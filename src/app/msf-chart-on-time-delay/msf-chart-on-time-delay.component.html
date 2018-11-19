@@ -1,0 +1,74 @@
+<div class="msf-chart-container">
+    <mat-form-field class="msf-width-20">
+        <mat-select placeholder="Chart Type" [(ngModel)]="currentChartType" (selectionChange)="chartTypeChange($event.value)">
+            <mat-option *ngFor="let chartType of chartTypes" [value]="chartType">
+            {{chartType.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <!--<mat-card *ngIf="globals.isLoading" style="display: flex; justify-content: center; align-items: center">
+        <mat-progress-spinner 
+            mode="indeterminate">
+        </mat-progress-spinner>
+    </mat-card>    -->
+    <div id="chartdiv2" [style.width.%]="100" [style.height.%]="60" style="display: block;"></div>
+    <div class="msf-chart-options-container">
+            <div class="msf-chart-analysis-container">
+                <div class="msf-chart-analysis-title">
+                    <i class="material-icons">bar_chart</i> Analysis by
+                </div>
+               <div class="msf-chart-op-container">
+                    <mat-form-field class="msf-full-width">
+                        <mat-select [formControl]="variableCtrl"  placeholder="Column" #variableSelect [(ngModel)]="variable">
+                            <ngx-mat-select-search [formControl]="variableFilterCtrl"  placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>
+                            <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
+                            {{variable.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                 </div>
+                <button mat-flat-button class="" (click)="loadData()">Generate</button>
+            </div>
+            <div class="msf-chart-filter-container">
+                <div class="msf-chart-analysis-title">
+                    <i class="material-icons">multiline_chart</i> x - Axis
+                </div>
+                <div class="msf-chart-op-container">
+                    <mat-form-field class="msf-full-width">
+                        <mat-select [formControl]="xaxisCtrl"  placeholder="Column" #xaxisSelect [(ngModel)]="xaxis">
+                            <ngx-mat-select-search [formControl]="xaxisFilterCtrl"  placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>
+                            <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
+                            {{variable.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                
+            </div>
+            <div class="msf-chart-values-container">
+                <div class="msf-chart-analysis-title">
+                    <i class="material-icons">show_chart</i> Values
+                </div>
+                <div class="msf-chart-op-container">
+                        <mat-form-field class="msf-field-2-column msf-margin-r-10">
+                            <mat-select [formControl]="valueCtrl"  placeholder="Column" #valueSelect [(ngModel)]="valueColunm">
+                                <ngx-mat-select-search [formControl]="valueFilterCtrl"  placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>
+                                <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
+                                {{variable.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field class="msf-field-2-column">
+                            <mat-select placeholder="Column" [(ngModel)]="function">
+                                <mat-option *ngFor="let fun of functions" [value]="fun">
+                                {{fun.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                </div>
+            </div>
+    </div>
+    
+</div>
+
+

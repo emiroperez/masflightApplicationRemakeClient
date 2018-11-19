@@ -1,0 +1,21 @@
+
+<mat-menu #childMenu="matMenu" [overlapTrigger]="false" yPosition="below">
+  <div (mouseleave)="closeMenu()">
+    <ng-container *ngFor="let option of options">
+      <!-- Handle branch node menu items -->
+      <ng-container *ngIf="option.children && option.children.length > 0">
+        <button mat-menu-item [matMenuTriggerFor]="menu.childMenu">               
+          {{option.label}}
+        </button>
+        <app-menu-option #menu [options]="option.children"></app-menu-option>
+      </ng-container>
+      <!-- Handle leaf node menu items -->
+      <ng-container *ngIf="!option.children || option.children.length === 0">
+        <button mat-menu-item (click)="optionClickHandler(option)">     
+          <mat-icon *ngIf="option.icon">{{option.icon}}</mat-icon>   
+          {{option.label}}
+        </button>
+      </ng-container>
+    </ng-container>
+  </div>
+</mat-menu>

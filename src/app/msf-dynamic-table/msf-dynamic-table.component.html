@@ -1,0 +1,8 @@
+<!--<mat-card *ngIf="globals.isLoading" style="display: flex; justify-content: center; align-items: center">
+    <mat-progress-spinner 
+      mode="indeterminate">
+    </mat-progress-spinner>
+  </mat-card>-->
+<jqxTreeGrid
+    #jqxTreeGridRef [width]="getWidth()" [height]="getHeight()" [source]="dataAdapter" [columns]="columns" [sortable]="true">
+</jqxTreeGrid>

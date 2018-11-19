@@ -1,0 +1,24 @@
+
+<ng-container *ngIf="globals.currentOption">
+    <mat-tab-group [selectedIndex]="globals.selectedIndex" #tabs>
+        <mat-tab label="CURRENT QUERY GENERAL SUMMARY" style="height: 100%;">
+            <app-current-query-summary></app-current-query-summary> 
+        </mat-tab>
+        <mat-tab  *ngIf="!globals.map" label="{{globals.currentOption.tab}}">
+            <div class="msf-viewport-container">
+                <app-msf-table #msfTableRef [tabRef]="tabRef"></app-msf-table>
+            </div>    
+        </mat-tab>        
+        <mat-tab  *ngIf="globals.generateDynamicTable"  #msfDynamicTableTabRef label="DYNAMIC TABLE">
+            <app-msf-dynamic-table  #msfDynamicTableRef ></app-msf-dynamic-table>
+        </mat-tab>    
+        <mat-tab  *ngIf="globals.chart" #tabRef label="CHART">
+            <app-msf-chart-on-time-delay  #msfChartRef ></app-msf-chart-on-time-delay> 
+        </mat-tab> 
+        <mat-tab *ngIf="globals.map"  #tabRef label="MAP">
+            <app-msf-map #msfMapRef></app-msf-map>
+        </mat-tab>    
+    </mat-tab-group>
+    <!--<app-msf-chart-on-time-delay *ngIf="globals.chart" #msfChartRef ></app-msf-chart-on-time-delay>    -->
+</ng-container>
+<app-intro *ngIf="!globals.currentOption"></app-intro>

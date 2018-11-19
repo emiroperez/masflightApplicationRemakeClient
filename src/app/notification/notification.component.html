@@ -1,0 +1,4 @@
+<div *ngIf="notificationShow" [ngClass]="{'notification-warning': notificationType ==='warning','notification-error': notificationType ==='error','notification-info': notificationType ==='info'}">
+    <i class="material-icons notification-icon">warning</i>
+    {{notificationMessage}}
+</div>

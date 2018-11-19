@@ -1,0 +1,15 @@
+<div>
+    <div class="center">
+        <div class="msf-component-airport-title">Format</div>        
+    </div>    
+    <div class="msf-component-airport-input-container">            
+        <mat-form-field class="msf-full-width">
+            <mat-select [formControl]="roundingCtrl"  placeholder="Rounding (Decimals)" #roundingSelect [(ngModel)]="argument.value1">
+                <ngx-mat-select-search [formControl]="roundingFilterCtrl" placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>
+                <mat-option *ngFor="let rounding of filteredRounding | async" [value]="rounding">
+                {{rounding.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>      
+    </div>
+</div>  

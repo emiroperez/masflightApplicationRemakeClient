@@ -1,0 +1,15 @@
+<div>
+    <div class="center">
+        <div class="msf-component-airport-title">Grouping</div>        
+    </div>    
+    <div class="msf-component-airport-input-container">            
+        <mat-form-field class="msf-full-width">
+            <mat-select [formControl]="groupingCtrl" [multiple]="true"  placeholder="Group By" #groupingSelect [(ngModel)]="argument.value1">
+                <ngx-mat-select-search [formControl]="groupingFilterCtrl" placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>
+                <mat-option *ngFor="let grouping of filteredGrouping | async" [value]="grouping">
+                {{grouping.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>      
+    </div>
+</div>  

@@ -1,0 +1,38 @@
+
+<ng-container *ngFor="let menuOptionArguments of globals.currentOption.menuOptionArguments">
+
+    <ng-container *ngFor="let category of menuOptionArguments.categoryArguments">
+        <div  [ngClass]="argsContainer.open ? 'msf-menu-component-active':'msf-menu-component'" (click)="componentClickHandler(argsContainer, icon)">
+            <img src="{{category.icon}}" class="msf-menu-image-border msf-vertical-middle">
+            <span class="msf-menu-component-text">{{category.label}}</span>
+            <i #icon class="material-icons msf-menu-cmpte-row">expand_more</i>
+        </div>
+        <div [ngClass]="argsContainer.open ? 'msf-menu-arguments-container-show' : 'msf-menu-arguments-container-hiden'" #argsContainer>
+            <ng-container *ngIf="category.arguments && category.arguments.length > 0">
+                <div class="msf-component-airport-container">
+                    <ng-container *ngFor="let argument of category.arguments">     
+                        <app-msf-airport-route *ngIf="isAirportRoute(argument)" [argument]="argument"></app-msf-airport-route>
+                        <app-msf-airport *ngIf="isAirport(argument)" [argument]="argument"></app-msf-airport>
+                        <app-msf-time-range *ngIf="isTimeRange(argument)" [argument]="argument" ></app-msf-time-range>
+                        <app-msf-date-range *ngIf="isDateRange(argument)" [argument]="argument"></app-msf-date-range>
+                        <app-msf-ceiling *ngIf="isCeiling(argument)" [argument]="argument"></app-msf-ceiling>
+                        <app-msf-wind *ngIf="isWindSpeed(argument)" [argument]="argument"></app-msf-wind>
+                        <app-msf-temperature *ngIf="isTemperature(argument)" [argument]="argument"></app-msf-temperature>
+                        <app-msf-wind-direction *ngIf="isWindDirection(argument)" [argument]="argument"></app-msf-wind-direction>
+                        <app-msf-airline *ngIf="isAirline(argument)" [argument]="argument"></app-msf-airline>
+                        <app-msf-single-airline *ngIf="isSingleAirline(argument)" [argument]="argument"></app-msf-single-airline>
+                        <app-msf-tail-number *ngIf="isTailNumber(argument)" [argument]="argument"></app-msf-tail-number>
+                        <app-msf-aircraft-type *ngIf="isAircraftType(argument)" [argument]="argument"></app-msf-aircraft-type>
+                        <app-msf-flight-number *ngIf="isFlightNumberType(argument)" [argument]="argument"></app-msf-flight-number>
+                        <app-msf-grouping *ngIf="isGrouping(argument)" [argument]="argument"></app-msf-grouping>
+                        <app-msf-rounding *ngIf="isRounding(argument)" [argument]="argument"></app-msf-rounding>
+                        <app-msf-date *ngIf="isDate(argument)" [argument]="argument"></app-msf-date>
+                        
+                    </ng-container>
+                </div>
+            </ng-container>      
+        </div>
+    </ng-container>
+    
+</ng-container>
+

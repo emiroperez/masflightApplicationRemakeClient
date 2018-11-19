@@ -1,0 +1,19 @@
+<div>
+  <div class="center">
+      <div class="msf-component-airport-title">Select Airlines</div>        
+  </div> 
+  <div class="msf-airline-container">
+      <img src="../../assets/images/components/arguments/airline/aerolin.png" class="msf-airline-image">
+      <div class="">   
+          <div class="msf-component-airline-title ">Input Airline(s) separated by commas</div>         
+          <mat-form-field class="msf-field msf-full-width">
+              <mat-select [formControl]="airlineCtrl" placeholder="Airlines" [multiple]="true"  #airlineSelect [(ngModel)]="argument.value1">
+                  <ngx-mat-select-search [formControl]="airlineFilterCtrl" placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>
+                  <mat-option *ngFor="let airline of filteredAirlines | async" [value]="airline">
+                  {{airline.name}}
+                  </mat-option>
+              </mat-select>
+          </mat-form-field>        
+      </div>
+  </div>
+</div>

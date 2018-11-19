@@ -1,0 +1,18 @@
+<div class="center">
+    <div class="msf-component-airport-title">Date Range</div>
+</div> 
+<div class="msf-component-date-input-container">
+    <mat-form-field class="msf-full-width">
+        <input matInput [matDatepicker]="picker3" placeholder="From" autocomplete="off" class=" msf-full-width msf-menu-arg-select"  [(ngModel)]="argument.value1" (ngModelChange)="dateChange($event)">
+        <mat-datepicker-toggle matSuffix [for]="picker3">            
+        </mat-datepicker-toggle>
+        <mat-datepicker #picker3></mat-datepicker>
+    </mat-form-field>            
+
+    <mat-form-field class="msf-full-width">
+        <input matInput [matDatepicker]="picker4" placeholder="To" autocomplete="off" class=" msf-full-width msf-menu-arg-select"  [(ngModel)]="argument.value2">
+        <mat-datepicker-toggle matSuffix [for]="picker4">           
+        </mat-datepicker-toggle>
+        <mat-datepicker #picker4></mat-datepicker>
+    </mat-form-field>         
+</div>

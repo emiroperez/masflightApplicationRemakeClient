@@ -1,0 +1,44 @@
+<mat-card class="login-card">
+  <mat-card-header>
+    <img mat-card-image class="login-header-image" src="../../assets/images/logo.png" >    
+  </mat-card-header>
+  
+  <mat-card-content>
+    <app-notification [show]="utils.notificationShow"  [message]="utils.notificationMessage" [type]="utils.notificationType" ></app-notification>
+    <form  class="login-form" name="login">  
+      <div class="block-item-input">
+        <mat-form-field>
+            <img src="../../assets/images/usuario.png" class="input_img">
+            <input  matInput autocomplete="off" type="text" placeholder="Username" class="input-username" [formControl]="usernameValidator" name="username" [(ngModel)]="user.username"/>         
+            <mat-error *ngIf="usernameValidator.invalid">{{getErrorUsernameMessage()}}</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="block-item-input">          
+          <mat-form-field>
+                <img src="../../assets/images/password.png" class="input_img">
+                <input matInput type="password" placeholder="Password" class="input-password" [formControl]="passwordValidator"  name="password" [(ngModel)]="user.password"/>         
+                <mat-error *ngIf="passwordValidator.invalid">{{getErrorPasswordMessage()}}</mat-error>
+          </mat-form-field>          
+      </div>
+      <div class="center">
+          <div class="block-item">
+              <mat-checkbox class="login-check block" color="primary"checked=true >keep me Signed in</mat-checkbox>
+          </div>
+          <div class="block-item">
+              <a href="#" class="login-link block login-font-color">Forgot Password?</a>
+          </div>
+          
+          <div class="block-item">
+              <span class="login-link-reg">New User?</span><a routerLink="/register" class="login-link login-link-reg2" >Register Now</a>
+          </div>
+       
+      </div>
+    </form>
+  </mat-card-content>
+  <mat-card-actions class="center">
+    <button mat-flat-button class="login-button" (click)="login()">Sign in</button>
+    <!--<button mat-flat-button class="login-button" routerLink="/welcome">Sign in</button>-->
+  </mat-card-actions>
+</mat-card>
+

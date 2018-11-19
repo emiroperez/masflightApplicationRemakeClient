@@ -1,0 +1,16 @@
+<div class="center">
+    <div class="msf-component-airport-title">Tail Number</div>        
+</div> 
+<div class="msf-airline-container">
+    <img src="../../assets/images/components/arguments/aircraftDate/tailnumber.png" class="msf-tail-image">
+    <div class="msf-full-width">          
+        <mat-form-field class="msf-field msf-full-width">
+            <mat-select [formControl]="tailNumberCtrl" placeholder="Tail Numbers"  #tailNumberSelect [(ngModel)]="argument.value1">
+                <ngx-mat-select-search [formControl]="tailNumberFilterCtrl" placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>
+                <mat-option *ngFor="let tailNumber of filteredTailNumbers | async" [value]="tailNumber">
+                {{tailNumber.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>        
+    </div>
+</div>

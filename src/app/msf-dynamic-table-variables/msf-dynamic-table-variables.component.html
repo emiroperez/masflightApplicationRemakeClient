@@ -1,0 +1,77 @@
+<div class="msf-dynamic-table-variable-containner">
+  <div class="msf-dynamic-table-variable-title">
+    <img src="../../assets/images/dynamicTable.png" alt="">
+    <span>Dynamic Table</span>
+  </div>
+  <div class="msf-dynamic-table-variable-content">
+      <div class="msf-var-content">
+          <mat-form-field class="msf-full-width">
+              <mat-select [formControl]="variableCtrl" [multiple]="true" placeholder="Variables" #variableSelect [(ngModel)]="this.globals.variables" (ngModelChange)="orderVariable($event)" openedChange="show()">
+                  <ngx-mat-select-search [formControl]="variableFilterCtrl"  placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>
+                  <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
+                  {{variable.name}}
+                  </mat-option>
+              </mat-select>              
+          </mat-form-field>
+          <ng-container *ngFor="let variable of this.globals.variables">
+              <mat-card class="msf-var-name-content">
+                {{variable.name}}
+                <i class="material-icons" (click)="deleteVariable(variable)">close </i>
+              </mat-card>
+          </ng-container>
+      </div>
+      <img src="../../assets/images/flechas.png" class="msf-var-img" alt="">
+      <div class="msf-var-content">
+          <mat-form-field class="msf-full-width">
+              <mat-select [formControl]="valueCtrl" [multiple]="true" placeholder="Values" #valueSelect [(ngModel)]="this.globals.values" (ngModelChange)="orderValues($event)">
+                  <ngx-mat-select-search [formControl]="valueFilterCtrl"  placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>
+                  <mat-option *ngFor="let value of filteredValues | async" [value]="value">
+                  {{value.name}}
+                  </mat-option>
+              </mat-select>
+          </mat-form-field>
+                       
+          <mat-accordion>
+              <ng-container *ngFor="let val of this.globals.values"> 
+                <mat-expansion-panel class="msf-val-name-content">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        {{val.name}}
+                    </mat-panel-title>                     
+                  </mat-expansion-panel-header>   
+                  <div class="msf-component-redio">
+                      <mat-radio-group [(ngModel)]="val.function">
+                        <div>
+                            <mat-checkbox class="msf-checkbox" color="primary" [(ngModel)]="val.summary">Summary</mat-checkbox>
+                        </div>
+                        <div>
+                            <mat-checkbox class="msf-checkbox" color="primary" [(ngModel)]="val.average">Average</mat-checkbox>
+                        </div>  
+                        <div>
+                            <mat-checkbox class="msf-checkbox" color="primary" [(ngModel)]="val.mean">Mean</mat-checkbox>
+                        </div> 
+                        <div>
+                            <mat-checkbox class="msf-checkbox" color="primary" [(ngModel)]="val.max">Max</mat-checkbox>
+                        </div> 
+                        <div>
+                            <mat-checkbox class="msf-checkbox" color="primary" [(ngModel)]="val.min">Min</mat-checkbox>
+                        </div> 
+                        <div>
+                            <mat-checkbox class="msf-checkbox" color="primary" [(ngModel)]="val.stddeviation">Std Deviation</mat-checkbox>
+                        </div> 
+                        <div>
+                            <mat-checkbox class="msf-checkbox" color="primary" [(ngModel)]="val.count">Count</mat-checkbox>
+                        </div>                         
+                      </mat-radio-group>    
+                  </div>                                                                              
+                </mat-expansion-panel>   
+            </ng-container>               
+          </mat-accordion>
+          
+      </div>
+  </div>
+  <div class="msf-dynamic-table-variable-fotter">
+      <button class="msf-cancel-button" mat-button (click)="onNoClick()" >Cancel</button>
+      <button  [disabled]="disabled()" [ngClass]="disabled()?'msf-disabled msf-ok-button ':'msf-ok-button'" mat-button (click)="generateTable()" >Generate Table</button>      
+  </div>
+</div>
