@@ -32,6 +32,7 @@ export class LoginScreenComponent implements OnInit {
     this.utils = new Utils();
   }
   
+  
 
   getErrorUsernameMessage() {
     return this.usernameValidator.hasError('required') ? 'You must enter a username' :'';
