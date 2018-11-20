@@ -4,7 +4,7 @@
         <mat-tab label="CURRENT QUERY GENERAL SUMMARY" style="height: 100%;">
             <app-current-query-summary></app-current-query-summary> 
         </mat-tab>
-        <mat-tab  *ngIf="!globals.map" label="{{globals.currentOption.tab}}">
+        <mat-tab  *ngIf="!globals.map && !globals.usageStatistics" label="{{globals.currentOption.tab}}">
             <div class="msf-viewport-container">
                 <app-msf-table #msfTableRef [tabRef]="tabRef"></app-msf-table>
             </div>    
@@ -17,8 +17,11 @@
         </mat-tab> 
         <mat-tab *ngIf="globals.map"  #tabRef label="MAP">
             <app-msf-map #msfMapRef></app-msf-map>
-        </mat-tab>    
+        </mat-tab> 
+        <mat-tab *ngIf="globals.usageStatistics"  #tabRef label="Usage Statistics">
+            <app-msf-usage-statistics #msfUsagestatisticRef></app-msf-usage-statistics> 
+        </mat-tab> 
+        
     </mat-tab-group>
-    <!--<app-msf-chart-on-time-delay *ngIf="globals.chart" #msfChartRef ></app-msf-chart-on-time-delay>    -->
 </ng-container>
 <app-intro *ngIf="!globals.currentOption"></app-intro>

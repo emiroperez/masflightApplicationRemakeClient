@@ -28,6 +28,9 @@ export class MenuOptionComponent implements OnInit {
     if(this.globals.currentOption.tabType === 'map'){
       this.globals.map = true;
     }
+    if(this.globals.currentOption.tabType === 'statistics'){
+      this.globals.usageStatistics = true;
+    }
   }
 
   closeMenu() {

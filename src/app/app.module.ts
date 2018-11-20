@@ -60,6 +60,7 @@ import { MsfLoadingComponent } from './msf-loading/msf-loading.component';
 import { MsfGroupingComponent } from './msf-grouping/msf-grouping.component';
 import { MsfRoundingComponent } from './msf-rounding/msf-rounding.component';
 import { MsfDateComponent } from './msf-date/msf-date.component';
+import { MsfUsageStatisticsComponent } from './msf-usage-statistics/msf-usage-statistics.component';
 
 @NgModule({
   declarations: [
@@ -105,7 +106,8 @@ import { MsfDateComponent } from './msf-date/msf-date.component';
     MsfLoadingComponent,
     MsfGroupingComponent,
     MsfRoundingComponent,
-    MsfDateComponent
+    MsfDateComponent,
+    MsfUsageStatisticsComponent
   ],
   imports: [
     BrowserModule,
