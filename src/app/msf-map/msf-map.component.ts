@@ -379,4 +379,8 @@ zoomChart(){
   this.chart.zoomToIndexes(0, lastIndex);  
 }
 
+getText(point){
+  return point.latitude +','+ point.longitude;
+}
+
 }

@@ -13,8 +13,18 @@
       </agm-marker>
       <ng-container *ngFor="let point of polyline.path; let i = index ">
           <agm-polyline-point [latitude]="point.latitude" [longitude]="point.longitude"></agm-polyline-point>          
+          <!--<agm-marker
+          [iconUrl]="iconMarker" 
+          [latitude]="point.latitude" 
+          [longitude]="point.longitude" 
+          [label]="{
+            color: 'red',
+            text: getText(point)
+            }"
+          >
+      </agm-marker>-->
       </ng-container>
-      <agm-marker
+     <agm-marker
           [iconUrl]="iconMarker" 
           [latitude]="polyline.path[polyline.path.length-1].latitude" 
           [longitude]="polyline.path[polyline.path.length-1].longitude" 
