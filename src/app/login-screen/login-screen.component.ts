@@ -28,7 +28,7 @@ export class LoginScreenComponent implements OnInit {
   usernameValidator = new FormControl('username', [Validators.required]);
 
   constructor(private router: Router, private authService: AuthService, private notification: NotificationComponent) {
-    this.user = new User(null,null);
+    this.user = new User(null);
     this.utils = new Utils();
   }
   

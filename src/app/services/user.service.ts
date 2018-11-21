@@ -13,10 +13,9 @@ export class UserService {
     this.http.post(_this,url,user,successHandler, errorHandler);
   }
 
-  getPlans(_this,successHandler, errorHandler){
-    //let url='/getPlans';
-    let url='http://localhost:8887/getPlans';
-    this.http.get(_this,url,successHandler,errorHandler,null);
+  saveUser(_this,user,successHandler, errorHandler){
+    let url='http://localhost:8887/saveUser';
+    this.http.post(_this,url,user,successHandler, errorHandler);
   }
 
 }

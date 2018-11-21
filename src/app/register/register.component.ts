@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import {FormControl, Validators} from '@angular/forms';
+import {FormControl, Validators,ValidatorFn, ValidationErrors, AbstractControl, FormGroup} from '@angular/forms';
 import { User} from '../model/User';
 import { State } from '../model/State';
 import { County } from '../model/Country';
 import { Plan } from '../model/Plan';
+import { UserPlan } from '../model/UserPlan';
 import { Utils } from '../commons/utils';
 import { UserService } from '../services/user.service';
+import { RegisterService } from '../services/register.service';
 import { Payment } from '../model/Payment';
 import { NG_SELECT_DEFAULT_CONFIG } from '@ng-select/ng-select';
 import { Globals } from '../globals/Globals';
@@ -18,19 +20,25 @@ import { Globals } from '../globals/Globals';
     {
         provide: NG_SELECT_DEFAULT_CONFIG,
         useValue: {
-            notFoundText: 'Custom not found'
+            notFoundText: 'There is no options'
         }
     }
 ]
 })
 export class RegisterComponent implements OnInit {
+  users: User;
+  utils: Utils;
+  plans: Plan[];
+  userPlan : UserPlan;
+  countries: County[];
+  states : State[];
 
-  isLinear = false;
+  isLinear = true;
   title: string = 'Personal Information';
-  nameValidator = new FormControl('name', [Validators.required]);
+  /* nameValidator = new FormControl('name', [Validators.required]);
   lastNameValidator = new FormControl('lastName', [Validators.required]);
   passwordValidator = new FormControl('password', [Validators.required]);
-  repeatPasswordValidator = new FormControl('repeatPassword', [Validators.required]);
+  repeatPasswordValidator = new FormControl('repeatPassword', [Validators.required, RegisterComponent.passwordMatchValidator(this)]);
   emailValidator = new FormControl('email', [Validators.required,Validators.email]);
   addressValidator = new FormControl('address', [Validators.required]);
   countryValidator = new FormControl('country', [Validators.required]);
@@ -39,33 +47,59 @@ export class RegisterComponent implements OnInit {
   phoneNumberValidator = new FormControl('phoneNumber', [Validators.required]);
   cardNumberValidator = new FormControl('cardNumber', [Validators.required]);
   expiryDateValidator = new FormControl('expiryDate', [Validators.required]);
-  cvvValidator = new FormControl('cvv', [Validators.required]);
+  cvvValidator = new FormControl('cvv', [Validators.required]); */
 
-  user: User;
-  utils: Utils;
-  plans: Plan[];
+  personalInformationForm = new FormGroup({
+    nameValidator:new FormControl('name', [Validators.required]),
+    lastNameValidator : new FormControl('lastName', [Validators.required]),
+    passwordValidator : new FormControl('password', [Validators.required]),
+    repeatPasswordValidator : new FormControl('repeatPassword', [Validators.required, RegisterComponent.passwordMatchValidator(this)]),
+    emailValidator : new FormControl('email', [Validators.required,Validators.email]),
+    addressValidator : new FormControl('address', [Validators.required]),
+    countryValidator : new FormControl('country', [Validators.required]),
+    stateValidator : new FormControl('state', [Validators.required]),
+    postalCodeValidator : new FormControl('postalCode', [Validators.required]),
+    phoneNumberValidator : new FormControl('phoneNumber', [Validators.required])
+  });
 
-  states: State[] = [
-    {name: 'California', code: '1'},
-    {name: 'Florida', code: '3'},
-    {name: 'Texas', code: '2'},    
-    {name: 'Washington', code: '4'},
+  planInformationForm = new FormGroup({
+    planValidator : new FormControl('prices',[Validators.required])
+  })
+
+  paymentInformationForm = new FormGroup({
+    paymentTypeValidator : new FormControl('paymentType',[Validators.required]),
+    cardNumberValidator : new FormControl('cardNumber', [Validators.required]),
+    expiryDateValidator : new FormControl('expiryDate', [Validators.required]),
+    cvvValidator : new FormControl('cvv', [Validators.required])
+  })
+
+ 
+ /*  states: State[] = [
+    {name: 'California', id: '1'},
+    {name: 'Florida', id: '3'},
+    {name: 'Texas', id: '2'},    
+    {name: 'Washington', id: '4'},
   ];
 
   countries: County[] = [
-    {name: 'Australia', code: '4'},
-    {name: 'Canada', code: '3'},
-    {name: 'China', code: '1'},
-    {name: 'Russia', code: '2'}
-  ];
+    {name: 'Australia', id: '4'},
+    {name: 'Canada', id: '3'},
+    {name: 'China', id: '1'},
+    {name: 'Russia', id: '2'}
+  ]; */
   
  
-  constructor(private userServices: UserService, private globals: Globals) {
-    this.user = new User( new Payment(),null);
+  constructor(private userServices: UserService,private registerServices:RegisterService, private globals: Globals) {
+    this.users = new User( new Payment());
+    this.userPlan=new UserPlan();
     this.utils = new Utils();
     this.plans=new Array();
+    this.countries = new Array();
+    this.states = new Array();
     this.globals.isLoading = true;
-    this.userServices.getPlans(this,this.renderPlans,this.errorPlans);
+    this.registerServices.getCountries(this,this.renderCountries,this.errorCountries);
+    this.registerServices.getPlans(this,this.renderPlans,this.errorPlans);
+   
    
   }
 
@@ -82,14 +116,40 @@ export class RegisterComponent implements OnInit {
 
   }
 
+  
+
   renderPlans(_this,data){
     _this.plans = data;
     _this.globals.isLoading = false;
   }
 
   errorPlans(_this,error){
-    console.log(error);
+   // console.log(error);
     _this.globals.isLoading = false;
+  }
+
+  renderCountries(_this,data){
+    _this.countries = data;
+  }
+
+  errorCountries(_this,error){
+    //console.log(error);
+  }
+
+  CountryChangeEvent(target){
+    this.users.CState=null;
+    if (target != undefined){
+      this.states = target.states;
+    }else{
+      this.states=[];
+    }
+
+  }
+
+
+  setPlan(plan){
+    this.userPlan.IdPlan=plan;
+   
   }
   getMonthlyValue(price,type){
     if (type=="month"){
@@ -99,64 +159,92 @@ export class RegisterComponent implements OnInit {
     }
   }
 
+
+  static passwordMatchValidator(comp: RegisterComponent): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors => {
+      if(comp.users!=undefined){
+        return comp.users.password !== control.value ? { mismatch: true } : null;
+      }else{
+        return null;
+      }
+    };
+  }
+
+  checkEmailValidator(email){
+    this.registerServices.checkEmail(this,this.checkEmailResponse,this.errorHandleResponsen,email);
+  }
+
+  checkEmailResponse(_this,data){
+   
+    if(data){
+      _this.personalInformationForm.get("emailValidator").setErrors({exists:data});
+    }else{
+      _this.personalInformationForm.get("emailValidator").setErrors(null);
+    }
+  }
   getErrorNameMessage() {
-    return this.nameValidator.hasError('required') ? 'You must enter the name' :'';
+    return this.personalInformationForm.get('nameValidator').hasError('required') ? 'You must enter the name' :'';
   }
 
   getErrorLastNameMessage() {
-    return this.lastNameValidator.hasError('required') ? 'You must enter the last name' :'';
+    return this.personalInformationForm.get('lastNameValidator').hasError('required') ? 'You must enter the last name' :'';
   }
 
   getErrorPasswordMessage() {
-    return this.passwordValidator.hasError('required') ? 'You must enter a password' :'';
+    
+    return this.personalInformationForm.get('passwordValidator').hasError('required') ? 'You must enter a password' : '';
   }
 
   getErrorRepeatPasswordMessage() {
-    return this.repeatPasswordValidator.hasError('required') ? 'You must repeat password' :'';
+    return this.personalInformationForm.get('repeatPasswordValidator').hasError('required') ? 'You must repeat password' : this.personalInformationForm.get('repeatPasswordValidator').hasError('mismatch') ? 'You must enter the same password' : '';
   }
 
   getErrorEmailMessage() {
-    return this.emailValidator.hasError('required') ? 'You must enter a e-mail' :'';
+    return this.personalInformationForm.get('emailValidator').hasError('required') ? 'You must enter an e-mail' :'';
   }
 
   getErrorFormatEmailMessage() {
-    return this.emailValidator.hasError('email') ? 'Bad format e-mail' :'';
+    return this.personalInformationForm.get('emailValidator').hasError('email') ? 'Bad format e-mail' :'';
+  }
+
+  getErrorEmaiExistlMessage() {
+    return this.personalInformationForm.get('emailValidator').hasError('exists') ? 'E-mail already exists' :'';
   }
 
   getErrorAddressMessage() {
-    return this.addressValidator.hasError('required') ? 'You must enter a address' :'';
+    return this.personalInformationForm.get('addressValidator').hasError('required') ? 'You must enter an address' :'';
   }
 
   getErrorCountryMessage() {
-    return this.countryValidator.hasError('required') ? 'You must enter a country' :'';
+    return this.personalInformationForm.get('countryValidator').hasError('required') ? 'You must select a country' :'';
   }
 
   getErrorStateMessage() {
-    return this.stateValidator.hasError('required') ? 'You must enter a state' :'';
+    return this.personalInformationForm.get('stateValidator').hasError('required') ? 'You must select a state' :'';
   }
 
   getErrorPostalCodeMessage() {
-    return this.postalCodeValidator.hasError('required') ? 'You must enter a postal code' :'';
+    return this.personalInformationForm.get('postalCodeValidator').hasError('required') ? 'You must enter a postal code' :'';
   }
 
   getErrorPhoneNumberMessage() {
-    return this.phoneNumberValidator.hasError('required') ? 'You must enter a phone number' :'';
+    return this.personalInformationForm.get('phoneNumberValidator').hasError('required') ? 'You must enter a phone number' :'';
   }
 
   getErrorCardNumberMessage() {
-    return this.cardNumberValidator.hasError('required') ? 'You must enter the card number' :'';
+    return this.paymentInformationForm.get('cardNumberValidator').hasError('required') ? 'You must enter the card number' :'';
   }
 
   getErrorExpiryDateMessage() {
-    return this.expiryDateValidator.hasError('required') ? 'You must enter the expiry date' :'';
+    return this.paymentInformationForm.get('expiryDateValidator').hasError('required') ? 'You must enter the expiry date' :'';
   }
 
   getErrorCvvMessage() {
-    return this.cvvValidator.hasError('required') ? 'You must enter the cvv' :'';
+    return this.paymentInformationForm.get('cvvValidator').hasError('required') ? 'You must enter the cvv' :'';
   }
 
   successHandleResponse(_this,data){
-		
+		//console.log(data);
 	}
 
   errorHandleResponsen(){
@@ -165,10 +253,15 @@ export class RegisterComponent implements OnInit {
   
 
   insertUser(){
-		//if(!this.utils.isEmpty(this.user.username) ){
-      this.userServices.save(this,this.user, this.successHandleResponse,this.errorHandleResponsen);
-    //}
+		if(this.personalInformationForm.valid && this.planInformationForm.valid && this.paymentInformationForm.valid ){
+      this.userPlan.IdUser=this.users;
+      this.userPlan.planPayment = this.users.payment;
+      this.userServices.saveUser(this,this.userPlan, this.successHandleResponse,this.errorHandleResponsen);
+    }else{
+      console.log('no valid Form')
+    }
   }
+  
   
   getOptionsText(options: any[]){
     let text="";
@@ -194,3 +287,4 @@ export class RegisterComponent implements OnInit {
   }
 
 }
+
