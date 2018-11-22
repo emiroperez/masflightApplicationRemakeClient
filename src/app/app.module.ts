@@ -61,6 +61,7 @@ import { MsfGroupingComponent } from './msf-grouping/msf-grouping.component';
 import { MsfRoundingComponent } from './msf-rounding/msf-rounding.component';
 import { MsfDateComponent } from './msf-date/msf-date.component';
 import { MsfUsageStatisticsComponent } from './msf-usage-statistics/msf-usage-statistics.component';
+import { AdminMenuComponent } from './admin-menu/admin-menu.component';
 
 @NgModule({
   declarations: [
@@ -107,7 +108,8 @@ import { MsfUsageStatisticsComponent } from './msf-usage-statistics/msf-usage-st
     MsfGroupingComponent,
     MsfRoundingComponent,
     MsfDateComponent,
-    MsfUsageStatisticsComponent
+    MsfUsageStatisticsComponent,
+    AdminMenuComponent
   ],
   imports: [
     BrowserModule,
