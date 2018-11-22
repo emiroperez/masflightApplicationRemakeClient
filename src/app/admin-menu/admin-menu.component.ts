@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, OnInit, Component, ViewChild } from '@angular/core';
 import { jqxTreeGridComponent } from 'jqwidgets-scripts/jqwidgets-ts/angular_jqxtreegrid';
 import { ApiClient } from '../api/api-client';
 import { Globals } from '../globals/Globals';
@@ -13,19 +13,35 @@ export class AdminMenuComponent implements AfterViewInit {
 
   treeObject: any = {};
 
+  categoryArgument: any = {};
+
+  categories: any[];
+
   columns: any[] =
     [
       { text: 'Id', dataField: 'id', width: '30%' },
       { text: 'Label', dataField: 'label', width: '70%' }
     ];
 
+  columnsCategory: any[] = [    
+    { text: 'Name1', dataField: 'name1', width: '20%' },
+    { text: 'Name2', dataField: 'name2', width: '20%' },
+    { text: 'Name3', dataField: 'name3', width: '20%' },
+    { text: 'URL', dataField: 'url', width: '30%' },
+    { text: 'Required', dataField: 'required', width: '10%' }  
+  ]
+
   @ViewChild(jqxTreeGridComponent) jqxTreeGridRef: jqxTreeGridComponent;
 
   constructor(private http: ApiClient, public globals: Globals, private service: ApplicationService) {
   }
 
+  ngOnInit() {
+    this.getCategoryArguments();
+  }
+
   ngAfterViewInit(): void {
-    this.loadData();
+    this.getMenuData();
   }
 
   getSelectedMenuItem(): any[] {
@@ -56,7 +72,6 @@ export class AdminMenuComponent implements AfterViewInit {
 
   createOption(): void {
     var re = /Cat/gi;
-    
     var parent = this.getSelectedMenuItem()[0];
     if (parent.id.toString().search(re) == -1) {
       this.treeObject.parentId = parent.id;
@@ -77,7 +92,7 @@ export class AdminMenuComponent implements AfterViewInit {
     console.log(result);
   }
 
-  loadData(): void {
+  getMenuData(): void {
     this.service.loadMenuOptions(this, this.handlerSuccess, this.handlerError);
   }
 
@@ -98,7 +113,6 @@ export class AdminMenuComponent implements AfterViewInit {
       id: 'id',
       localData: data
     };
-
     _this.dataAdapter = new jqx.dataAdapter(source);
     _this.globals.isLoading = false;
 
@@ -109,11 +123,63 @@ export class AdminMenuComponent implements AfterViewInit {
     _this.globals.isLoading = false;
   }
 
+  getCategoryArguments() {
+    this.service.loadCategoryArguments(this, this.handlerSuccessCategoryArguments, this.handlerErrorCategoryArguments);
+  }
+
+  handlerSuccessCategoryArguments(_this, data) {
+    _this.categories = data;    
+  }
+
+  handlerErrorCategoryArguments(_this, result) {
+    console.log(result);
+  }
+
+  getOptionCategoryArguments() {
+    var re = /Cat/gi;
+    let selectedOption = this.getSelectedMenuItem();
+    let selectedCategory = this.categoryArgument.idCategory;
+    let data = {
+      idOption: selectedOption[0].id,
+      idCategory: selectedCategory.id
+    };
+    if (selectedOption[0].id.toString().search(re) == -1 && selectedCategory != undefined) {
+      this.service.loadOptionCategoryArguments(this, data, this.handlerSuccessOptionCategoryArguments, this.handlerErrorOptionCategoryArguments);
+    }
+  }
+
+  handlerSuccessOptionCategoryArguments(_this, data) {
+    let source: any =
+    {
+      dataType: 'json',
+      dataFields: [    
+        { name: 'id', type: 'string' },
+        { name: 'name1', type: 'string' },
+        { name: 'name2', type: 'string' },
+        { name: 'name3', type: 'string' },
+        { name: 'url', type: 'string' },
+        { name: 'required', type: 'boolean' }        
+      ],      
+      localData: data[0].categoryArgumentsId.arguments
+    };
+    _this.dataAdapterCategory = new jqx.dataAdapter(source);
+    _this.globals.isLoading = false;    
+  }
+
+  handlerErrorOptionCategoryArguments(_this, result) {
+    console.log(result);
+  }
+
+  CategoryArgumentChanged(event: any) {
+    this.getOptionCategoryArguments();
+    console.log(event);
+  }
+
   getWidth(): any {
     if (document.body.offsetWidth < 850) {
       return '90%';
     }
-    return 500;
+    return 446;
   }
 
   getHeight(): any {

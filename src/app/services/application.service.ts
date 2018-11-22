@@ -79,4 +79,25 @@ export class ApplicationService {
     this.http.post(_this, url, data, handlerSuccess, handlerError);
   }
 
+  loadOptionCategoryArguments(_this, data, handlerSuccess, handlerError){
+    _this.globals.isLoading = true;
+    let url = "http://localhost:8887/getOptionArgumentsCategories?optionId=" + data.idOption
+      + "&categoryId=" + data.idCategory;
+    this.http.get(_this, url, handlerSuccess, handlerError, null);
+  }
+
+  loadArguments(_this, handlerSuccess, handlerError){
+    _this.globals.isLoading = true;
+    let url = "http://localhost:8887/getArguments";
+    this.http.get(_this, url, handlerSuccess, handlerError, null);
+  }
+
+  loadCategoryArguments(_this, handlerSuccess, handlerError){
+    _this.globals.isLoading = true;
+    let url = "http://localhost:8887/getArgumentsCategories";
+    this.http.get(_this, url, handlerSuccess, handlerError, null);
+  }
+
+  
+
 }
