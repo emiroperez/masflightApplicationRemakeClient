@@ -69,12 +69,12 @@ export class ApplicationService {
     this.http.get(_this, url, handlerSuccess, handlerError, null);
   }
 
-  createMenucategory(_this, data, handlerSuccess, handlerError) {
+  createMenucategory(_this, data, handlerSuccess, handlerError) {      
     let url = "http://localhost:8887/menuTreeCategory";
     this.http.post(_this, url, data, handlerSuccess, handlerError);
   }
 
-  createMenuOption(_this, data, handlerSuccess, handlerError) {
+  createMenuOption(_this, data, handlerSuccess, handlerError) {      
     let url = "http://localhost:8887/menuTreeOption";
     this.http.post(_this, url, data, handlerSuccess, handlerError);
   }
@@ -99,7 +99,8 @@ export class ApplicationService {
   }
 
   createArgument(_this, data, handlerSuccess, handlerError) {
-    let url = "http://localhost:8887/arguments?idOption=" + data.idOption;
+    //let url = "http://localhost:8887/arguments?idOption=" + data.idOption;
+    let url = "/arguments?idOption=" + data.idOption;
     this.http.post(_this, url, data.argument, handlerSuccess, handlerError);
   }
 

@@ -14,7 +14,7 @@ export class Globals {
   variables;
   values;
   generateDynamicTable = false;
-  selectedIndex = 1;
+  selectedIndex = 0;
   displayedColumns;
   metadata;
   totalRecord = 0;

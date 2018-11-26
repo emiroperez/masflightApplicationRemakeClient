@@ -887,8 +887,7 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 }
 
 .msf-select {
-  display: flex;
-  margin-top: 1.5%;
+  margin-left: 20px;
 }
 
 .ng-select .ng-select-container .ng-value-container .ng-placeholder {
@@ -2077,9 +2076,7 @@ g g g text {
 
 .msf-card-container {
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
+  align-items: flex-start;
 }
 
 .msf-plan-card {
@@ -2087,8 +2084,7 @@ g g g text {
   align-items: center;
   border-radius: 10px !important;
   margin: 4px;
-  width: 32%;
-  margin-top: 2%;
+  width: 33.3%;
 }
 
 .msf-large-container {
@@ -2106,16 +2102,11 @@ g g g text {
 
 .msf-feature-name {
   width: fit-content;
-  font-weight: 400;
-  font-size: 110%;
 }
 
 .msf-feature-description {
-  font-size: 78%;
+  font-size: 80%;
   margin: 0;
-  font-weight: lighter;
-  letter-spacing: 0.2px;
-  filter: brightness(95%);
 }
 
 .msf-features-container {
@@ -2135,7 +2126,7 @@ g g g text {
 }
 
 .msf-plan-card-content li {
-  margin-top: 15px;
+  margin-top: 10px;
   width: fit-content;
   background-image: url(assets/images/check-09.png);
   background-repeat: no-repeat;
@@ -2183,15 +2174,6 @@ g g g text {
   display: flex;
 }
 
-.msf-select-error{
-  font-size: 75%;
-  margin-left: 4vw;
-  margin-top: -2vh;
-}
-
-.ng-select.ng-select-focused.ng-invalid .ng-select-container::after {
-  border-color: #f44336 !important;
-}
 .msf-select-input {
   width: 98% !important;
 }
@@ -2210,28 +2192,28 @@ li.msf-select:before {
 .msf-medium-title-centered {
   color: white;
   font-size: 150%;
-  font-weight: 100;
+  font-weight: bold;
   letter-spacing: 1px;
   text-align: -webkit-center;
   margin-top: 2% !important;
+  margin-bottom: 2%;
 }
 
-.msf-select .ng-clear-wrapper{
-  visibility: hidden;
+input[type=checkbox] + label {
+  background: #999;
+  height: 16px;
+  width: 16px;
+  padding: 0 0 0 0px;
+}
+input[type=checkbox]:checked + label {
+  background: #0080FF;
+  height: 16px;
+  width: 16px;
+  padding: 0 0 0 0px;
+}
+mgl-map {
+  height: 500px;
+  width: 500px;
 }
 
-.mat-step-header .mat-step-label {
-  color: #3d3d3d;
-}
-
-.msf-select-input input {
-  color :white;
-  padding:10px;
-  font:inherit;
-  padding-left: 22px;
-  caret-color: #3f51b5;
-}
-.msf-select .ng-value-label{
-  padding-left :23px;
-}
 /*# sourceMappingURL=styles.css.map */

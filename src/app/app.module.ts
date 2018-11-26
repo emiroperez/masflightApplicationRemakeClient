@@ -61,6 +61,8 @@ import { MsfGroupingComponent } from './msf-grouping/msf-grouping.component';
 import { MsfRoundingComponent } from './msf-rounding/msf-rounding.component';
 import { MsfDateComponent } from './msf-date/msf-date.component';
 import { MsfUsageStatisticsComponent } from './msf-usage-statistics/msf-usage-statistics.component';
+import { MsfCancelledComponent } from './msf-cancelled/msf-cancelled.component';
+import { MapBoxComponent } from './map-box/map-box.component';
 import { AdminMenuComponent } from './admin-menu/admin-menu.component';
 import {MatSnackBarModule} from '@angular/material';
 import { CategoryArgumentsComponent } from './category-arguments/category-arguments.component';
@@ -111,6 +113,9 @@ import { CategoryArgumentsComponent } from './category-arguments/category-argume
     MsfRoundingComponent,
     MsfDateComponent,
     MsfUsageStatisticsComponent,
+    MsfCancelledComponent,
+    MapBoxComponent,
+    AdminMenuComponent,
     AdminMenuComponent,
     CategoryArgumentsComponent    
   ],
@@ -137,6 +142,11 @@ import { CategoryArgumentsComponent } from './category-arguments/category-argume
     }),
     AgmDirectionModule,
     AgmSnazzyInfoWindowModule,
+    NgxMapboxGLModule.withConfig({
+      accessToken: 'pk.eyJ1IjoiYXNwc29sdXRpb25zIiwiYSI6ImNqbm5uNGhscTI4N28za3FybnJ0OWF6NmEifQ.pDzlIgQjVkVszvxF2UoXvA', 
+      geocoderAccessToken: 'pk.eyJ1IjoiYXNwc29sdXRpb25zIiwiYSI6ImNqbm5uNGhscTI4N28za3FybnJ0OWF6NmEifQ.pDzlIgQjVkVszvxF2UoXvA'
+    }),
+
     MatSnackBarModule
   ],
   providers: [

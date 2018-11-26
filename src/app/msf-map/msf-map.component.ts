@@ -216,7 +216,7 @@ export class MsfMapComponent implements OnInit {
   ];
 
   iconMarker = {
-    url: '../../assets/images/ovni.png',
+    url: '../../assets/images/minireddot.png',
     scaledSize: {
       width: 5,
       height: 5
@@ -266,25 +266,38 @@ export class MsfMapComponent implements OnInit {
   }
 
   index = 0;
-  paintMarker(i, points: any[]){
+  paintMarker(i, point){
     if(i === 0){
       this.index = 0;
       return true;
     }
-    if(i === points.length -1){
-      this.index = points.length - 1;
-      return true;
-    }
-    if(i > (this.index + 500)){
-      this.index = i + 500;
-      return true;
+    let speed = point.groundSpeed;
+    if(speed < 50){
+      this.index ++;
+      if(this.index >= 10){
+        this.index = 0;
+        return true;
+      }
+    }else if(speed >= 50 && speed <= 500){
+      this.index ++;
+      let num = (500 / speed)*10;
+      if(this.index >= num){
+        this.index = 0;
+        return true;
+      }
+    }else{
+      this.index ++;
+      if(this.index >= 10){
+        this.index = 0;
+        return true;
+      }
     }
     return false;
   }
 
   successHandler(_this,data){
-    if(data.length > 0){
-      _this.polylines = data;
+    _this.polylines = data;
+    if(data.length > 0){      
       _this.lat = data[0].path[0].latitude;
       _this.lng = data[0].path[0].longitude;
       _this.getChart(_this);      

@@ -12,18 +12,20 @@ export class RegisterService {
 
 
   getPlans(_this,successHandler, errorHandler){
-    let url='http://localhost:8887/getPlans';
+    let url='/getPlans';
+    //let url='http://localhost:8887/getPlans';
     this.http.get(_this,url,successHandler,errorHandler,null);
   }
 
   getCountries(_this,successHandler, errorHandler){
-    let url='http://localhost:8887/getCountries';
+    let url='/getCountries';
+    //let url='http://localhost:8887/getCountries';
     this.http.get(_this,url,successHandler,errorHandler,null);
   }
   
   checkEmail(_this,successHandler,errorHandler,email){
-    
-    let url='http://localhost:8887/checkEmail?email='+email;
+    let url='/checkEmail?email='+email;
+    //let url='http://localhost:8887/checkEmail?email='+email;
     this.http.get(_this,url,successHandler,errorHandler,null);
   }
 }

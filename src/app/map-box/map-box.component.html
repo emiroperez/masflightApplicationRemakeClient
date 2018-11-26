@@ -1,0 +1,17 @@
+<!--<input type="text" [(ngModel)]="message" placeholder="your message...">
+<h1>Markers</h1>
+<div *ngFor="let marker of markers | async">
+  <button (click)="flyTo(marker)">{{ marker.properties.message }}</button>
+  <button (click)="removeMarker(marker)">Delete</button>
+</div>
+
+<div class="map" id="map"></div>
+
+-->
+<button class="msf-menu-icon" (click)="refresh()" ><img src="../../assets/images/Chart.png" class="msf-menu-image msf-vertical-middle" ><span  class="msf-vertical-middle">refresh</span></button>
+<mgl-map #map
+    [style]="'mapbox://styles/mapbox/streets-v9'"
+    [zoom]="[9]"
+    [center]="[-74.50, 40]"
+  >
+  </mgl-map>

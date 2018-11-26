@@ -104,4 +104,8 @@ export class MsfComponentComponent implements OnInit {
     return ComponentType.date == argument.type;
   }
 
+  isCancelled(argument: Arguments){
+    return ComponentType.cancelled == argument.type;
+  }
+
 }
