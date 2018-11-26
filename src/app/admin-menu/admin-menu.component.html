@@ -2,8 +2,7 @@
   <img class="msf-medium-logo" src="../../assets/images/logo.png">
   <div class="msf-register-header-content">
     <div class="msf-register-header-title">
-      <div class="msf-register-header-title-content"> MENU ADMINISTRATION</div>
-      <div class="msf-register-header-little-title">{{title}}</div>
+      <div class="msf-register-header-title-content"> MENU ADMINISTRATION</div>      
     </div>
 
     <div class="msf-register-header-image-content">
@@ -15,30 +14,91 @@
   <mat-card-content>
     <div style="display: flex; flex-direction: row;">
       <div style="flex: 1; flex-direction: column; justify-content: center; margin-left: 1%; margin-right: 1%">
-        <mat-form-field class="msf-item">
-          <input type="text" matInput placeholder="Category/Option Name" class="input-register" [(ngModel)]="treeObject.label"
-            [ngModelOptions]="{standalone: true}">
-        </mat-form-field>
-        <mat-form-field class="msf-item">
-          <input type="text" matInput placeholder="Base URL" class="input-register" [(ngModel)]="treeObject.baseUrl"
-            [ngModelOptions]="{standalone: true}">
-        </mat-form-field>
-        <button mat-button class="msf-medium-button" (click)="saveMenu()">Save</button>
-        <div style="margin-top: 5%">
-          <jqxTreeGrid #jqxTreeGridRef [width]="getWidth()" [height]="getHeight()"
-            [source]="dataAdapter" [columns]="columns" [sortable]="true" [selectionMode]="'singleRow'">
-          </jqxTreeGrid>
-        </div>
+        <mat-expansion-panel style="background: transparent">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Create Menu Category/Option
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-form-field class="msf-item">
+            <input type="text" matInput placeholder="Category/Option Name" class="input-register" [(ngModel)]="treeObject.label"
+              [ngModelOptions]="{standalone: true}">
+          </mat-form-field>
+          <mat-form-field class="msf-item">
+            <input type="text" matInput placeholder="Base URL" class="input-register" [(ngModel)]="treeObject.baseUrl"
+              [ngModelOptions]="{standalone: true}">
+          </mat-form-field>
+          <button mat-button class="msf-medium-button" (click)="saveMenu()">Save</button>
+        </mat-expansion-panel>
+        <jqxTreeGrid #jqxTreeGridRef [width]="getWidth()" [height]="getHeight()" [source]="dataAdapter" [columns]="columns"
+          [sortable]="true" [selectionMode]="'singleRow'">
+        </jqxTreeGrid>
       </div>
       <div style="flex: 1 ;flex-direction: column; justify-content: center; margin-left: 1%; margin-right: 1%">
-        <mat-form-field class="msf-field msf-full-width">
-          <mat-select placeholder="Category Arguments" [(ngModel)]="categoryArgument.idCategory" name="idcategory"
-            [ngModelOptions]="{standalone: true}" (ngModelChange)="CategoryArgumentChanged($event)" style="line-height: 2.125;">
-            <mat-option *ngFor="let item of categories" [value]="item">
-              {{item.label}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+        <mat-expansion-panel style="background: transparent">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Category Argument
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-form-field class="msf-field msf-full-width">
+            <mat-select placeholder="Category Arguments" [(ngModel)]="categoryArgument.idCategory" name="idcategory"
+              [ngModelOptions]="{standalone: true}" (ngModelChange)="CategoryArgumentChanged($event)" style="line-height: 2.125;">
+              <mat-option *ngFor="let item of categories" [value]="item">
+                {{item.label}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-expansion-panel>
+        <mat-expansion-panel style="background: transparent">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Create Arguments
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <form name="argumentForm">
+            <mat-form-field class="msf-item">
+              <input type="text" matInput placeholder="Name1" class="input-register" [(ngModel)]="argument.name1"
+                [ngModelOptions]="{standalone: true}">
+            </mat-form-field>
+            <mat-form-field class="msf-item">
+              <input type="text" matInput placeholder="Name2" class="input-register" [(ngModel)]="argument.name2"
+                [ngModelOptions]="{standalone: true}">
+            </mat-form-field>
+            <mat-form-field class="msf-item">
+              <input type="text" matInput placeholder="Name3" class="input-register" [(ngModel)]="argument.name3"
+                [ngModelOptions]="{standalone: true}">
+            </mat-form-field>
+            <mat-form-field class="msf-item">
+              <input type="text" matInput placeholder="url" class="input-register" [(ngModel)]="argument.url"
+                [ngModelOptions]="{standalone: true}">
+            </mat-form-field>
+            <mat-form-field class="msf-field msf-full-width">
+              <mat-select placeholder="Type" [(ngModel)]="argument.type" name="type" style="line-height: 2.125;"
+                >
+                <mat-option value="airline">Airline</mat-option>
+                <mat-option value="airportRoute">AirportRoute</mat-option>
+                <mat-option value="timeRange">TimeRange</mat-option>
+                <mat-option value="dateRange">DateRange</mat-option>
+                <mat-option value="tailnumber">Tailnumber</mat-option>
+                <mat-option value="singleairline">SingleAirline</mat-option>
+                <mat-option value="aircraftType">AircraftType</mat-option>
+                <mat-option value="flightNumber">FlightNumber</mat-option>
+                <mat-option value="airport">Airport</mat-option>
+                <mat-option value="grouping">Grouping</mat-option>
+                <mat-option value="rounding">Rounding</mat-option>
+                <mat-option value="date">Date</mat-option>
+                <mat-option value="windDirection">WindDirection</mat-option>
+                <mat-option value="ceiling">Ceiling</mat-option>
+                <mat-option value="windSpeed">WindSpeed</mat-option>
+                <mat-option value="temperature">Temperature</mat-option>
+              </mat-select>
+              <mat-error *ngIf="argumentForm.get('typeValidator')?.invalid">This field is required.</mat-error>
+            </mat-form-field>
+            <mat-checkbox class="login-check block" color="primary" [(ngModel)]="argument.required" [ngModelOptions]="{standalone: true}">Required?</mat-checkbox>
+            <button mat-button class="msf-medium-button" (click)="saveArgument()">Save</button>
+          </form>
+        </mat-expansion-panel>
         <jqxGrid [width]="getWidth()" [source]="dataAdapterCategory" [columns]="columnsCategory" [columnsresize]="true"
           [sortable]="true">
         </jqxGrid>

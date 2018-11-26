@@ -50,7 +50,7 @@ export class ApplicationService {
   loadDynamicTableData(_this, handlerSuccess, handlerError) {
     _this.globals.isLoading = true;
     _this.columns = [];
-   
+
     _this.jqxTreeGridRef.clear();
     let param = this.utils.getUrlParameters(_this.globals.currentOption);
     let urlBase = param.url;
@@ -69,35 +69,38 @@ export class ApplicationService {
     this.http.get(_this, url, handlerSuccess, handlerError, null);
   }
 
-  createMenucategory(_this, data, handlerSuccess, handlerError) {      
+  createMenucategory(_this, data, handlerSuccess, handlerError) {
     let url = "http://localhost:8887/menuTreeCategory";
     this.http.post(_this, url, data, handlerSuccess, handlerError);
   }
 
-  createMenuOption(_this, data, handlerSuccess, handlerError) {      
+  createMenuOption(_this, data, handlerSuccess, handlerError) {
     let url = "http://localhost:8887/menuTreeOption";
     this.http.post(_this, url, data, handlerSuccess, handlerError);
   }
 
-  loadOptionCategoryArguments(_this, data, handlerSuccess, handlerError){
+  loadOptionCategoryArguments(_this, data, handlerSuccess, handlerError) {
     _this.globals.isLoading = true;
     let url = "http://localhost:8887/getOptionArgumentsCategories?optionId=" + data.idOption
       + "&categoryId=" + data.idCategory;
     this.http.get(_this, url, handlerSuccess, handlerError, null);
   }
 
-  loadArguments(_this, handlerSuccess, handlerError){
+  loadArguments(_this, handlerSuccess, handlerError) {
     _this.globals.isLoading = true;
     let url = "http://localhost:8887/getArguments";
     this.http.get(_this, url, handlerSuccess, handlerError, null);
   }
 
-  loadCategoryArguments(_this, handlerSuccess, handlerError){
+  loadCategoryArguments(_this, handlerSuccess, handlerError) {
     _this.globals.isLoading = true;
     let url = "http://localhost:8887/getArgumentsCategories";
     this.http.get(_this, url, handlerSuccess, handlerError, null);
   }
 
-  
+  createArgument(_this, data, handlerSuccess, handlerError) {
+    let url = "http://localhost:8887/arguments?idOption=" + data.idOption;
+    this.http.post(_this, url, data.argument, handlerSuccess, handlerError);
+  }
 
 }

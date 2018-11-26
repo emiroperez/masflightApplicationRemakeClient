@@ -18,9 +18,11 @@ export class ApiClient {
 
     post = function (_this,url, data, successHandler, errorHandler) {
         this.http.post(url, data,httpOptions).subscribe(result => {
+            /*
             if (result.sessionExpired){
 
             }
+            */
             successHandler(_this,result);
           }, error => 
           errorHandler(_this,error)

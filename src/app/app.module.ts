@@ -62,6 +62,8 @@ import { MsfRoundingComponent } from './msf-rounding/msf-rounding.component';
 import { MsfDateComponent } from './msf-date/msf-date.component';
 import { MsfUsageStatisticsComponent } from './msf-usage-statistics/msf-usage-statistics.component';
 import { AdminMenuComponent } from './admin-menu/admin-menu.component';
+import {MatSnackBarModule} from '@angular/material';
+import { CategoryArgumentsComponent } from './category-arguments/category-arguments.component';
 
 @NgModule({
   declarations: [
@@ -109,7 +111,8 @@ import { AdminMenuComponent } from './admin-menu/admin-menu.component';
     MsfRoundingComponent,
     MsfDateComponent,
     MsfUsageStatisticsComponent,
-    AdminMenuComponent
+    AdminMenuComponent,
+    CategoryArgumentsComponent    
   ],
   imports: [
     BrowserModule,
@@ -133,8 +136,8 @@ import { AdminMenuComponent } from './admin-menu/admin-menu.component';
       apiKey: 'AIzaSyArd7Sqcy7bB0ucBKhm2ik4r2xZPG9wPtU'
     }),
     AgmDirectionModule,
-    AgmSnazzyInfoWindowModule
-
+    AgmSnazzyInfoWindowModule,
+    MatSnackBarModule
   ],
   providers: [
     AuthService,
