@@ -28,7 +28,7 @@ export class Globals {
     this.variables = null;
     this.values = null;
     this.generateDynamicTable = false;
-    this.selectedIndex = 1;
+    this.selectedIndex = 0;
     this.totalRecord = 0;
   }
 }
