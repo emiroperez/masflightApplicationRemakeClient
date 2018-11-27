@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import {FormControl, Validators,ValidatorFn, ValidationErrors, AbstractControl, FormGroup} from '@angular/forms';
 import { User} from '../model/User';
 import { State } from '../model/State';
@@ -89,7 +90,7 @@ export class RegisterComponent implements OnInit {
   ]; */
   
  
-  constructor(private userServices: UserService,private registerServices:RegisterService, private globals: Globals) {
+  constructor(private userServices: UserService,private registerServices:RegisterService, private globals: Globals,private router: Router) {
     this.users = new User( new Payment());
     this.userPlan=new UserPlan();
     this.utils = new Utils();
@@ -287,8 +288,9 @@ export class RegisterComponent implements OnInit {
     }
   }
   
-  saveUserHandleResponse(){
-      
+  saveUserHandleResponse(this_,data){
+    this_.utils.showAlert('Warning','User Created Succesfully');
+    this_.router.navigate(['']);
   }
   
   getOptionsText(options: any[]){
