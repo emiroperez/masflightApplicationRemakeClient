@@ -659,6 +659,10 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
   color: #3d3d3d;
 }
 
+.mat-step-header .mat-step-label {
+  color: #3d3d3d;
+}
+
 .mat-step-header .mat-step-icon-not-touched {
   background-color: rgba(45, 44, 44, 0.91);
 }
@@ -2077,6 +2081,7 @@ g g g text {
 .msf-card-container {
   display: inline-flex;
   align-items: flex-start;
+  flex-wrap: wrap;
 }
 
 .msf-plan-card {
@@ -2084,7 +2089,7 @@ g g g text {
   align-items: center;
   border-radius: 10px !important;
   margin: 4px;
-  width: 33.3%;
+  width: 32%;
 }
 
 .msf-large-container {
@@ -2184,10 +2189,17 @@ g g g text {
 
 .msf-select {
   display: flex;
+  margin-left: 0;
 }
 
 .msf-select-input {
   width: 98% !important;
+}
+
+.msf-select-error{
+    margin-left: 54px;
+    font-size: 75%;
+    margin-top: -3%;
 }
 
 li.msf-select:before {
