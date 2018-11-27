@@ -46,14 +46,15 @@ export class CreateMempershipsComponent implements OnInit {
   }
   getPlans(){
     this.items=this.plansForms.get('items') as FormArray;
-    return this.items
+    return this.items.controls;
   }
   createPlan(): FormGroup{
     return this.formBuilder.group({
       name: new FormControl('',[Validators.required]),
       id :'',
       features: this.formBuilder.array([this.createFeature()]),
-      fares: this.formBuilder.array([this.createPrice()])
+      fares: this.formBuilder.array([this.createPrice()]),
+      deleted: false
     });
   }
 
@@ -64,8 +65,20 @@ export class CreateMempershipsComponent implements OnInit {
 
   deletePlan(index) {
     this.items=this.plansForms.get('items') as FormArray;
-    this.items.removeAt(index);
+    if(this.items.at(index).get('id').value!=''){
+      this.items.removeAt(index);
+    }else{
+      this.items.at(index).get('deleted').setValue(true);
+    }
   }
+  
+  isPlanDelete(index):boolean{
+    this.items=this.plansForms.get('items') as FormArray;
+    console.log(this.items.at(index).get('deleted').value);
+    return !(this.features.at(index).get('deleted').value);
+    
+  }
+
   getPlansJson(){
     let plansJsons : Array<Plan>=new Array();
     this.items=this.plansForms.get('items') as FormArray;
@@ -75,8 +88,10 @@ export class CreateMempershipsComponent implements OnInit {
 
       if(this.items.at(i).get("id").value!=''){
         plan.id=this.items.at(i).get("id").value;
+        plan.delete=this.items.at(i).get("deleted").value;
       }else{
         plan.id=null;
+        plan.delete=false;
       }
       plan.name=this.items.at(i).get("name").value.toUpperCase();
 
@@ -97,7 +112,8 @@ export class CreateMempershipsComponent implements OnInit {
     return this.formBuilder.group({
       id :'',
       name: new FormControl('',[Validators.required]),
-      description: new FormControl('',[Validators.required])
+      description: new FormControl('',[Validators.required]),
+      deleted: false
     })
   }
   addNewFeature(index): void{
@@ -110,7 +126,20 @@ export class CreateMempershipsComponent implements OnInit {
   deleteFeature(indexPlan,indexFeature) {
     this.items=this.plansForms.get('items') as FormArray;
     this.features=this.items.controls[indexPlan]['controls']['features'];
-    this.features.removeAt(indexFeature);
+    
+    if(this.features.at(indexFeature).get('id').value==''){
+       this.features.removeAt(indexFeature);
+    }else{
+      this.features.at(indexFeature).get('delete').setValue(true);
+    }
+   
+  }
+
+  isFeatureDelete(indexPlan,indexFeature):boolean{
+    this.items=this.plansForms.get('items') as FormArray;
+    this.features=this.items.controls[indexPlan]['controls']['features'];
+    console.log(this.features.at(indexFeature).get('deleted').value);
+    return !(this.features.at(indexFeature).get('deleted').value);  
   }
   getFeaturesJson(index){
     this.items=this.plansForms.get('items') as FormArray;
@@ -120,8 +149,10 @@ export class CreateMempershipsComponent implements OnInit {
       let feature: PlanFeature=new PlanFeature();
       if(this.features.at(i).get("id").value!=''){
         feature.id=this.features.at(i).get("id").value;
+        feature.delete=this.prices.at(i).get("deleted").value;
       }else{
         feature.id=null;
+        feature.delete=false;
       }
 
       feature.features = this.features.at(i).get("name").value;
@@ -153,7 +184,8 @@ export class CreateMempershipsComponent implements OnInit {
     return this.formBuilder.group({
       id :'',
       fare: new FormControl('',[Validators.required]),
-      periodicity: new FormControl(null,[Validators.required])
+      periodicity: new FormControl(null,[Validators.required]),
+      deleted: false
     });
   }
 
@@ -163,10 +195,23 @@ export class CreateMempershipsComponent implements OnInit {
     this.prices.push(this.createPrice());   
   }
 
-  deletePrice(indexPlan,indexFeature) {
+  deletePrice(indexPlan,indexFare) {
     this.items=this.plansForms.get('items') as FormArray;
     this.prices=this.items.controls[indexPlan]['controls']['fares'];
-    this.prices.removeAt(indexFeature);
+
+    if(this.prices.at(indexFare).get('id').value==''){
+        this.prices.removeAt(indexFare);
+    }else{
+      this.prices.at(indexFare).get('delete').setValue(true);
+    }
+  }
+  
+  isFareDelete(indexPlan,indexFare):boolean{
+    this.items=this.plansForms.get('items') as FormArray;
+    this.features=this.items.controls[indexPlan]['controls']['fares'];
+    console.log(this.features.at(indexFare).get('deleted').value);
+    return !(this.features.at(indexFare).get('deleted').value);
+    
   }
 
   getPricesJson(index){
@@ -178,8 +223,10 @@ export class CreateMempershipsComponent implements OnInit {
 
       if(this.prices.at(i).get("id").value!=''){
         fare.id=this.prices.at(i).get("id").value;
+        fare.delete=this.prices.at(i).get("deleted").value;
       }else{
         fare.id=null;
+        fare.delete=false;
       }
       fare.fare = this.prices.at(i).get("fare").value;
       fare.periodicity= this.prices.at(i).get("periodicity").value;
