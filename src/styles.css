@@ -2082,6 +2082,7 @@ g g g text {
   display: inline-flex;
   align-items: flex-start;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .msf-plan-card {
