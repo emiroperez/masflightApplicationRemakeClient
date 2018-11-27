@@ -882,7 +882,7 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
   display: flex;
 }
 
-.ng-select .ng-select-container {
+.msf-register-select.ng-select .ng-select-container {
   color: white !important;
 }
 
@@ -2096,24 +2096,24 @@ g g g text {
 }
 
 .msf-plan-card-content {
-  padding-top: 2%;
+  padding: 2% 9% 0 9%;
   background-color: #0081B4;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  min-height: 350px;
+  min-height: 500px;
   margin-bottom: 0 !important;
 }
 
 .msf-feature-name {
   width: fit-content;
-  font-weight: 400;
-  font-size: 110%;
+  font-weight: 400 !important;
+  font-size: 110% !important;
 }
 
 .msf-feature-description {
-  font-size: 78%;
+  font-size: 78% !important;
   margin: 0;
-  font-weight: lighter;
+  font-weight: lighter !important;
   letter-spacing: 0.2px;
   filter: brightness(95%);
 }
@@ -2142,6 +2142,13 @@ g g g text {
   background-position-x: 0%;
   background-position-y: center;
   padding-left: 18%;
+}
+
+.msf-price-fare {
+  font-size: 190% !important;
+  font-weight: bold!important;
+  padding-left: 5%;
+  margin: 0 auto !important;
 }
 
 .mat-card-footer {
@@ -2208,12 +2215,11 @@ li.msf-select:before {
 }
 
 .msf-medium-title-centered {
-  color: white;
+  color: white !important;
   font-size: 150%;
   font-weight: 100;
   letter-spacing: 1px;
   text-align: -webkit-center;
-  margin-top: 2% !important;
 }
 
 .msf-select .ng-clear-wrapper{
@@ -2234,4 +2240,187 @@ li.msf-select:before {
 .msf-select .ng-value-label{
   padding-left :23px;
 }
+
+.msf-fab-button-container{
+  width: 70%;
+  margin: 0 auto;
+  text-align: right;
+  position: relative;
+  z-index: 999;
+  /* z-index: auto; */
+}
+
+.msf-membership-card{
+  width: 70%;
+  margin: 0 auto;
+  margin-top: -1.5%;
+  
+}
+
+.msf-membership-card .mat-form-field-appearance-legacy .mat-form-field-label {
+  line-height: 2;
+  color: white !important;
+  text-align: center;
+}
+
+.msf-membership-card mat-card-footer.mat-form-field-appearance-legacy .mat-form-field-label {
+  line-height: 2;
+  color: black !important;
+  text-align: left;
+}
+
+
+.msf-features-membership-container .mat-form-field-appearance-legacy .mat-form-field-label {
+  line-height: 2;
+  color: white !important;
+  text-align: left;
+  padding-left:8px;
+}
+
+
+.msf-features-prices-container .mat-form-field-appearance-legacy .mat-form-field-label {
+  line-height: 2;
+  color: black !important;
+  text-align: left;
+  padding-left:8px;
+}
+
+
+.msf-card, .msf-membership-card, .login-card {
+  border-radius: 10px !important;
+  background: rgba(30, 30, 30, 0.5);
+  padding: 50px !important;
+}
+
+.msf-card-content-item input[type=text], .msf-card-content-item input[type=password], .msf-card-content-item input[type=number], .msf-card-content-item input[type=email] {
+  padding: 8px;
+  width: 230px;
+  outline: none;
+  border: none;
+  color: white;
+  background-size: 0 2px, 100% 1px;
+  background-position: 50% 100%, 50% 100%;
+  transition: background-size 0.3s cubic-bezier(0.64, 0.09, 0.08, 1);
+  text-align: center;
+}
+
+
+.msf-card-feature-item input[type=text]{
+    
+    width: 120%;
+    text-align: left;
+  }
+
+  .msf-card-footer-item input[type=text]{
+    color: black;
+    text-align: left;
+    width: 35%;
+  }
+
+  .msf-card-footer-item{
+    width: 35%;
+    margin: 0 auto;
+    margin-left:5%;
+  }
+
+.msf-card-content-item{
+  width: 100%;
+  margin: 0 auto;
+}
+
+.msf-card-content-title{
+  width: 80%;
+  display: block;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.msf-plan-card-content .mat-form-field-appearance-legacy .mat-form-field-underline {
+  background-color: white !important;
+}
+
+.msf-plan-card-content .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label, .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+  color: white !important;
+}
+
+.msf-plan-card-content .mat-form-field.mat-focused .mat-form-field-ripple {
+  background-color: white;
+}
+
+.msf-plan-card-content .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label, .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+  margin-left: 0;
+}
+
+.msf-fab-button-features .mat-button-wrapper{
+  color: #0081B4;
+}
+
+.msf-features-membership-container ul{
+  width: 80%;
+  margin-top: -10%;
+  padding-bottom: 15%;
+}
+
+.msf-periodicity-select{
+  color: black !important;
+  width: 55% !important;
+  display: inline-flex !important;
+  position: absolute !important;
+  margin-left:2%;
+}
+
+.msf-periodicity-select.ng-select .ng-arrow-wrapper .ng-arrow {
+  color: black;
+  
+}
+
+.ng-select.ng-select-focused .ng-select-container .ng-arrow-wrapper .ng-arrow {
+  color: black !important;
+}
+
+.msf-periodicity-select.ng-select.ng-select-focused .ng-select-container .ng-value-container .ng-placeholder {
+  color: black !important;
+}
+
+.msf-price-fare .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label, .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+  -webkit-transform: translateY(-1.739125em) scale(0.75) perspective(100px) translateZ(0.001px);
+  transform: translateY(-1.739125em) scale(0.75) perspective(100px) translateZ(0.001px);
+  -ms-transform: translateY(-1.739125em) scale(0.75);
+  width: 133.33333%;
+  margin-left: 7px;
+  color: white !important;
+}
+
+.msf-periodicity-select input {
+  color :black;
+  font:inherit;
+  caret-color: #3f51b5;
+}
+
+.msf-periodicity-select.ng-select .ng-select-container {
+  color: black !important;
+}
+
+.msf-periodicity-select.ng-select .ng-select-container .ng-value-container .ng-placeholder {
+  color: black !important;
+}
+
+
+.msf-periodicity-select .ng-star-inserted .mat-step-icon {
+  background-color: #01abec;
+  color: black;
+}
+.msf-periodicity-select .ng-select .ng-select-container .ng-value-container .ng-placeholder {
+  color: black !important;
+  padding-left: 0 !important;
+}
+
+.msf-prices-membership-container {
+  width: max-content;
+  margin: auto;
+  margin-top: 4%;
+  margin-bottom: 4%;
+  display: inline-flex;
+}
+
 /*# sourceMappingURL=styles.css.map */

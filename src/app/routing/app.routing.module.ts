@@ -6,13 +6,15 @@ import { WelcomeComponent } from '../welcome/welcome.component';
 import { RegisterComponent } from '../register/register.component';
 import { ApplicationComponent } from '../application/application.component';
 import { AdminMenuComponent } from '../admin-menu/admin-menu.component';
+import { CreateMempershipsComponent } from '../create-memperships/create-memperships.component';
 
 export const routes: Routes = [
   { path: '', component: LoginScreenComponent },
   { path: 'welcome', component: WelcomeComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'application', component: ApplicationComponent },
-  { path: 'admin-menu', component: AdminMenuComponent }
+  { path: 'admin-menu', component: AdminMenuComponent },
+  { path: 'create-membership', component: CreateMempershipsComponent }
 ];
 
 @NgModule({

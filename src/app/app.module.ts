@@ -62,6 +62,7 @@ import { MsfRoundingComponent } from './msf-rounding/msf-rounding.component';
 import { MsfDateComponent } from './msf-date/msf-date.component';
 import { MsfUsageStatisticsComponent } from './msf-usage-statistics/msf-usage-statistics.component';
 import { AdminMenuComponent } from './admin-menu/admin-menu.component';
+import { CreateMempershipsComponent } from './create-memperships/create-memperships.component';
 
 @NgModule({
   declarations: [
@@ -109,7 +110,8 @@ import { AdminMenuComponent } from './admin-menu/admin-menu.component';
     MsfRoundingComponent,
     MsfDateComponent,
     MsfUsageStatisticsComponent,
-    AdminMenuComponent
+    AdminMenuComponent,
+    CreateMempershipsComponent
   ],
   imports: [
     BrowserModule,
