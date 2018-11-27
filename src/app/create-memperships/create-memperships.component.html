@@ -22,7 +22,7 @@
                   
               <div >
                 <form [formGroup]= "plansForms" class="msf-inline msf-large-container msf-card-container">
-                  <mat-card class="msf-plan-card" formArrayName="items" *ngFor="let plan of plansForms.get('items').controls; let i = index;">
+                  <mat-card class="msf-plan-card" formArrayName="items" *ngFor="let plan of getPlans(); let i = index;">
                       <div [formGroupName]="i">
                         <mat-card-content class= "msf-plan-card-content">
                              <!--  <div class ="msf-fab-button-container msf-fab-button msf-center-container msf-fab-button-features">

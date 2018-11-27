@@ -44,7 +44,10 @@ export class CreateMempershipsComponent implements OnInit {
       items:this.formBuilder.array([])
     })
   }
-
+  getPlans(){
+    this.items=this.plansForms.get('items') as FormArray;
+    return this.items
+  }
   createPlan(): FormGroup{
     return this.formBuilder.group({
       name: new FormControl('',[Validators.required]),
