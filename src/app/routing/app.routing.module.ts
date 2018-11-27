@@ -7,6 +7,7 @@ import { RegisterComponent } from '../register/register.component';
 import { ApplicationComponent } from '../application/application.component';
 import { AdminMenuComponent } from '../admin-menu/admin-menu.component';
 import { CreateMempershipsComponent } from '../create-memperships/create-memperships.component';
+import { CategoryArgumentsComponent } from '../category-arguments/category-arguments.component';
 
 export const routes: Routes = [
   { path: '', component: LoginScreenComponent },
@@ -14,7 +15,8 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'application', component: ApplicationComponent },
   { path: 'admin-menu', component: AdminMenuComponent },
-  { path: 'create-membership', component: CreateMempershipsComponent }
+  { path: 'create-membership', component: CreateMempershipsComponent },
+  { path: 'category-arguments', component: CategoryArgumentsComponent }
 ];
 
 @NgModule({

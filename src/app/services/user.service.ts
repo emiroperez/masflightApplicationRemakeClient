@@ -14,7 +14,8 @@ export class UserService {
   }
 
   saveUser(_this,user,successHandler, errorHandler){
-    let url='http://localhost:8887/saveUser';
+    let url='/saveUser';
+    //let url='http://localhost:8887/saveUser';
     this.http.post(_this,url,user,successHandler, errorHandler);
   }
 

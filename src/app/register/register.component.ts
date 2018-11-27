@@ -14,6 +14,7 @@ import { NG_SELECT_DEFAULT_CONFIG } from '@ng-select/ng-select';
 import { Globals } from '../globals/Globals';
 
 
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',

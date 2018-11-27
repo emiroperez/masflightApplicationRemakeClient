@@ -1,40 +1,38 @@
 
 <agm-map *ngIf="mapReady" [latitude]="lat" [longitude]="lng"  #AgmMap [styles]="styles" [zoom]='5' [style.height.%]="getHeight()">    
-    <agm-polyline *ngFor="let polyline of polylines"  [strokeColor]="polyline.color" [strokeWeight]="2">              
-        <agm-marker
-          [iconUrl]="iconMarker" 
-          [latitude]="polyline.path[0].latitude" 
-          [longitude]="polyline.path[0].longitude" 
-          [label]="{
-            color: '#01abec',
-            text: polyline.path[0].origin
-            }"
-          >
-      </agm-marker>
-      <ng-container *ngFor="let point of polyline.path; let i = index ">
-          <agm-polyline-point [latitude]="point.latitude" [longitude]="point.longitude"></agm-polyline-point>          
-          <!--<agm-marker
-          [iconUrl]="iconMarker" 
-          [latitude]="point.latitude" 
-          [longitude]="point.longitude" 
-          [label]="{
-            color: 'red',
-            text: getText(point)
-            }"
-          >
-      </agm-marker>-->
-      </ng-container>
-     <agm-marker
-          [iconUrl]="iconMarker" 
-          [latitude]="polyline.path[polyline.path.length-1].latitude" 
-          [longitude]="polyline.path[polyline.path.length-1].longitude" 
-          [label]="{
-            color: '#01abec',
-            text: polyline.path[0].destination
-            }"
-          >
-      </agm-marker>
-    </agm-polyline>    
- </agm-map>
- <div id="chartdiv" [style.width.%]="100" [style.height.%]="40" style="display: block;background-color: #000; color: #fff;"></div>
- 
+
+        <ng-container *ngFor="let polyline of polylines">
+                <agm-marker
+                  [iconUrl]="iconMarker" 
+                  [latitude]="polyline.origin.latitude" 
+                  [longitude]="polyline.origin.longitude" 
+                  [label]="{
+                    color: '#01abec',
+                    text: polyline.origin.origin
+                    }"
+                  >
+                </agm-marker>
+                <ng-container *ngFor="let point of polyline.path; let i = index ">
+                    <agm-marker   *ngIf="paintMarker(i, point, polyline.path)"              
+                        [iconUrl]="iconMarker"
+                        [latitude]="point.latitude"
+                        [longitude]="point.longitude"
+                          >
+                    </agm-marker>
+                </ng-container>
+            
+                <agm-marker
+                  [iconUrl]="iconMarker" 
+                  [latitude]="polyline.dest.latitude" 
+                  [longitude]="polyline.dest.longitude" 
+                  [label]="{
+                    color: '#01abec',
+                    text: polyline.dest.destination
+                    }"
+                  >
+              </agm-marker>
+        </ng-container>  
+    
+     </agm-map>
+     <div id="chartdiv" [style.width.%]="100" [style.height.%]="40" style="display: block;background-color: #000; color: #fff;"></div>
+     

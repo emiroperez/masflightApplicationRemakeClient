@@ -1,0 +1,25 @@
+<mgl-map #map
+    [style]="'mapbox://styles/mapbox/dark-v9'"
+    [zoom]="zoom"
+    [center]="center"
+  >
+
+  <mgl-geojson-source
+      *ngIf="data"
+      id="route"
+      [data]="data"
+    >
+  </mgl-geojson-source>
+
+  <mgl-layer
+  *ngIf="data"
+      id="route"
+      type="circle"
+      source="route"
+      [paint]="{        
+        'circle-radius': 2,
+        'circle-color': '#B42222'
+      }"
+    >
+    </mgl-layer>
+  </mgl-map>

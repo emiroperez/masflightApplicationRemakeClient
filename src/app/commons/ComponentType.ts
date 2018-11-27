@@ -14,5 +14,6 @@ export enum ComponentType{
     flightNumber="flightNumber",
     grouping="grouping",
     rounding="rounding",
-    date="date"
+    date="date",
+    cancelled='cancelled'
 }

@@ -1,8 +1,10 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, OnInit, Component, ViewChild } from '@angular/core';
 import { jqxTreeGridComponent } from 'jqwidgets-scripts/jqwidgets-ts/angular_jqxtreegrid';
 import { ApiClient } from '../api/api-client';
 import { Globals } from '../globals/Globals';
 import { ApplicationService } from '../services/application.service';
+import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-admin-menu',
@@ -11,7 +13,17 @@ import { ApplicationService } from '../services/application.service';
 })
 export class AdminMenuComponent implements AfterViewInit {
 
+  argumentForm = new FormGroup({
+    typeValidator: new FormControl('type', [Validators.required])
+  });
+
   treeObject: any = {};
+
+  categoryArgument: any = {};
+
+  argument: any = {};
+
+  categories: any[];
 
   columns: any[] =
     [
@@ -19,13 +31,29 @@ export class AdminMenuComponent implements AfterViewInit {
       { text: 'Label', dataField: 'label', width: '70%' }
     ];
 
+  columnsCategory: any[] = [
+    { text: 'Name1', dataField: 'name1', width: '20%' },
+    { text: 'Name2', dataField: 'name2', width: '20%' },
+    { text: 'Name3', dataField: 'name3', width: '20%' },
+    { text: 'URL', dataField: 'url', width: '30%' },
+    { text: 'Required', dataField: 'required', width: '10%' }
+  ]
+
   @ViewChild(jqxTreeGridComponent) jqxTreeGridRef: jqxTreeGridComponent;
 
-  constructor(private http: ApiClient, public globals: Globals, private service: ApplicationService) {
+  dataAdapter;
+
+  dataAdapterCategory;
+
+  constructor(private http: ApiClient, public globals: Globals, private service: ApplicationService, public snackBar: MatSnackBar) {
+  }
+
+  ngOnInit() {
+    this.getCategoryArguments();
   }
 
   ngAfterViewInit(): void {
-    this.loadData();
+    this.getMenuData();
   }
 
   getSelectedMenuItem(): any[] {
@@ -46,7 +74,7 @@ export class AdminMenuComponent implements AfterViewInit {
   }
 
   handlerSuccessCategory(_this, result) {
-    _this.loadData();
+    _this.getMenuData();
     console.log(result);
   }
 
@@ -56,7 +84,6 @@ export class AdminMenuComponent implements AfterViewInit {
 
   createOption(): void {
     var re = /Cat/gi;
-    
     var parent = this.getSelectedMenuItem()[0];
     if (parent.id.toString().search(re) == -1) {
       this.treeObject.parentId = parent.id;
@@ -77,7 +104,7 @@ export class AdminMenuComponent implements AfterViewInit {
     console.log(result);
   }
 
-  loadData(): void {
+  getMenuData(): void {
     this.service.loadMenuOptions(this, this.handlerSuccess, this.handlerError);
   }
 
@@ -98,7 +125,6 @@ export class AdminMenuComponent implements AfterViewInit {
       id: 'id',
       localData: data
     };
-
     _this.dataAdapter = new jqx.dataAdapter(source);
     _this.globals.isLoading = false;
 
@@ -109,11 +135,98 @@ export class AdminMenuComponent implements AfterViewInit {
     _this.globals.isLoading = false;
   }
 
+  getCategoryArguments() {
+    this.service.loadCategoryArguments(this, this.handlerSuccessCategoryArguments, this.handlerErrorCategoryArguments);
+  }
+
+  handlerSuccessCategoryArguments(_this, data) {
+    _this.categories = data;
+  }
+
+  handlerErrorCategoryArguments(_this, result) {
+    console.log(result);
+  }
+
+  getOptionCategoryArguments() {
+    var re = /Cat/gi;
+    let selectedOption = this.getSelectedMenuItem();
+    let selectedCategory = this.categoryArgument.idCategory;
+    let data = {
+      idOption: selectedOption[0].id,
+      idCategory: selectedCategory.id
+    };
+    if (selectedOption[0].id.toString().search(re) == -1 && selectedCategory != undefined) {
+      this.service.loadOptionCategoryArguments(this, data, this.handlerSuccessOptionCategoryArguments, this.handlerErrorOptionCategoryArguments);
+    }
+  }
+
+  handlerSuccessOptionCategoryArguments(_this, data) {
+    if (data.length != 0) {
+      let source: any =
+      {
+        dataType: 'json',
+        dataFields: [
+          { name: 'id', type: 'string' },
+          { name: 'name1', type: 'string' },
+          { name: 'name2', type: 'string' },
+          { name: 'name3', type: 'string' },
+          { name: 'url', type: 'string' },
+          { name: 'required', type: 'boolean' }
+        ],
+        localData: data[0].categoryArgumentsId.arguments
+      };
+      _this.dataAdapterCategory = new jqx.dataAdapter(source);
+    }
+    _this.globals.isLoading = false;
+  }
+
+  handlerErrorOptionCategoryArguments(_this, result) {
+    _this.globals.isLoading = false;
+    console.log(result);
+  }
+
+  CategoryArgumentChanged(event: any) {
+    this.getOptionCategoryArguments();
+    console.log(event);
+  }
+
+  saveArgument() {
+    if (this.categoryArgument.idCategory != undefined) {
+      var re = /Cat/gi;
+      var selectedOption = this.getSelectedMenuItem()[0];
+      if (selectedOption.id.toString().search(re) == -1 && selectedOption.children.length == 0) {
+        this.argument.categoryId = this.categoryArgument.idCategory.id;
+        let data: any = {
+          idOption: selectedOption.id,
+          argument: this.argument
+        };
+        this.service.createArgument(this, data, this.handlerSuccessArgument, this.handlerErrorArgument);
+      } else {
+        this.snackBar.open("You must choose a menu option.", "", {
+          duration: 5000,
+        });
+      }
+    } else {
+      this.snackBar.open("You must choose a category argument.", "", {
+        duration: 5000,
+      });
+    }
+  }
+
+  handlerSuccessArgument(_this, result) {
+    _this.getOptionCategoryArguments();
+    console.log(result);
+  }
+
+  handlerErrorArgument(_this, result) {
+    console.log(result);
+  }
+
   getWidth(): any {
     if (document.body.offsetWidth < 850) {
       return '90%';
     }
-    return 500;
+    return 520;
   }
 
   getHeight(): any {
