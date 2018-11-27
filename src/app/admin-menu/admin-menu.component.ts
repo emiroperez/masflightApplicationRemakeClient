@@ -41,6 +41,10 @@ export class AdminMenuComponent implements AfterViewInit {
 
   @ViewChild(jqxTreeGridComponent) jqxTreeGridRef: jqxTreeGridComponent;
 
+  dataAdapter;
+
+  dataAdapterCategory;
+
   constructor(private http: ApiClient, public globals: Globals, private service: ApplicationService, public snackBar: MatSnackBar) {
   }
 

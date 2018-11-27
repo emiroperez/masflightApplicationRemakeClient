@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Globals } from '../globals/Globals';
+import { ApplicationService } from '../services/application.service';
 
 @Component({
   selector: 'app-current-query-summary',
@@ -8,9 +9,12 @@ import { Globals } from '../globals/Globals';
 })
 export class CurrentQuerySummaryComponent implements OnInit {
 
-  constructor(public globals: Globals) { }
+  constructor(private services: ApplicationService, public globals: Globals) { }
 
   ngOnInit() {
   }
+
+
+  
 
 }

@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CategoryArgumentsComponent implements OnInit {
 
+  title;
+  
   constructor() { }
 
   ngOnInit() {
