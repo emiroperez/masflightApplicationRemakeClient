@@ -289,8 +289,8 @@ export class RegisterComponent implements OnInit {
   }
   
   saveUserHandleResponse(this_,data){
-    this_.utils.showAlert('Warning','User Created Succesfully');
-    this_.router.navigate(['']);
+    this_.utils.showAlert('info','User Created Succesfully');
+    //this_.router.navigate(['']);
   }
   
   getOptionsText(options: any[]){
