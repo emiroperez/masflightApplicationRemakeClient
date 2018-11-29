@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Injectable } from '@angular/core';
 import { Arguments } from '../model/Arguments';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
 import { AppDateAdapter, APP_DATE_FORMATS } from '../commons/date.adapters';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-msf-date-range',
@@ -25,10 +26,16 @@ export class MsfDateRangeComponent implements OnInit {
   ngOnInit() {
   }
 
-  dateChange(event){
+  dateChange(event){      
       if(!this.argument.value2){
         this.argument.value2 = this.argument.value1;
       }
+  }
+
+  validateDate(){
+      if(this.argument.value1){
+        this.argument.value1 = new DatePipe('en-US').transform(this.argument.value1, 'MM/dd/yyyy');
+      }    
   }
 
 }

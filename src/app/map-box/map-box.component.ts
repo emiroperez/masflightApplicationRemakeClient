@@ -1,7 +1,5 @@
 import { Component, OnInit, ViewChildren, ViewChild } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
-import { GeoJson } from '../msf-map/GeoJson ';
-import { FeatureCollection } from '../msf-map/FeatureCollection';
 import { ApplicationService } from '../services/application.service';
 import { Globals } from '../globals/Globals';
 
@@ -16,6 +14,13 @@ import { Globals } from '../globals/Globals';
   `]
 })
 export class MapBoxComponent implements OnInit{
+
+  @ViewChild('map')
+  map: mapboxgl.Map;
+
+  zoom = [3];
+  
+  center = [-73.968285, 40.785091];
 
   data = {'type': 'FeatureCollection',
             'features': []
@@ -32,11 +37,7 @@ export class MapBoxComponent implements OnInit{
     this.getTrackingDataSource();
   }
 
-  @ViewChild('map')
-  map: mapboxgl.Map;
-
-  zoom = [3];
-  center = [-73.968285, 40.785091];
+  
 
   ngAfterViewInit() {
     this.map.resize;

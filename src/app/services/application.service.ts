@@ -22,8 +22,8 @@ export class ApplicationService {
 
   getMapBoxTracking(_this, successHandler, errorHandler) {
     let params = this.utils.getUrlParameters(_this.globals.currentOption);
-    let url = "http://69.64.45.220:8886/getMapBoxTracking?airline=DL&origin=LGA&destination=MCO&initialdate=20181011&finaldate=20181011&flightNo=1071";// + params.url;
-    //let url = "http://localhost:8886/getMapBoxTracking?airline=DL&origin=LGA&destination=MCO&initialdate=20181011&finaldate=20181011&flightNo=1071";// + params.url;
+    let url = "http://69.64.45.220:8886/getMapBoxTracking?" + params.url;
+    //let url = "http://localhost:8886/getMapBoxTracking?" + params.url;
     this.http.get(_this, url, successHandler, errorHandler, null);
   }
 

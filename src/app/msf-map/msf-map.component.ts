@@ -3,13 +3,20 @@ import { ApplicationService } from '../services/application.service';
 import { Globals } from '../globals/Globals';
 import { AgmMap } from '@agm/core';
 import { AmChartsService, AmChart } from "@amcharts/amcharts3-angular";
+import * as mapboxgl from 'mapbox-gl';
 
 @Component({
   selector: 'app-msf-map',
   templateUrl: './msf-map.component.html',
-  styleUrls: ['./msf-map.component.css']
+  styles: [`
+    mgl-map {
+      height: 100%;
+      width: 100%;
+    }
+  `]
 })
 export class MsfMapComponent implements OnInit {
+  /*
 
   lat: number = 40.74093;
   lng: number = -74.38954;
@@ -240,7 +247,7 @@ export class MsfMapComponent implements OnInit {
   constructor( private services: ApplicationService, public globals: Globals, private AmCharts: AmChartsService) { }
 
 
-  private chart: AmChart;
+  
 
   ngOnInit() {
     
@@ -310,15 +317,80 @@ export class MsfMapComponent implements OnInit {
     _this.globals.isLoading = false;
   }
 
+  getText(point){
+  return point.latitude +','+ point.longitude;
+}
+
+
+  */
+
+  
+
+
+
+
+  @ViewChild('map')
+  map: mapboxgl.Map;
+
+  mapReady: boolean=false;
+  
+  zoom = [4];
+  
+  center = [-73.968285, 40.785091];
+
+  data = [];
+
+  paint = {        
+            'circle-radius': 2,
+            'circle-color': '#B42222'
+          };
+
+  layout = {
+              "icon-image": "{icon}-15",
+              "text-field": "{title}",
+              "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
+              "text-offset": [0, 0.6],
+              "text-anchor": "top"
+          };
+
+  private chart: AmChart;
+
+  constructor( private services: ApplicationService, public globals: Globals, private AmCharts: AmChartsService) { }
+
+
+  ngOnInit() {
+    
+  }
+
+  getTrackingDataSource(){
+    this.data = [];
+    this.globals.isLoading = true;
+    this.services.getMapBoxTracking(this,this.successHandler, this.errorHandler);    
+  }
+
+  successHandler(_this,features){
+    _this.data = features;
+    if(features.length > 0){  
+      /*let size =  Math.round(features[0].features.length/2);
+      _this.center = features[0].features[size].geometry.coordinates;  */        
+      _this.getChart(_this);      
+    }
+    _this.globals.isLoading = false;
+    
+	}
+
+  errorHandler(_this,data){
+    _this.globals.isLoading = false;
+  }
+
   getHeight(){
-    if(this.polylines != null && this.polylines.length == 1 ){
+    if(this.data != null && this.data.length == 1 ){
       return 60;
     }
     return 100;
   }
 
   getChart(_this){
-      /* chart */
     _this.mapReady = true;
     let chartData = _this.generateChartData();
 
@@ -379,21 +451,18 @@ export class MsfMapComponent implements OnInit {
   }
   
 
-generateChartData() {
-    var chartData = [];
-    if(this.polylines != null && this.polylines.length == 1 ){
-      chartData = this.polylines[0].path;
-    }
-    return chartData;
-}
+  generateChartData() {
+      var chartData = [];
+      if(this.data != null && this.data.length == 1 ){
+        chartData = this.data[0].features;      
+      }
+      return chartData;
+  }
 
-zoomChart(){
-  let lastIndex =  Math.round(this.chart.dataProvider.length);
-  this.chart.zoomToIndexes(0, lastIndex);  
-}
+  zoomChart(){
+    let lastIndex =  Math.round(this.chart.dataProvider.length);
+    this.chart.zoomToIndexes(0, lastIndex);  
+  }
 
-getText(point){
-  return point.latitude +','+ point.longitude;
-}
 
 }

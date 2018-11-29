@@ -1,4 +1,4 @@
-import { Option } from "../model/Option";
+
 import { CategoryArguments } from "../model/CategoryArguments";
 import { Arguments } from "../model/Arguments";
 import { ComponentType } from "./ComponentType";
