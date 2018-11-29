@@ -376,6 +376,14 @@ p {
   background-color: #3d3d3d;
 }
 
+.msf-card-footer-item.mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label, .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+  -webkit-transform: translateY(-1.739125em) scale(0.75) perspective(100px) translateZ(0.001px);
+  transform: translateY(-1.739125em) scale(0.75) perspective(100px) translateZ(0.001px);
+  -ms-transform: translateY(-1.739125em) scale(0.75);
+  width: 133.33333%;
+  color: black !important;
+}
+
 .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label, .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
   -webkit-transform: translateY(-1.739125em) scale(0.75) perspective(100px) translateZ(0.001px);
   transform: translateY(-1.739125em) scale(0.75) perspective(100px) translateZ(0.001px);
@@ -2082,6 +2090,7 @@ g g g text {
   display: inline-flex;
   align-items: flex-start;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .msf-plan-card {
@@ -2260,7 +2269,7 @@ mgl-map {
   text-align: center;
 }
 
-.msf-membership-card mat-card-footer.mat-form-field-appearance-legacy .mat-form-field-label {
+.msf-membership-card mat-card-footer .mat-form-field-appearance-legacy .mat-form-field-label {
   line-height: 2;
   color: black !important;
   text-align: left;
@@ -2311,13 +2320,13 @@ mgl-map {
   .msf-card-footer-item input[type=text]{
     color: black;
     text-align: left;
-    width: 35%;
   }
 
   .msf-card-footer-item{
     width: 35%;
     margin: 0 auto;
     margin-left:5%;
+    margin-top: -0.5%;
   }
 
 .msf-card-content-item{
@@ -2419,5 +2428,6 @@ mgl-map {
   margin-bottom: 4%;
   display: inline-flex;
 }
+
 
 /*# sourceMappingURL=styles.css.map */

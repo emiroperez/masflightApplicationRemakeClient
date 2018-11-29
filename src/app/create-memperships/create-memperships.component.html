@@ -20,14 +20,19 @@
 
 <mat-card-content > 
                   
-              <div >
+              
+                   
                 <form [formGroup]= "plansForms" class="msf-inline msf-large-container msf-card-container">
-                  <mat-card class="msf-plan-card" formArrayName="items" *ngFor="let plan of getPlans(); let i = index;">
+                        <ng-container formArrayName="items" *ngFor="let plan of getPlans(); let i = index;">
+                  <mat-card class="msf-plan-card" *ngIf="isPlanDelete(i)" >
+                        
                       <div [formGroupName]="i">
                         <mat-card-content class= "msf-plan-card-content">
-                             <!--  <div class ="msf-fab-button-container msf-fab-button msf-center-container msf-fab-button-features">
-                                <button mat-mini-fab color="basic" (click)="RemovePlan(i)">-</button>
-                              </div> -->
+                                <div class ="msf-fab-button-container msf-fab-button msf-center-container msf-fab-button-features" >
+                                        <button mat-mini-fab color="basic" (click)="deletePlan(i)">-</button>
+                                        </div>
+                               
+                            
                               <mat-form-field class="msf-card-content-item msf-medium-title-centered" [floatLabel]="never">
                                   <input  matInput class="msf-card-content-title" autocomplete="off" type="text"  formControlName="name" placeholder="Name"/>  
                               </mat-form-field>
@@ -38,20 +43,22 @@
                                 <div style="width:15%"></div>
                                 
                                   <ul>
-                                    <li formArrayName ="features" *ngFor="let feature of getPlanFeatures(i); let j = index;">
-                                      <div [formGroupName]="j">
-                                          <mat-form-field class="msf-card-content-item msf-card-feature-item" [floatLabel]="never">
-                                              <input  matInput class="msf-feature-name" autocomplete="off" type="text"  formControlName="name" placeholder="Name"/>  
-                                          </mat-form-field>
-                                          <mat-form-field class="msf-card-content-item msf-card-feature-item" [floatLabel]="never">
-                                              <input  matInput class="msf-feature-description" autocomplete="off" type="text"  formControlName="description" placeholder="Description"/>  
-                                          </mat-form-field>
-                                          <div class ="msf-fab-button-container msf-fab-button msf-center-container msf-fab-button-features" >
-                                              <button mat-mini-fab color="basic" (click)="deleteFeature(i,j)">-</button>
-                                            </div>
-                                      </div>
+                                    <div formArrayName ="features" *ngFor="let feature of getPlanFeatures(i); let j = index;">
+                                        <li  *ngIf='isFeatureDelete(i,j)'>
+                                        <div [formGroupName]="j">
+                                            <mat-form-field class="msf-card-content-item msf-card-feature-item" [floatLabel]="never">
+                                                <input  matInput class="msf-feature-name" autocomplete="off" type="text"  formControlName="name" placeholder="Feature"/>  
+                                            </mat-form-field>
+                                            <mat-form-field class="msf-card-content-item msf-card-feature-item" [floatLabel]="never">
+                                                <input  matInput class="msf-feature-description" autocomplete="off" type="text"  formControlName="description" placeholder="Options"/>  
+                                            </mat-form-field>
+                                            <div class ="msf-fab-button-container msf-fab-button msf-center-container msf-fab-button-features" >
+                                                <button mat-mini-fab color="basic" (click)="deleteFeature(i,j)">-</button>
+                                                </div>
+                                        </div>
 
-                                    </li>
+                                        </li>
+                                    </div>
                                   </ul>
                                 <div style="width:5%"></div>
                             </div>
@@ -61,7 +68,8 @@
                             <div class ="msf-fab-button-container msf-fab-button msf-center-container">
                                 <button mat-mini-fab color="primary" (click)="addNewPrice(i)">+</button>
                               </div>
-                              <div formArrayName="fares" class="msf-prices-membership-container" *ngFor="let price of getPlanPrices(i); let k = index;">
+                              <div formArrayName="fares" *ngFor="let price of getPlanPrices(i); let k = index;">
+                              <div  class="msf-prices-membership-container"  *ngIf="isFareDelete(i,k)">
                                   <div [formGroupName]="k">  
                                     <mat-form-field class=" msf-card-footer-item" >
                                         <input  matInput class="msf-price-fare" autocomplete="off" type="text"  formControlName="fare" placeholder="Fare"/>  
@@ -71,18 +79,20 @@
                                       placeholder="Periodicity" matInput autocomplete="off" bindValue="code" class=" msf-imput msf-periodicity-select" formControlName="periodicity" required>
                                     </ng-select>  
                                     <div class ="msf-fab-button-container msf-fab-button msf-center-container">
-                                        <button mat-mini-fab color="primary" (click)="deletePrice(i)">-</button>
+                                        <button mat-mini-fab color="primary" (click)="deletePrice(i,k)">-</button>
                                       </div>
                                   </div>
                               </div>
+                            </div>
                         </mat-card-footer>
                      </div>
                   </mat-card>
+                </ng-container>
                 </form>
                   
           
                  
-              </div>
+              
 
             <div>
               <button mat-button class="msf-big-button" (click)="savePlans()" >Save</button>
