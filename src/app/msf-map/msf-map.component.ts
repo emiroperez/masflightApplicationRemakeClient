@@ -333,7 +333,7 @@ export class MsfMapComponent implements OnInit {
   map: mapboxgl.Map;
 
   mapReady: boolean=false;
-  
+
   zoom = [4];
   
   center = [-73.968285, 40.785091];
@@ -359,7 +359,7 @@ export class MsfMapComponent implements OnInit {
 
 
   ngOnInit() {
-    
+
   }
 
   getTrackingDataSource(){
