@@ -2216,4 +2216,10 @@ mgl-map {
   width: 500px;
 }
 
+.msf-user-image {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
 /*# sourceMappingURL=styles.css.map */

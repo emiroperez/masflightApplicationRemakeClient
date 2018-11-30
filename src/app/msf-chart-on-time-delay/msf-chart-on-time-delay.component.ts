@@ -184,7 +184,11 @@ export class MsfChartOnTimeDelayComponent implements OnInit {
 
 
   loadData(){
-    this.service.loadChartData(this, this.handlerSuccess, this.handlerError);
+    if(this.globals.currentOption.tabType === 'usageStatistics'){
+      this.service.loadChartDataUsageStatistics(this, this.handlerSuccess, this.handlerError);
+    }else{
+      this.service.loadChartData(this, this.handlerSuccess, this.handlerError);
+    }
   }
 
   ngOnDestroy() {

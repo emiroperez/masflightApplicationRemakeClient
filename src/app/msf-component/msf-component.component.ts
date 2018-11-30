@@ -108,4 +108,12 @@ export class MsfComponentComponent implements OnInit {
     return ComponentType.cancelled == argument.type;
   }
 
+  isUserList(argument: Arguments){
+    return ComponentType.userList == argument.type;
+  }
+
+  isOptionList(argument: Arguments){
+    return ComponentType.optionList == argument.type;
+  }
+
 }

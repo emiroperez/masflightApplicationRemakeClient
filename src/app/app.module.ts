@@ -66,6 +66,8 @@ import { MapBoxComponent } from './map-box/map-box.component';
 import { AdminMenuComponent } from './admin-menu/admin-menu.component';
 import {MatSnackBarModule} from '@angular/material';
 import { CategoryArgumentsComponent } from './category-arguments/category-arguments.component';
+import { MsfUserListComponent } from './msf-user-list/msf-user-list.component';
+import { MsfOptionListComponent } from './msf-option-list/msf-option-list.component';
 
 @NgModule({
   declarations: [
@@ -117,7 +119,9 @@ import { CategoryArgumentsComponent } from './category-arguments/category-argume
     MapBoxComponent,
     AdminMenuComponent,
     AdminMenuComponent,
-    CategoryArgumentsComponent    
+    CategoryArgumentsComponent,
+    MsfUserListComponent,
+    MsfOptionListComponent    
   ],
   imports: [
     BrowserModule,

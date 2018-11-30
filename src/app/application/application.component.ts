@@ -86,6 +86,8 @@ export class ApplicationComponent implements OnInit {
     if(this.globals.currentOption.tabType === 'map'){
       this.globals.map = true;
       this.msfContainerRef.msfMapRef.getTrackingDataSource(); 
+    }else if(this.globals.currentOption.tabType === 'usageStatistics'){
+      this.msfContainerRef.msfTableRef.getDataUsageStatistics();
     }else{
       this.msfContainerRef.msfTableRef.getData(); 
     }       
