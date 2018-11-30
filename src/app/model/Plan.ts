@@ -2,15 +2,16 @@ import { PlanFeature } from "./PlanFeature"
 import { PlanPrice } from "./PlanPrice"
 
 export class Plan{
-    "code": string;
+    "id": string;
     "name": string;    
     "features":Array<PlanFeature>;
-    "prices":Array<PlanPrice>;
+    "fares":Array<PlanPrice>;
+    "delete": boolean;
 
-    constructor(code: string,name:string,features:Array<PlanFeature>,prices:Array<PlanPrice>){
-        this.code=code;
-        this.name=name;
-        this.features=features;
-        this.prices=prices;
+    constructor(){
+        this.name = '';
+        this.features = new Array();
+        this.fares=new Array();
+        this.delete=false;
     }
 }

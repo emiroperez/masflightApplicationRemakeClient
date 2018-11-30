@@ -64,6 +64,7 @@ import { MsfUsageStatisticsComponent } from './msf-usage-statistics/msf-usage-st
 import { MsfCancelledComponent } from './msf-cancelled/msf-cancelled.component';
 import { MapBoxComponent } from './map-box/map-box.component';
 import { AdminMenuComponent } from './admin-menu/admin-menu.component';
+import { CreateMempershipsComponent } from './create-memperships/create-memperships.component';
 import {MatSnackBarModule} from '@angular/material';
 import { CategoryArgumentsComponent } from './category-arguments/category-arguments.component';
 import { MsfUserListComponent } from './msf-user-list/msf-user-list.component';
@@ -115,6 +116,8 @@ import { MsfOptionListComponent } from './msf-option-list/msf-option-list.compon
     MsfRoundingComponent,
     MsfDateComponent,
     MsfUsageStatisticsComponent,
+    AdminMenuComponent,
+    CreateMempershipsComponent,
     MsfCancelledComponent,
     MapBoxComponent,
     AdminMenuComponent,

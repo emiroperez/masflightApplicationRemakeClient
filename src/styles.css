@@ -2199,18 +2199,26 @@ li.msf-select:before {
   margin-bottom: 2%;
 }
 
+input[type=checkbox] {
+  display: none;
+}
+
 input[type=checkbox] + label {
   background: #999;
   height: 16px;
   width: 16px;
+  display: inline-block;
   padding: 0 0 0 0px;
 }
+
 input[type=checkbox]:checked + label {
   background: #0080FF;
   height: 16px;
   width: 16px;
+  display: inline-block;
   padding: 0 0 0 0px;
 }
+
 mgl-map {
   height: 500px;
   width: 500px;
@@ -2220,6 +2228,9 @@ mgl-map {
   width: 40px;
   height: 40px;
   margin-right: 10px;
+}
+.msf-summary-title {
+  color: #01abec;
 }
 
 /*# sourceMappingURL=styles.css.map */

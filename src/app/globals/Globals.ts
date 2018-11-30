@@ -14,7 +14,7 @@ export class Globals {
   variables;
   values;
   generateDynamicTable = false;
-  selectedIndex = 0;
+  selectedIndex = 1;
   displayedColumns;
   metadata;
   totalRecord = 0;
@@ -28,7 +28,7 @@ export class Globals {
     this.variables = null;
     this.values = null;
     this.generateDynamicTable = false;
-    this.selectedIndex = 0;
+    this.selectedIndex = 1;
     this.totalRecord = 0;
   }
 }

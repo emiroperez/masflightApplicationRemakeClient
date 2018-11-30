@@ -1,11 +1,14 @@
-export class PlanFeature{
-    "code": string;
-    "name": string;    
-    "description": string;
+import { PlanFeatureOption } from "./PlanFeatureOption"
 
-    constructor(code:string,name:string,description:string){
-        this.code=code;
-        this.name=name;
-        this.description=description;
+export class PlanFeature{
+    "id": string;
+    "features": string;    
+    "options": Array<PlanFeatureOption>;
+    "delete": boolean;
+
+    constructor(){
+        this.features='';
+        this.options=new Array();
+        this.delete=false;
     }
 }

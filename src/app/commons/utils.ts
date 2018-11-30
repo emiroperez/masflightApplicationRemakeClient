@@ -1,4 +1,4 @@
-import { Option } from "../model/Option";
+
 import { CategoryArguments } from "../model/CategoryArguments";
 import { Arguments } from "../model/Arguments";
 import { ComponentType } from "./ComponentType";
@@ -109,12 +109,12 @@ export class Utils{
         }else if(type == ComponentType.dateRange || 
             type == ComponentType.date){
             return new DateFormatPipe('en-US').transform(value);
-        }else if(type == ComponentType.airportRoute ){
+        }/*else if(type == ComponentType.airportRoute ){
             if(typeof value === "string"){
                 return value;
             }
             return value.iata;
-        }else if(type == ComponentType.airport){
+        }*/else if(type == ComponentType.airport){
             if(typeof value === "string"){
                 return value;
             }
@@ -135,7 +135,8 @@ export class Utils{
             }
            return value.iata;
         }else if(type == ComponentType.airline ||
-             type == ComponentType.aircraftType){
+             type == ComponentType.aircraftType ||
+             type == ComponentType.airportRoute){
             var valueAux="";
             var i = 0;
             for(var val of value){

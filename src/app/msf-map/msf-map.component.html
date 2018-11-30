@@ -1,4 +1,4 @@
-
+<!--
 <agm-map *ngIf="mapReady" [latitude]="lat" [longitude]="lng"  #AgmMap [styles]="styles" [zoom]='5' [style.height.%]="getHeight()">    
 
         <ng-container *ngFor="let polyline of polylines">
@@ -34,5 +34,24 @@
         </ng-container>  
     
      </agm-map>
-     <div id="chartdiv" [style.width.%]="100" [style.height.%]="40" style="display: block;background-color: #000; color: #fff;"></div>
+     -->
+
+    <mgl-map  #map [style]="'mapbox://styles/mapbox/dark-v9'" [zoom]="zoom" [center]="center"  [style.height.%]="getHeight()">      
+      <ng-container *ngFor="let feature of data; let i = index ">
+          <mgl-marker  [lngLat]="[feature.features[0].origin.longitude, feature.features[0].origin.latitude]">
+              <div style="justify-content: center; color: #01abec">            
+                {{feature.features[0].origin.iata}}
+              </div>
+          </mgl-marker> 
+          <mgl-marker  [lngLat]="[feature.features[0].dest.longitude, feature.features[0].dest.latitude]">
+              <div style="justify-content: center; color: #01abec">            
+                {{feature.features[0].dest.iata}}
+              </div>
+          </mgl-marker>            
+          <mgl-geojson-source *ngIf="feature" id="feature_{{i}}" [data]="feature"></mgl-geojson-source>
+          <mgl-layer *ngIf="feature"  id="feature_{{i}}" type="circle" source="feature_{{i}}" [paint]="paint"></mgl-layer>          
+      </ng-container>
+    </mgl-map>
+
+    <div id="chartdiv" [style.width.%]="100" [style.height.%]="40" style="display: block;background-color: #000; color: #fff;"></div>
      
