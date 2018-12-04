@@ -2307,7 +2307,6 @@ mgl-map {
 
 .msf-card-content-item input[type=text], .msf-card-content-item input[type=password], .msf-card-content-item input[type=number], .msf-card-content-item input[type=email] {
   padding: 8px;
-  width: 230px;
   outline: none;
   border: none;
   color: white;
@@ -2319,7 +2318,6 @@ mgl-map {
 
 
 .msf-card-feature-item input[type=text]{
-    
     width: 120%;
     text-align: left;
   }
