@@ -66,6 +66,10 @@ import { MapBoxComponent } from './map-box/map-box.component';
 import { AdminMenuComponent } from './admin-menu/admin-menu.component';
 import {MatSnackBarModule} from '@angular/material';
 import { CategoryArgumentsComponent } from './category-arguments/category-arguments.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material';
+import { AdminMenuRecursiveComponent } from './admin-menu-recursive/admin-menu-recursive.component';
+import { AgGridModule } from 'ag-grid-angular';
 
 @NgModule({
   declarations: [
@@ -117,7 +121,8 @@ import { CategoryArgumentsComponent } from './category-arguments/category-argume
     MapBoxComponent,
     AdminMenuComponent,
     AdminMenuComponent,
-    CategoryArgumentsComponent    
+    CategoryArgumentsComponent,
+    AdminMenuRecursiveComponent    
   ],
   imports: [
     BrowserModule,
@@ -146,8 +151,10 @@ import { CategoryArgumentsComponent } from './category-arguments/category-argume
       accessToken: 'pk.eyJ1IjoiYXNwc29sdXRpb25zIiwiYSI6ImNqbm5uNGhscTI4N28za3FybnJ0OWF6NmEifQ.pDzlIgQjVkVszvxF2UoXvA', 
       geocoderAccessToken: 'pk.eyJ1IjoiYXNwc29sdXRpb25zIiwiYSI6ImNqbm5uNGhscTI4N28za3FybnJ0OWF6NmEifQ.pDzlIgQjVkVszvxF2UoXvA'
     }),
-
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatTableModule,
+    MatPaginatorModule,
+    AgGridModule.withComponents(null)
   ],
   providers: [
     AuthService,

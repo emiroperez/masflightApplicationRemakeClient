@@ -1,0 +1,20 @@
+<div *ngIf="option && !option.toDelete">
+  <!-- {{option.label}} -->
+  <mat-form-field class="msf-item menu-field" [ngClass]="{
+    'is-active': option.isActive,
+    'is-inactive': !option.isActive        
+  }">
+    <input type="text" matInput class="input-register" [(ngModel)]="option.label" [ngModelOptions]="{standalone: true}"
+      (click)="selectOption(option)">
+  </mat-form-field>
+  <button mat-icon-button (click)="toggle(option)" *ngIf="option.children && option.children.length > 0">
+    <mat-icon *ngIf="!option.isOpened" style="color: white" aria-label="Toogle">keyboard_arrow_down</mat-icon>
+    <mat-icon *ngIf="option.isOpened" style="color: white" aria-label="Toogle">keyboard_arrow_up</mat-icon>
+  </button>
+  <div [@animationOption2]="option.isOpened ? 'open': 'close'" *ngIf="option.children && option.children.length > 0 && option.isOpened"
+    style="padding-left: 5%">
+    <div *ngFor="let optionChild of option.children">
+      <app-admin-menu-recursive [menu]="optionChild" (optionSelected)="selectOption($event)"></app-admin-menu-recursive>
+    </div>
+  </div>
+</div>
