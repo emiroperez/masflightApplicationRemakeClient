@@ -52,4 +52,8 @@ export class Globals {
     }
     return 0;
   }
+
+  getSelectedIndex(){
+    return this.selectedIndex;
+  }
 }
