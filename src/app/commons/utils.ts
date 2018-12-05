@@ -55,6 +55,31 @@ export class Utils{
         return {tab:option.tab,url: params};
     }
 
+    getParameters(option: any){
+        let params;        
+        if(option.menuOptionArguments){            
+            for( let menuOptionArguments of option.menuOptionArguments){
+                if(menuOptionArguments.categoryArguments){            
+                    for( let i = 0; i < menuOptionArguments.categoryArguments.length;i++){
+                        let category: CategoryArguments = menuOptionArguments.categoryArguments[i];
+                        if(category && category.arguments){
+                            for( let j = 0; j < category.arguments.length;j++){
+                                let argument: Arguments = category.arguments[j];
+                                if(params){
+                                    params += "&" + this.getArguments(argument);
+                                }else{
+                                    params = this.getArguments(argument);
+                                }
+                            }
+                        }        
+                    }
+                }
+            }
+        }
+        
+        return params;
+    }
+
     getArguments(argument: Arguments){
         let args='';
         if(argument.name1){

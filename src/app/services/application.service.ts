@@ -44,6 +44,20 @@ export class ApplicationService {
     this.http.get(_this, url, handlerSuccess, handlerError, null);
   }
 
+  getDataTableSourceUsageStatistics(_this, handlerSuccess, handlerError) {
+    _this.dataSource = null;
+    _this.displayedColumns = [];
+    _this.globals.isLoading = true;
+    let param = this.utils.getUrlParameters(_this.globals.currentOption);
+    let urlBase = param.url;
+    urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=100";
+    console.log(urlBase);
+    let urlArg = encodeURIComponent(urlBase);
+    urlBase += "&optionId=" + _this.globals.currentOption.id;
+    //let url = "/consumeWebServices?url=" + urlArg + "&optionId="+ _this.globals.currentOption.id;    
+    this.http.get(_this, urlBase, handlerSuccess, handlerError, null);
+  }
+
   loadChartData(_this, handlerSuccess, handlerError) {
     _this.globals.isLoading = true;
     let param = this.utils.getUrlParameters(_this.globals.currentOption);
@@ -52,6 +66,16 @@ export class ApplicationService {
     console.log(urlBase);
     let urlArg = encodeURIComponent(urlBase);
     let url = this.host + "/getChartData?url=" + urlArg + "&variable=" + _this.variable.id + "&xaxis=" + _this.xaxis.id + "&valueColunm=" + _this.valueColunm.id + "&function=" + _this.function.id;
+    this.http.get(_this, url, handlerSuccess, handlerError, null);
+  }
+
+  loadChartDataUsageStatistics(_this, handlerSuccess, handlerError) {
+    _this.globals.isLoading = true;
+    let params = this.utils.getParameters(_this.globals.currentOption);
+    params += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999";
+    console.log(params);
+    let url = "http://localhost:8887/getChartDataUsageStatistics?variable=" + _this.variable.id + "&xaxis=" + _this.xaxis.id + "&valueColunm=" + _this.valueColunm.id + "&function=" + _this.function.id + "&" +params+ "&optionId=" + _this.globals.currentOption.id;;
+    //let url = "/getChartData?url=" + urlArg+"&variable="+ _this.variable.id+"&xaxis="+_this.xaxis.id+"&valueColunm="+_this.valueColunm.id+"&function="+_this.function.id;     
     this.http.get(_this, url, handlerSuccess, handlerError, null);
   }
 

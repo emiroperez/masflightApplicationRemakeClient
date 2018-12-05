@@ -50,6 +50,10 @@ export class MsfTableComponent implements OnInit {
     this.service.getDataTableSource(this, this.handlerSuccess, this.handlerError);
   }
 
+  getDataUsageStatistics(){
+    this.service.getDataTableSourceUsageStatistics(this, this.handlerSuccess, this.handlerError);
+  }
+
 
   getDataCurrentSource(){
     let tab = this.tabRef;

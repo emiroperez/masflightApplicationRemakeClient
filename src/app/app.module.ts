@@ -68,6 +68,8 @@ import { CreateMempershipsComponent } from './create-memperships/create-mempersh
 import {MatSnackBarModule} from '@angular/material';
 import { CategoryArgumentsComponent } from './category-arguments/category-arguments.component';
 import { Utils } from './commons/utils';
+import { MsfUserListComponent } from './msf-user-list/msf-user-list.component';
+import { MsfOptionListComponent } from './msf-option-list/msf-option-list.component';
 
 @NgModule({
   declarations: [
@@ -121,7 +123,9 @@ import { Utils } from './commons/utils';
     MapBoxComponent,
     AdminMenuComponent,
     AdminMenuComponent,
-    CategoryArgumentsComponent    
+    CategoryArgumentsComponent,
+    MsfUserListComponent,
+    MsfOptionListComponent    
   ],
   imports: [
     BrowserModule,
