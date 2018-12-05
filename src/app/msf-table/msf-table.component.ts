@@ -46,6 +46,7 @@ export class MsfTableComponent implements OnInit {
   }
 
   getData(){
+    this.globals.startTimestamp = new Date();
     this.service.getDataTableSource(this, this.handlerSuccess, this.handlerError);
   }
 
@@ -71,6 +72,7 @@ export class MsfTableComponent implements OnInit {
   }
 
   handlerSuccess(_this,data, tab){
+    _this.globals.endTimestamp = new Date();
     let response = data.Response;
     _this.globals.totalRecord = response.total;
     let keys = Object.keys(response);

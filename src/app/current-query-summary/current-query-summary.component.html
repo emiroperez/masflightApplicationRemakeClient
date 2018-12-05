@@ -1,10 +1,81 @@
 
   <div class="msf-intro-body1" [style.width.%]="100" [style.height.%]="100">    
       <div class="msf-current-query-summay-container">
-           <div class="msf-summary-title">Current Query Summary</div>
+        <div class="msf-summary-title">Current Query Summary</div>
+        <div class="msf-summary-div-container">
+        <div class="msf-inline ">Data Selected: </div>
+        <div class="msf-inline msf-summary-value"> {{globals.currentOption.label}}</div>
+        </div>
+        <div class="msf-summary-container">
+            <ng-container *ngFor="let menuOptionArgument of globals.currentOption.menuOptionArguments">
+                <div  *ngFor="let category of menuOptionArgument.categoryArguments" class="msf-summary-category-container">
+                    <div class="msf-summary-category-label">{{category.label}}</div>
+                    <div>
+                            <div  *ngFor="let argument of category.arguments">
+                                <ng-container *ngIf="argument.name1">
+                                    <div class="msf-block">
+                                            <div class="msf-inline msf-summary-arg-title">{{argument.title}} </div>
+                                            <div class="msf-inline msf-summary-arg-label">{{argument.label1}} </div>
+                                            <div class="msf-inline msf-summary-value msf-summary-arg-value"> {{utils.getValueFormatView(argument.type, argument.value1)}}</div>
+                                    </div>                                        
+                                </ng-container> 
+                                <ng-container *ngIf="argument.name2">
+                                        <div class="msf-block">
+                                                <div class="msf-inline msf-summary-arg-label">{{argument.label2}} </div>
+                                                <div class="msf-inline msf-summary-value msf-summary-arg-value"> {{utils.getValueFormatView(argument.type, argument.value2)}}</div>
+                                        </div>                                        
+                                </ng-container> 
+                                <ng-container *ngIf="argument.name3">
+                                        <div class="msf-block">
+                                                <div class="msf-inline msf-summary-arg-label">{{argument.label3}} </div>
+                                                <div class="msf-inline msf-summary-value msf-summary-arg-value"> {{utils.getValueFormatView(argument.type, argument.value3)}}</div>
+                                        </div>                                        
+                                </ng-container>                                    
+                            </div>
+                    </div>
+                </div>
+           </ng-container>    
+        </div>
       </div>
       <div class="msf-search-complete-container">
-           
+            <div class="msf-search-title">Search Complete</div>            
+            <div  class="msf-searc-complete-option" (click)="componentClickHandler(argsContainer, icon2)">   
+                <i #icon2 class="material-icons msf-menu-complete-row ">expand_more</i>             
+                <span class="msf-menu-component-text">{{globals.currentOption.label}} : ({{globals.getTime()}} s)</span>
+                <i #icon [ngClass]="globals.getTime() != 0 ?'material-icons msf-summary-ok-icon':'material-icons msf-summary-icon'">check_circle</i>
+            </div>
+            <div [ngClass]="argsContainer.open ? 'msf-detail-container msf-block' : 'msf-detail-container msf-hiden'" #argsContainer>
+                <div class="msf-summary-category-label">Request Details</div>
+                <div class="msf-detail msf-block">                       
+                        <div class="msf-inline msf-summary-arg-label">Start Date: </div>
+                        <div class="msf-inline msf-summary-value msf-summary-arg-value"> {{utils.getDateFormat(globals.startTimestamp,'MM/dd/yyyy HH:mm:ss')}}</div>                        
+                </div>  
+                <div class="msf-detail  msf-block">                                               
+                        <div class="msf-inline msf-summary-arg-label">End Date: </div>
+                        <div class="msf-inline msf-summary-value msf-summary-arg-value"> {{utils.getDateFormat(globals.endTimestamp,'MM/dd/yyyy HH:mm:ss')}}</div>
+                </div>  
+                <div class="msf-detail  msf-block">                                               
+                        <div class="msf-inline msf-summary-arg-label">Time: </div>
+                        <div class="msf-inline msf-summary-value msf-summary-arg-value"> {{globals.getTime()}} s</div>
+                </div>  
+                <div class="msf-detail  msf-block">                                               
+                        <div class="msf-inline msf-summary-arg-label">Size: </div>
+                        <div class="msf-inline msf-summary-value msf-summary-arg-value"> {{(globals.getBytesLoaded())/1000}} KB</div>
+                </div>  
+            </div>
+            <div class="msf-summary-category-label ">Having Problems?</div>
+            <div  class="msf-searc-complete-option" >                
+                <span class="msf-menu-component-text">Having Problems?</span>
+                <i #icon class="material-icons msf-summary-icon">warning</i>
+            </div>
+            <div  class="msf-searc-complete-option" >                
+                <span class="msf-menu-component-text">Documentation</span>
+                <i #icon class="material-icons msf-summary-icon">find_in_page</i>
+            </div>
+            <div  class="msf-searc-complete-option" >                
+                <span class="msf-menu-component-text">Forum</span>
+                <i #icon class="material-icons msf-summary-icon">question_answer</i>
+            </div>
       </div>
   </div>
   

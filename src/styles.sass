@@ -1172,8 +1172,9 @@ button[aria-expanded="true"]
 
 .msf-menu-component-text
     color: white
-    font-size: 80%
     margin-left: 5px
+    max-width: 155px
+    word-break: break-word
 
 
 .mat-menu-item .mat-icon
@@ -1288,7 +1289,7 @@ app-msf-airport
 
 .mat-tab-body-wrapper
     height: 100%
-    background: black
+    background: $msf-primary-color
 
 .mat-table
     background: black
@@ -1976,10 +1977,115 @@ mgl-map
     width: 500px
 
 .msf-current-query-summay-container
+    display: inline-block
+    margin-left: 20px
+    margin-top: 20px    
+    width: 50%
+    height: 90%
 
 .msf-search-complete-container
+    display: inline-block
+    margin-top: 20px
+    text-align: center
+    width: 25%
 
 .msf-summary-title
     color: $msf-secondary-color
+    font-size: 161%
+    font-weight: bold
+    margin-bottom: 20px
+
+.msf-summary-category-container
+    color: $msf-secondary-color
+    font-size: 100%    
+    
+.msf-summary-container
+    -webkit-columns: 2 200px
+    -moz-columns: 2 200px
+    columns: 2 200px
+    -moz-column-fill: auto
+    column-fill: auto
+    height: 80%
+
+.msf-search-title
+    color: white
+    font-size: 161%
+    font-weight: bold
 
 .msf-summary-subtitle
+
+.msf-intro-body1
+    color: white
+    display: flex
+    justify-content: space-between
+    overflow: auto
+
+.msf-summary-value
+    margin-left: 5px
+    color: $msf-little-font-color
+    max-width: 200px
+    word-wrap: break-word
+
+.msf-block
+    display: block
+
+.msf-summary-arg-label
+    color: $msf-little-font-color
+    font-size: 100%
+
+.msf-summary-arg-title
+    color: $msf-font-color
+    display: block
+    font-size: 120%
+    margin-top: 5px
+
+.msf-summary-div-container, .msf-summary-category-label
+    margin-top: 10px
+    margin-bottom: 10px
+    font-size: 120%
+
+.msf-summary-category-label
+    color: $msf-secondary-color
+
+.msf-searc-complete-option
+    @extend .msf-primary-light-bg-color
+    display: flex
+    align-items: center
+    position: relative
+    cursor: pointer
+    margin: 4%
+    padding: 5%
+    padding-left: 10%
+    padding-right: 10%
+    border-top-right-radius: 5px
+    border-bottom-right-radius: 5px
+    border-top-left-radius: 40px
+    border-bottom-left-radius: 40px
+    justify-content: center
+    &:hover
+        background-color: $msf-primary-dark-color
+
+.msf-summary-icon
+    color: white
+    position: absolute
+    right: 5px
+
+.msf-summary-ok-icon
+    @extend  .msf-summary-icon
+    color: $msf-secondary-color
+
+.msf-menu-complete-row 
+    color: white
+    position: absolute
+    left: 20px
+
+.msf-hiden
+    display: none
+
+.msf-detail-container
+    text-align: -webkit-left
+    margin-left: 35px
+    border-bottom: 1px solid #ccc
+
+.msf-detail
+    margin-bottom: 5px

@@ -67,6 +67,7 @@ import { AdminMenuComponent } from './admin-menu/admin-menu.component';
 import { CreateMempershipsComponent } from './create-memperships/create-memperships.component';
 import {MatSnackBarModule} from '@angular/material';
 import { CategoryArgumentsComponent } from './category-arguments/category-arguments.component';
+import { Utils } from './commons/utils';
 
 @NgModule({
   declarations: [
@@ -164,7 +165,8 @@ import { CategoryArgumentsComponent } from './category-arguments/category-argume
     MsfContainerComponent,
     MsfContainerComponent,
     DateFormatPipe,
-    DateTimeFormatPipe
+    DateTimeFormatPipe,
+    Utils
   ],
   bootstrap: [AppComponent],
   entryComponents: [MessageComponent, MsfDynamicTableVariablesComponent]

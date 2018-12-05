@@ -18,6 +18,9 @@ export class Globals {
   displayedColumns;
   metadata;
   totalRecord = 0;
+  startTimestamp = null;
+  endTimestamp = null;
+  bytesLoaded = 0;
 
   clearVariables(){
     this.currentOption=null;
@@ -30,5 +33,23 @@ export class Globals {
     this.generateDynamicTable = false;
     this.selectedIndex = 1;
     this.totalRecord = 0;
+    this.startTimestamp = null;
+    this.endTimestamp = null;
+    this.bytesLoaded = 0;
+
+  }
+
+  getTime(){
+    if( this.endTimestamp != null && this.startTimestamp != null){
+      return (this.endTimestamp.getTime() - this.startTimestamp.getTime())/ 1000;
+    }
+    return 0;
+  };
+
+  getBytesLoaded(){
+    if(this.getTime() > 0){
+      return this.bytesLoaded;
+    }
+    return 0;
   }
 }

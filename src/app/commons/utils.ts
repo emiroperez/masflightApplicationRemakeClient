@@ -4,6 +4,8 @@ import { Arguments } from "../model/Arguments";
 import { ComponentType } from "./ComponentType";
 import { DateTimeFormatPipe } from "./DateTimeFormatPipe";
 import { DateFormatPipe } from "./DateFormatPipe ";
+import { Constants } from "./Constants ";
+import { DatePipe } from "@angular/common";
 
 export class Utils{
 
@@ -84,12 +86,7 @@ export class Utils{
         }else if(type == ComponentType.dateRange || 
             type == ComponentType.date){
             return new DateFormatPipe('en-US').transform(value);
-        }/*else if(type == ComponentType.airportRoute ){
-            if(typeof value === "string"){
-                return value;
-            }
-            return value.iata;
-        }*/else if(type == ComponentType.airport){
+        }else if(type == ComponentType.airport){
             if(typeof value === "string"){
                 return value;
             }
@@ -136,6 +133,75 @@ export class Utils{
            }
            return valueAux;
        }
+        return value;
+    };
+
+
+    getValueFormatView(type: string, value:any){
+        if( typeof value === 'undefined'){
+            return '';
+        }
+        if(type == ComponentType.dateRange || 
+            type == ComponentType.date){
+            return this.getDateFormat(value, null);
+        }else if(type == ComponentType.airport){
+            if(typeof value === "string"){
+                return value;
+            }
+            return value.iata;
+        }else if(type == ComponentType.ceiling ||
+             type == ComponentType.tailnumber ||
+             type == ComponentType.rounding){
+            if(typeof value === "string"){
+                return value;
+            }
+            return value.id;
+        }else if(type == ComponentType.singleairline){
+           if(typeof value === "string"){
+               return value;
+           }
+           if( typeof value.iata === 'undefined'){
+                return '';
+            }
+           return value.iata;
+        }else if(type == ComponentType.airline ||
+             type == ComponentType.aircraftType ||
+             type == ComponentType.airportRoute){
+            var valueAux="";
+            var i = 0;
+            for(var val of value){
+                if(i == 0){
+                    valueAux = val.iata;
+                }else{
+                    valueAux += ","+ val.iata;
+                }                
+                i++;
+            }
+            return valueAux;
+        }else if(type == ComponentType.grouping){
+           var valueAux="";
+           var i = 0;
+           for(var val of value){
+               if(i == 0){
+                   valueAux = val.id;
+               }else{
+                   valueAux += ","+ val.id;
+               }                
+               i++;
+           }
+           return valueAux;
+       }
+        return value;
+    };
+
+    getDateFormat(value, format){
+        if(value != null){
+            if(format == null){
+                format = 'MM/dd/yyyy';
+            }
+            var datePipe = new DatePipe('en-US');
+            return datePipe.transform(value, format);            
+        }
         return value;
     }
 

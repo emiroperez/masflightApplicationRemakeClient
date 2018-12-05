@@ -363,12 +363,14 @@ export class MsfMapComponent implements OnInit {
   }
 
   getTrackingDataSource(){
+    this.globals.startTimestamp = new Date();
     this.data = [];
     this.globals.isLoading = true;
     this.services.getMapBoxTracking(this,this.successHandler, this.errorHandler);    
   }
 
   successHandler(_this,features){
+    _this.globals.endTimestamp = new Date();
     _this.data = features;
     if(features.length > 0){  
       /*let size =  Math.round(features[0].features.length/2);

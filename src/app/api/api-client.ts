@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpEventType } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import * as xml2js from 'xml2js';
@@ -31,11 +31,21 @@ export class ApiClient {
 
 
     get = function (_this,url, successHandler, errorHandler, tab) {
-        this.http.get(url).subscribe(result => {
-            if (result.sessionExpired){
+        this.http.get(url, {observe: 'events', reportProgress: true}).subscribe(result => {
 
-            }
-            successHandler(_this,result, tab);
+            if (result.type === HttpEventType.DownloadProgress) {
+                if( _this.globals != null){
+                    if(result.total != null){
+                        _this.globals.bytesLoaded = result.total;
+                    }else if(result.loaded != null){
+                        _this.globals.bytesLoaded = result.loaded;
+                    }                    
+                }   
+            }           
+            if (result.type === HttpEventType.Response) {
+                successHandler(_this,result.body, tab);
+            }           
+            
           }, error => 
           errorHandler(_this,error)
         );
