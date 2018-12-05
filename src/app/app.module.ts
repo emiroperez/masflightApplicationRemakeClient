@@ -67,6 +67,10 @@ import { AdminMenuComponent } from './admin-menu/admin-menu.component';
 import { CreateMempershipsComponent } from './create-memperships/create-memperships.component';
 import {MatSnackBarModule} from '@angular/material';
 import { CategoryArgumentsComponent } from './category-arguments/category-arguments.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material';
+import { AdminMenuRecursiveComponent } from './admin-menu-recursive/admin-menu-recursive.component';
+import { AgGridModule } from 'ag-grid-angular';
 import { Utils } from './commons/utils';
 import { MsfUserListComponent } from './msf-user-list/msf-user-list.component';
 import { MsfOptionListComponent } from './msf-option-list/msf-option-list.component';
@@ -124,6 +128,7 @@ import { MsfOptionListComponent } from './msf-option-list/msf-option-list.compon
     AdminMenuComponent,
     AdminMenuComponent,
     CategoryArgumentsComponent,
+    AdminMenuRecursiveComponent,    
     MsfUserListComponent,
     MsfOptionListComponent    
   ],
@@ -154,8 +159,10 @@ import { MsfOptionListComponent } from './msf-option-list/msf-option-list.compon
       accessToken: 'pk.eyJ1IjoiYXNwc29sdXRpb25zIiwiYSI6ImNqbm5uNGhscTI4N28za3FybnJ0OWF6NmEifQ.pDzlIgQjVkVszvxF2UoXvA', 
       geocoderAccessToken: 'pk.eyJ1IjoiYXNwc29sdXRpb25zIiwiYSI6ImNqbm5uNGhscTI4N28za3FybnJ0OWF6NmEifQ.pDzlIgQjVkVszvxF2UoXvA'
     }),
-
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatTableModule,
+    MatPaginatorModule,
+    AgGridModule.withComponents(null)
   ],
   providers: [
     AuthService,

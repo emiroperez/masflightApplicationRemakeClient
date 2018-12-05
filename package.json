@@ -28,6 +28,8 @@
     "@ng-select/ng-select": "^2.8.0",
     "@turf/turf": "^5.1.6",
     "@types/moment": "^2.13.0",
+    "ag-grid-angular": "^19.1.2",
+    "ag-grid-community": "^19.1.4",
     "agm-direction": "^0.7.4",
     "buffer": "^5.2.1",
     "core-js": "^2.5.4",
