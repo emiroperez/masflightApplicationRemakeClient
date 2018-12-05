@@ -31,7 +31,7 @@
           </div>
         </div>
         <ag-grid-angular style="height: 490px" class="ag-theme-balham-dark" [rowData]="rowData" [columnDefs]="columnDefs"
-          [rowSelection]="multiple" [pagination]="true" [paginationPageSize]="15" (gridReady)="onGridReady($event)" (selectionChanged)="onSelectionChanged($event)">
+          [rowSelection]="'multiple'" [pagination]="true" [paginationPageSize]="15" (gridReady)="onGridReady($event)" (selectionChanged)="onSelectionChanged($event)">
         </ag-grid-angular>
       </div>
       <div style="flex: 1; margin: 0 1%">
@@ -52,7 +52,7 @@
           </div>
         </div>
         <ag-grid-angular style="height: 490px" class="ag-theme-balham-dark" [rowData]="rowDataArguments" [columnDefs]="columnDefsArguments"
-          [rowSelection]="rowSelection" [pagination]="true" [paginationPageSize]="15" (gridReady)="onGridReadyArgument($event)" (selectionChanged)="onSelectionChangedArguments($event)">
+          [rowSelection]="'rowSelection'" [pagination]="true" [paginationPageSize]="15" (gridReady)="onGridReadyArgument($event)">
         </ag-grid-angular>
       </div>
     </div>

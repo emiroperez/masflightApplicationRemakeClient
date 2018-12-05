@@ -150,7 +150,7 @@ export class CategoryArgumentsComponent implements OnInit {
     return rowDataResult;
   }
 
-  onSelectionChanged() {
+  onSelectionChanged(event) {
     var selectedRows = this.gridApi.getSelectedRows();
     if (selectedRows.length > 0 && selectedRows[0].id != null) {
       this.service.loadArgumentsByCategory(this, selectedRows[0], this.handlerSuccessArgumentsByCategory, this.handlerErrorArgumentsByCategory);
