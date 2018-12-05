@@ -7,7 +7,7 @@ export class AuthService {
   constructor(private http: ApiClient) { }
 
   login(_this,credentials,successHandler, errorHandler){
-    let url = '/login';
+    let url = 'http://localhost:8887/login';
     this.http.post(_this,url,credentials,successHandler, errorHandler);
   }
 }

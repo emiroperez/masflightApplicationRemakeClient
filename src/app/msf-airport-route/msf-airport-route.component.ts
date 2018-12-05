@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 import { Airport } from '../model/Airport';
 import { ApiClient } from '../api/api-client';
+import { Globals } from '../globals/Globals';
 
 
 @Component({
@@ -47,7 +48,7 @@ export class MsfAirportRouteComponent implements OnInit {
   private _onDestroy = new Subject<void>();
 
   
-  constructor(private http: ApiClient) { }
+  constructor(private http: ApiClient, private globals: Globals) { }
 
   ngOnInit() { 
 
@@ -67,15 +68,17 @@ export class MsfAirportRouteComponent implements OnInit {
   }
 
   getAirports(search, handlerSuccess){
+    this.globals.isLoading = true;
     let url = this.argument.url + "?search="+ (search != null?search:'');
     this.http.get(this,url,handlerSuccess,this.handlerError, null);        
   }
 
 
-  handlerSuccess(_this,data, tab){
+  handlerSuccess(_this,data, tab){   
+    _this.globals.isLoading = false;
     _this.airports = data;    
     _this.filteredOriginAirports.next(_this.airports.slice());
-    _this.filteredDestAirports.next(_this.airports.slice());
+    _this.filteredDestAirports.next(_this.airports.slice());    
   }
 
   handlerSuccessOrg(_this,data, tab){
@@ -127,7 +130,7 @@ export class MsfAirportRouteComponent implements OnInit {
       search = search.toLowerCase();
     }
     // filter the airports
-    this.getAirports(search, this.handlerSuccessOrg);
+    this.filteredOriginAirports.next(this.airports.filter(a => a.name.toLowerCase().indexOf(search) > -1));
   }
 
   private filterDestAirports() {
@@ -142,7 +145,7 @@ export class MsfAirportRouteComponent implements OnInit {
     } else {
       search = search.toLowerCase();
     }
-    this.getAirports(search, this.handlerSuccessDest);
+    this.filteredDestAirports.next(this.airports.filter(a => a.name.toLowerCase().indexOf(search) > -1));
     
   }
 

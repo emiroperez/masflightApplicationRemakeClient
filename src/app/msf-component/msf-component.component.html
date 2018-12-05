@@ -28,6 +28,8 @@
                         <app-msf-rounding *ngIf="isRounding(argument)" [argument]="argument"></app-msf-rounding>
                         <app-msf-date *ngIf="isDate(argument)" [argument]="argument"></app-msf-date>
                         <app-msf-cancelled *ngIf="isCancelled(argument)" [argument]="argument"></app-msf-cancelled>
+                        <app-msf-user-list *ngIf="isUserList(argument)" [argument]="argument"></app-msf-user-list>
+                        <app-msf-option-list *ngIf="isOptionList(argument)" [argument]="argument"></app-msf-option-list>
                     </ng-container>
                 </div>
             </ng-container>      

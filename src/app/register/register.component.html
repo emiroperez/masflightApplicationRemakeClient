@@ -14,7 +14,7 @@
 
 <mat-card class="msf-register-card msf-center-container">
   <mat-card-header>
-       
+        <app-notification [show]="utils.notificationShow"  [message]="utils.notificationMessage" [type]="utils.notificationType" ></app-notification>
   </mat-card-header>
   
   <mat-card-content >
@@ -86,7 +86,7 @@
                           
                             <ng-select (change)="CountryChangeEvent($event)" [items]="countries"
                                         bindLabel="name" dropdownPosition= "bottom"
-                                        placeholder="Country" matInput autocomplete="off" class="msf-select-input msf-imput" [formControl]="personalInformationForm.get('countryValidator')" name="country" [(ngModel)]="users.country" [virtualScroll]="true" required>
+                                        placeholder="Country" matInput autocomplete="off" class="msf-select-input msf-imput msf-register-select" [formControl]="personalInformationForm.get('countryValidator')" name="country" [(ngModel)]="users.country" [virtualScroll]="true" required>
                             </ng-select>  
                             
                       </li>
@@ -104,7 +104,7 @@
                           </mat-form-field>-->
                           <ng-select [items]="states"
                                       bindLabel="name" dropdownPosition= "bottom"
-                                      placeholder="State" matInput autocomplete="off" class="msf-select-input msf-imput" [formControl]="personalInformationForm.get('stateValidator')" name="state" [(ngModel)]="users.CState" [virtualScroll]="true" required>
+                                      placeholder="State" matInput autocomplete="off" class="msf-select-input msf-imput msf-register-select" [formControl]="personalInformationForm.get('stateValidator')" name="state" [(ngModel)]="users.CState" [virtualScroll]="true" required>
                           </ng-select>
                           
                       </li>

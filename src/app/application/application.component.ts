@@ -33,28 +33,6 @@ export class ApplicationComponent implements OnInit {
   }
 
   ngOnInit() {
-
-   /*
-    let ceilingArgs = new Arguments(true, ComponentType.ceiling,'ceilingmin', 'ceilingmax', 'distanceunit', null);
-    let windArgs = new Arguments(true, ComponentType.windSpeed,'windmin', 'windmax', 'speedunit', null);
-    let temperaturaArgs = new Arguments(true, ComponentType.temperature,'tempmin', 'tempmax', 'tempunit', null);
-    let windDirectionArgs = new Arguments(true, ComponentType.windDirection,'windanglemin', 'windanglemax', null, null);    
-    let weatherCondArgs: Arguments[] = [ceilingArgs,windArgs,temperaturaArgs,windDirectionArgs];
-    let weatherCondCategory = new CategoryArguments('Weather Conditions','../../assets/images/components/Weather_Conditions.png',weatherCondArgs);
-
-
-
-    let cancelsAndDiversionCategory = new CategoryArguments('Cancels & Diversions','../../assets/images/components/Cancels_Diversions.png',null);
-    let categoryArgts5 = new CategoryArguments('Flight Delays','../../assets/images/components/Flight_Delays.png',null);
-    let categoryArgts6 = new CategoryArguments('Taxi Times','../../assets/images/components/Taxi_Times.png',null);
-    let categoryOutputFormat = new CategoryArguments('Output Format','../../assets/images/components/Output_Format.png',null);
-    
-    let categoryArgts9 = new CategoryArguments('Date Period','../../assets/images/components/Taxi_Times.png',null);
-    let categoriesArguments: CategoryArguments[] = [airlineCategory,airportCategory,weatherCondCategory,cancelsAndDiversionCategory,categoryArgts5,categoryArgts6,categoryOutputFormat];
-    
-*/
-
-
     this.getMenu();
   }
 
@@ -85,7 +63,9 @@ export class ApplicationComponent implements OnInit {
   search(){
     if(this.globals.currentOption.tabType === 'map'){
       this.globals.map = true;
-      this.msfContainerRef.msfMapRef.getTrackingDataSource(); 
+      this.msfContainerRef.msfMapRef.getTrackingDataSource();       
+    }else if(this.globals.currentOption.tabType === 'usageStatistics'){
+      this.msfContainerRef.msfTableRef.getDataUsageStatistics();
     }else{
       this.msfContainerRef.msfTableRef.getData(); 
     }       

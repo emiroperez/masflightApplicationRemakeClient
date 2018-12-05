@@ -15,5 +15,7 @@ export enum ComponentType{
     grouping="grouping",
     rounding="rounding",
     date="date",
-    cancelled='cancelled'
+    cancelled='cancelled',
+    userList='userList',
+    optionList='optionList'
 }

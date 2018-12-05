@@ -11,7 +11,7 @@ export class MenuService {
   constructor( private http: HttpClient) { }
 
   getMenu(_this,successHandler, errorHandler){
-    //let url = "getMenu";
+    //let url = "/getMenu";
     let url = "http://localhost:8887/getMenu";
     _this.globals.isLoading = true;
     this.get(_this,url,successHandler, errorHandler);

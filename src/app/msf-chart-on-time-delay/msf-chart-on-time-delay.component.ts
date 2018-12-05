@@ -184,7 +184,13 @@ export class MsfChartOnTimeDelayComponent implements OnInit {
 
 
   loadData(){
+    this.globals.startTimestamp = new Date();
     this.service.loadChartData(this, this.handlerSuccess, this.handlerError);
+    if(this.globals.currentOption.tabType === 'usageStatistics'){
+      this.service.loadChartDataUsageStatistics(this, this.handlerSuccess, this.handlerError);
+    }else{
+      this.service.loadChartData(this, this.handlerSuccess, this.handlerError);
+    }
   }
 
   ngOnDestroy() {
@@ -197,6 +203,7 @@ export class MsfChartOnTimeDelayComponent implements OnInit {
   }
 
   handlerSuccess(_this,data){
+    _this.globals.endTimestamp = new Date();
     _this.chart2 = _this.AmCharts.makeChart('chartdiv2', _this.makeOptions(data));
     _this.chart2.addListener("dataUpdated", _this.zoomChart);
     _this.zoomChart();

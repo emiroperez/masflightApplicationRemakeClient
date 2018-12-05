@@ -27,6 +27,7 @@ export class MenuOptionComponent implements OnInit {
     this.globals.currentOption = option
     if(this.globals.currentOption.tabType === 'map'){
       this.globals.map = true;
+      this.globals.selectedIndex = 1;
     }
     if(this.globals.currentOption.tabType === 'statistics'){
       this.globals.usageStatistics = true;

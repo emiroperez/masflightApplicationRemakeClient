@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import {FormControl, Validators,ValidatorFn, ValidationErrors, AbstractControl, FormGroup} from '@angular/forms';
 import { User} from '../model/User';
 import { State } from '../model/State';
@@ -70,7 +71,7 @@ export class RegisterComponent implements OnInit {
   paymentInformationForm = new FormGroup({
     paymentTypeValidator : new FormControl('paymentType',[Validators.required]),
     cardNumberValidator : new FormControl('cardNumber', [Validators.required]),
-    expiryDateValidator : new FormControl('expiryDate', [Validators.required]),
+    expiryDateValidator : new FormControl('expiryDate', [Validators.required, RegisterComponent.expiriDateValidator(this)]),
     cvvValidator : new FormControl('cvv', [Validators.required])
   })
 
@@ -90,7 +91,7 @@ export class RegisterComponent implements OnInit {
   ]; */
   
  
-  constructor(private userServices: UserService,private registerServices:RegisterService, private globals: Globals) {
+  constructor(private userServices: UserService,private registerServices:RegisterService, private globals: Globals,private router: Router) {
     this.users = new User( new Payment());
     this.userPlan=new UserPlan();
     this.utils = new Utils();
@@ -171,6 +172,31 @@ export class RegisterComponent implements OnInit {
     };
   }
 
+  static expiriDateValidator(comp: RegisterComponent): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors => {
+      if(comp.users!=undefined){
+        if(comp.users.payment!=undefined){
+          
+          if(control.value!= undefined && control.value.length==4){
+            let today = new Date();
+            let inputDate: string = control.value;
+            let dateString : string=inputDate.substring(0,2)+'/01/'+today.getFullYear().toString().substring(0,2)+inputDate.substring(2,4)
+            let date = new Date(dateString);
+              return date<today ? {outdate : true} : null;
+          }else{
+            return null;
+          }
+          
+          
+        }else{
+          return null;
+        }
+      }else{
+        return null;
+      }
+    };
+  }
+
   checkEmailValidator(email){
     this.registerServices.checkEmail(this,this.checkEmailResponse,this.errorHandleResponsen,email);
   }
@@ -237,7 +263,7 @@ export class RegisterComponent implements OnInit {
   }
 
   getErrorExpiryDateMessage() {
-    return this.paymentInformationForm.get('expiryDateValidator').hasError('required') ? 'You must enter the expiry date' :'';
+    return this.paymentInformationForm.get('expiryDateValidator').hasError('required') ? 'You must enter the expiry date' : this.paymentInformationForm.get('expiryDateValidator').hasError('outdate')? 'You must enter a correct expiry date':'';
   }
 
   getErrorCvvMessage() {
@@ -257,12 +283,16 @@ export class RegisterComponent implements OnInit {
 		if(this.personalInformationForm.valid && this.planInformationForm.valid && this.paymentInformationForm.valid ){
       this.userPlan.IdUser=this.users;
       this.userPlan.planPayment = this.users.payment;
-      this.userServices.saveUser(this,this.userPlan, this.successHandleResponse,this.errorHandleResponsen);
+      this.userServices.saveUser(this,this.userPlan, this.saveUserHandleResponse,this.errorHandleResponsen);
     }else{
       console.log('no valid Form')
     }
   }
   
+  saveUserHandleResponse(this_,data){
+    this_.utils.showAlert('info','User Created Succesfully');
+    //this_.router.navigate(['']);
+  }
   
   getOptionsText(options: any[]){
     let text="";

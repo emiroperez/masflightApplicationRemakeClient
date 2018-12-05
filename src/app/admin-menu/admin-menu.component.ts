@@ -21,6 +21,10 @@ export class AdminMenuComponent implements AfterViewInit {
 
   categoryArgumentSelected: any = {};
 
+  dataAdapter;
+
+  dataAdapterCategory;
+
   constructor(private http: ApiClient, public globals: Globals, private service: ApplicationService, public snackBar: MatSnackBar) {
   }
 
