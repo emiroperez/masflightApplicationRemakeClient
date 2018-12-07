@@ -373,8 +373,8 @@ export class MsfMapComponent implements OnInit {
     _this.globals.endTimestamp = new Date();
     _this.data = features;
     if(features.length > 0){  
-      /*let size =  Math.round(features[0].features.length/2);
-      _this.center = features[0].features[size].geometry.coordinates;  */        
+      let size =  Math.round(features[0].features.length/2);
+      _this.center = features[0].features[size].geometry.coordinates;       
       _this.getChart(_this);      
     }
     _this.globals.isLoading = false;
