@@ -4,7 +4,6 @@ import { Globals } from '../globals/Globals';
 import { ApplicationService } from '../services/application.service';
 import { MatSnackBar } from '@angular/material';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { SelectionModel } from '@angular/cdk/collections';
 
 @Component({
   selector: 'dialog-overview-example-dialog',
@@ -26,6 +25,17 @@ export class EditCategoryArgumentDialog {
     this.dialogRef.close();
   }
 
+  selectArgumentCategory(category) {
+    if (this.itemSelected != category) {
+      category.isSelected = !category.isSelected;  
+      this.itemSelected.isSelected = !this.itemSelected.isSelected;
+      this.itemSelected = category;
+    } else {
+      category.isSelected = !category.isSelected;
+      this.itemSelected = {};
+    }
+  }
+
   setSelectedCategoryArguments(category) {
     if (category.isSelected) {
       this.selectedCategories.forEach(function (currentValue, index, array) {
@@ -41,8 +51,9 @@ export class EditCategoryArgumentDialog {
 
   addCategoryArgument() {
     let node = {
+      "selected": true,
       "label": null,
-      "icon:": null,
+      "icon:": null,      
       "arguments": []
     };
     this.data.push(node);
@@ -57,7 +68,6 @@ export class EditCategoryArgumentDialog {
         }
       });
     }
-
     filterSelected.forEach(function (item, index, array) {
       item.toDelete = true;
     });
@@ -233,13 +243,18 @@ export class AdminMenuComponent implements OnInit {
     _this.globals.isLoading = false;
   }
 
+  setSelectedCategoryArguments(category) {
+    category.selected = !category.selected;
+  }
+
   addCategoryArgument() {
-    let newNode = {
+    let node = {
       "label": null,
-      "icon": null
+      "icon:": null,
+      "arguments": []
     };
-    this.categories.unshift(newNode);
-  }  
+    this.categories.push(node);
+  }
 
   saveCategoryArgument() {
     this.service.saveArgumentsCategory(this, this.categories, this.handlerSuccessSaveCategoryArgument, this.handlerErrorSaveCategoryArgument);
@@ -250,7 +265,7 @@ export class AdminMenuComponent implements OnInit {
     _this.globals.isLoading = false;
     if (_this.optionSelected.id != undefined) {
       _this.getOptionCategoryArguments();
-    } 
+    }
   }
 
   handlerErrorSaveCategoryArgument(_this, result) {
@@ -289,7 +304,7 @@ export class AdminMenuComponent implements OnInit {
     var duplicateObject = JSON.parse(JSON.stringify(this.categories));
 
     const dialogRef = this.dialog.open(EditCategoryArgumentDialog, {
-      width: '80%',
+      width: '70%',
       data: duplicateObject
     });
 

@@ -10,19 +10,27 @@ div.mat-select-panel .mat-primary .ng-star-inserted .mat-select-panel-done-anima
     background-color: transparent;
 }
 
+.category-active {
+    background-color: #79797a !important;
+}
+
+.category-inactive {
+    background-color: transparent;
+}
+
 .dialog-category-arguments-container {
     display: flex;
     flex-wrap: wrap;    
-    max-height: 200px;
+    max-height: 430px;
     overflow-y: auto;
 }
 
 .dialog-item {
     padding: 5px;
-    margin: 8px;
-    width: 155px;
+    margin: 3px;
+    width: 150px;
     cursor: pointer;
-    text-align: center;    
+    text-align: center;
     -moz-box-shadow:    inset 0 0 5px #00000038;
     -webkit-box-shadow: inset 0 0 5px #00000038;
     box-shadow:         inset 0 0 5px #00000038;
@@ -37,6 +45,7 @@ div.mat-select-panel .mat-primary .ng-star-inserted .mat-select-panel-done-anima
     border-bottom: 2px solid #01abec;    
     margin-top: 3px; 
     height: 30px;
+    color: white;
 }
 
 .img-item-category-argument {

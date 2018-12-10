@@ -1,7 +1,21 @@
-<h1 style="color: white !important" mat-dialog-title>Manage Arguments</h1>
+<div style="display: flex; flex-direction: row">
+  <div style="flex: 1">
+    <h1 style="color: white !important" mat-dialog-title>Manage Arguments</h1>    
+  </div>
+  <div style="flex: 4">
+    <button matTooltip="Add category argument." mat-icon-button (click)="addCategoryArgument()">
+      <mat-icon style="color: white" aria-label="add">add_circle</mat-icon>
+    </button>
+    <button matTooltip="Remove category argument." mat-icon-button (click)="deleteCategoryArgument()">
+      <mat-icon style="color: white" aria-label="delete">remove_circle</mat-icon>
+    </button>
+  </div>
+</div>
 <div style="color: white !important" mat-dialog-content>
   <div style="display: flex; flex-direction: row">
     <div style="flex: 1; margin: 0 10px">
+
+      <!-- 
       <div style="display: flex; flex-direction: row">
         <div style="flex: 3">
           <h3 style="color: white !important">Category Arguments</h3>
@@ -15,7 +29,78 @@
           </button>
         </div>
       </div>
-      <div class="dialog-category-arguments-container">
+      -->
+      <div>
+        <div style="max-height: 400px; overflow-y: auto; padding: 5px">
+          <div *ngFor="let item of data" style="margin-bottom: 5px">
+            <div *ngIf="item.selected && !item.toDelete">
+              <div class="group-category" style="display: flex; flex-direction: row; justify-content: space-between"
+                [ngClass]="{ 'category-active': item.isSelected, 'category-inactive': !item.isSelected }">
+                <i (click)="toggleGroup(item)" *ngIf="!item.isOpened" class="material-icons" style="flex: 1">expand_more</i>
+                <i (click)="toggleGroup(item)" *ngIf="item.isOpened" class="material-icons" style="flex: 1">expand_less</i>
+                <span class="group-category-text" style="flex: 20; text-align: center">
+                  <input type="text" matInput [(ngModel)]="item.label" class="text-item-category-argument" (click)="selectArgumentCategory(item)">
+                </span>
+                <i matTooltip="Add argument." (click)="addArgument(item)" class="material-icons" style="flex: 1; text-align: right">add_circle</i>
+                <i matTooltip="Delete argument." (click)="deleteArgument(item)" class="material-icons" style="flex: 1; text-align: right">remove_circle</i>
+              </div>
+              <div style="overflow-x: auto; max-width: 980px;">
+                <table *ngIf="item.isOpened" class="argument-table">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>Title</th>
+                      <th>Type</th>
+                      <th>Arg. Name 1</th>
+                      <th>Arg. Name 2</th>
+                      <th>Arg. Name 3</th>
+                      <th>Arg. Label 1</th>
+                      <th>Arg. Label 2</th>
+                      <th>Arg. Label 3</th>
+                      <th>URL</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let argument of item.arguments">
+                      <td *ngIf="!argument.toDelete" style="text-align: center;">
+                        <mat-checkbox color="primary" [(ngModel)]="argument.isSelected"></mat-checkbox>
+                      </td>
+                      <td *ngIf="!argument.toDelete"><input class="input-table" [(ngModel)]="argument.title"></td>
+                      <td *ngIf="!argument.toDelete">
+                        <select style="width: 100%">
+                          <option value="airline">Airline</option>
+                          <option value="airportRoute">AirportRoute</option>
+                          <option value="timeRange">TimeRange</option>
+                          <option value="dateRange">DateRange</option>
+                          <option value="tailnumber">Tailnumber</option>
+                          <option value="singleairline">SingleAirline</option>
+                          <option value="aircraftType">AircraftType</option>
+                          <option value="flightNumber">FlightNumber</option>
+                          <option value="airport">Airport</option>
+                          <option value="grouping">Grouping</option>
+                          <option value="rounding">Rounding</option>
+                          <option value="date">Date</option>
+                          <option value="windDirection">WindDirection</option>
+                          <option value="ceiling">Ceiling</option>
+                          <option value="windSpeed">WindSpeed</option>
+                          <option value="temperature">Temperature</option>
+                        </select>
+                      </td>
+                      <td *ngIf="!argument.toDelete"><input class="input-table" [(ngModel)]="argument.name1"></td>
+                      <td *ngIf="!argument.toDelete"><input class="input-table" [(ngModel)]="argument.name2"></td>
+                      <td *ngIf="!argument.toDelete"><input class="input-table" [(ngModel)]="argument.name3"></td>
+                      <td *ngIf="!argument.toDelete"><input class="input-table" [(ngModel)]="argument.label1"></td>
+                      <td *ngIf="!argument.toDelete"><input class="input-table" [(ngModel)]="argument.label2"></td>
+                      <td *ngIf="!argument.toDelete"><input class="input-table" [(ngModel)]="argument.label3"></td>
+                      <td *ngIf="!argument.toDelete"><input class="input-table" [(ngModel)]="argument.url"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 
         <div *ngFor="let item of data">
           <div *ngIf="!item.toDelete" class="dialog-item" (click)="setSelectedCategoryArguments(item)" [ngClass]="{ 'is-active': item.isSelected, 'is-inactive': !item.isSelected }">
             <div style="display: flex; justify-content: flex-start">
@@ -25,109 +110,18 @@
             <input type="text" matInput [(ngModel)]="item.label" class="text-item-category-argument">
           </div>
         </div>
+        -->
       </div>
     </div>
+    <!-- 
     <div style="flex: 1;  margin: 0 10px">
       <div style="display: flex; flex-direction: row">
         <div style="flex: 4">
           <h3 style="color: white !important">Arguments</h3>
         </div>
       </div>
-      <div style="max-height: 200px; overflow-y: auto;">
-        <div *ngFor="let item of selectedCategories" style="margin-bottom: 5px">
-          <div class="group-category" style="display: flex; flex-direction: row; justify-content: space-between">
-            <i (click)="toggleGroup(item)" *ngIf="!item.isOpened" class="material-icons" style="flex: 1">expand_more</i>
-            <i (click)="toggleGroup(item)" *ngIf="item.isOpened" class="material-icons" style="flex: 1">expand_less</i>
-            <span class="group-category-text" style="flex: 10; text-align: center">{{item.label}}</span>
-            <i (click)="addArgument(item)" class="material-icons" style="flex: 1; text-align: right">add_circle</i>
-            <i (click)="deleteArgument(item)" class="material-icons" style="flex: 1; text-align: right">remove_circle</i>
-          </div>
-          <div style="overflow-x: auto; max-width: 550px;">
-            <table *ngIf="item.isOpened" class="argument-table">
-              <thead>
-                <tr>
-                  <th></th>
-                  <th>Title</th>
-                  <th>Type</th>
-                  <th>Arg. Name 1</th>
-                  <th>Arg. Name 2</th>
-                  <th>Arg. Name 3</th>
-                  <th>Arg. Label 1</th>
-                  <th>Arg. Label 2</th>
-                  <th>Arg. Label 3</th>
-                  <th>URL</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let argument of item.arguments">
-                  <td *ngIf="!argument.toDelete" style="text-align: center;">
-                    <mat-checkbox color="primary" [(ngModel)]="argument.isSelected"></mat-checkbox>
-                  </td>
-                  <td *ngIf="!argument.toDelete"><input class="input-table" [(ngModel)]="argument.title"></td>
-                  <td *ngIf="!argument.toDelete">
-                    <select style="width: 100%">
-                      <option value="airline">Airline</option>
-                      <option value="airportRoute">AirportRoute</option>
-                      <option value="timeRange">TimeRange</option>
-                      <option value="dateRange">DateRange</option>
-                      <option value="tailnumber">Tailnumber</option>
-                      <option value="singleairline">SingleAirline</option>
-                      <option value="aircraftType">AircraftType</option>
-                      <option value="flightNumber">FlightNumber</option>
-                      <option value="airport">Airport</option>
-                      <option value="grouping">Grouping</option>
-                      <option value="rounding">Rounding</option>
-                      <option value="date">Date</option>
-                      <option value="windDirection">WindDirection</option>
-                      <option value="ceiling">Ceiling</option>
-                      <option value="windSpeed">WindSpeed</option>
-                      <option value="temperature">Temperature</option>
-                    </select>
-                  </td>
-                  <td *ngIf="!argument.toDelete"><input class="input-table" [(ngModel)]="argument.name1"></td>
-                  <td *ngIf="!argument.toDelete"><input class="input-table" [(ngModel)]="argument.name2"></td>
-                  <td *ngIf="!argument.toDelete"><input class="input-table" [(ngModel)]="argument.name3"></td>
-                  <td *ngIf="!argument.toDelete"><input class="input-table" [(ngModel)]="argument.label1"></td>
-                  <td *ngIf="!argument.toDelete"><input class="input-table" [(ngModel)]="argument.label2"></td>
-                  <td *ngIf="!argument.toDelete"><input class="input-table" [(ngModel)]="argument.label3"></td>
-                  <td *ngIf="!argument.toDelete"><input class="input-table" [(ngModel)]="argument.url"></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <!--
-          <table *ngIf="item.arguments.length > 0 && item.isOpened" mat-table [dataSource]="item.arguments" class="mat-elevation-z8 table-group">                        
-            <ng-container  matColumnDef="label1">
-              <th mat-header-cell *matHeaderCellDef> Label Arg. 1 </th>
-              <td mat-cell *matCellDef="let element">
-                <input class="input-table" [(ngModel)]="element.label1">
-              </td>
-            </ng-container>
-            <ng-container  matColumnDef="label2">
-              <th mat-header-cell *matHeaderCellDef> Label Arg. 2 </th>
-              <td mat-cell *matCellDef="let element">
-                <input class="input-table" [(ngModel)]="element.label2">
-              </td>
-            </ng-container>
-            <ng-container  matColumnDef="name1">
-              <th mat-header-cell *matHeaderCellDef> Name 1 </th>
-              <td mat-cell *matCellDef="let element">
-                <input class="input-table" [(ngModel)]="element.name1">
-              </td>
-            </ng-container>
-            <ng-container  matColumnDef="name2">
-              <th mat-header-cell *matHeaderCellDef> Name 2 </th>
-              <td mat-cell *matCellDef="let element">
-                <input class="input-table" [(ngModel)]="element.name2">
-              </td>
-            </ng-container>
-            <tr style="height: 30px;" mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr style="height: 30px;" mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-          </table>
-          -->
-        </div>
-      </div>
     </div>
+    -->
   </div>
 </div>
 <div mat-dialog-actions>

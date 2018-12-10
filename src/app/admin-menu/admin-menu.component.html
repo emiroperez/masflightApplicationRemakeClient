@@ -12,7 +12,7 @@
 <mat-card class="msf-register-card msf-center-container">
   <mat-card-content>
     <button mat-icon-button routerLink="/application">
-      <mat-icon>arrow_back</mat-icon>      
+      <mat-icon>arrow_back</mat-icon>
     </button>
     <div style="display: flex; flex-direction: row;">
       <div style="flex: 1; flex-direction: column; justify-content: center; margin-left: 1%; margin-right: 1%">
@@ -38,20 +38,32 @@
       </div>
       <div style="flex: 1; flex-direction: column; justify-content: center; margin-left: 1%; margin-right: 1%">
         <div style="display: flex; flex-direction: row">
-          <div style="flex: 2">
+          <div style="flex: 4">
             <h2 class="title-section">Category Arguments</h2>
           </div>
           <div style="flex: 1">
             <button mat-icon-button (click)="editCategoryArguments()">
               <mat-icon style="color: white" aria-label="delete">settings</mat-icon>
-            </button>
+            </button>            
             <button mat-icon-button (click)="saveOptionCategoryArguments()">
               <mat-icon style="color: white" aria-label="save">save</mat-icon>
             </button>
           </div>
         </div>
         <div *ngIf="!optionSelected.root && optionSelected.id">
-          <div *ngFor="let category of categories" style="color: white">
+          <div>
+            <div class="dialog-category-arguments-container">
+              <div *ngFor="let item of categories" style="color: white">
+                <div *ngIf="!item.toDelete" class="dialog-item" (click)="setSelectedCategoryArguments(item)" [ngClass]="{ 'is-active': item.isSelected, 'is-inactive': !item.isSelected }">
+                  <div style="display: flex; justify-content: flex-start">
+                    <mat-checkbox [disabled]="true" color="primary" [(ngModel)]="item.selected"></mat-checkbox>
+                  </div>
+                  <img class="img-item-category-argument" src="{{item.icon}}">
+                  <input [disabled]="true" type="text" matInput [(ngModel)]="item.label" class="text-item-category-argument">
+                </div>
+              </div>
+            </div>
+            <!-- 
             <div *ngIf="!category.toDelete" style="display: flex; flex-direction: row">
               <div style="flex: 1">
                 <mat-checkbox color="primary" [(ngModel)]="category.selected" style="line-height: 36px;"></mat-checkbox>
@@ -62,6 +74,7 @@
                 </mat-form-field>
               </div>
             </div>
+            -->
           </div>
         </div>
         <!--
