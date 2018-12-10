@@ -247,11 +247,10 @@ export class AdminMenuComponent implements OnInit {
 
   handlerSuccessSaveCategoryArgument(_this, result) {
     _this.categories = result;
+    _this.globals.isLoading = false;
     if (_this.optionSelected.id != undefined) {
       _this.getOptionCategoryArguments();
-    } else {
-      _this.globals.isLoading = false;
-    }
+    } 
   }
 
   handlerErrorSaveCategoryArgument(_this, result) {
