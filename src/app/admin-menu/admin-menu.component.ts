@@ -1,15 +1,95 @@
-import { AfterViewInit, OnInit, Component, ViewChild } from '@angular/core';
+import { OnInit, Component, Inject } from '@angular/core';
 import { ApiClient } from '../api/api-client';
 import { Globals } from '../globals/Globals';
 import { ApplicationService } from '../services/application.service';
 import { MatSnackBar } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { SelectionModel } from '@angular/cdk/collections';
+
+@Component({
+  selector: 'dialog-overview-example-dialog',
+  templateUrl: 'dialog-edit-argument-category.html',
+  styleUrls: ['./admin-menu.component.css']
+})
+export class EditCategoryArgumentDialog {
+
+  itemSelected: any = {};
+
+  selectedCategories: any[] = [];
+
+  displayedColumns: string[] = ['label1', 'label2', 'name1', 'name2'];
+
+  constructor(
+    public dialogRef: MatDialogRef<EditCategoryArgumentDialog>, @Inject(MAT_DIALOG_DATA) public data) { }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  setSelectedCategoryArguments(category) {
+    if (category.isSelected) {
+      this.selectedCategories.forEach(function (currentValue, index, array) {
+        if (currentValue == category) {
+          array.splice(index, 1);
+        }
+      });
+    } else {
+      this.selectedCategories.push(category);
+    }
+    category.isSelected = !category.isSelected;
+  }
+
+  addCategoryArgument() {
+    let node = {
+      "label": null,
+      "icon:": null,
+      "arguments": []
+    };
+    this.data.push(node);
+  }
+
+  deleteCategoryArgument() {
+    let filterSelected = this.data.filter(item => item.isSelected);
+    for (var i = 0; i < filterSelected.length; i += 1) {
+      this.selectedCategories.forEach(function (currentValue, index, array) {
+        if (currentValue == filterSelected[i]) {
+          array.splice(index, 1);
+        }
+      });
+    }
+
+    filterSelected.forEach(function (item, index, array) {
+      item.toDelete = true;
+    });
+  }
+
+  toggleGroup(item) {
+    item.isOpened = !item.isOpened;
+  }
+
+  addArgument(item) {
+    var node = {
+      "isSelected": false,
+      "toDelete": false
+    };
+    item.arguments.push(node);
+  }
+
+  deleteArgument(item) {
+    let filterSelected = item.arguments.filter(node => node.isSelected);
+    filterSelected.forEach(function (node, index, array) {
+      node.toDelete = true;
+    });
+  }
+
+}
 
 @Component({
   selector: 'app-admin-menu',
   templateUrl: './admin-menu.component.html',
   styleUrls: ['./admin-menu.component.css']
 })
-export class AdminMenuComponent implements AfterViewInit {
+export class AdminMenuComponent implements OnInit {
 
   menu: any[] = [];
 
@@ -19,22 +99,16 @@ export class AdminMenuComponent implements AfterViewInit {
 
   optionSelected: any = {};
 
+  categorySelected: any = {};
+
   categoryArgumentSelected: any = {};
 
-  dataAdapter;
-
-  dataAdapterCategory;
-
-  constructor(private http: ApiClient, public globals: Globals, private service: ApplicationService, public snackBar: MatSnackBar) {
+  constructor(private http: ApiClient, public globals: Globals, private service: ApplicationService, public snackBar: MatSnackBar, public dialog: MatDialog) {
   }
 
   ngOnInit() {
     this.getMenuData();
     this.getCategoryArguments();
-  }
-
-  ngAfterViewInit(): void {
-
   }
 
   getCategoryArguments() {
@@ -43,24 +117,27 @@ export class AdminMenuComponent implements AfterViewInit {
 
   handlerSuccessCategoryArguments(_this, result) {
     _this.categories = result;
+    if (_this.optionSelected.id) {
+      _this.getOptionCategoryArguments(_this.optionSelected);
+    }
   }
 
   handlerErrorCategoryArguments(_this, result) {
     console.log(result);
   }
 
-  getOptionSelected(option) {    
+  getOptionSelected(option) {
+    this.categoryArguments = [];
+    this.clearSelectedCategoryArguments();
     if (this.optionSelected == option) {
       this.optionSelected.isActive = false;
-      this.optionSelected = {};      
+      this.optionSelected = {};
     } else {
       this.optionSelected.isActive = false;
       option.isActive = option.isActive == null ? true : !option.isActive;
       this.optionSelected = option;
       if (!option.root && option.id) {
-        this.getOptionCategoryArguments(option);
-      }else{
-        this.categoryArguments = [];
+        this.getOptionCategoryArguments();
       }
       console.log("was selected: " + option.label);
     }
@@ -75,12 +152,26 @@ export class AdminMenuComponent implements AfterViewInit {
     console.log("was selected: " + category.categoryArgumentsId.label);
   }
 
-  getOptionCategoryArguments(option) {
-    this.service.loadOptionCategoryArguments(this, option, this.handlerSuccessOptionCategoryArguments, this.handlerErrorOptionCategoryArguments);
+  clearSelectedCategoryArguments() {
+    this.categories.forEach(function (itemCategory, indexCategory, arrayCategory) {
+      itemCategory.selected = false;
+    })
+  }
+
+  getOptionCategoryArguments() {
+    this.service.loadOptionCategoryArguments(this, this.optionSelected, this.handlerSuccessOptionCategoryArguments, this.handlerErrorOptionCategoryArguments);
   }
 
   handlerSuccessOptionCategoryArguments(_this, result) {
+    _this.clearSelectedCategoryArguments()
     _this.categoryArguments = result;
+    _this.categoryArguments.forEach(function (itemOptionCategory, indexOptionCategory, arrayOptionCategory) {
+      _this.categories.forEach(function (itemCategory, indexCategory, arrayCategory) {
+        if (itemOptionCategory.categoryArgumentsId.id == itemCategory.id) {
+          itemCategory.selected = true;
+        }
+      })
+    });
     _this.globals.isLoading = false;
   }
 
@@ -114,7 +205,7 @@ export class AdminMenuComponent implements AfterViewInit {
   }
 
   saveMenu() {
-    console.log(this.menu);    
+    console.log(this.menu);
     this.service.saveMenu(this, this.menu, this.handlerSuccessSaveMenuData, this.handlerErrorSaveMenuData);
   }
 
@@ -143,39 +234,71 @@ export class AdminMenuComponent implements AfterViewInit {
   }
 
   addCategoryArgument() {
-    if (this.optionSelected.id != null && this.optionSelected.children.length == 0 ) {
-      let newNode = {
-        "optionId": this.optionSelected.id,
-        "categoryArgumentsId": {
-          "id": null
-        },
-        "toDelete": false
-      };
-      this.categoryArguments.unshift(newNode);
+    let newNode = {
+      "label": null,
+      "icon": null
+    };
+    this.categories.unshift(newNode);
+  }  
+
+  saveCategoryArgument() {
+    this.service.saveArgumentsCategory(this, this.categories, this.handlerSuccessSaveCategoryArgument, this.handlerErrorSaveCategoryArgument);
+  }
+
+  handlerSuccessSaveCategoryArgument(_this, result) {
+    _this.categories = result;
+    if (_this.optionSelected.id != undefined) {
+      _this.getOptionCategoryArguments();
+    } else {
+      _this.globals.isLoading = false;
     }
   }
 
-  deleteCategoryArguments() {
-    var result = this.categoryArguments.filter(function (object) {
-      return object.selected == true;
-    });
-    result.forEach(function (valor, indice, array) {
-      valor.toDelete = true;
-    });
+  handlerErrorSaveCategoryArgument(_this, result) {
+    _this.globals.isLoading = false;
   }
 
-  saveCategoryArguments() {
-    this.service.saveOptionCategoryArguments(this, this.categoryArguments, this.handlerSuccessSaveOptionCategoryArguments, this.handlerErrorSaveOptionCategoryArguments);
+  saveOptionCategoryArguments() {
+    if (this.optionSelected.id != undefined) {
+      let arrayResult: any = [];
+      //let filterSelected = this.categories.filter(item => item.selected);
+      let filterSelected = this.categories;
+      var optionSelectedId = this.optionSelected.id;
+      filterSelected.forEach(function (item, index, array) {
+        var itemToAdd = {
+          "optionId": optionSelectedId,
+          "categoryArgumentsId": item,
+          "selected": item.selected
+        };
+        arrayResult.push(itemToAdd);
+      });
+      this.service.saveOptionCategoryArguments(this, arrayResult, this.handlerSuccessSaveOptionCategoryArguments, this.handlerErrorSaveOptionCategoryArguments);
+    }
   }
 
   handlerSuccessSaveOptionCategoryArguments(_this, result) {
-    _this.getOptionCategoryArguments(_this.optionSelected);
+    _this.getCategoryArguments();
   }
 
-  handlerErrorSaveOptionCategoryArguments(_this, result) {    
+  handlerErrorSaveOptionCategoryArguments(_this, result) {
     _this.globals.isLoading = false;
-    _this.getOptionCategoryArguments(_this.optionSelected);
     console.log(result);
+  }
+
+  editCategoryArguments() {
+    var duplicateObject = JSON.parse(JSON.stringify(this.categories));
+
+    const dialogRef = this.dialog.open(EditCategoryArgumentDialog, {
+      width: '80%',
+      data: duplicateObject
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != undefined) {
+        this.categories = result;
+        this.saveCategoryArgument();
+      }
+    });
   }
 
 }

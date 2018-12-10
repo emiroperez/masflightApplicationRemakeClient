@@ -9,8 +9,8 @@ export class ApplicationService {
 
   utils: Utils;
 
-  //host = "http://localhost:8887";
-  host = "";
+  host = "http://localhost:8887";
+  //host = "";
 
   //host1 = "http://localhost:8886";
   host1 = "http://69.64.45.220:8886"; 
@@ -90,7 +90,8 @@ export class ApplicationService {
 
   loadOptionCategoryArguments(_this, data, handlerSuccess, handlerError) {
     _this.globals.isLoading = true;
-    let url = "http://localhost:8887/getOptionArgumentsCategories?optionId=" + data.id;
+    //let url = "http://localhost:8887/getOptionArgumentsCategories?optionId=" + data.id;
+    let url = this.host + "/getOptionArgumentsCategories?optionId=" + data.id;
     this.http.get(_this, url, handlerSuccess, handlerError, null);
   }
 
@@ -107,56 +108,56 @@ export class ApplicationService {
   }
 
   createArgument(_this, data, handlerSuccess, handlerError) {
-    let url = "http://localhost:8887/arguments?idOption=" + data.idOption;
+    let url = this.host + "/arguments?idOption=" + data.idOption;
     //let url = "/arguments?idOption=" + data.idOption;
     this.http.post(_this, url, data.argument, handlerSuccess, handlerError);
   }
 
   loadMenuCategories(_this, handlerSuccess, handlerError){
     _this.globals.isLoading = true;
-    let url = "http://localhost:8887/getMenu";
+    let url = this.host + "/getMenu";
     this.http.get(_this, url, handlerSuccess, handlerError, null);
   }
 
   saveMenu(_this, data, handlerSuccess, handlerError){
     _this.globals.isLoading = true;
-    let url = "http://localhost:8887/menu";
+    let url = this.host + "/menu";
     this.http.post(_this, url, data, handlerSuccess, handlerError);
   }
 
   saveOptionCategoryArguments(_this, data, handlerSuccess, handlerError){
     _this.globals.isLoading = true;
-    let url = "http://localhost:8887/saveOptionArgumentsCategories";
+    let url = this.host + "/saveOptionArgumentsCategories";
     this.http.post(_this, url, data, handlerSuccess, handlerError);
   }
 
   loadArgumentsByCategory(_this, data, handlerSuccess, handlerError){
     _this.globals.isLoading = true;
-    let url = "http://localhost:8887/getArgumentsByCategory?idCategory=" + data.id;
+    let url = this.host + "/getArgumentsByCategory?idCategory=" + data.id;
     this.http.get(_this, url, handlerSuccess, handlerError, null);
   }
 
   saveArgumentsCategory(_this, data, handlerSuccess, handlerError){
     _this.globals.isLoading = true;
-    let url = "http://localhost:8887/saveArgumentsCategory";
+    let url = this.host + "/saveArgumentsCategory";
     this.http.post(_this, url, data, handlerSuccess, handlerError);
   }
   
   saveArguments(_this, data, handlerSuccess, handlerError){
     _this.globals.isLoading = true;
-    let url = "http://localhost:8887/saveArguments";
+    let url = this.host + "/saveArguments";
     this.http.post(_this, url, data, handlerSuccess, handlerError);
   }
 
   deleteArgumentsCategory(_this, data, handlerSuccess, handlerError){
     _this.globals.isLoading = true;
-    let url = "http://localhost:8887/deleteArgumentsCategory";
+    let url = this.host + "/deleteArgumentsCategory";
     this.http.post(_this, url, data, handlerSuccess, handlerError);
   }
 
   deleteArguments(_this, data, handlerSuccess, handlerError){
     _this.globals.isLoading = true;
-    let url = "http://localhost:8887/deleteArguments";
+    let url = this.host + "/deleteArguments";
     this.http.post(_this, url, data, handlerSuccess, handlerError);    
   }    
 
