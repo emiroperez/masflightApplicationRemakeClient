@@ -12,8 +12,8 @@ export class ApplicationService {
   host = "http://localhost:8887";
   //host = "";
 
-  //host1 = "http://localhost:8886";
-  host1 = "http://69.64.45.220:8886"; 
+  host1 = "http://localhost:8886";
+  //host1 = "http://69.64.45.220:8886"; 
 
   constructor(private http: ApiClient) {
     this.utils = new Utils();
@@ -89,8 +89,7 @@ export class ApplicationService {
   */
 
   loadOptionCategoryArguments(_this, data, handlerSuccess, handlerError) {
-    _this.globals.isLoading = true;
-    //let url = "http://localhost:8887/getOptionArgumentsCategories?optionId=" + data.id;
+    _this.globals.isLoading = true;    
     let url = this.host + "/getOptionArgumentsCategories?optionId=" + data.id;
     this.http.get(_this, url, handlerSuccess, handlerError, null);
   }
@@ -107,9 +106,8 @@ export class ApplicationService {
     this.http.get(_this, url, handlerSuccess, handlerError, null);
   }
 
-  createArgument(_this, data, handlerSuccess, handlerError) {
-    let url = this.host + "/arguments?idOption=" + data.idOption;
-    //let url = "/arguments?idOption=" + data.idOption;
+  createArgument(_this, data, handlerSuccess, handlerError) {   
+    let url = this.host +  "/arguments?idOption=" + data.idOption;
     this.http.post(_this, url, data.argument, handlerSuccess, handlerError);
   }
 

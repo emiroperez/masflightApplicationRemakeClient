@@ -7,10 +7,18 @@
     <div class="msf-menu-container">
         <app-menu [menu]="menu"></app-menu>
     </div>    
-    <div class="msf-header-icons">
-          <div class="msf-inline msf-vertical-middle">Admin</div>
-          <img src="../../assets/images/ADMIN.png" class="msf-menu-admin-icon">
-          <i class="material-icons msf-vertical-middle">expand_more</i>         
+    <div class="msf-header-icons">        
+            <div class="msf-inline msf-vertical-middle">Admin</div>
+            <img src="../../assets/images/ADMIN.png" class="msf-menu-admin-icon">
+            <button mat-icon-button [matMenuTriggerFor]="adminMenu">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #adminMenu="matMenu">
+                <button mat-menu-item routerLink="/admin-menu">
+                    <mat-icon>settings</mat-icon>
+                    <span>Admin Menu</span>
+                </button>                
+            </mat-menu>      
     </div>
 </div>
 <div class="msf-menu-icons-container">
