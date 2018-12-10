@@ -89,7 +89,7 @@ export class ApplicationService {
   */
 
   loadOptionCategoryArguments(_this, data, handlerSuccess, handlerError) {
-    _this.globals.isLoading = true;    
+    //_this.globals.isLoading = true;    
     let url = this.host + "/getOptionArgumentsCategories?optionId=" + data.id;
     this.http.get(_this, url, handlerSuccess, handlerError, null);
   }

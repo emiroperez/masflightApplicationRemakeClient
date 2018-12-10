@@ -172,11 +172,11 @@ export class AdminMenuComponent implements OnInit {
         }
       })
     });
-    _this.globals.isLoading = false;
+    //_this.globals.isLoading = false;
   }
 
   handlerErrorOptionCategoryArguments(_this, result) {
-    _this.globals.isLoading = false;
+    //_this.globals.isLoading = false;
   }
 
   addOption() {
