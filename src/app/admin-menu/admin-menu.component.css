@@ -1,0 +1,126 @@
+div.mat-select-panel .mat-primary .ng-star-inserted .mat-select-panel-done-animating {
+    background-color: black;
+}
+
+.is-active {
+    background-color: #4f4f4f;
+}
+
+.is-inactive {
+    background-color: transparent;
+}
+
+.dialog-category-arguments-container {
+    display: flex;
+    flex-wrap: wrap;    
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.dialog-item {
+    padding: 5px;
+    margin: 8px;
+    width: 155px;
+    cursor: pointer;
+    text-align: center;    
+    -moz-box-shadow:    inset 0 0 5px #00000038;
+    -webkit-box-shadow: inset 0 0 5px #00000038;
+    box-shadow:         inset 0 0 5px #00000038;
+    border-radius: 5px;
+}
+
+.dialog-item:hover {
+    background-color: #4f4f4f;
+}
+
+.text-item-category-argument {
+    border-bottom: 2px solid #01abec;    
+    margin-top: 3px; 
+    height: 30px;
+}
+
+.img-item-category-argument {
+    height: 33px;
+    width: 33px;
+}
+
+.group-category {
+    display: flex;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+    padding: 1%;    
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-top-left-radius: 40px;
+    border-bottom-left-radius: 40px;
+    justify-content: center;
+    background-color: #3d3d3d;
+    margin-bottom: 5px;
+}
+
+.group-category-text {
+    color: white;
+    margin-left: 5px;
+    word-break: break-word;
+}
+
+table.argument-table > thead > tr {
+    height: 30px !important;
+}
+
+.input-table {
+    width: 100%;
+    border: 0;
+}
+
+table.argument-table {
+    border: 1px solid #000000;
+    background-color: #FFFFFF;
+    text-align: left;
+    border-collapse: collapse;
+    color: #000000;
+}
+
+table.argument-table td, table.argument-table th {
+    border: 1px solid #AAAAAA;
+    padding: 3px 2px;
+}
+
+table.argument-table tbody td {
+    font-size: 13px;
+}
+  
+table.argument-table thead {
+    background: #000000;
+    background: -moz-linear-gradient(top, #404040 0%, #191919 66%, #000000 100%);
+    background: -webkit-linear-gradient(top, #404040 0%, #191919 66%, #000000 100%);
+    background: linear-gradient(to bottom, #404040 0%, #191919 66%, #000000 100%);
+}
+  
+table.argument-table thead th {
+    font-size: 15px;
+    font-weight: bold;
+    color: #FFFFFF;
+    border-left: 2px solid #FFFFFF;
+}
+  
+table.argument-table thead th:first-child {
+    border-left: none;
+}
+  
+table.argument-table tfoot td {
+    font-size: 14px;
+}
+  
+table.argument-table tfoot .links {
+    text-align: right;
+}
+  
+table.argument-table tfoot .links a{
+    display: inline-block;
+    background: #1C6EA4;
+    color: #FFFFFF;
+    padding: 2px 8px;
+    border-radius: 5px;
+}

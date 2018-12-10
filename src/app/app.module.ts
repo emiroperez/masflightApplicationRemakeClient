@@ -74,6 +74,7 @@ import { AgGridModule } from 'ag-grid-angular';
 import { Utils } from './commons/utils';
 import { MsfUserListComponent } from './msf-user-list/msf-user-list.component';
 import { MsfOptionListComponent } from './msf-option-list/msf-option-list.component';
+import { EditCategoryArgumentDialog } from './admin-menu/admin-menu.component';
 
 @NgModule({
   declarations: [
@@ -130,7 +131,8 @@ import { MsfOptionListComponent } from './msf-option-list/msf-option-list.compon
     CategoryArgumentsComponent,
     AdminMenuRecursiveComponent,    
     MsfUserListComponent,
-    MsfOptionListComponent    
+    MsfOptionListComponent,
+    EditCategoryArgumentDialog       
   ],
   imports: [
     BrowserModule,
@@ -180,6 +182,6 @@ import { MsfOptionListComponent } from './msf-option-list/msf-option-list.compon
     Utils
   ],
   bootstrap: [AppComponent],
-  entryComponents: [MessageComponent, MsfDynamicTableVariablesComponent]
+  entryComponents: [MessageComponent, MsfDynamicTableVariablesComponent, EditCategoryArgumentDialog]
 })
 export class AppModule { }
