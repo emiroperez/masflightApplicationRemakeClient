@@ -81,19 +81,33 @@ table.argument-table > thead > tr {
 .input-table {
     width: 100%;
     border: 0;
+    padding: 1%;
+    background-color: transparent;
+    outline-color: #3d3d3d;
+    color: #d1d2d2;
+    font: 500 13px/32px Roboto,"Helvetica Neue",sans-serif;
 }
 
-table.argument-table {
-    border: 1px solid #000000;
-    background-color: #FFFFFF;
+.select-table {
+    width: 100%; 
+    background-color: #3d3d3d; 
+    border-color: #3d3d3d;
+    color: #d1d2d2;
+    outline-color: #3d3d3d;
+    font: 500 13px/32px Roboto,"Helvetica Neue",sans-serif;
+}
+
+table.argument-table {    
+    background-color: #3d3d3d;
     text-align: left;
     border-collapse: collapse;
     color: #000000;
+    font: 500 8px/20px Roboto,"Helvetica Neue",sans-serif;
 }
 
 table.argument-table td {
-    border: 1px solid #AAAAAA;
-    padding: 3px 2px;
+    border-bottom: 1px solid #4f4e4e;
+    padding: 10px;
 }
 
 table.argument-table tbody td {
@@ -101,14 +115,15 @@ table.argument-table tbody td {
 }
   
 table.argument-table thead {
-    background: #000000;    
+    background-color: #333333;    
 }
   
 table.argument-table thead th {
     font-size: 15px;
-    font-weight: normal;
-    color: #FFFFFF;
-    border-left: 2px solid #FFFFFF;
+    font-weight: bold;    
+    color: white;
+    padding: 10px;
+    font: 500 15px/32px Roboto,"Helvetica Neue",sans-serif;
 }
   
 table.argument-table thead th:first-child {

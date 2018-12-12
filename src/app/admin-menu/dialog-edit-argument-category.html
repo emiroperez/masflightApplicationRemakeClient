@@ -31,10 +31,10 @@
       </div>
       -->
       <div>
-        <div style="max-height: 400px; overflow-y: auto; padding: 5px">
+        <div style="padding: 5px">
           <div *ngFor="let item of data" style="margin-bottom: 5px">
             <div *ngIf="item.selected && !item.toDelete">
-              <div class="group-category" style="display: flex; flex-direction: row; justify-content: space-between"
+              <div class="group-category" style="display: flex; flex-direction: row; justify-content: space-between;"
                 [ngClass]="{ 'category-active': item.isSelected, 'category-inactive': !item.isSelected }">
                 <i (click)="toggleGroup(item)" *ngIf="!item.isOpened" class="material-icons" style="flex: 1">expand_more</i>
                 <i (click)="toggleGroup(item)" *ngIf="item.isOpened" class="material-icons" style="flex: 1">expand_less</i>
@@ -44,19 +44,19 @@
                 <i matTooltip="Add argument." (click)="addArgument(item)" class="material-icons" style="flex: 1; text-align: right">add_circle</i>
                 <i matTooltip="Delete argument." (click)="deleteArgument(item)" class="material-icons" style="flex: 1; text-align: right">remove_circle</i>
               </div>
-              <div style="overflow-x: auto; max-width: 990px;">
+              <div style="overflow-x: auto; max-width: 990px; margin: 10px; overflow-y: hidden">
                 <table *ngIf="item.isOpened" class="argument-table">
                   <thead>
                     <tr>
                       <th></th>
-                      <th>Title</th>
                       <th>Type</th>
-                      <th>Arg. Name 1</th>
-                      <th>Arg. Name 2</th>
-                      <th>Arg. Name 3</th>
-                      <th>Arg. Label 1</th>
-                      <th>Arg. Label 2</th>
-                      <th>Arg. Label 3</th>
+                      <th>Title</th>                      
+                      <th>Service Arg. 1</th>
+                      <th>Service Arg. 2</th>
+                      <th>Service Arg. 3</th>
+                      <th>Label 1</th>
+                      <th>Label 2</th>
+                      <th>Label 3</th>
                       <th>URL</th>
                     </tr>
                   </thead>
@@ -64,10 +64,9 @@
                     <tr *ngFor="let argument of item.arguments">
                       <td *ngIf="!argument.toDelete" style="text-align: center;">
                         <mat-checkbox color="primary" [(ngModel)]="argument.isSelected"></mat-checkbox>
-                      </td>
-                      <td *ngIf="!argument.toDelete"><input class="input-table" [(ngModel)]="argument.title"></td>
+                      </td>                      
                       <td *ngIf="!argument.toDelete">
-                        <select style="width: 100%">
+                        <select class="select-table">
                           <option value="airline">Airline</option>
                           <option value="airportRoute">AirportRoute</option>
                           <option value="timeRange">TimeRange</option>
@@ -86,6 +85,7 @@
                           <option value="temperature">Temperature</option>
                         </select>
                       </td>
+                      <td *ngIf="!argument.toDelete"><input class="input-table" [(ngModel)]="argument.title"></td>
                       <td *ngIf="!argument.toDelete"><input class="input-table" [(ngModel)]="argument.name1"></td>
                       <td *ngIf="!argument.toDelete"><input class="input-table" [(ngModel)]="argument.name2"></td>
                       <td *ngIf="!argument.toDelete"><input class="input-table" [(ngModel)]="argument.name3"></td>
