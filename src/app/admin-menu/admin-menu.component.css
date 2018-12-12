@@ -91,7 +91,7 @@ table.argument-table {
     color: #000000;
 }
 
-table.argument-table td, table.argument-table th {
+table.argument-table td {
     border: 1px solid #AAAAAA;
     padding: 3px 2px;
 }
@@ -106,7 +106,7 @@ table.argument-table thead {
   
 table.argument-table thead th {
     font-size: 15px;
-    font-weight: bold;
+    font-weight: normal;
     color: #FFFFFF;
     border-left: 2px solid #FFFFFF;
 }
