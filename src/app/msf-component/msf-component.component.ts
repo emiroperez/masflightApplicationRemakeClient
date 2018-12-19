@@ -116,4 +116,5 @@ export class MsfComponentComponent implements OnInit {
     return ComponentType.optionList == argument.type;
   }
 
+
 }

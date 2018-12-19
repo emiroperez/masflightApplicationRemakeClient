@@ -1,8 +1,8 @@
-<div>
+<!--<div>
     <div class="center">
         <div class="msf-component-airport-title">Limit to Flight(s) from</div>
         <div class="msf-menu-arg-airport-image">
-            <!--<span><strong>356</strong> <p>Miles</p></span> -->
+            <span><strong>356</strong> <p>Miles</p></span>
         </div>
     </div>    
     <div class="msf-component-airport-input-container">            
@@ -24,4 +24,37 @@
             </mat-select>
         </mat-form-field>              
     </div>
+</div>  
+-->
+
+<div>
+    <div class="center">
+        <div class="msf-component-airport-title">Limit to Flight(s) from</div>
+    </div>
+    <div class="msf-component-airport-sub-title">From</div>     
+    <ng-select
+        [items]="this.globals.airports | async"
+        [multiple]="true"
+        [loading]="loading"
+        loadingText="Loading..."
+        [closeOnSelect]="true"
+        [hideSelected]="false"
+        bindLabel="name"
+        labelForId="id"
+        [(ngModel)]="argument.value1">
+    </ng-select>
+    <div class="center">
+        <div class="msf-menu-arg-airport-image"></div>
+    </div>   
+    <div class="msf-component-airport-sub-title">To</div>  
+    <ng-select
+        [items]="this.globals.airports | async"
+        [multiple]="true"
+        [loading]="loading"
+        loadingText="Loading..."
+        [closeOnSelect]="true"
+        [hideSelected]="false"
+        bindLabel="name"
+        [(ngModel)]="argument.value2">
+    </ng-select> 
 </div>  

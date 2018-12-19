@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ApiClient } from '../api/api-client';
 import { Utils } from '../commons/utils';
+import { Observable, of } from 'rxjs';
+import { Airport } from '../model/Airport';
+import { delay } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +15,7 @@ export class ApplicationService {
   //host = "http://localhost:8887";
   host = "";
 
-  //host1 = "http://localhost:8886";
+ // host1 = "http://localhost:8886";
   host1 = "http://69.64.45.220:8886"; 
 
   constructor(private http: ApiClient) {

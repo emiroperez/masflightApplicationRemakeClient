@@ -75,6 +75,7 @@ import { Utils } from './commons/utils';
 import { MsfUserListComponent } from './msf-user-list/msf-user-list.component';
 import { MsfOptionListComponent } from './msf-option-list/msf-option-list.component';
 import { EditCategoryArgumentDialog } from './admin-menu/admin-menu.component';
+import { MsfTestComponent } from './msf-test/msf-test.component';
 
 @NgModule({
   declarations: [
@@ -132,7 +133,8 @@ import { EditCategoryArgumentDialog } from './admin-menu/admin-menu.component';
     AdminMenuRecursiveComponent,    
     MsfUserListComponent,
     MsfOptionListComponent,
-    EditCategoryArgumentDialog       
+    EditCategoryArgumentDialog,
+    MsfTestComponent       
   ],
   imports: [
     BrowserModule,

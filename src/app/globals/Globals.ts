@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Option} from '../model/Option';
 import { MatSort } from '@angular/material';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class Globals {
@@ -21,6 +22,7 @@ export class Globals {
   startTimestamp = null;
   endTimestamp = null;
   bytesLoaded = 0;
+  airports: Observable<any[]>;
 
   clearVariables(){
     this.currentOption=null;
