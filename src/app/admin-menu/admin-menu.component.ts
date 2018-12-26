@@ -14,6 +14,8 @@ export class EditCategoryArgumentDialog {
 
   itemSelected: any = {};
 
+  argumentSelected: any = {};
+
   selectedCategories: any[] = [];
 
   displayedColumns: string[] = ['label1', 'label2', 'name1', 'name2'];
@@ -27,7 +29,7 @@ export class EditCategoryArgumentDialog {
 
   selectArgumentCategory(category) {
     if (this.itemSelected != category) {
-      category.isSelected = !category.isSelected;  
+      category.isSelected = !category.isSelected;
       this.itemSelected.isSelected = !this.itemSelected.isSelected;
       this.itemSelected = category;
     } else {
@@ -53,7 +55,7 @@ export class EditCategoryArgumentDialog {
     let node = {
       "selected": true,
       "label": null,
-      "icon:": null,      
+      "icon:": null,
       "arguments": []
     };
     this.data.push(node);
@@ -86,12 +88,24 @@ export class EditCategoryArgumentDialog {
   }
 
   deleteArgument(item) {
+    /*
     let filterSelected = item.arguments.filter(node => node.isSelected);
     filterSelected.forEach(function (node, index, array) {
       node.toDelete = true;
     });
+    */
+    item.toDelete = true;
   }
 
+  setSelectedAgument(item) {    
+    if (item == this.argumentSelected) {      
+      this.argumentSelected.isSelected = false;
+      this.argumentSelected = {};
+    } else {
+      this.argumentSelected = item;
+      this.argumentSelected.isSelected = true;
+    }    
+  }
 }
 
 @Component({

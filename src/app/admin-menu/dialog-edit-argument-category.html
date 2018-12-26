@@ -101,13 +101,14 @@
           <button matTooltip="Add category argument." mat-icon-button (click)="addArgument(itemSelected)" style="display: inline;">
             <mat-icon style="color: white" aria-label="add">add_circle</mat-icon>
           </button>
-          <button matTooltip="Remove category argument." mat-icon-button (click)="deleteArgument(itemSelected)" style="display: inline;">
+          <button matTooltip="Remove category argument." mat-icon-button (click)="deleteArgument(argumentSelected)" style="display: inline;">
             <mat-icon style="color: white" aria-label="delete">remove_circle</mat-icon>
           </button>
         </div>
       </div>
       <div *ngFor="let argument of itemSelected.arguments">
-        <div class="arguments-container" *ngIf="itemSelected.isSelected">
+        <div class="arguments-container" *ngIf="itemSelected.isSelected && !argument.toDelete"
+          [ngClass]="{ 'category-active': argument.isSelected, 'category-inactive': !argument.isSelected }">
           <div style="display: flex; flex-wrap: wrap; align-content: flex-start">
             <div style="width: 100%; margin: auto; font-size: 15px">
               <mat-form-field style="width: 100%">
