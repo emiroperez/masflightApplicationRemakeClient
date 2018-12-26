@@ -822,8 +822,7 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button
     /**register pending
         padding-left: 17px*/
 
-.ng-dropdown-panel 
-    max-width: 362px
+.ng-dropdown-panel     
     background-color: $msf-primary-light-color!important
 
 .ng-dropdown-panel .ng-dropdown-panel-items .ng-option
@@ -1078,7 +1077,7 @@ button[aria-expanded="true"]
 
 
 .msf-menu-content-whith-nav    
-    width: calc(100% - 250px)
+    width: calc(100% - 300px)
     transition: 0.5s
 
 .msf-menu-content-without-nav
@@ -1090,7 +1089,7 @@ button[aria-expanded="true"]
     transition: 0.5s
 
 .msf-menu-show-nav
-    width: 250px
+    width: 300px
     transition: 0.5s
 
 .msf-menu-admin-icon
@@ -1152,7 +1151,7 @@ button[aria-expanded="true"]
 
 .msf-menu-arguments-container
     margin: 4%
-    padding: 5%
+    padding: 1%
     display: flex
     color: white
     background-color: $msf-primary-color
@@ -1169,8 +1168,7 @@ button[aria-expanded="true"]
 
 .msf-menu-arguments-container-show
     @extend .msf-menu-arguments-container    
-    max-height: 350px
-    overflow-y: auto
+    overflow-y: hidden
     overflow-x: hidden
     transition: max-height 1s ease-in
     opacity: 1
@@ -1215,6 +1213,11 @@ button[aria-expanded="true"]
     margin-bottom: 10px
     background: $msf-primary-light-color
 
+.msf-component-airport-sub-title
+    width: 100%
+    padding: 5px 0 5px 0
+    margin-bottom: 10px
+
 .msf-component-airport-input-container
     display: flex
     align-items: center
@@ -1235,7 +1238,7 @@ button[aria-expanded="true"]
 .msf-menu-arg-image    
     height: 50px
     width: 100%
-    background-position-x: 20px
+    background-position-x: 50px
     background-size: contain
     background-repeat: no-repeat
     span
@@ -1960,27 +1963,6 @@ li.msf-select:before
   margin-bottom: 2%
 
 
-input[type=checkbox] 
-    display: none
- 
-input[type=checkbox] + label
-    background: #999
-    height: 16px
-    width: 16px
-    display: inline-block
-    padding: 0 0 0 0px
-
-input[type=checkbox]:checked + label
-    background: #0080FF
-    height: 16px
-    width: 16px
-    display: inline-block
-    padding: 0 0 0 0px
-
-mgl-map
-    height: 500px
-    width: 500px
-
 .menu-field
     div
         div
@@ -2110,3 +2092,78 @@ mgl-map
 
 .dialog-container-agument-category
     color: white !important
+
+
+input[type=checkbox] 
+    display: none
+ 
+input[type=checkbox] + label
+    background: #999
+    height: 16px
+    width: 16px
+    display: inline-block
+    padding: 0 0 0 0px
+
+input[type=checkbox]:checked + label
+    background: #0080FF
+    height: 16px
+    width: 16px
+    display: inline-block
+    padding: 0 0 0 0px
+
+input[role=combobox]
+    color: $msf-font-color
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value
+    background-color: $msf-secondary-color
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-label
+    font-size: 100%
+    font-weight: normal
+
+.test
+    width: 100%
+    height: 600px
+    background: #252424
+    padding: 50px
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value
+    padding: 0px 5px
+
+.ng-select .ng-has-value .ng-placeholder, .ng-select.ng-select-opened .ng-placeholder
+    -webkit-transform: translateY(-1.09125em) scale(0.75) perspective(100px) translateZ(0.001px)
+    transform: translateY(-1.09125em) scale(0.75) perspective(100px) translateZ(0.001px)
+    padding-top: 2px
+
+.ng-dropdown-panel .ng-dropdown-header
+    color: $msf-secondary-color
+
+.ng-select .ng-select-container .ng-value-container .ng-placeholder
+    color: $msf-font-color
+
+.ng-select .ng-select-container
+    cursor: pointer!important
+    border-radius: 4px
+    border: 1px solid #9e9e9e5e
+    min-height: 36px
+    align-items: center
+
+.ng-select .ng-select-container .ng-value-container
+    border-top: 0.34375em solid transparent
+    padding-left: 5px
+
+mat-form-field.standard-text
+    div
+        div
+            div
+                span
+                    label            
+                        padding-left: 0px !important
+.padding-5
+    padding-left: 25px
+
+
+
+
+
+

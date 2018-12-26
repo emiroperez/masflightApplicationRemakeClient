@@ -16,329 +16,19 @@ import * as mapboxgl from 'mapbox-gl';
   `]
 })
 export class MsfMapComponent implements OnInit {
-  /*
-
-  lat: number = 40.74093;
-  lng: number = -74.38954;
-
-  @ViewChild('AgmMap')
-  agmMap: AgmMap;
-
-  mapReady: boolean=false;
-
-  styles: any[] = [
-    {
-      "elementType": "geometry",
-      "stylers": [
-        {
-          "color": "#212121"
-        }
-      ]
-    },
-    {
-      "elementType": "labels.icon",
-      "stylers": [
-        {
-          "visibility": "off"
-        }
-      ]
-    },
-    {
-      "elementType": "labels.text.fill",
-      "stylers": [
-        {
-          "color": "#757575"
-        }
-      ]
-    },
-    {
-      "elementType": "labels.text.stroke",
-      "stylers": [
-        {
-          "color": "#212121"
-        }
-      ]
-    },
-    {
-      "featureType": "administrative",
-      "elementType": "geometry",
-      "stylers": [
-        {
-          "color": "#757575"
-        }
-      ]
-    },
-    {
-      "featureType": "administrative.country",
-      "elementType": "labels.text.fill",
-      "stylers": [
-        {
-          "color": "#9e9e9e"
-        }
-      ]
-    },
-    {
-      "featureType": "administrative.land_parcel",
-      "stylers": [
-        {
-          "visibility": "off"
-        }
-      ]
-    },
-    {
-      "featureType": "administrative.locality",
-      "elementType": "labels.text.fill",
-      "stylers": [
-        {
-          "color": "#bdbdbd"
-        }
-      ]
-    },
-    {
-      "featureType": "poi",
-      "elementType": "labels",
-      "stylers": [
-        {
-          "visibility": "off"
-        }
-      ]
-    },
-    {
-      "featureType": "poi",
-      "elementType": "labels.text.fill",
-      "stylers": [
-        {
-          "color": "#757575"
-        }
-      ]
-    },
-    {
-      "featureType": "poi.park",
-      "elementType": "geometry",
-      "stylers": [
-        {
-          "color": "#181818"
-        }
-      ]
-    },
-    {
-      "featureType": "poi.park",
-      "elementType": "labels.text.fill",
-      "stylers": [
-        {
-          "color": "#616161"
-        }
-      ]
-    },
-    {
-      "featureType": "poi.park",
-      "elementType": "labels.text.stroke",
-      "stylers": [
-        {
-          "color": "#1b1b1b"
-        }
-      ]
-    },
-    {
-      "featureType": "road",
-      "elementType": "geometry.fill",
-      "stylers": [
-        {
-          "color": "#2c2c2c"
-        }
-      ]
-    },
-    {
-      "featureType": "road",
-      "elementType": "labels.text.fill",
-      "stylers": [
-        {
-          "color": "#8a8a8a"
-        }
-      ]
-    },
-    {
-      "featureType": "road.arterial",
-      "elementType": "geometry",
-      "stylers": [
-        {
-          "color": "#373737"
-        }
-      ]
-    },
-    {
-      "featureType": "road.highway",
-      "elementType": "geometry",
-      "stylers": [
-        {
-          "color": "#3c3c3c"
-        }
-      ]
-    },
-    {
-      "featureType": "road.highway.controlled_access",
-      "elementType": "geometry",
-      "stylers": [
-        {
-          "color": "#4e4e4e"
-        }
-      ]
-    },
-    {
-      "featureType": "road.local",
-      "elementType": "labels.text.fill",
-      "stylers": [
-        {
-          "color": "#616161"
-        }
-      ]
-    },
-    {
-      "featureType": "transit",
-      "elementType": "labels.text.fill",
-      "stylers": [
-        {
-          "color": "#757575"
-        }
-      ]
-    },
-    {
-      "featureType": "water",
-      "elementType": "geometry",
-      "stylers": [
-        {
-          "color": "#000000"
-        }
-      ]
-    },
-    {
-      "featureType": "water",
-      "elementType": "labels.text.fill",
-      "stylers": [
-        {
-          "color": "#3d3d3d"
-        }
-      ]
-    }
-  ];
-
-  iconMarker = {
-    url: '../../assets/images/minireddot.png',
-    scaledSize: {
-      width: 5,
-      height: 5
-    }
- }
-
- iconHost = {
-  url: '../../assets/images/AirportDate&Time.png',
-  scaledSize: {
-    width: 25,
-    height: 25
-  }
-  }
-
-
-  polylines = [];
-
-  origin: any
-  destination: any
-
-  constructor( private services: ApplicationService, public globals: Globals, private AmCharts: AmChartsService) { }
-
-
-  
-
-  ngOnInit() {
-    
-  }
-
-  ngAfterViewInit(){
-    
-  }
-
-
-  getTrackingDataSource(){
-    this.globals.isLoading = true;
-    this.services.getTracking(this,this.successHandler, this.errorHandler);    
-  }
-  
-   
-  onMarkerMouseOver(infoWindow, gm) {
-      if (gm.lastOpen != null) {
-          gm.lastOpen.close();
-      }
-      gm.lastOpen = infoWindow;
-      infoWindow.open();
-  }
-
-  index = 0;
-  paintMarker(i, point){
-    if(i === 0){
-      this.index = 0;
-      return true;
-    }
-    let speed = point.groundSpeed;
-    if(speed < 50){
-      this.index ++;
-      if(this.index >= 10){
-        this.index = 0;
-        return true;
-      }
-    }else if(speed >= 50 && speed <= 500){
-      this.index ++;
-      let num = (500 / speed)*10;
-      if(this.index >= num){
-        this.index = 0;
-        return true;
-      }
-    }else{
-      this.index ++;
-      if(this.index >= 10){
-        this.index = 0;
-        return true;
-      }
-    }
-    return false;
-  }
-
-  successHandler(_this,data){
-    _this.polylines = data;
-    if(data.length > 0){      
-      _this.lat = data[0].path[0].latitude;
-      _this.lng = data[0].path[0].longitude;
-      _this.getChart(_this);      
-    }
-    _this.globals.isLoading = false;
-    
-	}
-
-  errorHandler(_this,data){
-    _this.globals.isLoading = false;
-  }
-
-  getText(point){
-  return point.latitude +','+ point.longitude;
-}
-
-
-  */
-
-  
-
-
-
 
   @ViewChild('map')
   map: mapboxgl.Map;
 
   mapReady: boolean=false;
 
-  zoom = [4];
+  zoom = [1];
   
   center = [-73.968285, 40.785091];
 
   data = [];
+
+  coordinates = [];
 
   paint = {        
             'circle-radius': 2,
@@ -353,16 +43,24 @@ export class MsfMapComponent implements OnInit {
               "text-anchor": "top"
           };
 
+  mapTypes:any[] = [
+    {id:'line',name:'Lines'},                      
+    {id:'point',name:'Dots'}
+  ]; 
+
+  currentMapType;
+
   private chart: AmChart;
 
   constructor( private services: ApplicationService, public globals: Globals, private AmCharts: AmChartsService) { }
 
 
   ngOnInit() {
-
+    this.currentMapType = this.mapTypes[1];
   }
 
   getTrackingDataSource(){
+    this.zoom = [1];
     this.globals.startTimestamp = new Date();
     this.data = [];
     this.globals.isLoading = true;
@@ -372,10 +70,12 @@ export class MsfMapComponent implements OnInit {
   successHandler(_this,features){
     _this.globals.endTimestamp = new Date();
     _this.data = features;
+    _this.setCoordinates(features);
     if(features.length > 0){  
       let size =  Math.round(features[0].features.length/2);
       _this.center = features[0].features[size].geometry.coordinates;       
-      _this.getChart(_this);      
+      _this.getChart(_this);  
+      _this.zoom = [4];    
     }
     _this.globals.isLoading = false;
     
@@ -466,5 +166,23 @@ export class MsfMapComponent implements OnInit {
     this.chart.zoomToIndexes(0, lastIndex);  
   }
 
+  mapTypeChange(type){
+    switch (type.id) {
+      case 'line':
+
+        break;
+      case 'point':
+        
+        break;
+    }
+  }
+
+  setCoordinates(data){
+    for(let features of data){
+      for(let feature of features.features){
+        this.coordinates.push(feature.geometry.coordinates);
+      }
+    }    
+  }
 
 }

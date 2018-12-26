@@ -1,0 +1,33 @@
+<div class="test">
+    <div [style.width.%]="40">
+        <ng-select
+          [items]="airports | async"
+          [multiple]="true"
+          [loading]="loading"
+          loadingText="Loading..."
+          [closeOnSelect]="true"
+          [hideSelected]="false"
+          bindLabel="name"
+          placeholder="Select airports"
+          [(ngModel)]="selectedAirport">
+        </ng-select>
+
+<!--
+        <ng-select [items]="airportsBuffer"
+                [multiple]="true"
+                [closeOnSelect]="false"
+                [hideSelected]="true"
+                [virtualScroll]="true"
+                [loading]="loading"
+                bindLabel="name"
+                bindValue="id"             
+                placeholder="Select airports"
+                (scroll)="onScroll($event)"
+                (scrollToEnd)="onScrollToEnd()">
+                <ng-template ng-header-tmp>
+                    <small class="form-text text-muted">Loaded {{airportsBuffer.length}} of {{airports.length}}</small>
+                </ng-template>                
+        </ng-select>
+-->
+    </div>    
+</div>
