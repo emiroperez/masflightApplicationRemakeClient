@@ -1,3 +1,14 @@
+.card-principal {
+    border-radius: 10px !important;
+    background: rgba(30, 30, 30, 0.5);
+    width: 70%;
+}
+
+.standard-input-text {
+    color: white;
+    height: 30px;
+}
+
 div.mat-select-panel .mat-primary .ng-star-inserted .mat-select-panel-done-animating {
     background-color: black;
 }
@@ -21,14 +32,14 @@ div.mat-select-panel .mat-primary .ng-star-inserted .mat-select-panel-done-anima
 .dialog-category-arguments-container {
     display: flex;
     flex-wrap: wrap;    
-    max-height: 430px;
+    max-height: 300px;
     overflow-y: auto;
 }
 
 .dialog-item {
     padding: 5px;
     margin: 3px;
-    width: 150px;
+    width: 130px;
     cursor: pointer;
     text-align: center;
     -moz-box-shadow:    inset 0 0 5px #00000038;
@@ -47,6 +58,19 @@ div.mat-select-panel .mat-primary .ng-star-inserted .mat-select-panel-done-anima
     height: 30px;
     color: white;
 }
+
+.text-item-category-argument::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: white;
+    opacity: 1; /* Firefox */
+  }
+  
+  .text-item-category-argument:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: white;
+  }
+  
+  .text-item-category-argument::-ms-input-placeholder { /* Microsoft Edge */
+    color: white;
+  }
 
 .img-item-category-argument {
     height: 33px;

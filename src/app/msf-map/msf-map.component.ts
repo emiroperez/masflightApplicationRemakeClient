@@ -45,7 +45,7 @@ export class MsfMapComponent implements OnInit {
 
   mapTypes:any[] = [
     {id:'line',name:'Lines'},                      
-    {id:'point',name:'Point'}
+    {id:'point',name:'Dots'}
   ]; 
 
   currentMapType;

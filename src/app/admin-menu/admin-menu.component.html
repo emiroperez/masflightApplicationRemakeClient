@@ -9,206 +9,82 @@
     </div>
   </div>
 </div>
-<mat-card class="msf-register-card msf-center-container">
+<mat-card class="card-principal msf-center-container">
   <mat-card-content>
     <button mat-icon-button routerLink="/application">
       <mat-icon>arrow_back</mat-icon>
     </button>
     <div style="display: flex; flex-direction: row;">
-      <div style="flex: 1; flex-direction: column; justify-content: center; margin-left: 1%; margin-right: 1%">
-        <div style="display: flex; flex-direction: row">
-          <div style="flex: 2">
-            <h2 class="title-section">Menu</h2>
-          </div>
-          <div style="flex: 1">
-            <button mat-icon-button (click)="addOption()">
-              <mat-icon style="color: white" aria-label="add">add_circle</mat-icon>
-            </button>
-            <button mat-icon-button (click)="deleteOption()">
-              <mat-icon style="color: white" aria-label="delete">remove_circle</mat-icon>
-            </button>
-            <button mat-icon-button (click)="saveMenu()">
-              <mat-icon style="color: white" aria-label="save">save</mat-icon>
-            </button>
-          </div>
-        </div>
-        <div *ngFor="let option of menu" style="color: white">
-          <app-admin-menu-recursive [menu]="option" (optionSelected)="getOptionSelected($event)"></app-admin-menu-recursive>
-        </div>
-      </div>
-      <div style="flex: 1; flex-direction: column; justify-content: center; margin-left: 1%; margin-right: 1%">
-        <div style="display: flex; flex-direction: row">
-          <div style="flex: 4">
-            <h2 class="title-section">Category Arguments</h2>
-          </div>
-          <div style="flex: 1">
-            <button mat-icon-button (click)="editCategoryArguments()">
-              <mat-icon style="color: white" aria-label="delete">settings</mat-icon>
-            </button>            
-            <button mat-icon-button (click)="saveOptionCategoryArguments()">
-              <mat-icon style="color: white" aria-label="save">save</mat-icon>
-            </button>
-          </div>
-        </div>
-        <div *ngIf="!optionSelected.root && optionSelected.id">
-          <div>
-            <div class="dialog-category-arguments-container">
-              <div *ngFor="let item of categories" style="color: white">
-                <div *ngIf="!item.toDelete" class="dialog-item" (click)="setSelectedCategoryArguments(item)" [ngClass]="{ 'is-active': item.isSelected, 'is-inactive': !item.isSelected }">
-                  <div style="display: flex; justify-content: flex-start">
-                    <mat-checkbox [disabled]="true" color="primary" [(ngModel)]="item.selected"></mat-checkbox>
-                  </div>
-                  <img class="img-item-category-argument" src="{{item.icon}}">
-                  <input [disabled]="true" autocomplete="off" type="text" matInput [(ngModel)]="item.label" class="text-item-category-argument">
-                </div>
+      <div style="flex: 1; flex-direction: column; justify-content: center">
+        <div style="display: flex; flex-direction: row; flex-wrap: wrap">
+          <div style="flex: 1; min-width: 455px; margin-left: 1%; margin-right: 1%">
+            <div style="display: flex; flex-direction: row">
+              <div style="flex: 2">
+                <h2 class="title-section">Menu</h2>
+              </div>
+              <div style="flex: 1">
+                <button mat-icon-button (click)="addOption()">
+                  <mat-icon style="color: white" aria-label="add">add_circle</mat-icon>
+                </button>
+                <button mat-icon-button (click)="deleteOption()">
+                  <mat-icon style="color: white" aria-label="delete">remove_circle</mat-icon>
+                </button>
+                <button mat-icon-button (click)="saveMenu()">
+                  <mat-icon style="color: white" aria-label="save">save</mat-icon>
+                </button>
               </div>
             </div>
-            <!-- 
-            <div *ngIf="!category.toDelete" style="display: flex; flex-direction: row">
-              <div style="flex: 1">
-                <mat-checkbox color="primary" [(ngModel)]="category.selected" style="line-height: 36px;"></mat-checkbox>
-              </div>
-              <div style="flex: 10">
-                <mat-form-field class="msf-item menu-field">
-                  <input [disabled]="true" type="text" matInput class="input-register" [(ngModel)]="category.label" [ngModelOptions]="{standalone: true}">
+            <div *ngFor="let option of menu" style="color: white">
+              <app-admin-menu-recursive [menu]="option" (optionSelected)="getOptionSelected($event)"></app-admin-menu-recursive>
+            </div>
+          </div>
+          <div style="flex: 1; min-width: 455px; margin-left: 1%; margin-right: 1%">
+            <div *ngIf="!optionSelected.root && optionSelected.isActive">
+              <div *ngIf="optionSelected.children.length == 0">
+                <h2 class="title-section">Menu Option Configuration</h2>
+                <mat-form-field class="standard-text" style="width: 100%">
+                  <input matInput class="standard-input-text" placeholder="URL Base" [(ngModel)]="optionSelected.baseUrl">
+                </mat-form-field>
+                <mat-form-field class="standard-text" style="width: 100%">
+                  <input matInput class="standard-input-text" placeholder="Icon" [(ngModel)]="optionSelected.icon">
+                </mat-form-field>
+                <mat-form-field class="standard-text" style="width: 100%">
+                  <input matInput class="standard-input-text" placeholder="Tab" [(ngModel)]="optionSelected.tab">
                 </mat-form-field>
               </div>
             </div>
-            -->
+            <div style="flex: 1; flex-direction: column; justify-content: center">
+              <div style="display: flex; flex-direction: row">
+                <div style="flex: 4">
+                  <h2 class="title-section">Category Arguments</h2>
+                </div>
+                <div style="flex: 1">
+                  <button mat-icon-button (click)="editCategoryArguments()">
+                    <mat-icon style="color: white" aria-label="delete">settings</mat-icon>
+                  </button>
+                  <button mat-icon-button (click)="saveOptionCategoryArguments()">
+                    <mat-icon style="color: white" aria-label="save">save</mat-icon>
+                  </button>
+                </div>
+              </div>
+              <div *ngIf="!optionSelected.root && optionSelected.id">
+                <div class="dialog-category-arguments-container">
+                  <div *ngFor="let item of categories" style="color: white">
+                    <div *ngIf="!item.toDelete" class="dialog-item" (click)="setSelectedCategoryArguments(item)"
+                      [ngClass]="{ 'is-active': item.isSelected, 'is-inactive': !item.isSelected }">
+                      <div style="display: flex; justify-content: flex-start">
+                        <mat-checkbox [disabled]="true" color="primary" [(ngModel)]="item.selected"></mat-checkbox>
+                      </div>
+                      <img class="img-item-category-argument" src="{{item.icon}}">
+                      <input [disabled]="true" type="text" matInput [(ngModel)]="item.label" class="text-item-category-argument">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <!--
-        <label *ngIf="categoryArguments.length == 0 && !optionSelected.root && optionSelected.id" style="color: white">There's
-          no category arguments for this option. Press (+) button to add.</label>
-        <div *ngFor="let category of categoryArguments" style="color: white">
-          <div *ngIf="!category.toDelete" style="display: flex; flex-direction: row; align-items: center">
-            <div style="flex: 1">
-              <mat-checkbox [(ngModel)]="category.selected"></mat-checkbox>
-            </div>
-            <div style="flex: 10">
-              <mat-form-field class="msf-field msf-full-width">
-                <mat-select [(ngModel)]="category.categoryArgumentsId.id" [ngModelOptions]="{standalone: true}" (click)="getSelectCategoryArgument(category)">
-                  <mat-option *ngFor="let item of categories" [value]="item.id" style="background-color: black;
-                  color: white;">
-                    {{item.label}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-          </div>
-        </div>
-        -->
       </div>
     </div>
   </mat-card-content>
 </mat-card>
-<!--
-<div class="msf-register-header">
-  <img class="msf-medium-logo" src="../../assets/images/logo.png">
-  <div class="msf-register-header-content">
-    <div class="msf-register-header-title">
-      <div class="msf-register-header-title-content"> MENU ADMINISTRATION</div>
-    </div>
-
-    <div class="msf-register-header-image-content">
-      <img class="medium-user-image" src="../../assets/images/icon-user-white.png">
-    </div>
-  </div>
-</div>
-<mat-card class="msf-register-card msf-center-container">
-  <mat-card-content>        
-    <div style="display: flex; flex-direction: row;">
-      <div style="flex: 1; flex-direction: column; justify-content: center; margin-left: 1%; margin-right: 1%">
-        <mat-expansion-panel style="background: transparent">
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              Create Menu Category/Option
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-          <mat-form-field class="msf-item">
-            <input type="text" matInput placeholder="Category/Option Name" class="input-register" [(ngModel)]="treeObject.label"
-              [ngModelOptions]="{standalone: true}">
-          </mat-form-field>
-          <mat-form-field class="msf-item">
-            <input type="text" matInput placeholder="Base URL" class="input-register" [(ngModel)]="treeObject.baseUrl"
-              [ngModelOptions]="{standalone: true}">
-          </mat-form-field>
-          <button mat-button class="msf-medium-button" (click)="saveMenu()">Save</button>
-        </mat-expansion-panel>
-        <jqxTreeGrid #jqxTreeGridRef [width]="getWidth()" [height]="getHeight()" [source]="dataAdapter" [columns]="columns"
-          [sortable]="true" [selectionMode]="'singleRow'">
-        </jqxTreeGrid>
-      </div>
-      <div style="flex: 1 ;flex-direction: column; justify-content: center; margin-left: 1%; margin-right: 1%">
-        <mat-expansion-panel [expanded]="toggleArgumentPanelState === 0" (opened)="toggleArgumentPanel(0)" style="background: transparent">
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              Category Argument
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-          <mat-form-field class="msf-field msf-full-width">
-            <mat-select placeholder="Category Arguments" [(ngModel)]="categoryArgument.idCategory" name="idcategory"
-              [ngModelOptions]="{standalone: true}" style="line-height: 2.125;">
-              <mat-option *ngFor="let item of categories" [value]="item">
-                {{item.label}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <button mat-button class="msf-medium-button" (click)="searchArguments()">Search</button>
-        </mat-expansion-panel>
-        <mat-expansion-panel [expanded]="toggleArgumentPanelState === 1" (opened)="toggleArgumentPanel(1)" style="background: transparent">
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              Create Arguments
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-          <form name="argumentForm">
-            <mat-form-field class="msf-item">
-              <input type="text" matInput placeholder="Name1" class="input-register" [(ngModel)]="argument.name1"
-                [ngModelOptions]="{standalone: true}">
-            </mat-form-field>
-            <mat-form-field class="msf-item">
-              <input type="text" matInput placeholder="Name2" class="input-register" [(ngModel)]="argument.name2"
-                [ngModelOptions]="{standalone: true}">
-            </mat-form-field>
-            <mat-form-field class="msf-item">
-              <input type="text" matInput placeholder="Name3" class="input-register" [(ngModel)]="argument.name3"
-                [ngModelOptions]="{standalone: true}">
-            </mat-form-field>
-            <mat-form-field class="msf-item">
-              <input type="text" matInput placeholder="URL" class="input-register" [(ngModel)]="argument.url"
-                [ngModelOptions]="{standalone: true}">
-            </mat-form-field>
-            <mat-form-field class="msf-field msf-full-width">
-              <mat-select placeholder="Type" [(ngModel)]="argument.type" name="type" style="line-height: 2.125;">
-                <mat-option value="airline">Airline</mat-option>
-                <mat-option value="airportRoute">AirportRoute</mat-option>
-                <mat-option value="timeRange">TimeRange</mat-option>
-                <mat-option value="dateRange">DateRange</mat-option>
-                <mat-option value="tailnumber">Tailnumber</mat-option>
-                <mat-option value="singleairline">SingleAirline</mat-option>
-                <mat-option value="aircraftType">AircraftType</mat-option>
-                <mat-option value="flightNumber">FlightNumber</mat-option>
-                <mat-option value="airport">Airport</mat-option>
-                <mat-option value="grouping">Grouping</mat-option>
-                <mat-option value="rounding">Rounding</mat-option>
-                <mat-option value="date">Date</mat-option>
-                <mat-option value="windDirection">WindDirection</mat-option>
-                <mat-option value="ceiling">Ceiling</mat-option>
-                <mat-option value="windSpeed">WindSpeed</mat-option>
-                <mat-option value="temperature">Temperature</mat-option>
-              </mat-select>
-              <mat-error *ngIf="argumentForm.get('typeValidator')?.invalid">This field is required.</mat-error>
-            </mat-form-field>
-            <mat-checkbox class="login-check block" color="primary" [(ngModel)]="argument.required" [ngModelOptions]="{standalone: true}">Required?</mat-checkbox>
-            <button mat-button class="msf-medium-button" (click)="saveArgument()">Save</button>
-          </form>
-        </mat-expansion-panel>
-        <jqxGrid [width]="getWidth()" [source]="dataAdapterCategory" [columns]="columnsCategory" [columnsresize]="true"
-          [sortable]="true">
-        </jqxGrid>      
-      </div>
-    </div>    
-  </mat-card-content>
-</mat-card>
--->
