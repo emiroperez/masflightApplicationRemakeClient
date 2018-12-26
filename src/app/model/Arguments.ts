@@ -11,6 +11,8 @@ export class Arguments{
     dataSubType:string;
     url: string;
     required: boolean;
+    title:string;
+    label1:string;
     
 
     constructor(requiredIn: boolean,typeIn: string, name1In: string,name2In: string,name3In: String, urlIn: string){

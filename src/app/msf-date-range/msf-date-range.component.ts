@@ -3,6 +3,7 @@ import { Arguments } from '../model/Arguments';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
 import { AppDateAdapter, APP_DATE_FORMATS } from '../commons/date.adapters';
 import { DatePipe } from '@angular/common';
+import { Globals } from '../globals/Globals';
 
 @Component({
   selector: 'app-msf-date-range',

@@ -7,6 +7,7 @@
 @import "~ag-grid-community/dist/styles/ag-grid.css";
 @import "~ag-grid-community/dist/styles/ag-theme-balham.css";
 @import "~ag-grid-community/dist/styles/ag-theme-balham-dark.css";
+@import "~ng-pick-datetime/assets/style/picker.min.css";
 body {
   background-image: url("assets/images/fondo.png");
   background-size: cover;
@@ -919,6 +920,12 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 
 .ng-dropdown-panel {
   background-color: #3d3d3d !important;
+  position: initial !important;
+}
+
+.ng-dropdown-panel .ng-dropdown-panel-items {
+  background-color: #3d3d3d;
+  box-shadow: 0 -5px 5px -3px rgba(0, 0, 0, 0.2), 0 -8px 10px 1px rgba(0, 0, 0, 0.14), 0 -3px 14px 2px rgba(0, 0, 0, 0.12);
 }
 
 .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
@@ -2423,6 +2430,24 @@ input[role=combobox] {
 .ng-select .ng-select-container .ng-value-container {
   border-top: 0.34375em solid transparent;
   padding-left: 5px;
+}
+
+.trigger {
+  cursor: pointer;
+  font-size: 100% !important;
+  height: 1.5em !important;
+  width: 1.5em !important;
+  text-align: center;
+  vertical-align: -webkit-baseline-middle;
+}
+
+.mat-checkbox-checked.mat-accent .mat-checkbox-background,
+.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+  background-color: #01abec;
+}
+
+.checkbox-container {
+  padding: 10px 0 10px 10px;
 }
 
 /*# sourceMappingURL=styles.css.map */

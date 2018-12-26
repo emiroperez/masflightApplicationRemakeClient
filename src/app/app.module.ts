@@ -76,6 +76,14 @@ import { MsfUserListComponent } from './msf-user-list/msf-user-list.component';
 import { MsfOptionListComponent } from './msf-option-list/msf-option-list.component';
 import { EditCategoryArgumentDialog } from './admin-menu/admin-menu.component';
 import { MsfTestComponent } from './msf-test/msf-test.component';
+import { MsfFreeTextInputComponent } from './msf-free-text-input/msf-free-text-input.component';
+import { MsfSelectBoxSingleOptionComponent } from './msf-select-box-single-option/msf-select-box-single-option.component';
+import { MsfSelectBoxMultipleOptionComponent } from './msf-select-box-multiple-option/msf-select-box-multiple-option.component';
+import { MsfDatePickerComponent } from './msf-date-picker/msf-date-picker.component';
+import { MsfTimePickerComponent } from './msf-time-picker/msf-time-picker.component';
+import { MsfDateTimePickerComponent } from './msf-date-time-picker/msf-date-time-picker.component';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+import { MsfCheckBoxComponent } from './msf-check-box/msf-check-box.component';
 
 @NgModule({
   declarations: [
@@ -134,7 +142,14 @@ import { MsfTestComponent } from './msf-test/msf-test.component';
     MsfUserListComponent,
     MsfOptionListComponent,
     EditCategoryArgumentDialog,
-    MsfTestComponent       
+    MsfTestComponent,
+    MsfFreeTextInputComponent,
+    MsfSelectBoxSingleOptionComponent,
+    MsfSelectBoxMultipleOptionComponent,
+    MsfDatePickerComponent,
+    MsfTimePickerComponent,
+    MsfDateTimePickerComponent,
+    MsfCheckBoxComponent       
   ],
   imports: [
     BrowserModule,
@@ -166,7 +181,9 @@ import { MsfTestComponent } from './msf-test/msf-test.component';
     MatSnackBarModule,
     MatTableModule,
     MatPaginatorModule,
-    AgGridModule.withComponents(null)
+    AgGridModule.withComponents(null),
+    OwlDateTimeModule, 
+    OwlNativeDateTimeModule
   ],
   providers: [
     AuthService,

@@ -10,8 +10,8 @@ import { Utils } from '../commons/utils';
 import { UserService } from '../services/user.service';
 import { RegisterService } from '../services/register.service';
 import { Payment } from '../model/Payment';
-import { NG_SELECT_DEFAULT_CONFIG } from '@ng-select/ng-select';
 import { Globals } from '../globals/Globals';
+import { NG_SELECT_DEFAULT_CONFIG } from '@ng-select/ng-select';
 
 
 

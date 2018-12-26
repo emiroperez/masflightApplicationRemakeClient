@@ -59,7 +59,7 @@
                     <mat-checkbox [disabled]="true" color="primary" [(ngModel)]="item.selected"></mat-checkbox>
                   </div>
                   <img class="img-item-category-argument" src="{{item.icon}}">
-                  <input [disabled]="true" type="text" matInput [(ngModel)]="item.label" class="text-item-category-argument">
+                  <input [disabled]="true" autocomplete="off" type="text" matInput [(ngModel)]="item.label" class="text-item-category-argument">
                 </div>
               </div>
             </div>

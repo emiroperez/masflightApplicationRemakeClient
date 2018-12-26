@@ -116,5 +116,28 @@ export class MsfComponentComponent implements OnInit {
     return ComponentType.optionList == argument.type;
   }
 
+  isMsFreeTextInput(argument: Arguments){
+    return ComponentType.freeTextInput == argument.type;
+  }
+
+  isSelectBoxSingleOption(argument: Arguments){
+    return ComponentType.selectBoxSingleOption == argument.type;
+  }
+
+  isSelectBoxMultipleOption(argument: Arguments){
+    return ComponentType.selectBoxMultipleOption == argument.type;
+  }
+  isDatePicker(argument: Arguments){
+    return ComponentType.datePicker == argument.type;
+  }
+  isTimePicker(argument: Arguments){
+    return ComponentType.timePicker == argument.type;
+  }
+  isDateTimePicker(argument: Arguments){
+    return ComponentType.dateTimePicker == argument.type;
+  }
+  isCheckBox(argument: Arguments){
+    return ComponentType.checkBox == argument.type;
+  }
 
 }
