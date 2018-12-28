@@ -139,5 +139,8 @@ export class MsfComponentComponent implements OnInit {
   isCheckBox(argument: Arguments){
     return ComponentType.checkBox == argument.type;
   }
+  isCancelsCheckBox(argument: Arguments){
+    return ComponentType.cancelsCheckBox == argument.type;
+  }
 
 }

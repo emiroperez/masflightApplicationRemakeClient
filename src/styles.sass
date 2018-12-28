@@ -342,7 +342,7 @@ p
     color:$msf-surface-color!important
 
 .mat-form-field-appearance-legacy .mat-form-field-label
-    color:$msf-surface-color!important
+    color:$msf-font-color!important
 
 .mat-form-field-infix
     width: 100%!important
@@ -1337,13 +1337,12 @@ td.mat-cell, td.mat-footer-cell, th.mat-header-cell
 
 
 .msf-component-airport-container input.mat-input-element
-    background-color: $msf-primary-dark-color
-    border-bottom-left-radius: 15px
-    border-top-left-radius: 15px
-    border-bottom-right-radius: 15px
-    border-top-right-radius: 15px
-    padding-left: 5px
     text-align: center
+    cursor: pointer !important
+    border-radius: 4px
+    border: 1px solid #9e9e9e5e
+    min-height: 26px
+    align-items: center
 
 input[role="combobox"]
     padding-left: 0px
@@ -1499,9 +1498,9 @@ mat-tab-group
     align-items: center
 
 .msf-airline-image
-    width: 50px
-    height: 50px
-    margin-right: 10px
+    width: 40px
+    height: 40px
+    margin-left: 8px
 
 .msf-tail-image
     width: 50px
@@ -2182,6 +2181,21 @@ mat-form-field.standard-text
                         padding-left: 0px !important
 .padding-5
     padding-left: 25px
+
+.flex-container 
+    display: flex
+    flex-wrap: wrap
+
+.cancels-checkbox
+    margin: 0 10px
+
+.ng-select .ng-select-container .ng-value-container    
+    padding: 0 
+    padding-left:5px
+
+.msf-menu-arg-image-circle, .msf-menu-arg-wind-speed-image, .msf-menu-arg-temperature-image, .msf-menu-arg-wind-direction-image
+    background-position-x: center
+
 
 
 

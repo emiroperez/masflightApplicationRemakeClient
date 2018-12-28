@@ -84,6 +84,8 @@ import { MsfTimePickerComponent } from './msf-time-picker/msf-time-picker.compon
 import { MsfDateTimePickerComponent } from './msf-date-time-picker/msf-date-time-picker.component';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { MsfCheckBoxComponent } from './msf-check-box/msf-check-box.component';
+import { MsfCancelsCheckboxComponent } from './msf-cancels-checkbox/msf-cancels-checkbox.component';
+import { MsfDiversionsCheckboxComponent } from './msf-diversions-checkbox/msf-diversions-checkbox.component';
 
 @NgModule({
   declarations: [
@@ -149,7 +151,9 @@ import { MsfCheckBoxComponent } from './msf-check-box/msf-check-box.component';
     MsfDatePickerComponent,
     MsfTimePickerComponent,
     MsfDateTimePickerComponent,
-    MsfCheckBoxComponent       
+    MsfCheckBoxComponent,
+    MsfCancelsCheckboxComponent,
+    MsfDiversionsCheckboxComponent       
   ],
   imports: [
     BrowserModule,

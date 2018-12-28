@@ -37,6 +37,7 @@
                         <app-msf-time-picker *ngIf="isTimePicker(argument)" [argument]="argument"></app-msf-time-picker>
                         <app-msf-date-time-picker *ngIf="isDateTimePicker(argument)" [argument]="argument"></app-msf-date-time-picker>
                         <app-msf-check-box *ngIf="isCheckBox(argument)" [argument]="argument"></app-msf-check-box>
+                        <app-msf-cancels-checkbox *ngIf="isCancelsCheckBox(argument)" [argument]="argument"></app-msf-cancels-checkbox>
                     </ng-container>
                 </div>
             </ng-container>      

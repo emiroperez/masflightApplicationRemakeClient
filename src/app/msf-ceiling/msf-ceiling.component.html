@@ -2,25 +2,32 @@
     <div class="msf-component-airport-title">Ceiling (Above Ground Level)</div>
     <div class="msf-menu-arg-ceiling-image"></div>
 </div>    
-<div class="msf-component-airport-input-container">
-    
-        <mat-form-field class="msf-field-2-column">
-            <mat-select [formControl]="originAirportCtrl" placeholder="From" #originAirportSelect [(ngModel)]="argument.value1">
-                <ngx-mat-select-search [formControl]="originAirportFilterCtrl" placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>
-                <mat-option *ngFor="let originAirport of filteredOriginAirports | async" [value]="originAirport">
-                {{originAirport.name}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
+<div class="msf-component-airport-input-container" style="margin:10px 0">
+        <div class="msf-component-airport-sub-title" style="width:50%;padding: 0;margin: 0;">{{argument.label1}}</div>   
+        <ng-select style="width:100%; padding-bottom:0;"
+                [items]="filteredOriginAirports | async"
+                [multiple]="false"
+                [loading]="loading"
+                loadingText="Loading..."
+                [closeOnSelect]="true"
+                [hideSelected]="false"
+                bindLabel="name"
+                labelForId="id"
+                [(ngModel)]="argument.value1">
+            </ng-select>
         <i class="material-icons msf-menu-arg-right-row">chevron_right</i>
-        <mat-form-field class="msf-field-2-column">
-            <mat-select [formControl]="destAirportCtrl" placeholder="To" #destAirportSelect [(ngModel)]="argument.value2">
-                <ngx-mat-select-search [formControl]="destAirportFilterCtrl" placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>
-                <mat-option *ngFor="let destAirport of filteredDestAirports | async" [value]="destAirport">
-                {{destAirport.name}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>   
+        <div class="msf-component-airport-sub-title" style="width:50%;padding: 0;margin: 0;">{{argument.label2}}</div>   
+        <ng-select style="width:100%;  padding-bottom:0;"
+                [items]="filteredDestAirports | async"
+                [multiple]="false"
+                [loading]="loading"
+                loadingText="Loading..."
+                [closeOnSelect]="true"
+                [hideSelected]="false"
+                bindLabel="name"
+                labelForId="id"
+                [(ngModel)]="argument.value2">
+            </ng-select>
 </div>
 <div class="center msf-component-redio">
     <mat-radio-group [(ngModel)]="argument.value3">
