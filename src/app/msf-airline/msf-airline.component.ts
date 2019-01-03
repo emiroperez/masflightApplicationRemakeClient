@@ -17,22 +17,22 @@ export class MsfAirlineComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
   
- /** control for the selected airline */
- public airlineCtrl: FormControl = new FormControl();
+//  /** control for the selected airline */
+//  public airlineCtrl: FormControl = new FormControl();
 
- /** control for the MatSelect filter keyword */
- public airlineFilterCtrl: FormControl = new FormControl();
+//  /** control for the MatSelect filter keyword */
+//  public airlineFilterCtrl: FormControl = new FormControl();
 
  
 
-  /** list of airlines */
-  private airlines: Airline[] = [];
+//   /** list of airlines */
+//   private airlines: Airline[] = [];
 
-  /** list of airline filtered by search keyword */
-  public filteredAirlines: ReplaySubject<Airline[]> = new ReplaySubject<Airline[]>(1);
+//   /** list of airline filtered by search keyword */
+//   public filteredAirlines: ReplaySubject<Airline[]> = new ReplaySubject<Airline[]>(1);
 
 
-  @ViewChild('airlineSelect') airlineSelect: MatSelect;
+//   @ViewChild('airlineSelect') airlineSelect: MatSelect;
 
   /** Subject that emits when the component has been destroyed. */
   data: Observable<any[]>;

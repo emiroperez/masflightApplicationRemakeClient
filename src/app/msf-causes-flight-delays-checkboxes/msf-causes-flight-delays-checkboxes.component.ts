@@ -3,26 +3,41 @@ import { Globals } from '../globals/Globals';
 import { Arguments } from '../model/Arguments';
 
 @Component({
-  selector: 'app-msf-diversions-checkbox',
-  templateUrl: './msf-diversions-checkbox.component.html',
-  styleUrls: ['./msf-diversions-checkbox.component.css']
+  selector: 'app-msf-causes-flight-delays-checkboxes',
+  templateUrl: './msf-causes-flight-delays-checkboxes.component.html',
+  styleUrls: ['./msf-causes-flight-delays-checkboxes.component.css']
 })
-export class MsfDiversionsCheckboxComponent implements OnInit {
+export class MsfCausesFlightDelaysCheckboxesComponent implements OnInit {
 
+  
   @Input("argument") public argument: Arguments;
   
   selected: any[] = [];
   all = {"checked":false};
+  
+
   data =  [
-      {"id":1,
-      "name":"Airborne Return To Origin",
-      "value":"Airborne Return To Origin",
-      "checked":false},
-      {"id":2,
-      "name":"En-route Diversion",
-      "value":"En-route Diversion",
-      "checked":false}
-  ];
+    {"id":1,
+    "name":"Carrier (A)",
+    "value":"Carrier (A)",
+    "checked":false},
+    {"id":2,
+    "name":"Weather (B)",
+    "value":"Weather (B)",
+    "checked":false},
+    {"id":3,
+    "name":"Airspace (C)",
+    "value":"Airspace (C)",
+    "checked":false},
+    {"id":4,
+    "name":"Security (D)",
+    "value":"Security (D)",
+    "checked":false},
+    {"id":5,
+    "name":"Late Inbound (E)",
+    "value":"Late Inbound (E)",
+    "checked":false}
+];
 
   constructor(public globals: Globals) { }
 

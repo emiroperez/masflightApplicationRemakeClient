@@ -25,5 +25,12 @@ export enum ComponentType {
   timePicker = "timePicker",
   dateTimePicker = "dateTimePicker",
   checkBox = "checkBox",
-  cancelsCheckBox = "cancelsCheckBox"
+  cancelsCheckBox = "cancelsCheckBox",
+  diversionsCheckbox = "diversionsCheckbox",
+  flightDelaysCheckbox = "flightDelaysCheckbox",
+  causesFlightDelaysCheckbox = "causesFlightDelaysCheckbox",
+  taxiTimes = "taxiTimes",
+  taxiTimesCheckbox = "taxiTimesCheckbox",
+  taxiTimesCheckboxes = "taxiTimesCheckboxes",
+  datePeriod = "datePeriod"
 }

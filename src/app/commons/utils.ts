@@ -28,6 +28,7 @@ export class Utils{
     }
 
     getUrlParameters(option: any){
+        console.log(option);
         let params;        
         if(option.menuOptionArguments){            
             for( let menuOptionArguments of option.menuOptionArguments){
@@ -132,7 +133,6 @@ export class Utils{
             }
            return value.iata;
         }else if(type == ComponentType.airline ||
-             type == ComponentType.aircraftType ||
              type == ComponentType.airportRoute){
             var valueAux="";
             var i = 0;
@@ -157,6 +157,18 @@ export class Utils{
                i++;
            }
            return valueAux;
+       }else if(type == ComponentType.aircraftType){
+        var valueAux="";
+        var i = 0;
+        for(var val of value){
+            if(i == 0){
+                valueAux = val.name;
+            }else{
+                valueAux += ","+ val.name;
+            }                
+            i++;
+        }
+        return valueAux;
        }
         return value;
     };
@@ -190,7 +202,6 @@ export class Utils{
             }
            return value.iata;
         }else if(type == ComponentType.airline ||
-             type == ComponentType.aircraftType ||
              type == ComponentType.airportRoute){
             var valueAux="";
             var i = 0;
@@ -215,6 +226,18 @@ export class Utils{
                i++;
            }
            return valueAux;
+       }else if(type == ComponentType.aircraftType){
+        var valueAux="";
+        var i = 0;
+        for(var val of value){
+            if(i == 0){
+                valueAux = val.name;
+            }else{
+                valueAux += ","+ val.name;
+            }                
+            i++;
+        }
+        return valueAux;
        }
         return value;
     };

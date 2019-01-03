@@ -3,24 +3,27 @@ import { Globals } from '../globals/Globals';
 import { Arguments } from '../model/Arguments';
 
 @Component({
-  selector: 'app-msf-diversions-checkbox',
-  templateUrl: './msf-diversions-checkbox.component.html',
-  styleUrls: ['./msf-diversions-checkbox.component.css']
+  selector: 'app-msf-flight-delays-checkboxes',
+  templateUrl: './msf-flight-delays-checkboxes.component.html',
+  styleUrls: ['./msf-flight-delays-checkboxes.component.css']
 })
-export class MsfDiversionsCheckboxComponent implements OnInit {
+export class MsfFlightDelaysCheckboxesComponent implements OnInit {
 
+  
   @Input("argument") public argument: Arguments;
   
   selected: any[] = [];
   all = {"checked":false};
+  
+
   data =  [
       {"id":1,
-      "name":"Airborne Return To Origin",
-      "value":"Airborne Return To Origin",
+      "name":"Departure Delay >= 15 Minutes",
+      "value":"Departure Delay >= 15 Minutes",
       "checked":false},
       {"id":2,
-      "name":"En-route Diversion",
-      "value":"En-route Diversion",
+      "name":" Arrival Delay >= 15 Minutes",
+      "value":"Departure Delay >= 15 Minutes",
       "checked":false}
   ];
 
@@ -78,5 +81,6 @@ export class MsfDiversionsCheckboxComponent implements OnInit {
 		}
 		return false;
 	}
+
 
 }

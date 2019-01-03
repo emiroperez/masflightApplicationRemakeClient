@@ -2,8 +2,8 @@
     <div class="center">
         <div class="msf-component-airport-title"> Equipment Types</div>        
     </div> 
-    <div class="msf-airline-container" >
-        <!--<img src="../../assets/images/components/arguments/airline/aerolin.png" class="msf-airline-image">-->
+    <!-- <div class="msf-airline-container" >
+        <img src="../../assets/images/components/arguments/airline/aerolin.png" class="msf-airline-image">
         <div class="msf-full-width">   
             <div class="msf-component-airline-title ">Input Equipment(s) separated by commas</div>         
             <mat-form-field class="msf-field msf-full-width">
@@ -15,6 +15,22 @@
                 </mat-select>
             </mat-form-field>        
         </div>
-    </div>
+    </div> -->
+    <div class="msf-airline-container">
+            <div class="msf-full-width">   
+                <div class="msf-component-airport-sub-title">Input Equipment(s) separated by commas</div>         
+                <ng-select
+                [items]="data | async"
+                [multiple]="true"
+                [loading]="loading"
+                loadingText="Loading..."
+                [closeOnSelect]="true"
+                [hideSelected]="false"
+                bindLabel="name"
+                labelForId="id"
+                [(ngModel)]="argument.value1">
+            </ng-select>          
+            </div>
+    </div>     
   </div>
   

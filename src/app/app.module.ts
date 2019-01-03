@@ -86,6 +86,12 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { MsfCheckBoxComponent } from './msf-check-box/msf-check-box.component';
 import { MsfCancelsCheckboxComponent } from './msf-cancels-checkbox/msf-cancels-checkbox.component';
 import { MsfDiversionsCheckboxComponent } from './msf-diversions-checkbox/msf-diversions-checkbox.component';
+import { MsfFlightDelaysCheckboxesComponent } from './msf-flight-delays-checkboxes/msf-flight-delays-checkboxes.component';
+import { MsfCausesFlightDelaysCheckboxesComponent } from './msf-causes-flight-delays-checkboxes/msf-causes-flight-delays-checkboxes.component';
+import { MsfTaxiTimesComponent } from './msf-taxi-times/msf-taxi-times.component';
+import { MsfTaxiTimesCheckboxComponent } from './msf-taxi-times-checkbox/msf-taxi-times-checkbox.component';
+import { MsfTaxiTimesCheckboxesComponent } from './msf-taxi-times-checkboxes/msf-taxi-times-checkboxes.component';
+import { MsfDatePeriodComponent } from './msf-date-period/msf-date-period.component';
 
 @NgModule({
   declarations: [
@@ -153,7 +159,13 @@ import { MsfDiversionsCheckboxComponent } from './msf-diversions-checkbox/msf-di
     MsfDateTimePickerComponent,
     MsfCheckBoxComponent,
     MsfCancelsCheckboxComponent,
-    MsfDiversionsCheckboxComponent       
+    MsfDiversionsCheckboxComponent,
+    MsfFlightDelaysCheckboxesComponent,
+    MsfCausesFlightDelaysCheckboxesComponent,
+    MsfTaxiTimesComponent,
+    MsfTaxiTimesCheckboxComponent,
+    MsfTaxiTimesCheckboxesComponent,
+    MsfDatePeriodComponent
   ],
   imports: [
     BrowserModule,

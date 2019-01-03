@@ -13,7 +13,7 @@ import { Globals } from '../globals/Globals';
     {
         provide: DateAdapter, useClass: AppDateAdapter
     },
-    {
+    {   
         provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS
     }
     ]

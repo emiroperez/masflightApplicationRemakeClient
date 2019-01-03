@@ -12,11 +12,11 @@ export class ApplicationService {
 
   utils: Utils;
 
-  host = "http://localhost:8887";
-  // host = "";
+  // host = "http://localhost:8887";
+  host = "";
 
-  host1 = "http://localhost:8886";
-  // host1 = "http://69.64.45.220:8886"; 
+  // host1 = "http://localhost:8886";
+  host1 = "http://69.64.45.220:8886"; 
 
   constructor(private http: ApiClient) {
     this.utils = new Utils();
@@ -45,6 +45,7 @@ export class ApplicationService {
     let urlArg = encodeURIComponent(urlBase);
     let url = this.host + "/consumeWebServices?url=" + urlArg + "&optionId=" + _this.globals.currentOption.id;   
     this.http.get(_this, url, handlerSuccess, handlerError, null);
+    console.log(url);
   }
 
   loadChartData(_this, handlerSuccess, handlerError) {
