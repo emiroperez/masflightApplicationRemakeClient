@@ -39,10 +39,10 @@ export const MY_FORMATS = {
     ]
 })
 
-
 export class MsfDatePeriodComponent implements OnInit {
   date: FormControl;
   date2: FormControl;
+  loading = false;
 
   quarters: any[] = [
     {id: 0, name: '1st Quarter'},

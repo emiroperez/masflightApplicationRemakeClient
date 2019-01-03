@@ -37,7 +37,7 @@ export class MsfSingleAirlineComponent implements OnInit {
  
    /** Subject that emits when the component has been destroyed. */
   //  private _onDestroy = new Subject<void>();
- 
+  loading = false;
    constructor(private http: ApiClient) { }
  
  

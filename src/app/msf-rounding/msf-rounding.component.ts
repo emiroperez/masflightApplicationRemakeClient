@@ -35,7 +35,7 @@ export class MsfRoundingComponent implements OnInit {
 
   // private _onDestroy = new Subject<void>();
 
-  
+  loading = false;
   constructor(private http: ApiClient) { }
 
   ngOnInit() { 
