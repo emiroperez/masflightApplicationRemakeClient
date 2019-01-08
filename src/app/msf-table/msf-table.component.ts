@@ -25,6 +25,8 @@ export class MsfTableComponent implements OnInit {
 
   dataSource;
 
+  actualPageNumber;
+
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(public globals: Globals, private service: ApplicationService) { }
@@ -45,9 +47,16 @@ export class MsfTableComponent implements OnInit {
      return text.replace(re, ' ');
   }
 
-  getData(){
+  getData(moreResults: boolean){
     this.globals.startTimestamp = new Date();
-    this.service.getDataTableSource(this, this.handlerSuccess, this.handlerError);
+    var pageSize = 100;
+      if(moreResults){
+        this.actualPageNumber++;
+        this.globals.moreResults = true;
+      }else{
+        this.actualPageNumber=0;
+      }
+    this.service.getDataTableSource(this, this.handlerSuccess, this.handlerError,""+this.actualPageNumber);
   }
 
   getDataUsageStatistics(){
@@ -88,15 +97,31 @@ export class MsfTableComponent implements OnInit {
       _this.globals.displayedColumns = data.metadata;
       _this.metadata = data.metadata;
       _this.globals.metadata = data.metadata;
+      console.log( _this.globals.displayedColumns);
       
       _this.setColumnsDisplayed(_this);
       
       let dataResult = new MatTableDataSource(mainElement);     
       dataResult.sort = _this.sort; 
-      _this.dataSource = dataResult;
-    }    
-    _this.globals.isLoading = false;    
-    
+      if( _this.globals.moreResults){
+        if( _this.globals.totalRecord<100){
+          _this.globals.moreResultsBtn = false;
+          _this.globals.moreResults = false;
+        }
+          _this.dataSource.data = _this.dataSource.data.concat(dataResult.data);
+      }else{
+        _this.dataSource = dataResult;
+      }
+    }else{
+      if( _this.globals.moreResults){
+        _this.globals.moreResultsBtn = false;
+          _this.globals.moreResults = false;
+      }
+    }  
+    _this.globals.isLoading = false;   
+    if(_this.dataSource){
+      console.log(_this.dataSource);
+    }
   }
 
   setColumnsDisplayed(_this){

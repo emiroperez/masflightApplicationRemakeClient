@@ -175,71 +175,73 @@ export class Utils{
 
 
     getValueFormatView(type: string, value:any){
-        if( typeof value === 'undefined'){
-            return '';
-        }
-        if(type == ComponentType.dateRange || 
-            type == ComponentType.date){
-            return this.getDateFormat(value, null);
-        }else if(type == ComponentType.airport){
-            if(typeof value === "string"){
-                return value;
-            }
-            return value.iata;
-        }else if(type == ComponentType.ceiling ||
-             type == ComponentType.tailnumber ||
-             type == ComponentType.rounding){
-            if(typeof value === "string"){
-                return value;
-            }
-            return value.id;
-        }else if(type == ComponentType.singleairline){
-           if(typeof value === "string"){
-               return value;
-           }
-           if( typeof value.iata === 'undefined'){
+        if(value!=null){
+            if( typeof value === 'undefined'){
                 return '';
             }
-           return value.iata;
-        }else if(type == ComponentType.airline ||
-             type == ComponentType.airportRoute){
+            if(type == ComponentType.dateRange || 
+                type == ComponentType.date){
+                return this.getDateFormat(value, null);
+            }else if(type == ComponentType.airport){
+                if(typeof value === "string"){
+                    return value;
+                }
+                return value.iata;
+            }else if(type == ComponentType.ceiling ||
+                 type == ComponentType.tailnumber ||
+                 type == ComponentType.rounding){
+                if(typeof value === "string"){
+                    return value;
+                }
+                return value.id;
+            }else if(type == ComponentType.singleairline){
+                    if(typeof value === "string"){
+                        return value;
+                    }
+                    if( typeof value.iata === 'undefined'){
+                         return '';
+                     }
+                     return value.iata;
+            }else if(type == ComponentType.airline ||
+                 type == ComponentType.airportRoute){
+                    var valueAux="";
+                    var i = 0;
+                    for(var val of value){
+                        if(i == 0){
+                            valueAux = val.iata;
+                        }else{
+                            valueAux += ","+ val.iata;
+                        }                
+                        i++;
+                    }
+                    return valueAux;
+            }else if(type == ComponentType.grouping){
+               var valueAux="";
+               var i = 0;
+               for(var val of value){
+                   if(i == 0){
+                       valueAux = val.id;
+                   }else{
+                       valueAux += ","+ val.id;
+                   }                
+                   i++;
+               }
+               return valueAux;
+           }else if(type == ComponentType.aircraftType){
             var valueAux="";
             var i = 0;
             for(var val of value){
                 if(i == 0){
-                    valueAux = val.iata;
+                    valueAux = val.name;
                 }else{
-                    valueAux += ","+ val.iata;
+                    valueAux += ","+ val.name;
                 }                
                 i++;
             }
             return valueAux;
-        }else if(type == ComponentType.grouping){
-           var valueAux="";
-           var i = 0;
-           for(var val of value){
-               if(i == 0){
-                   valueAux = val.id;
-               }else{
-                   valueAux += ","+ val.id;
-               }                
-               i++;
            }
-           return valueAux;
-       }else if(type == ComponentType.aircraftType){
-        var valueAux="";
-        var i = 0;
-        for(var val of value){
-            if(i == 0){
-                valueAux = val.name;
-            }else{
-                valueAux += ","+ val.name;
-            }                
-            i++;
+            return value;
         }
-        return valueAux;
-       }
-        return value;
     };
 
     getDateFormat(value, format){

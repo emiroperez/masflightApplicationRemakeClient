@@ -61,14 +61,26 @@ export class ApplicationComponent implements OnInit {
   }
 
   search(){
+    this.globals.moreResults = false;
     if(this.globals.currentOption.tabType === 'map'){
       this.globals.map = true;
       this.msfContainerRef.msfMapRef.getTrackingDataSource();       
     }else if(this.globals.currentOption.tabType === 'usageStatistics'){
       this.msfContainerRef.msfTableRef.getDataUsageStatistics();
     }else{
-      this.msfContainerRef.msfTableRef.getData(); 
+      this.msfContainerRef.msfTableRef.getData(false); 
     }       
+  }
+
+  moreResults(){
+    if(this.globals.currentOption.tabType === 'map'){
+      this.globals.map = true;
+      this.msfContainerRef.msfMapRef.getTrackingDataSource();       
+    }else if(this.globals.currentOption.tabType === 'usageStatistics'){
+      this.msfContainerRef.msfTableRef.getDataUsageStatistics();
+    }else{
+      this.msfContainerRef.msfTableRef.getData(true); 
+    } 
   }
 
 

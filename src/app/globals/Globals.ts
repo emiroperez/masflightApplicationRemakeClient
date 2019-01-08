@@ -23,6 +23,8 @@ export class Globals {
   endTimestamp = null;
   bytesLoaded = 0;
   airports: Observable<any[]>;
+  moreResults : boolean = false;
+  moreResultsBtn : boolean = true;
 
   clearVariables(){
     this.currentOption=null;

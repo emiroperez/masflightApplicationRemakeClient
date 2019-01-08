@@ -57,9 +57,10 @@
         <div class="msf-menu-internal-content">
             <app-msf-container #msfContainerRef ></app-msf-container>
         </div>
-        <div class="msf-menu-more-button" *ngIf="msfContainerRef.msfTableRef && msfContainerRef.msfTableRef.dataSource">
-            <img src="../../assets/images/more.png" class="msf-menu-image msf-vertical-middle msf-line">
-            <div class="msf-vertical-middle msf-line">More Result</div>
+        <div  [ngClass]="globals.moreResultsBtn ? 'msf-menu-more-button' : 'msf-menu-more-button disabled-more-button'" 
+            (click)="moreResults()"  *ngIf="msfContainerRef.msfTableRef && msfContainerRef.msfTableRef.dataSource">
+            <img style="width: 16px;height: 16px;" src="../../assets/images/more.png" class="msf-menu-image msf-vertical-middle msf-line">
+            <div class="msf-vertical-middle msf-line" style="font-size: 13px">More Result</div>
         </div>
         
     </div>
