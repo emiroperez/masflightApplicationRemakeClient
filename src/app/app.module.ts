@@ -92,6 +92,9 @@ import { MsfTaxiTimesComponent } from './msf-taxi-times/msf-taxi-times.component
 import { MsfTaxiTimesCheckboxComponent } from './msf-taxi-times-checkbox/msf-taxi-times-checkbox.component';
 import { MsfTaxiTimesCheckboxesComponent } from './msf-taxi-times-checkboxes/msf-taxi-times-checkboxes.component';
 import { MsfDatePeriodComponent } from './msf-date-period/msf-date-period.component';
+import { MsfRegionComponent } from './msf-region/msf-region.component';
+import { MsfDatePeriodYearComponent } from './msf-date-period-year/msf-date-period-year.component';
+import { MsfDatePeriodYearMonthComponent } from './msf-date-period-year-month/msf-date-period-year-month.component';
 
 @NgModule({
   declarations: [
@@ -165,7 +168,10 @@ import { MsfDatePeriodComponent } from './msf-date-period/msf-date-period.compon
     MsfTaxiTimesComponent,
     MsfTaxiTimesCheckboxComponent,
     MsfTaxiTimesCheckboxesComponent,
-    MsfDatePeriodComponent
+    MsfDatePeriodComponent,
+    MsfRegionComponent,
+    MsfDatePeriodYearComponent,
+    MsfDatePeriodYearMonthComponent
   ],
   imports: [
     BrowserModule,

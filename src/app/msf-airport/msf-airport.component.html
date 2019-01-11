@@ -2,17 +2,22 @@
         <div class="center">
             <div class="msf-component-airport-title">Limit to Flight(s) from</div>
             <div class="msf-menu-arg-single-airport-image">
-                <!--<span><strong>356</strong> <p>Miles</p></span> -->
             </div>
         </div>    
-        <div class="msf-component-airport-input-container">            
-            <mat-form-field class="msf-full-width">
-                <mat-select [formControl]="originAirportCtrl" placeholder="From" #originAirportSelect [(ngModel)]="argument.value1">
-                    <ngx-mat-select-search [formControl]="originAirportFilterCtrl" placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>
-                    <mat-option *ngFor="let originAirport of filteredOriginAirports | async" [value]="originAirport">
-                    {{originAirport.name}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>      
-        </div>
+        <div class="msf-airline-container">
+            <div class="msf-full-width">   
+            <div class="msf-component-airport-sub-title">From</div>         
+            <ng-select
+                [items]="data | async"
+                [multiple]="true"
+                [loading]="loading"
+                loadingText="Loading..."
+                [closeOnSelect]="true"
+                [hideSelected]="false"
+                bindLabel="name"
+                (search)="onSearch($event)" 
+                [(ngModel)]="argument.value1">
+            </ng-select>          
+            </div>
+        </div>        
     </div>  

@@ -20,31 +20,35 @@ export class MsfAirportRouteComponent implements OnInit {
   @Input("argument") public argument: Arguments;
 
   loading = false;
-  
+  name:any;
   constructor(private http: ApiClient, public globals: Globals) { }
 
   ngOnInit() { 
-    this.getAirports(null, this.handlerSuccess);
+    // this.globals.isLoading = true;
+    // this.getAirports(null, this.handlerSuccess);
   }
 
   getAirports(search, handlerSuccess){
-    if(this.globals.airports == null || this.getAirports.length == 0){
-      this.globals.isLoading = true;
       let url = this.argument.url + "?search="+ (search != null?search:'');
       this.http.get(this,url,handlerSuccess,this.handlerError, null);  
-    }
-          
   }
 
 
   handlerSuccess(_this,data, tab){   
-    _this.globals.isLoading = false;
+    _this.loading = false;
     _this.globals.airports = of(data).pipe(delay(500));;        
   }
   
   handlerError(_this,result){
-    _this.globals.isLoading = false; 
+    _this.loading = false; 
     console.log(result);
+  }
+
+  onSearch($event: any){
+    if($event.length>=2){
+      this.loading = true;
+      this.getAirports($event, this.handlerSuccess);
+    }
   }
 
 }

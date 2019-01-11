@@ -32,5 +32,8 @@ export enum ComponentType {
   taxiTimes = "taxiTimes",
   taxiTimesCheckbox = "taxiTimesCheckbox",
   taxiTimesCheckboxes = "taxiTimesCheckboxes",
-  datePeriod = "datePeriod"
+  datePeriod = "datePeriod",
+  region = "region",
+  datePeriodYear = "datePeriodYear",
+  datePeriodYearMonth = "datePeriodYearMonth"
 }

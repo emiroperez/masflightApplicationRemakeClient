@@ -27,21 +27,13 @@ export const MY_FORMATS = {
 };
 
 @Component({
-  selector: 'app-msf-date-period',
-  templateUrl: './msf-date-period.component.html',
-  styleUrls: ['./msf-date-period.component.css'],
-  providers: [
-    {
-        provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
-    {
-        provide: MAT_DATE_FORMATS, useValue: MY_FORMATS
-    }
-    ]
+  selector: 'app-msf-date-period-year',
+  templateUrl: './msf-date-period-year.component.html',
+  styleUrls: ['./msf-date-period-year.component.css']
 })
+export class MsfDatePeriodYearComponent implements OnInit {
 
-export class MsfDatePeriodComponent implements OnInit {
   date: FormControl;
-  date2: FormControl;
   loading = false;
 
   quarters: any[] = [

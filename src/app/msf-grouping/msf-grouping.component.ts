@@ -1,11 +1,12 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Arguments } from '../model/Arguments';
 import { FormControl } from '@angular/forms';
-import { ReplaySubject } from 'rxjs';
+import { ReplaySubject, Observable, of } from 'rxjs';
 import { MatSelect } from '@angular/material';
 import { Subject } from 'rxjs';
-import { take, takeUntil } from 'rxjs/operators';
+import { take, takeUntil, delay } from 'rxjs/operators';
 import { ApiClient } from '../api/api-client';
+import { Globals } from '../globals/Globals';
 
 @Component({
   selector: 'app-msf-grouping',
@@ -17,79 +18,33 @@ export class MsfGroupingComponent implements OnInit {
   @Input("argument") public argument: Arguments;
  
 
-  public groupingCtrl: FormControl = new FormControl();
+  // public groupingCtrl: FormControl = new FormControl();
 
-  public groupingFilterCtrl: FormControl = new FormControl();
+  // public groupingFilterCtrl: FormControl = new FormControl();
 
   groupingList: any[] = [
-                          {id: 'YEAR', name: 'Year'},
-                          {id: 'MONTH', name: 'Month'},
-                          {id: 'DAY', name: 'Day'},
-                          {id: 'HOUR', name: 'Hour'},
-                          {id: 'EQUIPTYPE', name: 'Equip Type'},
-                          {id: 'OPERATINGAIRLINE', name: 'Operating Airline'},                          
-                          {id: 'ORIGINAIRPORT', name: 'Origin Airport'},
-                          {id: 'DESTINATIONAIRPORT', name: 'Destination Airport'},
-                          {id: 'FLIGHTNUMBER', name: 'Flight Number'},
-                          {id: 'MARKETINGAIRLINE', name: 'Marketing Airline'},
-                          {id: 'STATUSCODE', name: 'Status Code'},
-                          {id: 'ROUTE', name: 'Route'}
+                          {id: 'YEAR', name: 'Year', column:'Year'},
+                          {id: 'MONTH', name: 'Month', column:'Month'},
+                          {id: 'DAY', name: 'Day' ,column:'Day'},
+                          {id: 'HOUR', name: 'Hour', column: 'Hour'},
+                          {id: 'EQUIPMENTTYPESPECIFIC', name: 'Specific Equipment Type',column:'EspecificEquipmentType'},
+                          {id: 'EQUIPMENTTYPEGENERAL', name: 'General Equipment Type',column:'GeneralEquipmentType'},
+                          {id: 'OPERATINGAIRLINE', name: 'Operating Airline',column:'OperatingAirline'},                          
+                          {id: 'ORIGINAIRPORT', name: 'Origin Airport',column:'Origin'},
+                          {id: 'DESTINATIONAIRPORT', name: 'Destination Airport',column:'Destination'},
+                          {id: 'FLIGHTNUMBER', name: 'Flight Number',column:'FlightNumber'},
+                          {id: 'MARKETINGAIRLINE', name: 'Marketing Airline',column:'Marketing_Carrier'},
+                          // {id: 'STATUSCODE', name: 'Status Code',column:'StatusCode'},
+                          {id: 'ROUTE', name: 'Route',column:'Route'}
                         ];
+  // private _onDestroy = new Subject<void>();
 
-  public filteredGrouping: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
+  constructor(private http: ApiClient, public globals: Globals) { }
 
-  @ViewChild('groupingSelect') groupingSelect: MatSelect;
-
-
-  private _onDestroy = new Subject<void>();
-
-  
-  constructor(private http: ApiClient) { }
 
   ngOnInit() { 
-
-    this.argument.value1 = [{id: 'MARKETINGAIRLINE', name: 'Marketing Airline'}];
-
-    this.filteredGrouping.next(this.groupingList.slice());
-
-    this.groupingFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() =>{
-        this.filterGrouping();
-      });
-
   }
 
-
-  ngAfterViewInit() {
-    this.setInitialValue();
-  }
-
-  ngOnDestroy() {
-    this._onDestroy.next();
-    this._onDestroy.complete();
-  }
-
-  private setInitialValue() {
-    this.filteredGrouping
-      .pipe(take(1), takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.groupingSelect.compareWith = (a: any, b: any) => a.id === b.id;
-      });
-  }
-
-  private filterGrouping() {
-    if (!this.groupingList) {
-      return;
-    }
-    let search = this.groupingFilterCtrl.value;
-    if (!search) {
-      this.filteredGrouping.next(this.groupingList.slice());
-      return;
-    } else {
-      search = search.toLowerCase();
-    }
-    this.groupingSelect.compareWith = (a: any, b: any) => a.id === b.id;
-  }
+ 
 
 }

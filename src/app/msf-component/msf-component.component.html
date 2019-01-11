@@ -45,6 +45,9 @@
                         <app-msf-taxi-times-checkbox *ngIf="isTaxiTimesCheckbox(argument)" [argument]="argument"></app-msf-taxi-times-checkbox>
                         <app-msf-taxi-times-checkboxes *ngIf="isTaxiTimesCheckboxes(argument)" [argument]="argument"></app-msf-taxi-times-checkboxes>
                         <app-msf-date-period *ngIf="isDatePeriod(argument)" [argument]="argument"></app-msf-date-period>
+                        <app-msf-region *ngIf="isRegion(argument)" [argument]="argument"></app-msf-region>
+                        <app-msf-date-period-year *ngIf="isDatePeriodYear(argument)" [argument]="argument"></app-msf-date-period-year>
+                        <app-msf-date-period-year-month *ngIf="isDatePeriodYearMonth(argument)" [argument]="argument"></app-msf-date-period-year-month>
                     </ng-container>
                 </div>
             </ng-container>      

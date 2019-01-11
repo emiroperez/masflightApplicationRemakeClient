@@ -1,7 +1,9 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
-import {MatSort, MatTableDataSource, MatTab} from '@angular/material';
+import {MatSort, MatTableDataSource, MatTab, Sort} from '@angular/material';
 import { Globals } from '../globals/Globals';
 import { ApplicationService } from '../services/application.service';
+import { MsfGroupingComponent } from '../msf-grouping/msf-grouping.component';
+import { Utils } from '../commons/utils';
 
 
 
@@ -12,6 +14,8 @@ import { ApplicationService } from '../services/application.service';
 })
 export class MsfTableComponent implements OnInit {
 
+  utils: Utils;
+  
   isLoading = false;
   color = 'primary';
 
@@ -21,22 +25,58 @@ export class MsfTableComponent implements OnInit {
   @Input('displayedColumns')
   displayedColumns: string[] = []; 
 
+  @Input('msfGroupingComponent')
+  msfGroupingComponent: MsfGroupingComponent;
+
   metadata;
 
   dataSource;
 
   actualPageNumber;
 
+  groupingArgument;
+
+  sortedData: any[];
+
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(public globals: Globals, private service: ApplicationService) { }
 
-  ngOnInit() {        
+  ngOnInit() {      
+    // this.dataSource.sort = this.sort;  
   }
 
   ngAfterViewInit(){
     //this.globals.generateDynamicTable = false;
   }
+
+  setGroupingArgument(){
+    var menuOptionArguments = this.globals.currentOption.menuOptionArguments;
+    var categoryArguments = menuOptionArguments[menuOptionArguments.length-1].categoryArguments;
+    categoryArguments.forEach(element => {
+            element.arguments.forEach(element2 => {
+            if(element2.type=="grouping"){
+              this.groupingArgument = element2;
+            }
+        });
+        });
+    }
+
+    addGroupingColumns(displayedColumns: any[]){
+      var array = this.groupingArgument.value1;
+      for (let index = array.length-1; index >= 0; index--) {
+        const element = array[index];
+        const indexColumn = this.indexOfAttrInList(displayedColumns, "columnName", element.column);
+        displayedColumns.unshift({ columnType:"string",
+                                   columnName:element.column,
+                                   columnLabel:element.name});
+        if(indexColumn!=-1){
+            displayedColumns.splice(indexColumn,1);
+        }else{
+           
+        }
+      }
+    }
 
   setMsfChartRef(msfChartRef){
     msfChartRef.setColumns(this.displayedColumns);
@@ -85,6 +125,7 @@ export class MsfTableComponent implements OnInit {
   }
 
   handlerSuccess(_this,data, tab){
+    _this.setGroupingArgument();
     _this.globals.endTimestamp = new Date();
     let response = data.Response;
     _this.globals.totalRecord = response.total;
@@ -95,6 +136,9 @@ export class MsfTableComponent implements OnInit {
     }
     if( _this.globals.totalRecord > 0){
       _this.globals.displayedColumns = data.metadata;
+      if(_this.groupingArgument!=null){
+        _this.addGroupingColumns(_this.globals.displayedColumns);
+      }
       _this.metadata = data.metadata;
       _this.globals.metadata = data.metadata;
       console.log( _this.globals.displayedColumns);
@@ -120,8 +164,11 @@ export class MsfTableComponent implements OnInit {
     }  
     _this.globals.isLoading = false;   
     if(_this.dataSource){
+      _this.dataSource.sort = _this.sort;
+      _this.globals.dataSource = true;
       console.log(_this.dataSource);
     }
+
   }
 
   setColumnsDisplayed(_this){
@@ -134,5 +181,16 @@ export class MsfTableComponent implements OnInit {
     _this.globals.isLoading = false; 
     console.log(result);
   }
+
+  indexOfAttrInList = function (list, attr, value){
+		for (var i=0;i<list.length;i++){
+			var obj=list[i];
+			if (obj[attr]==value){
+				return i;
+			}
+		}
+		return -1;
+	}
+
 
 }

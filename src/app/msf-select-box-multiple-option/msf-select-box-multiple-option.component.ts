@@ -13,7 +13,6 @@ import { delay } from 'rxjs/operators';
 export class MsfSelectBoxMultipleOptionComponent implements OnInit {
 
   data: Observable<any[]>;
-
   @Input("argument") public argument: Arguments;
 
   loading = false;
@@ -23,21 +22,27 @@ export class MsfSelectBoxMultipleOptionComponent implements OnInit {
   ngOnInit() { 
     this.getRecords(null, this.handlerSuccess);
   }
-
-  getRecords(search, handlerSuccess){
-    if(this.data == null || this.getRecords.length == 0){
-      let url = this.argument.url + "?search="+ (search != null?search:'');
-      this.http.get(this,url,handlerSuccess,this.handlerError, null);  
-    }
-          
+  
+   getRecords(search, handlerSuccess){
+    let url = this.argument.url + "?search="+ (search != null?search:'');
+    this.http.get(this,url,handlerSuccess,this.handlerError, null);  
   }
 
   handlerSuccess(_this,data, tab){   
+    _this.loading = false;
     _this.data = of(data).pipe(delay(500));;        
   }
-  
+
   handlerError(_this,result){
+    _this.loading = false;
     console.log(result);
+  }
+
+  onSearch($event: any){
+    if($event.length>=2){
+      this.loading = true;
+      this.getRecords($event, this.handlerSuccess);
+    }
   }
 
 }

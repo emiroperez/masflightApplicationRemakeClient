@@ -26,20 +26,13 @@ export const MY_FORMATS = {
   },
 };
 
-@Component({
-  selector: 'app-msf-date-period',
-  templateUrl: './msf-date-period.component.html',
-  styleUrls: ['./msf-date-period.component.css'],
-  providers: [
-    {
-        provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
-    {
-        provide: MAT_DATE_FORMATS, useValue: MY_FORMATS
-    }
-    ]
-})
 
-export class MsfDatePeriodComponent implements OnInit {
+@Component({
+  selector: 'app-msf-date-period-year-month',
+  templateUrl: './msf-date-period-year-month.component.html',
+  styleUrls: ['./msf-date-period-year-month.component.css']
+})
+export class MsfDatePeriodYearMonthComponent implements OnInit {
   date: FormControl;
   date2: FormControl;
   loading = false;
@@ -55,6 +48,7 @@ export class MsfDatePeriodComponent implements OnInit {
   
   ngOnInit() {
     this.date =  new FormControl(moment());
+    this.date2 =  new FormControl(moment());
   }
 
   chosenYearHandler(normalizedYear: Moment, datepicker: MatDatepicker<Moment>) {
@@ -62,6 +56,13 @@ export class MsfDatePeriodComponent implements OnInit {
     ctrlValue.year(normalizedYear.year());
     this.date.setValue(ctrlValue);
     this.argument.value1 = this.date;
+  }
+
+  chosenMonthHandler(normalizedYear: Moment, datepicker: MatDatepicker<Moment>) {
+    const ctrlValue = this.date2.value;
+    ctrlValue.month(normalizedYear.month());
+    this.date.setValue(ctrlValue);
+    this.argument.value2 = this.date2;
     datepicker.close();
   }
 

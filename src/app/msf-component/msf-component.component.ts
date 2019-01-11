@@ -163,4 +163,13 @@ export class MsfComponentComponent implements OnInit {
   isDatePeriod(argument: Arguments){
     return ComponentType.datePeriod == argument.type;
   }
+  isRegion(argument: Arguments){
+    return ComponentType.region == argument.type;
+  }
+  isDatePeriodYear(argument: Arguments){
+    return ComponentType.datePeriodYear == argument.type;
+  }
+  isDatePeriodYearMonth(argument: Arguments){
+    return ComponentType.datePeriodYearMonth == argument.type;
+  }
 }
