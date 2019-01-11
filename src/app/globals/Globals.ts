@@ -26,6 +26,7 @@ export class Globals {
   airports: Observable<any[]>;
   moreResults : boolean = false;
   moreResultsBtn : boolean = true;
+  currentApplication : any;
 
   clearVariables(){
     this.currentOption=null;

@@ -6,13 +6,13 @@ import { Menu } from '../model/Menu';
 @Injectable({
   providedIn: 'root'
 })
-export class MenuService {
+export class WelcomeService {
 
   constructor( private http: HttpClient) { }
 
-  getMenu(_this,successHandler, errorHandler){
-    // let url = "/getMenu";
-    let url = "http://localhost:8887/getMenu?application="+_this.globals.currentApplication.id;
+  getApplications(_this,successHandler, errorHandler){
+    // let url = "/getApplications";
+    let url = "http://localhost:8887/getApplications";
     _this.globals.isLoading = true;
     this.get(_this,url,successHandler, errorHandler);
   }
