@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, QueryList, ViewChildren, AfterViewInit } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
@@ -32,7 +32,12 @@ export class AdminMenuRecursiveComponent implements OnInit {
   @Input("menu")
   option: any;
 
+  @Input("index")
+  index: any;
+
   @Output() optionSelected = new EventEmitter();
+
+  @Output() idSelected = new EventEmitter();
 
   isOpened: any = true;
 
@@ -43,6 +48,9 @@ export class AdminMenuRecursiveComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+  }
+
+  ngAfterViewInit(): void {    
   }
 
   toggle(option) {
@@ -56,7 +64,11 @@ export class AdminMenuRecursiveComponent implements OnInit {
   }
 
   selectOption(option) {    
-    this.optionSelected.emit(option);    
+    this.optionSelected.emit(option);            
+  }  
+
+  selectIdDom(index){
+    this.idSelected.emit(index);
   }
 
   changeDivState(option) {

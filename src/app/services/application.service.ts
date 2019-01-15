@@ -76,7 +76,7 @@ export class ApplicationService {
 
   loadMenuOptions(_this, handlerSuccess, handlerError) {
     _this.globals.isLoading = true;
-    let url = this.host + "/getMenuTree";
+    let url = this.host + "/getMenuTree?appId=" + _this.globals.currentApplication;
     this.http.get(_this, url, handlerSuccess, handlerError, null);
   }
 /*
