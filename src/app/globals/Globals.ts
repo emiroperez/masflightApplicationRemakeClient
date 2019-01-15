@@ -27,6 +27,8 @@ export class Globals {
   moreResults : boolean = false;
   moreResultsBtn : boolean = true;
   currentApplication : any;
+  minDate:any;
+  maxDate:any;
 
   clearVariables(){
     this.currentOption=null;
@@ -64,5 +66,16 @@ export class Globals {
 
   getSelectedIndex(){
     return this.selectedIndex;
+  }
+
+  dataAvailabilityInit(){
+    const option = this.currentOption;
+    if(option.dataAvailability!=null){
+      this.minDate = new Date(option.dataAvailability.startDate);
+      this.maxDate = new Date(option.dataAvailability.endDate);
+    }else{
+      this.minDate = null;
+      this.minDate = null;
+    }
   }
 }

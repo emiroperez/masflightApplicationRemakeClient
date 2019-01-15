@@ -12,11 +12,11 @@ export class ApplicationService {
 
   utils: Utils;
 
-  // host = "http://localhost:8887";
-  host = "";
+  host = "http://localhost:8887";
+  // host = "";
 
-  // host1 = "http://localhost:8886";
-  host1 = "http://69.64.45.220:8886"; 
+  host1 = "http://localhost:8886";
+  // host1 = "http://69.64.45.220:8886"; 
 
   constructor(private http: ApiClient) {
     this.utils = new Utils();
@@ -40,7 +40,7 @@ export class ApplicationService {
     let param = this.utils.getUrlParameters(_this.globals.currentOption);
     let urlBase = param.url;
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=100&page_number="+pageNumber;
-    if(pageNumber=="1"){
+    if(pageNumber=="0"){
       _this.dataSource = null;
     }
     console.log(urlBase);

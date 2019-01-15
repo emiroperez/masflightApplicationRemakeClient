@@ -10,6 +10,7 @@ import { AppDateAdapter, APP_DATE_FORMATS } from '../commons/date.adapters';
 import * as _moment from 'moment';
 // tslint:disable-next-line:no-duplicate-imports
 import {default as _rollupMoment, Moment} from 'moment';
+import { Globals } from '../globals/Globals';
 
 const moment = _rollupMoment || _moment;
 
@@ -29,24 +30,30 @@ export const MY_FORMATS = {
 @Component({
   selector: 'app-msf-date-period-year',
   templateUrl: './msf-date-period-year.component.html',
-  styleUrls: ['./msf-date-period-year.component.css']
+  styleUrls: ['./msf-date-period-year.component.css'],
+  providers: [
+    {
+        provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
+    {
+        provide: MAT_DATE_FORMATS, useValue: MY_FORMATS
+    }
+    ]
 })
 export class MsfDatePeriodYearComponent implements OnInit {
 
+  constructor(public globals: Globals) { }
+  
   date: FormControl;
+  date2: FormControl;
   loading = false;
-
-  quarters: any[] = [
-    {id: 0, name: '1st Quarter',value:"1"},
-    {id: 1, name: '2nd Quarter',value:"2"},
-    {id: 2, name: '3rd Quarter',value:"3"},
-    {id: 3, name: '4st Quarter',value:"4"}
-  ];
 
   @Input("argument") public argument: Arguments;
   
   ngOnInit() {
     this.date =  new FormControl(moment());
+    this.date2 =  new FormControl(moment());
+    this.argument.value1 = this.date.value.year();
+    this.argument.value2 = this.date2.value.year();
   }
 
   chosenYearHandler(normalizedYear: Moment, datepicker: MatDatepicker<Moment>) {
@@ -54,6 +61,14 @@ export class MsfDatePeriodYearComponent implements OnInit {
     ctrlValue.year(normalizedYear.year());
     this.date.setValue(ctrlValue);
     this.argument.value1 = this.date;
+    datepicker.close();
+  }
+
+  chosenYearHandler2(normalizedYear: Moment, datepicker: MatDatepicker<Moment>) {
+    const ctrlValue = this.date2.value;
+    ctrlValue.year(normalizedYear.year());
+    this.date2.setValue(ctrlValue);
+    this.argument.value2 = this.date2;
     datepicker.close();
   }
 

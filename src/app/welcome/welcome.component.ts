@@ -103,6 +103,7 @@ export class WelcomeComponent implements OnInit {
 
   goTo(option:any){
     this.globals.currentApplication = option;
+    localStorage.setItem("currentApplication", JSON.stringify(this.globals.currentApplication));
     this.router.navigate([option.url]);
   }
 }

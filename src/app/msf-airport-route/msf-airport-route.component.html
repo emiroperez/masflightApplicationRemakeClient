@@ -1,32 +1,3 @@
-<!--<div>
-    <div class="center">
-        <div class="msf-component-airport-title">Limit to Flight(s) from</div>
-        <div class="msf-menu-arg-airport-image">
-            <span><strong>356</strong> <p>Miles</p></span>
-        </div>
-    </div>    
-    <div class="msf-component-airport-input-container">            
-        <mat-form-field class="msf-field-2-column">
-            <mat-select [formControl]="originAirportCtrl" placeholder="From" [multiple]="true"  #originAirportSelect [(ngModel)]="argument.value1">
-                <ngx-mat-select-search [formControl]="originAirportFilterCtrl" placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>
-                <mat-option *ngFor="let originAirport of filteredOriginAirports | async" [value]="originAirport">
-                {{originAirport.name}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-        <i class="material-icons msf-menu-arg-right-row">chevron_right</i>
-        <mat-form-field class="msf-field-2-column">
-            <mat-select [formControl]="destAirportCtrl" placeholder="To" [multiple]="true" #destAirportSelect [(ngModel)]="argument.value2">
-                <ngx-mat-select-search [formControl]="destAirportFilterCtrl" placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>
-                <mat-option *ngFor="let destAirport of filteredDestAirports | async" [value]="destAirport">
-                {{destAirport.name}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>              
-    </div>
-</div>  
--->
-
 <div>
     <div class="center">
         <div class="msf-component-airport-title">Limit to Flight(s) from</div>
