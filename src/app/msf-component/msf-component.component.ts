@@ -142,5 +142,34 @@ export class MsfComponentComponent implements OnInit {
   isCancelsCheckBox(argument: Arguments){
     return ComponentType.cancelsCheckBox == argument.type;
   }
-
+  isDiversionsCheckBox(argument: Arguments){
+    return ComponentType.diversionsCheckbox == argument.type;
+  }
+  isFlightDelaysCheckBox(argument: Arguments){
+    return ComponentType.flightDelaysCheckbox == argument.type;
+  }
+  isCausesFlightDelaysCheckBox(argument: Arguments){
+    return ComponentType.causesFlightDelaysCheckbox == argument.type;
+  }
+  isTaxiTimes(argument: Arguments){
+    return ComponentType.taxiTimes == argument.type;
+  }
+  isTaxiTimesCheckbox(argument: Arguments){
+    return ComponentType.taxiTimesCheckbox == argument.type;
+  }
+  isTaxiTimesCheckboxes(argument: Arguments){
+    return ComponentType.taxiTimesCheckboxes == argument.type;
+  }
+  isDatePeriod(argument: Arguments){
+    return ComponentType.datePeriod == argument.type;
+  }
+  isRegion(argument: Arguments){
+    return ComponentType.region == argument.type;
+  }
+  isDatePeriodYear(argument: Arguments){
+    return ComponentType.datePeriodYear == argument.type;
+  }
+  isDatePeriodYearMonth(argument: Arguments){
+    return ComponentType.datePeriodYearMonth == argument.type;
+  }
 }

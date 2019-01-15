@@ -42,6 +42,11 @@ export class MsfDiversionsCheckboxComponent implements OnInit {
       });
     }
     this.argument.value1 = this.selected;
+    if(this.selected.length==this.data.length){
+      this.all.checked=true;
+    }else{
+      this.all.checked=false;
+    }
   }
   
   changeAllSelected(value){

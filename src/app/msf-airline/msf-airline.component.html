@@ -3,16 +3,8 @@
       <div class="msf-component-airport-title">Select Airlines</div>        
   </div> 
   <div class="msf-airline-container">
-      <div class="">   
-          <div class="msf-component-airline-title ">Input Airline(s) separated by commas</div>         
-          <!-- <mat-form-field class="msf-field msf-full-width">
-              <mat-select [formControl]="airlineCtrl" placeholder="Airlines" [multiple]="true"  #airlineSelect [(ngModel)]="argument.value1">
-                  <ngx-mat-select-search [formControl]="airlineFilterCtrl" placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>
-                  <mat-option *ngFor="let airline of filteredAirlines | async" [value]="airline">
-                  {{airline.name}}
-                  </mat-option>
-              </mat-select>
-          </mat-form-field>         -->
+      <div class="msf-full-width">   
+          <div class="msf-component-airport-sub-title">Input Airline(s) separated by commas</div>         
           <ng-select
           [items]="data | async"
           [multiple]="true"
@@ -21,7 +13,7 @@
           [closeOnSelect]="true"
           [hideSelected]="false"
           bindLabel="name"
-          labelForId="id"
+          (search)="onSearch($event)" 
           [(ngModel)]="argument.value1">
       </ng-select>          
       </div>

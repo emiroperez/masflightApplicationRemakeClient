@@ -40,7 +40,7 @@
         [closeOnSelect]="true"
         [hideSelected]="false"
         bindLabel="name"
-        labelForId="id"
+        (search)="onSearch($event)" 
         [(ngModel)]="argument.value1">
     </ng-select>
     <div class="center">
@@ -55,6 +55,7 @@
         [closeOnSelect]="true"
         [hideSelected]="false"
         bindLabel="name"
+        (search)="onSearch($event)" 
         [(ngModel)]="argument.value2">
     </ng-select> 
 </div>  

@@ -38,6 +38,16 @@
                         <app-msf-date-time-picker *ngIf="isDateTimePicker(argument)" [argument]="argument"></app-msf-date-time-picker>
                         <app-msf-check-box *ngIf="isCheckBox(argument)" [argument]="argument"></app-msf-check-box>
                         <app-msf-cancels-checkbox *ngIf="isCancelsCheckBox(argument)" [argument]="argument"></app-msf-cancels-checkbox>
+                        <app-msf-diversions-checkbox *ngIf="isDiversionsCheckBox(argument)" [argument]="argument"></app-msf-diversions-checkbox>
+                        <app-msf-flight-delays-checkboxes *ngIf="isFlightDelaysCheckBox(argument)" [argument]="argument"></app-msf-flight-delays-checkboxes>
+                        <app-msf-causes-flight-delays-checkboxes *ngIf="isCausesFlightDelaysCheckBox(argument)" [argument]="argument"></app-msf-causes-flight-delays-checkboxes>
+                        <app-msf-taxi-times *ngIf="isTaxiTimes(argument)" [argument]="argument"></app-msf-taxi-times>
+                        <app-msf-taxi-times-checkbox *ngIf="isTaxiTimesCheckbox(argument)" [argument]="argument"></app-msf-taxi-times-checkbox>
+                        <app-msf-taxi-times-checkboxes *ngIf="isTaxiTimesCheckboxes(argument)" [argument]="argument"></app-msf-taxi-times-checkboxes>
+                        <app-msf-date-period *ngIf="isDatePeriod(argument)" [argument]="argument"></app-msf-date-period>
+                        <app-msf-region *ngIf="isRegion(argument)" [argument]="argument"></app-msf-region>
+                        <app-msf-date-period-year *ngIf="isDatePeriodYear(argument)" [argument]="argument"></app-msf-date-period-year>
+                        <app-msf-date-period-year-month *ngIf="isDatePeriodYearMonth(argument)" [argument]="argument"></app-msf-date-period-year-month>
                     </ng-container>
                 </div>
             </ng-container>      

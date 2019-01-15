@@ -19,10 +19,14 @@ export class Globals {
   displayedColumns;
   metadata;
   totalRecord = 0;
+  dataSource : boolean = false;
   startTimestamp = null;
   endTimestamp = null;
   bytesLoaded = 0;
   airports: Observable<any[]>;
+  moreResults : boolean = false;
+  moreResultsBtn : boolean = true;
+  currentApplication : any;
 
   clearVariables(){
     this.currentOption=null;
@@ -38,6 +42,9 @@ export class Globals {
     this.startTimestamp = null;
     this.endTimestamp = null;
     this.bytesLoaded = 0;
+    this.moreResults = false;
+    this.moreResultsBtn = true;
+    this.dataSource = false;
 
   }
 

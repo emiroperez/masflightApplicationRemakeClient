@@ -12,7 +12,7 @@ export class MenuService {
 
   getMenu(_this,successHandler, errorHandler){
     // let url = "/getMenu";
-    let url = "http://localhost:8887/getMenu";
+    let url = "http://localhost:8887/getMenu?application="+_this.globals.currentApplication.id;
     _this.globals.isLoading = true;
     this.get(_this,url,successHandler, errorHandler);
   }

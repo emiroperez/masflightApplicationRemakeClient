@@ -12,37 +12,25 @@
   <!--nav-->
   <div class="msf-nav">
     <ul>
-      <li *ngFor="let option of options" routerLink="{{option.url}}" (click)="setState(option.label)" class="{{aciveElement==option.label?'msf-active-li':'msf-off'}}">
+      <li *ngFor="let option of options" routerLink="{{option.url}}" (click)="setState(option)" class="{{activeElement==option?'msf-active-li':'msf-off'}}">
         <img src="../../assets/images/check.png" class="msf-li-icon">
-        <a class="msf-option">{{option.label}}</a>
+        <a class="msf-option">{{option.name}}</a>
       </li>
     </ul>
     <a class="msf-link msf-support-text" >Need support?</a>
   </div>
   <!--content-->
   <div class="fade-in msf-container">
-    <div *ngFor="let option of options" id="option.label" class="{{aciveElement==option.label?'msf-show-panel':'msf-hide'}} msf-content">
+    <div *ngFor="let option of options" id="option.id" class="{{activeElement==option?'msf-show-panel':'msf-hide'}} msf-content">
       <!--Dashboard-->
-      <div class="msf-internal-content" *ngIf="option.label==='Landing'" >
+      <div class="msf-internal-content" *ngIf="option.name==='Landing'" >
         <div class="landing-name-content">
             <img src="../../assets/images/pulse (1).png" > 
         </div>
         <div class="landing-icon-content">
-          <div>
-              <img src="../../assets/images/airview.png" class="landing-icon">              
-              <span>Airview</span>
-          </div>
-          <div>
-            <img src="../../assets/images/ship_tracker.png" class="landing-icon">
-            <span>Ship Tracker</span>
-          </div>
-          <div>
-            <img src="../../assets/images/content.png" class="landing-icon">
-            <span>Content</span>
-          </div>
-          <div>
-            <img routerLink="/application" src="../../assets/images/masflight.png" class="landing-icon">
-            <span>masFlight</span>
+          <div *ngFor="let option of options2">
+              <img  (click)="goTo(option)" src="../../assets/images/{{option.name}}.png" class="landing-icon">              
+              <span >{{option.name}}</span>
           </div>
         </div>
          

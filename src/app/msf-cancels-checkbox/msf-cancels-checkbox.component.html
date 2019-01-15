@@ -7,7 +7,7 @@
               Select/De-Select All
           </mat-checkbox>
       </div>
-    </div>    
+  </div>    
   <div class="msf-component-airport-input-container checkbox-container">
     <div class="msf-full-width flex-container">
       <mat-checkbox class="cancels-checkbox" *ngFor="let checkbox of data" [value]="checkbox.value" [(ngModel)]="checkbox.checked" (change)="checkBoxChange(checkbox)" >
