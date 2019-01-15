@@ -220,7 +220,8 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
       "tabType": null,
       "parentId": null,
       "children": [],
-      "toDelete": false
+      "toDelete": false,
+      "applicationId": this.globals.currentApplication.id
     };
     if (this.optionSelected.label != null) {
       this.optionSelected.isOpened = true;
