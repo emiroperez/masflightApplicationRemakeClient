@@ -4,17 +4,16 @@
     <mat-icon *ngIf="!option.isOpened" style="color: white" aria-label="Toogle">keyboard_arrow_down</mat-icon>
     <mat-icon *ngIf="option.isOpened" style="color: white" aria-label="Toogle">keyboard_arrow_up</mat-icon>
   </button>
-  <mat-form-field class="msf-item menu-field" [ngClass]="{
-    'is-active': option.isActive,
-    'is-inactive': !option.isActive        
-  }">
-    <input type="text" autocomplete="off" matInput class="input-register" [(ngModel)]="option.label" [ngModelOptions]="{standalone: true}"
+  <mat-form-field #root id="'root' + index" class="msf-item menu-field" [ngClass]="{
+    'is-active': option.isActive,'is-inactive': !option.isActive }" (click)="selectIdDom(index)">
+    <input id="root{{index}}" type="text" matInput class="input-register input-menu-option" [(ngModel)]="option.label" [ngModelOptions]="{standalone: true}"
       (click)="selectOption(option)">
   </mat-form-field>
   <div [@animationOption2]="option.isOpened ? 'open': 'close'" *ngIf="option.children && option.children.length > 0 && option.isOpened"
     style="padding-left: 10%">
-    <div *ngFor="let optionChild of option.children">
-      <app-admin-menu-recursive [menu]="optionChild" (optionSelected)="selectOption($event)"></app-admin-menu-recursive>
+    <div *ngFor="let optionChild of option.children; let i = index">
+      <app-admin-menu-recursive [menu]="optionChild" [index]="index + '-' + i" (optionSelected)="selectOption($event)"
+        (idSelected)="selectIdDom($event)"></app-admin-menu-recursive>
     </div>
   </div>
 </div>

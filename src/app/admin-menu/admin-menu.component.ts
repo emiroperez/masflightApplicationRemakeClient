@@ -1,4 +1,4 @@
-import { OnInit, Component, Inject } from '@angular/core';
+import { OnInit, Component, Inject, ViewChildren, AfterViewInit, QueryList, ChangeDetectorRef, Renderer2 } from '@angular/core';
 import { ApiClient } from '../api/api-client';
 import { Globals } from '../globals/Globals';
 import { ApplicationService } from '../services/application.service';
@@ -21,7 +21,8 @@ export class EditCategoryArgumentDialog {
   displayedColumns: string[] = ['label1', 'label2', 'name1', 'name2'];
 
   constructor(
-    public dialogRef: MatDialogRef<EditCategoryArgumentDialog>, @Inject(MAT_DIALOG_DATA) public data) { }
+    public dialogRef: MatDialogRef<EditCategoryArgumentDialog>,
+    @Inject(MAT_DIALOG_DATA) public data) { }
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -97,14 +98,14 @@ export class EditCategoryArgumentDialog {
     item.toDelete = true;
   }
 
-  setSelectedAgument(item) {    
-    if (item == this.argumentSelected) {      
+  setSelectedAgument(item) {
+    if (item == this.argumentSelected) {
       this.argumentSelected.isSelected = false;
       this.argumentSelected = {};
     } else {
       this.argumentSelected = item;
       this.argumentSelected.isSelected = true;
-    }    
+    }
   }
 }
 
@@ -113,7 +114,7 @@ export class EditCategoryArgumentDialog {
   templateUrl: './admin-menu.component.html',
   styleUrls: ['./admin-menu.component.css']
 })
-export class AdminMenuComponent implements OnInit {
+export class AdminMenuComponent implements OnInit, AfterViewInit {
 
   menu: any[] = [];
 
@@ -127,12 +128,20 @@ export class AdminMenuComponent implements OnInit {
 
   categoryArgumentSelected: any = {};
 
-  constructor(private http: ApiClient, public globals: Globals, private service: ApplicationService, public snackBar: MatSnackBar, public dialog: MatDialog) {
+  idDomOptionSelected: any;
+
+  constructor(private http: ApiClient, public globals: Globals,
+    private service: ApplicationService, public snackBar: MatSnackBar,
+    public dialog: MatDialog, private ref: ChangeDetectorRef,
+    public rend: Renderer2) {
   }
 
   ngOnInit() {
     this.getMenuData();
     this.getCategoryArguments();
+  }
+
+  ngAfterViewInit(): void {
   }
 
   getCategoryArguments() {
@@ -151,20 +160,25 @@ export class AdminMenuComponent implements OnInit {
   }
 
   getOptionSelected(option) {
-    this.categoryArguments = [];
-    this.clearSelectedCategoryArguments();
+    //this.categoryArguments = [];
+    //this.clearSelectedCategoryArguments();
     if (this.optionSelected == option) {
       this.optionSelected.isActive = false;
       this.optionSelected = {};
+      this.idDomOptionSelected = {};
     } else {
       this.optionSelected.isActive = false;
       option.isActive = option.isActive == null ? true : !option.isActive;
       this.optionSelected = option;
-      if (!option.root && option.id) {
+      if (!option.isRoot && option.id) {
         this.getOptionCategoryArguments();
       }
       console.log("was selected: " + option.label);
     }
+  }
+
+  getSelectIdDom(idDomOption) {
+    this.idDomOptionSelected = idDomOption;
   }
 
   getSelectCategoryArgument(category) {
@@ -176,31 +190,25 @@ export class AdminMenuComponent implements OnInit {
     console.log("was selected: " + category.categoryArgumentsId.label);
   }
 
+  /*
   clearSelectedCategoryArguments() {
     this.categories.forEach(function (itemCategory, indexCategory, arrayCategory) {
       itemCategory.selected = false;
     })
   }
+  */
 
   getOptionCategoryArguments() {
-    this.service.loadOptionCategoryArguments(this, this.optionSelected, this.handlerSuccessOptionCategoryArguments, this.handlerErrorOptionCategoryArguments);
-  }
-
-  handlerSuccessOptionCategoryArguments(_this, result) {
-    _this.clearSelectedCategoryArguments()
-    _this.categoryArguments = result;
-    _this.categoryArguments.forEach(function (itemOptionCategory, indexOptionCategory, arrayOptionCategory) {
-      _this.categories.forEach(function (itemCategory, indexCategory, arrayCategory) {
+    //this.service.loadOptionCategoryArguments(this, this.optionSelected, this.handlerSuccessOptionCategoryArguments, this.handlerErrorOptionCategoryArguments);
+    var categories = this.categories;
+    this.optionSelected.menuOptionArgumentsAdmin.forEach(function (itemOptionCategory, indexOptionCategory, arrayOptionCategory) {
+      categories.forEach(function (itemCategory, indexCategory, arrayCategory) {
         if (itemOptionCategory.categoryArgumentsId.id == itemCategory.id) {
           itemCategory.selected = true;
         }
       })
     });
-    _this.globals.isLoading = false;
-  }
-
-  handlerErrorOptionCategoryArguments(_this, result) {
-    //_this.globals.isLoading = false;
+    this.globals.isLoading = false;
   }
 
   addOption() {
@@ -219,6 +227,18 @@ export class AdminMenuComponent implements OnInit {
       this.optionSelected.children.unshift(newNode);
     } else {
       this.menu.unshift(newNode);
+    }
+    this.ref.detectChanges();
+    if (this.optionSelected.label != null) {
+      if (this.idDomOptionSelected != null) {
+        const element = this.rend.selectRootElement('#root' + this.idDomOptionSelected + '-0');
+        element.click();
+        setTimeout(() => element.focus(), 10);
+      }
+    } else {
+      const element = this.rend.selectRootElement('#root0');
+      element.click();
+      setTimeout(() => element.focus(), 10);
     }
   }
 
@@ -259,6 +279,21 @@ export class AdminMenuComponent implements OnInit {
 
   setSelectedCategoryArguments(category) {
     category.selected = !category.selected;
+    var index = this.optionSelected.menuOptionArgumentsAdmin.findIndex(el => el.categoryArgumentsId.id == category.id);
+    if (index != -1) {
+      if (this.optionSelected.menuOptionArgumentsAdmin[index].id == undefined) {
+        this.optionSelected.menuOptionArgumentsAdmin.slice(index, 1);
+      } else {
+        this.optionSelected.menuOptionArgumentsAdmin[index].toDelete = !category.selected;
+      }
+    } else {
+      var itemToAdd = {
+        "categoryArgumentsId": category,
+        "selected": true,
+        "toDelete": false
+      };
+      this.optionSelected.menuOptionArgumentsAdmin.push(itemToAdd);
+    }
   }
 
   addCategoryArgument() {
@@ -284,34 +319,6 @@ export class AdminMenuComponent implements OnInit {
 
   handlerErrorSaveCategoryArgument(_this, result) {
     _this.globals.isLoading = false;
-  }
-
-  saveOptionCategoryArguments() {
-    if (this.optionSelected.id != undefined) {
-      let arrayResult: any = [];
-      //let filterSelected = this.categories.filter(item => item.selected);
-      let filterSelected = this.categories;
-      var optionSelectedId = this.optionSelected.id;
-      filterSelected.forEach(function (item, index, array) {
-        var itemToAdd = {
-          "optionId": optionSelectedId,
-          "categoryArgumentsId": item,
-          "selected": item.selected
-        };
-        arrayResult.push(itemToAdd);
-      });
-      this.service.saveOptionCategoryArguments(this, arrayResult, this.handlerSuccessSaveOptionCategoryArguments, this.handlerErrorSaveOptionCategoryArguments);
-    }
-  }
-
-  handlerSuccessSaveOptionCategoryArguments(_this, result) {
-    _this.globals.isLoading = false;
-    _this.getCategoryArguments();
-  }
-
-  handlerErrorSaveOptionCategoryArguments(_this, result) {
-    _this.globals.isLoading = false;
-    console.log(result);
   }
 
   editCategoryArguments() {
