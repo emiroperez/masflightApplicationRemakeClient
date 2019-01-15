@@ -1,6 +1,9 @@
 
 <ng-container *ngIf="globals.currentOption">
     <mat-tab-group [selectedIndex]="globals.getSelectedIndex()" #tabs>
+        <mat-tab label="WELCOME" style="height: 100%;">
+            <app-option-welcome></app-option-welcome> 
+        </mat-tab>        
         <mat-tab label="CURRENT QUERY GENERAL SUMMARY" style="height: 100%;">
             <app-current-query-summary></app-current-query-summary> 
         </mat-tab>

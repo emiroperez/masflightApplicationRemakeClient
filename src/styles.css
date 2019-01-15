@@ -2502,4 +2502,23 @@ tr.mat-footer-row, tr.mat-row {
   margin-top: 5px !important;
 }
 
+.no-show {
+  display: none !important;
+}
+
+.msf-welcome-title {
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+.msf-option-welcome-container {
+  margin-left: 70px;
+  margin-right: 20px;
+}
+
+.msf-welcome-inline {
+  font-weight: lighter;
+  line-height: 2;
+}
+
 /*# sourceMappingURL=styles.css.map */
