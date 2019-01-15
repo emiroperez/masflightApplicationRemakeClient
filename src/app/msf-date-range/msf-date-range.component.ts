@@ -22,9 +22,10 @@ export class MsfDateRangeComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
   
-  constructor() { }
+  constructor(public globals: Globals) { }
 
   ngOnInit() {
+    
   }
 
   dateChange(event){      

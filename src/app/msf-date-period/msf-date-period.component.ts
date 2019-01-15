@@ -10,6 +10,7 @@ import { AppDateAdapter, APP_DATE_FORMATS } from '../commons/date.adapters';
 import * as _moment from 'moment';
 // tslint:disable-next-line:no-duplicate-imports
 import {default as _rollupMoment, Moment} from 'moment';
+import { Globals } from '../globals/Globals';
 
 const moment = _rollupMoment || _moment;
 
@@ -40,6 +41,8 @@ export const MY_FORMATS = {
 })
 
 export class MsfDatePeriodComponent implements OnInit {
+
+  constructor(public globals: Globals) { }
   date: FormControl;
   date2: FormControl;
   loading = false;
@@ -55,6 +58,7 @@ export class MsfDatePeriodComponent implements OnInit {
   
   ngOnInit() {
     this.date =  new FormControl(moment());
+    this.argument.value1 = this.date.value.year();
   }
 
   chosenYearHandler(normalizedYear: Moment, datepicker: MatDatepicker<Moment>) {
@@ -64,5 +68,4 @@ export class MsfDatePeriodComponent implements OnInit {
     this.argument.value1 = this.date;
     datepicker.close();
   }
-
 }

@@ -1360,8 +1360,10 @@ button[aria-expanded=true] {
 
 .msf-component-airport-sub-title {
   width: 100%;
-  padding: 5px 0 5px 0;
-  margin-bottom: 10px;
+  padding: 2px 0 2px 0;
+  margin-bottom: 5px;
+  padding-left: 10px;
+  margin-left: 5px;
 }
 
 .msf-component-airport-input-container {
@@ -2490,6 +2492,10 @@ mat-form-field.standard-text div div div span label {
 
 tr.mat-footer-row, tr.mat-row {
   height: 30px;
+}
+
+.input-margin {
+  margin-top: 5px;
 }
 
 /*# sourceMappingURL=style.css.map */

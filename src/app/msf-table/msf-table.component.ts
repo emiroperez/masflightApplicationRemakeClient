@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input ,ChangeDetectorRef} from '@angular/core';
 import {MatSort, MatTableDataSource, MatTab, Sort} from '@angular/material';
 import { Globals } from '../globals/Globals';
 import { ApplicationService } from '../services/application.service';
 import { MsfGroupingComponent } from '../msf-grouping/msf-grouping.component';
 import { Utils } from '../commons/utils';
+
 
 
 
@@ -30,7 +31,7 @@ export class MsfTableComponent implements OnInit {
 
   metadata;
 
-  dataSource;
+  dataSource : any;
 
   actualPageNumber;
 
@@ -40,10 +41,10 @@ export class MsfTableComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(public globals: Globals, private service: ApplicationService) { }
+  constructor(public globals: Globals, private service: ApplicationService,private ref: ChangeDetectorRef) { }
 
   ngOnInit() {      
-    // this.dataSource.sort = this.sort;  
+    
   }
 
   ngAfterViewInit(){
@@ -66,14 +67,11 @@ export class MsfTableComponent implements OnInit {
       var array = this.groupingArgument.value1;
       for (let index = array.length-1; index >= 0; index--) {
         const element = array[index];
-        const indexColumn = this.indexOfAttrInList(displayedColumns, "columnName", element.column);
-        displayedColumns.unshift({ columnType:"string",
-                                   columnName:element.column,
-                                   columnLabel:element.name});
-        if(indexColumn!=-1){
-            displayedColumns.splice(indexColumn,1);
-        }else{
-           
+        const indexColumn = displayedColumns.findIndex(column => column.columnName === element.column);
+        if(indexColumn==-1){
+          displayedColumns.unshift({ columnType:"string",
+          columnName:element.column,
+          columnLabel:element.name});
         }
       }
     }
@@ -88,15 +86,17 @@ export class MsfTableComponent implements OnInit {
   }
 
   getData(moreResults: boolean){
-    this.globals.startTimestamp = new Date();
-    var pageSize = 100;
-      if(moreResults){
-        this.actualPageNumber++;
-        this.globals.moreResults = true;
-      }else{
-        this.actualPageNumber=0;
-      }
-    this.service.getDataTableSource(this, this.handlerSuccess, this.handlerError,""+this.actualPageNumber);
+    if(this.globals.moreResultsBtn){
+      this.globals.startTimestamp = new Date();
+      var pageSize = 100;
+        if(moreResults){
+          this.actualPageNumber++;
+          this.globals.moreResults = true;
+        }else{
+          this.actualPageNumber=0;
+        }
+      this.service.getDataTableSource(this, this.handlerSuccess, this.handlerError,""+this.actualPageNumber);
+    }
   }
 
   getDataUsageStatistics(){
@@ -146,7 +146,6 @@ export class MsfTableComponent implements OnInit {
       _this.setColumnsDisplayed(_this);
       
       let dataResult = new MatTableDataSource(mainElement);     
-      dataResult.sort = _this.sort; 
       if( _this.globals.moreResults){
         if( _this.globals.totalRecord<100){
           _this.globals.moreResultsBtn = false;
@@ -164,7 +163,10 @@ export class MsfTableComponent implements OnInit {
     }  
     _this.globals.isLoading = false;   
     if(_this.dataSource){
-      _this.dataSource.sort = _this.sort;
+      _this.ref.detectChanges();
+      if(_this.sort!=undefined){
+        _this.dataSource.sort =_this.sort;
+      }
       _this.globals.dataSource = true;
       console.log(_this.dataSource);
     }

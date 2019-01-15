@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Arguments } from '../model/Arguments';
+import { Globals } from '../globals/Globals';
 
 
 @Component({
@@ -11,7 +12,7 @@ export class MsfDateTimePickerComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
   
-  constructor() { }
+  constructor(public globals: Globals) { }
 
   ngOnInit() {
   }

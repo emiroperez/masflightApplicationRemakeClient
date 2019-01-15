@@ -59,7 +59,7 @@ handlerError(_this,result){
 }
 
 onSearch($event: any){
-  if($event.length>=2){
+  if($event.length>=3){
     this.loading = true;
     this.getRecords($event, this.handlerSuccess);
   }

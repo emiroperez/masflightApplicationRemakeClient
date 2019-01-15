@@ -1,27 +1,17 @@
 <div class="center">
   <div class="msf-component-airport-title">{{argument.title}}</div>
 </div> 
-<div class="msf-component-date-input-container">  
-      <div class="msf-component-airport-sub-title" style="margin: 0;padding: 0;">{{argument.label1}}</div>   
+    <div class="msf-component-date-input-container">  
+      <div class="msf-component-airport-sub-title" style="margin-bottom: -8px;">{{argument.label1}}</div>   
       <mat-form-field class="msf-full-width">
-          <input matInput [formControl]="date" [matDatepicker]="picker3" autocomplete="off" 
+          <input [min]="globals.minDate" [max]="globals.maxDate" matInput [formControl]="date" [matDatepicker]="picker3" autocomplete="off" 
           class=" msf-full-width msf-menu-arg-select">
           <mat-datepicker-toggle matSuffix [for]="picker3">            
           </mat-datepicker-toggle>
           <mat-datepicker #picker3
           startView="multi-year"
-          (yearSelected)="chosenYearHandler($event,picker3)"></mat-datepicker>
+          (yearSelected)="chosenYearHandler($event)"
+          (monthSelected)="chosenMonthHandler($event, picker3)"
+          ></mat-datepicker>
       </mat-form-field>
-</div>
-<div class="msf-component-date-input-container">  
-  <div class="msf-component-airport-sub-title" style="margin: 0;padding: 0;">{{argument.label2}}</div>   
-  <mat-form-field class="msf-full-width">
-      <input matInput [formControl]="date2" [matDatepicker]="picker4" autocomplete="off" 
-      class=" msf-full-width msf-menu-arg-select">
-      <mat-datepicker-toggle matSuffix [for]="picker4">            
-      </mat-datepicker-toggle>
-      <mat-datepicker #picker4
-      startView="month"
-      (monthSelected)="chosenMonthHandler($event,picker4)"></mat-datepicker>
-  </mat-form-field>
-</div>
+    </div>

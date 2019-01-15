@@ -1,5 +1,5 @@
 
-    <div *ngIf="globals.dataSource">
+    <div [style.visibility]="globals.dataSource ? 'visible' : 'hidden'">
     <table  mat-table  [dataSource]="dataSource" matSort class="mat-elevation-z8">
     
         <ng-container  [matColumnDef]="column.columnName" *ngFor="let column of metadata">

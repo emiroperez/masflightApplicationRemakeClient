@@ -18,7 +18,7 @@ export class MsfTailNumberComponent implements OnInit {
   public tailNumberCtrl: FormControl = new FormControl();
   public tailNumberFilterCtrl: FormControl = new FormControl();
 
-  private tailNumbers: any[] = [
+  public tailNumbers: any[] = [
     {name: 'N300AU US Boeing 737-3001 ', id: 'N300AU'},
     {name: 'N103US US Airbus A320-214', id: 'N103US'},
     {name: 'HBIOZ', id: 'HBIOZ'},
@@ -50,50 +50,7 @@ export class MsfTailNumberComponent implements OnInit {
 
 
   ngOnInit() {
-    this.argument.value1 = this.tailNumbers[0];
-    this.tailNumberCtrl.setValue(this.tailNumbers[10]);
-    this.filteredTailNumbers.next(this.tailNumbers.slice());
-    this.tailNumberFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterTailNumbers();
-      });
-    
   }
 
-  ngAfterViewInit() {
-    this.setInitialValue();
-  }
-
-  ngOnDestroy() {
-    this._onDestroy.next();
-    this._onDestroy.complete();
-  }
-
-
-  private setInitialValue() {
-    this.filteredTailNumbers
-      .pipe(take(1), takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.tailNumberSelect.compareWith = (a: any, b: any) => a.id === b.id;        
-      });
-  }
-
-  private filterTailNumbers() {
-    if (!this.tailNumbers) {
-      return;
-    }
-    let search = this.tailNumberFilterCtrl.value;
-    if (!search) {
-      this.filteredTailNumbers.next(this.tailNumbers.slice());
-      return;
-    } else {
-      search = search.toLowerCase();
-    }
-    // filter the airports
-    this.filteredTailNumbers.next(
-      this.tailNumbers.filter(a => a.name.toLowerCase().indexOf(search) > -1)
-    );
-  }
 
 }

@@ -25,7 +25,7 @@ export class MsfGroupingComponent implements OnInit {
   groupingList: any[] = [
                           {id: 'YEAR', name: 'Year', column:'Year'},
                           {id: 'MONTH', name: 'Month', column:'Month'},
-                          {id: 'DAY', name: 'Day' ,column:'Day'},
+                          {id: 'DAY', name: 'Day' ,column:'Date'},
                           {id: 'HOUR', name: 'Hour', column: 'Hour'},
                           {id: 'EQUIPMENTTYPESPECIFIC', name: 'Specific Equipment Type',column:'EspecificEquipmentType'},
                           {id: 'EQUIPMENTTYPEGENERAL', name: 'General Equipment Type',column:'GeneralEquipmentType'},

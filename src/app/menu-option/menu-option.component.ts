@@ -25,6 +25,7 @@ export class MenuOptionComponent implements OnInit {
   optionClickHandler(option) {
     this.globals.clearVariables();
     this.globals.currentOption = option
+    this.globals.dataAvailabilityInit()
     if(this.globals.currentOption.tabType === 'map'){
       this.globals.map = true;
       this.globals.selectedIndex = 1;

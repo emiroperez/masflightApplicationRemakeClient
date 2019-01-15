@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Arguments } from '../model/Arguments';
+import { Globals } from '../globals/Globals';
 
 @Component({
   selector: 'app-msf-date-picker',
@@ -10,7 +11,7 @@ export class MsfDatePickerComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
   
-  constructor() { }
+  constructor(public globals: Globals) { }
 
   ngOnInit() {
   }
