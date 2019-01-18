@@ -1,13 +1,19 @@
 
 <ng-container *ngIf="globals.currentOption">
     <mat-tab-group [selectedIndex]="globals.getSelectedIndex()" #tabs>
-        <mat-tab label="WELCOME" style="height: 100%;">
+        <mat-tab *ngIf="globals.showWelcome" label="WELCOME" style="height: 100%;">
             <app-option-welcome></app-option-welcome> 
         </mat-tab>        
-        <mat-tab label="CURRENT QUERY GENERAL SUMMARY" style="height: 100%;">
+        <mat-tab *ngIf="globals.query">
+                <ng-template mat-tab-label>
+                        CURRENT QUERY GENERAL SUMMARY <mat-icon (click)="closeTab(1)" class="close-icon">close</mat-icon> 
+                </ng-template>
             <app-current-query-summary></app-current-query-summary> 
         </mat-tab>
-        <mat-tab  *ngIf="!globals.map" label="{{globals.currentOption.tab}}">
+        <mat-tab  *ngIf="globals.tab" >
+            <ng-template mat-tab-label>
+                    {{globals.currentOption.tab}} <mat-icon (click)="closeTab(2)" class="close-icon">close</mat-icon> 
+            </ng-template>
             <div class="msf-viewport-container">
                 <app-msf-table #msfTableRef [tabRef]="tabRef"></app-msf-table>
             </div>    

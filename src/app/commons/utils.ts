@@ -112,13 +112,7 @@ export class Utils{
         }else if(type == ComponentType.dateRange || 
             type == ComponentType.date){
             return new DateFormatPipe('en-US').transform(value);
-        }else if(type == ComponentType.airport){
-            if(typeof value === "string"){
-                return value;
-            }
-            return value.iata;
         }else if(type == ComponentType.ceiling ||
-             type == ComponentType.tailnumber ||
              type == ComponentType.rounding){
             if(typeof value === "string"){
                 return value;
@@ -133,7 +127,7 @@ export class Utils{
             }
            return value.iata;
         }else if(type == ComponentType.airline ||
-             type == ComponentType.airportRoute){
+             type == ComponentType.airportRoute || type == ComponentType.airport){
             var valueAux="";
             var i = 0;
             for(var val of value){
@@ -145,7 +139,7 @@ export class Utils{
                 i++;
             }
             return valueAux;
-        }else if(type == ComponentType.grouping){
+        }else if(type == ComponentType.grouping || type == ComponentType.tailnumber){
            var valueAux="";
            var i = 0;
            for(var val of value){

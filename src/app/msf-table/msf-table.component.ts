@@ -55,16 +55,20 @@ export class MsfTableComponent implements OnInit {
     var menuOptionArguments = this.globals.currentOption.menuOptionArguments;
     var categoryArguments = menuOptionArguments[menuOptionArguments.length-1].categoryArguments;
     categoryArguments.forEach(element => {
-            element.arguments.forEach(element2 => {
-            if(element2.type=="grouping"){
-              this.groupingArgument = element2;
+            if(element.arguments!=null){
+              element.arguments.forEach(element2 => {
+                if(element2.type=="grouping"){
+                  this.groupingArgument = element2;
+                }
+            });
             }
-        });
+
         });
     }
 
     addGroupingColumns(displayedColumns: any[]){
       var array = this.groupingArgument.value1;
+      if(array!=null){
       for (let index = array.length-1; index >= 0; index--) {
         const element = array[index];
         const indexColumn = displayedColumns.findIndex(column => column.columnName === element.column);
@@ -74,6 +78,7 @@ export class MsfTableComponent implements OnInit {
           columnLabel:element.name});
         }
       }
+    }
     }
 
   setMsfChartRef(msfChartRef){

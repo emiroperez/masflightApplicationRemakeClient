@@ -1,7 +1,7 @@
 <!--Header-->
 <div class="msf-menu-header">
     <div class="msf-menu-header-image-container">
-        <img src="../../assets/images/logo_global_peqe.png" class="msf-menu-logo">
+        <img (click)="goHome()" style="cursor:pointer;" src="../../assets/images/logo_global_peqe.png" class="msf-menu-logo">
         <img src="../../assets/images/ajustes.png" class="msf-menu-ajustes-icon">
     </div>
     <div class="msf-menu-container">
@@ -17,7 +17,11 @@
                 <button mat-menu-item routerLink="/admin-menu">
                     <mat-icon>settings</mat-icon>
                     <span>Admin Menu</span>
-                </button>                
+                </button>  
+                <button mat-menu-item routerLink="/create-membership">
+                    <mat-icon>settings</mat-icon>
+                    <span>Memberships</span>
+                </button>                                
             </mat-menu>      
     </div>
 </div>

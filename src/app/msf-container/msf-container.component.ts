@@ -34,11 +34,17 @@ export class MsfContainerComponent implements OnInit {
   constructor(public globals: Globals) { }
 
   ngOnInit() {
-    
   }
 
   ngAfterViewInit(){
     
   }
 
+  closeTab(tab : any){
+    if(tab==1){
+      this.globals.query = false;
+    }else{
+      this.globals.tab = false;
+    }
+  }
 }

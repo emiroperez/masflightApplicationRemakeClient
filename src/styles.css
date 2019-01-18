@@ -1474,7 +1474,7 @@ td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
 
 .mat-header-cell {
   background-color: #333333;
-  border-left: 1px solid #777676;
+  border: 1px solid #777676;
   color: white;
   font-size: 100%;
   position: sticky;
@@ -1489,6 +1489,7 @@ td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
 .mat-row, .mat-header-row {
   background: white;
   min-width: 1200px;
+  color: rgba(0, 0, 0, 0.87);
 }
 
 .mat-sort-header-button {
@@ -2102,6 +2103,8 @@ g g g text {
 .msf-card-container {
   display: inline-flex;
   align-items: flex-start;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .msf-plan-card {
@@ -2109,7 +2112,7 @@ g g g text {
   align-items: center;
   border-radius: 10px !important;
   margin: 4px;
-  width: 33.3%;
+  width: 30%;
 }
 
 .msf-large-container {
@@ -2136,6 +2139,7 @@ g g g text {
 
 .msf-features-container {
   display: flex;
+  padding-bottom: 22px;
 }
 
 .msf-plan-card-content ul {
@@ -2519,6 +2523,225 @@ tr.mat-footer-row, tr.mat-row {
 .msf-welcome-inline {
   font-weight: lighter;
   line-height: 2;
+}
+
+.mat-list .mat-list-item, .mat-nav-list .mat-list-item, .mat-selection-list .mat-list-item {
+  color: white;
+  font-size: 100%;
+  font-weight: lighter;
+  height: 30px !important;
+}
+
+.mat-list.what-do-list .mat-list-item .mat-list-item-content {
+  display: list-item;
+  list-style: disc inside;
+  padding: 0;
+}
+
+.welcome-table th {
+  text-align: center !important;
+  width: inherit !important;
+  font-size: 120%;
+}
+
+.welcome-table td {
+  width: initial !important;
+  font-size: 110%;
+  text-align: left;
+  padding: 10px !important;
+  font-weight: 500;
+}
+
+table.datasource {
+  width: auto !important;
+  max-width: 2000px !important;
+}
+
+.datasource.welcome-table {
+  margin-bottom: 20px;
+  width: 100% !important;
+}
+
+.msf-fab-button-container {
+  width: 70%;
+  margin: 0 auto;
+  text-align: right;
+  position: relative;
+  z-index: 999;
+  /* z-index: auto; */
+}
+
+.msf-membership-card {
+  width: 70%;
+  margin: 0 auto;
+  margin-top: -1.5%;
+}
+
+.msf-membership-card .mat-form-field-appearance-legacy .mat-form-field-label {
+  line-height: 2;
+  color: white !important;
+  text-align: center;
+}
+
+.msf-membership-card mat-card-footer.mat-form-field-appearance-legacy .mat-form-field-label {
+  line-height: 2;
+  color: black !important;
+  text-align: left;
+}
+
+.msf-features-membership-container .mat-form-field-appearance-legacy .mat-form-field-label {
+  line-height: 2;
+  color: white !important;
+  text-align: left;
+  padding-left: 8px;
+}
+
+.msf-features-prices-container .mat-form-field-appearance-legacy .mat-form-field-label {
+  line-height: 2;
+  color: black !important;
+  text-align: left;
+  padding-left: 8px;
+}
+
+.msf-card, .msf-register-card, .msf-membership-card, .login-card {
+  border-radius: 10px !important;
+  background: rgba(30, 30, 30, 0.5);
+  padding: 50px !important;
+}
+
+.msf-card-content-item input[type=text], .msf-card-content-item input[type=password], .msf-card-content-item input[type=number], .msf-card-content-item input[type=email] {
+  padding: 8px;
+  outline: none;
+  border: none;
+  color: white;
+  background-size: 0 2px, 100% 1px;
+  background-position: 50% 100%, 50% 100%;
+  transition: background-size 0.3s cubic-bezier(0.64, 0.09, 0.08, 1);
+  text-align: center;
+}
+
+.msf-card-feature-item input[type=text] {
+  width: 120%;
+  text-align: left;
+}
+
+.msf-card-footer-item input[type=text] {
+  color: black;
+  text-align: left;
+}
+
+.msf-card-footer-item {
+  width: 35%;
+  margin: 0 auto;
+  margin-left: 5%;
+}
+
+.msf-card-content-item {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.msf-card-content-title {
+  width: 80%;
+  display: block;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.msf-plan-card-content .mat-form-field-appearance-legacy .mat-form-field-underline {
+  background-color: white !important;
+}
+
+.msf-plan-card-content .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label, .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+  color: white !important;
+}
+
+.msf-plan-card-content .mat-form-field.mat-focused .mat-form-field-ripple {
+  background-color: white;
+}
+
+.msf-plan-card-content .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label, .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+  margin-left: 0;
+}
+
+.msf-fab-button-features .mat-button-wrapper {
+  color: #0081B4;
+  width: 100% !important;
+}
+
+.msf-features-membership-container ul {
+  width: 80%;
+  padding-bottom: 15%;
+}
+
+.msf-periodicity-select {
+  color: black !important;
+  width: 55% !important;
+  display: inline-flex !important;
+  position: absolute !important;
+  margin-left: 2%;
+}
+
+.msf-periodicity-select.ng-select .ng-arrow-wrapper .ng-arrow {
+  color: black;
+}
+
+.msf-periodicity-select.ng-select.ng-select-focused .ng-select-container .ng-value-container .ng-placeholder {
+  color: black !important;
+}
+
+.msf-price-fare .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label, .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+  -webkit-transform: translateY(-1.739125em) scale(0.75) perspective(100px) translateZ(0.001px);
+  transform: translateY(-1.739125em) scale(0.75) perspective(100px) translateZ(0.001px);
+  -ms-transform: translateY(-1.739125em) scale(0.75);
+  width: 133.33333%;
+  margin-left: 7px;
+  color: white !important;
+}
+
+.msf-periodicity-select input {
+  caret-color: #3f51b5;
+}
+.msf-periodicity-select.ng-select .ng-select-container {
+  color: black !important;
+}
+
+.msf-periodicity-select.ng-select .ng-select-container .ng-value-container .ng-placeholder {
+  color: black !important;
+}
+
+.msf-periodicity-select .ng-star-inserted .mat-step-icon {
+  background-color: #01abec;
+  color: black;
+}
+
+.msf-periodicity-select .ng-select .ng-select-container .ng-value-container .ng-placeholder {
+  color: black !important;
+  padding-left: 0 !important;
+}
+
+.msf-prices-membership-container {
+  width: 100%;
+  margin: auto;
+  margin-top: 4%;
+  margin-bottom: 4%;
+  display: inline-flex;
+}
+
+.msf-price-fare {
+  font-size: 190% !important;
+  font-weight: bold !important;
+  padding-left: 5%;
+  margin: 0 auto !important;
+}
+
+.msf-register-select .ng-select-container {
+  min-height: 51.4px !important;
+}
+
+.close-icon {
+  color: #01abec;
+  margin-left: 10px;
 }
 
 /*# sourceMappingURL=styles.css.map */

@@ -8,6 +8,7 @@ import { MatDialog} from '@angular/material';
 import { MsfDynamicTableVariablesComponent } from '../msf-dynamic-table-variables/msf-dynamic-table-variables.component';
 import { MsfContainerComponent } from '../msf-container/msf-container.component';
 import { MenuService } from '../services/menu.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-application',
@@ -28,7 +29,7 @@ export class ApplicationComponent implements OnInit {
   @ViewChild('msfContainerRef')
   msfContainerRef: MsfContainerComponent;
 
-  constructor(public dialog: MatDialog, public globals: Globals, private service: MenuService) {
+  constructor(public dialog: MatDialog, public globals: Globals, private service: MenuService,private router: Router) {
     this.status = true;    
   }
 
@@ -62,14 +63,25 @@ export class ApplicationComponent implements OnInit {
 
   search(){
     this.globals.moreResults = false;
+    this.globals.query = true;
+    this.globals.tab = true; 
+    this.globals.isLoading = true; 
+
+    setTimeout(() => {
+      this.search2();
+  }, 3000);
+
+  }
+
+  search2(){
     if(this.globals.currentOption.tabType === 'map'){
       this.globals.map = true;
-      this.msfContainerRef.msfMapRef.getTrackingDataSource();       
+      this.msfContainerRef.msfMapRef.getTrackingDataSource();     
     }else if(this.globals.currentOption.tabType === 'usageStatistics'){
       this.msfContainerRef.msfTableRef.getDataUsageStatistics();
     }else{
       this.msfContainerRef.msfTableRef.getData(false); 
-    }       
+    }
   }
 
   moreResults(){
@@ -137,6 +149,10 @@ export class ApplicationComponent implements OnInit {
       console.log('The dialog was closed');
       this.animal = result;
     });
+  }
+
+  goHome(){
+    this.router.navigate(["/welcome"]);
   }
 
 }
