@@ -2,7 +2,8 @@
   <img class="msf-medium-logo" src="../../assets/images/logo.png">
   <div class="msf-register-header-content">
     <div class="msf-register-header-title">
-      <div class="msf-register-header-title-content"> MENU ADMINISTRATION</div>
+      <div class="msf-register-header-title-content"> MENU ADMINISTRATION
+        <br /> Enterprise: {{globals.currentApplication.name}}</div>
     </div>
     <div class="msf-register-header-image-content">
       <img class="medium-user-image" src="../../assets/images/icon-user-white.png">
@@ -36,7 +37,7 @@
             </div>
             <div *ngFor="let option of menu; let i = index" style="color: white">
               <app-admin-menu-recursive [menu]="option" [index]="i" (optionSelected)="getOptionSelected($event)"
-              (idSelected)="getSelectIdDom($event)"></app-admin-menu-recursive>
+                (idSelected)="getSelectIdDom($event)"></app-admin-menu-recursive>
             </div>
           </div>
           <div style="flex: 1; min-width: 455px; margin-left: 1%; margin-right: 1%">
@@ -46,10 +47,10 @@
                 <mat-form-field class="standard-text" style="width: 100%">
                   <input matInput class="standard-input-text" placeholder="URL Base" [(ngModel)]="optionSelected.baseUrl">
                 </mat-form-field>
-                <mat-form-field class="standard-text" style="width: 100%">
+                <mat-form-field class="standard-text" style="width: 45%; padding-right: 5%;">
                   <input matInput class="standard-input-text" placeholder="Icon" [(ngModel)]="optionSelected.icon">
                 </mat-form-field>
-                <mat-form-field class="standard-text" style="width: 100%">
+                <mat-form-field class="standard-text" style="width: 45%; padding-left: 5%">
                   <input matInput class="standard-input-text" placeholder="Tab" [(ngModel)]="optionSelected.tab">
                 </mat-form-field>
               </div>
