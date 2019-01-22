@@ -8,7 +8,7 @@
   </div>
 </div>
 <!--body-->
-<div class="msf-body">
+<div [style.visibility]="globals.isLoading ? 'hidden' : 'visible'" class="msf-body">
   <!--nav-->
   <div class="msf-nav">
     <ul>
@@ -20,7 +20,7 @@
     <a class="msf-link msf-support-text" >Need support?</a>
   </div>
   <!--content-->
-  <div [@animationOption2]="options ? 'open': 'close'" class="fade-in msf-container">
+  <div  class="fade-in msf-container">
     <div *ngFor="let option of options" id="option.id" class="{{activeElement==option?'msf-show-panel':'msf-hide'}} msf-content">
       <!--Dashboard-->
       <div class="msf-internal-content" *ngIf="option.name==='Landing'" >

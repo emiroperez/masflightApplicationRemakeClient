@@ -9,6 +9,9 @@ import { MsfDynamicTableVariablesComponent } from '../msf-dynamic-table-variable
 import { MsfContainerComponent } from '../msf-container/msf-container.component';
 import { MenuService } from '../services/menu.service';
 import { Router } from '@angular/router';
+import {ExcelService} from '../services/excel.service';
+import { MsfTableComponent } from '../msf-table/msf-table.component';
+
 
 @Component({
   selector: 'app-application',
@@ -29,7 +32,7 @@ export class ApplicationComponent implements OnInit {
   @ViewChild('msfContainerRef')
   msfContainerRef: MsfContainerComponent;
 
-  constructor(public dialog: MatDialog, public globals: Globals, private service: MenuService,private router: Router) {
+  constructor(public dialog: MatDialog, public globals: Globals, private service: MenuService,private router: Router,private excelService:ExcelService) {
     this.status = true;    
   }
 
@@ -153,6 +156,10 @@ export class ApplicationComponent implements OnInit {
 
   goHome(){
     this.router.navigate(["/welcome"]);
+  }
+
+  exportToExcel():void {
+    this.excelService.exportAsExcelFile(this.msfContainerRef.msfTableRef.table, this.globals.currentOption.label);
   }
 
 }

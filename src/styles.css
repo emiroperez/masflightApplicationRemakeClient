@@ -179,7 +179,6 @@ body {
 
 .msf-show-panel {
   display: flex;
-  transition: display 50s;
 }
 
 .msf-user, .msf-intro-welcome {

@@ -8,28 +8,7 @@ import { trigger, transition, style, animate, state } from '@angular/animations'
 @Component({
   selector: 'app-welcome',
   templateUrl: './welcome.component.html',
-  styleUrls: ['./welcome.component.css'],
-  animations: [
-    trigger('animationOption2', [
-      transition(':enter', [
-        style({
-          opacity: 0,
-          height: '0px'
-        }),
-        animate(5000)
-      ]),
-      transition(':leave', [
-        animate(5000, style({
-          opacity: 0,
-          height: '0px'
-        }))
-      ]),
-      state('*', style({
-        opacity: 1,
-        height: '*'
-      })),
-    ])
-  ]
+  styleUrls: ['./welcome.component.css']
 })
 export class WelcomeComponent implements OnInit {
 
@@ -94,10 +73,12 @@ export class WelcomeComponent implements OnInit {
   }
 
   setState(option){
+    
       this.activeElement = option;           
   };
 
   ngOnInit() {
+    this.globals.isLoading = true;
     this.getApplications();
   }
 
@@ -115,7 +96,11 @@ export class WelcomeComponent implements OnInit {
                         name:"Landing",
                         url:"/welcome"})
     _this.activeElement = _this.options[0];
-    _this.globals.isLoading = false; 
+    
+    setTimeout(() => {
+      _this.globals.isLoading = false; 
+  }, 3000);
+
   }
 
   handlerError(_this,result){

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input ,ChangeDetectorRef} from '@angular/core';
+import { Component, OnInit, ViewChild, Input ,ChangeDetectorRef, ElementRef} from '@angular/core';
 import {MatSort, MatTableDataSource, MatTab, Sort} from '@angular/material';
 import { Globals } from '../globals/Globals';
 import { ApplicationService } from '../services/application.service';
@@ -25,6 +25,8 @@ export class MsfTableComponent implements OnInit {
 
   @Input('displayedColumns')
   displayedColumns: string[] = []; 
+
+  @ViewChild('TABLE') table: ElementRef;
 
   @Input('msfGroupingComponent')
   msfGroupingComponent: MsfGroupingComponent;
@@ -82,6 +84,13 @@ export class MsfTableComponent implements OnInit {
           displayedColumns.unshift({ columnType:"string",
           columnName:element.column,
           columnLabel:element.name});
+        }else{
+          if(element.column=="Marketing_Carrier"){
+            displayedColumns.splice(indexColumn,1);
+            displayedColumns.unshift({ columnType:"string",
+            columnName:element.column,
+            columnLabel:element.name});
+          }
         }
       }
     }
@@ -93,6 +102,13 @@ export class MsfTableComponent implements OnInit {
             displayedColumns.unshift({ columnType:"string",
             columnName:element.column,
             columnLabel:element.name});
+          }else{
+            if(element.column=="Marketing_Carrier"){
+              displayedColumns.splice(indexColumn,1);
+              displayedColumns.unshift({ columnType:"string",
+              columnName:element.column,
+              columnLabel:element.name});
+            }
           }
         }
     }

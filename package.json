@@ -35,6 +35,7 @@
     "buffer": "^5.2.1",
     "core-js": "^2.5.4",
     "events": "^3.0.0",
+    "file-saver": "^2.0.0",
     "jqwidgets-scripts": "^6.1.0",
     "mapbox-gl": "^0.49.0",
     "moment": "^2.23.0",
@@ -49,6 +50,7 @@
     "snazzy-info-window": "^1.1.0",
     "stream": "0.0.2",
     "timers": "^0.1.1",
+    "xlsx": "^0.14.1",
     "xml2js": "^0.4.19",
     "zone.js": "~0.8.26"
   },
