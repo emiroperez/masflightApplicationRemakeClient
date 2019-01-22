@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpEventType } from '@angular/common/http';
+import {Http, Headers} from '@angular/http';
 import { throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import * as xml2js from 'xml2js';
@@ -16,13 +17,18 @@ export class ApiClient {
     constructor(private http: HttpClient) {
     }
 
-    post = function (_this,url, data, successHandler, errorHandler) {
-        this.http.post(url, data,httpOptions).subscribe(result => {
-            /*
-            if (result.sessionExpired){
 
-            }
-            */
+    createAuthorizationHeader(headers: Headers) {
+        headers.append('Authorization',localStorage.getItem(this.TOKEN_STORAGE_KEY)); 
+      }
+
+    post = function (_this,url, data, successHandler, errorHandler) {
+        let headers = new Headers();
+        this.createAuthorizationHeader(headers);
+        this.http.post(url, data,httpOptions,{
+            headers: headers
+            }).subscribe(result => {
+
             successHandler(_this,result);
           }, error => 
           errorHandler(_this,error)
@@ -31,7 +37,11 @@ export class ApiClient {
 
 
     get = function (_this,url, successHandler, errorHandler, tab) {
-        this.http.get(url, {observe: 'events', reportProgress: true}).subscribe(result => {
+        let headers = new Headers();
+        this.createAuthorizationHeader(headers);
+        this.http.get(url, {observe: 'events', reportProgress: true},{
+            headers: headers
+            }).subscribe(result => {
 
             if (result.type === HttpEventType.DownloadProgress) {
                 if( _this.globals != null){

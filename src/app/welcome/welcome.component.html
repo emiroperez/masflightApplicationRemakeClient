@@ -20,7 +20,7 @@
     <a class="msf-link msf-support-text" >Need support?</a>
   </div>
   <!--content-->
-  <div class="fade-in msf-container">
+  <div [@animationOption2]="options ? 'open': 'close'" class="fade-in msf-container">
     <div *ngFor="let option of options" id="option.id" class="{{activeElement==option?'msf-show-panel':'msf-hide'}} msf-content">
       <!--Dashboard-->
       <div class="msf-internal-content" *ngIf="option.name==='Landing'" >

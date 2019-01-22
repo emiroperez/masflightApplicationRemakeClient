@@ -3,11 +3,33 @@ import { DOCUMENT } from '@angular/common';
 import { Globals } from '../globals/Globals';
 import { WelcomeService } from '../services/welcome.service';
 import { Router } from '@angular/router';
+import { trigger, transition, style, animate, state } from '@angular/animations';
 
 @Component({
   selector: 'app-welcome',
   templateUrl: './welcome.component.html',
-  styleUrls: ['./welcome.component.css']
+  styleUrls: ['./welcome.component.css'],
+  animations: [
+    trigger('animationOption2', [
+      transition(':enter', [
+        style({
+          opacity: 0,
+          height: '0px'
+        }),
+        animate(5000)
+      ]),
+      transition(':leave', [
+        animate(5000, style({
+          opacity: 0,
+          height: '0px'
+        }))
+      ]),
+      state('*', style({
+        opacity: 1,
+        height: '*'
+      })),
+    ])
+  ]
 })
 export class WelcomeComponent implements OnInit {
 
