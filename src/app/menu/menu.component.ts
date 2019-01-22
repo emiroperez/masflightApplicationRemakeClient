@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Menu } from '../model/Menu';
 import { MatMenuTrigger } from '@angular/material';
+import { Globals } from '../globals/Globals';
+import { OptionWelcomeComponent } from '../option-welcome/option-welcome.component';
 
 @Component({
   selector: 'app-menu',
@@ -12,11 +14,14 @@ export class MenuComponent implements OnInit {
   @Input("menu")
   menu: Menu;
 
+  @Input('optionWelcomeComponent')
+  optionWelcomeComponent: OptionWelcomeComponent;
+
   trigger: MatMenuTrigger;
 
   currentTrigger:MatMenuTrigger;
 
-  constructor() {
+  constructor(private globals : Globals) {
     
   }
 
@@ -38,6 +43,16 @@ export class MenuComponent implements OnInit {
     
   }
 
+  setMenuCategory(category: any){
+    if(this.globals.currentMenuCategory!=null){
+      if(category.id!=this.globals.currentMenuCategory.id){
+        this.globals.currentMenuCategory = category;
+      }
+    }else{
+      this.globals.currentMenuCategory = category;
+    }
+  }
+  
   closeMenu(menu, trigger) {
     if(menu === this.currentTrigger)  {
       //if(menu.menu.menuOpen()){

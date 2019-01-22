@@ -5,8 +5,9 @@
                 #trigger
                 #menuTrigger="matMenuTrigger" 
                 [matMenuTriggerFor]="menu.childMenu"
+                (click)="setMenuCategory(category)"
                 [ngClass]="{'msf-menu-op-2':i == 0, 'msf-menu-op-1':i != 0 && i!= (size -1), 'msf-menu-op-3':i== (size -1)}">
-            {{category.label}}
+            {{category.label}} 
         </button>
         <app-menu-option #menu [options]="category.options" [trigger]="trigger"></app-menu-option>          
     </ng-container>

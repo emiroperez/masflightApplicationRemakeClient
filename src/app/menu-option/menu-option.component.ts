@@ -2,6 +2,7 @@ import { Component, OnInit, Input,Output,EventEmitter, ViewChild } from '@angula
 import { Option } from '../model/Option';
 import {Globals} from '../globals/Globals'
 import { MatMenuTrigger } from '@angular/material';
+import { OptionWelcomeComponent } from '../option-welcome/option-welcome.component';
 
 @Component({
   selector: 'app-menu-option',
@@ -17,6 +18,8 @@ export class MenuOptionComponent implements OnInit {
 
 
 
+
+
   constructor(private globals: Globals) { }
 
   ngOnInit() {
@@ -24,8 +27,9 @@ export class MenuOptionComponent implements OnInit {
 
   optionClickHandler(option) {
     this.globals.clearVariables();
-    this.globals.currentOption = option
-    this.globals.dataAvailabilityInit()
+    this.globals.currentOption = option;
+    this.globals.initDataSource();
+    this.globals.dataAvailabilityInit();
     if(this.globals.currentOption.tabType === 'map'){
       this.globals.map = true;
       this.globals.selectedIndex = 1;
