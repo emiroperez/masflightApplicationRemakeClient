@@ -172,4 +172,7 @@ export class MsfComponentComponent implements OnInit {
   isDatePeriodYearMonth(argument: Arguments){
     return ComponentType.datePeriodYearMonth == argument.type;
   }
+  isSorting(argument: Arguments){
+    return ComponentType.sorting == argument.type;
+  }
 }

@@ -48,6 +48,7 @@
                         <app-msf-region *ngIf="isRegion(argument)" [argument]="argument"></app-msf-region>
                         <app-msf-date-period-year *ngIf="isDatePeriodYear(argument)" [argument]="argument"></app-msf-date-period-year>
                         <app-msf-date-period-year-month *ngIf="isDatePeriodYearMonth(argument)" [argument]="argument"></app-msf-date-period-year-month>
+                        <app-msf-sorting *ngIf="isSorting(argument)" [argument]="argument"></app-msf-sorting>
                     </ng-container>
                 </div>
             </ng-container>      

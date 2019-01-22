@@ -163,7 +163,19 @@ export class Utils{
             i++;
         }
         return valueAux;
-       }
+       }else if(type == ComponentType.grouping || type == ComponentType.tailnumber|| type == ComponentType.sorting){
+           var valueAux="";
+           var i = 0;
+           for(var val of value){
+               if(i == 0){
+                   valueAux = val.id;
+               }else{
+                   valueAux += ","+ val.id;
+               }                
+               i++;
+           }
+           return valueAux;
+         }
         return value;
     };
 

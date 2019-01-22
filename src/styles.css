@@ -2744,4 +2744,9 @@ table.datasource {
   margin-left: 10px;
 }
 
+.msf-component-date-input-container .mat-form-field-appearance-legacy .mat-form-field-label {
+  padding: 5px !important;
+  padding-left: 10px !important;
+}
+
 /*# sourceMappingURL=styles.css.map */

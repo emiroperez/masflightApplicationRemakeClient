@@ -35,5 +35,6 @@ export enum ComponentType {
   datePeriod = "datePeriod",
   region = "region",
   datePeriodYear = "datePeriodYear",
-  datePeriodYearMonth = "datePeriodYearMonth"
+  datePeriodYearMonth = "datePeriodYearMonth",
+  sorting = "sorting"
 }

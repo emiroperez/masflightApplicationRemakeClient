@@ -42,7 +42,9 @@ export class Globals {
     if(this.currentMenuCategory.welcome!= null){
       this.welcome = this.currentMenuCategory.welcome;
       this.items = this.welcome.applicationsDo.split(";");
-      this.initTableDataSource();
+      if(this.currentMenuCategory.welcomeTable!="0"){
+        this.initTableDataSource();
+      }
       this.showWelcome = true;
     }else{
       this.showWelcome = false;

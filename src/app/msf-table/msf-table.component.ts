@@ -37,6 +37,8 @@ export class MsfTableComponent implements OnInit {
 
   groupingArgument;
 
+  sortingArgument;
+
   sortedData: any[];
 
   @ViewChild(MatSort) sort: MatSort;
@@ -60,6 +62,9 @@ export class MsfTableComponent implements OnInit {
                 if(element2.type=="grouping"){
                   this.groupingArgument = element2;
                 }
+                if(element2.type=="sorting"){
+                  this.sortingArgument = element2;
+                }
             });
             }
 
@@ -68,6 +73,7 @@ export class MsfTableComponent implements OnInit {
 
     addGroupingColumns(displayedColumns: any[]){
       var array = this.groupingArgument.value1;
+      var array2 = this.sortingArgument.value1;
       if(array!=null){
       for (let index = array.length-1; index >= 0; index--) {
         const element = array[index];
@@ -79,7 +85,19 @@ export class MsfTableComponent implements OnInit {
         }
       }
     }
+    if(array2!=null){
+        for (let index = array2.length-1; index >= 0; index--) {
+          const element = array2[index];
+          const indexColumn = displayedColumns.findIndex(column => column.columnName === element.column);
+          if(indexColumn==-1){
+            displayedColumns.unshift({ columnType:"string",
+            columnName:element.column,
+            columnLabel:element.name});
+          }
+        }
     }
+  }
+
 
   setMsfChartRef(msfChartRef){
     msfChartRef.setColumns(this.displayedColumns);
