@@ -189,3 +189,8 @@ table.argument-table tfoot .links a{
     text-align: center;
     font: 500 15px/32px Roboto,"Helvetica Neue",sans-serif;
 }
+
+.mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label, .msf-price-fare .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus+.mat-form-field-label-wrapper .mat-form-field-label {
+    -webkit-transform: translateY(-1.239125em) scale(.75) perspective(100px) translateZ(.001px) !important;
+    transform: translateY(-1.239125em) scale(.75) perspective(100px) translateZ(.001px) !important;
+}
