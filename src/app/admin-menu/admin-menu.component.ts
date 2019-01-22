@@ -212,7 +212,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   }
 
   addOption() {
-    let newNode = {
+    var newNode = {
       "label": null,
       "baseUrl": null,
       "icon": null,
@@ -220,13 +220,17 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
       "tabType": null,
       "parentId": null,
       "children": [],
-      "toDelete": false
+      "toDelete": false,
+      "isRoot": false,
+      "applicationId": this.globals.currentApplication.id
     };
     if (this.optionSelected.label != null) {
       this.optionSelected.isOpened = true;
       this.optionSelected.children.unshift(newNode);
     } else {
+      newNode.isRoot = true;
       this.menu.unshift(newNode);
+
     }
     this.ref.detectChanges();
     if (this.optionSelected.label != null) {
