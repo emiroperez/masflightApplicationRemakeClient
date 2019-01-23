@@ -190,16 +190,15 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     console.log("was selected: " + category.categoryArgumentsId.label);
   }
 
-  /*
   clearSelectedCategoryArguments() {
     this.categories.forEach(function (itemCategory, indexCategory, arrayCategory) {
       itemCategory.selected = false;
     })
-  }
-  */
+  }  
 
   getOptionCategoryArguments() {
     //this.service.loadOptionCategoryArguments(this, this.optionSelected, this.handlerSuccessOptionCategoryArguments, this.handlerErrorOptionCategoryArguments);
+    this.clearSelectedCategoryArguments();
     var categories = this.categories;
     this.optionSelected.menuOptionArgumentsAdmin.forEach(function (itemOptionCategory, indexOptionCategory, arrayOptionCategory) {
       categories.forEach(function (itemCategory, indexCategory, arrayCategory) {
