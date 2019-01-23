@@ -1,12 +1,12 @@
     <div>
         <div class="center">
-            <div class="msf-component-airport-title">Limit to Flight(s) from</div>
+            <div class="msf-component-airport-title">{{argument.title}}</div>
             <div class="msf-menu-arg-single-airport-image">
             </div>
         </div>    
         <div class="msf-airline-container">
             <div class="msf-full-width">   
-            <div class="msf-component-airport-sub-title">From</div>         
+            <div class="msf-component-airport-sub-title">{{argument.label1}}</div>         
             <ng-select
                 [items]="data | async"
                 [multiple]="true"
