@@ -1,19 +1,174 @@
-import { Component, OnInit ,Input} from '@angular/core';
+import { Component, OnInit ,Input, Inject, ViewChildren, AfterViewInit, QueryList, ChangeDetectorRef, Renderer2 } from '@angular/core';
 import {FormControl, Validators,ValidatorFn, ValidationErrors, AbstractControl, FormGroup,FormArray, FormBuilder} from '@angular/forms';
 import { Globals } from '../globals/Globals';
 import { Utils } from '../commons/utils';
 import { Plan } from '../model/Plan';
-import { PlanFeature } from "../model/PlanFeature"
-import { PlanFeatureOption } from "../model/PlanFeatureOption"
-import { PlanPrice } from "../model/PlanPrice"
+import { PlanFeature } from '../model/PlanFeature';
+import { ApplicationService } from '../services/application.service';
+import { PlanFeatureOption } from '../model/PlanFeatureOption';
+import { PlanPrice } from '../model/PlanPrice';
 import { PlanService } from '../services/plan.service';
 import { NG_SELECT_DEFAULT_CONFIG } from '@ng-select/ng-select';
 import { Arguments } from '../model/Arguments';
 import { ApiClient } from '../api/api-client';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+
+
+@Component({
+  selector: 'dialog-overview-example-dialog',
+  templateUrl: 'dialog-edit-options.html',
+  styleUrls: ['./../admin-menu/admin-menu.component.css']
+})
+export class EditOptionsDialog {
+
+  itemSelected: any = {};
+
+  argumentSelected: any = {};
+
+  selectedCategories: any[] = [];
+
+  displayedColumns: string[] = ['label1', 'label2', 'name1', 'name2'];
+
+  constructor(
+    public dialogRef: MatDialogRef<EditOptionsDialog>,
+    private service: ApplicationService,
+    @Inject(MAT_DIALOG_DATA) public menu) { }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+    console.log("aqui es el click.............");
+    this.getMenuData();
+  }
+
+  onCreate(): void {
+    this.dialogRef.close();
+    console.log("aqui es el click.............");
+    this.getMenuData();
+  }
+
+  selectArgumentCategory(category) {
+    if (this.itemSelected != category) {
+      category.isSelected = !category.isSelected;
+      this.itemSelected.isSelected = !this.itemSelected.isSelected;
+      this.itemSelected = category;
+    } else {
+      category.isSelected = !category.isSelected;
+      this.itemSelected = {};
+    }
+  }
+
+  setSelectedCategoryArguments(category) {
+    if (category.isSelected) {
+      this.selectedCategories.forEach(function (currentValue, index, array) {
+        if (currentValue == category) {
+          array.splice(index, 1);
+        }
+      });
+    } else {
+      this.selectedCategories.push(category);
+    }
+    category.isSelected = !category.isSelected;
+  }
+
+  addCategoryArgument() {
+    let node = {
+      "selected": true,
+      "label": null,
+      "icon:": null,
+      "arguments": []
+    };
+    this.data.push(node);
+  }
+
+  deleteCategoryArgument() {
+    let filterSelected = this.data.filter(item => item.isSelected);
+    for (var i = 0; i < filterSelected.length; i += 1) {
+      this.selectedCategories.forEach(function (currentValue, index, array) {
+        if (currentValue == filterSelected[i]) {
+          array.splice(index, 1);
+        }
+      });
+    }
+    filterSelected.forEach(function (item, index, array) {
+      item.toDelete = true;
+    });
+  }
+
+  toggleGroup(item) {
+    item.isOpened = !item.isOpened;
+  }
+
+  addArgument(item) {
+    var node = {
+      "isSelected": false,
+      "toDelete": false
+    };
+    item.arguments.push(node);
+  }
+
+  deleteArgument(item) {
+    /*
+    let filterSelected = item.arguments.filter(node => node.isSelected);
+    filterSelected.forEach(function (node, index, array) {
+      node.toDelete = true;
+    });
+    */
+    item.toDelete = true;
+  }
+
+  getMenuData(): void {
+    this.service.loadMenuOptions(this, this.handlerGetSuccessMenuData, this.handlerGetErrorMenuData);
+    console.log("busca data---------");
+  }
+  handlerGetSuccessMenuData(_this, data) {
+    _this.menu = data;
+    _this.globals.isLoading = false;
+    console.log(_this.menu);
+  }
+
+  handlerGetErrorMenuData(_this, result) {
+    console.log(result);
+    _this.globals.isLoading = false;
+  }
+
+  setSelectedAgument(item) {
+    if (item == this.argumentSelected) {
+      this.argumentSelected.isSelected = false;
+      this.argumentSelected = {};
+    } else {
+      this.argumentSelected = item;
+      this.argumentSelected.isSelected = true;
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @Component({
   selector: 'app-create-memperships',
-  //templateUrl: './membership.component.html',
+  // templateUrl: './membership.component.html',
   templateUrl: './create-memperships.component.html',
   styleUrls: ['./membership.css'],
   providers: [
@@ -27,7 +182,7 @@ import { ApiClient } from '../api/api-client';
 })
 export class CreateMempershipsComponent implements OnInit {
 
-  @Input("argument") public argument: Arguments;
+  @Input('argument') public argument: Arguments;
 
   utils: Utils;
 
@@ -42,10 +197,15 @@ export class CreateMempershipsComponent implements OnInit {
   periodicities = [
     {label: 'Month',code:'M'},
     {label: 'Year',code:'Y'}];
+    service: any;
+    optionSelected: {};
 
 
-  constructor(private http: ApiClient,private planServices:PlanService,private globals: Globals,private formBuilder: FormBuilder) {
+  constructor(private http: ApiClient,
+    private planServices:PlanService, private globals: Globals, private formBuilder: FormBuilder,
+    public dialog: MatDialog, private ref: ChangeDetectorRef) {
     this.utils = new Utils();
+
    }
 
 
@@ -57,10 +217,10 @@ export class CreateMempershipsComponent implements OnInit {
   }
 
   getPlansService(){
-    this.globals.isLoading = true; 
-    // let url = "http://localhost:8887/getPlans";
-    let url = "/getPlans";
-    this.http.get(this,url,this.handlerSuccessInit,this.handlerError, null); 
+    this.globals.isLoading = true;
+    let url = "http://localhost:8887/getPlans";
+    //let url = '/getPlans';
+    this.http.get(this, url, this.handlerSuccessInit, this.handlerError, null);
   }
   getPlans(){
     this.items=this.plansForms.get('items') as FormArray;
@@ -68,13 +228,13 @@ export class CreateMempershipsComponent implements OnInit {
   }
 
   handlerSuccessInit(_this,data, tab){
-    console.log("data: "+data);
+    console.log('data: ' + data);
     _this.plans = data;
     _this.plans.forEach(plan => {
       _this.items=_this.plansForms.get('items') as FormArray;
       _this.items.push(_this.createPlanFromJson(plan));
     });
-    _this.globals.isLoading = false; 
+    _this.globals.isLoading = false;
   }
 
   createPlanFromJson(plan):FormGroup{
@@ -129,37 +289,37 @@ export class CreateMempershipsComponent implements OnInit {
   }
 
   handlerError(_this,result){
-    _this.globals.isLoading = false; 
+    _this.globals.isLoading = false;
     console.log(result);
   }
 
 /*
 getUsers(search, handlerSuccess){
      let url = this.argument.url + "?search="+ (search != null?search:'');
-     this.http.get(this,url,handlerSuccess,this.handlerError, null); 
+     this.http.get(this,url,handlerSuccess,this.handlerError, null);
    }
- 
+
    handlerSuccessInit(_this,data, tab){
 
-     _this.users = data;  
+     _this.users = data;
      _this.users.push({id: '', email:'ALL'})
      _this.filteredSimpleUser.next(_this.users.slice());
      _this.argument.value1 = '';
      _this.userCtrl.setValue('');
    }
- 
- 
+
+
    handlerSuccess(_this,data, tab){
-     _this.users = data;    
+     _this.users = data;
      _this.filteredSimpleUser.next(_this.users.slice());
    }
- 
+
    handlerError(_this,result){
-     _this.globals.isLoading = false; 
+     _this.globals.isLoading = false;
      console.log(result);
    }
 */
-  
+
   createPlan(): FormGroup{
     return this.formBuilder.group({
       name: new FormControl('',[Validators.required]),
@@ -194,12 +354,12 @@ getUsers(search, handlerSuccess){
       this.options.at(index3).get('deleted').setValue(true);
     }
   }
-  
+
   isPlanDelete(index):boolean{
     this.items=this.plansForms.get('items') as FormArray;
     //console.log(this.items.at(index).get('deleted').value);
     return !(this.items.at(index).get('deleted').value);
-    
+
   }
 
   getPlansJson(){
@@ -221,7 +381,7 @@ getUsers(search, handlerSuccess){
       plan.features = this.getFeaturesJson(i);
       plan.fares = this.getPricesJson(i);
       plansJsons.push(plan);
-    } 
+    }
     return plansJsons;
   }
 
@@ -250,8 +410,8 @@ getUsers(search, handlerSuccess){
   addNewFeature(index): void{
     this.items=this.plansForms.get('items') as FormArray;
     this.features=this.items.controls[index]['controls']['features'];
-    this.features.push(this.createFeature());  
-    
+    this.features.push(this.createFeature());
+
   }
 
   addNewOptionFeature(index,index2): void{
@@ -259,7 +419,7 @@ getUsers(search, handlerSuccess){
     this.features =this.items.controls[index]['controls']['features']['controls'];
     this.options = this.features[index2]['controls']['options'];
     this.options.push(this.createOptions());
-    
+
   }
 
   createOptions(): FormGroup{
@@ -273,20 +433,20 @@ getUsers(search, handlerSuccess){
   deleteFeature(indexPlan,indexFeature) {
     this.items=this.plansForms.get('items') as FormArray;
     this.features=this.items.controls[indexPlan]['controls']['features'];
-    
+
     if(this.features.at(indexFeature).get('id').value==''){
        this.features.removeAt(indexFeature);
     }else{
       this.features.at(indexFeature).get('deleted').setValue(true);
     }
-   
+
   }
 
   isFeatureDelete(indexPlan,indexFeature):boolean{
     this.items=this.plansForms.get('items') as FormArray;
     this.features=this.items.controls[indexPlan]['controls']['features'];
     //console.log(this.features.at(indexFeature).get('deleted').value);
-    return !(this.features.at(indexFeature).get('deleted').value);  
+    return !(this.features.at(indexFeature).get('deleted').value);
   }
 
   isOptionDelete(indexPlan,indexFeature,indexOption):boolean{
@@ -294,9 +454,9 @@ getUsers(search, handlerSuccess){
     this.items=this.plansForms.get('items') as FormArray;
     this.features =this.items.controls[indexPlan]['controls']['features']['controls'];
     this.options = this.features[indexFeature]['controls']['options'];
-    return !(this.options.at(indexOption).get('deleted').value); 
+    return !(this.options.at(indexOption).get('deleted').value);
   }
-  
+
   getFeaturesJson(index){
     this.items=this.plansForms.get('items') as FormArray;
     this.features=this.items.controls[index]['controls']['features'];
@@ -310,7 +470,7 @@ getUsers(search, handlerSuccess){
         feature.id=null;
         feature.delete=false;
       }
-      
+
      this.options = this.features.at(i).get("options").value;
       let planFeatureOptions: Array<PlanFeatureOption> = new Array();
       for(let j=0; j< this.options.length; j++){
@@ -319,7 +479,7 @@ getUsers(search, handlerSuccess){
           option.id=this.options[j].id;
           option.delete=this.options[j].deleted;
           option.optionName=this.options[j].name;
-          
+
         }else{
           option.id=null;
           option.delete=false;
@@ -327,7 +487,7 @@ getUsers(search, handlerSuccess){
         }
         planFeatureOptions.push(option);
       }
-      
+
 
       feature.features = this.features.at(i).get("name").value;
       feature.options= planFeatureOptions;
@@ -342,7 +502,7 @@ getUsers(search, handlerSuccess){
     let planFeatureOptions: Array<PlanFeatureOption> = new Array();
     optionsArray.forEach(option => {
       let featureOption : PlanFeatureOption = new PlanFeatureOption()
-      featureOption.optionName = option; 
+      featureOption.optionName = option;
       planFeatureOptions.push(featureOption);
     });
     return planFeatureOptions;
@@ -366,7 +526,7 @@ getUsers(search, handlerSuccess){
   addNewPrice(index): void{
     this.items=this.plansForms.get('items') as FormArray;
     this.prices=this.items.controls[index]['controls']['fares'];
-    this.prices.push(this.createPrice());   
+    this.prices.push(this.createPrice());
   }
 
   deletePrice(indexPlan,indexFare) {
@@ -385,7 +545,7 @@ getUsers(search, handlerSuccess){
     this.features=this.items.controls[indexPlan]['controls']['fares'];
     //console.log(this.features.at(indexFare).get('deleted').value);
     return !(this.features.at(indexFare).get('deleted').value);
-    
+
   }
 
   getPricesJson(index){
@@ -407,7 +567,7 @@ getUsers(search, handlerSuccess){
       pricesJson.push(fare)
     }
     return pricesJson;
-    
+
 
   }
   getOptionsText(options: any[]){
@@ -430,38 +590,38 @@ getUsers(search, handlerSuccess){
     if( periodicity === 'M'){
       return 'MONTH';
     }
-    return 'YEAR'
+    return 'YEAR';
   }
 
   savePlans(){
     this.globals.isLoading = true;
     this.items=this.plansForms.get('items') as FormArray;
     if(this.plansForms.valid && this.items.length > 0){
-     
+
       this.planServices.savePlans(this,this.getPlansJson(), this.savePlansResponse,this.errorHandleResponse);
     }
   }
 
   savePlansResponse(this_,data){
    console.log(data);
-   
+
     this_.deleteRemoveItems(this_);
     this_.items=this_.plansForms.get('items') as FormArray;
     for(let i=0; i< this_.items.length; i++){
-     
+
       this_.items.at(i).get("id").value=data[i].id;
 
       this_.prices =this_.items.controls[i]['controls']['fares'];
-      for(let j=0; j< this_.prices.length; j++){  
+      for(let j=0; j< this_.prices.length; j++){
         this_.prices.at(j).get("id").value=data[i].fares[j].id;
       }
       this_.features=this_.items.controls[i]['controls']['features'];
       for(let j=0; j< this_.features.length; j++){
-        
+
           this_.features.at(j).get("id").value=data[i].features[j].id;
-        
+
       }
-      
+
     }
    console.log(this_.items);
    this_.globals.isLoading = false;
@@ -477,7 +637,7 @@ getUsers(search, handlerSuccess){
       if(this_.items.at(i).get("deleted").value==true){
         this_.items.removeAt(i);
       }else{
-        
+
         this_.prices =this_.items.controls[i]['controls']['fares'];
         for(let j=0; j< this_.prices.length; j++){
           if(this_.prices.at(j).get("deleted").value==true){
@@ -493,4 +653,17 @@ getUsers(search, handlerSuccess){
       }
     }
   }
+
+
+  editOptionsMembership() {
+
+
+    const dialogRef = this.dialog.open(EditOptionsDialog, {
+      width: '70%',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+    });
+  }
+
 }

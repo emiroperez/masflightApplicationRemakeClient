@@ -2111,7 +2111,7 @@ g g g text {
   align-items: center;
   border-radius: 10px !important;
   margin: 4px;
-  width: 30%;
+  width: 19%;
 }
 
 .msf-large-container {
@@ -2223,7 +2223,6 @@ li.msf-select:before {
   font-weight: bold;
   letter-spacing: 1px;
   text-align: -webkit-center;
-  margin-top: 2% !important;
   margin-bottom: 2%;
 }
 
@@ -2562,7 +2561,7 @@ table.datasource {
 }
 
 .msf-fab-button-container {
-  width: 70%;
+  width: 85%;
   margin: 0 auto;
   text-align: right;
   position: relative;
@@ -2571,9 +2570,10 @@ table.datasource {
 }
 
 .msf-membership-card {
-  width: 70%;
+  width: 90%;
   margin: 0 auto;
   margin-top: -1.5%;
+  padding: 30px !important;
 }
 
 .msf-membership-card .mat-form-field-appearance-legacy .mat-form-field-label {

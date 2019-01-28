@@ -70,11 +70,13 @@ import { CategoryArgumentsComponent } from './category-arguments/category-argume
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material';
 import { AdminMenuRecursiveComponent } from './admin-menu-recursive/admin-menu-recursive.component';
+import { AdminMenuMembershipsComponent } from './admin-menu-memberships/admin-menu-memberships.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { Utils } from './commons/utils';
 import { MsfUserListComponent } from './msf-user-list/msf-user-list.component';
 import { MsfOptionListComponent } from './msf-option-list/msf-option-list.component';
 import { EditCategoryArgumentDialog } from './admin-menu/admin-menu.component';
+import { EditOptionsDialog } from './create-memperships/create-memperships.component';
 import { MsfTestComponent } from './msf-test/msf-test.component';
 import { MsfFreeTextInputComponent } from './msf-free-text-input/msf-free-text-input.component';
 import { MsfSelectBoxSingleOptionComponent } from './msf-select-box-single-option/msf-select-box-single-option.component';
@@ -96,7 +98,6 @@ import { MsfRegionComponent } from './msf-region/msf-region.component';
 import { MsfDatePeriodYearComponent } from './msf-date-period-year/msf-date-period-year.component';
 import { MsfDatePeriodYearMonthComponent } from './msf-date-period-year-month/msf-date-period-year-month.component';
 import { OptionWelcomeComponent } from './option-welcome/option-welcome.component';
-import { MsfSortingComponent } from './msf-sorting/msf-sorting.component';
 
 @NgModule({
   declarations: [
@@ -151,10 +152,12 @@ import { MsfSortingComponent } from './msf-sorting/msf-sorting.component';
     AdminMenuComponent,
     AdminMenuComponent,
     CategoryArgumentsComponent,
-    AdminMenuRecursiveComponent,    
+    AdminMenuRecursiveComponent,
+    AdminMenuMembershipsComponent,
     MsfUserListComponent,
     MsfOptionListComponent,
     EditCategoryArgumentDialog,
+    EditOptionsDialog,
     MsfTestComponent,
     MsfFreeTextInputComponent,
     MsfSelectBoxSingleOptionComponent,
@@ -174,8 +177,7 @@ import { MsfSortingComponent } from './msf-sorting/msf-sorting.component';
     MsfRegionComponent,
     MsfDatePeriodYearComponent,
     MsfDatePeriodYearMonthComponent,
-    OptionWelcomeComponent,
-    MsfSortingComponent
+    OptionWelcomeComponent
   ],
   imports: [
     BrowserModule,
@@ -201,19 +203,19 @@ import { MsfSortingComponent } from './msf-sorting/msf-sorting.component';
     AgmDirectionModule,
     AgmSnazzyInfoWindowModule,
     NgxMapboxGLModule.withConfig({
-      accessToken: 'pk.eyJ1IjoiYXNwc29sdXRpb25zIiwiYSI6ImNqbm5uNGhscTI4N28za3FybnJ0OWF6NmEifQ.pDzlIgQjVkVszvxF2UoXvA', 
+      accessToken: 'pk.eyJ1IjoiYXNwc29sdXRpb25zIiwiYSI6ImNqbm5uNGhscTI4N28za3FybnJ0OWF6NmEifQ.pDzlIgQjVkVszvxF2UoXvA',
       geocoderAccessToken: 'pk.eyJ1IjoiYXNwc29sdXRpb25zIiwiYSI6ImNqbm5uNGhscTI4N28za3FybnJ0OWF6NmEifQ.pDzlIgQjVkVszvxF2UoXvA'
     }),
     MatSnackBarModule,
     MatTableModule,
     MatPaginatorModule,
     AgGridModule.withComponents(null),
-    OwlDateTimeModule, 
+    OwlDateTimeModule,
     OwlNativeDateTimeModule
   ],
   providers: [
     AuthService,
-    NotificationComponent, 
+    NotificationComponent,
     ApiClient,
     MenuOptionComponent,
     MenuComponent,
@@ -227,6 +229,6 @@ import { MsfSortingComponent } from './msf-sorting/msf-sorting.component';
     Utils
   ],
   bootstrap: [AppComponent],
-  entryComponents: [MessageComponent, MsfDynamicTableVariablesComponent, EditCategoryArgumentDialog]
+  entryComponents: [MessageComponent, MsfDynamicTableVariablesComponent, EditCategoryArgumentDialog, EditOptionsDialog]
 })
 export class AppModule { }
