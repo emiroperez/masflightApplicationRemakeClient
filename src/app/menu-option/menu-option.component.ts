@@ -37,6 +37,7 @@ export class MenuOptionComponent implements OnInit {
     if(this.globals.currentOption.tabType === 'statistics'){
       this.globals.usageStatistics = true;
     }
+    this.globals.status = true;
   }
 
   closeMenu() {

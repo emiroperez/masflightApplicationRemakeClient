@@ -139,7 +139,7 @@ export class Utils{
                 i++;
             }
             return valueAux;
-        }else if(type == ComponentType.grouping || type == ComponentType.tailnumber){
+        }else if(type == ComponentType.tailnumber){
            var valueAux="";
            var i = 0;
            for(var val of value){
@@ -163,7 +163,7 @@ export class Utils{
             i++;
         }
         return valueAux;
-       }else if(type == ComponentType.grouping || type == ComponentType.tailnumber){
+       }else if(type == ComponentType.tailnumber){
            var valueAux="";
            var i = 0;
            for(var val of value){
@@ -185,6 +185,18 @@ export class Utils{
                     valueAux = val.columnName + "-" +val.order;
                 }else{
                     valueAux += ","+ val.columnName+ "-" +val.order;
+                }                
+                i++;
+            }
+            return valueAux;
+          }else if (type == ComponentType.grouping){
+            var valueAux="";
+            var i = 0;
+            for(var val of value){
+                if(i == 0){
+                    valueAux = val.columnName;
+                }else{
+                    valueAux += ","+ val.columnName;
                 }                
                 i++;
             }
@@ -235,18 +247,6 @@ export class Utils{
                         i++;
                     }
                     return valueAux;
-            }else if(type == ComponentType.grouping){
-               var valueAux="";
-               var i = 0;
-               for(var val of value){
-                   if(i == 0){
-                       valueAux = val.id;
-                   }else{
-                       valueAux += ","+ val.id;
-                   }                
-                   i++;
-               }
-               return valueAux;
            }else if(type == ComponentType.aircraftType){
             var valueAux="";
             var i = 0;
@@ -267,6 +267,18 @@ export class Utils{
                     valueAux = val.columnName + "-" +val.order;
                 }else{
                     valueAux += ","+ val.columnName+ "-" +val.order;
+                }                
+                i++;
+            }
+            return valueAux;
+          }else if (type == ComponentType.grouping){
+            var valueAux="";
+            var i = 0;
+            for(var val of value){
+                if(i == 0){
+                    valueAux = val.columnName;
+                }else{
+                    valueAux += ","+ val.columnName;
                 }                
                 i++;
             }

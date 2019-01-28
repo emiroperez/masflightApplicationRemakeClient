@@ -36,6 +36,7 @@ export class Globals {
   query : boolean= false;
   tab : boolean= false;
   showWelcome : boolean= false;
+  status: boolean= false;
 
   initDataSource(){
     if(this.currentMenuCategory!= null){

@@ -19,7 +19,6 @@ export class MenuService {
   getMenu(_this,successHandler, errorHandler){
     // let url = "/secure/getMenu?";
     let url = "http://localhost:8887/getMenu?"
-    // let url = "http://localhost:8887/secure/getMenu?"
     if(_this.globals.currentApplication==undefined){
       _this.globals.currentApplication = JSON.parse(localStorage.getItem("currentApplication"));
     }
@@ -29,6 +28,7 @@ export class MenuService {
   }
 
   createAuthorizationHeader() {
+    httpOptions.headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     httpOptions.headers = httpOptions.headers.append(this.SECURITY_HEADER, localStorage.getItem(this.TOKEN_STORAGE_KEY));
   }
 

@@ -85,17 +85,17 @@ export class MsfTableComponent implements OnInit {
       if(array!=null){
       for (let index = array.length-1; index >= 0; index--) {
         const element = array[index];
-        const indexColumn = displayedColumns.findIndex(column => column.columnName === element.column);
+        const indexColumn = displayedColumns.findIndex(column => column.columnName === element.columnName);
         if(indexColumn==-1){
           displayedColumns.unshift({ columnType:"string",
-          columnName:element.column,
-          columnLabel:element.name});
+          columnName:element.columnName,
+          columnLabel:element.columnLabel});
         }else{
           if(element.column=="Marketing_Carrier"){
             displayedColumns.splice(indexColumn,1);
             displayedColumns.unshift({ columnType:"string",
-            columnName:element.column,
-            columnLabel:element.name});
+            columnName:element.columnName,
+            columnLabel:element.columnLabel});
           }
         }
       }
@@ -103,11 +103,11 @@ export class MsfTableComponent implements OnInit {
     if(array2!=null){
         for (let index = array2.length-1; index >= 0; index--) {
           const element = array2[index];
-          const indexColumn = displayedColumns.findIndex(column => column.columnName === element.column);
+          const indexColumn = displayedColumns.findIndex(column => column.columnName === element.columnName);
           if(indexColumn==-1){
             displayedColumns.unshift({ columnType:"string",
-            columnName:element.column,
-            columnLabel:element.name});
+            columnName:element.columnName,
+            columnLabel:element.columnLabel});
           }
         }
     }

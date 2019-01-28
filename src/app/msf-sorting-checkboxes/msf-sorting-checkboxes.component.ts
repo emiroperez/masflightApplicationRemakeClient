@@ -63,7 +63,7 @@ export class MsfSortingCheckboxesComponent implements OnInit {
 
   checkBoxChange(checkBox){
     if(checkBox.checked){
-      if(!this.selected.findIndex(check => checkBox.columnName === check.columnName)){
+      if(!this.inList(this.selected,"columnName",checkBox.columnName)){
         this.selected.push(checkBox);
       }
     }else{
