@@ -9,9 +9,11 @@
       </div>
   </div> 
   <div class="msf-component-airport-input-container checkbox-container">
-    <div class="msf-full-width flex-container">
-      <mat-checkbox class="cancels-checkbox" *ngFor="let checkbox of data" [value]="checkbox.value" [(ngModel)]="checkbox.checked" (change)="checkBoxChange(checkbox)" >
-        {{checkbox.name}}
-      </mat-checkbox>
+    <div class="msf-full-width">
+        <div class="checkbox-component" *ngFor="let checkbox of data" style="width: 100%">
+            <mat-checkbox class="cancels-checkbox"  [value]="checkbox.value" [(ngModel)]="checkbox.checked" (change)="checkBoxChange(checkbox)" >
+              {{checkbox.name}}
+            </mat-checkbox>
+        </div> 
     </div>      
   </div>

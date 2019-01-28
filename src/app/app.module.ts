@@ -97,6 +97,8 @@ import { MsfDatePeriodYearComponent } from './msf-date-period-year/msf-date-peri
 import { MsfDatePeriodYearMonthComponent } from './msf-date-period-year-month/msf-date-period-year-month.component';
 import { OptionWelcomeComponent } from './option-welcome/option-welcome.component';
 import { MsfSortingComponent } from './msf-sorting/msf-sorting.component';
+import { MsfSortingCheckboxesComponent } from './msf-sorting-checkboxes/msf-sorting-checkboxes.component';
+import { MsfSortingByAirportComponent } from './msf-sorting-by-airport/msf-sorting-by-airport.component';
 
 @NgModule({
   declarations: [
@@ -175,7 +177,9 @@ import { MsfSortingComponent } from './msf-sorting/msf-sorting.component';
     MsfDatePeriodYearComponent,
     MsfDatePeriodYearMonthComponent,
     OptionWelcomeComponent,
-    MsfSortingComponent
+    MsfSortingComponent,
+    MsfSortingCheckboxesComponent,
+    MsfSortingByAirportComponent,
   ],
   imports: [
     BrowserModule,

@@ -163,7 +163,7 @@ export class Utils{
             i++;
         }
         return valueAux;
-       }else if(type == ComponentType.grouping || type == ComponentType.tailnumber|| type == ComponentType.sorting){
+       }else if(type == ComponentType.grouping || type == ComponentType.tailnumber){
            var valueAux="";
            var i = 0;
            for(var val of value){
@@ -175,7 +175,21 @@ export class Utils{
                i++;
            }
            return valueAux;
-         }
+         }else if(type == ComponentType.datePeriodYear){
+            return value;
+          }else if (type == ComponentType.sortingCheckboxes){
+            var valueAux="";
+            var i = 0;
+            for(var val of value){
+                if(i == 0){
+                    valueAux = val.columnName + "-" +val.order;
+                }else{
+                    valueAux += ","+ val.columnName+ "-" +val.order;
+                }                
+                i++;
+            }
+            return valueAux;
+          }
         return value;
     };
 
@@ -245,7 +259,19 @@ export class Utils{
                 i++;
             }
             return valueAux;
-           }
+           }else if (type == ComponentType.sortingCheckboxes){
+            var valueAux="";
+            var i = 0;
+            for(var val of value){
+                if(i == 0){
+                    valueAux = val.columnName + "-" +val.order;
+                }else{
+                    valueAux += ","+ val.columnName+ "-" +val.order;
+                }                
+                i++;
+            }
+            return valueAux;
+          }
             return value;
         }
     };

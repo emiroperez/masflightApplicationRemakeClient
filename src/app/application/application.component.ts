@@ -37,6 +37,7 @@ export class ApplicationComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.globals.clearVariables();
     this.getMenu();
   }
 

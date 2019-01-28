@@ -175,4 +175,10 @@ export class MsfComponentComponent implements OnInit {
   isSorting(argument: Arguments){
     return ComponentType.sorting == argument.type;
   }
+  isSortingCheckboxes(argument: Arguments){
+    return ComponentType.sortingCheckboxes == argument.type;
+  }
+  isSortingAirport(argument: Arguments){
+    return ComponentType.sortingAirport == argument.type;
+  }
 }

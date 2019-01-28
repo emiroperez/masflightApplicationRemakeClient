@@ -17,6 +17,8 @@
 
 @import "~ng-pick-datetime/assets/style/picker.min.css"
 
+@import "~@angular/material/prebuilt-themes/deeppurple-amber.css"
+
 
 body
     background-image: url("assets/images/fondo.png")
@@ -1323,7 +1325,6 @@ app-msf-airport
 td.mat-cell, td.mat-footer-cell, th.mat-header-cell 
     text-align: center
     padding: 0 !important
-    width: 5% !important
 
 .mat-header-cell
     background-color: $msf-primary-color
@@ -2184,7 +2185,7 @@ input[role=combobox]
         background-color: $msf-secondary-color
 
 .checkbox-container
-    padding: 10px 0 10px 10px        
+    padding: 10px 0 10px 0        
 mat-form-field.standard-text
     div
         div
@@ -2260,7 +2261,7 @@ tr.mat-footer-row, tr.mat-row
     font-weight: 500
 
 table.datasource  
-    width: auto !important
+    width: 100% !important
     max-width: 2000px !important   
 
 .datasource.welcome-table
@@ -2399,12 +2400,9 @@ table.datasource
 
 
 .msf-price-fare .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label, .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label 
-    -webkit-transform: translateY(-1.739125em) scale(0.75) perspective(100px) translateZ(0.001px)
-    transform: translateY(-1.739125em) scale(0.75) perspective(100px) translateZ(0.001px)
-    -ms-transform: translateY(-1.739125em) scale(0.75)
-    width: 133.33333%
-    margin-left: 7px
-    color: white !important
+    -webkit-transform: translateY(-1.239125em) scale(0.75) perspective(100px) translateZ(0.001px) !important
+    transform: translateY(-1.239125em) scale(0.75) perspective(100px) translateZ(0.001px) !important
+    -ms-transform: translateY(-1.239125em) scale(0.75) !important
 
 
 .msf-periodicity-select input 
@@ -2455,3 +2453,22 @@ table.datasource
 .msf-component-date-input-container .mat-form-field-appearance-legacy .mat-form-field-label
     padding: 5px !important
     padding-left: 10px !important
+
+
+.checkbox-component
+    width: 45%
+    display: inline-block
+    margin: 2%   
+
+.arrow-button   
+    padding: 0 !important
+    margin: 0 5px !important
+    min-width: 40px !important
+
+.arrow-blue-button
+    background-color: $msf-secondary-color !important
+    color: white !important
+
+.mat-badge-content 
+    background: $msf-font-color !important
+    color: $msf-secondary-color !important

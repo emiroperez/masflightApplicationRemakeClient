@@ -21,6 +21,7 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatTableModule} from '@angular/material/table';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatExpansionModule} from '@angular/material/expansion';
+import {MatBadgeModule} from '@angular/material';
 
 
 @NgModule({
@@ -43,6 +44,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
     MatMenuModule,
     MatTabsModule,
     MatTableModule,
+    MatBadgeModule,
     MatProgressSpinnerModule,
     MatExpansionModule
   ],
@@ -66,6 +68,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
     MatTabsModule,
     MatTableModule,
     MatSortModule,
+    MatBadgeModule,
     MatProgressSpinnerModule,
     MatExpansionModule
   ]

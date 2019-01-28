@@ -60,7 +60,7 @@ export class MsfDatePeriodYearComponent implements OnInit {
     const ctrlValue = this.date.value;
     ctrlValue.year(normalizedYear.year());
     this.date.setValue(ctrlValue);
-    this.argument.value1 = this.date;
+    this.argument.value1 = this.date.value.year();
     datepicker.close();
   }
 
@@ -68,7 +68,7 @@ export class MsfDatePeriodYearComponent implements OnInit {
     const ctrlValue = this.date2.value;
     ctrlValue.year(normalizedYear.year());
     this.date2.setValue(ctrlValue);
-    this.argument.value2 = this.date2;
+    this.argument.value2 = this.date2.value.year();
     datepicker.close();
   }
 
