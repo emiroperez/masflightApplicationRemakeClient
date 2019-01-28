@@ -1,0 +1,8 @@
+<div mat-dialog-actions>
+    <h2 class="title-section">Options</h2>
+    <div *ngFor="let option of menu; let i = index" style="color: white">
+        <app-admin-menu-memberships [menu]="option" [index]="i"></app-admin-menu-memberships>
+    </div>
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Save</button>
+</div>

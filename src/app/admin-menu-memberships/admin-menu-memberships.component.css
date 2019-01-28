@@ -1,0 +1,7 @@
+.is-active {
+    background-color: #4f4f4f;
+}
+
+.is-inactive {
+    background-color: transparent;
+}
