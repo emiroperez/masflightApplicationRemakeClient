@@ -38,5 +38,6 @@ export enum ComponentType {
   datePeriodYearMonth = "datePeriodYearMonth",
   sorting = "sorting",
   sortingCheckboxes = "sortingCheckboxes",
-  sortingAirport = "sortingAirport"
+  sortingAirport = "sortingAirport",
+  groupingAthena = "groupingAthena"
 }

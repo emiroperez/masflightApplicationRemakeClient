@@ -43,8 +43,14 @@ export class MsfContainerComponent implements OnInit {
   closeTab(tab : any){
     if(tab==1){
       this.globals.query = false;
-    }else{
-      this.globals.tab = false;
+    }else if(tab==2){
+      this.globals.query = false;
+    }else if(tab==3){
+      this.globals.generateDynamicTable = false;
+    }else if(tab==4){
+      this.globals.chart = false;
+    }else if(tab==5){
+      this.globals.map = false;
     }
   }
 }

@@ -23,33 +23,20 @@ export class MsfGroupingComponent implements OnInit {
   // public groupingFilterCtrl: FormControl = new FormControl();
 
   groupingList: any[] = [
-                          // {id: 'YEAR', name: 'Year', column:'Year'},
-                          // {id: 'MONTH', name: 'Month', column:'Month'},
-                          // {id: 'DAY', name: 'Day' ,column:'Date'},
-                          // {id: 'HOUR', name: 'Hour', column: 'Hour'},
-                          // {id: 'EQUIPMENTTYPESPECIFIC', name: 'Specific Equipment Type',column:'EspecificEquipmentType'},
-                          // {id: 'EQUIPMENTTYPEGENERAL', name: 'General Equipment Type',column:'GeneralEquipmentType'},
-                          // {id: 'OPERATINGAIRLINE', name: 'Operating Airline',column:'OperatingAirline'},                          
-                          // {id: 'ORIGINAIRPORT', name: 'Origin Airport',column:'Origin'},
-                          // {id: 'DESTINATIONAIRPORT', name: 'Destination Airport',column:'Destination'},
-                          // {id: 'FLIGHTNUMBER', name: 'Flight Number',column:'FlightNumber'},
-                          // {id: 'Marketing_Carrier', name: 'Marketing Airline',column:'Marketing_Carrier'},
-                          // // {id: 'STATUSCODE', name: 'Status Code',column:'StatusCode'},
-                          // {id: 'ROUTE', name: 'Route',column:'Route'}
-
-                          {columnName: 'Year', columnLabel: 'Year',"checked":false, "order":"desc"},
-                          {columnName: 'Month', columnLabel: 'Month', "checked":false, "order":"desc"},
-                          {columnName: 'Date', columnLabel: 'Day' ,"checked":false, "order":"desc"},
-                          {columnName: 'Hour', columnLabel: 'Hour', "checked":false, "order":"desc"},
-                          {columnName: 'EspecificEquipmentType',columnLabel: 'Specific Equipment Type', "checked":false, "order":"desc"},
-                          {columnName: 'GeneralEquipmentType',columnLabel: 'General Equipment Type',"checked":false, "order":"desc"},
-                          {columnName: 'OperatingAirline', columnLabel: 'Operating Airline',"checked":false, "order":"desc"},                          
-                          {columnName: 'Origin', columnLabel: 'Origin Airport',"checked":false, "order":"desc"},
-                          {columnName: 'Destination', columnLabel: 'Destination Airport',"checked":false, "order":"desc"},
-                          {columnName: 'FlightNumber', columnLabel: 'Flight Number',"checked":false, "order":"desc"},
-                          {columnName: 'Route', columnLabel: 'Route',"checked":false, "order":"desc"},
-                          {columnName: 'Marketing_Carrier', columnLabel: 'Marketing Airline',"checked":false, "order":"desc"}
-                        ];
+                {id: 'YEAR', name: 'Year', column:'Year'},
+                {id: 'MONTH', name: 'Month', column:'Month'},
+                {id: 'DAY', name: 'Day' ,column:'Day'},
+                {id: 'HOUR', name: 'Hour', column: 'Hour'},
+                {id: 'EQUIPMENTTYPESPECIFIC', name: 'Specific Equipment Type',column:'EspecificEquipmentType'},
+                {id: 'EQUIPMENTTYPEGENERAL', name: 'General Equipment Type',column:'GeneralEquipmentType'},
+                {id: 'OPERATINGAIRLINE', name: 'Operating Airline',column:'OperatingAirline'},                          
+                {id: 'ORIGINAIRPORT', name: 'Origin Airport',column:'Origin'},
+                {id: 'DESTINATIONAIRPORT', name: 'Destination Airport',column:'Destination'},
+                {id: 'FLIGHTNUMBER', name: 'Flight Number',column:'FlightNumber'},
+                {id: 'MARKETINGAIRLINE', name: 'Marketing Airline',column:'Marketing_Carrier'},
+                // {id: 'STATUSCODE', name: 'Status Code',column:'StatusCode'},
+                {id: 'ROUTE', name: 'Route',column:'Route'}
+  ];
   // private _onDestroy = new Subject<void>();
 
   constructor(private http: ApiClient, public globals: Globals) { }

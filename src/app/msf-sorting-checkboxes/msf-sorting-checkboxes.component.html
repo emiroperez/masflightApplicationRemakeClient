@@ -14,7 +14,7 @@
             <mat-checkbox class="cancels-checkbox"  style="display: inline-block; width: 70%;" [value]="checkbox.columnName" [(ngModel)]="checkbox.checked" (change)="checkBoxChange(checkbox)" >
               {{checkbox.columnLabel}}
             </mat-checkbox>
-            <button mat-button matBadge="{{getIndex(checkbox)}}" [matBadgeHidden]="!checkbox.checked" matBadgePosition="before" (click)="checkBoxChangeOrder(checkbox)" [ngClass]="checkbox.checked  ? 'arrow-button arrow-blue-button' : 'arrow-button'">
+            <button  mat-button matBadge="{{getIndex(checkbox)}}" [matBadgeHidden]="!checkbox.checked" matBadgePosition="before" (click)="checkBoxChangeOrder(checkbox)" [ngClass]="checkbox.checked  ? 'arrow-button arrow-blue-button' : 'arrow-button'">
                 <mat-icon *ngIf="checkbox.order=='desc'">arrow_downward</mat-icon>
                 <mat-icon *ngIf="checkbox.order=='asc'">arrow_upward</mat-icon>
             </button>     

@@ -61,7 +61,7 @@ export class MsfTableComponent implements OnInit {
     categoryArguments.forEach(element => {
             if(element.arguments!=null){
               element.arguments.forEach(element2 => {
-                if(element2.type=="grouping"){
+                if(element2.type=="groupingAthena"){
                   this.groupingArgument = element2;
                 }
                 if(element2.type=="sortingCheckboxes"){
@@ -82,24 +82,6 @@ export class MsfTableComponent implements OnInit {
         if(this.sortingArgument!=null){
            array2 = this.sortingArgument.value1;
         }
-      if(array!=null){
-      for (let index = array.length-1; index >= 0; index--) {
-        const element = array[index];
-        const indexColumn = displayedColumns.findIndex(column => column.columnName === element.columnName);
-        if(indexColumn==-1){
-          displayedColumns.unshift({ columnType:"string",
-          columnName:element.columnName,
-          columnLabel:element.columnLabel});
-        }else{
-          if(element.column=="Marketing_Carrier"){
-            displayedColumns.splice(indexColumn,1);
-            displayedColumns.unshift({ columnType:"string",
-            columnName:element.columnName,
-            columnLabel:element.columnLabel});
-          }
-        }
-      }
-    }
     if(array2!=null){
         for (let index = array2.length-1; index >= 0; index--) {
           const element = array2[index];
@@ -110,6 +92,24 @@ export class MsfTableComponent implements OnInit {
             columnLabel:element.columnLabel});
           }
         }
+    }
+    if(array!=null){
+      for (let index = array.length-1; index >= 0; index--) {
+        const element = array[index];
+        const indexColumn = displayedColumns.findIndex(column => column.columnName === element.columnName);
+        if(indexColumn==-1){
+          displayedColumns.unshift({ columnType:"string",
+          columnName:element.columnName,
+          columnLabel:element.columnLabel});
+        }else{
+          if(element.columnName=="Marketing_Carrier"){
+            displayedColumns.splice(indexColumn,1);
+            displayedColumns.unshift({ columnType:"string",
+            columnName:element.columnName,
+            columnLabel:element.columnLabel});
+          }
+        }
+      }
     }
   }
 

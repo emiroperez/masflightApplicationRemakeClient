@@ -36,14 +36,10 @@ export class EditOptionsDialog {
 
   onNoClick(): void {
     this.dialogRef.close();
-    console.log("aqui es el click.............");
-    this.getMenuData();
   }
 
   onCreate(): void {
     this.dialogRef.close();
-    console.log("aqui es el click.............");
-    this.getMenuData();
   }
 
   selectArgumentCategory(category) {
@@ -70,29 +66,6 @@ export class EditOptionsDialog {
     category.isSelected = !category.isSelected;
   }
 
-  addCategoryArgument() {
-    let node = {
-      "selected": true,
-      "label": null,
-      "icon:": null,
-      "arguments": []
-    };
-    this.data.push(node);
-  }
-
-  deleteCategoryArgument() {
-    let filterSelected = this.data.filter(item => item.isSelected);
-    for (var i = 0; i < filterSelected.length; i += 1) {
-      this.selectedCategories.forEach(function (currentValue, index, array) {
-        if (currentValue == filterSelected[i]) {
-          array.splice(index, 1);
-        }
-      });
-    }
-    filterSelected.forEach(function (item, index, array) {
-      item.toDelete = true;
-    });
-  }
 
   toggleGroup(item) {
     item.isOpened = !item.isOpened;
@@ -114,21 +87,6 @@ export class EditOptionsDialog {
     });
     */
     item.toDelete = true;
-  }
-
-  getMenuData(): void {
-    this.service.loadMenuOptions(this, this.handlerGetSuccessMenuData, this.handlerGetErrorMenuData);
-    console.log("busca data---------");
-  }
-  handlerGetSuccessMenuData(_this, data) {
-    _this.menu = data;
-    _this.globals.isLoading = false;
-    console.log(_this.menu);
-  }
-
-  handlerGetErrorMenuData(_this, result) {
-    console.log(result);
-    _this.globals.isLoading = false;
   }
 
   setSelectedAgument(item) {
@@ -185,7 +143,7 @@ export class CreateMempershipsComponent implements OnInit {
   @Input('argument') public argument: Arguments;
 
   utils: Utils;
-
+  menu: any[];
   plansForms: FormGroup;
   items: FormArray;
   features:FormArray;
@@ -218,8 +176,8 @@ export class CreateMempershipsComponent implements OnInit {
 
   getPlansService(){
     this.globals.isLoading = true;
-    let url = "http://localhost:8887/getPlans";
-    //let url = '/getPlans';
+    // let url = "http://localhost:8887/getPlans";
+    let url = '/getPlans';
     this.http.get(this, url, this.handlerSuccessInit, this.handlerError, null);
   }
   getPlans(){
@@ -344,6 +302,19 @@ getUsers(search, handlerSuccess){
     }
   }
 
+  getMenuData(): void {
+    this.service.loadMenuOptions(this, this.handlerGetSuccessMenuData, this.handlerGetErrorMenuData);
+  }
+  handlerGetSuccessMenuData(_this, data) {
+    _this.menu = data;
+    _this.globals.isLoading = false;
+    console.log(_this.menu);
+  }
+
+  handlerGetErrorMenuData(_this, result) {
+    console.log(result);
+    _this.globals.isLoading = false;
+  }
   deleteOption(index,index2,index3) {
     this.items=this.plansForms.get('items') as FormArray;
     this.features =this.items.controls[index]['controls']['features']['controls'];
@@ -656,10 +627,11 @@ getUsers(search, handlerSuccess){
 
 
   editOptionsMembership() {
-
+   // var duplicateObject = JSON.parse(JSON.stringify(this.menu));
 
     const dialogRef = this.dialog.open(EditOptionsDialog, {
       width: '70%',
+    //  data: duplicateObject
     });
 
     dialogRef.afterClosed().subscribe(result => {

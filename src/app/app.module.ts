@@ -101,6 +101,8 @@ import { OptionWelcomeComponent } from './option-welcome/option-welcome.componen
 import { MsfSortingComponent } from './msf-sorting/msf-sorting.component';
 import { MsfSortingCheckboxesComponent } from './msf-sorting-checkboxes/msf-sorting-checkboxes.component';
 import { MsfSortingByAirportComponent } from './msf-sorting-by-airport/msf-sorting-by-airport.component';
+import { MsfGroupingAthenaComponent } from './msf-grouping-athena/msf-grouping-athena.component';
+import { GroupingTwoArgumentsComponent } from './grouping-two-arguments/grouping-two-arguments.component';
 
 @NgModule({
   declarations: [
@@ -184,6 +186,8 @@ import { MsfSortingByAirportComponent } from './msf-sorting-by-airport/msf-sorti
     MsfSortingComponent,
     MsfSortingCheckboxesComponent,
     MsfSortingByAirportComponent,
+    MsfGroupingAthenaComponent,
+    GroupingTwoArgumentsComponent,
   ],
   imports: [
     BrowserModule,

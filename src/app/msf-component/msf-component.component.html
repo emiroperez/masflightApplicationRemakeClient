@@ -48,9 +48,8 @@
                         <app-msf-region *ngIf="isRegion(argument)" [argument]="argument"></app-msf-region>
                         <app-msf-date-period-year *ngIf="isDatePeriodYear(argument)" [argument]="argument"></app-msf-date-period-year>
                         <app-msf-date-period-year-month *ngIf="isDatePeriodYearMonth(argument)" [argument]="argument"></app-msf-date-period-year-month>
-                        <app-msf-sorting *ngIf="isSorting(argument)" [argument]="argument"></app-msf-sorting>
                         <app-msf-sorting-checkboxes *ngIf="isSortingCheckboxes(argument)" [argument]="argument"></app-msf-sorting-checkboxes>
-                        <app-msf-sorting-by-airport *ngIf="isSortingAirport(argument)" [argument]="argument"></app-msf-sorting-by-airport>
+                        <app-msf-grouping-athena *ngIf="isGroupingAthena(argument)" [argument]="argument"></app-msf-grouping-athena>
                     </ng-container>
                 </div>
             </ng-container>      

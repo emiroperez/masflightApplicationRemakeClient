@@ -194,6 +194,18 @@ export class Utils{
             var i = 0;
             for(var val of value){
                 if(i == 0){
+                    valueAux = val.id;
+                }else{
+                    valueAux += ","+ val.id;
+                }                
+                i++;
+            }
+            return valueAux;
+          }else if (type == ComponentType.groupingAthena){
+            var valueAux="";
+            var i = 0;
+            for(var val of value){
+                if(i == 0){
                     valueAux = val.columnName;
                 }else{
                     valueAux += ","+ val.columnName;
@@ -220,7 +232,6 @@ export class Utils{
                 }
                 return value.iata;
             }else if(type == ComponentType.ceiling ||
-                 type == ComponentType.tailnumber ||
                  type == ComponentType.rounding){
                 if(typeof value === "string"){
                     return value;
@@ -271,7 +282,7 @@ export class Utils{
                 i++;
             }
             return valueAux;
-          }else if (type == ComponentType.grouping){
+          }else if (type == ComponentType.groupingAthena){
             var valueAux="";
             var i = 0;
             for(var val of value){
@@ -279,6 +290,18 @@ export class Utils{
                     valueAux = val.columnName;
                 }else{
                     valueAux += ","+ val.columnName;
+                }                
+                i++;
+            }
+            return valueAux;
+          }else if (type == ComponentType.grouping || type == ComponentType.tailnumber){
+            var valueAux="";
+            var i = 0;
+            for(var val of value){
+                if(i == 0){
+                    valueAux = val.id;
+                }else{
+                    valueAux += ","+ val.id;
                 }                
                 i++;
             }

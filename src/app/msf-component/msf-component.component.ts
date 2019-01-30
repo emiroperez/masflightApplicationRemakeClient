@@ -172,13 +172,10 @@ export class MsfComponentComponent implements OnInit {
   isDatePeriodYearMonth(argument: Arguments){
     return ComponentType.datePeriodYearMonth == argument.type;
   }
-  isSorting(argument: Arguments){
-    return ComponentType.sorting == argument.type;
-  }
   isSortingCheckboxes(argument: Arguments){
     return ComponentType.sortingCheckboxes == argument.type;
   }
-  isSortingAirport(argument: Arguments){
-    return ComponentType.sortingAirport == argument.type;
+  isGroupingAthena(argument: Arguments){
+    return ComponentType.groupingAthena == argument.type;
   }
 }

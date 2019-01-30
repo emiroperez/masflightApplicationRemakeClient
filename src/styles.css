@@ -2257,7 +2257,7 @@ li.msf-select:before {
 .msf-summary-title {
   color: #01abec;
   font-size: 161%;
-  font-weight: bold;
+  font-weight: 500;
   margin-bottom: 20px;
 }
 
@@ -2511,6 +2511,7 @@ tr.mat-footer-row, tr.mat-row {
 .msf-welcome-title {
   color: #ffffff;
   margin-bottom: 10px;
+  font-weight: 500;
 }
 
 .msf-option-welcome-container {
@@ -2743,6 +2744,43 @@ table.datasource {
 .msf-component-date-input-container .mat-form-field-appearance-legacy .mat-form-field-label {
   padding: 5px !important;
   padding-left: 10px !important;
+}
+
+.msf-low-bold {
+  font-weight: 500 !important;
+}
+
+.msf-ident {
+  margin-left: 10px !important;
+}
+
+.arrow-blue-button {
+  background-color: #01abec;
+}
+
+.arrow-button {
+  color: white !important;
+  min-width: 40px !important;
+  margin: 0 5px !important;
+  padding: 0 !important;
+}
+
+.mat-badge-content {
+  background-color: white !important;
+  color: #01abec !important;
+}
+
+.checkbox-component {
+  margin: 10px 0;
+}
+
+.msf-no-results {
+  color: white;
+  background: #01abec;
+  font-size: 15px;
+  margin: 0 100px;
+  text-align: center;
+  padding: 15px;
 }
 
 /*# sourceMappingURL=styles.css.map */
