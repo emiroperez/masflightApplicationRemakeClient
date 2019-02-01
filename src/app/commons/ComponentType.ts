@@ -38,6 +38,15 @@ export enum ComponentType {
   datePeriodYearMonth = "datePeriodYearMonth",
   sorting = "sorting",
   sortingCheckboxes = "sortingCheckboxes",
-  sortingAirport = "sortingAirport",
-  groupingAthena = "groupingAthena"
+  groupingAthena = "groupingAthena",
+  flightDistance = "flightDistance",
+  fareTypes = "fareTypes",
+  serviceClasses = "serviceClasses",
+  summary = "summary",
+  resultsLess = "resultsLess",
+  geography = "geography",
+  excludeFollowing = "excludeFollowing",
+  singleCheckbox = "singleCheckbox",
+  excludeItineraries = "excludeItineraries",
+  filterAirlineType = "filterAirlineType"
 }

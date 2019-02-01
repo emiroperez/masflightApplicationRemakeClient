@@ -108,6 +108,24 @@ export class MsfTableComponent implements OnInit {
             columnName:element.columnName,
             columnLabel:element.columnLabel});
           }
+          if(element.columnName=="MktCar"){
+            displayedColumns.splice(indexColumn,1);
+            displayedColumns.unshift({ columnType:"string",
+            columnName:element.columnName,
+            columnLabel:element.columnLabel});
+          }
+          if(element.columnName=="Origin"){
+            displayedColumns.splice(indexColumn,1);
+            displayedColumns.unshift({ columnType:"string",
+            columnName:element.columnName,
+            columnLabel:element.columnLabel});
+          }
+          if(element.columnName=="Destination"){
+            displayedColumns.splice(indexColumn,1);
+            displayedColumns.unshift({ columnType:"string",
+            columnName:element.columnName,
+            columnLabel:element.columnLabel});
+          }
         }
       }
     }

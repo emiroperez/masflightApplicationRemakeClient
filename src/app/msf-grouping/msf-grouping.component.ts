@@ -17,11 +17,6 @@ export class MsfGroupingComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
  
-
-  // public groupingCtrl: FormControl = new FormControl();
-
-  // public groupingFilterCtrl: FormControl = new FormControl();
-
   groupingList: any[] = [
                 {id: 'YEAR', name: 'Year', column:'Year'},
                 {id: 'MONTH', name: 'Month', column:'Month'},
@@ -37,14 +32,10 @@ export class MsfGroupingComponent implements OnInit {
                 // {id: 'STATUSCODE', name: 'Status Code',column:'StatusCode'},
                 {id: 'ROUTE', name: 'Route',column:'Route'}
   ];
-  // private _onDestroy = new Subject<void>();
-
   constructor(private http: ApiClient, public globals: Globals) { }
 
 
   ngOnInit() { 
   }
-
- 
 
 }

@@ -139,7 +139,7 @@ export class Utils{
                 i++;
             }
             return valueAux;
-        }else if(type == ComponentType.tailnumber){
+        }else if(type == ComponentType.tailnumber || type == ComponentType.summary || type == ComponentType.fareTypes){
            var valueAux="";
            var i = 0;
            for(var val of value){
@@ -189,7 +189,7 @@ export class Utils{
                 i++;
             }
             return valueAux;
-          }else if (type == ComponentType.grouping){
+          }else if (type == ComponentType.grouping || type ==  ComponentType.resultsLess || type ==  ComponentType.geography || type == ComponentType.filterAirlineType){
             var valueAux="";
             var i = 0;
             for(var val of value){
@@ -213,6 +213,16 @@ export class Utils{
                 i++;
             }
             return valueAux;
+          }else if (type == ComponentType.datePeriod){
+              if(value!=null){
+                if(value.id!=null){
+                    return value.id;
+                }else{
+                    return value;
+                }
+              }else{
+                  return "";
+              }
           }
         return value;
     };
@@ -294,7 +304,9 @@ export class Utils{
                 i++;
             }
             return valueAux;
-          }else if (type == ComponentType.grouping || type == ComponentType.tailnumber){
+          }else if (type == ComponentType.grouping || type == ComponentType.tailnumber || type == ComponentType.summary 
+            || type == ComponentType.fareTypes ||  type ==  ComponentType.resultsLess || type ==  ComponentType.geography 
+            || type == ComponentType.filterAirlineType){
             var valueAux="";
             var i = 0;
             for(var val of value){
@@ -306,7 +318,17 @@ export class Utils{
                 i++;
             }
             return valueAux;
-          }
+          }else if (type == ComponentType.datePeriod){
+            if(value!=null){
+              if(value.id!=null){
+                  return value.id;
+              }else{
+                  return value;
+              }
+            }else{
+                return "";
+            }
+        }
             return value;
         }
     };

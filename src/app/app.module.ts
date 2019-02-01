@@ -103,6 +103,17 @@ import { MsfSortingCheckboxesComponent } from './msf-sorting-checkboxes/msf-sort
 import { MsfSortingByAirportComponent } from './msf-sorting-by-airport/msf-sorting-by-airport.component';
 import { MsfGroupingAthenaComponent } from './msf-grouping-athena/msf-grouping-athena.component';
 import { GroupingTwoArgumentsComponent } from './grouping-two-arguments/grouping-two-arguments.component';
+import { MsfFlightDistanceComponent } from './msf-flight-distance/msf-flight-distance.component';
+import { MsfFareTypesComponent } from './msf-fare-types/msf-fare-types.component';
+import { MsfSummaryComponent } from './msf-summary/msf-summary.component';
+import { MsfServiceClassesComponent } from './msf-service-classes/msf-service-classes.component';
+import { MsfResultsLessComponent } from './msf-results-less/msf-results-less.component';
+import { MsfExcludeFollowingCheckboxComponent } from './msf-exclude-following-checkbox/msf-exclude-following-checkbox.component';
+import { MsfExcludeFaresLowerComponent } from './msf-exclude-fares-lower/msf-exclude-fares-lower.component';
+import { MsfGeographyComponent } from './msf-geography/msf-geography.component';
+import { MsfSingleCheckboxComponent } from './msf-single-checkbox/msf-single-checkbox.component';
+import { MsfExcludeItinerariesCheckboxComponent } from './msf-exclude-itineraries-checkbox/msf-exclude-itineraries-checkbox.component';
+import { MsfFilterAirlineTypeComponent } from './msf-filter-airline-type/msf-filter-airline-type.component';
 
 @NgModule({
   declarations: [
@@ -188,6 +199,17 @@ import { GroupingTwoArgumentsComponent } from './grouping-two-arguments/grouping
     MsfSortingByAirportComponent,
     MsfGroupingAthenaComponent,
     GroupingTwoArgumentsComponent,
+    MsfFlightDistanceComponent,
+    MsfFareTypesComponent,
+    MsfSummaryComponent,
+    MsfServiceClassesComponent,
+    MsfResultsLessComponent,
+    MsfExcludeFollowingCheckboxComponent,
+    MsfExcludeFaresLowerComponent,
+    MsfGeographyComponent,
+    MsfSingleCheckboxComponent,
+    MsfExcludeItinerariesCheckboxComponent,
+    MsfFilterAirlineTypeComponent,
   ],
   imports: [
     BrowserModule,

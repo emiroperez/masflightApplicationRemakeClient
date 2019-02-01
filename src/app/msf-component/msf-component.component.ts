@@ -178,4 +178,35 @@ export class MsfComponentComponent implements OnInit {
   isGroupingAthena(argument: Arguments){
     return ComponentType.groupingAthena == argument.type;
   }
+  isFlightDistance(argument: Arguments){
+    return ComponentType.flightDistance == argument.type;
+  }
+  isFareTypes(argument: Arguments){
+    return ComponentType.fareTypes == argument.type;
+  }
+  isServiceClasses(argument: Arguments){
+    return ComponentType.serviceClasses == argument.type;
+  }
+  isSummary(argument: Arguments){
+    return ComponentType.summary == argument.type;
+  }
+  isResultsLess(argument: Arguments){
+    return ComponentType.resultsLess == argument.type;
+  }
+  isGeography(argument: Arguments){
+    return ComponentType.geography == argument.type;
+  }
+  isExcludeFollowing(argument: Arguments){
+    return ComponentType.excludeFollowing == argument.type;
+  }
+  isSIngleCheckbox(argument: Arguments){
+    return ComponentType.singleCheckbox == argument.type;
+  }
+  isExcludeItineraries(argument: Arguments){
+    return ComponentType.excludeItineraries == argument.type;
+  }
+  isFilterAirlineType(argument: Arguments){
+    return ComponentType.filterAirlineType == argument.type;
+  }
+
 }
