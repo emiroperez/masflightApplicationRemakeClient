@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { AppComponent } from './app.component';
 import { LoginScreenComponent } from './login-screen/login-screen.component';
 import { WelcomeComponent } from './welcome/welcome.component';
@@ -98,6 +98,8 @@ import { MsfRegionComponent } from './msf-region/msf-region.component';
 import { MsfDatePeriodYearComponent } from './msf-date-period-year/msf-date-period-year.component';
 import { MsfDatePeriodYearMonthComponent } from './msf-date-period-year-month/msf-date-period-year-month.component';
 import { OptionWelcomeComponent } from './option-welcome/option-welcome.component';
+import { MsfDashboardComponent } from './msf-dashboard/msf-dashboard.component';
+import { MsfDashboardChartmenuComponent } from './msf-dashboard-chartmenu/msf-dashboard-chartmenu.component';
 
 @NgModule({
   declarations: [
@@ -177,7 +179,9 @@ import { OptionWelcomeComponent } from './option-welcome/option-welcome.componen
     MsfRegionComponent,
     MsfDatePeriodYearComponent,
     MsfDatePeriodYearMonthComponent,
-    OptionWelcomeComponent
+    OptionWelcomeComponent,
+    MsfDashboardComponent,
+    MsfDashboardChartmenuComponent
   ],
   imports: [
     BrowserModule,
@@ -213,6 +217,7 @@ import { OptionWelcomeComponent } from './option-welcome/option-welcome.componen
     OwlDateTimeModule,
     OwlNativeDateTimeModule
   ],
+schemas : [ CUSTOM_ELEMENTS_SCHEMA ],
   providers: [
     AuthService,
     NotificationComponent,

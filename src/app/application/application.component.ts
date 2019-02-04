@@ -133,6 +133,12 @@ export class ApplicationComponent implements OnInit {
     this.globals.selectedIndex = 3;
   }
 
+  openDashboard(){
+    this.globals.dashboard = !this.globals.dashboard;
+    this.globals.selectedIndex = 4;
+    this.globals.currentOption = 'dashboard';
+  }
+
   dynamicTable(){
     this.openDialog();
   }

@@ -12,6 +12,7 @@ export class Globals {
   sort: MatSort;
   chart: boolean = false;
   map: boolean = false;
+  dashboard: boolean = false;
   usageStatistics: boolean = false;
   variables;
   values;

@@ -24,6 +24,9 @@
         <mat-tab  *ngIf="globals.chart" #tabRef label="CHART">
             <app-msf-chart-on-time-delay  #msfChartRef ></app-msf-chart-on-time-delay> 
         </mat-tab> 
+        <mat-tab  *ngIf="globals.dashboard" #tabRef label="DASHBOARD">
+            <app-msf-dashboard  #msfDashboardRef></app-msf-dashboard>
+        </mat-tab> 
         <mat-tab *ngIf="globals.map"  #tabRef label="MAP">
             <app-msf-map #msfMapRef></app-msf-map>
         </mat-tab> 

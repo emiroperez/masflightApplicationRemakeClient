@@ -5,6 +5,7 @@ import { MsfTableComponent } from '../msf-table/msf-table.component';
 import { MsfChartOnTimeDelayComponent } from '../msf-chart-on-time-delay/msf-chart-on-time-delay.component';
 import { MsfDynamicTableComponent } from '../msf-dynamic-table/msf-dynamic-table.component';
 import { MsfMapComponent } from '../msf-map/msf-map.component';
+import { MsfDashboardComponent } from '../msf-dashboard/msf-dashboard.component';
 
 @Component({
   selector: 'app-msf-container',
@@ -22,6 +23,9 @@ export class MsfContainerComponent implements OnInit {
 
   @ViewChild('msfMapRef')
   msfMapRef: MsfMapComponent;
+
+  @ViewChild('msfDashboardRef')
+  msfDashboardRef: MsfDashboardComponent;
 
   @ViewChild('msfDynamicTableRef')
   msfDynamicTableRef: MsfDynamicTableComponent;
