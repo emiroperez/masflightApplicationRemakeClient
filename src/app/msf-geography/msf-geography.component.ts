@@ -15,8 +15,8 @@ export class MsfGeographyComponent implements OnInit {
     "name":"Domestic",
     "value":"Domestic"},
     {"id":2,
-    "name":"Inertanitonal",
-    "value":"Inertanitonal"},
+    "name":"International",
+    "value":"International"},
     {"id":3,
     "name":"Both",
     "value":"Both"}

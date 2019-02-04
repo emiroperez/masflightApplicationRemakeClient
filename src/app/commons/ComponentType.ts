@@ -55,5 +55,7 @@ export enum ComponentType {
   title = "title",
   airportsRoutes = "airportsRoutes",
   fareLower = "fareLower",
-  percentIncrement = "percentIncrement"
+  percentIncrement = "percentIncrement",
+  groupingDailyStatics = "groupingDailyStatics",
+  quarterHour = "quarterHour"
 }

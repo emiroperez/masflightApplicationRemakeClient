@@ -120,6 +120,9 @@ import { MsfFareIncrementMaxComponent } from './msf-fare-increment-max/msf-fare-
 import { MsfArgumentTitleComponent } from './msf-argument-title/msf-argument-title.component';
 import { MsfAirportsRoutesComponent } from './msf-airports-routes/msf-airports-routes.component';
 import { MsfPercentIncrementComponent } from './msf-percent-increment/msf-percent-increment.component';
+import { MsfGroupingDailyStaticsComponent } from './msf-grouping-daily-statics/msf-grouping-daily-statics.component';
+import { MsfQuarterHourComponent } from './msf-quarter-hour/msf-quarter-hour.component';
+import { MsfFunctionsComponent } from './msf-functions/msf-functions.component';
 
 @NgModule({
   declarations: [
@@ -222,6 +225,9 @@ import { MsfPercentIncrementComponent } from './msf-percent-increment/msf-percen
     MsfArgumentTitleComponent,
     MsfAirportsRoutesComponent,
     MsfPercentIncrementComponent,
+    MsfGroupingDailyStaticsComponent,
+    MsfQuarterHourComponent,
+    MsfFunctionsComponent,
   ],
   imports: [
     BrowserModule,

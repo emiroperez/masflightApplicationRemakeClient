@@ -113,7 +113,9 @@ export class Utils{
             type == ComponentType.date){
             return new DateFormatPipe('en-US').transform(value);
         }else if(type == ComponentType.ceiling ||
-             type == ComponentType.rounding){
+             type == ComponentType.rounding || type ==  ComponentType.resultsLess || type ==  ComponentType.geography 
+             || type == ComponentType.filterAirlineType || type == ComponentType.fareIncrements || type == ComponentType.fareIncrementMiddle
+             || type == ComponentType.fareIncrementMax ||  type == ComponentType.percentIncrement || type == ComponentType.quarterHour){
             if(typeof value === "string"){
                 return value;
             }
@@ -147,8 +149,7 @@ export class Utils{
                 i++;
             }
             return valueAux;
-        }else if(type == ComponentType.tailnumber || type == ComponentType.summary || type == ComponentType.fareTypes 
-            || type == ComponentType.percentIncrement){
+        }else if(type == ComponentType.tailnumber || type == ComponentType.summary || type == ComponentType.fareTypes ){
            var valueAux="";
            var i = 0;
            for(var val of value){
@@ -198,9 +199,7 @@ export class Utils{
                 i++;
             }
             return valueAux;
-          }else if (type == ComponentType.grouping || type ==  ComponentType.resultsLess || type ==  ComponentType.geography 
-            || type == ComponentType.filterAirlineType || type == ComponentType.fareIncrements || type == ComponentType.fareIncrementMiddle
-            || type == ComponentType.fareIncrementMax){
+          }else if (type == ComponentType.grouping){
             var valueAux="";
             var i = 0;
             for(var val of value){
@@ -265,7 +264,9 @@ export class Utils{
                 }
                 return value.iata;
             }else if(type == ComponentType.ceiling ||
-                 type == ComponentType.rounding){
+                 type == ComponentType.rounding ||  type ==  ComponentType.resultsLess || type ==  ComponentType.geography 
+                 || type == ComponentType.filterAirlineType || type == ComponentType.fareIncrements || type == ComponentType.fareIncrementMiddle
+                 || type == ComponentType.fareIncrementMax || type == ComponentType.percentIncrement || type == ComponentType.quarterHour){
                 if(typeof value === "string"){
                     return value;
                 }
@@ -336,9 +337,7 @@ export class Utils{
             }
             return valueAux;
           }else if (type == ComponentType.grouping || type == ComponentType.tailnumber || type == ComponentType.summary 
-            || type == ComponentType.fareTypes ||  type ==  ComponentType.resultsLess || type ==  ComponentType.geography 
-            || type == ComponentType.filterAirlineType || type == ComponentType.fareIncrements || type == ComponentType.fareIncrementMiddle
-            || type == ComponentType.fareIncrementMax || type == ComponentType.percentIncrement){
+            || type == ComponentType.fareTypes){
             var valueAux="";
             var i = 0;
             for(var val of value){

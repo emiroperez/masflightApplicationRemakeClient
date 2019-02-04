@@ -229,5 +229,11 @@ export class MsfComponentComponent implements OnInit {
   isPercentIncrement(argument: Arguments){
     return ComponentType.percentIncrement == argument.type;
   }
+  isGroupingDailyStatics(argument: Arguments){
+    return ComponentType.groupingDailyStatics == argument.type;
+  }
+  isQuarterHour(argument: Arguments){
+    return ComponentType.quarterHour == argument.type;
+  }
 
 }

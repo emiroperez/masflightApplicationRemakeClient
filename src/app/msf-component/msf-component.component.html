@@ -68,6 +68,8 @@
                         <app-msf-airports-routes *ngIf="isAirportsRoutes(argument)" [argument]="argument"></app-msf-airports-routes>
                         <app-msf-exclude-fares-lower *ngIf="isFaresLower(argument)" [argument]="argument"></app-msf-exclude-fares-lower>
                         <app-msf-percent-increment *ngIf="isPercentIncrement(argument)" [argument]="argument"></app-msf-percent-increment>
+                        <app-msf-grouping-daily-statics  *ngIf="isGroupingDailyStatics(argument)" [argument]="argument"></app-msf-grouping-daily-statics>
+                        <app-msf-quarter-hour *ngIf="isQuarterHour(argument)" [argument]="argument"></app-msf-quarter-hour>
                     </ng-container>
                 </div>
             </ng-container>      
