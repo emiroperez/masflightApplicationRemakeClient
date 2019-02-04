@@ -42,12 +42,12 @@
       </div>
       <div>
         <div class="msf-chart-analysis-title">
-          <i class="material-icons">multiline_chart</i>  x - Axis
+          <i class="material-icons">multiline_chart</i> x - Axis
         </div>
         <div class="msf-chart-op-container">
           <mat-form-field class="msf-full-width">
             <mat-select [formControl]="xaxisCtrl" placeholder="Column" #xaxisSelect [(ngModel)]="xaxis">
-              <ngx-mat-select-search [formControl]="xaxisFilterCtrl"  placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>
+              <ngx-mat-select-search [formControl]="xaxisFilterCtrl" placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>
               <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
                 {{variable.name}}
               </mat-option>
@@ -57,7 +57,7 @@
       </div>
       <div>
         <div class="msf-chart-analysis-title">
-          <i class="material-icons">show_chart</i>  Values
+          <i class="material-icons">show_chart</i> Values
         </div>
         <div class="msf-chart-op-container">
           <mat-form-field class="msf-full-width">
