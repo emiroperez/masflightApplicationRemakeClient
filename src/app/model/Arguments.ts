@@ -14,6 +14,7 @@ export class Arguments{
     title:string;
     label1:string;
     label2:string;
+    label3:string;
     
 
     constructor(requiredIn: boolean,typeIn: string, name1In: string,name2In: string,name3In: String, urlIn: string){

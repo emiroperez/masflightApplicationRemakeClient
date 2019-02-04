@@ -33,10 +33,11 @@ export class ApplicationComponent implements OnInit {
   msfContainerRef: MsfContainerComponent;
 
   constructor(public dialog: MatDialog, public globals: Globals, private service: MenuService,private router: Router,private excelService:ExcelService) {
-    this.status = true;    
+    this.status = false;    
   }
 
   ngOnInit() {
+    this.globals.clearVariables();
     this.getMenu();
   }
 
@@ -60,6 +61,13 @@ export class ApplicationComponent implements OnInit {
     if(!this.status && this.globals.currentAgts){
       this.globals.currentAgts.open=false;
     }if(this.status && this.globals.currentAgts){
+      this.globals.currentAgts.open=true;
+    }
+
+    this.globals.status  = !this.globals.status ;
+    if(!this.globals.status && this.globals.currentAgts){
+      this.globals.currentAgts.open=false;
+    }if(this.globals.status && this.globals.currentAgts){
       this.globals.currentAgts.open=true;
     }
   }

@@ -172,7 +172,68 @@ export class MsfComponentComponent implements OnInit {
   isDatePeriodYearMonth(argument: Arguments){
     return ComponentType.datePeriodYearMonth == argument.type;
   }
-  isSorting(argument: Arguments){
-    return ComponentType.sorting == argument.type;
+  isSortingCheckboxes(argument: Arguments){
+    return ComponentType.sortingCheckboxes == argument.type;
   }
+  isGroupingAthena(argument: Arguments){
+    return ComponentType.groupingAthena == argument.type;
+  }
+  isFlightDistance(argument: Arguments){
+    return ComponentType.flightDistance == argument.type;
+  }
+  isFareTypes(argument: Arguments){
+    return ComponentType.fareTypes == argument.type;
+  }
+  isServiceClasses(argument: Arguments){
+    return ComponentType.serviceClasses == argument.type;
+  }
+  isSummary(argument: Arguments){
+    return ComponentType.summary == argument.type;
+  }
+  isResultsLess(argument: Arguments){
+    return ComponentType.resultsLess == argument.type;
+  }
+  isGeography(argument: Arguments){
+    return ComponentType.geography == argument.type;
+  }
+  isExcludeFollowing(argument: Arguments){
+    return ComponentType.excludeFollowing == argument.type;
+  }
+  isSIngleCheckbox(argument: Arguments){
+    return ComponentType.singleCheckbox == argument.type;
+  }
+  isExcludeItineraries(argument: Arguments){
+    return ComponentType.excludeItineraries == argument.type;
+  }
+  isFilterAirlineType(argument: Arguments){
+    return ComponentType.filterAirlineType == argument.type;
+  }
+  isFareIncrements(argument: Arguments){
+    return ComponentType.fareIncrements == argument.type;
+  }
+  isFareIncrementMiddle(argument: Arguments){
+    return ComponentType.fareIncrementMiddle == argument.type;
+  }
+  isFareIncrementMax(argument: Arguments){
+    return ComponentType.fareIncrementMax == argument.type;
+  }
+  isArgumentTitle(argument: Arguments){
+    return ComponentType.title == argument.type;
+  }
+  isAirportsRoutes(argument: Arguments){
+    return ComponentType.airportsRoutes == argument.type;
+  }
+  isFaresLower(argument: Arguments){
+    return ComponentType.fareLower == argument.type;
+  }
+  isPercentIncrement(argument: Arguments){
+    return ComponentType.percentIncrement == argument.type;
+  }
+  isGroupingDailyStatics(argument: Arguments){
+    return ComponentType.groupingDailyStatics == argument.type;
+  }
+  isQuarterHour(argument: Arguments){
+    return ComponentType.quarterHour == argument.type;
+  }
+
 }

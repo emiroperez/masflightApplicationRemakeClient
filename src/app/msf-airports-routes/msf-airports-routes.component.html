@@ -1,0 +1,27 @@
+<div class="msf-component-airport-sub-title" *ngIf="argument.label1!=null">{{argument.label1}}</div>     
+    <ng-select
+        [items]="this.globals.airports | async"
+        [multiple]="true"
+        [loading]="loading"
+        loadingText="Loading..."
+        [closeOnSelect]="true"
+        [hideSelected]="false"
+        bindLabel="name"
+        (search)="onSearch($event)" 
+        [(ngModel)]="argument.value1">
+    </ng-select>
+    <div class="center">
+        <div class="msf-menu-arg-airport-image"></div>
+    </div>   
+    <div class="msf-component-airport-sub-title" *ngIf="argument.label2!=null">{{argument.label2}}</div>  
+    <ng-select
+        [items]="this.globals.airports | async"
+        [multiple]="true"
+        [loading]="loading"
+        loadingText="Loading..."
+        [closeOnSelect]="true"
+        [hideSelected]="false"
+        bindLabel="name"
+        (search)="onSearch($event)" 
+        [(ngModel)]="argument.value2">
+    </ng-select> 

@@ -6,7 +6,7 @@
   </button>
   <mat-form-field #root id="'root' + index" class="msf-item menu-field" [ngClass]="{
     'is-active': option.isActive,'is-inactive': !option.isActive }" (click)="selectIdDom(index)">
-    <input id="root{{index}}" type="text" matInput class="input-register input-menu-option" [(ngModel)]="option.label" [ngModelOptions]="{standalone: true}"
+    <input id="root{{index}}" type="text" autocomplete="off" matInput class="input-register input-menu-option" [(ngModel)]="option.label" [ngModelOptions]="{standalone: true}"
       (click)="selectOption(option)">
   </mat-form-field>
   <div [@animationOption2]="option.isOpened ? 'open': 'close'" *ngIf="option.children && option.children.length > 0 && option.isOpened"

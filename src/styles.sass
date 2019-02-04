@@ -17,6 +17,8 @@
 
 @import "~ng-pick-datetime/assets/style/picker.min.css"
 
+@import "~@angular/material/prebuilt-themes/deeppurple-amber.css"
+
 
 body
     background-image: url("assets/images/fondo.png")
@@ -1323,7 +1325,6 @@ app-msf-airport
 td.mat-cell, td.mat-footer-cell, th.mat-header-cell
     text-align: center
     padding: 0 !important
-    width: 5% !important
 
 .mat-header-cell
     background-color: $msf-primary-color
@@ -2104,7 +2105,7 @@ li.msf-select:before
 .msf-summary-title
     color: $msf-secondary-color
     font-size: 161%
-    font-weight: bold
+    font-weight: 500
     margin-bottom: 20px
 
 .msf-summary-category-container
@@ -2277,7 +2278,7 @@ input[role=combobox]
         background-color: $msf-secondary-color
 
 .checkbox-container
-    padding: 10px 0 10px 10px
+    padding: 10px 0 10px 0
 mat-form-field.standard-text
     div
         div
@@ -2320,6 +2321,7 @@ tr.mat-footer-row, tr.mat-row
 .msf-welcome-title
     color: $msf-font-color
     margin-bottom: 10px
+    font-weight: 500
 
 .msf-option-welcome-container
     margin-left: 70px
@@ -2352,9 +2354,9 @@ tr.mat-footer-row, tr.mat-row
     padding: 10px !important
     font-weight: 500
 
-table.datasource
-    width: auto !important
-    max-width: 2000px !important
+table.datasource  
+    width: 100% !important
+    max-width: 2000px !important   
 
 .datasource.welcome-table
     margin-bottom: 20px
@@ -2492,13 +2494,10 @@ table.datasource
     color: black !important
 
 
-.msf-price-fare .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label, .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label
-    -webkit-transform: translateY(-1.739125em) scale(0.75) perspective(100px) translateZ(0.001px)
-    transform: translateY(-1.739125em) scale(0.75) perspective(100px) translateZ(0.001px)
-    -ms-transform: translateY(-1.739125em) scale(0.75)
-    width: 133.33333%
-    margin-left: 7px
-    color: white !important
+.msf-price-fare .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label, .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label 
+    -webkit-transform: translateY(-1.239125em) scale(0.75) perspective(100px) translateZ(0.001px) !important
+    transform: translateY(-1.239125em) scale(0.75) perspective(100px) translateZ(0.001px) !important
+    -ms-transform: translateY(-1.239125em) scale(0.75) !important
 
 
 .msf-periodicity-select input
@@ -2549,3 +2548,33 @@ table.datasource
 .msf-component-date-input-container .mat-form-field-appearance-legacy .mat-form-field-label
     padding: 5px !important
     padding-left: 10px !important
+
+.msf-low-bold
+    font-weight: 500 !important
+
+.msf-ident
+    margin-left: 10px !important
+
+.arrow-blue-button
+    background-color: #01abec
+
+.arrow-button
+    color: white !important
+    min-width: 40px !important
+    margin: 0 5px !important
+    padding: 0 !important
+
+.mat-badge-content
+    background-color: white !important
+    color: #01abec !important
+
+.checkbox-component
+    margin: 10px 0
+
+.msf-no-results 
+    color: white
+    background: #01abec
+    font-size: 15px
+    margin: 0 100px
+    text-align: center
+    padding: 15px

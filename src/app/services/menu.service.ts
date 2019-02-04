@@ -3,16 +3,22 @@ import { ApiClient } from '../api/api-client';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Menu } from '../model/Menu';
 
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+};
+
 @Injectable({
   providedIn: 'root'
 })
-export class MenuService {
 
+export class MenuService {
+  SECURITY_HEADER = "Authorization";
+  TOKEN_STORAGE_KEY = "token";
   constructor( private http: HttpClient) { }
 
   getMenu(_this,successHandler, errorHandler){
-    // let url = "/getMenu?";
-    let url = "http://localhost:8887/getMenu?"
+    let url = "/secure/getMenu?";
+    // let url = "http://localhost:8887/getMenu?"
     if(_this.globals.currentApplication==undefined){
       _this.globals.currentApplication = JSON.parse(localStorage.getItem("currentApplication"));
     }
@@ -21,12 +27,26 @@ export class MenuService {
     this.get(_this,url,successHandler, errorHandler);
   }
 
-  get(_this,url,successHandler, errorHandler){
-    this.http.get<Menu>(url).subscribe(result => {
-      successHandler(_this,result);
+  createAuthorizationHeader() {
+    httpOptions.headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    httpOptions.headers = httpOptions.headers.append(this.SECURITY_HEADER, localStorage.getItem(this.TOKEN_STORAGE_KEY));
+  }
+
+  get = function (_this,url,successHandler, errorHandler){
+    this.createAuthorizationHeader();
+    this.http.get(url,httpOptions).subscribe(result => {
+        successHandler(_this,result);
     }, error => 
-    errorHandler(_this,error)
+        errorHandler(_this,error)
   );
   }
+
+  // get = function (_this,url,successHandler, errorHandler){
+  //   this.http.get(url).subscribe(result => {
+  //       successHandler(_this,result);
+  //   }, error => 
+  //       errorHandler(_this,error)
+  // );
+  // }
 
 }

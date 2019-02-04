@@ -14,13 +14,7 @@ export class ExcelService {
   constructor() { }
 
   public exportAsExcelFile(tableSource: any, excelFileName: string): void {
-    
-    // const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json);
-    // console.log('worksheet',worksheet);
-    // const workbook: XLSX.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
-    // const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-    // //const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'buffer' });
-    // this.saveAsExcelFile(excelBuffer, excelFileName);
+
 
     const ws: XLSX.WorkSheet=XLSX.utils.table_to_sheet(tableSource.nativeElement);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();

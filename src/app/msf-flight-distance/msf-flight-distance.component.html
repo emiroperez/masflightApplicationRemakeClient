@@ -1,0 +1,12 @@
+<div class="center">
+  <div class="msf-component-airport-title">{{argument.title}}</div>
+</div> 
+<div class="msf-component-airport-input-container">  
+  <mat-form-field class="msf-full-width" style="margin: 0 10px;">
+      <input  matInput autocomplete="off" placeholder="{{argument.label1}}" autocomplete="off" class=" msf-full-width msf-menu-arg-select"  [(ngModel)]="argument.value1" >
+  </mat-form-field>            
+  <mat-form-field class="msf-full-width" style="margin: 0 10px;">
+      <input  matInput placeholder="{{argument.label2}}" autocomplete="off" class=" msf-full-width msf-menu-arg-select"  [(ngModel)]="argument.value2">
+  </mat-form-field>    
+  <div class="msf-component-airport-title" style="background: none;margin: 0 10px;">miles</div>     
+</div>

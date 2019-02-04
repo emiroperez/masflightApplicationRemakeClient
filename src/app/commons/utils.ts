@@ -113,7 +113,9 @@ export class Utils{
             type == ComponentType.date){
             return new DateFormatPipe('en-US').transform(value);
         }else if(type == ComponentType.ceiling ||
-             type == ComponentType.rounding){
+             type == ComponentType.rounding || type ==  ComponentType.resultsLess || type ==  ComponentType.geography 
+             || type == ComponentType.filterAirlineType || type == ComponentType.fareIncrements || type == ComponentType.fareIncrementMiddle
+             || type == ComponentType.fareIncrementMax ||  type == ComponentType.percentIncrement || type == ComponentType.quarterHour){
             if(typeof value === "string"){
                 return value;
             }
@@ -126,8 +128,16 @@ export class Utils{
                 return '';
             }
            return value.iata;
+        }else if(type == ComponentType.selectBoxSingleOption){
+            if(typeof value === "string"){
+                return value;
+            }
+            if( typeof value.name === 'undefined'){
+                 return '';
+             }
+            return value.name;
         }else if(type == ComponentType.airline ||
-             type == ComponentType.airportRoute || type == ComponentType.airport){
+             type == ComponentType.airportRoute || type == ComponentType.airport || type == ComponentType.airportsRoutes){
             var valueAux="";
             var i = 0;
             for(var val of value){
@@ -139,7 +149,7 @@ export class Utils{
                 i++;
             }
             return valueAux;
-        }else if(type == ComponentType.grouping || type == ComponentType.tailnumber){
+        }else if(type == ComponentType.tailnumber || type == ComponentType.summary || type == ComponentType.fareTypes ){
            var valueAux="";
            var i = 0;
            for(var val of value){
@@ -163,7 +173,7 @@ export class Utils{
             i++;
         }
         return valueAux;
-       }else if(type == ComponentType.grouping || type == ComponentType.tailnumber|| type == ComponentType.sorting){
+       }else if(type == ComponentType.tailnumber){
            var valueAux="";
            var i = 0;
            for(var val of value){
@@ -175,7 +185,67 @@ export class Utils{
                i++;
            }
            return valueAux;
-         }
+         }else if(type == ComponentType.datePeriodYear){
+            return value;
+          }else if (type == ComponentType.sortingCheckboxes){
+            var valueAux="";
+            var i = 0;
+            for(var val of value){
+                if(i == 0){
+                    valueAux = val.columnName + "-" +val.order;
+                }else{
+                    valueAux += ","+ val.columnName+ "-" +val.order;
+                }                
+                i++;
+            }
+            return valueAux;
+          }else if (type == ComponentType.grouping){
+            var valueAux="";
+            var i = 0;
+            for(var val of value){
+                if(i == 0){
+                    valueAux = val.id;
+                }else{
+                    valueAux += ","+ val.id;
+                }                
+                i++;
+            }
+            return valueAux;
+          }else if (type == ComponentType.groupingAthena){
+            var valueAux="";
+            var i = 0;
+            for(var val of value){
+                if(i == 0){
+                    valueAux = val.columnName;
+                }else{
+                    valueAux += ","+ val.columnName;
+                }                
+                i++;
+            }
+            return valueAux;
+        }else if (type == ComponentType.selectBoxMultipleOption){
+                var valueAux="";
+                var i = 0;
+                for(var val of value){
+                    if(i == 0){
+                        valueAux = val.name;
+                    }else{
+                        valueAux += ","+ val.name;
+                    }                
+                    i++;
+                }
+                return valueAux;
+        }else if (type == ComponentType.datePeriod){
+              if(value!=null){
+                if(value.id!=null){
+                    return value.id;
+                }else{
+                    return value;
+                }
+              }else{
+                  return "";
+              }
+          }
         return value;
     };
 
@@ -194,8 +264,9 @@ export class Utils{
                 }
                 return value.iata;
             }else if(type == ComponentType.ceiling ||
-                 type == ComponentType.tailnumber ||
-                 type == ComponentType.rounding){
+                 type == ComponentType.rounding ||  type ==  ComponentType.resultsLess || type ==  ComponentType.geography 
+                 || type == ComponentType.filterAirlineType || type == ComponentType.fareIncrements || type == ComponentType.fareIncrementMiddle
+                 || type == ComponentType.fareIncrementMax || type == ComponentType.percentIncrement || type == ComponentType.quarterHour){
                 if(typeof value === "string"){
                     return value;
                 }
@@ -208,8 +279,16 @@ export class Utils{
                          return '';
                      }
                      return value.iata;
+            }else if(type == ComponentType.selectBoxSingleOption){
+                if(typeof value === "string"){
+                    return value;
+                }
+                if( typeof value.name === 'undefined'){
+                     return '';
+                 }
+                return value.name;
             }else if(type == ComponentType.airline ||
-                 type == ComponentType.airportRoute){
+                 type == ComponentType.airportRoute || type == ComponentType.airportsRoutes){
                     var valueAux="";
                     var i = 0;
                     for(var val of value){
@@ -221,18 +300,6 @@ export class Utils{
                         i++;
                     }
                     return valueAux;
-            }else if(type == ComponentType.grouping){
-               var valueAux="";
-               var i = 0;
-               for(var val of value){
-                   if(i == 0){
-                       valueAux = val.id;
-                   }else{
-                       valueAux += ","+ val.id;
-                   }                
-                   i++;
-               }
-               return valueAux;
            }else if(type == ComponentType.aircraftType){
             var valueAux="";
             var i = 0;
@@ -245,7 +312,66 @@ export class Utils{
                 i++;
             }
             return valueAux;
-           }
+           }else if (type == ComponentType.sortingCheckboxes){
+            var valueAux="";
+            var i = 0;
+            for(var val of value){
+                if(i == 0){
+                    valueAux = val.columnName + "-" +val.order;
+                }else{
+                    valueAux += ","+ val.columnName+ "-" +val.order;
+                }                
+                i++;
+            }
+            return valueAux;
+          }else if (type == ComponentType.groupingAthena){
+            var valueAux="";
+            var i = 0;
+            for(var val of value){
+                if(i == 0){
+                    valueAux = val.columnName;
+                }else{
+                    valueAux += ","+ val.columnName;
+                }                
+                i++;
+            }
+            return valueAux;
+          }else if (type == ComponentType.grouping || type == ComponentType.tailnumber || type == ComponentType.summary 
+            || type == ComponentType.fareTypes){
+            var valueAux="";
+            var i = 0;
+            for(var val of value){
+                if(i == 0){
+                    valueAux = val.id;
+                }else{
+                    valueAux += ","+ val.id;
+                }                
+                i++;
+            }
+            return valueAux;
+        }else if (type == ComponentType.selectBoxMultipleOption){
+                var valueAux="";
+                var i = 0;
+                for(var val of value){
+                    if(i == 0){
+                        valueAux = val.name;
+                    }else{
+                        valueAux += ","+ val.name;
+                    }                
+                    i++;
+                }
+                return valueAux;
+        }else if (type == ComponentType.datePeriod){
+            if(value!=null){
+              if(value.id!=null){
+                  return value.id;
+              }else{
+                  return value;
+              }
+            }else{
+                return "";
+            }
+        }
             return value;
         }
     };

@@ -13,8 +13,8 @@
         <div class="msf-summary-div-container">
           <div class="msf-inline msf-welcome-inline">
               <mat-list class="what-do-list" role="list">
-                  <mat-list-item *ngFor="let item of globals.items; let i = index" role="listitem">
-                    {{item}}
+                  <mat-list-item class="{{classItem(item)}}" *ngFor="let item of globals.items; let i = index" role="listitem">
+                    {{formatItem(item)}}
                   </mat-list-item>
                 </mat-list>
           </div>

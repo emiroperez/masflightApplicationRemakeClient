@@ -98,6 +98,31 @@ import { MsfRegionComponent } from './msf-region/msf-region.component';
 import { MsfDatePeriodYearComponent } from './msf-date-period-year/msf-date-period-year.component';
 import { MsfDatePeriodYearMonthComponent } from './msf-date-period-year-month/msf-date-period-year-month.component';
 import { OptionWelcomeComponent } from './option-welcome/option-welcome.component';
+import { MsfSortingComponent } from './msf-sorting/msf-sorting.component';
+import { MsfSortingCheckboxesComponent } from './msf-sorting-checkboxes/msf-sorting-checkboxes.component';
+import { MsfSortingByAirportComponent } from './msf-sorting-by-airport/msf-sorting-by-airport.component';
+import { MsfGroupingAthenaComponent } from './msf-grouping-athena/msf-grouping-athena.component';
+import { GroupingTwoArgumentsComponent } from './grouping-two-arguments/grouping-two-arguments.component';
+import { MsfFlightDistanceComponent } from './msf-flight-distance/msf-flight-distance.component';
+import { MsfFareTypesComponent } from './msf-fare-types/msf-fare-types.component';
+import { MsfSummaryComponent } from './msf-summary/msf-summary.component';
+import { MsfServiceClassesComponent } from './msf-service-classes/msf-service-classes.component';
+import { MsfResultsLessComponent } from './msf-results-less/msf-results-less.component';
+import { MsfExcludeFollowingCheckboxComponent } from './msf-exclude-following-checkbox/msf-exclude-following-checkbox.component';
+import { MsfExcludeFaresLowerComponent } from './msf-exclude-fares-lower/msf-exclude-fares-lower.component';
+import { MsfGeographyComponent } from './msf-geography/msf-geography.component';
+import { MsfSingleCheckboxComponent } from './msf-single-checkbox/msf-single-checkbox.component';
+import { MsfExcludeItinerariesCheckboxComponent } from './msf-exclude-itineraries-checkbox/msf-exclude-itineraries-checkbox.component';
+import { MsfFilterAirlineTypeComponent } from './msf-filter-airline-type/msf-filter-airline-type.component';
+import { MsfFareIncrementsComponent } from './msf-fare-increments/msf-fare-increments.component';
+import { MsfFareIncrementMiddleComponent } from './msf-fare-increment-middle/msf-fare-increment-middle.component';
+import { MsfFareIncrementMaxComponent } from './msf-fare-increment-max/msf-fare-increment-max.component';
+import { MsfArgumentTitleComponent } from './msf-argument-title/msf-argument-title.component';
+import { MsfAirportsRoutesComponent } from './msf-airports-routes/msf-airports-routes.component';
+import { MsfPercentIncrementComponent } from './msf-percent-increment/msf-percent-increment.component';
+import { MsfGroupingDailyStaticsComponent } from './msf-grouping-daily-statics/msf-grouping-daily-statics.component';
+import { MsfQuarterHourComponent } from './msf-quarter-hour/msf-quarter-hour.component';
+import { MsfFunctionsComponent } from './msf-functions/msf-functions.component';
 import { MsfDashboardComponent } from './msf-dashboard/msf-dashboard.component';
 import { MsfDashboardChartmenuComponent } from './msf-dashboard-chartmenu/msf-dashboard-chartmenu.component';
 
@@ -180,6 +205,31 @@ import { MsfDashboardChartmenuComponent } from './msf-dashboard-chartmenu/msf-da
     MsfDatePeriodYearComponent,
     MsfDatePeriodYearMonthComponent,
     OptionWelcomeComponent,
+    MsfSortingComponent,
+    MsfSortingCheckboxesComponent,
+    MsfSortingByAirportComponent,
+    MsfGroupingAthenaComponent,
+    GroupingTwoArgumentsComponent,
+    MsfFlightDistanceComponent,
+    MsfFareTypesComponent,
+    MsfSummaryComponent,
+    MsfServiceClassesComponent,
+    MsfResultsLessComponent,
+    MsfExcludeFollowingCheckboxComponent,
+    MsfExcludeFaresLowerComponent,
+    MsfGeographyComponent,
+    MsfSingleCheckboxComponent,
+    MsfExcludeItinerariesCheckboxComponent,
+    MsfFilterAirlineTypeComponent,
+    MsfFareIncrementsComponent,
+    MsfFareIncrementMiddleComponent,
+    MsfFareIncrementMaxComponent,
+    MsfArgumentTitleComponent,
+    MsfAirportsRoutesComponent,
+    MsfPercentIncrementComponent,
+    MsfGroupingDailyStaticsComponent,
+    MsfQuarterHourComponent,
+    MsfFunctionsComponent,
     MsfDashboardComponent,
     MsfDashboardChartmenuComponent
   ],
