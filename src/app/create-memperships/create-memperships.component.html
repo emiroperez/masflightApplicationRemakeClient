@@ -43,7 +43,7 @@
                             <div class="feature-options-container">
                                 <h3 class="feature-tittle">Options</h3>
                                 <div class="msf-fab-button-container msf-fab-button msf-center-container msf-fab-button-features">
-                                    <button mat-mini-fab color="basic" (click)="editOptionsMembership()">+</button>
+                                    <button mat-mini-fab color="basic" (click)="editOptionsMembership(i)">+</button>
                                 </div>
                             </div>
 
@@ -67,18 +67,6 @@
                                                 <mat-form-field class="msf-card-content-item msf-card-feature-item" [floatLabel]="never">
                                                     <input matInput class="msf-feature-name" autocomplete="off" type="text" formControlName="name" placeholder="Feature" />
                                                 </mat-form-field>
-
-
-                                                <div formArrayName="options" *ngFor="let option of getPlanFeaturesOptions(i,j); let l = index;">
-                                                    <div [formGroupName]="l" *ngIf='isOptionDelete(i,j,l)'>
-                                                        <div class="button-delete-container">
-                                                            <button class="button-delete button-delete-pos" mat-mini-fab color="basic" (click)="deleteOption(i,j,l)"></button>
-                                                        </div>
-                                                        <mat-form-field class="msf-card-content-item msf-card-feature-item" [floatLabel]="never">
-                                                            <input matInput class="msf-feature-description" autocomplete="off" type="text" formControlName="name" placeholder="Option" />
-                                                        </mat-form-field>
-                                                    </div>
-                                                </div>
                                             </div>
 
                                         </li>

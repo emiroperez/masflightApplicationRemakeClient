@@ -1,5 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter, QueryList, ViewChildren, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { ApplicationService } from '../services/application.service';
+import { Globals } from '../globals/Globals';
 
 @Component({
   selector: 'app-admin-menu-memberships',
@@ -35,7 +37,12 @@ export class AdminMenuMembershipsComponent implements OnInit {
   @Input("index")
   index: any;
 
+  @Input("options")
+  optionsPlan: any[];
+
   @Output() optionSelected = new EventEmitter();
+
+  @Output() optionSelectedArray = new EventEmitter();
 
   @Output() idSelected = new EventEmitter();
 
@@ -45,14 +52,23 @@ export class AdminMenuMembershipsComponent implements OnInit {
 
   optionActive: any = {};
 
-  constructor() { }
+  options: any[] = [];
+
+  constructor(private service: ApplicationService) { }
 
   ngOnInit() {
-  }
 
-  ngAfterViewInit(): void {
   }
-
+  setSelectedOption(option) {
+    if (option == this.optionActive) {
+      this.optionActive.isSelected = false;
+      this.optionActive = {};
+    } else {
+      this.optionActive = option;
+      this.optionActive.isSelected = true;
+    }
+    console.log(this.optionActive);
+  }
   toggle(option) {
     if (option.isOpened) {
       option.isOpened = false;
@@ -64,6 +80,7 @@ export class AdminMenuMembershipsComponent implements OnInit {
   }
 
   selectOption(option) {
+    this.options.push(option);
     this.optionSelected.emit(option);
   }
 
@@ -80,5 +97,4 @@ export class AdminMenuMembershipsComponent implements OnInit {
       }, 3000);
     }
   }
-
 }
