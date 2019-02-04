@@ -116,8 +116,9 @@ export class ApplicationService {
   }
 
   loadPlanOptions(_this, data, handlerSuccess, handlerError) {
-    //_this.globals.isLoading = true;
-    let url = this.host + "/getOptionsPlan?planId="+data;
+    _this.globals.isLoading = true;
+    //let url = this.host + "/getOptionsPlan?plan="+data+"&application="+_this.globals.currentApplication.id;
+    let url = this.host + "/getOptionsPlan?plan="+data+"&application=4";
     this.http.get(_this, url, handlerSuccess, handlerError, null);
   }
 

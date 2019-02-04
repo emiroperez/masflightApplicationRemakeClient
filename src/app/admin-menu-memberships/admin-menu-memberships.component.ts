@@ -40,11 +40,9 @@ export class AdminMenuMembershipsComponent implements OnInit {
   @Input("options")
   optionsPlan: any[];
 
-
-  @Input("planId")
-  planId: any[];
-
   @Output() optionSelected = new EventEmitter();
+
+  @Output() optionSelectedArray = new EventEmitter();
 
   @Output() idSelected = new EventEmitter();
 
@@ -61,24 +59,6 @@ export class AdminMenuMembershipsComponent implements OnInit {
   ngOnInit() {
 
   }
-
- /* getSelectedOptionsByPlan() {
-    this.service.loadPlanOptions(this,"1", this.handlerSuccessPlanOptions, this.handlerErrorPlanOptions);
-  }
-
-  handlerSuccessPlanOptions(_this, result) {
-    _this.options = result;
-    this.setSelectedOption(this.option);
-    console.log(_this.options);
-  }
-
-  handlerErrorPlanOptions(_this, result) {
-    console.log(result);
-  }
-
-  ngAfterViewInit(): void {
-  }*/
-
   setSelectedOption(option) {
     if (option == this.optionActive) {
       this.optionActive.isSelected = false;
@@ -89,32 +69,6 @@ export class AdminMenuMembershipsComponent implements OnInit {
     }
     console.log(this.optionActive);
   }
-
-  getOptionsPlan() {
-       // this.clearSelectedCategoryArguments();
-       console.log(this.optionsPlan.length);
-    for (var i = 0; i < this.optionsPlan.length; i++) {
-      console.log(this.optionsPlan[i]);
-      if (this.optionsPlan[i].id = this.option.id){
-        this.option.selected = true;
-        console.log(this.option);
-      }
-    }
-  }
-
-  getOptionsPlan();
-
- /*   var categories = this.categories;
-    this.optionSelected.menuOptionArgumentsAdmin.forEach(function (itemOptionCategory, indexOptionCategory, arrayOptionCategory) {
-      categories.forEach(function (itemCategory, indexCategory, arrayCategory) {
-        if (itemOptionCategory.categoryArgumentsId.id == itemCategory.id) {
-          itemCategory.selected = true;
-        }
-      })
-    });
-    this.globals.isLoading = false;
-  }
-*/
   toggle(option) {
     if (option.isOpened) {
       option.isOpened = false;
@@ -126,6 +80,7 @@ export class AdminMenuMembershipsComponent implements OnInit {
   }
 
   selectOption(option) {
+    this.options.push(option);
     this.optionSelected.emit(option);
   }
 

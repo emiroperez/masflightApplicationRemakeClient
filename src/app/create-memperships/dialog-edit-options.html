@@ -1,8 +1,8 @@
 <div style='max-height: 400px;' cdkFocusInitial>
     <h2 class="title-section">Options</h2>
-    <div *ngFor="let option of menu; let i = index;">
-        <app-admin-menu-memberships [options]="options" [menu]="option" [index]="i" [planId]="planId" (optionSelected)="getOptionSelected($event)" (idSelected)="getSelectIdDom($event)"></app-admin-menu-memberships>
+    <div *ngFor="let option of data.menuSelected; let i = index;">
+        <app-admin-menu-memberships [menu]="option" [index]="i" (optionSelected)="getOptionSelected($event)"></app-admin-menu-memberships>
     </div>
     <button mat-button>Cancel</button>
-    <button mat-button [mat-dialog-close]="data">Save</button>
+    <button mat-button (click)="getItemsSelected(data.menuSelected)" [mat-dialog-close]="data.auxOptions">Save</button>
 </div>
