@@ -16,7 +16,7 @@ export class ApplicationService {
   // host = "";
 
   host1 = "http://localhost:8886";
-  // host1 = "http://69.64.45.220:8886"; 
+  // host1 = "http://69.64.45.220:8886";
 
   constructor(private http: ApiClient) {
     this.utils = new Utils();
@@ -45,7 +45,7 @@ export class ApplicationService {
     }
     console.log(urlBase);
     let urlArg = encodeURIComponent(urlBase);
-    let url = this.host + "/consumeWebServices?url=" + urlArg + "&optionId=" + _this.globals.currentOption.id;   
+    let url = this.host + "/consumeWebServices?url=" + urlArg + "&optionId=" + _this.globals.currentOption.id;
     this.http.get(_this, url, handlerSuccess, handlerError, null);
     console.log(url);
   }
@@ -86,19 +86,19 @@ export class ApplicationService {
     this.http.get(_this, url, handlerSuccess, handlerError, null);
   }
 /*
-  createMenucategory(_this, data, handlerSuccess, handlerError) {      
+  createMenucategory(_this, data, handlerSuccess, handlerError) {
     let url = this.host + "/menuTreeCategory";
     this.http.post(_this, url, data, handlerSuccess, handlerError);
   }
 
-  createMenuOption(_this, data, handlerSuccess, handlerError) {      
+  createMenuOption(_this, data, handlerSuccess, handlerError) {
     let url = this.host + "/menuTreeOption";
     this.http.post(_this, url, data, handlerSuccess, handlerError);
   }
   */
 
   loadOptionCategoryArguments(_this, data, handlerSuccess, handlerError) {
-    //_this.globals.isLoading = true;    
+    //_this.globals.isLoading = true;
     let url = this.host + "/getOptionArgumentsCategories?optionId=" + data.id;
     this.http.get(_this, url, handlerSuccess, handlerError, null);
   }
@@ -115,7 +115,15 @@ export class ApplicationService {
     this.http.get(_this, url, handlerSuccess, handlerError, null);
   }
 
-  createArgument(_this, data, handlerSuccess, handlerError) {   
+  loadPlanOptions(_this, data, handlerSuccess, handlerError) {
+    _this.globals.isLoading = true;
+    //let url = this.host + "/getOptionsPlan?plan="+data+"&application="+_this.globals.currentApplication.id;
+    let url = this.host + "/getOptionsPlan?plan="+data+"&application=4";
+    this.http.get(_this, url, handlerSuccess, handlerError, null);
+  }
+
+
+  createArgument(_this, data, handlerSuccess, handlerError) {
     let url = this.host +  "/arguments?idOption=" + data.idOption;
     this.http.post(_this, url, data.argument, handlerSuccess, handlerError);
   }
@@ -149,7 +157,7 @@ export class ApplicationService {
     let url = this.host + "/saveArgumentsCategory";
     this.http.post(_this, url, data, handlerSuccess, handlerError);
   }
-  
+
   saveArguments(_this, data, handlerSuccess, handlerError){
     _this.globals.isLoading = true;
     let url = this.host + "/saveArguments";
@@ -165,15 +173,15 @@ export class ApplicationService {
   deleteArguments(_this, data, handlerSuccess, handlerError){
     _this.globals.isLoading = true;
     let url = this.host + "/deleteArguments";
-    this.http.post(_this, url, data, handlerSuccess, handlerError);    
-  }    
+    this.http.post(_this, url, data, handlerSuccess, handlerError);
+  }
 
   loadChartDataUsageStatistics(_this, handlerSuccess, handlerError) {
     _this.globals.isLoading = true;
     let params = this.utils.getParameters(_this.globals.currentOption);
     params += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999";
     console.log(params);
-    let url = this.host + "/getChartDataUsageStatistics?variable=" + _this.variable.id + "&xaxis=" + _this.xaxis.id + "&valueColunm=" + _this.valueColunm.id + "&function=" + _this.function.id + "&" +params+ "&optionId=" + _this.globals.currentOption.id;;    
+    let url = this.host + "/getChartDataUsageStatistics?variable=" + _this.variable.id + "&xaxis=" + _this.xaxis.id + "&valueColunm=" + _this.valueColunm.id + "&function=" + _this.function.id + "&" +params+ "&optionId=" + _this.globals.currentOption.id;;
     this.http.get(_this, url, handlerSuccess, handlerError, null);
   }
 
@@ -186,7 +194,7 @@ export class ApplicationService {
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=100";
     console.log(urlBase);
     let urlArg = encodeURIComponent(urlBase);
-    urlBase += "&optionId=" + _this.globals.currentOption.id;   
+    urlBase += "&optionId=" + _this.globals.currentOption.id;
     this.http.get(_this, urlBase, handlerSuccess, handlerError, null);
   }
 
