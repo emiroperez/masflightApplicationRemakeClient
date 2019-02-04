@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Globals } from '../globals/Globals';
+import { Arguments } from '../model/Arguments';
 
 @Component({
   selector: 'app-msf-exclude-fares-lower',
@@ -8,6 +9,8 @@ import { Globals } from '../globals/Globals';
 })
 export class MsfExcludeFaresLowerComponent implements OnInit {
 
+  @Input("argument") public argument: Arguments;
+  
   data: any[] = [
     {id: 0},
     {id: 20},

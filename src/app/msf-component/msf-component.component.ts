@@ -208,5 +208,26 @@ export class MsfComponentComponent implements OnInit {
   isFilterAirlineType(argument: Arguments){
     return ComponentType.filterAirlineType == argument.type;
   }
+  isFareIncrements(argument: Arguments){
+    return ComponentType.fareIncrements == argument.type;
+  }
+  isFareIncrementMiddle(argument: Arguments){
+    return ComponentType.fareIncrementMiddle == argument.type;
+  }
+  isFareIncrementMax(argument: Arguments){
+    return ComponentType.fareIncrementMax == argument.type;
+  }
+  isArgumentTitle(argument: Arguments){
+    return ComponentType.title == argument.type;
+  }
+  isAirportsRoutes(argument: Arguments){
+    return ComponentType.airportsRoutes == argument.type;
+  }
+  isFaresLower(argument: Arguments){
+    return ComponentType.fareLower == argument.type;
+  }
+  isPercentIncrement(argument: Arguments){
+    return ComponentType.percentIncrement == argument.type;
+  }
 
 }

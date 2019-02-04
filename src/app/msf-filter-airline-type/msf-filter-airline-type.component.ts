@@ -12,7 +12,7 @@ export class MsfFilterAirlineTypeComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
  
-  groupingList: any[] = [
+  data: any[] = [
                 {id: 'RpCarrier', name: 'Reporting Carrier'},
                 {id: 'TcCarrier', name: 'Ticked Carrier'},
                 {id: 'OpCarrier', name: 'Operating Carrier' }
