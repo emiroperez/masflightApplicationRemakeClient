@@ -6,6 +6,7 @@ import { DateTimeFormatPipe } from "./DateTimeFormatPipe";
 import { DateFormatPipe } from "./DateFormatPipe ";
 import { Constants } from "./Constants ";
 import { DatePipe } from "@angular/common";
+import { componentNeedsResolution } from "@angular/core/src/metadata/resource_loading";
 
 export class Utils{
 
@@ -199,7 +200,9 @@ export class Utils{
                 i++;
             }
             return valueAux;
-          }else if (type == ComponentType.grouping){
+          }else if (type == ComponentType.grouping || type == ComponentType.groupingOperationsSummary || type == ComponentType.causesFlightDelaysCheckbox
+            || type == ComponentType.taxiTimesCheckboxes || type == ComponentType.cancelsCheckBox || type== ComponentType.diversionsCheckbox
+            || type  == ComponentType.aircraftTypeCheckboxes){
             var valueAux="";
             var i = 0;
             for(var val of value){
@@ -337,7 +340,9 @@ export class Utils{
             }
             return valueAux;
           }else if (type == ComponentType.grouping || type == ComponentType.tailnumber || type == ComponentType.summary 
-            || type == ComponentType.fareTypes){
+            || type == ComponentType.fareTypes || type == ComponentType.groupingOperationsSummary || type == ComponentType.causesFlightDelaysCheckbox 
+            || type == ComponentType.taxiTimesCheckboxes || type == ComponentType.cancelsCheckBox || type== ComponentType.diversionsCheckbox
+            || type  == ComponentType.aircraftTypeCheckboxes){
             var valueAux="";
             var i = 0;
             for(var val of value){
@@ -371,6 +376,26 @@ export class Utils{
             }else{
                 return "";
             }
+        }else if(type == ComponentType.selectBoxSingleOption || type == ComponentType.functions){
+            if(typeof value === "string"){
+                return value;
+            }
+            if( typeof value.name === 'undefined'){
+                 return '';
+             }
+            return value.name;
+        }else if (type == ComponentType.selectBoxMultipleOption){
+            var valueAux="";
+            var i = 0;
+            for(var val of value){
+                if(i == 0){
+                    valueAux = val.name;
+                }else{
+                    valueAux += ","+ val.name;
+                }                
+                i++;
+            }
+            return valueAux;
         }
             return value;
         }

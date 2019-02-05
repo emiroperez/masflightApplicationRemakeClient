@@ -14,11 +14,11 @@ export class MsfDiversionsCheckboxComponent implements OnInit {
   selected: any[] = [];
   all = {"checked":false};
   data =  [
-      {"id":1,
+      {"id":"airborne",
       "name":"Airborne Return To Origin",
       "value":"Airborne Return To Origin",
       "checked":false},
-      {"id":2,
+      {"id":"enroutenroute",
       "name":"En-route Diversion",
       "value":"En-route Diversion",
       "checked":false}

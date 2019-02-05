@@ -235,5 +235,19 @@ export class MsfComponentComponent implements OnInit {
   isQuarterHour(argument: Arguments){
     return ComponentType.quarterHour == argument.type;
   }
-
+  isFunctions(argument: Arguments){
+    return ComponentType.functions == argument.type;
+  }
+  isGroupingOperationsSummary(argument: Arguments){
+    return ComponentType.groupingOperationsSummary == argument.type;
+  }
+  isGroupingHubSummaries(argument: Arguments){
+    return ComponentType.groupingHubSummaries == argument.type;
+  }
+  isRegionSchedule(argument: Arguments){
+    return ComponentType.regionSchedule == argument.type;
+  }
+  isAircraftTypeCheckboxes(argument: Arguments){
+    return ComponentType.aircraftTypeCheckboxes == argument.type;
+  }
 }

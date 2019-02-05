@@ -70,6 +70,11 @@
                         <app-msf-percent-increment *ngIf="isPercentIncrement(argument)" [argument]="argument"></app-msf-percent-increment>
                         <app-msf-grouping-daily-statics  *ngIf="isGroupingDailyStatics(argument)" [argument]="argument"></app-msf-grouping-daily-statics>
                         <app-msf-quarter-hour *ngIf="isQuarterHour(argument)" [argument]="argument"></app-msf-quarter-hour>
+                        <app-msf-functions *ngIf="isFunctions(argument)" [argument]="argument"></app-msf-functions>
+                        <app-msf-grouping-operations-summary *ngIf="isGroupingOperationsSummary(argument)" [argument]="argument"></app-msf-grouping-operations-summary>
+                        <app-msf-grouping-hub-summaries *ngIf="isGroupingHubSummaries(argument)" [argument]="argument"></app-msf-grouping-hub-summaries>
+                        <app-msf-region-schedule *ngIf="isRegionSchedule(argument)" [argument]="argument"></app-msf-region-schedule>
+                        <app-msf-aircraft-type-checkboxes *ngIf="isAircraftTypeCheckboxes(argument)" [argument]="argument"></app-msf-aircraft-type-checkboxes>
                     </ng-container>
                 </div>
             </ng-container>      

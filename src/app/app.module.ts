@@ -125,6 +125,11 @@ import { MsfQuarterHourComponent } from './msf-quarter-hour/msf-quarter-hour.com
 import { MsfFunctionsComponent } from './msf-functions/msf-functions.component';
 import { MsfDashboardComponent } from './msf-dashboard/msf-dashboard.component';
 import { MsfDashboardChartmenuComponent } from './msf-dashboard-chartmenu/msf-dashboard-chartmenu.component';
+import { MsfGroupingOperationsSummaryComponent } from './msf-grouping-operations-summary/msf-grouping-operations-summary.component';
+import { MsfGroupingHubSummariesComponent } from './msf-grouping-hub-summaries/msf-grouping-hub-summaries.component';
+import { MsfRegionScheduleComponent } from './msf-region-schedule/msf-region-schedule.component';
+import { MsfAircraftTypeCheckboxesComponent } from './msf-aircraft-type-checkboxes/msf-aircraft-type-checkboxes.component';
+import { MsfSeatsComponent } from './msf-seats/msf-seats.component';
 
 @NgModule({
   declarations: [
@@ -231,7 +236,12 @@ import { MsfDashboardChartmenuComponent } from './msf-dashboard-chartmenu/msf-da
     MsfQuarterHourComponent,
     MsfFunctionsComponent,
     MsfDashboardComponent,
-    MsfDashboardChartmenuComponent
+    MsfDashboardChartmenuComponent,
+    MsfGroupingOperationsSummaryComponent,
+    MsfGroupingHubSummariesComponent,
+    MsfRegionScheduleComponent,
+    MsfAircraftTypeCheckboxesComponent,
+    MsfSeatsComponent
   ],
   imports: [
     BrowserModule,

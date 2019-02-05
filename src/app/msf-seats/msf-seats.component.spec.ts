@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MsfFunctionsComponent } from './msf-functions.component';
+import { MsfSeatsComponent } from './msf-seats.component';
 
-describe('MsfFunctionsComponent', () => {
-  let component: MsfFunctionsComponent;
-  let fixture: ComponentFixture<MsfFunctionsComponent>;
+describe('MsfSeatsComponent', () => {
+  let component: MsfSeatsComponent;
+  let fixture: ComponentFixture<MsfSeatsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MsfFunctionsComponent ]
+      declarations: [ MsfSeatsComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MsfFunctionsComponent);
+    fixture = TestBed.createComponent(MsfSeatsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

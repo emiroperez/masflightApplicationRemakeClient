@@ -3,41 +3,34 @@ import { Globals } from '../globals/Globals';
 import { Arguments } from '../model/Arguments';
 
 @Component({
-  selector: 'app-msf-taxi-times-checkboxes',
-  templateUrl: './msf-taxi-times-checkboxes.component.html',
-  styleUrls: ['./msf-taxi-times-checkboxes.component.css']
+  selector: 'app-msf-aircraft-type-checkboxes',
+  templateUrl: './msf-aircraft-type-checkboxes.component.html',
+  styleUrls: ['./msf-aircraft-type-checkboxes.component.css']
 })
-export class MsfTaxiTimesCheckboxesComponent implements OnInit {
+export class MsfAircraftTypeCheckboxesComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
   
   selected: any[] = [];
-
   all = {"checked":false};
+  
+
   data =  [
-      {"id":"taxiout ",
-      "name":"Taxi-Out",
-      "value":"Taxi-Out",
+      {"id":"REGIONALS",
+      "name":"Regionals",
+      "value":"REGIONALS",
       "checked":false},
-      {"id":"taxiin",
-      "name":"Taxi-In",
-      "value":"Taxi-In",
+      {"id":"NARROWBODY",
+      "name":"Narrow Body",
+      "value":"NARROWBODY",
       "checked":false},
-      {"id":"longestaddgtime",
-      "name":"First Gate Departure",
-      "value":"First Gate Departure",
-      "checked":false},
-      {"id":"div1longestGTime",
-      "name":"1st Diversion",
-      "value":"1st Diversion",
-      "checked":false},
-      {"id":"div2longestGtime",
-      "name":"2nd Diversion",
-      "value":"2nd Diversion",
+      {"id":"WIDEBODY",
+      "name":"Wide Body",
+      "value":"WIDEBODY",
       "checked":false}
+      ,
   ];
 
-  loading = false;
   constructor(public globals: Globals) { }
 
   ngOnInit() { 
@@ -62,16 +55,6 @@ export class MsfTaxiTimesCheckboxesComponent implements OnInit {
       this.all.checked=false;
     }
   }
-
-  inList(list, attr, value){
-		for (var i=0;i<list.length;i++){
-			var elem=list[i];
-			if (elem[attr]==value){
-				return true;
-			}
-		}
-		return false;
-  }
   
   changeAllSelected(value){
     for (let index = 0; index < this.data.length; index++) {
@@ -92,5 +75,15 @@ export class MsfTaxiTimesCheckboxesComponent implements OnInit {
       this.changeAllSelected(false);
     }
   }
+
+  inList(list, attr, value){
+		for (var i=0;i<list.length;i++){
+			var elem=list[i];
+			if (elem[attr]==value){
+				return true;
+			}
+		}
+		return false;
+	}
 
 }
