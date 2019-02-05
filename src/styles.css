@@ -1808,6 +1808,158 @@ mat-tab-group {
   margin-left: 0px;
 }
 
+.msf-dashboard-container {
+  font-size: 14px;
+  text-align: center;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+}
+.msf-dashboard-container .msf-dashboard-empty {
+  padding-top: 45px;
+}
+.msf-dashboard-container .msf-dashboard-addrowmenu {
+  margin-top: 10px;
+  display: table;
+  border-collapse: collapse;
+  margin-left: 40%;
+  margin-right: 40%;
+}
+.msf-dashboard-container .msf-dashboard-addrowmenu .msf-dashboard-addrowmenu-item:hover {
+  background-color: #01abec;
+  display: table-row;
+  vertical-align: middle;
+  cursor: pointer;
+}
+.msf-dashboard-container .msf-dashboard-addrowmenu .msf-dashboard-addrowmenu-item {
+  display: table-row;
+  vertical-align: middle;
+}
+.msf-dashboard-container .msf-dashboard-addrowmenu .msf-dashboard-addrowmenu-item-text {
+  border: 1px solid #ffffff;
+  display: table-cell;
+  align-items: center;
+  padding: 10px 40px;
+}
+.msf-dashboard-container .msf-dashboard-addrowmenu .msf-dashboard-addrowmenu-item-text .msf-dashboard-icon {
+  vertical-align: middle;
+  margin-top: -5%;
+  margin-bottom: -5%;
+}
+.msf-dashboard-container .msf-dashboard-addrowmenu .msf-dashboard-addrowmenu-item-text .msf-dashboard-addrowmenu-iten-addrowtext {
+  vertical-align: middle;
+}
+.msf-dashboard-container .msf-dashboard-chartbox {
+  padding: 10px;
+  flex-direction: column;
+}
+.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-row {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  overflow-y: visible;
+}
+.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-row .msf-dashboard-chartbox-item-1 {
+  padding: 2px 2px;
+  width: 100%;
+}
+.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-row .msf-dashboard-chartbox-item-2 {
+  padding: 2px 2px;
+  width: 50%;
+}
+.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-row .msf-dashboard-chartbox-item-3 {
+  padding: 2px 2px;
+  width: 33.3333333333%;
+}
+
+.msf-dashboard-chartmenu-container {
+  padding: 10px;
+  background-color: #424242;
+  overflow-y: visible;
+}
+.msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-row {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-left: 4px;
+  font-size: 10px;
+}
+.msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-close-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  position: absolute;
+  width: 100%;
+}
+.msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-close-row .msf-dashboard-close-icon {
+  vertical-align: top;
+  font-size: 16px;
+}
+.msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-close-row .msf-dashboard-close-icon:hover {
+  vertical-align: top;
+  cursor: pointer;
+  font-size: 16px;
+}
+.msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-column {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  position: relative;
+  padding-right: 5px;
+  font-size: 10px;
+}
+.msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-column .msf-dashboard-addrowmenu-icon-item {
+  align-items: center;
+  padding-bottom: 5px;
+}
+.msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-column .msf-dashboard-addrowmenu-icon-item .msf-dashboard-chart-icon {
+  vertical-align: middle;
+  margin-top: -5%;
+  margin-bottom: -5%;
+  padding-right: 5px;
+  font-size: 22px;
+}
+.msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-column .msf-dashboard-addrowmenu-icon-item .msf-dashboard-chartmenu-item-text {
+  vertical-align: middle;
+}
+
+.msf-dashboard-chartmenu-sub-title {
+  vertical-align: middle;
+  font-size: 10px;
+  padding-right: 6px;
+}
+
+.msf-dashboard-chart-options-container {
+  width: 100%;
+  display: flex;
+  font-size: 10px;
+  flex-direction: column;
+}
+
+.msf-dashboard-chart-selector {
+  display: flex;
+  flex-direction: row;
+}
+.msf-dashboard-chart-selector .msf-dashboard-chart-analysis-title {
+  display: flex;
+  align-items: center;
+}
+.msf-dashboard-chart-selector .msf-dashboard-chart-analysis-title .msf-dashboard-chart-icon {
+  vertical-align: middle;
+  margin-top: -5%;
+  margin-bottom: -5%;
+  padding-right: 5px;
+  font-size: 22px;
+}
+.msf-dashboard-chart-selector .msf-dashboard-chart-op-container {
+  padding-top: 10px;
+  padding-left: 10px;
+  width: 100%;
+}
+
 .msf-dynamic-table-variable-title {
   display: flex;
   margin-bottom: 10px;
@@ -2030,6 +2182,10 @@ mat-dialog-container {
 
 .msf-width-20 {
   width: 20%;
+}
+
+.msf-width-90 {
+  width: 90%;
 }
 
 g g g text {
@@ -2697,8 +2853,11 @@ table.datasource {
 }
 
 .msf-periodicity-select input {
+  color: black;
+  font: inherit;
   caret-color: #3f51b5;
 }
+
 .msf-periodicity-select.ng-select .ng-select-container {
   color: black !important;
 }
