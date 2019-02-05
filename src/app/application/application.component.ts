@@ -143,7 +143,6 @@ export class ApplicationComponent implements OnInit {
 
   openDashboard(){
     this.globals.dashboard = !this.globals.dashboard;
-    this.globals.selectedIndex = 4;
     this.globals.currentOption = 'dashboard';
   }
 

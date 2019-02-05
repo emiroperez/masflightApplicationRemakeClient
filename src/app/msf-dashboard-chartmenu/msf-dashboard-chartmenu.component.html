@@ -1,9 +1,16 @@
 <div class="msf-dashboard-chartmenu-container">
   <div class="msf-dashboard-chartmenu-sub-container-column">
+    <div class="msf-dashboard-chartmenu-sub-container-close-row">
+      <mat-icon class="msf-dashboard-close-icon" aria-label="close">close</mat-icon>
+    </div>
     <div class="msf-dashboard-chartmenu-sub-container-row">
-      <div class="msf-dashboard-chartmenu-sub-title">Chart Name:</div>
+      <div class="msf-dashboard-chartmenu-sub-title">Select Data From:</div>
       <mat-form-field class="msf-width-90">
-        <input matInput type="text">
+        <mat-select [(ngModel)]="optionId" (selectionChange)="loadChartFilterValues($event.value.id)">
+          <mat-option *ngFor="let optionId of optionIds" [value]="optionId">
+            {{optionId.name}}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
     </div>
     <div class="msf-dashboard-chartmenu-sub-container-row">
@@ -19,19 +26,19 @@
   </div>
   <div class="msf-dashboard-chartmenu-sub-container-column">
     <div class="msf-dashboard-addrowmenu-icon-item">
-      <mat-icon class="msf-dashboard-icon" aria-label="filter_list">filter_list</mat-icon>
-      <span class="msf-dashboard-addrowmenu-iten-text">Chart Filters</span>
+      <mat-icon class="msf-dashboard-chart-icon" aria-label="filter_list">filter_list</mat-icon>
+      <span class="msf-dashboard-addrowmenu-item-text">Chart Filters</span>
     </div>
   </div>
   <div class="msf-dashboard-chartmenu-sub-container-column">
     <div class="msf-dashboard-chart-options-container">
-      <div>
-        <div class="msf-chart-analysis-title">
-          <i class="material-icons">bar_chart</i> Analysis by
+      <div class="msf-dashboard-chart-selector">
+        <div class="msf-dashboard-chart-analysis-title">
+          <mat-icon class="msf-dashboard-chart-icon">bar_chart</mat-icon>
         </div>
-        <div class="msf-chart-op-container">
+        <div class="msf-dashboard-chart-op-container">
           <mat-form-field class="msf-full-width">
-            <mat-select [formControl]="variableCtrl" placeholder="Column" #variableSelect [(ngModel)]="variable">
+            <mat-select [formControl]="variableCtrl" placeholder="Analysis by" #variableSelect [(ngModel)]="variable">
               <ngx-mat-select-search [formControl]="variableFilterCtrl"  placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>
               <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
                 {{variable.name}}
@@ -40,13 +47,13 @@
           </mat-form-field>
         </div>
       </div>
-      <div>
-        <div class="msf-chart-analysis-title">
-          <i class="material-icons">multiline_chart</i> x - Axis
+      <div class="msf-dashboard-chart-selector">
+        <div class="msf-dashboard-chart-analysis-title">
+          <mat-icon class="msf-dashboard-chart-icon">multiline_chart</mat-icon>
         </div>
-        <div class="msf-chart-op-container">
+        <div class="msf-dashboard-chart-op-container">
           <mat-form-field class="msf-full-width">
-            <mat-select [formControl]="xaxisCtrl" placeholder="Column" #xaxisSelect [(ngModel)]="xaxis">
+            <mat-select [formControl]="xaxisCtrl" placeholder="x - Axis" #xaxisSelect [(ngModel)]="xaxis">
               <ngx-mat-select-search [formControl]="xaxisFilterCtrl" placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>
               <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
                 {{variable.name}}
@@ -55,23 +62,16 @@
           </mat-form-field>
         </div>
       </div>
-      <div>
-        <div class="msf-chart-analysis-title">
-          <i class="material-icons">show_chart</i> Values
+      <div class="msf-dashboard-chart-selector">
+        <div class="msf-dashboard-chart-analysis-title">
+          <mat-icon class="msf-dashboard-chart-icon">show_chart</mat-icon>
         </div>
-        <div class="msf-chart-op-container">
+        <div class="msf-dashboard-chart-op-container">
           <mat-form-field class="msf-full-width">
-            <mat-select [formControl]="valueCtrl" placeholder="Column" #valueSelect [(ngModel)]="valueColunm">
+            <mat-select [formControl]="valueCtrl" placeholder="Values" #valueSelect [(ngModel)]="valueColunm">
               <ngx-mat-select-search [formControl]="valueFilterCtrl"  placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>
               <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
                 {{variable.name}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field class="msf-full-width">
-            <mat-select placeholder="Column" [(ngModel)]="function">
-              <mat-option *ngFor="let fun of functions" [value]="fun">
-                {{fun.name}}
               </mat-option>
             </mat-select>
           </mat-form-field>

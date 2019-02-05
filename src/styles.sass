@@ -1622,7 +1622,6 @@ mat-tab-group
         border-collapse: collapse
         margin-left: 40%
         margin-right: 40%
-        font-size: 12px
         .msf-dashboard-addrowmenu-item:hover
             background-color: #01abec
             display: table-row
@@ -1640,7 +1639,6 @@ mat-tab-group
                 vertical-align: middle
                 margin-top: -5%
                 margin-bottom: -5%
-                font-size: 22px
             .msf-dashboard-addrowmenu-iten-addrowtext
                 vertical-align: middle
     .msf-dashboard-chartbox
@@ -1663,22 +1661,38 @@ mat-tab-group
 
 .msf-dashboard-chartmenu-container
     padding: 10px
-    background-color: #444444
+    background-color: #424242
     overflow-y: visible
     .msf-dashboard-chartmenu-sub-container-row
         display: flex
         flex-direction: column
         width: 100%
-        padding-right: 5px
+        padding-left: 4px
+        font-size: 10px
+    .msf-dashboard-chartmenu-sub-container-close-row
+        display: flex
+        flex-direction: column
+        align-items: flex-end
+        position: absolute
+        width: 100%
+        .msf-dashboard-close-icon
+            vertical-align: top
+            font-size: 16px
+        .msf-dashboard-close-icon:hover
+            vertical-align: top
+            cursor: pointer
+            font-size: 16px
     .msf-dashboard-chartmenu-sub-container-column
         display: flex
         flex-direction: row
         width: 100%
+        position: relative
         padding-right: 5px
+        font-size: 10px
         .msf-dashboard-addrowmenu-icon-item
             align-items: center
             padding-bottom: 5px
-            .msf-dashboard-icon
+            .msf-dashboard-chart-icon
                 vertical-align: middle
                 margin-top: -5%
                 margin-bottom: -5%
@@ -1689,13 +1703,31 @@ mat-tab-group
 
 .msf-dashboard-chartmenu-sub-title
     vertical-align: middle
-    font-size: 11px
+    font-size: 10px
     padding-right: 6px
 
 .msf-dashboard-chart-options-container
     width: 100%
     display: flex
+    font-size: 10px
     flex-direction: column
+
+.msf-dashboard-chart-selector
+    display: flex
+    flex-direction: row
+    .msf-dashboard-chart-analysis-title
+        display: flex
+        align-items: center
+        .msf-dashboard-chart-icon
+            vertical-align: middle
+            margin-top: -5%
+            margin-bottom: -5%
+            padding-right: 5px
+            font-size: 22px
+    .msf-dashboard-chart-op-container
+        padding-top: 10px
+        padding-left: 10px
+        width: 100%
 
 .msf-dynamic-table-variable-title
     display: flex

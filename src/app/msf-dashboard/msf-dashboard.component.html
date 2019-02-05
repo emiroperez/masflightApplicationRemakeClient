@@ -3,7 +3,7 @@
     <div class="msf-dashboard-chartbox">
       <div class="msf-dashboard-chartbox-row" *ngFor="let dashboardRow of dashboardRows">
         <div class="msf-dashboard-chartbox-item-{{dashboardRow.length}}" *ngFor="let dashboardChart of dashboardRow">
-          <app-msf-dashboard-chartmenu></app-msf-dashboard-chartmenu>
+          <app-msf-dashboard-chartmenu [optionIds]="dashboardChart"></app-msf-dashboard-chartmenu>
         </div>
       </div>
     </div>
