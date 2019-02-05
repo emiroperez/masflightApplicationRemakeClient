@@ -23,16 +23,12 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   columns:any[] = []; 
 
-  chartTypes:any[] = [{id:'column',name:'Columns'},
-                      {id:'line',name:'Lines'},                      
-                      {id:'area',name:'Area'}
-                    ]; 
+  chartTypes:any[] = [
+    { id: 'column', name: 'Columns' },
+    { id: 'line', name: 'Lines' },                      
+    { id: 'area', name: 'Area' }
+  ]; 
 
-                    //
-/*  optionIds:any[] = [
-    { id: '55', name: 'Performance By Marketing Carrier' },
-    { id: '56', name: 'Performance By Flight Number' }
-  ];*/
   @Input()
   optionIds:any[] = [];
 
@@ -165,8 +161,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   loadData()
   {
-    this.globals.startTimestamp = new Date();
-    this.service.loadChartData(this, this.handlerSuccess, this.handlerError);
+    //this.globals.startTimestamp = new Date();
+    //this.service.loadChartData(this, this.handlerSuccess, this.handlerError);
   }
 
   ngOnDestroy()
@@ -213,6 +209,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   {
     _this.globals.isLoading = false;
 
+    _this.columns = [];
     for(let columnConfig of data)
       _this.columns.push({id: columnConfig.columnName, name: columnConfig.columnLabel});
 
