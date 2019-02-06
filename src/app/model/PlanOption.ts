@@ -1,4 +1,4 @@
-export class PlanOption{
+export class PlanOption {
   "id": string;
   "optionId": string;
   "planId": string;

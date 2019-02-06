@@ -109,6 +109,11 @@ export class ApplicationService {
     this.http.get(_this, url, handlerSuccess, handlerError, null);
   }
 
+  loadAdvanceFeatures(_this, handlerSuccess, handlerError) {
+    let url = this.host + "/getAdvanceFeatures";
+    this.http.get(_this, url, handlerSuccess, handlerError, null);
+  }
+
   loadCategoryArguments(_this, handlerSuccess, handlerError) {
     _this.globals.isLoading = true;
     let url = this.host + "/getArgumentsCategories";
