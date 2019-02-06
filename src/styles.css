@@ -8,6 +8,7 @@
 @import "~ag-grid-community/dist/styles/ag-theme-balham.css";
 @import "~ag-grid-community/dist/styles/ag-theme-balham-dark.css";
 @import "~ng-pick-datetime/assets/style/picker.min.css";
+@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
 body {
   background-image: url("assets/images/fondo.png");
   background-size: cover;
@@ -1468,7 +1469,6 @@ app-msf-airport {
 td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
   text-align: center;
   padding: 0 !important;
-  width: 5% !important;
 }
 
 .mat-header-cell {
@@ -1806,6 +1806,177 @@ mat-tab-group {
 
 .msf-dynamic-table-variable-containner .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label, .msf-dynamic-table-variable-containner .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
   margin-left: 0px;
+}
+
+.msf-dashboard-container {
+  font-size: 14px;
+  text-align: center;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+}
+.msf-dashboard-container .msf-dashboard-empty {
+  padding-top: 45px;
+}
+.msf-dashboard-container .msf-dashboard-addmenu {
+  margin-top: 10px;
+  display: table;
+  border-collapse: collapse;
+  margin-left: 40%;
+  margin-right: 40%;
+}
+.msf-dashboard-container .msf-dashboard-addmenu .msf-dashboard-addmenu-item:hover {
+  background-color: #01abec;
+  display: table-row;
+  vertical-align: middle;
+  cursor: pointer;
+}
+.msf-dashboard-container .msf-dashboard-addmenu .msf-dashboard-addmenu-item {
+  display: table-row;
+  vertical-align: middle;
+}
+.msf-dashboard-container .msf-dashboard-addmenu .msf-dashboard-addmenu-item-text {
+  border: 1px solid #ffffff;
+  display: table-cell;
+  align-items: center;
+  padding: 10px 40px;
+}
+.msf-dashboard-container .msf-dashboard-addmenu .msf-dashboard-addmenu-item-text .msf-dashboard-icon {
+  vertical-align: middle;
+  margin-top: -5%;
+  margin-bottom: -5%;
+}
+.msf-dashboard-container .msf-dashboard-addmenu .msf-dashboard-addmenu-item-text .msf-dashboard-addmenu-item-addtext {
+  vertical-align: middle;
+}
+.msf-dashboard-container .msf-dashboard-chartbox {
+  padding: 10px;
+  flex-direction: column;
+}
+.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  overflow-y: visible;
+}
+.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-item-1 {
+  padding: 2px 2px;
+  width: 100%;
+  position: relative;
+}
+.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-item-2 {
+  padding: 2px 2px;
+  width: 50%;
+  position: relative;
+}
+.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-item-3 {
+  padding: 2px 2px;
+  width: 33.3333333333%;
+  position: relative;
+}
+
+.msf-dashboard-chartbox-close-button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  position: absolute;
+  width: 100%;
+}
+.msf-dashboard-chartbox-close-button .msf-dashboard-close-icon {
+  font-size: 16px;
+  padding-right: 5px;
+  padding-top: 5px;
+}
+.msf-dashboard-chartbox-close-button .msf-dashboard-close-icon:hover {
+  cursor: pointer;
+  font-size: 16px;
+  padding-right: 5px;
+  padding-top: 5px;
+}
+
+.msf-dashboard-chartmenu-container {
+  padding: 10px;
+  background-color: #424242;
+  overflow-y: visible;
+  min-height: 263px;
+}
+.msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-row {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-left: 4px;
+  font-size: 10px;
+}
+.msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-column {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding-right: 5px;
+  font-size: 10px;
+}
+.msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-column .msf-dashboard-addmenu-icon-item {
+  align-items: center;
+  padding-bottom: 5px;
+}
+.msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-column .msf-dashboard-addmenu-icon-item .msf-dashboard-chart-icon {
+  vertical-align: middle;
+  margin-top: -5%;
+  margin-bottom: -5%;
+  padding-right: 5px;
+  font-size: 22px;
+}
+.msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-column .msf-dashboard-addmenu-icon-item .msf-dashboard-chartmenu-item-text {
+  vertical-align: middle;
+}
+
+.msf-dashboard-chartmenu-container-invisible {
+  display: none;
+}
+
+#msf-dashboard-chart-display {
+  background-color: #000;
+  display: block;
+}
+
+#msf-dashboard-chart-display > div > div.amcharts-chart-div > a {
+  display: none !important;
+}
+
+.msf-dashboard-chartmenu-sub-title {
+  vertical-align: middle;
+  font-size: 10px;
+  padding-right: 6px;
+}
+
+.msf-dashboard-chart-options-container {
+  width: 100%;
+  display: flex;
+  font-size: 10px;
+  flex-direction: column;
+}
+
+.msf-dashboard-chart-selector {
+  display: flex;
+  flex-direction: row;
+}
+.msf-dashboard-chart-selector .msf-dashboard-chart-analysis-title {
+  display: flex;
+  align-items: center;
+}
+.msf-dashboard-chart-selector .msf-dashboard-chart-analysis-title .msf-dashboard-chart-icon {
+  vertical-align: middle;
+  margin-top: -5%;
+  margin-bottom: -5%;
+  padding-right: 5px;
+  font-size: 22px;
+}
+.msf-dashboard-chart-selector .msf-dashboard-chart-op-container {
+  padding-top: 10px;
+  padding-left: 10px;
+  width: 100%;
 }
 
 .msf-dynamic-table-variable-title {
@@ -2257,7 +2428,7 @@ li.msf-select:before {
 .msf-summary-title {
   color: #01abec;
   font-size: 161%;
-  font-weight: bold;
+  font-weight: 500;
   margin-bottom: 20px;
 }
 
@@ -2460,7 +2631,7 @@ input[role=combobox] {
 }
 
 .checkbox-container {
-  padding: 10px 0 10px 10px;
+  padding: 10px 0 10px 0;
 }
 
 mat-form-field.standard-text div div div span label {
@@ -2511,6 +2682,7 @@ tr.mat-footer-row, tr.mat-row {
 .msf-welcome-title {
   color: #ffffff;
   margin-bottom: 10px;
+  font-weight: 500;
 }
 
 .msf-option-welcome-container {
@@ -2551,7 +2723,7 @@ tr.mat-footer-row, tr.mat-row {
 }
 
 table.datasource {
-  width: auto !important;
+  width: 100% !important;
   max-width: 2000px !important;
 }
 
@@ -2690,17 +2862,17 @@ table.datasource {
 }
 
 .msf-price-fare .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label, .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
-  -webkit-transform: translateY(-1.739125em) scale(0.75) perspective(100px) translateZ(0.001px);
-  transform: translateY(-1.739125em) scale(0.75) perspective(100px) translateZ(0.001px);
-  -ms-transform: translateY(-1.739125em) scale(0.75);
-  width: 133.33333%;
-  margin-left: 7px;
-  color: white !important;
+  -webkit-transform: translateY(-1.239125em) scale(0.75) perspective(100px) translateZ(0.001px) !important;
+  transform: translateY(-1.239125em) scale(0.75) perspective(100px) translateZ(0.001px) !important;
+  -ms-transform: translateY(-1.239125em) scale(0.75) !important;
 }
 
 .msf-periodicity-select input {
+  color: black;
+  font: inherit;
   caret-color: #3f51b5;
 }
+
 .msf-periodicity-select.ng-select .ng-select-container {
   color: black !important;
 }
@@ -2746,6 +2918,52 @@ table.datasource {
 .msf-component-date-input-container .mat-form-field-appearance-legacy .mat-form-field-label {
   padding: 5px !important;
   padding-left: 10px !important;
+}
+
+.msf-low-bold {
+  font-weight: 500 !important;
+}
+
+.msf-ident {
+  margin-left: 10px !important;
+}
+
+.arrow-blue-button {
+  background-color: #01abec;
+}
+
+.arrow-button {
+  color: white !important;
+  min-width: 40px !important;
+  margin: 0 5px !important;
+  padding: 0 !important;
+}
+
+.mat-badge-content {
+  background-color: white !important;
+  color: #01abec !important;
+}
+
+.checkbox-component {
+  margin: 10px 0;
+}
+
+.msf-no-results {
+  color: white;
+  background: #01abec;
+  font-size: 15px;
+  margin: 0 100px;
+  text-align: center;
+  padding: 15px;
+}
+
+.single-checkbox {
+  padding: 0 !important;
+  margin: 5px 0 !important;
+}
+
+.mat-checkbox-frame {
+  border-color: white !important;
 }
 
 /*# sourceMappingURL=styles.css.map */

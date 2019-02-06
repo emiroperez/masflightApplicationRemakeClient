@@ -17,34 +17,30 @@ export class MsfGroupingComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
  
-
-  // public groupingCtrl: FormControl = new FormControl();
-
-  // public groupingFilterCtrl: FormControl = new FormControl();
-
   groupingList: any[] = [
-                          {id: 'YEAR', name: 'Year', column:'Year'},
-                          {id: 'MONTH', name: 'Month', column:'Month'},
-                          {id: 'DAY', name: 'Day' ,column:'Date'},
-                          {id: 'HOUR', name: 'Hour', column: 'Hour'},
-                          {id: 'EQUIPMENTTYPESPECIFIC', name: 'Specific Equipment Type',column:'EspecificEquipmentType'},
-                          {id: 'EQUIPMENTTYPEGENERAL', name: 'General Equipment Type',column:'GeneralEquipmentType'},
-                          {id: 'OPERATINGAIRLINE', name: 'Operating Airline',column:'OperatingAirline'},                          
-                          {id: 'ORIGINAIRPORT', name: 'Origin Airport',column:'Origin'},
-                          {id: 'DESTINATIONAIRPORT', name: 'Destination Airport',column:'Destination'},
-                          {id: 'FLIGHTNUMBER', name: 'Flight Number',column:'FlightNumber'},
-                          {id: 'MARKETINGAIRLINE', name: 'Marketing Airline',column:'Marketing_Carrier'},
-                          // {id: 'STATUSCODE', name: 'Status Code',column:'StatusCode'},
-                          {id: 'ROUTE', name: 'Route',column:'Route'}
-                        ];
-  // private _onDestroy = new Subject<void>();
-
+                {id: 'YEAR', name: 'Year', column:'Year'},
+                {id: 'MONTH', name: 'Month', column:'Month'},
+                {id: 'DAY', name: 'Day' ,column:'Day'},
+                {id: 'HOUR', name: 'Hour', column: 'Hour'},
+                {id: 'EQUIPMENTTYPESPECIFIC', name: 'Specific Equipment Type',column:'EspecificEquipmentType'},
+                {id: 'EQUIPMENTTYPEGENERAL', name: 'General Equipment Type',column:'GeneralEquipmentType'},
+                {id: 'OPERATINGAIRLINE', name: 'Operating Airline',column:'OperatingAirline'},                          
+                {id: 'ORIGINAIRPORT', name: 'Origin Airport',column:'Origin'},
+                {id: 'DESTINATIONAIRPORT', name: 'Destination Airport',column:'Destination'},
+                {id: 'FLIGHTNUMBER', name: 'Flight Number',column:'FlightNumber'},
+                {id: 'MARKETINGAIRLINE', name: 'Marketing Airline',column:'Marketing_Carrier'},
+                // {id: 'STATUSCODE', name: 'Status Code',column:'StatusCode'},
+                {id: 'ROUTE', name: 'Route',column:'Route'}
+  ];
   constructor(private http: ApiClient, public globals: Globals) { }
 
 
   ngOnInit() { 
+    if(this.argument.required){
+      this.argument.value1 = [  {id: 'YEAR', name: 'Year', column:'Year'},
+                                  {id: 'MONTH', name: 'Month', column:'Month'},
+                                    {id: 'DAY', name: 'Day' ,column:'Day'}];
+    }
   }
-
- 
 
 }

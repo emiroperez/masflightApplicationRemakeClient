@@ -48,7 +48,41 @@
                         <app-msf-region *ngIf="isRegion(argument)" [argument]="argument"></app-msf-region>
                         <app-msf-date-period-year *ngIf="isDatePeriodYear(argument)" [argument]="argument"></app-msf-date-period-year>
                         <app-msf-date-period-year-month *ngIf="isDatePeriodYearMonth(argument)" [argument]="argument"></app-msf-date-period-year-month>
-                        <app-msf-sorting *ngIf="isSorting(argument)" [argument]="argument"></app-msf-sorting>
+                        <app-msf-sorting-checkboxes *ngIf="isSortingCheckboxes(argument)" [argument]="argument"></app-msf-sorting-checkboxes>
+                        <app-msf-grouping-athena *ngIf="isGroupingAthena(argument)" [argument]="argument"></app-msf-grouping-athena>
+                        
+                        <app-msf-flight-distance *ngIf="isFlightDistance(argument)" [argument]="argument"></app-msf-flight-distance>
+                        <app-msf-fare-types *ngIf="isFareTypes(argument)" [argument]="argument"></app-msf-fare-types>
+                        <app-msf-service-classes *ngIf="isServiceClasses(argument)" [argument]="argument"></app-msf-service-classes>
+                        <app-msf-summary *ngIf="isSummary(argument)" [argument]="argument"></app-msf-summary>
+                        <app-msf-results-less *ngIf="isResultsLess(argument)" [argument]="argument"></app-msf-results-less>
+                        <app-msf-geography *ngIf="isGeography(argument)" [argument]="argument"></app-msf-geography>
+                        <app-msf-exclude-following-checkbox *ngIf="isExcludeFollowing(argument)" [argument]="argument"> </app-msf-exclude-following-checkbox>
+                        <app-msf-single-checkbox *ngIf="isSIngleCheckbox(argument)" [argument]="argument"></app-msf-single-checkbox>
+                        <app-msf-exclude-itineraries-checkbox *ngIf="isExcludeItineraries(argument)" [argument]="argument"></app-msf-exclude-itineraries-checkbox>
+                        <app-msf-filter-airline-type *ngIf="isFilterAirlineType(argument)" [argument]="argument"></app-msf-filter-airline-type>
+                        <app-msf-fare-increments *ngIf="isFareIncrements(argument)" [argument]="argument"></app-msf-fare-increments>
+                        <app-msf-fare-increment-middle *ngIf="isFareIncrementMiddle(argument)" [argument]="argument"></app-msf-fare-increment-middle>
+                        <app-msf-fare-increment-max *ngIf="isFareIncrementMax(argument)" [argument]="argument"></app-msf-fare-increment-max>
+                        <app-msf-argument-title *ngIf="isArgumentTitle(argument)" [argument]="argument"></app-msf-argument-title>
+                        <app-msf-airports-routes *ngIf="isAirportsRoutes(argument)" [argument]="argument"></app-msf-airports-routes>
+                        <app-msf-exclude-fares-lower *ngIf="isFaresLower(argument)" [argument]="argument"></app-msf-exclude-fares-lower>
+                        <app-msf-percent-increment *ngIf="isPercentIncrement(argument)" [argument]="argument"></app-msf-percent-increment>
+                        <app-msf-grouping-daily-statics  *ngIf="isGroupingDailyStatics(argument)" [argument]="argument"></app-msf-grouping-daily-statics>
+                        <app-msf-quarter-hour *ngIf="isQuarterHour(argument)" [argument]="argument"></app-msf-quarter-hour>
+                        <app-msf-functions *ngIf="isFunctions(argument)" [argument]="argument"></app-msf-functions>
+                        <app-msf-grouping-operations-summary *ngIf="isGroupingOperationsSummary(argument)" [argument]="argument"></app-msf-grouping-operations-summary>
+                        <app-msf-grouping-hub-summaries *ngIf="isGroupingHubSummaries(argument)" [argument]="argument"></app-msf-grouping-hub-summaries>
+                        <app-msf-region-schedule *ngIf="isRegionSchedule(argument)" [argument]="argument"></app-msf-region-schedule>
+                        <app-msf-aircraft-type-checkboxes *ngIf="isAircraftTypeCheckboxes(argument)" [argument]="argument"></app-msf-aircraft-type-checkboxes>
+                        <app-msf-seats *ngIf="isSeats(argument)" [argument]="argument"></app-msf-seats>
+                        <app-msf-sorting-nonstop-capacity *ngIf="isSortingNonstop(argument)" [argument]="argument"></app-msf-sorting-nonstop-capacity>
+                        <app-msf-sorting-connection-builder *ngIf="isSortingConnectionBuilder(argument)" [argument]="argument"></app-msf-sorting-connection-builder>
+                        <app-msf-connecton-time *ngIf="isConnectionTime(argument)" [argument]="argument"></app-msf-connecton-time>
+                        <app-msf-stops *ngIf="isStops(argument)" [argument]="argument"></app-msf-stops>
+                        <app-msf-circuity-type *ngIf="isCircuityType(argument)" [argument]="argument"></app-msf-circuity-type>
+                        <app-msf-circuity *ngIf="isCircuity(argument)" [argument]="argument"></app-msf-circuity>
+                        <app-msf-single-airport *ngIf="isSingleAirport(argument)" [argument]="argument"></app-msf-single-airport>
                     </ng-container>
                 </div>
             </ng-container>      

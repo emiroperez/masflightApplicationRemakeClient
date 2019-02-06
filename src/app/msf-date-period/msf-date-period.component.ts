@@ -48,24 +48,26 @@ export class MsfDatePeriodComponent implements OnInit {
   loading = false;
 
   quarters: any[] = [
-    {id: 0, name: '1st Quarter',value:"1"},
-    {id: 1, name: '2nd Quarter',value:"2"},
-    {id: 2, name: '3rd Quarter',value:"3"},
-    {id: 3, name: '4st Quarter',value:"4"}
+    {id: 1, name: '1st Quarter',value:"1"},
+    {id: 2, name: '2nd Quarter',value:"2"},
+    {id: 3, name: '3rd Quarter',value:"3"},
+    {id: 4, name: '4st Quarter',value:"4"}
   ];
 
   @Input("argument") public argument: Arguments;
   
+  quarter
   ngOnInit() {
     this.date =  new FormControl(moment());
     this.argument.value1 = this.date.value.year();
+    this.argument.value2 = {id: 1, name: '1st Quarter',value:"1"};
   }
 
   chosenYearHandler(normalizedYear: Moment, datepicker: MatDatepicker<Moment>) {
     const ctrlValue = this.date.value;
     ctrlValue.year(normalizedYear.year());
     this.date.setValue(ctrlValue);
-    this.argument.value1 = this.date;
+    this.argument.value1 = this.date.value.year();
     datepicker.close();
   }
 }

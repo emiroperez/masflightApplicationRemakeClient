@@ -172,7 +172,106 @@ export class MsfComponentComponent implements OnInit {
   isDatePeriodYearMonth(argument: Arguments){
     return ComponentType.datePeriodYearMonth == argument.type;
   }
-  isSorting(argument: Arguments){
-    return ComponentType.sorting == argument.type;
+  isSortingCheckboxes(argument: Arguments){
+    return ComponentType.sortingCheckboxes == argument.type;
+  }
+  isGroupingAthena(argument: Arguments){
+    return ComponentType.groupingAthena == argument.type;
+  }
+  isFlightDistance(argument: Arguments){
+    return ComponentType.flightDistance == argument.type;
+  }
+  isFareTypes(argument: Arguments){
+    return ComponentType.fareTypes == argument.type;
+  }
+  isServiceClasses(argument: Arguments){
+    return ComponentType.serviceClasses == argument.type;
+  }
+  isSummary(argument: Arguments){
+    return ComponentType.summary == argument.type;
+  }
+  isResultsLess(argument: Arguments){
+    return ComponentType.resultsLess == argument.type;
+  }
+  isGeography(argument: Arguments){
+    return ComponentType.geography == argument.type;
+  }
+  isExcludeFollowing(argument: Arguments){
+    return ComponentType.excludeFollowing == argument.type;
+  }
+  isSIngleCheckbox(argument: Arguments){
+    return ComponentType.singleCheckbox == argument.type;
+  }
+  isExcludeItineraries(argument: Arguments){
+    return ComponentType.excludeItineraries == argument.type;
+  }
+  isFilterAirlineType(argument: Arguments){
+    return ComponentType.filterAirlineType == argument.type;
+  }
+  isFareIncrements(argument: Arguments){
+    return ComponentType.fareIncrements == argument.type;
+  }
+  isFareIncrementMiddle(argument: Arguments){
+    return ComponentType.fareIncrementMiddle == argument.type;
+  }
+  isFareIncrementMax(argument: Arguments){
+    return ComponentType.fareIncrementMax == argument.type;
+  }
+  isArgumentTitle(argument: Arguments){
+    return ComponentType.title == argument.type;
+  }
+  isAirportsRoutes(argument: Arguments){
+    return ComponentType.airportsRoutes == argument.type;
+  }
+  isFaresLower(argument: Arguments){
+    return ComponentType.fareLower == argument.type;
+  }
+  isPercentIncrement(argument: Arguments){
+    return ComponentType.percentIncrement == argument.type;
+  }
+  isGroupingDailyStatics(argument: Arguments){
+    return ComponentType.groupingDailyStatics == argument.type;
+  }
+  isQuarterHour(argument: Arguments){
+    return ComponentType.quarterHour == argument.type;
+  }
+  isFunctions(argument: Arguments){
+    return ComponentType.functions == argument.type;
+  }
+  isGroupingOperationsSummary(argument: Arguments){
+    return ComponentType.groupingOperationsSummary == argument.type;
+  }
+  isGroupingHubSummaries(argument: Arguments){
+    return ComponentType.groupingHubSummaries == argument.type;
+  }
+  isRegionSchedule(argument: Arguments){
+    return ComponentType.regionSchedule == argument.type;
+  }
+  isAircraftTypeCheckboxes(argument: Arguments){
+    return ComponentType.aircraftTypeCheckboxes == argument.type;
+  }
+  isSeats(argument: Arguments){
+    return ComponentType.seats == argument.type;
+  }
+  isSortingNonstop(argument: Arguments){
+    return ComponentType.sortingNostop == argument.type;
+  }
+  isSortingConnectionBuilder(argument: Arguments){
+    return ComponentType.sortingConnectionBuilder == argument.type;
+  }
+  isConnectionTime(argument: Arguments){
+    return ComponentType.connectionTime == argument.type;
+  }
+  isStops(argument: Arguments){
+    return ComponentType.stops == argument.type;
+  }
+  isCircuityType(argument: Arguments){
+    return ComponentType.circuityType == argument.type;
+  }
+  isCircuity(argument: Arguments){
+    return ComponentType.circuity == argument.type;
+  }
+  isSingleAirport(argument: Arguments){
+    return ComponentType.singleAirport == argument.type;
   }
 }

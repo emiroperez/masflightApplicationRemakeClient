@@ -37,3 +37,9 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+angular.json
+package-lock.json
+src/styles.css.map
+src/styles.css
+src/styles.css.map
+src/app/services/auth.service.ts

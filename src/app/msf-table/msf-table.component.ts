@@ -61,10 +61,10 @@ export class MsfTableComponent implements OnInit {
     categoryArguments.forEach(element => {
             if(element.arguments!=null){
               element.arguments.forEach(element2 => {
-                if(element2.type=="grouping"){
+                if(element2.type=="groupingAthena"){
                   this.groupingArgument = element2;
                 }
-                if(element2.type=="sorting"){
+                if(element2.type=="sortingCheckboxes"){
                   this.sortingArgument = element2;
                 }
             });
@@ -74,43 +74,60 @@ export class MsfTableComponent implements OnInit {
     }
 
     addGroupingColumns(displayedColumns: any[]){
-      var array = this.groupingArgument.value1;
-      var array2 = this.sortingArgument.value1;
-      if(array!=null){
-      for (let index = array.length-1; index >= 0; index--) {
-        const element = array[index];
-        const indexColumn = displayedColumns.findIndex(column => column.columnName === element.column);
-        if(indexColumn==-1){
-          displayedColumns.unshift({ columnType:"string",
-          columnName:element.column,
-          columnLabel:element.name});
-        }else{
-          if(element.column=="Marketing_Carrier"){
-            displayedColumns.splice(indexColumn,1);
-            displayedColumns.unshift({ columnType:"string",
-            columnName:element.column,
-            columnLabel:element.name});
-          }
+      var array =null;
+      var array2 =null;
+        if(this.groupingArgument!=null){
+           array = this.groupingArgument.value1;
         }
-      }
-    }
+        if(this.sortingArgument!=null){
+           array2 = this.sortingArgument.value1;
+        }
     if(array2!=null){
         for (let index = array2.length-1; index >= 0; index--) {
           const element = array2[index];
-          const indexColumn = displayedColumns.findIndex(column => column.columnName === element.column);
+          const indexColumn = displayedColumns.findIndex(column => column.columnName === element.columnName);
           if(indexColumn==-1){
             displayedColumns.unshift({ columnType:"string",
-            columnName:element.column,
-            columnLabel:element.name});
-          }else{
-            if(element.column=="Marketing_Carrier"){
-              displayedColumns.splice(indexColumn,1);
-              displayedColumns.unshift({ columnType:"string",
-              columnName:element.column,
-              columnLabel:element.name});
-            }
+            columnName:element.columnName,
+            columnLabel:element.columnLabel});
           }
         }
+    }
+    if(array!=null){
+      for (let index = array.length-1; index >= 0; index--) {
+        const element = array[index];
+        const indexColumn = displayedColumns.findIndex(column => column.columnName === element.columnName);
+        if(indexColumn==-1){
+          displayedColumns.unshift({ columnType:"string",
+          columnName:element.columnName,
+          columnLabel:element.columnLabel});
+        }else{
+          if(element.columnName=="Marketing_Carrier"){
+            displayedColumns.splice(indexColumn,1);
+            displayedColumns.unshift({ columnType:"string",
+            columnName:element.columnName,
+            columnLabel:element.columnLabel});
+          }
+          if(element.columnName=="MktCar"){
+            displayedColumns.splice(indexColumn,1);
+            displayedColumns.unshift({ columnType:"string",
+            columnName:element.columnName,
+            columnLabel:element.columnLabel});
+          }
+          if(element.columnName=="Origin"){
+            displayedColumns.splice(indexColumn,1);
+            displayedColumns.unshift({ columnType:"string",
+            columnName:element.columnName,
+            columnLabel:element.columnLabel});
+          }
+          if(element.columnName=="Destination"){
+            displayedColumns.splice(indexColumn,1);
+            displayedColumns.unshift({ columnType:"string",
+            columnName:element.columnName,
+            columnLabel:element.columnLabel});
+          }
+        }
+      }
     }
   }
 
@@ -167,7 +184,22 @@ export class MsfTableComponent implements OnInit {
     _this.setGroupingArgument();
     _this.globals.endTimestamp = new Date();
     let response = data.Response;
-    _this.globals.totalRecord = response.total;
+    if(response!=null){
+      if(Array.isArray(response)){
+        for (var key in response) {
+          var tam = response[key].length;
+          if( tam != null){
+            if(tam>0){
+              _this.globals.totalRecord = tam;
+              break;
+            }
+          }
+        }
+      }else{
+        _this.globals.totalRecord = 1;
+      }
+
+    }
     let keys = Object.keys(response);
     let mainElement = _this.getMainKey(keys,response);
     if(!(mainElement instanceof Array)){
@@ -207,7 +239,10 @@ export class MsfTableComponent implements OnInit {
         _this.dataSource.sort =_this.sort;
       }
       _this.globals.dataSource = true;
+      _this.globals.selectedIndex = 2;
       console.log(_this.dataSource);
+    }else{
+      _this.globals.dataSource = false;
     }
 
   }
@@ -222,16 +257,5 @@ export class MsfTableComponent implements OnInit {
     _this.globals.isLoading = false; 
     console.log(result);
   }
-
-  indexOfAttrInList = function (list, attr, value){
-		for (var i=0;i<list.length;i++){
-			var obj=list[i];
-			if (obj[attr]==value){
-				return i;
-			}
-		}
-		return -1;
-	}
-
 
 }

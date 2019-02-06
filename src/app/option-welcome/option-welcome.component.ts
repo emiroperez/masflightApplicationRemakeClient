@@ -26,4 +26,26 @@ export class OptionWelcomeComponent implements OnInit {
   ngOnInit() {
   }
  
+  formatItem(text :string){
+    var aux ="";
+    if(text.substring(0, 1)=="ñ"){
+      aux = text.replace("ñ", "");
+    }else if(text.substring(0, 1)=="&"){
+      aux = text.replace("&", "");
+    }else{
+      aux = text;
+    }
+    return aux;
+  }
+
+  classItem(text :string){
+    if(text.substring(0, 1)=="ñ"){
+      return  "mat-list-item msf-ident ng-star-inserted";
+    }if(text.substring(0, 1)=="&"){
+      return  "mat-list-item msf-low-bold ng-star-inserted";
+    }else{
+      return  "mat-list-item ng-star-inserted"
+    }
+  }
+  
 }

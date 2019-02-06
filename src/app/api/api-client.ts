@@ -18,16 +18,12 @@ export class ApiClient {
     }
 
 
-    createAuthorizationHeader(headers: Headers) {
-        headers.append('Authorization',localStorage.getItem(this.TOKEN_STORAGE_KEY)); 
+    createAuthorizationHeader() {
+        httpOptions.headers = httpOptions.headers.append(this.SECURITY_HEADER, localStorage.getItem(this.TOKEN_STORAGE_KEY));
       }
 
     post = function (_this,url, data, successHandler, errorHandler) {
-        let headers = new Headers();
-        this.createAuthorizationHeader(headers);
-        this.http.post(url, data,httpOptions,{
-            headers: headers
-            }).subscribe(result => {
+        this.http.post(url, data).subscribe(result => {
 
             successHandler(_this,result);
           }, error => 
@@ -37,11 +33,7 @@ export class ApiClient {
 
 
     get = function (_this,url, successHandler, errorHandler, tab) {
-        let headers = new Headers();
-        this.createAuthorizationHeader(headers);
-        this.http.get(url, {observe: 'events', reportProgress: true},{
-            headers: headers
-            }).subscribe(result => {
+        this.http.get(url, {observe: 'events', reportProgress: true}).subscribe(result => {
 
             if (result.type === HttpEventType.DownloadProgress) {
                 if( _this.globals != null){

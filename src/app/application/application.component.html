@@ -31,9 +31,9 @@
     <div class="msf-menu-icon-container msf-flex msf-menu-icons-right">        
         <button [disabled]="!msfContainerRef.msfTableRef || !msfContainerRef.msfTableRef.dataSource || msfContainerRef.msfTableRef.dataSource.length < 0 " class="msf-menu-icon" (click)="dynamicTable()" ><img src="../../assets/images/dynamicTable.png" class="msf-menu-image msf-vertical-middle" ><span  class="msf-vertical-middle">Dynamic Table</span></button>
         <button [disabled]="!msfContainerRef.msfTableRef || !msfContainerRef.msfTableRef.dataSource || msfContainerRef.msfTableRef.dataSource.length < 0 " class="msf-menu-icon" (click)="openChart()" ><img src="../../assets/images/Chart.png" class="msf-menu-image msf-vertical-middle" ><span  class="msf-vertical-middle">Chart</span></button>
+        <button class="msf-menu-icon" (click)="openDashboard()"><img src="../../assets/images/Chart.png" class="msf-menu-image msf-vertical-middle" ><span  class="msf-vertical-middle">Dashboard</span></button>
         <button [disabled]="!msfContainerRef.msfTableRef || !msfContainerRef.msfTableRef.dataSource || msfContainerRef.msfTableRef.dataSource.length < 0 " class="msf-menu-icon"><img src="../../assets/images/ExporttoExcel.png" class="msf-menu-image msf-vertical-middle" ><span  class="msf-vertical-middle" (click)="exportToExcel()">Export Excel</span></button>
         <button class="msf-menu-icon"><img src="../../assets/images/CopytoClipboard.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Copy to Clipboard</span></button>
-        <button class="msf-menu-icon"><img src="../../assets/images/ColumnSelector.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Column Selector</span></button>
         <button class="msf-menu-icon"><img src="../../assets/images/LoadingOptions.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Loading Options</span></button>
         <button class="msf-menu-icon"><img src="../../assets/images/SaveOptions.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Save Options</span></button>
     </div>
@@ -43,21 +43,21 @@
 <div class="msf-menu-body">
     
     <!--nav-->
-    <div [ngClass]="status  ? 'msf-menu-nav msf-menu-show-nav' : 'msf-menu-nav msf-menu-hide-nav'" >
-        <div [ngClass]="status  ? 'msf-menu-components-container-show' : 'msf-menu-components-container-hide'" >
+    <div [ngClass]="globals.status  ? 'msf-menu-nav msf-menu-show-nav' : 'msf-menu-nav msf-menu-hide-nav'" >
+        <div [ngClass]="globals.status  ? 'msf-menu-components-container-show' : 'msf-menu-components-container-hide'" >
             <div class="msf-category-container">
                 <app-msf-component *ngIf="globals.currentOption && globals.currentOption.menuOptionArguments && globals.currentOption.menuOptionArguments.length > 0 && globals.currentOption.menuOptionArguments[0].categoryArguments.length > 0"></app-msf-component>
             </div>            
             <button  [disabled]="disabled()" [ngClass]="disabled()?'msf-menu-search-button-disabled':'msf-menu-search-button-enabled'" (click)="search()">Search</button >
         </div>
-        <div (click)="toogle()" [ngClass]="status  ? 'msf-menu-hide-button-open': 'msf-menu-hide-button-close'">
-            <i *ngIf="status" class="material-icons msf-menu-row-left-icon">chevron_left</i>
-            <i *ngIf="!status" class="material-icons msf-menu-row-right-icon">chevron_right</i>
+        <div (click)="toogle()" [ngClass]="globals.status  ? 'msf-menu-hide-button-open': 'msf-menu-hide-button-close'">
+            <i *ngIf="globals.status" class="material-icons msf-menu-row-left-icon">chevron_left</i>
+            <i *ngIf="!globals.status" class="material-icons msf-menu-row-right-icon">chevron_right</i>
         </div>
     </div>
     
     <!--container-->
-    <div [ngClass]="status  ? 'msf-menu-content msf-menu-content-whith-nav' : 'msf-menu-content msf-menu-content-without-nav'">
+    <div [ngClass]="globals.status  ? 'msf-menu-content msf-menu-content-whith-nav' : 'msf-menu-content msf-menu-content-without-nav'">
         <div class="msf-menu-internal-content">
             <app-msf-container #msfContainerRef ></app-msf-container>
         </div>

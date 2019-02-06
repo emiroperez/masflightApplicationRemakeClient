@@ -15,23 +15,23 @@ export class MsfTaxiTimesCheckboxesComponent implements OnInit {
 
   all = {"checked":false};
   data =  [
-      {"id":1,
+      {"id":"taxiout ",
       "name":"Taxi-Out",
       "value":"Taxi-Out",
       "checked":false},
-      {"id":2,
+      {"id":"taxiin",
       "name":"Taxi-In",
       "value":"Taxi-In",
       "checked":false},
-      {"id":3,
+      {"id":"longestaddgtime",
       "name":"First Gate Departure",
       "value":"First Gate Departure",
       "checked":false},
-      {"id":4,
+      {"id":"div1longestGTime",
       "name":"1st Diversion",
       "value":"1st Diversion",
       "checked":false},
-      {"id":5,
+      {"id":"div2longestGtime",
       "name":"2nd Diversion",
       "value":"2nd Diversion",
       "checked":false}

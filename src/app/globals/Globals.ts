@@ -12,6 +12,7 @@ export class Globals {
   sort: MatSort;
   chart: boolean = false;
   map: boolean = false;
+  dashboard: boolean = false;
   usageStatistics: boolean = false;
   variables;
   values;
@@ -36,6 +37,7 @@ export class Globals {
   query : boolean= false;
   tab : boolean= false;
   showWelcome : boolean= false;
+  status: boolean= false;
 
   initDataSource(){
     if(this.currentMenuCategory!= null){

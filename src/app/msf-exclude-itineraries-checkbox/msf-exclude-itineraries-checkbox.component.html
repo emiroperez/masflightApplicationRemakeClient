@@ -1,0 +1,12 @@
+<div class="center">
+    <div class="msf-component-airport-title">{{argument.title}}</div>
+  </div>    
+  <div class="msf-component-airport-input-container checkbox-container single-checkbox">
+    <div class="msf-full-width">
+        <div class="checkbox-component" *ngFor="let checkbox of data" style="width: 100%">
+            <mat-checkbox class="cancels-checkbox"  [value]="argument.value1" [(ngModel)]="argument.value1" >
+              {{checkbox.name}}
+            </mat-checkbox>
+        </div> 
+    </div>      
+  </div>

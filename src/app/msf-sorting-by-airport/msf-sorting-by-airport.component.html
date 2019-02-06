@@ -1,0 +1,24 @@
+<div class="center">
+    <div class="msf-component-airport-title">{{argument.title}}</div>
+  </div>    
+  <div class="center">
+      <div class="msf-component-airport-title">
+          <mat-checkbox class="msf-component-airport-title" [value]="all" [(ngModel)]="all.checked" (change)="checkBoxAllChange()" >
+              Select/De-Select All
+          </mat-checkbox>
+      </div>
+  </div> 
+  <div class="msf-component-airport-input-container checkbox-container" style="margin: 5px 0;padding: 0;">
+    <div class="msf-full-width">
+        <div class="checkbox-component" *ngFor="let checkbox of data" style="width: 100%">
+            <mat-checkbox class="cancels-checkbox"  style="display: inline-block; width: 70%;" [value]="checkbox.value" [(ngModel)]="checkbox.checked" (change)="checkBoxChange(checkbox)" >
+              {{checkbox.name}}
+            </mat-checkbox>
+            <button mat-button (click)="checkBoxChangeOrder(checkbox)" 
+             [ngClass]="checkbox.checked  ? 'arrow-button arrow-blue-button' : 'arrow-button'">
+                <mat-icon *ngIf="checkbox.order=='desc'">arrow_downward</mat-icon>
+                <mat-icon *ngIf="checkbox.order=='asc'">arrow_upward</mat-icon>
+            </button>    
+        </div>      
+    </div>      
+  </div>
