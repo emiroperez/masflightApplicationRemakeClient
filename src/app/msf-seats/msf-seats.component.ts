@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { Arguments } from '../model/Arguments';
 
 @Component({
   selector: 'app-msf-seats',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MsfSeatsComponent implements OnInit {
 
+  @Input("argument") public argument: Arguments;
   constructor() { }
 
   ngOnInit() {
+    this.argument.value1 = 0;
+    this.argument.value2 = 600;
   }
 
 }

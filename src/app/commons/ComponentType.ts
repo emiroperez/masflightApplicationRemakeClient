@@ -62,5 +62,13 @@ export enum ComponentType {
   groupingOperationsSummary = "groupingOperationsSummary",
   groupingHubSummaries = "groupingHubSummaries",
   regionSchedule = "regionSchedule",
-  aircraftTypeCheckboxes = "aircraftTypeCheckboxes"
+  aircraftTypeCheckboxes = "aircraftTypeCheckboxes",
+  seats = "seats",
+  sortingNostop = "sortingNostop",
+  sortingConnectionBuilder = "sortingConnectionBuilder",
+  stops = "stops",
+  connectionTime = "connectionTime",
+  circuityType = "circuityType",
+  circuity = "circuity",
+  singleAirport = "singleAirport"
 }

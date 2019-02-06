@@ -8,6 +8,7 @@
 @import "~ag-grid-community/dist/styles/ag-theme-balham.css";
 @import "~ag-grid-community/dist/styles/ag-theme-balham-dark.css";
 @import "~ng-pick-datetime/assets/style/picker.min.css";
+@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
 body {
   background-image: url("assets/images/fondo.png");
   background-size: cover;
@@ -179,7 +180,6 @@ body {
 
 .msf-show-panel {
   display: flex;
-  transition: display 50s;
 }
 
 .msf-user, .msf-intro-welcome {
@@ -1157,7 +1157,11 @@ button[aria-expanded=true] {
 
 .disabled-more-button {
   cursor: no-drop;
-  pointer-events: none;
+  color: #727277 !important;
+}
+
+.disabled-more-button .msf-menu-image, .disabled-more-button .msf-menu-image-border {
+  display: none;
 }
 
 .msf-menu-hide-button, .msf-menu-hide-button-open, .msf-menu-hide-button-close {
@@ -1465,12 +1469,11 @@ app-msf-airport {
 td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
   text-align: center;
   padding: 0 !important;
-  width: 5% !important;
 }
 
 .mat-header-cell {
   background-color: #333333;
-  border-left: 1px solid #777676;
+  border: 1px solid #777676;
   color: white;
   font-size: 100%;
   position: sticky;
@@ -1485,6 +1488,7 @@ td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
 .mat-row, .mat-header-row {
   background: white;
   min-width: 1200px;
+  color: rgba(0, 0, 0, 0.87);
 }
 
 .mat-sort-header-button {
@@ -1496,7 +1500,7 @@ td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
   cursor: pointer !important;
   border-radius: 4px;
   border: 1px solid #9e9e9e5e;
-  min-height: 26px;
+  min-height: 30px;
   align-items: center;
 }
 
@@ -1804,6 +1808,158 @@ mat-tab-group {
   margin-left: 0px;
 }
 
+.msf-dashboard-container {
+  font-size: 14px;
+  text-align: center;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+}
+.msf-dashboard-container .msf-dashboard-empty {
+  padding-top: 45px;
+}
+.msf-dashboard-container .msf-dashboard-addrowmenu {
+  margin-top: 10px;
+  display: table;
+  border-collapse: collapse;
+  margin-left: 40%;
+  margin-right: 40%;
+}
+.msf-dashboard-container .msf-dashboard-addrowmenu .msf-dashboard-addrowmenu-item:hover {
+  background-color: #01abec;
+  display: table-row;
+  vertical-align: middle;
+  cursor: pointer;
+}
+.msf-dashboard-container .msf-dashboard-addrowmenu .msf-dashboard-addrowmenu-item {
+  display: table-row;
+  vertical-align: middle;
+}
+.msf-dashboard-container .msf-dashboard-addrowmenu .msf-dashboard-addrowmenu-item-text {
+  border: 1px solid #ffffff;
+  display: table-cell;
+  align-items: center;
+  padding: 10px 40px;
+}
+.msf-dashboard-container .msf-dashboard-addrowmenu .msf-dashboard-addrowmenu-item-text .msf-dashboard-icon {
+  vertical-align: middle;
+  margin-top: -5%;
+  margin-bottom: -5%;
+}
+.msf-dashboard-container .msf-dashboard-addrowmenu .msf-dashboard-addrowmenu-item-text .msf-dashboard-addrowmenu-iten-addrowtext {
+  vertical-align: middle;
+}
+.msf-dashboard-container .msf-dashboard-chartbox {
+  padding: 10px;
+  flex-direction: column;
+}
+.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-row {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  overflow-y: visible;
+}
+.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-row .msf-dashboard-chartbox-item-1 {
+  padding: 2px 2px;
+  width: 100%;
+}
+.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-row .msf-dashboard-chartbox-item-2 {
+  padding: 2px 2px;
+  width: 50%;
+}
+.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-row .msf-dashboard-chartbox-item-3 {
+  padding: 2px 2px;
+  width: 33.3333333333%;
+}
+
+.msf-dashboard-chartmenu-container {
+  padding: 10px;
+  background-color: #424242;
+  overflow-y: visible;
+}
+.msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-row {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-left: 4px;
+  font-size: 10px;
+}
+.msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-close-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  position: absolute;
+  width: 100%;
+}
+.msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-close-row .msf-dashboard-close-icon {
+  vertical-align: top;
+  font-size: 16px;
+}
+.msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-close-row .msf-dashboard-close-icon:hover {
+  vertical-align: top;
+  cursor: pointer;
+  font-size: 16px;
+}
+.msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-column {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  position: relative;
+  padding-right: 5px;
+  font-size: 10px;
+}
+.msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-column .msf-dashboard-addrowmenu-icon-item {
+  align-items: center;
+  padding-bottom: 5px;
+}
+.msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-column .msf-dashboard-addrowmenu-icon-item .msf-dashboard-chart-icon {
+  vertical-align: middle;
+  margin-top: -5%;
+  margin-bottom: -5%;
+  padding-right: 5px;
+  font-size: 22px;
+}
+.msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-column .msf-dashboard-addrowmenu-icon-item .msf-dashboard-chartmenu-item-text {
+  vertical-align: middle;
+}
+
+.msf-dashboard-chartmenu-sub-title {
+  vertical-align: middle;
+  font-size: 10px;
+  padding-right: 6px;
+}
+
+.msf-dashboard-chart-options-container {
+  width: 100%;
+  display: flex;
+  font-size: 10px;
+  flex-direction: column;
+}
+
+.msf-dashboard-chart-selector {
+  display: flex;
+  flex-direction: row;
+}
+.msf-dashboard-chart-selector .msf-dashboard-chart-analysis-title {
+  display: flex;
+  align-items: center;
+}
+.msf-dashboard-chart-selector .msf-dashboard-chart-analysis-title .msf-dashboard-chart-icon {
+  vertical-align: middle;
+  margin-top: -5%;
+  margin-bottom: -5%;
+  padding-right: 5px;
+  font-size: 22px;
+}
+.msf-dashboard-chart-selector .msf-dashboard-chart-op-container {
+  padding-top: 10px;
+  padding-left: 10px;
+  width: 100%;
+}
+
 .msf-dynamic-table-variable-title {
   display: flex;
   margin-bottom: 10px;
@@ -2028,6 +2184,10 @@ mat-dialog-container {
   width: 20%;
 }
 
+.msf-width-90 {
+  width: 90%;
+}
+
 g g g text {
   fill: white;
 }
@@ -2098,6 +2258,8 @@ g g g text {
 .msf-card-container {
   display: inline-flex;
   align-items: flex-start;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .msf-plan-card {
@@ -2105,7 +2267,7 @@ g g g text {
   align-items: center;
   border-radius: 10px !important;
   margin: 4px;
-  width: 33.3%;
+  width: 19%;
 }
 
 .msf-large-container {
@@ -2132,6 +2294,7 @@ g g g text {
 
 .msf-features-container {
   display: flex;
+  padding-bottom: 22px;
 }
 
 .msf-plan-card-content ul {
@@ -2216,7 +2379,6 @@ li.msf-select:before {
   font-weight: bold;
   letter-spacing: 1px;
   text-align: -webkit-center;
-  margin-top: 2% !important;
   margin-bottom: 2%;
 }
 
@@ -2251,7 +2413,7 @@ li.msf-select:before {
 .msf-summary-title {
   color: #01abec;
   font-size: 161%;
-  font-weight: bold;
+  font-weight: 500;
   margin-bottom: 20px;
 }
 
@@ -2430,7 +2592,7 @@ input[role=combobox] {
   cursor: pointer !important;
   border-radius: 4px;
   border: 1px solid #9e9e9e5e;
-  min-height: 36px;
+  min-height: 30px;
   align-items: center;
 }
 
@@ -2454,7 +2616,7 @@ input[role=combobox] {
 }
 
 .checkbox-container {
-  padding: 10px 0 10px 10px;
+  padding: 10px 0 10px 0;
 }
 
 mat-form-field.standard-text div div div span label {
@@ -2495,7 +2657,294 @@ tr.mat-footer-row, tr.mat-row {
 }
 
 .input-margin {
-  margin-top: 5px;
+  margin-top: 5px !important;
+}
+
+.no-show {
+  display: none !important;
+}
+
+.msf-welcome-title {
+  color: #ffffff;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.msf-option-welcome-container {
+  margin-left: 70px;
+  margin-right: 20px;
+}
+
+.msf-welcome-inline {
+  font-weight: lighter;
+  line-height: 2;
+}
+
+.mat-list .mat-list-item, .mat-nav-list .mat-list-item, .mat-selection-list .mat-list-item {
+  color: white;
+  font-size: 100%;
+  font-weight: lighter;
+  height: 30px !important;
+}
+
+.mat-list.what-do-list .mat-list-item .mat-list-item-content {
+  display: list-item;
+  list-style: disc inside;
+  padding: 0;
+}
+
+.welcome-table th {
+  text-align: center !important;
+  width: inherit !important;
+  font-size: 120%;
+}
+
+.welcome-table td {
+  width: initial !important;
+  font-size: 110%;
+  text-align: left;
+  padding: 10px !important;
+  font-weight: 500;
+}
+
+table.datasource {
+  width: 100% !important;
+  max-width: 2000px !important;
+}
+
+.datasource.welcome-table {
+  margin-bottom: 20px;
+  width: 100% !important;
+}
+
+.msf-fab-button-container {
+  width: 85%;
+  margin: 0 auto;
+  text-align: right;
+  position: relative;
+  z-index: 999;
+  /* z-index: auto; */
+}
+
+.msf-membership-card {
+  width: 90%;
+  margin: 0 auto;
+  margin-top: -1.5%;
+  padding: 30px !important;
+}
+
+.msf-membership-card .mat-form-field-appearance-legacy .mat-form-field-label {
+  line-height: 2;
+  color: white !important;
+  text-align: center;
+}
+
+.msf-membership-card mat-card-footer.mat-form-field-appearance-legacy .mat-form-field-label {
+  line-height: 2;
+  color: black !important;
+  text-align: left;
+}
+
+.msf-features-membership-container .mat-form-field-appearance-legacy .mat-form-field-label {
+  line-height: 2;
+  color: white !important;
+  text-align: left;
+  padding-left: 8px;
+}
+
+.msf-features-prices-container .mat-form-field-appearance-legacy .mat-form-field-label {
+  line-height: 2;
+  color: black !important;
+  text-align: left;
+  padding-left: 8px;
+}
+
+.msf-card, .msf-register-card, .msf-membership-card, .login-card {
+  border-radius: 10px !important;
+  background: rgba(30, 30, 30, 0.5);
+  padding: 50px !important;
+}
+
+.msf-card-content-item input[type=text], .msf-card-content-item input[type=password], .msf-card-content-item input[type=number], .msf-card-content-item input[type=email] {
+  padding: 8px;
+  outline: none;
+  border: none;
+  color: white;
+  background-size: 0 2px, 100% 1px;
+  background-position: 50% 100%, 50% 100%;
+  transition: background-size 0.3s cubic-bezier(0.64, 0.09, 0.08, 1);
+  text-align: center;
+}
+
+.msf-card-feature-item input[type=text] {
+  width: 120%;
+  text-align: left;
+}
+
+.msf-card-footer-item input[type=text] {
+  color: black;
+  text-align: left;
+}
+
+.msf-card-footer-item {
+  width: 35%;
+  margin: 0 auto;
+  margin-left: 5%;
+}
+
+.msf-card-content-item {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.msf-card-content-title {
+  width: 80%;
+  display: block;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.msf-plan-card-content .mat-form-field-appearance-legacy .mat-form-field-underline {
+  background-color: white !important;
+}
+
+.msf-plan-card-content .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label, .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+  color: white !important;
+}
+
+.msf-plan-card-content .mat-form-field.mat-focused .mat-form-field-ripple {
+  background-color: white;
+}
+
+.msf-plan-card-content .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label, .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+  margin-left: 0;
+}
+
+.msf-fab-button-features .mat-button-wrapper {
+  color: #0081B4;
+  width: 100% !important;
+}
+
+.msf-features-membership-container ul {
+  width: 80%;
+  padding-bottom: 15%;
+}
+
+.msf-periodicity-select {
+  color: black !important;
+  width: 55% !important;
+  display: inline-flex !important;
+  position: absolute !important;
+  margin-left: 2%;
+}
+
+.msf-periodicity-select.ng-select .ng-arrow-wrapper .ng-arrow {
+  color: black;
+}
+
+.msf-periodicity-select.ng-select.ng-select-focused .ng-select-container .ng-value-container .ng-placeholder {
+  color: black !important;
+}
+
+.msf-price-fare .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label, .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+  -webkit-transform: translateY(-1.239125em) scale(0.75) perspective(100px) translateZ(0.001px) !important;
+  transform: translateY(-1.239125em) scale(0.75) perspective(100px) translateZ(0.001px) !important;
+  -ms-transform: translateY(-1.239125em) scale(0.75) !important;
+}
+
+.msf-periodicity-select input {
+  color: black;
+  font: inherit;
+  caret-color: #3f51b5;
+}
+
+.msf-periodicity-select.ng-select .ng-select-container {
+  color: black !important;
+}
+
+.msf-periodicity-select.ng-select .ng-select-container .ng-value-container .ng-placeholder {
+  color: black !important;
+}
+
+.msf-periodicity-select .ng-star-inserted .mat-step-icon {
+  background-color: #01abec;
+  color: black;
+}
+
+.msf-periodicity-select .ng-select .ng-select-container .ng-value-container .ng-placeholder {
+  color: black !important;
+  padding-left: 0 !important;
+}
+
+.msf-prices-membership-container {
+  width: 100%;
+  margin: auto;
+  margin-top: 4%;
+  margin-bottom: 4%;
+  display: inline-flex;
+}
+
+.msf-price-fare {
+  font-size: 190% !important;
+  font-weight: bold !important;
+  padding-left: 5%;
+  margin: 0 auto !important;
+}
+
+.msf-register-select .ng-select-container {
+  min-height: 51.4px !important;
+}
+
+.close-icon {
+  color: #01abec;
+  margin-left: 10px;
+}
+
+.msf-component-date-input-container .mat-form-field-appearance-legacy .mat-form-field-label {
+  padding: 5px !important;
+  padding-left: 10px !important;
+}
+
+.msf-low-bold {
+  font-weight: 500 !important;
+}
+
+.msf-ident {
+  margin-left: 10px !important;
+}
+
+.arrow-blue-button {
+  background-color: #01abec;
+}
+
+.arrow-button {
+  color: white !important;
+  min-width: 40px !important;
+  margin: 0 5px !important;
+  padding: 0 !important;
+}
+
+.mat-badge-content {
+  background-color: white !important;
+  color: #01abec !important;
+}
+
+.checkbox-component {
+  margin: 10px 0;
+}
+
+.msf-no-results {
+  color: white;
+  background: #01abec;
+  font-size: 15px;
+  margin: 0 100px;
+  text-align: center;
+  padding: 15px;
+}
+
+.single-checkbox {
+  padding: 0 !important;
+  margin: 5px 0 !important;
 }
 
 /*# sourceMappingURL=style.css.map */

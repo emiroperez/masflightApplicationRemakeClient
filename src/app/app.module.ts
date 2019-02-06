@@ -130,6 +130,13 @@ import { MsfGroupingHubSummariesComponent } from './msf-grouping-hub-summaries/m
 import { MsfRegionScheduleComponent } from './msf-region-schedule/msf-region-schedule.component';
 import { MsfAircraftTypeCheckboxesComponent } from './msf-aircraft-type-checkboxes/msf-aircraft-type-checkboxes.component';
 import { MsfSeatsComponent } from './msf-seats/msf-seats.component';
+import { MsfSortingNonstopCapacityComponent } from './msf-sorting-nonstop-capacity/msf-sorting-nonstop-capacity.component';
+import { MsfSortingConnectionBuilderComponent } from './msf-sorting-connection-builder/msf-sorting-connection-builder.component';
+import { MsfConnectonTimeComponent } from './msf-connecton-time/msf-connecton-time.component';
+import { MsfStopsComponent } from './msf-stops/msf-stops.component';
+import { MsfCircuityTypeComponent } from './msf-circuity-type/msf-circuity-type.component';
+import { MsfCircuityComponent } from './msf-circuity/msf-circuity.component';
+import { MsfSingleAirportComponent } from './msf-single-airport/msf-single-airport.component';
 
 @NgModule({
   declarations: [
@@ -241,7 +248,14 @@ import { MsfSeatsComponent } from './msf-seats/msf-seats.component';
     MsfGroupingHubSummariesComponent,
     MsfRegionScheduleComponent,
     MsfAircraftTypeCheckboxesComponent,
-    MsfSeatsComponent
+    MsfSeatsComponent,
+    MsfSortingNonstopCapacityComponent,
+    MsfSortingConnectionBuilderComponent,
+    MsfConnectonTimeComponent,
+    MsfStopsComponent,
+    MsfCircuityTypeComponent,
+    MsfCircuityComponent,
+    MsfSingleAirportComponent
   ],
   imports: [
     BrowserModule,

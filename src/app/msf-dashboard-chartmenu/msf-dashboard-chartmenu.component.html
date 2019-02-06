@@ -1,4 +1,4 @@
-<!-- <div class="msf-dashboard-chartmenu-container">
+<div class="msf-dashboard-chartmenu-container">
   <div class="msf-dashboard-chartmenu-sub-container-column">
     <div class="msf-dashboard-chartmenu-sub-container-close-row">
       <mat-icon class="msf-dashboard-close-icon" aria-label="close">close</mat-icon>
@@ -6,7 +6,8 @@
     <div class="msf-dashboard-chartmenu-sub-container-row">
       <div class="msf-dashboard-chartmenu-sub-title">Select Data From:</div>
       <mat-form-field class="msf-width-90">
-        <mat-select [(ngModel)]="optionId" (selectionChange)="loadChartFilterValues($event.value.id)">
+        <!-- <mat-select [(ngModel)]="optionId" (selectionChange)="loadChartFilterValues($event.value.id)"> -->
+            <mat-select  (selectionChange)="loadChartFilterValues($event.value.id)">
           <mat-option *ngFor="let optionId of optionIds" [value]="optionId">
             {{optionId.name}}
           </mat-option>
@@ -80,4 +81,4 @@
       <button mat-flat-button (click)="loadData()">Generate</button>
     </div>
   </div>
-</div> -->
+</div>

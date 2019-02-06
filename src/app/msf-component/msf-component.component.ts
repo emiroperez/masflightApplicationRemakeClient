@@ -250,4 +250,28 @@ export class MsfComponentComponent implements OnInit {
   isAircraftTypeCheckboxes(argument: Arguments){
     return ComponentType.aircraftTypeCheckboxes == argument.type;
   }
+  isSeats(argument: Arguments){
+    return ComponentType.seats == argument.type;
+  }
+  isSortingNonstop(argument: Arguments){
+    return ComponentType.sortingNostop == argument.type;
+  }
+  isSortingConnectionBuilder(argument: Arguments){
+    return ComponentType.sortingConnectionBuilder == argument.type;
+  }
+  isConnectionTime(argument: Arguments){
+    return ComponentType.connectionTime == argument.type;
+  }
+  isStops(argument: Arguments){
+    return ComponentType.stops == argument.type;
+  }
+  isCircuityType(argument: Arguments){
+    return ComponentType.circuityType == argument.type;
+  }
+  isCircuity(argument: Arguments){
+    return ComponentType.circuity == argument.type;
+  }
+  isSingleAirport(argument: Arguments){
+    return ComponentType.singleAirport == argument.type;
+  }
 }

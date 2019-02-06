@@ -2942,4 +2942,13 @@ table.datasource {
   padding: 15px;
 }
 
+.single-checkbox {
+  padding: 0 !important;
+  margin: 5px 0 !important;
+}
+
+.mat-checkbox-frame {
+  border-color: white !important;
+}
+
 /*# sourceMappingURL=styles.css.map */

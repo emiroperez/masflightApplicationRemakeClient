@@ -116,12 +116,13 @@ export class Utils{
         }else if(type == ComponentType.ceiling ||
              type == ComponentType.rounding || type ==  ComponentType.resultsLess || type ==  ComponentType.geography 
              || type == ComponentType.filterAirlineType || type == ComponentType.fareIncrements || type == ComponentType.fareIncrementMiddle
-             || type == ComponentType.fareIncrementMax ||  type == ComponentType.percentIncrement || type == ComponentType.quarterHour){
+             || type == ComponentType.fareIncrementMax ||  type == ComponentType.percentIncrement || type == ComponentType.quarterHour 
+             || type == ComponentType.stops || type == ComponentType.circuityType || type == ComponentType.circuity){
             if(typeof value === "string"){
                 return value;
             }
             return value.id;
-        }else if(type == ComponentType.singleairline){
+        }else if(type == ComponentType.singleairline || type == ComponentType.singleAirport){
            if(typeof value === "string"){
                return value;
            }
@@ -202,7 +203,7 @@ export class Utils{
             return valueAux;
           }else if (type == ComponentType.grouping || type == ComponentType.groupingOperationsSummary || type == ComponentType.causesFlightDelaysCheckbox
             || type == ComponentType.taxiTimesCheckboxes || type == ComponentType.cancelsCheckBox || type== ComponentType.diversionsCheckbox
-            || type  == ComponentType.aircraftTypeCheckboxes){
+            || type  == ComponentType.aircraftTypeCheckboxes || type == ComponentType.sortingNostop || type == ComponentType.sortingConnectionBuilder){
             var valueAux="";
             var i = 0;
             for(var val of value){
@@ -269,12 +270,13 @@ export class Utils{
             }else if(type == ComponentType.ceiling ||
                  type == ComponentType.rounding ||  type ==  ComponentType.resultsLess || type ==  ComponentType.geography 
                  || type == ComponentType.filterAirlineType || type == ComponentType.fareIncrements || type == ComponentType.fareIncrementMiddle
-                 || type == ComponentType.fareIncrementMax || type == ComponentType.percentIncrement || type == ComponentType.quarterHour){
+                 || type == ComponentType.fareIncrementMax || type == ComponentType.percentIncrement || type == ComponentType.quarterHour
+                 || type == ComponentType.stops || type == ComponentType.circuityType || type == ComponentType.circuity){
                 if(typeof value === "string"){
                     return value;
                 }
                 return value.id;
-            }else if(type == ComponentType.singleairline){
+            }else if(type == ComponentType.singleairline || type == ComponentType.singleAirport){
                     if(typeof value === "string"){
                         return value;
                     }
@@ -342,7 +344,7 @@ export class Utils{
           }else if (type == ComponentType.grouping || type == ComponentType.tailnumber || type == ComponentType.summary 
             || type == ComponentType.fareTypes || type == ComponentType.groupingOperationsSummary || type == ComponentType.causesFlightDelaysCheckbox 
             || type == ComponentType.taxiTimesCheckboxes || type == ComponentType.cancelsCheckBox || type== ComponentType.diversionsCheckbox
-            || type  == ComponentType.aircraftTypeCheckboxes){
+            || type  == ComponentType.aircraftTypeCheckboxes || type == ComponentType.sortingNostop || type == ComponentType.sortingConnectionBuilder){
             var valueAux="";
             var i = 0;
             for(var val of value){
