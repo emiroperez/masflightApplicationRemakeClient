@@ -70,8 +70,8 @@ export class MsfDashboardComponent implements OnInit {
   }
 
   // update the dashboard container and hide the menu after
-  // adding a new chart row
-  AddChartRow(numCharts): void
+  // adding a new chart column
+  AddChart(numCharts): void
   {
     let dashboardRows;
 

@@ -39,12 +39,12 @@ export class MsfDashboardChartmenuComponent implements OnInit {
                     ]; 
 
   @Input()
-//  dashboardValues: MsfDashboardChartValues[] = [];
   optionIds:any[] = [];
 
   currentOptionUrl: String;
 
   currentChartType;
+  currentOptionId: number;
 
   public variableCtrl: FormControl = new FormControl();
   public variableFilterCtrl: FormControl = new FormControl();
@@ -138,10 +138,6 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     this.currentChartType = this.chartTypes[0];
   }
 
-  ngAfterViewInit() {
-    this.setInitialValue();
-  }
-
    /**
    * Sets the initial value after the filteredBanks are loaded initially
    */
@@ -175,7 +171,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   loadChartData(handlerSuccess, handlerError) {
     this.globals.isLoading = true;
     let urlBase = "";
-    urlBase += this.currentOptionUrl + "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999";
+    //urlBase += this.currentOptionUrl + "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
+    urlBase += "http://18.215.171.208:8181/WebSAirPortTest/Fast234Query/getFast234Query?AIRLINESLIST=AA,DL,UA,WN&flightDistance=0&fareTypes=A,C,E,F,G,H,K,L,N,P,Q,R,V,F&summary=&serviceClasses=Both&pruebaFilter=RpCarrier&percentIncrement=1&prueba=&prueba2=&ORIGINSLIST=MIA&DESTSLIST=&initialhour=0000&finalhour=2359&initialdate=20170101&finaldate=20170131&windanglemin=0&windanglemax=360&ceilingmin=&ceilingmax=&distanceunit=ft&windmin=0&windmax=200&speedunit=kts&tempmin=-75&tempmax=125&tempunit=f&&&&&&&&&&decimals=2&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
     console.log(urlBase);
     let urlArg = encodeURIComponent(urlBase);
     let url = this.service.host + "/getChartData?url=" + urlArg + "&variable=" + this.variable.id + "&xaxis=" + this.xaxis.id + "&valueColunm=" + this.valueColunm.id + "&function=" + this.function.id;
@@ -200,14 +197,12 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   handlerSuccess(_this,data)
   {
-    _this.globals.endTimestamp = new Date();
-    _this.chart2 = _this.AmCharts.makeChart('msf-dashboard-chart-display', _this.makeOptions(data));
-    _this.chart2.addListener("dataUpdated", _this.zoomChart);
-    _this.zoomChart();
-    _this.chartTypeChange(_this.currentChartType);
-    //_this.globals.selectedIndex = 3;
-    _this.globals.isLoading = false;
     _this.displayChart = true;
+    _this.globals.endTimestamp = new Date();
+    _this.chart2 = _this.AmCharts.makeChart("msf-dashboard-chart-display", _this.makeOptions(data));
+    _this.chart2.addListener("dataUpdated", _this.zoomChart);
+    _this.chartTypeChange(_this.currentChartType);
+    _this.globals.isLoading = false;
   }
 
   loadChartFilterValues (component)
@@ -225,15 +220,13 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   getChartFilterValues(id, handlerSuccess)
   {
-    //let url = "/getMetaByOptionId?optionId=" + id;
-    let url = "http://localhost:8887/getMetaByOptionId?optionId=" + id;
-    this.http.get(this,url,handlerSuccess, this.handlerError, null);  
+    let url = "/getMetaByOptionId?optionId=" + id;
+    //let url = "http://localhost:8887/getMetaByOptionId?optionId=" + id;
+    this.http.get(this, url, handlerSuccess, this.handlerError, null);  
   }
 
   addChartFilterValues(_this, data)
   {
-    _this.globals.isLoading = false;
-
     _this.columns = [];
     for(let columnConfig of data)
       _this.columns.push({id: columnConfig.columnName, name: columnConfig.columnLabel});
@@ -246,6 +239,9 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     _this.searchChange(_this.variableFilterCtrl);
     _this.searchChange(_this.xaxisFilterCtrl);
     _this.searchChange(_this.valueFilterCtrl);
+
+    _this.setInitialValue();
+    _this.globals.isLoading = false;
   }
 
   searchChange(filterCtrl)

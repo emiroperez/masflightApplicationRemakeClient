@@ -1,7 +1,7 @@
 <div class="msf-dashboard-container">
   <ng-container *ngIf="dashboardColumns.length">
     <div class="msf-dashboard-chartbox">
-      <div class="msf-dashboard-chartbox-row" *ngFor="let dashboardColumn of dashboardColumns; let column = index" [attr.data-index]="column">
+      <div class="msf-dashboard-chartbox-column" *ngFor="let dashboardColumn of dashboardColumns; let column = index" [attr.data-index]="column">
         <div class="msf-dashboard-chartbox-item-{{dashboardColumn.length}}" *ngFor="let dashboardChart of dashboardColumn; let row = index" [attr.data-index]="row">
           <div class="msf-dashboard-chartbox-close-button">
             <mat-icon class="msf-dashboard-close-icon" aria-label="close" (click)="RemoveChart(column, row)">close</mat-icon>
@@ -15,21 +15,21 @@
     You have not added any chart.<br>
     Click here to start!
   </div>
-  <div class="msf-dashboard-addrowmenu">
-    <div class="msf-dashboard-addrowmenu-item" (click)="ToggleDiplayAddChartMenu()">
-      <div class="msf-dashboard-addrowmenu-item-text">
+  <div class="msf-dashboard-addmenu">
+    <div class="msf-dashboard-addmenu-item" (click)="ToggleDiplayAddChartMenu()">
+      <div class="msf-dashboard-addmenu-item-text">
         <mat-icon class="msf-dashboard-icon" aria-label="add">add</mat-icon>
-        <span class="msf-dashboard-addrowmenu-iten-addrowtext">ADD ROW</span>
+        <span class="msf-dashboard-addmenu-item-addtext">ADD ROW</span>
       </div>
     </div>
-    <div class="msf-dashboard-addrowmenu-item" *ngIf="displayAddChartMenu">
-      <div class="msf-dashboard-addrowmenu-item-text"(click)="AddChartRow(1)">1 Chart</div>
+    <div class="msf-dashboard-addmenu-item" *ngIf="displayAddChartMenu">
+      <div class="msf-dashboard-addmenu-item-text"(click)="AddChart(1)">1 Chart</div>
     </div>
-    <div class="msf-dashboard-addrowmenu-item" *ngIf="displayAddChartMenu">
-      <div class="msf-dashboard-addrowmenu-item-text"(click)="AddChartRow(2)">2 Charts</div>
+    <div class="msf-dashboard-addmenu-item" *ngIf="displayAddChartMenu">
+      <div class="msf-dashboard-addmenu-item-text"(click)="AddChart(2)">2 Charts</div>
     </div>
-    <div class="msf-dashboard-addrowmenu-item" *ngIf="displayAddChartMenu">
-      <div class="msf-dashboard-addrowmenu-item-text"(click)="AddChartRow(3)">3 Charts</div>
+    <div class="msf-dashboard-addmenu-item" *ngIf="displayAddChartMenu">
+      <div class="msf-dashboard-addmenu-item-text"(click)="AddChart(3)">3 Charts</div>
     </div>
   </div>
 </div>

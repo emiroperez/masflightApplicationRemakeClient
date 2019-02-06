@@ -3,7 +3,7 @@
     <div class="msf-dashboard-chartmenu-sub-container-row">
       <div class="msf-dashboard-chartmenu-sub-title">Select Data From:</div>
       <mat-form-field class="msf-full-width">
-        <mat-select [(ngModel)]="optionId" (selectionChange)="loadChartFilterValues($event.value)">
+        <mat-select [(ngModel)]="currentOptionId" (selectionChange)="loadChartFilterValues($event.value)">
           <mat-option *ngFor="let optionId of optionIds" [value]="optionId">
             {{optionId.name}}
           </mat-option>
@@ -22,9 +22,9 @@
     </div>
   </div>
   <div class="msf-dashboard-chartmenu-sub-container-column">
-    <div class="msf-dashboard-addrowmenu-icon-item">
+    <div class="msf-dashboard-addmenu-icon-item">
       <mat-icon class="msf-dashboard-chart-icon" aria-label="filter_list">filter_list</mat-icon>
-      <span class="msf-dashboard-addrowmenu-item-text">Chart Filters</span>
+      <span class="msf-dashboard-addmenu-item-text">Chart Filters</span>
     </div>
   </div>
   <div class="msf-dashboard-chartmenu-sub-container-column">
@@ -78,6 +78,7 @@
     </div>
   </div>
 </div>
-<div class="msf-dashboard-chartmenu-container" *ngIf="displayChart">
-  <div id="msf-dashboard-chart-display" [style.width.%]="100" [style.height.%]="80" style="display: block;"></div>
+<!-- ngIf doesn't work with AmCharts -->
+<div class="tabs {{displayChart ? 'msf-dashboard-chartmenu-container': 'msf-dashboard-chartmenu-container-invisible'}}">
+  <div id="msf-dashboard-chart-display" [style.width.%]="100" [style.height.px]="264"></div>
 </div>
