@@ -1865,14 +1865,36 @@ mat-tab-group {
 .msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-row .msf-dashboard-chartbox-item-1 {
   padding: 2px 2px;
   width: 100%;
+  position: relative;
 }
 .msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-row .msf-dashboard-chartbox-item-2 {
   padding: 2px 2px;
   width: 50%;
+  position: relative;
 }
 .msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-row .msf-dashboard-chartbox-item-3 {
   padding: 2px 2px;
   width: 33.3333333333%;
+  position: relative;
+}
+
+.msf-dashboard-chartbox-close-button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  position: absolute;
+  width: 100%;
+}
+.msf-dashboard-chartbox-close-button .msf-dashboard-close-icon {
+  font-size: 16px;
+  padding-right: 5px;
+  padding-top: 5px;
+}
+.msf-dashboard-chartbox-close-button .msf-dashboard-close-icon:hover {
+  cursor: pointer;
+  font-size: 16px;
+  padding-right: 5px;
+  padding-top: 5px;
 }
 
 .msf-dashboard-chartmenu-container {
@@ -1887,27 +1909,10 @@ mat-tab-group {
   padding-left: 4px;
   font-size: 10px;
 }
-.msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-close-row {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  position: absolute;
-  width: 100%;
-}
-.msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-close-row .msf-dashboard-close-icon {
-  vertical-align: top;
-  font-size: 16px;
-}
-.msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-close-row .msf-dashboard-close-icon:hover {
-  vertical-align: top;
-  cursor: pointer;
-  font-size: 16px;
-}
 .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-column {
   display: flex;
   flex-direction: row;
   width: 100%;
-  position: relative;
   padding-right: 5px;
   font-size: 10px;
 }
@@ -1924,6 +1929,9 @@ mat-tab-group {
 }
 .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-column .msf-dashboard-addrowmenu-icon-item .msf-dashboard-chartmenu-item-text {
   vertical-align: middle;
+}
+.msf-dashboard-chartmenu-container #msf-dashboard-chart-display {
+  min-height: 270px;
 }
 
 .msf-dashboard-chartmenu-sub-title {
@@ -2182,10 +2190,6 @@ mat-dialog-container {
 
 .msf-width-20 {
   width: 20%;
-}
-
-.msf-width-90 {
-  width: 90%;
 }
 
 g g g text {
