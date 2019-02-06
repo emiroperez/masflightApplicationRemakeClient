@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Globals } from '../globals/Globals';
 import { ApiClient } from '../api/api-client';
+import { MsfDashboardChartValues } from '../msf-dashboard-chartmenu/msf-dashboard-chartvalues';
 
 @Component({
   selector: 'app-msf-dashboard',
@@ -8,32 +9,41 @@ import { ApiClient } from '../api/api-client';
   styleUrls: ['./msf-dashboard.component.css']
 })
 export class MsfDashboardComponent implements OnInit {
-  dashboardRows: number[] = [];
-  columns:any[] = [];
-  addChartMenu: boolean = false;
+  dashboardColumns: MsfDashboardChartValues[] = [];
+  optionIds:any[] = [];
+
+  displayAddChartMenu: boolean = false;
 
   constructor(public globals: Globals, private http: ApiClient) { }
 
   ngOnInit()
   {
-    this.getChartFilterOptionsFromApplication(this.globals.currentApplication.id);
+    this.getDataOptions(this.globals.currentApplication.id);
   }
 
-  getChartFilterOptionsFromApplication(applicationId): void
+  getDataOptions(applicationId): void
   {
     this.globals.isLoading = true;
 
-    //let url = "/getFilterOptions?applicationId=" + applicationId;
-    let url = "http://localhost:8887/getFilterOptions?applicationId=" + applicationId;
+    let url = "/getDataOptions?applicationId=" + applicationId;
+    //let url = "http://localhost:8887/getDataOptions?applicationId=" + applicationId;
     this.http.get (this, url, this.addFilterOptions, this.handlerError, null);
   }
 
+  // store any data option depending of the application id
   addFilterOptions(_this, data): void
   {
     _this.globals.isLoading = false;
 
     for (let columnConfig of data)
-      _this.columns.push ( { id: columnConfig.option.id, name: columnConfig.option.label } );
+    {
+      _this.optionIds.push (
+      {
+        id: columnConfig.option.id,
+        name: columnConfig.option.label,
+        baseUrl: columnConfig.option.baseUrl
+      });
+    }
   }
 
   handlerError(_this, result): void
@@ -42,25 +52,37 @@ export class MsfDashboardComponent implements OnInit {
     _this.globals.isLoading = false;  
   }
 
-  ToggleAddChartMenu(): void
+  RemoveChart(column, row): void
   {
-    this.addChartMenu = !this.addChartMenu;
+    let dashboardRows;
+
+    dashboardRows = this.dashboardColumns[column];
+    dashboardRows.splice (row, 1);
+
+    // also remove the column if there are no chart left
+    if (!dashboardRows.length)
+      this.dashboardColumns.splice (column, 1);
   }
 
+  ToggleDiplayAddChartMenu(): void
+  {
+    this.displayAddChartMenu = !this.displayAddChartMenu;
+  }
+
+  // update the dashboard container and hide the menu after
+  // adding a new chart row
   AddChartRow(numCharts): void
   {
-    let chartsFilterOptions;
+    let dashboardRows;
 
-    chartsFilterOptions = [];
-  
+    dashboardRows = [];
     do
     {
-      chartsFilterOptions.push (this.columns);
+      // insert the data options for each chart
+      dashboardRows.push (new MsfDashboardChartValues (this.optionIds));
     } while (--numCharts);
 
-    this.dashboardRows.push (chartsFilterOptions);
-
-    // display the specified number of charts and hide the menu
-    this.addChartMenu = false;
+    this.dashboardColumns.push (dashboardRows);
+    this.displayAddChartMenu = false;
   }
 }

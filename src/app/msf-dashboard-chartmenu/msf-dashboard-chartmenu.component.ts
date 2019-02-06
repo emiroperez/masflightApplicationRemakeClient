@@ -20,6 +20,9 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   variable;
   xaxis;
   valueColunm;
+  function;
+
+  displayChart:boolean = false;
 
   columns:any[] = []; 
 
@@ -27,10 +30,19 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     { id: 'column', name: 'Columns' },
     { id: 'line', name: 'Lines' },                      
     { id: 'area', name: 'Area' }
-  ]; 
+  ];
+
+  functions:any[] = [{id:'avg',name:'Average'},
+                     {id:'sum',name:'Sum'},
+                     {id:'max',name:'Max'},
+                     {id:'min',name:'Min'}
+                    ]; 
 
   @Input()
+//  dashboardValues: MsfDashboardChartValues[] = [];
   optionIds:any[] = [];
+
+  currentOptionUrl: String;
 
   currentChartType;
 
@@ -122,6 +134,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.function = {id:'avg',name:'Average'};
     this.currentChartType = this.chartTypes[0];
   }
 
@@ -159,10 +172,20 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     );
   }
 
+  loadChartData(handlerSuccess, handlerError) {
+    this.globals.isLoading = true;
+    let urlBase = "";
+    urlBase += this.currentOptionUrl + "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999";
+    console.log(urlBase);
+    let urlArg = encodeURIComponent(urlBase);
+    let url = this.service.host + "/getChartData?url=" + urlArg + "&variable=" + this.variable.id + "&xaxis=" + this.xaxis.id + "&valueColunm=" + this.valueColunm.id + "&function=" + this.function.id;
+    this.http.get(this, url, handlerSuccess, handlerError, null);
+  }
+
   loadData()
   {
-    //this.globals.startTimestamp = new Date();
-    //this.service.loadChartData(this, this.handlerSuccess, this.handlerError);
+    this.globals.startTimestamp = new Date();
+    this.loadChartData(this.handlerSuccess, this.handlerError);
   }
 
   ngOnDestroy()
@@ -178,18 +201,20 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   handlerSuccess(_this,data)
   {
     _this.globals.endTimestamp = new Date();
-    _this.chart2 = _this.AmCharts.makeChart('chartdiv2', _this.makeOptions(data));
+    _this.chart2 = _this.AmCharts.makeChart('msf-dashboard-chart-display', _this.makeOptions(data));
     _this.chart2.addListener("dataUpdated", _this.zoomChart);
     _this.zoomChart();
     _this.chartTypeChange(_this.currentChartType);
-    _this.globals.selectedIndex = 3;
-    _this.globals.isLoading = false; 
+    //_this.globals.selectedIndex = 3;
+    _this.globals.isLoading = false;
+    _this.displayChart = true;
   }
 
-  loadChartFilterValues (componentId)
+  loadChartFilterValues (component)
   {
     this.globals.isLoading = true;
-    this.getChartFilterValues (componentId, this.addChartFilterValues);
+    this.getChartFilterValues (component.id, this.addChartFilterValues);
+    this.currentOptionUrl = component.baseUrl;
   }
 
   handlerError(_this,result)
