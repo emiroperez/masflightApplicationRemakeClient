@@ -1,6 +1,7 @@
 import { PlanFeature } from "./PlanFeature"
 import { PlanPrice } from "./PlanPrice"
 import { PlanOption } from "./PlanOption"
+import { PlanAdvanceFeatures} from "./PlanAdvanceFeatures";
 
 export class Plan{
     "id": string;
@@ -8,6 +9,7 @@ export class Plan{
     "features":Array<PlanFeature>;
     "fares":Array<PlanPrice>;
     "options":Array<PlanOption>;
+    "advanceFeatures":Array<PlanAdvanceFeatures>;
     "delete": boolean;
 
     constructor(){
@@ -15,6 +17,7 @@ export class Plan{
         this.features = new Array();
         this.fares=new Array();
         this.options=new Array();
+        this.advanceFeatures=new Array();
         this.delete=false;
     }
 }

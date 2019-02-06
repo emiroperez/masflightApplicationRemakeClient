@@ -1,8 +1,9 @@
-import { Component, OnInit, Input, Inject, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, Inject, ChangeDetectorRef } from '@angular/core';
 import { FormControl, Validators, FormGroup, FormArray, FormBuilder } from '@angular/forms';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Globals } from '../globals/Globals';
 import { Utils } from '../commons/utils';
+import { AdvanceFeature } from '../model/AdvanceFeature';
 import { Plan } from '../model/Plan';
 import { PlanFeature } from '../model/PlanFeature';
 import { ApplicationService } from '../services/application.service';
@@ -16,6 +17,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { PlanOption } from '../model/PlanOption';
 import { Menu } from '../model/Menu';
 import { Optional } from 'ag-grid-community';
+import { PlanAdvanceFeatures } from '../model/PlanAdvanceFeatures';
 
 
 @Component({
@@ -66,71 +68,71 @@ export class EditOptionsDialog {
 
   constructor(
     public dialogRef: MatDialogRef<EditOptionsDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: {menuSelected: any, auxOptions: any}) {}
+    @Inject(MAT_DIALOG_DATA) public data: { menuSelected: any, auxOptions: any }) { }
 
 
-/*     getOptionSelected(option) {
-      //this.categoryArguments = [];
-      //this.clearSelectedCategoryArguments();
-      if (this.optionSelected == option) {
-        this.optionSelected.isActive = false;
-        this.optionSelected = {};
-        this.idDomOptionSelected = {};
-      } else {
-        this.optionSelected.isActive = false;
-        option.isActive = option.isActive == null ? true : !option.isActive;
-        this.optionSelected = option;
-        this.optionsArray.push(option);
-        console.log(this.optionsArray);
-        console.log("was selected: " + option.label);
-      }
-    } */
-
-    getItemsSelected(menu) {
-      console.log(this.data.auxOptions);
-
-      for (let j = 0; j < menu.length; j++) {
-        console.log("entra for root");
-        this.recursiveOption(menu[j]);
-      }
-      console.log("then....");
-      console.log(this.data.auxOptions);
-      console.log(this.data.auxOptions.length);
-      this.optionsArray = this.data.auxOptions;
-      console.log(this.optionsArray);
-    }
-
-    recursiveOption(option: any) {
-
-      if(option.children.length !== 0) {
-        for (let i = 0; i < option.children.length; i++) {
-          const element = option.children[i];
-          let found = false;
-          for (let j = 0; j < this.data.auxOptions.length; j++) {
-          if (!element.selected) {
-            if(element.id === this.data.auxOptions[j].optionId) {
-            this.data.auxOptions[j].delete = true;
-          }
+  /*     getOptionSelected(option) {
+        //this.categoryArguments = [];
+        //this.clearSelectedCategoryArguments();
+        if (this.optionSelected == option) {
+          this.optionSelected.isActive = false;
+          this.optionSelected = {};
+          this.idDomOptionSelected = {};
         } else {
-          if(element.id === this.data.auxOptions[j].optionId) {
-            this.data.auxOptions[j].delete = false;
-            found = true;
+          this.optionSelected.isActive = false;
+          option.isActive = option.isActive == null ? true : !option.isActive;
+          this.optionSelected = option;
+          this.optionsArray.push(option);
+          console.log(this.optionsArray);
+          console.log("was selected: " + option.label);
         }
+      } */
+
+  getItemsSelected(menu) {
+    console.log(this.data.auxOptions);
+
+    for (let j = 0; j < menu.length; j++) {
+      console.log("entra for root");
+      this.recursiveOption(menu[j]);
+    }
+    console.log("then....");
+    console.log(this.data.auxOptions);
+    console.log(this.data.auxOptions.length);
+    this.optionsArray = this.data.auxOptions;
+    console.log(this.optionsArray);
+  }
+
+  recursiveOption(option: any) {
+
+    if (option.children.length !== 0) {
+      for (let i = 0; i < option.children.length; i++) {
+        const element = option.children[i];
+        let found = false;
+        for (let j = 0; j < this.data.auxOptions.length; j++) {
+          if (!element.selected) {
+            if (element.id === this.data.auxOptions[j].optionId) {
+              this.data.auxOptions[j].delete = true;
+            }
+          } else {
+            if (element.id === this.data.auxOptions[j].optionId) {
+              this.data.auxOptions[j].delete = false;
+              found = true;
+            }
+          }
         }
-      }
-      if (element.selected && !found){
-        const optionAdd = new PlanOption();
-        optionAdd.planId = null;
-        optionAdd.id = null;
-        optionAdd.optionId = element.id;
-        optionAdd.delete = false;
-        this.data.auxOptions.push(optionAdd);
+        if (element.selected && !found) {
+          const optionAdd = new PlanOption();
+          optionAdd.planId = null;
+          optionAdd.id = null;
+          optionAdd.optionId = element.id;
+          optionAdd.delete = false;
+          this.data.auxOptions.push(optionAdd);
+        }
       }
     }
   }
-}
 
-  }
+}
 
 
 
@@ -166,7 +168,6 @@ export class EditOptionsDialog {
 
 @Component({
   selector: 'app-create-memperships',
-  // templateUrl: './membership.component.html',
   templateUrl: './create-memperships.component.html',
   styleUrls: ['./membership.css'],
   providers: [
@@ -187,6 +188,8 @@ export class CreateMempershipsComponent implements OnInit {
   menu: any[];
   planJson: any[] = [];
   itemsJson: any[];
+  advanceFeatures: any[];
+  advanceFeaturesGroup: FormArray;
   plansForms: FormGroup;
   items: FormArray;
   features: FormArray;
@@ -195,6 +198,7 @@ export class CreateMempershipsComponent implements OnInit {
   optionsXPlan: any[];
   optionsByPlan: any[];
   optionsToAdd: any[] = [];
+  adFeaturesByPlan: any[] = [];
 
   private plans: any[];
 
@@ -215,6 +219,7 @@ export class CreateMempershipsComponent implements OnInit {
   ngOnInit() {
     this.getPlansService();
     this.getMenuData();
+    this.getAdvanceFeatures();
 
     this.plansForms = this.formBuilder.group({
       items: this.formBuilder.array([])
@@ -252,6 +257,7 @@ export class CreateMempershipsComponent implements OnInit {
       id: plan.id,
       features: this.formBuilder.array(this.createFeatureFromJson(plan.features)),
       fares: this.formBuilder.array(this.createPriceFromJson(plan.fares)),
+      advanceFeatures: this.formBuilder.array(this.createAdvanceFeatureFromJson(this.advanceFeatures, plan.advanceFeatures)),
       deleted: false
     });
   }
@@ -264,12 +270,47 @@ export class CreateMempershipsComponent implements OnInit {
         name: feature.features,
         options: this.formBuilder.array(this.createOptionsFromJson(feature.options)),
         deleted: false
-      }))
+      }));
     });
     return features;
   }
 
+  getSelectedAdvanceFeatures(id, plan) {
+    let value = false;
+    for (let i = 0; i < plan.length; i++) {
+      if (plan[i].advanceFeatureId == id) {
+        value = true;
+      }
+    }
+    return value;
+  }
 
+  getIdAFPlan(id, plan){
+    let value: any;
+    for (let i =0; i <plan.length;i++){
+      if (plan[i].advanceFeatureId == id) {
+        value = plan[i].id;
+    }
+  }
+  return value;
+}
+
+  createAdvanceFeatureFromJson(advanceFeaturesArray, advanceFeaturesPlan): FormGroup[] {
+    let advanceFeaturesGroup: FormGroup[] = [];
+    advanceFeaturesArray.forEach(advFeature => {
+      advanceFeaturesGroup.push(this.formBuilder.group({
+        id: advFeature.id,
+        idByPlan: this.getIdAFPlan(advFeature.id, advanceFeaturesPlan),
+        label: advFeature.label,
+        selected: this.getSelectedAdvanceFeatures(advFeature.id, advanceFeaturesPlan),
+        deleted: false
+
+      }));
+    });
+
+    console.log(advanceFeaturesGroup);
+    return advanceFeaturesGroup;
+  }
 
   createOptionsFromJson(optionsArray): FormGroup[] {
     let options: FormGroup[] = [];
@@ -277,7 +318,6 @@ export class CreateMempershipsComponent implements OnInit {
       options.push(this.formBuilder.group({
         id: option.id,
         name: option.optionName,
-        //description: new FormControl('',[Validators.required]),
         deleted: false
       }))
     });
@@ -336,7 +376,7 @@ export class CreateMempershipsComponent implements OnInit {
   }
 
   getMenuData(): void {
-    this.service.loadMenuOptions(this, this.handlerGetSuccessMenuData, this.handlerGetErrorMenuData);
+    this.service.loadMenuOptions(this, this.handlerGetSuccessMenuData, this.handlerError);
   }
   handlerGetSuccessMenuData(_this, data) {
     _this.menu = data;
@@ -344,10 +384,14 @@ export class CreateMempershipsComponent implements OnInit {
     console.log(_this.menu);
   }
 
-  handlerGetErrorMenuData(_this, result) {
-    console.log(result);
-    _this.globals.isLoading = false;
+  getAdvanceFeatures(): void {
+    this.service.loadAdvanceFeatures(this, this.handlerGetSuccessAF, this.handlerError);
   }
+  handlerGetSuccessAF(_this, data) {
+    _this.advanceFeatures = data;
+    console.log(_this.advanceFeatures);
+  }
+
   deleteOption(index, index2, index3) {
     this.items = this.plansForms.get('items') as FormArray;
     this.features = this.items.controls[index]['controls']['features']['controls'];
@@ -366,37 +410,6 @@ export class CreateMempershipsComponent implements OnInit {
 
   }
 
-  getPlansJson() {
-    let plansJsons: Array<Plan> = new Array();
-    this.items = this.plansForms.get('items') as FormArray;
-
-    for (let i = 0; i < this.items.length; i++) {
-      let plan: Plan = new Plan();
-
-      if (this.items.at(i).get("id").value != '') {
-        plan.id = this.items.at(i).get("id").value;
-        plan.delete = this.items.at(i).get("deleted").value;
-      } else {
-        plan.id = null;
-        plan.delete = false;
-      }
-      plan.name = this.items.at(i).get("name").value.toUpperCase();
-      plan.options = this.getOptionsPlanJson(i);
-      console.log("lo que se va");
-      console.log(plan.options);
-      plan.features = this.getFeaturesJson(i);
-      plan.fares = this.getPricesJson(i);
-      plansJsons.push(plan);
-    }
-    console.log(plansJsons);
-    return plansJsons;
-  }
-
-  getPlanFeatures(index): FormArray {
-    this.items = this.plansForms.get('items') as FormArray;
-    this.features = this.items.controls[index]['controls']['features']['controls'];
-    return this.features;
-  }
 
 
   getPlanFeaturesOptions(index, index2): FormArray {
@@ -419,7 +432,6 @@ export class CreateMempershipsComponent implements OnInit {
     this.features.push(this.createFeature());
 
   }
-
   addNewOptionFeature(index, index2): void {
     this.items = this.plansForms.get('items') as FormArray;
     this.features = this.items.controls[index]['controls']['features']['controls'];
@@ -427,7 +439,6 @@ export class CreateMempershipsComponent implements OnInit {
     this.options.push(this.createOptions());
 
   }
-
   createOptions(): FormGroup {
     return this.formBuilder.group({
       id: '',
@@ -463,6 +474,44 @@ export class CreateMempershipsComponent implements OnInit {
     return !(this.options.at(indexOption).get('deleted').value);
   }
 
+
+  getPlansJson() {
+    let plansJsons: Array<Plan> = new Array();
+    this.items = this.plansForms.get('items') as FormArray;
+
+    for (let i = 0; i < this.items.length; i++) {
+      let plan: Plan = new Plan();
+
+      if (this.items.at(i).get("id").value != '') {
+        plan.id = this.items.at(i).get("id").value;
+        plan.delete = this.items.at(i).get("deleted").value;
+      } else {
+        plan.id = null;
+        plan.delete = false;
+      }
+      plan.name = this.items.at(i).get("name").value.toUpperCase();
+      plan.options = this.getOptionsPlanJson(i);
+      plan.features = this.getFeaturesJson(i);
+      plan.fares = this.getPricesJson(i);
+      plan.advanceFeatures = this.getAdvanceFeaturesJson(i);
+      plansJsons.push(plan);
+    }
+    console.log("ENVIO");
+    console.log(plansJsons);
+    return plansJsons;
+  }
+
+  getPlanFeatures(index): FormArray {
+    this.items = this.plansForms.get('items') as FormArray;
+    this.features = this.items.controls[index]['controls']['features']['controls'];
+    return this.features;
+  }
+
+  getPlanAdvanceFeatures(index): FormArray {
+    this.items = this.plansForms.get('items') as FormArray;
+    this.advanceFeaturesGroup = this.items.controls[index]['controls']['advanceFeatures']['controls'];
+    return this.advanceFeaturesGroup;
+  }
   getFeaturesJson(index) {
     this.items = this.plansForms.get('items') as FormArray;
     this.features = this.items.controls[index]['controls']['features'];
@@ -480,7 +529,37 @@ export class CreateMempershipsComponent implements OnInit {
       featuresJson.push(feature)
     }
     return featuresJson;
+  }
 
+  getAdvanceFeaturesJson(index) {
+
+    this.items = this.plansForms.get('items') as FormArray;
+    this.advanceFeaturesGroup = this.items.controls[index]['controls']['advanceFeatures'];
+    let advfeaturesJson: Array<PlanAdvanceFeatures> = new Array();
+    for (let i = 0; i < this.advanceFeaturesGroup.length; i++) {
+      let advfeature: PlanAdvanceFeatures = new PlanAdvanceFeatures();
+      if (this.advanceFeaturesGroup.at(i).get("idByPlan").value != null) {
+
+        if(this.advanceFeaturesGroup.at(i).get("selected").value){
+          advfeature.delete = false;
+          advfeature.id = this.advanceFeaturesGroup.at(i).get("idByPlan").value;
+        }
+        else { advfeature.delete = true; }
+
+          advfeature.advanceFeatureId = this.advanceFeaturesGroup.at(i).get("id").value;
+          advfeature.id = this.advanceFeaturesGroup.at(i).get("idByPlan").value;
+          advfeaturesJson.push(advfeature);
+        }
+
+         else if(this.advanceFeaturesGroup.at(i).get("selected").value) {
+        advfeature.advanceFeatureId = this.advanceFeaturesGroup.at(i).get("id").value;
+        advfeature.id = null;
+        advfeature.delete = false;
+        advfeaturesJson.push(advfeature);
+      }
+
+    }
+    return advfeaturesJson;
   }
 
   getFeatureOptions(options): Array<PlanFeatureOption> {
@@ -561,23 +640,18 @@ export class CreateMempershipsComponent implements OnInit {
   }
 
   getOptionsPlanJson(index) {
-    console.log("cuando entro");
-    console.log(this.planJson);
     const optionsXPlan = this.planJson[index]['options'];
-    console.log(optionsXPlan);
     const opJson: Array<PlanOption> = new Array();
-      for (let j = 0; j < optionsXPlan.length; j++){
-          const planOp: PlanOption = new PlanOption();
-          planOp.id = optionsXPlan[j]['id'];
-          planOp.optionId = optionsXPlan[j]['optionId'];
-          planOp.planId = optionsXPlan[j]['planId'];
-          planOp.delete = optionsXPlan[j]['delete'];
-          opJson.push(planOp);
-      }
-      console.log('Opciones del plan --');
-      console.log(opJson);
-      return opJson;
-   }
+    for (let j = 0; j < optionsXPlan.length; j++) {
+      const planOp: PlanOption = new PlanOption();
+      planOp.id = optionsXPlan[j]['id'];
+      planOp.optionId = optionsXPlan[j]['optionId'];
+      planOp.planId = optionsXPlan[j]['planId'];
+      planOp.delete = optionsXPlan[j]['delete'];
+      opJson.push(planOp);
+    }
+    return opJson;
+  }
 
   getOptionsText(options: any[]) {
     let text = "";
@@ -667,8 +741,8 @@ export class CreateMempershipsComponent implements OnInit {
     const opData = options;
     const planId: any = this.planJson[index]['id'];
     if (planId) {
-    for (let i = 0; i < menuData.length; i++) {
-      this.recursiveOptionData(menuData[i], opData);
+      for (let i = 0; i < menuData.length; i++) {
+        this.recursiveOptionData(menuData[i], opData);
       }
     }
     console.log(menuData);
@@ -676,7 +750,7 @@ export class CreateMempershipsComponent implements OnInit {
 
   }
   recursiveOptionData(option, selectedOp) {
-    if(option.children.length !== 0) {
+    if (option.children.length !== 0) {
       for (let i = 0; i < option.children.length; i++) {
         const element = option.children[i];
         for (let j = 0; j < selectedOp.length; j++) {
@@ -688,43 +762,43 @@ export class CreateMempershipsComponent implements OnInit {
     }
   }
 
-  clearOptionData(menu){
+  clearOptionData(menu) {
     for (let i = 0; i < menu.length; i++) {
       this.clearOptionDataRecursive(menu[i]);
     }
   }
   clearOptionDataRecursive(option) {
-    if(option.children.length !== 0) {
+    if (option.children.length !== 0) {
       for (let i = 0; i < option.children.length; i++) {
         const element = option.children[i];
-            element.selected = false;
-          }
-        }
+        element.selected = false;
       }
+    }
+  }
 
   editOptionsMembership(index) {
     this.index = index;
-    let planId : any;
+    let planId: any;
     planId = this.planJson[index]['id'];
-    let auxOptions : any[] = [];
+    let auxOptions: any[] = [];
     this.clearOptionData(this.menu);
-    if (planId){
+    if (planId) {
       auxOptions = this.getOptionsPlanJson(index);
     }
     const menuSelected = this.getSelectedOptionsByPlan(this.menu, auxOptions, index);
     console.log(auxOptions);
-     const dialogRef = this.dialog.open(EditOptionsDialog, {
+    const dialogRef = this.dialog.open(EditOptionsDialog, {
       width: '80%',
-      data : { menuSelected : menuSelected, auxOptions : auxOptions}
+      data: { menuSelected: menuSelected, auxOptions: auxOptions }
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
       console.log("result");
       console.log(result);
-      if(result){
-      this.planJson[index]['options'] = [];
-      this.planJson[index]['options'] = result;
-      console.log(this.planJson);
+      if (result) {
+        this.planJson[index]['options'] = [];
+        this.planJson[index]['options'] = result;
+        console.log(this.planJson);
       }
     });
 
