@@ -17,14 +17,14 @@ export class MenuService {
   constructor( private http: HttpClient) { }
 
   getMenu(_this,successHandler, errorHandler){
-    let url = "/secure/getMenu?";
-    // let url = "http://localhost:8887/getMenu?"
+    //let url = "/secure/getMenu?";
+     let url = "http://localhost:8887/getMenu?"
     if(_this.globals.currentApplication==undefined){
       _this.globals.currentApplication = JSON.parse(localStorage.getItem("currentApplication"));
     }
     url = url + "application="+_this.globals.currentApplication.id;
-    _this.globals.isLoading = true;
-    this.get(_this,url,successHandler, errorHandler);
+    //_this.globals.isLoading = true;
+    //this.get(_this,url,successHandler, errorHandler);
   }
 
   createAuthorizationHeader() {

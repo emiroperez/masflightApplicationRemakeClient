@@ -36,6 +36,11 @@ export class MsfGroupingComponent implements OnInit {
 
 
   ngOnInit() { 
+    if(this.argument.required){
+      this.argument.value1 = [  {id: 'YEAR', name: 'Year', column:'Year'},
+                                  {id: 'MONTH', name: 'Month', column:'Month'},
+                                    {id: 'DAY', name: 'Day' ,column:'Day'}];
+    }
   }
 
 }

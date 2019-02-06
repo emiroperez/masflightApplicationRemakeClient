@@ -17,23 +17,23 @@ export class MsfCausesFlightDelaysCheckboxesComponent implements OnInit {
   
 
   data =  [
-    {"id":1,
+    {"id":"A",
     "name":"Carrier (A)",
     "value":"Carrier (A)",
     "checked":false},
-    {"id":2,
+    {"id":"B",
     "name":"Weather (B)",
     "value":"Weather (B)",
     "checked":false},
-    {"id":3,
+    {"id":"C",
     "name":"Airspace (C)",
     "value":"Airspace (C)",
     "checked":false},
-    {"id":4,
+    {"id":"D",
     "name":"Security (D)",
     "value":"Security (D)",
     "checked":false},
-    {"id":5,
+    {"id":"E",
     "name":"Late Inbound (E)",
     "value":"Late Inbound (E)",
     "checked":false}

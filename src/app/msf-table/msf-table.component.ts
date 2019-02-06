@@ -184,7 +184,22 @@ export class MsfTableComponent implements OnInit {
     _this.setGroupingArgument();
     _this.globals.endTimestamp = new Date();
     let response = data.Response;
-    _this.globals.totalRecord = response.total;
+    if(response!=null){
+      if(Array.isArray(response)){
+        for (var key in response) {
+          var tam = response[key].length;
+          if( tam != null){
+            if(tam>0){
+              _this.globals.totalRecord = tam;
+              break;
+            }
+          }
+        }
+      }else{
+        _this.globals.totalRecord = 1;
+      }
+
+    }
     let keys = Object.keys(response);
     let mainElement = _this.getMainKey(keys,response);
     if(!(mainElement instanceof Array)){

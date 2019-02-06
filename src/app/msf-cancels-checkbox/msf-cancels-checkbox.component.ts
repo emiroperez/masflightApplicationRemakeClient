@@ -16,23 +16,27 @@ export class MsfCancelsCheckboxComponent implements OnInit {
   all = {"checked":false};
 
   data =  [
-      {"id":1,
-      "name":"Carrier (A)",
-      "value":"Carrier (A)",
-      "checked":false},
-      {"id":2,
-      "name":"Weather (B)",
-      "value":"Weather (B)",
-      "checked":false},
-      {"id":3,
-      "name":"Airspace (C)",
-      "value":"Airspace (C)",
-      "checked":false},
-      {"id":4,
-      "name":"Security (D)",
-      "value":"Security (D)",
-      "checked":false}
-  ];
+    {"id":"A",
+    "name":"Carrier (A)",
+    "value":"Carrier (A)",
+    "checked":false},
+    {"id":"B",
+    "name":"Weather (B)",
+    "value":"Weather (B)",
+    "checked":false},
+    {"id":"C",
+    "name":"Airspace (C)",
+    "value":"Airspace (C)",
+    "checked":false},
+    {"id":"D",
+    "name":"Security (D)",
+    "value":"Security (D)",
+    "checked":false},
+    {"id":"E",
+    "name":"Late Inbound (E)",
+    "value":"Late Inbound (E)",
+    "checked":false}
+];
 
   loading = false;
   constructor(public globals: Globals) { }

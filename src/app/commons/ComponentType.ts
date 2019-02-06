@@ -57,5 +57,18 @@ export enum ComponentType {
   fareLower = "fareLower",
   percentIncrement = "percentIncrement",
   groupingDailyStatics = "groupingDailyStatics",
-  quarterHour = "quarterHour"
+  quarterHour = "quarterHour",
+  functions = "functions",
+  groupingOperationsSummary = "groupingOperationsSummary",
+  groupingHubSummaries = "groupingHubSummaries",
+  regionSchedule = "regionSchedule",
+  aircraftTypeCheckboxes = "aircraftTypeCheckboxes",
+  seats = "seats",
+  sortingNostop = "sortingNostop",
+  sortingConnectionBuilder = "sortingConnectionBuilder",
+  stops = "stops",
+  connectionTime = "connectionTime",
+  circuityType = "circuityType",
+  circuity = "circuity",
+  singleAirport = "singleAirport"
 }

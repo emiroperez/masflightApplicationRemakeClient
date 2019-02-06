@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "C:\\Users\\ASP-61\\Documents\\CmkWorkspace\\masflightApplicationRemake\\src\\main\\resources\\static",
+            "outputPath": "C:\\Users\\AspSolutions\\Documents\\Proyectos\\masflightApplicationRemakeClient\\src\\main\\resources\\static",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
