@@ -1221,7 +1221,6 @@ button[aria-expanded="true"]
 .msf-component-airport-container
     width: 100%
 
-
 .msf-component-airport-title
     width: 100%
     padding: 5px 0 5px 0
@@ -1232,7 +1231,7 @@ button[aria-expanded="true"]
     width: 100%
     padding: 2px 0 2px 0
     margin-bottom: 5px
-    padding-left: 10px
+    text-align: center
     margin-left: 5px
 
 .msf-component-airport-input-container
@@ -1255,7 +1254,7 @@ button[aria-expanded="true"]
 .msf-menu-arg-image
     height: 50px
     width: 100%
-    background-position-x: 50px
+    background-position-x: 50%
     background-size: contain
     background-repeat: no-repeat
     span
@@ -1682,12 +1681,19 @@ mat-tab-group
     padding: 10px
     background-color: #424242
     overflow-y: visible
-    min-height: 263px
+    min-height: 266px
     .msf-dashboard-chartmenu-sub-container-row
         display: flex
         flex-direction: column
         width: 100%
         padding-left: 4px
+        font-size: 10px
+    .msf-dashboard-chartmenu-variable-buttons
+        display: flex
+        flex-direction: row
+        width: 100%
+        padding-right: 5px
+        padding-top: 10px
         font-size: 10px
     .msf-dashboard-chartmenu-sub-container-column
         display: flex
@@ -1706,16 +1712,37 @@ mat-tab-group
                 font-size: 22px
             .msf-dashboard-chartmenu-item-text
                 vertical-align: middle
+        .msf-dashboard-chartmenu-control-variable-button
+            display: flex
+            align-items: flex-end
+            width: 99.5%
+            flex-direction: column
 
 .msf-dashboard-chartmenu-container-invisible
     display: none
 
 .msf-dashboard-chartmenu-container-chart
-    display: block
     padding: 10px
-    background-color: #000
+    background-color: #222222
     overflow-y: visible
-    min-height: 263px
+    min-height: 266px
+    .msf-dashboard-chartmenu-sub-container-column
+        display: flex
+        flex-direction: row
+        width: 100%
+        padding-right: 5px
+        font-size: 10px
+        .msf-dashboard-chartmenu-config-button
+            display: flex
+            width: 8%
+            align-items: flex-end
+            flex-direction: column-reverse
+
+.msf-dashboard-control-variables
+    overflow-y: auto
+    font-size: 10px
+    max-height: 220px
+    width: calc(100% - 15px)
 
 .msf-dashboard-chartmenu-sub-title
     vertical-align: middle
@@ -1744,6 +1771,25 @@ mat-tab-group
         padding-top: 10px
         padding-left: 10px
         width: 100%
+
+.msf-dashboard-menu-component
+    @extend .msf-primary-light-bg-color
+    display: flex
+    align-items: center
+    position: relative
+    cursor: pointer
+    margin: 5px
+    padding: 10px
+    border-top-right-radius: 5px
+    border-bottom-right-radius: 5px
+    border-top-left-radius: 40px
+    border-bottom-left-radius: 40px
+    &:hover
+        background-color: $msf-primary-dark-color
+
+.msf-dashboard-menu-component-active
+    @extend .msf-dashboard-menu-component
+    background-color: $msf-primary-dark-color!important
 
 .msf-dynamic-table-variable-title
     display: flex
@@ -2324,6 +2370,7 @@ input[role=combobox]
 
 .checkbox-container
     padding: 10px 0 10px 0
+    text-align: left
 mat-form-field.standard-text
     div
         div

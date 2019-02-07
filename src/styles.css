@@ -1366,7 +1366,7 @@ button[aria-expanded=true] {
   width: 100%;
   padding: 2px 0 2px 0;
   margin-bottom: 5px;
-  padding-left: 10px;
+  text-align: center;
   margin-left: 5px;
 }
 
@@ -1393,7 +1393,7 @@ button[aria-expanded=true] {
 .msf-menu-arg-image, .msf-menu-arg-wind-direction-image, .msf-menu-arg-temperature-image, .msf-menu-arg-wind-speed-image, .msf-menu-arg-ceiling-image, .msf-menu-arg-date-image, .msf-menu-arg-single-airport-image, .msf-menu-arg-airport-image {
   height: 50px;
   width: 100%;
-  background-position-x: 50px;
+  background-position-x: 50%;
   background-size: contain;
   background-repeat: no-repeat;
 }
@@ -1598,7 +1598,7 @@ mat-tab-group {
   background-color: #1e1e1e;
 }
 
-.msf-primary-light-bg-color, .msf-searc-complete-option, .msf-menu-component, .msf-menu-component-active {
+.msf-primary-light-bg-color, .msf-searc-complete-option, .msf-dashboard-menu-component, .msf-dashboard-menu-component-active, .msf-menu-component, .msf-menu-component-active {
   background-color: #3d3d3d;
 }
 
@@ -1901,13 +1901,21 @@ mat-tab-group {
   padding: 10px;
   background-color: #424242;
   overflow-y: visible;
-  min-height: 263px;
+  min-height: 266px;
 }
 .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-row {
   display: flex;
   flex-direction: column;
   width: 100%;
   padding-left: 4px;
+  font-size: 10px;
+}
+.msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-variable-buttons {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding-right: 5px;
+  padding-top: 10px;
   font-size: 10px;
 }
 .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-column {
@@ -1931,17 +1939,42 @@ mat-tab-group {
 .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-column .msf-dashboard-addmenu-icon-item .msf-dashboard-chartmenu-item-text {
   vertical-align: middle;
 }
+.msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-column .msf-dashboard-chartmenu-control-variable-button {
+  display: flex;
+  align-items: flex-end;
+  width: 99.5%;
+  flex-direction: column;
+}
 
 .msf-dashboard-chartmenu-container-invisible {
   display: none;
 }
 
 .msf-dashboard-chartmenu-container-chart {
-  display: block;
   padding: 10px;
-  background-color: #000;
+  background-color: #222222;
   overflow-y: visible;
-  min-height: 263px;
+  min-height: 266px;
+}
+.msf-dashboard-chartmenu-container-chart .msf-dashboard-chartmenu-sub-container-column {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding-right: 5px;
+  font-size: 10px;
+}
+.msf-dashboard-chartmenu-container-chart .msf-dashboard-chartmenu-sub-container-column .msf-dashboard-chartmenu-config-button {
+  display: flex;
+  width: 8%;
+  align-items: flex-end;
+  flex-direction: column-reverse;
+}
+
+.msf-dashboard-control-variables {
+  overflow-y: auto;
+  font-size: 10px;
+  max-height: 220px;
+  width: calc(100% - 15px);
 }
 
 .msf-dashboard-chartmenu-sub-title {
@@ -1976,6 +2009,26 @@ mat-tab-group {
   padding-top: 10px;
   padding-left: 10px;
   width: 100%;
+}
+
+.msf-dashboard-menu-component, .msf-dashboard-menu-component-active {
+  display: flex;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  margin: 5px;
+  padding: 10px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-top-left-radius: 40px;
+  border-bottom-left-radius: 40px;
+}
+.msf-dashboard-menu-component:hover, .msf-dashboard-menu-component-active:hover {
+  background-color: #1e1e1e;
+}
+
+.msf-dashboard-menu-component-active {
+  background-color: #1e1e1e !important;
 }
 
 .msf-dynamic-table-variable-title {
@@ -2631,6 +2684,7 @@ input[role=combobox] {
 
 .checkbox-container {
   padding: 10px 0 10px 0;
+  text-align: left;
 }
 
 mat-form-field.standard-text div div div span label {
