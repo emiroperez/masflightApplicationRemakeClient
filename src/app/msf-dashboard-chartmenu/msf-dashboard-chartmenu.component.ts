@@ -41,6 +41,12 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   @Input()
   optionIds:any[] = [];
 
+  @Input()
+  columnPos: number;
+
+  @Input()
+  rowPos: number;
+
   currentOptionUrl: String;
 
   currentChartType;
@@ -197,11 +203,11 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   handlerSuccess(_this,data)
   {
-    _this.displayChart = true;
     _this.globals.endTimestamp = new Date();
-    _this.chart2 = _this.AmCharts.makeChart("msf-dashboard-chart-display", _this.makeOptions(data));
+    _this.chart2 = _this.AmCharts.makeChart("msf-dashboard-chart-display-" + _this.columnPos + "-" + _this.rowPos, _this.makeOptions(data));
     _this.chart2.addListener("dataUpdated", _this.zoomChart);
     _this.chartTypeChange(_this.currentChartType);
+    _this.displayChart = true;
     _this.globals.isLoading = false;
   }
 
@@ -220,8 +226,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   getChartFilterValues(id, handlerSuccess)
   {
-    let url = "/getMetaByOptionId?optionId=" + id;
-    //let url = "http://localhost:8887/getMetaByOptionId?optionId=" + id;
+    //let url = "/getMetaByOptionId?optionId=" + id;
+    let url = "http://localhost:8887/getMetaByOptionId?optionId=" + id;
     this.http.get(this, url, handlerSuccess, this.handlerError, null);  
   }
 
