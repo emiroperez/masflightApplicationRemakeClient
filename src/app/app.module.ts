@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule} from '@angular/core';
 import { AppComponent } from './app.component';
 import { LoginScreenComponent } from './login-screen/login-screen.component';
 import { WelcomeComponent } from './welcome/welcome.component';
@@ -291,7 +291,6 @@ import { MsfSingleAirportComponent } from './msf-single-airport/msf-single-airpo
     OwlDateTimeModule,
     OwlNativeDateTimeModule
   ],
-schemas : [ CUSTOM_ELEMENTS_SCHEMA ],
   providers: [
     AuthService,
     NotificationComponent,

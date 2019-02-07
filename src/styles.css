@@ -1411,30 +1411,37 @@ button[aria-expanded=true] {
 
 .msf-menu-arg-airport-image {
   background-image: url("assets/images/components/arguments/airport/aerop_a_aerop.png");
+  background-position: center;
 }
 
 .msf-menu-arg-single-airport-image {
   background-image: url("assets/images/components/arguments/airport/aerop_a_todos.png");
+  background-position: center;
 }
 
 .msf-menu-arg-date-image {
   background-image: url("assets/images/components/arguments/airport/fecha.png");
+  background-position: center;
 }
 
 .msf-menu-arg-ceiling-image {
   background-image: url("assets/images/components/arguments/weather/Ceiling.png");
+  background-position: center;
 }
 
 .msf-menu-arg-wind-speed-image {
   background-image: url("assets/images/components/arguments/weather/ReportedWindSpeed.png");
+  background-position: center;
 }
 
 .msf-menu-arg-temperature-image {
   background-image: url("assets/images/components/arguments/weather/Temperature.png");
+  background-position: center;
 }
 
 .msf-menu-arg-wind-direction-image {
   background-image: url("assets/images/components/arguments/weather/Winddirection.png");
+  background-position: center;
 }
 
 .msf-menu-arg-image-circle, .msf-menu-arg-wind-speed-image, .msf-menu-arg-temperature-image, .msf-menu-arg-wind-direction-image {
