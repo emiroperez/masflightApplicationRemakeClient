@@ -13,7 +13,7 @@
     <div class="msf-dashboard-chartmenu-sub-container-row">
       <div class="msf-dashboard-chartmenu-sub-title">Chart Type:</div>
       <mat-form-field class="msf-full-width">
-        <mat-select [(ngModel)]="currentChartType" (selectionChange)="chartTypeChange($event.value)">
+        <mat-select [(ngModel)]="currentChartType">
           <mat-option *ngFor="let chartType of chartTypes" [value]="chartType">
             {{chartType.name}}
           </mat-option>
@@ -79,6 +79,6 @@
   </div>
 </div>
 <!-- ngIf doesn't work with AmCharts -->
-<div class="tabs {{displayChart ? 'msf-dashboard-chartmenu-container': 'msf-dashboard-chartmenu-container-invisible'}}">
-  <div id="msf-dashboard-chart-display" [style.width.%]="100" [style.height.px]="264"></div>
+<div class="tabs {{displayChart ? 'msf-dashboard-chartmenu-container-chart': 'msf-dashboard-chartmenu-container-invisible'}}">
+  <div id="msf-dashboard-chart-display-{{columnPos}}-{{rowPos}}" [style.width.%]="100" [style.height.px]="264"></div>
 </div>
