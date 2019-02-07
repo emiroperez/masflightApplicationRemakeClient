@@ -27,6 +27,7 @@ export class MsfResultsLessComponent implements OnInit {
 
 
   ngOnInit() { 
+    this.argument.value1 = {id: '1', name: '1%'};
   }
 
 

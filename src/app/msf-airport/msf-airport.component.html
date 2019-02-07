@@ -16,6 +16,7 @@
                 [hideSelected]="false"
                 bindLabel="name"
                 (search)="onSearch($event)" 
+                [VirtualScroll]="true"
                 [(ngModel)]="argument.value1">
             </ng-select>          
             </div>

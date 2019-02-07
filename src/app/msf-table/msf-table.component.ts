@@ -185,20 +185,26 @@ export class MsfTableComponent implements OnInit {
     _this.globals.endTimestamp = new Date();
     let response = data.Response;
     if(response!=null){
-      if(Array.isArray(response)){
+      if(response.total!=null){
+        _this.globals.totalRecord = response.total;
+      }else{
         for (var key in response) {
-          var tam = response[key].length;
-          if( tam != null){
-            if(tam>0){
-              _this.globals.totalRecord = tam;
+          var array = response[key];
+          if( array != null){
+            if(Array.isArray(array)){
+              _this.globals.totalRecord = array.length;
               break;
+            }else{
+              for (var key in array) {
+                var obj = array[key];
+                if( obj != null){
+                  _this.globals.totalRecord = 1;
+                }
+              }
             }
           }
         }
-      }else{
-        _this.globals.totalRecord = 1;
       }
-
     }
     let keys = Object.keys(response);
     let mainElement = _this.getMainKey(keys,response);
