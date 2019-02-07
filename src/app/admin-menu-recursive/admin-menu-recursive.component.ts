@@ -50,7 +50,7 @@ export class AdminMenuRecursiveComponent implements OnInit {
   ngOnInit() {
   }
 
-  ngAfterViewInit(): void {    
+  ngAfterViewInit(): void {
   }
 
   toggle(option) {
@@ -63,13 +63,14 @@ export class AdminMenuRecursiveComponent implements OnInit {
     }
   }
 
-  selectOption(option) {    
-    this.optionSelected.emit(option);            
-  }  
+  selectOption(option) {
+    this.optionSelected.emit(option);
+  }
 
-  selectIdDom(index){
+  selectIdDom(index) {
     this.idSelected.emit(index);
   }
+
 
   changeDivState(option) {
     if (option.isOpened) {
@@ -77,7 +78,7 @@ export class AdminMenuRecursiveComponent implements OnInit {
     } else {
       setTimeout(() => {
         this.clickedDivState = 'start';
-      }, 3000);
+      }, 2000);
     }
   }
 
