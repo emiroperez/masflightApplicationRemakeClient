@@ -10,8 +10,8 @@ export class PlanService {
 
 
   savePlans(_this,plans,successHandler, errorHandler){
-    let url='http://localhost:8887/savePlans';
-    //let url='/savePlans';
+    // let url='http://localhost:8887/savePlans';
+    let url='/savePlans';
     this.http.post(_this,url,plans,successHandler, errorHandler);
   }
 

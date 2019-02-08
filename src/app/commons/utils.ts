@@ -151,7 +151,8 @@ export class Utils{
                 i++;
             }
             return valueAux;
-        }else if(type == ComponentType.tailnumber || type == ComponentType.summary || type == ComponentType.fareTypes ){
+        }else if(type == ComponentType.tailnumber || type == ComponentType.summary || type == ComponentType.fareTypes 
+            || type == ComponentType.summaryRevenueBuilds){
            var valueAux="";
            var i = 0;
            for(var val of value){
@@ -344,7 +345,8 @@ export class Utils{
           }else if (type == ComponentType.grouping || type == ComponentType.tailnumber || type == ComponentType.summary 
             || type == ComponentType.fareTypes || type == ComponentType.groupingOperationsSummary || type == ComponentType.causesFlightDelaysCheckbox 
             || type == ComponentType.taxiTimesCheckboxes || type == ComponentType.cancelsCheckBox || type== ComponentType.diversionsCheckbox
-            || type  == ComponentType.aircraftTypeCheckboxes || type == ComponentType.sortingNostop || type == ComponentType.sortingConnectionBuilder){
+            || type  == ComponentType.aircraftTypeCheckboxes || type == ComponentType.sortingNostop || type == ComponentType.sortingConnectionBuilder
+            || type == ComponentType.summaryRevenueBuilds){
             var valueAux="";
             var i = 0;
             for(var val of value){

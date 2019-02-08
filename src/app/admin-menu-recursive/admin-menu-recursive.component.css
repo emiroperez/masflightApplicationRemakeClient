@@ -1,7 +1,20 @@
 .is-active {
-    background-color: #4f4f4f;
+    background-color: #182128;
 }
 
 .is-inactive {
     background-color: transparent;
+}
+
+.mat-form-field.mat-focused .mat-form-field-ripple {
+    background-color: transparent;
+}
+
+.menu-recursive-input input {
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-size: 12px;
+  height: 40px;
+  width: 90%;
 }

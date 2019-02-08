@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule} from '@angular/core';
 import { AppComponent } from './app.component';
 import { LoginScreenComponent } from './login-screen/login-screen.component';
 import { WelcomeComponent } from './welcome/welcome.component';
@@ -138,6 +138,7 @@ import { MsfCircuityTypeComponent } from './msf-circuity-type/msf-circuity-type.
 import { MsfCircuityComponent } from './msf-circuity/msf-circuity.component';
 import { MsfSingleAirportComponent } from './msf-single-airport/msf-single-airport.component';
 import { MsfDashboardControlVariablesComponent } from './msf-dashboard-control-variables/msf-dashboard-control-variables.component';
+import { MsfSummaryRevenueBuildsComponent } from './msf-summary-revenue-builds/msf-summary-revenue-builds.component';
 
 @NgModule({
   declarations: [
@@ -257,7 +258,8 @@ import { MsfDashboardControlVariablesComponent } from './msf-dashboard-control-v
     MsfCircuityTypeComponent,
     MsfCircuityComponent,
     MsfSingleAirportComponent,
-    MsfDashboardControlVariablesComponent
+    MsfDashboardControlVariablesComponent,
+    MsfSummaryRevenueBuildsComponent
   ],
   imports: [
     BrowserModule,
@@ -293,7 +295,6 @@ import { MsfDashboardControlVariablesComponent } from './msf-dashboard-control-v
     OwlDateTimeModule,
     OwlNativeDateTimeModule
   ],
-  schemas : [ CUSTOM_ELEMENTS_SCHEMA ],
   providers: [
     AuthService,
     NotificationComponent,
