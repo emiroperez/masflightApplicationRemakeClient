@@ -98,11 +98,11 @@
 <div class="{{isChartDisplayed() ? 'msf-dashboard-chartmenu-container-chart' : 'msf-dashboard-chartmenu-container-invisible'}}">
   <div class="msf-dashboard-chartmenu-title" *ngIf="isChartDisplayed()">{{currentOption.name}}</div>
   <div class="msf-dashboard-chartmenu-sub-container-column">
-    <div id="msf-dashboard-chart-display-{{columnPos}}-{{rowPos}}" [style.width.%]="96" [style.height.px]="253"></div>
     <div class="msf-dashboard-chartmenu-config-button">
       <button mat-mini-fab (click)="goToChartConfiguration()" color="primary">
         <mat-icon aria-label="Edit Configuration">menu</mat-icon>
       </button>
     </div>
+    <div id="msf-dashboard-chart-display-{{columnPos}}-{{rowPos}}" [style.width.%]="96" [style.height.px]="253"></div>
   </div>
 </div>
