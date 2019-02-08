@@ -372,6 +372,10 @@ p {
   color: #ffffff !important;
 }
 
+.mat-form-field {
+  width: 100%;
+}
+
 .mat-form-field-infix {
   width: 100% !important;
 }
@@ -1301,7 +1305,7 @@ button[aria-expanded=true] {
   padding: 1%;
   display: flex;
   color: white;
-  background-color: #333333;
+  background-color: inherit;
   font-size: 90%;
 }
 
@@ -2029,6 +2033,32 @@ mat-tab-group {
 
 .msf-dashboard-menu-component-active {
   background-color: #1e1e1e !important;
+}
+
+.msf-dashboard-menu-arguments-container, .msf-dashboard-menu-arguments-container-show, .msf-dashboard-menu-arguments-container-hiden {
+  margin: 10px;
+  padding: 5px;
+  display: flex;
+  color: white;
+  background-color: inherit;
+  font-size: 90%;
+}
+
+.msf-dashboard-menu-arguments-container-hiden {
+  max-height: 0;
+  transition: max-height 2s ease-out;
+  opacity: 0;
+  position: absolute;
+  top: -99999px;
+  transition: opacity 0.5s ease-out;
+}
+
+.msf-dashboard-menu-arguments-container-show {
+  overflow-y: hidden;
+  overflow-x: hidden;
+  transition: max-height 1s ease-in;
+  opacity: 1;
+  transition: opacity 2s ease-out;
 }
 
 .msf-dynamic-table-variable-title {

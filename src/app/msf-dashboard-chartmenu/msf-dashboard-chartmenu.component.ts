@@ -1,14 +1,16 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
-import { AmChartsService, AmChart } from "@amcharts/amcharts3-angular";
+import { AmChartsService, AmChart } from '@amcharts/amcharts3-angular';
+import { CategoryArguments } from '../model/CategoryArguments';
 import { Globals } from '../globals/Globals';
 import { FormControl } from '@angular/forms';
 import { ReplaySubject, Subject } from 'rxjs';
 import { MatSelect } from '@angular/material';
 import { takeUntil, take } from 'rxjs/operators';
 import { ApiClient } from '../api/api-client';
-import { ApplicationService } from '../services/application.service';
 import { ComponentType } from '../commons/ComponentType';
 import { Arguments } from '../model/Arguments';
+import { Utils } from '../commons/utils';
+import { ApplicationService } from '../services/application.service';
 
 enum DashboardMenu
 {
@@ -25,6 +27,7 @@ enum DashboardMenu
 export class MsfDashboardChartmenuComponent implements OnInit {
   open: boolean = false;
 
+  utils: Utils;
   argsBefore: any;
   iconBefore: any;
 
@@ -65,6 +68,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   currentChartType;
   currentOptionId: number;
+  currentOptionCategories: any;
 
   public variableCtrl: FormControl = new FormControl();
   public variableFilterCtrl: FormControl = new FormControl();
@@ -84,7 +88,10 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   private _onDestroy = new Subject<void>();
 
-  constructor(private AmCharts: AmChartsService, public globals: Globals, private service: ApplicationService, private http: ApiClient) { }
+  constructor(private AmCharts: AmChartsService, public globals: Globals, private service: ApplicationService, private http: ApiClient)
+  {
+    this.utils = new Utils();
+  }
 
   buildGraphs(dataProvider){    
     let  graphs = [];
@@ -191,11 +198,31 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     );
   }
 
+  getParameters()
+  {
+    let params;        
+           if(this.currentOptionCategories){            
+                for( let i = 0; i < this.currentOptionCategories.length;i++){
+                    let category: CategoryArguments = this.currentOptionCategories[i];
+                    if(category && category.arguments){
+                        for( let j = 0; j < category.arguments.length;j++){
+                            let argument: Arguments = category.arguments[j];
+                            if(params){
+                                params += "&" + this.utils.getArguments(argument);
+                            }else{
+                                params = this.utils.getArguments(argument);
+                            }
+                        }
+                    }        
+                }
+            }
+    
+    return params;
+}
+
   loadChartData(handlerSuccess, handlerError) {
     this.globals.isLoading = true;
-    let urlBase = "";
-    //urlBase += this.currentOptionUrl + "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
-    urlBase += this.currentOptionUrl + "?AIRLINESLIST=AA,DL,UA,WN&flightDistance=0&fareTypes=A,C,E,F,G,H,K,L,N,P,Q,R,V,F&summary=&serviceClasses=Both&pruebaFilter=RpCarrier&percentIncrement=1&prueba=&prueba2=&ORIGINSLIST=MIA&DESTSLIST=&initialhour=0000&finalhour=2359&initialdate=20170101&finaldate=20170131&windanglemin=0&windanglemax=360&ceilingmin=&ceilingmax=&distanceunit=ft&windmin=0&windmax=200&speedunit=kts&tempmin=-75&tempmax=125&tempunit=f&&&&&&&&&&decimals=2&MIN_VALUE=0&MAX_VALUE=999999&minuteunit=m&pageSize=30&page_number=0";
+    let urlBase = this.currentOptionUrl + "?" + this.getParameters ();
     console.log(urlBase);
     let urlArg = encodeURIComponent(urlBase);
     let url = this.service.host + "/getChartData?url=" + urlArg + "&variable=" + this.variable.id + "&xaxis=" + this.xaxis.id + "&valueColunm=" + this.valueColunm.id + "&function=" + this.function.id;
@@ -264,6 +291,17 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     _this.searchChange(_this.valueFilterCtrl);
 
     _this.setInitialValue();
+
+    // initiate another query to get the category arguments
+    _this.service.loadOptionCategoryArguments (_this, _this.currentOptionId, _this.setCategories, _this.handlerError);
+  }
+
+  setCategories(_this, data)
+  {
+    _this.currentOptionCategories = [];
+    for (let optionCategory of data)
+      _this.currentOptionCategories.push (optionCategory.categoryArgumentsId);
+
     _this.globals.isLoading = false;
   }
 
