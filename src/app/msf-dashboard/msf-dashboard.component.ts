@@ -10,7 +10,7 @@ import { MsfDashboardChartValues } from '../msf-dashboard-chartmenu/msf-dashboar
 })
 export class MsfDashboardComponent implements OnInit {
   dashboardColumns: MsfDashboardChartValues[] = [];
-  optionIds:any[] = [];
+  options:any[] = [];
 
   displayAddChartMenu: boolean = false;
 
@@ -25,8 +25,8 @@ export class MsfDashboardComponent implements OnInit {
   {
     this.globals.isLoading = true;
 
-    //let url = "/getDataOptions?applicationId=" + applicationId;
-    let url = "http://localhost:8887/getDataOptions?applicationId=" + applicationId;
+    let url = "/getDataOptions?applicationId=" + applicationId;
+    //let url = "http://localhost:8887/getDataOptions?applicationId=" + applicationId;
     this.http.get (this, url, this.addFilterOptions, this.handlerError, null);
   }
 
@@ -37,7 +37,7 @@ export class MsfDashboardComponent implements OnInit {
 
     for (let columnConfig of data)
     {
-      _this.optionIds.push (
+      _this.options.push (
       {
         id: columnConfig.option.id,
         name: columnConfig.option.label,
@@ -79,7 +79,7 @@ export class MsfDashboardComponent implements OnInit {
     do
     {
       // insert the data options for each chart
-      dashboardRows.push (new MsfDashboardChartValues (this.optionIds));
+      dashboardRows.push (new MsfDashboardChartValues (this.options));
     } while (--numCharts);
 
     this.dashboardColumns.push (dashboardRows);

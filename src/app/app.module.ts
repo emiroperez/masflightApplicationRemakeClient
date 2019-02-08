@@ -137,6 +137,7 @@ import { MsfStopsComponent } from './msf-stops/msf-stops.component';
 import { MsfCircuityTypeComponent } from './msf-circuity-type/msf-circuity-type.component';
 import { MsfCircuityComponent } from './msf-circuity/msf-circuity.component';
 import { MsfSingleAirportComponent } from './msf-single-airport/msf-single-airport.component';
+import { MsfDashboardControlVariablesComponent } from './msf-dashboard-control-variables/msf-dashboard-control-variables.component';
 
 @NgModule({
   declarations: [
@@ -255,7 +256,8 @@ import { MsfSingleAirportComponent } from './msf-single-airport/msf-single-airpo
     MsfStopsComponent,
     MsfCircuityTypeComponent,
     MsfCircuityComponent,
-    MsfSingleAirportComponent
+    MsfSingleAirportComponent,
+    MsfDashboardControlVariablesComponent
   ],
   imports: [
     BrowserModule,
@@ -291,7 +293,7 @@ import { MsfSingleAirportComponent } from './msf-single-airport/msf-single-airpo
     OwlDateTimeModule,
     OwlNativeDateTimeModule
   ],
-schemas : [ CUSTOM_ELEMENTS_SCHEMA ],
+  schemas : [ CUSTOM_ELEMENTS_SCHEMA ],
   providers: [
     AuthService,
     NotificationComponent,
@@ -308,6 +310,12 @@ schemas : [ CUSTOM_ELEMENTS_SCHEMA ],
     Utils
   ],
   bootstrap: [AppComponent],
-  entryComponents: [MessageComponent, MsfDynamicTableVariablesComponent, EditCategoryArgumentDialog, EditOptionsDialog]
+  entryComponents: [
+    MessageComponent,
+    MsfDynamicTableVariablesComponent,
+    EditCategoryArgumentDialog,
+    EditOptionsDialog,
+    MsfDashboardControlVariablesComponent
+  ]
 })
 export class AppModule { }

@@ -1960,7 +1960,11 @@ mat-tab-group {
   overflow-y: visible;
   min-height: 266px;
 }
+.msf-dashboard-chartmenu-container-chart .msf-dashboard-chartmenu-title {
+  font-size: 10px;
+}
 .msf-dashboard-chartmenu-container-chart .msf-dashboard-chartmenu-sub-container-column {
+  position: relative;
   display: flex;
   flex-direction: row;
   width: 100%;
@@ -1968,17 +1972,53 @@ mat-tab-group {
   font-size: 10px;
 }
 .msf-dashboard-chartmenu-container-chart .msf-dashboard-chartmenu-sub-container-column .msf-dashboard-chartmenu-config-button {
+  position: absolute;
   display: flex;
-  width: 8%;
+  width: calc(100% - 5px);
+  height: 100%;
   align-items: flex-end;
   flex-direction: column-reverse;
+}
+
+.msf-dashboard-control-variables-dialog .mat-dialog-container {
+  padding: 12px;
+}
+
+.msf-dashboard-control-variables-title {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  padding-top: 5px;
+  padding-bottom: 10px;
+  color: #fff;
+  position: relative;
+}
+.msf-dashboard-control-variables-title .msf-dashboard-control-variables-close-button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  position: absolute;
+  width: 100%;
+}
+.msf-dashboard-control-variables-title .msf-dashboard-control-variables-close-button .msf-dashboard-close-icon {
+  font-size: 16px;
+}
+.msf-dashboard-control-variables-title .msf-dashboard-control-variables-close-button .msf-dashboard-close-icon:hover {
+  cursor: pointer;
+  font-size: 16px;
 }
 
 .msf-dashboard-control-variables {
   overflow-y: auto;
   font-size: 10px;
-  max-height: 220px;
-  width: calc(100% - 15px);
+  min-height: 85%;
+  max-height: 85%;
+  width: 100%;
+}
+
+.msf-dashboard-control-variables-button {
+  margin-top: 10px;
+  text-align: center;
 }
 
 .msf-dashboard-chartmenu-sub-title {

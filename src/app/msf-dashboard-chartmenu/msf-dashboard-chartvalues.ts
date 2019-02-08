@@ -1,8 +1,8 @@
 // Object used to mantain data values for each dashboard chart component
 export class MsfDashboardChartValues {
-    optionIds:any[] = [];
+    options:any[] = [];
 
-    constructor(optionIds:any[]) {
-        this.optionIds = optionIds;
+    constructor(options:any[]) {
+        this.options = options;
     }
 }
