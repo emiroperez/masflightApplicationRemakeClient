@@ -12,7 +12,9 @@ import { delay } from 'rxjs/operators';
 })
 export class MsfSortingCheckboxesComponent implements OnInit {
   @Input("argument") public argument: Arguments;
-  
+
+  @Input("currentOptionId")
+  currentOptionId: number;
   selected: any[] = [];
   all = {"checked":false};
 
@@ -41,7 +43,7 @@ export class MsfSortingCheckboxesComponent implements OnInit {
   }
   
   getRecords(search, handlerSuccess){
-      let url = this.argument.url + "?optionId="+ this.globals.currentOption.id;
+      let url = this.argument.url + "?optionId="+ this.currentOptionId;
       this.http.get(this,url,handlerSuccess,this.handlerError, null);  
   }
   
