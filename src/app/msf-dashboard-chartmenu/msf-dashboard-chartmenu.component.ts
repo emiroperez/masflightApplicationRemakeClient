@@ -222,10 +222,10 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   loadChartData(handlerSuccess, handlerError) {
     this.globals.isLoading = true;
     let urlBase = this.currentOptionUrl + "?" + this.getParameters ();
+    urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
     console.log(urlBase);
     let urlArg = encodeURIComponent(urlBase);
     let url = this.service.host + "/getChartData?url=" + urlArg + "&variable=" + this.variable.id + "&xaxis=" + this.xaxis.id + "&valueColunm=" + this.valueColunm.id + "&function=" + this.function.id;
-    url += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
     this.http.get(this, url, handlerSuccess, handlerError, null);
   }
 
