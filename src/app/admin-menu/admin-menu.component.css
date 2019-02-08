@@ -1,7 +1,6 @@
 .card-principal {
-    border-radius: 10px !important;
-    background: rgba(30, 30, 30, 0.5);
-    width: 70%;
+    background: rgb(30, 30, 30);
+    width: 100%;
 }
 
 .standard-input-text {
@@ -14,7 +13,7 @@ div.mat-select-panel .mat-primary .ng-star-inserted .mat-select-panel-done-anima
 }
 
 .is-active {
-    background-color: #4f4f4f;
+    background-color: #182128;
 }
 
 .is-inactive {
@@ -22,7 +21,7 @@ div.mat-select-panel .mat-primary .ng-star-inserted .mat-select-panel-done-anima
 }
 
 .category-active {
-    background-color: #79797a !important;
+    background-color: 3d3d3d !important;
 }
 
 .category-inactive {
@@ -31,7 +30,7 @@ div.mat-select-panel .mat-primary .ng-star-inserted .mat-select-panel-done-anima
 
 .dialog-category-arguments-container {
     display: flex;
-    flex-wrap: wrap;    
+    flex-wrap: wrap;
     max-height: 300px;
     overflow-y: auto;
 }
@@ -42,35 +41,38 @@ div.mat-select-panel .mat-primary .ng-star-inserted .mat-select-panel-done-anima
     width: 130px;
     cursor: pointer;
     text-align: center;
-    -moz-box-shadow:    inset 0 0 5px #00000038;
+    -moz-box-shadow: inset 0 0 5px #00000038;
     -webkit-box-shadow: inset 0 0 5px #00000038;
-    box-shadow:         inset 0 0 5px #00000038;
+    box-shadow: inset 0 0 5px #00000038;
     border-radius: 5px;
 }
 
 .dialog-item:hover {
-    background-color: #4f4f4f;
+    background-color: #182128;
 }
 
 .text-item-category-argument {
-    border-bottom: 2px solid #01abec;    
-    margin-top: 3px; 
+    margin-top: 3px;
     height: 30px;
     color: white;
 }
 
-.text-item-category-argument::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+.text-item-category-argument::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
     color: white;
-    opacity: 1; /* Firefox */
-  }
-  
-  .text-item-category-argument:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    opacity: 1;
+    /* Firefox */
+}
+
+.text-item-category-argument:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
     color: white;
-  }
-  
-  .text-item-category-argument::-ms-input-placeholder { /* Microsoft Edge */
+}
+
+.text-item-category-argument::-ms-input-placeholder {
+    /* Microsoft Edge */
     color: white;
-  }
+}
 
 .img-item-category-argument {
     height: 33px;
@@ -82,7 +84,7 @@ div.mat-select-panel .mat-primary .ng-star-inserted .mat-select-panel-done-anima
     align-items: center;
     position: relative;
     cursor: pointer;
-    padding: 1%;    
+    padding: 1%;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     border-top-left-radius: 5px;
@@ -99,7 +101,7 @@ div.mat-select-panel .mat-primary .ng-star-inserted .mat-select-panel-done-anima
     margin: 0 14px;
 }
 
-table.argument-table > thead > tr {
+table.argument-table>thead>tr {
     height: 30px !important;
 }
 
@@ -110,24 +112,24 @@ table.argument-table > thead > tr {
     background-color: transparent;
     outline-color: #3d3d3d;
     color: #d1d2d2;
-    font: 500 13px/32px Roboto,"Helvetica Neue",sans-serif;
+    font: 500 13px/32px Roboto, "Helvetica Neue", sans-serif;
 }
 
 .select-table {
-    width: 100%; 
-    background-color: #3d3d3d; 
+    width: 100%;
+    background-color: #3d3d3d;
     border-color: #3d3d3d;
     color: #d1d2d2;
     outline-color: #3d3d3d;
-    font: 500 13px/32px Roboto,"Helvetica Neue",sans-serif;
+    font: 500 13px/32px Roboto, "Helvetica Neue", sans-serif;
 }
 
-table.argument-table {    
+table.argument-table {
     background-color: #3d3d3d;
     text-align: left;
     border-collapse: collapse;
     color: #000000;
-    font: 500 8px/20px Roboto,"Helvetica Neue",sans-serif;
+    font: 500 8px/20px Roboto, "Helvetica Neue", sans-serif;
 }
 
 table.argument-table td {
@@ -138,32 +140,32 @@ table.argument-table td {
 table.argument-table tbody td {
     font-size: 13px;
 }
-  
+
 table.argument-table thead {
-    background-color: #333333;    
+    background-color: #333333;
 }
-  
+
 table.argument-table thead th {
     font-size: 15px;
-    font-weight: bold;    
+    font-weight: bold;
     color: white;
     padding: 10px;
-    font: 500 15px/32px Roboto,"Helvetica Neue",sans-serif;
+    font: 500 15px/32px Roboto, "Helvetica Neue", sans-serif;
 }
-  
+
 table.argument-table thead th:first-child {
     border-left: none;
 }
-  
+
 table.argument-table tfoot td {
     font-size: 14px;
 }
-  
+
 table.argument-table tfoot .links {
     text-align: right;
 }
-  
-table.argument-table tfoot .links a{
+
+table.argument-table tfoot .links a {
     display: inline-block;
     background: #1C6EA4;
     color: #FFFFFF;
@@ -174,23 +176,28 @@ table.argument-table tfoot .links a{
 .arguments-container {
     margin-bottom: 10px;
     padding: 10px;
-    -moz-box-shadow:    inset 0 0 5px #00000038;
+    -moz-box-shadow: inset 0 0 5px #00000038;
     -webkit-box-shadow: inset 0 0 5px #00000038;
-    box-shadow:         inset 0 0 5px #00000038;
+    box-shadow: inset 0 0 5px #00000038;
     border-radius: 0px;
 }
 
 .arguments-child {
-    width: 250px; 
+    width: 250px;
     margin: auto;
 }
 
 .arguments-title {
     text-align: center;
-    font: 500 15px/32px Roboto,"Helvetica Neue",sans-serif;
+    font: 500 15px/32px Roboto, "Helvetica Neue", sans-serif;
 }
 
-.mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label, .msf-price-fare .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus+.mat-form-field-label-wrapper .mat-form-field-label {
+.mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label,
+.msf-price-fare .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus+.mat-form-field-label-wrapper .mat-form-field-label {
     -webkit-transform: translateY(-1.239125em) scale(.75) perspective(100px) translateZ(.001px) !important;
     transform: translateY(-1.239125em) scale(.75) perspective(100px) translateZ(.001px) !important;
+}
+
+h2 {
+    font-weight: 500;
 }

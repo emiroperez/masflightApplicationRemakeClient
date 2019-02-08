@@ -137,6 +137,7 @@ import { MsfStopsComponent } from './msf-stops/msf-stops.component';
 import { MsfCircuityTypeComponent } from './msf-circuity-type/msf-circuity-type.component';
 import { MsfCircuityComponent } from './msf-circuity/msf-circuity.component';
 import { MsfSingleAirportComponent } from './msf-single-airport/msf-single-airport.component';
+import { MsfSummaryRevenueBuildsComponent } from './msf-summary-revenue-builds/msf-summary-revenue-builds.component';
 
 @NgModule({
   declarations: [
@@ -255,7 +256,8 @@ import { MsfSingleAirportComponent } from './msf-single-airport/msf-single-airpo
     MsfStopsComponent,
     MsfCircuityTypeComponent,
     MsfCircuityComponent,
-    MsfSingleAirportComponent
+    MsfSingleAirportComponent,
+    MsfSummaryRevenueBuildsComponent
   ],
   imports: [
     BrowserModule,

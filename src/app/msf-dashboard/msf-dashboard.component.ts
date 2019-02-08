@@ -25,8 +25,8 @@ export class MsfDashboardComponent implements OnInit {
   {
     this.globals.isLoading = true;
 
-    //let url = "/getDataOptions?applicationId=" + applicationId;
-    let url = "http://localhost:8887/getDataOptions?applicationId=" + applicationId;
+    let url = "/getDataOptions?applicationId=" + applicationId;
+    // let url = "http://localhost:8887/getDataOptions?applicationId=" + applicationId;
     this.http.get (this, url, this.addFilterOptions, this.handlerError, null);
   }
 

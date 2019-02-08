@@ -1,15 +1,14 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Arguments } from '../model/Arguments';
-import { ApiClient } from '../api/api-client';
 import { Globals } from '../globals/Globals';
+import { ApiClient } from '../api/api-client';
 
 @Component({
-  selector: 'app-msf-summary',
-  templateUrl: './msf-summary.component.html',
-  styleUrls: ['./msf-summary.component.css']
+  selector: 'app-msf-summary-revenue-builds',
+  templateUrl: './msf-summary-revenue-builds.component.html',
+  styleUrls: ['./msf-summary-revenue-builds.component.css']
 })
-export class MsfSummaryComponent implements OnInit {
-
+export class MsfSummaryRevenueBuildsComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
  
@@ -27,8 +26,8 @@ export class MsfSummaryComponent implements OnInit {
 
   ngOnInit() { 
     this.argument.value1 = [
-      {id: 'ORIGIN', name: 'Origin',column:'Origin'},
-      {id: 'DESTINATION', name: 'Destination', column: 'Destination'}];
+      {id: 'YEAR', name: 'Year', column:'Year'},
+      {id: 'MONTH', name: 'Month', column:'Month'},
+      {id: 'AIRCRAFT', name: 'Aircraft Type',column:'Aircraft Type'}];
   }
-
 }

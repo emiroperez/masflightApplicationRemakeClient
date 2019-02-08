@@ -198,7 +198,11 @@ export class MsfTableComponent implements OnInit {
               for (var key in array) {
                 var obj = array[key];
                 if( obj != null){
-                  _this.globals.totalRecord = 1;
+                  let keys = Object.keys(response);
+                  let mainElement = _this.getMainKey(keys,response);
+                  if(mainElement!=null){
+                    _this.globals.totalRecord = 1;
+                  }
                 }
               }
             }

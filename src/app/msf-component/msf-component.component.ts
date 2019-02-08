@@ -274,4 +274,7 @@ export class MsfComponentComponent implements OnInit {
   isSingleAirport(argument: Arguments){
     return ComponentType.singleAirport == argument.type;
   }
+  isSummaryRevenueBuilds(argument: Arguments){
+    return ComponentType.summaryRevenueBuilds == argument.type;
+  }
 }
