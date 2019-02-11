@@ -57,7 +57,7 @@ export class ApplicationService {
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
     console.log(urlBase);
     let urlArg = encodeURIComponent(urlBase);
-    let url = this.host + "/getChartData?url=" + urlArg + "&variable=" + _this.variable.id + "&xaxis=" + _this.xaxis.id + "&valueColunm=" + _this.valueColumn.id + "&function=" + _this.function.id;
+    let url = this.host + "/getChartData?url=" + urlArg + "&variable=" + _this.variable.id + "&xaxis=" + _this.xaxis.id + "&valueColumn=" + _this.valueColumn.id + "&function=" + _this.function.id;
     this.http.get(_this, url, handlerSuccess, handlerError, null);
   }
 
@@ -186,7 +186,7 @@ export class ApplicationService {
     let params = this.utils.getParameters(_this.globals.currentOption);
     params += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999";
     console.log(params);
-    let url = this.host + "/getChartDataUsageStatistics?variable=" + _this.variable.id + "&xaxis=" + _this.xaxis.id + "&valueColunm=" + _this.valueColumn.id + "&function=" + _this.function.id + "&" +params+ "&optionId=" + _this.globals.currentOption.id;;
+    let url = this.host + "/getChartDataUsageStatistics?variable=" + _this.variable.id + "&xaxis=" + _this.xaxis.id + "&valueColumn=" + _this.valueColumn.id + "&function=" + _this.function.id + "&" +params+ "&optionId=" + _this.globals.currentOption.id;;
     this.http.get(_this, url, handlerSuccess, handlerError, null);
   }
 

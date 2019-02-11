@@ -77,7 +77,7 @@ export class MsfDashboardComponent implements OnInit {
     do
     {
       // insert the data options for each chart
-      dashboardRows.push (new MsfDashboardChartValues (this.options));
+      dashboardRows.push (new MsfDashboardChartValues (this.options, "New Chart"));
     } while (--numCharts);
 
     this.dashboardColumns.push (dashboardRows);

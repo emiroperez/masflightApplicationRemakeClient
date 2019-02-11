@@ -1908,7 +1908,7 @@ mat-tab-group {
   padding: 10px;
   background-color: #424242;
   overflow-y: visible;
-  min-height: 266px;
+  min-height: 294px;
 }
 .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-row {
   display: flex;
@@ -1916,6 +1916,7 @@ mat-tab-group {
   width: 100%;
   padding-left: 4px;
   font-size: 10px;
+  align-items: center;
 }
 .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-variable-buttons {
   display: flex;
@@ -1961,7 +1962,7 @@ mat-tab-group {
   padding: 10px;
   background-color: #222222;
   overflow-y: visible;
-  min-height: 266px;
+  min-height: 294px;
 }
 .msf-dashboard-chartmenu-container-chart .msf-dashboard-chartmenu-title {
   font-size: 10px;
@@ -2334,6 +2335,10 @@ mat-dialog-container {
 
 .msf-width-20 {
   width: 20%;
+}
+
+.msf-width-90 {
+  width: 90%;
 }
 
 g g g text {

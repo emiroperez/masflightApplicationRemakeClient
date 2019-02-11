@@ -1,9 +1,15 @@
 <div class="msf-dashboard-chartmenu-container" *ngIf="!values.displayChart">
   <div class="msf-dashboard-chartmenu-sub-container-column">
     <div class="msf-dashboard-chartmenu-sub-container-row">
-      <div class="msf-dashboard-chartmenu-sub-title">Select Data From:</div>
+      <mat-form-field class="msf-width-90">
+        <input matInput autocomplete="off" type="text" placeholder="Chart Name" [(ngModel)]="values.chartName"/>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="msf-dashboard-chartmenu-sub-container-column">
+    <div class="msf-dashboard-chartmenu-sub-container-row">
       <mat-form-field class="msf-full-width">
-        <mat-select [(ngModel)]="values.currentOption" (selectionChange)="loadChartFilterValues($event.value)">
+        <mat-select placeholder="Select Data From" [(ngModel)]="values.currentOption" (selectionChange)="loadChartFilterValues($event.value)">
           <mat-option *ngFor="let option of values.options" [value]="option">
             {{option.name}}
           </mat-option>
@@ -11,9 +17,8 @@
       </mat-form-field>
     </div>
     <div class="msf-dashboard-chartmenu-sub-container-row">
-      <div class="msf-dashboard-chartmenu-sub-title">Chart Type:</div>
       <mat-form-field class="msf-full-width">
-        <mat-select [(ngModel)]="values.currentChartType">
+        <mat-select placeholder="Chart Type" [(ngModel)]="values.currentChartType">
           <mat-option *ngFor="let chartType of chartTypes" [value]="chartType">
             {{chartType.name}}
           </mat-option>
@@ -34,9 +39,9 @@
           <mat-icon class="msf-dashboard-chart-icon">bar_chart</mat-icon>
         </div>
         <div class="msf-dashboard-chart-op-container">
-          <mat-form-field class="msf-full-width">
-            <mat-select [formControl]="variableCtrl" placeholder="Analysis by" #variableSelect [(ngModel)]="values.variable">
-              <ngx-mat-select-search [formControl]="variableFilterCtrl"  placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>
+          <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+            <mat-select formControlName="variableCtrl" placeholder="Analysis by" #variableSelect [(ngModel)]="values.variable" (selectionChange)="checkChartFilters()">
+              <ngx-mat-select-search [formControl]="variableFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
               <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
                 {{variable.name}}
               </mat-option>
@@ -49,9 +54,9 @@
           <mat-icon class="msf-dashboard-chart-icon">multiline_chart</mat-icon>
         </div>
         <div class="msf-dashboard-chart-op-container">
-          <mat-form-field class="msf-full-width">
-            <mat-select [formControl]="xaxisCtrl" placeholder="x - Axis" #xaxisSelect [(ngModel)]="values.xaxis">
-              <ngx-mat-select-search [formControl]="xaxisFilterCtrl" placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>
+          <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+            <mat-select formControlName="xaxisCtrl" placeholder="x - Axis" #xaxisSelect [(ngModel)]="values.xaxis" (selectionChange)="checkChartFilters()">
+              <ngx-mat-select-search [formControl]="xaxisFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
               <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
                 {{variable.name}}
               </mat-option>
@@ -64,9 +69,9 @@
           <mat-icon class="msf-dashboard-chart-icon">show_chart</mat-icon>
         </div>
         <div class="msf-dashboard-chart-op-container">
-          <mat-form-field class="msf-dashboard-field-valuectrl">
-            <mat-select [formControl]="valueCtrl" placeholder="Values" #valueSelect [(ngModel)]="values.valueColumn">
-              <ngx-mat-select-search [formControl]="valueFilterCtrl"  placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>
+          <mat-form-field [formGroup]="chartForm" class="msf-dashboard-field-valuectrl">
+            <mat-select formControlName="valueCtrl" placeholder="Values" #valueSelect [(ngModel)]="values.valueColumn" (selectionChange)="checkChartFilters()">
+              <ngx-mat-select-search [formControl]="valueFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
               <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
                 {{variable.name}}
               </mat-option>
@@ -82,9 +87,9 @@
         </div>
       </div>
       <div class="msf-dashboard-chartmenu-sub-container-column">
-        <button mat-flat-button (click)="loadData()">Generate</button>
+        <button [disabled]="!generateBtnEnabled" mat-flat-button (click)="loadData()">Generate</button>
         <div class="msf-dashboard-chartmenu-control-variable-button">
-          <button mat-mini-fab (click)="goToControlVariables()" color="primary">
+          <button [disabled]="!variableCtrlBtnEnabled" mat-mini-fab (click)="goToControlVariables()" color="primary">
             <mat-icon aria-label="Control Variables">more_vert</mat-icon>
           </button>
         </div>
@@ -94,13 +99,13 @@
 </div>
 <!-- ngIf doesn't work with AmCharts -->
 <div class="{{values.displayChart ? 'msf-dashboard-chartmenu-container-chart' : 'msf-dashboard-chartmenu-container-invisible'}}">
-  <div class="msf-dashboard-chartmenu-title" *ngIf="values.displayChart">{{values.currentOption.name}}</div>
+  <div class="msf-dashboard-chartmenu-title" *ngIf="values.displayChart">{{values.chartName}}</div>
   <div class="msf-dashboard-chartmenu-sub-container-column">
     <div class="msf-dashboard-chartmenu-config-button">
       <button mat-mini-fab (click)="goToChartConfiguration()" color="primary">
         <mat-icon aria-label="Edit Configuration">menu</mat-icon>
       </button>
     </div>
-    <div id="msf-dashboard-chart-display-{{columnPos}}-{{rowPos}}" [style.width.%]="96" [style.height.px]="253"></div>
+    <div id="msf-dashboard-chart-display-{{columnPos}}-{{rowPos}}" [style.width.%]="96" [style.height.px]="281"></div>
   </div>
 </div>
