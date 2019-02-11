@@ -181,6 +181,7 @@ export class MsfTableComponent implements OnInit {
   }
 
   handlerSuccess(_this,data, tab){
+    _this.globals.totalRecord=0;
     _this.setGroupingArgument();
     _this.globals.endTimestamp = new Date();
     let response = data.Response;

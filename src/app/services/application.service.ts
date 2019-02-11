@@ -13,11 +13,10 @@ export class ApplicationService {
   utils: Utils;
 
   host = "http://localhost:8887";
-  // host = "http://staging.masflight.aspsols.com:8887";
-  //host = "";
+  // host = "";
 
-//   host1 = "http://localhost:8886";
-  host1 = "http://69.64.45.220:8886"; 
+  host1 = "http://localhost:8886";
+  // host1 = "http://69.64.45.220:8886"; 
 
   constructor(private http: ApiClient) {
     this.utils = new Utils();
@@ -123,8 +122,8 @@ export class ApplicationService {
 
   loadPlanOptions(_this, data, handlerSuccess, handlerError) {
     _this.globals.isLoading = true;
-    //let url = this.host + "/getOptionsPlan?plan="+data+"&application="+_this.globals.currentApplication.id;
-    let url = this.host + "/getOptionsPlan?plan="+data+"&application=4";
+    let url = this.host + "/getOptionsPlan?plan="+data+"&application="+_this.globals.currentApplication.id;
+    // let url = this.host + "/getOptionsPlan?plan="+data+"&application=4";
     this.http.get(_this, url, handlerSuccess, handlerError, null);
   }
 

@@ -18,22 +18,22 @@ export class MsfSortingCheckboxesComponent implements OnInit {
   selected: any[] = [];
   all = {"checked":false};
 
-  response:any[] = [];
+  data:any[] = [];
 
-  data: any[] = [
-    {columnName: 'Year', columnLabel: 'Year',"checked":false, "order":"desc"},
-    {columnName: 'Month', columnLabel: 'Month', "checked":false, "order":"desc"},
-    {columnName: 'Date', columnLabel: 'Day' ,"checked":false, "order":"desc"},
-    {columnName: 'Hour', columnLabel: 'Hour', "checked":false, "order":"desc"},
-    {columnName: 'EspecificEquipmentType',columnLabel: 'Specific Equipment Type', "checked":false, "order":"desc"},
-    {columnName: 'GeneralEquipmentType',columnLabel: 'General Equipment Type',"checked":false, "order":"desc"},
-    {columnName: 'OperatingAirline', columnLabel: 'Operating Airline',"checked":false, "order":"desc"},                          
-    {columnName: 'Origin', columnLabel: 'Origin Airport',"checked":false, "order":"desc"},
-    {columnName: 'Destination', columnLabel: 'Destination Airport',"checked":false, "order":"desc"},
-    {columnName: 'FlightNumber', columnLabel: 'Flight Number',"checked":false, "order":"desc"},
-    {columnName: 'Route', columnLabel: 'Route',"checked":false, "order":"desc"}
+  // data: any[] = [
+  //   {columnName: 'Year', columnLabel: 'Year',"checked":false, "order":"desc"},
+  //   {columnName: 'Month', columnLabel: 'Month', "checked":false, "order":"desc"},
+  //   {columnName: 'Date', columnLabel: 'Day' ,"checked":false, "order":"desc"},
+  //   {columnName: 'Hour', columnLabel: 'Hour', "checked":false, "order":"desc"},
+  //   {columnName: 'EspecificEquipmentType',columnLabel: 'Specific Equipment Type', "checked":false, "order":"desc"},
+  //   {columnName: 'GeneralEquipmentType',columnLabel: 'General Equipment Type',"checked":false, "order":"desc"},
+  //   {columnName: 'OperatingAirline', columnLabel: 'Operating Airline',"checked":false, "order":"desc"},                          
+  //   {columnName: 'Origin', columnLabel: 'Origin Airport',"checked":false, "order":"desc"},
+  //   {columnName: 'Destination', columnLabel: 'Destination Airport',"checked":false, "order":"desc"},
+  //   {columnName: 'FlightNumber', columnLabel: 'Flight Number',"checked":false, "order":"desc"},
+  //   {columnName: 'Route', columnLabel: 'Route',"checked":false, "order":"desc"}
 
-  ];
+  // ];
 
   constructor(public globals: Globals, private http: ApiClient) { }
 
@@ -48,8 +48,9 @@ export class MsfSortingCheckboxesComponent implements OnInit {
   }
   
   handlerSuccess(_this,data, tab){   
-    _this.response = data;     
-    _this.formatData();    
+    _this.data = data;    
+    _this.globals.isLoading = false; 
+    // _this.formatData();    
   }
   
   handlerError(_this,result){
@@ -57,11 +58,11 @@ export class MsfSortingCheckboxesComponent implements OnInit {
     console.log(result);
   }
 
-    formatData(){
-    this.data = this.data.concat(this.response);
-    console.log(this.data)
-    this.globals.isLoading = false;
-  }
+  //   formatData(){
+  //   this.data = this.data.concat(this.response);
+  //   console.log(this.data)
+  //   this.globals.isLoading = false;
+  // }
 
   checkBoxChange(checkBox){
     if(checkBox.checked){

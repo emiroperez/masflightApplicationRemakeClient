@@ -42,6 +42,8 @@ export class MsfRegionComponent implements OnInit {
   constructor(public globals: Globals) { }
 
   ngOnInit() { 
+    this.all.checked = true;
+    this.checkBoxAllChange();
   }
 
   checkBoxChange(checkBox){
