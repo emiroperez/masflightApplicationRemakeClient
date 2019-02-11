@@ -64,11 +64,18 @@
           <mat-icon class="msf-dashboard-chart-icon">show_chart</mat-icon>
         </div>
         <div class="msf-dashboard-chart-op-container">
-          <mat-form-field class="msf-full-width">
+          <mat-form-field class="msf-dashboard-field-valuectrl">
             <mat-select [formControl]="valueCtrl" placeholder="Values" #valueSelect [(ngModel)]="valueColunm">
               <ngx-mat-select-search [formControl]="valueFilterCtrl"  placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>
               <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
                 {{variable.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="msf-dashboard-field-function">
+            <mat-select placeholder="Function" [(ngModel)]="function">
+              <mat-option *ngFor="let fun of functions" [value]="fun">
+                {{fun.name}}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -86,9 +93,6 @@
   </div>
 </div>
 <div class="msf-dashboard-chartmenu-container" *ngIf="isControlVariablesDisplayed()">
-
-
-
   <div class="msf-dashboard-chartmenu-variable-buttons">
     <button mat-flat-button (click)="loadData()">Generate</button>
     <button mat-flat-button (click)="goToChartConfiguration()">Back to Chart Configuration</button>

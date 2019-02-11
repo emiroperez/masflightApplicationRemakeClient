@@ -163,7 +163,6 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.function = {id:'avg',name:'Average'};
     this.currentChartType = this.chartTypes[0];
   }
 
@@ -270,8 +269,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   getChartFilterValues(id, handlerSuccess)
   {
-    let url = "/getMetaByOptionId?optionId=" + id;
-    //let url = "http://localhost:8887/getMetaByOptionId?optionId=" + id;
+    //let url = "/getMetaByOptionId?optionId=" + id;
+    let url = "http://localhost:8887/getMetaByOptionId?optionId=" + id;
     this.http.get(this, url, handlerSuccess, this.handlerError, null);  
   }
 
