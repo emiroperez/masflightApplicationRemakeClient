@@ -14,6 +14,7 @@
                 [hideSelected]="false"
                 bindLabel="name"
                 (search)="onSearch($event)" 
+                (focus)="onFocus()" 
                 [(ngModel)]="argument.value1">
             </ng-select>          
             </div>

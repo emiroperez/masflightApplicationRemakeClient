@@ -240,7 +240,7 @@ export class Utils{
                     i++;
                 }
                 return valueAux;
-        }else if (type == ComponentType.datePeriod){
+        }else if (type == ComponentType.datePeriod || type == ComponentType.datePeriodRevenue){
               if(value!=null){
                 if(value.id!=null){
                     return value.id;

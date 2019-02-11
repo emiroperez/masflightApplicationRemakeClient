@@ -1,0 +1,28 @@
+<div class="center">
+  <div class="msf-component-airport-title">{{argument.title}}</div>
+</div> 
+<div class="msf-component-date-input-container">  
+      <div class="msf-component-airport-sub-title" style="margin-bottom: -8px;">{{argument.label1}}</div>   
+      <mat-form-field class="msf-full-width">
+          <input matInput [min]="globals.minDate" [max]="globals.maxDate" [formControl]="date" [matDatepicker]="picker3" autocomplete="off" 
+          class=" msf-full-width msf-menu-arg-select">
+          <mat-datepicker-toggle matSuffix [for]="picker3">            
+          </mat-datepicker-toggle>
+          <mat-datepicker #picker3
+          startView="multi-year"
+          (yearSelected)="chosenYearHandler($event,picker3)"></mat-datepicker>
+      </mat-form-field>
+</div>
+<div class="msf-component-date-input-container">  
+  <div class="msf-component-airport-sub-title">{{argument.label2}}</div>         
+      <ng-select
+          [items]="quarters"
+          [multiple]="false"
+          [loading]="loading"
+          loadingText="Loading..."
+          [closeOnSelect]="true"
+          [hideSelected]="false"
+          bindLabel="name"
+          [(ngModel)]="argument.value2">
+      </ng-select> 
+</div>         

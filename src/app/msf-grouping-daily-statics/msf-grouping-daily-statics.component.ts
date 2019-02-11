@@ -18,6 +18,7 @@ export class MsfGroupingDailyStaticsComponent implements OnInit {
 
 
   ngOnInit() { 
+    this.argument.value1= [{id: 'HOUR', name: 'Hour', column: 'Hour'}];
   }
 
 }

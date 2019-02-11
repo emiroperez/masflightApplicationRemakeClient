@@ -36,11 +36,16 @@ export class MsfAircraftTypeComponent implements OnInit {
    constructor(private http: ApiClient, public globals: Globals) { }
 
    ngOnInit() { 
-    this.getRecords(null, this.handlerSuccess);
+    // this.getRecords(null, this.handlerSuccess);
   }
 
   getRecords(search, handlerSuccess){
     let url = this.argument.url + "?search="+ (search != null?search:'');
+    if(this.globals.currentAirline!=null){
+      url = "http://localhost:8887/getAircraftTypes";
+      // url = "/getAircraftTypes?search=";
+      url += "?search="+ (search != null?search:'') + "&airlineIata=" + this.globals.currentAirline.iata;
+    }
     this.http.get(this,url,handlerSuccess,this.handlerError, null);  
   }
 
@@ -55,9 +60,13 @@ export class MsfAircraftTypeComponent implements OnInit {
   }
 
   onSearch($event: any){
-    if($event.length>=2){
       this.loading = true;
       this.getRecords($event, this.handlerSuccess);
-    }
   }
+
+  onFocus(){
+    this.loading = true;
+    this.getRecords(null, this.handlerSuccess);
+}
+  
 }

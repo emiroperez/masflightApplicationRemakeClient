@@ -277,4 +277,7 @@ export class MsfComponentComponent implements OnInit {
   isSummaryRevenueBuilds(argument: Arguments){
     return ComponentType.summaryRevenueBuilds == argument.type;
   }
+  isDatePeriodRevenue(argument: Arguments){
+    return ComponentType.datePeriodRevenue == argument.type;
+  }
 }

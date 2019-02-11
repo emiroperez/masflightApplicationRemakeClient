@@ -6,6 +6,7 @@ import { MatSelect } from '@angular/material';
 import { takeUntil, take, delay } from 'rxjs/operators';
 import { Airline } from '../model/Airline';
 import { ApiClient } from '../api/api-client';
+import { Globals } from '../globals/Globals';
 
 @Component({
   selector: 'app-msf-single-airline',
@@ -18,7 +19,7 @@ export class MsfSingleAirlineComponent implements OnInit {
   @Input("argument") public argument: Arguments;
 
   loading = false;
-   constructor(private http: ApiClient) { }
+   constructor(private http: ApiClient, private globals: Globals) { }
  
    ngOnInit() { 
     this.getRecords(null, this.handlerSuccess);
@@ -44,6 +45,15 @@ export class MsfSingleAirlineComponent implements OnInit {
       this.loading = true;
       this.getRecords($event, this.handlerSuccess);
     }
+  }
+
+  onFocus(){
+      this.loading = true;
+      this.getRecords(null, this.handlerSuccess);
+  }
+
+  airlineChange(){
+  this.globals.currentAirline = this.argument.value1;
   }
    
 
