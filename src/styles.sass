@@ -1687,13 +1687,13 @@ mat-tab-group
     padding: 10px
     background-color: #424242
     overflow-y: visible
-    min-height: 294px
+    min-height: 302px
     .msf-dashboard-chartmenu-sub-container-row
         display: flex
         flex-direction: column
         width: 100%
         padding-left: 4px
-        font-size: 10px
+        font-size: 1wpx
         align-items: center
     .msf-dashboard-chartmenu-variable-buttons
         display: flex
@@ -1701,13 +1701,13 @@ mat-tab-group
         width: 100%
         padding-right: 5px
         padding-top: 10px
-        font-size: 10px
+        font-size: 1wpx
     .msf-dashboard-chartmenu-sub-container-column
         display: flex
         flex-direction: row
         width: 100%
         padding-right: 5px
-        font-size: 10px
+        font-size: 12px
         .msf-dashboard-addmenu-icon-item
             align-items: center
             padding-bottom: 5px
@@ -1719,10 +1719,15 @@ mat-tab-group
                 font-size: 22px
             .msf-dashboard-chartmenu-item-text
                 vertical-align: middle
+    .msf-dashboard-chartmenu-sub-container-column-reverse
+        display: flex
+        flex-direction: row-reverse
+        width: 100%
+        padding-right: 5px
+        font-size: 12px
         .msf-dashboard-chartmenu-control-variable-button
             display: flex
-            align-items: flex-end
-            width: 99.5%
+            width: 50px
             flex-direction: column
 
 .msf-dashboard-chartmenu-container-invisible
@@ -1732,16 +1737,16 @@ mat-tab-group
     padding: 10px
     background-color: #222222
     overflow-y: visible
-    min-height: 294px
+    min-height: 302px
     .msf-dashboard-chartmenu-title
-        font-size: 10px
+        font-size: 12px
     .msf-dashboard-chartmenu-sub-container-column
         position: relative
         display: flex
         flex-direction: row
         width: 100%
         padding-right: 5px
-        font-size: 10px
+        font-size: 14px
         .msf-dashboard-chartmenu-config-button
             position: absolute
             display: flex
@@ -1784,15 +1789,10 @@ mat-tab-group
     margin-top: 10px
     text-align: center
 
-.msf-dashboard-chartmenu-sub-title
-    vertical-align: middle
-    font-size: 10px
-    padding-right: 6px
-
 .msf-dashboard-chart-options-container
     width: 100%
     display: flex
-    font-size: 10px
+    font-size: 12px
     flex-direction: column
 
 .msf-dashboard-chart-selector
@@ -1808,7 +1808,6 @@ mat-tab-group
             padding-right: 5px
             font-size: 22px
     .msf-dashboard-chart-op-container
-        padding-top: 10px
         padding-left: 10px
         width: 100%
         .msf-dashboard-field-valuectrl
