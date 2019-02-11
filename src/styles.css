@@ -2058,12 +2058,12 @@ mat-tab-group {
   width: 100%;
 }
 .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-field-valuectrl {
-  width: 48%;
-  padding-right: 2%;
+  width: 49.5%;
+  padding-right: 0.5%;
 }
 .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-field-function {
-  width: 48%;
-  padding-left: 2%;
+  width: 49.5%;
+  padding-left: 0.5%;
 }
 
 .msf-dashboard-menu-component, .msf-dashboard-menu-component-active {

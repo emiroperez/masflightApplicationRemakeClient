@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Globals } from '../globals/Globals';
 import { ApiClient } from '../api/api-client';
-import { MsfDashboardChartValues } from '../msf-dashboard-chartmenu/msf-dashboard-chartvalues';
 
 @Component({
   selector: 'app-msf-dashboard',
@@ -9,8 +8,8 @@ import { MsfDashboardChartValues } from '../msf-dashboard-chartmenu/msf-dashboar
   styleUrls: ['./msf-dashboard.component.css']
 })
 export class MsfDashboardComponent implements OnInit {
-  dashboardColumns: MsfDashboardChartValues[] = [];
-  options:any[] = [];
+  dashboardColumns: any[] = [];
+  options: any[] = [];
 
   displayAddChartMenu: boolean = false;
 
@@ -64,7 +63,7 @@ export class MsfDashboardComponent implements OnInit {
       this.dashboardColumns.splice (column, 1);
   }
 
-  ToggleDiplayAddChartMenu(): void
+  ToggleDisplayAddChartMenu(): void
   {
     this.displayAddChartMenu = !this.displayAddChartMenu;
   }
@@ -79,7 +78,7 @@ export class MsfDashboardComponent implements OnInit {
     do
     {
       // insert the data options for each chart
-      dashboardRows.push (new MsfDashboardChartValues (this.options));
+      dashboardRows.push (this.options);
     } while (--numCharts);
 
     this.dashboardColumns.push (dashboardRows);

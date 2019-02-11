@@ -163,6 +163,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.function = this.functions[0];
     this.currentChartType = this.chartTypes[0];
   }
 
