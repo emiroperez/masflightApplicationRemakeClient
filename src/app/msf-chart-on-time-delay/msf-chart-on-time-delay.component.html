@@ -51,7 +51,7 @@
                 </div>
                 <div class="msf-chart-op-container">
                         <mat-form-field class="msf-field-2-column msf-margin-r-10">
-                            <mat-select [formControl]="valueCtrl"  placeholder="Column" #valueSelect [(ngModel)]="valueColunm">
+                            <mat-select [formControl]="valueCtrl"  placeholder="Column" #valueSelect [(ngModel)]="valueColumn">
                                 <ngx-mat-select-search [formControl]="valueFilterCtrl"  placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>
                                 <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
                                 {{variable.name}}

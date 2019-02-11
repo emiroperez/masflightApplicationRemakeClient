@@ -2,7 +2,7 @@
 export class MsfDashboardChartValues {
     options:any[] = [];
 
-    displayChart: boolean = false;
+    displayChart: boolean;
 
     currentOptionUrl: String;
     currentChartType;
@@ -11,12 +11,24 @@ export class MsfDashboardChartValues {
 
     variable;
     xaxis;
-    valueColunm;
+    valueColumn;
     function;
 
-    constructor(options: any[])
+    constructor(options: any[], displayChart?, currentOptionUrl?, currentChartType?,
+        currentOption?: any, currentOptionCategories?: any, variable?, xaxis?, valueColumn?,
+        func?)
     {
         this.options = options;
-        this.currentChartType = null;
+
+        // optional parameters, only used when querying for the dashboard tables
+        this.displayChart = displayChart;
+        this.currentOptionUrl = currentOptionUrl;
+        this.currentChartType = currentChartType;
+        this.currentOption = currentOption;
+        this.currentOptionCategories = currentOptionCategories;
+        this.variable = variable;
+        this.xaxis = xaxis;
+        this.valueColumn = valueColumn;
+        this.function = func;
     }
 }

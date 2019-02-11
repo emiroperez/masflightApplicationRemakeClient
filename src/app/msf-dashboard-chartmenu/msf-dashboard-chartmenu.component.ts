@@ -221,7 +221,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     console.log(urlBase);
     let urlArg = encodeURIComponent(urlBase);
     let url = this.service.host + "/getChartData?url=" + urlArg + "&variable=" + this.values.variable.id + "&xaxis=" +
-      this.values.xaxis.id + "&valueColunm=" + this.values.valueColunm.id + "&function=" + this.values.function.id;
+      this.values.xaxis.id + "&valueColunm=" + this.values.valueColumn.id + "&function=" + this.values.function.id;
     this.http.get(this, url, handlerSuccess, handlerError, null);
   }
 
@@ -266,9 +266,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   getChartFilterValues(id, handlerSuccess)
   {
-    let url = "/getMetaByOptionId?optionId=" + id;
-    //let url = "http://localhost:8887/getMetaByOptionId?optionId=" + id;
-    this.http.get(this, url, handlerSuccess, this.handlerError, null);  
+    this.service.getChartFilterValues (this, id, handlerSuccess, this.handlerError);
   }
 
   addChartFilterValues(_this, data)
