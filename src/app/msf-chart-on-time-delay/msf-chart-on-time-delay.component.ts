@@ -24,7 +24,7 @@ export class MsfChartOnTimeDelayComponent implements OnInit {
 
   variable;
   xaxis;
-  valueColunm;
+  valueColumn;
   function;
 
   dataSource;

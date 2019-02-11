@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Globals } from '../globals/Globals';
 import { ApiClient } from '../api/api-client';
 import { MsfDashboardChartValues } from '../msf-dashboard-chartmenu/msf-dashboard-chartvalues';
+import { ApplicationService } from '../services/application.service';
 
 @Component({
   selector: 'app-msf-dashboard',
@@ -10,11 +11,11 @@ import { MsfDashboardChartValues } from '../msf-dashboard-chartmenu/msf-dashboar
 })
 export class MsfDashboardComponent implements OnInit {
   dashboardColumns: MsfDashboardChartValues[] = [];
-  options:any[] = [];
+  options: any[] = [];
 
   displayAddChartMenu: boolean = false;
 
-  constructor(public globals: Globals, private http: ApiClient) { }
+  constructor(public globals: Globals, private service: ApplicationService, private http: ApiClient) { }
 
   ngOnInit()
   {
@@ -24,10 +25,7 @@ export class MsfDashboardComponent implements OnInit {
   getDataOptions(applicationId): void
   {
     this.globals.isLoading = true;
-
-    let url = "/getDataOptions?applicationId=" + applicationId;
-    //let url = "http://localhost:8887/getDataOptions?applicationId=" + applicationId;
-    this.http.get (this, url, this.addFilterOptions, this.handlerError, null);
+    this.service.getDataOptions(this, applicationId, this.addFilterOptions, this.handlerError);
   }
 
   // store any data option depending of the application id
@@ -64,7 +62,7 @@ export class MsfDashboardComponent implements OnInit {
       this.dashboardColumns.splice (column, 1);
   }
 
-  ToggleDiplayAddChartMenu(): void
+  ToggleDisplayAddChartMenu(): void
   {
     this.displayAddChartMenu = !this.displayAddChartMenu;
   }

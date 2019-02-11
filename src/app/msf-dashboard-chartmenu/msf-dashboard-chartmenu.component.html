@@ -1,10 +1,10 @@
-<div class="msf-dashboard-chartmenu-container" *ngIf="isChartConfigurationDisplayed()">
+<div class="msf-dashboard-chartmenu-container" *ngIf="!values.displayChart">
   <div class="msf-dashboard-chartmenu-sub-container-column">
     <div class="msf-dashboard-chartmenu-sub-container-row">
       <div class="msf-dashboard-chartmenu-sub-title">Select Data From:</div>
       <mat-form-field class="msf-full-width">
-        <mat-select [(ngModel)]="currentOption" (selectionChange)="loadChartFilterValues($event.value)">
-          <mat-option *ngFor="let option of options" [value]="option">
+        <mat-select [(ngModel)]="values.currentOption" (selectionChange)="loadChartFilterValues($event.value)">
+          <mat-option *ngFor="let option of values.options" [value]="option">
             {{option.name}}
           </mat-option>
         </mat-select>
@@ -13,7 +13,7 @@
     <div class="msf-dashboard-chartmenu-sub-container-row">
       <div class="msf-dashboard-chartmenu-sub-title">Chart Type:</div>
       <mat-form-field class="msf-full-width">
-        <mat-select [(ngModel)]="currentChartType">
+        <mat-select [(ngModel)]="values.currentChartType">
           <mat-option *ngFor="let chartType of chartTypes" [value]="chartType">
             {{chartType.name}}
           </mat-option>
@@ -35,7 +35,7 @@
         </div>
         <div class="msf-dashboard-chart-op-container">
           <mat-form-field class="msf-full-width">
-            <mat-select [formControl]="variableCtrl" placeholder="Analysis by" #variableSelect [(ngModel)]="variable">
+            <mat-select [formControl]="variableCtrl" placeholder="Analysis by" #variableSelect [(ngModel)]="values.variable">
               <ngx-mat-select-search [formControl]="variableFilterCtrl"  placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>
               <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
                 {{variable.name}}
@@ -50,7 +50,7 @@
         </div>
         <div class="msf-dashboard-chart-op-container">
           <mat-form-field class="msf-full-width">
-            <mat-select [formControl]="xaxisCtrl" placeholder="x - Axis" #xaxisSelect [(ngModel)]="xaxis">
+            <mat-select [formControl]="xaxisCtrl" placeholder="x - Axis" #xaxisSelect [(ngModel)]="values.xaxis">
               <ngx-mat-select-search [formControl]="xaxisFilterCtrl" placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>
               <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
                 {{variable.name}}
@@ -64,11 +64,18 @@
           <mat-icon class="msf-dashboard-chart-icon">show_chart</mat-icon>
         </div>
         <div class="msf-dashboard-chart-op-container">
-          <mat-form-field class="msf-full-width">
-            <mat-select [formControl]="valueCtrl" placeholder="Values" #valueSelect [(ngModel)]="valueColunm">
+          <mat-form-field class="msf-dashboard-field-valuectrl">
+            <mat-select [formControl]="valueCtrl" placeholder="Values" #valueSelect [(ngModel)]="values.valueColumn">
               <ngx-mat-select-search [formControl]="valueFilterCtrl"  placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>
               <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
                 {{variable.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="msf-dashboard-field-function">
+            <mat-select placeholder="Function" [(ngModel)]="values.function">
+              <mat-option *ngFor="let fun of functions" [value]="fun">
+                {{fun.name}}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -85,18 +92,9 @@
     </div>
   </div>
 </div>
-<div class="msf-dashboard-chartmenu-container" *ngIf="isControlVariablesDisplayed()">
-
-
-
-  <div class="msf-dashboard-chartmenu-variable-buttons">
-    <button mat-flat-button (click)="loadData()">Generate</button>
-    <button mat-flat-button (click)="goToChartConfiguration()">Back to Chart Configuration</button>
-  </div>
-</div>
 <!-- ngIf doesn't work with AmCharts -->
-<div class="{{isChartDisplayed() ? 'msf-dashboard-chartmenu-container-chart' : 'msf-dashboard-chartmenu-container-invisible'}}">
-  <div class="msf-dashboard-chartmenu-title" *ngIf="isChartDisplayed()">{{currentOption.name}}</div>
+<div class="{{values.displayChart ? 'msf-dashboard-chartmenu-container-chart' : 'msf-dashboard-chartmenu-container-invisible'}}">
+  <div class="msf-dashboard-chartmenu-title" *ngIf="values.displayChart">{{values.currentOption.name}}</div>
   <div class="msf-dashboard-chartmenu-sub-container-column">
     <div class="msf-dashboard-chartmenu-config-button">
       <button mat-mini-fab (click)="goToChartConfiguration()" color="primary">

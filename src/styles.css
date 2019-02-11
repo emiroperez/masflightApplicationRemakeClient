@@ -2057,6 +2057,14 @@ mat-tab-group {
   padding-left: 10px;
   width: 100%;
 }
+.msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-field-valuectrl {
+  width: 49.5%;
+  padding-right: 0.5%;
+}
+.msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-field-function {
+  width: 49.5%;
+  padding-left: 0.5%;
+}
 
 .msf-dashboard-menu-component, .msf-dashboard-menu-component-active {
   display: flex;
