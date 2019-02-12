@@ -22,7 +22,7 @@ export class MsfGroupingOperationsSummaryComponent implements OnInit {
 
 
   ngOnInit() { 
-    this.argument.value1= [{id: 'AUTO', name: 'Auto', column:'Auto'}];
+    this.argument.value1= {id: 'AUTO', name: 'Auto', column:'Auto'};
   }
 
 }
