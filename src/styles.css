@@ -1908,14 +1908,14 @@ mat-tab-group {
   padding: 10px;
   background-color: #424242;
   overflow-y: visible;
-  min-height: 294px;
+  min-height: 302px;
 }
 .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-row {
   display: flex;
   flex-direction: column;
   width: 100%;
   padding-left: 4px;
-  font-size: 10px;
+  font-size: 12px;
   align-items: center;
 }
 .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-variable-buttons {
@@ -1924,14 +1924,14 @@ mat-tab-group {
   width: 100%;
   padding-right: 5px;
   padding-top: 10px;
-  font-size: 10px;
+  font-size: 12px;
 }
 .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-column {
   display: flex;
   flex-direction: row;
   width: 100%;
   padding-right: 5px;
-  font-size: 10px;
+  font-size: 12px;
 }
 .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-column .msf-dashboard-addmenu-icon-item {
   align-items: center;
@@ -1947,10 +1947,16 @@ mat-tab-group {
 .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-column .msf-dashboard-addmenu-icon-item .msf-dashboard-chartmenu-item-text {
   vertical-align: middle;
 }
-.msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-column .msf-dashboard-chartmenu-control-variable-button {
+.msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-column-reverse {
   display: flex;
-  align-items: flex-end;
-  width: 99.5%;
+  flex-direction: row-reverse;
+  width: 100%;
+  padding-right: 5px;
+  font-size: 12px;
+}
+.msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-column-reverse .msf-dashboard-chartmenu-control-variable-button {
+  display: flex;
+  width: 50px;
   flex-direction: column;
 }
 
@@ -1962,10 +1968,10 @@ mat-tab-group {
   padding: 10px;
   background-color: #222222;
   overflow-y: visible;
-  min-height: 294px;
+  min-height: 302px;
 }
 .msf-dashboard-chartmenu-container-chart .msf-dashboard-chartmenu-title {
-  font-size: 10px;
+  font-size: 12px;
 }
 .msf-dashboard-chartmenu-container-chart .msf-dashboard-chartmenu-sub-container-column {
   position: relative;
@@ -1973,7 +1979,7 @@ mat-tab-group {
   flex-direction: row;
   width: 100%;
   padding-right: 5px;
-  font-size: 10px;
+  font-size: 14px;
 }
 .msf-dashboard-chartmenu-container-chart .msf-dashboard-chartmenu-sub-container-column .msf-dashboard-chartmenu-config-button {
   position: absolute;
@@ -2025,16 +2031,10 @@ mat-tab-group {
   text-align: center;
 }
 
-.msf-dashboard-chartmenu-sub-title {
-  vertical-align: middle;
-  font-size: 10px;
-  padding-right: 6px;
-}
-
 .msf-dashboard-chart-options-container {
   width: 100%;
   display: flex;
-  font-size: 10px;
+  font-size: 12px;
   flex-direction: column;
 }
 
@@ -2054,7 +2054,6 @@ mat-tab-group {
   font-size: 22px;
 }
 .msf-dashboard-chart-selector .msf-dashboard-chart-op-container {
-  padding-top: 10px;
   padding-left: 10px;
   width: 100%;
 }

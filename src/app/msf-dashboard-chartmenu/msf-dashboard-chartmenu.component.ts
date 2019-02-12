@@ -98,50 +98,55 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   }
 
   makeOptions(dataProvider) {
-    let parserDate = this.values.xaxis.id.includes('date');
+    let parserDate = this.values.xaxis.id.includes ('date');
 
     return {
-      "type": "serial",
-      "theme": "dark",
-      "legend": {
-          "useGraphSettings": true
+      "type" : "serial",
+      "theme" : "dark",
+      "legend" :
+      {
+        "useGraphSettings" : true
       },
-      "dataProvider": dataProvider.data,
-      "synchronizeGrid":true,
-      "valueAxes": [{
-        "gridColor": "#888888",
-        "gridAlpha": 0.4,
-        "dashLength": 0
+      "dataProvider" : dataProvider.data,
+      "synchronizeGrid" :true,
+      "valueAxes" : [{
+        "gridColor" : "#888888",
+        "gridAlpha" : 0.4,
+        "dashLength" : 0
       }],
-      "graphs": this.buildGraphs(dataProvider.filter),
-      "plotAreaFillAlphas": 1,
-      "plotAreaFillColors":"#222222",
-      "plotAreaBorderColor":"#888888",
-      "plotAreaBorderAlpha":0.4,
-      "depth3D": 0,
-      "angle": 30,
-      "categoryField": this.values.xaxis.id,
-      "categoryAxis": {
-          "gridPosition": "start",
-          "parseDates": parserDate,
-          "minorGridEnabled": true
+      "graphs" : this.buildGraphs (dataProvider.filter),
+      "plotAreaFillAlphas" : 1,
+      "plotAreaFillColors" :"#222222",
+      "plotAreaBorderColor" :"#888888",
+      "plotAreaBorderAlpha" : 0.4,
+      "depth3D" : 0,
+      "angle" : 30,
+      "categoryField" : this.values.xaxis.id,
+      "categoryAxis" :
+      {
+        "gridPosition" : "start",
+        "parseDates" : parserDate,
+        "minorGridEnabled" : true
       },
-      "export": {
-        "enabled": true,
-          "position": "bottom-right"
-       },
-       "chartScrollbar": {
-            "scrollbarHeight":2,
-            "offset":-1,
-            "backgroundAlpha":0.4,
-            "backgroundColor":"#888888",
-            "selectedBackgroundColor":"#67b7dc",
-            "selectedBackgroundAlpha":1
-        },
-        "chartCursor": {
-            "cursorPosition": "mouse"
-        },
-      };
+      "export" :
+      {
+        "enabled" : true,
+        "position" : "bottom-right"
+      },
+      "chartScrollbar" :
+      {
+        "scrollbarHeight" : 2,
+        "offset" : -1,
+        "backgroundAlpha" : 0.4,
+        "backgroundColor" : "#888888",
+        "selectedBackgroundColor" : "#67b7dc",
+        "selectedBackgroundAlpha" : 1
+      },
+      "chartCursor" :
+      {
+        "cursorPosition" : "mouse"
+      }
+    };
   }
 
   zoomChart()
@@ -280,7 +285,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   {
     _this.columns = [];
     for (let columnConfig of data)
-      _this.columns.push ({id: columnConfig.columnName, name: columnConfig.columnLabel});
+      _this.columns.push ( { id: columnConfig.columnName, name: columnConfig.columnLabel } );
 
     _this.searchChange (_this.variableFilterCtrl);
     _this.searchChange (_this.xaxisFilterCtrl);

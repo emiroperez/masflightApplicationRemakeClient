@@ -29,7 +29,7 @@
   <div class="msf-dashboard-chartmenu-sub-container-column">
     <div class="msf-dashboard-addmenu-icon-item">
       <mat-icon class="msf-dashboard-chart-icon" aria-label="filter_list">filter_list</mat-icon>
-      <span class="msf-dashboard-addmenu-item-text">Chart Filters</span>
+      <span class="msf-dashboard-addmenu-item-text">Chart Configuration</span>
     </div>
   </div>
   <div class="msf-dashboard-chartmenu-sub-container-column">
@@ -86,7 +86,7 @@
           </mat-form-field>
         </div>
       </div>
-      <div class="msf-dashboard-chartmenu-sub-container-column">
+      <div class="msf-dashboard-chartmenu-sub-container-column-reverse">
         <button [disabled]="!generateBtnEnabled" mat-flat-button (click)="loadData()">Generate</button>
         <div class="msf-dashboard-chartmenu-control-variable-button">
           <button [disabled]="!variableCtrlBtnEnabled" mat-mini-fab (click)="goToControlVariables()" color="primary">
@@ -106,6 +106,6 @@
         <mat-icon aria-label="Edit Configuration">menu</mat-icon>
       </button>
     </div>
-    <div id="msf-dashboard-chart-display-{{columnPos}}-{{rowPos}}" [style.width.%]="96" [style.height.px]="281"></div>
+    <div id="msf-dashboard-chart-display-{{columnPos}}-{{rowPos}}" style="width: calc(100% - 35px); height: 289px"></div>
   </div>
 </div>
