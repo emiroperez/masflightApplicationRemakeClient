@@ -13,7 +13,6 @@ export class WelcomeService {
   getApplications(_this,successHandler, errorHandler){
     let url = "/getApplications";
     //  let url = "http://localhost:8887/getApplications";
-    //pruebaaaaaaaaa
     _this.globals.isLoading = true;
     this.get(_this,url,successHandler, errorHandler);
   }
