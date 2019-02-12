@@ -1,0 +1,15 @@
+.mat-select-value {
+    color: #2d3436;
+}
+
+.mat-select-arrow {
+    color: #2d3436;
+}
+
+.white {
+    color: white !important;
+}
+
+.selected {
+    background-color: #f2f2f2;
+}

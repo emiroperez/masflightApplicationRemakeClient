@@ -1,15 +1,70 @@
-import { OnInit, Component, Inject, ViewChildren, AfterViewInit, QueryList, ChangeDetectorRef, Renderer2 } from '@angular/core';
+import { OnInit, Component, Inject, ViewChildren, AfterViewInit, QueryList, ChangeDetectorRef, Renderer2, ViewEncapsulation, Output, EventEmitter } from '@angular/core';
 import { ApiClient } from '../api/api-client';
 import { Globals } from '../globals/Globals';
 import { ApplicationService } from '../services/application.service';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatTableDataSource } from '@angular/material';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+
+@Component({
+  selector: 'dialog-edit-output-options-dialog',
+  templateUrl: 'dialog-edit-output-options.html',
+  styleUrls: ['./dialog-output.css'],
+  encapsulation: ViewEncapsulation.None
+})
+
+export class EditOutputOptionsMetaDialog {
+
+  optionSelected : any;
+
+  constructor(
+    public dialogRef: MatDialogRef<EditOutputOptionsMetaDialog>,
+    @Inject(MAT_DIALOG_DATA) public data) { }
+
+
+    displayedColumns = ['columnLabel', 'columnName', 'columnType', 'columnFormat', 'grouping'];
+    dataSource = new MatTableDataSource(this.data);
+
+    addOption() {
+      console.log()
+      this.data.push({
+        id: null,
+        checked: false,
+        order: 'desc',
+        optionId: this.data[0].optionId,
+        columnLabel: '',
+        columnName: '',
+        columnType: 'string',
+        columnFormat: null,
+        grouping: 0,
+        delete: false});
+      this.dataSource = new MatTableDataSource(this.data);
+    }
+
+    onNoClick(): void {
+      this.dialogRef.close();
+    }
+
+    selectRow(row) {
+      this.optionSelected = row;
+  }
+
+  deleteOption() {
+    if (this.optionSelected) {
+      this.optionSelected.delete = true;
+      const index: number = this.data.findIndex(d => d === this.optionSelected);
+      this.data.splice(index, 1);
+      this.dataSource = new MatTableDataSource(this.data);
+    }
+  }
+
+}
 
 @Component({
   selector: 'dialog-overview-example-dialog',
   templateUrl: 'dialog-edit-argument-category.html',
   styleUrls: ['./admin-menu.component.css']
 })
+
 export class EditCategoryArgumentDialog {
 
   itemSelected: any = {};
@@ -122,6 +177,8 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
   categories: any[] = [];
 
+  outputs: any[] = [];
+
   optionSelected: any = {};
 
   categorySelected: any = {};
@@ -159,6 +216,30 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     console.log(result);
   }
 
+  getMeta() {
+    this.service.loadWebservicMeta(this, this.optionSelected, this.handlerSuccessMeta, this.handlerErrorMeta);
+  }
+
+  handlerSuccessMeta(__this, result) {
+      __this.outputs = result;
+      const dialogRef = __this.dialog.open(EditOutputOptionsMetaDialog, {
+      width: '80%',
+      data: __this.outputs
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result != undefined) {
+        __this.outputs = result;
+        __this.saveMeta();
+        console.log("envio");
+        console.log(result);
+      }
+    });
+
+  }
+  handlerErrorMeta(_this, result) {
+    console.log(result);
+  }
   getOptionSelected(option) {
     //this.categoryArguments = [];
     //this.clearSelectedCategoryArguments();
@@ -194,10 +275,9 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     this.categories.forEach(function (itemCategory, indexCategory, arrayCategory) {
       itemCategory.selected = false;
     })
-  }  
+  }
 
   getOptionCategoryArguments() {
-    //this.service.loadOptionCategoryArguments(this, this.optionSelected, this.handlerSuccessOptionCategoryArguments, this.handlerErrorOptionCategoryArguments);
     this.clearSelectedCategoryArguments();
     var categories = this.categories;
     this.optionSelected.menuOptionArgumentsAdmin.forEach(function (itemOptionCategory, indexOptionCategory, arrayOptionCategory) {
@@ -265,6 +345,18 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     _this.getMenuData();
   }
 
+  saveMeta() {
+    this.service.saveMeta(this, this.outputs, this.handlerSuccessSaveMeta, this.handlerErrorSaveMeta);
+  }
+
+  handlerSuccessSaveMeta(_this, data) {
+    _this.globals.isLoading = false;
+  }
+
+  handlerErrorSaveMeta(_this, data) {
+    console.log(data);
+  }
+
   getMenuData(): void {
     this.service.loadMenuOptions(this, this.handlerGetSuccessMenuData, this.handlerGetErrorMenuData);
     this.optionSelected = {};
@@ -324,9 +416,12 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     _this.globals.isLoading = false;
   }
 
+  editOutputOptions() {
+    this.getMeta();
+  }
+
   editCategoryArguments() {
     var duplicateObject = JSON.parse(JSON.stringify(this.categories));
-
     const dialogRef = this.dialog.open(EditCategoryArgumentDialog, {
       width: '70%',
       data: duplicateObject

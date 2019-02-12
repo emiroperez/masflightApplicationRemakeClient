@@ -8,7 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from '@angular/cdk/layout';
 import {MaterialModule} from './material/material';
 import { MessageComponent } from './message/message.component';
-import { FormsModule, ReactiveFormsModule}   from '@angular/forms';
+import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AuthService} from './services/auth.service';
 import {HttpClientModule} from '@angular/common/http';
 import { NotificationComponent } from './notification/notification.component';
@@ -40,7 +40,7 @@ import { MsfTabSelectorComponent } from './msf-tab-selector/msf-tab-selector.com
 import { DateFormatPipe } from './commons/DateFormatPipe ';
 import { DateTimeFormatPipe } from './commons/DateTimeFormatPipe';
 import { MsfAirlineComponent } from './msf-airline/msf-airline.component';
-import { AmChartsModule } from "@amcharts/amcharts3-angular";
+import { AmChartsModule } from '@amcharts/amcharts3-angular';
 import { MsfChartOnTimeDelayComponent } from './msf-chart-on-time-delay/msf-chart-on-time-delay.component';
 import { MsfDynamicTableVariablesComponent } from './msf-dynamic-table-variables/msf-dynamic-table-variables.component';
 import { MsfDynamicTableComponent } from './msf-dynamic-table/msf-dynamic-table.component';
@@ -75,6 +75,7 @@ import { AgGridModule } from 'ag-grid-angular';
 import { Utils } from './commons/utils';
 import { MsfUserListComponent } from './msf-user-list/msf-user-list.component';
 import { MsfOptionListComponent } from './msf-option-list/msf-option-list.component';
+import { EditOutputOptionsMetaDialog } from './admin-menu/admin-menu.component';
 import { EditCategoryArgumentDialog } from './admin-menu/admin-menu.component';
 import { EditOptionsDialog } from './create-memperships/create-memperships.component';
 import { MsfTestComponent } from './msf-test/msf-test.component';
@@ -198,6 +199,7 @@ import { MsfDatePeriodRevenueComponent } from './msf-date-period-revenue/msf-dat
     AdminMenuMembershipsComponent,
     MsfUserListComponent,
     MsfOptionListComponent,
+    EditOutputOptionsMetaDialog,
     EditCategoryArgumentDialog,
     EditOptionsDialog,
     MsfTestComponent,
@@ -313,12 +315,11 @@ import { MsfDatePeriodRevenueComponent } from './msf-date-period-revenue/msf-dat
     Utils
   ],
   bootstrap: [AppComponent],
-  entryComponents: [
-    MessageComponent,
+  entryComponents: [MessageComponent,
     MsfDynamicTableVariablesComponent,
+    EditOutputOptionsMetaDialog,
     EditCategoryArgumentDialog,
     EditOptionsDialog,
-    MsfDashboardControlVariablesComponent
-  ]
+    MsfDashboardControlVariablesComponent]
 })
 export class AppModule { }
