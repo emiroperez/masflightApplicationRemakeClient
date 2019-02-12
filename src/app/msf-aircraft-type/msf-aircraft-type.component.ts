@@ -42,8 +42,8 @@ export class MsfAircraftTypeComponent implements OnInit {
   getRecords(search, handlerSuccess){
     let url = this.argument.url + "?search="+ (search != null?search:'');
     if(this.globals.currentAirline!=null){
-      url = "http://localhost:8887/getAircraftTypes";
-      // url = "/getAircraftTypes?search=";
+      // url = "http://localhost:8887/getAircraftTypes";
+      url = "/getAircraftTypes?search=";
       url += "?search="+ (search != null?search:'') + "&airlineIata=" + this.globals.currentAirline.iata;
     }
     this.http.get(this,url,handlerSuccess,this.handlerError, null);  
