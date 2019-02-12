@@ -93,6 +93,11 @@
             <mat-icon aria-label="Control Variables">more_vert</mat-icon>
           </button>
         </div>
+        <div class="msf-dashboard-chartmenu-control-variable-button">
+          <button [disabled]="!values.chartGenerated" mat-mini-fab (click)="goToChart()" color="primary">
+            <mat-icon aria-label="Go To Chart">bar_chart</mat-icon>
+          </button>
+        </div>
       </div>
     </div>
   </div>

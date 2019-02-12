@@ -1,4 +1,4 @@
-import {  AmChart } from '@amcharts/amcharts3-angular';
+import { AmChart } from '@amcharts/amcharts3-angular';
 
 // Object used to mantain data values for each dashboard chart component
 export class MsfDashboardChartValues {
@@ -6,6 +6,7 @@ export class MsfDashboardChartValues {
 
     chart2: AmChart;
     displayChart: boolean;
+    chartGenerated: boolean;
 
     chartName: String;
     currentOptionUrl: String;
@@ -20,7 +21,7 @@ export class MsfDashboardChartValues {
 
     constructor(options: any[], chartName: String, displayChart?, currentOptionUrl?: String,
         currentChartType?, currentOption?: any, currentOptionCategories?: any, variable?, xaxis?,
-        valueColumn?, func?, chart2?: AmChart)
+        valueColumn?, func?, chart2?: AmChart, chartGenerated?: boolean)
     {
         this.options = options;
 
@@ -36,5 +37,6 @@ export class MsfDashboardChartValues {
         this.valueColumn = valueColumn;
         this.function = func;
         this.chart2 = chart2;
+        this.chartGenerated = chartGenerated;
     }
 }

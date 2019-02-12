@@ -47,6 +47,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   @Input()
   values: MsfDashboardChartValues;
+  temp: MsfDashboardChartValues;
 
   @Input()
   columnPos: number;
@@ -77,27 +78,68 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       xaxisCtrl: new FormControl ({ value: '', disabled: true }),
       valueCtrl: new FormControl ({ value: '', disabled: true })
     });
+
+    // add function to sort from the smallest value to the larger one
+    this.AmCharts.addInitHandler (function (chart)
+    {
+      for (var i = 0; i < chart.dataProvider.length; i++)
+      {
+        // Collect all values for all graphs in this data point
+        var row = chart.dataProvider[i];
+        var values = [];
+
+        for (var g = 0; g < chart.graphs.length; g++)
+        {
+          var graph = chart.graphs[g];
+
+          values.push
+          ({
+            "value" : row[graph.valueField],
+            "graph" : graph
+          });
+        }
+
+        // Sort by value
+        values.sort (function(a, b)
+        {
+          return a.value - b.value;
+        });
+
+        // Apply 'columnIndexField'
+        for (var x = 0; x < values.length; x++)
+        {
+          var graph = values[x].graph;
+
+          graph.columnIndexField = graph.valueField + "_index";
+          row[graph.columnIndexField] = x;
+        }
+      }
+    }, [ "serial" ]);
   }
 
-  buildGraphs(dataProvider){    
-    let  graphs = [];
-    for(let object of dataProvider){
-      graphs.push(
-        {
-          balloonText: "Delay in [[category]] ("+object.valueField+"): <b>[[value]]</b>",
-          fillAlphas: 0.9,
-          lineAlpha: 0.2,
-          valueAxis: object.valueAxis,
-          lineColor: object.lineColor,
-          title: object.valueField,
-          type: "column",
-          valueField: object.valueField
+  buildGraphs(dataProvider)
+  {
+    let graphs = [];
+
+    for (let object of dataProvider)
+    {
+      graphs.push
+      ({
+        balloonText: "Delay in [[category]] (" + object.valueField + "): <b>[[value]]</b>",
+        fillAlphas: 0.9,
+        lineAlpha: 0.2,
+        valueAxis: object.valueAxis,
+        lineColor: object.lineColor,
+        title: object.valueField,
+        type: "column",
+        valueField: object.valueField
       });
     }
     return graphs;
   }
 
-  makeOptions(dataProvider) {
+  makeOptions(dataProvider)
+  {
     let parserDate = this.values.xaxis.id.includes ('date');
 
     return {
@@ -126,7 +168,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       {
         "gridPosition" : "start",
         "parseDates" : parserDate,
-        "minorGridEnabled" : true
+        "minorGridEnabled" : true,
+        "equalSpacing": true
       },
       "export" :
       {
@@ -164,9 +207,12 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       this.values.currentChartType = this.chartTypes[0];
   }
 
-   /**
-   * Sets the initial value after the filteredBanks are loaded initially
-   */
+  ngAfterViewInit(): void {
+    if (this.values.chartGenerated)
+      this.storeChartValues ();
+  }
+
+  // sets the initial value after the filteredBanks are loaded initially
   setInitialValue()
   {
     this.filteredVariables
@@ -260,6 +306,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     _this.values.chart2.addListener ("dataUpdated", _this.zoomChart);
     _this.chartTypeChange (_this.values.currentChartType);
     _this.values.displayChart = true;
+    _this.values.chartGenerated = true;
     _this.globals.isLoading = false;
   }
 
@@ -347,8 +394,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     for (let graph of this.values.chart2.graphs)
     {
       graph.type = type;
-      graph.lineAlpha =lineAlpha;
-      graph.fillAlphas =fillAlphas;
+      graph.lineAlpha = lineAlpha;
+      graph.fillAlphas = fillAlphas;
     }
       
     this.values.chart2.validateNow();
@@ -404,9 +451,55 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     });
   }
 
+  // save chart data into a temporary value
+  storeChartValues(): void
+  {
+    if (!this.temp)
+      this.temp = new MsfDashboardChartValues (this.values.options, this.values.chartName);
+    else
+    {
+      this.temp.options = this.values.options;
+      this.temp.chartName = this.values.chartName;
+    }
+
+    this.temp.displayChart = this.values.displayChart;
+    this.temp.currentOptionUrl = this.values.currentOptionUrl;
+    this.temp.currentChartType = this.values.currentChartType;
+    this.temp.currentOption = this.values.currentOption;
+    this.temp.currentOptionCategories = this.values.currentOptionCategories;
+    this.temp.variable = this.values.variable;
+    this.temp.xaxis = this.values.xaxis;
+    this.temp.valueColumn = this.values.valueColumn;
+    this.temp.function = this.values.function;
+    this.temp.chart2 = this.values.chart2;
+    this.temp.chartGenerated = this.values.chartGenerated;
+  }
+
   goToChartConfiguration(): void
   {
     this.values.displayChart = false;
+    this.storeChartValues();
+  }
+
+  goToChart(): void
+  {
+    this.values.displayChart = true;
+
+    // restore values from temp if the user decide to return to the chart
+    // without generating it
+    this.temp.displayChart = true;
+    this.values.options = this.temp.options;
+    this.values.chartName = this.temp.chartName;
+    this.values.currentOptionUrl = this.temp.currentOptionUrl;
+    this.values.currentChartType = this.temp.currentChartType;
+    this.values.currentOption = this.temp.currentOption;
+    this.values.currentOptionCategories = this.temp.currentOptionCategories;
+    this.values.variable = this.temp.variable;
+    this.values.xaxis = this.temp.xaxis;
+    this.values.valueColumn = this.temp.valueColumn;
+    this.values.function = this.temp.function;
+    this.values.chart2 = this.temp.chart2;
+    this.values.chartGenerated = this.temp.chartGenerated;
   }
 
   checkChartFilters(): void
