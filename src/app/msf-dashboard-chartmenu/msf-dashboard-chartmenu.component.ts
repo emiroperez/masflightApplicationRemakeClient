@@ -36,7 +36,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     { id: 'column', name: 'Columns' },
     { id: 'line', name: 'Lines' },                      
     { id: 'area', name: 'Area' },
-    { id: 'pie', name: 'Pie' }
+    { id: 'pie', name: 'Pie' },
+    { id: 'donut', name: 'Donut' }
   ];
 
   functions:any[] = [
@@ -141,7 +142,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   makeOptions(dataProvider)
   {
-    if (this.values.currentChartType.id === 'pie')
+    if (this.values.currentChartType.id === 'pie'
+      || this.values.currentChartType.id === 'donut')
     {
       return {
         "type" : "pie",
@@ -311,10 +313,18 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
     console.log(urlBase);
     let urlArg = encodeURIComponent(urlBase);
-    let url = this.service.host + "/getChartData?url=" + urlArg + "&variable=" + this.values.variable.id + "&xaxis=" +
-      this.values.xaxis.id + "&valueColumn=" + this.values.valueColumn.id + "&function=" + this.values.function.id;
-    if (this.values.currentChartType.id === 'pie')
-      url += "&chartType=pie";
+    let url;
+    if (this.values.currentChartType.id === 'pie' || this.values.currentChartType.id === 'donut')
+    {
+      // put an arbitrary xaxis id until the server application make this optional
+      url = this.service.host + "/getChartData?url=" + urlArg + "&variable=" + this.values.variable.id + "&xaxis=" +
+        1 + "&valueColumn=" + this.values.valueColumn.id + "&function=" + this.values.function.id + "&chartType=pie";
+    }
+    else
+    {
+      url = this.service.host + "/getChartData?url=" + urlArg + "&variable=" + this.values.variable.id + "&xaxis=" +
+        this.values.xaxis.id + "&valueColumn=" + this.values.valueColumn.id + "&function=" + this.values.function.id + "&chartType=pie";
+    }
 
     this.http.get(this, url, handlerSuccess, handlerError, null);
   }
@@ -389,7 +399,10 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     _this.globals.isLoading = false;
 
     _this.chartForm.get ('variableCtrl').enable ();
-    _this.chartForm.get ('xaxisCtrl').enable ();
+
+    if (_this.values.currentChartType.id !== 'pie' && _this.values.currentChartType.id !== 'donut')
+      _this.chartForm.get ('xaxisCtrl').enable ();
+
     _this.chartForm.get ('valueCtrl').enable ();
 
     _this.variableCtrlBtnEnabled = true;
@@ -409,33 +422,50 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   chartTypeChange(type)
   {
-    // pie and donut types ignores this function
     switch (type.id)
     {
       case 'line':
-        this.changeChartConfig('line', 1, 0);
+        this.changeChartConfig ('line', 1, 0);
         break;
 
       case 'area':
-        this.changeChartConfig('line', 1, 0.3);
+        this.changeChartConfig ('line', 1, 0.3);
         break;
 
       case 'column':
-        this.changeChartConfig('column', 0, 0.9);
+        this.changeChartConfig ('column', 0, 0.9);
+        break;
+
+      case 'pie':
+        this.changeChartConfig ('pie', 0, 0);
+        break;
+
+      case 'donut':
+        this.changeChartConfig ('pie', 0, 50);
         break;
     }
   }
 
-  changeChartConfig(type, lineAlpha, fillAlphas)
+  changeChartConfig(type, param1, param2)
   {
-    for (let graph of this.values.chart2.graphs)
+    if (type === 'pie')
     {
-      graph.type = type;
-      graph.lineAlpha = lineAlpha;
-      graph.fillAlphas = fillAlphas;
+      let graph = this.values.chart2;
+
+      graph.radius = param1;
+      graph.innerRadius = param2;
+    }
+    else
+    {
+      for (let graph of this.values.chart2.graphs)
+      {
+        graph.type = type;
+        graph.lineAlpha = param1;
+        graph.fillAlphas = param2;
+      }
     }
       
-    this.values.chart2.validateNow();
+    this.values.chart2.validateNow ();
   }
 
   haveSortingCheckboxes(): boolean
@@ -543,11 +573,39 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     */
   }
 
+  // check if the x axis should be enabled or not depending of the chart type
+  checkChartType(): void
+  {
+    if (this.values.currentOptionCategories == null)
+      return;
+
+    this.chartForm.get ('xaxisCtrl').reset ();
+
+    if (this.values.currentChartType.id === 'pie' || this.values.currentChartType.id === 'donut')
+      this.chartForm.get ('xaxisCtrl').disable ();
+    else
+      this.chartForm.get ('xaxisCtrl').enable ();
+  }
+
   checkChartFilters(): void
   {
-    if (this.values.variable != null && this.values.xaxis != null && this.values.valueColumn != null)
-      this.generateBtnEnabled = true;
+    if (this.values.currentChartType.id === 'pie' || this.values.currentChartType.id === 'donut')
+    {
+      if (this.values.variable != null && this.values.valueColumn != null)
+      {
+        this.generateBtnEnabled = true;
+        return;
+      }
+    }
     else
-      this.generateBtnEnabled = false;
+    {
+      if (this.values.variable != null && this.values.xaxis != null && this.values.valueColumn != null)
+      {
+        this.generateBtnEnabled = true;
+        return;
+      }
+    }
+
+    this.generateBtnEnabled = false;
   }
 }
