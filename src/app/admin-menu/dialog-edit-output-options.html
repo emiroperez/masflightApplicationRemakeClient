@@ -1,0 +1,63 @@
+<div style="color: white !important" mat-dialog-content>
+    <div style="flex: 1; float:right">
+        <button mat-icon-button (click)="addOption()">
+    <mat-icon style="color: white" aria-label="add">add_circle</mat-icon>
+  </button>
+        <button mat-icon-button (click)="deleteOption()">
+      <mat-icon style="color: white" aria-label="delete">remove_circle</mat-icon>
+    </button>
+    </div>
+    <div style="flex: 1">
+        <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8 datasource welcome-table">
+
+            <ng-container matColumnDef="columnLabel">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>column Label</th>
+                <td mat-cell *matCellDef="let element">
+                    <input matInput placeholder="Label" [value]="element.columnLabel" [(ngModel)]="element.columnLabel">
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="columnName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>column Name</th>
+                <td mat-cell *matCellDef="let element">
+                    <input matInput placeholder="Label" [value]="element.columnName" [(ngModel)]="element.columnName">
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="columnType">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>column Type</th>
+                <td mat-cell *matCellDef="let element">
+                    <mat-select [(value)]="element.columnType" placeholder="Column type" [(ngModel)]="element.columnType">
+                        <mat-option value="string">string</mat-option>
+                        <mat-option value="number">number</mat-option>
+                        <mat-option value="date">date</mat-option>
+                    </mat-select>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="columnFormat">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>column Format</th>
+                <td mat-cell *matCellDef="let element">
+                    <input matInput placeholder="format" [value]="element.columnFormat" [(ngModel)]="element.columnFormat">
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="grouping">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Grouping</th>
+                <td mat-cell *matCellDef="let element">
+                    <mat-select [(value)]="element.grouping" placeholder="" [(ngModel)]="element.grouping">
+                        <mat-option [value]=1>Yes</mat-option>
+                        <mat-option [value]=0>No</mat-option>
+                    </mat-select>
+                </td>
+            </ng-container>
+
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="selectRow(row)" [ngClass]="{ 'selected': row === optionSelected }"> ></tr>
+        </table>
+    </div>
+
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button [mat-dialog-close]="data">Save</button>
+</div>

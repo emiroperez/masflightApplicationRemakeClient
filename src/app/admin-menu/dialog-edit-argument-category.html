@@ -1,177 +1,172 @@
 <div style="color: white !important" mat-dialog-content>
-  <div style="display: flex; flex-direction: row;">
-    <div style="flex: 1; margin: 0 10px">
-      <div style="display: flex; flex-direction: row">
-        <div style="flex: 2">
-          <h2 class="title-section">Category Arguments</h2>
-        </div>
-        <div style="flex: 1; text-align: right;">
-          <button matTooltip="Add category argument." mat-icon-button (click)="addCategoryArgument()" style="display: inline;">
+    <div style="display: flex; flex-direction: row;">
+        <div style="flex: 1; margin: 0 10px">
+            <div style="display: flex; flex-direction: row">
+                <div style="flex: 2">
+                    <h2 class="title-section">Category Arguments</h2>
+                </div>
+                <div style="flex: 1; text-align: right;">
+                    <button matTooltip="Add category argument." mat-icon-button (click)="addCategoryArgument()" style="display: inline;">
             <mat-icon style="color: white" aria-label="add">add_circle</mat-icon>
           </button>
-          <button matTooltip="Remove category argument." mat-icon-button (click)="deleteCategoryArgument()" style="display: inline;">
+                    <button matTooltip="Remove category argument." mat-icon-button (click)="deleteCategoryArgument()" style="display: inline;">
             <mat-icon style="color: white" aria-label="delete">remove_circle</mat-icon>
           </button>
-        </div>
-      </div>
-      <div *ngFor="let item of data" style="margin-bottom: 5px">
-        <div *ngIf="item.selected && !item.toDelete">
-          <div style="display: flex; flex-direction: row;">
-            <div style="flex: 1">
-              <div class="group-category" style="display: flex; flex-direction: row; justify-content: space-between;"
-                [ngClass]="{ 'category-active': item.isSelected, 'category-inactive': !item.isSelected }">               
-                <span class="group-category-text" style="flex: 20; text-align: center">
+                </div>
+            </div>
+            <div *ngFor="let item of data" style="margin-bottom: 5px">
+                <div *ngIf="item.selected && !item.toDelete">
+                    <div style="display: flex; flex-direction: row;">
+                        <div style="flex: 1">
+                            <div class="group-category" style="display: flex; flex-direction: row; justify-content: space-between;" [ngClass]="{ 'category-active': item.isSelected, 'category-inactive': !item.isSelected }">
+                                <span class="group-category-text" style="flex: 20; text-align: center">
                   <input type="text" matInput [(ngModel)]="item.label" class="text-item-category-argument" (click)="selectArgumentCategory(item)">
-                </span>               
-              </div>
+                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>         
         </div>
-      </div>
-    </div>
-    <div style="flex: 2; margin: 0 10px">
-      <div style="display: flex; flex-direction: row">
-        <div style="flex: 2">
-          <h2 class="title-section">Arguments</h2>
-        </div>
-        <div style="flex: 1; text-align: right;">
-          <button matTooltip="Add category argument." mat-icon-button (click)="addArgument(itemSelected)" style="display: inline;">
+        <div style="flex: 2; margin: 0 10px">
+            <div style="display: flex; flex-direction: row">
+                <div style="flex: 2">
+                    <h2 class="title-section">Arguments</h2>
+                </div>
+                <div style="flex: 1; text-align: right;">
+                    <button matTooltip="Add category argument." mat-icon-button (click)="addArgument(itemSelected)" style="display: inline;">
             <mat-icon style="color: white" aria-label="add">add_circle</mat-icon>
           </button>
-          <button matTooltip="Remove category argument." mat-icon-button (click)="deleteArgument(argumentSelected)" style="display: inline;">
+                    <button matTooltip="Remove category argument." mat-icon-button (click)="deleteArgument(argumentSelected)" style="display: inline;">
             <mat-icon style="color: white" aria-label="delete">remove_circle</mat-icon>
           </button>
+                </div>
+            </div>
+            <div *ngFor="let argument of itemSelected.arguments">
+                <div class="arguments-container" *ngIf="itemSelected.isSelected && !argument.toDelete" [ngClass]="{ 'category-active': argument.isSelected, 'category-inactive': !argument.isSelected }" (click)="setSelectedAgument(argument)">
+                    <div style="display: flex; flex-wrap: wrap; align-content: flex-start">
+                        <div style="width: 100%; margin: auto; font-size: 15px">
+                            <mat-form-field style="width: 100%">
+                                <input matInput placeholder="Title" [(ngModel)]="argument.title">
+                            </mat-form-field>
+                        </div>
+                        <div class="arguments-child">
+                            <mat-form-field style="width: 100%">
+                                <mat-select class="white" placeholder="Type" [(ngModel)]="argument.type">
+                                    <mat-option value="airline">Airline</mat-option>
+                                    <mat-option value="airportRoute">Airport route</mat-option>
+                                    <mat-option value="timeRange">Time range</mat-option>
+                                    <mat-option value="dateRange">Date range</mat-option>
+                                    <mat-option value="tailnumber">Tail number</mat-option>
+                                    <mat-option value="singleairline">Single airline</mat-option>
+                                    <mat-option value="aircraftType">Aircraft type</mat-option>
+                                    <mat-option value="flightNumber">Flight number</mat-option>
+                                    <mat-option value="airport">Airport</mat-option>
+                                    <mat-option value="grouping">Grouping</mat-option>
+                                    <mat-option value="rounding">Rounding</mat-option>
+                                    <mat-option value="date">Date</mat-option>
+                                    <mat-option value="windDirection">Wind direction</mat-option>
+                                    <mat-option value="ceiling">Ceiling</mat-option>
+                                    <mat-option value="windSpeed">Wind Speed</mat-option>
+                                    <mat-option value="temperature">Temperature</mat-option>
+                                    <mat-option value="freeTextInput">Free text input</mat-option>
+                                    <mat-option value="selectBoxSingleOption">Select box single option</mat-option>
+                                    <mat-option value="selectBoxMultipleOption">Select box multiple option</mat-option>
+                                    <mat-option value="datePicker">Date picker</mat-option>
+                                    <mat-option value="timePicker">Time picker</mat-option>
+                                    <mat-option value="dateTimePicker">Date time picker</mat-option>
+                                    <mat-option value="checkBox">Check box</mat-option>
+                                    <mat-option value="cancelsCheckBox">Cancels check boxes</mat-option>
+                                    <mat-option value="diversionsCheckbox">Diversions check boxes</mat-option>
+                                    <mat-option value="flightDelaysCheckbox">Flight Delays check box</mat-option>
+                                    <mat-option value="causesFlightDelaysCheckbox">Causes Of Flight Delays check boxes</mat-option>
+                                    <mat-option value="taxiTimes">Taxi times</mat-option>
+                                    <mat-option value="taxiTimesCheckbox">Taxi times checkbox</mat-option>
+                                    <mat-option value="taxiTimesCheckboxes">Taxi times checkboxes</mat-option>
+                                    <mat-option value="datePeriod">Date period (year-quarter)</mat-option>
+                                    <mat-option value="region">Region</mat-option>
+                                    <mat-option value="datePeriodYear">Date period (year)</mat-option>
+                                    <mat-option value="datePeriodYearMonth">Date period (year-month)</mat-option>
+                                    <mat-option value="sortingCheckboxes">Sorting checkboxes</mat-option>
+                                    <mat-option value="groupingAthena">New Grouping</mat-option>
+
+                                    <mat-option value="flightDistance">Flight Distance</mat-option>
+                                    <mat-option value="fareTypes">Fare Types</mat-option>
+                                    <mat-option value="summary">Summary</mat-option>
+                                    <mat-option value="serviceClasses">Service Classes</mat-option>
+                                    <mat-option value="resultsLess">Group Results Less Than</mat-option>
+                                    <mat-option value="geography">Geography</mat-option>
+                                    <mat-option value="excludeItineraries">Itineraries</mat-option>
+                                    <mat-option value="excludeFollowing">Exclude The Following Fares</mat-option>
+                                    <mat-option value="singleCheckbox">Single checkbox</mat-option>
+                                    <mat-option value="filterAirlineType">Filter Airline Type</mat-option>
+                                    <mat-option value="fareIncrements">Fare Increments</mat-option>
+                                    <mat-option value="fareIncrementMiddle">Fare Increments Middle</mat-option>
+                                    <mat-option value="fareIncrementMax">Fare Increments Max</mat-option>
+                                    <mat-option value="title">Title</mat-option>
+                                    <mat-option value="airportsRoutes">Airports Routes</mat-option>
+                                    <mat-option value="fareLower">Exclude Fares lower than</mat-option>
+                                    <mat-option value="percentIncrement">Pecent Increment</mat-option>
+                                    <mat-option value="groupingDailyStatics">Grouping Daily Statics</mat-option>
+                                    <mat-option value="quarterHour">Quarter Hour</mat-option>
+                                    <mat-option value="functions">Functions</mat-option>
+                                    <mat-option value="groupingOperationsSummary">Grouping Operatins Summary</mat-option>
+                                    <mat-option value="groupingHubSummaries">Grouping Hub Summaries</mat-option>
+                                    <mat-option value="regionSchedule">Region Schedule</mat-option>
+                                    <mat-option value="aircraftTypeCheckboxes">Aircraft Type Checkboxes</mat-option>
+                                    <mat-option value="seats">Seats</mat-option>
+                                    <mat-option value="sortingNostop">Sorting Nostop</mat-option>
+                                    <mat-option value="connectionTime">Connection Time</mat-option>
+                                    <mat-option value="stops">Stops</mat-option>
+                                    <mat-option value="circuityType">Circuity Type</mat-option>
+                                    <mat-option value="circuity">Circuity</mat-option>
+                                    <mat-option value="singleAirport">Single airport</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="arguments-child">
+                            <mat-form-field style="width: 100%">
+                                <input matInput placeholder="Service Arg. 1" [(ngModel)]="argument.name1">
+                            </mat-form-field>
+                        </div>
+                        <div class="arguments-child">
+                            <mat-form-field style="width: 100%">
+                                <input matInput placeholder="Service Arg. 2" [(ngModel)]="argument.name2">
+                            </mat-form-field>
+                        </div>
+                        <div class="arguments-child">
+                            <mat-form-field style="width: 100%">
+                                <input matInput placeholder="Service Arg. 3" [(ngModel)]="argument.name3">
+                            </mat-form-field>
+                        </div>
+                        <div class="arguments-child">
+                            <mat-form-field style="width: 100%">
+                                <input matInput placeholder="Label 1" [(ngModel)]="argument.label1">
+                            </mat-form-field>
+                        </div>
+                        <div class="arguments-child">
+                            <mat-form-field style="width: 100%">
+                                <input matInput placeholder="Label 2" [(ngModel)]="argument.label2">
+                            </mat-form-field>
+                        </div>
+                        <div class="arguments-child">
+                            <mat-form-field style="width: 100%">
+                                <input matInput placeholder="Label 3" [(ngModel)]="argument.label3">
+                            </mat-form-field>
+                        </div>
+                        <div class="arguments-child">
+                            <mat-form-field style="width: 100%">
+                                <input matInput placeholder="URL" [(ngModel)]="argument.url">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-      <div *ngFor="let argument of itemSelected.arguments">
-        <div class="arguments-container" *ngIf="itemSelected.isSelected && !argument.toDelete"
-          [ngClass]="{ 'category-active': argument.isSelected, 'category-inactive': !argument.isSelected }"
-          (click)="setSelectedAgument(argument)">
-          <div style="display: flex; flex-wrap: wrap; align-content: flex-start">
-            <div style="width: 100%; margin: auto; font-size: 15px">
-              <mat-form-field style="width: 100%">
-                <input matInput placeholder="Title" [(ngModel)]="argument.title">
-              </mat-form-field>
-            </div>
-            <div class="arguments-child">
-              <mat-form-field style="width: 100%">
-                <mat-select placeholder="Type" [(ngModel)]="argument.type">
-                  <mat-option value="airline">Airline</mat-option>
-                  <mat-option value="airportRoute">Airport route</mat-option>
-                  <mat-option value="timeRange">Time range</mat-option>
-                  <mat-option value="dateRange">Date range</mat-option>
-                  <mat-option value="tailnumber">Tail number</mat-option>
-                  <mat-option value="singleairline">Single airline</mat-option>
-                  <mat-option value="aircraftType">Aircraft type</mat-option>
-                  <mat-option value="flightNumber">Flight number</mat-option>
-                  <mat-option value="airport">Airport</mat-option>
-                  <mat-option value="grouping">Grouping</mat-option>
-                  <mat-option value="rounding">Rounding</mat-option>
-                  <mat-option value="date">Date</mat-option>
-                  <mat-option value="windDirection">Wind direction</mat-option>
-                  <mat-option value="ceiling">Ceiling</mat-option>
-                  <mat-option value="windSpeed">Wind Speed</mat-option>
-                  <mat-option value="temperature">Temperature</mat-option>
-                  <mat-option value="freeTextInput">Free text input</mat-option>
-                  <mat-option value="selectBoxSingleOption">Select box single option</mat-option>
-                  <mat-option value="selectBoxMultipleOption">Select box multiple option</mat-option>
-                  <mat-option value="datePicker">Date picker</mat-option>
-                  <mat-option value="timePicker">Time picker</mat-option>
-                  <mat-option value="dateTimePicker">Date time picker</mat-option>
-                  <mat-option value="checkBox">Check box</mat-option>
-                  <mat-option value="cancelsCheckBox">Cancels check boxes</mat-option>
-                  <mat-option value="diversionsCheckbox">Diversions check boxes</mat-option>
-                  <mat-option value="flightDelaysCheckbox">Flight Delays check box</mat-option>
-                  <mat-option value="causesFlightDelaysCheckbox">Causes Of Flight Delays check boxes</mat-option>
-                  <mat-option value="taxiTimes">Taxi times</mat-option>
-                  <mat-option value="taxiTimesCheckbox">Taxi times checkbox</mat-option>
-                  <mat-option value="taxiTimesCheckboxes">Taxi times checkboxes</mat-option>
-                  <mat-option value="datePeriod">Date period (year-quarter)</mat-option>
-                  <mat-option value="region">Region</mat-option>
-                  <mat-option value="datePeriodYear">Date period (year)</mat-option>
-                  <mat-option value="datePeriodYearMonth">Date period (year-month)</mat-option>
-                  <mat-option value="sortingCheckboxes">Sorting checkboxes</mat-option>
-                  <mat-option value="groupingAthena">New Grouping</mat-option>
-                  
-                  <mat-option value="flightDistance">Flight Distance</mat-option>
-                  <mat-option value="fareTypes">Fare Types</mat-option>
-                  <mat-option value="summary">Summary Passengers Traffic</mat-option>
-                  <mat-option value="serviceClasses">Service Classes</mat-option>
-                  <mat-option value="resultsLess">Group Results Less Than</mat-option>
-                  <mat-option value="geography">Geography</mat-option>
-                  <mat-option value="excludeItineraries">Itineraries</mat-option>
-                  <mat-option value="excludeFollowing">Exclude The Following Fares</mat-option>
-                  <mat-option value="singleCheckbox">Single checkbox</mat-option>
-                  <mat-option value="filterAirlineType">Filter Airline Type</mat-option>
-                  <mat-option value="fareIncrements">Fare Increments</mat-option>
-                  <mat-option value="fareIncrementMiddle">Fare Increments Middle</mat-option>
-                  <mat-option value="fareIncrementMax">Fare Increments Max</mat-option>
-                  <mat-option value="title">Title</mat-option>
-                  <mat-option value="airportsRoutes">Airports Routes</mat-option> 
-                  <mat-option value="fareLower">Exclude Fares lower than</mat-option> 
-                  <mat-option value="percentIncrement">Pecent Increment</mat-option> 
-                  <mat-option value="groupingDailyStatics">Grouping Daily Statics</mat-option> 
-                  <mat-option value="quarterHour">Quarter Hour</mat-option> 
-                  <mat-option value="functions">Functions</mat-option> 
-                  <mat-option value="groupingOperationsSummary">Grouping Operations Summary</mat-option> 
-                  <mat-option value="groupingHubSummaries">Grouping Hub Summaries</mat-option> 
-                  <mat-option value="regionSchedule">Region Schedule</mat-option> 
-                  <mat-option value="aircraftTypeCheckboxes">Aircraft Type Checkboxes</mat-option> 
-                  <mat-option value="seats">Seats</mat-option>
-                  <mat-option value="sortingNostop">Sorting Nostop</mat-option>
-                  <mat-option value="connectionTime">Connection Time</mat-option>
-                  <mat-option value="stops">Stops</mat-option>
-                  <mat-option value="circuityType">Circuity Type</mat-option>
-                  <mat-option value="circuity">Circuity</mat-option>
-                  <mat-option value="singleAirport">Single airport</mat-option>
-                  <mat-option value="summaryRevenueBuilds">Summary Revenue Builds</mat-option>
-                  <mat-option value="datePeriodRevenue">Date Period Revenue</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-            <div class="arguments-child">
-              <mat-form-field style="width: 100%">
-                <input matInput placeholder="Service Arg. 1" [(ngModel)]="argument.name1">
-              </mat-form-field>
-            </div>
-            <div class="arguments-child">
-              <mat-form-field style="width: 100%">
-                <input matInput placeholder="Service Arg. 2" [(ngModel)]="argument.name2">
-              </mat-form-field>
-            </div>
-            <div class="arguments-child">
-              <mat-form-field style="width: 100%">
-                <input matInput placeholder="Service Arg. 3" [(ngModel)]="argument.name3">
-              </mat-form-field>
-            </div>
-            <div class="arguments-child">
-              <mat-form-field style="width: 100%">
-                <input matInput placeholder="Label 1" [(ngModel)]="argument.label1">
-              </mat-form-field>
-            </div>
-            <div class="arguments-child">
-              <mat-form-field style="width: 100%">
-                <input matInput placeholder="Label 2" [(ngModel)]="argument.label2">
-              </mat-form-field>
-            </div>
-            <div class="arguments-child">
-              <mat-form-field style="width: 100%">
-                <input matInput placeholder="Label 3" [(ngModel)]="argument.label3">
-              </mat-form-field>
-            </div>
-            <div class="arguments-child">
-              <mat-form-field style="width: 100%">
-                <input matInput placeholder="URL" [(ngModel)]="argument.url">
-              </mat-form-field>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
 
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Save</button>
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Save</button>
 </div>

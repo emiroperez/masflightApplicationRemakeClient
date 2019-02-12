@@ -11,7 +11,7 @@
         <mat-checkbox [disabled]="false" color="primary" [(ngModel)]="option.selected"></mat-checkbox>
         <input matInput id="root{{index}}" type="text" class="input-menu-option" [(ngModel)]="option.label">
     </mat-form-field>
-    <div [@animationOption2]="option.isOpened ? 'open': 'close'" *ngIf="option.children && option.children.length > 0 && option.isOpened" style="padding-left: 10%">
+    <div [@animationOption2]="option.isOpened ? 'open': 'close'" *ngIf="option.children && option.children.length > 0 && option.isOpened" style="padding-left: 4%">
         <div *ngFor="let optionChild of option.children; let i = index">
             <app-admin-menu-memberships [menu]="optionChild" [index]="index + '-' + i" (optionSelected)="selectOption($event)" (idSelected)="selectIdDom($event)"></app-admin-menu-memberships>
         </div>

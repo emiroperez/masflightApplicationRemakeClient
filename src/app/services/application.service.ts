@@ -12,11 +12,11 @@ export class ApplicationService {
 
   utils: Utils;
 
-  // host = "http://localhost:8887";
+  //host = "http://localhost:8887";
   host = "";
 
-  // host1 = "http://localhost:8886";
-  host1 = "http://69.64.45.220:8886"; 
+  //host1 = "http://localhost:8886";
+  host1 = "http://69.64.45.220:8886";
 
   constructor(private http: ApiClient) {
     this.utils = new Utils();
@@ -103,6 +103,10 @@ export class ApplicationService {
     this.http.get(_this, url, handlerSuccess, handlerError, null);
   }
 
+  loadWebservicMeta(_this,data,handlerSuccess, handlerError) {
+    let url = this.host+"/getMetaByOptionId?optionId=" + data.id;
+    this.http.get(_this, url, handlerSuccess, handlerError, null);
+  }
   loadArguments(_this, handlerSuccess, handlerError) {
     _this.globals.isLoading = true;
     let url = this.host + "/getArguments";
@@ -142,6 +146,12 @@ export class ApplicationService {
   saveMenu(_this, data, handlerSuccess, handlerError){
     _this.globals.isLoading = true;
     let url = this.host + "/menu";
+    this.http.post(_this, url, data, handlerSuccess, handlerError);
+  }
+
+  saveMeta(_this, data, handlerSuccess, handlerError){
+    _this.globals.isLoading = true;
+    let url = this.host + "/saveWebServieMeta";
     this.http.post(_this, url, data, handlerSuccess, handlerError);
   }
 
