@@ -1915,7 +1915,7 @@ mat-tab-group {
   flex-direction: column;
   width: 100%;
   padding-left: 4px;
-  font-size: 1wpx;
+  font-size: 12px;
   align-items: center;
 }
 .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-variable-buttons {
@@ -1924,7 +1924,7 @@ mat-tab-group {
   width: 100%;
   padding-right: 5px;
   padding-top: 10px;
-  font-size: 1wpx;
+  font-size: 12px;
 }
 .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-column {
   display: flex;
