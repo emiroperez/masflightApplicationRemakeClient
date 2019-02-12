@@ -113,7 +113,8 @@ export class MsfChartOnTimeDelayComponent implements OnInit {
       "categoryAxis": {
           "gridPosition": "start",
           "parseDates": parserDate,
-          "minorGridEnabled": true
+          "minorGridEnabled": true,
+          "equalSpacing": true
       },
       "export": {
         "enabled": true,
