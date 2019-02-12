@@ -58,6 +58,19 @@
                         <div *ngIf="!optionSelected.isRoot && optionSelected.isActive" style="flex: 1; flex-direction: column; justify-content: center">
                             <div style="display: flex; flex-direction: row">
                                 <div style="flex: 4">
+                                    <h2 class="title-section">Output Options</h2>
+                                </div>
+                                <div style="flex: 1">
+                                    <button mat-icon-button (click)="editOutputOptions()">
+                  <mat-icon style="color: white" aria-label="delete">settings</mat-icon>
+                </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="!optionSelected.isRoot && optionSelected.isActive" style="flex: 1; flex-direction: column; justify-content: center">
+                            <div style="display: flex; flex-direction: row">
+                                <div style="flex: 4">
                                     <h2 class="title-section">Category Arguments</h2>
                                 </div>
                                 <div style="flex: 1">

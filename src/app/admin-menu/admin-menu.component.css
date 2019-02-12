@@ -1,5 +1,5 @@
 .card-principal {
-    background: rgba(30, 30, 30);
+    background: rgb(30, 30, 30);
     width: 100%;
 }
 
@@ -12,6 +12,10 @@ div.mat-select-panel .mat-primary .ng-star-inserted .mat-select-panel-done-anima
     background-color: black;
 }
 
+.mat-select-valuue {
+    color: black !important;
+}
+
 .is-active {
     background-color: #182128;
 }
@@ -21,7 +25,7 @@ div.mat-select-panel .mat-primary .ng-star-inserted .mat-select-panel-done-anima
 }
 
 .category-active {
-    background-color: #79797a !important;
+    background-color: 3d3d3d !important;
 }
 
 .category-inactive {
@@ -48,11 +52,10 @@ div.mat-select-panel .mat-primary .ng-star-inserted .mat-select-panel-done-anima
 }
 
 .dialog-item:hover {
-    background-color: #4f4f4f;
+    background-color: #182128;
 }
 
 .text-item-category-argument {
-    border-bottom: 2px solid #01abec;
     margin-top: 3px;
     height: 30px;
     color: white;
@@ -201,4 +204,8 @@ table.argument-table tfoot .links a {
 
 h2 {
     font-weight: 500;
+}
+
+.selection {
+    border: none;
 }
