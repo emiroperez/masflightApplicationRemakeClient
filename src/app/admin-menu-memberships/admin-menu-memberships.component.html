@@ -9,7 +9,7 @@
  -->
     <mat-form-field #root id="'root' + index" class="msf-item menu-field">
         <mat-checkbox [disabled]="false" color="primary" [(ngModel)]="option.selected"></mat-checkbox>
-        <input id="root{{index}}" type="text" matInput class="input-menu-option" [(ngModel)]="option.label">
+        <input matInput id="root{{index}}" type="text" class="input-menu-option" [(ngModel)]="option.label">
     </mat-form-field>
     <div [@animationOption2]="option.isOpened ? 'open': 'close'" *ngIf="option.children && option.children.length > 0 && option.isOpened" style="padding-left: 4%">
         <div *ngFor="let optionChild of option.children; let i = index">

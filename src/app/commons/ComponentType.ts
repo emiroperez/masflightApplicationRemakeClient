@@ -70,5 +70,7 @@ export enum ComponentType {
   connectionTime = "connectionTime",
   circuityType = "circuityType",
   circuity = "circuity",
-  singleAirport = "singleAirport"
+  singleAirport = "singleAirport",
+  summaryRevenueBuilds = "summaryRevenueBuilds",
+  datePeriodRevenue = "datePeriodRevenue"
 }

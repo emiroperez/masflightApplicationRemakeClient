@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule} from '@angular/core';
 import { AppComponent } from './app.component';
 import { LoginScreenComponent } from './login-screen/login-screen.component';
 import { WelcomeComponent } from './welcome/welcome.component';
@@ -138,6 +138,9 @@ import { MsfStopsComponent } from './msf-stops/msf-stops.component';
 import { MsfCircuityTypeComponent } from './msf-circuity-type/msf-circuity-type.component';
 import { MsfCircuityComponent } from './msf-circuity/msf-circuity.component';
 import { MsfSingleAirportComponent } from './msf-single-airport/msf-single-airport.component';
+import { MsfDashboardControlVariablesComponent } from './msf-dashboard-control-variables/msf-dashboard-control-variables.component';
+import { MsfSummaryRevenueBuildsComponent } from './msf-summary-revenue-builds/msf-summary-revenue-builds.component';
+import { MsfDatePeriodRevenueComponent } from './msf-date-period-revenue/msf-date-period-revenue.component';
 
 @NgModule({
   declarations: [
@@ -257,7 +260,10 @@ import { MsfSingleAirportComponent } from './msf-single-airport/msf-single-airpo
     MsfStopsComponent,
     MsfCircuityTypeComponent,
     MsfCircuityComponent,
-    MsfSingleAirportComponent
+    MsfSingleAirportComponent,
+    MsfDashboardControlVariablesComponent,
+    MsfSummaryRevenueBuildsComponent,
+    MsfDatePeriodRevenueComponent
   ],
   imports: [
     BrowserModule,
@@ -293,7 +299,6 @@ import { MsfSingleAirportComponent } from './msf-single-airport/msf-single-airpo
     OwlDateTimeModule,
     OwlNativeDateTimeModule
   ],
-schemas : [ CUSTOM_ELEMENTS_SCHEMA ],
   providers: [
     AuthService,
     NotificationComponent,
@@ -310,6 +315,11 @@ schemas : [ CUSTOM_ELEMENTS_SCHEMA ],
     Utils
   ],
   bootstrap: [AppComponent],
-  entryComponents: [MessageComponent, MsfDynamicTableVariablesComponent, EditOutputOptionsMetaDialog, EditCategoryArgumentDialog, EditOptionsDialog]
+  entryComponents: [MessageComponent,
+    MsfDynamicTableVariablesComponent,
+    EditOutputOptionsMetaDialog,
+    EditCategoryArgumentDialog,
+    EditOptionsDialog,
+    MsfDashboardControlVariablesComponent]
 })
 export class AppModule { }

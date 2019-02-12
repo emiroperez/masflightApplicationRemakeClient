@@ -1,10 +1,11 @@
 <div>
         <div class="center">
-            <div class="msf-component-airport-title">Select Airline</div>        
+            <div class="msf-component-airport-title">{{argument.title}}</div>        
         </div> 
         <div class="msf-airline-container">
-            <div class="msf-full-width">   
-                <div class="msf-component-airport-sub-title">Input an Airline</div>         
+            <div class="msf-full-width" style="text-align: center;">   
+                <img src="../../assets/images/components/arguments/airline/aerolin.png" class="msf-airline-image">
+                <div class="msf-component-airport-sub-title">{{argument.label1}}</div>         
                 <ng-select
                 [items]="data | async"
                 [multiple]="false"
@@ -14,10 +15,11 @@
                 [hideSelected]="false"
                 bindLabel="name"
                 (search)="onSearch($event)" 
+                (change)="airlineChange()"
+                (focus)="onFocus()"
                 [(ngModel)]="argument.value1">
             </ng-select>          
             </div>
-            <img src="../../assets/images/components/arguments/airline/aerolin.png" class="msf-airline-image">
         </div>
       </div>
   

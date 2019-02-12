@@ -24,7 +24,7 @@ export class MsfChartOnTimeDelayComponent implements OnInit {
 
   variable;
   xaxis;
-  valueColunm;
+  valueColumn;
   function;
 
   dataSource;
@@ -113,7 +113,8 @@ export class MsfChartOnTimeDelayComponent implements OnInit {
       "categoryAxis": {
           "gridPosition": "start",
           "parseDates": parserDate,
-          "minorGridEnabled": true
+          "minorGridEnabled": true,
+          "equalSpacing": true
       },
       "export": {
         "enabled": true,

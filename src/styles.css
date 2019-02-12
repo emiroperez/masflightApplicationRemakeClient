@@ -11,7 +11,6 @@
 @import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
 body {
   background-image: url("assets/images/fondo.png");
-  background-size: cover;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   font-size: 12px;
   margin: 0;
@@ -370,6 +369,10 @@ p {
 
 .mat-form-field-appearance-legacy .mat-form-field-label {
   color: #ffffff !important;
+}
+
+.mat-form-field {
+  width: 100%;
 }
 
 .mat-form-field-infix {
@@ -1301,7 +1304,7 @@ button[aria-expanded=true] {
   padding: 1%;
   display: flex;
   color: white;
-  background-color: #333333;
+  background-color: inherit;
   font-size: 90%;
 }
 
@@ -1363,11 +1366,8 @@ button[aria-expanded=true] {
 }
 
 .msf-component-airport-sub-title {
-  width: 100%;
-  padding: 2px 0 2px 0;
   margin-bottom: 5px;
   padding-left: 10px;
-  margin-left: 5px;
 }
 
 .msf-component-airport-input-container {
@@ -1393,7 +1393,7 @@ button[aria-expanded=true] {
 .msf-menu-arg-image, .msf-menu-arg-wind-direction-image, .msf-menu-arg-temperature-image, .msf-menu-arg-wind-speed-image, .msf-menu-arg-ceiling-image, .msf-menu-arg-date-image, .msf-menu-arg-single-airport-image, .msf-menu-arg-airport-image {
   height: 50px;
   width: 100%;
-  background-position-x: 50px;
+  background-position-x: 50%;
   background-size: contain;
   background-repeat: no-repeat;
 }
@@ -1414,30 +1414,37 @@ button[aria-expanded=true] {
 
 .msf-menu-arg-airport-image {
   background-image: url("assets/images/components/arguments/airport/aerop_a_aerop.png");
+  background-position: center;
 }
 
 .msf-menu-arg-single-airport-image {
   background-image: url("assets/images/components/arguments/airport/aerop_a_todos.png");
+  background-position: center;
 }
 
 .msf-menu-arg-date-image {
   background-image: url("assets/images/components/arguments/airport/fecha.png");
+  background-position: center;
 }
 
 .msf-menu-arg-ceiling-image {
   background-image: url("assets/images/components/arguments/weather/Ceiling.png");
+  background-position: center;
 }
 
 .msf-menu-arg-wind-speed-image {
   background-image: url("assets/images/components/arguments/weather/ReportedWindSpeed.png");
+  background-position: center;
 }
 
 .msf-menu-arg-temperature-image {
   background-image: url("assets/images/components/arguments/weather/Temperature.png");
+  background-position: center;
 }
 
 .msf-menu-arg-wind-direction-image {
   background-image: url("assets/images/components/arguments/weather/Winddirection.png");
+  background-position: center;
 }
 
 .msf-menu-arg-image-circle, .msf-menu-arg-wind-speed-image, .msf-menu-arg-temperature-image, .msf-menu-arg-wind-direction-image {
@@ -1598,7 +1605,7 @@ mat-tab-group {
   background-color: #1e1e1e;
 }
 
-.msf-primary-light-bg-color, .msf-searc-complete-option, .msf-menu-component, .msf-menu-component-active {
+.msf-primary-light-bg-color, .msf-searc-complete-option, .msf-dashboard-menu-component, .msf-dashboard-menu-component-active, .msf-menu-component, .msf-menu-component-active {
   background-color: #3d3d3d;
 }
 
@@ -1901,21 +1908,30 @@ mat-tab-group {
   padding: 10px;
   background-color: #424242;
   overflow-y: visible;
-  min-height: 263px;
+  min-height: 302px;
 }
 .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-row {
   display: flex;
   flex-direction: column;
   width: 100%;
   padding-left: 4px;
-  font-size: 10px;
+  font-size: 12px;
+  align-items: center;
+}
+.msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-variable-buttons {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding-right: 5px;
+  padding-top: 10px;
+  font-size: 12px;
 }
 .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-column {
   display: flex;
   flex-direction: row;
   width: 100%;
   padding-right: 5px;
-  font-size: 10px;
+  font-size: 12px;
 }
 .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-column .msf-dashboard-addmenu-icon-item {
   align-items: center;
@@ -1931,30 +1947,94 @@ mat-tab-group {
 .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-column .msf-dashboard-addmenu-icon-item .msf-dashboard-chartmenu-item-text {
   vertical-align: middle;
 }
+.msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-column-reverse {
+  display: flex;
+  flex-direction: row-reverse;
+  width: 100%;
+  padding-right: 5px;
+  font-size: 12px;
+}
+.msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-column-reverse .msf-dashboard-chartmenu-control-variable-button {
+  display: flex;
+  width: 50px;
+  flex-direction: column;
+}
 
 .msf-dashboard-chartmenu-container-invisible {
   display: none;
 }
 
-#msf-dashboard-chart-display {
-  background-color: #000;
-  display: block;
+.msf-dashboard-chartmenu-container-chart {
+  padding: 10px;
+  background-color: #222222;
+  overflow-y: visible;
+  min-height: 302px;
+}
+.msf-dashboard-chartmenu-container-chart .msf-dashboard-chartmenu-title {
+  font-size: 12px;
+}
+.msf-dashboard-chartmenu-container-chart .msf-dashboard-chartmenu-sub-container-column {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding-right: 5px;
+  font-size: 14px;
+}
+.msf-dashboard-chartmenu-container-chart .msf-dashboard-chartmenu-sub-container-column .msf-dashboard-chartmenu-config-button {
+  position: absolute;
+  display: flex;
+  width: calc(100% - 5px);
+  height: 100%;
+  align-items: flex-end;
+  flex-direction: column-reverse;
 }
 
-#msf-dashboard-chart-display > div > div.amcharts-chart-div > a {
-  display: none !important;
+.msf-dashboard-control-variables-dialog .mat-dialog-container {
+  padding: 12px;
 }
 
-.msf-dashboard-chartmenu-sub-title {
-  vertical-align: middle;
+.msf-dashboard-control-variables-title {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  padding-top: 5px;
+  padding-bottom: 10px;
+  color: #fff;
+  position: relative;
+}
+.msf-dashboard-control-variables-title .msf-dashboard-control-variables-close-button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  position: absolute;
+  width: 100%;
+}
+.msf-dashboard-control-variables-title .msf-dashboard-control-variables-close-button .msf-dashboard-close-icon {
+  font-size: 16px;
+}
+.msf-dashboard-control-variables-title .msf-dashboard-control-variables-close-button .msf-dashboard-close-icon:hover {
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.msf-dashboard-control-variables {
+  overflow-y: auto;
   font-size: 10px;
-  padding-right: 6px;
+  min-height: 85%;
+  max-height: 85%;
+  width: 100%;
+}
+
+.msf-dashboard-control-variables-button {
+  margin-top: 10px;
+  text-align: center;
 }
 
 .msf-dashboard-chart-options-container {
   width: 100%;
   display: flex;
-  font-size: 10px;
+  font-size: 12px;
   flex-direction: column;
 }
 
@@ -1974,9 +2054,62 @@ mat-tab-group {
   font-size: 22px;
 }
 .msf-dashboard-chart-selector .msf-dashboard-chart-op-container {
-  padding-top: 10px;
   padding-left: 10px;
   width: 100%;
+}
+.msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-field-valuectrl {
+  width: 49.5%;
+  padding-right: 0.5%;
+}
+.msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-field-function {
+  width: 49.5%;
+  padding-left: 0.5%;
+}
+
+.msf-dashboard-menu-component, .msf-dashboard-menu-component-active {
+  display: flex;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  margin: 5px;
+  padding: 10px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-top-left-radius: 40px;
+  border-bottom-left-radius: 40px;
+}
+.msf-dashboard-menu-component:hover, .msf-dashboard-menu-component-active:hover {
+  background-color: #1e1e1e;
+}
+
+.msf-dashboard-menu-component-active {
+  background-color: #1e1e1e !important;
+}
+
+.msf-dashboard-menu-arguments-container, .msf-dashboard-menu-arguments-container-show, .msf-dashboard-menu-arguments-container-hiden {
+  margin: 10px;
+  padding: 5px;
+  display: flex;
+  color: white;
+  background-color: inherit;
+  font-size: 90%;
+}
+
+.msf-dashboard-menu-arguments-container-hiden {
+  max-height: 0;
+  transition: max-height 2s ease-out;
+  opacity: 0;
+  position: absolute;
+  top: -99999px;
+  transition: opacity 0.5s ease-out;
+}
+
+.msf-dashboard-menu-arguments-container-show {
+  overflow-y: hidden;
+  overflow-x: hidden;
+  transition: max-height 1s ease-in;
+  opacity: 1;
+  transition: opacity 2s ease-out;
 }
 
 .msf-dynamic-table-variable-title {
@@ -2201,6 +2334,10 @@ mat-dialog-container {
 
 .msf-width-20 {
   width: 20%;
+}
+
+.msf-width-90 {
+  width: 90%;
 }
 
 g g g text {
@@ -2632,6 +2769,7 @@ input[role=combobox] {
 
 .checkbox-container {
   padding: 10px 0 10px 0;
+  text-align: left;
 }
 
 mat-form-field.standard-text div div div span label {
@@ -2959,11 +3097,39 @@ table.datasource {
 
 .single-checkbox {
   padding: 0 !important;
-  margin: 5px 0 !important;
+  margin: 0 !important;
 }
 
 .mat-checkbox-frame {
   border-color: white !important;
+}
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
+  white-space: normal !important;
+}
+
+.ng-value .ng-star-inserted {
+  line-height: 20px !important;
+}
+
+.ng-select-container.ng-has-value {
+  padding-bottom: 20px !important;
+}
+
+.mat-checkbox-frame {
+  border-color: white !important;
+}
+
+.mat-card .mat-divider-horizontal {
+  position: relative !important;
+  left: 0;
+  border-top-color: rgba(50, 50, 50, 0.5);
+  width: 100%;
+}
+
+.msf-single-date .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+  -webkit-transform: translateY(-1.739125em) scale(0.75) perspective(100px) translateZ(0.001px) !important;
+  transform: translateY(-1.79125em) scale(0.75) perspective(100px) translateZ(0.001px) !important;
 }
 
 /*# sourceMappingURL=styles.css.map */

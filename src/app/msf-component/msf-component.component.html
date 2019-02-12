@@ -48,7 +48,7 @@
                         <app-msf-region *ngIf="isRegion(argument)" [argument]="argument"></app-msf-region>
                         <app-msf-date-period-year *ngIf="isDatePeriodYear(argument)" [argument]="argument"></app-msf-date-period-year>
                         <app-msf-date-period-year-month *ngIf="isDatePeriodYearMonth(argument)" [argument]="argument"></app-msf-date-period-year-month>
-                        <app-msf-sorting-checkboxes *ngIf="isSortingCheckboxes(argument)" [argument]="argument"></app-msf-sorting-checkboxes>
+                        <app-msf-sorting-checkboxes *ngIf="isSortingCheckboxes(argument)" [argument]="argument" [currentOptionId]="globals.currentOption.id"></app-msf-sorting-checkboxes>
                         <app-msf-grouping-athena *ngIf="isGroupingAthena(argument)" [argument]="argument"></app-msf-grouping-athena>
                         
                         <app-msf-flight-distance *ngIf="isFlightDistance(argument)" [argument]="argument"></app-msf-flight-distance>
@@ -83,6 +83,8 @@
                         <app-msf-circuity-type *ngIf="isCircuityType(argument)" [argument]="argument"></app-msf-circuity-type>
                         <app-msf-circuity *ngIf="isCircuity(argument)" [argument]="argument"></app-msf-circuity>
                         <app-msf-single-airport *ngIf="isSingleAirport(argument)" [argument]="argument"></app-msf-single-airport>
+                        <app-msf-summary-revenue-builds *ngIf="isSummaryRevenueBuilds(argument)" [argument]="argument"></app-msf-summary-revenue-builds>
+                        <app-msf-date-period-revenue *ngIf="isDatePeriodRevenue(argument)" [argument]="argument"></app-msf-date-period-revenue>
                     </ng-container>
                 </div>
             </ng-container>      

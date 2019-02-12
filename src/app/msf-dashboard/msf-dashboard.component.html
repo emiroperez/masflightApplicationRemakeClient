@@ -6,7 +6,7 @@
           <div class="msf-dashboard-chartbox-close-button">
             <mat-icon class="msf-dashboard-close-icon" aria-label="close" (click)="RemoveChart(column, row)">close</mat-icon>
           </div>
-          <app-msf-dashboard-chartmenu [optionIds]="dashboardChart.optionIds"></app-msf-dashboard-chartmenu>
+          <app-msf-dashboard-chartmenu [values]="dashboardChart" [columnPos]="column" [rowPos]="row"></app-msf-dashboard-chartmenu>
         </div>
       </div>
     </div>
@@ -16,20 +16,20 @@
     Click here to start!
   </div>
   <div class="msf-dashboard-addmenu">
-    <div class="msf-dashboard-addmenu-item" (click)="ToggleDiplayAddChartMenu()">
+    <div class="msf-dashboard-addmenu-item" (click)="ToggleDisplayAddChartMenu()">
       <div class="msf-dashboard-addmenu-item-text">
         <mat-icon class="msf-dashboard-icon" aria-label="add">add</mat-icon>
         <span class="msf-dashboard-addmenu-item-addtext">ADD ROW</span>
       </div>
     </div>
     <div class="msf-dashboard-addmenu-item" *ngIf="displayAddChartMenu">
-      <div class="msf-dashboard-addmenu-item-text"(click)="AddChart(1)">1 Chart</div>
+      <div class="msf-dashboard-addmenu-item-text" (click)="AddChart(1)">1 Chart</div>
     </div>
     <div class="msf-dashboard-addmenu-item" *ngIf="displayAddChartMenu">
-      <div class="msf-dashboard-addmenu-item-text"(click)="AddChart(2)">2 Charts</div>
+      <div class="msf-dashboard-addmenu-item-text" (click)="AddChart(2)">2 Charts</div>
     </div>
     <div class="msf-dashboard-addmenu-item" *ngIf="displayAddChartMenu">
-      <div class="msf-dashboard-addmenu-item-text"(click)="AddChart(3)">3 Charts</div>
+      <div class="msf-dashboard-addmenu-item-text" (click)="AddChart(3)">3 Charts</div>
     </div>
   </div>
 </div>

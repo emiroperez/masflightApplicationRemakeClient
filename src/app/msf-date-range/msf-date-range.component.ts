@@ -25,19 +25,28 @@ export class MsfDateRangeComponent implements OnInit {
   constructor(public globals: Globals) { }
 
   ngOnInit() {
-    
+    this.minDate = this.globals.minDate;
   }
 
   dateChange(event){      
       if(!this.argument.value2){
         this.argument.value2 = this.argument.value1;
       }
+      this.minDate = this.argument.value1;
   }
 
   validateDate(){
       if(this.argument.value1){
         this.argument.value1 = new DatePipe('en-US').transform(this.argument.value1, 'MM/dd/yyyy');
       }    
+  }
+
+  minDate(){
+    if(this.argument.value1!=null){
+        return this.globals.minDate;
+    }else{
+      return this.argument.value1; 
+    }
   }
 
 }

@@ -1,13 +1,13 @@
 <div>
     <div class="center">
-        <div class="msf-component-airport-title">Grouping</div>        
+        <div class="msf-component-airport-title">Summary</div>        
     </div>    
     <div class="msf-airline-container">
         <div class="msf-full-width">   
-        <div class="msf-component-airport-sub-title">Group by</div>         
+        <div class="msf-component-airport-sub-title">Summary by</div>         
         <ng-select
-            [items]="groupingList"
-            [multiple]="false"
+            [items]="summaryList"
+            [multiple]="true"
             loadingText="Loading..."
             [closeOnSelect]="true"
             [hideSelected]="false"
@@ -16,4 +16,4 @@
         </ng-select>          
         </div>
     </div>
-</div>  
+  </div>  

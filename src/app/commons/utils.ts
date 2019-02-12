@@ -117,7 +117,8 @@ export class Utils{
              type == ComponentType.rounding || type ==  ComponentType.resultsLess || type ==  ComponentType.geography 
              || type == ComponentType.filterAirlineType || type == ComponentType.fareIncrements || type == ComponentType.fareIncrementMiddle
              || type == ComponentType.fareIncrementMax ||  type == ComponentType.percentIncrement || type == ComponentType.quarterHour 
-             || type == ComponentType.stops || type == ComponentType.circuityType || type == ComponentType.circuity){
+             || type == ComponentType.stops || type == ComponentType.circuityType || type == ComponentType.circuity
+             || type == ComponentType.groupingHubSummaries || type == ComponentType.groupingDailyStatics || type == ComponentType.groupingOperationsSummary){
             if(typeof value === "string"){
                 return value;
             }
@@ -151,7 +152,8 @@ export class Utils{
                 i++;
             }
             return valueAux;
-        }else if(type == ComponentType.tailnumber || type == ComponentType.summary || type == ComponentType.fareTypes ){
+        }else if(type == ComponentType.tailnumber || type == ComponentType.summary || type == ComponentType.fareTypes 
+            || type == ComponentType.summaryRevenueBuilds){
            var valueAux="";
            var i = 0;
            for(var val of value){
@@ -201,7 +203,7 @@ export class Utils{
                 i++;
             }
             return valueAux;
-          }else if (type == ComponentType.grouping || type == ComponentType.groupingOperationsSummary || type == ComponentType.causesFlightDelaysCheckbox
+          }else if (type == ComponentType.grouping || type == ComponentType.causesFlightDelaysCheckbox
             || type == ComponentType.taxiTimesCheckboxes || type == ComponentType.cancelsCheckBox || type== ComponentType.diversionsCheckbox
             || type  == ComponentType.aircraftTypeCheckboxes || type == ComponentType.sortingNostop || type == ComponentType.sortingConnectionBuilder){
             var valueAux="";
@@ -239,7 +241,7 @@ export class Utils{
                     i++;
                 }
                 return valueAux;
-        }else if (type == ComponentType.datePeriod){
+        }else if (type == ComponentType.datePeriod || type == ComponentType.datePeriodRevenue){
               if(value!=null){
                 if(value.id!=null){
                     return value.id;
@@ -271,7 +273,8 @@ export class Utils{
                  type == ComponentType.rounding ||  type ==  ComponentType.resultsLess || type ==  ComponentType.geography 
                  || type == ComponentType.filterAirlineType || type == ComponentType.fareIncrements || type == ComponentType.fareIncrementMiddle
                  || type == ComponentType.fareIncrementMax || type == ComponentType.percentIncrement || type == ComponentType.quarterHour
-                 || type == ComponentType.stops || type == ComponentType.circuityType || type == ComponentType.circuity){
+                 || type == ComponentType.stops || type == ComponentType.circuityType || type == ComponentType.circuity
+                 || type == ComponentType.groupingHubSummaries || type == ComponentType.groupingDailyStatics || type == ComponentType.groupingOperationsSummary){
                 if(typeof value === "string"){
                     return value;
                 }
@@ -342,9 +345,10 @@ export class Utils{
             }
             return valueAux;
           }else if (type == ComponentType.grouping || type == ComponentType.tailnumber || type == ComponentType.summary 
-            || type == ComponentType.fareTypes || type == ComponentType.groupingOperationsSummary || type == ComponentType.causesFlightDelaysCheckbox 
+            || type == ComponentType.fareTypes || type == ComponentType.causesFlightDelaysCheckbox 
             || type == ComponentType.taxiTimesCheckboxes || type == ComponentType.cancelsCheckBox || type== ComponentType.diversionsCheckbox
-            || type  == ComponentType.aircraftTypeCheckboxes || type == ComponentType.sortingNostop || type == ComponentType.sortingConnectionBuilder){
+            || type  == ComponentType.aircraftTypeCheckboxes || type == ComponentType.sortingNostop || type == ComponentType.sortingConnectionBuilder
+            || type == ComponentType.summaryRevenueBuilds){
             var valueAux="";
             var i = 0;
             for(var val of value){

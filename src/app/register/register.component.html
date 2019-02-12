@@ -86,7 +86,7 @@
                           
                             <ng-select style="min-height: 51.5px;" (change)="CountryChangeEvent($event)" [items]="countries"
                                         bindLabel="name" dropdownPosition= "bottom"
-                                        placeholder="Country" matInput autocomplete="off" class="msf-select-input msf-imput msf-register-select msf-register-select" [formControl]="personalInformationForm.get('countryValidator')" name="country" [(ngModel)]="users.country" [virtualScroll]="true" required>
+                                        placeholder="Country" matInput autocomplete="off" class="msf-select-input msf-imput msf-register-select msf-register-select" [formControl]="personalInformationForm.get('countryValidator')" name="country" [(ngModel)]="users.country"  required>
                             </ng-select>  
                             
                       </li>
@@ -104,7 +104,7 @@
                           </mat-form-field>-->
                           <ng-select [items]="states"
                                       bindLabel="name" dropdownPosition= "bottom"
-                                      placeholder="State" matInput autocomplete="off" class="msf-select-input msf-imput msf-register-select msf-register-select" [formControl]="personalInformationForm.get('stateValidator')" name="state" [(ngModel)]="users.CState" [virtualScroll]="true" required>
+                                      placeholder="State" matInput autocomplete="off" class="msf-select-input msf-imput msf-register-select msf-register-select" [formControl]="personalInformationForm.get('stateValidator')" name="state" [(ngModel)]="users.CState" required>
                           </ng-select>
                           
                       </li>

@@ -68,7 +68,7 @@ export class MsfFareTypesComponent implements OnInit {
       "name":"V - NS service (L+N+P+R)",
       "value":" V - NS service (L+N+P+R)",
       "checked":false},
-      {"id":"F",
+      {"id":"Z",
       "name":"Z - All Service (K+V)",
       "value":"Z - All Service (K+V)",
       "checked":false}

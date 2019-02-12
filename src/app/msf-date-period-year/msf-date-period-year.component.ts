@@ -50,8 +50,14 @@ export class MsfDatePeriodYearComponent implements OnInit {
   @Input("argument") public argument: Arguments;
   
   ngOnInit() {
-    this.date =  new FormControl(moment());
-    this.date2 =  new FormControl(moment());
+    if(this.globals.minDate!=null){
+      this.date =  new FormControl(moment(this.globals.minDate));
+      this.date2 =  new FormControl(moment(this.globals.minDate));
+    }else{
+      this.date =  new FormControl(moment());
+      this.date2 =  new FormControl(moment());
+    }
+
     this.argument.value1 = this.date.value.year();
     this.argument.value2 = this.date2.value.year();
   }
