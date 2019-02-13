@@ -307,32 +307,31 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     return params;
   }
 
-  loadChartData(handlerSuccess, handlerError) {
+  loadChartData(handlerSuccess, handlerError)
+  {
+    let url, urlBase, urlArg;
+
     this.globals.isLoading = true;
-    let urlBase = this.values.currentOptionUrl + "?" + this.getParameters ();
+    urlBase = this.values.currentOptionUrl + "?" + this.getParameters ();
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
     console.log(urlBase);
-    let urlArg = encodeURIComponent(urlBase);
-    let url;
-    if (this.values.currentChartType.id === 'pie' || this.values.currentChartType.id === 'donut')
-    {
-      // put an arbitrary xaxis id until the server application make this optional
-      url = this.service.host + "/getChartData?url=" + urlArg + "&variable=" + this.values.variable.id + "&xaxis=" +
-        1 + "&valueColumn=" + this.values.valueColumn.id + "&function=" + this.values.function.id + "&chartType=pie";
-    }
-    else
-    {
-      url = this.service.host + "/getChartData?url=" + urlArg + "&variable=" + this.values.variable.id + "&xaxis=" +
-        this.values.xaxis.id + "&valueColumn=" + this.values.valueColumn.id + "&function=" + this.values.function.id + "&chartType=pie";
-    }
+    urlArg = encodeURIComponent (urlBase);
+    url = this.service.host + "/getChartData?url=" + urlArg + "&variable=" + this.values.variable.id +
+      "&valueColumn=" + this.values.valueColumn.id + "&function=" + this.values.function.id;
 
-    this.http.get(this, url, handlerSuccess, handlerError, null);
+    // use xaxis if the chart type is not pie or donut
+    if (this.values.currentChartType.id === 'pie' || this.values.currentChartType.id === 'donut')
+      url += "&chartType=pie";
+    else
+      url += "&xaxis=" + this.values.xaxis.id;
+
+    this.http.get (this, url, handlerSuccess, handlerError, null);
   }
 
   loadData()
   {
-    this.globals.startTimestamp = new Date();
-    this.loadChartData(this.handlerSuccess, this.handlerError);
+    this.globals.startTimestamp = new Date ();
+    this.loadChartData (this.handlerSuccess, this.handlerError);
   }
 
   ngOnDestroy()
