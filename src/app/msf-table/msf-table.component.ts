@@ -41,6 +41,8 @@ export class MsfTableComponent implements OnInit {
 
   sortingArgument;
 
+  template;
+
   sortedData: any[];
 
   @ViewChild(MatSort) sort: MatSort;
@@ -217,26 +219,31 @@ export class MsfTableComponent implements OnInit {
       mainElement = [mainElement];
     }
     if( _this.globals.totalRecord > 0){
-      _this.globals.displayedColumns = data.metadata;
-      if(_this.groupingArgument!=null){
-        _this.addGroupingColumns(_this.globals.displayedColumns);
-      }
-      _this.metadata = data.metadata;
-      _this.globals.metadata = data.metadata;
-      console.log( _this.globals.displayedColumns);
-      
-      _this.setColumnsDisplayed(_this);
-      
-      let dataResult = new MatTableDataSource(mainElement);     
-      if( _this.globals.moreResults){
-        if( _this.globals.totalRecord<100){
-          _this.globals.moreResultsBtn = false;
-          _this.globals.moreResults = false;
+      if(_this.globals.currentOption.metaData==1){
+        _this.globals.displayedColumns = data.metadata;
+        if(_this.groupingArgument!=null){
+          _this.addGroupingColumns(_this.globals.displayedColumns);
         }
-          _this.dataSource.data = _this.dataSource.data.concat(dataResult.data);
+        _this.metadata = data.metadata;
+        _this.globals.metadata = data.metadata;
+        console.log( _this.globals.displayedColumns);
+        
+        _this.setColumnsDisplayed(_this);
+        
+        let dataResult = new MatTableDataSource(mainElement);     
+        if( _this.globals.moreResults){
+          if( _this.globals.totalRecord<100){
+            _this.globals.moreResultsBtn = false;
+            _this.globals.moreResults = false;
+          }
+            _this.dataSource.data = _this.dataSource.data.concat(dataResult.data);
+        }else{
+          _this.dataSource = dataResult;
+        }
       }else{
-        _this.dataSource = dataResult;
+        _this.template = data.template;
       }
+      
     }else{
       if( _this.globals.moreResults){
         _this.globals.moreResultsBtn = false;
