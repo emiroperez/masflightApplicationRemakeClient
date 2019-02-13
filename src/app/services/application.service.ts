@@ -12,10 +12,10 @@ export class ApplicationService {
 
   utils: Utils;
 
-  host = "http://localhost:8887";
-  // host = "";
+  // host = "http://localhost:8887";
+  host = "";
 
-  //host1 = "http://localhost:8886";
+  // host1 = "http://localhost:8886";
   host1 = "http://69.64.45.220:8886";
 
   constructor(private http: ApiClient) {
