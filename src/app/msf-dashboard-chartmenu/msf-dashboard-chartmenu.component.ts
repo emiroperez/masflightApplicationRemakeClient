@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, ChangeDetectorRef } from '@angular/core';
 import { AmChartsService } from '@amcharts/amcharts3-angular';
 import { CategoryArguments } from '../model/CategoryArguments';
 import { Globals } from '../globals/Globals';
@@ -35,7 +35,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   chartTypes:any[] = [
     { id: 'column', name: 'Columns' },
     { id: 'line', name: 'Lines' },                      
-    { id: 'area', name: 'Area' }
+    { id: 'area', name: 'Area' },
+    { id: 'pie', name: 'Pie' }
   ];
 
   functions:any[] = [
@@ -69,7 +70,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   constructor(private AmCharts: AmChartsService, public globals: Globals,
     private service: ApplicationService, private http: ApiClient, public dialog: MatDialog,
-    private formBuilder: FormBuilder)
+    private formBuilder: FormBuilder, private cdRef: ChangeDetectorRef)
   {
     this.utils = new Utils();
 
@@ -140,6 +141,34 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   makeOptions(dataProvider)
   {
+    if (this.values.currentChartType.id === 'pie')
+    {
+      return {
+        "type" : "pie",
+        "theme" : "dark",
+        "dataProvider" : dataProvider.dataProvider,
+        "valueField" : dataProvider.valueField,
+        "titleField" : dataProvider.titleField,
+        "colors" : dataProvider.colors,
+        "color" : "#ffffff",
+        "labelColorField" : "#ffffff",
+        "labelTickColor" : "#ffffff",
+        "balloon" :
+        {
+          "fixedPosition" : true
+        },
+        "export" :
+        {
+          "enabled" : true,
+          "position" : "bottom-right"
+        },
+        "chartCursor" :
+        {
+          "cursorPosition" : "mouse"
+        }
+      };
+    }
+
     let parserDate = this.values.xaxis.id.includes ('date');
 
     return {
@@ -158,6 +187,10 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       }],
       "graphs" : this.buildGraphs (dataProvider.filter),
       "plotAreaFillAlphas" : 1,
+      "zoomOutButtonImage" : "lensWhite",
+      "color" : "#ffffff",
+      "zoomOutButtonColor" : "#ffffff",
+      "zoomOutButtonRollOverAlpha" : "0.5",
       "plotAreaFillColors" :"#222222",
       "plotAreaBorderColor" :"#888888",
       "plotAreaBorderAlpha" : 0.4,
@@ -280,6 +313,9 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     let urlArg = encodeURIComponent(urlBase);
     let url = this.service.host + "/getChartData?url=" + urlArg + "&variable=" + this.values.variable.id + "&xaxis=" +
       this.values.xaxis.id + "&valueColumn=" + this.values.valueColumn.id + "&function=" + this.values.function.id;
+    if (this.values.currentChartType.id === 'pie')
+      url += "&chartType=pie";
+
     this.http.get(this, url, handlerSuccess, handlerError, null);
   }
 
@@ -338,7 +374,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     _this.searchChange (_this.xaxisFilterCtrl);
     _this.searchChange (_this.valueFilterCtrl);
 
-    _this.setInitialValue ();
+    //_this.setInitialValue ();
 
     // initiate another query to get the category arguments
     _this.service.loadOptionCategoryArguments (_this, _this.values.currentOption, _this.setCategories, _this.handlerError);
@@ -373,6 +409,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   chartTypeChange(type)
   {
+    // pie and donut types ignores this function
     switch (type.id)
     {
       case 'line':
@@ -451,28 +488,30 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     });
   }
 
-  // save chart data into a temporary value
+  // save chart data into a temporary value by performing a deep copy
   storeChartValues(): void
   {
+    /*
     if (!this.temp)
       this.temp = new MsfDashboardChartValues (this.values.options, this.values.chartName);
     else
     {
-      this.temp.options = this.values.options;
+      this.temp.options = { ...this.values.options };
       this.temp.chartName = this.values.chartName;
     }
 
     this.temp.displayChart = this.values.displayChart;
     this.temp.currentOptionUrl = this.values.currentOptionUrl;
-    this.temp.currentChartType = this.values.currentChartType;
-    this.temp.currentOption = this.values.currentOption;
-    this.temp.currentOptionCategories = this.values.currentOptionCategories;
-    this.temp.variable = this.values.variable;
-    this.temp.xaxis = this.values.xaxis;
-    this.temp.valueColumn = this.values.valueColumn;
-    this.temp.function = this.values.function;
-    this.temp.chart2 = this.values.chart2;
-    this.temp.chartGenerated = this.values.chartGenerated;
+    this.temp.currentChartType = JSON.parse (JSON.stringify (this.values.currentChartType));
+    this.temp.currentOption = JSON.parse (JSON.stringify (this.values.currentOption));
+    this.temp.currentOptionCategories = JSON.parse (JSON.stringify (this.values.currentOptionCategories));
+    this.temp.variable = JSON.parse (JSON.stringify (this.values.variable));
+    this.temp.xaxis = JSON.parse (JSON.stringify (this.values.xaxis));
+    this.temp.valueColumn = JSON.parse (JSON.stringify (this.values.valueColumn));
+    this.temp.function = JSON.parse (JSON.stringify (this.values.function));
+    this.temp.chart2 = this.values.chart2; // this one will be never modified unless the chart is generated again
+    this.temp.chartGenerated = true; // the chart is already generated when returning to the configuration
+    */
   }
 
   goToChartConfiguration(): void
@@ -483,23 +522,25 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   goToChart(): void
   {
-    this.values.displayChart = true;
-
-    // restore values from temp if the user decide to return to the chart
-    // without generating it
-    this.temp.displayChart = true;
-    this.values.options = this.temp.options;
+    /*
+    // discard changes with a deep copy from temp if the user decide to
+    // return to the chart without generating it again
+    this.values.displayChart = this.temp.displayChart = true;
+    this.values.options = { ...this.temp.options };
     this.values.chartName = this.temp.chartName;
     this.values.currentOptionUrl = this.temp.currentOptionUrl;
-    this.values.currentChartType = this.temp.currentChartType;
-    this.values.currentOption = this.temp.currentOption;
-    this.values.currentOptionCategories = this.temp.currentOptionCategories;
-    this.values.variable = this.temp.variable;
-    this.values.xaxis = this.temp.xaxis;
-    this.values.valueColumn = this.temp.valueColumn;
-    this.values.function = this.temp.function;
-    this.values.chart2 = this.temp.chart2;
+    this.values.currentChartType = JSON.parse (JSON.stringify (this.temp.currentChartType));
+    this.values.currentOption = JSON.parse (JSON.stringify (this.temp.currentOption));
+    this.values.currentOptionCategories = JSON.parse (JSON.stringify (this.temp.currentOptionCategories));
+    this.values.variable = JSON.parse (JSON.stringify (this.temp.variable));
+    this.values.xaxis = JSON.parse (JSON.stringify (this.temp.xaxis));
+    this.values.valueColumn = JSON.parse (JSON.stringify (this.temp.valueColumn));
+    this.values.function = JSON.parse (JSON.stringify (this.temp.function));
+    this.values.chart2 = this.temp.chart2; // this one will be never modified unless the chart is generated again
     this.values.chartGenerated = this.temp.chartGenerated;
+
+    this.cdRef.detectChanges();
+    */
   }
 
   checkChartFilters(): void
