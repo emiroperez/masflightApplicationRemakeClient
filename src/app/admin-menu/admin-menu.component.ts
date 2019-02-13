@@ -15,34 +15,41 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 export class EditOutputOptionsMetaDialog {
 
   optionSelected : any;
+  dataToSend : any [] = [];
+  dataToDelete : any [] = [];
 
   constructor(
     public dialogRef: MatDialogRef<EditOutputOptionsMetaDialog>,
-    @Inject(MAT_DIALOG_DATA) public data) { }
+    @Inject(MAT_DIALOG_DATA) public data : {outputs: any, option: any}) { }
 
 
     displayedColumns = ['columnLabel', 'columnName', 'columnType', 'columnFormat', 'grouping'];
-    dataSource = new MatTableDataSource(this.data);
+    dataSource = new MatTableDataSource(this.data.outputs);
 
     addOption() {
-      console.log()
-      this.data.push({
+      this.data.outputs.push({
         id: null,
         checked: false,
         order: 'desc',
-        optionId: this.data[0].optionId,
+        optionId: this.data.option,
         columnLabel: '',
         columnName: '',
         columnType: 'string',
         columnFormat: null,
         grouping: 0,
         delete: false});
-      this.dataSource = new MatTableDataSource(this.data);
+      this.dataSource = new MatTableDataSource(this.data.outputs);
     }
 
     onNoClick(): void {
       this.dialogRef.close();
     }
+
+    sendData() {
+      this.dataToSend = this.data.outputs.concat(this.dataToDelete);
+      this.dialogRef.close(this.dataToSend);
+    }
+
 
     selectRow(row) {
       this.optionSelected = row;
@@ -51,9 +58,10 @@ export class EditOutputOptionsMetaDialog {
   deleteOption() {
     if (this.optionSelected) {
       this.optionSelected.delete = true;
-      const index: number = this.data.findIndex(d => d === this.optionSelected);
-      this.data.splice(index, 1);
-      this.dataSource = new MatTableDataSource(this.data);
+      this.dataToDelete.push(this.optionSelected);
+      const index: number = this.data.outputs.findIndex(d => d === this.optionSelected);
+      this.data.outputs.splice(index, 1);
+      this.dataSource = new MatTableDataSource(this.data.outputs);
     }
   }
 
@@ -224,7 +232,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
       __this.outputs = result;
       const dialogRef = __this.dialog.open(EditOutputOptionsMetaDialog, {
       width: '80%',
-      data: __this.outputs
+      data: {outputs : __this.outputs, option : __this.optionSelected}
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
