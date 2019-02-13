@@ -45,7 +45,7 @@
 <div class="msf-menu-body">
     
     <!--nav-->
-    <div [ngClass]="globals.currentOption === 'dashboard' ? 'msf-menu-hide-full-nav' : 'msf-menu-show-full-nav'">
+    <div [ngClass]="isSimpleContent() ? 'msf-menu-hide-full-nav' : 'msf-menu-show-full-nav'">
         <div [ngClass]="globals.status ? 'msf-menu-nav msf-menu-show-nav' : 'msf-menu-nav msf-menu-hide-nav'" >
             <div [ngClass]="globals.status ? 'msf-menu-components-container-show' : 'msf-menu-components-container-hide'" >
                 <div class="msf-category-container">
@@ -53,7 +53,7 @@
                 </div>            
                 <button [disabled]="disabled()" [ngClass]="disabled()?'msf-menu-search-button-disabled':'msf-menu-search-button-enabled'" (click)="search()">Search</button >
             </div>
-            <div (click)="toogle()" [ngClass]="globals.status ? 'msf-menu-hide-button-open': 'msf-menu-hide-button-close'">
+            <div (click)="toggle()" [ngClass]="globals.status ? 'msf-menu-hide-button-open': 'msf-menu-hide-button-close'">
                 <i *ngIf="globals.status" class="material-icons msf-menu-row-left-icon">chevron_left</i>
                 <i *ngIf="!globals.status" class="material-icons msf-menu-row-right-icon">chevron_right</i>
             </div>
@@ -61,12 +61,12 @@
     </div>
     
     <!--container-->
-    <div *ngIf="globals.currentOption === 'dashboard'" class="msf-menu-content" style="width: 100%">
+    <div *ngIf="isSimpleContent()" class="msf-menu-content" style="width: 100%">
         <div class="msf-menu-internal-simple-content">
             <app-msf-container #msfContainerRef></app-msf-container>
         </div>
     </div>
-    <div [ngClass]="globals.currentOption !== 'dashboard' ? 'msf-menu-show-full-nav-component' : 'msf-menu-hide-full-nav'">
+    <div [ngClass]="!isSimpleContent() ? 'msf-menu-show-full-nav-component' : 'msf-menu-hide-full-nav'">
         <div class="msf-menu-content msf-menu-tabs-content">
             <div class="msf-menu-internal-content">
                 <app-msf-container #msfContainerRef></app-msf-container>

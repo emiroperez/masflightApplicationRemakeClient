@@ -10,7 +10,8 @@
     <div class="msf-dashboard-chartmenu-sub-container-row">
       <mat-form-field class="msf-full-width">
         <mat-select placeholder="Select Data From" [(ngModel)]="values.currentOption" (selectionChange)="loadChartFilterValues($event.value)">
-          <mat-option *ngFor="let option of values.options" [value]="option">
+          <ngx-mat-select-search [formControl]="dataFormFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+          <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
             {{option.name}}
           </mat-option>
         </mat-select>

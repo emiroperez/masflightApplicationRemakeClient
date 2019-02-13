@@ -29,7 +29,8 @@ export class MsfGroupingAthenaComponent implements OnInit {
 
 
   ngOnInit() {
-    this.argument.value1 = [{columnName: 'Marketing_Carrier', columnLabel: 'Marketing Airline',"checked":false, "order":"desc"}];
+    if (!this.argument.value1)
+      this.argument.value1 = [{columnName: 'Marketing_Carrier', columnLabel: 'Marketing Airline',"checked":false, "order":"desc"}];
   }
 
 }
