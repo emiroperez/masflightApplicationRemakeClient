@@ -375,7 +375,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     if (((_this.values.currentChartType.id === 'pie' || _this.values.currentChartType.id === 'donut')
       && data.dataProvider == null) ||
       ((_this.values.currentChartType.id !== 'pie' && _this.values.currentChartType.id !== 'donut')
-      && (data.filter.valueAxis == null || data.filter.valueField == null)))
+      && !data.filter.length))
     {
       // TODO: Display a dialog which mentions that no data is found
       _this.values.chartGenerated = false;
@@ -632,10 +632,11 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     if (this.values.currentOptionCategories == null)
       return;
 
-    this.chartForm.get ('xaxisCtrl').reset ();
-
     if (this.values.currentChartType.id === 'pie' || this.values.currentChartType.id === 'donut')
+    {
+      this.chartForm.get ('xaxisCtrl').reset ();
       this.chartForm.get ('xaxisCtrl').disable ();
+    }
     else
       this.chartForm.get ('xaxisCtrl').enable ();
 
