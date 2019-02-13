@@ -33,9 +33,9 @@
                 </ng-template>
             <app-msf-chart-on-time-delay  #msfChartRef ></app-msf-chart-on-time-delay> 
         </mat-tab> 
-        <mat-tab  *ngIf="globals.dashboard" #tabRef label="Dashboard">
+        <mat-tab *ngIf="globals.dashboard" #tabRef label="Dashboard">
             <app-msf-dashboard  #msfDashboardRef></app-msf-dashboard>
-        </mat-tab> 
+        </mat-tab>
         <mat-tab *ngIf="globals.map"  #tabRef >
                 <ng-template mat-tab-label>
                         Map
