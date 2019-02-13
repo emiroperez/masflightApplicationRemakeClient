@@ -143,7 +143,6 @@ export class ApplicationComponent implements OnInit {
 
   goToDashboard(): void
   {
-    this.globals.dashboard = true;
     this.globals.currentOption = 'dashboard';
   }
 

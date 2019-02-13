@@ -35,7 +35,8 @@ export class MsfDashboardControlVariablesComponent {
       {
         this.argsBefore.open = false;
         this.iconBefore.innerText ="expand_more";
-      }    
+      }
+  
       if (!this.open || (this.open && (this.argsBefore !== argsContainer)))
       {
         argsContainer.open = true;

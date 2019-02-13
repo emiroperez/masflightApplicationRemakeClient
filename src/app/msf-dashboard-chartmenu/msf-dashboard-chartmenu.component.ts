@@ -440,7 +440,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         break;
 
       case 'donut':
-        this.changeChartConfig ('pie', 0, 50);
+        this.changeChartConfig ('pie', 0, 40);
         break;
     }
   }

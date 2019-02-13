@@ -1005,6 +1005,7 @@ button[aria-expanded="true"]
 .msf-menu-body
     width: 100%
     position: fixed
+    display: flex
     height: 100%
 
 .msf-menu-nav
@@ -1018,6 +1019,11 @@ button[aria-expanded="true"]
 .msf-menu-content
     height: 100%
     display: inline-block
+    vertical-align: middle
+
+.msf-menu-internal-simple-content
+    height: 100%
+    width: 100%
     vertical-align: middle
 
 .msf-menu-internal-content
@@ -1092,12 +1098,7 @@ button[aria-expanded="true"]
     overflow: auto
 
 
-
-.msf-menu-content-whith-nav
-    width: calc(100% - 300px)
-    transition: 0.5s
-
-.msf-menu-content-without-nav
+.msf-menu-tabs-content
     width: calc(100% - 20px)
     transition: 0.5s
 
@@ -1108,6 +1109,14 @@ button[aria-expanded="true"]
 .msf-menu-show-nav
     width: 300px
     transition: 0.5s
+
+.msf-menu-hide-full-nav
+    display: none
+
+.msf-menu-show-full-nav
+
+.msf-menu-show-full-nav-component
+    width: 100%
 
 .msf-menu-admin-icon
     vertical-align: middle
@@ -1614,11 +1623,13 @@ mat-tab-group
     font-size: 14px
     text-align: center
     color: #fff
+    background-color: #333333
     display: flex
     flex-direction: column
     width: 100%
     height: 100%
     overflow-y: auto
+    transition: 0.5s
     .msf-dashboard-empty
         padding-top: 45px
     .msf-dashboard-addmenu
