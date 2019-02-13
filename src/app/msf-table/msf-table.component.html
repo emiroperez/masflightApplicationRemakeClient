@@ -1,5 +1,5 @@
 
-    <div [style.visibility]="globals.dataSource && globals.currentOption.metaData==1 ? 'visible' : 'hidden'" #TABLE>
+    <div [style.visibility]="globals.dataSource ? 'visible' : 'hidden'" #TABLE>
     <table  #table mat-table  [dataSource]="dataSource" matSort class="mat-elevation-z8 datasource">
     
         <ng-container  [matColumnDef]="column.columnName" *ngFor="let column of metadata">
@@ -17,19 +17,6 @@
 
     <div *ngIf="!globals.dataSource">
         <div class="msf-no-results">Results not available, please select your Filters and click on Search button</div>
-    </div>
-
-    
-    <div *ngIf="globals.dataSource && globals.currentOption.metaData==0 ? 'visible' : 'hidden'" #TABLE>
-        <div class="financial-table-container" *ngFor="let table of template">
-          <div class="financial-title">{{table.title}}</div>
-          <div class="financial-table-item"  *ngFor="let tableItems of table.tableItems">
-            <div class="financial-table-item-label-title">{{tableItems.label}}</div>
-              <div class="financial-table-item-label" *ngFor="let childrenItems of tableItems.children">
-                    {{childrenItems.label}}
-              </div>
-          </div>
-        </div>
     </div>
 
   
