@@ -1,8 +1,8 @@
 <div *ngIf="option && !option.toDelete">
     <!-- {{option.label}} -->
     <button mat-icon-button (click)="toggle(option)" *ngIf="option.children && option.children.length > 0" style="vertical-align: super;">
-    <mat-icon *ngIf="!option.isOpened" style="color: white" aria-label="Toogle">keyboard_arrow_down</mat-icon>
-    <mat-icon *ngIf="option.isOpened" style="color: white" aria-label="Toogle">keyboard_arrow_up</mat-icon>
+    <mat-icon *ngIf="!option.isOpened" style="color: white" aria-label="Toggle">keyboard_arrow_down</mat-icon>
+    <mat-icon *ngIf="option.isOpened" style="color: white" aria-label="Toggle">keyboard_arrow_up</mat-icon>
   </button>
 
     <!-- <div *ngIf="!option.toDelete" (click)="setSelectedOption(option)" #root id="'root' + index" class="msf-item menu-field">

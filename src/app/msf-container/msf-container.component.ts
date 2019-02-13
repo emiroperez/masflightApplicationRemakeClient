@@ -24,9 +24,6 @@ export class MsfContainerComponent implements OnInit {
   @ViewChild('msfMapRef')
   msfMapRef: MsfMapComponent;
 
-  @ViewChild('msfDashboardRef')
-  msfDashboardRef: MsfDashboardComponent;
-
   @ViewChild('msfDynamicTableRef')
   msfDynamicTableRef: MsfDynamicTableComponent;
 

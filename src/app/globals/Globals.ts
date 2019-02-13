@@ -7,12 +7,11 @@ import { Observable } from 'rxjs';
 export class Globals {
   currentOption: any;
   currentMenuCategory: any;
-  currentAgts: any;
+  currentArgs: any;
   isLoading: boolean = false;
   sort: MatSort;
   chart: boolean = false;
   map: boolean = false;
-  dashboard: boolean = false;
   usageStatistics: boolean = false;
   variables;
   values;
@@ -128,7 +127,7 @@ export class Globals {
 
   clearVariables(){
     this.currentOption=null;
-    this.currentAgts=null;
+    this.currentArgs=null;
     this.isLoading = false;
     this.chart = false;
     this.map = false;

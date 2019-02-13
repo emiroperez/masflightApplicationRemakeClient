@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, ChangeDetectorRef } from '@angular/core';
 import { AmChartsService } from '@amcharts/amcharts3-angular';
 import { CategoryArguments } from '../model/CategoryArguments';
 import { Globals } from '../globals/Globals';
@@ -35,7 +35,9 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   chartTypes:any[] = [
     { id: 'column', name: 'Columns' },
     { id: 'line', name: 'Lines' },                      
-    { id: 'area', name: 'Area' }
+    { id: 'area', name: 'Area' },
+    { id: 'pie', name: 'Pie' },
+    { id: 'donut', name: 'Donut' }
   ];
 
   functions:any[] = [
@@ -55,11 +57,13 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   @Input()
   rowPos: number;
 
-  public variableFilterCtrl: FormControl = new FormControl();
-  public xaxisFilterCtrl: FormControl = new FormControl();
-  public valueFilterCtrl: FormControl = new FormControl();
+  public dataFormFilterCtrl: FormControl = new FormControl ();
+  public variableFilterCtrl: FormControl = new FormControl ();
+  public xaxisFilterCtrl: FormControl = new FormControl ();
+  public valueFilterCtrl: FormControl = new FormControl ();
 
   public filteredVariables: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
+  public filteredOptions: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
 
   @ViewChild('variableSelect') variableSelect: MatSelect;
   @ViewChild('xaxisSelect') xaxisSelect: MatSelect;
@@ -69,7 +73,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   constructor(private AmCharts: AmChartsService, public globals: Globals,
     private service: ApplicationService, private http: ApiClient, public dialog: MatDialog,
-    private formBuilder: FormBuilder)
+    private formBuilder: FormBuilder, private cdRef: ChangeDetectorRef)
   {
     this.utils = new Utils();
 
@@ -135,11 +139,41 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         valueField: object.valueField
       });
     }
+
     return graphs;
   }
 
   makeOptions(dataProvider)
   {
+    if (this.values.currentChartType.id === 'pie'
+      || this.values.currentChartType.id === 'donut')
+    {
+      return {
+        "type" : "pie",
+        "theme" : "dark",
+        "dataProvider" : dataProvider.dataProvider,
+        "valueField" : dataProvider.valueField,
+        "titleField" : dataProvider.titleField,
+        "colors" : dataProvider.colors,
+        "color" : "#ffffff",
+        "labelColorField" : "#ffffff",
+        "labelTickColor" : "#ffffff",
+        "balloon" :
+        {
+          "fixedPosition" : true
+        },
+        "export" :
+        {
+          "enabled" : true,
+          "position" : "bottom-right"
+        },
+        "chartCursor" :
+        {
+          "cursorPosition" : "mouse"
+        }
+      };
+    }
+
     let parserDate = this.values.xaxis.id.includes ('date');
 
     return {
@@ -158,6 +192,10 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       }],
       "graphs" : this.buildGraphs (dataProvider.filter),
       "plotAreaFillAlphas" : 1,
+      "zoomOutButtonImage" : "lensWhite",
+      "color" : "#ffffff",
+      "zoomOutButtonColor" : "#ffffff",
+      "zoomOutButtonRollOverAlpha" : "0.5",
       "plotAreaFillColors" :"#222222",
       "plotAreaBorderColor" :"#888888",
       "plotAreaBorderAlpha" : 0.4,
@@ -192,7 +230,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     };
   }
 
-  zoomChart()
+  zoomChart(): void
   {
     let chart = this.values.chart2;
     let lastIndex =  Math.round (chart.dataProvider.length - (chart.dataProvider.length / 2));
@@ -205,26 +243,28 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
     if (this.values.currentChartType == null)
       this.values.currentChartType = this.chartTypes[0];
+
+    this.optionSearchChange (this.dataFormFilterCtrl);
   }
 
-  ngAfterViewInit(): void {
+  ngAfterViewInit(): void
+  {
     if (this.values.chartGenerated)
       this.storeChartValues ();
   }
 
-  // sets the initial value after the filteredBanks are loaded initially
-  setInitialValue()
+  compareFilterValues(): void
   {
     this.filteredVariables
-      .pipe(take(1), takeUntil(this._onDestroy))
-      .subscribe(() => {
+      .pipe (take (1), takeUntil (this._onDestroy))
+      .subscribe (() => {
         this.variableSelect.compareWith = (a: any, b: any) => a.id === b.id;
         this.xaxisSelect.compareWith = (a: any, b: any) => a.id === b.id;
         this.valueSelect.compareWith = (a: any, b: any) => a.id === b.id;
       });
   }
 
-  private filterVariables(filterCtrl)
+  private filterVariables(filterCtrl): void
   {
     if (!this.columns)
       return;
@@ -233,13 +273,32 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     let search = filterCtrl.value;
     if (!search)
     {
-      this.filteredVariables.next(this.columns.slice ());
+      this.filteredVariables.next (this.columns.slice ());
       return;
     }
 
     search = search.toLowerCase ();
     this.filteredVariables.next (
       this.columns.filter (a => a.name.toLowerCase ().indexOf (search) > -1)
+    );
+  }
+
+  private filterOptions(filterCtrl): void
+  {
+    if (!this.values.options)
+      return;
+
+    // get the search keyword
+    let search = filterCtrl.value;
+    if (!search)
+    {
+      this.filteredOptions.next (this.values.options.slice ());
+      return;
+    }
+
+    search = search.toLowerCase ();
+    this.filteredOptions.next (
+      this.values.options.filter (a => a.name.toLowerCase ().indexOf (search) > -1)
     );
   }
 
@@ -272,27 +331,38 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     return params;
   }
 
-  loadChartData(handlerSuccess, handlerError) {
+  loadChartData(handlerSuccess, handlerError): void
+  {
+    let url, urlBase, urlArg;
+
     this.globals.isLoading = true;
-    let urlBase = this.values.currentOptionUrl + "?" + this.getParameters ();
+    urlBase = this.values.currentOptionUrl + "?" + this.getParameters ();
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
-    console.log(urlBase);
-    let urlArg = encodeURIComponent(urlBase);
-    let url = this.service.host + "/getChartData?url=" + urlArg + "&variable=" + this.values.variable.id + "&xaxis=" +
-      this.values.xaxis.id + "&valueColumn=" + this.values.valueColumn.id + "&function=" + this.values.function.id;
-    this.http.get(this, url, handlerSuccess, handlerError, null);
+    console.log (urlBase);
+    urlArg = encodeURIComponent (urlBase);
+    url = this.service.host + "/getChartData?url=" + urlArg + "&variable=" + this.values.variable.id +
+      "&valueColumn=" + this.values.valueColumn.id + "&function=" + this.values.function.id;
+
+    // don't use the xaxis parameter if the chart type is pie or donut
+    if (this.values.currentChartType.id === 'pie' || this.values.currentChartType.id === 'donut')
+      url += "&chartType=pie";
+    else
+      url += "&xaxis=" + this.values.xaxis.id;
+
+    this.http.get (this, url, handlerSuccess, handlerError, null);
   }
 
-  loadData()
+  loadData(): void
   {
-    this.globals.startTimestamp = new Date();
-    this.loadChartData(this.handlerSuccess, this.handlerError);
+    this.globals.startTimestamp = new Date ();
+    this.compareFilterValues ();
+    this.loadChartData (this.handlerSuccess, this.handleChartError);
   }
 
   ngOnDestroy()
   {
-    this._onDestroy.next();
-    this._onDestroy.complete();
+    this._onDestroy.next ();
+    this._onDestroy.complete ();
 
     clearInterval (this.timer);
 
@@ -300,8 +370,19 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       this.AmCharts.destroyChart (this.values.chart2);
   }
 
-  handlerSuccess(_this,data)
+  handlerSuccess(_this, data): void
   {
+    if (((_this.values.currentChartType.id === 'pie' || _this.values.currentChartType.id === 'donut')
+      && data.dataProvider == null) ||
+      ((_this.values.currentChartType.id !== 'pie' && _this.values.currentChartType.id !== 'donut')
+      && !data.filter.length))
+    {
+      // TODO: Display a dialog which mentions that no data is found
+      _this.values.chartGenerated = false;
+      _this.globals.isLoading = false;
+      return;
+    }
+
     _this.values.chart2 = _this.AmCharts.makeChart ("msf-dashboard-chart-display-" + _this.columnPos + "-" + _this.rowPos, _this.makeOptions(data));
     _this.values.chart2.addListener ("dataUpdated", _this.zoomChart);
     _this.chartTypeChange (_this.values.currentChartType);
@@ -310,25 +391,33 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     _this.globals.isLoading = false;
   }
 
-  loadChartFilterValues (component)
+  loadChartFilterValues(component): void
   {
     this.globals.isLoading = true;
     this.getChartFilterValues (component.id, this.addChartFilterValues);
     this.values.currentOptionUrl = component.baseUrl;
   }
 
-  handlerError(_this,result)
+  handleChartError(_this, result): void
   {
-    console.log(result);
+    // TODO: Display a dialog that display the message
+    console.log (result);
+    _this.values.chartGenerated = false;
     _this.globals.isLoading = false;  
   }
 
-  getChartFilterValues(id, handlerSuccess)
+  handlerError(_this, result): void
+  {
+    console.log (result);
+    _this.globals.isLoading = false;  
+  }
+
+  getChartFilterValues(id, handlerSuccess): void
   {
     this.service.getChartFilterValues (this, id, handlerSuccess, this.handlerError);
   }
 
-  addChartFilterValues(_this, data)
+  addChartFilterValues(_this, data): void
   {
     _this.columns = [];
     for (let columnConfig of data)
@@ -338,13 +427,11 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     _this.searchChange (_this.xaxisFilterCtrl);
     _this.searchChange (_this.valueFilterCtrl);
 
-    _this.setInitialValue ();
-
     // initiate another query to get the category arguments
     _this.service.loadOptionCategoryArguments (_this, _this.values.currentOption, _this.setCategories, _this.handlerError);
   }
 
-  setCategories(_this, data)
+  setCategories(_this, data): void
   {
     _this.values.currentOptionCategories = [];
     for (let optionCategory of data)
@@ -353,52 +440,85 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     _this.globals.isLoading = false;
 
     _this.chartForm.get ('variableCtrl').enable ();
-    _this.chartForm.get ('xaxisCtrl').enable ();
+
+    if (_this.values.currentChartType.id !== 'pie' && _this.values.currentChartType.id !== 'donut')
+      _this.chartForm.get ('xaxisCtrl').enable ();
+
     _this.chartForm.get ('valueCtrl').enable ();
 
     _this.variableCtrlBtnEnabled = true;
   }
 
-  searchChange(filterCtrl)
+  searchChange(filterCtrl): void
   {
     // load the initial airport list
-    this.filteredVariables.next(this.columns.slice());
+    this.filteredVariables.next(this.columns.slice ());
     // listen for search field value changes
     filterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterVariables(filterCtrl);
+      .pipe (takeUntil (this._onDestroy))
+      .subscribe (() => {
+        this.filterVariables (filterCtrl);
       });
   }
 
-  chartTypeChange(type)
+  optionSearchChange(filterCtrl): void
+  {
+    // load the initial airport list
+    this.filteredOptions.next(this.values.options.slice ());
+    // listen for search field value changes
+    filterCtrl.valueChanges
+      .pipe (takeUntil (this._onDestroy))
+      .subscribe (() => {
+        this.filterOptions (filterCtrl);
+      });
+  }
+
+  chartTypeChange(type): void
   {
     switch (type.id)
     {
       case 'line':
-        this.changeChartConfig('line', 1, 0);
+        this.changeChartConfig ('line', 1, 0);
         break;
 
       case 'area':
-        this.changeChartConfig('line', 1, 0.3);
+        this.changeChartConfig ('line', 1, 0.3);
         break;
 
       case 'column':
-        this.changeChartConfig('column', 0, 0.9);
+        this.changeChartConfig ('column', 0, 0.9);
+        break;
+
+      case 'pie':
+        this.changeChartConfig ('pie', 0, 0);
+        break;
+
+      case 'donut':
+        this.changeChartConfig ('pie', 0, 40);
         break;
     }
   }
 
-  changeChartConfig(type, lineAlpha, fillAlphas)
+  changeChartConfig(type, param1, param2): void
   {
-    for (let graph of this.values.chart2.graphs)
+    if (type === 'pie')
     {
-      graph.type = type;
-      graph.lineAlpha = lineAlpha;
-      graph.fillAlphas = fillAlphas;
+      let graph = this.values.chart2;
+
+      graph.radius = param1;
+      graph.innerRadius = param2;
+    }
+    else
+    {
+      for (let graph of this.values.chart2.graphs)
+      {
+        graph.type = type;
+        graph.lineAlpha = param1;
+        graph.fillAlphas = param2;
+      }
     }
       
-    this.values.chart2.validateNow();
+    this.values.chart2.validateNow ();
   }
 
   haveSortingCheckboxes(): boolean
@@ -451,62 +571,98 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     });
   }
 
-  // save chart data into a temporary value
+  // save chart data into a temporary value by performing a deep copy
   storeChartValues(): void
   {
+    /*
     if (!this.temp)
       this.temp = new MsfDashboardChartValues (this.values.options, this.values.chartName);
     else
     {
-      this.temp.options = this.values.options;
+      this.temp.options = { ...this.values.options };
       this.temp.chartName = this.values.chartName;
     }
 
     this.temp.displayChart = this.values.displayChart;
     this.temp.currentOptionUrl = this.values.currentOptionUrl;
-    this.temp.currentChartType = this.values.currentChartType;
-    this.temp.currentOption = this.values.currentOption;
-    this.temp.currentOptionCategories = this.values.currentOptionCategories;
-    this.temp.variable = this.values.variable;
-    this.temp.xaxis = this.values.xaxis;
-    this.temp.valueColumn = this.values.valueColumn;
-    this.temp.function = this.values.function;
-    this.temp.chart2 = this.values.chart2;
-    this.temp.chartGenerated = this.values.chartGenerated;
+    this.temp.currentChartType = JSON.parse (JSON.stringify (this.values.currentChartType));
+    this.temp.currentOption = JSON.parse (JSON.stringify (this.values.currentOption));
+    this.temp.currentOptionCategories = JSON.parse (JSON.stringify (this.values.currentOptionCategories));
+    this.temp.variable = JSON.parse (JSON.stringify (this.values.variable));
+    this.temp.xaxis = JSON.parse (JSON.stringify (this.values.xaxis));
+    this.temp.valueColumn = JSON.parse (JSON.stringify (this.values.valueColumn));
+    this.temp.function = JSON.parse (JSON.stringify (this.values.function));
+    this.temp.chart2 = this.values.chart2; // this one will be never modified unless the chart is generated again
+    this.temp.chartGenerated = true; // the chart is already generated when returning to the configuration
+    */
   }
 
   goToChartConfiguration(): void
   {
     this.values.displayChart = false;
-    this.storeChartValues();
+    this.storeChartValues ();
   }
 
   goToChart(): void
   {
-    this.values.displayChart = true;
-
-    // restore values from temp if the user decide to return to the chart
-    // without generating it
-    this.temp.displayChart = true;
-    this.values.options = this.temp.options;
+    /*
+    // discard changes with a deep copy from temp if the user decide to
+    // return to the chart without generating it again
+    this.values.displayChart = this.temp.displayChart = true;
+    this.values.options = { ...this.temp.options };
     this.values.chartName = this.temp.chartName;
     this.values.currentOptionUrl = this.temp.currentOptionUrl;
-    this.values.currentChartType = this.temp.currentChartType;
-    this.values.currentOption = this.temp.currentOption;
-    this.values.currentOptionCategories = this.temp.currentOptionCategories;
-    this.values.variable = this.temp.variable;
-    this.values.xaxis = this.temp.xaxis;
-    this.values.valueColumn = this.temp.valueColumn;
-    this.values.function = this.temp.function;
-    this.values.chart2 = this.temp.chart2;
+    this.values.currentChartType = JSON.parse (JSON.stringify (this.temp.currentChartType));
+    this.values.currentOption = JSON.parse (JSON.stringify (this.temp.currentOption));
+    this.values.currentOptionCategories = JSON.parse (JSON.stringify (this.temp.currentOptionCategories));
+    this.values.variable = JSON.parse (JSON.stringify (this.temp.variable));
+    this.values.xaxis = JSON.parse (JSON.stringify (this.temp.xaxis));
+    this.values.valueColumn = JSON.parse (JSON.stringify (this.temp.valueColumn));
+    this.values.function = JSON.parse (JSON.stringify (this.temp.function));
+    this.values.chart2 = this.temp.chart2; // this one will be never modified unless the chart is generated again
     this.values.chartGenerated = this.temp.chartGenerated;
+
+    this.cdRef.detectChanges();
+    */
+  }
+
+  // check if the x axis should be enabled or not depending of the chart type
+  checkChartType(): void
+  {
+    if (this.values.currentOptionCategories == null)
+      return;
+
+    if (this.values.currentChartType.id === 'pie' || this.values.currentChartType.id === 'donut')
+    {
+      this.chartForm.get ('xaxisCtrl').reset ();
+      this.chartForm.get ('xaxisCtrl').disable ();
+    }
+    else
+      this.chartForm.get ('xaxisCtrl').enable ();
+
+    // check the chart filters to see if the chart generation is to be enabled or not
+    this.checkChartFilters ();
   }
 
   checkChartFilters(): void
   {
-    if (this.values.variable != null && this.values.xaxis != null && this.values.valueColumn != null)
-      this.generateBtnEnabled = true;
+    if (this.values.currentChartType.id === 'pie' || this.values.currentChartType.id === 'donut')
+    {
+      if (this.values.variable != null && this.values.valueColumn != null)
+      {
+        this.generateBtnEnabled = true;
+        return;
+      }
+    }
     else
-      this.generateBtnEnabled = false;
+    {
+      if (this.values.variable != null && this.values.xaxis != null && this.values.valueColumn != null)
+      {
+        this.generateBtnEnabled = true;
+        return;
+      }
+    }
+
+    this.generateBtnEnabled = false;
   }
 }
