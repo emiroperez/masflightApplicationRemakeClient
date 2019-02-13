@@ -57,11 +57,13 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   @Input()
   rowPos: number;
 
+  public dataFormFilterCtrl: FormControl = new FormControl ();
   public variableFilterCtrl: FormControl = new FormControl ();
   public xaxisFilterCtrl: FormControl = new FormControl ();
   public valueFilterCtrl: FormControl = new FormControl ();
 
   public filteredVariables: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
+  public filteredOptions: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
 
   @ViewChild('variableSelect') variableSelect: MatSelect;
   @ViewChild('xaxisSelect') xaxisSelect: MatSelect;
@@ -241,6 +243,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
     if (this.values.currentChartType == null)
       this.values.currentChartType = this.chartTypes[0];
+
+    this.optionSearchChange (this.dataFormFilterCtrl);
   }
 
   ngAfterViewInit(): void
@@ -269,13 +273,32 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     let search = filterCtrl.value;
     if (!search)
     {
-      this.filteredVariables.next(this.columns.slice ());
+      this.filteredVariables.next (this.columns.slice ());
       return;
     }
 
     search = search.toLowerCase ();
     this.filteredVariables.next (
       this.columns.filter (a => a.name.toLowerCase ().indexOf (search) > -1)
+    );
+  }
+
+  private filterOptions(filterCtrl): void
+  {
+    if (!this.values.options)
+      return;
+
+    // get the search keyword
+    let search = filterCtrl.value;
+    if (!search)
+    {
+      this.filteredOptions.next (this.values.options.slice ());
+      return;
+    }
+
+    search = search.toLowerCase ();
+    this.filteredOptions.next (
+      this.values.options.filter (a => a.name.toLowerCase ().indexOf (search) > -1)
     );
   }
 
@@ -333,7 +356,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   {
     this.globals.startTimestamp = new Date ();
     this.compareFilterValues ();
-    this.loadChartData (this.handlerSuccess, this.handlerError);
+    this.loadChartData (this.handlerSuccess, this.handleChartError);
   }
 
   ngOnDestroy()
@@ -347,8 +370,19 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       this.AmCharts.destroyChart (this.values.chart2);
   }
 
-  handlerSuccess(_this,data): void
+  handlerSuccess(_this, data): void
   {
+    if (((_this.values.currentChartType.id === 'pie' || _this.values.currentChartType.id === 'donut')
+      && data.dataProvider == null) ||
+      ((_this.values.currentChartType.id !== 'pie' && _this.values.currentChartType.id !== 'donut')
+      && (data.filter.valueAxis == null || data.filter.valueField == null)))
+    {
+      // TODO: Display a dialog which mentions that no data is found
+      _this.values.chartGenerated = false;
+      _this.globals.isLoading = false;
+      return;
+    }
+
     _this.values.chart2 = _this.AmCharts.makeChart ("msf-dashboard-chart-display-" + _this.columnPos + "-" + _this.rowPos, _this.makeOptions(data));
     _this.values.chart2.addListener ("dataUpdated", _this.zoomChart);
     _this.chartTypeChange (_this.values.currentChartType);
@@ -357,14 +391,22 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     _this.globals.isLoading = false;
   }
 
-  loadChartFilterValues (component): void
+  loadChartFilterValues(component): void
   {
     this.globals.isLoading = true;
     this.getChartFilterValues (component.id, this.addChartFilterValues);
     this.values.currentOptionUrl = component.baseUrl;
   }
 
-  handlerError(_this,result): void
+  handleChartError(_this, result): void
+  {
+    // TODO: Display a dialog that display the message
+    console.log (result);
+    _this.values.chartGenerated = false;
+    _this.globals.isLoading = false;  
+  }
+
+  handlerError(_this, result): void
   {
     console.log (result);
     _this.globals.isLoading = false;  
@@ -416,6 +458,18 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       .pipe (takeUntil (this._onDestroy))
       .subscribe (() => {
         this.filterVariables (filterCtrl);
+      });
+  }
+
+  optionSearchChange(filterCtrl): void
+  {
+    // load the initial airport list
+    this.filteredOptions.next(this.values.options.slice ());
+    // listen for search field value changes
+    filterCtrl.valueChanges
+      .pipe (takeUntil (this._onDestroy))
+      .subscribe (() => {
+        this.filterOptions (filterCtrl);
       });
   }
 

@@ -19,13 +19,13 @@ export class MsfDashboardComponent implements OnInit {
 
   ngOnInit()
   {
-    this.getDataOptions(this.globals.currentApplication.id);
+    this.getDataOptions (this.globals.currentApplication.id);
   }
 
   getDataOptions(applicationId): void
   {
     this.globals.isLoading = true;
-    this.service.getDataOptions(this, applicationId, this.addFilterOptions, this.handlerError);
+    this.service.getMenuString (this, applicationId, "", this.addFilterOptions, this.handlerError);
   }
 
   // store any data option depending of the application id
@@ -37,9 +37,9 @@ export class MsfDashboardComponent implements OnInit {
     {
       _this.options.push (
       {
-        id: columnConfig.option.id,
-        name: columnConfig.option.label,
-        baseUrl: columnConfig.option.baseUrl
+        id: columnConfig.id,
+        name: columnConfig.string,
+        baseUrl: columnConfig.url
       });
     }
   }
