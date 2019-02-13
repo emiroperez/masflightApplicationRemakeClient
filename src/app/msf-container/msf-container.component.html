@@ -1,5 +1,5 @@
 
-<ng-container *ngIf="globals.currentOption">
+<ng-container *ngIf="globals.currentOption && globals.currentOption !== 'dashboard'">
     <mat-tab-group [selectedIndex]="globals.getSelectedIndex()" #tabs>
         <mat-tab *ngIf="globals.showWelcome" label="Welcome" style="height: 100%;">
             <app-option-welcome></app-option-welcome> 
@@ -11,7 +11,8 @@
                 </ng-template>
             <app-current-query-summary></app-current-query-summary> 
         </mat-tab>
-        <mat-tab *ngIf="globals.tab">
+        <mat-tab>
+        <!-- <mat-tab *ngIf="globals.tab"> -->
             <ng-template mat-tab-label>
                     {{globals.currentOption.tab}} <mat-icon (click)="closeTab(2)" class="close-icon">close</mat-icon> 
             </ng-template>
@@ -33,9 +34,6 @@
                 </ng-template>
             <app-msf-chart-on-time-delay  #msfChartRef ></app-msf-chart-on-time-delay> 
         </mat-tab> 
-        <mat-tab *ngIf="globals.dashboard" #tabRef label="Dashboard">
-            <app-msf-dashboard  #msfDashboardRef></app-msf-dashboard>
-        </mat-tab>
         <mat-tab *ngIf="globals.map"  #tabRef >
                 <ng-template mat-tab-label>
                         Map
@@ -46,4 +44,5 @@
         
     </mat-tab-group>
 </ng-container>
+<app-msf-dashboard *ngIf="globals.currentOption === 'dashboard'"></app-msf-dashboard>
 <app-intro *ngIf="!globals.currentOption"></app-intro>
