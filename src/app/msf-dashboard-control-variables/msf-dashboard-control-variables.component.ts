@@ -29,257 +29,383 @@ export class MsfDashboardControlVariablesComponent {
       this.dialogRef.close ();
     }
 
-    componentClickHandler(argsContainer, icon){
-      if(this.argsBefore){
+    componentClickHandler(argsContainer, icon): void
+    {
+      if (this.argsBefore)
+      {
         this.argsBefore.open = false;
         this.iconBefore.innerText ="expand_more";
       }    
-      if(!this.open || (this.open && (this.argsBefore !==argsContainer))){
+      if (!this.open || (this.open && (this.argsBefore !== argsContainer)))
+      {
         argsContainer.open = true;
         icon.innerText ="expand_less";
         this.open = true;
-      }else{
+      }
+      else
+      {
         argsContainer.open = false;
         icon.innerText ="expand_more";
         this.open = false;
-      }    
+      }
+
       this.globals.currentAgts = argsContainer;
       this.iconBefore = icon;
       this.argsBefore = argsContainer;
     }
     
-    isAirportRoute(argument: Arguments){
+    isAirportRoute(argument: Arguments) : boolean
+    {
       return ComponentType.airportRoute == argument.type;
     }
     
-    isAirport(argument: Arguments){
+    isAirport(argument: Arguments) : boolean
+    {
       return ComponentType.airport == argument.type;
     }
     
-    isTimeRange(argument: Arguments){
+    isTimeRange(argument: Arguments) : boolean
+    {
       return ComponentType.timeRange == argument.type;
     }
     
-    isDateRange(argument: Arguments){
+    isDateRange(argument: Arguments) : boolean
+    {
       return ComponentType.dateRange == argument.type;
     }
     
-    isCeiling(argument: Arguments){
+    isCeiling(argument: Arguments) : boolean
+    {
       return ComponentType.ceiling == argument.type;
     }
-    
-    isWindSpeed(argument: Arguments){
+
+    isWindSpeed(argument: Arguments) : boolean
+    {
       return ComponentType.windSpeed == argument.type;
     }
-    
-    isTemperature(argument: Arguments){
+
+    isTemperature(argument: Arguments) : boolean
+    {
       return ComponentType.temperature == argument.type;
     }
-    
-    isWindDirection(argument: Arguments){
+
+    isWindDirection(argument: Arguments) : boolean
+    {
       return ComponentType.windDirection == argument.type;
     }
-    
-    isAirline(argument: Arguments){
+
+    isAirline(argument: Arguments) : boolean
+    {
       return ComponentType.airline == argument.type;
     }
-    
-    isSingleAirline(argument: Arguments){
+
+    isSingleAirline(argument: Arguments) : boolean
+    {
       return ComponentType.singleairline == argument.type;
     }
-    
-    isTailNumber(argument: Arguments){
+
+    isTailNumber(argument: Arguments) : boolean
+    {
       return ComponentType.tailnumber == argument.type;
     }
-    
-    isAircraftType(argument: Arguments){
+
+    isAircraftType(argument: Arguments) : boolean
+    {
       return ComponentType.aircraftType == argument.type;
     }
-    
-    isFlightNumberType(argument: Arguments){
+
+    isFlightNumberType(argument: Arguments) : boolean
+    {
       return ComponentType.flightNumber == argument.type;
     }
-    
-    isGrouping(argument: Arguments){
+
+    isGrouping(argument: Arguments) : boolean
+    {
       return ComponentType.grouping == argument.type;
     }
-    
-    isRounding(argument: Arguments){
+
+    isRounding(argument: Arguments) : boolean
+    {
       return ComponentType.rounding == argument.type;
     }
-    
-    isDate(argument: Arguments){
+
+    isDate(argument: Arguments) : boolean
+    {
       return ComponentType.date == argument.type;
     }
-    
-    isCancelled(argument: Arguments){
+
+    isCancelled(argument: Arguments) : boolean
+    {
       return ComponentType.cancelled == argument.type;
     }
-    
-    isUserList(argument: Arguments){
+
+    isUserList(argument: Arguments) : boolean
+    {
       return ComponentType.userList == argument.type;
     }
-    
-    isOptionList(argument: Arguments){
+
+    isOptionList(argument: Arguments) : boolean
+    {
       return ComponentType.optionList == argument.type;
     }
-    
-    isMsFreeTextInput(argument: Arguments){
+
+    isMsFreeTextInput(argument: Arguments) : boolean
+    {
       return ComponentType.freeTextInput == argument.type;
     }
-    
-    isSelectBoxSingleOption(argument: Arguments){
+
+    isSelectBoxSingleOption(argument: Arguments) : boolean
+    {
       return ComponentType.selectBoxSingleOption == argument.type;
     }
-    
-    isSelectBoxMultipleOption(argument: Arguments){
+
+    isSelectBoxMultipleOption(argument: Arguments) : boolean
+    {
       return ComponentType.selectBoxMultipleOption == argument.type;
     }
-    isDatePicker(argument: Arguments){
+
+    isDatePicker(argument: Arguments) : boolean
+    {
       return ComponentType.datePicker == argument.type;
     }
-    isTimePicker(argument: Arguments){
+
+    isTimePicker(argument: Arguments) : boolean
+    {
       return ComponentType.timePicker == argument.type;
     }
-    isDateTimePicker(argument: Arguments){
+
+    isDateTimePicker(argument: Arguments) : boolean
+    {
       return ComponentType.dateTimePicker == argument.type;
     }
-    isCheckBox(argument: Arguments){
+
+    isCheckBox(argument: Arguments) : boolean
+    {
       return ComponentType.checkBox == argument.type;
     }
-    isCancelsCheckBox(argument: Arguments){
+
+    isCancelsCheckBox(argument: Arguments) : boolean
+    {
       return ComponentType.cancelsCheckBox == argument.type;
     }
-    isDiversionsCheckBox(argument: Arguments){
+
+    isDiversionsCheckBox(argument: Arguments) : boolean
+    {
       return ComponentType.diversionsCheckbox == argument.type;
     }
-    isFlightDelaysCheckBox(argument: Arguments){
+
+    isFlightDelaysCheckBox(argument: Arguments) : boolean
+    {
       return ComponentType.flightDelaysCheckbox == argument.type;
     }
-    isCausesFlightDelaysCheckBox(argument: Arguments){
+
+    isCausesFlightDelaysCheckBox(argument: Arguments) : boolean
+    {
       return ComponentType.causesFlightDelaysCheckbox == argument.type;
     }
-    isTaxiTimes(argument: Arguments){
+
+    isTaxiTimes(argument: Arguments) : boolean
+    {
       return ComponentType.taxiTimes == argument.type;
     }
-    isTaxiTimesCheckbox(argument: Arguments){
+
+    isTaxiTimesCheckbox(argument: Arguments) : boolean
+    {
       return ComponentType.taxiTimesCheckbox == argument.type;
     }
-    isTaxiTimesCheckboxes(argument: Arguments){
+
+    isTaxiTimesCheckboxes(argument: Arguments) : boolean
+    {
       return ComponentType.taxiTimesCheckboxes == argument.type;
     }
-    isDatePeriod(argument: Arguments){
+
+    isDatePeriod(argument: Arguments) : boolean
+    {
       return ComponentType.datePeriod == argument.type;
     }
-    isRegion(argument: Arguments){
+
+    isRegion(argument: Arguments) : boolean
+    {
       return ComponentType.region == argument.type;
     }
-    isDatePeriodYear(argument: Arguments){
+
+    isDatePeriodYear(argument: Arguments) : boolean
+    {
       return ComponentType.datePeriodYear == argument.type;
     }
-    isDatePeriodYearMonth(argument: Arguments){
+
+    isDatePeriodYearMonth(argument: Arguments) : boolean
+    {
       return ComponentType.datePeriodYearMonth == argument.type;
     }
-    isSortingCheckboxes(argument: Arguments){
+
+    isSortingCheckboxes(argument: Arguments) : boolean
+    {
       return ComponentType.sortingCheckboxes == argument.type;
     }
-    isGroupingAthena(argument: Arguments){
+
+    isGroupingAthena(argument: Arguments) : boolean
+    {
       return ComponentType.groupingAthena == argument.type;
     }
-    isFlightDistance(argument: Arguments){
+
+    isFlightDistance(argument: Arguments) : boolean
+    {
       return ComponentType.flightDistance == argument.type;
     }
-    isFareTypes(argument: Arguments){
+
+    isFareTypes(argument: Arguments) : boolean
+    {
       return ComponentType.fareTypes == argument.type;
     }
-    isServiceClasses(argument: Arguments){
+
+    isServiceClasses(argument: Arguments) : boolean
+    {
       return ComponentType.serviceClasses == argument.type;
     }
-    isSummary(argument: Arguments){
+
+    isSummary(argument: Arguments) : boolean
+    {
       return ComponentType.summary == argument.type;
     }
-    isResultsLess(argument: Arguments){
+
+    isResultsLess(argument: Arguments) : boolean
+    {
       return ComponentType.resultsLess == argument.type;
     }
-    isGeography(argument: Arguments){
+
+    isGeography(argument: Arguments) : boolean
+    {
       return ComponentType.geography == argument.type;
     }
-    isExcludeFollowing(argument: Arguments){
+
+    isExcludeFollowing(argument: Arguments) : boolean
+    {
       return ComponentType.excludeFollowing == argument.type;
     }
-    isSIngleCheckbox(argument: Arguments){
+
+    isSIngleCheckbox(argument: Arguments) : boolean
+    {
       return ComponentType.singleCheckbox == argument.type;
     }
-    isExcludeItineraries(argument: Arguments){
+
+    isExcludeItineraries(argument: Arguments) : boolean
+    {
       return ComponentType.excludeItineraries == argument.type;
     }
-    isFilterAirlineType(argument: Arguments){
+
+    isFilterAirlineType(argument: Arguments) : boolean
+    {
       return ComponentType.filterAirlineType == argument.type;
     }
-    isFareIncrements(argument: Arguments){
+
+    isFareIncrements(argument: Arguments) : boolean
+    {
       return ComponentType.fareIncrements == argument.type;
     }
-    isFareIncrementMiddle(argument: Arguments){
+
+    isFareIncrementMiddle(argument: Arguments) : boolean
+    {
       return ComponentType.fareIncrementMiddle == argument.type;
     }
-    isFareIncrementMax(argument: Arguments){
+
+    isFareIncrementMax(argument: Arguments) : boolean
+    {
       return ComponentType.fareIncrementMax == argument.type;
     }
-    isArgumentTitle(argument: Arguments){
+
+    isArgumentTitle(argument: Arguments) : boolean
+    {
       return ComponentType.title == argument.type;
     }
-    isAirportsRoutes(argument: Arguments){
+
+    isAirportsRoutes(argument: Arguments) : boolean
+    {
       return ComponentType.airportsRoutes == argument.type;
     }
-    isFaresLower(argument: Arguments){
+
+    isFaresLower(argument: Arguments) : boolean
+    {
       return ComponentType.fareLower == argument.type;
     }
-    isPercentIncrement(argument: Arguments){
+
+    isPercentIncrement(argument: Arguments) : boolean
+    {
       return ComponentType.percentIncrement == argument.type;
     }
-    isGroupingDailyStatics(argument: Arguments){
+
+    isGroupingDailyStatics(argument: Arguments) : boolean
+    {
       return ComponentType.groupingDailyStatics == argument.type;
     }
-    isQuarterHour(argument: Arguments){
+
+    isQuarterHour(argument: Arguments) : boolean
+    {
       return ComponentType.quarterHour == argument.type;
     }
-    isFunctions(argument: Arguments){
+
+    isFunctions(argument: Arguments) : boolean
+    {
       return ComponentType.functions == argument.type;
     }
-    isGroupingOperationsSummary(argument: Arguments){
+
+    isGroupingOperationsSummary(argument: Arguments) : boolean
+    {
       return ComponentType.groupingOperationsSummary == argument.type;
     }
-    isGroupingHubSummaries(argument: Arguments){
+
+    isGroupingHubSummaries(argument: Arguments) : boolean
+    {
       return ComponentType.groupingHubSummaries == argument.type;
     }
-    isRegionSchedule(argument: Arguments){
+
+    isRegionSchedule(argument: Arguments) : boolean
+    {
       return ComponentType.regionSchedule == argument.type;
     }
-    isAircraftTypeCheckboxes(argument: Arguments){
+
+    isAircraftTypeCheckboxes(argument: Arguments) : boolean
+    {
       return ComponentType.aircraftTypeCheckboxes == argument.type;
     }
-    isSeats(argument: Arguments){
+
+    isSeats(argument: Arguments) : boolean
+    {
       return ComponentType.seats == argument.type;
     }
-    isSortingNonstop(argument: Arguments){
+
+    isSortingNonstop(argument: Arguments) : boolean
+    {
       return ComponentType.sortingNostop == argument.type;
     }
-    isSortingConnectionBuilder(argument: Arguments){
+
+    isSortingConnectionBuilder(argument: Arguments) : boolean
+    {
       return ComponentType.sortingConnectionBuilder == argument.type;
     }
-    isConnectionTime(argument: Arguments){
+
+    isConnectionTime(argument: Arguments) : boolean
+    {
       return ComponentType.connectionTime == argument.type;
     }
-    isStops(argument: Arguments){
+
+    isStops(argument: Arguments) : boolean
+    {
       return ComponentType.stops == argument.type;
     }
-    isCircuityType(argument: Arguments){
+
+    isCircuityType(argument: Arguments) : boolean
+    {
       return ComponentType.circuityType == argument.type;
     }
-    isCircuity(argument: Arguments){
+
+    isCircuity(argument: Arguments) : boolean
+    {
       return ComponentType.circuity == argument.type;
     }
-    isSingleAirport(argument: Arguments){
+
+    isSingleAirport(argument: Arguments) : boolean
+    {
       return ComponentType.singleAirport == argument.type;
     }
 }

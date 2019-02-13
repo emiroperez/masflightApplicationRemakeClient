@@ -57,9 +57,9 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   @Input()
   rowPos: number;
 
-  public variableFilterCtrl: FormControl = new FormControl();
-  public xaxisFilterCtrl: FormControl = new FormControl();
-  public valueFilterCtrl: FormControl = new FormControl();
+  public variableFilterCtrl: FormControl = new FormControl ();
+  public xaxisFilterCtrl: FormControl = new FormControl ();
+  public valueFilterCtrl: FormControl = new FormControl ();
 
   public filteredVariables: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
 
@@ -137,6 +137,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         valueField: object.valueField
       });
     }
+
     return graphs;
   }
 
@@ -227,7 +228,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     };
   }
 
-  zoomChart()
+  zoomChart(): void
   {
     let chart = this.values.chart2;
     let lastIndex =  Math.round (chart.dataProvider.length - (chart.dataProvider.length / 2));
@@ -242,24 +243,24 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       this.values.currentChartType = this.chartTypes[0];
   }
 
-  ngAfterViewInit(): void {
+  ngAfterViewInit(): void
+  {
     if (this.values.chartGenerated)
       this.storeChartValues ();
   }
 
-  // sets the initial value after the filteredBanks are loaded initially
-  setInitialValue()
+  compareFilterValues(): void
   {
     this.filteredVariables
-      .pipe(take(1), takeUntil(this._onDestroy))
-      .subscribe(() => {
+      .pipe (take (1), takeUntil (this._onDestroy))
+      .subscribe (() => {
         this.variableSelect.compareWith = (a: any, b: any) => a.id === b.id;
         this.xaxisSelect.compareWith = (a: any, b: any) => a.id === b.id;
         this.valueSelect.compareWith = (a: any, b: any) => a.id === b.id;
       });
   }
 
-  private filterVariables(filterCtrl)
+  private filterVariables(filterCtrl): void
   {
     if (!this.columns)
       return;
@@ -307,19 +308,19 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     return params;
   }
 
-  loadChartData(handlerSuccess, handlerError)
+  loadChartData(handlerSuccess, handlerError): void
   {
     let url, urlBase, urlArg;
 
     this.globals.isLoading = true;
     urlBase = this.values.currentOptionUrl + "?" + this.getParameters ();
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
-    console.log(urlBase);
+    console.log (urlBase);
     urlArg = encodeURIComponent (urlBase);
     url = this.service.host + "/getChartData?url=" + urlArg + "&variable=" + this.values.variable.id +
       "&valueColumn=" + this.values.valueColumn.id + "&function=" + this.values.function.id;
 
-    // use xaxis if the chart type is not pie or donut
+    // don't use the xaxis parameter if the chart type is pie or donut
     if (this.values.currentChartType.id === 'pie' || this.values.currentChartType.id === 'donut')
       url += "&chartType=pie";
     else
@@ -328,16 +329,17 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     this.http.get (this, url, handlerSuccess, handlerError, null);
   }
 
-  loadData()
+  loadData(): void
   {
     this.globals.startTimestamp = new Date ();
+    this.compareFilterValues ();
     this.loadChartData (this.handlerSuccess, this.handlerError);
   }
 
   ngOnDestroy()
   {
-    this._onDestroy.next();
-    this._onDestroy.complete();
+    this._onDestroy.next ();
+    this._onDestroy.complete ();
 
     clearInterval (this.timer);
 
@@ -345,7 +347,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       this.AmCharts.destroyChart (this.values.chart2);
   }
 
-  handlerSuccess(_this,data)
+  handlerSuccess(_this,data): void
   {
     _this.values.chart2 = _this.AmCharts.makeChart ("msf-dashboard-chart-display-" + _this.columnPos + "-" + _this.rowPos, _this.makeOptions(data));
     _this.values.chart2.addListener ("dataUpdated", _this.zoomChart);
@@ -355,25 +357,25 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     _this.globals.isLoading = false;
   }
 
-  loadChartFilterValues (component)
+  loadChartFilterValues (component): void
   {
     this.globals.isLoading = true;
     this.getChartFilterValues (component.id, this.addChartFilterValues);
     this.values.currentOptionUrl = component.baseUrl;
   }
 
-  handlerError(_this,result)
+  handlerError(_this,result): void
   {
-    console.log(result);
+    console.log (result);
     _this.globals.isLoading = false;  
   }
 
-  getChartFilterValues(id, handlerSuccess)
+  getChartFilterValues(id, handlerSuccess): void
   {
     this.service.getChartFilterValues (this, id, handlerSuccess, this.handlerError);
   }
 
-  addChartFilterValues(_this, data)
+  addChartFilterValues(_this, data): void
   {
     _this.columns = [];
     for (let columnConfig of data)
@@ -383,13 +385,11 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     _this.searchChange (_this.xaxisFilterCtrl);
     _this.searchChange (_this.valueFilterCtrl);
 
-    //_this.setInitialValue ();
-
     // initiate another query to get the category arguments
     _this.service.loadOptionCategoryArguments (_this, _this.values.currentOption, _this.setCategories, _this.handlerError);
   }
 
-  setCategories(_this, data)
+  setCategories(_this, data): void
   {
     _this.values.currentOptionCategories = [];
     for (let optionCategory of data)
@@ -407,19 +407,19 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     _this.variableCtrlBtnEnabled = true;
   }
 
-  searchChange(filterCtrl)
+  searchChange(filterCtrl): void
   {
     // load the initial airport list
-    this.filteredVariables.next(this.columns.slice());
+    this.filteredVariables.next(this.columns.slice ());
     // listen for search field value changes
     filterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterVariables(filterCtrl);
+      .pipe (takeUntil (this._onDestroy))
+      .subscribe (() => {
+        this.filterVariables (filterCtrl);
       });
   }
 
-  chartTypeChange(type)
+  chartTypeChange(type): void
   {
     switch (type.id)
     {
@@ -445,7 +445,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     }
   }
 
-  changeChartConfig(type, param1, param2)
+  changeChartConfig(type, param1, param2): void
   {
     if (type === 'pie')
     {
@@ -546,7 +546,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   goToChartConfiguration(): void
   {
     this.values.displayChart = false;
-    this.storeChartValues();
+    this.storeChartValues ();
   }
 
   goToChart(): void
@@ -584,6 +584,9 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       this.chartForm.get ('xaxisCtrl').disable ();
     else
       this.chartForm.get ('xaxisCtrl').enable ();
+
+    // check the chart filters to see if the chart generation is to be enabled or not
+    this.checkChartFilters ();
   }
 
   checkChartFilters(): void
