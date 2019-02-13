@@ -50,7 +50,7 @@ export class MsfDashboardControlVariablesComponent {
         this.open = false;
       }
 
-      this.globals.currentAgts = argsContainer;
+      this.globals.currentArgs = argsContainer;
       this.iconBefore = icon;
       this.argsBefore = argsContainer;
     }

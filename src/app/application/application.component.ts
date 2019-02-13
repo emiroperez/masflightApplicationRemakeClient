@@ -56,19 +56,19 @@ export class ApplicationComponent implements OnInit {
     _this.globals.isLoading = false;  
   }
 
-  toogle(){
+toggle(){
     this.status  = !this.status ;
-    if(!this.status && this.globals.currentAgts){
-      this.globals.currentAgts.open=false;
-    }if(this.status && this.globals.currentAgts){
-      this.globals.currentAgts.open=true;
+    if(!this.status && this.globals.currentArgs){
+      this.globals.currentArgs.open=false;
+    }if(this.status && this.globals.currentArgs){
+      this.globals.currentArgs.open=true;
     }
 
     this.globals.status  = !this.globals.status ;
-    if(!this.globals.status && this.globals.currentAgts){
-      this.globals.currentAgts.open=false;
-    }if(this.globals.status && this.globals.currentAgts){
-      this.globals.currentAgts.open=true;
+    if(!this.globals.status && this.globals.currentArgs){
+      this.globals.currentArgs.open=false;
+    }if(this.globals.status && this.globals.currentArgs){
+      this.globals.currentArgs.open=true;
     }
   }
 
@@ -175,4 +175,7 @@ export class ApplicationComponent implements OnInit {
     this.excelService.exportAsExcelFile(this.msfContainerRef.msfTableRef.table, this.globals.currentOption.label);
   }
 
+  isSimpleContent(): boolean {
+    return (this.globals.currentOption === "dashboard" || !this.globals.currentOption);
+  }
 }

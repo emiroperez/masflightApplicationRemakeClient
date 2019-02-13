@@ -38,7 +38,7 @@ export class CurrentQuerySummaryComponent implements OnInit {
       icon.innerText ="expand_more";
       this.open = false;
     }    
-    this.globals.currentAgts = argsContainer;
+    this.globals.currentArgs = argsContainer;
     this.iconBefore = icon;
     this.argsBefore = argsContainer;
   }

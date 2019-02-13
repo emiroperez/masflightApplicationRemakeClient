@@ -1833,7 +1833,7 @@ mat-tab-group {
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100%;
+  height: calc(100% - 90px);
   overflow-y: auto;
   transition: 0.5s;
 }
@@ -1846,6 +1846,7 @@ mat-tab-group {
   border-collapse: collapse;
   margin-left: 40%;
   margin-right: 40%;
+  margin-bottom: 2%;
 }
 .msf-dashboard-container .msf-dashboard-addmenu .msf-dashboard-addmenu-item:hover {
   background-color: #01abec;

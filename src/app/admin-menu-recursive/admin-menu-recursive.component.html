@@ -5,8 +5,8 @@
         <div class="menu-recursive-input" #root id="'root' + index" style="width: 100%" (click)="selectOption(option)">
             <input id="root{{index}}" type="text" autocomplete="off"  matInput class="input-register input-menu-option" [(ngModel)]="option.label" [ngModelOptions]="{standalone: true}">
             <button mat-icon-button (click)="toggle(option)" *ngIf="option.children && option.children.length > 0" style="vertical-align: super; float:right">
-                <mat-icon *ngIf="!option.isOpened" style="color: white" aria-label="Toogle">keyboard_arrow_down</mat-icon>
-                <mat-icon *ngIf="option.isOpened" style="color: white" aria-label="Toogle">keyboard_arrow_up</mat-icon>
+                <mat-icon *ngIf="!option.isOpened" style="color: white" aria-label="Toggle">keyboard_arrow_down</mat-icon>
+                <mat-icon *ngIf="option.isOpened" style="color: white" aria-label="Toggle">keyboard_arrow_up</mat-icon>
               </button>
         </div>
     </div>
