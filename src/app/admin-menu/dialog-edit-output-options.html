@@ -1,5 +1,5 @@
-<div style="color: white !important" mat-dialog-content>
-    <div style="flex: 1; float:right">
+<div style="color: white !important">
+    <div mat-dialog-title style="flex: 1">
         <button mat-icon-button (click)="addOption()">
     <mat-icon style="color: white" aria-label="add">add_circle</mat-icon>
   </button>
@@ -7,7 +7,7 @@
       <mat-icon style="color: white" aria-label="delete">remove_circle</mat-icon>
     </button>
     </div>
-    <div style="flex: 1">
+    <div mat-dialog-content style="flex: 1">
         <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8 datasource welcome-table">
 
             <ng-container matColumnDef="columnLabel">
@@ -31,6 +31,7 @@
                         <mat-option value="string">string</mat-option>
                         <mat-option value="number">number</mat-option>
                         <mat-option value="date">date</mat-option>
+                        <mat-option value="time">time</mat-option>
                     </mat-select>
                 </td>
             </ng-container>
@@ -59,5 +60,5 @@
     </div>
 
     <button mat-button (click)="onNoClick()">Cancel</button>
-    <button mat-button [mat-dialog-close]="data">Save</button>
+    <button mat-button (click)="sendData()">Save</button>
 </div>

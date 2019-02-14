@@ -11,8 +11,8 @@
                 </ng-template>
             <app-current-query-summary></app-current-query-summary> 
         </mat-tab>
-        <mat-tab>
-        <!-- <mat-tab *ngIf="globals.tab"> -->
+        <!-- <mat-tab> -->
+        <mat-tab *ngIf="globals.tab">
             <ng-template mat-tab-label>
                     {{globals.currentOption.tab}} <mat-icon (click)="closeTab(2)" class="close-icon">close</mat-icon> 
             </ng-template>

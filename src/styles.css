@@ -1141,6 +1141,7 @@ button[aria-expanded=true] {
   height: 100%;
   display: inline-block;
   vertical-align: middle;
+  width: calc(100% - 20px);
 }
 
 .msf-menu-internal-simple-content {
@@ -3186,7 +3187,7 @@ table.datasource {
   padding: 10px;
   border: 1px solid #777676;
   border-right: 1px solid #777676;
-  width: 300px;
+  width: 100px;
 }
 
 .financial-result-cell {
@@ -3194,7 +3195,15 @@ table.datasource {
   display: table-cell;
   padding: 10px;
   border: 1px solid #777676;
-  width: auto;
+  width: 70px;
+}
+
+.children-cell {
+  text-indent: 25px;
+}
+
+.parent-cell {
+  text-indent: 10px;
 }
 
 /*# sourceMappingURL=styles.css.map */

@@ -13,7 +13,7 @@ export class MsfGroupingAthenaComponent implements OnInit {
   groupingList: any[] = [
     {columnName: 'Year', columnLabel: 'Year',"checked":false, "order":"desc"},
     {columnName: 'Month', columnLabel: 'Month', "checked":false, "order":"desc"},
-    {columnName: 'Date', columnLabel: 'Day' ,"checked":false, "order":"desc"},
+    {columnName: 'Day', columnLabel: 'Day' ,"checked":false, "order":"desc"},
     {columnName: 'Hour', columnLabel: 'Hour', "checked":false, "order":"desc"},
     {columnName: 'EspecificEquipmentType',columnLabel: 'Specific Equipment Type', "checked":false, "order":"desc"},
     {columnName: 'GeneralEquipmentType',columnLabel: 'General Equipment Type',"checked":false, "order":"desc"},

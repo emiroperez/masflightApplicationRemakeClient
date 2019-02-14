@@ -242,7 +242,6 @@ export class MsfTableComponent implements OnInit {
         }
     }else{
       _this.template = data.template;
-      _this.dataSource = data.Response.Record;
     }
     }else{
       if( _this.globals.moreResults){
@@ -250,7 +249,6 @@ export class MsfTableComponent implements OnInit {
           _this.globals.moreResults = false;
       }
     }  
-    _this.globals.isLoading = false;   
     if(_this.dataSource){
       _this.ref.detectChanges();
       if(_this.sort!=undefined){
@@ -262,6 +260,14 @@ export class MsfTableComponent implements OnInit {
     }else{
       _this.globals.dataSource = false;
     }
+    
+    if(_this.template){
+      _this.globals.template = true;
+      _this.globals.selectedIndex = 2;
+    }else{
+      _this.globals.template = false;
+    }
+    _this.globals.isLoading = false;   
 
   }
 

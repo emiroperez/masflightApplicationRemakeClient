@@ -38,6 +38,7 @@ export class Globals {
   showWelcome : boolean= false;
   status: boolean= false;
   currentAirline: any;
+  template : boolean = false;
 
   initDataSource(){
     if(this.currentMenuCategory!= null){
