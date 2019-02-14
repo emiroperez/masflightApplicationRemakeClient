@@ -1139,6 +1139,7 @@ button[aria-expanded=true] {
 
 .msf-menu-content {
   height: 100%;
+  width: calc(100% - 20px);
   display: inline-block;
   vertical-align: middle;
   width: calc(100% - 20px);

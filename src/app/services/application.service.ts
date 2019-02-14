@@ -213,9 +213,9 @@ export class ApplicationService {
     this.http.get(_this, urlBase, handlerSuccess, handlerError, null);
   }
 
-  getMenuString(_this, applicationId, filter, handlerSuccess, handlerError): void
+  getMenuString(_this, applicationId, handlerSuccess, handlerError): void
   {
-    let url = this.host + "/getMenuString?appId=" + applicationId + "&search=" + filter;
+    let url = this.host + "/getMenuString?appId=" + applicationId;
     this.http.get (_this, url, handlerSuccess, handlerError, null);
   }
 

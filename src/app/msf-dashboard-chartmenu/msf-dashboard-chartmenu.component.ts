@@ -129,7 +129,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     {
       graphs.push
       ({
-        balloonText: "Delay in [[category]] (" + object.valueField + "): <b>[[value]]</b>",
+        balloonText: "[[category]] (" + object.valueField + "): <b>[[value]]</b>",
         fillAlphas: 0.9,
         lineAlpha: 0.2,
         valueAxis: object.valueAxis,
@@ -298,7 +298,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
     search = search.toLowerCase ();
     this.filteredOptions.next (
-      this.values.options.filter (a => a.name.toLowerCase ().indexOf (search) > -1)
+      this.values.options.filter (a => a.nameSearch.toLowerCase ().indexOf (search) > -1)
     );
   }
 
@@ -394,8 +394,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   loadChartFilterValues(component): void
   {
     this.globals.isLoading = true;
-    this.getChartFilterValues (component.id, this.addChartFilterValues);
     this.values.currentOptionUrl = component.baseUrl;
+    this.getChartFilterValues (component.id, this.addChartFilterValues);
   }
 
   handleChartError(_this, result): void
@@ -427,6 +427,12 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     _this.searchChange (_this.xaxisFilterCtrl);
     _this.searchChange (_this.valueFilterCtrl);
 
+    // reset chart filter values and disable generate chart button
+    _this.chartForm.get ('variableCtrl').reset ();
+    _this.chartForm.get ('xaxisCtrl').reset ();
+    _this.chartForm.get ('valueCtrl').reset ();
+    _this.checkChartFilters ();
+
     // initiate another query to get the category arguments
     _this.service.loadOptionCategoryArguments (_this, _this.values.currentOption, _this.setCategories, _this.handlerError);
   }
@@ -434,8 +440,10 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   setCategories(_this, data): void
   {
     _this.values.currentOptionCategories = [];
+
     for (let optionCategory of data)
       _this.values.currentOptionCategories.push (optionCategory.categoryArgumentsId);
+    _this.variableCtrlBtnEnabled = true;
 
     _this.globals.isLoading = false;
 
@@ -445,8 +453,6 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       _this.chartForm.get ('xaxisCtrl').enable ();
 
     _this.chartForm.get ('valueCtrl').enable ();
-
-    _this.variableCtrlBtnEnabled = true;
   }
 
   searchChange(filterCtrl): void
