@@ -33,7 +33,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   columns:any[] = []; 
 
   chartTypes:any[] = [
-    { id: 'column', name: 'Columns' },
+    { id: 'bars', name: 'Bars' },
+    { id: 'hbars', name: 'Horizontal Bars' },
     { id: 'line', name: 'Lines' },                      
     { id: 'area', name: 'Area' },
     { id: 'pie', name: 'Pie' },
@@ -202,6 +203,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       "depth3D" : 0,
       "angle" : 30,
       "categoryField" : this.values.xaxis.id,
+      "rotate" : (this.values.currentChartType.id == 'hbars' ? true : false),
       "categoryAxis" :
       {
         "gridPosition" : "start",
@@ -458,7 +460,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   searchChange(filterCtrl): void
   {
     // load the initial airport list
-    this.filteredVariables.next(this.columns.slice ());
+    this.filteredVariables.next (this.columns.slice ());
     // listen for search field value changes
     filterCtrl.valueChanges
       .pipe (takeUntil (this._onDestroy))
@@ -470,7 +472,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   optionSearchChange(filterCtrl): void
   {
     // load the initial airport list
-    this.filteredOptions.next(this.values.options.slice ());
+    this.filteredOptions.next (this.values.options.slice ());
     // listen for search field value changes
     filterCtrl.valueChanges
       .pipe (takeUntil (this._onDestroy))
@@ -491,7 +493,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         this.changeChartConfig ('line', 1, 0.3);
         break;
 
-      case 'column':
+      case 'bars':
+      case 'hbars':
         this.changeChartConfig ('column', 0, 0.9);
         break;
 
