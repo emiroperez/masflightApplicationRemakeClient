@@ -611,6 +611,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   goToChart(): void
   {
+    this.temp.displayChart = true;
+
     /*
     // discard changes with a deep copy from temp if the user decide to
     // return to the chart without generating it again
