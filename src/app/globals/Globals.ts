@@ -173,7 +173,7 @@ export class Globals {
       this.maxDate = new Date(option.dataAvailability.endDate);
     }else{
       this.minDate = null;
-      this.minDate = null;
+      this.maxDate = null;
     }
   }
 }

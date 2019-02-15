@@ -18,28 +18,28 @@ export class MsfGroupingComponent implements OnInit {
   @Input("argument") public argument: Arguments;
  
   groupingList: any[] = [
-                {id: 'YEAR', name: 'Year', column:'Year'},
-                {id: 'MONTH', name: 'Month', column:'Month'},
-                {id: 'DAY', name: 'Day' ,column:'Day'},
-                {id: 'HOUR', name: 'Hour', column: 'Hour'},
-                {id: 'EQUIPMENTTYPESPECIFIC', name: 'Specific Equipment Type',column:'EspecificEquipmentType'},
-                {id: 'EQUIPMENTTYPEGENERAL', name: 'General Equipment Type',column:'GeneralEquipmentType'},
-                {id: 'OPERATINGAIRLINE', name: 'Operating Airline',column:'OperatingAirline'},                          
-                {id: 'ORIGINAIRPORT', name: 'Origin Airport',column:'Origin'},
-                {id: 'DESTINATIONAIRPORT', name: 'Destination Airport',column:'Destination'},
-                {id: 'FLIGHTNUMBER', name: 'Flight Number',column:'FlightNumber'},
-                {id: 'MARKETINGAIRLINE', name: 'Marketing Airline',column:'Marketing_Carrier'},
-                // {id: 'STATUSCODE', name: 'Status Code',column:'StatusCode'},
-                {id: 'ROUTE', name: 'Route',column:'Route'}
+                {id: 'YEAR', columnLabel: 'Year', columnNamecolumnLabel:'Year'},
+                {id: 'MONTH', columnLabel: 'Month', columnName:'Month'},
+                {id: 'DAY', columnLabel: 'Day' ,columnName:'Day'},
+                {id: 'HOUR', columnLabel: 'Hour', columnName: 'Hour'},
+                {id: 'EQUIPMENTTYPESPECIFIC', columnLabel: 'Specific Equipment Type',columnName:'EspecificEquipmentType'},
+                {id: 'EQUIPMENTTYPEGENERAL', columnLabel: 'General Equipment Type',columnName:'GeneralEquipmentType'},
+                {id: 'OPERATINGAIRLINE', columnLabel: 'Operating Airline',columnName:'OperatingAirline'},                          
+                {id: 'ORIGINAIRPORT', columnLabel: 'Origin Airport',columnName:'Origin'},
+                {id: 'DESTINATIONAIRPORT', columnLabel: 'Destination Airport',columnName:'Destination'},
+                {id: 'FLIGHTNUMBER', columnLabel: 'Flight Number',columnName:'FlightNumber'},
+                {id: 'MARKETINGAIRLINE', columnLabel: 'Marketing Airline',columnName:'Marketing_Carrier'},
+                // {id: 'STATUSCODE', columnLabel: 'Status Code',columnName:'StatusCode'},
+                {id: 'ROUTE', columnLabel: 'Route',columnName:'Route'}
   ];
   constructor(private http: ApiClient, public globals: Globals) { }
 
 
   ngOnInit() { 
     if(this.argument.required){
-      this.argument.value1 = [  {id: 'YEAR', name: 'Year', column:'Year'},
-                                  {id: 'MONTH', name: 'Month', column:'Month'},
-                                    {id: 'DAY', name: 'Day' ,column:'Day'}];
+      this.argument.value1 = [  {id: 'YEAR', columnLabel: 'Year', columnName:'Year'},
+                                  {id: 'MONTH', columnLabel: 'Month', columnName:'Month'},
+                                    {id: 'DAY', columnLabel: 'Day' ,columnName:'Day'}];
     }
   }
 

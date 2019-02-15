@@ -11,14 +11,14 @@ export class MsfGroupingDailyStaticsComponent implements OnInit {
   @Input("argument") public argument: Arguments;
  
   groupingList: any[] = [
-                {id: 'HOUR', name: 'Hour', column: 'Hour'},
-                {id: 'QUARTERHOUR', name: 'Quarter Hour',column:'Quarter Hour'},
+                {id: 'HOUR', columnLabel: 'Hour', columnName: 'Hour'},
+                {id: 'QUARTERHOUR', columnLabel: 'Quarter Hour',columnName:'Quarter Hour'},
   ];
   constructor() { }
 
 
   ngOnInit() { 
-    this.argument.value1= {id: 'HOUR', name: 'Hour', column: 'Hour'};
+    this.argument.value1= {id: 'HOUR', columnLabel: 'Hour', columnName: 'Hour'};
   }
 
 }

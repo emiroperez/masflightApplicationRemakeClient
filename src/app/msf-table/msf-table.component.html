@@ -23,17 +23,16 @@
     <div *ngIf="globals.template && globals.currentOption.metaData==0 && !globals.dataSource" class="financial-container">
         <div class="financial-table-container" *ngFor="let table of template">
           <div class="financial-title">{{table.title}}</div>
-          <div class="financial-table-item"  *ngFor="let tableItems of table.tableItems">
-            <div [ngClass]="tableItems.bold==0 ? 'financial-table-item-label-title' : 'financial-table-item-label-title msf-bold'">
-              <div class="financial-item-cell parent-cell">{{tableItems.label}}</div>
-              <div class="financial-result-cell" *ngFor="let value of tableItems.values">{{value}}</div>
+          <div class="financial-table-item"  *ngFor="let tableItem of table.tableItems">
+            <div [ngClass]="tableItem.bold==0 ? 'financial-table-item-label-title' : 'financial-table-item-label-title msf-bold'">
+              <div [ngClass]="tableItem.subtitle==0 ? 'financial-item-cell parent-cell' : 'no-show'">{{tableItem.label}}</div>
+              <div [ngClass]="tableItem.subtitle==0 ? 'financial-result-cell' : 'no-show'" *ngFor="let valueItem of tableItem.values">{{valueItem.value}}</div>
+              <div [ngClass]="tableItem.subtitle==1 ? 'financial-item-cell parent-cell-subtitle' : 'no-show'" >{{tableItem.label}}</div>
             </div>
-              <div class="financial-table-item"  *ngFor="let childrenItem of tableItems.children">
-                <div [ngClass]="childrenItem.bold==0 ? 'financial-table-item-label-title' : 'financial-table-item-label-title msf-bold'">
-                    <div class="financial-item-cell children-cell">{{childrenItem.label}}</div>
-                    <div class="financial-result-cell" *ngFor="let value of childrenItem.values">{{value}}</div>
-                  </div>
-              </div>
+            <div *ngFor="let childrenItem of tableItem.children" [ngClass]="childrenItem.bold==0 ? 'financial-table-item-label-title' : 'financial-table-item-label-title msf-bold'">
+                <div class="financial-item-cell children-cell">{{childrenItem.label}}</div>
+                <div class="financial-result-cell" *ngFor="let valueItem of childrenItem.values">{{valueItem.value}}</div>
+            </div>
           </div>
         </div>
     </div>

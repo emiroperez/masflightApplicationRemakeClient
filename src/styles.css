@@ -1139,7 +1139,6 @@ button[aria-expanded=true] {
 
 .msf-menu-content {
   height: 100%;
-  width: calc(100% - 20px);
   display: inline-block;
   vertical-align: middle;
   width: calc(100% - 20px);
@@ -3153,6 +3152,8 @@ table.datasource {
 
 .financial-table-container {
   background: white;
+  display: table;
+  width: 100%;
 }
 
 .financial-title {
@@ -3160,16 +3161,18 @@ table.datasource {
   padding: 15px 10px;
   color: white;
   border: 1px solid #777676;
+  display: table-caption;
 }
 
 .financial-table-item-label-title {
   background: white;
-  display: table;
+  display: table-row;
   width: 100%;
 }
 
 .financial-table-item-label {
   background: white;
+  display: table-row;
 }
 
 .msf-bold {
@@ -3177,26 +3180,18 @@ table.datasource {
 }
 
 .financial-item-cell {
-  background: white;
-  padding: 5px;
-  border: 1px solid #777676;
-}
-
-.financial-item-cell {
   display: inline-block;
   display: table-cell;
   padding: 10px;
   border: 1px solid #777676;
-  border-right: 1px solid #777676;
-  width: 100px;
+  min-width: 300px;
 }
 
 .financial-result-cell {
   display: table-cell;
-  display: table-cell;
   padding: 10px;
   border: 1px solid #777676;
-  width: 70px;
+  min-width: 120px;
 }
 
 .children-cell {
@@ -3204,6 +3199,16 @@ table.datasource {
 }
 
 .parent-cell {
+  text-indent: 10px;
+}
+
+.financial-table-item {
+  display: table-row-group;
+  vertical-align: middle;
+  border-color: inherit;
+}
+
+.financial-item-cell.parent-cell-subtitle {
   text-indent: 10px;
 }
 

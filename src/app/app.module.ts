@@ -141,6 +141,7 @@ import { MsfSingleAirportComponent } from './msf-single-airport/msf-single-airpo
 import { MsfDashboardControlVariablesComponent } from './msf-dashboard-control-variables/msf-dashboard-control-variables.component';
 import { MsfSummaryRevenueBuildsComponent } from './msf-summary-revenue-builds/msf-summary-revenue-builds.component';
 import { MsfDatePeriodRevenueComponent } from './msf-date-period-revenue/msf-date-period-revenue.component';
+import { MsfFareIncrementsMarketHistogramsComponent } from './msf-fare-increments-market-histograms/msf-fare-increments-market-histograms.component';
 
 @NgModule({
   declarations: [
@@ -263,7 +264,8 @@ import { MsfDatePeriodRevenueComponent } from './msf-date-period-revenue/msf-dat
     MsfSingleAirportComponent,
     MsfDashboardControlVariablesComponent,
     MsfSummaryRevenueBuildsComponent,
-    MsfDatePeriodRevenueComponent
+    MsfDatePeriodRevenueComponent,
+    MsfFareIncrementsMarketHistogramsComponent
   ],
   imports: [
     BrowserModule,
