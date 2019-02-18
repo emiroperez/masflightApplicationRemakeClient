@@ -293,4 +293,15 @@ export class MsfTableComponent implements OnInit {
     console.log(result);
   }
 
+  getCurrentClass(tableItem:any){
+    var aux ="financial-table-item-label-title";
+    if(tableItem.bold=='1'){
+      aux+=" msf-bold";
+    }
+    if(tableItem.subtitle=='1'){
+      aux+=" parent-cell-subtitle";
+    }
+    return aux;
+  }
+
 }

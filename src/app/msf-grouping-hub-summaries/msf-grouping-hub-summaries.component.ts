@@ -11,14 +11,14 @@ export class MsfGroupingHubSummariesComponent implements OnInit {
   @Input("argument") public argument: Arguments;
  
   groupingList: any[] = [
-                      {id: 'INTERVAL', name: 'Interval', column:'Interval'},
-                      {id: 'RANGE', name: 'Range', column:'Range'}
+                      {id: 'INTERVAL', columnLabel: 'Interval', columnName:'Interval'},
+                      {id: 'RANGE', columnLabel: 'Range', columnName:'Range'}
   ];
   constructor() { }
 
 
   ngOnInit() { 
-    this.argument.value1= {id: 'INTERVAL', name: 'Interval', column:'Interval'};
+    this.argument.value1= {id: 'INTERVAL', columnLabel: 'Interval', columnName:'Interval'};
   }
 
 }

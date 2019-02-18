@@ -18,7 +18,8 @@ export class MenuService {
 
   getMenu(_this,successHandler, errorHandler){
     // let url = "/secure/getMenu?";
-     let url = "http://localhost:8887/getMenu?"
+    //  let url = "http://localhost:8887/getMenu?"
+     let url = "http://192.168.1.131:8887/getMenu?"
     if(_this.globals.currentApplication==undefined){
       _this.globals.currentApplication = JSON.parse(localStorage.getItem("currentApplication"));
     }

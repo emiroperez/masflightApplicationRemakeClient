@@ -91,7 +91,7 @@ body
 
 .msf-body
     width: 100%
-    height: 100%
+    height: calc(100% - 50px)
     background-color: $msf-primary-color
     background-size: cover
     background-image: url(assets/images/fondo2.png)
@@ -125,7 +125,7 @@ body
 
 .msf-content
     width: 100%
-    background-color: black
+    background-color: #161616
     position: absolute
     top: 0px
     bottom: 0
@@ -2092,10 +2092,11 @@ g
 .landing-icon-content
     display: flex
     align-items: center
-    margin-top: 10%
+    height: calc(100% - 105px)
     div
         width: 25%
-        text-align: center
+        text-align: center        
+        height: 100%
         span
             text-align: center
             display: block
@@ -2103,13 +2104,15 @@ g
         img
             cursor: pointer
             outline: none
-            width: 70px
-            height: 70px
+            width: 100%
+            /* height: 70px*/
+            height: calc(100% - 90px)
 
-.landing-name-content
+.landing-name-content 
     display: flex
     align-items: center
     justify-content: center
+    padding: 0 50px
 
 .msf-show-panel2
     opacity: 1
@@ -2818,7 +2821,7 @@ table.datasource
     display: table-cell
     padding: 10px
     border: 1px solid #777676
-    min-width: 300px
+    min-width: 120px
 
 .financial-result-cell 
     display: table-cell
@@ -2827,20 +2830,72 @@ table.datasource
     min-width: 120px
 
 .children-cell
-    text-indent: 25px
+    // padding-left: 25px
 
 .parent-cell
-    text-indent: 10px
+    // padding-left: 10px
 
 .financial-table-item
-    display: table-row-group
     vertical-align: middle
     border-color: inherit
 
 .no-show
     display:none
 
-.financial-item-cell.parent-cell-subtitle 
-    text-indent: 10px
+.parent-cell-subtitle 
+    display: block
 
-				 
+/* kp */
+.msf-container-welcome
+    @extend  .msf-container
+    width: 100% !important
+    left: 0px !important
+    height: calc(100% - 50px)
+
+/* kp */
+.msf-intro-div-image
+    align-items: center
+    float: right
+    margin: 15px 0px
+    width: 90px
+    height: 75px
+
+/* kp */
+.icon-container-bk
+    height: 50px !important
+    background-size: contain !important
+    display: block !important
+    background-repeat: no-repeat
+    margin: 0 !important
+    width: 100% !important
+    background-position: center !important
+
+/* kp */
+.footer-container
+    height: auto !important
+    width: 100%
+    display: flex
+    margin: 20px 0
+    border-right: 1px solid #333
+    transition: background-image 0.2s ease-in-out
+
+/* kp */
+.icon-container
+    width: 100% !important
+    height: calc(100% - 90px) !important    
+    position: relative    
+    background-size: cover
+    background-repeat: no-repeat
+    background-position: center		
+
+/* kp */
+.landing-icon-content2
+    display: flex
+    align-items: center
+    justify-content: center
+    padding: 0 50px
+    height: 14% !important
+
+.cell-value
+    text-align: right
+    width: 100%

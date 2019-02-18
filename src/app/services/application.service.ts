@@ -12,7 +12,8 @@ export class ApplicationService {
 
   utils: Utils;
 
-  host = "http://localhost:8887";
+  // host = "http://localhost:8887";
+  host = "http://192.168.1.131:8887";
   // host = "";
 
   // host1 = "http://localhost:8886";
