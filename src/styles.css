@@ -1922,7 +1922,7 @@ mat-tab-group {
   padding: 10px;
   background-color: #424242;
   overflow-y: visible;
-  min-height: 302px;
+  min-height: 303px;
 }
 .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-row {
   display: flex;
@@ -1982,7 +1982,7 @@ mat-tab-group {
   padding: 10px;
   background-color: #222222;
   overflow-y: visible;
-  min-height: 302px;
+  min-height: 303px;
 }
 .msf-dashboard-chartmenu-container-chart .msf-dashboard-chartmenu-title {
   font-size: 12px;

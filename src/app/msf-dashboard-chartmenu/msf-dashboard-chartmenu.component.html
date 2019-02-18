@@ -41,7 +41,7 @@
         </div>
         <div class="msf-dashboard-chart-op-container">
           <mat-form-field [formGroup]="chartForm" class="msf-full-width">
-            <mat-select formControlName="variableCtrl" placeholder="Analysis by" #variableSelect [(ngModel)]="values.variable" (selectionChange)="checkChartFilters()">
+            <mat-select formControlName="variableCtrl" placeholder="Analysis by" #variableSelect [(value)]="values.variable" (selectionChange)="checkChartFilters()">
               <ngx-mat-select-search [formControl]="variableFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
               <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
                 {{variable.name}}
@@ -56,7 +56,7 @@
         </div>
         <div class="msf-dashboard-chart-op-container">
           <mat-form-field [formGroup]="chartForm" class="msf-full-width">
-            <mat-select formControlName="xaxisCtrl" placeholder="x - Axis" #xaxisSelect [(ngModel)]="values.xaxis" (selectionChange)="checkChartFilters()">
+            <mat-select formControlName="xaxisCtrl" placeholder="x - Axis" #xaxisSelect [(value)]="values.xaxis" (selectionChange)="checkChartFilters()">
               <ngx-mat-select-search [formControl]="xaxisFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
               <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
                 {{variable.name}}
@@ -71,7 +71,7 @@
         </div>
         <div class="msf-dashboard-chart-op-container">
           <mat-form-field [formGroup]="chartForm" class="msf-dashboard-field-valuectrl">
-            <mat-select formControlName="valueCtrl" placeholder="Values" #valueSelect [(ngModel)]="values.valueColumn" (selectionChange)="checkChartFilters()">
+            <mat-select formControlName="valueCtrl" placeholder="Values" #valueSelect [(value)]="values.valueColumn" (selectionChange)="checkChartFilters()">
               <ngx-mat-select-search [formControl]="valueFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
               <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
                 {{variable.name}}
