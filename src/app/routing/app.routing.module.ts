@@ -9,6 +9,7 @@ import { AdminMenuComponent } from '../admin-menu/admin-menu.component';
 import { CreateMempershipsComponent } from '../create-memperships/create-memperships.component';
 import { CategoryArgumentsComponent } from '../category-arguments/category-arguments.component';
 import { MsfTestComponent } from '../msf-test/msf-test.component';
+import { UserActivationComponent } from '../user-activation/user-activation.component';
 
 export const routes: Routes = [
   { path: '', component: LoginScreenComponent },
@@ -18,7 +19,8 @@ export const routes: Routes = [
   { path: 'admin-menu', component: AdminMenuComponent },
   { path: 'create-membership', component: CreateMempershipsComponent },
   { path: 'category-arguments', component: CategoryArgumentsComponent },
-  { path: 'app-msf-test', component: MsfTestComponent}
+  { path: 'app-msf-test', component: MsfTestComponent},
+  { path: 'user-activation', component: UserActivationComponent}
 ];
 
 @NgModule({

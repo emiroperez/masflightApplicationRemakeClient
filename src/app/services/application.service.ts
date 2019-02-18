@@ -28,6 +28,7 @@ export class ApplicationService {
     this.http.get(_this, url, successHandler, errorHandler, null);
   }
 
+
   getMapBoxTracking(_this, successHandler, errorHandler) {
     let params = this.utils.getUrlParameters(_this.globals.currentOption);
     let url = this.host1 + "/getMapBoxTracking?" + params.url;
@@ -83,6 +84,15 @@ export class ApplicationService {
       _this.globals.currentApplication = JSON.parse(localStorage.getItem("currentApplication"));
     }
     let url = this.host + "/getMenuTree?appId=" + _this.globals.currentApplication.id;
+    this.http.get(_this, url, handlerSuccess, handlerError, null);
+  }
+
+  loadAllUsers(_this, handlerSuccess, handlerError) {
+    _this.globals.isLoading = true;
+    if(_this.globals.currentApplication == undefined){
+      _this.globals.currentApplication = JSON.parse(localStorage.getItem("currentApplication"));
+    }
+    let url = this.host + "/getAllUsers";
     this.http.get(_this, url, handlerSuccess, handlerError, null);
   }
 /*
@@ -222,6 +232,6 @@ export class ApplicationService {
   getChartFilterValues(_this, id, handlerSuccess, handlerError)
   {
     let url = this.host + "/getMetaByOptionId?optionId=" + id;
-    this.http.get(_this, url, handlerSuccess, handlerError, null);  
+    this.http.get(_this, url, handlerSuccess, handlerError, null);
   }
 }

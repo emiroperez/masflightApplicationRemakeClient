@@ -1,0 +1,15 @@
+.msf-register-card {
+    width: 85%;
+}
+
+.mat-checkbox-frame {
+    border-color: #2d3436 !important;
+}
+
+.mat-select-value {
+    color: #2d3436;
+}
+
+.mat-select-arrow {
+    color: #2d3436;
+}

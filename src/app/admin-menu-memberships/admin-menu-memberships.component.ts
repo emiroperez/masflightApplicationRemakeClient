@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewEncapsulation} from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { ApplicationService } from '../services/application.service';
 import { Globals } from '../globals/Globals';
@@ -7,6 +7,7 @@ import { Globals } from '../globals/Globals';
   selector: 'app-admin-menu-memberships',
   templateUrl: './admin-menu-memberships.component.html',
   styleUrls: ['./admin-menu-memberships.component.css'],
+  encapsulation: ViewEncapsulation.None,
   animations: [
     trigger('animationOption2', [
       transition(':enter', [
