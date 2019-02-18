@@ -1,6 +1,7 @@
 import { Payment } from "./Payment";
 import { State } from "./State";
 import { County } from "./Country";
+import { UserPlan } from "./UserPlan";
 
 export class User{
     id: string;
@@ -17,10 +18,11 @@ export class User{
     postalCode: string;
     phoneNumber: string;
     payment: Payment;
-    
+    userPlan: UserPlan;
+
 
     constructor(private paymentIn: Payment){
         this.payment = paymentIn;
     }
-   
+
 }

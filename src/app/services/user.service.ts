@@ -19,4 +19,10 @@ export class UserService {
     this.http.post(_this,url,user,successHandler, errorHandler);
   }
 
+  activationUsers(_this,users,successHandler, errorHandler){
+    let url='/saveUsersActivation';
+    //let url='http://localhost:8887/saveUsersActivation';
+    this.http.post(_this,url,users,successHandler, errorHandler);
+  }
+
 }

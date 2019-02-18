@@ -6,34 +6,38 @@
     </div>
     <div class="msf-menu-container">
         <app-menu [menu]="menu"></app-menu>
-    </div>    
-    <div class="msf-header-icons">        
-            <div class="msf-inline msf-vertical-middle">Admin</div>
-            <img src="../../assets/images/ADMIN.png" class="msf-menu-admin-icon">
-            <button mat-icon-button (click)="goToDashboard()">
+    </div>
+    <div class="msf-header-icons">
+        <div class="msf-inline msf-vertical-middle">Admin</div>
+        <img src="../../assets/images/ADMIN.png" class="msf-menu-admin-icon">
+        <button mat-icon-button (click)="goToDashboard()">
                 <mat-icon>dashboard</mat-icon>
             </button>
-            <button mat-icon-button [matMenuTriggerFor]="adminMenu">
+        <button mat-icon-button [matMenuTriggerFor]="adminMenu">
                 <mat-icon>more_vert</mat-icon>
             </button>
-            <mat-menu #adminMenu="matMenu">
-                <button mat-menu-item routerLink="/admin-menu">
+        <mat-menu #adminMenu="matMenu">
+            <button mat-menu-item routerLink="/admin-menu">
                     <mat-icon>settings</mat-icon>
                     <span>Admin Menu</span>
-                </button>  
-                <button mat-menu-item routerLink="/create-membership">
+                </button>
+            <button mat-menu-item routerLink="/create-membership">
                     <mat-icon>settings</mat-icon>
                     <span>Memberships</span>
-                </button>                                
-            </mat-menu>      
+                </button>
+            <button mat-menu-item routerLink="/user-activation">
+                  <mat-icon>settings</mat-icon>
+                  <span>Users Activation</span>
+              </button>
+        </mat-menu>
     </div>
 </div>
 <div class="msf-menu-icons-container">
     <div class="msf-secondary-color msf-menu-icon-container msf-menu-adm">connected as: admin</div>
-    <div class="msf-menu-icon-container">|  {{globals.currentOption ?globals.currentOption.label:''}}</div>
-    <div class="msf-menu-icon-container msf-flex msf-menu-icons-right">        
-        <button [disabled]="!msfContainerRef.msfTableRef || !msfContainerRef.msfTableRef.dataSource || msfContainerRef.msfTableRef.dataSource.length < 0 " class="msf-menu-icon" (click)="dynamicTable()" ><img src="../../assets/images/dynamicTable.png" class="msf-menu-image msf-vertical-middle" ><span  class="msf-vertical-middle">Dynamic Table</span></button>
-        <button [disabled]="!msfContainerRef.msfTableRef || !msfContainerRef.msfTableRef.dataSource || msfContainerRef.msfTableRef.dataSource.length < 0 " class="msf-menu-icon" (click)="openChart()" ><img src="../../assets/images/Chart.png" class="msf-menu-image msf-vertical-middle" ><span  class="msf-vertical-middle">Chart</span></button>
+    <div class="msf-menu-icon-container">| {{globals.currentOption ?globals.currentOption.label:''}}</div>
+    <div class="msf-menu-icon-container msf-flex msf-menu-icons-right">
+        <button [disabled]="!msfContainerRef.msfTableRef || !msfContainerRef.msfTableRef.dataSource || msfContainerRef.msfTableRef.dataSource.length < 0 " class="msf-menu-icon" (click)="dynamicTable()"><img src="../../assets/images/dynamicTable.png" class="msf-menu-image msf-vertical-middle" ><span  class="msf-vertical-middle">Dynamic Table</span></button>
+        <button [disabled]="!msfContainerRef.msfTableRef || !msfContainerRef.msfTableRef.dataSource || msfContainerRef.msfTableRef.dataSource.length < 0 " class="msf-menu-icon" (click)="openChart()"><img src="../../assets/images/Chart.png" class="msf-menu-image msf-vertical-middle" ><span  class="msf-vertical-middle">Chart</span></button>
         <button [disabled]="!msfContainerRef.msfTableRef || !msfContainerRef.msfTableRef.dataSource || msfContainerRef.msfTableRef.dataSource.length < 0 " class="msf-menu-icon"><img src="../../assets/images/ExporttoExcel.png" class="msf-menu-image msf-vertical-middle" ><span  class="msf-vertical-middle" (click)="exportToExcel()">Export Excel</span></button>
         <button class="msf-menu-icon"><img src="../../assets/images/CopytoClipboard.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Copy to Clipboard</span></button>
         <button class="msf-menu-icon"><img src="../../assets/images/LoadingOptions.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Loading Options</span></button>
@@ -43,14 +47,14 @@
 
 <!--body-->
 <div class="msf-menu-body">
-    
+
     <!--nav-->
     <div [ngClass]="isSimpleContent() ? 'msf-menu-hide-full-nav' : 'msf-menu-show-full-nav'">
-        <div [ngClass]="globals.status ? 'msf-menu-nav msf-menu-show-nav' : 'msf-menu-nav msf-menu-hide-nav'" >
-            <div [ngClass]="globals.status ? 'msf-menu-components-container-show' : 'msf-menu-components-container-hide'" >
+        <div [ngClass]="globals.status ? 'msf-menu-nav msf-menu-show-nav' : 'msf-menu-nav msf-menu-hide-nav'">
+            <div [ngClass]="globals.status ? 'msf-menu-components-container-show' : 'msf-menu-components-container-hide'">
                 <div class="msf-category-container">
                     <app-msf-component *ngIf="globals.currentOption && globals.currentOption.menuOptionArguments && globals.currentOption.menuOptionArguments.length > 0 && globals.currentOption.menuOptionArguments[0].categoryArguments.length > 0"></app-msf-component>
-                </div>            
+                </div>
                 <button [disabled]="disabled()" [ngClass]="disabled()?'msf-menu-search-button-disabled':'msf-menu-search-button-enabled'" (click)="search()">Search</button >
             </div>
             <div (click)="toggle()" [ngClass]="globals.status ? 'msf-menu-hide-button-open': 'msf-menu-hide-button-close'">
@@ -59,7 +63,7 @@
             </div>
         </div>
     </div>
-    
+
     <!--container-->
     <div *ngIf="isSimpleContent()" class="msf-menu-content" style="width: 100%">
         <div class="msf-menu-internal-simple-content">
@@ -71,7 +75,7 @@
             <div class="msf-menu-internal-content">
                 <app-msf-container #msfContainerRef></app-msf-container>
             </div>
-            <div [ngClass]="globals.moreResultsBtn ? 'msf-menu-more-button' : 'msf-menu-more-button disabled-more-button'" 
+            <div [ngClass]="globals.moreResultsBtn ? 'msf-menu-more-button' : 'msf-menu-more-button disabled-more-button'"
                 (click)="moreResults()" *ngIf="msfContainerRef.msfTableRef && msfContainerRef.msfTableRef.dataSource">
                 <img style="width: 16px;height: 16px;" src="../../assets/images/more.png" class="msf-menu-image msf-vertical-middle msf-line">
                 <div class="msf-vertical-middle msf-line" style="font-size: 13px">More Result</div>
