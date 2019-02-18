@@ -1,16 +1,11 @@
 <div *ngIf="option && !option.toDelete">
-    <!-- {{option.label}} -->
     <button mat-icon-button (click)="toggle(option)" *ngIf="option.children && option.children.length > 0" style="vertical-align: super;">
     <mat-icon *ngIf="!option.isOpened" style="color: white" aria-label="Toggle">keyboard_arrow_down</mat-icon>
     <mat-icon *ngIf="option.isOpened" style="color: white" aria-label="Toggle">keyboard_arrow_up</mat-icon>
   </button>
 
-    <!-- <div *ngIf="!option.toDelete" (click)="setSelectedOption(option)" #root id="'root' + index" class="msf-item menu-field">
- -->
-    <mat-form-field #root id="'root' + index" class="msf-item menu-field">
-        <mat-checkbox [disabled]="false" color="primary" [(ngModel)]="option.selected"></mat-checkbox>
-        <input matInput id="root{{index}}" type="text" class="input-menu-option" [(ngModel)]="option.label">
-    </mat-form-field>
+
+    <mat-checkbox style="height: 35px" [disabled]="false" color="primary" [(ngModel)]="option.selected" [ngModelOptions]="{standalone: true}">{{ option.label }}</mat-checkbox>
     <div [@animationOption2]="option.isOpened ? 'open': 'close'" *ngIf="option.children && option.children.length > 0 && option.isOpened" style="padding-left: 4%">
         <div *ngFor="let optionChild of option.children; let i = index">
             <app-admin-menu-memberships [menu]="optionChild" [index]="index + '-' + i" (optionSelected)="selectOption($event)" (idSelected)="selectIdDom($event)"></app-admin-menu-memberships>

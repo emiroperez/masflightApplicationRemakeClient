@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Inject, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, Inject, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
 import { FormControl, Validators, FormGroup, FormArray, FormBuilder } from '@angular/forms';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Globals } from '../globals/Globals';
@@ -753,11 +753,15 @@ export class CreateMempershipsComponent implements OnInit {
     if (option.children.length !== 0) {
       for (let i = 0; i < option.children.length; i++) {
         const element = option.children[i];
+        //Validate if selected or not
         for (let j = 0; j < selectedOp.length; j++) {
           if (element.id === selectedOp[j].optionId && !selectedOp[j].delete) {
             element.selected = true;
           }
         }
+        /* *********************** */
+          this.recursiveOptionData(element, selectedOp);
+
       }
     }
   }
