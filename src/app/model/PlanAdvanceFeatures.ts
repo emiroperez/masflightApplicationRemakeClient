@@ -1,8 +1,8 @@
 export class PlanAdvanceFeatures{
-    "id" : string;
-    "planId" : string;
-    "advanceFeatureId" : string;
-    "delete" : boolean;
+    id : string;
+    planId : string;
+    advanceFeatureId : string;
+    delete : boolean;
 
     constructor() {
         this.advanceFeatureId = '';

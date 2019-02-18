@@ -11,6 +11,7 @@ import { MenuService } from '../services/menu.service';
 import { Router } from '@angular/router';
 import {ExcelService} from '../services/excel.service';
 import { MsfTableComponent } from '../msf-table/msf-table.component';
+import { PlanAdvanceFeatures } from '../model/PlanAdvanceFeatures';
 
 
 @Component({
@@ -19,11 +20,15 @@ import { MsfTableComponent } from '../msf-table/msf-table.component';
   styleUrls: ['./application.component.css']
 })
 export class ApplicationComponent implements OnInit {
-  
+
   animal: string;
   name: string;
-
+  chartPlan: boolean;
+  dynamicTablePlan: boolean;
+  exportExcelPlan: boolean;
+  dashboardPlan: boolean;
   menu: Menu;
+  planAdvanceFeatures: any[];
   status: boolean;
   ELEMENT_DATA: any[];
   //displayedColumns: string[] = [];
@@ -33,12 +38,35 @@ export class ApplicationComponent implements OnInit {
   msfContainerRef: MsfContainerComponent;
 
   constructor(public dialog: MatDialog, public globals: Globals, private service: MenuService,private router: Router,private excelService:ExcelService) {
-    this.status = false;    
+    this.status = false;
   }
 
   ngOnInit() {
     this.globals.clearVariables();
     this.getMenu();
+    this.getAdvanceFeatures();
+  }
+
+
+  getAdvanceFeatures(){
+    this.service.getAdvanceFeatures(this,this.handlerSuccessAF,this.handlerErrorAF)
+
+    }
+
+  handlerSuccessAF(_this,data){
+    _this.planAdvanceFeatures = data;
+    _this.planAdvanceFeatures.forEach(item => {
+      item.advanceFeatureId == 1 ? _this.chartPlan = true : false;
+      item.advanceFeatureId == 2 ? _this.dashboardPlan = true : false;
+      item.advanceFeatureId == 3 ? _this.dynamicTablePlan = true : false;
+      item.advanceFeatureId == 4 ? _this.exportExcelPlan = true : false;
+    });
+    _this.globals.isLoading = false;
+  }
+
+  handlerErrorAF(_this,result){
+    console.log(result);
+    _this.globals.isLoading = false;
   }
 
 
@@ -48,13 +76,17 @@ export class ApplicationComponent implements OnInit {
 
   handlerSuccess(_this,data){
     _this.menu = data;
-    _this.globals.isLoading = false; 
+    _this.globals.isLoading = false;
   }
 
   handlerError(_this,result){
     console.log(result);
-    _this.globals.isLoading = false;  
+    _this.globals.isLoading = false;
   }
+
+
+
+
 
 toggle(){
     this.status  = !this.status ;
@@ -75,8 +107,8 @@ toggle(){
   search(){
     this.globals.moreResults = false;
     this.globals.query = true;
-    this.globals.tab = true; 
-    this.globals.isLoading = true; 
+    this.globals.tab = true;
+    this.globals.isLoading = true;
 
     setTimeout(() => {
       this.search2();
@@ -87,33 +119,33 @@ toggle(){
   search2(){
     if(this.globals.currentOption.tabType === 'map'){
       this.globals.map = true;
-      this.msfContainerRef.msfMapRef.getTrackingDataSource();     
+      this.msfContainerRef.msfMapRef.getTrackingDataSource();
     }else if(this.globals.currentOption.tabType === 'usageStatistics'){
       this.msfContainerRef.msfTableRef.getDataUsageStatistics();
     }else{
-      this.msfContainerRef.msfTableRef.getData(false); 
+      this.msfContainerRef.msfTableRef.getData(false);
     }
   }
 
   moreResults(){
     if(this.globals.currentOption.tabType === 'map'){
       this.globals.map = true;
-      this.msfContainerRef.msfMapRef.getTrackingDataSource();       
+      this.msfContainerRef.msfMapRef.getTrackingDataSource();
     }else if(this.globals.currentOption.tabType === 'usageStatistics'){
       this.msfContainerRef.msfTableRef.getDataUsageStatistics();
     }else{
-      this.msfContainerRef.msfTableRef.getData(true); 
-    } 
+      this.msfContainerRef.msfTableRef.getData(true);
+    }
   }
 
 
   disabled(){
     let option:any = this.globals.currentOption;
     let disabled = false;
-    if(option && option.menuOptionArguments){            
+    if(option && option.menuOptionArguments){
       for( let menuOptionArguments of option.menuOptionArguments){
-          if(menuOptionArguments.categoryArguments){   
-            if( menuOptionArguments.categoryArguments){            
+          if(menuOptionArguments.categoryArguments){
+            if( menuOptionArguments.categoryArguments){
               for( let i = 0; i < menuOptionArguments.categoryArguments.length;i++){
                 let category: CategoryArguments = menuOptionArguments.categoryArguments[i];
                 if(category && category.arguments){
@@ -122,16 +154,16 @@ toggle(){
                     if(argument.required){
                       if(argument.value1 == null || (argument.name2 && argument.value2 == null)){
                         return true;
-                      }       
+                      }
                     }
                   }
-                }        
-              }   
-            }   
+                }
+              }
+            }
           }
         }
       }
-    
+
     return disabled;
   }
 
@@ -154,7 +186,7 @@ toggle(){
     this.globals.generateDynamicTable = true;
     const dialogRef = this.dialog.open(MsfDynamicTableVariablesComponent, {
       width: '600px',
-      data: {metadata:this.msfContainerRef.msfTableRef.metadata, variables: this.variables}      
+      data: {metadata:this.msfContainerRef.msfTableRef.metadata, variables: this.variables}
     });
 
     const sub = dialogRef.componentInstance.dynamicTableOpen.subscribe(() => {
