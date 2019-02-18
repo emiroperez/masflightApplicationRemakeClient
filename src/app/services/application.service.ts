@@ -12,10 +12,11 @@ export class ApplicationService {
 
   utils: Utils;
 
-  //host = "http://localhost:8887";
-  host = "";
+  // host = "http://localhost:8887";
+  host = "http://192.168.1.131:8887";
+  // host = "";
 
-  //host1 = "http://localhost:8886";
+  // host1 = "http://localhost:8886";
   host1 = "http://69.64.45.220:8886";
 
   constructor(private http: ApiClient) {
@@ -59,7 +60,7 @@ export class ApplicationService {
     console.log(urlBase);
     let urlArg = encodeURIComponent(urlBase);
     let url = this.host + "/getChartData?url=" + urlArg + "&variable=" + _this.variable.id + "&xaxis=" + _this.xaxis.id + "&valueColumn=" + _this.valueColumn.id + "&function=" + _this.function.id;
-    this.http.get(_this, url, handlerSuccess, handlerError, null);
+    this.http.post(_this, url, null, handlerSuccess, handlerError);
   }
 
 
@@ -229,9 +230,45 @@ export class ApplicationService {
     this.http.get (_this, url, handlerSuccess, handlerError, null);
   }
 
-  getChartFilterValues(_this, id, handlerSuccess, handlerError)
+  getChartFilterValues(_this, id, handlerSuccess, handlerError): void
   {
     let url = this.host + "/getMetaByOptionId?optionId=" + id;
-    this.http.get(_this, url, handlerSuccess, handlerError, null);
+    this.http.get (_this, url, handlerSuccess, handlerError, null);  
   }
+
+  createDashboardPanel(_this, panels, handlerSuccess, handlerError): void
+  {
+    let url = "/addDashboardPanels";
+    if (this.host != "")
+      this.http.post (_this, this.host + url, panels, handlerSuccess, handlerError);
+    else
+      this.http.postSecure (_this, this.host + "/secure" + url, panels, handlerSuccess, handlerError);
+  }
+
+  deleteDashboardPanel(_this, panel, handlerSuccess, handlerError): void
+  {
+    let url = this.host + "/deleteDashboardPanel";
+    this.http.post (_this, url, panel, handlerSuccess, handlerError);
+  }
+
+  deleteDashboardColumn(_this, panel, handlerSuccess, handlerError): void
+  {
+    let url = this.host + "/deleteDashboardColumn";
+    this.http.post (_this, url, panel, handlerSuccess, handlerError);
+  }
+
+  getDashboardPanels(_this, appId, handlerSuccess, handlerError): void
+  {
+    let url = "/getDashboardPanels?appId=" + appId;
+    if (this.host != "")
+      this.http.get (_this, this.host + url, handlerSuccess, handlerError, null);
+    else
+      this.http.getSecure (_this, this.host + "/secure" + url, handlerSuccess, handlerError, null);
+  }
+
+  /*updateDashboardPanel(_this, panelInfo, handlerSucess, handlerError): void
+  {
+    let url = this.host + "/updateDashboardPanel";
+    this.http.post (_this, url, panelInfo, handlerSucess, handlerError);
+  }*/
 }

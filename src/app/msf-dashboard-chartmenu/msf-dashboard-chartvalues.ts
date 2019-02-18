@@ -1,42 +1,70 @@
-import { AmChart } from '@amcharts/amcharts3-angular';
-
-// Object used to mantain data values for each dashboard chart component
+// Object used to mantain data values for each dashboard panel
 export class MsfDashboardChartValues {
     options:any[] = [];
 
-    chart2: AmChart;
+    id: number;
     displayChart: boolean;
     chartGenerated: boolean;
 
     chartName: String;
+    chartColumnOptions:any[] = []; 
     currentOptionUrl: String;
     currentChartType;
     currentOption: any;
     currentOptionCategories: any;
+
+    lastestResponse: string;
 
     variable;
     xaxis;
     valueColumn;
     function;
 
-    constructor(options: any[], chartName: String, displayChart?, currentOptionUrl?: String,
+    constructor(options: any[], chartName: String, id: number, currentOption?: any, chartColumnOptions? : any,
+        variable?, xaxis?, valueColumn?, func?, chartType?, lastestResponse?: string)
+    /*, displayChart?, currentOptionUrl?: String,
         currentChartType?, currentOption?: any, currentOptionCategories?: any, variable?, xaxis?,
-        valueColumn?, func?, chart2?: AmChart, chartGenerated?: boolean)
+        valueColumn?, func?, chart2?: AmChart, chartGenerated?: boolean)*/
     {
         this.options = options;
-
-        // optional parameters, only used when querying for the dashboard tables
-        this.displayChart = displayChart;
         this.chartName = chartName;
-        this.currentOptionUrl = currentOptionUrl;
-        this.currentChartType = currentChartType;
+        this.id = id;
         this.currentOption = currentOption;
-        this.currentOptionCategories = currentOptionCategories;
-        this.variable = variable;
-        this.xaxis = xaxis;
-        this.valueColumn = valueColumn;
-        this.function = func;
-        this.chart2 = chart2;
-        this.chartGenerated = chartGenerated;
+
+        // check if the following parameters are null before parsing the JSON
+        if (chartColumnOptions)
+            this.chartColumnOptions = JSON.parse (chartColumnOptions);
+        else
+            this.chartColumnOptions = null;
+
+        if (variable)
+            this.variable = JSON.parse (variable);
+        else
+            this.variable = null;
+
+        if (xaxis)
+            this.xaxis = JSON.parse (xaxis);
+        else
+            this.xaxis = null;
+
+        if (valueColumn)
+            this.valueColumn = JSON.parse (valueColumn);
+        else
+            this.valueColumn = null;
+
+        if (lastestResponse)
+            this.lastestResponse = JSON.parse (lastestResponse);
+        else
+            this.lastestResponse = null;
+
+        if (func)
+            this.function = JSON.parse (func);
+        else
+            this.function = null;
+
+        if (chartType)
+            this.currentChartType = JSON.parse (chartType);
+        else
+            this.currentChartType = null;
     }
 }

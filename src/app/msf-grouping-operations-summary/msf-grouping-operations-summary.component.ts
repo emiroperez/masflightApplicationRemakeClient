@@ -11,18 +11,18 @@ export class MsfGroupingOperationsSummaryComponent implements OnInit {
   @Input("argument") public argument: Arguments;
  
   groupingList: any[] = [
-                      {id: 'AUTO', name: 'Auto', column:'Auto'},
-                      {id: 'YEAR', name: 'Year', column:'Year'},
-                      {id: 'MONTH', name: 'Month', column:'Month'},
-                      {id: 'DAY', name: 'Day' ,column:'Day'},
-                      {id: 'HOUR', name: 'Hour', column: 'Hour'},
-                      {id: 'QUARTERHOUR', name: 'Quarter Hour',column:'Quarter Hour'}
+                      {id: 'AUTO', columnLabel: 'Auto', columnName:'Auto'},
+                      {id: 'YEAR', columnLabel: 'Year', columnName:'Year'},
+                      {id: 'MONTH', columnLabel: 'Month', columnName:'Month'},
+                      {id: 'DAY', columnLabel: 'Day' ,columnName:'Day'},
+                      {id: 'HOUR', columnLabel: 'Hour', columnName: 'Hour'},
+                      {id: 'QUARTERHOUR', columnLabel: 'Quarter Hour',columnName:'Quarter Hour'}
   ];
   constructor() { }
 
 
   ngOnInit() { 
-    this.argument.value1= {id: 'AUTO', name: 'Auto', column:'Auto'};
+    this.argument.value1= {id: 'AUTO', columnLabel: 'Auto', columnName:'Auto'};
   }
 
 }

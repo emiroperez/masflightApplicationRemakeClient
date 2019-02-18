@@ -58,8 +58,8 @@ export class MsfDatePeriodComponent implements OnInit {
   
   quarter
   ngOnInit() {
-    if(this.globals.minDate!=null){
-      this.date =  new FormControl(moment(this.globals.minDate));
+    if(this.globals.maxDate!=null){
+      this.date =  new FormControl(moment(this.globals.maxDate));
     }else{
       this.date =  new FormControl(moment());
     }

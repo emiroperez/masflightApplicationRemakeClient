@@ -280,4 +280,7 @@ export class MsfComponentComponent implements OnInit {
   isDatePeriodRevenue(argument: Arguments){
     return ComponentType.datePeriodRevenue == argument.type;
   }
+  isFareIncrementsMarketHistograms(argument: Arguments){
+    return ComponentType.fareIncrementsMarketHistograms == argument.type;
+  }
 }

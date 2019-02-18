@@ -142,6 +142,7 @@ import { MsfDashboardControlVariablesComponent } from './msf-dashboard-control-v
 import { MsfSummaryRevenueBuildsComponent } from './msf-summary-revenue-builds/msf-summary-revenue-builds.component';
 import { MsfDatePeriodRevenueComponent } from './msf-date-period-revenue/msf-date-period-revenue.component';
 import { UserActivationComponent } from './user-activation/user-activation.component';
+import { MsfFareIncrementsMarketHistogramsComponent } from './msf-fare-increments-market-histograms/msf-fare-increments-market-histograms.component';
 
 @NgModule({
   declarations: [
@@ -265,7 +266,8 @@ import { UserActivationComponent } from './user-activation/user-activation.compo
     MsfDashboardControlVariablesComponent,
     MsfSummaryRevenueBuildsComponent,
     MsfDatePeriodRevenueComponent,
-    UserActivationComponent
+    UserActivationComponent,
+    MsfFareIncrementsMarketHistogramsComponent
   ],
   imports: [
     BrowserModule,

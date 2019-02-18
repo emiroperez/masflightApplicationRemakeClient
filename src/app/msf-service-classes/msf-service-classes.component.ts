@@ -19,12 +19,12 @@ export class MsfServiceClassesComponent implements OnInit {
     "value":"Economy"},
     {"id":3,
     "name":"Both",
-    "value":"Both"}
+    "value":""}
 ];
   constructor() { }
 
   ngOnInit() {
-    this.argument.value1 = "Both";
+    this.argument.value1 = "";
   }
   
 

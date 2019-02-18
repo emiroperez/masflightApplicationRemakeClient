@@ -43,6 +43,8 @@ export class MsfTableComponent implements OnInit {
 
   sortedData: any[];
 
+  template;
+
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(public globals: Globals, private service: ApplicationService,private ref: ChangeDetectorRef) { }
@@ -66,6 +68,15 @@ export class MsfTableComponent implements OnInit {
                 }
                 if(element2.type=="sortingCheckboxes"){
                   this.sortingArgument = element2;
+                }
+                // if(element2.type=="summaryRevenueBuilds"){
+                //   this.groupingArgument = element2;
+                // }
+                if(element2.type=="summary"){
+                  this.groupingArgument = element2;
+                }
+                if(element2.type=="grouping"){
+                  this.groupingArgument = element2;
                 }
             });
             }
@@ -217,33 +228,36 @@ export class MsfTableComponent implements OnInit {
       mainElement = [mainElement];
     }
     if( _this.globals.totalRecord > 0){
-      _this.globals.displayedColumns = data.metadata;
-      if(_this.groupingArgument!=null){
-        _this.addGroupingColumns(_this.globals.displayedColumns);
-      }
-      _this.metadata = data.metadata;
-      _this.globals.metadata = data.metadata;
-      console.log( _this.globals.displayedColumns);
-      
-      _this.setColumnsDisplayed(_this);
-      
-      let dataResult = new MatTableDataSource(mainElement);     
-      if( _this.globals.moreResults){
-        if( _this.globals.totalRecord<100){
-          _this.globals.moreResultsBtn = false;
-          _this.globals.moreResults = false;
+      if(_this.globals.currentOption.metaData==1){
+        _this.globals.displayedColumns = data.metadata;
+        if(_this.groupingArgument!=null){
+          _this.addGroupingColumns(_this.globals.displayedColumns);
         }
-          _this.dataSource.data = _this.dataSource.data.concat(dataResult.data);
-      }else{
-        _this.dataSource = dataResult;
-      }
+        _this.metadata = data.metadata;
+        _this.globals.metadata = data.metadata;
+        console.log( _this.globals.displayedColumns);
+        
+        _this.setColumnsDisplayed(_this);
+        
+        let dataResult = new MatTableDataSource(mainElement);     
+        if( _this.globals.moreResults){
+          if( _this.globals.totalRecord<100){
+            _this.globals.moreResultsBtn = false;
+            _this.globals.moreResults = false;
+          }
+            _this.dataSource.data = _this.dataSource.data.concat(dataResult.data);
+        }else{
+          _this.dataSource = dataResult;
+        }
+    }else{
+      _this.template = data.template;
+    }
     }else{
       if( _this.globals.moreResults){
         _this.globals.moreResultsBtn = false;
           _this.globals.moreResults = false;
       }
     }  
-    _this.globals.isLoading = false;   
     if(_this.dataSource){
       _this.ref.detectChanges();
       if(_this.sort!=undefined){
@@ -255,6 +269,14 @@ export class MsfTableComponent implements OnInit {
     }else{
       _this.globals.dataSource = false;
     }
+    
+    if(_this.template){
+      _this.globals.template = true;
+      _this.globals.selectedIndex = 2;
+    }else{
+      _this.globals.template = false;
+    }
+    _this.globals.isLoading = false;   
 
   }
 
@@ -264,9 +286,22 @@ export class MsfTableComponent implements OnInit {
       }
   }
 
+
+
   handlerError(_this,result){
     _this.globals.isLoading = false; 
     console.log(result);
+  }
+
+  getCurrentClass(tableItem:any){
+    var aux ="financial-table-item-label-title";
+    if(tableItem.bold=='1'){
+      aux+=" msf-bold";
+    }
+    if(tableItem.subtitle=='1'){
+      aux+=" parent-cell-subtitle";
+    }
+    return aux;
   }
 
 }

@@ -40,7 +40,15 @@ export class Utils{
                             for( let j = 0; j < category.arguments.length;j++){
                                 let argument: Arguments = category.arguments[j];
                                 if(params){
-                                    params += "&" + this.getArguments(argument);
+                                    if(argument.type!="singleCheckbox"&& argument.type!="serviceClasses" && argument.type!="fareLower"){
+                                        params += "&" + this.getArguments(argument);
+                                    }else{
+                                        if(argument.value1!=false && argument.value1!="" &&  argument.value1!=undefined &&  argument.value1!=null){
+                                            params += "&" + this.getArguments(argument);
+                                        }else{
+
+                                        }
+                                    }
                                 }else{
                                     params = this.getArguments(argument);
                                 }
@@ -68,7 +76,15 @@ export class Utils{
                             for( let j = 0; j < category.arguments.length;j++){
                                 let argument: Arguments = category.arguments[j];
                                 if(params){
-                                    params += "&" + this.getArguments(argument);
+                                    if(argument.type!="singleCheckbox"&& argument.type!="serviceClasses" && argument.type!="fareLower"){
+                                        params += "&" + this.getArguments(argument);
+                                    }else{
+                                        if(argument.value1!=false && argument.value1!="" &&  argument.value1!=undefined &&  argument.value1!=null){
+                                            params += "&" + this.getArguments(argument);
+                                        }else{
+
+                                        }
+                                    }
                                 }else{
                                     params = this.getArguments(argument);
                                 }
@@ -84,24 +100,24 @@ export class Utils{
 
     getArguments(argument: Arguments){
         let args='';
-        if(argument.name1){
-            args = argument.name1 + "=" + this.getValueFormat(argument.type, argument.value1);
-        }
-        if(argument.name2){
-            if(args !== ''){
-                args += "&" + argument.name2 + "=" + this.getValueFormat(argument.type, argument.value2);
-            }else{
-                args += argument.name2 + "=" + this.getValueFormat(argument.type, argument.value2);
-            }            
-        }
-        if(argument.name3){
-            if(args !== ''){
-                args += "&" + argument.name3 + "=" + this.getValueFormat(argument.type, argument.value3);
-            }else{
-                args += argument.name3 + "=" + this.getValueFormat(argument.type, argument.value3);
-            }            
-        }
-        return args;
+                if(argument.name1){
+                    args = argument.name1 + "=" + this.getValueFormat(argument.type, argument.value1);
+                }
+                if(argument.name2){
+                    if(args !== ''){
+                        args += "&" + argument.name2 + "=" + this.getValueFormat(argument.type, argument.value2);
+                    }else{
+                        args += argument.name2 + "=" + this.getValueFormat(argument.type, argument.value2);
+                    }            
+                }
+                if(argument.name3){
+                    if(args !== ''){
+                        args += "&" + argument.name3 + "=" + this.getValueFormat(argument.type, argument.value3);
+                    }else{
+                        args += argument.name3 + "=" + this.getValueFormat(argument.type, argument.value3);
+                    }            
+                }
+                return args;
     }
 
     getValueFormat(type: string, value:any){
@@ -118,7 +134,8 @@ export class Utils{
              || type == ComponentType.filterAirlineType || type == ComponentType.fareIncrements || type == ComponentType.fareIncrementMiddle
              || type == ComponentType.fareIncrementMax ||  type == ComponentType.percentIncrement || type == ComponentType.quarterHour 
              || type == ComponentType.stops || type == ComponentType.circuityType || type == ComponentType.circuity
-             || type == ComponentType.groupingHubSummaries || type == ComponentType.groupingDailyStatics || type == ComponentType.groupingOperationsSummary){
+             || type == ComponentType.groupingHubSummaries || type == ComponentType.groupingDailyStatics || type == ComponentType.groupingOperationsSummary
+             || type == ComponentType.fareIncrementsMarketHistograms){
             if(typeof value === "string"){
                 return value;
             }
@@ -241,7 +258,19 @@ export class Utils{
                     i++;
                 }
                 return valueAux;
-        }else if (type == ComponentType.datePeriod || type == ComponentType.datePeriodRevenue){
+        }else if (type == ComponentType.region){
+            var valueAux="";
+            var i = 0;
+            for(var val of value){
+                if(i == 0){
+                    valueAux = val.value;
+                }else{
+                    valueAux += ","+ val.value;
+                }                
+                i++;
+            }
+            return valueAux;
+    }   else if (type == ComponentType.datePeriod || type == ComponentType.datePeriodRevenue){
               if(value!=null){
                 if(value.id!=null){
                     return value.id;
@@ -274,7 +303,8 @@ export class Utils{
                  || type == ComponentType.filterAirlineType || type == ComponentType.fareIncrements || type == ComponentType.fareIncrementMiddle
                  || type == ComponentType.fareIncrementMax || type == ComponentType.percentIncrement || type == ComponentType.quarterHour
                  || type == ComponentType.stops || type == ComponentType.circuityType || type == ComponentType.circuity
-                 || type == ComponentType.groupingHubSummaries || type == ComponentType.groupingDailyStatics || type == ComponentType.groupingOperationsSummary){
+                 || type == ComponentType.groupingHubSummaries || type == ComponentType.groupingDailyStatics || type == ComponentType.groupingOperationsSummary
+                 || type == ComponentType.fareIncrementsMarketHistograms){
                 if(typeof value === "string"){
                     return value;
                 }
@@ -402,7 +432,19 @@ export class Utils{
                 i++;
             }
             return valueAux;
-        }
+        }else if (type == ComponentType.region){
+            var valueAux="";
+            var i = 0;
+            for(var val of value){
+                if(i == 0){
+                    valueAux = val.value;
+                }else{
+                    valueAux += ","+ val.value;
+                }                
+                i++;
+            }
+            return valueAux;
+    } 
             return value;
         }
     };
