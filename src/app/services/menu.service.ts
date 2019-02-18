@@ -17,15 +17,20 @@ export class MenuService {
   constructor( private http: HttpClient) { }
 
   getMenu(_this,successHandler, errorHandler){
-    // let url = "/secure/getMenu?";
-    //  let url = "http://localhost:8887/getMenu?"
-     let url = "http://192.168.1.131:8887/getMenu?"
+    let url = "/secure/getMenu?";
+    //let url = "http://localhost:8887/getMenu?"
     if(_this.globals.currentApplication==undefined){
       _this.globals.currentApplication = JSON.parse(localStorage.getItem("currentApplication"));
     }
     url = url + "application="+_this.globals.currentApplication.id;
     _this.globals.isLoading = true;
     this.get(_this,url,successHandler, errorHandler);
+  }
+
+  getAdvanceFeatures(_this, successHandler, errorHandler){
+    let url = "/secure/getPlanAdvanceFeatures";
+    //let url = "http://localhost:8887/secure/getPlanAdvanceFeatures";
+    this.get(_this, url, successHandler, errorHandler);
   }
 
   createAuthorizationHeader() {
@@ -37,7 +42,7 @@ export class MenuService {
     this.createAuthorizationHeader();
     this.http.get(url,httpOptions).subscribe(result => {
         successHandler(_this,result);
-    }, error => 
+    }, error =>
         errorHandler(_this,error)
   );
   }
@@ -45,7 +50,7 @@ export class MenuService {
   // get = function (_this,url,successHandler, errorHandler){
   //   this.http.get(url).subscribe(result => {
   //       successHandler(_this,result);
-  //   }, error => 
+  //   }, error =>
   //       errorHandler(_this,error)
   // );
   // }
