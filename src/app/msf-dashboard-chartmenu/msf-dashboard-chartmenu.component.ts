@@ -33,7 +33,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   columns:any[] = []; 
 
   chartTypes:any[] = [
-    { id: 'column', name: 'Columns' },
+    { id: 'bars', name: 'Bars' },
+    { id: 'hbars', name: 'Horizontal Bars' },
     { id: 'line', name: 'Lines' },                      
     { id: 'area', name: 'Area' },
     { id: 'pie', name: 'Pie' },
@@ -129,7 +130,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     {
       graphs.push
       ({
-        balloonText: "Delay in [[category]] (" + object.valueField + "): <b>[[value]]</b>",
+        balloonText: "[[category]] (" + object.valueField + "): <b>[[value]]</b>",
         fillAlphas: 0.9,
         lineAlpha: 0.2,
         valueAxis: object.valueAxis,
@@ -202,6 +203,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       "depth3D" : 0,
       "angle" : 30,
       "categoryField" : this.values.xaxis.id,
+      "rotate" : (this.values.currentChartType.id == 'hbars' ? true : false),
       "categoryAxis" :
       {
         "gridPosition" : "start",
@@ -298,7 +300,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
     search = search.toLowerCase ();
     this.filteredOptions.next (
-      this.values.options.filter (a => a.name.toLowerCase ().indexOf (search) > -1)
+      this.values.options.filter (a => a.nameSearch.toLowerCase ().indexOf (search) > -1)
     );
   }
 
@@ -394,8 +396,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   loadChartFilterValues(component): void
   {
     this.globals.isLoading = true;
-    this.getChartFilterValues (component.id, this.addChartFilterValues);
     this.values.currentOptionUrl = component.baseUrl;
+    this.getChartFilterValues (component.id, this.addChartFilterValues);
   }
 
   handleChartError(_this, result): void
@@ -427,6 +429,12 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     _this.searchChange (_this.xaxisFilterCtrl);
     _this.searchChange (_this.valueFilterCtrl);
 
+    // reset chart filter values and disable generate chart button
+    _this.chartForm.get ('variableCtrl').reset ();
+    _this.chartForm.get ('xaxisCtrl').reset ();
+    _this.chartForm.get ('valueCtrl').reset ();
+    _this.checkChartFilters ();
+
     // initiate another query to get the category arguments
     _this.service.loadOptionCategoryArguments (_this, _this.values.currentOption, _this.setCategories, _this.handlerError);
   }
@@ -434,8 +442,10 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   setCategories(_this, data): void
   {
     _this.values.currentOptionCategories = [];
+
     for (let optionCategory of data)
       _this.values.currentOptionCategories.push (optionCategory.categoryArgumentsId);
+    _this.variableCtrlBtnEnabled = true;
 
     _this.globals.isLoading = false;
 
@@ -445,14 +455,12 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       _this.chartForm.get ('xaxisCtrl').enable ();
 
     _this.chartForm.get ('valueCtrl').enable ();
-
-    _this.variableCtrlBtnEnabled = true;
   }
 
   searchChange(filterCtrl): void
   {
     // load the initial airport list
-    this.filteredVariables.next(this.columns.slice ());
+    this.filteredVariables.next (this.columns.slice ());
     // listen for search field value changes
     filterCtrl.valueChanges
       .pipe (takeUntil (this._onDestroy))
@@ -464,7 +472,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   optionSearchChange(filterCtrl): void
   {
     // load the initial airport list
-    this.filteredOptions.next(this.values.options.slice ());
+    this.filteredOptions.next (this.values.options.slice ());
     // listen for search field value changes
     filterCtrl.valueChanges
       .pipe (takeUntil (this._onDestroy))
@@ -485,7 +493,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         this.changeChartConfig ('line', 1, 0.3);
         break;
 
-      case 'column':
+      case 'bars':
+      case 'hbars':
         this.changeChartConfig ('column', 0, 0.9);
         break;
 
@@ -605,6 +614,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   goToChart(): void
   {
+    this.values.displayChart = true;
+
     /*
     // discard changes with a deep copy from temp if the user decide to
     // return to the chart without generating it again
