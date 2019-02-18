@@ -10,8 +10,11 @@ import { ApplicationService } from '../services/application.service';
   styleUrls: ['./msf-dashboard.component.css']
 })
 export class MsfDashboardComponent implements OnInit {
-  dashboardColumns: MsfDashboardChartValues[] = [];
+  dashboardColumns: MsfDashboardChartValues[][] = [];
   options: any[] = [];
+
+  columnToDelete: number;
+  rowToDelete: number;
 
   displayAddChartMenu: boolean = false;
 
@@ -19,13 +22,16 @@ export class MsfDashboardComponent implements OnInit {
 
   ngOnInit()
   {
+    if (this.globals.isLoading)
+      return; // do not query this component twice
+
     this.globals.isLoading = true;
     this.service.getMenuString (this, this.globals.currentApplication.id,
-      this.addFilterOptions, this.handlerError);
+      this.addDataForms, this.handlerError);
   }
 
-  // store any data option depending of the application id
-  addFilterOptions(_this, data): void
+  // store any data form depending of the application id
+  addDataForms(_this, data): void
   {
     _this.globals.isLoading = false;
 
@@ -39,24 +45,65 @@ export class MsfDashboardComponent implements OnInit {
         baseUrl: columnConfig.url
       });
     }
+
+    // get dashboard panels after getting the data forms
+    _this.service.getDashboardPanels (_this, _this.globals.currentApplication.id,
+      _this.loadDashboardPanels, _this.handlerError);
+  }
+
+  loadDashboardPanels (_this, data)
+  {
+    let dashboardPanels: any[] = [];
+    let dashboardRows = [];
+
+    dashboardPanels = data;
+    if (!dashboardPanels.length)
+    {
+      // we're done if there are no existing dashboard panels
+      _this.globals.isLoading = false;
+      return;
+    }
+
+    // insert dashboard panels for synchronization
+    for (let i = 0, curColumn = 0; i < dashboardPanels.length; i++)
+    {
+      let dashboardPanel = dashboardPanels[i];
+
+      if (dashboardPanel.column != curColumn)
+      {
+        curColumn = dashboardPanel.column;
+        _this.dashboardColumns.push (dashboardRows);
+        dashboardRows = [];
+      }
+
+      dashboardRows.push (new MsfDashboardChartValues (_this.options, dashboardPanel.title,
+        dashboardPanel.id, dashboardPanel.option, dashboardPanel.chartColumnOptions, dashboardPanel.analysis,
+        dashboardPanel.xaxis, dashboardPanel.function, dashboardPanel.values, dashboardPanel.chartType,
+        dashboardPanel.lastestResponse));
+    }
+
+    // add the last dashboard column
+    _this.dashboardColumns.push (dashboardRows);
+    _this.globals.isLoading = false;
   }
 
   handlerError(_this, result): void
   {
-    console.log(result);
+    console.log (result);
     _this.globals.isLoading = false;  
   }
 
   RemoveChart(column, row): void
   {
-    let dashboardRows;
+    let dashboardRows: MsfDashboardChartValues[];
 
     dashboardRows = this.dashboardColumns[column];
-    dashboardRows.splice (row, 1);
 
-    // also remove the column if there are no chart left
-    if (!dashboardRows.length)
-      this.dashboardColumns.splice (column, 1);
+    this.columnToDelete = column;
+    this.rowToDelete = row;
+
+    this.globals.isLoading = true;
+    this.service.deleteDashboardPanel (this, dashboardRows[row], this.deleteRowPanel, this.handlerError);
   }
 
   ToggleDisplayAddChartMenu(): void
@@ -64,20 +111,69 @@ export class MsfDashboardComponent implements OnInit {
     this.displayAddChartMenu = !this.displayAddChartMenu;
   }
 
+  insertPanels (_this, data)
+  {
+    let dashboardPanels;
+    let dashboardRows = [];
+
+    dashboardPanels = data;
+
+    // insert the data options for each chart
+    for (let i = 0; i < dashboardPanels.length; i++)
+    {
+      let dashboardPanel = dashboardPanels[i];
+      dashboardRows.push (new MsfDashboardChartValues (_this.options, dashboardPanel.title, dashboardPanel.id));
+    }
+
+    _this.dashboardColumns.push (dashboardRows);
+    _this.displayAddChartMenu = false;
+    _this.globals.isLoading = false;
+  }
+
+  deleteRowPanel (_this, data): void
+  {
+    let dashboardRows = [], pos;
+
+    pos = data;
+
+    dashboardRows = _this.dashboardColumns[_this.columnToDelete];
+    dashboardRows.splice (_this.rowToDelete, 1);
+
+    // also remove the column if there are no panels left in the row
+    if (!dashboardRows.length)
+      _this.service.deleteDashboardColumn (_this, pos, _this.deleteColumn, _this.handlerError);
+    else
+      _this.globals.isLoading = false;
+  }
+
+  deleteColumn (_this, data): void
+  {
+    _this.dashboardColumns.splice (data.column, 1);
+    _this.globals.isLoading = false;
+  }
+
   // update the dashboard container and hide the menu after
   // adding a new chart column
   AddChart(numCharts): void
   {
-    let dashboardRows;
+    let panelsToAdd, column;
 
-    dashboardRows = [];
-    do
+    panelsToAdd = [];
+    column = this.dashboardColumns.length;
+
+    for (let i = 0; i < numCharts; i++)
     {
-      // insert the data options for each chart
-      dashboardRows.push (new MsfDashboardChartValues (this.options, "New Chart"));
-    } while (--numCharts);
+      // set the properties for each panel before adding it into the database
+      panelsToAdd.push (
+      {
+        'applicationId' : this.globals.currentApplication.id,
+        'row' : i,
+        'column' : column,
+        'title' : "New Chart"
+      });
+    }
 
-    this.dashboardColumns.push (dashboardRows);
-    this.displayAddChartMenu = false;
+    this.globals.isLoading = true;
+    this.service.createDashboardPanel (this, panelsToAdd, this.insertPanels, this.handlerError);
   }
 }
