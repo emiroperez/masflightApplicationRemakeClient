@@ -34,11 +34,12 @@
 </div>
 <div class="msf-menu-icons-container">
     <div class="msf-secondary-color msf-menu-icon-container msf-menu-adm">connected as: admin</div>
-    <div class="msf-menu-icon-container">| {{globals.currentOption ?globals.currentOption.label:''}}</div>
+    <div class="msf-menu-icon-container">| {{globals.currentOption ? globals.currentOption.label:''}}</div>
     <div class="msf-menu-icon-container msf-flex msf-menu-icons-right">
-        <button [disabled]="!msfContainerRef.msfTableRef || !msfContainerRef.msfTableRef.dataSource || msfContainerRef.msfTableRef.dataSource.length < 0 " class="msf-menu-icon" (click)="dynamicTable()"><img src="../../assets/images/dynamicTable.png" class="msf-menu-image msf-vertical-middle" ><span  class="msf-vertical-middle">Dynamic Table</span></button>
-        <button [disabled]="!msfContainerRef.msfTableRef || !msfContainerRef.msfTableRef.dataSource || msfContainerRef.msfTableRef.dataSource.length < 0 " class="msf-menu-icon" (click)="openChart()"><img src="../../assets/images/Chart.png" class="msf-menu-image msf-vertical-middle" ><span  class="msf-vertical-middle">Chart</span></button>
-        <button [disabled]="!msfContainerRef.msfTableRef || !msfContainerRef.msfTableRef.dataSource || msfContainerRef.msfTableRef.dataSource.length < 0 " class="msf-menu-icon"><img src="../../assets/images/ExporttoExcel.png" class="msf-menu-image msf-vertical-middle" ><span  class="msf-vertical-middle" (click)="exportToExcel()">Export Excel</span></button>
+        <button [disabled]="(!msfContainerRef.msfTableRef || !msfContainerRef.msfTableRef.dataSource || msfContainerRef.msfTableRef.dataSource.length < 0) || !dynamicTablePlan" class="msf-menu-icon" (click)="dynamicTable()"><img src="../../assets/images/dynamicTable.png" class="msf-menu-image msf-vertical-middle" ><span  class="msf-vertical-middle">Dynamic Table</span></button>
+        <button [disabled]="(!msfContainerRef.msfTableRef || !msfContainerRef.msfTableRef.dataSource || msfContainerRef.msfTableRef.dataSource.length < 0) || !chartPlan" class="msf-menu-icon" (click)="openChart()"><img src="../../assets/images/Chart.png" class="msf-menu-image msf-vertical-middle" ><span  class="msf-vertical-middle">Chart</span></button>
+        <button [disabled]="(!msfContainerRef.msfTableRef || !msfContainerRef.msfTableRef.dataSource || msfContainerRef.msfTableRef.dataSource.length < 0) || !exportExcelPlan" class="msf-menu-icon" (click)="exportToExcel()"><img src="../../assets/images/ExporttoExcel.png" class="msf-menu-image msf-vertical-middle" ><span  class="msf-vertical-middle">Export Excel</span></button>
+
         <button class="msf-menu-icon"><img src="../../assets/images/CopytoClipboard.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Copy to Clipboard</span></button>
         <button class="msf-menu-icon"><img src="../../assets/images/LoadingOptions.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Loading Options</span></button>
         <button class="msf-menu-icon"><img src="../../assets/images/SaveOptions.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Save Options</span></button>

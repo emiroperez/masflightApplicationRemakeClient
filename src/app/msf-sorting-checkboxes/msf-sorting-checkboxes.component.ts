@@ -105,6 +105,7 @@ export class MsfSortingCheckboxesComponent implements OnInit {
     }
     if(value){
       this.selected = this.data;
+      this.argument.value1 = this.selected;
     }else{
       this.selected = [];
     }

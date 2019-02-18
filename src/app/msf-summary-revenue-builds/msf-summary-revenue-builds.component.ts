@@ -13,21 +13,21 @@ export class MsfSummaryRevenueBuildsComponent implements OnInit {
   @Input("argument") public argument: Arguments;
  
   summaryList: any[] = [
-                {id: 'YEAR', name: 'Year', column:'Year'},
-                {id: 'MONTH', name: 'Month', column:'Month'},
-                {id: 'DAY', name: 'Day' ,column:'Day'},
-                {id: 'DESTINATION', name: 'Destination', column: 'Destination'},
-                {id: 'AIRCRAFT', name: 'Aircraft Type',column:'Aircraft Type'},
-                {id: 'AIRLINE', name: 'Airline',column:'Airline'},
-                {id: 'ORIGIN', name: 'Origin',column:'Origin'}
-  ];
+    {id: 'YEAR', columnLabel: 'Year', columnName:'Year'},
+    {id: 'MONTH', columnLabel: 'Month', columnName:'Month'},
+    {id: 'DAY', columnLabel: 'Day' ,columnName:'Day'},
+    {id: 'DESTINATION', columnLabel: 'Destination', columnName: 'Destination'},
+    {id: 'AIRCRAFT_TYPE', columnLabel: 'Aircraft Type',columnName:'AircraftType'},
+    {id: 'AIRLINE', columnLabel: 'Airline',columnName:'Carrier'},
+    {id: 'ORIGIN', columnLabel: 'Origin',columnName:'Origin'}
+];
   constructor(private http: ApiClient, public globals: Globals) { }
 
 
   ngOnInit() { 
     this.argument.value1 = [
-      {id: 'YEAR', name: 'Year', column:'Year'},
-      {id: 'MONTH', name: 'Month', column:'Month'},
-      {id: 'AIRCRAFT', name: 'Aircraft Type',column:'Aircraft Type'}];
+      {id: 'YEAR', columnLabel: 'Year', columnName:'Year'},
+      {id: 'MONTH', columnLabel: 'Month', columnName:'Month'},
+      {id: 'AIRCRAFT_TYPE', columnLabel: 'Aircraft Type',columnName:'AircraftType'}];
   }
 }

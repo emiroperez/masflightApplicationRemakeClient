@@ -114,4 +114,21 @@ export class WelcomeComponent implements OnInit {
     localStorage.setItem("currentApplication", JSON.stringify(this.globals.currentApplication));
     this.router.navigate([option.url]);
   }
+
+  getBackground(option : any){
+    var aux = option.name;
+    aux = aux.replace(" ","");
+    if(option.hover){
+      return "../../assets/images/w_"+aux+"2.png"
+    }else{
+      return "../../assets/images/w_"+aux+"1.png"
+    }
+
+  }
+
+  getBackground2(option : any){
+    var aux = option.name;
+    aux = aux.replace(" ","");
+    return "../../assets/images/w_"+aux+".png"
+  }
 }
