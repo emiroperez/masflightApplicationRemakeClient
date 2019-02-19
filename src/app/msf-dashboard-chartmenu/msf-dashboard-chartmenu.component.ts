@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { AmChart, AmChartsService } from '@amcharts/amcharts3-angular';
 import { CategoryArguments } from '../model/CategoryArguments';
 import { Globals } from '../globals/Globals';
@@ -74,7 +74,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   constructor(private AmCharts: AmChartsService, public globals: Globals,
     private service: ApplicationService, private http: ApiClient, public dialog: MatDialog,
-    private formBuilder: FormBuilder, private cdRef: ChangeDetectorRef)
+    private formBuilder: FormBuilder)
   {
     this.utils = new Utils();
 
@@ -244,12 +244,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   {
     let i, options, option;
 
-    this.values.function = this.functions[0];
-
     // prepare the combo boxes
-    if (this.values.currentChartType == null)
-      this.values.currentChartType = this.chartTypes[0];
-
     this.optionSearchChange (this.dataFormFilterCtrl);
 
     if (this.values.chartColumnOptions)
@@ -257,8 +252,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       this.filteredVariables.next (this.values.chartColumnOptions.slice ());
 
       this.searchChange (this.variableFilterCtrl);
-      //this.searchChange (this.xaxisFilterCtrl);
-      //this.searchChange (this.valueFilterCtrl);
+      this.searchChange (this.xaxisFilterCtrl);
+      this.searchChange (this.valueFilterCtrl);
     }
 
     // set any values if loading a panel already created
@@ -274,7 +269,11 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         {
           this.chartForm.get ('dataFormCtrl').setValue (option);
           this.chartForm.get ('variableCtrl').enable ();
-          this.chartForm.get ('xaxisCtrl').enable ();
+
+          // only enable x axis if the chart type is not pie or donut
+          if (this.values.currentChartType.id !== 'pie' && this.values.currentChartType.id !== 'donut')
+            this.chartForm.get ('xaxisCtrl').enable ();
+
           this.chartForm.get ('valueCtrl').enable ();
           break;
         }
@@ -328,6 +327,43 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         }
       }
     }
+
+    // refresh the following two values to avoid a blank form
+    if (this.values.currentChartType)
+    {
+      options = this.chartTypes;
+
+      for (i = 0; i < this.chartTypes.length; i++)
+      {
+        option = this.chartTypes[i];
+
+        if (option.id == this.values.currentChartType.id)
+        {
+          this.values.currentChartType = option;
+          break;
+        }
+      }
+    }
+    else
+      this.values.currentChartType = this.chartTypes[0];
+
+    if (this.values.function)
+    {
+      options = this.functions;
+
+      for (i = 0; i < this.functions.length; i++)
+      {
+        option = this.functions[i];
+
+        if (option.id == this.values.function.id)
+        {
+          this.values.function = option;
+          break;
+        }
+      }
+    }
+    else
+      this.values.function = this.functions[0];
 
     this.checkChartFilters ();
     //if (this.values.displayChart)
@@ -549,12 +585,12 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   addChartFilterValues(_this, data): void
   {
-    _this.chartColumnOptions = [];
+    _this.values.chartColumnOptions = [];
     for (let columnConfig of data)
-      _this.chartColumnOptions.push ( { id: columnConfig.columnName, name: columnConfig.columnLabel, item: columnConfig } );
+      _this.values.chartColumnOptions.push ( { id: columnConfig.columnName, name: columnConfig.columnLabel, item: columnConfig } );
 
     // load the initial filter variables list
-    _this.filteredVariables.next (_this.chartColumnOptions.slice ());
+    _this.filteredVariables.next (_this.values.chartColumnOptions.slice ());
 
     _this.searchChange (_this.variableFilterCtrl);
     _this.searchChange (_this.xaxisFilterCtrl);

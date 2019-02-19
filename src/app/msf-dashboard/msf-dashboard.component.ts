@@ -78,7 +78,7 @@ export class MsfDashboardComponent implements OnInit {
 
       dashboardRows.push (new MsfDashboardChartValues (_this.options, dashboardPanel.title,
         dashboardPanel.id, dashboardPanel.option, dashboardPanel.chartColumnOptions, dashboardPanel.analysis,
-        dashboardPanel.xaxis, dashboardPanel.function, dashboardPanel.values, dashboardPanel.chartType,
+        dashboardPanel.xaxis, dashboardPanel.values, dashboardPanel.function, dashboardPanel.chartType,
         dashboardPanel.lastestResponse));
     }
 
