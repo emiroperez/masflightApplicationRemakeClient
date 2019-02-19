@@ -23,15 +23,14 @@
     <div *ngIf="globals.template && globals.currentOption.metaData==0 && !globals.dataSource" class="financial-container">
         <div class="financial-table-container" *ngFor="let table of template">
           <div class="financial-title">{{table.title}}</div>
-          <div class="financial-content">
-          <div class="financial-table-item"  *ngFor="let tableItem of table.tableItems" >
+          <div class="financial-table-item"  *ngFor="let tableItem of table.tableItems">
             <div class="{{getCurrentClass(tableItem)}}">
-              <div  [ngClass]="tableItem.subtitle==0 ? 'financial-item-cell parent-cell' : 'no-show'">{{tableItem.label}}</div>
+              <div [ngClass]="tableItem.subtitle==0 ? 'financial-item-cell parent-cell' : 'no-show'">{{tableItem.label}}</div>
               <div [ngClass]="tableItem.subtitle==0 ? 'financial-result-cell' : 'no-show'" *ngFor="let valueItem of tableItem.values">
                 <div *ngIf="tableItem.cellFormat=='string'">{{valueItem.value}}</div>
                 <div *ngIf="tableItem.cellFormat=='number'" class="cell-value" >$ {{valueItem.value | number:'.0-2':'en'}}</div>
               </div>
-              <div style="width: auto;" [ngClass]="tableItem.subtitle==1 ? 'financial-item-cell parent-cell-subtitle' : 'no-show'" >{{tableItem.label}}</div>
+              <div [ngClass]="tableItem.subtitle==1 ? 'financial-item-cell parent-cell-subtitle' : 'no-show'" >{{tableItem.label}}</div>
             </div>
             <div *ngFor="let childrenItem of tableItem.children" [ngClass]="childrenItem.bold==0 ? 'financial-table-item-label-title' : 'financial-table-item-label-title msf-bold'">
                 <div class="financial-item-cell children-cell">{{childrenItem.label}}</div>
@@ -41,7 +40,6 @@
                 </div>
             </div>
           </div>
-        </div>
         </div>
     </div>
 

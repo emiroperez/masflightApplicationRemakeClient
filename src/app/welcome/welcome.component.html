@@ -35,20 +35,19 @@
           </div>
         </div>
         <div class="landing-icon-content">
-            <div class="landing-icon-content-child" (mouseover)="option.hover=true" (mouseleave)="option.hover=false"  (click)="goTo(option)" *ngFor="let option of options2" style="cursor:pointer; " >	
-              <div class="icon-container" [ngStyle]="{'background-image': 'url(' + getBackground(option) + ')'}" >
-                <!-- <div  [ngStyle]="{'display': none}" class="landing-title">{{option.name}}</div> -->
+            <div (click)="goTo(option)" *ngFor="let option of options2" style="cursor:pointer;">	
+              <!-- <img  (click)="goTo(option)" src="../../assets/images/w_{{option.name}}1.png" class="landing-icon">               -->
+              <div (mouseover)="option.hover=true" (mouseleave)="option.hover=false"    class="icon-container" [ngStyle]="{'background-image': 'url(' + getBackground(option) + ')'}" ></div>
+              <div  class="footer-container" style="height: auto !important; width: 99%; display: flex;">
+                  <div style="width: 25%;"></div>
+              <div style="width: 25%;">
+                <div  class="icon-container-bk" [ngStyle]="{'background-image': 'url(' + getBackground2(option) + ')'}" ></div>
               </div>
-              <div class="footer-container" style="height: auto !important; width: 99%; display: flex;">
-                  <div style="width: 25%;"></div>
-                  <div style="width: 25%;">
-                    <div  class="icon-container-bk" [ngStyle]="{'background-image': 'url(' + getBackground2(option) + ')'}" ></div>
-                  </div>
-                  <div style="width: 25%; margin: auto;">
-                    <span >{{option.name}}</span> 
-                  </div>   
-                  <div style="width: 25%;"></div>
-          </div> 
+              <div style="width: 25%; margin: auto;">
+                <span >{{option.name}}</span> 
+              </div>   
+              <div style="width: 25%;"></div>
+            </div>    
           </div>
         </div>         
       </div> 

@@ -4,26 +4,23 @@ import { Utils } from '../commons/utils';
 import { Observable, of } from 'rxjs';
 import { Airport } from '../model/Airport';
 import { delay } from 'rxjs/operators';
-import { Globals } from '../globals/Globals';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApplicationService {
 
-  
   utils: Utils;
 
   // host = "http://localhost:8887";
-  host = "";
+  host = "http://192.168.1.131:8887";
+  // host = "";
 
-  //host1 = "http://localhost:8886";
+  // host1 = "http://localhost:8886";
   host1 = "http://69.64.45.220:8886";
 
-  constructor(private http: ApiClient, private globals:Globals) {
+  constructor(private http: ApiClient) {
     this.utils = new Utils();
-    this.host = this.globals.baseUrl;
-    this.host1 = this.globals.baseUrl2;
   }
 
   getTracking(_this, successHandler, errorHandler) {
@@ -248,19 +245,16 @@ export class ApplicationService {
       this.http.postSecure (_this, this.host + "/secure" + url, panels, handlerSuccess, handlerError);
   }
 
-  deleteDashboardPanel(_this, id, handlerSuccess, handlerError): void
+  deleteDashboardPanel(_this, panel, handlerSuccess, handlerError): void
   {
     let url = this.host + "/deleteDashboardPanel";
-    this.http.post (_this, url, id, handlerSuccess, handlerError);
+    this.http.post (_this, url, panel, handlerSuccess, handlerError);
   }
 
-  deleteDashboardColumn(_this, appId, column, handlerSuccess, handlerError): void
+  deleteDashboardColumn(_this, panel, handlerSuccess, handlerError): void
   {
-    let url = "/updateDashboardPanelColumns?appId=" + appId + "&column=" + column;
-    if (this.host != "")
-      this.http.post (_this, this.host + url, null, handlerSuccess, handlerError);
-    else
-      this.http.postSecure (_this, this.host + "/secure" + url, null, handlerSuccess, handlerError);
+    let url = this.host + "/deleteDashboardColumn";
+    this.http.post (_this, url, panel, handlerSuccess, handlerError);
   }
 
   getDashboardPanels(_this, appId, handlerSuccess, handlerError): void

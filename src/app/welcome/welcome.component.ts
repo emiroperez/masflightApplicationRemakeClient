@@ -115,15 +115,6 @@ export class WelcomeComponent implements OnInit {
     this.router.navigate([option.url]);
   }
 
-  getDisplay(option : any){
-    if(option.hover){
-      return "inline-block !important"
-    }else{
-      return "none !important"
-    }
-
-  }
-
   getBackground(option : any){
     var aux = option.name;
     aux = aux.replace(" ","");
@@ -134,7 +125,6 @@ export class WelcomeComponent implements OnInit {
     }
 
   }
-
 
   getBackground2(option : any){
     var aux = option.name;

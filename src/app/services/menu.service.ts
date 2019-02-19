@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { ApiClient } from '../api/api-client';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Menu } from '../model/Menu';
-import { Globals } from '../globals/Globals';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -15,31 +14,23 @@ const httpOptions = {
 export class MenuService {
   SECURITY_HEADER = "Authorization";
   TOKEN_STORAGE_KEY = "token";
-  url;
-  constructor( private http: HttpClient, private globals:Globals) { 
-    this.url = this.globals.baseUrl;
-  }
+  constructor( private http: HttpClient) { }
 
   getMenu(_this,successHandler, errorHandler){
-    let url = "/getMenu?"
+    let url = "/secure/getMenu?";
+    //let url = "http://localhost:8887/getMenu?"
     if(_this.globals.currentApplication==undefined){
       _this.globals.currentApplication = JSON.parse(localStorage.getItem("currentApplication"));
     }
     url = url + "application="+_this.globals.currentApplication.id;
-
     _this.globals.isLoading = true;
-    if (_this.globals.baseUrl != "")
-      this.get (_this, _this.globals.baseUrl + url, successHandler, errorHandler);
-    else
-      this.get (_this, _this.globals.baseUrl + "/secure" + url, successHandler, errorHandler);
+    this.get(_this,url,successHandler, errorHandler);
   }
 
   getAdvanceFeatures(_this, successHandler, errorHandler){
-    let url = "/getPlanAdvanceFeatures";
-    if (_this.globals.baseUrl != "")
-      this.get (_this, _this.globals.baseUrl + url, successHandler, errorHandler);
-    else
-      this.get (_this, _this.globals.baseUrl + "/secure" + url, successHandler, errorHandler);
+    let url = "/secure/getPlanAdvanceFeatures";
+    //let url = "http://localhost:8887/secure/getPlanAdvanceFeatures";
+    this.get(_this, url, successHandler, errorHandler);
   }
 
   getUserLoggedin(_this,successHandler, errorHandler){

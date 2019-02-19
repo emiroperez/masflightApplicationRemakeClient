@@ -2,18 +2,18 @@ import { Injectable } from '@angular/core';
 import { ApiClient } from '../api/api-client';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Menu } from '../model/Menu';
-import { Globals } from '../globals/Globals';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WelcomeService {
-  constructor( private http: HttpClient, private globals:Globals) {
-   }
+
+  constructor( private http: HttpClient) { }
 
   getApplications(_this,successHandler, errorHandler){
-    let url= this.globals.baseUrl+"/getApplications";
+    // let url = "/getApplications";
     //  let url = "http://localhost:8887/getApplications";
+     let url = "http://192.168.1.131:8887/getApplications";
     _this.globals.isLoading = true;
     this.get(_this,url,successHandler, errorHandler);
   }
