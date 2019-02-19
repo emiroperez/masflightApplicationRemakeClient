@@ -33,9 +33,11 @@ export class MenuService {
   }
 
   getAdvanceFeatures(_this, successHandler, errorHandler){
-    let url = _this.globals.baseUrl+ "/secure/getPlanAdvanceFeatures";
-    // let url = "http://localhost:8887/secure/getPlanAdvanceFeatures";
-    this.get(_this, url, successHandler, errorHandler);
+    let url = "/getPlanAdvanceFeatures";
+    if (_this.globals.baseUrl != "")
+      this.get (_this, _this.globals.baseUrl + url, successHandler, errorHandler);
+    else
+      this.get (_this, _this.globals.baseUrl + "/secure" + url, successHandler, errorHandler);
   }
 
   createAuthorizationHeader() {
