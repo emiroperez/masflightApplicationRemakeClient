@@ -9,6 +9,8 @@ export class Globals {
   currentMenuCategory: any;
   currentArgs: any;
   isLoading: boolean = false;
+  isMenuLoading: boolean = false;
+  isDashboardLoading: boolean = false;
   sort: MatSort;
   chart: boolean = false;
   map: boolean = false;

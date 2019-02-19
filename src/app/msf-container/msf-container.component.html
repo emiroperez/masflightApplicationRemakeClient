@@ -1,5 +1,5 @@
 
-<ng-container *ngIf="globals.currentOption && globals.currentOption !== 'dashboard'">
+<ng-container *ngIf="globals.currentOption">
     <mat-tab-group [selectedIndex]="globals.getSelectedIndex()" #tabs>
         <mat-tab *ngIf="globals.showWelcome" label="Welcome" style="height: 100%;">
             <app-option-welcome></app-option-welcome> 
@@ -44,5 +44,4 @@
         
     </mat-tab-group>
 </ng-container>
-<app-msf-dashboard *ngIf="globals.currentOption === 'dashboard'"></app-msf-dashboard>
-<app-intro *ngIf="!globals.currentOption"></app-intro>
+<app-msf-dashboard *ngIf="!globals.currentOption"></app-msf-dashboard>
