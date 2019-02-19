@@ -3170,7 +3170,7 @@ table.datasource {
 .financial-table-item-label-title {
   background: white;
   display: table-row;
-  width: 100%;
+  width: auto;
 }
 
 .financial-table-item-label {
@@ -3186,24 +3186,30 @@ table.datasource {
   display: inline-block;
   display: table-cell;
   padding: 10px;
-  border: 1px solid #777676;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-right: 0;
+  border-top: 0;
   width: 120px;
 }
 
 .financial-result-cell {
   display: table-cell;
   padding: 10px;
-  border: 1px solid #777676;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-right: 0;
+  border-top: 0;
   width: 120px;
 }
 
 .financial-table-item {
   vertical-align: middle;
   border-color: inherit;
+  display: table-row;
 }
 
 .parent-cell-subtitle {
   display: block;
+  width: 100%;
 }
 
 /* kp */
@@ -3293,6 +3299,17 @@ table.datasource {
 
 .landing-icon-content-child:focus {
   outline: none !important;
+}
+
+img.msf-calendar-image {
+  width: 20px;
+  margin-left: 13px;
+  margin-bottom: 10px;
+}
+
+.financial-content {
+  width: auto;
+  display: table-caption;
 }
 
 /*# sourceMappingURL=styles.css.map */
