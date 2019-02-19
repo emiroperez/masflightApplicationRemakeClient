@@ -23,13 +23,14 @@ export class MenuService {
       _this.globals.currentApplication = JSON.parse(localStorage.getItem("currentApplication"));
     }
     url = url + "application="+_this.globals.currentApplication.id;
+    _this.globals.isMenuLoading = true;
     _this.globals.isLoading = true;
     this.get(_this,url,successHandler, errorHandler);
   }
 
   getAdvanceFeatures(_this, successHandler, errorHandler){
     let url = "/secure/getPlanAdvanceFeatures";
-    //let url = "http://localhost:8887/secure/getPlanAdvanceFeatures";
+    //let url = "http://localhost:8887/getPlanAdvanceFeatures";
     this.get(_this, url, successHandler, errorHandler);
   }
 

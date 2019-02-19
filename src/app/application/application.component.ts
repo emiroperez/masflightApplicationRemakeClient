@@ -44,14 +44,15 @@ export class ApplicationComponent implements OnInit {
   ngOnInit() {
     this.globals.clearVariables();
     this.getMenu();
-    this.getAdvanceFeatures();
   }
 
 
-  getAdvanceFeatures(){
-    this.service.getAdvanceFeatures(this,this.handlerSuccessAF,this.handlerErrorAF)
+  getAdvanceFeatures(_this, data)
+  {
+    _this.menu = data;
 
-    }
+    _this.service.getAdvanceFeatures(_this,_this.handlerSuccessAF,_this.handlerErrorAF);
+  }
 
   handlerSuccessAF(_this,data){
     _this.planAdvanceFeatures = data;
@@ -61,27 +62,29 @@ export class ApplicationComponent implements OnInit {
       item.advanceFeatureId == 3 ? _this.dynamicTablePlan = true : false;
       item.advanceFeatureId == 4 ? _this.exportExcelPlan = true : false;
     });
-    _this.globals.isLoading = false;
+
+    _this.globals.isMenuLoading = false;
+    if (!_this.globals.isDashboardLoading)
+      _this.globals.isLoading = false;
   }
 
   handlerErrorAF(_this,result){
     console.log(result);
-    _this.globals.isLoading = false;
+
+    _this.globals.isMenuLoading = false;
+    if (!_this.globals.isDashboardLoading)
+      _this.globals.isLoading = false;
   }
 
 
   getMenu(){
-    this.service.getMenu(this,this.handlerSuccess,this.handlerError);
-  }
-
-  handlerSuccess(_this,data){
-    _this.menu = data;
-    _this.globals.isLoading = false;
+    this.service.getMenu(this,this.getAdvanceFeatures,this.handlerError);
   }
 
   handlerError(_this,result){
     console.log(result);
-    _this.globals.isLoading = false;
+
+    _this.service.getAdvanceFeatures(_this,_this.handlerSuccessAF,_this.handlerErrorAF);
   }
 
 
@@ -175,7 +178,7 @@ toggle(){
 
   goToDashboard(): void
   {
-    this.globals.currentOption = 'dashboard';
+    this.globals.currentOption = null;
   }
 
   dynamicTable(){
@@ -208,6 +211,6 @@ toggle(){
   }
 
   isSimpleContent(): boolean {
-    return (this.globals.currentOption === "dashboard" || !this.globals.currentOption);
+    return !this.globals.currentOption;
   }
 }

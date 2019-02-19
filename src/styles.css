@@ -3202,6 +3202,10 @@ table.datasource {
   border-color: inherit;
 }
 
+.no-show {
+  display: none;
+}
+
 .parent-cell-subtitle {
   display: block;
 }

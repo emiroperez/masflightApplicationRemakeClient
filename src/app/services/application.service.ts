@@ -12,11 +12,11 @@ export class ApplicationService {
 
   utils: Utils;
 
-  // host = "http://localhost:8887";
+  //host = "http://localhost:8887";
   host = "http://192.168.1.131:8887";
   // host = "";
 
-  // host1 = "http://localhost:8886";
+  //host1 = "http://localhost:8886";
   host1 = "http://69.64.45.220:8886";
 
   constructor(private http: ApiClient) {
@@ -245,16 +245,19 @@ export class ApplicationService {
       this.http.postSecure (_this, this.host + "/secure" + url, panels, handlerSuccess, handlerError);
   }
 
-  deleteDashboardPanel(_this, panel, handlerSuccess, handlerError): void
+  deleteDashboardPanel(_this, id, handlerSuccess, handlerError): void
   {
     let url = this.host + "/deleteDashboardPanel";
-    this.http.post (_this, url, panel, handlerSuccess, handlerError);
+    this.http.post (_this, url, id, handlerSuccess, handlerError);
   }
 
-  deleteDashboardColumn(_this, panel, handlerSuccess, handlerError): void
+  deleteDashboardColumn(_this, appId, column, handlerSuccess, handlerError): void
   {
-    let url = this.host + "/deleteDashboardColumn";
-    this.http.post (_this, url, panel, handlerSuccess, handlerError);
+    let url = "/updateDashboardPanelColumns?appId=" + appId + "&column=" + column;
+    if (this.host != "")
+      this.http.post (_this, this.host + url, null, handlerSuccess, handlerError);
+    else
+      this.http.postSecure (_this, this.host + "/secure" + url, null, handlerSuccess, handlerError);
   }
 
   getDashboardPanels(_this, appId, handlerSuccess, handlerError): void
