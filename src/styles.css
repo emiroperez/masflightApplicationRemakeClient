@@ -3151,6 +3151,7 @@ table.datasource {
 
 .financial-container {
   margin-top: -57px;
+  display: table;
 }
 
 .financial-table-container {
@@ -3189,7 +3190,8 @@ table.datasource {
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-right: 0;
   border-top: 0;
-  width: 120px;
+  width: 150px;
+  vertical-align: middle;
 }
 
 .financial-result-cell {
@@ -3199,6 +3201,7 @@ table.datasource {
   border-right: 0;
   border-top: 0;
   width: 120px;
+  vertical-align: middle;
 }
 
 .financial-table-item {
