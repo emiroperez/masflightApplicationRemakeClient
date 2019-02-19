@@ -85,7 +85,6 @@ export class MsfDashboardComponent implements OnInit {
     // add the last dashboard column
     _this.dashboardColumns.push (dashboardRows);
     _this.globals.isLoading = false;
-    _this.globals.isDashboardLoading = false;
   }
 
   handlerError(_this, result): void

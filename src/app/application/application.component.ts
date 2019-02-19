@@ -67,6 +67,7 @@ export class ApplicationComponent implements OnInit {
   }
 
   getAdvanceFeatures(){
+    this.globals.isLoading = true;
     this.service.getAdvanceFeatures(this,this.handlerSuccessAF,this.handlerErrorAF);
 
     }
@@ -80,6 +81,9 @@ export class ApplicationComponent implements OnInit {
       item.advanceFeatureId == 4 ? _this.exportExcelPlan = true : false;
     });
     _this.globals.isLoading = false;
+
+    if (_this.dashboardPlan)
+      _this.goToDashboard ();
   }
 
   handlerErrorAF(_this,result){
@@ -97,7 +101,6 @@ export class ApplicationComponent implements OnInit {
     _this.globals.isLoading = false;
     _this.getAdvanceFeatures();
     _this.validateAdmin();
-
   }
 
   handlerError(_this,result){
