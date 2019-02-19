@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import {ExcelService} from '../services/excel.service';
 import { MsfTableComponent } from '../msf-table/msf-table.component';
 import { PlanAdvanceFeatures } from '../model/PlanAdvanceFeatures';
+import { User } from '../model/User';
 
 
 @Component({
@@ -30,6 +31,9 @@ export class ApplicationComponent implements OnInit {
   menu: Menu;
   planAdvanceFeatures: any[];
   status: boolean;
+  user: any[];
+
+  admin: boolean = false;
   ELEMENT_DATA: any[];
   //displayedColumns: string[] = [];
   variables;
@@ -44,18 +48,30 @@ export class ApplicationComponent implements OnInit {
   ngOnInit() {
     this.globals.clearVariables();
     this.getMenu();
+
+
   }
 
-
-  getAdvanceFeatures(_this, data)
-  {
-    _this.menu = data;
-
-    _this.service.getAdvanceFeatures(_this,_this.handlerSuccessAF,_this.handlerErrorAF);
+  validateAdmin(){
+    this.service.getUserLoggedin(this,this.handleLogin, this.errorLogin);
   }
+
+  handleLogin(_this,data){
+    _this.user = data;
+    _this.admin = data.admin;
+     _this.globals.isLoading = false;
+  }
+  errorLogin(_this,result){
+    console.log(result);
+     _this.globals.isLoading = false;
+  }
+
+  getAdvanceFeatures(){
+    this.service.getAdvanceFeatures(this,this.handlerSuccessAF,this.handlerErrorAF);
+
+    }
 
   handlerSuccessAF(_this,data){
-    _this.globals.isLoading = true;
     _this.planAdvanceFeatures = data;
     _this.planAdvanceFeatures.forEach(item => {
       item.advanceFeatureId == 1 ? _this.chartPlan = true : false;
@@ -63,29 +79,30 @@ export class ApplicationComponent implements OnInit {
       item.advanceFeatureId == 3 ? _this.dynamicTablePlan = true : false;
       item.advanceFeatureId == 4 ? _this.exportExcelPlan = true : false;
     });
-
-    _this.globals.isMenuLoading = false;
-    if (!_this.globals.isDashboardLoading)
-      _this.globals.isLoading = false;
+    _this.globals.isLoading = false;
   }
 
   handlerErrorAF(_this,result){
     console.log(result);
-
-    _this.globals.isMenuLoading = false;
-    if (!_this.globals.isDashboardLoading)
-      _this.globals.isLoading = false;
+    _this.globals.isLoading = false;
   }
 
 
   getMenu(){
-    this.service.getMenu(this,this.getAdvanceFeatures,this.handlerError);
+    this.service.getMenu(this,this.handlerSuccess,this.handlerError);
+  }
+
+  handlerSuccess(_this,data){
+    _this.menu = data;
+    _this.globals.isLoading = false;
+    _this.getAdvanceFeatures();
+    _this.validateAdmin();
+
   }
 
   handlerError(_this,result){
     console.log(result);
-
-    _this.service.getAdvanceFeatures(_this,_this.handlerSuccessAF,_this.handlerErrorAF);
+    _this.globals.isLoading = false;
   }
 
 
@@ -179,7 +196,7 @@ toggle(){
 
   goToDashboard(): void
   {
-    this.globals.currentOption = null;
+    this.globals.currentOption = 'dashboard';
   }
 
   dynamicTable(){
@@ -212,6 +229,6 @@ toggle(){
   }
 
   isSimpleContent(): boolean {
-    return !this.globals.currentOption;
+    return (this.globals.currentOption === "dashboard" || !this.globals.currentOption);
   }
 }
