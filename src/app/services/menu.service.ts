@@ -21,15 +21,17 @@ export class MenuService {
   }
 
   getMenu(_this,successHandler, errorHandler){
-    // this.url += "/secure/getMenu?";
-    let url =this.globals.baseUrl+  "/getMenu?"
+    let url = "/getMenu?"
     if(_this.globals.currentApplication==undefined){
       _this.globals.currentApplication = JSON.parse(localStorage.getItem("currentApplication"));
     }
     url = url + "application="+_this.globals.currentApplication.id;
-    _this.globals.isMenuLoading = true;
+
     _this.globals.isLoading = true;
-    this.get(_this,url,successHandler, errorHandler);
+    if (_this.globals.baseUrl != "")
+      this.get (_this, _this.globals.baseUrl + url, successHandler, errorHandler);
+    else
+      this.get (_this, _this.globals.baseUrl + "/secure" + url, successHandler, errorHandler);
   }
 
   getAdvanceFeatures(_this, successHandler, errorHandler){

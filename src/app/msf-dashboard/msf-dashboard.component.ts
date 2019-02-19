@@ -18,16 +18,16 @@ export class MsfDashboardComponent implements OnInit {
 
   displayAddChartMenu: boolean = false;
 
-  constructor(public globals: Globals, private service: ApplicationService, private http: ApiClient) { }
+  constructor(public globals: Globals, private service: ApplicationService,
+    private http: ApiClient) { }
 
   ngOnInit()
   {
-    if (this.globals.isDashboardLoading)
+    if (this.globals.isLoading)
       return; // do not query this component twice
-    else if (!this.globals.isMenuLoading)
-      this.globals.isLoading = true;
 
-    this.globals.isDashboardLoading = true;
+    this.globals.isLoading = true;
+
     this.service.getMenuString (this, this.globals.currentApplication.id,
       this.addDataForms, this.handlerError);
   }
@@ -60,9 +60,7 @@ export class MsfDashboardComponent implements OnInit {
     if (!dashboardPanels.length)
     {
       // we're done if there are no existing dashboard panels
-      if (!_this.globals.isMenuLoading)
       _this.globals.isLoading = false;
-      _this.globals.isDashboardLoading = false;
       return;
     }
 
@@ -86,10 +84,7 @@ export class MsfDashboardComponent implements OnInit {
 
     // add the last dashboard column
     _this.dashboardColumns.push (dashboardRows);
-
-    if (!_this.globals.isMenuLoading)
-      _this.globals.isLoading = false;
-
+    _this.globals.isLoading = false;
     _this.globals.isDashboardLoading = false;
   }
 
@@ -97,10 +92,7 @@ export class MsfDashboardComponent implements OnInit {
   {
     console.log (result);
 
-    if (!_this.globals.isMenuLoading)
-      _this.globals.isLoading = false;
-
-    _this.globals.isDashboardLoading = false;
+    _this.globals.isLoading = false;
   }
 
   RemoveChart(column, row): void

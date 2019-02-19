@@ -64,17 +64,15 @@ export class ApplicationComponent implements OnInit {
       item.advanceFeatureId == 4 ? _this.exportExcelPlan = true : false;
     });
 
-    _this.globals.isMenuLoading = false;
-    if (!_this.globals.isDashboardLoading)
-      _this.globals.isLoading = false;
+    _this.globals.isLoading = false;
+    _this.goToDashboard ();
   }
 
   handlerErrorAF(_this,result){
     console.log(result);
 
-    _this.globals.isMenuLoading = false;
-    if (!_this.globals.isDashboardLoading)
-      _this.globals.isLoading = false;
+    _this.globals.isLoading = false;
+    _this.goToDashboard ();
   }
 
 
@@ -179,7 +177,7 @@ toggle(){
 
   goToDashboard(): void
   {
-    this.globals.currentOption = null;
+    this.globals.currentOption = 'dashboard';
   }
 
   dynamicTable(){
@@ -212,6 +210,6 @@ toggle(){
   }
 
   isSimpleContent(): boolean {
-    return !this.globals.currentOption;
+    return (!this.globals.currentOption || this.globals.currentOption === 'dashboard');
   }
 }
