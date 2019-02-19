@@ -3170,7 +3170,7 @@ table.datasource {
 .financial-table-item-label-title {
   background: white;
   display: table-row;
-  width: 100%;
+  width: auto;
 }
 
 .financial-table-item-label {
@@ -3186,20 +3186,25 @@ table.datasource {
   display: inline-block;
   display: table-cell;
   padding: 10px;
-  border: 1px solid #777676;
-  min-width: 120px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-right: 0;
+  border-top: 0;
+  width: 120px;
 }
 
 .financial-result-cell {
   display: table-cell;
   padding: 10px;
-  border: 1px solid #777676;
-  min-width: 120px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-right: 0;
+  border-top: 0;
+  width: 120px;
 }
 
 .financial-table-item {
   vertical-align: middle;
   border-color: inherit;
+  display: table-row;
 }
 
 .no-show {
@@ -3208,6 +3213,7 @@ table.datasource {
 
 .parent-cell-subtitle {
   display: block;
+  width: 100%;
 }
 
 /* kp */
@@ -3244,7 +3250,7 @@ table.datasource {
   display: flex;
   margin: 20px 0;
   border-right: 1px solid #333;
-  transition: background-image 0.2s ease-in-out;
+  transition: background-image 0.5s ease-in-out;
 }
 
 /* kp */
@@ -3255,6 +3261,7 @@ table.datasource {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+  transition: background-image 0.5s ease-in-out;
 }
 
 /* kp */
@@ -3269,6 +3276,44 @@ table.datasource {
 .cell-value {
   text-align: right;
   width: 100%;
+}
+
+.landing-title {
+  background-color: #15ACEC;
+  border-bottom-right-radius: 30px;
+  border-bottom-left-radius: 30px;
+  height: 5% !important;
+  width: 100% !important;
+  vertical-align: middle;
+  text-align: center;
+  padding: 5% 0;
+}
+
+.landing-icon-content-child:hover, .icon-container:hover {
+  background-color: black;
+}
+
+.footer-container:hover, .icon-container {
+  background-color: black;
+}
+
+.landing-icon-content-child:hover, .footer-container:hover {
+  background-color: #15ACEC;
+}
+
+.landing-icon-content-child:focus {
+  outline: none !important;
+}
+
+img.msf-calendar-image {
+  width: 20px;
+  margin-left: 13px;
+  margin-bottom: 10px;
+}
+
+.financial-content {
+  width: auto;
+  display: table-caption;
 }
 
 /*# sourceMappingURL=styles.css.map */

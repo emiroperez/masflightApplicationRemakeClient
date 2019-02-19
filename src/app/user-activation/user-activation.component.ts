@@ -26,6 +26,7 @@ export class UserActivationComponent implements OnInit {
   usersToAdd: any[] = [];
   plans: any[] = [];
   userSelected: any;
+  dataSource;
 
   constructor(private http: ApiClient, public globals: Globals,
     private service: ApplicationService, private userService: UserService) { }
@@ -49,8 +50,8 @@ export class UserActivationComponent implements OnInit {
 
   getPlansService() {
     this.globals.isLoading = true;
-    let url = "http://localhost:8887/getPlans";
-    //let url = '/getPlans';
+    // let url = "http://localhost:8887/getPlans";
+    let url = this.globals.baseUrl+'/getPlans';
     this.http.get(this, url, this.handlerSuccessInit, this.handlerError, null);
   }
 

@@ -55,6 +55,7 @@ export class ApplicationComponent implements OnInit {
   }
 
   handlerSuccessAF(_this,data){
+    _this.globals.isLoading = true;
     _this.planAdvanceFeatures = data;
     _this.planAdvanceFeatures.forEach(item => {
       item.advanceFeatureId == 1 ? _this.chartPlan = true : false;
