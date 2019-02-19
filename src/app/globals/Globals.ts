@@ -41,8 +41,8 @@ export class Globals {
   status: boolean= false;
   currentAirline: any;
   template : boolean = false;
-  // baseUrl = "http://localhost:8887";
-  baseUrl = "";
+  baseUrl = "http://localhost:8887";
+  // baseUrl = "";
   // baseUrl2 = "http://localhost:8886";
   baseUrl2 = "http://69.64.45.220:8886";
 

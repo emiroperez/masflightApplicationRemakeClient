@@ -15,9 +15,7 @@ const httpOptions = {
 export class MenuService {
   SECURITY_HEADER = "Authorization";
   TOKEN_STORAGE_KEY = "token";
-  url;
   constructor( private http: HttpClient, private globals:Globals) { 
-    this.url = this.globals.baseUrl;
   }
 
   getMenu(_this,successHandler, errorHandler){
