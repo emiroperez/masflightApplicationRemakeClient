@@ -4,12 +4,14 @@ import { Utils } from '../commons/utils';
 import { Observable, of } from 'rxjs';
 import { Airport } from '../model/Airport';
 import { delay } from 'rxjs/operators';
+import { Globals } from '../globals/Globals';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApplicationService {
 
+  
   utils: Utils;
 
   // host = "http://localhost:8887";
@@ -18,8 +20,10 @@ export class ApplicationService {
   // host1 = "http://localhost:8886";
   host1 = "http://69.64.45.220:8886";
 
-  constructor(private http: ApiClient) {
+  constructor(private http: ApiClient, private globals:Globals) {
     this.utils = new Utils();
+    this.host = this.globals.baseUrl;
+    this.host1 = this.globals.baseUrl2;
   }
 
   getTracking(_this, successHandler, errorHandler) {

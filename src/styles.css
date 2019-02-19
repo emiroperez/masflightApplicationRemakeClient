@@ -3187,14 +3187,14 @@ table.datasource {
   display: table-cell;
   padding: 10px;
   border: 1px solid #777676;
-  min-width: 120px;
+  width: 120px;
 }
 
 .financial-result-cell {
   display: table-cell;
   padding: 10px;
   border: 1px solid #777676;
-  min-width: 120px;
+  width: 120px;
 }
 
 .financial-table-item {
