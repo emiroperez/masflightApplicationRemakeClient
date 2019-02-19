@@ -79,7 +79,7 @@ export class MsfDashboardComponent implements OnInit {
       dashboardRows.push (new MsfDashboardChartValues (_this.options, dashboardPanel.title,
         dashboardPanel.id, dashboardPanel.option, dashboardPanel.chartColumnOptions, dashboardPanel.analysis,
         dashboardPanel.xaxis, dashboardPanel.values, dashboardPanel.function, dashboardPanel.chartType,
-        dashboardPanel.lastestResponse));
+        dashboardPanel.categoryOptions, dashboardPanel.lastestResponse));
     }
 
     // add the last dashboard column

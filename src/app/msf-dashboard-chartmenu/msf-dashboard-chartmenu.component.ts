@@ -242,155 +242,14 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   ngOnInit()
   {
-    let i, options, option;
-
-    // prepare the combo boxes
-    this.optionSearchChange (this.dataFormFilterCtrl);
-
-    if (this.values.chartColumnOptions)
-    {
-      this.filteredVariables.next (this.values.chartColumnOptions.slice ());
-
-      this.searchChange (this.variableFilterCtrl);
-      this.searchChange (this.xaxisFilterCtrl);
-      this.searchChange (this.valueFilterCtrl);
-    }
-
-    // set any values if loading a panel already created
-    if (this.values.currentOption)
-    {
-      options = this.values.options;
-
-      for (i = 0; i < options.length; i++)
-      {
-        option = options[i];
-
-        if (option.id == this.values.currentOption.id)
-        {
-          this.chartForm.get ('dataFormCtrl').setValue (option);
-          this.chartForm.get ('variableCtrl').enable ();
-
-          // only enable x axis if the chart type is not pie or donut
-          if (this.values.currentChartType.id !== 'pie' && this.values.currentChartType.id !== 'donut')
-            this.chartForm.get ('xaxisCtrl').enable ();
-
-          this.chartForm.get ('valueCtrl').enable ();
-          break;
-        }
-      }
-    }
-
-    if (this.values.variable)
-    {
-      options = this.values.chartColumnOptions;
-
-      for (i = 0; i < options.length; i++)
-      {
-        option = options[i];
-
-        if (option.id == this.values.variable.id)
-        {
-          this.chartForm.get ('variableCtrl').setValue (option);
-          break;
-        }
-      }
-    }
-
-    if (this.values.xaxis)
-    {
-      options = this.values.chartColumnOptions;
-
-      for (i = 0; i < options.length; i++)
-      {
-        option = options[i];
-
-        if (option.id == this.values.xaxis.id)
-        {
-          this.chartForm.get ('xaxisCtrl').setValue (option);
-          break;
-        }
-      }
-    }
-
-    if (this.values.valueColumn)
-    {
-      options = this.values.chartColumnOptions;
-
-      for (i = 0; i < options.length; i++)
-      {
-        option = options[i];
-
-        if (option.id == this.values.valueColumn.id)
-        {
-          this.chartForm.get ('valueCtrl').setValue (option);
-          break;
-        }
-      }
-    }
-
-    // refresh the following two values to avoid a blank form
-    if (this.values.currentChartType)
-    {
-      options = this.chartTypes;
-
-      for (i = 0; i < this.chartTypes.length; i++)
-      {
-        option = this.chartTypes[i];
-
-        if (option.id == this.values.currentChartType.id)
-        {
-          this.values.currentChartType = option;
-          break;
-        }
-      }
-    }
-    else
-      this.values.currentChartType = this.chartTypes[0];
-
-    if (this.values.function)
-    {
-      options = this.functions;
-
-      for (i = 0; i < this.functions.length; i++)
-      {
-        option = this.functions[i];
-
-        if (option.id == this.values.function.id)
-        {
-          this.values.function = option;
-          break;
-        }
-      }
-    }
-    else
-      this.values.function = this.functions[0];
-
-    this.checkChartFilters ();
-    //if (this.values.displayChart)
-
-    /*if (this.values.xaxis)
-      this.columns.push ( { id: this.values.xaxis.columnName, name: this.values.xaxis.columnLabel, item: this.values.xaxis } );
-
-    this.filteredVariables.next (this.columns);
-
-    options = this.columns;
-
-    for (i = 0; i < options.length; i++)
-    {
-      option = options[i];
-
-      if (option.id == this.values.xaxis.id)
-      {
-        this.chartForm.get ('xaxisCtrl').setValue (option);
-        break;
-      }
-    }*/
   }
 
   ngAfterViewInit(): void
   {
     //if (this.values.chartGenerated)
     //  this.storeChartValues ();
+    this.initPanelSettings ();
+
     if (this.values.lastestResponse)
     {
       this.chart = this.AmCharts.makeChart ("msf-dashboard-chart-display-" + this.columnPos + "-" + this.rowPos, this.makeOptions (this.values.lastestResponse));
@@ -494,11 +353,12 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       'option' : this.values.currentOption,
       'title' : this.values.chartName,
       'chartColumnOptions' : this.values.chartColumnOptions,
-      'analysis' : this.values.variable,
-      'xaxis' : this.values.xaxis,
-      'values' : this.values.valueColumn,
-      'function' : this.values.function,
-      'chartType' : this.values.currentChartType
+      'analysis' : this.values.chartColumnOptions.indexOf (this.values.variable),
+      'xaxis' : this.values.chartColumnOptions.indexOf (this.values.xaxis),
+      'values' : this.values.chartColumnOptions.indexOf (this.values.valueColumn),
+      'function' : this.functions.indexOf (this.values.function),
+      'chartType' : this.chartTypes.indexOf (this.values.currentChartType),
+      'categoryOptions' : this.values.currentOptionCategories
     };
 
     this.globals.isLoading = true;
@@ -840,5 +700,121 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     }
 
     this.generateBtnEnabled = false;
+  }
+
+  initPanelSettings(): void
+  {
+    let i, options, option;
+
+    // prepare the combo boxes
+    this.optionSearchChange (this.dataFormFilterCtrl);
+
+    if (this.values.chartColumnOptions)
+    {
+      this.filteredVariables.next (this.values.chartColumnOptions.slice ());
+      this.values.currentOptionUrl = this.values.currentOption.baseUrl;
+
+      this.searchChange (this.variableFilterCtrl);
+      this.searchChange (this.xaxisFilterCtrl);
+      this.searchChange (this.valueFilterCtrl);
+    }
+
+    // set any values if loading a panel already created
+    if (this.values.currentOption)
+    {
+      options = this.values.options;
+
+      for (i = 0; i < options.length; i++)
+      {
+        option = options[i];
+
+        if (option.id == this.values.currentOption.id)
+        {
+          this.chartForm.get ('dataFormCtrl').setValue (option);
+          this.chartForm.get ('variableCtrl').enable ();
+
+          // only enable x axis if the chart type is not pie or donut
+          if (this.values.currentChartType.id !== 'pie' && this.values.currentChartType.id !== 'donut')
+            this.chartForm.get ('xaxisCtrl').enable ();
+
+          this.chartForm.get ('valueCtrl').enable ();
+          this.values.currentOption = option;
+          break;
+        }
+      }
+    }
+
+    if (this.values.variable)
+    {
+      for (i = 0; i < this.values.chartColumnOptions.length; i++)
+      {
+        if (i == this.values.variable)
+        {
+          this.chartForm.get ('variableCtrl').setValue (this.values.chartColumnOptions[i]);
+          this.values.variable = this.values.chartColumnOptions[i];
+          break;
+        }
+      }
+    }
+
+    if (this.values.xaxis)
+    {
+      for (i = 0; i < this.values.chartColumnOptions.length; i++)
+      {
+        if (i == this.values.xaxis)
+        {
+          this.chartForm.get ('xaxisCtrl').setValue (this.values.chartColumnOptions[i]);
+          this.values.xaxis = this.values.chartColumnOptions[i];
+          break;
+        }
+      }
+    }
+
+    if (this.values.valueColumn)
+    {
+      for (i = 0; i < this.values.chartColumnOptions.length; i++)
+      {
+        if (i == this.values.valueColumn)
+        {
+          this.chartForm.get ('valueCtrl').setValue (this.values.chartColumnOptions[i]);
+          this.values.valueColumn = this.values.chartColumnOptions[i];
+          break;
+        }
+      }
+    }
+
+    // refresh the following two values to avoid a blank form
+    if (this.values.currentChartType)
+    {
+      for (i = 0; i < this.chartTypes.length; i++)
+      {
+        if (i == this.values.currentChartType)
+        {
+          this.values.currentChartType = this.chartTypes[i];
+          break;
+        }
+      }
+    }
+    else
+      this.values.currentChartType = this.chartTypes[0];
+
+    if (this.values.function)
+    {
+      for (i = 0; i < this.functions.length; i++)
+      {
+        if (i == this.values.function)
+        {
+          this.values.function = this.functions[i];
+          break;
+        }
+      }
+    }
+    else
+      this.values.function = this.functions[0];
+
+    if (this.values.currentOptionCategories)
+      this.variableCtrlBtnEnabled = true;
+
+    this.checkChartFilters ();
   }
 }
