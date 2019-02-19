@@ -33,6 +33,13 @@ export class MenuService {
     this.get(_this, url, successHandler, errorHandler);
   }
 
+  getUserLoggedin(_this,successHandler, errorHandler){
+    let url = "/secure/getUserloggedin";
+    //let url = "http://localhost:8887/secure/getUserloggedin"
+    this.get(_this, url, successHandler, errorHandler);
+  }
+
+
   createAuthorizationHeader() {
     httpOptions.headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     httpOptions.headers = httpOptions.headers.append(this.SECURITY_HEADER, localStorage.getItem(this.TOKEN_STORAGE_KEY));

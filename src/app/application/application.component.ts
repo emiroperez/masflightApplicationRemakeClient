@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import {ExcelService} from '../services/excel.service';
 import { MsfTableComponent } from '../msf-table/msf-table.component';
 import { PlanAdvanceFeatures } from '../model/PlanAdvanceFeatures';
+import { User } from '../model/User';
 
 
 @Component({
@@ -30,6 +31,9 @@ export class ApplicationComponent implements OnInit {
   menu: Menu;
   planAdvanceFeatures: any[];
   status: boolean;
+  user: any[];
+
+  admin: boolean = false;
   ELEMENT_DATA: any[];
   //displayedColumns: string[] = [];
   variables;
@@ -44,12 +48,26 @@ export class ApplicationComponent implements OnInit {
   ngOnInit() {
     this.globals.clearVariables();
     this.getMenu();
-    this.getAdvanceFeatures();
+
+
   }
 
+  validateAdmin(){
+    this.service.getUserLoggedin(this,this.handleLogin, this.errorLogin);
+  }
+
+  handleLogin(_this,data){
+    _this.user = data;
+    _this.admin = data.admin;
+     _this.globals.isLoading = false;
+  }
+  errorLogin(_this,result){
+    console.log(result);
+     _this.globals.isLoading = false;
+  }
 
   getAdvanceFeatures(){
-    this.service.getAdvanceFeatures(this,this.handlerSuccessAF,this.handlerErrorAF)
+    this.service.getAdvanceFeatures(this,this.handlerSuccessAF,this.handlerErrorAF);
 
     }
 
@@ -77,6 +95,9 @@ export class ApplicationComponent implements OnInit {
   handlerSuccess(_this,data){
     _this.menu = data;
     _this.globals.isLoading = false;
+    _this.getAdvanceFeatures();
+    _this.validateAdmin();
+
   }
 
   handlerError(_this,result){

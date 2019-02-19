@@ -19,6 +19,7 @@ export class User{
     phoneNumber: string;
     payment: Payment;
     userPlan: UserPlan;
+    admin: boolean;
 
 
     constructor(private paymentIn: Payment){
