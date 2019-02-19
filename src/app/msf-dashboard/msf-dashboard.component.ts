@@ -18,7 +18,8 @@ export class MsfDashboardComponent implements OnInit {
 
   displayAddChartMenu: boolean = false;
 
-  constructor(public globals: Globals, private service: ApplicationService, private http: ApiClient) { }
+  constructor(public globals: Globals, private service: ApplicationService,
+    private http: ApiClient) { }
 
   ngOnInit()
   {
@@ -26,6 +27,7 @@ export class MsfDashboardComponent implements OnInit {
       return; // do not query this component twice
 
     this.globals.isLoading = true;
+
     this.service.getMenuString (this, this.globals.currentApplication.id,
       this.addDataForms, this.handlerError);
   }
@@ -33,8 +35,6 @@ export class MsfDashboardComponent implements OnInit {
   // store any data form depending of the application id
   addDataForms(_this, data): void
   {
-    _this.globals.isLoading = false;
-
     for (let columnConfig of data)
     {
       _this.options.push (
@@ -85,25 +85,29 @@ export class MsfDashboardComponent implements OnInit {
     // add the last dashboard column
     _this.dashboardColumns.push (dashboardRows);
     _this.globals.isLoading = false;
+    _this.globals.isDashboardLoading = false;
   }
 
   handlerError(_this, result): void
   {
     console.log (result);
-    _this.globals.isLoading = false;  
+
+    _this.globals.isLoading = false;
   }
 
   RemoveChart(column, row): void
   {
     let dashboardRows: MsfDashboardChartValues[];
+    let dashboardRow, panel;
 
     dashboardRows = this.dashboardColumns[column];
 
     this.columnToDelete = column;
     this.rowToDelete = row;
+    dashboardRow = dashboardRows[row];
 
     this.globals.isLoading = true;
-    this.service.deleteDashboardPanel (this, dashboardRows[row], this.deleteRowPanel, this.handlerError);
+    this.service.deleteDashboardPanel (this, dashboardRow.id, this.deleteRowPanel, this.handlerError);
   }
 
   ToggleDisplayAddChartMenu(): void
@@ -130,25 +134,26 @@ export class MsfDashboardComponent implements OnInit {
     _this.globals.isLoading = false;
   }
 
-  deleteRowPanel (_this, data): void
+  deleteRowPanel (_this): void
   {
-    let dashboardRows = [], pos;
-
-    pos = data;
+    let dashboardRows = [];
 
     dashboardRows = _this.dashboardColumns[_this.columnToDelete];
     dashboardRows.splice (_this.rowToDelete, 1);
 
     // also remove the column if there are no panels left in the row
     if (!dashboardRows.length)
-      _this.service.deleteDashboardColumn (_this, pos, _this.deleteColumn, _this.handlerError);
+    {
+      _this.service.deleteDashboardColumn (_this, _this.globals.currentApplication.id,
+        _this.columnToDelete, _this.deleteColumn, _this.handlerError);
+    }
     else
       _this.globals.isLoading = false;
   }
 
-  deleteColumn (_this, data): void
+  deleteColumn (_this): void
   {
-    _this.dashboardColumns.splice (data.column, 1);
+    _this.dashboardColumns.splice (_this.columnToDelete, 1);
     _this.globals.isLoading = false;
   }
 
