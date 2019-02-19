@@ -44,7 +44,6 @@ export class ApplicationComponent implements OnInit {
   ngOnInit() {
     this.globals.clearVariables();
     this.getMenu();
-    this.getAdvanceFeatures();
   }
 
 
@@ -54,6 +53,7 @@ export class ApplicationComponent implements OnInit {
     }
 
   handlerSuccessAF(_this,data){
+    _this.globals.isLoading = true;
     _this.planAdvanceFeatures = data;
     _this.planAdvanceFeatures.forEach(item => {
       item.advanceFeatureId == 1 ? _this.chartPlan = true : false;
@@ -77,6 +77,7 @@ export class ApplicationComponent implements OnInit {
   handlerSuccess(_this,data){
     _this.menu = data;
     _this.globals.isLoading = false;
+    _this.getAdvanceFeatures();
   }
 
   handlerError(_this,result){

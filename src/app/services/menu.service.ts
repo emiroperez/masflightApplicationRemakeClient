@@ -18,7 +18,7 @@ export class MenuService {
 
   getMenu(_this,successHandler, errorHandler){
     let url = "/secure/getMenu?";
-    //let url = "http://localhost:8887/getMenu?"
+    // let url = "http://localhost:8887/getMenu?"
     if(_this.globals.currentApplication==undefined){
       _this.globals.currentApplication = JSON.parse(localStorage.getItem("currentApplication"));
     }
@@ -29,7 +29,7 @@ export class MenuService {
 
   getAdvanceFeatures(_this, successHandler, errorHandler){
     let url = "/secure/getPlanAdvanceFeatures";
-    //let url = "http://localhost:8887/secure/getPlanAdvanceFeatures";
+    // let url = "http://localhost:8887/secure/getPlanAdvanceFeatures";
     this.get(_this, url, successHandler, errorHandler);
   }
 

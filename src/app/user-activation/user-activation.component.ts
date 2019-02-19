@@ -26,6 +26,7 @@ export class UserActivationComponent implements OnInit {
   usersToAdd: any[] = [];
   plans: any[] = [];
   userSelected: any;
+  dataSource;
 
   constructor(private http: ApiClient, public globals: Globals,
     private service: ApplicationService, private userService: UserService) { }
