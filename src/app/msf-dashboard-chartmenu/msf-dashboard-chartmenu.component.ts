@@ -710,6 +710,35 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       this.searchChange (this.valueFilterCtrl);
     }
 
+    // refresh the following two values to avoid a blank form
+    if (this.values.currentChartType)
+    {
+      for (i = 0; i < this.chartTypes.length; i++)
+      {
+        if (i == this.values.currentChartType)
+        {
+          this.values.currentChartType = this.chartTypes[i];
+          break;
+        }
+      }
+    }
+    else
+      this.values.currentChartType = this.chartTypes[0];
+
+    if (this.values.function)
+    {
+      for (i = 0; i < this.functions.length; i++)
+      {
+        if (i == this.values.function)
+        {
+          this.values.function = this.functions[i];
+          break;
+        }
+      }
+    }
+    else
+      this.values.function = this.functions[0];
+
     // set any values if loading a panel already created
     if (this.values.currentOption)
     {
@@ -773,35 +802,6 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         }
       }
     }
-
-    // refresh the following two values to avoid a blank form
-    if (this.values.currentChartType)
-    {
-      for (i = 0; i < this.chartTypes.length; i++)
-      {
-        if (i == this.values.currentChartType)
-        {
-          this.values.currentChartType = this.chartTypes[i];
-          break;
-        }
-      }
-    }
-    else
-      this.values.currentChartType = this.chartTypes[0];
-
-    if (this.values.function)
-    {
-      for (i = 0; i < this.functions.length; i++)
-      {
-        if (i == this.values.function)
-        {
-          this.values.function = this.functions[i];
-          break;
-        }
-      }
-    }
-    else
-      this.values.function = this.functions[0];
 
     if (this.values.currentOptionCategories)
       this.variableCtrlBtnEnabled = true;
