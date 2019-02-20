@@ -711,7 +711,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     }
 
     // refresh the following two values to avoid a blank form
-    if (this.values.currentChartType != -1)
+    if (this.values.currentChartType != null && this.values.currentChartType != -1)
     {
       for (i = 0; i < this.chartTypes.length; i++)
       {
@@ -725,7 +725,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     else
       this.values.currentChartType = this.chartTypes[0];
 
-    if (this.values.function != -1)
+    if (this.values.function != null && this.values.function != -1)
     {
       for (i = 0; i < this.functions.length; i++)
       {
@@ -764,7 +764,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       }
     }
 
-    if (this.values.variable != -1)
+    if (this.values.variable != null && this.values.variable != -1)
     {
       for (i = 0; i < this.values.chartColumnOptions.length; i++)
       {
@@ -777,7 +777,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       }
     }
 
-    if (this.values.xaxis != -1)
+    if (this.values.xaxis != null && this.values.xaxis != -1)
     {
       for (i = 0; i < this.values.chartColumnOptions.length; i++)
       {
@@ -790,7 +790,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       }
     }
 
-    if (this.values.valueColumn != -1)
+    if (this.values.valueColumn != null && this.values.valueColumn != -1)
     {
       for (i = 0; i < this.values.chartColumnOptions.length; i++)
       {
