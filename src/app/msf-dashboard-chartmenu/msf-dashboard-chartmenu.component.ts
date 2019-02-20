@@ -152,14 +152,12 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     {
       return {
         "type" : "pie",
-        "theme" : "dark",
+        "theme" : "light",
         "dataProvider" : dataProvider.dataProvider,
         "valueField" : dataProvider.valueField,
         "titleField" : dataProvider.titleField,
         "colors" : dataProvider.colors,
-        "color" : "#ffffff",
-        "labelColorField" : "#ffffff",
-        "labelTickColor" : "#ffffff",
+        "labelTickAlpha" : 0.75,
         "balloon" :
         {
           "fixedPosition" : true
@@ -180,7 +178,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
     return {
       "type" : "serial",
-      "theme" : "dark",
+      "theme" : "light",
       "legend" :
       {
         "useGraphSettings" : true
@@ -194,11 +192,9 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       }],
       "graphs" : this.buildGraphs (dataProvider.filter),
       "plotAreaFillAlphas" : 1,
-      "zoomOutButtonImage" : "lensWhite",
-      "color" : "#ffffff",
-      "zoomOutButtonColor" : "#ffffff",
       "zoomOutButtonRollOverAlpha" : "0.5",
-      "plotAreaFillColors" : "#222222",
+      "plotAreaFillColors" : "#cccccc",
+      "color" : "#000000",
       "plotAreaBorderColor" : "#888888",
       "plotAreaBorderAlpha" : 0.4,
       "depth3D" : 0,
@@ -246,8 +242,6 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   ngAfterViewInit(): void
   {
-    //if (this.values.chartGenerated)
-    //  this.storeChartValues ();
     this.initPanelSettings ();
 
     if (this.values.lastestResponse)
@@ -362,7 +356,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     };
 
     this.globals.isLoading = true;
-    urlBase = this.values.currentOptionUrl + "?" + this.getParameters ();
+    urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
     console.log (urlBase);
     urlArg = encodeURIComponent (urlBase);
@@ -420,7 +414,6 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   loadChartFilterValues(component): void
   {
     this.globals.isLoading = true;
-    this.values.currentOptionUrl = component.baseUrl;
     this.getChartFilterValues (component.id, this.addChartFilterValues);
   }
 
@@ -617,7 +610,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       this.temp.chartName = this.values.chartName;
     }
 
-    this.temp.displayChart = this.values.displayChart;
+    this.temp.displayChart = this.displayChart;
     this.temp.currentOptionUrl = this.values.currentOptionUrl;
     this.temp.currentChartType = JSON.parse (JSON.stringify (this.values.currentChartType));
     this.temp.currentOption = JSON.parse (JSON.stringify (this.values.currentOption));
@@ -641,10 +634,11 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   {
     this.values.displayChart = true;
 
+    // discard any changes except the title if changed
     /*
     // discard changes with a deep copy from temp if the user decide to
     // return to the chart without generating it again
-    this.values.displayChart = this.temp.displayChart = true;
+    this.displayChart = this.temp.displayChart = true;
     this.values.options = { ...this.temp.options };
     this.values.chartName = this.temp.chartName;
     this.values.currentOptionUrl = this.temp.currentOptionUrl;
@@ -656,9 +650,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     this.values.valueColumn = JSON.parse (JSON.stringify (this.temp.valueColumn));
     this.values.function = JSON.parse (JSON.stringify (this.temp.function));
     this.chart = this.temp.chart2; // this one will be never modified unless the chart is generated again
-    this.values.chartGenerated = this.temp.chartGenerated;
-
-    this.cdRef.detectChanges();
+    this.chartGenerated = this.temp.chartGenerated;
     */
   }
 
@@ -712,7 +704,6 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     if (this.values.chartColumnOptions)
     {
       this.filteredVariables.next (this.values.chartColumnOptions.slice ());
-      this.values.currentOptionUrl = this.values.currentOption.baseUrl;
 
       this.searchChange (this.variableFilterCtrl);
       this.searchChange (this.xaxisFilterCtrl);
