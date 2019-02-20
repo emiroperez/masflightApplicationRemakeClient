@@ -66,7 +66,7 @@ export class ApiClient {
 
     getSecure = function (_this, url, successHandler, errorHandler, tab) {
         this.createAuthorizationHeader ();
-        this.http.get(url, httpOptions).subscribe(result => {
+        this.http.get(url, {observe: 'events', reportProgress: true, headers: httpOptions.headers}).subscribe(result => {
 
             if (result.type === HttpEventType.DownloadProgress) {
                 if( _this.globals != null){

@@ -23,9 +23,10 @@ export class MsfDashboardComponent implements OnInit {
 
   ngOnInit()
   {
-    if (this.globals.isLoading)
-      return; // do not query this component twice
+  }
 
+  ngAfterViewInit()
+  {
     this.globals.isLoading = true;
 
     this.service.getMenuString (this, this.globals.currentApplication.id,
@@ -79,13 +80,12 @@ export class MsfDashboardComponent implements OnInit {
       dashboardRows.push (new MsfDashboardChartValues (_this.options, dashboardPanel.title,
         dashboardPanel.id, dashboardPanel.option, dashboardPanel.chartColumnOptions, dashboardPanel.analysis,
         dashboardPanel.xaxis, dashboardPanel.values, dashboardPanel.function, dashboardPanel.chartType,
-        dashboardPanel.lastestResponse));
+        dashboardPanel.categoryOptions, dashboardPanel.lastestResponse));
     }
 
     // add the last dashboard column
     _this.dashboardColumns.push (dashboardRows);
     _this.globals.isLoading = false;
-    _this.globals.isDashboardLoading = false;
   }
 
   handlerError(_this, result): void

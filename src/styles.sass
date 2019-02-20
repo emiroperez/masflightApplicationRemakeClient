@@ -1022,6 +1022,12 @@ button[aria-expanded="true"]
     vertical-align: middle
     width: calc(100% - 20px)
 
+.msf-menu-simple-content
+    height: 100%
+    display: inline-block
+    vertical-align: middle
+    width: 100%
+
 .msf-menu-internal-simple-content
     height: 100%
     width: 100%
@@ -2791,6 +2797,8 @@ table.datasource
 
 .financial-container 
     margin-top: -57px
+    display: table
+    width: auto
 
 .financial-table-container 
     background: white
@@ -2798,7 +2806,7 @@ table.datasource
     width: 100%
 
 .financial-title 
-    background: #333
+    background: #3C3C3C
     padding: 15px 10px
     color: white
     border: 1px solid #777676
@@ -2823,7 +2831,9 @@ table.datasource
     border: 1px solid rgba(0,0,0,.12)
     border-right: 0
     border-top: 0
-    width: 120px
+    min-width: 120px
+    max-width: 120px
+    vertical-align: middle
 
 .financial-result-cell 
     display: table-cell
@@ -2831,7 +2841,9 @@ table.datasource
     border: 1px solid rgba(0,0,0,.12)
     border-right: 0
     border-top: 0
-    width: 120px
+    min-width: 80px
+    max-width: 80px
+    vertical-align: middle
 
 .children-cell
     // padding-left: 25px

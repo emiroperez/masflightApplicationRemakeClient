@@ -21,15 +21,17 @@ export class MsfDashboardChartValues {
     function;
 
     constructor(options: any[], chartName: String, id: number, currentOption?: any, chartColumnOptions? : any,
-        variable?, xaxis?, valueColumn?, func?, chartType?, lastestResponse?: string)
-    /*, displayChart?, currentOptionUrl?: String,
-        currentChartType?, currentOption?: any, currentOptionCategories?: any, variable?, xaxis?,
-        valueColumn?, func?, chart2?: AmChart, chartGenerated?: boolean)*/
+        variable?, xaxis?, valueColumn?, func?, chartType?, currentOptionCategories?: any, lastestResponse?: string)
     {
         this.options = options;
         this.chartName = chartName;
         this.id = id;
         this.currentOption = currentOption;
+        this.variable = variable;
+        this.xaxis = xaxis;
+        this.valueColumn = valueColumn;
+        this.function = func;
+        this.currentChartType = chartType;
 
         // check if the following parameters are null before parsing the JSON
         if (chartColumnOptions)
@@ -37,34 +39,14 @@ export class MsfDashboardChartValues {
         else
             this.chartColumnOptions = null;
 
-        if (variable)
-            this.variable = JSON.parse (variable);
-        else
-            this.variable = null;
-
-        if (xaxis)
-            this.xaxis = JSON.parse (xaxis);
-        else
-            this.xaxis = null;
-
-        if (valueColumn)
-            this.valueColumn = JSON.parse (valueColumn);
-        else
-            this.valueColumn = null;
-
         if (lastestResponse)
             this.lastestResponse = JSON.parse (lastestResponse);
         else
             this.lastestResponse = null;
 
-        if (func)
-            this.function = JSON.parse (func);
+        if (currentOptionCategories)
+            this.currentOptionCategories = JSON.parse (currentOptionCategories);
         else
-            this.function = null;
-
-        if (chartType)
-            this.currentChartType = JSON.parse (chartType);
-        else
-            this.currentChartType = null;
+            this.currentOptionCategories = null;
     }
 }

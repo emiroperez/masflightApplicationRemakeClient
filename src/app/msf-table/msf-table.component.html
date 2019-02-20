@@ -31,7 +31,8 @@
                 <div *ngIf="tableItem.cellFormat=='string'">{{valueItem.value}}</div>
                 <div *ngIf="tableItem.cellFormat=='number'" class="cell-value" >$ {{valueItem.value | number:'.0-2':'en'}}</div>
               </div>
-              <div style="width: auto;" [ngClass]="tableItem.subtitle==1 ? 'financial-item-cell parent-cell-subtitle' : 'no-show'" >{{tableItem.label}}</div>
+              <div style="width: auto;width: auto;min-width: auto;
+              max-width: 100%;" [ngClass]="tableItem.subtitle==1 ? 'financial-item-cell parent-cell-subtitle' : 'no-show'" >{{tableItem.label}}</div>
             </div>
             <div *ngFor="let childrenItem of tableItem.children" [ngClass]="childrenItem.bold==0 ? 'financial-table-item-label-title' : 'financial-table-item-label-title msf-bold'">
                 <div class="financial-item-cell children-cell">{{childrenItem.label}}</div>
