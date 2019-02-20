@@ -241,13 +241,13 @@ export class MsfTableComponent implements OnInit {
         
         let dataResult = new MatTableDataSource(mainElement);     
         if( _this.globals.moreResults){
-          if( _this.globals.totalRecord<100){
-            _this.globals.moreResultsBtn = false;
-            _this.globals.moreResults = false;
-          }
             _this.dataSource.data = _this.dataSource.data.concat(dataResult.data);
         }else{
           _this.dataSource = dataResult;
+        }
+        if( _this.globals.totalRecord<100){
+          _this.globals.moreResultsBtn = false;
+          _this.globals.moreResults = false;
         }
     }else{
       _this.template = data.template;
