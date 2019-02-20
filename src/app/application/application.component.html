@@ -66,14 +66,9 @@
     </div>
 
     <!--container-->
-    <div *ngIf="isSimpleContent()" class="msf-menu-content" style="width: 100%">
-        <div class="msf-menu-internal-simple-content">
-            <app-msf-container #msfContainerRef></app-msf-container>
-        </div>
-    </div>
-    <div [ngClass]="!isSimpleContent() ? 'msf-menu-show-full-nav-component' : 'msf-menu-hide-full-nav'">
-        <div class="msf-menu-content msf-menu-tabs-content">
-            <div class="msf-menu-internal-content">
+    <div [ngClass]="isSimpleContent() ? 'msf-menu-simple-content' : 'msf-menu-show-full-nav-component'">
+        <div [ngClass]="isSimpleContent() ? 'msf-menu-simple-content' : 'msf-menu-content msf-menu-tabs-content'">
+            <div [ngClass]="isSimpleContent() ? 'msf-menu-internal-simple-content' : 'msf-menu-internal-content'">
                 <app-msf-container #msfContainerRef></app-msf-container>
             </div>
             <div [ngClass]="globals.moreResultsBtn ? 'msf-menu-more-button' : 'msf-menu-more-button disabled-more-button'"
