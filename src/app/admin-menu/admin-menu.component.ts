@@ -31,7 +31,7 @@ export class EditOutputOptionsMetaDialog {
         id: null,
         checked: false,
         order: 'desc',
-        optionId: this.data.option,
+        optionId: this.data.option.id,
         columnLabel: '',
         columnName: '',
         columnType: 'string',
@@ -338,6 +338,8 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
       this.optionSelected.toDelete = true;
     }
   }
+
+  deleteCategory
 
   saveMenu() {
     console.log(this.menu);
