@@ -304,4 +304,12 @@ export class MsfTableComponent implements OnInit {
     return aux;
   }
 
+  getFormatCell(value:any){
+    var aux = String(value);
+    aux = aux.replace("%","");
+    aux = aux.replace("$","");
+    aux = aux.replace("ï¿½","0");
+    return aux;
+  }
+
 }
