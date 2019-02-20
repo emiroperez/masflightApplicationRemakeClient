@@ -213,8 +213,7 @@ export class CreateMempershipsComponent implements OnInit {
 
   getPlansService() {
     this.globals.isLoading = true;
-    let url = "http://localhost:8887/getPlans";
-    //let url= this.globals.baseUrl+'/getPlans';
+    let url= this.globals.baseUrl+'/getPlans';
     this.http.get(this, url, this.handlerSuccessInit, this.handlerError, null);
   }
 
