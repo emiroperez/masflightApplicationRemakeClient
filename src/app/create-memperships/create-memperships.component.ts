@@ -73,23 +73,6 @@ export class EditOptionsDialog {
     @Inject(MAT_DIALOG_DATA) public data: { menuSelected: any, auxOptions: any }) { }
 
 
-/*       getOptionSelected(option) {
-        //this.categoryArguments = [];
-        //this.clearSelectedCategoryArguments();
-        if (this.optionSelected == option) {
-          this.optionSelected.isActive = false;
-          this.optionSelected = {};
-          this.idDomOptionSelected = {};
-        } else {
-          this.optionSelected.isActive = false;
-          option.isActive = option.isActive == null ? true : !option.isActive;
-          this.optionSelected = option;
-          this.optionsArray.push(option);
-          console.log(this.optionsArray);
-          console.log("was selected: " + option.label);
-        }
-      }
- */
   getItemsSelected(menu) {
     console.log(this.data.auxOptions);
 
@@ -123,8 +106,6 @@ export class EditOptionsDialog {
         }
         if (element.selected && !found) {
           const optionAdd = new PlanOption();
-          optionAdd.planId = null;
-          optionAdd.id = null;
           optionAdd.optionId = element.id;
           optionAdd.delete = false;
           this.data.auxOptions.push(optionAdd);
@@ -303,8 +284,8 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
   let advanceFeaturesGroup: FormGroup[] = [];
   advanceFeaturesArray.forEach(advFeature => {
     advanceFeaturesGroup.push(this.formBuilder.group({
-      id : '',
-      idByPlan: '',
+      id : advFeature.id,
+      idByPlan: null,
       label: advFeature.label,
       selected: false,
       delete: false
@@ -379,11 +360,12 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
   addNewPlan(): void {
     const newPlan: Plan = new Plan();
     newPlan.id = '';
-    newPlan.options = [];
+    newPlan.options = new Array();
     this.items = this.plansForms.get('items') as FormArray;
     this.items.push(this.createPlan());
 
     this.planJson.push(newPlan);
+    console.log(this.planJson);
   }
 
   deletePlan(index) {
@@ -556,29 +538,23 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
   getAdvanceFeaturesJson(index) {
 
     this.items = this.plansForms.get('items') as FormArray;
+
     this.advanceFeaturesGroup = this.items.controls[index]['controls']['advanceFeatures'];
     let advfeaturesJson: Array<PlanAdvanceFeatures> = new Array();
     for (let i = 0; i < this.advanceFeaturesGroup.length; i++) {
       let advfeature: PlanAdvanceFeatures = new PlanAdvanceFeatures();
-      if (this.advanceFeaturesGroup.at(i).get("idByPlan").value != null) {
-
-        if(this.advanceFeaturesGroup.at(i).get("selected").value){
-          advfeature.delete = false;
-          advfeature.id = this.advanceFeaturesGroup.at(i).get("idByPlan").value;
+      if (this.advanceFeaturesGroup.at(i).get("idByPlan").value !== null &&
+      this.advanceFeaturesGroup.at(i).get("idByPlan").value !== "") {
+         advfeature.delete = this.advanceFeaturesGroup.at(i).get("selected").value ? false : true;
+         advfeature.advanceFeatureId = this.advanceFeaturesGroup.at(i).get("id").value;
+         advfeature.id = this.advanceFeaturesGroup.at(i).get("idByPlan").value;
+         advfeaturesJson.push(advfeature);
+       }else if(this.advanceFeaturesGroup.at(i).get("selected").value) {
+            advfeature.advanceFeatureId = this.advanceFeaturesGroup.at(i).get("id").value;
+            advfeature.id = null;
+            advfeature.delete = false;
+            advfeaturesJson.push(advfeature);
         }
-        else { advfeature.delete = true; }
-
-          advfeature.advanceFeatureId = this.advanceFeaturesGroup.at(i).get("id").value;
-          advfeature.id = this.advanceFeaturesGroup.at(i).get("idByPlan").value;
-          advfeaturesJson.push(advfeature);
-        }
-
-         else if(this.advanceFeaturesGroup.at(i).get("selected").value) {
-        advfeature.advanceFeatureId = this.advanceFeaturesGroup.at(i).get("id").value;
-        advfeature.id = null;
-        advfeature.delete = false;
-        advfeaturesJson.push(advfeature);
-      }
 
     }
     return advfeaturesJson;
@@ -668,7 +644,6 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
       const planOp: PlanOption = new PlanOption();
       planOp.id = optionsXPlan[j]['id'];
       planOp.optionId = optionsXPlan[j]['optionId'];
-      planOp.planId = optionsXPlan[j]['planId'];
       planOp.delete = optionsXPlan[j]['delete'];
       opJson.push(planOp);
     }
