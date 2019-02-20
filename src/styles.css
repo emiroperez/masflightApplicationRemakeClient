@@ -820,6 +820,10 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
   color: white;
 }
 
+.mat-select-search-clear .mat-button-wrapper {
+  color: black;
+}
+
 .msf-prompt {
   width: 60px;
   color: white;
@@ -1832,8 +1836,8 @@ mat-tab-group {
 .msf-dashboard-container {
   font-size: 14px;
   text-align: center;
-  color: #fff;
-  background-color: #333333;
+  color: #555555;
+  background-color: #ffffff;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -1854,16 +1858,33 @@ mat-tab-group {
 }
 .msf-dashboard-container .msf-dashboard-addmenu .msf-dashboard-addmenu-item:hover {
   background-color: #01abec;
+  color: #fff;
   display: table-row;
   vertical-align: middle;
   cursor: pointer;
 }
 .msf-dashboard-container .msf-dashboard-addmenu .msf-dashboard-addmenu-item {
+  background-color: #ffffff;
   display: table-row;
   vertical-align: middle;
 }
+.msf-dashboard-container .msf-dashboard-addmenu .msf-dashboard-addmenu-item-text:hover {
+  border: 1px solid #888888;
+  color: #fff;
+  display: table-cell;
+  align-items: center;
+  padding: 10px 40px;
+}
+.msf-dashboard-container .msf-dashboard-addmenu .msf-dashboard-addmenu-item-text:hover .msf-dashboard-icon {
+  vertical-align: middle;
+  margin-top: -5%;
+  margin-bottom: -5%;
+}
+.msf-dashboard-container .msf-dashboard-addmenu .msf-dashboard-addmenu-item-text:hover .msf-dashboard-addmenu-item-addtext {
+  vertical-align: middle;
+}
 .msf-dashboard-container .msf-dashboard-addmenu .msf-dashboard-addmenu-item-text {
-  border: 1px solid #ffffff;
+  border: 1px solid #888888;
   display: table-cell;
   align-items: center;
   padding: 10px 40px;
@@ -1915,15 +1936,29 @@ mat-tab-group {
   padding-top: 5px;
 }
 .msf-dashboard-chartbox-close-button .msf-dashboard-close-icon:hover {
+  color: #fff;
   cursor: pointer;
   font-size: 16px;
   padding-right: 5px;
   padding-top: 5px;
 }
 
+.msf-dashboard-form-field .mat-select-value, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-field-function .mat-select-value, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-field-valuectrl .mat-select-value, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-full-width .mat-select-value, .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-row .msf-full-width .mat-select-value, .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-row .msf-width-90 .mat-select-value {
+  color: #555555;
+}
+.msf-dashboard-form-field .mat-select-arrow, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-field-function .mat-select-arrow, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-field-valuectrl .mat-select-arrow, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-full-width .mat-select-arrow, .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-row .msf-full-width .mat-select-arrow, .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-row .msf-width-90 .mat-select-arrow {
+  color: #555555;
+}
+.msf-dashboard-form-field .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-field-function .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-field-valuectrl .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-full-width .mat-form-field-underline, .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-row .msf-full-width .mat-form-field-underline, .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-row .msf-width-90 .mat-form-field-underline {
+  background-alpha: 0;
+}
+.msf-dashboard-form-field .mat-form-field-label-wrapper .mat-form-field-label, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-field-function .mat-form-field-label-wrapper .mat-form-field-label, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-field-valuectrl .mat-form-field-label-wrapper .mat-form-field-label, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-full-width .mat-form-field-label-wrapper .mat-form-field-label, .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-row .msf-full-width .mat-form-field-label-wrapper .mat-form-field-label, .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-row .msf-width-90 .mat-form-field-label-wrapper .mat-form-field-label {
+  color: #555555 !important;
+}
+
 .msf-dashboard-chartmenu-container {
   padding: 10px;
-  background-color: #424242;
+  background-color: #e6e6e6;
   overflow-y: visible;
   min-height: 303px;
 }
@@ -1984,7 +2019,7 @@ mat-tab-group {
 .msf-dashboard-chartmenu-container-chart {
   padding: 10px;
   background-color: #e6e6e6;
-  color: #000000;
+  color: #555555;
   overflow-y: visible;
   min-height: 303px;
 }
@@ -2032,6 +2067,7 @@ mat-tab-group {
   font-size: 16px;
 }
 .msf-dashboard-control-variables-title .msf-dashboard-control-variables-close-button .msf-dashboard-close-icon:hover {
+  color: #01abec;
   cursor: pointer;
   font-size: 16px;
 }

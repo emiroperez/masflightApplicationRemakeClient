@@ -737,6 +737,10 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button
 .mat-button-wrapper
     color: white
 
+.mat-select-search-clear
+    .mat-button-wrapper
+        color: black
+
 .msf-prompt
     width: 60px
     color: white
@@ -1625,8 +1629,8 @@ mat-tab-group
 .msf-dashboard-container
     font-size: 14px
     text-align: center
-    color: #fff
-    background-color: #333333
+    color: #555555
+    background-color: #ffffff
     display: flex
     flex-direction: column
     width: 100%
@@ -1644,14 +1648,28 @@ mat-tab-group
         margin-bottom: 2%
         .msf-dashboard-addmenu-item:hover
             background-color: #01abec
+            color: #fff
             display: table-row
             vertical-align: middle
             cursor: pointer
         .msf-dashboard-addmenu-item
+            background-color: #ffffff
             display: table-row
             vertical-align: middle
+        .msf-dashboard-addmenu-item-text:hover
+            border: 1px solid #888888
+            color: #fff
+            display: table-cell
+            align-items: center
+            padding: 10px 40px
+            .msf-dashboard-icon
+                vertical-align: middle
+                margin-top: -5%
+                margin-bottom: -5%
+            .msf-dashboard-addmenu-item-addtext
+                vertical-align: middle
         .msf-dashboard-addmenu-item-text
-            border: 1px solid #ffffff
+            border: 1px solid #888888
             display: table-cell
             align-items: center
             padding: 10px 40px
@@ -1693,14 +1711,26 @@ mat-tab-group
         padding-right: 5px
         padding-top: 5px
     .msf-dashboard-close-icon:hover
+        color: #fff
         cursor: pointer
         font-size: 16px
         padding-right: 5px
         padding-top: 5px
 
+.msf-dashboard-form-field
+    .mat-select-value
+        color: #555555
+    .mat-select-arrow
+        color: #555555
+    .mat-form-field-underline
+        background-alpha: 0
+    .mat-form-field-label-wrapper
+        .mat-form-field-label
+            color: #555555 !important
+
 .msf-dashboard-chartmenu-container
     padding: 10px
-    background-color: #424242
+    background-color: #e6e6e6
     overflow-y: visible
     min-height: 303px
     .msf-dashboard-chartmenu-sub-container-row
@@ -1710,6 +1740,10 @@ mat-tab-group
         padding-left: 4px
         font-size: 12px
         align-items: center
+        .msf-width-90
+            @extend .msf-dashboard-form-field
+        .msf-full-width
+            @extend .msf-dashboard-form-field
     .msf-dashboard-chartmenu-variable-buttons
         display: flex
         flex-direction: row
@@ -1751,7 +1785,7 @@ mat-tab-group
 .msf-dashboard-chartmenu-container-chart
     padding: 10px
     background-color: #e6e6e6
-    color: #000000
+    color: #555555
     overflow-y: visible
     min-height: 303px
     .msf-dashboard-chartmenu-title
@@ -1791,6 +1825,7 @@ mat-tab-group
         .msf-dashboard-close-icon
             font-size: 16px
         .msf-dashboard-close-icon:hover
+            color: #01abec
             cursor: pointer
             font-size: 16px
 
@@ -1826,12 +1861,16 @@ mat-tab-group
     .msf-dashboard-chart-op-container
         padding-left: 10px
         width: 100%
+        .msf-full-width
+            @extend .msf-dashboard-form-field
         .msf-dashboard-field-valuectrl
             width: 49.5%
             padding-right: 0.5%
+            @extend .msf-dashboard-form-field
         .msf-dashboard-field-function
             width: 49.5%
             padding-left: 0.5%
+            @extend .msf-dashboard-form-field
 
 .msf-dashboard-menu-component
     @extend .msf-primary-light-bg-color
@@ -2563,8 +2602,6 @@ table.datasource
     line-height: 2
     color: black !important
     text-align: left
-
-
 
 .msf-features-membership-container .mat-form-field-appearance-legacy .mat-form-field-label
     line-height: 2

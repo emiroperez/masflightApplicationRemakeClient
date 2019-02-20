@@ -71,7 +71,7 @@
         </div>
         <div class="msf-dashboard-chart-op-container">
           <mat-form-field [formGroup]="chartForm" class="msf-dashboard-field-valuectrl">
-            <mat-select formControlName="valueCtrl" placeholder="Values" #valueSelect [(value)]="values.valueColumn" (selectionChange)="checkChartFilters()">
+            <mat-select formControlName="valueCtrl" placeholder="Values" #valueSelect [(value)]="values.valueColumn" (selectionChange)="checkChartFilters()" class="light-mat-select">
               <ngx-mat-select-search [formControl]="valueFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
               <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
                 {{variable.name}}
