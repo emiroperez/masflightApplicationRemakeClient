@@ -23,9 +23,10 @@ export class MsfDashboardComponent implements OnInit {
 
   ngOnInit()
   {
-    if (this.globals.isLoading)
-      return; // do not query this component twice
+  }
 
+  ngAfterViewInit()
+  {
     this.globals.isLoading = true;
 
     this.service.getMenuString (this, this.globals.currentApplication.id,
