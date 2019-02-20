@@ -8,7 +8,6 @@ export class MsfDashboardChartValues {
 
     chartName: String;
     chartColumnOptions:any[] = []; 
-    currentOptionUrl: String;
     currentChartType;
     currentOption: any;
     currentOptionCategories: any;

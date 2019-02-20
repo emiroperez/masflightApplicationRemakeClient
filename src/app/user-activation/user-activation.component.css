@@ -13,3 +13,15 @@
 .mat-select-arrow {
     color: #2d3436;
 }
+
+.datasource.welcome-table {
+    margin-bottom: 0px;
+}
+
+.mat-button-wrapper {
+    color: #2d3436;
+}
+
+.mat-icon-button {
+    float: right;
+}

@@ -53,17 +53,23 @@ export class ApplicationComponent implements OnInit {
   }
 
   validateAdmin(){
-    this.service.getUserLoggedin(this,this.handleLogin, this.errorLogin);
+    this.service.getUserLoggedin(this, this.handleLogin, this.errorLogin);
   }
 
   handleLogin(_this,data){
     _this.user = data;
     _this.admin = data.admin;
      _this.globals.isLoading = false;
+
+    if (_this.dashboardPlan)
+     _this.goToDashboard ();
   }
   errorLogin(_this,result){
     console.log(result);
      _this.globals.isLoading = false;
+
+     if (_this.dashboardPlan)
+     _this.goToDashboard ();
   }
 
   getAdvanceFeatures(){
@@ -80,15 +86,13 @@ export class ApplicationComponent implements OnInit {
       item.advanceFeatureId == 3 ? _this.dynamicTablePlan = true : false;
       item.advanceFeatureId == 4 ? _this.exportExcelPlan = true : false;
     });
-    _this.globals.isLoading = false;
 
-    if (_this.dashboardPlan)
-      _this.goToDashboard ();
+    _this.validateAdmin ();
   }
 
   handlerErrorAF(_this,result){
     console.log(result);
-    _this.globals.isLoading = false;
+    _this.validateAdmin ();
   }
 
 
@@ -100,12 +104,12 @@ export class ApplicationComponent implements OnInit {
     _this.menu = data;
     _this.globals.isLoading = false;
     _this.getAdvanceFeatures();
-    _this.validateAdmin();
   }
 
   handlerError(_this,result){
     console.log(result);
     _this.globals.isLoading = false;
+    _this.getAdvanceFeatures();
   }
 
 

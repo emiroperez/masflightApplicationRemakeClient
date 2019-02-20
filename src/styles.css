@@ -1787,10 +1787,6 @@ mat-tab-group {
   padding-top: 15px;
 }
 
-.amcharts-category-axis text, .amcharts-value-axis text {
-  fill: #fff;
-}
-
 .msf-chart-analysis-container {
   width: 30%;
   margin-right: 50px;
@@ -1987,7 +1983,8 @@ mat-tab-group {
 
 .msf-dashboard-chartmenu-container-chart {
   padding: 10px;
-  background-color: #222222;
+  background-color: #e6e6e6;
+  color: #000000;
   overflow-y: visible;
   min-height: 303px;
 }
@@ -2359,10 +2356,6 @@ mat-dialog-container {
 
 .msf-width-90 {
   width: 90%;
-}
-
-g g g text {
-  fill: white;
 }
 
 .mat-tab-labels {

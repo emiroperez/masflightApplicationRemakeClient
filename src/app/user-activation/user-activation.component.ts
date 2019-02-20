@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import {FormControl, Validators,ValidatorFn, ValidationErrors, AbstractControl, FormGroup} from '@angular/forms';
 import { User} from '../model/User';
@@ -11,7 +11,7 @@ import { Globals } from '../globals/Globals';
 import { ApiClient } from '../api/api-client';
 import { ApplicationService } from '../services/application.service';
 import { UserService } from '../services/user.service';
-import { MatTableDataSource } from '@angular/material';
+import { MatTableDataSource, MatPaginator } from '@angular/material';
 
 
 @Component({
@@ -35,13 +35,7 @@ export class UserActivationComponent implements OnInit {
     displayedColumns = ['columnName', 'columnLastName', 'columnEmail', 'columnAddress', 'columnPostalCode',
     'columnCountry', 'columnCountryState', 'columnPhone', 'columnState', 'columnMembership'];
 
-    get isActiveBool() {
-      return this.users["state"] == 1;
-    }
-
-    set isActiveBool(newValue:boolean) {
-      this.users["state"] = newValue ? 1 : 0;
-    }
+    @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit() {
     this.getUsers();
@@ -75,6 +69,7 @@ export class UserActivationComponent implements OnInit {
     _this.getPlansService();
     console.log(_this.users);
     _this.dataSource = new MatTableDataSource(_this.users);
+    _this.dataSource.paginator = _this.paginator;
     _this.globals.isLoading = false;
   }
 
