@@ -1936,7 +1936,7 @@ mat-tab-group {
   padding-top: 5px;
 }
 .msf-dashboard-chartbox-close-button .msf-dashboard-close-icon:hover {
-  color: #fff;
+  color: #01abec;
   cursor: pointer;
   font-size: 16px;
   padding-right: 5px;
@@ -2067,7 +2067,6 @@ mat-tab-group {
   font-size: 16px;
 }
 .msf-dashboard-control-variables-title .msf-dashboard-control-variables-close-button .msf-dashboard-close-icon:hover {
-  color: #01abec;
   cursor: pointer;
   font-size: 16px;
 }
