@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewEncapsulation} from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { ApplicationService } from '../services/application.service';
-import { Globals } from '../globals/Globals';
 
 @Component({
   selector: 'app-admin-menu-memberships',
@@ -47,6 +46,8 @@ export class AdminMenuMembershipsComponent implements OnInit {
 
   @Output() idSelected = new EventEmitter();
 
+
+
   isOpened: any = true;
 
   clickedDivState = 'start';
@@ -54,6 +55,8 @@ export class AdminMenuMembershipsComponent implements OnInit {
   optionActive: any = {};
 
   options: any[] = [];
+  allSelected: boolean;
+  partiallySelected: boolean;
 
   constructor(private service: ApplicationService) { }
 
@@ -96,6 +99,47 @@ export class AdminMenuMembershipsComponent implements OnInit {
       setTimeout(() => {
         this.clickedDivState = 'start';
       }, 3000);
+    }
+  }
+
+  getSelectedNodes(option){
+    this.allSelected = false;
+    this.partiallySelected = false;
+    let total: any = 0;
+    let selected: any = 0;
+    this.recursiveSelected(option, total, selected);
+    if (total == selected && total > 0) {
+      this.allSelected = true;
+    }
+    else if (total > selected){
+      this.partiallySelected = true;
+    }
+
+  }
+
+  recursiveSelected(option, total, selected){
+    for (let i=0; i < option.length; i++) {
+      total++;
+      if (option[i].selected){
+        selected++;
+      }
+      if (option[i].children.length > 0){
+        this.recursiveSelected(option, total, selected);
+      }
+    }
+  }
+
+  descendantsAllSelected(option){
+    this.getSelectedNodes(option);
+    if (this.allSelected){
+      return true;
+    }
+  }
+
+  descendantsPartiallySelected(option){
+    this.getSelectedNodes(option);
+    if (this.partiallySelected){
+      return true && !this.descendantsAllSelected(option);
     }
   }
 }

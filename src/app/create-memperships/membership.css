@@ -98,3 +98,7 @@
 .padding-periodicity-select {
     padding-right: 15px;
 }
+
+.mat-checkbox-frame {
+    border-color: white !important;
+}
