@@ -249,6 +249,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     {
       this.chart = this.AmCharts.makeChart ("msf-dashboard-chart-display-" + this.columnPos + "-" + this.rowPos, this.makeOptions (this.values.lastestResponse));
       this.chart.addListener ("dataUpdated", this.zoomChart);
+      this.chartTypeChange (this.values.currentChartType);
       this.values.chartGenerated = true;
     }
   }
