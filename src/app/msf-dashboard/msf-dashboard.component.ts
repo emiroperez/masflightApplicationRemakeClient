@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Globals } from '../globals/Globals';
 import { ApiClient } from '../api/api-client';
 import { MsfDashboardChartValues } from '../msf-dashboard-chartmenu/msf-dashboard-chartvalues';
@@ -19,7 +19,7 @@ export class MsfDashboardComponent implements OnInit {
   displayAddChartMenu: boolean = false;
 
   constructor(public globals: Globals, private service: ApplicationService,
-    private http: ApiClient) { }
+    private http: ApiClient, private cdref: ChangeDetectorRef) { }
 
   ngOnInit()
   {
@@ -97,8 +97,24 @@ export class MsfDashboardComponent implements OnInit {
 
   RemoveChart(column, row): void
   {
-    let dashboardRows: MsfDashboardChartValues[];
-    let dashboardRow, panel;
+    this.service.confirmationDialog (this, "Are you sure you want to delete this panel?",
+      function (_this)
+      {
+        let dashboardRows: MsfDashboardChartValues[];
+        let dashboardRow;
+    
+        dashboardRows = _this.dashboardColumns[column];
+    
+        _this.columnToDelete = column;
+        _this.rowToDelete = row;
+        dashboardRow = dashboardRows[row];
+    
+        _this.globals.isLoading = true;
+        _this.service.deleteDashboardPanel (_this, dashboardRow.id, _this.deleteRowPanel, _this.handlerError);
+      });
+
+    /*let dashboardRows: MsfDashboardChartValues[];
+    let dashboardRow;
 
     dashboardRows = this.dashboardColumns[column];
 
@@ -107,7 +123,7 @@ export class MsfDashboardComponent implements OnInit {
     dashboardRow = dashboardRows[row];
 
     this.globals.isLoading = true;
-    this.service.deleteDashboardPanel (this, dashboardRow.id, this.deleteRowPanel, this.handlerError);
+    this.service.deleteDashboardPanel (this, dashboardRow.id, this.deleteRowPanel, this.handlerError);*/
   }
 
   ToggleDisplayAddChartMenu(): void
@@ -148,13 +164,17 @@ export class MsfDashboardComponent implements OnInit {
         _this.columnToDelete, _this.deleteColumn, _this.handlerError);
     }
     else
+    {
       _this.globals.isLoading = false;
+      _this.cdref.detectChanges ();
+    }
   }
 
   deleteColumn (_this): void
   {
     _this.dashboardColumns.splice (_this.columnToDelete, 1);
     _this.globals.isLoading = false;
+    _this.cdref.detectChanges ();
   }
 
   // update the dashboard container and hide the menu after

@@ -15,6 +15,7 @@ import { MsfDashboardControlVariablesComponent } from '../msf-dashboard-control-
 import { MatDialog } from '@angular/material';
 import { ComponentType } from '../commons/ComponentType';
 import { MsfDashboardChartValues } from '../msf-dashboard-chartmenu/msf-dashboard-chartvalues';
+import { MsfConfirmationDialogComponent } from '../msf-confirmation-dialog/msf-confirmation-dialog.component';
 
 @Component({
   selector: 'app-msf-dashboard-chartmenu',
@@ -248,6 +249,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     {
       this.chart = this.AmCharts.makeChart ("msf-dashboard-chart-display-" + this.columnPos + "-" + this.rowPos, this.makeOptions (this.values.lastestResponse));
       this.chart.addListener ("dataUpdated", this.zoomChart);
+      this.chartTypeChange (this.values.currentChartType);
       this.values.chartGenerated = true;
     }
   }
@@ -812,8 +814,12 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   savePanel(): void
   {
-    let panel = this.getPanelInfo ();
-    this.globals.isLoading = true;
-    this.service.updateDashboardPanel (this, panel, this.handlerUpdateSucess, this.handlerError);
+    this.service.confirmationDialog (this, "Are you sure you want to save the changes?",
+      function (_this)
+      {
+        let panel = _this.getPanelInfo ();
+        _this.globals.isLoading = true;
+        _this.service.updateDashboardPanel (_this, panel, _this.handlerUpdateSucess, _this.handlerError);
+      });
   }
 }
