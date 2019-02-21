@@ -2,11 +2,37 @@
   <ng-container *ngIf="dashboardColumns.length">
     <div class="msf-dashboard-chartbox">
       <div class="msf-dashboard-chartbox-column" *ngFor="let dashboardColumn of dashboardColumns; let column = index" [attr.data-index]="column">
-        <div class="msf-dashboard-chartbox-item-{{dashboardColumn.length}}" *ngFor="let dashboardChart of dashboardColumn; let row = index" [attr.data-index]="row">
-          <div class="msf-dashboard-chartbox-close-button">
-            <mat-icon class="msf-dashboard-close-icon" aria-label="close" (click)="RemoveChart(column, row)">close</mat-icon>
+        <div class="msf-dashboard-chartbox-items">
+          <div class="msf-dashboard-chartbox-column">
+            <div class="msf-dashboard-chartbox-item-{{dashboardColumn.length}}" *ngFor="let dashboardChart of dashboardColumn; let row = index" [attr.data-index]="row">
+              <div class="msf-dashboard-chartbox-close-button">
+                <mat-icon class="msf-dashboard-close-icon" aria-label="close" (click)="RemoveChart(column, row)">close</mat-icon>
+              </div>
+              <app-msf-dashboard-chartmenu [values]="dashboardChart" [columnPos]="column" [rowPos]="row"></app-msf-dashboard-chartmenu>
+            </div>
           </div>
-          <app-msf-dashboard-chartmenu [values]="dashboardChart" [columnPos]="column" [rowPos]="row"></app-msf-dashboard-chartmenu>
+          <!-- This is a demostration only -->
+          <!--
+          <div style="position: relative; background-color: #e6e6e6; justify-content: center; display: flex; flex-direction: row; padding-top: 10px; margin-left: 2px; margin-right: 2px">
+            <div style="display: flex; flex-direction: row; align-items: center">
+              <span style="width: 30%">Height:</span>
+              <mat-form-field style="width: 15%">
+                <input matInput autocomplete="off" type="text" style="text-align: center"/>
+              </mat-form-field>
+            </div>
+            <ng-container *ngIf="dashboardColumn.length > 1">
+              <div style="display: flex; flex-direction: row; align-items: center" *ngFor="let dashboardChart of dashboardColumn; let row = index">
+                <span style="width: 50%">Width (Chart #{{row + 1}}):</span>
+                <mat-form-field style="width: 15%">
+                  <input matInput autocomplete="off" type="text" style="text-align: center"/>
+                </mat-form-field>
+              </div>
+            </ng-container>
+            <div class="msf-dashboard-chartbox-close-button" style="width: 0">
+              <mat-icon class="msf-dashboard-close-icon" style="padding-right: 0; padding-top: 0" aria-label="fold">keyboard_arrow_up</mat-icon>
+            </div>
+          </div>
+        -->
         </div>
       </div>
     </div>
