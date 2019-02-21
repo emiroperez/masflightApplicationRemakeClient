@@ -110,6 +110,10 @@ export class EditOptionsDialog {
           optionAdd.delete = false;
           this.data.auxOptions.push(optionAdd);
         }
+        if (element.children.length>0){
+          this.recursiveOption(element);
+
+        }
       }
     }
   }
@@ -768,12 +772,16 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
       menu[i].selected = false;
       this.clearOptionDataRecursive(menu[i]);
     }
+    return menu;
   }
   clearOptionDataRecursive(option) {
     if (option.children.length !== 0) {
       for (let i = 0; i < option.children.length; i++) {
         const element = option.children[i];
         element.selected = false;
+        if(element.children.length > 0){
+            this.clearOptionDataRecursive(element);
+        }
       }
     }
   }
@@ -784,13 +792,19 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
     let menuSelected;
     planId = this.planJson[index]['id'];
     let auxOptions: Array<PlanOption> = new Array();
-    this.clearOptionData(this.menu);
+    let menuClear = this.clearOptionData(this.menu);
+    console.log("DESPUES DE CLEAR")
+    console.log(menuClear);
     if (planId){
       auxOptions = this.getOptionsPlanJson(index);
-      menuSelected = this.getSelectedOptionsByPlan(this.menu, auxOptions, index);
+      console.log("OPCIONES PLAN")
+      console.log(auxOptions);
+      menuSelected = this.getSelectedOptionsByPlan(menuClear, auxOptions, index);
     }else {
-      menuSelected = this.menu;
+      menuSelected = menuClear;
     }
+    console.log("SELECCIONADOS")
+    console.log(menuSelected);
     const dialogRef = this.dialog.open(EditOptionsDialog, {
       width: '80%',
       data: { menuSelected: menuSelected, auxOptions: auxOptions }
