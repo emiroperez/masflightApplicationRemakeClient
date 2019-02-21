@@ -337,12 +337,10 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     return params;
   }
 
-  loadChartData(handlerSuccess, handlerError): void
+  // return current panel information into a JSON for a http message body
+  getPanelInfo(): any
   {
-    let url, urlBase, urlArg, panel;
-
-    // set panel info for the HTTP message body
-    panel = {
+    return {
       'id' : this.values.id,
       'option' : this.values.currentOption,
       'title' : this.values.chartName,
@@ -354,7 +352,14 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       'chartType' : this.chartTypes.indexOf (this.values.currentChartType),
       'categoryOptions' : this.values.currentOptionCategories
     };
+  }
 
+  loadChartData(handlerSuccess, handlerError): void
+  {
+    let url, urlBase, urlArg, panel;
+
+    // set panel info for the HTTP message body
+    panel = this.getPanelInfo ();
     this.globals.isLoading = true;
     urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
@@ -794,5 +799,21 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       this.variableCtrlBtnEnabled = true;
 
     this.checkChartFilters ();
+  }
+
+  handlerUpdateSucess(_this): void
+  {
+    // set lastestResponse to null and remove temporary values since the panel has been updated
+    _this.values.lastestResponse = null;
+    _this.values.chartGenerated = false;
+    _this.temp = null;
+    _this.globals.isLoading = false;
+  }
+
+  savePanel(): void
+  {
+    let panel = this.getPanelInfo ();
+    this.globals.isLoading = true;
+    this.service.updateDashboardPanel (this, panel, this.handlerUpdateSucess, this.handlerError);
   }
 }
