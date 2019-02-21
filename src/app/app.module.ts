@@ -143,6 +143,7 @@ import { MsfSummaryRevenueBuildsComponent } from './msf-summary-revenue-builds/m
 import { MsfDatePeriodRevenueComponent } from './msf-date-period-revenue/msf-date-period-revenue.component';
 import { UserActivationComponent } from './user-activation/user-activation.component';
 import { MsfFareIncrementsMarketHistogramsComponent } from './msf-fare-increments-market-histograms/msf-fare-increments-market-histograms.component';
+import { MsfConfirmationDialogComponent } from './msf-confirmation-dialog/msf-confirmation-dialog.component';
 
 @NgModule({
   declarations: [
@@ -267,7 +268,8 @@ import { MsfFareIncrementsMarketHistogramsComponent } from './msf-fare-increment
     MsfSummaryRevenueBuildsComponent,
     MsfDatePeriodRevenueComponent,
     UserActivationComponent,
-    MsfFareIncrementsMarketHistogramsComponent
+    MsfFareIncrementsMarketHistogramsComponent,
+    MsfConfirmationDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -324,6 +326,7 @@ import { MsfFareIncrementsMarketHistogramsComponent } from './msf-fare-increment
     EditOutputOptionsMetaDialog,
     EditCategoryArgumentDialog,
     EditOptionsDialog,
-    MsfDashboardControlVariablesComponent]
+    MsfDashboardControlVariablesComponent,
+    MsfConfirmationDialogComponent]
 })
 export class AppModule { }
