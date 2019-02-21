@@ -272,9 +272,9 @@ export class ApplicationService {
       this.http.getSecure (_this, this.host + "/secure" + url, handlerSuccess, handlerError, null);
   }
 
-  /*updateDashboardPanel(_this, panelInfo, handlerSucess, handlerError): void
+  updateDashboardPanel(_this, panel, handlerSucess, handlerError): void
   {
     let url = this.host + "/updateDashboardPanel";
-    this.http.post (_this, url, panelInfo, handlerSucess, handlerError);
-  }*/
+    this.http.post (_this, url, panel, handlerSucess, handlerError);
+  }
 }
