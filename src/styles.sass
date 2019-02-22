@@ -1657,6 +1657,29 @@ mat-tab-group
     display: flex
     flex-direction: row
 
+@mixin msf-dashboard-column-properties-field-width ($width)
+    width: $width
+
+@mixin msf-dashboard-column-properties ($height: 20px)
+    position: relative
+    justify-content: center
+    display: flex
+    flex-direction: row
+    margin-left: 2px
+    margin-right: 2px
+    height: $height
+    transition: 0.5s
+    .msf-dashboard-column-properties-align
+        display: flex
+        flex-direction: row
+        align-items: center
+        .msf-dashboard-column-properties-height-label
+            @include msf-dashboard-column-properties-field-width(30%)
+        .msf-dashboard-column-properties-width-label
+            @include msf-dashboard-column-properties-field-width(50%)
+        .msf-dashboard-column-properties-form-field
+            @include msf-dashboard-column-properties-field-width(15%)
+
 .msf-dashboard-container
     font-size: 14px
     text-align: center
@@ -1700,24 +1723,28 @@ mat-tab-group
                         @include msf-dashboard-chartbox-item(50%)
                     .msf-dashboard-chartbox-item-3
                         @include msf-dashboard-chartbox-item(33.333333333333333333333333333333%)
+                .msf-dashboard-panel-size-properties-closed
+                    @include msf-dashboard-column-properties
+                .msf-dashboard-panel-size-properties-open
+                    @include msf-dashboard-column-properties(60px)
 
-@mixin msf-dashboard-close-icon ($color: inherit, $cursor: default)
+@mixin msf-dashboard-icon ($color: inherit, $cursor: default)
     color: $color
     cursor: $cursor
     font-size: 16px
     padding-right: 5px
     padding-top: 5px
 
-.msf-dashboard-chartbox-close-button
+.msf-dashboard-button
     display: flex
     flex-direction: column
     align-items: flex-end
     position: absolute
     width: 100%
-    .msf-dashboard-close-icon
-        @include msf-dashboard-close-icon
-    .msf-dashboard-close-icon:hover
-        @include msf-dashboard-close-icon(#01abec, pointer)
+    .msf-dashboard-button-icon
+        @include msf-dashboard-icon
+    .msf-dashboard-button-icon:hover
+        @include msf-dashboard-icon(#01abec, pointer)
 
 .msf-dashboard-form-field
     .mat-select-value
@@ -1730,6 +1757,10 @@ mat-tab-group
         .mat-form-field-label
             color: #555555 !important
 
+@mixin msf-dashboard-form-field-size
+    width: 49.5%
+    padding-right: 0.5%
+
 .msf-dashboard-chart-icon
     vertical-align: middle
     margin-top: -5%
@@ -1737,46 +1768,38 @@ mat-tab-group
     padding-right: 5px
     font-size: 22px
 
+@mixin msf-dashboard-chartmenu-sub-container ($flex-direction: row, $padding-right: initial, $padding-top: initial, $padding-left: initial)
+    display: flex
+    flex-direction: $flex-direction
+    width: 100%
+    padding-left: $padding-left
+    padding-right: $padding-right
+    padding-top: $padding-top
+    font-size: 12px
+
 .msf-dashboard-chartmenu-container
     padding: 10px
     background-color: #e6e6e6
     overflow-y: visible
     min-height: 303px
     .msf-dashboard-chartmenu-sub-container-row
-        display: flex
-        flex-direction: column
-        width: 100%
-        padding-left: 4px
-        font-size: 12px
+        @include msf-dashboard-chartmenu-sub-container(column)
         align-items: center
         .msf-width-90
             @extend .msf-dashboard-form-field
         .msf-full-width
             @extend .msf-dashboard-form-field
     .msf-dashboard-chartmenu-variable-buttons
-        display: flex
-        flex-direction: row
-        width: 100%
-        padding-right: 5px
-        padding-top: 10px
-        font-size: 12px
+        @include msf-dashboard-chartmenu-sub-container(row, 5px, 10px)
     .msf-dashboard-chartmenu-sub-container-column
-        display: flex
-        flex-direction: row
-        width: 100%
-        padding-right: 5px
-        font-size: 12px
+        @include msf-dashboard-chartmenu-sub-container(row, 5px)
         .msf-dashboard-addmenu-icon-item
             align-items: center
             padding-bottom: 5px
             .msf-dashboard-chartmenu-item-text
                 vertical-align: middle
     .msf-dashboard-chartmenu-sub-container-column-reverse
-        display: flex
-        flex-direction: row-reverse
-        width: 100%
-        padding-right: 5px
-        font-size: 12px
+        @include msf-dashboard-chartmenu-sub-container(row-reverse, 5px)
         .msf-dashboard-chartmenu-control-variable-button
             display: flex
             width: 50px
@@ -1794,12 +1817,8 @@ mat-tab-group
     .msf-dashboard-chartmenu-title
         font-size: 12px
     .msf-dashboard-chartmenu-sub-container-column
+        @include msf-dashboard-chartmenu-sub-container(row, 5px)
         position: relative
-        display: flex
-        flex-direction: row
-        width: 100%
-        padding-right: 5px
-        font-size: 14px
         .msf-dashboard-chartmenu-config-button
             position: absolute
             display: flex
@@ -1860,12 +1879,10 @@ mat-tab-group
         .msf-full-width
             @extend .msf-dashboard-form-field
         .msf-dashboard-field-valuectrl
-            width: 49.5%
-            padding-right: 0.5%
+            @include msf-dashboard-form-field-size
             @extend .msf-dashboard-form-field
         .msf-dashboard-field-function
-            width: 49.5%
-            padding-left: 0.5%
+            @include msf-dashboard-form-field-size
             @extend .msf-dashboard-form-field
 
 .msf-dashboard-menu-component
