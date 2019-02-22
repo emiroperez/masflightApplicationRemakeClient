@@ -1,0 +1,12 @@
+<div cdkFocusInitial>
+    <div mat-dialog-title style="flex: 1; color: white">Confirmation required</div>
+    <div mat-dialog-content style="flex: 1">
+        <div style="color: white; font-size: 14px">
+            <p>{{ data.message }}</p>
+        </div>
+    </div>
+    <mat-dialog-actions style='text-align: right;'>
+        <button mat-button (click)="confirm()" [mat-dialog-close]="data">Yes</button>
+        <button mat-button (click)="close()" [mat-dialog-close]="data">No</button>
+    </mat-dialog-actions>
+</div>

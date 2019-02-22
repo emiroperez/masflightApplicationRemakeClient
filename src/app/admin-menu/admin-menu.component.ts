@@ -1,9 +1,31 @@
-import { OnInit, Component, Inject, ViewChildren, AfterViewInit, QueryList, ChangeDetectorRef, Renderer2, ViewEncapsulation, Output, EventEmitter } from '@angular/core';
+import { OnInit, Component, Inject, AfterViewInit, ChangeDetectorRef, Renderer2, ViewEncapsulation } from '@angular/core';
 import { ApiClient } from '../api/api-client';
 import { Globals } from '../globals/Globals';
 import { ApplicationService } from '../services/application.service';
 import { MatSnackBar, MatTableDataSource } from '@angular/material';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+
+
+@Component({
+  selector: 'confirm-delete-dialog',
+  templateUrl: 'confirm-delete-dialog.html',
+})
+
+export class ConfirmDeleteDialog {
+
+  constructor(private dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: {message: string, confirm: boolean}) {
+  }
+
+  close() {
+    this.data.confirm = false;
+    this.dialog.closeAll();
+  }
+
+  confirm() {
+    this.data.confirm = true;
+  }
+}
+
 
 @Component({
   selector: 'dialog-edit-output-options-dialog',
@@ -334,8 +356,21 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   }
 
   deleteOption() {
+    const message = 'If you delete this option, all it children and relationships with memberships will be deleted. Do you want to continue?';
+    const confirm: boolean = false;
     if (this.optionSelected) {
-      this.optionSelected.toDelete = true;
+      const dialogRef = this.dialog.open(ConfirmDeleteDialog, {
+        width: '40%',
+        data: { message: message, confirm: confirm }
+      });
+      dialogRef.afterClosed().subscribe((result: any) => {
+        if (result.confirm){
+          this.optionSelected.toDelete = true;
+        }
+        console.log('prueba entro'+this.optionSelected.toDelete);
+      });
+
+      console.log('prueba '+this.optionSelected.toDelete);
     }
   }
 

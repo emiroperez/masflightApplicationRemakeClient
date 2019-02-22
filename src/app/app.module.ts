@@ -75,6 +75,7 @@ import { AgGridModule } from 'ag-grid-angular';
 import { Utils } from './commons/utils';
 import { MsfUserListComponent } from './msf-user-list/msf-user-list.component';
 import { MsfOptionListComponent } from './msf-option-list/msf-option-list.component';
+import { ConfirmDeleteDialog } from './admin-menu/admin-menu.component';
 import { EditOutputOptionsMetaDialog } from './admin-menu/admin-menu.component';
 import { EditCategoryArgumentDialog } from './admin-menu/admin-menu.component';
 import { EditOptionsDialog } from './create-memperships/create-memperships.component';
@@ -204,6 +205,7 @@ import { MsfConfirmationDialogComponent } from './msf-confirmation-dialog/msf-co
     AdminMenuMembershipsComponent,
     MsfUserListComponent,
     MsfOptionListComponent,
+    ConfirmDeleteDialog,
     EditOutputOptionsMetaDialog,
     EditCategoryArgumentDialog,
     EditOptionsDialog,
@@ -327,6 +329,7 @@ import { MsfConfirmationDialogComponent } from './msf-confirmation-dialog/msf-co
   bootstrap: [AppComponent],
   entryComponents: [MessageComponent,
     MsfDynamicTableVariablesComponent,
+    ConfirmDeleteDialog,
     EditOutputOptionsMetaDialog,
     EditCategoryArgumentDialog,
     EditOptionsDialog,
