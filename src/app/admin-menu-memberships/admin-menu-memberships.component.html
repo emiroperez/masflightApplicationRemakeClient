@@ -5,11 +5,13 @@
   </button>
 
 
-    <mat-checkbox style="height: 35px" [disabled]="false" color="primary" [(ngModel)]="option.selected" [ngModelOptions]="{standalone: true}" [checked]="descendantsAllSelected(option)" [indeterminate]="descendantsPartiallySelected(option)">{{ option.label }}</mat-checkbox>
+    <mat-checkbox style="height: 35px" [disabled]="false" color="primary" [(ngModel)]="option.selected" [ngModelOptions]="{standalone: true}">{{ option.label }}</mat-checkbox>
     <div [@animationOption2]="option.isOpened ? 'open': 'close'" *ngIf="option.children && option.children.length > 0 && option.isOpened" style="padding-left: 4%">
         <div *ngFor="let optionChild of option.children; let i = index">
-            <app-admin-menu-memberships [menu]="optionChild" [index]="index + '-' + i" (optionSelected)="selectOption($event)" (idSelected)="selectIdDom($event)"></app-admin-menu-memberships>
+            <app-admin-menu-memberships [menu]="optionChild" [index]="index + '-' + i"></app-admin-menu-memberships>
         </div>
     </div>
 
 </div>
+
+<!--  [checked]="descendantsAllSelected(option)" [indeterminate]="descendantsPartiallySelected(option)" -->

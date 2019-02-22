@@ -793,18 +793,12 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
     planId = this.planJson[index]['id'];
     let auxOptions: Array<PlanOption> = new Array();
     let menuClear = this.clearOptionData(this.menu);
-    console.log("DESPUES DE CLEAR")
-    console.log(menuClear);
     if (planId){
       auxOptions = this.getOptionsPlanJson(index);
-      console.log("OPCIONES PLAN")
-      console.log(auxOptions);
       menuSelected = this.getSelectedOptionsByPlan(menuClear, auxOptions, index);
     }else {
       menuSelected = menuClear;
     }
-    console.log("SELECCIONADOS")
-    console.log(menuSelected);
     const dialogRef = this.dialog.open(EditOptionsDialog, {
       width: '80%',
       data: { menuSelected: menuSelected, auxOptions: auxOptions }

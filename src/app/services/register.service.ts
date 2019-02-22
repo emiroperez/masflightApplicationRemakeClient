@@ -10,7 +10,7 @@ export class RegisterService {
 
   utils: Utils;
   url;
-  constructor(private http: ApiClient,private globals:Globals) { 
+  constructor(private http: ApiClient,private globals:Globals) {
     this.url = this.globals.baseUrl;
   }
 
@@ -26,7 +26,7 @@ export class RegisterService {
     // let url='http://localhost:8887/getCountries';
     this.http.get(_this,url,successHandler,errorHandler,null);
   }
-  
+
   checkEmail(_this,successHandler,errorHandler,email){
     let url= this.globals.baseUrl+'/checkEmail?email='+email;
     // let url='http://localhost:8887/checkEmail?email='+email;
