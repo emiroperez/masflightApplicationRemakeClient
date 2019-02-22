@@ -2079,8 +2079,8 @@ mat-tab-group {
 
 .msf-dashboard-chartmenu-container-chart {
   padding: 10px;
-  background-color: #e6e6e6;
-  color: #555555;
+  background-color: #222222;
+  color: #ffffff;
   overflow-y: visible;
   min-height: 303px;
 }

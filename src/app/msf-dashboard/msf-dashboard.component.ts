@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Globals } from '../globals/Globals';
 import { ApiClient } from '../api/api-client';
 import { MsfDashboardChartValues } from '../msf-dashboard-chartmenu/msf-dashboard-chartvalues';
+import { MsfDashboardColumnValues } from './msf-dashboard-columnvalues';
 import { ApplicationService } from '../services/application.service';
 
 @Component({
@@ -11,7 +12,7 @@ import { ApplicationService } from '../services/application.service';
 })
 export class MsfDashboardComponent implements OnInit {
   dashboardColumns: MsfDashboardChartValues[][] = [];
-  test: boolean[] = [];
+  dashboardColumnsSize: MsfDashboardColumnValues[] = [];
   options: any[] = [];
 
   columnToDelete: number;
@@ -57,6 +58,7 @@ export class MsfDashboardComponent implements OnInit {
   {
     let dashboardPanels: any[] = [];
     let dashboardRows = [];
+    let defaultWidth;
 
     dashboardPanels = data;
     if (!dashboardPanels.length)
@@ -73,9 +75,11 @@ export class MsfDashboardComponent implements OnInit {
 
       if (dashboardPanel.column != curColumn)
       {
+        defaultWidth = 12 / dashboardRows.length;
+
         curColumn = dashboardPanel.column;
         _this.dashboardColumns.push (dashboardRows);
-        _this.test.push (false);
+        _this.dashboardColumnsSize.push (new MsfDashboardColumnValues (2, defaultWidth, defaultWidth, defaultWidth));
         dashboardRows = [];
       }
 
@@ -86,8 +90,9 @@ export class MsfDashboardComponent implements OnInit {
     }
 
     // add the last dashboard column
+    defaultWidth = 12 / dashboardRows.length;
     _this.dashboardColumns.push (dashboardRows);
-    _this.test.push (false);
+    _this.dashboardColumnsSize.push (new MsfDashboardColumnValues (2, defaultWidth, defaultWidth, defaultWidth));
     _this.globals.isLoading = false;
   }
 
@@ -115,21 +120,9 @@ export class MsfDashboardComponent implements OnInit {
         _this.globals.isLoading = true;
         _this.service.deleteDashboardPanel (_this, dashboardRow.id, _this.deleteRowPanel, _this.handlerError);
       });
-
-    /*let dashboardRows: MsfDashboardChartValues[];
-    let dashboardRow;
-
-    dashboardRows = this.dashboardColumns[column];
-
-    this.columnToDelete = column;
-    this.rowToDelete = row;
-    dashboardRow = dashboardRows[row];
-
-    this.globals.isLoading = true;
-    this.service.deleteDashboardPanel (this, dashboardRow.id, this.deleteRowPanel, this.handlerError);*/
   }
 
-  ToggleDisplayAddChartMenu(): void
+  toggleDisplayAddChartMenu(): void
   {
     this.displayAddChartMenu = !this.displayAddChartMenu;
   }
@@ -138,6 +131,7 @@ export class MsfDashboardComponent implements OnInit {
   {
     let dashboardPanels;
     let dashboardRows = [];
+    let defaultWidth;
 
     dashboardPanels = data;
 
@@ -148,8 +142,9 @@ export class MsfDashboardComponent implements OnInit {
       dashboardRows.push (new MsfDashboardChartValues (_this.options, dashboardPanel.title, dashboardPanel.id));
     }
 
+    defaultWidth = 12 / dashboardRows.length;
     _this.dashboardColumns.push (dashboardRows);
-    _this.test.push (false);
+    _this.dashboardColumnsSize.push (new MsfDashboardColumnValues (2, defaultWidth, defaultWidth, defaultWidth));
     _this.displayAddChartMenu = false;
     _this.globals.isLoading = false;
   }
@@ -177,13 +172,14 @@ export class MsfDashboardComponent implements OnInit {
   deleteColumn (_this): void
   {
     _this.dashboardColumns.splice (_this.columnToDelete, 1);
+    _this.dashboardColumnsSize.splice (_this.columnToDelete, 1);
     _this.globals.isLoading = false;
     _this.cdref.detectChanges ();
   }
 
   // update the dashboard container and hide the menu after
   // adding a new chart column
-  AddChart(numCharts): void
+  addChart(numCharts): void
   {
     let panelsToAdd, column;
 
@@ -206,8 +202,19 @@ export class MsfDashboardComponent implements OnInit {
     this.service.createDashboardPanel (this, panelsToAdd, this.insertPanels, this.handlerError);
   }
 
-  toggle(column): void
+  toggleColumnProperties(column): void
   {
-    this.test[column] = !this.test[column];
+    this.dashboardColumnsSize[column].displayProperties = !this.dashboardColumnsSize[column].displayProperties;
+  }
+
+  getPanelWidth(column, row): number
+  {
+    return (this.dashboardColumnsSize[column].width[row] * 100) / 12;
+  }
+
+  getColumnHeight(column): number
+  {
+    return 100;
+    //return (this.dashboardColumnsSize[column].height * 100) / 12;
   }
 }
