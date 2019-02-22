@@ -31,7 +31,8 @@
               <div  [ngClass]="tableItem.subtitle==0 ? 'financial-item-cell parent-cell' : 'no-show'">{{tableItem.label}}</div>
               <div [ngClass]="tableItem.subtitle==0 ? 'financial-result-cell' : 'no-show'" *ngFor="let valueItem of tableItem.values">
                 <div *ngIf="tableItem.cellFormat=='string'">{{valueItem.value}}</div>
-                <div *ngIf="tableItem.cellFormat=='number'" class="cell-value" >${{valueItem.value | number:'.0-2':'en'}}</div>
+                <div *ngIf="tableItem.cellFormat=='money'" class="cell-value" >${{valueItem.value | number:'.0-2':'en'}}</div>
+                <div *ngIf="tableItem.cellFormat=='number'" class="cell-value" >{{valueItem.value | number:'.0-2':'en'}}</div>
               </div>
               <div style="width: auto;width: auto;min-width: auto;
               max-width: 100%;" [ngClass]="tableItem.subtitle==1 ? 'financial-item-cell parent-cell-subtitle' : 'no-show'" >{{tableItem.label}}</div>
@@ -40,7 +41,8 @@
                 <div class="financial-item-cell children-cell">{{childrenItem.label}}</div>
                 <div class="financial-result-cell" *ngFor="let valueItem of childrenItem.values">
                     <div *ngIf="childrenItem.cellFormat=='string'">{{valueItem.value}}</div>
-                    <div *ngIf="childrenItem.cellFormat=='number'" class="cell-value" >${{valueItem.value | number:'.0-2':'en'}}</div>
+                    <div *ngIf="childrenItem.cellFormat=='money'" class="cell-value" >${{valueItem.value | number:'.0-2':'en'}}</div>
+                    <div *ngIf="childrenItem.cellFormat=='number'" class="cell-value" >{{valueItem.value | number:'.0-2':'en'}}</div>
                 </div>
             </div>
           </div>
