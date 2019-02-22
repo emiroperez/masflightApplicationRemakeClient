@@ -272,7 +272,7 @@ import { MsfConfirmationDialogComponent } from './msf-confirmation-dialog/msf-co
     UserActivationComponent,
     MsfFareIncrementsMarketHistogramsComponent,
     ForgotPasswordComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
     MsfConfirmationDialogComponent
   ],
   imports: [
