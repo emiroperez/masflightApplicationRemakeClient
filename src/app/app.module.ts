@@ -145,6 +145,7 @@ import { UserActivationComponent } from './user-activation/user-activation.compo
 import { MsfFareIncrementsMarketHistogramsComponent } from './msf-fare-increments-market-histograms/msf-fare-increments-market-histograms.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { MsfConfirmationDialogComponent } from './msf-confirmation-dialog/msf-confirmation-dialog.component';
 
 @NgModule({
   declarations: [
@@ -272,6 +273,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     MsfFareIncrementsMarketHistogramsComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent
+    MsfConfirmationDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -328,6 +330,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     EditOutputOptionsMetaDialog,
     EditCategoryArgumentDialog,
     EditOptionsDialog,
-    MsfDashboardControlVariablesComponent]
+    MsfDashboardControlVariablesComponent,
+    MsfConfirmationDialogComponent]
 })
 export class AppModule { }

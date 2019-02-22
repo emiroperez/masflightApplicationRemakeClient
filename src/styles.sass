@@ -1626,6 +1626,37 @@ mat-tab-group
     .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus+.mat-form-field-label-wrapper .mat-form-field-label, .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label
         margin-left: 0px
 
+@mixin msf-dashboard-chartbox-item($width)
+    padding: 2px 2px
+    width: $width
+    position: relative
+
+@mixin msf-dashboard-addmenu-item-text($color)
+    border: 1px solid #888888
+    color: $color
+    display: table-cell
+    align-items: center
+    padding: 10px 40px
+
+@mixin msf-dashboard-addmenu-item($bgcolor, $fgcolor, $cursor: default)
+    background-color: $bgcolor
+    color: $fgcolor
+    display: table-row
+    vertical-align: middle
+    cursor: $cursor
+
+.msf-dashboard-icon
+    vertical-align: middle
+    margin-top: -5%
+    margin-bottom: -5%
+
+.msf-dashboard-addmenu-item-addtext
+    vertical-align: middle
+
+.msf-dashboard-chartbox-column
+    display: flex
+    flex-direction: row
+
 .msf-dashboard-container
     font-size: 14px
     text-align: center
@@ -1647,58 +1678,35 @@ mat-tab-group
         margin-right: 40%
         margin-bottom: 2%
         .msf-dashboard-addmenu-item:hover
-            background-color: #01abec
-            color: #fff
-            display: table-row
-            vertical-align: middle
-            cursor: pointer
+            @include msf-dashboard-addmenu-item(#01abec, #fff, pointer)
         .msf-dashboard-addmenu-item
-            background-color: #ffffff
-            display: table-row
-            vertical-align: middle
+            @include msf-dashboard-addmenu-item(#fff, #555555)
         .msf-dashboard-addmenu-item-text:hover
-            border: 1px solid #888888
-            color: #fff
-            display: table-cell
-            align-items: center
-            padding: 10px 40px
-            .msf-dashboard-icon
-                vertical-align: middle
-                margin-top: -5%
-                margin-bottom: -5%
-            .msf-dashboard-addmenu-item-addtext
-                vertical-align: middle
+            @include msf-dashboard-addmenu-item-text(#fff)
         .msf-dashboard-addmenu-item-text
-            border: 1px solid #888888
-            display: table-cell
-            align-items: center
-            padding: 10px 40px
-            .msf-dashboard-icon
-                vertical-align: middle
-                margin-top: -5%
-                margin-bottom: -5%
-            .msf-dashboard-addmenu-item-addtext
-                vertical-align: middle
+            @include msf-dashboard-addmenu-item-text(#555555)
     .msf-dashboard-chartbox
         padding: 10px
         flex-direction: column
         .msf-dashboard-chartbox-column
             width: 100%
-            display: flex
-            flex-direction: row
             overflow-y: visible
-            .msf-dashboard-chartbox-item-1
-                padding: 2px 2px
+            .msf-dashboard-chartbox-items
                 width: 100%
-                position: relative
-            .msf-dashboard-chartbox-item-2
-                padding: 2px 2px
-                width: 50%
-                position: relative
-            .msf-dashboard-chartbox-item-3
-                padding: 2px 2px
-                width: 33.333333333333333333333333333333%
-                position: relative
+                .msf-dashboard-chartbox-column
+                    .msf-dashboard-chartbox-item-1
+                        @include msf-dashboard-chartbox-item(100%)
+                    .msf-dashboard-chartbox-item-2
+                        @include msf-dashboard-chartbox-item(50%)
+                    .msf-dashboard-chartbox-item-3
+                        @include msf-dashboard-chartbox-item(33.333333333333333333333333333333%)
+
+@mixin msf-dashboard-close-icon ($color: inherit, $cursor: default)
+    color: $color
+    cursor: $cursor
+    font-size: 16px
+    padding-right: 5px
+    padding-top: 5px
 
 .msf-dashboard-chartbox-close-button
     display: flex
@@ -1707,15 +1715,9 @@ mat-tab-group
     position: absolute
     width: 100%
     .msf-dashboard-close-icon
-        font-size: 16px
-        padding-right: 5px
-        padding-top: 5px
+        @include msf-dashboard-close-icon
     .msf-dashboard-close-icon:hover
-        color: #01abec
-        cursor: pointer
-        font-size: 16px
-        padding-right: 5px
-        padding-top: 5px
+        @include msf-dashboard-close-icon(#01abec, pointer)
 
 .msf-dashboard-form-field
     .mat-select-value
@@ -1727,6 +1729,13 @@ mat-tab-group
     .mat-form-field-label-wrapper
         .mat-form-field-label
             color: #555555 !important
+
+.msf-dashboard-chart-icon
+    vertical-align: middle
+    margin-top: -5%
+    margin-bottom: -5%
+    padding-right: 5px
+    font-size: 22px
 
 .msf-dashboard-chartmenu-container
     padding: 10px
@@ -1760,12 +1769,6 @@ mat-tab-group
         .msf-dashboard-addmenu-icon-item
             align-items: center
             padding-bottom: 5px
-            .msf-dashboard-chart-icon
-                vertical-align: middle
-                margin-top: -5%
-                margin-bottom: -5%
-                padding-right: 5px
-                font-size: 22px
             .msf-dashboard-chartmenu-item-text
                 vertical-align: middle
     .msf-dashboard-chartmenu-sub-container-column-reverse
@@ -1851,12 +1854,6 @@ mat-tab-group
     .msf-dashboard-chart-analysis-title
         display: flex
         align-items: center
-        .msf-dashboard-chart-icon
-            vertical-align: middle
-            margin-top: -5%
-            margin-bottom: -5%
-            padding-right: 5px
-            font-size: 22px
     .msf-dashboard-chart-op-container
         padding-left: 10px
         width: 100%
