@@ -1,11 +1,11 @@
-<h2 mat-dialog-title>{{title}}</h2>
-
-<mat-dialog-content>
-  
-<span>{{message}}</span>
- 
-</mat-dialog-content>
-
-<mat-dialog-actions>
-    <button class="mat-raised-button"(click)="close()">Close</button>
-</mat-dialog-actions>
+<div cdkFocusInitial>
+    <div mat-dialog-title style="flex: 1; color: white"> {{title}}</div>
+    <div mat-dialog-content style="flex: 1">
+        <div style="color: white; font-size: 14px">
+            <p>{{ message }}</p>
+        </div>
+    </div>
+    <mat-dialog-actions>
+        <button mat-button (click)="close()">Close</button>
+    </mat-dialog-actions>
+</div>

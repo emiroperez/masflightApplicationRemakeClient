@@ -143,6 +143,8 @@ import { MsfSummaryRevenueBuildsComponent } from './msf-summary-revenue-builds/m
 import { MsfDatePeriodRevenueComponent } from './msf-date-period-revenue/msf-date-period-revenue.component';
 import { UserActivationComponent } from './user-activation/user-activation.component';
 import { MsfFareIncrementsMarketHistogramsComponent } from './msf-fare-increments-market-histograms/msf-fare-increments-market-histograms.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { MsfConfirmationDialogComponent } from './msf-confirmation-dialog/msf-confirmation-dialog.component';
 
 @NgModule({
@@ -269,6 +271,8 @@ import { MsfConfirmationDialogComponent } from './msf-confirmation-dialog/msf-co
     MsfDatePeriodRevenueComponent,
     UserActivationComponent,
     MsfFareIncrementsMarketHistogramsComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent,
     MsfConfirmationDialogComponent
   ],
   imports: [

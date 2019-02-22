@@ -10,6 +10,8 @@ import { CreateMempershipsComponent } from '../create-memperships/create-mempers
 import { CategoryArgumentsComponent } from '../category-arguments/category-arguments.component';
 import { MsfTestComponent } from '../msf-test/msf-test.component';
 import { UserActivationComponent } from '../user-activation/user-activation.component';
+import { ForgotPasswordComponent } from '../forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from '../reset-password/reset-password.component';
 
 export const routes: Routes = [
   { path: '', component: LoginScreenComponent },
@@ -20,7 +22,10 @@ export const routes: Routes = [
   { path: 'create-membership', component: CreateMempershipsComponent },
   { path: 'category-arguments', component: CategoryArgumentsComponent },
   { path: 'app-msf-test', component: MsfTestComponent},
-  { path: 'user-activation', component: UserActivationComponent}
+  { path: 'user-activation', component: UserActivationComponent},
+  { path: 'forgot-password', component: ForgotPasswordComponent},
+  { path: 'reset-password/:token', component: ResetPasswordComponent}
+
 ];
 
 @NgModule({

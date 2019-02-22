@@ -63,16 +63,7 @@ export class AdminMenuMembershipsComponent implements OnInit {
   ngOnInit() {
 
   }
-  setSelectedOption(option) {
-    if (option == this.optionActive) {
-      this.optionActive.isSelected = false;
-      this.optionActive = {};
-    } else {
-      this.optionActive = option;
-      this.optionActive.isSelected = true;
-    }
-    console.log(this.optionActive);
-  }
+
   toggle(option) {
     if (option.isOpened) {
       option.isOpened = false;
@@ -81,15 +72,6 @@ export class AdminMenuMembershipsComponent implements OnInit {
       option.isOpened = true;
       this.clickedDivState = 'end';
     }
-  }
-
-  selectOption(option) {
-    this.options.push(option);
-    this.optionSelected.emit(option);
-  }
-
-  selectIdDom(index){
-    this.idSelected.emit(index);
   }
 
   changeDivState(option) {
@@ -102,7 +84,7 @@ export class AdminMenuMembershipsComponent implements OnInit {
     }
   }
 
-  getSelectedNodes(option){
+  /* getSelectedNodes(option){
     this.allSelected = false;
     this.partiallySelected = false;
     let total: any = 0;
@@ -118,13 +100,15 @@ export class AdminMenuMembershipsComponent implements OnInit {
   }
 
   recursiveSelected(option, total, selected){
-    for (let i=0; i < option.length; i++) {
-      total++;
-      if (option[i].selected){
-        selected++;
-      }
-      if (option[i].children.length > 0){
-        this.recursiveSelected(option, total, selected);
+    total++;
+    if (option.selected){
+      console.log(option+ " is selected");
+      selected++;
+    }
+    if (option.children.length > 0) {
+        this.recursiveSelected(option.children, total, selected);
+      }else{
+        for
       }
     }
   }
@@ -141,5 +125,5 @@ export class AdminMenuMembershipsComponent implements OnInit {
     if (this.partiallySelected){
       return true && !this.descendantsAllSelected(option);
     }
-  }
+  } */
 }
