@@ -159,6 +159,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         "titleField" : dataProvider.titleField,
         "colors" : dataProvider.colors,
         "labelTickAlpha" : 0.25,
+        "color" : "#ffffff",
         "balloon" :
         {
           "fixedPosition" : true
@@ -182,28 +183,35 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       "theme" : "light",
       "legend" :
       {
-        "useGraphSettings" : true
+        "useGraphSettings" : true,
+        "color" : "#ffffff"
       },
       "dataProvider" : dataProvider.data,
       "synchronizeGrid" : true,
+      "guides" : [{
+        "lineColor" : "#30303d",
+        "lineAlpha": 1
+      }],
       "valueAxes" : [{
-        "gridColor" : "#888888",
-        "gridAlpha" : 0.4,
+        "gridColor" : "#30303d",
+        "gridAlpha" : 1,
         "dashLength" : 0
       }],
       "graphs" : this.buildGraphs (dataProvider.filter),
       "plotAreaFillAlphas" : 1,
       "zoomOutButtonRollOverAlpha" : "0.5",
-      "plotAreaFillColors" : "#cccccc",
-      "color" : "#000000",
-      "plotAreaBorderColor" : "#888888",
-      "plotAreaBorderAlpha" : 0.4,
+      "plotAreaFillColors" : "#222222",
+      "color" : "#ffffff",
+      "plotAreaBorderColor" : "#222222",
+      "plotAreaBorderAlpha" : 1,
       "depth3D" : 0,
       "angle" : 30,
       "categoryField" : this.values.xaxis.id,
       "rotate" : (this.values.currentChartType.id == 'hbars' ? true : false),
       "categoryAxis" :
       {
+        "gridColor" : "#30303d",
+        "gridAlpha" : 1,
         "gridPosition" : "start",
         "parseDates" : parserDate,
         "minorGridEnabled" : true,
