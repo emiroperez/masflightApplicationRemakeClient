@@ -11,6 +11,7 @@ import { ApplicationService } from '../services/application.service';
 })
 export class MsfDashboardComponent implements OnInit {
   dashboardColumns: MsfDashboardChartValues[][] = [];
+  test: boolean[] = [];
   options: any[] = [];
 
   columnToDelete: number;
@@ -74,6 +75,7 @@ export class MsfDashboardComponent implements OnInit {
       {
         curColumn = dashboardPanel.column;
         _this.dashboardColumns.push (dashboardRows);
+        _this.test.push (false);
         dashboardRows = [];
       }
 
@@ -85,6 +87,7 @@ export class MsfDashboardComponent implements OnInit {
 
     // add the last dashboard column
     _this.dashboardColumns.push (dashboardRows);
+    _this.test.push (false);
     _this.globals.isLoading = false;
   }
 
@@ -146,6 +149,7 @@ export class MsfDashboardComponent implements OnInit {
     }
 
     _this.dashboardColumns.push (dashboardRows);
+    _this.test.push (false);
     _this.displayAddChartMenu = false;
     _this.globals.isLoading = false;
   }
@@ -200,5 +204,10 @@ export class MsfDashboardComponent implements OnInit {
 
     this.globals.isLoading = true;
     this.service.createDashboardPanel (this, panelsToAdd, this.insertPanels, this.handlerError);
+  }
+
+  toggle(column): void
+  {
+    this.test[column] = !this.test[column];
   }
 }
