@@ -118,7 +118,7 @@ export class MsfFareTypesComponent implements OnInit {
         element.checked = value;
     }
     if(value){
-      this.selected = this.data;
+      this.selected = this.data.slice();
     }else{
       this.selected = [];
     }

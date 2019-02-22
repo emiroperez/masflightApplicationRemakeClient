@@ -3295,7 +3295,7 @@ table.datasource {
 
 /* kp */
 .icon-container {
-  width: 100% !important;
+  width: 100.3% !important;
   height: calc(100% - 90px) !important;
   position: relative;
   background-size: cover;
@@ -3327,14 +3327,6 @@ table.datasource {
   vertical-align: middle;
   text-align: center;
   padding: 5% 0;
-}
-
-.landing-icon-content-child:hover, .icon-container:hover {
-  background-color: black;
-}
-
-.footer-container:hover, .icon-container {
-  background-color: black;
 }
 
 .landing-icon-content-child:hover, .footer-container:hover {

@@ -306,6 +306,9 @@ export class MsfTableComponent implements OnInit {
 
   getFormatCell(value:any){
     var aux = String(value);
+    if(value==undefined){
+      return "";
+    }
     aux = aux.replace("%","");
     aux = aux.replace("$","");
     aux = aux.replace("ï¿½","0");
