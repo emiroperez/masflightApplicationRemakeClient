@@ -1925,22 +1925,70 @@ mat-tab-group {
   width: 33.3333333333%;
   position: relative;
 }
+.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed {
+  position: relative;
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+  margin-left: 2px;
+  margin-right: 2px;
+  height: 20px;
+  transition: 0.5s;
+}
+.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-properties-align {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-properties-align .msf-dashboard-column-properties-height-label {
+  width: 30%;
+}
+.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-properties-align .msf-dashboard-column-properties-width-label {
+  width: 50%;
+}
+.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-properties-align .msf-dashboard-column-properties-form-field {
+  width: 15%;
+}
+.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open {
+  position: relative;
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+  margin-left: 2px;
+  margin-right: 2px;
+  height: 60px;
+  transition: 0.5s;
+}
+.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-properties-align {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-properties-align .msf-dashboard-column-properties-height-label {
+  width: 30%;
+}
+.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-properties-align .msf-dashboard-column-properties-width-label {
+  width: 50%;
+}
+.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-properties-align .msf-dashboard-column-properties-form-field {
+  width: 15%;
+}
 
-.msf-dashboard-chartbox-close-button {
+.msf-dashboard-button {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   position: absolute;
   width: 100%;
 }
-.msf-dashboard-chartbox-close-button .msf-dashboard-close-icon {
+.msf-dashboard-button .msf-dashboard-button-icon {
   color: inherit;
   cursor: default;
   font-size: 16px;
   padding-right: 5px;
   padding-top: 5px;
 }
-.msf-dashboard-chartbox-close-button .msf-dashboard-close-icon:hover {
+.msf-dashboard-button .msf-dashboard-button-icon:hover {
   color: #01abec;
   cursor: pointer;
   font-size: 16px;
@@ -1979,7 +2027,9 @@ mat-tab-group {
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding-left: 4px;
+  padding-left: initial;
+  padding-right: initial;
+  padding-top: initial;
   font-size: 12px;
   align-items: center;
 }
@@ -1987,6 +2037,7 @@ mat-tab-group {
   display: flex;
   flex-direction: row;
   width: 100%;
+  padding-left: initial;
   padding-right: 5px;
   padding-top: 10px;
   font-size: 12px;
@@ -1995,7 +2046,9 @@ mat-tab-group {
   display: flex;
   flex-direction: row;
   width: 100%;
+  padding-left: initial;
   padding-right: 5px;
+  padding-top: initial;
   font-size: 12px;
 }
 .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-column .msf-dashboard-addmenu-icon-item {
@@ -2009,7 +2062,9 @@ mat-tab-group {
   display: flex;
   flex-direction: row-reverse;
   width: 100%;
+  padding-left: initial;
   padding-right: 5px;
+  padding-top: initial;
   font-size: 12px;
 }
 .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-column-reverse .msf-dashboard-chartmenu-control-variable-button {
@@ -2033,12 +2088,14 @@ mat-tab-group {
   font-size: 12px;
 }
 .msf-dashboard-chartmenu-container-chart .msf-dashboard-chartmenu-sub-container-column {
-  position: relative;
   display: flex;
   flex-direction: row;
   width: 100%;
+  padding-left: initial;
   padding-right: 5px;
-  font-size: 14px;
+  padding-top: initial;
+  font-size: 12px;
+  position: relative;
 }
 .msf-dashboard-chartmenu-container-chart .msf-dashboard-chartmenu-sub-container-column .msf-dashboard-chartmenu-config-button {
   position: absolute;
@@ -2115,7 +2172,7 @@ mat-tab-group {
 }
 .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-field-function {
   width: 49.5%;
-  padding-left: 0.5%;
+  padding-right: 0.5%;
 }
 
 .msf-dashboard-menu-component, .msf-dashboard-menu-component-active {
