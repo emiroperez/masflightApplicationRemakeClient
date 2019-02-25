@@ -3356,5 +3356,7 @@ img.msf-calendar-image {
   width: auto;
   display: table-caption;
 }
-
+.mat-expansion-panel-body {
+  padding: 0px!important ; 
+}
 /*# sourceMappingURL=styles.css.map */

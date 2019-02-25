@@ -33,6 +33,13 @@ export class MsfAirportRouteComponent implements OnInit {
       this.http.get(this,url,handlerSuccess,this.handlerError, null);  
   }
 
+  onAirportSelect(index){
+    if(index===1){
+      this.globals. Airportdataorigin =this.argument.value1; 
+     }else{
+      this.globals. Airportdatadest =this.argument.value2; 
+     }
+  }
 
   handlerSuccess(_this,data, tab){   
     _this.loading = false;

@@ -68,8 +68,8 @@ export class ApplicationComponent implements OnInit {
     console.log(result);
      _this.globals.isLoading = false;
 
-     if (_this.dashboardPlan)
-     _this.goToDashboard ();
+    //  if (_this.dashboardPlan)
+    //  _this.goToDashboard ();
   }
 
   getAdvanceFeatures(){
@@ -135,7 +135,14 @@ toggle(){
   search(){
     this.globals.moreResults = false;
     this.globals.query = true;
-    this.globals.tab = true;
+    if(this.globals.currentOption.metadata==2){
+      this.globals.mapsc=true;
+      this.globals.tab =false;
+    }else{
+      this.globals.tab = true;
+      this.globals.mapsc=false;
+    }
+    
     this.globals.isLoading = true;
 
     setTimeout(() => {
