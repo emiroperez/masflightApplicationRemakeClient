@@ -147,6 +147,7 @@ import { MsfFareIncrementsMarketHistogramsComponent } from './msf-fare-increment
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { MsfConfirmationDialogComponent } from './msf-confirmation-dialog/msf-confirmation-dialog.component';
+import { MsfDashboardPanelSizePipe } from './msf-dashboard/msf-dashboard-panelsizepipe';
 
 @NgModule({
   declarations: [
@@ -275,7 +276,8 @@ import { MsfConfirmationDialogComponent } from './msf-confirmation-dialog/msf-co
     MsfFareIncrementsMarketHistogramsComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
-    MsfConfirmationDialogComponent
+    MsfConfirmationDialogComponent,
+    MsfDashboardPanelSizePipe
   ],
   imports: [
     BrowserModule,
