@@ -68,8 +68,8 @@ export class ApplicationComponent implements OnInit {
     console.log(result);
      _this.globals.isLoading = false;
 
-     if (_this.dashboardPlan)
-     _this.goToDashboard ();
+    //  if (_this.dashboardPlan)
+    //  _this.goToDashboard ();
   }
 
   getAdvanceFeatures(){

@@ -915,7 +915,7 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button
     display: inline-block
     margin-left: 90px
 
-.msf-menu-opcion
+.msf-menu-option
     height: 100%
     min-height: 60px
     font-size: 90%
@@ -935,20 +935,20 @@ button[aria-expanded="true"]
     background-color: $msf-primary-dark-color
 
 .msf-menu-op-1
-    @extend .msf-menu-opcion
+    @extend .msf-menu-option
     background-color: $msf-primary-light-color
     margin-right: 1px
     margin-left: 1px!important
 
 .msf-menu-op-2
-    @extend .msf-menu-opcion
+    @extend .msf-menu-option
     border-top-left-radius: 60px!important
     background-color: $msf-primary-light-color
     span
         margin-left: 15px
 
 .msf-menu-op-3
-    @extend .msf-menu-opcion
+    @extend .msf-menu-option
     border-top-right-radius: 60px!important
     background-color: $msf-primary-light-color
     margin-left: 1px!important
@@ -1683,8 +1683,8 @@ mat-tab-group
 .msf-dashboard-container
     font-size: 14px
     text-align: center
-    color: #555555
-    background-color: #ffffff
+    color: #fff
+    background-color: #333333
     display: flex
     flex-direction: column
     width: 100%
@@ -1703,11 +1703,11 @@ mat-tab-group
         .msf-dashboard-addmenu-item:hover
             @include msf-dashboard-addmenu-item(#01abec, #fff, pointer)
         .msf-dashboard-addmenu-item
-            @include msf-dashboard-addmenu-item(#fff, #555555)
+            @include msf-dashboard-addmenu-item(#333333, #fff)
         .msf-dashboard-addmenu-item-text:hover
             @include msf-dashboard-addmenu-item-text(#fff)
         .msf-dashboard-addmenu-item-text
-            @include msf-dashboard-addmenu-item-text(#555555)
+            @include msf-dashboard-addmenu-item-text(#fff)
     .msf-dashboard-chartbox
         padding: 10px
         flex-direction: column
@@ -1747,15 +1747,8 @@ mat-tab-group
         @include msf-dashboard-icon(#01abec, pointer)
 
 .msf-dashboard-form-field
-    .mat-select-value
-        color: #555555
-    .mat-select-arrow
-        color: #555555
     .mat-form-field-underline
-        background-alpha: 0
-    .mat-form-field-label-wrapper
-        .mat-form-field-label
-            color: #555555 !important
+        background-color: #595959
 
 @mixin msf-dashboard-form-field-size
     width: 49.5%
@@ -1779,9 +1772,11 @@ mat-tab-group
 
 .msf-dashboard-chartmenu-container
     padding: 10px
-    background-color: #e6e6e6
+    background-color: #3b3b3b
     overflow-y: visible
-    min-height: 303px
+    display: flex
+    justify-content: space-around
+    flex-direction: column
     .msf-dashboard-chartmenu-sub-container-row
         @include msf-dashboard-chartmenu-sub-container(column)
         align-items: center
@@ -1813,7 +1808,6 @@ mat-tab-group
     background-color: #222222
     color: #ffffff
     overflow-y: visible
-    min-height: 303px
     .msf-dashboard-chartmenu-title
         font-size: 12px
     .msf-dashboard-chartmenu-sub-container-column
@@ -2706,7 +2700,7 @@ table.datasource
 
 .msf-periodicity-select
     color: black !important
-    width: 55% !important
+    // width: 55% !important
     display: inline-flex !important
     position: absolute !important
     margin-left:2%
@@ -2835,9 +2829,10 @@ table.datasource
     transform: translateY(-1.79125em) scale(.75) perspective(100px) translateZ(.001px)!important
 
 .financial-container 
-    margin-top: -57px
     display: table
     width: auto
+    margin: 0 auto
+    margin-top: -57px
 
 .financial-table-container 
     background: white
@@ -2866,22 +2861,22 @@ table.datasource
 .financial-item-cell 
     display: inline-block
     display: table-cell
-    padding: 10px
+    padding: 5px
     border: 1px solid rgba(0,0,0,.12)
     border-right: 0
     border-top: 0
-    min-width: 120px
-    max-width: 120px
+    min-width: 260px
+    max-width: 260px
     vertical-align: middle
 
 .financial-result-cell 
     display: table-cell
-    padding: 10px
+    padding: 5px
     border: 1px solid rgba(0,0,0,.12)
     border-right: 0
     border-top: 0
-    min-width: 80px
-    max-width: 80px
+    min-width: 150px
+    max-width: 150px
     vertical-align: middle
 
 .children-cell
@@ -2933,12 +2928,11 @@ table.datasource
     width: 100%
     display: flex
     margin: 20px 0
-    border-right: 1px solid #333
     transition: background-image 0.5s ease-in-out
 
 /* kp */
 .icon-container
-    width: 100% !important
+    width: 100.3% !important
     height: calc(100% - 90px) !important    
     position: relative    
     background-size: cover
@@ -2970,9 +2964,9 @@ table.datasource
 .landing-icon-content-child 
 
 .landing-icon-content-child:hover, .icon-container:hover
-    background-color: black
+    // background-color: black
 .footer-container:hover, .icon-container
-    background-color: black
+    // background-color: black
 .landing-icon-content-child:hover, .footer-container:hover
     background-color: #15ACEC
 .landing-icon-content-child:focus
@@ -2985,4 +2979,7 @@ img.msf-calendar-image
 .financial-content 
     width: auto
     display: table-caption
-    
+.ng-select.ng-select-single .ng-select-container .ng-clear-wrapper 
+    bottom: 1px
+.ng-select.ng-select-single .ng-select-container .ng-arrow-wrapper 
+    bottom: 5px
