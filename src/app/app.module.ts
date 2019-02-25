@@ -148,6 +148,8 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { MsfConfirmationDialogComponent } from './msf-confirmation-dialog/msf-confirmation-dialog.component';
 import { MsfDashboardPanelSizePipe } from './msf-dashboard/msf-dashboard-panelsizepipe';
+import { MsfSchedulePanelComponent } from './msf-schedule-panel/msf-schedule-panel.component';
+import { MsfScheduleMapsComponent } from './msf-schedule-maps/msf-schedule-maps.component';
 
 @NgModule({
   declarations: [
@@ -277,7 +279,9 @@ import { MsfDashboardPanelSizePipe } from './msf-dashboard/msf-dashboard-panelsi
     ForgotPasswordComponent,
     ResetPasswordComponent,
     MsfConfirmationDialogComponent,
-    MsfDashboardPanelSizePipe
+    MsfDashboardPanelSizePipe,
+    MsfSchedulePanelComponent,
+    MsfScheduleMapsComponent
   ],
   imports: [
     BrowserModule,

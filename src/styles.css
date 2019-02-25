@@ -3398,5 +3398,7 @@ img.msf-calendar-image {
 .ng-select.ng-select-single .ng-select-container .ng-arrow-wrapper {
   bottom: 5px;
 }
-
+.mat-expansion-panel-body {
+  padding: 0px!important ; 
+}
 /*# sourceMappingURL=styles.css.map */

@@ -41,6 +41,14 @@
                 </ng-template>
             <app-msf-map #msfMapRef></app-msf-map>
         </mat-tab> 
+
+        <mat-tab  [style.visibility]= "globals.mapsc ? 'visible' : 'hidden' " #tabRef >
+                <ng-template mat-tab-label>
+                        Map
+                        <mat-icon (click)="closeTab(6)" class="close-icon">close</mat-icon> 
+                </ng-template>
+            <app-msf-schedule-maps ></app-msf-schedule-maps>
+        </mat-tab> 
         
     </mat-tab-group>
 </ng-container>
