@@ -915,7 +915,7 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button
     display: inline-block
     margin-left: 90px
 
-.msf-menu-opcion
+.msf-menu-option
     height: 100%
     min-height: 60px
     font-size: 90%
@@ -935,20 +935,20 @@ button[aria-expanded="true"]
     background-color: $msf-primary-dark-color
 
 .msf-menu-op-1
-    @extend .msf-menu-opcion
+    @extend .msf-menu-option
     background-color: $msf-primary-light-color
     margin-right: 1px
     margin-left: 1px!important
 
 .msf-menu-op-2
-    @extend .msf-menu-opcion
+    @extend .msf-menu-option
     border-top-left-radius: 60px!important
     background-color: $msf-primary-light-color
     span
         margin-left: 15px
 
 .msf-menu-op-3
-    @extend .msf-menu-opcion
+    @extend .msf-menu-option
     border-top-right-radius: 60px!important
     background-color: $msf-primary-light-color
     margin-left: 1px!important
@@ -1683,8 +1683,8 @@ mat-tab-group
 .msf-dashboard-container
     font-size: 14px
     text-align: center
-    color: #555555
-    background-color: #ffffff
+    color: #fff
+    background-color: #333333
     display: flex
     flex-direction: column
     width: 100%
@@ -1703,11 +1703,11 @@ mat-tab-group
         .msf-dashboard-addmenu-item:hover
             @include msf-dashboard-addmenu-item(#01abec, #fff, pointer)
         .msf-dashboard-addmenu-item
-            @include msf-dashboard-addmenu-item(#fff, #555555)
+            @include msf-dashboard-addmenu-item(#333333, #fff)
         .msf-dashboard-addmenu-item-text:hover
             @include msf-dashboard-addmenu-item-text(#fff)
         .msf-dashboard-addmenu-item-text
-            @include msf-dashboard-addmenu-item-text(#555555)
+            @include msf-dashboard-addmenu-item-text(#fff)
     .msf-dashboard-chartbox
         padding: 10px
         flex-direction: column
@@ -1747,15 +1747,8 @@ mat-tab-group
         @include msf-dashboard-icon(#01abec, pointer)
 
 .msf-dashboard-form-field
-    .mat-select-value
-        color: #555555
-    .mat-select-arrow
-        color: #555555
     .mat-form-field-underline
-        background-alpha: 0
-    .mat-form-field-label-wrapper
-        .mat-form-field-label
-            color: #555555 !important
+        background-color: #595959
 
 @mixin msf-dashboard-form-field-size
     width: 49.5%
@@ -1779,9 +1772,11 @@ mat-tab-group
 
 .msf-dashboard-chartmenu-container
     padding: 10px
-    background-color: #e6e6e6
+    background-color: #3b3b3b
     overflow-y: visible
-    min-height: 303px
+    display: flex
+    justify-content: space-around
+    flex-direction: column
     .msf-dashboard-chartmenu-sub-container-row
         @include msf-dashboard-chartmenu-sub-container(column)
         align-items: center
@@ -1813,7 +1808,6 @@ mat-tab-group
     background-color: #222222
     color: #ffffff
     overflow-y: visible
-    min-height: 303px
     .msf-dashboard-chartmenu-title
         font-size: 12px
     .msf-dashboard-chartmenu-sub-container-column
