@@ -242,15 +242,15 @@ export class MsfTableComponent implements OnInit {
         
         let dataResult = new MatTableDataSource(mainElement);     
         if( _this.globals.moreResults){
-          if( _this.globals.totalRecord<100){
-            _this.globals.moreResultsBtn = false;
-            _this.globals.moreResults = false;
-          }
             _this.dataSource.data = _this.dataSource.data.concat(dataResult.data);
         }else{
           _this.dataSource = dataResult;
         }
-    }else if(_this.globals.currentOption.metaData==0){
+        if( _this.globals.totalRecord<100){
+          _this.globals.moreResultsBtn = false;
+          _this.globals.moreResults = false;
+        }
+    }else if (_this.globals.currentOption.metaData==0){
       _this.template = data.template;
     }else if (_this.globals.currentOption.metaData==2){
       _this.globals.hideParametersPanels = true;
@@ -306,6 +306,17 @@ export class MsfTableComponent implements OnInit {
     if(tableItem.subtitle=='1'){
       aux+=" parent-cell-subtitle";
     }
+    return aux;
+  }
+
+  getFormatCell(value:any){
+    var aux = String(value);
+    if(value==undefined){
+      return "";
+    }
+    aux = aux.replace("%","");
+    aux = aux.replace("$","");
+    aux = aux.replace("ï¿½","0");
     return aux;
   }
 

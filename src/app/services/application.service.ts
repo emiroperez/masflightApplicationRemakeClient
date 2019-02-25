@@ -6,6 +6,9 @@ import { Airport } from '../model/Airport';
 import { delay } from 'rxjs/operators';
 import { Globals } from '../globals/Globals';
 
+import { MatDialog } from '@angular/material';
+import { MsfConfirmationDialogComponent } from '../msf-confirmation-dialog/msf-confirmation-dialog.component';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -20,7 +23,7 @@ export class ApplicationService {
   //host1 = "http://localhost:8886";
   host1 = "http://69.64.45.220:8886";
 
-  constructor(private http: ApiClient, private globals:Globals) {
+  constructor(private http: ApiClient, private globals:Globals, private dialog: MatDialog) {
     this.utils = new Utils();
     this.host = this.globals.baseUrl;
     this.host1 = this.globals.baseUrl2;
@@ -272,9 +275,26 @@ export class ApplicationService {
       this.http.getSecure (_this, this.host + "/secure" + url, handlerSuccess, handlerError, null);
   }
 
-  /*updateDashboardPanel(_this, panelInfo, handlerSucess, handlerError): void
+  updateDashboardPanel(_this, panel, handlerSucess, handlerError): void
   {
     let url = this.host + "/updateDashboardPanel";
-    this.http.post (_this, url, panelInfo, handlerSucess, handlerError);
-  }*/
+    this.http.post (_this, url, panel, handlerSucess, handlerError);
+  }
+
+  confirmationDialog(_this, message, callback)
+  {
+    const dialogRef = this.dialog.open (MsfConfirmationDialogComponent, {
+      disableClose: false,
+      panelClass: 'msf-dashboard-control-variables-dialog'
+    });
+
+    let self = _this;
+    dialogRef.componentInstance.confirmMessage = message;
+
+    dialogRef.afterClosed ().subscribe (result =>
+    {
+      if (result)
+        callback (self);
+    });
+  }
 }

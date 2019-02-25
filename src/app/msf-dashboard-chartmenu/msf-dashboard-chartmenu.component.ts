@@ -15,6 +15,7 @@ import { MsfDashboardControlVariablesComponent } from '../msf-dashboard-control-
 import { MatDialog } from '@angular/material';
 import { ComponentType } from '../commons/ComponentType';
 import { MsfDashboardChartValues } from '../msf-dashboard-chartmenu/msf-dashboard-chartvalues';
+import { MsfConfirmationDialogComponent } from '../msf-confirmation-dialog/msf-confirmation-dialog.component';
 
 @Component({
   selector: 'app-msf-dashboard-chartmenu',
@@ -57,6 +58,9 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   @Input()
   rowPos: number;
+
+  @Input()
+  height: number;
 
   public dataFormFilterCtrl: FormControl = new FormControl ();
   public variableFilterCtrl: FormControl = new FormControl ();
@@ -131,7 +135,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     {
       graphs.push
       ({
-        balloonText: "[[category]] (" + object.valueField + "): <b>[[value]]</b>",
+        //balloonText: "[[category]] (" + object.valueField + "): <b>[[value]]</b>",
+        showBalloon : false,
         fillAlphas: 0.9,
         lineAlpha: 0.2,
         valueAxis: object.valueAxis,
@@ -152,15 +157,17 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     {
       return {
         "type" : "pie",
-        "theme" : "light",
+        "theme" : "dark",
         "dataProvider" : dataProvider.dataProvider,
         "valueField" : dataProvider.valueField,
         "titleField" : dataProvider.titleField,
         "colors" : dataProvider.colors,
-        "labelTickAlpha" : 0.75,
+        "labelTickAlpha" : 0.45,
+        "labelTickColor" : "#ffffff",
+        "color" : "#ffffff",
         "balloon" :
         {
-          "fixedPosition" : true
+          "enabled" : false
         },
         "export" :
         {
@@ -178,31 +185,40 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
     return {
       "type" : "serial",
-      "theme" : "light",
+      "theme" : "dark",
       "legend" :
       {
-        "useGraphSettings" : true
+        "useGraphSettings" : true,
+        "color" : "#ffffff"
       },
       "dataProvider" : dataProvider.data,
       "synchronizeGrid" : true,
+      "guides" : [{
+        "lineColor" : "#30303d",
+        "lineAlpha": 1
+      }],
       "valueAxes" : [{
-        "gridColor" : "#888888",
-        "gridAlpha" : 0.4,
+        "axisColor" : "#30303d",
+        "gridColor" : "#30303d",
+        "gridAlpha" : 1,
         "dashLength" : 0
       }],
       "graphs" : this.buildGraphs (dataProvider.filter),
       "plotAreaFillAlphas" : 1,
       "zoomOutButtonRollOverAlpha" : "0.5",
-      "plotAreaFillColors" : "#cccccc",
-      "color" : "#000000",
-      "plotAreaBorderColor" : "#888888",
-      "plotAreaBorderAlpha" : 0.4,
+      "plotAreaFillColors" : "#222222",
+      "color" : "#ffffff",
+      "plotAreaBorderColor" : "#222222",
+      "plotAreaBorderAlpha" : 1,
       "depth3D" : 0,
       "angle" : 30,
       "categoryField" : this.values.xaxis.id,
       "rotate" : (this.values.currentChartType.id == 'hbars' ? true : false),
       "categoryAxis" :
       {
+        "axisColor" : "#30303d",
+        "gridColor" : "#30303d",
+        "gridAlpha" : 1,
         "gridPosition" : "start",
         "parseDates" : parserDate,
         "minorGridEnabled" : true,
@@ -248,6 +264,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     {
       this.chart = this.AmCharts.makeChart ("msf-dashboard-chart-display-" + this.columnPos + "-" + this.rowPos, this.makeOptions (this.values.lastestResponse));
       this.chart.addListener ("dataUpdated", this.zoomChart);
+      this.chartTypeChange (this.values.currentChartType);
       this.values.chartGenerated = true;
     }
   }
@@ -337,12 +354,10 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     return params;
   }
 
-  loadChartData(handlerSuccess, handlerError): void
+  // return current panel information into a JSON for a http message body
+  getPanelInfo(): any
   {
-    let url, urlBase, urlArg, panel;
-
-    // set panel info for the HTTP message body
-    panel = {
+    return {
       'id' : this.values.id,
       'option' : this.values.currentOption,
       'title' : this.values.chartName,
@@ -354,7 +369,14 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       'chartType' : this.chartTypes.indexOf (this.values.currentChartType),
       'categoryOptions' : this.values.currentOptionCategories
     };
+  }
 
+  loadChartData(handlerSuccess, handlerError): void
+  {
+    let url, urlBase, urlArg, panel;
+
+    // set panel info for the HTTP message body
+    panel = this.getPanelInfo ();
     this.globals.isLoading = true;
     urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
@@ -598,30 +620,22 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     });
   }
 
-  // save chart data into a temporary value by performing a deep copy
+  // save chart data into a temporary value
   storeChartValues(): void
   {
-    /*
     if (!this.temp)
-      this.temp = new MsfDashboardChartValues (this.values.options, this.values.chartName);
+      this.temp = new MsfDashboardChartValues (this.values.options, this.values.chartName, this.values.id);
     else
-    {
-      this.temp.options = { ...this.values.options };
       this.temp.chartName = this.values.chartName;
-    }
 
-    this.temp.displayChart = this.displayChart;
-    this.temp.currentOptionUrl = this.values.currentOptionUrl;
-    this.temp.currentChartType = JSON.parse (JSON.stringify (this.values.currentChartType));
     this.temp.currentOption = JSON.parse (JSON.stringify (this.values.currentOption));
+    this.temp.variable = this.values.chartColumnOptions.indexOf (this.values.variable);
+    this.temp.xaxis = this.values.chartColumnOptions.indexOf (this.values.xaxis);
+    this.temp.valueColumn = this.values.chartColumnOptions.indexOf (this.values.valueColumn);
+    this.temp.function = this.functions.indexOf (this.values.function);
+    this.temp.currentChartType = this.chartTypes.indexOf (this.values.currentChartType);
+    this.temp.chartColumnOptions = JSON.parse (JSON.stringify (this.values.chartColumnOptions));
     this.temp.currentOptionCategories = JSON.parse (JSON.stringify (this.values.currentOptionCategories));
-    this.temp.variable = JSON.parse (JSON.stringify (this.values.variable));
-    this.temp.xaxis = JSON.parse (JSON.stringify (this.values.xaxis));
-    this.temp.valueColumn = JSON.parse (JSON.stringify (this.values.valueColumn));
-    this.temp.function = JSON.parse (JSON.stringify (this.values.function));
-    this.temp.chart2 = this.chart; // this one will be never modified unless the chart is generated again
-    this.temp.chartGenerated = true; // the chart is already generated when returning to the configuration
-    */
   }
 
   goToChartConfiguration(): void
@@ -634,24 +648,19 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   {
     this.values.displayChart = true;
 
-    // discard any changes except the title if changed
-    /*
-    // discard changes with a deep copy from temp if the user decide to
-    // return to the chart without generating it again
-    this.displayChart = this.temp.displayChart = true;
-    this.values.options = { ...this.temp.options };
-    this.values.chartName = this.temp.chartName;
-    this.values.currentOptionUrl = this.temp.currentOptionUrl;
-    this.values.currentChartType = JSON.parse (JSON.stringify (this.temp.currentChartType));
+    // discard any changes
     this.values.currentOption = JSON.parse (JSON.stringify (this.temp.currentOption));
+    this.values.chartName = this.temp.chartName;
+    this.values.variable = this.temp.variable;
+    this.values.xaxis = this.temp.xaxis;
+    this.values.valueColumn = this.temp.valueColumn;
+    this.values.function = this.temp.function;
+    this.values.currentChartType = this.temp.currentChartType;
+    this.values.chartColumnOptions = JSON.parse (JSON.stringify (this.temp.chartColumnOptions));
     this.values.currentOptionCategories = JSON.parse (JSON.stringify (this.temp.currentOptionCategories));
-    this.values.variable = JSON.parse (JSON.stringify (this.temp.variable));
-    this.values.xaxis = JSON.parse (JSON.stringify (this.temp.xaxis));
-    this.values.valueColumn = JSON.parse (JSON.stringify (this.temp.valueColumn));
-    this.values.function = JSON.parse (JSON.stringify (this.temp.function));
-    this.chart = this.temp.chart2; // this one will be never modified unless the chart is generated again
-    this.chartGenerated = this.temp.chartGenerated;
-    */
+
+    // re-initialize panel settings
+    this.initPanelSettings ();
   }
 
   // check if the x axis should be enabled or not depending of the chart type
@@ -807,5 +816,30 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       this.variableCtrlBtnEnabled = true;
 
     this.checkChartFilters ();
+  }
+
+  handlerUpdateSucess(_this): void
+  {
+    // set lastestResponse to null and remove temporary values since the panel has been updated
+    _this.values.lastestResponse = null;
+    _this.values.chartGenerated = false;
+    _this.temp = null;
+    _this.globals.isLoading = false;
+  }
+
+  savePanel(): void
+  {
+    this.service.confirmationDialog (this, "Are you sure you want to save the changes?",
+      function (_this)
+      {
+        let panel = _this.getPanelInfo ();
+        _this.globals.isLoading = true;
+        _this.service.updateDashboardPanel (_this, panel, _this.handlerUpdateSucess, _this.handlerError);
+      });
+  }
+
+  calcChartHeight(): number
+  {
+    return this.height - 14;
   }
 }

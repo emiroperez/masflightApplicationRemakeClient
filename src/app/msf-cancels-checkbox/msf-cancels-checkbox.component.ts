@@ -80,10 +80,11 @@ export class MsfCancelsCheckboxComponent implements OnInit {
         element.checked = value;
     }
     if(value){
-      this.selected = this.data;
+      this.selected = this.data.slice();
     }else{
       this.selected = [];
     }
+    this.argument.value1 = this.selected;
   }
 
   checkBoxAllChange(){

@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Globals } from '../globals/Globals';
 import { ApiClient } from '../api/api-client';
 import { MsfDashboardChartValues } from '../msf-dashboard-chartmenu/msf-dashboard-chartvalues';
+import { MsfDashboardColumnValues } from './msf-dashboard-columnvalues';
 import { ApplicationService } from '../services/application.service';
 
 @Component({
@@ -11,6 +12,7 @@ import { ApplicationService } from '../services/application.service';
 })
 export class MsfDashboardComponent implements OnInit {
   dashboardColumns: MsfDashboardChartValues[][] = [];
+  dashboardColumnsSize: MsfDashboardColumnValues[] = [];
   options: any[] = [];
 
   columnToDelete: number;
@@ -18,8 +20,23 @@ export class MsfDashboardComponent implements OnInit {
 
   displayAddChartMenu: boolean = false;
 
+  heightValues:any[] = [
+    { value: 1, name: 'Small' },
+    { value: 3, name: 'Medium' },
+    { value: 6, name: 'Large' },
+    { value: 12, name: 'Very Large' }
+  ];
+
+  widthValues:any[] = [
+    { value: 3, name: 'Small' },
+    { value: 4, name: 'Medium' },
+    { value: 6, name: 'Large' },
+    { value: 8, name: 'Very Large' },
+    { value: 12, name: 'Full Width' }
+  ];
+
   constructor(public globals: Globals, private service: ApplicationService,
-    private http: ApiClient) { }
+    private http: ApiClient, private cdref: ChangeDetectorRef) { }
 
   ngOnInit()
   {
@@ -52,10 +69,31 @@ export class MsfDashboardComponent implements OnInit {
       _this.loadDashboardPanels, _this.handlerError);
   }
 
-  loadDashboardPanels (_this, data)
+  getDefaultPanelWidth(length): any
+  {
+    let result = this.widthValues[0]; // default result if no equivalent found
+    let i = this.widthValues.length - 1;
+    let width = 12 / length;
+
+    do
+    {
+      let widthValue = this.widthValues[i];
+
+      if (widthValue.value == width)
+      {
+        result = widthValue;
+        break;
+      }
+    } while (--i);
+
+    return result;
+  }
+
+  loadDashboardPanels (_this, data): void
   {
     let dashboardPanels: any[] = [];
     let dashboardRows = [];
+    let defaultWidth;
 
     dashboardPanels = data;
     if (!dashboardPanels.length)
@@ -72,8 +110,11 @@ export class MsfDashboardComponent implements OnInit {
 
       if (dashboardPanel.column != curColumn)
       {
+        defaultWidth = _this.getDefaultPanelWidth (dashboardRows.length);
+
         curColumn = dashboardPanel.column;
         _this.dashboardColumns.push (dashboardRows);
+        _this.dashboardColumnsSize.push (new MsfDashboardColumnValues (_this.heightValues[0], defaultWidth, defaultWidth, defaultWidth));
         dashboardRows = [];
       }
 
@@ -84,7 +125,9 @@ export class MsfDashboardComponent implements OnInit {
     }
 
     // add the last dashboard column
+    defaultWidth = _this.getDefaultPanelWidth (dashboardRows.length);
     _this.dashboardColumns.push (dashboardRows);
+    _this.dashboardColumnsSize.push (new MsfDashboardColumnValues (_this.heightValues[0], defaultWidth, defaultWidth, defaultWidth));
     _this.globals.isLoading = false;
   }
 
@@ -97,20 +140,24 @@ export class MsfDashboardComponent implements OnInit {
 
   RemoveChart(column, row): void
   {
-    let dashboardRows: MsfDashboardChartValues[];
-    let dashboardRow, panel;
-
-    dashboardRows = this.dashboardColumns[column];
-
-    this.columnToDelete = column;
-    this.rowToDelete = row;
-    dashboardRow = dashboardRows[row];
-
-    this.globals.isLoading = true;
-    this.service.deleteDashboardPanel (this, dashboardRow.id, this.deleteRowPanel, this.handlerError);
+    this.service.confirmationDialog (this, "Are you sure you want to delete this panel?",
+      function (_this)
+      {
+        let dashboardRows: MsfDashboardChartValues[];
+        let dashboardRow;
+    
+        dashboardRows = _this.dashboardColumns[column];
+    
+        _this.columnToDelete = column;
+        _this.rowToDelete = row;
+        dashboardRow = dashboardRows[row];
+    
+        _this.globals.isLoading = true;
+        _this.service.deleteDashboardPanel (_this, dashboardRow.id, _this.deleteRowPanel, _this.handlerError);
+      });
   }
 
-  ToggleDisplayAddChartMenu(): void
+  toggleDisplayAddChartMenu(): void
   {
     this.displayAddChartMenu = !this.displayAddChartMenu;
   }
@@ -119,6 +166,7 @@ export class MsfDashboardComponent implements OnInit {
   {
     let dashboardPanels;
     let dashboardRows = [];
+    let defaultWidth;
 
     dashboardPanels = data;
 
@@ -129,7 +177,9 @@ export class MsfDashboardComponent implements OnInit {
       dashboardRows.push (new MsfDashboardChartValues (_this.options, dashboardPanel.title, dashboardPanel.id));
     }
 
+    defaultWidth = _this.getDefaultPanelWidth (dashboardRows.length);
     _this.dashboardColumns.push (dashboardRows);
+    _this.dashboardColumnsSize.push (new MsfDashboardColumnValues (_this.heightValues[0], defaultWidth, defaultWidth, defaultWidth));
     _this.displayAddChartMenu = false;
     _this.globals.isLoading = false;
   }
@@ -148,18 +198,23 @@ export class MsfDashboardComponent implements OnInit {
         _this.columnToDelete, _this.deleteColumn, _this.handlerError);
     }
     else
+    {
       _this.globals.isLoading = false;
+      _this.cdref.detectChanges ();
+    }
   }
 
   deleteColumn (_this): void
   {
     _this.dashboardColumns.splice (_this.columnToDelete, 1);
+    _this.dashboardColumnsSize.splice (_this.columnToDelete, 1);
     _this.globals.isLoading = false;
+    _this.cdref.detectChanges ();
   }
 
   // update the dashboard container and hide the menu after
   // adding a new chart column
-  AddChart(numCharts): void
+  addChart(numCharts): void
   {
     let panelsToAdd, column;
 
@@ -180,5 +235,23 @@ export class MsfDashboardComponent implements OnInit {
 
     this.globals.isLoading = true;
     this.service.createDashboardPanel (this, panelsToAdd, this.insertPanels, this.handlerError);
+  }
+
+  toggleColumnProperties(column): void
+  {
+    this.dashboardColumnsSize[column].displayProperties = !this.dashboardColumnsSize[column].displayProperties;
+  }
+
+  getPanelWidth(column, row): number
+  {
+    return (this.dashboardColumnsSize[column].width[row].value * 100) / 12;
+  }
+
+  getColumnHeight(column): number
+  {
+    if (this.dashboardColumnsSize[column].height.value == 1)
+      return 303;
+
+    return 303 + (this.dashboardColumnsSize[column].height.value * 15);
   }
 }

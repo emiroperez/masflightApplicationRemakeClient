@@ -75,6 +75,7 @@ import { AgGridModule } from 'ag-grid-angular';
 import { Utils } from './commons/utils';
 import { MsfUserListComponent } from './msf-user-list/msf-user-list.component';
 import { MsfOptionListComponent } from './msf-option-list/msf-option-list.component';
+import { ConfirmDeleteDialog } from './admin-menu/admin-menu.component';
 import { EditOutputOptionsMetaDialog } from './admin-menu/admin-menu.component';
 import { EditCategoryArgumentDialog } from './admin-menu/admin-menu.component';
 import { EditOptionsDialog } from './create-memperships/create-memperships.component';
@@ -143,10 +144,11 @@ import { MsfSummaryRevenueBuildsComponent } from './msf-summary-revenue-builds/m
 import { MsfDatePeriodRevenueComponent } from './msf-date-period-revenue/msf-date-period-revenue.component';
 import { UserActivationComponent } from './user-activation/user-activation.component';
 import { MsfFareIncrementsMarketHistogramsComponent } from './msf-fare-increments-market-histograms/msf-fare-increments-market-histograms.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { MsfConfirmationDialogComponent } from './msf-confirmation-dialog/msf-confirmation-dialog.component';
 import { MsfSchedulePanelComponent } from './msf-schedule-panel/msf-schedule-panel.component';
 import { MsfScheduleMapsComponent } from './msf-schedule-maps/msf-schedule-maps.component';
-
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -204,6 +206,7 @@ import { MsfScheduleMapsComponent } from './msf-schedule-maps/msf-schedule-maps.
     AdminMenuMembershipsComponent,
     MsfUserListComponent,
     MsfOptionListComponent,
+    ConfirmDeleteDialog,
     EditOutputOptionsMetaDialog,
     EditCategoryArgumentDialog,
     EditOptionsDialog,
@@ -271,9 +274,11 @@ import { MsfScheduleMapsComponent } from './msf-schedule-maps/msf-schedule-maps.
     MsfDatePeriodRevenueComponent,
     UserActivationComponent,
     MsfFareIncrementsMarketHistogramsComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent,
+    MsfConfirmationDialogComponent,
     MsfSchedulePanelComponent,
     MsfScheduleMapsComponent,
-    
   ],
   imports: [
     BrowserModule,
@@ -327,9 +332,11 @@ import { MsfScheduleMapsComponent } from './msf-schedule-maps/msf-schedule-maps.
   bootstrap: [AppComponent],
   entryComponents: [MessageComponent,
     MsfDynamicTableVariablesComponent,
+    ConfirmDeleteDialog,
     EditOutputOptionsMetaDialog,
     EditCategoryArgumentDialog,
     EditOptionsDialog,
-    MsfDashboardControlVariablesComponent]
+    MsfDashboardControlVariablesComponent,
+    MsfConfirmationDialogComponent]
 })
 export class AppModule { }

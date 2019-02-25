@@ -1020,7 +1020,7 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
   margin-left: 90px;
 }
 
-.msf-menu-opcion, .msf-menu-op-3, .msf-menu-op-2, .msf-menu-op-1 {
+.msf-menu-option, .msf-menu-op-3, .msf-menu-op-2, .msf-menu-op-1 {
   height: 100%;
   min-height: 60px;
   font-size: 90%;
@@ -1028,7 +1028,7 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
   padding-left: 20px !important;
   padding-right: 20px !important;
 }
-.msf-menu-opcion:hover, .msf-menu-op-3:hover, .msf-menu-op-2:hover, .msf-menu-op-1:hover {
+.msf-menu-option:hover, .msf-menu-op-3:hover, .msf-menu-op-2:hover, .msf-menu-op-1:hover {
   background-color: #1e1e1e;
 }
 
@@ -1833,11 +1833,26 @@ mat-tab-group {
   margin-left: 0px;
 }
 
+.msf-dashboard-icon {
+  vertical-align: middle;
+  margin-top: -5%;
+  margin-bottom: -5%;
+}
+
+.msf-dashboard-addmenu-item-addtext {
+  vertical-align: middle;
+}
+
+.msf-dashboard-chartbox-column {
+  display: flex;
+  flex-direction: row;
+}
+
 .msf-dashboard-container {
   font-size: 14px;
   text-align: center;
-  color: #555555;
-  background-color: #ffffff;
+  color: #fff;
+  background-color: #333333;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -1864,9 +1879,11 @@ mat-tab-group {
   cursor: pointer;
 }
 .msf-dashboard-container .msf-dashboard-addmenu .msf-dashboard-addmenu-item {
-  background-color: #ffffff;
+  background-color: #333333;
+  color: #fff;
   display: table-row;
   vertical-align: middle;
+  cursor: default;
 }
 .msf-dashboard-container .msf-dashboard-addmenu .msf-dashboard-addmenu-item-text:hover {
   border: 1px solid #888888;
@@ -1875,27 +1892,12 @@ mat-tab-group {
   align-items: center;
   padding: 10px 40px;
 }
-.msf-dashboard-container .msf-dashboard-addmenu .msf-dashboard-addmenu-item-text:hover .msf-dashboard-icon {
-  vertical-align: middle;
-  margin-top: -5%;
-  margin-bottom: -5%;
-}
-.msf-dashboard-container .msf-dashboard-addmenu .msf-dashboard-addmenu-item-text:hover .msf-dashboard-addmenu-item-addtext {
-  vertical-align: middle;
-}
 .msf-dashboard-container .msf-dashboard-addmenu .msf-dashboard-addmenu-item-text {
   border: 1px solid #888888;
+  color: #fff;
   display: table-cell;
   align-items: center;
   padding: 10px 40px;
-}
-.msf-dashboard-container .msf-dashboard-addmenu .msf-dashboard-addmenu-item-text .msf-dashboard-icon {
-  vertical-align: middle;
-  margin-top: -5%;
-  margin-bottom: -5%;
-}
-.msf-dashboard-container .msf-dashboard-addmenu .msf-dashboard-addmenu-item-text .msf-dashboard-addmenu-item-addtext {
-  vertical-align: middle;
 }
 .msf-dashboard-container .msf-dashboard-chartbox {
   padding: 10px;
@@ -1903,39 +1905,85 @@ mat-tab-group {
 }
 .msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column {
   width: 100%;
-  display: flex;
-  flex-direction: row;
   overflow-y: visible;
 }
-.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-item-1 {
+.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items {
+  width: 100%;
+}
+.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-chartbox-column .msf-dashboard-chartbox-item-1 {
   padding: 2px 2px;
   width: 100%;
   position: relative;
 }
-.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-item-2 {
+.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-chartbox-column .msf-dashboard-chartbox-item-2 {
   padding: 2px 2px;
   width: 50%;
   position: relative;
 }
-.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-item-3 {
+.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-chartbox-column .msf-dashboard-chartbox-item-3 {
   padding: 2px 2px;
   width: 33.3333333333%;
   position: relative;
 }
-
-.msf-dashboard-chartbox-close-button {
+.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed {
+  position: relative;
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+  margin-left: 2px;
+  margin-right: 2px;
+  height: 20px;
+  transition: 0.5s;
+}
+.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-properties-align {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 20%;
+}
+.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-properties-align .msf-dashboard-column-properties-height-label {
+  width: 60%;
+}
+.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-properties-align .msf-dashboard-column-properties-width-label {
+  width: 90%;
+}
+.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open {
+  position: relative;
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+  margin-left: 2px;
+  margin-right: 2px;
+  height: 60px;
+  transition: 0.5s;
+}
+.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-properties-align {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 20%;
+}
+.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-properties-align .msf-dashboard-column-properties-height-label {
+  width: 60%;
+}
+.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-properties-align .msf-dashboard-column-properties-width-label {
+  width: 90%;
+}
+.msf-dashboard-button {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   position: absolute;
   width: 100%;
 }
-.msf-dashboard-chartbox-close-button .msf-dashboard-close-icon {
+.msf-dashboard-button .msf-dashboard-button-icon {
+  color: inherit;
+  cursor: default;
   font-size: 16px;
   padding-right: 5px;
   padding-top: 5px;
 }
-.msf-dashboard-chartbox-close-button .msf-dashboard-close-icon:hover {
+.msf-dashboard-button .msf-dashboard-button-icon:hover {
   color: #01abec;
   cursor: pointer;
   font-size: 16px;
@@ -1943,30 +1991,33 @@ mat-tab-group {
   padding-top: 5px;
 }
 
-.msf-dashboard-form-field .mat-select-value, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-field-function .mat-select-value, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-field-valuectrl .mat-select-value, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-full-width .mat-select-value, .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-row .msf-full-width .mat-select-value, .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-row .msf-width-90 .mat-select-value {
-  color: #555555;
+.msf-dashboard-form-field .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-field-function .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-field-valuectrl .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-full-width .mat-form-field-underline, .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-row .msf-full-width .mat-form-field-underline, .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-row .msf-width-90 .mat-form-field-underline, .msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-properties-align .msf-dashboard-column-properties-form-field .mat-form-field-underline, .msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-properties-align .msf-dashboard-column-properties-form-field .mat-form-field-underline {
+  background-color: #595959;
 }
-.msf-dashboard-form-field .mat-select-arrow, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-field-function .mat-select-arrow, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-field-valuectrl .mat-select-arrow, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-full-width .mat-select-arrow, .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-row .msf-full-width .mat-select-arrow, .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-row .msf-width-90 .mat-select-arrow {
-  color: #555555;
-}
-.msf-dashboard-form-field .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-field-function .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-field-valuectrl .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-full-width .mat-form-field-underline, .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-row .msf-full-width .mat-form-field-underline, .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-row .msf-width-90 .mat-form-field-underline {
-  background-alpha: 0;
-}
-.msf-dashboard-form-field .mat-form-field-label-wrapper .mat-form-field-label, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-field-function .mat-form-field-label-wrapper .mat-form-field-label, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-field-valuectrl .mat-form-field-label-wrapper .mat-form-field-label, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-full-width .mat-form-field-label-wrapper .mat-form-field-label, .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-row .msf-full-width .mat-form-field-label-wrapper .mat-form-field-label, .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-row .msf-width-90 .mat-form-field-label-wrapper .mat-form-field-label {
-  color: #555555 !important;
+
+.msf-dashboard-chart-icon {
+  vertical-align: middle;
+  margin-top: -5%;
+  margin-bottom: -5%;
+  padding-right: 5px;
+  font-size: 22px;
 }
 
 .msf-dashboard-chartmenu-container {
   padding: 10px;
-  background-color: #e6e6e6;
+  background-color: #3b3b3b;
   overflow-y: visible;
-  min-height: 303px;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
 }
 .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-row {
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding-left: 4px;
+  padding-left: initial;
+  padding-right: initial;
+  padding-top: initial;
   font-size: 12px;
   align-items: center;
 }
@@ -1974,6 +2025,7 @@ mat-tab-group {
   display: flex;
   flex-direction: row;
   width: 100%;
+  padding-left: initial;
   padding-right: 5px;
   padding-top: 10px;
   font-size: 12px;
@@ -1982,19 +2034,14 @@ mat-tab-group {
   display: flex;
   flex-direction: row;
   width: 100%;
+  padding-left: initial;
   padding-right: 5px;
+  padding-top: initial;
   font-size: 12px;
 }
 .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-column .msf-dashboard-addmenu-icon-item {
   align-items: center;
   padding-bottom: 5px;
-}
-.msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-column .msf-dashboard-addmenu-icon-item .msf-dashboard-chart-icon {
-  vertical-align: middle;
-  margin-top: -5%;
-  margin-bottom: -5%;
-  padding-right: 5px;
-  font-size: 22px;
 }
 .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-column .msf-dashboard-addmenu-icon-item .msf-dashboard-chartmenu-item-text {
   vertical-align: middle;
@@ -2003,7 +2050,9 @@ mat-tab-group {
   display: flex;
   flex-direction: row-reverse;
   width: 100%;
+  padding-left: initial;
   padding-right: 5px;
+  padding-top: initial;
   font-size: 12px;
 }
 .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-column-reverse .msf-dashboard-chartmenu-control-variable-button {
@@ -2018,21 +2067,22 @@ mat-tab-group {
 
 .msf-dashboard-chartmenu-container-chart {
   padding: 10px;
-  background-color: #e6e6e6;
-  color: #555555;
+  background-color: #222222;
+  color: #ffffff;
   overflow-y: visible;
-  min-height: 303px;
 }
 .msf-dashboard-chartmenu-container-chart .msf-dashboard-chartmenu-title {
   font-size: 12px;
 }
 .msf-dashboard-chartmenu-container-chart .msf-dashboard-chartmenu-sub-container-column {
-  position: relative;
   display: flex;
   flex-direction: row;
   width: 100%;
+  padding-left: initial;
   padding-right: 5px;
-  font-size: 14px;
+  padding-top: initial;
+  font-size: 12px;
+  position: relative;
 }
 .msf-dashboard-chartmenu-container-chart .msf-dashboard-chartmenu-sub-container-column .msf-dashboard-chartmenu-config-button {
   position: absolute;
@@ -2099,13 +2149,6 @@ mat-tab-group {
   display: flex;
   align-items: center;
 }
-.msf-dashboard-chart-selector .msf-dashboard-chart-analysis-title .msf-dashboard-chart-icon {
-  vertical-align: middle;
-  margin-top: -5%;
-  margin-bottom: -5%;
-  padding-right: 5px;
-  font-size: 22px;
-}
 .msf-dashboard-chart-selector .msf-dashboard-chart-op-container {
   padding-left: 10px;
   width: 100%;
@@ -2116,7 +2159,7 @@ mat-tab-group {
 }
 .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-field-function {
   width: 49.5%;
-  padding-left: 0.5%;
+  padding-right: 0.5%;
 }
 
 .msf-dashboard-menu-component, .msf-dashboard-menu-component-active {
@@ -3037,7 +3080,6 @@ table.datasource {
 
 .msf-periodicity-select {
   color: black !important;
-  width: 55% !important;
   display: inline-flex !important;
   position: absolute !important;
   margin-left: 2%;
@@ -3185,9 +3227,10 @@ table.datasource {
 }
 
 .financial-container {
-  margin-top: -57px;
   display: table;
   width: auto;
+  margin: 0 auto;
+  margin-top: -57px;
 }
 
 .financial-table-container {
@@ -3222,23 +3265,23 @@ table.datasource {
 .financial-item-cell {
   display: inline-block;
   display: table-cell;
-  padding: 10px;
+  padding: 5px;
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-right: 0;
   border-top: 0;
-  min-width: 120px;
-  max-width: 120px;
+  min-width: 260px;
+  max-width: 260px;
   vertical-align: middle;
 }
 
 .financial-result-cell {
   display: table-cell;
-  padding: 10px;
+  padding: 5px;
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-right: 0;
   border-top: 0;
-  min-width: 80px;
-  max-width: 80px;
+  min-width: 150px;
+  max-width: 150px;
   vertical-align: middle;
 }
 
@@ -3290,13 +3333,12 @@ table.datasource {
   width: 100%;
   display: flex;
   margin: 20px 0;
-  border-right: 1px solid #333;
   transition: background-image 0.5s ease-in-out;
 }
 
 /* kp */
 .icon-container {
-  width: 100% !important;
+  width: 100.3% !important;
   height: calc(100% - 90px) !important;
   position: relative;
   background-size: cover;
@@ -3330,14 +3372,6 @@ table.datasource {
   padding: 5% 0;
 }
 
-.landing-icon-content-child:hover, .icon-container:hover {
-  background-color: black;
-}
-
-.footer-container:hover, .icon-container {
-  background-color: black;
-}
-
 .landing-icon-content-child:hover, .footer-container:hover {
   background-color: #15ACEC;
 }
@@ -3355,6 +3389,14 @@ img.msf-calendar-image {
 .financial-content {
   width: auto;
   display: table-caption;
+}
+
+.ng-select.ng-select-single .ng-select-container .ng-clear-wrapper {
+  bottom: 1px;
+}
+
+.ng-select.ng-select-single .ng-select-container .ng-arrow-wrapper {
+  bottom: 5px;
 }
 .mat-expansion-panel-body {
   padding: 0px!important ; 

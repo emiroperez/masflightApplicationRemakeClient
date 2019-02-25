@@ -1,4 +1,4 @@
-<div class="msf-dashboard-chartmenu-container" *ngIf="!values.displayChart">
+<div class="msf-dashboard-chartmenu-container" [style.height.px]="height" *ngIf="!values.displayChart">
   <div class="msf-dashboard-chartmenu-sub-container-column">
     <div class="msf-dashboard-chartmenu-sub-container-row">
       <mat-form-field class="msf-width-90">
@@ -99,12 +99,17 @@
             <mat-icon aria-label="Go To Chart">bar_chart</mat-icon>
           </button>
         </div>
+        <div class="msf-dashboard-chartmenu-control-variable-button">
+          <button mat-mini-fab (click)="savePanel()" color="primary">
+            <mat-icon aria-label="Save Changes">save</mat-icon>
+          </button>
+        </div>
       </div>
     </div>
   </div>
 </div>
 <!-- ngIf doesn't work with AmCharts -->
-<div class="{{values.displayChart ? 'msf-dashboard-chartmenu-container-chart' : 'msf-dashboard-chartmenu-container-invisible'}}">
+<div class="{{values.displayChart ? 'msf-dashboard-chartmenu-container-chart' : 'msf-dashboard-chartmenu-container-invisible'}}" [style.height.px]="height">
   <div class="msf-dashboard-chartmenu-title" *ngIf="values.displayChart">{{values.chartName}}</div>
   <div class="msf-dashboard-chartmenu-sub-container-column">
     <div class="msf-dashboard-chartmenu-config-button">
@@ -112,6 +117,6 @@
         <mat-icon aria-label="Edit Configuration">menu</mat-icon>
       </button>
     </div>
-    <div id="msf-dashboard-chart-display-{{columnPos}}-{{rowPos}}" style="width: calc(100% - 35px); height: 289px"></div>
+    <div id="msf-dashboard-chart-display-{{columnPos}}-{{rowPos}}" style="width: calc(100% - 35px)" [style.height.px]="calcChartHeight()"></div>
   </div>
 </div>

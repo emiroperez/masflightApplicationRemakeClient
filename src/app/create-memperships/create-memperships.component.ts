@@ -110,6 +110,10 @@ export class EditOptionsDialog {
           optionAdd.delete = false;
           this.data.auxOptions.push(optionAdd);
         }
+        if (element.children.length>0){
+          this.recursiveOption(element);
+
+        }
       }
     }
   }
@@ -213,8 +217,7 @@ export class CreateMempershipsComponent implements OnInit {
 
   getPlansService() {
     this.globals.isLoading = true;
-    let url = "http://localhost:8887/getPlans";
-    //let url= this.globals.baseUrl+'/getPlans';
+    let url= this.globals.baseUrl+'/getPlans';
     this.http.get(this, url, this.handlerSuccessInit, this.handlerError, null);
   }
 
@@ -768,12 +771,16 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
       menu[i].selected = false;
       this.clearOptionDataRecursive(menu[i]);
     }
+    return menu;
   }
   clearOptionDataRecursive(option) {
     if (option.children.length !== 0) {
       for (let i = 0; i < option.children.length; i++) {
         const element = option.children[i];
         element.selected = false;
+        if(element.children.length > 0){
+            this.clearOptionDataRecursive(element);
+        }
       }
     }
   }
@@ -784,12 +791,12 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
     let menuSelected;
     planId = this.planJson[index]['id'];
     let auxOptions: Array<PlanOption> = new Array();
-    this.clearOptionData(this.menu);
+    let menuClear = this.clearOptionData(this.menu);
     if (planId){
       auxOptions = this.getOptionsPlanJson(index);
-      menuSelected = this.getSelectedOptionsByPlan(this.menu, auxOptions, index);
+      menuSelected = this.getSelectedOptionsByPlan(menuClear, auxOptions, index);
     }else {
-      menuSelected = this.menu;
+      menuSelected = menuClear;
     }
     const dialogRef = this.dialog.open(EditOptionsDialog, {
       width: '80%',

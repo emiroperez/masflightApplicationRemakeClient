@@ -37,18 +37,36 @@ export class MsfSortingCheckboxesComponent implements OnInit {
 
   constructor(public globals: Globals, private http: ApiClient) { }
 
-  ngOnInit() { 
+  ngOnInit()
+  { 
     this.globals.isLoading = true;
-    this.getRecords(null, this.handlerSuccess);
+    this.getRecords (null, this.handlerSuccess);
+
+    if(this.argument.value1 != null)
+      this.selected = this.argument.value1;      
+  }
+
+  refreshData()
+  {
+    for (let i = 0; i < this.selected.length; i++)
+    {
+      const element = this.selected[i];
+      var index = this.data.findIndex (aux => aux.id == element.id);
+
+      if (index != -1)
+        this.data[index] = element;
+    }
   }
   
-  getRecords(search, handlerSuccess){
-      let url = this.argument.url + "?optionId="+ this.currentOptionId;
-      this.http.get(this,url,handlerSuccess,this.handlerError, null);  
+  getRecords(search, handlerSuccess)
+  {
+    let url = this.argument.url + "?optionId="+ this.currentOptionId;
+    this.http.get(this,url,handlerSuccess,this.handlerError, null);  
   }
   
   handlerSuccess(_this,data, tab){   
-    _this.data = data;    
+    _this.data = data;
+    _this.refreshData();
     _this.globals.isLoading = false; 
     // _this.formatData();    
   }
@@ -104,11 +122,11 @@ export class MsfSortingCheckboxesComponent implements OnInit {
         element.checked = value;
     }
     if(value){
-      this.selected = this.data;
-      this.argument.value1 = this.selected;
+      this.selected = this.data.slice();
     }else{
       this.selected = [];
     }
+    this.argument.value1 = this.selected;
   }
 
   checkBoxAllChange(){

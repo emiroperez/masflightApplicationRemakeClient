@@ -915,7 +915,7 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button
     display: inline-block
     margin-left: 90px
 
-.msf-menu-opcion
+.msf-menu-option
     height: 100%
     min-height: 60px
     font-size: 90%
@@ -935,20 +935,20 @@ button[aria-expanded="true"]
     background-color: $msf-primary-dark-color
 
 .msf-menu-op-1
-    @extend .msf-menu-opcion
+    @extend .msf-menu-option
     background-color: $msf-primary-light-color
     margin-right: 1px
     margin-left: 1px!important
 
 .msf-menu-op-2
-    @extend .msf-menu-opcion
+    @extend .msf-menu-option
     border-top-left-radius: 60px!important
     background-color: $msf-primary-light-color
     span
         margin-left: 15px
 
 .msf-menu-op-3
-    @extend .msf-menu-opcion
+    @extend .msf-menu-option
     border-top-right-radius: 60px!important
     background-color: $msf-primary-light-color
     margin-left: 1px!important
@@ -1626,11 +1626,63 @@ mat-tab-group
     .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus+.mat-form-field-label-wrapper .mat-form-field-label, .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label
         margin-left: 0px
 
+@mixin msf-dashboard-chartbox-item($width)
+    padding: 2px 2px
+    width: $width
+    position: relative
+
+@mixin msf-dashboard-addmenu-item-text($color)
+    border: 1px solid #888888
+    color: $color
+    display: table-cell
+    align-items: center
+    padding: 10px 40px
+
+@mixin msf-dashboard-addmenu-item($bgcolor, $fgcolor, $cursor: default)
+    background-color: $bgcolor
+    color: $fgcolor
+    display: table-row
+    vertical-align: middle
+    cursor: $cursor
+
+.msf-dashboard-icon
+    vertical-align: middle
+    margin-top: -5%
+    margin-bottom: -5%
+
+.msf-dashboard-addmenu-item-addtext
+    vertical-align: middle
+
+.msf-dashboard-chartbox-column
+    display: flex
+    flex-direction: row
+
+@mixin msf-dashboard-column-properties ($height: 20px)
+    position: relative
+    justify-content: center
+    display: flex
+    flex-direction: row
+    margin-left: 2px
+    margin-right: 2px
+    height: $height
+    transition: 0.5s
+    .msf-dashboard-column-properties-align
+        display: flex
+        flex-direction: row
+        align-items: center
+        width: 20%
+        .msf-dashboard-column-properties-height-label
+            width: 60%
+        .msf-dashboard-column-properties-width-label
+            width: 90%
+        .msf-dashboard-column-properties-form-field
+            @extend .msf-dashboard-form-field
+
 .msf-dashboard-container
     font-size: 14px
     text-align: center
-    color: #555555
-    background-color: #ffffff
+    color: #fff
+    background-color: #333333
     display: flex
     flex-direction: column
     width: 100%
@@ -1647,133 +1699,100 @@ mat-tab-group
         margin-right: 40%
         margin-bottom: 2%
         .msf-dashboard-addmenu-item:hover
-            background-color: #01abec
-            color: #fff
-            display: table-row
-            vertical-align: middle
-            cursor: pointer
+            @include msf-dashboard-addmenu-item(#01abec, #fff, pointer)
         .msf-dashboard-addmenu-item
-            background-color: #ffffff
-            display: table-row
-            vertical-align: middle
+            @include msf-dashboard-addmenu-item(#333333, #fff)
         .msf-dashboard-addmenu-item-text:hover
-            border: 1px solid #888888
-            color: #fff
-            display: table-cell
-            align-items: center
-            padding: 10px 40px
-            .msf-dashboard-icon
-                vertical-align: middle
-                margin-top: -5%
-                margin-bottom: -5%
-            .msf-dashboard-addmenu-item-addtext
-                vertical-align: middle
+            @include msf-dashboard-addmenu-item-text(#fff)
         .msf-dashboard-addmenu-item-text
-            border: 1px solid #888888
-            display: table-cell
-            align-items: center
-            padding: 10px 40px
-            .msf-dashboard-icon
-                vertical-align: middle
-                margin-top: -5%
-                margin-bottom: -5%
-            .msf-dashboard-addmenu-item-addtext
-                vertical-align: middle
+            @include msf-dashboard-addmenu-item-text(#fff)
     .msf-dashboard-chartbox
         padding: 10px
         flex-direction: column
         .msf-dashboard-chartbox-column
             width: 100%
-            display: flex
-            flex-direction: row
             overflow-y: visible
-            .msf-dashboard-chartbox-item-1
-                padding: 2px 2px
+            .msf-dashboard-chartbox-items
                 width: 100%
-                position: relative
-            .msf-dashboard-chartbox-item-2
-                padding: 2px 2px
-                width: 50%
-                position: relative
-            .msf-dashboard-chartbox-item-3
-                padding: 2px 2px
-                width: 33.333333333333333333333333333333%
-                position: relative
+                .msf-dashboard-chartbox-column
+                    .msf-dashboard-chartbox-item-1
+                        @include msf-dashboard-chartbox-item(100%)
+                    .msf-dashboard-chartbox-item-2
+                        @include msf-dashboard-chartbox-item(50%)
+                    .msf-dashboard-chartbox-item-3
+                        @include msf-dashboard-chartbox-item(33.333333333333333333333333333333%)
+                .msf-dashboard-panel-size-properties-closed
+                    @include msf-dashboard-column-properties
+                .msf-dashboard-panel-size-properties-open
+                    @include msf-dashboard-column-properties(60px)
 
-.msf-dashboard-chartbox-close-button
+@mixin msf-dashboard-icon ($color: inherit, $cursor: default)
+    color: $color
+    cursor: $cursor
+    font-size: 16px
+    padding-right: 5px
+    padding-top: 5px
+
+.msf-dashboard-button
     display: flex
     flex-direction: column
     align-items: flex-end
     position: absolute
     width: 100%
-    .msf-dashboard-close-icon
-        font-size: 16px
-        padding-right: 5px
-        padding-top: 5px
-    .msf-dashboard-close-icon:hover
-        color: #01abec
-        cursor: pointer
-        font-size: 16px
-        padding-right: 5px
-        padding-top: 5px
+    .msf-dashboard-button-icon
+        @include msf-dashboard-icon
+    .msf-dashboard-button-icon:hover
+        @include msf-dashboard-icon(#01abec, pointer)
 
 .msf-dashboard-form-field
-    .mat-select-value
-        color: #555555
-    .mat-select-arrow
-        color: #555555
     .mat-form-field-underline
-        background-alpha: 0
-    .mat-form-field-label-wrapper
-        .mat-form-field-label
-            color: #555555 !important
+        background-color: #595959
+
+@mixin msf-dashboard-form-field-size
+    width: 49.5%
+    padding-right: 0.5%
+
+.msf-dashboard-chart-icon
+    vertical-align: middle
+    margin-top: -5%
+    margin-bottom: -5%
+    padding-right: 5px
+    font-size: 22px
+
+@mixin msf-dashboard-chartmenu-sub-container ($flex-direction: row, $padding-right: initial, $padding-top: initial, $padding-left: initial)
+    display: flex
+    flex-direction: $flex-direction
+    width: 100%
+    padding-left: $padding-left
+    padding-right: $padding-right
+    padding-top: $padding-top
+    font-size: 12px
 
 .msf-dashboard-chartmenu-container
     padding: 10px
-    background-color: #e6e6e6
+    background-color: #3b3b3b
     overflow-y: visible
-    min-height: 303px
+    display: flex
+    justify-content: space-around
+    flex-direction: column
     .msf-dashboard-chartmenu-sub-container-row
-        display: flex
-        flex-direction: column
-        width: 100%
-        padding-left: 4px
-        font-size: 12px
+        @include msf-dashboard-chartmenu-sub-container(column)
         align-items: center
         .msf-width-90
             @extend .msf-dashboard-form-field
         .msf-full-width
             @extend .msf-dashboard-form-field
     .msf-dashboard-chartmenu-variable-buttons
-        display: flex
-        flex-direction: row
-        width: 100%
-        padding-right: 5px
-        padding-top: 10px
-        font-size: 12px
+        @include msf-dashboard-chartmenu-sub-container(row, 5px, 10px)
     .msf-dashboard-chartmenu-sub-container-column
-        display: flex
-        flex-direction: row
-        width: 100%
-        padding-right: 5px
-        font-size: 12px
+        @include msf-dashboard-chartmenu-sub-container(row, 5px)
         .msf-dashboard-addmenu-icon-item
             align-items: center
             padding-bottom: 5px
-            .msf-dashboard-chart-icon
-                vertical-align: middle
-                margin-top: -5%
-                margin-bottom: -5%
-                padding-right: 5px
-                font-size: 22px
             .msf-dashboard-chartmenu-item-text
                 vertical-align: middle
     .msf-dashboard-chartmenu-sub-container-column-reverse
-        display: flex
-        flex-direction: row-reverse
-        width: 100%
-        padding-right: 5px
-        font-size: 12px
+        @include msf-dashboard-chartmenu-sub-container(row-reverse, 5px)
         .msf-dashboard-chartmenu-control-variable-button
             display: flex
             width: 50px
@@ -1784,19 +1803,14 @@ mat-tab-group
 
 .msf-dashboard-chartmenu-container-chart
     padding: 10px
-    background-color: #e6e6e6
-    color: #555555
+    background-color: #222222
+    color: #ffffff
     overflow-y: visible
-    min-height: 303px
     .msf-dashboard-chartmenu-title
         font-size: 12px
     .msf-dashboard-chartmenu-sub-container-column
+        @include msf-dashboard-chartmenu-sub-container(row, 5px)
         position: relative
-        display: flex
-        flex-direction: row
-        width: 100%
-        padding-right: 5px
-        font-size: 14px
         .msf-dashboard-chartmenu-config-button
             position: absolute
             display: flex
@@ -1851,24 +1865,16 @@ mat-tab-group
     .msf-dashboard-chart-analysis-title
         display: flex
         align-items: center
-        .msf-dashboard-chart-icon
-            vertical-align: middle
-            margin-top: -5%
-            margin-bottom: -5%
-            padding-right: 5px
-            font-size: 22px
     .msf-dashboard-chart-op-container
         padding-left: 10px
         width: 100%
         .msf-full-width
             @extend .msf-dashboard-form-field
         .msf-dashboard-field-valuectrl
-            width: 49.5%
-            padding-right: 0.5%
+            @include msf-dashboard-form-field-size
             @extend .msf-dashboard-form-field
         .msf-dashboard-field-function
-            width: 49.5%
-            padding-left: 0.5%
+            @include msf-dashboard-form-field-size
             @extend .msf-dashboard-form-field
 
 .msf-dashboard-menu-component
@@ -2692,7 +2698,7 @@ table.datasource
 
 .msf-periodicity-select
     color: black !important
-    width: 55% !important
+    // width: 55% !important
     display: inline-flex !important
     position: absolute !important
     margin-left:2%
@@ -2821,9 +2827,10 @@ table.datasource
     transform: translateY(-1.79125em) scale(.75) perspective(100px) translateZ(.001px)!important
 
 .financial-container 
-    margin-top: -57px
     display: table
     width: auto
+    margin: 0 auto
+    margin-top: -57px
 
 .financial-table-container 
     background: white
@@ -2852,22 +2859,22 @@ table.datasource
 .financial-item-cell 
     display: inline-block
     display: table-cell
-    padding: 10px
+    padding: 5px
     border: 1px solid rgba(0,0,0,.12)
     border-right: 0
     border-top: 0
-    min-width: 120px
-    max-width: 120px
+    min-width: 260px
+    max-width: 260px
     vertical-align: middle
 
 .financial-result-cell 
     display: table-cell
-    padding: 10px
+    padding: 5px
     border: 1px solid rgba(0,0,0,.12)
     border-right: 0
     border-top: 0
-    min-width: 80px
-    max-width: 80px
+    min-width: 150px
+    max-width: 150px
     vertical-align: middle
 
 .children-cell
@@ -2919,12 +2926,11 @@ table.datasource
     width: 100%
     display: flex
     margin: 20px 0
-    border-right: 1px solid #333
     transition: background-image 0.5s ease-in-out
 
 /* kp */
 .icon-container
-    width: 100% !important
+    width: 100.3% !important
     height: calc(100% - 90px) !important    
     position: relative    
     background-size: cover
@@ -2956,9 +2962,9 @@ table.datasource
 .landing-icon-content-child 
 
 .landing-icon-content-child:hover, .icon-container:hover
-    background-color: black
+    // background-color: black
 .footer-container:hover, .icon-container
-    background-color: black
+    // background-color: black
 .landing-icon-content-child:hover, .footer-container:hover
     background-color: #15ACEC
 .landing-icon-content-child:focus
@@ -2971,6 +2977,9 @@ img.msf-calendar-image
 .financial-content 
     width: auto
     display: table-caption
+.ng-select.ng-select-single .ng-select-container .ng-clear-wrapper 
+    bottom: 1px
+.ng-select.ng-select-single .ng-select-container .ng-arrow-wrapper 
+    bottom: 5px
 mat-expansion-panel-body
     padding: 0px!important
-    
