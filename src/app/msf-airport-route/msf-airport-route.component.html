@@ -12,7 +12,8 @@
         [hideSelected]="false"
         bindLabel="name"
         (search)="onSearch($event)" 
-        [(ngModel)]="argument.value1">
+        [(ngModel)]="argument.value1"
+        (change) ="onAirportSelect(1)" >
     </ng-select>
     <div class="center">
         <div class="msf-menu-arg-airport-image"></div>
@@ -27,6 +28,7 @@
         [hideSelected]="false"
         bindLabel="name"
         (search)="onSearch($event)" 
-        [(ngModel)]="argument.value2">
+        [(ngModel)]="argument.value2"
+        (change) ="onAirportSelect(2)">
     </ng-select> 
 </div>  

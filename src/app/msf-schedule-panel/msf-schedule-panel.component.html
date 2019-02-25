@@ -1,0 +1,36 @@
+<mat-accordion>
+  <mat-expansion-panel  class="msf-schedule-panel" *ngFor="let item of aux; let indexopen = index" (opened)="expandFligth(indexopen)">
+    <mat-expansion-panel-header class="msf-schedule-mat-expansion-panel-header" > 
+      <mat-panel-title class="msf-schedule-panel-header">
+       Option {{indexopen+1}} - Flight N° {{item.Flight.FlightNo}}
+      </mat-panel-title>
+       
+    </mat-expansion-panel-header>
+    <table class="msf-schedule-panel-table">
+      <tr><td>TouchedAirports</td><td>{{item.TouchedAirports}}</td></tr>
+      <tr><td>TotalDistance</td><td>{{item.TotalDistance}}</td></tr>
+      <tr><td>TotalTime</td><td>{{item.TotalTime}}</td></tr>
+    </table>
+      <!-- <table *ngFor="let item2 of item.Flight"> -->
+      <h3 class="msf-schedule-panel-subs">{{item.Flight.content}}</h3>  
+    <table class="msf-schedule-panel-table" >
+        <tr><td>DepartureDate</td><td>{{item.Flight.DepartureDate}}</td></tr>
+        <tr><td>Airline</td><td>{{item.Flight.Marketing_Airline}}</td></tr>
+        <tr><td>FlightNo</td><td>{{item.Flight.FlightNo}}</td></tr>
+        <tr><td>Departure</td><td>{{item.Flight.Departure}}</td></tr>
+        <tr><td>Arrival</td><td>{{item.Flight.Arrival}}</td></tr>
+        <tr><td>Stops</td><td>{{item.Flight.Stops}}</td></tr>
+        <tr><td>DepartureTime</td><td>{{item.Flight.DepartureTime}}</td></tr>
+        <tr><td>ArrivalTime</td><td>{{item.Flight.ArrivalTime}}</td></tr>
+        <tr><td>Seats</td><td>{{item.Flight.Seats}}</td></tr>
+        <tr><td>Configuration</td><td>{{item.Flight.Configuration}}</td></tr>
+        <tr><td>AircraftType</td><td>{{item.Flight.AircraftType}}</td></tr>
+        <tr><td>Distance</td><td>{{item.TotalDistance}}</td></tr>
+      <!-- </table> -->
+    </table>
+    
+    
+  </mat-expansion-panel>
+
+</mat-accordion>
+

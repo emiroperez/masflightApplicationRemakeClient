@@ -53,5 +53,8 @@ export class MsfContainerComponent implements OnInit {
     }else if(tab==5){
       this.globals.map = false;
     }
+    else if(tab==6){
+      this.globals.mapsc = false;
+    }
   }
 }

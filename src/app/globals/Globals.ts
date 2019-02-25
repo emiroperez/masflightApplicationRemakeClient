@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {Option} from '../model/Option';
 import { MatSort } from '@angular/material';
 import { Observable } from 'rxjs';
-
+import { AmChart, AmChartsService } from '@amcharts/amcharts3-angular';
 @Injectable()
 export class Globals {
   currentOption: any;
@@ -12,6 +12,7 @@ export class Globals {
   sort: MatSort;
   chart: boolean = false;
   map: boolean = false;
+  mapsc: boolean = false;
   usageStatistics: boolean = false;
   variables;
   values;
@@ -43,8 +44,12 @@ export class Globals {
   // baseUrl = "";
   // baseUrl2 = "http://localhost:8886";
   baseUrl2 = "http://69.64.45.220:8886";
-
-  initDataSource(){
+  scheduledata:any;
+  hideParametersPanels : boolean =false;
+  Airportdataorigin:any;
+  Airportdatadest:any;
+  scheduleChart :AmChart;
+   initDataSource(){
     if(this.currentMenuCategory!= null){
     if(this.currentMenuCategory.welcome!= null){
       this.welcome = this.currentMenuCategory.welcome;
@@ -136,6 +141,7 @@ export class Globals {
     this.isLoading = false;
     this.chart = false;
     this.map = false;
+    this.mapsc = false;
     this.variables = null;
     this.values = null;
     this.generateDynamicTable = false;

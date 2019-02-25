@@ -147,7 +147,8 @@ import { MsfFareIncrementsMarketHistogramsComponent } from './msf-fare-increment
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { MsfConfirmationDialogComponent } from './msf-confirmation-dialog/msf-confirmation-dialog.component';
-
+import { MsfSchedulePanelComponent } from './msf-schedule-panel/msf-schedule-panel.component';
+import { MsfScheduleMapsComponent } from './msf-schedule-maps/msf-schedule-maps.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -275,7 +276,9 @@ import { MsfConfirmationDialogComponent } from './msf-confirmation-dialog/msf-co
     MsfFareIncrementsMarketHistogramsComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
-    MsfConfirmationDialogComponent
+    MsfConfirmationDialogComponent,
+    MsfSchedulePanelComponent,
+    MsfScheduleMapsComponent,
   ],
   imports: [
     BrowserModule,
