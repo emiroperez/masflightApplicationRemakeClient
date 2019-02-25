@@ -3,9 +3,9 @@ export class MsfDashboardColumnValues {
     displayProperties: boolean;
 
     height: any;
-    width: number[] = [0, 0, 0];
+    width: any[] = [{ value: 0 }, { value: 0 }, { value: 0 }];
 
-    constructor(height: any, width1: number, width2: number, width3: number)
+    constructor(height: any, width1: any, width2: any, width3: any)
     {
         this.displayProperties = false;
 

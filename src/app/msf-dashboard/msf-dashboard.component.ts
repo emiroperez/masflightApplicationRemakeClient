@@ -21,11 +21,19 @@ export class MsfDashboardComponent implements OnInit {
   displayAddChartMenu: boolean = false;
 
   heightValues:any[] = [
-    { id: 1, name: 'Small', value: 1 },
-    { id: 2, name: 'Medium', value: 3 },
-    { id: 3, name: 'Large', value: 6 },
-    { id: 4, name: 'Very Large', value: 12 }
-  ]; 
+    { value: 1, name: 'Small' },
+    { value: 3, name: 'Medium' },
+    { value: 6, name: 'Large' },
+    { value: 12, name: 'Very Large' }
+  ];
+
+  widthValues:any[] = [
+    { value: 3, name: 'Small' },
+    { value: 4, name: 'Medium' },
+    { value: 6, name: 'Large' },
+    { value: 8, name: 'Very Large' },
+    { value: 12, name: 'Full Width' }
+  ];
 
   constructor(public globals: Globals, private service: ApplicationService,
     private http: ApiClient, private cdref: ChangeDetectorRef) { }
@@ -61,7 +69,27 @@ export class MsfDashboardComponent implements OnInit {
       _this.loadDashboardPanels, _this.handlerError);
   }
 
-  loadDashboardPanels (_this, data)
+  getDefaultPanelWidth(length): any
+  {
+    let result = this.widthValues[0]; // default result if no equivalent found
+    let i = this.widthValues.length - 1;
+    let width = 12 / length;
+
+    do
+    {
+      let widthValue = this.widthValues[i];
+
+      if (widthValue.value == width)
+      {
+        result = widthValue;
+        break;
+      }
+    } while (--i);
+
+    return result;
+  }
+
+  loadDashboardPanels (_this, data): void
   {
     let dashboardPanels: any[] = [];
     let dashboardRows = [];
@@ -82,7 +110,7 @@ export class MsfDashboardComponent implements OnInit {
 
       if (dashboardPanel.column != curColumn)
       {
-        defaultWidth = 12 / dashboardRows.length;
+        defaultWidth = _this.getDefaultPanelWidth (dashboardRows.length);
 
         curColumn = dashboardPanel.column;
         _this.dashboardColumns.push (dashboardRows);
@@ -97,7 +125,7 @@ export class MsfDashboardComponent implements OnInit {
     }
 
     // add the last dashboard column
-    defaultWidth = 12 / dashboardRows.length;
+    defaultWidth = _this.getDefaultPanelWidth (dashboardRows.length);
     _this.dashboardColumns.push (dashboardRows);
     _this.dashboardColumnsSize.push (new MsfDashboardColumnValues (_this.heightValues[0], defaultWidth, defaultWidth, defaultWidth));
     _this.globals.isLoading = false;
@@ -149,7 +177,7 @@ export class MsfDashboardComponent implements OnInit {
       dashboardRows.push (new MsfDashboardChartValues (_this.options, dashboardPanel.title, dashboardPanel.id));
     }
 
-    defaultWidth = 12 / dashboardRows.length;
+    defaultWidth = _this.getDefaultPanelWidth (dashboardRows.length);
     _this.dashboardColumns.push (dashboardRows);
     _this.dashboardColumnsSize.push (new MsfDashboardColumnValues (_this.heightValues[0], defaultWidth, defaultWidth, defaultWidth));
     _this.displayAddChartMenu = false;
@@ -216,7 +244,7 @@ export class MsfDashboardComponent implements OnInit {
 
   getPanelWidth(column, row): number
   {
-    return (this.dashboardColumnsSize[column].width[row] * 100) / 12;
+    return (this.dashboardColumnsSize[column].width[row].value * 100) / 12;
   }
 
   getColumnHeight(column): number
@@ -225,9 +253,5 @@ export class MsfDashboardComponent implements OnInit {
       return 303;
 
     return 303 + (this.dashboardColumnsSize[column].height.value * 15);
-  }
-
-  changeColumnHeight(): void
-  {
   }
 }
