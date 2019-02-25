@@ -24,7 +24,7 @@ export const routes: Routes = [
   { path: 'app-msf-test', component: MsfTestComponent},
   { path: 'user-activation', component: UserActivationComponent},
   { path: 'forgot-password', component: ForgotPasswordComponent},
-  { path: 'reset-password/:token', component: ResetPasswordComponent}
+  { path: 'reset-password', component: ResetPasswordComponent}
 
 ];
 
