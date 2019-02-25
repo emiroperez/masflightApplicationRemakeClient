@@ -149,6 +149,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 import { MsfConfirmationDialogComponent } from './msf-confirmation-dialog/msf-confirmation-dialog.component';
 import { MsfSchedulePanelComponent } from './msf-schedule-panel/msf-schedule-panel.component';
 import { MsfScheduleMapsComponent } from './msf-schedule-maps/msf-schedule-maps.component';
+import { MsfSchedulePanelInfoComponent } from './msf-schedule-panel-info/msf-schedule-panel-info.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -279,6 +280,7 @@ import { MsfScheduleMapsComponent } from './msf-schedule-maps/msf-schedule-maps.
     MsfConfirmationDialogComponent,
     MsfSchedulePanelComponent,
     MsfScheduleMapsComponent,
+    MsfSchedulePanelInfoComponent,
   ],
   imports: [
     BrowserModule,
