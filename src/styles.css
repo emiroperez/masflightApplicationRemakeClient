@@ -3404,4 +3404,12 @@ img.msf-calendar-image {
   display: table-caption;
 }
 
+.ng-select.ng-select-single .ng-select-container .ng-clear-wrapper {
+  bottom: 1px;
+}
+
+.ng-select.ng-select-single .ng-select-container .ng-arrow-wrapper {
+  bottom: 5px;
+}
+
 /*# sourceMappingURL=styles.css.map */
