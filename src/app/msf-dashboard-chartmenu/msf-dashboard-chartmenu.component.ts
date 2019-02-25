@@ -59,6 +59,9 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   @Input()
   rowPos: number;
 
+  @Input()
+  height: number;
+
   public dataFormFilterCtrl: FormControl = new FormControl ();
   public variableFilterCtrl: FormControl = new FormControl ();
   public xaxisFilterCtrl: FormControl = new FormControl ();
@@ -132,7 +135,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     {
       graphs.push
       ({
-        balloonText: "[[category]] (" + object.valueField + "): <b>[[value]]</b>",
+        //balloonText: "[[category]] (" + object.valueField + "): <b>[[value]]</b>",
+        showBalloon : false,
         fillAlphas: 0.9,
         lineAlpha: 0.2,
         valueAxis: object.valueAxis,
@@ -153,7 +157,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     {
       return {
         "type" : "pie",
-        "theme" : "light",
+        "theme" : "dark",
         "dataProvider" : dataProvider.dataProvider,
         "valueField" : dataProvider.valueField,
         "titleField" : dataProvider.titleField,
@@ -162,7 +166,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         "color" : "#ffffff",
         "balloon" :
         {
-          "fixedPosition" : true
+          "enabled" : false
         },
         "export" :
         {
@@ -180,7 +184,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
     return {
       "type" : "serial",
-      "theme" : "light",
+      "theme" : "dark",
       "legend" :
       {
         "useGraphSettings" : true,
@@ -829,5 +833,10 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         _this.globals.isLoading = true;
         _this.service.updateDashboardPanel (_this, panel, _this.handlerUpdateSucess, _this.handlerError);
       });
+  }
+
+  calcChartHeight(): number
+  {
+    return this.height - 14;
   }
 }
