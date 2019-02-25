@@ -162,7 +162,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         "valueField" : dataProvider.valueField,
         "titleField" : dataProvider.titleField,
         "colors" : dataProvider.colors,
-        "labelTickAlpha" : 0.25,
+        "labelTickAlpha" : 0.45,
+        "labelTickColor" : "#ffffff",
         "color" : "#ffffff",
         "balloon" :
         {
