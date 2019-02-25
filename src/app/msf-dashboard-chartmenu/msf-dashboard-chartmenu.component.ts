@@ -198,6 +198,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         "lineAlpha": 1
       }],
       "valueAxes" : [{
+        "axisColor" : "#30303d",
         "gridColor" : "#30303d",
         "gridAlpha" : 1,
         "dashLength" : 0
@@ -215,6 +216,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       "rotate" : (this.values.currentChartType.id == 'hbars' ? true : false),
       "categoryAxis" :
       {
+        "axisColor" : "#30303d",
         "gridColor" : "#30303d",
         "gridAlpha" : 1,
         "gridPosition" : "start",
