@@ -20,7 +20,7 @@ export class MsfGroupingComponent implements OnInit {
   groupingList: any[] = [
                 {id: 'YEAR', columnLabel: 'Year', columnNamecolumnLabel:'Year'},
                 {id: 'MONTH', columnLabel: 'Month', columnName:'Month'},
-                {id: 'DAY', columnLabel: 'Day' ,columnName:'Day'},
+                {id: 'DAY', columnLabel: 'Date' ,columnName:'Date'},
                 {id: 'HOUR', columnLabel: 'Hour', columnName: 'Hour'},
                 {id: 'EQUIPMENTTYPESPECIFIC', columnLabel: 'Specific Equipment Type',columnName:'EspecificEquipmentType'},
                 {id: 'EQUIPMENTTYPEGENERAL', columnLabel: 'General Equipment Type',columnName:'GeneralEquipmentType'},
@@ -38,7 +38,7 @@ export class MsfGroupingComponent implements OnInit {
     if(this.argument.required){
       this.argument.value1 = [  {id: 'YEAR', columnLabel: 'Year', columnName:'Year'},
                                   {id: 'MONTH', columnLabel: 'Month', columnName:'Month'},
-                                    {id: 'DAY', columnLabel: 'Day' ,columnName:'Day'}];
+                                    {id: 'DAY', columnLabel: 'Date' ,columnName:'Date'}];
     }
   }
 

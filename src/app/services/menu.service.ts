@@ -41,7 +41,7 @@ export class MenuService {
   }
 
   getUserLoggedin(_this,successHandler, errorHandler){
-    let url = "/secure/getUserloggedin";
+    let url = _this.globals.baseUrl+ "/secure/getUserloggedin";
     //let url = "http://localhost:8887/secure/getUserloggedin"
     this.get(_this, url, successHandler, errorHandler);
   }

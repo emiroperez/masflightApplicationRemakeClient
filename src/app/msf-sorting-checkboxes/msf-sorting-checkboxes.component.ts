@@ -122,11 +122,11 @@ export class MsfSortingCheckboxesComponent implements OnInit {
         element.checked = value;
     }
     if(value){
-      this.selected = this.data;
-      this.argument.value1 = this.selected;
+      this.selected = this.data.slice();
     }else{
       this.selected = [];
     }
+    this.argument.value1 = this.selected;
   }
 
   checkBoxAllChange(){

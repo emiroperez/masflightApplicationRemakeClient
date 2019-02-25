@@ -2698,7 +2698,7 @@ table.datasource
 
 .msf-periodicity-select
     color: black !important
-    width: 55% !important
+    // width: 55% !important
     display: inline-flex !important
     position: absolute !important
     margin-left:2%
@@ -2827,9 +2827,10 @@ table.datasource
     transform: translateY(-1.79125em) scale(.75) perspective(100px) translateZ(.001px)!important
 
 .financial-container 
-    margin-top: -57px
     display: table
     width: auto
+    margin: 0 auto
+    margin-top: -57px
 
 .financial-table-container 
     background: white
@@ -2858,22 +2859,22 @@ table.datasource
 .financial-item-cell 
     display: inline-block
     display: table-cell
-    padding: 10px
+    padding: 5px
     border: 1px solid rgba(0,0,0,.12)
     border-right: 0
     border-top: 0
-    min-width: 120px
-    max-width: 120px
+    min-width: 260px
+    max-width: 260px
     vertical-align: middle
 
 .financial-result-cell 
     display: table-cell
-    padding: 10px
+    padding: 5px
     border: 1px solid rgba(0,0,0,.12)
     border-right: 0
     border-top: 0
-    min-width: 80px
-    max-width: 80px
+    min-width: 150px
+    max-width: 150px
     vertical-align: middle
 
 .children-cell
@@ -2925,12 +2926,11 @@ table.datasource
     width: 100%
     display: flex
     margin: 20px 0
-    border-right: 1px solid #333
     transition: background-image 0.5s ease-in-out
 
 /* kp */
 .icon-container
-    width: 100% !important
+    width: 100.3% !important
     height: calc(100% - 90px) !important    
     position: relative    
     background-size: cover
@@ -2962,9 +2962,9 @@ table.datasource
 .landing-icon-content-child 
 
 .landing-icon-content-child:hover, .icon-container:hover
-    background-color: black
+    // background-color: black
 .footer-container:hover, .icon-container
-    background-color: black
+    // background-color: black
 .landing-icon-content-child:hover, .footer-container:hover
     background-color: #15ACEC
 .landing-icon-content-child:focus
@@ -2977,4 +2977,7 @@ img.msf-calendar-image
 .financial-content 
     width: auto
     display: table-caption
-    
+.ng-select.ng-select-single .ng-select-container .ng-clear-wrapper 
+    bottom: 1px
+.ng-select.ng-select-single .ng-select-container .ng-arrow-wrapper 
+    bottom: 5px
