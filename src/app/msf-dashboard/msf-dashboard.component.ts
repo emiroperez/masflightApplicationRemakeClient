@@ -20,6 +20,13 @@ export class MsfDashboardComponent implements OnInit {
 
   displayAddChartMenu: boolean = false;
 
+  heightValues:any[] = [
+    { id: 1, name: 'Small', value: 1 },
+    { id: 2, name: 'Medium', value: 3 },
+    { id: 3, name: 'Large', value: 6 },
+    { id: 4, name: 'Very Large', value: 12 }
+  ]; 
+
   constructor(public globals: Globals, private service: ApplicationService,
     private http: ApiClient, private cdref: ChangeDetectorRef) { }
 
@@ -79,7 +86,7 @@ export class MsfDashboardComponent implements OnInit {
 
         curColumn = dashboardPanel.column;
         _this.dashboardColumns.push (dashboardRows);
-        _this.dashboardColumnsSize.push (new MsfDashboardColumnValues (1, defaultWidth, defaultWidth, defaultWidth));
+        _this.dashboardColumnsSize.push (new MsfDashboardColumnValues (_this.heightValues[0], defaultWidth, defaultWidth, defaultWidth));
         dashboardRows = [];
       }
 
@@ -92,7 +99,7 @@ export class MsfDashboardComponent implements OnInit {
     // add the last dashboard column
     defaultWidth = 12 / dashboardRows.length;
     _this.dashboardColumns.push (dashboardRows);
-    _this.dashboardColumnsSize.push (new MsfDashboardColumnValues (1, defaultWidth, defaultWidth, defaultWidth));
+    _this.dashboardColumnsSize.push (new MsfDashboardColumnValues (_this.heightValues[0], defaultWidth, defaultWidth, defaultWidth));
     _this.globals.isLoading = false;
   }
 
@@ -144,7 +151,7 @@ export class MsfDashboardComponent implements OnInit {
 
     defaultWidth = 12 / dashboardRows.length;
     _this.dashboardColumns.push (dashboardRows);
-    _this.dashboardColumnsSize.push (new MsfDashboardColumnValues (1, defaultWidth, defaultWidth, defaultWidth));
+    _this.dashboardColumnsSize.push (new MsfDashboardColumnValues (_this.heightValues[0], defaultWidth, defaultWidth, defaultWidth));
     _this.displayAddChartMenu = false;
     _this.globals.isLoading = false;
   }
@@ -214,9 +221,13 @@ export class MsfDashboardComponent implements OnInit {
 
   getColumnHeight(column): number
   {
-    if (this.dashboardColumnsSize[column].height == 1)
+    if (this.dashboardColumnsSize[column].height.value == 1)
       return 303;
 
-    return 303 + (this.dashboardColumnsSize[column].height * 15);
+    return 303 + (this.dashboardColumnsSize[column].height.value * 15);
+  }
+
+  changeColumnHeight(): void
+  {
   }
 }

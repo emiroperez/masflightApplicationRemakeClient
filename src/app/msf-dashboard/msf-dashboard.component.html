@@ -18,8 +18,16 @@
             <ng-container *ngIf="dashboardColumnsSize[column].displayProperties">
               <div class="msf-dashboard-column-properties-align">
                 <span class="msf-dashboard-column-properties-height-label">Height:</span>
+                <!--
                 <mat-form-field class="msf-dashboard-column-properties-form-field">
                   <input matInput autocomplete="off" type="text" style="text-align: center" type="number" [(ngModel)]="dashboardColumnsSize[column].height"/>
+                </mat-form-field>-->
+                <mat-form-field class="msf-dashboard-column-properties-form-field">
+                  <mat-select [(ngModel)]="dashboardColumnsSize[column].height" style="text-align: center" (selectionChange)="changeColumnHeight()">
+                    <mat-option *ngFor="let heightValue of heightValues" [value]="heightValue">
+                      {{heightValue.name}}
+                    </mat-option>
+                  </mat-select>
                 </mat-form-field>
               </div>
               <ng-container *ngIf="dashboardColumn.length > 1">

@@ -2,10 +2,10 @@
 export class MsfDashboardColumnValues {
     displayProperties: boolean;
 
-    height: number;
+    height: any;
     width: number[] = [0, 0, 0];
 
-    constructor(height: number, width1: number, width2: number, width3: number)
+    constructor(height: any, width1: number, width2: number, width3: number)
     {
         this.displayProperties = false;
 
