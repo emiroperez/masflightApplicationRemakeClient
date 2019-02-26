@@ -11,7 +11,8 @@ export class MsfDashboardPanelSizePipe implements PipeTransform
         if (filter === undefined)
             return items;
 
-        // filter out items by checking the name of the array list to be checked
-        return items.filter (item => !item.name.includes (filter.name));
+        // filter out items by checking the if the value item inside the
+        // array is below of the specified filter value
+        return items.filter (item => item.value < filter.value);
     }
 }

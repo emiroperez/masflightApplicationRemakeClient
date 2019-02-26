@@ -36,7 +36,8 @@ export class MsfDashboardComponent implements OnInit {
     { value: 12, name: 'Full Size' }
   ];
 
-  twoPanelsfilterArgs:any = { value: 12, name: 'Full Size' };
+  twoPanelsFilterArgs:any = { value: 12, name: 'Full Size' };
+  threePanelsFilterArgs:any = { value: 10, name: 'Very Large' };
 
   constructor(public globals: Globals, private service: ApplicationService,
     private http: ApiClient) { }
