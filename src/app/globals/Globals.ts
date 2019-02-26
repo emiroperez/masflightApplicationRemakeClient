@@ -155,6 +155,7 @@ export class Globals {
     this.dataSource = false;
     this.query = false;
     this.tab = false;
+    this.hideParametersPanels = false;
 
   }
 

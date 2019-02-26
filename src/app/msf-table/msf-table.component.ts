@@ -256,6 +256,7 @@ export class MsfTableComponent implements OnInit {
       _this.globals.hideParametersPanels = true;
       _this.globals.scheduledata = mainElement;
       _this.globals.scmap=true;
+      _this.globals.tab =false;
     }
     }else{
       if( _this.globals.moreResults){
