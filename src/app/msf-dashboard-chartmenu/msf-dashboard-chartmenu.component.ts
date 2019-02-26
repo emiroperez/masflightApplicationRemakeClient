@@ -34,12 +34,14 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   private timer: number;
 
   chartTypes:any[] = [
-    { id: 'bars', name: 'Bars' },
-    { id: 'hbars', name: 'Horizontal Bars' },
-    { id: 'line', name: 'Lines' },                      
-    { id: 'area', name: 'Area' },
-    { id: 'pie', name: 'Pie' },
-    { id: 'donut', name: 'Donut' }
+    { id: 'bars', name: 'Bars', rotate: false },
+    { id: 'hbars', name: 'Horizontal Bars', rotate: true },
+    { id: 'sbars', name: 'Stacked Bars', rotate: false },
+    { id: 'hsbars', name: 'Horizontal Stacked Bars', rotate: true },
+    { id: 'line', name: 'Lines', rotate: false },                      
+    { id: 'area', name: 'Area', rotate: false },
+    { id: 'pie', name: 'Pie', rotate: false },
+    { id: 'donut', name: 'Donut', rotate: false }
   ];
 
   functions:any[] = [
@@ -150,6 +152,19 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     return graphs;
   }
 
+  setChartStackType(): string
+  {
+    switch (this.values.currentChartType.id)
+    {
+      case 'sbars':
+      case 'hsbars':
+        return "regular";
+
+      default:
+        return "none";
+    }
+  }
+
   makeOptions(dataProvider)
   {
     if (this.values.currentChartType.id === 'pie'
@@ -198,6 +213,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         "lineAlpha": 1
       }],
       "valueAxes" : [{
+        "stackType" : this.setChartStackType (),
         "axisColor" : "#30303d",
         "gridColor" : "#30303d",
         "gridAlpha" : 1,
@@ -213,7 +229,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       "depth3D" : 0,
       "angle" : 30,
       "categoryField" : this.values.xaxis.id,
-      "rotate" : (this.values.currentChartType.id == 'hbars' ? true : false),
+      "rotate" : this.values.currentChartType.rotate,
       "categoryAxis" :
       {
         "axisColor" : "#30303d",
