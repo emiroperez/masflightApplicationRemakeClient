@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { Globals } from '../globals/Globals';
 @Component({
   selector: 'app-msf-schedule-panel-info',
   templateUrl: './msf-schedule-panel-info.component.html',
@@ -7,9 +7,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MsfSchedulePanelInfoComponent implements OnInit {
 
-  constructor() { }
+  constructor(public globals: Globals) { }
 
   ngOnInit() {
+
   }
 
 }

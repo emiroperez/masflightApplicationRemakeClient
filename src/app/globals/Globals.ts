@@ -49,6 +49,7 @@ export class Globals {
   Airportdataorigin:any;
   Airportdatadest:any;
   scheduleChart :AmChart;
+  schedulepanelinfo :any;
    initDataSource(){
     if(this.currentMenuCategory!= null){
     if(this.currentMenuCategory.welcome!= null){

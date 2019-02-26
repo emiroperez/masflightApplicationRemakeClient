@@ -41,8 +41,15 @@
     list-style-position: inside; 
 }
 
-/* .msf-schedule-panel-header:before {
-    content:"•  ";
-    color :blue;
-    font-size: 20px;
-} */
+.example-icon {
+    padding: 0 14px;
+  }
+  
+  .example-spacer {
+    flex: 1 1 auto;
+  }
+
+  .panel-toolbar{
+    background: #191a1a;
+    color: #01abec;
+  }
