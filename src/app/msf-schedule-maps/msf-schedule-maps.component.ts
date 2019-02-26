@@ -33,8 +33,8 @@ export class MsfScheduleMapsComponent implements OnInit {
     
       "imagesSettings": {
         "color": "#dedef7",
-        "rollOverColor": "#dedef7",
-        "selectedColor": "#dedef7",
+        "rollOverColor": "#585869",
+        "selectedColor": "#585869",
         "pauseDuration": 0.5,
         "animationDuration": 10,
         "adjustAnimationSpeed": true
