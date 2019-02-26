@@ -3399,7 +3399,7 @@ img.msf-calendar-image {
   bottom: 5px;
 }
 
-mat-expansion-panel-body {
+.mat-expansion-panel-body {
   padding: 0px !important;
 }
 

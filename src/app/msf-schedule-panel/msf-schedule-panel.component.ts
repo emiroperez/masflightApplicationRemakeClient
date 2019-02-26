@@ -28,7 +28,10 @@ export class MsfSchedulePanelComponent implements OnInit {
           "svgPath": targetSVG,
            "title": airportsarray[i].airportname,
            "latitude": airportsarray[i].airportlat,
-           "longitude": airportsarray[i].airportlgt
+           "longitude": airportsarray[i].airportlgt,
+           "label": airportsarray[i].airportname,
+           "labelColor" :"#ffffff",
+           "labelFontSize" : 12
         }
         if (i+1 < airportsarray.length){
           countlines++;
@@ -60,17 +63,28 @@ export class MsfSchedulePanelComponent implements OnInit {
         }
         airports.push(nodeair);
       }
-    
+      this.globals.schedulepanelinfo = this.aux[index];
+      this.globals.schedulepanelinfo.TotalTime= this.globals.schedulepanelinfo.TotalTime.replace("Hours", "H").replace("Minutes","M");
       this.AmCharts.updateChart(this.globals.scheduleChart, () => {
       this.globals.scheduleChart.dataProvider.images  = airports;
       this.globals.scheduleChart.dataProvider.lines =lines;
       this.globals.scheduleChart.dataProvider.zoomLevel = 4.0;
        this.globals.scheduleChart.dataProvider.zoomLongitude=Number(airports[0].longitude);
        this.globals.scheduleChart.dataProvider.zoomLatitude=Number(airports[0].latitude);
-       console.log( this.globals.scheduleChart);
+      
       });
    }
- 
+   returnSearch(){
+    this.globals.hideParametersPanels=false;
+    this.globals.schedulepanelinfo =false;
+    this.AmCharts.updateChart(this.globals.scheduleChart, () => {
+      this.globals.scheduleChart.dataProvider.images  = [];
+      this.globals.scheduleChart.dataProvider.lines =[];
+      this.globals.scheduleChart.dataProvider.zoomLevel = 1;
+      
+      });
+   }
+   
   ngOnInit() {
     
   }

@@ -150,7 +150,7 @@ import { MsfConfirmationDialogComponent } from './msf-confirmation-dialog/msf-co
 import { MsfDashboardPanelSizePipe } from './msf-dashboard/msf-dashboard-panelsizepipe';
 import { MsfSchedulePanelComponent } from './msf-schedule-panel/msf-schedule-panel.component';
 import { MsfScheduleMapsComponent } from './msf-schedule-maps/msf-schedule-maps.component';
-
+import { MsfSchedulePanelInfoComponent } from './msf-schedule-panel-info/msf-schedule-panel-info.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -281,7 +281,8 @@ import { MsfScheduleMapsComponent } from './msf-schedule-maps/msf-schedule-maps.
     MsfConfirmationDialogComponent,
     MsfDashboardPanelSizePipe,
     MsfSchedulePanelComponent,
-    MsfScheduleMapsComponent
+    MsfScheduleMapsComponent,
+    MsfSchedulePanelInfoComponent
   ],
   imports: [
     BrowserModule,
