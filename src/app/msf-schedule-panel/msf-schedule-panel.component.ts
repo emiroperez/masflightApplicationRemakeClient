@@ -28,7 +28,10 @@ export class MsfSchedulePanelComponent implements OnInit {
           "svgPath": targetSVG,
            "title": airportsarray[i].airportname,
            "latitude": airportsarray[i].airportlat,
-           "longitude": airportsarray[i].airportlgt
+           "longitude": airportsarray[i].airportlgt,
+           "label": airportsarray[i].airportname,
+           "labelColor" :"#ffffff",
+           "labelFontSize" : 12
         }
         if (i+1 < airportsarray.length){
           countlines++;
