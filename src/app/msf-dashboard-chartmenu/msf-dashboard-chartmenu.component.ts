@@ -258,6 +258,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       }],
       "graphs" : this.buildGraphs (dataProvider.filter),
       "plotAreaFillAlphas" : 1,
+      "zoomOutButtonImage" : "lensWhite",
       "zoomOutButtonRollOverAlpha" : "0.5",
       "plotAreaFillColors" : "#222222",
       "color" : "#ffffff",
