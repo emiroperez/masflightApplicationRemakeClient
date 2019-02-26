@@ -56,7 +56,11 @@
                 <div class="msf-category-container"   [ngClass]= "globals.hideParametersPanels ?  'msf-hide':'msf-category-container' ">
                     <app-msf-component *ngIf="globals.currentOption && globals.currentOption.menuOptionArguments && globals.currentOption.menuOptionArguments.length > 0 && globals.currentOption.menuOptionArguments[0].categoryArguments.length > 0"></app-msf-component>
                 </div>
-                <button [ngClass]= "globals.hideParametersPanels ?  'msf-hide': 'msf-menu-search-button-enabled' "  [disabled]="disabled()" [ngClass]="disabled()?'msf-menu-search-button-disabled':'msf-menu-search-button-enabled'" (click)="search()">Search</button >
+                <button [disabled]="disabled()"  
+                [ngClass]="{'msf-menu-search-button-disabled' : disabled() && !globals.hideParametersPanels,
+                            'msf-menu-search-button-enabled' : !disabled() && !globals.hideParametersPanels,
+                            'msf-hide' : globals.hideParametersPanels && !disabled()}"
+                (click)="search()">Search</button >
               <app-msf-schedule-panel *ngIf="globals.hideParametersPanels" ></app-msf-schedule-panel>
             </div>
            <div (click)="toggle()" [ngClass]="globals.status ? 'msf-menu-hide-button-open': 'msf-menu-hide-button-close'">
