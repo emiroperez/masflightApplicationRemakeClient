@@ -114,3 +114,7 @@
 select.ng-select-single .ng-select-container .ng-value-container .ng-value {
     line-height: 1.125px;
 }
+
+.msf-periodicity-select.ng-select .ng-select-container .ng-value-container .ng-placeholder {
+    line-height: 1.125px;
+}
