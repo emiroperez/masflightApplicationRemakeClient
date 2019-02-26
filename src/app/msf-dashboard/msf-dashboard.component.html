@@ -31,7 +31,7 @@
                   <span class="msf-dashboard-column-properties-width-label">Width (Chart #{{row + 1}}):</span>
                   <mat-form-field class="msf-dashboard-column-properties-form-field">
                     <mat-select [(ngModel)]="dashboardColumnsSize[column].width[row]" style="text-align: center" (selectionChange)="resizePanels(column, row)">
-                      <mat-option *ngFor="let widthValue of widthValues | panelSizeFilter: twoPanelsfilterArgs" [value]="widthValue">
+                      <mat-option *ngFor="let widthValue of widthValues | panelSizeFilter: (dashboardColumns[column].length == 3 ? threePanelsFilterArgs : twoPanelsFilterArgs)" [value]="widthValue">
                         {{widthValue.name}}
                       </mat-option>
                     </mat-select>
