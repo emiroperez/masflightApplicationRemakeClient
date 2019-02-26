@@ -181,7 +181,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
           "axisTitleOffset" : 20,
           "axisColor" : "#30303d",
           "gridColor" : "#30303d",
-          "gridAlpha" : 0.5,
+          "axisAlpha" : 1,
+          "gridAlpha" : 1,
           "minimum" : 0
         }],
         "color" : "#ffffff",
