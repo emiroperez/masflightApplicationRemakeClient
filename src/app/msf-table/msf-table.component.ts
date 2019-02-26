@@ -229,6 +229,7 @@ export class MsfTableComponent implements OnInit {
     }
     if( _this.globals.totalRecord > 0){
       if(_this.globals.currentOption.metaData==1){
+
         _this.globals.displayedColumns = data.metadata;
         if(_this.groupingArgument!=null){
           _this.addGroupingColumns(_this.globals.displayedColumns);
@@ -249,8 +250,13 @@ export class MsfTableComponent implements OnInit {
           _this.globals.moreResultsBtn = false;
           _this.globals.moreResults = false;
         }
-    }else{
+    }else if (_this.globals.currentOption.metaData==0){
       _this.template = data.template;
+    }else if (_this.globals.currentOption.metaData==2){
+      _this.globals.hideParametersPanels = true;
+      _this.globals.scheduledata = mainElement;
+      _this.globals.scmap=true;
+      _this.globals.tab =false;
     }
     }else{
       if( _this.globals.moreResults){

@@ -1657,9 +1657,6 @@ mat-tab-group
     display: flex
     flex-direction: row
 
-@mixin msf-dashboard-column-properties-field-width ($width)
-    width: $width
-
 @mixin msf-dashboard-column-properties ($height: 20px)
     position: relative
     justify-content: center
@@ -1673,12 +1670,13 @@ mat-tab-group
         display: flex
         flex-direction: row
         align-items: center
+        width: 20%
         .msf-dashboard-column-properties-height-label
-            @include msf-dashboard-column-properties-field-width(30%)
+            width: 60%
         .msf-dashboard-column-properties-width-label
-            @include msf-dashboard-column-properties-field-width(50%)
+            width: 90%
         .msf-dashboard-column-properties-form-field
-            @include msf-dashboard-column-properties-field-width(15%)
+            @extend .msf-dashboard-form-field
 
 .msf-dashboard-container
     font-size: 14px
@@ -2983,3 +2981,5 @@ img.msf-calendar-image
     bottom: 1px
 .ng-select.ng-select-single .ng-select-container .ng-arrow-wrapper 
     bottom: 5px
+mat-expansion-panel-body
+    padding: 0px!important

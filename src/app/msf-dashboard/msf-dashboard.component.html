@@ -19,14 +19,22 @@
               <div class="msf-dashboard-column-properties-align">
                 <span class="msf-dashboard-column-properties-height-label">Height:</span>
                 <mat-form-field class="msf-dashboard-column-properties-form-field">
-                  <input matInput autocomplete="off" type="text" style="text-align: center" type="number" [(ngModel)]="dashboardColumnsSize[column].height"/>
+                  <mat-select [(ngModel)]="dashboardColumnsSize[column].height" style="text-align: center">
+                    <mat-option *ngFor="let heightValue of heightValues" [value]="heightValue">
+                      {{heightValue.name}}
+                    </mat-option>
+                  </mat-select>
                 </mat-form-field>
               </div>
               <ng-container *ngIf="dashboardColumn.length > 1">
                 <div class="msf-dashboard-column-properties-align" *ngFor="let dashboardChart of dashboardColumn; let row = index">
                   <span class="msf-dashboard-column-properties-width-label">Width (Chart #{{row + 1}}):</span>
                   <mat-form-field class="msf-dashboard-column-properties-form-field">
-                    <input matInput autocomplete="off" type="text" style="text-align: center" type="number" [(ngModel)]="dashboardColumnsSize[column].width[row]"/>
+                    <mat-select [(ngModel)]="dashboardColumnsSize[column].width[row]" style="text-align: center" (selectionChange)="resizePanels(column, row)">
+                      <mat-option *ngFor="let widthValue of widthValues | panelSizeFilter: (dashboardColumns[column].length == 3 ? threePanelsFilterArgs : twoPanelsFilterArgs)" [value]="widthValue">
+                        {{widthValue.name}}
+                      </mat-option>
+                    </mat-select>
                   </mat-form-field>
                 </div>
               </ng-container>

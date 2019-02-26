@@ -1,0 +1,48 @@
+.msf-schedule-panel{
+    background-color: #333333;
+    color :#ffffff;
+}
+
+.msf-schedule-mat-expansion-panel-header {
+    height: 48px;
+    padding: 20px !important;
+    font-size: 16px !important;
+}
+
+.mat-expansion-panel-body {
+    padding: 0px ; 
+}
+
+.msf-schedule-panel-table {
+    width: 100%;
+    padding: 0 24px 16px;
+    font-size: 12px !important;
+}
+
+.msf-schedule-panel-table td:nth-child(2) { 
+    font-weight: bold;
+    padding-left: 22px;
+ }
+.msf-schedule-panel-subs{
+    background-color: #01abec;
+    padding: 12px;
+    font-size: 12px;
+}
+.mat-expanded mat-expansion-panel-header{
+    background-color: #1e2a2f;
+    border-bottom: 2px solid #01abec;
+    padding: 20px !important;
+}
+
+
+.msf-schedule-panel-header {
+    display: list-item;                           
+    list-style-type: disc;      
+    list-style-position: inside; 
+}
+
+/* .msf-schedule-panel-header:before {
+    content:"•  ";
+    color :blue;
+    font-size: 20px;
+} */
