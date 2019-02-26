@@ -1,0 +1,16 @@
+.msf-select {
+    margin-left: 0px;
+}
+
+.mat-select {
+    height: 34px;
+}
+
+.input-register {
+    width: 100% !important;
+}
+
+.mat-select-trigger {
+    padding-top: 10px;
+    padding-left: 30px;
+}

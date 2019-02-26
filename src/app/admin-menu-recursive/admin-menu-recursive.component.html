@@ -3,11 +3,11 @@
 
     <div [ngClass]="{'is-active': option.isActive,'is-inactive': !option.isActive }" style="width: 100%" (click)="selectIdDom(index)">
         <div class="menu-recursive-input" #root id="'root' + index" style="width: 100%" (click)="selectOption(option)">
-            <input id="root{{index}}" type="text" autocomplete="off"  matInput class="input-register input-menu-option" [(ngModel)]="option.label" [ngModelOptions]="{standalone: true}">
-            <button mat-icon-button (click)="toggle(option)" *ngIf="option.children && option.children.length > 0" style="vertical-align: super; float:right">
-                <mat-icon *ngIf="!option.isOpened" style="color: white" aria-label="Toggle">keyboard_arrow_down</mat-icon>
-                <mat-icon *ngIf="option.isOpened" style="color: white" aria-label="Toggle">keyboard_arrow_up</mat-icon>
-              </button>
+            <input id="root{{index}}" type="text" name="optionname" autocomplete="off" matInput class="input-register input-menu-option" [formControl]="optionValidator" [(ngModel)]="option.label">
+            <button mat-icon-button (click)="toggle(option) " *ngIf="option.children && option.children.length> 0" style="vertical-align: super; float:right">
+            <mat-icon *ngIf="!option.isOpened" style="color: white" aria-label="Toggle">keyboard_arrow_down</mat-icon>
+            <mat-icon *ngIf="option.isOpened" style="color: white" aria-label="Toggle">keyboard_arrow_up</mat-icon>
+            </button>
         </div>
     </div>
 

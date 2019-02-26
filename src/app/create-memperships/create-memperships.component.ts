@@ -74,8 +74,6 @@ export class EditOptionsDialog {
 
 
   getItemsSelected(menu) {
-    console.log(this.data.auxOptions);
-
     for (let j = 0; j < menu.length; j++) {
       this.recursiveOption(menu[j]);
     }
@@ -227,10 +225,8 @@ export class CreateMempershipsComponent implements OnInit {
   }
 
   handlerSuccessInit(_this, data, tab) {
-    console.log('data: ' + data);
     _this.plans = data;
     _this.planJson = data;
-    console.log(_this.plans);
     _this.plans.forEach(plan => {
       _this.items = _this.plansForms.get('items') as FormArray;
       _this.items.push(_this.createPlanFromJson(plan));
@@ -239,7 +235,6 @@ export class CreateMempershipsComponent implements OnInit {
   }
 
   createPlanFromJson(plan): FormGroup {
-    console.log(plan);
     return this.formBuilder.group({
       name: plan.name,
       id: plan.id,
@@ -310,8 +305,6 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
 
       }));
     });
-
-    console.log(advanceFeaturesGroup);
     return advanceFeaturesGroup;
   }
 
@@ -368,7 +361,6 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
     this.items.push(this.createPlan());
 
     this.planJson.push(newPlan);
-    console.log(this.planJson);
   }
 
   deletePlan(index) {
@@ -387,7 +379,6 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
     _this.menu = data;
     _this.getPlansService();
     _this.globals.isLoading = false;
-    console.log(_this.menu);
   }
 
   getAdvanceFeatures(): void {
@@ -395,7 +386,6 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
   }
   handlerGetSuccessAF(_this, data) {
     _this.advanceFeatures = data;
-    console.log(_this.advanceFeatures);
   }
 
   deleteOption(index, index2, index3) {
