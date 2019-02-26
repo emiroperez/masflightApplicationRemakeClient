@@ -1,145 +1,141 @@
 <div class="msf-register-header">
-    <img  class="msf-medium-logo" src="../../assets/images/logo.png" > 
+    <img class="msf-medium-logo" src="../../assets/images/logo.png">
     <div class="msf-register-header-content">
         <div class="msf-register-header-title">
             <div class="msf-register-header-title-content"> USER REGISTRATION</div>
             <div class="msf-register-header-little-title">{{title}}</div>
         </div>
-        
+
         <div class="msf-register-header-image-content">
-            <img  class="medium-user-image" src="../../assets/images/icon-user-white.png" >
+            <img class="medium-user-image" src="../../assets/images/icon-user-white.png">
         </div>
     </div>
 </div>
 
 <mat-card class="msf-register-card msf-center-container">
-  <mat-card-header>
-        <app-notification [show]="utils.notificationShow"  [message]="utils.notificationMessage" [type]="utils.notificationType" ></app-notification>
-  </mat-card-header>
-  
-  <mat-card-content >
-        <mat-horizontal-stepper [linear]="isLinear" #stepper (selectionChange)="selectionChange($event)">
-          <mat-step [stepControl] ="personalInformationForm" >
-            <form name="register">
-                  <ng-template matStepLabel>PERSONAL INFORMATION</ng-template>                         
-                  <ul class="msf-register-list-aux">
-                      <li>                                                                                                     
-                          <mat-form-field class="msf-item">
-                              <input  matInput autocomplete="off" type="text" placeholder="Name" class="input-register" [formControl]="personalInformationForm.get('nameValidator')" name="name" [(ngModel)]="users.name"/>         
-                              <mat-error *ngIf="personalInformationForm.get('nameValidator')?.invalid">{{getErrorNameMessage()}}</mat-error>
-                          </mat-form-field>
-                      </li>
-                      <li>                                                                                                     
-                          <mat-form-field class="msf-item">
-                              <input  matInput autocomplete="off" type="text" placeholder="Last Name" class="input-register" [formControl]="personalInformationForm.get('lastNameValidator')" name="lastName" [(ngModel)]="users.lastname"/>         
-                              <mat-error *ngIf="personalInformationForm.get('lastNameValidator')?.invalid">{{getErrorLastNameMessage()}}</mat-error>
-                          </mat-form-field>
-                      </li>
-                      <li>                                                                                                     
-                          <mat-form-field class="msf-item">
-                              <input  matInput autocomplete="off" type="password" placeholder="Password" class="input-register" [formControl]="personalInformationForm.get('passwordValidator')" name="password" [(ngModel)]="users.password"/>         
-                              <mat-error *ngIf="personalInformationForm.get('passwordValidator')?.invalid">{{getErrorPasswordMessage()}}</mat-error>
-                          </mat-form-field>
-                      </li>
-                      <li>                                                                                                     
-                          <mat-form-field class="msf-item">
-                              <input  matInput autocomplete="off" type="password" placeholder="Repeat Password" class="input-register" [formControl]="personalInformationForm.get('repeatPasswordValidator')" name="repeatPassword" [(ngModel)]="users.repeatPassword"/>         
-                              <mat-error *ngIf="personalInformationForm.get('repeatPasswordValidator')?.invalid">{{getErrorRepeatPasswordMessage()}}</mat-error>
+    <mat-card-header>
+        <app-notification [show]="utils.notificationShow" [message]="utils.notificationMessage" [type]="utils.notificationType"></app-notification>
+    </mat-card-header>
 
-                          </mat-form-field>
-                      </li>
-                      <li>                                                                                                     
-                          <mat-form-field class="msf-item">
-                              <input  (change)="checkEmailValidator($event.target.value)" matInput autocomplete="off" type="email" placeholder="E-mail" class="input-register" [formControl]="personalInformationForm.get('emailValidator')" name="email" [(ngModel)]="users.email"/>                                       
-                              <mat-error *ngIf="personalInformationForm.get('emailValidator')?.hasError('email') && !personalInformationForm.get('emailValidator')?.hasError('required')">
-                                  {{getErrorFormatEmailMessage()}}
-                              </mat-error>
-                              <mat-error *ngIf="personalInformationForm.get('emailValidator')?.hasError('required')">
-                                 {{getErrorEmailMessage()}} 
-                              </mat-error>
-                              <mat-error *ngIf="personalInformationForm.get('emailValidator')?.hasError('exists')">
-                                    {{getErrorEmaiExistlMessage()}} 
-                                 </mat-error>
-                          </mat-form-field>
-                      </li>
-                  </ul>    
-                  <ul class="msf-register-list">
-                      
-                      <li>                                                                                                     
-                          <mat-form-field class="msf-item">
-                              <input  matInput autocomplete="off" type="text" placeholder="Address" class="input-register" [formControl]="personalInformationForm.get('addressValidator')" name="Address" [(ngModel)]="users.address"/>         
-                              <mat-error *ngIf="personalInformationForm.get('addressValidator')?.invalid">{{getErrorAddressMessage()}}</mat-error>
-                          </mat-form-field>
-                      </li>
-                      <li class="msf-select">                                                                                                                              
-                         <!--  <mat-form-field class="msf-item">
-                            <mat-select placeholder="Country" autocomplete="off" class="input-register" [formControl]="personalInformationForm.get('countryValidator')" name="country" [(ngModel)]="users.country" required>
-                              <mat-option>--</mat-option>
-                              <mat-option *ngFor="let country of countries" [value]="country">
-                                {{country.name}}
-                              </mat-option>
-                            </mat-select>
-                          
-                            <mat-error *ngIf="countryValidator.invalid">{{getErrorCountryMessage()}}</mat-error>
-                            <mat-hint>{{countryValidator.value?.code}}</mat-hint>
-                          </mat-form-field> -->
-                          
-                            <ng-select style="min-height: 51.5px;" (change)="CountryChangeEvent($event)" [items]="countries"
-                                        bindLabel="name" dropdownPosition= "bottom"
-                                        placeholder="Country" matInput autocomplete="off" class="msf-select-input msf-imput msf-register-select msf-register-select" [formControl]="personalInformationForm.get('countryValidator')" name="country" [(ngModel)]="users.country"  required>
-                            </ng-select>  
-                            
-                      </li>
-                      <mat-error class="msf-select msf-select-error" *ngIf="personalInformationForm.get('countryValidator')?.invalid">{{getErrorCountryMessage()}}</mat-error>  
-                      <li class="msf-select">                                                                                                                              
-                          <!--<mat-form-field class="msf-item">
-                            <mat-select placeholder="State" autocomplete="off" class="input-register" [formControl]="stateValidator" name="state" [(ngModel)]="users.state" required>
-                              <mat-option>--</mat-option>
-                              <mat-option *ngFor="let state of states" [value]="state">
-                                {{state.name}}
-                              </mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="stateValidator.invalid">{{getErrorStateMessage()}}</mat-error>
-                            <mat-hint>{{stateValidator.value?.code}}</mat-hint>
-                          </mat-form-field>-->
-                          <ng-select [items]="states"
-                                      bindLabel="name" dropdownPosition= "bottom"
-                                      placeholder="State" matInput autocomplete="off" class="msf-select-input msf-imput msf-register-select msf-register-select" [formControl]="personalInformationForm.get('stateValidator')" name="state" [(ngModel)]="users.CState" required>
-                          </ng-select>
-                          
-                      </li>
-                      <mat-error class="msf-select-error" *ngIf="personalInformationForm.get('stateValidator')?.invalid">{{getErrorStateMessage()}}</mat-error>
-                      <li>                                                                                                     
-                          <mat-form-field class="msf-item">
-                              <input  matInput autocomplete="off" type="text" placeholder="Postal Code" class="input-register" [formControl]="personalInformationForm.get('postalCodeValidator')" name="postalCode" [(ngModel)]="users.postalCode"/>         
-                              <mat-error *ngIf="personalInformationForm.get('postalCodeValidator')?.invalid">{{getErrorPostalCodeMessage()}}</mat-error>
-                          </mat-form-field>
-                      </li>
-                      <li>                                                                                                     
-                          <mat-form-field class="msf-item">
-                              <input  matInput autocomplete="off" type="text"  mask="(000) 000-0000" placeholder="Phone Number" class="input-register" [formControl]="personalInformationForm.get('phoneNumberValidator')" name="phoneNumber" [(ngModel)]="users.phoneNumber"/>         
-                              <mat-error *ngIf="personalInformationForm.get('phoneNumberValidator')?.invalid">{{getErrorPhoneNumberMessage()}}</mat-error>
-                          </mat-form-field>
-                      </li>
-                  </ul>  
-                  <div>
-                    <button mat-button matStepperNext class="msf-big-button" >Next</button>
-                  </div>                              
-            </form>
-          </mat-step>
-          <mat-step [stepControl] ="planInformationForm">
-            <form name="plan">
-                <ng-template matStepLabel>MEMBERSHIP PLAN</ng-template>
-                <div class="msf-medium-title-centered">SELECT YOUR PLAN</div>
-                <div class="msf-inline msf-large-container msf-card-container">
-                    
+    <mat-card-content>
+        <mat-horizontal-stepper [linear]="isLinear" #stepper (selectionChange)="selectionChange($event)">
+            <mat-step [stepControl]="personalInformationForm">
+                <form name="register">
+                    <ng-template matStepLabel>PERSONAL INFORMATION</ng-template>
+                    <ul class="msf-register-list-aux">
+                        <li>
+                            <mat-form-field class="msf-item">
+                                <input matInput autocomplete="off" type="text" placeholder="Name" class="input-register" [formControl]="personalInformationForm.get('nameValidator')" name="name" [(ngModel)]="users.name" />
+                                <mat-error *ngIf="personalInformationForm.get('nameValidator')?.invalid">{{getErrorNameMessage()}}</mat-error>
+                            </mat-form-field>
+                        </li>
+                        <li>
+                            <mat-form-field class="msf-item">
+                                <input matInput autocomplete="off" type="text" placeholder="Last Name" class="input-register" [formControl]="personalInformationForm.get('lastNameValidator')" name="lastName" [(ngModel)]="users.lastname" />
+                                <mat-error *ngIf="personalInformationForm.get('lastNameValidator')?.invalid">{{getErrorLastNameMessage()}}</mat-error>
+                            </mat-form-field>
+                        </li>
+                        <li>
+                            <mat-form-field class="msf-item">
+                                <input matInput autocomplete="off" type="password" placeholder="Password" class="input-register" [formControl]="personalInformationForm.get('passwordValidator')" name="password" [(ngModel)]="users.password" />
+                                <mat-error *ngIf="personalInformationForm.get('passwordValidator')?.invalid">{{getErrorPasswordMessage()}}</mat-error>
+                            </mat-form-field>
+                        </li>
+                        <li>
+                            <mat-form-field class="msf-item">
+                                <input matInput autocomplete="off" type="password" placeholder="Repeat Password" class="input-register" [formControl]="personalInformationForm.get('repeatPasswordValidator')" name="repeatPassword" [(ngModel)]="users.repeatPassword" />
+                                <mat-error *ngIf="personalInformationForm.get('repeatPasswordValidator')?.invalid">{{getErrorRepeatPasswordMessage()}}</mat-error>
+
+                            </mat-form-field>
+                        </li>
+                        <li>
+                            <mat-form-field class="msf-item">
+                                <input (change)="checkEmailValidator($event.target.value)" matInput autocomplete="off" type="email" placeholder="E-mail" class="input-register" [formControl]="personalInformationForm.get('emailValidator')" name="email" [(ngModel)]="users.email" />
+                                <mat-error *ngIf="personalInformationForm.get('emailValidator')?.hasError('email') && !personalInformationForm.get('emailValidator')?.hasError('required')">
+                                    {{getErrorFormatEmailMessage()}}
+                                </mat-error>
+                                <mat-error *ngIf="personalInformationForm.get('emailValidator')?.hasError('required')">
+                                    {{getErrorEmailMessage()}}
+                                </mat-error>
+                                <mat-error *ngIf="personalInformationForm.get('emailValidator')?.hasError('exists')">
+                                    {{getErrorEmaiExistlMessage()}}
+                                </mat-error>
+                            </mat-form-field>
+                        </li>
+                    </ul>
+                    <ul class="msf-register-list">
+
+                        <li>
+                            <mat-form-field class="msf-item">
+                                <input matInput autocomplete="off" type="text" placeholder="Address" class="input-register" [formControl]="personalInformationForm.get('addressValidator')" name="Address" [(ngModel)]="users.address" />
+                                <mat-error *ngIf="personalInformationForm.get('addressValidator')?.invalid">{{getErrorAddressMessage()}}</mat-error>
+                            </mat-form-field>
+                        </li>
+                        <li class="msf-select">
+                            <mat-form-field class="msf-item">
+                                <mat-select placeholder="Country" autocomplete="off" class="input-register" [formControl]="personalInformationForm.get('countryValidator')" (selectionChange)="CountryChangeEvent($event)" name="country" [(ngModel)]="users.country" required>
+                                    <mat-option>--</mat-option>
+                                    <mat-option *ngFor="let country of countries" [value]="country">
+                                        {{country.name}}
+                                    </mat-option>
+                                </mat-select>
+
+                                <mat-error *ngIf="personalInformationForm.get('countryValidator')?.invalid">{{getErrorCountryMessage()}}</mat-error>
+                            </mat-form-field>
+                            <!-- <mat-form-field>
+                                <ng-select style="min-height: 51.5px;" (change)="CountryChangeEvent($event)" [items]="countries" bindLabel="name" dropdownPosition="bottom" placeholder="Country" matInput autocomplete="off" class="msf-select-input msf-imput msf-register-select msf-register-select"
+                                    [formControl]="personalInformationForm.get('countryValidator')" name="country" [(ngModel)]="users.country" required>
+                                </ng-select>
+                                <mat-error class="msf-select msf-select-error" *ngIf="personalInformationForm.get('countryValidator')?.invalid">{{getErrorCountryMessage()}}</mat-error>
+                            </mat-form-field> -->
+                        </li>
+
+                        <li class="msf-select">
+                            <mat-form-field class="msf-item">
+                                <mat-select placeholder="State" autocomplete="off" class="input-register" name="state" [(ngModel)]="users.CState">
+                                    <mat-option>--</mat-option>
+                                    <mat-option *ngFor="let state of states" [value]="state">
+                                        {{state.name}}
+                                    </mat-option>
+                                </mat-select>
+
+                            </mat-form-field>
+                            <!-- <ng-select [items]="states" bindLabel="name" dropdownPosition="bottom" placeholder="State" matInput autocomplete="off" class="msf-select-input msf-imput msf-register-select msf-register-select" [formControl]="personalInformationForm.get('stateValidator')"
+                                name="state" [(ngModel)]="users.CState">
+                            </ng-select> -->
+
+                        </li>
+                        <li>
+                            <mat-form-field class="msf-item">
+                                <input matInput autocomplete="off" type="text" placeholder="Postal Code" class="input-register" [formControl]="personalInformationForm.get('postalCodeValidator')" name="postalCode" [(ngModel)]="users.postalCode" />
+                                <mat-error *ngIf="personalInformationForm.get('postalCodeValidator')?.invalid">{{getErrorPostalCodeMessage()}}</mat-error>
+                            </mat-form-field>
+                        </li>
+                        <li>
+                            <mat-form-field class="msf-item">
+                                <input matInput autocomplete="off" type="text" mask="(000) 000-0000" placeholder="Phone Number" class="input-register" [formControl]="personalInformationForm.get('phoneNumberValidator')" name="phoneNumber" [(ngModel)]="users.phoneNumber" />
+                                <mat-error *ngIf="personalInformationForm.get('phoneNumberValidator')?.invalid">{{getErrorPhoneNumberMessage()}}</mat-error>
+                            </mat-form-field>
+                        </li>
+                    </ul>
+                    <div>
+                        <button mat-button matStepperNext class="msf-big-button">Next</button>
+                    </div>
+                </form>
+            </mat-step>
+            <mat-step [stepControl]="planInformationForm">
+                <form name="plan">
+                    <ng-template matStepLabel>MEMBERSHIP PLAN</ng-template>
+                    <div class="msf-medium-title-centered">SELECT YOUR PLAN</div>
+                    <div class="msf-inline msf-large-container msf-card-container">
+
                         <mat-card class="msf-plan-card" *ngFor="let plan of plans">
-                            <mat-card-content class= "msf-plan-card-content">
+                            <mat-card-content class="msf-plan-card-content">
                                 <div class="msf-medium-title-centered">{{plan.name}}</div>
                                 <div class="msf-features-container">
                                     <div style="width:25%"></div>
                                     <ul>
-                                        <li *ngFor= "let feature of plan.features">
+                                        <li *ngFor="let feature of plan.features">
                                             <div class="msf-feature-name"> {{feature.features}}</div>
                                             <div class="msf-feature-description"> {{getOptionsText(feature.options)}} </div>
                                         </li>
@@ -157,95 +153,81 @@
                                 </div>
                             </mat-card-footer>
                         </mat-card>
-                   
-                </div>
 
-              <div>
-                <!-- <button mat-button matStepperPrevious class="msf-big-button" >Back</button> -->
-                <button mat-button matStepperNext class="msf-big-button" >Next</button>
-              </div>
-            </form>
-          </mat-step>
-          <mat-step [stepControl] ="paymentInformationForm">
-            <ng-template matStepLabel>PAYMENT METHOD</ng-template>
-           <!-- <div class="center">-->
+                    </div>
+
+                    <div>
+                        <button mat-button matStepperNext class="msf-big-button" (click)=validatePlan()>Next</button>
+                    </div>
+                </form>
+            </mat-step>
+            <mat-step [stepControl]="paymentInformationForm">
+                <ng-template matStepLabel>PAYMENT METHOD</ng-template>
+                <!-- <div class="center">-->
                 <div class="msf-inline msf-medium-container msf-margin-right-5">
                     <div class="msf-medium-title">Select Payment Method</div>
                     <div class="msf-payment-container">
                         <mat-radio-group class="example-radio-group" name='paymentType' [(ngModel)]="users.payment.paymentType" [formControl]="paymentInformationForm.get('paymentTypeValidator')">
                             <div class="msf-payment-logo-container msf-inline">
                                 <img src="../../assets/images/visa_master.png" class="msf-img-payment">
-                                <mat-radio-button  class="msf-radio-button"  [value]="1"></mat-radio-button>
+                                <mat-radio-button class="msf-radio-button" [value]="1"></mat-radio-button>
                             </div>
                             <div class="msf-payment-logo-container msf-inline">
                                 <img src="../../assets/images/pay_pal.png" class="msf-img-payment">
-                                <mat-radio-button  class="msf-radio-button"  [value]="2"></mat-radio-button>
-                            </div>                                                    
-                        </mat-radio-group>                                         
+                                <mat-radio-button class="msf-radio-button" [value]="2"></mat-radio-button>
+                            </div>
+                        </mat-radio-group>
                     </div>
-                    <form name="payment">                                               
-                      <ul class="msf-register-list-big">
-                          <li>                     
-                              <img src="../../assets/images/no_tarjeta.png" class="msf-icon">                                                                                                
-                              <mat-form-field class="msf-input-icon msf-item">                                  
-                                  <input  matInput autocomplete="off" type="text"  mask="0000 - 0000 - 0000 - 0000" placeholder="card number" class="msf-imput" [formControl]="paymentInformationForm.get('cardNumberValidator')" name="cardNumber" [(ngModel)]="users.payment.cardNumber"/>         
-                                  <mat-error *ngIf="paymentInformationForm.get('cardNumberValidator')?.invalid">{{getErrorCardNumberMessage()}}</mat-error>                                  
-                              </mat-form-field>
-                          </li>  
-                          <li>    
-                             <div class="msf-input-prompt">
-                                Expiry Date
-                             </div>                                                                                                                 
-                              <mat-form-field class="msf-input-prompt-field msf-item">                                   
-                                  <!--<input matInput [matDatepicker]="picker" autocomplete="off" type="text"    placeholder="MM    /  YY" class="msf-imput" [formControl]="expiryDateValidator" name="expiryDate" [(ngModel)]="users.payment.expiryDate"/>         
-                                  <mat-error *ngIf="expiryDateValidator.invalid">{{getErrorExpiryDateMessage()}}</mat-error>                                  
-                                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                  <mat-datepicker #picker
-                                                  startView="multi-year"
-                                                  (yearSelected)="chosenYearHandler($event)"
-                                                  (monthSelected)="chosenMonthHandler($event, dp)"
-                                                  panelClass="example-month-picker">
-                                  </mat-datepicker>
-                                -->
-                                  <input  matInput autocomplete="off" type="text"  mask="99/99" placeholder="MM   /  YY" class="msf-imput" [formControl]="paymentInformationForm.get('expiryDateValidator')" name="expiryDate" [(ngModel)]="users.payment.expiryDate"/>                             
-                                  <mat-error *ngIf="paymentInformationForm.get('expiryDateValidator')?.invalid">{{getErrorExpiryDateMessage()}}</mat-error>       
-                                  <!--<input  matInput autocomplete="off" type="text"  [matDatepicker]="picker"  placeholder="MM    /  YY" class="msf-imput" [formControl]="expiryDateValidator" name="expiryDate" [(ngModel)]="users.payment.expiryDate"/>         
-                                  <mat-error *ngIf="expiryDateValidator.invalid">{{getErrorExpiryDateMessage()}}</mat-error>                                  
-                                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                  <mat-datepicker #picker></mat-datepicker>-->                                 
-                              </mat-form-field>
-                          </li> 
-                          <li>        
-                              <img src="../../assets/images/cvv.png" class="msf-icon"> 
-                              <div class="msf-input-prompt-litle">
-                                  CVV
-                               </div>                                                                                                               
-                              <mat-form-field class="msf-input-icon-text msf-item">                                  
-                                  <input  matInput autocomplete="off" maxlength="3" type="password"  class="msf-imput" [formControl]="paymentInformationForm.get('cvvValidator')" name="cvv" [(ngModel)]="users.payment.cvv"/>         
-                                  <mat-error *ngIf="paymentInformationForm.get('cvvValidator')?.invalid">{{getErrorCvvMessage()}}</mat-error>                                  
-                              </mat-form-field>
-                          </li>                               
-                      </ul>                                                           
+                    <form name="payment">
+                        <ul class="msf-register-list-big">
+                            <li>
+                                <img src="../../assets/images/no_tarjeta.png" class="msf-icon">
+                                <mat-form-field class="msf-input-icon msf-item">
+                                    <input matInput autocomplete="off" type="text" mask="0000 - 0000 - 0000 - 0000" placeholder="card number" class="msf-imput" [formControl]="paymentInformationForm.get('cardNumberValidator')" name="cardNumber" [(ngModel)]="users.payment.cardNumber" />
+                                    <mat-error *ngIf="paymentInformationForm.get('cardNumberValidator')?.invalid">{{getErrorCardNumberMessage()}}</mat-error>
+                                </mat-form-field>
+                            </li>
+                            <li>
+                                <div class="msf-input-prompt">
+                                    Expiry Date
+                                </div>
+                                <mat-form-field class="msf-input-prompt-field msf-item">
+                                    <input matInput autocomplete="off" type="text" mask="99/99" placeholder="MM   /  YY" class="msf-imput" [formControl]="paymentInformationForm.get('expiryDateValidator')" name="expiryDate" [(ngModel)]="users.payment.expiryDate" />
+                                    <mat-error *ngIf="paymentInformationForm.get('expiryDateValidator')?.invalid">{{getErrorExpiryDateMessage()}}</mat-error>
+
+                                </mat-form-field>
+                            </li>
+                            <li>
+                                <img src="../../assets/images/cvv.png" class="msf-icon">
+                                <div class="msf-input-prompt-litle">
+                                    CVV
+                                </div>
+                                <mat-form-field class="msf-input-icon-text msf-item">
+                                    <input matInput autocomplete="off" maxlength="3" type="password" class="msf-imput" [formControl]="paymentInformationForm.get('cvvValidator')" name="cvv" [(ngModel)]="users.payment.cvv" />
+                                    <mat-error *ngIf="paymentInformationForm.get('cvvValidator')?.invalid">{{getErrorCvvMessage()}}</mat-error>
+                                </mat-form-field>
+                            </li>
+                        </ul>
                     </form>
                 </div>
                 <div class="msf-inline msf-medium-container">
-                  <div class="msf-medium-title">Billing Details Save</div>
-                  <div class="register-card">
-                    <div class="msf-row-info">{{users.name}} {{users.lastname}}</div>
-                    <div class="msf-row-info">{{users.email}}</div>
-                    <div class="msf-row-info">{{users.address}}</div>
-                    <div class="msf-row-info">{{users.CState?.name}}</div>
-                    <div class="msf-row-info">{{users.country?.name}}</div>
-                    <button mat-button (click)="stepper.selectedIndex=0" class="msf-medium-button" >Edit</button>
-                  </div>
+                    <div class="msf-medium-title">Billing Details Save</div>
+                    <div class="register-card">
+                        <div class="msf-row-info">{{users.name}} {{users.lastname}}</div>
+                        <div class="msf-row-info">{{users.email}}</div>
+                        <div class="msf-row-info">{{users.address}}</div>
+                        <div class="msf-row-info">{{users.CState?.name}}</div>
+                        <div class="msf-row-info">{{users.country?.name}}</div>
+                        <button mat-button (click)="stepper.selectedIndex=0" class="msf-medium-button">Edit</button>
+                    </div>
                 </div>
                 <div>
                     <!-- <button mat-button matStepperPrevious class="msf-big-button" >Back</button>     -->
-                    <button mat-button (click)="insertUser()" class="msf-big-button" >Save</button>                      
+                    <button mat-button (click)="insertUser()" class="msf-big-button">Save</button>
                 </div>
-           <!-- </div> -->
-          </mat-step>
+                <!-- </div> -->
+            </mat-step>
         </mat-horizontal-stepper>
-  </mat-card-content>
- 
+    </mat-card-content>
+
 </mat-card>

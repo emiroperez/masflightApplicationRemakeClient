@@ -135,13 +135,12 @@ toggle(){
   search(){
     this.globals.moreResults = false;
     this.globals.query = true;
-    if(this.globals.currentOption.metadata==2){
+    if(this.globals.currentOption.metaData==2){
       this.globals.mapsc=true;
-      this.globals.tab =false;
     }else{
-      this.globals.tab = true;
       this.globals.mapsc=false;
     }
+    this.globals.tab = true;
     
     this.globals.isLoading = true;
 

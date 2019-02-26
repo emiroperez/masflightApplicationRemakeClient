@@ -84,12 +84,15 @@ export class AdminMenuMembershipsComponent implements OnInit {
     }
   }
 
-  /* getSelectedNodes(option){
+   getSelectedNodes(option){
     this.allSelected = false;
     this.partiallySelected = false;
     let total: any = 0;
     let selected: any = 0;
-    this.recursiveSelected(option, total, selected);
+    let children = option.chiildren;
+    for (let i=0; i < children; i++){
+    this.recursiveSelected(children[i], total, selected);
+    }
     if (total == selected && total > 0) {
       this.allSelected = true;
     }
@@ -106,12 +109,12 @@ export class AdminMenuMembershipsComponent implements OnInit {
       selected++;
     }
     if (option.children.length > 0) {
-        this.recursiveSelected(option.children, total, selected);
-      }else{
-        for
+      for (let i=0; i < option.children; i++){
+        this.recursiveSelected(option.children[i], total, selected);
+      }
       }
     }
-  }
+
 
   descendantsAllSelected(option){
     this.getSelectedNodes(option);
@@ -125,5 +128,5 @@ export class AdminMenuMembershipsComponent implements OnInit {
     if (this.partiallySelected){
       return true && !this.descendantsAllSelected(option);
     }
-  } */
+  }
 }

@@ -12,12 +12,11 @@ import { Utils } from '../commons/utils';
 })
 export class LoginScreenComponent implements OnInit {
 
-  LOGIN_URL="/login/";	
-	OK_STATUS = "ok";	
-	INVALID_USERNAME = "invaliduser";
-	
-	credentials = {}	
-	authenticated = false;
+  LOGIN_URL = '/login/';
+  OK_STATUS = 'ok';
+  INVALID_USERNAME = 'invaliduser';
+  credentials = {};
+  authenticated = false;
 
   user: User;
   utils: Utils;
@@ -31,8 +30,6 @@ export class LoginScreenComponent implements OnInit {
     this.user = new User(null);
     this.utils = new Utils();
   }
-  
-  
 
   getErrorUsernameMessage() {
     return this.usernameValidator.hasError('required') ? 'You must enter a username' :'';
@@ -46,32 +43,32 @@ export class LoginScreenComponent implements OnInit {
 
 
   storeSecurityToken(token){
-		window.localStorage.setItem ("token", token);
-	}
+    window.localStorage.setItem ("token", token);
+  }
 
   handleResponse(_this,data){
-		var response =data;
-		if (response.status==_this.OK_STATUS){
-			_this.userId = response.userId;
-			if (response.token!=null){
-				_this.storeSecurityToken(response.token);
-				_this.username=response.username;
-        _this.authenticated = true;				
-			}
-			_this.router.navigate(['/welcome']);
-		}else {
-			_this.utils.showAlert ('warning',data.errorMessage);
-			_this.credentials = {};
-		}
-	}
+    var response = data;
+    if (response.status == _this.OK_STATUS){
+      _this.userId = response.userId;
+      if (response.token! = null){
+        _this.storeSecurityToken(response.token);
+        _this.username = response.username;
+        _this.authenticated = true;
+      }
+      _this.router.navigate(['/welcome']);
+    } else {
+      _this.utils.showAlert ('warning', data.errorMessage);
+      _this.credentials = {};
+    }
+  }
 
   errorAutentication(_this,data){
 
   }
 
 
-  login(){ 
-    if( this.utils.isEmpty(this.user.username) ){
+  login(){
+    if(this.utils.isEmpty(this.user.username) ){
       this.utils.showAlert('warning', 'Invalid User Name');
       return;
     }
@@ -81,15 +78,14 @@ export class LoginScreenComponent implements OnInit {
     }
     let encodedObj = this.encodeCredentials();
     this.authService.login(this,encodedObj, this.handleResponse,this.errorAutentication);
-        
   }
 
   encodeCredentials(){
-		let encoded = {};
-		encoded['id'] = window.btoa(this.user.username);
-		encoded['pd'] = window.btoa(this.user.password);
-		return encoded;
-	}
+    let encoded = {};
+    encoded['id'] = window.btoa(this.user.username);
+    encoded['pd'] = window.btoa(this.user.password);
+    return encoded;
+  }
 
 
   ngOnInit() {

@@ -4,6 +4,7 @@ import { Globals } from '../globals/Globals';
 import { ApplicationService } from '../services/application.service';
 import { MatSnackBar, MatTableDataSource } from '@angular/material';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MessageComponent } from '../message/message.component';
 
 
 @Component({
@@ -217,6 +218,8 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
   idDomOptionSelected: any;
 
+  emptyError: any = 0;
+
   constructor(private http: ApiClient, public globals: Globals,
     private service: ApplicationService, public snackBar: MatSnackBar,
     public dialog: MatDialog, private ref: ChangeDetectorRef,
@@ -366,19 +369,26 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
       dialogRef.afterClosed().subscribe((result: any) => {
         if (result.confirm){
           this.optionSelected.toDelete = true;
+          this.optionSelected.label+="...";
+          this.saveMenu();
         }
-        console.log('prueba entro'+this.optionSelected.toDelete);
       });
-
-      console.log('prueba '+this.optionSelected.toDelete);
     }
   }
 
   deleteCategory
 
   saveMenu() {
-    console.log(this.menu);
-    this.service.saveMenu(this, this.menu, this.handlerSuccessSaveMenuData, this.handlerErrorSaveMenuData);
+    this.emptyError=0;
+    let verify = this.verifyMenu();
+    if (verify > 0){
+      const dialogRef = this.dialog.open(MessageComponent, {
+        data: { title:"Error", message: "You have empty options, please complete them and try again."}
+      });
+    }else {
+      console.log("ok");
+      this.service.saveMenu(this, this.menu, this.handlerSuccessSaveMenuData, this.handlerErrorSaveMenuData);
+    }
   }
 
   handlerSuccessSaveMenuData(_this, data) {
@@ -386,8 +396,36 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   }
 
   handlerErrorSaveMenuData(_this, data) {
-    console.log(data);
     _this.getMenuData();
+  }
+
+  verifyMenu(){
+
+    for (let i=0; i < this.menu.length; i++){
+      let optionMenu = this.menu[i];
+      if ((optionMenu['label'] == null) || (optionMenu['label'] == "")){
+        this.emptyError = this.emptyError+1;
+      }
+      this.recursiveVerify(optionMenu);
+    }
+    let valueError =  this.emptyError;
+    return valueError;
+    }
+
+
+  recursiveVerify(option){
+    if(option.children.length > 0){
+      for (let i=0; i<option.children.length; i++){
+        const element = option.children[i];
+        if((element['label'] == null) || (element['label'] == "")){
+          this.emptyError = this.emptyError+1;
+        }
+        if(element.children.length > 0){
+          this.recursiveVerify(element);
+      }
+      }
+    }
+
   }
 
   saveMeta() {

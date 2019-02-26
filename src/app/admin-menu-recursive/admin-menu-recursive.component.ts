@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, QueryList, ViewChildren, AfterViewInit } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-admin-menu-recursive',
@@ -45,12 +46,18 @@ export class AdminMenuRecursiveComponent implements OnInit {
 
   optionActive: any = {};
 
+  optionValidator = new FormControl('optionname', [Validators.required]);
+
   constructor() { }
 
   ngOnInit() {
   }
 
   ngAfterViewInit(): void {
+  }
+
+  getErrorOptionMessage() {
+    return this.optionValidator.hasError('required') ? 'You must enter a label in this field' :'';
   }
 
   toggle(option) {

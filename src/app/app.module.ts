@@ -147,6 +147,7 @@ import { MsfFareIncrementsMarketHistogramsComponent } from './msf-fare-increment
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { MsfConfirmationDialogComponent } from './msf-confirmation-dialog/msf-confirmation-dialog.component';
+import { MsfDashboardPanelSizePipe } from './msf-dashboard/msf-dashboard-panelsizepipe';
 import { MsfSchedulePanelComponent } from './msf-schedule-panel/msf-schedule-panel.component';
 import { MsfScheduleMapsComponent } from './msf-schedule-maps/msf-schedule-maps.component';
 import { MsfSchedulePanelInfoComponent } from './msf-schedule-panel-info/msf-schedule-panel-info.component';
@@ -278,9 +279,10 @@ import { MsfSchedulePanelInfoComponent } from './msf-schedule-panel-info/msf-sch
     ForgotPasswordComponent,
     ResetPasswordComponent,
     MsfConfirmationDialogComponent,
+    MsfDashboardPanelSizePipe,
     MsfSchedulePanelComponent,
     MsfScheduleMapsComponent,
-    MsfSchedulePanelInfoComponent,
+    MsfSchedulePanelInfoComponent
   ],
   imports: [
     BrowserModule,

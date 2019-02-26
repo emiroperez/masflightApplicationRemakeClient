@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import {FormControl, Validators,ValidatorFn, ValidationErrors, AbstractControl, FormGroup} from '@angular/forms';
 import { User} from '../model/User';
@@ -12,12 +12,16 @@ import { RegisterService } from '../services/register.service';
 import { Payment } from '../model/Payment';
 import { Globals } from '../globals/Globals';
 import { NG_SELECT_DEFAULT_CONFIG } from '@ng-select/ng-select';
+import { MessageComponent } from '../message/message.component';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
+  styleUrls: ['./register.css'],
+  encapsulation: ViewEncapsulation.None,
   providers: [
     {
         provide: NG_SELECT_DEFAULT_CONFIG,
@@ -75,11 +79,11 @@ export class RegisterComponent implements OnInit {
     cvvValidator : new FormControl('cvv', [Validators.required])
   })
 
- 
+
  /*  states: State[] = [
     {name: 'California', id: '1'},
     {name: 'Florida', id: '3'},
-    {name: 'Texas', id: '2'},    
+    {name: 'Texas', id: '2'},
     {name: 'Washington', id: '4'},
   ];
 
@@ -89,9 +93,13 @@ export class RegisterComponent implements OnInit {
     {name: 'China', id: '1'},
     {name: 'Russia', id: '2'}
   ]; */
-  
- 
-  constructor(private userServices: UserService,private registerServices:RegisterService, private globals: Globals,private router: Router) {
+
+
+  constructor(private userServices: UserService,
+    private registerServices:RegisterService,
+    public dialog: MatDialog,
+    private globals: Globals,private router: Router) {
+
     this.users = new User( new Payment());
     this.userPlan=new UserPlan();
     this.utils = new Utils();
@@ -101,8 +109,8 @@ export class RegisterComponent implements OnInit {
     this.globals.isLoading = true;
     this.registerServices.getCountries(this,this.renderCountries,this.errorCountries);
     this.registerServices.getPlans(this,this.renderPlans,this.errorPlans);
-   
-   
+
+
   }
 
   ngOnInit() {}
@@ -118,7 +126,7 @@ export class RegisterComponent implements OnInit {
 
   }
 
-  
+
 
   renderPlans(_this,data){
     _this.plans = data;
@@ -138,20 +146,23 @@ export class RegisterComponent implements OnInit {
     //console.log(error);
   }
 
-  CountryChangeEvent(target){
+  CountryChangeEvent(event){
     this.users.CState=null;
-    if (target != undefined){
-      this.states = target.states;
+    console.log(event);
+    if (event != undefined){
+      console.log(event)
+      this.states = event.value.states;
     }else{
       this.states=[];
+      console.log('mmop');
     }
-
+    console.log(this.states);
   }
 
 
   setPlan(plan){
     this.userPlan.IdPlan=plan;
-   
+
   }
   getMonthlyValue(price,type){
     if (type=="month"){
@@ -176,7 +187,7 @@ export class RegisterComponent implements OnInit {
     return (control: AbstractControl): ValidationErrors => {
       if(comp.users!=undefined){
         if(comp.users.payment!=undefined){
-          
+
           if(control.value!= undefined && control.value.length==4){
             let today = new Date();
             let inputDate: string = control.value;
@@ -186,8 +197,8 @@ export class RegisterComponent implements OnInit {
           }else{
             return null;
           }
-          
-          
+
+
         }else{
           return null;
         }
@@ -202,7 +213,7 @@ export class RegisterComponent implements OnInit {
   }
 
   checkEmailResponse(_this,data){
-   
+
     if(data){
       _this.personalInformationForm.get("emailValidator").setErrors({exists:data});
     }else{
@@ -218,7 +229,7 @@ export class RegisterComponent implements OnInit {
   }
 
   getErrorPasswordMessage() {
-    
+
     return this.personalInformationForm.get('passwordValidator').hasError('required') ? 'You must enter a password' : '';
   }
 
@@ -258,6 +269,10 @@ export class RegisterComponent implements OnInit {
     return this.personalInformationForm.get('phoneNumberValidator').hasError('required') ? 'You must enter a phone number' :'';
   }
 
+  getPamentTypeMessage() {
+    return this.paymentInformationForm.get('paymentTypeValidator').hasError('required') ? 'You must choose a payment type method' :'';
+  }
+
   getErrorCardNumberMessage() {
     return this.paymentInformationForm.get('cardNumberValidator').hasError('required') ? 'You must enter the card number' :'';
   }
@@ -270,6 +285,10 @@ export class RegisterComponent implements OnInit {
     return this.paymentInformationForm.get('cvvValidator').hasError('required') ? 'You must enter the cvv' :'';
   }
 
+  getErrorPlan() {
+    return this.planInformationForm.get('planValidator').hasError('required') ? 'You must choose a plan' :'';
+  }
+
   successHandleResponse(_this,data){
 		//console.log(data);
 	}
@@ -277,7 +296,7 @@ export class RegisterComponent implements OnInit {
   errorHandleResponsen(){
 
   }
-  
+
 
   insertUser(){
 		if(this.personalInformationForm.valid && this.planInformationForm.valid && this.paymentInformationForm.valid ){
@@ -285,15 +304,27 @@ export class RegisterComponent implements OnInit {
       this.userPlan.planPayment = this.users.payment;
       this.userServices.saveUser(this,this.userPlan, this.saveUserHandleResponse,this.errorHandleResponsen);
     }else{
-      console.log('no valid Form')
+      this.utils.showAlert('info','No valid form, you must complete all fields including payment type, card number, expiration date and cvv');
     }
   }
-  
-  saveUserHandleResponse(this_,data){
-    this_.utils.showAlert('info','User Created Succesfully');
-    //this_.router.navigate(['']);
+
+  validatePlan() {
+    if(this.planInformationForm.get('planValidator').hasError('required')){
+      const dialogRef = this.dialog.open(MessageComponent, {
+        data: { title:"Error", message: "No valid form, you must choose a plan"}
+      });
+    }
   }
-  
+
+  saveUserHandleResponse(this_,data){
+    const dialogRef = this_.dialog.open(MessageComponent, {
+      data: { title:"User created succesfully!", message: "Congratulations! You have created a new user. Please let our administrator validate your user membership plan and we will let you know when your user is activated!"}
+    });
+    dialogRef.afterClosed().subscribe((result: any) => {
+      this_.router.navigate(['']);
+    });
+  }
+
   getOptionsText(options: any[]){
     let text="";
     let i = 0;
