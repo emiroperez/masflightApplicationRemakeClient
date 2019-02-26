@@ -110,3 +110,7 @@
 .ng-select {
     width: 50% !important;
 }
+
+select.ng-select-single .ng-select-container .ng-value-container .ng-value {
+    line-height: 1.125px;
+}
