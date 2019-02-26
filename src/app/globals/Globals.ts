@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Option} from '../model/Option';
-import { MatSort } from '@angular/material';
+import { MatSort, MatTab } from '@angular/material';
 import { Observable } from 'rxjs';
 import { AmChart, AmChartsService } from '@amcharts/amcharts3-angular';
 @Injectable()
@@ -49,6 +49,8 @@ export class Globals {
   Airportdataorigin:any;
   Airportdatadest:any;
   scheduleChart :AmChart;
+  showMapsc: boolean =true;
+  scTab: MatTab;
    initDataSource(){
     if(this.currentMenuCategory!= null){
     if(this.currentMenuCategory.welcome!= null){
@@ -156,7 +158,6 @@ export class Globals {
     this.query = false;
     this.tab = false;
     this.hideParametersPanels = false;
-
   }
 
   getTime(){

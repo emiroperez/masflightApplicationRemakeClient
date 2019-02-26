@@ -3403,4 +3403,12 @@ mat-expansion-panel-body {
   padding: 0px !important;
 }
 
+.tab-hide {
+  display: none !important;
+}
+
+.tab-show {
+  display: block !important;
+}
+
 /*# sourceMappingURL=styles.css.map */
