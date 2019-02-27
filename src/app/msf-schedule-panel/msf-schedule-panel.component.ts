@@ -10,9 +10,11 @@ import { AmChart, AmChartsService } from '@amcharts/amcharts3-angular';
 
 export class MsfSchedulePanelComponent implements OnInit {
   panelOpenState = false;
-  
+  private mapaairports : Map<String, any>;
   constructor(private AmCharts: AmChartsService,public globals: Globals) { }
   aux=this.globals.scheduledata;
+
+ 
   rad2degr(rad) { return rad * 180 / Math.PI; }
   degr2rad(degr) { return degr * Math.PI / 180; }
   calcCrow(lat1, lon1, lat2, lon2) 
@@ -29,10 +31,10 @@ export class MsfSchedulePanelComponent implements OnInit {
     var d = R * c;
     return d;
   }
+  
 
-
-  expandFligth(index){
-    let planeSVG = "m2,106h28l24,30h72l-44,-133h35l80,132h98c21,0 21,34 0,34l-98,0 -80,134h-35l43,-133h-71l-24,30h-28l15,-47";
+    expandFligth(index,$event){
+      let planeSVG = "m2,106h28l24,30h72l-44,-133h35l80,132h98c21,0 21,34 0,34l-98,0 -80,134h-35l43,-133h-71l-24,30h-28l15,-47";
     let targetSVG = "M9,0C4.029,0,0,4.029,0,9s4.029,9,9,9s9-4.029,9-9S13.971,0,9,0z M9,15.93 c-3.83,0-6.93-3.1-6.93-6.93S5.17,2.07,9,2.07s6.93,3.1,6.93,6.93S12.83,15.93,9,15.93 M12.5,9c0,1.933-1.567,3.5-3.5,3.5S5.5,10.933,5.5,9S7.067,5.5,9,5.5 S12.5,7.067,12.5,9z";
     var airportsarray =this.aux[index].airports;
     var airports =[];
@@ -40,31 +42,49 @@ export class MsfSchedulePanelComponent implements OnInit {
      var nodeair = {}
      var nodeline ={}
      var countlines =0;
-      for (var i = 0; i < airportsarray.length; i += 1) {
-         nodeair = { 
-          "svgPath": targetSVG,
-           "title": airportsarray[i].airportname,
-           "latitude": airportsarray[i].airportlat,
-           "longitude": airportsarray[i].airportlgt,
-           "label": airportsarray[i].airportname,
-           "labelColor" :"#ffffff",
-           "labelFontSize" : 12
+   
+      if($event.checked){
+        for(var k =0;k<airportsarray.length; k+=1){
+          nodeair = { 
+            "svgPath": targetSVG,
+             "title": airportsarray[k].airportname,
+             "latitude": airportsarray[k].airportlat,
+             "longitude": airportsarray[k].airportlgt,
+             "label": airportsarray[k].airportname,
+             "labelColor" :"#ffffff",
+             "labelFontSize" : 12
+          }
+          this.mapaairports.set( airportsarray[k].airportname+"_"+index, nodeair);
+          airports.push(nodeair);
+         }
+      }else{
+        for(var k =0;k<airportsarray.length; k+=1){
+        this.mapaairports.delete(airportsarray[k].airportname+"_"+index);
         }
-        if (i+1 < airportsarray.length){
+      }
+          
+    
+  
+     let mapToArray = Array.from(this.mapaairports.values());
+      for (var i = 0; i < mapToArray.length; i += 1) {
+     
+        if (i+1 <  mapToArray.length){
           countlines++;
           nodeline ={
             "id" :"line"+countlines,
             "arc": -0.85,
             "alpha": 0.3,
-            "latitudes": [ airportsarray[i].airportlat, airportsarray[i+1].airportlat ],
-            "longitudes": [ airportsarray[i].airportlgt, airportsarray[i+1].airportlgt ]
+            "latitudes": [ mapToArray[i].latitude, mapToArray[i+1].latitude ],
+            "longitudes": [ mapToArray[i].longitude, mapToArray[i+1].longitude ]
           }
           lines.push(nodeline);
 
         }
         
-        airports.push(nodeair);
+      
       }
+
+
      
       var LATIDX = 0;
       var LNGIDX = 1;
@@ -72,18 +92,18 @@ export class MsfSchedulePanelComponent implements OnInit {
       var sumY = 0;
       var sumZ = 0;
   
-      for (var i=0; i<airports.length; i++) {
-          var lat = this.degr2rad(airports[i].latitude);
-          var lng = this.degr2rad(airports[i].longitude);
+      for (var i=0; i<mapToArray.length; i++) {
+          var lat = this.degr2rad(mapToArray[i].latitude);
+          var lng = this.degr2rad(mapToArray[i].longitude);
           // sum of cartesian coordinates
           sumX += Math.cos(lat) * Math.cos(lng);
           sumY += Math.cos(lat) * Math.sin(lng);
           sumZ += Math.sin(lat);
       }
       console.log(sumX+"-"+sumY+"-"+sumZ);
-      var avgX = sumX / airports.length;
-      var avgY = sumY / airports.length;
-      var avgZ = sumZ / airports.length;
+      var avgX = sumX / mapToArray.length;
+      var avgY = sumY / mapToArray.length;
+      var avgZ = sumZ / mapToArray.length;
   
       // convert average x, y, z coordinate to latitude and longtitude
       var lng = Math.atan2(avgY, avgX);
@@ -91,8 +111,16 @@ export class MsfSchedulePanelComponent implements OnInit {
       var lat = Math.atan2(avgZ, hyp);
       var zoomlat =  this.rad2degr(lat);
       var zoomlong =this.rad2degr(lng);
-     var dist = this.calcCrow(airports[0].latitude,airports[0].longitude,airports[1].latitude,airports[1].longitude);
-     console.log(dist);
+      if(mapToArray.length>0){
+        var dist = this.calcCrow(mapToArray[0].latitude,mapToArray[0].longitude,mapToArray[1].latitude,mapToArray[1].longitude);
+      }
+      
+      if(mapToArray.length===0){
+        this.globals.scheduleChart.dataProvider.zoomLevel = 1;
+        zoomlat =42;
+        zoomlong =  -55;
+      }
+
 
       for (var i = 0; i < lines.length; i += 1) {
         nodeair = { 
@@ -107,18 +135,21 @@ export class MsfSchedulePanelComponent implements OnInit {
           "scale": 0.03,
           "positionScale": 1.3
         }
-        airports.push(nodeair);
+        mapToArray.push(nodeair);
       }
       this.globals.schedulepanelinfo = this.aux[index];
       this.globals.schedulepanelinfo.TotalTime= this.globals.schedulepanelinfo.TotalTime.replace("Hours", "H").replace("Minutes","M");
       this.AmCharts.updateChart(this.globals.scheduleChart, () => {
-      this.globals.scheduleChart.dataProvider.images  = airports;
+      this.globals.scheduleChart.dataProvider.images  = mapToArray;
       this.globals.scheduleChart.dataProvider.lines =lines;
       this.globals.scheduleChart.dataProvider.zoomLevel = 4.0;
        this.globals.scheduleChart.dataProvider.zoomLongitude=Number(zoomlong);
        this.globals.scheduleChart.dataProvider.zoomLatitude=Number(zoomlat);
       
       });
+     
+   
+     
    }
    returnSearch(){
     this.globals.hideParametersPanels=false;
@@ -132,7 +163,7 @@ export class MsfSchedulePanelComponent implements OnInit {
    }
    
   ngOnInit() {
-    
+    this.mapaairports = new Map();
   }
 
   

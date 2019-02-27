@@ -1,9 +1,8 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Arguments } from '../model/Arguments';
 import { FormControl } from '@angular/forms';
-import { ReplaySubject } from 'rxjs';
+import { ReplaySubject ,  Subject } from 'rxjs';
 import { MatSelect } from '@angular/material';
-import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 import { ApiClient } from '../api/api-client';
 

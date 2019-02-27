@@ -6,12 +6,12 @@
         </mat-toolbar-row>
 </mat-toolbar>
 <mat-accordion>
-  <mat-expansion-panel  class="msf-schedule-panel" *ngFor="let item of aux; let indexopen = index" (opened)="expandFligth(indexopen)">
+  <mat-expansion-panel  class="msf-schedule-panel" *ngFor="let item of aux; let indexopen = index" >
     <mat-expansion-panel-header class="msf-schedule-mat-expansion-panel-header" > 
       <mat-panel-title class="msf-schedule-panel-header">
-       Option {{indexopen+1}} - Flight N° {{item.Flight.FlightNo}}
+       {{item.Flight.Marketing_Airline}} - Flight N° {{item.Flight.FlightNo}}
       </mat-panel-title>
-       
+      <mat-panel-description><mat-checkbox  (change)="expandFligth(indexopen,$event)" (click)="$event.stopPropagation();"></mat-checkbox></mat-panel-description>
     </mat-expansion-panel-header>
     <table class="msf-schedule-panel-table">
       <tr><td>Touched Airports</td><td>{{item.TouchedAirports}}</td></tr>
