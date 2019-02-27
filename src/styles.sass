@@ -1671,12 +1671,14 @@ mat-tab-group
         flex-direction: row
         align-items: center
         width: 20%
+        .msf-dashboard-column-properties-button
+            padding-left: 10px
         .msf-dashboard-column-properties-height-label
             width: 60%
         .msf-dashboard-column-properties-width-label
             width: 90%
         .msf-dashboard-column-properties-form-field
-            @extend .msf-dashboard-form-field
+            @extend .msf-dashboard-column-properties-form-field
 
 .msf-dashboard-container
     font-size: 14px
@@ -1745,6 +1747,12 @@ mat-tab-group
         @include msf-dashboard-icon(#01abec, pointer)
 
 .msf-dashboard-form-field
+    .mat-form-field-underline
+        background-color: #595959
+
+.msf-dashboard-column-properties-form-field
+    .mat-select-value-text
+        color: #fff
     .mat-form-field-underline
         background-color: #595959
 

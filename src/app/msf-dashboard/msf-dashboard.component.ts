@@ -164,7 +164,7 @@ export class MsfDashboardComponent implements OnInit {
     this.displayAddChartMenu = !this.displayAddChartMenu;
   }
 
-  insertPanels (_this, data)
+  insertPanels(_this, data): void
   {
     let dashboardPanels;
     let dashboardRows = [];
@@ -186,7 +186,28 @@ export class MsfDashboardComponent implements OnInit {
     _this.globals.isLoading = false;
   }
 
-  deleteRowPanel (_this): void
+  insertPanelsInColumn(_this, data): void
+  {
+    let dashboardPanels, column, defaultWidth;
+
+    dashboardPanels = data;
+    column = dashboardPanels[0].column;
+
+    // insert the data options for each chart
+    for (let i = 0; i < dashboardPanels.length; i++)
+    {
+      let dashboardPanel = dashboardPanels[i];
+      _this.dashboardColumns[column].push (new MsfDashboardChartValues (_this.options, dashboardPanel.title, dashboardPanel.id));
+    }
+
+    defaultWidth = _this.getPanelWidthOption (12 / (dashboardPanels.length + 1));
+    _this.dashboardColumnsSize[column].width[0] = defaultWidth;
+    _this.dashboardColumnsSize[column].width[1] = defaultWidth;
+    _this.dashboardColumnsSize[column].width[2] = defaultWidth;
+    _this.globals.isLoading = false;
+  }
+
+  deleteRowPanel(_this): void
   {
     let dashboardRows = [];
 
@@ -234,6 +255,28 @@ export class MsfDashboardComponent implements OnInit {
 
     this.globals.isLoading = true;
     this.service.createDashboardPanel (this, panelsToAdd, this.insertPanels, this.handlerError);
+  }
+
+  addChartInColumn(column, numCharts): void
+  {
+    let panelsToAdd;
+
+    panelsToAdd = [];
+
+    for (let i = 0; i < numCharts; i++)
+    {
+      // set the properties for each panel before adding it into the database
+      panelsToAdd.push (
+      {
+        'applicationId' : this.globals.currentApplication.id,
+        'row' : i,
+        'column' : column,
+        'title' : "New Chart"
+      });
+    }
+
+    this.globals.isLoading = true;
+    this.service.createDashboardPanel (this, panelsToAdd, this.insertPanelsInColumn, this.handlerError);
   }
 
   toggleColumnProperties(column): void
