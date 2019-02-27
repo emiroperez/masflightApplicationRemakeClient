@@ -192,28 +192,30 @@ export class MsfTableComponent implements OnInit {
   }
 
   handlerSuccess(_this,data, tab){
-    _this.globals.totalRecord=0;
-    _this.setGroupingArgument();
-    _this.globals.endTimestamp = new Date();
-    let response = data.Response;
-    if(response!=null){
-      if(response.total!=null){
-        _this.globals.totalRecord = response.total;
-      }else{
-        for (var key in response) {
-          var array = response[key];
-          if( array != null){
-            if(Array.isArray(array)){
-              _this.globals.totalRecord = array.length;
-              break;
-            }else{
-              for (var key in array) {
-                var obj = array[key];
-                if( obj != null){
-                  let keys = Object.keys(response);
-                  let mainElement = _this.getMainKey(keys,response);
-                  if(mainElement!=null){
-                    _this.globals.totalRecord = 1;
+    if(_this.globals.isLoading){
+      _this.globals.totalRecord=0;
+      _this.setGroupingArgument();
+      _this.globals.endTimestamp = new Date();
+      let response = data.Response;
+      if(response!=null){
+        if(response.total!=null){
+          _this.globals.totalRecord = response.total;
+        }else{
+          for (var key in response) {
+            var array = response[key];
+            if( array != null){
+              if(Array.isArray(array)){
+                _this.globals.totalRecord = array.length;
+                break;
+              }else{
+                for (var key in array) {
+                  var obj = array[key];
+                  if( obj != null){
+                    let keys = Object.keys(response);
+                    let mainElement = _this.getMainKey(keys,response);
+                    if(mainElement!=null){
+                      _this.globals.totalRecord = 1;
+                    }
                   }
                 }
               }
@@ -221,69 +223,68 @@ export class MsfTableComponent implements OnInit {
           }
         }
       }
-    }
-    let keys = Object.keys(response);
-    let mainElement = _this.getMainKey(keys,response);
-    if(!(mainElement instanceof Array)){
-      mainElement = [mainElement];
-    }
-    if( _this.globals.totalRecord > 0){
-      if(_this.globals.currentOption.metaData==1){
-
-        _this.globals.displayedColumns = data.metadata;
-        if(_this.groupingArgument!=null){
-          _this.addGroupingColumns(_this.globals.displayedColumns);
-        }
-        _this.metadata = data.metadata;
-        _this.globals.metadata = data.metadata;
-        console.log( _this.globals.displayedColumns);
-        
-        _this.setColumnsDisplayed(_this);
-        
-        let dataResult = new MatTableDataSource(mainElement);     
+      let keys = Object.keys(response);
+      let mainElement = _this.getMainKey(keys,response);
+      if(!(mainElement instanceof Array)){
+        mainElement = [mainElement];
+      }
+      if( _this.globals.totalRecord > 0){
+        if(_this.globals.currentOption.metaData==1){
+  
+          _this.globals.displayedColumns = data.metadata;
+          if(_this.groupingArgument!=null){
+            _this.addGroupingColumns(_this.globals.displayedColumns);
+          }
+          _this.metadata = data.metadata;
+          _this.globals.metadata = data.metadata;
+          console.log( _this.globals.displayedColumns);
+          
+          _this.setColumnsDisplayed(_this);
+          
+          let dataResult = new MatTableDataSource(mainElement);     
+          if( _this.globals.moreResults){
+              _this.dataSource.data = _this.dataSource.data.concat(dataResult.data);
+          }else{
+            _this.dataSource = dataResult;
+          }
+          if( _this.globals.totalRecord<100){
+            _this.globals.moreResultsBtn = false;
+            _this.globals.moreResults = false;
+          }
+      }else if (_this.globals.currentOption.metaData==0){
+        _this.template = data.template;
+      }else if (_this.globals.currentOption.metaData==2){
+        _this.globals.hideParametersPanels = true;
+        _this.globals.scheduledata = mainElement;
+        _this.globals.scmap=true;
+        _this.globals.tab =false;
+      }
+      }else{
         if( _this.globals.moreResults){
-            _this.dataSource.data = _this.dataSource.data.concat(dataResult.data);
-        }else{
-          _this.dataSource = dataResult;
-        }
-        if( _this.globals.totalRecord<100){
           _this.globals.moreResultsBtn = false;
-          _this.globals.moreResults = false;
+            _this.globals.moreResults = false;
         }
-    }else if (_this.globals.currentOption.metaData==0){
-      _this.template = data.template;
-    }else if (_this.globals.currentOption.metaData==2){
-      _this.globals.hideParametersPanels = true;
-      _this.globals.scheduledata = mainElement;
-      _this.globals.scmap=true;
-      _this.globals.tab =false;
-    }
-    }else{
-      if( _this.globals.moreResults){
-        _this.globals.moreResultsBtn = false;
-          _this.globals.moreResults = false;
+      }  
+      if(_this.dataSource){
+        _this.ref.detectChanges();
+        if(_this.sort!=undefined){
+          _this.dataSource.sort =_this.sort;
+        }
+        _this.globals.dataSource = true;
+        _this.globals.selectedIndex = 2;
+        console.log(_this.dataSource);
+      }else{
+        _this.globals.dataSource = false;
       }
-    }  
-    if(_this.dataSource){
-      _this.ref.detectChanges();
-      if(_this.sort!=undefined){
-        _this.dataSource.sort =_this.sort;
+      
+      if(_this.template){
+        _this.globals.template = true;
+        _this.globals.selectedIndex = 2;
+      }else{
+        _this.globals.template = false;
       }
-      _this.globals.dataSource = true;
-      _this.globals.selectedIndex = 2;
-      console.log(_this.dataSource);
-    }else{
-      _this.globals.dataSource = false;
+      _this.globals.isLoading = false;   
     }
-    
-    if(_this.template){
-      _this.globals.template = true;
-      _this.globals.selectedIndex = 2;
-    }else{
-      _this.globals.template = false;
-    }
-    _this.globals.isLoading = false;   
-
   }
 
   setColumnsDisplayed(_this){
