@@ -153,7 +153,7 @@ export class MsfTableComponent implements OnInit {
   }
 
   getData(moreResults: boolean){
-    if(this.globals.moreResultsBtn){
+    // if(this.globals.moreResultsBtn){
       this.globals.startTimestamp = new Date();
       var pageSize = 100;
         if(moreResults){
@@ -163,7 +163,7 @@ export class MsfTableComponent implements OnInit {
           this.actualPageNumber=0;
         }
       this.service.getDataTableSource(this, this.handlerSuccess, this.handlerError,""+this.actualPageNumber);
-    }
+    // }
   }
 
   getDataUsageStatistics(){

@@ -50,7 +50,7 @@ export class LoginScreenComponent implements OnInit {
     var response = data;
     if (response.status == _this.OK_STATUS){
       _this.userId = response.userId;
-      if (response.token! = null){
+      if (response.token!= null){
         _this.storeSecurityToken(response.token);
         _this.username = response.username;
         _this.authenticated = true;
