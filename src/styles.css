@@ -3423,7 +3423,7 @@ img.msf-calendar-image {
   margin: auto;
 }
 
-mat-expansion-panel-body {
+.mat-expansion-panel-body {
   padding: 0px !important;
 }
 
