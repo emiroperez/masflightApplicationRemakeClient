@@ -14,16 +14,17 @@
        
     </mat-expansion-panel-header>
     <table class="msf-schedule-panel-table">
-      <tr><td>TouchedAirports</td><td>{{item.TouchedAirports}}</td></tr>
-      <tr><td>TotalDistance</td><td>{{item.TotalDistance}}</td></tr>
-      <tr><td>TotalTime</td><td>{{item.TotalTime}}</td></tr>
+      <tr><td>Touched Airports</td><td>{{item.TouchedAirports}}</td></tr>
+      <tr><td>Total Distance</td><td>{{item.TotalDistance}}</td></tr>
+      <tr><td>Total Time</td><td>{{item.TotalTime}}</td></tr>
     </table>
       <!-- <table *ngFor="let item2 of item.Flight"> -->
+      <!-- <div **ngIf="item.Flight.length"> -->
       <h3 class="msf-schedule-panel-subs">{{item.Flight.content}}</h3>  
     <table class="msf-schedule-panel-table" >
-        <tr><td>DepartureDate</td><td>{{item.Flight.DepartureDate}}</td></tr>
-        <tr><td>Airline</td><td>{{item.Flight.Marketing_Airline}}</td></tr>
-        <tr><td>FlightNo</td><td>{{item.Flight.FlightNo}}</td></tr>
+        <tr><td>Departure Date</td><td>{{item.Flight.DepartureDate}}</td></tr>
+        <tr><td>Air line</td><td>{{item.Flight.Marketing_Airline}}</td></tr>
+        <tr><td>Flight No</td><td>{{item.Flight.FlightNo}}</td></tr>
         <tr><td>Departure</td><td>{{item.Flight.Departure}}</td></tr>
         <tr><td>Arrival</td><td>{{item.Flight.Arrival}}</td></tr>
         <tr><td>Stops</td><td>{{item.Flight.Stops}}</td></tr>
@@ -35,11 +36,9 @@
         <tr><td>Distance</td><td>{{item.TotalDistance}}</td></tr>
       <!-- </table> -->
     </table>
-    
+  <!-- </div> -->
     
   </mat-expansion-panel>
 
 </mat-accordion>
-<mat-toolbar  class="panel-toolbar" > 
-   
-</mat-toolbar>
+<mat-toolbar  class="panel-toolbar2" ></mat-toolbar>

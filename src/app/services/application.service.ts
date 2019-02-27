@@ -43,7 +43,7 @@ export class ApplicationService {
   }
 
   getDataTableSource(_this, handlerSuccess, handlerError,pageNumber: String) {
-    _this.globals.isLoading = true;
+    // _this.globals.isLoading = true;
     _this.displayedColumns = [];
     let param = this.utils.getUrlParameters(_this.globals.currentOption);
     let urlBase = param.url;

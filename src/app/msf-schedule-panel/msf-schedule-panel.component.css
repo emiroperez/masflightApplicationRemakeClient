@@ -50,3 +50,10 @@
     color: #01abec;
     cursor: pointer;
   }
+
+  .panel-toolbar2{
+    background: #191a1a;
+    color: #01abec;
+    cursor: pointer;
+    height: 88px;
+  }

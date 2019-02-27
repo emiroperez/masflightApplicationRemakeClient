@@ -7,18 +7,18 @@
         <app-notification [show]="utils.notificationShow" [message]="utils.notificationMessage" [type]="utils.notificationType"></app-notification>
         <form class="login-form" name="login">
             <div class="block-item-input">
-                <mat-form-field>
+                <mat-form-field [formGroup]="loginForm">
                     <img src="../../assets/images/usuario.png" class="input_img">
-                    <input matInput autocomplete="off" type="text" placeholder="Username" class="input-username" [formControl]="usernameValidator" name="username" [(ngModel)]="user.username" />
-                    <mat-error *ngIf="usernameValidator.invalid">{{getErrorUsernameMessage()}}</mat-error>
+                    <input matInput autocomplete="off" type="text" placeholder="Username" class="input-username" formControlName="usernameValidator" name="username" [(value)]="user.username" />
+                    <mat-error *ngIf="isUsernameInvalid()">{{getErrorUsernameMessage()}}</mat-error>
                 </mat-form-field>
             </div>
 
             <div class="block-item-input">
-                <mat-form-field>
+                <mat-form-field [formGroup]="loginForm">
                     <img src="../../assets/images/password.png" class="input_img">
-                    <input matInput type="password" placeholder="Password" class="input-password" [formControl]="passwordValidator" name="password" [(ngModel)]="user.password" />
-                    <mat-error *ngIf="passwordValidator.invalid">{{getErrorPasswordMessage()}}</mat-error>
+                    <input matInput type="password" placeholder="Password" class="input-password" formControlName="passwordValidator" name="password" [(value)]="user.password" />
+                    <mat-error *ngIf="isPasswordInvalid()">{{getErrorPasswordMessage()}}</mat-error>
                 </mat-form-field>
             </div>
             <div class="center">

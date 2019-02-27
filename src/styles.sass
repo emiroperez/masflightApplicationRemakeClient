@@ -453,6 +453,9 @@ p
 .center
         text-align: center
 
+.flat-button
+    background-color: $msf-secondary-color!important
+
 .login-button
             background-color: $msf-secondary-color!important
             line-height: 50px!important
@@ -1671,12 +1674,14 @@ mat-tab-group
         flex-direction: row
         align-items: center
         width: 20%
+        .msf-dashboard-column-properties-button
+            padding-left: 10px
         .msf-dashboard-column-properties-height-label
             width: 60%
         .msf-dashboard-column-properties-width-label
             width: 90%
         .msf-dashboard-column-properties-form-field
-            @extend .msf-dashboard-form-field
+            @extend .msf-dashboard-column-properties-form-field
 
 .msf-dashboard-container
     font-size: 14px
@@ -1745,6 +1750,12 @@ mat-tab-group
         @include msf-dashboard-icon(#01abec, pointer)
 
 .msf-dashboard-form-field
+    .mat-form-field-underline
+        background-color: #595959
+
+.msf-dashboard-column-properties-form-field
+    .mat-select-value-text
+        color: #fff
     .mat-form-field-underline
         background-color: #595959
 
@@ -2172,7 +2183,11 @@ mat-dialog-container
     width: 100%
     height: 100%
     opacity:0.9
-    background: rgba(0, 0,0, .9) no-repeat center url(assets/images/Rolling.svg)
+    background-color: rgba(0,0,0,.9)
+    background-image: url(assets/images/loading_pulse.gif)
+    background-repeat: no-repeat
+    background-position: bottom
+    background-size: contain
 
 .mat-tab-header, .mat-tab-nav-bar
     border-bottom: 1px solid rgba(62, 60, 60, 0.8)!important
@@ -2480,8 +2495,8 @@ input[role=combobox]
     min-height: 30px
     align-items: center
 
-.ng-select .ng-select-container .ng-value-container
-    border-top: 0.34375em solid transparent
+.ng-select.ng-select-single .ng-select-container .ng-value-container
+    border-top: 0em solid transparent
     padding-left: 5px
 
 .trigger
@@ -2810,7 +2825,7 @@ table.datasource
 .ng-value .ng-star-inserted 
     line-height: 20px !important
 
-.ng-select-container.ng-has-value
+.ng-select-multiple .ng-select-container.ng-has-value
     padding-bottom: 20px !important    
 
 .mat-checkbox-frame
@@ -2978,9 +2993,12 @@ img.msf-calendar-image
     width: auto
     display: table-caption
 .ng-select.ng-select-single .ng-select-container .ng-clear-wrapper 
-    bottom: 1px
+    bottom: 0px !important
+    margin: auto
 .ng-select.ng-select-single .ng-select-container .ng-arrow-wrapper 
-    bottom: 5px
+    height: 17px
+    bottom: -1px !important
+    margin: auto
 mat-expansion-panel-body
     padding: 0px!important
 
@@ -2988,3 +3006,18 @@ mat-expansion-panel-body
     display: none !important
 .tab-show
     display: block !important
+
+.cancel-button.mat-button 
+    top: 70%
+    margin: auto
+    padding: 5px 20px
+    display: flex
+    align-items: center
+    border: 1px solid white
+
+.cancel-button.mat-button:hover
+    background: $msf-secondary-color
+    border-color: $msf-secondary-color
+
+.cancel-button .close-icon
+    color: white
