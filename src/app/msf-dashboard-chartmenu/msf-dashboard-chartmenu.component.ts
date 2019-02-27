@@ -325,7 +325,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   {
     this.initPanelSettings ();
 
-    if (this.values.lastestResponse)
+    if (this.values.lastestResponse || this.isEmpty (this.values.lastestResponse))
     {
       this.chart = this.AmCharts.makeChart ("msf-dashboard-chart-display-" + this.columnPos + "-" + this.rowPos, this.makeOptions (this.values.lastestResponse));
       this.chart.addListener ("dataUpdated", this.zoomChart);
@@ -336,12 +336,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   ngAfterContentInit(): void
   {
-    // make sure that the lastest response is not empty
-    if (this.isEmpty (this.values.lastestResponse))
-      this.values.lastestResponse = null;
-
     // this part must be here because it generate an error if inserted on ngAfterViewInit
-    if (this.values.lastestResponse)
+    if (this.values.lastestResponse || this.isEmpty (this.values.lastestResponse))
       this.values.displayChart = true;
   }
 
