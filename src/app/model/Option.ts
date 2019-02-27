@@ -2,6 +2,7 @@ import { CategoryArguments } from "./CategoryArguments";
 
 export class Option{
     id: any;
+    order: any;
     label: string;
     icon:string;
     categoryArguments: CategoryArguments[];
@@ -11,7 +12,8 @@ export class Option{
 
 
 
-    constructor(idIn:string, labelIn: string, tabsIn: string, baseUrlIn:string, iconIn:string, childrenIn: Option[], categoryArgts: CategoryArguments[]){
+    constructor(orderIn:string,idIn:string, labelIn: string, tabsIn: string, baseUrlIn:string, iconIn:string, childrenIn: Option[], categoryArgts: CategoryArguments[]){
+        this.order = orderIn;
         this.id = idIn;
         this.label = labelIn;
         this.tab = tabsIn;

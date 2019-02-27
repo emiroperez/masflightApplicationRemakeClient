@@ -15,7 +15,7 @@ import { MsfDashboardControlVariablesComponent } from '../msf-dashboard-control-
 import { MatDialog } from '@angular/material';
 import { ComponentType } from '../commons/ComponentType';
 import { MsfDashboardChartValues } from '../msf-dashboard-chartmenu/msf-dashboard-chartvalues';
-import { MsfConfirmationDialogComponent } from '../msf-confirmation-dialog/msf-confirmation-dialog.component';
+import { MessageComponent } from '../message/message.component';
 
 @Component({
   selector: 'app-msf-dashboard-chartmenu',
@@ -310,11 +310,22 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   {
   }
 
+  isEmpty(obj): boolean
+  {
+    for (let key in obj)
+    {
+      if (obj.hasOwnProperty (key))
+        return false;
+    }
+
+    return true;
+  }
+
   ngAfterViewInit(): void
   {
     this.initPanelSettings ();
 
-    if (this.values.lastestResponse)
+    if (this.values.lastestResponse || !this.isEmpty (this.values.lastestResponse))
     {
       this.chart = this.AmCharts.makeChart ("msf-dashboard-chart-display-" + this.columnPos + "-" + this.rowPos, this.makeOptions (this.values.lastestResponse));
       this.chart.addListener ("dataUpdated", this.zoomChart);
@@ -326,7 +337,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   ngAfterContentInit(): void
   {
     // this part must be here because it generate an error if inserted on ngAfterViewInit
-    if (this.values.lastestResponse)
+    if (this.values.lastestResponse || !this.isEmpty (this.values.lastestResponse))
       this.values.displayChart = true;
   }
 
@@ -469,16 +480,21 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   handlerSuccess(_this, data): void
   {
-    if (((_this.values.currentChartType.id === 'pie' || _this.values.currentChartType.id === 'donut'
+    if (_this.isEmpty (data) || ((_this.values.currentChartType.id === 'pie' || _this.values.currentChartType.id === 'donut'
       || _this.values.currentChartType.id === 'radar')
       && data.dataProvider == null) ||
       ((_this.values.currentChartType.id !== 'pie' && _this.values.currentChartType.id !== 'donut'
         && _this.values.currentChartType.id !== 'radar')
       && !data.filter.length))
     {
-      // TODO: Display a dialog which mentions that no data is found
+      _this.values.lastestResponse = null;
       _this.values.chartGenerated = false;
       _this.globals.isLoading = false;
+
+      _this.dialog.open (MessageComponent, {
+        data: { title: "Error", message: "No data available for chart generation." }
+      });
+
       return;
     }
 
@@ -498,10 +514,14 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   handleChartError(_this, result): void
   {
-    // TODO: Display a dialog that display the message
     console.log (result);
+    _this.values.lastestResponse = null;
     _this.values.chartGenerated = false;
-    _this.globals.isLoading = false;  
+    _this.globals.isLoading = false;
+
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Error", message: result }
+    });
   }
 
   handlerError(_this, result): void

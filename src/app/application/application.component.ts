@@ -15,6 +15,7 @@ import { PlanAdvanceFeatures } from '../model/PlanAdvanceFeatures';
 import { User } from '../model/User';
 
 
+
 @Component({
   selector: 'app-application',
   templateUrl: './application.component.html',
@@ -51,6 +52,7 @@ export class ApplicationComponent implements OnInit {
 
 
   }
+
 
   validateAdmin(){
     this.service.getUserLoggedin(this, this.handleLogin, this.errorLogin);
@@ -137,6 +139,7 @@ toggle(){
     this.globals.query = true;
     if(this.globals.currentOption.metaData==2){
       this.globals.mapsc=true;
+      
     }else{
       this.globals.mapsc=false;
     }

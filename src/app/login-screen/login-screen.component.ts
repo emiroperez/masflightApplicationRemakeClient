@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {AuthService} from '../services/auth.service';
 import {NotificationComponent} from '../notification/notification.component';
-import {FormControl, Validators} from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl, Validators} from '@angular/forms';
 import { User } from '../model/User';
 import { Utils } from '../commons/utils';
 
@@ -22,23 +22,39 @@ export class LoginScreenComponent implements OnInit {
   utils: Utils;
   userId: string;
 
+  loginForm: FormGroup;
+
   _this = this;
 
-  usernameValidator = new FormControl('username', [Validators.required]);
-
-  constructor(private router: Router, private authService: AuthService, private notification: NotificationComponent) {
+  constructor(private router: Router, private authService: AuthService, private notification: NotificationComponent,
+    private formBuilder: FormBuilder) {
     this.user = new User(null);
     this.utils = new Utils();
+    this.user.username = "";
+    this.user.password = "";
+
+    this.loginForm = this.formBuilder.group ({
+      usernameValidator: new FormControl('username', [Validators.required]),
+      passwordValidator: new FormControl('password', [Validators.required])
+    });
+  }
+
+  isUsernameInvalid(): boolean
+  {
+    return this.loginForm.get ('usernameValidator').invalid;
+  }
+
+  isPasswordInvalid(): boolean
+  {
+    return this.loginForm.get ('passwordValidator').invalid;
   }
 
   getErrorUsernameMessage() {
-    return this.usernameValidator.hasError('required') ? 'You must enter a username' :'';
+    return this.loginForm.get ('usernameValidator').hasError('required') ? 'You must enter a username' :'';
   }
 
-  passwordValidator = new FormControl('username', [Validators.required]);
-
   getErrorPasswordMessage() {
-    return this.passwordValidator.hasError('required') ? 'You must enter a password':'';
+    return this.loginForm.get ('passwordValidator').hasError('required') ? 'You must enter a password':'';
   }
 
 
@@ -50,7 +66,7 @@ export class LoginScreenComponent implements OnInit {
     var response = data;
     if (response.status == _this.OK_STATUS){
       _this.userId = response.userId;
-      if (response.token! = null){
+      if (response.token!= null){
         _this.storeSecurityToken(response.token);
         _this.username = response.username;
         _this.authenticated = true;
@@ -68,6 +84,9 @@ export class LoginScreenComponent implements OnInit {
 
 
   login(){
+    this.user.username = this.loginForm.get ('usernameValidator').value;
+    this.user.password = this.loginForm.get ('passwordValidator').value;
+
     if(this.utils.isEmpty(this.user.username) ){
       this.utils.showAlert('warning', 'Invalid User Name');
       return;

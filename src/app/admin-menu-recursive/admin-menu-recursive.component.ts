@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, QueryList, ViewChildren, AfterViewInit } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { FormControl, Validators } from '@angular/forms';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-admin-menu-recursive',
@@ -50,6 +51,7 @@ export class AdminMenuRecursiveComponent implements OnInit {
 
   constructor() { }
 
+
   ngOnInit() {
   }
 
@@ -69,6 +71,11 @@ export class AdminMenuRecursiveComponent implements OnInit {
       this.clickedDivState = 'end';
     }
   }
+
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.option.children, event.previousIndex, event.currentIndex);
+  }
+
 
   selectOption(option) {
     this.optionSelected.emit(option);

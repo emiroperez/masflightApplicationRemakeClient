@@ -17,7 +17,7 @@ export class MsfGroupingComponent implements OnInit {
   @Input("argument") public argument: Arguments;
  
   groupingList: any[] = [
-                {id: 'YEAR', columnLabel: 'Year', columnNamecolumnLabel:'Year'},
+                {id: 'YEAR', columnLabel: 'Year', columnName:'Year'},
                 {id: 'MONTH', columnLabel: 'Month', columnName:'Month'},
                 {id: 'DAY', columnLabel: 'Date' ,columnName:'Date'},
                 {id: 'HOUR', columnLabel: 'Hour', columnName: 'Hour'},

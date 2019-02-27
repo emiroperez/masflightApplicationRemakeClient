@@ -3,7 +3,7 @@ import { Option } from '../model/Option';
 import {Globals} from '../globals/Globals'
 import { MatMenuTrigger } from '@angular/material';
 import { OptionWelcomeComponent } from '../option-welcome/option-welcome.component';
-
+import { AmChart, AmChartsService } from '@amcharts/amcharts3-angular';
 @Component({
   selector: 'app-menu-option',
   templateUrl: './menu-option.component.html'
@@ -20,10 +20,50 @@ export class MenuOptionComponent implements OnInit {
 
 
 
-  constructor(private globals: Globals) { }
+  constructor(private globals: Globals,private AmCharts: AmChartsService) { }
 
   ngOnInit() {
   }
+
+  makeOptions(dataProvider)
+  {
+
+   return {
+    "type": "map",
+    "theme": "none",
+      "backgroundColor" : "#FFFFFF",
+      "dataProvider": {
+        "map": "worldLow",
+        "zoomLevel": 1,
+        "zoomLongitude": 2.3510,
+        "zoomLatitude": 48.8567
+       },
+    
+      "areasSettings": {
+        "unlistedAreasColor": "#343332"
+      },
+    
+      "imagesSettings": {
+        "color": "#dedef7",
+        "rollOverColor": "#585869",
+        "selectedColor": "#585869",
+        "pauseDuration": 0.5,
+        "animationDuration": 10,
+        "adjustAnimationSpeed": true
+      },
+    
+      "linesSettings": {
+        "color": "#00a3e1",
+        "arrowSize" : 40,
+        "size" :40
+      },
+    
+      "export": {
+        "enabled": true
+      }  
+  }
+
+}
 
   optionClickHandler(option) {
     this.globals.clearVariables();
@@ -37,6 +77,7 @@ export class MenuOptionComponent implements OnInit {
     if(this.globals.currentOption.tabType === 'scmap'){
       this.globals.mapsc = true;
       this.globals.selectedIndex = 1;
+      this.globals.scheduleChart = this.AmCharts.makeChart ("chartdiv", this.makeOptions (""));
     }
     if(this.globals.currentOption.tabType === 'statistics'){
       this.globals.usageStatistics = true;
