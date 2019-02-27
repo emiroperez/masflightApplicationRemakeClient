@@ -480,7 +480,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   handlerSuccess(_this, data): void
   {
-    if (_this.isEmpty (data) || ((_this.values.currentChartType.id === 'pie' || _this.values.currentChartType.id === 'donut'
+    if (((_this.values.currentChartType.id === 'pie' || _this.values.currentChartType.id === 'donut'
       || _this.values.currentChartType.id === 'radar')
       && data.dataProvider == null) ||
       ((_this.values.currentChartType.id !== 'pie' && _this.values.currentChartType.id !== 'donut'
