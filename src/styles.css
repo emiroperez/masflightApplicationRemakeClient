@@ -494,6 +494,10 @@ p {
   text-align: center;
 }
 
+.flat-button {
+  background-color: #01abec !important;
+}
+
 .login-button, .msf-medium-button, .msf-big-button {
   background-color: #01abec !important;
   line-height: 50px !important;

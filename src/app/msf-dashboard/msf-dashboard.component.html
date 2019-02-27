@@ -41,12 +41,12 @@
               <div class="msf-dashboard-column-properties-align">
                 <ng-container *ngIf="dashboardColumn.length <= 2">
                   <div class="msf-dashboard-column-properties-button">
-                    <button mat-flat-button (click)="addChartInColumn(column, 1)">Add 1 panel</button>
+                    <button mat-flat-button class="flat-button" (click)="addChartInColumn(column, 1)">Add 1 panel</button>
                   </div>
                 </ng-container>
                 <ng-container *ngIf="dashboardColumn.length == 1">
                   <div class="msf-dashboard-column-properties-button">
-                    <button mat-flat-button (click)="addChartInColumn(column, 2)">Add 2 panels</button>
+                    <button mat-flat-button class="flat-button" (click)="addChartInColumn(column, 2)">Add 2 panels</button>
                   </div>
                 </ng-container>
               </div>

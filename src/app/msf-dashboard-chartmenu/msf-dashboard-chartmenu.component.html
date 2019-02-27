@@ -88,7 +88,7 @@
         </div>
       </div>
       <div class="msf-dashboard-chartmenu-sub-container-column-reverse">
-        <button [disabled]="!generateBtnEnabled" mat-flat-button (click)="loadData()">Generate</button>
+        <button [disabled]="!generateBtnEnabled" mat-flat-button class="flat-button" (click)="loadData()">Generate</button>
         <div class="msf-dashboard-chartmenu-control-variable-button">
           <button [disabled]="!variableCtrlBtnEnabled" mat-mini-fab (click)="goToControlVariables()" color="primary">
             <mat-icon aria-label="Control Variables">more_vert</mat-icon>
