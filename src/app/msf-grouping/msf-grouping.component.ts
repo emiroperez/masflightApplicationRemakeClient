@@ -1,9 +1,8 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Arguments } from '../model/Arguments';
 import { FormControl } from '@angular/forms';
-import { ReplaySubject, Observable, of } from 'rxjs';
+import { ReplaySubject, Observable, of ,  Subject } from 'rxjs';
 import { MatSelect } from '@angular/material';
-import { Subject } from 'rxjs';
 import { take, takeUntil, delay } from 'rxjs/operators';
 import { ApiClient } from '../api/api-client';
 import { Globals } from '../globals/Globals';
@@ -18,7 +17,7 @@ export class MsfGroupingComponent implements OnInit {
   @Input("argument") public argument: Arguments;
  
   groupingList: any[] = [
-                {id: 'YEAR', columnLabel: 'Year', columnNamecolumnLabel:'Year'},
+                {id: 'YEAR', columnLabel: 'Year', columnName:'Year'},
                 {id: 'MONTH', columnLabel: 'Month', columnName:'Month'},
                 {id: 'DAY', columnLabel: 'Date' ,columnName:'Date'},
                 {id: 'HOUR', columnLabel: 'Hour', columnName: 'Hour'},

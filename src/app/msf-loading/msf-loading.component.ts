@@ -13,4 +13,8 @@ export class MsfLoadingComponent implements OnInit {
   ngOnInit() {
   }
 
+  cancelLoading(){
+    this.globals.isLoading = false;
+  }
+
 }
