@@ -532,7 +532,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     _this.globals.isLoading = false;
 
     _this.dialog.open (MessageComponent, {
-      data: { title: "Error", message: result }
+      data: { title: "Error", message: "Failed to generate chart." }
     });
   }
 
