@@ -312,6 +312,9 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   isEmpty(obj): boolean
   {
+    if (obj == null)
+      return true;
+
     for (let key in obj)
     {
       if (obj.hasOwnProperty (key))
@@ -325,7 +328,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   {
     this.initPanelSettings ();
 
-    if (this.values.lastestResponse || !this.isEmpty (this.values.lastestResponse))
+    if (!this.isEmpty (this.values.lastestResponse))
     {
       this.chart = this.AmCharts.makeChart ("msf-dashboard-chart-display-" + this.columnPos + "-" + this.rowPos, this.makeOptions (this.values.lastestResponse));
       this.chart.addListener ("dataUpdated", this.zoomChart);
@@ -337,7 +340,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   ngAfterContentInit(): void
   {
     // this part must be here because it generate an error if inserted on ngAfterViewInit
-    if (this.values.lastestResponse || !this.isEmpty (this.values.lastestResponse))
+    if (!this.isEmpty (this.values.lastestResponse))
       this.values.displayChart = true;
   }
 
@@ -478,23 +481,32 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       this.AmCharts.destroyChart (this.chart);
   }
 
+  noDataFound(): void
+  {
+    this.values.lastestResponse = null;
+    this.values.chartGenerated = false;
+    this.globals.isLoading = false;
+
+    this.dialog.open (MessageComponent, {
+      data: { title: "Error", message: "No data available for chart generation." }
+    });
+  }
+
   handlerSuccess(_this, data): void
   {
-    if (_this.isEmpty (data) || ((_this.values.currentChartType.id === 'pie' || _this.values.currentChartType.id === 'donut'
-      || _this.values.currentChartType.id === 'radar')
-      && data.dataProvider == null) ||
-      ((_this.values.currentChartType.id !== 'pie' && _this.values.currentChartType.id !== 'donut'
-        && _this.values.currentChartType.id !== 'radar')
-      && !data.filter.length))
+    if (_this.isEmpty (data.data))
     {
-      _this.values.lastestResponse = null;
-      _this.values.chartGenerated = false;
-      _this.globals.isLoading = false;
+      _this.noDataFound ();
+      return;
+    }
 
-      _this.dialog.open (MessageComponent, {
-        data: { title: "Error", message: "No data available for chart generation." }
-      });
-
+    if (((_this.values.currentChartType.id === 'pie' || _this.values.currentChartType.id === 'donut'
+      || _this.values.currentChartType.id === 'radar') && data.dataProvider == null) ||
+      ((_this.values.currentChartType.id !== 'pie' && _this.values.currentChartType.id !== 'donut'
+      && _this.values.currentChartType.id !== 'radar')
+      && !data.filter == null))
+    {
+      _this.noDataFound ();
       return;
     }
 
