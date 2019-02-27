@@ -200,6 +200,7 @@ export class MsfDashboardComponent implements OnInit {
       _this.dashboardColumns[column].push (new MsfDashboardChartValues (_this.options, dashboardPanel.title, dashboardPanel.id));
     }
 
+    // reset for now the panel width variables
     defaultWidth = _this.getPanelWidthOption (12 / (dashboardPanels.length + 1));
     _this.dashboardColumnsSize[column].width[0] = defaultWidth;
     _this.dashboardColumnsSize[column].width[1] = defaultWidth;
@@ -209,11 +210,16 @@ export class MsfDashboardComponent implements OnInit {
 
   deleteRowPanel(_this): void
   {
+    let defaultWidth;
     let dashboardRows = [];
 
     dashboardRows = _this.dashboardColumns[_this.columnToDelete];
     dashboardRows.splice (_this.rowToDelete, 1);
-    _this.adjustPanelSize (_this.columnToDelete);
+
+    // reset panel width to avoid mess
+    defaultWidth = _this.getPanelWidthOption (12 / dashboardRows.length);
+    for (let i = 0; i < dashboardRows.length; i++)
+      _this.dashboardColumnsSize[_this.columnToDelete].width[i] = defaultWidth;
 
     // also remove the column if there are no panels left in the row
     if (!dashboardRows.length)
