@@ -518,10 +518,14 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   handleChartError(_this, result): void
   {
-    // TODO: Display a dialog that display the message
     console.log (result);
+    _this.values.lastestResponse = null;
     _this.values.chartGenerated = false;
-    _this.globals.isLoading = false;  
+    _this.globals.isLoading = false;
+
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Error", message: result }
+    });
   }
 
   handlerError(_this, result): void
