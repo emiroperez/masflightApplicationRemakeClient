@@ -19,7 +19,7 @@
               <div class="msf-dashboard-column-properties-align">
                 <span class="msf-dashboard-column-properties-height-label">Height:</span>
                 <mat-form-field class="msf-dashboard-column-properties-form-field">
-                  <mat-select [(ngModel)]="dashboardColumnsSize[column].height" style="text-align: center">
+                  <mat-select [(ngModel)]="dashboardColumnsSize[column].height" style="text-align: center" (selectionChange)="changePanelHeight(column, $event.value)">
                     <mat-option *ngFor="let heightValue of heightValues" [value]="heightValue">
                       {{heightValue.name}}
                     </mat-option>
