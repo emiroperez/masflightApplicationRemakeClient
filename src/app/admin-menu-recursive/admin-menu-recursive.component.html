@@ -14,8 +14,10 @@
 
     <mat-divider></mat-divider>
     <div [@animationOption2]="option.isOpened ? 'open': 'close'" *ngIf="option.children && option.children.length > 0 && option.isOpened" style="padding-left: 4%">
-        <div *ngFor="let optionChild of option.children; let i = index">
-            <app-admin-menu-recursive [menu]="optionChild" [index]="index + '-' + i" (optionSelected)="selectOption($event)" (idSelected)="selectIdDom($event)"></app-admin-menu-recursive>
+        <div cdkDropList class="draggable-list" (cdkDropListDropped)="drop($event)">
+            <div cdkDrag class="draggable-box" *ngFor="let optionChild of option.children; let i = index">
+                <app-admin-menu-recursive [menu]="optionChild" [index]="index + '-' + i" (optionSelected)="selectOption($event)" (idSelected)="selectIdDom($event)"></app-admin-menu-recursive>
+            </div>
         </div>
     </div>
 </div>

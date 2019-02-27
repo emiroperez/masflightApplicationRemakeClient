@@ -35,9 +35,10 @@
                 </button>
                             </div>
                         </div>
-                        <div *ngFor="let option of menu; let i = index" style="color: white; width: 86%">
-
-                            <app-admin-menu-recursive [menu]="option" [index]="i" (optionSelected)="getOptionSelected($event)" (idSelected)="getSelectIdDom($event)"></app-admin-menu-recursive>
+                        <div cdkDropList class="draggable-list" (cdkDropListDropped)="drop($event)">
+                            <div cdkDrag class="draggable-box" *ngFor="let option of menu; let i = index" style="color: white; width: 86%">
+                                <app-admin-menu-recursive [menu]="option" [index]="i" (optionSelected)="getOptionSelected($event)" (idSelected)="getSelectIdDom($event)"></app-admin-menu-recursive>
+                            </div>
                         </div>
                     </div>
                     <div style="flex: 1; min-width: 400px; margin-left: 1%; margin-right: 1%">

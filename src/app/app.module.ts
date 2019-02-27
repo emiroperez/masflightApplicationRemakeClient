@@ -151,6 +151,8 @@ import { MsfDashboardPanelSizePipe } from './msf-dashboard/msf-dashboard-panelsi
 import { MsfSchedulePanelComponent } from './msf-schedule-panel/msf-schedule-panel.component';
 import { MsfScheduleMapsComponent } from './msf-schedule-maps/msf-schedule-maps.component';
 import { MsfSchedulePanelInfoComponent } from './msf-schedule-panel-info/msf-schedule-panel-info.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -286,6 +288,7 @@ import { MsfSchedulePanelInfoComponent } from './msf-schedule-panel-info/msf-sch
   ],
   imports: [
     BrowserModule,
+    DragDropModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     LayoutModule,

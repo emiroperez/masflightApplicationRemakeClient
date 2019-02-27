@@ -5,7 +5,7 @@ import { ApplicationService } from '../services/application.service';
 import { MatSnackBar, MatTableDataSource } from '@angular/material';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { MessageComponent } from '../message/message.component';
-
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'confirm-delete-dialog',
@@ -291,6 +291,10 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     }
   }
 
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.menu, event.previousIndex, event.currentIndex);
+  }
+
   getSelectIdDom(idDomOption) {
     this.idDomOptionSelected = idDomOption;
   }
@@ -387,6 +391,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
       });
     }else {
       console.log("ok");
+      this.verifyOrder();
       this.service.saveMenu(this, this.menu, this.handlerSuccessSaveMenuData, this.handlerErrorSaveMenuData);
     }
   }
@@ -422,6 +427,29 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
         }
         if(element.children.length > 0){
           this.recursiveVerify(element);
+      }
+      }
+    }
+
+  }
+
+  verifyOrder(){
+
+    for (let i=0; i < this.menu.length; i++){
+      let optionMenu = this.menu[i];
+      this.menu[i].order = i;
+      this.recursiveOrder(optionMenu);
+    }
+    return this.menu;
+    }
+
+
+  recursiveOrder(option){
+    if(option.children.length > 0){
+      for (let i=0; i<option.children.length; i++){
+        option.children[i].order = i;
+        if(option.children[i].children.length > 0){
+          this.recursiveOrder(option.children[i]);
       }
       }
     }

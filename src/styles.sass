@@ -2495,8 +2495,8 @@ input[role=combobox]
     min-height: 30px
     align-items: center
 
-.ng-select .ng-select-container .ng-value-container
-    border-top: 0.34375em solid transparent
+.ng-select.ng-select-single .ng-select-container .ng-value-container
+    border-top: 0em solid transparent
     padding-left: 5px
 
 .trigger
@@ -2993,9 +2993,12 @@ img.msf-calendar-image
     width: auto
     display: table-caption
 .ng-select.ng-select-single .ng-select-container .ng-clear-wrapper 
-    bottom: 1px
+    bottom: 0px !important
+    margin: auto
 .ng-select.ng-select-single .ng-select-container .ng-arrow-wrapper 
-    bottom: 5px
+    height: 17px
+    bottom: -1px !important
+    margin: auto
 mat-expansion-panel-body
     padding: 0px!important
 
