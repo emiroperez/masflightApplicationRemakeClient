@@ -47,7 +47,8 @@ export class AdminMenuMembershipsComponent implements OnInit {
   @Output() idSelected = new EventEmitter();
 
 
-
+  selected: any;
+  total: any;
   isOpened: any = true;
 
   clickedDivState = 'start';
@@ -87,33 +88,50 @@ export class AdminMenuMembershipsComponent implements OnInit {
    getSelectedNodes(option){
     this.allSelected = false;
     this.partiallySelected = false;
-    let total: any = 0;
-    let selected: any = 0;
-    let children = option.chiildren;
-    for (let i=0; i < children; i++){
-    this.recursiveSelected(children[i], total, selected);
+    this.total = 0;
+    this.selected = 0;
+    let childrenOption = option.children;
+    for (let i=0; i < childrenOption.length; i++){
+    this.recursiveSelected(childrenOption[i]);
     }
-    if (total == selected && total > 0) {
-      this.allSelected = true;
+    if (this.total == this.selected && this.total != 0) {
+      option.selected = true;
     }
-    else if (total > selected){
+    else if (this.total > this.selected && this.selected != 0){
       this.partiallySelected = true;
     }
 
   }
 
-  recursiveSelected(option, total, selected){
-    total++;
+  recursiveSelected(option){
+    this.total++;
     if (option.selected){
-      console.log(option+ " is selected");
-      selected++;
+      this.selected++;
     }
     if (option.children.length > 0) {
-      for (let i=0; i < option.children; i++){
-        this.recursiveSelected(option.children[i], total, selected);
+      for (let i=0; i < option.children.length; i++){
+        this.recursiveSelected(option.children[i]);
       }
       }
     }
+
+
+    cascadeState(option){
+      let newState = option.selected;
+      let childrenOption = option.children;
+      for (let i=0; i < childrenOption.length; i++){
+      this.recursiveStates(childrenOption[i], newState);
+      }
+    }
+
+    recursiveStates(option, state){
+      option.selected = state;
+      if (option.children.length > 0) {
+        for (let i=0; i < option.children.length; i++){
+          this.recursiveStates(option.children[i], state);
+        }
+        }
+      }
 
 
   descendantsAllSelected(option){
@@ -126,7 +144,7 @@ export class AdminMenuMembershipsComponent implements OnInit {
   descendantsPartiallySelected(option){
     this.getSelectedNodes(option);
     if (this.partiallySelected){
-      return true && !this.descendantsAllSelected(option);
+      return true;
     }
   }
 }
