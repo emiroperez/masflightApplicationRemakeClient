@@ -19,6 +19,7 @@ import { Menu } from '../model/Menu';
 import { Optional } from 'ag-grid-community';
 import { MatSnackBar, MatTableDataSource } from '@angular/material';
 import { PlanAdvanceFeatures } from '../model/PlanAdvanceFeatures';
+import { MessageComponent } from '../message/message.component';
 
 
 @Component({
@@ -667,11 +668,14 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
   }
 
   savePlans() {
-    this.globals.isLoading = true;
     this.items = this.plansForms.get('items') as FormArray;
     if (this.plansForms.valid && this.items.length > 0) {
-
+      this.globals.isLoading = true;
       this.planServices.savePlans(this, this.getPlansJson(), this.savePlansResponse, this.errorHandleResponse);
+    }else{
+      const dialogRef = this.dialog.open(MessageComponent, {
+        data: { title:'Error', message: 'You must complete all the information about memberships plans'}
+      });
     }
   }
 
