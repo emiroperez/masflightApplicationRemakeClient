@@ -243,13 +243,31 @@ export class MsfTableComponent implements OnInit {
           
           let dataResult = new MatTableDataSource(mainElement);     
           if( _this.globals.moreResults){
+            if(_this.globals.currentOption.tabType!="athena"){
               _this.dataSource.data = _this.dataSource.data.concat(dataResult.data);
+            }else{
+              _this.dataSource = dataResult;
+            }
           }else{
             _this.dataSource = dataResult;
           }
-          if( _this.globals.totalRecord<100){
-            _this.globals.moreResultsBtn = false;
-            _this.globals.moreResults = false;
+
+          if(_this.globals.currentOption.tabType!="athena"){
+            if( _this.globals.totalRecord<100){
+              _this.globals.moreResultsBtn = false;
+              _this.globals.moreResults = false;
+            }else{
+              _this.globals.moreResultsBtn = true;
+            }
+          }else{
+            var aux = (_this.actualPageNumber+1)*100;
+            aux = aux!=0 ? aux : 100;
+            if( _this.globals.totalRecord<aux){
+              _this.globals.moreResultsBtn = false;
+              _this.globals.moreResults = false;
+            }else{
+              _this.globals.moreResultsBtn = true;
+            }
           }
       }else if (_this.globals.currentOption.metaData==0){
         _this.template = data.template;
