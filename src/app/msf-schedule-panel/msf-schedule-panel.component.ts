@@ -13,7 +13,9 @@ export class MsfSchedulePanelComponent implements OnInit {
   private mapaairports : Map<String, any>;
   constructor(private AmCharts: AmChartsService,public globals: Globals) { }
   aux=this.globals.scheduledata;
-
+  checkarray(aux2){
+    return Array.isArray(aux2);
+  }
  getPropshtml(json){
    var html="";
   for (var key in json) {
@@ -175,7 +177,7 @@ export class MsfSchedulePanelComponent implements OnInit {
    
   ngOnInit() {
     this.mapaairports = new Map();
-  }
+    }
 
   
   

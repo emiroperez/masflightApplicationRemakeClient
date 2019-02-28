@@ -9,7 +9,7 @@
   <mat-expansion-panel  class="msf-schedule-panel" *ngFor="let item of aux; let indexopen = index" >
     <mat-expansion-panel-header class="msf-schedule-mat-expansion-panel-header" > 
       <mat-panel-title class="msf-schedule-panel-header">
-       {{item.Flight.Marketing_Airline}} - F# {{item.Flight.FlightNo}} {{item.TouchedAirports}}
+       {{item.Flight.Marketing_Airline}} {{item.Flight.Airline}} - F# {{item.Flight.FlightNo}} {{item.TouchedAirports}}
       </mat-panel-title>
       <mat-panel-description><mat-checkbox  (change)="expandFligth(indexopen,$event)" (click)="$event.stopPropagation();"></mat-checkbox></mat-panel-description>
     </mat-expansion-panel-header>
@@ -19,7 +19,7 @@
       <tr><td>Total Time</td><td>{{item.TotalTime}}</td></tr>
     </table>
       <!-- <table *ngFor="let item2 of item.Flight"> -->
-      <!-- <div **ngIf="item.Flight.length"> -->
+     <div *ngIf="!checkarray(item.Flight)">
       <h3 class="msf-schedule-panel-subs">{{item.Flight.content}}</h3>  
     <!-- <table class="msf-schedule-panel-table" innerHTML="{{getPropshtml(item.Flight) }}" > -->
        <table class="msf-schedule-panel-table" >
@@ -36,10 +36,13 @@
         <tr><td>AircraftType</td><td>{{item.Flight.AircraftType}}</td></tr>
         <tr><td>Distance</td><td>{{item.TotalDistance}}</td></tr> -->
     
-        <tr *ngFor="let entry  of item.Flight | keyvalue"  ><td *ngIf="entry.key!='content'" >{{entry.key}}</td><td *ngIf="entry.key!='content'">{{entry.value}}</td></tr>
+        <tr *ngFor="let entry  of item.Flight | keyvalue"  ><td *ngIf="globals.metadata.get(entry.key)" >{{globals.metadata.get(entry.key)}}</td><td *ngIf="globals.metadata.get(entry.key)">{{entry.value}}</td></tr>
     </table>
-  <!-- </div> -->
-    
+  </div>
+  <div *ngIf="checkarray(item.Flight)">
+
+
+  </div>
   </mat-expansion-panel>
 
 </mat-accordion>

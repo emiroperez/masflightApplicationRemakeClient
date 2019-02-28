@@ -254,6 +254,14 @@ export class MsfTableComponent implements OnInit {
       }else if (_this.globals.currentOption.metaData==0){
         _this.template = data.template;
       }else if (_this.globals.currentOption.metaData==2){
+        if(data.metadata.length>0){
+          _this.globals.metadata =new Map();
+          data.metadata.forEach(element => {
+            _this.globals.metadata.set(element.columnName,element.columnLabel);
+           });
+         
+        }
+      
         _this.globals.hideParametersPanels = true;
         _this.globals.scheduledata = mainElement;
         _this.globals.scmap=true;
