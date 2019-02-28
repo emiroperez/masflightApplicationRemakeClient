@@ -13,8 +13,16 @@ export class MsfSchedulePanelComponent implements OnInit {
   private mapaairports : Map<String, any>;
   constructor(private AmCharts: AmChartsService,public globals: Globals) { }
   aux=this.globals.scheduledata;
-
- 
+  checkarray(aux2){
+    return Array.isArray(aux2);
+  }
+ getPropshtml(json){
+   var html="";
+  for (var key in json) {
+    html +='<tr><td>' + key + '</td><td  style="font-weight: bold;  padding-left: 22px;">' + json[key]+'</td></tr>';
+  }
+ return html;
+ }
   rad2degr(rad) { return rad * 180 / Math.PI; }
   degr2rad(degr) { return degr * Math.PI / 180; }
   calcCrow(lat1, lon1, lat2, lon2) 
@@ -120,7 +128,12 @@ export class MsfSchedulePanelComponent implements OnInit {
         zoomlat =42;
         zoomlong =  -55;
       }
-
+      if(mapToArray.length!=2){
+        this.globals.schedulepanelinfo=false;
+      }else{
+        this.globals.schedulepanelinfo = this.aux[index];
+        this.globals.schedulepanelinfo.TotalTime= this.globals.schedulepanelinfo.TotalTime.replace("Hours", "H").replace("Minutes","M");
+      }
 
       for (var i = 0; i < lines.length; i += 1) {
         nodeair = { 
@@ -137,8 +150,8 @@ export class MsfSchedulePanelComponent implements OnInit {
         }
         mapToArray.push(nodeair);
       }
-      this.globals.schedulepanelinfo = this.aux[index];
-      this.globals.schedulepanelinfo.TotalTime= this.globals.schedulepanelinfo.TotalTime.replace("Hours", "H").replace("Minutes","M");
+    
+     
       this.AmCharts.updateChart(this.globals.scheduleChart, () => {
       this.globals.scheduleChart.dataProvider.images  = mapToArray;
       this.globals.scheduleChart.dataProvider.lines =lines;
@@ -164,7 +177,7 @@ export class MsfSchedulePanelComponent implements OnInit {
    
   ngOnInit() {
     this.mapaairports = new Map();
-  }
+    }
 
   
   

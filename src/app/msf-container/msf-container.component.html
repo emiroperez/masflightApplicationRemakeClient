@@ -1,6 +1,7 @@
 
 <ng-container *ngIf="globals.currentOption && globals.currentOption !== 'dashboard'">
-    <mat-tab-group [selectedIndex]="globals.getSelectedIndex()" #tabs>
+    <div  [hidden]= "globals.mapsc ">
+    <mat-tab-group [selectedIndex]="globals.getSelectedIndex()" #tabs >
         <mat-tab *ngIf="globals.showWelcome" label="Welcome" style="height: 100%;">
             <app-option-welcome></app-option-welcome> 
         </mat-tab>        
@@ -42,16 +43,17 @@
             <app-msf-map #msfMapRef></app-msf-map>
         </mat-tab> 
 
-        <mat-tab  [ngClass]="globals.mapsc? 'tab-show':'tab-hide'" #msfScMapRef >
-                <!-- <mat-tab  *ngIf= "globals.mapsc" #tabRef > -->
+       <!-- <mat-tab  [style.visibility]= "globals.mapsc ? 'visible' : 'hidden' " #tabRef >
                 <ng-template mat-tab-label>
                         Map
                         <mat-icon (click)="closeTab(6)" class="close-icon">close</mat-icon> 
                 </ng-template>
             <app-msf-schedule-maps ></app-msf-schedule-maps>
-        </mat-tab> 
+        </mat-tab>  -->
         
     </mat-tab-group>
+    </div>
+    <app-msf-schedule-maps  [style.visibility]= "globals.mapsc ?  'visible' : 'hidden'   "> </app-msf-schedule-maps>
 </ng-container>
 <app-msf-dashboard *ngIf="globals.currentOption === 'dashboard'"></app-msf-dashboard>
 <app-intro *ngIf="!globals.currentOption"></app-intro>

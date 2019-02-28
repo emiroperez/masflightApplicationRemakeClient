@@ -19,8 +19,7 @@ import { MessageComponent } from '../message/message.component';
 
 @Component({
   selector: 'app-msf-dashboard-chartmenu',
-  templateUrl: './msf-dashboard-chartmenu.component.html',
-  styleUrls: ['./msf-dashboard-chartmenu.component.css']
+  templateUrl: './msf-dashboard-chartmenu.component.html'
 })
 export class MsfDashboardChartmenuComponent implements OnInit {
   utils: Utils;
@@ -65,7 +64,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   rowPos: number;
 
   @Input()
-  height: number;
+  panelHeight: number;
 
   public dataFormFilterCtrl: FormControl = new FormControl ();
   public variableFilterCtrl: FormControl = new FormControl ();
@@ -309,6 +308,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   ngOnInit()
   {
+    // prepare the data form combo box
+    this.optionSearchChange (this.dataFormFilterCtrl);
   }
 
   isEmpty(obj): boolean
@@ -327,8 +328,6 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   ngAfterViewInit(): void
   {
-    this.initPanelSettings ();
-
     if (!this.isEmpty (this.values.lastestResponse))
     {
       this.chart = this.AmCharts.makeChart ("msf-dashboard-chart-display-" + this.columnPos + "-" + this.rowPos, this.makeOptions (this.values.lastestResponse));
@@ -340,7 +339,9 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   ngAfterContentInit(): void
   {
-    // this part must be here because it generate an error if inserted on ngAfterViewInit
+    // these parts must be here because it generate an error if inserted on ngAfterViewInit
+    this.initPanelSettings ();
+
     if (!this.isEmpty (this.values.lastestResponse))
       this.values.displayChart = true;
   }
@@ -440,6 +441,11 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     };
   }
 
+  hasXAxis(chartType): boolean
+  {
+    return (chartType.id !== 'pie' && chartType.id !== 'donut' && chartType.id !== 'radar');
+  }
+
   loadChartData(handlerSuccess, handlerError): void
   {
     let url, urlBase, urlArg, panel;
@@ -455,8 +461,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       "&valueColumn=" + this.values.valueColumn.id + "&function=" + this.values.function.id;
 
     // don't use the xaxis parameter if the chart type is pie, donut or radar
-    if (this.values.currentChartType.id === 'pie' || this.values.currentChartType.id === 'donut'
-      || this.values.currentChartType.id === 'radar')
+    if (!this.hasXAxis (this.values.currentChartType))
       url += "&chartType=pie";
     else
       url += "&xaxis=" + this.values.xaxis.id;
@@ -495,17 +500,14 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   handlerSuccess(_this, data): void
   {
-    if (_this.isEmpty (data.data))
+    if (_this.hasXAxis (_this.values.currentChartType) && _this.isEmpty (data.data))
     {
       _this.noDataFound ();
       return;
     }
 
-    if (((_this.values.currentChartType.id === 'pie' || _this.values.currentChartType.id === 'donut'
-      || _this.values.currentChartType.id === 'radar') && data.dataProvider == null) ||
-      ((_this.values.currentChartType.id !== 'pie' && _this.values.currentChartType.id !== 'donut'
-      && _this.values.currentChartType.id !== 'radar')
-      && !data.filter == null))
+    if ((!_this.hasXAxis (_this.values.currentChartType) && data.dataProvider == null) ||
+      (_this.hasXAxis (_this.values.currentChartType) && !data.filter))
     {
       _this.noDataFound ();
       return;
@@ -583,8 +585,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
     _this.chartForm.get ('variableCtrl').enable ();
 
-    if (_this.values.currentChartType.id !== 'pie' && _this.values.currentChartType.id !== 'donut'
-      && _this.values.currentChartType.id !== 'radar')
+    if (_this.hasXAxis (_this.values.currentChartType))
       _this.chartForm.get ('xaxisCtrl').enable ();
 
     _this.chartForm.get ('valueCtrl').enable ();
@@ -729,7 +730,10 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   storeChartValues(): void
   {
     if (!this.temp)
-      this.temp = new MsfDashboardChartValues (this.values.options, this.values.chartName, this.values.id);
+    {
+      this.temp = new MsfDashboardChartValues (this.values.options, this.values.chartName,
+        this.values.id, this.values.width, this.values.height);
+    }
     else
       this.temp.chartName = this.values.chartName;
 
@@ -814,9 +818,6 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   {
     let i, options, option;
 
-    // prepare the combo boxes
-    this.optionSearchChange (this.dataFormFilterCtrl);
-
     if (this.values.chartColumnOptions)
     {
       this.filteredVariables.next (this.values.chartColumnOptions.slice ());
@@ -870,8 +871,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
           this.chartForm.get ('variableCtrl').enable ();
 
           // only enable x axis if the chart type is not pie, donut or radar
-          if (this.values.currentChartType.id !== 'pie' && this.values.currentChartType.id !== 'donut'
-            && this.values.currentChartType.id !== 'radar')
+          if (this.hasXAxis (this.values.currentChartType))
             this.chartForm.get ('xaxisCtrl').enable ();
 
           this.chartForm.get ('valueCtrl').enable ();
@@ -948,6 +948,6 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   calcChartHeight(): number
   {
-    return this.height - 14;
+    return this.panelHeight - 14;
   }
 }

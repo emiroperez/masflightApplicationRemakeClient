@@ -1852,6 +1852,27 @@ mat-tab-group {
   flex-direction: row;
 }
 
+.msf-dashboard-panel-line-resize {
+  position: absolute;
+  height: 100%;
+  width: 5px;
+}
+
+.msf-dashboard-panel-line-resize:hover {
+  cursor: col-resize;
+  position: absolute;
+  height: 100%;
+  width: 5px;
+}
+
+#msf-dashboard-panel-right-resize {
+  right: 0px;
+}
+
+#msf-dashboard-panel-left-resize {
+  left: 0px;
+}
+
 .msf-dashboard-container {
   font-size: 14px;
   text-align: center;
@@ -1914,19 +1935,8 @@ mat-tab-group {
 .msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items {
   width: 100%;
 }
-.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-chartbox-column .msf-dashboard-chartbox-item-1 {
+.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-chartbox-column .msf-dashboard-chartbox-item {
   padding: 2px 2px;
-  width: 100%;
-  position: relative;
-}
-.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-chartbox-column .msf-dashboard-chartbox-item-2 {
-  padding: 2px 2px;
-  width: 50%;
-  position: relative;
-}
-.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-chartbox-column .msf-dashboard-chartbox-item-3 {
-  padding: 2px 2px;
-  width: 33.3333333333%;
   position: relative;
 }
 .msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed {
