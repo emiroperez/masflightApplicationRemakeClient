@@ -309,6 +309,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   ngOnInit()
   {
+    // prepare the data form combo box
+    this.optionSearchChange (this.dataFormFilterCtrl);
   }
 
   isEmpty(obj): boolean
@@ -327,8 +329,6 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   ngAfterViewInit(): void
   {
-    this.initPanelSettings ();
-
     if (!this.isEmpty (this.values.lastestResponse))
     {
       this.chart = this.AmCharts.makeChart ("msf-dashboard-chart-display-" + this.columnPos + "-" + this.rowPos, this.makeOptions (this.values.lastestResponse));
@@ -340,7 +340,9 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   ngAfterContentInit(): void
   {
-    // this part must be here because it generate an error if inserted on ngAfterViewInit
+    // these parts must be here because it generate an error if inserted on ngAfterViewInit
+    this.initPanelSettings ();
+
     if (!this.isEmpty (this.values.lastestResponse))
       this.values.displayChart = true;
   }
@@ -816,9 +818,6 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   initPanelSettings(): void
   {
     let i, options, option;
-
-    // prepare the combo boxes
-    this.optionSearchChange (this.dataFormFilterCtrl);
 
     if (this.values.chartColumnOptions)
     {
