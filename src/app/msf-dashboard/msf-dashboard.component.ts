@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Globals } from '../globals/Globals';
 import { ApiClient } from '../api/api-client';
 import { MsfDashboardChartValues } from '../msf-dashboard-chartmenu/msf-dashboard-chartvalues';
-import { MsfDashboardColumnValues } from './msf-dashboard-columnvalues';
 import { ApplicationService } from '../services/application.service';
 
 @Component({
@@ -12,7 +11,7 @@ import { ApplicationService } from '../services/application.service';
 })
 export class MsfDashboardComponent implements OnInit {
   dashboardColumns: MsfDashboardChartValues[][] = [];
-  dashboardColumnsSize: MsfDashboardColumnValues[] = [];
+  dashboardColumnsProperties: boolean[] = [];
   options: any[] = [];
 
   columnToUpdate: number;
@@ -93,7 +92,6 @@ export class MsfDashboardComponent implements OnInit {
 
   loadDashboardPanels (_this, data): void
   {
-    let i, curColumn, defaultWidth, height;
     let dashboardPanels: any[] = [];
     let dashboardRows = [];
 
@@ -106,35 +104,29 @@ export class MsfDashboardComponent implements OnInit {
     }
 
     // insert dashboard panels for synchronization
-    for (i = 0, curColumn = 0; i < dashboardPanels.length; i++)
+    for (let i = 0, curColumn = 0; i < dashboardPanels.length; i++)
     {
       let dashboardPanel = dashboardPanels[i];
 
       if (dashboardPanel.column != curColumn)
       {
-        defaultWidth = _this.getPanelWidthOption (12 / dashboardRows.length);
-
         curColumn = dashboardPanel.column;
-        height = _this.heightValues[dashboardPanels[i - 1].height];
 
         _this.dashboardColumns.push (dashboardRows);
-
-        _this.dashboardColumnsSize.push (new MsfDashboardColumnValues (height, defaultWidth, defaultWidth, defaultWidth));
+        _this.dashboardColumnsProperties.push (false);
         dashboardRows = [];
       }
 
       dashboardRows.push (new MsfDashboardChartValues (_this.options, dashboardPanel.title,
-        dashboardPanel.id, dashboardPanel.option, dashboardPanel.chartColumnOptions, dashboardPanel.analysis,
-        dashboardPanel.xaxis, dashboardPanel.values, dashboardPanel.function, dashboardPanel.chartType,
-        dashboardPanel.categoryOptions, dashboardPanel.lastestResponse));
+        dashboardPanel.id, _this.widthValues[dashboardPanel.width], _this.heightValues[dashboardPanel.height],
+        dashboardPanel.option, dashboardPanel.chartColumnOptions, dashboardPanel.analysis, dashboardPanel.xaxis,
+        dashboardPanel.values, dashboardPanel.function, dashboardPanel.chartType, dashboardPanel.categoryOptions,
+        dashboardPanel.lastestResponse));
     }
 
     // add the last dashboard column
-    defaultWidth = _this.getPanelWidthOption (12 / dashboardRows.length);
-    height = _this.heightValues[dashboardPanels[i - 1].height];
-
     _this.dashboardColumns.push (dashboardRows);
-    _this.dashboardColumnsSize.push (new MsfDashboardColumnValues (height, defaultWidth, defaultWidth, defaultWidth));
+    _this.dashboardColumnsProperties.push (false);
     _this.globals.isLoading = false;
   }
 
@@ -151,16 +143,20 @@ export class MsfDashboardComponent implements OnInit {
       function (_this)
       {
         let dashboardRows: MsfDashboardChartValues[];
-        let dashboardRow;
+        let dashboardRow, defaultWidth;
     
         dashboardRows = _this.dashboardColumns[column];
     
         _this.columnToUpdate = column;
         _this.rowToUpdate = row;
         dashboardRow = dashboardRows[row];
-    
+
+        // reset panel width to avoid mess after deleting one
+        defaultWidth = _this.getPanelWidthOption (12 / (dashboardRows.length - 1));
+
         _this.globals.isLoading = true;
-        _this.service.deleteDashboardPanel (_this, dashboardRow.id, _this.deleteRowPanel, _this.handlerError);
+        _this.service.deleteDashboardPanel (_this, dashboardRow.id, _this.widthValues.indexOf (defaultWidth),
+          _this.deleteRowPanel, _this.handlerError);
       });
   }
 
@@ -173,7 +169,6 @@ export class MsfDashboardComponent implements OnInit {
   {
     let dashboardPanels;
     let dashboardRows = [];
-    let width, height;
 
     dashboardPanels = data;
 
@@ -181,51 +176,50 @@ export class MsfDashboardComponent implements OnInit {
     for (let i = 0; i < dashboardPanels.length; i++)
     {
       let dashboardPanel = dashboardPanels[i];
-      dashboardRows.push (new MsfDashboardChartValues (_this.options, dashboardPanel.title, dashboardPanel.id));
+      dashboardRows.push (new MsfDashboardChartValues (_this.options, dashboardPanel.title, dashboardPanel.id,
+        _this.widthValues[dashboardPanels[0].width], _this.heightValues[dashboardPanels[0].height]));
     }
 
-    height = _this.heightValues[dashboardPanels[0].height];
-    width = _this.widthValues[dashboardPanels[0].width];
     _this.dashboardColumns.push (dashboardRows);
-    _this.dashboardColumnsSize.push (new MsfDashboardColumnValues (height, width, width, width));
     _this.displayAddChartMenu = false;
     _this.globals.isLoading = false;
   }
 
   insertPanelsInColumn(_this, data): void
   {
-    let dashboardPanels, column, defaultWidth;
+    let i, dashboardPanels, dashboardPanel, column;
 
     dashboardPanels = data;
     column = dashboardPanels[0].column;
 
-    // insert the data options for each chart
-    for (let i = 0; i < dashboardPanels.length; i++)
+    // change width values of existing panels in the same column
+    for (i = 0; i < _this.dashboardColumns[column].length; i++)
     {
-      let dashboardPanel = dashboardPanels[i];
-      _this.dashboardColumns[column].push (new MsfDashboardChartValues (_this.options, dashboardPanel.title, dashboardPanel.id));
+      dashboardPanel = _this.dashboardColumns[column][i];
+      dashboardPanel.width = _this.widthValues[dashboardPanels[0].width];
     }
 
-    // reset for now the panel width variables
-    defaultWidth = _this.getPanelWidthOption (12 / (dashboardPanels.length + 1));
-    _this.dashboardColumnsSize[column].width[0] = defaultWidth;
-    _this.dashboardColumnsSize[column].width[1] = defaultWidth;
-    _this.dashboardColumnsSize[column].width[2] = defaultWidth;
+    // insert the data options for each chart
+    for (i = 0; i < dashboardPanels.length; i++)
+    {
+      dashboardPanel = dashboardPanels[i];
+      _this.dashboardColumns[column].push (new MsfDashboardChartValues (_this.options, dashboardPanel.title, dashboardPanel.id,
+        _this.widthValues[dashboardPanel.width], _this.heightValues[dashboardPanel.height]));
+    }
+
     _this.globals.isLoading = false;
   }
 
-  deleteRowPanel(_this): void
+  deleteRowPanel(_this, defaultWidth): void
   {
-    let defaultWidth;
     let dashboardRows = [];
 
     dashboardRows = _this.dashboardColumns[_this.columnToUpdate];
     dashboardRows.splice (_this.rowToUpdate, 1);
 
-    // reset panel width to avoid mess
-    defaultWidth = _this.getPanelWidthOption (12 / dashboardRows.length);
+    // set panel width for synchronization with the database
     for (let i = 0; i < dashboardRows.length; i++)
-      _this.dashboardColumnsSize[_this.columnToUpdate].width[i] = defaultWidth;
+      _this.dashboardColumns[_this.columnToUpdate][i].width = _this.widthValues[defaultWidth];
 
     // also remove the column if there are no panels left in the row
     if (!dashboardRows.length)
@@ -240,7 +234,7 @@ export class MsfDashboardComponent implements OnInit {
   deleteColumn (_this): void
   {
     _this.dashboardColumns.splice (_this.columnToUpdate, 1);
-    _this.dashboardColumnsSize.splice (_this.columnToUpdate, 1);
+    _this.dashboardColumnsProperties.splice (_this.columnToUpdate, 1);
     _this.globals.isLoading = false;
   }
 
@@ -252,7 +246,7 @@ export class MsfDashboardComponent implements OnInit {
 
     panelsToAdd = [];
     column = this.dashboardColumns.length;
-    width = 12 / numCharts;
+    width = this.getPanelWidthOption (12 / numCharts);
 
     for (let i = 0; i < numCharts; i++)
     {
@@ -264,7 +258,7 @@ export class MsfDashboardComponent implements OnInit {
         'column' : column,
         'title' : "New Chart",
         'height' : 0,
-        'width' : width
+        'width' : this.widthValues.indexOf (width)
       });
     }
 
@@ -277,7 +271,7 @@ export class MsfDashboardComponent implements OnInit {
     let panelsToAdd, width;
 
     panelsToAdd = [];
-    width = 12 / (this.dashboardColumns[column].length + numCharts);
+    width = this.widthValues.indexOf (this.getPanelWidthOption (12 / (this.dashboardColumns[column].length + numCharts)));
 
     for (let i = 0; i < numCharts; i++)
     {
@@ -288,29 +282,30 @@ export class MsfDashboardComponent implements OnInit {
         'row' : i,
         'column' : column,
         'title' : "New Chart",
-        'height' : this.heightValues.indexOf (this.dashboardColumnsSize[column].height),
+        'height' : this.heightValues.indexOf (this.dashboardColumns[column][0].height),
         'width' : width
       });
     }
 
     this.globals.isLoading = true;
-    this.service.createDashboardPanel (this, panelsToAdd, this.insertPanelsInColumn, this.handlerError);
+    this.service.createDashboardPanelInColumn (this, panelsToAdd, width, this.insertPanelsInColumn,
+      this.handlerError);
   }
 
   toggleColumnProperties(column): void
   {
-    this.dashboardColumnsSize[column].displayProperties = !this.dashboardColumnsSize[column].displayProperties;
+    this.dashboardColumnsProperties[column] = !this.dashboardColumnsProperties[column];
   }
 
   getPanelWidth(column, row): number
   {
-    return (this.dashboardColumnsSize[column].width[row].value * 100) / 12;
+    return (this.dashboardColumns[column][row].width.value * 100) / 12;
   }
 
   getColumnHeight(column): number
   {
     const minHeight = 303;
-    return minHeight + ((this.dashboardColumnsSize[column].height.value - 1) * 15);
+    return minHeight + ((this.dashboardColumns[column][0].height.value - 1) * 15);
   }
 
   changePanelHeight(column, index): void
@@ -330,64 +325,64 @@ export class MsfDashboardComponent implements OnInit {
 
   adjustPanelSize(column): void
   {
-    let currentColumn = this.dashboardColumnsSize[column];
+    let currentColumn = this.dashboardColumns[column];
 
     if (this.dashboardColumns[column].length == 2) // two panels
     {
-      let widthLeft = 12 - (currentColumn.width[1].value + currentColumn.width[0].value);
+      let widthLeft = 12 - (currentColumn[1].width.value + currentColumn[0].width.value);
 
-      this.dashboardColumnsSize[column].width[0] =
-        this.getPanelWidthOption (currentColumn.width[0].value + (widthLeft >> 1));
-      this.dashboardColumnsSize[column].width[1] =
-        this.getPanelWidthOption (currentColumn.width[1].value + (widthLeft >> 1));
+      this.dashboardColumns[column][0].width =
+        this.getPanelWidthOption (currentColumn[0].width.value + (widthLeft >> 1));
+      this.dashboardColumns[column][1].width =
+        this.getPanelWidthOption (currentColumn[1].width.value + (widthLeft >> 1));
     }
     else if (this.dashboardColumns[column].length == 1) // one panel
-      this.dashboardColumnsSize[column].width[0] = this.getPanelWidthOption (12);
+      this.dashboardColumns[column][0].width = this.getPanelWidthOption (12);
   }
 
   // this is not flexible...
   resizePanels(column, row): void
   {
-    let currentColumn = this.dashboardColumnsSize[column];
+    let currentColumn = this.dashboardColumns[column];
 
     if (this.dashboardColumns[column].length == 3) // three panels
     {
       if (row == 1)
       {
-        this.dashboardColumnsSize[column].width[0] =
-          this.getPanelWidthOption (12 - (currentColumn.width[1].value + currentColumn.width[2].value));
-        this.dashboardColumnsSize[column].width[2] =
-          this.getPanelWidthOption (12 - (currentColumn.width[1].value + currentColumn.width[0].value));
+        this.dashboardColumns[column][0].width =
+          this.getPanelWidthOption (12 - (currentColumn[1].width.value + currentColumn[2].width.value));
+        this.dashboardColumns[column][2].width =
+          this.getPanelWidthOption (12 - (currentColumn[1].width.value + currentColumn[0].width.value));
       }
       else if (row == 2)
       {
-        this.dashboardColumnsSize[column].width[1] =
-          this.getPanelWidthOption (12 - (currentColumn.width[2].value + currentColumn.width[0].value));
-        this.dashboardColumnsSize[column].width[0] =
-          this.getPanelWidthOption (12 - (currentColumn.width[2].value + currentColumn.width[1].value));
+        this.dashboardColumns[column][1].width =
+          this.getPanelWidthOption (12 - (currentColumn[2].width.value + currentColumn[0].width.value));
+        this.dashboardColumns[column][0].width =
+          this.getPanelWidthOption (12 - (currentColumn[2].width.value + currentColumn[1].width.value));
       }
       else
       {
-        this.dashboardColumnsSize[column].width[1] =
-          this.getPanelWidthOption (12 - (currentColumn.width[0].value + currentColumn.width[2].value));
-        this.dashboardColumnsSize[column].width[2] =
-          this.getPanelWidthOption (12 - (currentColumn.width[0].value + currentColumn.width[1].value));
+        this.dashboardColumns[column][1].width =
+          this.getPanelWidthOption (12 - (currentColumn[0].width.value + currentColumn[2].width.value));
+        this.dashboardColumns[column][2].width =
+          this.getPanelWidthOption (12 - (currentColumn[0].width.value + currentColumn[1].width.value));
       }
     }
     else if (this.dashboardColumns[column].length == 2) // two panels
     {
       if (row == 1)
       {
-        this.dashboardColumnsSize[column].width[0] =
-          this.getPanelWidthOption (12 - currentColumn.width[1].value);
+        this.dashboardColumns[column][0].width =
+          this.getPanelWidthOption (12 - currentColumn[1].width.value);
       }
       else
       {
-        this.dashboardColumnsSize[column].width[1] =
-          this.getPanelWidthOption (12 - currentColumn.width[0].value);
+        this.dashboardColumns[column][1].width =
+          this.getPanelWidthOption (12 - currentColumn[0].width.value);
       }
     }
     else if (this.dashboardColumns[column].length == 1) // one panel
-      this.dashboardColumnsSize[column].width[0] = this.getPanelWidthOption (12);
+      this.dashboardColumns[column][0].width = this.getPanelWidthOption (12);
   }
 }

@@ -440,6 +440,11 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     };
   }
 
+  hasXAxis(chartType): boolean
+  {
+    return (chartType.id !== 'pie' && chartType.id !== 'donut' && chartType.id !== 'radar');
+  }
+
   loadChartData(handlerSuccess, handlerError): void
   {
     let url, urlBase, urlArg, panel;
@@ -455,8 +460,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       "&valueColumn=" + this.values.valueColumn.id + "&function=" + this.values.function.id;
 
     // don't use the xaxis parameter if the chart type is pie, donut or radar
-    if (this.values.currentChartType.id === 'pie' || this.values.currentChartType.id === 'donut'
-      || this.values.currentChartType.id === 'radar')
+    if (!this.hasXAxis (this.values.currentChartType))
       url += "&chartType=pie";
     else
       url += "&xaxis=" + this.values.xaxis.id;
@@ -495,17 +499,14 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   handlerSuccess(_this, data): void
   {
-    if (_this.isEmpty (data.data))
+    if (_this.hasXAxis (_this.values.currentChartType) && _this.isEmpty (data.data))
     {
       _this.noDataFound ();
       return;
     }
 
-    if (((_this.values.currentChartType.id === 'pie' || _this.values.currentChartType.id === 'donut'
-      || _this.values.currentChartType.id === 'radar') && data.dataProvider == null) ||
-      ((_this.values.currentChartType.id !== 'pie' && _this.values.currentChartType.id !== 'donut'
-      && _this.values.currentChartType.id !== 'radar')
-      && !data.filter == null))
+    if ((!_this.hasXAxis (_this.values.currentChartType) && data.dataProvider == null) ||
+      (_this.hasXAxis (_this.values.currentChartType) && !data.filter))
     {
       _this.noDataFound ();
       return;
@@ -583,8 +584,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
     _this.chartForm.get ('variableCtrl').enable ();
 
-    if (_this.values.currentChartType.id !== 'pie' && _this.values.currentChartType.id !== 'donut'
-      && _this.values.currentChartType.id !== 'radar')
+    if (_this.hasXAxis (_this.values.currentChartType))
       _this.chartForm.get ('xaxisCtrl').enable ();
 
     _this.chartForm.get ('valueCtrl').enable ();
@@ -729,7 +729,10 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   storeChartValues(): void
   {
     if (!this.temp)
-      this.temp = new MsfDashboardChartValues (this.values.options, this.values.chartName, this.values.id);
+    {
+      this.temp = new MsfDashboardChartValues (this.values.options, this.values.chartName,
+        this.values.id, this.values.width, this.values.height);
+    }
     else
       this.temp.chartName = this.values.chartName;
 
@@ -870,8 +873,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
           this.chartForm.get ('variableCtrl').enable ();
 
           // only enable x axis if the chart type is not pie, donut or radar
-          if (this.values.currentChartType.id !== 'pie' && this.values.currentChartType.id !== 'donut'
-            && this.values.currentChartType.id !== 'radar')
+          if (this.hasXAxis (this.values.currentChartType))
             this.chartForm.get ('xaxisCtrl').enable ();
 
           this.chartForm.get ('valueCtrl').enable ();

@@ -12,6 +12,9 @@ export class MsfDashboardChartValues {
     currentOption: any;
     currentOptionCategories: any;
 
+    width: any;
+    height: any;
+
     lastestResponse: string;
 
     variable;
@@ -19,7 +22,7 @@ export class MsfDashboardChartValues {
     valueColumn;
     function;
 
-    constructor(options: any[], chartName: String, id: number, currentOption?: any, chartColumnOptions? : any,
+    constructor(options: any[], chartName: String, id: number, width: any, height: any, currentOption?: any, chartColumnOptions? : any,
         variable?, xaxis?, valueColumn?, func?, chartType?, currentOptionCategories?: any, lastestResponse?: string)
     {
         this.options = options;
@@ -31,6 +34,8 @@ export class MsfDashboardChartValues {
         this.valueColumn = valueColumn;
         this.function = func;
         this.currentChartType = chartType;
+        this.width = width;
+        this.height = height;
 
         // check if the following parameters are null before parsing the JSON
         if (chartColumnOptions)

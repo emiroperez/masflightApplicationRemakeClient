@@ -11,15 +11,15 @@
               <app-msf-dashboard-chartmenu [values]="dashboardChart" [height]="getColumnHeight(column)" [columnPos]="column" [rowPos]="row"></app-msf-dashboard-chartmenu>
             </div>
           </div>
-          <div [ngClass]="dashboardColumnsSize[column].displayProperties ? 'msf-dashboard-panel-size-properties-open' : 'msf-dashboard-panel-size-properties-closed'">
-            <div *ngIf="!dashboardColumnsSize[column].displayProperties" (click)="toggleColumnProperties(column)" class="msf-dashboard-button" style="width: 0">
+          <div [ngClass]="dashboardColumnsProperties[column] ? 'msf-dashboard-panel-size-properties-open' : 'msf-dashboard-panel-size-properties-closed'">
+            <div *ngIf="!dashboardColumnsProperties[column]" (click)="toggleColumnProperties(column)" class="msf-dashboard-button" style="width: 0">
               <mat-icon class="msf-dashboard-button-icon" style="padding-right: 0; padding-top: 0" aria-label="fold">keyboard_arrow_down</mat-icon>
             </div>
-            <ng-container *ngIf="dashboardColumnsSize[column].displayProperties">
+            <ng-container *ngIf="dashboardColumnsProperties[column]">
               <div class="msf-dashboard-column-properties-align">
                 <span class="msf-dashboard-column-properties-height-label">Height:</span>
                 <mat-form-field class="msf-dashboard-column-properties-form-field">
-                  <mat-select [(ngModel)]="dashboardColumnsSize[column].height" style="text-align: center" (selectionChange)="changePanelHeight(column, $event.value)">
+                  <mat-select [(ngModel)]="dashboardColumns[column][0].height" style="text-align: center" (selectionChange)="changePanelHeight(column, $event.value)">
                     <mat-option *ngFor="let heightValue of heightValues" [value]="heightValue">
                       {{heightValue.name}}
                     </mat-option>
@@ -30,7 +30,7 @@
                 <div class="msf-dashboard-column-properties-align" *ngFor="let dashboardChart of dashboardColumn; let row = index">
                   <span class="msf-dashboard-column-properties-width-label">Width (Chart #{{row + 1}}):</span>
                   <mat-form-field class="msf-dashboard-column-properties-form-field">
-                    <mat-select [(ngModel)]="dashboardColumnsSize[column].width[row]" style="text-align: center" (selectionChange)="resizePanels(column, row)">
+                    <mat-select [(ngModel)]="dashboardColumns[column][row].width" style="text-align: center" (selectionChange)="resizePanels(column, row)">
                       <mat-option *ngFor="let widthValue of widthValues | panelSizeFilter: (dashboardColumns[column].length == 3 ? threePanelsFilterArgs : twoPanelsFilterArgs)" [value]="widthValue">
                         {{widthValue.name}}
                       </mat-option>
@@ -38,8 +38,8 @@
                   </mat-form-field>
                 </div>
               </ng-container>
-              <div class="msf-dashboard-column-properties-align">
-                <ng-container *ngIf="dashboardColumn.length <= 2">
+              <div class="msf-dashboard-column-properties-align" *ngIf="dashboardColumn.length <= 2">
+                <ng-container>
                   <div class="msf-dashboard-column-properties-button">
                     <button mat-flat-button class="flat-button" (click)="addChartInColumn(column, 1)">Add 1 panel</button>
                   </div>
