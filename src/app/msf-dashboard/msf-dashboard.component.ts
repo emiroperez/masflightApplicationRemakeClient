@@ -315,29 +315,12 @@ export class MsfDashboardComponent implements OnInit {
     for (let i = 0; i < this.dashboardColumns[column].length; i++)
       dashboardIds.push (this.dashboardColumns[column][i].id);
 
-    this.service.updateDashboardPanelHeight (this, dashboardIds, index.value, this.handlerSucess, this.handlerError);
+    this.service.updateDashboardPanelHeight (this, dashboardIds, this.heightValues.indexOf (index), this.handlerSucess, this.handlerError);
   }
 
   handlerSucess(_this): void
   {
     console.log ("Panel height adjustement was successful.");
-  }
-
-  adjustPanelSize(column): void
-  {
-    let currentColumn = this.dashboardColumns[column];
-
-    if (this.dashboardColumns[column].length == 2) // two panels
-    {
-      let widthLeft = 12 - (currentColumn[1].width.value + currentColumn[0].width.value);
-
-      this.dashboardColumns[column][0].width =
-        this.getPanelWidthOption (currentColumn[0].width.value + (widthLeft >> 1));
-      this.dashboardColumns[column][1].width =
-        this.getPanelWidthOption (currentColumn[1].width.value + (widthLeft >> 1));
-    }
-    else if (this.dashboardColumns[column].length == 1) // one panel
-      this.dashboardColumns[column][0].width = this.getPanelWidthOption (12);
   }
 
   // this is not flexible...
