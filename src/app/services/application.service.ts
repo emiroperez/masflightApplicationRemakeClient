@@ -296,6 +296,12 @@ export class ApplicationService {
     this.http.post (_this, url, dashboardIds, handlerSucess, handlerError);
   }
 
+  updateDashboardPanelWidth(_this, dashboardIds, handlerSucess, handlerError): void
+  {
+    let url = this.host + "/updateDashboardPanelWidth";
+    this.http.post (_this, url, dashboardIds, handlerSucess, handlerError);
+  }
+
   confirmationDialog(_this, message, callback)
   {
     const dialogRef = this.dialog.open (MsfConfirmationDialogComponent, {

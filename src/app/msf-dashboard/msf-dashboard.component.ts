@@ -320,13 +320,14 @@ export class MsfDashboardComponent implements OnInit {
 
   handlerSucess(_this): void
   {
-    console.log ("Panel height adjustement was successful.");
+    console.log ("Panel size adjustement was successful.");
   }
 
   // this is not flexible...
   resizePanels(column, row): void
   {
     let currentColumn = this.dashboardColumns[column];
+    let dashboardIds = [];
 
     if (this.dashboardColumns[column].length == 3) // three panels
     {
@@ -367,5 +368,14 @@ export class MsfDashboardComponent implements OnInit {
     }
     else if (this.dashboardColumns[column].length == 1) // one panel
       this.dashboardColumns[column][0].width = this.getPanelWidthOption (12);
+
+    // update the database to save changes
+    for (let i = 0; i < this.dashboardColumns[column].length; i++)
+    {
+      dashboardIds.push (this.dashboardColumns[column][i].id);
+      dashboardIds.push (this.widthValues.indexOf (this.dashboardColumns[column][i].width));
+    }
+
+    this.service.updateDashboardPanelWidth (this, dashboardIds, this.handlerSucess, this.handlerError);
   }
 }
