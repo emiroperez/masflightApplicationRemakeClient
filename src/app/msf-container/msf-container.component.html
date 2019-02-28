@@ -42,7 +42,8 @@
             <app-msf-map #msfMapRef></app-msf-map>
         </mat-tab> 
 
-        <mat-tab  [style.visibility]= "globals.mapsc ? 'visible' : 'hidden' " #tabRef >
+        <mat-tab  [ngClass]="globals.mapsc? 'tab-show':'tab-hide'" #msfScMapRef >
+                <!-- <mat-tab  *ngIf= "globals.mapsc" #tabRef > -->
                 <ng-template mat-tab-label>
                         Map
                         <mat-icon (click)="closeTab(6)" class="close-icon">close</mat-icon> 
