@@ -135,7 +135,7 @@ export class Utils{
              || type == ComponentType.fareIncrementMax ||  type == ComponentType.percentIncrement || type == ComponentType.quarterHour 
              || type == ComponentType.stops || type == ComponentType.circuityType || type == ComponentType.circuity
              || type == ComponentType.groupingHubSummaries || type == ComponentType.groupingDailyStatics || type == ComponentType.groupingOperationsSummary
-             || type == ComponentType.fareIncrementsMarketHistograms){
+             || type == ComponentType.fareIncrementsMarketHistograms|| type == ComponentType.sortingNostop || type == ComponentType.sortingConnectionBuilder){
             if(typeof value === "string"){
                 return value;
             }
@@ -222,7 +222,7 @@ export class Utils{
             return valueAux;
           }else if (type == ComponentType.grouping || type == ComponentType.causesFlightDelaysCheckbox
             || type == ComponentType.taxiTimesCheckboxes || type == ComponentType.cancelsCheckBox || type== ComponentType.diversionsCheckbox
-            || type  == ComponentType.aircraftTypeCheckboxes || type == ComponentType.sortingNostop || type == ComponentType.sortingConnectionBuilder){
+            || type  == ComponentType.aircraftTypeCheckboxes){
             var valueAux="";
             var i = 0;
             for(var val of value){
@@ -304,7 +304,7 @@ export class Utils{
                  || type == ComponentType.fareIncrementMax || type == ComponentType.percentIncrement || type == ComponentType.quarterHour
                  || type == ComponentType.stops || type == ComponentType.circuityType || type == ComponentType.circuity
                  || type == ComponentType.groupingHubSummaries || type == ComponentType.groupingDailyStatics || type == ComponentType.groupingOperationsSummary
-                 || type == ComponentType.fareIncrementsMarketHistograms){
+                 || type == ComponentType.fareIncrementsMarketHistograms|| type == ComponentType.sortingNostop || type == ComponentType.sortingConnectionBuilder){
                 if(typeof value === "string"){
                     return value;
                 }
@@ -377,7 +377,7 @@ export class Utils{
           }else if (type == ComponentType.grouping || type == ComponentType.tailnumber || type == ComponentType.summary 
             || type == ComponentType.fareTypes || type == ComponentType.causesFlightDelaysCheckbox 
             || type == ComponentType.taxiTimesCheckboxes || type == ComponentType.cancelsCheckBox || type== ComponentType.diversionsCheckbox
-            || type  == ComponentType.aircraftTypeCheckboxes || type == ComponentType.sortingNostop || type == ComponentType.sortingConnectionBuilder
+            || type  == ComponentType.aircraftTypeCheckboxes
             || type == ComponentType.summaryRevenueBuilds){
             var valueAux="";
             var i = 0;
