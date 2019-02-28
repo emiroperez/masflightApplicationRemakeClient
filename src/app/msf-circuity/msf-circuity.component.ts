@@ -11,22 +11,22 @@ export class MsfCircuityComponent implements OnInit {
   @Input("argument") public argument: Arguments;
   
   data: any[] = [
-    {id: "ShortestRoute" ,name:"Shortest Route"},
-    {id: "5" ,name:"5%"},
-    {id: "10" ,name:"10%"},
-    {id: "15" ,name:"15%"},
-    {id: "20" ,name:"20%"},
-    {id: "25" ,name:"25%"},
-    {id: "30" ,name:"30%"},
-    {id: "35" ,name:"35%"},
-    {id: "40" ,name:"40%"},
-    {id: "45" ,name:"45%"},
-    {id: "50" ,name:"50%"}
+    {id: "0.0" ,name:"Shortest Route"},
+    {id: "0.05" ,name:"5%"},
+    {id: "0.10" ,name:"10%"},
+    {id: "0.15" ,name:"15%"},
+    {id: "0.20" ,name:"20%"},
+    {id: "0.25" ,name:"25%"},
+    {id: "0.30" ,name:"30%"},
+    {id: "0.35" ,name:"35%"},
+    {id: "0.40" ,name:"40%"},
+    {id: "0.45" ,name:"45%"},
+    {id: "0.50" ,name:"50%"}
 ];
 constructor() { }
 
 
 ngOnInit() { 
-  this.argument.value1  = {id: "25" ,name:"25%"};
+  this.argument.value1  = {id: "0.25" ,name:"25%"};
 }
 }

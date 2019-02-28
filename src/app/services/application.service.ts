@@ -251,9 +251,18 @@ export class ApplicationService {
       this.http.postSecure (_this, this.host + "/secure" + url, panels, handlerSuccess, handlerError);
   }
 
-  deleteDashboardPanel(_this, id, handlerSuccess, handlerError): void
+  createDashboardPanelInColumn(_this, panels, width, handlerSuccess, handlerError): void
   {
-    let url = this.host + "/deleteDashboardPanel";
+    let url = "/addDashboardPanels/column?width=" + width;
+    if (this.host != "")
+      this.http.post (_this, this.host + url, panels, handlerSuccess, handlerError);
+    else
+      this.http.postSecure (_this, this.host + "/secure" + url, panels, handlerSuccess, handlerError);
+  }
+
+  deleteDashboardPanel(_this, id, width, handlerSuccess, handlerError): void
+  {
+    let url = this.host + "/deleteDashboardPanel?width=" + width;
     this.http.post (_this, url, id, handlerSuccess, handlerError);
   }
 
@@ -279,6 +288,12 @@ export class ApplicationService {
   {
     let url = this.host + "/updateDashboardPanel";
     this.http.post (_this, url, panel, handlerSucess, handlerError);
+  }
+
+  updateDashboardPanelHeight(_this, dashboardIds, height, handlerSucess, handlerError): void
+  {
+    let url = this.host + "/updateDashboardPanelHeight?height=" + height;
+    this.http.post (_this, url, dashboardIds, handlerSucess, handlerError);
   }
 
   confirmationDialog(_this, message, callback)
