@@ -21,8 +21,9 @@
       <!-- <table *ngFor="let item2 of item.Flight"> -->
       <!-- <div **ngIf="item.Flight.length"> -->
       <h3 class="msf-schedule-panel-subs">{{item.Flight.content}}</h3>  
-    <table class="msf-schedule-panel-table" >
-        <tr><td>Departure Date</td><td>{{item.Flight.DepartureDate}}</td></tr>
+    <!-- <table class="msf-schedule-panel-table" innerHTML="{{getPropshtml(item.Flight) }}" > -->
+       <table class="msf-schedule-panel-table" >
+        <!-- <tr><td>Departure Date</td><td>{{item.Flight.DepartureDate}}</td></tr>
         <tr><td>Air line</td><td>{{item.Flight.Marketing_Airline}}</td></tr>
         <tr><td>Flight No</td><td>{{item.Flight.FlightNo}}</td></tr>
         <tr><td>Departure</td><td>{{item.Flight.Departure}}</td></tr>
@@ -33,8 +34,9 @@
         <tr><td>Seats</td><td>{{item.Flight.Seats}}</td></tr>
         <tr><td>Configuration</td><td>{{item.Flight.Configuration}}</td></tr>
         <tr><td>AircraftType</td><td>{{item.Flight.AircraftType}}</td></tr>
-        <tr><td>Distance</td><td>{{item.TotalDistance}}</td></tr>
-      <!-- </table> -->
+        <tr><td>Distance</td><td>{{item.TotalDistance}}</td></tr> -->
+    
+        <tr *ngFor="let entry  of item.Flight | keyvalue"  ><td *ngIf="entry.key!='content'" >{{entry.key}}</td><td *ngIf="entry.key!='content'">{{entry.value}}</td></tr>
     </table>
   <!-- </div> -->
     
