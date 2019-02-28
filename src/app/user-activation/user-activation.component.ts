@@ -69,10 +69,11 @@ export class UserActivationComponent implements OnInit {
     for(let i = 0; i < _this.users.length; i++){
       console.log(i)
       console.log(_this.users[i])
-    if (_this.users[i].CState == null){
-      _this.users[i].CState = "";
+    if (_this.users[i].userPlan.length == 0){
+      _this.users[i].userPlan.push([{"id": null,"Plan_Id":null,"Fare_Id":null}]);
     }
     }
+    console.log(_this.users)
     _this.getPlansService();
     console.log(_this.users);
     _this.dataSource = new MatTableDataSource(_this.users);
@@ -83,6 +84,10 @@ export class UserActivationComponent implements OnInit {
   handlerErrorUsers(_this, result){
     console.log(result);
     _this.globals.isLoading = false;
+  }
+
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
 
@@ -102,8 +107,6 @@ export class UserActivationComponent implements OnInit {
   addToJson(element){
     this.userSelected = element;
     this.userSelected.state ? this.userSelected.state = 1 : this.userSelected.state = 0;
-
-    console.log(this.userSelected.state);
     this.usersToAdd.push(this.userSelected);
     console.log(this.usersToAdd);
   }
