@@ -66,6 +66,13 @@ export class UserActivationComponent implements OnInit {
 
   handlerSuccessUsers(_this, data){
     _this.users = data;
+    for(let i = 0; i < _this.users.length; i++){
+      console.log(i)
+      console.log(_this.users[i])
+    if (_this.users[i].CState == null){
+      _this.users[i].CState = "";
+    }
+    }
     _this.getPlansService();
     console.log(_this.users);
     _this.dataSource = new MatTableDataSource(_this.users);
