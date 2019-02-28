@@ -19,8 +19,7 @@ import { MessageComponent } from '../message/message.component';
 
 @Component({
   selector: 'app-msf-dashboard-chartmenu',
-  templateUrl: './msf-dashboard-chartmenu.component.html',
-  styleUrls: ['./msf-dashboard-chartmenu.component.css']
+  templateUrl: './msf-dashboard-chartmenu.component.html'
 })
 export class MsfDashboardChartmenuComponent implements OnInit {
   utils: Utils;
@@ -65,7 +64,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   rowPos: number;
 
   @Input()
-  height: number;
+  panelHeight: number;
 
   public dataFormFilterCtrl: FormControl = new FormControl ();
   public variableFilterCtrl: FormControl = new FormControl ();
@@ -949,6 +948,6 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   calcChartHeight(): number
   {
-    return this.height - 14;
+    return this.panelHeight - 14;
   }
 }

@@ -6,8 +6,7 @@ import { ApplicationService } from '../services/application.service';
 
 @Component({
   selector: 'app-msf-dashboard',
-  templateUrl: './msf-dashboard.component.html',
-  styleUrls: ['./msf-dashboard.component.css']
+  templateUrl: './msf-dashboard.component.html'
 })
 export class MsfDashboardComponent implements OnInit {
   dashboardColumns: MsfDashboardChartValues[][] = [];
@@ -315,11 +314,13 @@ export class MsfDashboardComponent implements OnInit {
     for (let i = 0; i < this.dashboardColumns[column].length; i++)
       dashboardIds.push (this.dashboardColumns[column][i].id);
 
+    this.globals.isLoading = true;
     this.service.updateDashboardPanelHeight (this, dashboardIds, this.heightValues.indexOf (index), this.handlerSucess, this.handlerError);
   }
 
   handlerSucess(_this): void
   {
+    _this.globals.isLoading = false;
     console.log ("Panel size adjustement was successful.");
   }
 
@@ -376,6 +377,7 @@ export class MsfDashboardComponent implements OnInit {
       dashboardIds.push (this.widthValues.indexOf (this.dashboardColumns[column][i].width));
     }
 
+    this.globals.isLoading = true;
     this.service.updateDashboardPanelWidth (this, dashboardIds, this.handlerSucess, this.handlerError);
   }
 }

@@ -1,4 +1,4 @@
-<div class="msf-dashboard-chartmenu-container" [style.height.px]="height" *ngIf="!values.displayChart">
+<div class="msf-dashboard-chartmenu-container" [style.height.px]="panelHeight" *ngIf="!values.displayChart">
   <div class="msf-dashboard-chartmenu-sub-container-column">
     <div class="msf-dashboard-chartmenu-sub-container-row">
       <mat-form-field class="msf-width-90">
@@ -109,7 +109,7 @@
   </div>
 </div>
 <!-- ngIf doesn't work with AmCharts -->
-<div class="{{values.displayChart ? 'msf-dashboard-chartmenu-container-chart' : 'msf-dashboard-chartmenu-container-invisible'}}" [style.height.px]="height">
+<div class="{{values.displayChart ? 'msf-dashboard-chartmenu-container-chart' : 'msf-dashboard-chartmenu-container-invisible'}}" [style.height.px]="panelHeight">
   <div class="msf-dashboard-chartmenu-title" *ngIf="values.displayChart">{{values.chartName}}</div>
   <div class="msf-dashboard-chartmenu-sub-container-column">
     <div class="msf-dashboard-chartmenu-config-button">

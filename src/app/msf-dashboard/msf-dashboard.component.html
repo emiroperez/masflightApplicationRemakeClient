@@ -8,7 +8,7 @@
               <div class="msf-dashboard-button">
                 <mat-icon class="msf-dashboard-button-icon" aria-label="close" (click)="RemoveChart(column, row)">close</mat-icon>
               </div>
-              <app-msf-dashboard-chartmenu [values]="dashboardChart" [height]="getColumnHeight(column)" [columnPos]="column" [rowPos]="row"></app-msf-dashboard-chartmenu>
+              <app-msf-dashboard-chartmenu [values]="dashboardChart" [panelHeight]="getColumnHeight(column)" [columnPos]="column" [rowPos]="row"></app-msf-dashboard-chartmenu>
             </div>
           </div>
           <div [ngClass]="dashboardColumnsProperties[column] ? 'msf-dashboard-panel-size-properties-open' : 'msf-dashboard-panel-size-properties-closed'">
