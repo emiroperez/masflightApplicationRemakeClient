@@ -50,7 +50,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     { id: 'avg', name: 'Average' },
     { id: 'sum', name: 'Sum' },
     { id: 'max', name: 'Max' },
-    { id: 'min', name: 'Min' }
+    { id: 'min', name: 'Min' },
+    { id: 'count', name: 'Count' }
   ]; 
 
   @Input()
