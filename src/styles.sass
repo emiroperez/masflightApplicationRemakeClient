@@ -1629,11 +1629,6 @@ mat-tab-group
     .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus+.mat-form-field-label-wrapper .mat-form-field-label, .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label
         margin-left: 0px
 
-@mixin msf-dashboard-chartbox-item($width)
-    padding: 2px 2px
-    width: $width
-    position: relative
-
 @mixin msf-dashboard-addmenu-item-text($color)
     border: 1px solid #888888
     color: $color
@@ -1683,6 +1678,24 @@ mat-tab-group
         .msf-dashboard-column-properties-form-field
             @extend .msf-dashboard-column-properties-form-field
 
+@mixin msf-dashboard-line-resize
+    position: absolute
+    height: 100%
+    width: 5px
+
+.msf-dashboard-panel-line-resize
+    @include msf-dashboard-line-resize
+
+.msf-dashboard-panel-line-resize:hover
+    cursor: col-resize
+    @include msf-dashboard-line-resize
+
+#msf-dashboard-panel-right-resize
+    right: 0px
+
+#msf-dashboard-panel-left-resize
+    left: 0px
+
 .msf-dashboard-container
     font-size: 14px
     text-align: center
@@ -1720,12 +1733,9 @@ mat-tab-group
             .msf-dashboard-chartbox-items
                 width: 100%
                 .msf-dashboard-chartbox-column
-                    .msf-dashboard-chartbox-item-1
-                        @include msf-dashboard-chartbox-item(100%)
-                    .msf-dashboard-chartbox-item-2
-                        @include msf-dashboard-chartbox-item(50%)
-                    .msf-dashboard-chartbox-item-3
-                        @include msf-dashboard-chartbox-item(33.333333333333333333333333333333%)
+                    .msf-dashboard-chartbox-item
+                        padding: 2px 2px
+                        position: relative
                 .msf-dashboard-panel-size-properties-closed
                     @include msf-dashboard-column-properties
                 .msf-dashboard-panel-size-properties-open
