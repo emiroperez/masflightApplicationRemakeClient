@@ -73,5 +73,7 @@ export enum ComponentType {
   singleAirport = "singleAirport",
   summaryRevenueBuilds = "summaryRevenueBuilds",
   datePeriodRevenue = "datePeriodRevenue",
-  fareIncrementsMarketHistograms = "fareIncrementsMarketHistograms"
+  fareIncrementsMarketHistograms = "fareIncrementsMarketHistograms",
+  seatClass = "seatClass",
+  topNumber = "topNumber"
 }

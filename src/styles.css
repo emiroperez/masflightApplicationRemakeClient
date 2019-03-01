@@ -3343,7 +3343,7 @@ table.datasource {
   align-items: center;
   float: right;
   margin: 15px 0px;
-  width: 90px;
+  width: 95px;
   height: 75px;
 }
 
@@ -3363,7 +3363,7 @@ table.datasource {
   height: auto !important;
   width: 100%;
   display: flex;
-  margin: 20px 0;
+  padding: 20px 0;
   transition: background-image 0.5s ease-in-out;
 }
 
@@ -3403,7 +3403,7 @@ table.datasource {
   padding: 5% 0;
 }
 
-.landing-icon-content-child:hover, .footer-container:hover {
+.option-hover {
   background-color: #15ACEC;
 }
 
