@@ -520,6 +520,9 @@ export class MsfDashboardComponent implements OnInit {
   @HostListener('window:resize', ['$event'])
   checkScreen(event)
   {
-    this.screenHeight = (event.target.innerHeight == window.screen.height) ? "100%" : "calc(100% - 90px)";
+    if (event.target.innerHeight == window.screen.height && event.target.innerWidth == window.screen.width)
+      this.screenHeight = "100%";
+    else
+      this.screenHeight = "calc(100% - 90px)";
   }
 }

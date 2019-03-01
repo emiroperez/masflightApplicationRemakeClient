@@ -1,5 +1,5 @@
 <!--Header-->
-<div class="msf-menu-header">
+<div *ngIf="!isFullscreen" class="msf-menu-header">
     <div class="msf-menu-header-image-container">
         <img (click)="goHome()" style="cursor:pointer;" src="../../assets/images/logo_global_peqe.png" class="msf-menu-logo">
         <img src="../../assets/images/ajustes.png" class="msf-menu-ajustes-icon">
@@ -32,7 +32,7 @@
         </mat-menu>
     </div>
 </div>
-<div class="msf-menu-icons-container">
+<div *ngIf="!isFullscreen" class="msf-menu-icons-container">
     <div class="msf-secondary-color msf-menu-icon-container msf-menu-adm">connected as: admin</div>
     <div class="msf-menu-icon-container">| {{globals.currentOption ? globals.currentOption.label:''}}</div>
     <div class="msf-menu-icon-container msf-flex msf-menu-icons-right">
@@ -42,14 +42,14 @@
 
         <!-- <button class="msf-menu-icon"><img src="../../assets/images/CopytoClipboard.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Copy to Clipboard</span></button>
         <button class="msf-menu-icon"><img src="../../assets/images/LoadingOptions.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Loading Options</span></button> -->
+        <button [disabled]="globals.currentOption !== 'dashboard'" class="msf-menu-icon"><img src="../../assets/images/Chart.png" class="msf-menu-image msf-vertical-middle" ><span class="msf-vertical-middle">Open Dashboard</span></button>
+        <button [disabled]="globals.currentOption !== 'dashboard'" class="msf-menu-icon"><img src="../../assets/images/SaveOptions.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Save Dashboard</span></button>
         <button class="msf-menu-icon" (click)="goToFullscreen()"><img src="../../assets/images/fullscreen.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Full Screen</span></button>
-        <button class="msf-menu-icon"><img src="../../assets/images/SaveOptions.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Save Options</span></button>
     </div>
 </div>
 
 <!--body-->
-<div id="msf-component-screen" class="msf-menu-body">
-
+<div class="msf-menu-body">
     <!--nav-->
     <div [ngClass]="isSimpleContent() ? 'msf-menu-hide-full-nav' : 'msf-menu-show-full-nav'">
         <div [ngClass]="globals.status ? 'msf-menu-nav msf-menu-show-nav' : 'msf-menu-nav msf-menu-hide-nav'">

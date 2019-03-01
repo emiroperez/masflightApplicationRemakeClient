@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { Menu } from '../model/Menu';
 import { Option } from '../model/Option';
 import {CategoryArguments} from '../model/CategoryArguments';
@@ -23,6 +23,7 @@ import { User } from '../model/User';
 })
 export class ApplicationComponent implements OnInit {
 
+  isFullscreen: boolean;
   animal: string;
   name: string;
   chartPlan: boolean;
@@ -250,7 +251,7 @@ toggle(){
 
   goToFullscreen(): void
   {
-    let element: any = document.getElementById ("msf-component-screen");
+    let element: any = document.documentElement;
 
     if (element.requestFullscreen)
       element.requestFullscreen ();
@@ -260,5 +261,14 @@ toggle(){
       element.webkitRequestFullscreen ();
     else if (element.msRequestFullscreen)
       element.msRequestFullscreen ();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  checkScreen(event)
+  {
+    if (event.target.innerHeight == window.screen.height && event.target.innerWidth == window.screen.width)
+      this.isFullscreen = true;
+    else
+      this.isFullscreen = false;
   }
 }
