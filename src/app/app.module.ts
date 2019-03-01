@@ -152,8 +152,6 @@ import { MsfSchedulePanelComponent } from './msf-schedule-panel/msf-schedule-pan
 import { MsfScheduleMapsComponent } from './msf-schedule-maps/msf-schedule-maps.component';
 import { MsfSchedulePanelInfoComponent } from './msf-schedule-panel-info/msf-schedule-panel-info.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { MsfSeatClassComponent } from './msf-seat-class/msf-seat-class.component';
-import { MsfTopNumberComponent } from './msf-top-number/msf-top-number.component';
 
 @NgModule({
   declarations: [
@@ -286,9 +284,7 @@ import { MsfTopNumberComponent } from './msf-top-number/msf-top-number.component
     MsfDashboardPanelSizePipe,
     MsfSchedulePanelComponent,
     MsfScheduleMapsComponent,
-    MsfSchedulePanelInfoComponent,
-    MsfSeatClassComponent,
-    MsfTopNumberComponent
+    MsfSchedulePanelInfoComponent
   ],
   imports: [
     BrowserModule,
