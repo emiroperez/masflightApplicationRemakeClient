@@ -70,8 +70,8 @@ export class ApplicationComponent implements OnInit {
     console.log(result);
      _this.globals.isLoading = false;
 
-    //  if (_this.dashboardPlan)
-    //  _this.goToDashboard ();
+     if (_this.dashboardPlan)
+     _this.goToDashboard ();
   }
 
   getAdvanceFeatures(){
@@ -165,6 +165,25 @@ toggle(){
   }
 
   moreResults(){
+    this.globals.moreResults = false;
+    this.globals.query = true;
+    if(this.globals.currentOption.metaData==2){
+      this.globals.mapsc=true;
+      
+    }else{
+      this.globals.mapsc=false;
+    }
+    this.globals.tab = true;
+    
+    this.globals.isLoading = true;
+
+    setTimeout(() => {
+      this.moreResults2();
+  }, 3000);
+
+  }
+
+  moreResults2(){
     if(this.globals.currentOption.tabType === 'map'){
       this.globals.map = true;
       this.msfContainerRef.msfMapRef.getTrackingDataSource();
