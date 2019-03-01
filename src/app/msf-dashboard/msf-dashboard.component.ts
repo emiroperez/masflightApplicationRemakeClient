@@ -39,13 +39,13 @@ export class MsfDashboardComponent implements OnInit {
   threePanelsFilterArgs:any = { value: 10, name: 'Very Large' };
 
   // variables for panel resizing
-  px: number;
+  //px: number;
   currentColumn: number;
-  currentRow: number;
+  /*currentRow: number;
   resizePanel: boolean;
   minWidth: any;
   maxWidth: any;
-  resizer: any;
+  resizer: any;*/
 
   constructor(public globals: Globals, private service: ApplicationService,
     private http: ApiClient)
@@ -389,7 +389,7 @@ export class MsfDashboardComponent implements OnInit {
     this.saveResizedPanels ();
   }
 
-  resizePanelsFromLeft(offsetX: number): void
+  /*resizePanelsFromLeft(offsetX: number): void
   {
     let leftPanel = this.dashboardColumns[this.currentColumn][this.currentRow - 1];
     let rightPanel = this.dashboardColumns[this.currentColumn][this.currentRow];
@@ -497,7 +497,7 @@ export class MsfDashboardComponent implements OnInit {
   onLineRelease(event: MouseEvent)
   {
     this.resizePanel = false;
-  }
+  }*/
 
   saveResizedPanels(): void
   {
