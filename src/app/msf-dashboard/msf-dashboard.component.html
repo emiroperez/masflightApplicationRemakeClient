@@ -1,4 +1,4 @@
-<div class="msf-dashboard-container">
+<div class="msf-dashboard-container" [style.height]="screenHeight">
   <ng-container *ngIf="dashboardColumns.length">
     <div class="msf-dashboard-chartbox">
       <div class="msf-dashboard-chartbox-column" *ngFor="let dashboardColumn of dashboardColumns; let column = index" [attr.data-index]="column">
@@ -6,10 +6,12 @@
           <div class="msf-dashboard-chartbox-column">
             <div class="msf-dashboard-chartbox-item" [style.width.%]="getPanelWidth(column, row)" *ngFor="let dashboardChart of dashboardColumn; let row = index" [attr.data-index]="row">
               <div class="msf-dashboard-button">
-                <mat-icon class="msf-dashboard-button-icon" aria-label="close" (click)="RemoveChart(column, row)">close</mat-icon>
+                <mat-icon class="msf-dashboard-button-icon" aria-label="close" (click)="removeChart(column, row)">close</mat-icon>
               </div>
+              <!--
               <div *ngIf="row" (mousedown)='onLineClick($event, column, row, resizePanelsFromLeft)' id='msf-dashboard-panel-left-resize' class='msf-dashboard-panel-line-resize'></div>
               <div *ngIf="row != dashboardColumn.length - 1" (mousedown)='onLineClick($event, column, row, resizePanelsFromRight)' id='msf-dashboard-panel-right-resize' class='msf-dashboard-panel-line-resize'></div>
+              -->
               <app-msf-dashboard-chartmenu [values]="dashboardChart" [panelHeight]="getColumnHeight(column)" [columnPos]="column" [rowPos]="row"></app-msf-dashboard-chartmenu>
             </div>
           </div>

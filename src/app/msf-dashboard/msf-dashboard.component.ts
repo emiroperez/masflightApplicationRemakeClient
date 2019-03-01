@@ -15,6 +15,7 @@ export class MsfDashboardComponent implements OnInit {
 
   columnToUpdate: number;
   rowToUpdate: number;
+  screenHeight: string;
 
   displayAddChartMenu: boolean = false;
 
@@ -38,16 +39,19 @@ export class MsfDashboardComponent implements OnInit {
   threePanelsFilterArgs:any = { value: 10, name: 'Very Large' };
 
   // variables for panel resizing
-  px: number;
+  //px: number;
   currentColumn: number;
-  currentRow: number;
+  /*currentRow: number;
   resizePanel: boolean;
   minWidth: any;
   maxWidth: any;
-  resizer: any;
+  resizer: any;*/
 
   constructor(public globals: Globals, private service: ApplicationService,
-    private http: ApiClient) { }
+    private http: ApiClient)
+  {
+    this.screenHeight = "calc(100% - 90px)";
+  }
 
   ngOnInit()
   {
@@ -145,7 +149,7 @@ export class MsfDashboardComponent implements OnInit {
     _this.globals.isLoading = false;
   }
 
-  RemoveChart(column, row): void
+  removeChart(column, row): void
   {
     this.service.confirmationDialog (this, "Are you sure you want to delete this panel?",
       function (_this)
@@ -385,7 +389,7 @@ export class MsfDashboardComponent implements OnInit {
     this.saveResizedPanels ();
   }
 
-  resizePanelsFromLeft(offsetX: number): void
+  /*resizePanelsFromLeft(offsetX: number): void
   {
     let leftPanel = this.dashboardColumns[this.currentColumn][this.currentRow - 1];
     let rightPanel = this.dashboardColumns[this.currentColumn][this.currentRow];
@@ -493,7 +497,7 @@ export class MsfDashboardComponent implements OnInit {
   onLineRelease(event: MouseEvent)
   {
     this.resizePanel = false;
-  }
+  }*/
 
   saveResizedPanels(): void
   {
@@ -511,5 +515,14 @@ export class MsfDashboardComponent implements OnInit {
 
     this.globals.isLoading = true;
     this.service.updateDashboardPanelWidth (this, dashboardIds, this.handlerSucess, this.handlerError);
+  }
+
+  @HostListener('window:resize', ['$event'])
+  checkScreen(event)
+  {
+    if (event.target.innerHeight == window.screen.height && event.target.innerWidth == window.screen.width)
+      this.screenHeight = "100%";
+    else
+      this.screenHeight = "calc(100% - 90px)";
   }
 }
