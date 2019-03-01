@@ -10,7 +10,7 @@
     <div class="msf-header-icons">
         <div class="msf-inline msf-vertical-middle">Admin</div>
         <img src="../../assets/images/ADMIN.png" class="msf-menu-admin-icon">
-        <button mat-icon-button [disabled]="!dashboardPlan" (click)="goToDashboard()">
+        <button mat-icon-button (click)="goToDashboard()">
                 <mat-icon>dashboard</mat-icon>
             </button>
         <button *ngIf="admin" mat-icon-button [matMenuTriggerFor]="adminMenu">
@@ -42,18 +42,19 @@
 
         <!-- <button class="msf-menu-icon"><img src="../../assets/images/CopytoClipboard.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Copy to Clipboard</span></button>
         <button class="msf-menu-icon"><img src="../../assets/images/LoadingOptions.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Loading Options</span></button> -->
+        <button class="msf-menu-icon" (click)="goToFullscreen()"><img src="../../assets/images/fullscreen.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Fullscreen</span></button>
         <button class="msf-menu-icon"><img src="../../assets/images/SaveOptions.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Save Options</span></button>
     </div>
 </div>
 
 <!--body-->
-<div class="msf-menu-body">
+<div id="msf-component-screen" class="msf-menu-body">
 
     <!--nav-->
     <div [ngClass]="isSimpleContent() ? 'msf-menu-hide-full-nav' : 'msf-menu-show-full-nav'">
         <div [ngClass]="globals.status ? 'msf-menu-nav msf-menu-show-nav' : 'msf-menu-nav msf-menu-hide-nav'">
             <div [ngClass]="globals.status ? 'msf-menu-components-container-show' : 'msf-menu-components-container-hide'">
-                <div class="msf-category-container"   [ngClass]= "globals.hideParametersPanels ?  'msf-hide':'msf-category-container' ">
+                <div class="msf-category-container" [ngClass]= "globals.hideParametersPanels ?  'msf-hide':'msf-category-container' ">
                     <app-msf-component *ngIf="globals.currentOption && globals.currentOption.menuOptionArguments && globals.currentOption.menuOptionArguments.length > 0 && globals.currentOption.menuOptionArguments[0].categoryArguments.length > 0"></app-msf-component>
                 </div>
                 <button [disabled]="disabled()"  

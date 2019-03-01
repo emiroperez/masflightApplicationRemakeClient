@@ -1881,7 +1881,6 @@ mat-tab-group {
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: calc(100% - 90px);
   overflow-y: auto;
   transition: 0.5s;
 }

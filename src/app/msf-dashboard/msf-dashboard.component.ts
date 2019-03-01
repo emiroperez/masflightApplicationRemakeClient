@@ -15,6 +15,7 @@ export class MsfDashboardComponent implements OnInit {
 
   columnToUpdate: number;
   rowToUpdate: number;
+  screenHeight: string;
 
   displayAddChartMenu: boolean = false;
 
@@ -47,7 +48,10 @@ export class MsfDashboardComponent implements OnInit {
   resizer: any;
 
   constructor(public globals: Globals, private service: ApplicationService,
-    private http: ApiClient) { }
+    private http: ApiClient)
+  {
+    this.screenHeight = "calc(100% - 90px)";
+  }
 
   ngOnInit()
   {
@@ -145,7 +149,7 @@ export class MsfDashboardComponent implements OnInit {
     _this.globals.isLoading = false;
   }
 
-  RemoveChart(column, row): void
+  removeChart(column, row): void
   {
     this.service.confirmationDialog (this, "Are you sure you want to delete this panel?",
       function (_this)
@@ -511,5 +515,11 @@ export class MsfDashboardComponent implements OnInit {
 
     this.globals.isLoading = true;
     this.service.updateDashboardPanelWidth (this, dashboardIds, this.handlerSucess, this.handlerError);
+  }
+
+  @HostListener('window:resize', ['$event'])
+  checkScreen(event)
+  {
+    this.screenHeight = (event.target.innerHeight == window.screen.height) ? "100%" : "calc(100% - 90px)";
   }
 }

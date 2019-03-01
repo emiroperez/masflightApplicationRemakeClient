@@ -247,4 +247,18 @@ toggle(){
   isSimpleContent(): boolean {
     return (this.globals.currentOption === "dashboard" || !this.globals.currentOption);
   }
+
+  goToFullscreen(): void
+  {
+    let element: any = document.getElementById ("msf-component-screen");
+
+    if (element.requestFullscreen)
+      element.requestFullscreen ();
+    else if (element.mozRequestFullScreen)
+      element.mozRequestFullScreen ();
+    else if (element.webkitRequestFullscreen)
+      element.webkitRequestFullscreen ();
+    else if (element.msRequestFullscreen)
+      element.msRequestFullscreen ();
+  }
 }
