@@ -10,7 +10,7 @@
     <div class="msf-header-icons">
         <div class="msf-inline msf-vertical-middle">Admin</div>
         <img src="../../assets/images/ADMIN.png" class="msf-menu-admin-icon">
-        <button mat-icon-button (click)="goToDashboard()">
+        <button mat-icon-button [disabled]="!dashboardPlan" (click)="goToDashboard()">
                 <mat-icon>dashboard</mat-icon>
             </button>
         <button *ngIf="admin" mat-icon-button [matMenuTriggerFor]="adminMenu">
