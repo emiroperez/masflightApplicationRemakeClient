@@ -34,7 +34,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   generateBtnEnabled: boolean = false;
 
   chartForm: FormGroup;
-  chart: am4charts.XYChart;
+  chart: any;
 
   private timer: number;
 
@@ -378,20 +378,41 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   makeChart(chartInfo): void
   {
     this.zone.runOutsideAngular (() => {
-      let colIndex = 0;
       let chart;
 
       // Check chart type before generating it
       if (this.values.currentChartType.id === 'pie'
         || this.values.currentChartType.id === 'donut')
       {
-        // TODO: add other chart types
+        chart = am4core.create ("msf-dashboard-chart-display-" + this.columnPos + "-" + this.rowPos, am4charts.PieChart);
+        chart.data = chartInfo.dataProvider;
+
+        // Set inner radius for donut chart
+        if (this.values.currentChartType.id === 'donut')
+          chart.innerRadius = am4core.percent (60);
+
+        // Configure Pie Chart
+        var pieSeries = chart.series.push (new am4charts.PieSeries ());
+        pieSeries.dataFields.value = chartInfo.valueField;
+        pieSeries.dataFields.category = chartInfo.titleField;
+
+        // This creates initial animation
+        pieSeries.hiddenState.properties.opacity = 1;
+        pieSeries.hiddenState.properties.endAngle = -90;
+        pieSeries.hiddenState.properties.startAngle = -90;
+
+        // Set colors
+        var colorSet = new am4core.ColorSet ();
+        colorSet.list = chartInfo.colors.map (function(color) {
+          return am4core.color (color);
+        });
+        pieSeries.colors = colorSet;
       }
       else
       {
-        chart = am4core.create ("msf-dashboard-chart-display-" + this.columnPos + "-" + this.rowPos, am4charts.XYChart);
-        colIndex = 0;
+        let colIndex = 0;
 
+        chart = am4core.create ("msf-dashboard-chart-display-" + this.columnPos + "-" + this.rowPos, am4charts.XYChart);
         chart.data = chartInfo.data;
 
         if (this.values.currentChartType.rotate)
