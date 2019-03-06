@@ -402,6 +402,10 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         pieSeries.hiddenState.properties.startAngle = -90;
 
         // Set colors
+        pieSeries.ticks.template.strokeOpacity = 1;
+        pieSeries.ticks.template.stroke = am4core.color ("#30303d");
+        pieSeries.ticks.template.strokeWidth = 1;
+
         var colorSet = new am4core.ColorSet ();
         colorSet.list = chartInfo.colors.map (function(color) {
           return am4core.color (color);
