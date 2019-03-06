@@ -13,7 +13,7 @@ export class MsfFunctionsComponent implements OnInit {
   data =  [
     {"id":1,
     "name":"Average(Mean)",
-    "value":"m"},
+    "value":"a"},
     {"id":2,
     "name":"Total (Sum)",
     "value":"s"},
