@@ -69,13 +69,19 @@ export class MsfTableComponent implements OnInit {
                 if(element2.type=="sortingCheckboxes"){
                   this.sortingArgument = element2;
                 }
-                // if(element2.type=="summaryRevenueBuilds"){
-                //   this.groupingArgument = element2;
-                // }
                 if(element2.type=="summary"){
                   this.groupingArgument = element2;
                 }
                 if(element2.type=="grouping"){
+                  this.groupingArgument = element2;
+                }
+                if(element2.type=="groupingOperationsSummary"){
+                  this.groupingArgument = element2;
+                }
+                if(element2.type=="groupingHubSummaries"){
+                  this.groupingArgument = element2;
+                }
+                if(element2.type=="groupingDailyStatics"){
                   this.groupingArgument = element2;
                 }
             });
