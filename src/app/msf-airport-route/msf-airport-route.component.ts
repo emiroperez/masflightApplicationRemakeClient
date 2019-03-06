@@ -51,9 +51,9 @@ export class MsfAirportRouteComponent implements OnInit {
   }
 
   onSearch($event: any){
-    if($event.length>=3){
+    if($event.term.length>=3){
       this.loading = true;
-      this.getAirports($event, this.handlerSuccess);
+      this.getAirports($event.term, this.handlerSuccess);
     }
   }
 

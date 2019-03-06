@@ -39,9 +39,9 @@ export class MsfSingleAirportComponent implements OnInit {
   }
   
   onSearch($event: any){
-    if($event.length>=3){
+    if($event.term.length>=3){
       this.loading = true;
-      this.getRecords($event, this.handlerSuccess);
+      this.getRecords($event.term, this.handlerSuccess);
     }
 }
 }

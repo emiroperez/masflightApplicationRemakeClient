@@ -61,7 +61,7 @@ export class MsfAircraftTypeComponent implements OnInit {
 
   onSearch($event: any){
       this.loading = true;
-      this.getRecords($event, this.handlerSuccess);
+      this.getRecords($event.term, this.handlerSuccess);
   }
 
   onFocus(){

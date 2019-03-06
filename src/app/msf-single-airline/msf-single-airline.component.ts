@@ -41,9 +41,9 @@ export class MsfSingleAirlineComponent implements OnInit {
   }
 
   onSearch($event: any){
-    if($event.length>=2){
+    if($event.term.length>=2){
       this.loading = true;
-      this.getRecords($event, this.handlerSuccess);
+      this.getRecords($event.term, this.handlerSuccess);
     }
   }
 
