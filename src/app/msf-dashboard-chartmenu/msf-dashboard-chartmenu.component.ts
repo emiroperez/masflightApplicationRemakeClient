@@ -1,5 +1,8 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
-import { AmChart, AmChartsService } from '@amcharts/amcharts3-angular';
+import { Component, OnInit, ViewChild, Input, NgZone } from '@angular/core';
+import * as am4core from "@amcharts/amcharts4/core";
+import * as am4charts from "@amcharts/amcharts4/charts";
+import am4themes_animated from "@amcharts/amcharts4/themes/animated";
+import am4themes_dark from "@amcharts/amcharts4/themes/dark";
 import { CategoryArguments } from '../model/CategoryArguments';
 import { Globals } from '../globals/Globals';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
@@ -17,6 +20,9 @@ import { ComponentType } from '../commons/ComponentType';
 import { MsfDashboardChartValues } from '../msf-dashboard-chartmenu/msf-dashboard-chartvalues';
 import { MessageComponent } from '../message/message.component';
 
+am4core.useTheme(am4themes_animated);
+am4core.useTheme(am4themes_dark);
+
 @Component({
   selector: 'app-msf-dashboard-chartmenu',
   templateUrl: './msf-dashboard-chartmenu.component.html'
@@ -28,7 +34,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   generateBtnEnabled: boolean = false;
 
   chartForm: FormGroup;
-  chart: AmChart;
+  chart: am4charts.XYChart;
 
   private timer: number;
 
@@ -80,7 +86,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   private _onDestroy = new Subject<void>();
 
-  constructor(private AmCharts: AmChartsService, public globals: Globals,
+  constructor(private zone: NgZone, public globals: Globals,
     private service: ApplicationService, private http: ApiClient, public dialog: MatDialog,
     private formBuilder: FormBuilder)
   {
@@ -94,7 +100,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     });
 
     // add function to sort from the smallest value to the larger one
-    this.AmCharts.addInitHandler (function (chart)
+    /*this.AmCharts.addInitHandler (function (chart)
     {
       for (var i = 0; i < chart.dataProvider.length; i++)
       {
@@ -128,7 +134,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
           row[graph.columnIndexField] = x;
         }
       }
-    }, [ "serial" ]);
+    }, [ "serial" ]);*/
   }
 
   buildGraphs(dataProvider)
@@ -154,17 +160,17 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     return graphs;
   }
 
-  setChartStackType(): string
+  setChartTypeStack(): boolean
   {
     switch (this.values.currentChartType.id)
     {
       case 'sbars':
       case 'hsbars':
       case 'sarea':
-        return "regular";
+        return true;
 
       default:
-        return "none";
+        return false;
     }
   }
 
@@ -250,7 +256,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         "lineAlpha": 1
       }],
       "valueAxes" : [{
-        "stackType" : this.setChartStackType (),
+        "stackType" : "none",
         "axisColor" : "#30303d",
         "gridColor" : "#30303d",
         "gridAlpha" : 1,
@@ -299,13 +305,6 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     };
   }
 
-  zoomChart(): void
-  {
-    let chart = this.chart;
-    let lastIndex =  Math.round (chart.dataProvider.length - (chart.dataProvider.length / 2));
-    chart.zoomToIndexes (0, lastIndex);  
-  }
-
   ngOnInit()
   {
     // prepare the data form combo box
@@ -326,13 +325,156 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     return true;
   }
 
+  // Function to create horizontal chart series
+  createHorizSeries(_this, chart, field, name, color): void
+  {
+    // Set up series
+    let series = chart.series.push (new am4charts.ColumnSeries ());
+    series.name = name;
+    series.dataFields.valueX = field;
+    series.dataFields.categoryY = _this.values.xaxis.id;
+    series.sequencedInterpolation = true;
+
+    // Check chart type if it should be stacked or not
+    series.stacked = _this.setChartTypeStack ();
+  
+    // Configure columns
+    series.columns.template.strokeWidth = 0;
+    series.columns.template.width = am4core.percent (60);
+    series.columns.template.tooltipText = "{name}[/]\n[font-size:14px]{categoryY}: {valueX}";
+    series.columns.template.events.once ("inited", function (event)
+    {
+      event.target.fill = color;
+    });
+  
+    return series;
+  }
+
+  // Function to create vertical chart series
+  createVertSeries(_this, chart, field, name, color): void
+  {
+    // Set up series
+    let series = chart.series.push (new am4charts.ColumnSeries ());
+    series.name = name;
+    series.dataFields.valueY = field;
+    series.dataFields.categoryX = _this.values.xaxis.id;
+    series.sequencedInterpolation = true;
+
+    // Check chart type if it should be stacked or not
+    series.stacked = _this.setChartTypeStack ();
+  
+    // Configure columns
+    series.columns.template.strokeWidth = 0;
+    series.columns.template.width = am4core.percent (60);
+    series.columns.template.tooltipText = "{name}[/]\n[font-size:14px]{categoryX}: {valueY}";
+    series.columns.template.events.once ("inited", function (event)
+    {
+      event.target.fill = color;
+    });
+  
+    return series;
+  }
+
+  makeChart(chartInfo): void
+  {
+    this.zone.runOutsideAngular (() => {
+      let colIndex = 0;
+      let chart;
+
+      // Check chart type before generating it
+      if (this.values.currentChartType.id === 'pie'
+        || this.values.currentChartType.id === 'donut')
+      {
+        // TODO: add other chart types
+      }
+      else
+      {
+        chart = am4core.create ("msf-dashboard-chart-display-" + this.columnPos + "-" + this.rowPos, am4charts.XYChart);
+        colIndex = 0;
+
+        chart.data = chartInfo.data;
+
+        if (this.values.currentChartType.rotate)
+        {
+          // Set category axis properties
+          var categoryAxis = chart.yAxes.push (new am4charts.CategoryAxis ());
+          categoryAxis.dataFields.category = this.values.xaxis.id;
+          categoryAxis.renderer.grid.template.location = 0;
+          categoryAxis.renderer.grid.template.strokeOpacity = 1;
+          categoryAxis.renderer.grid.template.stroke = am4core.color ("#30303d");
+          categoryAxis.renderer.grid.template.strokeWidth = 1;
+          categoryAxis.renderer.labels.template.fill = am4core.color ("#ffffff");
+
+          // Set value axis properties
+          var valueAxis = chart.xAxes.push (new am4charts.ValueAxis ());
+          valueAxis.renderer.grid.template.strokeOpacity = 1;
+          valueAxis.renderer.grid.template.stroke = am4core.color ("#30303d");
+          valueAxis.renderer.grid.template.strokeWidth = 1;
+          valueAxis.renderer.labels.template.fill = am4core.color ("#ffffff");
+
+          // Create the column series
+          chart.colors.list = [];
+          for (let object of chartInfo.filter)
+          {
+            chart.colors.list.push (am4core.color (object.lineColor));
+            this.createHorizSeries (this, chart, object.valueField, object.valueAxis, chart.colors.list[colIndex]);
+            colIndex++;
+          }
+
+          // Add scrollbar into the chart for zooming
+          chart.scrollbarY = new am4core.Scrollbar ();
+          chart.scrollbarY.background.fill = am4core.color ("#67b7dc");
+        }
+        else
+        {
+          var categoryAxis = chart.xAxes.push (new am4charts.CategoryAxis ());
+          categoryAxis.dataFields.category = this.values.xaxis.id;
+          categoryAxis.renderer.grid.template.location = 0;
+          categoryAxis.renderer.grid.template.strokeOpacity = 1;
+          categoryAxis.renderer.grid.template.stroke = am4core.color ("#30303d");
+          categoryAxis.renderer.grid.template.strokeWidth = 1;
+          categoryAxis.renderer.labels.template.fill = am4core.color ("#ffffff");
+
+          var valueAxis = chart.yAxes.push (new am4charts.ValueAxis ());
+          valueAxis.renderer.grid.template.strokeOpacity = 1;
+          valueAxis.renderer.grid.template.stroke = am4core.color ("#30303d");
+          valueAxis.renderer.grid.template.strokeWidth = 1;
+          valueAxis.renderer.labels.template.fill = am4core.color ("#ffffff");
+
+          chart.colors.list = [];
+          for (let object of chartInfo.filter)
+          {
+            chart.colors.list.push (am4core.color (object.lineColor));
+            this.createVertSeries (this, chart, object.valueField, object.valueAxis, chart.colors.list[colIndex]);
+            colIndex++;
+          }
+
+          chart.scrollbarX = new am4core.Scrollbar ();
+          chart.scrollbarX.background.fill = am4core.color ("#67b7dc");
+        }
+
+        // Display Legend
+        chart.legend = new am4charts.Legend ();
+        chart.legend.labels.template.fill = am4core.color ("#ffffff");
+
+        // Set date format
+        if (this.values.xaxis.id.includes ('date'))
+          chart.dateFormatter.inputDateFormat = "MM/dd/yyyy";
+
+        // Add export button
+        chart.exporting.menu = new am4core.ExportMenu ();
+        chart.exporting.menu.verticalAlign = "bottom";
+      }
+
+      this.chart = chart;
+    });
+  }
+
   ngAfterViewInit(): void
   {
     if (!this.isEmpty (this.values.lastestResponse))
     {
-      this.chart = this.AmCharts.makeChart ("msf-dashboard-chart-display-" + this.columnPos + "-" + this.rowPos, this.makeOptions (this.values.lastestResponse));
-      this.chart.addListener ("dataUpdated", this.zoomChart);
-      this.chartTypeChange (this.values.currentChartType);
+      this.makeChart (this.values.lastestResponse);
       this.values.chartGenerated = true;
     }
   }
@@ -484,7 +626,12 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     clearInterval (this.timer);
 
     if (this.chart)
-      this.AmCharts.destroyChart (this.chart);
+    {
+      this.zone.runOutsideAngular (() => {
+        if (this.chart)
+          this.chart.dispose ();
+      });
+    }
   }
 
   noDataFound(): void
@@ -513,9 +660,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       return;
     }
 
-    _this.chart = _this.AmCharts.makeChart ("msf-dashboard-chart-display-" + _this.columnPos + "-" + _this.rowPos, _this.makeOptions(data));
-    _this.chart.addListener ("dataUpdated", _this.zoomChart);
-    _this.chartTypeChange (_this.values.currentChartType);
+    _this.makeChart (data);
     _this.values.displayChart = true;
     _this.values.chartGenerated = true;
     _this.globals.isLoading = false;
@@ -649,7 +794,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   changeChartConfig(type, param1, param2): void
   {
-    if (type === 'pie')
+    /*if (type === 'pie')
     {
       let graph = this.chart;
 
@@ -673,7 +818,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       }
     }
       
-    this.chart.validateNow ();
+    this.chart.validateNow ();*/
   }
 
   haveSortingCheckboxes(): boolean
