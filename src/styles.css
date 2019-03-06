@@ -3362,7 +3362,7 @@ table.datasource {
   height: auto !important;
   width: 100%;
   display: flex;
-  margin: 20px 0;
+  padding: 20px 0;
   transition: background-image 0.5s ease-in-out;
 }
 
@@ -3400,10 +3400,6 @@ table.datasource {
   vertical-align: middle;
   text-align: center;
   padding: 5% 0;
-}
-
-.landing-icon-content-child:hover, .footer-container:hover {
-  background-color: #15ACEC;
 }
 
 .landing-icon-content-child:focus {
@@ -3460,6 +3456,10 @@ img.msf-calendar-image {
 
 .cancel-button .close-icon {
   color: white;
+}
+
+.footer-hover {
+  background-color: #01abec;
 }
 
 /*# sourceMappingURL=styles.css.map */

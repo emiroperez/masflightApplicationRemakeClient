@@ -41,7 +41,7 @@
               <div class="icon-container" [ngStyle]="{'background-image': 'url(' + getBackground(option) + ')'}" >
                 <!-- <div  [ngStyle]="{'display': none}" class="landing-title">{{option.name}}</div> -->
               </div>
-              <div class="footer-container" style="height: auto !important; width: 100%; display: flex;">
+              <div [ngClass]="option.hover?'footer-container footer-hover':'footer-container'" class="footer-container" style="height: auto !important; width: 100%; display: flex;">
                   <div style="width: 25%;"></div>
                   <div style="width: 25%;">
                     <div  class="icon-container-bk" [ngStyle]="{'background-image': 'url(' + getBackground2(option) + ')'}" ></div>

@@ -409,4 +409,19 @@ export class MsfDashboardControlVariablesComponent {
     {
       return ComponentType.singleAirport == argument.type;
     }
+    isSummaryRevenueBuilds(argument: Arguments){
+      return ComponentType.summaryRevenueBuilds == argument.type;
+    }
+    isDatePeriodRevenue(argument: Arguments){
+      return ComponentType.datePeriodRevenue == argument.type;
+    }
+    isFareIncrementsMarketHistograms(argument: Arguments){
+      return ComponentType.fareIncrementsMarketHistograms == argument.type;
+    }
+    isTopNumber(argument: Arguments){
+      return ComponentType.topNumber == argument.type;
+    }
+    isSeatClass(argument: Arguments){
+      return ComponentType.seatClass == argument.type;
+    }
 }

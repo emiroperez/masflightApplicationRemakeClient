@@ -283,4 +283,10 @@ export class MsfComponentComponent implements OnInit {
   isFareIncrementsMarketHistograms(argument: Arguments){
     return ComponentType.fareIncrementsMarketHistograms == argument.type;
   }
+  isTopNumber(argument: Arguments){
+    return ComponentType.topNumber == argument.type;
+  }
+  isSeatClass(argument: Arguments){
+    return ComponentType.seatClass == argument.type;
+  }
 }

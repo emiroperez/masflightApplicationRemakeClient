@@ -87,6 +87,11 @@
             <app-msf-circuity-type *ngIf="isCircuityType(argument)" [argument]="argument"></app-msf-circuity-type>
             <app-msf-circuity *ngIf="isCircuity(argument)" [argument]="argument"></app-msf-circuity>
             <app-msf-single-airport *ngIf="isSingleAirport(argument)" [argument]="argument"></app-msf-single-airport>
+            <app-msf-summary-revenue-builds *ngIf="isSummaryRevenueBuilds(argument)" [argument]="argument"></app-msf-summary-revenue-builds>
+            <app-msf-date-period-revenue *ngIf="isDatePeriodRevenue(argument)" [argument]="argument"></app-msf-date-period-revenue>
+            <app-msf-fare-increments-market-histograms *ngIf="isFareIncrementsMarketHistograms(argument)" [argument]="argument"></app-msf-fare-increments-market-histograms>
+            <app-msf-top-number *ngIf="isTopNumber(argument)" [argument]="argument"></app-msf-top-number>
+            <app-msf-seat-class *ngIf="isSeatClass(argument)" [argument]="argument"></app-msf-seat-class>
           </ng-container>
         </div>
       </ng-container>      
