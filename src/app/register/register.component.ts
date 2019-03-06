@@ -11,7 +11,7 @@ import { UserService } from '../services/user.service';
 import { RegisterService } from '../services/register.service';
 import { Payment } from '../model/Payment';
 import { Globals } from '../globals/Globals';
-import { NG_SELECT_DEFAULT_CONFIG } from '@ng-select/ng-select';
+import { NgSelectConfig } from '@ng-select/ng-select';
 import { MessageComponent } from '../message/message.component';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
@@ -21,15 +21,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.css'],
-  encapsulation: ViewEncapsulation.None,
-  providers: [
-    {
-        provide: NG_SELECT_DEFAULT_CONFIG,
-        useValue: {
-            notFoundText: 'There is no options'
-        }
-    }
-]
+  encapsulation: ViewEncapsulation.None
 })
 export class RegisterComponent implements OnInit {
   users: User;
@@ -98,7 +90,10 @@ export class RegisterComponent implements OnInit {
   constructor(private userServices: UserService,
     private registerServices:RegisterService,
     public dialog: MatDialog,
-    private globals: Globals,private router: Router) {
+    private globals: Globals,private router: Router,
+    private config: NgSelectConfig) {
+
+    this.config.notFoundText = 'There is no options';
 
     this.users = new User( new Payment());
     this.userPlan=new UserPlan();

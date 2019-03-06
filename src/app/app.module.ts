@@ -51,9 +51,9 @@ import { jqxTreeGridComponent } from 'jqwidgets-scripts/jqwidgets-ts/angular_jqx
 import { jqxBarGaugeComponent } from 'jqwidgets-scripts/jqwidgets-ts/angular_jqxbargauge';
 import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
 import { MsfMapComponent } from './msf-map/msf-map.component';
-import { AgmCoreModule } from '@agm/core';
-import { AgmDirectionModule } from 'agm-direction'
-import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
+//import { AgmCoreModule } from '@agm/core';
+//import { AgmDirectionModule } from 'agm-direction'
+//import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 import { MsfSingleAirlineComponent } from './msf-single-airline/msf-single-airline.component';
 import { MsfFlightNumberComponent } from './msf-flight-number/msf-flight-number.component';
 import { MsfLoadingComponent } from './msf-loading/msf-loading.component';
@@ -311,11 +311,11 @@ import { MsfControlVariablesComponent } from './msf-control-variables/msf-contro
     MatFormFieldModule,
     NgxMatSelectSearchModule,
     AmChartsModule,
-    AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyArd7Sqcy7bB0ucBKhm2ik4r2xZPG9wPtU'
-    }),
-    AgmDirectionModule,
-    AgmSnazzyInfoWindowModule,
+//    AgmCoreModule.forRoot({
+      // apiKey: 'AIzaSyArd7Sqcy7bB0ucBKhm2ik4r2xZPG9wPtU'
+    // }),
+    // AgmDirectionModule,
+    // AgmSnazzyInfoWindowModule,
     NgxMapboxGLModule.withConfig({
       accessToken: 'pk.eyJ1IjoiYXNwc29sdXRpb25zIiwiYSI6ImNqbm5uNGhscTI4N28za3FybnJ0OWF6NmEifQ.pDzlIgQjVkVszvxF2UoXvA',
       geocoderAccessToken: 'pk.eyJ1IjoiYXNwc29sdXRpb25zIiwiYSI6ImNqbm5uNGhscTI4N28za3FybnJ0OWF6NmEifQ.pDzlIgQjVkVszvxF2UoXvA'

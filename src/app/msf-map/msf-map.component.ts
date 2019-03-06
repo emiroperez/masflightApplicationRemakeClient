@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ApplicationService } from '../services/application.service';
 import { Globals } from '../globals/Globals';
-import { AgmMap } from '@agm/core';
+// import { AgmMap } from '@agm/core';
 import { AmChartsService, AmChart } from "@amcharts/amcharts3-angular";
 import * as mapboxgl from 'mapbox-gl';
 

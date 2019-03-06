@@ -10,7 +10,7 @@ import { ApplicationService } from '../services/application.service';
 import { PlanFeatureOption } from '../model/PlanFeatureOption';
 import { PlanPrice } from '../model/PlanPrice';
 import { PlanService } from '../services/plan.service';
-import { NG_SELECT_DEFAULT_CONFIG } from '@ng-select/ng-select';
+import { NgSelectConfig } from '@ng-select/ng-select';
 import { Arguments } from '../model/Arguments';
 import { ApiClient } from '../api/api-client';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
@@ -155,15 +155,7 @@ export class EditOptionsDialog {
   selector: 'app-create-memperships',
   templateUrl: './create-memperships.component.html',
   encapsulation: ViewEncapsulation.None,
-  styleUrls: ['./membership.css'],
-  providers: [
-    {
-      provide: NG_SELECT_DEFAULT_CONFIG,
-      useValue: {
-        notFoundText: 'There is no options'
-      }
-    }
-  ]
+  styleUrls: ['./membership.css']
 })
 export class CreateMempershipsComponent implements OnInit {
 
@@ -194,11 +186,11 @@ export class CreateMempershipsComponent implements OnInit {
   optionSelected: {};
 
 
-  constructor(private http: ApiClient,
+  constructor(private http: ApiClient, private config: NgSelectConfig,
     private planServices: PlanService, private service: ApplicationService, private globals: Globals, private formBuilder: FormBuilder,
     public dialog: MatDialog, private ref: ChangeDetectorRef) {
     this.utils = new Utils();
-
+    this.config.notFoundText = 'There is no options';
   }
 
 
