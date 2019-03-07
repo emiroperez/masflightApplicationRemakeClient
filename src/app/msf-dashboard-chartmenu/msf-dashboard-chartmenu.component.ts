@@ -314,17 +314,29 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         categoryAxis.renderer.grid.template.stroke = am4core.color ("#30303d");
         categoryAxis.renderer.grid.template.strokeWidth = 1;
 
-//        categoryAxis.renderer.grid.template.location = 0;
-//        categoryAxis.startLocation = 5;
-//        categoryAxis.endLocation = 5;
-
         // Set value axis properties
         valueAxis.renderer.grid.template.strokeOpacity = 1;
         valueAxis.renderer.grid.template.stroke = am4core.color ("#30303d");
         valueAxis.renderer.grid.template.strokeWidth = 1;
 
+        // Avoid negative values on the stacked area chart
+        if (this.values.currentChartType.id === 'sarea')
+        {
+          for (let object of chartInfo.filter)
+          {
+            for (let data of chartInfo.data)
+            {
+              if (data[object.valueField] == null)
+                continue;
+
+              if (data[object.valueField] < 0)
+                data[object.valueField] = 0;
+            }
+          }
+        }
+
         // Sort chart series from least to greatest by calculating the
-        // total value of each key item to compensate for the lack of
+        // average value of each key item to compensate for the lack of
         // proper sorting by values
         for (let object of chartInfo.filter)
         {
