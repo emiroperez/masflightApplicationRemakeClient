@@ -314,6 +314,10 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         categoryAxis.renderer.grid.template.stroke = am4core.color ("#30303d");
         categoryAxis.renderer.grid.template.strokeWidth = 1;
 
+//        categoryAxis.renderer.grid.template.location = 0;
+//        categoryAxis.startLocation = 5;
+//        categoryAxis.endLocation = 5;
+
         // Set value axis properties
         valueAxis.renderer.grid.template.strokeOpacity = 1;
         valueAxis.renderer.grid.template.stroke = am4core.color ("#30303d");
@@ -324,18 +328,20 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         // proper sorting by values
         for (let object of chartInfo.filter)
         {
-          object["sum"] = 0;
+          object["avg"] = 0;
 
           for (let data of chartInfo.data)
           {
             let value = data[object.valueField];
 
             if (value != null)
-              object["sum"] += value;
+              object["avg"] += value;
           }
+
+          object["avg"] /= chartInfo.data.length;
         }
 
-        chartInfo.filter = chartInfo.filter.sort (function (e1, e2) { return e1.sum - e2.sum });
+        chartInfo.filter = chartInfo.filter.sort (function (e1, e2) { return e1.avg - e2.avg });
 
         // Create the series and set colors
         chart.colors.list = [];
