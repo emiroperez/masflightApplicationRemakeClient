@@ -98,43 +98,6 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       xaxisCtrl: new FormControl ({ value: '', disabled: true }),
       valueCtrl: new FormControl ({ value: '', disabled: true })
     });
-
-    // add function to sort from the smallest value to the larger one
-    /*this.AmCharts.addInitHandler (function (chart)
-    {
-      for (var i = 0; i < chart.dataProvider.length; i++)
-      {
-        // Collect all values for all graphs in this data point
-        var row = chart.dataProvider[i];
-        var values = [];
-
-        for (var g = 0; g < chart.graphs.length; g++)
-        {
-          var graph = chart.graphs[g];
-
-          values.push
-          ({
-            "value" : row[graph.valueField],
-            "graph" : graph
-          });
-        }
-
-        // Sort by value
-        values.sort (function(a, b)
-        {
-          return a.value - b.value;
-        });
-
-        // Apply 'columnIndexField'
-        for (var x = 0; x < values.length; x++)
-        {
-          var graph = values[x].graph;
-
-          graph.columnIndexField = graph.valueField + "_index";
-          row[graph.columnIndexField] = x;
-        }
-      }
-    }, [ "serial" ]);*/
   }
 
   setChartTypeStack(): boolean
@@ -243,9 +206,42 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       let chart;
 
       // Check chart type before generating it
-      if (this.values.currentChartType.id === 'pie'
+      if (this.values.currentChartType.id === 'radar')
+      {
+        let categoryAxis, valueAxis, series, colorSet;
+
+        chart = am4core.create ("msf-dashboard-chart-display-" + this.columnPos + "-" + this.rowPos, am4charts.RadarChart);
+        chart.data = chartInfo.dataProvider;
+
+        // Configure Radar Chart
+        categoryAxis = chart.xAxes.push (new am4charts.CategoryAxis ());
+        categoryAxis.dataFields.category = chartInfo.titleField;
+        categoryAxis.renderer.grid.template.strokeOpacity = 1;
+        categoryAxis.renderer.grid.template.stroke = am4core.color ("#30303d");
+        categoryAxis.renderer.grid.template.strokeWidth = 1;
+        
+        valueAxis = chart.yAxes.push (new am4charts.ValueAxis ());
+        valueAxis.renderer.axisFills.template.fillOpacity = 1;
+        valueAxis.renderer.grid.template.strokeOpacity = 1;
+        valueAxis.renderer.grid.template.stroke = am4core.color ("#30303d");
+        valueAxis.renderer.grid.template.strokeWidth = 1;
+
+        series = chart.series.push (new am4charts.RadarColumnSeries ());
+        series.dataFields.valueY = chartInfo.valueField;
+        series.dataFields.categoryX = chartInfo.titleField;
+        series.columns.template.tooltipText = "{categoryX}: {valueY}";
+        series.columns.template.strokeWidth = 0;
+
+        // Set colors
+        series.columns.template.adapter.add ("fill", (fill, target) => {
+          return am4core.color (chartInfo.colors[target.dataItem.index]);
+        });
+      }
+      else if (this.values.currentChartType.id === 'pie'
         || this.values.currentChartType.id === 'donut')
       {
+        let series, colorSet;
+
         chart = am4core.create ("msf-dashboard-chart-display-" + this.columnPos + "-" + this.rowPos, am4charts.PieChart);
         chart.data = chartInfo.dataProvider;
 
@@ -254,30 +250,29 @@ export class MsfDashboardChartmenuComponent implements OnInit {
           chart.innerRadius = am4core.percent (60);
 
         // Configure Pie Chart
-        var pieSeries = chart.series.push (new am4charts.PieSeries ());
-        pieSeries.dataFields.value = chartInfo.valueField;
-        pieSeries.dataFields.category = chartInfo.titleField;
+        series = chart.series.push (new am4charts.PieSeries ());
+        series.dataFields.value = chartInfo.valueField;
+        series.dataFields.category = chartInfo.titleField;
 
         // This creates initial animation
-        pieSeries.hiddenState.properties.opacity = 1;
-        pieSeries.hiddenState.properties.endAngle = -90;
-        pieSeries.hiddenState.properties.startAngle = -90;
+        series.hiddenState.properties.opacity = 1;
+        series.hiddenState.properties.endAngle = -90;
+        series.hiddenState.properties.startAngle = -90;
 
         // Set colors
-        pieSeries.ticks.template.strokeOpacity = 1;
-        pieSeries.ticks.template.stroke = am4core.color ("#30303d");
-        pieSeries.ticks.template.strokeWidth = 1;
+        series.ticks.template.strokeOpacity = 1;
+        series.ticks.template.stroke = am4core.color ("#30303d");
+        series.ticks.template.strokeWidth = 1;
 
-        var colorSet = new am4core.ColorSet ();
+        colorSet = new am4core.ColorSet ();
         colorSet.list = chartInfo.colors.map (function(color) {
           return am4core.color (color);
         });
-        pieSeries.colors = colorSet;
+        series.colors = colorSet;
       }
       else
       {
-        var categoryAxis, valueAxis;
-        let data = [];
+        let categoryAxis, valueAxis;
 
         chart = am4core.create ("msf-dashboard-chart-display-" + this.columnPos + "-" + this.rowPos, am4charts.XYChart);
         chart.data = chartInfo.data;
@@ -417,17 +412,6 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       this.values.displayChart = true;
   }
 
-  compareFilterValues(): void
-  {
-    this.filteredVariables
-      .pipe (take (1), takeUntil (this._onDestroy))
-      .subscribe (() => {
-        this.variableSelect.compareWith = (a: any, b: any) => a.id === b.id;
-        this.xaxisSelect.compareWith = (a: any, b: any) => a.id === b.id;
-        this.valueSelect.compareWith = (a: any, b: any) => a.id === b.id;
-      });
-  }
-
   private filterVariables(filterCtrl): void
   {
     if (!this.values.chartColumnOptions)
@@ -543,7 +527,6 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   loadData(): void
   {
     this.globals.startTimestamp = new Date ();
-    this.compareFilterValues ();
     this.loadChartData (this.handlerSuccess, this.handleChartError);
   }
 
@@ -682,69 +665,6 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       .subscribe (() => {
         this.filterOptions (filterCtrl);
       });
-  }
-
-  chartTypeChange(type): void
-  {
-    switch (type.id)
-    {
-      case 'line':
-        this.changeChartConfig ('line', 1, 0);
-        break;
-
-      case 'area':
-      case 'sarea':
-        this.changeChartConfig ('line', 1, 0.3);
-        break;
-
-      case 'bars':
-      case 'hbars':
-      case 'sbars':
-      case 'hsbars':
-        this.changeChartConfig ('column', 0, 0.9);
-        break;
-
-      case 'pie':
-        this.changeChartConfig ('pie', 0, 0);
-        break;
-
-      case 'donut':
-        this.changeChartConfig ('pie', 0, 60);
-        break;
-
-      case 'radar':
-        this.changeChartConfig ('radar', 2, 0.15);
-        break;
-    }
-  }
-
-  changeChartConfig(type, param1, param2): void
-  {
-    /*if (type === 'pie')
-    {
-      let graph = this.chart;
-
-      graph.radius = param1 + "%";
-      graph.innerRadius = param2 + "%";
-    }
-    else if (type === 'radar')
-    {
-      let graph = this.chart;
-
-      graph.graphs.lineThickness = param1;
-      graph.valueAxes.axisAlpha = param2;
-    }
-    else
-    {
-      for (let graph of this.chart.graphs)
-      {
-        graph.type = type;
-        graph.lineAlpha = param1;
-        graph.fillAlphas = param2;
-      }
-    }
-      
-    this.chart.validateNow ();*/
   }
 
   haveSortingCheckboxes(): boolean
