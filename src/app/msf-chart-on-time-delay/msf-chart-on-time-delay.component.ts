@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AmChartsService, AmChart } from "@amcharts/amcharts3-angular";
+// import { AmChartsService, AmChart } from "@amcharts/amcharts3-angular";
 import { Globals } from '../globals/Globals';
 import { ApiClient } from '../api/api-client';
 import { FormControl } from '@angular/forms';
@@ -17,7 +17,7 @@ import { ApplicationService } from '../services/application.service';
 })
 export class MsfChartOnTimeDelayComponent implements OnInit {
 
-  private chart2: AmChart;
+  // private chart2: AmChart;
   private timer: number;
 
   type: string = "airport";
@@ -67,7 +67,7 @@ export class MsfChartOnTimeDelayComponent implements OnInit {
   
   private _onDestroy = new Subject<void>();
 
-  constructor(private AmCharts: AmChartsService, public globals: Globals, private service: ApplicationService) {
+  constructor(/*private AmCharts: AmChartsService, */public globals: Globals, private service: ApplicationService) {
     this.utils = new Utils();
   }
 
@@ -136,8 +136,8 @@ export class MsfChartOnTimeDelayComponent implements OnInit {
 
   
   zoomChart(){
-    let lastIndex =  Math.round(this.chart2.dataProvider.length - ( this.chart2.dataProvider.length/2));
-    this.chart2.zoomToIndexes(0, lastIndex);  
+    // let lastIndex =  Math.round(this.chart2.dataProvider.length - ( this.chart2.dataProvider.length/2));
+    // this.chart2.zoomToIndexes(0, lastIndex);  
   }
 
   ngOnInit() {
@@ -196,9 +196,9 @@ export class MsfChartOnTimeDelayComponent implements OnInit {
     this._onDestroy.next();
     this._onDestroy.complete();
     clearInterval(this.timer);
-    if (this.chart2) {
-      this.AmCharts.destroyChart(this.chart2);
-    }
+    // if (this.chart2) {
+      // this.AmCharts.destroyChart(this.chart2);
+    // }
   }
 
   handlerSuccess(_this,data){
@@ -261,12 +261,12 @@ export class MsfChartOnTimeDelayComponent implements OnInit {
   }
 
   changeChartConfig(type, lineAlpha, fillAlphas){
-    for( let graph of this.chart2.graphs){
+    /*for( let graph of this.chart2.graphs){
       graph.type = type;
       graph.lineAlpha =lineAlpha;
       graph.fillAlphas =fillAlphas;
     }      
-    this.chart2.validateNow();
+    this.chart2.validateNow();*/
   }
 
 }
