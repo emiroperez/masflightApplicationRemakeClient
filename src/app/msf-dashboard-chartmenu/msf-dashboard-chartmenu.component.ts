@@ -141,8 +141,20 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     let series = chart.series.push (new am4charts.ColumnSeries ());
     series.name = item.valueAxis;
     series.dataFields.valueX = item.valueField;
-    series.dataFields.categoryY = _this.values.xaxis.id;
     series.sequencedInterpolation = true;
+
+    // Parse date if available
+    if (_this.values.xaxis.id.includes ('date'))
+    {
+      series.dataFields.dateY = _this.values.xaxis.id;
+      series.dateFormatter.dateFormat = "d MMM, yyyy";
+      series.columns.template.tooltipText = "{dateY}: {valueX}";
+    }
+    else
+    {
+      series.dataFields.categoryY = _this.values.xaxis.id;
+      series.columns.template.tooltipText = "{categoryY}: {valueX}";
+    }
 
     // Check chart type if it should be stacked or not
     series.stacked = _this.setChartTypeStack ();
@@ -150,7 +162,6 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     // Configure columns
     series.columns.template.strokeWidth = 0;
     series.columns.template.width = am4core.percent (60);
-    series.columns.template.tooltipText = "{categoryY}: {valueX}";
   
     return series;
   }
@@ -161,14 +172,24 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     let series = chart.series.push (new am4charts.ColumnSeries ());
     series.name = item.valueAxis;
     series.dataFields.valueY = item.valueField;
-    series.dataFields.categoryX = _this.values.xaxis.id;
     series.sequencedInterpolation = true;
+
+    if (_this.values.xaxis.id.includes ('date'))
+    {
+      series.dataFields.dateX = _this.values.xaxis.id;
+      series.dateFormatter.dateFormat = "d MMM, yyyy";
+      series.columns.template.tooltipText = "{dateX}: {valueY}";
+    }
+    else
+    {
+      series.dataFields.categoryX = _this.values.xaxis.id;
+      series.columns.template.tooltipText = "{categoryX}: {valueY}";
+    }
 
     series.stacked = _this.setChartTypeStack ();
   
     series.columns.template.strokeWidth = 0;
     series.columns.template.width = am4core.percent (60);
-    series.columns.template.tooltipText = "{categoryX}: {valueY}";
   
     return series;
   }
@@ -180,21 +201,30 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     let series = chart.series.push (new am4charts.LineSeries ());
     series.name = item.valueAxis;
     series.dataFields.valueY = item.valueField;
-    series.dataFields.categoryX = _this.values.xaxis.id;
     series.sequencedInterpolation = true;
     series.strokeWidth = 2;
     series.minBulletDistance = 10;
-    series.tooltipText = "{categoryX}: {valueY}";
     series.tooltip.pointerOrientation = "horizontal";
     series.tooltip.background.cornerRadius = 20;
     series.tooltip.background.fillOpacity = 0.5;
     series.tooltip.label.padding (12, 12, 12, 12);
 
+    if (_this.values.xaxis.id.includes ('date'))
+    {
+      series.dataFields.dateX = _this.values.xaxis.id;
+      series.dateFormatter.dateFormat = "d MMM, yyyy";
+      series.tooltipText = "{dateX}: {valueY}";
+    }
+    else
+    {
+      series.dataFields.categoryX = _this.values.xaxis.id;
+      series.tooltipText = "{categoryX}: {valueY}";
+    }
+
     // Fill area below line for area chart types
     if (_this.values.currentChartType.id === 'area' || _this.values.currentChartType.id === 'sarea')
       series.fillOpacity = 0.3;
 
-    // Check chart type if it should be stacked or not
     series.stacked = _this.setChartTypeStack ();
   
     return series;
@@ -208,7 +238,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       // Check chart type before generating it
       if (this.values.currentChartType.id === 'radar')
       {
-        let categoryAxis, valueAxis, series, colorSet;
+        let categoryAxis, valueAxis, series;
 
         chart = am4core.create ("msf-dashboard-chart-display-" + this.columnPos + "-" + this.rowPos, am4charts.RadarChart);
         chart.data = chartInfo.dataProvider;
@@ -219,7 +249,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         categoryAxis.renderer.grid.template.strokeOpacity = 1;
         categoryAxis.renderer.grid.template.stroke = am4core.color ("#30303d");
         categoryAxis.renderer.grid.template.strokeWidth = 1;
-        
+
         valueAxis = chart.yAxes.push (new am4charts.ValueAxis ());
         valueAxis.renderer.axisFills.template.fillOpacity = 1;
         valueAxis.renderer.grid.template.strokeOpacity = 1;
@@ -280,11 +310,16 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         // Set chart axes depeding on the rotation
         if (this.values.currentChartType.rotate)
         {
-          categoryAxis = chart.yAxes.push (new am4charts.CategoryAxis ());
-          /*if (this.values.xaxis.id.includes ('date'))
-            valueAxis = chart.xAxes.push (new am4charts.DateAxis ());
-          else*/
-            valueAxis = chart.xAxes.push (new am4charts.ValueAxis ());
+          if (this.values.xaxis.id.includes ('date'))
+          {
+            categoryAxis = chart.yAxes.push (new am4charts.DateAxis ());
+            categoryAxis.dateFormats.setKey ("day", "d MMM, yyyy");
+            categoryAxis.periodChangeDateFormats.setKey ("day", "d MMM, yyyy");
+          }
+          else
+            categoryAxis = chart.yAxes.push (new am4charts.CategoryAxis ());
+
+          valueAxis = chart.xAxes.push (new am4charts.ValueAxis ());
 
           // Add scrollbar into the chart for zooming
           chart.scrollbarY = new am4core.Scrollbar ();
@@ -292,11 +327,16 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         }
         else
         {
-          categoryAxis = chart.xAxes.push (new am4charts.CategoryAxis ());
-          /*if (this.values.xaxis.id.includes ('date'))
-            valueAxis = chart.yAxes.push (new am4charts.DateAxis ());
-          else*/
-            valueAxis = chart.yAxes.push (new am4charts.ValueAxis ());
+          if (this.values.xaxis.id.includes ('date'))
+          {
+            categoryAxis = chart.xAxes.push (new am4charts.DateAxis ());
+            categoryAxis.dateFormats.setKey ("day", "d MMM, yyyy");
+            categoryAxis.periodChangeDateFormats.setKey ("day", "d MMM, yyyy");
+          }
+          else
+            categoryAxis = chart.xAxes.push (new am4charts.CategoryAxis ());
+
+          valueAxis = chart.yAxes.push (new am4charts.ValueAxis ());
 
           chart.scrollbarX = new am4core.Scrollbar ();
           chart.scrollbarX.background.fill = am4core.color ("#67b7dc");
@@ -335,17 +375,17 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         // proper sorting by values
         for (let object of chartInfo.filter)
         {
-          object["avg"] = 0;
+          let average = 0;
 
           for (let data of chartInfo.data)
           {
             let value = data[object.valueField];
 
             if (value != null)
-              object["avg"] += value;
+              average += value;
           }
 
-          object["avg"] /= chartInfo.data.length;
+          object["avg"] = average / chartInfo.data.length;
         }
 
         chartInfo.filter = chartInfo.filter.sort (function (e1, e2) { return e1.avg - e2.avg });
@@ -371,9 +411,6 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         chart.legend = new am4charts.Legend ();
         chart.legend.labels.template.fill = am4core.color ("#ffffff");
       }
-
-      // Set date format
-      chart.dateFormatter.inputDateFormat = "d MMM, yyyy";
 
       // Add export button
       chart.exporting.menu = new am4core.ExportMenu ();
@@ -772,6 +809,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     if (this.values.currentChartType.id === 'pie' || this.values.currentChartType.id === 'donut'
     || this.values.currentChartType.id === 'radar')
     {
+      this.values.xaxis = null;
       this.chartForm.get ('xaxisCtrl').reset ();
       this.chartForm.get ('xaxisCtrl').disable ();
     }
