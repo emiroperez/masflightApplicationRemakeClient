@@ -147,7 +147,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     if (_this.values.xaxis.id.includes ('date'))
     {
       series.dataFields.dateY = _this.values.xaxis.id;
-      series.dateFormatter.dateFormat = "d MMM, yyyy";
+      series.dateFormatter.dateFormat = "MMM d, yyyy";
       series.columns.template.tooltipText = "{dateY}: {valueX}";
     }
     else
@@ -177,7 +177,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     if (_this.values.xaxis.id.includes ('date'))
     {
       series.dataFields.dateX = _this.values.xaxis.id;
-      series.dateFormatter.dateFormat = "d MMM, yyyy";
+      series.dateFormatter.dateFormat = "MMM d, yyyy";
       series.columns.template.tooltipText = "{dateX}: {valueY}";
     }
     else
@@ -212,7 +212,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     if (_this.values.xaxis.id.includes ('date'))
     {
       series.dataFields.dateX = _this.values.xaxis.id;
-      series.dateFormatter.dateFormat = "d MMM, yyyy";
+      series.dateFormatter.dateFormat = "MMM d, yyyy";
       series.tooltipText = "{dateX}: {valueY}";
     }
     else
@@ -313,8 +313,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
           if (this.values.xaxis.id.includes ('date'))
           {
             categoryAxis = chart.yAxes.push (new am4charts.DateAxis ());
-            categoryAxis.dateFormats.setKey ("day", "d MMM, yyyy");
-            categoryAxis.periodChangeDateFormats.setKey ("day", "d MMM, yyyy");
+            categoryAxis.dateFormats.setKey ("day", "MMM d");
+            categoryAxis.periodChangeDateFormats.setKey ("day", "yyyy");
           }
           else
             categoryAxis = chart.yAxes.push (new am4charts.CategoryAxis ());
@@ -330,8 +330,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
           if (this.values.xaxis.id.includes ('date'))
           {
             categoryAxis = chart.xAxes.push (new am4charts.DateAxis ());
-            categoryAxis.dateFormats.setKey ("day", "d MMM, yyyy");
-            categoryAxis.periodChangeDateFormats.setKey ("day", "d MMM, yyyy");
+            categoryAxis.dateFormats.setKey ("day", "MMM d");
+            categoryAxis.periodChangeDateFormats.setKey ("day", "yyyy");
           }
           else
             categoryAxis = chart.xAxes.push (new am4charts.CategoryAxis ());
