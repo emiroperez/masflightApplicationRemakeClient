@@ -27,14 +27,8 @@
     <div *ngFor="let option of options" id="option.id" class="{{activeElement==option?'msf-show-panel':'msf-hide'}} msf-content">
       <!--Dashboard-->
       <div style="height: 100%;overflow-x: hidden;" class="msf-internal-content" *ngIf="option.name==='Landing'" >
-        <div class="landing-name-content">
-          <div style="width: calc(100% - 83px); margin-right: 30px;">
-              <!-- <div class="msf-intro-welcome">Welcome, {{globals.currentUser}}</div>
-              <div style="font-weight: lighter;">Last time: jan 31, 2019 4:00 pm</div> -->
-          </div>
-          <div>
-              <img src="../../assets/images/pulse_welc.png" class="msf-intro-div-image">                
-          </div>
+        <div class="landing-name-content" style="text-align: center;">
+              <img src="../../assets/images/pulse_welc.png" class="msf-intro-div-image" style="width: 100px;">                
         </div>
         <div class="landing-icon-content">
             <div class="landing-icon-content-child" (mouseover)="option.hover=true" (mouseleave)="option.hover=false"  (click)="goTo(option)" *ngFor="let option of options2" style="cursor:pointer; " >	
