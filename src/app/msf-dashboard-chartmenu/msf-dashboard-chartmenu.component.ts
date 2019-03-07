@@ -187,7 +187,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     // Configure columns
     series.columns.template.strokeWidth = 0;
     series.columns.template.width = am4core.percent (60);
-    series.columns.template.tooltipText = "{name}[/]\n[font-size:14px]{categoryY}: {valueX}";
+    series.columns.template.tooltipText = "{categoryY}: {valueX}";
   
     return series;
   }
@@ -208,7 +208,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     // Configure columns
     series.columns.template.strokeWidth = 0;
     series.columns.template.width = am4core.percent (60);
-    series.columns.template.tooltipText = "{name}[/]\n[font-size:14px]{categoryX}: {valueY}";
+    series.columns.template.tooltipText = "{categoryX}: {valueY}";
   
     return series;
   }
@@ -224,11 +224,11 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     series.sequencedInterpolation = true;
     series.strokeWidth = 2;
     series.minBulletDistance = 10;
-    series.tooltipText = "{valueX}";
+    series.tooltipText = "{categoryY}: {valueX}";
     series.tooltip.pointerOrientation = "vertical";
     series.tooltip.background.cornerRadius = 20;
     series.tooltip.background.fillOpacity = 0.5;
-    series.tooltip.label.padding (12,12,12,12);
+    series.tooltip.label.padding (12, 12, 12, 12);
 
     // Fill area below line for area chart types
     if (_this.values.currentChartType.id === 'area' || _this.values.currentChartType.id === 'sarea')
@@ -251,11 +251,11 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     series.sequencedInterpolation = true;
     series.strokeWidth = 2;
     series.minBulletDistance = 10;
-    series.tooltipText = "{valueY}";
+    series.tooltipText = "{categoryX}: {valueY}";
     series.tooltip.pointerOrientation = "horizontal";
     series.tooltip.background.cornerRadius = 20;
     series.tooltip.background.fillOpacity = 0.5;
-    series.tooltip.label.padding (12,12,12,12);
+    series.tooltip.label.padding (12, 12, 12, 12);
 
     // Fill area below line for area chart types
     if (_this.values.currentChartType.id === 'area' || _this.values.currentChartType.id === 'sarea')
@@ -405,7 +405,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
         // Set date format
         if (this.values.xaxis.id.includes ('date'))
-          chart.dateFormatter.inputDateFormat = "MM/dd/yyyy";
+          chart.dateFormatter.inputDateFormat = "yyyy";
       }
 
       // Add export button
@@ -414,6 +414,17 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
       this.chart = chart;
     });
+  }
+
+  destroyChart(): void
+  {
+    if (this.chart)
+    {
+      this.zone.runOutsideAngular (() => {
+        if (this.chart)
+          this.chart.dispose ();
+      });
+    }
   }
 
   ngAfterViewInit(): void
@@ -571,13 +582,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
     clearInterval (this.timer);
 
-    if (this.chart)
-    {
-      this.zone.runOutsideAngular (() => {
-        if (this.chart)
-          this.chart.dispose ();
-      });
-    }
+    this.destroyChart ();
   }
 
   noDataFound(): void
@@ -605,6 +610,9 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       _this.noDataFound ();
       return;
     }
+
+    // destroy current chart if it's already generated to avoid a blank chart
+    _this.destroyChart ();
 
     _this.makeChart (data);
     _this.values.displayChart = true;
