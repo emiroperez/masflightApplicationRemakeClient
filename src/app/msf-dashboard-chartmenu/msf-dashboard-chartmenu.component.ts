@@ -51,9 +51,21 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     { id: 'line', name: 'Lines', rotate: false, createSeries: this.createLineSeries },                      
     { id: 'area', name: 'Area', rotate: false, createSeries: this.createLineSeries },
     { id: 'sarea', name: 'Stacked Area', rotate: false, createSeries: this.createLineSeries },
+
+    // { id: 'sbars', name: 'Simple Bars', rotate: false },
+    // { id: 'shbars', name: 'Simple Horizontal Bars', rotate: true },
+    // { id: 'ssbars', name: 'Simple Stacked Bars', rotate: false },
+    // { id: 'shsbars', name: 'Simple Horizontal Stacked Bars', rotate: true },
+    // length: 4
+
     { id: 'pie', name: 'Pie', rotate: false },
     { id: 'donut', name: 'Donut', rotate: false },
-    { id: 'radar', name: 'Radar', rotate: false }
+    { id: 'radar', name: 'Radar', rotate: false },
+
+    { id: 'spbars', name: 'Simple Bars', rotate: false, createSeries: this.createSimpleVertColumnSeries },
+    { id: 'sphbars', name: 'Simple Horizontal Bars', rotate: true, createSeries: this.createSimpleHorizColumnSeries }
+    // { id: 'ssbars', name: 'Simple Stacked Bars', rotate: false, createSeries: this.createSimpleVertColumnSeries },
+    // { id: 'shsbars', name: 'Simple Horizontal Stacked Bars', rotate: true, createSeries: this.createSimpleHorizColumnSeries }
   ];
 
   functions:any[] = [
@@ -112,6 +124,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       case 'sbars':
       case 'hsbars':
       case 'sarea':
+      case 'ssbars':
+      case 'shsbars':
         return true;
 
       default:
@@ -165,7 +179,6 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     series.stacked = stacked;
     series.columns.template.strokeWidth = 0;
     series.columns.template.width = am4core.percent (60);
-    return series;
   }
 
   // Function to create vertical column chart series
@@ -191,7 +204,6 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     series.stacked = stacked;
     series.columns.template.strokeWidth = 0;
     series.columns.template.width = am4core.percent (60);
-    return series;
   }
 
   // Function to create line chart series
@@ -226,7 +238,42 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       series.fillOpacity = 0.3;
 
     series.stacked = stacked;
-    return series;
+  }
+
+  // Function to create simple vertical column chart series
+  createSimpleVertColumnSeries(values, stacked, chart, item, parseDate): void
+  {
+    let series = chart.series.push (new am4charts.ColumnSeries());
+    series.dataFields.valueY = item.valueField;
+    series.dataFields.categoryX = item.titleField;
+    series.name = item.valueField;
+    series.columns.template.tooltipText = "{categoryX}: {valueY}";
+    series.columns.template.strokeWidth = 0;
+
+    series.stacked = stacked;
+
+    // Set colors
+    series.columns.template.adapter.add ("fill", (fill, target) => {
+      return am4core.color (item.colors[target.dataItem.index]);
+    });
+  }
+
+  // Function to create simple horizontal column chart series
+  createSimpleHorizColumnSeries(values, stacked, chart, item, parseDate): void
+  {
+    let series = chart.series.push (new am4charts.ColumnSeries());
+    series.dataFields.valueX = item.valueField;
+    series.dataFields.categoryY = item.titleField;
+    series.name = item.valueField;
+    series.columns.template.tooltipText = "{categoryY}: {valueX}";
+    series.columns.template.strokeWidth = 0;
+
+    series.stacked = stacked;
+
+    // Set colors
+    series.columns.template.adapter.add ("fill", (fill, target) => {
+      return am4core.color (item.colors[target.dataItem.index]);
+    });
   }
 
   makeChart(chartInfo): void
@@ -298,6 +345,45 @@ export class MsfDashboardChartmenuComponent implements OnInit {
           return am4core.color (color);
         });
         series.colors = colorSet;
+      }
+      else if (this.values.currentChartType.name.includes ('Simple'))
+      {
+        let categoryAxis, valueAxis;
+
+        chart = am4core.create ("msf-dashboard-chart-display-" + this.columnPos + "-" + this.rowPos, am4charts.XYChart);
+        chart.data = chartInfo.dataProvider;
+
+        if (this.values.currentChartType.rotate)
+        {
+          categoryAxis = chart.yAxes.push (new am4charts.CategoryAxis ());
+          valueAxis = chart.xAxes.push (new am4charts.ValueAxis ());
+
+          chart.scrollbarY = new am4core.Scrollbar ();
+          chart.scrollbarY.background.fill = blueJeans;
+        }
+        else
+        {
+          categoryAxis = chart.xAxes.push (new am4charts.CategoryAxis ())
+          valueAxis = chart.yAxes.push (new am4charts.ValueAxis ());
+
+          chart.scrollbarX = new am4core.Scrollbar ();
+          chart.scrollbarX.background.fill = blueJeans;
+        }
+
+        categoryAxis.dataFields.category = chartInfo.titleField;
+        categoryAxis.renderer.grid.template.location = 0;
+        categoryAxis.renderer.grid.template.strokeOpacity = 1;
+        categoryAxis.renderer.line.strokeOpacity = 1;
+        categoryAxis.renderer.grid.template.stroke = darkBlue;
+        categoryAxis.renderer.line.stroke = darkBlue;
+        categoryAxis.renderer.grid.template.strokeWidth = 1;
+        categoryAxis.renderer.line.strokeWidth = 1;
+
+        valueAxis.renderer.grid.template.strokeOpacity = 1;
+        valueAxis.renderer.grid.template.stroke = darkBlue;
+        valueAxis.renderer.grid.template.strokeWidth = 1;
+
+        this.values.currentChartType.createSeries (this.values, false, chart, chartInfo, null);
       }
       else
       {
@@ -539,7 +625,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   hasXAxis(chartType): boolean
   {
-    return (chartType.id !== 'pie' && chartType.id !== 'donut' && chartType.id !== 'radar');
+    return (chartType.id !== 'pie' && chartType.id !== 'donut' && chartType.id !== 'radar'
+      && !chartType.name.includes ('Simple'));
   }
 
   loadChartData(handlerSuccess, handlerError): void
@@ -810,8 +897,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     if (this.values.currentOptionCategories == null)
       return;
 
-    if (this.values.currentChartType.id === 'pie' || this.values.currentChartType.id === 'donut'
-    || this.values.currentChartType.id === 'radar')
+    if (!this.hasXAxis (this.values.currentChartType))
     {
       this.values.xaxis = null;
       this.chartForm.get ('xaxisCtrl').reset ();
@@ -826,8 +912,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   checkChartFilters(): void
   {
-    if (this.values.currentChartType.id === 'pie' || this.values.currentChartType.id === 'donut'
-      || this.values.currentChartType.id === 'radar')
+    if (!this.hasXAxis (this.values.currentChartType))
     {
       if (this.values.variable != null && this.values.valueColumn != null)
       {
