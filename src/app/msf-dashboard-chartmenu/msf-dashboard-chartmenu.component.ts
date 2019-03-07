@@ -277,6 +277,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       else
       {
         var categoryAxis, valueAxis;
+        let data = [];
 
         chart = am4core.create ("msf-dashboard-chart-display-" + this.columnPos + "-" + this.rowPos, am4charts.XYChart);
         chart.data = chartInfo.data;
@@ -285,7 +286,10 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         if (this.values.currentChartType.rotate)
         {
           categoryAxis = chart.yAxes.push (new am4charts.CategoryAxis ());
-          valueAxis = chart.xAxes.push (new am4charts.ValueAxis ());
+          /*if (this.values.xaxis.id.includes ('date'))
+            valueAxis = chart.xAxes.push (new am4charts.DateAxis ());
+          else*/
+            valueAxis = chart.xAxes.push (new am4charts.ValueAxis ());
 
           // Add scrollbar into the chart for zooming
           chart.scrollbarY = new am4core.Scrollbar ();
@@ -294,7 +298,10 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         else
         {
           categoryAxis = chart.xAxes.push (new am4charts.CategoryAxis ());
-          valueAxis = chart.yAxes.push (new am4charts.ValueAxis ());
+          /*if (this.values.xaxis.id.includes ('date'))
+            valueAxis = chart.yAxes.push (new am4charts.DateAxis ());
+          else*/
+            valueAxis = chart.yAxes.push (new am4charts.ValueAxis ());
 
           chart.scrollbarX = new am4core.Scrollbar ();
           chart.scrollbarX.background.fill = am4core.color ("#67b7dc");
@@ -311,6 +318,24 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         valueAxis.renderer.grid.template.strokeOpacity = 1;
         valueAxis.renderer.grid.template.stroke = am4core.color ("#30303d");
         valueAxis.renderer.grid.template.strokeWidth = 1;
+
+        // Sort chart series from least to greatest by calculating the
+        // total value of each key item to compensate for the lack of
+        // proper sorting by values
+        for (let object of chartInfo.filter)
+        {
+          object["sum"] = 0;
+
+          for (let data of chartInfo.data)
+          {
+            let value = data[object.valueField];
+
+            if (value != null)
+              object["sum"] += value;
+          }
+        }
+
+        chartInfo.filter = chartInfo.filter.sort (function (e1, e2) { return e1.sum - e2.sum });
 
         // Create the series and set colors
         chart.colors.list = [];
@@ -332,14 +357,10 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         // Display Legend
         chart.legend = new am4charts.Legend ();
         chart.legend.labels.template.fill = am4core.color ("#ffffff");
-
-        // Set date format
-        //if (this.values.xaxis.id.includes ('date'))
-        //  chart.dateFormatter.inputDateFormat = "MM/DD/yyyy";
       }
 
       // Set date format
-      chart.dateFormatter.inputDateFormat = "MM/DD/yyyy";
+      chart.dateFormatter.inputDateFormat = "d MMM, yyyy";
 
       // Add export button
       chart.exporting.menu = new am4core.ExportMenu ();
