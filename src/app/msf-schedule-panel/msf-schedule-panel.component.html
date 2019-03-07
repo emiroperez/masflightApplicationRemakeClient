@@ -26,7 +26,7 @@
   </div>
   <div *ngIf="checkarray(item.Flight)">
     
-    <table class="msf-schedule-panel-table"  **ngFor="let fly of item.Flight" >
+    <table class="msf-schedule-panel-table" *ngFor="let fly of item.Flight" >
         <tr *ngFor="let entry  of fly | keyvalue"  ><td *ngIf="globals.metadata.get(entry.key)" >{{globals.metadata.get(entry.key)}}</td><td *ngIf="globals.metadata.get(entry.key)">{{entry.value}}</td></tr>
     </table>
 
