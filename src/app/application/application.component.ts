@@ -64,15 +64,15 @@ export class ApplicationComponent implements OnInit {
     _this.admin = data.admin;
      _this.globals.isLoading = false;
 
-    if (_this.dashboardPlan)
-     _this.goToDashboard ();
+    // if (_this.dashboardPlan)
+    //  _this.goToDashboard ();
   }
   errorLogin(_this,result){
     console.log(result);
      _this.globals.isLoading = false;
 
-     if (_this.dashboardPlan)
-     _this.goToDashboard ();
+    //  if (_this.dashboardPlan)
+    //  _this.goToDashboard ();
   }
 
   getAdvanceFeatures(){
@@ -166,22 +166,23 @@ toggle(){
   }
 
   moreResults(){
-    this.globals.moreResults = false;
-    this.globals.query = true;
-    if(this.globals.currentOption.metaData==2){
-      this.globals.mapsc=true;
+    if(this.globals.moreResultsBtn){
+      this.globals.moreResults = false;
+      this.globals.query = true;
+      if(this.globals.currentOption.metaData==2){
+        this.globals.mapsc=true;
+        
+      }else{
+        this.globals.mapsc=false;
+      }
+      this.globals.tab = true;
       
-    }else{
-      this.globals.mapsc=false;
+      this.globals.isLoading = true;
+  
+      setTimeout(() => {
+        this.moreResults2();
+    }, 3000);
     }
-    this.globals.tab = true;
-    
-    this.globals.isLoading = true;
-
-    setTimeout(() => {
-      this.moreResults2();
-  }, 3000);
-
   }
 
   moreResults2(){
@@ -286,8 +287,8 @@ toggle(){
   checkScreen(event)
   {
     if (event.target.innerHeight == window.screen.height && event.target.innerWidth == window.screen.width)
-      this.isFullscreen = true;
+      this.globals.isFullscreen = true;
     else
-      this.isFullscreen = false;
+    this.globals.isFullscreen = false;
   }
 }
