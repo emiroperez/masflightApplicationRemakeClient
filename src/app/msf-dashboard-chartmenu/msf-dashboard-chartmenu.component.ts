@@ -31,10 +31,11 @@ const blueJeans = am4core.color ("#67b7dc");
 // Chart flags settings
 enum ChartFlags
 {
-  NONE        = 0x00000000,
-  HAVE_XAXIS  = 0x00000001,
-  ROTATED     = 0x00000002,
-  STACKED     = 0x00000004
+  NONE     = 0x00000000,
+  XYCHART  = 0x00000001,
+  ROTATED  = 0x00000002,
+  STACKED  = 0x00000004,
+  INFO     = 0x00000008
 }
 
 @Component({
@@ -53,13 +54,13 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   private timer: number;
 
   chartTypes:any[] = [
-    { id: 'bars', name: 'Bars', flags: ChartFlags.HAVE_XAXIS, createSeries: this.createVertColumnSeries },
-    { id: 'hbars', name: 'Horizontal Bars', flags: ChartFlags.HAVE_XAXIS | ChartFlags.ROTATED, createSeries: this.createHorizColumnSeries },
-    { id: 'sbars', name: 'Stacked Bars', flags: ChartFlags.HAVE_XAXIS | ChartFlags.STACKED, createSeries: this.createVertColumnSeries },
-    { id: 'hsbars', name: 'Horizontal Stacked Bars', flags: ChartFlags.HAVE_XAXIS | ChartFlags.ROTATED | ChartFlags.STACKED, createSeries: this.createHorizColumnSeries },
-    { id: 'line', name: 'Lines', flags: ChartFlags.HAVE_XAXIS, createSeries: this.createLineSeries },                      
-    { id: 'area', name: 'Area', flags: ChartFlags.HAVE_XAXIS, createSeries: this.createLineSeries },
-    { id: 'sarea', name: 'Stacked Area', flags: ChartFlags.HAVE_XAXIS | ChartFlags.STACKED, createSeries: this.createLineSeries },
+    { id: 'bars', name: 'Bars', flags: ChartFlags.XYCHART, createSeries: this.createVertColumnSeries },
+    { id: 'hbars', name: 'Horizontal Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED, createSeries: this.createHorizColumnSeries },
+    { id: 'sbars', name: 'Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.STACKED, createSeries: this.createVertColumnSeries },
+    { id: 'hsbars', name: 'Horizontal Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED | ChartFlags.STACKED, createSeries: this.createHorizColumnSeries },
+    { id: 'line', name: 'Lines', flags: ChartFlags.XYCHART, createSeries: this.createLineSeries },                      
+    { id: 'area', name: 'Area', flags: ChartFlags.XYCHART, createSeries: this.createLineSeries },
+    { id: 'sarea', name: 'Stacked Area', flags: ChartFlags.XYCHART | ChartFlags.STACKED, createSeries: this.createLineSeries },
 
     // { id: 'sbars', name: 'Simple Bars', rotate: false },
     // { id: 'shbars', name: 'Simple Horizontal Bars', rotate: true },
@@ -72,9 +73,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     { id: 'radar', name: 'Radar', flags: ChartFlags.NONE },
 
     { id: 'spbars', name: 'Simple Bars', flags: ChartFlags.NONE, createSeries: this.createSimpleVertColumnSeries },
-    { id: 'sphbars', name: 'Simple Horizontal Bars', flags: ChartFlags.ROTATED, createSeries: this.createSimpleHorizColumnSeries }
-    // { id: 'ssbars', name: 'Simple Stacked Bars', rotate: false, createSeries: this.createSimpleVertColumnSeries },
-    // { id: 'shsbars', name: 'Simple Horizontal Stacked Bars', rotate: true, createSeries: this.createSimpleHorizColumnSeries }
+    { id: 'sphbars', name: 'Simple Horizontal Bars', flags: ChartFlags.ROTATED, createSeries: this.createSimpleHorizColumnSeries },
+    // { id: 'info', name: 'Information', flags: ChartFlags.INFO }
   ];
 
   functions:any[] = [
@@ -351,6 +351,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
           categoryAxis = chart.yAxes.push (new am4charts.CategoryAxis ());
           valueAxis = chart.xAxes.push (new am4charts.ValueAxis ());
 
+          categoryAxis.renderer.minGridDistance = 15;
+
           chart.scrollbarY = new am4core.Scrollbar ();
           chart.scrollbarY.background.fill = blueJeans;
         }
@@ -358,6 +360,9 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         {
           categoryAxis = chart.xAxes.push (new am4charts.CategoryAxis ())
           valueAxis = chart.yAxes.push (new am4charts.ValueAxis ());
+
+          categoryAxis.renderer.labels.template.rotation = 315;
+          categoryAxis.renderer.minGridDistance = 30;
 
           chart.scrollbarX = new am4core.Scrollbar ();
           chart.scrollbarX.background.fill = blueJeans;
@@ -397,7 +402,10 @@ export class MsfDashboardChartmenuComponent implements OnInit {
             categoryAxis.periodChangeDateFormats.setKey ("day", "yyyy");
           }
           else
+          {
             categoryAxis = chart.yAxes.push (new am4charts.CategoryAxis ());
+            categoryAxis.renderer.minGridDistance = 15;
+          }
 
           valueAxis = chart.xAxes.push (new am4charts.ValueAxis ());
 
@@ -414,7 +422,13 @@ export class MsfDashboardChartmenuComponent implements OnInit {
             categoryAxis.periodChangeDateFormats.setKey ("day", "yyyy");
           }
           else
+          {
             categoryAxis = chart.xAxes.push (new am4charts.CategoryAxis ());
+            categoryAxis.renderer.minGridDistance = 30;
+
+            // Rotate labels if the chart is displayed vertically
+            categoryAxis.renderer.labels.template.rotation = 315;
+          }
 
           valueAxis = chart.yAxes.push (new am4charts.ValueAxis ());
 
@@ -632,7 +646,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       "&valueColumn=" + this.values.valueColumn.id + "&function=" + this.values.function.id;
 
     // don't use the xaxis parameter if the chart type is pie, donut or radar
-    if (!(this.values.currentChartType.flags & ChartFlags.HAVE_XAXIS))
+    if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
       url += "&chartType=pie";
     else
       url += "&xaxis=" + this.values.xaxis.id;
@@ -669,14 +683,14 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   handlerSuccess(_this, data): void
   {
-    if (_this.hasXAxis (_this.values.currentChartType) && _this.isEmpty (data.data))
+    if ((_this.values.currentChartType.flags & ChartFlags.XYCHART) && _this.isEmpty (data.data))
     {
       _this.noDataFound ();
       return;
     }
 
-    if ((!_this.hasXAxis (_this.values.currentChartType) && data.dataProvider == null) ||
-      (_this.hasXAxis (_this.values.currentChartType) && !data.filter))
+    if ((!(_this.values.currentChartType.flags & ChartFlags.XYCHART) && data.dataProvider == null) ||
+      ((_this.values.currentChartType.flags & ChartFlags.XYCHART) && !data.filter))
     {
       _this.noDataFound ();
       return;
@@ -755,7 +769,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
     _this.chartForm.get ('variableCtrl').enable ();
 
-    if (_this.hasXAxis (_this.values.currentChartType))
+    if (_this.values.currentChartType.flags & ChartFlags.XYCHART)
       _this.chartForm.get ('xaxisCtrl').enable ();
 
     _this.chartForm.get ('valueCtrl').enable ();
@@ -885,7 +899,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     if (this.values.currentOptionCategories == null)
       return;
 
-    if (!(this.values.currentChartType.flags & ChartFlags.HAVE_XAXIS))
+    if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
     {
       this.values.xaxis = null;
       this.chartForm.get ('xaxisCtrl').reset ();
@@ -900,7 +914,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   checkChartFilters(): void
   {
-    if (!(this.values.currentChartType.flags & ChartFlags.HAVE_XAXIS))
+    if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
     {
       if (this.values.variable != null && this.values.valueColumn != null)
       {
@@ -977,7 +991,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
           this.chartForm.get ('variableCtrl').enable ();
 
           // only enable x axis if the chart type is not pie, donut or radar
-          if (!(this.values.currentChartType.flags & ChartFlags.HAVE_XAXIS))
+          if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
             this.chartForm.get ('xaxisCtrl').enable ();
 
           this.chartForm.get ('valueCtrl').enable ();
