@@ -17,20 +17,23 @@ export class MsfDashboardChartValues {
 
     lastestResponse: string;
 
-    variable;
-    xaxis;
-    valueColumn;
-    function;
+    variable: any;
+    xaxis: any;
+    valueColumn: any;
+    function: any;
 
-    infoVar1;
-    infoVar2;
-    infoVar3;
+    infoVar1: any;
+    infoVar2: any;
+    infoVar3: any;
+    infoFunc1: any;
+    infoFunc2: any;
+    infoFunc3: any;
 
     // values used for the information panel
     infoNumVariables: number;
 
     constructor(options: any[], chartName: String, id: number, width: any, height: any, currentOption?: any, chartColumnOptions? : any,
-        variable?, xaxis?, valueColumn?, func?, chartType?, currentOptionCategories?: any, lastestResponse?: string)
+        variable?: any, xaxis?: any, valueColumn?: any, func?: any, chartType?: any, currentOptionCategories?: any, lastestResponse?: string)
     {
         this.options = options;
         this.chartName = chartName;

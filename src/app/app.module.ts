@@ -155,6 +155,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MsfTopNumberComponent } from './msf-top-number/msf-top-number.component';
 import { MsfSeatClassComponent } from './msf-seat-class/msf-seat-class.component';
 import { MsfControlVariablesComponent } from './msf-control-variables/msf-control-variables.component';
+import { MsfDashboardInfoFunctionsComponent } from './msf-dashboard-info-functions/msf-dashboard-info-functions.component';
 
 @NgModule({
   declarations: [
@@ -291,6 +292,7 @@ import { MsfControlVariablesComponent } from './msf-control-variables/msf-contro
     MsfTopNumberComponent,
     MsfSeatClassComponent,
     MsfControlVariablesComponent,
+    MsfDashboardInfoFunctionsComponent,
   ],
   imports: [
     BrowserModule,
@@ -350,6 +352,7 @@ import { MsfControlVariablesComponent } from './msf-control-variables/msf-contro
     EditCategoryArgumentDialog,
     EditOptionsDialog,
     MsfDashboardControlVariablesComponent,
-    MsfConfirmationDialogComponent]
+    MsfConfirmationDialogComponent,
+    MsfDashboardInfoFunctionsComponent]
 })
 export class AppModule { }

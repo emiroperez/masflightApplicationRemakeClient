@@ -2030,7 +2030,7 @@ mat-tab-group {
   padding-top: 5px;
 }
 
-.msf-dashboard-form-field .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-field-function .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-field-valuectrl .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-full-width .mat-form-field-underline, .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-row .msf-full-width .mat-form-field-underline, .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-row .msf-width-90 .mat-form-field-underline {
+.msf-dashboard-form-field .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-field-function .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-field-valuectrl .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-full-width .mat-form-field-underline, .msf-dashboard-chartmenu-sub-container-row .msf-full-width .mat-form-field-underline, .msf-dashboard-chartmenu-sub-container-row .msf-width-90 .mat-form-field-underline {
   background-color: #595959;
 }
 
@@ -2056,16 +2056,6 @@ mat-tab-group {
   display: flex;
   justify-content: space-around;
   flex-direction: column;
-}
-.msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-row {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  padding-left: initial;
-  padding-right: initial;
-  padding-top: initial;
-  font-size: 12px;
-  align-items: center;
 }
 .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-variable-buttons {
   display: flex;
@@ -2143,6 +2133,21 @@ mat-tab-group {
   padding: 12px;
 }
 
+.msf-dashboard-dialog .msf-dashboard-control-variables-close-button, .msf-dashboard-info-function-title .msf-dashboard-control-variables-close-button, .msf-dashboard-control-variables-title .msf-dashboard-control-variables-close-button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  position: absolute;
+  width: 100%;
+}
+.msf-dashboard-dialog .msf-dashboard-control-variables-close-button .msf-dashboard-close-icon, .msf-dashboard-info-function-title .msf-dashboard-control-variables-close-button .msf-dashboard-close-icon, .msf-dashboard-control-variables-title .msf-dashboard-control-variables-close-button .msf-dashboard-close-icon {
+  font-size: 16px;
+}
+.msf-dashboard-dialog .msf-dashboard-control-variables-close-button .msf-dashboard-close-icon:hover, .msf-dashboard-info-function-title .msf-dashboard-control-variables-close-button .msf-dashboard-close-icon:hover, .msf-dashboard-control-variables-title .msf-dashboard-control-variables-close-button .msf-dashboard-close-icon:hover {
+  cursor: pointer;
+  font-size: 16px;
+}
+
 .msf-dashboard-control-variables-title {
   text-align: center;
   font-size: 20px;
@@ -2152,21 +2157,37 @@ mat-tab-group {
   color: #fff;
   position: relative;
 }
-.msf-dashboard-control-variables-title .msf-dashboard-control-variables-close-button {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  position: absolute;
-  width: 100%;
-}
-.msf-dashboard-control-variables-title .msf-dashboard-control-variables-close-button .msf-dashboard-close-icon {
-  font-size: 16px;
-}
-.msf-dashboard-control-variables-title .msf-dashboard-control-variables-close-button .msf-dashboard-close-icon:hover {
-  cursor: pointer;
-  font-size: 16px;
+
+.msf-dashboard-info-function-title {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  padding-top: 5px;
+  padding-bottom: 0;
+  color: #fff;
+  position: relative;
 }
 
+.msf-dashboard-info-function-subtitle {
+  text-align: center;
+  font-size: 12px;
+  font-weight: bold;
+  padding-top: 5px;
+  padding-bottom: 10px;
+  color: #fff;
+  position: relative;
+}
+
+.msf-dashboard-chartmenu-sub-container-row {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-left: initial;
+  padding-right: initial;
+  padding-top: initial;
+  font-size: 12px;
+  align-items: center;
+}
 .msf-dashboard-control-variables {
   overflow-y: auto;
   font-size: 10px;
@@ -2200,7 +2221,7 @@ mat-tab-group {
   width: 100%;
 }
 .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-checkbox-component {
-  margin: 2px 0;
+  margin: 10px 0;
   display: flex;
 }
 .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-field-valuectrl {
