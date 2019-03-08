@@ -16,13 +16,15 @@
 }
 
 .msf-schedule-panel-table td:nth-child(2) { 
-    font-weight: bold;
+    font-weight: 400;
     padding-left: 22px;
  }
 .msf-schedule-panel-subs{
     background-color: #01abec;
     padding: 12px;
     font-size: 12px;
+    font-weight: 400;
+
 }
 .mat-expanded mat-expansion-panel-header{
     background-color: #1e2a2f;

@@ -18,29 +18,17 @@
       <tr><td>Total Distance</td><td>{{item.TotalDistance}}</td></tr>
       <tr><td>Total Time</td><td>{{item.TotalTime}}</td></tr>
     </table>
-      <!-- <table *ngFor="let item2 of item.Flight"> -->
      <div *ngIf="!checkarray(item.Flight)">
       <h3 class="msf-schedule-panel-subs">{{item.Flight.content}}</h3>  
-    <!-- <table class="msf-schedule-panel-table" innerHTML="{{getPropshtml(item.Flight) }}" > -->
-       <table class="msf-schedule-panel-table" >
-        <!-- <tr><td>Departure Date</td><td>{{item.Flight.DepartureDate}}</td></tr>
-        <tr><td>Air line</td><td>{{item.Flight.Marketing_Airline}}</td></tr>
-        <tr><td>Flight No</td><td>{{item.Flight.FlightNo}}</td></tr>
-        <tr><td>Departure</td><td>{{item.Flight.Departure}}</td></tr>
-        <tr><td>Arrival</td><td>{{item.Flight.Arrival}}</td></tr>
-        <tr><td>Stops</td><td>{{item.Flight.Stops}}</td></tr>
-        <tr><td>DepartureTime</td><td>{{item.Flight.DepartureTime}}</td></tr>
-        <tr><td>ArrivalTime</td><td>{{item.Flight.ArrivalTime}}</td></tr>
-        <tr><td>Seats</td><td>{{item.Flight.Seats}}</td></tr>
-        <tr><td>Configuration</td><td>{{item.Flight.Configuration}}</td></tr>
-        <tr><td>AircraftType</td><td>{{item.Flight.AircraftType}}</td></tr>
-        <tr><td>Distance</td><td>{{item.TotalDistance}}</td></tr> -->
-    
+    <table class="msf-schedule-panel-table" >
         <tr *ngFor="let entry  of item.Flight | keyvalue"  ><td *ngIf="globals.metadata.get(entry.key)" >{{globals.metadata.get(entry.key)}}</td><td *ngIf="globals.metadata.get(entry.key)">{{entry.value}}</td></tr>
     </table>
   </div>
   <div *ngIf="checkarray(item.Flight)">
-
+    
+    <table class="msf-schedule-panel-table" *ngFor="let fly of item.Flight" >
+        <tr *ngFor="let entry  of fly | keyvalue"  ><td *ngIf="globals.metadata.get(entry.key)" >{{globals.metadata.get(entry.key)}}</td><td *ngIf="globals.metadata.get(entry.key)">{{entry.value}}</td></tr>
+    </table>
 
   </div>
   </mat-expansion-panel>
