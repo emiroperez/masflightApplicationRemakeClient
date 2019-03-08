@@ -479,6 +479,10 @@ p {
   color: #01abec;
 }
 
+.mat-form-field.mat-focused.mat-primary .mat-input-element {
+  caret-color: #b3b3b3;
+}
+
 .login-header-image {
   width: 80% !important;
   height: 30px;
@@ -496,6 +500,10 @@ p {
 
 .flat-button {
   background-color: #01abec !important;
+}
+
+.flat-button-disabled {
+  background-color: #343434 !important;
 }
 
 .login-button, .msf-medium-button, .msf-big-button {
