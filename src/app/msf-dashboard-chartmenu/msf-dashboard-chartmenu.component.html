@@ -27,86 +27,208 @@
       </mat-form-field>
     </div>
   </div>
-  <div class="msf-dashboard-chartmenu-sub-container-column">
-    <div class="msf-dashboard-addmenu-icon-item">
-      <mat-icon class="msf-dashboard-chart-icon" aria-label="filter_list">filter_list</mat-icon>
-      <span class="msf-dashboard-addmenu-item-text">Chart Configuration</span>
-    </div>
-  </div>
-  <div class="msf-dashboard-chartmenu-sub-container-column">
-    <div class="msf-dashboard-chart-options-container">
-      <div class="msf-dashboard-chart-selector">
-        <div class="msf-dashboard-chart-analysis-title">
-          <mat-icon class="msf-dashboard-chart-icon">bar_chart</mat-icon>
-        </div>
-        <div class="msf-dashboard-chart-op-container">
-          <mat-form-field [formGroup]="chartForm" class="msf-full-width">
-            <mat-select formControlName="variableCtrl" placeholder="Analysis by" #variableSelect [(value)]="values.variable" (selectionChange)="checkChartFilters()">
-              <ngx-mat-select-search [formControl]="variableFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
-              <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
-                {{variable.name}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="msf-dashboard-chart-selector">
-        <div class="msf-dashboard-chart-analysis-title">
-          <mat-icon class="msf-dashboard-chart-icon">multiline_chart</mat-icon>
-        </div>
-        <div class="msf-dashboard-chart-op-container">
-          <mat-form-field [formGroup]="chartForm" class="msf-full-width">
-            <mat-select formControlName="xaxisCtrl" placeholder="x - Axis" #xaxisSelect [(value)]="values.xaxis" (selectionChange)="checkChartFilters()">
-              <ngx-mat-select-search [formControl]="xaxisFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
-              <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
-                {{variable.name}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="msf-dashboard-chart-selector">
-        <div class="msf-dashboard-chart-analysis-title">
-          <mat-icon class="msf-dashboard-chart-icon">show_chart</mat-icon>
-        </div>
-        <div class="msf-dashboard-chart-op-container">
-          <mat-form-field [formGroup]="chartForm" class="msf-dashboard-field-valuectrl">
-            <mat-select formControlName="valueCtrl" placeholder="Values" #valueSelect [(value)]="values.valueColumn" (selectionChange)="checkChartFilters()">
-              <ngx-mat-select-search [formControl]="valueFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
-              <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
-                {{variable.name}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field class="msf-dashboard-field-function">
-            <mat-select placeholder="Function" [(ngModel)]="values.function">
-              <mat-option *ngFor="let fun of functions" [value]="fun">
-                {{fun.name}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="msf-dashboard-chartmenu-sub-container-column-reverse">
-        <button [disabled]="!generateBtnEnabled" mat-flat-button [ngClass]="generateBtnEnabled ? 'flat-button' : 'flat-button-disabled'" (click)="loadData()">Generate</button>
-        <div class="msf-dashboard-chartmenu-control-variable-button">
-          <button [disabled]="!variableCtrlBtnEnabled" mat-mini-fab (click)="goToControlVariables()" color="primary">
-            <mat-icon aria-label="Control Variables">more_vert</mat-icon>
-          </button>
-        </div>
-        <div class="msf-dashboard-chartmenu-control-variable-button">
-          <button [disabled]="!values.chartGenerated" mat-mini-fab (click)="goToChart()" color="primary">
-            <mat-icon aria-label="Go To Chart">bar_chart</mat-icon>
-          </button>
-        </div>
-        <div class="msf-dashboard-chartmenu-control-variable-button">
-          <button mat-mini-fab (click)="savePanel()" color="primary">
-            <mat-icon aria-label="Save Changes">save</mat-icon>
-          </button>
-        </div>
+  <ng-container *ngIf="!isInformationPanel()">
+    <div class="msf-dashboard-chartmenu-sub-container-column">
+      <div class="msf-dashboard-addmenu-icon-item">
+        <mat-icon class="msf-dashboard-chart-icon" aria-label="Filter List">filter_list</mat-icon>
+        <span class="msf-dashboard-addmenu-item-text">Chart Configuration</span>
       </div>
     </div>
-  </div>
+    <div class="msf-dashboard-chartmenu-sub-container-column">
+      <div class="msf-dashboard-chart-options-container">
+        <div class="msf-dashboard-chart-selector">
+          <div class="msf-dashboard-chart-analysis-title">
+            <mat-icon class="msf-dashboard-chart-icon">bar_chart</mat-icon>
+          </div>
+          <div class="msf-dashboard-chart-op-container">
+            <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+              <mat-select formControlName="variableCtrl" placeholder="Analysis by" #variableSelect [(value)]="values.variable" (selectionChange)="checkChartFilters()">
+                <ngx-mat-select-search [formControl]="variableFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+                <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
+                  {{variable.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="msf-dashboard-chart-selector">
+          <div class="msf-dashboard-chart-analysis-title">
+            <mat-icon class="msf-dashboard-chart-icon">multiline_chart</mat-icon>
+          </div>
+          <div class="msf-dashboard-chart-op-container">
+            <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+              <mat-select formControlName="xaxisCtrl" placeholder="x - Axis" #xaxisSelect [(value)]="values.xaxis" (selectionChange)="checkChartFilters()">
+                <ngx-mat-select-search [formControl]="xaxisFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+                <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
+                  {{variable.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="msf-dashboard-chart-selector">
+          <div class="msf-dashboard-chart-analysis-title">
+            <mat-icon class="msf-dashboard-chart-icon">show_chart</mat-icon>
+          </div>
+          <div class="msf-dashboard-chart-op-container">
+            <mat-form-field [formGroup]="chartForm" class="msf-dashboard-field-valuectrl">
+              <mat-select formControlName="valueCtrl" placeholder="Values" #valueSelect [(value)]="values.valueColumn" (selectionChange)="checkChartFilters()">
+                <ngx-mat-select-search [formControl]="valueFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+                <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
+                  {{variable.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field class="msf-dashboard-field-function">
+              <mat-select placeholder="Function" [(ngModel)]="values.function">
+                <mat-option *ngFor="let fun of functions" [value]="fun">
+                  {{fun.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="msf-dashboard-chartmenu-sub-container-column-reverse">
+          <button [disabled]="!generateBtnEnabled" mat-flat-button [ngClass]="generateBtnEnabled ? 'flat-button' : 'flat-button-disabled'" (click)="loadData()">Generate</button>
+          <div class="msf-dashboard-chartmenu-control-variable-button">
+            <button [disabled]="!variableCtrlBtnEnabled" mat-mini-fab (click)="goToControlVariables()" color="primary">
+              <mat-icon aria-label="Control Variables">more_vert</mat-icon>
+            </button>
+          </div>
+          <div class="msf-dashboard-chartmenu-control-variable-button">
+            <button [disabled]="!values.chartGenerated" mat-mini-fab (click)="goToChart()" color="primary">
+              <mat-icon aria-label="Go To Chart">bar_chart</mat-icon>
+            </button>
+          </div>
+          <div class="msf-dashboard-chartmenu-control-variable-button">
+            <button mat-mini-fab (click)="savePanel()" color="primary">
+              <mat-icon aria-label="Save Changes">save</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="isInformationPanel()">
+    <div class="msf-dashboard-chartmenu-sub-container-column">
+      <div class="msf-dashboard-chartmenu-sub-container-row">
+        <div class="msf-dashboard-chart-options-container">
+          <div class="msf-dashboard-chart-selector">
+            <div class="msf-dashboard-chart-analysis-title">
+              <mat-icon class="msf-dashboard-chart-icon">table_chart</mat-icon>
+            </div>
+            <div class="msf-dashboard-chart-op-container">
+              <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+                <mat-select formControlName="infoNumVarCtrl" placeholder="Number of variables" [(value)]="values.infoNumVariables" (selectionChange)="checkNumVariables()">
+                  <mat-option *ngFor="let number of [1,2,3]" [value]="number">
+                    {{number}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="msf-dashboard-chart-selector">
+            <div class="msf-dashboard-chart-analysis-title">
+              <mat-icon class="msf-dashboard-chart-icon">filter_1</mat-icon>
+            </div>
+            <div class="msf-dashboard-chart-op-container">
+              <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+                <mat-select formControlName="infoVar1Ctrl" placeholder="Variable #1" [(value)]="values.infoVar1">
+                  <ngx-mat-select-search [formControl]="infoVar1FilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+                  <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
+                    {{variable.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <button [disabled]="!values.infoVar1" mat-icon-button (click)="goToFunctions(1)" [ngClass]="values.infoVar1 ? 'func-button' : 'func-button-disabled'">
+              <mat-icon aria-label="Functions for Variable #1">more_horiz</mat-icon>
+            </button>
+          </div>
+          <div class="msf-dashboard-chart-selector">
+            <div class="msf-dashboard-chart-analysis-title">
+              <mat-icon class="msf-dashboard-chart-icon">filter_2</mat-icon>
+            </div>
+            <div class="msf-dashboard-chart-op-container">
+              <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+                <mat-select formControlName="infoVar2Ctrl" placeholder="Variable #2" [(value)]="values.infoVar2">
+                  <ngx-mat-select-search [formControl]="infoVar2FilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+                  <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
+                    {{variable.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <button [disabled]="!values.infoVar2" mat-icon-button (click)="goToFunctions(2)" [ngClass]="values.infoVar2 ? 'func-button' : 'func-button-disabled'">
+              <mat-icon aria-label="Functions for Variable #2">more_horiz</mat-icon>
+            </button>
+          </div>
+          <div class="msf-dashboard-chart-selector">
+            <div class="msf-dashboard-chart-analysis-title">
+              <mat-icon class="msf-dashboard-chart-icon">filter_3</mat-icon>
+            </div>
+            <div class="msf-dashboard-chart-op-container">
+              <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+                <mat-select formControlName="infoVar3Ctrl" placeholder="Variable #3" [(value)]="values.infoVar3">
+                  <ngx-mat-select-search [formControl]="infoVar3FilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+                  <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
+                    {{variable.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <button [disabled]="!values.infoVar3" mat-icon-button (click)="goToFunctions(3)" [ngClass]="values.infoVar3 ? 'func-button' : 'func-button-disabled'">
+              <mat-icon aria-label="Functions for Variable #3">more_horiz</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+      <!--
+      <div class="msf-dashboard-chartmenu-sub-container-row">
+        <div class="msf-dashboard-addmenu-icon-item">
+          <mat-icon class="msf-dashboard-chart-icon" aria-label="Functions">functions</mat-icon>
+          <span class="msf-dashboard-addmenu-item-text">Select Functions</span>
+        </div>
+        <div class="msf-dashboard-chart-options-container">
+          <div class="msf-dashboard-chart-selector">
+            <div class="msf-dashboard-chart-op-container">
+              <div class="msf-dashboard-checkbox-component" *ngFor="let fun of functions" style="width: 100%">
+
+                <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [value]="checkbox.value" [(ngModel)]="checkbox.checked" (change)="checkBoxChange(checkbox)" >
+
+                <mat-checkbox class="cancels-checkbox" style="display: inline-block;">
+                  {{fun.name}}
+                </mat-checkbox>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      -->
+    </div>
+    <div class="msf-dashboard-chartmenu-sub-container-column">
+      <div class="msf-dashboard-chart-options-container">
+        <div class="msf-dashboard-chartmenu-sub-container-column-reverse">
+          <button [disabled]="!generateBtnEnabled" mat-flat-button [ngClass]="generateBtnEnabled ? 'flat-button' : 'flat-button-disabled'" (click)="loadData()">Generate</button>
+          <div class="msf-dashboard-chartmenu-control-variable-button">
+            <button [disabled]="!variableCtrlBtnEnabled" mat-mini-fab (click)="goToControlVariables()" color="primary">
+              <mat-icon aria-label="Control Variables">more_vert</mat-icon>
+            </button>
+          </div>
+          <div class="msf-dashboard-chartmenu-control-variable-button">
+            <button [disabled]="!values.chartGenerated" mat-mini-fab (click)="goToChart()" color="primary">
+              <mat-icon aria-label="Go To Information">bar_chart</mat-icon>
+            </button>
+          </div>
+          <div class="msf-dashboard-chartmenu-control-variable-button">
+            <button mat-mini-fab (click)="savePanel()" color="primary">
+              <mat-icon aria-label="Save Changes">save</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
 </div>
 <!-- ngIf doesn't work with AmCharts -->
 <div class="{{values.displayChart ? 'msf-dashboard-chartmenu-container-chart' : 'msf-dashboard-chartmenu-container-invisible'}}" [style.height.px]="panelHeight">

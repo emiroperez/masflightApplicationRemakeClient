@@ -22,6 +22,13 @@ export class MsfDashboardChartValues {
     valueColumn;
     function;
 
+    infoVar1;
+    infoVar2;
+    infoVar3;
+
+    // values used for the information panel
+    infoNumVariables: number;
+
     constructor(options: any[], chartName: String, id: number, width: any, height: any, currentOption?: any, chartColumnOptions? : any,
         variable?, xaxis?, valueColumn?, func?, chartType?, currentOptionCategories?: any, lastestResponse?: string)
     {

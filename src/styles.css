@@ -400,6 +400,10 @@ p {
   background-color: #01abec;
 }
 
+.mat-form-field-ripple {
+  background-color: #01abec;
+}
+
 .notification, .notification-info, .notification-error, .notification-warning {
   padding: 10px;
   color: #cf183c;
@@ -504,6 +508,14 @@ p {
 
 .flat-button-disabled {
   background-color: #343434 !important;
+}
+
+.func-button .mat-button-wrapper {
+  color: white !important;
+}
+
+.func-button-disabled .mat-button-wrapper {
+  color: #343434 !important;
 }
 
 .login-button, .msf-medium-button, .msf-big-button {
@@ -2187,6 +2199,10 @@ mat-tab-group {
   padding-left: 10px;
   width: 100%;
 }
+.msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-checkbox-component {
+  margin: 2px 0;
+  display: flex;
+}
 .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-field-valuectrl {
   width: 49.5%;
   padding-right: 0.5%;
@@ -3099,6 +3115,10 @@ table.datasource {
 }
 
 .msf-plan-card-content .mat-form-field.mat-focused .mat-form-field-ripple {
+  background-color: white;
+}
+
+.msf-plan-card-content .mat-form-field-ripple {
   background-color: white;
 }
 

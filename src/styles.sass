@@ -368,6 +368,9 @@ p
 .mat-form-field.mat-focused .mat-form-field-ripple
     background-color: $msf-secondary-color
 
+.mat-form-field-ripple
+    background-color: $msf-secondary-color
+
 .notification
     @extend  .msf-font-smaller
     padding: 10px
@@ -461,6 +464,14 @@ p
 
 .flat-button-disabled
     background-color: #343434!important
+
+.func-button
+    .mat-button-wrapper
+        color: white!important
+
+.func-button-disabled
+    .mat-button-wrapper
+        color: #343434!important
 
 .login-button
             background-color: $msf-secondary-color!important
@@ -1894,6 +1905,9 @@ mat-tab-group
     .msf-dashboard-chart-op-container
         padding-left: 10px
         width: 100%
+        .msf-dashboard-checkbox-component
+            margin: 2px 0
+            display: flex
         .msf-full-width
             @extend .msf-dashboard-form-field
         .msf-dashboard-field-valuectrl
@@ -2711,6 +2725,8 @@ table.datasource
 .msf-plan-card-content .mat-form-field.mat-focused .mat-form-field-ripple
     background-color: white
 
+.msf-plan-card-content .mat-form-field-ripple
+    background-color: white
 
 .msf-plan-card-content .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label, .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label
     margin-left: 0

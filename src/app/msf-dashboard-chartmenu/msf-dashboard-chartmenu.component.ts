@@ -62,19 +62,13 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     { id: 'area', name: 'Area', flags: ChartFlags.XYCHART, createSeries: this.createLineSeries },
     { id: 'sarea', name: 'Stacked Area', flags: ChartFlags.XYCHART | ChartFlags.STACKED, createSeries: this.createLineSeries },
 
-    // { id: 'sbars', name: 'Simple Bars', rotate: false },
-    // { id: 'shbars', name: 'Simple Horizontal Bars', rotate: true },
-    // { id: 'ssbars', name: 'Simple Stacked Bars', rotate: false },
-    // { id: 'shsbars', name: 'Simple Horizontal Stacked Bars', rotate: true },
-    // length: 4
-
     { id: 'pie', name: 'Pie', flags: ChartFlags.NONE },
     { id: 'donut', name: 'Donut', flags: ChartFlags.NONE },
     { id: 'radar', name: 'Radar', flags: ChartFlags.NONE },
 
     { id: 'spbars', name: 'Simple Bars', flags: ChartFlags.NONE, createSeries: this.createSimpleVertColumnSeries },
-    { id: 'sphbars', name: 'Simple Horizontal Bars', flags: ChartFlags.ROTATED, createSeries: this.createSimpleHorizColumnSeries },
-    // { id: 'info', name: 'Information', flags: ChartFlags.INFO }
+    { id: 'sphbars', name: 'Simple Horizontal Bars', flags: ChartFlags.ROTATED, createSeries: this.createSimpleHorizColumnSeries }/*,
+    { id: 'info', name: 'Information', flags: ChartFlags.INFO }*/
   ];
 
   functions:any[] = [
@@ -103,6 +97,10 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   public xaxisFilterCtrl: FormControl = new FormControl ();
   public valueFilterCtrl: FormControl = new FormControl ();
 
+  public infoVar1FilterCtrl: FormControl = new FormControl ();
+  public infoVar2FilterCtrl: FormControl = new FormControl ();
+  public infoVar3FilterCtrl: FormControl = new FormControl ();
+
   public filteredVariables: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
   public filteredOptions: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
 
@@ -122,7 +120,11 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       dataFormCtrl: new FormControl (),
       variableCtrl: new FormControl ({ value: '', disabled: true }),
       xaxisCtrl: new FormControl ({ value: '', disabled: true }),
-      valueCtrl: new FormControl ({ value: '', disabled: true })
+      valueCtrl: new FormControl ({ value: '', disabled: true }),
+      infoNumVarCtrl: new FormControl ({ value: '', disabled: true }),
+      infoVar1Ctrl: new FormControl ({ value: '', disabled: true }),
+      infoVar2Ctrl: new FormControl ({ value: '', disabled: true }),
+      infoVar3Ctrl: new FormControl ({ value: '', disabled: true })
     });
   }
 
@@ -353,8 +355,11 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
           categoryAxis.renderer.minGridDistance = 15;
 
-          chart.scrollbarY = new am4core.Scrollbar ();
-          chart.scrollbarY.background.fill = blueJeans;
+          if (chart.data.length > 1)
+          {
+            chart.scrollbarY = new am4core.Scrollbar ();
+            chart.scrollbarY.background.fill = blueJeans;
+          }
         }
         else
         {
@@ -364,8 +369,11 @@ export class MsfDashboardChartmenuComponent implements OnInit {
           categoryAxis.renderer.labels.template.rotation = 315;
           categoryAxis.renderer.minGridDistance = 30;
 
-          chart.scrollbarX = new am4core.Scrollbar ();
-          chart.scrollbarX.background.fill = blueJeans;
+          if (chart.data.length > 1)
+          {
+            chart.scrollbarX = new am4core.Scrollbar ();
+            chart.scrollbarX.background.fill = blueJeans;
+          }
         }
 
         categoryAxis.dataFields.category = chartInfo.titleField;
@@ -409,9 +417,12 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
           valueAxis = chart.xAxes.push (new am4charts.ValueAxis ());
 
-          // Add scrollbar into the chart for zooming
-          chart.scrollbarY = new am4core.Scrollbar ();
-          chart.scrollbarY.background.fill = blueJeans;
+          // Add scrollbar into the chart for zooming if there are multiple series
+          if (chart.data.length > 1)
+          {
+            chart.scrollbarY = new am4core.Scrollbar ();
+            chart.scrollbarY.background.fill = blueJeans;
+          }
         }
         else
         {
@@ -432,8 +443,11 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
           valueAxis = chart.yAxes.push (new am4charts.ValueAxis ());
 
-          chart.scrollbarX = new am4core.Scrollbar ();
-          chart.scrollbarX.background.fill = blueJeans;
+          if (chart.data.length > 1)
+          {
+            chart.scrollbarX = new am4core.Scrollbar ();
+            chart.scrollbarX.background.fill = blueJeans;
+          }
         }
 
         // Set category axis properties
@@ -747,6 +761,10 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     _this.searchChange (_this.xaxisFilterCtrl);
     _this.searchChange (_this.valueFilterCtrl);
 
+    _this.searchChange (_this.infoVar1FilterCtrl);
+    _this.searchChange (_this.infoVar2FilterCtrl);
+    _this.searchChange (_this.infoVar3FilterCtrl);
+
     // reset chart filter values and disable generate chart button
     _this.chartForm.get ('variableCtrl').reset ();
     _this.chartForm.get ('xaxisCtrl').reset ();
@@ -768,6 +786,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     _this.globals.isLoading = false;
 
     _this.chartForm.get ('variableCtrl').enable ();
+    _this.chartForm.get ('infoNumVarCtrl').enable ();
 
     if (_this.values.currentChartType.flags & ChartFlags.XYCHART)
       _this.chartForm.get ('xaxisCtrl').enable ();
@@ -899,14 +918,47 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     if (this.values.currentOptionCategories == null)
       return;
 
-    if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
+    if (this.values.currentChartType.flags & ChartFlags.INFO)
     {
+      // disable and reset any variables when selecting the information panel
+      this.values.variable = null;
+      this.chartForm.get ('variableCtrl').reset ();
+
       this.values.xaxis = null;
       this.chartForm.get ('xaxisCtrl').reset ();
-      this.chartForm.get ('xaxisCtrl').disable ();
+
+      this.values.valueColumn = null;
+      this.chartForm.get ('valueCtrl').reset ();
+
+      this.values.infoVar1 = null;
+      this.chartForm.get ('infoVar1Ctrl').reset ();
+      this.chartForm.get ('infoVar1Ctrl').disable ();
+
+      this.values.infoVar2 = null;
+      this.chartForm.get ('infoVar1Ctrl').reset ();
+      this.chartForm.get ('infoVar2Ctrl').disable ();
+
+      this.values.infoVar3 = null;
+      this.chartForm.get ('infoVar3Ctrl').reset ();
+      this.chartForm.get ('infoVar3Ctrl').disable ();
     }
     else
-      this.chartForm.get ('xaxisCtrl').enable ();
+    {
+      this.values.infoNumVariables = 0;
+      this.chartForm.get ('infoNumVarCtrl').setValue (0);
+
+      if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
+      {
+        this.values.xaxis = null;
+        this.chartForm.get ('xaxisCtrl').reset ();
+        this.chartForm.get ('xaxisCtrl').disable ();
+      }
+      else
+        this.chartForm.get ('xaxisCtrl').enable ();
+
+      this.chartForm.get ('variableCtrl').enable ();
+      this.chartForm.get ('valueCtrl').enable ();
+    }
 
     // check the chart filters to see if the chart generation is to be enabled or not
     this.checkChartFilters ();
@@ -914,20 +966,27 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   checkChartFilters(): void
   {
-    if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
+    if (this.values.currentChartType.flags & ChartFlags.INFO)
     {
-      if (this.values.variable != null && this.values.valueColumn != null)
-      {
-        this.generateBtnEnabled = true;
-        return;
-      }
+      // TODO: Check number of variable selected and check if the variable and functions are not null
     }
     else
     {
-      if (this.values.variable != null && this.values.xaxis != null && this.values.valueColumn != null)
+      if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
       {
-        this.generateBtnEnabled = true;
-        return;
+        if (this.values.variable != null && this.values.valueColumn != null)
+        {
+          this.generateBtnEnabled = true;
+          return;
+        }
+      }
+      else
+      {
+        if (this.values.variable != null && this.values.xaxis != null && this.values.valueColumn != null)
+        {
+          this.generateBtnEnabled = true;
+          return;
+        }
       }
     }
 
@@ -945,6 +1004,10 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       this.searchChange (this.variableFilterCtrl);
       this.searchChange (this.xaxisFilterCtrl);
       this.searchChange (this.valueFilterCtrl);
+
+      this.searchChange (this.infoVar1FilterCtrl);
+      this.searchChange (this.infoVar2FilterCtrl);
+      this.searchChange (this.infoVar3FilterCtrl);
     }
 
     // refresh the following two values to avoid a blank form
@@ -989,6 +1052,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         {
           this.chartForm.get ('dataFormCtrl').setValue (option);
           this.chartForm.get ('variableCtrl').enable ();
+          this.chartForm.get ('infoNumVarCtrl').enable ();
 
           // only enable x axis if the chart type is not pie, donut or radar
           if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
@@ -1069,5 +1133,42 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   calcChartHeight(): number
   {
     return this.panelHeight - 14;
+  }
+
+  isInformationPanel(): boolean
+  {
+    return (this.values.currentChartType.flags & ChartFlags.INFO) ? true : false;
+  }
+
+  getButtonColor(infoVarNum): String
+  {
+    if (infoVarNum == null)
+      return "#343434";
+
+    return "primary";
+  }
+
+  checkNumVariables(): void
+  {
+    if (this.values.infoNumVariables >= 1)
+      this.chartForm.get ('infoVar1Ctrl').enable ();
+
+    if (this.values.infoNumVariables >= 2)
+      this.chartForm.get ('infoVar2Ctrl').enable ();
+    else
+    {
+      this.values.infoVar2 = null;
+      this.chartForm.get ('infoVar2Ctrl').reset ();
+      this.chartForm.get ('infoVar2Ctrl').disable ();
+    }
+
+    if (this.values.infoNumVariables == 3)
+      this.chartForm.get ('infoVar3Ctrl').enable ();
+    else
+    {
+      this.values.infoVar3 = null;
+      this.chartForm.get ('infoVar3Ctrl').reset ();
+      this.chartForm.get ('infoVar3Ctrl').disable ();
+    }
   }
 }
