@@ -290,7 +290,7 @@ import { MsfControlVariablesComponent } from './msf-control-variables/msf-contro
     MsfSchedulePanelInfoComponent,
     MsfTopNumberComponent,
     MsfSeatClassComponent,
-    MsfControlVariablesComponent
+    MsfControlVariablesComponent,
   ],
   imports: [
     BrowserModule,

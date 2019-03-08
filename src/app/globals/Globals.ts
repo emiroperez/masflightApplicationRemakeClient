@@ -175,7 +175,10 @@ export class Globals {
   }
 
   getSelectedIndex(){
-    return this.selectedIndex;
+    if(this.currentOption.tabType==="map"){
+      return this.selectedIndex;
+    }
+
   }
 
   dataAvailabilityInit(){

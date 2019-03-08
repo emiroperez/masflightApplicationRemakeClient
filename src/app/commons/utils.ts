@@ -40,7 +40,7 @@ export class Utils{
                             for( let j = 0; j < category.arguments.length;j++){
                                 let argument: Arguments = category.arguments[j];
                                 if(params){
-                                    if(argument.type!="singleCheckbox"&& argument.type!="serviceClasses" && argument.type!="fareLower"){
+                                    if(argument.type!="singleCheckbox"&& argument.type!="serviceClasses" && argument.type!="fareLower"&& argument.type!="airportsRoutes"&&argument.name1!="intermediateCitiesList"){
                                         params += "&" + this.getArguments(argument);
                                     }else{
                                         if(argument.value1!=false && argument.value1!="" &&  argument.value1!=undefined &&  argument.value1!=null){
@@ -76,7 +76,7 @@ export class Utils{
                             for( let j = 0; j < category.arguments.length;j++){
                                 let argument: Arguments = category.arguments[j];
                                 if(params){
-                                    if(argument.type!="singleCheckbox"&& argument.type!="serviceClasses" && argument.type!="fareLower"){
+                                    if(argument.type!="singleCheckbox"&& argument.type!="serviceClasses" && argument.type!="fareLower"&& argument.type!="airportsRoutes"&&argument.name1!="intermediateCitiesList"){
                                         params += "&" + this.getArguments(argument);
                                     }else{
                                         if(argument.value1!=false && argument.value1!="" &&  argument.value1!=undefined &&  argument.value1!=null){

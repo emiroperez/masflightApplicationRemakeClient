@@ -111,40 +111,76 @@ export class MsfTableComponent implements OnInit {
         }
     }
     if(array!=null){
-      for (let index = array.length-1; index >= 0; index--) {
-        const element = array[index];
-        const indexColumn = displayedColumns.findIndex(column => column.columnName === element.columnName);
-        if(indexColumn==-1){
-          displayedColumns.unshift({ columnType:"string",
-          columnName:element.columnName,
-          columnLabel:element.columnLabel});
-        }else{
-          if(element.columnName=="Marketing_Carrier"){
-            displayedColumns.splice(indexColumn,1);
+      if(Array.isArray(array)){
+        for (let index = array.length-1; index >= 0; index--) {
+          const element = array[index];
+          const indexColumn = displayedColumns.findIndex(column => column.columnName === element.columnName);
+          if(indexColumn==-1){
             displayedColumns.unshift({ columnType:"string",
             columnName:element.columnName,
             columnLabel:element.columnLabel});
-          }
-          if(element.columnName=="MktCar"){
-            displayedColumns.splice(indexColumn,1);
-            displayedColumns.unshift({ columnType:"string",
-            columnName:element.columnName,
-            columnLabel:element.columnLabel});
-          }
-          if(element.columnName=="Origin"){
-            displayedColumns.splice(indexColumn,1);
-            displayedColumns.unshift({ columnType:"string",
-            columnName:element.columnName,
-            columnLabel:element.columnLabel});
-          }
-          if(element.columnName=="Destination"){
-            displayedColumns.splice(indexColumn,1);
-            displayedColumns.unshift({ columnType:"string",
-            columnName:element.columnName,
-            columnLabel:element.columnLabel});
+          }else{
+            if(element.columnName=="Marketing_Carrier"){
+              displayedColumns.splice(indexColumn,1);
+              displayedColumns.unshift({ columnType:"string",
+              columnName:element.columnName,
+              columnLabel:element.columnLabel});
+            }
+            if(element.columnName=="MktCar"){
+              displayedColumns.splice(indexColumn,1);
+              displayedColumns.unshift({ columnType:"string",
+              columnName:element.columnName,
+              columnLabel:element.columnLabel});
+            }
+            if(element.columnName=="Origin"){
+              displayedColumns.splice(indexColumn,1);
+              displayedColumns.unshift({ columnType:"string",
+              columnName:element.columnName,
+              columnLabel:element.columnLabel});
+            }
+            if(element.columnName=="Destination"){
+              displayedColumns.splice(indexColumn,1);
+              displayedColumns.unshift({ columnType:"string",
+              columnName:element.columnName,
+              columnLabel:element.columnLabel});
+            }
           }
         }
+      }else{
+        const indexColumn = displayedColumns.findIndex(column => column.columnName === array.columnName);
+        if(indexColumn==-1){
+          displayedColumns.unshift({ columnType:"string",
+          columnName:array.columnName,
+          columnLabel:array.columnLabel});
+        }else{
+          if(array.columnName=="Marketing_Carrier"){
+            displayedColumns.splice(indexColumn,1);
+            displayedColumns.unshift({ columnType:"string",
+            columnName:array.columnName,
+            columnLabel:array.columnLabel});
+          }
+          if(array.columnName=="MktCar"){
+            displayedColumns.splice(indexColumn,1);
+            displayedColumns.unshift({ columnType:"string",
+            columnName:array.columnName,
+            columnLabel:array.columnLabel});
+          }
+          if(array.columnName=="Origin"){
+            displayedColumns.splice(indexColumn,1);
+            displayedColumns.unshift({ columnType:"string",
+            columnName:array.columnName,
+            columnLabel:array.columnLabel});
+          }
+          if(array.columnName=="Destination"){
+            displayedColumns.splice(indexColumn,1);
+            displayedColumns.unshift({ columnType:"string",
+            columnName:array.columnName,
+            columnLabel:array.columnLabel});
+          }
+        }
+
       }
+
     }
   }
 
