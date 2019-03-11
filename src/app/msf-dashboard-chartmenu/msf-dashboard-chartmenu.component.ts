@@ -941,7 +941,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       this.globals.isLoading = true;
 
     this.dialog.open (MsfDashboardControlVariablesComponent, {
-      height: '90%',
+      height: '92%',
       width: '400px',
       panelClass: 'msf-dashboard-control-variables-dialog',
       data: {
@@ -1358,7 +1358,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     }
 
     const dialogRef = this.dialog.open (MsfDashboardInfoFunctionsComponent, {
-      height: '50%',
+      height: '58%',
       width: '400px',
       panelClass: 'msf-dashboard-control-variables-dialog',
       data: {
