@@ -181,6 +181,13 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     series.stacked = stacked;
     series.columns.template.strokeWidth = 0;
     series.columns.template.width = am4core.percent (60);
+
+    // Add an event that hide the column chart when clicked
+    /*series.columns.template.events.on ("hit", function(event) {
+//      console.log ("clicked on ", event.target);
+//      series.hidden = true;
+      series.hide ();
+    });*/
   }
 
   // Function to create vertical column chart series
@@ -589,7 +596,9 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
         // Display Legend
         chart.legend = new am4charts.Legend ();
-        chart.legend.labels.template.fill = white;
+        chart.legend.markers.template.width = 15;
+        chart.legend.markers.template.height = 15;
+        chart.legend.labels.template.fontSize = 10;
 
         /*chart.legend.itemContainers.template.events.on (
           "hit",
