@@ -15,6 +15,7 @@ import { Utils } from '../commons/utils';
 import { ApplicationService } from '../services/application.service';
 
 import { MsfDashboardControlVariablesComponent } from '../msf-dashboard-control-variables/msf-dashboard-control-variables.component';
+import { MsfDashboardInfoFunctionsComponent } from '../msf-dashboard-info-functions/msf-dashboard-info-functions.component';
 import { MatDialog } from '@angular/material';
 import { ComponentType } from '../commons/ComponentType';
 import { MsfDashboardChartValues } from '../msf-dashboard-chartmenu/msf-dashboard-chartvalues';
@@ -31,11 +32,12 @@ const blueJeans = am4core.color ("#67b7dc");
 // Chart flags settings
 enum ChartFlags
 {
-  NONE     = 0x00000000,
-  XYCHART  = 0x00000001,
-  ROTATED  = 0x00000002,
-  STACKED  = 0x00000004,
-  INFO     = 0x00000008
+  NONE      = 0x00000000,
+  XYCHART   = 0x00000001,
+  ROTATED   = 0x00000002,
+  STACKED   = 0x00000004,
+  INFO      = 0x00000008,
+  LINECHART = 0x00000010
 }
 
 @Component({
@@ -58,9 +60,9 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     { id: 'hbars', name: 'Horizontal Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED, createSeries: this.createHorizColumnSeries },
     { id: 'sbars', name: 'Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.STACKED, createSeries: this.createVertColumnSeries },
     { id: 'hsbars', name: 'Horizontal Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED | ChartFlags.STACKED, createSeries: this.createHorizColumnSeries },
-    { id: 'line', name: 'Lines', flags: ChartFlags.XYCHART, createSeries: this.createLineSeries },                      
-    { id: 'area', name: 'Area', flags: ChartFlags.XYCHART, createSeries: this.createLineSeries },
-    { id: 'sarea', name: 'Stacked Area', flags: ChartFlags.XYCHART | ChartFlags.STACKED, createSeries: this.createLineSeries },
+    { id: 'line', name: 'Lines', flags: ChartFlags.XYCHART | ChartFlags.LINECHART, createSeries: this.createLineSeries },                      
+    { id: 'area', name: 'Area', flags: ChartFlags.XYCHART | ChartFlags.LINECHART, createSeries: this.createLineSeries },
+    { id: 'sarea', name: 'Stacked Area', flags: ChartFlags.XYCHART | ChartFlags.STACKED | ChartFlags.LINECHART, createSeries: this.createLineSeries },
 
     { id: 'pie', name: 'Pie', flags: ChartFlags.NONE },
     { id: 'donut', name: 'Donut', flags: ChartFlags.NONE },
@@ -132,6 +134,11 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   {
     // prepare the data form combo box
     this.optionSearchChange (this.dataFormFilterCtrl);
+
+    // copy function list for use with the information panel
+    this.values.infoFunc1 = JSON.parse (JSON.stringify (this.functions));
+    this.values.infoFunc2 = JSON.parse (JSON.stringify (this.functions));
+    this.values.infoFunc3 = JSON.parse (JSON.stringify (this.functions));
   }
 
   isEmpty(obj): boolean
@@ -341,7 +348,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         });
         series.colors = colorSet;
       }
-      else if (this.values.currentChartType.name.includes ('Simple'))
+      else if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
       {
         let categoryAxis, valueAxis;
 
@@ -398,7 +405,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         chart = am4core.create ("msf-dashboard-chart-display-" + this.columnPos + "-" + this.rowPos, am4charts.XYChart);
         chart.data = chartInfo.data;
 
-        parseDate = this.values.xaxis.id.includes ('date');
+        parseDate = false;//this.values.xaxis.id.includes ('date');
 
         // Set chart axes depeding on the rotation
         if (this.values.currentChartType.flags & ChartFlags.ROTATED)
@@ -465,9 +472,10 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         valueAxis.renderer.grid.template.stroke = darkBlue;
         valueAxis.renderer.grid.template.strokeWidth = 1;
 
-        // Avoid negative values on the stacked area chart
-        if (this.values.currentChartType.id === 'sarea')
+        stacked = (this.values.currentChartType.flags & ChartFlags.STACKED) ? true : false;
+        if ((this.values.currentChartType.flags & ChartFlags.LINECHART) && stacked)
         {
+          // Avoid negative values on the stacked area chart
           for (let object of chartInfo.filter)
           {
             for (let data of chartInfo.data)
@@ -482,25 +490,46 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         }
 
         // Sort chart series from least to greatest by calculating the
-        // average value of each key item to compensate for the lack of
-        // proper sorting by values
-        for (let object of chartInfo.filter)
+        // average (normal) or total (stacked) value of each key item to
+        // compensate for the lack of proper sorting by values
+        if (stacked && !(this.values.currentChartType.flags & ChartFlags.LINECHART))
         {
-          let average = 0;
-
-          for (let data of chartInfo.data)
+          for (let item of chart.data)
           {
-            let value = data[object.valueField];
+            let total = 0;
 
-            if (value != null)
-              average += value;
+            for (let object of chartInfo.filter)
+            {
+              let value = item[object.valueField];
+
+              if (value != null)
+                total += value;
+            }
+
+            item["sum"] = total;
           }
 
-          object["avg"] = average / chartInfo.data.length;
+          chart.data = chart.data.sort (function (e1, e2) { return e1.sum - e2.sum });
         }
+        else
+        {
+          for (let object of chartInfo.filter)
+          {
+            let average = 0;
 
-        chartInfo.filter = chartInfo.filter.sort (function (e1, e2) { return e1.avg - e2.avg });
-        stacked = (this.values.currentChartType.flags & ChartFlags.STACKED) ? true : false;
+            for (let data of chartInfo.data)
+            {
+              let value = data[object.valueField];
+
+              if (value != null)
+                average += value;
+            }
+
+            object["avg"] = average / chartInfo.data.length;
+          }
+
+          chartInfo.filter = chartInfo.filter.sort (function (e1, e2) { return e1.avg - e2.avg });
+        }
 
         // Create the series and set colors
         chart.colors.list = [];
@@ -854,7 +883,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     if (this.haveSortingCheckboxes ())
       this.globals.isLoading = true;
 
-    const dialogRef = this.dialog.open (MsfDashboardControlVariablesComponent, {
+    this.dialog.open (MsfDashboardControlVariablesComponent, {
       height: '90%',
       width: '400px',
       panelClass: 'msf-dashboard-control-variables-dialog',
@@ -920,6 +949,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
     if (this.values.currentChartType.flags & ChartFlags.INFO)
     {
+      let i;
+
       // disable and reset any variables when selecting the information panel
       this.values.variable = null;
       this.chartForm.get ('variableCtrl').reset ();
@@ -931,14 +962,26 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       this.chartForm.get ('valueCtrl').reset ();
 
       this.values.infoVar1 = null;
+
+      for (i = 0; i < this.values.infoFunc1.length; i++)
+        this.values.infoFunc1[i].checked = false;
+
       this.chartForm.get ('infoVar1Ctrl').reset ();
       this.chartForm.get ('infoVar1Ctrl').disable ();
 
       this.values.infoVar2 = null;
-      this.chartForm.get ('infoVar1Ctrl').reset ();
+
+      for (i = 0; i < this.values.infoFunc2.length; i++)
+        this.values.infoFunc2[i].checked = false;
+
+      this.chartForm.get ('infoVar2Ctrl').reset ();
       this.chartForm.get ('infoVar2Ctrl').disable ();
 
       this.values.infoVar3 = null;
+
+      for (i = 0; i < this.values.infoFunc3.length; i++)
+        this.values.infoFunc3[i].checked = false;
+
       this.chartForm.get ('infoVar3Ctrl').reset ();
       this.chartForm.get ('infoVar3Ctrl').disable ();
     }
@@ -1150,6 +1193,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   checkNumVariables(): void
   {
+    let i;
+
     if (this.values.infoNumVariables >= 1)
       this.chartForm.get ('infoVar1Ctrl').enable ();
 
@@ -1158,6 +1203,10 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     else
     {
       this.values.infoVar2 = null;
+
+      for (i = 0; i < this.values.infoFunc3.length; i++)
+        this.values.infoFunc2[i].checked = false;
+
       this.chartForm.get ('infoVar2Ctrl').reset ();
       this.chartForm.get ('infoVar2Ctrl').disable ();
     }
@@ -1167,8 +1216,46 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     else
     {
       this.values.infoVar3 = null;
+
+      for (i = 0; i < this.values.infoFunc3.length; i++)
+        this.values.infoFunc3[i].checked = false;
+
       this.chartForm.get ('infoVar3Ctrl').reset ();
       this.chartForm.get ('infoVar3Ctrl').disable ();
     }
+  }
+
+  goToFunctions(infoVarNum): void
+  {
+    let infoVar, infoFunc;
+
+    switch (infoVarNum)
+    {
+      case 3:
+        infoVar = this.values.infoVar3;
+        infoFunc = this.values.infoFunc3;
+        break;
+
+      case 2:
+        infoVar = this.values.infoVar2;
+        infoFunc = this.values.infoFunc2;
+        break;
+
+      default:
+        infoVar = this.values.infoVar1;
+        infoFunc = this.values.infoFunc1;
+        break;
+    }
+
+    this.dialog.open (MsfDashboardInfoFunctionsComponent, {
+      height: '50%',
+      width: '400px',
+      panelClass: 'msf-dashboard-control-variables-dialog',
+      data: {
+        title: this.values.chartName,
+        subTitle: "Variable #" + infoVarNum + ": " + infoVar.name,
+        functions: infoFunc
+      }
+    });
   }
 }

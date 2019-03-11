@@ -1,0 +1,29 @@
+<div class="msf-dashboard-info-function-title">
+  <div class="msf-dashboard-control-variables-close-button">
+    <mat-icon class="msf-dashboard-close-icon" aria-label="close" (click)="closeDialog()">close</mat-icon>
+  </div>
+  {{data.title}}
+</div>
+<div class="msf-dashboard-info-function-subtitle">
+  {{data.subTitle}}
+</div>
+<div class="msf-dashboard-chartmenu-sub-container-row" style="color: #fff">
+  <div class="msf-dashboard-addmenu-icon-item">
+    <mat-icon class="msf-dashboard-chart-icon" aria-label="Functions">functions</mat-icon>
+    <span class="msf-dashboard-addmenu-item-text">Select Functions</span>
+  </div>
+  <div class="msf-dashboard-chart-options-container">
+    <div class="msf-dashboard-chart-selector">
+      <div class="msf-dashboard-chart-op-container">
+        <div class="msf-dashboard-checkbox-component" *ngFor="let fun of data.functions" style="width: 100%">
+          <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="fun.checked">
+            {{fun.name}}
+          </mat-checkbox>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="msf-dashboard-control-variables-button">
+  <button mat-flat-button class="flat-button" (click)="closeDialog()">OK</button>
+</div>

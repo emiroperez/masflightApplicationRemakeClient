@@ -1812,13 +1812,6 @@ mat-tab-group
     display: flex
     justify-content: space-around
     flex-direction: column
-    .msf-dashboard-chartmenu-sub-container-row
-        @include msf-dashboard-chartmenu-sub-container(column)
-        align-items: center
-        .msf-width-90
-            @extend .msf-dashboard-form-field
-        .msf-full-width
-            @extend .msf-dashboard-form-field
     .msf-dashboard-chartmenu-variable-buttons
         @include msf-dashboard-chartmenu-sub-container(row, 5px, 10px)
     .msf-dashboard-chartmenu-sub-container-column
@@ -1859,14 +1852,7 @@ mat-tab-group
 .msf-dashboard-control-variables-dialog .mat-dialog-container
     padding: 12px
 
-.msf-dashboard-control-variables-title
-    text-align: center
-    font-size: 20px
-    font-weight: bold
-    padding-top: 5px
-    padding-bottom: 10px
-    color: #fff
-    position: relative
+.msf-dashboard-dialog
     .msf-dashboard-control-variables-close-button
         display: flex
         flex-direction: column
@@ -1878,6 +1864,34 @@ mat-tab-group
         .msf-dashboard-close-icon:hover
             cursor: pointer
             font-size: 16px
+
+@mixin msf-dashboard-dialog-title($font-size, $padding-bottom)
+    text-align: center
+    font-size: $font-size
+    font-weight: bold
+    padding-top: 5px
+    padding-bottom: $padding-bottom
+    color: #fff
+    position: relative
+
+.msf-dashboard-control-variables-title
+    @include msf-dashboard-dialog-title(20px, 10px)
+    @extend .msf-dashboard-dialog
+
+.msf-dashboard-info-function-title
+    @include msf-dashboard-dialog-title(20px, 0)
+    @extend .msf-dashboard-dialog
+
+.msf-dashboard-info-function-subtitle
+    @include msf-dashboard-dialog-title(12px, 10px)
+
+.msf-dashboard-chartmenu-sub-container-row
+    @include msf-dashboard-chartmenu-sub-container(column)
+    align-items: center
+    .msf-width-90
+        @extend .msf-dashboard-form-field
+    .msf-full-width
+        @extend .msf-dashboard-form-field
 
 .msf-dashboard-control-variables
     overflow-y: auto
@@ -1906,7 +1920,7 @@ mat-tab-group
         padding-left: 10px
         width: 100%
         .msf-dashboard-checkbox-component
-            margin: 2px 0
+            margin: 10px 0
             display: flex
         .msf-full-width
             @extend .msf-dashboard-form-field
