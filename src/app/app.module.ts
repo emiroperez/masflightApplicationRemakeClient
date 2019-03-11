@@ -156,8 +156,6 @@ import { MsfTopNumberComponent } from './msf-top-number/msf-top-number.component
 import { MsfSeatClassComponent } from './msf-seat-class/msf-seat-class.component';
 import { MsfControlVariablesComponent } from './msf-control-variables/msf-control-variables.component';
 import { MsfDashboardInfoFunctionsComponent } from './msf-dashboard-info-functions/msf-dashboard-info-functions.component';
-import { WebServicesComponent } from './web-services/web-services.component';
-import { FilterPipe } from './web-services/pipe-filter';
 
 @NgModule({
   declarations: [
@@ -295,8 +293,6 @@ import { FilterPipe } from './web-services/pipe-filter';
     MsfSeatClassComponent,
     MsfControlVariablesComponent,
     MsfDashboardInfoFunctionsComponent,
-    WebServicesComponent,
-    FilterPipe
   ],
   imports: [
     BrowserModule,
