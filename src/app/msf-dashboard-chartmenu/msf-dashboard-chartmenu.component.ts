@@ -405,7 +405,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         chart = am4core.create ("msf-dashboard-chart-display-" + this.columnPos + "-" + this.rowPos, am4charts.XYChart);
         chart.data = chartInfo.data;
 
-        parseDate = false;//this.values.xaxis.id.includes ('date');
+        parseDate = this.values.xaxis.id.includes ('date');
 
         // Set chart axes depeding on the rotation
         if (this.values.currentChartType.flags & ChartFlags.ROTATED)
@@ -509,7 +509,11 @@ export class MsfDashboardChartmenuComponent implements OnInit {
             item["sum"] = total;
           }
 
-          chart.data = chart.data.sort (function (e1, e2) { return e1.sum - e2.sum });
+          chart.events.on ("beforedatavalidated", function(event) {
+            chart.data.sort (function(e1, e2) {
+              return e1.sum - e2.sum;
+            });
+          });
         }
         else
         {
@@ -528,7 +532,22 @@ export class MsfDashboardChartmenuComponent implements OnInit {
             object["avg"] = average / chartInfo.data.length;
           }
 
-          chartInfo.filter = chartInfo.filter.sort (function (e1, e2) { return e1.avg - e2.avg });
+          // Also sort the data by date the to get the correct order on the line chart
+          // if the category axis is a date type
+          if (parseDate && (this.values.currentChartType.flags & ChartFlags.LINECHART))
+          {
+            let axisField = this.values.xaxis.id;
+  
+            chart.events.on ("beforedatavalidated", function(event) {
+              chart.data.sort (function(e1, e2) {
+                return +(new Date(e1[axisField])) - +(new Date(e2[axisField]));
+              });
+            });
+          }
+
+          chartInfo.filter.sort (function(e1, e2) {
+            return e1.avg - e2.avg;
+          });
         }
 
         // Create the series and set colors
