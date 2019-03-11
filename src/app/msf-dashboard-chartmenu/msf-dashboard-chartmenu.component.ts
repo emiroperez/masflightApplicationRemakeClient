@@ -181,6 +181,13 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     series.stacked = stacked;
     series.columns.template.strokeWidth = 0;
     series.columns.template.width = am4core.percent (60);
+
+    // Add an event that hide the column chart when clicked
+    /*series.columns.template.events.on ("hit", function(event) {
+//      console.log ("clicked on ", event.target);
+//      series.hidden = true;
+      series.hide ();
+    });*/
   }
 
   // Function to create vertical column chart series
@@ -294,12 +301,14 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
         // Configure Radar Chart
         categoryAxis = chart.xAxes.push (new am4charts.CategoryAxis ());
+        categoryAxis.renderer.labels.template.fontSize = 10;
         categoryAxis.dataFields.category = chartInfo.titleField;
         categoryAxis.renderer.grid.template.strokeOpacity = 1;
         categoryAxis.renderer.grid.template.stroke = darkBlue;
         categoryAxis.renderer.grid.template.strokeWidth = 1;
 
         valueAxis = chart.yAxes.push (new am4charts.ValueAxis ());
+        valueAxis.renderer.labels.template.fontSize = 10;
         valueAxis.renderer.axisFills.template.fillOpacity = 1;
         valueAxis.renderer.grid.template.strokeOpacity = 1;
         valueAxis.renderer.grid.template.stroke = darkBlue;
@@ -323,6 +332,9 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
         chart = am4core.create ("msf-dashboard-chart-display-" + this.columnPos + "-" + this.rowPos, am4charts.PieChart);
         chart.data = chartInfo.dataProvider;
+
+        // Set label font size
+        chart.fontSize = 10;
 
         // Set inner radius for donut chart
         if (this.values.currentChartType.id === 'donut')
@@ -361,6 +373,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
           categoryAxis = chart.yAxes.push (new am4charts.CategoryAxis ());
           valueAxis = chart.xAxes.push (new am4charts.ValueAxis ());
 
+          categoryAxis.renderer.labels.template.maxWidth = 130;
           categoryAxis.renderer.minGridDistance = 15;
 
           if (chart.data.length > 1)
@@ -374,7 +387,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
           categoryAxis = chart.xAxes.push (new am4charts.CategoryAxis ())
           valueAxis = chart.yAxes.push (new am4charts.ValueAxis ());
 
-          categoryAxis.renderer.labels.template.rotation = 315;
+          categoryAxis.renderer.labels.template.maxWidth = 100;
+          categoryAxis.renderer.labels.template.rotation = 330;
           categoryAxis.renderer.minGridDistance = 30;
 
           if (chart.data.length > 1)
@@ -384,6 +398,10 @@ export class MsfDashboardChartmenuComponent implements OnInit {
           }
         }
 
+        categoryAxis.renderer.labels.template.fontSize = 10;
+        categoryAxis.renderer.labels.template.wrap = true;
+        categoryAxis.renderer.labels.template.horizontalCenter  = "right";
+        categoryAxis.renderer.labels.template.textAlign  = "end";
         categoryAxis.dataFields.category = chartInfo.titleField;
         categoryAxis.renderer.grid.template.location = 0;
         categoryAxis.renderer.grid.template.strokeOpacity = 1;
@@ -393,6 +411,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         categoryAxis.renderer.grid.template.strokeWidth = 1;
         categoryAxis.renderer.line.strokeWidth = 1;
 
+        valueAxis.renderer.labels.template.fontSize = 10;
         valueAxis.renderer.grid.template.strokeOpacity = 1;
         valueAxis.renderer.grid.template.stroke = darkBlue;
         valueAxis.renderer.grid.template.strokeWidth = 1;
@@ -421,6 +440,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
           {
             categoryAxis = chart.yAxes.push (new am4charts.CategoryAxis ());
             categoryAxis.renderer.minGridDistance = 15;
+            categoryAxis.renderer.labels.template.maxWidth = 130;
           }
 
           valueAxis = chart.xAxes.push (new am4charts.ValueAxis ());
@@ -446,7 +466,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
             categoryAxis.renderer.minGridDistance = 30;
 
             // Rotate labels if the chart is displayed vertically
-            categoryAxis.renderer.labels.template.rotation = 315;
+            categoryAxis.renderer.labels.template.rotation = 330;
+            categoryAxis.renderer.labels.template.maxWidth = 100;
           }
 
           valueAxis = chart.yAxes.push (new am4charts.ValueAxis ());
@@ -459,6 +480,10 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         }
 
         // Set category axis properties
+        categoryAxis.renderer.labels.template.fontSize = 10;
+        categoryAxis.renderer.labels.template.wrap = true;
+        categoryAxis.renderer.labels.template.horizontalCenter  = "right";
+        categoryAxis.renderer.labels.template.textAlign  = "end";
         categoryAxis.dataFields.category = this.values.xaxis.id;
         categoryAxis.renderer.grid.template.location = 0;
         categoryAxis.renderer.grid.template.strokeOpacity = 1;
@@ -469,6 +494,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         categoryAxis.renderer.line.strokeWidth = 1;
 
         // Set value axis properties
+        valueAxis.renderer.labels.template.fontSize = 10;
         valueAxis.renderer.grid.template.strokeOpacity = 1;
         valueAxis.renderer.grid.template.stroke = darkBlue;
         valueAxis.renderer.grid.template.strokeWidth = 1;
@@ -570,7 +596,18 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
         // Display Legend
         chart.legend = new am4charts.Legend ();
-        chart.legend.labels.template.fill = white;
+        chart.legend.markers.template.width = 15;
+        chart.legend.markers.template.height = 15;
+        chart.legend.labels.template.fontSize = 10;
+
+        /*chart.legend.itemContainers.template.events.on (
+          "hit",
+          ev => {
+            var item = ev.target.dataItem.component.tooltipDataItem.dataContext;
+            //alert("line clicked on: " + item.country + ": " + item.marketing);
+          },
+          this
+        );*/
       }
 
       // Add export button
@@ -904,7 +941,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       this.globals.isLoading = true;
 
     this.dialog.open (MsfDashboardControlVariablesComponent, {
-      height: '90%',
+      height: '92%',
       width: '400px',
       panelClass: 'msf-dashboard-control-variables-dialog',
       data: {
@@ -1321,7 +1358,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     }
 
     const dialogRef = this.dialog.open (MsfDashboardInfoFunctionsComponent, {
-      height: '50%',
+      height: '58%',
       width: '400px',
       panelClass: 'msf-dashboard-control-variables-dialog',
       data: {

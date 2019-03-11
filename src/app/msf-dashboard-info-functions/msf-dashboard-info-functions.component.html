@@ -15,10 +15,17 @@
   <div class="msf-dashboard-chart-options-container">
     <div class="msf-dashboard-chart-selector">
       <div class="msf-dashboard-chart-op-container">
-        <div class="msf-dashboard-checkbox-component" *ngFor="let fun of data.functions" style="width: 100%">
-          <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="fun.checked">
-            {{fun.name}}
-          </mat-checkbox>
+        <div class="msf-dashboard-checkbox-container" *ngFor="let fun of data.functions" style="width: 100%">
+          <div class="msf-dashboard-checkbox-component">
+            <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="fun.checked">
+              {{fun.name}}
+            </mat-checkbox>
+          </div>
+          <div class="msf-dashboard-function-title">
+            <mat-form-field>
+              <input matInput autocomplete="off" type="text" placeholder="Title" [(ngModel)]="fun.title"/>
+            </mat-form-field> 
+          </div>
         </div>
       </div>
     </div>
