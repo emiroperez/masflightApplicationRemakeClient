@@ -1,9 +1,10 @@
 import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
-import { DOCUMENT } from '@angular/common'; 
+import { DOCUMENT } from '@angular/common';
 import { Globals } from '../globals/Globals';
 import { WelcomeService } from '../services/welcome.service';
 import { Router } from '@angular/router';
 import { trigger, transition, style, animate, state } from '@angular/animations';
+import { MenuService } from '../services/menu.service';
 
 @Component({
   selector: 'app-welcome',
@@ -16,8 +17,8 @@ export class WelcomeComponent implements OnInit {
   options2:any[]=[];
 
   activeElement ='Landing';
+  userName: string;
 
-  
 
   customer = {
     name: 'Emiro Perez',
@@ -69,19 +70,32 @@ export class WelcomeComponent implements OnInit {
 
 
 
-  constructor(public globals: Globals, private service: WelcomeService,private router: Router) {     
+  constructor(public globals: Globals, private menuService: MenuService, private service: WelcomeService,private router: Router) {
   }
 
   setState(option){
-    
-      this.activeElement = option;           
+
+      this.activeElement = option;
   };
 
   ngOnInit() {
     this.globals.isLoading = true;
+    this.getUserLoggedIn();
     this.getApplications();
   }
+  getUserLoggedIn(){
+    this.menuService.getUserLoggedin(this, this.handleLogin, this.errorLogin);
+  }
 
+  handleLogin(_this,data){
+    _this.userName = data.name;
+    _this.globals.isLoading = false;
+  }
+  errorLogin(_this,result){
+    console.log(result);
+     _this.globals.isLoading = false;
+
+  }
   ngAfterViewInit() {
   }
 
@@ -96,16 +110,16 @@ export class WelcomeComponent implements OnInit {
                         name:"Landing",
                         url:"/welcome"})
     _this.activeElement = _this.options[0];
-    
+
     setTimeout(() => {
-      _this.globals.isLoading = false; 
+      _this.globals.isLoading = false;
   }, 3000);
 
   }
 
   handlerError(_this,result){
     console.log(result);
-    _this.globals.isLoading = false;  
+    _this.globals.isLoading = false;
   }
 
   goTo(option:any){
