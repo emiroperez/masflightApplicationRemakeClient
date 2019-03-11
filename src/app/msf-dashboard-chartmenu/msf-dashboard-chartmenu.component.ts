@@ -222,6 +222,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     series.tooltip.background.cornerRadius = 20;
     series.tooltip.background.fillOpacity = 0.5;
     series.tooltip.label.padding (12, 12, 12, 12);
+    series.tensionX = 0.8;
 
     if (parseDate)
     {
@@ -1030,7 +1031,58 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   {
     if (this.values.currentChartType.flags & ChartFlags.INFO)
     {
-      // TODO: Check number of variable selected and check if the variable and functions are not null
+      // Make sure that al least one function is checked when using the information "chart" type
+      let i, infoFunc1Ready, infoFunc2Ready, infoFunc3Ready;
+
+      infoFunc1Ready = false;
+      infoFunc2Ready = false;
+      infoFunc3Ready = false;
+
+      if (this.values.infoNumVariables >= 1)
+      {
+        for (i = 0; i < this.values.infoFunc1.length; i++)
+        {
+          if (this.values.infoFunc1[i].checked)
+          {
+            infoFunc1Ready = true;
+            break;
+          }
+        }
+      }
+
+      if (this.values.infoNumVariables >= 2)
+      {
+        for (i = 0; i < this.values.infoFunc2.length; i++)
+        {
+          if (this.values.infoFunc2[i].checked)
+          {
+            infoFunc2Ready = true;
+            break;
+          }
+        }
+      }
+      else
+        infoFunc2Ready = true; // This is to simplify the final condition
+
+      if (this.values.infoNumVariables == 3)
+      {
+        for (i = 0; i < this.values.infoFunc3.length; i++)
+        {
+          if (this.values.infoFunc3[i].checked)
+          {
+            infoFunc3Ready = true;
+            break;
+          }
+        }
+      }
+      else
+        infoFunc3Ready = true;
+
+      if (infoFunc1Ready && infoFunc2Ready && infoFunc3Ready)
+      {
+        this.generateBtnEnabled = true;
+        return;
+      }
     }
     else
     {
@@ -1223,7 +1275,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     {
       this.values.infoVar2 = null;
 
-      for (i = 0; i < this.values.infoFunc3.length; i++)
+      for (i = 0; i < this.values.infoFunc2.length; i++)
         this.values.infoFunc2[i].checked = false;
 
       this.chartForm.get ('infoVar2Ctrl').reset ();
@@ -1242,6 +1294,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       this.chartForm.get ('infoVar3Ctrl').reset ();
       this.chartForm.get ('infoVar3Ctrl').disable ();
     }
+
+    this.checkChartFilters ();
   }
 
   goToFunctions(infoVarNum): void
@@ -1266,7 +1320,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         break;
     }
 
-    this.dialog.open (MsfDashboardInfoFunctionsComponent, {
+    const dialogRef = this.dialog.open (MsfDashboardInfoFunctionsComponent, {
       height: '50%',
       width: '400px',
       panelClass: 'msf-dashboard-control-variables-dialog',
@@ -1276,5 +1330,9 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         functions: infoFunc
       }
     });
+
+    dialogRef.afterClosed ().subscribe (
+      () => this.checkChartFilters ()
+    );
   }
 }
