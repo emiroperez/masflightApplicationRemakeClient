@@ -99,6 +99,10 @@
     padding-right: 15px;
 }
 
+.mat-checkbox-label {
+    color: white;
+}
+
 .mat-checkbox-frame {
     border-color: white !important;
 }
