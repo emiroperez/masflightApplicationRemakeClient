@@ -107,6 +107,10 @@ export class ApplicationComponent implements OnInit {
     _this.menu = data;
     _this.globals.isLoading = false;
     _this.getAdvanceFeatures();
+    if(_this.globals.currentApplication.id==3){
+      _this.temporalSelectOption(_this);
+    }
+
   }
 
   handlerError(_this,result){
@@ -116,6 +120,20 @@ export class ApplicationComponent implements OnInit {
   }
 
 
+  temporalSelectOption(_this){
+    _this.menu.categories.forEach(category => {
+      category.options.forEach(option => {
+        if(option.id==100){
+          _this.globals.clearVariables();
+          this.globals.currentMenuCategory = category;
+          _this.globals.currentOption = option;
+          _this.globals.initDataSource();
+          _this.globals.dataAvailabilityInit();
+          _this.globals.status = true;
+        }
+      });
+    });
+  }
 
 
 

@@ -3511,4 +3511,8 @@ img.msf-calendar-image {
   background-color: #01abec;
 }
 
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-disabled {
+  color: #8e8e8e !important;
+}
+
 /*# sourceMappingURL=styles.css.map */
