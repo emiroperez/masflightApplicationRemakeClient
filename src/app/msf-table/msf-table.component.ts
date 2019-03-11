@@ -4,6 +4,7 @@ import { Globals } from '../globals/Globals';
 import { ApplicationService } from '../services/application.service';
 import { MsfGroupingComponent } from '../msf-grouping/msf-grouping.component';
 import { Utils } from '../commons/utils';
+import { MessageComponent } from '../message/message.component';
 
 
 
@@ -78,9 +79,9 @@ export class MsfTableComponent implements OnInit {
                 if(element2.type=="groupingOperationsSummary"){
                   this.groupingArgument = element2;
                 }
-                if(element2.type=="groupingHubSummaries"){
-                  this.groupingArgument = element2;
-                }
+                // if(element2.type=="groupingHubSummaries"){
+                //   this.groupingArgument = element2;
+                // }
                 if(element2.type=="groupingDailyStatics"){
                   this.groupingArgument = element2;
                 }
@@ -365,7 +366,16 @@ export class MsfTableComponent implements OnInit {
 
   handlerError(_this,result){
     _this.globals.isLoading = false; 
+    _this.globals.dataSource = false;
+    _this.globals.template = false;
     console.log(result);
+
+    _this.globals.isLoading = false;
+    const title = "F";
+    const message= "Your password was  successfully reset";
+    const dialogRef = _this.dialog.open(MessageComponent, {
+      data: { title: title, message: message}
+    });
   }
 
   getCurrentClass(tableItem:any){

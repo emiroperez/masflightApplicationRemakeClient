@@ -176,6 +176,8 @@ export class Globals {
 
   getSelectedIndex(){
     if(this.currentOption.tabType==="map"){
+      return 1;
+    }else{
       return this.selectedIndex;
     }
 
