@@ -2014,6 +2014,27 @@ mat-tab-group
         width: 35%
         background-color:$msf-secondary-color
 
+@mixin msf-dashboard-info-table($bgcolor, $font-size)
+    background-color: $bgcolor
+    vertical-align: middle
+    padding: 15px
+    min-width: 150px
+    font-size: $font-size
+
+.msf-dashboard-info-display
+    margin: 8px
+    .msf-dashboard-info-container
+        display: flex
+        flex-flow: row wrap
+        .msf-dashboard-info-table
+            margin-top: 10px
+            margin-right: 10px
+            flex: 1
+            .msf-dashboard-info-table-row-title
+                @include msf-dashboard-info-table(#3b3b3b, 20px)
+            .msf-dashboard-info-table-row-value
+                @include msf-dashboard-info-table(#333333, 14px)
+
 mat-dialog-container
     background-color: $msf-primary-color!important
 

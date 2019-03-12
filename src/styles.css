@@ -2325,6 +2325,33 @@ mat-tab-group {
   background-color: #01abec;
 }
 
+.msf-dashboard-info-display {
+  margin: 8px;
+}
+.msf-dashboard-info-display .msf-dashboard-info-container {
+  display: flex;
+  flex-flow: row wrap;
+}
+.msf-dashboard-info-display .msf-dashboard-info-container .msf-dashboard-info-table {
+  margin-top: 10px;
+  margin-right: 10px;
+  flex: 1;
+}
+.msf-dashboard-info-display .msf-dashboard-info-container .msf-dashboard-info-table .msf-dashboard-info-table-row-title {
+  background-color: #3b3b3b;
+  vertical-align: middle;
+  padding: 15px;
+  min-width: 150px;
+  font-size: 20px;
+}
+.msf-dashboard-info-display .msf-dashboard-info-container .msf-dashboard-info-table .msf-dashboard-info-table-row-value {
+  background-color: #333333;
+  vertical-align: middle;
+  padding: 15px;
+  min-width: 150px;
+  font-size: 14px;
+}
+
 mat-dialog-container {
   background-color: #333333 !important;
   /*Scroll style*/

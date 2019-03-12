@@ -69,8 +69,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     { id: 'radar', name: 'Radar', flags: ChartFlags.NONE },
 
     { id: 'spbars', name: 'Simple Bars', flags: ChartFlags.NONE, createSeries: this.createSimpleVertColumnSeries },
-    { id: 'sphbars', name: 'Simple Horizontal Bars', flags: ChartFlags.ROTATED, createSeries: this.createSimpleHorizColumnSeries }/*,
-    { id: 'info', name: 'Information', flags: ChartFlags.INFO }*/
+    { id: 'sphbars', name: 'Simple Horizontal Bars', flags: ChartFlags.ROTATED, createSeries: this.createSimpleHorizColumnSeries },
+    { id: 'info', name: 'Information', flags: ChartFlags.INFO }
   ];
 
   functions:any[] = [
@@ -378,7 +378,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
           categoryAxis = chart.yAxes.push (new am4charts.CategoryAxis ());
           valueAxis = chart.xAxes.push (new am4charts.ValueAxis ());
 
-          categoryAxis.renderer.labels.template.maxWidth = 130;
+          categoryAxis.renderer.labels.template.maxWidth = 160;
           categoryAxis.renderer.minGridDistance = 15;
 
           if (chart.data.length > 1)
@@ -445,7 +445,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
           {
             categoryAxis = chart.yAxes.push (new am4charts.CategoryAxis ());
             categoryAxis.renderer.minGridDistance = 15;
-            categoryAxis.renderer.labels.template.maxWidth = 130;
+            categoryAxis.renderer.labels.template.maxWidth = 160;
           }
 
           valueAxis = chart.xAxes.push (new am4charts.ValueAxis ());
@@ -764,28 +764,28 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
     for (let i = 0; i < this.values.infoNumVariables; i++)
     {
+      let infoVar, infoFunc;
+
+      switch (i)
+      {
+        case 2:
+          infoVar = this.values.infoVar3;
+          infoFunc = this.values.infoFunc3;
+          break;
+
+        case 1:
+          infoVar = this.values.infoVar2;
+          infoFunc = this.values.infoFunc2;
+          break;
+
+        default:
+          infoVar = this.values.infoVar1;
+          infoFunc = this.values.infoFunc1;
+          break;
+      }
+
       for (let j = 0; j < 5; j++)
       {
-        let infoVar, infoFunc;
-
-        switch (i)
-        {
-          case 2:
-            infoVar = this.values.infoVar3;
-            infoFunc = this.values.infoFunc3;
-            break;
-  
-          case 1:
-            infoVar = this.values.infoVar2;
-            infoFunc = this.values.infoFunc2;
-            break;
-  
-          default:
-            infoVar = this.values.infoVar1;
-            infoFunc = this.values.infoFunc1;
-            break;
-        }
-
         if (!infoFunc[j].checked)
           continue;
 
@@ -849,20 +849,86 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   {
     this.values.lastestResponse = null;
     this.values.chartGenerated = false;
+    this.values.infoGenerated = false;
     this.globals.isLoading = false;
 
-    this.dialog.open (MessageComponent, {
-      data: { title: "Error", message: "No data available for chart generation." }
-    });
+    if (this.values.currentChartType.flags & ChartFlags.INFO)
+    {
+      this.dialog.open (MessageComponent, {
+        data: { title: "Error", message: "No data available for information." }
+      });
+    }
+    else
+    {
+      this.dialog.open (MessageComponent, {
+        data: { title: "Error", message: "No data available for chart generation." }
+      });
+    }
+  }
+
+  haveDataInfo(data): boolean
+  {
+    let numEmpty = 0;
+
+    for (let i = 0; i < data.length; i++)
+    {
+      if (data[i].value == null)
+        numEmpty++;
+    }
+
+    if (numEmpty == data.length)
+      return false;
+    else
+      return true;
   }
 
   handlerTextSuccess(_this, data): void
   {
-    // TODO: Check if no information could be found
-    // 0: {id: 7, text: null, value: 42964, column: "Hits"}
-    // 1: {id: 7, text: null, value: 131692.75, column: "PlayDuration"}
-    // length: 2
-    _this.values.lastestResponse = data;
+    if (!_this.haveDataInfo (data))
+    {
+      _this.noDataFound ();
+      return;
+    }
+
+    // Set measure and title for each value
+    _this.values.lastestResponse = [];
+
+    for (let i = 0, dataindex = 0; i < _this.values.infoNumVariables; i++)
+    {
+      let infoFunc, item;
+
+      switch (i)
+      {
+        case 2:
+          infoFunc = _this.values.infoFunc3;
+          break;
+
+        case 1:
+          infoFunc = _this.values.infoFunc2;
+          break;
+
+        default:
+          infoFunc = _this.values.infoFunc1;
+          break;
+      }
+
+      for (let j = 0; j < 5; j++)
+      {
+        if (!infoFunc[j].checked)
+          continue;
+
+        if (data[dataindex].value == null)
+          data[dataindex].value = 0;
+
+        item = {
+          title: infoFunc[j].title,
+          value: data[dataindex].value
+        };
+
+        _this.values.lastestResponse.push (item);
+        dataindex++;
+      }
+    }
 
     // destroy current chart if it's already generated to avoid a blank chart later
     _this.destroyChart ();

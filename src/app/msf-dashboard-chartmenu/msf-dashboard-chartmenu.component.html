@@ -228,15 +228,14 @@
         <mat-icon aria-label="Edit Configuration">menu</mat-icon>
       </button>
     </div>
-    <div style="width: calc(100% - 35px)" [style.height.px]="calcChartHeight()">
-      <div *ngIf="values.infoVar1">
-        <div>{{values.infoVar1.info.columnName}}</div>
-      </div>
-      <div *ngIf="values.infoVar2">
-        <div>{{values.infoVar2.info.columnName}}</div>
-      </div>
-      <div *ngIf="values.infoVar3">
-        <div>{{values.infoVar3.info.columnName}}</div>
+    <div style="width: 100%" [style.height.px]="calcChartHeight()">
+      <div class="msf-dashboard-info-display">
+        <div class="msf-dashboard-info-container" *ngIf="values.infoVar1">
+          <div class="msf-dashboard-info-table" *ngFor="let result of values.lastestResponse">
+            <div class="msf-dashboard-info-table-row-title">{{result.title}}</div>
+            <div class="msf-dashboard-info-table-row-value">{{result.value}}</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
