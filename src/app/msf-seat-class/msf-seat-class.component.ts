@@ -19,11 +19,14 @@ export class MsfSeatClassComponent implements OnInit {
     "value":"Economy"},
     {"id":3,
     "name":"All",
-    "value":""}
+    "value":"All"},
+    {"id":3,
+    "name":"All Combined",
+    "value":"Combined"}
 ];
   constructor() { }
 
   ngOnInit() {
-    this.argument.value1 = "";
+    this.argument.value1 = "Combined";
   }
 }

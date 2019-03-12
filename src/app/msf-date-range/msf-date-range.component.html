@@ -10,9 +10,22 @@
     </mat-form-field>            
 
     <mat-form-field class="msf-full-width msf-single-date">
-        <input [min]="minDate" [max]="globals.maxDate" class="msf-component-airport-container mat-input-element" matInput [matDatepicker]="picker4" placeholder="{{argument.label2}}" autocomplete="off" class=" msf-full-width msf-menu-arg-select"  [(ngModel)]="argument.value2">
+        <input [min]="minDate" [max]="globals.maxDate" class="msf-component-airport-container mat-input-element" matInput [matDatepicker]="picker4" placeholder="{{argument.label2}}" autocomplete="off" class=" msf-full-width msf-menu-arg-select"  (ngModelChange)="hasDate()" [(ngModel)]="argument.value2">
         <mat-datepicker-toggle matSuffix [for]="picker4">           
         </mat-datepicker-toggle>
         <mat-datepicker #picker4></mat-datepicker>
-    </mat-form-field>         
+    </mat-form-field>       
+      
 </div>
+
+<!-- <div class="msf-component-date-input-container" style="display: flex; align-items: center;">         
+    <ng-select style="width: 85%;"
+        [items]="dates"
+        [multiple]="false"
+        [closeOnSelect]="true"
+        [hideSelected]="false"
+        bindLabel="name"
+        (change)="autoSelect()"
+        [(ngModel)]="argument.value3">
+    </ng-select> 
+</div>    -->

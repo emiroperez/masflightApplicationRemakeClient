@@ -85,6 +85,9 @@ export class MsfTableComponent implements OnInit {
                 if(element2.type=="groupingDailyStatics"){
                   this.groupingArgument = element2;
                 }
+                if(element2.type=="groupingMariaDB"){
+                  this.groupingArgument = element2;
+                }
             });
             }
 
