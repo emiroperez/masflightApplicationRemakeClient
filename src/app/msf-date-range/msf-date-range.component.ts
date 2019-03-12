@@ -1,9 +1,10 @@
 import { Component, OnInit, Input, Injectable, ChangeDetectorRef } from '@angular/core';
 import { Arguments } from '../model/Arguments';
-import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
+import { DateAdapter, MAT_DATE_FORMATS, MatDialog } from '@angular/material';
 import { AppDateAdapter, APP_DATE_FORMATS } from '../commons/date.adapters';
 import { DatePipe } from '@angular/common';
 import { Globals } from '../globals/Globals';
+import { MessageComponent } from '../message/message.component';
 
 @Component({
   selector: 'app-msf-date-range',
@@ -30,7 +31,7 @@ export class MsfDateRangeComponent implements OnInit {
     {id: 4, name: 'Last Year',value:"LASTYEAR"}
   ];
 
-  constructor(public globals: Globals) { }
+  constructor(public globals: Globals,public dialog: MatDialog) { }
 
   ngOnInit() {
     this.minDate = this.globals.minDate;
@@ -40,22 +41,22 @@ export class MsfDateRangeComponent implements OnInit {
       if(!this.argument.value2){
         this.argument.value2 = this.argument.value1;
       }
-      if(this.dates.length==4){
-        this.dates.push({id: 5, name: 'Until Yesterday',value:"UNTILYESTERDAY"});
-        this.dates.push({id: 6, name: 'Until Last Week',value:"UNTILWEEK"});
-        this.dates.push({id: 7, name: 'Until Last Month',value:"UNTILMONTH"});
-        this.dates.push({id: 8, name: 'Until Last Year',value:"UNTILYEAR"});
-      }
+      // if(this.dates.length==4){
+      //   this.dates.push({id: 5, name: 'Until Yesterday',value:"UNTILYESTERDAY"});
+      //   this.dates.push({id: 6, name: 'Until Last Week',value:"UNTILWEEK"});
+      //   this.dates.push({id: 7, name: 'Until Last Month',value:"UNTILMONTH"});
+      //   this.dates.push({id: 8, name: 'Until Last Year',value:"UNTILYEAR"});
+      // }
       this.minDate = this.argument.value1;
   }
 
   hasDate(){
-    if(this.dates.length==4){
-      this.dates.push({id: 5, name: 'Until Yesterday',value:"UNTILYESTERDAY"});
-      this.dates.push({id: 6, name: 'Until Last Week',value:"UNTILWEEK"});
-      this.dates.push({id: 7, name: 'Until Last Month',value:"UNTILMONTH"});
-      this.dates.push({id: 8, name: 'Until Last Year',value:"UNTILYEAR"});
-    }
+    // if(this.dates.length==4){
+    //   this.dates.push({id: 5, name: 'Until Yesterday',value:"UNTILYESTERDAY"});
+    //   this.dates.push({id: 6, name: 'Until Last Week',value:"UNTILWEEK"});
+    //   this.dates.push({id: 7, name: 'Until Last Month',value:"UNTILMONTH"});
+    //   this.dates.push({id: 8, name: 'Until Last Year',value:"UNTILYEAR"});
+    // }
   }
 
   validateDate(){
@@ -73,24 +74,47 @@ export class MsfDateRangeComponent implements OnInit {
   }
 
   autoSelect(){
-    switch (this.argument.value3) {
+    switch (this.argument.value3.value) {
       case 'YESTERDAY':
+      this.calculateDate('Yesterday',24*60*60*1000);
         break;
       case 'LASTWEEK':
+      this.calculateDate('Last Week',(24*60*60*1000)*7);
         break;
       case 'LASTMONTH':
+      this.calculateDate('Last Month',(24*60*60*1000)*30);
         break;
       case 'LASTYEAR':
-        break;
-      case 'UNTILYESTERDAY':
-        break;
-      case 'UNTILWEEK':
-        break;
-      case 'UNTILMONTH':
-        break;
-      case 'UNTILYEAR':
-        break;                        
+        this.calculateDate('LAST Year',(24*60*60*1000)*365);
+        break;                   
     }
+  }
+  calculateDate(type: string,milis: any) {
+    this.dialog.open (MessageComponent, {
+      data: { title: "Message", message: "The date range is going to change to "+ type}
+    });
+    var today = new Date();
+      if(!this.argument.value2&&!this.argument.value2){
+        if(this.globals.maxDate==null){
+          this.argument.value2 = today
+        }else{
+          this.argument.value2 = this.globals.maxDate;
+        }
+        if(this.globals.minDate==null){
+          this.argument.value1 = this.argument.value2.getTime() - milis;
+        }else{
+          this.argument.value1 = this.globals.minDate;
+        }
+      }else{
+        if(this.argument.value2){
+          if(this.globals.minDate==null){
+            this.argument.value1 = this.argument.value2.getTime() - milis;
+          }else{
+            this.argument.value1 = this.globals.minDate;
+          }
+        }
+      }
+
   }
 
 }
