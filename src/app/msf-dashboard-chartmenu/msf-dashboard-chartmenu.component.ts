@@ -350,16 +350,21 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         series.hiddenState.properties.endAngle = -90;
         series.hiddenState.properties.startAngle = -90;
 
-        // Set colors
-        series.ticks.template.strokeOpacity = 1;
-        series.ticks.template.stroke = darkBlue;
-        series.ticks.template.strokeWidth = 1;
+        // Disable label and ticks
+        series.ticks.template.disabled = true;
+        series.labels.template.disabled = true;
 
         colorSet = new am4core.ColorSet ();
         colorSet.list = chartInfo.colors.map (function(color) {
           return am4core.color (color);
         });
         series.colors = colorSet;
+
+        // Display chart legend
+        chart.legend = new am4charts.Legend ();
+        chart.legend.markers.template.width = 15;
+        chart.legend.markers.template.height = 15;
+        chart.legend.labels.template.fontSize = 10;
       }
       else if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
       {
@@ -633,8 +638,16 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   {
     if (!this.isEmpty (this.values.lastestResponse))
     {
-      this.makeChart (this.values.lastestResponse);
-      this.values.chartGenerated = true;
+      if (this.values.currentChartType.flags & ChartFlags.INFO)
+      {
+        // TODO: Generate information here
+        this.values.infoGenerated = true;
+      }
+      else
+      {
+        this.makeChart (this.values.lastestResponse);
+        this.values.chartGenerated = true;
+      }
     }
   }
 
@@ -644,7 +657,12 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     this.initPanelSettings ();
 
     if (!this.isEmpty (this.values.lastestResponse))
-      this.values.displayChart = true;
+    {
+      if (this.values.currentChartType.flags & ChartFlags.INFO)
+        this.values.displayInfo = true;
+      else
+        this.values.displayChart = true;
+    }
   }
 
   private filterVariables(filterCtrl): void
@@ -731,6 +749,59 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     };
   }
 
+  loadTextSummary(handlerSuccess, handlerError): void
+  {
+    let url, urlBase, urlArg, variables;
+
+    this.globals.isLoading = true;
+    urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
+    urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
+    console.log (urlBase);
+    urlArg = encodeURIComponent (urlBase);
+
+    // Prepare list of variables
+    variables = [];
+
+    for (let i = 0; i < this.values.infoNumVariables; i++)
+    {
+      for (let j = 0; j < 5; j++)
+      {
+        let infoVar, infoFunc;
+
+        switch (i)
+        {
+          case 2:
+            infoVar = this.values.infoVar3;
+            infoFunc = this.values.infoFunc3;
+            break;
+  
+          case 1:
+            infoVar = this.values.infoVar2;
+            infoFunc = this.values.infoFunc2;
+            break;
+  
+          default:
+            infoVar = this.values.infoVar1;
+            infoFunc = this.values.infoFunc1;
+            break;
+        }
+
+        if (!infoFunc[j].checked)
+          continue;
+
+        variables.push ({
+          id : this.values.id,
+          function : infoFunc[j].id, // avg
+          column : infoVar.id     // columnLabel
+        });
+      }
+    }
+
+    url = this.service.host + "/getTextSummaryResponse?url=" + urlArg;
+
+    this.http.post (this, url, variables, handlerSuccess, handlerError);
+  }
+
   loadChartData(handlerSuccess, handlerError): void
   {
     let url, urlBase, urlArg, panel;
@@ -757,7 +828,11 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   loadData(): void
   {
     this.globals.startTimestamp = new Date ();
-    this.loadChartData (this.handlerSuccess, this.handleChartError);
+
+    if (this.values.currentChartType.flags & ChartFlags.INFO)
+      this.loadTextSummary (this.handlerTextSuccess, this.handlerTextError);
+    else
+      this.loadChartData (this.handlerChartSuccess, this.handlerChartError);
   }
 
   ngOnDestroy()
@@ -781,7 +856,25 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     });
   }
 
-  handlerSuccess(_this, data): void
+  handlerTextSuccess(_this, data): void
+  {
+    // TODO: Check if no information could be found
+    // 0: {id: 7, text: null, value: 42964, column: "Hits"}
+    // 1: {id: 7, text: null, value: 131692.75, column: "PlayDuration"}
+    // length: 2
+    _this.values.lastestResponse = data;
+
+    // destroy current chart if it's already generated to avoid a blank chart later
+    _this.destroyChart ();
+
+    //console.log (data);
+    _this.values.displayInfo = true;
+    _this.values.chartGenerated = false;
+    _this.values.infoGenerated = true;
+    _this.globals.isLoading = false;
+  }
+
+  handlerChartSuccess(_this, data): void
   {
     if ((_this.values.currentChartType.flags & ChartFlags.XYCHART) && _this.isEmpty (data.data))
     {
@@ -802,6 +895,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     _this.makeChart (data);
     _this.values.displayChart = true;
     _this.values.chartGenerated = true;
+    _this.values.infoGenerated = false;
     _this.globals.isLoading = false;
   }
 
@@ -811,7 +905,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     this.getChartFilterValues (component.id, this.addChartFilterValues);
   }
 
-  handleChartError(_this, result): void
+  handlerChartError(_this, result): void
   {
     console.log (result);
     _this.values.lastestResponse = null;
@@ -820,6 +914,18 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
     _this.dialog.open (MessageComponent, {
       data: { title: "Error", message: "Failed to generate chart." }
+    });
+  }
+
+  handlerTextError(_this, result): void
+  {
+    console.log (result);
+    _this.values.lastestResponse = null;
+    _this.values.chartGenerated = false;
+    _this.globals.isLoading = false;
+
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Error", message: "Failed to get summary." }
     });
   }
 
@@ -979,9 +1085,18 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     this.storeChartValues ();
   }
 
+  goToInfoConfiguration(): void
+  {
+    this.values.displayInfo = false;
+    this.storeChartValues ();
+  }
+
   goToChart(): void
   {
-    this.values.displayChart = true;
+    if (this.values.infoGenerated)
+      this.values.displayInfo = true;
+    else
+      this.values.displayChart = true;
 
     // discard any changes
     this.values.currentOption = JSON.parse (JSON.stringify (this.temp.currentOption));
@@ -1341,12 +1456,12 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
     switch (infoVarNum)
     {
-      case 3:
+      case 2:
         infoVar = this.values.infoVar3;
         infoFunc = this.values.infoFunc3;
         break;
 
-      case 2:
+      case 1:
         infoVar = this.values.infoVar2;
         infoFunc = this.values.infoFunc2;
         break;
@@ -1363,7 +1478,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       panelClass: 'msf-dashboard-control-variables-dialog',
       data: {
         title: this.values.chartName,
-        subTitle: "Variable #" + infoVarNum + ": " + infoVar.name,
+        subTitle: "Variable #" + (infoVarNum + 1) + ": " + infoVar.name,
         functions: infoFunc
       }
     });
