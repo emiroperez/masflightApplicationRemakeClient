@@ -4,7 +4,9 @@ export class MsfDashboardChartValues {
 
     id: number;
     displayChart: boolean;
+    displayInfo: boolean;
     chartGenerated: boolean;
+    infoGenerated: boolean;
 
     chartName: String;
     chartColumnOptions:any[] = []; 

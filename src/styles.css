@@ -2208,6 +2208,11 @@ mat-tab-group {
   flex-direction: column;
 }
 
+.msf-dashboard-checkbox-container {
+  flex-direction: row;
+  display: flex;
+}
+
 .msf-dashboard-chart-selector {
   display: flex;
   flex-direction: row;
@@ -2222,7 +2227,11 @@ mat-tab-group {
 }
 .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-checkbox-component {
   margin: 10px 0;
-  display: flex;
+  width: 35%;
+}
+.msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-function-title {
+  margin-bottom: -20px;
+  width: 100%;
 }
 .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-field-valuectrl {
   width: 49.5%;
