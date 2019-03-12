@@ -121,6 +121,7 @@ export class ApplicationComponent implements OnInit {
 
 
   temporalSelectOption(_this){
+    _this.globals.isLoading = true;
     _this.menu.categories.forEach(category => {
       category.options.forEach(option => {
         if(option.id==100){
@@ -130,6 +131,7 @@ export class ApplicationComponent implements OnInit {
           _this.globals.initDataSource();
           _this.globals.dataAvailabilityInit();
           _this.globals.status = true;
+          _this.globals.isLoading = false;
         }
       });
     });

@@ -19,7 +19,7 @@ export class MsfSeatClassComponent implements OnInit {
     "value":"Economy"},
     {"id":3,
     "name":"All",
-    "value":""},
+    "value":"All"},
     {"id":3,
     "name":"All Combined",
     "value":"Combined"}

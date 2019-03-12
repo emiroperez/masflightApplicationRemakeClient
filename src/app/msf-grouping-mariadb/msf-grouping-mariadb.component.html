@@ -1,0 +1,19 @@
+<div>
+  <div class="center">
+      <div class="msf-component-airport-title">Grouping</div>        
+  </div>    
+  <div class="msf-airline-container">
+      <div class="msf-full-width">   
+      <div class="msf-component-airport-sub-title">Group by</div>         
+      <ng-select
+          [items]="groupingList"
+          [multiple]="true"
+          loadingText="Loading..."
+          [closeOnSelect]="true"
+          [hideSelected]="false"
+          bindLabel="columnLabel"
+          [(ngModel)]="argument.value1">
+      </ng-select>          
+      </div>
+  </div>
+</div>  

@@ -300,4 +300,7 @@ export class MsfControlVariablesComponent implements OnInit {
   isSeatClass(argument: Arguments){
     return ComponentType.seatClass == argument.type;
   }
+  isGroupingMariaDB(argument: Arguments){
+    return ComponentType.groupingMariaDB == argument.type;
+  }
 }
