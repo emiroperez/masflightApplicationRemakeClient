@@ -27,6 +27,9 @@ export class MsfSeatClassComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.argument.value1 = "Combined";
+    if(!this.argument.value1){
+      this.argument.value1 = "Combined";
+    }
+
   }
 }

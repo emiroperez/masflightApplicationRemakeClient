@@ -1521,7 +1521,7 @@ app-msf-airport {
 
 td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
   text-align: center;
-  padding: 15px 0 !important;
+  padding: 10px 0 !important;
 }
 
 .mat-header-cell {
