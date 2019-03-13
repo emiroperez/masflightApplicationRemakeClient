@@ -1759,6 +1759,6 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   getResultValue(result): string
   {
-    return new Intl.NumberFormat ('en-us', { minimumFractionDigits: 2 }).format (result);
+    return new Intl.NumberFormat ('en-us').format (result);
   }
 }
