@@ -32,12 +32,15 @@ const blueJeans = am4core.color ("#67b7dc");
 // Chart flags settings
 enum ChartFlags
 {
-  NONE      = 0x00000000,
-  XYCHART   = 0x00000001,
-  ROTATED   = 0x00000002,
-  STACKED   = 0x00000004,
-  INFO      = 0x00000008,
-  LINECHART = 0x00000010
+  NONE       = 0x00000000,
+  XYCHART    = 0x00000001,
+  ROTATED    = 0x00000002,
+  STACKED    = 0x00000004,
+  INFO       = 0x00000008,
+  LINECHART  = 0x00000010,
+  AREACHART  = 0x00000030,
+  PIECHART   = 0x00000040,
+  DONUTCHART = 0x000000C0
 }
 
 @Component({
@@ -56,21 +59,20 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   private timer: number;
 
   chartTypes:any[] = [
-    { id: 'bars', name: 'Bars', flags: ChartFlags.XYCHART, createSeries: this.createVertColumnSeries },
-    { id: 'hbars', name: 'Horizontal Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED, createSeries: this.createHorizColumnSeries },
-    { id: 'sbars', name: 'Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.STACKED, createSeries: this.createVertColumnSeries },
-    { id: 'hsbars', name: 'Horizontal Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED | ChartFlags.STACKED, createSeries: this.createHorizColumnSeries },
-    { id: 'line', name: 'Lines', flags: ChartFlags.XYCHART | ChartFlags.LINECHART, createSeries: this.createLineSeries },                      
-    { id: 'area', name: 'Area', flags: ChartFlags.XYCHART | ChartFlags.LINECHART, createSeries: this.createLineSeries },
-    { id: 'sarea', name: 'Stacked Area', flags: ChartFlags.XYCHART | ChartFlags.STACKED | ChartFlags.LINECHART, createSeries: this.createLineSeries },
+    { name: 'Bars', flags: ChartFlags.XYCHART, createSeries: this.createVertColumnSeries },
+    { name: 'Horizontal Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED, createSeries: this.createHorizColumnSeries },
+    { name: 'Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.STACKED, createSeries: this.createVertColumnSeries },
+    { name: 'Horizontal Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED | ChartFlags.STACKED, createSeries: this.createHorizColumnSeries },
+    { name: 'Lines', flags: ChartFlags.XYCHART | ChartFlags.LINECHART, createSeries: this.createLineSeries },                      
+    { name: 'Area', flags: ChartFlags.XYCHART | ChartFlags.AREACHART, createSeries: this.createLineSeries },
+    { name: 'Stacked Area', flags: ChartFlags.XYCHART | ChartFlags.STACKED | ChartFlags.AREACHART, createSeries: this.createLineSeries },
 
-    { id: 'pie', name: 'Pie', flags: ChartFlags.NONE },
-    { id: 'donut', name: 'Donut', flags: ChartFlags.NONE },
-    { id: 'radar', name: 'Radar', flags: ChartFlags.NONE },
+    { name: 'Pie', flags: ChartFlags.PIECHART },
+    { name: 'Donut', flags: ChartFlags.DONUTCHART },
 
-    { id: 'spbars', name: 'Simple Bars', flags: ChartFlags.NONE, createSeries: this.createSimpleVertColumnSeries },
-    { id: 'sphbars', name: 'Simple Horizontal Bars', flags: ChartFlags.ROTATED, createSeries: this.createSimpleHorizColumnSeries },
-    { id: 'info', name: 'Information', flags: ChartFlags.INFO }
+    { name: 'Simple Bars', flags: ChartFlags.NONE, createSeries: this.createSimpleVertColumnSeries },
+    { name: 'Simple Horizontal Bars', flags: ChartFlags.ROTATED, createSeries: this.createSimpleHorizColumnSeries },
+    { name: 'Information', flags: ChartFlags.INFO }
   ];
 
   functions:any[] = [
@@ -244,7 +246,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     }
 
     // Fill area below line for area chart types
-    if (values.currentChartType.id === 'area' || values.currentChartType.id === 'sarea')
+    if (values.currentChartType.flags & ChartFlags.AREACHART)
       series.fillOpacity = 0.3;
 
     series.stacked = stacked;
@@ -292,41 +294,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       let chart;
 
       // Check chart type before generating it
-      if (this.values.currentChartType.id === 'radar')
-      {
-        let categoryAxis, valueAxis, series;
-
-        chart = am4core.create ("msf-dashboard-chart-display-" + this.columnPos + "-" + this.rowPos, am4charts.RadarChart);
-        chart.data = chartInfo.dataProvider;
-
-        // Configure Radar Chart
-        categoryAxis = chart.xAxes.push (new am4charts.CategoryAxis ());
-        categoryAxis.renderer.labels.template.fontSize = 10;
-        categoryAxis.dataFields.category = chartInfo.titleField;
-        categoryAxis.renderer.grid.template.strokeOpacity = 1;
-        categoryAxis.renderer.grid.template.stroke = darkBlue;
-        categoryAxis.renderer.grid.template.strokeWidth = 1;
-
-        valueAxis = chart.yAxes.push (new am4charts.ValueAxis ());
-        valueAxis.renderer.labels.template.fontSize = 10;
-        valueAxis.renderer.axisFills.template.fillOpacity = 1;
-        valueAxis.renderer.grid.template.strokeOpacity = 1;
-        valueAxis.renderer.grid.template.stroke = darkBlue;
-        valueAxis.renderer.grid.template.strokeWidth = 1;
-
-        series = chart.series.push (new am4charts.RadarColumnSeries ());
-        series.dataFields.valueY = chartInfo.valueField;
-        series.dataFields.categoryX = chartInfo.titleField;
-        series.columns.template.tooltipText = "{categoryX}: {valueY}";
-        series.columns.template.strokeWidth = 0;
-
-        // Set colors
-        series.columns.template.adapter.add ("fill", (fill, target) => {
-          return am4core.color (chartInfo.colors[target.dataItem.index]);
-        });
-      }
-      else if (this.values.currentChartType.id === 'pie'
-        || this.values.currentChartType.id === 'donut')
+      if (this.values.currentChartType.flags & ChartFlags.PIECHART)
       {
         let series, colorSet;
 
@@ -337,7 +305,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         chart.fontSize = 10;
 
         // Set inner radius for donut chart
-        if (this.values.currentChartType.id === 'donut')
+        if (this.values.currentChartType.flags & ChartFlags.DONUTCHART)
           chart.innerRadius = am4core.percent (60);
 
         // Configure Pie Chart
@@ -591,8 +559,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         }
 
         // Add cursor if the chart type is line, area or stacked area
-        if (this.values.currentChartType.id === 'line' || this.values.currentChartType.id === 'area'
-          || this.values.currentChartType.id === 'sarea')
+        if (this.values.currentChartType.flags & ChartFlags.LINECHART)
         {
           chart.cursor = new am4charts.XYCursor ();
           chart.cursor.xAxis = valueAxis;
@@ -1200,6 +1167,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   goToChart(): void
   {
+    let i, item;
+
     if (this.values.infoGenerated)
       this.values.displayInfo = true;
     else
@@ -1212,14 +1181,22 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     this.values.xaxis = this.temp.xaxis;
     this.values.valueColumn = this.temp.valueColumn;
     this.values.function = this.temp.function;
-    this.values.currentChartType = JSON.parse (JSON.stringify (this.temp.currentChartType));
     this.values.chartColumnOptions = JSON.parse (JSON.stringify (this.temp.chartColumnOptions));
     this.values.currentOptionCategories = JSON.parse (JSON.stringify (this.temp.currentOptionCategories));
 
+    for (i = 0; i < this.chartTypes.length; i++)
+    {
+      item = this.chartTypes[i];
+
+      if (item.name === this.temp.currentChartType.name)
+      {
+        this.values.currentChartType = item;
+        break;
+      }
+    }
+
     if (this.values.currentChartType.flags & ChartFlags.INFO)
     {
-      let i, item;
-
       if (this.temp.infoVar1 != null)
       {
         for (i = 0; i < this.values.chartColumnOptions.length; i++)
@@ -1264,6 +1241,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     }
 
     // re-initialize panel settings
+    this.values.currentChartType = this.chartTypes.indexOf (this.values.currentChartType);
     this.initPanelSettings ();
   }
 
