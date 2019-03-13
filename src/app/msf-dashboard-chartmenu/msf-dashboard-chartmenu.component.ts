@@ -188,9 +188,9 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
     // Add an event that hide the column chart when clicked
     /*series.columns.template.events.on ("hit", function(event) {
-//      console.log ("clicked on ", event.target);
-//      series.hidden = true;
-      series.hide ();
+      //event.target.parent.hide ();
+      chart.legend.dispatchImmediately ("hide");
+      //event.target.dataItem.categoryY;
     });*/
   }
 
@@ -561,15 +561,6 @@ export class MsfDashboardChartmenuComponent implements OnInit {
           chart.cursor.xAxis = valueAxis;
           chart.cursor.snapToSeries = chart.series;
         }
-
-        /*chart.legend.itemContainers.template.events.on (
-          "hit",
-          ev => {
-            var item = ev.target.dataItem.component.tooltipDataItem.dataContext;
-            //alert("line clicked on: " + item.country + ": " + item.marketing);
-          },
-          this
-        );*/
       }
 
       // Display Legend
@@ -577,6 +568,16 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       chart.legend.markers.template.width = 15;
       chart.legend.markers.template.height = 15;
       chart.legend.labels.template.fontSize = 10;
+
+      /*chart.legend.itemContainers.template.events.on (
+        "hide",
+        ev => {
+          chart.legend.data[0].hide ();
+          // var item = ev.target.dataItem.component.tooltipDataItem.dataContext;
+          //alert("line clicked on: " + item.country + ": " + item.marketing);
+        },
+        this
+      );*/
 
       // Add export button
       chart.exporting.menu = new am4core.ExportMenu ();
@@ -602,7 +603,13 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     if (!this.isEmpty (this.values.lastestResponse))
     {
       if (this.values.currentChartType.flags & ChartFlags.INFO)
-        this.values.infoGenerated = true;
+      {
+        if (this.values.function == 1)
+        {
+          this.values.infoGenerated = true;
+          this.values.function = -1;
+        }
+      }
       else
       {
         this.makeChart (this.values.lastestResponse);
@@ -619,7 +626,10 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     if (!this.isEmpty (this.values.lastestResponse))
     {
       if (this.values.currentChartType.flags & ChartFlags.INFO)
-        this.values.displayInfo = true;
+      {
+        if (this.values.function == 1)
+          this.values.displayInfo = true;
+      }
       else
         this.values.displayChart = true;
     }
@@ -705,7 +715,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         'analysis' : this.values.chartColumnOptions.indexOf (this.values.infoVar1),
         'xaxis' : this.values.chartColumnOptions.indexOf (this.values.infoVar2),
         'values' : this.values.chartColumnOptions.indexOf (this.values.infoVar3),
-        'function' : -1,
+        'function' : 1,
         'chartType' : this.chartTypes.indexOf (this.values.currentChartType),
         'categoryOptions' : this.values.currentOptionCategories
       };
@@ -874,47 +884,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       return;
     }
 
-//    _this.values.lastestResponse = data;
-    // Set measure and title for each value
-    _this.values.lastestResponse = [];
-
-    for (let i = 0, dataindex = 0; i < _this.values.infoNumVariables; i++)
-    {
-      let infoFunc, item;
-
-      switch (i)
-      {
-        case 2:
-          infoFunc = _this.values.infoFunc3;
-          break;
-
-        case 1:
-          infoFunc = _this.values.infoFunc2;
-          break;
-
-        default:
-          infoFunc = _this.values.infoFunc1;
-          break;
-      }
-
-      for (let j = 0; j < 5; j++)
-      {
-        if (!infoFunc[j].checked)
-          continue;
-
-        if (data[dataindex].value == null)
-          data[dataindex].value = 0;
-
-        item = {
-          title: infoFunc[j].title,
-          measure: infoFunc[j].measure,
-          value: data[dataindex].value
-        };
-
-        _this.values.lastestResponse.push (item);
-        dataindex++;
-      }
-    }
+    _this.values.lastestResponse = data;
 
     // destroy current chart if it's already generated to avoid a blank chart later
     _this.destroyChart ();
@@ -1624,6 +1594,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     // set lastestResponse to null and remove temporary values since the panel has been updated
     _this.values.lastestResponse = null;
     _this.values.chartGenerated = false;
+    _this.values.infoGenerated = false;
     _this.temp = null;
     _this.globals.isLoading = false;
   }
@@ -1633,7 +1604,60 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     this.service.confirmationDialog (this, "Are you sure you want to save the changes?",
       function (_this)
       {
-        let panel = _this.getPanelInfo ();
+        let panel;
+
+        if (_this.values.currentChartType.flags & ChartFlags.INFO)
+        {
+          let variables;
+
+          panel = _this.getPanelInfo (true);
+          panel.function = -1;
+
+          // Prepare list of variables
+          variables = [];
+
+          for (let i = 0; i < _this.values.infoNumVariables; i++)
+          {
+            let infoVar, infoFunc;
+
+            switch (i)
+            {
+              case 2:
+                infoVar = _this.values.infoVar3;
+                infoFunc = _this.values.infoFunc3;
+                break;
+
+              case 1:
+                infoVar = _this.values.infoVar2;
+                infoFunc = _this.values.infoFunc2;
+                break;
+
+              default:
+                infoVar = _this.values.infoVar1;
+                infoFunc = _this.values.infoFunc1;
+                break;
+            }
+
+            for (let j = 0; j < 5; j++)
+            {
+              if (!infoFunc[j].checked)
+                continue;
+
+              variables.push ({
+                id : i,
+                function : infoFunc[j].id,
+                title : infoFunc[j].title,
+                measure : infoFunc[j].measure,
+                column : infoVar.id
+              });
+            }
+          }
+
+          panel.lastestResponse = variables;
+        }
+        else
+          panel = _this.getPanelInfo (false);
+
         _this.globals.isLoading = true;
         _this.service.updateDashboardPanel (_this, panel, _this.handlerUpdateSucess, _this.handlerError);
       });
