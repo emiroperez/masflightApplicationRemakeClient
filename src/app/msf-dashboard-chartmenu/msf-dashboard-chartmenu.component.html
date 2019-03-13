@@ -198,11 +198,13 @@
               <mat-icon aria-label="Go To Information">bar_chart</mat-icon>
             </button>
           </div>
+          <!--
           <div class="msf-dashboard-chartmenu-control-variable-button">
             <button mat-mini-fab (click)="savePanel()" color="primary">
               <mat-icon aria-label="Save Changes">save</mat-icon>
             </button>
           </div>
+          -->
         </div>
       </div>
     </div>
@@ -232,8 +234,9 @@
       <div class="msf-dashboard-info-display">
         <div class="msf-dashboard-info-container" *ngIf="values.infoVar1">
           <div class="msf-dashboard-info-table" *ngFor="let result of values.lastestResponse">
-            <div class="msf-dashboard-info-table-row-title">{{result.title}}</div>
-            <div class="msf-dashboard-info-table-row-value">{{result.value}}</div>
+            <div class="msf-dashboard-info-title">{{result.title}}</div>
+            <div class="msf-dashboard-info-value">{{getResultValue(result.value)}}</div>
+            <div class="msf-dashboard-info-measure">{{result.measure}}</div>
           </div>
         </div>
       </div>
