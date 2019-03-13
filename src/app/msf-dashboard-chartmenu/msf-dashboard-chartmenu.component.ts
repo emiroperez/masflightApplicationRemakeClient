@@ -38,8 +38,10 @@ enum ChartFlags
   STACKED    = 0x00000004,
   INFO       = 0x00000008,
   LINECHART  = 0x00000010,
+  AREAFILL   = 0x00000020,
   AREACHART  = 0x00000030,
   PIECHART   = 0x00000040,
+  PIEHOLE    = 0x00000080,
   DONUTCHART = 0x000000C0
 }
 
@@ -246,7 +248,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     }
 
     // Fill area below line for area chart types
-    if (values.currentChartType.flags & ChartFlags.AREACHART)
+    if (values.currentChartType.flags & ChartFlags.AREAFILL)
       series.fillOpacity = 0.3;
 
     series.stacked = stacked;
@@ -305,7 +307,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         chart.fontSize = 10;
 
         // Set inner radius for donut chart
-        if (this.values.currentChartType.flags & ChartFlags.DONUTCHART)
+        if (this.values.currentChartType.flags & ChartFlags.PIEHOLE)
           chart.innerRadius = am4core.percent (60);
 
         // Configure Pie Chart
@@ -327,12 +329,6 @@ export class MsfDashboardChartmenuComponent implements OnInit {
           return am4core.color (color);
         });
         series.colors = colorSet;
-
-        // Display chart legend
-        chart.legend = new am4charts.Legend ();
-        chart.legend.markers.template.width = 15;
-        chart.legend.markers.template.height = 15;
-        chart.legend.labels.template.fontSize = 10;
       }
       else if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
       {
@@ -566,12 +562,6 @@ export class MsfDashboardChartmenuComponent implements OnInit {
           chart.cursor.snapToSeries = chart.series;
         }
 
-        // Display Legend
-        chart.legend = new am4charts.Legend ();
-        chart.legend.markers.template.width = 15;
-        chart.legend.markers.template.height = 15;
-        chart.legend.labels.template.fontSize = 10;
-
         /*chart.legend.itemContainers.template.events.on (
           "hit",
           ev => {
@@ -581,6 +571,12 @@ export class MsfDashboardChartmenuComponent implements OnInit {
           this
         );*/
       }
+
+      // Display Legend
+      chart.legend = new am4charts.Legend ();
+      chart.legend.markers.template.width = 15;
+      chart.legend.markers.template.height = 15;
+      chart.legend.labels.template.fontSize = 10;
 
       // Add export button
       chart.exporting.menu = new am4core.ExportMenu ();
