@@ -28,7 +28,11 @@ export class MsfDateRangeComponent implements OnInit {
     {id: 1, name: 'Yesterday',value:"YESTERDAY"},
     {id: 2, name: 'Last week',value:"LASTWEEK"},
     {id: 3, name: 'Last Month',value:"LASTMONTH"},
-    {id: 4, name: 'Last Year',value:"LASTYEAR"}
+    {id: 4, name: 'Last Year',value:"LASTYEAR"},
+    {id: 5, name: 'Until Yesterday',value:"UNTILYESTERDAY"},
+    {id: 6, name: 'Until Last week',value:"UNTILLASTWEEK"},
+    {id: 7, name: 'Until Last Month',value:"UNTILLASTMONTH"},
+    {id: 8, name: 'Until Last Year',value:"UNTILLASTYEAR"}
   ];
 
   constructor(public globals: Globals,public dialog: MatDialog) { }
@@ -41,22 +45,12 @@ export class MsfDateRangeComponent implements OnInit {
       if(!this.argument.value2){
         this.argument.value2 = this.argument.value1;
       }
-      // if(this.dates.length==4){
-      //   this.dates.push({id: 5, name: 'Until Yesterday',value:"UNTILYESTERDAY"});
-      //   this.dates.push({id: 6, name: 'Until Last Week',value:"UNTILWEEK"});
-      //   this.dates.push({id: 7, name: 'Until Last Month',value:"UNTILMONTH"});
-      //   this.dates.push({id: 8, name: 'Until Last Year',value:"UNTILYEAR"});
-      // }
+
       this.minDate = this.argument.value1;
   }
 
   hasDate(){
-    // if(this.dates.length==4){
-    //   this.dates.push({id: 5, name: 'Until Yesterday',value:"UNTILYESTERDAY"});
-    //   this.dates.push({id: 6, name: 'Until Last Week',value:"UNTILWEEK"});
-    //   this.dates.push({id: 7, name: 'Until Last Month',value:"UNTILMONTH"});
-    //   this.dates.push({id: 8, name: 'Until Last Year',value:"UNTILYEAR"});
-    // }
+
   }
 
   validateDate(){
@@ -90,38 +84,69 @@ export class MsfDateRangeComponent implements OnInit {
         break;
       case 'LASTYEAR':
         this.calculateDate('LAST Year',(24*60*60*1000)*365);
-        break;                   
+        break;    
+      case 'UNTILYESTERDAY':
+        this.calculateDate2('Yesterday',24*60*60*1000);
+          break;
+      case 'UNTILLASTWEEK':
+        this.calculateDate2('Last Week',(24*60*60*1000)*7);
+          break;
+      case 'UNTILLASTMONTH':
+        this.calculateDate2('Last Month',(24*60*60*1000)*30);
+          break;
+      case 'UNTILLASTYEAR':
+          this.calculateDate2('LAST Year',(24*60*60*1000)*365);
+          break;            
+                     
     }
   }
   calculateDate(type: string,milis: any) {
-    this.dialog.open (MessageComponent, {
-      data: { title: "Message", message: "The date range is going to change to "+ type}
-    });
-    this.dialog.open (MessageComponent, {
-      data: { title: "Message", message: "The maximun date of the service is"+ this.globals.maxDate}
-    });
     var today = new Date();
-      if(!this.argument.value2&&!this.argument.value2){
+    var maximunDateMessage = "the maximun date of the option is ";
         if(this.globals.maxDate==null){
-          this.argument.value2 = today
+          this.argument.value2 = today;
+          maximunDateMessage = "the option doesn't have maximun date";
         }else{
           this.argument.value2 = this.globals.maxDate;
+          maximunDateMessage += this.globals.maxDate;
         }
           this.argument.value1 = new Date(this.argument.value2.getTime() - milis);
-      }else{
-        if(this.argument.value1){
-          if(this.globals.maxDate==null){
-            this.argument.value2 = today.getTime() - milis;
-          }else{
-              if((this.argument.value1.getTime() - milis) < this.globals.minDate.getTime()){
-                this.argument.value2 = this.globals.minDate;
-              }else{
-                this.argument.value2 = new Date(this.globals.maxDate.getTime() - milis);
-              }
-            }
-          }
-      }
 
+          this.openDialog("The date range changed to "+ type+", "+maximunDateMessage);
+
+  }
+
+  calculateDate2(type: string,milis: any) {
+    var today = new Date();
+    var aux;
+    var maximunDateMessage = "the maximun date of the option is ";
+      if(this.argument.value1){
+        if(this.globals.maxDate==null){
+          aux = today
+          maximunDateMessage = "the option doesn't have maximun date"
+        }else{
+          aux = this.globals.maxDate;
+          maximunDateMessage += this.globals.maxDate;
+        }
+        var diff = aux.getTime() - milis;
+        if(this.argument.value1.getTime()<=diff){
+          this.argument.value2 = new Date(diff);
+        }else{
+          this.openDialog("The final date can't be less than the initial date");
+          return;
+        }
+        this.openDialog("The date range changed to "+ type+", "+maximunDateMessage);
+      }else{
+        this.argument.value3 = null;
+        this.openDialog("Please select the initial date");
+      }
+  }
+  
+  openDialog(text:string){
+    this.dialog.open (MessageComponent, {
+      data: { title: "Message", 
+      message: text}
+    });
   }
 
 }

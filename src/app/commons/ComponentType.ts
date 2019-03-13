@@ -76,5 +76,6 @@ export enum ComponentType {
   fareIncrementsMarketHistograms = "fareIncrementsMarketHistograms",
   topNumber = "topNumber",
   seatClass = "seatClass",
-  groupingMariaDB = "groupingMariaDB"
+  groupingMariaDB = "groupingMariaDB",
+  contentType = "contentType"
 }

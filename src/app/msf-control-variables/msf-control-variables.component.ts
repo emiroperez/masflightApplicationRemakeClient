@@ -303,4 +303,7 @@ export class MsfControlVariablesComponent implements OnInit {
   isGroupingMariaDB(argument: Arguments){
     return ComponentType.groupingMariaDB == argument.type;
   }
+  isContentType(argument: Arguments){
+    return ComponentType.contentType == argument.type;
+  }
 }
