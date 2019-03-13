@@ -157,6 +157,7 @@ import { MsfSeatClassComponent } from './msf-seat-class/msf-seat-class.component
 import { MsfControlVariablesComponent } from './msf-control-variables/msf-control-variables.component';
 import { MsfDashboardInfoFunctionsComponent } from './msf-dashboard-info-functions/msf-dashboard-info-functions.component';
 import { MsfGroupingMariadbComponent } from './msf-grouping-mariadb/msf-grouping-mariadb.component';
+import { MsfContentTypeComponent } from './msf-content-type/msf-content-type.component';
 
 @NgModule({
   declarations: [
@@ -295,6 +296,7 @@ import { MsfGroupingMariadbComponent } from './msf-grouping-mariadb/msf-grouping
     MsfControlVariablesComponent,
     MsfDashboardInfoFunctionsComponent,
     MsfGroupingMariadbComponent,
+    MsfContentTypeComponent,
   ],
   imports: [
     BrowserModule,
