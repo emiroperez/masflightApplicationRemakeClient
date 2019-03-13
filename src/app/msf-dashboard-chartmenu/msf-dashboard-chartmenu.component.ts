@@ -563,21 +563,25 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         }
       }
 
-      // Display Legend
-      chart.legend = new am4charts.Legend ();
-      chart.legend.markers.template.width = 15;
-      chart.legend.markers.template.height = 15;
-      chart.legend.labels.template.fontSize = 10;
+      if ((this.values.currentChartType.flags & ChartFlags.XYCHART)
+        || (this.values.currentChartType.flags & ChartFlags.PIECHART))
+      {
+        // Display Legend
+        chart.legend = new am4charts.Legend ();
+        chart.legend.markers.template.width = 15;
+        chart.legend.markers.template.height = 15;
+        chart.legend.labels.template.fontSize = 10;
 
-      /*chart.legend.itemContainers.template.events.on (
-        "hide",
-        ev => {
-          chart.legend.data[0].hide ();
-          // var item = ev.target.dataItem.component.tooltipDataItem.dataContext;
-          //alert("line clicked on: " + item.country + ": " + item.marketing);
-        },
-        this
-      );*/
+        /*chart.legend.itemContainers.template.events.on (
+          "hide",
+          ev => {
+            chart.legend.data[0].hide ();
+            // var item = ev.target.dataItem.component.tooltipDataItem.dataContext;
+            //alert("line clicked on: " + item.country + ": " + item.marketing);
+          },
+          this
+        );*/
+      }
 
       // Add export button
       chart.exporting.menu = new am4core.ExportMenu ();
