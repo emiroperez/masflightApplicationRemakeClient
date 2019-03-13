@@ -17,7 +17,7 @@ export class MsfDashboardChartValues {
     width: any;
     height: any;
 
-    lastestResponse: string;
+    lastestResponse: any;
 
     variable: any;
     xaxis: any;
