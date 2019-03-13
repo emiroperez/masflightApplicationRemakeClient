@@ -1163,7 +1163,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     this.temp.xaxis = this.values.chartColumnOptions.indexOf (this.values.xaxis);
     this.temp.valueColumn = this.values.chartColumnOptions.indexOf (this.values.valueColumn);
     this.temp.function = this.functions.indexOf (this.values.function);
-    this.temp.currentChartType = this.chartTypes.indexOf (this.values.currentChartType);
+    this.temp.currentChartType = JSON.parse (JSON.stringify (this.values.currentChartType));
     this.temp.chartColumnOptions = JSON.parse (JSON.stringify (this.values.chartColumnOptions));
     this.temp.currentOptionCategories = JSON.parse (JSON.stringify (this.values.currentOptionCategories));
 
@@ -1212,20 +1212,55 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     this.values.xaxis = this.temp.xaxis;
     this.values.valueColumn = this.temp.valueColumn;
     this.values.function = this.temp.function;
-    this.values.currentChartType = this.temp.currentChartType;
+    this.values.currentChartType = JSON.parse (JSON.stringify (this.temp.currentChartType));
     this.values.chartColumnOptions = JSON.parse (JSON.stringify (this.temp.chartColumnOptions));
     this.values.currentOptionCategories = JSON.parse (JSON.stringify (this.temp.currentOptionCategories));
 
-    if (this.temp.currentChartType.flags & ChartFlags.INFO)
+    if (this.values.currentChartType.flags & ChartFlags.INFO)
     {
+      let i, item;
+
       if (this.temp.infoVar1 != null)
-        this.values.variable = this.values.chartColumnOptions.indexOf (this.temp.infoVar1);
+      {
+        for (i = 0; i < this.values.chartColumnOptions.length; i++)
+        {
+          item = this.values.chartColumnOptions[i];
+
+          if (this.temp.infoVar1.id === item.id)
+          {
+            this.values.variable = this.values.chartColumnOptions.indexOf (item);
+            break;
+          }
+        }
+      }
 
       if (this.temp.infoVar2 != null)
-        this.values.xaxis = this.values.chartColumnOptions.indexOf (this.temp.infoVar2);
+      {
+        for (i = 0; i < this.values.chartColumnOptions.length; i++)
+        {
+          item = this.values.chartColumnOptions[i];
+
+          if (this.temp.infoVar2.id === item.id)
+          {
+            this.values.xaxis = this.values.chartColumnOptions.indexOf (item);
+            break;
+          }
+        }
+      }
 
       if (this.temp.infoVar3 != null)
-        this.values.valueColumn = this.values.chartColumnOptions.indexOf (this.temp.infoVar3);
+      {
+        for (i = 0; i < this.values.chartColumnOptions.length; i++)
+        {
+          item = this.values.chartColumnOptions[i];
+
+          if (this.temp.infoVar3.id === item.id)
+          {
+            this.values.valueColumn = this.values.chartColumnOptions.indexOf (item);
+            break;
+          }
+        }
+      }
     }
 
     // re-initialize panel settings
