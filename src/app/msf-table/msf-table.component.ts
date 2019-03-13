@@ -299,7 +299,7 @@ export class MsfTableComponent implements OnInit {
           }
 
           if(_this.globals.currentOption.tabType!="athena"){
-            if( _this.globals.totalRecord<100){
+            if( _this.globals.totalRecord<100 ||  _this.globals.totalRecord>100){
               _this.globals.moreResultsBtn = false;
               _this.globals.moreResults = false;
             }else{

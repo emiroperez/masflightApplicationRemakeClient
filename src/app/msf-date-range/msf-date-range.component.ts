@@ -74,7 +74,11 @@ export class MsfDateRangeComponent implements OnInit {
   }
 
   autoSelect(){
-    switch (this.argument.value3.value) {
+    var option = this.argument.value3;
+    if(option!=null){
+      option = option.value;
+    }
+    switch (option) {
       case 'YESTERDAY':
       this.calculateDate('Yesterday',24*60*60*1000);
         break;
@@ -93,6 +97,9 @@ export class MsfDateRangeComponent implements OnInit {
     this.dialog.open (MessageComponent, {
       data: { title: "Message", message: "The date range is going to change to "+ type}
     });
+    this.dialog.open (MessageComponent, {
+      data: { title: "Message", message: "The maximun date of the service is"+ this.globals.maxDate}
+    });
     var today = new Date();
       if(!this.argument.value2&&!this.argument.value2){
         if(this.globals.maxDate==null){
@@ -100,19 +107,19 @@ export class MsfDateRangeComponent implements OnInit {
         }else{
           this.argument.value2 = this.globals.maxDate;
         }
-        if(this.globals.minDate==null){
-          this.argument.value1 = this.argument.value2.getTime() - milis;
-        }else{
-          this.argument.value1 = this.globals.minDate;
-        }
+          this.argument.value1 = new Date(this.argument.value2.getTime() - milis);
       }else{
-        if(this.argument.value2){
-          if(this.globals.minDate==null){
-            this.argument.value1 = this.argument.value2.getTime() - milis;
+        if(this.argument.value1){
+          if(this.globals.maxDate==null){
+            this.argument.value2 = today.getTime() - milis;
           }else{
-            this.argument.value1 = this.globals.minDate;
+              if((this.argument.value1.getTime() - milis) < this.globals.minDate.getTime()){
+                this.argument.value2 = this.globals.minDate;
+              }else{
+                this.argument.value2 = new Date(this.globals.maxDate.getTime() - milis);
+              }
+            }
           }
-        }
       }
 
   }
