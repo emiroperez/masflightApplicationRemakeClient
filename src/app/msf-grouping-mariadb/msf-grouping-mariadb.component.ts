@@ -13,7 +13,8 @@ export class MsfGroupingMariadbComponent implements OnInit {
   groupingList: any[] = [
     {id: 'seat', columnLabel: 'Seat Number', columnName:'seat'},
     {id: 'aircraft_tail', columnLabel: 'Aircraft Tail', columnName:'aircraft_tail'},
-    {id: 'date', columnLabel: 'Day', columnName:'date'}
+    {id: 'date', columnLabel: 'Day', columnName:'date'},
+    {id: 'content_type', columnLabel: 'Content Type', columnName:'content_type'}
 ];
   
   constructor() { }
