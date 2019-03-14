@@ -10,6 +10,8 @@
             <span *ngIf="column.columnType=='number' && column.columnFormat=='%'"> {{getFormatCell(element[column.columnName]) | number:'.0-2':'en'}}%</span>
             <span *ngIf="column.columnType=='number' && column.columnFormat=='temp'"> {{getFormatCell(element[column.columnName]) | number:'.0-2':'en'}}°</span>
             <span *ngIf="column.columnType=='number' && column.columnFormat==null"> {{getFormatCell(element[column.columnName]) | number:'.0-2':'en'}} </span>
+            <!-- <span *ngIf="column.columnType=='date' && column.columnFormat==null"> {{element[column.columnName]}} </span>
+            <span *ngIf="column.columnType=='date' && column.columnFormat!=null"> {{element[column.columnName] | date:'':'en'}} </span> -->
           </td>
         </ng-container>
   

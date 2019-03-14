@@ -1521,7 +1521,7 @@ app-msf-airport {
 
 td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
   text-align: center;
-  padding: 15px 0 !important;
+  padding: 10px 0 !important;
 }
 
 .mat-header-cell {
@@ -2208,6 +2208,11 @@ mat-tab-group {
   flex-direction: column;
 }
 
+.msf-dashboard-checkbox-container {
+  flex-direction: row;
+  display: flex;
+}
+
 .msf-dashboard-chart-selector {
   display: flex;
   flex-direction: row;
@@ -2222,7 +2227,16 @@ mat-tab-group {
 }
 .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-checkbox-component {
   margin: 10px 0;
-  display: flex;
+  width: 35%;
+}
+.msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-function-title {
+  margin-bottom: -20px;
+  width: 50%;
+}
+.msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-function-measure {
+  margin-bottom: -20px;
+  margin-left: 15px;
+  width: 50%;
 }
 .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-field-valuectrl {
   width: 49.5%;
@@ -2314,6 +2328,53 @@ mat-tab-group {
 .msf-dynamic-table-variable-fotter .msf-ok-button {
   width: 35%;
   background-color: #01abec;
+}
+
+.msf-dashboard-info-display {
+  margin: 8px;
+  display: flex;
+  align-items: center;
+  height: 80%;
+}
+.msf-dashboard-info-display .msf-dashboard-info-container {
+  display: flex;
+  flex-flow: row wrap;
+  width: 100%;
+}
+.msf-dashboard-info-display .msf-dashboard-info-container .msf-dashboard-info-table {
+  margin-top: 10px;
+  margin-right: 10px;
+  flex: 1;
+}
+.msf-dashboard-info-display .msf-dashboard-info-container .msf-dashboard-info-table .msf-dashboard-info-title {
+  background-color: #3b3b3b;
+  vertical-align: middle;
+  height: 45px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 170px;
+  font-size: 18px;
+}
+.msf-dashboard-info-display .msf-dashboard-info-container .msf-dashboard-info-table .msf-dashboard-info-value {
+  background-color: #333333;
+  vertical-align: middle;
+  height: 37px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 170px;
+  font-size: 14px;
+}
+.msf-dashboard-info-display .msf-dashboard-info-container .msf-dashboard-info-table .msf-dashboard-info-measure {
+  background-color: #3b3b3b;
+  vertical-align: middle;
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 170px;
+  font-size: 14px;
 }
 
 mat-dialog-container {
@@ -3509,6 +3570,10 @@ img.msf-calendar-image {
 
 .footer-hover {
   background-color: #01abec;
+}
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-disabled {
+  color: #8e8e8e !important;
 }
 
 /*# sourceMappingURL=styles.css.map */

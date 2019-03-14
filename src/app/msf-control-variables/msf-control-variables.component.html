@@ -85,6 +85,8 @@
             <app-msf-fare-increments-market-histograms *ngIf="isFareIncrementsMarketHistograms(argument)" [argument]="argument"></app-msf-fare-increments-market-histograms>
             <app-msf-top-number *ngIf="isTopNumber(argument)" [argument]="argument"></app-msf-top-number>
             <app-msf-seat-class *ngIf="isSeatClass(argument)" [argument]="argument"></app-msf-seat-class>
+            <app-msf-grouping-mariadb *ngIf="isGroupingMariaDB(argument)" [argument]="argument"></app-msf-grouping-mariadb>
+            <app-msf-content-type *ngIf="isContentType(argument)" [argument]="argument"></app-msf-content-type>
           </ng-container>
         </div>
       </ng-container>      

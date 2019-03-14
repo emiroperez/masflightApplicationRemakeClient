@@ -27,8 +27,8 @@ export class MsfGroupingComponent implements OnInit {
                 {id: 'ORIGIN', columnLabel: 'Origin Airport',columnName:'Origin'},
                 {id: 'DESTINATION', columnLabel: 'Destination Airport',columnName:'Destination'},
                 {id: 'FLIGHTNUMBER', columnLabel: 'Flight Number',columnName:'FlightNumber'},
-                {id: 'MARKETINGAIRLINE', columnLabel: 'Marketing Airline',columnName:'Marketing_Carrier'},
-                {id: 'ROUTE', columnLabel: 'Route',columnName:'Route'}
+                {id: 'TAILNUMBER', columnLabel: 'Tail Number',columnName:'TailNumber'},
+                // {id: 'ROUTE', columnLabel: 'Route',columnName:'Route'}
   ];
   constructor(private http: ApiClient, public globals: Globals) { }
 

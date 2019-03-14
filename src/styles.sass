@@ -1369,7 +1369,7 @@ app-msf-airport
 
 td.mat-cell, td.mat-footer-cell, th.mat-header-cell
     text-align: center
-    padding: 15px 0 !important
+    padding: 10px 0 !important
 
 .mat-header-cell
     background-color: $msf-primary-color
@@ -1910,6 +1910,10 @@ mat-tab-group
     font-size: 12px
     flex-direction: column
 
+.msf-dashboard-checkbox-container
+    flex-direction: row
+    display: flex
+
 .msf-dashboard-chart-selector
     display: flex
     flex-direction: row
@@ -1921,7 +1925,14 @@ mat-tab-group
         width: 100%
         .msf-dashboard-checkbox-component
             margin: 10px 0
-            display: flex
+            width: 35%
+        .msf-dashboard-function-title
+            margin-bottom: -20px
+            width: 50%
+        .msf-dashboard-function-measure
+            margin-bottom: -20px
+            margin-left: 15px
+            width: 50%
         .msf-full-width
             @extend .msf-dashboard-form-field
         .msf-dashboard-field-valuectrl
@@ -2006,6 +2017,36 @@ mat-tab-group
     .msf-ok-button
         width: 35%
         background-color:$msf-secondary-color
+
+@mixin msf-dashboard-info-table($bgcolor, $font-size, $height)
+    background-color: $bgcolor
+    vertical-align: middle
+    height: $height
+    display: flex
+    flex-direction: column
+    justify-content: center
+    min-width: 170px
+    font-size: $font-size
+
+.msf-dashboard-info-display
+    margin: 8px
+    display: flex
+    align-items: center
+    height: 80%
+    .msf-dashboard-info-container
+        display: flex
+        flex-flow: row wrap
+        width: 100%
+        .msf-dashboard-info-table
+            margin-top: 10px
+            margin-right: 10px
+            flex: 1
+            .msf-dashboard-info-title
+                @include msf-dashboard-info-table(#3b3b3b, 18px, 45px)
+            .msf-dashboard-info-value
+                @include msf-dashboard-info-table(#333333, 14px, 37px)
+            .msf-dashboard-info-measure
+                @include msf-dashboard-info-table(#3b3b3b, 14px, 30px)
 
 mat-dialog-container
     background-color: $msf-primary-color!important
@@ -3069,3 +3110,6 @@ img.msf-calendar-image
 
 .footer-hover
     background-color: $msf-secondary-color
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-disabled 
+    color: #8e8e8e !important

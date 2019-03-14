@@ -234,7 +234,7 @@ export class Utils{
                 i++;
             }
             return valueAux;
-          }else if (type == ComponentType.groupingAthena){
+          }else if (type == ComponentType.groupingAthena || type == ComponentType.groupingMariaDB){
             var valueAux="";
             var i = 0;
             for(var val of value){
@@ -362,7 +362,7 @@ export class Utils{
                 i++;
             }
             return valueAux;
-          }else if (type == ComponentType.groupingAthena){
+          }else if (type == ComponentType.groupingAthena|| type == ComponentType.groupingMariaDB){
             var valueAux="";
             var i = 0;
             for(var val of value){

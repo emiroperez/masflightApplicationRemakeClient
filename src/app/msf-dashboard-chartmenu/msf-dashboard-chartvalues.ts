@@ -4,7 +4,9 @@ export class MsfDashboardChartValues {
 
     id: number;
     displayChart: boolean;
+    displayInfo: boolean;
     chartGenerated: boolean;
+    infoGenerated: boolean;
 
     chartName: String;
     chartColumnOptions:any[] = []; 
@@ -15,7 +17,7 @@ export class MsfDashboardChartValues {
     width: any;
     height: any;
 
-    lastestResponse: string;
+    lastestResponse: any;
 
     variable: any;
     xaxis: any;

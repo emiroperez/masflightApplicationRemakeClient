@@ -32,12 +32,17 @@ const blueJeans = am4core.color ("#67b7dc");
 // Chart flags settings
 enum ChartFlags
 {
-  NONE      = 0x00000000,
-  XYCHART   = 0x00000001,
-  ROTATED   = 0x00000002,
-  STACKED   = 0x00000004,
-  INFO      = 0x00000008,
-  LINECHART = 0x00000010
+  NONE       = 0x00000000,
+  XYCHART    = 0x00000001,
+  ROTATED    = 0x00000002,
+  STACKED    = 0x00000004,
+  INFO       = 0x00000008,
+  LINECHART  = 0x00000010,
+  AREAFILL   = 0x00000020,
+  AREACHART  = 0x00000030,
+  PIECHART   = 0x00000040,
+  PIEHOLE    = 0x00000080,
+  DONUTCHART = 0x000000C0
 }
 
 @Component({
@@ -56,21 +61,20 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   private timer: number;
 
   chartTypes:any[] = [
-    { id: 'bars', name: 'Bars', flags: ChartFlags.XYCHART, createSeries: this.createVertColumnSeries },
-    { id: 'hbars', name: 'Horizontal Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED, createSeries: this.createHorizColumnSeries },
-    { id: 'sbars', name: 'Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.STACKED, createSeries: this.createVertColumnSeries },
-    { id: 'hsbars', name: 'Horizontal Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED | ChartFlags.STACKED, createSeries: this.createHorizColumnSeries },
-    { id: 'line', name: 'Lines', flags: ChartFlags.XYCHART | ChartFlags.LINECHART, createSeries: this.createLineSeries },                      
-    { id: 'area', name: 'Area', flags: ChartFlags.XYCHART | ChartFlags.LINECHART, createSeries: this.createLineSeries },
-    { id: 'sarea', name: 'Stacked Area', flags: ChartFlags.XYCHART | ChartFlags.STACKED | ChartFlags.LINECHART, createSeries: this.createLineSeries },
+    { name: 'Bars', flags: ChartFlags.XYCHART, createSeries: this.createVertColumnSeries },
+    { name: 'Horizontal Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED, createSeries: this.createHorizColumnSeries },
+    { name: 'Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.STACKED, createSeries: this.createVertColumnSeries },
+    { name: 'Horizontal Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED | ChartFlags.STACKED, createSeries: this.createHorizColumnSeries },
+    { name: 'Lines', flags: ChartFlags.XYCHART | ChartFlags.LINECHART, createSeries: this.createLineSeries },                      
+    { name: 'Area', flags: ChartFlags.XYCHART | ChartFlags.AREACHART, createSeries: this.createLineSeries },
+    { name: 'Stacked Area', flags: ChartFlags.XYCHART | ChartFlags.STACKED | ChartFlags.AREACHART, createSeries: this.createLineSeries },
 
-    { id: 'pie', name: 'Pie', flags: ChartFlags.NONE },
-    { id: 'donut', name: 'Donut', flags: ChartFlags.NONE },
-    { id: 'radar', name: 'Radar', flags: ChartFlags.NONE },
+    { name: 'Pie', flags: ChartFlags.PIECHART },
+    { name: 'Donut', flags: ChartFlags.DONUTCHART },
 
-    { id: 'spbars', name: 'Simple Bars', flags: ChartFlags.NONE, createSeries: this.createSimpleVertColumnSeries },
-    { id: 'sphbars', name: 'Simple Horizontal Bars', flags: ChartFlags.ROTATED, createSeries: this.createSimpleHorizColumnSeries }/*,
-    { id: 'info', name: 'Information', flags: ChartFlags.INFO }*/
+    { name: 'Simple Bars', flags: ChartFlags.NONE, createSeries: this.createSimpleVertColumnSeries },
+    { name: 'Simple Horizontal Bars', flags: ChartFlags.ROTATED, createSeries: this.createSimpleHorizColumnSeries },
+    { name: 'Information', flags: ChartFlags.INFO }
   ];
 
   functions:any[] = [
@@ -184,9 +188,9 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
     // Add an event that hide the column chart when clicked
     /*series.columns.template.events.on ("hit", function(event) {
-//      console.log ("clicked on ", event.target);
-//      series.hidden = true;
-      series.hide ();
+      //event.target.parent.hide ();
+      chart.legend.dispatchImmediately ("hide");
+      //event.target.dataItem.categoryY;
     });*/
   }
 
@@ -244,7 +248,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     }
 
     // Fill area below line for area chart types
-    if (values.currentChartType.id === 'area' || values.currentChartType.id === 'sarea')
+    if (values.currentChartType.flags & ChartFlags.AREAFILL)
       series.fillOpacity = 0.3;
 
     series.stacked = stacked;
@@ -292,41 +296,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       let chart;
 
       // Check chart type before generating it
-      if (this.values.currentChartType.id === 'radar')
-      {
-        let categoryAxis, valueAxis, series;
-
-        chart = am4core.create ("msf-dashboard-chart-display-" + this.columnPos + "-" + this.rowPos, am4charts.RadarChart);
-        chart.data = chartInfo.dataProvider;
-
-        // Configure Radar Chart
-        categoryAxis = chart.xAxes.push (new am4charts.CategoryAxis ());
-        categoryAxis.renderer.labels.template.fontSize = 10;
-        categoryAxis.dataFields.category = chartInfo.titleField;
-        categoryAxis.renderer.grid.template.strokeOpacity = 1;
-        categoryAxis.renderer.grid.template.stroke = darkBlue;
-        categoryAxis.renderer.grid.template.strokeWidth = 1;
-
-        valueAxis = chart.yAxes.push (new am4charts.ValueAxis ());
-        valueAxis.renderer.labels.template.fontSize = 10;
-        valueAxis.renderer.axisFills.template.fillOpacity = 1;
-        valueAxis.renderer.grid.template.strokeOpacity = 1;
-        valueAxis.renderer.grid.template.stroke = darkBlue;
-        valueAxis.renderer.grid.template.strokeWidth = 1;
-
-        series = chart.series.push (new am4charts.RadarColumnSeries ());
-        series.dataFields.valueY = chartInfo.valueField;
-        series.dataFields.categoryX = chartInfo.titleField;
-        series.columns.template.tooltipText = "{categoryX}: {valueY}";
-        series.columns.template.strokeWidth = 0;
-
-        // Set colors
-        series.columns.template.adapter.add ("fill", (fill, target) => {
-          return am4core.color (chartInfo.colors[target.dataItem.index]);
-        });
-      }
-      else if (this.values.currentChartType.id === 'pie'
-        || this.values.currentChartType.id === 'donut')
+      if (this.values.currentChartType.flags & ChartFlags.PIECHART)
       {
         let series, colorSet;
 
@@ -337,7 +307,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         chart.fontSize = 10;
 
         // Set inner radius for donut chart
-        if (this.values.currentChartType.id === 'donut')
+        if (this.values.currentChartType.flags & ChartFlags.PIEHOLE)
           chart.innerRadius = am4core.percent (60);
 
         // Configure Pie Chart
@@ -350,10 +320,9 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         series.hiddenState.properties.endAngle = -90;
         series.hiddenState.properties.startAngle = -90;
 
-        // Set colors
-        series.ticks.template.strokeOpacity = 1;
-        series.ticks.template.stroke = darkBlue;
-        series.ticks.template.strokeWidth = 1;
+        // Disable label and ticks
+        series.ticks.template.disabled = true;
+        series.labels.template.disabled = true;
 
         colorSet = new am4core.ColorSet ();
         colorSet.list = chartInfo.colors.map (function(color) {
@@ -361,71 +330,23 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         });
         series.colors = colorSet;
       }
-      else if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
-      {
-        let categoryAxis, valueAxis;
-
-        chart = am4core.create ("msf-dashboard-chart-display-" + this.columnPos + "-" + this.rowPos, am4charts.XYChart);
-        chart.data = chartInfo.dataProvider;
-
-        if (this.values.currentChartType.flags & ChartFlags.ROTATED)
-        {
-          categoryAxis = chart.yAxes.push (new am4charts.CategoryAxis ());
-          valueAxis = chart.xAxes.push (new am4charts.ValueAxis ());
-
-          categoryAxis.renderer.labels.template.maxWidth = 130;
-          categoryAxis.renderer.minGridDistance = 15;
-
-          if (chart.data.length > 1)
-          {
-            chart.scrollbarY = new am4core.Scrollbar ();
-            chart.scrollbarY.background.fill = blueJeans;
-          }
-        }
-        else
-        {
-          categoryAxis = chart.xAxes.push (new am4charts.CategoryAxis ())
-          valueAxis = chart.yAxes.push (new am4charts.ValueAxis ());
-
-          categoryAxis.renderer.labels.template.maxWidth = 100;
-          categoryAxis.renderer.labels.template.rotation = 330;
-          categoryAxis.renderer.minGridDistance = 30;
-
-          if (chart.data.length > 1)
-          {
-            chart.scrollbarX = new am4core.Scrollbar ();
-            chart.scrollbarX.background.fill = blueJeans;
-          }
-        }
-
-        categoryAxis.renderer.labels.template.fontSize = 10;
-        categoryAxis.renderer.labels.template.wrap = true;
-        categoryAxis.renderer.labels.template.horizontalCenter  = "right";
-        categoryAxis.renderer.labels.template.textAlign  = "end";
-        categoryAxis.dataFields.category = chartInfo.titleField;
-        categoryAxis.renderer.grid.template.location = 0;
-        categoryAxis.renderer.grid.template.strokeOpacity = 1;
-        categoryAxis.renderer.line.strokeOpacity = 1;
-        categoryAxis.renderer.grid.template.stroke = darkBlue;
-        categoryAxis.renderer.line.stroke = darkBlue;
-        categoryAxis.renderer.grid.template.strokeWidth = 1;
-        categoryAxis.renderer.line.strokeWidth = 1;
-
-        valueAxis.renderer.labels.template.fontSize = 10;
-        valueAxis.renderer.grid.template.strokeOpacity = 1;
-        valueAxis.renderer.grid.template.stroke = darkBlue;
-        valueAxis.renderer.grid.template.strokeWidth = 1;
-
-        this.values.currentChartType.createSeries (this.values, false, chart, chartInfo, null);
-      }
       else
       {
         let categoryAxis, valueAxis, parseDate, stacked;
 
         chart = am4core.create ("msf-dashboard-chart-display-" + this.columnPos + "-" + this.rowPos, am4charts.XYChart);
-        chart.data = chartInfo.data;
 
-        parseDate = this.values.xaxis.id.includes ('date');
+        // Don't parse dates if the chart is a simple version
+        if (this.values.currentChartType.flags & ChartFlags.XYCHART)
+        {
+          chart.data = chartInfo.data;
+          parseDate = this.values.xaxis.id.includes ('date');
+        }
+        else
+        {
+          chart.data = chartInfo.dataProvider;
+          parseDate = false;
+        }
 
         // Set chart axes depeding on the rotation
         if (this.values.currentChartType.flags & ChartFlags.ROTATED)
@@ -440,7 +361,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
           {
             categoryAxis = chart.yAxes.push (new am4charts.CategoryAxis ());
             categoryAxis.renderer.minGridDistance = 15;
-            categoryAxis.renderer.labels.template.maxWidth = 130;
+            categoryAxis.renderer.labels.template.maxWidth = 160;
           }
 
           valueAxis = chart.xAxes.push (new am4charts.ValueAxis ());
@@ -484,7 +405,6 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         categoryAxis.renderer.labels.template.wrap = true;
         categoryAxis.renderer.labels.template.horizontalCenter  = "right";
         categoryAxis.renderer.labels.template.textAlign  = "end";
-        categoryAxis.dataFields.category = this.values.xaxis.id;
         categoryAxis.renderer.grid.template.location = 0;
         categoryAxis.renderer.grid.template.strokeOpacity = 1;
         categoryAxis.renderer.line.strokeOpacity = 1;
@@ -499,101 +419,125 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         valueAxis.renderer.grid.template.stroke = darkBlue;
         valueAxis.renderer.grid.template.strokeWidth = 1;
 
-        stacked = (this.values.currentChartType.flags & ChartFlags.STACKED) ? true : false;
-        if ((this.values.currentChartType.flags & ChartFlags.LINECHART) && stacked)
+        if (this.values.currentChartType.flags & ChartFlags.XYCHART)
         {
-          // Avoid negative values on the stacked area chart
-          for (let object of chartInfo.filter)
+          // The category will be the x axis if the chart type has it
+          categoryAxis.dataFields.category = this.values.xaxis.id;
+
+          stacked = (this.values.currentChartType.flags & ChartFlags.STACKED) ? true : false;
+          if ((this.values.currentChartType.flags & ChartFlags.LINECHART) && stacked)
           {
-            for (let data of chartInfo.data)
-            {
-              if (data[object.valueField] == null)
-                continue;
-
-              if (data[object.valueField] < 0)
-                data[object.valueField] = 0;
-            }
-          }
-        }
-
-        // Sort chart series from least to greatest by calculating the
-        // average (normal) or total (stacked) value of each key item to
-        // compensate for the lack of proper sorting by values
-        if (stacked && !(this.values.currentChartType.flags & ChartFlags.LINECHART))
-        {
-          for (let item of chart.data)
-          {
-            let total = 0;
-
+            // Avoid negative values on the stacked area chart
             for (let object of chartInfo.filter)
             {
-              let value = item[object.valueField];
+              for (let data of chartInfo.data)
+              {
+                if (data[object.valueField] == null)
+                  continue;
 
-              if (value != null)
-                total += value;
+                if (data[object.valueField] < 0)
+                  data[object.valueField] = 0;
+              }
             }
-
-            item["sum"] = total;
           }
 
-          chart.events.on ("beforedatavalidated", function(event) {
-            chart.data.sort (function(e1, e2) {
-              return e1.sum - e2.sum;
-            });
-          });
-        }
-        else
-        {
-          for (let object of chartInfo.filter)
+          // Sort chart series from least to greatest by calculating the
+          // average (normal) or total (stacked) value of each key item to
+          // compensate for the lack of proper sorting by values
+          if (stacked && !(this.values.currentChartType.flags & ChartFlags.LINECHART))
           {
-            let average = 0;
-
-            for (let data of chartInfo.data)
+            for (let item of chart.data)
             {
-              let value = data[object.valueField];
+              let total = 0;
 
-              if (value != null)
-                average += value;
+              for (let object of chartInfo.filter)
+              {
+                let value = item[object.valueField];
+
+                if (value != null)
+                  total += value;
+              }
+
+              item["sum"] = total;
             }
 
-            object["avg"] = average / chartInfo.data.length;
-          }
-
-          // Also sort the data by date the to get the correct order on the line chart
-          // if the category axis is a date type
-          if (parseDate && (this.values.currentChartType.flags & ChartFlags.LINECHART))
-          {
-            let axisField = this.values.xaxis.id;
-  
             chart.events.on ("beforedatavalidated", function(event) {
               chart.data.sort (function(e1, e2) {
-                return +(new Date(e1[axisField])) - +(new Date(e2[axisField]));
+                return e1.sum - e2.sum;
               });
             });
           }
+          else
+          {
+            for (let object of chartInfo.filter)
+            {
+              let average = 0;
 
-          chartInfo.filter.sort (function(e1, e2) {
-            return e1.avg - e2.avg;
+              for (let data of chartInfo.data)
+              {
+                let value = data[object.valueField];
+
+                if (value != null)
+                  average += value;
+              }
+
+              object["avg"] = average / chartInfo.data.length;
+            }
+
+            // Also sort the data by date the to get the correct order on the line chart
+            // if the category axis is a date type
+            if (parseDate && (this.values.currentChartType.flags & ChartFlags.LINECHART))
+            {
+              let axisField = this.values.xaxis.id;
+  
+              chart.events.on ("beforedatavalidated", function(event) {
+                chart.data.sort (function(e1, e2) {
+                  return +(new Date(e1[axisField])) - +(new Date(e2[axisField]));
+                });
+              });
+            }
+
+            chartInfo.filter.sort (function(e1, e2) {
+              return e1.avg - e2.avg;
+            });
+          }
+
+          // Create the series and set colors
+          chart.colors.list = [];
+          for (let object of chartInfo.filter)
+          {
+            chart.colors.list.push (am4core.color (object.lineColor));
+            this.values.currentChartType.createSeries (this.values, stacked, chart, object, parseDate);
+          }
+
+          // Add cursor if the chart type is line, area or stacked area
+          if (this.values.currentChartType.flags & ChartFlags.LINECHART)
+          {
+            chart.cursor = new am4charts.XYCursor ();
+            chart.cursor.xAxis = valueAxis;
+            chart.cursor.snapToSeries = chart.series;
+          }
+        }
+        else
+        {
+          // The category will the values if the chart type lacks an x axis
+          categoryAxis.dataFields.category = chartInfo.titleField;
+
+          // Sort values from least to greatest
+          chart.events.on ("beforedatavalidated", function(event) {
+            chart.data.sort (function(e1, e2) {
+              return e1[chartInfo.valueField] - e2[chartInfo.valueField];
+            });
           });
-        }
 
-        // Create the series and set colors
-        chart.colors.list = [];
-        for (let object of chartInfo.filter)
-        {
-          chart.colors.list.push (am4core.color (object.lineColor));
-          this.values.currentChartType.createSeries (this.values, stacked, chart, object, parseDate);
+          // Create the series
+          this.values.currentChartType.createSeries (this.values, false, chart, chartInfo, parseDate);
         }
+      }
 
-        // Add cursor if the chart type is line, area or stacked area
-        if (this.values.currentChartType.id === 'line' || this.values.currentChartType.id === 'area'
-          || this.values.currentChartType.id === 'sarea')
-        {
-          chart.cursor = new am4charts.XYCursor ();
-          chart.cursor.xAxis = valueAxis;
-          chart.cursor.snapToSeries = chart.series;
-        }
-
+      if ((this.values.currentChartType.flags & ChartFlags.XYCHART)
+        || (this.values.currentChartType.flags & ChartFlags.PIECHART))
+      {
         // Display Legend
         chart.legend = new am4charts.Legend ();
         chart.legend.markers.template.width = 15;
@@ -601,9 +545,10 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         chart.legend.labels.template.fontSize = 10;
 
         /*chart.legend.itemContainers.template.events.on (
-          "hit",
+          "hide",
           ev => {
-            var item = ev.target.dataItem.component.tooltipDataItem.dataContext;
+            chart.legend.data[0].hide ();
+            // var item = ev.target.dataItem.component.tooltipDataItem.dataContext;
             //alert("line clicked on: " + item.country + ": " + item.marketing);
           },
           this
@@ -633,8 +578,19 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   {
     if (!this.isEmpty (this.values.lastestResponse))
     {
-      this.makeChart (this.values.lastestResponse);
-      this.values.chartGenerated = true;
+      if (this.values.currentChartType.flags & ChartFlags.INFO)
+      {
+        if (this.values.function == 1)
+        {
+          this.values.infoGenerated = true;
+          this.values.function = -1;
+        }
+      }
+      else
+      {
+        this.makeChart (this.values.lastestResponse);
+        this.values.chartGenerated = true;
+      }
     }
   }
 
@@ -644,7 +600,15 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     this.initPanelSettings ();
 
     if (!this.isEmpty (this.values.lastestResponse))
-      this.values.displayChart = true;
+    {
+      if (this.values.currentChartType.flags & ChartFlags.INFO)
+      {
+        if (this.values.function == 1)
+          this.values.displayInfo = true;
+      }
+      else
+        this.values.displayChart = true;
+    }
   }
 
   private filterVariables(filterCtrl): void
@@ -715,20 +679,103 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   }
 
   // return current panel information into a JSON for a http message body
-  getPanelInfo(): any
+  //
+  // panels that only displays information will reuse some values from the database
+  // for simplicity reasons: analysis, xaxis and values will store the data type used
+  // for variables #1, #2 and #3 respetively; function will be used to check if the
+  // results are generated or not and lastestResponse will store all the functions
+  // values and results (if it was generated)
+  getPanelInfo(infoChartType: boolean): any
   {
-    return {
-      'id' : this.values.id,
-      'option' : this.values.currentOption,
-      'title' : this.values.chartName,
-      'chartColumnOptions' : this.values.chartColumnOptions,
-      'analysis' : this.values.chartColumnOptions.indexOf (this.values.variable),
-      'xaxis' : this.values.chartColumnOptions.indexOf (this.values.xaxis),
-      'values' : this.values.chartColumnOptions.indexOf (this.values.valueColumn),
-      'function' : this.functions.indexOf (this.values.function),
-      'chartType' : this.chartTypes.indexOf (this.values.currentChartType),
-      'categoryOptions' : this.values.currentOptionCategories
-    };
+    if (infoChartType)
+    {
+      return {
+        'id' : this.values.id,
+        'option' : this.values.currentOption,
+        'title' : this.values.chartName,
+        'chartColumnOptions' : this.values.chartColumnOptions,
+        'analysis' : this.values.chartColumnOptions.indexOf (this.values.infoVar1),
+        'xaxis' : this.values.chartColumnOptions.indexOf (this.values.infoVar2),
+        'values' : this.values.chartColumnOptions.indexOf (this.values.infoVar3),
+        'function' : 1,
+        'chartType' : this.chartTypes.indexOf (this.values.currentChartType),
+        'categoryOptions' : this.values.currentOptionCategories
+      };
+    }
+    else
+    {
+      return {
+        'id' : this.values.id,
+        'option' : this.values.currentOption,
+        'title' : this.values.chartName,
+        'chartColumnOptions' : this.values.chartColumnOptions,
+        'analysis' : this.values.chartColumnOptions.indexOf (this.values.variable),
+        'xaxis' : this.values.chartColumnOptions.indexOf (this.values.xaxis),
+        'values' : this.values.chartColumnOptions.indexOf (this.values.valueColumn),
+        'function' : this.functions.indexOf (this.values.function),
+        'chartType' : this.chartTypes.indexOf (this.values.currentChartType),
+        'categoryOptions' : this.values.currentOptionCategories
+      };
+    }
+  }
+
+  loadTextSummary(handlerSuccess, handlerError): void
+  {
+    let url, urlBase, urlArg, panel, variables;
+
+    this.globals.isLoading = true;
+    urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
+    urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
+    console.log (urlBase);
+    urlArg = encodeURIComponent (urlBase);
+
+    // Prepare list of variables
+    variables = [];
+
+    for (let i = 0; i < this.values.infoNumVariables; i++)
+    {
+      let infoVar, infoFunc;
+
+      switch (i)
+      {
+        case 2:
+          infoVar = this.values.infoVar3;
+          infoFunc = this.values.infoFunc3;
+          break;
+
+        case 1:
+          infoVar = this.values.infoVar2;
+          infoFunc = this.values.infoFunc2;
+          break;
+
+        default:
+          infoVar = this.values.infoVar1;
+          infoFunc = this.values.infoFunc1;
+          break;
+      }
+
+      for (let j = 0; j < 5; j++)
+      {
+        if (!infoFunc[j].checked)
+          continue;
+
+        variables.push ({
+          id : i,
+          function : infoFunc[j].id,
+          title : infoFunc[j].title,
+          measure : infoFunc[j].measure,
+          column : infoVar.id
+        });
+      }
+    }
+
+    // set panel info for the HTTP message body
+    panel = this.getPanelInfo (true);
+    panel.variables = variables;
+
+    url = this.service.host + "/getTextSummaryResponse?url=" + urlArg;
+
+    this.http.post (this, url, panel, handlerSuccess, handlerError);
   }
 
   loadChartData(handlerSuccess, handlerError): void
@@ -736,7 +783,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     let url, urlBase, urlArg, panel;
 
     // set panel info for the HTTP message body
-    panel = this.getPanelInfo ();
+    panel = this.getPanelInfo (false);
     this.globals.isLoading = true;
     urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
@@ -757,7 +804,11 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   loadData(): void
   {
     this.globals.startTimestamp = new Date ();
-    this.loadChartData (this.handlerSuccess, this.handleChartError);
+
+    if (this.values.currentChartType.flags & ChartFlags.INFO)
+      this.loadTextSummary (this.handlerTextSuccess, this.handlerTextError);
+    else
+      this.loadChartData (this.handlerChartSuccess, this.handlerChartError);
   }
 
   ngOnDestroy()
@@ -774,14 +825,60 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   {
     this.values.lastestResponse = null;
     this.values.chartGenerated = false;
+    this.values.infoGenerated = false;
     this.globals.isLoading = false;
 
-    this.dialog.open (MessageComponent, {
-      data: { title: "Error", message: "No data available for chart generation." }
-    });
+    if (this.values.currentChartType.flags & ChartFlags.INFO)
+    {
+      this.dialog.open (MessageComponent, {
+        data: { title: "Error", message: "No data available for information." }
+      });
+    }
+    else
+    {
+      this.dialog.open (MessageComponent, {
+        data: { title: "Error", message: "No data available for chart generation." }
+      });
+    }
   }
 
-  handlerSuccess(_this, data): void
+  haveDataInfo(data): boolean
+  {
+    let numEmpty = 0;
+
+    for (let i = 0; i < data.length; i++)
+    {
+      if (data[i].value == null)
+        numEmpty++;
+    }
+
+    if (numEmpty == data.length)
+      return false;
+    else
+      return true;
+  }
+
+  handlerTextSuccess(_this, data): void
+  {
+    if (!_this.haveDataInfo (data))
+    {
+      _this.noDataFound ();
+      return;
+    }
+
+    _this.values.lastestResponse = data;
+
+    // destroy current chart if it's already generated to avoid a blank chart later
+    _this.destroyChart ();
+
+    //console.log (data);
+    _this.values.displayInfo = true;
+    _this.values.chartGenerated = false;
+    _this.values.infoGenerated = true;
+    _this.globals.isLoading = false;
+  }
+
+  handlerChartSuccess(_this, data): void
   {
     if ((_this.values.currentChartType.flags & ChartFlags.XYCHART) && _this.isEmpty (data.data))
     {
@@ -802,6 +899,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     _this.makeChart (data);
     _this.values.displayChart = true;
     _this.values.chartGenerated = true;
+    _this.values.infoGenerated = false;
     _this.globals.isLoading = false;
   }
 
@@ -811,7 +909,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     this.getChartFilterValues (component.id, this.addChartFilterValues);
   }
 
-  handleChartError(_this, result): void
+  handlerChartError(_this, result): void
   {
     console.log (result);
     _this.values.lastestResponse = null;
@@ -820,6 +918,18 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
     _this.dialog.open (MessageComponent, {
       data: { title: "Error", message: "Failed to generate chart." }
+    });
+  }
+
+  handlerTextError(_this, result): void
+  {
+    console.log (result);
+    _this.values.lastestResponse = null;
+    _this.values.chartGenerated = false;
+    _this.globals.isLoading = false;
+
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Error", message: "Failed to get summary." }
     });
   }
 
@@ -968,9 +1078,27 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     this.temp.xaxis = this.values.chartColumnOptions.indexOf (this.values.xaxis);
     this.temp.valueColumn = this.values.chartColumnOptions.indexOf (this.values.valueColumn);
     this.temp.function = this.functions.indexOf (this.values.function);
-    this.temp.currentChartType = this.chartTypes.indexOf (this.values.currentChartType);
+    this.temp.currentChartType = JSON.parse (JSON.stringify (this.values.currentChartType));
     this.temp.chartColumnOptions = JSON.parse (JSON.stringify (this.values.chartColumnOptions));
     this.temp.currentOptionCategories = JSON.parse (JSON.stringify (this.values.currentOptionCategories));
+
+    if (this.values.currentChartType.flags & ChartFlags.INFO)
+    {
+      if (this.values.infoVar1 != null)
+        this.temp.infoVar1 = this.values.infoVar1;
+
+      if (this.values.infoVar2 != null)
+        this.temp.infoVar2 = this.values.infoVar2;
+
+      if (this.values.infoVar3 != null)
+        this.temp.infoVar3 = this.values.infoVar3;
+    }
+    else
+    {
+      this.temp.infoVar1 = null;
+      this.temp.infoVar2 = null;
+      this.temp.infoVar3 = null;
+    }
   }
 
   goToChartConfiguration(): void
@@ -979,9 +1107,20 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     this.storeChartValues ();
   }
 
+  goToInfoConfiguration(): void
+  {
+    this.values.displayInfo = false;
+    this.storeChartValues ();
+  }
+
   goToChart(): void
   {
-    this.values.displayChart = true;
+    let i, item;
+
+    if (this.values.infoGenerated)
+      this.values.displayInfo = true;
+    else
+      this.values.displayChart = true;
 
     // discard any changes
     this.values.currentOption = JSON.parse (JSON.stringify (this.temp.currentOption));
@@ -990,11 +1129,67 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     this.values.xaxis = this.temp.xaxis;
     this.values.valueColumn = this.temp.valueColumn;
     this.values.function = this.temp.function;
-    this.values.currentChartType = this.temp.currentChartType;
     this.values.chartColumnOptions = JSON.parse (JSON.stringify (this.temp.chartColumnOptions));
     this.values.currentOptionCategories = JSON.parse (JSON.stringify (this.temp.currentOptionCategories));
 
+    for (i = 0; i < this.chartTypes.length; i++)
+    {
+      item = this.chartTypes[i];
+
+      if (item.name === this.temp.currentChartType.name)
+      {
+        this.values.currentChartType = item;
+        break;
+      }
+    }
+
+    if (this.values.currentChartType.flags & ChartFlags.INFO)
+    {
+      if (this.temp.infoVar1 != null)
+      {
+        for (i = 0; i < this.values.chartColumnOptions.length; i++)
+        {
+          item = this.values.chartColumnOptions[i];
+
+          if (this.temp.infoVar1.id === item.id)
+          {
+            this.values.variable = this.values.chartColumnOptions.indexOf (item);
+            break;
+          }
+        }
+      }
+
+      if (this.temp.infoVar2 != null)
+      {
+        for (i = 0; i < this.values.chartColumnOptions.length; i++)
+        {
+          item = this.values.chartColumnOptions[i];
+
+          if (this.temp.infoVar2.id === item.id)
+          {
+            this.values.xaxis = this.values.chartColumnOptions.indexOf (item);
+            break;
+          }
+        }
+      }
+
+      if (this.temp.infoVar3 != null)
+      {
+        for (i = 0; i < this.values.chartColumnOptions.length; i++)
+        {
+          item = this.values.chartColumnOptions[i];
+
+          if (this.temp.infoVar3.id === item.id)
+          {
+            this.values.valueColumn = this.values.chartColumnOptions.indexOf (item);
+            break;
+          }
+        }
+      }
+    }
+
     // re-initialize panel settings
+    this.values.currentChartType = this.chartTypes.indexOf (this.values.currentChartType);
     this.initPanelSettings ();
   }
 
@@ -1006,9 +1201,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
     if (this.values.currentChartType.flags & ChartFlags.INFO)
     {
-      let i;
-
-      // disable and reset any variables when selecting the information panel
+      // disable and reset unused variables
       this.values.variable = null;
       this.chartForm.get ('variableCtrl').reset ();
 
@@ -1017,6 +1210,25 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
       this.values.valueColumn = null;
       this.chartForm.get ('valueCtrl').reset ();
+    }
+    else
+    {
+      let i;
+
+      this.values.infoNumVariables = 0;
+      this.chartForm.get ('infoNumVarCtrl').setValue (0);
+
+      if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
+      {
+        this.values.xaxis = null;
+        this.chartForm.get ('xaxisCtrl').reset ();
+        this.chartForm.get ('xaxisCtrl').disable ();
+      }
+      else
+        this.chartForm.get ('xaxisCtrl').enable ();
+
+      this.chartForm.get ('variableCtrl').enable ();
+      this.chartForm.get ('valueCtrl').enable ();
 
       this.values.infoVar1 = null;
 
@@ -1041,23 +1253,6 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
       this.chartForm.get ('infoVar3Ctrl').reset ();
       this.chartForm.get ('infoVar3Ctrl').disable ();
-    }
-    else
-    {
-      this.values.infoNumVariables = 0;
-      this.chartForm.get ('infoNumVarCtrl').setValue (0);
-
-      if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
-      {
-        this.values.xaxis = null;
-        this.chartForm.get ('xaxisCtrl').reset ();
-        this.chartForm.get ('xaxisCtrl').disable ();
-      }
-      else
-        this.chartForm.get ('xaxisCtrl').enable ();
-
-      this.chartForm.get ('variableCtrl').enable ();
-      this.chartForm.get ('valueCtrl').enable ();
     }
 
     // check the chart filters to see if the chart generation is to be enabled or not
@@ -1176,21 +1371,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     else
       this.values.currentChartType = this.chartTypes[0];
 
-    if (this.values.function != null && this.values.function != -1)
-    {
-      for (i = 0; i < this.functions.length; i++)
-      {
-        if (i == this.values.function)
-        {
-          this.values.function = this.functions[i];
-          break;
-        }
-      }
-    }
-    else
-      this.values.function = this.functions[0];
-
-    // set any values if loading a panel already created
+    // set the form values
     if (this.values.currentOption)
     {
       options = this.values.options;
@@ -1216,41 +1397,170 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       }
     }
 
-    if (this.values.variable != null && this.values.variable != -1)
+    if (this.values.currentChartType.flags & ChartFlags.INFO)
     {
-      for (i = 0; i < this.values.chartColumnOptions.length; i++)
+      let lastvar;
+
+      this.values.infoNumVariables = 0;
+
+      if (this.values.variable != null && this.values.variable != -1)
       {
-        if (i == this.values.variable)
+        for (i = 0; i < this.values.chartColumnOptions.length; i++)
         {
-          this.chartForm.get ('variableCtrl').setValue (this.values.chartColumnOptions[i]);
-          this.values.variable = this.values.chartColumnOptions[i];
-          break;
+          if (i == this.values.variable)
+          {
+            this.chartForm.get ('infoVar1Ctrl').setValue (this.values.chartColumnOptions[i]);
+            this.chartForm.get ('infoVar1Ctrl').enable ();
+            this.values.infoVar1 = this.values.chartColumnOptions[i];
+            this.values.variable = null;
+            this.values.infoNumVariables++;
+            break;
+          }
+        }
+      }
+  
+      if (this.values.xaxis != null && this.values.xaxis != -1)
+      {
+        for (i = 0; i < this.values.chartColumnOptions.length; i++)
+        {
+          if (i == this.values.xaxis)
+          {
+            this.chartForm.get ('infoVar2Ctrl').setValue (this.values.chartColumnOptions[i]);
+            this.chartForm.get ('infoVar2Ctrl').enable ();
+            this.values.infoVar2 = this.values.chartColumnOptions[i];
+            this.values.variable = null;
+            this.values.infoNumVariables++;
+            break;
+          }
+        }
+      }
+  
+      if (this.values.valueColumn != null && this.values.valueColumn != -1)
+      {
+        for (i = 0; i < this.values.chartColumnOptions.length; i++)
+        {
+          if (i == this.values.valueColumn)
+          {
+            this.chartForm.get ('infoVar3Ctrl').setValue (this.values.chartColumnOptions[i]);
+            this.chartForm.get ('infoVar3Ctrl').enable ();
+            this.values.infoVar3 = this.values.chartColumnOptions[i];
+            this.values.valueColumn = null;
+            this.values.infoNumVariables++;
+            break;
+          }
+        }
+      }
+
+      if (this.values.infoNumVariables)
+        this.chartForm.get ('infoNumVarCtrl').setValue (this.values.infoNumVariables);
+
+      // set function values
+      for (i = 0; i < this.values.lastestResponse.length; i++)
+      {
+        let item = this.values.lastestResponse[i];
+        let infoFunc, j;
+
+        switch (item.id)
+        {
+          case 2:
+            infoFunc = this.values.infoFunc3;
+            break;
+  
+          case 1:
+            infoFunc = this.values.infoFunc2;
+            break;
+  
+          default:
+            infoFunc = this.values.infoFunc1;
+            break;
+        }
+
+        switch (item.function)
+        {
+          case 'avg':
+            j = 0;
+            break;
+
+          case 'sum':
+            j = 1;
+            break;
+
+          case 'max':
+            j = 2;
+            break;
+
+          case 'min':
+            j = 3;
+            break;
+
+          case 'count':
+            j = 4;
+            break;
+
+          default:
+            j = -1;
+        }
+
+        if (j != -1)
+        {
+          infoFunc[j].checked = true;
+          infoFunc[j].title = item.title;
+          infoFunc[j].measure = item.measure;
         }
       }
     }
-
-    if (this.values.xaxis != null && this.values.xaxis != -1)
+    else
     {
-      for (i = 0; i < this.values.chartColumnOptions.length; i++)
+      if (this.values.function != null && this.values.function != -1)
       {
-        if (i == this.values.xaxis)
+        for (i = 0; i < this.functions.length; i++)
         {
-          this.chartForm.get ('xaxisCtrl').setValue (this.values.chartColumnOptions[i]);
-          this.values.xaxis = this.values.chartColumnOptions[i];
-          break;
+          if (i == this.values.function)
+          {
+            this.values.function = this.functions[i];
+            break;
+          }
         }
       }
-    }
+      else
+        this.values.function = this.functions[0];
 
-    if (this.values.valueColumn != null && this.values.valueColumn != -1)
-    {
-      for (i = 0; i < this.values.chartColumnOptions.length; i++)
+      if (this.values.variable != null && this.values.variable != -1)
       {
-        if (i == this.values.valueColumn)
+        for (i = 0; i < this.values.chartColumnOptions.length; i++)
         {
-          this.chartForm.get ('valueCtrl').setValue (this.values.chartColumnOptions[i]);
-          this.values.valueColumn = this.values.chartColumnOptions[i];
-          break;
+          if (i == this.values.variable)
+          {
+            this.chartForm.get ('variableCtrl').setValue (this.values.chartColumnOptions[i]);
+            this.values.variable = this.values.chartColumnOptions[i];
+            break;
+          }
+        }
+      }
+
+      if (this.values.xaxis != null && this.values.xaxis != -1)
+      {
+        for (i = 0; i < this.values.chartColumnOptions.length; i++)
+        {
+          if (i == this.values.xaxis)
+          {
+            this.chartForm.get ('xaxisCtrl').setValue (this.values.chartColumnOptions[i]);
+            this.values.xaxis = this.values.chartColumnOptions[i];
+            break;
+          }
+        }
+      }
+
+      if (this.values.valueColumn != null && this.values.valueColumn != -1)
+      {
+        for (i = 0; i < this.values.chartColumnOptions.length; i++)
+        {
+          if (i == this.values.valueColumn)
+          {
+            this.chartForm.get ('valueCtrl').setValue (this.values.chartColumnOptions[i]);
+            this.values.valueColumn = this.values.chartColumnOptions[i];
+            break;
+          }
         }
       }
     }
@@ -1266,6 +1576,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     // set lastestResponse to null and remove temporary values since the panel has been updated
     _this.values.lastestResponse = null;
     _this.values.chartGenerated = false;
+    _this.values.infoGenerated = false;
     _this.temp = null;
     _this.globals.isLoading = false;
   }
@@ -1275,7 +1586,60 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     this.service.confirmationDialog (this, "Are you sure you want to save the changes?",
       function (_this)
       {
-        let panel = _this.getPanelInfo ();
+        let panel;
+
+        if (_this.values.currentChartType.flags & ChartFlags.INFO)
+        {
+          let variables;
+
+          panel = _this.getPanelInfo (true);
+          panel.function = -1;
+
+          // Prepare list of variables
+          variables = [];
+
+          for (let i = 0; i < _this.values.infoNumVariables; i++)
+          {
+            let infoVar, infoFunc;
+
+            switch (i)
+            {
+              case 2:
+                infoVar = _this.values.infoVar3;
+                infoFunc = _this.values.infoFunc3;
+                break;
+
+              case 1:
+                infoVar = _this.values.infoVar2;
+                infoFunc = _this.values.infoFunc2;
+                break;
+
+              default:
+                infoVar = _this.values.infoVar1;
+                infoFunc = _this.values.infoFunc1;
+                break;
+            }
+
+            for (let j = 0; j < 5; j++)
+            {
+              if (!infoFunc[j].checked)
+                continue;
+
+              variables.push ({
+                id : i,
+                function : infoFunc[j].id,
+                title : infoFunc[j].title,
+                measure : infoFunc[j].measure,
+                column : infoVar.id
+              });
+            }
+          }
+
+          panel.lastestResponse = variables;
+        }
+        else
+          panel = _this.getPanelInfo (false);
+
         _this.globals.isLoading = true;
         _this.service.updateDashboardPanel (_this, panel, _this.handlerUpdateSucess, _this.handlerError);
       });
@@ -1341,12 +1705,12 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
     switch (infoVarNum)
     {
-      case 3:
+      case 2:
         infoVar = this.values.infoVar3;
         infoFunc = this.values.infoFunc3;
         break;
 
-      case 2:
+      case 1:
         infoVar = this.values.infoVar2;
         infoFunc = this.values.infoFunc2;
         break;
@@ -1359,11 +1723,11 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
     const dialogRef = this.dialog.open (MsfDashboardInfoFunctionsComponent, {
       height: '58%',
-      width: '400px',
+      width: '600px',
       panelClass: 'msf-dashboard-control-variables-dialog',
       data: {
         title: this.values.chartName,
-        subTitle: "Variable #" + infoVarNum + ": " + infoVar.name,
+        subTitle: "Variable #" + (infoVarNum + 1) + ": " + infoVar.name,
         functions: infoFunc
       }
     });
@@ -1371,5 +1735,10 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     dialogRef.afterClosed ().subscribe (
       () => this.checkChartFilters ()
     );
+  }
+
+  getResultValue(result): string
+  {
+    return new Intl.NumberFormat ('en-us').format (result);
   }
 }
