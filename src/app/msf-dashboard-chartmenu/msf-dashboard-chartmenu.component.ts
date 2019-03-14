@@ -268,7 +268,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
     // Set colors
     series.columns.template.adapter.add ("fill", (fill, target) => {
-      return am4core.color (item.colors[target.dataItem.index]);
+      return am4core.color (item.colors[0]);
     });
   }
 
@@ -286,7 +286,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
     // Set colors
     series.columns.template.adapter.add ("fill", (fill, target) => {
-      return am4core.color (item.colors[target.dataItem.index]);
+      return am4core.color (item.colors[0]);
     });
   }
 
