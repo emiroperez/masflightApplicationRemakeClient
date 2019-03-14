@@ -682,7 +682,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   //
   // panels that only displays information will reuse some values from the database
   // for simplicity reasons: analysis, xaxis and values will store the data type used
-  // for variables #1, #2 and #3 respetively; function will be used to check if the
+  // for variables #1, #2 and #3 respectively; function will be used to check if the
   // results are generated or not and lastestResponse will store all the functions
   // values and results (if it was generated)
   getPanelInfo(infoChartType: boolean): any
