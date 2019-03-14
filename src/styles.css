@@ -2343,7 +2343,8 @@ mat-tab-group {
 }
 .msf-dashboard-info-display .msf-dashboard-info-container .msf-dashboard-info-table {
   margin-top: 10px;
-  margin-right: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
   flex: 1;
 }
 .msf-dashboard-info-display .msf-dashboard-info-container .msf-dashboard-info-table .msf-dashboard-info-title {
