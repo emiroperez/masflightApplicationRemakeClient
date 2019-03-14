@@ -330,71 +330,23 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         });
         series.colors = colorSet;
       }
-      else if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
-      {
-        let categoryAxis, valueAxis;
-
-        chart = am4core.create ("msf-dashboard-chart-display-" + this.columnPos + "-" + this.rowPos, am4charts.XYChart);
-        chart.data = chartInfo.dataProvider;
-
-        if (this.values.currentChartType.flags & ChartFlags.ROTATED)
-        {
-          categoryAxis = chart.yAxes.push (new am4charts.CategoryAxis ());
-          valueAxis = chart.xAxes.push (new am4charts.ValueAxis ());
-
-          categoryAxis.renderer.labels.template.maxWidth = 160;
-          categoryAxis.renderer.minGridDistance = 15;
-
-          if (chart.data.length > 1)
-          {
-            chart.scrollbarY = new am4core.Scrollbar ();
-            chart.scrollbarY.background.fill = blueJeans;
-          }
-        }
-        else
-        {
-          categoryAxis = chart.xAxes.push (new am4charts.CategoryAxis ())
-          valueAxis = chart.yAxes.push (new am4charts.ValueAxis ());
-
-          categoryAxis.renderer.labels.template.maxWidth = 100;
-          categoryAxis.renderer.labels.template.rotation = 330;
-          categoryAxis.renderer.minGridDistance = 30;
-
-          if (chart.data.length > 1)
-          {
-            chart.scrollbarX = new am4core.Scrollbar ();
-            chart.scrollbarX.background.fill = blueJeans;
-          }
-        }
-
-        categoryAxis.renderer.labels.template.fontSize = 10;
-        categoryAxis.renderer.labels.template.wrap = true;
-        categoryAxis.renderer.labels.template.horizontalCenter  = "right";
-        categoryAxis.renderer.labels.template.textAlign  = "end";
-        categoryAxis.dataFields.category = chartInfo.titleField;
-        categoryAxis.renderer.grid.template.location = 0;
-        categoryAxis.renderer.grid.template.strokeOpacity = 1;
-        categoryAxis.renderer.line.strokeOpacity = 1;
-        categoryAxis.renderer.grid.template.stroke = darkBlue;
-        categoryAxis.renderer.line.stroke = darkBlue;
-        categoryAxis.renderer.grid.template.strokeWidth = 1;
-        categoryAxis.renderer.line.strokeWidth = 1;
-
-        valueAxis.renderer.labels.template.fontSize = 10;
-        valueAxis.renderer.grid.template.strokeOpacity = 1;
-        valueAxis.renderer.grid.template.stroke = darkBlue;
-        valueAxis.renderer.grid.template.strokeWidth = 1;
-
-        this.values.currentChartType.createSeries (this.values, false, chart, chartInfo, null);
-      }
       else
       {
         let categoryAxis, valueAxis, parseDate, stacked;
 
         chart = am4core.create ("msf-dashboard-chart-display-" + this.columnPos + "-" + this.rowPos, am4charts.XYChart);
-        chart.data = chartInfo.data;
 
-        parseDate = this.values.xaxis.id.includes ('date');
+        // Don't parse dates if the chart is a simple version
+        if (this.values.currentChartType.flags & ChartFlags.XYCHART)
+        {
+          chart.data = chartInfo.data;
+          parseDate = this.values.xaxis.id.includes ('date');
+        }
+        else
+        {
+          chart.data = chartInfo.dataProvider;
+          parseDate = false;
+        }
 
         // Set chart axes depeding on the rotation
         if (this.values.currentChartType.flags & ChartFlags.ROTATED)
@@ -453,7 +405,6 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         categoryAxis.renderer.labels.template.wrap = true;
         categoryAxis.renderer.labels.template.horizontalCenter  = "right";
         categoryAxis.renderer.labels.template.textAlign  = "end";
-        categoryAxis.dataFields.category = this.values.xaxis.id;
         categoryAxis.renderer.grid.template.location = 0;
         categoryAxis.renderer.grid.template.strokeOpacity = 1;
         categoryAxis.renderer.line.strokeOpacity = 1;
@@ -468,98 +419,110 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         valueAxis.renderer.grid.template.stroke = darkBlue;
         valueAxis.renderer.grid.template.strokeWidth = 1;
 
-        stacked = (this.values.currentChartType.flags & ChartFlags.STACKED) ? true : false;
-        if ((this.values.currentChartType.flags & ChartFlags.LINECHART) && stacked)
+        if (this.values.currentChartType.flags & ChartFlags.XYCHART)
         {
-          // Avoid negative values on the stacked area chart
-          for (let object of chartInfo.filter)
+          // The category will be the x axis if the chart type has it
+          categoryAxis.dataFields.category = this.values.xaxis.id;
+
+          stacked = (this.values.currentChartType.flags & ChartFlags.STACKED) ? true : false;
+          if ((this.values.currentChartType.flags & ChartFlags.LINECHART) && stacked)
           {
-            for (let data of chartInfo.data)
-            {
-              if (data[object.valueField] == null)
-                continue;
-
-              if (data[object.valueField] < 0)
-                data[object.valueField] = 0;
-            }
-          }
-        }
-
-        // Sort chart series from least to greatest by calculating the
-        // average (normal) or total (stacked) value of each key item to
-        // compensate for the lack of proper sorting by values
-        if (stacked && !(this.values.currentChartType.flags & ChartFlags.LINECHART))
-        {
-          for (let item of chart.data)
-          {
-            let total = 0;
-
+            // Avoid negative values on the stacked area chart
             for (let object of chartInfo.filter)
             {
-              let value = item[object.valueField];
+              for (let data of chartInfo.data)
+              {
+                if (data[object.valueField] == null)
+                  continue;
 
-              if (value != null)
-                total += value;
+                if (data[object.valueField] < 0)
+                  data[object.valueField] = 0;
+              }
             }
-
-            item["sum"] = total;
           }
 
-          chart.events.on ("beforedatavalidated", function(event) {
-            chart.data.sort (function(e1, e2) {
-              return e1.sum - e2.sum;
-            });
-          });
-        }
-        else
-        {
-          for (let object of chartInfo.filter)
+          // Sort chart series from least to greatest by calculating the
+          // average (normal) or total (stacked) value of each key item to
+          // compensate for the lack of proper sorting by values
+          if (stacked && !(this.values.currentChartType.flags & ChartFlags.LINECHART))
           {
-            let average = 0;
-
-            for (let data of chartInfo.data)
+            for (let item of chart.data)
             {
-              let value = data[object.valueField];
+              let total = 0;
 
-              if (value != null)
-                average += value;
+              for (let object of chartInfo.filter)
+              {
+                let value = item[object.valueField];
+
+                if (value != null)
+                  total += value;
+              }
+
+              item["sum"] = total;
             }
 
-            object["avg"] = average / chartInfo.data.length;
-          }
-
-          // Also sort the data by date the to get the correct order on the line chart
-          // if the category axis is a date type
-          if (parseDate && (this.values.currentChartType.flags & ChartFlags.LINECHART))
-          {
-            let axisField = this.values.xaxis.id;
-  
             chart.events.on ("beforedatavalidated", function(event) {
               chart.data.sort (function(e1, e2) {
-                return +(new Date(e1[axisField])) - +(new Date(e2[axisField]));
+                return e1.sum - e2.sum;
               });
             });
           }
+          else
+          {
+            for (let object of chartInfo.filter)
+            {
+              let average = 0;
 
-          chartInfo.filter.sort (function(e1, e2) {
-            return e1.avg - e2.avg;
-          });
+              for (let data of chartInfo.data)
+              {
+                let value = data[object.valueField];
+
+                if (value != null)
+                  average += value;
+              }
+
+              object["avg"] = average / chartInfo.data.length;
+            }
+
+            // Also sort the data by date the to get the correct order on the line chart
+            // if the category axis is a date type
+            if (parseDate && (this.values.currentChartType.flags & ChartFlags.LINECHART))
+            {
+              let axisField = this.values.xaxis.id;
+  
+              chart.events.on ("beforedatavalidated", function(event) {
+                chart.data.sort (function(e1, e2) {
+                  return +(new Date(e1[axisField])) - +(new Date(e2[axisField]));
+                });
+              });
+            }
+
+            chartInfo.filter.sort (function(e1, e2) {
+              return e1.avg - e2.avg;
+            });
+          }
+
+          // Create the series and set colors
+          chart.colors.list = [];
+          for (let object of chartInfo.filter)
+          {
+            chart.colors.list.push (am4core.color (object.lineColor));
+            this.values.currentChartType.createSeries (this.values, stacked, chart, object, parseDate);
+          }
+
+          // Add cursor if the chart type is line, area or stacked area
+          if (this.values.currentChartType.flags & ChartFlags.LINECHART)
+          {
+            chart.cursor = new am4charts.XYCursor ();
+            chart.cursor.xAxis = valueAxis;
+            chart.cursor.snapToSeries = chart.series;
+          }
         }
-
-        // Create the series and set colors
-        chart.colors.list = [];
-        for (let object of chartInfo.filter)
+        else
         {
-          chart.colors.list.push (am4core.color (object.lineColor));
-          this.values.currentChartType.createSeries (this.values, stacked, chart, object, parseDate);
-        }
-
-        // Add cursor if the chart type is line, area or stacked area
-        if (this.values.currentChartType.flags & ChartFlags.LINECHART)
-        {
-          chart.cursor = new am4charts.XYCursor ();
-          chart.cursor.xAxis = valueAxis;
-          chart.cursor.snapToSeries = chart.series;
+          // The category will the values if the chart type lacks an x axis
+          categoryAxis.dataFields.category = chartInfo.titleField;
+          this.values.currentChartType.createSeries (this.values, false, chart, chartInfo, parseDate);
         }
       }
 
@@ -707,6 +670,12 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   }
 
   // return current panel information into a JSON for a http message body
+  //
+  // panels that only displays information will reuse some values from the database
+  // for simplicity reasons: analysis, xaxis and values will store the data type used
+  // for variables #1, #2 and #3 respetively; function will be used to check if the
+  // results are generated or not and lastestResponse will store all the functions
+  // values and results (if it was generated)
   getPanelInfo(infoChartType: boolean): any
   {
     if (infoChartType)
