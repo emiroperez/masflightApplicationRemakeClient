@@ -2347,17 +2347,20 @@ mat-tab-group {
   flex: 1;
 }
 .msf-dashboard-info-display .msf-dashboard-info-container .msf-dashboard-info-table .msf-dashboard-info-title {
+  font-weight: bold;
   background-color: #3b3b3b;
+  color: #01abec;
   vertical-align: middle;
   height: 45px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   min-width: 170px;
-  font-size: 18px;
+  font-size: 16px;
 }
 .msf-dashboard-info-display .msf-dashboard-info-container .msf-dashboard-info-table .msf-dashboard-info-value {
   background-color: #333333;
+  color: #fff;
   vertical-align: middle;
   height: 37px;
   display: flex;
@@ -2366,10 +2369,22 @@ mat-tab-group {
   min-width: 170px;
   font-size: 14px;
 }
+.msf-dashboard-info-display .msf-dashboard-info-container .msf-dashboard-info-table .msf-dashboard-info-separator-background {
+  background-color: #333333;
+}
+.msf-dashboard-info-display .msf-dashboard-info-container .msf-dashboard-info-table .msf-dashboard-info-separator-background .msf-dashboard-info-separator {
+  border-color: #3b3b3b;
+  border-bottom: 0;
+  border-style: solid;
+  width: 90%;
+  margin-top: 0;
+  margin-bottom: 0;
+}
 .msf-dashboard-info-display .msf-dashboard-info-container .msf-dashboard-info-table .msf-dashboard-info-measure {
-  background-color: #3b3b3b;
+  background-color: #333333;
+  color: #fff;
   vertical-align: middle;
-  height: 30px;
+  height: 37px;
   display: flex;
   flex-direction: column;
   justify-content: center;
