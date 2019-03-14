@@ -7,11 +7,12 @@
         </div>
     </div>
 </div>
+
 <mat-card class="msf-register-card msf-center-container">
-    <button style="float: left;margin-top: 30px;" mat-icon-button routerLink="/application">
-      <mat-icon style="color: white">arrow_back</mat-icon>
+    <button style="float: left !important;margin-top: 30px;" mat-icon-button routerLink="/application">
+    <mat-icon style="color: white">arrow_back</mat-icon>
   </button>
-    <button mat-icon-button (click)="saveUsers()">
+    <button style="float: right !important;" mat-icon-button (click)="saveUsers()">
         <mat-icon style="color: white" aria-label="save">save</mat-icon>
       </button>
 
@@ -71,8 +72,17 @@
             <ng-container matColumnDef="columnMembership">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Membership</th>
                 <td mat-cell *matCellDef="let element" style="text-align: center">
-                    <mat-select [(ngModel)]="element.userPlan[0].Plan_Id" (selectionChange)="addToJson(element)">
+                    <mat-select class="user-activation" [(ngModel)]="element.userPlan[0].Plan_Id" (selectionChange)="checkFare(element)">
                         <mat-option *ngFor="let plan of plans" [value]="plan.id">{{ plan.name }}</mat-option>
+                    </mat-select>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="columnMembershipFare">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Membership Fare</th>
+                <td mat-cell *matCellDef="let element" style="text-align: center">
+                    <mat-select [(ngModel)]="element.userPlan[0].Fare_Id" (selectionChange)="addToJson(element)">
+                        <mat-option *ngFor="let fare of element.auxplans" [value]="fare.id">{{ fare.periodicity }}</mat-option>
                     </mat-select>
                 </td>
             </ng-container>

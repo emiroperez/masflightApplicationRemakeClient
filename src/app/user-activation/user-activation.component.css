@@ -1,5 +1,5 @@
 .msf-register-card {
-    width: 85%;
+    width: 85% !important;
 }
 
 .mat-checkbox-frame {
@@ -7,21 +7,41 @@
 }
 
 .mat-select-value {
-    color: #2d3436;
+    color: #2d3436 !important;
+}
+
+.mat-paginator-icon {
+    color: #2d3436 !important;
 }
 
 .mat-select-arrow {
-    color: #2d3436;
+    color: #2d3436 !important;
 }
 
 .datasource.welcome-table {
-    margin-bottom: 0px;
-}
-
-.mat-button-wrapper {
-    color: #2d3436;
+    margin-bottom: 0px !important;
 }
 
 .mat-icon-button {
-    float: right;
+    float: left !important;
+}
+
+.mat-form-field {
+    font-size: inherit;
+    color: white;
+    font-weight: 400;
+    line-height: 3.125;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+input {
+    color: white;
+}
+
+.msf-register-card .mat-form-field-appearance-legacy .mat-form-field-label {
+    padding-left: 0px;
+}
+
+.mat-elevation-z8 {
+    width: 103%;
 }

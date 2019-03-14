@@ -2018,8 +2018,9 @@ mat-tab-group
         width: 35%
         background-color:$msf-secondary-color
 
-@mixin msf-dashboard-info-table($bgcolor, $font-size, $height)
+@mixin msf-dashboard-info-table($bgcolor, $color, $font-size, $height)
     background-color: $bgcolor
+    color: $color
     vertical-align: middle
     height: $height
     display: flex
@@ -2042,11 +2043,21 @@ mat-tab-group
             margin-right: 10px
             flex: 1
             .msf-dashboard-info-title
-                @include msf-dashboard-info-table(#3b3b3b, 18px, 45px)
+                font-weight: bold
+                @include msf-dashboard-info-table(#3b3b3b, #01abec, 16px, 45px)
             .msf-dashboard-info-value
-                @include msf-dashboard-info-table(#333333, 14px, 37px)
+                @include msf-dashboard-info-table(#333333, #fff, 14px, 37px)
+            .msf-dashboard-info-separator-background
+                background-color: #333333
+                .msf-dashboard-info-separator
+                    border-color: #3b3b3b
+                    border-bottom: 0
+                    border-style: solid
+                    width: 90%
+                    margin-top: 0
+                    margin-bottom: 0
             .msf-dashboard-info-measure
-                @include msf-dashboard-info-table(#3b3b3b, 14px, 30px)
+                @include msf-dashboard-info-table(#333333, #fff, 14px, 37px)
 
 mat-dialog-container
     background-color: $msf-primary-color!important
