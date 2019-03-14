@@ -1851,6 +1851,7 @@ mat-tab-group
 
 .msf-dashboard-control-variables-dialog .mat-dialog-container
     padding: 12px
+    overflow: hidden
 
 .msf-dashboard-dialog
     .msf-dashboard-control-variables-close-button
@@ -2059,6 +2060,48 @@ mat-tab-group
                     margin-bottom: 0
             .msf-dashboard-info-measure
                 @include msf-dashboard-info-table(#333333, #fff, 14px, 37px)
+
+@mixin msf-dashboard-color-picker-selector-style($cursor: default)
+    cursor: $cursor
+    border-style: none
+    border-radius: 4px
+    width: 20px
+    height: 20px
+    color: transparent
+    caret-color: transparent
+
+.msf-dashboard-color-picker-container
+    text-align: center
+    color: #fff
+
+.msf-dashboard-color-picker-grid-layout
+    display: grid
+    grid-auto-flow: column
+    grid-template: repeat(6, 1fr) / repeat(2, 1fr)
+    padding-top: 10px
+    padding-bottom: 10px
+
+.msf-dashboard-color-picker-layout
+    margin-left: 100px
+    padding-top: 10px
+    padding-bottom: 10px
+
+.msf-dashboard-color-picker-selector-container
+    display: flex
+    align-items: center
+    padding-top: 10px
+    .msf-dashboard-color-picker-selector-label
+        margin-left: 10px
+        margin-right: 20px
+        text-align: left
+        width: 60px
+    .msf-dashboard-color-picker-color-label
+        margin-left: 20px
+        text-align: right
+    .msf-dashboard-color-picker-selector
+        @include msf-dashboard-color-picker-selector-style
+    .msf-dashboard-color-picker-selector:hover
+        @include msf-dashboard-color-picker-selector-style(pointer)
 
 mat-dialog-container
     background-color: $msf-primary-color!important

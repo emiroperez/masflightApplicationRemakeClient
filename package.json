@@ -41,6 +41,7 @@
     "ng-material-datetimepicker": "^1.18.3",
     "ng-pick-datetime": "7.0.0",
     "ng-pick-datetime-moment": "^1.0.8",
+    "ngx-color-picker": "^7.4.0",
     "ngx-mapbox-gl": "3.0.1",
     "ngx-mask": "^7.3.6",
     "ngx-mat-select-search": "1.5.3",
