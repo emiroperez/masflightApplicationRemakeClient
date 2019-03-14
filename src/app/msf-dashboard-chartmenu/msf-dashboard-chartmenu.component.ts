@@ -522,6 +522,15 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         {
           // The category will the values if the chart type lacks an x axis
           categoryAxis.dataFields.category = chartInfo.titleField;
+
+          // Sort values from least to greatest
+          chart.events.on ("beforedatavalidated", function(event) {
+            chart.data.sort (function(e1, e2) {
+              return e1[chartInfo.valueField] - e2[chartInfo.valueField];
+            });
+          });
+
+          // Create the series
           this.values.currentChartType.createSeries (this.values, false, chart, chartInfo, parseDate);
         }
       }
