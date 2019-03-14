@@ -83,19 +83,19 @@ export class MsfDateRangeComponent implements OnInit {
       this.calculateDate('Last Month',(24*60*60*1000)*30);
         break;
       case 'LASTYEAR':
-        this.calculateDate('LAST Year',(24*60*60*1000)*365);
+        this.calculateDate('Last Year',(24*60*60*1000)*365);
         break;    
       case 'UNTILYESTERDAY':
-        this.calculateDate2('Yesterday',24*60*60*1000);
+        this.calculateDate2('Until Yesterday',24*60*60*1000);
           break;
       case 'UNTILLASTWEEK':
-        this.calculateDate2('Last Week',(24*60*60*1000)*7);
+        this.calculateDate2('Until Last Week',(24*60*60*1000)*7);
           break;
       case 'UNTILLASTMONTH':
-        this.calculateDate2('Last Month',(24*60*60*1000)*30);
+        this.calculateDate2('Until Last Month',(24*60*60*1000)*30);
           break;
       case 'UNTILLASTYEAR':
-          this.calculateDate2('LAST Year',(24*60*60*1000)*365);
+          this.calculateDate2('Until Last Year',(24*60*60*1000)*365);
           break;            
                      
     }
@@ -108,7 +108,7 @@ export class MsfDateRangeComponent implements OnInit {
           maximunDateMessage = "the option doesn't have maximun date";
         }else{
           this.argument.value2 = this.globals.maxDate;
-          maximunDateMessage += this.globals.maxDate;
+          maximunDateMessage += this.globals.maxDate.toLocaleString("en-US").split(",")[0];
         }
           this.argument.value1 = new Date(this.argument.value2.getTime() - milis);
 
@@ -126,13 +126,13 @@ export class MsfDateRangeComponent implements OnInit {
           maximunDateMessage = "the option doesn't have maximun date"
         }else{
           aux = this.globals.maxDate;
-          maximunDateMessage += this.globals.maxDate;
+          maximunDateMessage += this.globals.maxDate.toLocaleString("en-US").split(",")[0];
         }
         var diff = aux.getTime() - milis;
         if(this.argument.value1.getTime()<=diff){
           this.argument.value2 = new Date(diff);
         }else{
-          this.openDialog("The final date can't be less than the initial date");
+          this.openDialog("The final date can't be less than the initial date, "+maximunDateMessage);
           return;
         }
         this.openDialog("The date range changed to "+ type+", "+maximunDateMessage);
