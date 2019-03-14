@@ -24,7 +24,8 @@ export class UserActivationComponent implements OnInit {
 
   users: any[] = [];
   usersToAdd: any[] = [];
-  plans: any[] = [];
+  plans:any[] = [];
+  plansFare: Plan = new Plan();
   userSelected: any;
   dataSource;
 
@@ -33,7 +34,7 @@ export class UserActivationComponent implements OnInit {
 
 
     displayedColumns = ['columnName', 'columnLastName', 'columnEmail', 'columnAddress', 'columnPostalCode',
-    'columnCountry', 'columnCountryState', 'columnPhone', 'columnState', 'columnMembership'];
+    'columnCountry', 'columnCountryState', 'columnPhone', 'columnState', 'columnMembership','columnMembershipFare'];
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -52,11 +53,31 @@ export class UserActivationComponent implements OnInit {
   handlerSuccessInit(_this, data, tab) {
     console.log('data: ' + data);
     _this.plans = data;
-
+    console.log(_this.plans);
+     for (let i = 0; i < _this.users.length;i++){
+      for(let j=0; j<_this.plans.length;j++){
+        if(_this.plans[j].id == _this.users[i].userPlan[0].Plan_Id){
+          let plans = _this.plans[j];
+          _this.users[i].auxplans= plans.fares;
+        }
+      }
+    }
   }
+
   handlerError(_this, result) {
     _this.globals.isLoading = false;
     console.log(result);
+  }
+
+  checkFare(element){
+    for(let j=0; j< this.plans.length;j++){
+      console.log(this.plans[j]);
+      if(this.plans[j].id == element.userPlan[0].Plan_Id){
+        let plans = this.plans[j];
+        element.auxplans= plans.fares;
+      }
+    }
+    this.addToJson(element);
   }
 
 
@@ -70,7 +91,7 @@ export class UserActivationComponent implements OnInit {
       console.log(i)
       console.log(_this.users[i])
     if (_this.users[i].userPlan.length == 0){
-      _this.users[i].userPlan.push([{"id": null,"Plan_Id":null,"Fare_Id":null}]);
+      _this.users[i].userPlan.push({"id": null,"Plan_Id":null,"Fare_Id":null});
     }
     }
     console.log(_this.users)
