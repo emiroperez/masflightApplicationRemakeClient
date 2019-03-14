@@ -31,8 +31,7 @@ export class ConfirmDeleteDialog {
 @Component({
   selector: 'dialog-edit-output-options-dialog',
   templateUrl: 'dialog-edit-output-options.html',
-  styleUrls: ['./dialog-output.css'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./dialog-output.css']
 })
 
 export class EditOutputOptionsMetaDialog {

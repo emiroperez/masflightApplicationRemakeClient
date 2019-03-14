@@ -3592,4 +3592,36 @@ img.msf-calendar-image {
   color: #8e8e8e !important;
 }
 
+.activation-form .mat-checkbox-frame {
+  border-color: #2d3436 !important;
+}
+
+.activation-form .mat-select-value {
+  color: #2d3436 !important;
+}
+
+.activation-form .mat-paginator-icon {
+  color: #2d3436 !important;
+}
+
+.activation-form .mat-select-arrow {
+  color: #2d3436 !important;
+}
+
+.activation-form .mat-icon-button {
+  float: left;
+}
+
+.activation-form .mat-form-field {
+  font-size: inherit;
+  color: white;
+  font-weight: 400;
+  line-height: 3.125;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.activation-form input {
+  color: white !important;
+}
+
 /*# sourceMappingURL=styles.css.map */
