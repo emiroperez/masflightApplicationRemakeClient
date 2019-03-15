@@ -88,7 +88,8 @@ export class WelcomeComponent implements OnInit {
   }
 
   handleLogin(_this,data){
-    _this.userName = data.name;
+    _this.globals.currentUser = data.name;
+    _this.userName = _this.globals.currentUser;
     _this.globals.isLoading = false;
   }
   errorLogin(_this,result){

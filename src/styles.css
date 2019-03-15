@@ -2131,6 +2131,7 @@ mat-tab-group {
 
 .msf-dashboard-control-variables-dialog .mat-dialog-container {
   padding: 12px;
+  overflow: hidden;
 }
 
 .msf-dashboard-dialog .msf-dashboard-control-variables-close-button, .msf-dashboard-info-function-title .msf-dashboard-control-variables-close-button, .msf-dashboard-control-variables-title .msf-dashboard-control-variables-close-button {
@@ -2345,7 +2346,7 @@ mat-tab-group {
   margin-top: 10px;
   margin-left: 5px;
   margin-right: 5px;
-  flex: 1;
+  flex: 1 1 45%;
 }
 .msf-dashboard-info-display .msf-dashboard-info-container .msf-dashboard-info-table .msf-dashboard-info-title {
   font-weight: bold;
@@ -2391,6 +2392,59 @@ mat-tab-group {
   justify-content: center;
   min-width: 170px;
   font-size: 14px;
+}
+
+.msf-dashboard-color-picker-container {
+  text-align: center;
+  color: #fff;
+}
+
+.msf-dashboard-color-picker-grid-layout {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template: repeat(6, 1fr)/repeat(2, 1fr);
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.msf-dashboard-color-picker-layout {
+  margin-left: 100px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.msf-dashboard-color-picker-selector-container {
+  display: flex;
+  align-items: center;
+  padding-top: 10px;
+}
+.msf-dashboard-color-picker-selector-container .msf-dashboard-color-picker-selector-label {
+  margin-left: 10px;
+  margin-right: 20px;
+  text-align: left;
+  width: 60px;
+}
+.msf-dashboard-color-picker-selector-container .msf-dashboard-color-picker-color-label {
+  margin-left: 20px;
+  text-align: right;
+}
+.msf-dashboard-color-picker-selector-container .msf-dashboard-color-picker-selector {
+  cursor: default;
+  border-style: none;
+  border-radius: 4px;
+  width: 20px;
+  height: 20px;
+  color: transparent;
+  caret-color: transparent;
+}
+.msf-dashboard-color-picker-selector-container .msf-dashboard-color-picker-selector:hover {
+  cursor: pointer;
+  border-style: none;
+  border-radius: 4px;
+  width: 20px;
+  height: 20px;
+  color: transparent;
+  caret-color: transparent;
 }
 
 mat-dialog-container {
@@ -3590,6 +3644,38 @@ img.msf-calendar-image {
 
 .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-disabled {
   color: #8e8e8e !important;
+}
+
+.activation-form .mat-checkbox-frame {
+  border-color: #2d3436 !important;
+}
+
+.activation-form .mat-select-value {
+  color: #2d3436 !important;
+}
+
+.activation-form .mat-paginator-icon {
+  color: #2d3436 !important;
+}
+
+.activation-form .mat-select-arrow {
+  color: #2d3436 !important;
+}
+
+.activation-form .mat-icon-button {
+  float: left;
+}
+
+.activation-form .mat-form-field {
+  font-size: inherit;
+  color: white;
+  font-weight: 400;
+  line-height: 3.125;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.activation-form input {
+  color: white !important;
 }
 
 /*# sourceMappingURL=styles.css.map */

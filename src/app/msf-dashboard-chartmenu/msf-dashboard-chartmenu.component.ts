@@ -16,10 +16,12 @@ import { ApplicationService } from '../services/application.service';
 
 import { MsfDashboardControlVariablesComponent } from '../msf-dashboard-control-variables/msf-dashboard-control-variables.component';
 import { MsfDashboardInfoFunctionsComponent } from '../msf-dashboard-info-functions/msf-dashboard-info-functions.component';
+import { MsfDashboardColorPickerComponent } from  '../msf-dashboard-color-picker/msf-dashboard-color-picker.component';
 import { MatDialog } from '@angular/material';
 import { ComponentType } from '../commons/ComponentType';
 import { MsfDashboardChartValues } from '../msf-dashboard-chartmenu/msf-dashboard-chartvalues';
 import { MessageComponent } from '../message/message.component';
+import { ChartFlags } from '../msf-dashboard-chartmenu/msf-dashboard-chartflags';
 
 am4core.useTheme(am4themes_animated);
 am4core.useTheme(am4themes_dark);
@@ -28,22 +30,6 @@ am4core.useTheme(am4themes_dark);
 const white = am4core.color ("#ffffff");
 const darkBlue = am4core.color ("#30303d");
 const blueJeans = am4core.color ("#67b7dc");
-
-// Chart flags settings
-enum ChartFlags
-{
-  NONE       = 0x00000000,
-  XYCHART    = 0x00000001,
-  ROTATED    = 0x00000002,
-  STACKED    = 0x00000004,
-  INFO       = 0x00000008,
-  LINECHART  = 0x00000010,
-  AREAFILL   = 0x00000020,
-  AREACHART  = 0x00000030,
-  PIECHART   = 0x00000040,
-  PIEHOLE    = 0x00000080,
-  DONUTCHART = 0x000000C0
-}
 
 @Component({
   selector: 'app-msf-dashboard-chartmenu',
@@ -68,10 +54,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     { name: 'Lines', flags: ChartFlags.XYCHART | ChartFlags.LINECHART, createSeries: this.createLineSeries },                      
     { name: 'Area', flags: ChartFlags.XYCHART | ChartFlags.AREACHART, createSeries: this.createLineSeries },
     { name: 'Stacked Area', flags: ChartFlags.XYCHART | ChartFlags.STACKED | ChartFlags.AREACHART, createSeries: this.createLineSeries },
-
     { name: 'Pie', flags: ChartFlags.PIECHART },
     { name: 'Donut', flags: ChartFlags.DONUTCHART },
-
     { name: 'Simple Bars', flags: ChartFlags.NONE, createSeries: this.createSimpleVertColumnSeries },
     { name: 'Simple Horizontal Bars', flags: ChartFlags.ROTATED, createSeries: this.createSimpleHorizColumnSeries },
     { name: 'Information', flags: ChartFlags.INFO }
@@ -268,7 +252,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
     // Set colors
     series.columns.template.adapter.add ("fill", (fill, target) => {
-      return am4core.color (item.colors[0]);
+      return am4core.color (values.paletteColors[0]);
     });
   }
 
@@ -286,7 +270,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
     // Set colors
     series.columns.template.adapter.add ("fill", (fill, target) => {
-      return am4core.color (item.colors[0]);
+      return am4core.color (values.paletteColors[0]);
     });
   }
 
@@ -325,7 +309,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         series.labels.template.disabled = true;
 
         colorSet = new am4core.ColorSet ();
-        colorSet.list = chartInfo.colors.map (function(color) {
+        colorSet.list = this.values.paletteColors.map (function(color) {
           return am4core.color (color);
         });
         series.colors = colorSet;
@@ -388,7 +372,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
             // Rotate labels if the chart is displayed vertically
             categoryAxis.renderer.labels.template.rotation = 330;
-            categoryAxis.renderer.labels.template.maxWidth = 100;
+            categoryAxis.renderer.labels.template.maxWidth = 160;
           }
 
           valueAxis = chart.yAxes.push (new am4charts.ValueAxis ());
@@ -425,7 +409,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
           categoryAxis.dataFields.category = this.values.xaxis.id;
 
           stacked = (this.values.currentChartType.flags & ChartFlags.STACKED) ? true : false;
-          if ((this.values.currentChartType.flags & ChartFlags.LINECHART) && stacked)
+          if (this.values.currentChartType.flags & ChartFlags.LINECHART && stacked)
           {
             // Avoid negative values on the stacked area chart
             for (let object of chartInfo.filter)
@@ -486,7 +470,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
             // Also sort the data by date the to get the correct order on the line chart
             // if the category axis is a date type
-            if (parseDate && (this.values.currentChartType.flags & ChartFlags.LINECHART))
+            if (parseDate && this.values.currentChartType.flags & ChartFlags.LINECHART)
             {
               let axisField = this.values.xaxis.id;
   
@@ -504,11 +488,12 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
           // Create the series and set colors
           chart.colors.list = [];
+
+          for (let color of this.values.paletteColors)
+            chart.colors.list.push (am4core.color (color));
+
           for (let object of chartInfo.filter)
-          {
-            chart.colors.list.push (am4core.color (object.lineColor));
             this.values.currentChartType.createSeries (this.values, stacked, chart, object, parseDate);
-          }
 
           // Add cursor if the chart type is line, area or stacked area
           if (this.values.currentChartType.flags & ChartFlags.LINECHART)
@@ -535,8 +520,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         }
       }
 
-      if ((this.values.currentChartType.flags & ChartFlags.XYCHART)
-        || (this.values.currentChartType.flags & ChartFlags.PIECHART))
+      if (this.values.currentChartType.flags & ChartFlags.XYCHART
+        || this.values.currentChartType.flags & ChartFlags.PIECHART)
       {
         // Display Legend
         chart.legend = new am4charts.Legend ();
@@ -714,7 +699,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         'values' : this.values.chartColumnOptions.indexOf (this.values.valueColumn),
         'function' : this.functions.indexOf (this.values.function),
         'chartType' : this.chartTypes.indexOf (this.values.currentChartType),
-        'categoryOptions' : this.values.currentOptionCategories
+        'categoryOptions' : this.values.currentOptionCategories,
+        'paletteColors' : this.values.paletteColors
       };
     }
   }
@@ -880,14 +866,14 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   handlerChartSuccess(_this, data): void
   {
-    if ((_this.values.currentChartType.flags & ChartFlags.XYCHART) && _this.isEmpty (data.data))
+    if (_this.values.currentChartType.flags & ChartFlags.XYCHART && _this.isEmpty (data.data))
     {
       _this.noDataFound ();
       return;
     }
 
     if ((!(_this.values.currentChartType.flags & ChartFlags.XYCHART) && data.dataProvider == null) ||
-      ((_this.values.currentChartType.flags & ChartFlags.XYCHART) && !data.filter))
+      (_this.values.currentChartType.flags & ChartFlags.XYCHART && !data.filter))
     {
       _this.noDataFound ();
       return;
@@ -1725,6 +1711,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       height: '58%',
       width: '600px',
       panelClass: 'msf-dashboard-control-variables-dialog',
+      autoFocus: false,
       data: {
         title: this.values.chartName,
         subTitle: "Variable #" + (infoVarNum + 1) + ": " + infoVar.name,
@@ -1739,6 +1726,35 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   getResultValue(result): string
   {
-    return new Intl.NumberFormat ('en-us').format (result);
+    return new Intl.NumberFormat ('en-us', { maximumFractionDigits: 1 }).format (result);
+  }
+
+  goToColorPicker(): void
+  {
+    let dialogHeight, numColors;
+
+    if (this.values.currentChartType.flags & ChartFlags.XYCHART
+      || this.values.currentChartType.flags & ChartFlags.PIECHART)
+    {
+      dialogHeight = '52%';
+      numColors = 12;
+    }
+    else
+    {
+      dialogHeight = '27%';
+      numColors = 1;
+    }
+
+    this.dialog.open (MsfDashboardColorPickerComponent, {
+      height: dialogHeight,
+      width: '400px',
+      panelClass: 'msf-dashboard-control-variables-dialog',
+      autoFocus: false,
+      data: {
+        title: this.values.chartName,
+        colors: this.values.paletteColors,
+        numColors: numColors
+      }
+    });
   }
 }

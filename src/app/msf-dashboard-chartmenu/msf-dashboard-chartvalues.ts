@@ -34,8 +34,25 @@ export class MsfDashboardChartValues {
     // values used for the information panel
     infoNumVariables: number;
 
+    // palette colors used on charts
+    paletteColors: string[] = [
+	    "#01B0A1",
+	    "#9B5E8E",
+	    "#FA5751",
+	    "#FD8B5A",
+	    "#80CFEA",
+	    "#FF5900",
+	    "#005EFF",
+	    "#FFFF00",
+	    "#FC636B",
+	    "#FF7E00",
+	    "#3D67CE",
+        "#FFFEFE"
+    ];
+
     constructor(options: any[], chartName: String, id: number, width: any, height: any, currentOption?: any, chartColumnOptions? : any,
-        variable?: any, xaxis?: any, valueColumn?: any, func?: any, chartType?: any, currentOptionCategories?: any, lastestResponse?: string)
+        variable?: any, xaxis?: any, valueColumn?: any, func?: any, chartType?: any, currentOptionCategories?: any, lastestResponse?: string,
+        paletteColors?: any)
     {
         this.options = options;
         this.chartName = chartName;
@@ -48,6 +65,10 @@ export class MsfDashboardChartValues {
         this.currentChartType = chartType;
         this.width = width;
         this.height = height;
+
+        // load palette colors if there is any
+        if (paletteColors)
+            this.paletteColors = JSON.parse (paletteColors);
 
         // check if the following parameters are null before parsing the JSON
         if (chartColumnOptions)

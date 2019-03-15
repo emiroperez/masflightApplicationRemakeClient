@@ -5,6 +5,8 @@ import {NotificationComponent} from '../notification/notification.component';
 import { FormGroup, FormBuilder, FormControl, Validators} from '@angular/forms';
 import { User } from '../model/User';
 import { Utils } from '../commons/utils';
+import { MenuService } from '../services/menu.service';
+import { Globals } from '../globals/Globals';
 
 @Component({
   selector: 'app-login-screen',
@@ -23,10 +25,11 @@ export class LoginScreenComponent implements OnInit {
   userId: string;
 
   loginForm: FormGroup;
-
+  loggedIn = false;
   _this = this;
 
-  constructor(private router: Router, private authService: AuthService, private notification: NotificationComponent,
+  constructor(private router: Router,  public globals: Globals, private service: MenuService,
+    private authService: AuthService, private notification: NotificationComponent,
     private formBuilder: FormBuilder) {
     this.user = new User(null);
     this.utils = new Utils();
@@ -37,6 +40,7 @@ export class LoginScreenComponent implements OnInit {
       usernameValidator: new FormControl('username', [Validators.required]),
       passwordValidator: new FormControl('password', [Validators.required])
     });
+
   }
 
   isUsernameInvalid(): boolean
@@ -108,6 +112,21 @@ export class LoginScreenComponent implements OnInit {
 
 
   ngOnInit() {
+    this.getUserLoggedIn();
+
+  }
+
+
+  getUserLoggedIn(){
+    this.service.getUserLoggedin(this, this.handleLogin, this.errorLogin);
+  }
+
+  handleLogin(_this,data){
+    _this.loggedIn = true;
+    _this.router.navigate(["/welcome"]);
+  }
+  errorLogin(_this,result){
+    console.log(result);
   }
 
 
