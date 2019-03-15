@@ -20,8 +20,8 @@
   <div class="msf-dashboard-color-picker-grid-layout" *ngIf="data.numColors != 1">
     <div class="msf-dashboard-color-picker-selector-container" *ngFor="let color of data.colors; let i = index">
       <span class="msf-dashboard-color-picker-selector-label">Color #{{i + 1}}:</span>
-      <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="color" [style.background]="color"/>
-      <span class="msf-dashboard-color-picker-color-label">{{color}}</span>
+      <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="data.colors[i]" [style.background]="data.colors[i]"/>
+      <span class="msf-dashboard-color-picker-color-label">{{data.colors[i]}}</span>
     </div>
   </div>
 </div>
