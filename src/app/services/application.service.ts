@@ -302,6 +302,12 @@ export class ApplicationService {
     this.http.post (_this, url, dashboardIds, handlerSucess, handlerError);
   }
 
+  setDashboardPanelRowPositions(_this, panels, handlerSucess, handlerError): void
+  {
+    let url = this.host + "/updateDashboardPanelRowPositions";
+    this.http.post (_this, url, panels, handlerSucess, handlerError);
+  }
+
   confirmationDialog(_this, message, callback)
   {
     const dialogRef = this.dialog.open (MsfConfirmationDialogComponent, {
