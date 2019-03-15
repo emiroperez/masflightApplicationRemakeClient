@@ -2346,7 +2346,7 @@ mat-tab-group {
   margin-top: 10px;
   margin-left: 5px;
   margin-right: 5px;
-  flex: 1 1 45%;
+  flex: 1 0 45%;
 }
 .msf-dashboard-info-display .msf-dashboard-info-container .msf-dashboard-info-table .msf-dashboard-info-title {
   font-weight: bold;
