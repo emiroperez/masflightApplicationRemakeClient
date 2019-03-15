@@ -36,18 +36,18 @@ export class MsfDashboardChartValues {
 
     // palette colors used on charts
     paletteColors: string[] = [
-	    "#01B0A1",
-	    "#9B5E8E",
-	    "#FA5751",
-	    "#FD8B5A",
-	    "#80CFEA",
-	    "#FF5900",
-	    "#005EFF",
-	    "#FFFF00",
-	    "#FC636B",
-	    "#FF7E00",
-	    "#3D67CE",
-        "#FFFEFE"
+	    "#01b0a1",
+	    "#9b5e8e",
+	    "#fa5751",
+	    "#fd8b5a",
+	    "#80cfea",
+	    "#ff5900",
+	    "#005eff",
+	    "#ffff00",
+	    "#fc636b",
+	    "#ff7e00",
+	    "#3d67ce",
+        "#fffefe"
     ];
 
     constructor(options: any[], chartName: String, id: number, width: any, height: any, currentOption?: any, chartColumnOptions? : any,
