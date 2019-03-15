@@ -372,13 +372,6 @@ export class MsfTableComponent implements OnInit {
     _this.globals.dataSource = false;
     _this.globals.template = false;
     console.log(result);
-
-    _this.globals.isLoading = false;
-    const title = "F";
-    const message= "Your password was  successfully reset";
-    const dialogRef = _this.dialog.open(MessageComponent, {
-      data: { title: title, message: message}
-    });
   }
 
   getCurrentClass(tableItem:any){
