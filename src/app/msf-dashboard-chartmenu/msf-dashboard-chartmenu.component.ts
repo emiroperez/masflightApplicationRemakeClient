@@ -1726,7 +1726,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   getResultValue(result): string
   {
-    return new Intl.NumberFormat ('en-us').format (result);
+    return new Intl.NumberFormat ('en-us', { maximumFractionDigits: 1 }).format (result);
   }
 
   goToColorPicker(): void
