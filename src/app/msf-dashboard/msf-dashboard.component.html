@@ -3,8 +3,8 @@
     <div class="msf-dashboard-chartbox">
       <div class="msf-dashboard-chartbox-column" *ngFor="let dashboardColumn of dashboardColumns; let column = index" [attr.data-index]="column">
         <div class="msf-dashboard-chartbox-items">
-          <div class="msf-dashboard-chartbox-column">
-            <div class="msf-dashboard-chartbox-item" [style.width.%]="getPanelWidth(column, row)" *ngFor="let dashboardChart of dashboardColumn; let row = index" [attr.data-index]="row">
+          <div class="msf-dashboard-chartbox-column" cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="swapPanelRowPositions($event,dashboardColumns[column],column)">
+            <div class="msf-dashboard-chartbox-item" [style.width.%]="getPanelWidth(column, row)" *ngFor="let dashboardChart of dashboardColumn; let row = index" [attr.data-index]="row" cdkDragLockAxis="x" cdkDrag>
               <div class="msf-dashboard-button">
                 <mat-icon class="msf-dashboard-button-icon" aria-label="close" (click)="removeChart(column, row)">close</mat-icon>
               </div>

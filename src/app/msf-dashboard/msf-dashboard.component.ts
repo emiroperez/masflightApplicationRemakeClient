@@ -1,4 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Globals } from '../globals/Globals';
 import { ApiClient } from '../api/api-client';
 import { MsfDashboardChartValues } from '../msf-dashboard-chartmenu/msf-dashboard-chartvalues';
@@ -6,7 +7,8 @@ import { ApplicationService } from '../services/application.service';
 
 @Component({
   selector: 'app-msf-dashboard',
-  templateUrl: './msf-dashboard.component.html'
+  templateUrl: './msf-dashboard.component.html',
+  styleUrls: ['./msf-dashboard.component.css']
 })
 export class MsfDashboardComponent implements OnInit {
   dashboardColumns: MsfDashboardChartValues[][] = [];
@@ -124,6 +126,11 @@ export class MsfDashboardComponent implements OnInit {
       {
         curColumn = dashboardPanel.column;
 
+        // sort rows before adding the column
+        dashboardRows.sort (function(e1, e2) {
+          return e1.row - e2.row;
+        });
+
         _this.dashboardColumns.push (dashboardRows);
         _this.dashboardColumnsProperties.push (false);
         dashboardRows = [];
@@ -133,10 +140,14 @@ export class MsfDashboardComponent implements OnInit {
         dashboardPanel.id, _this.widthValues[dashboardPanel.width], _this.heightValues[dashboardPanel.height],
         dashboardPanel.option, dashboardPanel.chartColumnOptions, dashboardPanel.analysis, dashboardPanel.xaxis,
         dashboardPanel.values, dashboardPanel.function, dashboardPanel.chartType, dashboardPanel.categoryOptions,
-        dashboardPanel.lastestResponse, dashboardPanel.paletteColors));
+        dashboardPanel.lastestResponse, dashboardPanel.paletteColors, dashboardPanel.row));
     }
 
     // add the last dashboard column
+    dashboardRows.sort (function(e1, e2) {
+      return e1.row - e2.row;
+    });
+
     _this.dashboardColumns.push (dashboardRows);
     _this.dashboardColumnsProperties.push (false);
     _this.globals.isLoading = false;
@@ -337,7 +348,6 @@ export class MsfDashboardComponent implements OnInit {
   handlerSucess(_this): void
   {
     _this.globals.isLoading = false;
-    console.log ("Panel size adjustement was successful.");
   }
 
   // this is not flexible...
@@ -518,11 +528,38 @@ export class MsfDashboardComponent implements OnInit {
   }
 
   @HostListener('window:resize', ['$event'])
-  checkScreen(event)
+  checkScreen(event): void
   {
     if (event.target.innerHeight == window.screen.height && event.target.innerWidth == window.screen.width)
       this.screenHeight = "100%";
     else
       this.screenHeight = "calc(100% - 90px)";
+  }
+
+  swapPanelRowPositions(event: CdkDragDrop<string[]>, dashboardColumn, columnIndex): void
+  {
+    let newPanelPos = [];
+
+    // do not update if the position remains the same
+    if (event.previousIndex == event.currentIndex)
+      return;
+
+    // move items
+    moveItemInArray (dashboardColumn, event.previousIndex, event.currentIndex);
+
+    // update the database to set the new row position for the panels
+    for (let i = 0; i < dashboardColumn.length; i++)
+    {
+      // swap row position by swapping the dashboard ids
+      newPanelPos.push ({
+        id: dashboardColumn[i].id,
+        column : columnIndex,
+        row: i
+      });
+    }
+
+    this.globals.isLoading = true;
+    this.service.setDashboardPanelRowPositions (this, newPanelPos, this.handlerSucess,
+      this.handlerError);
   }
 }

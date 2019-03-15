@@ -11,7 +11,7 @@ export class MsfDashboardColorPickerComponent {
   constructor(
     public dialogRef: MatDialogRef<MsfDashboardColorPickerComponent>,
     public globals: Globals,
-    @Inject(MAT_DIALOG_DATA) public data: any) {}
+    @Inject(MAT_DIALOG_DATA) public data: any) { }
 
     onNoClick(): void
     {
