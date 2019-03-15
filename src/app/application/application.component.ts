@@ -34,6 +34,7 @@ export class ApplicationComponent implements OnInit {
   planAdvanceFeatures: any[];
   status: boolean;
   user: any[];
+  userName : any;
 
   admin: boolean = false;
   ELEMENT_DATA: any[];
@@ -61,6 +62,8 @@ export class ApplicationComponent implements OnInit {
 
   handleLogin(_this,data){
     _this.user = data;
+    _this.globals.currentUser = data.name;
+    _this.userName = data.name;
     _this.admin = data.admin;
      _this.globals.isLoading = false;
 
@@ -164,12 +167,12 @@ toggle(){
     this.globals.query = true;
     if(this.globals.currentOption.metaData==2){
       this.globals.mapsc=true;
-      
+
     }else{
       this.globals.mapsc=false;
     }
     this.globals.tab = true;
-    
+
     this.globals.isLoading = true;
 
     setTimeout(() => {
@@ -195,14 +198,14 @@ toggle(){
       this.globals.query = true;
       if(this.globals.currentOption.metaData==2){
         this.globals.mapsc=true;
-        
+
       }else{
         this.globals.mapsc=false;
       }
       this.globals.tab = true;
-      
+
       this.globals.isLoading = true;
-  
+
       setTimeout(() => {
         this.moreResults2();
     }, 3000);
@@ -291,6 +294,11 @@ toggle(){
 
   isSimpleContent(): boolean {
     return (this.globals.currentOption === "dashboard" || !this.globals.currentOption);
+  }
+
+  logOut(){
+    window.localStorage.removeItem("token");
+    this.router.navigate(['']);
   }
 
   goToFullscreen(): void
