@@ -158,6 +158,8 @@ import { MsfControlVariablesComponent } from './msf-control-variables/msf-contro
 import { MsfDashboardInfoFunctionsComponent } from './msf-dashboard-info-functions/msf-dashboard-info-functions.component';
 import { MsfGroupingMariadbComponent } from './msf-grouping-mariadb/msf-grouping-mariadb.component';
 import { MsfContentTypeComponent } from './msf-content-type/msf-content-type.component';
+import { ColorPickerModule } from 'ngx-color-picker';
+import { MsfDashboardColorPickerComponent } from './msf-dashboard-color-picker/msf-dashboard-color-picker.component';
 
 @NgModule({
   declarations: [
@@ -297,6 +299,7 @@ import { MsfContentTypeComponent } from './msf-content-type/msf-content-type.com
     MsfDashboardInfoFunctionsComponent,
     MsfGroupingMariadbComponent,
     MsfContentTypeComponent,
+    MsfDashboardColorPickerComponent,
   ],
   imports: [
     BrowserModule,
@@ -331,7 +334,8 @@ import { MsfContentTypeComponent } from './msf-content-type/msf-content-type.com
     MatPaginatorModule,
     AgGridModule.withComponents(null),
     OwlDateTimeModule,
-    OwlNativeDateTimeModule
+    OwlNativeDateTimeModule,
+    ColorPickerModule
   ],
   providers: [
     AuthService,
@@ -349,7 +353,8 @@ import { MsfContentTypeComponent } from './msf-content-type/msf-content-type.com
     Utils
   ],
   bootstrap: [AppComponent],
-  entryComponents: [MessageComponent,
+  entryComponents: [
+    MessageComponent,
     MsfDynamicTableVariablesComponent,
     ConfirmDeleteDialog,
     EditOutputOptionsMetaDialog,
@@ -357,6 +362,8 @@ import { MsfContentTypeComponent } from './msf-content-type/msf-content-type.com
     EditOptionsDialog,
     MsfDashboardControlVariablesComponent,
     MsfConfirmationDialogComponent,
-    MsfDashboardInfoFunctionsComponent]
+    MsfDashboardInfoFunctionsComponent,
+    MsfDashboardColorPickerComponent
+  ]
 })
 export class AppModule { }

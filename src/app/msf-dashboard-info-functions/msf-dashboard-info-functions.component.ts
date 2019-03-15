@@ -7,6 +7,7 @@ import { Globals } from '../globals/Globals';
   templateUrl: './msf-dashboard-info-functions.component.html'
 })
 export class MsfDashboardInfoFunctionsComponent {
+
   constructor(
     public dialogRef: MatDialogRef<MsfDashboardInfoFunctionsComponent>,
     public globals: Globals,
