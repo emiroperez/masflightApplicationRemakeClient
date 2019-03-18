@@ -8,10 +8,8 @@
               <div class="msf-dashboard-button">
                 <mat-icon class="msf-dashboard-button-icon" aria-label="close" (click)="removeChart(column, row)">close</mat-icon>
               </div>
-              <!--
-              <div *ngIf="row" (mousedown)='onLineClick($event, column, row, resizePanelsFromLeft)' id='msf-dashboard-panel-left-resize' class='msf-dashboard-panel-line-resize'></div>
-              <div *ngIf="row != dashboardColumn.length - 1" (mousedown)='onLineClick($event, column, row, resizePanelsFromRight)' id='msf-dashboard-panel-right-resize' class='msf-dashboard-panel-line-resize'></div>
-              -->
+              <div *ngIf="row" (mousedown)='onLineClick($event, column, row - 1, row)' (mouseup)='onLineRelease()' id='msf-dashboard-panel-left-resize' class='msf-dashboard-panel-line-resize'></div>
+              <div *ngIf="row != dashboardColumn.length - 1" (mousedown)='onLineClick($event, column, row, row + 1)' id='msf-dashboard-panel-right-resize' class='msf-dashboard-panel-line-resize'></div>
               <app-msf-dashboard-chartmenu [values]="dashboardChart" [panelHeight]="getColumnHeight(column)" [columnPos]="column" [rowPos]="row"></app-msf-dashboard-chartmenu>
             </div>
           </div>
@@ -30,18 +28,6 @@
                   </mat-select>
                 </mat-form-field>
               </div>
-              <ng-container *ngIf="dashboardColumn.length > 1">
-                <div class="msf-dashboard-column-properties-align" *ngFor="let dashboardChart of dashboardColumn; let row = index">
-                  <span class="msf-dashboard-column-properties-width-label">Width (Chart #{{row + 1}}):</span>
-                  <mat-form-field class="msf-dashboard-column-properties-form-field">
-                    <mat-select [(ngModel)]="dashboardColumns[column][row].width" style="text-align: center" (selectionChange)="resizePanels(column, row)">
-                      <mat-option *ngFor="let widthValue of widthValues | panelSizeFilter: (dashboardColumns[column].length == 3 ? threePanelsFilterArgs : twoPanelsFilterArgs)" [value]="widthValue">
-                        {{widthValue.name}}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                </div>
-              </ng-container>
               <div class="msf-dashboard-column-properties-align" *ngIf="dashboardColumn.length <= 2">
                 <ng-container>
                   <div class="msf-dashboard-column-properties-button">

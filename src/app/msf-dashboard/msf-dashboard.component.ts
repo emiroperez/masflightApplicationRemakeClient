@@ -4,6 +4,8 @@ import { Globals } from '../globals/Globals';
 import { MsfDashboardChartValues } from '../msf-dashboard-chartmenu/msf-dashboard-chartvalues';
 import { ApplicationService } from '../services/application.service';
 
+const minPanelWidth = 25;
+
 @Component({
   selector: 'app-msf-dashboard',
   templateUrl: './msf-dashboard.component.html',
@@ -27,26 +29,11 @@ export class MsfDashboardComponent implements OnInit {
     { value: 12, name: 'Very Large' }
   ];
 
-  widthValues:any[] = [
-    { value: 2, name: 'Very Small' },
-    { value: 4, name: 'Small' },
-    { value: 6, name: 'Medium' },
-    { value: 8, name: 'Large' },
-    { value: 10, name: 'Very Large' },
-    { value: 12, name: 'Full Size' }
-  ];
-
-  twoPanelsFilterArgs:any = { value: 12, name: 'Full Size' };
-  threePanelsFilterArgs:any = { value: 10, name: 'Very Large' };
-
   // variables for panel resizing
-  //px: number;
   currentColumn: number;
-  /*currentRow: number;
   resizePanel: boolean;
-  minWidth: any;
-  maxWidth: any;
-  resizer: any;*/
+  leftPanel: any;
+  rightPanel: any;
 
   constructor(public globals: Globals, private service: ApplicationService)
   {
@@ -84,24 +71,6 @@ export class MsfDashboardComponent implements OnInit {
       _this.loadDashboardPanels, _this.handlerError);
   }
 
-  getPanelWidthOption(width): any
-  {
-    let result = this.widthValues[0]; // default result if no equivalent found
-
-    for (let i = 0; i < this.widthValues.length; i++)
-    {
-      let widthValue = this.widthValues[i];
-
-      if (widthValue.value == width)
-      {
-        result = widthValue;
-        break;
-      }
-    }
-
-    return result;
-  }
-
   loadDashboardPanels (_this, data): void
   {
     let dashboardPanels: any[] = [];
@@ -135,7 +104,7 @@ export class MsfDashboardComponent implements OnInit {
       }
 
       dashboardRows.push (new MsfDashboardChartValues (_this.options, dashboardPanel.title,
-        dashboardPanel.id, _this.widthValues[dashboardPanel.width], _this.heightValues[dashboardPanel.height],
+        dashboardPanel.id, dashboardPanel.width, _this.heightValues[dashboardPanel.height],
         dashboardPanel.option, dashboardPanel.chartColumnOptions, dashboardPanel.analysis, dashboardPanel.xaxis,
         dashboardPanel.values, dashboardPanel.function, dashboardPanel.chartType, dashboardPanel.categoryOptions,
         dashboardPanel.lastestResponse, dashboardPanel.paletteColors, dashboardPanel.row));
@@ -173,10 +142,13 @@ export class MsfDashboardComponent implements OnInit {
         dashboardPanel = dashboardPanels[row];
 
         // reset panel width to avoid mess after deleting one
-        defaultWidth = _this.getPanelWidthOption (12 / (dashboardPanels.length - 1));
+        if (dashboardPanels.length == 1)
+          defaultWidth = 0;
+        else
+          defaultWidth = 100 / (dashboardPanels.length - 1);
 
         _this.globals.isLoading = true;
-        _this.service.deleteDashboardPanel (_this, dashboardPanel.id, _this.widthValues.indexOf (defaultWidth),
+        _this.service.deleteDashboardPanel (_this, dashboardPanel.id, defaultWidth,
           _this.deleteRowPanel, _this.handlerError);
       });
   }
@@ -198,7 +170,7 @@ export class MsfDashboardComponent implements OnInit {
     {
       let dashboardPanel = dashboardPanels[i];
       dashboardRows.push (new MsfDashboardChartValues (_this.options, dashboardPanel.title, dashboardPanel.id,
-        _this.widthValues[dashboardPanels[0].width], _this.heightValues[dashboardPanels[0].height]));
+        dashboardPanels[0].width, _this.heightValues[dashboardPanels[0].height]));
     }
 
     _this.dashboardColumns.push (dashboardRows);
@@ -218,7 +190,7 @@ export class MsfDashboardComponent implements OnInit {
     for (i = 0; i < dashboardColumn.length; i++)
     {
       dashboardPanel = dashboardColumn[i];
-      dashboardPanel.width = _this.widthValues[dashboardPanels[0].width];
+      dashboardPanel.width = dashboardPanels[0].width;
     }
 
     // insert the data options for each chart
@@ -226,7 +198,7 @@ export class MsfDashboardComponent implements OnInit {
     {
       dashboardPanel = dashboardPanels[i];
       dashboardColumn.push (new MsfDashboardChartValues (_this.options, dashboardPanel.title, dashboardPanel.id,
-        _this.widthValues[dashboardPanel.width], _this.heightValues[dashboardPanel.height]));
+        dashboardPanel.width, _this.heightValues[dashboardPanel.height]));
     }
 
     _this.globals.isLoading = false;
@@ -241,7 +213,7 @@ export class MsfDashboardComponent implements OnInit {
 
     // set panel width for synchronization with the database
     for (let i = 0; i < dashboardPanels.length; i++)
-    dashboardPanels[i].width = _this.widthValues[defaultWidth];
+      dashboardPanels[i].width = defaultWidth;
 
     // also remove the column if there are no panels left in the row
     if (!dashboardPanels.length)
@@ -268,7 +240,7 @@ export class MsfDashboardComponent implements OnInit {
 
     panelsToAdd = [];
     column = this.dashboardColumns.length;
-    width = this.getPanelWidthOption (12 / numCharts);
+    width = 100 / numCharts;
 
     for (let i = 0; i < numCharts; i++)
     {
@@ -280,7 +252,7 @@ export class MsfDashboardComponent implements OnInit {
         'column' : column,
         'title' : "New Chart",
         'height' : 0,
-        'width' : this.widthValues.indexOf (width)
+        'width' : width
       });
     }
 
@@ -294,7 +266,7 @@ export class MsfDashboardComponent implements OnInit {
     let panelsToAdd, width;
 
     panelsToAdd = [];
-    width = this.widthValues.indexOf (this.getPanelWidthOption (12 / (dashboardColumns.length + numCharts)));
+    width = 100 / (dashboardColumns.length + numCharts);
 
     for (let i = 0; i < numCharts; i++)
     {
@@ -322,7 +294,7 @@ export class MsfDashboardComponent implements OnInit {
 
   getPanelWidth(column, row): number
   {
-    return (this.dashboardColumns[column][row].width.value * 100) / 12;
+    return this.dashboardColumns[column][row].width;
   }
 
   getColumnHeight(column): number
@@ -351,7 +323,7 @@ export class MsfDashboardComponent implements OnInit {
   // this is not flexible...
   resizePanels(column, row): void
   {
-    let currentColumn = this.dashboardColumns[column];
+    /*let currentColumn = this.dashboardColumns[column];
 
     if (currentColumn.length == 3) // three panels
     {
@@ -394,118 +366,59 @@ export class MsfDashboardComponent implements OnInit {
       currentColumn[0].width = this.getPanelWidthOption (12);
 
     this.currentColumn = column;
-    this.saveResizedPanels ();
+    this.saveResizedPanels ();*/
   }
 
-  /*resizePanelsFromLeft(offsetX: number): void
+  onLineClick(event, column, leftrow, rightrow): void
   {
-    let leftPanel = this.dashboardColumns[this.currentColumn][this.currentRow - 1];
-    let rightPanel = this.dashboardColumns[this.currentColumn][this.currentRow];
-
-    if (offsetX < 0)
-    {
-      this.resizePanel = false;
-
-      if (rightPanel.width === this.maxWidth)
-        return;
-
-      rightPanel.width = this.widthValues[this.widthValues.indexOf (rightPanel.width) + 1];
-      leftPanel.width = this.widthValues[this.widthValues.indexOf (leftPanel.width) - 1];
-
-      this.saveResizedPanels ();
-    }
-    else if (offsetX > 0)
-    {
-      this.resizePanel = false;
-
-      if (rightPanel.width === this.minWidth)
-        return;
-
-      rightPanel.width = this.widthValues[this.widthValues.indexOf (rightPanel.width) - 1];
-      leftPanel.width = this.widthValues[this.widthValues.indexOf (leftPanel.width) + 1];
-
-      this.saveResizedPanels ();
-    }
-  }
-
-  resizePanelsFromRight(offsetX: number): void
-  {
-    let leftPanel = this.dashboardColumns[this.currentColumn][this.currentRow];
-    let rightPanel = this.dashboardColumns[this.currentColumn][this.currentRow + 1];
-
-    if (offsetX < 0)
-    {
-      this.resizePanel = false;
-
-      if (leftPanel.width === this.minWidth)
-        return;
-
-      leftPanel.width = this.widthValues[this.widthValues.indexOf (leftPanel.width) - 1];
-      rightPanel.width = this.widthValues[this.widthValues.indexOf (rightPanel.width) + 1];
-
-      this.saveResizedPanels ();
-    }
-    else if (offsetX > 0)
-    {
-      this.resizePanel = false;
-
-      if (leftPanel === this.maxWidth)
-        return;
-
-      leftPanel.width = this.widthValues[this.widthValues.indexOf (leftPanel.width) + 1];
-      rightPanel.width = this.widthValues[this.widthValues.indexOf (rightPanel.width) - 1];
-
-      this.saveResizedPanels ();
-    }
-  }
-
-  onLineClick(event, column, row, func): void
-  {
-    if (this.dashboardColumns[column].length == 3)
-    {
-      let dashboardColumn = this.dashboardColumns[column];
-      let offset = 0;
-
-      this.minWidth = this.widthValues[0];
-
-      if (row == 2)
-        offset = this.widthValues.indexOf (dashboardColumn[0].width);
-      else if (!row)
-        offset = this.widthValues.indexOf (dashboardColumn[2].width);
-
-      this.maxWidth = this.widthValues[3 - offset];
-    }
-    else
-    {
-      this.minWidth = this.widthValues[0];
-      this.maxWidth = this.widthValues[4];
-    }
-
     this.currentColumn = column;
-    this.currentRow = row;
-    this.resizer = func;
+    this.leftPanel = this.dashboardColumns[column][leftrow];
+    this.rightPanel = this.dashboardColumns[column][rightrow];
     this.resizePanel = true;
-    this.px = event.x;
 
-    event.preventDefault();
-    event.stopPropagation();
+    event.preventDefault ();
+    event.stopPropagation ();
   }
 
   @HostListener('document:mousemove', ['$event'])
   onLineMove(event: MouseEvent)
   {
+    let offsetX, totalWidth;
+
     if (!this.resizePanel)
         return;
 
-    this.resizer (event.clientX - this.px);
-    this.px = event.clientX;
+    // convert horizontal offset into percentage for proper resizing
+    offsetX = event.movementX * 100 / window.screen.width;
+    totalWidth = this.leftPanel.width + this.rightPanel.width;
+
+    // begin resizing the panels
+    if (offsetX > 0 && this.rightPanel.width - offsetX < minPanelWidth)
+    {    
+      this.rightPanel.width = minPanelWidth;
+      this.leftPanel.width = totalWidth - minPanelWidth;
+      return;
+    }
+    else if (offsetX < 0 && this.leftPanel.width + offsetX < minPanelWidth)
+    {    
+      this.leftPanel.width = minPanelWidth;
+      this.rightPanel.width = totalWidth - minPanelWidth;
+      return;
+    }
+
+    this.leftPanel.width += offsetX;
+    this.rightPanel.width -= offsetX;
   }
 
   @HostListener('document:mouseup', ['$event'])
   onLineRelease(event: MouseEvent)
   {
+    if (!this.resizePanel)
+      return;
+
     this.resizePanel = false;
-  }*/
+    this.saveResizedPanels ();
+  }
 
   saveResizedPanels(): void
   {
@@ -517,8 +430,10 @@ export class MsfDashboardComponent implements OnInit {
     {
       let dashboardPanel = dashboardColumn[i];
 
-      dashboardIds.push (dashboardPanel.id);
-      dashboardIds.push (this.widthValues.indexOf (dashboardPanel.width));
+      dashboardIds.push ({
+        id: dashboardPanel.id,
+        width: dashboardPanel.width
+      });
     }
 
     this.globals.isLoading = true;

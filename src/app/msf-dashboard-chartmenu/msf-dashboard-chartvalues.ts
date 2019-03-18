@@ -14,7 +14,7 @@ export class MsfDashboardChartValues {
     currentOption: any;
     currentOptionCategories: any;
 
-    width: any;
+    width: number;
     height: any;
     row: number;
 
