@@ -2012,6 +2012,20 @@ mat-tab-group {
   position: absolute;
   width: 100%;
 }
+.msf-dashboard-button .msf-dashboard-button-close-icon {
+  color: inherit;
+  cursor: default;
+  font-size: 16px;
+  padding-right: 2px;
+  padding-top: 5px;
+}
+.msf-dashboard-button .msf-dashboard-button-close-icon:hover {
+  color: #01abec;
+  cursor: pointer;
+  font-size: 16px;
+  padding-right: 2px;
+  padding-top: 5px;
+}
 .msf-dashboard-button .msf-dashboard-button-icon {
   color: inherit;
   cursor: default;
@@ -2051,7 +2065,7 @@ mat-tab-group {
   background-color: #3b3b3b;
   overflow-y: visible;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   flex-direction: column;
 }
 .msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-variable-buttons {
