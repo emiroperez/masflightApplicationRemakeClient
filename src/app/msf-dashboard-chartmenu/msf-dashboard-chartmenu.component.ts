@@ -1037,7 +1037,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       this.globals.isLoading = true;
 
     this.dialog.open (MsfDashboardControlVariablesComponent, {
-      height: '92%',
+      height: '605px',
       width: '400px',
       panelClass: 'msf-dashboard-control-variables-dialog',
       data: {
@@ -1708,7 +1708,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     }
 
     const dialogRef = this.dialog.open (MsfDashboardInfoFunctionsComponent, {
-      height: '58%',
+      height: '362px',
       width: '600px',
       panelClass: 'msf-dashboard-control-variables-dialog',
       autoFocus: false,
@@ -1736,12 +1736,12 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     if (this.values.currentChartType.flags & ChartFlags.XYCHART
       || this.values.currentChartType.flags & ChartFlags.PIECHART)
     {
-      dialogHeight = '52%';
+      dialogHeight = '340px';
       numColors = 12;
     }
     else
     {
-      dialogHeight = '27%';
+      dialogHeight = '178px';
       numColors = 1;
     }
 

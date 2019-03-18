@@ -1880,6 +1880,10 @@ mat-tab-group {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
 
+.msf-dashboard-chartbox-item:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
 .msf-dashboard-chartbox-column .cdk-drag-animating {
   transition: transform 300ms cubic-bezier(0, 0, 0.2, 1);
 }
@@ -1967,7 +1971,7 @@ mat-tab-group {
   width: 100%;
 }
 .msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-chartbox-column .msf-dashboard-chartbox-item {
-  padding: 2px 2px;
+  margin: 0 2px;
   position: relative;
 }
 .msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed {
@@ -1977,6 +1981,7 @@ mat-tab-group {
   flex-direction: row;
   margin-left: 2px;
   margin-right: 2px;
+  padding-top: 2px;
   height: 20px;
   transition: 0.5s;
 }
@@ -2002,6 +2007,7 @@ mat-tab-group {
   flex-direction: row;
   margin-left: 2px;
   margin-right: 2px;
+  padding-top: 2px;
   height: 60px;
   transition: 0.5s;
 }
