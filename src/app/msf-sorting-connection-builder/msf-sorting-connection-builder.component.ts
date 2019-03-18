@@ -21,6 +21,8 @@ export class MsfSortingConnectionBuilderComponent implements OnInit {
 
 
   ngOnInit() { 
+    if(!this.argument.value1){
       this.argument.value1 =   {id: 'NUMBERSTOPS', name: 'Number of Stops'};
+    }
   }
 }

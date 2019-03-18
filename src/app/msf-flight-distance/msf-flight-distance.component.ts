@@ -12,8 +12,10 @@ export class MsfFlightDistanceComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    if(!this.argument.value1&&!this.argument.value2){
     this.argument.value1 = 0;
     this.argument.value2 = 25000;
+    }
   }
 
 }

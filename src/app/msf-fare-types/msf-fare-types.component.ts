@@ -78,8 +78,10 @@ export class MsfFareTypesComponent implements OnInit {
   constructor(public globals: Globals) { }
 
   ngOnInit() { 
+    if(!this.argument.value1){
     this.all.checked = true;
     this.checkBoxAllChange();
+    }
   }
 
   checkBoxChange(checkBox){

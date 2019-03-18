@@ -18,7 +18,7 @@ export class MsfSummaryComponent implements OnInit {
     {id: 'MONTH', columnLabel: 'Month', columnName:'Month'},
     // {id: 'DAY', columnLabel: 'Day' ,columnName:'Day'},
     {id: 'DESTINATION', columnLabel: 'Destination', columnName: 'Destination'},
-    {id: 'AIRCRAFT_TYPE', columnLabel: 'Aircraft Type',columnName:'AircraftType'},
+    // {id: 'AIRCRAFT_TYPE', columnLabel: 'Aircraft Type',columnName:'AircraftType'},
     {id: 'AIRLINE', columnLabel: 'Airline',columnName:'Carrier'},
     {id: 'ORIGIN', columnLabel: 'Origin',columnName:'Origin'}
 ];
@@ -26,9 +26,11 @@ export class MsfSummaryComponent implements OnInit {
 
 
   ngOnInit() { 
+    if(!this.argument.value1){
     this.argument.value1 = [
       {id: 'ORIGIN', columnLabel: 'Origin',columnName:'Origin'},
       {id: 'DESTINATION', columnLabel: 'Destination', columnName: 'Destination'}];
   }
+}
 
 }

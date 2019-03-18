@@ -24,7 +24,8 @@ export class MsfGeographyComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    if(!this.argument.value1){
     this.argument.value1 = "Both";
   }
-  
+}  
 }

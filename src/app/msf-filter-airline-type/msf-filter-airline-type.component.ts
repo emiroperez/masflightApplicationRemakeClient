@@ -22,7 +22,9 @@ export class MsfFilterAirlineTypeComponent implements OnInit {
 
 
   ngOnInit() { 
+    if(!this.argument.value1){
     this.argument.value1 = {id: 'RpCarrier', name: 'Reporting Carrier'};
+    }
   }
 
 }

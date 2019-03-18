@@ -20,7 +20,9 @@ constructor() { }
 
 
 ngOnInit() { 
+  if(!this.argument.value1){
   this.argument.value1  = {id: "1" ,name:"1 Stop"};
+  }
 }
 
 }
