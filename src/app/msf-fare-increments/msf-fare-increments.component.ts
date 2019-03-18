@@ -23,7 +23,9 @@ export class MsfFareIncrementsComponent implements OnInit {
 
 
   ngOnInit() { 
+    if(!this.argument.value1){
     this.argument.value1 = {id: '0.05', name: '$0.05'};
   }
+}
 
 }

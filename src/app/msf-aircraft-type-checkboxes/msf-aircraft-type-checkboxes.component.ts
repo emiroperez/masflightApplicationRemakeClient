@@ -33,9 +33,11 @@ export class MsfAircraftTypeCheckboxesComponent implements OnInit {
 
   constructor(public globals: Globals) { }
 
-  ngOnInit() { 
-    this.all.checked = true;
-    this.checkBoxAllChange();
+  ngOnInit() {
+    if(!this.argument.value1){
+      this.all.checked = true;
+      this.checkBoxAllChange();
+    } 
   }
 
   checkBoxChange(checkBox){

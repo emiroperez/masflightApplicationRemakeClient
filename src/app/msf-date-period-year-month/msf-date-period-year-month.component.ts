@@ -54,8 +54,10 @@ export class MsfDatePeriodYearMonthComponent implements OnInit {
     }else{
       this.date =  new FormControl(moment());
     }
+    if(!this.argument.value1&&!this.argument.value2){
     this.argument.value1 = this.date.value.year();
     this.argument.value2 = this.date.value.month()+1;
+    }
   }
 
   chosenYearHandler(normalizedYear: Moment) {

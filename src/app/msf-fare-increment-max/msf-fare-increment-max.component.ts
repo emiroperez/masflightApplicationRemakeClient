@@ -22,7 +22,9 @@ export class MsfFareIncrementMaxComponent implements OnInit {
 
 
   ngOnInit() { 
+    if(!this.argument.value1){
     this.argument.value1 = {id: '0.25', name: '$0.25'};
+    }
   }
 
 }

@@ -20,6 +20,8 @@ export class MsfSortingNonstopCapacityComponent implements OnInit {
 
 
   ngOnInit() { 
+    if(!this.argument.value1){
       this.argument.value1 =   {id: 'DEPARTURETIME', name: 'Departure Time', column:'Departure Time'};
+    }
   }
 }

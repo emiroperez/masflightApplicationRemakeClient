@@ -21,8 +21,10 @@ export class MsfQuarterHourComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    if (!this.argument.value1&&!this.argument.value2){
     this.argument.value1 = {id: 1, name: '0:00-0:14',value:"1"};
     this.argument.value2 = {id: 4, name: '0:45-0:59',value:"4"};
+    }
   }
 
 }

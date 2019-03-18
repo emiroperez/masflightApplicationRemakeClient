@@ -24,7 +24,9 @@ export class MsfServiceClassesComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    if(!this.argument.value1){
     this.argument.value1 = "";
+    }
   }
   
 

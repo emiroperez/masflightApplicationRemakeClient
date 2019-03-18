@@ -18,7 +18,9 @@ export class MsfGroupingHubSummariesComponent implements OnInit {
 
 
   ngOnInit() { 
+    if (!this.argument.value1){
     this.argument.value1= {id: 'INTERVAL', columnLabel: 'Interval', columnName:'Interval'};
   }
+}
 
 }

@@ -24,7 +24,9 @@ export class MsfFunctionsComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.argument.value1 = "s";
+    if(!this.argument.value1){
+      this.argument.value1 = "s";
+    }
   }
 
 }

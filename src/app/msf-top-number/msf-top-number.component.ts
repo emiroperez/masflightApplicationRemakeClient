@@ -13,7 +13,9 @@ export class MsfTopNumberComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.argument.value1=10;
+    if(!this.argument.value1){
+      this.argument.value1=10;
+    }
   }
 
 }

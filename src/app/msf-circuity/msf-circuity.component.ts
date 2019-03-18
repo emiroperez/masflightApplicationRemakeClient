@@ -26,7 +26,9 @@ export class MsfCircuityComponent implements OnInit {
 constructor() { }
 
 
-ngOnInit() { 
-  this.argument.value1  = {id: "0.25" ,name:"25%"};
-}
+ngOnInit() {
+  if(!this.argument.value1){
+    this.argument.value1  = {id: "0.25" ,name:"25%"};
+  } 
+  }
 }

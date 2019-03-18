@@ -27,60 +27,17 @@ export class MsfRoundingComponent implements OnInit {
                           {id: 3, name: '3 Digits (n.ddd)'}
                         ];
 
-  // public filteredRounding: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
-
   @ViewChild('roundingSelect') roundingSelect: MatSelect;
 
-
-  // private _onDestroy = new Subject<void>();
 
   loading = false;
   constructor(private http: ApiClient) { }
 
   ngOnInit() { 
-
+    if(!this.argument.value1){
     this.argument.value1 = {id: 2, name: '2 Digits (n.dd)'};
-
-    // this.filteredRounding.next(this.roundingList.slice());
-
-    // this.roundingFilterCtrl.valueChanges
-    //   .pipe(takeUntil(this._onDestroy))
-    //   .subscribe(() =>{
-    //     this.filterRounding();
-    //   });
+    }
 
   }
-
-
-  // ngAfterViewInit() {
-  //   this.setInitialValue();
-  // }
-
-  // ngOnDestroy() {
-  //   this._onDestroy.next();
-  //   this._onDestroy.complete();
-  // }
-
-  // private setInitialValue() {
-  //   this.filteredRounding
-  //     .pipe(take(1), takeUntil(this._onDestroy))
-  //     .subscribe(() => {
-  //       this.roundingSelect.compareWith = (a: any, b: any) => a.id === b.id;
-  //     });
-  // }
-
-  // private filterRounding() {
-  //   if (!this.roundingList) {
-  //     return;
-  //   }
-  //   let search = this.roundingFilterCtrl.value;
-  //   if (!search) {
-  //     this.filteredRounding.next(this.roundingList.slice());
-  //     return;
-  //   } else {
-  //     search = search.toLowerCase();
-  //   }
-  //   this.roundingSelect.compareWith = (a: any, b: any) => a.id === b.id;
-  // }
 
 }

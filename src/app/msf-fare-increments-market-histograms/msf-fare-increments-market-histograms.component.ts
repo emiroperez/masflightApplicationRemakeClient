@@ -26,8 +26,10 @@ export class MsfFareIncrementsMarketHistogramsComponent implements OnInit {
 
 
   ngOnInit() { 
+    if(!this.argument.value1){
     this.argument.value1 = {id: '25', name: '$25'};
   }
+}
 
 
 }

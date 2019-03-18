@@ -13,9 +13,11 @@ export class MsfWindComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.argument.value1 = 0;
-    this.argument.value2 = 200;
-    this.argument.value3 = 'kts';
+    if(!this.argument.value1&&!this.argument.value2&&!this.argument.value3){
+      this.argument.value1 = 0;
+      this.argument.value2 = 200;
+      this.argument.value3 = 'kts';
+    }
   }
 
 }

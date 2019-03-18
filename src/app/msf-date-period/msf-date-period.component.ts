@@ -63,8 +63,10 @@ export class MsfDatePeriodComponent implements OnInit {
     }else{
       this.date =  new FormControl(moment());
     }
-    this.argument.value1 = this.date.value.year();
-    this.argument.value2 = {id: 4, name: '4st Quarter',value:"4"};
+    if(!this.argument.value1&&!this.argument.value2){
+      this.argument.value1 = this.date.value.year();
+      this.argument.value2 = {id: 4, name: '4st Quarter',value:"4"};
+    }
   }
 
   chosenYearHandler(normalizedYear: Moment, datepicker: MatDatepicker<Moment>) {

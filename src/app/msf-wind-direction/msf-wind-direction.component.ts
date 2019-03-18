@@ -13,8 +13,10 @@ export class MsfWindDirectionComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.argument.value1 = 0;
-    this.argument.value2 = 360;
+    if(!this.argument.value1&&!this.argument.value2){
+      this.argument.value1 = 0;
+      this.argument.value2 = 360;
+    }
   }
 
 }

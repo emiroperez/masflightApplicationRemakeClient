@@ -104,7 +104,6 @@ import { MsfSortingComponent } from './msf-sorting/msf-sorting.component';
 import { MsfSortingCheckboxesComponent } from './msf-sorting-checkboxes/msf-sorting-checkboxes.component';
 import { MsfSortingByAirportComponent } from './msf-sorting-by-airport/msf-sorting-by-airport.component';
 import { MsfGroupingAthenaComponent } from './msf-grouping-athena/msf-grouping-athena.component';
-import { GroupingTwoArgumentsComponent } from './grouping-two-arguments/grouping-two-arguments.component';
 import { MsfFlightDistanceComponent } from './msf-flight-distance/msf-flight-distance.component';
 import { MsfFareTypesComponent } from './msf-fare-types/msf-fare-types.component';
 import { MsfSummaryComponent } from './msf-summary/msf-summary.component';
@@ -245,7 +244,6 @@ import { MsfDashboardColorPickerComponent } from './msf-dashboard-color-picker/m
     MsfSortingCheckboxesComponent,
     MsfSortingByAirportComponent,
     MsfGroupingAthenaComponent,
-    GroupingTwoArgumentsComponent,
     MsfFlightDistanceComponent,
     MsfFareTypesComponent,
     MsfSummaryComponent,

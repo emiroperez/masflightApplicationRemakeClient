@@ -21,7 +21,9 @@ export class MsfGroupingOperationsSummaryComponent implements OnInit {
 
 
   ngOnInit() { 
+    if (!this.argument.value1){
     this.argument.value1= {id: 'YEAR', columnLabel: 'Year', columnName:'years'}
+  }
   }
 
 }

@@ -22,6 +22,8 @@ export class MsfFareIncrementMiddleComponent implements OnInit {
 
 
   ngOnInit() { 
+    if(!this.argument.value1){
     this.argument.value1 = {id: '0.10', name: '$0.10'};
   }
+}
 }
