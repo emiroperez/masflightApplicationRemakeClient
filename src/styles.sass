@@ -1676,6 +1676,9 @@ mat-tab-group
 .msf-dashboard-chartbox-column .cdk-drop-list-dragging .cdk-drag
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1)
 
+.msf-dashboard-chartbox-item:not(.cdk-drag-placeholder)
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1)
+
 .msf-dashboard-chartbox-column .cdk-drag-animating
     transition: transform 300ms cubic-bezier(0, 0, 0.2, 1)
 
@@ -1686,6 +1689,7 @@ mat-tab-group
     flex-direction: row
     margin-left: 2px
     margin-right: 2px
+    padding-top: 2px
     height: $height
     transition: 0.5s
     .msf-dashboard-column-properties-align
@@ -1757,7 +1761,7 @@ mat-tab-group
                 width: 100%
                 .msf-dashboard-chartbox-column
                     .msf-dashboard-chartbox-item
-                        padding: 2px 2px
+                        margin: 0 2px
                         position: relative
                 .msf-dashboard-panel-size-properties-closed
                     @include msf-dashboard-column-properties
