@@ -1,7 +1,6 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Globals } from '../globals/Globals';
-import { ApiClient } from '../api/api-client';
 import { MsfDashboardChartValues } from '../msf-dashboard-chartmenu/msf-dashboard-chartvalues';
 import { ApplicationService } from '../services/application.service';
 
@@ -49,8 +48,7 @@ export class MsfDashboardComponent implements OnInit {
   maxWidth: any;
   resizer: any;*/
 
-  constructor(public globals: Globals, private service: ApplicationService,
-    private http: ApiClient)
+  constructor(public globals: Globals, private service: ApplicationService)
   {
     this.screenHeight = "calc(100% - 90px)";
   }
