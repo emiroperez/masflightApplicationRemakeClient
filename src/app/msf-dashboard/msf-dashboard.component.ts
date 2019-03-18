@@ -320,55 +320,6 @@ export class MsfDashboardComponent implements OnInit {
     _this.globals.isLoading = false;
   }
 
-  // this is not flexible...
-  resizePanels(column, row): void
-  {
-    /*let currentColumn = this.dashboardColumns[column];
-
-    if (currentColumn.length == 3) // three panels
-    {
-      if (row == 1)
-      {
-        currentColumn[0].width =
-          this.getPanelWidthOption (12 - (currentColumn[1].width.value + currentColumn[2].width.value));
-        currentColumn[2].width =
-          this.getPanelWidthOption (12 - (currentColumn[1].width.value + currentColumn[0].width.value));
-      }
-      else if (row == 2)
-      {
-        currentColumn[1].width =
-          this.getPanelWidthOption (12 - (currentColumn[2].width.value + currentColumn[0].width.value));
-        currentColumn[0].width =
-          this.getPanelWidthOption (12 - (currentColumn[2].width.value + currentColumn[1].width.value));
-      }
-      else
-      {
-        currentColumn[1].width =
-          this.getPanelWidthOption (12 - (currentColumn[0].width.value + currentColumn[2].width.value));
-        currentColumn[2].width =
-          this.getPanelWidthOption (12 - (currentColumn[0].width.value + currentColumn[1].width.value));
-      }
-    }
-    else if (currentColumn.length == 2) // two panels
-    {
-      if (row == 1)
-      {
-        currentColumn[0].width =
-          this.getPanelWidthOption (12 - currentColumn[1].width.value);
-      }
-      else
-      {
-        currentColumn[1].width =
-          this.getPanelWidthOption (12 - currentColumn[0].width.value);
-      }
-    }
-    else if (currentColumn.length == 1) // one panel
-      currentColumn[0].width = this.getPanelWidthOption (12);
-
-    this.currentColumn = column;
-    this.saveResizedPanels ();*/
-  }
-
   onLineClick(event, column, leftrow, rightrow): void
   {
     this.currentColumn = column;
