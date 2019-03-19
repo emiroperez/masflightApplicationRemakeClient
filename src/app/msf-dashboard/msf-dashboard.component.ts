@@ -48,7 +48,7 @@ export class MsfDashboardComponent implements OnInit {
   {
     this.globals.isLoading = true;
 
-    this.service.getMenuString (this, this.globals.currentApplication.id,
+    this.service.getMenuString (this, this.globals.currentDashboardMenu.id,
       this.addDataForms, this.handlerError);
   }
 
@@ -67,7 +67,7 @@ export class MsfDashboardComponent implements OnInit {
     }
 
     // get dashboard panels after getting the data forms
-    _this.service.getDashboardPanels (_this, _this.globals.currentApplication.id,
+    _this.service.getDashboardPanels (_this, _this.globals.currentDashboardMenu.id,
       _this.loadDashboardPanels, _this.handlerError);
   }
 
@@ -218,7 +218,7 @@ export class MsfDashboardComponent implements OnInit {
     // also remove the column if there are no panels left in the row
     if (!dashboardPanels.length)
     {
-      _this.service.deleteDashboardColumn (_this, _this.globals.currentApplication.id,
+      _this.service.deleteDashboardColumn (_this, _this.globals.currentDashboardMenu.id,
         _this.columnToUpdate, _this.deleteColumn, _this.handlerError);
     }
     else
@@ -247,7 +247,7 @@ export class MsfDashboardComponent implements OnInit {
       // set the properties for each panel before adding it into the database
       panelsToAdd.push (
       {
-        'applicationId' : this.globals.currentApplication.id,
+        'dashboardMenuId' : this.globals.currentDashboardMenu.id,
         'row' : i,
         'column' : column,
         'title' : "New Chart",
@@ -273,7 +273,7 @@ export class MsfDashboardComponent implements OnInit {
       // set the properties for each panel before adding it into the database
       panelsToAdd.push (
       {
-        'applicationId' : this.globals.currentApplication.id,
+        'dashboardMenuId' : this.globals.currentDashboardMenu.id,
         'row' : i,
         'column' : column,
         'title' : "New Chart",
