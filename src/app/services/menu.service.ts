@@ -55,9 +55,24 @@ export class MenuService {
       this.get (_this, _this.globals.baseUrl + "/secure" + url, successHandler, errorHandler);
   }
 
+  addDashboard(_this, data, successHandler, errorHandler){
+    let url = "/addDashboardMenu";
+    if (_this.globals.baseUrl != ""){
+        this.post (_this,  _this.globals.baseUrl + url,data, successHandler, errorHandler);
+    }else{
+      this.post (_this, _this.globals.baseUrl + "/secure" + url, data, successHandler, errorHandler);
+}
+  }
+
   updateDashboardTitle(_this, id, title, successHandler, errorHandler)
   {
     let url = _this.globals.baseUrl+ "/updateDashboardTitle?id=" + id + "&title=" + title;
+    this.post (_this, url, null, successHandler, errorHandler);
+  }
+
+  deleteDashboard(_this, id, successHandler, errorHandler)
+  {
+    let url = _this.globals.baseUrl+ "/deleteDashboard?id=" + id;
     this.post (_this, url, null, successHandler, errorHandler);
   }
 
@@ -78,7 +93,7 @@ export class MenuService {
   post = function (_this,url, data, successHandler, errorHandler) {
     this.http.post(url, data).subscribe(result => {
         successHandler(_this,result);
-      }, error => 
+      }, error =>
       errorHandler(_this,error)
     );
   }

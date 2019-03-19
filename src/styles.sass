@@ -1765,6 +1765,11 @@ mat-tab-group
     padding-right: $padding-right
     padding-top: 5px
 
+.msf-dashboard-invisible
+    display: none
+    width: 1px
+    height: 1px
+
 .msf-dashboard-button
     display: flex
     flex-direction: column
@@ -1779,6 +1784,23 @@ mat-tab-group
         @include msf-dashboard-icon(5px)
     .msf-dashboard-button-icon:hover
         @include msf-dashboard-icon(5px, #01abec, pointer)
+
+.msf-dashboard-panel-button
+    display: flex
+    flex-direction: row-reverse
+    align-items: flex-end
+    position: absolute
+    width: 100%
+    .msf-dashboard-button-close-icon
+        @include msf-dashboard-icon(2px)
+    .msf-dashboard-button-close-icon:hover
+        @include msf-dashboard-icon(2px, #01abec, pointer)
+    .msf-dashboard-button-move-icon
+        margin-right: -8px
+        @include msf-dashboard-icon(2px)
+    .msf-dashboard-button-move-icon:hover
+        margin-right: -8px
+        @include msf-dashboard-icon(2px, #01abec, move)
 
 .msf-dashboard-form-field
     .mat-form-field-underline
@@ -1902,6 +1924,9 @@ mat-tab-group
     align-items: center
     .msf-dashboard-function-measure
         width: 90%
+    .msf-width-80
+        width: 80%
+        @extend .msf-dashboard-form-field
     .msf-width-90
         @extend .msf-dashboard-form-field
     .msf-full-width
