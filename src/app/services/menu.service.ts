@@ -61,6 +61,12 @@ export class MenuService {
     this.post (_this, url, null, successHandler, errorHandler);
   }
 
+  deleteDashboard(_this, id, successHandler, errorHandler)
+  {
+    let url = _this.globals.baseUrl+ "/deleteDashboard?id=" + id;
+    this.post (_this, url, null, successHandler, errorHandler);
+  }
+
   createAuthorizationHeader() {
     httpOptions.headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     httpOptions.headers = httpOptions.headers.append(this.SECURITY_HEADER, localStorage.getItem(this.TOKEN_STORAGE_KEY));

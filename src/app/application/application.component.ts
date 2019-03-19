@@ -15,6 +15,7 @@ import { PlanAdvanceFeatures } from '../model/PlanAdvanceFeatures';
 import { User } from '../model/User';
 import { DashboardMenu } from '../model/DashboardMenu';
 import { MsfEditDashboardComponent } from '../msf-edit-dashboard/msf-edit-dashboard.component';
+import { ApplicationService } from '../services/application.service';
 
 
 @Component({
@@ -46,7 +47,8 @@ export class ApplicationComponent implements OnInit {
   @ViewChild('msfContainerRef')
   msfContainerRef: MsfContainerComponent;
 
-  constructor(public dialog: MatDialog, public globals: Globals, private service: MenuService,private router: Router,private excelService:ExcelService) {
+  constructor(public dialog: MatDialog, public globals: Globals, private service: MenuService,private router: Router,private excelService:ExcelService,
+    private appService: ApplicationService) {
     this.status = false;
   }
 
@@ -341,5 +343,27 @@ toggle(){
         currentDashboardMenu: this.globals.currentDashboardMenu
       }
     });
+  }
+
+  deleteSucess(_this): void
+  {
+    _this.temporalSelectOption (_this);
+  }
+
+  deleteError(_this): void
+  {
+    _this.globals.isLoading = false;
+  }
+
+  deleteDashboard(): void
+  {
+    this.appService.confirmationDialog (this, "Are you sure you want to delete this dashboard?",
+      function (_this)
+      {
+        _this.globals.isLoading = true;
+        _this.service.deleteDashboard (_this, _this.globals.currentDashboardMenu.id, _this.deleteSucess,
+          _this.deleteError);
+      }
+    );
   }
 }
