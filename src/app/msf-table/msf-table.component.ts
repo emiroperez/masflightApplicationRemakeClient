@@ -291,14 +291,14 @@ export class MsfTableComponent implements OnInit {
           }else{  
             var aux = (_this.actualPageNumber+1)*100;
             aux = aux!=0 ? aux : 100;
-            if( _this.globals.totalRecord<parseIntAutoRadix){
+            if( _this.globals.totalRecord<aux){
               _this.globals.moreResultsBtn = false;
               _this.globals.moreResults = false;
             }else{
               _this.globals.moreResultsBtn = true;
             }
             if(_this.limitNumber!=null){
-              if(_this.limitNumber.value1!=null && _this.limitNumber.value1!=""){
+              if(_this.limitNumber.value1!=null || _this.limitNumber.value1!=""){
                 _this.globals.moreResultsBtn = false;
                 _this.globals.moreResults = false;
               }
