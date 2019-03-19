@@ -7,8 +7,11 @@
             <div class="msf-dashboard-chartbox-item" [style.width.%]="getPanelWidth(column, row)" *ngFor="let dashboardChart of dashboardColumn; let row = index" [attr.data-index]="row" cdkDragLockAxis="x" cdkDrag>
               <div *ngIf="row" (mousedown)='onLineClick($event, column, row - 1, row)' (mouseup)='onLineRelease()' id='msf-dashboard-panel-left-resize' class='msf-dashboard-panel-line-resize'></div>
               <div *ngIf="row != dashboardColumn.length - 1" (mousedown)='onLineClick($event, column, row, row + 1)' id='msf-dashboard-panel-right-resize' class='msf-dashboard-panel-line-resize'></div>
-              <div class="msf-dashboard-button">
+              <!-- HACK: Add an invisible div to avoid panel row dragging when only one panel in a column is available -->
+              <div *ngIf="dashboardColumn.length == 1" cdkDragHandle class="msf-dashboard-invisible"></div>
+              <div class="msf-dashboard-panel-button">
                 <mat-icon class="msf-dashboard-button-close-icon" aria-label="close" (click)="removeChart(column, row)">close</mat-icon>
+                <mat-icon class="msf-dashboard-button-move-icon" *ngIf="dashboardColumn.length != 1" aria-label="move" cdkDragHandle>drag_handle</mat-icon>
               </div>
               <app-msf-dashboard-chartmenu [values]="dashboardChart" [panelHeight]="getColumnHeight(column)" [columnPos]="column" [rowPos]="row"></app-msf-dashboard-chartmenu>
             </div>
