@@ -5,6 +5,7 @@ import { ApplicationService } from '../services/application.service';
 import { MsfGroupingComponent } from '../msf-grouping/msf-grouping.component';
 import { Utils } from '../commons/utils';
 import { MessageComponent } from '../message/message.component';
+import { parseIntAutoRadix } from '@angular/common/src/i18n/format_number';
 
 
 
@@ -39,6 +40,8 @@ export class MsfTableComponent implements OnInit {
   actualPageNumber;
 
   groupingArgument;
+
+  limitNumber;
 
   sortingArgument;
 
@@ -79,14 +82,14 @@ export class MsfTableComponent implements OnInit {
                 if(element2.type=="groupingOperationsSummary"){
                   this.groupingArgument = element2;
                 }
-                // if(element2.type=="groupingHubSummaries"){
-                //   this.groupingArgument = element2;
-                // }
                 if(element2.type=="groupingDailyStatics"){
                   this.groupingArgument = element2;
                 }
                 if(element2.type=="groupingMariaDB"){
                   this.groupingArgument = element2;
+                }
+                if(element2.name1=="limitNumber"){
+                  this.limitNumber = element2;
                 }
             });
             }
@@ -288,11 +291,17 @@ export class MsfTableComponent implements OnInit {
           }else{  
             var aux = (_this.actualPageNumber+1)*100;
             aux = aux!=0 ? aux : 100;
-            if( _this.globals.totalRecord<aux){
+            if( _this.globals.totalRecord<parseIntAutoRadix){
               _this.globals.moreResultsBtn = false;
               _this.globals.moreResults = false;
             }else{
               _this.globals.moreResultsBtn = true;
+            }
+            if(_this.limitNumber!=null){
+              if(_this.limitNumber.value1!=null && _this.limitNumber.value1!=""){
+                _this.globals.moreResultsBtn = false;
+                _this.globals.moreResults = false;
+              }
             }
           }
       }else if (_this.globals.currentOption.metaData==0){
