@@ -99,7 +99,28 @@ export class MsfTableComponent implements OnInit {
       var array2 =null;
         if(this.groupingArgument!=null){
            array = this.groupingArgument.value1;
-        }
+           if(array!=null){
+            if(array.length!=0){
+              if(this.groupingArgument.type=="groupingMariaDB" && this.globals.currentOption.id==166){
+                displayedColumns.unshift({ columnType:"number",
+                columnName:"AVG_RT_Minutes",
+                columnLabel:"Avg Rt Minutes"});
+                displayedColumns.unshift({ columnType:"number",
+                columnName:"AVG_Play_Duration",
+                columnLabel:"Avg Play Duration"});
+                displayedColumns.unshift({ columnType:"number",
+                columnName:"SUM_RT_Minutes",
+                columnLabel:"Sum Rt Minutes"});
+                displayedColumns.unshift({ columnType:"number",
+                columnName:"SUM_Play_Duration",
+                columnLabel:"Sum Play Duration"});
+                displayedColumns.unshift({ columnType:"number",
+                columnName:"SUM_Unique_Hits",
+                columnLabel:"Sum Unique Hits"});
+              }
+            }
+           }
+      }
         if(this.sortingArgument!=null){
            array2 = this.sortingArgument.value1;
         }
@@ -124,30 +145,10 @@ export class MsfTableComponent implements OnInit {
             columnName:element.columnName,
             columnLabel:element.columnLabel});
           }else{
-            // if(element.columnName=="Marketing_Carrier"){
               displayedColumns.splice(indexColumn,1);
               displayedColumns.unshift({ columnType:"string",
               columnName:element.columnName,
               columnLabel:element.columnLabel});
-            // }
-            // if(element.columnName=="MktCar"){
-            //   displayedColumns.splice(indexColumn,1);
-            //   displayedColumns.unshift({ columnType:"string",
-            //   columnName:element.columnName,
-            //   columnLabel:element.columnLabel});
-            // }
-            // if(element.columnName=="Origin"){
-            //   displayedColumns.splice(indexColumn,1);
-            //   displayedColumns.unshift({ columnType:"string",
-            //   columnName:element.columnName,
-            //   columnLabel:element.columnLabel});
-            // }
-            // if(element.columnName=="Destination"){
-            //   displayedColumns.splice(indexColumn,1);
-            //   displayedColumns.unshift({ columnType:"string",
-            //   columnName:element.columnName,
-            //   columnLabel:element.columnLabel});
-            // }
           }
         }
       }else{
@@ -157,37 +158,16 @@ export class MsfTableComponent implements OnInit {
           columnName:array.columnName,
           columnLabel:array.columnLabel});
         }else{
-          if(array.columnName=="Marketing_Carrier"){
             displayedColumns.splice(indexColumn,1);
             displayedColumns.unshift({ columnType:"string",
             columnName:array.columnName,
             columnLabel:array.columnLabel});
-          }
-          if(array.columnName=="MktCar"){
-            displayedColumns.splice(indexColumn,1);
-            displayedColumns.unshift({ columnType:"string",
-            columnName:array.columnName,
-            columnLabel:array.columnLabel});
-          }
-          if(array.columnName=="Origin"){
-            displayedColumns.splice(indexColumn,1);
-            displayedColumns.unshift({ columnType:"string",
-            columnName:array.columnName,
-            columnLabel:array.columnLabel});
-          }
-          if(array.columnName=="Destination"){
-            displayedColumns.splice(indexColumn,1);
-            displayedColumns.unshift({ columnType:"string",
-            columnName:array.columnName,
-            columnLabel:array.columnLabel});
-          }
         }
 
       }
 
     }
   }
-
 
   setMsfChartRef(msfChartRef){
     msfChartRef.setColumns(this.displayedColumns);
@@ -298,14 +278,14 @@ export class MsfTableComponent implements OnInit {
             _this.dataSource = dataResult;
           }
 
-          if(_this.globals.currentOption.tabType!="athena"){
+          if(_this.globals.currentOption.tabType!="athena"&&_this.globals.currentOption.tabType!="mariadb"){
             if( _this.globals.totalRecord<100 ||  _this.globals.totalRecord>100){
               _this.globals.moreResultsBtn = false;
               _this.globals.moreResults = false;
             }else{
               _this.globals.moreResultsBtn = true;
             }
-          }else{
+          }else{  
             var aux = (_this.actualPageNumber+1)*100;
             aux = aux!=0 ? aux : 100;
             if( _this.globals.totalRecord<aux){
