@@ -55,6 +55,12 @@ export class MenuService {
       this.get (_this, _this.globals.baseUrl + "/secure" + url, successHandler, errorHandler);
   }
 
+  updateDashboardTitle(_this, id, title, successHandler, errorHandler)
+  {
+    let url = _this.globals.baseUrl+ "/updateDashboardTitle?id=" + id + "&title=" + title;
+    this.post (_this, url, null, successHandler, errorHandler);
+  }
+
   createAuthorizationHeader() {
     httpOptions.headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     httpOptions.headers = httpOptions.headers.append(this.SECURITY_HEADER, localStorage.getItem(this.TOKEN_STORAGE_KEY));
@@ -67,6 +73,14 @@ export class MenuService {
     }, error =>
         errorHandler(_this,error)
   );
+  }
+
+  post = function (_this,url, data, successHandler, errorHandler) {
+    this.http.post(url, data).subscribe(result => {
+        successHandler(_this,result);
+      }, error => 
+      errorHandler(_this,error)
+    );
   }
 
   // get = function (_this,url,successHandler, errorHandler){

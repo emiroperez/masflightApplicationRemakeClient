@@ -158,6 +158,7 @@ import { MsfGroupingMariadbComponent } from './msf-grouping-mariadb/msf-grouping
 import { MsfContentTypeComponent } from './msf-content-type/msf-content-type.component';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { MsfDashboardColorPickerComponent } from './msf-dashboard-color-picker/msf-dashboard-color-picker.component';
+import { MsfEditDashboardComponent } from './msf-edit-dashboard/msf-edit-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -296,6 +297,7 @@ import { MsfDashboardColorPickerComponent } from './msf-dashboard-color-picker/m
     MsfGroupingMariadbComponent,
     MsfContentTypeComponent,
     MsfDashboardColorPickerComponent,
+    MsfEditDashboardComponent,
   ],
   imports: [
     BrowserModule,
@@ -359,7 +361,8 @@ import { MsfDashboardColorPickerComponent } from './msf-dashboard-color-picker/m
     MsfDashboardControlVariablesComponent,
     MsfConfirmationDialogComponent,
     MsfDashboardInfoFunctionsComponent,
-    MsfDashboardColorPickerComponent
+    MsfDashboardColorPickerComponent,
+    MsfEditDashboardComponent
   ]
 })
 export class AppModule { }

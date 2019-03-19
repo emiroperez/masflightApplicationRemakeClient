@@ -7,7 +7,7 @@
     </ng-container>
     <button mat-button class='msf-menu-op-3' [matMenuTriggerFor]="dashboardMenu">Dashboards</button>
     <mat-menu #dashboardMenu="matMenu">
-        <button mat-menu-item *ngFor="let dashboard of dashboards" (click)="goToDashboard(dashboard.id)">
+        <button mat-menu-item *ngFor="let dashboard of dashboards" (click)="goToDashboard(dashboard)">
               {{dashboard.title}}
           </button>
 

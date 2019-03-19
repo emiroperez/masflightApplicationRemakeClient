@@ -47,9 +47,9 @@ export class MenuComponent implements OnInit {
 
   }
 
-  goToDashboard(id): void
+  goToDashboard(dashboard): void
   {
-    this.globals.currentDashboardMenu = id;
+    this.globals.currentDashboardMenu = dashboard;
     this.globals.currentOption = 'dashboard';
   }
 

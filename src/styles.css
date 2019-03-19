@@ -2211,6 +2211,9 @@ mat-tab-group {
   font-size: 12px;
   align-items: center;
 }
+.msf-dashboard-chartmenu-sub-container-row .msf-dashboard-function-measure {
+  width: 90%;
+}
 .msf-dashboard-control-variables {
   overflow-y: auto;
   font-size: 10px;

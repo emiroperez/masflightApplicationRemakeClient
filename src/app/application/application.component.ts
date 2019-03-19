@@ -14,7 +14,7 @@ import { MsfTableComponent } from '../msf-table/msf-table.component';
 import { PlanAdvanceFeatures } from '../model/PlanAdvanceFeatures';
 import { User } from '../model/User';
 import { DashboardMenu } from '../model/DashboardMenu';
-
+import { MsfEditDashboardComponent } from '../msf-edit-dashboard/msf-edit-dashboard.component';
 
 
 @Component({
@@ -68,16 +68,11 @@ export class ApplicationComponent implements OnInit {
     _this.userName = data.name;
     _this.admin = data.admin;
      _this.globals.isLoading = false;
-
-    // if (_this.dashboardPlan)
-    //  _this.goToDashboard ();
   }
+
   errorLogin(_this,result){
     console.log(result);
      _this.globals.isLoading = false;
-
-    //  if (_this.dashboardPlan)
-    //  _this.goToDashboard ();
   }
 
   getDashboardsUser(){
@@ -275,11 +270,6 @@ toggle(){
     this.globals.selectedIndex = 3;
   }
 
-  goToDashboard(): void
-  {
-    this.globals.currentOption = 'dashboard';
-  }
-
   dynamicTable(){
     this.openDialog();
   }
@@ -339,5 +329,17 @@ toggle(){
       this.globals.isFullscreen = true;
     else
     this.globals.isFullscreen = false;
+  }
+
+  changeDashboardName(): void
+  {
+    this.dialog.open (MsfEditDashboardComponent, {
+      height: '160px',
+      width: '400px',
+      panelClass: 'msf-dashboard-control-variables-dialog',
+      data: {
+        currentDashboardMenu: this.globals.currentDashboardMenu
+      }
+    });
   }
 }
