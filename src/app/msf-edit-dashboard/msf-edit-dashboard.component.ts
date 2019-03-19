@@ -9,6 +9,7 @@ import { MenuService } from '../services/menu.service';
 })
 export class MsfEditDashboardComponent {
   oldDashboardMenuTitle: string;
+  currentDashboardMenuTitle: string;
 
   constructor(
     public dialogRef: MatDialogRef<MsfEditDashboardComponent>,
@@ -17,6 +18,7 @@ export class MsfEditDashboardComponent {
     @Inject(MAT_DIALOG_DATA) public data: any)
     {
       this.oldDashboardMenuTitle = data.currentDashboardMenu.title;
+      this.currentDashboardMenuTitle = data.currentDashboardMenu.title;
     }
 
     onNoClick(): void
@@ -31,8 +33,9 @@ export class MsfEditDashboardComponent {
       {
         this.globals.isLoading = true;
 
+        this.data.currentDashboardMenu.title = this.currentDashboardMenuTitle;
         this.service.updateDashboardTitle (this, this.data.currentDashboardMenu.id,
-          this.data.currentDashboardMenu.title, this.closeDialog, this.closeDialog);
+          this.currentDashboardMenuTitle, this.closeDialog, this.closeDialog);
       }
       else
       {
