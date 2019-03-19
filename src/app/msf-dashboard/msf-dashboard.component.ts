@@ -312,12 +312,12 @@ export class MsfDashboardComponent implements OnInit {
       dashboardIds.push (dashboardColumn[i].id);
 
     // this.globals.isLoading = true;
-    this.service.updateDashboardPanelHeight (this, dashboardIds, this.heightValues.indexOf (index), this.handlerSucess, this.handlerError);
+    this.service.updateDashboardPanelHeight (this, dashboardIds, this.heightValues.indexOf (index), this.handlerSuccess, this.handlerError);
   }
 
-  handlerSucess(_this): void
+  handlerSuccess(_this): void
   {
-    console.log ("The changes to the dashboard were sucessful.");
+    console.log ("The changes to the dashboard were successful.");
     // _this.globals.isLoading = false;
   }
 
@@ -389,7 +389,7 @@ export class MsfDashboardComponent implements OnInit {
     }
 
     // this.globals.isLoading = true;
-    this.service.updateDashboardPanelWidth (this, dashboardIds, this.handlerSucess, this.handlerError);
+    this.service.updateDashboardPanelWidth (this, dashboardIds, this.handlerSuccess, this.handlerError);
   }
 
   @HostListener('window:resize', ['$event'])
@@ -424,7 +424,7 @@ export class MsfDashboardComponent implements OnInit {
     }
 
     // this.globals.isLoading = true;
-    this.service.setDashboardPanelRowPositions (this, newPanelPos, this.handlerSucess,
+    this.service.setDashboardPanelRowPositions (this, newPanelPos, this.handlerSuccess,
       this.handlerError);
   }
 }

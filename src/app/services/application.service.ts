@@ -284,28 +284,28 @@ export class ApplicationService {
       this.http.getSecure (_this, this.host + "/secure" + url, handlerSuccess, handlerError, null);
   }
 
-  updateDashboardPanel(_this, panel, handlerSucess, handlerError): void
+  updateDashboardPanel(_this, panel, handlerSuccess, handlerError): void
   {
     let url = this.host + "/updateDashboardPanel";
-    this.http.post (_this, url, panel, handlerSucess, handlerError);
+    this.http.post (_this, url, panel, handlerSuccess, handlerError);
   }
 
-  updateDashboardPanelHeight(_this, dashboardIds, height, handlerSucess, handlerError): void
+  updateDashboardPanelHeight(_this, dashboardIds, height, handlerSuccess, handlerError): void
   {
     let url = this.host + "/updateDashboardPanelHeight?height=" + height;
-    this.http.post (_this, url, dashboardIds, handlerSucess, handlerError);
+    this.http.post (_this, url, dashboardIds, handlerSuccess, handlerError);
   }
 
-  updateDashboardPanelWidth(_this, dashboardIds, handlerSucess, handlerError): void
+  updateDashboardPanelWidth(_this, dashboardIds, handlerSuccess, handlerError): void
   {
     let url = this.host + "/updateDashboardPanelWidth";
-    this.http.post (_this, url, dashboardIds, handlerSucess, handlerError);
+    this.http.post (_this, url, dashboardIds, handlerSuccess, handlerError);
   }
 
-  setDashboardPanelRowPositions(_this, panels, handlerSucess, handlerError): void
+  setDashboardPanelRowPositions(_this, panels, handlerSuccess, handlerError): void
   {
     let url = this.host + "/updateDashboardPanelRowPositions";
-    this.http.post (_this, url, panels, handlerSucess, handlerError);
+    this.http.post (_this, url, panels, handlerSuccess, handlerError);
   }
 
   confirmationDialog(_this, message, callback)

@@ -1557,7 +1557,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     this.checkChartType ();
   }
 
-  handlerUpdateSucess(_this): void
+  handlerUpdateSuccess(_this): void
   {
     // set lastestResponse to null and remove temporary values since the panel has been updated
     _this.values.lastestResponse = null;
@@ -1627,7 +1627,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
           panel = _this.getPanelInfo (false);
 
         _this.globals.isLoading = true;
-        _this.service.updateDashboardPanel (_this, panel, _this.handlerUpdateSucess, _this.handlerError);
+        _this.service.updateDashboardPanel (_this, panel, _this.handlerUpdateSuccess, _this.handlerError);
       });
   }
 
