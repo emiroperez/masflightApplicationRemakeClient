@@ -159,6 +159,7 @@ import { MsfContentTypeComponent } from './msf-content-type/msf-content-type.com
 import { ColorPickerModule } from 'ngx-color-picker';
 import { MsfDashboardColorPickerComponent } from './msf-dashboard-color-picker/msf-dashboard-color-picker.component';
 import { MsfEditDashboardComponent } from './msf-edit-dashboard/msf-edit-dashboard.component';
+import { MsfAddDashboardComponent } from './msf-add-dashboard/msf-add-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -298,6 +299,7 @@ import { MsfEditDashboardComponent } from './msf-edit-dashboard/msf-edit-dashboa
     MsfContentTypeComponent,
     MsfDashboardColorPickerComponent,
     MsfEditDashboardComponent,
+    MsfAddDashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -362,7 +364,8 @@ import { MsfEditDashboardComponent } from './msf-edit-dashboard/msf-edit-dashboa
     MsfConfirmationDialogComponent,
     MsfDashboardInfoFunctionsComponent,
     MsfDashboardColorPickerComponent,
-    MsfEditDashboardComponent
+    MsfEditDashboardComponent,
+    MsfAddDashboardComponent
   ]
 })
 export class AppModule { }

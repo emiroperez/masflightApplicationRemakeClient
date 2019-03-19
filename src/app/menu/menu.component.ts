@@ -1,9 +1,11 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Menu } from '../model/Menu';
 import { MatMenuTrigger } from '@angular/material';
+import { MatDialog} from '@angular/material';
 import { Globals } from '../globals/Globals';
 import { OptionWelcomeComponent } from '../option-welcome/option-welcome.component';
 import { DashboardMenu } from '../model/DashboardMenu';
+import { MsfAddDashboardComponent } from '../msf-add-dashboard/msf-add-dashboard.component';
 
 @Component({
   selector: 'app-menu',
@@ -25,7 +27,7 @@ export class MenuComponent implements OnInit {
 
   currentTrigger:MatMenuTrigger;
 
-  constructor(private globals : Globals) {
+  constructor(public dialog: MatDialog, private globals : Globals) {
 
   }
 
@@ -47,6 +49,14 @@ export class MenuComponent implements OnInit {
 
   }
 
+  addDashboard(){
+    this.dialog.open (MsfAddDashboardComponent, {
+      height: '160px',
+      width: '400px',
+      panelClass: 'msf-dashboard-control-variables-dialog',
+    });
+
+  }
   goToDashboard(dashboard): void
   {
     this.globals.currentDashboardMenu = dashboard;
