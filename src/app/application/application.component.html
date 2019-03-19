@@ -81,7 +81,7 @@
     </div>
 
     <!--container-->
-    <div [ngClass]="isSimpleContent() ? 'msf-menu-simple-content' : 'msf-menu-show-full-nav-component'">
+    <div [ngClass]="isSimpleContent() ? 'msf-menu-simple-content' : (globals.status ? 'msf-menu-show-full-nav-component' : 'msf-menu-show-full-nav-component-wide')">
         <div [ngClass]="isSimpleContent() ? 'msf-menu-simple-content' : 'msf-menu-content msf-menu-tabs-content'">
             <div [ngClass]="isSimpleContent() ? 'msf-menu-internal-simple-content' : 'msf-menu-internal-content'">
                 <app-msf-container #msfContainerRef></app-msf-container>
