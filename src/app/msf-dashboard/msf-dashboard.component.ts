@@ -40,7 +40,10 @@ export class MsfDashboardComponent implements OnInit {
 
   constructor(public globals: Globals, private service: ApplicationService)
   {
-    this.screenHeight = "calc(100% - 90px)";
+    if (globals.isFullscreen)
+      this.screenHeight = "100%";
+    else
+      this.screenHeight = "calc(100% - 90px)";
   }
 
   ngOnInit()

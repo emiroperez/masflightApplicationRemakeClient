@@ -1,5 +1,5 @@
 <!--Header-->
-<div *ngIf="!globals.isFullscreen" class="msf-menu-header">
+<div *ngIf="!globals.isFullscreen || (globals.isFullscreen && globals.currentOption !== 'dashboard')" class="msf-menu-header">
     <div class="msf-menu-header-image-container">
         <img (click)="goHome()" style="cursor:pointer;" src="../../assets/images/logo_global_peqe.png" class="msf-menu-logo">
         <img src="../../assets/images/ajustes.png" class="msf-menu-ajustes-icon">
@@ -40,7 +40,7 @@
         </mat-menu>
     </div>
 </div>
-<div *ngIf="!globals.isFullscreen" class="msf-menu-icons-container">
+<div *ngIf="!globals.isFullscreen || (globals.isFullscreen && globals.currentOption !== 'dashboard')" class="msf-menu-icons-container">
     <div class="msf-secondary-color msf-menu-icon-container msf-menu-adm">connected</div>
     <div class="msf-menu-icon-container">| {{globals.currentOption ? globals.currentOption.label:''}}</div>
     <div class="msf-menu-icon-container msf-flex msf-menu-icons-right">
@@ -50,8 +50,10 @@
 
         <!-- <button class="msf-menu-icon"><img src="../../assets/images/CopytoClipboard.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Copy to Clipboard</span></button>
         <button class="msf-menu-icon"><img src="../../assets/images/LoadingOptions.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Loading Options</span></button> -->
+        <button class="msf-menu-icon"><img src="../../assets/images/add.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Add New Dashboard</span></button>
         <button [disabled]="globals.currentOption !== 'dashboard'" class="msf-menu-icon" (click)="changeDashboardName()"><img src="../../assets/images/Chart.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Edit Dashboard Title</span></button>
-        <button class="msf-menu-icon" (click)="goToFullscreen()"><img src="../../assets/images/fullscreen.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Full Screen</span></button>
+        <button [disabled]="globals.currentOption !== 'dashboard'" class="msf-menu-icon"><img src="../../assets/images/trash-blue-small.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Delete Dashboard</span></button>
+        <button class="msf-menu-icon" *ngIf="!globals.isFullscreen" (click)="goToFullscreen()"><img src="../../assets/images/fullscreen.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Full Screen</span></button>
     </div>
 </div>
 

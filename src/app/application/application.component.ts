@@ -328,7 +328,7 @@ toggle(){
     if (event.target.innerHeight == window.screen.height && event.target.innerWidth == window.screen.width)
       this.globals.isFullscreen = true;
     else
-    this.globals.isFullscreen = false;
+      this.globals.isFullscreen = false;
   }
 
   changeDashboardName(): void
