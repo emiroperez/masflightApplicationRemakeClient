@@ -54,6 +54,9 @@ export class MenuComponent implements OnInit {
       height: '160px',
       width: '400px',
       panelClass: 'msf-dashboard-control-variables-dialog',
+      data: {
+        dashboards: this.dashboards
+      }
     });
 
   }

@@ -34,7 +34,8 @@ export class MsfAddDashboardComponent {
         dashboard.title = this.title;
         dashboard.applicationId = this.globals.currentApplication.id;
         console.log(dashboard);
-        this.service.addDashboard(this, dashboard, this.successHandler, this.errorHandler)
+        this.globals.isLoading = true;
+        this.service.addDashboard(this, dashboard, this.successHandler, this.errorHandler);
 
         this.dialogRef.close ();
       }
@@ -45,14 +46,13 @@ export class MsfAddDashboardComponent {
     }
 
     getDashboardsUser(_this){
-      _this.globals.isLoading = true;
       _this.service.getDashboardsByUser(this,this.handlerDashboard, this.errorHandler);
 
     }
 
     handlerDashboard(_this, data){
-      _this.dashboards = data;
-      let dashboard = _this.dashboards[_this.dashboards.length - 1];
+      let dashboard = data[data.length - 1];
+      _this.data.dashboards.push (dashboard);
       _this.globals.currentDashboardMenu = dashboard;
       _this.globals.currentOption = 'dashboard';
     }
