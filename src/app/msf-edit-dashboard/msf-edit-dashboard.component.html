@@ -1,0 +1,18 @@
+<div class="msf-dashboard-info-function-title">
+  <div class="msf-dashboard-control-variables-close-button">
+    <mat-icon class="msf-dashboard-close-icon" aria-label="close" (click)="confirmChanges(false)">close</mat-icon>
+  </div>
+  Edit Dashboard Title
+</div>
+<div class="msf-dashboard-chartmenu-sub-container-row" style="color: #fff; padding-top: 10px">
+  <div class="msf-dashboard-function-measure">
+    <mat-form-field>
+      <input matInput autocomplete="off" type="text" placeholder="Name" [(ngModel)]="currentDashboardMenuTitle"/>
+    </mat-form-field> 
+  </div>
+</div>
+<div class="msf-dashboard-control-variables-button">
+  <button mat-flat-button class="flat-button" (click)="confirmChanges(true)">OK</button>
+  &nbsp;&nbsp;
+  <button mat-flat-button class="flat-button" (click)="confirmChanges(false)">Cancel</button>
+</div>
