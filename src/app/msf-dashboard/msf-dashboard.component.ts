@@ -340,7 +340,7 @@ export class MsfDashboardComponent implements OnInit {
         return;
 
     // convert horizontal offset into percentage for proper resizing
-    offsetX = event.movementX * 100 / window.screen.width;
+    offsetX = event.movementX * 100 / window.innerWidth;
     totalWidth = this.leftPanel.width + this.rightPanel.width;
 
     // begin resizing the panels
