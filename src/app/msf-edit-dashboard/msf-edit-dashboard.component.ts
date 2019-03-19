@@ -31,8 +31,6 @@ export class MsfEditDashboardComponent {
       // update database if confirmed, otherwise discard the title change
       if (confirm)
       {
-        this.globals.isLoading = true;
-
         this.data.currentDashboardMenu.title = this.currentDashboardMenuTitle;
         this.service.updateDashboardTitle (this, this.data.currentDashboardMenu.id,
           this.currentDashboardMenuTitle, this.closeDialog, this.closeDialog);
@@ -46,7 +44,6 @@ export class MsfEditDashboardComponent {
 
     closeDialog(_this)
     {
-      _this.globals.isLoading = false;
       _this.dialogRef.close ();
     }
 }
