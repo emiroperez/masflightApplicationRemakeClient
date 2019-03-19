@@ -1645,7 +1645,7 @@ mat-tab-group
         margin-left: 0px
 
 @mixin msf-dashboard-addmenu-item-text($color)
-    border: 1px solid #888888
+    border: 1px solid #fff
     color: $color
     display: table-cell
     align-items: center
@@ -1855,6 +1855,13 @@ mat-tab-group
     padding: 12px
     overflow: hidden
 
+@mixin msf-dashboard-control-variables-close-icon ($color: inherit, $cursor: inherit)
+    font-size: 16px
+    margin-top: -10px
+    margin-right: -9px
+    color: $color
+    cursor: $cursor
+
 .msf-dashboard-dialog
     .msf-dashboard-control-variables-close-button
         display: flex
@@ -1863,10 +1870,9 @@ mat-tab-group
         position: absolute
         width: 100%
         .msf-dashboard-close-icon
-            font-size: 16px
+            @include msf-dashboard-control-variables-close-icon
         .msf-dashboard-close-icon:hover
-            cursor: pointer
-            font-size: 16px
+            @include msf-dashboard-control-variables-close-icon(#01abec, pointer)
 
 @mixin msf-dashboard-dialog-title($font-size, $padding-bottom)
     text-align: center
