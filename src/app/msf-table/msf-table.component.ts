@@ -297,11 +297,11 @@ export class MsfTableComponent implements OnInit {
             }else{
               _this.globals.moreResultsBtn = true;
             }
-            if(_this.limitNumber!=null){
-              if(_this.limitNumber.value1!=null || _this.limitNumber.value1!=""){
-                _this.globals.moreResultsBtn = false;
-                _this.globals.moreResults = false;
-              }
+          }
+          if(_this.limitNumber!=null){
+            if(_this.limitNumber.value1!=null &&_this.limitNumber.value1!=""){
+              _this.globals.moreResultsBtn = false;
+              _this.globals.moreResults = false;
             }
           }
       }else if (_this.globals.currentOption.metaData==0){
