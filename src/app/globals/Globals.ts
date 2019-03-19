@@ -30,7 +30,7 @@ export class Globals {
   moreResults : boolean = false;
   moreResultsBtn : boolean = true;
   currentApplication : any;
-  currentDashboardMenu : any;
+  currentDashboardMenu : number;
   minDate:any;
   maxDate:any;
   welcome:any;

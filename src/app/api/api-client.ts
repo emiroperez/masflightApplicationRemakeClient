@@ -44,7 +44,7 @@ export class ApiClient {
                         _this.globals.bytesLoaded = result.loaded;
                     }                    
                 }   
-            }           
+            }
             if (result.type === HttpEventType.Response) {
                 successHandler(_this,result.body, tab);
             }           
@@ -53,37 +53,4 @@ export class ApiClient {
           errorHandler(_this,error)
         );
     };
-
-    postSecure = function (_this, url, data, successHandler, errorHandler) {
-        this.createAuthorizationHeader ();
-        this.http.post(url, data, httpOptions).subscribe(result => {
-
-            successHandler(_this,result);
-          }, error => 
-          errorHandler(_this,error)
-        );
-    };
-
-    getSecure = function (_this, url, successHandler, errorHandler, tab) {
-        this.createAuthorizationHeader ();
-        this.http.get(url, {observe: 'events', reportProgress: true, headers: httpOptions.headers}).subscribe(result => {
-
-            if (result.type === HttpEventType.DownloadProgress) {
-                if( _this.globals != null){
-                    if(result.total != null){
-                        _this.globals.bytesLoaded = result.total;
-                    }else if(result.loaded != null){
-                        _this.globals.bytesLoaded = result.loaded;
-                    }                    
-                }   
-            }           
-            if (result.type === HttpEventType.Response) {
-                successHandler(_this,result.body, tab);
-            }           
-            
-          }, error => 
-          errorHandler(_this,error)
-        );
-    };
-   
 }

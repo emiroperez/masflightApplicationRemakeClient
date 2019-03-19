@@ -47,9 +47,12 @@ export class MenuService {
   }
 
   getDashboardsByUser(_this, successHandler, errorHandler){
-    let url = _this.globals.baseUrl+"/secure/getDashboards?";
-    url = url + "application="+_this.globals.currentApplication.id;
-    this.get(_this, url, successHandler, errorHandler);
+    let url = "/getDashboards?application=" + _this.globals.currentApplication.id;
+
+    if (_this.globals.baseUrl != "")
+      this.get (_this, _this.globals.baseUrl + url, successHandler, errorHandler);
+    else
+      this.get (_this, _this.globals.baseUrl + "/secure" + url, successHandler, errorHandler);
   }
 
   createAuthorizationHeader() {
