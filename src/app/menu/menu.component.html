@@ -1,14 +1,16 @@
 <ng-container *ngIf="menu && menu.categories && menu.categories.length > 0">
-    <ng-container *ngFor="let category of menu.categories; let i = index ; let size = count">           
-        <button 
-                mat-button 
-                #trigger
-                #menuTrigger="matMenuTrigger" 
-                [matMenuTriggerFor]="menu.childMenu"
-                (click)="setMenuCategory(category)"
-                [ngClass]="{'msf-menu-op-2':i == 0, 'msf-menu-op-1':i != 0 && i!= (size -1), 'msf-menu-op-3':i== (size -1)}">
-            {{category.label}} 
+    <ng-container *ngFor="let category of menu.categories; let i = index ; let size = count">
+        <button mat-button #trigger #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu.childMenu" (click)="setMenuCategory(category)" [ngClass]="{'msf-menu-op-2':i == 0, 'msf-menu-op-1':i != 0}">
+            {{category.label}}
         </button>
-        <app-menu-option #menu [options]="category.options" [trigger]="trigger"></app-menu-option>          
+        <app-menu-option #menu [options]="category.options" [trigger]="trigger"></app-menu-option>
     </ng-container>
+    <button mat-button class='msf-menu-op-3' [matMenuTriggerFor]="dashboardMenu">Dashboards</button>
+    <mat-menu #dashboardMenu="matMenu">
+        <button mat-menu-item *ngFor="let dashboard of dashboards" (click)="goToDashboard(dashboard.Id)">
+              {{dashboard.title}}
+          </button>
+
+    </mat-menu>
+
 </ng-container>
