@@ -5,7 +5,7 @@
         <img src="../../assets/images/ajustes.png" class="msf-menu-ajustes-icon">
     </div>
     <div class="msf-menu-container">
-        <app-menu [menu]="menu"></app-menu>
+        <app-menu [menu]="menu" [dashboards]="dashboards"></app-menu>
     </div>
     <div class="msf-header-icons">
         <div *ngIf="globals.currentUser" style="margin-right:5px;" class="msf-inline msf-vertical-middle">
@@ -21,9 +21,6 @@
                 </button>
 
         </mat-menu>
-        <button mat-icon-button [disabled]="!dashboardPlan" (click)="goToDashboard()">
-                <mat-icon>dashboard</mat-icon>
-            </button>
         <button *ngIf="admin" mat-icon-button [matMenuTriggerFor]="adminMenu">
                 <mat-icon>more_vert</mat-icon>
             </button>
@@ -81,7 +78,7 @@
     </div>
 
     <!--container-->
-    <div [ngClass]="isSimpleContent() ? 'msf-menu-simple-content' : 'msf-menu-show-full-nav-component'">
+    <div [ngClass]="isSimpleContent() ? 'msf-menu-simple-content' : (globals.status ? 'msf-menu-show-full-nav-component' : 'msf-menu-show-full-nav-component-wide')">
         <div [ngClass]="isSimpleContent() ? 'msf-menu-simple-content' : 'msf-menu-content msf-menu-tabs-content'">
             <div [ngClass]="isSimpleContent() ? 'msf-menu-internal-simple-content' : 'msf-menu-internal-content'">
                 <app-msf-container #msfContainerRef></app-msf-container>

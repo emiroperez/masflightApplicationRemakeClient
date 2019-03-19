@@ -15,7 +15,7 @@ const httpOptions = {
 export class MenuService {
   SECURITY_HEADER = "Authorization";
   TOKEN_STORAGE_KEY = "token";
-  constructor( private http: HttpClient, private globals:Globals) { 
+  constructor( private http: HttpClient, private globals:Globals) {
   }
 
   getMenu(_this,successHandler, errorHandler){
@@ -46,6 +46,14 @@ export class MenuService {
     this.get(_this, url, successHandler, errorHandler);
   }
 
+  getDashboardsByUser(_this, successHandler, errorHandler){
+    let url = "/getDashboards?application=" + _this.globals.currentApplication.id;
+
+    if (_this.globals.baseUrl != "")
+      this.get (_this, _this.globals.baseUrl + url, successHandler, errorHandler);
+    else
+      this.get (_this, _this.globals.baseUrl + "/secure" + url, successHandler, errorHandler);
+  }
 
   createAuthorizationHeader() {
     httpOptions.headers = new HttpHeaders({ 'Content-Type': 'application/json' });

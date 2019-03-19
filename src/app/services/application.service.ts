@@ -245,19 +245,13 @@ export class ApplicationService {
   createDashboardPanel(_this, panels, handlerSuccess, handlerError): void
   {
     let url = "/addDashboardPanels";
-    if (this.host != "")
-      this.http.post (_this, this.host + url, panels, handlerSuccess, handlerError);
-    else
-      this.http.postSecure (_this, this.host + "/secure" + url, panels, handlerSuccess, handlerError);
+    this.http.post (_this, this.host + url, panels, handlerSuccess, handlerError);
   }
 
   createDashboardPanelInColumn(_this, panels, width, handlerSuccess, handlerError): void
   {
     let url = "/addDashboardPanels/column?width=" + width;
-    if (this.host != "")
-      this.http.post (_this, this.host + url, panels, handlerSuccess, handlerError);
-    else
-      this.http.postSecure (_this, this.host + "/secure" + url, panels, handlerSuccess, handlerError);
+    this.http.post (_this, this.host + url, panels, handlerSuccess, handlerError);
   }
 
   deleteDashboardPanel(_this, id, width, handlerSuccess, handlerError): void
@@ -266,22 +260,16 @@ export class ApplicationService {
     this.http.post (_this, url, id, handlerSuccess, handlerError);
   }
 
-  deleteDashboardColumn(_this, appId, column, handlerSuccess, handlerError): void
+  deleteDashboardColumn(_this, dashboardMenuId, column, handlerSuccess, handlerError): void
   {
-    let url = "/updateDashboardPanelColumns?appId=" + appId + "&column=" + column;
-    if (this.host != "")
-      this.http.post (_this, this.host + url, null, handlerSuccess, handlerError);
-    else
-      this.http.postSecure (_this, this.host + "/secure" + url, null, handlerSuccess, handlerError);
+    let url = "/updateDashboardPanelColumns?dashboardMenuId=" + dashboardMenuId + "&column=" + column;
+    this.http.post (_this, this.host + url, null, handlerSuccess, handlerError);
   }
 
-  getDashboardPanels(_this, appId, handlerSuccess, handlerError): void
+  getDashboardPanels(_this, dashboardMenuId, handlerSuccess, handlerError): void
   {
-    let url = "/getDashboardPanels?appId=" + appId;
-    if (this.host != "")
-      this.http.get (_this, this.host + url, handlerSuccess, handlerError, null);
-    else
-      this.http.getSecure (_this, this.host + "/secure" + url, handlerSuccess, handlerError, null);
+    let url = "/getDashboardPanels?dashboardMenuId=" + dashboardMenuId;
+    this.http.get (_this, this.host + url, handlerSuccess, handlerError, null);
   }
 
   updateDashboardPanel(_this, panel, handlerSuccess, handlerError): void

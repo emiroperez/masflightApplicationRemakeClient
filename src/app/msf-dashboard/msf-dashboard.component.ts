@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, Input, SimpleChanges } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Globals } from '../globals/Globals';
 import { MsfDashboardChartValues } from '../msf-dashboard-chartmenu/msf-dashboard-chartvalues';
@@ -29,6 +29,9 @@ export class MsfDashboardComponent implements OnInit {
     { value: 12, name: 'Very Large' }
   ];
 
+  @Input()
+  currentDashboardMenu: number;
+
   // variables for panel resizing
   currentColumn: number;
   resizePanel: boolean;
@@ -52,7 +55,21 @@ export class MsfDashboardComponent implements OnInit {
       this.addDataForms, this.handlerError);
   }
 
-  // store any data form depending of the application id
+  ngOnChanges(changes: SimpleChanges)
+  {
+    if (changes['currentDashboardMenu'] && this.options.length != 0)
+    {
+      // replace dashboard panels if the menu has changed and we're still on the dashboard
+      this.dashboardColumns.splice (0, this.dashboardColumns.length);
+      this.dashboardColumnsProperties.splice (0, this.dashboardColumnsProperties.length);
+
+      this.globals.isLoading = true;
+      this.service.getDashboardPanels (this, this.currentDashboardMenu,
+        this.loadDashboardPanels, this.handlerError);
+    }
+  }
+
+  // store any data form depending of the selected dashboard from menu
   addDataForms(_this, data): void
   {
     for (let columnConfig of data)
@@ -67,7 +84,7 @@ export class MsfDashboardComponent implements OnInit {
     }
 
     // get dashboard panels after getting the data forms
-    _this.service.getDashboardPanels (_this, _this.globals.currentApplication.id,
+    _this.service.getDashboardPanels (_this, _this.currentDashboardMenu,
       _this.loadDashboardPanels, _this.handlerError);
   }
 
@@ -218,7 +235,7 @@ export class MsfDashboardComponent implements OnInit {
     // also remove the column if there are no panels left in the row
     if (!dashboardPanels.length)
     {
-      _this.service.deleteDashboardColumn (_this, _this.globals.currentApplication.id,
+      _this.service.deleteDashboardColumn (_this, _this.currentDashboardMenu,
         _this.columnToUpdate, _this.deleteColumn, _this.handlerError);
     }
     else
@@ -247,7 +264,7 @@ export class MsfDashboardComponent implements OnInit {
       // set the properties for each panel before adding it into the database
       panelsToAdd.push (
       {
-        'applicationId' : this.globals.currentApplication.id,
+        'dashboardMenuId' : this.currentDashboardMenu,
         'row' : i,
         'column' : column,
         'title' : "New Chart",
@@ -273,7 +290,7 @@ export class MsfDashboardComponent implements OnInit {
       // set the properties for each panel before adding it into the database
       panelsToAdd.push (
       {
-        'applicationId' : this.globals.currentApplication.id,
+        'dashboardMenuId' : this.currentDashboardMenu,
         'row' : i,
         'column' : column,
         'title' : "New Chart",

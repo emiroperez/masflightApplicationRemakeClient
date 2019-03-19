@@ -13,6 +13,7 @@ import {ExcelService} from '../services/excel.service';
 import { MsfTableComponent } from '../msf-table/msf-table.component';
 import { PlanAdvanceFeatures } from '../model/PlanAdvanceFeatures';
 import { User } from '../model/User';
+import { DashboardMenu } from '../model/DashboardMenu';
 
 
 
@@ -31,6 +32,7 @@ export class ApplicationComponent implements OnInit {
   exportExcelPlan: boolean;
   dashboardPlan: boolean;
   menu: Menu;
+  dashboards: Array<DashboardMenu>;
   planAdvanceFeatures: any[];
   status: boolean;
   user: any[];
@@ -78,6 +80,20 @@ export class ApplicationComponent implements OnInit {
     //  _this.goToDashboard ();
   }
 
+  getDashboardsUser(){
+    this.globals.isLoading = true;
+    this.service.getDashboardsByUser(this,this.handlerDashboard, this.errorHandler);
+  }
+
+  handlerDashboard(_this, data){
+    _this.dashboards = data;
+    _this.getAdvanceFeatures();
+  }
+
+  errorHandler(_this,result){
+    console.log(result);
+    _this.globals.isLoading = false;
+  }
   getAdvanceFeatures(){
     this.globals.isLoading = true;
     this.service.getAdvanceFeatures(this,this.handlerSuccessAF,this.handlerErrorAF);
@@ -141,7 +157,8 @@ export class ApplicationComponent implements OnInit {
         }
       });
     });
-    _this.getAdvanceFeatures();
+    _this.getDashboardsUser();
+
   }
 
 
