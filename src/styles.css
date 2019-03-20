@@ -1908,6 +1908,10 @@ mat-tab-group {
   overflow-y: auto;
   transition: 0.5s;
 }
+.msf-dashboard-container .msf-dashboard-title {
+  padding-top: 10px;
+  font-size: 16px;
+}
 .msf-dashboard-container .msf-dashboard-empty {
   padding-top: 45px;
 }
