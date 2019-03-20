@@ -723,32 +723,32 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     if (infoChartType)
     {
       return {
-        'id' : this.values.id,
-        'option' : this.values.currentOption,
-        'title' : this.values.chartName,
-        'chartColumnOptions' : this.values.chartColumnOptions,
-        'analysis' : this.values.chartColumnOptions.indexOf (this.values.infoVar1),
-        'xaxis' : this.values.chartColumnOptions.indexOf (this.values.infoVar2),
-        'values' : this.values.chartColumnOptions.indexOf (this.values.infoVar3),
-        'function' : 1,
-        'chartType' : this.chartTypes.indexOf (this.values.currentChartType),
-        'categoryOptions' : this.values.currentOptionCategories
+        id: this.values.id,
+        option: this.values.currentOption,
+        title: this.values.chartName,
+        chartColumnOptions: JSON.stringify (this.values.chartColumnOptions),
+        analysis: this.values.chartColumnOptions.indexOf (this.values.infoVar1),
+        xaxis: this.values.chartColumnOptions.indexOf (this.values.infoVar2),
+        values: this.values.chartColumnOptions.indexOf (this.values.infoVar3),
+        function: 1,
+        chartType: this.chartTypes.indexOf (this.values.currentChartType),
+        categoryOptions: JSON.stringify (this.values.currentOptionCategories)
       };
     }
     else
     {
       return {
-        'id' : this.values.id,
-        'option' : this.values.currentOption,
-        'title' : this.values.chartName,
-        'chartColumnOptions' : this.values.chartColumnOptions,
-        'analysis' : this.values.chartColumnOptions.indexOf (this.values.variable),
-        'xaxis' : this.values.chartColumnOptions.indexOf (this.values.xaxis),
-        'values' : this.values.chartColumnOptions.indexOf (this.values.valueColumn),
-        'function' : this.functions.indexOf (this.values.function),
-        'chartType' : this.chartTypes.indexOf (this.values.currentChartType),
-        'categoryOptions' : this.values.currentOptionCategories,
-        'paletteColors' : this.values.paletteColors
+        id: this.values.id,
+        option: this.values.currentOption,
+        title: this.values.chartName,
+        chartColumnOptions: JSON.stringify (this.values.chartColumnOptions),
+        analysis: this.values.chartColumnOptions.indexOf (this.values.variable),
+        xaxis: this.values.chartColumnOptions.indexOf (this.values.xaxis),
+        values: this.values.chartColumnOptions.indexOf (this.values.valueColumn),
+        function: this.functions.indexOf (this.values.function),
+        chartType: this.chartTypes.indexOf (this.values.currentChartType),
+        categoryOptions: JSON.stringify (this.values.currentOptionCategories),
+        paletteColors: JSON.stringify (this.values.paletteColors)
       };
     }
   }
@@ -805,7 +805,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
     // set panel info for the HTTP message body
     panel = this.getPanelInfo (true);
-    panel.variables = variables;
+    panel.paletteColors = JSON.stringify (variables); // store the variables into the paletteColors for temporary use
 
     url = this.service.host + "/getTextSummaryResponse?url=" + urlArg;
 
@@ -1669,7 +1669,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
             }
           }
 
-          panel.lastestResponse = variables;
+          panel.lastestResponse = JSON.stringify (variables);
         }
         else
           panel = _this.getPanelInfo (false);
