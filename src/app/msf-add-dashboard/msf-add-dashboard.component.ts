@@ -42,18 +42,8 @@ export class MsfAddDashboardComponent {
     }
 
     successHandler(_this,data){
-      _this.getDashboardsUser(_this);
-    }
-
-    getDashboardsUser(_this){
-      _this.service.getDashboardsByUser(this,this.handlerDashboard, this.errorHandler);
-
-    }
-
-    handlerDashboard(_this, data){
-      let dashboard = data[data.length - 1];
-      _this.data.dashboards.push (dashboard);
-      _this.globals.currentDashboardMenu = dashboard;
+      _this.data.dashboards.push (data);
+      _this.globals.currentDashboardMenu = _this.data.dashboards[_this.data.dashboards.length - 1];
       _this.globals.currentOption = 'dashboard';
     }
 
