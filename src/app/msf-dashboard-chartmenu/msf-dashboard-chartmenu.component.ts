@@ -53,6 +53,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     { name: 'Simple Horizontal Bars', flags: ChartFlags.ROTATED, createSeries: this.createSimpleHorizColumnSeries },
     { name: 'Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.STACKED, createSeries: this.createVertColumnSeries },
     { name: 'Horizontal Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED | ChartFlags.STACKED, createSeries: this.createHorizColumnSeries },
+    { name: 'Funnel', flags: ChartFlags.FUNNELCHART },
     { name: 'Lines', flags: ChartFlags.XYCHART | ChartFlags.LINECHART, createSeries: this.createLineSeries },                      
     { name: 'Area', flags: ChartFlags.XYCHART | ChartFlags.AREACHART, createSeries: this.createLineSeries },
     { name: 'Stacked Area', flags: ChartFlags.XYCHART | ChartFlags.STACKED | ChartFlags.AREACHART, createSeries: this.createLineSeries },
@@ -280,7 +281,42 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       let chart;
 
       // Check chart type before generating it
-      if (this.values.currentChartType.flags & ChartFlags.PIECHART)
+      if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART)
+      {
+        let series, colorSet;
+
+        chart = am4core.create ("msf-dashboard-chart-display-" + this.columnPos + "-" + this.rowPos, am4charts.SlicedChart);
+        chart.data = chartInfo.dataProvider;
+
+        // Set label font size
+        chart.fontSize = 10;
+
+        // Configure Funnel Chart
+        series = chart.series.push (new am4charts.FunnelSeries ());
+        series.dataFields.value = chartInfo.valueField;
+        series.dataFields.category = chartInfo.titleField;
+
+        // Set chart apparence
+        series.sliceLinks.template.height = 0;
+        series.ticks.template.strokeOpacity = 1;
+        series.ticks.template.stroke = darkBlue;
+        series.ticks.template.strokeWidth = 1;
+        series.alignLabels = true;
+
+        // Sort values from least to greatest
+        chart.events.on ("beforedatavalidated", function(event) {
+          chart.data.sort (function(e1, e2) {
+            return e2[chartInfo.valueField] - e1[chartInfo.valueField];
+          });
+        });
+
+        colorSet = new am4core.ColorSet ();
+        colorSet.list = this.values.paletteColors.map (function(color) {
+          return am4core.color (color);
+        });
+        series.colors = colorSet;
+      }
+      else if (this.values.currentChartType.flags & ChartFlags.PIECHART)
       {
         let series, colorSet;
 
@@ -521,13 +557,18 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       }
 
       if (this.values.currentChartType.flags & ChartFlags.XYCHART
-        || this.values.currentChartType.flags & ChartFlags.PIECHART)
+        || this.values.currentChartType.flags & ChartFlags.PIECHART
+        || this.values.currentChartType.flags & ChartFlags.FUNNELCHART)
       {
         // Display Legend
         chart.legend = new am4charts.Legend ();
         chart.legend.markers.template.width = 15;
         chart.legend.markers.template.height = 15;
         chart.legend.labels.template.fontSize = 10;
+
+        // Remove value from legend in the funnel chart type
+        if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART)
+          chart.legend.valueLabels.template.text = "{value.category}";
 
         /*chart.legend.itemContainers.template.events.on (
           "hide",
@@ -1734,7 +1775,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     let dialogHeight, numColors;
 
     if (this.values.currentChartType.flags & ChartFlags.XYCHART
-      || this.values.currentChartType.flags & ChartFlags.PIECHART)
+      || this.values.currentChartType.flags & ChartFlags.PIECHART
+      || this.values.currentChartType.flags & ChartFlags.FUNNELCHART)
     {
       dialogHeight = '340px';
       numColors = 12;
