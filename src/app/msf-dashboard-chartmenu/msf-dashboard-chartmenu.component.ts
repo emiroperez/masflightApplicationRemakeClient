@@ -569,18 +569,13 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       }
 
       if (this.values.currentChartType.flags & ChartFlags.XYCHART
-        || this.values.currentChartType.flags & ChartFlags.PIECHART
-        || this.values.currentChartType.flags & ChartFlags.FUNNELCHART)
+        || this.values.currentChartType.flags & ChartFlags.PIECHART)
       {
         // Display Legend
         chart.legend = new am4charts.Legend ();
         chart.legend.markers.template.width = 15;
         chart.legend.markers.template.height = 15;
         chart.legend.labels.template.fontSize = 10;
-
-        // Remove value from legend in the funnel chart type
-        if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART)
-          chart.legend.valueLabels.template.text = "{value.category}";
 
         /*chart.legend.itemContainers.template.events.on (
           "hide",
