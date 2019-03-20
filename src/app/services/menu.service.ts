@@ -60,7 +60,7 @@ export class MenuService {
     if (_this.globals.baseUrl != ""){
         this.post (_this,  _this.globals.baseUrl + url,data, successHandler, errorHandler);
     }else{
-      this.post (_this, _this.globals.baseUrl + "/secure" + url, data, successHandler, errorHandler);
+      this.postSecure (_this, _this.globals.baseUrl + "/secure" + url, data, successHandler, errorHandler);
 }
   }
 
@@ -92,6 +92,15 @@ export class MenuService {
 
   post = function (_this,url, data, successHandler, errorHandler) {
     this.http.post(url, data).subscribe(result => {
+        successHandler(_this,result);
+      }, error =>
+      errorHandler(_this,error)
+    );
+  }
+
+  postSecure = function (_this,url, data, successHandler, errorHandler) {
+    this.createAuthorizationHeader();
+    this.http.post(url, data,httpOptions).subscribe(result => {
         successHandler(_this,result);
       }, error =>
       errorHandler(_this,error)
