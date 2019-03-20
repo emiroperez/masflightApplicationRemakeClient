@@ -316,7 +316,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     series.dataFields.category = item.titleField;
 
     // Set chart apparence
-    series.sliceLinks.template.height = 0;
+    series.sliceLinks.template.fillOpacity = 0;
     series.ticks.template.strokeOpacity = 1;
     series.ticks.template.stroke = darkBlue;
     series.ticks.template.strokeWidth = 1;
