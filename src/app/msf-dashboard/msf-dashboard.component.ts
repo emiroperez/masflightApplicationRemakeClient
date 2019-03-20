@@ -331,8 +331,13 @@ export class MsfDashboardComponent implements OnInit {
     for (let i = 0; i < dashboardColumn.length; i++)
       dashboardIds.push (dashboardColumn[i].id);
 
-    // this.globals.isLoading = true;
-    this.service.updateDashboardPanelHeight (this, dashboardIds, this.heightValues.indexOf (index), this.handlerSuccess, this.handlerError);
+    this.globals.isLoading = true;
+    this.service.updateDashboardPanelHeight (this, dashboardIds, this.heightValues.indexOf (index), this.changeSucessful, this.handlerError);
+  }
+
+  changeSucessful(_this): void
+  {
+    _this.globals.isLoading = false;
   }
 
   handlerSuccess(_this): void
