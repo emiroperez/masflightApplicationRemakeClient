@@ -53,12 +53,12 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     { name: 'Simple Horizontal Bars', flags: ChartFlags.ROTATED, createSeries: this.createSimpleHorizColumnSeries },
     { name: 'Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.STACKED, createSeries: this.createVertColumnSeries },
     { name: 'Horizontal Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED | ChartFlags.STACKED, createSeries: this.createHorizColumnSeries },
-    { name: 'Funnel', flags: ChartFlags.FUNNELCHART },
+    { name: 'Funnel', flags: ChartFlags.FUNNELCHART, createSeries: this.createFunnelSeries },
     { name: 'Lines', flags: ChartFlags.XYCHART | ChartFlags.LINECHART, createSeries: this.createLineSeries },                      
     { name: 'Area', flags: ChartFlags.XYCHART | ChartFlags.AREACHART, createSeries: this.createLineSeries },
     { name: 'Stacked Area', flags: ChartFlags.XYCHART | ChartFlags.STACKED | ChartFlags.AREACHART, createSeries: this.createLineSeries },
-    { name: 'Pie', flags: ChartFlags.PIECHART },
-    { name: 'Donut', flags: ChartFlags.DONUTCHART },
+    { name: 'Pie', flags: ChartFlags.PIECHART, createSeries: this.createPieSeries },
+    { name: 'Donut', flags: ChartFlags.DONUTCHART, createSeries: this.createPieSeries },
     { name: 'Information', flags: ChartFlags.INFO }
   ];
 
@@ -275,80 +275,92 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     });
   }
 
+  // Function to create pie chart series
+  createPieSeries(values, stacked, chart, item, parseDate): void
+  {
+    let series, colorSet;
+
+    // Set inner radius for donut chart
+    if (values.currentChartType.flags & ChartFlags.PIEHOLE)
+      chart.innerRadius = am4core.percent (60);
+
+    // Configure Pie Chart
+    series = chart.series.push (new am4charts.PieSeries ());
+    series.dataFields.value = item.valueField;
+    series.dataFields.category = item.titleField;
+
+    // This creates initial animation
+    series.hiddenState.properties.opacity = 1;
+    series.hiddenState.properties.endAngle = -90;
+    series.hiddenState.properties.startAngle = -90;
+
+    // Disable label and ticks
+    series.ticks.template.disabled = true;
+    series.labels.template.disabled = true;
+
+    // Set the color for the chart to display
+    colorSet = new am4core.ColorSet ();
+    colorSet.list = values.paletteColors.map (function(color) {
+      return am4core.color (color);
+    });
+    series.colors = colorSet;
+  }
+
+  // Function to create funnel chart series
+  createFunnelSeries(values, stacked, chart, item, parseDate): void
+  {
+    let series, colorSet;
+
+    series = chart.series.push (new am4charts.FunnelSeries ());
+    series.dataFields.value = item.valueField;
+    series.dataFields.category = item.titleField;
+
+    // Set chart apparence
+    series.sliceLinks.template.height = 0;
+    series.ticks.template.strokeOpacity = 1;
+    series.ticks.template.stroke = darkBlue;
+    series.ticks.template.strokeWidth = 1;
+    series.alignLabels = true;
+
+    // Set the color for the chart to display
+    colorSet = new am4core.ColorSet ();
+    colorSet.list = values.paletteColors.map (function(color) {
+      return am4core.color (color);
+    });
+    series.colors = colorSet;
+  }
+
   makeChart(chartInfo): void
   {
     this.zone.runOutsideAngular (() => {
       let chart;
 
       // Check chart type before generating it
-      if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART)
+      if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART
+        || this.values.currentChartType.flags & ChartFlags.PIECHART)
       {
-        let series, colorSet;
+        if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART)
+          chart = am4core.create ("msf-dashboard-chart-display-" + this.columnPos + "-" + this.rowPos, am4charts.SlicedChart);
+        else
+          chart = am4core.create ("msf-dashboard-chart-display-" + this.columnPos + "-" + this.rowPos, am4charts.PieChart);
 
-        chart = am4core.create ("msf-dashboard-chart-display-" + this.columnPos + "-" + this.rowPos, am4charts.SlicedChart);
         chart.data = chartInfo.dataProvider;
 
         // Set label font size
         chart.fontSize = 10;
 
-        // Configure Funnel Chart
-        series = chart.series.push (new am4charts.FunnelSeries ());
-        series.dataFields.value = chartInfo.valueField;
-        series.dataFields.category = chartInfo.titleField;
+        // Create the series
+        this.values.currentChartType.createSeries (this.values, false, chart, chartInfo, null);
 
-        // Set chart apparence
-        series.sliceLinks.template.height = 0;
-        series.ticks.template.strokeOpacity = 1;
-        series.ticks.template.stroke = darkBlue;
-        series.ticks.template.strokeWidth = 1;
-        series.alignLabels = true;
-
-        // Sort values from least to greatest
-        chart.events.on ("beforedatavalidated", function(event) {
-          chart.data.sort (function(e1, e2) {
-            return e2[chartInfo.valueField] - e1[chartInfo.valueField];
+        if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART)
+        {
+          // Sort values from greatest to least on funnel chart types
+          chart.events.on ("beforedatavalidated", function(event) {
+            chart.data.sort (function(e1, e2) {
+              return e2[chartInfo.valueField] - e1[chartInfo.valueField];
+            });
           });
-        });
-
-        colorSet = new am4core.ColorSet ();
-        colorSet.list = this.values.paletteColors.map (function(color) {
-          return am4core.color (color);
-        });
-        series.colors = colorSet;
-      }
-      else if (this.values.currentChartType.flags & ChartFlags.PIECHART)
-      {
-        let series, colorSet;
-
-        chart = am4core.create ("msf-dashboard-chart-display-" + this.columnPos + "-" + this.rowPos, am4charts.PieChart);
-        chart.data = chartInfo.dataProvider;
-
-        // Set label font size
-        chart.fontSize = 10;
-
-        // Set inner radius for donut chart
-        if (this.values.currentChartType.flags & ChartFlags.PIEHOLE)
-          chart.innerRadius = am4core.percent (60);
-
-        // Configure Pie Chart
-        series = chart.series.push (new am4charts.PieSeries ());
-        series.dataFields.value = chartInfo.valueField;
-        series.dataFields.category = chartInfo.titleField;
-
-        // This creates initial animation
-        series.hiddenState.properties.opacity = 1;
-        series.hiddenState.properties.endAngle = -90;
-        series.hiddenState.properties.startAngle = -90;
-
-        // Disable label and ticks
-        series.ticks.template.disabled = true;
-        series.labels.template.disabled = true;
-
-        colorSet = new am4core.ColorSet ();
-        colorSet.list = this.values.paletteColors.map (function(color) {
-          return am4core.color (color);
-        });
-        series.colors = colorSet;
+        }
       }
       else
       {
