@@ -22,6 +22,11 @@ export class MsfDashboardComponent implements OnInit {
 
   displayAddChartMenu: boolean = false;
 
+  displayContextMenu: boolean = false;
+  contextMenuX: number = 0;
+  contextMenuY: number = 0;
+  contextCategory: any;
+
   heightValues:any[] = [
     { value: 1, name: 'Small' },
     { value: 3, name: 'Medium' },
@@ -424,6 +429,8 @@ export class MsfDashboardComponent implements OnInit {
       this.screenHeight = "100%";
     else
       this.screenHeight = "calc(100% - 90px)";
+
+    this.disableContextMenu ();
   }
 
   swapPanelRowPositions(event: CdkDragDrop<string[]>, dashboardColumn, columnIndex): void
@@ -451,5 +458,34 @@ export class MsfDashboardComponent implements OnInit {
     // this.globals.isLoading = true;
     this.service.setDashboardPanelRowPositions (this, newPanelPos, this.handlerSuccess,
       this.handlerError);
+  }
+
+  onrightClick(event, dashboardColumn, rowindex): boolean
+  {
+    event.stopPropagation ();
+
+    if (!dashboardColumn[rowindex].chartClicked)
+    {
+      this.displayContextMenu = false;
+      return true;
+    }
+
+    this.contextCategory = dashboardColumn[rowindex].chartObjectSelected;
+    this.contextMenuX = event.clientX;
+
+    if (this.globals.isFullscreen)
+      this.contextMenuY = event.clientY;
+    else
+      this.contextMenuY = event.clientY - 90;
+
+    // prevent context menu from appearing
+    dashboardColumn[rowindex].chartClicked = false;
+    this.displayContextMenu = true;
+    return false;
+  }
+
+  disableContextMenu(): void
+  {
+    this.displayContextMenu = false;
   }
 }

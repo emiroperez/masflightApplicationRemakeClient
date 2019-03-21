@@ -172,11 +172,17 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     series.columns.template.width = am4core.percent (60);
 
     // Add an event that hide the column chart when clicked
-    /*series.columns.template.events.on ("hit", function(event) {
+    // series.columns.template.events.on ("hit", function(event) {
       //event.target.parent.hide ();
-      chart.legend.dispatchImmediately ("hide");
+//      chart.legend.dispatchImmediately ("hide");
       //event.target.dataItem.categoryY;
-    });*/
+    // });
+
+    // Display a special context menu when a chart column is right clicked
+    series.columns.template.events.on ("rightclick", function(event) {
+      values.chartClicked = true;
+      values.chartObjectSelected = event.target.dataItem.dataContext[values.xaxis.id];
+    });
   }
 
   // Function to create vertical column chart series
@@ -202,6 +208,11 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     series.stacked = stacked;
     series.columns.template.strokeWidth = 0;
     series.columns.template.width = am4core.percent (60);
+
+    series.columns.template.events.on ("rightclick", function(event) {
+      values.chartClicked = true;
+      values.chartObjectSelected = event.target.dataItem.dataContext[values.xaxis.id];
+    });
   }
 
   // Function to create line chart series
@@ -237,6 +248,13 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       series.fillOpacity = 0.3;
 
     series.stacked = stacked;
+
+    // Display a special context menu when a chart line segment is right clicked
+    series.segments.template.interactionsEnabled = true;
+    series.segments.template.events.on ("rightclick", function(event) {
+      values.chartClicked = true;
+      values.chartObjectSelected = event.target.dataItem.component.tooltipDataItem.dataContext[values.xaxis.id];
+    });
   }
 
   // Function to create simple vertical column chart series
@@ -255,6 +273,12 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     series.columns.template.adapter.add ("fill", (fill, target) => {
       return am4core.color (values.paletteColors[0]);
     });
+
+    // Display a special context menu when a chart column is right clicked
+    series.columns.template.events.on ("rightclick", function(event) {
+      values.chartClicked = true;
+      values.chartObjectSelected = event.target.dataItem.dataContext[item.titleField];
+    });
   }
 
   // Function to create simple horizontal column chart series
@@ -269,9 +293,13 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
     series.stacked = stacked;
 
-    // Set colors
     series.columns.template.adapter.add ("fill", (fill, target) => {
       return am4core.color (values.paletteColors[0]);
+    });
+
+    series.columns.template.events.on ("rightclick", function(event) {
+      values.chartClicked = true;
+      values.chartObjectSelected = event.target.dataItem.dataContext[item.titleField];
     });
   }
 
@@ -304,6 +332,12 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       return am4core.color (color);
     });
     series.colors = colorSet;
+
+    // Display a special context menu when a pie slice is right clicked
+    series.slices.template.events.on ("rightclick", function(event) {
+      values.chartClicked = true;
+      values.chartObjectSelected = event.target.dataItem.dataContext[item.titleField];
+    });
   }
 
   // Function to create funnel chart series
@@ -316,7 +350,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     series.dataFields.category = item.titleField;
 
     // Set chart apparence
-    series.sliceLinks.template.height = 0;
+    series.sliceLinks.template.fillOpacity = 0;
     series.ticks.template.strokeOpacity = 1;
     series.ticks.template.stroke = darkBlue;
     series.ticks.template.strokeWidth = 1;
@@ -328,6 +362,12 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       return am4core.color (color);
     });
     series.colors = colorSet;
+
+    // Display a special context menu when a funnel slice is right clicked
+    series.slices.template.events.on ("rightclick", function(event) {
+      values.chartClicked = true;
+      values.chartObjectSelected = event.target.dataItem.dataContext[item.titleField];
+    });
   }
 
   makeChart(chartInfo): void
@@ -723,32 +763,32 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     if (infoChartType)
     {
       return {
-        'id' : this.values.id,
-        'option' : this.values.currentOption,
-        'title' : this.values.chartName,
-        'chartColumnOptions' : this.values.chartColumnOptions,
-        'analysis' : this.values.chartColumnOptions.indexOf (this.values.infoVar1),
-        'xaxis' : this.values.chartColumnOptions.indexOf (this.values.infoVar2),
-        'values' : this.values.chartColumnOptions.indexOf (this.values.infoVar3),
-        'function' : 1,
-        'chartType' : this.chartTypes.indexOf (this.values.currentChartType),
-        'categoryOptions' : this.values.currentOptionCategories
+        id: this.values.id,
+        option: this.values.currentOption,
+        title: this.values.chartName,
+        chartColumnOptions: JSON.stringify (this.values.chartColumnOptions),
+        analysis: this.values.chartColumnOptions.indexOf (this.values.infoVar1),
+        xaxis: this.values.chartColumnOptions.indexOf (this.values.infoVar2),
+        values: this.values.chartColumnOptions.indexOf (this.values.infoVar3),
+        function: 1,
+        chartType: this.chartTypes.indexOf (this.values.currentChartType),
+        categoryOptions: JSON.stringify (this.values.currentOptionCategories)
       };
     }
     else
     {
       return {
-        'id' : this.values.id,
-        'option' : this.values.currentOption,
-        'title' : this.values.chartName,
-        'chartColumnOptions' : this.values.chartColumnOptions,
-        'analysis' : this.values.chartColumnOptions.indexOf (this.values.variable),
-        'xaxis' : this.values.chartColumnOptions.indexOf (this.values.xaxis),
-        'values' : this.values.chartColumnOptions.indexOf (this.values.valueColumn),
-        'function' : this.functions.indexOf (this.values.function),
-        'chartType' : this.chartTypes.indexOf (this.values.currentChartType),
-        'categoryOptions' : this.values.currentOptionCategories,
-        'paletteColors' : this.values.paletteColors
+        id: this.values.id,
+        option: this.values.currentOption,
+        title: this.values.chartName,
+        chartColumnOptions: JSON.stringify (this.values.chartColumnOptions),
+        analysis: this.values.chartColumnOptions.indexOf (this.values.variable),
+        xaxis: this.values.chartColumnOptions.indexOf (this.values.xaxis),
+        values: this.values.chartColumnOptions.indexOf (this.values.valueColumn),
+        function: this.functions.indexOf (this.values.function),
+        chartType: this.chartTypes.indexOf (this.values.currentChartType),
+        categoryOptions: JSON.stringify (this.values.currentOptionCategories),
+        paletteColors: JSON.stringify (this.values.paletteColors)
       };
     }
   }
@@ -805,7 +845,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
     // set panel info for the HTTP message body
     panel = this.getPanelInfo (true);
-    panel.variables = variables;
+    panel.paletteColors = JSON.stringify (variables); // store the variables into the paletteColors for temporary use
 
     url = this.service.host + "/getTextSummaryResponse?url=" + urlArg;
 
@@ -1669,7 +1709,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
             }
           }
 
-          panel.lastestResponse = variables;
+          panel.lastestResponse = JSON.stringify (variables);
         }
         else
           panel = _this.getPanelInfo (false);
