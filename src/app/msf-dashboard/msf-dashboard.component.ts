@@ -22,6 +22,10 @@ export class MsfDashboardComponent implements OnInit {
 
   displayAddChartMenu: boolean = false;
 
+  displayContextMenu: boolean = false;
+  contextMenuX: number = 0;
+  contextMenuY: number = 0;
+
   heightValues:any[] = [
     { value: 1, name: 'Small' },
     { value: 3, name: 'Medium' },
@@ -451,5 +455,34 @@ export class MsfDashboardComponent implements OnInit {
     // this.globals.isLoading = true;
     this.service.setDashboardPanelRowPositions (this, newPanelPos, this.handlerSuccess,
       this.handlerError);
+  }
+
+  onrightClick(event, dashboardColumn, rowindex): boolean
+  {
+    event.stopPropagation ();
+
+//    if (!dashboardColumn[rowindex].displayChart)
+    if (!dashboardColumn[rowindex].chartClicked)
+    {
+      this.displayContextMenu = false;
+      return true;
+    }
+
+    this.contextMenuX = event.clientX;
+
+    if (this.globals.isFullscreen)
+      this.contextMenuY = event.clientY;
+    else
+      this.contextMenuY = event.clientY - 90;
+
+    // prevent context menu from appearing
+    dashboardColumn[rowindex].chartClicked = false;
+    this.displayContextMenu = true;
+    return false;
+  }
+
+  disableContextMenu(): void
+  {
+    this.displayContextMenu = false;
   }
 }

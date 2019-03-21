@@ -172,11 +172,16 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     series.columns.template.width = am4core.percent (60);
 
     // Add an event that hide the column chart when clicked
-    /*series.columns.template.events.on ("hit", function(event) {
+    series.columns.template.events.on ("hit", function(event) {
       //event.target.parent.hide ();
-      chart.legend.dispatchImmediately ("hide");
+//      chart.legend.dispatchImmediately ("hide");
       //event.target.dataItem.categoryY;
-    });*/
+      values.chartClicked = true;
+    });
+
+    series.columns.template.events.on ("rightclick", function(event) {
+      values.chartClicked = true;
+    });
   }
 
   // Function to create vertical column chart series
@@ -202,6 +207,10 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     series.stacked = stacked;
     series.columns.template.strokeWidth = 0;
     series.columns.template.width = am4core.percent (60);
+
+    series.columns.template.events.on ("rightclick", function(event) {
+      values.chartClicked = true;
+    });
   }
 
   // Function to create line chart series
@@ -237,6 +246,19 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       series.fillOpacity = 0.3;
 
     series.stacked = stacked;
+
+    series.segments.template.interactionsEnabled = true;
+    /*series.segments.template.events.on(
+      "hit",
+      ev => {
+        var item = ev.target.dataItem.component.tooltipDataItem.dataContext;
+        alert("line clicked on: " + item.country + ": " + item.marketing);
+      },
+      this
+    );*/
+    series.segments.template.events.on ("rightclick", function(event) {
+      values.chartClicked = true;
+    });
   }
 
   // Function to create simple vertical column chart series
@@ -255,6 +277,10 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     series.columns.template.adapter.add ("fill", (fill, target) => {
       return am4core.color (values.paletteColors[0]);
     });
+
+    series.columns.template.events.on ("rightclick", function(event) {
+      values.chartClicked = true;
+    });
   }
 
   // Function to create simple horizontal column chart series
@@ -272,6 +298,10 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     // Set colors
     series.columns.template.adapter.add ("fill", (fill, target) => {
       return am4core.color (values.paletteColors[0]);
+    });
+
+    series.columns.template.events.on ("rightclick", function(event) {
+      values.chartClicked = true;
     });
   }
 
@@ -304,6 +334,10 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       return am4core.color (color);
     });
     series.colors = colorSet;
+
+    series.slices.template.events.on ("rightclick", function(event) {
+      values.chartClicked = true;
+    });
   }
 
   // Function to create funnel chart series
@@ -328,6 +362,10 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       return am4core.color (color);
     });
     series.colors = colorSet;
+
+    series.slices.template.events.on ("rightclick", function(event) {
+      values.chartClicked = true;
+    });
   }
 
   makeChart(chartInfo): void

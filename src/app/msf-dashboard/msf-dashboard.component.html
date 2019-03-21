@@ -1,11 +1,11 @@
-<div class="msf-dashboard-container" [style.height]="screenHeight">
+<div (click)="disableContextMenu()" (contextmenu)="disableContextMenu()" (scroll)="disableContextMenu()" class="msf-dashboard-container" [style.height]="screenHeight">
   <div class="msf-dashboard-title">{{globals.currentDashboardMenu.title}}</div>
   <ng-container *ngIf="dashboardColumns.length">
     <div class="msf-dashboard-chartbox">
       <div class="msf-dashboard-chartbox-column" *ngFor="let dashboardColumn of dashboardColumns; let column = index" [attr.data-index]="column">
         <div class="msf-dashboard-chartbox-items">
-          <div class="msf-dashboard-chartbox-column" cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="swapPanelRowPositions($event,dashboardColumns[column],column)">
-            <div class="msf-dashboard-chartbox-item" [style.width.%]="getPanelWidth(column, row)" *ngFor="let dashboardChart of dashboardColumn; let row = index" [attr.data-index]="row" cdkDragLockAxis="x" cdkDrag>
+          <div class="msf-dashboard-chartbox-column" cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="swapPanelRowPositions($event, dashboardColumns[column], column)">
+            <div (contextmenu)="onrightClick($event, dashboardColumns[column], row)" class="msf-dashboard-chartbox-item" [style.width.%]="getPanelWidth(column, row)" *ngFor="let dashboardChart of dashboardColumn; let row = index" [attr.data-index]="row" cdkDragLockAxis="x" cdkDrag>
               <div *ngIf="row" (mousedown)='onLineClick($event, column, row - 1, row)' (mouseup)='onLineRelease()' id='msf-dashboard-panel-left-resize' class='msf-dashboard-panel-line-resize'></div>
               <div *ngIf="row != dashboardColumn.length - 1" (mousedown)='onLineClick($event, column, row, row + 1)' id='msf-dashboard-panel-right-resize' class='msf-dashboard-panel-line-resize'></div>
               <!-- HACK: Add an invisible div to avoid panel row dragging when only one panel in a column is available -->
@@ -73,5 +73,8 @@
     <div class="msf-dashboard-addmenu-item" *ngIf="displayAddChartMenu">
       <div class="msf-dashboard-addmenu-item-text" (click)="addChart(3)">3 Panels</div>
     </div>
+  </div>
+  <div *ngIf="displayContextMenu">
+    <app-msf-dashboard-panel-context-menu [x]="contextMenuX" [y]="contextMenuY"></app-msf-dashboard-panel-context-menu>
   </div>
 </div>

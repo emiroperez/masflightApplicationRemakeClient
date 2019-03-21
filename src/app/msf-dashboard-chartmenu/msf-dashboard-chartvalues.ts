@@ -51,6 +51,8 @@ export class MsfDashboardChartValues {
         "#fffefe"
     ];
 
+    chartClicked: boolean;
+
     constructor(options: any[], chartName: String, id: number, width: any, height: any, currentOption?: any, chartColumnOptions? : any,
         variable?: any, xaxis?: any, valueColumn?: any, func?: any, chartType?: any, currentOptionCategories?: any, lastestResponse?: string,
         paletteColors?: any, row?: number)
