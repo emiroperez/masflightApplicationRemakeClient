@@ -172,15 +172,16 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     series.columns.template.width = am4core.percent (60);
 
     // Add an event that hide the column chart when clicked
-    series.columns.template.events.on ("hit", function(event) {
+    // series.columns.template.events.on ("hit", function(event) {
       //event.target.parent.hide ();
 //      chart.legend.dispatchImmediately ("hide");
       //event.target.dataItem.categoryY;
-      values.chartClicked = true;
-    });
+    // });
 
+    // Display a special context menu when a chart column is right clicked
     series.columns.template.events.on ("rightclick", function(event) {
       values.chartClicked = true;
+      values.chartObjectSelected = event.target.dataItem.dataContext[values.xaxis.id];
     });
   }
 
@@ -210,6 +211,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
     series.columns.template.events.on ("rightclick", function(event) {
       values.chartClicked = true;
+      values.chartObjectSelected = event.target.dataItem.dataContext[values.xaxis.id];
     });
   }
 
@@ -247,17 +249,11 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
     series.stacked = stacked;
 
+    // Display a special context menu when a chart line segment is right clicked
     series.segments.template.interactionsEnabled = true;
-    /*series.segments.template.events.on(
-      "hit",
-      ev => {
-        var item = ev.target.dataItem.component.tooltipDataItem.dataContext;
-        alert("line clicked on: " + item.country + ": " + item.marketing);
-      },
-      this
-    );*/
     series.segments.template.events.on ("rightclick", function(event) {
       values.chartClicked = true;
+      values.chartObjectSelected = event.target.dataItem.component.tooltipDataItem.dataContext[values.xaxis.id];
     });
   }
 
@@ -278,8 +274,10 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       return am4core.color (values.paletteColors[0]);
     });
 
+    // Display a special context menu when a chart column is right clicked
     series.columns.template.events.on ("rightclick", function(event) {
       values.chartClicked = true;
+      values.chartObjectSelected = event.target.dataItem.dataContext[item.titleField];
     });
   }
 
@@ -295,13 +293,13 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
     series.stacked = stacked;
 
-    // Set colors
     series.columns.template.adapter.add ("fill", (fill, target) => {
       return am4core.color (values.paletteColors[0]);
     });
 
     series.columns.template.events.on ("rightclick", function(event) {
       values.chartClicked = true;
+      values.chartObjectSelected = event.target.dataItem.dataContext[item.titleField];
     });
   }
 
@@ -335,8 +333,10 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     });
     series.colors = colorSet;
 
+    // Display a special context menu when a pie slice is right clicked
     series.slices.template.events.on ("rightclick", function(event) {
       values.chartClicked = true;
+      values.chartObjectSelected = event.target.dataItem.dataContext[item.titleField];
     });
   }
 
@@ -363,8 +363,10 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     });
     series.colors = colorSet;
 
+    // Display a special context menu when a funnel slice is right clicked
     series.slices.template.events.on ("rightclick", function(event) {
       values.chartClicked = true;
+      values.chartObjectSelected = event.target.dataItem.dataContext[item.titleField];
     });
   }
 

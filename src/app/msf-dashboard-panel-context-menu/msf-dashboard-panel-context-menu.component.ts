@@ -11,6 +11,9 @@ export class MsfDashboardPanelContextMenuComponent {
   @Input()
   y: number = 0;
 
+  @Input()
+  category: string;
+
   constructor() { }
 
   // make sure that the context menu is fully visible

@@ -25,6 +25,7 @@ export class MsfDashboardComponent implements OnInit {
   displayContextMenu: boolean = false;
   contextMenuX: number = 0;
   contextMenuY: number = 0;
+  contextCategory: any;
 
   heightValues:any[] = [
     { value: 1, name: 'Small' },
@@ -469,6 +470,7 @@ export class MsfDashboardComponent implements OnInit {
       return true;
     }
 
+    this.contextCategory = dashboardColumn[rowindex].chartObjectSelected;
     this.contextMenuX = event.clientX;
 
     if (this.globals.isFullscreen)
