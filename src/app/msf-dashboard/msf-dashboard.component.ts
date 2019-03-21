@@ -428,6 +428,8 @@ export class MsfDashboardComponent implements OnInit {
       this.screenHeight = "100%";
     else
       this.screenHeight = "calc(100% - 90px)";
+
+    this.disableContextMenu ();
   }
 
   swapPanelRowPositions(event: CdkDragDrop<string[]>, dashboardColumn, columnIndex): void
@@ -461,7 +463,6 @@ export class MsfDashboardComponent implements OnInit {
   {
     event.stopPropagation ();
 
-//    if (!dashboardColumn[rowindex].displayChart)
     if (!dashboardColumn[rowindex].chartClicked)
     {
       this.displayContextMenu = false;
