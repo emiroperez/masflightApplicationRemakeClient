@@ -16,6 +16,7 @@ export class MsfGroupingMariadbComponent implements OnInit {
     {id: 'date', columnLabel: 'Day', columnName:'date'},
     {id: 'content_type', columnLabel: 'Content Type', columnName:'content_type'},
     {id: 'seat_class', columnLabel: 'Seat Class', columnName:'seat_class'},
+    {id: 'Release_Year', columnLabel: 'Release Year', columnName:'Release_Year'},
 ];
   
   constructor() { }

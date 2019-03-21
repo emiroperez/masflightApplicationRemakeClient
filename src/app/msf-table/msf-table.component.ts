@@ -107,19 +107,24 @@ export class MsfTableComponent implements OnInit {
               if(this.groupingArgument.type=="groupingMariaDB" && this.globals.currentOption.id==166){
                 displayedColumns.unshift({ columnType:"number",
                 columnName:"AVG_RT_Minutes",
-                columnLabel:"Avg Rt Minutes"});
+                columnLabel:"Avg Rt Minutes",
+                drillDowns: []});
                 displayedColumns.unshift({ columnType:"number",
                 columnName:"AVG_Play_Duration",
-                columnLabel:"Avg Play Duration"});
+                columnLabel:"Avg Play Duration",
+                drillDowns: []});
                 displayedColumns.unshift({ columnType:"number",
                 columnName:"SUM_RT_Minutes",
-                columnLabel:"Sum Rt Minutes"});
+                columnLabel:"Sum Rt Minutes",
+                drillDowns: []});
                 displayedColumns.unshift({ columnType:"number",
                 columnName:"SUM_Play_Duration",
-                columnLabel:"Sum Play Duration"});
+                columnLabel:"Sum Play Duration",
+                drillDowns: []});
                 displayedColumns.unshift({ columnType:"number",
                 columnName:"SUM_Unique_Hits",
-                columnLabel:"Sum Unique Hits"});
+                columnLabel:"Sum Unique Hits",
+                drillDowns: []});
               }
             }
            }
@@ -134,7 +139,8 @@ export class MsfTableComponent implements OnInit {
           if(indexColumn==-1){
             displayedColumns.unshift({ columnType:"string",
             columnName:element.columnName,
-            columnLabel:element.columnLabel});
+            columnLabel:element.columnLabel,
+            drillDowns: []});
           }
         }
     }
@@ -146,12 +152,15 @@ export class MsfTableComponent implements OnInit {
           if(indexColumn==-1){
             displayedColumns.unshift({ columnType:"string",
             columnName:element.columnName,
-            columnLabel:element.columnLabel});
+            columnLabel:element.columnLabel,
+            drillDowns: []
+          });
           }else{
               displayedColumns.splice(indexColumn,1);
               displayedColumns.unshift({ columnType:"string",
               columnName:element.columnName,
-              columnLabel:element.columnLabel});
+              columnLabel:element.columnLabel,
+              drillDowns: []});
           }
         }
       }else{
@@ -159,12 +168,14 @@ export class MsfTableComponent implements OnInit {
         if(indexColumn==-1){
           displayedColumns.unshift({ columnType:"string",
           columnName:array.columnName,
-          columnLabel:array.columnLabel});
+          columnLabel:array.columnLabel,
+          drillDowns: []});
         }else{
             displayedColumns.splice(indexColumn,1);
             displayedColumns.unshift({ columnType:"string",
             columnName:array.columnName,
-            columnLabel:array.columnLabel});
+            columnLabel:array.columnLabel,
+            drillDowns: []});
         }
 
       }
