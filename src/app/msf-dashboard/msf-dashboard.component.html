@@ -12,7 +12,7 @@
                 <mat-icon class="msf-dashboard-button-close-icon" aria-label="close" (click)="removeChart(column, row)">close</mat-icon>
                 <mat-icon class="msf-dashboard-button-move-icon" *ngIf="dashboardColumn.length != 1" aria-label="move" cdkDragHandle (click)="disableContextMenu()">drag_handle</mat-icon>
               </div>
-              <app-msf-dashboard-chartmenu [values]="dashboardChart" [rebuildChart]="dashboardChart.rebuildChart" [panelHeight]="getColumnHeight(column)"></app-msf-dashboard-chartmenu>
+              <app-msf-dashboard-chartmenu [values]="dashboardChart" [rebuildChart]="dashboardColumnsRebuildChart[column]" [panelHeight]="getColumnHeight(column)"></app-msf-dashboard-chartmenu>
             </div>
           </div>
           <div [ngClass]="dashboardColumnsProperties[column] ? 'msf-dashboard-panel-size-properties-open' : 'msf-dashboard-panel-size-properties-closed'">

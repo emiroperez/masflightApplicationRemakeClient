@@ -129,11 +129,10 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void
   {
-    if (changes['rebuildChart'] && this.values.rebuildChart)
+    if (changes['rebuildChart'] && this.rebuildChart && this.values.chartGenerated)
     {
-      this.chart.dispose ();
+      this.destroyChart ();
       this.makeChart (this.values.lastestResponse);
-      this.values.rebuildChart = false;
     }
   }
 
