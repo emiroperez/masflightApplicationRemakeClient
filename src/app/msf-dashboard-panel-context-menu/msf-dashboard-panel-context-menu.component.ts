@@ -13,13 +13,13 @@ export class MsfDashboardPanelContextMenuComponent {
 
   constructor() { }
 
-  // make sure that the visibility of the context menu is not out of the window bounds
+  // make sure that the context menu is fully visible
   getXPosition(): number
   {
     var clientWidth = document.getElementById ('msf-dashboard-panel-context-menu-container').clientWidth;
 
     if (this.x + clientWidth > window.innerWidth)
-      return this.x - clientWidth;
+      return window.innerWidth - clientWidth;
 
     return this.x;
   }
