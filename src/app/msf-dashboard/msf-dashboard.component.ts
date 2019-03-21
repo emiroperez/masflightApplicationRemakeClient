@@ -342,13 +342,8 @@ export class MsfDashboardComponent implements OnInit {
         dashboardColumn[i].height = dashboardColumn[0].height;
     }
 
-    this.globals.isLoading = true;
-    this.service.updateDashboardPanelHeight (this, dashboardIds, this.heightValues.indexOf (index), this.changeSucessful, this.handlerError);
-  }
-
-  changeSucessful(_this): void
-  {
-    _this.globals.isLoading = false;
+    // this.globals.isLoading = true;
+    this.service.updateDashboardPanelHeight (this, dashboardIds, this.heightValues.indexOf (index), this.handlerSuccess, this.handlerError);
   }
 
   handlerSuccess(_this): void
@@ -442,16 +437,24 @@ export class MsfDashboardComponent implements OnInit {
   swapPanelRowPositions(event: CdkDragDrop<MsfDashboardChartValues[]>, dashboardColumn, columnIndex): void
   {
     let newPanelPos = [];
+    let i;
 
     // do not update if the position remains the same
     if (event.previousIndex == event.currentIndex)
+    {
+      // rebuild charts as a workaround to a bug that causes the chart
+      // not getting adjusted to the panel size after dragging
+      for (i = 0; i < dashboardColumn.length; i++)
+        dashboardColumn[i].rebuildChart = true;
+
       return;
+    }
 
     // move items
     moveItemInArray (dashboardColumn, event.previousIndex, event.currentIndex);
 
     // update the database to set the new row position for the panels
-    for (let i = 0; i < dashboardColumn.length; i++)
+    for (i = 0; i < dashboardColumn.length; i++)
     {
       // swap row position by swapping the dashboard ids
       newPanelPos.push ({
@@ -459,6 +462,10 @@ export class MsfDashboardComponent implements OnInit {
         column : columnIndex,
         row: i
       });
+
+      // rebuild charts as a workaround to a bug that causes the chart
+      // not getting adjusted to the panel size after dragging
+      dashboardColumn[i].rebuildChart = true;
     }
 
     // this.globals.isLoading = true;

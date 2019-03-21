@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input, NgZone } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, NgZone, SimpleChanges } from '@angular/core';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
@@ -77,6 +77,9 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   @Input()
   panelHeight: number;
 
+  @Input()
+  rebuildChart: boolean;
+
   public dataFormFilterCtrl: FormControl = new FormControl ();
   public variableFilterCtrl: FormControl = new FormControl ();
   public xaxisFilterCtrl: FormControl = new FormControl ();
@@ -122,6 +125,16 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     this.values.infoFunc1 = JSON.parse (JSON.stringify (this.functions));
     this.values.infoFunc2 = JSON.parse (JSON.stringify (this.functions));
     this.values.infoFunc3 = JSON.parse (JSON.stringify (this.functions));
+  }
+
+  ngOnChanges(changes: SimpleChanges): void
+  {
+    if (changes['rebuildChart'] && this.values.rebuildChart)
+    {
+      this.chart.dispose ();
+      this.makeChart (this.values.lastestResponse);
+      this.values.rebuildChart = false;
+    }
   }
 
   isEmpty(obj): boolean
