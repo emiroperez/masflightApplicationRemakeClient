@@ -16,7 +16,6 @@ export class MsfDashboardChartValues {
 
     width: number;
     height: any;
-    row: number;
 
     lastestResponse: any;
 
@@ -56,7 +55,7 @@ export class MsfDashboardChartValues {
 
     constructor(options: any[], chartName: String, id: number, width: any, height: any, currentOption?: any, chartColumnOptions? : any,
         variable?: any, xaxis?: any, valueColumn?: any, func?: any, chartType?: any, currentOptionCategories?: any, lastestResponse?: string,
-        paletteColors?: any, row?: number)
+        paletteColors?: any)
     {
         this.options = options;
         this.chartName = chartName;
@@ -69,7 +68,6 @@ export class MsfDashboardChartValues {
         this.currentChartType = chartType;
         this.width = width;
         this.height = height;
-        this.row = row;
 
         // load palette colors if there is any
         if (paletteColors)

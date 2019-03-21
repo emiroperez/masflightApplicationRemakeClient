@@ -75,12 +75,6 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   temp: MsfDashboardChartValues;
 
   @Input()
-  columnPos: number;
-
-  @Input()
-  rowPos: number;
-
-  @Input()
   panelHeight: number;
 
   public dataFormFilterCtrl: FormControl = new FormControl ();
@@ -380,9 +374,9 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         || this.values.currentChartType.flags & ChartFlags.PIECHART)
       {
         if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART)
-          chart = am4core.create ("msf-dashboard-chart-display-" + this.columnPos + "-" + this.rowPos, am4charts.SlicedChart);
+          chart = am4core.create ("msf-dashboard-chart-display-" + this.values.id, am4charts.SlicedChart);
         else
-          chart = am4core.create ("msf-dashboard-chart-display-" + this.columnPos + "-" + this.rowPos, am4charts.PieChart);
+          chart = am4core.create ("msf-dashboard-chart-display-" + this.values.id, am4charts.PieChart);
 
         chart.data = chartInfo.dataProvider;
 
@@ -406,7 +400,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       {
         let categoryAxis, valueAxis, parseDate, stacked;
 
-        chart = am4core.create ("msf-dashboard-chart-display-" + this.columnPos + "-" + this.rowPos, am4charts.XYChart);
+        chart = am4core.create ("msf-dashboard-chart-display-" + this.values.id, am4charts.XYChart);
 
         // Don't parse dates if the chart is a simple version
         if (this.values.currentChartType.flags & ChartFlags.XYCHART)

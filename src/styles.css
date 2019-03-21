@@ -2013,12 +2013,6 @@ mat-tab-group {
 .msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-properties-align .msf-dashboard-column-properties-height-label {
   width: 60%;
 }
-.msf-dashboard-invisible {
-  display: none;
-  width: 1px;
-  height: 1px;
-}
-
 .msf-dashboard-button {
   display: flex;
   flex-direction: column;

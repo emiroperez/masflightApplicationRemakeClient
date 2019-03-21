@@ -132,7 +132,7 @@ export class MsfDashboardComponent implements OnInit {
         dashboardPanel.id, dashboardPanel.width, _this.heightValues[dashboardPanel.height],
         dashboardPanel.option, dashboardPanel.chartColumnOptions, dashboardPanel.analysis, dashboardPanel.xaxis,
         dashboardPanel.values, dashboardPanel.function, dashboardPanel.chartType, dashboardPanel.categoryOptions,
-        dashboardPanel.lastestResponse, dashboardPanel.paletteColors, dashboardPanel.row));
+        dashboardPanel.lastestResponse, dashboardPanel.paletteColors));
     }
 
     // add the last dashboard column
@@ -332,9 +332,15 @@ export class MsfDashboardComponent implements OnInit {
   {
     let dashboardColumn = this.dashboardColumns[column];
     let dashboardIds = [];
+    let i;
 
-    for (let i = 0; i < dashboardColumn.length; i++)
+    for (i = 0; i < dashboardColumn.length; i++)
+    {
       dashboardIds.push (dashboardColumn[i].id);
+
+      if (i >= 1)
+        dashboardColumn[i].height = dashboardColumn[0].height;
+    }
 
     this.globals.isLoading = true;
     this.service.updateDashboardPanelHeight (this, dashboardIds, this.heightValues.indexOf (index), this.changeSucessful, this.handlerError);
@@ -433,7 +439,7 @@ export class MsfDashboardComponent implements OnInit {
     this.disableContextMenu ();
   }
 
-  swapPanelRowPositions(event: CdkDragDrop<string[]>, dashboardColumn, columnIndex): void
+  swapPanelRowPositions(event: CdkDragDrop<MsfDashboardChartValues[]>, dashboardColumn, columnIndex): void
   {
     let newPanelPos = [];
 
