@@ -1283,10 +1283,12 @@ button[aria-expanded=true] {
 
 .msf-menu-show-full-nav-component {
   width: calc(100% - 300px);
+  transition: 0.5s;
 }
 
 .msf-menu-show-full-nav-component-wide {
   width: 100%;
+  transition: 0.5s;
 }
 
 .msf-menu-admin-icon {
