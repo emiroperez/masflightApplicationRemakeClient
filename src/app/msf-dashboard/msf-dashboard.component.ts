@@ -3,7 +3,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MatMenuTrigger } from '@angular/material';
 
 import { Globals } from '../globals/Globals';
-import { MsfDashboardChartValues } from '../msf-dashboard-panel/msf-dashboard-chartvalues';
+import { MsfDashboardPanelValues } from '../msf-dashboard-panel/msf-dashboard-panelvalues';
 import { ApplicationService } from '../services/application.service';
 
 const minPanelWidth = 25;
@@ -14,7 +14,7 @@ const minPanelWidth = 25;
   styleUrls: ['./msf-dashboard.component.css']
 })
 export class MsfDashboardComponent implements OnInit {
-  dashboardColumns: MsfDashboardChartValues[][] = [];
+  dashboardColumns: MsfDashboardPanelValues[][] = [];
   dashboardColumnsProperties: boolean[] = [];
   dashboardColumnsReAppendCharts: boolean[] = [];
   options: any[] = [];
@@ -134,7 +134,7 @@ export class MsfDashboardComponent implements OnInit {
         dashboardRows = [];
       }
 
-      dashboardRows.push (new MsfDashboardChartValues (_this.options, dashboardPanel.title,
+      dashboardRows.push (new MsfDashboardPanelValues (_this.options, dashboardPanel.title,
         dashboardPanel.id, dashboardPanel.width, _this.heightValues[dashboardPanel.height],
         dashboardPanel.option, dashboardPanel.chartColumnOptions, dashboardPanel.analysis, dashboardPanel.xaxis,
         dashboardPanel.values, dashboardPanel.function, dashboardPanel.chartType, dashboardPanel.categoryOptions,
@@ -164,7 +164,7 @@ export class MsfDashboardComponent implements OnInit {
     this.service.confirmationDialog (this, "Are you sure you want to delete this panel?",
       function (_this)
       {
-        let dashboardPanels: MsfDashboardChartValues[];
+        let dashboardPanels: MsfDashboardPanelValues[];
         let dashboardPanel, defaultWidth;
     
         dashboardPanels = _this.dashboardColumns[column];
@@ -201,7 +201,7 @@ export class MsfDashboardComponent implements OnInit {
     for (let i = 0; i < dashboardPanels.length; i++)
     {
       let dashboardPanel = dashboardPanels[i];
-      dashboardRows.push (new MsfDashboardChartValues (_this.options, dashboardPanel.title, dashboardPanel.id,
+      dashboardRows.push (new MsfDashboardPanelValues (_this.options, dashboardPanel.title, dashboardPanel.id,
         dashboardPanels[0].width, _this.heightValues[dashboardPanels[0].height]));
     }
 
@@ -229,7 +229,7 @@ export class MsfDashboardComponent implements OnInit {
     for (i = 0; i < dashboardPanels.length; i++)
     {
       dashboardPanel = dashboardPanels[i];
-      dashboardColumn.push (new MsfDashboardChartValues (_this.options, dashboardPanel.title, dashboardPanel.id,
+      dashboardColumn.push (new MsfDashboardPanelValues (_this.options, dashboardPanel.title, dashboardPanel.id,
         dashboardPanel.width, _this.heightValues[dashboardPanel.height]));
     }
 
@@ -456,7 +456,7 @@ export class MsfDashboardComponent implements OnInit {
     this.disableContextMenu ();
   }
 
-  swapPanelRowPositions(event: CdkDragDrop<MsfDashboardChartValues[]>, dashboardColumn, columnIndex): void
+  swapPanelRowPositions(event: CdkDragDrop<MsfDashboardPanelValues[]>, dashboardColumn, columnIndex): void
   {
     let newPanelPos = [];
 

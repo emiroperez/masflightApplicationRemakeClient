@@ -1,5 +1,5 @@
 // Object used to mantain data values for each dashboard panel
-export class MsfDashboardChartValues {
+export class MsfDashboardPanelValues {
     options:any[] = [];
 
     id: number;

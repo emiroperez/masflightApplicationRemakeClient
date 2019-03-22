@@ -19,7 +19,7 @@ import { MsfDashboardInfoFunctionsComponent } from '../msf-dashboard-info-functi
 import { MsfDashboardColorPickerComponent } from  '../msf-dashboard-color-picker/msf-dashboard-color-picker.component';
 import { MsfDashboardDrillDownComponent } from  '../msf-dashboard-drill-down/msf-dashboard-drill-down.component';
 import { ComponentType } from '../commons/ComponentType';
-import { MsfDashboardChartValues } from '../msf-dashboard-panel/msf-dashboard-chartvalues';
+import { MsfDashboardPanelValues } from '../msf-dashboard-panel/msf-dashboard-panelvalues';
 import { MessageComponent } from '../message/message.component';
 import { ChartFlags } from '../msf-dashboard-panel/msf-dashboard-chartflags';
 
@@ -71,8 +71,8 @@ export class MsfDashboardPanelComponent implements OnInit {
   ]; 
 
   @Input()
-  values: MsfDashboardChartValues;
-  temp: MsfDashboardChartValues;
+  values: MsfDashboardPanelValues;
+  temp: MsfDashboardPanelValues;
 
   @Input()
   panelHeight: number;
@@ -96,13 +96,13 @@ export class MsfDashboardPanelComponent implements OnInit {
   @ViewChild('xaxisSelect') xaxisSelect: MatSelect;
   @ViewChild('valueSelect') valueSelect: MatSelect;
 
-  private _onDestroy = new Subject<void>();
+  private _onDestroy = new Subject<void> ();
 
   constructor(private zone: NgZone, public globals: Globals,
     private service: ApplicationService, private http: ApiClient, public dialog: MatDialog,
     private formBuilder: FormBuilder)
   {
-    this.utils = new Utils();
+    this.utils = new Utils ();
 
     this.chartForm = this.formBuilder.group ({
       dataFormCtrl: new FormControl (),
@@ -1147,7 +1147,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     if (!this.temp)
     {
-      this.temp = new MsfDashboardChartValues (this.values.options, this.values.chartName,
+      this.temp = new MsfDashboardPanelValues (this.values.options, this.values.chartName,
         this.values.id, this.values.width, this.values.height);
     }
     else
@@ -1856,11 +1856,12 @@ export class MsfDashboardPanelComponent implements OnInit {
   goToDrillDownSettings(): void
   {
     this.dialog.open (MsfDashboardDrillDownComponent, {
-      height: '300px',
+      height: '370px',
       width: '400px',
       panelClass: 'msf-dashboard-control-variables-dialog',
       data: {
-        title: this.values.chartName
+        title: this.values.chartName,
+        chartColumnOptions: this.values.chartColumnOptions
       }
     });
   }
