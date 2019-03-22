@@ -1,11 +1,12 @@
 import { Component, Inject, ViewChild } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA, MatSelect } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatSelect, MatDialog } from '@angular/material';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { Globals } from '../globals/Globals';
 import { MsfDashboardPanelValues } from '../msf-dashboard-panel/msf-dashboard-panelvalues';
+import { MsfDashboardColorPickerComponent } from '../msf-dashboard-color-picker/msf-dashboard-color-picker.component';
 import { ChartFlags } from '../msf-dashboard-panel/msf-dashboard-chartflags';
 
 @Component({
@@ -43,6 +44,21 @@ export class MsfDashboardDrillDownComponent {
 
   currentChartType: any;
 
+  paletteColors: string[] = [
+    "#01b0a1",
+    "#9b5e8e",
+    "#fa5751",
+    "#fd8b5a",
+    "#80cfea",
+    "#ff5900",
+    "#005eff",
+    "#ffff00",
+    "#fc636b",
+    "#ff7e00",
+    "#3d67ce",
+    "#fffefe"
+  ];
+
   @ViewChild('variableSelect') variableSelect: MatSelect;
   @ViewChild('xaxisSelect') xaxisSelect: MatSelect;
   @ViewChild('valueSelect') valueSelect: MatSelect;
@@ -58,6 +74,7 @@ export class MsfDashboardDrillDownComponent {
     public dialogRef: MatDialogRef<MsfDashboardDrillDownComponent>,
     public globals: Globals,
     private formBuilder: FormBuilder,
+    private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any)
   {
     this.chartForm = this.formBuilder.group ({
@@ -121,5 +138,36 @@ export class MsfDashboardDrillDownComponent {
   isInformationPanel(): boolean
   {
     return (this.currentChartType.flags & ChartFlags.INFO) ? true : false;
+  }
+
+  goToColorPicker(): void
+  {
+    let dialogHeight, numColors;
+
+    if (this.currentChartType.flags & ChartFlags.XYCHART
+      || this.currentChartType.flags & ChartFlags.PIECHART
+      || this.currentChartType.flags & ChartFlags.FUNNELCHART)
+    {
+      dialogHeight = '340px';
+      numColors = 12;
+    }
+    else
+    {
+      dialogHeight = '178px';
+      numColors = 1;
+    }
+
+    this.dialog.open (MsfDashboardColorPickerComponent, {
+      height: dialogHeight,
+      width: '400px',
+      panelClass: 'msf-dashboard-control-variables-dialog',
+      autoFocus: false,
+      data: {
+        //title: this.values.chartName,
+        title: 'Color Picker',
+        colors: this.paletteColors,
+        numColors: numColors
+      }
+    });
   }
 }
