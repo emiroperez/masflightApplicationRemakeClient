@@ -1,8 +1,11 @@
-import { Component, HostListener, OnInit, Input, SimpleChanges } from '@angular/core';
+import { Component, HostListener, OnInit, Input, SimpleChanges, ViewChild } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { MatMenuTrigger, MatDialog } from '@angular/material';
+
 import { Globals } from '../globals/Globals';
-import { MsfDashboardChartValues } from '../msf-dashboard-chartmenu/msf-dashboard-chartvalues';
+import { MsfDashboardPanelValues } from '../msf-dashboard-panel/msf-dashboard-panelvalues';
 import { ApplicationService } from '../services/application.service';
+import { MsfDashboardChildPanelComponent } from '../msf-dashboard-child-panel/msf-dashboard-child-panel.component';
 
 const minPanelWidth = 25;
 
@@ -12,21 +15,22 @@ const minPanelWidth = 25;
   styleUrls: ['./msf-dashboard.component.css']
 })
 export class MsfDashboardComponent implements OnInit {
-  dashboardColumns: MsfDashboardChartValues[][] = [];
+  dashboardColumns: MsfDashboardPanelValues[][] = [];
   dashboardColumnsProperties: boolean[] = [];
-  dashboardColumnsRebuildChart: boolean[] = [];
+  dashboardColumnsReAppendCharts: boolean[] = [];
   options: any[] = [];
 
   columnToUpdate: number;
   rowToUpdate: number;
   screenHeight: string;
 
-  displayAddChartMenu: boolean = false;
+  displayAddPanel: boolean = false;
 
-  displayContextMenu: boolean = false;
   contextMenuX: number = 0;
   contextMenuY: number = 0;
   contextCategory: any;
+
+  @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
 
   heightValues:any[] = [
     { value: 1, name: 'Small' },
@@ -44,7 +48,8 @@ export class MsfDashboardComponent implements OnInit {
   leftPanel: any;
   rightPanel: any;
 
-  constructor(public globals: Globals, private service: ApplicationService)
+  constructor(public globals: Globals, private service: ApplicationService,
+    public dialog: MatDialog)
   {
     if (globals.isFullscreen)
       this.screenHeight = "100%";
@@ -71,7 +76,7 @@ export class MsfDashboardComponent implements OnInit {
       // replace dashboard panels if the menu has changed and we're still on the dashboard
       this.dashboardColumns.splice (0, this.dashboardColumns.length);
       this.dashboardColumnsProperties.splice (0, this.dashboardColumnsProperties.length);
-      this.dashboardColumnsRebuildChart.splice (0, this.dashboardColumnsRebuildChart.length);
+      this.dashboardColumnsReAppendCharts.splice (0, this.dashboardColumnsReAppendCharts.length);
 
       this.globals.isLoading = true;
       this.service.getDashboardPanels (this, this.currentDashboardMenu,
@@ -127,11 +132,11 @@ export class MsfDashboardComponent implements OnInit {
 
         _this.dashboardColumns.push (dashboardRows);
         _this.dashboardColumnsProperties.push (false);
-        _this.dashboardColumnsRebuildChart.push (false);
+        _this.dashboardColumnsReAppendCharts.push (false);
         dashboardRows = [];
       }
 
-      dashboardRows.push (new MsfDashboardChartValues (_this.options, dashboardPanel.title,
+      dashboardRows.push (new MsfDashboardPanelValues (_this.options, dashboardPanel.title,
         dashboardPanel.id, dashboardPanel.width, _this.heightValues[dashboardPanel.height],
         dashboardPanel.option, dashboardPanel.chartColumnOptions, dashboardPanel.analysis, dashboardPanel.xaxis,
         dashboardPanel.values, dashboardPanel.function, dashboardPanel.chartType, dashboardPanel.categoryOptions,
@@ -145,7 +150,7 @@ export class MsfDashboardComponent implements OnInit {
 
     _this.dashboardColumns.push (dashboardRows);
     _this.dashboardColumnsProperties.push (false);
-    _this.dashboardColumnsRebuildChart.push (false);
+    _this.dashboardColumnsReAppendCharts.push (false);
     _this.globals.isLoading = false;
   }
 
@@ -161,7 +166,7 @@ export class MsfDashboardComponent implements OnInit {
     this.service.confirmationDialog (this, "Are you sure you want to delete this panel?",
       function (_this)
       {
-        let dashboardPanels: MsfDashboardChartValues[];
+        let dashboardPanels: MsfDashboardPanelValues[];
         let dashboardPanel, defaultWidth;
     
         dashboardPanels = _this.dashboardColumns[column];
@@ -182,9 +187,9 @@ export class MsfDashboardComponent implements OnInit {
       });
   }
 
-  toggleDisplayAddChartMenu(): void
+  toggleDisplayAddPanel(): void
   {
-    this.displayAddChartMenu = !this.displayAddChartMenu;
+    this.displayAddPanel = !this.displayAddPanel;
   }
 
   insertPanels(_this, data): void
@@ -198,12 +203,12 @@ export class MsfDashboardComponent implements OnInit {
     for (let i = 0; i < dashboardPanels.length; i++)
     {
       let dashboardPanel = dashboardPanels[i];
-      dashboardRows.push (new MsfDashboardChartValues (_this.options, dashboardPanel.title, dashboardPanel.id,
+      dashboardRows.push (new MsfDashboardPanelValues (_this.options, dashboardPanel.title, dashboardPanel.id,
         dashboardPanels[0].width, _this.heightValues[dashboardPanels[0].height]));
     }
 
     _this.dashboardColumns.push (dashboardRows);
-    _this.displayAddChartMenu = false;
+    _this.displayAddPanel = false;
     _this.globals.isLoading = false;
   }
 
@@ -226,7 +231,7 @@ export class MsfDashboardComponent implements OnInit {
     for (i = 0; i < dashboardPanels.length; i++)
     {
       dashboardPanel = dashboardPanels[i];
-      dashboardColumn.push (new MsfDashboardChartValues (_this.options, dashboardPanel.title, dashboardPanel.id,
+      dashboardColumn.push (new MsfDashboardPanelValues (_this.options, dashboardPanel.title, dashboardPanel.id,
         dashboardPanel.width, _this.heightValues[dashboardPanel.height]));
     }
 
@@ -258,21 +263,21 @@ export class MsfDashboardComponent implements OnInit {
   {
     _this.dashboardColumns.splice (_this.columnToUpdate, 1);
     _this.dashboardColumnsProperties.splice (_this.columnToUpdate, 1);
-    _this.dashboardColumnsRebuildChart.splice (_this.columnToUpdate, 1);
+    _this.dashboardColumnsReAppendCharts.splice (_this.columnToUpdate, 1);
     _this.globals.isLoading = false;
   }
 
   // update the dashboard container and hide the menu after
   // adding a new chart column
-  addChart(numCharts): void
+  addPanel(numPanels): void
   {
     let panelsToAdd, width, column;
 
     panelsToAdd = [];
     column = this.dashboardColumns.length;
-    width = 100 / numCharts;
+    width = 100 / numPanels;
 
-    for (let i = 0; i < numCharts; i++)
+    for (let i = 0; i < numPanels; i++)
     {
       // set the properties for each panel before adding it into the database
       panelsToAdd.push (
@@ -353,10 +358,16 @@ export class MsfDashboardComponent implements OnInit {
 
   swapSucess(_this): void
   {
-    if (_this.currentColumn && _this.dashboardColumnsRebuildChart[_this.currentColumn])
-      _this.dashboardColumnsRebuildChart[_this.currentColumn] = false;
+    if (_this.currentColumn)
+      _this.dashboardColumnsReAppendCharts[_this.currentColumn] = false;
 
     console.log ("The changes to the dashboard were successful.");
+  }
+
+  swapError(_this): void
+  {
+    if (_this.currentColumn)
+      _this.dashboardColumnsReAppendCharts[_this.currentColumn] = false;
   }
 
   handlerSuccess(_this): void
@@ -447,14 +458,25 @@ export class MsfDashboardComponent implements OnInit {
     this.disableContextMenu ();
   }
 
-  swapPanelRowPositions(event: CdkDragDrop<MsfDashboardChartValues[]>, dashboardColumn, columnIndex): void
+  swapPanelRowPositions(event: CdkDragDrop<MsfDashboardPanelValues[]>, dashboardColumn, columnIndex): void
   {
     let newPanelPos = [];
 
-    // rebuild charts as a workaround to a bug that causes the chart
-    // not getting adjusted to the panel size after dragging
+    // reappend the chart div element to the chart container of each panel in the specified
+    // column as a workaround to a bug that causes the chart resizing sensor to stop working
+    // after dragging the panels
     this.currentColumn = columnIndex;
-    this.dashboardColumnsRebuildChart[columnIndex] = true;
+    this.dashboardColumnsReAppendCharts[columnIndex] = true;
+
+    // do not perform query if the panels are now swapped
+    if (event.previousIndex == event.currentIndex)
+    {
+      setTimeout(() => {
+        this.dashboardColumnsReAppendCharts[this.currentColumn] = false;
+      }, 100);
+
+      return;
+    }
 
     // move items
     moveItemInArray (dashboardColumn, event.previousIndex, event.currentIndex);
@@ -471,8 +493,7 @@ export class MsfDashboardComponent implements OnInit {
     }
 
     // this.globals.isLoading = true;
-    this.service.setDashboardPanelRowPositions (this, newPanelPos, this.swapSucess,
-      this.handlerError);
+    this.service.setDashboardPanelRowPositions (this, newPanelPos, this.swapSucess, this.swapError);
   }
 
   onrightClick(event, dashboardColumn, rowindex): boolean
@@ -480,10 +501,7 @@ export class MsfDashboardComponent implements OnInit {
     event.stopPropagation ();
 
     if (!dashboardColumn[rowindex].chartClicked)
-    {
-      this.displayContextMenu = false;
       return true;
-    }
 
     this.contextCategory = dashboardColumn[rowindex].chartObjectSelected;
     this.contextMenuX = event.clientX;
@@ -495,12 +513,50 @@ export class MsfDashboardComponent implements OnInit {
 
     // prevent context menu from appearing
     dashboardColumn[rowindex].chartClicked = false;
-    this.displayContextMenu = true;
+    this.contextMenu.openMenu ();
     return false;
   }
 
   disableContextMenu(): void
   {
-    this.displayContextMenu = false;
+    this.contextMenu.closeMenu ();
+  }
+
+  // make sure that the context menu is fully visible
+  getContextMenuPosX(): number
+  {
+    var clientWidth = document.getElementById ('msf-dashboard-panel-context-menu-container').clientWidth;
+
+    if (this.contextMenuX + clientWidth > window.innerWidth)
+      return window.innerWidth - clientWidth;
+
+    return this.contextMenuX;
+  }
+
+  getContextMenuPosY(): number
+  {
+    var clientHeight = document.getElementById ('msf-dashboard-panel-context-menu-container').clientHeight;
+    var heightOffset = 0;
+
+    if (!this.globals.isFullscreen)
+      heightOffset = 90;
+
+    if (this.contextMenuY + clientHeight > window.innerHeight - heightOffset)
+      return this.contextMenuY - clientHeight;
+
+    return this.contextMenuY;
+  }
+
+  displayChildPanel(): void
+  {
+    this.dialog.open (MsfDashboardChildPanelComponent, {
+      height: '600px',
+      width: '800px',
+      panelClass: 'msf-dashboard-control-variables-dialog'/*,
+      data: {
+        title: this.values.chartName,
+        chartColumnOptions: this.values.chartColumnOptions
+      }*/
+    });
   }
 }

@@ -125,7 +125,7 @@ import { MsfGroupingDailyStaticsComponent } from './msf-grouping-daily-statics/m
 import { MsfQuarterHourComponent } from './msf-quarter-hour/msf-quarter-hour.component';
 import { MsfFunctionsComponent } from './msf-functions/msf-functions.component';
 import { MsfDashboardComponent } from './msf-dashboard/msf-dashboard.component';
-import { MsfDashboardChartmenuComponent } from './msf-dashboard-chartmenu/msf-dashboard-chartmenu.component';
+import { MsfDashboardPanelComponent } from './msf-dashboard-panel/msf-dashboard-panel.component';
 import { MsfGroupingOperationsSummaryComponent } from './msf-grouping-operations-summary/msf-grouping-operations-summary.component';
 import { MsfGroupingHubSummariesComponent } from './msf-grouping-hub-summaries/msf-grouping-hub-summaries.component';
 import { MsfRegionScheduleComponent } from './msf-region-schedule/msf-region-schedule.component';
@@ -160,7 +160,8 @@ import { ColorPickerModule } from 'ngx-color-picker';
 import { MsfDashboardColorPickerComponent } from './msf-dashboard-color-picker/msf-dashboard-color-picker.component';
 import { MsfEditDashboardComponent } from './msf-edit-dashboard/msf-edit-dashboard.component';
 import { MsfAddDashboardComponent } from './msf-add-dashboard/msf-add-dashboard.component';
-import { MsfDashboardPanelContextMenuComponent } from './msf-dashboard-panel-context-menu/msf-dashboard-panel-context-menu.component';
+import { MsfDashboardDrillDownComponent } from './msf-dashboard-drill-down/msf-dashboard-drill-down.component';
+import { MsfDashboardChildPanelComponent } from './msf-dashboard-child-panel/msf-dashboard-child-panel.component';
 import { MsfTotalTypeComponent } from './msf-total-type/msf-total-type.component';
 import { MsfGroupingCompGenreComponent } from './msf-grouping-comp-genre/msf-grouping-comp-genre.component';
 import { MsfGroupingCompTotalComponent } from './msf-grouping-comp-total/msf-grouping-comp-total.component';
@@ -271,7 +272,7 @@ import { MsfGroupingCompTotalComponent } from './msf-grouping-comp-total/msf-gro
     MsfQuarterHourComponent,
     MsfFunctionsComponent,
     MsfDashboardComponent,
-    MsfDashboardChartmenuComponent,
+    MsfDashboardPanelComponent,
     MsfGroupingOperationsSummaryComponent,
     MsfGroupingHubSummariesComponent,
     MsfRegionScheduleComponent,
@@ -304,7 +305,8 @@ import { MsfGroupingCompTotalComponent } from './msf-grouping-comp-total/msf-gro
     MsfDashboardColorPickerComponent,
     MsfEditDashboardComponent,
     MsfAddDashboardComponent,
-    MsfDashboardPanelContextMenuComponent,
+    MsfDashboardDrillDownComponent,
+    MsfDashboardChildPanelComponent,
     MsfTotalTypeComponent,
     MsfGroupingCompGenreComponent,
     MsfGroupingCompTotalComponent
@@ -373,7 +375,9 @@ import { MsfGroupingCompTotalComponent } from './msf-grouping-comp-total/msf-gro
     MsfDashboardInfoFunctionsComponent,
     MsfDashboardColorPickerComponent,
     MsfEditDashboardComponent,
-    MsfAddDashboardComponent
+    MsfAddDashboardComponent,
+    MsfDashboardDrillDownComponent,
+    MsfDashboardChildPanelComponent
   ]
 })
 export class AppModule { }

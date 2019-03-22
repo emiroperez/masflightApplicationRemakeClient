@@ -1,13 +1,13 @@
-<div class="msf-dashboard-chartmenu-container" [style.height.px]="panelHeight" *ngIf="!values.displayChart && !values.displayInfo">
-  <div class="msf-dashboard-chartmenu-sub-container-column">
-    <div class="msf-dashboard-chartmenu-sub-container-row">
+<div class="msf-dashboard-panel-container" [style.height.px]="panelHeight" *ngIf="!values.displayChart && !values.displayInfo">
+  <div class="msf-dashboard-panel-sub-container-column">
+    <div class="msf-dashboard-panel-sub-container-row">
       <mat-form-field class="msf-width-80">
         <input matInput autocomplete="off" type="text" placeholder="Chart Name" [(ngModel)]="values.chartName"/>
       </mat-form-field>
     </div>
   </div>
-  <div class="msf-dashboard-chartmenu-sub-container-column">
-    <div class="msf-dashboard-chartmenu-sub-container-row">
+  <div class="msf-dashboard-panel-sub-container-column">
+    <div class="msf-dashboard-panel-sub-container-row">
       <mat-form-field [formGroup]="chartForm" class="msf-full-width">
         <mat-select formControlName="dataFormCtrl" placeholder="Select Data From" [(value)]="values.currentOption" (selectionChange)="loadChartFilterValues($event.value)">
           <ngx-mat-select-search [formControl]="dataFormFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
@@ -17,7 +17,7 @@
         </mat-select>
       </mat-form-field>
     </div>
-    <div class="msf-dashboard-chartmenu-sub-container-row">
+    <div class="msf-dashboard-panel-sub-container-row">
       <mat-form-field class="msf-full-width">
         <mat-select placeholder="Chart Type" [(ngModel)]="values.currentChartType" (selectionChange)="checkChartType()">
           <mat-option *ngFor="let chartType of chartTypes" [value]="chartType">
@@ -28,13 +28,13 @@
     </div>
   </div>
   <ng-container *ngIf="!isInformationPanel()">
-    <div class="msf-dashboard-chartmenu-sub-container-column">
+    <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-addmenu-icon-item">
         <mat-icon class="msf-dashboard-chart-icon" aria-label="Filter List">filter_list</mat-icon>
         <span class="msf-dashboard-addmenu-item-text">Chart Configuration</span>
       </div>
     </div>
-    <div class="msf-dashboard-chartmenu-sub-container-column">
+    <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-chart-options-container">
         <div class="msf-dashboard-chart-selector">
           <div class="msf-dashboard-chart-analysis-title">
@@ -88,24 +88,32 @@
             </mat-form-field>
           </div>
         </div>
-        <div class="msf-dashboard-chartmenu-sub-container-column-reverse">
+        <div class="msf-dashboard-panel-sub-container-column-reverse">
           <button [disabled]="!generateBtnEnabled" mat-flat-button [ngClass]="generateBtnEnabled ? 'flat-button' : 'flat-button-disabled'" (click)="loadData()">Generate</button>
-          <div class="msf-dashboard-chartmenu-control-variable-button">
+          <div class="msf-dashboard-panel-control-variable-button">
             <button [disabled]="!variableCtrlBtnEnabled" mat-mini-fab (click)="goToControlVariables()" color="primary">
               <mat-icon aria-label="Control Variables">more_vert</mat-icon>
             </button>
           </div>
-          <div class="msf-dashboard-chartmenu-control-variable-button">
+          <div class="msf-dashboard-panel-control-variable-button">
             <button [disabled]="!values.chartGenerated && !values.infoGenerated" mat-mini-fab (click)="goToChart()" color="primary">
               <mat-icon aria-label="Go To Chart">bar_chart</mat-icon>
             </button>
           </div>
-          <div class="msf-dashboard-chartmenu-control-variable-button">
+          <div class="msf-dashboard-panel-control-variable-button">
             <button mat-mini-fab (click)="goToColorPicker()" color="primary">
               <mat-icon aria-label="Color Picker">palette</mat-icon>
             </button>
           </div>
-          <div class="msf-dashboard-chartmenu-control-variable-button">
+          <!-- Drill Down Button Under Construction -->
+          <!--
+          <div class="msf-dashboard-panel-control-variable-button">
+            <button [disabled]="!values.chartColumnOptions" mat-mini-fab (click)="goToDrillDownSettings()" color="primary">
+              <mat-icon aria-label="Drill Down">subtitles</mat-icon>
+            </button>
+          </div>
+          -->
+          <div class="msf-dashboard-panel-control-variable-button">
             <button mat-mini-fab (click)="savePanel()" color="primary">
               <mat-icon aria-label="Save Changes">save</mat-icon>
             </button>
@@ -115,8 +123,8 @@
     </div>
   </ng-container>
   <ng-container *ngIf="isInformationPanel()">
-    <div class="msf-dashboard-chartmenu-sub-container-column">
-      <div class="msf-dashboard-chartmenu-sub-container-row">
+    <div class="msf-dashboard-panel-sub-container-column">
+      <div class="msf-dashboard-panel-sub-container-row">
         <div class="msf-dashboard-chart-options-container">
           <div class="msf-dashboard-chart-selector">
             <div class="msf-dashboard-chart-analysis-title">
@@ -189,21 +197,21 @@
         </div>
       </div>
     </div>
-    <div class="msf-dashboard-chartmenu-sub-container-column">
+    <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-chart-options-container">
-        <div class="msf-dashboard-chartmenu-sub-container-column-reverse">
+        <div class="msf-dashboard-panel-sub-container-column-reverse">
           <button [disabled]="!generateBtnEnabled" mat-flat-button [ngClass]="generateBtnEnabled ? 'flat-button' : 'flat-button-disabled'" (click)="loadData()">Generate</button>
-          <div class="msf-dashboard-chartmenu-control-variable-button">
+          <div class="msf-dashboard-panel-control-variable-button">
             <button [disabled]="!variableCtrlBtnEnabled" mat-mini-fab (click)="goToControlVariables()" color="primary">
               <mat-icon aria-label="Control Variables">more_vert</mat-icon>
             </button>
           </div>
-          <div class="msf-dashboard-chartmenu-control-variable-button">
+          <div class="msf-dashboard-panel-control-variable-button">
             <button [disabled]="!values.chartGenerated && !values.infoGenerated" mat-mini-fab (click)="goToChart()" color="primary">
               <mat-icon aria-label="Go To Information">bar_chart</mat-icon>
             </button>
           </div>
-          <div class="msf-dashboard-chartmenu-control-variable-button">
+          <div class="msf-dashboard-panel-control-variable-button">
             <button mat-mini-fab (click)="savePanel()" color="primary">
               <mat-icon aria-label="Save Changes">save</mat-icon>
             </button>
@@ -214,10 +222,10 @@
   </ng-container>
 </div>
 <!-- ngIf doesn't work with AmCharts -->
-<div class="{{values.displayChart ? 'msf-dashboard-chartmenu-container-chart' : 'msf-dashboard-chartmenu-container-invisible'}}" [style.height.px]="panelHeight">
-  <div class="msf-dashboard-chartmenu-title" *ngIf="values.displayChart">{{values.chartName}}</div>
-  <div class="msf-dashboard-chartmenu-sub-container-column">
-    <div class="msf-dashboard-chartmenu-config-button">
+<div class="{{values.displayChart ? 'msf-dashboard-panel-container-chart' : 'msf-dashboard-panel-container-invisible'}}" [style.height.px]="panelHeight">
+  <div class="msf-dashboard-panel-title" *ngIf="values.displayChart">{{values.chartName}}</div>
+  <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard.chart-display-container-{{values.id}}">
+    <div class="msf-dashboard-panel-config-button">
       <button mat-mini-fab (click)="goToChartConfiguration()" color="primary">
         <mat-icon aria-label="Edit Configuration">menu</mat-icon>
       </button>
@@ -225,10 +233,10 @@
     <div id="msf-dashboard-chart-display-{{values.id}}" style="width: calc(100% - 35px)" [style.height.px]="calcChartHeight()"></div>
   </div>
 </div>
-<div class="msf-dashboard-chartmenu-container-chart" *ngIf="values.displayInfo" [style.height.px]="panelHeight">
-  <div class="msf-dashboard-chartmenu-title">{{values.chartName}}</div>
-  <div class="msf-dashboard-chartmenu-sub-container-column">
-    <div class="msf-dashboard-chartmenu-config-button">
+<div class="msf-dashboard-panel-container-chart" *ngIf="values.displayInfo" [style.height.px]="panelHeight">
+  <div class="msf-dashboard-panel-title">{{values.chartName}}</div>
+  <div class="msf-dashboard-panel-sub-container-column">
+    <div class="msf-dashboard-panel-config-button">
       <button mat-mini-fab (click)="goToInfoConfiguration()" color="primary">
         <mat-icon aria-label="Edit Configuration">menu</mat-icon>
       </button>

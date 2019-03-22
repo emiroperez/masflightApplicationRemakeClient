@@ -1821,7 +1821,7 @@ mat-tab-group
     padding-right: 5px
     font-size: 22px
 
-@mixin msf-dashboard-chartmenu-sub-container ($flex-direction: row, $padding-right: initial, $padding-top: initial, $padding-left: initial)
+@mixin msf-dashboard-panel-sub-container ($flex-direction: row, $padding-right: initial, $padding-top: initial, $padding-left: initial)
     display: flex
     flex-direction: $flex-direction
     width: 100%
@@ -1830,43 +1830,43 @@ mat-tab-group
     padding-top: $padding-top
     font-size: 12px
 
-.msf-dashboard-chartmenu-container
+.msf-dashboard-panel-container
     padding: 10px
     background-color: #3b3b3b
     overflow-y: visible
     display: flex
     justify-content: space-between
     flex-direction: column
-    .msf-dashboard-chartmenu-variable-buttons
-        @include msf-dashboard-chartmenu-sub-container(row, 5px, 10px)
-    .msf-dashboard-chartmenu-sub-container-column
-        @include msf-dashboard-chartmenu-sub-container(row, 5px)
+    .msf-dashboard-panel-variable-buttons
+        @include msf-dashboard-panel-sub-container(row, 5px, 10px)
+    .msf-dashboard-panel-sub-container-column
+        @include msf-dashboard-panel-sub-container(row, 5px)
         .msf-dashboard-addmenu-icon-item
             align-items: center
             padding-bottom: 5px
-            .msf-dashboard-chartmenu-item-text
+            .msf-dashboard-panel-item-text
                 vertical-align: middle
-    .msf-dashboard-chartmenu-sub-container-column-reverse
-        @include msf-dashboard-chartmenu-sub-container(row-reverse, 5px)
-        .msf-dashboard-chartmenu-control-variable-button
+    .msf-dashboard-panel-sub-container-column-reverse
+        @include msf-dashboard-panel-sub-container(row-reverse, 5px)
+        .msf-dashboard-panel-control-variable-button
             display: flex
             width: 50px
             flex-direction: column
 
-.msf-dashboard-chartmenu-container-invisible
+.msf-dashboard-panel-container-invisible
     display: none
 
-.msf-dashboard-chartmenu-container-chart
+.msf-dashboard-panel-container-chart
     padding: 10px
     background-color: #222222
     color: #ffffff
     overflow-y: visible
-    .msf-dashboard-chartmenu-title
+    .msf-dashboard-panel-title
         font-size: 12px
-    .msf-dashboard-chartmenu-sub-container-column
-        @include msf-dashboard-chartmenu-sub-container(row, 5px)
+    .msf-dashboard-panel-sub-container-column
+        @include msf-dashboard-panel-sub-container(row, 5px)
         position: relative
-        .msf-dashboard-chartmenu-config-button
+        .msf-dashboard-panel-config-button
             position: absolute
             display: flex
             width: calc(100% - 5px)
@@ -1917,8 +1917,8 @@ mat-tab-group
 .msf-dashboard-info-function-subtitle
     @include msf-dashboard-dialog-title(12px, 10px)
 
-.msf-dashboard-chartmenu-sub-container-row
-    @include msf-dashboard-chartmenu-sub-container(column)
+.msf-dashboard-panel-sub-container-row
+    @include msf-dashboard-panel-sub-container(column)
     align-items: center
     .msf-dashboard-function-measure
         width: 90%
@@ -2026,17 +2026,6 @@ mat-tab-group
 .msf-dashboard-panel-context-menu
     position: absolute
     z-index: 1
-    #msf-dashboard-panel-context-menu-container
-        background-color: $msf-primary-color
-        border-radius: 4px
-        font-size: 12px
-        box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12)
-        .msf-dashboard-panel-context-menu-item
-            border-bottom: 1px solid #444343!important
-        .msf-dashboard-panel-context-menu-item:hover
-            background-color: $msf-primary-dark-color
-        .msf-dashboard-panel-context-menu-bounds
-            height: 7px
 
 .msf-dynamic-table-variable-title
     display: flex

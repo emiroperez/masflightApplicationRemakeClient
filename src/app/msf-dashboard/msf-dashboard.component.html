@@ -12,7 +12,7 @@
                 <mat-icon class="msf-dashboard-button-close-icon" aria-label="close" (click)="removeChart(column, row)">close</mat-icon>
                 <mat-icon class="msf-dashboard-button-move-icon" *ngIf="dashboardColumn.length != 1" aria-label="move" cdkDragHandle (click)="disableContextMenu()">drag_handle</mat-icon>
               </div>
-              <app-msf-dashboard-chartmenu [values]="dashboardChart" [rebuildChart]="dashboardColumnsRebuildChart[column]" [panelHeight]="getColumnHeight(column)"></app-msf-dashboard-chartmenu>
+              <app-msf-dashboard-panel [values]="dashboardChart" [reAppendChart]="dashboardColumnsReAppendCharts[column]" [panelHeight]="getColumnHeight(column)"></app-msf-dashboard-panel>
             </div>
           </div>
           <div [ngClass]="dashboardColumnsProperties[column] ? 'msf-dashboard-panel-size-properties-open' : 'msf-dashboard-panel-size-properties-closed'">
@@ -56,23 +56,27 @@
     Click here to start!
   </div>
   <div class="msf-dashboard-addmenu">
-    <div class="msf-dashboard-addmenu-item" (click)="toggleDisplayAddChartMenu()">
+    <div class="msf-dashboard-addmenu-item" (click)="toggleDisplayAddPanel()">
       <div class="msf-dashboard-addmenu-item-text">
         <mat-icon class="msf-dashboard-icon" aria-label="add">add</mat-icon>
         <span class="msf-dashboard-addmenu-item-addtext">ADD PANELS</span>
       </div>
     </div>
-    <div class="msf-dashboard-addmenu-item" *ngIf="displayAddChartMenu">
-      <div class="msf-dashboard-addmenu-item-text" (click)="addChart(1)">1 Panel</div>
+    <div class="msf-dashboard-addmenu-item" *ngIf="displayAddPanel">
+      <div class="msf-dashboard-addmenu-item-text" (click)="addPanel(1)">1 Panel</div>
     </div>
-    <div class="msf-dashboard-addmenu-item" *ngIf="displayAddChartMenu">
-      <div class="msf-dashboard-addmenu-item-text" (click)="addChart(2)">2 Panels</div>
+    <div class="msf-dashboard-addmenu-item" *ngIf="displayAddPanel">
+      <div class="msf-dashboard-addmenu-item-text" (click)="addPanel(2)">2 Panels</div>
     </div>
-    <div class="msf-dashboard-addmenu-item" *ngIf="displayAddChartMenu">
-      <div class="msf-dashboard-addmenu-item-text" (click)="addChart(3)">3 Panels</div>
+    <div class="msf-dashboard-addmenu-item" *ngIf="displayAddPanel">
+      <div class="msf-dashboard-addmenu-item-text" (click)="addPanel(3)">3 Panels</div>
     </div>
   </div>
-  <div *ngIf="displayContextMenu">
-    <app-msf-dashboard-panel-context-menu [x]="contextMenuX" [y]="contextMenuY" [category]="contextCategory"></app-msf-dashboard-panel-context-menu>
+  <div class="msf-dashboard-panel-context-menu" #contextMenu="matMenuTrigger" [matMenuTriggerFor]="menu" [style.left.px]="getContextMenuPosX()" [style.top.px]="getContextMenuPosY()">
+    <mat-menu id="msf-dashboard-panel-context-menu-container" #menu="matMenu" [style.visibility]="contextCategory ? 'visible' : 'hidden'">
+      <button mat-menu-item (click)="displayChildPanel()">
+        <span>{{contextCategory}}</span>
+      </button>
+    </mat-menu>
   </div>
 </div>

@@ -7,21 +7,21 @@ import { CategoryArguments } from '../model/CategoryArguments';
 import { Globals } from '../globals/Globals';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { ReplaySubject, Subject } from 'rxjs';
-import { MatSelect } from '@angular/material';
-import { takeUntil, take } from 'rxjs/operators';
+import { MatSelect, MatDialog } from '@angular/material';
+import { takeUntil } from 'rxjs/operators';
+
 import { ApiClient } from '../api/api-client';
 import { Arguments } from '../model/Arguments';
 import { Utils } from '../commons/utils';
 import { ApplicationService } from '../services/application.service';
-
 import { MsfDashboardControlVariablesComponent } from '../msf-dashboard-control-variables/msf-dashboard-control-variables.component';
 import { MsfDashboardInfoFunctionsComponent } from '../msf-dashboard-info-functions/msf-dashboard-info-functions.component';
 import { MsfDashboardColorPickerComponent } from  '../msf-dashboard-color-picker/msf-dashboard-color-picker.component';
-import { MatDialog } from '@angular/material';
+import { MsfDashboardDrillDownComponent } from  '../msf-dashboard-drill-down/msf-dashboard-drill-down.component';
 import { ComponentType } from '../commons/ComponentType';
-import { MsfDashboardChartValues } from '../msf-dashboard-chartmenu/msf-dashboard-chartvalues';
+import { MsfDashboardPanelValues } from '../msf-dashboard-panel/msf-dashboard-panelvalues';
 import { MessageComponent } from '../message/message.component';
-import { ChartFlags } from '../msf-dashboard-chartmenu/msf-dashboard-chartflags';
+import { ChartFlags } from '../msf-dashboard-panel/msf-dashboard-chartflags';
 
 am4core.useTheme(am4themes_animated);
 am4core.useTheme(am4themes_dark);
@@ -32,10 +32,10 @@ const darkBlue = am4core.color ("#30303d");
 const blueJeans = am4core.color ("#67b7dc");
 
 @Component({
-  selector: 'app-msf-dashboard-chartmenu',
-  templateUrl: './msf-dashboard-chartmenu.component.html'
+  selector: 'app-msf-dashboard-panel',
+  templateUrl: './msf-dashboard-panel.component.html'
 })
-export class MsfDashboardChartmenuComponent implements OnInit {
+export class MsfDashboardPanelComponent implements OnInit {
   utils: Utils;
 
   variableCtrlBtnEnabled: boolean = false;
@@ -71,14 +71,14 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   ]; 
 
   @Input()
-  values: MsfDashboardChartValues;
-  temp: MsfDashboardChartValues;
+  values: MsfDashboardPanelValues;
+  temp: MsfDashboardPanelValues;
 
   @Input()
   panelHeight: number;
 
   @Input()
-  rebuildChart: boolean;
+  reAppendChart: boolean;
 
   public dataFormFilterCtrl: FormControl = new FormControl ();
   public variableFilterCtrl: FormControl = new FormControl ();
@@ -96,13 +96,13 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   @ViewChild('xaxisSelect') xaxisSelect: MatSelect;
   @ViewChild('valueSelect') valueSelect: MatSelect;
 
-  private _onDestroy = new Subject<void>();
+  private _onDestroy = new Subject<void> ();
 
   constructor(private zone: NgZone, public globals: Globals,
     private service: ApplicationService, private http: ApiClient, public dialog: MatDialog,
     private formBuilder: FormBuilder)
   {
-    this.utils = new Utils();
+    this.utils = new Utils ();
 
     this.chartForm = this.formBuilder.group ({
       dataFormCtrl: new FormControl (),
@@ -129,10 +129,10 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void
   {
-    if (changes['rebuildChart'] && this.rebuildChart && this.values.chartGenerated)
+    if (changes['reAppendChart'] && this.reAppendChart && this.values.chartGenerated)
     {
-      this.destroyChart ();
-      this.makeChart (this.values.lastestResponse);
+      let chartElement = document.getElementById ("msf-dashboard-chart-display-" + this.values.id);
+      document.getElementById ("msf-dashboard.chart-display-container-" + this.values.id).appendChild (chartElement);
     }
   }
 
@@ -1147,7 +1147,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   {
     if (!this.temp)
     {
-      this.temp = new MsfDashboardChartValues (this.values.options, this.values.chartName,
+      this.temp = new MsfDashboardPanelValues (this.values.options, this.values.chartName,
         this.values.id, this.values.width, this.values.height);
     }
     else
@@ -1849,6 +1849,19 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         title: this.values.chartName,
         colors: this.values.paletteColors,
         numColors: numColors
+      }
+    });
+  }
+
+  goToDrillDownSettings(): void
+  {
+    this.dialog.open (MsfDashboardDrillDownComponent, {
+      height: '370px',
+      width: '400px',
+      panelClass: 'msf-dashboard-control-variables-dialog',
+      data: {
+        title: this.values.chartName,
+        chartColumnOptions: this.values.chartColumnOptions
       }
     });
   }
