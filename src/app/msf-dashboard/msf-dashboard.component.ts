@@ -1,10 +1,11 @@
 import { Component, HostListener, OnInit, Input, SimpleChanges, ViewChild } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { MatMenuTrigger } from '@angular/material';
+import { MatMenuTrigger, MatDialog } from '@angular/material';
 
 import { Globals } from '../globals/Globals';
 import { MsfDashboardPanelValues } from '../msf-dashboard-panel/msf-dashboard-panelvalues';
 import { ApplicationService } from '../services/application.service';
+import { MsfDashboardChildPanelComponent } from '../msf-dashboard-child-panel/msf-dashboard-child-panel.component';
 
 const minPanelWidth = 25;
 
@@ -47,7 +48,8 @@ export class MsfDashboardComponent implements OnInit {
   leftPanel: any;
   rightPanel: any;
 
-  constructor(public globals: Globals, private service: ApplicationService)
+  constructor(public globals: Globals, private service: ApplicationService,
+    public dialog: MatDialog)
   {
     if (globals.isFullscreen)
       this.screenHeight = "100%";
@@ -543,5 +545,18 @@ export class MsfDashboardComponent implements OnInit {
       return this.contextMenuY - clientHeight;
 
     return this.contextMenuY;
+  }
+
+  displayChildPanel(): void
+  {
+    this.dialog.open (MsfDashboardChildPanelComponent, {
+      height: '600px',
+      width: '800px',
+      panelClass: 'msf-dashboard-control-variables-dialog'/*,
+      data: {
+        title: this.values.chartName,
+        chartColumnOptions: this.values.chartColumnOptions
+      }*/
+    });
   }
 }

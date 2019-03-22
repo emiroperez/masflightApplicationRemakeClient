@@ -9,9 +9,6 @@
   <div class="msf-dashboard-panel-sub-container-column">
     <mat-form-field class="msf-full-width">
       <mat-select placeholder="Drill Down">
-        <!--
-        <ngx-mat-select-search placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
-        -->
         <mat-option *ngFor="let option of [1, 2, 3]" [value]="option">
           {{option}}
         </mat-option>
@@ -20,14 +17,14 @@
   </div>
   <div class="msf-dashboard-panel-sub-container-column">
     <mat-form-field class="msf-full-width">
-      <mat-select placeholder="Chart Type">
+      <mat-select placeholder="Chart Type" [(ngModel)]="currentChartType" (selectionChange)="checkChartType()">
         <mat-option *ngFor="let chartType of chartTypes" [value]="chartType">
           {{chartType.name}}
         </mat-option>
       </mat-select>
     </mat-form-field>
   </div>
-  <ng-container>
+  <ng-container *ngIf="!isInformationPanel()">
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-addmenu-icon-item">
         <mat-icon class="msf-dashboard-chart-icon" aria-label="Filter List">filter_list</mat-icon>
@@ -80,7 +77,7 @@
             </mat-form-field>
           </div>
         </div>
-        <div class="msf-dashboard-panel-sub-container-column-reverse">
+        <div class="msf-dashboard-panel-sub-container-column-reverse" style="margin-top: 9px">
           <button mat-flat-button class="flat-button" (click)="closeDialog()">OK</button>
           <div class="msf-dashboard-panel-control-variable-button">
             <button mat-mini-fab (click)="goToColorPicker()" color="primary">
@@ -88,6 +85,34 @@
             </button>
           </div>
         </div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="isInformationPanel()">
+    <div class="msf-dashboard-chart-options-container">
+      <div class="msf-dashboard-chart-selector">
+        <div class="msf-dashboard-chart-op-container" style="padding-left: 0">
+          <div class="msf-dashboard-checkbox-container" *ngFor="let fun of functions" style="width: 100%; margin-top: -9px">
+            <div class="msf-dashboard-checkbox-component">
+              <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="fun.checked">
+                {{fun.name}}
+              </mat-checkbox>
+            </div>
+            <div class="msf-dashboard-function-title">
+              <mat-form-field>
+                <input matInput autocomplete="off" type="text" placeholder="Title" [(ngModel)]="fun.title"/>
+              </mat-form-field> 
+            </div>
+            <div class="msf-dashboard-function-measure">
+              <mat-form-field>
+                <input matInput autocomplete="off" type="text" placeholder="Measure" [(ngModel)]="fun.measure"/>
+              </mat-form-field> 
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="msf-dashboard-panel-sub-container-column-reverse">
+        <button mat-flat-button class="flat-button" (click)="closeDialog()">OK</button>
       </div>
     </div>
   </ng-container>

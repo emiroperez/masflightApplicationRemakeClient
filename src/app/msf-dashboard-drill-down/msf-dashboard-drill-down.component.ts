@@ -41,6 +41,8 @@ export class MsfDashboardDrillDownComponent {
   chartForm: FormGroup;
   values: MsfDashboardPanelValues;
 
+  currentChartType: any;
+
   @ViewChild('variableSelect') variableSelect: MatSelect;
   @ViewChild('xaxisSelect') xaxisSelect: MatSelect;
   @ViewChild('valueSelect') valueSelect: MatSelect;
@@ -67,6 +69,8 @@ export class MsfDashboardDrillDownComponent {
 
     this.searchChange (this.variableFilterCtrl);
     this.searchChange (this.xaxisFilterCtrl);
+
+    this.currentChartType = this.chartTypes[0];
   }
 
   ngOnDestroy()
@@ -112,5 +116,10 @@ export class MsfDashboardDrillDownComponent {
       .subscribe (() => {
         this.filterVariables (filterCtrl);
       });
+  }
+
+  isInformationPanel(): boolean
+  {
+    return (this.currentChartType.flags & ChartFlags.INFO) ? true : false;
   }
 }

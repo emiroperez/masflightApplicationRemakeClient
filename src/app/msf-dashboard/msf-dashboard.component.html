@@ -74,7 +74,7 @@
   </div>
   <div class="msf-dashboard-panel-context-menu" #contextMenu="matMenuTrigger" [matMenuTriggerFor]="menu" [style.left.px]="getContextMenuPosX()" [style.top.px]="getContextMenuPosY()">
     <mat-menu id="msf-dashboard-panel-context-menu-container" #menu="matMenu" [style.visibility]="contextCategory ? 'visible' : 'hidden'">
-      <button mat-menu-item>
+      <button mat-menu-item (click)="displayChildPanel()">
         <span>{{contextCategory}}</span>
       </button>
     </mat-menu>

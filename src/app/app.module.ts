@@ -161,6 +161,7 @@ import { MsfDashboardColorPickerComponent } from './msf-dashboard-color-picker/m
 import { MsfEditDashboardComponent } from './msf-edit-dashboard/msf-edit-dashboard.component';
 import { MsfAddDashboardComponent } from './msf-add-dashboard/msf-add-dashboard.component';
 import { MsfDashboardDrillDownComponent } from './msf-dashboard-drill-down/msf-dashboard-drill-down.component';
+import { MsfDashboardChildPanelComponent } from './msf-dashboard-child-panel/msf-dashboard-child-panel.component';
 
 @NgModule({
   declarations: [
@@ -301,7 +302,8 @@ import { MsfDashboardDrillDownComponent } from './msf-dashboard-drill-down/msf-d
     MsfDashboardColorPickerComponent,
     MsfEditDashboardComponent,
     MsfAddDashboardComponent,
-    MsfDashboardDrillDownComponent
+    MsfDashboardDrillDownComponent,
+    MsfDashboardChildPanelComponent
   ],
   imports: [
     BrowserModule,
@@ -368,7 +370,8 @@ import { MsfDashboardDrillDownComponent } from './msf-dashboard-drill-down/msf-d
     MsfDashboardColorPickerComponent,
     MsfEditDashboardComponent,
     MsfAddDashboardComponent,
-    MsfDashboardDrillDownComponent
+    MsfDashboardDrillDownComponent,
+    MsfDashboardChildPanelComponent
   ]
 })
 export class AppModule { }
