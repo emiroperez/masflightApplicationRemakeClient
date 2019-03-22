@@ -355,7 +355,7 @@ export class MsfDashboardComponent implements OnInit {
 
   swapSucess(_this): void
   {
-    if (_this.currentColumn && _this.dashboardColumnsReAppendCharts[_this.currentColumn])
+    if (_this.currentColumn)
       _this.dashboardColumnsReAppendCharts[_this.currentColumn] = false;
 
     console.log ("The changes to the dashboard were successful.");
@@ -363,7 +363,7 @@ export class MsfDashboardComponent implements OnInit {
 
   swapError(_this): void
   {
-    if (_this.currentColumn && _this.dashboardColumnsReAppendCharts[_this.currentColumn])
+    if (_this.currentColumn)
       _this.dashboardColumnsReAppendCharts[_this.currentColumn] = false;
   }
 
@@ -464,6 +464,16 @@ export class MsfDashboardComponent implements OnInit {
     // after dragging the panels
     this.currentColumn = columnIndex;
     this.dashboardColumnsReAppendCharts[columnIndex] = true;
+
+    // do not perform query if the panels are now swapped
+    if (event.previousIndex == event.currentIndex)
+    {
+      setTimeout(() => {
+        this.dashboardColumnsReAppendCharts[this.currentColumn] = false;
+      }, 100);
+
+      return;
+    }
 
     // move items
     moveItemInArray (dashboardColumn, event.previousIndex, event.currentIndex);
