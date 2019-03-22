@@ -523,8 +523,12 @@ export class MsfDashboardComponent implements OnInit {
   getContextMenuPosY(): number
   {
     var clientHeight = document.getElementById ('msf-dashboard-panel-context-menu-container').clientHeight;
+    var heightOffset = 0;
 
-    if (this.contextMenuY + clientHeight > window.innerHeight - 90)
+    if (!this.globals.isFullscreen)
+      heightOffset = 90;
+
+    if (this.contextMenuY + clientHeight > window.innerHeight - heightOffset)
       return this.contextMenuY - clientHeight;
 
     return this.contextMenuY;
