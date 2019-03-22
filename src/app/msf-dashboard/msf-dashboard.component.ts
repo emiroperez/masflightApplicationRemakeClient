@@ -1,9 +1,10 @@
 import { Component, HostListener, OnInit, Input, SimpleChanges, ViewChild } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Globals } from '../globals/Globals';
-import { MsfDashboardChartValues } from '../msf-dashboard-chartmenu/msf-dashboard-chartvalues';
-import { ApplicationService } from '../services/application.service';
 import { MatMenuTrigger } from '@angular/material';
+
+import { Globals } from '../globals/Globals';
+import { MsfDashboardChartValues } from '../msf-dashboard-panel/msf-dashboard-chartvalues';
+import { ApplicationService } from '../services/application.service';
 
 const minPanelWidth = 25;
 
@@ -22,7 +23,7 @@ export class MsfDashboardComponent implements OnInit {
   rowToUpdate: number;
   screenHeight: string;
 
-  displayAddChartMenu: boolean = false;
+  displayAddPanel: boolean = false;
 
   contextMenuX: number = 0;
   contextMenuY: number = 0;
@@ -184,9 +185,9 @@ export class MsfDashboardComponent implements OnInit {
       });
   }
 
-  toggleDisplayAddChartMenu(): void
+  toggleDisplayAddPanel(): void
   {
-    this.displayAddChartMenu = !this.displayAddChartMenu;
+    this.displayAddPanel = !this.displayAddPanel;
   }
 
   insertPanels(_this, data): void
@@ -205,7 +206,7 @@ export class MsfDashboardComponent implements OnInit {
     }
 
     _this.dashboardColumns.push (dashboardRows);
-    _this.displayAddChartMenu = false;
+    _this.displayAddPanel = false;
     _this.globals.isLoading = false;
   }
 
@@ -266,15 +267,15 @@ export class MsfDashboardComponent implements OnInit {
 
   // update the dashboard container and hide the menu after
   // adding a new chart column
-  addChart(numCharts): void
+  addPanel(numPanels): void
   {
     let panelsToAdd, width, column;
 
     panelsToAdd = [];
     column = this.dashboardColumns.length;
-    width = 100 / numCharts;
+    width = 100 / numPanels;
 
-    for (let i = 0; i < numCharts; i++)
+    for (let i = 0; i < numPanels; i++)
     {
       // set the properties for each panel before adding it into the database
       panelsToAdd.push (

@@ -125,7 +125,7 @@ import { MsfGroupingDailyStaticsComponent } from './msf-grouping-daily-statics/m
 import { MsfQuarterHourComponent } from './msf-quarter-hour/msf-quarter-hour.component';
 import { MsfFunctionsComponent } from './msf-functions/msf-functions.component';
 import { MsfDashboardComponent } from './msf-dashboard/msf-dashboard.component';
-import { MsfDashboardChartmenuComponent } from './msf-dashboard-chartmenu/msf-dashboard-chartmenu.component';
+import { MsfDashboardPanelComponent } from './msf-dashboard-panel/msf-dashboard-panel.component';
 import { MsfGroupingOperationsSummaryComponent } from './msf-grouping-operations-summary/msf-grouping-operations-summary.component';
 import { MsfGroupingHubSummariesComponent } from './msf-grouping-hub-summaries/msf-grouping-hub-summaries.component';
 import { MsfRegionScheduleComponent } from './msf-region-schedule/msf-region-schedule.component';
@@ -160,6 +160,7 @@ import { ColorPickerModule } from 'ngx-color-picker';
 import { MsfDashboardColorPickerComponent } from './msf-dashboard-color-picker/msf-dashboard-color-picker.component';
 import { MsfEditDashboardComponent } from './msf-edit-dashboard/msf-edit-dashboard.component';
 import { MsfAddDashboardComponent } from './msf-add-dashboard/msf-add-dashboard.component';
+import { MsfDashboardDrillDownComponent } from './msf-dashboard-drill-down/msf-dashboard-drill-down.component';
 
 @NgModule({
   declarations: [
@@ -267,7 +268,7 @@ import { MsfAddDashboardComponent } from './msf-add-dashboard/msf-add-dashboard.
     MsfQuarterHourComponent,
     MsfFunctionsComponent,
     MsfDashboardComponent,
-    MsfDashboardChartmenuComponent,
+    MsfDashboardPanelComponent,
     MsfGroupingOperationsSummaryComponent,
     MsfGroupingHubSummariesComponent,
     MsfRegionScheduleComponent,
@@ -299,7 +300,8 @@ import { MsfAddDashboardComponent } from './msf-add-dashboard/msf-add-dashboard.
     MsfContentTypeComponent,
     MsfDashboardColorPickerComponent,
     MsfEditDashboardComponent,
-    MsfAddDashboardComponent
+    MsfAddDashboardComponent,
+    MsfDashboardDrillDownComponent
   ],
   imports: [
     BrowserModule,
@@ -365,7 +367,8 @@ import { MsfAddDashboardComponent } from './msf-add-dashboard/msf-add-dashboard.
     MsfDashboardInfoFunctionsComponent,
     MsfDashboardColorPickerComponent,
     MsfEditDashboardComponent,
-    MsfAddDashboardComponent
+    MsfAddDashboardComponent,
+    MsfDashboardDrillDownComponent
   ]
 })
 export class AppModule { }
