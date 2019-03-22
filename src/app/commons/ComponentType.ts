@@ -77,5 +77,8 @@ export enum ComponentType {
   topNumber = "topNumber",
   seatClass = "seatClass",
   groupingMariaDB = "groupingMariaDB",
-  contentType = "contentType"
+  contentType = "contentType",
+  totalType = "totalType",
+  groupingCompGenre = "groupingCompGenre",
+  groupingCompTotal = "groupingCompTotal"
 }

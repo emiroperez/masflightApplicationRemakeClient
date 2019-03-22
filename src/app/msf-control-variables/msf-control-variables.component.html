@@ -87,6 +87,9 @@
             <app-msf-seat-class *ngIf="isSeatClass(argument)" [argument]="argument"></app-msf-seat-class>
             <app-msf-grouping-mariadb *ngIf="isGroupingMariaDB(argument)" [argument]="argument"></app-msf-grouping-mariadb>
             <app-msf-content-type *ngIf="isContentType(argument)" [argument]="argument"></app-msf-content-type>
+            <app-msf-total-type *ngIf="isTotalType(argument)" [argument]="argument"></app-msf-total-type>
+            <app-msf-grouping-comp-genre *ngIf="isGroupingGenre(argument)" [argument]="argument"></app-msf-grouping-comp-genre>
+            <app-msf-grouping-comp-total *ngIf="isGroupingTotal(argument)" [argument]="argument"></app-msf-grouping-comp-total>
           </ng-container>
         </div>
       </ng-container>      

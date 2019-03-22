@@ -161,6 +161,9 @@ import { MsfDashboardColorPickerComponent } from './msf-dashboard-color-picker/m
 import { MsfEditDashboardComponent } from './msf-edit-dashboard/msf-edit-dashboard.component';
 import { MsfAddDashboardComponent } from './msf-add-dashboard/msf-add-dashboard.component';
 import { MsfDashboardPanelContextMenuComponent } from './msf-dashboard-panel-context-menu/msf-dashboard-panel-context-menu.component';
+import { MsfTotalTypeComponent } from './msf-total-type/msf-total-type.component';
+import { MsfGroupingCompGenreComponent } from './msf-grouping-comp-genre/msf-grouping-comp-genre.component';
+import { MsfGroupingCompTotalComponent } from './msf-grouping-comp-total/msf-grouping-comp-total.component';
 
 @NgModule({
   declarations: [
@@ -301,7 +304,10 @@ import { MsfDashboardPanelContextMenuComponent } from './msf-dashboard-panel-con
     MsfDashboardColorPickerComponent,
     MsfEditDashboardComponent,
     MsfAddDashboardComponent,
-    MsfDashboardPanelContextMenuComponent
+    MsfDashboardPanelContextMenuComponent,
+    MsfTotalTypeComponent,
+    MsfGroupingCompGenreComponent,
+    MsfGroupingCompTotalComponent
   ],
   imports: [
     BrowserModule,

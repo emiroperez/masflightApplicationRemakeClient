@@ -88,6 +88,12 @@ export class MsfTableComponent implements OnInit {
                 if(element2.type=="groupingMariaDB"){
                   this.groupingArgument = element2;
                 }
+                if(element2.type=="groupingCompTotal"){
+                  this.groupingArgument = element2;
+                }
+                if(element2.type=="groupingCompGenre"){
+                  this.groupingArgument = element2;
+                }
                 if(element2.name1=="limitNumber"){
                   this.limitNumber = element2;
                 }
@@ -395,5 +401,31 @@ export class MsfTableComponent implements OnInit {
     aux = aux.replace("ï¿½","0");
     return aux;
   }
+
+  openSubQuery(drillDown : any,rowNumber: any){
+    var parameters = this.getSubOptionParameters(drillDown.drillDownParameter);
+    this.service.getSubDataTableSource(this,drillDown.childrenOptionId,this.getPopupInfo,this.popupInfoError)
+
+  }
+  popupInfoError(_this,data) {
+    console.log("SUCCESS")
+  }
+  getPopupInfo(_this,error){
+    console.log("ERROR")
+  }
+
+  
+  getSubOptionParameters(parameters:any[]){
+    var urlPam = "";
+    for (let index = 0; index < parameters.length; index++) {
+        const element = parameters[index].webServicesMetaId;
+        if(index==0){
+            urlPam+="?"+element.columnName+"="+this.dataSource;
+        }else{
+          urlPam+="&"+element.columnName+"="+this.dataSource;
+        }
+        return urlPam;
+    }
+}
 
 }

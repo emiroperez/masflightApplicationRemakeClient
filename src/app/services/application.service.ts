@@ -312,4 +312,15 @@ export class ApplicationService {
         callback (self);
     });
   }
+
+  getSubDataTableSource(_this,option,handlerSuccess, handlerError) {
+    // _this.globals.isLoading = true;
+    let param = this.utils.getUrlParameters(_this.globals.currentOption);
+    let urlBase = option.url;
+    console.log(urlBase);
+    let urlArg = encodeURIComponent(urlBase);
+    let url = this.host + "/consumeWebServices?url=" + urlArg + "&optionId=" + option.id;
+    this.http.get(_this, url, handlerSuccess, handlerError, null);
+    console.log(url);
+  }
 }

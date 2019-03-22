@@ -234,7 +234,7 @@ export class Utils{
                 i++;
             }
             return valueAux;
-          }else if (type == ComponentType.groupingAthena || type == ComponentType.groupingMariaDB){
+          }else if (type == ComponentType.groupingAthena || type == ComponentType.groupingMariaDB || type == ComponentType.groupingCompGenre || type == ComponentType.groupingCompTotal){
             var valueAux="";
             var i = 0;
             for(var val of value){
@@ -246,7 +246,7 @@ export class Utils{
                 i++;
             }
             return valueAux;
-        }else if (type == ComponentType.selectBoxMultipleOption){
+        }else if (type == ComponentType.selectBoxMultipleOption || type == ComponentType.totalType){
                 var valueAux="";
                 var i = 0;
                 for(var val of value){
@@ -362,7 +362,7 @@ export class Utils{
                 i++;
             }
             return valueAux;
-          }else if (type == ComponentType.groupingAthena|| type == ComponentType.groupingMariaDB){
+          }else if (type == ComponentType.groupingAthena|| type == ComponentType.groupingMariaDB || type == ComponentType.groupingMariaDB || type == ComponentType.groupingCompGenre || type == ComponentType.groupingCompTotal){
             var valueAux="";
             var i = 0;
             for(var val of value){
@@ -390,7 +390,7 @@ export class Utils{
                 i++;
             }
             return valueAux;
-        }else if (type == ComponentType.selectBoxMultipleOption){
+        }else if (type == ComponentType.selectBoxMultipleOption || type == ComponentType.totalType){
                 var valueAux="";
                 var i = 0;
                 for(var val of value){
@@ -420,7 +420,7 @@ export class Utils{
                  return '';
              }
             return value.name;
-        }else if (type == ComponentType.selectBoxMultipleOption){
+        }else if (type == ComponentType.selectBoxMultipleOption|| type == ComponentType.totalType){
             var valueAux="";
             var i = 0;
             for(var val of value){
@@ -459,5 +459,6 @@ export class Utils{
         }
         return value;
     }
+
 
 }
