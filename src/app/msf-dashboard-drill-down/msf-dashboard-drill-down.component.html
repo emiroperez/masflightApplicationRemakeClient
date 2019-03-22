@@ -17,7 +17,7 @@
   </div>
   <div class="msf-dashboard-panel-sub-container-column">
     <mat-form-field class="msf-full-width">
-      <mat-select placeholder="Chart Type" [(ngModel)]="currentChartType" (selectionChange)="checkChartType()">
+      <mat-select placeholder="Chart Type" [(ngModel)]="currentChartType">
         <mat-option *ngFor="let chartType of chartTypes" [value]="chartType">
           {{chartType.name}}
         </mat-option>

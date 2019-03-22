@@ -161,7 +161,7 @@ export class MsfDashboardComponent implements OnInit {
     _this.globals.isLoading = false;
   }
 
-  removeChart(column, row): void
+  removePanel(column, row): void
   {
     this.service.confirmationDialog (this, "Are you sure you want to delete this panel?",
       function (_this)
@@ -295,15 +295,15 @@ export class MsfDashboardComponent implements OnInit {
     this.service.createDashboardPanel (this, panelsToAdd, this.insertPanels, this.handlerError);
   }
 
-  addChartInColumn(column, numCharts): void
+  addPanelInColumn(column, numPanels): void
   {
     let dashboardColumns = this.dashboardColumns[column];
     let panelsToAdd, width;
 
     panelsToAdd = [];
-    width = 100 / (dashboardColumns.length + numCharts);
+    width = 100 / (dashboardColumns.length + numPanels);
 
-    for (let i = 0; i < numCharts; i++)
+    for (let i = 0; i < numPanels; i++)
     {
       // set the properties for each panel before adding it into the database
       panelsToAdd.push (

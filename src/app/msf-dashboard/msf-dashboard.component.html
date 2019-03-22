@@ -9,7 +9,7 @@
               <div *ngIf="row" (mousedown)='onLineClick($event, column, row - 1, row)' (mouseup)='onLineRelease()' id='msf-dashboard-panel-left-resize' class='msf-dashboard-panel-line-resize'></div>
               <div *ngIf="row != dashboardColumn.length - 1" (mousedown)='onLineClick($event, column, row, row + 1)' id='msf-dashboard-panel-right-resize' class='msf-dashboard-panel-line-resize'></div>
               <div class="msf-dashboard-panel-button">
-                <mat-icon class="msf-dashboard-button-close-icon" aria-label="close" (click)="removeChart(column, row)">close</mat-icon>
+                <mat-icon class="msf-dashboard-button-close-icon" aria-label="close" (click)="removePanel(column, row)">close</mat-icon>
                 <mat-icon class="msf-dashboard-button-move-icon" *ngIf="dashboardColumn.length != 1" aria-label="move" cdkDragHandle (click)="disableContextMenu()">drag_handle</mat-icon>
               </div>
               <app-msf-dashboard-panel [values]="dashboardChart" [reAppendChart]="dashboardColumnsReAppendCharts[column]" [panelHeight]="getColumnHeight(column)"></app-msf-dashboard-panel>
@@ -33,12 +33,12 @@
               <div class="msf-dashboard-column-properties-align" *ngIf="dashboardColumn.length <= 2">
                 <ng-container>
                   <div class="msf-dashboard-column-properties-button">
-                    <button mat-flat-button class="flat-button" (click)="addChartInColumn(column, 1)">Add 1 panel</button>
+                    <button mat-flat-button class="flat-button" (click)="addPanelInColumn(column, 1)">Add 1 panel</button>
                   </div>
                 </ng-container>
                 <ng-container *ngIf="dashboardColumn.length == 1">
                   <div class="msf-dashboard-column-properties-button">
-                    <button mat-flat-button class="flat-button" (click)="addChartInColumn(column, 2)">Add 2 panels</button>
+                    <button mat-flat-button class="flat-button" (click)="addPanelInColumn(column, 2)">Add 2 panels</button>
                   </div>
                 </ng-container>
               </div>
@@ -52,7 +52,7 @@
     </div>
   </ng-container>
   <div class="msf-dashboard-empty" *ngIf="!dashboardColumns.length">
-    You have not added any chart.<br>
+    You have not added any panel.<br>
     Click here to start!
   </div>
   <div class="msf-dashboard-addmenu">
