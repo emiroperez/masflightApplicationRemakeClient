@@ -216,7 +216,7 @@
 <!-- ngIf doesn't work with AmCharts -->
 <div class="{{values.displayChart ? 'msf-dashboard-chartmenu-container-chart' : 'msf-dashboard-chartmenu-container-invisible'}}" [style.height.px]="panelHeight">
   <div class="msf-dashboard-chartmenu-title" *ngIf="values.displayChart">{{values.chartName}}</div>
-  <div class="msf-dashboard-chartmenu-sub-container-column">
+  <div class="msf-dashboard-chartmenu-sub-container-column" id="msf-dashboard.chart-display-container-{{values.id}}">
     <div class="msf-dashboard-chartmenu-config-button">
       <button mat-mini-fab (click)="goToChartConfiguration()" color="primary">
         <mat-icon aria-label="Edit Configuration">menu</mat-icon>

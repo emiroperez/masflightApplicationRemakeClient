@@ -78,7 +78,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   panelHeight: number;
 
   @Input()
-  rebuildChart: boolean;
+  reAppendChart: boolean;
 
   public dataFormFilterCtrl: FormControl = new FormControl ();
   public variableFilterCtrl: FormControl = new FormControl ();
@@ -129,10 +129,10 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void
   {
-    if (changes['rebuildChart'] && this.rebuildChart && this.values.chartGenerated)
+    if (changes['reAppendChart'] && this.reAppendChart && this.values.chartGenerated)
     {
-      this.destroyChart ();
-      this.makeChart (this.values.lastestResponse);
+      let chartElement = document.getElementById ("msf-dashboard-chart-display-" + this.values.id);
+      document.getElementById ("msf-dashboard.chart-display-container-" + this.values.id).appendChild (chartElement);
     }
   }
 

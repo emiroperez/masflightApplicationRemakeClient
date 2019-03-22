@@ -12,7 +12,7 @@
                 <mat-icon class="msf-dashboard-button-close-icon" aria-label="close" (click)="removeChart(column, row)">close</mat-icon>
                 <mat-icon class="msf-dashboard-button-move-icon" *ngIf="dashboardColumn.length != 1" aria-label="move" cdkDragHandle (click)="disableContextMenu()">drag_handle</mat-icon>
               </div>
-              <app-msf-dashboard-chartmenu [values]="dashboardChart" [rebuildChart]="dashboardColumnsRebuildChart[column]" [panelHeight]="getColumnHeight(column)"></app-msf-dashboard-chartmenu>
+              <app-msf-dashboard-chartmenu [values]="dashboardChart" [reAppendChart]="dashboardColumnsReAppendCharts[column]" [panelHeight]="getColumnHeight(column)"></app-msf-dashboard-chartmenu>
             </div>
           </div>
           <div [ngClass]="dashboardColumnsProperties[column] ? 'msf-dashboard-panel-size-properties-open' : 'msf-dashboard-panel-size-properties-closed'">
@@ -75,4 +75,22 @@
   <div *ngIf="displayContextMenu">
     <app-msf-dashboard-panel-context-menu [x]="contextMenuX" [y]="contextMenuY" [category]="contextCategory"></app-msf-dashboard-panel-context-menu>
   </div>
+  <!--
+  <div class="msf-dashboard-panel-context-menu" #trigger="matMenuTrigger" [matMenuTriggerFor]="menu" [style.left.px]="getXPosition()" [style.top.px]="getYPosition()">
+    <mat-menu id="msf-dashboard-panel-context-menu-container" #menu="matMenu" [style.visibility]="displayContextMenu ? 'visible' : 'hidden'">
+      <button mat-menu-item>
+        <span>This is a context menu</span>
+      </button>
+      <button mat-menu-item>
+        <span>clicked from a chart</span>
+      </button>
+      <button mat-menu-item>
+        <span>object</span>
+      </button>
+      <button mat-menu-item>
+        <span>{{contextCategory}}</span>
+      </button>
+    </mat-menu>
+  </div>
+  -->
 </div>
