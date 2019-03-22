@@ -72,25 +72,11 @@
       <div class="msf-dashboard-addmenu-item-text" (click)="addChart(3)">3 Panels</div>
     </div>
   </div>
-  <div *ngIf="displayContextMenu">
-    <app-msf-dashboard-panel-context-menu [x]="contextMenuX" [y]="contextMenuY" [category]="contextCategory"></app-msf-dashboard-panel-context-menu>
-  </div>
-  <!--
-  <div class="msf-dashboard-panel-context-menu" #trigger="matMenuTrigger" [matMenuTriggerFor]="menu" [style.left.px]="getXPosition()" [style.top.px]="getYPosition()">
-    <mat-menu id="msf-dashboard-panel-context-menu-container" #menu="matMenu" [style.visibility]="displayContextMenu ? 'visible' : 'hidden'">
-      <button mat-menu-item>
-        <span>This is a context menu</span>
-      </button>
-      <button mat-menu-item>
-        <span>clicked from a chart</span>
-      </button>
-      <button mat-menu-item>
-        <span>object</span>
-      </button>
+  <div class="msf-dashboard-panel-context-menu" #contextMenu="matMenuTrigger" [matMenuTriggerFor]="menu" [style.left.px]="getContextMenuPosX()" [style.top.px]="getContextMenuPosY()">
+    <mat-menu id="msf-dashboard-panel-context-menu-container" #menu="matMenu" [style.visibility]="contextCategory ? 'visible' : 'hidden'">
       <button mat-menu-item>
         <span>{{contextCategory}}</span>
       </button>
     </mat-menu>
   </div>
-  -->
 </div>

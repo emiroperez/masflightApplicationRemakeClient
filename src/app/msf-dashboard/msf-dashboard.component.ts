@@ -1,9 +1,9 @@
-import { Component, HostListener, OnInit, Input, SimpleChanges } from '@angular/core';
+import { Component, HostListener, OnInit, Input, SimpleChanges, ViewChild } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Globals } from '../globals/Globals';
 import { MsfDashboardChartValues } from '../msf-dashboard-chartmenu/msf-dashboard-chartvalues';
 import { ApplicationService } from '../services/application.service';
-// import { MatMenuTrigger } from '@angular/material';
+import { MatMenuTrigger } from '@angular/material';
 
 const minPanelWidth = 25;
 
@@ -24,10 +24,11 @@ export class MsfDashboardComponent implements OnInit {
 
   displayAddChartMenu: boolean = false;
 
-  displayContextMenu: boolean = false;
   contextMenuX: number = 0;
   contextMenuY: number = 0;
   contextCategory: any;
+
+  @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
 
   heightValues:any[] = [
     { value: 1, name: 'Small' },
@@ -360,6 +361,12 @@ export class MsfDashboardComponent implements OnInit {
     console.log ("The changes to the dashboard were successful.");
   }
 
+  swapError(_this): void
+  {
+    if (_this.currentColumn && _this.dashboardColumnsReAppendCharts[_this.currentColumn])
+      _this.dashboardColumnsReAppendCharts[_this.currentColumn] = false;
+  }
+
   handlerSuccess(_this): void
   {
     console.log ("The changes to the dashboard were successful.");
@@ -473,21 +480,15 @@ export class MsfDashboardComponent implements OnInit {
     }
 
     // this.globals.isLoading = true;
-    this.service.setDashboardPanelRowPositions (this, newPanelPos, this.swapSucess,
-      this.handlerError);
+    this.service.setDashboardPanelRowPositions (this, newPanelPos, this.swapSucess, this.swapError);
   }
-
-  // @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
 
   onrightClick(event, dashboardColumn, rowindex): boolean
   {
     event.stopPropagation ();
 
     if (!dashboardColumn[rowindex].chartClicked)
-    {
-      this.displayContextMenu = false;
       return true;
-    }
 
     this.contextCategory = dashboardColumn[rowindex].chartObjectSelected;
     this.contextMenuX = event.clientX;
@@ -499,19 +500,17 @@ export class MsfDashboardComponent implements OnInit {
 
     // prevent context menu from appearing
     dashboardColumn[rowindex].chartClicked = false;
-    this.displayContextMenu = true;
-    // this.trigger.openMenu ();
+    this.contextMenu.openMenu ();
     return false;
   }
 
   disableContextMenu(): void
   {
-    // this.trigger.closeMenu ();
-    this.displayContextMenu = false;
+    this.contextMenu.closeMenu ();
   }
 
   // make sure that the context menu is fully visible
-  getXPosition(): number
+  getContextMenuPosX(): number
   {
     var clientWidth = document.getElementById ('msf-dashboard-panel-context-menu-container').clientWidth;
 
@@ -521,7 +520,7 @@ export class MsfDashboardComponent implements OnInit {
     return this.contextMenuX;
   }
 
-  getYPosition(): number
+  getContextMenuPosY(): number
   {
     var clientHeight = document.getElementById ('msf-dashboard-panel-context-menu-container').clientHeight;
 
