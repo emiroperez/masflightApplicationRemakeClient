@@ -170,4 +170,8 @@ export class MsfDashboardDrillDownComponent {
       }
     });
   }
+
+  checkChartType(){
+    
+  }
 }

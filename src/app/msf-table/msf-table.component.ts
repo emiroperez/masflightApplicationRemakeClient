@@ -132,8 +132,36 @@ export class MsfTableComponent implements OnInit {
                 columnLabel:"Sum Unique Hits",
                 drillDowns: []});
               }
+            }else{
+              var aux = displayedColumns.slice();
+              var cont = 0;
+              for (let index = 0; index < displayedColumns.length; index++) {
+                const element = displayedColumns[index];
+                var x = index;
+                if(element.function==0){
+                  x = x-cont;
+                  aux.splice(x,1);
+                  cont++;
+                }
+              }
+              displayedColumns = aux;
+              this.globals.displayedColumns = displayedColumns;
             }
-           }
+           }else{
+            var aux = displayedColumns.slice();
+            var cont = 0;
+            for (let index = 0; index < displayedColumns.length; index++) {
+              const element = displayedColumns[index];
+              var x = index;
+              if(element.function==0){
+                x = x-cont;
+                aux.splice(x,1);
+                cont++;
+              }
+            }
+            displayedColumns = aux;
+            this.globals.displayedColumns = displayedColumns;
+          }
       }
         if(this.sortingArgument!=null){
            array2 = this.sortingArgument.value1;
@@ -187,6 +215,7 @@ export class MsfTableComponent implements OnInit {
       }
 
     }
+    return displayedColumns;
   }
 
   setMsfChartRef(msfChartRef){
@@ -279,9 +308,9 @@ export class MsfTableComponent implements OnInit {
   
           _this.globals.displayedColumns = data.metadata;
           if(_this.groupingArgument!=null){
-            _this.addGroupingColumns(_this.globals.displayedColumns);
+            _this.globals.displayedColumns  = _this.addGroupingColumns(_this.globals.displayedColumns);
           }
-          _this.metadata = data.metadata;
+          _this.metadata = _this.globals.displayedColumns;
           _this.globals.metadata = data.metadata;
           console.log( _this.globals.displayedColumns);
           
@@ -403,8 +432,8 @@ export class MsfTableComponent implements OnInit {
   }
 
   openSubQuery(drillDown : any,rowNumber: any){
-    var parameters = this.getSubOptionParameters(drillDown.drillDownParameter);
-    this.service.getSubDataTableSource(this,drillDown.childrenOptionId,this.getPopupInfo,this.popupInfoError)
+    // var parameters = this.getSubOptionParameters(drillDown.drillDownParameter);
+    // this.service.getSubDataTableSource(this,drillDown.childrenOptionId,this.getPopupInfo,this.popupInfoError)
 
   }
   popupInfoError(_this,data) {

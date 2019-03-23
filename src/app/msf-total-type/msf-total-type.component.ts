@@ -10,7 +10,7 @@ export class MsfTotalTypeComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
   
-  groupingList: any[] = [
+  types: any[] = [
     {name: 'Total Movies'},
     {name: 'Hollywood'},
     {name: 'Total World Movies'},
