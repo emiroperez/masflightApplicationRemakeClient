@@ -4,7 +4,7 @@
       <span class="msf-menu-component-text">{{category.label}}</span>
       <i #icon class="material-icons msf-menu-cmpte-row">expand_more</i>
     </div>
-    <div [ngClass]="argsContainer.open ? 'msf-dashboard-menu-arguments-container-show' : 'msf-dashboard-menu-arguments-container-hiden'" #argsContainer>
+    <div [ngClass]="argsContainer.open ? 'msf-dashboard-menu-arguments-container-show' : 'msf-dashboard-menu-arguments-container-hidden'" #argsContainer>
       <ng-container *ngIf="category.arguments && category.arguments.length > 0">
         <div class="msf-component-airport-container">
           <ng-container *ngFor="let argument of category.arguments">     

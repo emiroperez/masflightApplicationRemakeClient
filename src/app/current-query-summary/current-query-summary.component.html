@@ -44,7 +44,7 @@
                 <span class="msf-menu-component-text">{{globals.currentOption.label}} : ({{globals.getTime()}} s)</span>
                 <i #icon [ngClass]="globals.getTime() != 0 ?'material-icons msf-summary-ok-icon':'material-icons msf-summary-icon'">check_circle</i>
             </div>
-            <div [ngClass]="argsContainer.open ? 'msf-detail-container msf-block' : 'msf-detail-container msf-hiden'" #argsContainer>
+            <div [ngClass]="argsContainer.open ? 'msf-detail-container msf-block' : 'msf-detail-container msf-hidden'" #argsContainer>
                 <div class="msf-summary-category-label">Request Details</div>
                 <div class="msf-detail msf-block">                       
                         <div class="msf-inline msf-summary-arg-label">Start Date: </div>
