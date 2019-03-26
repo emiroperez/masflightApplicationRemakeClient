@@ -40,7 +40,18 @@ export class MenuOptionComponent implements OnInit {
        },
     
       "areasSettings": {
-        "unlistedAreasColor": "#343332"
+        "outlineColor ": "#3b3b3b",
+        "unlistedAreasOutlineColor " : "#3b3b3b",
+        "unlistedAreasColor": "#3b3b3b",
+        "outlineColor": "#000000",
+        "outlineAlpha": 0.5,
+        "outlineThickness": 0.5,
+        "rollOverBrightness": 30,
+        "slectedBrightness": 50,
+        "rollOverOutlineColor": "#3b3b3b",
+        "selectedOutlineColor": "#3b3b3b",
+        "unlistedAreasOutlineColor": "#000000",
+        "unlistedAreasOutlineAlpha": 0.2
       },
     
       "imagesSettings": {
@@ -77,7 +88,7 @@ export class MenuOptionComponent implements OnInit {
     if(this.globals.currentOption.tabType === 'scmap'){
       this.globals.mapsc = true;
       this.globals.selectedIndex = 1;
-      this.globals.scheduleChart = this.AmCharts.makeChart ("chartdiv", this.makeOptions (""));
+      this.globals.scheduleChart = this.AmCharts.makeChart ("chartdivmap", this.makeOptions (""));
     }
     if(this.globals.currentOption.tabType === 'statistics'){
       this.globals.usageStatistics = true;
