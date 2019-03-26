@@ -93,17 +93,14 @@ export class MsfDashboardDrillDownComponent {
       this.childPanelValues[i].currentChartType = this.chartTypes[0];
     }
 
-    this.currentValue = this.childPanelValues[0];
-
     // set initial values
     this.chartForm = this.formBuilder.group ({
-      optionCtrl: new FormControl (),
+      chartCtrl: new FormControl ({ value: '', disabled: true }),
       variableCtrl: new FormControl ({ value: '', disabled: true }),
       xaxisCtrl: new FormControl ({ value: '', disabled: true }),
-      valueCtrl: new FormControl ({ value: '', disabled: true })
+      valueCtrl: new FormControl ({ value: '', disabled: true }),
+      functionCtrl: new FormControl ({ value: '', disabled: true })
     });
-
-    this.chartForm.get ('optionCtrl').setValue (data.drillDownOptions[0]);
   }
 
   ngOnDestroy()
@@ -182,11 +179,6 @@ export class MsfDashboardDrillDownComponent {
       });
   }
 
-  isInformationPanel(): boolean
-  {
-    return (this.currentValue.currentChartType.flags & ChartFlags.INFO) ? true : false;
-  }
-
   goToColorPicker(): void
   {
     let dialogHeight, numColors;
@@ -231,6 +223,8 @@ export class MsfDashboardDrillDownComponent {
 
   addChartFilterValues(_this, data): void
   {
+    let i, option;
+
     _this.currentValue.chartColumnOptions = [];
     for (let columnConfig of data)
       _this.currentValue.chartColumnOptions.push ( { id: columnConfig.columnName, name: columnConfig.columnLabel, item: columnConfig } );
@@ -242,43 +236,69 @@ export class MsfDashboardDrillDownComponent {
     _this.searchChange (_this.xaxisFilterCtrl);
     _this.searchChange (_this.valueFilterCtrl);
 
-    // reset chart filter values and disable generate chart button
-    _this.chartForm.get ('variableCtrl').reset ();
-    _this.chartForm.get ('xaxisCtrl').reset ();
-    _this.chartForm.get ('valueCtrl').reset ();
-    // _this.checkChartFilters ();
-
     // enable the combo box that allows to select the values for the chart
+    _this.chartForm.get ('chartCtrl').enable ();
     _this.chartForm.get ('variableCtrl').enable ();
 
     if (_this.currentValue.currentChartType.flags & ChartFlags.XYCHART)
       _this.chartForm.get ('xaxisCtrl').enable ();
+    else
+      _this.chartForm.get ('xaxisCtrl').disable ();
 
     _this.chartForm.get ('valueCtrl').enable ();
+    _this.chartForm.get ('functionCtrl').enable ();
+
+    // set combo box values if necessary
+    _this.chartForm.get ('chartCtrl').setValue (_this.currentValue.currentChartType);
+
+    if (_this.currentValue.variable)
+    {
+      for (i = 0; i < _this.currentValue.chartColumnOptions.length; i++)
+      {
+        option = _this.currentValue.chartColumnOptions[i];
+
+        if (option.id == _this.currentValue.variable.id)
+        {
+          _this.chartForm.get ('variableCtrl').setValue (option);
+          break;
+        }
+      }
+    }
+
+    if (_this.currentValue.xaxis)
+    {
+      for (i = 0; i < _this.currentValue.chartColumnOptions.length; i++)
+      {
+        option = _this.currentValue.chartColumnOptions[i];
+
+        if (option.id == _this.currentValue.xaxis.id)
+        {
+          _this.chartForm.get ('xaxisCtrl').setValue (option);
+          break;
+        }
+      }
+    }
+
+    if (_this.currentValue.valueColumn)
+    {
+      for (i = 0; i < _this.currentValue.chartColumnOptions.length; i++)
+      {
+        option = _this.currentValue.chartColumnOptions[i];
+
+        if (option.id == _this.currentValue.valueColumn.id)
+        {
+          _this.chartForm.get ('valueCtrl').setValue (option);
+          break;
+        }
+      }
+    }
+
+    _this.chartForm.get ('functionCtrl').setValue (_this.currentValue.function);
 
     // copy the category arguments settings from the parent panel and finish loading
     _this.currentValue.categoryOptions = JSON.parse (_this.data.categoryOptions);
     _this.globals.isLoading = false;
   }
-
-  /*setCategories(_this, data): void
-  {
-    _this.currentValue.currentOptionCategories = [];
-
-    for (let optionCategory of data)
-      _this.currentValue.currentOptionCategories.push (optionCategory.categoryArgumentsId);
-    _this.variableCtrlBtnEnabled = true;
-
-    _this.chartForm.get ('variableCtrl').enable ();
-    _this.chartForm.get ('infoNumVarCtrl').enable ();
-
-    if (_this.currentValue.currentValue.currentChartType.flags & ChartFlags.XYCHART)
-      _this.chartForm.get ('xaxisCtrl').enable ();
-
-    _this.chartForm.get ('valueCtrl').enable ();
-
-    _this.globals.isLoading = false;
-  }*/
 
   handlerError(_this, result): void
   {
@@ -286,8 +306,40 @@ export class MsfDashboardDrillDownComponent {
     _this.globals.isLoading = false;  
   }
 
-  checkChartType(): void
+  checkChartType(value): void
   {
-    
+    this.currentValue.currentChartType = value;
+
+    if (!(this.currentValue.currentChartType.flags & ChartFlags.XYCHART))
+    {
+      this.currentValue.xaxis = null;
+      this.chartForm.get ('xaxisCtrl').reset ();
+      this.chartForm.get ('xaxisCtrl').disable ();
+    }
+    else
+      this.chartForm.get ('xaxisCtrl').enable ();
+
+    this.chartForm.get ('variableCtrl').enable ();
+    this.chartForm.get ('valueCtrl').enable ();
+  }
+
+  checkVariable(value): void
+  {
+    this.currentValue.variable = value;
+  }
+
+  checkXAxis(value): void
+  {
+    this.currentValue.xaxis = value;
+  }
+
+  checkValue(value): void
+  {
+    this.currentValue.valueColumn = value;
+  }
+
+  checkFunction(value): void
+  {
+    this.currentValue.function = value;
   }
 }

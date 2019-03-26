@@ -330,9 +330,10 @@ export class MsfDashboardPanelComponent implements OnInit {
     series.hiddenState.properties.endAngle = -90;
     series.hiddenState.properties.startAngle = -90;
 
-    // Disable label and ticks
-    series.ticks.template.disabled = true;
-    series.labels.template.disabled = true;
+    // Set ticks color
+    series.ticks.template.strokeOpacity = 1;
+    series.ticks.template.stroke = darkBlue;
+    series.ticks.template.strokeWidth = 1;
 
     // Set the color for the chart to display
     colorSet = new am4core.ColorSet ();
@@ -616,8 +617,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         }
       }
 
-      if (this.values.currentChartType.flags & ChartFlags.XYCHART
-        || this.values.currentChartType.flags & ChartFlags.PIECHART)
+      if (this.values.currentChartType.flags & ChartFlags.XYCHART)
       {
         // Display Legend
         chart.legend = new am4charts.Legend ();
@@ -1865,7 +1865,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   goToDrillDownSettings(): void
   {
-    this.dialog.open (MsfDashboardDrillDownComponent, {
+    let dialogRef = this.dialog.open (MsfDashboardDrillDownComponent, {
       height: '425px',
       width: '450px',
       panelClass: 'msf-dashboard-control-variables-dialog',
@@ -1875,5 +1875,9 @@ export class MsfDashboardPanelComponent implements OnInit {
         categoryOptions: JSON.stringify (this.values.currentOptionCategories)
       }
     });
+
+    /*dialogRef.afterClosed ().subscribe (
+      (data) => this.saveChildPanels (data)
+    );*/
   }
 }
