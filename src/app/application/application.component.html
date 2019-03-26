@@ -1,11 +1,11 @@
 <!--Header-->
-<div *ngIf="!globals.isFullscreen" class="msf-menu-header">
+<div *ngIf="!globals.isFullscreen || (globals.isFullscreen && globals.currentOption !== 'dashboard')" class="msf-menu-header">
     <div class="msf-menu-header-image-container">
         <img (click)="goHome()" style="cursor:pointer;" src="../../assets/images/logo_global_peqe.png" class="msf-menu-logo">
         <img src="../../assets/images/ajustes.png" class="msf-menu-ajustes-icon">
     </div>
     <div class="msf-menu-container">
-        <app-menu [menu]="menu"></app-menu>
+        <app-menu [menu]="menu" [dashboards]="dashboards"></app-menu>
     </div>
     <div class="msf-header-icons">
         <div *ngIf="globals.currentUser" style="margin-right:5px;" class="msf-inline msf-vertical-middle">
@@ -21,9 +21,6 @@
                 </button>
 
         </mat-menu>
-        <button mat-icon-button [disabled]="!dashboardPlan" (click)="goToDashboard()">
-                <mat-icon>dashboard</mat-icon>
-            </button>
         <button *ngIf="admin" mat-icon-button [matMenuTriggerFor]="adminMenu">
                 <mat-icon>more_vert</mat-icon>
             </button>
@@ -43,7 +40,7 @@
         </mat-menu>
     </div>
 </div>
-<div *ngIf="!globals.isFullscreen" class="msf-menu-icons-container">
+<div *ngIf="!globals.isFullscreen || (globals.isFullscreen && globals.currentOption !== 'dashboard')" class="msf-menu-icons-container">
     <div class="msf-secondary-color msf-menu-icon-container msf-menu-adm">connected</div>
     <div class="msf-menu-icon-container">| {{globals.currentOption ? globals.currentOption.label:''}}</div>
     <div class="msf-menu-icon-container msf-flex msf-menu-icons-right">
@@ -53,9 +50,9 @@
 
         <!-- <button class="msf-menu-icon"><img src="../../assets/images/CopytoClipboard.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Copy to Clipboard</span></button>
         <button class="msf-menu-icon"><img src="../../assets/images/LoadingOptions.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Loading Options</span></button> -->
-        <button [disabled]="globals.currentOption !== 'dashboard'" class="msf-menu-icon"><img src="../../assets/images/Chart.png" class="msf-menu-image msf-vertical-middle" ><span class="msf-vertical-middle">Open Dashboard</span></button>
-        <button [disabled]="globals.currentOption !== 'dashboard'" class="msf-menu-icon"><img src="../../assets/images/SaveOptions.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Save Dashboard</span></button>
-        <button class="msf-menu-icon" (click)="goToFullscreen()"><img src="../../assets/images/fullscreen.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Full Screen</span></button>
+        <button [disabled]="globals.currentOption !== 'dashboard'" class="msf-menu-icon" (click)="changeDashboardName()"><img src="../../assets/images/Chart.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Edit Dashboard Title</span></button>
+        <button [disabled]="globals.currentOption !== 'dashboard'" class="msf-menu-icon" (click)="deleteDashboard()"><img src="../../assets/images/trash-blue-small.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Delete Dashboard</span></button>
+        <button class="msf-menu-icon" *ngIf="!globals.isFullscreen" (click)="goToFullscreen()"><img src="../../assets/images/fullscreen.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Full Screen</span></button>
     </div>
 </div>
 
@@ -81,7 +78,7 @@
     </div>
 
     <!--container-->
-    <div [ngClass]="isSimpleContent() ? 'msf-menu-simple-content' : 'msf-menu-show-full-nav-component'">
+    <div [ngClass]="isSimpleContent() ? 'msf-menu-simple-content' : (globals.status ? 'msf-menu-show-full-nav-component' : 'msf-menu-show-full-nav-component-wide')">
         <div [ngClass]="isSimpleContent() ? 'msf-menu-simple-content' : 'msf-menu-content msf-menu-tabs-content'">
             <div [ngClass]="isSimpleContent() ? 'msf-menu-internal-simple-content' : 'msf-menu-internal-content'">
                 <app-msf-container #msfContainerRef></app-msf-container>

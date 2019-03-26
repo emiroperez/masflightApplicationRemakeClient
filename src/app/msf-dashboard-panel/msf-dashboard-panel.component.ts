@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input, NgZone } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, NgZone, SimpleChanges } from '@angular/core';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
@@ -7,21 +7,21 @@ import { CategoryArguments } from '../model/CategoryArguments';
 import { Globals } from '../globals/Globals';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { ReplaySubject, Subject } from 'rxjs';
-import { MatSelect } from '@angular/material';
-import { takeUntil, take } from 'rxjs/operators';
+import { MatSelect, MatDialog } from '@angular/material';
+import { takeUntil } from 'rxjs/operators';
+
 import { ApiClient } from '../api/api-client';
 import { Arguments } from '../model/Arguments';
 import { Utils } from '../commons/utils';
 import { ApplicationService } from '../services/application.service';
-
 import { MsfDashboardControlVariablesComponent } from '../msf-dashboard-control-variables/msf-dashboard-control-variables.component';
 import { MsfDashboardInfoFunctionsComponent } from '../msf-dashboard-info-functions/msf-dashboard-info-functions.component';
 import { MsfDashboardColorPickerComponent } from  '../msf-dashboard-color-picker/msf-dashboard-color-picker.component';
-import { MatDialog } from '@angular/material';
+import { MsfDashboardDrillDownComponent } from  '../msf-dashboard-drill-down/msf-dashboard-drill-down.component';
 import { ComponentType } from '../commons/ComponentType';
-import { MsfDashboardChartValues } from '../msf-dashboard-chartmenu/msf-dashboard-chartvalues';
+import { MsfDashboardPanelValues } from '../msf-dashboard-panel/msf-dashboard-panelvalues';
 import { MessageComponent } from '../message/message.component';
-import { ChartFlags } from '../msf-dashboard-chartmenu/msf-dashboard-chartflags';
+import { ChartFlags } from '../msf-dashboard-panel/msf-dashboard-chartflags';
 
 am4core.useTheme(am4themes_animated);
 am4core.useTheme(am4themes_dark);
@@ -32,10 +32,10 @@ const darkBlue = am4core.color ("#30303d");
 const blueJeans = am4core.color ("#67b7dc");
 
 @Component({
-  selector: 'app-msf-dashboard-chartmenu',
-  templateUrl: './msf-dashboard-chartmenu.component.html'
+  selector: 'app-msf-dashboard-panel',
+  templateUrl: './msf-dashboard-panel.component.html'
 })
-export class MsfDashboardChartmenuComponent implements OnInit {
+export class MsfDashboardPanelComponent implements OnInit {
   utils: Utils;
 
   variableCtrlBtnEnabled: boolean = false;
@@ -49,15 +49,16 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   chartTypes:any[] = [
     { name: 'Bars', flags: ChartFlags.XYCHART, createSeries: this.createVertColumnSeries },
     { name: 'Horizontal Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED, createSeries: this.createHorizColumnSeries },
+    { name: 'Simple Bars', flags: ChartFlags.NONE, createSeries: this.createSimpleVertColumnSeries },
+    { name: 'Simple Horizontal Bars', flags: ChartFlags.ROTATED, createSeries: this.createSimpleHorizColumnSeries },
     { name: 'Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.STACKED, createSeries: this.createVertColumnSeries },
     { name: 'Horizontal Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED | ChartFlags.STACKED, createSeries: this.createHorizColumnSeries },
+    { name: 'Funnel', flags: ChartFlags.FUNNELCHART, createSeries: this.createFunnelSeries },
     { name: 'Lines', flags: ChartFlags.XYCHART | ChartFlags.LINECHART, createSeries: this.createLineSeries },                      
     { name: 'Area', flags: ChartFlags.XYCHART | ChartFlags.AREACHART, createSeries: this.createLineSeries },
     { name: 'Stacked Area', flags: ChartFlags.XYCHART | ChartFlags.STACKED | ChartFlags.AREACHART, createSeries: this.createLineSeries },
-    { name: 'Pie', flags: ChartFlags.PIECHART },
-    { name: 'Donut', flags: ChartFlags.DONUTCHART },
-    { name: 'Simple Bars', flags: ChartFlags.NONE, createSeries: this.createSimpleVertColumnSeries },
-    { name: 'Simple Horizontal Bars', flags: ChartFlags.ROTATED, createSeries: this.createSimpleHorizColumnSeries },
+    { name: 'Pie', flags: ChartFlags.PIECHART, createSeries: this.createPieSeries },
+    { name: 'Donut', flags: ChartFlags.DONUTCHART, createSeries: this.createPieSeries },
     { name: 'Information', flags: ChartFlags.INFO }
   ];
 
@@ -70,17 +71,14 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   ]; 
 
   @Input()
-  values: MsfDashboardChartValues;
-  temp: MsfDashboardChartValues;
-
-  @Input()
-  columnPos: number;
-
-  @Input()
-  rowPos: number;
+  values: MsfDashboardPanelValues;
+  temp: MsfDashboardPanelValues;
 
   @Input()
   panelHeight: number;
+
+  @Input()
+  reAppendChart: boolean;
 
   public dataFormFilterCtrl: FormControl = new FormControl ();
   public variableFilterCtrl: FormControl = new FormControl ();
@@ -98,13 +96,13 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   @ViewChild('xaxisSelect') xaxisSelect: MatSelect;
   @ViewChild('valueSelect') valueSelect: MatSelect;
 
-  private _onDestroy = new Subject<void>();
+  private _onDestroy = new Subject<void> ();
 
   constructor(private zone: NgZone, public globals: Globals,
     private service: ApplicationService, private http: ApiClient, public dialog: MatDialog,
     private formBuilder: FormBuilder)
   {
-    this.utils = new Utils();
+    this.utils = new Utils ();
 
     this.chartForm = this.formBuilder.group ({
       dataFormCtrl: new FormControl (),
@@ -127,6 +125,15 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     this.values.infoFunc1 = JSON.parse (JSON.stringify (this.functions));
     this.values.infoFunc2 = JSON.parse (JSON.stringify (this.functions));
     this.values.infoFunc3 = JSON.parse (JSON.stringify (this.functions));
+  }
+
+  ngOnChanges(changes: SimpleChanges): void
+  {
+    if (changes['reAppendChart'] && this.reAppendChart && this.values.chartGenerated)
+    {
+      let chartElement = document.getElementById ("msf-dashboard-chart-display-" + this.values.id);
+      document.getElementById ("msf-dashboard.chart-display-container-" + this.values.id).appendChild (chartElement);
+    }
   }
 
   isEmpty(obj): boolean
@@ -171,11 +178,17 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     series.columns.template.width = am4core.percent (60);
 
     // Add an event that hide the column chart when clicked
-    /*series.columns.template.events.on ("hit", function(event) {
+    // series.columns.template.events.on ("hit", function(event) {
       //event.target.parent.hide ();
-      chart.legend.dispatchImmediately ("hide");
+//      chart.legend.dispatchImmediately ("hide");
       //event.target.dataItem.categoryY;
-    });*/
+    // });
+
+    // Display a special context menu when a chart column is right clicked
+    series.columns.template.events.on ("rightclick", function(event) {
+      values.chartClicked = true;
+      values.chartObjectSelected = event.target.dataItem.dataContext[values.xaxis.id];
+    });
   }
 
   // Function to create vertical column chart series
@@ -201,6 +214,11 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     series.stacked = stacked;
     series.columns.template.strokeWidth = 0;
     series.columns.template.width = am4core.percent (60);
+
+    series.columns.template.events.on ("rightclick", function(event) {
+      values.chartClicked = true;
+      values.chartObjectSelected = event.target.dataItem.dataContext[values.xaxis.id];
+    });
   }
 
   // Function to create line chart series
@@ -236,6 +254,13 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       series.fillOpacity = 0.3;
 
     series.stacked = stacked;
+
+    // Display a special context menu when a chart line segment is right clicked
+    series.segments.template.interactionsEnabled = true;
+    series.segments.template.events.on ("rightclick", function(event) {
+      values.chartClicked = true;
+      values.chartObjectSelected = event.target.dataItem.component.tooltipDataItem.dataContext[values.xaxis.id];
+    });
   }
 
   // Function to create simple vertical column chart series
@@ -254,6 +279,12 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     series.columns.template.adapter.add ("fill", (fill, target) => {
       return am4core.color (values.paletteColors[0]);
     });
+
+    // Display a special context menu when a chart column is right clicked
+    series.columns.template.events.on ("rightclick", function(event) {
+      values.chartClicked = true;
+      values.chartObjectSelected = event.target.dataItem.dataContext[item.titleField];
+    });
   }
 
   // Function to create simple horizontal column chart series
@@ -268,9 +299,80 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
     series.stacked = stacked;
 
-    // Set colors
     series.columns.template.adapter.add ("fill", (fill, target) => {
       return am4core.color (values.paletteColors[0]);
+    });
+
+    series.columns.template.events.on ("rightclick", function(event) {
+      values.chartClicked = true;
+      values.chartObjectSelected = event.target.dataItem.dataContext[item.titleField];
+    });
+  }
+
+  // Function to create pie chart series
+  createPieSeries(values, stacked, chart, item, parseDate): void
+  {
+    let series, colorSet;
+
+    // Set inner radius for donut chart
+    if (values.currentChartType.flags & ChartFlags.PIEHOLE)
+      chart.innerRadius = am4core.percent (60);
+
+    // Configure Pie Chart
+    series = chart.series.push (new am4charts.PieSeries ());
+    series.dataFields.value = item.valueField;
+    series.dataFields.category = item.titleField;
+
+    // This creates initial animation
+    series.hiddenState.properties.opacity = 1;
+    series.hiddenState.properties.endAngle = -90;
+    series.hiddenState.properties.startAngle = -90;
+
+    // Disable label and ticks
+    series.ticks.template.disabled = true;
+    series.labels.template.disabled = true;
+
+    // Set the color for the chart to display
+    colorSet = new am4core.ColorSet ();
+    colorSet.list = values.paletteColors.map (function(color) {
+      return am4core.color (color);
+    });
+    series.colors = colorSet;
+
+    // Display a special context menu when a pie slice is right clicked
+    series.slices.template.events.on ("rightclick", function(event) {
+      values.chartClicked = true;
+      values.chartObjectSelected = event.target.dataItem.dataContext[item.titleField];
+    });
+  }
+
+  // Function to create funnel chart series
+  createFunnelSeries(values, stacked, chart, item, parseDate): void
+  {
+    let series, colorSet;
+
+    series = chart.series.push (new am4charts.FunnelSeries ());
+    series.dataFields.value = item.valueField;
+    series.dataFields.category = item.titleField;
+
+    // Set chart apparence
+    series.sliceLinks.template.fillOpacity = 0;
+    series.ticks.template.strokeOpacity = 1;
+    series.ticks.template.stroke = darkBlue;
+    series.ticks.template.strokeWidth = 1;
+    series.alignLabels = true;
+
+    // Set the color for the chart to display
+    colorSet = new am4core.ColorSet ();
+    colorSet.list = values.paletteColors.map (function(color) {
+      return am4core.color (color);
+    });
+    series.colors = colorSet;
+
+    // Display a special context menu when a funnel slice is right clicked
+    series.slices.template.events.on ("rightclick", function(event) {
+      values.chartClicked = true;
+      values.chartObjectSelected = event.target.dataItem.dataContext[item.titleField];
     });
   }
 
@@ -280,45 +382,37 @@ export class MsfDashboardChartmenuComponent implements OnInit {
       let chart;
 
       // Check chart type before generating it
-      if (this.values.currentChartType.flags & ChartFlags.PIECHART)
+      if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART
+        || this.values.currentChartType.flags & ChartFlags.PIECHART)
       {
-        let series, colorSet;
+        if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART)
+          chart = am4core.create ("msf-dashboard-chart-display-" + this.values.id, am4charts.SlicedChart);
+        else
+          chart = am4core.create ("msf-dashboard-chart-display-" + this.values.id, am4charts.PieChart);
 
-        chart = am4core.create ("msf-dashboard-chart-display-" + this.columnPos + "-" + this.rowPos, am4charts.PieChart);
         chart.data = chartInfo.dataProvider;
 
         // Set label font size
         chart.fontSize = 10;
 
-        // Set inner radius for donut chart
-        if (this.values.currentChartType.flags & ChartFlags.PIEHOLE)
-          chart.innerRadius = am4core.percent (60);
+        // Create the series
+        this.values.currentChartType.createSeries (this.values, false, chart, chartInfo, null);
 
-        // Configure Pie Chart
-        series = chart.series.push (new am4charts.PieSeries ());
-        series.dataFields.value = chartInfo.valueField;
-        series.dataFields.category = chartInfo.titleField;
-
-        // This creates initial animation
-        series.hiddenState.properties.opacity = 1;
-        series.hiddenState.properties.endAngle = -90;
-        series.hiddenState.properties.startAngle = -90;
-
-        // Disable label and ticks
-        series.ticks.template.disabled = true;
-        series.labels.template.disabled = true;
-
-        colorSet = new am4core.ColorSet ();
-        colorSet.list = this.values.paletteColors.map (function(color) {
-          return am4core.color (color);
-        });
-        series.colors = colorSet;
+        if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART)
+        {
+          // Sort values from greatest to least on funnel chart types
+          chart.events.on ("beforedatavalidated", function(event) {
+            chart.data.sort (function(e1, e2) {
+              return e2[chartInfo.valueField] - e1[chartInfo.valueField];
+            });
+          });
+        }
       }
       else
       {
         let categoryAxis, valueAxis, parseDate, stacked;
 
-        chart = am4core.create ("msf-dashboard-chart-display-" + this.columnPos + "-" + this.rowPos, am4charts.XYChart);
+        chart = am4core.create ("msf-dashboard-chart-display-" + this.values.id, am4charts.XYChart);
 
         // Don't parse dates if the chart is a simple version
         if (this.values.currentChartType.flags & ChartFlags.XYCHART)
@@ -675,32 +769,32 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     if (infoChartType)
     {
       return {
-        'id' : this.values.id,
-        'option' : this.values.currentOption,
-        'title' : this.values.chartName,
-        'chartColumnOptions' : this.values.chartColumnOptions,
-        'analysis' : this.values.chartColumnOptions.indexOf (this.values.infoVar1),
-        'xaxis' : this.values.chartColumnOptions.indexOf (this.values.infoVar2),
-        'values' : this.values.chartColumnOptions.indexOf (this.values.infoVar3),
-        'function' : 1,
-        'chartType' : this.chartTypes.indexOf (this.values.currentChartType),
-        'categoryOptions' : this.values.currentOptionCategories
+        id: this.values.id,
+        option: this.values.currentOption,
+        title: this.values.chartName,
+        chartColumnOptions: JSON.stringify (this.values.chartColumnOptions),
+        analysis: this.values.chartColumnOptions.indexOf (this.values.infoVar1),
+        xaxis: this.values.chartColumnOptions.indexOf (this.values.infoVar2),
+        values: this.values.chartColumnOptions.indexOf (this.values.infoVar3),
+        function: 1,
+        chartType: this.chartTypes.indexOf (this.values.currentChartType),
+        categoryOptions: JSON.stringify (this.values.currentOptionCategories)
       };
     }
     else
     {
       return {
-        'id' : this.values.id,
-        'option' : this.values.currentOption,
-        'title' : this.values.chartName,
-        'chartColumnOptions' : this.values.chartColumnOptions,
-        'analysis' : this.values.chartColumnOptions.indexOf (this.values.variable),
-        'xaxis' : this.values.chartColumnOptions.indexOf (this.values.xaxis),
-        'values' : this.values.chartColumnOptions.indexOf (this.values.valueColumn),
-        'function' : this.functions.indexOf (this.values.function),
-        'chartType' : this.chartTypes.indexOf (this.values.currentChartType),
-        'categoryOptions' : this.values.currentOptionCategories,
-        'paletteColors' : this.values.paletteColors
+        id: this.values.id,
+        option: this.values.currentOption,
+        title: this.values.chartName,
+        chartColumnOptions: JSON.stringify (this.values.chartColumnOptions),
+        analysis: this.values.chartColumnOptions.indexOf (this.values.variable),
+        xaxis: this.values.chartColumnOptions.indexOf (this.values.xaxis),
+        values: this.values.chartColumnOptions.indexOf (this.values.valueColumn),
+        function: this.functions.indexOf (this.values.function),
+        chartType: this.chartTypes.indexOf (this.values.currentChartType),
+        categoryOptions: JSON.stringify (this.values.currentOptionCategories),
+        paletteColors: JSON.stringify (this.values.paletteColors)
       };
     }
   }
@@ -757,7 +851,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
 
     // set panel info for the HTTP message body
     panel = this.getPanelInfo (true);
-    panel.variables = variables;
+    panel.paletteColors = JSON.stringify (variables); // store the variables into the paletteColors for temporary use
 
     url = this.service.host + "/getTextSummaryResponse?url=" + urlArg;
 
@@ -1053,7 +1147,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
   {
     if (!this.temp)
     {
-      this.temp = new MsfDashboardChartValues (this.values.options, this.values.chartName,
+      this.temp = new MsfDashboardPanelValues (this.values.options, this.values.chartName,
         this.values.id, this.values.width, this.values.height);
     }
     else
@@ -1557,7 +1651,7 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     this.checkChartType ();
   }
 
-  handlerUpdateSucess(_this): void
+  handlerUpdateSuccess(_this): void
   {
     // set lastestResponse to null and remove temporary values since the panel has been updated
     _this.values.lastestResponse = null;
@@ -1621,13 +1715,13 @@ export class MsfDashboardChartmenuComponent implements OnInit {
             }
           }
 
-          panel.lastestResponse = variables;
+          panel.lastestResponse = JSON.stringify (variables);
         }
         else
           panel = _this.getPanelInfo (false);
 
         _this.globals.isLoading = true;
-        _this.service.updateDashboardPanel (_this, panel, _this.handlerUpdateSucess, _this.handlerError);
+        _this.service.updateDashboardPanel (_this, panel, _this.handlerUpdateSuccess, _this.handlerError);
       });
   }
 
@@ -1734,7 +1828,8 @@ export class MsfDashboardChartmenuComponent implements OnInit {
     let dialogHeight, numColors;
 
     if (this.values.currentChartType.flags & ChartFlags.XYCHART
-      || this.values.currentChartType.flags & ChartFlags.PIECHART)
+      || this.values.currentChartType.flags & ChartFlags.PIECHART
+      || this.values.currentChartType.flags & ChartFlags.FUNNELCHART)
     {
       dialogHeight = '340px';
       numColors = 12;
@@ -1754,6 +1849,19 @@ export class MsfDashboardChartmenuComponent implements OnInit {
         title: this.values.chartName,
         colors: this.values.paletteColors,
         numColors: numColors
+      }
+    });
+  }
+
+  goToDrillDownSettings(): void
+  {
+    this.dialog.open (MsfDashboardDrillDownComponent, {
+      height: '370px',
+      width: '400px',
+      panelClass: 'msf-dashboard-control-variables-dialog',
+      data: {
+        title: this.values.chartName,
+        chartColumnOptions: this.values.chartColumnOptions
       }
     });
   }

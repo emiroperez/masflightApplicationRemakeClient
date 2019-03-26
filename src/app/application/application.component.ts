@@ -13,7 +13,9 @@ import {ExcelService} from '../services/excel.service';
 import { MsfTableComponent } from '../msf-table/msf-table.component';
 import { PlanAdvanceFeatures } from '../model/PlanAdvanceFeatures';
 import { User } from '../model/User';
-
+import { DashboardMenu } from '../model/DashboardMenu';
+import { MsfEditDashboardComponent } from '../msf-edit-dashboard/msf-edit-dashboard.component';
+import { ApplicationService } from '../services/application.service';
 
 
 @Component({
@@ -31,6 +33,7 @@ export class ApplicationComponent implements OnInit {
   exportExcelPlan: boolean;
   dashboardPlan: boolean;
   menu: Menu;
+  dashboards: Array<DashboardMenu>;
   planAdvanceFeatures: any[];
   status: boolean;
   user: any[];
@@ -44,7 +47,8 @@ export class ApplicationComponent implements OnInit {
   @ViewChild('msfContainerRef')
   msfContainerRef: MsfContainerComponent;
 
-  constructor(public dialog: MatDialog, public globals: Globals, private service: MenuService,private router: Router,private excelService:ExcelService) {
+  constructor(public dialog: MatDialog, public globals: Globals, private service: MenuService,private router: Router,private excelService:ExcelService,
+    private appService: ApplicationService) {
     this.status = false;
   }
 
@@ -66,18 +70,27 @@ export class ApplicationComponent implements OnInit {
     _this.userName = data.name;
     _this.admin = data.admin;
      _this.globals.isLoading = false;
-
-    // if (_this.dashboardPlan)
-    //  _this.goToDashboard ();
   }
+
   errorLogin(_this,result){
     console.log(result);
      _this.globals.isLoading = false;
-
-    //  if (_this.dashboardPlan)
-    //  _this.goToDashboard ();
   }
 
+  getDashboardsUser(){
+    this.globals.isLoading = true;
+    this.service.getDashboardsByUser(this,this.handlerDashboard, this.errorHandler);
+  }
+
+  handlerDashboard(_this, data){
+    _this.dashboards = data;
+    _this.getAdvanceFeatures();
+  }
+
+  errorHandler(_this,result){
+    console.log(result);
+    _this.globals.isLoading = false;
+  }
   getAdvanceFeatures(){
     this.globals.isLoading = true;
     this.service.getAdvanceFeatures(this,this.handlerSuccessAF,this.handlerErrorAF);
@@ -141,7 +154,8 @@ export class ApplicationComponent implements OnInit {
         }
       });
     });
-    _this.getAdvanceFeatures();
+    _this.getDashboardsUser();
+
   }
 
 
@@ -258,11 +272,6 @@ toggle(){
     this.globals.selectedIndex = 3;
   }
 
-  goToDashboard(): void
-  {
-    this.globals.currentOption = 'dashboard';
-  }
-
   dynamicTable(){
     this.openDialog();
   }
@@ -321,6 +330,40 @@ toggle(){
     if (event.target.innerHeight == window.screen.height && event.target.innerWidth == window.screen.width)
       this.globals.isFullscreen = true;
     else
-    this.globals.isFullscreen = false;
+      this.globals.isFullscreen = false;
+  }
+
+  changeDashboardName(): void
+  {
+    this.dialog.open (MsfEditDashboardComponent, {
+      height: '160px',
+      width: '400px',
+      panelClass: 'msf-dashboard-control-variables-dialog',
+      data: {
+        currentDashboardMenu: this.globals.currentDashboardMenu
+      }
+    });
+  }
+
+  deleteSucess(_this): void
+  {
+    _this.temporalSelectOption (_this);
+  }
+
+  deleteError(_this): void
+  {
+    _this.globals.isLoading = false;
+  }
+
+  deleteDashboard(): void
+  {
+    this.appService.confirmationDialog (this, "Are you sure you want to delete this dashboard?",
+      function (_this)
+      {
+        _this.globals.isLoading = true;
+        _this.service.deleteDashboard (_this, _this.globals.currentDashboardMenu.id, _this.deleteSucess,
+          _this.deleteError);
+      }
+    );
   }
 }

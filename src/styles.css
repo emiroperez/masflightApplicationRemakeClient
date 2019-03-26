@@ -1282,7 +1282,13 @@ button[aria-expanded=true] {
 }
 
 .msf-menu-show-full-nav-component {
+  width: calc(100% - 300px);
+  transition: 0.5s;
+}
+
+.msf-menu-show-full-nav-component-wide {
   width: 100%;
+  transition: 0.5s;
 }
 
 .msf-menu-admin-icon {
@@ -1886,11 +1892,11 @@ mat-tab-group {
 }
 
 #msf-dashboard-panel-right-resize {
-  right: 0px;
+  right: 5px;
 }
 
 #msf-dashboard-panel-left-resize {
-  left: 0px;
+  left: -5px;
 }
 
 .msf-dashboard-container {
@@ -1903,6 +1909,10 @@ mat-tab-group {
   width: 100%;
   overflow-y: auto;
   transition: 0.5s;
+}
+.msf-dashboard-container .msf-dashboard-title {
+  padding-top: 10px;
+  font-size: 16px;
 }
 .msf-dashboard-container .msf-dashboard-empty {
   padding-top: 45px;
@@ -1930,14 +1940,14 @@ mat-tab-group {
   cursor: default;
 }
 .msf-dashboard-container .msf-dashboard-addmenu .msf-dashboard-addmenu-item-text:hover {
-  border: 1px solid #888888;
+  border: 1px solid #fff;
   color: #fff;
   display: table-cell;
   align-items: center;
   padding: 10px 40px;
 }
 .msf-dashboard-container .msf-dashboard-addmenu .msf-dashboard-addmenu-item-text {
-  border: 1px solid #888888;
+  border: 1px solid #fff;
   color: #fff;
   display: table-cell;
   align-items: center;
@@ -1982,9 +1992,6 @@ mat-tab-group {
 .msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-properties-align .msf-dashboard-column-properties-height-label {
   width: 60%;
 }
-.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-properties-align .msf-dashboard-column-properties-width-label {
-  width: 90%;
-}
 .msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open {
   position: relative;
   justify-content: center;
@@ -2008,15 +2015,26 @@ mat-tab-group {
 .msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-properties-align .msf-dashboard-column-properties-height-label {
   width: 60%;
 }
-.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-properties-align .msf-dashboard-column-properties-width-label {
-  width: 90%;
-}
 .msf-dashboard-button {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   position: absolute;
   width: 100%;
+}
+.msf-dashboard-button .msf-dashboard-button-close-icon {
+  color: inherit;
+  cursor: default;
+  font-size: 16px;
+  padding-right: 2px;
+  padding-top: 5px;
+}
+.msf-dashboard-button .msf-dashboard-button-close-icon:hover {
+  color: #01abec;
+  cursor: pointer;
+  font-size: 16px;
+  padding-right: 2px;
+  padding-top: 5px;
 }
 .msf-dashboard-button .msf-dashboard-button-icon {
   color: inherit;
@@ -2033,7 +2051,45 @@ mat-tab-group {
   padding-top: 5px;
 }
 
-.msf-dashboard-form-field .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-field-function .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-field-valuectrl .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-full-width .mat-form-field-underline, .msf-dashboard-chartmenu-sub-container-row .msf-full-width .mat-form-field-underline, .msf-dashboard-chartmenu-sub-container-row .msf-width-90 .mat-form-field-underline {
+.msf-dashboard-panel-button {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: flex-end;
+  position: absolute;
+  width: 100%;
+}
+.msf-dashboard-panel-button .msf-dashboard-button-close-icon {
+  color: inherit;
+  cursor: default;
+  font-size: 16px;
+  padding-right: 2px;
+  padding-top: 5px;
+}
+.msf-dashboard-panel-button .msf-dashboard-button-close-icon:hover {
+  color: #01abec;
+  cursor: pointer;
+  font-size: 16px;
+  padding-right: 2px;
+  padding-top: 5px;
+}
+.msf-dashboard-panel-button .msf-dashboard-button-move-icon {
+  margin-right: -8px;
+  color: inherit;
+  cursor: default;
+  font-size: 16px;
+  padding-right: 2px;
+  padding-top: 5px;
+}
+.msf-dashboard-panel-button .msf-dashboard-button-move-icon:hover {
+  margin-right: -8px;
+  color: #01abec;
+  cursor: move;
+  font-size: 16px;
+  padding-right: 2px;
+  padding-top: 5px;
+}
+
+.msf-dashboard-form-field .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-field-function .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-field-valuectrl .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-full-width .mat-form-field-underline, .msf-dashboard-panel-sub-container-row .msf-full-width .mat-form-field-underline, .msf-dashboard-panel-sub-container-row .msf-width-90 .mat-form-field-underline, .msf-dashboard-panel-sub-container-row .msf-width-80 .mat-form-field-underline {
   background-color: #595959;
 }
 
@@ -2052,15 +2108,15 @@ mat-tab-group {
   font-size: 22px;
 }
 
-.msf-dashboard-chartmenu-container {
+.msf-dashboard-panel-container {
   padding: 10px;
   background-color: #3b3b3b;
   overflow-y: visible;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   flex-direction: column;
 }
-.msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-variable-buttons {
+.msf-dashboard-panel-container .msf-dashboard-panel-variable-buttons {
   display: flex;
   flex-direction: row;
   width: 100%;
@@ -2069,7 +2125,7 @@ mat-tab-group {
   padding-top: 10px;
   font-size: 12px;
 }
-.msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-column {
+.msf-dashboard-panel-container .msf-dashboard-panel-sub-container-column {
   display: flex;
   flex-direction: row;
   width: 100%;
@@ -2078,14 +2134,14 @@ mat-tab-group {
   padding-top: initial;
   font-size: 12px;
 }
-.msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-column .msf-dashboard-addmenu-icon-item {
+.msf-dashboard-panel-container .msf-dashboard-panel-sub-container-column .msf-dashboard-addmenu-icon-item {
   align-items: center;
   padding-bottom: 5px;
 }
-.msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-column .msf-dashboard-addmenu-icon-item .msf-dashboard-chartmenu-item-text {
+.msf-dashboard-panel-container .msf-dashboard-panel-sub-container-column .msf-dashboard-addmenu-icon-item .msf-dashboard-panel-item-text {
   vertical-align: middle;
 }
-.msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-column-reverse {
+.msf-dashboard-panel-container .msf-dashboard-panel-sub-container-column-reverse {
   display: flex;
   flex-direction: row-reverse;
   width: 100%;
@@ -2094,26 +2150,26 @@ mat-tab-group {
   padding-top: initial;
   font-size: 12px;
 }
-.msf-dashboard-chartmenu-container .msf-dashboard-chartmenu-sub-container-column-reverse .msf-dashboard-chartmenu-control-variable-button {
+.msf-dashboard-panel-container .msf-dashboard-panel-sub-container-column-reverse .msf-dashboard-panel-control-variable-button {
   display: flex;
   width: 50px;
   flex-direction: column;
 }
 
-.msf-dashboard-chartmenu-container-invisible {
+.msf-dashboard-panel-container-invisible {
   display: none;
 }
 
-.msf-dashboard-chartmenu-container-chart {
+.msf-dashboard-panel-container-chart {
   padding: 10px;
   background-color: #222222;
   color: #ffffff;
   overflow-y: visible;
 }
-.msf-dashboard-chartmenu-container-chart .msf-dashboard-chartmenu-title {
+.msf-dashboard-panel-container-chart .msf-dashboard-panel-title {
   font-size: 12px;
 }
-.msf-dashboard-chartmenu-container-chart .msf-dashboard-chartmenu-sub-container-column {
+.msf-dashboard-panel-container-chart .msf-dashboard-panel-sub-container-column {
   display: flex;
   flex-direction: row;
   width: 100%;
@@ -2123,7 +2179,7 @@ mat-tab-group {
   font-size: 12px;
   position: relative;
 }
-.msf-dashboard-chartmenu-container-chart .msf-dashboard-chartmenu-sub-container-column .msf-dashboard-chartmenu-config-button {
+.msf-dashboard-panel-container-chart .msf-dashboard-panel-sub-container-column .msf-dashboard-panel-config-button {
   position: absolute;
   display: flex;
   width: calc(100% - 5px);
@@ -2146,10 +2202,17 @@ mat-tab-group {
 }
 .msf-dashboard-dialog .msf-dashboard-control-variables-close-button .msf-dashboard-close-icon, .msf-dashboard-info-function-title .msf-dashboard-control-variables-close-button .msf-dashboard-close-icon, .msf-dashboard-control-variables-title .msf-dashboard-control-variables-close-button .msf-dashboard-close-icon {
   font-size: 16px;
+  margin-top: -10px;
+  margin-right: -9px;
+  color: inherit;
+  cursor: inherit;
 }
 .msf-dashboard-dialog .msf-dashboard-control-variables-close-button .msf-dashboard-close-icon:hover, .msf-dashboard-info-function-title .msf-dashboard-control-variables-close-button .msf-dashboard-close-icon:hover, .msf-dashboard-control-variables-title .msf-dashboard-control-variables-close-button .msf-dashboard-close-icon:hover {
-  cursor: pointer;
   font-size: 16px;
+  margin-top: -10px;
+  margin-right: -9px;
+  color: #01abec;
+  cursor: pointer;
 }
 
 .msf-dashboard-control-variables-title {
@@ -2182,7 +2245,7 @@ mat-tab-group {
   position: relative;
 }
 
-.msf-dashboard-chartmenu-sub-container-row {
+.msf-dashboard-panel-sub-container-row {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -2191,6 +2254,12 @@ mat-tab-group {
   padding-top: initial;
   font-size: 12px;
   align-items: center;
+}
+.msf-dashboard-panel-sub-container-row .msf-dashboard-function-measure {
+  width: 90%;
+}
+.msf-dashboard-panel-sub-container-row .msf-width-80 {
+  width: 80%;
 }
 .msf-dashboard-control-variables {
   overflow-y: auto;
@@ -2295,6 +2364,11 @@ mat-tab-group {
   transition: max-height 1s ease-in;
   opacity: 1;
   transition: opacity 2s ease-out;
+}
+
+.msf-dashboard-panel-context-menu {
+  position: absolute;
+  z-index: 1;
 }
 
 .msf-dynamic-table-variable-title {
@@ -2699,12 +2773,11 @@ mat-dialog-container {
   top: 0;
   width: 100%;
   height: 100%;
-  opacity: 0.9;
-  background-color: rgba(0, 0, 0, 0.9);
+  background-color: #1F1F1F;
   background-image: url(assets/images/loading_pulse.gif);
   background-repeat: no-repeat;
   background-position: center;
-  background-size: contain;
+  background-size: 25%;
 }
 
 .mat-tab-header, .mat-tab-nav-bar {
@@ -3624,7 +3697,7 @@ img.msf-calendar-image {
 }
 
 .cancel-button.mat-button {
-  top: 65%;
+  top: 73%;
   margin: auto;
   padding: 5px 20px;
   display: flex;

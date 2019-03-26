@@ -4,15 +4,26 @@
     
         <ng-container  [matColumnDef]="column.columnName" *ngFor="let column of metadata">
           <th mat-header-cell *matHeaderCellDef mat-sort-header > {{column.columnLabel}} </th>
-          <td mat-cell *matCellDef="let element"> 
+          <td mat-cell *matCellDef="let element,let rowNumber = index"> 
+            <span *ngIf="column.drillDowns.length==0">
+              <span *ngIf="column.columnType!='number'">{{element[column.columnName]}} </span>
+              <span *ngIf="column.columnType=='number' && column.columnFormat=='$'">${{getFormatCell(element[column.columnName]) | number:'.0-2':'en'}} </span>
+              <span *ngIf="column.columnType=='number' && column.columnFormat=='%'"> {{getFormatCell(element[column.columnName]) | number:'.0-2':'en'}}%</span>
+              <span *ngIf="column.columnType=='number' && column.columnFormat=='temp'"> {{getFormatCell(element[column.columnName]) | number:'.0-2':'en'}}°</span>
+              <span *ngIf="column.columnType=='number' && column.columnFormat==null"> {{getFormatCell(element[column.columnName]) | number:'.0-2':'en'}} </span>
+          </span>
+          <span *ngIf="column.drillDowns.length>0" [matMenuTriggerFor]="menu">
             <span *ngIf="column.columnType!='number'">{{element[column.columnName]}} </span>
             <span *ngIf="column.columnType=='number' && column.columnFormat=='$'">${{getFormatCell(element[column.columnName]) | number:'.0-2':'en'}} </span>
             <span *ngIf="column.columnType=='number' && column.columnFormat=='%'"> {{getFormatCell(element[column.columnName]) | number:'.0-2':'en'}}%</span>
             <span *ngIf="column.columnType=='number' && column.columnFormat=='temp'"> {{getFormatCell(element[column.columnName]) | number:'.0-2':'en'}}°</span>
             <span *ngIf="column.columnType=='number' && column.columnFormat==null"> {{getFormatCell(element[column.columnName]) | number:'.0-2':'en'}} </span>
-            <!-- <span *ngIf="column.columnType=='date' && column.columnFormat==null"> {{element[column.columnName]}} </span>
-            <span *ngIf="column.columnType=='date' && column.columnFormat!=null"> {{element[column.columnName] | date:'':'en'}} </span> -->
+          </span>
+          <mat-menu #menu="matMenu" [style.visibility]="column.drillDowns.length!=0? 'visible' : 'hidden'">
+              <button mat-menu-item *ngFor="let drillDown of column.drillDowns" (click)="openSubQuery(drillDown,rowNumber)">{{drillDown.title}}</button>
+            </mat-menu>
           </td>
+
         </ng-container>
   
       <tr mat-header-row *matHeaderRowDef="displayedColumns" ></tr>

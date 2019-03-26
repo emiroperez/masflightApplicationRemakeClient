@@ -1,0 +1,17 @@
+<div class="msf-dashboard-info-function-title">
+    <div class="msf-dashboard-control-variables-close-button">
+        <mat-icon class="msf-dashboard-close-icon" aria-label="close" (click)="onNoClick()">close</mat-icon>
+    </div>
+    Dashboard Title
+</div>
+<div class="msf-dashboard-panel-sub-container-row" style="color: #fff; padding-top: 10px">
+    <div class="msf-dashboard-function-measure">
+        <mat-form-field>
+            <input matInput autocomplete="off" type="text" placeholder="Name" [(ngModel)]="title" />
+        </mat-form-field>
+    </div>
+</div>
+<div class="msf-dashboard-control-variables-button">
+    <button mat-flat-button class="flat-button" (click)="confirmChanges(true)" [mat-dialog-close]="data">OK</button> &nbsp;&nbsp;
+    <button mat-flat-button class="flat-button" (click)="onNoClick()">Cancel</button>
+</div>

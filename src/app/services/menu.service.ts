@@ -15,7 +15,7 @@ const httpOptions = {
 export class MenuService {
   SECURITY_HEADER = "Authorization";
   TOKEN_STORAGE_KEY = "token";
-  constructor( private http: HttpClient, private globals:Globals) { 
+  constructor( private http: HttpClient, private globals:Globals) {
   }
 
   getMenu(_this,successHandler, errorHandler){
@@ -46,6 +46,35 @@ export class MenuService {
     this.get(_this, url, successHandler, errorHandler);
   }
 
+  getDashboardsByUser(_this, successHandler, errorHandler){
+    let url = "/getDashboards?application=" + _this.globals.currentApplication.id;
+
+    if (_this.globals.baseUrl != "")
+      this.get (_this, _this.globals.baseUrl + url, successHandler, errorHandler);
+    else
+      this.get (_this, _this.globals.baseUrl + "/secure" + url, successHandler, errorHandler);
+  }
+
+  addDashboard(_this, data, successHandler, errorHandler){
+    let url = "/addDashboardMenu";
+    if (_this.globals.baseUrl != ""){
+        this.post (_this,  _this.globals.baseUrl + url,data, successHandler, errorHandler);
+    }else{
+      this.postSecure (_this, _this.globals.baseUrl + "/secure" + url, data, successHandler, errorHandler);
+}
+  }
+
+  updateDashboardTitle(_this, id, title, successHandler, errorHandler)
+  {
+    let url = _this.globals.baseUrl+ "/updateDashboardTitle?id=" + id + "&title=" + title;
+    this.post (_this, url, null, successHandler, errorHandler);
+  }
+
+  deleteDashboard(_this, id, successHandler, errorHandler)
+  {
+    let url = _this.globals.baseUrl+ "/deleteDashboard?id=" + id;
+    this.post (_this, url, null, successHandler, errorHandler);
+  }
 
   createAuthorizationHeader() {
     httpOptions.headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -59,6 +88,23 @@ export class MenuService {
     }, error =>
         errorHandler(_this,error)
   );
+  }
+
+  post = function (_this,url, data, successHandler, errorHandler) {
+    this.http.post(url, data).subscribe(result => {
+        successHandler(_this,result);
+      }, error =>
+      errorHandler(_this,error)
+    );
+  }
+
+  postSecure = function (_this,url, data, successHandler, errorHandler) {
+    this.createAuthorizationHeader();
+    this.http.post(url, data,httpOptions).subscribe(result => {
+        successHandler(_this,result);
+      }, error =>
+      errorHandler(_this,error)
+    );
   }
 
   // get = function (_this,url,successHandler, errorHandler){

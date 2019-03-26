@@ -125,7 +125,7 @@ import { MsfGroupingDailyStaticsComponent } from './msf-grouping-daily-statics/m
 import { MsfQuarterHourComponent } from './msf-quarter-hour/msf-quarter-hour.component';
 import { MsfFunctionsComponent } from './msf-functions/msf-functions.component';
 import { MsfDashboardComponent } from './msf-dashboard/msf-dashboard.component';
-import { MsfDashboardChartmenuComponent } from './msf-dashboard-chartmenu/msf-dashboard-chartmenu.component';
+import { MsfDashboardPanelComponent } from './msf-dashboard-panel/msf-dashboard-panel.component';
 import { MsfGroupingOperationsSummaryComponent } from './msf-grouping-operations-summary/msf-grouping-operations-summary.component';
 import { MsfGroupingHubSummariesComponent } from './msf-grouping-hub-summaries/msf-grouping-hub-summaries.component';
 import { MsfRegionScheduleComponent } from './msf-region-schedule/msf-region-schedule.component';
@@ -146,7 +146,6 @@ import { MsfFareIncrementsMarketHistogramsComponent } from './msf-fare-increment
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { MsfConfirmationDialogComponent } from './msf-confirmation-dialog/msf-confirmation-dialog.component';
-import { MsfDashboardPanelSizePipe } from './msf-dashboard/msf-dashboard-panelsizepipe';
 import { MsfSchedulePanelComponent } from './msf-schedule-panel/msf-schedule-panel.component';
 import { MsfScheduleMapsComponent } from './msf-schedule-maps/msf-schedule-maps.component';
 import { MsfSchedulePanelInfoComponent } from './msf-schedule-panel-info/msf-schedule-panel-info.component';
@@ -159,6 +158,13 @@ import { MsfGroupingMariadbComponent } from './msf-grouping-mariadb/msf-grouping
 import { MsfContentTypeComponent } from './msf-content-type/msf-content-type.component';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { MsfDashboardColorPickerComponent } from './msf-dashboard-color-picker/msf-dashboard-color-picker.component';
+import { MsfEditDashboardComponent } from './msf-edit-dashboard/msf-edit-dashboard.component';
+import { MsfAddDashboardComponent } from './msf-add-dashboard/msf-add-dashboard.component';
+import { MsfDashboardDrillDownComponent } from './msf-dashboard-drill-down/msf-dashboard-drill-down.component';
+import { MsfDashboardChildPanelComponent } from './msf-dashboard-child-panel/msf-dashboard-child-panel.component';
+import { MsfTotalTypeComponent } from './msf-total-type/msf-total-type.component';
+import { MsfGroupingCompGenreComponent } from './msf-grouping-comp-genre/msf-grouping-comp-genre.component';
+import { MsfGroupingCompTotalComponent } from './msf-grouping-comp-total/msf-grouping-comp-total.component';
 
 @NgModule({
   declarations: [
@@ -266,7 +272,7 @@ import { MsfDashboardColorPickerComponent } from './msf-dashboard-color-picker/m
     MsfQuarterHourComponent,
     MsfFunctionsComponent,
     MsfDashboardComponent,
-    MsfDashboardChartmenuComponent,
+    MsfDashboardPanelComponent,
     MsfGroupingOperationsSummaryComponent,
     MsfGroupingHubSummariesComponent,
     MsfRegionScheduleComponent,
@@ -287,7 +293,6 @@ import { MsfDashboardColorPickerComponent } from './msf-dashboard-color-picker/m
     ForgotPasswordComponent,
     ResetPasswordComponent,
     MsfConfirmationDialogComponent,
-    MsfDashboardPanelSizePipe,
     MsfSchedulePanelComponent,
     MsfScheduleMapsComponent,
     MsfSchedulePanelInfoComponent,
@@ -298,6 +303,13 @@ import { MsfDashboardColorPickerComponent } from './msf-dashboard-color-picker/m
     MsfGroupingMariadbComponent,
     MsfContentTypeComponent,
     MsfDashboardColorPickerComponent,
+    MsfEditDashboardComponent,
+    MsfAddDashboardComponent,
+    MsfDashboardDrillDownComponent,
+    MsfDashboardChildPanelComponent,
+    MsfTotalTypeComponent,
+    MsfGroupingCompGenreComponent,
+    MsfGroupingCompTotalComponent
   ],
   imports: [
     BrowserModule,
@@ -361,7 +373,11 @@ import { MsfDashboardColorPickerComponent } from './msf-dashboard-color-picker/m
     MsfDashboardControlVariablesComponent,
     MsfConfirmationDialogComponent,
     MsfDashboardInfoFunctionsComponent,
-    MsfDashboardColorPickerComponent
+    MsfDashboardColorPickerComponent,
+    MsfEditDashboardComponent,
+    MsfAddDashboardComponent,
+    MsfDashboardDrillDownComponent,
+    MsfDashboardChildPanelComponent
   ]
 })
 export class AppModule { }
