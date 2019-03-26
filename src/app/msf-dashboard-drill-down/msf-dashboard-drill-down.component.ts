@@ -28,8 +28,7 @@ export class MsfDashboardDrillDownComponent {
     { name: 'Area', flags: ChartFlags.XYCHART | ChartFlags.AREACHART },
     { name: 'Stacked Area', flags: ChartFlags.XYCHART | ChartFlags.STACKED | ChartFlags.AREACHART },
     { name: 'Pie', flags: ChartFlags.PIECHART },
-    { name: 'Donut', flags: ChartFlags.DONUTCHART }//,
-    // { name: 'Information', flags: ChartFlags.INFO }
+    { name: 'Donut', flags: ChartFlags.DONUTCHART }
   ];
 
   functions:any[] = [
@@ -42,7 +41,6 @@ export class MsfDashboardDrillDownComponent {
 
   chartForm: FormGroup;
   currentValue: MsfDashboardPanelValues;
-  childPanelValues: MsfDashboardPanelValues[] = [];
 
   paletteColors: string[] = [
     "#01b0a1",
@@ -85,12 +83,15 @@ export class MsfDashboardDrillDownComponent {
     this.optionSearchChange (this.dataFormFilterCtrl);
 
     // add child panels in order to be able to configure the drill down settings
-    for (let i = 0; i < data.drillDownOptions.length; i++)
+    if (!data.childPanelValues.length)
     {
-      this.childPanelValues.push (new MsfDashboardPanelValues (data.drillDownOptions,
-        data.drillDownOptions[i].title, -1, null, null));
+      for (let i = 0; i < data.drillDownOptions.length; i++)
+      {
+        data.childPanelValues.push (new MsfDashboardPanelValues (data.drillDownOptions,
+          data.drillDownOptions[i].title, -1, null, null));
 
-      this.childPanelValues[i].currentChartType = this.chartTypes[0];
+        data.childPanelValues[i].currentChartType = this.chartTypes[0];
+      }
     }
 
     // set initial values
@@ -211,9 +212,9 @@ export class MsfDashboardDrillDownComponent {
 
   loadChartFilterValues(component): void
   {
-    this.currentValue = this.childPanelValues [this.data.drillDownOptions.indexOf (component)];
+    this.currentValue = this.data.childPanelValues [this.data.drillDownOptions.indexOf (component)];
     this.globals.isLoading = true;
-    this.getChartFilterValues (component.childrenOptionId, this.addChartFilterValues);
+    this.getChartFilterValues (component.childrenOptionId.id, this.addChartFilterValues);
   }
 
   getChartFilterValues(id, handlerSuccess): void
