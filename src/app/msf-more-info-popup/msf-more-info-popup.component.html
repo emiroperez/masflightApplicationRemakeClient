@@ -1,0 +1,38 @@
+<div  *ngIf="globals.popupMainElement" class="msf-more-info-popup-image"  [ngStyle]="{'background-image': 'url(' + getBackground() + ')'}">
+    <div  *ngIf="globals.popupMainElement" class="msf-more-info-black">
+  <div class="msf-moreinfo-control-variables-title ">
+      <div class="msf-dashboard-control-variables-close-button">
+        <mat-icon style="height: 35px;width: 35px;font-size: 35px;cursor: pointer;"class="msf-dashboard-close-icon" aria-label="close" (click)="closeDialog()">close</mat-icon>
+      </div>
+  </div>
+  <div class="msf-more-info-popup-content">
+    <div class="msf-media-title-container">
+        <div class="msf-media-title">Title</div>
+        <div class="msf-media-title-value">{{globals.popupMainElement[0].title}}</div>
+      </div>
+   </div>
+    <div class="msf-media-info-container">
+        <div class="msf-media-info-row" *ngFor="let info of globals.subDisplayedColumns" >
+          <div class="msf-media-info" *ngIf="info.columnName!='title'">{{info.columnLabel}}</div>
+          <div class="msf-media-info-value" *ngIf="info.columnName!='title' && info.columnType=='string' && info.columnFormat==null">
+            {{globals.popupMainElement[0][info.columnName]}}
+          </div>
+          <div class="msf-media-info-value" *ngIf="info.columnName!='title' && info.columnType=='number' && info.columnFormat==null">
+            {{ globals.popupMainElement[0][info.columnName] | number:'.0-2':'en'}}
+          </div>
+          <div class="msf-media-info-value" *ngIf="info.columnName!='title' && info.columnType=='number' && info.columnFormat=='$'">
+              ${{globals.popupMainElement[0][info.columnName] | number:'.0-2':'en'}}
+          </div>
+          <div class="msf-media-info-value" *ngIf="info.columnName!='title' && info.columnType=='number' && info.columnFormat=='min'">
+              {{ getFormatMinutes(globals.popupMainElement[0][info.columnName]) }}
+          </div>
+       </div>
+    </div>
+    <!-- <div class="msf-dashboard-control-variables-button">
+        <button mat-flat-button class="flat-button" (click)="closeDialog()">OK</button>
+    </div> -->
+  </div>
+</div>
+
+<div [ngClass]="!globals.popupResponse? 'tab-show':'tab-hide'" id='loading-panel-popup' class='loading-panel-popup'>
+</div>

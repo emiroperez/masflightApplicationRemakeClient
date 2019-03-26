@@ -10,6 +10,7 @@ export class Globals {
   currentUser: any;
   currentArgs: any;
   isLoading: boolean = false;
+  popupLoading: boolean = false;
   sort: MatSort;
   chart: boolean = false;
   map: boolean = false;
@@ -20,7 +21,9 @@ export class Globals {
   generateDynamicTable = false;
   selectedIndex = 0;
   displayedColumns;
+  subDisplayedColumns;
   metadata;
+  subMetadata;
   totalRecord = 0;
   dataSource : boolean = false;
   startTimestamp = null;
@@ -28,7 +31,9 @@ export class Globals {
   bytesLoaded = 0;
   airports: Observable<any[]>;
   moreResults : boolean = false;
+  subMoreResults : boolean = false;
   moreResultsBtn : boolean = true;
+  subMoreResultsBtn : boolean = true;
   currentApplication : any;
   currentDashboardMenu : any;
   minDate:any;
@@ -53,6 +58,10 @@ export class Globals {
   Airportdatadest:any;
   scheduleChart :AmChart;
   schedulepanelinfo :any;
+  subTotalRecord = 0;
+  currentDrillDown: any;
+  popupMainElement: any;
+  popupResponse: any;
    initDataSource(){
     if(this.currentMenuCategory!= null){
     if(this.currentMenuCategory.welcome!= null){
