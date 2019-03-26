@@ -25,11 +25,12 @@
     </table>
   </div>
   <div *ngIf="checkarray(item.Flight)">
-    
-    <table class="msf-schedule-panel-table" *ngFor="let fly of item.Flight" >
+    <div *ngFor="let fly of item.Flight" >
+        <h3 class="msf-schedule-panel-subs">{{fly.content}}</h3>  
+    <table class="msf-schedule-panel-table"  >
         <tr *ngFor="let entry  of fly | keyvalue"  ><td *ngIf="globals.metadata.get(entry.key)" >{{globals.metadata.get(entry.key)}}</td><td *ngIf="globals.metadata.get(entry.key)">{{entry.value}}</td></tr>
     </table>
-
+  </div>
   </div>
   </mat-expansion-panel>
 
