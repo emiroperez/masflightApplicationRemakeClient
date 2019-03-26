@@ -45,7 +45,7 @@ export class EditOutputOptionsMetaDialog {
     @Inject(MAT_DIALOG_DATA) public data : {outputs: any, option: any}) { }
 
 
-    displayedColumns = ['columnLabel', 'columnName', 'columnType', 'columnFormat', 'grouping'];
+    displayedColumns = ['columnLabel', 'columnName', 'columnType', 'columnFormat', 'grouping', 'unit'];
     dataSource = new MatTableDataSource(this.data.outputs);
 
     addOption() {
@@ -59,6 +59,7 @@ export class EditOutputOptionsMetaDialog {
         columnType: 'string',
         columnFormat: null,
         grouping: 0,
+        unit: '',
         delete: false});
       this.dataSource = new MatTableDataSource(this.data.outputs);
     }
@@ -263,8 +264,6 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
       if (result != undefined) {
         __this.outputs = result;
         __this.saveMeta();
-        console.log("envio");
-        console.log(result);
       }
     });
 
@@ -286,7 +285,6 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
       if (!option.isRoot && option.id) {
         this.getOptionCategoryArguments();
       }
-      console.log("was selected: " + option.label);
     }
   }
 
@@ -304,7 +302,6 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     } else {
       this.categoryArgumentSelected = category;
     }
-    console.log("was selected: " + category.categoryArgumentsId.label);
   }
 
   clearSelectedCategoryArguments() {
@@ -389,7 +386,6 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
         data: { title:"Error", message: "You have empty options, please complete them and try again."}
       });
     }else {
-      console.log("ok");
       this.verifyOrder();
       this.service.saveMenu(this, this.menu, this.handlerSuccessSaveMenuData, this.handlerErrorSaveMenuData);
     }
