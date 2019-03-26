@@ -1217,7 +1217,7 @@ button[aria-expanded="true"]
     background-color: inherit
     font-size: 90%
 
-.msf-menu-arguments-container-hiden
+.msf-menu-arguments-container-hidden
     @extend .msf-menu-arguments-container
     max-height: 0
     transition: max-height 2s ease-out
@@ -1843,6 +1843,8 @@ mat-tab-group
         @include msf-dashboard-panel-sub-container(row, 5px, 10px)
     .msf-dashboard-panel-sub-container-column
         @include msf-dashboard-panel-sub-container(row, 5px)
+        .msf-full-width
+            @extend .msf-dashboard-form-field
         .msf-dashboard-addmenu-icon-item
             align-items: center
             padding-bottom: 5px
@@ -2008,7 +2010,7 @@ mat-tab-group
     background-color: inherit
     font-size: 90%
 
-.msf-dashboard-menu-arguments-container-hiden
+.msf-dashboard-menu-arguments-container-hidden
     @extend .msf-dashboard-menu-arguments-container
     max-height: 0
     transition: max-height 2s ease-out
@@ -2616,7 +2618,7 @@ li.msf-select:before
     position: absolute
     left: 20px
 
-.msf-hiden
+.msf-hidden
     display: none
 
 .msf-detail-container

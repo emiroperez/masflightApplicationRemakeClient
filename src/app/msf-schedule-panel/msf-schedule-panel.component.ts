@@ -55,19 +55,19 @@ export class MsfSchedulePanelComponent implements OnInit {
         for(var k =0;k<airportsarray.length; k+=1){
           nodeair = { 
             "svgPath": targetSVG,
-             "title": airportsarray[k].airportname,
-             "latitude": airportsarray[k].airportlat,
-             "longitude": airportsarray[k].airportlgt,
-             "label": airportsarray[k].airportname,
+             "title": airportsarray[k].title,
+             "latitude": airportsarray[k].latitude,
+             "longitude": airportsarray[k].longitude,
+             "label": airportsarray[k].title,
              "labelColor" :"#ffffff",
              "labelFontSize" : 12
           }
-          this.mapaairports.set( airportsarray[k].airportname+"_"+index, nodeair);
+          this.mapaairports.set( airportsarray[k].id, nodeair);
           airports.push(nodeair);
          }
       }else{
         for(var k =0;k<airportsarray.length; k+=1){
-        this.mapaairports.delete(airportsarray[k].airportname+"_"+index);
+        this.mapaairports.delete(airportsarray[k].id);
         }
       }
           

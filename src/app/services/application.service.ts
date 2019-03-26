@@ -324,4 +324,16 @@ export class ApplicationService {
     this.http.get(_this, url, handlerSuccess, handlerError, null);
     console.log(url);
   }
+
+  getDrillDown(_this, optionId, handlerSuccess, handlerError)
+  {
+    let url = this.host + "/getDrillDown?optionId=" + optionId;
+    this.http.get (_this, url, handlerSuccess, handlerError, null);
+  }
+
+  saveChildPanels(_this, info, handlerSuccess, handlerError)
+  {
+    let url = this.host + "/saveChildPanels";
+    this.http.post (_this, url, info, handlerSuccess, handlerError);
+  }
 }
