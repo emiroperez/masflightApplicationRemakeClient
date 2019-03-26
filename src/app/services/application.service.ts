@@ -323,4 +323,10 @@ export class ApplicationService {
     this.http.get(_this, url, handlerSuccess, handlerError, null);
     console.log(url);
   }
+
+  getDrillDown(_this, optionId, handlerSuccess, handlerError)
+  {
+    let url = this.host + "/getDrillDown?optionId=" + optionId;
+    this.http.get(_this, url, handlerSuccess, handlerError, null);
+  }
 }

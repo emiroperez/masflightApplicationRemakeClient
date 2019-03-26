@@ -7,17 +7,18 @@
 <!--<div class="msf-dashboard-panel-container" *ngIf="!values.displayChart && !values.displayInfo">-->
 <div class="msf-dashboard-panel-container" style="background-color: inherit; padding: inherit; color: #fff">
   <div class="msf-dashboard-panel-sub-container-column">
-    <mat-form-field class="msf-full-width">
-      <mat-select placeholder="Drill Down">
-        <mat-option *ngFor="let option of [1, 2, 3]" [value]="option">
-          {{option}}
+    <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+      <mat-select formControlName="optionCtrl" placeholder="Drill Down" (selectionChange)="loadChartFilterValues($event.value)">
+        <ngx-mat-select-search [formControl]="dataFormFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+        <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+          {{option.title}}
         </mat-option>
       </mat-select>
     </mat-form-field>
   </div>
   <div class="msf-dashboard-panel-sub-container-column">
     <mat-form-field class="msf-full-width">
-      <mat-select placeholder="Chart Type" [(ngModel)]="currentChartType">
+      <mat-select placeholder="Chart Type" [(ngModel)]="currentValue.currentChartType">
         <mat-option *ngFor="let chartType of chartTypes" [value]="chartType">
           {{chartType.name}}
         </mat-option>
@@ -56,6 +57,21 @@
             <mat-form-field [formGroup]="chartForm" class="msf-full-width">
               <mat-select formControlName="xaxisCtrl" placeholder="x - Axis" #xaxisSelect>
                 <ngx-mat-select-search [formControl]="xaxisFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+                <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
+                  {{variable.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="msf-dashboard-chart-selector">
+          <div class="msf-dashboard-chart-analysis-title">
+            <mat-icon class="msf-dashboard-chart-icon">show_chart</mat-icon>
+          </div>
+          <div class="msf-dashboard-chart-op-container">
+            <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+              <mat-select formControlName="valueCtrl" placeholder="Values">
+                <ngx-mat-select-search [formControl]="valueFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
                 <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
                   {{variable.name}}
                 </mat-option>
