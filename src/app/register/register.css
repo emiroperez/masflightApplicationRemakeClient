@@ -14,3 +14,8 @@
     padding-top: 10px;
     padding-left: 30px;
 }
+
+.myInput {
+    height: 50px !important;
+    padding: 10px !important;
+}

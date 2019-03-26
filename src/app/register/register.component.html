@@ -73,28 +73,22 @@
                         </li>
                         <li class="msf-select">
                             <mat-form-field class="msf-item">
-                                <mat-select placeholder="Country" autocomplete="off" class="input-register" [formControl]="personalInformationForm.get('countryValidator')" (selectionChange)="CountryChangeEvent($event)" name="country" [(ngModel)]="users.country" required>
-                                    <mat-option>--</mat-option>
-                                    <mat-option *ngFor="let country of countries" [value]="country">
+                                <mat-select placeholder="Country" autocomplete="off" class="input-register" [formControl]="personalInformationForm.get('countryValidator')" [(ngModel)]="users.country" (selectionChange)="CountryChangeEvent($event)" name="country" required (openedChange)="myInput.focus()">
+                                    <input class="myInput" #myInput matInput focused="'true'" type="text" (keyup)="searchCountry($event.target.value)" autocomplete="off" placeholder="search">
+                                    <mat-option *ngFor="let country of selectedCountries" [value]="country">
                                         {{country.name}}
                                     </mat-option>
                                 </mat-select>
 
                                 <mat-error *ngIf="personalInformationForm.get('countryValidator')?.invalid">{{getErrorCountryMessage()}}</mat-error>
                             </mat-form-field>
-                            <!-- <mat-form-field>
-                                <ng-select style="min-height: 51.5px;" (change)="CountryChangeEvent($event)" [items]="countries" bindLabel="name" dropdownPosition="bottom" placeholder="Country" matInput autocomplete="off" class="msf-select-input msf-imput msf-register-select msf-register-select"
-                                    [formControl]="personalInformationForm.get('countryValidator')" name="country" [(ngModel)]="users.country" required>
-                                </ng-select>
-                                <mat-error class="msf-select msf-select-error" *ngIf="personalInformationForm.get('countryValidator')?.invalid">{{getErrorCountryMessage()}}</mat-error>
-                            </mat-form-field> -->
                         </li>
 
                         <li class="msf-select">
                             <mat-form-field class="msf-item">
                                 <mat-select placeholder="State" autocomplete="off" class="input-register" name="state" [(ngModel)]="users.CState">
-                                    <mat-option>--</mat-option>
-                                    <mat-option *ngFor="let state of states" [value]="state">
+                                    <input class="myInput" #myInput matInput focused="'true'" type="text" (keyup)="searchState($event.target.value)" autocomplete="off" placeholder="search">
+                                    <mat-option *ngFor="let state of selectedStates" [value]="state">
                                         {{state.name}}
                                     </mat-option>
                                 </mat-select>
@@ -192,7 +186,7 @@
                                     Expiry Date
                                 </div>
                                 <mat-form-field class="msf-input-prompt-field msf-item">
-                                    <input matInput autocomplete="off" type="text" mask="99/99" placeholder="MM   /  YY" class="msf-imput" [formControl]="paymentInformationForm.get('expiryDateValidator')" name="expiryDate" [(ngModel)]="users.payment.expiryDate" />
+                                    <input matInput autocomplete="off" type="text" mask="00/00" placeholder="MM/YY" class="msf-imput" [formControl]="paymentInformationForm.get('expiryDateValidator')" name="expiryDate" [(ngModel)]="users.payment.expiryDate" />
                                     <mat-error *ngIf="paymentInformationForm.get('expiryDateValidator')?.invalid">{{getErrorExpiryDateMessage()}}</mat-error>
 
                                 </mat-form-field>

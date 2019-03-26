@@ -30,7 +30,8 @@ export class RegisterComponent implements OnInit {
   userPlan : UserPlan;
   countries: County[];
   states : State[];
-
+  selectedCountries: County[];
+  selectedStates: State[];
   isLinear = true;
   title: string = 'Personal Information';
   /* nameValidator = new FormControl('name', [Validators.required]);
@@ -57,8 +58,11 @@ export class RegisterComponent implements OnInit {
     countryValidator : new FormControl('country', [Validators.required]),
     stateValidator : new FormControl('state', [Validators.required]),
     postalCodeValidator : new FormControl('postalCode', [Validators.required]),
-    phoneNumberValidator : new FormControl('phoneNumber', [Validators.required])
+    phoneNumberValidator : new FormControl('phoneNumber', [Validators.required]),
+
   });
+
+  public countryFilterCtrl: FormControl = new FormControl();
 
   planInformationForm = new FormGroup({
     planValidator : new FormControl('prices',[Validators.required])
@@ -135,6 +139,7 @@ export class RegisterComponent implements OnInit {
 
   renderCountries(_this,data){
     _this.countries = data;
+    _this.selectedCountries = _this.countries;
   }
 
   errorCountries(_this,error){
@@ -143,15 +148,12 @@ export class RegisterComponent implements OnInit {
 
   CountryChangeEvent(event){
     this.users.CState=null;
-    console.log(event);
     if (event != undefined){
-      console.log(event)
       this.states = event.value.states;
+      this.selectedStates = this.states;
     }else{
       this.states=[];
-      console.log('mmop');
     }
-    console.log(this.states);
   }
 
 
@@ -341,6 +343,38 @@ export class RegisterComponent implements OnInit {
       return 'MONTH';
     }
     return 'YEAR'
+  }
+
+  searchCountry(query: string){
+    this.selectedCountries = this.countries;
+    let result = this.selectCountries(query);
+    this.selectedCountries = result;
+  }
+
+  searchState(query: string){
+    this.selectedStates = this.states;
+    let result = this.selectStates(query);
+    this.selectedStates = result;
+  }
+
+  selectCountries(query: string):County[]{
+    let result: County[] = [];
+    for(let a of this.countries){
+      if(a.name.toLowerCase().indexOf(query) > -1){
+        result.push(a)
+      }
+    }
+    return result;
+  }
+
+  selectStates(query: string):State[]{
+    let result: State[] = [];
+    for(let a of this.states){
+      if(a.name.toLowerCase().indexOf(query) > -1){
+        result.push(a)
+      }
+    }
+    return result;
   }
 
 }
