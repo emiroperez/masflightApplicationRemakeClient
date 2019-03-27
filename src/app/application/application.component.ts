@@ -135,7 +135,7 @@ export class ApplicationComponent implements OnInit {
     _this.globals.isLoading = true;
     _this.menu.categories.forEach(category => {
       category.options.forEach(option => {
-        if(option.id==100 && this.globals.currentApplication.id==3){
+        if(option.id==166 && this.globals.currentApplication.id==3){
           _this.globals.clearVariables();
           this.globals.currentMenuCategory = category;
           _this.globals.currentOption = option;

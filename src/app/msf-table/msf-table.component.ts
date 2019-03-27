@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewChild, Input ,ChangeDetectorRef, ElementRef} from '@angular/core';
-import {MatSort, MatTableDataSource, MatTab, Sort} from '@angular/material';
+import {MatSort, MatTableDataSource, MatTab, Sort, MatDialog} from '@angular/material';
 import { Globals } from '../globals/Globals';
 import { ApplicationService } from '../services/application.service';
 import { MsfGroupingComponent } from '../msf-grouping/msf-grouping.component';
 import { Utils } from '../commons/utils';
 import { MessageComponent } from '../message/message.component';
 import { parseIntAutoRadix } from '@angular/common/src/i18n/format_number';
+import { MsfMoreInfoPopupComponent } from '../msf-more-info-popup/msf-more-info-popup.component';
 
 
 
@@ -51,7 +52,7 @@ export class MsfTableComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(public globals: Globals, private service: ApplicationService,private ref: ChangeDetectorRef) { }
+  constructor(public globals: Globals, private service: ApplicationService,private ref: ChangeDetectorRef,public dialog: MatDialog) { }
 
   ngOnInit() {      
     
@@ -431,27 +432,99 @@ export class MsfTableComponent implements OnInit {
     return aux;
   }
 
-  openSubQuery(drillDown : any,rowNumber: any){
-    // var parameters = this.getSubOptionParameters(drillDown.drillDownParameter);
-    // this.service.getSubDataTableSource(this,drillDown.childrenOptionId,this.getPopupInfo,this.popupInfoError)
+  openSubQuery(drillDown : any,element: any){
+    this.globals.popupMainElement = null;
+    this.globals.popupResponse = null;
+    this.goToPopup();
+    this.globals.currentDrillDown = drillDown;
+    var rowNumber = this.dataSource.filteredData.indexOf(element)
+    this.globals.popupLoading = true;
+    var parameters = this.getSubOptionParameters(drillDown.drillDownParameter,rowNumber);
+    this.service.getSubDataTableSource(this,drillDown.childrenOptionId,parameters,this.getPopupInfo,this.popupInfoError)
+   
 
   }
+
   popupInfoError(_this,data) {
-    console.log("SUCCESS")
-  }
-  getPopupInfo(_this,error){
     console.log("ERROR")
   }
 
+  getPopupInfo(_this,data){
+    let response =  data.Response;
+    _this.globals.subTotalRecord = response.total;
+    let keys = Object.keys(response);
+    let mainElement = _this.getMainKey(keys,response);
+    if(!(mainElement instanceof Array)){
+      mainElement = [mainElement];
+    }
+    let dataResult;
+    _this.globals.subDisplayedColumns = data.metadata;
+    _this.globals.subMetadata = data.metadata;
+    console.log( _this.globals.subDisplayedColumns);
+    if( _this.globals.subTotalRecord > 1){
   
-  getSubOptionParameters(parameters:any[]){
+        dataResult = new MatTableDataSource(mainElement);     
+        // if( _this.globals.subMoreResults){
+        //     _this.globals.subDataSource.data = _this.dataSource.data.concat(dataResult.data);
+        //     _this.dataSource = dataResult;
+        // }else{
+        //   _this.dataSource = dataResult;
+        // }
+
+        // if(_this.globals.currentOption.tabType!="athena"&&_this.globals.currentOption.tabType!="mariadb"){
+        //   if( _this.globals.totalRecord<100 ||  _this.globals.totalRecord>100){
+        //     _this.globals.moreResultsBtn = false;
+        //     _this.globals.moreResults = false;
+        //   }else{
+        //     _this.globals.moreResultsBtn = true;
+        //   }
+        // }else{  
+        //   var aux = (_this.actualPageNumber+1)*100;
+        //   aux = aux!=0 ? aux : 100;
+        //   if( _this.globals.totalRecord<aux){
+        //     _this.globals.moreResultsBtn = false;
+        //     _this.globals.moreResults = false;
+        //   }else{
+        //     _this.globals.moreResultsBtn = true;
+        //   }
+        // }
+        // if(_this.limitNumber!=null){
+        //   if(_this.limitNumber.value1!=null &&_this.limitNumber.value1!=""){
+        //     _this.globals.moreResultsBtn = false;
+        //     _this.globals.moreResults = false;
+        //   }
+        // }
+    }else if(_this.globals.subTotalRecord==1){
+      _this.globals.popupLoading = false;
+      _this.globals.popupResponse = response;
+      _this.globals.popupMainElement = mainElement;
+      console.log(_this.globals.popupResponse)
+      console.log(_this.globals.popupMainElement)
+    }else{
+      if( _this.globals.subMoreResults){
+        _this.globals.moreResultsBtn = false;
+          _this.globals.moreResults = false;
+      }
+    }  
+  }
+
+  goToPopup(){
+    this.dialog.open (MsfMoreInfoPopupComponent, {
+      height: '500px',
+      width: '1200px',
+      panelClass: 'msf-more-info-popup'
+    });
+  }
+
+  
+  getSubOptionParameters(parameters:any[],rowNumber: any){
     var urlPam = "";
     for (let index = 0; index < parameters.length; index++) {
-        const element = parameters[index].webServicesMetaId;
+        const element = parameters[index].webservicesMetaId;
         if(index==0){
-            urlPam+="?"+element.columnName+"="+this.dataSource;
+            urlPam+="?"+element.columnName+"="+this.dataSource.filteredData[rowNumber][element.columnName];
         }else{
-          urlPam+="&"+element.columnName+"="+this.dataSource;
+            urlPam+="&"+element.columnName+"="+this.dataSource.filteredData[rowNumber][element.columnName];
         }
         return urlPam;
     }
