@@ -319,7 +319,7 @@ export class MsfTableComponent implements OnInit {
           
           let dataResult = new MatTableDataSource(mainElement);     
           if( _this.globals.moreResults){
-            if(_this.globals.currentOption.tabType!="athena"){
+            if(_this.globals.currentOption.tabType!="athena"&&_this.globals.currentOption.tabType!="mariadb"){
               _this.dataSource.data = _this.dataSource.data.concat(dataResult.data);
             }else{
               _this.dataSource = dataResult;
