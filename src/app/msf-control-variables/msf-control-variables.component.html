@@ -92,6 +92,8 @@
             <app-msf-grouping-comp-total *ngIf="isGroupingTotal(argument)" [argument]="argument"></app-msf-grouping-comp-total>
             <app-msf-grouping-op2 *ngIf="isGroupingOp2(argument)" [argument]="argument"></app-msf-grouping-op2>
             <app-msf-grouping-op *ngIf="isGroupingOp(argument)" [argument]="argument"></app-msf-grouping-op>
+            <app-msf-states *ngIf="isStates(argument)" [argument]="argument"></app-msf-states>
+            <app-msf-flight-duration-segments *ngIf="isFlightSegments(argument)" [argument]="argument"></app-msf-flight-duration-segments>
           </ng-container>
         </div>
       </ng-container>      

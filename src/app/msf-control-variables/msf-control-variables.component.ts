@@ -321,4 +321,10 @@ export class MsfControlVariablesComponent implements OnInit {
   isGroupingOp2(argument: Arguments){
     return ComponentType.groupingOpSum2 == argument.type;
   }
+  isStates(argument: Arguments){
+    return ComponentType.states == argument.type;
+  }
+  isFlightSegments(argument: Arguments){
+    return ComponentType.flightSegments == argument.type;
+  }
 }

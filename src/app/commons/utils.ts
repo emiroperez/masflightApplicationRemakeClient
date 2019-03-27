@@ -7,6 +7,7 @@ import { DateFormatPipe } from "./DateFormatPipe ";
 import { Constants } from "./Constants ";
 import { DatePipe } from "@angular/common";
 import { componentNeedsResolution } from "@angular/core/src/metadata/resource_loading";
+import { ComponentFactory } from '@angular/core/src/render3';
 
 export class Utils{
 
@@ -246,7 +247,7 @@ export class Utils{
                 i++;
             }
             return valueAux;
-        }else if (type == ComponentType.selectBoxMultipleOption || type == ComponentType.totalType){
+        }else if (type == ComponentType.selectBoxMultipleOption || type == ComponentType.totalType || type == ComponentType.flightSegments || type == ComponentType.states){
                 var valueAux="";
                 var i = 0;
                 for(var val of value){
@@ -420,7 +421,7 @@ export class Utils{
                  return '';
              }
             return value.name;
-        }else if (type == ComponentType.selectBoxMultipleOption|| type == ComponentType.totalType){
+        }else if (type == ComponentType.selectBoxMultipleOption|| type == ComponentType.totalType || type == ComponentType.flightSegments || type == ComponentType.states){
             var valueAux="";
             var i = 0;
             for(var val of value){

@@ -82,5 +82,7 @@ export enum ComponentType {
   groupingCompGenre = "groupingCompGenre",
   groupingCompTotal = "groupingCompTotal",
   groupingOpSum = "groupingOpSum",
-  groupingOpSum2 = "groupingOpSum2"
+  groupingOpSum2 = "groupingOpSum2",
+  states = "states",
+  flightSegments = "flightSegments"
 }

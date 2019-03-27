@@ -30,7 +30,7 @@ export class MsfCheckBoxComponent implements OnInit {
 
   getRecords(search, handlerSuccess){
     if(this.data == null || this.getRecords.length == 0){
-      let url = this.argument.url + "?search="+ (search != null?search:'');
+      let url = this.globals.baseUrl + this.argument.url + "?search="+ (search != null?search:'');
       this.http.get(this,url,handlerSuccess,this.handlerError, null);  
     }
           

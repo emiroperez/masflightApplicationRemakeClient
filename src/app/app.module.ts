@@ -168,6 +168,8 @@ import { MsfGroupingCompTotalComponent } from './msf-grouping-comp-total/msf-gro
 import { MsfMoreInfoPopupComponent } from './msf-more-info-popup/msf-more-info-popup.component';
 import { MsfGroupingOpComponent } from './msf-grouping-op/msf-grouping-op.component';
 import { MsfGroupingOp2Component } from './msf-grouping-op2/msf-grouping-op2.component';
+import { MsfStatesComponent } from './msf-states/msf-states.component';
+import { MsfFlightDurationSegmentsComponent } from './msf-flight-duration-segments/msf-flight-duration-segments.component';
 
 @NgModule({
   declarations: [
@@ -315,7 +317,9 @@ import { MsfGroupingOp2Component } from './msf-grouping-op2/msf-grouping-op2.com
     MsfGroupingCompTotalComponent,
     MsfMoreInfoPopupComponent,
     MsfGroupingOpComponent,
-    MsfGroupingOp2Component
+    MsfGroupingOp2Component,
+    MsfStatesComponent,
+    MsfFlightDurationSegmentsComponent
   ],
   imports: [
     BrowserModule,

@@ -43,7 +43,7 @@ ngOnInit() {
 }
 
 getRecords(search, handlerSuccess){
-    let url = this.argument.url + "?search="+ (search != null?search:'');
+    let url = this.globals.baseUrl + this.argument.url + "?search="+ (search != null?search:'');
     this.http.get(this,url,handlerSuccess,this.handlerError, null);  
 }
 

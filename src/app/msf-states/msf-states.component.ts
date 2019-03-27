@@ -1,33 +1,29 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { Observable, of } from 'rxjs';
 import { Arguments } from '../model/Arguments';
-import { FormControl } from '@angular/forms';
-import { ReplaySubject, Subject, Observable, of } from 'rxjs';
-import { MatSelect } from '@angular/material';
-import { takeUntil, take, delay } from 'rxjs/operators';
-import { Airline } from '../model/Airline';
 import { ApiClient } from '../api/api-client';
 import { Globals } from '../globals/Globals';
+import { delay } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-msf-airline',
-  templateUrl: './msf-airline.component.html',
-  styleUrls: ['./msf-airline.component.css']
+  selector: 'app-msf-states',
+  templateUrl: './msf-states.component.html',
+  styleUrls: ['./msf-states.component.css']
 })
-export class MsfAirlineComponent implements OnInit {
+export class MsfStatesComponent implements OnInit {
 
-  @Input("argument") public argument: Arguments;
-  
   data: Observable<any[]>;
-
+  @Input("argument") public argument: Arguments;
 
   loading = false;
   constructor(private http: ApiClient, public globals: Globals) { }
 
+
   ngOnInit() { 
     this.getRecords(null, this.handlerSuccess);
   }
-
-  getRecords(search, handlerSuccess){
+  
+   getRecords(search, handlerSuccess){
     let url = this.globals.baseUrl + this.argument.url + "?search="+ (search != null?search:'');
     this.http.get(this,url,handlerSuccess,this.handlerError, null);  
   }
@@ -48,6 +44,5 @@ export class MsfAirlineComponent implements OnInit {
       this.getRecords($event.term, this.handlerSuccess);
     }
   }
-  
 
 }

@@ -1,0 +1,17 @@
+<div>
+    <div class="center">
+        <div class="msf-component-airport-title">{{argument.title}}</div>
+    </div>
+    <ng-select
+        [items]="data | async"
+        [multiple]="true"
+        [loading]="loading"
+        loadingText="Loading..."
+        [closeOnSelect]="true"
+        [hideSelected]="false"
+        bindLabel="fullName"
+        (search)="onSearch($event)" 
+        [(ngModel)]="argument.value1">
+    </ng-select>
+  </div> 
+  
