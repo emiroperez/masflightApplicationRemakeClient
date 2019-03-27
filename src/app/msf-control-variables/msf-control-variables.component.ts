@@ -315,4 +315,10 @@ export class MsfControlVariablesComponent implements OnInit {
   isGroupingTotal(argument: Arguments){
     return ComponentType.groupingCompTotal == argument.type;
   }
+  isGroupingOp(argument: Arguments){
+    return ComponentType.groupingOpSum == argument.type;
+  }
+  isGroupingOp2(argument: Arguments){
+    return ComponentType.groupingOpSum2 == argument.type;
+  }
 }

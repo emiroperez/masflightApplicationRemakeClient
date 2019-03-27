@@ -134,8 +134,8 @@ export class Utils{
              || type == ComponentType.filterAirlineType || type == ComponentType.fareIncrements || type == ComponentType.fareIncrementMiddle
              || type == ComponentType.fareIncrementMax ||  type == ComponentType.percentIncrement || type == ComponentType.quarterHour 
              || type == ComponentType.stops || type == ComponentType.circuityType || type == ComponentType.circuity
-             || type == ComponentType.groupingHubSummaries || type == ComponentType.groupingDailyStatics || type == ComponentType.groupingOperationsSummary
-             || type == ComponentType.fareIncrementsMarketHistograms|| type == ComponentType.sortingNostop || type == ComponentType.sortingConnectionBuilder){
+             || type == ComponentType.groupingHubSummaries || type == ComponentType.groupingDailyStatics || type == ComponentType.groupingOperationsSummary || type == ComponentType.groupingOpSum
+             || type == ComponentType.groupingOpSum2 || type == ComponentType.fareIncrementsMarketHistograms|| type == ComponentType.sortingNostop || type == ComponentType.sortingConnectionBuilder){
             if(typeof value === "string"){
                 return value;
             }
@@ -303,8 +303,8 @@ export class Utils{
                  || type == ComponentType.filterAirlineType || type == ComponentType.fareIncrements || type == ComponentType.fareIncrementMiddle
                  || type == ComponentType.fareIncrementMax || type == ComponentType.percentIncrement || type == ComponentType.quarterHour
                  || type == ComponentType.stops || type == ComponentType.circuityType || type == ComponentType.circuity
-                 || type == ComponentType.groupingHubSummaries || type == ComponentType.groupingDailyStatics || type == ComponentType.groupingOperationsSummary
-                 || type == ComponentType.fareIncrementsMarketHistograms|| type == ComponentType.sortingNostop || type == ComponentType.sortingConnectionBuilder){
+                 || type == ComponentType.groupingHubSummaries || type == ComponentType.groupingDailyStatics || type == ComponentType.groupingOperationsSummary|| type == ComponentType.groupingOpSum
+                 || type == ComponentType.groupingOpSum2 || type == ComponentType.fareIncrementsMarketHistograms|| type == ComponentType.sortingNostop || type == ComponentType.sortingConnectionBuilder){
                 if(typeof value === "string"){
                     return value;
                 }

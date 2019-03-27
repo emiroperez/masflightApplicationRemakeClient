@@ -80,5 +80,7 @@ export enum ComponentType {
   contentType = "contentType",
   totalType = "totalType",
   groupingCompGenre = "groupingCompGenre",
-  groupingCompTotal = "groupingCompTotal"
+  groupingCompTotal = "groupingCompTotal",
+  groupingOpSum = "groupingOpSum",
+  groupingOpSum2 = "groupingOpSum2"
 }

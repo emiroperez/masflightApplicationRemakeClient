@@ -166,6 +166,8 @@ import { MsfTotalTypeComponent } from './msf-total-type/msf-total-type.component
 import { MsfGroupingCompGenreComponent } from './msf-grouping-comp-genre/msf-grouping-comp-genre.component';
 import { MsfGroupingCompTotalComponent } from './msf-grouping-comp-total/msf-grouping-comp-total.component';
 import { MsfMoreInfoPopupComponent } from './msf-more-info-popup/msf-more-info-popup.component';
+import { MsfGroupingOpComponent } from './msf-grouping-op/msf-grouping-op.component';
+import { MsfGroupingOp2Component } from './msf-grouping-op2/msf-grouping-op2.component';
 
 @NgModule({
   declarations: [
@@ -311,7 +313,9 @@ import { MsfMoreInfoPopupComponent } from './msf-more-info-popup/msf-more-info-p
     MsfTotalTypeComponent,
     MsfGroupingCompGenreComponent,
     MsfGroupingCompTotalComponent,
-    MsfMoreInfoPopupComponent
+    MsfMoreInfoPopupComponent,
+    MsfGroupingOpComponent,
+    MsfGroupingOp2Component
   ],
   imports: [
     BrowserModule,
