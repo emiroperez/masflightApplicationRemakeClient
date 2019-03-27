@@ -1,4 +1,9 @@
-<div class="msf-dashboard-control-variables-title">
+<div [ngClass]="globals.popupLoading? 'tab-show' : 'tab-hide'" id="msf-dashboard-drill-down-loading" class="msf-dashboard-drill-down-loading">
+  <div class="msf-dashboard-control-variables-close-button">
+    <mat-icon class="msf-dashboard-close-icon" aria-label="close" (click)="closeDialog()">close</mat-icon>
+  </div>
+</div>
+<div class="msf-dashboard-control-variables-title" *ngIf="!globals.popupLoading">
   <div class="msf-dashboard-control-variables-close-button">
     <mat-icon class="msf-dashboard-close-icon" aria-label="close" (click)="closeDialog()">close</mat-icon>
   </div>
@@ -19,7 +24,7 @@
   <div class="msf-dashboard-panel-sub-container-column">
     <mat-form-field [formGroup]="chartForm" class="msf-full-width">
       <mat-select formControlName="chartCtrl" placeholder="Chart Type" (selectionChange)="checkChartType($event.value)">
-        <mat-option *ngFor="let chartType of chartTypes" [value]="chartType">
+        <mat-option *ngFor="let chartType of data.chartTypes" [value]="chartType">
           {{chartType.name}}
         </mat-option>
       </mat-select>
@@ -85,7 +90,7 @@
         <div class="msf-dashboard-chart-op-container">
           <mat-form-field [formGroup]="chartForm" class="msf-full-width">
             <mat-select formControlName="functionCtrl" placeholder="Function" (selectionChange)="checkFunction($event.value)">
-              <mat-option *ngFor="let fun of functions" [value]="fun">
+              <mat-option *ngFor="let fun of data.functions" [value]="fun">
                 {{fun.name}}
               </mat-option>
             </mat-select>

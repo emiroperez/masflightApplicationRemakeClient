@@ -82,6 +82,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   drillDownOptions: any[] = [];
   childPanelValues: any[] = [];
+  childPanelsConfigured: boolean[] = [];
 
   public dataFormFilterCtrl: FormControl = new FormControl ();
   public variableFilterCtrl: FormControl = new FormControl ();
@@ -1869,17 +1870,23 @@ export class MsfDashboardPanelComponent implements OnInit {
     let dialogRef = this.dialog.open (MsfDashboardDrillDownComponent, {
       height: '425px',
       width: '450px',
-      panelClass: 'msf-dashboard-control-variables-dialog',
+      panelClass: 'msf-dashboard-child-panel-dialog',
       data: {
         title: this.values.chartName,
         childPanelValues: this.childPanelValues,
         drillDownOptions: this.drillDownOptions,
-        categoryOptions: JSON.stringify (this.values.currentOptionCategories)
+        childPanelsConfigured: this.childPanelsConfigured,
+        categoryOptions: JSON.stringify (this.values.currentOptionCategories),
+        functions: this.functions,
+        chartTypes: this.chartTypes
       }
     });
 
     dialogRef.afterClosed ().subscribe (
-      () => this.saveChildPanels ()
+      () => {
+        this.globals.popupLoading = false;
+        this.saveChildPanels ();
+      }
     );
   }
 
@@ -1891,29 +1898,32 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       let value = this.childPanelValues[i];
 
-      //if (!childPanelsConfigured[i])
-      //   continue;
+      if (!this.childPanelsConfigured[i])
+         continue;
 
       childPanels.push ({
         option: value.currentOption,
         title: value.chartName,
-        chartColumnOptions: JSON.stringify (value.chartColumnOptions),
         analysis: value.chartColumnOptions.indexOf (value.variable),
         xaxis: value.chartColumnOptions.indexOf (value.xaxis),
         values: value.chartColumnOptions.indexOf (value.valueColumn),
         function: this.functions.indexOf (value.function),
         chartType: this.chartTypes.indexOf (value.currentChartType),
-        categoryOptions: JSON.stringify (value.currentOptionCategories),
         paletteColors: JSON.stringify (value.paletteColors)
       });
 
-      return childPanels;
+      this.childPanelsConfigured[i] = false;
     }
+
+    return childPanels;
   }
 
   saveChildPanels(): void
   {
     let childPanels = this.getChildPanelsInfo ();
+
+    if (!childPanels.length)
+      return;
 
     this.globals.isLoading = true;
     this.service.saveChildPanels (this, childPanels, this.saveChildPanelsInfo, this.handlerError);

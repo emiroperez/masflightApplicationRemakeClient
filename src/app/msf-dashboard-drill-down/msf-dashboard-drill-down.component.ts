@@ -16,31 +16,10 @@ import { ApplicationService } from '../services/application.service';
 })
 export class MsfDashboardDrillDownComponent {
 
-  chartTypes:any[] = [
-    { name: 'Bars', flags: ChartFlags.XYCHART },
-    { name: 'Horizontal Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED },
-    { name: 'Simple Bars', flags: ChartFlags.NONE },
-    { name: 'Simple Horizontal Bars', flags: ChartFlags.ROTATED },
-    { name: 'Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.STACKED },
-    { name: 'Horizontal Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED | ChartFlags.STACKED },
-    { name: 'Funnel', flags: ChartFlags.FUNNELCHART },
-    { name: 'Lines', flags: ChartFlags.XYCHART | ChartFlags.LINECHART },
-    { name: 'Area', flags: ChartFlags.XYCHART | ChartFlags.AREACHART },
-    { name: 'Stacked Area', flags: ChartFlags.XYCHART | ChartFlags.STACKED | ChartFlags.AREACHART },
-    { name: 'Pie', flags: ChartFlags.PIECHART },
-    { name: 'Donut', flags: ChartFlags.DONUTCHART }
-  ];
-
-  functions:any[] = [
-    { id: 'avg', name: 'Average' },
-    { id: 'sum', name: 'Sum' },
-    { id: 'max', name: 'Max' },
-    { id: 'min', name: 'Min' },
-    { id: 'count', name: 'Count' }
-  ];
-
   chartForm: FormGroup;
   currentValue: MsfDashboardPanelValues;
+  lastValue: MsfDashboardPanelValues;
+  currentIndex: number = -1;
 
   paletteColors: string[] = [
     "#01b0a1",
@@ -90,7 +69,8 @@ export class MsfDashboardDrillDownComponent {
         data.childPanelValues.push (new MsfDashboardPanelValues (data.drillDownOptions,
           data.drillDownOptions[i].title, -1, null, null));
 
-        data.childPanelValues[i].currentChartType = this.chartTypes[0];
+        data.childPanelValues[i].currentChartType = data.chartTypes[0];
+        data.childPanelsConfigured.push (false);
       }
     }
 
@@ -212,8 +192,10 @@ export class MsfDashboardDrillDownComponent {
 
   loadChartFilterValues(component): void
   {
-    this.currentValue = this.data.childPanelValues [this.data.drillDownOptions.indexOf (component)];
-    this.globals.isLoading = true;
+    this.currentIndex = this.data.drillDownOptions.indexOf (component);
+    this.currentValue = this.data.childPanelValues[this.currentIndex];
+    this.lastValue = JSON.parse (JSON.stringify (this.currentValue));
+    this.globals.popupLoading = true;
     this.getChartFilterValues (component.childrenOptionId.id, this.addChartFilterValues);
   }
 
@@ -250,7 +232,20 @@ export class MsfDashboardDrillDownComponent {
     _this.chartForm.get ('functionCtrl').enable ();
 
     // set combo box values if necessary
-    _this.chartForm.get ('chartCtrl').setValue (_this.currentValue.currentChartType);
+    if (_this.currentValue.currentChartType)
+    {
+      for (i = 0; i < _this.data.chartTypes.length; i++)
+      {
+        option = _this.data.chartTypes[i];
+
+        if (option.name == _this.currentValue.currentChartType.name)
+        {
+          _this.currentValue.currentChartType = option;
+          _this.chartForm.get ('chartCtrl').setValue (option);
+          break;
+        }
+      }
+    }
 
     if (_this.currentValue.variable)
     {
@@ -260,6 +255,7 @@ export class MsfDashboardDrillDownComponent {
 
         if (option.id == _this.currentValue.variable.id)
         {
+          _this.currentValue.variable = option;
           _this.chartForm.get ('variableCtrl').setValue (option);
           break;
         }
@@ -274,6 +270,7 @@ export class MsfDashboardDrillDownComponent {
 
         if (option.id == _this.currentValue.xaxis.id)
         {
+          _this.currentValue.xaxis = option;
           _this.chartForm.get ('xaxisCtrl').setValue (option);
           break;
         }
@@ -288,23 +285,56 @@ export class MsfDashboardDrillDownComponent {
 
         if (option.id == _this.currentValue.valueColumn.id)
         {
+          _this.currentValue.valueColumn = option;
           _this.chartForm.get ('valueCtrl').setValue (option);
           break;
         }
       }
     }
 
-    _this.chartForm.get ('functionCtrl').setValue (_this.currentValue.function);
+    if (_this.currentValue.function)
+    {
+      for (i = 0; i < _this.data.functions.length; i++)
+      {
+        option = _this.data.functions[i];
 
-    // copy the category arguments settings from the parent panel and finish loading
-    _this.currentValue.categoryOptions = JSON.parse (_this.data.categoryOptions);
-    _this.globals.isLoading = false;
+        if (option.id == _this.currentValue.function.id)
+        {
+          _this.currentValue.function = option;
+          _this.chartForm.get ('functionCtrl').setValue (option);
+          break;
+        }
+      }
+    }
+
+    _this.globals.popupLoading = false;
   }
 
   handlerError(_this, result): void
   {
     console.log (result);
-    _this.globals.isLoading = false;  
+    _this.globals.popupLoading = false;  
+  }
+
+  checkIfPanelIsConfigured(): void
+  {
+    // make sure that every value is not null
+    if (this.currentValue.currentChartType == null
+      || this.currentValue.variable == null
+      || this.currentValue.xaxis == null
+      || this.currentValue.valueColumn == null
+      || this.currentValue.function == null)
+      return;
+
+    // al least one value must be changed
+    if (this.currentValue.currentChartType == this.lastValue.currentChartType
+      && this.currentValue.variable == this.lastValue.variable
+      && this.currentValue.xaxis == this.lastValue.xaxis
+      && this.currentValue.valueColumn == this.lastValue.valueColumn
+      && this.currentValue.function == this.lastValue.function)
+      return;
+
+    this.data.childPanelsConfigured[this.currentIndex] = true;
   }
 
   checkChartType(value): void
@@ -322,25 +352,31 @@ export class MsfDashboardDrillDownComponent {
 
     this.chartForm.get ('variableCtrl').enable ();
     this.chartForm.get ('valueCtrl').enable ();
+
+    this.checkIfPanelIsConfigured ();
   }
 
   checkVariable(value): void
   {
     this.currentValue.variable = value;
+    this.checkIfPanelIsConfigured ();
   }
 
   checkXAxis(value): void
   {
     this.currentValue.xaxis = value;
+    this.checkIfPanelIsConfigured ();
   }
 
   checkValue(value): void
   {
     this.currentValue.valueColumn = value;
+    this.checkIfPanelIsConfigured ();
   }
 
   checkFunction(value): void
   {
     this.currentValue.function = value;
+    this.checkIfPanelIsConfigured ();
   }
 }

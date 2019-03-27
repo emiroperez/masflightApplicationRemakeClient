@@ -2198,21 +2198,28 @@ mat-tab-group {
   overflow: hidden;
 }
 
-.msf-dashboard-dialog .msf-dashboard-control-variables-close-button, .msf-dashboard-info-function-title .msf-dashboard-control-variables-close-button, .msf-dashboard-control-variables-title .msf-dashboard-control-variables-close-button {
+.msf-dashboard-child-panel-dialog .mat-dialog-container {
+  padding: 12px;
+  overflow: hidden;
+  background-color: #1f1f1f !important;
+}
+
+.msf-dashboard-dialog .msf-dashboard-control-variables-close-button, .msf-dashboard-drill-down-loading .msf-dashboard-control-variables-close-button, .msf-dashboard-info-function-title .msf-dashboard-control-variables-close-button, .msf-dashboard-control-variables-title .msf-dashboard-control-variables-close-button {
+  z-index: 99999;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   position: absolute;
   width: 100%;
 }
-.msf-dashboard-dialog .msf-dashboard-control-variables-close-button .msf-dashboard-close-icon, .msf-dashboard-info-function-title .msf-dashboard-control-variables-close-button .msf-dashboard-close-icon, .msf-dashboard-control-variables-title .msf-dashboard-control-variables-close-button .msf-dashboard-close-icon {
+.msf-dashboard-dialog .msf-dashboard-control-variables-close-button .msf-dashboard-close-icon, .msf-dashboard-drill-down-loading .msf-dashboard-control-variables-close-button .msf-dashboard-close-icon, .msf-dashboard-info-function-title .msf-dashboard-control-variables-close-button .msf-dashboard-close-icon, .msf-dashboard-control-variables-title .msf-dashboard-control-variables-close-button .msf-dashboard-close-icon {
   font-size: 16px;
   margin-top: -10px;
   margin-right: -9px;
   color: inherit;
   cursor: inherit;
 }
-.msf-dashboard-dialog .msf-dashboard-control-variables-close-button .msf-dashboard-close-icon:hover, .msf-dashboard-info-function-title .msf-dashboard-control-variables-close-button .msf-dashboard-close-icon:hover, .msf-dashboard-control-variables-title .msf-dashboard-control-variables-close-button .msf-dashboard-close-icon:hover {
+.msf-dashboard-dialog .msf-dashboard-control-variables-close-button .msf-dashboard-close-icon:hover, .msf-dashboard-drill-down-loading .msf-dashboard-control-variables-close-button .msf-dashboard-close-icon:hover, .msf-dashboard-info-function-title .msf-dashboard-control-variables-close-button .msf-dashboard-close-icon:hover, .msf-dashboard-control-variables-title .msf-dashboard-control-variables-close-button .msf-dashboard-close-icon:hover {
   font-size: 16px;
   margin-top: -10px;
   margin-right: -9px;
@@ -2543,6 +2550,24 @@ mat-tab-group {
   height: 20px;
   color: transparent;
   caret-color: transparent;
+}
+
+.msf-dashboard-drill-down-loading {
+  z-index: 99998;
+  width: 100%;
+  height: 100%;
+  background-color: #1F1F1F;
+  background-image: url(assets/images/loading_pulse.gif);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 50%;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  padding-top: 5px;
+  padding-bottom: 10px;
+  color: #fff;
+  position: relative;
 }
 
 mat-dialog-container {
