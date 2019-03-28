@@ -74,7 +74,7 @@ export class MsfMapComponent implements OnInit {
     if(features.length > 0){  
       let size =  Math.round(features[0].features.length/2);
       _this.center = features[0].features[size].geometry.coordinates;       
-      _this.getChart(_this);  
+      // _this.getChart(_this);  
       _this.zoom = [4];    
     }
     _this.globals.isLoading = false;
@@ -86,9 +86,9 @@ export class MsfMapComponent implements OnInit {
   }
 
   getHeight(){
-    if(this.data != null && this.data.length == 1 ){
-      return 60;
-    }
+    // if(this.data != null && this.data.length == 1 ){
+    //   return 60;
+    // }
     return 100;
   }
 
