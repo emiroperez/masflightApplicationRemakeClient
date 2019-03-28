@@ -39,6 +39,7 @@ export class ApplicationService {
   getMapBoxTracking(_this, successHandler, errorHandler) {
     let params = this.utils.getUrlParameters(_this.globals.currentOption);
     let url = this.host1 + "/getMapBoxTracking?" + params.url;
+    console.log(url)
     this.http.get(_this, url, successHandler, errorHandler, null);
   }
 

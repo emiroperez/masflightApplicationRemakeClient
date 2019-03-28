@@ -27,13 +27,13 @@ export class MsfControlVariablesComponent implements OnInit {
 
   componentClickHandler(argsContainer, icon): void
   {
-    if (this.argsBefore)
+    if (this.globals.currentArgs)
     {
-      this.argsBefore.open = false;
-      this.iconBefore.innerText ="expand_more";
+      this.globals.currentArgs.open = false;
+      this.globals.iconBefore.innerText ="expand_more";
     }
 
-    if (!this.open || (this.open && (this.argsBefore !== argsContainer)))
+    if (!this.open || (this.open && (this.globals.currentArgs !== argsContainer)))
     {
       argsContainer.open = true;
       icon.innerText ="expand_less";
@@ -47,7 +47,7 @@ export class MsfControlVariablesComponent implements OnInit {
     }
 
     this.globals.currentArgs = argsContainer;
-    this.iconBefore = icon;
+    this.globals.iconBefore = icon;
     this.argsBefore = argsContainer;
   }
 

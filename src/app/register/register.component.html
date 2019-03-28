@@ -76,7 +76,7 @@
                                 <mat-select placeholder="Country" autocomplete="off" class="input-register" [formControl]="personalInformationForm.get('countryValidator')" [(ngModel)]="users.country" (selectionChange)="CountryChangeEvent($event)" name="country" required (openedChange)="myInput.focus()">
                                     <input class="myInput" #myInput matInput focused="'true'" type="text" (keyup)="searchCountry($event.target.value)" autocomplete="off" placeholder="search">
                                     <mat-option *ngFor="let country of selectedCountries" [value]="country">
-                                        {{country.name}}
+                                        {{country.fullName}}
                                     </mat-option>
                                 </mat-select>
 
@@ -89,7 +89,7 @@
                                 <mat-select placeholder="State" autocomplete="off" class="input-register" name="state" [(ngModel)]="users.CState">
                                     <input class="myInput" #myInput matInput focused="'true'" type="text" (keyup)="searchState($event.target.value)" autocomplete="off" placeholder="search">
                                     <mat-option *ngFor="let state of selectedStates" [value]="state">
-                                        {{state.name}}
+                                        {{state.fullName}}
                                     </mat-option>
                                 </mat-select>
 
