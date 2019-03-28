@@ -42,20 +42,6 @@ body {
   background-color: #3d3d3d;
 }
 
-.msf-header-image2 {
-  width: 50%;
-  height: 100%;
-  vertical-align: middle;
-  margin-right: 20px;
-}
-
-.msf-header-icons2 {
-  width: 100px;
-  height: 100%;
-  vertical-align: middle;
-  margin-right: 20px;
-}
-
 .msf-header-image {
   width: 30%;
   max-width: 250px;
@@ -65,10 +51,10 @@ body {
   border-bottom-right-radius: 40px;
   border-top-right-radius: 40px;
   background-color: #3d3d3d;
+  background-size: 70%;
   background-repeat: no-repeat;
-  background-image: url(assets/images/pulse_welc.png);
-  background-position: 15% 55%;
-  background-size: 45%;
+  background-position: 30% 55%;
+  background-image: url(assets/images/logo_global_peqe.png);
 }
 
 .msf-header-title {
@@ -83,27 +69,18 @@ body {
 .msf-header-icons {
   display: inline-block;
   right: 0;
-  position: relative;
+  position: absolute;
   line-height: 4;
   vertical-align: middle;
   min-height: 60px;
   color: white;
   margin-right: 10px;
-  text-align: right;
-  width: 21%;
 }
 
 .header-icon {
   width: 22px;
   height: 22px;
   margin-right: 20px;
-  vertical-align: middle;
-}
-
-.header-icon2 {
-  width: 22px;
-  height: 22px;
-  margin: 5% 0% 5% 75%;
   vertical-align: middle;
 }
 
@@ -1031,7 +1008,7 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 }
 
 .msf-menu-header-image-container {
-  width: 13%;
+  width: 265px;
   height: 100%;
   min-height: 60px;
   vertical-align: middle;
@@ -1042,8 +1019,8 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 }
 
 .msf-menu-logo {
-  width: 55%;
-  height: 20%;
+  width: 170px;
+  height: 27px;
   margin-left: 17px;
   vertical-align: middle;
   display: inline-block;
@@ -1055,7 +1032,7 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
   display: inline-block;
   width: 30px;
   height: 30px;
-  margin-left: 17px;
+  margin-left: 30px;
   margin-top: 17px;
   cursor: pointer;
 }
@@ -1064,9 +1041,7 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
   height: 100%;
   vertical-align: middle;
   display: inline-block;
-  /* margin-left: 90px; */
-  width: 65%;
-  text-align: center;
+  margin-left: 90px;
 }
 
 .msf-menu-option, .msf-menu-op-3, .msf-menu-op-2, .msf-menu-op-1 {
@@ -2795,7 +2770,7 @@ mat-dialog-container {
 .landing-icon-content {
   display: flex;
   align-items: center;
-  height: 100%;
+  height: calc(100% - 105px);
 }
 .landing-icon-content div {
   width: 25%;
