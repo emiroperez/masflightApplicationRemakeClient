@@ -3821,7 +3821,7 @@ img.msf-calendar-image {
 }
 
 .msf-more-info-popup-image {
-  background-size: 55%;
+  background-size: contain;
   background-repeat: no-repeat;
   background-position: right;
   height: 100%;
@@ -3829,7 +3829,7 @@ img.msf-calendar-image {
 
 .msf-more-info-black {
   background-image: url("assets/images/banner_negro.png");
-  background-size: 50% 100%;
+  background-size: contain;
   background-position: -1px -1px;
   background-repeat: no-repeat;
   height: 100%;

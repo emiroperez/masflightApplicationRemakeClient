@@ -1,4 +1,4 @@
-<div  *ngIf="globals.popupMainElement" class="msf-more-info-popup-image"  [ngStyle]="{'background-image': 'url(' + getBackground() + ')'}">
+<div  *ngIf="globals.subTotalRecord>0 && globals.popupMainElement && !globals.popupLoading" class="msf-more-info-popup-image"  [ngStyle]="{'background-image': 'url(' + getBackground() + ')'}">
     <div  *ngIf="globals.popupMainElement" class="msf-more-info-black">
   <div class="msf-moreinfo-control-variables-title ">
       <div class="msf-dashboard-control-variables-close-button">
@@ -8,22 +8,23 @@
   <div class="msf-more-info-popup-content">
     <div class="msf-media-title-container">
         <div class="msf-media-title">Title</div>
-        <div class="msf-media-title-value">{{globals.popupMainElement[0].title}}</div>
+        <div class="msf-media-title-value" *ngIf="globals.popupMainElement[0].title">{{globals.popupMainElement[0].title}}</div>
+        <div class="msf-media-title-value" *ngIf="globals.popupMainElement[0].Media_Name">{{globals.popupMainElement[0].Media_Name}}</div>
       </div>
    </div>
     <div class="msf-media-info-container">
         <div class="msf-media-info-row" *ngFor="let info of globals.subDisplayedColumns" >
           <div class="msf-media-info" *ngIf="info.columnName!='title'">{{info.columnLabel}}</div>
-          <div class="msf-media-info-value" *ngIf="info.columnName!='title' && info.columnType=='string' && info.columnFormat==null">
+          <div class="msf-media-info-value" *ngIf="info.columnName!='title' && info.columnName!='Media_Name' && info.columnType=='string' && info.columnFormat==null">
             {{globals.popupMainElement[0][info.columnName]}}
           </div>
-          <div class="msf-media-info-value" *ngIf="info.columnName!='title' && info.columnType=='number' && info.columnFormat==null">
+          <div class="msf-media-info-value" *ngIf="info.columnName!='title' && info.columnName!='Media_Name' && info.columnType=='number' && info.columnFormat==null">
             {{ globals.popupMainElement[0][info.columnName] | number:'.0-2':'en'}}
           </div>
-          <div class="msf-media-info-value" *ngIf="info.columnName!='title' && info.columnType=='number' && info.columnFormat=='$'">
+          <div class="msf-media-info-value" *ngIf="info.columnName!='title' && info.columnName!='Media_Name' && info.columnType=='number' && info.columnFormat=='$'">
               ${{globals.popupMainElement[0][info.columnName] | number:'.0-2':'en'}}
           </div>
-          <div class="msf-media-info-value" *ngIf="info.columnName!='title' && info.columnType=='number' && info.columnFormat=='min'">
+          <div class="msf-media-info-value" *ngIf="info.columnName!='title' && info.columnName!='Media_Name' && info.columnType=='number' && info.columnFormat=='min'">
               {{ getFormatMinutes(globals.popupMainElement[0][info.columnName]) }}
           </div>
        </div>
@@ -34,5 +35,9 @@
   </div>
 </div>
 
-<div [ngClass]="!globals.popupResponse? 'tab-show':'tab-hide'" id='loading-panel-popup' class='loading-panel-popup'>
+<div *ngIf="globals.subTotalRecord==0 && !globals.popupMainElement && !globals.popupLoading">
+    <div class="msf-no-results" style="margin: 210px;padding: 30px;">Results not available</div>
+</div>
+
+<div [ngClass]="globals.popupLoading? 'tab-show':'tab-hide'" id='loading-panel-popup' class='loading-panel-popup'>
 </div>

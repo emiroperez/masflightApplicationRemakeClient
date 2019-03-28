@@ -453,16 +453,15 @@ export class MsfTableComponent implements OnInit {
     let response =  data.Response;
     _this.globals.subTotalRecord = response.total;
     let keys = Object.keys(response);
-    let mainElement = _this.getMainKey(keys,response);
-    if(!(mainElement instanceof Array)){
-      mainElement = [mainElement];
-    }
     let dataResult;
     _this.globals.subDisplayedColumns = data.metadata;
     _this.globals.subMetadata = data.metadata;
     console.log( _this.globals.subDisplayedColumns);
     if( _this.globals.subTotalRecord > 1){
-  
+      let mainElement = _this.getMainKey(keys,response);
+    if(!(mainElement instanceof Array)){
+      mainElement = [mainElement];
+    }
         dataResult = new MatTableDataSource(mainElement);     
         // if( _this.globals.subMoreResults){
         //     _this.globals.subDataSource.data = _this.dataSource.data.concat(dataResult.data);
@@ -495,7 +494,10 @@ export class MsfTableComponent implements OnInit {
         //   }
         // }
     }else if(_this.globals.subTotalRecord==1){
-      _this.globals.popupLoading = false;
+      let mainElement = _this.getMainKey(keys,response);
+      if(!(mainElement instanceof Array)){
+        mainElement = [mainElement];
+      }
       _this.globals.popupResponse = response;
       _this.globals.popupMainElement = mainElement;
       console.log(_this.globals.popupResponse)
@@ -506,6 +508,7 @@ export class MsfTableComponent implements OnInit {
           _this.globals.moreResults = false;
       }
     }  
+    _this.globals.popupLoading = false;
   }
 
   goToPopup(){
