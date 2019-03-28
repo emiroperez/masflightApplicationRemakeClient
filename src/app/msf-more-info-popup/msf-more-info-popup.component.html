@@ -21,7 +21,7 @@
           <div class="msf-media-info-value" *ngIf="info.columnName!='title' && info.columnName!='Media_Name' && info.columnType=='number' && info.columnFormat==null">
             {{ globals.popupMainElement[0][info.columnName] | number:'.0-2':'en'}}
           </div>
-          <div class="msf-media-info-value" *ngIf="info.columnName!='title' && info.columnName!='Media_Name' && info.columnType=='number' && info.columnFormat=='$'">
+          <div class="msf-media-info-value" *ngIf="info.columnName!='title' && info.columnName!='Media_Name' && info.columnType=='number' && info.columnFormat=='$' && globals.popupMainElement[0][info.columnName]">
               ${{globals.popupMainElement[0][info.columnName] | number:'.0-2':'en'}}
           </div>
           <div class="msf-media-info-value" *ngIf="info.columnName!='title' && info.columnName!='Media_Name' && info.columnType=='number' && info.columnFormat=='min'">
@@ -29,9 +29,6 @@
           </div>
        </div>
     </div>
-    <!-- <div class="msf-dashboard-control-variables-button">
-        <button mat-flat-button class="flat-button" (click)="closeDialog()">OK</button>
-    </div> -->
   </div>
 </div>
 
