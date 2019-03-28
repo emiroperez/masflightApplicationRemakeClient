@@ -80,7 +80,6 @@ export class MsfDashboardPanelComponent implements OnInit {
   @Input()
   reAppendChart: boolean;
 
-  drillDownOptions: any[] = [];
   childPanelValues: any[] = [];
   childPanelsConfigured: boolean[] = [];
 
@@ -1071,15 +1070,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     _this.chartForm.get ('valueCtrl').enable ();
 
-    // perform another query to get the drill down options
-    _this.service.getDrillDown (_this, _this.values.currentOption.id, _this.setDrillDownList, _this.handlerError);
-  }
-
-  setDrillDownList(_this, data)
-  {
     _this.globals.isLoading = false;
-
-    _this.drillDownOptions = data;
   }
 
   searchChange(filterCtrl): void
@@ -1867,14 +1858,22 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   goToDrillDownSettings(): void
   {
+    let drillDownOptions = [];
+
+    // clear child panel list befre opening drill down dialog
+    this.childPanelValues = [];
+    this.childPanelsConfigured = [];
+
     let dialogRef = this.dialog.open (MsfDashboardDrillDownComponent, {
       height: '425px',
       width: '450px',
       panelClass: 'msf-dashboard-child-panel-dialog',
       data: {
         title: this.values.chartName,
+        optionId: this.values.currentOption.id,
+        parentPanelId: this.values.id,
         childPanelValues: this.childPanelValues,
-        drillDownOptions: this.drillDownOptions,
+        drillDownOptions: drillDownOptions,
         childPanelsConfigured: this.childPanelsConfigured,
         categoryOptions: JSON.stringify (this.values.currentOptionCategories),
         functions: this.functions,
@@ -1883,14 +1882,19 @@ export class MsfDashboardPanelComponent implements OnInit {
     });
 
     dialogRef.afterClosed ().subscribe (
-      () => {
+      (noDrillDownFound) => {
         this.globals.popupLoading = false;
-        this.saveChildPanels ();
+
+        if (noDrillDownFound)
+        {
+        }
+        else
+          this.saveChildPanels (drillDownOptions);
       }
     );
   }
 
-  getChildPanelsInfo(): any[]
+  getChildPanelsInfo(drillDownOptions, drillDownIds): any[]
   {
     let childPanels = [];
 
@@ -1902,6 +1906,7 @@ export class MsfDashboardPanelComponent implements OnInit {
          continue;
 
       childPanels.push ({
+        id: value.id,
         option: value.currentOption,
         title: value.chartName,
         analysis: value.chartColumnOptions.indexOf (value.variable),
@@ -1912,24 +1917,27 @@ export class MsfDashboardPanelComponent implements OnInit {
         paletteColors: JSON.stringify (value.paletteColors)
       });
 
+      drillDownIds.push (drillDownOptions[i].id);
       this.childPanelsConfigured[i] = false;
     }
 
     return childPanels;
   }
 
-  saveChildPanels(): void
+  saveChildPanels(drillDownOptions): void
   {
-    let childPanels = this.getChildPanelsInfo ();
+    let drillDownIds = [];
+    let childPanels = this.getChildPanelsInfo (drillDownOptions, drillDownIds);
 
     if (!childPanels.length)
       return;
 
     this.globals.isLoading = true;
-    this.service.saveChildPanels (this, childPanels, this.saveChildPanelsInfo, this.handlerError);
+    this.service.saveChildPanels (this, childPanels, this.values.id, drillDownIds, this.drillDownSettingsClear, this.drillDownSettingsClear);
   }
 
-  saveChildPanelsInfo(_this, data): void
+  // destroy child panel list after success or failure
+  drillDownSettingsClear(_this): void
   {
     _this.globals.isLoading = false;
   }

@@ -1817,6 +1817,10 @@ mat-tab-group
     .mat-form-field-underline
         background-color: #595959
 
+#msf-dashboard-drill-down-container-column
+    .mat-form-field-underline
+        background-color: #353535
+
 @mixin msf-dashboard-form-field-size
     width: 49.5%
     padding-right: 0.5%
@@ -2183,6 +2187,14 @@ mat-tab-group
     background-size: 50%
     @include msf-dashboard-dialog-title(20px, 10px)
     @extend .msf-dashboard-dialog
+
+#msf-dashboard-drill-down-container
+    background-color: inherit
+    padding: inherit
+    color: #fff
+
+#msf-dashboard-drill-down-sub-container-column-reverse
+    margin-top: 9px
 
 mat-dialog-container
     background-color: $msf-primary-color!important

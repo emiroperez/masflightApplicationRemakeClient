@@ -2105,6 +2105,10 @@ mat-tab-group {
   background-color: #595959;
 }
 
+#msf-dashboard-drill-down-container-column .mat-form-field-underline {
+  background-color: #353535;
+}
+
 .msf-dashboard-chart-icon {
   vertical-align: middle;
   margin-top: -5%;
@@ -2568,6 +2572,16 @@ mat-tab-group {
   padding-bottom: 10px;
   color: #fff;
   position: relative;
+}
+
+#msf-dashboard-drill-down-container {
+  background-color: inherit;
+  padding: inherit;
+  color: #fff;
+}
+
+#msf-dashboard-drill-down-sub-container-column-reverse {
+  margin-top: 9px;
 }
 
 mat-dialog-container {

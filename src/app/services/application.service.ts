@@ -331,9 +331,20 @@ export class ApplicationService {
     this.http.get (_this, url, handlerSuccess, handlerError, null);
   }
 
-  saveChildPanels(_this, info, handlerSuccess, handlerError)
+  saveChildPanels(_this, info, parentPanelId, drillDownIds, handlerSuccess, handlerError)
   {
-    let url = this.host + "/saveChildPanels";
+    let url = this.host + "/saveChildPanels?parentPanelId=" + parentPanelId;
+
+    // add every drill down id that exists
+    for (let i = 0; i < drillDownIds.length; i++)
+      url += "&drillDownId=" + drillDownIds[i];
+
     this.http.post (_this, url, info, handlerSuccess, handlerError);
+  }
+
+  getChildPanels(_this, parentPanelId, handlerSuccess, handlerError)
+  {
+    let url = this.host + "/getChildPanels?parentPanelId=" + parentPanelId;
+    this.http.get (_this, url, handlerSuccess, handlerError, null);
   }
 }

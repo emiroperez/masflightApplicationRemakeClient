@@ -9,10 +9,9 @@
   </div>
   {{data.title}}
 </div>
-<!--<div class="msf-dashboard-panel-container" *ngIf="!values.displayChart && !values.displayInfo">-->
-<div class="msf-dashboard-panel-container" style="background-color: inherit; padding: inherit; color: #fff">
+<div class="msf-dashboard-panel-container" id="msf-dashboard-drill-down-container" *ngIf="data.childPanelValues.length">
   <div class="msf-dashboard-panel-sub-container-column">
-    <mat-form-field class="msf-full-width">
+    <mat-form-field class="msf-full-width" id="msf-dashboard-drill-down-container-column">
       <mat-select placeholder="Drill Down" (selectionChange)="loadChartFilterValues($event.value)">
         <ngx-mat-select-search [formControl]="dataFormFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
         <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
@@ -22,7 +21,7 @@
     </mat-form-field>
   </div>
   <div class="msf-dashboard-panel-sub-container-column">
-    <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+    <mat-form-field [formGroup]="chartForm" class="msf-full-width" id="msf-dashboard-drill-down-container-column">
       <mat-select formControlName="chartCtrl" placeholder="Chart Type" (selectionChange)="checkChartType($event.value)">
         <mat-option *ngFor="let chartType of data.chartTypes" [value]="chartType">
           {{chartType.name}}
@@ -43,7 +42,7 @@
           <mat-icon class="msf-dashboard-chart-icon">bar_chart</mat-icon>
         </div>
         <div class="msf-dashboard-chart-op-container">
-          <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+          <mat-form-field [formGroup]="chartForm" class="msf-full-width" id="msf-dashboard-drill-down-container-column">
             <mat-select formControlName="variableCtrl" placeholder="Analysis by" (selectionChange)="checkVariable($event.value)">
               <ngx-mat-select-search [formControl]="variableFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
               <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
@@ -58,7 +57,7 @@
           <mat-icon class="msf-dashboard-chart-icon">multiline_chart</mat-icon>
         </div>
         <div class="msf-dashboard-chart-op-container">
-          <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+          <mat-form-field [formGroup]="chartForm" class="msf-full-width" id="msf-dashboard-drill-down-container-column">
             <mat-select formControlName="xaxisCtrl" placeholder="x - Axis" (selectionChange)="checkXAxis($event.value)">
               <ngx-mat-select-search [formControl]="xaxisFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
               <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
@@ -73,7 +72,7 @@
           <mat-icon class="msf-dashboard-chart-icon">show_chart</mat-icon>
         </div>
         <div class="msf-dashboard-chart-op-container">
-          <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+          <mat-form-field [formGroup]="chartForm" class="msf-full-width" id="msf-dashboard-drill-down-container-column">
             <mat-select formControlName="valueCtrl" placeholder="Values" (selectionChange)="checkValue($event.value)">
               <ngx-mat-select-search [formControl]="valueFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
               <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
@@ -88,7 +87,7 @@
           <mat-icon class="msf-dashboard-chart-icon">functions</mat-icon>
         </div>
         <div class="msf-dashboard-chart-op-container">
-          <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+          <mat-form-field [formGroup]="chartForm" class="msf-full-width" id="msf-dashboard-drill-down-container-column">
             <mat-select formControlName="functionCtrl" placeholder="Function" (selectionChange)="checkFunction($event.value)">
               <mat-option *ngFor="let fun of data.functions" [value]="fun">
                 {{fun.name}}
@@ -97,7 +96,7 @@
           </mat-form-field>
         </div>
       </div>
-      <div class="msf-dashboard-panel-sub-container-column-reverse" style="margin-top: 9px">
+      <div class="msf-dashboard-panel-sub-container-column-reverse" id="msf-dashboard-drill-down-sub-container-column-reverse">
         <button mat-flat-button class="flat-button" (click)="closeDialog()">OK</button>
         <div class="msf-dashboard-panel-control-variable-button">
           <button [disabled]="!currentValue" mat-mini-fab (click)="goToColorPicker()" color="primary">
