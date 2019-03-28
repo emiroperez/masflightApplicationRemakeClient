@@ -29,6 +29,7 @@ export class MsfDashboardComponent implements OnInit {
   contextMenuX: number = 0;
   contextMenuY: number = 0;
   contextCategory: any;
+  contextMenuItems: any;
 
   @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
 
@@ -87,6 +88,8 @@ export class MsfDashboardComponent implements OnInit {
   // store any data form depending of the selected dashboard from menu
   addDataForms(_this, data): void
   {
+    let optionIds = [];
+
     for (let columnConfig of data)
     {
       _this.options.push (
@@ -94,8 +97,30 @@ export class MsfDashboardComponent implements OnInit {
         id: columnConfig.id,
         name: columnConfig.string,
         nameSearch: columnConfig.stringSearch,
-        baseUrl: columnConfig.url
+        baseUrl: columnConfig.url,
+        drillDownOptions: []
       });
+
+      optionIds.push (columnConfig.id);
+    }
+
+    // set drill down for each option
+    _this.service.getDrillDownOptions (_this, optionIds,
+      _this.setDrillDownOptions, _this.handlerError);
+  }
+
+  setDrillDownOptions(_this, data): void
+  {
+    for (let drillDown of data)
+    {
+      for (let i = 0; i < _this.options.length; i++)
+      {
+        if (drillDown.parentOptionId == _this.options[i].id)
+        {
+          _this.options[i].drillDownOptions.push (drillDown);
+          break;
+        }
+      }
     }
 
     // get dashboard panels after getting the data forms
@@ -103,7 +128,7 @@ export class MsfDashboardComponent implements OnInit {
       _this.loadDashboardPanels, _this.handlerError);
   }
 
-  loadDashboardPanels (_this, data): void
+  loadDashboardPanels(_this, data): void
   {
     let dashboardPanels: any[] = [];
     let dashboardRows = [];
@@ -498,12 +523,13 @@ export class MsfDashboardComponent implements OnInit {
 
   onrightClick(event, dashboardColumn, rowindex): boolean
   {
-    event.stopPropagation ();
+/*    event.stopPropagation ();
 
     if (!dashboardColumn[rowindex].chartClicked)
       return true;
 
     this.contextCategory = dashboardColumn[rowindex].chartObjectSelected;
+    this.contextMenuItems = dashboardColumn[rowindex].currentOption.drillDownOptions;
     this.contextMenuX = event.clientX;
 
     if (this.globals.isFullscreen)
@@ -514,11 +540,14 @@ export class MsfDashboardComponent implements OnInit {
     // prevent context menu from appearing
     dashboardColumn[rowindex].chartClicked = false;
     this.contextMenu.openMenu ();
-    return false;
+    return false;*/
+    dashboardColumn[rowindex].chartClicked = false;
+    return true;
   }
 
   disableContextMenu(): void
   {
+    this.contextMenuItems = null;
     this.contextMenu.closeMenu ();
   }
 
