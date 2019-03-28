@@ -73,9 +73,9 @@
     </div>
   </div>
   <div class="msf-dashboard-panel-context-menu" #contextMenu="matMenuTrigger" [matMenuTriggerFor]="menu" [style.left.px]="getContextMenuPosX()" [style.top.px]="getContextMenuPosY()">
-    <mat-menu id="msf-dashboard-panel-context-menu-container" #menu="matMenu" [style.visibility]="contextCategory ? 'visible' : 'hidden'">
-      <button mat-menu-item (click)="displayChildPanel()">
-        <span>{{contextCategory}}</span>
+    <mat-menu id="msf-dashboard-panel-context-menu-container" #menu="matMenu" [style.visibility]="contextMenuItems ? 'visible' : 'hidden'">
+      <button mat-menu-item *ngFor="let item of contextMenuItems" (click)="displayChildPanel()">
+        <span>{{item.title}}</span>
       </button>
     </mat-menu>
   </div>

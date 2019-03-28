@@ -59,7 +59,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     { name: 'Stacked Area', flags: ChartFlags.XYCHART | ChartFlags.STACKED | ChartFlags.AREACHART, createSeries: this.createLineSeries },
     { name: 'Pie', flags: ChartFlags.PIECHART, createSeries: this.createPieSeries },
     { name: 'Donut', flags: ChartFlags.DONUTCHART, createSeries: this.createPieSeries },
-    { name: 'Information', flags: ChartFlags.INFO }
+    { name: 'Information', flags: ChartFlags.INFO }//,
+    // { name: 'Detailed Information', flags: ChartFlags.INFO | ChartFlags.DETAILEDINFO }//,
+    // { name: 'Picture', flags: ChartFlags.INFO | ChartFlags.PICTURE }
   ];
 
   functions:any[] = [
@@ -180,15 +182,11 @@ export class MsfDashboardPanelComponent implements OnInit {
     series.columns.template.strokeWidth = 0;
     series.columns.template.width = am4core.percent (60);
 
-    // Add an event that hide the column chart when clicked
-    // series.columns.template.events.on ("hit", function(event) {
-      //event.target.parent.hide ();
-//      chart.legend.dispatchImmediately ("hide");
-      //event.target.dataItem.categoryY;
-    // });
-
     // Display a special context menu when a chart column is right clicked
     series.columns.template.events.on ("rightclick", function(event) {
+      if (!values.currentOption.drillDownOptions.length)
+        return;
+
       values.chartClicked = true;
       values.chartObjectSelected = event.target.dataItem.dataContext[values.xaxis.id];
     });
@@ -219,6 +217,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     series.columns.template.width = am4core.percent (60);
 
     series.columns.template.events.on ("rightclick", function(event) {
+      if (!values.currentOption.drillDownOptions.length)
+        return;
+
       values.chartClicked = true;
       values.chartObjectSelected = event.target.dataItem.dataContext[values.xaxis.id];
     });
@@ -261,6 +262,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     // Display a special context menu when a chart line segment is right clicked
     series.segments.template.interactionsEnabled = true;
     series.segments.template.events.on ("rightclick", function(event) {
+      if (!values.currentOption.drillDownOptions.length)
+        return;
+
       values.chartClicked = true;
       values.chartObjectSelected = event.target.dataItem.component.tooltipDataItem.dataContext[values.xaxis.id];
     });
@@ -285,6 +289,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     // Display a special context menu when a chart column is right clicked
     series.columns.template.events.on ("rightclick", function(event) {
+      if (!values.currentOption.drillDownOptions.length)
+        return;
+
       values.chartClicked = true;
       values.chartObjectSelected = event.target.dataItem.dataContext[item.titleField];
     });
@@ -307,6 +314,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     });
 
     series.columns.template.events.on ("rightclick", function(event) {
+      if (!values.currentOption.drillDownOptions.length)
+        return;
+
       values.chartClicked = true;
       values.chartObjectSelected = event.target.dataItem.dataContext[item.titleField];
     });
@@ -345,6 +355,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     // Display a special context menu when a pie slice is right clicked
     series.slices.template.events.on ("rightclick", function(event) {
+      if (!values.currentOption.drillDownOptions.length)
+        return;
+
       values.chartClicked = true;
       values.chartObjectSelected = event.target.dataItem.dataContext[item.titleField];
     });
@@ -375,6 +388,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     // Display a special context menu when a funnel slice is right clicked
     series.slices.template.events.on ("rightclick", function(event) {
+      if (!values.currentOption.drillDownOptions.length)
+        return;
+
       values.chartClicked = true;
       values.chartObjectSelected = event.target.dataItem.dataContext[item.titleField];
     });
@@ -625,16 +641,6 @@ export class MsfDashboardPanelComponent implements OnInit {
         chart.legend.markers.template.width = 15;
         chart.legend.markers.template.height = 15;
         chart.legend.labels.template.fontSize = 10;
-
-        /*chart.legend.itemContainers.template.events.on (
-          "hide",
-          ev => {
-            chart.legend.data[0].hide ();
-            // var item = ev.target.dataItem.component.tooltipDataItem.dataContext;
-            //alert("line clicked on: " + item.country + ": " + item.marketing);
-          },
-          this
-        );*/
       }
 
       // Add export button
@@ -1735,7 +1741,13 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   isInformationPanel(): boolean
   {
-    return (this.values.currentChartType.flags & ChartFlags.INFO) ? true : false;
+    return (this.values.currentChartType.flags & ChartFlags.INFO
+      && !(this.values.currentChartType.flags & ChartFlags.DETAILEDINFO)) ? true : false;
+  }
+
+  isDetailedInformationPanel(): boolean
+  {
+    return (this.values.currentChartType.flags & (ChartFlags.INFO | ChartFlags.DETAILEDINFO)) ? true : false;
   }
 
   getButtonColor(infoVarNum): String
@@ -1858,8 +1870,6 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   goToDrillDownSettings(): void
   {
-    let drillDownOptions = [];
-
     // clear child panel list befre opening drill down dialog
     this.childPanelValues = [];
     this.childPanelsConfigured = [];
@@ -1873,7 +1883,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         optionId: this.values.currentOption.id,
         parentPanelId: this.values.id,
         childPanelValues: this.childPanelValues,
-        drillDownOptions: drillDownOptions,
+        drillDownOptions: this.values.currentOption.drillDownOptions,
         childPanelsConfigured: this.childPanelsConfigured,
         categoryOptions: JSON.stringify (this.values.currentOptionCategories),
         functions: this.functions,
@@ -1882,19 +1892,13 @@ export class MsfDashboardPanelComponent implements OnInit {
     });
 
     dialogRef.afterClosed ().subscribe (
-      (noDrillDownFound) => {
-        this.globals.popupLoading = false;
-
-        if (noDrillDownFound)
-        {
-        }
-        else
-          this.saveChildPanels (drillDownOptions);
+      () => {
+        this.saveChildPanels ();
       }
     );
   }
 
-  getChildPanelsInfo(drillDownOptions, drillDownIds): any[]
+  getChildPanelsInfo(drillDownIds): any[]
   {
     let childPanels = [];
 
@@ -1917,17 +1921,17 @@ export class MsfDashboardPanelComponent implements OnInit {
         paletteColors: JSON.stringify (value.paletteColors)
       });
 
-      drillDownIds.push (drillDownOptions[i].id);
+      drillDownIds.push (this.values.currentOption.drillDownOptions[i].id);
       this.childPanelsConfigured[i] = false;
     }
 
     return childPanels;
   }
 
-  saveChildPanels(drillDownOptions): void
+  saveChildPanels(): void
   {
     let drillDownIds = [];
-    let childPanels = this.getChildPanelsInfo (drillDownOptions, drillDownIds);
+    let childPanels = this.getChildPanelsInfo (drillDownIds);
 
     if (!childPanels.length)
       return;

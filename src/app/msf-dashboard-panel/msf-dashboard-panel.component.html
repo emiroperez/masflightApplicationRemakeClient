@@ -27,7 +27,7 @@
       </mat-form-field>
     </div>
   </div>
-  <ng-container *ngIf="!isInformationPanel()">
+  <ng-container *ngIf="!isInformationPanel() && !isDetailedInformationPanel()">
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-addmenu-icon-item">
         <mat-icon class="msf-dashboard-chart-icon" aria-label="Filter List">filter_list</mat-icon>
@@ -108,7 +108,7 @@
           <!-- Drill Down Button Under Construction -->
           <!--
           <div class="msf-dashboard-panel-control-variable-button">
-            <button mat-mini-fab (click)="goToDrillDownSettings()" color="primary">
+            <button [disabled]="!values.currentOption.drillDownOptions.length" mat-mini-fab (click)="goToDrillDownSettings()" color="primary">
               <mat-icon aria-label="Drill Down">subtitles</mat-icon>
             </button>
           </div>
@@ -220,6 +220,22 @@
       </div>
     </div>
   </ng-container>
+  <!--
+  <ng-container *ngIf="isDetailedInformationPanel()">
+    <div class="msf-dashboard-panel-sub-container-column">
+      <div class="msf-dashboard-panel-sub-container-row">
+        <mat-form-field class="msf-full-width">
+          <mat-select multiple placeholder="Select Values To Display">
+            <ngx-mat-select-search placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+            <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
+              {{variable.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </ng-container>
+  -->
 </div>
 <!-- ngIf doesn't work with AmCharts -->
 <div class="{{values.displayChart ? 'msf-dashboard-panel-container-chart' : 'msf-dashboard-panel-container-invisible'}}" [style.height.px]="panelHeight">

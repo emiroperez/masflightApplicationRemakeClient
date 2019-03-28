@@ -60,6 +60,9 @@ export class MsfDashboardDrillDownComponent {
     private service: ApplicationService,
     @Inject(MAT_DIALOG_DATA) public data: any)
   {
+    // prepare the drill down form combo box
+    this.optionSearchChange (this.dataFormFilterCtrl);
+
     // set initial values
     this.chartForm = this.formBuilder.group ({
       chartCtrl: new FormControl ({ value: '', disabled: true }),
@@ -71,7 +74,7 @@ export class MsfDashboardDrillDownComponent {
 
     // configure child panels in order to be able to configure the drill down settings
     this.globals.popupLoading = true;
-    service.getDrillDown (this, this.data.optionId, this.setDrillDownList, this.handlerError);
+    this.service.getChildPanels (this, data.parentPanelId, this.setChildPanels, this.handlerError);
   }
 
   ngOnDestroy()
@@ -82,12 +85,12 @@ export class MsfDashboardDrillDownComponent {
 
   onNoClick(): void
   {
-    this.dialogRef.close (false);
+    this.dialogRef.close ();
   }
 
   closeDialog(): void
   {
-    this.dialogRef.close (false);
+    this.dialogRef.close ();
   }
 
   private filterVariables(filterCtrl): void
@@ -316,24 +319,6 @@ export class MsfDashboardDrillDownComponent {
     }
 
     _this.globals.popupLoading = false;
-  }
-
-  setDrillDownList(_this, data)
-  {
-    if (!data.length)
-    {
-      _this.globals.popupLoading = false;
-      _this.dialogRef.close (true);
-      return;
-    }
-
-    for (let i = 0; i < data.length; i++)
-      _this.data.drillDownOptions.push (data[i]);
-
-    // prepare the drill down form combo box
-    _this.optionSearchChange (_this.dataFormFilterCtrl);
-
-    _this.service.getChildPanels (_this, _this.data.parentPanelId, _this.setChildPanels, _this.handlerError);
   }
 
   setChildPanels(_this, data)

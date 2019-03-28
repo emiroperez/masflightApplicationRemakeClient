@@ -326,10 +326,10 @@ export class ApplicationService {
     console.log(url);
   }
 
-  getDrillDown(_this, optionId, handlerSuccess, handlerError)
+  getDrillDownOptions(_this, optionIds, handlerSuccess, handlerError)
   {
-    let url = this.host + "/getDrillDown?optionId=" + optionId;
-    this.http.get (_this, url, handlerSuccess, handlerError, null);
+    let url = this.host + "/getDrillDowns";
+    this.http.post (_this, url, optionIds, handlerSuccess, handlerError);
   }
 
   saveChildPanels(_this, info, parentPanelId, drillDownIds, handlerSuccess, handlerError)
