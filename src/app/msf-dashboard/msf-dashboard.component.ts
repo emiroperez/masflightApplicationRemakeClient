@@ -552,7 +552,7 @@ export class MsfDashboardComponent implements OnInit {
     this.dialog.open (MsfDashboardChildPanelComponent, {
       height: '600px',
       width: '800px',
-      panelClass: 'msf-dashboard-control-variables-dialog'/*,
+      panelClass: 'msf-dashboard-child-panel-dialog'/*,
       data: {
         title: this.values.chartName,
         chartColumnOptions: this.values.chartColumnOptions
