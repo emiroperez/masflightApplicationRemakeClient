@@ -2078,15 +2078,15 @@ mat-tab-group
         width: 35%
         background-color:$msf-secondary-color
 
-@mixin msf-dashboard-info-table($bgcolor, $color, $font-size, $padding)
+@mixin msf-dashboard-info-table($bgcolor, $color, $font-size, $height)
     background-color: $bgcolor
-    padding: 5px
     color: $color
-    padding: $padding
     vertical-align: middle
+    height: $height
     display: flex
     flex-direction: column
     justify-content: center
+    min-width: 170px
     font-size: $font-size
 
 @mixin msf-dashboard-info-position($width, $flex-direction, $text-align)
@@ -2108,31 +2108,23 @@ mat-tab-group
             margin-top: 10px
             margin-left: 5px
             margin-right: 5px
-            width: 100%
-            display: flex
-            .msf-dashboard-info-left
-                @include msf-dashboard-info-position(80%, row, left)
-                .msf-dashboard-info-title
-                    width: 100%
-                    text-align: left
-                    font-weight: bold
-                    @include msf-dashboard-info-table(#3b3b3b, #01abec, 16px, 10px)
-            .msf-dashboard-info-right
-                min-width: 120px
-                @include msf-dashboard-info-position(20%, column, center)
-                .msf-dashboard-info-value
-                    @include msf-dashboard-info-table(#333333, #fff, 14px, 5px)
-                .msf-dashboard-info-separator-background
-                    background-color: #333333
-                    .msf-dashboard-info-separator
-                        border-color: #3b3b3b
-                        border-bottom: 0
-                        border-style: solid
-                        width: 90%
-                        margin-top: 0
-                        margin-bottom: 0
-                .msf-dashboard-info-measure
-                    @include msf-dashboard-info-table(#333333, #fff, 14px, 5px)
+            flex: 1 1 45%
+            .msf-dashboard-info-title
+                font-weight: bold
+                @include msf-dashboard-info-table(#3b3b3b, #01abec, 16px, 45px)
+            .msf-dashboard-info-value
+                @include msf-dashboard-info-table(#333333, #fff, 14px, 37px)
+            .msf-dashboard-info-separator-background
+                background-color: #333333
+                .msf-dashboard-info-separator
+                    border-color: #3b3b3b
+                    border-bottom: 0
+                    border-style: solid
+                    width: 90%
+                    margin-top: 0
+                    margin-bottom: 0
+            .msf-dashboard-info-measure
+                @include msf-dashboard-info-table(#333333, #fff, 14px, 37px)
 
 @mixin msf-dashboard-color-picker-selector-style($cursor: default)
     cursor: $cursor

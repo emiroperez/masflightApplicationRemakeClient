@@ -245,16 +245,12 @@
       <div class="msf-dashboard-info-display">
         <div class="msf-dashboard-info-container" *ngIf="values.infoVar1">
           <div class="msf-dashboard-info-table" *ngFor="let result of values.lastestResponse">
-            <div class="msf-dashboard-info-left">
-              <div class="msf-dashboard-info-title">{{result.title}}</div>
+            <div class="msf-dashboard-info-title">{{result.title}}</div>
+            <div class="msf-dashboard-info-value">{{getResultValue(result.value)}}</div>
+            <div class="msf-dashboard-info-separator-background">
+              <hr class="msf-dashboard-info-separator">
             </div>
-            <div class="msf-dashboard-info-right">
-              <div class="msf-dashboard-info-value">{{getResultValue(result.value)}}</div>
-              <div class="msf-dashboard-info-separator-background">
-                <hr class="msf-dashboard-info-separator">
-              </div>
-              <div class="msf-dashboard-info-measure">{{result.measure}}</div>
-            </div>
+            <div class="msf-dashboard-info-measure">{{result.measure}}</div>
           </div>
         </div>
       </div>
