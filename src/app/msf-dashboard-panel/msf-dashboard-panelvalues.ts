@@ -33,6 +33,7 @@ export class MsfDashboardPanelValues {
 
     // values used for the information panel
     infoNumVariables: number;
+    formVariables: any[] = [];
 
     // palette colors used on charts
     paletteColors: string[] = [
