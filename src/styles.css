@@ -10,10 +10,18 @@
 @import "~ng-pick-datetime/assets/style/picker.min.css";
 @import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
 body {
-  background-image: url("assets/images/fondo.png");
   font-family: Roboto, "Helvetica Neue", sans-serif;
   font-size: 12px;
   margin: 0;
+}
+
+.application-class {
+  background-color: #1e1e1e;
+  height: 100%;
+}
+
+.login-form .mat-checkbox-checked.mat-primary .mat-checkbox-background {
+  background-color: #ED5C27;
 }
 
 .mat-card {
@@ -403,7 +411,7 @@ p {
 }
 
 .mat-form-field-appearance-legacy .mat-form-field-underline {
-  background-color: #3d3d3d;
+  background-color: #9E9E9E;
 }
 
 .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label, .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
@@ -412,7 +420,11 @@ p {
   -ms-transform: translateY(-1.739125em) scale(0.75);
   width: 133.33333%;
   margin-left: 7px;
-  color: white !important;
+  color: #ffffff !important;
+}
+
+.login-form .mat-form-field.mat-focused .mat-form-field-ripple {
+  background-color: #ED5C27;
 }
 
 .mat-error {
@@ -437,7 +449,7 @@ p {
 }
 
 .notification-warning {
-  background-color: #b2e1ef;
+  background-color: #ed5c2742;
 }
 
 .notification-error {
@@ -473,6 +485,7 @@ p {
 
 .login-card {
   max-width: 280px;
+  background: rgba(255, 255, 255, 0.5) !important;
 }
 
 .register-card {
@@ -512,7 +525,7 @@ p {
 
 .login-header-image {
   width: 80% !important;
-  height: 30px;
+  height: 50px;
   margin: 0 auto !important;
 }
 
@@ -542,7 +555,7 @@ p {
 }
 
 .login-button, .msf-medium-button, .msf-big-button {
-  background-color: #01abec !important;
+  background-color: #ED5C27 !important;
   line-height: 50px !important;
   padding: 0 50px !important;
 }
@@ -554,7 +567,7 @@ p {
 }
 
 .login-check {
-  color: white;
+  color: #1e1e1e;
   text-align: center;
   font-size: smaller;
 }
@@ -571,13 +584,13 @@ p {
 }
 
 .login-link-reg {
-  color: white;
+  color: #1e1e1e;
   margin: 2px;
   font-size: smaller;
 }
 
 .login-link-reg2 {
-  color: #01abec;
+  color: #ED5C27;
 }
 
 .login-font-color {
@@ -610,7 +623,7 @@ p {
   width: 230px;
   outline: none;
   border: none;
-  color: white;
+  color: #1e1e1e;
   padding-left: 31px;
   background-size: 0 2px, 100% 1px;
   background-position: 50% 100%, 50% 100%;
@@ -1179,6 +1192,7 @@ button[aria-expanded=true] {
   position: fixed;
   display: flex;
   height: 100%;
+  background-color: #1e1e1e;
 }
 
 .msf-menu-nav {
@@ -3484,7 +3498,7 @@ table.datasource {
 }
 
 .msf-plan-card-content .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label, .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
-  color: white !important;
+  color: #ffffff !important;
 }
 
 .msf-plan-card-content .mat-form-field.mat-focused .mat-form-field-ripple {
@@ -3627,6 +3641,14 @@ table.datasource {
 
 .mat-checkbox-frame {
   border-color: white !important;
+}
+
+.login-form .mat-checkbox-frame {
+  border-color: #1e1e1e !important;
+}
+
+.mat-icon.input_img {
+  color: #ED5C27 !important;
 }
 
 .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {

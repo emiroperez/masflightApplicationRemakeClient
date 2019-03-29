@@ -1,14 +1,17 @@
+<div>
 <mat-card class="login-card">
     <mat-card-header>
-        <img mat-card-image class="login-header-image" src="../../assets/images/logo.png">
+        <!-- <img mat-card-image class="login-header-image" src="../../assets/images/logo.png"> -->
+         <img mat-card-image class="login-header-image" src="../../assets/images/logo.jpg"> <!--kp20032019  descomentar cuando quiera el nuevo diseño-->
     </mat-card-header>
 
     <mat-card-content>
         <app-notification [show]="utils.notificationShow" [message]="utils.notificationMessage" [type]="utils.notificationType"></app-notification>
         <form class="login-form" name="login">
             <div class="block-item-input">
-                <mat-form-field [formGroup]="loginForm">
-                    <img src="../../assets/images/usuario.png" class="input_img">
+                <mat-form-field [formGroup]="loginForm">                    
+                    <mat-icon class="input_img">person</mat-icon>
+                    <!-- <img src="../../assets/images/usuario.png" class="input_img"> kp20032019 comentar para cuando se use el nuevo diseño -->
                     <input matInput autocomplete="off" type="text" placeholder="Username" class="input-username" formControlName="usernameValidator" name="username" [(value)]="user.username" />
                     <mat-error *ngIf="isUsernameInvalid()">{{getErrorUsernameMessage()}}</mat-error>
                 </mat-form-field>
@@ -16,7 +19,8 @@
 
             <div class="block-item-input">
                 <mat-form-field [formGroup]="loginForm">
-                    <img src="../../assets/images/password.png" class="input_img">
+                    <mat-icon class="input_img">lock</mat-icon>
+                    <!-- <img src="../../assets/images/password.png" class="input_img"> kp20032019 comentar para cuando se use el nuevo diseño -->
                     <input matInput type="password" placeholder="Password" class="input-password" formControlName="passwordValidator" name="password" [(value)]="user.password" />
                     <mat-error *ngIf="isPasswordInvalid()">{{getErrorPasswordMessage()}}</mat-error>
                 </mat-form-field>
@@ -41,3 +45,4 @@
         <!--<button mat-flat-button class="login-button" routerLink="/welcome">Sign in</button>-->
     </mat-card-actions>
 </mat-card>
+</div>
