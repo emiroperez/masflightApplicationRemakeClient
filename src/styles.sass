@@ -21,10 +21,19 @@
 
 
 body
-    background-image: url("assets/images/fondo.png")
+    //background-image: url("assets/images/fondo.png") //kp29032019
+    //background-color: $msf-primary-dark-color
     font-family: $msf-font-family
     font-size: $msf-font-size
     margin: 0
+
+.application-class
+    background-color: $msf-primary-dark-color
+    height: 100%
+
+// kp20032019
+.login-form .mat-checkbox-checked.mat-primary .mat-checkbox-background
+    background-color: $msf-secondary-color-orange
 
 
 .mat-card
@@ -372,7 +381,7 @@ p
     width: 100%!important
 
 .mat-form-field-appearance-legacy .mat-form-field-underline
-    background-color: $msf-primary-light-color
+    background-color: #9E9E9E
 
 .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus+.mat-form-field-label-wrapper .mat-form-field-label, .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label
     -webkit-transform: translateY(-1.739125em) scale(.75) perspective(100px) translateZ(.001px)
@@ -380,7 +389,12 @@ p
     -ms-transform: translateY(-1.739125em) scale(.75)
     width: 133.33333%
     margin-left: 7px
-    color: white!important
+    // color: white!important kp20032019
+    color: $msf-font-color !important
+
+//kp20032019
+.login-form .mat-form-field.mat-focused .mat-form-field-ripple
+    background-color: $msf-secondary-color-orange
 
 .mat-error
     margin-left: 31px
@@ -403,7 +417,8 @@ p
 
 .notification-warning
     @extend .notification
-    background-color: #b2e1ef
+    // background-color: #b2e1ef KP20032019
+    background-color: $msf-secondary-color-light
 
 .notification-error
     @extend .notification
@@ -438,6 +453,7 @@ p
 .login-card
     @extend .msf-card
     max-width: 280px
+    background: rgba($msf-primary-white-color,.5) !important //kp20032019
 
 .register-card
     border-radius: 10px!important
@@ -471,7 +487,8 @@ p
 
 .login-header-image
                 width: 80%!important
-                height: 30px
+                // height: 30px
+                height: 50px //descomentar para el nuevo diseño KP20032019
                 margin: 0 auto!important
 .image-avatar
             width: 20px
@@ -495,7 +512,8 @@ p
         color: #343434!important
 
 .login-button
-            background-color: $msf-secondary-color!important
+            // background-color: $msf-secondary-color!important //kp20032019
+            background-color: $msf-secondary-color-orange!important
             line-height: 50px!important
             padding: 0 50px!important
 
@@ -506,7 +524,8 @@ p
     margin-top: 10px!important
 
 .login-check
-            color: white
+            // color: white //kp20032019
+            color: $msf-font-color-black
             text-align: center
             font-size: $msf-login-font-size
 
@@ -520,12 +539,14 @@ p
     display: block
 
 .login-link-reg
-                color: white
+                // color: white kp19032019
+                color: $msf-font-color-black
                 margin: 2px
                 font-size: $msf-login-font-size
 
 .login-link-reg2
-                color: $msf-secondary-color
+                // color: $msf-secondary-color kp19032019
+                color: $msf-secondary-color-orange
 
 
 .login-font-color
@@ -553,9 +574,10 @@ p
 .login-card input[type="text"], .login-card input[type="password"],.login-card  input[type="number"],.login-card input[type="email"]
     padding: 10px
     width: 230px
-    outline: none
+    outline: none    
     border: none
-    color: white
+    // color: white kp20032019
+    color: $msf-font-color-black
     padding-left: 31px
     background-size: 0 2px, 100% 1px
     background-position: 50% 100%, 50% 100%
@@ -931,7 +953,7 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button
     display: inline-block
     border-bottom-right-radius: 40px
     border-top-right-radius: 40px
-    background-color: #3d3d3d
+    background-color: $msf-primary-light-color
 
 .msf-menu-logo
     //width: 170px //kp28032019
@@ -1055,7 +1077,9 @@ button[aria-expanded="true"]
     width: 100%
     position: fixed
     display: flex
-    height: 100%
+    height: 100%    
+    background-color: $msf-primary-dark-color
+
 
 .msf-menu-nav
     width: 250px
@@ -3013,7 +3037,8 @@ table.datasource
 
 
 .msf-plan-card-content .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label, .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label
-    color: white !important
+    // color: white !important kp19032019
+    color: $msf-font-color !important
 
 
 .msf-plan-card-content .mat-form-field.mat-focused .mat-form-field-ripple
@@ -3143,6 +3168,13 @@ table.datasource
 
 .mat-checkbox-frame
     border-color: white !important
+
+.login-form .mat-checkbox-frame 
+    // border-color: $msf-font-color !important kp20032019
+    border-color: $msf-font-color-black !important
+    
+.mat-icon.input_img
+    color: #ED5C27 !important
 
 .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value
     white-space: normal !important
