@@ -33,7 +33,7 @@ export class MsfMoreInfoPopupComponent {
         var result = value/60;
         var resultString = String(result);
         if(resultString.split(".")[0]!="0"){
-          aux = resultString.split(".")[0] + "h " + resultString.split(".")[1].substr(0, 1); + "m";
+          aux = resultString.split(".")[0] + "h " + resultString.split(".")[1].substr(0, 1)+ "m";
         }else{
           aux = value + "m";
         }
