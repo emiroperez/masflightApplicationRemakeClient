@@ -1,15 +1,17 @@
 <!--Header-->
 <div *ngIf="!globals.isFullscreen || (globals.isFullscreen && globals.currentOption !== 'dashboard')" class="msf-menu-header">
     <div class="msf-menu-header-image-container">
-        <img (click)="goHome()" style="cursor:pointer;" src="../../assets/images/logo_global_peqe.png" class="msf-menu-logo">
-        <img src="../../assets/images/ajustes.png" class="msf-menu-ajustes-icon">
+        <!-- kp28032019<img (click)="goHome()" style="cursor:pointer;" src="../../assets/images/logo_global_peqe.png" class="msf-menu-logo"> -->
+        <img (click)="goHome()" style="cursor:pointer;" src="../../assets/images/pulse_welc.png" class="msf-menu-logo">
+       <img src="../../assets/images/ajustes.png" class="msf-menu-ajustes-icon">
     </div>
     <div class="msf-menu-container">
         <app-menu [menu]="menu" [dashboards]="dashboards"></app-menu>
     </div>
     <div class="msf-header-icons">
+        <img src="../../assets/images/logo_global_peqe.png" class="msf-header-icons2">
         <div *ngIf="globals.currentUser" style="margin-right:5px;" class="msf-inline msf-vertical-middle">
-            <button mat-icon-button style="margin-right: 70px" [matMenuTriggerFor]="userMenu">
+            <button mat-icon-button style="margin-right: 70px;height: 60px;" [matMenuTriggerFor]="userMenu">
                 {{globals.currentUser}}
                 <mat-icon>person</mat-icon>
             </button>
