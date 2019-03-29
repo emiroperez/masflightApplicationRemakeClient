@@ -72,8 +72,10 @@ export class MsfDashboardPanelComponent implements OnInit {
     { id: 'count', name: 'Count' }
   ];
 
-  fontSizes:string[] = [
-    'Small', 'Medium', 'Large'
+  fontSizes:any[] = [
+    { name: 'Small', value: 12 },
+    { name: 'Medium', value: 18 },
+    { name: 'Large', value: 30 }
   ];
 
   @Input()
@@ -678,7 +680,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       if (this.values.currentChartType.flags & ChartFlags.INFO)
       {
-        if (this.values.function == 1)
+        if (this.values.currentChartType.flags & ChartFlags.FORM)
+          this.values.formGenerated = true;
+        else if (this.values.function == 1)
         {
           this.values.infoGenerated = true;
           this.values.function = -1;
@@ -702,7 +706,12 @@ export class MsfDashboardPanelComponent implements OnInit {
       if (this.values.currentChartType.flags & ChartFlags.INFO)
       {
         if (this.values.function == 1)
-          this.values.displayInfo = true;
+        {
+          if (this.values.currentChartType.flags & ChartFlags.FORM)
+            this.values.displayForm = true;
+          else
+            this.values.displayInfo = true;
+        }
       }
       else
         this.values.displayChart = true;
@@ -913,48 +922,13 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.http.get (this, url, handlerSuccess, handlerError, null);
   }
 
-  abc(_this, data): void
-  {
-    let response, result;
-
-    _this.globals.isLoading = false;
-    // console.log (data);
-
-    _this.formResults = [];
-
-    // only use the first result and filter out the values
-    response = data.Response;
-    for (let key in response)
-    {
-      let array = response[key];
-      if(array != null)
-      {
-        if (Array.isArray (array))
-        {
-          result = array[0];
-          break;
-        }
-      }
-    }
-
-    for (let formVariable of _this.values.formVariables)
-      _this.formResults.push (formVariable.column.name + ": " + result[formVariable.column.id]);
-
-    console.log (_this.formResults);
-  }
-
-  def(_this, data): void
-  {
-    _this.globals.isLoading = false;
-  }
-
   loadData(): void
   {
     this.globals.startTimestamp = new Date ();
 
     if (this.values.currentChartType.flags & ChartFlags.FORM ||
       this.values.currentChartType.flags & ChartFlags.PICTURE)
-      this.consumeWebServices (this.abc, this.def); // use the web service directly
+      this.consumeWebServices (this.handlerFormSuccess, this.handlerFormError); // use the web service directly
     else if (this.values.currentChartType.flags & ChartFlags.INFO)
       this.loadTextSummary (this.handlerTextSuccess, this.handlerTextError);
     else
@@ -976,9 +950,16 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.lastestResponse = null;
     this.values.chartGenerated = false;
     this.values.infoGenerated = false;
+    this.values.formGenerated = false;
     this.globals.isLoading = false;
 
-    if (this.values.currentChartType.flags & ChartFlags.INFO)
+    if (this.values.currentChartType.flags & ChartFlags.FORM)
+    {
+      this.dialog.open (MessageComponent, {
+        data: { title: "Error", message: "No data available for the form." }
+      });
+    }
+    else if (this.values.currentChartType.flags & ChartFlags.INFO)
     {
       this.dialog.open (MessageComponent, {
         data: { title: "Error", message: "No data available for information." }
@@ -1008,6 +989,56 @@ export class MsfDashboardPanelComponent implements OnInit {
       return true;
   }
 
+  handlerFormSuccess(_this, data): void
+  {
+    let response, result;
+
+    _this.formResults = [];
+
+    if (_this.isEmpty (data) || _this.isEmpty (data.Response))
+    {
+      _this.noDataFound ();
+      return;
+    }
+
+    if (!data.Response.total)
+    {
+      _this.noDataFound ();
+      return;
+    }
+
+    // only use the first result and filter out the values
+    response = data.Response;
+    for (let key in response)
+    {
+      let array = response[key];
+      if(array != null)
+      {
+        if (Array.isArray (array))
+        {
+          result = array[0];
+          break;
+        }
+      }
+    }
+
+    for (let formVariable of _this.values.formVariables)
+    {
+      let value = result[formVariable.column.id];
+
+      _this.formResults.push ({
+        title: formVariable.column.name,
+        value: (isNaN (value) ? value : _this.getResultValue (value))
+      });
+    }
+
+    _this.globals.isLoading = false;
+    _this.values.displayForm = true;
+    _this.values.chartGenerated = false;
+    _this.values.infoGenerated = false;
+    _this.values.formGenerated = true;
+  }
+
   handlerTextSuccess(_this, data): void
   {
     if (!_this.haveDataInfo (data))
@@ -1021,10 +1052,10 @@ export class MsfDashboardPanelComponent implements OnInit {
     // destroy current chart if it's already generated to avoid a blank chart later
     _this.destroyChart ();
 
-    //console.log (data);
     _this.values.displayInfo = true;
     _this.values.chartGenerated = false;
     _this.values.infoGenerated = true;
+    _this.values.formGenerated = false;
     _this.globals.isLoading = false;
   }
 
@@ -1050,6 +1081,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.displayChart = true;
     _this.values.chartGenerated = true;
     _this.values.infoGenerated = false;
+    _this.values.formGenerated = false;
     _this.globals.isLoading = false;
   }
 
@@ -1064,6 +1096,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     console.log (result);
     _this.values.lastestResponse = null;
     _this.values.chartGenerated = false;
+    _this.values.infoGenerated = false;
+    _this.values.formGenerated = false;
     _this.globals.isLoading = false;
 
     _this.dialog.open (MessageComponent, {
@@ -1076,10 +1110,26 @@ export class MsfDashboardPanelComponent implements OnInit {
     console.log (result);
     _this.values.lastestResponse = null;
     _this.values.chartGenerated = false;
+    _this.values.infoGenerated = false;
+    _this.values.formGenerated = false;
     _this.globals.isLoading = false;
 
     _this.dialog.open (MessageComponent, {
       data: { title: "Error", message: "Failed to get summary." }
+    });
+  }
+
+  handlerFormError(_this, result): void
+  {
+    console.log (result);
+    _this.values.lastestResponse = null;
+    _this.values.chartGenerated = false;
+    _this.values.infoGenerated = false;
+    _this.values.formGenerated = false;
+    _this.globals.isLoading = false;
+
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Error", message: "Failed to generate form." }
     });
   }
 
@@ -1240,7 +1290,23 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.temp.chartColumnOptions = JSON.parse (JSON.stringify (this.values.chartColumnOptions));
     this.temp.currentOptionCategories = JSON.parse (JSON.stringify (this.values.currentOptionCategories));
 
-    if (this.values.currentChartType.flags & ChartFlags.INFO)
+    this.temp.formVariables = [];
+
+    if (this.values.currentChartType.flags & ChartFlags.FORM)
+    {
+      this.temp.infoVar1 = null;
+      this.temp.infoVar2 = null;
+      this.temp.infoVar3 = null;
+
+      for (let formVariable of this.values.formVariables)
+      {
+        this.temp.formVariables.push ({
+          column: this.values.chartColumnOptions.indexOf (formVariable.column),
+          fontSize: this.fontSizes.indexOf (formVariable.fontSize),
+        });
+      }
+    }
+    else if (this.values.currentChartType.flags & ChartFlags.INFO)
     {
       if (this.values.infoVar1 != null)
         this.temp.infoVar1 = this.values.infoVar1;
@@ -1271,11 +1337,19 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.storeChartValues ();
   }
 
+  goToFormConfiguration(): void
+  {
+    this.values.displayForm = false;
+    this.storeChartValues ();
+  }
+
   goToChart(): void
   {
     let i, item;
 
-    if (this.values.infoGenerated)
+    if (this.values.formGenerated)
+      this.values.displayForm = true;
+    else if (this.values.infoGenerated)
       this.values.displayInfo = true;
     else
       this.values.displayChart = true;
@@ -1301,7 +1375,9 @@ export class MsfDashboardPanelComponent implements OnInit {
       }
     }
 
-    if (this.values.currentChartType.flags & ChartFlags.INFO)
+    if (this.values.currentChartType.flags & ChartFlags.INFO
+      && !(this.values.currentChartType.flags & ChartFlags.FORM)
+      && !(this.values.currentChartType.flags & ChartFlags.PICTURE))
     {
       if (this.temp.infoVar1 != null)
       {
@@ -1345,6 +1421,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         }
       }
     }
+
+    this.values.formVariables = JSON.parse (JSON.stringify (this.temp.formVariables));
 
     // re-initialize panel settings
     this.values.currentChartType = this.chartTypes.indexOf (this.values.currentChartType);
@@ -1586,10 +1664,26 @@ export class MsfDashboardPanelComponent implements OnInit {
       }
     }
 
-    if (this.values.currentChartType.flags & ChartFlags.INFO)
+    if (this.values.currentChartType.flags & ChartFlags.FORM)
     {
-      let lastvar;
+      let columns = [];
 
+      // reset form column selection combo boxes
+      this.chartForm.get ('columnCtrl').reset ();
+      this.chartForm.get ('fontSizeCtrl').reset ();
+
+      for (let formVariable of this.values.formVariables)
+      {
+        columns.push ({
+          column: this.values.chartColumnOptions[formVariable.column],
+          fontSize: this.fontSizes[formVariable.fontSize]
+        });
+      }
+
+      this.values.formVariables = columns;
+    }
+    else if (this.values.currentChartType.flags & ChartFlags.INFO)
+    {
       this.values.infoNumVariables = 0;
 
       if (this.values.variable != null && this.values.variable != -1)
@@ -2074,5 +2168,10 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     this.values.formVariables.splice (index, 1);
     this.checkChartFilters ();
+  }
+
+  getFormFontSize(column): number
+  {
+    return this.values.formVariables[column].fontSize.value;
   }
 }

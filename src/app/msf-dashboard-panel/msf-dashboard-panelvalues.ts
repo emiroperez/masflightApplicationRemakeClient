@@ -5,8 +5,10 @@ export class MsfDashboardPanelValues {
     id: number;
     displayChart: boolean;
     displayInfo: boolean;
+    displayForm: boolean;
     chartGenerated: boolean;
     infoGenerated: boolean;
+    formGenerated: boolean;
 
     chartName: String;
     chartColumnOptions:any[] = []; 
