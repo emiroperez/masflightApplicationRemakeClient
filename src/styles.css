@@ -4002,4 +4002,30 @@ img.msf-calendar-image {
   padding-left: 30px;
 }
 
+.msf-more-info-popup-passenger {
+  background-size: 200px;
+  background-repeat: no-repeat;
+  background-position: left 65%;
+  height: 100%;
+}
+
+.msf-border-passenger {
+  border-bottom: 1px solid #01ABEC;
+  margin: 0 20px;
+  margin-bottom: 25px;
+}
+
+.msf-padding-passenger {
+  padding-left: 250px;
+}
+
+.msf-chart {
+  height: 199px !important;
+}
+
+.msf-passenger-chart-title {
+  text-align: center;
+  color: white;
+}
+
 /*# sourceMappingURL=styles.css.map */
