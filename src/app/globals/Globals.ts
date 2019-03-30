@@ -48,8 +48,8 @@ export class Globals {
   currentAirline: any;
   template : boolean = false;
   isFullscreen: boolean = false;
-  baseUrl = "http://192.168.1.6:8887";
-  // baseUrl = "";
+  // baseUrl = "http://192.168.1.6:8887";
+  baseUrl = "";
   // baseUrl2 = "http://localhost:8886";
   baseUrl2 = "http://69.64.45.220:8886";
   scheduledata:any;
