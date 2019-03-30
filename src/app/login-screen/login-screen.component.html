@@ -1,48 +1,64 @@
-<div>
-<mat-card class="login-card">
-    <mat-card-header>
-        <!-- <img mat-card-image class="login-header-image" src="../../assets/images/logo.png"> -->
-         <img mat-card-image class="login-header-image" src="../../assets/images/logo.jpg"> <!--kp20032019  descomentar cuando quiera el nuevo diseño-->
-    </mat-card-header>
+<div style="display: inline-block;width: 98%; position: absolute">
+    <img style="float: right; padding: 30px; display: inline-block; height: 20px; width: 211px !important;object-fit: contain;" mat-card-image src="../../assets/images/logo.png">
+</div>
+<div style="display: flex; align-items: center; justify-content: space-around; height: 100vh;">
+    <div style="width: 40%; display: flex; align-items: center;">
+        <img mat-card-image style="width: 100% !important; height: 90px; object-fit: contain;"    class="login-header-image"  src="../../assets/images/logo.jpg">
+        <!--kp20032019  descomentar cuando quiera el nuevo diseño-->
+    </div>
+    <div style="width: 40%;">
+        <mat-card class="login-card" style="margin: 30px;">
+            <mat-card-header>
+                <!-- <img mat-card-image class="login-header-image" src="../../assets/images/logo.png"> -->
+            </mat-card-header>
 
-    <mat-card-content>
-        <app-notification [show]="utils.notificationShow" [message]="utils.notificationMessage" [type]="utils.notificationType"></app-notification>
-        <form class="login-form" name="login">
-            <div class="block-item-input">
-                <mat-form-field [formGroup]="loginForm">                    
-                    <mat-icon class="input_img">person</mat-icon>
-                    <!-- <img src="../../assets/images/usuario.png" class="input_img"> kp20032019 comentar para cuando se use el nuevo diseño -->
-                    <input matInput autocomplete="off" type="text" placeholder="Username" class="input-username" formControlName="usernameValidator" name="username" [(value)]="user.username" />
-                    <mat-error *ngIf="isUsernameInvalid()">{{getErrorUsernameMessage()}}</mat-error>
-                </mat-form-field>
-            </div>
+            <mat-card-content>
+                <app-notification [show]="utils.notificationShow" [message]="utils.notificationMessage"
+                    [type]="utils.notificationType"></app-notification>
+                <form class="login-form" name="login">
+                    <div class="block-item-input">
+                        <mat-form-field [formGroup]="loginForm">
+                            <mat-icon class="input_img">person</mat-icon>
+                            <!-- <img src="../../assets/images/usuario.png" class="input_img"> kp20032019 comentar para cuando se use el nuevo diseño -->
+                            <input matInput autocomplete="off" type="text" placeholder="Username" class="input-username"
+                                formControlName="usernameValidator" name="username" [(value)]="user.username" />
+                            <mat-error *ngIf="isUsernameInvalid()">{{getErrorUsernameMessage()}}</mat-error>
+                        </mat-form-field>
+                    </div>
 
-            <div class="block-item-input">
-                <mat-form-field [formGroup]="loginForm">
-                    <mat-icon class="input_img">lock</mat-icon>
-                    <!-- <img src="../../assets/images/password.png" class="input_img"> kp20032019 comentar para cuando se use el nuevo diseño -->
-                    <input matInput type="password" placeholder="Password" class="input-password" formControlName="passwordValidator" name="password" [(value)]="user.password" />
-                    <mat-error *ngIf="isPasswordInvalid()">{{getErrorPasswordMessage()}}</mat-error>
-                </mat-form-field>
-            </div>
-            <div class="center">
-                <div class="block-item">
-                    <mat-checkbox class="login-check block" color="primary" checked=true>keep me Signed in</mat-checkbox>
-                </div>
-                <div class="block-item">
-                    <a routerLink="/forgot-password" class="login-link block login-font-color">Forgot Password?</a>
-                </div>
+                    <div class="block-item-input">
+                        <mat-form-field [formGroup]="loginForm">
+                            <mat-icon class="input_img">lock</mat-icon>
+                            <!-- <img src="../../assets/images/password.png" class="input_img"> kp20032019 comentar para cuando se use el nuevo diseño -->
+                            <input matInput type="password" placeholder="Password" class="input-password"
+                                formControlName="passwordValidator" name="password" [(value)]="user.password" />
+                            <mat-error *ngIf="isPasswordInvalid()">{{getErrorPasswordMessage()}}</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="center">
+                        <div class="block-item">
+                            <mat-checkbox class="login-check block" color="primary" checked=true>keep me Signed in
+                            </mat-checkbox>
+                        </div>
+                        <div class="block-item">
+                            <a routerLink="/forgot-password" class="login-link block login-font-color">Forgot
+                                Password?</a>
+                        </div>
 
-                <div class="block-item">
-                    <span class="login-link-reg">New User?</span><a routerLink="/register" class="login-link login-link-reg2">Register Now</a>
-                </div>
+                        <div class="block-item">
+                            <span class="login-link-reg">New User?</span><a routerLink="/register"
+                                class="login-link login-link-reg2">Register Now</a>
+                        </div>
 
-            </div>
-        </form>
-    </mat-card-content>
-    <mat-card-actions class="center">
-        <button mat-flat-button class="login-button" (click)="login()">Sign in</button>
-        <!--<button mat-flat-button class="login-button" routerLink="/welcome">Sign in</button>-->
-    </mat-card-actions>
-</mat-card>
+                    </div>
+                </form>
+            </mat-card-content>
+            <mat-card-actions class="center">
+                <button mat-flat-button class="login-button" (click)="login()">Sign in</button>
+                <!--<button mat-flat-button class="login-button" routerLink="/welcome">Sign in</button>-->
+            </mat-card-actions>
+        </mat-card>
+
+    </div>
+
 </div>
