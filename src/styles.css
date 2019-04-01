@@ -10,13 +10,14 @@
 @import "~ng-pick-datetime/assets/style/picker.min.css";
 @import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
 body {
+  background-image: url("assets/images/fondo.png");
   font-family: Roboto, "Helvetica Neue", sans-serif;
   font-size: 12px;
   margin: 0;
 }
 
 .application-class {
-  background-color: #1e1e1e;
+  background-color: white;
   height: 100%;
 }
 
