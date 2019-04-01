@@ -383,8 +383,8 @@
     </div>
     <div style="width: 100%; display: table" [style.height.px]="calcChartHeight()">
       <div class="msf-media-title-container" id="msf-dashboard-form-display">
-        <div style="padding: 3px 0" *ngFor="let formResult of formResults; let column = index">
-          <span class="msf-media-title-value" id="msf-dashboard-form-display-title" [style.font-size.px]="getFormFontSize(column)">{{formResult.title}}: </span>
+        <div style="padding: 3px 0" *ngFor="let formResult of values.lastestResponse; let column = index">
+          <span class="msf-media-title-value" id="msf-dashboard-form-display-title" [style.font-size.px]="getFormFontSize(column)">{{formResult.column.name}}: </span>
           <span class="msf-media-title-value" id="msf-dashboard-form-display-value" [style.font-size.px]="getFormFontSize(column)">{{formResult.value}}</span>
         </div>
       </div>

@@ -59,8 +59,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     { name: 'Stacked Area', flags: ChartFlags.XYCHART | ChartFlags.STACKED | ChartFlags.AREACHART, createSeries: this.createLineSeries },
     { name: 'Pie', flags: ChartFlags.PIECHART, createSeries: this.createPieSeries },
     { name: 'Donut', flags: ChartFlags.DONUTCHART, createSeries: this.createPieSeries },
-    { name: 'Information', flags: ChartFlags.INFO }/*,
-    { name: 'Simple Form', flags: ChartFlags.INFO | ChartFlags.FORM },
+    { name: 'Information', flags: ChartFlags.INFO },
+    { name: 'Simple Form', flags: ChartFlags.INFO | ChartFlags.FORM }/*,
     { name: 'Simple Picture', flags: ChartFlags.INFO | ChartFlags.PICTURE }*/
   ];
 
@@ -90,8 +90,6 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   childPanelValues: any[] = [];
   childPanelsConfigured: boolean[] = [];
-
-  formResults: string[];
 
   public dataFormFilterCtrl: FormControl = new FormControl ();
   public variableFilterCtrl: FormControl = new FormControl ();
@@ -680,11 +678,16 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       if (this.values.currentChartType.flags & ChartFlags.INFO)
       {
-        if (this.values.currentChartType.flags & ChartFlags.FORM)
-          this.values.formGenerated = true;
-        else if (this.values.function == 1)
+        if (this.values.function != null && this.values.function != -1)
         {
-          this.values.infoGenerated = true;
+          if (this.values.function == 1)
+          {
+            if (this.values.currentChartType.flags & ChartFlags.FORM)
+              this.values.formGenerated = true;
+            else
+              this.values.infoGenerated = true;
+          }
+
           this.values.function = -1;
         }
       }
@@ -792,9 +795,21 @@ export class MsfDashboardPanelComponent implements OnInit {
   // for variables #1, #2 and #3 respectively; function will be used to check if the
   // results are generated or not and lastestResponse will store all the functions
   // values and results (if it was generated)
-  getPanelInfo(infoChartType: boolean): any
+  getPanelInfo(): any
   {
-    if (infoChartType)
+    if (this.values.currentChartType.flags & ChartFlags.FORM)
+    {
+      return {
+        id: this.values.id,
+        option: this.values.currentOption,
+        title: this.values.chartName,
+        chartColumnOptions: JSON.stringify (this.values.chartColumnOptions),
+        chartType: this.chartTypes.indexOf (this.values.currentChartType),
+        categoryOptions: JSON.stringify (this.values.currentOptionCategories),
+        function: 1
+      };
+    }
+    else if (this.values.currentChartType.flags & ChartFlags.INFO)
     {
       return {
         id: this.values.id,
@@ -878,7 +893,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
 
     // set panel info for the HTTP message body
-    panel = this.getPanelInfo (true);
+    panel = this.getPanelInfo ();
     panel.paletteColors = JSON.stringify (variables); // store the variables into the paletteColors for temporary use
 
     url = this.service.host + "/getTextSummaryResponse?url=" + urlArg;
@@ -891,7 +906,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     let url, urlBase, urlArg, panel;
 
     // set panel info for the HTTP message body
-    panel = this.getPanelInfo (false);
+    panel = this.getPanelInfo ();
     this.globals.isLoading = true;
     urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
@@ -909,16 +924,16 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.http.post (this, url, panel, handlerSuccess, handlerError);
   }
 
-  consumeWebServices(handlerSuccess, handlerError): void
+  loadFormData(handlerSuccess, handlerError): void
   {
     let url, urlBase, urlArg;
 
+    this.globals.isLoading = true;
     urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
-    urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
+    urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=1&page_number=0";
     urlArg = encodeURIComponent(urlBase);
     url = this.service.host + "/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
 
-    this.globals.isLoading = true;
     this.http.get (this, url, handlerSuccess, handlerError, null);
   }
 
@@ -926,9 +941,8 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     this.globals.startTimestamp = new Date ();
 
-    if (this.values.currentChartType.flags & ChartFlags.FORM ||
-      this.values.currentChartType.flags & ChartFlags.PICTURE)
-      this.consumeWebServices (this.handlerFormSuccess, this.handlerFormError); // use the web service directly
+    if (this.values.currentChartType.flags & ChartFlags.FORM)
+      this.loadFormData (this.handlerFormSuccess, this.handlerFormError);
     else if (this.values.currentChartType.flags & ChartFlags.INFO)
       this.loadTextSummary (this.handlerTextSuccess, this.handlerTextError);
     else
@@ -991,9 +1005,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   handlerFormSuccess(_this, data): void
   {
-    let response, result;
+    let formResults, response, result;
 
-    _this.formResults = [];
+    formResults = [];
 
     if (_this.isEmpty (data) || _this.isEmpty (data.Response))
     {
@@ -1026,9 +1040,27 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       let value = result[formVariable.column.id];
 
-      _this.formResults.push ({
-        title: formVariable.column.name,
-        value: (isNaN (value) ? value : _this.getResultValue (value))
+      formResults.push ({
+        value: (isNaN (value) ? value : _this.getResultValue (value)),
+        column: _this.values.chartColumnOptions.indexOf (formVariable.column),
+        fontSize: _this.fontSizes.indexOf (formVariable.fontSize)
+      });
+    }
+
+    // save the panel into the database
+    _this.service.saveLastestResponse (_this, _this.getPanelInfo (), JSON.stringify (formResults), _this.handlerFormLastestResponse, _this.handlerFormError);
+  }
+
+  handlerFormLastestResponse(_this, data): void
+  {
+    _this.values.lastestResponse = [];
+
+    for (let formVariable of data)
+    {
+      _this.values.lastestResponse.push ({
+        value: formVariable.value,
+        column: _this.values.chartColumnOptions[formVariable.column],
+        fontSize: _this.fontSizes[formVariable.fontSize]
       });
     }
 
@@ -1298,9 +1330,12 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.temp.infoVar2 = null;
       this.temp.infoVar3 = null;
 
-      for (let formVariable of this.values.formVariables)
+      for (let i = 0; i < this.values.formVariables.length; i++)
       {
+        let formVariable = this.values.formVariables[i];
+
         this.temp.formVariables.push ({
+          value: this.values.lastestResponse[i].value,
           column: this.values.chartColumnOptions.indexOf (formVariable.column),
           fontSize: this.fontSizes.indexOf (formVariable.fontSize),
         });
@@ -1652,6 +1687,8 @@ export class MsfDashboardPanelComponent implements OnInit {
           this.chartForm.get ('dataFormCtrl').setValue (option);
           this.chartForm.get ('variableCtrl').enable ();
           this.chartForm.get ('infoNumVarCtrl').enable ();
+          this.chartForm.get ('columnCtrl').enable ();
+          this.chartForm.get ('fontSizeCtrl').enable ();
 
           // only enable x axis if the chart type is not pie, donut or radar
           if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
@@ -1666,21 +1703,37 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     if (this.values.currentChartType.flags & ChartFlags.FORM)
     {
-      let columns = [];
-
       // reset form column selection combo boxes
       this.chartForm.get ('columnCtrl').reset ();
       this.chartForm.get ('fontSizeCtrl').reset ();
 
+      // set form variable settings if loaded from database
+      if (this.values.function != null && this.values.function != -1)
+      {
+        this.values.formVariables = [];
+  
+        for (let formVariable of this.values.lastestResponse)
+        {
+          this.values.formVariables.push ({
+            value: formVariable.value,
+            column: formVariable.column,
+            fontSize: formVariable.fontSize,
+          });
+        }
+      }
+
+      this.values.lastestResponse = [];
+
       for (let formVariable of this.values.formVariables)
       {
-        columns.push ({
+        this.values.lastestResponse.push ({
+          value: formVariable.value,
           column: this.values.chartColumnOptions[formVariable.column],
           fontSize: this.fontSizes[formVariable.fontSize]
         });
       }
 
-      this.values.formVariables = columns;
+      this.values.formVariables = this.values.lastestResponse;
     }
     else if (this.values.currentChartType.flags & ChartFlags.INFO)
     {
@@ -1860,6 +1913,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.lastestResponse = null;
     _this.values.chartGenerated = false;
     _this.values.infoGenerated = false;
+    _this.values.formGenerated = false;
     _this.temp = null;
     _this.globals.isLoading = false;
   }
@@ -1871,11 +1925,29 @@ export class MsfDashboardPanelComponent implements OnInit {
       {
         let panel;
 
-        if (_this.values.currentChartType.flags & ChartFlags.INFO)
+        if (_this.values.currentChartType.flags & ChartFlags.FORM)
+        {
+          let formVariables = [];
+
+          panel = _this.getPanelInfo ();
+          panel.function = 2;
+
+          for (let formVariable of _this.values.formVariables)
+          {
+            formVariables.push ({
+              value: null,
+              column: _this.values.chartColumnOptions.indexOf (formVariable.column),
+              fontSize: _this.fontSizes.indexOf (formVariable.fontSize)
+            });
+          }
+
+          panel.lastestResponse = JSON.stringify (formVariables);
+        }
+        else if (_this.values.currentChartType.flags & ChartFlags.INFO)
         {
           let variables;
 
-          panel = _this.getPanelInfo (true);
+          panel = _this.getPanelInfo ();
           panel.function = -1;
 
           // Prepare list of variables
@@ -1921,7 +1993,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           panel.lastestResponse = JSON.stringify (variables);
         }
         else
-          panel = _this.getPanelInfo (false);
+          panel = _this.getPanelInfo ();
 
         _this.globals.isLoading = true;
         _this.service.updateDashboardPanel (_this, panel, _this.handlerUpdateSuccess, _this.handlerError);
