@@ -1,4 +1,4 @@
-<div class="msf-dashboard-panel-container" [style.height.px]="panelHeight" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm">
+<div class="msf-dashboard-panel-container" [style.height.px]="panelHeight" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic">
   <div class="msf-dashboard-panel-sub-container-column">
     <div class="msf-dashboard-panel-sub-container-row">
       <mat-form-field class="msf-width-80">
@@ -96,7 +96,7 @@
             </button>
           </div>
           <div class="msf-dashboard-panel-control-variable-button">
-            <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated" mat-mini-fab (click)="goToChart()" color="primary">
+            <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated" mat-mini-fab (click)="goToChart()" color="primary">
               <mat-icon aria-label="Go To Chart">bar_chart</mat-icon>
             </button>
           </div>
@@ -207,7 +207,7 @@
             </button>
           </div>
           <div class="msf-dashboard-panel-control-variable-button">
-            <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated" mat-mini-fab (click)="goToChart()" color="primary">
+            <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated" mat-mini-fab (click)="goToChart()" color="primary">
               <mat-icon aria-label="Go To Information">bar_chart</mat-icon>
             </button>
           </div>
@@ -292,7 +292,7 @@
             </button>
           </div>
           <div class="msf-dashboard-panel-control-variable-button">
-            <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated" mat-mini-fab (click)="goToChart()" color="primary">
+            <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated" mat-mini-fab (click)="goToChart()" color="primary">
               <mat-icon aria-label="Go To Form">bar_chart</mat-icon>
             </button>
           </div>
@@ -323,7 +323,7 @@
             </button>
           </div>
           <div class="msf-dashboard-panel-control-variable-button">
-            <button [disabled]="!values.chartGenerated && !values.infoGenerated" mat-mini-fab (click)="goToChart()" color="primary">
+            <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated" mat-mini-fab (click)="goToChart()" color="primary">
               <mat-icon aria-label="Go To Picture">bar_chart</mat-icon>
             </button>
           </div>
@@ -383,11 +383,24 @@
     </div>
     <div style="width: 100%; display: table" [style.height.px]="calcChartHeight()">
       <div class="msf-media-title-container" id="msf-dashboard-form-display">
-        <div style="padding: 3px 0" *ngFor="let formResult of formResults; let column = index">
-          <span class="msf-media-title-value" id="msf-dashboard-form-display-title" [style.font-size.px]="getFormFontSize(column)">{{formResult.title}}: </span>
+        <div style="padding: 3px 0" *ngFor="let formResult of values.lastestResponse; let column = index">
+          <span class="msf-media-title-value" id="msf-dashboard-form-display-title" [style.font-size.px]="getFormFontSize(column)">{{formResult.column.name}}: </span>
           <span class="msf-media-title-value" id="msf-dashboard-form-display-value" [style.font-size.px]="getFormFontSize(column)">{{formResult.value}}</span>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+<div class="msf-dashboard-panel-container-chart" *ngIf="values.displayPic" [style.height.px]="panelHeight">
+  <div class="msf-dashboard-panel-title"><br></div>
+  <div class="msf-dashboard-panel-sub-container-column">
+    <div class="msf-dashboard-panel-config-button">
+      <button mat-mini-fab (click)="goToFormConfiguration()" color="primary">
+        <mat-icon aria-label="Edit Configuration">menu</mat-icon>
+      </button>
+    </div>
+    <div [style.height.px]="calcChartHeight()">
+      <!-- TODO: Picture goes here -->
     </div>
   </div>
 </div>
