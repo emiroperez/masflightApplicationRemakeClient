@@ -1,37 +1,40 @@
-<div  *ngIf="globals.subTotalRecord>0 && globals.popupMainElement && !globals.popupLoading" class="msf-more-info-popup-image"  [ngStyle]="{'background-image': 'url(' + getBackground() + ')'}">
-    <div  *ngIf="globals.popupMainElement" class="msf-more-info-black">
+<div  *ngIf="globals.subTotalRecord>0 && globals.popupMainElement && !globals.popupLoading"     [ngClass]="globals.currentDrillDown.title!='More Info Passenger'?'msf-more-info-black':''">
+    <div  *ngIf="globals.popupMainElement" [ngClass]="globals.currentDrillDown.title!='More Info Passenger'?'msf-more-info-popup-image':'msf-more-info-popup-passenger msf-border-passenger'" [ngStyle]="{'background-image': 'url(' + getBackground() + ')'}">
   <div class="msf-moreinfo-control-variables-title ">
       <div class="msf-dashboard-control-variables-close-button">
         <mat-icon style="height: 35px;width: 35px;font-size: 35px;cursor: pointer;"class="msf-dashboard-close-icon" aria-label="close" (click)="closeDialog()">close</mat-icon>
       </div>
   </div>
-  <div class="msf-more-info-popup-content">
+  <div [ngClass]="globals.currentDrillDown.title!='More Info Passenger'?'msf-more-info-popup-content':'msf-media-info-container msf-padding-passenger'">
     <div class="msf-media-title-container">
-        <div class="msf-media-title">Title</div>
+        <div class="msf-media-title" *ngIf="globals.popupMainElement[0].title">Title</div>
+        <div class="msf-media-title" *ngIf="globals.popupMainElement[0].passenger_name">Passenger Name</div>
         <div class="msf-media-title-value" *ngIf="globals.popupMainElement[0].title">{{globals.popupMainElement[0].title}}</div>
         <div class="msf-media-title-value" *ngIf="globals.popupMainElement[0].Media_Name">{{globals.popupMainElement[0].Media_Name}}</div>
-      </div>
+        <div class="msf-media-title-value" *ngIf="globals.popupMainElement[0].passenger_name">{{globals.popupMainElement[0].passenger_name}}</div>
+    </div>
    </div>
-    <div class="msf-media-info-container">
-        <div class="msf-media-info-row" *ngFor="let info of globals.subDisplayedColumns" >
-          <div class="msf-media-info" *ngIf="info.columnName!='title'">{{info.columnLabel}}</div>
-          <div class="msf-media-info-value" *ngIf="info.columnName!='title' && info.columnName!='Media_Name' && info.columnType=='string' && info.columnFormat==null">
+    <div [ngClass]="globals.currentDrillDown.title!='More Info Passenger'?'msf-media-info-container':'msf-media-info-container msf-padding-passenger'" class="msf-media-info-container">
+        <div class="msf-media-info-row" *ngFor="let info of globals.subDisplayedColumns; let i = index" >
+          <div class="msf-media-info" *ngIf="i>0">{{info.columnLabel}}</div>
+          <div class="msf-media-info-value" *ngIf="i>0 && info.columnType=='string' && info.columnFormat==null">
             {{globals.popupMainElement[0][info.columnName]}}
           </div>
-          <div class="msf-media-info-value" *ngIf="info.columnName!='title' && info.columnName!='Media_Name' && info.columnType=='number' && info.columnFormat==null">
+          <div class="msf-media-info-value" *ngIf="i>0 && info.columnType=='number' && info.columnFormat==null">
             {{ globals.popupMainElement[0][info.columnName] | number:'.0-2':'en'}}
           </div>
-          <div class="msf-media-info-value" *ngIf="info.columnName!='title' && info.columnName!='Media_Name' && info.columnType=='number' && info.columnFormat=='$' && globals.popupMainElement[0][info.columnName]">
+          <div class="msf-media-info-value" *ngIf="i>0 && info.columnType=='number' && info.columnFormat=='$' && globals.popupMainElement[0][info.columnName]">
               ${{globals.popupMainElement[0][info.columnName] | number:'.0-2':'en'}}
           </div>
-          <div class="msf-media-info-value" *ngIf="info.columnName!='title' && info.columnName!='Media_Name' && info.columnType=='number' && info.columnFormat=='min'">
+          <div class="msf-media-info-value" *ngIf="i>0 && info.columnType=='number' && info.columnFormat=='min'">
               {{ getFormatMinutes(globals.popupMainElement[0][info.columnName]) }}
           </div>
        </div>
     </div>
   </div>
 </div>
-
+<div *ngIf="chart!=null&&globals.subTotalRecord>0 && globals.popupMainElement" class="msf-media-title msf-passenger-chart-title">Play Duration In Minutes</div>
+<div [style.visibility]="chart!=null&&globals.subTotalRecord>0 && globals.popupMainElement? 'visible' : 'hidden'" id="msf-dashboard-chart-display" [ngClass]="chart!=null&&globals.subTotalRecord>0 && globals.popupMainElement? 'msf-chart' : ''"></div>
 <div *ngIf="globals.subTotalRecord==0 && !globals.popupMainElement && !globals.popupLoading">
     <div class="msf-no-results" style="margin: 210px;padding: 30px;">Results not available</div>
 </div>

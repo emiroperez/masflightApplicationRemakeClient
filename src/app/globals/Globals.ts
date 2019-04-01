@@ -52,6 +52,8 @@ export class Globals {
   // baseUrl = "";
   // baseUrl2 = "http://localhost:8886";
   baseUrl2 = "http://69.64.45.220:8886";
+    // popupUrl = "http://localhost:8900";
+  popupUrl = "http://testing.pulse.aspsols.com:8900";
   scheduledata:any;
   hideParametersPanels : boolean =false;
   Airportdataorigin:any;

@@ -64,44 +64,49 @@ export class MsfTableComponent implements OnInit {
 
   setGroupingArgument(){
     var menuOptionArguments = this.globals.currentOption.menuOptionArguments;
-    var categoryArguments = menuOptionArguments[menuOptionArguments.length-1].categoryArguments;
-    categoryArguments.forEach(element => {
-            if(element.arguments!=null){
-              element.arguments.forEach(element2 => {
-                if(element2.type=="groupingAthena"){
-                  this.groupingArgument = element2;
-                }
-                if(element2.type=="sortingCheckboxes"){
-                  this.sortingArgument = element2;
-                }
-                if(element2.type=="summary"){
-                  this.groupingArgument = element2;
-                }
-                if(element2.type=="grouping"){
-                  this.groupingArgument = element2;
-                }
-                if(element2.type=="groupingOperationsSummary"){
-                  this.groupingArgument = element2;
-                }
-                if(element2.type=="groupingDailyStatics"){
-                  this.groupingArgument = element2;
-                }
-                if(element2.type=="groupingMariaDB"){
-                  this.groupingArgument = element2;
-                }
-                if(element2.type=="groupingCompTotal"){
-                  this.groupingArgument = element2;
-                }
-                if(element2.type=="groupingCompGenre"){
-                  this.groupingArgument = element2;
-                }
-                if(element2.name1=="limitNumber"){
-                  this.limitNumber = element2;
-                }
-            });
+    var categoryArguments = null;
+    if(menuOptionArguments[menuOptionArguments.length-1]!=null){
+       categoryArguments = menuOptionArguments[menuOptionArguments.length-1].categoryArguments;
+    }
+    if(categoryArguments!=null){
+      categoryArguments.forEach(element => {
+        if(element.arguments!=null){
+          element.arguments.forEach(element2 => {
+            if(element2.type=="groupingAthena"){
+              this.groupingArgument = element2;
             }
-
+            if(element2.type=="sortingCheckboxes"){
+              this.sortingArgument = element2;
+            }
+            if(element2.type=="summary"){
+              this.groupingArgument = element2;
+            }
+            if(element2.type=="grouping"){
+              this.groupingArgument = element2;
+            }
+            if(element2.type=="groupingOperationsSummary"){
+              this.groupingArgument = element2;
+            }
+            if(element2.type=="groupingDailyStatics"){
+              this.groupingArgument = element2;
+            }
+            if(element2.type=="groupingMariaDB"){
+              this.groupingArgument = element2;
+            }
+            if(element2.type=="groupingCompTotal"){
+              this.groupingArgument = element2;
+            }
+            if(element2.type=="groupingCompGenre"){
+              this.groupingArgument = element2;
+            }
+            if(element2.name1=="limitNumber"){
+              this.limitNumber = element2;
+            }
         });
+        }
+
+    });
+    }
     }
 
     addGroupingColumns(displayedColumns: any[]){
@@ -435,7 +440,7 @@ export class MsfTableComponent implements OnInit {
   openSubQuery(drillDown : any,element: any){
     this.globals.popupMainElement = null;
     this.globals.popupResponse = null;
-    this.goToPopup();
+    this.goToPopup(drillDown);
     this.globals.currentDrillDown = drillDown;
     var rowNumber = this.dataSource.filteredData.indexOf(element)
     this.globals.popupLoading = true;
@@ -508,13 +513,27 @@ export class MsfTableComponent implements OnInit {
           _this.globals.moreResults = false;
       }
     }  
-    _this.globals.popupLoading = false;
+    if(_this.globals.currentDrillDown.title!="More Info Passenger"){
+      _this.globals.popupLoading = false;
+    }
   }
 
-  goToPopup(){
+  goToPopup(drillDown:any){
+    var width = drillDown.width;
+    var height =drillDown.height;
+    if(width=="" || width==null){
+      width = "1200px";
+    }else{
+      width +="px";
+    }
+    if(height=="" || height==null){
+      height = "500px";
+    }else{
+      height +="px";
+    }
     this.dialog.open (MsfMoreInfoPopupComponent, {
-      height: '500px',
-      width: '1200px',
+      height: height,
+      width: width,
       panelClass: 'msf-more-info-popup'
     });
   }

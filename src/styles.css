@@ -10,13 +10,14 @@
 @import "~ng-pick-datetime/assets/style/picker.min.css";
 @import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
 body {
+  background-image: url("assets/images/fondo.png");
   font-family: Roboto, "Helvetica Neue", sans-serif;
   font-size: 12px;
   margin: 0;
 }
 
 .application-class {
-  background-color: #1e1e1e;
+  background-color: white;
   height: 100%;
 }
 
@@ -3508,7 +3509,7 @@ table.datasource {
 }
 
 .msf-plan-card-content .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label, .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
-  color: #ffffff !important;
+  color: #ED5C27 !important;
 }
 
 .msf-plan-card-content .mat-form-field.mat-focused .mat-form-field-ripple {
@@ -4000,6 +4001,32 @@ img.msf-calendar-image {
 
 .msf-more-info-popup-content, .msf-media-info-container {
   padding-left: 30px;
+}
+
+.msf-more-info-popup-passenger {
+  background-size: 200px;
+  background-repeat: no-repeat;
+  background-position: left 65%;
+  height: 100%;
+}
+
+.msf-border-passenger {
+  border-bottom: 1px solid #01ABEC;
+  margin: 0 20px;
+  margin-bottom: 25px;
+}
+
+.msf-padding-passenger {
+  padding-left: 250px;
+}
+
+.msf-chart {
+  height: 199px !important;
+}
+
+.msf-passenger-chart-title {
+  text-align: center;
+  color: white;
 }
 
 /*# sourceMappingURL=styles.css.map */
