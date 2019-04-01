@@ -1772,7 +1772,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           this.chartForm.get ('fontSizeCtrl').enable ();
 
           // only enable x axis if the chart type is not pie, donut or radar
-          if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
+          if (this.values.currentChartType.flags & ChartFlags.XYCHART)
             this.chartForm.get ('xaxisCtrl').enable ();
 
           this.chartForm.get ('valueCtrl').enable ();
