@@ -171,6 +171,7 @@ import { MsfGroupingOp2Component } from './msf-grouping-op2/msf-grouping-op2.com
 import { MsfStatesComponent } from './msf-states/msf-states.component';
 import { MsfFlightDurationSegmentsComponent } from './msf-flight-duration-segments/msf-flight-duration-segments.component';
 import { MsfDashboardChartTypePipe } from './msf-dashboard-drill-down/msf-dashboard-chart-type-pipe';
+import { MsfColumnSelectorComponent } from './msf-column-selector/msf-column-selector.component';
 
 @NgModule({
   declarations: [
@@ -321,7 +322,8 @@ import { MsfDashboardChartTypePipe } from './msf-dashboard-drill-down/msf-dashbo
     MsfGroupingOp2Component,
     MsfStatesComponent,
     MsfFlightDurationSegmentsComponent,
-    MsfDashboardChartTypePipe
+    MsfDashboardChartTypePipe,
+    MsfColumnSelectorComponent
   ],
   imports: [
     BrowserModule,
