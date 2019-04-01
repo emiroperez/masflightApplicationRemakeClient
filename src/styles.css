@@ -562,6 +562,7 @@ p {
 }
 
 .msf-big-button {
+  background-color: #01abec !important;
   margin-left: 40px !important;
   color: white;
   margin-top: 10px !important;
@@ -816,6 +817,7 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 }
 
 .msf-medium-button {
+  background-color: #01abec !important;
   margin-left: 70% !important;
   color: white;
   margin-top: 10px !important;
@@ -3509,6 +3511,10 @@ table.datasource {
 }
 
 .msf-plan-card-content .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label, .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+  color: #ffffff !important;
+}
+
+.login-form .block-item-input .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix .mat-form-field-label-wrapper .mat-form-field-label {
   color: #ED5C27 !important;
 }
 
