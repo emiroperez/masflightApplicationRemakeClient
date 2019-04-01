@@ -6,9 +6,11 @@ export class MsfDashboardPanelValues {
     displayChart: boolean;
     displayInfo: boolean;
     displayForm: boolean;
+    displayPic: boolean;
     chartGenerated: boolean;
     infoGenerated: boolean;
     formGenerated: boolean;
+    picGenerated: boolean;
 
     chartName: String;
     chartColumnOptions:any[] = []; 
