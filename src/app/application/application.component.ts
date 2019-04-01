@@ -16,6 +16,7 @@ import { User } from '../model/User';
 import { DashboardMenu } from '../model/DashboardMenu';
 import { MsfEditDashboardComponent } from '../msf-edit-dashboard/msf-edit-dashboard.component';
 import { ApplicationService } from '../services/application.service';
+import { MsfColumnSelectorComponent } from '../msf-column-selector/msf-column-selector.component';
 
 
 @Component({
@@ -365,5 +366,14 @@ toggle(){
           _this.deleteError);
       }
     );
+  }
+
+  columnSelector(){
+    this.dialog.open (MsfColumnSelectorComponent, {
+      width: "500px",
+      height: "auto",
+      maxHeight: "600px",
+      panelClass: 'msf-column-selector-popup'
+    });
   }
 }
