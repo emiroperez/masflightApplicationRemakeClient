@@ -1285,6 +1285,12 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.chartForm.get ('columnCtrl').enable ();
     _this.chartForm.get ('fontSizeCtrl').enable ();
 
+    // delete previous child panels
+    _this.service.deleteChildPanels (_this, _this.values.id, _this.deleteSuccess, _this.handlerError);
+  }
+
+  deleteSuccess(_this): void
+  {
     _this.globals.isLoading = false;
   }
 

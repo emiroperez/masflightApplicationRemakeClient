@@ -369,4 +369,10 @@ export class ApplicationService {
     let url = this.host + "/getChildPanel?parentPanelId=" + parentPanelId + "&drillDownId=" + drillDownId;
     this.http.get (_this, url, handlerSuccess, handlerError, null);
   }
+
+  deleteChildPanels(_this, parentPanelId, handlerSuccess, handlerError)
+  {
+    let url = this.host + "/deleteChildPanels?parentPanelId=" + parentPanelId;
+    this.http.post (_this, url, null, handlerSuccess, handlerError);
+  }
 }
