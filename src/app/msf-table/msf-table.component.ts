@@ -115,63 +115,11 @@ export class MsfTableComponent implements OnInit {
         if(this.groupingArgument!=null){
            array = this.groupingArgument.value1;
            if(array!=null){
-            if(array.length!=0){
-              if(this.groupingArgument.type=="groupingMariaDB" && this.globals.currentOption.id==166){
-                displayedColumns.unshift({ columnType:"number",
-                columnName:"AVG_RT_Minutes",
-                columnLabel:"Avg Rt Minutes",
-                drillDowns: [],
-                show:true});
-                displayedColumns.unshift({ columnType:"number",
-                columnName:"AVG_Play_Duration",
-                columnLabel:"Avg Play Duration",
-                drillDowns: [],
-                show:true});
-                displayedColumns.unshift({ columnType:"number",
-                columnName:"SUM_RT_Minutes",
-                columnLabel:"Sum Rt Minutes",
-                drillDowns: [],
-                show:true});
-                displayedColumns.unshift({ columnType:"number",
-                columnName:"SUM_Play_Duration",
-                columnLabel:"Sum Play Duration",
-                drillDowns: [],
-                show:true});
-                displayedColumns.unshift({ columnType:"number",
-                columnName:"SUM_Unique_Hits",
-                columnLabel:"Sum Unique Hits",
-                drillDowns: [],
-                show:true});
-              }
-            }else{
-              var aux = displayedColumns.slice();
-              var cont = 0;
-              for (let index = 0; index < displayedColumns.length; index++) {
-                const element = displayedColumns[index];
-                var x = index;
-                if(element.function==0){
-                  x = x-cont;
-                  aux.splice(x,1);
-                  cont++;
-                }
-              }
-              displayedColumns = aux;
-              this.globals.displayedColumns = displayedColumns;
+            if(array.length==0){
+              displayedColumns = this.removeFunctionsColumns(displayedColumns,this);
             }
            }else{
-            var aux = displayedColumns.slice();
-            var cont = 0;
-            for (let index = 0; index < displayedColumns.length; index++) {
-              const element = displayedColumns[index];
-              var x = index;
-              if(element.function==0){
-                x = x-cont;
-                aux.splice(x,1);
-                cont++;
-              }
-            }
-            displayedColumns = aux;
-            this.globals.displayedColumns = displayedColumns;
+            displayedColumns = this.removeFunctionsColumns(displayedColumns,this);
           }
       }
         if(this.sortingArgument!=null){
@@ -561,5 +509,20 @@ export class MsfTableComponent implements OnInit {
         return urlPam;
     }
 }
+
+  removeFunctionsColumns(displayedColumns,_this){
+    var aux = displayedColumns.slice();
+    var cont = 0;
+    for (let index = 0; index < displayedColumns.length; index++) {
+      const element = displayedColumns[index];
+      var x = index;
+      if(element.function==0){
+        x = x-cont;
+        aux.splice(x,1);
+        cont++;
+      }
+    }
+    return aux;
+  }
 
 }
