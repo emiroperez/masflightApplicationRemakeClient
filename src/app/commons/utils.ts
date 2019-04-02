@@ -99,32 +99,36 @@ export class Utils{
         return params;
     }
 
-    getArguments(argument: Arguments){
-        let args='';
-                if(argument.name1){
-                    args = argument.name1 + "=" + this.getValueFormat(argument.type, argument.value1);
-                }
-                if(argument.name2){
-                    if(args !== ''){
-                        args += "&" + argument.name2 + "=" + this.getValueFormat(argument.type, argument.value2);
-                    }else{
-                        args += argument.name2 + "=" + this.getValueFormat(argument.type, argument.value2);
-                    }            
-                }
-                if(argument.name3){
-                    if(args !== ''){
-                        args += "&" + argument.name3 + "=" + this.getValueFormat(argument.type, argument.value3);
-                    }else{
-                        args += argument.name3 + "=" + this.getValueFormat(argument.type, argument.value3);
-                    }            
-                }
-                return args;
+    getArguments(argument: Arguments)
+    {
+        let args = '';
+
+        if (argument.name1)
+            args = argument.name1 + "=" + this.getValueFormat (argument.type, argument.value1);
+
+        if (argument.name2)
+        {
+            if (args !== '')
+                args += "&";
+
+            args += argument.name2 + "=" + this.getValueFormat (argument.type, argument.value2);          
+        }
+
+        if (argument.name3)
+        {
+            if (args !== '')
+                args += "&";
+
+            args += argument.name3 + "=" + this.getValueFormat (argument.type, argument.value3);
+        }
+
+        return args;
     }
 
     getArguments2(parentArgument: Arguments, childArgument: Arguments, categoryFilter)
     {
-        let args='';
-        let value='';
+        let args = '';
+        let value = '';
 
         // Duplicate the value into the three parameters
         if (parentArgument.name1)
@@ -136,6 +140,7 @@ export class Utils{
             else
                 args = parentArgument.name1 + "=" + categoryFilter;
         }
+
         if (parentArgument.name2)
         {
             value = this.getValueFormat (parentArgument.type, parentArgument.value2);
@@ -148,6 +153,7 @@ export class Utils{
             else
                 args += parentArgument.name2 + "=" + categoryFilter;
         }
+
         if (parentArgument.name3)
         {
             if (args !== '')
