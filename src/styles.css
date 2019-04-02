@@ -2915,7 +2915,10 @@ mat-dialog-container {
   height: 100%;
 }
 .landing-icon-content div {
-  width: 25%;
+  width: 100%;
+  width: -moz-available;
+  width: -webkit-fill-available;
+  width: fill-available;
   text-align: center;
   height: 100%;
 }
@@ -4058,6 +4061,44 @@ img.msf-calendar-image {
 .msf-passenger-chart-title {
   text-align: center;
   color: white;
+}
+
+.msf-filter-container {
+  margin: 10px;
+}
+
+.column-selector-checkbox {
+  color: white;
+}
+
+.column-title {
+  width: 100%;
+  text-align: center;
+  font-size: 16px;
+}
+
+.msf-popup-selector {
+  display: flex;
+  align-items: center;
+  padding: 5px 0;
+  height: 20px;
+}
+
+.checkboxes-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.column-selector-component {
+  width: 33%;
+}
+
+.msf-full-width .search-text-filter {
+  color: white;
+}
+
+th.msf-show-table, td.msf-show-table {
+  display: table-cell;
 }
 
 /*# sourceMappingURL=styles.css.map */

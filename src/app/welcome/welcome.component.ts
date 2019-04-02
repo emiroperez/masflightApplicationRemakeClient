@@ -107,11 +107,12 @@ export class WelcomeComponent implements OnInit {
   handlerSuccess(_this,data){
     _this.options = data;
     _this.options2 = data.slice();
-    _this.options.unshift({id:0,
-                        name:"Landing",
-                        url:"/welcome"})
-    _this.activeElement = _this.options[0];
 
+    _this.activeElement = _this.options[0];
+    //Cambio temporal------------------------------------------------------
+    const indexColumn = _this.options2.findIndex(column => column.id === 2);
+    _this.options2.splice(indexColumn,1);
+    //---------------------------------------------------------------------
     setTimeout(() => {
       _this.globals.isLoading = false;
   }, 3000);

@@ -1,3 +1,22 @@
-<p>
-  msf-column-selector works!
-</p>
+
+<div class="msf-column-selector-container">
+
+    <div class="msf-moreinfo-control-variables-title msf-popup-selector">
+        <div class="msf-media-title column-title">Column Selector</div>
+        <div class="msf-dashboard-control-variables-close-button">
+          <mat-icon style="height: 35px;width: 35px;font-size: 35px;cursor: pointer;"class="msf-dashboard-close-icon" aria-label="close" (click)="closeDialog()">close</mat-icon>
+        </div>
+    </div>
+  <div>
+      <!-- <mat-form-field class="msf-full-width">
+          <input class="search-text-filter" matInput placeholder="{{searchText}}" autocomplete="off" [(ngModel)]="search">
+        </mat-form-field>  -->
+  </div>
+  <div class="checkboxes-container">
+      <div class="column-selector-component" *ngFor="let checkbox of globals.displayedColumns">
+          <mat-checkbox class="column-selector-checkbox"  [value]="checkbox.columnName" [(ngModel)]="checkbox.checked" (change)="checkBoxChange(checkbox)" >
+            {{checkbox.columnLabel}}
+          </mat-checkbox>
+        </div> 
+  </div>
+</div>

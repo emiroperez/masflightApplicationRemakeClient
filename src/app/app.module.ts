@@ -392,7 +392,8 @@ import { MsfColumnSelectorComponent } from './msf-column-selector/msf-column-sel
     MsfAddDashboardComponent,
     MsfDashboardDrillDownComponent,
     MsfDashboardChildPanelComponent,
-    MsfMoreInfoPopupComponent
+    MsfMoreInfoPopupComponent,
+    MsfColumnSelectorComponent
   ]
 })
 export class AppModule { }

@@ -3,8 +3,8 @@
     <table  #table mat-table  [dataSource]="dataSource" matSort class="mat-elevation-z8 datasource">
     
         <ng-container  [matColumnDef]="column.columnName" *ngFor="let column of metadata">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header > {{column.columnLabel}} </th>
-          <td mat-cell *matCellDef="let element;let rowNumber = dataIndex"> 
+          <th [ngClass]="column.show?'msf-show-table':'msf-hide'" mat-header-cell *matHeaderCellDef mat-sort-header > {{column.columnLabel}} </th>
+          <td [ngClass]="column.show?'msf-show-table':'msf-hide'"  mat-cell *matCellDef="let element;let rowNumber = dataIndex"> 
             <span *ngIf="column.drillDowns.length==0">
               <span *ngIf="column.columnType!='number'">{{element[column.columnName]}} </span>
               <span *ngIf="column.columnType=='number' && column.columnFormat=='$'">${{getFormatCell(element[column.columnName]) | number:'.0-2':'en'}} </span>
