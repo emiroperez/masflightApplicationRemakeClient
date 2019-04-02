@@ -121,6 +121,47 @@ export class Utils{
                 return args;
     }
 
+    getArguments2(parentArgument: Arguments, childArgument: Arguments, categoryFilter)
+    {
+        let args='';
+        let value='';
+
+        // Duplicate the value into the three parameters
+        if (parentArgument.name1)
+        {
+            value = this.getValueFormat (parentArgument.type, parentArgument.value1);
+
+            if (value !== '')
+                args = parentArgument.name1 + "=" + value + "," + categoryFilter;
+            else
+                args = parentArgument.name1 + "=" + categoryFilter;
+        }
+        if (parentArgument.name2)
+        {
+            value = this.getValueFormat (parentArgument.type, parentArgument.value2);
+
+            if (args !== '')
+                args += "&";
+
+            if (value !== '')
+                args += parentArgument.name2 + "=" + value + "," + categoryFilter;
+            else
+                args += parentArgument.name2 + "=" + categoryFilter;
+        }
+        if (parentArgument.name3)
+        {
+            if (args !== '')
+                args += "&";
+
+            if (value !== '')
+                args += parentArgument.name3 + "=" + value + "," + categoryFilter;
+            else
+                args += parentArgument.name3 + "=" + categoryFilter;
+        }
+
+        return args;
+    }
+
     getValueFormat(type: string, value:any){
         if( typeof value === 'undefined'){
             return '';

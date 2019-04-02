@@ -539,10 +539,11 @@ export class MsfDashboardChildPanelComponent {
   
     if (currentOptionCategories)
     {
+      let parentArgument = this.data.parentCategory.item.argumentsId;
+
       for (let i = 0; i < currentOptionCategories.length; i++)
       {
         let category: CategoryArguments = currentOptionCategories[i];
-        let parentArgument = this.data.parentCategory.item.argumentsId;
         
         if (category && category.arguments)
         {
@@ -553,9 +554,9 @@ export class MsfDashboardChildPanelComponent {
             if (parentArgument != null && argument.id == parentArgument.id)
             {
               if (params)
-                params += "&" + this.utils.getArguments (parentArgument) + this.data.categoryFilter;
+                params += "&" + this.utils.getArguments2 (parentArgument, argument, this.data.categoryFilter);
               else
-                params = this.utils.getArguments (parentArgument) + this.data.categoryFilter;
+                params = this.utils.getArguments2 (parentArgument, argument, this.data.categoryFilter);
             }
             else
             {
