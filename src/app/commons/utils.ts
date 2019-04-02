@@ -247,7 +247,8 @@ export class Utils{
                 i++;
             }
             return valueAux;
-        }else if (type == ComponentType.selectBoxMultipleOption || type == ComponentType.totalType || type == ComponentType.flightSegments || type == ComponentType.states){
+        }else if (type == ComponentType.selectBoxMultipleOption || type == ComponentType.totalType || type == ComponentType.flightSegments || type == ComponentType.states
+            || type == ComponentType.flightDelaysCheckbox){
                 var valueAux="";
                 var i = 0;
                 for(var val of value){
@@ -433,7 +434,7 @@ export class Utils{
                 i++;
             }
             return valueAux;
-        }else if (type == ComponentType.region){
+        }else if (type == ComponentType.region || type == ComponentType.flightDelaysCheckbox){
             var valueAux="";
             var i = 0;
             for(var val of value){

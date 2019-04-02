@@ -19,11 +19,11 @@ export class MsfFlightDelaysCheckboxesComponent implements OnInit {
   data =  [
       {"id":1,
       "name":"Departure Delay >= 15 Minutes",
-      "value":"Departure Delay >= 15 Minutes",
+      "value":"depdel15",
       "checked":false},
       {"id":2,
       "name":" Arrival Delay >= 15 Minutes",
-      "value":"Departure Delay >= 15 Minutes",
+      "value":"arrdel15",
       "checked":false}
   ];
 

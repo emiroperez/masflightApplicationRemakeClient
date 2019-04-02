@@ -120,23 +120,28 @@ export class MsfTableComponent implements OnInit {
                 displayedColumns.unshift({ columnType:"number",
                 columnName:"AVG_RT_Minutes",
                 columnLabel:"Avg Rt Minutes",
-                drillDowns: []});
+                drillDowns: [],
+                show:true});
                 displayedColumns.unshift({ columnType:"number",
                 columnName:"AVG_Play_Duration",
                 columnLabel:"Avg Play Duration",
-                drillDowns: []});
+                drillDowns: [],
+                show:true});
                 displayedColumns.unshift({ columnType:"number",
                 columnName:"SUM_RT_Minutes",
                 columnLabel:"Sum Rt Minutes",
-                drillDowns: []});
+                drillDowns: [],
+                show:true});
                 displayedColumns.unshift({ columnType:"number",
                 columnName:"SUM_Play_Duration",
                 columnLabel:"Sum Play Duration",
-                drillDowns: []});
+                drillDowns: [],
+                show:true});
                 displayedColumns.unshift({ columnType:"number",
                 columnName:"SUM_Unique_Hits",
                 columnLabel:"Sum Unique Hits",
-                drillDowns: []});
+                drillDowns: [],
+                show:true});
               }
             }else{
               var aux = displayedColumns.slice();
@@ -180,7 +185,8 @@ export class MsfTableComponent implements OnInit {
             displayedColumns.unshift({ columnType:"string",
             columnName:element.columnName,
             columnLabel:element.columnLabel,
-            drillDowns: []});
+            drillDowns: [],
+            show:true});
           }
         }
     }
@@ -193,14 +199,16 @@ export class MsfTableComponent implements OnInit {
             displayedColumns.unshift({ columnType:"string",
             columnName:element.columnName,
             columnLabel:element.columnLabel,
-            drillDowns: []
+            drillDowns: [],
+            show:true
           });
           }else{
               displayedColumns.splice(indexColumn,1);
               displayedColumns.unshift({ columnType:"string",
               columnName:element.columnName,
               columnLabel:element.columnLabel,
-              drillDowns: []});
+              drillDowns: [],
+              show:true});
           }
         }
       }else{
@@ -209,13 +217,15 @@ export class MsfTableComponent implements OnInit {
           displayedColumns.unshift({ columnType:"string",
           columnName:array.columnName,
           columnLabel:array.columnLabel,
-          drillDowns: []});
+          drillDowns: [],
+          show:true});
         }else{
             displayedColumns.splice(indexColumn,1);
             displayedColumns.unshift({ columnType:"string",
             columnName:array.columnName,
             columnLabel:array.columnLabel,
-            drillDowns: []});
+            drillDowns: [],
+            show:true});
         }
 
       }
