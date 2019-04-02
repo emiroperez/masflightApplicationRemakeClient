@@ -370,9 +370,10 @@ toggle(){
 
   columnSelector(){
     this.dialog.open (MsfColumnSelectorComponent, {
-      width: "500px",
+      width: "auto",
       height: "auto",
-      maxHeight: "600px",
+      maxHeight: "700px",
+      maxWidth: "700px",
       panelClass: 'msf-column-selector-popup'
     });
   }
