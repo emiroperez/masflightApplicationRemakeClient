@@ -151,20 +151,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
   }
 
-  isEmpty(obj): boolean
-  {
-    if (obj == null)
-      return true;
-
-    for (let key in obj)
-    {
-      if (obj.hasOwnProperty (key))
-        return false;
-    }
-
-    return true;
-  }
-
   // Function to create horizontal column chart series
   createHorizColumnSeries(values, stacked, chart, item, parseDate): void
   {
@@ -674,7 +660,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   ngAfterViewInit(): void
   {
-    if (!this.isEmpty (this.values.lastestResponse))
+    if (!this.utils.isJSONEmpty (this.values.lastestResponse))
     {
       if (this.values.currentChartType.flags & ChartFlags.INFO)
       {
@@ -706,7 +692,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     // these parts must be here because it generate an error if inserted on ngAfterViewInit
     this.initPanelSettings ();
 
-    if (!this.isEmpty (this.values.lastestResponse))
+    if (!this.utils.isJSONEmpty (this.values.lastestResponse))
     {
       if (this.values.currentChartType.flags & ChartFlags.INFO)
       {
@@ -1057,7 +1043,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     formResults = [];
 
-    if (_this.isEmpty (data) || _this.isEmpty (data.Response))
+    if (_this.utils.isJSONEmpty (data) || _this.utils.isJSONEmpty (data.Response))
     {
       _this.noDataFound ();
       return;
@@ -1146,7 +1132,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   handlerChartSuccess(_this, data): void
   {
-    if (_this.values.currentChartType.flags & ChartFlags.XYCHART && _this.isEmpty (data.data))
+    if (_this.values.currentChartType.flags & ChartFlags.XYCHART && _this.utils.isJSONEmpty (data.data))
     {
       _this.noDataFound ();
       return;

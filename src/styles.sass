@@ -1939,6 +1939,13 @@ mat-tab-group
             align-items: flex-end
             flex-direction: column-reverse
 
+.msf-dashboard-child-panel-container
+    width: 98%
+    height: 82%
+
+#msf-dashboard-child-panel-chart-display
+    @extend .msf-dashboard-child-panel-container
+
 .msf-dashboard-control-variables-dialog .mat-dialog-container
     padding: 12px
     overflow: hidden
@@ -1953,6 +1960,8 @@ mat-tab-group
     background-color: #1f1f1f
     color: #ffffff
     overflow-y: visible
+    .msf-no-results
+        margin-top: 80px
 
 @mixin msf-dashboard-control-variables-close-icon ($color: inherit, $cursor: inherit)
     font-size: 16px
@@ -2262,17 +2271,34 @@ mat-tab-group
 #msf-dashboard-panel-form-sub-container
     margin-top: -10px
 
-#msf-dashboard-panel-form-container-column
+@mixin msf-dashboard-panel-form-container
     height: 100%
     align-items: center
     margin-bottom: 10px
-    flex-direction: column
     border-style: solid
     border-width: 1px
     border-color: #595959
     background-color: #333333
     padding: 10px
     width: inherit
+
+#msf-dashboard-panel-form-container-column
+    flex-direction: column
+    @include msf-dashboard-panel-form-container
+
+#msf-dashboard-panel-form-container-column-empty
+    justify-content: center
+    @include msf-dashboard-panel-form-container
+    .msf-no-results
+        color: white
+        background: #01abec
+        margin: 0 100px
+        text-align: center
+        align-items: center
+        vertical-align: middle
+        justify-content: center
+        padding: 15px
+        font-size: 12px
 
 #msf-dashboard-panel-form-container-row
     flex-direction: row
@@ -2306,14 +2332,13 @@ mat-tab-group
     justify-content: center
     align-items: center
     .msf-dashboard-panel-picture-label-container
-        width: 220px
+        width: 250px
         height: 60px
         display: flex
         align-items: center
-        border-radius: 10px
         background-color: $msf-secondary-color
         .msf-dashboard-panel-picture-label
-            font-size: 14px
+            font-size: 15px
             width: 100%
 
 mat-dialog-container

@@ -27,6 +27,7 @@ const blueJeans = am4core.color ("#67b7dc");
   templateUrl: './msf-dashboard-child-panel.component.html'
 })
 export class MsfDashboardChildPanelComponent {
+  errorMessage: string;
   utils: Utils;
 
   values: MsfDashboardPanelValues;
@@ -329,7 +330,7 @@ export class MsfDashboardChildPanelComponent {
           {
             categoryAxis = chart.yAxes.push (new am4charts.CategoryAxis ());
             categoryAxis.renderer.minGridDistance = 15;
-            categoryAxis.renderer.labels.template.maxWidth = 160;
+            categoryAxis.renderer.labels.template.maxWidth = 240;
           }
 
           valueAxis = chart.xAxes.push (new am4charts.ValueAxis ());
@@ -356,7 +357,7 @@ export class MsfDashboardChildPanelComponent {
 
             // Rotate labels if the chart is displayed vertically
             categoryAxis.renderer.labels.template.rotation = 330;
-            categoryAxis.renderer.labels.template.maxWidth = 160;
+            categoryAxis.renderer.labels.template.maxWidth = 240;
           }
 
           valueAxis = chart.yAxes.push (new am4charts.ValueAxis ());
@@ -576,7 +577,9 @@ export class MsfDashboardChildPanelComponent {
 
   configureChildPanel(_this, data)
   {
-    let i;
+    let i, notConfigured;
+
+    notConfigured = false;
 
     if (data == null)
     {
@@ -602,7 +605,10 @@ export class MsfDashboardChildPanelComponent {
       }
     }
     else
-      _this.values.currentChartType = _this.chartTypes[0];
+      i = _this.chartTypes.length;
+
+    if (i == _this.chartTypes.length)
+      notConfigured = true;
 
     if (_this.values.variable != null && _this.values.variable != -1)
     {
@@ -616,21 +622,30 @@ export class MsfDashboardChildPanelComponent {
       }
     }
     else
-      _this.values.variable = _this.values.chartColumnOptions[0];
+      i = _this.values.chartColumnOptions.length;
 
-    if (_this.values.xaxis != null && _this.values.xaxis != -1)
+    if (i == _this.values.chartColumnOptions.length)
+      notConfigured = true;
+
+    if (_this.values.currentChartType.flags & ChartFlags.XYCHART)
     {
-      for (i = 0; i < _this.values.chartColumnOptions.length; i++)
+      if (_this.values.xaxis != null && _this.values.xaxis != -1)
       {
-        if (i == _this.values.xaxis)
+        for (i = 0; i < _this.values.chartColumnOptions.length; i++)
         {
-          _this.values.xaxis = _this.values.chartColumnOptions[i];
-          break;
+          if (i == _this.values.xaxis)
+          {
+            _this.values.xaxis = _this.values.chartColumnOptions[i];
+            break;
+          }
         }
       }
+      else
+        i = _this.values.chartColumnOptions.length;
+
+      if (i == _this.values.chartColumnOptions.length)
+        notConfigured = true;
     }
-    else
-      _this.values.xaxis = _this.values.chartColumnOptions[0];
 
     if (_this.values.valueColumn != null && _this.values.valueColumn != -1)
     {
@@ -644,7 +659,10 @@ export class MsfDashboardChildPanelComponent {
       }
     }
     else
-      _this.values.valueColumn = _this.values.chartColumnOptions[0];
+      i = _this.values.chartColumnOptions.length;
+
+    if (i == _this.values.chartColumnOptions.length)
+      notConfigured = true;
 
     if (_this.values.function != null && _this.values.function != -1)
     {
@@ -658,7 +676,16 @@ export class MsfDashboardChildPanelComponent {
       }
     }
     else
-      _this.values.function = _this.values.functions[0];
+      i = _this.functions.length;
+
+    if (i == _this.functions.length)
+      notConfigured = true;
+
+    if (notConfigured)
+    {
+      _this.panelNotConfigured ();
+      return;
+    }
 
     _this.service.loadOptionCategoryArguments (_this, _this.values.currentOption, _this.setCategories, _this.handlerCategoryError);
   }
@@ -688,23 +715,37 @@ export class MsfDashboardChildPanelComponent {
   noPanelFound(_this)
   {
     _this.globals.popupLoading = false;
+    _this.errorMessage = "This drill down option has not been configured for this panel";
+  }
+
+  panelNotConfigured()
+  {
+    this.globals.popupLoading = false;
+    this.errorMessage = "This drill down option is not configured properly";
   }
 
   handlerChildPanelError(_this)
   {
     _this.globals.popupLoading = false;
+    _this.errorMessage = "Unable to get child panel";
   }
 
   handlerCategoryError(_this)
   {
     _this.globals.popupLoading = false;
+    _this.errorMessage = "Failed to generate chart";
+  }
+
+  noDataFound(): void
+  {
+    this.globals.popupLoading = false;
+    this.errorMessage = "No data available for chart generation";
   }
 
   loadChartData(handlerSuccess, handlerError): void
   {
     let url, urlBase, urlArg;
 
-    // TODO: Add category parameters from child panel
     urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
     console.log (urlBase);
@@ -723,7 +764,7 @@ export class MsfDashboardChildPanelComponent {
 
   handlerChartSuccess(_this, data): void
   {
-    /*if (_this.values.currentChartType.flags & ChartFlags.XYCHART && _this.isEmpty (data.data))
+    if (_this.values.currentChartType.flags & ChartFlags.XYCHART && _this.utils.isJSONEmpty (data.data))
     {
       _this.noDataFound ();
       return;
@@ -734,7 +775,7 @@ export class MsfDashboardChildPanelComponent {
     {
       _this.noDataFound ();
       return;
-    }*/
+    }
 
     _this.makeChart (data);
     _this.globals.popupLoading = false;
@@ -744,9 +785,6 @@ export class MsfDashboardChildPanelComponent {
   {
     console.log (result);
     _this.globals.popupLoading = false;
-
-    /*_this.dialog.open (MessageComponent, {
-      data: { title: "Error", message: "Failed to generate chart." }
-    });*/
+    _this.errorMessage = "Failed to generate chart";
   }
 }

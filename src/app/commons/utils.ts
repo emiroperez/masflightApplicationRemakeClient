@@ -21,6 +21,19 @@ export class Utils{
         this.notificationMessage = message;
     }
 
+    isJSONEmpty(obj): boolean
+    {
+      if (obj == null)
+        return true;
+  
+      for (let key in obj)
+      {
+        if (obj.hasOwnProperty (key))
+          return false;
+      }
+  
+      return true;
+    }
 
     isEmpty (value: string){
         if(value == null || value == ''){
@@ -482,6 +495,4 @@ export class Utils{
         }
         return value;
     }
-
-
 }
