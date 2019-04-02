@@ -525,7 +525,7 @@ export class MsfDashboardComponent implements OnInit {
 
   onrightClick(event, dashboardColumn, rowindex): boolean
   {
-    /*event.stopPropagation ();
+    event.stopPropagation ();
 
     if (!dashboardColumn[rowindex].chartClicked)
       return true;
@@ -543,9 +543,7 @@ export class MsfDashboardComponent implements OnInit {
     // prevent context menu from appearing
     dashboardColumn[rowindex].chartClicked = false;
     this.contextMenu.openMenu ();
-    return false;*/
-    dashboardColumn[rowindex].chartClicked = false;
-    return true;
+    return false;
   }
 
   disableContextMenu(): void
@@ -590,7 +588,7 @@ export class MsfDashboardComponent implements OnInit {
         drillDownId: contextDrillDownId,
         currentOptionCategories: this.contextParentPanel.currentOptionCategories,
         currentOptionBaseUrl: this.contextParentPanel.currentOption.baseUrl,
-        parentCategory: (this.contextParentPanel.currentChartType.flags & ChartFlags.XYCHART ? this.contextParentPanel.xaxis.id : this.contextParentPanel.variable.id),
+        parentCategory: (this.contextParentPanel.currentChartType.flags & ChartFlags.XYCHART ? this.contextParentPanel.xaxis : this.contextParentPanel.variable),
         categoryFilter: this.contextCategory
       }
     });
