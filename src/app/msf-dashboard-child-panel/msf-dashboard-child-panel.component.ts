@@ -540,6 +540,7 @@ export class MsfDashboardChildPanelComponent {
     if (currentOptionCategories)
     {
       let parentArgument = this.data.parentCategory.item.argumentsId;
+      let filverValue = this.data.categoryFilter;
 
       for (let i = 0; i < currentOptionCategories.length; i++)
       {
@@ -554,9 +555,9 @@ export class MsfDashboardChildPanelComponent {
             if (parentArgument != null && argument.id == parentArgument.id)
             {
               if (params)
-                params += "&" + this.utils.getArguments2 (parentArgument, argument, this.data.categoryFilter);
+                params += "&" + this.utils.getArguments2 (parentArgument, filverValue);
               else
-                params = this.utils.getArguments2 (parentArgument, argument, this.data.categoryFilter);
+                params = this.utils.getArguments2 (parentArgument, filverValue);
             }
             else
             {
