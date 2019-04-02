@@ -363,4 +363,10 @@ export class ApplicationService {
     let url = this.host + "/saveLastestResponse?lastestResponse=" + lastestResponse;
     this.http.post (_this, url, panel, handlerSuccess, handlerError);
   }
+
+  getChildPanel(_this, parentPanelId, drillDownId, handlerSuccess, handlerError)
+  {
+    let url = this.host + "/getChildPanel?parentPanelId=" + parentPanelId + "&drillDownId=" + drillDownId;
+    this.http.get (_this, url, handlerSuccess, handlerError, null);
+  }
 }
