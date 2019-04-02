@@ -1855,7 +1855,7 @@ export class MsfDashboardPanelComponent implements OnInit {
             this.chartForm.get ('infoVar2Ctrl').setValue (this.values.chartColumnOptions[i]);
             this.chartForm.get ('infoVar2Ctrl').enable ();
             this.values.infoVar2 = this.values.chartColumnOptions[i];
-            this.values.variable = null;
+            this.values.xaxis = null;
             this.values.infoNumVariables++;
             break;
           }
@@ -2278,6 +2278,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         id: value.id,
         option: value.currentOption,
         title: value.chartName,
+        chartColumnOptions: JSON.stringify (value.chartColumnOptions),
         analysis: value.chartColumnOptions.indexOf (value.variable),
         xaxis: value.chartColumnOptions.indexOf (value.xaxis),
         values: value.chartColumnOptions.indexOf (value.valueColumn),

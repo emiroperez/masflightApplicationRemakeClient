@@ -6,6 +6,7 @@ import { Globals } from '../globals/Globals';
 import { MsfDashboardPanelValues } from '../msf-dashboard-panel/msf-dashboard-panelvalues';
 import { ApplicationService } from '../services/application.service';
 import { MsfDashboardChildPanelComponent } from '../msf-dashboard-child-panel/msf-dashboard-child-panel.component';
+import { ChartFlags } from '../msf-dashboard-panel/msf-dashboard-chartflags';
 
 const minPanelWidth = 25;
 
@@ -30,6 +31,7 @@ export class MsfDashboardComponent implements OnInit {
   contextMenuY: number = 0;
   contextCategory: any;
   contextMenuItems: any;
+  contextParentPanel: MsfDashboardPanelValues;
 
   @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
 
@@ -523,7 +525,7 @@ export class MsfDashboardComponent implements OnInit {
 
   onrightClick(event, dashboardColumn, rowindex): boolean
   {
-/*    event.stopPropagation ();
+    /*event.stopPropagation ();
 
     if (!dashboardColumn[rowindex].chartClicked)
       return true;
@@ -531,6 +533,7 @@ export class MsfDashboardComponent implements OnInit {
     this.contextCategory = dashboardColumn[rowindex].chartObjectSelected;
     this.contextMenuItems = dashboardColumn[rowindex].currentOption.drillDownOptions;
     this.contextMenuX = event.clientX;
+    this.contextParentPanel = dashboardColumn[rowindex];
 
     if (this.globals.isFullscreen)
       this.contextMenuY = event.clientY;
@@ -576,16 +579,20 @@ export class MsfDashboardComponent implements OnInit {
     return this.contextMenuY;
   }
 
-  displayChildPanel(): void
+  displayChildPanel(contextDrillDownId): void
   {
     this.dialog.open (MsfDashboardChildPanelComponent, {
       height: '600px',
       width: '800px',
-      panelClass: 'msf-dashboard-child-panel-dialog'/*,
+      panelClass: 'msf-dashboard-child-panel-dialog',
       data: {
-        title: this.values.chartName,
-        chartColumnOptions: this.values.chartColumnOptions
-      }*/
+        parentPanelId: this.contextParentPanel.id,
+        drillDownId: contextDrillDownId,
+        currentOptionCategories: this.contextParentPanel.currentOptionCategories,
+        currentOptionBaseUrl: this.contextParentPanel.currentOption.baseUrl,
+        parentCategory: (this.contextParentPanel.currentChartType.flags & ChartFlags.XYCHART ? this.contextParentPanel.xaxis.id : this.contextParentPanel.variable.id),
+        categoryFilter: this.contextCategory
+      }
     });
   }
 }
