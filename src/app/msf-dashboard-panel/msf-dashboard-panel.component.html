@@ -255,7 +255,7 @@
           <div class="msf-dashboard-chart-op-container">
             <mat-form-field [formGroup]="chartForm" class="msf-full-width">
               <mat-select formControlName="valueOrientationCtrl" placeholder="Value Orientation">
-                <mat-option *ngFor="let orientation of orientatios" [value]="orientation">
+                <mat-option *ngFor="let orientation of orientations" [value]="orientation">
                   {{orientation.name}}
                 </mat-option>
               </mat-select>
