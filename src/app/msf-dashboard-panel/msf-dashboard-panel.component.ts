@@ -2138,14 +2138,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     return (this.values.currentChartType.flags & ChartFlags.PICTURE) ? true : false;
   }
 
-  getButtonColor(infoVarNum): String
-  {
-    if (infoVarNum == null)
-      return "#343434";
-
-    return "primary";
-  }
-
   checkNumVariables(): void
   {
     let i;
