@@ -58,6 +58,8 @@ export class MsfDashboardPanelValues {
     chartClicked: boolean;
     chartObjectSelected: any;
 
+    isLoading: boolean = false;
+
     constructor(options: any[], chartName: String, id: number, width: any, height: any, currentOption?: any, chartColumnOptions? : any,
         variable?: any, xaxis?: any, valueColumn?: any, func?: any, chartType?: any, currentOptionCategories?: any, lastestResponse?: string,
         paletteColors?: any)
