@@ -2715,6 +2715,15 @@ mat-tab-group {
   display: table-cell;
 }
 
+.msf-dashboard-form-display-result-horizontal, .msf-dashboard-form-display-result-vertical {
+  padding: 3px 0;
+}
+
+.msf-dashboard-form-display-result-vertical {
+  display: flex;
+  flex-direction: column;
+}
+
 #msf-dashboard-form-display-title {
   color: #01abec;
   font-weight: normal;

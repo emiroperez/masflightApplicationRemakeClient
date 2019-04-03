@@ -78,6 +78,11 @@ export class MsfDashboardPanelComponent implements OnInit {
     { name: 'Large', value: 30 }
   ];
 
+  orientations:any[] = [
+    { name: 'Horizontal', value: false },
+    { name: 'Vertical', value: true }
+  ];
+
   @Input()
   values: MsfDashboardPanelValues;
   temp: MsfDashboardPanelValues;
@@ -128,7 +133,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       infoVar3Ctrl: new FormControl ({ value: '', disabled: true }),
       columnCtrl: new FormControl ({ value: '', disabled: true }),
       fontSizeCtrl: new FormControl ({ value: '', disabled: true }),
-      valueFontSizeCtrl: new FormControl ({ value: '', disabled: true })
+      valueFontSizeCtrl: new FormControl ({ value: '', disabled: true }),
+      valueOrientationCtrl: new FormControl ({ value: '', disabled: true })
     });
   }
 
@@ -1079,7 +1085,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         value: (isNaN (value) ? value : _this.getResultValue (value)),
         column: _this.values.chartColumnOptions.indexOf (formVariable.column),
         fontSize: _this.fontSizes.indexOf (formVariable.fontSize),
-        valueFontSize: _this.fontSizes.indexOf (formVariable.valueFontSize)
+        valueFontSize: _this.fontSizes.indexOf (formVariable.valueFontSize),
+        valueOrientation: _this.orientations.indexOf (formVariable.valueOrientation)
       });
     }
 
@@ -1097,7 +1104,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         value: formVariable.value,
         column: _this.values.chartColumnOptions[formVariable.column],
         fontSize: _this.fontSizes[formVariable.fontSize],
-        valueFontSize: _this.fontSizes[formVariable.valueFontSize]
+        valueFontSize: _this.fontSizes[formVariable.valueFontSize],
+        valueOrientation: _this.orientations[formVariable.valueOrientation]
       });
     }
 
@@ -1263,6 +1271,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.chartForm.get ('columnCtrl').reset ();
     _this.chartForm.get ('fontSizeCtrl').reset ();
     _this.chartForm.get ('valueFontSizeCtrl').reset ();
+    _this.chartForm.get ('valueOrientationCtrl').reset ();
     _this.checkChartFilters ();
 
     _this.values.formVariables = [];
@@ -1289,6 +1298,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.chartForm.get ('columnCtrl').enable ();
     _this.chartForm.get ('fontSizeCtrl').enable ();
     _this.chartForm.get ('valueFontSizeCtrl').enable ();
+    _this.chartForm.get ('valueOrientationCtrl').enable ();
 
     // delete previous child panels
     _this.service.deleteChildPanels (_this, _this.values.id, _this.deleteSuccess, _this.handlerError);
@@ -1407,7 +1417,8 @@ export class MsfDashboardPanelComponent implements OnInit {
           value: this.values.lastestResponse[i].value,
           column: this.values.chartColumnOptions.indexOf (formVariable.column),
           fontSize: this.fontSizes.indexOf (formVariable.fontSize),
-          valueFontSize: this.fontSizes.indexOf (formVariable.valueFontSize)
+          valueFontSize: this.fontSizes.indexOf (formVariable.valueFontSize),
+          valueOrientation: this.orientations.indexOf (formVariable.valueOrientation)
         });
       }
     }
@@ -1566,6 +1577,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         this.chartForm.get ('columnCtrl').reset ();
         this.chartForm.get ('fontSizeCtrl').reset ();
         this.chartForm.get ('valueFontSizeCtrl').reset ();
+        this.chartForm.get ('valueOrientationCtrl').reset ();
 
         this.values.formVariables = [];
       }
@@ -1616,6 +1628,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.chartForm.get ('columnCtrl').reset ();
       this.chartForm.get ('fontSizeCtrl').reset ();
       this.chartForm.get ('valueFontSizeCtrl').reset ();
+      this.chartForm.get ('valueOrientationCtrl').reset ();
 
       this.values.formVariables = [];
     }
@@ -1771,6 +1784,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           this.chartForm.get ('columnCtrl').enable ();
           this.chartForm.get ('fontSizeCtrl').enable ();
           this.chartForm.get ('valueFontSizeCtrl').enable ();
+          this.chartForm.get ('valueOrientationCtrl').enable ();
 
           // only enable x axis if the chart type is not pie, donut or radar
           if (this.values.currentChartType.flags & ChartFlags.XYCHART)
@@ -1799,6 +1813,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.chartForm.get ('columnCtrl').reset ();
       this.chartForm.get ('fontSizeCtrl').reset ();
       this.chartForm.get ('valueFontSizeCtrl').reset ();
+      this.chartForm.get ('valueOrientationCtrl').reset ();
 
       // set form variable settings if loaded from database
       if (this.values.function != null && this.values.function != -1)
@@ -1811,7 +1826,8 @@ export class MsfDashboardPanelComponent implements OnInit {
             value: formVariable.value,
             column: formVariable.column,
             fontSize: formVariable.fontSize,
-            valueFontSize: formVariable.valueFontSize
+            valueFontSize: formVariable.valueFontSize,
+            valueOrientation: formVariable.valueOrientation
           });
         }
       }
@@ -1824,7 +1840,8 @@ export class MsfDashboardPanelComponent implements OnInit {
           value: formVariable.value,
           column: this.values.chartColumnOptions[formVariable.column],
           fontSize: this.fontSizes[formVariable.fontSize],
-          valueFontSize: this.fontSizes[formVariable.valueFontSize]
+          valueFontSize: this.fontSizes[formVariable.valueFontSize],
+          valueOrientation: this.orientations[formVariable.valueOrientation]
         });
       }
 
@@ -2034,7 +2051,8 @@ export class MsfDashboardPanelComponent implements OnInit {
               value: null,
               column: _this.values.chartColumnOptions.indexOf (formVariable.column),
               fontSize: _this.fontSizes.indexOf (formVariable.fontSize),
-              valueFontSize: _this.fontSizes.indexOf (formVariable.valueFontSize)
+              valueFontSize: _this.fontSizes.indexOf (formVariable.valueFontSize),
+              valueOrientation: _this.orientations.indexOf (formVariable.valueOrientation)
             });
           }
 
@@ -2319,7 +2337,8 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   isFormColumnValid(): boolean
   {
-    return (this.chartForm.get ('columnCtrl').value && this.chartForm.get ('fontSizeCtrl').value && this.chartForm.get ('valueFontSizeCtrl').value);
+    return (this.chartForm.get ('columnCtrl').value && this.chartForm.get ('fontSizeCtrl').value
+      && this.chartForm.get ('valueFontSizeCtrl').value && this.chartForm.get ('valueOrientationCtrl').value);
   }
 
   addColumnIntoForm(): void
@@ -2327,13 +2346,15 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.formVariables.push ({
       column: this.chartForm.get ('columnCtrl').value,
       fontSize:  this.chartForm.get ('fontSizeCtrl').value,
-      valueFontSize: this.chartForm.get ('valueFontSizeCtrl').value
+      valueFontSize: this.chartForm.get ('valueFontSizeCtrl').value,
+      valueOrientation: this.chartForm.get ('valueOrientationCtrl').value
     });
 
     // reset main column and font size values
     this.chartForm.get ('columnCtrl').reset ();
     this.chartForm.get ('fontSizeCtrl').reset ();
     this.chartForm.get ('valueFontSizeCtrl').reset ();
+    this.chartForm.get ('valueOrientationCtrl').reset ();
     this.checkChartFilters ();
   }
 

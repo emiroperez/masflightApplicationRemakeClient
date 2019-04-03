@@ -252,6 +252,15 @@
               </mat-select>
             </mat-form-field>
           </div>
+          <div class="msf-dashboard-chart-op-container">
+            <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+              <mat-select formControlName="valueOrientationCtrl" placeholder="Value Orientation">
+                <mat-option *ngFor="let orientation of orientatios" [value]="orientation">
+                  {{orientation.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
           <div class="msf-dashboard-chart-add-button" id="msf-dashboard-form-button">
             <button [disabled]="!isFormColumnValid()" mat-icon-button (click)="addColumnIntoForm()" [ngClass]="isFormColumnValid() ? 'func-button' : 'func-button-disabled'">
               <mat-icon class="msf-dashboard-chart-icon" aria-label="Add Column">add</mat-icon>
@@ -286,6 +295,15 @@
             <mat-select [(value)]="formVariable.valueFontSize" placeholder="Value Font Size">
               <mat-option *ngFor="let fontSize of fontSizes" [value]="fontSize">
                 {{fontSize.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="msf-dashboard-chart-op-container" id="msf-dashboard-panel-form-op-container">
+          <mat-form-field class="msf-full-width">
+            <mat-select [(value)]="formVariable.valueOrientation" placeholder="Value Orientation">
+              <mat-option *ngFor="let orientation of orientations" [value]="orientation">
+                {{orientation.name}}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -403,7 +421,7 @@
     </div>
     <div style="width: 100%; display: table" [style.height.px]="calcChartHeight()">
       <div class="msf-media-title-container" id="msf-dashboard-form-display">
-        <div style="padding: 3px 0" *ngFor="let formResult of values.lastestResponse; let column = index">
+        <div [ngClass]="values.formVariables[column].valueOrientation.value ? 'msf-dashboard-form-display-result-vertical' : 'msf-dashboard-form-display-result-horizontal'" *ngFor="let formResult of values.lastestResponse; let column = index">
           <span class="msf-media-title-value" id="msf-dashboard-form-display-title" [style.font-size.px]="getFormFontSize(column)">{{formResult.column.name}}: </span>
           <span class="msf-media-title-value" id="msf-dashboard-form-display-value" [style.font-size.px]="getValueFormFontSize(column)">{{formResult.value}}</span>
         </div>
