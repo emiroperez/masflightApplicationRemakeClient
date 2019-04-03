@@ -236,7 +236,16 @@
           </div>
           <div class="msf-dashboard-chart-op-container">
             <mat-form-field [formGroup]="chartForm" class="msf-full-width">
-              <mat-select formControlName="fontSizeCtrl" placeholder="Font Size">
+              <mat-select formControlName="fontSizeCtrl" placeholder="Title Font Size">
+                <mat-option *ngFor="let fontSize of fontSizes" [value]="fontSize">
+                  {{fontSize.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="msf-dashboard-chart-op-container">
+            <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+              <mat-select formControlName="valueFontSizeCtrl" placeholder="Value Font Size">
                 <mat-option *ngFor="let fontSize of fontSizes" [value]="fontSize">
                   {{fontSize.name}}
                 </mat-option>
@@ -265,7 +274,16 @@
         </div>
         <div class="msf-dashboard-chart-op-container" id="msf-dashboard-panel-form-op-container">
           <mat-form-field class="msf-full-width">
-            <mat-select [(value)]="formVariable.fontSize" placeholder="Font Size">
+            <mat-select [(value)]="formVariable.fontSize" placeholder="Title Font Size">
+              <mat-option *ngFor="let fontSize of fontSizes" [value]="fontSize">
+                {{fontSize.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="msf-dashboard-chart-op-container" id="msf-dashboard-panel-form-op-container">
+          <mat-form-field class="msf-full-width">
+            <mat-select [(value)]="formVariable.valueFontSize" placeholder="Value Font Size">
               <mat-option *ngFor="let fontSize of fontSizes" [value]="fontSize">
                 {{fontSize.name}}
               </mat-option>
@@ -387,7 +405,7 @@
       <div class="msf-media-title-container" id="msf-dashboard-form-display">
         <div style="padding: 3px 0" *ngFor="let formResult of values.lastestResponse; let column = index">
           <span class="msf-media-title-value" id="msf-dashboard-form-display-title" [style.font-size.px]="getFormFontSize(column)">{{formResult.column.name}}: </span>
-          <span class="msf-media-title-value" id="msf-dashboard-form-display-value" [style.font-size.px]="getFormFontSize(column)">{{formResult.value}}</span>
+          <span class="msf-media-title-value" id="msf-dashboard-form-display-value" [style.font-size.px]="getValueFormFontSize(column)">{{formResult.value}}</span>
         </div>
       </div>
     </div>
