@@ -116,14 +116,8 @@ export class MsfMoreInfoPopupComponent{
 
     handlerChartSuccess(_this, data): void
     {
-      // destroy current chart if it's already generated to avoid a blank chart
-      // _this.destroyChart ();
-  
       _this.makeChart (data);
-      // _this.values.displayChart = true;
-      // _this.values.chartGenerated = true;
-      // _this.values.infoGenerated = false;
-      // _this.globals.isLoading = false;
+
     }
 
     createHorizColumnSeries(values, chart, item, parseDate): void
