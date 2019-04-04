@@ -2403,7 +2403,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       if (this.updateTimeLeft)
         this.updateTimeLeft--;
-      else
+
+      if (!this.updateTimeLeft)
       {
         this.updateTimeLeft = this.values.updateTimeLeft;
         this.loadData ();
