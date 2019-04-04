@@ -1459,6 +1459,9 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.temp.infoVar3 = null;
     }
 
+    this.temp.updateIntervalSwitch = this.values.updateIntervalSwitch;
+    this.temp.updateTimeLeft = this.values.updateTimeLeft;
+
     this.stopUpdateInterval ();
   }
 
@@ -1568,6 +1571,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
 
     this.values.formVariables = JSON.parse (JSON.stringify (this.temp.formVariables));
+
+    this.values.updateIntervalSwitch = this.temp.updateIntervalSwitch;
+    this.values.updateTimeLeft = this.temp.updateTimeLeft;
 
     // re-initialize panel settings
     this.values.currentChartType = this.chartTypes.indexOf (this.values.currentChartType);
