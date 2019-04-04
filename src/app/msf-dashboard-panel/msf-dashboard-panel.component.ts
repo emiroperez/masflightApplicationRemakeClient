@@ -44,8 +44,6 @@ export class MsfDashboardPanelComponent implements OnInit {
   chartForm: FormGroup;
   chart: any;
 
-  private timer: number;
-
   chartTypes:any[] = [
     { name: 'Bars', flags: ChartFlags.XYCHART, createSeries: this.createVertColumnSeries },
     { name: 'Horizontal Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED, createSeries: this.createHorizColumnSeries },
@@ -976,7 +974,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this._onDestroy.next ();
     this._onDestroy.complete ();
 
-    clearInterval (this.timer);
+    clearInterval (this.updateInterval);
 
     this.destroyChart ();
   }
