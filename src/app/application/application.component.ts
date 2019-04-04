@@ -360,7 +360,7 @@ toggle(){
   shareDashboard(): void
   {
     this.dialog.open (MsfShareDashboardComponent, {
-      height: '500px',
+      height: '430px',
       width: '400px',
       panelClass: 'msf-dashboard-child-panel-dialog',
       data: {
