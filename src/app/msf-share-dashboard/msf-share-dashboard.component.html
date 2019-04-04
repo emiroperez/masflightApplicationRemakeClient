@@ -1,0 +1,13 @@
+<div [ngClass]="globals.popupLoading? 'tab-show' : 'tab-hide'" id="msf-dashboard-drill-down-loading" class="msf-dashboard-drill-down-loading">
+  <div class="msf-dashboard-control-variables-close-button">
+    <mat-icon class="msf-dashboard-close-icon" aria-label="close" (click)="closeDialog()">close</mat-icon>
+  </div>
+</div>
+<div class="msf-dashboard-control-variables-title" *ngIf="!globals.popupLoading">
+  <div class="msf-dashboard-control-variables-close-button">
+    <mat-icon class="msf-dashboard-close-icon" aria-label="close" (click)="closeDialog()">close</mat-icon>
+  </div>
+  Share Dashboard
+</div>
+<div class="msf-dashboard-panel-container" id="msf-dashboard-drill-down-container">
+</div>
