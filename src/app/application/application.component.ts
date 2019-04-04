@@ -17,6 +17,7 @@ import { DashboardMenu } from '../model/DashboardMenu';
 import { MsfEditDashboardComponent } from '../msf-edit-dashboard/msf-edit-dashboard.component';
 import { ApplicationService } from '../services/application.service';
 import { MsfColumnSelectorComponent } from '../msf-column-selector/msf-column-selector.component';
+import { MsfShareDashboardComponent } from '../msf-share-dashboard/msf-share-dashboard.component';
 
 
 @Component({
@@ -354,6 +355,18 @@ toggle(){
   deleteError(_this): void
   {
     _this.globals.isLoading = false;
+  }
+
+  shareDashboard(): void
+  {
+    this.dialog.open (MsfShareDashboardComponent, {
+      height: '500px',
+      width: '400px',
+      panelClass: 'msf-dashboard-child-panel-dialog',
+      data: {
+        currentDashboardMenu: this.globals.currentDashboardMenu
+      }
+    });
   }
 
   deleteDashboard(): void

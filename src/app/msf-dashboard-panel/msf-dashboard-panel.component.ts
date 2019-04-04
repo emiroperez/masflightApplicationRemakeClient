@@ -844,7 +844,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     let url, urlBase, urlArg, panel, variables;
 
-    this.globals.isLoading = true;
+    this.values.isLoading = true;
     urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
     console.log (urlBase);
@@ -905,7 +905,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     // set panel info for the HTTP message body
     panel = this.getPanelInfo ();
-    this.globals.isLoading = true;
+    this.values.isLoading = true;
     urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
     console.log (urlBase);
@@ -926,7 +926,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     let url, urlBase, urlArg;
 
-    this.globals.isLoading = true;
+    this.values.isLoading = true;
     urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=1&page_number=0";
     urlArg = encodeURIComponent (urlBase);
@@ -940,7 +940,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     let url, urlBase, urlArg;
 
     // TODO: Use a service that gets a url which contains a picture
-    this.globals.isLoading = true;
+    this.values.isLoading = true;
     urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=1&page_number=0";
     urlArg = encodeURIComponent (urlBase);
@@ -980,7 +980,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.infoGenerated = false;
     this.values.formGenerated = false;
     this.values.picGenerated = false;
-    this.globals.isLoading = false;
+    this.values.isLoading = false;
 
     if (this.values.currentChartType.flags & ChartFlags.PICTURE)
     {
@@ -1036,7 +1036,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.destroyChart ();
 
     _this.valus.lastestResponse = data;
-    _this.globals.isLoading = false;
+    _this.values.isLoading = false;
     _this.values.displayPic = true;
     _this.values.chartGenerated = false;
     _this.values.infoGenerated = false;
@@ -1112,7 +1112,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     // destroy current chart if it's already generated to avoid a blank chart later
     _this.destroyChart ();
 
-    _this.globals.isLoading = false;
+    _this.values.isLoading = false;
     _this.values.displayForm = true;
     _this.values.chartGenerated = false;
     _this.values.infoGenerated = false;
@@ -1138,7 +1138,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.infoGenerated = true;
     _this.values.formGenerated = false;
     _this.values.picGenerated = false;
-    _this.globals.isLoading = false;
+    _this.values.isLoading = false;
   }
 
   handlerChartSuccess(_this, data): void
@@ -1165,12 +1165,12 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.infoGenerated = false;
     _this.values.formGenerated = false;
     _this.values.picGenerated = false;
-    _this.globals.isLoading = false;
+    _this.values.isLoading = false;
   }
 
   loadChartFilterValues(component): void
   {
-    this.globals.isLoading = true;
+    this.values.isLoading = true;
     this.getChartFilterValues (component.id, this.addChartFilterValues);
   }
 
@@ -1182,7 +1182,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.infoGenerated = false;
     _this.values.formGenerated = false;
     _this.values.picGenerated = false;
-    _this.globals.isLoading = false;
+    _this.values.isLoading = false;
 
     _this.dialog.open (MessageComponent, {
       data: { title: "Error", message: "Failed to generate chart." }
@@ -1197,7 +1197,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.infoGenerated = false;
     _this.values.formGenerated = false;
     _this.values.picGenerated = false;
-    _this.globals.isLoading = false;
+    _this.values.isLoading = false;
 
     _this.dialog.open (MessageComponent, {
       data: { title: "Error", message: "Failed to get summary." }
@@ -1212,7 +1212,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.infoGenerated = false;
     _this.values.formGenerated = false;
     _this.values.picGenerated = false;
-    _this.globals.isLoading = false;
+    _this.values.isLoading = false;
 
     _this.dialog.open (MessageComponent, {
       data: { title: "Error", message: "Failed to generate simple form panel." }
@@ -1227,7 +1227,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.infoGenerated = false;
     _this.values.formGenerated = false;
     _this.values.picGenerated = false;
-    _this.globals.isLoading = false;
+    _this.values.isLoading = false;
 
     _this.dialog.open (MessageComponent, {
       data: { title: "Error", message: "Failed to generate picture panel." }
@@ -1237,7 +1237,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   handlerError(_this, result): void
   {
     console.log (result);
-    _this.globals.isLoading = false;  
+    _this.values.isLoading = false;  
   }
 
   getChartFilterValues(id, handlerSuccess): void
@@ -1306,7 +1306,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   deleteSuccess(_this): void
   {
-    _this.globals.isLoading = false;
+    _this.values.isLoading = false;
   }
 
   searchChange(filterCtrl): void
@@ -2028,7 +2028,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.formGenerated = false;
     _this.values.picGenerated = false;
     _this.temp = null;
-    _this.globals.isLoading = false;
+    _this.values.isLoading = false;
   }
 
   savePanel(): void
@@ -2111,7 +2111,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         else
           panel = _this.getPanelInfo ();
 
-        _this.globals.isLoading = true;
+        _this.values.isLoading = true;
         _this.service.updateDashboardPanel (_this, panel, _this.handlerUpdateSuccess, _this.handlerError);
       });
   }
@@ -2136,14 +2136,6 @@ export class MsfDashboardPanelComponent implements OnInit {
   isPicturePanel(): boolean
   {
     return (this.values.currentChartType.flags & ChartFlags.PICTURE) ? true : false;
-  }
-
-  getButtonColor(infoVarNum): String
-  {
-    if (infoVarNum == null)
-      return "#343434";
-
-    return "primary";
   }
 
   checkNumVariables(): void
@@ -2325,14 +2317,14 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (!childPanels.length)
       return;
 
-    this.globals.isLoading = true;
+    this.values.isLoading = true;
     this.service.saveChildPanels (this, childPanels, this.values.id, drillDownIds, this.drillDownSettingsClear, this.drillDownSettingsClear);
   }
 
   // destroy child panel list after success or failure
   drillDownSettingsClear(_this): void
   {
-    _this.globals.isLoading = false;
+    _this.values.isLoading = false;
   }
 
   isFormColumnValid(): boolean

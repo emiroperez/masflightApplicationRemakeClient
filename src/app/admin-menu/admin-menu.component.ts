@@ -14,12 +14,12 @@ import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 export class ConfirmDeleteDialog {
 
-  constructor(private dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: {message: string, confirm: boolean}) {
+  constructor(public dialogRef: MatDialogRef<ConfirmDeleteDialog>, private dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: {message: string, confirm: boolean}) {
   }
 
   close() {
     this.data.confirm = false;
-    this.dialog.closeAll();
+    this.dialogRef.close ();
   }
 
   confirm() {

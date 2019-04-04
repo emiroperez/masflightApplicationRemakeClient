@@ -1,5 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+
 import { Globals } from '../globals/Globals';
 import { MenuService } from '../services/menu.service';
 import { DashboardMenu } from '../model/DashboardMenu';
@@ -33,7 +34,7 @@ export class MsfAddDashboardComponent {
         let dashboard = new DashboardMenu();
         dashboard.title = this.title;
         dashboard.applicationId = this.globals.currentApplication.id;
-        console.log(dashboard);
+        console.log (dashboard);
         this.globals.isLoading = true;
         this.service.addDashboard(this, dashboard, this.successHandler, this.errorHandler);
 
@@ -47,10 +48,12 @@ export class MsfAddDashboardComponent {
       _this.globals.currentOption = 'dashboard';
     }
 
-    errorHandler(_this,result){
-      console.log(result);
+    errorHandler(_this,result)
+    {
+      console.log (result);
       _this.globals.isLoading = false;
     }
+
     closeDialog(_this)
     {
       _this.globals.isLoading = false;

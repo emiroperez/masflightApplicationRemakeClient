@@ -406,11 +406,9 @@ export class MsfDashboardDrillDownComponent {
       && this.currentValue.variable == this.lastValue.variable
       && this.currentValue.valueColumn == this.lastValue.valueColumn
       && this.currentValue.function == this.lastValue.function
+      && (this.currentValue.currentChartType.flags & ChartFlags.XYCHART
+        && this.currentValue.xaxis == this.lastValue.xaxis)
       && !this.checkPaletteColors ())
-      return;
-
-    if (this.currentValue.currentChartType.flags & ChartFlags.XYCHART
-      && this.currentValue.xaxis == this.lastValue.xaxis)
       return;
 
     this.data.childPanelsConfigured[this.currentIndex] = true;
