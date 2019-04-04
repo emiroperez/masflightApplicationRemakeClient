@@ -64,7 +64,7 @@ export class MsfDashboardPanelValues {
 
     constructor(options: any[], chartName: String, id: number, width: any, height: any, currentOption?: any, chartColumnOptions? : any,
         variable?: any, xaxis?: any, valueColumn?: any, func?: any, chartType?: any, currentOptionCategories?: any, lastestResponse?: string,
-        paletteColors?: any)
+        paletteColors?: any, updateTimeInterval?: number)
     {
         this.options = options;
         this.chartName = chartName;
@@ -97,5 +97,11 @@ export class MsfDashboardPanelValues {
             this.currentOptionCategories = JSON.parse (currentOptionCategories);
         else
             this.currentOptionCategories = null;
+
+        if (updateTimeInterval)
+        {
+            this.updateTimeLeft = updateTimeInterval;
+            this.updateIntervalSwitch = true;
+        }
     }
 }

@@ -809,7 +809,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         chartColumnOptions: JSON.stringify (this.values.chartColumnOptions),
         chartType: this.chartTypes.indexOf (this.values.currentChartType),
         categoryOptions: JSON.stringify (this.values.currentOptionCategories),
-        function: 1
+        function: 1,
+        updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0)
       };
     }
     else if (this.values.currentChartType.flags & ChartFlags.INFO)
@@ -824,7 +825,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         values: this.values.chartColumnOptions.indexOf (this.values.infoVar3),
         function: 1,
         chartType: this.chartTypes.indexOf (this.values.currentChartType),
-        categoryOptions: JSON.stringify (this.values.currentOptionCategories)
+        categoryOptions: JSON.stringify (this.values.currentOptionCategories),
+        updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0)
       };
     }
     else
@@ -840,7 +842,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         function: this.functions.indexOf (this.values.function),
         chartType: this.chartTypes.indexOf (this.values.currentChartType),
         categoryOptions: JSON.stringify (this.values.currentOptionCategories),
-        paletteColors: JSON.stringify (this.values.paletteColors)
+        paletteColors: JSON.stringify (this.values.paletteColors),
+        updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0)
       };
     }
   }
@@ -2288,7 +2291,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         childPanelsConfigured: this.childPanelsConfigured,
         categoryOptions: JSON.stringify (this.values.currentOptionCategories),
         functions: this.functions,
-        chartTypes: this.chartTypes
+        chartTypes: this.chartTypes,
+        updateTimeInterval: 0
       }
     });
 
