@@ -6,7 +6,7 @@ import am4themes_dark from "@amcharts/amcharts4/themes/dark";
 import { CategoryArguments } from '../model/CategoryArguments';
 import { Globals } from '../globals/Globals';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
-import { ReplaySubject, Subject } from 'rxjs';
+import { ReplaySubject, Subject, timer } from 'rxjs';
 import { MatSelect, MatDialog } from '@angular/material';
 import { takeUntil } from 'rxjs/operators';
 
@@ -95,6 +95,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   childPanelValues: any[] = [];
   childPanelsConfigured: boolean[] = [];
+
+  updateTimeLeft: number = 60;
+  updateInterval: any;
 
   public dataFormFilterCtrl: FormControl = new FormControl ();
   public variableFilterCtrl: FormControl = new FormControl ();
@@ -715,6 +718,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       }
       else
         this.values.displayChart = true;
+
+      this.startUpdateInterval ();
     }
   }
 
@@ -804,7 +809,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         chartColumnOptions: JSON.stringify (this.values.chartColumnOptions),
         chartType: this.chartTypes.indexOf (this.values.currentChartType),
         categoryOptions: JSON.stringify (this.values.currentOptionCategories),
-        function: 1
+        function: 1,
+        updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0)
       };
     }
     else if (this.values.currentChartType.flags & ChartFlags.INFO)
@@ -819,7 +825,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         values: this.values.chartColumnOptions.indexOf (this.values.infoVar3),
         function: 1,
         chartType: this.chartTypes.indexOf (this.values.currentChartType),
-        categoryOptions: JSON.stringify (this.values.currentOptionCategories)
+        categoryOptions: JSON.stringify (this.values.currentOptionCategories),
+        updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0)
       };
     }
     else
@@ -835,7 +842,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         function: this.functions.indexOf (this.values.function),
         chartType: this.chartTypes.indexOf (this.values.currentChartType),
         categoryOptions: JSON.stringify (this.values.currentOptionCategories),
-        paletteColors: JSON.stringify (this.values.paletteColors)
+        paletteColors: JSON.stringify (this.values.paletteColors),
+        updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0)
       };
     }
   }
@@ -1042,6 +1050,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.infoGenerated = false;
     _this.values.formGenerated = false;
     _this.values.picGenerated = true;
+
+    _this.stopUpdateInterval ();
+    _this.startUpdateInterval ();
   }
 
   handlerFormSuccess(_this, data): void
@@ -1118,6 +1129,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.infoGenerated = false;
     _this.values.formGenerated = true;
     _this.values.picGenerated = false;
+
+    _this.stopUpdateInterval ();
+    _this.startUpdateInterval ();
   }
 
   handlerTextSuccess(_this, data): void
@@ -1139,6 +1153,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.formGenerated = false;
     _this.values.picGenerated = false;
     _this.values.isLoading = false;
+
+    _this.stopUpdateInterval ();
+    _this.startUpdateInterval ();
   }
 
   handlerChartSuccess(_this, data): void
@@ -1166,6 +1183,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.formGenerated = false;
     _this.values.picGenerated = false;
     _this.values.isLoading = false;
+
+    _this.stopUpdateInterval ();
+    _this.startUpdateInterval ();
   }
 
   loadChartFilterValues(component): void
@@ -1440,6 +1460,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.temp.infoVar2 = null;
       this.temp.infoVar3 = null;
     }
+
+    this.stopUpdateInterval ();
   }
 
   goToChartConfiguration(): void
@@ -1552,6 +1574,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     // re-initialize panel settings
     this.values.currentChartType = this.chartTypes.indexOf (this.values.currentChartType);
     this.initPanelSettings ();
+
+    this.startUpdateInterval ();
   }
 
   // check if the x axis should be enabled or not depending of the chart type
@@ -2267,7 +2291,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         childPanelsConfigured: this.childPanelsConfigured,
         categoryOptions: JSON.stringify (this.values.currentOptionCategories),
         functions: this.functions,
-        chartTypes: this.chartTypes
+        chartTypes: this.chartTypes,
+        updateTimeInterval: 0
       }
     });
 
@@ -2364,5 +2389,33 @@ export class MsfDashboardPanelComponent implements OnInit {
   getValueFormFontSize(column): number
   {
     return this.values.formVariables[column].valueFontSize.value;
+  }
+
+  startUpdateInterval(): void
+  {
+    if (!this.values.updateIntervalSwitch)
+      return; // don't start the interval if no update time is set
+
+    // set update time first before starting the interval
+    this.updateTimeLeft = this.values.updateTimeLeft;
+
+    this.updateInterval = setInterval (() =>
+    {
+      if (this.updateTimeLeft)
+        this.updateTimeLeft--;
+      else
+      {
+        this.updateTimeLeft = this.values.updateTimeLeft;
+        this.loadData ();
+      }
+    }, 60000); // update interval each minute
+  }
+
+  stopUpdateInterval(): void
+  {
+    if (!this.values.updateIntervalSwitch)
+      return;
+
+    clearInterval (this.updateInterval);
   }
 }

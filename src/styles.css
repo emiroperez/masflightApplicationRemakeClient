@@ -2318,6 +2318,14 @@ mat-tab-group {
   position: relative;
 }
 
+.msf-dashboard-panel-sub-container-space {
+  padding-left: 5px !important;
+}
+
+.msf-dashboard-panel-sub-container-checkbox {
+  flex-direction: row !important;
+}
+
 .msf-dashboard-panel-sub-container-row {
   display: flex;
   flex-direction: column;

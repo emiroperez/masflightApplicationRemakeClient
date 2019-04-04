@@ -17,7 +17,7 @@
         </mat-select>
       </mat-form-field>
     </div>
-    <div class="msf-dashboard-panel-sub-container-row">
+    <div class="msf-dashboard-panel-sub-container-row msf-dashboard-panel-sub-container-space">
       <mat-form-field class="msf-full-width">
         <mat-select placeholder="Chart Type" [(ngModel)]="values.currentChartType" (selectionChange)="checkChartType()">
           <mat-option *ngFor="let chartType of chartTypes" [value]="chartType">
@@ -25,6 +25,12 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+    </div>
+    <div class="msf-dashboard-panel-sub-container-row msf-dashboard-panel-sub-container-space msf-dashboard-panel-sub-container-checkbox">
+      <mat-form-field class="msf-full-width">
+        <input matInput autocomplete="off" type="number" placeholder="Update Interval (In Minutes)" [(ngModel)]="values.updateTimeLeft"/>
+      </mat-form-field>
+      <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="values.updateIntervalSwitch"></mat-checkbox>
     </div>
   </div>
   <ng-container *ngIf="!isInformationPanel() && !isSimpleFormPanel() && !isPicturePanel()">
