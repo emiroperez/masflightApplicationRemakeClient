@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Globals } from '../globals/Globals';
-import { MenuService } from '../services/menu.service';
+import { ApplicationService } from '../services/application.service';
 
 @Component({
   selector: 'app-msf-share-dashboard',
@@ -18,13 +18,42 @@ export class MsfShareDashboardComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<MsfShareDashboardComponent>,
     public globals: Globals,
-    private service: MenuService,
+    private service: ApplicationService,
     @Inject(MAT_DIALOG_DATA) public data: any)
   {
     this.dashboardItem = data.isPanel ? "Panel" : "Dashboard";
   }
 
-  ngOnInit() {
+  ngOnInit()
+  {
+    this.globals.popupLoading = true;
+
+    if (this.data.isPanel)
+      this.service.getSharedContentByPanel (this, this.data.dashboardContentId, this.successHandler, this.errorHandler);
+    else
+      this.service.getSharedContentByDashboard (this, this.data.dashboardContentId, this.successHandler, this.errorHandler);
+  }
+
+  successHandler(_this, data): void
+  {
+    let users = data;
+
+    for (let user of users)
+    {
+      _this.users.push ({
+        id: user.id,
+        name: user.name,
+        email: user.email
+      });
+    }
+
+    _this.globals.popupLoading = false;
+  }
+
+  errorHandler(_this): void
+  {
+    _this.globals.popupLoading = false;
+    // _this.dialogRef.close ();
   }
 
   closeDialog(): void
@@ -34,24 +63,88 @@ export class MsfShareDashboardComponent implements OnInit {
 
   addUser(): void
   {
-    this.users.push ({
-      name: this.userName
+    for (let user of this.users)
+    {
+      if (user.email === this.userName)
+      {
+        // already shared with this user
+        this.userName = "";
+        return;
+      }
+    }
+
+    this.globals.popupLoading = true;
+    this.service.getUserByEmail (this, this.userName, this.foundUser, this.addError);
+    this.userName = "";
+  }
+
+  foundUser(_this, data): void
+  {
+    let shareInfo;
+
+    // the specified user name must not be as the user
+    if (data.name === _this.globals.currentUser)
+    {
+      // TODO: Show dialog
+      _this.globals.popupLoading = false;
+      return;
+    }
+
+    _this.users.push ({
+      id: data.id,
+      name: data.name,
+      email: data.email
     });
 
-    this.userName = "";
+    shareInfo = {
+      userId: data.id,
+      dashboardContentId: _this.data.dashboardContentId,
+      isPanel: _this.data.isPanel
+    };
+
+    _this.service.addSharedContent (_this, shareInfo, _this.addSuccess, _this.addError);
+  }
+
+  addSuccess(_this): void
+  {
+    _this.globals.popupLoading = false;
+  }
+
+  addError(_this): void
+  {
+    // TODO: Display error dialog
+    _this.globals.popupLoading = false;
   }
 
   removeUser(): void
   {
-    for (let i = 0; i < this.users.length; i++)
+    let shareInfo = {
+      userId: this.selectedUser.id,
+      isPanel: this.data.isPanel
+    };
+
+    this.globals.popupLoading = true;
+    this.service.deleteSharedContent (this, shareInfo, this.removeSuccess, this.removeError);
+  }
+
+  removeSuccess(_this): void
+  {
+    for (let i = 0; i < _this.users.length; i++)
     {
-      if (this.selectedUser == this.users[i])
+      if (_this.selectedUser == _this.users[i])
       {
-        this.users.splice (i, 1);
+        _this.users.splice (i, 1);
         break;
       }
     }
 
-    this.selectedUser = null;
+    _this.selectedUser = null;
+    _this.globals.popupLoading = false;
+  }
+
+  removeError(_this): void
+  {
+    // TODO: Display error dialog
+    _this.globals.popupLoading = false;
   }
 }

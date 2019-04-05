@@ -342,7 +342,7 @@ toggle(){
     });
   }
 
-  deleteSucess(_this): void
+  deleteSuccess(_this): void
   {
     _this.temporalSelectOption (_this);
   }
@@ -359,7 +359,8 @@ toggle(){
       width: '400px',
       panelClass: 'msf-dashboard-child-panel-dialog',
       data: {
-        isPanel: false
+        isPanel: false,
+        dashboardContentId: this.globals.currentDashboardMenu.id
       }
     });
   }
@@ -370,7 +371,7 @@ toggle(){
       function (_this)
       {
         _this.globals.isLoading = true;
-        _this.service.deleteDashboard (_this, _this.globals.currentDashboardMenu.id, _this.deleteSucess,
+        _this.service.deleteDashboard (_this, _this.globals.currentDashboardMenu.id, _this.deleteSuccess,
           _this.deleteError);
       }
     );

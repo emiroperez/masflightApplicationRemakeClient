@@ -9,7 +9,7 @@
   </div>
   Share {{dashboardItem}}
 </div>
-<div class="msf-dashboard-panel-container" id="msf-dashboard-drill-down-container">
+<div class="msf-dashboard-panel-container" id="msf-dashboard-drill-down-container" *ngIf="!globals.popupLoading">
   <div class="msf-dashboard-panel-sub-container-column">
     <mat-form-field class="msf-full-width" id="msf-dashboard-drill-down-container-column">
       <input matInput autocomplete="off" type="text" placeholder="User Name" [(ngModel)]="userName"/>
@@ -19,18 +19,18 @@
     </button>
   </div>
 </div>
-<div class="msf-dashboard-panel-container" id="msf-dashboard-drill-down-container">
+<div class="msf-dashboard-panel-container" id="msf-dashboard-drill-down-container" *ngIf="!globals.popupLoading">
   <div class="msf-dashboard-panel-sub-container-column" id="msf-share-dashboard-sub-container-column">
     <mat-icon class="msf-share-dashboard-icon" aria-label="Users List">person</mat-icon>
     <span class="msf-dashboard-addmenu-item-text">Users List</span>
   </div>
 </div>
-<div class="msf-dashboard-panel-container" id="msf-dashboard-drill-down-container">
+<div class="msf-dashboard-panel-container" id="msf-dashboard-drill-down-container" *ngIf="!globals.popupLoading">
   <div class="msf-dashboard-panel-sub-container-column">
     <div class="msf-dashboard-panel-sub-container-column" id="msf-share-dashboard-container" *ngIf="users.length">
       <mat-radio-group [(ngModel)]="selectedUser" style="flex-direction: column; display: flex">
         <mat-radio-button style="margin: 10px;" class="cancels-checkbox" *ngFor="let user of users" [value]="user">
-          {{user.name}}
+          {{user.email}} ({{user.name}})
         </mat-radio-button>
       </mat-radio-group>
     </div>
@@ -41,7 +41,7 @@
     </div>
   </div>
 </div>
-<div class="msf-dashboard-control-variables-button" id="msf-dashboard-drill-down-container">
+<div class="msf-dashboard-control-variables-button" id="msf-dashboard-drill-down-container" *ngIf="!globals.popupLoading">
   <button [disabled]="!selectedUser" mat-flat-button [ngClass]="selectedUser ? 'flat-button' : 'flat-button-disabled'" (click)="removeUser()">Remove User</button>
   &nbsp;&nbsp;
   <button mat-flat-button class="flat-button" (click)="closeDialog()">OK</button>
