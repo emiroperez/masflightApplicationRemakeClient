@@ -77,9 +77,14 @@ export class MenuService {
   }
 
   createAuthorizationHeader() {
+    let token = localStorage.getItem('token');
+
+    if (!token)
+      token = "noUser";
+
     httpOptions.headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     // httpOptions.headers = httpOptions.headers.append(this.SECURITY_HEADER, localStorage.getItem(this.TOKEN_STORAGE_KEY));
-    httpOptions.headers = httpOptions.headers.append('Authorization', localStorage.getItem('token'));
+    httpOptions.headers = httpOptions.headers.append('Authorization', token);
   }
 
   get = function (_this,url,successHandler, errorHandler){

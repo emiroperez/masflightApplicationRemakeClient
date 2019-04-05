@@ -80,7 +80,6 @@ export class ApplicationComponent implements OnInit {
   }
 
   getDashboardsUser(){
-    this.globals.isLoading = true;
     this.service.getDashboardsByUser(this,this.handlerDashboard, this.errorHandler);
   }
 
@@ -94,7 +93,6 @@ export class ApplicationComponent implements OnInit {
     _this.globals.isLoading = false;
   }
   getAdvanceFeatures(){
-    this.globals.isLoading = true;
     this.service.getAdvanceFeatures(this,this.handlerSuccessAF,this.handlerErrorAF);
 
     }
@@ -118,6 +116,7 @@ export class ApplicationComponent implements OnInit {
 
 
   getMenu(){
+    this.globals.isLoading = true;
     this.service.getMenu(this,this.handlerSuccess,this.handlerError);
   }
 
@@ -128,13 +127,11 @@ export class ApplicationComponent implements OnInit {
 
   handlerError(_this,result){
     console.log(result);
-    _this.globals.isLoading = false;
     _this.getAdvanceFeatures();
   }
 
 
   temporalSelectOption(_this){
-    _this.globals.isLoading = true;
     _this.menu.categories.forEach(category => {
       category.options.forEach(option => {
         if(option.id==166 && this.globals.currentApplication.id==3){
@@ -144,7 +141,6 @@ export class ApplicationComponent implements OnInit {
           _this.globals.initDataSource();
           _this.globals.dataAvailabilityInit();
           _this.globals.status = true;
-          _this.globals.isLoading = false;
         }else if(option.id==14 && this.globals.currentApplication.id==4){
           _this.globals.clearVariables();
           this.globals.currentMenuCategory = category;
@@ -152,7 +148,6 @@ export class ApplicationComponent implements OnInit {
           _this.globals.initDataSource();
           _this.globals.dataAvailabilityInit();
           _this.globals.status = true;
-          _this.globals.isLoading = false;
         }
       });
     });
