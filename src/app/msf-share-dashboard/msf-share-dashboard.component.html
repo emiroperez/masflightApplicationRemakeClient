@@ -10,4 +10,41 @@
   Share Dashboard
 </div>
 <div class="msf-dashboard-panel-container" id="msf-dashboard-drill-down-container">
+  <div class="msf-dashboard-panel-sub-container-column">
+    <mat-form-field class="msf-full-width" id="msf-dashboard-drill-down-container-column">
+      <input matInput autocomplete="off" type="text" placeholder="User Name"/>
+    </mat-form-field>
+    <button mat-icon-button class="func-button">
+      <mat-icon class="msf-dashboard-chart-icon" aria-label="Add User" style="margin-left: 6px">add</mat-icon>
+    </button>
+  </div>
+</div>
+<div class="msf-dashboard-panel-container" id="msf-dashboard-drill-down-container">
+  <div class="msf-dashboard-panel-sub-container-column" id="msf-share-dashboard-sub-container-column">
+    <mat-icon class="msf-share-dashboard-icon" aria-label="Users List">person</mat-icon>
+    <span class="msf-dashboard-addmenu-item-text">Users List</span>
+  </div>
+</div>
+<div class="msf-dashboard-panel-container" id="msf-dashboard-drill-down-container">
+  <div class="msf-dashboard-panel-sub-container-column">
+    <!--
+    <div class="msf-dashboard-panel-sub-container-column" id="msf-share-dashboard-container">
+      <mat-radio-group [(ngModel)]="argument" style="flex-direction: column; display: flex">
+        <mat-radio-button style="margin: 10px;" class="cancels-checkbox" *ngFor="let radio of [1, 2, 3, 4, 5, 6, 7, 8]; let v = index" [value]="v">
+          {{radio}}
+        </mat-radio-button>
+      </mat-radio-group>
+    </div>
+    -->
+    <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-form-container-column-empty" style="height: 200px">
+      <div class="msf-no-results">
+        You have not shared this dashboard with anyone
+      </div>
+    </div>
+  </div>
+</div>
+<div class="msf-dashboard-control-variables-button" id="msf-dashboard-drill-down-container">
+  <button mat-flat-button class="flat-button">Remove User</button>
+  &nbsp;&nbsp;
+  <button mat-flat-button class="flat-button" (click)="closeDialog()">OK</button>
 </div>

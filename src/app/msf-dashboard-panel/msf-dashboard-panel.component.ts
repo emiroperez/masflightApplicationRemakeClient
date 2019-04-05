@@ -44,8 +44,6 @@ export class MsfDashboardPanelComponent implements OnInit {
   chartForm: FormGroup;
   chart: any;
 
-  private timer: number;
-
   chartTypes:any[] = [
     { name: 'Bars', flags: ChartFlags.XYCHART, createSeries: this.createVertColumnSeries },
     { name: 'Horizontal Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED, createSeries: this.createHorizColumnSeries },
@@ -976,7 +974,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this._onDestroy.next ();
     this._onDestroy.complete ();
 
-    clearInterval (this.timer);
+    clearInterval (this.updateInterval);
 
     this.destroyChart ();
   }
@@ -1461,6 +1459,9 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.temp.infoVar3 = null;
     }
 
+    this.temp.updateIntervalSwitch = this.values.updateIntervalSwitch;
+    this.temp.updateTimeLeft = this.values.updateTimeLeft;
+
     this.stopUpdateInterval ();
   }
 
@@ -1570,6 +1571,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
 
     this.values.formVariables = JSON.parse (JSON.stringify (this.temp.formVariables));
+
+    this.values.updateIntervalSwitch = this.temp.updateIntervalSwitch;
+    this.values.updateTimeLeft = this.temp.updateTimeLeft;
 
     // re-initialize panel settings
     this.values.currentChartType = this.chartTypes.indexOf (this.values.currentChartType);
@@ -2403,7 +2407,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       if (this.updateTimeLeft)
         this.updateTimeLeft--;
-      else
+
+      if (!this.updateTimeLeft)
       {
         this.updateTimeLeft = this.values.updateTimeLeft;
         this.loadData ();

@@ -2185,6 +2185,9 @@ mat-tab-group {
   padding-top: initial;
   font-size: 12px;
 }
+.msf-dashboard-panel-container .msf-dashboard-panel-sub-container-column .msf-dashboard-addmenu-item-text {
+  font-size: 12px;
+}
 .msf-dashboard-panel-container .msf-dashboard-panel-sub-container-column .msf-dashboard-addmenu-icon-item {
   align-items: center;
   padding-bottom: 5px;
@@ -2680,6 +2683,33 @@ mat-tab-group {
 
 #msf-dashboard-panel-form-sub-container {
   margin-top: -10px;
+}
+
+#msf-share-dashboard-sub-container-column {
+  padding: 10px 0;
+}
+
+.msf-share-dashboard-icon {
+  vertical-align: middle;
+  margin-top: -5px;
+  padding-right: 5px;
+  font-size: 22px;
+}
+
+#msf-share-dashboard-container {
+  height: 100%;
+  align-items: center;
+  margin-bottom: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #595959;
+  background-color: #333333;
+  padding: 10px;
+  width: inherit;
+  flex-direction: column;
+  align-items: baseline;
+  max-height: 200px;
+  overflow-y: auto;
 }
 
 #msf-dashboard-panel-form-container-column {

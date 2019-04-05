@@ -79,22 +79,21 @@ export class WelcomeComponent implements OnInit {
   };
 
   ngOnInit() {
-    this.globals.isLoading = true;
     this.getUserLoggedIn();
-    this.getApplications();
   }
   getUserLoggedIn(){
+    this.globals.isLoading = true;
     this.menuService.getUserLoggedin(this, this.handleLogin, this.errorLogin);
   }
 
   handleLogin(_this,data){
     _this.globals.currentUser = data.name;
     _this.userName = _this.globals.currentUser;
-    _this.globals.isLoading = false;
+    _this.getApplications();
   }
   errorLogin(_this,result){
     console.log(result);
-     _this.globals.isLoading = false;
+    _this.getApplications();
 
   }
   ngAfterViewInit() {
@@ -113,10 +112,7 @@ export class WelcomeComponent implements OnInit {
     const indexColumn = _this.options2.findIndex(column => column.id === 2);
     _this.options2.splice(indexColumn,1);
     //---------------------------------------------------------------------
-    setTimeout(() => {
-      _this.globals.isLoading = false;
-  }, 3000);
-
+    _this.globals.isLoading = false;
   }
 
   handlerError(_this,result){
