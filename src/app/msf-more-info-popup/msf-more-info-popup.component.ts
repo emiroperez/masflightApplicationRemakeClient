@@ -29,6 +29,7 @@ export class MsfMoreInfoPopupComponent{
   xaxis = "category";
   valueColumn = "total";
   variable = "language";
+    
   chart: any;
   private _onDestroy = new Subject<void> ();
   functions:any[] = [
@@ -274,4 +275,16 @@ export class MsfMoreInfoPopupComponent{
         this.loadChartData(this.handlerChartSuccess,this.handlerChartSuccess)
       }
     }
-}
+    
+    getFormatCell(value:any){
+      var aux = String(value);
+      if(value==undefined){
+        return "";
+      }
+      aux = aux.replace("%","");
+      aux = aux.replace("$","");
+      aux = aux.replace("ï¿½","0");
+      return aux;
+    }
+
+  }

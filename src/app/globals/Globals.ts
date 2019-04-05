@@ -23,7 +23,7 @@ export class Globals {
   displayedColumns;
   subDisplayedColumns;
   metadata;
-  subMetadata;
+  subDataSource : any
   totalRecord = 0;
   dataSource : boolean = false;
   startTimestamp = null;
@@ -65,6 +65,7 @@ export class Globals {
   popupMainElement: any;
   popupResponse: any;
   iconBefore: any;
+  subDisplayedColumnNames: string[] = []; 
    initDataSource(){
     if(this.currentMenuCategory!= null){
     if(this.currentMenuCategory.welcome!= null){
