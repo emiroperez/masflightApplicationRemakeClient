@@ -136,7 +136,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       columnCtrl: new FormControl ({ value: '', disabled: true }),
       fontSizeCtrl: new FormControl ({ value: '', disabled: true }),
       valueFontSizeCtrl: new FormControl ({ value: '', disabled: true }),
-      valueOrientationCtrl: new FormControl ({ value: '', disabled: true })
+      valueOrientationCtrl: new FormControl ({ value: '', disabled: true }),
+      intervalCtrl: new FormControl ({ value: 5, disabled: true })
     });
   }
 
@@ -2046,6 +2047,11 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.variableCtrlBtnEnabled = true;
 
     this.checkChartType ();
+
+    if (this.values.updateTimeLeft != null)
+      this.chartForm.get ('intervalCtrl').setValue (this.values.updateTimeLeft);
+
+    this.toggleIntervalInput ();
   }
 
   handlerUpdateSuccess(_this): void
@@ -2435,5 +2441,15 @@ export class MsfDashboardPanelComponent implements OnInit {
         isPanel: true
       }
     });
+  }
+
+  toggleIntervalInput(): void
+  {
+    // this must be inverted since this is called before changing updateIntervalSwitch
+    // value
+    if (this.values.updateIntervalSwitch)
+      this.chartForm.get ('intervalCtrl').enable ();
+    else
+      this.chartForm.get ('intervalCtrl').disable ();
   }
 }
