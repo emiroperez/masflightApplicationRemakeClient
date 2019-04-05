@@ -2708,7 +2708,7 @@ mat-tab-group {
   width: inherit;
   flex-direction: column;
   align-items: baseline;
-  max-height: 200px;
+  height: 200px;
   overflow-y: auto;
 }
 

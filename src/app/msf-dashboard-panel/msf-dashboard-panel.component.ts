@@ -18,8 +18,9 @@ import { MsfDashboardControlVariablesComponent } from '../msf-dashboard-control-
 import { MsfDashboardInfoFunctionsComponent } from '../msf-dashboard-info-functions/msf-dashboard-info-functions.component';
 import { MsfDashboardColorPickerComponent } from  '../msf-dashboard-color-picker/msf-dashboard-color-picker.component';
 import { MsfDashboardDrillDownComponent } from  '../msf-dashboard-drill-down/msf-dashboard-drill-down.component';
-import { ComponentType } from '../commons/ComponentType';
+import { MsfShareDashboardComponent } from '../msf-share-dashboard/msf-share-dashboard.component';
 import { MsfDashboardPanelValues } from '../msf-dashboard-panel/msf-dashboard-panelvalues';
+import { ComponentType } from '../commons/ComponentType';
 import { MessageComponent } from '../message/message.component';
 import { ChartFlags } from '../msf-dashboard-panel/msf-dashboard-chartflags';
 
@@ -2422,5 +2423,17 @@ export class MsfDashboardPanelComponent implements OnInit {
       return;
 
     clearInterval (this.updateInterval);
+  }
+
+  sharePanel(): void
+  {
+    this.dialog.open (MsfShareDashboardComponent, {
+      height: '430px',
+      width: '400px',
+      panelClass: 'msf-dashboard-child-panel-dialog',
+      data: {
+        isPanel: true
+      }
+    });
   }
 }

@@ -359,7 +359,7 @@ toggle(){
       width: '400px',
       panelClass: 'msf-dashboard-child-panel-dialog',
       data: {
-        currentDashboardMenu: this.globals.currentDashboardMenu
+        isPanel: false
       }
     });
   }

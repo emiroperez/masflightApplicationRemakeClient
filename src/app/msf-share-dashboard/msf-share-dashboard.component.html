@@ -7,14 +7,14 @@
   <div class="msf-dashboard-control-variables-close-button">
     <mat-icon class="msf-dashboard-close-icon" aria-label="close" (click)="closeDialog()">close</mat-icon>
   </div>
-  Share Dashboard
+  Share {{dashboardItem}}
 </div>
 <div class="msf-dashboard-panel-container" id="msf-dashboard-drill-down-container">
   <div class="msf-dashboard-panel-sub-container-column">
     <mat-form-field class="msf-full-width" id="msf-dashboard-drill-down-container-column">
-      <input matInput autocomplete="off" type="text" placeholder="User Name"/>
+      <input matInput autocomplete="off" type="text" placeholder="User Name" [(ngModel)]="userName"/>
     </mat-form-field>
-    <button mat-icon-button class="func-button">
+    <button [disabled]="!userName.length" mat-icon-button [ngClass]="!userName.length ? 'func-button-disabled' : 'func-button'" (click)="addUser()">
       <mat-icon class="msf-dashboard-chart-icon" aria-label="Add User" style="margin-left: 6px">add</mat-icon>
     </button>
   </div>
@@ -27,24 +27,22 @@
 </div>
 <div class="msf-dashboard-panel-container" id="msf-dashboard-drill-down-container">
   <div class="msf-dashboard-panel-sub-container-column">
-    <!--
-    <div class="msf-dashboard-panel-sub-container-column" id="msf-share-dashboard-container">
-      <mat-radio-group [(ngModel)]="argument" style="flex-direction: column; display: flex">
-        <mat-radio-button style="margin: 10px;" class="cancels-checkbox" *ngFor="let radio of [1, 2, 3, 4, 5, 6, 7, 8]; let v = index" [value]="v">
-          {{radio}}
+    <div class="msf-dashboard-panel-sub-container-column" id="msf-share-dashboard-container" *ngIf="users.length">
+      <mat-radio-group [(ngModel)]="selectedUser" style="flex-direction: column; display: flex">
+        <mat-radio-button style="margin: 10px;" class="cancels-checkbox" *ngFor="let user of users" [value]="user">
+          {{user.name}}
         </mat-radio-button>
       </mat-radio-group>
     </div>
-    -->
-    <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-form-container-column-empty" style="height: 200px">
+    <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-form-container-column-empty" *ngIf="!users.length" style="height: 200px">
       <div class="msf-no-results">
-        You have not shared this dashboard with anyone
+        You have not shared this {{dashboardItem.toLowerCase()}} with anyone
       </div>
     </div>
   </div>
 </div>
 <div class="msf-dashboard-control-variables-button" id="msf-dashboard-drill-down-container">
-  <button mat-flat-button class="flat-button">Remove User</button>
+  <button [disabled]="!selectedUser" mat-flat-button [ngClass]="selectedUser ? 'flat-button' : 'flat-button-disabled'" (click)="removeUser()">Remove User</button>
   &nbsp;&nbsp;
   <button mat-flat-button class="flat-button" (click)="closeDialog()">OK</button>
 </div>
