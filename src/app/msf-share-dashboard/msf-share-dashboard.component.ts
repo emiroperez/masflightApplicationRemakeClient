@@ -1,8 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 
 import { Globals } from '../globals/Globals';
 import { ApplicationService } from '../services/application.service';
+import { MessageComponent } from '../message/message.component';
 
 @Component({
   selector: 'app-msf-share-dashboard',
@@ -19,6 +20,7 @@ export class MsfShareDashboardComponent implements OnInit {
     public dialogRef: MatDialogRef<MsfShareDashboardComponent>,
     public globals: Globals,
     private service: ApplicationService,
+    public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any)
   {
     this.dashboardItem = data.isPanel ? "Panel" : "Dashboard";
@@ -53,7 +55,11 @@ export class MsfShareDashboardComponent implements OnInit {
   errorHandler(_this): void
   {
     _this.globals.popupLoading = false;
-    // _this.dialogRef.close ();
+    _this.dialogRef.close ();
+
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Error", message: "Failed to get the list of users." }
+    });
   }
 
   closeDialog(): void
@@ -68,6 +74,10 @@ export class MsfShareDashboardComponent implements OnInit {
       if (user.email === this.userName)
       {
         // already shared with this user
+        this.dialog.open (MessageComponent, {
+          data: { title: "Error", message: "You have already shared this " + this.dashboardItem.toLowerCase () + " with this user." }
+        });
+
         this.userName = "";
         return;
       }
@@ -82,10 +92,12 @@ export class MsfShareDashboardComponent implements OnInit {
   {
     let shareInfo;
 
-    // the specified user name must not be as the user
     if (data.name === _this.globals.currentUser)
     {
-      // TODO: Show dialog
+      _this.dialog.open (MessageComponent, {
+        data: { title: "Error", message: "The specified user to share this " + this.dashboardItem.toLowerCase () + " must not be the host." }
+      });
+
       _this.globals.popupLoading = false;
       return;
     }
@@ -99,7 +111,9 @@ export class MsfShareDashboardComponent implements OnInit {
     shareInfo = {
       userId: data.id,
       dashboardContentId: _this.data.dashboardContentId,
-      isPanel: _this.data.isPanel
+      isPanel: _this.data.isPanel,
+      name: _this.data.dashboardContentTitle,
+      applicationId: _this.globals.currentApplication.id
     };
 
     _this.service.addSharedContent (_this, shareInfo, _this.addSuccess, _this.addError);
@@ -112,13 +126,17 @@ export class MsfShareDashboardComponent implements OnInit {
 
   addError(_this): void
   {
-    // TODO: Display error dialog
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Error", message: "Failed to share with the new user." }
+    });
+
     _this.globals.popupLoading = false;
   }
 
   removeUser(): void
   {
     let shareInfo = {
+      dashboardContentId: this.data.dashboardContentId,
       userId: this.selectedUser.id,
       isPanel: this.data.isPanel
     };
@@ -144,7 +162,10 @@ export class MsfShareDashboardComponent implements OnInit {
 
   removeError(_this): void
   {
-    // TODO: Display error dialog
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Error", message: "Failed to remove user." }
+    });
+
     _this.globals.popupLoading = false;
   }
 }

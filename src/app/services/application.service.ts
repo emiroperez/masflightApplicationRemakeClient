@@ -376,12 +376,6 @@ export class ApplicationService {
     this.http.post (_this, url, null, handlerSuccess, handlerError);
   }
 
-  getSharedContentByUser(_this, handlerSuccess, handlerError)
-  {
-    let url = this.host + "/getSharedContent/byUser";
-    this.http.get (_this, url, handlerSuccess, handlerError, null);
-  }
-
   getSharedContentByDashboard(_this, dashboardMenuId, handlerSuccess, handlerError)
   {
     let url = this.host + "/getSharedContent/byDashboard?dashboardMenuId=" + dashboardMenuId;

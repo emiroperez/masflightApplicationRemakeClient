@@ -360,7 +360,8 @@ toggle(){
       panelClass: 'msf-dashboard-child-panel-dialog',
       data: {
         isPanel: false,
-        dashboardContentId: this.globals.currentDashboardMenu.id
+        dashboardContentId: this.globals.currentDashboardMenu.id,
+        dashboardContentTitle: this.globals.currentDashboardMenu.title
       }
     });
   }

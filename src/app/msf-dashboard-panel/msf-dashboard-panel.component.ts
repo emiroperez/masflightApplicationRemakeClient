@@ -2438,7 +2438,9 @@ export class MsfDashboardPanelComponent implements OnInit {
       width: '400px',
       panelClass: 'msf-dashboard-child-panel-dialog',
       data: {
-        isPanel: true
+        isPanel: true,
+        dashboardContentId: this.values.id,
+        dashboardContentTitle: this.values.chartName
       }
     });
   }

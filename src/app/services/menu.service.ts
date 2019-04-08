@@ -76,6 +76,12 @@ export class MenuService {
     this.post (_this, url, null, successHandler, errorHandler);
   }
 
+  getSharedContentByUser(_this, successHandler, errorHandler)
+  {
+    let url = _this.globals.baseUrl + "/secure/getSharedContent/byUser?appId=" + _this.globals.currentApplication.id;
+    this.get (_this, url, successHandler, errorHandler);
+  }
+
   createAuthorizationHeader() {
     let token = localStorage.getItem('token');
 
