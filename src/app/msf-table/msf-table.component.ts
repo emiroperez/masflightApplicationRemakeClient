@@ -396,17 +396,17 @@ export class MsfTableComponent implements OnInit {
   openSubQuery(drillDown : any,element: any){
     this.globals.popupMainElement = null;
     this.globals.popupResponse = null;
+    this.globals.subDataSource = null;
     this.goToPopup(drillDown);
     this.globals.currentDrillDown = drillDown;
     var rowNumber = this.dataSource.filteredData.indexOf(element)
     this.globals.popupLoading = true;
     var parameters = this.getSubOptionParameters(drillDown.drillDownParameter,rowNumber);
     this.service.getSubDataTableSource(this,drillDown.childrenOptionId,parameters,this.getPopupInfo,this.popupInfoError)
-   
-
   }
 
   popupInfoError(_this,data) {
+    _this.globals.popupLoading = false;
     console.log("ERROR")
   }
 
@@ -488,14 +488,13 @@ export class MsfTableComponent implements OnInit {
 
           if (element.argumentsId.name3)
           argName = element.argumentsId.name3;
-          
         }else{
           argName = element.columnName;
         }
         if(index==0){
-            urlPam+="?"+element.columnName+"="+this.dataSource.filteredData[rowNumber][element.columnName];
+            urlPam+="?" + argName + "=" + this.dataSource.filteredData[rowNumber][element.columnName];
         }else{
-            urlPam+="&"+element.columnName+"="+this.dataSource.filteredData[rowNumber][element.columnName];
+            urlPam+="&" + argName + "=" + this.dataSource.filteredData[rowNumber][element.columnName];
         }
         return urlPam;
     }
