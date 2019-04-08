@@ -26,11 +26,11 @@
         </mat-select>
       </mat-form-field>
     </div>
-    <div class="msf-dashboard-panel-sub-container-row msf-dashboard-panel-sub-container-space msf-dashboard-panel-sub-container-checkbox">
-      <mat-form-field class="msf-full-width">
-        <input matInput autocomplete="off" type="number" placeholder="Update Interval (In Minutes)" [(ngModel)]="values.updateTimeLeft"/>
+    <div class="msf-dashboard-panel-sub-container-row msf-dashboard-panel-sub-container-checkbox">
+      <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="values.updateIntervalSwitch" (ngModelChange)="toggleIntervalInput()"></mat-checkbox>
+      <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+        <input matInput formControlName="intervalCtrl" autocomplete="off" type="number" placeholder="Update Interval (In Minutes)" [(value)]="values.updateTimeLeft"/>
       </mat-form-field>
-      <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="values.updateIntervalSwitch"></mat-checkbox>
     </div>
   </div>
   <ng-container *ngIf="!isInformationPanel() && !isSimpleFormPanel() && !isPicturePanel()">
@@ -390,7 +390,7 @@
         <mat-icon aria-label="Edit Configuration">menu</mat-icon>
       </button>
       <!--
-      <button mat-mini-fab color="primary" style="margin-bottom: 7px">
+      <button mat-mini-fab color="primary" style="margin-bottom: 7px" (click)="sharePanel()">
         <mat-icon aria-label="Share Panel">share</mat-icon>
       </button>
       -->
@@ -406,7 +406,7 @@
         <mat-icon aria-label="Edit Configuration">menu</mat-icon>
       </button>
       <!--
-      <button mat-mini-fab color="primary" style="margin-bottom: 7px">
+      <button mat-mini-fab color="primary" style="margin-bottom: 7px" (click)="sharePanel()">
         <mat-icon aria-label="Share Panel">share</mat-icon>
       </button>
       -->
@@ -435,7 +435,7 @@
         <mat-icon aria-label="Edit Configuration">menu</mat-icon>
       </button>
       <!--
-      <button mat-mini-fab color="primary" style="margin-bottom: 7px">
+      <button mat-mini-fab color="primary" style="margin-bottom: 7px" (click)="sharePanel()">
         <mat-icon aria-label="Share Panel">share</mat-icon>
       </button>
       -->
@@ -458,7 +458,7 @@
         <mat-icon aria-label="Edit Configuration">menu</mat-icon>
       </button>
       <!--
-      <button mat-mini-fab color="primary" style="margin-bottom: 7px">
+      <button mat-mini-fab color="primary" style="margin-bottom: 7px" (click)="sharePanel()">
         <mat-icon aria-label="Share Panel">share</mat-icon>
       </button>
       -->

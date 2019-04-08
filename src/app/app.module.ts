@@ -173,6 +173,7 @@ import { MsfFlightDurationSegmentsComponent } from './msf-flight-duration-segmen
 import { MsfDashboardChartTypePipe } from './msf-dashboard-drill-down/msf-dashboard-chart-type-pipe';
 import { MsfColumnSelectorComponent } from './msf-column-selector/msf-column-selector.component';
 import { MsfShareDashboardComponent } from './msf-share-dashboard/msf-share-dashboard.component';
+import { MsfSharedDashboardItemsComponent } from './msf-shared-dashboard-items/msf-shared-dashboard-items.component';
 
 @NgModule({
   declarations: [
@@ -325,7 +326,8 @@ import { MsfShareDashboardComponent } from './msf-share-dashboard/msf-share-dash
     MsfFlightDurationSegmentsComponent,
     MsfDashboardChartTypePipe,
     MsfColumnSelectorComponent,
-    MsfShareDashboardComponent
+    MsfShareDashboardComponent,
+    MsfSharedDashboardItemsComponent
   ],
   imports: [
     BrowserModule,
@@ -396,7 +398,8 @@ import { MsfShareDashboardComponent } from './msf-share-dashboard/msf-share-dash
     MsfDashboardChildPanelComponent,
     MsfMoreInfoPopupComponent,
     MsfColumnSelectorComponent,
-    MsfShareDashboardComponent
+    MsfShareDashboardComponent,
+    MsfSharedDashboardItemsComponent
   ]
 })
 export class AppModule { }

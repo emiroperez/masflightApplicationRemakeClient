@@ -375,4 +375,40 @@ export class ApplicationService {
     let url = this.host + "/deleteChildPanels?parentPanelId=" + parentPanelId;
     this.http.post (_this, url, null, handlerSuccess, handlerError);
   }
+
+  getSharedContentByUser(_this, handlerSuccess, handlerError)
+  {
+    let url = this.host + "/getSharedContent/byUser";
+    this.http.get (_this, url, handlerSuccess, handlerError, null);
+  }
+
+  getSharedContentByDashboard(_this, dashboardMenuId, handlerSuccess, handlerError)
+  {
+    let url = this.host + "/getSharedContent/byDashboard?dashboardMenuId=" + dashboardMenuId;
+    this.http.get (_this, url, handlerSuccess, handlerError, null);
+  }
+
+  getSharedContentByPanel(_this, dashboadPanelId, handlerSuccess, handlerError)
+  {
+    let url = this.host + "/getSharedContent/byPanel?dashboadPanelId=" + dashboadPanelId;
+    this.http.get (_this, url, handlerSuccess, handlerError, null);
+  }
+
+  addSharedContent(_this, sharedContent, handlerSuccess, handlerError)
+  {
+    let url = this.host + "/addSharedContent";
+    this.http.post (_this, url, sharedContent, handlerSuccess, handlerError);
+  }
+
+  deleteSharedContent(_this, shareInfo, handlerSuccess, handlerError)
+  {
+    let url = this.host + "/deleteSharedContent";
+    this.http.post (_this, url, shareInfo, handlerSuccess, handlerError);
+  }
+
+  getUserByEmail(_this, email, handlerSuccess, handlerError)
+  {
+    let url = this.host + "/getUserByEmail?email=" + email;
+    this.http.get (_this, url, handlerSuccess, handlerError, null);
+  }
 }

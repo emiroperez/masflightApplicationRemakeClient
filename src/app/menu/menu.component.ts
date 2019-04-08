@@ -6,6 +6,7 @@ import { Globals } from '../globals/Globals';
 import { OptionWelcomeComponent } from '../option-welcome/option-welcome.component';
 import { DashboardMenu } from '../model/DashboardMenu';
 import { MsfAddDashboardComponent } from '../msf-add-dashboard/msf-add-dashboard.component';
+import { MsfSharedDashboardItemsComponent } from '../msf-shared-dashboard-items/msf-shared-dashboard-items.component';
 
 @Component({
   selector: 'app-menu',
@@ -58,8 +59,19 @@ export class MenuComponent implements OnInit {
         dashboards: this.dashboards
       }
     });
-
   }
+
+  checkSharedItems() {
+    this.dialog.open (MsfSharedDashboardItemsComponent, {
+      height: '340px',
+      width: '400px',
+      panelClass: 'msf-dashboard-child-panel-dialog',
+      data: {
+        dashboards: this.dashboards
+      }
+    });
+  }
+
   goToDashboard(dashboard): void
   {
     this.globals.currentDashboardMenu = dashboard;
