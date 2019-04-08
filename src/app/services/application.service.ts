@@ -382,9 +382,9 @@ export class ApplicationService {
     this.http.get (_this, url, handlerSuccess, handlerError, null);
   }
 
-  getSharedContentByPanel(_this, dashboadPanelId, handlerSuccess, handlerError)
+  getSharedContentByPanel(_this, dashboardPanelId, handlerSuccess, handlerError)
   {
-    let url = this.host + "/getSharedContent/byPanel?dashboadPanelId=" + dashboadPanelId;
+    let url = this.host + "/getSharedContent/byPanel?dashboardPanelId=" + dashboardPanelId;
     this.http.get (_this, url, handlerSuccess, handlerError, null);
   }
 
