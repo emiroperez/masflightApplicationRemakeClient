@@ -405,4 +405,10 @@ export class ApplicationService {
     let url = this.host + "/getUserByEmail?email=" + email;
     this.http.get (_this, url, handlerSuccess, handlerError, null);
   }
+
+  getUsersById(_this, userIds, handlerSuccess, handlerError)
+  {
+    let url = this.host + "/getUsersById";
+    this.http.post (_this, url, userIds, handlerSuccess, handlerError);
+  }
 }

@@ -1,9 +1,10 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 
 import { Globals } from '../globals/Globals';
 import { MenuService } from '../services/menu.service';
 import { ApplicationService } from '../services/application.service';
+import { MessageComponent } from '../message/message.component';
 
 @Component({
   selector: 'app-msf-shared-dashboard-items',
@@ -18,6 +19,7 @@ export class MsfSharedDashboardItemsComponent implements OnInit {
     public globals: Globals,
     private menuService: MenuService,
     private appService: ApplicationService,
+    public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any)
   {
   }
@@ -25,7 +27,7 @@ export class MsfSharedDashboardItemsComponent implements OnInit {
   ngOnInit()
   {
     this.globals.popupLoading = true;
-    this.menuService.getSharedContentByUser (this, this.successHandler, this.errorHandler);
+    this.menuService.getSharedContentByUser (this, this.contentSuccess, this.contentError);
   }
 
   closeDialog(): void
@@ -33,27 +35,56 @@ export class MsfSharedDashboardItemsComponent implements OnInit {
     this.dialogRef.close ();
   }
 
-  successHandler(_this, data): void
+  contentSuccess(_this, data): void
   {
+    let userIds = [];
     let items = data;
 
     for (let item of items)
     {
       _this.dashboardItems.push ({
         id: item.dashboardContentId,
-        name: item.name + " (" + (item.isPanel ? "Panel" : "Dashboard" + ")"),
+        name: item.name + " (" + (item.isPanel ? "Panel" : "Dashboard") + ", from ",
         isPanel: item.isPanel,
         userId: item.userId             // just to make things simpler
       });
+
+      // add user ids just to get the email
+      if (userIds.indexOf (item.userId) == -1)
+        userIds.push (item.userId);
+    }
+
+    _this.appService.getUsersById (_this, userIds, _this.contentUsersSuccess, _this.contentError);
+  }
+
+  contentUsersSuccess(_this, data): void
+  {
+    let users = data;
+
+    // add user name for each dashoard item
+    for (let item of _this.dashboardItems)
+    {
+      for (let user of users)
+      {
+        if (item.userId == user.id)
+        {
+          item.name += user.name + ")";
+          break;
+        }
+      }
     }
 
     _this.globals.popupLoading = false;
   }
 
-  errorHandler(_this): void
+  contentError(_this): void
   {
     _this.globals.popupLoading = false;
-    // _this.dialogRef.close ();
+    _this.dialogRef.close ();
+
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Error", message: "Failed to get the list of shared dashboard items." }
+    });
   }
 
   addItem(): void
@@ -90,6 +121,10 @@ export class MsfSharedDashboardItemsComponent implements OnInit {
 
   removeError(_this): void
   {
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Error", message: "Failed to remove dashboard item." }
+    });
+
     _this.globals.popupLoading = false;
   }
 }
