@@ -1,11 +1,12 @@
-import { OnInit, Component, Inject, AfterViewInit, ChangeDetectorRef, Renderer2, ViewEncapsulation } from '@angular/core';
+import { OnInit, Component, Inject, AfterViewInit, ChangeDetectorRef, Renderer2, ViewEncapsulation, ViewChild } from '@angular/core';
 import { ApiClient } from '../api/api-client';
 import { Globals } from '../globals/Globals';
 import { ApplicationService } from '../services/application.service';
-import { MatSnackBar, MatTableDataSource } from '@angular/material';
+import { MatSnackBar, MatTableDataSource, MatTable } from '@angular/material';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { MessageComponent } from '../message/message.component';
-import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import {CdkDragDrop, moveItemInArray, CdkDropList} from '@angular/cdk/drag-drop';
+//import  clonedeep from 'lodash.clonedeep';
 
 @Component({
   selector: 'confirm-delete-dialog',
@@ -35,7 +36,8 @@ export class ConfirmDeleteDialog {
 })
 
 export class EditOutputOptionsMetaDialog {
-
+  @ViewChild('table') table: MatTable<any>;
+  @ViewChild('list') list: CdkDropList;
   optionSelected : any;
   dataToSend : any [] = [];
   dataToDelete : any [] = [];
@@ -46,7 +48,25 @@ export class EditOutputOptionsMetaDialog {
 
 
     displayedColumns = ['columnLabel', 'columnName', 'columnType', 'columnFormat', 'grouping', 'unit'];
-    dataSource = new MatTableDataSource(this.data.outputs);
+    dataSource = this.data.outputs;
+
+
+    /* dropTable(event: CdkDragDrop<string[]>) {
+      console.log(`Moving item from ${event.previousIndex} to index ${event.currentIndex}`)
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      for (let i=0; i<event.container.data.length; i++){
+      console.log(`event.container ${event.container.data[i]}`);
+      }
+      this.dataSource.data = clonedeep(this.dataSource.data);
+    } */
+
+    dropTable(event: CdkDragDrop<any[]>) {
+      const prevIndex = this.dataSource.findIndex((d) => d === event.item.data);
+      moveItemInArray(this.dataSource, prevIndex, event.currentIndex);
+      this.table.renderRows();
+      console.log(this.dataSource)
+    }
+
 
     addOption() {
       this.data.outputs.push({
@@ -69,10 +89,17 @@ export class EditOutputOptionsMetaDialog {
     }
 
     sendData() {
+      this.saveOrder();
       this.dataToSend = this.data.outputs.concat(this.dataToDelete);
       this.dialogRef.close(this.dataToSend);
     }
 
+    saveOrder(){
+      for (let i=0; i< this.data.outputs.length;i++){
+        this.data.outputs[i].columnOrder = i;
+        console.log(this.data.outputs[i]);
+      }
+    }
 
     selectRow(row) {
       this.optionSelected = row;
@@ -461,6 +488,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
   handlerErrorSaveMeta(_this, data) {
     console.log(data);
+    _this.globals.isLoading = false;
   }
 
   getMenuData(): void {
@@ -525,7 +553,9 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   editOutputOptions() {
     this.getMeta();
   }
+  editDrillDown(){
 
+  }
   editCategoryArguments() {
     var duplicateObject = JSON.parse(JSON.stringify(this.categories));
     const dialogRef = this.dialog.open(EditCategoryArgumentDialog, {
