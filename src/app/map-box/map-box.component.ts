@@ -54,10 +54,12 @@ export class MapBoxComponent implements OnInit{
   }
 
   successHandler(_this,features){
-    _this.data = {
-      'type': 'FeatureCollection',
-      'features': features
-    } ;
+    if(this.globals.isLoading){
+      _this.data = {
+        'type': 'FeatureCollection',
+        'features': features
+      } ;
+    }
     _this.globals.isLoading = false;    
 	}
 
