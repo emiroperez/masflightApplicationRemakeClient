@@ -10,9 +10,7 @@
         <button mat-menu-item *ngFor="let dashboard of dashboards" (click)="goToDashboard(dashboard)">
               {{dashboard.title}}
           </button>
-        <!--
         <button mat-menu-item (click)="checkSharedItems()">Shared with me</button>
-        -->
         <button mat-menu-item (click)="addDashboard()">Add dashboard</button>
     </mat-menu>
 

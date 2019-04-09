@@ -33,7 +33,8 @@ export class MsfDashboardComponent implements OnInit {
   contextMenuItems: any;
   contextParentPanel: MsfDashboardPanelValues;
 
-  @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
+  @ViewChild(MatMenuTrigger)
+  contextMenu: MatMenuTrigger;
 
   heightValues:any[] = [
     { value: 1, name: 'Small' },
@@ -43,7 +44,7 @@ export class MsfDashboardComponent implements OnInit {
   ];
 
   @Input()
-  currentDashboardMenu: number;
+  currentDashboardMenu: any;
 
   // variables for panel resizing
   currentColumn: number;
@@ -81,9 +82,12 @@ export class MsfDashboardComponent implements OnInit {
       this.dashboardColumnsProperties.splice (0, this.dashboardColumnsProperties.length);
       this.dashboardColumnsReAppendCharts.splice (0, this.dashboardColumnsReAppendCharts.length);
 
-      this.globals.isLoading = true;
-      this.service.getDashboardPanels (this, this.currentDashboardMenu,
-        this.loadDashboardPanels, this.handlerError);
+      if (this.currentDashboardMenu != null)
+      {
+        this.globals.isLoading = true;
+        this.service.getDashboardPanels (this, this.currentDashboardMenu.id,
+          this.loadDashboardPanels, this.handlerError);
+      }
     }
   }
 
@@ -126,7 +130,7 @@ export class MsfDashboardComponent implements OnInit {
     }
 
     // get dashboard panels after getting the data forms
-    _this.service.getDashboardPanels (_this, _this.currentDashboardMenu,
+    _this.service.getDashboardPanels (_this, _this.currentDashboardMenu.id,
       _this.loadDashboardPanels, _this.handlerError);
   }
 
@@ -279,7 +283,7 @@ export class MsfDashboardComponent implements OnInit {
     // also remove the column if there are no panels left in the row
     if (!dashboardPanels.length)
     {
-      _this.service.deleteDashboardColumn (_this, _this.currentDashboardMenu,
+      _this.service.deleteDashboardColumn (_this, _this.currentDashboardMenu.id,
         _this.columnToUpdate, _this.deleteColumn, _this.handlerError);
     }
     else
@@ -309,7 +313,7 @@ export class MsfDashboardComponent implements OnInit {
       // set the properties for each panel before adding it into the database
       panelsToAdd.push (
       {
-        'dashboardMenuId' : this.currentDashboardMenu,
+        'dashboardMenuId' : this.currentDashboardMenu.id,
         'row' : i,
         'column' : column,
         'title' : "New Chart",
@@ -335,7 +339,7 @@ export class MsfDashboardComponent implements OnInit {
       // set the properties for each panel before adding it into the database
       panelsToAdd.push (
       {
-        'dashboardMenuId' : this.currentDashboardMenu,
+        'dashboardMenuId' : this.currentDashboardMenu.id,
         'row' : i,
         'column' : column,
         'title' : "New Chart",
