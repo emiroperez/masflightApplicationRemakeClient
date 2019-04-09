@@ -43,6 +43,6 @@
 </div>
 <div class="msf-dashboard-control-variables-button" id="msf-dashboard-drill-down-container" *ngIf="!globals.popupLoading">
   <button [disabled]="!selectedUser" mat-flat-button [ngClass]="selectedUser ? 'flat-button' : 'flat-button-disabled'" (click)="removeUser()">Remove User</button>
-  &nbsp;&nbsp;
+  <span class="button-separator"></span>
   <button mat-flat-button class="flat-button" (click)="closeDialog()">OK</button>
 </div>
