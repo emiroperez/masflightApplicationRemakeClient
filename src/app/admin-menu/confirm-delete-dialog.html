@@ -6,7 +6,7 @@
         </div>
     </div>
     <mat-dialog-actions style='text-align: right;'>
-        <button mat-button class="flat-button" (click)="confirm()" [mat-dialog-close]="data">Yes</button>
+        <button mat-button class="flat-button" (click)="confirm()" [mat-dialog-close]="data" cdkFocusInitial>Yes</button>
         <button mat-button class="flat-button" (click)="close()" [mat-dialog-close]="data">No</button>
     </mat-dialog-actions>
 </div>
