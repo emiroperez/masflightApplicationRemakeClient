@@ -8,13 +8,13 @@
   Which preference you want to choose to add the shared dashboard:
 </div>
 <div class="msf-dashboard-panel-sub-container-row" style="color: #fff; padding: 10px 0">
-  <mat-radio-group [(ngModel)]="selectedOption">
+  <mat-radio-group [(ngModel)]="isOwner">
     <mat-radio-button class="cancels-checkbox" [value]="false">Viewer</mat-radio-button>
     <mat-radio-button class="cancels-checkbox" [value]="true">Owner</mat-radio-button>
   </mat-radio-group>
 </div>
 <div class="msf-dashboard-control-variables-button">
-  <button mat-flat-button class="flat-button">OK</button>
+  <button mat-flat-button class="flat-button" (click)="addDashboard()">OK</button>
   <span class="button-separator"></span>
   <button mat-flat-button class="flat-button" (click)="closeDialog()">Cancel</button>
 </div>

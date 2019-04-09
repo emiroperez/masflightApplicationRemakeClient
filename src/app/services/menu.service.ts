@@ -82,6 +82,12 @@ export class MenuService {
     this.get (_this, url, successHandler, errorHandler);
   }
 
+  addSharedDashboard(_this, dashboardId, handlerSuccess, handlerError)
+  {
+    let url = _this.globals.baseUrl + "/secure/addSharedDashboard?dashboardId=" + dashboardId;
+    this.postSecure (_this, url, null, handlerSuccess, handlerError);
+  }
+
   createAuthorizationHeader() {
     let token = localStorage.getItem('token');
 

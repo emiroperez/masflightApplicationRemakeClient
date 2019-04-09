@@ -110,7 +110,8 @@ export class MsfSharedDashboardItemsComponent implements OnInit {
         width: '400px',
         panelClass: 'msf-dashboard-control-variables-dialog',
         data: {
-          dashboardId: this.selectedDashboardItem.id
+          dashboardId: this.selectedDashboardItem.id,
+          dashboards: this.data.dashboards
         }
       });
     }
