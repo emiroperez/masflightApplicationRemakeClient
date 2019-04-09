@@ -547,6 +547,14 @@ p {
   background-color: #343434 !important;
 }
 
+.flat-share-button-disabled {
+  background-color: #242424 !important;
+}
+
+.button-separator {
+  padding: 0 5px;
+}
+
 .func-button .mat-button-wrapper {
   color: white !important;
 }

@@ -174,6 +174,8 @@ import { MsfDashboardChartTypePipe } from './msf-dashboard-drill-down/msf-dashbo
 import { MsfColumnSelectorComponent } from './msf-column-selector/msf-column-selector.component';
 import { MsfShareDashboardComponent } from './msf-share-dashboard/msf-share-dashboard.component';
 import { MsfSharedDashboardItemsComponent } from './msf-shared-dashboard-items/msf-shared-dashboard-items.component';
+import { MsfAddSharedDashboardPanelComponent } from './msf-add-shared-dashboard-panel/msf-add-shared-dashboard-panel.component';
+import { MsfAddSharedDashboardComponent } from './msf-add-shared-dashboard/msf-add-shared-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -327,7 +329,9 @@ import { MsfSharedDashboardItemsComponent } from './msf-shared-dashboard-items/m
     MsfDashboardChartTypePipe,
     MsfColumnSelectorComponent,
     MsfShareDashboardComponent,
-    MsfSharedDashboardItemsComponent
+    MsfSharedDashboardItemsComponent,
+    MsfAddSharedDashboardPanelComponent,
+    MsfAddSharedDashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -399,7 +403,9 @@ import { MsfSharedDashboardItemsComponent } from './msf-shared-dashboard-items/m
     MsfMoreInfoPopupComponent,
     MsfColumnSelectorComponent,
     MsfShareDashboardComponent,
-    MsfSharedDashboardItemsComponent
+    MsfSharedDashboardItemsComponent,
+    MsfAddSharedDashboardPanelComponent,
+    MsfAddSharedDashboardComponent
   ]
 })
 export class AppModule { }

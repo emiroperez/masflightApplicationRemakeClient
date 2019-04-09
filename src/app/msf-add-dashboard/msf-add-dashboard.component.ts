@@ -1,9 +1,10 @@
 import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 
 import { Globals } from '../globals/Globals';
 import { MenuService } from '../services/menu.service';
 import { DashboardMenu } from '../model/DashboardMenu';
+import { MessageComponent } from '../message/message.component';
 
 @Component({
   selector: 'app-msf-add-dashboard',
@@ -16,6 +17,7 @@ export class MsfAddDashboardComponent {
   constructor(
     public dialogRef: MatDialogRef<MsfAddDashboardComponent>,
     public globals: Globals,
+    public dialog: MatDialog,
     private service: MenuService,
     @Inject(MAT_DIALOG_DATA) public data: any)
     {
@@ -50,6 +52,10 @@ export class MsfAddDashboardComponent {
 
     errorHandler(_this,result)
     {
+      _this.dialog.open (MessageComponent, {
+        data: { title: "Error", message: "Failed to add dashboard." }
+      });
+
       console.log (result);
       _this.globals.isLoading = false;
     }
