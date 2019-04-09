@@ -1,5 +1,5 @@
 <div (click)="disableContextMenu()" (contextmenu)="disableContextMenu()" (scroll)="disableContextMenu()" class="msf-dashboard-container" [style.height]="screenHeight">
-  <div class="msf-dashboard-title">{{globals.currentDashboardMenu.title}}</div>
+  <div class="msf-dashboard-title" *ngIf="currentDashboardMenu">{{currentDashboardMenu.title}}</div>
   <ng-container *ngIf="dashboardColumns.length">
     <div class="msf-dashboard-chartbox">
       <div class="msf-dashboard-chartbox-column" *ngFor="let dashboardColumn of dashboardColumns; let column = index" [attr.data-index]="column">
