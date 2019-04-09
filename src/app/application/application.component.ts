@@ -16,6 +16,8 @@ import { User } from '../model/User';
 import { DashboardMenu } from '../model/DashboardMenu';
 import { MsfEditDashboardComponent } from '../msf-edit-dashboard/msf-edit-dashboard.component';
 import { ApplicationService } from '../services/application.service';
+import { MsfColumnSelectorComponent } from '../msf-column-selector/msf-column-selector.component';
+import { MsfShareDashboardComponent } from '../msf-share-dashboard/msf-share-dashboard.component';
 
 
 @Component({
@@ -78,7 +80,6 @@ export class ApplicationComponent implements OnInit {
   }
 
   getDashboardsUser(){
-    this.globals.isLoading = true;
     this.service.getDashboardsByUser(this,this.handlerDashboard, this.errorHandler);
   }
 
@@ -92,7 +93,6 @@ export class ApplicationComponent implements OnInit {
     _this.globals.isLoading = false;
   }
   getAdvanceFeatures(){
-    this.globals.isLoading = true;
     this.service.getAdvanceFeatures(this,this.handlerSuccessAF,this.handlerErrorAF);
 
     }
@@ -116,6 +116,7 @@ export class ApplicationComponent implements OnInit {
 
 
   getMenu(){
+    this.globals.isLoading = true;
     this.service.getMenu(this,this.handlerSuccess,this.handlerError);
   }
 
@@ -126,13 +127,11 @@ export class ApplicationComponent implements OnInit {
 
   handlerError(_this,result){
     console.log(result);
-    _this.globals.isLoading = false;
     _this.getAdvanceFeatures();
   }
 
 
   temporalSelectOption(_this){
-    _this.globals.isLoading = true;
     _this.menu.categories.forEach(category => {
       category.options.forEach(option => {
         if(option.id==166 && this.globals.currentApplication.id==3){
@@ -142,7 +141,6 @@ export class ApplicationComponent implements OnInit {
           _this.globals.initDataSource();
           _this.globals.dataAvailabilityInit();
           _this.globals.status = true;
-          _this.globals.isLoading = false;
         }else if(option.id==14 && this.globals.currentApplication.id==4){
           _this.globals.clearVariables();
           this.globals.currentMenuCategory = category;
@@ -150,7 +148,6 @@ export class ApplicationComponent implements OnInit {
           _this.globals.initDataSource();
           _this.globals.dataAvailabilityInit();
           _this.globals.status = true;
-          _this.globals.isLoading = false;
         }
       });
     });
@@ -345,7 +342,7 @@ toggle(){
     });
   }
 
-  deleteSucess(_this): void
+  deleteSuccess(_this): void
   {
     _this.temporalSelectOption (_this);
   }
@@ -355,15 +352,39 @@ toggle(){
     _this.globals.isLoading = false;
   }
 
+  shareDashboard(): void
+  {
+    this.dialog.open (MsfShareDashboardComponent, {
+      height: '430px',
+      width: '400px',
+      panelClass: 'msf-dashboard-child-panel-dialog',
+      data: {
+        isPanel: false,
+        dashboardContentId: this.globals.currentDashboardMenu.id,
+        dashboardContentTitle: this.globals.currentDashboardMenu.title
+      }
+    });
+  }
+
   deleteDashboard(): void
   {
     this.appService.confirmationDialog (this, "Are you sure you want to delete this dashboard?",
       function (_this)
       {
         _this.globals.isLoading = true;
-        _this.service.deleteDashboard (_this, _this.globals.currentDashboardMenu.id, _this.deleteSucess,
+        _this.service.deleteDashboard (_this, _this.globals.currentDashboardMenu.id, _this.deleteSuccess,
           _this.deleteError);
       }
     );
+  }
+
+  columnSelector(){
+    this.dialog.open (MsfColumnSelectorComponent, {
+      width: "auto",
+      height: "auto",
+      maxHeight: "700px",
+      maxWidth: "700px",
+      panelClass: 'msf-column-selector-popup'
+    });
   }
 }

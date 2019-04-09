@@ -1,0 +1,34 @@
+<div [ngClass]="globals.popupLoading? 'tab-show' : 'tab-hide'" id="msf-dashboard-drill-down-loading" class="msf-dashboard-drill-down-loading">
+  <div class="msf-dashboard-control-variables-close-button">
+    <mat-icon class="msf-dashboard-close-icon" aria-label="close" (click)="closeDialog()">close</mat-icon>
+  </div>
+</div>
+<div class="msf-dashboard-control-variables-title" *ngIf="!globals.popupLoading">
+  <div class="msf-dashboard-control-variables-close-button">
+    <mat-icon class="msf-dashboard-close-icon" aria-label="close" (click)="closeDialog()">close</mat-icon>
+  </div>
+  Shared With Me
+</div>
+<div class="msf-dashboard-panel-container" id="msf-dashboard-drill-down-container" *ngIf="!globals.popupLoading">
+  <div class="msf-dashboard-panel-sub-container-column">
+    <div class="msf-dashboard-panel-sub-container-column" id="msf-share-dashboard-container" *ngIf="dashboardItems.length">
+      <mat-radio-group [(ngModel)]="selectedDashboardItem" style="flex-direction: column; display: flex">
+        <mat-radio-button style="margin: 10px;" class="cancels-checkbox" *ngFor="let item of dashboardItems" [value]="item">
+          {{item.name}}
+        </mat-radio-button>
+      </mat-radio-group>
+    </div>
+    <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-form-container-column-empty" *ngIf="!dashboardItems.length" style="height: 200px">
+      <div class="msf-no-results">
+        You don't have any dashboard items shared with you
+      </div>
+    </div>
+  </div>
+</div>
+<div class="msf-dashboard-control-variables-button" id="msf-dashboard-drill-down-container" *ngIf="!globals.popupLoading">
+  <button [disabled]="!selectedDashboardItem" mat-flat-button [ngClass]="selectedDashboardItem ? 'flat-button' : 'flat-button-disabled'" (click)="addItem()">Add Item</button>
+  &nbsp;&nbsp;
+  <button [disabled]="!selectedDashboardItem" mat-flat-button [ngClass]="selectedDashboardItem ? 'flat-button' : 'flat-button-disabled'" (click)="removeItem()">Remove Item</button>
+  &nbsp;&nbsp;
+  <button mat-flat-button class="flat-button" (click)="closeDialog()">OK</button>
+</div>

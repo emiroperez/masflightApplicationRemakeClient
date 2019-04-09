@@ -1,4 +1,4 @@
-<div class="msf-dashboard-panel-container" [style.height.px]="panelHeight" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm">
+<div class="msf-dashboard-panel-container" [style.height.px]="panelHeight" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic">
   <div class="msf-dashboard-panel-sub-container-column">
     <div class="msf-dashboard-panel-sub-container-row">
       <mat-form-field class="msf-width-80">
@@ -17,13 +17,19 @@
         </mat-select>
       </mat-form-field>
     </div>
-    <div class="msf-dashboard-panel-sub-container-row">
+    <div class="msf-dashboard-panel-sub-container-row msf-dashboard-panel-sub-container-space">
       <mat-form-field class="msf-full-width">
         <mat-select placeholder="Chart Type" [(ngModel)]="values.currentChartType" (selectionChange)="checkChartType()">
           <mat-option *ngFor="let chartType of chartTypes" [value]="chartType">
             {{chartType.name}}
           </mat-option>
         </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="msf-dashboard-panel-sub-container-row msf-dashboard-panel-sub-container-checkbox">
+      <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="values.updateIntervalSwitch" (ngModelChange)="toggleIntervalInput()"></mat-checkbox>
+      <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+        <input matInput formControlName="intervalCtrl" autocomplete="off" type="number" placeholder="Update Interval (In Minutes)" [(value)]="values.updateTimeLeft"/>
       </mat-form-field>
     </div>
   </div>
@@ -96,7 +102,7 @@
             </button>
           </div>
           <div class="msf-dashboard-panel-control-variable-button">
-            <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated" mat-mini-fab (click)="goToChart()" color="primary">
+            <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated" mat-mini-fab (click)="goToChart()" color="primary">
               <mat-icon aria-label="Go To Chart">bar_chart</mat-icon>
             </button>
           </div>
@@ -105,14 +111,11 @@
               <mat-icon aria-label="Color Picker">palette</mat-icon>
             </button>
           </div>
-          <!-- Drill Down Button Under Construction -->
-          <!--
           <div class="msf-dashboard-panel-control-variable-button">
-            <button [disabled]="!values.currentOption.drillDownOptions.length" mat-mini-fab (click)="goToDrillDownSettings()" color="primary">
+            <button [disabled]="values.currentOption == null || !values.currentOption.drillDownOptions.length" mat-mini-fab (click)="goToDrillDownSettings()" color="primary">
               <mat-icon aria-label="Drill Down">subtitles</mat-icon>
             </button>
           </div>
-          -->
           <div class="msf-dashboard-panel-control-variable-button">
             <button mat-mini-fab (click)="savePanel()" color="primary">
               <mat-icon aria-label="Save Changes">save</mat-icon>
@@ -207,7 +210,7 @@
             </button>
           </div>
           <div class="msf-dashboard-panel-control-variable-button">
-            <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated" mat-mini-fab (click)="goToChart()" color="primary">
+            <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated" mat-mini-fab (click)="goToChart()" color="primary">
               <mat-icon aria-label="Go To Information">bar_chart</mat-icon>
             </button>
           </div>
@@ -239,9 +242,27 @@
           </div>
           <div class="msf-dashboard-chart-op-container">
             <mat-form-field [formGroup]="chartForm" class="msf-full-width">
-              <mat-select formControlName="fontSizeCtrl" placeholder="Font Size">
+              <mat-select formControlName="fontSizeCtrl" placeholder="Title Font Size">
                 <mat-option *ngFor="let fontSize of fontSizes" [value]="fontSize">
                   {{fontSize.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="msf-dashboard-chart-op-container">
+            <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+              <mat-select formControlName="valueFontSizeCtrl" placeholder="Value Font Size">
+                <mat-option *ngFor="let fontSize of fontSizes" [value]="fontSize">
+                  {{fontSize.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="msf-dashboard-chart-op-container">
+            <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+              <mat-select formControlName="valueOrientationCtrl" placeholder="Value Orientation">
+                <mat-option *ngFor="let orientation of orientations" [value]="orientation">
+                  {{orientation.name}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
@@ -254,7 +275,7 @@
         </div>
       </div>
     </div>
-    <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-form-container-column" [ngStyle]="{'overflow-y': values.formVariables.length > 2 ? 'scroll' : 'hidden'}">
+    <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-form-container-column" *ngIf="values.formVariables.length" [ngStyle]="{'overflow-y': values.formVariables.length > 2 ? 'scroll' : 'hidden'}">
       <div class="msf-dashboard-panel-sub-container-row" id="msf-dashboard-panel-form-container-row" *ngFor="let formVariable of values.formVariables; let column = index">
         <div class="msf-dashboard-chart-op-container" id="msf-dashboard-panel-form-op-container">
           <mat-form-field class="msf-full-width">
@@ -268,9 +289,27 @@
         </div>
         <div class="msf-dashboard-chart-op-container" id="msf-dashboard-panel-form-op-container">
           <mat-form-field class="msf-full-width">
-            <mat-select [(value)]="formVariable.fontSize" placeholder="Font Size">
+            <mat-select [(value)]="formVariable.fontSize" placeholder="Title Font Size">
               <mat-option *ngFor="let fontSize of fontSizes" [value]="fontSize">
                 {{fontSize.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="msf-dashboard-chart-op-container" id="msf-dashboard-panel-form-op-container">
+          <mat-form-field class="msf-full-width">
+            <mat-select [(value)]="formVariable.valueFontSize" placeholder="Value Font Size">
+              <mat-option *ngFor="let fontSize of fontSizes" [value]="fontSize">
+                {{fontSize.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="msf-dashboard-chart-op-container" id="msf-dashboard-panel-form-op-container">
+          <mat-form-field class="msf-full-width">
+            <mat-select [(value)]="formVariable.valueOrientation" placeholder="Value Orientation">
+              <mat-option *ngFor="let orientation of orientations" [value]="orientation">
+                {{orientation.name}}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -280,6 +319,11 @@
             <mat-icon class="msf-dashboard-chart-icon" aria-label="Delete Column">delete</mat-icon>
           </button>
         </div>
+      </div>
+    </div>
+    <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-form-container-column-empty" *ngIf="!values.formVariables.length">
+      <div class="msf-no-results">
+        The form doesn't contain any columns
       </div>
     </div>
     <div class="msf-dashboard-panel-sub-container-column">
@@ -292,7 +336,7 @@
             </button>
           </div>
           <div class="msf-dashboard-panel-control-variable-button">
-            <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated" mat-mini-fab (click)="goToChart()" color="primary">
+            <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated" mat-mini-fab (click)="goToChart()" color="primary">
               <mat-icon aria-label="Go To Form">bar_chart</mat-icon>
             </button>
           </div>
@@ -323,7 +367,7 @@
             </button>
           </div>
           <div class="msf-dashboard-panel-control-variable-button">
-            <button [disabled]="!values.chartGenerated && !values.infoGenerated" mat-mini-fab (click)="goToChart()" color="primary">
+            <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated" mat-mini-fab (click)="goToChart()" color="primary">
               <mat-icon aria-label="Go To Picture">bar_chart</mat-icon>
             </button>
           </div>
@@ -345,6 +389,11 @@
       <button mat-mini-fab (click)="goToChartConfiguration()" color="primary">
         <mat-icon aria-label="Edit Configuration">menu</mat-icon>
       </button>
+      <!--
+      <button mat-mini-fab color="primary" style="margin-bottom: 7px" (click)="sharePanel()">
+        <mat-icon aria-label="Share Panel">share</mat-icon>
+      </button>
+      -->
     </div>
     <div id="msf-dashboard-chart-display-{{values.id}}" style="width: calc(100% - 35px)" [style.height.px]="calcChartHeight()"></div>
   </div>
@@ -356,6 +405,11 @@
       <button mat-mini-fab (click)="goToInfoConfiguration()" color="primary">
         <mat-icon aria-label="Edit Configuration">menu</mat-icon>
       </button>
+      <!--
+      <button mat-mini-fab color="primary" style="margin-bottom: 7px" (click)="sharePanel()">
+        <mat-icon aria-label="Share Panel">share</mat-icon>
+      </button>
+      -->
     </div>
     <div style="width: 100%" [style.height.px]="calcChartHeight()">
       <div class="msf-dashboard-info-display">
@@ -380,14 +434,37 @@
       <button mat-mini-fab (click)="goToFormConfiguration()" color="primary">
         <mat-icon aria-label="Edit Configuration">menu</mat-icon>
       </button>
+      <!--
+      <button mat-mini-fab color="primary" style="margin-bottom: 7px" (click)="sharePanel()">
+        <mat-icon aria-label="Share Panel">share</mat-icon>
+      </button>
+      -->
     </div>
     <div style="width: 100%; display: table" [style.height.px]="calcChartHeight()">
       <div class="msf-media-title-container" id="msf-dashboard-form-display">
-        <div style="padding: 3px 0" *ngFor="let formResult of formResults; let column = index">
-          <span class="msf-media-title-value" id="msf-dashboard-form-display-title" [style.font-size.px]="getFormFontSize(column)">{{formResult.title}}: </span>
-          <span class="msf-media-title-value" id="msf-dashboard-form-display-value" [style.font-size.px]="getFormFontSize(column)">{{formResult.value}}</span>
+        <div [ngClass]="values.formVariables[column].valueOrientation.value ? 'msf-dashboard-form-display-result-vertical' : 'msf-dashboard-form-display-result-horizontal'" *ngFor="let formResult of values.lastestResponse; let column = index">
+          <span class="msf-media-title-value" id="msf-dashboard-form-display-title" [style.font-size.px]="getFormFontSize(column)">{{formResult.column.name}}: </span>
+          <span class="msf-media-title-value" id="msf-dashboard-form-display-value" [style.font-size.px]="getValueFormFontSize(column)">{{formResult.value}}</span>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+<div class="msf-dashboard-panel-container-chart" *ngIf="values.displayPic" [style.height.px]="panelHeight">
+  <div class="msf-dashboard-panel-title"><br></div>
+  <div class="msf-dashboard-panel-sub-container-column">
+    <div class="msf-dashboard-panel-config-button">
+      <button mat-mini-fab (click)="goToFormConfiguration()" color="primary">
+        <mat-icon aria-label="Edit Configuration">menu</mat-icon>
+      </button>
+      <!--
+      <button mat-mini-fab color="primary" style="margin-bottom: 7px" (click)="sharePanel()">
+        <mat-icon aria-label="Share Panel">share</mat-icon>
+      </button>
+      -->
+    </div>
+    <div [style.height.px]="calcChartHeight()">
+      <!-- TODO: Picture goes here -->
     </div>
   </div>
 </div>

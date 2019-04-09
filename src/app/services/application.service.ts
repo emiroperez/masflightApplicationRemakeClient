@@ -48,7 +48,16 @@ export class ApplicationService {
     _this.displayedColumns = [];
     let param = this.utils.getUrlParameters(_this.globals.currentOption);
     let urlBase = param.url;
-    urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=100&page_number="+pageNumber;
+    if(!urlBase.includes("MIN_VALUE")){
+      urlBase += "&MIN_VALUE=0";
+    }
+    if(!urlBase.includes("MAX_VALUE")){
+      urlBase += "&MAX_VALUE=999";
+    }
+    if(!urlBase.includes("minuteunit")){
+      urlBase += "&minuteunit=m";
+    }
+    urlBase += "&pageSize=100&page_number="+pageNumber;
     if(pageNumber=="0"){
       _this.dataSource = null;
     }
@@ -347,5 +356,65 @@ export class ApplicationService {
   {
     let url = this.host + "/getChildPanels?parentPanelId=" + parentPanelId;
     this.http.get (_this, url, handlerSuccess, handlerError, null);
+  }
+
+  saveLastestResponse(_this, panel, lastestResponse, handlerSuccess, handlerError)
+  {
+    let url = this.host + "/saveLastestResponse?lastestResponse=" + lastestResponse;
+    this.http.post (_this, url, panel, handlerSuccess, handlerError);
+  }
+
+  getChildPanel(_this, parentPanelId, drillDownId, handlerSuccess, handlerError)
+  {
+    let url = this.host + "/getChildPanel?parentPanelId=" + parentPanelId + "&drillDownId=" + drillDownId;
+    this.http.get (_this, url, handlerSuccess, handlerError, null);
+  }
+
+  deleteChildPanels(_this, parentPanelId, handlerSuccess, handlerError)
+  {
+    let url = this.host + "/deleteChildPanels?parentPanelId=" + parentPanelId;
+    this.http.post (_this, url, null, handlerSuccess, handlerError);
+  }
+
+  getSharedContentByDashboard(_this, dashboardMenuId, handlerSuccess, handlerError)
+  {
+    let url = this.host + "/getSharedContent/byDashboard?dashboardMenuId=" + dashboardMenuId;
+    this.http.get (_this, url, handlerSuccess, handlerError, null);
+  }
+
+  getSharedContentByPanel(_this, dashboardPanelId, handlerSuccess, handlerError)
+  {
+    let url = this.host + "/getSharedContent/byPanel?dashboardPanelId=" + dashboardPanelId;
+    this.http.get (_this, url, handlerSuccess, handlerError, null);
+  }
+
+  addSharedContent(_this, sharedContent, handlerSuccess, handlerError)
+  {
+    let url = this.host + "/addSharedContent";
+    this.http.post (_this, url, sharedContent, handlerSuccess, handlerError);
+  }
+
+  deleteSharedContent(_this, shareInfo, handlerSuccess, handlerError)
+  {
+    let url = this.host + "/deleteSharedContent";
+    this.http.post (_this, url, shareInfo, handlerSuccess, handlerError);
+  }
+
+  getUserByEmail(_this, email, handlerSuccess, handlerError)
+  {
+    let url = this.host + "/getUserByEmail?email=" + email;
+    this.http.get (_this, url, handlerSuccess, handlerError, null);
+  }
+
+  getUsersById(_this, userIds, handlerSuccess, handlerError)
+  {
+    let url = this.host + "/getUsersById";
+    this.http.post (_this, url, userIds, handlerSuccess, handlerError);
+  }
+
+  addSharedPanel(_this, dashboardId, panelId, handlerSuccess, handlerError)
+  {
+    let url = this.host + "/addSharedPanel?dashboardId=" + dashboardId + "&panelId=" + panelId;
+    this.http.post (_this, url, null, handlerSuccess, handlerError);
   }
 }

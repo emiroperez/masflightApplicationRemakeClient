@@ -1,4 +1,4 @@
-<div  *ngIf="globals.subTotalRecord>0 && globals.popupMainElement && !globals.popupLoading"     [ngClass]="globals.currentDrillDown.title!='More Info Passenger'?'msf-more-info-black':''">
+<div  *ngIf="globals.subTotalRecord==1 && globals.popupMainElement && !globals.popupLoading"     [ngClass]="globals.currentDrillDown.title!='More Info Passenger'?'msf-more-info-black':''">
     <div  *ngIf="globals.popupMainElement" [ngClass]="globals.currentDrillDown.title!='More Info Passenger'?'msf-more-info-popup-image':'msf-more-info-popup-passenger msf-border-passenger'" [ngStyle]="{'background-image': 'url(' + getBackground() + ')'}">
   <div class="msf-moreinfo-control-variables-title ">
       <div class="msf-dashboard-control-variables-close-button">
@@ -33,6 +33,45 @@
     </div>
   </div>
 </div>
+
+
+<div  [ngClass]="globals.subTotalRecord>1?'msf-show-table':'msf-hide'" #TABLE>
+    <div class="msf-moreinfo-control-variables-title ">
+        <div class="msf-dashboard-control-variables-close-button">
+          <mat-icon style="height: 35px;width: 35px;font-size: 35px;cursor: pointer;"class="msf-dashboard-close-icon" aria-label="close" (click)="closeDialog()">close</mat-icon>
+        </div>
+    </div>
+  <table  #table mat-table  [dataSource]="globals.subDataSource" matSort class="mat-elevation-z8 datasource">
+  
+      <ng-container  [matColumnDef]="column.columnName" *ngFor="let column of globals.subDisplayedColumns">
+        <th [ngClass]="column.show?'msf-show-table':'msf-hide'" mat-header-cell *matHeaderCellDef mat-sort-header > {{column.columnLabel}} </th>
+        <td [ngClass]="column.show?'msf-show-table':'msf-hide'"  mat-cell *matCellDef="let element;let rowNumber = dataIndex"> 
+        <span>
+            <span *ngIf="column.columnType!='number'">{{element[column.columnName]}} </span>
+            <span *ngIf="column.columnType=='number' && column.columnFormat=='$'">${{getFormatCell(element[column.columnName]) | number:'.0-2':'en'}} </span>
+            <span *ngIf="column.columnType=='number' && column.columnFormat=='%'"> {{getFormatCell(element[column.columnName]) | number:'.0-2':'en'}}%</span>
+            <span *ngIf="column.columnType=='number' && column.columnFormat=='temp'"> {{getFormatCell(element[column.columnName]) | number:'.0-2':'en'}}°</span>
+            <span *ngIf="column.columnType=='number' && column.columnFormat==null"> {{getFormatCell(element[column.columnName]) | number:'.0-2':'en'}} </span>
+        </span>
+        <!-- <span class="drillDown-decoration" *ngIf="column.drillDowns.length>0" [matMenuTriggerFor]="menu">
+          <span *ngIf="column.columnType!='number'">{{element[column.columnName]}} </span>
+          <span *ngIf="column.columnType=='number' && column.columnFormat=='$'">${{getFormatCell(element[column.columnName]) | number:'.0-2':'en'}} </span>
+          <span *ngIf="column.columnType=='number' && column.columnFormat=='%'"> {{getFormatCell(element[column.columnName]) | number:'.0-2':'en'}}%</span>
+          <span *ngIf="column.columnType=='number' && column.columnFormat=='temp'"> {{getFormatCell(element[column.columnName]) | number:'.0-2':'en'}}°</span>
+          <span *ngIf="column.columnType=='number' && column.columnFormat==null"> {{getFormatCell(element[column.columnName]) | number:'.0-2':'en'}} </span>
+        </span>
+        <mat-menu #menu="matMenu" [style.visibility]="column.drillDowns.length!=0? 'visible' : 'hidden'">
+            <button mat-menu-item *ngFor="let drillDown of column.drillDowns" (click)="openSubQuery(drillDown,element)">{{drillDown.title}}</button>
+          </mat-menu> -->
+        </td>
+
+      </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="globals.subDisplayedColumnNames" ></tr>
+    <tr mat-row *matRowDef="let row; columns: globals.subDisplayedColumnNames;" style="height:30px;"></tr>
+  </table>
+  </div>
+  
 <div *ngIf="chart!=null&&globals.subTotalRecord>0 && globals.popupMainElement" class="msf-media-title msf-passenger-chart-title">Play Duration In Minutes</div>
 <div [style.visibility]="chart!=null&&globals.subTotalRecord>0 && globals.popupMainElement? 'visible' : 'hidden'" id="msf-dashboard-chart-display" [ngClass]="chart!=null&&globals.subTotalRecord>0 && globals.popupMainElement? 'msf-chart' : ''"></div>
 <div *ngIf="globals.subTotalRecord==0 && !globals.popupMainElement && !globals.popupLoading">

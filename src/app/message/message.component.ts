@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialog} from "@angular/material";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material";
 
 @Component({
   selector: 'app-message',
@@ -10,13 +10,14 @@ export class MessageComponent implements OnInit {
   title: string;
   message: string;
 
-  constructor(private dialog: MatDialog, @Inject(MAT_DIALOG_DATA) data) { 
+  constructor(public dialogRef: MatDialogRef<MessageComponent>,
+    private dialog: MatDialog, @Inject(MAT_DIALOG_DATA) data) { 
     this.title = data.title;
-    this.message = data.message
+    this.message = data.message;
   }
 
   close() {
-    this.dialog.closeAll();
+    this.dialogRef.close ();
   }
 
   ngOnInit() {

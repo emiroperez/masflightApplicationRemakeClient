@@ -6,9 +6,11 @@ export class MsfDashboardPanelValues {
     displayChart: boolean;
     displayInfo: boolean;
     displayForm: boolean;
+    displayPic: boolean;
     chartGenerated: boolean;
     infoGenerated: boolean;
     formGenerated: boolean;
+    picGenerated: boolean;
 
     chartName: String;
     chartColumnOptions:any[] = []; 
@@ -56,9 +58,13 @@ export class MsfDashboardPanelValues {
     chartClicked: boolean;
     chartObjectSelected: any;
 
+    isLoading: boolean = false;
+    updateTimeLeft: number = 5;
+    updateIntervalSwitch: boolean = false;
+
     constructor(options: any[], chartName: String, id: number, width: any, height: any, currentOption?: any, chartColumnOptions? : any,
         variable?: any, xaxis?: any, valueColumn?: any, func?: any, chartType?: any, currentOptionCategories?: any, lastestResponse?: string,
-        paletteColors?: any)
+        paletteColors?: any, updateTimeInterval?: number)
     {
         this.options = options;
         this.chartName = chartName;
@@ -91,5 +97,11 @@ export class MsfDashboardPanelValues {
             this.currentOptionCategories = JSON.parse (currentOptionCategories);
         else
             this.currentOptionCategories = null;
+
+        if (updateTimeInterval)
+        {
+            this.updateTimeLeft = updateTimeInterval;
+            this.updateIntervalSwitch = true;
+        }
     }
 }

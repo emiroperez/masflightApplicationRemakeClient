@@ -32,7 +32,8 @@ export class MsfDateRangeComponent implements OnInit {
     {id: 5, name: 'Until Yesterday',value:"UNTILYESTERDAY"},
     {id: 6, name: 'Until Last week',value:"UNTILLASTWEEK"},
     {id: 7, name: 'Until Last Month',value:"UNTILLASTMONTH"},
-    {id: 8, name: 'Until Last Year',value:"UNTILLASTYEAR"}
+    {id: 8, name: 'Until Last Year',value:"UNTILLASTYEAR"},
+    {id: 8, name: 'Until Today',value:"UNTILTODAY"}
   ];
 
   constructor(public globals: Globals,public dialog: MatDialog) { }
@@ -96,7 +97,10 @@ export class MsfDateRangeComponent implements OnInit {
           break;
       case 'UNTILLASTYEAR':
           this.calculateDate2('Until Last Year',(24*60*60*1000)*365);
-          break;            
+          break;    
+      case 'UNTILTODAY':
+          this.calculateDate2('Until Today',0);
+          break;                      
                      
     }
   }

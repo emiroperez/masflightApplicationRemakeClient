@@ -115,58 +115,11 @@ export class MsfTableComponent implements OnInit {
         if(this.groupingArgument!=null){
            array = this.groupingArgument.value1;
            if(array!=null){
-            if(array.length!=0){
-              if(this.groupingArgument.type=="groupingMariaDB" && this.globals.currentOption.id==166){
-                displayedColumns.unshift({ columnType:"number",
-                columnName:"AVG_RT_Minutes",
-                columnLabel:"Avg Rt Minutes",
-                drillDowns: []});
-                displayedColumns.unshift({ columnType:"number",
-                columnName:"AVG_Play_Duration",
-                columnLabel:"Avg Play Duration",
-                drillDowns: []});
-                displayedColumns.unshift({ columnType:"number",
-                columnName:"SUM_RT_Minutes",
-                columnLabel:"Sum Rt Minutes",
-                drillDowns: []});
-                displayedColumns.unshift({ columnType:"number",
-                columnName:"SUM_Play_Duration",
-                columnLabel:"Sum Play Duration",
-                drillDowns: []});
-                displayedColumns.unshift({ columnType:"number",
-                columnName:"SUM_Unique_Hits",
-                columnLabel:"Sum Unique Hits",
-                drillDowns: []});
-              }
-            }else{
-              var aux = displayedColumns.slice();
-              var cont = 0;
-              for (let index = 0; index < displayedColumns.length; index++) {
-                const element = displayedColumns[index];
-                var x = index;
-                if(element.function==0){
-                  x = x-cont;
-                  aux.splice(x,1);
-                  cont++;
-                }
-              }
-              displayedColumns = aux;
-              this.globals.displayedColumns = displayedColumns;
+            if(array.length==0){
+              displayedColumns = this.removeFunctionsColumns(displayedColumns,this);
             }
            }else{
-            var aux = displayedColumns.slice();
-            var cont = 0;
-            for (let index = 0; index < displayedColumns.length; index++) {
-              const element = displayedColumns[index];
-              var x = index;
-              if(element.function==0){
-                x = x-cont;
-                aux.splice(x,1);
-                cont++;
-              }
-            }
-            displayedColumns = aux;
-            this.globals.displayedColumns = displayedColumns;
+            displayedColumns = this.removeFunctionsColumns(displayedColumns,this);
           }
       }
         if(this.sortingArgument!=null){
@@ -180,7 +133,8 @@ export class MsfTableComponent implements OnInit {
             displayedColumns.unshift({ columnType:"string",
             columnName:element.columnName,
             columnLabel:element.columnLabel,
-            drillDowns: []});
+            drillDowns: [],
+            show:true});
           }
         }
     }
@@ -193,14 +147,16 @@ export class MsfTableComponent implements OnInit {
             displayedColumns.unshift({ columnType:"string",
             columnName:element.columnName,
             columnLabel:element.columnLabel,
-            drillDowns: []
+            drillDowns: [],
+            show:true
           });
           }else{
               displayedColumns.splice(indexColumn,1);
               displayedColumns.unshift({ columnType:"string",
               columnName:element.columnName,
               columnLabel:element.columnLabel,
-              drillDowns: []});
+              drillDowns: [],
+              show:true});
           }
         }
       }else{
@@ -209,13 +165,15 @@ export class MsfTableComponent implements OnInit {
           displayedColumns.unshift({ columnType:"string",
           columnName:array.columnName,
           columnLabel:array.columnLabel,
-          drillDowns: []});
+          drillDowns: [],
+          show:true});
         }else{
             displayedColumns.splice(indexColumn,1);
             displayedColumns.unshift({ columnType:"string",
             columnName:array.columnName,
             columnLabel:array.columnLabel,
-            drillDowns: []});
+            drillDowns: [],
+            show:true});
         }
 
       }
@@ -406,8 +364,6 @@ export class MsfTableComponent implements OnInit {
       }
   }
 
-
-
   handlerError(_this,result){
     _this.globals.isLoading = false; 
     _this.globals.dataSource = false;
@@ -440,17 +396,17 @@ export class MsfTableComponent implements OnInit {
   openSubQuery(drillDown : any,element: any){
     this.globals.popupMainElement = null;
     this.globals.popupResponse = null;
+    this.globals.subDataSource = null;
     this.goToPopup(drillDown);
     this.globals.currentDrillDown = drillDown;
     var rowNumber = this.dataSource.filteredData.indexOf(element)
     this.globals.popupLoading = true;
     var parameters = this.getSubOptionParameters(drillDown.drillDownParameter,rowNumber);
     this.service.getSubDataTableSource(this,drillDown.childrenOptionId,parameters,this.getPopupInfo,this.popupInfoError)
-   
-
   }
 
   popupInfoError(_this,data) {
+    _this.globals.popupLoading = false;
     console.log("ERROR")
   }
 
@@ -460,7 +416,6 @@ export class MsfTableComponent implements OnInit {
     let keys = Object.keys(response);
     let dataResult;
     _this.globals.subDisplayedColumns = data.metadata;
-    _this.globals.subMetadata = data.metadata;
     console.log( _this.globals.subDisplayedColumns);
     if( _this.globals.subTotalRecord > 1){
       let mainElement = _this.getMainKey(keys,response);
@@ -468,36 +423,9 @@ export class MsfTableComponent implements OnInit {
       mainElement = [mainElement];
     }
         dataResult = new MatTableDataSource(mainElement);     
-        // if( _this.globals.subMoreResults){
-        //     _this.globals.subDataSource.data = _this.dataSource.data.concat(dataResult.data);
-        //     _this.dataSource = dataResult;
-        // }else{
-        //   _this.dataSource = dataResult;
-        // }
+        _this.setSubColumnsDisplayed(_this);
+        _this.globals.subDataSource = dataResult;
 
-        // if(_this.globals.currentOption.tabType!="athena"&&_this.globals.currentOption.tabType!="mariadb"){
-        //   if( _this.globals.totalRecord<100 ||  _this.globals.totalRecord>100){
-        //     _this.globals.moreResultsBtn = false;
-        //     _this.globals.moreResults = false;
-        //   }else{
-        //     _this.globals.moreResultsBtn = true;
-        //   }
-        // }else{  
-        //   var aux = (_this.actualPageNumber+1)*100;
-        //   aux = aux!=0 ? aux : 100;
-        //   if( _this.globals.totalRecord<aux){
-        //     _this.globals.moreResultsBtn = false;
-        //     _this.globals.moreResults = false;
-        //   }else{
-        //     _this.globals.moreResultsBtn = true;
-        //   }
-        // }
-        // if(_this.limitNumber!=null){
-        //   if(_this.limitNumber.value1!=null &&_this.limitNumber.value1!=""){
-        //     _this.globals.moreResultsBtn = false;
-        //     _this.globals.moreResults = false;
-        //   }
-        // }
     }else if(_this.globals.subTotalRecord==1){
       let mainElement = _this.getMainKey(keys,response);
       if(!(mainElement instanceof Array)){
@@ -517,6 +445,13 @@ export class MsfTableComponent implements OnInit {
       _this.globals.popupLoading = false;
     }
   }
+
+  setSubColumnsDisplayed(_this){
+    for(let column of _this.globals.subDisplayedColumns){
+      _this.globals.subDisplayedColumnNames.push(column.columnName);
+    }
+}
+
 
   goToPopup(drillDown:any){
     var width = drillDown.width;
@@ -543,13 +478,41 @@ export class MsfTableComponent implements OnInit {
     var urlPam = "";
     for (let index = 0; index < parameters.length; index++) {
         const element = parameters[index].webservicesMetaId;
-        if(index==0){
-            urlPam+="?"+element.columnName+"="+this.dataSource.filteredData[rowNumber][element.columnName];
+        var argName = "";
+        if(element.argumentsId!=null){
+          if (element.argumentsId.name1)
+          argName = element.argumentsId.name1;
+
+          if (element.argumentsId.name2)
+          argName = element.argumentsId.name2;
+
+          if (element.argumentsId.name3)
+          argName = element.argumentsId.name3;
         }else{
-            urlPam+="&"+element.columnName+"="+this.dataSource.filteredData[rowNumber][element.columnName];
+          argName = element.columnName;
+        }
+        if(index==0){
+            urlPam+="?" + argName + "=" + this.dataSource.filteredData[rowNumber][element.columnName];
+        }else{
+            urlPam+="&" + argName + "=" + this.dataSource.filteredData[rowNumber][element.columnName];
         }
         return urlPam;
     }
 }
+
+  removeFunctionsColumns(displayedColumns,_this){
+    var aux = displayedColumns.slice();
+    var cont = 0;
+    for (let index = 0; index < displayedColumns.length; index++) {
+      const element = displayedColumns[index];
+      var x = index;
+      if(element.function==0){
+        x = x-cont;
+        aux.splice(x,1);
+        cont++;
+      }
+    }
+    return aux;
+  }
 
 }

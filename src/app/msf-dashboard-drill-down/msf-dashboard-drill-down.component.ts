@@ -21,21 +21,6 @@ export class MsfDashboardDrillDownComponent {
   lastValue: MsfDashboardPanelValues;
   currentIndex: number = -1;
 
-  paletteColors: string[] = [
-    "#01b0a1",
-    "#9b5e8e",
-    "#fa5751",
-    "#fd8b5a",
-    "#80cfea",
-    "#ff5900",
-    "#005eff",
-    "#ffff00",
-    "#fc636b",
-    "#ff7e00",
-    "#3d67ce",
-    "#fffefe"
-  ];
-
   @ViewChild('variableSelect') variableSelect: MatSelect;
   @ViewChild('xaxisSelect') xaxisSelect: MatSelect;
   @ViewChild('valueSelect') valueSelect: MatSelect;
@@ -155,7 +140,7 @@ export class MsfDashboardDrillDownComponent {
 
   goToColorPicker(): void
   {
-    let dialogHeight, numColors;
+    let dialogRef, dialogHeight, numColors;
 
     if (this.currentValue.currentChartType.flags & ChartFlags.XYCHART
       || this.currentValue.currentChartType.flags & ChartFlags.PIECHART
@@ -170,17 +155,21 @@ export class MsfDashboardDrillDownComponent {
       numColors = 1;
     }
 
-    this.dialog.open (MsfDashboardColorPickerComponent, {
+    dialogRef = this.dialog.open (MsfDashboardColorPickerComponent, {
       height: dialogHeight,
       width: '400px',
       panelClass: 'msf-dashboard-control-variables-dialog',
       autoFocus: false,
       data: {
         title: this.currentValue.chartName,
-        colors: this.paletteColors,
+        colors: this.currentValue.paletteColors,
         numColors: numColors
       }
     });
+
+    dialogRef.afterClosed ().subscribe (
+      () => this.checkIfPanelIsConfigured ()
+    );
   }
 
   loadChartFilterValues(component): void
@@ -257,6 +246,8 @@ export class MsfDashboardDrillDownComponent {
         }
       }
     }
+    else
+      _this.chartForm.get ('chartCtrl').setValue ('');
 
     if (_this.currentValue.variable != null && _this.currentValue.variable != -1)
     {
@@ -317,6 +308,8 @@ export class MsfDashboardDrillDownComponent {
         }
       }
     }
+    else
+      _this.chartForm.get ('functionCtrl').setValue ('');
 
     _this.globals.popupLoading = false;
   }
@@ -325,29 +318,32 @@ export class MsfDashboardDrillDownComponent {
   {
     if (data.length)
     {
-      for (let i = 0, j = 0; i < _this.data.drillDownOptions.length; i++)
+      for (let i = 0; i < _this.data.drillDownOptions.length; i++)
       {
         _this.data.childPanelsConfigured.push (false);
 
-        if (j != data.length && data[j].option.id == _this.data.drillDownOptions[i].childrenOptionId.id)
+        for (let j = 0; j < data.length; j++)
         {
-          let panel = data[j];
+          if (data[j].option.id == _this.data.drillDownOptions[i].childrenOptionId.id)
+          {
+            let panel = data[j];
 
-          _this.data.childPanelValues.push (new MsfDashboardPanelValues (panel.id,
-            panel.title, panel.id, null, null, panel.option, null,
-            panel.analysis, panel.xaxis, panel.values, panel.function,
-            panel.chartType, null, null, panel.paletteColors));
+            _this.data.childPanelValues.push (new MsfDashboardPanelValues (panel.id,
+              panel.title, panel.id, null, null, panel.option, null,
+              panel.analysis, panel.xaxis, panel.values, panel.function,
+              panel.chartType, null, null, panel.paletteColors));
 
-          _this.convertValues.push (true);
-          j++;
-        }
-        else
-        {
-          _this.data.childPanelValues.push (new MsfDashboardPanelValues (_this.data.drillDownOptions,
-            _this.data.drillDownOptions[i].title, -1, null, null, _this.data.drillDownOptions[i]));
+            _this.convertValues.push (true);
+            break;
+          }
+          else if (j == data.length -1)
+          {
+            _this.data.childPanelValues.push (new MsfDashboardPanelValues (_this.data.drillDownOptions,
+              _this.data.drillDownOptions[i].title, -1, null, null, _this.data.drillDownOptions[i].childrenOptionId));
 
-          _this.data.childPanelValues[i].currentChartType = _this.data.chartTypes[0];
-          _this.convertValues.push (false);
+            _this.data.childPanelValues[i].currentChartType = _this.data.chartTypes[0];
+            _this.convertValues.push (false);
+          }
         }
       }
     }
@@ -358,9 +354,10 @@ export class MsfDashboardDrillDownComponent {
         _this.data.childPanelsConfigured.push (false);
 
         _this.data.childPanelValues.push (new MsfDashboardPanelValues (_this.data.drillDownOptions,
-          _this.data.drillDownOptions[i].title, -1, null, null));
+          _this.data.drillDownOptions[i].title, -1, null, null, _this.data.drillDownOptions[i].childrenOptionId));
 
         _this.data.childPanelValues[i].currentChartType = _this.data.chartTypes[0];
+        _this.convertValues.push (false);
       }
     }
 
@@ -373,22 +370,45 @@ export class MsfDashboardDrillDownComponent {
     _this.globals.popupLoading = false;  
   }
 
+  checkPaletteColors(): boolean
+  {
+    let different: boolean;
+
+    different = false;
+
+    for (let i = 0; i < this.currentValue.paletteColors.length; i++)
+    {
+      if (this.currentValue.paletteColors[i] != this.lastValue.paletteColors[i])
+      {
+        different = true;
+        break;
+      }
+    }
+
+    return different;
+  }
+
   checkIfPanelIsConfigured(): void
   {
     // make sure that every value is not null
     if (this.currentValue.currentChartType == null
       || this.currentValue.variable == null
-      || this.currentValue.xaxis == null
       || this.currentValue.valueColumn == null
       || this.currentValue.function == null)
       return;
 
-    // al least one value must be changed
+    if (this.currentValue.currentChartType.flags & ChartFlags.XYCHART
+      && this.currentValue.xaxis == null)
+      return;
+
+    // at least one value must be changed
     if (this.currentValue.currentChartType == this.lastValue.currentChartType
       && this.currentValue.variable == this.lastValue.variable
-      && this.currentValue.xaxis == this.lastValue.xaxis
       && this.currentValue.valueColumn == this.lastValue.valueColumn
-      && this.currentValue.function == this.lastValue.function)
+      && this.currentValue.function == this.lastValue.function
+      && (this.currentValue.currentChartType.flags & ChartFlags.XYCHART
+        && this.currentValue.xaxis == this.lastValue.xaxis)
+      && !this.checkPaletteColors ())
       return;
 
     this.data.childPanelsConfigured[this.currentIndex] = true;

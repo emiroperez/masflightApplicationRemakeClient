@@ -518,6 +518,7 @@ p
 
 .msf-big-button
     @extend .login-button
+    background-color: $msf-secondary-color!important
     margin-left: 40px!important
     color: white
     margin-top: 10px!important
@@ -744,6 +745,7 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button
 
 .msf-medium-button
     @extend .login-button
+    background-color: $msf-secondary-color!important
     margin-left: 70%!important
     color: white
     margin-top: 10px!important
@@ -1902,6 +1904,8 @@ mat-tab-group
         @include msf-dashboard-panel-sub-container(row, 5px, 10px)
     .msf-dashboard-panel-sub-container-column
         @include msf-dashboard-panel-sub-container(row, 5px)
+        .msf-dashboard-addmenu-item-text
+            font-size: 12px
         .msf-full-width
             @extend .msf-dashboard-form-field
         .msf-dashboard-addmenu-icon-item
@@ -1937,6 +1941,13 @@ mat-tab-group
             align-items: flex-end
             flex-direction: column-reverse
 
+.msf-dashboard-child-panel-container
+    width: 98%
+    height: 82%
+
+#msf-dashboard-child-panel-chart-display
+    @extend .msf-dashboard-child-panel-container
+
 .msf-dashboard-control-variables-dialog .mat-dialog-container
     padding: 12px
     overflow: hidden
@@ -1945,6 +1956,14 @@ mat-tab-group
     padding: 12px
     overflow: hidden
     background-color: #1f1f1f !important
+
+.msf-dashboard-child-panel-container-chart
+    padding: 10px
+    background-color: #1f1f1f
+    color: #ffffff
+    overflow-y: visible
+    .msf-no-results
+        margin-top: 80px
 
 @mixin msf-dashboard-control-variables-close-icon ($color: inherit, $cursor: inherit)
     font-size: 16px
@@ -1985,6 +2004,12 @@ mat-tab-group
 
 .msf-dashboard-info-function-subtitle
     @include msf-dashboard-dialog-title(12px, 10px)
+
+.msf-dashboard-panel-sub-container-space
+    padding-left: 5px !important
+
+.msf-dashboard-panel-sub-container-checkbox
+    flex-direction: row !important
 
 .msf-dashboard-panel-sub-container-row
     @include msf-dashboard-panel-sub-container(column)
@@ -2223,15 +2248,31 @@ mat-tab-group
     .msf-dashboard-color-picker-selector:hover
         @include msf-dashboard-color-picker-selector-style(pointer)
 
-.msf-dashboard-drill-down-loading
+@mixin msf-dashboard-dialog-loading($background-size)
     z-index: 99998
     width: 100%
     height: 100%
-    background-color: #1F1F1F
+    background-color: #1f1f1f
     background-image: url(assets/images/loading_pulse.gif)
     background-repeat: no-repeat
     background-position: center
-    background-size: 50%
+    background-size: $background-size
+
+.msf-dashboard-child-panel-loading
+    @include msf-dashboard-dialog-loading(40%)
+    @include msf-dashboard-dialog-title(20px, 10px)
+    @extend .msf-dashboard-dialog
+
+.msf-dashboard-drill-down-loading
+    @include msf-dashboard-dialog-loading(50%)
+    @include msf-dashboard-dialog-title(20px, 10px)
+    @extend .msf-dashboard-dialog
+
+.msf-dashboard-panel-loading
+    position: absolute !important
+    padding-top: 0 !important
+    padding-bottom: 0 !important
+    @include msf-dashboard-dialog-loading(250px)
     @include msf-dashboard-dialog-title(20px, 10px)
     @extend .msf-dashboard-dialog
 
@@ -2246,17 +2287,71 @@ mat-tab-group
 #msf-dashboard-panel-form-sub-container
     margin-top: -10px
 
-#msf-dashboard-panel-form-container-column
+@mixin msf-dashboard-panel-form-container($background-color)
     height: 100%
     align-items: center
     margin-bottom: 10px
-    flex-direction: column
     border-style: solid
     border-width: 1px
     border-color: #595959
-    background-color: #333333
+    background-color: $background-color
     padding: 10px
     width: inherit
+
+#msf-share-dashboard-sub-container-column
+    padding: 10px 0
+
+.msf-share-dashboard-icon
+    vertical-align: middle
+    margin-top: -5px
+    padding-right: 5px
+    font-size: 22px
+
+#msf-share-dashboard-container
+    @include msf-dashboard-panel-form-container(#333333)
+    flex-direction: column
+    align-items: baseline
+    height: 200px
+    overflow-y: auto
+
+#msf-add-shared-dashboard-content
+    @include msf-dashboard-panel-form-container(#242424)
+    flex-direction: column
+    align-items: baseline
+    height: 200px
+    overflow-y: auto
+
+#msf-dashboard-panel-form-container-column
+    flex-direction: column
+    @include msf-dashboard-panel-form-container(#333333)
+
+#msf-dashboard-panel-form-container-column-empty
+    justify-content: center
+    @include msf-dashboard-panel-form-container(#333333)
+    .msf-no-results
+        color: white
+        background: #01abec
+        margin: 0 100px
+        text-align: center
+        align-items: center
+        vertical-align: middle
+        justify-content: center
+        padding: 15px
+        font-size: 12px
+
+#msf-add-shared-dashboard-content-empty
+    justify-content: center
+    @include msf-dashboard-panel-form-container(#242424)
+    .msf-no-results
+        color: white
+        background: #01abec
+        margin: 0 100px
+        text-align: center
+        align-items: center
+        vertical-align: middle
+        justify-content: center
+        padding: 15px
+        font-size: 12px
 
 #msf-dashboard-panel-form-container-row
     flex-direction: row
@@ -2278,6 +2373,14 @@ mat-tab-group
     padding-bottom: 20px
     display: table-cell
 
+.msf-dashboard-form-display-result-horizontal
+    padding: 3px 0
+
+.msf-dashboard-form-display-result-vertical
+    display: flex
+    flex-direction: column
+    @extend .msf-dashboard-form-display-result-horizontal
+
 #msf-dashboard-form-display-title
     color: $msf-secondary-color
     font-weight: normal
@@ -2290,14 +2393,13 @@ mat-tab-group
     justify-content: center
     align-items: center
     .msf-dashboard-panel-picture-label-container
-        width: 220px
+        width: 250px
         height: 60px
         display: flex
         align-items: center
-        border-radius: 10px
         background-color: $msf-secondary-color
         .msf-dashboard-panel-picture-label
-            font-size: 14px
+            font-size: 15px
             width: 100%
 
 mat-dialog-container
@@ -2481,7 +2583,10 @@ mat-dialog-container
     //height: calc(100% - 105px) //kp28032019
     height: 100% //kp28032019
     div
-        width: 25%
+        width: 100%
+        width: -moz-available
+        width: -webkit-fill-available
+        width: stretch
         text-align: center
         height: 100%
         span
@@ -3037,8 +3142,10 @@ table.datasource
 
 .msf-plan-card-content .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label, .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label
     // color: white !important kp19032019
-    color: $msf-secondary-color-orange !important
+    color: $msf-font-color !important
 
+.login-form .block-item-input .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix .mat-form-field-label-wrapper .mat-form-field-label
+    color: $msf-secondary-color-orange !important
 
 .msf-plan-card-content .mat-form-field.mat-focused .mat-form-field-ripple
     background-color: white
@@ -3177,6 +3284,7 @@ table.datasource
 
 .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value
     white-space: normal !important
+    max-width: 130px
 
 .ng-value .ng-star-inserted
     line-height: 20px !important
@@ -3493,3 +3601,48 @@ img.msf-calendar-image
 .msf-passenger-chart-title
     text-align: center
     color: white
+
+.msf-filter-container
+    margin: 10px
+
+.column-selector-checkbox
+    color: white
+
+.column-title
+    width: 100%
+    text-align: center
+    font-size: 16px
+
+.msf-popup-selector
+    display: flex
+    align-items: center
+    padding: 5px 0
+    height: 20px
+
+.checkboxes-container 
+    display: flex
+    flex-wrap: wrap
+
+.column-selector-component 
+    width: 33%
+
+.msf-full-width .search-text-filter
+    color: white
+
+th.msf-show-table, td.msf-show-table
+    display: table-cell
+
+.mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float.msf-flight-number .mat-form-field-label
+    -webkit-transform: translateY(-1.839125em) scale(.75) perspective(100px) translateZ(.001px)!important
+    transform: translateY(-1.839125em) scale(.75) perspective(100px) translateZ(.001px)!important
+    -ms-transform: translateY(-1.839125em) scale(.75)!important
+
+.ng-select.ng-select-multiple.ng-select-searchable.ng-valid.ng-select-bottom.ng-touched.ng-dirty.ng-select-opened .ng-select-container .ng-value-container
+    border-bottom: .84375em solid transparent
+
+.ng-select .ng-select-container .ng-value-container 
+    align-items: stretch
+    padding: .4375em 0
+    border-top: .84375em solid transparent
+    border-bottom: .84375em solid transparent
+

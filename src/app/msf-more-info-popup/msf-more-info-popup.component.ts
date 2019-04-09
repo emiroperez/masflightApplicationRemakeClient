@@ -29,6 +29,7 @@ export class MsfMoreInfoPopupComponent{
   xaxis = "category";
   valueColumn = "total";
   variable = "language";
+    
   chart: any;
   private _onDestroy = new Subject<void> ();
   functions:any[] = [
@@ -116,14 +117,8 @@ export class MsfMoreInfoPopupComponent{
 
     handlerChartSuccess(_this, data): void
     {
-      // destroy current chart if it's already generated to avoid a blank chart
-      // _this.destroyChart ();
-  
       _this.makeChart (data);
-      // _this.values.displayChart = true;
-      // _this.values.chartGenerated = true;
-      // _this.values.infoGenerated = false;
-      // _this.globals.isLoading = false;
+
     }
 
     createHorizColumnSeries(values, chart, item, parseDate): void
@@ -280,4 +275,16 @@ export class MsfMoreInfoPopupComponent{
         this.loadChartData(this.handlerChartSuccess,this.handlerChartSuccess)
       }
     }
-}
+    
+    getFormatCell(value:any){
+      var aux = String(value);
+      if(value==undefined){
+        return "";
+      }
+      aux = aux.replace("%","");
+      aux = aux.replace("$","");
+      aux = aux.replace("ï¿½","0");
+      return aux;
+    }
+
+  }

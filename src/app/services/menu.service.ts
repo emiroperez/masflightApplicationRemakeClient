@@ -76,10 +76,21 @@ export class MenuService {
     this.post (_this, url, null, successHandler, errorHandler);
   }
 
+  getSharedContentByUser(_this, successHandler, errorHandler)
+  {
+    let url = _this.globals.baseUrl + "/secure/getSharedContent/byUser?appId=" + _this.globals.currentApplication.id;
+    this.get (_this, url, successHandler, errorHandler);
+  }
+
   createAuthorizationHeader() {
+    let token = localStorage.getItem('token');
+
+    if (!token)
+      token = "noUser";
+
     httpOptions.headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     // httpOptions.headers = httpOptions.headers.append(this.SECURITY_HEADER, localStorage.getItem(this.TOKEN_STORAGE_KEY));
-    httpOptions.headers = httpOptions.headers.append('Authorization', localStorage.getItem('token'));
+    httpOptions.headers = httpOptions.headers.append('Authorization', token);
   }
 
   get = function (_this,url,successHandler, errorHandler){

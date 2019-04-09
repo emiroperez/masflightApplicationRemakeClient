@@ -79,22 +79,21 @@ export class WelcomeComponent implements OnInit {
   };
 
   ngOnInit() {
-    this.globals.isLoading = true;
     this.getUserLoggedIn();
-    this.getApplications();
   }
   getUserLoggedIn(){
+    this.globals.isLoading = true;
     this.menuService.getUserLoggedin(this, this.handleLogin, this.errorLogin);
   }
 
   handleLogin(_this,data){
     _this.globals.currentUser = data.name;
     _this.userName = _this.globals.currentUser;
-    _this.globals.isLoading = false;
+    _this.getApplications();
   }
   errorLogin(_this,result){
     console.log(result);
-     _this.globals.isLoading = false;
+    _this.getApplications();
 
   }
   ngAfterViewInit() {
@@ -107,15 +106,13 @@ export class WelcomeComponent implements OnInit {
   handlerSuccess(_this,data){
     _this.options = data;
     _this.options2 = data.slice();
-    _this.options.unshift({id:0,
-                        name:"Landing",
-                        url:"/welcome"})
+
     _this.activeElement = _this.options[0];
-
-    setTimeout(() => {
-      _this.globals.isLoading = false;
-  }, 3000);
-
+    //Cambio temporal------------------------------------------------------
+    const indexColumn = _this.options2.findIndex(column => column.id === 2);
+    _this.options2.splice(indexColumn,1);
+    //---------------------------------------------------------------------
+    _this.globals.isLoading = false;
   }
 
   handlerError(_this,result){
