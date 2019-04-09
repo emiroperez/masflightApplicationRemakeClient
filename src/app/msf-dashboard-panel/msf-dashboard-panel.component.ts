@@ -1527,7 +1527,8 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     if (this.values.currentChartType.flags & ChartFlags.INFO
       && !(this.values.currentChartType.flags & ChartFlags.FORM)
-      && !(this.values.currentChartType.flags & ChartFlags.PICTURE))
+      && !(this.values.currentChartType.flags & ChartFlags.PICTURE)
+      && this.values.chartColumnOptions != null)
     {
       if (this.temp.infoVar1 != null)
       {
@@ -1881,50 +1882,53 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       this.values.infoNumVariables = 0;
 
-      if (this.values.variable != null && this.values.variable != -1)
+      if (this.values.chartColumnOptions != null)
       {
-        for (i = 0; i < this.values.chartColumnOptions.length; i++)
+        if (this.values.variable != null && this.values.variable != -1)
         {
-          if (i == this.values.variable)
+          for (i = 0; i < this.values.chartColumnOptions.length; i++)
           {
-            this.chartForm.get ('infoVar1Ctrl').setValue (this.values.chartColumnOptions[i]);
-            this.chartForm.get ('infoVar1Ctrl').enable ();
-            this.values.infoVar1 = this.values.chartColumnOptions[i];
-            this.values.variable = null;
-            this.values.infoNumVariables++;
-            break;
+            if (i == this.values.variable)
+            {
+              this.chartForm.get ('infoVar1Ctrl').setValue (this.values.chartColumnOptions[i]);
+              this.chartForm.get ('infoVar1Ctrl').enable ();
+              this.values.infoVar1 = this.values.chartColumnOptions[i];
+              this.values.variable = null;
+              this.values.infoNumVariables++;
+              break;
+            }
           }
         }
-      }
   
-      if (this.values.xaxis != null && this.values.xaxis != -1)
-      {
-        for (i = 0; i < this.values.chartColumnOptions.length; i++)
+        if (this.values.xaxis != null && this.values.xaxis != -1)
         {
-          if (i == this.values.xaxis)
+          for (i = 0; i < this.values.chartColumnOptions.length; i++)
           {
-            this.chartForm.get ('infoVar2Ctrl').setValue (this.values.chartColumnOptions[i]);
-            this.chartForm.get ('infoVar2Ctrl').enable ();
-            this.values.infoVar2 = this.values.chartColumnOptions[i];
-            this.values.xaxis = null;
-            this.values.infoNumVariables++;
-            break;
+            if (i == this.values.xaxis)
+            {
+              this.chartForm.get ('infoVar2Ctrl').setValue (this.values.chartColumnOptions[i]);
+              this.chartForm.get ('infoVar2Ctrl').enable ();
+              this.values.infoVar2 = this.values.chartColumnOptions[i];
+              this.values.xaxis = null;
+              this.values.infoNumVariables++;
+              break;
+            }
           }
         }
-      }
   
-      if (this.values.valueColumn != null && this.values.valueColumn != -1)
-      {
-        for (i = 0; i < this.values.chartColumnOptions.length; i++)
+        if (this.values.valueColumn != null && this.values.valueColumn != -1)
         {
-          if (i == this.values.valueColumn)
+          for (i = 0; i < this.values.chartColumnOptions.length; i++)
           {
-            this.chartForm.get ('infoVar3Ctrl').setValue (this.values.chartColumnOptions[i]);
-            this.chartForm.get ('infoVar3Ctrl').enable ();
-            this.values.infoVar3 = this.values.chartColumnOptions[i];
-            this.values.valueColumn = null;
-            this.values.infoNumVariables++;
-            break;
+            if (i == this.values.valueColumn)
+            {
+              this.chartForm.get ('infoVar3Ctrl').setValue (this.values.chartColumnOptions[i]);
+              this.chartForm.get ('infoVar3Ctrl').enable ();
+              this.values.infoVar3 = this.values.chartColumnOptions[i];
+              this.values.valueColumn = null;
+              this.values.infoNumVariables++;
+              break;
+            }
           }
         }
       }
@@ -2003,41 +2007,44 @@ export class MsfDashboardPanelComponent implements OnInit {
       else
         this.values.function = this.functions[0];
 
-      if (this.values.variable != null && this.values.variable != -1)
+      if (this.values.chartColumnOptions != null)
       {
-        for (i = 0; i < this.values.chartColumnOptions.length; i++)
+        if (this.values.variable != null && this.values.variable != -1)
         {
-          if (i == this.values.variable)
+          for (i = 0; i < this.values.chartColumnOptions.length; i++)
           {
-            this.chartForm.get ('variableCtrl').setValue (this.values.chartColumnOptions[i]);
-            this.values.variable = this.values.chartColumnOptions[i];
-            break;
+            if (i == this.values.variable)
+            {
+              this.chartForm.get ('variableCtrl').setValue (this.values.chartColumnOptions[i]);
+              this.values.variable = this.values.chartColumnOptions[i];
+              break;
+            }
           }
         }
-      }
 
-      if (this.values.xaxis != null && this.values.xaxis != -1)
-      {
-        for (i = 0; i < this.values.chartColumnOptions.length; i++)
+        if (this.values.xaxis != null && this.values.xaxis != -1)
         {
-          if (i == this.values.xaxis)
+          for (i = 0; i < this.values.chartColumnOptions.length; i++)
           {
-            this.chartForm.get ('xaxisCtrl').setValue (this.values.chartColumnOptions[i]);
-            this.values.xaxis = this.values.chartColumnOptions[i];
-            break;
+            if (i == this.values.xaxis)
+            {
+              this.chartForm.get ('xaxisCtrl').setValue (this.values.chartColumnOptions[i]);
+              this.values.xaxis = this.values.chartColumnOptions[i];
+              break;
+            }
           }
         }
-      }
 
-      if (this.values.valueColumn != null && this.values.valueColumn != -1)
-      {
-        for (i = 0; i < this.values.chartColumnOptions.length; i++)
+        if (this.values.valueColumn != null && this.values.valueColumn != -1)
         {
-          if (i == this.values.valueColumn)
+          for (i = 0; i < this.values.chartColumnOptions.length; i++)
           {
-            this.chartForm.get ('valueCtrl').setValue (this.values.chartColumnOptions[i]);
-            this.values.valueColumn = this.values.chartColumnOptions[i];
-            break;
+            if (i == this.values.valueColumn)
+            {
+              this.chartForm.get ('valueCtrl').setValue (this.values.chartColumnOptions[i]);
+              this.values.valueColumn = this.values.chartColumnOptions[i];
+              break;
+            }
           }
         }
       }
