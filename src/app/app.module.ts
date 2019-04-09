@@ -175,6 +175,7 @@ import { MsfColumnSelectorComponent } from './msf-column-selector/msf-column-sel
 import { MsfShareDashboardComponent } from './msf-share-dashboard/msf-share-dashboard.component';
 import { MsfSharedDashboardItemsComponent } from './msf-shared-dashboard-items/msf-shared-dashboard-items.component';
 import { MsfAddSharedDashboardPanelComponent } from './msf-add-shared-dashboard-panel/msf-add-shared-dashboard-panel.component';
+import { MsfAddSharedDashboardComponent } from './msf-add-shared-dashboard/msf-add-shared-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -329,7 +330,8 @@ import { MsfAddSharedDashboardPanelComponent } from './msf-add-shared-dashboard-
     MsfColumnSelectorComponent,
     MsfShareDashboardComponent,
     MsfSharedDashboardItemsComponent,
-    MsfAddSharedDashboardPanelComponent
+    MsfAddSharedDashboardPanelComponent,
+    MsfAddSharedDashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -402,7 +404,8 @@ import { MsfAddSharedDashboardPanelComponent } from './msf-add-shared-dashboard-
     MsfColumnSelectorComponent,
     MsfShareDashboardComponent,
     MsfSharedDashboardItemsComponent,
-    MsfAddSharedDashboardPanelComponent
+    MsfAddSharedDashboardPanelComponent,
+    MsfAddSharedDashboardComponent
   ]
 })
 export class AppModule { }
