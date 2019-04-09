@@ -2712,6 +2712,22 @@ mat-tab-group {
   overflow-y: auto;
 }
 
+#msf-add-shared-dashboard-content {
+  height: 100%;
+  align-items: center;
+  margin-bottom: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #595959;
+  background-color: #242424;
+  padding: 10px;
+  width: inherit;
+  flex-direction: column;
+  align-items: baseline;
+  height: 200px;
+  overflow-y: auto;
+}
+
 #msf-dashboard-panel-form-container-column {
   flex-direction: column;
   height: 100%;
@@ -2738,6 +2754,30 @@ mat-tab-group {
   width: inherit;
 }
 #msf-dashboard-panel-form-container-column-empty .msf-no-results {
+  color: white;
+  background: #01abec;
+  margin: 0 100px;
+  text-align: center;
+  align-items: center;
+  vertical-align: middle;
+  justify-content: center;
+  padding: 15px;
+  font-size: 12px;
+}
+
+#msf-add-shared-dashboard-content-empty {
+  justify-content: center;
+  height: 100%;
+  align-items: center;
+  margin-bottom: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #595959;
+  background-color: #242424;
+  padding: 10px;
+  width: inherit;
+}
+#msf-add-shared-dashboard-content-empty .msf-no-results {
   color: white;
   background: #01abec;
   margin: 0 100px;

@@ -411,4 +411,10 @@ export class ApplicationService {
     let url = this.host + "/getUsersById";
     this.http.post (_this, url, userIds, handlerSuccess, handlerError);
   }
+
+  addSharedPanel(_this, dashboardId, panelId, handlerSuccess, handlerError)
+  {
+    let url = this.host + "/addSharedPanel?dashboardId=" + dashboardId + "&panelId=" + panelId;
+    this.http.post (_this, url, null, handlerSuccess, handlerError);
+  }
 }

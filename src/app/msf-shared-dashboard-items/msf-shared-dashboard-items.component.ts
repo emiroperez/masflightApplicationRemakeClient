@@ -5,6 +5,7 @@ import { Globals } from '../globals/Globals';
 import { MenuService } from '../services/menu.service';
 import { ApplicationService } from '../services/application.service';
 import { MessageComponent } from '../message/message.component';
+import { MsfAddSharedDashboardPanelComponent } from '../msf-add-shared-dashboard-panel/msf-add-shared-dashboard-panel.component';
 
 @Component({
   selector: 'app-msf-shared-dashboard-items',
@@ -89,7 +90,21 @@ export class MsfSharedDashboardItemsComponent implements OnInit {
 
   addItem(): void
   {
-
+    if (this.selectedDashboardItem.isPanel)
+    {
+      this.dialog.open (MsfAddSharedDashboardPanelComponent, {
+        height: '340px',
+        width: '400px',
+        panelClass: 'msf-dashboard-control-variables-dialog',
+        data: {
+          panelId: this.selectedDashboardItem.id,
+          dashboards: this.data.dashboards
+        }
+      });
+    }
+    else
+    {
+    }
   }
 
   removeItem(): void
