@@ -27,6 +27,7 @@ export class MsfAddSharedDashboardComponent implements OnInit {
 
   addDashboard(): void
   {
+    /*
     if (!this.isOwner)
     {
       this.dialog.open (MessageComponent, {
@@ -36,6 +37,7 @@ export class MsfAddSharedDashboardComponent implements OnInit {
       this.closeDialog ();
       return;
     }
+    */
 
     this.globals.isLoading = true;
     this.service.addSharedDashboard (this, this.data.dashboardId, this.handlerSuccess,

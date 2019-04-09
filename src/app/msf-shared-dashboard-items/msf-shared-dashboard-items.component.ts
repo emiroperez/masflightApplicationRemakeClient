@@ -106,7 +106,8 @@ export class MsfSharedDashboardItemsComponent implements OnInit {
     else
     {
       this.dialog.open (MsfAddSharedDashboardComponent, {
-        height: '183px',
+        // height: '183px',
+        height: '143px',
         width: '400px',
         panelClass: 'msf-dashboard-control-variables-dialog',
         data: {
