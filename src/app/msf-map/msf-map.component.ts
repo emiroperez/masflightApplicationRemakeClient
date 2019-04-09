@@ -68,6 +68,7 @@ export class MsfMapComponent implements OnInit {
   }
 
   successHandler(_this,features){
+    if(this.globals.isLoading){
     _this.globals.endTimestamp = new Date();
     _this.data = features;
     _this.setCoordinates(features);
@@ -79,7 +80,8 @@ export class MsfMapComponent implements OnInit {
     }
     _this.globals.isLoading = false;
     
-	}
+  }
+}
 
   errorHandler(_this,data){
     _this.globals.isLoading = false;
