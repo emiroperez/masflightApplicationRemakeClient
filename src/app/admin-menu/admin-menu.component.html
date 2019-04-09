@@ -60,6 +60,16 @@
                             <div *ngIf="optionSelected.children.length == 0">
                                 <div style="display: flex; flex-direction: row">
                                     <div style="flex: 4">
+                                        <h2 class="title-section">Drill Down Setup</h2>
+                                    </div>
+                                    <div style="flex: 1">
+                                        <button mat-icon-button (click)="editDrillDown()">
+                  <mat-icon style="color: white" aria-label="delete">settings</mat-icon>
+                </button>
+                                    </div>
+                                </div>
+                                <div style="display: flex; flex-direction: row">
+                                    <div style="flex: 4">
                                         <h2 class="title-section">Output Options</h2>
                                     </div>
                                     <div style="flex: 1">
