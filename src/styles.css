@@ -2024,6 +2024,9 @@ mat-tab-group {
   position: relative;
   box-sizing: border-box;
 }
+.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-padding {
+  padding-top: 4px;
+}
 .msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed {
   position: relative;
   justify-content: center;
@@ -2070,6 +2073,10 @@ mat-tab-group {
 .msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-properties-align .msf-dashboard-column-properties-height-label {
   width: 60%;
 }
+.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-invisible {
+  display: none;
+}
+
 .msf-dashboard-button {
   display: flex;
   flex-direction: column;

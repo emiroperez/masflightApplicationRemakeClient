@@ -21,6 +21,9 @@ export class MenuComponent implements OnInit {
   @Input("dashboards")
   dashboards: Array<DashboardMenu>;
 
+  @Input("sharedDashboards")
+  sharedDashboards: Array<DashboardMenu>;
+
   @Input('optionWelcomeComponent')
   optionWelcomeComponent: OptionWelcomeComponent;
 
@@ -67,15 +70,17 @@ export class MenuComponent implements OnInit {
       width: '400px',
       panelClass: 'msf-dashboard-child-panel-dialog',
       data: {
-        dashboards: this.dashboards
+        dashboards: this.dashboards,
+        sharedDashboards: this.sharedDashboards
       }
     });
   }
 
-  goToDashboard(dashboard): void
+  goToDashboard(dashboard, readOnly): void
   {
     this.globals.currentDashboardMenu = dashboard;
     this.globals.currentOption = 'dashboard';
+    this.globals.readOnlyDashboard = readOnly;
   }
 
   setMenuCategory(category: any){

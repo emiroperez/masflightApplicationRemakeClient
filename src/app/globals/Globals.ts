@@ -36,6 +36,7 @@ export class Globals {
   subMoreResultsBtn : boolean = true;
   currentApplication : any;
   currentDashboardMenu : any;
+  readOnlyDashboard : boolean = false;
   minDate:any;
   maxDate:any;
   welcome:any;

@@ -30,11 +30,9 @@ export class MsfAddSharedDashboardComponent implements OnInit {
     /*
     if (!this.isOwner)
     {
-      this.dialog.open (MessageComponent, {
-        data: { title: "Information", message: "Not yet implemented." }
-      });
-  
-      this.closeDialog ();
+      this.globals.isLoading = true;
+      this.service.addSharedReadOnlyDashboard (this, this.data.dashboardId, this.handlerReadOnlySuccess,
+        this.handlerError);
       return;
     }
     */
@@ -42,6 +40,27 @@ export class MsfAddSharedDashboardComponent implements OnInit {
     this.globals.isLoading = true;
     this.service.addSharedDashboard (this, this.data.dashboardId, this.handlerSuccess,
       this.handlerError);
+  }
+
+  handlerReadOnlySuccess(_this, data): void
+  {
+    let newDashboard = data;
+
+    if (!newDashboard)
+    {
+      _this.handlerError (_this);
+      return;
+    }
+
+    // add read-only dashboard into the menu
+    _this.data.sharedDashboards.push (newDashboard);
+
+    _this.globals.isLoading = false;
+    _this.dialog.closeAll ();
+
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Success", message: "Shared dashboard has been added into the menu." }
+    });
   }
 
   handlerSuccess(_this, data): void

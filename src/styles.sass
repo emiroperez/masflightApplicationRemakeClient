@@ -1821,10 +1821,14 @@ mat-tab-group
                         margin: 0 2px
                         position: relative
                         box-sizing: border-box
+                .msf-dashboard-panel-padding
+                    padding-top: 4px
                 .msf-dashboard-panel-size-properties-closed
                     @include msf-dashboard-column-properties
                 .msf-dashboard-panel-size-properties-open
                     @include msf-dashboard-column-properties(60px)
+                .msf-dashboard-panel-size-properties-invisible
+                    display: none
 
 @mixin msf-dashboard-icon ($padding-right, $color: inherit, $cursor: default)
     color: $color

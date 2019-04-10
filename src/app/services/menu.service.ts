@@ -88,6 +88,17 @@ export class MenuService {
     this.postSecure (_this, url, null, handlerSuccess, handlerError);
   }
 
+  addSharedReadOnlyDashboard(_this, dashboardId, handlerSuccess, handlerError)
+  {
+    let url = _this.globals.baseUrl + "/secure/addSharedReadOnlyDashboard?dashboardId=" + dashboardId;
+    this.postSecure (_this, url, null, handlerSuccess, handlerError);
+  }
+
+  getSharedDashboardsByUser(_this, successHandler, errorHandler){
+    let url = _this.globals.baseUrl + "/secure/getSharedDashboards?application=" + _this.globals.currentApplication.id;
+    this.get (_this, url, successHandler, errorHandler);
+  }
+
   createAuthorizationHeader() {
     let token = localStorage.getItem('token');
 
