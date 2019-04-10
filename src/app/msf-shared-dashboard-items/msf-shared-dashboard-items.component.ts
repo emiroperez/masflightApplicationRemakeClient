@@ -44,6 +44,8 @@ export class MsfSharedDashboardItemsComponent implements OnInit {
 
     for (let item of items)
     {
+      let i;
+
       _this.dashboardItems.push ({
         id: item.dashboardContentId,
         name: item.name + " (" + (item.isPanel ? "Panel" : "Dashboard") + ", from ",
@@ -52,7 +54,13 @@ export class MsfSharedDashboardItemsComponent implements OnInit {
       });
 
       // add user ids just to get the email
-      if (userIds.indexOf (item.userId) == -1)
+      for (i = 0; i < userIds.length; i++)
+      {
+        if (userIds[i] == item.userId)
+          break;
+      }
+
+      if (i == userIds.length)
         userIds.push (item.userId);
     }
 
@@ -112,7 +120,8 @@ export class MsfSharedDashboardItemsComponent implements OnInit {
         panelClass: 'msf-dashboard-control-variables-dialog',
         data: {
           dashboardId: this.selectedDashboardItem.id,
-          dashboards: this.data.dashboards
+          dashboards: this.data.dashboards/*,
+          sharedDashboards: this.data.sharedDashboards*/
         }
       });
     }
