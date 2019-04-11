@@ -84,11 +84,15 @@
       <div class="msf-dashboard-addmenu-item-text" (click)="addPanel(3)">3 Panels</div>
     </div>
   </div>
-  <div class="msf-dashboard-panel-context-menu" #contextMenu="matMenuTrigger" [matMenuTriggerFor]="menu" [style.left.px]="getContextMenuPosX()" [style.top.px]="getContextMenuPosY()">
-    <mat-menu id="msf-dashboard-panel-context-menu-container" #menu="matMenu" [style.visibility]="contextMenuItems ? 'visible' : 'hidden'">
-      <button mat-menu-item *ngFor="let item of contextMenuItems" (click)="displayChildPanel(item.id)">
-        <span>{{item.title}}</span>
-      </button>
-    </mat-menu>
+  <div *ngIf="displayContextMenu">
+    <div class="msf-dashboard-panel-context-menu" [style.left.px]="getContextMenuPosX()" [style.top.px]="getContextMenuPosY()">
+      <div id="msf-dashboard-panel-context-menu-container">
+        <div class="msf-dashboard-panel-context-menu-top-bound"></div>
+        <button class="msf-dashboard-panel-context-menu-item" mat-menu-item *ngFor="let item of contextMenuItems" (click)="displayChildPanel(item.id)">
+          <span>{{item.title}}</span>
+        </button>
+        <div class="msf-dashboard-panel-context-menu-bottom-bound"></div>
+      </div>
+    </div>
   </div>
 </div>

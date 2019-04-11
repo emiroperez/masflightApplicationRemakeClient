@@ -1,6 +1,6 @@
-import { Component, HostListener, OnInit, Input, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, Input, SimpleChanges } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { MatMenuTrigger, MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material';
 
 import { Globals } from '../globals/Globals';
 import { MsfDashboardPanelValues } from '../msf-dashboard-panel/msf-dashboard-panelvalues';
@@ -27,14 +27,12 @@ export class MsfDashboardComponent implements OnInit {
 
   displayAddPanel: boolean = false;
 
+  displayContextMenu: boolean = false;
   contextMenuX: number = 0;
   contextMenuY: number = 0;
   contextCategory: any;
   contextMenuItems: any;
   contextParentPanel: MsfDashboardPanelValues;
-
-  @ViewChild(MatMenuTrigger)
-  contextMenu: MatMenuTrigger;
 
   heightValues:any[] = [
     { value: 1, name: 'Small' },
@@ -532,7 +530,10 @@ export class MsfDashboardComponent implements OnInit {
     event.stopPropagation ();
 
     if (!dashboardColumn[rowindex].chartClicked)
+    {
+      this.displayContextMenu = false;
       return true;
+    }
 
     this.contextCategory = dashboardColumn[rowindex].chartObjectSelected;
     this.contextMenuItems = dashboardColumn[rowindex].currentOption.drillDownOptions;
@@ -546,14 +547,14 @@ export class MsfDashboardComponent implements OnInit {
 
     // prevent context menu from appearing
     dashboardColumn[rowindex].chartClicked = false;
-    this.contextMenu.openMenu ();
+    this.displayContextMenu = true;
     return false;
   }
 
   disableContextMenu(): void
   {
+    this.displayContextMenu = false;
     this.contextMenuItems = null;
-    this.contextMenu.closeMenu ();
   }
 
   // make sure that the context menu is fully visible
