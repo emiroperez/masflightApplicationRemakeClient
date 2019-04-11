@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, Input, NgZone, SimpleChanges } from '@angular/core';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
@@ -6,7 +7,7 @@ import am4themes_dark from "@amcharts/amcharts4/themes/dark";
 import { CategoryArguments } from '../model/CategoryArguments';
 import { Globals } from '../globals/Globals';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
-import { ReplaySubject, Subject, timer } from 'rxjs';
+import { ReplaySubject, Subject } from 'rxjs';
 import { MatSelect, MatDialog } from '@angular/material';
 import { takeUntil } from 'rxjs/operators';
 
@@ -34,7 +35,8 @@ const blueJeans = am4core.color ("#67b7dc");
 
 @Component({
   selector: 'app-msf-dashboard-panel',
-  templateUrl: './msf-dashboard-panel.component.html'
+  templateUrl: './msf-dashboard-panel.component.html',
+  styleUrls: ['./msf-dashboard-panel.component.css']
 })
 export class MsfDashboardPanelComponent implements OnInit {
   utils: Utils;
@@ -1289,8 +1291,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.chartForm.get ('xaxisCtrl').reset ();
     _this.chartForm.get ('valueCtrl').reset ();
     _this.chartForm.get ('columnCtrl').reset ();
-    _this.chartForm.get ('fontSizeCtrl').setValue (_this.fontSizes[0]);
-    _this.chartForm.get ('valueFontSizeCtrl').setValue (_this.fontSizes[0]);
+    _this.chartForm.get ('fontSizeCtrl').setValue (_this.fontSizes[1]);
+    _this.chartForm.get ('valueFontSizeCtrl').setValue (_this.fontSizes[1]);
     _this.chartForm.get ('valueOrientationCtrl').setValue (_this.orientations[0]);
     _this.checkChartFilters ();
 
@@ -2460,5 +2462,11 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.chartForm.get ('intervalCtrl').enable ();
     else
       this.chartForm.get ('intervalCtrl').disable ();
+  }
+
+  swapFormVariablePositions(event: CdkDragDrop<MsfDashboardPanelValues[]>): void
+  {
+    // move items
+    moveItemInArray (this.values.formVariables, event.previousIndex, event.currentIndex);
   }
 }

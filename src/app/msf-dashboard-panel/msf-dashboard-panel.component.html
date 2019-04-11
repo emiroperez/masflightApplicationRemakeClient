@@ -430,7 +430,7 @@
   </div>
 </div>
 <div class="msf-dashboard-panel-container-chart" *ngIf="values.displayForm" [style.height.px]="panelHeight">
-  <div class="msf-dashboard-panel-title"><br></div>
+  <div class="msf-dashboard-panel-title">{{values.chartName}}</div>
   <div class="msf-dashboard-panel-sub-container-column">
     <div class="msf-dashboard-panel-config-button" *ngIf="!globals.readOnlyDashboard">
       <button mat-mini-fab (click)="goToFormConfiguration()" color="primary">

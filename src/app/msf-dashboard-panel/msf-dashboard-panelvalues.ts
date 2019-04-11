@@ -62,9 +62,11 @@ export class MsfDashboardPanelValues {
     updateTimeLeft: number = 5;
     updateIntervalSwitch: boolean = false;
 
+    row: number;
+
     constructor(options: any[], chartName: String, id: number, width: any, height: any, currentOption?: any, chartColumnOptions? : any,
         variable?: any, xaxis?: any, valueColumn?: any, func?: any, chartType?: any, currentOptionCategories?: any, lastestResponse?: string,
-        paletteColors?: any, updateTimeInterval?: number)
+        paletteColors?: any, updateTimeInterval?: number, row?: number)
     {
         this.options = options;
         this.chartName = chartName;
@@ -103,5 +105,7 @@ export class MsfDashboardPanelValues {
             this.updateTimeLeft = updateTimeInterval;
             this.updateIntervalSwitch = true;
         }
+
+        this.row = row;
     }
 }
