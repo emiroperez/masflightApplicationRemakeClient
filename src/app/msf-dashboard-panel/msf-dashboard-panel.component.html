@@ -17,7 +17,7 @@
         </mat-select>
       </mat-form-field>
     </div>
-    <div class="msf-dashboard-panel-sub-container-row msf-dashboard-panel-sub-container-space">
+    <div class="msf-dashboard-panel-sub-container-row msf-dashboard-panel-sub-container-space msf-dashboard-panel-chart-type">
       <mat-form-field class="msf-full-width">
         <mat-select placeholder="Chart Type" [(ngModel)]="values.currentChartType" (selectionChange)="checkChartType()">
           <mat-option *ngFor="let chartType of chartTypes" [value]="chartType">
@@ -26,7 +26,7 @@
         </mat-select>
       </mat-form-field>
     </div>
-    <div class="msf-dashboard-panel-sub-container-row msf-dashboard-panel-sub-container-checkbox">
+    <div class="msf-dashboard-panel-sub-container-row msf-dashboard-panel-sub-container-checkbox msf-dashboard-panel-interval-time">
       <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="values.updateIntervalSwitch" (ngModelChange)="toggleIntervalInput()"></mat-checkbox>
       <mat-form-field [formGroup]="chartForm" class="msf-full-width">
         <input matInput formControlName="intervalCtrl" autocomplete="off" type="number" placeholder="Update Interval (In Minutes)" [(value)]="values.updateTimeLeft"/>
@@ -77,21 +77,27 @@
             <mat-icon class="msf-dashboard-chart-icon">show_chart</mat-icon>
           </div>
           <div class="msf-dashboard-chart-op-container">
-            <mat-form-field [formGroup]="chartForm" class="msf-dashboard-field-valuectrl">
-              <mat-select formControlName="valueCtrl" placeholder="Values" #valueSelect [(value)]="values.valueColumn" (selectionChange)="checkChartFilters()">
-                <ngx-mat-select-search [formControl]="valueFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
-                <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
-                  {{variable.name}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <mat-form-field class="msf-dashboard-field-function">
-              <mat-select placeholder="Function" [(ngModel)]="values.function">
-                <mat-option *ngFor="let fun of functions" [value]="fun">
-                  {{fun.name}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
+            <div class="msf-dashboard-chart-op-container-row">
+              <div class="msf-dashboard-field-valuectrl">
+                <mat-form-field [formGroup]="chartForm">
+                  <mat-select formControlName="valueCtrl" placeholder="Values" #valueSelect [(value)]="values.valueColumn" (selectionChange)="checkChartFilters()">
+                    <ngx-mat-select-search [formControl]="valueFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+                    <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
+                      {{variable.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="msf-dashboard-field-function">
+                <mat-form-field>
+                  <mat-select placeholder="Function" [(ngModel)]="values.function">
+                    <mat-option *ngFor="let fun of functions" [value]="fun">
+                      {{fun.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
           </div>
         </div>
         <div class="msf-dashboard-panel-sub-container-column-reverse">
