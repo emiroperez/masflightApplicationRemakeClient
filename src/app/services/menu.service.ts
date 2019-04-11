@@ -100,9 +100,16 @@ export class MenuService {
     this.postSecure (_this, url, null, handlerSuccess, handlerError);
   }
 
-  getSharedDashboardsByUser(_this, successHandler, errorHandler){
+  getSharedDashboardsByUser(_this, successHandler, errorHandler)
+  {
     let url = _this.globals.baseUrl + "/secure/getSharedDashboards?application=" + _this.globals.currentApplication.id;
     this.get (_this, url, successHandler, errorHandler);
+  }
+
+  getUsers(_this, handlerSuccess, handlerError)
+  {
+    let url = _this.globals.baseUrl + "/secure/getAllUsers";
+    this.get (_this, url, handlerSuccess, handlerError);
   }
 
   createAuthorizationHeader() {
