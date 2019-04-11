@@ -18,7 +18,7 @@ export class MsfShareDashboardComponent implements OnInit {
   selectedUser: any;
 
   userNameList: any = [];
-  selectedUserNames: string[] = [];
+  selectedUserNames: any[] = [];
 
   dashboardItem: string;
 
@@ -127,8 +127,13 @@ export class MsfShareDashboardComponent implements OnInit {
 
   addUser(): void
   {
+    let selectedUserNameEmails = [];
+
+    for (let selectedUser of this.selectedUserNames)
+      selectedUserNameEmails.push (selectedUser.email);
+
     this.globals.popupLoading = true;
-    this.appService.getUsersByEmail (this, this.selectedUserNames, this.foundUsers, this.addError);
+    this.appService.getUsersByEmail (this, selectedUserNameEmails, this.foundUsers, this.addError);
     this.selectedUserNames = [];
   }
 
