@@ -66,14 +66,20 @@ export class MenuService {
 
   updateDashboardTitle(_this, id, title, successHandler, errorHandler)
   {
-    let url = _this.globals.baseUrl+ "/updateDashboardTitle?id=" + id + "&title=" + title;
+    let url = _this.globals.baseUrl + "/updateDashboardTitle?id=" + id + "&title=" + title;
     this.post (_this, url, null, successHandler, errorHandler);
   }
 
   deleteDashboard(_this, id, successHandler, errorHandler)
   {
-    let url = _this.globals.baseUrl+ "/deleteDashboard?id=" + id;
+    let url = _this.globals.baseUrl + "/deleteDashboard?id=" + id;
     this.post (_this, url, null, successHandler, errorHandler);
+  }
+
+  deleteSharedDashboard(_this, dashboardId, successHandler, errorHandler)
+  {
+    let url = _this.globals.baseUrl + "/secure/deleteSharedDashboard?dashboardId=" + dashboardId;
+    this.postSecure (_this, url, null, successHandler, errorHandler);
   }
 
   getSharedContentByUser(_this, successHandler, errorHandler)

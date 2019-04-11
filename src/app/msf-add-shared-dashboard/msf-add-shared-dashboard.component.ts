@@ -27,7 +27,6 @@ export class MsfAddSharedDashboardComponent implements OnInit {
 
   addDashboard(): void
   {
-    /*
     if (!this.isOwner)
     {
       this.globals.isLoading = true;
@@ -35,7 +34,6 @@ export class MsfAddSharedDashboardComponent implements OnInit {
         this.handlerError);
       return;
     }
-    */
 
     this.globals.isLoading = true;
     this.service.addSharedDashboard (this, this.data.dashboardId, this.handlerSuccess,
@@ -53,7 +51,7 @@ export class MsfAddSharedDashboardComponent implements OnInit {
     }
 
     // add read-only dashboard into the menu
-    _this.data.sharedDashboards.push (newDashboard);
+    _this.data.sharedDashboards.push (newDashboard.dashboardMenuId);
 
     _this.globals.isLoading = false;
     _this.dialog.closeAll ();

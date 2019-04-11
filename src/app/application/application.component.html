@@ -53,8 +53,8 @@
 
         <!-- <button class="msf-menu-icon"><img src="../../assets/images/CopytoClipboard.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Copy to Clipboard</span></button>
         <button class="msf-menu-icon"><img src="../../assets/images/LoadingOptions.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Loading Options</span></button> -->
-        <button [disabled]="globals.currentOption !== 'dashboard'" class="msf-menu-icon" (click)="changeDashboardName()"><img src="../../assets/images/Chart.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Edit Dashboard Title</span></button>
-        <button [disabled]="globals.currentOption !== 'dashboard'" class="msf-menu-icon" (click)="shareDashboard()"><img src="../../assets/images/share.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Share Dashboard</span></button>
+        <button [disabled]="globals.currentOption !== 'dashboard' || globals.readOnlyDashboard" class="msf-menu-icon" (click)="changeDashboardName()"><img src="../../assets/images/Chart.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Edit Dashboard Title</span></button>
+        <button [disabled]="globals.currentOption !== 'dashboard' || globals.readOnlyDashboard" class="msf-menu-icon" (click)="shareDashboard()"><img src="../../assets/images/share.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Share Dashboard</span></button>
         <button [disabled]="globals.currentOption !== 'dashboard'" class="msf-menu-icon" (click)="deleteDashboard()"><img src="../../assets/images/trash-blue-small.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Delete Dashboard</span></button>
         <button class="msf-menu-icon" *ngIf="!globals.isFullscreen" (click)="goToFullscreen()"><img src="../../assets/images/fullscreen.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Full Screen</span></button>
     </div>

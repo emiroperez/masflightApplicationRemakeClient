@@ -378,8 +378,17 @@ toggle(){
       function (_this)
       {
         _this.globals.isLoading = true;
-        _this.service.deleteDashboard (_this, _this.globals.currentDashboardMenu.id, _this.deleteSuccess,
-          _this.deleteError);
+
+        if (_this.globals.readOnlyDashboard)
+        {
+          _this.service.deleteSharedDashboard (_this, _this.globals.currentDashboardMenu.id,
+            _this.deleteSuccess, _this.deleteError);
+        }
+        else
+        {
+          _this.service.deleteDashboard (_this, _this.globals.currentDashboardMenu.id,
+            _this.deleteSuccess, _this.deleteError);
+        }
       }
     );
   }
