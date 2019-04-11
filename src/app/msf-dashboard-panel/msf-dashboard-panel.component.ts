@@ -134,9 +134,9 @@ export class MsfDashboardPanelComponent implements OnInit {
       infoVar2Ctrl: new FormControl ({ value: '', disabled: true }),
       infoVar3Ctrl: new FormControl ({ value: '', disabled: true }),
       columnCtrl: new FormControl ({ value: '', disabled: true }),
-      fontSizeCtrl: new FormControl ({ value: '', disabled: true }),
-      valueFontSizeCtrl: new FormControl ({ value: '', disabled: true }),
-      valueOrientationCtrl: new FormControl ({ value: '', disabled: true }),
+      fontSizeCtrl: new FormControl ({ value: this.fontSizes[0], disabled: true }),
+      valueFontSizeCtrl: new FormControl ({ value: this.fontSizes[0], disabled: true }),
+      valueOrientationCtrl: new FormControl ({ value: this.orientations[0], disabled: true }),
       intervalCtrl: new FormControl ({ value: 5, disabled: true })
     });
   }
@@ -1289,9 +1289,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.chartForm.get ('xaxisCtrl').reset ();
     _this.chartForm.get ('valueCtrl').reset ();
     _this.chartForm.get ('columnCtrl').reset ();
-    _this.chartForm.get ('fontSizeCtrl').reset ();
-    _this.chartForm.get ('valueFontSizeCtrl').reset ();
-    _this.chartForm.get ('valueOrientationCtrl').reset ();
+    _this.chartForm.get ('fontSizeCtrl').setValue (_this.fontSizes[0]);
+    _this.chartForm.get ('valueFontSizeCtrl').setValue (_this.fontSizes[0]);
+    _this.chartForm.get ('valueOrientationCtrl').setValue (_this.orientations[0]);
     _this.checkChartFilters ();
 
     _this.values.formVariables = [];
@@ -1606,9 +1606,9 @@ export class MsfDashboardPanelComponent implements OnInit {
       if (!(this.values.currentChartType.flags & ChartFlags.FORM))
       {
         this.chartForm.get ('columnCtrl').reset ();
-        this.chartForm.get ('fontSizeCtrl').reset ();
-        this.chartForm.get ('valueFontSizeCtrl').reset ();
-        this.chartForm.get ('valueOrientationCtrl').reset ();
+        this.chartForm.get ('fontSizeCtrl').setValue (this.fontSizes[0]);
+        this.chartForm.get ('valueFontSizeCtrl').setValue (this.fontSizes[0]);
+        this.chartForm.get ('valueOrientationCtrl').setValue (this.orientations[0]);
 
         this.values.formVariables = [];
       }
@@ -1657,9 +1657,9 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.chartForm.get ('infoVar3Ctrl').disable ();
 
       this.chartForm.get ('columnCtrl').reset ();
-      this.chartForm.get ('fontSizeCtrl').reset ();
-      this.chartForm.get ('valueFontSizeCtrl').reset ();
-      this.chartForm.get ('valueOrientationCtrl').reset ();
+      this.chartForm.get ('fontSizeCtrl').setValue (this.fontSizes[0]);
+      this.chartForm.get ('valueFontSizeCtrl').setValue (this.fontSizes[0]);
+      this.chartForm.get ('valueOrientationCtrl').setValue (this.orientations[0]);
 
       this.values.formVariables = [];
     }
@@ -1842,9 +1842,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       // reset form column selection combo boxes
       this.chartForm.get ('columnCtrl').reset ();
-      this.chartForm.get ('fontSizeCtrl').reset ();
-      this.chartForm.get ('valueFontSizeCtrl').reset ();
-      this.chartForm.get ('valueOrientationCtrl').reset ();
+      this.chartForm.get ('fontSizeCtrl').setValue (this.fontSizes[0]);
+      this.chartForm.get ('valueFontSizeCtrl').setValue (this.fontSizes[0]);
+      this.chartForm.get ('valueOrientationCtrl').setValue (this.orientations[0]);
 
       // set form variable settings if loaded from database
       if (this.values.function != null && this.values.function != -1)
@@ -2387,9 +2387,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     // reset main column and font size values
     this.chartForm.get ('columnCtrl').reset ();
-    this.chartForm.get ('fontSizeCtrl').reset ();
-    this.chartForm.get ('valueFontSizeCtrl').reset ();
-    this.chartForm.get ('valueOrientationCtrl').reset ();
+    this.chartForm.get ('fontSizeCtrl').setValue (this.fontSizes[0]);
+    this.chartForm.get ('valueFontSizeCtrl').setValue (this.fontSizes[0]);
+    this.chartForm.get ('valueOrientationCtrl').setValue (this.orientations[0]);
     this.checkChartFilters ();
   }
 
