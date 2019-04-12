@@ -547,13 +547,58 @@ export class MsfDashboardChildPanelComponent {
   getParameters()
   {
     let currentOptionCategories = this.values.currentOptionCategories;
+    let parentArgument = this.data.parentCategory.item.argumentsId;
+    let filterValue = this.data.categoryFilter;
+    let dateVal1, dateVal2; // used for date categories
     let params;
-  
+
+    // TODO: Convert also categories labeled date
+    // set special values for date formats
+    if (this.data.parentCategory.id.toLowerCase ().includes ("year"))
+    {
+      // from January 1 to December 31
+      dateVal1 = filterValue + "0101";
+      dateVal2 = filterValue + "1231";
+    }
+    else if (this.data.parentCategory.id.toLowerCase ().includes ("month")
+      || this.data.parentCategory.id.toLowerCase ().includes ("day"))
+    {
+      let year, month;
+      let lastDay = {
+        "01" : 31,    // January
+        "02" : 28,    // February
+        "03" : 31,    // March
+        "04" : 30,    // April
+        "05" : 31,    // May
+        "06" : 30,    // June
+        "07" : 31,    // July
+        "08" : 31,    // August
+        "09" : 30,    // September
+        "10" : 31,    // October
+        "11" : 30,    // November
+        "12" : 31     // December
+      };
+
+      year = filterValue.slice (0, 4);
+      month = filterValue.slice (5, 7);
+
+      if (this.data.parentCategory.id.toLowerCase ().includes ("day"))
+      {
+        let day = filterValue.slice (8, 10);
+
+        // use the same day for the date values
+        dateVal1 = dateVal2 = year + month + day;
+      }
+      else
+      {
+        // from the first day of the month to the last one
+        dateVal1 = year + month + "01";
+        dateVal2 = year + month + lastDay[month];
+      }
+    }
+
     if (currentOptionCategories)
     {
-      let parentArgument = this.data.parentCategory.item.argumentsId;
-      let filverValue = this.data.categoryFilter;
-
       for (let i = 0; i < currentOptionCategories.length; i++)
       {
         let category: CategoryArguments = currentOptionCategories[i];
@@ -566,10 +611,20 @@ export class MsfDashboardChildPanelComponent {
 
             if (parentArgument != null && argument.id == parentArgument.id)
             {
-              if (params)
-                params += "&" + this.utils.getArguments2 (parentArgument, filverValue);
+              if (argument.name1.toLowerCase ().includes ("date"))
+              {
+                if (params)
+                  params += "&" + argument.name1 + "=" + dateVal1 + "&" + argument.name2 + "=" + dateVal2;
+                else
+                  params = argument.name1 + "=" + dateVal1 + "&" + argument.name2 + "=" + dateVal2;
+              }
               else
-                params = this.utils.getArguments2 (parentArgument, filverValue);
+              {
+                if (params)
+                  params += "&" + this.utils.getArguments2 (parentArgument, filterValue);
+                else
+                  params = this.utils.getArguments2 (parentArgument, filterValue);
+              }
             }
             else
             {
@@ -580,7 +635,7 @@ export class MsfDashboardChildPanelComponent {
 
               // check if the argument uses grouping to add chart values that requires grouping
               // to work properly
-              if (argument.name1.includes ("grouping"))
+              if (argument.name1.toLowerCase ().includes ("grouping"))
               {
                 if (this.values.variable.item.grouping && !this.checkGroupingValue (this.values.variable.item.columnName, argument.value1))
                   params += "," + this.values.variable.item.columnName;
