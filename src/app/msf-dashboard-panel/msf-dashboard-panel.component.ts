@@ -763,6 +763,17 @@ export class MsfDashboardPanelComponent implements OnInit {
     );
   }
 
+  checkGroupingValue(categoryColumnName, values): boolean
+  {
+    for (let value of values)
+    {
+      if (value.columnName === categoryColumnName)
+        return true;          // already in the grouping list
+    }
+
+    return false;
+  }
+
   getParameters()
   {
     let currentOptionCategories = this.values.currentOptionCategories;
@@ -784,6 +795,20 @@ export class MsfDashboardPanelComponent implements OnInit {
               params += "&" + this.utils.getArguments (argument);
             else
               params = this.utils.getArguments (argument);
+
+            // check if the argument uses grouping to add chart values that requires grouping
+            // to work properly
+            if (argument.name1.includes ("grouping"))
+            {
+              if (this.values.variable.item.grouping && !this.checkGroupingValue (this.values.variable.item.columnName, argument.value1))
+                params += "," + this.values.variable.item.columnName;
+
+              if (this.values.xaxis.item.grouping && !this.checkGroupingValue (this.values.xaxis.item.columnName, argument.value1))
+                params += "," + this.values.xaxis.item.columnName;
+
+              if (this.values.valueColumn.item.grouping && !this.checkGroupingValue (this.values.valueColumn.item.columnName, argument.value1))
+                params += "," + this.values.valueColumn.item.columnName;
+            }
           }
         }        
       }
