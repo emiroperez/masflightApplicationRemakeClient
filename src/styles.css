@@ -2854,6 +2854,13 @@ mat-tab-group {
 #msf-dashboard-form-button .mat-icon-button {
   padding-left: 6px;
 }
+#msf-dashboard-form-button .mat-icon-drag-button {
+  padding-left: 6px;
+}
+#msf-dashboard-form-button .mat-icon-drag-button:hover {
+  padding-left: 6px;
+  cursor: move;
+}
 
 #msf-dashboard-form-display {
   text-align: left;
