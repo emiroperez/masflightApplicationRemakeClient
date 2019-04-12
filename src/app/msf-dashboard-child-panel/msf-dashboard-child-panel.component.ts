@@ -611,7 +611,7 @@ export class MsfDashboardChildPanelComponent {
 
             if (parentArgument != null && argument.id == parentArgument.id)
             {
-              if (argument.name1.toLowerCase ().includes ("date"))
+              if (argument.name1 != null && argument.name1.toLowerCase ().includes ("date"))
               {
                 if (params)
                   params += "&" + argument.name1 + "=" + dateVal1 + "&" + argument.name2 + "=" + dateVal2;
