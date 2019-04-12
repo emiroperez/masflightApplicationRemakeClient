@@ -635,7 +635,7 @@ export class MsfDashboardChildPanelComponent {
 
               // check if the argument uses grouping to add chart values that requires grouping
               // to work properly
-              if (argument.name1.toLowerCase ().includes ("grouping"))
+              if (argument.name1 != null && argument.name1.toLowerCase ().includes ("grouping"))
               {
                 if (this.values.variable.item.grouping && !this.checkGroupingValue (this.values.variable.item.columnName, argument.value1))
                   params += "," + this.values.variable.item.columnName;
