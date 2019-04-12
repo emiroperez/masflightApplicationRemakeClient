@@ -17,7 +17,7 @@
         </mat-select>
       </mat-form-field>
     </div>
-    <div class="msf-dashboard-panel-sub-container-row msf-dashboard-panel-sub-container-space">
+    <div class="msf-dashboard-panel-sub-container-row msf-dashboard-panel-sub-container-space msf-dashboard-panel-chart-type">
       <mat-form-field class="msf-full-width">
         <mat-select placeholder="Chart Type" [(ngModel)]="values.currentChartType" (selectionChange)="checkChartType()">
           <mat-option *ngFor="let chartType of chartTypes" [value]="chartType">
@@ -26,7 +26,7 @@
         </mat-select>
       </mat-form-field>
     </div>
-    <div class="msf-dashboard-panel-sub-container-row msf-dashboard-panel-sub-container-checkbox">
+    <div class="msf-dashboard-panel-sub-container-row msf-dashboard-panel-sub-container-checkbox msf-dashboard-panel-interval-time">
       <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="values.updateIntervalSwitch" (ngModelChange)="toggleIntervalInput()"></mat-checkbox>
       <mat-form-field [formGroup]="chartForm" class="msf-full-width">
         <input matInput formControlName="intervalCtrl" autocomplete="off" type="number" placeholder="Update Interval (In Minutes)" [(value)]="values.updateTimeLeft"/>
@@ -77,21 +77,27 @@
             <mat-icon class="msf-dashboard-chart-icon">show_chart</mat-icon>
           </div>
           <div class="msf-dashboard-chart-op-container">
-            <mat-form-field [formGroup]="chartForm" class="msf-dashboard-field-valuectrl">
-              <mat-select formControlName="valueCtrl" placeholder="Values" #valueSelect [(value)]="values.valueColumn" (selectionChange)="checkChartFilters()">
-                <ngx-mat-select-search [formControl]="valueFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
-                <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
-                  {{variable.name}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <mat-form-field class="msf-dashboard-field-function">
-              <mat-select placeholder="Function" [(ngModel)]="values.function">
-                <mat-option *ngFor="let fun of functions" [value]="fun">
-                  {{fun.name}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
+            <div class="msf-dashboard-chart-op-container-row">
+              <div class="msf-dashboard-field-valuectrl">
+                <mat-form-field [formGroup]="chartForm">
+                  <mat-select formControlName="valueCtrl" placeholder="Values" #valueSelect [(value)]="values.valueColumn" (selectionChange)="checkChartFilters()">
+                    <ngx-mat-select-search [formControl]="valueFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+                    <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
+                      {{variable.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="msf-dashboard-field-function">
+                <mat-form-field>
+                  <mat-select placeholder="Function" [(ngModel)]="values.function">
+                    <mat-option *ngFor="let fun of functions" [value]="fun">
+                      {{fun.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
           </div>
         </div>
         <div class="msf-dashboard-panel-sub-container-column-reverse">
@@ -275,8 +281,8 @@
         </div>
       </div>
     </div>
-    <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-form-container-column" *ngIf="values.formVariables.length" [ngStyle]="{'overflow-y': values.formVariables.length > 2 ? 'scroll' : 'hidden'}">
-      <div class="msf-dashboard-panel-sub-container-row" id="msf-dashboard-panel-form-container-row" *ngFor="let formVariable of values.formVariables; let column = index">
+    <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-form-container-column" *ngIf="values.formVariables.length" [ngStyle]="{'overflow-y': values.formVariables.length > 2 ? 'scroll' : 'hidden'}" cdkDropList [cdkDropListData]="values.formVariables" cdkDropListOrientation="vertical" (cdkDropListDropped)="swapFormVariablePositions($event)">
+      <div class="msf-dashboard-panel-sub-container-row" id="msf-dashboard-panel-form-container-row" *ngFor="let formVariable of values.formVariables; let column = index" cdkDragLockAxis="y" cdkDragBoundary="#msf-dashboard-panel-form-container-column" cdkDrag>
         <div class="msf-dashboard-chart-op-container" id="msf-dashboard-panel-form-op-container">
           <mat-form-field class="msf-full-width">
             <mat-select [(value)]="formVariable.column" placeholder="Select Column">
@@ -313,6 +319,11 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
+        </div>
+        <div class="msf-dashboard-chart-add-button" id="msf-dashboard-form-button">
+          <div class="mat-icon-drag-button">
+            <mat-icon class="msf-dashboard-chart-icon" aria-label="move" cdkDragHandle>drag_handle</mat-icon>
+          </div>
         </div>
         <div class="msf-dashboard-chart-add-button" id="msf-dashboard-form-button">
           <button mat-icon-button (click)="deleteColumnFromForm(column)">
@@ -424,7 +435,7 @@
   </div>
 </div>
 <div class="msf-dashboard-panel-container-chart" *ngIf="values.displayForm" [style.height.px]="panelHeight">
-  <div class="msf-dashboard-panel-title"><br></div>
+  <div class="msf-dashboard-panel-title">{{values.chartName}}</div>
   <div class="msf-dashboard-panel-sub-container-column">
     <div class="msf-dashboard-panel-config-button" *ngIf="!globals.readOnlyDashboard">
       <button mat-mini-fab (click)="goToFormConfiguration()" color="primary">

@@ -1883,10 +1883,6 @@ mat-tab-group
     .mat-form-field-underline
         background-color: #353535
 
-@mixin msf-dashboard-form-field-size
-    width: 49.5%
-    padding-right: 0.5%
-
 .msf-dashboard-chart-icon
     vertical-align: middle
     margin-top: -5%
@@ -2034,6 +2030,14 @@ mat-tab-group
     .msf-full-width
         @extend .msf-dashboard-form-field
 
+.msf-dashboard-panel-chart-type
+    width: 30% !important
+    min-width: 100px
+
+.msf-dashboard-panel-interval-time
+    width: 25% !important
+    min-width: 70px
+
 .msf-dashboard-control-variables
     overflow-y: auto
     font-size: 10px
@@ -2081,12 +2085,17 @@ mat-tab-group
             width: 50%
         .msf-full-width
             @extend .msf-dashboard-form-field
-        .msf-dashboard-field-valuectrl
-            @include msf-dashboard-form-field-size
-            @extend .msf-dashboard-form-field
-        .msf-dashboard-field-function
-            @include msf-dashboard-form-field-size
-            @extend .msf-dashboard-form-field
+        .msf-dashboard-chart-op-container-row
+            display: flex
+            flex-direction: row
+            width: 100%
+            .msf-dashboard-field-valuectrl
+                width: 50%
+                @extend .msf-dashboard-form-field
+            .msf-dashboard-field-function
+                width: 50%
+                padding-left: 5px !important
+                @extend .msf-dashboard-form-field
 
 .msf-dashboard-menu-component
     @extend .msf-primary-light-bg-color
@@ -2135,6 +2144,20 @@ mat-tab-group
 .msf-dashboard-panel-context-menu
     position: absolute
     z-index: 1
+    #msf-dashboard-panel-context-menu-container
+        background-color: $msf-primary-color
+        border-radius: 4px
+        font-size: 12px
+        box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12)
+        .msf-dashboard-panel-context-menu-item
+            border-bottom: 1px solid #444343!important
+        .msf-dashboard-panel-context-menu-item:hover
+            background-color: $msf-primary-dark-color
+        .msf-dashboard-panel-context-menu-top-bound
+            height: 7px
+            border-bottom: 1px solid #444343!important
+        .msf-dashboard-panel-context-menu-bottom-bound
+            height: 7px
 
 .msf-dynamic-table-variable-title
     display: flex
@@ -2298,7 +2321,7 @@ mat-tab-group
     margin-top: -10px
 
 @mixin msf-dashboard-panel-form-container($background-color)
-    height: 100%
+    height: 50%
     align-items: center
     margin-bottom: 10px
     border-style: solid
@@ -2376,6 +2399,11 @@ mat-tab-group
     margin-bottom: 8px
     .mat-icon-button
         padding-left: 6px
+    .mat-icon-drag-button
+        padding-left: 6px
+    .mat-icon-drag-button:hover
+        padding-left: 6px
+        cursor: move
 
 #msf-dashboard-form-display
     text-align: left

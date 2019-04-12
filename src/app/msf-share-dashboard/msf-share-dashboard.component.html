@@ -12,9 +12,17 @@
 <div class="msf-dashboard-panel-container" id="msf-dashboard-drill-down-container" *ngIf="!globals.popupLoading">
   <div class="msf-dashboard-panel-sub-container-column">
     <mat-form-field class="msf-full-width" id="msf-dashboard-drill-down-container-column">
-      <input matInput autocomplete="off" type="text" placeholder="User Name" [(ngModel)]="userName"/>
+      <mat-select placeholder="User Names" [(ngModel)]="selectedUserNames" multiple>
+        <mat-select-trigger>
+          <span *ngFor="let selectedUserName of selectedUserNames; let userIndex = index">{{selectedUserName.name}}<span *ngIf="userIndex != selectedUserNames.length - 1">, </span></span>
+        </mat-select-trigger>
+        <ngx-mat-select-search [formControl]="userNameFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+        <mat-option *ngFor="let userNameList of filteredUserNames | async" [value]="userNameList">
+          {{userNameList.email}} ({{userNameList.name}})
+        </mat-option>
+      </mat-select>
     </mat-form-field>
-    <button [disabled]="!userName.length" mat-icon-button [ngClass]="!userName.length ? 'func-button-disabled' : 'func-button'" (click)="addUser()">
+    <button [disabled]="!selectedUserNames.length" mat-icon-button [ngClass]="!selectedUserNames.length ? 'func-button-disabled' : 'func-button'" (click)="addUser()">
       <mat-icon class="msf-dashboard-chart-icon" aria-label="Add User" style="margin-left: 6px">add</mat-icon>
     </button>
   </div>

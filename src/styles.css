@@ -2151,7 +2151,7 @@ mat-tab-group {
   padding-top: 5px;
 }
 
-.msf-dashboard-form-field .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-field-function .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-field-valuectrl .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-full-width .mat-form-field-underline, .msf-dashboard-panel-sub-container-row .msf-full-width .mat-form-field-underline, .msf-dashboard-panel-sub-container-row .msf-width-90 .mat-form-field-underline, .msf-dashboard-panel-sub-container-row .msf-width-80 .mat-form-field-underline, .msf-dashboard-panel-container .msf-dashboard-panel-sub-container-column .msf-full-width .mat-form-field-underline {
+.msf-dashboard-form-field .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-chart-op-container-row .msf-dashboard-field-function .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-chart-op-container-row .msf-dashboard-field-valuectrl .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-full-width .mat-form-field-underline, .msf-dashboard-panel-sub-container-row .msf-full-width .mat-form-field-underline, .msf-dashboard-panel-sub-container-row .msf-width-90 .mat-form-field-underline, .msf-dashboard-panel-sub-container-row .msf-width-80 .mat-form-field-underline, .msf-dashboard-panel-container .msf-dashboard-panel-sub-container-column .msf-full-width .mat-form-field-underline {
   background-color: #595959;
 }
 
@@ -2360,6 +2360,16 @@ mat-tab-group {
 .msf-dashboard-panel-sub-container-row .msf-width-80 {
   width: 80%;
 }
+.msf-dashboard-panel-chart-type {
+  width: 30% !important;
+  min-width: 100px;
+}
+
+.msf-dashboard-panel-interval-time {
+  width: 25% !important;
+  min-width: 70px;
+}
+
 .msf-dashboard-control-variables {
   overflow-y: auto;
   font-size: 10px;
@@ -2416,13 +2426,17 @@ mat-tab-group {
   margin-left: 15px;
   width: 50%;
 }
-.msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-field-valuectrl {
-  width: 49.5%;
-  padding-right: 0.5%;
+.msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-chart-op-container-row {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
 }
-.msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-field-function {
-  width: 49.5%;
-  padding-right: 0.5%;
+.msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-chart-op-container-row .msf-dashboard-field-valuectrl {
+  width: 50%;
+}
+.msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-chart-op-container-row .msf-dashboard-field-function {
+  width: 50%;
+  padding-left: 5px !important;
 }
 
 .msf-dashboard-menu-component, .msf-dashboard-menu-component-active {
@@ -2474,6 +2488,25 @@ mat-tab-group {
 .msf-dashboard-panel-context-menu {
   position: absolute;
   z-index: 1;
+}
+.msf-dashboard-panel-context-menu #msf-dashboard-panel-context-menu-container {
+  background-color: #333333;
+  border-radius: 4px;
+  font-size: 12px;
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
+}
+.msf-dashboard-panel-context-menu #msf-dashboard-panel-context-menu-container .msf-dashboard-panel-context-menu-item {
+  border-bottom: 1px solid #444343 !important;
+}
+.msf-dashboard-panel-context-menu #msf-dashboard-panel-context-menu-container .msf-dashboard-panel-context-menu-item:hover {
+  background-color: #1e1e1e;
+}
+.msf-dashboard-panel-context-menu #msf-dashboard-panel-context-menu-container .msf-dashboard-panel-context-menu-top-bound {
+  height: 7px;
+  border-bottom: 1px solid #444343 !important;
+}
+.msf-dashboard-panel-context-menu #msf-dashboard-panel-context-menu-container .msf-dashboard-panel-context-menu-bottom-bound {
+  height: 7px;
 }
 
 .msf-dynamic-table-variable-title {
@@ -2712,7 +2745,7 @@ mat-tab-group {
 }
 
 #msf-share-dashboard-container {
-  height: 100%;
+  height: 50%;
   align-items: center;
   margin-bottom: 10px;
   border-style: solid;
@@ -2728,7 +2761,7 @@ mat-tab-group {
 }
 
 #msf-add-shared-dashboard-content {
-  height: 100%;
+  height: 50%;
   align-items: center;
   margin-bottom: 10px;
   border-style: solid;
@@ -2745,7 +2778,7 @@ mat-tab-group {
 
 #msf-dashboard-panel-form-container-column {
   flex-direction: column;
-  height: 100%;
+  height: 50%;
   align-items: center;
   margin-bottom: 10px;
   border-style: solid;
@@ -2758,7 +2791,7 @@ mat-tab-group {
 
 #msf-dashboard-panel-form-container-column-empty {
   justify-content: center;
-  height: 100%;
+  height: 50%;
   align-items: center;
   margin-bottom: 10px;
   border-style: solid;
@@ -2782,7 +2815,7 @@ mat-tab-group {
 
 #msf-add-shared-dashboard-content-empty {
   justify-content: center;
-  height: 100%;
+  height: 50%;
   align-items: center;
   margin-bottom: 10px;
   border-style: solid;
@@ -2820,6 +2853,13 @@ mat-tab-group {
 }
 #msf-dashboard-form-button .mat-icon-button {
   padding-left: 6px;
+}
+#msf-dashboard-form-button .mat-icon-drag-button {
+  padding-left: 6px;
+}
+#msf-dashboard-form-button .mat-icon-drag-button:hover {
+  padding-left: 6px;
+  cursor: move;
 }
 
 #msf-dashboard-form-display {
