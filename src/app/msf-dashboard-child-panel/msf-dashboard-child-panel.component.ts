@@ -550,50 +550,75 @@ export class MsfDashboardChildPanelComponent {
     let parentArgument = this.data.parentCategory.item.argumentsId;
     let filterValue = this.data.categoryFilter;
     let dateVal1, dateVal2; // used for date categories
-    let params;
+    let params, numSlashes;
 
-    // TODO: Convert also categories labeled date
-    // set special values for date formats
-    if (this.data.parentCategory.id.toLowerCase ().includes ("year"))
+    numSlashes = -1;
+
+    // check number of slashes if the value to filter is a date format
+    if (this.data.parentCategory.id.toLowerCase ().includes ("date"))
     {
-      // from January 1 to December 31
-      dateVal1 = filterValue + "0101";
-      dateVal2 = filterValue + "1231";
-    }
-    else if (this.data.parentCategory.id.toLowerCase ().includes ("month")
-      || this.data.parentCategory.id.toLowerCase ().includes ("day"))
-    {
-      let year, month;
-      let lastDay = {
-        "01" : 31,    // January
-        "02" : 28,    // February
-        "03" : 31,    // March
-        "04" : 30,    // April
-        "05" : 31,    // May
-        "06" : 30,    // June
-        "07" : 31,    // July
-        "08" : 31,    // August
-        "09" : 30,    // September
-        "10" : 31,    // October
-        "11" : 30,    // November
-        "12" : 31     // December
-      };
+      let numSlashes = 0;
 
-      year = filterValue.slice (0, 4);
-      month = filterValue.slice (5, 7);
-
-      if (this.data.parentCategory.id.toLowerCase ().includes ("day"))
+      for (let i = 0; i < filterValue.length; i++)
       {
-        let day = filterValue.slice (8, 10);
+        if (filterValue[i] == '/')
+          numSlashes++;
+      }
 
-        // use the same day for the date values
-        dateVal1 = dateVal2 = year + month + day;
+      if (numSlashes > 2)
+        numSlashes = 2;
+    }
+    else if (this.data.parentCategory.id.toLowerCase ().includes ("year"))
+      numSlashes = 0;
+    else if (this.data.parentCategory.id.toLowerCase ().includes ("month"))
+      numSlashes = 1;
+    else if (this.data.parentCategory.id.toLowerCase ().includes ("day"))
+      numSlashes = 2;
+
+    // set special values for date formats depending of the number of slashes,
+    // -1 if not a date format
+    if (numSlashes != -1)
+    {
+      if (!numSlashes)
+      {
+        // from January 1 to December 31
+        dateVal1 = filterValue + "0101";
+        dateVal2 = filterValue + "1231";
       }
       else
       {
-        // from the first day of the month to the last one
-        dateVal1 = year + month + "01";
-        dateVal2 = year + month + lastDay[month];
+        let year, month;
+        let lastDay = {
+          "01" : 31,    // January
+          "02" : 28,    // February
+          "03" : 31,    // March
+          "04" : 30,    // April
+          "05" : 31,    // May
+          "06" : 30,    // June
+          "07" : 31,    // July
+          "08" : 31,    // August
+          "09" : 30,    // September
+          "10" : 31,    // October
+          "11" : 30,    // November
+          "12" : 31     // December
+        };
+
+        year = filterValue.slice (0, 4);
+        month = filterValue.slice (5, 7);
+
+        if (numSlashes == 2)
+        {
+          let day = filterValue.slice (8, 10);
+
+          // use the same day for the date values
+          dateVal1 = dateVal2 = year + month + day;
+        }
+        else
+        {
+          // from the first day of the month to the last one
+          dateVal1 = year + month + "01";
+          dateVal2 = year + month + lastDay[month];
+        }
       }
     }
 
