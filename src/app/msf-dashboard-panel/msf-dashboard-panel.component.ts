@@ -964,6 +964,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.isLoading = true;
     urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=1&page_number=0";
+    console.log (urlBase);
     urlArg = encodeURIComponent (urlBase);
     url = this.service.host + "/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
 
@@ -1105,7 +1106,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     for (let key in response)
     {
       let array = response[key];
-      if(array != null)
+      if (array != null)
       {
         if (Array.isArray (array))
         {

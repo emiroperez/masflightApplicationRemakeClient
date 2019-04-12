@@ -551,6 +551,9 @@ export class MsfDashboardChildPanelComponent {
   
     if (currentOptionCategories)
     {
+      let parentArgument = this.data.parentCategory.item.argumentsId;
+      let filverValue = this.data.categoryFilter;
+
       for (let i = 0; i < currentOptionCategories.length; i++)
       {
         let category: CategoryArguments = currentOptionCategories[i];
@@ -561,23 +564,33 @@ export class MsfDashboardChildPanelComponent {
           {
             let argument: Arguments = category.arguments[j];
 
-            if (params)
-              params += "&" + this.utils.getArguments (argument);
-            else
-              params = this.utils.getArguments (argument);
-
-            // check if the argument uses grouping to add chart values that requires grouping
-            // to work properly
-            if (argument.name1.includes ("grouping"))
+            if (parentArgument != null && argument.id == parentArgument.id)
             {
-              if (this.values.variable.item.grouping && !this.checkGroupingValue (this.values.variable.item.columnName, argument.value1))
-                params += "," + this.values.variable.item.columnName;
+              if (params)
+                params += "&" + this.utils.getArguments2 (parentArgument, filverValue);
+              else
+                params = this.utils.getArguments2 (parentArgument, filverValue);
+            }
+            else
+            {
+              if (params)
+                params += "&" + this.utils.getArguments (argument);
+              else
+                params = this.utils.getArguments (argument);
 
-              if (this.values.xaxis.item.grouping && !this.checkGroupingValue (this.values.xaxis.item.columnName, argument.value1))
-                params += "," + this.values.xaxis.item.columnName;
+              // check if the argument uses grouping to add chart values that requires grouping
+              // to work properly
+              if (argument.name1.includes ("grouping"))
+              {
+                if (this.values.variable.item.grouping && !this.checkGroupingValue (this.values.variable.item.columnName, argument.value1))
+                  params += "," + this.values.variable.item.columnName;
 
-              if (this.values.valueColumn.item.grouping && !this.checkGroupingValue (this.values.valueColumn.item.columnName, argument.value1))
-                params += "," + this.values.valueColumn.item.columnName;
+                if (this.values.xaxis.item.grouping && !this.checkGroupingValue (this.values.xaxis.item.columnName, argument.value1))
+                  params += "," + this.values.xaxis.item.columnName;
+
+                if (this.values.valueColumn.item.grouping && !this.checkGroupingValue (this.values.valueColumn.item.columnName, argument.value1))
+                  params += "," + this.values.valueColumn.item.columnName;
+              }
             }
           }
         }        
