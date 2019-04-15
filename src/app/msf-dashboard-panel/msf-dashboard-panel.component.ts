@@ -2325,7 +2325,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.childPanelsConfigured = [];
 
     let dialogRef = this.dialog.open (MsfDashboardDrillDownComponent, {
-      height: '425px',
+      height: '470px',
       width: '450px',
       panelClass: 'msf-dashboard-child-panel-dialog',
       data: {
@@ -2392,9 +2392,43 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.service.saveChildPanels (this, childPanels, this.values.id, drillDownIds, this.drillDownSettingsClear, this.drillDownSettingsClear);
   }
 
-  // destroy child panel list after success or failure
-  drillDownSettingsClear(_this): void
+  // update child panel list after success or failure
+  drillDownSettingsClear(_this, data): void
   {
+    let drillDownIds: number[] = [];
+
+    drillDownIds = data.drillDownIds;
+
+    for (let i = 0; i < drillDownIds.length; i++)
+    {
+      let newChildPanel: boolean = true;
+      let drillDownId = drillDownIds[i];
+
+      for (let j = 0; j < _this.values.childPanels.length; j++)
+      {
+        let childPanel = _this.values.childPanels[j];
+
+        if (drillDownId == childPanel.id)
+        {
+          childPanel.title = data.childPanels[i].title;
+          newChildPanel = false;
+          break;
+        }
+      }
+
+      if (newChildPanel)
+      {
+        _this.values.childPanels.push ({
+          id: drillDownId,
+          title: data.childPanel[i].title
+        });
+      }
+    }
+
+    _this.values.childPanels.sort (function(e1, e2) {
+      return e2.id - e1.id;
+    });
+
     _this.values.isLoading = false;
   }
 

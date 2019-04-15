@@ -134,6 +134,7 @@ export class MsfDashboardComponent implements OnInit {
 
   loadDashboardPanels(_this, data): void
   {
+    let dashboardPanelIds: number[] = [];
     let dashboardPanels: any[] = [];
     let dashboardRows = [];
 
@@ -165,6 +166,7 @@ export class MsfDashboardComponent implements OnInit {
         dashboardRows = [];
       }
 
+      dashboardPanelIds.push (dashboardPanel.id);
       dashboardRows.push (new MsfDashboardPanelValues (_this.options, dashboardPanel.title,
         dashboardPanel.id, dashboardPanel.width, _this.heightValues[dashboardPanel.height],
         dashboardPanel.option, dashboardPanel.chartColumnOptions, dashboardPanel.analysis, dashboardPanel.xaxis,
@@ -180,6 +182,45 @@ export class MsfDashboardComponent implements OnInit {
     _this.dashboardColumns.push (dashboardRows);
     _this.dashboardColumnsProperties.push (false);
     _this.dashboardColumnsReAppendCharts.push (false);
+
+    _this.service.getAllChildPanels (_this, dashboardPanelIds, _this.setChildPanels, _this.handlerError);
+  }
+
+  setChildPanels(_this, data): void
+  {
+    let drillDownInfo: any[] = [];
+    let childPanelNames: any[] = [];
+
+    drillDownInfo = data.drillDownInfo;
+    childPanelNames = data.childPanelNames;
+    if (!drillDownInfo.length)
+    {
+      // we're done if there are no child panels
+      _this.globals.isLoading = false;
+      return;
+    }
+
+    for (let i = 0; i < _this.dashboardColumns.length; i++)
+    {
+      let dashboardRows = _this.dashboardColumns[i];
+
+      for (let j = 0; j < dashboardRows.length; j++)
+      {
+        let panel = dashboardRows[j];
+
+        for (let k = 0; k < drillDownInfo.length; k++)
+        {
+          if (panel.id == drillDownInfo[k].dashboardPanelId)
+          {
+            panel.childPanels.push ({
+              id: drillDownInfo[k].drillDownId,
+              title: childPanelNames[k]
+            });
+          }
+        }
+      }
+    }
+
     _this.globals.isLoading = false;
   }
 
@@ -297,7 +338,7 @@ export class MsfDashboardComponent implements OnInit {
   }
 
   // update the dashboard container and hide the menu after
-  // adding a new chart column
+  // adding a new panel column
   addPanel(numPanels): void
   {
     let panelsToAdd, width, column;
@@ -314,7 +355,7 @@ export class MsfDashboardComponent implements OnInit {
         'dashboardMenuId' : this.currentDashboardMenu.id,
         'row' : i,
         'column' : column,
-        'title' : "New Chart",
+        'title' : "New Panel",
         'height' : 0,
         'width' : width
       });
@@ -340,7 +381,7 @@ export class MsfDashboardComponent implements OnInit {
         'dashboardMenuId' : this.currentDashboardMenu.id,
         'row' : i,
         'column' : column,
-        'title' : "New Chart",
+        'title' : "New Panel",
         'height' : this.heightValues.indexOf (dashboardColumns[0].height),
         'width' : width
       });
@@ -535,8 +576,15 @@ export class MsfDashboardComponent implements OnInit {
       return true;
     }
 
+    this.contextMenuItems = dashboardColumn[rowindex].childPanels;
+    if (!this.contextMenuItems.length)
+    {
+      // do not display drill down context menu if there are no child panels
+      this.disableContextMenu ();
+      return true;
+    }
+
     this.contextCategory = dashboardColumn[rowindex].chartObjectSelected;
-    this.contextMenuItems = dashboardColumn[rowindex].currentOption.drillDownOptions;
     this.contextMenuX = event.clientX;
     this.contextParentPanel = dashboardColumn[rowindex];
 

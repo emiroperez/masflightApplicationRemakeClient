@@ -22,6 +22,11 @@
   </div>
   <div class="msf-dashboard-panel-sub-container-column">
     <mat-form-field [formGroup]="chartForm" class="msf-full-width" id="msf-dashboard-drill-down-container-column">
+      <input matInput formControlName="panelNameCtrl" autocomplete="off" placeholder="Panel Name" [(value)]="currentValue == null ? '' : currentValue.chartName" (blur)="checkPanelName()"/>
+    </mat-form-field>
+  </div>
+  <div class="msf-dashboard-panel-sub-container-column">
+    <mat-form-field [formGroup]="chartForm" class="msf-full-width" id="msf-dashboard-drill-down-container-column">
       <mat-select formControlName="chartCtrl" placeholder="Chart Type" (selectionChange)="checkChartType($event.value)">
         <mat-option *ngFor="let chartType of data.chartTypes | noInformationTypes" [value]="chartType">
           {{chartType.name}}

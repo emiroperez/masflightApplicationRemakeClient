@@ -54,7 +54,8 @@ export class MsfDashboardDrillDownComponent {
       variableCtrl: new FormControl ({ value: '', disabled: true }),
       xaxisCtrl: new FormControl ({ value: '', disabled: true }),
       valueCtrl: new FormControl ({ value: '', disabled: true }),
-      functionCtrl: new FormControl ({ value: '', disabled: true })
+      functionCtrl: new FormControl ({ value: '', disabled: true }),
+      panelNameCtrl: new FormControl ({ value: '', disabled: true })
     });
 
     // configure child panels in order to be able to configure the drill down settings
@@ -204,6 +205,7 @@ export class MsfDashboardDrillDownComponent {
     // enable the combo box that allows to select the values for the chart
     _this.chartForm.get ('chartCtrl').enable ();
     _this.chartForm.get ('variableCtrl').enable ();
+    _this.chartForm.get ('panelNameCtrl').enable ();
 
     if (_this.currentValue.currentChartType.flags & ChartFlags.XYCHART)
       _this.chartForm.get ('xaxisCtrl').enable ();
@@ -311,6 +313,8 @@ export class MsfDashboardDrillDownComponent {
     else
       _this.chartForm.get ('functionCtrl').setValue ('');
 
+    _this.chartForm.get ('panelNameCtrl').setValue (_this.currentValue.chartName);
+
     _this.globals.popupLoading = false;
   }
 
@@ -339,7 +343,7 @@ export class MsfDashboardDrillDownComponent {
           else if (j == data.length -1)
           {
             _this.data.childPanelValues.push (new MsfDashboardPanelValues (_this.data.drillDownOptions,
-              _this.data.drillDownOptions[i].title, -1, null, null, _this.data.drillDownOptions[i].childrenOptionId));
+              "New Child Panel", -1, null, null, _this.data.drillDownOptions[i].childrenOptionId));
 
             _this.data.childPanelValues[i].currentChartType = _this.data.chartTypes[0];
             _this.convertValues.push (false);
@@ -394,7 +398,8 @@ export class MsfDashboardDrillDownComponent {
     if (this.currentValue.currentChartType == null
       || this.currentValue.variable == null
       || this.currentValue.valueColumn == null
-      || this.currentValue.function == null)
+      || this.currentValue.function == null
+      || this.currentValue.chartName == null)
       return;
 
     if (this.currentValue.currentChartType.flags & ChartFlags.XYCHART
@@ -406,12 +411,19 @@ export class MsfDashboardDrillDownComponent {
       && this.currentValue.variable == this.lastValue.variable
       && this.currentValue.valueColumn == this.lastValue.valueColumn
       && this.currentValue.function == this.lastValue.function
+      && this.currentValue.chartName == this.lastValue.chartName
       && (this.currentValue.currentChartType.flags & ChartFlags.XYCHART
         && this.currentValue.xaxis == this.lastValue.xaxis)
       && !this.checkPaletteColors ())
       return;
 
     this.data.childPanelsConfigured[this.currentIndex] = true;
+  }
+
+  checkPanelName(): void
+  {
+    this.currentValue.chartName = this.chartForm.get ('panelNameCtrl').value;
+    this.checkIfPanelIsConfigured ();
   }
 
   checkChartType(value): void
