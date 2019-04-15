@@ -45,7 +45,8 @@ export class MsfDashboardChildPanelComponent {
     { name: 'Area', flags: ChartFlags.XYCHART | ChartFlags.AREACHART, createSeries: this.createLineSeries },
     { name: 'Stacked Area', flags: ChartFlags.XYCHART | ChartFlags.STACKED | ChartFlags.AREACHART, createSeries: this.createLineSeries },
     { name: 'Pie', flags: ChartFlags.PIECHART, createSeries: this.createPieSeries },
-    { name: 'Donut', flags: ChartFlags.DONUTCHART, createSeries: this.createPieSeries }
+    { name: 'Donut', flags: ChartFlags.DONUTCHART, createSeries: this.createPieSeries },
+    { name: 'Table', flags: ChartFlags.TABLE }
   ];
 
   functions:any[] = [
