@@ -282,6 +282,12 @@ export class ApplicationService {
     this.http.get (_this, this.host + url, handlerSuccess, handlerError, null);
   }
 
+  getAllChildPanels(_this, dashboardPanelIds, handlerSuccess, handlerError): void
+  {
+    let url = "/getChildPanels/all";
+    this.http.post (_this, this.host + url, dashboardPanelIds, handlerSuccess, handlerError);
+  }
+
   updateDashboardPanel(_this, panel, handlerSuccess, handlerError): void
   {
     let url = this.host + "/updateDashboardPanel";

@@ -2,7 +2,7 @@
   <div class="msf-dashboard-panel-sub-container-column">
     <div class="msf-dashboard-panel-sub-container-row">
       <mat-form-field class="msf-width-80">
-        <input matInput autocomplete="off" type="text" placeholder="Chart Name" [(ngModel)]="values.chartName"/>
+        <input matInput autocomplete="off" type="text" placeholder="Panel Name" [(ngModel)]="values.chartName"/>
       </mat-form-field>
     </div>
   </div>
@@ -281,7 +281,7 @@
         </div>
       </div>
     </div>
-    <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-form-container-column" *ngIf="values.formVariables.length" [ngStyle]="{'overflow-y': values.formVariables.length > 2 ? 'scroll' : 'hidden'}" cdkDropList [cdkDropListData]="values.formVariables" cdkDropListOrientation="vertical" (cdkDropListDropped)="swapFormVariablePositions($event)">
+    <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-form-container-column" *ngIf="values.formVariables.length" [ngStyle]="{'overflow-y': ((values.height.value < 6 && values.formVariables.length > 2) || (values.height.value >= 6 && values.formVariables.length > 3)) ? 'scroll' : 'hidden'}" cdkDropList [cdkDropListData]="values.formVariables" cdkDropListOrientation="vertical" (cdkDropListDropped)="swapFormVariablePositions($event)">
       <div class="msf-dashboard-panel-sub-container-row" id="msf-dashboard-panel-form-container-row" *ngFor="let formVariable of values.formVariables; let column = index" cdkDragLockAxis="y" cdkDragBoundary="#msf-dashboard-panel-form-container-column" cdkDrag>
         <div class="msf-dashboard-chart-op-container" id="msf-dashboard-panel-form-op-container">
           <mat-form-field class="msf-full-width">

@@ -2731,6 +2731,7 @@ mat-tab-group {
 
 #msf-dashboard-panel-form-sub-container {
   margin-top: -10px;
+  height: 15%;
 }
 
 #msf-share-dashboard-sub-container-column {
@@ -2745,7 +2746,7 @@ mat-tab-group {
 }
 
 #msf-share-dashboard-container {
-  height: 50%;
+  height: 40%;
   align-items: center;
   margin-bottom: 10px;
   border-style: solid;
@@ -2761,7 +2762,7 @@ mat-tab-group {
 }
 
 #msf-add-shared-dashboard-content {
-  height: 50%;
+  height: 40%;
   align-items: center;
   margin-bottom: 10px;
   border-style: solid;
@@ -2778,7 +2779,7 @@ mat-tab-group {
 
 #msf-dashboard-panel-form-container-column {
   flex-direction: column;
-  height: 50%;
+  height: 40%;
   align-items: center;
   margin-bottom: 10px;
   border-style: solid;
@@ -2791,7 +2792,7 @@ mat-tab-group {
 
 #msf-dashboard-panel-form-container-column-empty {
   justify-content: center;
-  height: 50%;
+  height: 40%;
   align-items: center;
   margin-bottom: 10px;
   border-style: solid;
@@ -2815,7 +2816,7 @@ mat-tab-group {
 
 #msf-add-shared-dashboard-content-empty {
   justify-content: center;
-  height: 50%;
+  height: 40%;
   align-items: center;
   margin-bottom: 10px;
   border-style: solid;

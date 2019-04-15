@@ -62,7 +62,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     { name: 'Donut', flags: ChartFlags.DONUTCHART, createSeries: this.createPieSeries },
     { name: 'Information', flags: ChartFlags.INFO },
     { name: 'Simple Form', flags: ChartFlags.INFO | ChartFlags.FORM }/*,
-    { name: 'Simple Picture', flags: ChartFlags.INFO | ChartFlags.PICTURE }*/
+    { name: 'Simple Picture', flags: ChartFlags.INFO | ChartFlags.PICTURE },*/
   ];
 
   functions:any[] = [
@@ -197,6 +197,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       values.chartClicked = true;
       values.chartObjectSelected = event.target.dataItem.dataContext[values.xaxis.id];
+      values.chartSecondaryObjectSelected = series.dataFields.valueX;
     });
   }
 
@@ -230,6 +231,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       values.chartClicked = true;
       values.chartObjectSelected = event.target.dataItem.dataContext[values.xaxis.id];
+      values.chartSecondaryObjectSelected = series.dataFields.valueY;
     });
   }
 
@@ -275,6 +277,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       values.chartClicked = true;
       values.chartObjectSelected = event.target.dataItem.component.tooltipDataItem.dataContext[values.xaxis.id];
+      values.chartSecondaryObjectSelected = series.dataFields.valueY;
     });
   }
 
@@ -302,6 +305,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       values.chartClicked = true;
       values.chartObjectSelected = event.target.dataItem.dataContext[item.titleField];
+      values.chartSecondaryObjectSelected = null;
     });
   }
 
@@ -327,6 +331,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       values.chartClicked = true;
       values.chartObjectSelected = event.target.dataItem.dataContext[item.titleField];
+      values.chartSecondaryObjectSelected = null;
     });
   }
 
@@ -368,6 +373,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       values.chartClicked = true;
       values.chartObjectSelected = event.target.dataItem.dataContext[item.titleField];
+      values.chartSecondaryObjectSelected = null;
     });
   }
 
@@ -401,6 +407,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       values.chartClicked = true;
       values.chartObjectSelected = event.target.dataItem.dataContext[item.titleField];
+      values.chartSecondaryObjectSelected = null;
     });
   }
 
@@ -2320,12 +2327,16 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   goToDrillDownSettings(): void
   {
+    let childChart= {
+      types: null
+    };
+
     // clear child panel list befre opening drill down dialog
     this.childPanelValues = [];
     this.childPanelsConfigured = [];
 
     let dialogRef = this.dialog.open (MsfDashboardDrillDownComponent, {
-      height: '425px',
+      height: '470px',
       width: '450px',
       panelClass: 'msf-dashboard-child-panel-dialog',
       data: {
@@ -2337,19 +2348,19 @@ export class MsfDashboardPanelComponent implements OnInit {
         childPanelsConfigured: this.childPanelsConfigured,
         categoryOptions: JSON.stringify (this.values.currentOptionCategories),
         functions: this.functions,
-        chartTypes: this.chartTypes,
+        childChart: childChart,
         updateTimeInterval: 0
       }
     });
 
     dialogRef.afterClosed ().subscribe (
       () => {
-        this.saveChildPanels ();
+        this.saveChildPanels (childChart.types);
       }
     );
   }
 
-  getChildPanelsInfo(drillDownIds): any[]
+  getChildPanelsInfo(childChartTypes, drillDownIds): any[]
   {
     let childPanels = [];
 
@@ -2369,7 +2380,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         xaxis: value.chartColumnOptions.indexOf (value.xaxis),
         values: value.chartColumnOptions.indexOf (value.valueColumn),
         function: this.functions.indexOf (value.function),
-        chartType: this.chartTypes.indexOf (value.currentChartType),
+        chartType: childChartTypes.indexOf (value.currentChartType),
         paletteColors: JSON.stringify (value.paletteColors)
       });
 
@@ -2380,10 +2391,10 @@ export class MsfDashboardPanelComponent implements OnInit {
     return childPanels;
   }
 
-  saveChildPanels(): void
+  saveChildPanels(childChartTypes): void
   {
     let drillDownIds = [];
-    let childPanels = this.getChildPanelsInfo (drillDownIds);
+    let childPanels = this.getChildPanelsInfo (childChartTypes, drillDownIds);
 
     if (!childPanels.length)
       return;
@@ -2392,9 +2403,46 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.service.saveChildPanels (this, childPanels, this.values.id, drillDownIds, this.drillDownSettingsClear, this.drillDownSettingsClear);
   }
 
-  // destroy child panel list after success or failure
-  drillDownSettingsClear(_this): void
+  // update child panel list after success or failure
+  drillDownSettingsClear(_this, data): void
   {
+    let drillDownIds: number[] = [];
+
+    drillDownIds = data.drillDownIds;
+
+    for (let i = 0; i < drillDownIds.length; i++)
+    {
+      let newChildPanel: boolean = true;
+      let drillDownId = drillDownIds[i];
+
+      for (let j = 0; j < _this.values.childPanels.length; j++)
+      {
+        let childPanel = _this.values.childPanels[j];
+
+        if (drillDownId == childPanel.id)
+        {
+          childPanel.title = data.childPanels[i].title;
+          newChildPanel = false;
+          break;
+        }
+      }
+
+      if (newChildPanel)
+      {
+        _this.values.childPanels.push ({
+          id: drillDownId,
+          title: data.childPanels[i].title
+        });
+      }
+    }
+
+    if (_this.values.childPanels.length > 1)
+    {
+      _this.values.childPanels.sort (function(e1, e2) {
+        return e1.id - e2.id;
+      });
+    }
+
     _this.values.isLoading = false;
   }
 
