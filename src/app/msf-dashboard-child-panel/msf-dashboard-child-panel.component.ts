@@ -550,11 +550,17 @@ export class MsfDashboardChildPanelComponent {
     let currentOptionCategories = this.values.currentOptionCategories;
     let parentArgument = this.data.parentCategory.item.argumentsId;
     let parentCategoryId = this.data.parentCategory.id.toLowerCase ();
-    let secondaryParentCategoryId = this.data.secondaryParentCategory.id.toLowerCase ();
     let filterValue = this.data.categoryFilter;
-    let secondaryParentArgument = this.data.secondaryParentCategory.item.argumentsId;
+    let secondaryParentCategoryId = null;
+    let secondaryParentArgument = null;
     let secondaryFilterValue = this.data.secondaryCategoryFilter;
     let params;
+
+    if (this.data.secondaryParentCategory != null)
+    {
+      secondaryParentCategoryId = this.data.secondaryParentCategory.id.toLowerCase ();
+      secondaryParentArgument = this.data.secondaryParentCategory.item.argumentsId;
+    }
 
     if (currentOptionCategories)
     {
