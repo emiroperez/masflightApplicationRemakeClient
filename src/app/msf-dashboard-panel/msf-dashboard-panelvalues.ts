@@ -57,6 +57,7 @@ export class MsfDashboardPanelValues {
 
     chartClicked: boolean;
     chartObjectSelected: any;
+    chartSecondaryObjectSelected: any;
 
     isLoading: boolean = false;
     updateTimeLeft: number = 5;

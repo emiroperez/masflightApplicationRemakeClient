@@ -30,7 +30,6 @@ export class MsfDashboardComponent implements OnInit {
   displayContextMenu: boolean = false;
   contextMenuX: number = 0;
   contextMenuY: number = 0;
-  contextCategory: any;
   contextMenuItems: any;
   contextParentPanel: MsfDashboardPanelValues;
 
@@ -584,7 +583,6 @@ export class MsfDashboardComponent implements OnInit {
       return true;
     }
 
-    this.contextCategory = dashboardColumn[rowindex].chartObjectSelected;
     this.contextMenuX = event.clientX;
     this.contextParentPanel = dashboardColumn[rowindex];
 
@@ -642,7 +640,9 @@ export class MsfDashboardComponent implements OnInit {
         currentOptionCategories: this.contextParentPanel.currentOptionCategories,
         currentOptionBaseUrl: this.contextParentPanel.currentOption.baseUrl,
         parentCategory: (this.contextParentPanel.currentChartType.flags & ChartFlags.XYCHART ? this.contextParentPanel.xaxis : this.contextParentPanel.variable),
-        categoryFilter: this.contextCategory
+        secondaryParentCategory: (this.contextParentPanel.currentChartType.flags & ChartFlags.XYCHART ? this.contextParentPanel.variable : null),
+        categoryFilter: this.contextParentPanel.chartObjectSelected,
+        secondaryCategoryFilter: this.contextParentPanel.chartSecondaryObjectSelected
       }
     });
   }

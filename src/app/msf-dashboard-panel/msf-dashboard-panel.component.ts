@@ -197,6 +197,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       values.chartClicked = true;
       values.chartObjectSelected = event.target.dataItem.dataContext[values.xaxis.id];
+      values.chartSecondaryObjectSelected = series.dataFields.valueX;
     });
   }
 
@@ -230,6 +231,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       values.chartClicked = true;
       values.chartObjectSelected = event.target.dataItem.dataContext[values.xaxis.id];
+      values.chartSecondaryObjectSelected = series.dataFields.valueY;
     });
   }
 
@@ -275,6 +277,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       values.chartClicked = true;
       values.chartObjectSelected = event.target.dataItem.component.tooltipDataItem.dataContext[values.xaxis.id];
+      values.chartSecondaryObjectSelected = series.dataFields.valueY;
     });
   }
 
@@ -302,6 +305,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       values.chartClicked = true;
       values.chartObjectSelected = event.target.dataItem.dataContext[item.titleField];
+      values.chartSecondaryObjectSelected = null;
     });
   }
 
@@ -327,6 +331,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       values.chartClicked = true;
       values.chartObjectSelected = event.target.dataItem.dataContext[item.titleField];
+      values.chartSecondaryObjectSelected = null;
     });
   }
 
@@ -368,6 +373,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       values.chartClicked = true;
       values.chartObjectSelected = event.target.dataItem.dataContext[item.titleField];
+      values.chartSecondaryObjectSelected = null;
     });
   }
 
@@ -401,6 +407,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       values.chartClicked = true;
       values.chartObjectSelected = event.target.dataItem.dataContext[item.titleField];
+      values.chartSecondaryObjectSelected = null;
     });
   }
 

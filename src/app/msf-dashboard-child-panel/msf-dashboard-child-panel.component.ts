@@ -548,79 +548,12 @@ export class MsfDashboardChildPanelComponent {
   {
     let currentOptionCategories = this.values.currentOptionCategories;
     let parentArgument = this.data.parentCategory.item.argumentsId;
+    let parentCategoryId = this.data.parentCategory.id.toLowerCase ();
+    let secondaryParentCategoryId = this.data.secondaryParentCategory.id.toLowerCase ();
     let filterValue = this.data.categoryFilter;
-    let dateVal1, dateVal2; // used for date categories
-    let params, numSlashes;
-
-    numSlashes = -1;
-
-    // check number of slashes if the value to filter is a date format
-    if (this.data.parentCategory.id.toLowerCase ().includes ("date"))
-    {
-      let numSlashes = 0;
-
-      for (let i = 0; i < filterValue.length; i++)
-      {
-        if (filterValue[i] == '/')
-          numSlashes++;
-      }
-
-      if (numSlashes > 2)
-        numSlashes = 2;
-    }
-    else if (this.data.parentCategory.id.toLowerCase ().includes ("year"))
-      numSlashes = 0;
-    else if (this.data.parentCategory.id.toLowerCase ().includes ("month"))
-      numSlashes = 1;
-    else if (this.data.parentCategory.id.toLowerCase ().includes ("day"))
-      numSlashes = 2;
-
-    // set special values for date formats depending of the number of slashes,
-    // -1 if not a date format
-    if (numSlashes != -1)
-    {
-      if (!numSlashes)
-      {
-        // from January 1 to December 31
-        dateVal1 = filterValue + "0101";
-        dateVal2 = filterValue + "1231";
-      }
-      else
-      {
-        let year, month;
-        let lastDay = {
-          "01" : 31,    // January
-          "02" : 28,    // February
-          "03" : 31,    // March
-          "04" : 30,    // April
-          "05" : 31,    // May
-          "06" : 30,    // June
-          "07" : 31,    // July
-          "08" : 31,    // August
-          "09" : 30,    // September
-          "10" : 31,    // October
-          "11" : 30,    // November
-          "12" : 31     // December
-        };
-
-        year = filterValue.slice (0, 4);
-        month = filterValue.slice (5, 7);
-
-        if (numSlashes == 2)
-        {
-          let day = filterValue.slice (8, 10);
-
-          // use the same day for the date values
-          dateVal1 = dateVal2 = year + month + day;
-        }
-        else
-        {
-          // from the first day of the month to the last one
-          dateVal1 = year + month + "01";
-          dateVal2 = year + month + lastDay[month];
-        }
-      }
-    }
+    let secondaryParentArgument = this.data.secondaryParentCategory.item.argumentsId;
+    let secondaryFilterValue = this.data.secondaryCategoryFilter;
+    let params;
 
     if (currentOptionCategories)
     {
@@ -636,20 +569,17 @@ export class MsfDashboardChildPanelComponent {
 
             if (parentArgument != null && argument.id == parentArgument.id)
             {
-              if (argument.name1 != null && argument.name1.toLowerCase ().includes ("date"))
-              {
-                if (params)
-                  params += "&" + argument.name1 + "=" + dateVal1 + "&" + argument.name2 + "=" + dateVal2;
-                else
-                  params = argument.name1 + "=" + dateVal1 + "&" + argument.name2 + "=" + dateVal2;
-              }
+              if (params)
+                params += "&" + this.utils.getArguments2 (parentArgument, parentCategoryId, filterValue);
               else
-              {
-                if (params)
-                  params += "&" + this.utils.getArguments2 (parentArgument, filterValue);
-                else
-                  params = this.utils.getArguments2 (parentArgument, filterValue);
-              }
+                params = this.utils.getArguments2 (parentArgument, parentCategoryId, filterValue);
+            }
+            else if (secondaryParentArgument != null && argument.id == secondaryParentArgument.id)
+            {
+              if (params)
+                params += "&" + this.utils.getArguments2 (secondaryParentArgument, secondaryParentCategoryId, secondaryFilterValue);
+              else
+                params = this.utils.getArguments2 (secondaryParentArgument, secondaryParentCategoryId, secondaryFilterValue);
             }
             else
             {

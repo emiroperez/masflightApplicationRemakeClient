@@ -138,19 +138,105 @@ export class Utils{
         return args;
     }
 
-    getArguments2(parentArgument: Arguments, categoryFilter)
+    getArguments2(parentArgument: Arguments, parentCategoryId, categoryFilter)
     {
         let args = '';
 
-        // Duplicate the value into the three parameters
-        if (parentArgument.name1)
-            args = parentArgument.name1 + "=" + categoryFilter;
+        if (parentArgument.name1 != null && parentArgument.name1.toLowerCase ().includes ("date"))
+        {
+            let dateVal1, dateVal2, numSlashes;
 
-        if (parentArgument.name2)
-            args += "&" + parentArgument.name2 + "=" + categoryFilter;
+            numSlashes = -1;
 
-        if (parentArgument.name3)
-            args += "&" + parentArgument.name3 + "=" + categoryFilter;
+            // check number of slashes if the value to filter is a date format
+            if (parentCategoryId.includes ("date"))
+            {
+              let numSlashes = 0;
+        
+              for (let i = 0; i < categoryFilter.length; i++)
+              {
+                if (categoryFilter[i] == '/')
+                  numSlashes++;
+              }
+        
+              if (numSlashes > 2)
+                numSlashes = 2;
+            }
+            else if (parentCategoryId.includes ("year"))
+              numSlashes = 0;
+            else if (parentCategoryId.includes ("month"))
+              numSlashes = 1;
+            else if (parentCategoryId.includes ("day"))
+              numSlashes = 2;
+        
+            // set special values for date formats depending of the number of slashes,
+            // -1 if not a date format
+            if (numSlashes != -1)
+            {
+              if (!numSlashes)
+              {
+                // from January 1 to December 31
+                dateVal1 = categoryFilter + "0101";
+                dateVal2 = categoryFilter + "1231";
+              }
+              else
+              {
+                let year, month;
+                let lastDay = {
+                  "01" : 31,    // January
+                  "02" : 28,    // February
+                  "03" : 31,    // March
+                  "04" : 30,    // April
+                  "05" : 31,    // May
+                  "06" : 30,    // June
+                  "07" : 31,    // July
+                  "08" : 31,    // August
+                  "09" : 30,    // September
+                  "10" : 31,    // October
+                  "11" : 30,    // November
+                  "12" : 31     // December
+                };
+        
+                year = categoryFilter.slice (0, 4);
+                month = categoryFilter.slice (5, 7);
+        
+                if (numSlashes == 2)
+                {
+                  let day = categoryFilter.slice (8, 10);
+        
+                  // use the same day for the date values
+                  dateVal1 = dateVal2 = year + month + day;
+                }
+                else
+                {
+                  // from the first day of the month to the last one
+                  dateVal1 = year + month + "01";
+                  dateVal2 = year + month + lastDay[month];
+                }
+              }
+            }
+
+            args = parentArgument.name1 + "=" + dateVal1 + "&" + parentArgument.name2 + "=" + dateVal2;
+        }
+        else if (parentArgument.name1 != null && parentArgument.name1.toLowerCase ().includes ("origin"))
+        {
+            if (parentCategoryId.includes ("origin"))
+                args = parentArgument.name1 + "=" + categoryFilter + "&" + parentArgument.name2 + "=";
+            else
+                args = parentArgument.name1 + "=&" + parentArgument.name2 + "=" + categoryFilter;
+        }
+        else
+        {
+            // Duplicate the value into the three parameters
+            if (parentArgument.name1)
+                args = parentArgument.name1 + "=" + categoryFilter;
+
+            if (parentArgument.name2)
+                args += "&" + parentArgument.name2 + "=" + categoryFilter;
+
+            if (parentArgument.name3)
+                args += "&" + parentArgument.name3 + "=" + categoryFilter;
+        }
 
         return args;
     }
