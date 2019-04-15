@@ -83,10 +83,12 @@ export class MenuOptionComponent implements OnInit {
     this.globals.dataAvailabilityInit();
     if(this.globals.currentOption.tabType === 'map'){
       this.globals.map = true;
+      this.globals.moreResultsBtn = false;
       this.globals.selectedIndex = 1;
     }
     if(this.globals.currentOption.tabType === 'scmap'){
       this.globals.mapsc = true;
+      this.globals.moreResultsBtn = false;
       this.globals.selectedIndex = 1;
       this.globals.scheduleChart = this.AmCharts.makeChart ("chartdivmap", this.makeOptions (""));
     }

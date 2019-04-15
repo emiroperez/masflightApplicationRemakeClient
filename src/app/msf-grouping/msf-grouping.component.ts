@@ -22,13 +22,11 @@ export class MsfGroupingComponent implements OnInit {
                 {id: 'DAY', columnLabel: 'Date' ,columnName:'Date'},
                 {id: 'HOUR', columnLabel: 'Hour', columnName: 'Hour'},
                 {id: 'EQUIPMENTTYPE', columnLabel: 'Equipment Type',columnName:'EquipmentType'},
-                // {id: 'EQUIPMENTTYPEGENERAL', columnLabel: 'General Equipment Type',columnName:'GeneralEquipmentType'},
                 {id: 'AIRLINE', columnLabel: 'Airline',columnName:'Airline'},                          
                 {id: 'ORIGIN', columnLabel: 'Origin Airport',columnName:'Origin'},
                 {id: 'DESTINATION', columnLabel: 'Destination Airport',columnName:'Destination'},
                 {id: 'FLIGHTNUMBER', columnLabel: 'Flight Number',columnName:'FlightNumber'},
                 {id: 'TAILNUMBER', columnLabel: 'Tail Number',columnName:'TailNumber'},
-                // {id: 'ROUTE', columnLabel: 'Route',columnName:'Route'}
   ];
   constructor(private http: ApiClient, public globals: Globals) { }
 

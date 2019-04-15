@@ -1,6 +1,6 @@
 
 <div style="height: 100%;" *ngIf="globals.currentOption && globals.currentOption !== 'dashboard'">
-    <div style="height: 100%;"  [hidden]= "globals.mapsc ">
+    <div style="height: 100%;"  [hidden]= "globals.mapsc">
     <mat-tab-group [selectedIndex]="globals.getSelectedIndex()" #tabs >
         <mat-tab *ngIf="globals.showWelcome" label="Welcome" style="height: 100%;">
             <app-option-welcome></app-option-welcome> 

@@ -74,9 +74,7 @@ export class MsfSchedulePanelComponent implements OnInit {
     
   
      let mapToArray = Array.from(this.mapaairports.values());
-      for (var i = 0; i < mapToArray.length; i += 1) {
-     
-        if (i+1 <  mapToArray.length){
+      for (var i = 0; i < mapToArray.length/2; i ++) {
           countlines++;
           nodeline ={
             "id" :"line"+countlines,
@@ -86,10 +84,6 @@ export class MsfSchedulePanelComponent implements OnInit {
             "longitudes": [ mapToArray[i].longitude, mapToArray[i+1].longitude ]
           }
           lines.push(nodeline);
-
-        }
-        
-      
       }
 
 
@@ -177,6 +171,10 @@ export class MsfSchedulePanelComponent implements OnInit {
    
   ngOnInit() {
     this.mapaairports = new Map();
+    }
+
+    showTable(state:boolean){
+      this.globals.mapsc = state;
     }
 
   

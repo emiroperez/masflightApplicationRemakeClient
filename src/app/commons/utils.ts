@@ -204,7 +204,7 @@ export class Utils{
                 i++;
             }
             return valueAux;
-        }else if(type == ComponentType.tailnumber || type == ComponentType.summary || type == ComponentType.fareTypes 
+        }else if(type == ComponentType.summary || type == ComponentType.fareTypes 
             || type == ComponentType.summaryRevenueBuilds){
            var valueAux="";
            var i = 0;
@@ -229,19 +229,7 @@ export class Utils{
             i++;
         }
         return valueAux;
-       }else if(type == ComponentType.tailnumber){
-           var valueAux="";
-           var i = 0;
-           for(var val of value){
-               if(i == 0){
-                   valueAux = val.id;
-               }else{
-                   valueAux += ","+ val.id;
-               }                
-               i++;
-           }
-           return valueAux;
-         }else if(type == ComponentType.datePeriodYear){
+       }else if(type == ComponentType.datePeriodYear){
             return value;
           }else if (type == ComponentType.sortingCheckboxes){
             var valueAux="";
@@ -410,7 +398,7 @@ export class Utils{
                 i++;
             }
             return valueAux;
-          }else if (type == ComponentType.grouping || type == ComponentType.tailnumber || type == ComponentType.summary 
+          }else if (type == ComponentType.grouping || type == ComponentType.summary 
             || type == ComponentType.fareTypes || type == ComponentType.causesFlightDelaysCheckbox 
             || type == ComponentType.taxiTimesCheckboxes || type == ComponentType.cancelsCheckBox || type== ComponentType.diversionsCheckbox
             || type  == ComponentType.aircraftTypeCheckboxes

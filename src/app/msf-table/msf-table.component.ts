@@ -268,7 +268,7 @@ export class MsfTableComponent implements OnInit {
         mainElement = [mainElement];
       }
       if( _this.globals.totalRecord > 0){
-        if(_this.globals.currentOption.metaData==1){
+        if(_this.globals.currentOption.metaData==1 || _this.globals.currentOption.metaData=='scmap'){
   
           _this.globals.displayedColumns = data.metadata;
           if(_this.groupingArgument!=null){
@@ -316,7 +316,8 @@ export class MsfTableComponent implements OnInit {
           }
       }else if (_this.globals.currentOption.metaData==0){
         _this.template = data.template;
-      }else if (_this.globals.currentOption.metaData==2){
+      }
+      if (_this.globals.currentOption.metaData==2){
         if(data.metadata.length>0){
           _this.globals.metadata =new Map();
           data.metadata.forEach(element => {

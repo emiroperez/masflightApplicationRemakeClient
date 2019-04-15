@@ -398,7 +398,7 @@ toggle(){
       width: "auto",
       height: "auto",
       maxHeight: "700px",
-      maxWidth: "700px",
+      maxWidth: "1000px",
       panelClass: 'msf-column-selector-popup'
     });
   }

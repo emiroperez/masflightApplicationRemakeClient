@@ -4313,4 +4313,16 @@ th.msf-show-table, td.msf-show-table {
   border-bottom: 0.84375em solid transparent;
 }
 
+.mat-expansion-panel-header[aria-disabled=true] .mat-expansion-panel-header-description, .mat-expansion-panel-header[aria-disabled=true] .mat-expansion-panel-header-title {
+  color: #b0b0b0 !important;
+}
+
+.mat-checkbox-disabled.mat-checkbox-checked .mat-checkbox-background, .mat-checkbox-disabled.mat-checkbox-indeterminate .mat-checkbox-background {
+  background-color: #b0b0b0 !important;
+}
+
+.mat-checkbox-disabled:not(.mat-checkbox-checked) .mat-checkbox-frame {
+  border-color: #b0b0b0 !important;
+}
+
 /*# sourceMappingURL=styles.css.map */
