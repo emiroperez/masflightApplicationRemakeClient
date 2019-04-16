@@ -1,4 +1,4 @@
-import { Component, Inject, NgZone } from '@angular/core';
+import { Component, Inject, NgZone, ViewChild } from '@angular/core';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
@@ -8,6 +8,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { Globals } from '../globals/Globals';
 import { ApplicationService } from '../services/application.service';
 import { ApiClient } from '../api/api-client';
+import { MsfTableComponent } from '../msf-table/msf-table.component';
 import { MsfDashboardPanelValues } from '../msf-dashboard-panel/msf-dashboard-panelvalues';
 import { ChartFlags } from '../msf-dashboard-panel/msf-dashboard-chartflags';
 import { CategoryArguments } from '../model/CategoryArguments';
@@ -56,6 +57,12 @@ export class MsfDashboardChildPanelComponent {
     { id: 'min' },
     { id: 'count' }
   ];
+
+  // table variables
+  @ViewChild('msfTableRef')
+  msfTableRef: MsfTableComponent;
+
+  actualPageNumber: number;
 
   constructor(
     public dialogRef: MatDialogRef<MsfDashboardChildPanelComponent>,
@@ -597,13 +604,16 @@ export class MsfDashboardChildPanelComponent {
 
               // check if the argument uses grouping to add chart values that requires grouping
               // to work properly
-              if (argument.name1 != null && argument.name1.toLowerCase ().includes ("grouping"))
+              if (!(this.values.currentChartType.flags & ChartFlags.TABLE) && argument.name1 != null && argument.name1.toLowerCase ().includes ("grouping"))
               {
                 if (this.values.variable.item.grouping && !this.checkGroupingValue (this.values.variable.item.columnName, argument.value1))
                   params += "," + this.values.variable.item.columnName;
 
-                if (this.values.xaxis.item.grouping && !this.checkGroupingValue (this.values.xaxis.item.columnName, argument.value1))
-                  params += "," + this.values.xaxis.item.columnName;
+                if (this.values.currentChartType.flags & ChartFlags.XYCHART)
+                {
+                  if (this.values.xaxis.item.grouping && !this.checkGroupingValue (this.values.xaxis.item.columnName, argument.value1))
+                    params += "," + this.values.xaxis.item.columnName;
+                }
 
                 if (this.values.valueColumn.item.grouping && !this.checkGroupingValue (this.values.valueColumn.item.columnName, argument.value1))
                   params += "," + this.values.valueColumn.item.columnName;
@@ -751,7 +761,10 @@ export class MsfDashboardChildPanelComponent {
         _this.values.currentOptionCategories.push (optionCategory.categoryArgumentsId);
     }
 
-    _this.loadChartData (_this.handlerChartSuccess, _this.handlerChartError);
+    if (_this.values.currentChartType.flags & ChartFlags.TABLE)
+      _this.loadDataTable (false, _this.msfTableRef.handlerSuccess, _this.msfTableRef.handlerError);
+    else
+      _this.loadChartData (_this.handlerChartSuccess, _this.handlerDataError);
   }
 
   noPanelFound(_this)
@@ -782,6 +795,31 @@ export class MsfDashboardChildPanelComponent {
   {
     this.globals.popupLoading = false;
     this.errorMessage = "No data available for chart generation";
+  }
+
+  loadDataTable(moreResults, handlerSuccess, handlerError): void
+  {
+    let url, urlBase, urlArg;
+
+    this.msfTableRef.displayedColumns = [];
+  
+    if (moreResults)
+    {
+      this.actualPageNumber++;
+      this.globals.moreResults = true;
+    }
+    else
+      this.actualPageNumber = 0;
+
+    if (!this.actualPageNumber)
+      this.msfTableRef.dataSource = null;
+
+    urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
+    urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&&pageSize=100&page_number=" + this.actualPageNumber;
+    console.log(urlBase);
+    urlArg = encodeURIComponent(urlBase);
+    url = this.service.host + "/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
+    this.http.get (this.msfTableRef, url, handlerSuccess, handlerError, null);
   }
 
   loadChartData(handlerSuccess, handlerError): void
@@ -823,10 +861,41 @@ export class MsfDashboardChildPanelComponent {
     _this.globals.popupLoading = false;
   }
 
-  handlerChartError(_this, result): void
+  handlerDataError(_this, result): void
   {
     console.log (result);
     _this.globals.popupLoading = false;
-    _this.errorMessage = "Failed to generate chart";
+    _this.errorMessage = "Failed to generate child panel information";
+  }
+
+  isTablePanel(): boolean
+  {
+    return (this.values != null && this.values.currentChartType.flags & ChartFlags.TABLE) ? true : false;
+  }
+
+  stopLoading()
+  {
+    this.globals.popupLoading = false;
+  }
+
+  isLoading(): boolean
+  {
+    return this.globals.popupLoading;
+  }
+
+  moreResults()
+  {
+    if (this.globals.moreResultsBtn)
+    {
+      this.globals.moreResults = false;
+      this.globals.query = true;
+      this.globals.mapsc = false;
+
+      this.globals.popupLoading = true;
+
+      setTimeout (() => {
+        this.loadDataTable (true, this.msfTableRef.handlerSuccess, this.msfTableRef.handlerError);
+      }, 3000);
+    }
   }
 }

@@ -1,5 +1,5 @@
 
-    <div [style.visibility]="globals.dataSource && globals.currentOption.metaData==1 && !globals.template? 'visible' : 'hidden'" #TABLE>
+    <div [style.visibility]="globals.dataSource && currentOption.metaData==1 && !globals.template? 'visible' : 'hidden'" #TABLE>
     <table  #table mat-table  [dataSource]="dataSource" matSort class="mat-elevation-z8 datasource">
     
         <ng-container  [matColumnDef]="column.columnName" *ngFor="let column of metadata">
@@ -32,11 +32,13 @@
     </div>
 
     <div *ngIf="!globals.dataSource && !globals.template">
-        <div class="msf-no-results">Results not available, please select your Filters and click on Search button</div>
+        <div class="msf-no-results">
+          <span *ngIf="!childPanel">Results not available, please select your Filters and click on Search button</span><span *ngIf="childPanel">Results not available, make sure that the control variables are working</span>
+        </div>
     </div>
 
     
-    <div *ngIf="globals.template && globals.currentOption.metaData==0 && !globals.dataSource" class="financial-container">
+    <div *ngIf="globals.template && currentOption.metaData==0 && !globals.dataSource" class="financial-container">
         <div class="financial-table-container" *ngFor="let table of template">
           <div class="financial-title">{{table.title}}</div>
           <div class="financial-content">

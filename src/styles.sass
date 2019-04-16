@@ -1968,6 +1968,13 @@ mat-tab-group
     background-color: #1f1f1f
     color: #ffffff
     overflow-y: visible
+    .msf-dashboard-child-panel-table
+        width: 100%
+        height: 95%
+        overflow: auto
+    .msf-dashboard-child-panel-table-more-button
+        width: 100%
+        height: 5%
     .msf-no-results
         margin-top: 80px
 
@@ -2320,6 +2327,23 @@ mat-tab-group
 #msf-dashboard-panel-form-sub-container
     margin-top: -10px
     height: 15%
+
+#msf-dashboard-drill-down-table-container
+    padding-top: 18%
+    padding-bottom: 18%
+    display: flex
+    justify-content: center
+    flex-direction: row
+    .msf-dashboard-drill-down-table-label-container
+        width: 270px
+        height: 60px
+        display: flex
+        align-items: center
+        text-align: center
+        background-color: $msf-secondary-color
+        .msf-dashboard-drill-down-table-label
+            font-size: 15px
+            width: 100%
 
 @mixin msf-dashboard-panel-form-container($background-color)
     height: 40%

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input ,ChangeDetectorRef, ElementRef} from '@angular/core';
+import { Component, OnInit, ViewChild, Input ,ChangeDetectorRef, ElementRef, EventEmitter} from '@angular/core';
 import {MatSort, MatTableDataSource, MatTab, Sort, MatDialog} from '@angular/material';
 import { Globals } from '../globals/Globals';
 import { ApplicationService } from '../services/application.service';
@@ -20,7 +20,6 @@ export class MsfTableComponent implements OnInit {
 
   utils: Utils;
   
-  isLoading = false;
   color = 'primary';
 
   @Input('tabRef')
@@ -33,6 +32,21 @@ export class MsfTableComponent implements OnInit {
 
   @Input('msfGroupingComponent')
   msfGroupingComponent: MsfGroupingComponent;
+
+  @Input('isLoading')
+  isLoading: any;
+
+  @Input('stopLoading')
+  stopLoading;
+
+  @Input('categoryArguments')
+  categoryArguments: any;
+
+  @Input('currentOption')
+  currentOption: any;
+
+  @Input('childPanel')
+  childPanel: boolean;
 
   metadata;
 
@@ -63,11 +77,7 @@ export class MsfTableComponent implements OnInit {
   }
 
   setGroupingArgument(){
-    var menuOptionArguments = this.globals.currentOption.menuOptionArguments;
-    var categoryArguments = null;
-    if(menuOptionArguments[menuOptionArguments.length-1]!=null){
-       categoryArguments = menuOptionArguments[menuOptionArguments.length-1].categoryArguments;
-    }
+    var categoryArguments = this.categoryArguments;
     if(categoryArguments!=null){
       categoryArguments.forEach(element => {
         if(element.arguments!=null){
@@ -231,7 +241,7 @@ export class MsfTableComponent implements OnInit {
   }
 
   handlerSuccess(_this,data, tab){
-    if(_this.globals.isLoading){
+    if(_this.isLoading ()){
       _this.globals.totalRecord=0;
       _this.setGroupingArgument();
       _this.globals.endTimestamp = new Date();
@@ -268,7 +278,7 @@ export class MsfTableComponent implements OnInit {
         mainElement = [mainElement];
       }
       if( _this.globals.totalRecord > 0){
-        if(_this.globals.currentOption.metaData==1 || _this.globals.currentOption.metaData=='scmap'){
+        if(_this.currentOption.metaData==1 || _this.currentOption.metaData=='scmap'){
   
           _this.globals.displayedColumns = data.metadata;
           if(_this.groupingArgument!=null){
@@ -282,7 +292,7 @@ export class MsfTableComponent implements OnInit {
           
           let dataResult = new MatTableDataSource(mainElement);     
           if( _this.globals.moreResults){
-            if(_this.globals.currentOption.tabType!="athena"&&_this.globals.currentOption.tabType!="mariadb"){
+            if(_this.currentOption.tabType!="athena"&&_this.currentOption.tabType!="mariadb"){
               _this.dataSource.data = _this.dataSource.data.concat(dataResult.data);
             }else{
               _this.dataSource = dataResult;
@@ -291,7 +301,7 @@ export class MsfTableComponent implements OnInit {
             _this.dataSource = dataResult;
           }
 
-          if(_this.globals.currentOption.tabType!="athena"&&_this.globals.currentOption.tabType!="mariadb"){
+          if(_this.currentOption.tabType!="athena"&&_this.currentOption.tabType!="mariadb"){
             if( _this.globals.totalRecord<100 ||  _this.globals.totalRecord>100){
               _this.globals.moreResultsBtn = false;
               _this.globals.moreResults = false;
@@ -314,10 +324,10 @@ export class MsfTableComponent implements OnInit {
               _this.globals.moreResults = false;
             }
           }
-      }else if (_this.globals.currentOption.metaData==0){
+      }else if (_this.currentOption.metaData==0){
         _this.template = data.template;
       }
-      if (_this.globals.currentOption.metaData==2){
+      if (_this.currentOption.metaData==2){
         if(data.metadata.length>0){
           _this.globals.metadata =new Map();
           data.metadata.forEach(element => {
@@ -355,7 +365,8 @@ export class MsfTableComponent implements OnInit {
       }else{
         _this.globals.template = false;
       }
-      _this.globals.isLoading = false;   
+
+      _this.stopLoading ();
     }
   }
 
@@ -365,8 +376,8 @@ export class MsfTableComponent implements OnInit {
       }
   }
 
-  handlerError(_this,result){
-    _this.globals.isLoading = false; 
+  handlerError(_this,result) {
+    _this.stopLoading ();
     _this.globals.dataSource = false;
     _this.globals.template = false;
     console.log(result);

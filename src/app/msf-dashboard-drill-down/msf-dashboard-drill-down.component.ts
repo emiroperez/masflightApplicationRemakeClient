@@ -49,8 +49,8 @@ export class MsfDashboardDrillDownComponent {
     { name: 'Area', flags: ChartFlags.XYCHART | ChartFlags.AREACHART },
     { name: 'Stacked Area', flags: ChartFlags.XYCHART | ChartFlags.STACKED | ChartFlags.AREACHART },
     { name: 'Pie', flags: ChartFlags.PIECHART },
-    { name: 'Donut', flags: ChartFlags.DONUTCHART }/*,
-    { name: 'Table', flags: ChartFlags.TABLE }*/
+    { name: 'Donut', flags: ChartFlags.DONUTCHART },
+    { name: 'Table', flags: ChartFlags.TABLE }
   ];
 
   constructor(
@@ -450,7 +450,18 @@ export class MsfDashboardDrillDownComponent {
   {
     this.currentValue.currentChartType = value;
 
-    if (!(this.currentValue.currentChartType.flags & ChartFlags.XYCHART))
+    if (this.currentValue.currentChartType.flags & ChartFlags.TABLE)
+    {
+      this.currentValue.xaxis = null;
+      this.chartForm.get ('xaxisCtrl').reset ();
+
+      this.currentValue.valueColumn = null;
+      this.chartForm.get ('valueCtrl').reset ();
+
+      this.currentValue.variable = null;
+      this.chartForm.get ('variableCtrl').reset ();
+    }
+    else if (!(this.currentValue.currentChartType.flags & ChartFlags.XYCHART))
     {
       this.currentValue.xaxis = null;
       this.chartForm.get ('xaxisCtrl').reset ();
@@ -487,5 +498,11 @@ export class MsfDashboardDrillDownComponent {
   {
     this.currentValue.function = value;
     this.checkIfPanelIsConfigured ();
+  }
+
+  isTablePanel(): boolean
+  {
+    return !((this.currentValue != null && !(this.currentValue.currentChartType.flags & ChartFlags.TABLE))
+      || this.currentValue == null);
   }
 }

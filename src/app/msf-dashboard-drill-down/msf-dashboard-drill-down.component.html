@@ -34,81 +34,97 @@
       </mat-select>
     </mat-form-field>
   </div>
-  <div class="msf-dashboard-panel-sub-container-column">
-    <div class="msf-dashboard-addmenu-icon-item">
-      <mat-icon class="msf-dashboard-chart-icon" aria-label="Filter List">filter_list</mat-icon>
-      <span class="msf-dashboard-addmenu-item-text">Chart Configuration</span>
+  <div *ngIf="!isTablePanel()">
+    <div class="msf-dashboard-panel-sub-container-column">
+      <div class="msf-dashboard-addmenu-icon-item">
+        <mat-icon class="msf-dashboard-chart-icon" aria-label="Filter List">filter_list</mat-icon>
+        <span class="msf-dashboard-addmenu-item-text">Chart Configuration</span>
+      </div>
+    </div>
+    <div class="msf-dashboard-panel-sub-container-column">
+      <div class="msf-dashboard-chart-options-container">
+        <div class="msf-dashboard-chart-selector">
+          <div class="msf-dashboard-chart-analysis-title">
+            <mat-icon class="msf-dashboard-chart-icon">bar_chart</mat-icon>
+          </div>
+          <div class="msf-dashboard-chart-op-container">
+            <mat-form-field [formGroup]="chartForm" class="msf-full-width" id="msf-dashboard-drill-down-container-column">
+              <mat-select formControlName="variableCtrl" placeholder="Analysis by" (selectionChange)="checkVariable($event.value)">
+                <ngx-mat-select-search [formControl]="variableFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+                <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
+                  {{variable.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="msf-dashboard-chart-selector">
+          <div class="msf-dashboard-chart-analysis-title">
+            <mat-icon class="msf-dashboard-chart-icon">multiline_chart</mat-icon>
+          </div>
+          <div class="msf-dashboard-chart-op-container">
+            <mat-form-field [formGroup]="chartForm" class="msf-full-width" id="msf-dashboard-drill-down-container-column">
+              <mat-select formControlName="xaxisCtrl" placeholder="x - Axis" (selectionChange)="checkXAxis($event.value)">
+                <ngx-mat-select-search [formControl]="xaxisFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+                <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
+                  {{variable.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="msf-dashboard-chart-selector">
+          <div class="msf-dashboard-chart-analysis-title">
+            <mat-icon class="msf-dashboard-chart-icon">show_chart</mat-icon>
+          </div>
+          <div class="msf-dashboard-chart-op-container">
+            <mat-form-field [formGroup]="chartForm" class="msf-full-width" id="msf-dashboard-drill-down-container-column">
+              <mat-select formControlName="valueCtrl" placeholder="Values" (selectionChange)="checkValue($event.value)">
+                <ngx-mat-select-search [formControl]="valueFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+                <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
+                  {{variable.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="msf-dashboard-chart-selector">
+          <div class="msf-dashboard-chart-analysis-title">
+            <mat-icon class="msf-dashboard-chart-icon">functions</mat-icon>
+          </div>
+          <div class="msf-dashboard-chart-op-container">
+            <mat-form-field [formGroup]="chartForm" class="msf-full-width" id="msf-dashboard-drill-down-container-column">
+              <mat-select formControlName="functionCtrl" placeholder="Function" (selectionChange)="checkFunction($event.value)">
+                <mat-option *ngFor="let fun of data.functions" [value]="fun">
+                  {{fun.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="msf-dashboard-panel-sub-container-column-reverse" id="msf-dashboard-drill-down-sub-container-column-reverse">
+          <button mat-flat-button class="flat-button" (click)="closeDialog()">OK</button>
+          <div class="msf-dashboard-panel-control-variable-button">
+            <button [disabled]="!currentValue" mat-mini-fab (click)="goToColorPicker()" color="primary">
+              <mat-icon aria-label="Color Picker">palette</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="msf-dashboard-panel-sub-container-column">
-    <div class="msf-dashboard-chart-options-container">
-      <div class="msf-dashboard-chart-selector">
-        <div class="msf-dashboard-chart-analysis-title">
-          <mat-icon class="msf-dashboard-chart-icon">bar_chart</mat-icon>
-        </div>
-        <div class="msf-dashboard-chart-op-container">
-          <mat-form-field [formGroup]="chartForm" class="msf-full-width" id="msf-dashboard-drill-down-container-column">
-            <mat-select formControlName="variableCtrl" placeholder="Analysis by" (selectionChange)="checkVariable($event.value)">
-              <ngx-mat-select-search [formControl]="variableFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
-              <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
-                {{variable.name}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+  <div *ngIf="isTablePanel()">
+    <div class="msf-dashboard-panel-sub-container-column">
+      <div class="msf-dashboard-chart-options-container" id="msf-dashboard-drill-down-table-container">
+        <div class="msf-dashboard-drill-down-table-label-container">
+          <div class="msf-dashboard-drill-down-table-label">
+            No additional configuration is needed
+          </div>
         </div>
       </div>
-      <div class="msf-dashboard-chart-selector">
-        <div class="msf-dashboard-chart-analysis-title">
-          <mat-icon class="msf-dashboard-chart-icon">multiline_chart</mat-icon>
-        </div>
-        <div class="msf-dashboard-chart-op-container">
-          <mat-form-field [formGroup]="chartForm" class="msf-full-width" id="msf-dashboard-drill-down-container-column">
-            <mat-select formControlName="xaxisCtrl" placeholder="x - Axis" (selectionChange)="checkXAxis($event.value)">
-              <ngx-mat-select-search [formControl]="xaxisFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
-              <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
-                {{variable.name}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="msf-dashboard-chart-selector">
-        <div class="msf-dashboard-chart-analysis-title">
-          <mat-icon class="msf-dashboard-chart-icon">show_chart</mat-icon>
-        </div>
-        <div class="msf-dashboard-chart-op-container">
-          <mat-form-field [formGroup]="chartForm" class="msf-full-width" id="msf-dashboard-drill-down-container-column">
-            <mat-select formControlName="valueCtrl" placeholder="Values" (selectionChange)="checkValue($event.value)">
-              <ngx-mat-select-search [formControl]="valueFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
-              <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
-                {{variable.name}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="msf-dashboard-chart-selector">
-        <div class="msf-dashboard-chart-analysis-title">
-          <mat-icon class="msf-dashboard-chart-icon">functions</mat-icon>
-        </div>
-        <div class="msf-dashboard-chart-op-container">
-          <mat-form-field [formGroup]="chartForm" class="msf-full-width" id="msf-dashboard-drill-down-container-column">
-            <mat-select formControlName="functionCtrl" placeholder="Function" (selectionChange)="checkFunction($event.value)">
-              <mat-option *ngFor="let fun of data.functions" [value]="fun">
-                {{fun.name}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="msf-dashboard-panel-sub-container-column-reverse" id="msf-dashboard-drill-down-sub-container-column-reverse">
-        <button mat-flat-button class="flat-button" (click)="closeDialog()">OK</button>
-        <div class="msf-dashboard-panel-control-variable-button">
-          <button [disabled]="!currentValue" mat-mini-fab (click)="goToColorPicker()" color="primary">
-            <mat-icon aria-label="Color Picker">palette</mat-icon>
-          </button>
-        </div>
-      </div>
+    </div>
+    <div class="msf-dashboard-panel-sub-container-column-reverse" id="msf-dashboard-drill-down-sub-container-column-reverse">
+      <button mat-flat-button class="flat-button" style="height: 40px" (click)="closeDialog()">OK</button>
     </div>
   </div>
 </div>

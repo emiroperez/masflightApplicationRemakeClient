@@ -62,4 +62,25 @@ export class MsfContainerComponent implements OnInit {
       this.globals.mapsc = false;
     }
   }
+
+  getCategoryArguments()
+  {
+    var menuOptionArguments = this.globals.currentOption.menuOptionArguments;
+    var categoryArguments = null;
+    if(menuOptionArguments[menuOptionArguments.length-1]!=null){
+       categoryArguments = menuOptionArguments[menuOptionArguments.length-1].categoryArguments;
+    }
+
+    return categoryArguments;
+  }
+
+  stopLoading()
+  {
+    this.globals.isLoading = false;
+  }
+
+  isLoading(): boolean
+  {
+    return this.globals.isLoading;
+  }
 }
