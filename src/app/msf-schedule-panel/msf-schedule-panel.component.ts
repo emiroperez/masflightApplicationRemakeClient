@@ -175,6 +175,11 @@ export class MsfSchedulePanelComponent implements OnInit {
 
     showTable(state:boolean){
       this.globals.mapsc = state;
+      if(state==false){
+        setTimeout(() => {
+          this.globals.selectedIndex = 2;
+      }, 2000);
+      }
     }
 
   

@@ -109,6 +109,9 @@ export class MsfTableComponent implements OnInit {
             if(element2.type=="groupingCompGenre"){
               this.groupingArgument = element2;
             }
+            if(element2.type=="groupingOpSum2"){
+              this.groupingArgument = element2;
+            }
             if(element2.name1=="limitNumber"){
               this.limitNumber = element2;
             }
@@ -131,6 +134,8 @@ export class MsfTableComponent implements OnInit {
            }else{
             displayedColumns = this.removeFunctionsColumns(displayedColumns,this);
           }
+      }else{
+        displayedColumns = this.removeFunctionsColumns(displayedColumns,this);
       }
         if(this.sortingArgument!=null){
            array2 = this.sortingArgument.value1;
@@ -278,12 +283,11 @@ export class MsfTableComponent implements OnInit {
         mainElement = [mainElement];
       }
       if( _this.globals.totalRecord > 0){
-        if(_this.currentOption.metaData==1 || _this.currentOption.metaData=='scmap'){
-  
+        if(_this.currentOption.metaData==1 || _this.currentOption.tabType=='scmap'){  
           _this.globals.displayedColumns = data.metadata;
-          if(_this.groupingArgument!=null){
+          // if(_this.groupingArgument!=null){
             _this.globals.displayedColumns  = _this.addGroupingColumns(_this.globals.displayedColumns);
-          }
+          // }
           _this.metadata = _this.globals.displayedColumns;
           _this.globals.metadata = data.metadata;
           console.log( _this.globals.displayedColumns);
@@ -339,7 +343,7 @@ export class MsfTableComponent implements OnInit {
         _this.globals.hideParametersPanels = true;
         _this.globals.scheduledata = mainElement;
         _this.globals.scmap=true;
-        _this.globals.tab =false;
+        // _this.globals.tab =false;
       }
       }else{
         if( _this.globals.moreResults){
@@ -394,10 +398,18 @@ export class MsfTableComponent implements OnInit {
     return aux;
   }
 
-  getFormatCell(value:any){
+  getFormatCell(value:any,element:any,column:any){
     var aux = String(value);
     if(value==undefined){
-      return "";
+      if(this.globals.currentOption.tabType=='scmap'&&this.globals.currentOption.metaData==2){
+        aux =""+ element['Flight'][column.columnName];
+        if(aux==undefined){
+          aux =""+ value;
+        }
+      }else{
+        return "";
+      }
+
     }
     aux = aux.replace("%","");
     aux = aux.replace("$","");
