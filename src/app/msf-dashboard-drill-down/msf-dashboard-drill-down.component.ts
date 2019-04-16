@@ -416,10 +416,13 @@ export class MsfDashboardDrillDownComponent {
   {
     // make sure that every value is not null
     if (this.currentValue.currentChartType == null
-      || this.currentValue.variable == null
-      || this.currentValue.valueColumn == null
-      || this.currentValue.function == null
       || this.currentValue.chartName == null)
+      return;
+
+    if (!(this.currentValue.currentChartType.flags & ChartFlags.TABLE)
+      && (this.currentValue.variable == null
+      || this.currentValue.valueColumn == null
+      || this.currentValue.function == null))
       return;
 
     if (this.currentValue.currentChartType.flags & ChartFlags.XYCHART
@@ -428,9 +431,12 @@ export class MsfDashboardDrillDownComponent {
 
     // at least one value must be changed
     if (this.currentValue.currentChartType == this.lastValue.currentChartType
-      && this.currentValue.variable == this.lastValue.variable
-      && this.currentValue.valueColumn == this.lastValue.valueColumn
-      && this.currentValue.function == this.lastValue.function
+      && (!(this.currentValue.currentChartType.flags & ChartFlags.TABLE)
+        && this.currentValue.variable == this.lastValue.variable)
+      && (!(this.currentValue.currentChartType.flags & ChartFlags.TABLE)
+        && this.currentValue.valueColumn == this.lastValue.valueColumn)
+      && (!(this.currentValue.currentChartType.flags & ChartFlags.TABLE)
+        && this.currentValue.function == this.lastValue.function)
       && this.currentValue.chartName == this.lastValue.chartName
       && (this.currentValue.currentChartType.flags & ChartFlags.XYCHART
         && this.currentValue.xaxis == this.lastValue.xaxis)

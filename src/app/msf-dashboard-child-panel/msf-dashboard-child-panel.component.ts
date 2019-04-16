@@ -662,23 +662,6 @@ export class MsfDashboardChildPanelComponent {
     if (i == _this.chartTypes.length)
       notConfigured = true;
 
-    if (_this.values.variable != null && _this.values.variable != -1)
-    {
-      for (i = 0; i < _this.values.chartColumnOptions.length; i++)
-      {
-        if (i == _this.values.variable)
-        {
-          _this.values.variable = _this.values.chartColumnOptions[i];
-          break;
-        }
-      }
-    }
-    else
-      i = _this.values.chartColumnOptions.length;
-
-    if (i == _this.values.chartColumnOptions.length)
-      notConfigured = true;
-
     if (_this.values.currentChartType.flags & ChartFlags.XYCHART)
     {
       if (_this.values.xaxis != null && _this.values.xaxis != -1)
@@ -699,39 +682,59 @@ export class MsfDashboardChildPanelComponent {
         notConfigured = true;
     }
 
-    if (_this.values.valueColumn != null && _this.values.valueColumn != -1)
+    if (!(_this.values.currentChartType.flags & ChartFlags.TABLE))
     {
-      for (i = 0; i < _this.values.chartColumnOptions.length; i++)
+      if (_this.values.variable != null && _this.values.variable != -1)
       {
-        if (i == _this.values.valueColumn)
+        for (i = 0; i < _this.values.chartColumnOptions.length; i++)
         {
-          _this.values.valueColumn = _this.values.chartColumnOptions[i];
-          break;
+          if (i == _this.values.variable)
+          {
+            _this.values.variable = _this.values.chartColumnOptions[i];
+            break;
+          }
         }
       }
-    }
-    else
-      i = _this.values.chartColumnOptions.length;
+      else
+        i = _this.values.chartColumnOptions.length;
+  
+      if (i == _this.values.chartColumnOptions.length)
+        notConfigured = true;
 
-    if (i == _this.values.chartColumnOptions.length)
-      notConfigured = true;
-
-    if (_this.values.function != null && _this.values.function != -1)
-    {
-      for (i = 0; i < _this.functions.length; i++)
+      if (_this.values.valueColumn != null && _this.values.valueColumn != -1)
       {
-        if (i == _this.values.function)
+        for (i = 0; i < _this.values.chartColumnOptions.length; i++)
         {
-          _this.values.function = _this.functions[i];
-          break;
+          if (i == _this.values.valueColumn)
+          {
+            _this.values.valueColumn = _this.values.chartColumnOptions[i];
+            break;
+          }
         }
       }
-    }
-    else
-      i = _this.functions.length;
+      else
+        i = _this.values.chartColumnOptions.length;
 
-    if (i == _this.functions.length)
-      notConfigured = true;
+      if (i == _this.values.chartColumnOptions.length)
+        notConfigured = true;
+
+      if (_this.values.function != null && _this.values.function != -1)
+      {
+        for (i = 0; i < _this.functions.length; i++)
+        {
+          if (i == _this.values.function)
+          {
+            _this.values.function = _this.functions[i];
+            break;
+          }
+        }
+      }
+      else
+        i = _this.functions.length;
+
+      if (i == _this.functions.length)
+        notConfigured = true;
+    }
 
     if (notConfigured)
     {
