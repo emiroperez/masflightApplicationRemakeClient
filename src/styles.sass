@@ -1968,6 +1968,13 @@ mat-tab-group
     background-color: #1f1f1f
     color: #ffffff
     overflow-y: visible
+    .msf-dashboard-child-panel-table
+        width: 100%
+        height: 95%
+        overflow: auto
+    .msf-dashboard-child-panel-table-more-button
+        width: 100%
+        height: 5%
     .msf-no-results
         margin-top: 80px
 
@@ -2321,8 +2328,14 @@ mat-tab-group
     margin-top: -10px
     height: 15%
 
-@mixin msf-dashboard-panel-form-container($background-color)
-    height: 40%
+#msf-dashboard-drill-down-table-container
+    height: 165px
+    display: flex
+    justify-content: center
+    flex-direction: row
+
+@mixin msf-dashboard-panel-form-container($background-color, $height: 40%)
+    height: $height
     align-items: center
     margin-bottom: 10px
     border-style: solid
@@ -2373,6 +2386,25 @@ mat-tab-group
         padding: 15px
         font-size: 12px
 
+#msf-dashboard-panel-table-container-column
+    flex-direction: column
+    overflow-y: auto
+    @include msf-dashboard-panel-form-container(#333333, initial)
+
+#msf-dashboard-panel-table-container-column-empty
+    justify-content: center
+    @include msf-dashboard-panel-form-container(#333333, initial)
+    .msf-no-results
+        color: white
+        background: #01abec
+        margin: 0 100px
+        text-align: center
+        align-items: center
+        vertical-align: middle
+        justify-content: center
+        padding: 15px
+        font-size: 12px
+
 #msf-add-shared-dashboard-content-empty
     justify-content: center
     @include msf-dashboard-panel-form-container(#242424)
@@ -2393,6 +2425,11 @@ mat-tab-group
 
 #msf-dashboard-panel-form-op-container
     width: 48%
+    padding-left: 10px
+
+#msf-dashboard-panel-table-op-container
+    display: flex
+    width: 100%
     padding-left: 10px
 
 #msf-dashboard-form-button

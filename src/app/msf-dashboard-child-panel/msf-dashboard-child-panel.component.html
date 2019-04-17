@@ -10,7 +10,18 @@
   <span *ngIf="values">{{values.chartName}}</span>
   <span *ngIf="!values" style="padding: 5px"></span>
 </div>
-<div class="{{(!globals.popupLoading && !errorMessage) ? 'msf-dashboard-child-panel-container-chart' : 'msf-dashboard-panel-container-invisible'}}" id="msf-dashboard-child-panel-chart-display"></div>
+<div class="{{(!globals.popupLoading && !errorMessage) ? 'msf-dashboard-child-panel-container-chart' : 'msf-dashboard-panel-container-invisible'}}" id="msf-dashboard-child-panel-chart-display">
+  <div *ngIf="isTablePanel()" class="msf-dashboard-child-panel-table">
+    <app-msf-table #msfTableRef [isLoading]="isLoading" [stopLoading]="stopLoading" [categoryArguments]="this.values.currentOptionCategories" [currentOption]="values.currentOption" [childPanel]="true"></app-msf-table>
+  </div>
+  <div *ngIf="isTablePanel()" class="msf-dashboard-child-panel-table-more-button">
+    <div [ngClass]="globals.moreResultsBtn ? 'msf-menu-more-button' : 'msf-menu-more-button disabled-more-button'"
+        (click)="moreResults()" *ngIf="msfTableRef && msfTableRef.dataSource">
+      <img style="width: 16px;height: 16px;" src="../../assets/images/more.png" class="msf-menu-image msf-vertical-middle msf-line">
+      <div class="msf-vertical-middle msf-line" style="font-size: 13px">More Result</div>
+    </div>
+  </div>
+</div>
 <div *ngIf="!globals.popupLoading && errorMessage" class="msf-dashboard-child-panel-container-chart msf-dashboard-child-panel-container">
   <div class="msf-no-results">
     {{errorMessage}}

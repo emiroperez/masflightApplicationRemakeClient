@@ -18,7 +18,7 @@
                     {{globals.currentOption.tab}} <mat-icon (click)="closeTab(2)" class="close-icon">close</mat-icon> 
             </ng-template>
             <div class="msf-viewport-container">
-                <app-msf-table #msfTableRef [tabRef]="tabRef"></app-msf-table>
+                <app-msf-table #msfTableRef [tabRef]="tabRef" [isLoading]="isLoading" [stopLoading]="stopLoading" [categoryArguments]="getCategoryArguments()" [currentOption]="globals.currentOption" [childPanel]="false"></app-msf-table>
             </div>    
         </mat-tab>        
         <mat-tab  *ngIf="globals.generateDynamicTable"  #msfDynamicTableTabRef >

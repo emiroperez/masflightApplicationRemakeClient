@@ -1,4 +1,4 @@
-import { Component, Inject, NgZone } from '@angular/core';
+import { Component, Inject, NgZone, ViewChild } from '@angular/core';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
@@ -8,6 +8,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { Globals } from '../globals/Globals';
 import { ApplicationService } from '../services/application.service';
 import { ApiClient } from '../api/api-client';
+import { MsfTableComponent } from '../msf-table/msf-table.component';
 import { MsfDashboardPanelValues } from '../msf-dashboard-panel/msf-dashboard-panelvalues';
 import { ChartFlags } from '../msf-dashboard-panel/msf-dashboard-chartflags';
 import { CategoryArguments } from '../model/CategoryArguments';
@@ -56,6 +57,12 @@ export class MsfDashboardChildPanelComponent {
     { id: 'min' },
     { id: 'count' }
   ];
+
+  // table variables
+  @ViewChild('msfTableRef')
+  msfTableRef: MsfTableComponent;
+
+  actualPageNumber: number;
 
   constructor(
     public dialogRef: MatDialogRef<MsfDashboardChildPanelComponent>,
@@ -597,13 +604,16 @@ export class MsfDashboardChildPanelComponent {
 
               // check if the argument uses grouping to add chart values that requires grouping
               // to work properly
-              if (argument.name1 != null && argument.name1.toLowerCase ().includes ("grouping"))
+              if (!(this.values.currentChartType.flags & ChartFlags.TABLE) && argument.name1 != null && argument.name1.toLowerCase ().includes ("grouping"))
               {
                 if (this.values.variable.item.grouping && !this.checkGroupingValue (this.values.variable.item.columnName, argument.value1))
                   params += "," + this.values.variable.item.columnName;
 
-                if (this.values.xaxis.item.grouping && !this.checkGroupingValue (this.values.xaxis.item.columnName, argument.value1))
-                  params += "," + this.values.xaxis.item.columnName;
+                if (this.values.currentChartType.flags & ChartFlags.XYCHART)
+                {
+                  if (this.values.xaxis.item.grouping && !this.checkGroupingValue (this.values.xaxis.item.columnName, argument.value1))
+                    params += "," + this.values.xaxis.item.columnName;
+                }
 
                 if (this.values.valueColumn.item.grouping && !this.checkGroupingValue (this.values.valueColumn.item.columnName, argument.value1))
                   params += "," + this.values.valueColumn.item.columnName;
@@ -632,7 +642,7 @@ export class MsfDashboardChildPanelComponent {
     _this.values = new MsfDashboardPanelValues (data.id, data.title,
       data.id, null, null, data.option, data.chartColumnOptions, data.analysis, data.xaxis,
       data.values, data.function, data.chartType, JSON.stringify (_this.data.currentOptionCategories),
-      null, data.paletteColors);
+      data.lastestResponse, data.paletteColors);
 
     // init child panel settings
     if (_this.values.currentChartType != null && _this.values.currentChartType != -1)
@@ -650,23 +660,6 @@ export class MsfDashboardChildPanelComponent {
       i = _this.chartTypes.length;
 
     if (i == _this.chartTypes.length)
-      notConfigured = true;
-
-    if (_this.values.variable != null && _this.values.variable != -1)
-    {
-      for (i = 0; i < _this.values.chartColumnOptions.length; i++)
-      {
-        if (i == _this.values.variable)
-        {
-          _this.values.variable = _this.values.chartColumnOptions[i];
-          break;
-        }
-      }
-    }
-    else
-      i = _this.values.chartColumnOptions.length;
-
-    if (i == _this.values.chartColumnOptions.length)
       notConfigured = true;
 
     if (_this.values.currentChartType.flags & ChartFlags.XYCHART)
@@ -689,39 +682,77 @@ export class MsfDashboardChildPanelComponent {
         notConfigured = true;
     }
 
-    if (_this.values.valueColumn != null && _this.values.valueColumn != -1)
+    if (_this.values.currentChartType.flags & ChartFlags.TABLE)
     {
-      for (i = 0; i < _this.values.chartColumnOptions.length; i++)
+      for (i = 0; i < _this.values.lastestResponse.length; i++)
       {
-        if (i == _this.values.valueColumn)
+        let tableColumn = _this.values.lastestResponse[i];
+
+        for (let j = 0; j < _this.values.chartColumnOptions.length; j++)
         {
-          _this.values.valueColumn = _this.values.chartColumnOptions[i];
-          break;
+          let curVariable = _this.values.chartColumnOptions[j];
+
+          if (curVariable.item.id == tableColumn.id)
+          {
+            _this.values.tableVariables.push (curVariable);
+            break;
+          }
         }
       }
     }
     else
-      i = _this.values.chartColumnOptions.length;
-
-    if (i == _this.values.chartColumnOptions.length)
-      notConfigured = true;
-
-    if (_this.values.function != null && _this.values.function != -1)
     {
-      for (i = 0; i < _this.functions.length; i++)
+      if (_this.values.variable != null && _this.values.variable != -1)
       {
-        if (i == _this.values.function)
+        for (i = 0; i < _this.values.chartColumnOptions.length; i++)
         {
-          _this.values.function = _this.functions[i];
-          break;
+          if (i == _this.values.variable)
+          {
+            _this.values.variable = _this.values.chartColumnOptions[i];
+            break;
+          }
         }
       }
-    }
-    else
-      i = _this.functions.length;
+      else
+        i = _this.values.chartColumnOptions.length;
+  
+      if (i == _this.values.chartColumnOptions.length)
+        notConfigured = true;
 
-    if (i == _this.functions.length)
-      notConfigured = true;
+      if (_this.values.valueColumn != null && _this.values.valueColumn != -1)
+      {
+        for (i = 0; i < _this.values.chartColumnOptions.length; i++)
+        {
+          if (i == _this.values.valueColumn)
+          {
+            _this.values.valueColumn = _this.values.chartColumnOptions[i];
+            break;
+          }
+        }
+      }
+      else
+        i = _this.values.chartColumnOptions.length;
+
+      if (i == _this.values.chartColumnOptions.length)
+        notConfigured = true;
+
+      if (_this.values.function != null && _this.values.function != -1)
+      {
+        for (i = 0; i < _this.functions.length; i++)
+        {
+          if (i == _this.values.function)
+          {
+            _this.values.function = _this.functions[i];
+            break;
+          }
+        }
+      }
+      else
+        i = _this.functions.length;
+
+      if (i == _this.functions.length)
+        notConfigured = true;
+    }
 
     if (notConfigured)
     {
@@ -751,7 +782,10 @@ export class MsfDashboardChildPanelComponent {
         _this.values.currentOptionCategories.push (optionCategory.categoryArgumentsId);
     }
 
-    _this.loadChartData (_this.handlerChartSuccess, _this.handlerChartError);
+    if (_this.values.currentChartType.flags & ChartFlags.TABLE)
+      _this.loadDataTable (false, _this.msfTableRef.handlerSuccess, _this.msfTableRef.handlerError);
+    else
+      _this.loadChartData (_this.handlerChartSuccess, _this.handlerDataError);
   }
 
   noPanelFound(_this)
@@ -782,6 +816,35 @@ export class MsfDashboardChildPanelComponent {
   {
     this.globals.popupLoading = false;
     this.errorMessage = "No data available for chart generation";
+  }
+
+  loadDataTable(moreResults, handlerSuccess, handlerError): void
+  {
+    let url, urlBase, urlArg;
+
+    this.msfTableRef.displayedColumns = [];
+  
+    if (moreResults)
+    {
+      this.actualPageNumber++;
+      this.globals.moreResults = true;
+    }
+    else
+      this.actualPageNumber = 0;
+
+    if (!this.actualPageNumber)
+      this.msfTableRef.dataSource = null;
+
+    urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
+    urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&&pageSize=100&page_number=" + this.actualPageNumber;
+    console.log(urlBase);
+    urlArg = encodeURIComponent(urlBase);
+    url = this.service.host + "/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
+
+    for (let tableVariable of this.values.tableVariables)
+      url += "&metaDataIds=" + tableVariable.item.id;
+
+    this.http.get (this.msfTableRef, url, handlerSuccess, handlerError, null);
   }
 
   loadChartData(handlerSuccess, handlerError): void
@@ -823,10 +886,41 @@ export class MsfDashboardChildPanelComponent {
     _this.globals.popupLoading = false;
   }
 
-  handlerChartError(_this, result): void
+  handlerDataError(_this, result): void
   {
     console.log (result);
     _this.globals.popupLoading = false;
-    _this.errorMessage = "Failed to generate chart";
+    _this.errorMessage = "Failed to generate child panel information";
+  }
+
+  isTablePanel(): boolean
+  {
+    return (this.values != null && this.values.currentChartType.flags & ChartFlags.TABLE) ? true : false;
+  }
+
+  stopLoading()
+  {
+    this.globals.popupLoading = false;
+  }
+
+  isLoading(): boolean
+  {
+    return this.globals.popupLoading;
+  }
+
+  moreResults()
+  {
+    if (this.globals.moreResultsBtn)
+    {
+      this.globals.moreResults = false;
+      this.globals.query = true;
+      this.globals.mapsc = false;
+
+      this.globals.popupLoading = true;
+
+      setTimeout (() => {
+        this.loadDataTable (true, this.msfTableRef.handlerSuccess, this.msfTableRef.handlerError);
+      }, 3000);
+    }
   }
 }

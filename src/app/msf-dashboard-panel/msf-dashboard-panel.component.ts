@@ -62,7 +62,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     { name: 'Pie', flags: ChartFlags.PIECHART, createSeries: this.createPieSeries },
     { name: 'Donut', flags: ChartFlags.DONUTCHART, createSeries: this.createPieSeries },
     { name: 'Information', flags: ChartFlags.INFO },
-    { name: 'Simple Form', flags: ChartFlags.INFO | ChartFlags.FORM }/*,
+    { name: 'Simple Form', flags: ChartFlags.INFO | ChartFlags.FORM },
+    { name: 'Table', flags: ChartFlags.TABLE }/*,
     { name: 'Simple Picture', flags: ChartFlags.INFO | ChartFlags.PICTURE },*/
   ];
 
@@ -2368,23 +2369,46 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     for (let i = 0; i < this.childPanelValues.length; i++)
     {
-      let value = this.childPanelValues[i];
+      let value: MsfDashboardPanelValues = this.childPanelValues[i];
 
       if (!this.childPanelsConfigured[i])
          continue;
 
-      childPanels.push ({
-        id: value.id,
-        option: value.currentOption,
-        title: value.chartName,
-        chartColumnOptions: JSON.stringify (value.chartColumnOptions),
-        analysis: value.chartColumnOptions.indexOf (value.variable),
-        xaxis: value.chartColumnOptions.indexOf (value.xaxis),
-        values: value.chartColumnOptions.indexOf (value.valueColumn),
-        function: this.functions.indexOf (value.function),
-        chartType: childChartTypes.indexOf (value.currentChartType),
-        paletteColors: JSON.stringify (value.paletteColors)
-      });
+      if (value.currentChartType.flags & ChartFlags.TABLE)
+      {
+        let tableVariableIds = [];
+
+        for (let tableVariable of value.tableVariables)
+        {
+          tableVariableIds.push ({
+            id: tableVariable.item.id
+          });
+        }
+
+        childPanels.push ({
+          id: value.id,
+          option: value.currentOption,
+          title: value.chartName,
+          chartColumnOptions: JSON.stringify (value.chartColumnOptions),
+          chartType: childChartTypes.indexOf (value.currentChartType),
+          lastestResponse: JSON.stringify (tableVariableIds)
+        });
+      }
+      else
+      {
+        childPanels.push ({
+          id: value.id,
+          option: value.currentOption,
+          title: value.chartName,
+          chartColumnOptions: JSON.stringify (value.chartColumnOptions),
+          analysis: value.chartColumnOptions.indexOf (value.variable),
+          xaxis: value.chartColumnOptions.indexOf (value.xaxis),
+          values: value.chartColumnOptions.indexOf (value.valueColumn),
+          function: this.functions.indexOf (value.function),
+          chartType: childChartTypes.indexOf (value.currentChartType),
+          paletteColors: JSON.stringify (value.paletteColors)
+        });
+      }
 
       drillDownIds.push (this.values.currentOption.drillDownOptions[i].id);
       this.childPanelsConfigured[i] = false;

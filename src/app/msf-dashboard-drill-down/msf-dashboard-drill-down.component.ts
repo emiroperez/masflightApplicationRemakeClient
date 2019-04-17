@@ -34,6 +34,7 @@ export class MsfDashboardDrillDownComponent {
   public variableFilterCtrl: FormControl = new FormControl ();
   public xaxisFilterCtrl: FormControl = new FormControl ();
   public valueFilterCtrl: FormControl = new FormControl ();
+  public tableFilterCtrl: FormControl = new FormControl ();
 
   private convertValues: any[] = [];
 
@@ -49,8 +50,8 @@ export class MsfDashboardDrillDownComponent {
     { name: 'Area', flags: ChartFlags.XYCHART | ChartFlags.AREACHART },
     { name: 'Stacked Area', flags: ChartFlags.XYCHART | ChartFlags.STACKED | ChartFlags.AREACHART },
     { name: 'Pie', flags: ChartFlags.PIECHART },
-    { name: 'Donut', flags: ChartFlags.DONUTCHART }/*,
-    { name: 'Table', flags: ChartFlags.TABLE }*/
+    { name: 'Donut', flags: ChartFlags.DONUTCHART },
+    { name: 'Table', flags: ChartFlags.TABLE }
   ];
 
   constructor(
@@ -73,7 +74,8 @@ export class MsfDashboardDrillDownComponent {
       xaxisCtrl: new FormControl ({ value: '', disabled: true }),
       valueCtrl: new FormControl ({ value: '', disabled: true }),
       functionCtrl: new FormControl ({ value: '', disabled: true }),
-      panelNameCtrl: new FormControl ({ value: '', disabled: true })
+      panelNameCtrl: new FormControl ({ value: '', disabled: true }),
+      tableCtrl: new FormControl ({ value: '', disabled: true })
     });
 
     // configure child panels in order to be able to configure the drill down settings
@@ -221,6 +223,7 @@ export class MsfDashboardDrillDownComponent {
     _this.searchChange (_this.variableFilterCtrl);
     _this.searchChange (_this.xaxisFilterCtrl);
     _this.searchChange (_this.valueFilterCtrl);
+    _this.searchChange (_this.tableFilterCtrl);
 
     // enable the combo box that allows to select the values for the chart
     _this.chartForm.get ('chartCtrl').enable ();
@@ -416,10 +419,13 @@ export class MsfDashboardDrillDownComponent {
   {
     // make sure that every value is not null
     if (this.currentValue.currentChartType == null
-      || this.currentValue.variable == null
-      || this.currentValue.valueColumn == null
-      || this.currentValue.function == null
       || this.currentValue.chartName == null)
+      return;
+
+    if (!(this.currentValue.currentChartType.flags & ChartFlags.TABLE)
+      && (this.currentValue.variable == null
+      || this.currentValue.valueColumn == null
+      || this.currentValue.function == null))
       return;
 
     if (this.currentValue.currentChartType.flags & ChartFlags.XYCHART
@@ -428,9 +434,12 @@ export class MsfDashboardDrillDownComponent {
 
     // at least one value must be changed
     if (this.currentValue.currentChartType == this.lastValue.currentChartType
-      && this.currentValue.variable == this.lastValue.variable
-      && this.currentValue.valueColumn == this.lastValue.valueColumn
-      && this.currentValue.function == this.lastValue.function
+      && (!(this.currentValue.currentChartType.flags & ChartFlags.TABLE)
+        && this.currentValue.variable == this.lastValue.variable)
+      && (!(this.currentValue.currentChartType.flags & ChartFlags.TABLE)
+        && this.currentValue.valueColumn == this.lastValue.valueColumn)
+      && (!(this.currentValue.currentChartType.flags & ChartFlags.TABLE)
+        && this.currentValue.function == this.lastValue.function)
       && this.currentValue.chartName == this.lastValue.chartName
       && (this.currentValue.currentChartType.flags & ChartFlags.XYCHART
         && this.currentValue.xaxis == this.lastValue.xaxis)
@@ -450,17 +459,36 @@ export class MsfDashboardDrillDownComponent {
   {
     this.currentValue.currentChartType = value;
 
-    if (!(this.currentValue.currentChartType.flags & ChartFlags.XYCHART))
+    if (this.currentValue.currentChartType.flags & ChartFlags.TABLE)
+    {
+      this.currentValue.xaxis = null;
+      this.chartForm.get ('xaxisCtrl').reset ();
+
+      this.currentValue.valueColumn = null;
+      this.chartForm.get ('valueCtrl').reset ();
+
+      this.currentValue.variable = null;
+      this.chartForm.get ('variableCtrl').reset ();
+    }
+    else if (!(this.currentValue.currentChartType.flags & ChartFlags.XYCHART))
     {
       this.currentValue.xaxis = null;
       this.chartForm.get ('xaxisCtrl').reset ();
       this.chartForm.get ('xaxisCtrl').disable ();
+
+      this.currentValue.formVariables = [];
+      this.chartForm.get ('tableCtrl').reset ();
     }
     else
+    {
+      this.currentValue.formVariables = [];
       this.chartForm.get ('xaxisCtrl').enable ();
+      this.chartForm.get ('tableCtrl').reset ();
+    }
 
     this.chartForm.get ('variableCtrl').enable ();
     this.chartForm.get ('valueCtrl').enable ();
+    this.chartForm.get ('tableCtrl').enable ();
 
     this.checkIfPanelIsConfigured ();
   }
@@ -487,5 +515,27 @@ export class MsfDashboardDrillDownComponent {
   {
     this.currentValue.function = value;
     this.checkIfPanelIsConfigured ();
+  }
+
+  isTablePanel(): boolean
+  {
+    return !((this.currentValue != null && !(this.currentValue.currentChartType.flags & ChartFlags.TABLE))
+      || this.currentValue == null);
+  }
+
+  isTableVariableValid(): boolean
+  {
+    return this.chartForm.get ('tableCtrl').value;
+  }
+
+  addTableVariable(): void
+  {
+    this.currentValue.tableVariables.push (this.chartForm.get ('tableCtrl').value);
+    this.chartForm.get ('tableCtrl').reset ();
+  }
+
+  deleteColumnFromTable(index): void
+  {
+    this.currentValue.tableVariables.splice (index, 1);
   }
 }
