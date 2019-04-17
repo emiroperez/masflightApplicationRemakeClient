@@ -2,87 +2,96 @@
         background: rgb(30, 30, 30);
         width: 100%;
     }
-    
+
     .standard-input-text {
         color: white;
-        height: 30px;
+        height: 15px;
     }
-    
+
     div.mat-select-panel .mat-primary .ng-star-inserted .mat-select-panel-done-animating {
         background-color: black;
     }
-    
+
     .mat-select-valuue {
         color: black !important;
     }
-    
+
     .is-active {
         background-color: #182128;
     }
-    
+
     .is-inactive {
         background-color: transparent;
     }
-    
+
     .category-active {
         background-color: #5d5b5b !important;
     }
-    
+
     .category-inactive {
         background-color: transparent;
     }
-    
+
     .dialog-category-arguments-container {
-        display: flex;
-        flex-wrap: wrap;
-        max-height: 300px;
         overflow-y: auto;
+        width: 95%;
+        margin-top: 30px;
+        background-color: #1a1a1a;
     }
-    
+
     .dialog-item {
         padding: 5px;
+        display: flex;
+        height: 25px;
+        justify-content: left;
+        flex-direction: row;
         margin: 3px;
-        width: 130px;
         cursor: pointer;
         text-align: center;
-        -moz-box-shadow: inset 0 0 5px #00000038;
-        -webkit-box-shadow: inset 0 0 5px #00000038;
-        box-shadow: inset 0 0 5px #00000038;
         border-radius: 5px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
-    
+
     .dialog-item:hover {
         background-color: #182128;
     }
-    
+
     .text-item-category-argument {
-        margin-top: 3px;
+        vertical-align: middle;
         height: 30px;
+        line-height: 30px;
+        display: table-cell;
+        text-align: left;
+        font-size: 13px;
         color: white;
     }
-    
+
     .text-item-category-argument::placeholder {
         /* Chrome, Firefox, Opera, Safari 10.1+ */
         color: white;
         opacity: 1;
         /* Firefox */
     }
-    
+
     .text-item-category-argument:-ms-input-placeholder {
         /* Internet Explorer 10-11 */
         color: white;
     }
-    
+
     .text-item-category-argument::-ms-input-placeholder {
         /* Microsoft Edge */
         color: white;
     }
-    
+
     .img-item-category-argument {
-        height: 33px;
-        width: 33px;
+        height: 16px;
+        width: 16px;
+        margin-right: 8px;
+        margin-top: 6px
     }
-    
+
     .group-category {
         display: flex;
         align-items: center;
@@ -97,18 +106,18 @@
         background-color: #3d3d3d;
         margin-bottom: 5px;
     }
-    
+
     .group-category-text {
         color: white;
         margin-left: 5px;
         word-break: break-word;
         margin: 0 14px;
     }
-    
+
     table.argument-table>thead>tr {
         height: 30px !important;
     }
-    
+
     .input-table {
         width: 100%;
         border: 0;
@@ -118,7 +127,7 @@
         color: #d1d2d2;
         font: 500 13px/32px Roboto, "Helvetica Neue", sans-serif;
     }
-    
+
     .select-table {
         width: 100%;
         background-color: #3d3d3d;
@@ -127,7 +136,7 @@
         outline-color: #3d3d3d;
         font: 500 13px/32px Roboto, "Helvetica Neue", sans-serif;
     }
-    
+
     table.argument-table {
         background-color: #3d3d3d;
         text-align: left;
@@ -135,20 +144,20 @@
         color: #000000;
         font: 500 8px/20px Roboto, "Helvetica Neue", sans-serif;
     }
-    
+
     table.argument-table td {
         border-bottom: 1px solid #4f4e4e;
         padding: 10px;
     }
-    
+
     table.argument-table tbody td {
         font-size: 13px;
     }
-    
+
     table.argument-table thead {
         background-color: #333333;
     }
-    
+
     table.argument-table thead th {
         font-size: 15px;
         font-weight: bold;
@@ -156,19 +165,19 @@
         padding: 10px;
         font: 500 15px/32px Roboto, "Helvetica Neue", sans-serif;
     }
-    
+
     table.argument-table thead th:first-child {
         border-left: none;
     }
-    
+
     table.argument-table tfoot td {
         font-size: 14px;
     }
-    
+
     table.argument-table tfoot .links {
         text-align: right;
     }
-    
+
     table.argument-table tfoot .links a {
         display: inline-block;
         background: #1C6EA4;
@@ -176,7 +185,7 @@
         padding: 2px 8px;
         border-radius: 5px;
     }
-    
+
     .arguments-container {
         margin-bottom: 10px;
         padding: 10px;
@@ -185,58 +194,96 @@
         box-shadow: inset 0 0 5px #00000038;
         border-radius: 0px;
     }
-    
+
     .arguments-child {
-        width: 250px;
-        margin: auto;
+        width: 40%;
     }
-    
+
     .arguments-title {
         text-align: center;
         font: 500 15px/32px Roboto, "Helvetica Neue", sans-serif;
     }
-    
+
     .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label,
     .msf-price-fare .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus+.mat-form-field-label-wrapper .mat-form-field-label {
         -webkit-transform: translateY(-1.239125em) scale(.75) perspective(100px) translateZ(.001px) !important;
         transform: translateY(-1.239125em) scale(.75) perspective(100px) translateZ(.001px) !important;
     }
-    
+
     h2 {
         font-weight: 500;
     }
-    
+
     .draggable-list {
         max-width: 100%;
         display: block;
         overflow: hidden;
         background-color: rgb(30, 30, 30);
     }
-    
+
     .draggable-box {
         cursor: move;
         background-color: rgb(30, 30, 30);
     }
-    
+
     .cdk-drag-preview {
         box-sizing: border-box;
         box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
     }
-    
+
     .cdk-drag-placeholder {
         opacity: 0;
     }
-    
+
     .cdk-drag-animating {
         transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
     }
-    
+
     .draggable-box:last-child {}
-    
+
     .draggable-list.cdk-drop-list-dragging .draggable-box:not(.cdk-drag-placeholder) {
         transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
     }
-    
+
     .dialog-category-arguments::-webkit-scrollbar {
         display: none;
+    }
+
+    .button-section {
+        font-size: 14px;
+        color: white;
+        padding-left: 5%
+    }
+
+    .button-setup {
+        display: flex;
+        flex-direction: row;
+        width: 30%;
+        background-color: #1a1a1a;
+        margin-right: 5%;
+    }
+
+    .category-list-item {
+        margin-bottom: 5px;
+    }
+
+    .is-active-cat {
+        background-color: #182128;
+    }
+
+    .is-inactive {
+        background-color: transparent;
+    }
+
+    .mat-form-field.mat-focused .mat-form-field-ripple {
+        background-color: transparent;
+    }
+
+    .menu-recursive-input input {
+        background-color: transparent;
+        border: none;
+        color: white;
+        font-size: 12px;
+        height: 30px;
+        width: 90%;
     }
