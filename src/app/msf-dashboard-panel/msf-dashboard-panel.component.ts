@@ -24,6 +24,7 @@ import { MsfDashboardPanelValues } from '../msf-dashboard-panel/msf-dashboard-pa
 import { ComponentType } from '../commons/ComponentType';
 import { MessageComponent } from '../message/message.component';
 import { ChartFlags } from '../msf-dashboard-panel/msf-dashboard-chartflags';
+import { forEach } from '@angular/router/src/utils/collection';
 
 am4core.useTheme(am4themes_animated);
 am4core.useTheme(am4themes_dark);
@@ -1344,7 +1345,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.currentOptionCategories = [];
 
     for (let optionCategory of data)
-      _this.values.currentOptionCategories.push (optionCategory.categoryArgumentsId);
+      for (let category of optionCategory.categoryArgumentsId)
+      _this.values.currentOptionCategories.push (category);
     _this.variableCtrlBtnEnabled = true;
 
     _this.chartForm.get ('variableCtrl').enable ();
@@ -1427,7 +1429,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     // workaround to prevent errors on certain data forms
     if (this.haveSortingCheckboxes ())
       this.globals.isLoading = true;
-
+    console.log(this.values.currentOptionCategories)
     this.dialog.open (MsfDashboardControlVariablesComponent, {
       height: '605px',
       width: '400px',
