@@ -27,8 +27,8 @@
 </div>
 <div class="msf-dashboard-control-variables-button" id="msf-dashboard-drill-down-container" *ngIf="!globals.popupLoading">
   <button [disabled]="!selectedDashboardItem" mat-flat-button [ngClass]="selectedDashboardItem ? 'flat-button' : 'flat-button-disabled'" (click)="addItem()">Add Item</button>
-  &nbsp;&nbsp;
+  <span class="button-separator"></span>
   <button [disabled]="!selectedDashboardItem" mat-flat-button [ngClass]="selectedDashboardItem ? 'flat-button' : 'flat-button-disabled'" (click)="removeItem()">Remove Item</button>
-  &nbsp;&nbsp;
+  <span class="button-separator"></span>
   <button mat-flat-button class="flat-button" (click)="closeDialog()">OK</button>
 </div>

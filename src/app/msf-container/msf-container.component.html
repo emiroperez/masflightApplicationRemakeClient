@@ -1,6 +1,6 @@
 
 <div style="height: 100%;" *ngIf="globals.currentOption && globals.currentOption !== 'dashboard'">
-    <div style="height: 100%;"  [hidden]= "globals.mapsc ">
+    <div style="height: 100%;"  [hidden]= "globals.mapsc">
     <mat-tab-group [selectedIndex]="globals.getSelectedIndex()" #tabs >
         <mat-tab *ngIf="globals.showWelcome" label="Welcome" style="height: 100%;">
             <app-option-welcome></app-option-welcome> 
@@ -18,7 +18,7 @@
                     {{globals.currentOption.tab}} <mat-icon (click)="closeTab(2)" class="close-icon">close</mat-icon> 
             </ng-template>
             <div class="msf-viewport-container">
-                <app-msf-table #msfTableRef [tabRef]="tabRef"></app-msf-table>
+                <app-msf-table #msfTableRef [tabRef]="tabRef" [isLoading]="isLoading" [stopLoading]="stopLoading" [categoryArguments]="getCategoryArguments()" [currentOption]="globals.currentOption" [childPanel]="false"></app-msf-table>
             </div>    
         </mat-tab>        
         <mat-tab  *ngIf="globals.generateDynamicTable"  #msfDynamicTableTabRef >

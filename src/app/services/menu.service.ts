@@ -66,20 +66,50 @@ export class MenuService {
 
   updateDashboardTitle(_this, id, title, successHandler, errorHandler)
   {
-    let url = _this.globals.baseUrl+ "/updateDashboardTitle?id=" + id + "&title=" + title;
+    let url = _this.globals.baseUrl + "/updateDashboardTitle?id=" + id + "&title=" + title;
     this.post (_this, url, null, successHandler, errorHandler);
   }
 
   deleteDashboard(_this, id, successHandler, errorHandler)
   {
-    let url = _this.globals.baseUrl+ "/deleteDashboard?id=" + id;
+    let url = _this.globals.baseUrl + "/deleteDashboard?id=" + id;
     this.post (_this, url, null, successHandler, errorHandler);
+  }
+
+  deleteSharedDashboard(_this, dashboardId, successHandler, errorHandler)
+  {
+    let url = _this.globals.baseUrl + "/secure/deleteSharedDashboard?dashboardId=" + dashboardId;
+    this.postSecure (_this, url, null, successHandler, errorHandler);
   }
 
   getSharedContentByUser(_this, successHandler, errorHandler)
   {
     let url = _this.globals.baseUrl + "/secure/getSharedContent/byUser?appId=" + _this.globals.currentApplication.id;
     this.get (_this, url, successHandler, errorHandler);
+  }
+
+  addSharedDashboard(_this, dashboardId, handlerSuccess, handlerError)
+  {
+    let url = _this.globals.baseUrl + "/secure/addSharedDashboard?dashboardId=" + dashboardId;
+    this.postSecure (_this, url, null, handlerSuccess, handlerError);
+  }
+
+  addSharedReadOnlyDashboard(_this, dashboardId, handlerSuccess, handlerError)
+  {
+    let url = _this.globals.baseUrl + "/secure/addSharedReadOnlyDashboard?dashboardId=" + dashboardId;
+    this.postSecure (_this, url, null, handlerSuccess, handlerError);
+  }
+
+  getSharedDashboardsByUser(_this, successHandler, errorHandler)
+  {
+    let url = _this.globals.baseUrl + "/secure/getSharedDashboards?application=" + _this.globals.currentApplication.id;
+    this.get (_this, url, successHandler, errorHandler);
+  }
+
+  getUsers(_this, handlerSuccess, handlerError)
+  {
+    let url = _this.globals.baseUrl + "/secure/getAllUsers";
+    this.get (_this, url, handlerSuccess, handlerError);
   }
 
   createAuthorizationHeader() {

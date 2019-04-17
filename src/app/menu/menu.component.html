@@ -7,9 +7,12 @@
     </ng-container>
     <button mat-button class='msf-menu-op-3' [matMenuTriggerFor]="dashboardMenu">Dashboards</button>
     <mat-menu #dashboardMenu="matMenu">
-        <button mat-menu-item *ngFor="let dashboard of dashboards" (click)="goToDashboard(dashboard)">
+        <button mat-menu-item *ngFor="let dashboard of dashboards" (click)="goToDashboard(dashboard, false)">
               {{dashboard.title}}
           </button>
+        <button mat-menu-item *ngFor="let dashboard of sharedDashboards" (click)="goToDashboard(dashboard, true)">
+          {{dashboard.title}} (Read only)
+        </button>
         <button mat-menu-item (click)="checkSharedItems()">Shared with me</button>
         <button mat-menu-item (click)="addDashboard()">Add dashboard</button>
     </mat-menu>

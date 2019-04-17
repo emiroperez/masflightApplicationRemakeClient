@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, Input, NgZone, SimpleChanges } from '@angular/core';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
@@ -6,7 +7,7 @@ import am4themes_dark from "@amcharts/amcharts4/themes/dark";
 import { CategoryArguments } from '../model/CategoryArguments';
 import { Globals } from '../globals/Globals';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
-import { ReplaySubject, Subject, timer } from 'rxjs';
+import { ReplaySubject, Subject } from 'rxjs';
 import { MatSelect, MatDialog } from '@angular/material';
 import { takeUntil } from 'rxjs/operators';
 
@@ -34,7 +35,8 @@ const blueJeans = am4core.color ("#67b7dc");
 
 @Component({
   selector: 'app-msf-dashboard-panel',
-  templateUrl: './msf-dashboard-panel.component.html'
+  templateUrl: './msf-dashboard-panel.component.html',
+  styleUrls: ['./msf-dashboard-panel.component.css']
 })
 export class MsfDashboardPanelComponent implements OnInit {
   utils: Utils;
@@ -59,8 +61,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     { name: 'Pie', flags: ChartFlags.PIECHART, createSeries: this.createPieSeries },
     { name: 'Donut', flags: ChartFlags.DONUTCHART, createSeries: this.createPieSeries },
     { name: 'Information', flags: ChartFlags.INFO },
-    { name: 'Simple Form', flags: ChartFlags.INFO | ChartFlags.FORM }/*,
-    { name: 'Simple Picture', flags: ChartFlags.INFO | ChartFlags.PICTURE }*/
+    { name: 'Simple Form', flags: ChartFlags.INFO | ChartFlags.FORM },
+    { name: 'Table', flags: ChartFlags.TABLE }/*,
+    { name: 'Simple Picture', flags: ChartFlags.INFO | ChartFlags.PICTURE },*/
   ];
 
   functions:any[] = [
@@ -102,6 +105,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   public variableFilterCtrl: FormControl = new FormControl ();
   public xaxisFilterCtrl: FormControl = new FormControl ();
   public valueFilterCtrl: FormControl = new FormControl ();
+  public tableFilterCtrl: FormControl = new FormControl ();
 
   public infoVar1FilterCtrl: FormControl = new FormControl ();
   public infoVar2FilterCtrl: FormControl = new FormControl ();
@@ -134,10 +138,11 @@ export class MsfDashboardPanelComponent implements OnInit {
       infoVar2Ctrl: new FormControl ({ value: '', disabled: true }),
       infoVar3Ctrl: new FormControl ({ value: '', disabled: true }),
       columnCtrl: new FormControl ({ value: '', disabled: true }),
-      fontSizeCtrl: new FormControl ({ value: '', disabled: true }),
-      valueFontSizeCtrl: new FormControl ({ value: '', disabled: true }),
-      valueOrientationCtrl: new FormControl ({ value: '', disabled: true }),
-      intervalCtrl: new FormControl ({ value: 5, disabled: true })
+      fontSizeCtrl: new FormControl ({ value: this.fontSizes[1], disabled: true }),
+      valueFontSizeCtrl: new FormControl ({ value: this.fontSizes[1], disabled: true }),
+      valueOrientationCtrl: new FormControl ({ value: this.orientations[0], disabled: true }),
+      intervalCtrl: new FormControl ({ value: 5, disabled: true }),
+      tableCtrl: new FormControl ({ value: '', disabled: true })
     });
   }
 
@@ -195,6 +200,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       values.chartClicked = true;
       values.chartObjectSelected = event.target.dataItem.dataContext[values.xaxis.id];
+      values.chartSecondaryObjectSelected = series.dataFields.valueX;
     });
   }
 
@@ -228,6 +234,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       values.chartClicked = true;
       values.chartObjectSelected = event.target.dataItem.dataContext[values.xaxis.id];
+      values.chartSecondaryObjectSelected = series.dataFields.valueY;
     });
   }
 
@@ -273,6 +280,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       values.chartClicked = true;
       values.chartObjectSelected = event.target.dataItem.component.tooltipDataItem.dataContext[values.xaxis.id];
+      values.chartSecondaryObjectSelected = series.dataFields.valueY;
     });
   }
 
@@ -300,6 +308,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       values.chartClicked = true;
       values.chartObjectSelected = event.target.dataItem.dataContext[item.titleField];
+      values.chartSecondaryObjectSelected = null;
     });
   }
 
@@ -325,6 +334,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       values.chartClicked = true;
       values.chartObjectSelected = event.target.dataItem.dataContext[item.titleField];
+      values.chartSecondaryObjectSelected = null;
     });
   }
 
@@ -366,6 +376,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       values.chartClicked = true;
       values.chartObjectSelected = event.target.dataItem.dataContext[item.titleField];
+      values.chartSecondaryObjectSelected = null;
     });
   }
 
@@ -399,6 +410,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       values.chartClicked = true;
       values.chartObjectSelected = event.target.dataItem.dataContext[item.titleField];
+      values.chartSecondaryObjectSelected = null;
     });
   }
 
@@ -761,6 +773,17 @@ export class MsfDashboardPanelComponent implements OnInit {
     );
   }
 
+  checkGroupingValue(categoryColumnName, values): boolean
+  {
+    for (let value of values)
+    {
+      if (value.columnName === categoryColumnName)
+        return true;          // already in the grouping list
+    }
+
+    return false;
+  }
+
   getParameters()
   {
     let currentOptionCategories = this.values.currentOptionCategories;
@@ -782,6 +805,20 @@ export class MsfDashboardPanelComponent implements OnInit {
               params += "&" + this.utils.getArguments (argument);
             else
               params = this.utils.getArguments (argument);
+
+            // check if the argument uses grouping to add chart values that requires grouping
+            // to work properly
+            if (argument.name1 != null && argument.name1.includes ("grouping"))
+            {
+              if (this.values.variable.item.grouping && !this.checkGroupingValue (this.values.variable.item.columnName, argument.value1))
+                params += "," + this.values.variable.item.columnName;
+
+              if (this.values.xaxis.item.grouping && !this.checkGroupingValue (this.values.xaxis.item.columnName, argument.value1))
+                params += "," + this.values.xaxis.item.columnName;
+
+              if (this.values.valueColumn.item.grouping && !this.checkGroupingValue (this.values.valueColumn.item.columnName, argument.value1))
+                params += "," + this.values.valueColumn.item.columnName;
+            }
           }
         }        
       }
@@ -937,6 +974,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.isLoading = true;
     urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=1&page_number=0";
+    console.log (urlBase);
     urlArg = encodeURIComponent (urlBase);
     url = this.service.host + "/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
 
@@ -1078,7 +1116,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     for (let key in response)
     {
       let array = response[key];
-      if(array != null)
+      if (array != null)
       {
         if (Array.isArray (array))
         {
@@ -1283,15 +1321,16 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.searchChange (_this.infoVar3FilterCtrl);
 
     _this.searchChange (_this.columnFilterCtrl);
+    _this.searchChange (_this.tableFilterCtrl);
 
     // reset chart filter values and disable generate chart button
     _this.chartForm.get ('variableCtrl').reset ();
     _this.chartForm.get ('xaxisCtrl').reset ();
     _this.chartForm.get ('valueCtrl').reset ();
     _this.chartForm.get ('columnCtrl').reset ();
-    _this.chartForm.get ('fontSizeCtrl').reset ();
-    _this.chartForm.get ('valueFontSizeCtrl').reset ();
-    _this.chartForm.get ('valueOrientationCtrl').reset ();
+    _this.chartForm.get ('fontSizeCtrl').setValue (_this.fontSizes[1]);
+    _this.chartForm.get ('valueFontSizeCtrl').setValue (_this.fontSizes[1]);
+    _this.chartForm.get ('valueOrientationCtrl').setValue (_this.orientations[0]);
     _this.checkChartFilters ();
 
     _this.values.formVariables = [];
@@ -1305,7 +1344,11 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.currentOptionCategories = [];
 
     for (let optionCategory of data)
-      _this.values.currentOptionCategories.push (optionCategory.categoryArgumentsId);
+    {
+      for (let category of optionCategory.categoryArgumentsId)
+        _this.values.currentOptionCategories.push (category);
+    }
+
     _this.variableCtrlBtnEnabled = true;
 
     _this.chartForm.get ('variableCtrl').enable ();
@@ -1320,12 +1363,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.chartForm.get ('valueFontSizeCtrl').enable ();
     _this.chartForm.get ('valueOrientationCtrl').enable ();
 
-    // delete previous child panels
-    _this.service.deleteChildPanels (_this, _this.values.id, _this.deleteSuccess, _this.handlerError);
-  }
-
-  deleteSuccess(_this): void
-  {
     _this.values.isLoading = false;
   }
 
@@ -1388,6 +1425,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     // workaround to prevent errors on certain data forms
     if (this.haveSortingCheckboxes ())
       this.globals.isLoading = true;
+
+    // console.log (this.values.currentOptionCategories);
 
     this.dialog.open (MsfDashboardControlVariablesComponent, {
       height: '605px',
@@ -1606,9 +1645,9 @@ export class MsfDashboardPanelComponent implements OnInit {
       if (!(this.values.currentChartType.flags & ChartFlags.FORM))
       {
         this.chartForm.get ('columnCtrl').reset ();
-        this.chartForm.get ('fontSizeCtrl').reset ();
-        this.chartForm.get ('valueFontSizeCtrl').reset ();
-        this.chartForm.get ('valueOrientationCtrl').reset ();
+        this.chartForm.get ('fontSizeCtrl').setValue (this.fontSizes[1]);
+        this.chartForm.get ('valueFontSizeCtrl').setValue (this.fontSizes[1]);
+        this.chartForm.get ('valueOrientationCtrl').setValue (this.orientations[0]);
 
         this.values.formVariables = [];
       }
@@ -1657,9 +1696,9 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.chartForm.get ('infoVar3Ctrl').disable ();
 
       this.chartForm.get ('columnCtrl').reset ();
-      this.chartForm.get ('fontSizeCtrl').reset ();
-      this.chartForm.get ('valueFontSizeCtrl').reset ();
-      this.chartForm.get ('valueOrientationCtrl').reset ();
+      this.chartForm.get ('fontSizeCtrl').setValue (this.fontSizes[1]);
+      this.chartForm.get ('valueFontSizeCtrl').setValue (this.fontSizes[1]);
+      this.chartForm.get ('valueOrientationCtrl').setValue (this.orientations[0]);
 
       this.values.formVariables = [];
     }
@@ -1842,9 +1881,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       // reset form column selection combo boxes
       this.chartForm.get ('columnCtrl').reset ();
-      this.chartForm.get ('fontSizeCtrl').reset ();
-      this.chartForm.get ('valueFontSizeCtrl').reset ();
-      this.chartForm.get ('valueOrientationCtrl').reset ();
+      this.chartForm.get ('fontSizeCtrl').setValue (this.fontSizes[1]);
+      this.chartForm.get ('valueFontSizeCtrl').setValue (this.fontSizes[1]);
+      this.chartForm.get ('valueOrientationCtrl').setValue (this.orientations[0]);
 
       // set form variable settings if loaded from database
       if (this.values.function != null && this.values.function != -1)
@@ -2180,6 +2219,11 @@ export class MsfDashboardPanelComponent implements OnInit {
     return (this.values.currentChartType.flags & ChartFlags.PICTURE) ? true : false;
   }
 
+  isTablePanel(): boolean
+  {
+    return (this.values.currentChartType.flags & ChartFlags.TABLE) ? true : false;
+  }
+
   checkNumVariables(): void
   {
     let i;
@@ -2292,12 +2336,16 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   goToDrillDownSettings(): void
   {
+    let childChart = {
+      types: null
+    };
+
     // clear child panel list befre opening drill down dialog
     this.childPanelValues = [];
     this.childPanelsConfigured = [];
 
     let dialogRef = this.dialog.open (MsfDashboardDrillDownComponent, {
-      height: '425px',
+      height: '470px',
       width: '450px',
       panelClass: 'msf-dashboard-child-panel-dialog',
       data: {
@@ -2309,41 +2357,64 @@ export class MsfDashboardPanelComponent implements OnInit {
         childPanelsConfigured: this.childPanelsConfigured,
         categoryOptions: JSON.stringify (this.values.currentOptionCategories),
         functions: this.functions,
-        chartTypes: this.chartTypes,
+        childChart: childChart,
         updateTimeInterval: 0
       }
     });
 
     dialogRef.afterClosed ().subscribe (
       () => {
-        this.saveChildPanels ();
+        this.saveChildPanels (childChart.types);
       }
     );
   }
 
-  getChildPanelsInfo(drillDownIds): any[]
+  getChildPanelsInfo(childChartTypes, drillDownIds): any[]
   {
     let childPanels = [];
 
     for (let i = 0; i < this.childPanelValues.length; i++)
     {
-      let value = this.childPanelValues[i];
+      let value: MsfDashboardPanelValues = this.childPanelValues[i];
 
       if (!this.childPanelsConfigured[i])
          continue;
 
-      childPanels.push ({
-        id: value.id,
-        option: value.currentOption,
-        title: value.chartName,
-        chartColumnOptions: JSON.stringify (value.chartColumnOptions),
-        analysis: value.chartColumnOptions.indexOf (value.variable),
-        xaxis: value.chartColumnOptions.indexOf (value.xaxis),
-        values: value.chartColumnOptions.indexOf (value.valueColumn),
-        function: this.functions.indexOf (value.function),
-        chartType: this.chartTypes.indexOf (value.currentChartType),
-        paletteColors: JSON.stringify (value.paletteColors)
-      });
+      if (value.currentChartType.flags & ChartFlags.TABLE)
+      {
+        let tableVariableIds = [];
+
+        for (let tableVariable of value.tableVariables)
+        {
+          tableVariableIds.push ({
+            id: tableVariable.item.id
+          });
+        }
+
+        childPanels.push ({
+          id: value.id,
+          option: value.currentOption,
+          title: value.chartName,
+          chartColumnOptions: JSON.stringify (value.chartColumnOptions),
+          chartType: childChartTypes.indexOf (value.currentChartType),
+          lastestResponse: JSON.stringify (tableVariableIds)
+        });
+      }
+      else
+      {
+        childPanels.push ({
+          id: value.id,
+          option: value.currentOption,
+          title: value.chartName,
+          chartColumnOptions: JSON.stringify (value.chartColumnOptions),
+          analysis: value.chartColumnOptions.indexOf (value.variable),
+          xaxis: value.chartColumnOptions.indexOf (value.xaxis),
+          values: value.chartColumnOptions.indexOf (value.valueColumn),
+          function: this.functions.indexOf (value.function),
+          chartType: childChartTypes.indexOf (value.currentChartType),
+          paletteColors: JSON.stringify (value.paletteColors)
+        });
+      }
 
       drillDownIds.push (this.values.currentOption.drillDownOptions[i].id);
       this.childPanelsConfigured[i] = false;
@@ -2352,10 +2423,10 @@ export class MsfDashboardPanelComponent implements OnInit {
     return childPanels;
   }
 
-  saveChildPanels(): void
+  saveChildPanels(childChartTypes): void
   {
     let drillDownIds = [];
-    let childPanels = this.getChildPanelsInfo (drillDownIds);
+    let childPanels = this.getChildPanelsInfo (childChartTypes, drillDownIds);
 
     if (!childPanels.length)
       return;
@@ -2364,9 +2435,46 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.service.saveChildPanels (this, childPanels, this.values.id, drillDownIds, this.drillDownSettingsClear, this.drillDownSettingsClear);
   }
 
-  // destroy child panel list after success or failure
-  drillDownSettingsClear(_this): void
+  // update child panel list after success or failure
+  drillDownSettingsClear(_this, data): void
   {
+    let drillDownIds: number[] = [];
+
+    drillDownIds = data.drillDownIds;
+
+    for (let i = 0; i < drillDownIds.length; i++)
+    {
+      let newChildPanel: boolean = true;
+      let drillDownId = drillDownIds[i];
+
+      for (let j = 0; j < _this.values.childPanels.length; j++)
+      {
+        let childPanel = _this.values.childPanels[j];
+
+        if (drillDownId == childPanel.id)
+        {
+          childPanel.title = data.childPanels[i].title;
+          newChildPanel = false;
+          break;
+        }
+      }
+
+      if (newChildPanel)
+      {
+        _this.values.childPanels.push ({
+          id: drillDownId,
+          title: data.childPanels[i].title
+        });
+      }
+    }
+
+    if (_this.values.childPanels.length > 1)
+    {
+      _this.values.childPanels.sort (function(e1, e2) {
+        return e1.id - e2.id;
+      });
+    }
+
     _this.values.isLoading = false;
   }
 
@@ -2387,9 +2495,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     // reset main column and font size values
     this.chartForm.get ('columnCtrl').reset ();
-    this.chartForm.get ('fontSizeCtrl').reset ();
-    this.chartForm.get ('valueFontSizeCtrl').reset ();
-    this.chartForm.get ('valueOrientationCtrl').reset ();
+    this.chartForm.get ('fontSizeCtrl').setValue (this.fontSizes[1]);
+    this.chartForm.get ('valueFontSizeCtrl').setValue (this.fontSizes[1]);
+    this.chartForm.get ('valueOrientationCtrl').setValue (this.orientations[0]);
     this.checkChartFilters ();
   }
 
@@ -2460,5 +2568,27 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.chartForm.get ('intervalCtrl').enable ();
     else
       this.chartForm.get ('intervalCtrl').disable ();
+  }
+
+  swapFormVariablePositions(event: CdkDragDrop<MsfDashboardPanelValues[]>): void
+  {
+    // move items
+    moveItemInArray (this.values.formVariables, event.previousIndex, event.currentIndex);
+  }
+
+  isTableVariableValid(): boolean
+  {
+    return this.chartForm.get ('tableCtrl').value;
+  }
+
+  addTableVariable(): void
+  {
+    this.values.tableVariables.push (this.chartForm.get ('tableCtrl').value);
+    this.chartForm.get ('tableCtrl').reset ();
+  }
+
+  deleteColumnFromTable(index): void
+  {
+    this.values.tableVariables.splice (index, 1);
   }
 }

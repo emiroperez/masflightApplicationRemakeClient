@@ -13,5 +13,6 @@ export enum ChartFlags
   DONUTCHART  = 0x000000C0,
   FUNNELCHART = 0x00000100,
   PICTURE     = 0x00000200,
-  FORM        = 0x00000400
+  FORM        = 0x00000400,
+  TABLE       = 0x00000800
 };

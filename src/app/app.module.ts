@@ -170,7 +170,6 @@ import { MsfGroupingOpComponent } from './msf-grouping-op/msf-grouping-op.compon
 import { MsfGroupingOp2Component } from './msf-grouping-op2/msf-grouping-op2.component';
 import { MsfStatesComponent } from './msf-states/msf-states.component';
 import { MsfFlightDurationSegmentsComponent } from './msf-flight-duration-segments/msf-flight-duration-segments.component';
-import { MsfDashboardChartTypePipe } from './msf-dashboard-drill-down/msf-dashboard-chart-type-pipe';
 import { MsfColumnSelectorComponent } from './msf-column-selector/msf-column-selector.component';
 import { MsfShareDashboardComponent } from './msf-share-dashboard/msf-share-dashboard.component';
 import { MsfSharedDashboardItemsComponent } from './msf-shared-dashboard-items/msf-shared-dashboard-items.component';
@@ -178,6 +177,7 @@ import { MsfAddSharedDashboardPanelComponent } from './msf-add-shared-dashboard-
 import { DrillDownDialog } from './admin-menu/admin-menu.component';
 import { FilterPipe } from './admin-menu/pipe-filter';
 import { NewCategoryDialog } from './admin-menu/admin-menu.component'
+import { MsfAddSharedDashboardComponent } from './msf-add-shared-dashboard/msf-add-shared-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -330,12 +330,12 @@ import { NewCategoryDialog } from './admin-menu/admin-menu.component'
     MsfGroupingOp2Component,
     MsfStatesComponent,
     MsfFlightDurationSegmentsComponent,
-    MsfDashboardChartTypePipe,
     MsfColumnSelectorComponent,
     MsfShareDashboardComponent,
     MsfSharedDashboardItemsComponent,
     MsfAddSharedDashboardPanelComponent,
-    FilterPipe
+    FilterPipe,
+    MsfAddSharedDashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -410,7 +410,8 @@ import { NewCategoryDialog } from './admin-menu/admin-menu.component'
     MsfColumnSelectorComponent,
     MsfShareDashboardComponent,
     MsfSharedDashboardItemsComponent,
-    MsfAddSharedDashboardPanelComponent
+    MsfAddSharedDashboardPanelComponent,
+    MsfAddSharedDashboardComponent
   ]
 })
 export class AppModule { }

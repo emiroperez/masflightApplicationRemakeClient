@@ -502,6 +502,12 @@ p
 .flat-button-disabled
     background-color: #343434!important
 
+.flat-share-button-disabled
+    background-color: #242424!important
+
+.button-separator
+    padding: 0 5px
+
 .func-button
     .mat-button-wrapper
         color: white!important
@@ -1815,10 +1821,14 @@ mat-tab-group
                         margin: 0 2px
                         position: relative
                         box-sizing: border-box
+                .msf-dashboard-panel-padding
+                    padding-top: 4px
                 .msf-dashboard-panel-size-properties-closed
                     @include msf-dashboard-column-properties
                 .msf-dashboard-panel-size-properties-open
                     @include msf-dashboard-column-properties(60px)
+                .msf-dashboard-panel-size-properties-invisible
+                    display: none
 
 @mixin msf-dashboard-icon ($padding-right, $color: inherit, $cursor: default)
     color: $color
@@ -1872,10 +1882,6 @@ mat-tab-group
 #msf-dashboard-drill-down-container-column
     .mat-form-field-underline
         background-color: #353535
-
-@mixin msf-dashboard-form-field-size
-    width: 49.5%
-    padding-right: 0.5%
 
 .msf-dashboard-chart-icon
     vertical-align: middle
@@ -1962,6 +1968,13 @@ mat-tab-group
     background-color: #1f1f1f
     color: #ffffff
     overflow-y: visible
+    .msf-dashboard-child-panel-table
+        width: 100%
+        height: 95%
+        overflow: auto
+    .msf-dashboard-child-panel-table-more-button
+        width: 100%
+        height: 5%
     .msf-no-results
         margin-top: 80px
 
@@ -2024,6 +2037,14 @@ mat-tab-group
     .msf-full-width
         @extend .msf-dashboard-form-field
 
+.msf-dashboard-panel-chart-type
+    width: 30% !important
+    min-width: 100px
+
+.msf-dashboard-panel-interval-time
+    width: 25% !important
+    min-width: 70px
+
 .msf-dashboard-control-variables
     overflow-y: auto
     font-size: 10px
@@ -2071,12 +2092,17 @@ mat-tab-group
             width: 50%
         .msf-full-width
             @extend .msf-dashboard-form-field
-        .msf-dashboard-field-valuectrl
-            @include msf-dashboard-form-field-size
-            @extend .msf-dashboard-form-field
-        .msf-dashboard-field-function
-            @include msf-dashboard-form-field-size
-            @extend .msf-dashboard-form-field
+        .msf-dashboard-chart-op-container-row
+            display: flex
+            flex-direction: row
+            width: 100%
+            .msf-dashboard-field-valuectrl
+                width: 50%
+                @extend .msf-dashboard-form-field
+            .msf-dashboard-field-function
+                width: 50%
+                padding-left: 5px !important
+                @extend .msf-dashboard-form-field
 
 .msf-dashboard-menu-component
     @extend .msf-primary-light-bg-color
@@ -2125,6 +2151,20 @@ mat-tab-group
 .msf-dashboard-panel-context-menu
     position: absolute
     z-index: 1
+    #msf-dashboard-panel-context-menu-container
+        background-color: $msf-primary-color
+        border-radius: 4px
+        font-size: 12px
+        box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12)
+        .msf-dashboard-panel-context-menu-item
+            border-bottom: 1px solid #444343!important
+        .msf-dashboard-panel-context-menu-item:hover
+            background-color: $msf-primary-dark-color
+        .msf-dashboard-panel-context-menu-top-bound
+            height: 7px
+            border-bottom: 1px solid #444343!important
+        .msf-dashboard-panel-context-menu-bottom-bound
+            height: 7px
 
 .msf-dynamic-table-variable-title
     display: flex
@@ -2286,9 +2326,16 @@ mat-tab-group
 
 #msf-dashboard-panel-form-sub-container
     margin-top: -10px
+    height: 15%
 
-@mixin msf-dashboard-panel-form-container($background-color)
-    height: 100%
+#msf-dashboard-drill-down-table-container
+    height: 165px
+    display: flex
+    justify-content: center
+    flex-direction: row
+
+@mixin msf-dashboard-panel-form-container($background-color, $height: 40%)
+    height: $height
     align-items: center
     margin-bottom: 10px
     border-style: solid
@@ -2339,6 +2386,25 @@ mat-tab-group
         padding: 15px
         font-size: 12px
 
+#msf-dashboard-panel-table-container-column
+    flex-direction: column
+    overflow-y: auto
+    @include msf-dashboard-panel-form-container(#333333, initial)
+
+#msf-dashboard-panel-table-container-column-empty
+    justify-content: center
+    @include msf-dashboard-panel-form-container(#333333, initial)
+    .msf-no-results
+        color: white
+        background: #01abec
+        margin: 0 100px
+        text-align: center
+        align-items: center
+        vertical-align: middle
+        justify-content: center
+        padding: 15px
+        font-size: 12px
+
 #msf-add-shared-dashboard-content-empty
     justify-content: center
     @include msf-dashboard-panel-form-container(#242424)
@@ -2361,11 +2427,21 @@ mat-tab-group
     width: 48%
     padding-left: 10px
 
+#msf-dashboard-panel-table-op-container
+    display: flex
+    width: 100%
+    padding-left: 10px
+
 #msf-dashboard-form-button
     padding-left: 5px
     margin-bottom: 8px
     .mat-icon-button
         padding-left: 6px
+    .mat-icon-drag-button
+        padding-left: 6px
+    .mat-icon-drag-button:hover
+        padding-left: 6px
+        cursor: move
 
 #msf-dashboard-form-display
     text-align: left
@@ -3662,3 +3738,11 @@ th.msf-show-table, td.msf-show-table
     height: 27px !important
 
 
+.mat-expansion-panel-header[aria-disabled=true] .mat-expansion-panel-header-description, .mat-expansion-panel-header[aria-disabled=true] .mat-expansion-panel-header-title
+    color: $msf-disabled-color !important
+
+.mat-checkbox-disabled.mat-checkbox-checked .mat-checkbox-background, .mat-checkbox-disabled.mat-checkbox-indeterminate .mat-checkbox-background
+    background-color: $msf-disabled-color !important
+
+.mat-checkbox-disabled:not(.mat-checkbox-checked) .mat-checkbox-frame
+    border-color: $msf-disabled-color !important

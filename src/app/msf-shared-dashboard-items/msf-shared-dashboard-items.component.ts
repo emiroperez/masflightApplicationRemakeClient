@@ -6,6 +6,7 @@ import { MenuService } from '../services/menu.service';
 import { ApplicationService } from '../services/application.service';
 import { MessageComponent } from '../message/message.component';
 import { MsfAddSharedDashboardPanelComponent } from '../msf-add-shared-dashboard-panel/msf-add-shared-dashboard-panel.component';
+import { MsfAddSharedDashboardComponent } from '../msf-add-shared-dashboard/msf-add-shared-dashboard.component';
 
 @Component({
   selector: 'app-msf-shared-dashboard-items',
@@ -43,6 +44,8 @@ export class MsfSharedDashboardItemsComponent implements OnInit {
 
     for (let item of items)
     {
+      let i;
+
       _this.dashboardItems.push ({
         id: item.dashboardContentId,
         name: item.name + " (" + (item.isPanel ? "Panel" : "Dashboard") + ", from ",
@@ -51,7 +54,13 @@ export class MsfSharedDashboardItemsComponent implements OnInit {
       });
 
       // add user ids just to get the email
-      if (userIds.indexOf (item.userId) == -1)
+      for (i = 0; i < userIds.length; i++)
+      {
+        if (userIds[i] == item.userId)
+          break;
+      }
+
+      if (i == userIds.length)
         userIds.push (item.userId);
     }
 
@@ -104,6 +113,16 @@ export class MsfSharedDashboardItemsComponent implements OnInit {
     }
     else
     {
+      this.dialog.open (MsfAddSharedDashboardComponent, {
+        height: '183px',
+        width: '400px',
+        panelClass: 'msf-dashboard-control-variables-dialog',
+        data: {
+          dashboardId: this.selectedDashboardItem.id,
+          dashboards: this.data.dashboards,
+          sharedDashboards: this.data.sharedDashboards
+        }
+      });
     }
   }
 

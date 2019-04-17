@@ -1,23 +1,22 @@
 
-    <div [style.visibility]="globals.dataSource && globals.currentOption.metaData==1 && !globals.template? 'visible' : 'hidden'" #TABLE>
+    <div [style.visibility]="globals.dataSource && !globals.template && currentOption.metaData==1 || currentOption.tabType=='scmap'? 'visible' : 'hidden'" #TABLE>
     <table  #table mat-table  [dataSource]="dataSource" matSort class="mat-elevation-z8 datasource">
-    
         <ng-container  [matColumnDef]="column.columnName" *ngFor="let column of metadata">
           <th [ngClass]="column.show?'msf-show-table':'msf-hide'" mat-header-cell *matHeaderCellDef mat-sort-header > {{column.columnLabel}} </th>
           <td [ngClass]="column.show?'msf-show-table':'msf-hide'"  mat-cell *matCellDef="let element;let rowNumber = dataIndex"> 
             <span *ngIf="column.drillDowns.length==0">
-              <span *ngIf="column.columnType!='number'">{{element[column.columnName]}} </span>
-              <span *ngIf="column.columnType=='number' && column.columnFormat=='$'">${{getFormatCell(element[column.columnName]) | number:'.0-2':'en'}} </span>
-              <span *ngIf="column.columnType=='number' && column.columnFormat=='%'"> {{getFormatCell(element[column.columnName]) | number:'.0-2':'en'}}%</span>
-              <span *ngIf="column.columnType=='number' && column.columnFormat=='temp'"> {{getFormatCell(element[column.columnName]) | number:'.0-2':'en'}}°</span>
-              <span *ngIf="column.columnType=='number' && column.columnFormat==null"> {{getFormatCell(element[column.columnName]) | number:'.0-2':'en'}} </span>
+              <span *ngIf="column.columnType!='number'">{{getFormatCell(element[column.columnName],element,column)}} </span>
+              <span *ngIf="column.columnType=='number' && column.columnFormat=='$'">${{getFormatCell(element[column.columnName],element,column) | number:'.0-2':'en'}} </span>
+              <span *ngIf="column.columnType=='number' && column.columnFormat=='%'"> {{getFormatCell(element[column.columnName],element,column) | number:'.0-2':'en'}}%</span>
+              <span *ngIf="column.columnType=='number' && column.columnFormat=='temp'"> {{getFormatCell(element[column.columnName],element,column) | number:'.0-2':'en'}}°</span>
+              <span *ngIf="column.columnType=='number' && column.columnFormat==null"> {{getFormatCell(element[column.columnName],element,column) | number:'.0-2':'en'}} </span>
           </span>
           <span class="drillDown-decoration" *ngIf="column.drillDowns.length>0" [matMenuTriggerFor]="menu">
-            <span *ngIf="column.columnType!='number'">{{element[column.columnName]}} </span>
-            <span *ngIf="column.columnType=='number' && column.columnFormat=='$'">${{getFormatCell(element[column.columnName]) | number:'.0-2':'en'}} </span>
-            <span *ngIf="column.columnType=='number' && column.columnFormat=='%'"> {{getFormatCell(element[column.columnName]) | number:'.0-2':'en'}}%</span>
-            <span *ngIf="column.columnType=='number' && column.columnFormat=='temp'"> {{getFormatCell(element[column.columnName]) | number:'.0-2':'en'}}°</span>
-            <span *ngIf="column.columnType=='number' && column.columnFormat==null"> {{getFormatCell(element[column.columnName]) | number:'.0-2':'en'}} </span>
+            <span *ngIf="column.columnType!='number'">{{getFormatCell(element[column.columnName],element,column)}} </span>
+            <span *ngIf="column.columnType=='number' && column.columnFormat=='$'">${{getFormatCell(element[column.columnName],element,column) | number:'.0-2':'en'}} </span>
+            <span *ngIf="column.columnType=='number' && column.columnFormat=='%'"> {{getFormatCell(element[column.columnName],element,column) | number:'.0-2':'en'}}%</span>
+            <span *ngIf="column.columnType=='number' && column.columnFormat=='temp'"> {{getFormatCell(element[column.columnName],element,column) | number:'.0-2':'en'}}°</span>
+            <span *ngIf="column.columnType=='number' && column.columnFormat==null"> {{getFormatCell(element[column.columnName],element,column) | number:'.0-2':'en'}} </span>
           </span>
           <mat-menu #menu="matMenu" [style.visibility]="column.drillDowns.length!=0? 'visible' : 'hidden'">
               <button mat-menu-item *ngFor="let drillDown of column.drillDowns" (click)="openSubQuery(drillDown,element)">{{drillDown.title}}</button>
@@ -32,11 +31,13 @@
     </div>
 
     <div *ngIf="!globals.dataSource && !globals.template">
-        <div class="msf-no-results">Results not available, please select your Filters and click on Search button</div>
+        <div class="msf-no-results">
+          <span *ngIf="!childPanel">Results not available, please select your Filters and click on Search button</span><span *ngIf="childPanel">Results not available, make sure that the control variables are working</span>
+        </div>
     </div>
 
     
-    <div *ngIf="globals.template && globals.currentOption.metaData==0 && !globals.dataSource" class="financial-container">
+    <div *ngIf="globals.template && currentOption.metaData==0 && !globals.dataSource" class="financial-container">
         <div class="financial-table-container" *ngFor="let table of template">
           <div class="financial-title">{{table.title}}</div>
           <div class="financial-content">

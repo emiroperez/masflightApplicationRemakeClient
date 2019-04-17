@@ -313,6 +313,12 @@ export class ApplicationService {
     this.http.get (_this, this.host + url, handlerSuccess, handlerError, null);
   }
 
+  getAllChildPanels(_this, dashboardPanelIds, handlerSuccess, handlerError): void
+  {
+    let url = "/getChildPanels/all";
+    this.http.post (_this, this.host + url, dashboardPanelIds, handlerSuccess, handlerError);
+  }
+
   updateDashboardPanel(_this, panel, handlerSuccess, handlerError): void
   {
     let url = this.host + "/updateDashboardPanel";
@@ -437,10 +443,10 @@ export class ApplicationService {
     this.http.post (_this, url, shareInfo, handlerSuccess, handlerError);
   }
 
-  getUserByEmail(_this, email, handlerSuccess, handlerError)
+  getUsersByEmail(_this, emails, handlerSuccess, handlerError)
   {
-    let url = this.host + "/getUserByEmail?email=" + email;
-    this.http.get (_this, url, handlerSuccess, handlerError, null);
+    let url = this.host + "/getUsersByEmail";
+    this.http.post (_this, url, emails, handlerSuccess, handlerError);
   }
 
   getUsersById(_this, userIds, handlerSuccess, handlerError)

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { Menu } from '../model/Menu';
 import { Option } from '../model/Option';
-import {CategoryArguments} from '../model/CategoryArguments';
+import { CategoryArguments } from '../model/CategoryArguments';
 import { Globals } from '../globals/Globals';
 import { Arguments } from '../model/Arguments';
 import { MatDialog} from '@angular/material';
@@ -9,7 +9,7 @@ import { MsfDynamicTableVariablesComponent } from '../msf-dynamic-table-variable
 import { MsfContainerComponent } from '../msf-container/msf-container.component';
 import { MenuService } from '../services/menu.service';
 import { Router } from '@angular/router';
-import {ExcelService} from '../services/excel.service';
+import { ExcelService } from '../services/excel.service';
 import { MsfTableComponent } from '../msf-table/msf-table.component';
 import { PlanAdvanceFeatures } from '../model/PlanAdvanceFeatures';
 import { User } from '../model/User';
@@ -36,6 +36,7 @@ export class ApplicationComponent implements OnInit {
   dashboardPlan: boolean;
   menu: Menu;
   dashboards: Array<DashboardMenu>;
+  sharedDashboards: Array<DashboardMenu>;
   planAdvanceFeatures: any[];
   status: boolean;
   user: any[];
@@ -80,11 +81,16 @@ export class ApplicationComponent implements OnInit {
   }
 
   getDashboardsUser(){
-    this.service.getDashboardsByUser(this,this.handlerDashboard, this.errorHandler);
+    this.service.getDashboardsByUser(this, this.handlerDashboard, this.errorHandler);
   }
 
   handlerDashboard(_this, data){
     _this.dashboards = data;
+    _this.service.getSharedDashboardsByUser(_this, _this.handlerSharedDashboard, _this.errorHandler);
+  }
+
+  handlerSharedDashboard(_this, data){
+    _this.sharedDashboards = data;
     _this.getAdvanceFeatures();
   }
 
@@ -372,8 +378,17 @@ toggle(){
       function (_this)
       {
         _this.globals.isLoading = true;
-        _this.service.deleteDashboard (_this, _this.globals.currentDashboardMenu.id, _this.deleteSuccess,
-          _this.deleteError);
+
+        if (_this.globals.readOnlyDashboard)
+        {
+          _this.service.deleteSharedDashboard (_this, _this.globals.currentDashboardMenu.id,
+            _this.deleteSuccess, _this.deleteError);
+        }
+        else
+        {
+          _this.service.deleteDashboard (_this, _this.globals.currentDashboardMenu.id,
+            _this.deleteSuccess, _this.deleteError);
+        }
       }
     );
   }
@@ -383,7 +398,7 @@ toggle(){
       width: "auto",
       height: "auto",
       maxHeight: "700px",
-      maxWidth: "700px",
+      maxWidth: "1000px",
       panelClass: 'msf-column-selector-popup'
     });
   }

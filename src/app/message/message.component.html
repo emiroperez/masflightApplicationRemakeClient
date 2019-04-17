@@ -1,4 +1,4 @@
-<div cdkFocusInitial>
+<div>
     <div mat-dialog-title style="flex: 1; color: white"> {{title}}</div>
     <div mat-dialog-content style="flex: 1">
         <div style="color: white; font-size: 14px">
@@ -6,6 +6,6 @@
         </div>
     </div>
     <mat-dialog-actions style="float: right">
-        <button mat-flat-button class="flat-button" (click)="close()">Close</button>
+        <button mat-flat-button class="flat-button" (click)="close()" cdkFocusInitial>Close</button>
     </mat-dialog-actions>
 </div>

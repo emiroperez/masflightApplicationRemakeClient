@@ -1,6 +1,6 @@
-import { Component, HostListener, OnInit, Input, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, Input, SimpleChanges } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { MatMenuTrigger, MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material';
 
 import { Globals } from '../globals/Globals';
 import { MsfDashboardPanelValues } from '../msf-dashboard-panel/msf-dashboard-panelvalues';
@@ -27,14 +27,11 @@ export class MsfDashboardComponent implements OnInit {
 
   displayAddPanel: boolean = false;
 
+  displayContextMenu: boolean = false;
   contextMenuX: number = 0;
   contextMenuY: number = 0;
-  contextCategory: any;
   contextMenuItems: any;
   contextParentPanel: MsfDashboardPanelValues;
-
-  @ViewChild(MatMenuTrigger)
-  contextMenu: MatMenuTrigger;
 
   heightValues:any[] = [
     { value: 1, name: 'Small' },
@@ -136,6 +133,7 @@ export class MsfDashboardComponent implements OnInit {
 
   loadDashboardPanels(_this, data): void
   {
+    let dashboardPanelIds: number[] = [];
     let dashboardPanels: any[] = [];
     let dashboardRows = [];
 
@@ -167,11 +165,12 @@ export class MsfDashboardComponent implements OnInit {
         dashboardRows = [];
       }
 
+      dashboardPanelIds.push (dashboardPanel.id);
       dashboardRows.push (new MsfDashboardPanelValues (_this.options, dashboardPanel.title,
         dashboardPanel.id, dashboardPanel.width, _this.heightValues[dashboardPanel.height],
         dashboardPanel.option, dashboardPanel.chartColumnOptions, dashboardPanel.analysis, dashboardPanel.xaxis,
         dashboardPanel.values, dashboardPanel.function, dashboardPanel.chartType, dashboardPanel.categoryOptions,
-        dashboardPanel.lastestResponse, dashboardPanel.paletteColors, dashboardPanel.updateTimeInterval));
+        dashboardPanel.lastestResponse, dashboardPanel.paletteColors, dashboardPanel.updateTimeInterval, dashboardPanel.row));
     }
 
     // add the last dashboard column
@@ -182,6 +181,45 @@ export class MsfDashboardComponent implements OnInit {
     _this.dashboardColumns.push (dashboardRows);
     _this.dashboardColumnsProperties.push (false);
     _this.dashboardColumnsReAppendCharts.push (false);
+
+    _this.service.getAllChildPanels (_this, dashboardPanelIds, _this.setChildPanels, _this.handlerError);
+  }
+
+  setChildPanels(_this, data): void
+  {
+    let drillDownInfo: any[] = [];
+    let childPanelNames: any[] = [];
+
+    drillDownInfo = data.drillDownInfo;
+    childPanelNames = data.childPanelNames;
+    if (!drillDownInfo.length)
+    {
+      // we're done if there are no child panels
+      _this.globals.isLoading = false;
+      return;
+    }
+
+    for (let i = 0; i < _this.dashboardColumns.length; i++)
+    {
+      let dashboardRows = _this.dashboardColumns[i];
+
+      for (let j = 0; j < dashboardRows.length; j++)
+      {
+        let panel = dashboardRows[j];
+
+        for (let k = 0; k < drillDownInfo.length; k++)
+        {
+          if (panel.id == drillDownInfo[k].dashboardPanelId)
+          {
+            panel.childPanels.push ({
+              id: drillDownInfo[k].drillDownId,
+              title: childPanelNames[k]
+            });
+          }
+        }
+      }
+    }
+
     _this.globals.isLoading = false;
   }
 
@@ -299,7 +337,7 @@ export class MsfDashboardComponent implements OnInit {
   }
 
   // update the dashboard container and hide the menu after
-  // adding a new chart column
+  // adding a new panel column
   addPanel(numPanels): void
   {
     let panelsToAdd, width, column;
@@ -316,7 +354,7 @@ export class MsfDashboardComponent implements OnInit {
         'dashboardMenuId' : this.currentDashboardMenu.id,
         'row' : i,
         'column' : column,
-        'title' : "New Chart",
+        'title' : "New Panel",
         'height' : 0,
         'width' : width
       });
@@ -342,7 +380,7 @@ export class MsfDashboardComponent implements OnInit {
         'dashboardMenuId' : this.currentDashboardMenu.id,
         'row' : i,
         'column' : column,
-        'title' : "New Chart",
+        'title' : "New Panel",
         'height' : this.heightValues.indexOf (dashboardColumns[0].height),
         'width' : width
       });
@@ -532,10 +570,19 @@ export class MsfDashboardComponent implements OnInit {
     event.stopPropagation ();
 
     if (!dashboardColumn[rowindex].chartClicked)
+    {
+      this.displayContextMenu = false;
       return true;
+    }
 
-    this.contextCategory = dashboardColumn[rowindex].chartObjectSelected;
-    this.contextMenuItems = dashboardColumn[rowindex].currentOption.drillDownOptions;
+    this.contextMenuItems = dashboardColumn[rowindex].childPanels;
+    if (!this.contextMenuItems.length)
+    {
+      // do not display drill down context menu if there are no child panels
+      this.disableContextMenu ();
+      return true;
+    }
+
     this.contextMenuX = event.clientX;
     this.contextParentPanel = dashboardColumn[rowindex];
 
@@ -546,14 +593,14 @@ export class MsfDashboardComponent implements OnInit {
 
     // prevent context menu from appearing
     dashboardColumn[rowindex].chartClicked = false;
-    this.contextMenu.openMenu ();
+    this.displayContextMenu = true;
     return false;
   }
 
   disableContextMenu(): void
   {
+    this.displayContextMenu = false;
     this.contextMenuItems = null;
-    this.contextMenu.closeMenu ();
   }
 
   // make sure that the context menu is fully visible
@@ -593,7 +640,9 @@ export class MsfDashboardComponent implements OnInit {
         currentOptionCategories: this.contextParentPanel.currentOptionCategories,
         currentOptionBaseUrl: this.contextParentPanel.currentOption.baseUrl,
         parentCategory: (this.contextParentPanel.currentChartType.flags & ChartFlags.XYCHART ? this.contextParentPanel.xaxis : this.contextParentPanel.variable),
-        categoryFilter: this.contextCategory
+        secondaryParentCategory: (this.contextParentPanel.currentChartType.flags & ChartFlags.XYCHART ? this.contextParentPanel.variable : null),
+        categoryFilter: this.contextParentPanel.chartObjectSelected,
+        secondaryCategoryFilter: this.contextParentPanel.chartSecondaryObjectSelected
       }
     });
   }

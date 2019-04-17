@@ -21,7 +21,7 @@
   </div>
 </div>
 <div class="msf-dashboard-control-variables-button">
-  <button mat-flat-button class="flat-button" (click)="addPanel()">OK</button>
-  &nbsp;&nbsp;
+  <button [disabled]="!selectedDashboard" mat-flat-button [ngClass]="selectedDashboard ? 'flat-button' : 'flat-share-button-disabled'" (click)="addPanel()">OK</button>
+  <span class="button-separator"></span>
   <button mat-flat-button class="flat-button" (click)="closeDialog()">Cancel</button>
 </div>
