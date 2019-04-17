@@ -4258,4 +4258,23 @@ th.msf-show-table, td.msf-show-table {
   border-bottom: 0.84375em solid transparent;
 }
 
+.invisible-scrollbar::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+
+.dark-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #333333;
+}
+
+.dark-scrollbar::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.background-principal {
+  background-color: #01abec;
+  border-radius: 0px !important;
+  width: 25px !important;
+  height: 27px !important;
+}
+
 /*# sourceMappingURL=styles.css.map */

@@ -14,7 +14,7 @@ import { MsfConfirmationDialogComponent } from '../msf-confirmation-dialog/msf-c
 })
 export class ApplicationService {
 
-  
+
   utils: Utils;
 
   // host = "http://localhost:8887";
@@ -134,6 +134,17 @@ export class ApplicationService {
     let url = this.host+"/getMetaByOptionId?optionId=" + data.id;
     this.http.get(_this, url, handlerSuccess, handlerError, null);
   }
+
+  loadWebservicMetaAdmin(_this,data,handlerSuccess, handlerError) {
+    let url = this.host+"/getMetaAdminByOptionId?optionId=" + data.id;
+    this.http.get(_this, url, handlerSuccess, handlerError, null);
+  }
+
+  loadArgumentsMeta(_this,data,handlerSuccess, handlerError) {
+    let url = this.host+"/getArgumentsByOption?optionId=" + data.id;
+    this.http.get(_this, url, handlerSuccess, handlerError, null);
+  }
+
   loadArguments(_this, handlerSuccess, handlerError) {
     _this.globals.isLoading = true;
     let url = this.host + "/getArguments";
@@ -182,9 +193,15 @@ export class ApplicationService {
     this.http.post(_this, url, data, handlerSuccess, handlerError);
   }
 
-  saveOptionCategoryArguments(_this, data, handlerSuccess, handlerError){
+  saveDrillDown(_this, data, handlerSuccess, handlerError){
     _this.globals.isLoading = true;
-    let url = this.host + "/saveOptionArgumentsCategories";
+    let url = this.host + "/saveDrillDown";
+    this.http.post(_this, url, data, handlerSuccess, handlerError);
+  }
+
+  saveOptionCategoryArguments(_this, data,option, handlerSuccess, handlerError){
+    _this.globals.isLoading = true;
+    let url = this.host + "/saveOptionArgumentsCategories/"+option;
     this.http.post(_this, url, data, handlerSuccess, handlerError);
   }
 
@@ -199,6 +216,20 @@ export class ApplicationService {
     let url = this.host + "/saveArgumentsCategory";
     this.http.post(_this, url, data, handlerSuccess, handlerError);
   }
+
+
+  saveNewCategoryArguments(_this, data, handlerSuccess, handlerError){
+    _this.globals.isLoading = true;
+    let url = this.host + "/saveNewCategoryArguments";
+    this.http.post(_this, url, data, handlerSuccess, handlerError);
+  }
+
+  saveOptionsArgumentsCategory(_this, data, optionId, handlerSuccess, handlerError){
+    _this.globals.isLoading = true;
+    let url = this.host + "/saveOptionsArgumentsCategory/"+optionId;
+    this.http.post(_this, url, data, handlerSuccess, handlerError);
+  }
+
 
   saveArguments(_this, data, handlerSuccess, handlerError){
     _this.globals.isLoading = true;
@@ -249,7 +280,7 @@ export class ApplicationService {
   getChartFilterValues(_this, id, handlerSuccess, handlerError): void
   {
     let url = this.host + "/getMetaByOptionId?optionId=" + id;
-    this.http.get (_this, url, handlerSuccess, handlerError, null);  
+    this.http.get (_this, url, handlerSuccess, handlerError, null);
   }
 
   createDashboardPanel(_this, panels, handlerSuccess, handlerError): void
@@ -333,6 +364,12 @@ export class ApplicationService {
     let url = this.host + "/consumeWebServices?url=" + urlArg + "&optionId=" + option.id;
     this.http.get(_this, url, handlerSuccess, handlerError, null);
     console.log(url);
+  }
+
+  getDrillDownAdmin(_this, optionId, handlerSuccess, handlerError)
+  {
+    let url = this.host + "/getDrillDownsAdmin?optionId="+optionId;
+    this.http.get (_this, url, handlerSuccess, handlerError, null);
   }
 
   getDrillDownOptions(_this, optionIds, handlerSuccess, handlerError)

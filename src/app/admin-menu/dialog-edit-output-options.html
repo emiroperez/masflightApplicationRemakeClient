@@ -55,8 +55,17 @@
 
             <ng-container matColumnDef="unit" class="example-box">
                 <th mat-header-cell *matHeaderCellDef>Unit</th>
-                <td mat-cell *matCellDef="let element">
+                <td mat-cell *matCellDef="let element" style="width: 50px;">
                     <input matInput placeholder="Label" [value]="element.unit" [(ngModel)]="element.unit">
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="arguments" class="example-box">
+                <th mat-header-cell *matHeaderCellDef>Argument</th>
+                <td mat-cell *matCellDef="let element">
+                    <mat-select class="activation-form" placeholder="Argument" [(ngModel)]="element.argumentsId">
+                        <mat-option *ngFor="let item of arg" [value]="item.id">{{item.title}}</mat-option>
+                    </mat-select>
                 </td>
             </ng-container>
 
