@@ -25,6 +25,7 @@ body
     font-family: $msf-font-family
     font-size: $msf-font-size
     margin: 0
+    overflow-x: hidden
 
 .application-class
     background-color: white
@@ -1421,9 +1422,6 @@ app-msf-airport
 .mat-tab-body-wrapper
     height: 100%
     background: $msf-primary-color
-
-.mat-table
-    background: black
 
 .mat-cell
     font-size: 90%
@@ -3731,4 +3729,36 @@ th.msf-show-table, td.msf-show-table
 .mat-checkbox-disabled:not(.mat-checkbox-checked) .mat-checkbox-frame
     border-color: $msf-disabled-color !important
 
+.msf-dashboard-child-panel-table th 
+    border: none
+    border-bottom-color: rgba(0,0,0,.12)
+    background: #1F1F1F
 
+.msf-dashboard-child-panel-table .mat-row 
+    background: #171717
+
+.msf-dashboard-child-panel-table td.mat-cell 
+    color: white
+    border-color: #1F1F1F
+
+.invisible-scrollbar::-webkit-scrollbar-thumb 
+  background-color: transparent
+
+
+.dark-scrollbar::-webkit-scrollbar-thumb 
+  background-color: #333333
+
+
+.dark-scrollbar::-webkit-scrollbar-track 
+  background-color: transparent
+
+
+.background-principal 
+  background-color: #01abec
+  border-radius: 0px !important
+  width: 25px !important
+  height: 27px !important
+
+
+.mat-expansion-panel-header[aria-disabled=true] .mat-expansion-panel-header-description, .mat-expansion-panel-header[aria-disabled=true] .mat-expansion-panel-header-title
+  color: #b0b0b0 !important

@@ -128,11 +128,11 @@
                                             <div *ngFor="let item of categories | filter : searchText" style="color: white">
                                                 <div *ngIf="!item.toDelete" class="dialog-item" [ngClass]="{ 'is-active': item.isSelected, 'is-inactive': !item.isSelected }">
                                                     <div (click)="setSelectedCategoryArguments(item)">
-                                                        <mat-checkbox [disabled]="true" color="primary" [(ngModel)]="item.selected" style="margin: 5px"></mat-checkbox>
+                                                        <mat-checkbox color="primary" [(ngModel)]="item.selected" style="margin: 5px"></mat-checkbox>
                                                     </div>
                                                     <img class="img-item-category-argument" src="{{item.icon}}">
-                                                    <input [disabled]="true" type="text" matInput [(ngModel)]="item.label" class="text-item-category-argument" style="width: 35%">
-                                                    <input [disabled]="true" type="text" matInput [(ngModel)]="item.description" class="text-item-category-argument" style="width: 50%; font-size: 11px">
+                                                    <input  type="text" matInput [(ngModel)]="item.label" class="text-item-category-argument" style="width: 35%">
+                                                    <input  type="text" matInput [(ngModel)]="item.description" class="text-item-category-argument" style="width: 50%; font-size: 11px">
                                                     <button class="background-principal" *ngIf="item.selected" mat-icon-button (click)="editVariables(item)" style="text-align: right">
                                                         <mat-icon style="color: white; line-height: 10px;" aria-label="delete">settings</mat-icon>
                                                         </button>

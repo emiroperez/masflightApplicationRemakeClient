@@ -14,6 +14,7 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
   font-size: 12px;
   margin: 0;
+  overflow-x: hidden;
 }
 
 .application-class {
@@ -4370,25 +4371,6 @@ th.msf-show-table, td.msf-show-table {
   border-bottom: 0.84375em solid transparent;
 }
 
-.invisible-scrollbar::-webkit-scrollbar-thumb {
-  background-color: transparent;
-}
-
-.dark-scrollbar::-webkit-scrollbar-thumb {
-  background-color: #333333;
-}
-
-.dark-scrollbar::-webkit-scrollbar-track {
-  background-color: transparent;
-}
-
-.background-principal {
-  background-color: #01abec;
-  border-radius: 0px !important;
-  width: 25px !important;
-  height: 27px !important;
-}
-
 .mat-expansion-panel-header[aria-disabled=true] .mat-expansion-panel-header-description, .mat-expansion-panel-header[aria-disabled=true] .mat-expansion-panel-header-title {
   color: #b0b0b0 !important;
 }
@@ -4414,6 +4396,29 @@ th.msf-show-table, td.msf-show-table {
 .msf-dashboard-child-panel-table td.mat-cell {
   color: white;
   border-color: #1F1F1F;
+}
+
+.invisible-scrollbar::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+
+.dark-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #333333;
+}
+
+.dark-scrollbar::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.background-principal {
+  background-color: #01abec;
+  border-radius: 0px !important;
+  width: 25px !important;
+  height: 27px !important;
+}
+
+.mat-expansion-panel-header[aria-disabled=true] .mat-expansion-panel-header-description, .mat-expansion-panel-header[aria-disabled=true] .mat-expansion-panel-header-title {
+  color: #b0b0b0 !important;
 }
 
 /*# sourceMappingURL=styles.css.map */
