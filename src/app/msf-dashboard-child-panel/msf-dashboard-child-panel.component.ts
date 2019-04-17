@@ -768,18 +768,21 @@ export class MsfDashboardChildPanelComponent {
     // add category arguments not available on the parent to the child panel, so the service will work properly
     for (let optionCategory of data)
     {
-      let avail = false;
-      for (let currentOptionCategory of _this.values.currentOptionCategories)
+      for (let category of optionCategory.categoryArgumentsId)
       {
-        if (currentOptionCategory.id == optionCategory.categoryArgumentsId.id)
+        let avail = false;
+        for (let curCategory of _this.values.currentOptionCategories)
         {
-          avail = true;
-          break;
+          if (curCategory.id == category.id)
+          {
+            avail = true;
+            break;
+          }
         }
+  
+        if (!avail)
+          _this.values.currentOptionCategories.push (category);
       }
-
-      if (!avail)
-        _this.values.currentOptionCategories.push (optionCategory.categoryArgumentsId);
     }
 
     if (_this.values.currentChartType.flags & ChartFlags.TABLE)
