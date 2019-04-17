@@ -1567,10 +1567,6 @@ app-msf-airport {
   background: #333333;
 }
 
-.mat-table {
-  background: black;
-}
-
 .mat-cell {
   font-size: 90%;
 }
@@ -4384,6 +4380,21 @@ th.msf-show-table, td.msf-show-table {
 
 .mat-checkbox-disabled:not(.mat-checkbox-checked) .mat-checkbox-frame {
   border-color: #b0b0b0 !important;
+}
+
+.msf-dashboard-child-panel-table th {
+  border: none;
+  border-bottom-color: rgba(0, 0, 0, 0.12);
+  background: #1F1F1F;
+}
+
+.msf-dashboard-child-panel-table .mat-row {
+  background: #171717;
+}
+
+.msf-dashboard-child-panel-table td.mat-cell {
+  color: white;
+  border-color: #1F1F1F;
 }
 
 /*# sourceMappingURL=styles.css.map */
