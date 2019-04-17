@@ -642,7 +642,7 @@ export class MsfDashboardChildPanelComponent {
     _this.values = new MsfDashboardPanelValues (data.id, data.title,
       data.id, null, null, data.option, data.chartColumnOptions, data.analysis, data.xaxis,
       data.values, data.function, data.chartType, JSON.stringify (_this.data.currentOptionCategories),
-      null, data.paletteColors);
+      data.lastestResponse, data.paletteColors);
 
     // init child panel settings
     if (_this.values.currentChartType != null && _this.values.currentChartType != -1)
@@ -682,7 +682,25 @@ export class MsfDashboardChildPanelComponent {
         notConfigured = true;
     }
 
-    if (!(_this.values.currentChartType.flags & ChartFlags.TABLE))
+    if (_this.values.currentChartType.flags & ChartFlags.TABLE)
+    {
+      for (i = 0; i < _this.values.lastestResponse.length; i++)
+      {
+        let tableColumn = _this.values.lastestResponse[i];
+
+        for (let j = 0; j < _this.values.chartColumnOptions.length; j++)
+        {
+          let curVariable = _this.values.chartColumnOptions[j];
+
+          if (curVariable.item.id == tableColumn.id)
+          {
+            _this.values.tableVariables.push (curVariable);
+            break;
+          }
+        }
+      }
+    }
+    else
     {
       if (_this.values.variable != null && _this.values.variable != -1)
       {
@@ -822,6 +840,10 @@ export class MsfDashboardChildPanelComponent {
     console.log(urlBase);
     urlArg = encodeURIComponent(urlBase);
     url = this.service.host + "/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
+
+    for (let tableVariable of this.values.tableVariables)
+      url += "&metaDataIds=" + tableVariable.item.id;
+
     this.http.get (this.msfTableRef, url, handlerSuccess, handlerError, null);
   }
 

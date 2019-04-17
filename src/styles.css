@@ -2744,23 +2744,10 @@ mat-tab-group {
 }
 
 #msf-dashboard-drill-down-table-container {
-  padding-top: 18%;
-  padding-bottom: 18%;
+  height: 165px;
   display: flex;
   justify-content: center;
   flex-direction: row;
-}
-#msf-dashboard-drill-down-table-container .msf-dashboard-drill-down-table-label-container {
-  width: 270px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  background-color: #01abec;
-}
-#msf-dashboard-drill-down-table-container .msf-dashboard-drill-down-table-label-container .msf-dashboard-drill-down-table-label {
-  font-size: 15px;
-  width: 100%;
 }
 
 #msf-share-dashboard-sub-container-column {
@@ -2843,6 +2830,44 @@ mat-tab-group {
   font-size: 12px;
 }
 
+#msf-dashboard-panel-table-container-column {
+  flex-direction: column;
+  overflow-y: auto;
+  height: initial;
+  align-items: center;
+  margin-bottom: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #595959;
+  background-color: #333333;
+  padding: 10px;
+  width: inherit;
+}
+
+#msf-dashboard-panel-table-container-column-empty {
+  justify-content: center;
+  height: initial;
+  align-items: center;
+  margin-bottom: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #595959;
+  background-color: #333333;
+  padding: 10px;
+  width: inherit;
+}
+#msf-dashboard-panel-table-container-column-empty .msf-no-results {
+  color: white;
+  background: #01abec;
+  margin: 0 100px;
+  text-align: center;
+  align-items: center;
+  vertical-align: middle;
+  justify-content: center;
+  padding: 15px;
+  font-size: 12px;
+}
+
 #msf-add-shared-dashboard-content-empty {
   justify-content: center;
   height: 40%;
@@ -2874,6 +2899,12 @@ mat-tab-group {
 
 #msf-dashboard-panel-form-op-container {
   width: 48%;
+  padding-left: 10px;
+}
+
+#msf-dashboard-panel-table-op-container {
+  display: flex;
+  width: 100%;
   padding-left: 10px;
 }
 

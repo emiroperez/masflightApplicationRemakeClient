@@ -34,6 +34,7 @@ export class MsfDashboardDrillDownComponent {
   public variableFilterCtrl: FormControl = new FormControl ();
   public xaxisFilterCtrl: FormControl = new FormControl ();
   public valueFilterCtrl: FormControl = new FormControl ();
+  public tableFilterCtrl: FormControl = new FormControl ();
 
   private convertValues: any[] = [];
 
@@ -73,7 +74,8 @@ export class MsfDashboardDrillDownComponent {
       xaxisCtrl: new FormControl ({ value: '', disabled: true }),
       valueCtrl: new FormControl ({ value: '', disabled: true }),
       functionCtrl: new FormControl ({ value: '', disabled: true }),
-      panelNameCtrl: new FormControl ({ value: '', disabled: true })
+      panelNameCtrl: new FormControl ({ value: '', disabled: true }),
+      tableCtrl: new FormControl ({ value: '', disabled: true })
     });
 
     // configure child panels in order to be able to configure the drill down settings
@@ -221,6 +223,7 @@ export class MsfDashboardDrillDownComponent {
     _this.searchChange (_this.variableFilterCtrl);
     _this.searchChange (_this.xaxisFilterCtrl);
     _this.searchChange (_this.valueFilterCtrl);
+    _this.searchChange (_this.tableFilterCtrl);
 
     // enable the combo box that allows to select the values for the chart
     _this.chartForm.get ('chartCtrl').enable ();
@@ -472,12 +475,20 @@ export class MsfDashboardDrillDownComponent {
       this.currentValue.xaxis = null;
       this.chartForm.get ('xaxisCtrl').reset ();
       this.chartForm.get ('xaxisCtrl').disable ();
+
+      this.currentValue.formVariables = [];
+      this.chartForm.get ('tableCtrl').reset ();
     }
     else
+    {
+      this.currentValue.formVariables = [];
       this.chartForm.get ('xaxisCtrl').enable ();
+      this.chartForm.get ('tableCtrl').reset ();
+    }
 
     this.chartForm.get ('variableCtrl').enable ();
     this.chartForm.get ('valueCtrl').enable ();
+    this.chartForm.get ('tableCtrl').enable ();
 
     this.checkIfPanelIsConfigured ();
   }
@@ -510,5 +521,21 @@ export class MsfDashboardDrillDownComponent {
   {
     return !((this.currentValue != null && !(this.currentValue.currentChartType.flags & ChartFlags.TABLE))
       || this.currentValue == null);
+  }
+
+  isTableVariableValid(): boolean
+  {
+    return this.chartForm.get ('tableCtrl').value;
+  }
+
+  addTableVariable(): void
+  {
+    this.currentValue.tableVariables.push (this.chartForm.get ('tableCtrl').value);
+    this.chartForm.get ('tableCtrl').reset ();
+  }
+
+  deleteColumnFromTable(index): void
+  {
+    this.currentValue.tableVariables.splice (index, 1);
   }
 }

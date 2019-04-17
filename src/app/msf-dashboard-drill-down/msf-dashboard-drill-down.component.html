@@ -115,10 +115,53 @@
   </div>
   <div *ngIf="isTablePanel()">
     <div class="msf-dashboard-panel-sub-container-column">
+      <div class="msf-dashboard-chart-options-container">
+        <div class="msf-dashboard-chart-selector">
+          <div class="msf-dashboard-chart-analysis-title">
+            <mat-icon class="msf-dashboard-chart-icon">filter_list</mat-icon>
+          </div>
+          <div class="msf-dashboard-chart-op-container">
+            <mat-form-field [formGroup]="chartForm" class="msf-full-width" id="msf-dashboard-drill-down-container-column">
+              <mat-select formControlName="tableCtrl" placeholder="Select Column" (selectionChange)="checkVariable($event.value)">
+                <ngx-mat-select-search [formControl]="tableFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+                <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
+                  {{variable.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <button [disabled]="!isTableVariableValid()" mat-icon-button [ngClass]="!isTableVariableValid() ? 'func-button-disabled' : 'func-button'" (click)="addTableVariable()">
+            <mat-icon class="msf-dashboard-chart-icon" aria-label="Add User" style="margin-left: 6px">add</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="msf-dashboard-panel-sub-container-column" *ngIf="currentValue.tableVariables.length">
       <div class="msf-dashboard-chart-options-container" id="msf-dashboard-drill-down-table-container">
-        <div class="msf-dashboard-drill-down-table-label-container">
-          <div class="msf-dashboard-drill-down-table-label">
-            No additional configuration is needed
+        <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-table-container-column">
+          <div class="msf-dashboard-chart-op-container" id="msf-dashboard-panel-table-op-container" *ngFor="let tableVariable of currentValue.tableVariables; let column = index">
+            <mat-form-field class="msf-full-width">
+              <mat-select [(value)]="tableVariable" placeholder="Select Column">
+                <ngx-mat-select-search [formControl]="tableFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+                <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
+                  {{variable.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div class="msf-dashboard-chart-add-button" id="msf-dashboard-table-button">
+              <button mat-icon-button (click)="deleteColumnFromTable(column)">
+                <mat-icon class="msf-dashboard-chart-icon" aria-label="Delete Column">delete</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="msf-dashboard-panel-sub-container-column" *ngIf="!currentValue.tableVariables.length">
+      <div class="msf-dashboard-chart-options-container" id="msf-dashboard-drill-down-table-container">
+        <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-table-container-column-empty">
+          <div class="msf-no-results">
+            You don't have any added any variable to filter
           </div>
         </div>
       </div>
