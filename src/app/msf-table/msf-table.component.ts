@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input ,ChangeDetectorRef, ElementRef, EventEmitter} from '@angular/core';
+import { Component, OnInit, ViewChild, Input ,ChangeDetectorRef, ElementRef, EventEmitter, Output} from '@angular/core';
 import {MatSort, MatTableDataSource, MatTab, Sort, MatDialog} from '@angular/material';
 import { Globals } from '../globals/Globals';
 import { ApplicationService } from '../services/application.service';
@@ -36,8 +36,8 @@ export class MsfTableComponent implements OnInit {
   @Input('isLoading')
   isLoading: any;
 
-  @Input('stopLoading')
-  stopLoading;
+  @Output('setLoading')
+  setLoading = new EventEmitter ();
 
   @Input('categoryArguments')
   categoryArguments: any;
@@ -45,8 +45,8 @@ export class MsfTableComponent implements OnInit {
   @Input('currentOption')
   currentOption: any;
 
-  @Input('childPanel')
-  childPanel: boolean;
+  @Input('isPanel')
+  isPanel: boolean;
 
   metadata;
 
@@ -246,7 +246,7 @@ export class MsfTableComponent implements OnInit {
   }
 
   handlerSuccess(_this,data, tab){
-    if(_this.isLoading ()){
+    if(_this.isLoading) {
       _this.globals.totalRecord=0;
       _this.setGroupingArgument();
       _this.globals.endTimestamp = new Date();
@@ -370,7 +370,7 @@ export class MsfTableComponent implements OnInit {
         _this.globals.template = false;
       }
 
-      _this.stopLoading ();
+      _this.setLoading.emit (false);
     }
   }
 
@@ -381,7 +381,7 @@ export class MsfTableComponent implements OnInit {
   }
 
   handlerError(_this,result) {
-    _this.stopLoading ();
+    _this.setLoading.emit (false);
     _this.globals.dataSource = false;
     _this.globals.template = false;
     console.log(result);
@@ -539,4 +539,11 @@ export class MsfTableComponent implements OnInit {
     return aux;
   }
 
+  resultsAvailable(): boolean
+  {
+    if (this.currentOption == null)
+      return false;
+
+    return ((this.globals.dataSource && !this.globals.template && this.currentOption.metaData==1) || (this.currentOption.tabType=='scmap'));
+  }
 }

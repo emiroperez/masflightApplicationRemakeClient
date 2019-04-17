@@ -101,7 +101,9 @@ export class MsfDashboardComponent implements OnInit {
         name: columnConfig.string,
         nameSearch: columnConfig.stringSearch,
         baseUrl: columnConfig.url,
-        drillDownOptions: []
+        drillDownOptions: [],
+        tabType: columnConfig.tabType,
+        metaData: columnConfig.metaData
       });
 
       optionIds.push (columnConfig.id);

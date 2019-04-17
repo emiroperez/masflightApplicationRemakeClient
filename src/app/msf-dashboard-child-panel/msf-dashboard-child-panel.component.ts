@@ -901,14 +901,9 @@ export class MsfDashboardChildPanelComponent {
     return (this.values != null && this.values.currentChartType.flags & ChartFlags.TABLE) ? true : false;
   }
 
-  stopLoading()
+  setLoading(value)
   {
-    this.globals.popupLoading = false;
-  }
-
-  isLoading(): boolean
-  {
-    return this.globals.popupLoading;
+    this.globals.popupLoading = value;
   }
 
   moreResults()

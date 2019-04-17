@@ -74,13 +74,8 @@ export class MsfContainerComponent implements OnInit {
     return categoryArguments;
   }
 
-  stopLoading()
+  setLoading(value)
   {
-    this.globals.isLoading = false;
-  }
-
-  isLoading(): boolean
-  {
-    return this.globals.isLoading;
+    this.globals.isLoading = value;
   }
 }

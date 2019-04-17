@@ -1,4 +1,4 @@
-<div class="msf-dashboard-panel-container" [style.height.px]="panelHeight" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic">
+<div class="msf-dashboard-panel-container" [style.height.px]="panelHeight" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable">
   <div class="msf-dashboard-panel-sub-container-column">
     <div class="msf-dashboard-panel-sub-container-row">
       <mat-form-field class="msf-width-80">
@@ -33,7 +33,7 @@
       </mat-form-field>
     </div>
   </div>
-  <ng-container *ngIf="!isInformationPanel() && !isSimpleFormPanel() && !isPicturePanel()">
+  <ng-container *ngIf="!isInformationPanel() && !isSimpleFormPanel() && !isPicturePanel() && !isTablePanel()">
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-addmenu-icon-item">
         <mat-icon class="msf-dashboard-chart-icon" aria-label="Filter List">filter_list</mat-icon>
@@ -108,7 +108,7 @@
             </button>
           </div>
           <div class="msf-dashboard-panel-control-variable-button">
-            <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated" mat-mini-fab (click)="goToChart()" color="primary">
+            <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated" mat-mini-fab (click)="goToChart()" color="primary">
               <mat-icon aria-label="Go To Chart">bar_chart</mat-icon>
             </button>
           </div>
@@ -216,7 +216,7 @@
             </button>
           </div>
           <div class="msf-dashboard-panel-control-variable-button">
-            <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated" mat-mini-fab (click)="goToChart()" color="primary">
+            <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated" mat-mini-fab (click)="goToChart()" color="primary">
               <mat-icon aria-label="Go To Information">bar_chart</mat-icon>
             </button>
           </div>
@@ -347,7 +347,7 @@
             </button>
           </div>
           <div class="msf-dashboard-panel-control-variable-button">
-            <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated" mat-mini-fab (click)="goToChart()" color="primary">
+            <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated" mat-mini-fab (click)="goToChart()" color="primary">
               <mat-icon aria-label="Go To Form">bar_chart</mat-icon>
             </button>
           </div>
@@ -378,8 +378,80 @@
             </button>
           </div>
           <div class="msf-dashboard-panel-control-variable-button">
-            <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated" mat-mini-fab (click)="goToChart()" color="primary">
+            <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated" mat-mini-fab (click)="goToChart()" color="primary">
               <mat-icon aria-label="Go To Picture">bar_chart</mat-icon>
+            </button>
+          </div>
+          <div class="msf-dashboard-panel-control-variable-button">
+            <button mat-mini-fab (click)="savePanel()" color="primary">
+              <mat-icon aria-label="Save Changes">save</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="isTablePanel()">
+    <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-form-sub-container">
+      <div class="msf-dashboard-chart-options-container">
+        <div class="msf-dashboard-chart-selector">
+          <div class="msf-dashboard-chart-analysis-title">
+            <mat-icon class="msf-dashboard-chart-icon">filter_list</mat-icon>
+          </div>
+          <div class="msf-dashboard-chart-op-container">
+            <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+              <mat-select formControlName="tableCtrl" placeholder="Select Column">
+                <ngx-mat-select-search [formControl]="tableFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+                <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
+                  {{variable.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="msf-dashboard-chart-add-button msf-dashboard-chart-table-add-button" id="msf-dashboard-table-button">
+            <button [disabled]="!isTableVariableValid()" mat-icon-button (click)="addTableVariable()" [ngClass]="isTableVariableValid() ? 'func-button' : 'func-button-disabled'">
+              <mat-icon class="msf-dashboard-chart-icon" aria-label="Add Column" style="margin-left: 6px">add</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-form-container-column" *ngIf="values.tableVariables.length" [ngStyle]="{'overflow-y': ((values.height.value < 6 && values.tableVariables.length > 2) || (values.height.value >= 6 && values.tableVariables.length > 3)) ? 'scroll' : 'hidden'}">
+      <div class="msf-dashboard-panel-sub-container-row" id="msf-dashboard-panel-form-container-row" *ngFor="let tableVariable of values.tableVariables">
+        <div class="msf-dashboard-chart-op-container" id="msf-dashboard-panel-table-op-container">
+          <mat-form-field class="msf-full-width">
+            <mat-select [(value)]="tableVariable" placeholder="Select Column">
+              <ngx-mat-select-search [formControl]="tableFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+              <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
+                {{variable.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="msf-dashboard-chart-add-button" id="msf-dashboard-form-button">
+          <button mat-icon-button (click)="deleteColumnFromTable(column)">
+            <mat-icon class="msf-dashboard-chart-icon" aria-label="Delete Column">delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-form-container-column-empty" *ngIf="!values.tableVariables.length">
+      <div class="msf-no-results">
+        You don't have added any variable to filter
+      </div>
+    </div>
+    <div class="msf-dashboard-panel-sub-container-column">
+      <div class="msf-dashboard-chart-options-container">
+        <div class="msf-dashboard-panel-sub-container-column-reverse">
+          <button [disabled]="!generateBtnEnabled" mat-flat-button [ngClass]="generateBtnEnabled ? 'flat-button' : 'flat-button-disabled'" (click)="loadData()">Generate</button>
+          <div class="msf-dashboard-panel-control-variable-button">
+            <button [disabled]="!variableCtrlBtnEnabled" mat-mini-fab (click)="goToControlVariables()" color="primary">
+              <mat-icon aria-label="Control Variables">more_vert</mat-icon>
+            </button>
+          </div>
+          <div class="msf-dashboard-panel-control-variable-button">
+            <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated" mat-mini-fab (click)="goToChart()" color="primary">
+              <mat-icon aria-label="Go To Table">bar_chart</mat-icon>
             </button>
           </div>
           <div class="msf-dashboard-panel-control-variable-button">
@@ -404,7 +476,7 @@
         <mat-icon aria-label="Share Panel">share</mat-icon>
       </button>
     </div>
-    <div id="msf-dashboard-chart-display-{{values.id}}" [ngStyle]="{'width': globals.readOnlyDashboard ? '100%' : 'calc(100% - 35px)'}" [style.height.px]="calcChartHeight()"></div>
+    <div id="msf-dashboard-chart-display-{{values.id}}" [ngStyle]="{'width': globals.readOnlyDashboard ? '100%' : 'calc(100% - 35px)'}" [style.height.px]="calcPanelHeight()"></div>
   </div>
 </div>
 <div class="msf-dashboard-panel-container-chart" *ngIf="values.displayInfo" [style.height.px]="panelHeight">
@@ -418,7 +490,7 @@
         <mat-icon aria-label="Share Panel">share</mat-icon>
       </button>
     </div>
-    <div style="width: 100%" [style.height.px]="calcChartHeight()">
+    <div style="width: 100%" [style.height.px]="calcPanelHeight()">
       <div class="msf-dashboard-info-display">
         <div class="msf-dashboard-info-container" *ngIf="values.infoVar1">
           <div class="msf-dashboard-info-table" *ngFor="let result of values.lastestResponse">
@@ -445,7 +517,7 @@
         <mat-icon aria-label="Share Panel">share</mat-icon>
       </button>
     </div>
-    <div style="width: 100%; display: table" [style.height.px]="calcChartHeight()">
+    <div style="width: 100%; display: table" [style.height.px]="calcPanelHeight()">
       <div class="msf-media-title-container" id="msf-dashboard-form-display">
         <div [ngClass]="values.formVariables[column].valueOrientation.value ? 'msf-dashboard-form-display-result-vertical' : 'msf-dashboard-form-display-result-horizontal'" *ngFor="let formResult of values.lastestResponse; let column = index">
           <span class="msf-media-title-value" id="msf-dashboard-form-display-title" [style.font-size.px]="getFormFontSize(column)">{{formResult.column.name}}: </span>
@@ -466,8 +538,24 @@
         <mat-icon aria-label="Share Panel">share</mat-icon>
       </button>
     </div>
-    <div [style.height.px]="calcChartHeight()">
+    <div [style.height.px]="calcPanelHeight()">
       <!-- TODO: Picture goes here -->
+    </div>
+  </div>
+</div>
+<div class="msf-dashboard-panel-container-chart" [style.display]="values.displayTable ? 'block' : 'none'" [style.height.px]="panelHeight">
+  <div class="msf-dashboard-panel-title"><br></div>
+  <div class="msf-dashboard-panel-sub-container-column">
+    <div class="msf-dashboard-panel-config-button" *ngIf="!globals.readOnlyDashboard">
+      <button mat-mini-fab (click)="goToTableConfiguration()" color="primary">
+        <mat-icon aria-label="Edit Configuration">menu</mat-icon>
+      </button>
+      <button mat-mini-fab color="primary" style="margin-bottom: 7px" (click)="sharePanel()">
+        <mat-icon aria-label="Share Panel">share</mat-icon>
+      </button>
+    </div>
+    <div [style.height.px]="calcPanelHeight()" style="width: calc(100% - 50px); overflow-y: auto; z-index: 99997">
+      <app-msf-table #msfTableRef [isLoading]="values.isLoading" (setLoading)="setLoading($event)" [categoryArguments]="values.currentOptionCategories" [currentOption]="values.currentOption" [isPanel]="true"></app-msf-table>
     </div>
   </div>
 </div>
