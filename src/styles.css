@@ -4421,4 +4421,8 @@ th.msf-show-table, td.msf-show-table {
   color: #b0b0b0 !important;
 }
 
+.admin-checkboxes.mat-checkbox-disabled.mat-checkbox-checked .mat-checkbox-background, .mat-checkbox-disabled.mat-checkbox-indeterminate .mat-checkbox-background {
+  background-color: #01abec !important;
+}
+
 /*# sourceMappingURL=styles.css.map */

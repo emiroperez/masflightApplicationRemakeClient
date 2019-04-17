@@ -756,10 +756,19 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
   setSelectedCategoryArguments(category) {
     category.selected = !category.selected;
-    var index = this.optionSelected.menuOptionArgumentsAdmin.findIndex(el => el.categoryArgumentsId.id == category.id);
+    // var index = this.optionSelected.menuOptionArgumentsAdmin.findIndex(el => el.categoryArgumentsId.id == category.id);
+    var index = -1;
+    this.optionSelected.menuOptionArgumentsAdmin.forEach(function(element,i){
+        element.categoryArgumentsId.forEach(function(element2,i2){
+          if(element2.id==category.id){
+              index = i;
+          }
+        })
+    });
+
     if (index != -1) {
       if (this.optionSelected.menuOptionArgumentsAdmin[index].id == undefined) {
-        this.optionSelected.menuOptionArgumentsAdmin.slice(index, 1);
+        this.optionSelected.menuOptionArgumentsAdmin.splice(index, 1);
       } else {
         this.optionSelected.menuOptionArgumentsAdmin[index].toDelete = !category.selected;
       }
