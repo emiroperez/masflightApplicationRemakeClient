@@ -174,6 +174,9 @@ import { MsfColumnSelectorComponent } from './msf-column-selector/msf-column-sel
 import { MsfShareDashboardComponent } from './msf-share-dashboard/msf-share-dashboard.component';
 import { MsfSharedDashboardItemsComponent } from './msf-shared-dashboard-items/msf-shared-dashboard-items.component';
 import { MsfAddSharedDashboardPanelComponent } from './msf-add-shared-dashboard-panel/msf-add-shared-dashboard-panel.component';
+import { DrillDownDialog } from './admin-menu/admin-menu.component';
+import { FilterPipe } from './admin-menu/pipe-filter';
+import { NewCategoryDialog } from './admin-menu/admin-menu.component'
 import { MsfAddSharedDashboardComponent } from './msf-add-shared-dashboard/msf-add-shared-dashboard.component';
 
 @NgModule({
@@ -234,9 +237,11 @@ import { MsfAddSharedDashboardComponent } from './msf-add-shared-dashboard/msf-a
     MsfUserListComponent,
     MsfOptionListComponent,
     ConfirmDeleteDialog,
+    NewCategoryDialog,
     EditOutputOptionsMetaDialog,
     EditCategoryArgumentDialog,
     EditOptionsDialog,
+    DrillDownDialog,
     MsfTestComponent,
     MsfFreeTextInputComponent,
     MsfSelectBoxSingleOptionComponent,
@@ -329,6 +334,7 @@ import { MsfAddSharedDashboardComponent } from './msf-add-shared-dashboard/msf-a
     MsfShareDashboardComponent,
     MsfSharedDashboardItemsComponent,
     MsfAddSharedDashboardPanelComponent,
+    FilterPipe,
     MsfAddSharedDashboardComponent
   ],
   imports: [
@@ -390,6 +396,8 @@ import { MsfAddSharedDashboardComponent } from './msf-add-shared-dashboard/msf-a
     EditOutputOptionsMetaDialog,
     EditCategoryArgumentDialog,
     EditOptionsDialog,
+    DrillDownDialog,
+    NewCategoryDialog,
     MsfDashboardControlVariablesComponent,
     MsfConfirmationDialogComponent,
     MsfDashboardInfoFunctionsComponent,

@@ -1,11 +1,16 @@
-import { OnInit, Component, Inject, AfterViewInit, ChangeDetectorRef, Renderer2, ViewEncapsulation, ViewChild } from '@angular/core';
+import { OnInit, Component, Inject, AfterViewInit, ChangeDetectorRef, Renderer2, ViewEncapsulation, ViewChild, ViewChildren } from '@angular/core';
 import { ApiClient } from '../api/api-client';
 import { Globals } from '../globals/Globals';
 import { ApplicationService } from '../services/application.service';
-import { MatSnackBar, MatTableDataSource, MatTable } from '@angular/material';
+import { MatSnackBar, MatTableDataSource, MatTable, MatSelect } from '@angular/material';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { MessageComponent } from '../message/message.component';
 import {CdkDragDrop, moveItemInArray, CdkDropList} from '@angular/cdk/drag-drop';
+import { FormControl } from '@angular/forms';
+import { DrillDown } from '../model/DrillDown';
+import { ReplaySubject, Subject } from 'rxjs';
+import { takeUntil, take } from 'rxjs/operators';
+import { CategoryArguments } from '../model/CategoryArguments';
 //import  clonedeep from 'lodash.clonedeep';
 
 @Component({
@@ -29,6 +34,182 @@ export class ConfirmDeleteDialog {
 }
 
 
+
+@Component({
+  selector: 'new-category-dialog-app',
+  templateUrl: 'new-category-dialog.html',
+  styleUrls: ['./admin-menu.component.css']
+})
+
+export class NewCategoryDialog {
+  category:any = {label:'',icon:'',description:'',isSelected:false};
+  categories: any[] =[];
+  optionSelected: any;
+  idDomOptionSelected: any;
+  categoryDelete: any[] = [];
+  argumentDelete: any[] = [];
+  dataToSend: any[] = [];
+
+  constructor(
+    public dialogRef: MatDialogRef<NewCategoryDialog>,private service: ApplicationService, private globals: Globals,
+    @Inject(MAT_DIALOG_DATA) public data) {
+      this.categories = data;
+}
+
+onNoClick(){
+  this.dialogRef.close();
+}
+
+sendData() {
+  this.dataToSend = this.categories.concat(this.categoryDelete);
+  this.dialogRef.close(this.dataToSend);
+}
+
+getSelectedOption(option) {
+  if (this.category != option) {
+    option.isSelected = !option.isSelected;
+    this.category.isSelected = !this.category.isSelected;
+    this.category = option;
+  } else {
+    option.isSelected = !option.isSelected;
+    this.category = {};
+  }
+
+  console.log(this.category)
+}
+
+addCategory(){
+  let cat = {
+    label:'',
+    icon:'',
+    description:'',
+    arguments: []
+  }
+  this.categories.unshift(cat);
+  this.getSelectedOption(this.categories[0]);
+}
+
+deleteCategory(){
+  this.category.delete=true;
+  this.categoryDelete.push(this.category);
+  const index: number = this.categories.findIndex(d => d === this.category);
+  this.categories.splice(index,1);
+}
+
+addArgument(){
+  let arg = {
+    description:'',
+    type:''
+  }
+  this.category.arguments.push(arg);
+}
+
+deleteArgument(argument){
+  argument.delete=true;
+  this.argumentDelete.push(argument);
+  const index: number = this.category.arguments.findIndex(d => d === argument);
+  this.category.arguments.spice(index,1);
+}
+
+}
+
+
+@Component({
+  selector: 'drill-down-app',
+  templateUrl: 'drill-down-setup.html',
+  styleUrls: ['./dialog-output.css']
+})
+
+export class DrillDownDialog {
+  drillDownSelected: any;
+  menuString;
+  dataToSend : any [] = [];
+  dataToDelete: any[] = [];
+  protected options: any[];
+  public optCtrl: FormControl = new FormControl();
+  public optFilterCtrl: FormControl = new FormControl();
+  public filteredOpts: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
+  @ViewChild('singleSelect') singleSelect: MatSelect;
+  protected _onDestroy = new Subject<void>();
+
+  constructor(
+    public dialogRef: MatDialogRef<DrillDownDialog>,
+    @Inject(MAT_DIALOG_DATA) public data : {optionString: any, option:any, drillDown:any}) {
+      this.menuString = data.optionString;
+      this.optCtrl = this.menuString[0];
+    this.filteredOpts.next(this.menuString.slice());
+
+    // listen for search field value changes
+    this.optFilterCtrl.valueChanges
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.filterOptions();
+      });
+     }
+
+     protected setInitialValue() {
+      this.filteredOpts
+        .pipe(take(1), takeUntil(this._onDestroy))
+        .subscribe(() => {
+          this.singleSelect.compareWith = (a: any, b: any) => a && b && a.id === b.id;
+        });
+    }
+
+    protected filterOptions() {
+      if (!this.menuString) {
+        return;
+      }
+      let search = this.optFilterCtrl.value;
+      if (!search) {
+        this.filteredOpts.next(this.menuString.slice());
+        return;
+      } else {
+        search = search.toLowerCase();
+      }
+      this.filteredOpts.next(
+        this.menuString.filter(mString => mString.stringSearch.toLowerCase().indexOf(search) > -1)
+      );
+    }
+
+
+    displayedColumns = ['title','childrenOptionId'];
+    dataSource = this.data.drillDown;
+
+
+    addDrillDown() {
+      this.data.drillDown.push({
+        id: null,
+        title: '',
+        childrenOptionId: 0,
+        parentOptionId: this.data.option,
+        delete: false});
+      this.dataSource = new MatTableDataSource(this.data.drillDown);
+    }
+
+    onNoClick(): void {
+      this.dialogRef.close();
+    }
+
+    sendData() {
+      this.dataToSend = this.data.drillDown.concat(this.dataToDelete);
+      this.dialogRef.close(this.dataToSend);
+    }
+
+    selectRow(row) {
+      this.drillDownSelected = row;
+  }
+
+  deleteDrillDown() {
+    if (this.drillDownSelected) {
+      this.drillDownSelected.delete = true;
+      this.dataToDelete.push(this.drillDownSelected);
+      const index: number = this.data.drillDown.findIndex(d => d === this.drillDownSelected);
+      this.data.drillDown.splice(index, 1);
+      this.dataSource = new MatTableDataSource(this.data.drillDown);
+    }
+  }
+}
+
 @Component({
   selector: 'dialog-edit-output-options-dialog',
   templateUrl: 'dialog-edit-output-options.html',
@@ -41,24 +222,17 @@ export class EditOutputOptionsMetaDialog {
   optionSelected : any;
   dataToSend : any [] = [];
   dataToDelete : any [] = [];
+  arg: any[];
 
   constructor(
     public dialogRef: MatDialogRef<EditOutputOptionsMetaDialog>,
-    @Inject(MAT_DIALOG_DATA) public data : {outputs: any, option: any}) { }
+    @Inject(MAT_DIALOG_DATA) public data : {outputs: any, option: any, arguments: any}) {
+      this.arg = data.arguments;
+     }
 
 
-    displayedColumns = ['columnLabel', 'columnName', 'columnType', 'columnFormat', 'grouping', 'unit'];
+    displayedColumns = ['columnLabel','columnName', 'columnType', 'columnFormat', 'grouping', 'unit', 'arguments'];
     dataSource = this.data.outputs;
-
-
-    /* dropTable(event: CdkDragDrop<string[]>) {
-      console.log(`Moving item from ${event.previousIndex} to index ${event.currentIndex}`)
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-      for (let i=0; i<event.container.data.length; i++){
-      console.log(`event.container ${event.container.data[i]}`);
-      }
-      this.dataSource.data = clonedeep(this.dataSource.data);
-    } */
 
     dropTable(event: CdkDragDrop<any[]>) {
       const prevIndex = this.dataSource.findIndex((d) => d === event.item.data);
@@ -80,6 +254,7 @@ export class EditOutputOptionsMetaDialog {
         columnFormat: null,
         grouping: 0,
         unit: '',
+        argumentsId: '',
         delete: false});
       this.dataSource = new MatTableDataSource(this.data.outputs);
     }
@@ -129,17 +304,25 @@ export class EditCategoryArgumentDialog {
 
   argumentSelected: any = {};
 
+  category: any[] = [];
+
   selectedCategories: any[] = [];
 
   displayedColumns: string[] = ['label1', 'label2', 'name1', 'name2'];
 
   constructor(
     public dialogRef: MatDialogRef<EditCategoryArgumentDialog>,
-    @Inject(MAT_DIALOG_DATA) public data) { }
+    @Inject(MAT_DIALOG_DATA) public data) {
+
+     }
+
+
 
   onNoClick(): void {
     this.dialogRef.close();
   }
+
+
 
   selectArgumentCategory(category) {
     if (this.itemSelected != category) {
@@ -223,29 +406,27 @@ export class EditCategoryArgumentDialog {
 }
 
 @Component({
-  selector: 'app-admin-menu',
+  selector: 'app-admin-menu, FilterPipe',
   templateUrl: './admin-menu.component.html',
   styleUrls: ['./admin-menu.component.css']
 })
 export class AdminMenuComponent implements OnInit, AfterViewInit {
 
   menu: any[] = [];
-
   categoryArguments: any[] = [];
-
+  drillDown: any[] = [];
   categories: any[] = [];
-
   outputs: any[] = [];
-
+  argumentsDrillDown: any[] = [];
   optionSelected: any = {};
-
   categorySelected: any = {};
-
+  optionsCategoriesArguments: any[] = [];
   categoryArgumentSelected: any = {};
-
+  searchText: string;
   idDomOptionSelected: any;
-
   emptyError: any = 0;
+  menuString: any[] = [];
+  @ViewChildren('tooltip') tooltips;
 
   constructor(private http: ApiClient, public globals: Globals,
     private service: ApplicationService, public snackBar: MatSnackBar,
@@ -277,26 +458,53 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   }
 
   getMeta() {
-    this.service.loadWebservicMeta(this, this.optionSelected, this.handlerSuccessMeta, this.handlerErrorMeta);
+    this.service.loadWebservicMetaAdmin(this, this.optionSelected, this.handlerSuccessMeta, this.handlerErrorMeta);
   }
 
-  handlerSuccessMeta(__this, result) {
-      __this.outputs = result;
-      const dialogRef = __this.dialog.open(EditOutputOptionsMetaDialog, {
-      width: '80%',
-      data: {outputs : __this.outputs, option : __this.optionSelected}
+  getArgumentsByOption(){
+    this.service.loadArgumentsMeta(this, this.optionSelected, this.handlerSuccessArgumentsMeta, this.handlerErrorMeta);
+  }
+
+  editVariables(item){
+    var index;
+    this.optionSelected.menuOptionArgumentsAdmin.forEach(element => {
+      element.categoryArgumentsId.forEach(element2 => {
+        if (element2.id==item.id) {
+          index = element;
+        }
+      });
+    });
+    // findIndex(el => el.categoryArgumentsId.id == item.id);
+    // var cat = (this.optionSelected.menuOptionArgumentsAdmin[index]);
+    this.editCategoryArguments(index);
+  }
+
+
+
+  handlerSuccessArgumentsMeta(___this,result){
+    ___this.argumentsDrillDown = result;
+    const dialogRef = ___this.dialog.open(EditOutputOptionsMetaDialog, {
+      width: '90%',
+      data: {outputs : ___this.outputs, option : ___this.optionSelected, arguments: ___this.argumentsDrillDown}
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result != undefined) {
-        __this.outputs = result;
-        __this.saveMeta();
+        ___this.outputs = result;
+        ___this.saveMeta();
       }
     });
+  }
+  handlerSuccessMeta(__this, result) {
+      __this.outputs = result;
+      __this.getArgumentsByOption();
+
+
 
   }
   handlerErrorMeta(_this, result) {
     console.log(result);
+    _this.globals.isLoading = false;
   }
   getOptionSelected(option) {
     //this.categoryArguments = [];
@@ -342,10 +550,14 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     var categories = this.categories;
     this.optionSelected.menuOptionArgumentsAdmin.forEach(function (itemOptionCategory, indexOptionCategory, arrayOptionCategory) {
       categories.forEach(function (itemCategory, indexCategory, arrayCategory) {
-        if (itemOptionCategory.categoryArgumentsId.id == itemCategory.id) {
-          itemCategory.selected = true;
+        for (let index = 0; index < itemOptionCategory.categoryArgumentsId.length; index++) {
+          const element = itemOptionCategory.categoryArgumentsId[index];
+          if (element.id == itemCategory.id) {
+            itemCategory.selected = true;
+          }
         }
       })
+
     });
     this.globals.isLoading = false;
   }
@@ -396,11 +608,37 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
       dialogRef.afterClosed().subscribe((result: any) => {
         if (result.confirm){
           this.optionSelected.toDelete = true;
-          this.optionSelected.label+="...";
+          this.optionSelected.label+="....";
           this.saveMenu();
         }
       });
     }
+  }
+
+  saveNewArgumentsCategory(category){
+    let arrayArg = [];
+    arrayArg.push(category);
+    this.service.saveNewCategoryArguments(this, arrayArg, this.handlerSuccess, this.handlerErrorMeta);
+
+  }
+
+   handlerSuccess(_this, result){
+     _this.categories = result;
+     _this.getOptionCategoryArguments();
+
+  }
+
+  addCategoryArguments(){
+    const dialogRef = this.dialog.open(NewCategoryDialog, {
+      width: '70%',
+      data: this.categories
+    });
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result){
+        this.categories = result;
+        this.saveNewArgumentsCategory(result);
+      }
+    });
   }
 
   deleteCategory
@@ -491,6 +729,16 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     _this.globals.isLoading = false;
   }
 
+  saveDrillDown() {
+    this.service.saveDrillDown(this, this.drillDown, this.handlerSuccessdrillDown, this.handlerErrorSaveMeta);
+  }
+
+  handlerSuccessdrillDown(_this, data) {
+    _this.globals.isLoading = false;
+  }
+
+
+
   getMenuData(): void {
     this.service.loadMenuOptions(this, this.handlerGetSuccessMenuData, this.handlerGetErrorMenuData);
     this.optionSelected = {};
@@ -517,7 +765,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
       }
     } else {
       var itemToAdd = {
-        "categoryArgumentsId": category,
+        "categoryArgumentsId": [category],
         "selected": true,
         "toDelete": false
       };
@@ -535,15 +783,16 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   }
 
   saveCategoryArgument() {
-    this.service.saveArgumentsCategory(this, this.categories, this.handlerSuccessSaveCategoryArgument, this.handlerErrorSaveCategoryArgument);
+    let arrayMenuOptionArg = [];
+    for(let i =0; i <this.optionSelected.menuOptionArgumentsAdmin.length;i++){
+      arrayMenuOptionArg.push(this.optionSelected.menuOptionArgumentsAdmin[i]);
+    }
+    this.service.saveOptionsArgumentsCategory(this, arrayMenuOptionArg, this.optionSelected.id, this.handlerSuccessSaveCategoryArgument, this.handlerErrorSaveCategoryArgument);
   }
 
   handlerSuccessSaveCategoryArgument(_this, result) {
-    _this.categories = result;
-    _this.globals.isLoading = false;
-    if (_this.optionSelected.id != undefined) {
-      _this.getOptionCategoryArguments();
-    }
+    _this.optionSelected.menuOptionArgumentsAdmin = result;
+    _this.getOptionCategoryArguments();
   }
 
   handlerErrorSaveCategoryArgument(_this, result) {
@@ -553,22 +802,120 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   editOutputOptions() {
     this.getMeta();
   }
-  editDrillDown(){
+
+  getMenuOptionsString(_this){
+    _this.service.getMenuString(_this, _this.globals.currentApplication.id, _this.handleSuccessString, _this.handlerErrorMeta);
+  }
+
+  handleSuccessString(_this,data){
+    console.log(data);
+    console.log(_this.optionSelected);
+    console.log(_this.drillDown);
+    let menuString = data;
+    const dialogRef = _this.dialog.open(DrillDownDialog, {
+      width: '90%',
+      data: {optionString : menuString, option : _this.optionSelected, drillDown : _this.drillDown}
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result != undefined) {
+        _this.drillDown = result;
+        _this.saveDrillDown();
+      }
+    });
 
   }
-  editCategoryArguments() {
-    var duplicateObject = JSON.parse(JSON.stringify(this.categories));
+
+  getDrillDowns(){
+    this.service.getDrillDownAdmin(this, this.optionSelected.id, this.handlerSuccessDrillDown, this.handlerErrorMeta);
+  }
+
+  handlerSuccessDrillDown(_this,data){
+    console.log(data);
+    _this.drillDown = data;
+    _this.getMenuOptionsString(_this);
+  }
+  editDrillDown(){
+    this.getDrillDowns();
+  }
+
+  fillArguments(data){
+    console.log(data)
+    if(!data.hasOwnProperty('id')){
+      data.id = null;
+    }
+
+    console.log(data)
+    for(let i=0; i<data.categoryArgumentsId.arguments.length;i++){
+    if(data.categoryArgumentsId.arguments[i].optionCategoryArguments == null){
+      data.categoryArgumentsId.arguments[i].optionCategoryArguments = {};
+        data.categoryArgumentsId.arguments[i].optionCategoryArguments.id= null;
+        data.categoryArgumentsId.arguments[i].optionCategoryArguments.label1= '';
+        data.categoryArgumentsId.arguments[i].optionCategoryArguments.label2= '';
+        data.categoryArgumentsId.arguments[i].optionCategoryArguments.label3='';
+        data.categoryArgumentsId.arguments[i].optionCategoryArguments.name1= '';
+        data.categoryArgumentsId.arguments[i].optionCategoryArguments.name2= '';
+        data.categoryArgumentsId.arguments[i].optionCategoryArguments.name3= '';
+        data.categoryArgumentsId.arguments[i].optionCategoryArguments.required= false;
+        data.categoryArgumentsId.arguments[i].optionCategoryArguments.title= '';
+        data.categoryArgumentsId.arguments[i].optionCategoryArguments.url= '';
+    }
+    data.categoryArgumentsId.arguments[i].optionCategoryArguments.menuOptionId = this.optionSelected.id;
+    data.categoryArgumentsId.arguments[i].optionCategoryArguments.menuOptionArguments = data.id;
+    data.categoryArgumentsId.arguments[i].optionCategoryArguments.argumentCategoryId = data.categoryArgumentsId.id;
+    data.categoryArgumentsId.arguments[i].optionCategoryArguments.argumentId = data.categoryArgumentsId.arguments[i].id;
+
+  }
+  }
+
+  editCategoryArguments(cat) {
+
+    var duplicateObject = JSON.parse(JSON.stringify(cat));
+    //this.fillArguments(duplicateObject);
+    console.log(duplicateObject)
     const dialogRef = this.dialog.open(EditCategoryArgumentDialog, {
-      width: '70%',
+      width: '45%',
       data: duplicateObject
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result != undefined) {
-        this.categories = result;
-        this.saveCategoryArgument();
+        console.log(result)
+        duplicateObject = result;
+        console.log("objeto")
+        console.log(duplicateObject);
+        this.saveMenuArguments(duplicateObject);
       }
     });
   }
+  saveMenuArguments(catId){
+    console.log("met");
+    console.log(catId);
+    if(this.optionSelected.menuOptionArgumentsAdmin.length>0){
+      console.log("priimer if")
+    for (let i=0; i < this.optionSelected.menuOptionArgumentsAdmin.length;i++){
+      let aux = this.optionSelected.menuOptionArgumentsAdmin[i];
+      console.log(aux.id)
+      if(aux.id==catId.id){
+        console.log("entra")
+        aux = catId;
+        this.optionSelected.menuOptionArgumentsAdmin[i] = aux;
+        console.log("aux")
+        console.log(aux)
+      }
+    }
+  }else{
+    console.log("entra al else")
+    catId.id = null;
+    catId.optionId = this.optionSelected.id;
+    console.log(catId)
+    this.optionSelected.menuOptionArgumentsAdmin.push(catId);
+
+  }
+  console.log(this.optionSelected)
+  this.saveCategoryArgument();
+  }
+
+
 
 }

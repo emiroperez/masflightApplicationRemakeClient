@@ -6,10 +6,12 @@ export class CategoryArguments{
     parentId: string;
     icon: string;
     arguments: Arguments[];
+    description: string;
 
-    constructor(private labelIn:string, private iconIn: string,private argumentsIn: Arguments[]){
+    constructor(private labelIn:string, private iconIn: string,private argumentsIn: Arguments[],private descriptionIn: string){
         this.label = labelIn;
         this.icon = iconIn;
+        this.description = descriptionIn;
         this.arguments = argumentsIn;
     }
 }
