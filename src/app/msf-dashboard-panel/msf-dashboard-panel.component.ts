@@ -61,7 +61,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     { name: 'Pie', flags: ChartFlags.PIECHART, createSeries: this.createPieSeries },
     { name: 'Donut', flags: ChartFlags.DONUTCHART, createSeries: this.createPieSeries },
     { name: 'Information', flags: ChartFlags.INFO },
-    { name: 'Simple Form', flags: ChartFlags.INFO | ChartFlags.FORM }/*,
+    { name: 'Simple Form', flags: ChartFlags.INFO | ChartFlags.FORM },
+    { name: 'Table', flags: ChartFlags.TABLE }/*,
     { name: 'Simple Picture', flags: ChartFlags.INFO | ChartFlags.PICTURE },*/
   ];
 
