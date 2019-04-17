@@ -105,6 +105,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   public variableFilterCtrl: FormControl = new FormControl ();
   public xaxisFilterCtrl: FormControl = new FormControl ();
   public valueFilterCtrl: FormControl = new FormControl ();
+  public tableFilterCtrl: FormControl = new FormControl ();
 
   public infoVar1FilterCtrl: FormControl = new FormControl ();
   public infoVar2FilterCtrl: FormControl = new FormControl ();
@@ -140,7 +141,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       fontSizeCtrl: new FormControl ({ value: this.fontSizes[1], disabled: true }),
       valueFontSizeCtrl: new FormControl ({ value: this.fontSizes[1], disabled: true }),
       valueOrientationCtrl: new FormControl ({ value: this.orientations[0], disabled: true }),
-      intervalCtrl: new FormControl ({ value: 5, disabled: true })
+      intervalCtrl: new FormControl ({ value: 5, disabled: true }),
+      tableCtrl: new FormControl ({ value: '', disabled: true })
     });
   }
 
@@ -1319,6 +1321,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.searchChange (_this.infoVar3FilterCtrl);
 
     _this.searchChange (_this.columnFilterCtrl);
+    _this.searchChange (_this.tableFilterCtrl);
 
     // reset chart filter values and disable generate chart button
     _this.chartForm.get ('variableCtrl').reset ();
@@ -2216,6 +2219,11 @@ export class MsfDashboardPanelComponent implements OnInit {
     return (this.values.currentChartType.flags & ChartFlags.PICTURE) ? true : false;
   }
 
+  isTablePanel(): boolean
+  {
+    return (this.values.currentChartType.flags & ChartFlags.TABLE) ? true : false;
+  }
+
   checkNumVariables(): void
   {
     let i;
@@ -2566,5 +2574,21 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     // move items
     moveItemInArray (this.values.formVariables, event.previousIndex, event.currentIndex);
+  }
+
+  isTableVariableValid(): boolean
+  {
+    return this.chartForm.get ('tableCtrl').value;
+  }
+
+  addTableVariable(): void
+  {
+    this.values.tableVariables.push (this.chartForm.get ('tableCtrl').value);
+    this.chartForm.get ('tableCtrl').reset ();
+  }
+
+  deleteColumnFromTable(index): void
+  {
+    this.values.tableVariables.splice (index, 1);
   }
 }
