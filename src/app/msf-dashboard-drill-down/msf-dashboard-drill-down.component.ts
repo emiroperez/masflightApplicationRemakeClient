@@ -254,6 +254,26 @@ export class MsfDashboardDrillDownComponent {
       _this.currentValue.xaxis = _this.currentValue.chartColumnOptions[_this.currentValue.xaxis];
       _this.currentValue.valueColumn = _this.currentValue.chartColumnOptions[_this.currentValue.valueColumn];
       _this.currentValue.function = _this.data.functions[_this.currentValue.function];
+
+      if (_this.currentValue.currentChartType.flags & ChartFlags.TABLE)
+      {
+        for (i = 0; i < _this.currentValue.lastestResponse.length; i++)
+        {
+          let tableColumn = _this.currentValue.lastestResponse[i];
+  
+          for (let j = 0; j < _this.currentValue.chartColumnOptions.length; j++)
+          {
+            let curVariable = _this.currentValue.chartColumnOptions[j];
+  
+            if (curVariable.item.id == tableColumn.id)
+            {
+              _this.lastValue.tableVariables.push (curVariable);
+              _this.currentValue.tableVariables.push (curVariable);
+              break;
+            }
+          }
+        }
+      }
     }
 
     // set combo box values if necessary
@@ -358,7 +378,7 @@ export class MsfDashboardDrillDownComponent {
             _this.data.childPanelValues.push (new MsfDashboardPanelValues (panel.id,
               panel.title, panel.id, null, null, panel.option, null,
               panel.analysis, panel.xaxis, panel.values, panel.function,
-              panel.chartType, null, null, panel.paletteColors));
+              panel.chartType, null, panel.lastestResponse, panel.paletteColors));
 
             _this.convertValues.push (true);
             break;
@@ -476,12 +496,12 @@ export class MsfDashboardDrillDownComponent {
       this.chartForm.get ('xaxisCtrl').reset ();
       this.chartForm.get ('xaxisCtrl').disable ();
 
-      this.currentValue.formVariables = [];
+      this.currentValue.tableVariables = [];
       this.chartForm.get ('tableCtrl').reset ();
     }
     else
     {
-      this.currentValue.formVariables = [];
+      this.currentValue.tableVariables = [];
       this.chartForm.get ('xaxisCtrl').enable ();
       this.chartForm.get ('tableCtrl').reset ();
     }
