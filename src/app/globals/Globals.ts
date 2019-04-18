@@ -49,8 +49,8 @@ export class Globals {
   currentAirline: any;
   template : boolean = false;
   isFullscreen: boolean = false;
-  baseUrl = "http://staging.pulse.aspsols.com:8887";
-  // baseUrl = "";
+  // baseUrl = "http://staging.pulse.aspsols.com:8881";
+  baseUrl = "";
   // baseUrl2 = "http://localhost:8886";
   baseUrl2 = "http://69.64.45.220:8886";
     // popupUrl = "http://localhost:8900";
@@ -99,6 +99,7 @@ export class Globals {
     if(option.children.length!=0){
       for (let i = 0; i < option.children.length; i++) {
         const element = option.children[i];
+        if(element.menuOptionArguments!=null){
           if(element.menuOptionArguments.length!=0) {
             const aux = element.menuOptionArguments;
             if(i!=option.children.length-1){
@@ -108,15 +109,21 @@ export class Globals {
             }
             for (let j = 0; j < aux.length; j++) {
               const aux2 = aux[j].categoryArguments;
-              for (let k = 0; k < aux2.length; k++) {
-                const aux3 = aux2[k];
-                for (let l = 0; l < aux3.arguments.length; l++) {
-                  const aux4 = aux3.arguments[l];
-                  if(aux4.required && aux4.title!="Format :"){
-                    if(l!=aux3.arguments.length-1){
-                      option.keyControl += aux4.title+'*, \n';
-                    }else{
-                      option.keyControl += aux4.title+'*.';
+              if(aux2!=null){
+                for (let k = 0; k < aux2.length; k++) {
+                  const aux3 = aux2[k];
+                  if(aux3!=null){
+                    for (let l = 0; l < aux3.arguments.length; l++) {
+                      const aux4 = aux3.arguments[l];
+                      if(aux4!=null){
+                        if(aux4.required && aux4.title!="Format :"){
+                          if(l!=aux3.arguments.length-1){
+                            option.keyControl += aux4.title+'*, \n';
+                          }else{
+                            option.keyControl += aux4.title+'*.';
+                          }
+                        }
+                      }
                     }
                   }
                 }
@@ -127,28 +134,40 @@ export class Globals {
               this.recursiveOption(element.children);
             }
           }
+        }
+
+
+         
       }
     }else{
       const aux = option.menuOptionArguments;
-      if(aux.length!=0) {
-        option.outputs = option.label;
-        for (let j = 0; j < aux.length; j++) {
-          const aux2 = aux[j].categoryArguments;
-          for (let k = 0; k < aux2.length; k++) {
-            const aux3 = aux2[k];
-            for (let l = 0; l < aux3.arguments.length; l++) {
-              const aux4 = aux3.arguments[l];
-              if(aux4.required&& aux4.title!="Format :"){
-                if(l!=aux3.arguments.length-1){
-                  option.keyControl += aux4.title+'*, \n';
-                }else{
-                  option.keyControl += aux4.title+'*.';
+      if(aux!=null){
+        if(aux.length!=0) {
+          option.outputs = option.label;
+          for (let j = 0; j < aux.length; j++) {
+            const aux2 = aux[j].categoryArguments;
+            if(aux2!=null){
+              for (let k = 0; k < aux2.length; k++) {
+                const aux3 = aux2[k];
+                if(aux3!=null){
+                  for (let l = 0; l < aux3.arguments.length; l++) {
+                    const aux4 = aux3.arguments[l];
+                    if(aux4!=null){
+                      if(aux4.required&& aux4.title!="Format :"){
+                        if(l!=aux3.arguments.length-1){
+                          option.keyControl += aux4.title+'*, \n';
+                        }else{
+                          option.keyControl += aux4.title+'*.';
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
           }
-        }
-    }
+      }
+      }
   }
   option.outputs = option.outputs.replace(" :","");
 }
