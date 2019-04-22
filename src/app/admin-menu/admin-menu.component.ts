@@ -1,4 +1,4 @@
-import { OnInit, Component, Inject, AfterViewInit, ChangeDetectorRef, Renderer2, ViewEncapsulation, ViewChild, ViewChildren } from '@angular/core';
+import { OnInit, Component, Inject, AfterViewInit, ChangeDetectorRef, Renderer2, ViewChild, ViewChildren } from '@angular/core';
 import { ApiClient } from '../api/api-client';
 import { Globals } from '../globals/Globals';
 import { ApplicationService } from '../services/application.service';
@@ -255,6 +255,7 @@ export class EditOutputOptionsMetaDialog {
         grouping: 0,
         unit: '',
         argumentsId: '',
+        function:'1',
         delete: false});
       this.dataSource = new MatTableDataSource(this.data.outputs);
     }
@@ -573,7 +574,8 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
       "children": [],
       "toDelete": false,
       "isRoot": false,
-      "applicationId": this.globals.currentApplication.id
+      "applicationId": this.globals.currentApplication.id,
+      "metaData": 1,
     };
     if (this.optionSelected.label != null) {
       this.optionSelected.isOpened = true;
@@ -641,7 +643,6 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     });
   }
 
-  deleteCategory
 
   saveMenu() {
     this.emptyError=0;
