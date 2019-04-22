@@ -2807,13 +2807,44 @@ export class MsfDashboardPanelComponent implements OnInit {
       return;
     }
 
-    this.values.lastestResponse = [];
+    // only save the lastest response if the page number of the table is the first one
+    if (!this.actualPageNumber)
+    {
+      this.values.lastestResponse = [];
 
-    for (let tableVariable of this.values.tableVariables)
-      this.values.lastestResponse.push ({ id: tableVariable.item.id });
+      for (let tableVariable of this.values.tableVariables)
+        this.values.lastestResponse.push ({ id: tableVariable.item.id });
 
-    this.service.saveLastestResponse (this, this.getPanelInfo (), JSON.stringify (this.values.lastestResponse),
-      this.handlerTableLastestResponse, this.handlerTableError);
+      this.service.saveLastestResponse (this, this.getPanelInfo (), JSON.stringify (this.values.lastestResponse),
+        this.handlerTableLastestResponse, this.handlerTableError);
+    }
+    else
+    {
+      this.values.isLoading = false;
+
+      this.values.displayTable = true;
+      this.values.chartGenerated = false;
+      this.values.infoGenerated = false;
+      this.values.formGenerated = false;
+      this.values.picGenerated = false;
+      this.values.tableGenerated = true;
+
+      // resume the update interval if activated
+      if (this.values.updateIntervalSwitch)
+      {
+        this.updateInterval = setInterval (() =>
+        {
+          if (this.updateTimeLeft)
+            this.updateTimeLeft--;
+  
+          if (!this.updateTimeLeft)
+          {
+            this.updateTimeLeft = this.values.updateTimeLeft;
+            this.loadData ();
+          }
+        }, 60000); // update interval each minute
+      }
+    }
   }
 
   moreTableResults()
@@ -2822,6 +2853,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       this.moreResults = false;
       this.values.isLoading = true;
+      this.stopUpdateInterval ();
 
       setTimeout (() => {
         this.loadTableData (true, this.msfTableRef.handlerSuccess, this.msfTableRef.handlerError);
