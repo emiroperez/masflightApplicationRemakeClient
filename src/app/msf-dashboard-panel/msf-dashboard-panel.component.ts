@@ -1447,6 +1447,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.checkChartFilters ();
 
     _this.values.formVariables = [];
+    _this.values.tableVariables = [];
 
     // initiate another query to get the category arguments
     _this.service.loadOptionCategoryArguments (_this, _this.values.currentOption, _this.setCategories, _this.handlerError);
@@ -1575,8 +1576,18 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.temp.currentOptionCategories = JSON.parse (JSON.stringify (this.values.currentOptionCategories));
 
     this.temp.formVariables = [];
+    this.temp.tableVariables = [];
 
-    if (this.values.currentChartType.flags & ChartFlags.FORM)
+    if (this.values.currentChartType.flags & ChartFlags.TABLE)
+    {
+      this.temp.infoVar1 = null;
+      this.temp.infoVar2 = null;
+      this.temp.infoVar3 = null;
+
+      for (let i = 0; i < this.values.formVariables.length; i++)
+        this.temp.tableVariables.push (this.values.chartColumnOptions.indexOf (this.values.tableVariables[i]));
+    }
+    else if (this.values.currentChartType.flags & ChartFlags.FORM)
     {
       this.temp.infoVar1 = null;
       this.temp.infoVar2 = null;
@@ -1735,6 +1746,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
 
     this.values.formVariables = JSON.parse (JSON.stringify (this.temp.formVariables));
+    this.values.tableVariables = JSON.parse (JSON.stringify (this.temp.tableVariables));
 
     this.values.updateIntervalSwitch = this.temp.updateIntervalSwitch;
     this.values.updateTimeLeft = this.temp.updateTimeLeft;
@@ -2795,13 +2807,44 @@ export class MsfDashboardPanelComponent implements OnInit {
       return;
     }
 
-    this.values.lastestResponse = [];
+    // only save the lastest response if the page number of the table is the first one
+    if (!this.actualPageNumber)
+    {
+      this.values.lastestResponse = [];
 
-    for (let tableVariable of this.values.tableVariables)
-      this.values.lastestResponse.push ({ id: tableVariable.item.id });
+      for (let tableVariable of this.values.tableVariables)
+        this.values.lastestResponse.push ({ id: tableVariable.item.id });
 
-    this.service.saveLastestResponse (this, this.getPanelInfo (), JSON.stringify (this.values.lastestResponse),
-      this.handlerTableLastestResponse, this.handlerTableError);
+      this.service.saveLastestResponse (this, this.getPanelInfo (), JSON.stringify (this.values.lastestResponse),
+        this.handlerTableLastestResponse, this.handlerTableError);
+    }
+    else
+    {
+      this.values.isLoading = false;
+
+      this.values.displayTable = true;
+      this.values.chartGenerated = false;
+      this.values.infoGenerated = false;
+      this.values.formGenerated = false;
+      this.values.picGenerated = false;
+      this.values.tableGenerated = true;
+
+      // resume the update interval if activated
+      if (this.values.updateIntervalSwitch)
+      {
+        this.updateInterval = setInterval (() =>
+        {
+          if (this.updateTimeLeft)
+            this.updateTimeLeft--;
+  
+          if (!this.updateTimeLeft)
+          {
+            this.updateTimeLeft = this.values.updateTimeLeft;
+            this.loadData ();
+          }
+        }, 60000); // update interval each minute
+      }
+    }
   }
 
   moreTableResults()
@@ -2810,6 +2853,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       this.moreResults = false;
       this.values.isLoading = true;
+      this.stopUpdateInterval ();
 
       setTimeout (() => {
         this.loadTableData (true, this.msfTableRef.handlerSuccess, this.msfTableRef.handlerError);
