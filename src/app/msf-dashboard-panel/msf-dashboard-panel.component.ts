@@ -1576,8 +1576,18 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.temp.currentOptionCategories = JSON.parse (JSON.stringify (this.values.currentOptionCategories));
 
     this.temp.formVariables = [];
+    this.temp.tableVariables = [];
 
-    if (this.values.currentChartType.flags & ChartFlags.FORM)
+    if (this.values.currentChartType.flags & ChartFlags.TABLE)
+    {
+      this.temp.infoVar1 = null;
+      this.temp.infoVar2 = null;
+      this.temp.infoVar3 = null;
+
+      for (let i = 0; i < this.values.formVariables.length; i++)
+        this.temp.tableVariables.push (this.values.chartColumnOptions.indexOf (this.values.tableVariables[i]));
+    }
+    else if (this.values.currentChartType.flags & ChartFlags.FORM)
     {
       this.temp.infoVar1 = null;
       this.temp.infoVar2 = null;
@@ -1736,6 +1746,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
 
     this.values.formVariables = JSON.parse (JSON.stringify (this.temp.formVariables));
+    this.values.tableVariables = JSON.parse (JSON.stringify (this.temp.tableVariables));
 
     this.values.updateIntervalSwitch = this.temp.updateIntervalSwitch;
     this.values.updateTimeLeft = this.temp.updateTimeLeft;
