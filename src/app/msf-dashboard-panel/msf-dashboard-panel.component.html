@@ -554,7 +554,7 @@
         <mat-icon aria-label="Share Panel">share</mat-icon>
       </button>
     </div>
-    <div [style.height.px]="calcPanelHeight()" style="width: calc(100% - 50px); overflow-y: auto; z-index: 99997">
+    <div class="msf-dashboard-child-panel-table" [style.height.px]="calcPanelHeight()" style="width: calc(100% - 50px); overflow: auto; z-index: 99997">
       <app-msf-table #msfTableRef [isLoading]="values.isLoading" (setLoading)="setLoading($event)" [categoryArguments]="values.currentOptionCategories" [currentOption]="values.currentOption" [isPanel]="true"></app-msf-table>
     </div>
   </div>
