@@ -107,6 +107,14 @@ export class MsfDashboardPanelComponent implements OnInit {
   msfTableRef: MsfTableComponent;
 
   actualPageNumber: number;
+  dataSource : boolean = false;
+  template : boolean = false;
+  moreResults: boolean = false;
+  moreResultsBtn: boolean = false;
+  displayedColumns;
+  selectedIndex = 0;
+  totalRecord = 0;
+  metadata;
 
   public dataFormFilterCtrl: FormControl = new FormControl ();
   public variableFilterCtrl: FormControl = new FormControl ();
@@ -689,6 +697,8 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   ngAfterViewInit(): void
   {
+    this.msfTableRef.tableOptions = this;
+
     if (this.values.currentChartType.flags & ChartFlags.TABLE)
     {
       if (this.values.function != null && this.values.function != -1)
@@ -1024,32 +1034,22 @@ export class MsfDashboardPanelComponent implements OnInit {
     let url, urlBase, urlArg;
     let tableVariableIds = [];
 
-    // set lastest response
-    for (let tableVariable of this.values.tableVariables)
-    {
-      this.values.lastestResponse.push ({
-        id: tableVariable.item.id
-      });
-    }
-
     this.msfTableRef.displayedColumns = [];
   
-    /*if (moreResults)
+    if (moreResults)
     {
       this.actualPageNumber++;
-      this.globals.moreResults = true;
+      this.moreResults = true;
     }
     else
       this.actualPageNumber = 0;
 
-    if (!this.actualPageNumber)*/
+    if (!this.actualPageNumber)
       this.msfTableRef.dataSource = null;
 
-    if (!this.values.isLoading)
-      this.values.isLoading = true;
-
+    this.values.isLoading = true;
     urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
-    urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&&pageSize=100&page_number=0";// + this.actualPageNumber;
+    urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&&pageSize=100&page_number=" + this.actualPageNumber;
     console.log (urlBase);
     urlArg = encodeURIComponent (urlBase);
     url = this.service.host + "/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
@@ -2802,5 +2802,18 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     this.service.saveLastestResponse (this, this.getPanelInfo (), JSON.stringify (this.values.lastestResponse),
       this.handlerTableLastestResponse, this.handlerTableError);
+  }
+
+  moreTableResults()
+  {
+    if (this.moreResultsBtn)
+    {
+      this.moreResults = false;
+      this.values.isLoading = true;
+
+      setTimeout (() => {
+        this.loadTableData (true, this.msfTableRef.handlerSuccess, this.msfTableRef.handlerError);
+      }, 3000);
+    }
   }
 }

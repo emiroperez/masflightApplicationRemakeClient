@@ -1,4 +1,4 @@
-<div  *ngIf="globals.subTotalRecord==1 && globals.popupMainElement && !globals.popupLoading"     [ngClass]="globals.currentDrillDown.title!='More Info Passenger'?'msf-more-info-black':''">
+<div  *ngIf="globals.subTotalRecord==1 && globals.popupMainElement && !globals.popupLoading2"     [ngClass]="globals.currentDrillDown.title!='More Info Passenger'?'msf-more-info-black':''">
     <div  *ngIf="globals.popupMainElement" [ngClass]="globals.currentDrillDown.title!='More Info Passenger'?'msf-more-info-popup-image':'msf-more-info-popup-passenger msf-border-passenger'" [ngStyle]="{'background-image': 'url(' + getBackground() + ')'}">
   <div class="msf-moreinfo-control-variables-title ">
       <div class="msf-dashboard-control-variables-close-button">
@@ -74,9 +74,9 @@
   
 <div *ngIf="chart!=null&&globals.subTotalRecord>0 && globals.popupMainElement" class="msf-media-title msf-passenger-chart-title">Play Duration In Minutes</div>
 <div [style.visibility]="chart!=null&&globals.subTotalRecord>0 && globals.popupMainElement? 'visible' : 'hidden'" id="msf-dashboard-chart-display" [ngClass]="chart!=null&&globals.subTotalRecord>0 && globals.popupMainElement? 'msf-chart' : ''"></div>
-<div *ngIf="globals.subTotalRecord==0 && !globals.popupMainElement && !globals.popupLoading">
+<div *ngIf="globals.subTotalRecord==0 && !globals.popupMainElement && !globals.popupLoading2">
     <div class="msf-no-results" style="margin: 210px;padding: 30px;">Results not available</div>
 </div>
 
-<div [ngClass]="globals.popupLoading? 'tab-show':'tab-hide'" id='loading-panel-popup' class='loading-panel-popup'>
+<div [ngClass]="globals.popupLoading2? 'tab-show':'tab-hide'" id='loading-panel-popup' class='loading-panel-popup'>
 </div>

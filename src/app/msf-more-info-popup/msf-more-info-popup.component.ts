@@ -103,7 +103,7 @@ export class MsfMoreInfoPopupComponent{
     }
 
     loadChartData(handlerSuccess, handlerError) {
-      this.globals.popupLoading = true;
+      this.globals.popupLoading2 = true;
       this.chart = null;
       let urlBase = this.globals.popupUrl + "/CategoryInfoPax";
       // urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
@@ -249,12 +249,12 @@ export class MsfMoreInfoPopupComponent{
       chart.exporting.menu.verticalAlign = "bottom";
 
       this.chart = chart;
-      this.globals.popupLoading = false;
+      this.globals.popupLoading2 = false;
     });
   }
   handlerChartError(_this, result): void
   {
-    this.globals.popupLoading = false;
+    this.globals.popupLoading2 = false;
     _this.dialog.open (MessageComponent, {
       data: { title: "Error", message: "Failed to generate chart." }
     });
