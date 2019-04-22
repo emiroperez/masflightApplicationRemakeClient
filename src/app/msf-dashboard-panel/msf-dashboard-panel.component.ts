@@ -689,19 +689,14 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   ngAfterViewInit(): void
   {
-    if (!this.utils.isJSONEmpty (this.values.lastestResponse))
+    if (this.values.currentChartType.flags & ChartFlags.TABLE)
     {
-      if (this.values.currentChartType.flags & ChartFlags.TABLE)
-      {
-        if (this.values.function != null && this.values.function != -1)
-        {
-          if (this.values.function == 1)
-            this.values.tableGenerated = true;
-
-          this.values.function = -1;
-        }
-      }
-      else if (this.values.currentChartType.flags & ChartFlags.INFO)
+      if (this.values.function != null && this.values.function != -1)
+        this.values.function = -1;
+    }
+    else if (!this.utils.isJSONEmpty (this.values.lastestResponse))
+    {
+      if (this.values.currentChartType.flags & ChartFlags.INFO)
       {
         if (this.values.function != null && this.values.function != -1)
         {
@@ -731,21 +726,20 @@ export class MsfDashboardPanelComponent implements OnInit {
     // these parts must be here because it generate an error if inserted on ngAfterViewInit
     this.initPanelSettings ();
 
-    if (!this.utils.isJSONEmpty (this.values.lastestResponse))
+    if (this.values.currentChartType.flags & ChartFlags.TABLE)
     {
-      if (this.values.currentChartType.flags & ChartFlags.TABLE)
+      if (this.values.function == 1)
       {
-        /*if (this.values.function == 1)
+        let prepateTable = setInterval (() =>
         {
-          this.values.isLoading = true;
-          this.msfTableRef.handlerSuccess (this.msfTableRef,
-            this.values.lastestResponse[this.values.lastestResponse.length - 1].results, null);
-
-          this.values.lastestResponse.splice (this.values.lastestResponse.length - 1, 1);
-          this.values.displayTable = true;
-        }*/
+          this.loadData ();
+          clearInterval (prepateTable);
+        }, 100);
       }
-      else if (this.values.currentChartType.flags & ChartFlags.INFO)
+    }
+    else if (!this.utils.isJSONEmpty (this.values.lastestResponse))
+    {
+      if (this.values.currentChartType.flags & ChartFlags.INFO)
       {
         if (this.values.function == 1)
         {
@@ -1051,7 +1045,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (!this.actualPageNumber)*/
       this.msfTableRef.dataSource = null;
 
-    this.values.isLoading = true;
+    if (!this.values.isLoading)
+      this.values.isLoading = true;
+
     urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&&pageSize=100&page_number=0";// + this.actualPageNumber;
     console.log (urlBase);
@@ -1166,31 +1162,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.startUpdateInterval ();
   }
 
-  handlerTableSuccess(_this, data): void
-  {
-    if (_this.utils.isJSONEmpty (data) || _this.utils.isJSONEmpty (data.Response))
-    {
-      _this.noDataFound ();
-      return;
-    }
-
-    if (!data.Response.total)
-    {
-      _this.noDataFound ();
-      return;
-    }
-
-    // destroy current chart if it's already generated to avoid a blank chart later
-    _this.destroyChart ();
-
-
-
-    _this.msfTableRef.handlerSuccess (_this.msfTableRef, data, null);
-
-    _this.stopUpdateInterval ();
-    _this.startUpdateInterval ();
-  }
-
   handlerFormSuccess(_this, data): void
   {
     let formResults, response, result;
@@ -1273,6 +1244,8 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   handlerTableLastestResponse(_this, data): void
   {
+    _this.values.isLoading = false;
+
     // destroy current chart if it's already generated to avoid a blank chart later
     _this.destroyChart ();
 
@@ -1282,9 +1255,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.formGenerated = false;
     _this.values.picGenerated = false;
     _this.values.tableGenerated = true;
-
-    _this.msfTableRef.handlerSuccess (_this.msfTableRef, data[data.length - 1].results, null);
-    _this.values.lastestResponse.splice (_this.values.lastestResponse.length - 1, 1);
 
     _this.stopUpdateInterval ();
     _this.startUpdateInterval ();
@@ -1418,15 +1388,17 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   handlerTableError(_this, result): void
   {
-    console.log (result);
+    _this.values.isLoading = false;
+
+    if (result != null)
+      console.log (result);
+
     _this.values.lastestResponse = null;
     _this.values.chartGenerated = false;
     _this.values.infoGenerated = false;
     _this.values.formGenerated = false;
     _this.values.picGenerated = false;
     _this.values.tableGenerated = false;
-
-    _this.msfTableRef.handlerError (_this.msfTableRef, result);
 
     _this.dialog.open (MessageComponent, {
       data: { title: "Error", message: "Failed to generate table panel." }
@@ -2817,29 +2789,18 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   finishLoadingTable(error)
   {
-    this.values.isLoading = false;
-
     if (error)
     {
-      this.values.lastestResponse = null;
-      this.values.chartGenerated = false;
-      this.values.infoGenerated = false;
-      this.values.formGenerated = false;
-      this.values.picGenerated = false;
-      this.values.tableGenerated = false;
-  
-      this.dialog.open (MessageComponent, {
-        data: { title: "Error", message: "Failed to generate table." }
-      });
-
+      this.handlerTableError (this, null);
       return;
     }
 
-    this.values.displayTable = true;
-    this.values.chartGenerated = false;
-    this.values.infoGenerated = false;
-    this.values.formGenerated = false;
-    this.values.picGenerated = false;
-    this.values.tableGenerated = true;
+    this.values.lastestResponse = [];
+
+    for (let tableVariable of this.values.tableVariables)
+      this.values.lastestResponse.push ({ id: tableVariable.item.id });
+
+    this.service.saveLastestResponse (this, this.getPanelInfo (), JSON.stringify (this.values.lastestResponse),
+      this.handlerTableLastestResponse, this.handlerTableError);
   }
 }
