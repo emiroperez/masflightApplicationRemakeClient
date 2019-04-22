@@ -41,7 +41,7 @@
     flex: auto;
 }
 
-.mat-checkbox-frame {
+.check-memberships.mat-checkbox-frame {
     border-color: white !important;
 }
 
@@ -99,15 +99,15 @@
     padding-right: 15px;
 }
 
-.mat-checkbox-frame {
+.check-memberships.mat-checkbox-frame {
     border-color: white !important;
 }
 
-.ng-select-container.ng-has-value {
+/* .ng-select-container.ng-has-value {
     padding-bottom: 0px !important;
 }
 
-.ng-select {
+.check-memberships.ng-select {
     width: 50% !important;
 }
 
@@ -117,4 +117,4 @@ select.ng-select-single .ng-select-container .ng-value-container .ng-value {
 
 .msf-periodicity-select.ng-select .ng-select-container .ng-value-container .ng-placeholder {
     line-height: 1.125px;
-}
+} */
