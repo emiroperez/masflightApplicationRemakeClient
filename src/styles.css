@@ -2449,6 +2449,12 @@ mat-tab-group {
   padding-left: 5px !important;
 }
 
+.msf-dashboard-table-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
 .msf-dashboard-menu-component, .msf-dashboard-menu-component-active {
   display: flex;
   align-items: center;
@@ -4406,7 +4412,6 @@ th.msf-show-table, td.msf-show-table {
   width: calc(100% - 50px) !important;
   z-index: 99997;
   overflow: auto;
-  padding-top: 5px !important;
 }
 
 .invisible-scrollbar::-webkit-scrollbar-thumb {

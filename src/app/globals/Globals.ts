@@ -11,6 +11,7 @@ export class Globals {
   currentArgs: any;
   isLoading: boolean = false;
   popupLoading: boolean = false;
+  popupLoading2: boolean = false;
   sort: MatSort;
   chart: boolean = false;
   map: boolean = false;

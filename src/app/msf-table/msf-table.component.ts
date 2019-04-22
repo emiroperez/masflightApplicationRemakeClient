@@ -64,12 +64,14 @@ export class MsfTableComponent implements OnInit {
 
   template;
 
+  tableOptions: any;
+
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(public globals: Globals, private service: ApplicationService,private ref: ChangeDetectorRef,public dialog: MatDialog) { }
 
   ngOnInit() {      
-    
+    this.tableOptions = this.globals;
   }
 
   ngAfterViewInit(){
@@ -207,12 +209,12 @@ export class MsfTableComponent implements OnInit {
   }
 
   getData(moreResults: boolean){
-    // if(this.globals.moreResultsBtn){
+    // if(this.tableOptions.moreResultsBtn){
       this.globals.startTimestamp = new Date();
       var pageSize = 100;
         if(moreResults){
           this.actualPageNumber++;
-          this.globals.moreResults = true;
+          this.tableOptions.moreResults = true;
         }else{
           this.actualPageNumber=0;
         }
@@ -247,19 +249,19 @@ export class MsfTableComponent implements OnInit {
 
   handlerSuccess(_this,data, tab){
     if(_this.isLoading) {
-      _this.globals.totalRecord=0;
+      _this.tableOptions.totalRecord=0;
       _this.setGroupingArgument();
       _this.globals.endTimestamp = new Date();
       let response = data.Response;
       if(response!=null){
         if(response.total!=null){
-          _this.globals.totalRecord = response.total;
+          _this.tableOptions.totalRecord = response.total;
         }else{
           for (var key in response) {
             var array = response[key];
             if( array != null){
               if(Array.isArray(array)){
-                _this.globals.totalRecord = array.length;
+                _this.tableOptions.totalRecord = array.length;
                 break;
               }else{
                 for (var key in array) {
@@ -268,7 +270,7 @@ export class MsfTableComponent implements OnInit {
                     let keys = Object.keys(response);
                     let mainElement = _this.getMainKey(keys,response);
                     if(mainElement!=null){
-                      _this.globals.totalRecord = 1;
+                      _this.tableOptions.totalRecord = 1;
                     }
                   }
                 }
@@ -282,20 +284,20 @@ export class MsfTableComponent implements OnInit {
       if(!(mainElement instanceof Array)){
         mainElement = [mainElement];
       }
-      if( _this.globals.totalRecord > 0){
+      if( _this.tableOptions.totalRecord > 0){
         if(_this.currentOption.metaData==1 || _this.currentOption.tabType=='scmap'){  
-          _this.globals.displayedColumns = data.metadata;
+          _this.tableOptions.displayedColumns = data.metadata;
           // if(_this.groupingArgument!=null){
-            _this.globals.displayedColumns  = _this.addGroupingColumns(_this.globals.displayedColumns);
+            _this.tableOptions.displayedColumns  = _this.addGroupingColumns(_this.tableOptions.displayedColumns);
           // }
-          _this.metadata = _this.globals.displayedColumns;
-          _this.globals.metadata = data.metadata;
-          console.log( _this.globals.displayedColumns);
+          _this.metadata = _this.tableOptions.displayedColumns;
+          _this.tableOptions.metadata = data.metadata;
+          console.log( _this.tableOptions.displayedColumns);
           
           _this.setColumnsDisplayed(_this);
           
           let dataResult = new MatTableDataSource(mainElement);     
-          if( _this.globals.moreResults){
+          if( _this.tableOptions.moreResults){
             if(_this.currentOption.tabType!="athena"&&_this.currentOption.tabType!="mariadb"){
               _this.dataSource.data = _this.dataSource.data.concat(dataResult.data);
             }else{
@@ -306,26 +308,26 @@ export class MsfTableComponent implements OnInit {
           }
 
           if(_this.currentOption.tabType!="athena"&&_this.currentOption.tabType!="mariadb"){
-            if( _this.globals.totalRecord<100 ||  _this.globals.totalRecord>100){
-              _this.globals.moreResultsBtn = false;
-              _this.globals.moreResults = false;
+            if( _this.tableOptions.totalRecord<100 ||  _this.tableOptions.totalRecord>100){
+              _this.tableOptions.moreResultsBtn = false;
+              _this.tableOptions.moreResults = false;
             }else{
-              _this.globals.moreResultsBtn = true;
+              _this.tableOptions.moreResultsBtn = true;
             }
           }else{  
             var aux = (_this.actualPageNumber+1)*100;
             aux = aux!=0 ? aux : 100;
-            if( _this.globals.totalRecord<aux){
-              _this.globals.moreResultsBtn = false;
-              _this.globals.moreResults = false;
+            if( _this.tableOptions.totalRecord<aux){
+              _this.tableOptions.moreResultsBtn = false;
+              _this.tableOptions.moreResults = false;
             }else{
-              _this.globals.moreResultsBtn = true;
+              _this.tableOptions.moreResultsBtn = true;
             }
           }
           if(_this.limitNumber!=null){
             if(_this.limitNumber.value1!=null &&_this.limitNumber.value1!=""){
-              _this.globals.moreResultsBtn = false;
-              _this.globals.moreResults = false;
+              _this.tableOptions.moreResultsBtn = false;
+              _this.tableOptions.moreResults = false;
             }
           }
       }else if (_this.currentOption.metaData==0){
@@ -333,9 +335,9 @@ export class MsfTableComponent implements OnInit {
       }
       if (_this.currentOption.metaData==2){
         if(data.metadata.length>0){
-          _this.globals.metadata =new Map();
+          _this.tableOptions.metadata =new Map();
           data.metadata.forEach(element => {
-            _this.globals.metadata.set(element.columnName,element.columnLabel);
+            _this.tableOptions.metadata.set(element.columnName,element.columnLabel);
            });
          
         }
@@ -346,9 +348,9 @@ export class MsfTableComponent implements OnInit {
         // _this.globals.tab =false;
       }
       }else{
-        if( _this.globals.moreResults){
-          _this.globals.moreResultsBtn = false;
-            _this.globals.moreResults = false;
+        if( _this.tableOptions.moreResults){
+          _this.tableOptions.moreResultsBtn = false;
+            _this.tableOptions.moreResults = false;
         }
       }  
       if(_this.dataSource){
@@ -356,18 +358,18 @@ export class MsfTableComponent implements OnInit {
         if(_this.sort!=undefined){
           _this.dataSource.sort =_this.sort;
         }
-        _this.globals.dataSource = true;
-        _this.globals.selectedIndex = 2;
+        _this.tableOptions.dataSource = true;
+        _this.tableOptions.selectedIndex = 2;
         console.log(_this.dataSource);
       }else{
-        _this.globals.dataSource = false;
+        _this.tableOptions.dataSource = false;
       }
       
       if(_this.template){
-        _this.globals.template = true;
-        _this.globals.selectedIndex = 2;
+        _this.tableOptions.template = true;
+        _this.tableOptions.selectedIndex = 2;
       }else{
-        _this.globals.template = false;
+        _this.tableOptions.template = false;
       }
 
       _this.finishLoading.emit (false);
@@ -382,8 +384,8 @@ export class MsfTableComponent implements OnInit {
 
   handlerError(_this,result) {
     _this.finishLoading.emit (true);
-    _this.globals.dataSource = false;
-    _this.globals.template = false;
+    _this.tableOptions.dataSource = false;
+    _this.tableOptions.template = false;
     console.log(result);
   }
 
@@ -401,7 +403,7 @@ export class MsfTableComponent implements OnInit {
   getFormatCell(value:any,element:any,column:any){
     var aux = String(value);
     if(value==undefined){
-      if(this.globals.currentOption.tabType=='scmap'&&this.globals.currentOption.metaData==2){
+      if(this.currentOption.tabType=='scmap'&& this.currentOption.metaData==2){
         aux =""+ element['Flight'][column.columnName];
         if(aux==undefined){
           aux =""+ value;
@@ -424,13 +426,13 @@ export class MsfTableComponent implements OnInit {
     this.goToPopup(drillDown);
     this.globals.currentDrillDown = drillDown;
     var rowNumber = this.dataSource.filteredData.indexOf(element)
-    this.globals.popupLoading = true;
+    this.globals.popupLoading2 = true;
     var parameters = this.getSubOptionParameters(drillDown.drillDownParameter,rowNumber);
     this.service.getSubDataTableSource(this,drillDown.childrenOptionId,parameters,this.getPopupInfo,this.popupInfoError)
   }
 
   popupInfoError(_this,data) {
-    _this.globals.popupLoading = false;
+    _this.globals.popupLoading2 = false;
     console.log("ERROR")
   }
 
@@ -466,7 +468,7 @@ export class MsfTableComponent implements OnInit {
       }
     }  
     if(_this.globals.currentDrillDown.title!="More Info Passenger"){
-      _this.globals.popupLoading = false;
+      _this.globals.popupLoading2 = false;
     }
   }
 
@@ -544,6 +546,6 @@ export class MsfTableComponent implements OnInit {
     if (this.currentOption == null)
       return false;
 
-    return ((this.globals.dataSource && !this.globals.template && this.currentOption.metaData==1) || (this.currentOption.tabType=='scmap'));
+    return ((this.tableOptions.dataSource && !this.tableOptions.template && this.currentOption.metaData==1) || (this.currentOption.tabType=='scmap'));
   }
 }
