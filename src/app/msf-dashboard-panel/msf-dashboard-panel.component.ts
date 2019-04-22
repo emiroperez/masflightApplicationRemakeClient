@@ -2815,9 +2815,25 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.tableVariables.splice (index, 1);
   }
 
-  setLoading(value)
+  finishLoadingTable(error)
   {
-    this.values.isLoading = value;
+    this.values.isLoading = false;
+
+    if (error)
+    {
+      this.values.lastestResponse = null;
+      this.values.chartGenerated = false;
+      this.values.infoGenerated = false;
+      this.values.formGenerated = false;
+      this.values.picGenerated = false;
+      this.values.tableGenerated = false;
+  
+      this.dialog.open (MessageComponent, {
+        data: { title: "Error", message: "Failed to generate table." }
+      });
+
+      return;
+    }
 
     this.values.displayTable = true;
     this.values.chartGenerated = false;

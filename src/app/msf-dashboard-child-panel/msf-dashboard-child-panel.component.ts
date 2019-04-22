@@ -901,9 +901,9 @@ export class MsfDashboardChildPanelComponent {
     return (this.values != null && this.values.currentChartType.flags & ChartFlags.TABLE) ? true : false;
   }
 
-  setLoading(value)
+  finishLoadingTable(error)
   {
-    this.globals.popupLoading = value;
+    this.globals.popupLoading = false;
   }
 
   moreResults()

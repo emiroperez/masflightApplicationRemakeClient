@@ -36,8 +36,8 @@ export class MsfTableComponent implements OnInit {
   @Input('isLoading')
   isLoading: any;
 
-  @Output('setLoading')
-  setLoading = new EventEmitter ();
+  @Output('finishLoading')
+  finishLoading = new EventEmitter ();
 
   @Input('categoryArguments')
   categoryArguments: any;
@@ -370,7 +370,7 @@ export class MsfTableComponent implements OnInit {
         _this.globals.template = false;
       }
 
-      _this.setLoading.emit (false);
+      _this.finishLoading.emit (false);
     }
   }
 
@@ -381,7 +381,7 @@ export class MsfTableComponent implements OnInit {
   }
 
   handlerError(_this,result) {
-    _this.setLoading.emit (false);
+    _this.finishLoading.emit (true);
     _this.globals.dataSource = false;
     _this.globals.template = false;
     console.log(result);
