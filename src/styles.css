@@ -2043,17 +2043,17 @@ mat-tab-group {
   align-items: center;
   width: 20%;
 }
-.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-properties-align .msf-dashboard-column-properties-button {
-  padding-left: 10px;
-}
-.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-properties-align .msf-dashboard-column-properties-height-label {
-  width: 60%;
-}
 .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-button {
   display: flex;
   flex-direction: row;
   align-items: center;
   padding-left: 10px;
+}
+.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-button .msf-dashboard-column-properties-button {
+  padding-left: 10px;
+}
+.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-button .msf-dashboard-column-properties-height-label {
+  width: 60%;
 }
 .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-columns-move-button {
   display: flex;
@@ -2094,17 +2094,17 @@ mat-tab-group {
   align-items: center;
   width: 20%;
 }
-.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-properties-align .msf-dashboard-column-properties-button {
-  padding-left: 10px;
-}
-.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-properties-align .msf-dashboard-column-properties-height-label {
-  width: 60%;
-}
 .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-button {
   display: flex;
   flex-direction: row;
   align-items: center;
   padding-left: 10px;
+}
+.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-button .msf-dashboard-column-properties-button {
+  padding-left: 10px;
+}
+.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-button .msf-dashboard-column-properties-height-label {
+  width: 60%;
 }
 .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-columns-move-button {
   display: flex;
@@ -2210,10 +2210,10 @@ mat-tab-group {
   background-color: #595959;
 }
 
-.msf-dashboard-column-properties-form-field .mat-select-value-text, .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-properties-align .msf-dashboard-column-properties-form-field .mat-select-value-text, .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-properties-align .msf-dashboard-column-properties-form-field .mat-select-value-text {
+.msf-dashboard-column-properties-form-field .mat-select-value-text, .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-button .msf-dashboard-column-properties-form-field .mat-select-value-text, .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-button .msf-dashboard-column-properties-form-field .mat-select-value-text {
   color: #fff;
 }
-.msf-dashboard-column-properties-form-field .mat-form-field-underline, .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-properties-align .msf-dashboard-column-properties-form-field .mat-form-field-underline, .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-properties-align .msf-dashboard-column-properties-form-field .mat-form-field-underline {
+.msf-dashboard-column-properties-form-field .mat-form-field-underline, .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-button .msf-dashboard-column-properties-form-field .mat-form-field-underline, .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-button .msf-dashboard-column-properties-form-field .mat-form-field-underline {
   background-color: #595959;
 }
 
@@ -2960,6 +2960,11 @@ mat-tab-group {
 #msf-dashboard-panel-form-container-row {
   flex-direction: row;
   margin-top: 5px;
+}
+
+#msf-dashboard-panel-table-container-row {
+  flex-direction: row;
+  margin-top: 10px;
 }
 
 #msf-dashboard-panel-form-op-container {

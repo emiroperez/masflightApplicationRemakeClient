@@ -1032,7 +1032,6 @@ export class MsfDashboardPanelComponent implements OnInit {
   loadTableData (moreResults, handlerSuccess, handlerError): void
   {
     let url, urlBase, urlArg;
-    let tableVariableIds = [];
 
     this.msfTableRef.displayedColumns = [];
   
@@ -1055,7 +1054,10 @@ export class MsfDashboardPanelComponent implements OnInit {
     url = this.service.host + "/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
 
     for (let tableVariable of this.values.tableVariables)
-      url += "&metaDataIds=" + tableVariable.item.id;
+    {
+      if (tableVariable.checked)
+        url += "&metaDataIds=" + tableVariable.itemId;
+    }
 
     this.http.get (this.msfTableRef, url, handlerSuccess, handlerError, null);
   }
@@ -1419,8 +1421,13 @@ export class MsfDashboardPanelComponent implements OnInit {
   addChartFilterValues(_this, data): void
   {
     _this.values.chartColumnOptions = [];
+    _this.values.tableVariables = [];
+
     for (let columnConfig of data)
+    {
       _this.values.chartColumnOptions.push ( { id: columnConfig.columnName, name: columnConfig.columnLabel, item: columnConfig } );
+      _this.values.tableVariables.push ( { id: columnConfig.columnName, name: columnConfig.columnLabel, itemId: columnConfig.id, checked: true } );
+    }
 
     // load the initial filter variables list
     _this.filteredVariables.next (_this.values.chartColumnOptions.slice ());
@@ -1447,7 +1454,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.checkChartFilters ();
 
     _this.values.formVariables = [];
-    _this.values.tableVariables = [];
 
     // initiate another query to get the category arguments
     _this.service.loadOptionCategoryArguments (_this, _this.values.currentOption, _this.setCategories, _this.handlerError);
@@ -1576,18 +1582,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.temp.currentOptionCategories = JSON.parse (JSON.stringify (this.values.currentOptionCategories));
 
     this.temp.formVariables = [];
-    this.temp.tableVariables = [];
+    this.temp.tableVariables = JSON.parse (JSON.stringify (this.values.tableVariables));
 
-    if (this.values.currentChartType.flags & ChartFlags.TABLE)
-    {
-      this.temp.infoVar1 = null;
-      this.temp.infoVar2 = null;
-      this.temp.infoVar3 = null;
-
-      for (let i = 0; i < this.values.formVariables.length; i++)
-        this.temp.tableVariables.push (this.values.chartColumnOptions.indexOf (this.values.tableVariables[i]));
-    }
-    else if (this.values.currentChartType.flags & ChartFlags.FORM)
+    if (this.values.currentChartType.flags & ChartFlags.FORM)
     {
       this.temp.infoVar1 = null;
       this.temp.infoVar2 = null;
@@ -2043,6 +2040,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       // set table column filters settings if loaded from database
       this.values.tableVariables = [];
+
+      for (let columnConfig of this.values.chartColumnOptions)
+        this.values.tableVariables.push ( { id: columnConfig.id, name: columnConfig.name, itemId: columnConfig.item.id, checked: true } );
   
       for (i = 0; i < this.values.lastestResponse.length; i++)
       {
@@ -2051,13 +2051,13 @@ export class MsfDashboardPanelComponent implements OnInit {
         if (tableColumn.id == null)
           continue;
   
-        for (let j = 0; j < this.values.chartColumnOptions.length; j++)
+        for (let j = 0; j < this.values.tableVariables.length; j++)
         {
-          let curVariable = this.values.chartColumnOptions[j];
+          let curVariable = this.values.tableVariables[j];
   
-          if (curVariable.item.id == tableColumn.id)
+          if (curVariable.itemId == tableColumn.id)
           {
-            this.values.tableVariables.push (curVariable);
+            curVariable.checked = tableColumn.checked;
             break;
           }
         }
@@ -2320,7 +2320,8 @@ export class MsfDashboardPanelComponent implements OnInit {
           for (let tableVariable of _this.values.tableVariables)
           {
             tableVariableIds.push ({
-              id: tableVariable.item.id
+              id: tableVariable.itemId,
+              checked: tableVariable.checked
             });
           }
   
@@ -2813,7 +2814,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.values.lastestResponse = [];
 
       for (let tableVariable of this.values.tableVariables)
-        this.values.lastestResponse.push ({ id: tableVariable.item.id });
+        this.values.lastestResponse.push ({ id: tableVariable.itemId, checked: tableVariable.checked });
 
       this.service.saveLastestResponse (this, this.getPanelInfo (), JSON.stringify (this.values.lastestResponse),
         this.handlerTableLastestResponse, this.handlerTableError);
