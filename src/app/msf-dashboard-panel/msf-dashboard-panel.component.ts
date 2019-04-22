@@ -1447,6 +1447,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.checkChartFilters ();
 
     _this.values.formVariables = [];
+    _this.values.tableVariables = [];
 
     // initiate another query to get the category arguments
     _this.service.loadOptionCategoryArguments (_this, _this.values.currentOption, _this.setCategories, _this.handlerError);
