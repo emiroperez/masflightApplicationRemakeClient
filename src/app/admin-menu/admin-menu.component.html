@@ -13,7 +13,7 @@
         </div>
     </div>
 </div>
-<mat-card class="card-principal msf-center-container" style="height:74vh">
+<mat-card class="card-principal msf-center-container" style="height:87vh">
     <mat-card-content>
         <div style="display: flex; flex-direction: row;">
             <div style="flex: 1; flex-direction: column; justify-content: center">
@@ -115,10 +115,11 @@
 
                             <div *ngIf="optionSelected.children.length == 0">
                                 <div *ngIf="!optionSelected.isRoot && optionSelected.id ">
-                                    <!--                                     <mat-form-field style="background-color: #1e1e1e; display: fixed">
-                                        <input class="search-input" style="width:85%" matInput [(ngModel)]="searchText">
+                                    <mat-form-field class="msf-admin-search" >
+                                        <input class="search-input"  matInput [(ngModel)]="searchText" style="width:95%;height:24px;">
                                         <mat-icon style="color: white" aria-label="search">search</mat-icon>
-                                    </mat-form-field> -->
+                                    </mat-form-field>
+
                                     <div class="dialog-category-arguments-container">
                                         <div style="display: flex;flex-direction: row; height: 30px; background-color: #333333; color:white">
                                             <div style="width: 40%; margin:5px">Category</div>
