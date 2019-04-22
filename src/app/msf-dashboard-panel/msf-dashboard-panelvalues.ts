@@ -113,6 +113,13 @@ export class MsfDashboardPanelValues {
             this.updateIntervalSwitch = true;
         }
 
+        // set loading to true for generated table panels
+        if (this.currentChartType != null)
+        {
+            if (this.currentChartType == 14 && this.function == 1)
+                this.isLoading = true;
+        }
+
         this.row = row;
     }
 }
