@@ -392,52 +392,19 @@
     </div>
   </ng-container>
   <ng-container *ngIf="isTablePanel()">
-    <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-form-sub-container">
-      <div class="msf-dashboard-chart-options-container">
-        <div class="msf-dashboard-chart-selector">
-          <div class="msf-dashboard-chart-analysis-title">
-            <mat-icon class="msf-dashboard-chart-icon">filter_list</mat-icon>
-          </div>
-          <div class="msf-dashboard-chart-op-container">
-            <mat-form-field [formGroup]="chartForm" class="msf-full-width">
-              <mat-select formControlName="tableCtrl" placeholder="Select Column">
-                <ngx-mat-select-search [formControl]="tableFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
-                <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
-                  {{variable.name}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <div class="msf-dashboard-chart-add-button msf-dashboard-chart-table-add-button" id="msf-dashboard-table-button">
-            <button [disabled]="!isTableVariableValid()" mat-icon-button (click)="addTableVariable()" [ngClass]="isTableVariableValid() ? 'func-button' : 'func-button-disabled'">
-              <mat-icon class="msf-dashboard-chart-icon" aria-label="Add Column" style="margin-left: 6px">add</mat-icon>
-            </button>
-          </div>
-        </div>
+    <div class="msf-dashboard-panel-sub-container-column">
+      <div class="msf-dashboard-addmenu-icon-item">
+        <mat-icon class="msf-dashboard-chart-icon" aria-label="Filter List">filter_list</mat-icon>
+        <span class="msf-dashboard-addmenu-item-text">Column Selector</span>
       </div>
     </div>
-    <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-form-container-column" *ngIf="values.tableVariables.length" [ngStyle]="{'overflow-y': ((values.height.value < 6 && values.tableVariables.length > 2) || (values.height.value >= 6 && values.tableVariables.length > 3)) ? 'scroll' : 'hidden'}">
-      <div class="msf-dashboard-panel-sub-container-row" id="msf-dashboard-panel-form-container-row" *ngFor="let tableVariable of values.tableVariables">
+    <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-form-container-column" [ngStyle]="{'overflow-y': ((values.height.value < 6 && values.tableVariables.length > 2) || (values.height.value >= 6 && values.tableVariables.length > 3)) ? 'scroll' : 'hidden'}">
+      <div class="msf-dashboard-panel-sub-container-row" id="msf-dashboard-panel-table-container-row" *ngFor="let tableVariable of values.tableVariables">
         <div class="msf-dashboard-chart-op-container" id="msf-dashboard-panel-table-op-container">
-          <mat-form-field class="msf-full-width">
-            <mat-select [(value)]="tableVariable" placeholder="Select Column">
-              <ngx-mat-select-search [formControl]="tableFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
-              <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
-                {{variable.name}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+          <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="tableVariable.checked">
+            {{tableVariable.name}}
+          </mat-checkbox>
         </div>
-        <div class="msf-dashboard-chart-add-button" id="msf-dashboard-form-button">
-          <button mat-icon-button (click)="deleteColumnFromTable(column)">
-            <mat-icon class="msf-dashboard-chart-icon" aria-label="Delete Column">delete</mat-icon>
-          </button>
-        </div>
-      </div>
-    </div>
-    <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-form-container-column-empty" *ngIf="!values.tableVariables.length">
-      <div class="msf-no-results">
-        You don't have added any variable to filter
       </div>
     </div>
     <div class="msf-dashboard-panel-sub-container-column">

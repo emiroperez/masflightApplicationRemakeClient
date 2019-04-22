@@ -2962,6 +2962,11 @@ mat-tab-group {
   margin-top: 5px;
 }
 
+#msf-dashboard-panel-table-container-row {
+  flex-direction: row;
+  margin-top: 10px;
+}
+
 #msf-dashboard-panel-form-op-container {
   width: 48%;
   padding-left: 10px;
