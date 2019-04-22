@@ -729,7 +729,13 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (this.values.currentChartType.flags & ChartFlags.TABLE)
     {
       if (this.values.function == 1)
-        this.loadData ();
+      {
+        let prepateTable = setInterval (() =>
+        {
+          this.loadData ();
+          clearInterval (prepateTable);
+        }, 100);
+      }
     }
     else if (!this.utils.isJSONEmpty (this.values.lastestResponse))
     {
