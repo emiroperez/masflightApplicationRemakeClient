@@ -427,7 +427,7 @@ export class MsfDashboardComponent implements OnInit {
     this.service.updateDashboardPanelHeight (this, dashboardIds, this.heightValues.indexOf (index), this.handlerSuccess, this.handlerError);
   }
 
-  swapSucess(_this): void
+  rowSwapSucess(_this): void
   {
     if (_this.currentColumn)
       _this.dashboardColumnsReAppendCharts[_this.currentColumn] = false;
@@ -435,7 +435,7 @@ export class MsfDashboardComponent implements OnInit {
     console.log ("The changes to the dashboard were successful.");
   }
 
-  swapError(_this): void
+  rowSwapError(_this): void
   {
     if (_this.currentColumn)
       _this.dashboardColumnsReAppendCharts[_this.currentColumn] = false;
@@ -564,7 +564,7 @@ export class MsfDashboardComponent implements OnInit {
     }
 
     // this.globals.isLoading = true;
-    this.service.setDashboardPanelRowPositions (this, newPanelPos, this.swapSucess, this.swapError);
+    this.service.setDashboardPanelRowPositions (this, newPanelPos, this.rowSwapSucess, this.rowSwapError);
   }
 
   onrightClick(event, dashboardColumn, rowindex): boolean
@@ -647,5 +647,57 @@ export class MsfDashboardComponent implements OnInit {
         secondaryCategoryFilter: this.contextParentPanel.chartSecondaryObjectSelected
       }
     });
+  }
+
+  columnSwapSucess(_this): void
+  {
+    for (let i = 0; i < _this.dashboardColumns.length; i++)
+      _this.dashboardColumnsReAppendCharts[i] = false;
+
+    console.log ("The changes to the dashboard were successful.");
+  }
+
+  columnSwapError(_this): void
+  {
+    for (let i = 0; i < _this.dashboardColumns.length; i++)
+      _this.dashboardColumnsReAppendCharts[i] = false;
+  }
+
+  swapColumnPositions(event: CdkDragDrop<MsfDashboardPanelValues[]>): void
+  {
+    let newColumnPos = [];
+    let i;
+
+    // reappend the chart div elements of every panel
+    for (i = 0; i < this.dashboardColumns.length; i++)
+      this.dashboardColumnsReAppendCharts[i] = true;
+
+    // do not perform query if the columns are now swapped
+    if (event.previousIndex == event.currentIndex)
+      return;
+
+    // move items
+    moveItemInArray (this.dashboardColumns, event.previousIndex, event.currentIndex);
+    moveItemInArray (this.dashboardColumnsProperties, event.previousIndex, event.currentIndex);
+    moveItemInArray (this.dashboardColumnsReAppendCharts, event.previousIndex, event.currentIndex);
+
+    // update the database the new column positions
+    for (i = 0; i < this.dashboardColumns.length; i++)
+    {
+      let dashboardColumn = this.dashboardColumns[i];
+
+      // swap column position by swapping the dashboard ids
+      for (let j = 0; j < dashboardColumn.length; j++)
+      {
+        newColumnPos.push ({
+          id: dashboardColumn[j].id,
+          column : i
+        });
+      }
+    }
+
+    // this.globals.isLoading = true;
+    this.service.setDashboardColumnPositions (this, newColumnPos,
+      this.columnSwapSucess, this.columnSwapError);
   }
 }

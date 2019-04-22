@@ -1732,9 +1732,12 @@ mat-tab-group
 .msf-dashboard-addmenu-item-addtext
     vertical-align: middle
 
-.msf-dashboard-chartbox-column
-    display: flex
-    flex-direction: row
+@mixin msf-dashboard-icon ($padding-right, $color: inherit, $cursor: default)
+    color: $color
+    cursor: $cursor
+    font-size: 16px
+    padding-right: $padding-right
+    padding-top: 5px
 
 @mixin msf-dashboard-column-properties ($height: 20px)
     position: relative
@@ -1757,6 +1760,22 @@ mat-tab-group
             width: 60%
         .msf-dashboard-column-properties-form-field
             @extend .msf-dashboard-column-properties-form-field
+    .msf-dashboard-column-button
+        display: flex
+        flex-direction: row
+        align-items: center
+        padding-left: 10px
+    .msf-dashboard-columns-move-button
+        display: flex
+        flex-direction: bottom
+        align-items: center
+        padding-left: 10px
+        .msf-dashboard-button-move-icon
+            @include msf-dashboard-icon(2px)
+            font-size: 24px
+        .msf-dashboard-button-move-icon:hover
+            @include msf-dashboard-icon(2px, #01abec, move)
+            font-size: 24px
 
 @mixin msf-dashboard-line-resize
     position: absolute
@@ -1809,31 +1828,29 @@ mat-tab-group
     .msf-dashboard-chartbox
         padding: 10px
         flex-direction: column
-        .msf-dashboard-chartbox-column
-            width: 100%
-            overflow-y: visible
-            .msf-dashboard-chartbox-items
-                width: 100%
-                .msf-dashboard-chartbox-column
-                    .msf-dashboard-chartbox-item
-                        margin: 0 2px
-                        position: relative
-                        box-sizing: border-box
-                .msf-dashboard-panel-padding
-                    padding-top: 4px
-                .msf-dashboard-panel-size-properties-closed
-                    @include msf-dashboard-column-properties
-                .msf-dashboard-panel-size-properties-open
-                    @include msf-dashboard-column-properties(60px)
-                .msf-dashboard-panel-size-properties-invisible
-                    display: none
 
-@mixin msf-dashboard-icon ($padding-right, $color: inherit, $cursor: default)
-    color: $color
-    cursor: $cursor
-    font-size: 16px
-    padding-right: $padding-right
-    padding-top: 5px
+.msf-dashboard-chartbox-column
+    display: flex
+    flex-direction: row
+    width: 100%
+    overflow-y: visible
+    .msf-dashboard-chartbox-items
+        width: 100%
+        .msf-dashboard-chartbox-column
+            display: flex
+            flex-direction: row
+            .msf-dashboard-chartbox-item
+                margin: 0 2px
+                position: relative
+                box-sizing: border-box
+        .msf-dashboard-panel-padding
+            padding-top: 4px
+        .msf-dashboard-panel-size-properties-closed
+            @include msf-dashboard-column-properties
+        .msf-dashboard-panel-size-properties-open
+            @include msf-dashboard-column-properties(60px)
+        .msf-dashboard-panel-size-properties-invisible
+            display: none
 
 .msf-dashboard-button
     display: flex

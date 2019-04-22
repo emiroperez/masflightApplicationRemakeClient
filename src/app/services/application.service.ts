@@ -460,4 +460,10 @@ export class ApplicationService {
     let url = this.host + "/addSharedPanel?dashboardId=" + dashboardId + "&panelId=" + panelId;
     this.http.post (_this, url, null, handlerSuccess, handlerError);
   }
+
+  setDashboardColumnPositions(_this, columns, handlerSuccess, handlerError): void
+  {
+    let url = this.host + "/updateDashboardColumnPositions";
+    this.http.post (_this, url, columns, handlerSuccess, handlerError);
+  }
 }

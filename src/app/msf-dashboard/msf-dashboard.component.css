@@ -1,6 +1,8 @@
 .cdk-drag-preview
 {
-    margin: 0 2px;
+    display: inherit;
+    margin: inherit;
+    padding: inherit;
     color: #fff;
     position: relative;
     text-align: center;
@@ -20,7 +22,7 @@
     transition: transform 300ms cubic-bezier(0, 0, 0.2, 1);
 }
 
-.msf-dashboard-chartbox-column.cdk-drop-list-dragging .msf-dashboard-chartbox-item:not(.cdk-drag-placeholder)
+.msf-dashboard-chartbox-column.cdk-drop-list-dragging .msf-dashboard-chartbox-item:not(.cdk-drag-placeholder), .msf-dashboard-chartbox.cdk-drop-list-dragging .msf-dashboard-chartbox-column:not(.cdk-drag-placeholder)
 {
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
