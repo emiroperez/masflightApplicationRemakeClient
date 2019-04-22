@@ -7,7 +7,7 @@
   </div>
   <ng-container *ngIf="dashboardColumns.length">
     <div class="msf-dashboard-chartbox" cdkDropList cdkDropListOrientation="vertical" [cdkDropListData]="dashboardColumns" (cdkDropListDropped)="swapColumnPositions($event)">
-      <div class="msf-dashboard-chartbox-column" *ngFor="let dashboardColumn of dashboardColumns; let column = index" [attr.data-index]="column" cdkDragLockAxis="y" vsDragScroll [vsDragScrollContainer]="scrollContainer" cdkDrag [cdkDragDisabled]="dashboardColumns.length == 1 || globals.readOnlyDashboard">
+      <div class="msf-dashboard-chartbox-column" *ngFor="let dashboardColumn of dashboardColumns; let column = index" [attr.data-index]="column" cdkDragLockAxis="y" vsDragScroll [vsDragScrollContainer]="scrollContainer" cdkDrag [cdkDragDisabled]="dashboardColumns.length == 1 || globals.readOnlyDashboard || !dashboardColumnsProperties[column]">
         <div class="msf-dashboard-chartbox-items">
           <div class="msf-dashboard-chartbox-column" cdkDropList cdkDropListOrientation="horizontal" [cdkDropListData]="dashboardColumns[column]" (cdkDropListDropped)="swapPanelRowPositions($event, dashboardColumns[column], column)">
             <div (contextmenu)="onrightClick($event, dashboardColumns[column], row)" class="msf-dashboard-chartbox-item" [style.width.%]="getPanelWidth(column, row)" *ngFor="let dashboardPanel of dashboardColumn; let row = index" [attr.data-index]="row" cdkDragLockAxis="x" cdkDrag [cdkDragDisabled]="dashboardColumn.length == 1 || globals.readOnlyDashboard">
