@@ -63,6 +63,14 @@ export class MsfDashboardChildPanelComponent {
   msfTableRef: MsfTableComponent;
 
   actualPageNumber: number;
+  dataSource: boolean = false;
+  template: boolean = false;
+  moreResults: boolean = false;
+  moreResultsBtn: boolean = false;
+  displayedColumns;
+  selectedIndex = 0;
+  totalRecord = 0;
+  metadata;
 
   constructor(
     public dialogRef: MatDialogRef<MsfDashboardChildPanelComponent>,
@@ -79,6 +87,12 @@ export class MsfDashboardChildPanelComponent {
     // generate drill down chart
     this.globals.popupLoading = true;
     this.service.getChildPanel (this, data.parentPanelId, this.data.drillDownId, this.configureChildPanel, this.handlerChildPanelError);
+  }
+
+  ngAfterViewInit(): void
+  {
+    if (this.isTablePanel ())
+      this.msfTableRef.tableOptions = this;
   }
 
   ngOnDestroy()
@@ -644,6 +658,11 @@ export class MsfDashboardChildPanelComponent {
       data.values, data.function, data.chartType, JSON.stringify (_this.data.currentOptionCategories),
       data.lastestResponse, data.paletteColors);
 
+    _this.values.tableVariables = [];
+
+    for (let columnConfig of _this.values.chartColumnOptions)
+      _this.values.tableVariables.push ( { id: columnConfig.id, name: columnConfig.name, itemId: columnConfig.item.id, checked: true } );
+
     // init child panel settings
     if (_this.values.currentChartType != null && _this.values.currentChartType != -1)
     {
@@ -688,13 +707,16 @@ export class MsfDashboardChildPanelComponent {
       {
         let tableColumn = _this.values.lastestResponse[i];
 
-        for (let j = 0; j < _this.values.chartColumnOptions.length; j++)
+        if (tableColumn.id == null)
+          continue;
+  
+        for (let j = 0; j < _this.values.tableVariables.length; j++)
         {
-          let curVariable = _this.values.chartColumnOptions[j];
-
-          if (curVariable.item.id == tableColumn.id)
+          let curVariable = _this.values.tableVariables[j];
+  
+          if (curVariable.itemId == tableColumn.id)
           {
-            _this.values.tableVariables.push (curVariable);
+            curVariable.checked = tableColumn.checked;
             break;
           }
         }
@@ -830,7 +852,7 @@ export class MsfDashboardChildPanelComponent {
     if (moreResults)
     {
       this.actualPageNumber++;
-      this.globals.moreResults = true;
+      this.moreResults = true;
     }
     else
       this.actualPageNumber = 0;
@@ -845,7 +867,10 @@ export class MsfDashboardChildPanelComponent {
     url = this.service.host + "/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
 
     for (let tableVariable of this.values.tableVariables)
-      url += "&metaDataIds=" + tableVariable.item.id;
+    {
+      if (tableVariable.checked)
+        url += "&metaDataIds=" + tableVariable.itemId;
+    }
 
     this.http.get (this.msfTableRef, url, handlerSuccess, handlerError, null);
   }
@@ -906,13 +931,11 @@ export class MsfDashboardChildPanelComponent {
     this.globals.popupLoading = false;
   }
 
-  moreResults()
+  moreTableResults()
   {
-    if (this.globals.moreResultsBtn)
+    if (this.moreResultsBtn)
     {
-      this.globals.moreResults = false;
-      this.globals.query = true;
-      this.globals.mapsc = false;
+      this.moreResults = false;
 
       this.globals.popupLoading = true;
 

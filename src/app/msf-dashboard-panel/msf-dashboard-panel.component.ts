@@ -107,8 +107,8 @@ export class MsfDashboardPanelComponent implements OnInit {
   msfTableRef: MsfTableComponent;
 
   actualPageNumber: number;
-  dataSource : boolean = false;
-  template : boolean = false;
+  dataSource: boolean = false;
+  template: boolean = false;
   moreResults: boolean = false;
   moreResultsBtn: boolean = false;
   displayedColumns;
@@ -120,7 +120,6 @@ export class MsfDashboardPanelComponent implements OnInit {
   public variableFilterCtrl: FormControl = new FormControl ();
   public xaxisFilterCtrl: FormControl = new FormControl ();
   public valueFilterCtrl: FormControl = new FormControl ();
-  public tableFilterCtrl: FormControl = new FormControl ();
 
   public infoVar1FilterCtrl: FormControl = new FormControl ();
   public infoVar2FilterCtrl: FormControl = new FormControl ();
@@ -156,8 +155,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       fontSizeCtrl: new FormControl ({ value: this.fontSizes[1], disabled: true }),
       valueFontSizeCtrl: new FormControl ({ value: this.fontSizes[1], disabled: true }),
       valueOrientationCtrl: new FormControl ({ value: this.orientations[0], disabled: true }),
-      intervalCtrl: new FormControl ({ value: 5, disabled: true }),
-      tableCtrl: new FormControl ({ value: '', disabled: true })
+      intervalCtrl: new FormControl ({ value: 5, disabled: true })
     });
   }
 
@@ -1441,7 +1439,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.searchChange (_this.infoVar3FilterCtrl);
 
     _this.searchChange (_this.columnFilterCtrl);
-    _this.searchChange (_this.tableFilterCtrl);
 
     // reset chart filter values and disable generate chart button
     _this.chartForm.get ('variableCtrl').reset ();
@@ -1482,7 +1479,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.chartForm.get ('fontSizeCtrl').enable ();
     _this.chartForm.get ('valueFontSizeCtrl').enable ();
     _this.chartForm.get ('valueOrientationCtrl').enable ();
-    _this.chartForm.get ('tableCtrl').enable ();
 
     _this.values.isLoading = false;
   }
@@ -1800,24 +1796,16 @@ export class MsfDashboardPanelComponent implements OnInit {
     
         this.values.variable = null;
         this.chartForm.get ('variableCtrl').reset ();
-
-        this.chartForm.get ('tableCtrl').enable ();
       }
       else if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
       {
         this.values.xaxis = null;
         this.chartForm.get ('xaxisCtrl').reset ();
         this.chartForm.get ('xaxisCtrl').disable ();
-
-        this.values.tableVariables = [];
-        this.chartForm.get ('tableCtrl').reset ();
       }
       else
       {
         this.chartForm.get ('xaxisCtrl').enable ();
-
-        this.values.tableVariables = [];
-        this.chartForm.get ('tableCtrl').reset ();
       }
 
       this.chartForm.get ('variableCtrl').enable ();
@@ -2014,7 +2002,6 @@ export class MsfDashboardPanelComponent implements OnInit {
             this.chartForm.get ('xaxisCtrl').enable ();
 
           this.chartForm.get ('valueCtrl').enable ();
-          this.chartForm.get ('tableCtrl').enable ();
           this.values.currentOption = option;
           break;
         }
@@ -2035,8 +2022,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       if (this.values.currentOptionCategories)
         this.variableCtrlBtnEnabled = true;
-
-      this.chartForm.get ('tableCtrl').reset ();
 
       // set table column filters settings if loaded from database
       this.values.tableVariables = [];
@@ -2595,7 +2580,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         for (let tableVariable of value.tableVariables)
         {
           tableVariableIds.push ({
-            id: tableVariable.item.id
+            id: tableVariable.itemId,
+            checked: tableVariable.checked
           });
         }
 
@@ -2782,17 +2768,6 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     // move items
     moveItemInArray (this.values.formVariables, event.previousIndex, event.currentIndex);
-  }
-
-  isTableVariableValid(): boolean
-  {
-    return this.chartForm.get ('tableCtrl').value;
-  }
-
-  addTableVariable(): void
-  {
-    this.values.tableVariables.push (this.chartForm.get ('tableCtrl').value);
-    this.chartForm.get ('tableCtrl').reset ();
   }
 
   deleteColumnFromTable(index): void
