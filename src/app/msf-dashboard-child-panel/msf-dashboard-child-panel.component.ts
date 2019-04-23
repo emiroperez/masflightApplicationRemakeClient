@@ -557,6 +557,9 @@ export class MsfDashboardChildPanelComponent {
 
   checkGroupingValue(categoryColumnName, values): boolean
   {
+    if (values == null)
+      return false;
+
     for (let value of values)
     {
       if (value.columnName === categoryColumnName)
@@ -564,6 +567,76 @@ export class MsfDashboardChildPanelComponent {
     }
 
     return false;
+  }
+
+  checkGroupingCategory(argument)
+  {
+    let params: string = "";
+
+    if (argument.name1 != null && argument.name1.toLowerCase ().includes ("grouping"))
+    {
+      let haveValues: boolean = false;
+
+      if (argument.value1 != null && argument.value1.length)
+        haveValues = true;
+
+      if (this.values.currentChartType.flags & ChartFlags.TABLE)
+      {
+        for (let tableVariable of this.values.tableVariables)
+        {
+          if (tableVariable.checked && tableVariable.grouping && !this.checkGroupingValue (tableVariable.id, argument.value1))
+          {
+            if (!haveValues)
+            {
+              params += "" + tableVariable.id;
+              haveValues = true;
+            }
+            else
+              params += "," + tableVariable.id;
+          }
+        }
+      }
+      else if (!(this.values.currentChartType.flags & ChartFlags.INFO))
+      {
+        if (this.values.variable.item.grouping && !this.checkGroupingValue (this.values.variable.item.columnName, argument.value1))
+        {
+          if (!haveValues)
+          {
+            params += "" + this.values.variable.item.columnName;
+            haveValues = true;
+          }
+          else
+            params += "," + this.values.variable.item.columnName;
+        }
+
+        if (this.values.currentChartType.flags & ChartFlags.XYCHART)
+        {
+          if (this.values.xaxis.item.grouping && !this.checkGroupingValue (this.values.xaxis.item.columnName, argument.value1))
+          {
+            if (!haveValues)
+            {
+              params += "" + this.values.xaxis.item.columnName;
+              haveValues = true;
+            }
+            else
+              params += "," + this.values.xaxis.item.columnName;
+          }
+        }
+
+        if (this.values.valueColumn.item.grouping && !this.checkGroupingValue (this.values.valueColumn.item.columnName, argument.value1))
+        {
+          if (!haveValues)
+          {
+            params += "" + this.values.valueColumn.item.columnName;
+            haveValues = true;
+          }
+          else
+            params += "," + this.values.valueColumn.item.columnName;
+        }
+      }
+    }
+
+    return params;
   }
 
   getParameters()
@@ -612,26 +685,9 @@ export class MsfDashboardChildPanelComponent {
             else
             {
               if (params)
-                params += "&" + this.utils.getArguments (argument);
+                params += "&" + this.utils.getArguments (argument) + this.checkGroupingCategory (argument);
               else
-                params = this.utils.getArguments (argument);
-
-              // check if the argument uses grouping to add chart values that requires grouping
-              // to work properly
-              if (!(this.values.currentChartType.flags & ChartFlags.TABLE) && argument.name1 != null && argument.name1.toLowerCase ().includes ("grouping"))
-              {
-                if (this.values.variable.item.grouping && !this.checkGroupingValue (this.values.variable.item.columnName, argument.value1))
-                  params += "," + this.values.variable.item.columnName;
-
-                if (this.values.currentChartType.flags & ChartFlags.XYCHART)
-                {
-                  if (this.values.xaxis.item.grouping && !this.checkGroupingValue (this.values.xaxis.item.columnName, argument.value1))
-                    params += "," + this.values.xaxis.item.columnName;
-                }
-
-                if (this.values.valueColumn.item.grouping && !this.checkGroupingValue (this.values.valueColumn.item.columnName, argument.value1))
-                  params += "," + this.values.valueColumn.item.columnName;
-              }
+                params = this.utils.getArguments (argument) + this.checkGroupingCategory (argument);
             }
           }
         }        
@@ -661,7 +717,7 @@ export class MsfDashboardChildPanelComponent {
     _this.values.tableVariables = [];
 
     for (let columnConfig of _this.values.chartColumnOptions)
-      _this.values.tableVariables.push ( { id: columnConfig.id, name: columnConfig.name, itemId: columnConfig.item.id, checked: true } );
+      _this.values.tableVariables.push ( { id: columnConfig.id, name: columnConfig.name, itemId: columnConfig.item.id, grouping: columnConfig.item.grouping, checked: true } );
 
     // init child panel settings
     if (_this.values.currentChartType != null && _this.values.currentChartType != -1)
