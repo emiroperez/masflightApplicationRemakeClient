@@ -435,16 +435,14 @@
 <div class="{{values.displayChart ? 'msf-dashboard-panel-container-chart' : 'msf-dashboard-panel-container-invisible'}}" [style.height.px]="panelHeight">
   <div class="msf-dashboard-panel-title" *ngIf="values.displayChart">{{values.chartName}}</div>
   <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard.chart-display-container-{{values.id}}">
-    <div id="msf-dashboard-chart-display-{{values.id}}" [style.width.%]="97" [style.height.px]="calcPanelHeight()"></div>
-    <div class="msf-dashboard-panel-sub-container-buttons" *ngIf="!globals.readOnlyDashboard">
-      <div class="msf-dashboard-panel-config-button">
-        <button mat-mini-fab (click)="goToChartConfiguration()" color="primary">
-          <mat-icon aria-label="Edit Configuration">menu</mat-icon>
-        </button>
-        <button mat-mini-fab color="primary" style="margin-bottom: 7px" (click)="sharePanel()">
-          <mat-icon aria-label="Share Panel">share</mat-icon>
-        </button>
-      </div>
+    <div id="msf-dashboard-chart-display-{{values.id}}" [ngStyle]="{'width': globals.readOnlyDashboard ? '100%' : 'calc(100% - 35px)'}" [style.height.px]="calcPanelHeight()"></div>
+    <div class="msf-dashboard-panel-config-button" *ngIf="!globals.readOnlyDashboard">
+      <button mat-mini-fab (click)="goToChartConfiguration()" color="primary">
+        <mat-icon aria-label="Edit Configuration">menu</mat-icon>
+      </button>
+      <button mat-mini-fab color="primary" style="margin-bottom: 7px" (click)="sharePanel()">
+        <mat-icon aria-label="Share Panel">share</mat-icon>
+      </button>
     </div>
   </div>
 </div>
