@@ -23,19 +23,7 @@ export class MsfSingleAirportComponent implements OnInit {
     this.getRecords(null, this.handlerSuccess);
   }
 
-  getBindLabel(){
-    if(this.getBindLabel()==null){
-      return "name";
-    }
-    return this.getBindLabel();
-  }
 
-  getBindName(){
-    if(this.argument.selectedAttribute==null){
-      return "name";
-    }
-    return this.argument.selectedAttribute;
-  }
   
   getRecords(search, handlerSuccess){
       let url = this.globals.baseUrl + this.argument.url + "?search="+ (search != null?search:'');
