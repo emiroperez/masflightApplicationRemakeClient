@@ -704,6 +704,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
     else if (!this.utils.isJSONEmpty (this.values.lastestResponse))
     {
+      if (!this.isResponseValid ())
+        return;
+
       if (this.values.currentChartType.flags & ChartFlags.INFO)
       {
         if (this.values.function != null && this.values.function != -1)
@@ -747,6 +750,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
     else if (!this.utils.isJSONEmpty (this.values.lastestResponse))
     {
+      if (!this.isResponseValid ())
+        return;
+
       if (this.values.currentChartType.flags & ChartFlags.INFO)
       {
         if (this.values.function == 1)
@@ -1197,6 +1203,37 @@ export class MsfDashboardPanelComponent implements OnInit {
     clearInterval (this.updateInterval);
 
     this.destroyChart ();
+  }
+
+  isResponseValid(): boolean
+  {
+    if (this.values.currentChartType.flags & ChartFlags.INFO)
+    {
+      if (this.values.currentChartType.flags & ChartFlags.FORM)
+      {
+        if (!this.values.lastestResponse.length)
+          return false;
+      }
+      else if (this.values.currentChartType.flags & ChartFlags.PICTURE)
+      {
+      }
+      else
+      {
+        if (!this.haveDataInfo (this.values.lastestResponse))
+          return false;
+      }
+    }
+    else
+    {
+      if (this.values.currentChartType.flags & ChartFlags.XYCHART && this.utils.isJSONEmpty (this.values.lastestResponse.data))
+        return false;
+
+      if ((!(this.values.currentChartType.flags & ChartFlags.XYCHART) && this.values.lastestResponse.dataProvider == null) ||
+        (this.values.currentChartType.flags & ChartFlags.XYCHART && !this.values.lastestResponse.filter))
+        return false;
+    }
+
+    return true;
   }
 
   noDataFound(): void
