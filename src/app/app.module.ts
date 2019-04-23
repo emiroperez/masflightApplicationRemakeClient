@@ -177,6 +177,8 @@ import { FilterPipe } from './admin-menu/pipe-filter';
 import { NewCategoryDialog } from './admin-menu/admin-menu.component'
 import { MsfAddSharedDashboardComponent } from './msf-add-shared-dashboard/msf-add-shared-dashboard.component';
 import { DragScrollModule } from 'cdk-drag-scroll';
+import { MsfArgumentComponent } from './msf-argument/msf-argument.component';
+import { DialogArgumentPreviewComponent } from './dialog-argument-preview/dialog-argument-preview.component';
 
 @NgModule({
   declarations: [
@@ -332,7 +334,9 @@ import { DragScrollModule } from 'cdk-drag-scroll';
     MsfSharedDashboardItemsComponent,
     MsfAddSharedDashboardPanelComponent,
     FilterPipe,
-    MsfAddSharedDashboardComponent
+    MsfAddSharedDashboardComponent,
+    MsfArgumentComponent,
+    DialogArgumentPreviewComponent
   ],
   imports: [
     BrowserModule,
@@ -405,6 +409,7 @@ import { DragScrollModule } from 'cdk-drag-scroll';
     MsfDashboardDrillDownComponent,
     MsfDashboardChildPanelComponent,
     MsfMoreInfoPopupComponent,
+    DialogArgumentPreviewComponent,
     MsfColumnSelectorComponent,
     MsfShareDashboardComponent,
     MsfSharedDashboardItemsComponent,

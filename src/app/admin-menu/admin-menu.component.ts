@@ -11,6 +11,7 @@ import { DrillDown } from '../model/DrillDown';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil, take } from 'rxjs/operators';
 import { CategoryArguments } from '../model/CategoryArguments';
+import { DialogArgumentPreviewComponent } from '../dialog-argument-preview/dialog-argument-preview.component';
 //import  clonedeep from 'lodash.clonedeep';
 
 @Component({
@@ -59,6 +60,8 @@ export class NewCategoryDialog {
 onNoClick(){
   this.dialogRef.close();
 }
+
+
 
 sendData() {
   this.dataToSend = this.categories.concat(this.categoryDelete);
@@ -225,11 +228,10 @@ export class EditOutputOptionsMetaDialog {
   arg: any[];
 
   constructor(
-    public dialogRef: MatDialogRef<EditOutputOptionsMetaDialog>,
+    public dialogRef: MatDialogRef<EditOutputOptionsMetaDialog>,public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data : {outputs: any, option: any, arguments: any}) {
       this.arg = data.arguments;
      }
-
 
     displayedColumns = ['columnLabel','columnName', 'columnType', 'columnFormat', 'grouping', 'unit', 'arguments'];
     dataSource = this.data.outputs;
@@ -313,7 +315,7 @@ export class EditCategoryArgumentDialog {
 
   constructor(
     public dialogRef: MatDialogRef<EditCategoryArgumentDialog>,
-    @Inject(MAT_DIALOG_DATA) public data) {
+    @Inject(MAT_DIALOG_DATA) public data,public dialog:MatDialog) {
 
      }
 
@@ -322,8 +324,14 @@ export class EditCategoryArgumentDialog {
   onNoClick(): void {
     this.dialogRef.close();
   }
-
-
+  showPreview(argument){
+    this.dialog.open (DialogArgumentPreviewComponent, {
+      height: "560px",
+      width: "500px",
+      panelClass: 'msf-argument-preview-popup',
+      data:argument
+    });
+}
 
   selectArgumentCategory(category) {
     if (this.itemSelected != category) {
