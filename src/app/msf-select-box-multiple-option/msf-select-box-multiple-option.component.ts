@@ -4,6 +4,7 @@ import { Arguments } from '../model/Arguments';
 import { ApiClient } from '../api/api-client';
 import { Globals } from '../globals/Globals';
 import { delay } from 'rxjs/operators';
+import { forEach } from '@angular/router/src/utils/collection';
 
 @Component({
   selector: 'app-msf-select-box-multiple-option',
@@ -21,6 +22,20 @@ export class MsfSelectBoxMultipleOptionComponent implements OnInit {
 
   ngOnInit() { 
     this.getRecords(null, this.handlerSuccess);
+  }
+
+  getBindLabel(){
+    if(this.getBindLabel()==null){
+      return "name";
+    }
+    return this.getBindLabel();
+  }
+
+  getBindName(){
+    if(this.argument.selectedAttribute==null){
+      return "name";
+    }
+    return this.argument.selectedAttribute;
   }
   
    getRecords(search, handlerSuccess){
@@ -43,6 +58,9 @@ export class MsfSelectBoxMultipleOptionComponent implements OnInit {
       this.loading = true;
       this.getRecords($event.term, this.handlerSuccess);
     }
+  }
+  onChange(){
+    console.log(this.argument.value1)
   }
 
 }

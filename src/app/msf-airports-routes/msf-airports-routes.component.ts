@@ -23,6 +23,21 @@ export class MsfAirportsRoutesComponent implements OnInit {
     // this.getAirports(null, this.handlerSuccess);
   }
 
+  getBindLabel(){
+    if(this.getBindLabel()==null){
+      return "name";
+    }
+    return this.getBindLabel();
+  }
+
+  getBindName(){
+    if(this.argument.selectedAttribute==null){
+      return "name";
+    }
+    return this.argument.selectedAttribute;
+  }
+  
+
   getAirports(search, handlerSuccess){
       let url = this.globals.baseUrl + this.argument.url + "?search="+ (search != null?search:'');
       this.http.get(this,url,handlerSuccess,this.handlerError, null);  

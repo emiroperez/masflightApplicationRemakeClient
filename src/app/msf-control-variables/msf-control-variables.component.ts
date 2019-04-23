@@ -115,10 +115,6 @@ export class MsfControlVariablesComponent implements OnInit {
     return ComponentType.date == argument.type;
   }
 
-  isCancelled(argument: Arguments){
-    return ComponentType.cancelled == argument.type;
-  }
-
   isUserList(argument: Arguments){
     return ComponentType.userList == argument.type;
   }
