@@ -4,6 +4,8 @@
     margin: inherit;
     padding: inherit;
     color: #fff;
+    background-color: #333333;
+    opacity: 0.5;
     position: relative;
     text-align: center;
     box-sizing: border-box;

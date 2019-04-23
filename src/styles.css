@@ -2036,6 +2036,7 @@ mat-tab-group {
   padding-top: 2px;
   height: 20px;
   transition: 0.5s;
+  font-size: 14px;
 }
 .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-properties-align {
   display: flex;
@@ -2087,6 +2088,7 @@ mat-tab-group {
   padding-top: 2px;
   height: 60px;
   transition: 0.5s;
+  font-size: 14px;
 }
 .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-properties-align {
   display: flex;
