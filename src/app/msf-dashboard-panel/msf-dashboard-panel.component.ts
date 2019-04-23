@@ -676,7 +676,8 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       // Add export button
       chart.exporting.menu = new am4core.ExportMenu ();
-      chart.exporting.menu.verticalAlign = "bottom";
+      chart.exporting.menu.verticalAlign = "top";
+      chart.exporting.menu.align = "left";
 
       this.chart = chart;
     });

@@ -1945,6 +1945,14 @@ mat-tab-group
 .msf-dashboard-panel-container-invisible
     display: none
 
+@mixin msf-dashboard-panel-config-button
+    position: absolute
+    display: flex
+    left: calc(100% - 45px)
+    top: calc(100% - 90px)
+    align-items: flex-end
+    flex-direction: column-reverse
+
 .msf-dashboard-panel-container-chart
     padding: 10px
     background-color: #222222
@@ -1956,12 +1964,13 @@ mat-tab-group
         @include msf-dashboard-panel-sub-container(row, 5px)
         position: relative
         .msf-dashboard-panel-config-button
-            position: absolute
-            display: flex
-            width: calc(100% - 5px)
-            height: 100%
-            align-items: flex-end
-            flex-direction: column-reverse
+            opacity: 0.05
+            transition: opacity 0.5s ease-out
+            @include msf-dashboard-panel-config-button
+        .msf-dashboard-panel-config-button:hover
+            opacity: 1
+            transition: opacity 0.5s ease-in
+            @include msf-dashboard-panel-config-button
 
 .msf-dashboard-child-panel-container
     width: 98%
@@ -3775,8 +3784,6 @@ th.msf-show-table, td.msf-show-table
     border-color: #1F1F1F
 
 .msf-dashboard-panel-table
-    width: calc(100% - 50px) !important
-    z-index: 99997
     overflow: auto
 
 .invisible-scrollbar::-webkit-scrollbar-thumb 
