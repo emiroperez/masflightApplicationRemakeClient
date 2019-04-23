@@ -2861,4 +2861,12 @@ export class MsfDashboardPanelComponent implements OnInit {
       }, 3000);
     }
   }
+
+  haveTableDataSource(): boolean
+  {
+    if (!this.msfTableRef)
+      return false;
+
+    return this.msfTableRef.dataSource ? true : false;
+  }
 }

@@ -530,6 +530,7 @@
         <img style="width: 16px;height: 16px;" src="../../assets/images/more.png" class="msf-menu-image msf-vertical-middle msf-line">
         <div class="msf-vertical-middle msf-line" style="font-size: 13px">More Result</div>
       </div>
+      <div *ngIf="!haveTableDataSource()" [style.height.px]="35"></div>
     </div>
   </div>
 </div>
