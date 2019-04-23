@@ -2308,10 +2308,22 @@ mat-tab-group {
   position: relative;
 }
 .msf-dashboard-panel-container-chart .msf-dashboard-panel-sub-container-column .msf-dashboard-panel-config-button {
+  opacity: 0.05;
+  transition: opacity 0.5s ease-out;
   position: absolute;
   display: flex;
-  width: calc(100% - 5px);
-  height: 100%;
+  left: calc(100% - 45px);
+  top: calc(100% - 90px);
+  align-items: flex-end;
+  flex-direction: column-reverse;
+}
+.msf-dashboard-panel-container-chart .msf-dashboard-panel-sub-container-column .msf-dashboard-panel-config-button:hover {
+  opacity: 1;
+  transition: opacity 0.5s ease-in;
+  position: absolute;
+  display: flex;
+  left: calc(100% - 45px);
+  top: calc(100% - 90px);
   align-items: flex-end;
   flex-direction: column-reverse;
 }
@@ -4479,8 +4491,6 @@ th.msf-show-table, td.msf-show-table {
 }
 
 .msf-dashboard-panel-table {
-  width: calc(100% - 50px) !important;
-  z-index: 99997;
   overflow: auto;
 }
 

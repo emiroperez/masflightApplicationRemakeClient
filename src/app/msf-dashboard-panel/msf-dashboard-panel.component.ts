@@ -676,7 +676,8 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       // Add export button
       chart.exporting.menu = new am4core.ExportMenu ();
-      chart.exporting.menu.verticalAlign = "bottom";
+      chart.exporting.menu.verticalAlign = "top";
+      chart.exporting.menu.align = "left";
 
       this.chart = chart;
     });
@@ -704,6 +705,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
     else if (!this.utils.isJSONEmpty (this.values.lastestResponse))
     {
+      if (!this.isResponseValid ())
+        return;
+
       if (this.values.currentChartType.flags & ChartFlags.INFO)
       {
         if (this.values.function != null && this.values.function != -1)
@@ -747,6 +751,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
     else if (!this.utils.isJSONEmpty (this.values.lastestResponse))
     {
+      if (!this.isResponseValid ())
+        return;
+
       if (this.values.currentChartType.flags & ChartFlags.INFO)
       {
         if (this.values.function == 1)
@@ -806,6 +813,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   checkGroupingValue(categoryColumnName, values): boolean
   {
+    if (values == null)
+      return false;
+
     for (let value of values)
     {
       if (value.columnName === categoryColumnName)
@@ -813,6 +823,130 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
 
     return false;
+  }
+
+  checkGroupingCategory(argument)
+  {
+    let params: string = "";
+
+    if (argument.name1 != null && argument.name1.toLowerCase ().includes ("grouping"))
+    {
+      let haveValues: boolean = false;
+
+      if (argument.value1 != null && argument.value1.length)
+        haveValues = true;
+
+      if (this.values.currentChartType.flags & ChartFlags.TABLE)
+      {
+        for (let tableVariable of this.values.tableVariables)
+        {
+          if (tableVariable.checked && tableVariable.grouping && !this.checkGroupingValue (tableVariable.id, argument.value1))
+          {
+            if (!haveValues)
+            {
+              params += "" + tableVariable.id;
+              haveValues = true;
+            }
+            else
+              params += "," + tableVariable.id;
+          }
+        }
+      }
+      else if (this.values.currentChartType.flags & ChartFlags.INFO)
+      {
+        if (this.values.currentChartType.flags & ChartFlags.FORM)
+        {
+          for (let formVariable of this.values.formVariables)
+          {
+            if (formVariable.column.item.grouping && !this.checkGroupingValue (formVariable.column.item.columnName, argument.value1))
+            {
+              if (!haveValues)
+              {
+                params += "" + formVariable.column.item.columnName;
+                haveValues = true;
+              }
+              else
+                params += "," + formVariable.column.item.columnName;
+            }
+          }
+        }
+        else if (!(this.values.currentChartType.flags & ChartFlags.PICTURE))
+        {
+          if (this.values.infoVar1 != null && this.values.infoVar1.grouping)
+          {
+            if (!haveValues)
+            {
+              params += "" + this.values.infoVar1.id;
+              haveValues = true;
+            }
+            else
+              params += "," + this.values.infoVar1.id;
+          }
+
+          if (this.values.infoVar2 != null && this.values.infoVar2.grouping)
+          {
+            if (!haveValues)
+            {
+              params += "" + this.values.infoVar2.id;
+              haveValues = true;
+            }
+            else
+              params += "," + this.values.infoVar2.id;
+          }
+
+          if (this.values.infoVar3 != null && this.values.infoVar3.grouping)
+          {
+            if (!haveValues)
+            {
+              params += "" + this.values.infoVar3.id;
+              haveValues = true;
+            }
+            else
+              params += "," + this.values.infoVar3.id;
+          }
+        }
+      }
+      else
+      {
+        if (this.values.variable.item.grouping && !this.checkGroupingValue (this.values.variable.item.columnName, argument.value1))
+        {
+          if (!haveValues)
+          {
+            params += "" + this.values.variable.item.columnName;
+            haveValues = true;
+          }
+          else
+            params += "," + this.values.variable.item.columnName;
+        }
+
+        if (this.values.currentChartType.flags & ChartFlags.XYCHART)
+        {
+          if (this.values.xaxis.item.grouping && !this.checkGroupingValue (this.values.xaxis.item.columnName, argument.value1))
+          {
+            if (!haveValues)
+            {
+              params += "" + this.values.xaxis.item.columnName;
+              haveValues = true;
+            }
+            else
+              params += "," + this.values.xaxis.item.columnName;
+          }
+        }
+
+        if (this.values.valueColumn.item.grouping && !this.checkGroupingValue (this.values.valueColumn.item.columnName, argument.value1))
+        {
+          if (!haveValues)
+          {
+            params += "" + this.values.valueColumn.item.columnName;
+            haveValues = true;
+          }
+          else
+            params += "," + this.values.valueColumn.item.columnName;
+        }
+      }
+    }
+
+    return params;
   }
 
   getParameters()
@@ -833,23 +967,9 @@ export class MsfDashboardPanelComponent implements OnInit {
             let argument: Arguments = category.arguments[j];
 
             if (params)
-              params += "&" + this.utils.getArguments (argument);
+              params += "&" + this.utils.getArguments (argument) + this.checkGroupingCategory (argument);
             else
-              params = this.utils.getArguments (argument);
-
-            // check if the argument uses grouping to add chart values that requires grouping
-            // to work properly
-            if (!(this.values.currentChartType.flags & ChartFlags.TABLE) && !(this.values.currentChartType.flags & ChartFlags.INFO) && argument.name1 != null && argument.name1.toLowerCase ().includes ("grouping"))
-            {
-              if (this.values.variable.item.grouping && !this.checkGroupingValue (this.values.variable.item.columnName, argument.value1))
-                params += "," + this.values.variable.item.columnName;
-
-              if (this.values.xaxis.item.grouping && !this.checkGroupingValue (this.values.xaxis.item.columnName, argument.value1))
-                params += "," + this.values.xaxis.item.columnName;
-
-              if (this.values.valueColumn.item.grouping && !this.checkGroupingValue (this.values.valueColumn.item.columnName, argument.value1))
-                params += "," + this.values.valueColumn.item.columnName;
-            }
+              params = this.utils.getArguments (argument) + this.checkGroupingCategory (argument);
           }
         }        
       }
@@ -1084,6 +1204,37 @@ export class MsfDashboardPanelComponent implements OnInit {
     clearInterval (this.updateInterval);
 
     this.destroyChart ();
+  }
+
+  isResponseValid(): boolean
+  {
+    if (this.values.currentChartType.flags & ChartFlags.INFO)
+    {
+      if (this.values.currentChartType.flags & ChartFlags.FORM)
+      {
+        if (!this.values.lastestResponse.length)
+          return false;
+      }
+      else if (this.values.currentChartType.flags & ChartFlags.PICTURE)
+      {
+      }
+      else
+      {
+        if (!this.haveDataInfo (this.values.lastestResponse))
+          return false;
+      }
+    }
+    else
+    {
+      if (this.values.currentChartType.flags & ChartFlags.XYCHART && this.utils.isJSONEmpty (this.values.lastestResponse.data))
+        return false;
+
+      if ((!(this.values.currentChartType.flags & ChartFlags.XYCHART) && this.values.lastestResponse.dataProvider == null) ||
+        (this.values.currentChartType.flags & ChartFlags.XYCHART && !this.values.lastestResponse.filter))
+        return false;
+    }
+
+    return true;
   }
 
   noDataFound(): void
@@ -1424,7 +1575,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     for (let columnConfig of data)
     {
       _this.values.chartColumnOptions.push ( { id: columnConfig.columnName, name: columnConfig.columnLabel, item: columnConfig } );
-      _this.values.tableVariables.push ( { id: columnConfig.columnName, name: columnConfig.columnLabel, itemId: columnConfig.id, checked: true } );
+      _this.values.tableVariables.push ( { id: columnConfig.columnName, name: columnConfig.columnLabel, itemId: columnConfig.id, grouping: columnConfig.grouping, checked: true } );
     }
 
     // load the initial filter variables list
@@ -2027,8 +2178,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.values.tableVariables = [];
 
       for (let columnConfig of this.values.chartColumnOptions)
-        this.values.tableVariables.push ( { id: columnConfig.id, name: columnConfig.name, itemId: columnConfig.item.id, checked: true } );
-  
+        this.values.tableVariables.push ( { id: columnConfig.id, name: columnConfig.name, itemId: columnConfig.item.id, grouping: columnConfig.item.grouping, checked: true } );
+
       for (i = 0; i < this.values.lastestResponse.length; i++)
       {
         let tableColumn = this.values.lastestResponse[i];
