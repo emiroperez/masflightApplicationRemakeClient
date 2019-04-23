@@ -16,19 +16,19 @@
                                     <div class="msf-block">
                                             <div class="msf-inline msf-summary-arg-title">{{argument.title}} </div>
                                             <div class="msf-inline msf-summary-arg-label">{{argument.label1}} </div>
-                                            <div class="msf-inline msf-summary-value msf-summary-arg-value"> {{utils.getValueFormatView(argument.type, argument.value1)}}</div>
+                                            <div class="msf-inline msf-summary-value msf-summary-arg-value"> {{utils.getValueFormatView(argument.type, argument.value1,argument.url)}}</div>
                                     </div>                                        
                                 </ng-container> 
                                 <ng-container *ngIf="argument.name2">
                                         <div class="msf-block">
                                                 <div class="msf-inline msf-summary-arg-label">{{argument.label2}} </div>
-                                                <div class="msf-inline msf-summary-value msf-summary-arg-value"> {{utils.getValueFormatView(argument.type, argument.value2)}}</div>
+                                                <div class="msf-inline msf-summary-value msf-summary-arg-value"> {{utils.getValueFormatView(argument.type, argument.value2,argument.url)}}</div>
                                         </div>                                        
                                 </ng-container> 
                                 <ng-container *ngIf="argument.name3">
                                         <div class="msf-block">
                                                 <div class="msf-inline msf-summary-arg-label">{{argument.label3}} </div>
-                                                <div class="msf-inline msf-summary-value msf-summary-arg-value"> {{utils.getValueFormatView(argument.type, argument.value3)}}</div>
+                                                <div class="msf-inline msf-summary-value msf-summary-arg-value"> {{utils.getValueFormatView(argument.type, argument.value3,argument.url)}}</div>
                                         </div>                                        
                                 </ng-container>                                    
                             </div>

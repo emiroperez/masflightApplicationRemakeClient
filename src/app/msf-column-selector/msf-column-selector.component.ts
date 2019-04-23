@@ -14,30 +14,6 @@ export class MsfColumnSelectorComponent implements OnInit {
   search;
   searchText = "Select to filter columns";
 
-  all = {"checked":false};
-
-  data =  [
-    {"id":"A",
-    "name":"Carrier (A)",
-    "value":"Carrier (A)",
-    "checked":false},
-    {"id":"B",
-    "name":"Weather (B)",
-    "value":"Weather (B)",
-    "checked":false},
-    {"id":"C",
-    "name":"Airspace (C)",
-    "value":"Airspace (C)",
-    "checked":false},
-    {"id":"D",
-    "name":"Security (D)",
-    "value":"Security (D)",
-    "checked":false},
-    {"id":"E",
-    "name":"Late Inbound (E)",
-    "value":"Late Inbound (E)",
-    "checked":false}
-];
   constructor(public globals:Globals,
     public dialogRef: MatDialogRef<MsfColumnSelectorComponent>) { }
 
@@ -92,23 +68,4 @@ export class MsfColumnSelectorComponent implements OnInit {
 		return false;
   }
   
-  changeAllSelected(value){
-    for (let index = 0; index < this.data.length; index++) {
-        const element = this.data[index];
-        element.checked = value;
-    }
-    if(value){
-      this.selected = this.data.slice();
-    }else{
-      this.selected = [];
-    }
-  }
-
-  checkBoxAllChange(){
-    if(this.all.checked){
-      this.changeAllSelected(true);
-    }else{
-      this.changeAllSelected(false);
-    }
-  }
 }

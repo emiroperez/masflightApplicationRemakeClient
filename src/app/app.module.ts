@@ -60,8 +60,6 @@ import { MsfLoadingComponent } from './msf-loading/msf-loading.component';
 import { MsfGroupingComponent } from './msf-grouping/msf-grouping.component';
 import { MsfRoundingComponent } from './msf-rounding/msf-rounding.component';
 import { MsfDateComponent } from './msf-date/msf-date.component';
-import { MsfUsageStatisticsComponent } from './msf-usage-statistics/msf-usage-statistics.component';
-import { MsfCancelledComponent } from './msf-cancelled/msf-cancelled.component';
 import { MapBoxComponent } from './map-box/map-box.component';
 import { AdminMenuComponent } from './admin-menu/admin-menu.component';
 import { CreateMempershipsComponent } from './create-memperships/create-memperships.component';
@@ -225,10 +223,8 @@ import { DragScrollModule } from 'cdk-drag-scroll';
     MsfGroupingComponent,
     MsfRoundingComponent,
     MsfDateComponent,
-    MsfUsageStatisticsComponent,
     AdminMenuComponent,
     CreateMempershipsComponent,
-    MsfCancelledComponent,
     MapBoxComponent,
     AdminMenuComponent,
     AdminMenuComponent,

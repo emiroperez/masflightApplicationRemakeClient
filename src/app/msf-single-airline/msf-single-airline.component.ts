@@ -24,6 +24,8 @@ export class MsfSingleAirlineComponent implements OnInit {
    ngOnInit() { 
     this.getRecords(null, this.handlerSuccess);
   }
+
+
   
    getRecords(search, handlerSuccess){
     let url = this.globals.baseUrl + this.argument.url + "?search="+ (search != null?search:'');
