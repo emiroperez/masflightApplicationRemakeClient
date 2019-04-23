@@ -34,7 +34,6 @@ export class MsfDashboardDrillDownComponent {
   public variableFilterCtrl: FormControl = new FormControl ();
   public xaxisFilterCtrl: FormControl = new FormControl ();
   public valueFilterCtrl: FormControl = new FormControl ();
-  public tableFilterCtrl: FormControl = new FormControl ();
 
   private convertValues: any[] = [];
 
@@ -74,8 +73,7 @@ export class MsfDashboardDrillDownComponent {
       xaxisCtrl: new FormControl ({ value: '', disabled: true }),
       valueCtrl: new FormControl ({ value: '', disabled: true }),
       functionCtrl: new FormControl ({ value: '', disabled: true }),
-      panelNameCtrl: new FormControl ({ value: '', disabled: true }),
-      tableCtrl: new FormControl ({ value: '', disabled: true })
+      panelNameCtrl: new FormControl ({ value: '', disabled: true })
     });
 
     // configure child panels in order to be able to configure the drill down settings
@@ -214,8 +212,13 @@ export class MsfDashboardDrillDownComponent {
     let i, option;
 
     _this.currentValue.chartColumnOptions = [];
+    _this.currentValue.tableVariables = [];
+
     for (let columnConfig of data)
+    {
       _this.currentValue.chartColumnOptions.push ( { id: columnConfig.columnName, name: columnConfig.columnLabel, item: columnConfig } );
+      _this.currentValue.tableVariables.push ( { id: columnConfig.columnName, name: columnConfig.columnLabel, itemId: columnConfig.id, checked: true } );
+    }
 
     // load the initial filter variables list
     _this.filteredVariables.next (_this.currentValue.chartColumnOptions.slice ());
@@ -223,7 +226,6 @@ export class MsfDashboardDrillDownComponent {
     _this.searchChange (_this.variableFilterCtrl);
     _this.searchChange (_this.xaxisFilterCtrl);
     _this.searchChange (_this.valueFilterCtrl);
-    _this.searchChange (_this.tableFilterCtrl);
 
     // enable the combo box that allows to select the values for the chart
     _this.chartForm.get ('chartCtrl').enable ();
@@ -261,14 +263,16 @@ export class MsfDashboardDrillDownComponent {
         {
           let tableColumn = _this.currentValue.lastestResponse[i];
   
-          for (let j = 0; j < _this.currentValue.chartColumnOptions.length; j++)
+          if (tableColumn.id == null)
+            continue;
+    
+          for (let j = 0; j < _this.currentValue.tableVariables.length; j++)
           {
-            let curVariable = _this.currentValue.chartColumnOptions[j];
-  
-            if (curVariable.item.id == tableColumn.id)
+            let curVariable = _this.currentValue.tableVariables[j];
+    
+            if (curVariable.itemId == tableColumn.id)
             {
-              _this.lastValue.tableVariables.push (curVariable);
-              _this.currentValue.tableVariables.push (curVariable);
+              curVariable.checked = tableColumn.checked;
               break;
             }
           }
@@ -495,20 +499,12 @@ export class MsfDashboardDrillDownComponent {
       this.currentValue.xaxis = null;
       this.chartForm.get ('xaxisCtrl').reset ();
       this.chartForm.get ('xaxisCtrl').disable ();
-
-      this.currentValue.tableVariables = [];
-      this.chartForm.get ('tableCtrl').reset ();
     }
     else
-    {
-      this.currentValue.tableVariables = [];
       this.chartForm.get ('xaxisCtrl').enable ();
-      this.chartForm.get ('tableCtrl').reset ();
-    }
 
     this.chartForm.get ('variableCtrl').enable ();
     this.chartForm.get ('valueCtrl').enable ();
-    this.chartForm.get ('tableCtrl').enable ();
 
     this.checkIfPanelIsConfigured ();
   }
@@ -541,17 +537,6 @@ export class MsfDashboardDrillDownComponent {
   {
     return !((this.currentValue != null && !(this.currentValue.currentChartType.flags & ChartFlags.TABLE))
       || this.currentValue == null);
-  }
-
-  isTableVariableValid(): boolean
-  {
-    return this.chartForm.get ('tableCtrl').value;
-  }
-
-  addTableVariable(): void
-  {
-    this.currentValue.tableVariables.push (this.chartForm.get ('tableCtrl').value);
-    this.chartForm.get ('tableCtrl').reset ();
   }
 
   deleteColumnFromTable(index): void
