@@ -851,15 +851,15 @@ export class MsfDashboardPanelComponent implements OnInit {
         {
           for (let formVariable of this.values.formVariables)
           {
-            if (formVariable.column.item.grouping && !this.checkGroupingValue (formVariable.column.item.id, argument.value1))
+            if (formVariable.column.item.grouping && !this.checkGroupingValue (formVariable.column.item.columnName, argument.value1))
             {
               if (!haveValues)
               {
-                params += "" + formVariable.column.item.id;
+                params += "" + formVariable.column.item.columnName;
                 haveValues = true;
               }
               else
-                params += "," + formVariable.column.item.id;
+                params += "," + formVariable.column.item.columnName;
             }
           }
         }
