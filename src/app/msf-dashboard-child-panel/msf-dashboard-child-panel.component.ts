@@ -686,7 +686,12 @@ export class MsfDashboardChildPanelComponent {
             else
             {
               if (params)
-                params += "&" + this.utils.getArguments (argument) + this.checkGroupingCategory (argument);
+              {
+                if (argument.type != "singleCheckbox" && argument.type != "serviceClasses" && argument.type != "fareLower" && argument.type != "airportsRoutes" && argument.name1 != "intermediateCitiesList")
+                  params += "&" + this.utils.getArguments (argument) + this.checkGroupingCategory (argument);
+                else if (argument.value1 != false && argument.value1 != "" && argument.value1 != undefined && argument.value1 != null)
+                  params += "&" + this.utils.getArguments (argument) + this.checkGroupingCategory (argument);
+              }
               else
                 params = this.utils.getArguments (argument) + this.checkGroupingCategory (argument);
             }
