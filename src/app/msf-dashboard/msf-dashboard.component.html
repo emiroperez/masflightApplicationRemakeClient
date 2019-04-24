@@ -14,14 +14,14 @@
               <div [ngClass]="dashboardPanel.isLoading? 'tab-show' : 'tab-hide'" id="msf-dashboard-panel-loading" class="msf-dashboard-panel-loading">
                 <div class="msf-dashboard-panel-button">
                   <mat-icon class="msf-dashboard-button-close-icon" aria-label="close" (click)="removePanel(column, row)">close</mat-icon>
-                  <mat-icon class="msf-dashboard-button-move-icon" *ngIf="dashboardColumn.length != 1" aria-label="move" cdkDragHandle (click)="disableContextMenu()">drag_handle</mat-icon>
+                  <div class="msf-dashboard-button-move-icon" *ngIf="dashboardColumn.length != 1" cdkDragHandle (click)="disableContextMenu()"></div>
                 </div>
               </div>
               <div *ngIf="row && !globals.readOnlyDashboard" (mousedown)='onLineClick($event, column, row - 1, row)' (mouseup)='onLineRelease()' id='msf-dashboard-panel-left-resize' class='msf-dashboard-panel-line-resize'></div>
               <div *ngIf="row != dashboardColumn.length - 1 && !globals.readOnlyDashboard" (mousedown)='onLineClick($event, column, row, row + 1)' id='msf-dashboard-panel-right-resize' class='msf-dashboard-panel-line-resize'></div>
               <div class="msf-dashboard-panel-button" *ngIf="!globals.readOnlyDashboard">
                 <mat-icon class="msf-dashboard-button-close-icon" aria-label="close" (click)="removePanel(column, row)">close</mat-icon>
-                <mat-icon class="msf-dashboard-button-move-icon" *ngIf="dashboardColumn.length != 1" aria-label="move" cdkDragHandle (click)="disableContextMenu()">drag_handle</mat-icon>
+                <div class="msf-dashboard-button-move-icon" *ngIf="dashboardColumn.length != 1" cdkDragHandle (click)="disableContextMenu()"></div>
               </div>
               <app-msf-dashboard-panel [values]="dashboardPanel" [reAppendChart]="dashboardColumnsReAppendCharts[column]" [panelHeight]="getColumnHeight(column)"></app-msf-dashboard-panel>
             </div>
@@ -56,7 +56,7 @@
               </div>
               <div class="msf-dashboard-columns-move-button" *ngIf="dashboardColumns.length != 1">
                 <div class="msf-dashboard-column-properties-button">
-                  <mat-icon class="msf-dashboard-button-move-icon" aria-label="move" cdkDragHandle (click)="disableContextMenu()">drag_handle</mat-icon>
+                  <div class="msf-dashboard-button-move-icon" cdkDragHandle (click)="disableContextMenu()"></div>
                 </div>
               </div>
               <div (click)="toggleColumnProperties(column)" class="msf-dashboard-button" style="width: 0">

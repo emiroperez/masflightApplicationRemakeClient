@@ -1775,10 +1775,14 @@ mat-tab-group
         padding-left: 10px
         .msf-dashboard-button-move-icon
             @include msf-dashboard-icon(2px)
-            font-size: 24px
+            background-image: url(assets/images/vert-move.png)
+            background-repeat: no-repeat
+            width: 20px
+            height: 30px
+            background-size: 95%
         .msf-dashboard-button-move-icon:hover
             @include msf-dashboard-icon(2px, #01abec, move)
-            font-size: 24px
+            background-image: url(assets/images/vert-move-hover.png)
 
 @mixin msf-dashboard-line-resize
     position: absolute
@@ -1882,9 +1886,15 @@ mat-tab-group
         @include msf-dashboard-icon(2px, #01abec, pointer)
     .msf-dashboard-button-move-icon
         margin-right: -8px
+        background-image: url(assets/images/horiz-move.png)
+        background-repeat: no-repeat
+        width: 45px
+        height: 20px
+        background-size: 85%
         @include msf-dashboard-icon(2px)
     .msf-dashboard-button-move-icon:hover
         margin-right: -8px
+        background-image: url(assets/images/horiz-move-hover.png)
         @include msf-dashboard-icon(2px, #01abec, move)
 
 .msf-dashboard-form-field
@@ -2479,11 +2489,19 @@ mat-tab-group
     margin-bottom: 8px
     .mat-icon-button
         padding-left: 6px
+        .msf-dashboard-chart-icon:hover
+            color: #01abec
     .mat-icon-drag-button
         padding-left: 6px
-    .mat-icon-drag-button:hover
-        padding-left: 6px
-        cursor: move
+        .msf-dashboard-chart-move-icon
+            background-image: url(assets/images/vert-move.png)
+            background-repeat: no-repeat
+            width: 20px
+            height: 30px
+            background-size: 95%
+        .msf-dashboard-chart-move-icon:hover
+            background-image: url(assets/images/vert-move-hover.png)
+            cursor: move
 
 #msf-dashboard-form-display
     text-align: left
