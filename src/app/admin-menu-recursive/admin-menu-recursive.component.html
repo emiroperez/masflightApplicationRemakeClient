@@ -1,8 +1,10 @@
-<div clas="menu-recursive" *ngIf="option && !option.toDelete">
+<div  *ngIf="option && !option.toDelete" 
+>
     <!-- {{option.label}} -->
 
     <div [ngClass]="{'is-active': option.isActive,'is-inactive': !option.isActive }" style="width: 100%" (click)="selectIdDom(index)">
-        <div class="menu-recursive-input" #root id="'root' + index" style="width: 100%" (click)="selectOption(option)">
+        <div  class="menu-recursive-input" [ngClass]="{'msf-show' : option.show,'msf-show' : option.show==null,'msf-hide': option.show==false}"
+            #root id="'root' + index" style="width: 100%" (click)="selectOption(option)">
             <input id="root{{index}}" type="text" name="optionname" autocomplete="off" matInput class="input-register input-menu-option" [formControl]="optionValidator" [(ngModel)]="option.label">
             <button mat-icon-button (click)="toggle(option) " *ngIf="option.children && option.children.length> 0" style="vertical-align: super; float:right">
             <mat-icon *ngIf="!option.isOpened" style="color: white" aria-label="Toggle">keyboard_arrow_down</mat-icon>
@@ -12,8 +14,8 @@
     </div>
 
 
-    <mat-divider></mat-divider>
-    <div [@animationOption2]="option.isOpened ? 'open': 'close'" *ngIf="option.children && option.children.length > 0 && option.isOpened" style="padding-left: 4%">
+    <mat-divider [ngClass]="{'msf-show' : option.show,'msf-show' : option.show==null,'msf-hide': option.show==false}"></mat-divider>
+    <div [@animationOption2]="option.isOpened ? 'open': 'close'" [ngClass]="option.children.length > 0 && option.isOpened? 'msf-show':'msf-hide'" style="padding-left: 4%">
         <div cdkDropList class="draggable-list" (cdkDropListDropped)="drop($event)">
             <div cdkDrag class="draggable-box" *ngFor="let optionChild of option.children; let i = index">
                 <app-admin-menu-recursive [menu]="optionChild" [index]="index + '-' + i" (optionSelected)="selectOption($event)" (idSelected)="selectIdDom($event)"></app-admin-menu-recursive>

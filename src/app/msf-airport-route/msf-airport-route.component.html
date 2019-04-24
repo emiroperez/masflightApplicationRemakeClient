@@ -11,7 +11,6 @@
         [closeOnSelect]="true"
         [hideSelected]="false"
         bindLabel="{{argument.visibleAttribute}}"
-        bindValue="{{argument.selectedAttribute}}"
         (search)="onSearch($event)" 
         [(ngModel)]="argument.value1"
         (change) ="onAirportSelect(1)" >
@@ -28,7 +27,6 @@
         [closeOnSelect]="true"
         [hideSelected]="false"
         bindLabel="{{argument.visibleAttribute}}"
-        bindValue="{{argument.selectedAttribute}}"
         (search)="onSearch($event)" 
         [(ngModel)]="argument.value2"
         (change) ="onAirportSelect(2)">

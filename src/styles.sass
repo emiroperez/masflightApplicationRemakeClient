@@ -196,10 +196,10 @@ body
         margin-left: 10px
 
 .msf-show
-    display: block
+    display: block!important
 
 .msf-hide
-    display: none
+    display: none!important
 
 .msf-show-panel
     display: flex
@@ -3833,14 +3833,36 @@ th.msf-show-table, td.msf-show-table
 
 .msf-admin-search
     background-color: #1e1e1e
-    width:95%
+    width: 74%
     color: white
     height: 24px
     display: inline-block
     margin-bottom: 20px
+
+.msf-admin-search-option
+    background-color: #1e1e1e
+    width:95%
+    color: white
+    display: inline-block
 
 .msf-admin-search mat-icon
     display: inline-block
 
 .msf-argument-preview-container
     padding: 0 40px
+
+.msf-admin-show-selected 
+    display: inline-block
+    width: 18%
+    margin-left: 20px
+    text-align: right
+
+.msf-admin-show-selected span.mat-checkbox-label 
+    color: white
+    
+.background-principal-empty 
+    background-color: transparent
+    border-radius: 0px !important
+    border: 1px solid
+    width: 25px !important
+    height: 27px !important

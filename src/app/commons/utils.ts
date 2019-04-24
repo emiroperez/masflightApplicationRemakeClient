@@ -117,14 +117,14 @@ export class Utils{
         let args = '';
 
         if (argument.name1)
-            args = argument.name1 + "=" + this.getValueFormat (argument.type, argument.value1,argument.url);
+            args = argument.name1 + "=" + this.getValueFormat (argument.type, argument.value1,argument);
 
         if (argument.name2)
         {
             if (args !== '')
                 args += "&";
 
-            args += argument.name2 + "=" + this.getValueFormat (argument.type, argument.value2,argument.url);          
+            args += argument.name2 + "=" + this.getValueFormat (argument.type, argument.value2,argument);          
         }
 
         if (argument.name3)
@@ -132,7 +132,7 @@ export class Utils{
             if (args !== '')
                 args += "&";
 
-            args += argument.name3 + "=" + this.getValueFormat (argument.type, argument.value3,argument.url);
+            args += argument.name3 + "=" + this.getValueFormat (argument.type, argument.value3,argument);
         }
 
         return args;
@@ -241,24 +241,24 @@ export class Utils{
         return args;
     }
 
-    getValueFormat(type: string, value:any,url:string){
+    getValueFormat(type: string, value:any,argument:any){
         if( typeof value === 'undefined'){
             return '';
         }
-        if(url!=null && url!='' && type != ComponentType.sortingCheckboxes){
+        if(argument.url!=null && argument.url!='' && type != ComponentType.sortingCheckboxes){
             var valueAux="";
             var i = 0;
             if(Array.isArray(value)){
                 for(var val of value){
                     if(i == 0){
-                        valueAux = val;
+                        valueAux = val[argument.selectedAttribute];
                     }else{
-                        valueAux += ","+ val;
+                        valueAux += ","+ val[argument.selectedAttribute];
                     }                
                     i++;
                 }
             }else{
-                return value;
+                return value[argument.selectedAttribute];
             }
 
             return valueAux;

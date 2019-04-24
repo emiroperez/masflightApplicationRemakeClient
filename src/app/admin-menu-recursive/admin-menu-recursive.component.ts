@@ -34,6 +34,9 @@ export class AdminMenuRecursiveComponent implements OnInit {
   @Input("menu")
   option: any;
 
+  @Input()
+  searchText: any;
+
   @Input("index")
   index: any;
 
