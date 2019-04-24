@@ -413,22 +413,27 @@ export class Utils{
     };
 
 
-    getValueFormatView(type: string, value:any,url:string){
+    getValueFormatView(type: string, value:any,argument:any){
         if(value!=null){
             if( typeof value === 'undefined'){
                 return '';
             }
-            if(url!=null && url!='' && type != ComponentType.sortingCheckboxes){
+            if(argument.url!=null && argument.url!='' && type != ComponentType.sortingCheckboxes){
                 var valueAux="";
                 var i = 0;
-                for(var val of value){
-                    if(i == 0){
-                        valueAux = val;
-                    }else{
-                        valueAux += ","+ val;
-                    }                
-                    i++;
+                if(Array.isArray(value)){
+                    for(var val of value){
+                        if(i == 0){
+                            valueAux = val[argument.selectedAttribute];
+                        }else{
+                            valueAux += ","+ val[argument.selectedAttribute];
+                        }                
+                        i++;
+                    }
+                }else{
+                    return value[argument.selectedAttribute];
                 }
+    
                 return valueAux;
             }
             if(type == ComponentType.dateRange || 
