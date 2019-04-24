@@ -36,7 +36,7 @@
     <app-msf-region *ngIf="isRegion(currentArgument)" [argument]="currentArgument"></app-msf-region>
     <app-msf-date-period-year *ngIf="isDatePeriodYear(currentArgument)" [argument]="currentArgument"></app-msf-date-period-year>
     <app-msf-date-period-year-month *ngIf="isDatePeriodYearMonth(currentArgument)" [argument]="currentArgument"></app-msf-date-period-year-month>
-    <app-msf-sorting-checkboxes *ngIf="isSortingCheckboxes(currentArgument)" [argument]="currentArgument" [currentOptionId]="currentOptionId"></app-msf-sorting-checkboxes>
+    <app-msf-sorting-checkboxes *ngIf="isSortingCheckboxes(currentArgument)" [argument]="currentArgument" [currentOptionId]="currentGlobalOptionId"></app-msf-sorting-checkboxes>
     <app-msf-grouping-athena *ngIf="isGroupingAthena(currentArgument)" [argument]="currentArgument"></app-msf-grouping-athena>
 
     <app-msf-flight-distance *ngIf="isFlightDistance(currentArgument)" [argument]="currentArgument"></app-msf-flight-distance>

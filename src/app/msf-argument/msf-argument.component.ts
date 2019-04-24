@@ -13,6 +13,9 @@ export class MsfArgumentComponent implements OnInit {
 
   @Input()
   currentArgument: any;
+
+  @Input()
+  currentGlobalOptionId: number;
   
   constructor(public globals: Globals) { }
 
