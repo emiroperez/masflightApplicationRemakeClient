@@ -51,9 +51,17 @@
                         <input matInput placeholder="Service Arg. 3" [(ngModel)]="item.name3">
                     </mat-form-field>
                 </div>
-                <div style="width: 100%">
-                    <mat-form-field style="width: 100%">
+                <div class="arguments-child" style="margin-right: 20%">
+                    <mat-form-field >
                         <input matInput placeholder="Url" [(ngModel)]="item.url">
+                    </mat-form-field>
+                </div>
+                <div class="arguments-child">
+                    <mat-form-field style="width: 100%">
+                        <mat-select [(value)]="item.required" placeholder="Required" [(ngModel)]="item.required">
+                            <mat-option [value]=1>Yes</mat-option>
+                            <mat-option [value]=0>No</mat-option>
+                        </mat-select>
                     </mat-form-field>
                 </div>
                 <div class="arguments-child" *ngIf="item.url!='' && item.url!=null" style="margin-right: 20%">

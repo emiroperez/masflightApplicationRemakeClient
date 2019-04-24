@@ -333,7 +333,7 @@ export class EditCategoryArgumentDialog {
     });
 }
 
-  selectArgumentCategory(category) {
+selectArgumentCategory(category) {
     if (this.itemSelected != category) {
       category.isSelected = !category.isSelected;
       this.itemSelected.isSelected = !this.itemSelected.isSelected;
