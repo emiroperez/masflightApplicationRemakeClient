@@ -2070,7 +2070,11 @@ mat-tab-group {
   font-size: 16px;
   padding-right: 2px;
   padding-top: 5px;
-  font-size: 24px;
+  background-image: url(assets/images/vert-move.png);
+  background-repeat: no-repeat;
+  width: 20px;
+  height: 30px;
+  background-size: 95%;
 }
 .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-columns-move-button .msf-dashboard-button-move-icon:hover {
   color: #01abec;
@@ -2078,7 +2082,7 @@ mat-tab-group {
   font-size: 16px;
   padding-right: 2px;
   padding-top: 5px;
-  font-size: 24px;
+  background-image: url(assets/images/vert-move-hover.png);
 }
 .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open {
   position: relative;
@@ -2122,7 +2126,11 @@ mat-tab-group {
   font-size: 16px;
   padding-right: 2px;
   padding-top: 5px;
-  font-size: 24px;
+  background-image: url(assets/images/vert-move.png);
+  background-repeat: no-repeat;
+  width: 20px;
+  height: 30px;
+  background-size: 95%;
 }
 .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-columns-move-button .msf-dashboard-button-move-icon:hover {
   color: #01abec;
@@ -2130,7 +2138,7 @@ mat-tab-group {
   font-size: 16px;
   padding-right: 2px;
   padding-top: 5px;
-  font-size: 24px;
+  background-image: url(assets/images/vert-move-hover.png);
 }
 .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-invisible {
   display: none;
@@ -2195,6 +2203,11 @@ mat-tab-group {
 }
 .msf-dashboard-panel-button .msf-dashboard-button-move-icon {
   margin-right: -8px;
+  background-image: url(assets/images/horiz-move.png);
+  background-repeat: no-repeat;
+  width: 45px;
+  height: 20px;
+  background-size: 85%;
   color: inherit;
   cursor: default;
   font-size: 16px;
@@ -2203,6 +2216,7 @@ mat-tab-group {
 }
 .msf-dashboard-panel-button .msf-dashboard-button-move-icon:hover {
   margin-right: -8px;
+  background-image: url(assets/images/horiz-move-hover.png);
   color: #01abec;
   cursor: move;
   font-size: 16px;
@@ -3004,11 +3018,21 @@ mat-tab-group {
 #msf-dashboard-form-button .mat-icon-button {
   padding-left: 6px;
 }
+#msf-dashboard-form-button .mat-icon-button .msf-dashboard-chart-icon:hover {
+  color: #01abec;
+}
 #msf-dashboard-form-button .mat-icon-drag-button {
   padding-left: 6px;
 }
-#msf-dashboard-form-button .mat-icon-drag-button:hover {
-  padding-left: 6px;
+#msf-dashboard-form-button .mat-icon-drag-button .msf-dashboard-chart-move-icon {
+  background-image: url(assets/images/vert-move.png);
+  background-repeat: no-repeat;
+  width: 20px;
+  height: 30px;
+  background-size: 95%;
+}
+#msf-dashboard-form-button .mat-icon-drag-button .msf-dashboard-chart-move-icon:hover {
+  background-image: url(assets/images/vert-move-hover.png);
   cursor: move;
 }
 
