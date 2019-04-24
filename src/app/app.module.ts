@@ -179,6 +179,8 @@ import { MsfAddSharedDashboardComponent } from './msf-add-shared-dashboard/msf-a
 import { DragScrollModule } from 'cdk-drag-scroll';
 import { MsfArgumentComponent } from './msf-argument/msf-argument.component';
 import { DialogArgumentPreviewComponent } from './dialog-argument-preview/dialog-argument-preview.component';
+import { MsfDashboardPanelOptionPipe } from './msf-dashboard-panel/msf-dashboard-panel-option-pipe';
+import { MsfDashboardPanelTypePipe } from './msf-dashboard-panel/msf-dashboard-panel-type-pipe';
 
 @NgModule({
   declarations: [
@@ -336,7 +338,9 @@ import { DialogArgumentPreviewComponent } from './dialog-argument-preview/dialog
     FilterPipe,
     MsfAddSharedDashboardComponent,
     MsfArgumentComponent,
-    DialogArgumentPreviewComponent
+    DialogArgumentPreviewComponent,
+    MsfDashboardPanelOptionPipe,
+    MsfDashboardPanelTypePipe
   ],
   imports: [
     BrowserModule,

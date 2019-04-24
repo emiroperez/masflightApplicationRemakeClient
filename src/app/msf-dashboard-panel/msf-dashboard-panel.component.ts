@@ -64,6 +64,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     { name: 'Information', flags: ChartFlags.INFO },
     { name: 'Simple Form', flags: ChartFlags.INFO | ChartFlags.FORM },
     { name: 'Table', flags: ChartFlags.TABLE }/*,
+    { name: 'Map', flags: ChartFlags.MAP },
     { name: 'Simple Picture', flags: ChartFlags.INFO | ChartFlags.PICTURE },*/
   ];
 
@@ -742,10 +743,10 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       if (this.values.function == 1)
       {
-        let prepateTable = setInterval (() =>
+        let prepareTable = setInterval (() =>
         {
           this.loadData ();
-          clearInterval (prepateTable);
+          clearInterval (prepareTable);
         }, 100);
       }
     }
@@ -906,7 +907,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           }
         }
       }
-      else
+      else if (!(this.values.currentChartType.flags & ChartFlags.MAP))
       {
         if (this.values.variable.item.grouping && !this.checkGroupingValue (this.values.variable.item.columnName, argument.value1))
         {
@@ -967,7 +968,12 @@ export class MsfDashboardPanelComponent implements OnInit {
             let argument: Arguments = category.arguments[j];
 
             if (params)
-              params += "&" + this.utils.getArguments (argument) + this.checkGroupingCategory (argument);
+            {
+              if (argument.type != "singleCheckbox" && argument.type != "serviceClasses" && argument.type != "fareLower" && argument.type != "airportsRoutes" && argument.name1 != "intermediateCitiesList")
+                params += "&" + this.utils.getArguments (argument) + this.checkGroupingCategory (argument);
+              else if (argument.value1 != false && argument.value1 != "" && argument.value1 != undefined && argument.value1 != null)
+                params += "&" + this.utils.getArguments (argument) + this.checkGroupingCategory (argument);
+            }
             else
               params = this.utils.getArguments (argument) + this.checkGroupingCategory (argument);
           }
@@ -989,7 +995,8 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     if (this.values.currentChartType.flags & ChartFlags.FORM
       || this.values.currentChartType.flags & ChartFlags.PICTURE
-      || this.values.currentChartType.flags & ChartFlags.TABLE)
+      || this.values.currentChartType.flags & ChartFlags.TABLE
+      || this.values.currentChartType.flags & ChartFlags.MAP)
     {
       return {
         id: this.values.id,
@@ -1184,7 +1191,9 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     this.globals.startTimestamp = new Date ();
 
-    if (this.values.currentChartType.flags & ChartFlags.TABLE)
+    if (this.values.currentChartType.flags & ChartFlags.MAP)
+      this.loadFormData (this.handlerMapSuccess, this.handlerMapError);
+    else if (this.values.currentChartType.flags & ChartFlags.TABLE)
       this.loadTableData (false, this.msfTableRef.handlerSuccess, this.msfTableRef.handlerError);
     else if (this.values.currentChartType.flags & ChartFlags.PICTURE)
       this.loadPicData (this.handlerPicSuccess, this.handlerPicError);
@@ -1247,7 +1256,19 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.tableGenerated = false;
     this.values.isLoading = false;
 
-    if (this.values.currentChartType.flags & ChartFlags.PICTURE)
+    if (this.values.currentChartType.flags & ChartFlags.MAP)
+    {
+      this.dialog.open (MessageComponent, {
+        data: { title: "Error", message: "No data available for the map." }
+      });
+    }
+    else if (this.values.currentChartType.flags & ChartFlags.TABLE)
+    {
+      this.dialog.open (MessageComponent, {
+        data: { title: "Error", message: "No data available for the table." }
+      });
+    }
+    else if (this.values.currentChartType.flags & ChartFlags.PICTURE)
     {
       this.dialog.open (MessageComponent, {
         data: { title: "Error", message: "No picture available." }
@@ -1289,6 +1310,62 @@ export class MsfDashboardPanelComponent implements OnInit {
       return true;
   }
 
+  getMainKey(keys, response)
+  {
+    for (let i of keys)
+    {
+      let obj = response[i];
+
+      if (obj instanceof Object)
+        return obj;
+    }
+
+    return null;
+  }
+
+  handlerMapSuccess(_this, data): void
+  {
+    let response, result;
+
+    if (_this.utils.isJSONEmpty (data) || _this.utils.isJSONEmpty (data.Response))
+    {
+      _this.noDataFound ();
+      return;
+    }
+
+    // only use the first result and filter out the values
+    response = data.Response;
+    for (let key in response)
+    {
+      let array = response[key];
+      if (array != null)
+      {
+        if (Array.isArray (array))
+        {
+          result = array[0];
+          break;
+        }
+      }
+    }
+
+    // destroy current chart if it's already generated to avoid a blank chart
+    _this.destroyChart ();
+
+    console.log (result);
+    // _this.makeChart (result);
+    _this.values.lastestResponse = result;
+    _this.values.displayChart = true;
+    _this.values.chartGenerated = true;
+    _this.values.infoGenerated = false;
+    _this.values.formGenerated = false;
+    _this.values.picGenerated = false;
+    _this.values.tableGenerated = false;
+    _this.values.isLoading = false;
+
+    _this.stopUpdateInterval ();
+    _this.startUpdateInterval ();
+  }
+
   handlerPicSuccess(_this, data): void
   {
     if (data == null)
@@ -1320,12 +1397,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     formResults = [];
 
     if (_this.utils.isJSONEmpty (data) || _this.utils.isJSONEmpty (data.Response))
-    {
-      _this.noDataFound ();
-      return;
-    }
-
-    if (!data.Response.total)
     {
       _this.noDataFound ();
       return;
@@ -1553,6 +1624,22 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     _this.dialog.open (MessageComponent, {
       data: { title: "Error", message: "Failed to generate table panel." }
+    });
+  }
+
+  handlerMapError(_this, result): void
+  {
+    console.log (result);
+    _this.values.lastestResponse = null;
+    _this.values.chartGenerated = false;
+    _this.values.infoGenerated = false;
+    _this.values.formGenerated = false;
+    _this.values.picGenerated = false;
+    _this.values.tableGenerated = false;
+    _this.values.isLoading = false;
+
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Error", message: "Failed to generate map." }
     });
   }
 
@@ -1937,8 +2024,16 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.values.infoNumVariables = 0;
       this.chartForm.get ('infoNumVarCtrl').setValue (0);
 
-      if (this.values.currentChartType.flags & ChartFlags.TABLE)
+      if (this.values.currentChartType.flags & ChartFlags.TABLE
+        || this.values.currentChartType.flags & ChartFlags.MAP)
       {
+        if (this.values.currentChartType.flags & ChartFlags.MAP
+          && this.values.currentOption.metaData != 2)
+        {
+          this.values.currentOption = null;
+          this.chartForm.get ('dataFormCtrl').reset ();
+        }
+
         this.values.xaxis = null;
         this.chartForm.get ('xaxisCtrl').reset ();
     
@@ -2001,9 +2096,10 @@ export class MsfDashboardPanelComponent implements OnInit {
   checkChartFilters(): void
   {
     if (this.values.currentChartType.flags & ChartFlags.PICTURE
-      || this.values.currentChartType.flags & ChartFlags.TABLE)
+      || this.values.currentChartType.flags & ChartFlags.TABLE
+      || this.values.currentChartType.flags & ChartFlags.MAP)
     {
-      if (this.values.options != null)
+      if (this.values.currentOption != null)
       {
         this.generateBtnEnabled = true;
         return;
@@ -2159,8 +2255,9 @@ export class MsfDashboardPanelComponent implements OnInit {
       }
     }
 
-    // picture panels doesn't need any data
-    if (this.values.currentChartType.flags & ChartFlags.PICTURE)
+    // picture and map panels doesn't need any data
+    if (this.values.currentChartType.flags & ChartFlags.PICTURE
+      && this.values.currentChartType.flags & ChartFlags.MAP)
     {
       if (this.values.currentOptionCategories)
         this.variableCtrlBtnEnabled = true;
@@ -2484,7 +2581,8 @@ export class MsfDashboardPanelComponent implements OnInit {
           panel.lastestResponse = JSON.stringify (formVariables);
         }
         else if (_this.values.currentChartType.flags & ChartFlags.INFO
-          && !(_this.values.currentChartType.flags & ChartFlags.PICTURE))
+          && !(_this.values.currentChartType.flags & ChartFlags.PICTURE)
+          && !(_this.values.currentChartType.flags & ChartFlags.MAP))
         {
           let variables;
 
@@ -2566,6 +2664,11 @@ export class MsfDashboardPanelComponent implements OnInit {
   isTablePanel(): boolean
   {
     return (this.values.currentChartType.flags & ChartFlags.TABLE) ? true : false;
+  }
+
+  isMapPanel(): boolean
+  {
+    return (this.values.currentChartType.flags & ChartFlags.MAP) ? true : false;
   }
 
   checkNumVariables(): void
