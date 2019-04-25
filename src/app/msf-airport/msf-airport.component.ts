@@ -61,7 +61,7 @@ getRecords(search, handlerSuccess){
   if(this.argument.url.substring(0,1)=="/"){
     url = this.globals.baseUrl + this.argument.url + "?search="+ (search != null?search:'');
   }else{
-    url = this.argument.url;
+   url = this.argument.url+ (search != null?search:'');
   }
     this.http.get(this,url,handlerSuccess,this.handlerError, null);  
 }
