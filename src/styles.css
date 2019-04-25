@@ -2472,6 +2472,10 @@ mat-tab-group {
   width: 100%;
 }
 
+#msf-dashboard-control-variables-font-size {
+  font-size: inherit !important;
+}
+
 .msf-dashboard-control-variables-button {
   margin-top: 10px;
   text-align: center;
