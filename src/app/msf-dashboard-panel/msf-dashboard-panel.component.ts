@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild, Input, NgZone, SimpleChanges } from '@ang
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
+import * as am4maps from "@amcharts/amcharts4/maps";
+import am4geodata_worldLow from "@amcharts/amcharts4-geodata/worldLow";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import am4themes_dark from "@amcharts/amcharts4/themes/dark";
 import { CategoryArguments } from '../model/CategoryArguments';
@@ -29,10 +31,16 @@ import { ChartFlags } from '../msf-dashboard-panel/msf-dashboard-chartflags';
 am4core.useTheme(am4themes_animated);
 am4core.useTheme(am4themes_dark);
 
-// Grid, scrollbar and legend label colors
+// AmChart colors
+const black = am4core.color ("#000000");
 const white = am4core.color ("#ffffff");
+const cyan = am4core.color ("#00a3e1");
 const darkBlue = am4core.color ("#30303d");
 const blueJeans = am4core.color ("#67b7dc");
+
+// SVG used for maps
+const planeSVG = "m2,106h28l24,30h72l-44,-133h35l80,132h98c21,0 21,34 0,34l-98,0 -80,134h-35l43,-133h-71l-24,30h-28l15,-47";
+const targetSVG = "M9,0C4.029,0,0,4.029,0,9s4.029,9,9,9s9-4.029,9-9S13.971,0,9,0z M9,15.93 c-3.83,0-6.93-3.1-6.93-6.93S5.17,2.07,9,2.07s6.93,3.1,6.93,6.93S12.83,15.93,9,15.93 M12.5,9c0,1.933-1.567,3.5-3.5,3.5S5.5,10.933,5.5,9S7.067,5.5,9,5.5 S12.5,7.067,12.5,9z";
 
 @Component({
   selector: 'app-msf-dashboard-panel',
@@ -63,8 +71,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     { name: 'Donut', flags: ChartFlags.DONUTCHART, createSeries: this.createPieSeries },
     { name: 'Information', flags: ChartFlags.INFO },
     { name: 'Simple Form', flags: ChartFlags.INFO | ChartFlags.FORM },
-    { name: 'Table', flags: ChartFlags.TABLE }/*,
-    { name: 'Map', flags: ChartFlags.MAP },
+    { name: 'Table', flags: ChartFlags.TABLE },
+    { name: 'Map', flags: ChartFlags.MAP }/*,
     { name: 'Simple Picture', flags: ChartFlags.INFO | ChartFlags.PICTURE },*/
   ];
 
@@ -430,11 +438,166 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   makeChart(chartInfo): void
   {
+    var planeContainer, plane;
+
+    function goForward() {
+
+
+      if (plane.rotation != 0)
+      {
+      plane.animate({ to: 0, property: "rotation" }, 1000).events.on("animationended", goForward);
+      return;
+      }
+
+      var animation = planeContainer.animate({ property: "position", from: 0, to: 1 }, 6000).delay(300);
+//      plane.rotation = 0;
+      animation.events.on("animationended", goBack);
+
+  }
+  
+  function goBack() {
+    if (plane.rotation != 180)
+    {
+    plane.animate({ to: 180, property: "rotation" }, 1000).events.on("animationended", goBack);
+    return;
+    }
+
+      var animation = planeContainer.animate({ property: "position", from: 1, to: 0 }, 6000).delay(300);
+      animation.events.on("animationended", goForward);
+      // plane.rotation = 180;
+  }
+
     this.zone.runOutsideAngular (() => {
       let chart;
 
       // Check chart type before generating it
-      if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART
+      if (this.values.currentChartType.flags & ChartFlags.MAP)
+      {
+        chart = am4core.create ("msf-dashboard-chart-display-" + this.values.id, am4maps.MapChart);
+
+        // Create map instance
+/*        chart.geodata = am4geodata_worldLow;
+        chart.projection = new am4maps.projections.Miller ();*/
+var mapChart = chart;
+mapChart.geodata = am4geodata_worldLow;
+mapChart.projection = new am4maps.projections.Miller();
+mapChart.homeZoomLevel = 1;
+mapChart.homeGeoPoint = {
+  latitude: 48.8567,
+  longitude: 2.3510
+}
+
+var continentSeries = mapChart.series.push(new am4maps.MapPolygonSeries());
+continentSeries.useGeodata = true;
+continentSeries.exclude = ["antarctica"];
+continentSeries.mapPolygons.template.fill = am4core.color("#3b3b3b");
+continentSeries.mapPolygons.template.stroke = black;
+continentSeries.mapPolygons.template.strokeOpacity = 0.25;
+continentSeries.mapPolygons.template.strokeWidth = 0.5;
+
+// create first image container
+var imageSeries = mapChart.series.push(new am4maps.MapImageSeries());
+
+// add circle to it
+let imageSeriesTemplate = imageSeries.mapImages.template;
+var circle2 = imageSeriesTemplate.createChild (am4core.Sprite);
+circle2.path = targetSVG;
+circle2.scale = 0.5;
+circle2.fill = white;
+
+// set propertyfields
+imageSeriesTemplate.propertyFields.latitude = "latitude";
+imageSeriesTemplate.propertyFields.longitude = "longitude";
+
+imageSeriesTemplate.horizontalCenter = "middle";
+imageSeriesTemplate.verticalCenter = "middle";
+imageSeriesTemplate.align = "center";
+imageSeriesTemplate.valign = "middle";
+imageSeriesTemplate.width = 8;
+imageSeriesTemplate.height = 8;
+imageSeriesTemplate.scale = 0.5;
+imageSeriesTemplate.tooltipText = "{title}";
+imageSeriesTemplate.fill = black;
+imageSeriesTemplate.background.fillOpacity = 0;
+imageSeriesTemplate.background.fill = white;
+imageSeriesTemplate.setStateOnChildren = true;
+imageSeriesTemplate.states.create("hover");
+
+var l = imageSeriesTemplate.createChild(am4core.Label);
+l.text = "{title}";
+l.scale = 0.5;
+l.horizontalCenter = "right";
+l.verticalCenter = "middle";
+l.dx += 12;
+l.dy += 6;
+
+var city1 = imageSeries.mapImages.create();
+// London's latitude/longitude
+var city1Info = chartInfo.airports[0];
+city1.latitude = city1Info.latitude;
+city1.longitude = city1Info.longitude;
+city1.scale = 0.0025;
+city1.title = city1Info.title;
+
+// second city, New York
+var city2 = imageSeries.mapImages.create();
+// NY latitude/longitude
+var city2Info = chartInfo.airports[1];
+city2.latitude = city2Info.latitude;
+city2.longitude = city2Info.longitude;
+city2.scale = 0.0025;
+city2.title = city2Info.title;
+
+// create line series
+var lineSeries = mapChart.series.push(new am4maps.MapLineSeries());
+var mapLine = lineSeries.mapLines.create();
+// tell the line to connect cities (alternatevely you can also specify latitudes/longitudes)
+mapLine.imagesToConnect = [city1, city2];
+mapLine.line.strokeOpacity = 0.3;
+mapLine.line.stroke = cyan;
+
+mapChart.homeZoomLevel = 3;
+mapChart.homeGeoPoint = { latitude: 50, longitude: -30 };
+
+// create plane container
+planeContainer = mapLine.lineObjects.create();
+planeContainer.position = 0;
+// set svg path of a plane for the sprite
+plane = planeContainer.createChild(am4core.Sprite);
+
+plane.path = planeSVG;
+plane.fill = cyan;
+plane.scale = 0.0075;
+
+plane.horizontalCenter = "middle";
+plane.verticalCenter = "middle";
+
+mapChart.events.on("ready", goForward);
+
+// make the plane to be bigger in the middle of the line
+planeContainer.adapter.add("scale", function(scale, target) {
+  return 0.02 * (1 - (Math.abs(0.5 - target.position)));
+});
+
+// Create a zoom control
+var zoomControl = new am4maps.ZoomControl();
+chart.zoomControl = zoomControl;
+zoomControl.slider.height = 100;
+zoomControl.align = "right";
+zoomControl.marginBottom = 150;
+zoomControl.marginRight = 10;
+
+// Add button to zoom out
+var home = chart.chartContainer.createChild(am4core.Button);
+home.label.text = "Home";
+home.align = "right";
+home.marginRight = 15;
+home.width = 70;
+home.events.on("hit", function(ev) {
+  chart.goHome();
+});
+      }
+      else if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART
         || this.values.currentChartType.flags & ChartFlags.PIECHART)
       {
         if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART)
@@ -1348,22 +1511,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       }
     }
 
-    // destroy current chart if it's already generated to avoid a blank chart
-    _this.destroyChart ();
-
-    console.log (result);
-    // _this.makeChart (result);
-    _this.values.lastestResponse = result;
-    _this.values.displayChart = true;
-    _this.values.chartGenerated = true;
-    _this.values.infoGenerated = false;
-    _this.values.formGenerated = false;
-    _this.values.picGenerated = false;
-    _this.values.tableGenerated = false;
-    _this.values.isLoading = false;
-
-    _this.stopUpdateInterval ();
-    _this.startUpdateInterval ();
+    _this.service.saveLastestResponse (_this, _this.getPanelInfo (), JSON.stringify (result),
+      _this.handlerMapLastestResponse, _this.handlerMapError);
   }
 
   handlerPicSuccess(_this, data): void
@@ -1431,7 +1580,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
 
     // save the panel into the database
-    _this.service.saveLastestResponse (_this, _this.getPanelInfo (), JSON.stringify (formResults), _this.handlerFormLastestResponse, _this.handlerFormError);
+    _this.service.saveLastestResponse (_this, _this.getPanelInfo (), JSON.stringify (formResults),
+      _this.handlerFormLastestResponse, _this.handlerFormError);
   }
 
   handlerFormLastestResponse(_this, data): void
@@ -1477,6 +1627,26 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.formGenerated = false;
     _this.values.picGenerated = false;
     _this.values.tableGenerated = true;
+
+    _this.stopUpdateInterval ();
+    _this.startUpdateInterval ();
+  }
+
+  handlerMapLastestResponse(_this, data): void
+  {
+    _this.values.lastestResponse = data;
+
+    // destroy current chart if it's already generated to avoid a blank chart
+    _this.destroyChart ();
+
+    _this.makeChart (data);
+    _this.values.displayChart = true;
+    _this.values.chartGenerated = true;
+    _this.values.infoGenerated = false;
+    _this.values.formGenerated = false;
+    _this.values.picGenerated = false;
+    _this.values.tableGenerated = false;
+    _this.values.isLoading = false;
 
     _this.stopUpdateInterval ();
     _this.startUpdateInterval ();
