@@ -25,7 +25,7 @@
                             </div>
                             <div style="flex: 2">
                             <mat-form-field class="msf-admin-search-option" >
-                                    <input class="search-input"  matInput [(ngModel)]="searchTextOption" style="width:93%;height:24px;" (ngModelChange)="filterMenuOptions()">
+                                    <input class="search-input"  matInput [(ngModel)]="searchTextOption" autocomplete="off" style="width:93%;height:24px;" (ngModelChange)="filterMenuOptions()">
                                     <mat-icon style="color: white" aria-label="search">search</mat-icon>
                             </mat-form-field>
                             </div>
@@ -122,7 +122,7 @@
                             <div *ngIf="optionSelected.children.length == 0">
                                 <div *ngIf="!optionSelected.isRoot && optionSelected.id ">
                                     <mat-form-field class="msf-admin-search" >
-                                        <input class="search-input"  matInput [(ngModel)]="searchText" style="width:95%;">
+                                        <input class="search-input"  matInput [(ngModel)]="searchText" style="width:95%;" autocomplete="off">
                                         <mat-icon style="color: white" aria-label="search">search</mat-icon>
                                     </mat-form-field>
                                     <div class="msf-admin-show-selected" >
