@@ -177,9 +177,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.infoFunc1 = JSON.parse (JSON.stringify (this.functions));
     this.values.infoFunc2 = JSON.parse (JSON.stringify (this.functions));
     this.values.infoFunc3 = JSON.parse (JSON.stringify (this.functions));
-
-    if (this.values.currentOption)
-    console.log (this.values.currentOption);
   }
 
   ngOnChanges(changes: SimpleChanges): void

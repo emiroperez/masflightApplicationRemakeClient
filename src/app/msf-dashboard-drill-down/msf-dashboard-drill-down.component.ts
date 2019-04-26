@@ -202,12 +202,16 @@ export class MsfDashboardDrillDownComponent {
     this.lastValue = JSON.parse (JSON.stringify (this.currentValue));
 
     this.currentValue.chartColumnOptions = [];
-    this.currentValue.tableVariables = [];
 
     for (let columnConfig of this.currentValue.currentOption.columnOptions)
-    {
       this.currentValue.chartColumnOptions.push ( { id: columnConfig.columnName, name: columnConfig.columnLabel, item: columnConfig } );
-      this.currentValue.tableVariables.push ( { id: columnConfig.columnName, name: columnConfig.columnLabel, itemId: columnConfig.id, checked: true } );
+
+    if (!this.currentValue.tableVariables.length)
+    {
+      this.currentValue.tableVariables = [];
+
+      for (let columnConfig of this.currentValue.currentOption.columnOptions)
+        this.currentValue.tableVariables.push ( { id: columnConfig.columnName, name: columnConfig.columnLabel, itemId: columnConfig.id, checked: true } );
     }
 
     // load the initial filter variables list
@@ -267,8 +271,12 @@ export class MsfDashboardDrillDownComponent {
             }
           }
         }
+  
+        this.lastValue.tableVariables = JSON.parse (JSON.stringify (this.currentValue.tableVariables));
       }
     }
+    else
+      this.lastValue.tableVariables = JSON.parse (JSON.stringify (this.currentValue.tableVariables));
 
     // set combo box values if necessary
     if (this.currentValue.currentChartType != null && this.currentValue.currentChartType != -1)
@@ -441,6 +449,27 @@ export class MsfDashboardDrillDownComponent {
     return different;
   }
 
+  checkTableVariables(): boolean
+  {
+    let different: boolean;
+
+    different = false;
+
+    if (this.lastValue.tableVariables != null)
+    {
+      for (let i = 0; i < this.currentValue.tableVariables.length; i++)
+      {
+        if (this.currentValue.tableVariables[i].checked != this.lastValue.tableVariables[i].checked)
+        {
+          different = true;
+          break;
+        }
+      }
+    }
+
+    return different;
+  }
+
   checkIfPanelIsConfigured(): void
   {
     // make sure that every value is not null
@@ -470,6 +499,10 @@ export class MsfDashboardDrillDownComponent {
       && (this.currentValue.currentChartType.flags & ChartFlags.XYCHART
         && this.currentValue.xaxis == this.lastValue.xaxis)
       && !this.checkPaletteColors ())
+      return;
+
+    if (this.currentValue.currentChartType.flags & ChartFlags.TABLE
+      && !this.checkTableVariables ())
       return;
 
     this.data.childPanelsConfigured[this.currentIndex] = true;

@@ -128,7 +128,7 @@
       <div class="msf-dashboard-chart-options-container" id="msf-dashboard-drill-down-table-container">
         <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-table-container-column">
           <div class="msf-dashboard-chart-op-container" id="msf-dashboard-panel-table-op-container" *ngFor="let tableVariable of currentValue.tableVariables; let column = index">
-            <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="tableVariable.checked">
+            <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="tableVariable.checked" (ngModelChange)="checkIfPanelIsConfigured()">
               {{tableVariable.name}}
             </mat-checkbox>
           </div>
