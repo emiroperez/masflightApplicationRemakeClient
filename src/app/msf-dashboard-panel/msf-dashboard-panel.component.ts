@@ -1380,7 +1380,12 @@ home.events.on("hit", function(ev) {
 
   isResponseValid(): boolean
   {
-    if (this.values.currentChartType.flags & ChartFlags.INFO)
+    if (this.values.currentChartType.flags & ChartFlags.MAP)
+    {
+      if (this.utils.isJSONEmpty (this.values.lastestResponse))
+        return false;
+    }
+    else if (this.values.currentChartType.flags & ChartFlags.INFO)
     {
       if (this.values.currentChartType.flags & ChartFlags.FORM)
       {
@@ -1859,21 +1864,6 @@ home.events.on("hit", function(ev) {
     _this.checkChartFilters ();
 
     _this.values.formVariables = [];
-
-    // initiate another query to get the category arguments
-    _this.service.loadOptionCategoryArguments (_this, _this.values.currentOption, _this.setCategories, _this.handlerError);
-  }
-
-  setCategories(_this, data): void
-  {
-    _this.values.currentOptionCategories = [];
-
-    for (let optionCategory of data)
-    {
-      for (let category of optionCategory.categoryArgumentsId)
-        _this.values.currentOptionCategories.push (category);
-    }
-
     _this.variableCtrlBtnEnabled = true;
 
     _this.chartForm.get ('variableCtrl').enable ();
@@ -1889,6 +1879,56 @@ home.events.on("hit", function(ev) {
     _this.chartForm.get ('valueOrientationCtrl').enable ();
 
     _this.values.isLoading = false;
+  }
+
+  setCategories(_this, data): void
+  {
+    let optionCategories = [];
+
+    for (let optionCategory of data)
+    {
+      for (let category of optionCategory.categoryArgumentsId)
+        optionCategories.push (category);
+    }
+
+    // if the category is not empty, add the categories that are missing
+    if (_this.values.currentOptionCategories != null)
+    {
+      for (let optionCategory of optionCategories)
+      {
+        let avail = false;
+        for (let curCategory of _this.values.currentOptionCategories)
+        {
+          if (curCategory.id == optionCategory.id)
+          {
+            avail = true;
+            break;
+          }
+        }
+  
+        if (!avail)
+          _this.values.currentOptionCategories.push (optionCategory);
+      }
+    }
+    else
+      _this.values.currentOptionCategories = optionCategories;
+
+    // workaround to prevent errors on certain data forms
+    if (!_this.haveSortingCheckboxes ())
+      _this.globals.isLoading = false;
+
+    // console.log (_this.values.currentOptionCategories);
+
+    _this.dialog.open (MsfDashboardControlVariablesComponent, {
+      height: '605px',
+      width: '400px',
+      panelClass: 'msf-dashboard-control-variables-dialog',
+      data: {
+        currentOptionCategories: _this.values.currentOptionCategories,
+        currentOptionId: _this.values.currentOption.id,
+        title: _this.values.chartName
+      }
+    });
   }
 
   searchChange(filterCtrl): void
@@ -1947,22 +1987,11 @@ home.events.on("hit", function(ev) {
 
   goToControlVariables(): void
   {
-    // workaround to prevent errors on certain data forms
-    if (this.haveSortingCheckboxes ())
-      this.globals.isLoading = true;
+    this.globals.isLoading = true;
 
-    // console.log (this.values.currentOptionCategories);
-
-    this.dialog.open (MsfDashboardControlVariablesComponent, {
-      height: '605px',
-      width: '400px',
-      panelClass: 'msf-dashboard-control-variables-dialog',
-      data: {
-        currentOptionCategories: this.values.currentOptionCategories,
-        currentOptionId: this.values.currentOption.id,
-        title: this.values.chartName
-      }
-    });
+    // load the category arguments before opening the dialog
+    this.service.loadOptionCategoryArguments (this, this.values.currentOption,
+      this.setCategories, this.handlerError);
   }
 
   // save chart data into a temporary value
