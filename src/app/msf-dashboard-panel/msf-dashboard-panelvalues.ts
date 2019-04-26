@@ -91,12 +91,6 @@ export class MsfDashboardPanelValues {
         if (paletteColors)
             this.paletteColors = JSON.parse (paletteColors);
 
-        // check if the following parameters are null before parsing the JSON
-        if (chartColumnOptions)
-            this.chartColumnOptions = JSON.parse (chartColumnOptions);
-        else
-            this.chartColumnOptions = null;
-
         if (lastestResponse)
             this.lastestResponse = JSON.parse (lastestResponse);
         else

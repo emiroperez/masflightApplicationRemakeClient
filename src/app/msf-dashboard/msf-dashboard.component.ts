@@ -103,7 +103,8 @@ export class MsfDashboardComponent implements OnInit {
         baseUrl: columnConfig.url,
         drillDownOptions: [],
         tabType: columnConfig.tabType,
-        metaData: columnConfig.metaData
+        metaData: columnConfig.metaData,
+        columnOptions: null
       });
 
       optionIds.push (columnConfig.id);
@@ -114,8 +115,29 @@ export class MsfDashboardComponent implements OnInit {
       _this.setDrillDownOptions, _this.handlerError);
   }
 
+  addWebServicesMeta(_this, data): void
+  {
+    for (let option of _this.options)
+    {
+      for (let columnOptions of data)
+      {
+        if (columnOptions[0].optionId == option.id)
+        {
+          option.columnOptions = columnOptions;
+          break;
+        }
+      }
+    }
+
+    // get dashboard panels after getting the data forms
+    _this.service.getDashboardPanels (_this, _this.currentDashboardMenu.id,
+      _this.loadDashboardPanels, _this.handlerError);
+  }
+
   setDrillDownOptions(_this, data): void
   {
+    let optionIds = [];
+
     for (let drillDown of data)
     {
       for (let i = 0; i < _this.options.length; i++)
@@ -128,9 +150,25 @@ export class MsfDashboardComponent implements OnInit {
       }
     }
 
-    // get dashboard panels after getting the data forms
-    _this.service.getDashboardPanels (_this, _this.currentDashboardMenu.id,
-      _this.loadDashboardPanels, _this.handlerError);
+    for (let option of _this.options)
+      optionIds.push (option.id);
+
+    _this.service.getWebServicesMeta (_this, optionIds,
+      _this.addWebServicesMeta, _this.handlerError);
+  }
+
+  getOption(dashboardPanelOption)
+  {
+    if (dashboardPanelOption != null)
+    {
+      for (let option of this.options)
+      {
+        if (option.id == dashboardPanelOption.id)
+          return option;
+      }
+    }
+
+    return null;
   }
 
   loadDashboardPanels(_this, data): void
@@ -170,7 +208,7 @@ export class MsfDashboardComponent implements OnInit {
       dashboardPanelIds.push (dashboardPanel.id);
       dashboardRows.push (new MsfDashboardPanelValues (_this.options, dashboardPanel.title,
         dashboardPanel.id, dashboardPanel.width, _this.heightValues[dashboardPanel.height],
-        dashboardPanel.option, dashboardPanel.chartColumnOptions, dashboardPanel.analysis, dashboardPanel.xaxis,
+        _this.getOption (dashboardPanel.option), dashboardPanel.chartColumnOptions, dashboardPanel.analysis, dashboardPanel.xaxis,
         dashboardPanel.values, dashboardPanel.function, dashboardPanel.chartType, dashboardPanel.categoryOptions,
         dashboardPanel.lastestResponse, dashboardPanel.paletteColors, dashboardPanel.updateTimeInterval, dashboardPanel.row));
     }

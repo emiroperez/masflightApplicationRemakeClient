@@ -282,6 +282,12 @@ export class ApplicationService {
     this.http.get (_this, url, handlerSuccess, handlerError, null);
   }
 
+  getWebServicesMeta(_this, optionIds, handlerSuccess, handlerError): void
+  {
+    let url = "/getMetaByOptionIds";
+    this.http.post (_this, this.host + url, optionIds, handlerSuccess, handlerError);
+  }
+
   createDashboardPanel(_this, panels, handlerSuccess, handlerError): void
   {
     let url = "/addDashboardPanels";

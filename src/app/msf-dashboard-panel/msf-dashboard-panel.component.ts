@@ -177,6 +177,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.infoFunc1 = JSON.parse (JSON.stringify (this.functions));
     this.values.infoFunc2 = JSON.parse (JSON.stringify (this.functions));
     this.values.infoFunc3 = JSON.parse (JSON.stringify (this.functions));
+
+    if (this.values.currentOption)
+    console.log (this.values.currentOption);
   }
 
   ngOnChanges(changes: SimpleChanges): void
@@ -1715,8 +1718,54 @@ home.events.on("hit", function(ev) {
 
   loadChartFilterValues(component): void
   {
-    this.values.isLoading = true;
-    this.getChartFilterValues (component.id, this.addChartFilterValues);
+    this.values.chartColumnOptions = [];
+    this.values.tableVariables = [];
+
+    for (let columnConfig of component.columnOptions)
+    {
+      this.values.chartColumnOptions.push ( { id: columnConfig.columnName, name: columnConfig.columnLabel, item: columnConfig } );
+      this.values.tableVariables.push ( { id: columnConfig.columnName, name: columnConfig.columnLabel, itemId: columnConfig.id, grouping: columnConfig.grouping, checked: true } );
+    }
+
+    // load the initial filter variables list
+    this.filteredVariables.next (this.values.chartColumnOptions.slice ());
+
+    this.searchChange (this.variableFilterCtrl);
+    this.searchChange (this.xaxisFilterCtrl);
+    this.searchChange (this.valueFilterCtrl);
+
+    this.searchChange (this.infoVar1FilterCtrl);
+    this.searchChange (this.infoVar2FilterCtrl);
+    this.searchChange (this.infoVar3FilterCtrl);
+
+    this.searchChange (this.columnFilterCtrl);
+
+    // reset chart filter values and disable generate chart button
+    this.chartForm.get ('variableCtrl').reset ();
+    this.chartForm.get ('xaxisCtrl').reset ();
+    this.chartForm.get ('valueCtrl').reset ();
+    this.chartForm.get ('columnCtrl').reset ();
+    this.chartForm.get ('fontSizeCtrl').setValue (this.fontSizes[1]);
+    this.chartForm.get ('valueFontSizeCtrl').setValue (this.fontSizes[1]);
+    this.chartForm.get ('valueOrientationCtrl').setValue (this.orientations[0]);
+    this.checkChartFilters ();
+
+    this.values.formVariables = [];
+    this.variableCtrlBtnEnabled = true;
+
+    this.chartForm.get ('variableCtrl').enable ();
+    this.chartForm.get ('infoNumVarCtrl').enable ();
+
+    if (this.values.currentChartType.flags & ChartFlags.XYCHART)
+      this.chartForm.get ('xaxisCtrl').enable ();
+
+    this.chartForm.get ('valueCtrl').enable ();
+    this.chartForm.get ('columnCtrl').enable ();
+    this.chartForm.get ('fontSizeCtrl').enable ();
+    this.chartForm.get ('valueFontSizeCtrl').enable ();
+    this.chartForm.get ('valueOrientationCtrl').enable ();
+
+    this.values.currentOptionCategories = null;
   }
 
   handlerChartError(_this, result): void
@@ -2404,8 +2453,17 @@ home.events.on("hit", function(ev) {
   {
     let i, options, option;
 
-    if (this.values.chartColumnOptions)
+    if (this.values.currentOption)
     {
+      this.values.chartColumnOptions = [];
+      this.values.tableVariables = [];
+  
+      for (let columnConfig of this.values.currentOption.columnOptions)
+      {
+        this.values.chartColumnOptions.push ( { id: columnConfig.columnName, name: columnConfig.columnLabel, item: columnConfig } );
+        this.values.tableVariables.push ( { id: columnConfig.columnName, name: columnConfig.columnLabel, itemId: columnConfig.id, grouping: columnConfig.grouping, checked: true } );
+      }
+
       this.filteredVariables.next (this.values.chartColumnOptions.slice ());
 
       this.searchChange (this.variableFilterCtrl);
