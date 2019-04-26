@@ -1,0 +1,17 @@
+.card-principal {
+    background: rgb(30, 30, 30);
+    width: 100%;
+}
+
+.is-active {
+    background-color: #232323;
+}
+
+.is-inactive {
+    background-color: transparent;
+}
+
+.img-item-category-argument {
+    height: 28px;
+    width: 26px;
+}

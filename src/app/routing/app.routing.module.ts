@@ -12,6 +12,7 @@ import { MsfTestComponent } from '../msf-test/msf-test.component';
 import { UserActivationComponent } from '../user-activation/user-activation.component';
 import { ForgotPasswordComponent } from '../forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from '../reset-password/reset-password.component';
+import { AdminArgumentsCategoryComponent } from '../admin-arguments-category/admin-arguments-category.component'
 
 export const routes: Routes = [
   { path: '', component: LoginScreenComponent },
@@ -24,7 +25,8 @@ export const routes: Routes = [
   { path: 'app-msf-test', component: MsfTestComponent},
   { path: 'user-activation', component: UserActivationComponent},
   { path: 'forgot-password', component: ForgotPasswordComponent},
-  { path: 'reset-password', component: ResetPasswordComponent}
+  { path: 'reset-password', component: ResetPasswordComponent},
+  { path: 'arguments-category', component: AdminArgumentsCategoryComponent}
 
 ];
 

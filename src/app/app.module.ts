@@ -176,8 +176,10 @@ import { MsfSharedDashboardItemsComponent } from './msf-shared-dashboard-items/m
 import { MsfAddSharedDashboardPanelComponent } from './msf-add-shared-dashboard-panel/msf-add-shared-dashboard-panel.component';
 import { DrillDownDialog } from './admin-menu/admin-menu.component';
 import { FilterPipe } from './admin-menu/pipe-filter';
+import { FilterPipeArg } from './admin-arguments-category/pipe-filter';
 import { NewCategoryDialog } from './admin-menu/admin-menu.component'
 import { MsfAddSharedDashboardComponent } from './msf-add-shared-dashboard/msf-add-shared-dashboard.component';
+import { AdminArgumentsCategoryComponent } from './admin-arguments-category/admin-arguments-category.component';
 
 @NgModule({
   declarations: [
@@ -335,7 +337,9 @@ import { MsfAddSharedDashboardComponent } from './msf-add-shared-dashboard/msf-a
     MsfSharedDashboardItemsComponent,
     MsfAddSharedDashboardPanelComponent,
     FilterPipe,
-    MsfAddSharedDashboardComponent
+    FilterPipeArg,
+    MsfAddSharedDashboardComponent,
+    AdminArgumentsCategoryComponent
   ],
   imports: [
     BrowserModule,
