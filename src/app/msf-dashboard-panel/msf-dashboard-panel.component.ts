@@ -1165,9 +1165,9 @@ home.events.on("hit", function(ev) {
         id: this.values.id,
         option: this.values.currentOption,
         title: this.values.chartName,
-        chartColumnOptions: JSON.stringify (this.values.chartColumnOptions),
+        chartColumnOptions: this.values.chartColumnOptions ? JSON.stringify (this.values.chartColumnOptions) : null,
         chartType: this.chartTypes.indexOf (this.values.currentChartType),
-        categoryOptions: JSON.stringify (this.values.currentOptionCategories),
+        categoryOptions: this.values.currentOptionCategories ? JSON.stringify (this.values.currentOptionCategories) : null,
         function: 1,
         updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0)
       };
@@ -1178,13 +1178,13 @@ home.events.on("hit", function(ev) {
         id: this.values.id,
         option: this.values.currentOption,
         title: this.values.chartName,
-        chartColumnOptions: JSON.stringify (this.values.chartColumnOptions),
-        analysis: this.values.chartColumnOptions.indexOf (this.values.infoVar1),
-        xaxis: this.values.chartColumnOptions.indexOf (this.values.infoVar2),
-        values: this.values.chartColumnOptions.indexOf (this.values.infoVar3),
+        chartColumnOptions: this.values.chartColumnOptions ? JSON.stringify (this.values.chartColumnOptions) : null,
+        analysis: this.values.chartColumnOptions ? this.values.chartColumnOptions.indexOf (this.values.infoVar1) : null,
+        xaxis: this.values.chartColumnOptions ? this.values.chartColumnOptions.indexOf (this.values.infoVar2) : null,
+        values: this.values.chartColumnOptions ? this.values.chartColumnOptions.indexOf (this.values.infoVar3) : null,
         function: 1,
         chartType: this.chartTypes.indexOf (this.values.currentChartType),
-        categoryOptions: JSON.stringify (this.values.currentOptionCategories),
+        categoryOptions: this.values.currentOptionCategories ? JSON.stringify (this.values.currentOptionCategories) : null,
         updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0)
       };
     }
@@ -1194,13 +1194,13 @@ home.events.on("hit", function(ev) {
         id: this.values.id,
         option: this.values.currentOption,
         title: this.values.chartName,
-        chartColumnOptions: JSON.stringify (this.values.chartColumnOptions),
-        analysis: this.values.chartColumnOptions.indexOf (this.values.variable),
-        xaxis: this.values.chartColumnOptions.indexOf (this.values.xaxis),
-        values: this.values.chartColumnOptions.indexOf (this.values.valueColumn),
+        chartColumnOptions: this.values.chartColumnOptions ? JSON.stringify (this.values.chartColumnOptions) : null,
+        analysis: this.values.chartColumnOptions ? this.values.chartColumnOptions.indexOf (this.values.variable) : null,
+        xaxis: this.values.chartColumnOptions ? this.values.chartColumnOptions.indexOf (this.values.xaxis) : null,
+        values: this.values.chartColumnOptions ? this.values.chartColumnOptions.indexOf (this.values.valueColumn) : null,
         function: this.functions.indexOf (this.values.function),
         chartType: this.chartTypes.indexOf (this.values.currentChartType),
-        categoryOptions: JSON.stringify (this.values.currentOptionCategories),
+        categoryOptions: this.values.currentOptionCategories ? JSON.stringify (this.values.currentOptionCategories) : null,
         paletteColors: JSON.stringify (this.values.paletteColors),
         updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0)
       };
