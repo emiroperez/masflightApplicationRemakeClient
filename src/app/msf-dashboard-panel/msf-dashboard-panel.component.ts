@@ -1879,6 +1879,7 @@ home.events.on("hit", function(ev) {
     _this.chartForm.get ('valueOrientationCtrl').enable ();
 
     _this.values.isLoading = false;
+    _this.values.currentOptionCategories = null;
   }
 
   setCategories(_this, data): void
@@ -1896,8 +1897,10 @@ home.events.on("hit", function(ev) {
     {
       for (let optionCategory of optionCategories)
       {
+        let curCategory;
         let avail = false;
-        for (let curCategory of _this.values.currentOptionCategories)
+
+        for (curCategory of _this.values.currentOptionCategories)
         {
           if (curCategory.id == optionCategory.id)
           {
@@ -1908,6 +1911,11 @@ home.events.on("hit", function(ev) {
   
         if (!avail)
           _this.values.currentOptionCategories.push (optionCategory);
+        /*else
+        {
+
+          curCategory
+        }*/
       }
     }
     else
