@@ -340,7 +340,7 @@ import { MsfDashboardPanelTypePipe } from './msf-dashboard-panel/msf-dashboard-p
     FilterPipe,
     FilterPipeArg,
     MsfAddSharedDashboardComponent,
-    AdminArgumentsCategoryComponent
+    AdminArgumentsCategoryComponent,
     MsfAddSharedDashboardComponent,
     MsfArgumentComponent,
     DialogArgumentPreviewComponent,

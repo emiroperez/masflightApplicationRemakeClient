@@ -3,7 +3,7 @@
     <div class="msf-menu-header-image-container">
         <!-- kp28032019<img (click)="goHome()" style="cursor:pointer;" src="../../assets/images/logo_global_peqe.png" class="msf-menu-logo"> -->
         <img (click)="goHome()" style="cursor:pointer;" src="../../assets/images/pulse_welc.png" class="msf-menu-logo">
-       <img src="../../assets/images/ajustes.png" class="msf-menu-ajustes-icon">
+        <img src="../../assets/images/ajustes.png" class="msf-menu-ajustes-icon">
     </div>
     <div class="msf-menu-container">
         <app-menu [menu]="menu" [dashboards]="dashboards" [sharedDashboards]="sharedDashboards"></app-menu>
@@ -31,6 +31,10 @@
                     <mat-icon>settings</mat-icon>
                     <span>Admin Menu</span>
                 </button>
+            <button mat-menu-item routerLink="/arguments-category">
+                  <mat-icon>settings</mat-icon>
+                  <span>Admin Argument Category</span>
+              </button>
             <button mat-menu-item routerLink="/create-membership">
                     <mat-icon>settings</mat-icon>
                     <span>Memberships</span>
