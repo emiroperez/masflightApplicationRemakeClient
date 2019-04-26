@@ -71,8 +71,8 @@ export class MsfDashboardPanelValues {
     row: number;
     childPanels: any[] = [];
 
-    constructor(options: any[], chartName: String, id: number, width: any, height: any, currentOption?: any, chartColumnOptions? : any,
-        variable?: any, xaxis?: any, valueColumn?: any, func?: any, chartType?: any, currentOptionCategories?: any, lastestResponse?: string,
+    constructor(options: any[], chartName: String, id: number, width: any, height: any, currentOption?: any, variable?: any,
+        xaxis?: any, valueColumn?: any, func?: any, chartType?: any, currentOptionCategories?: any, lastestResponse?: string,
         paletteColors?: any, updateTimeInterval?: number, row?: number)
     {
         this.options = options;

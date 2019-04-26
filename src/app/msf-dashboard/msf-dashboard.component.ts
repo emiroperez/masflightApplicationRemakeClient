@@ -208,9 +208,11 @@ export class MsfDashboardComponent implements OnInit {
       dashboardPanelIds.push (dashboardPanel.id);
       dashboardRows.push (new MsfDashboardPanelValues (_this.options, dashboardPanel.title,
         dashboardPanel.id, dashboardPanel.width, _this.heightValues[dashboardPanel.height],
-        _this.getOption (dashboardPanel.option), dashboardPanel.chartColumnOptions, dashboardPanel.analysis, dashboardPanel.xaxis,
-        dashboardPanel.values, dashboardPanel.function, dashboardPanel.chartType, dashboardPanel.categoryOptions,
-        dashboardPanel.lastestResponse, dashboardPanel.paletteColors, dashboardPanel.updateTimeInterval, dashboardPanel.row));
+        _this.getOption (dashboardPanel.option), dashboardPanel.analysis, dashboardPanel.xaxis,
+        dashboardPanel.values, dashboardPanel.function, dashboardPanel.chartType,
+        dashboardPanel.categoryOptions, dashboardPanel.lastestResponse,
+        dashboardPanel.paletteColors, dashboardPanel.updateTimeInterval,
+        dashboardPanel.row));
     }
 
     // add the last dashboard column
@@ -675,6 +677,7 @@ export class MsfDashboardComponent implements OnInit {
       width: '800px',
       panelClass: 'msf-dashboard-child-panel-dialog',
       data: {
+        options: this.options,
         parentPanelId: this.contextParentPanel.id,
         drillDownId: contextDrillDownId,
         currentOptionCategories: this.contextParentPanel.currentOptionCategories,

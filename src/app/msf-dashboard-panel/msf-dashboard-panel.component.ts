@@ -3072,7 +3072,8 @@ home.events.on("hit", function(ev) {
         categoryOptions: JSON.stringify (this.values.currentOptionCategories),
         functions: this.functions,
         childChart: childChart,
-        updateTimeInterval: 0
+        updateTimeInterval: 0,
+        options: this.values.options
       }
     });
 
