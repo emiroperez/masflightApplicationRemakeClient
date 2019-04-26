@@ -1,0 +1,24 @@
+  <div class="msf-argument-preview-container">
+    <app-msf-argument [currentArgument]="data"></app-msf-argument>
+    <div class="msf-argument-preview-footer">
+        <ng-container *ngIf="data.name1">
+            <div class="msf-block">
+                    <div class="msf-inline msf-summary-arg-title">{{data.title}} </div>
+                    <div class="msf-inline msf-summary-arg-label">{{data.label1}} </div>
+                    <div class="msf-inline msf-summary-value msf-summary-arg-value"> {{utils.getValueFormat(data.type, data.value1,data)}}</div>
+            </div>                                        
+        </ng-container> 
+        <ng-container *ngIf="data.name2">
+                <div class="msf-block">
+                        <div class="msf-inline msf-summary-arg-label">{{data.label2}} </div>
+                        <div class="msf-inline msf-summary-value msf-summary-arg-value"> {{utils.getValueFormat(data.type, data.value2,data)}}</div>
+                </div>                                        
+        </ng-container> 
+        <ng-container *ngIf="data.name3">
+                <div class="msf-block">
+                        <div class="msf-inline msf-summary-arg-label">{{data.label3}} </div>
+                        <div class="msf-inline msf-summary-value msf-summary-arg-value"> {{utils.getValueFormat(data.type, data.value3,data)}}</div>
+                </div>                                        
+        </ng-container>                                    
+    </div>
+  </div>

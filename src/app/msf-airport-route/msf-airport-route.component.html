@@ -10,7 +10,7 @@
         loadingText="Loading..."
         [closeOnSelect]="true"
         [hideSelected]="false"
-        bindLabel="name"
+        bindLabel="{{argument.visibleAttribute}}"
         (search)="onSearch($event)" 
         [(ngModel)]="argument.value1"
         (change) ="onAirportSelect(1)" >
@@ -26,7 +26,7 @@
         loadingText="Loading..."
         [closeOnSelect]="true"
         [hideSelected]="false"
-        bindLabel="name"
+        bindLabel="{{argument.visibleAttribute}}"
         (search)="onSearch($event)" 
         [(ngModel)]="argument.value2"
         (change) ="onAirportSelect(2)">

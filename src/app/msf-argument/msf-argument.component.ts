@@ -1,56 +1,27 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Arguments } from '../model/Arguments';
 import { Globals } from '../globals/Globals';
 import { ComponentType } from '../commons/ComponentType';
-import { Arguments } from '../model/Arguments';
 
 @Component({
-  selector: 'app-msf-control-variables',
-  templateUrl: './msf-control-variables.component.html'
+  selector: 'app-msf-argument',
+  templateUrl: './msf-argument.component.html',
+  styleUrls: ['./msf-argument.component.css']
 })
-export class MsfControlVariablesComponent implements OnInit {
+export class MsfArgumentComponent implements OnInit {
 
-  open: boolean = false;
-
-  @Input()
-  currentOptionCategories: any;
 
   @Input()
-  currentOptionId: number;
+  currentArgument: any;
 
-  argsBefore: any;
-  iconBefore: any;
-
+  @Input()
+  currentGlobalOptionId: number;
+  
   constructor(public globals: Globals) { }
 
   ngOnInit() {
   }
-
-  componentClickHandler(argsContainer, icon): void
-  {
-    if (this.globals.currentArgs)
-    {
-      this.globals.currentArgs.open = false;
-      this.globals.iconBefore.innerText ="expand_more";
-    }
-
-    if (!this.open || (this.open && (this.globals.currentArgs !== argsContainer)))
-    {
-      argsContainer.open = true;
-      icon.innerText ="expand_less";
-      this.open = true;
-    }
-    else
-    {
-      argsContainer.open = false;
-      icon.innerText ="expand_more";
-      this.open = false;
-    }
-
-    this.globals.currentArgs = argsContainer;
-    this.globals.iconBefore = icon;
-    this.argsBefore = argsContainer;
-  }
-
+  
   isAirportRoute(argument: Arguments){
     return ComponentType.airportRoute == argument.type;
   }

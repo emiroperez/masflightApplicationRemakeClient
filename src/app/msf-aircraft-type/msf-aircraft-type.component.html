@@ -12,7 +12,7 @@
                 loadingText="Loading..."
                 [closeOnSelect]="true"
                 [hideSelected]="false"
-                bindLabel="name"
+                bindLabel="{{argument.visibleAttribute}}"
                 (search)="onSearch($event)" 
                 (focus)="onFocus()" 
                 [(ngModel)]="argument.value1">

@@ -125,7 +125,6 @@ export class ApplicationService {
   */
 
   loadOptionCategoryArguments(_this, data, handlerSuccess, handlerError) {
-    //_this.globals.isLoading = true;
     let url = this.host + "/getOptionArgumentsCategories?optionId=" + data.id;
     this.http.get(_this, url, handlerSuccess, handlerError, null);
   }
@@ -281,6 +280,12 @@ export class ApplicationService {
   {
     let url = this.host + "/getMetaByOptionId?optionId=" + id;
     this.http.get (_this, url, handlerSuccess, handlerError, null);
+  }
+
+  getWebServicesMeta(_this, optionIds, handlerSuccess, handlerError): void
+  {
+    let url = "/getMetaByOptionIds";
+    this.http.post (_this, this.host + url, optionIds, handlerSuccess, handlerError);
   }
 
   createDashboardPanel(_this, panels, handlerSuccess, handlerError): void
@@ -459,5 +464,11 @@ export class ApplicationService {
   {
     let url = this.host + "/addSharedPanel?dashboardId=" + dashboardId + "&panelId=" + panelId;
     this.http.post (_this, url, null, handlerSuccess, handlerError);
+  }
+
+  setDashboardColumnPositions(_this, columns, handlerSuccess, handlerError): void
+  {
+    let url = this.host + "/updateDashboardColumnPositions";
+    this.http.post (_this, url, columns, handlerSuccess, handlerError);
   }
 }

@@ -60,8 +60,6 @@ import { MsfLoadingComponent } from './msf-loading/msf-loading.component';
 import { MsfGroupingComponent } from './msf-grouping/msf-grouping.component';
 import { MsfRoundingComponent } from './msf-rounding/msf-rounding.component';
 import { MsfDateComponent } from './msf-date/msf-date.component';
-import { MsfUsageStatisticsComponent } from './msf-usage-statistics/msf-usage-statistics.component';
-import { MsfCancelledComponent } from './msf-cancelled/msf-cancelled.component';
 import { MapBoxComponent } from './map-box/map-box.component';
 import { AdminMenuComponent } from './admin-menu/admin-menu.component';
 import { CreateMempershipsComponent } from './create-memperships/create-memperships.component';
@@ -180,6 +178,11 @@ import { FilterPipeArg } from './admin-arguments-category/pipe-filter';
 import { NewCategoryDialog } from './admin-menu/admin-menu.component'
 import { MsfAddSharedDashboardComponent } from './msf-add-shared-dashboard/msf-add-shared-dashboard.component';
 import { AdminArgumentsCategoryComponent } from './admin-arguments-category/admin-arguments-category.component';
+import { DragScrollModule } from 'cdk-drag-scroll';
+import { MsfArgumentComponent } from './msf-argument/msf-argument.component';
+import { DialogArgumentPreviewComponent } from './dialog-argument-preview/dialog-argument-preview.component';
+import { MsfDashboardPanelOptionPipe } from './msf-dashboard-panel/msf-dashboard-panel-option-pipe';
+import { MsfDashboardPanelTypePipe } from './msf-dashboard-panel/msf-dashboard-panel-type-pipe';
 
 @NgModule({
   declarations: [
@@ -226,10 +229,8 @@ import { AdminArgumentsCategoryComponent } from './admin-arguments-category/admi
     MsfGroupingComponent,
     MsfRoundingComponent,
     MsfDateComponent,
-    MsfUsageStatisticsComponent,
     AdminMenuComponent,
     CreateMempershipsComponent,
-    MsfCancelledComponent,
     MapBoxComponent,
     AdminMenuComponent,
     AdminMenuComponent,
@@ -340,6 +341,11 @@ import { AdminArgumentsCategoryComponent } from './admin-arguments-category/admi
     FilterPipeArg,
     MsfAddSharedDashboardComponent,
     AdminArgumentsCategoryComponent
+    MsfAddSharedDashboardComponent,
+    MsfArgumentComponent,
+    DialogArgumentPreviewComponent,
+    MsfDashboardPanelOptionPipe,
+    MsfDashboardPanelTypePipe
   ],
   imports: [
     BrowserModule,
@@ -375,7 +381,8 @@ import { AdminArgumentsCategoryComponent } from './admin-arguments-category/admi
     AgGridModule.withComponents(null),
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
-    ColorPickerModule
+    ColorPickerModule,
+    DragScrollModule
   ],
   providers: [
     AuthService,
@@ -411,6 +418,7 @@ import { AdminArgumentsCategoryComponent } from './admin-arguments-category/admi
     MsfDashboardDrillDownComponent,
     MsfDashboardChildPanelComponent,
     MsfMoreInfoPopupComponent,
+    DialogArgumentPreviewComponent,
     MsfColumnSelectorComponent,
     MsfShareDashboardComponent,
     MsfSharedDashboardItemsComponent,

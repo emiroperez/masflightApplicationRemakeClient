@@ -203,11 +203,11 @@ body {
 }
 
 .msf-show {
-  display: block;
+  display: block !important;
 }
 
 .msf-hide {
-  display: none;
+  display: none !important;
 }
 
 .msf-show-panel {
@@ -1466,11 +1466,13 @@ button[aria-expanded=true] {
   padding: 5px 0 5px 0;
   margin-bottom: 10px;
   background: #3d3d3d;
+  color: #ffffff;
 }
 
 .msf-component-airport-sub-title {
   margin-bottom: 5px;
   padding-left: 10px;
+  color: #ffffff;
 }
 
 .msf-component-airport-input-container {
@@ -1925,11 +1927,6 @@ mat-tab-group {
   vertical-align: middle;
 }
 
-.msf-dashboard-chartbox-column {
-  display: flex;
-  flex-direction: row;
-}
-
 .msf-dashboard-panel-line-resize {
   position: absolute;
   height: 100%;
@@ -2009,22 +2006,29 @@ mat-tab-group {
   padding: 10px;
   flex-direction: column;
 }
-.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column {
+
+.msf-dashboard-chartbox-column {
+  display: flex;
+  flex-direction: row;
   width: 100%;
   overflow-y: visible;
 }
-.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items {
+.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items {
   width: 100%;
 }
-.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-chartbox-column .msf-dashboard-chartbox-item {
+.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-chartbox-column {
+  display: flex;
+  flex-direction: row;
+}
+.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-chartbox-column .msf-dashboard-chartbox-item {
   margin: 0 2px;
   position: relative;
   box-sizing: border-box;
 }
-.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-padding {
+.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-padding {
   padding-top: 4px;
 }
-.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed {
+.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed {
   position: relative;
   justify-content: center;
   display: flex;
@@ -2034,20 +2038,53 @@ mat-tab-group {
   padding-top: 2px;
   height: 20px;
   transition: 0.5s;
+  font-size: 14px;
 }
-.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-properties-align {
+.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-properties-align {
   display: flex;
   flex-direction: row;
   align-items: center;
   width: 20%;
 }
-.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-properties-align .msf-dashboard-column-properties-button {
+.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   padding-left: 10px;
 }
-.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-properties-align .msf-dashboard-column-properties-height-label {
+.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-button .msf-dashboard-column-properties-button {
+  padding-left: 10px;
+}
+.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-button .msf-dashboard-column-properties-height-label {
   width: 60%;
 }
-.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open {
+.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-columns-move-button {
+  display: flex;
+  flex-direction: bottom;
+  align-items: center;
+  padding-left: 10px;
+}
+.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-columns-move-button .msf-dashboard-button-move-icon {
+  color: inherit;
+  cursor: default;
+  font-size: 16px;
+  padding-right: 2px;
+  padding-top: 5px;
+  background-image: url(assets/images/vert-move.png);
+  background-repeat: no-repeat;
+  width: 20px;
+  height: 30px;
+  background-size: 95%;
+}
+.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-columns-move-button .msf-dashboard-button-move-icon:hover {
+  color: #01abec;
+  cursor: move;
+  font-size: 16px;
+  padding-right: 2px;
+  padding-top: 5px;
+  background-image: url(assets/images/vert-move-hover.png);
+}
+.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open {
   position: relative;
   justify-content: center;
   display: flex;
@@ -2057,20 +2094,53 @@ mat-tab-group {
   padding-top: 2px;
   height: 60px;
   transition: 0.5s;
+  font-size: 14px;
 }
-.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-properties-align {
+.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-properties-align {
   display: flex;
   flex-direction: row;
   align-items: center;
   width: 20%;
 }
-.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-properties-align .msf-dashboard-column-properties-button {
+.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   padding-left: 10px;
 }
-.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-properties-align .msf-dashboard-column-properties-height-label {
+.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-button .msf-dashboard-column-properties-button {
+  padding-left: 10px;
+}
+.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-button .msf-dashboard-column-properties-height-label {
   width: 60%;
 }
-.msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-invisible {
+.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-columns-move-button {
+  display: flex;
+  flex-direction: bottom;
+  align-items: center;
+  padding-left: 10px;
+}
+.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-columns-move-button .msf-dashboard-button-move-icon {
+  color: inherit;
+  cursor: default;
+  font-size: 16px;
+  padding-right: 2px;
+  padding-top: 5px;
+  background-image: url(assets/images/vert-move.png);
+  background-repeat: no-repeat;
+  width: 20px;
+  height: 30px;
+  background-size: 95%;
+}
+.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-columns-move-button .msf-dashboard-button-move-icon:hover {
+  color: #01abec;
+  cursor: move;
+  font-size: 16px;
+  padding-right: 2px;
+  padding-top: 5px;
+  background-image: url(assets/images/vert-move-hover.png);
+}
+.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-invisible {
   display: none;
 }
 
@@ -2133,6 +2203,11 @@ mat-tab-group {
 }
 .msf-dashboard-panel-button .msf-dashboard-button-move-icon {
   margin-right: -8px;
+  background-image: url(assets/images/horiz-move.png);
+  background-repeat: no-repeat;
+  width: 45px;
+  height: 20px;
+  background-size: 85%;
   color: inherit;
   cursor: default;
   font-size: 16px;
@@ -2141,6 +2216,7 @@ mat-tab-group {
 }
 .msf-dashboard-panel-button .msf-dashboard-button-move-icon:hover {
   margin-right: -8px;
+  background-image: url(assets/images/horiz-move-hover.png);
   color: #01abec;
   cursor: move;
   font-size: 16px;
@@ -2152,10 +2228,10 @@ mat-tab-group {
   background-color: #595959;
 }
 
-.msf-dashboard-column-properties-form-field .mat-select-value-text, .msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-properties-align .msf-dashboard-column-properties-form-field .mat-select-value-text, .msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-properties-align .msf-dashboard-column-properties-form-field .mat-select-value-text {
+.msf-dashboard-column-properties-form-field .mat-select-value-text, .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-button .msf-dashboard-column-properties-form-field .mat-select-value-text, .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-button .msf-dashboard-column-properties-form-field .mat-select-value-text {
   color: #fff;
 }
-.msf-dashboard-column-properties-form-field .mat-form-field-underline, .msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-properties-align .msf-dashboard-column-properties-form-field .mat-form-field-underline, .msf-dashboard-container .msf-dashboard-chartbox .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-properties-align .msf-dashboard-column-properties-form-field .mat-form-field-underline {
+.msf-dashboard-column-properties-form-field .mat-form-field-underline, .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-button .msf-dashboard-column-properties-form-field .mat-form-field-underline, .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-button .msf-dashboard-column-properties-form-field .mat-form-field-underline {
   background-color: #595959;
 }
 
@@ -2246,10 +2322,22 @@ mat-tab-group {
   position: relative;
 }
 .msf-dashboard-panel-container-chart .msf-dashboard-panel-sub-container-column .msf-dashboard-panel-config-button {
+  opacity: 0.05;
+  transition: opacity 0.5s ease-out;
   position: absolute;
   display: flex;
-  width: calc(100% - 5px);
-  height: 100%;
+  left: calc(100% - 45px);
+  top: calc(100% - 90px);
+  align-items: flex-end;
+  flex-direction: column-reverse;
+}
+.msf-dashboard-panel-container-chart .msf-dashboard-panel-sub-container-column .msf-dashboard-panel-config-button:hover {
+  opacity: 1;
+  transition: opacity 0.5s ease-in;
+  position: absolute;
+  display: flex;
+  left: calc(100% - 45px);
+  top: calc(100% - 90px);
   align-items: flex-end;
   flex-direction: column-reverse;
 }
@@ -2382,6 +2470,10 @@ mat-tab-group {
   min-height: 85%;
   max-height: 85%;
   width: 100%;
+}
+
+#msf-dashboard-control-variables-font-size {
+  font-size: inherit !important;
 }
 
 .msf-dashboard-control-variables-button {
@@ -2751,10 +2843,11 @@ mat-tab-group {
 }
 
 #msf-dashboard-drill-down-table-container {
-  height: 165px;
+  height: 190px;
   display: flex;
   justify-content: center;
   flex-direction: row;
+  padding-top: 10px;
 }
 
 #msf-share-dashboard-sub-container-column {
@@ -2904,6 +2997,11 @@ mat-tab-group {
   margin-top: 5px;
 }
 
+#msf-dashboard-panel-table-container-row {
+  flex-direction: row;
+  margin-top: 10px;
+}
+
 #msf-dashboard-panel-form-op-container {
   width: 48%;
   padding-left: 10px;
@@ -2913,6 +3011,8 @@ mat-tab-group {
   display: flex;
   width: 100%;
   padding-left: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
 #msf-dashboard-form-button {
@@ -2922,11 +3022,21 @@ mat-tab-group {
 #msf-dashboard-form-button .mat-icon-button {
   padding-left: 6px;
 }
+#msf-dashboard-form-button .mat-icon-button .msf-dashboard-chart-icon:hover {
+  color: #01abec;
+}
 #msf-dashboard-form-button .mat-icon-drag-button {
   padding-left: 6px;
 }
-#msf-dashboard-form-button .mat-icon-drag-button:hover {
-  padding-left: 6px;
+#msf-dashboard-form-button .mat-icon-drag-button .msf-dashboard-chart-move-icon {
+  background-image: url(assets/images/vert-move.png);
+  background-repeat: no-repeat;
+  width: 20px;
+  height: 30px;
+  background-size: 95%;
+}
+#msf-dashboard-form-button .mat-icon-drag-button .msf-dashboard-chart-move-icon:hover {
+  background-image: url(assets/images/vert-move-hover.png);
   cursor: move;
 }
 
@@ -4409,8 +4519,6 @@ th.msf-show-table, td.msf-show-table {
 }
 
 .msf-dashboard-panel-table {
-  width: calc(100% - 50px) !important;
-  z-index: 99997;
   overflow: auto;
 }
 
@@ -4439,6 +4547,49 @@ th.msf-show-table, td.msf-show-table {
 
 .admin-checkboxes.mat-checkbox-disabled.mat-checkbox-checked .mat-checkbox-background, .mat-checkbox-disabled.mat-checkbox-indeterminate .mat-checkbox-background {
   background-color: #01abec !important;
+}
+
+.msf-admin-search {
+  background-color: #1e1e1e;
+  width: 74%;
+  color: white;
+  height: 24px;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+.msf-admin-search-option {
+  background-color: #1e1e1e;
+  width: 95%;
+  color: white;
+  display: inline-block;
+}
+
+.msf-admin-search mat-icon {
+  display: inline-block;
+}
+
+.msf-argument-preview-container {
+  padding: 0 40px;
+}
+
+.msf-admin-show-selected {
+  display: inline-block;
+  width: 18%;
+  margin-left: 20px;
+  text-align: right;
+}
+
+.msf-admin-show-selected span.mat-checkbox-label {
+  color: white;
+}
+
+.background-principal-empty {
+  background-color: transparent;
+  border-radius: 0px !important;
+  border: 1px solid;
+  width: 25px !important;
+  height: 27px !important;
 }
 
 /*# sourceMappingURL=styles.css.map */

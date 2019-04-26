@@ -13,7 +13,8 @@
                 loadingText="Loading..."
                 [closeOnSelect]="true"
                 [hideSelected]="false"
-                bindLabel="name"
+                bindLabel="{{argument.visibleAttribute}}"
+                
                 (search)="onSearch($event)" 
                 (change)="airlineChange()"
                 (focus)="onFocus()"

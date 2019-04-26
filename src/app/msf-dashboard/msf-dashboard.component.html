@@ -1,4 +1,4 @@
-<div (click)="disableContextMenu()" (contextmenu)="disableContextMenu()" (scroll)="disableContextMenu()" class="msf-dashboard-container" [style.height]="screenHeight">
+<div #scrollContainer (click)="disableContextMenu()" (contextmenu)="disableContextMenu()" (scroll)="disableContextMenu()" class="msf-dashboard-container" [style.height]="screenHeight">
   <div class="msf-dashboard-title" *ngIf="currentDashboardMenu">
     {{currentDashboardMenu.title}}
     <span *ngIf="globals.readOnlyDashboard">
@@ -6,22 +6,22 @@
     </span>
   </div>
   <ng-container *ngIf="dashboardColumns.length">
-    <div class="msf-dashboard-chartbox">
-      <div class="msf-dashboard-chartbox-column" *ngFor="let dashboardColumn of dashboardColumns; let column = index" [attr.data-index]="column">
+    <div class="msf-dashboard-chartbox" cdkDropList cdkDropListOrientation="vertical" [cdkDropListData]="dashboardColumns" (cdkDropListDropped)="swapColumnPositions($event)">
+      <div class="msf-dashboard-chartbox-column" *ngFor="let dashboardColumn of dashboardColumns; let column = index" [attr.data-index]="column" cdkDragLockAxis="y" vsDragScroll [vsDragScrollContainer]="scrollContainer" cdkDrag [cdkDragDisabled]="dashboardColumns.length == 1 || globals.readOnlyDashboard || !dashboardColumnsProperties[column]">
         <div class="msf-dashboard-chartbox-items">
           <div class="msf-dashboard-chartbox-column" cdkDropList cdkDropListOrientation="horizontal" [cdkDropListData]="dashboardColumns[column]" (cdkDropListDropped)="swapPanelRowPositions($event, dashboardColumns[column], column)">
             <div (contextmenu)="onrightClick($event, dashboardColumns[column], row)" class="msf-dashboard-chartbox-item" [style.width.%]="getPanelWidth(column, row)" *ngFor="let dashboardPanel of dashboardColumn; let row = index" [attr.data-index]="row" cdkDragLockAxis="x" cdkDrag [cdkDragDisabled]="dashboardColumn.length == 1 || globals.readOnlyDashboard">
               <div [ngClass]="dashboardPanel.isLoading? 'tab-show' : 'tab-hide'" id="msf-dashboard-panel-loading" class="msf-dashboard-panel-loading">
                 <div class="msf-dashboard-panel-button">
                   <mat-icon class="msf-dashboard-button-close-icon" aria-label="close" (click)="removePanel(column, row)">close</mat-icon>
-                  <mat-icon class="msf-dashboard-button-move-icon" *ngIf="dashboardColumn.length != 1" aria-label="move" cdkDragHandle (click)="disableContextMenu()">drag_handle</mat-icon>
+                  <div class="msf-dashboard-button-move-icon" *ngIf="dashboardColumn.length != 1" cdkDragHandle (click)="disableContextMenu()"></div>
                 </div>
               </div>
               <div *ngIf="row && !globals.readOnlyDashboard" (mousedown)='onLineClick($event, column, row - 1, row)' (mouseup)='onLineRelease()' id='msf-dashboard-panel-left-resize' class='msf-dashboard-panel-line-resize'></div>
               <div *ngIf="row != dashboardColumn.length - 1 && !globals.readOnlyDashboard" (mousedown)='onLineClick($event, column, row, row + 1)' id='msf-dashboard-panel-right-resize' class='msf-dashboard-panel-line-resize'></div>
               <div class="msf-dashboard-panel-button" *ngIf="!globals.readOnlyDashboard">
                 <mat-icon class="msf-dashboard-button-close-icon" aria-label="close" (click)="removePanel(column, row)">close</mat-icon>
-                <mat-icon class="msf-dashboard-button-move-icon" *ngIf="dashboardColumn.length != 1" aria-label="move" cdkDragHandle (click)="disableContextMenu()">drag_handle</mat-icon>
+                <div class="msf-dashboard-button-move-icon" *ngIf="dashboardColumn.length != 1" cdkDragHandle (click)="disableContextMenu()"></div>
               </div>
               <app-msf-dashboard-panel [values]="dashboardPanel" [reAppendChart]="dashboardColumnsReAppendCharts[column]" [panelHeight]="getColumnHeight(column)"></app-msf-dashboard-panel>
             </div>
@@ -42,7 +42,7 @@
                   </mat-select>
                 </mat-form-field>
               </div>
-              <div class="msf-dashboard-column-properties-align" *ngIf="dashboardColumn.length <= 2">
+              <div class="msf-dashboard-column-button" *ngIf="dashboardColumn.length <= 2">
                 <ng-container>
                   <div class="msf-dashboard-column-properties-button">
                     <button mat-flat-button class="flat-button" (click)="addPanelInColumn(column, 1)">Add 1 panel</button>
@@ -53,6 +53,11 @@
                     <button mat-flat-button class="flat-button" (click)="addPanelInColumn(column, 2)">Add 2 panels</button>
                   </div>
                 </ng-container>
+              </div>
+              <div class="msf-dashboard-columns-move-button" *ngIf="dashboardColumns.length != 1">
+                <div class="msf-dashboard-column-properties-button">
+                  <div class="msf-dashboard-button-move-icon" cdkDragHandle (click)="disableContextMenu()"></div>
+                </div>
               </div>
               <div (click)="toggleColumnProperties(column)" class="msf-dashboard-button" style="width: 0">
                 <mat-icon class="msf-dashboard-button-icon" style="padding-right: 0; padding-top: 0" aria-label="fold">keyboard_arrow_up</mat-icon>

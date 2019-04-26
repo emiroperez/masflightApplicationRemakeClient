@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild, Input, NgZone, SimpleChanges } from '@ang
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
+import * as am4maps from "@amcharts/amcharts4/maps";
+import am4geodata_worldLow from "@amcharts/amcharts4-geodata/worldLow";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import am4themes_dark from "@amcharts/amcharts4/themes/dark";
 import { CategoryArguments } from '../model/CategoryArguments';
@@ -29,10 +31,16 @@ import { ChartFlags } from '../msf-dashboard-panel/msf-dashboard-chartflags';
 am4core.useTheme(am4themes_animated);
 am4core.useTheme(am4themes_dark);
 
-// Grid, scrollbar and legend label colors
+// AmChart colors
+const black = am4core.color ("#000000");
 const white = am4core.color ("#ffffff");
+const cyan = am4core.color ("#00a3e1");
 const darkBlue = am4core.color ("#30303d");
 const blueJeans = am4core.color ("#67b7dc");
+
+// SVG used for maps
+const planeSVG = "m2,106h28l24,30h72l-44,-133h35l80,132h98c21,0 21,34 0,34l-98,0 -80,134h-35l43,-133h-71l-24,30h-28l15,-47";
+const targetSVG = "M9,0C4.029,0,0,4.029,0,9s4.029,9,9,9s9-4.029,9-9S13.971,0,9,0z M9,15.93 c-3.83,0-6.93-3.1-6.93-6.93S5.17,2.07,9,2.07s6.93,3.1,6.93,6.93S12.83,15.93,9,15.93 M12.5,9c0,1.933-1.567,3.5-3.5,3.5S5.5,10.933,5.5,9S7.067,5.5,9,5.5 S12.5,7.067,12.5,9z";
 
 @Component({
   selector: 'app-msf-dashboard-panel',
@@ -63,7 +71,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     { name: 'Donut', flags: ChartFlags.DONUTCHART, createSeries: this.createPieSeries },
     { name: 'Information', flags: ChartFlags.INFO },
     { name: 'Simple Form', flags: ChartFlags.INFO | ChartFlags.FORM },
-    { name: 'Table', flags: ChartFlags.TABLE }/*,
+    { name: 'Table', flags: ChartFlags.TABLE },
+    { name: 'Map', flags: ChartFlags.MAP }/*,
     { name: 'Simple Picture', flags: ChartFlags.INFO | ChartFlags.PICTURE },*/
   ];
 
@@ -107,8 +116,8 @@ export class MsfDashboardPanelComponent implements OnInit {
   msfTableRef: MsfTableComponent;
 
   actualPageNumber: number;
-  dataSource : boolean = false;
-  template : boolean = false;
+  dataSource: boolean = false;
+  template: boolean = false;
   moreResults: boolean = false;
   moreResultsBtn: boolean = false;
   displayedColumns;
@@ -120,7 +129,6 @@ export class MsfDashboardPanelComponent implements OnInit {
   public variableFilterCtrl: FormControl = new FormControl ();
   public xaxisFilterCtrl: FormControl = new FormControl ();
   public valueFilterCtrl: FormControl = new FormControl ();
-  public tableFilterCtrl: FormControl = new FormControl ();
 
   public infoVar1FilterCtrl: FormControl = new FormControl ();
   public infoVar2FilterCtrl: FormControl = new FormControl ();
@@ -156,8 +164,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       fontSizeCtrl: new FormControl ({ value: this.fontSizes[1], disabled: true }),
       valueFontSizeCtrl: new FormControl ({ value: this.fontSizes[1], disabled: true }),
       valueOrientationCtrl: new FormControl ({ value: this.orientations[0], disabled: true }),
-      intervalCtrl: new FormControl ({ value: 5, disabled: true }),
-      tableCtrl: new FormControl ({ value: '', disabled: true })
+      intervalCtrl: new FormControl ({ value: 5, disabled: true })
     });
   }
 
@@ -170,6 +177,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.infoFunc1 = JSON.parse (JSON.stringify (this.functions));
     this.values.infoFunc2 = JSON.parse (JSON.stringify (this.functions));
     this.values.infoFunc3 = JSON.parse (JSON.stringify (this.functions));
+
+    if (this.values.currentOption)
+    console.log (this.values.currentOption);
   }
 
   ngOnChanges(changes: SimpleChanges): void
@@ -431,11 +441,166 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   makeChart(chartInfo): void
   {
+    var planeContainer, plane;
+
+    function goForward() {
+
+
+      if (plane.rotation != 0)
+      {
+      plane.animate({ to: 0, property: "rotation" }, 1000).events.on("animationended", goForward);
+      return;
+      }
+
+      var animation = planeContainer.animate({ property: "position", from: 0, to: 1 }, 6000).delay(300);
+//      plane.rotation = 0;
+      animation.events.on("animationended", goBack);
+
+  }
+  
+  function goBack() {
+    if (plane.rotation != 180)
+    {
+    plane.animate({ to: 180, property: "rotation" }, 1000).events.on("animationended", goBack);
+    return;
+    }
+
+      var animation = planeContainer.animate({ property: "position", from: 1, to: 0 }, 6000).delay(300);
+      animation.events.on("animationended", goForward);
+      // plane.rotation = 180;
+  }
+
     this.zone.runOutsideAngular (() => {
       let chart;
 
       // Check chart type before generating it
-      if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART
+      if (this.values.currentChartType.flags & ChartFlags.MAP)
+      {
+        chart = am4core.create ("msf-dashboard-chart-display-" + this.values.id, am4maps.MapChart);
+
+        // Create map instance
+/*        chart.geodata = am4geodata_worldLow;
+        chart.projection = new am4maps.projections.Miller ();*/
+var mapChart = chart;
+mapChart.geodata = am4geodata_worldLow;
+mapChart.projection = new am4maps.projections.Miller();
+mapChart.homeZoomLevel = 1;
+mapChart.homeGeoPoint = {
+  latitude: 48.8567,
+  longitude: 2.3510
+}
+
+var continentSeries = mapChart.series.push(new am4maps.MapPolygonSeries());
+continentSeries.useGeodata = true;
+continentSeries.exclude = ["antarctica"];
+continentSeries.mapPolygons.template.fill = am4core.color("#3b3b3b");
+continentSeries.mapPolygons.template.stroke = black;
+continentSeries.mapPolygons.template.strokeOpacity = 0.25;
+continentSeries.mapPolygons.template.strokeWidth = 0.5;
+
+// create first image container
+var imageSeries = mapChart.series.push(new am4maps.MapImageSeries());
+
+// add circle to it
+let imageSeriesTemplate = imageSeries.mapImages.template;
+var circle2 = imageSeriesTemplate.createChild (am4core.Sprite);
+circle2.path = targetSVG;
+circle2.scale = 0.5;
+circle2.fill = white;
+
+// set propertyfields
+imageSeriesTemplate.propertyFields.latitude = "latitude";
+imageSeriesTemplate.propertyFields.longitude = "longitude";
+
+imageSeriesTemplate.horizontalCenter = "middle";
+imageSeriesTemplate.verticalCenter = "middle";
+imageSeriesTemplate.align = "center";
+imageSeriesTemplate.valign = "middle";
+imageSeriesTemplate.width = 8;
+imageSeriesTemplate.height = 8;
+imageSeriesTemplate.scale = 0.5;
+imageSeriesTemplate.tooltipText = "{title}";
+imageSeriesTemplate.fill = black;
+imageSeriesTemplate.background.fillOpacity = 0;
+imageSeriesTemplate.background.fill = white;
+imageSeriesTemplate.setStateOnChildren = true;
+imageSeriesTemplate.states.create("hover");
+
+var l = imageSeriesTemplate.createChild(am4core.Label);
+l.text = "{title}";
+l.scale = 0.5;
+l.horizontalCenter = "right";
+l.verticalCenter = "middle";
+l.dx += 12;
+l.dy += 6;
+
+var city1 = imageSeries.mapImages.create();
+// London's latitude/longitude
+var city1Info = chartInfo.airports[0];
+city1.latitude = city1Info.latitude;
+city1.longitude = city1Info.longitude;
+city1.scale = 0.0025;
+city1.title = city1Info.title;
+
+// second city, New York
+var city2 = imageSeries.mapImages.create();
+// NY latitude/longitude
+var city2Info = chartInfo.airports[1];
+city2.latitude = city2Info.latitude;
+city2.longitude = city2Info.longitude;
+city2.scale = 0.0025;
+city2.title = city2Info.title;
+
+// create line series
+var lineSeries = mapChart.series.push(new am4maps.MapLineSeries());
+var mapLine = lineSeries.mapLines.create();
+// tell the line to connect cities (alternatevely you can also specify latitudes/longitudes)
+mapLine.imagesToConnect = [city1, city2];
+mapLine.line.strokeOpacity = 0.3;
+mapLine.line.stroke = cyan;
+
+mapChart.homeZoomLevel = 3;
+mapChart.homeGeoPoint = { latitude: 50, longitude: -30 };
+
+// create plane container
+planeContainer = mapLine.lineObjects.create();
+planeContainer.position = 0;
+// set svg path of a plane for the sprite
+plane = planeContainer.createChild(am4core.Sprite);
+
+plane.path = planeSVG;
+plane.fill = cyan;
+plane.scale = 0.0075;
+
+plane.horizontalCenter = "middle";
+plane.verticalCenter = "middle";
+
+mapChart.events.on("ready", goForward);
+
+// make the plane to be bigger in the middle of the line
+planeContainer.adapter.add("scale", function(scale, target) {
+  return 0.02 * (1 - (Math.abs(0.5 - target.position)));
+});
+
+// Create a zoom control
+var zoomControl = new am4maps.ZoomControl();
+chart.zoomControl = zoomControl;
+zoomControl.slider.height = 100;
+zoomControl.align = "right";
+zoomControl.marginBottom = 150;
+zoomControl.marginRight = 10;
+
+// Add button to zoom out
+var home = chart.chartContainer.createChild(am4core.Button);
+home.label.text = "Home";
+home.align = "right";
+home.marginRight = 15;
+home.width = 70;
+home.events.on("hit", function(ev) {
+  chart.goHome();
+});
+      }
+      else if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART
         || this.values.currentChartType.flags & ChartFlags.PIECHART)
       {
         if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART)
@@ -678,7 +843,8 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       // Add export button
       chart.exporting.menu = new am4core.ExportMenu ();
-      chart.exporting.menu.verticalAlign = "bottom";
+      chart.exporting.menu.verticalAlign = "top";
+      chart.exporting.menu.align = "left";
 
       this.chart = chart;
     });
@@ -706,6 +872,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
     else if (!this.utils.isJSONEmpty (this.values.lastestResponse))
     {
+      if (!this.isResponseValid ())
+        return;
+
       if (this.values.currentChartType.flags & ChartFlags.INFO)
       {
         if (this.values.function != null && this.values.function != -1)
@@ -740,15 +909,18 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       if (this.values.function == 1)
       {
-        let prepateTable = setInterval (() =>
+        let prepareTable = setInterval (() =>
         {
           this.loadData ();
-          clearInterval (prepateTable);
+          clearInterval (prepareTable);
         }, 100);
       }
     }
     else if (!this.utils.isJSONEmpty (this.values.lastestResponse))
     {
+      if (!this.isResponseValid ())
+        return;
+
       if (this.values.currentChartType.flags & ChartFlags.INFO)
       {
         if (this.values.function == 1)
@@ -808,6 +980,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   checkGroupingValue(categoryColumnName, values): boolean
   {
+    if (values == null)
+      return false;
+
     for (let value of values)
     {
       if (value.columnName === categoryColumnName)
@@ -815,6 +990,130 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
 
     return false;
+  }
+
+  checkGroupingCategory(argument)
+  {
+    let params: string = "";
+
+    if (argument.name1 != null && argument.name1.toLowerCase ().includes ("grouping"))
+    {
+      let haveValues: boolean = false;
+
+      if (argument.value1 != null && argument.value1.length)
+        haveValues = true;
+
+      if (this.values.currentChartType.flags & ChartFlags.TABLE)
+      {
+        for (let tableVariable of this.values.tableVariables)
+        {
+          if (tableVariable.checked && tableVariable.grouping && !this.checkGroupingValue (tableVariable.id, argument.value1))
+          {
+            if (!haveValues)
+            {
+              params += "" + tableVariable.id;
+              haveValues = true;
+            }
+            else
+              params += "," + tableVariable.id;
+          }
+        }
+      }
+      else if (this.values.currentChartType.flags & ChartFlags.INFO)
+      {
+        if (this.values.currentChartType.flags & ChartFlags.FORM)
+        {
+          for (let formVariable of this.values.formVariables)
+          {
+            if (formVariable.column.item.grouping && !this.checkGroupingValue (formVariable.column.item.columnName, argument.value1))
+            {
+              if (!haveValues)
+              {
+                params += "" + formVariable.column.item.columnName;
+                haveValues = true;
+              }
+              else
+                params += "," + formVariable.column.item.columnName;
+            }
+          }
+        }
+        else if (!(this.values.currentChartType.flags & ChartFlags.PICTURE))
+        {
+          if (this.values.infoVar1 != null && this.values.infoVar1.grouping)
+          {
+            if (!haveValues)
+            {
+              params += "" + this.values.infoVar1.id;
+              haveValues = true;
+            }
+            else
+              params += "," + this.values.infoVar1.id;
+          }
+
+          if (this.values.infoVar2 != null && this.values.infoVar2.grouping)
+          {
+            if (!haveValues)
+            {
+              params += "" + this.values.infoVar2.id;
+              haveValues = true;
+            }
+            else
+              params += "," + this.values.infoVar2.id;
+          }
+
+          if (this.values.infoVar3 != null && this.values.infoVar3.grouping)
+          {
+            if (!haveValues)
+            {
+              params += "" + this.values.infoVar3.id;
+              haveValues = true;
+            }
+            else
+              params += "," + this.values.infoVar3.id;
+          }
+        }
+      }
+      else if (!(this.values.currentChartType.flags & ChartFlags.MAP))
+      {
+        if (this.values.variable.item.grouping && !this.checkGroupingValue (this.values.variable.item.columnName, argument.value1))
+        {
+          if (!haveValues)
+          {
+            params += "" + this.values.variable.item.columnName;
+            haveValues = true;
+          }
+          else
+            params += "," + this.values.variable.item.columnName;
+        }
+
+        if (this.values.currentChartType.flags & ChartFlags.XYCHART)
+        {
+          if (this.values.xaxis.item.grouping && !this.checkGroupingValue (this.values.xaxis.item.columnName, argument.value1))
+          {
+            if (!haveValues)
+            {
+              params += "" + this.values.xaxis.item.columnName;
+              haveValues = true;
+            }
+            else
+              params += "," + this.values.xaxis.item.columnName;
+          }
+        }
+
+        if (this.values.valueColumn.item.grouping && !this.checkGroupingValue (this.values.valueColumn.item.columnName, argument.value1))
+        {
+          if (!haveValues)
+          {
+            params += "" + this.values.valueColumn.item.columnName;
+            haveValues = true;
+          }
+          else
+            params += "," + this.values.valueColumn.item.columnName;
+        }
+      }
+    }
+
+    return params;
   }
 
   getParameters()
@@ -835,23 +1134,14 @@ export class MsfDashboardPanelComponent implements OnInit {
             let argument: Arguments = category.arguments[j];
 
             if (params)
-              params += "&" + this.utils.getArguments (argument);
-            else
-              params = this.utils.getArguments (argument);
-
-            // check if the argument uses grouping to add chart values that requires grouping
-            // to work properly
-            if (!(this.values.currentChartType.flags & ChartFlags.TABLE) && !(this.values.currentChartType.flags & ChartFlags.INFO) && argument.name1 != null && argument.name1.toLowerCase ().includes ("grouping"))
             {
-              if (this.values.variable.item.grouping && !this.checkGroupingValue (this.values.variable.item.columnName, argument.value1))
-                params += "," + this.values.variable.item.columnName;
-
-              if (this.values.xaxis.item.grouping && !this.checkGroupingValue (this.values.xaxis.item.columnName, argument.value1))
-                params += "," + this.values.xaxis.item.columnName;
-
-              if (this.values.valueColumn.item.grouping && !this.checkGroupingValue (this.values.valueColumn.item.columnName, argument.value1))
-                params += "," + this.values.valueColumn.item.columnName;
+              if (argument.type != "singleCheckbox" && argument.type != "serviceClasses" && argument.type != "fareLower" && argument.type != "airportsRoutes" && argument.name1 != "intermediateCitiesList")
+                params += "&" + this.utils.getArguments (argument) + this.checkGroupingCategory (argument);
+              else if (argument.value1 != false && argument.value1 != "" && argument.value1 != undefined && argument.value1 != null)
+                params += "&" + this.utils.getArguments (argument) + this.checkGroupingCategory (argument);
             }
+            else
+              params = this.utils.getArguments (argument) + this.checkGroupingCategory (argument);
           }
         }        
       }
@@ -871,15 +1161,16 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     if (this.values.currentChartType.flags & ChartFlags.FORM
       || this.values.currentChartType.flags & ChartFlags.PICTURE
-      || this.values.currentChartType.flags & ChartFlags.TABLE)
+      || this.values.currentChartType.flags & ChartFlags.TABLE
+      || this.values.currentChartType.flags & ChartFlags.MAP)
     {
       return {
         id: this.values.id,
         option: this.values.currentOption,
         title: this.values.chartName,
-        chartColumnOptions: JSON.stringify (this.values.chartColumnOptions),
+        chartColumnOptions: this.values.chartColumnOptions ? JSON.stringify (this.values.chartColumnOptions) : null,
         chartType: this.chartTypes.indexOf (this.values.currentChartType),
-        categoryOptions: JSON.stringify (this.values.currentOptionCategories),
+        categoryOptions: this.values.currentOptionCategories ? JSON.stringify (this.values.currentOptionCategories) : null,
         function: 1,
         updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0)
       };
@@ -890,13 +1181,13 @@ export class MsfDashboardPanelComponent implements OnInit {
         id: this.values.id,
         option: this.values.currentOption,
         title: this.values.chartName,
-        chartColumnOptions: JSON.stringify (this.values.chartColumnOptions),
-        analysis: this.values.chartColumnOptions.indexOf (this.values.infoVar1),
-        xaxis: this.values.chartColumnOptions.indexOf (this.values.infoVar2),
-        values: this.values.chartColumnOptions.indexOf (this.values.infoVar3),
+        chartColumnOptions: this.values.chartColumnOptions ? JSON.stringify (this.values.chartColumnOptions) : null,
+        analysis: this.values.chartColumnOptions ? this.values.chartColumnOptions.indexOf (this.values.infoVar1) : null,
+        xaxis: this.values.chartColumnOptions ? this.values.chartColumnOptions.indexOf (this.values.infoVar2) : null,
+        values: this.values.chartColumnOptions ? this.values.chartColumnOptions.indexOf (this.values.infoVar3) : null,
         function: 1,
         chartType: this.chartTypes.indexOf (this.values.currentChartType),
-        categoryOptions: JSON.stringify (this.values.currentOptionCategories),
+        categoryOptions: this.values.currentOptionCategories ? JSON.stringify (this.values.currentOptionCategories) : null,
         updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0)
       };
     }
@@ -906,13 +1197,13 @@ export class MsfDashboardPanelComponent implements OnInit {
         id: this.values.id,
         option: this.values.currentOption,
         title: this.values.chartName,
-        chartColumnOptions: JSON.stringify (this.values.chartColumnOptions),
-        analysis: this.values.chartColumnOptions.indexOf (this.values.variable),
-        xaxis: this.values.chartColumnOptions.indexOf (this.values.xaxis),
-        values: this.values.chartColumnOptions.indexOf (this.values.valueColumn),
+        chartColumnOptions: this.values.chartColumnOptions ? JSON.stringify (this.values.chartColumnOptions) : null,
+        analysis: this.values.chartColumnOptions ? this.values.chartColumnOptions.indexOf (this.values.variable) : null,
+        xaxis: this.values.chartColumnOptions ? this.values.chartColumnOptions.indexOf (this.values.xaxis) : null,
+        values: this.values.chartColumnOptions ? this.values.chartColumnOptions.indexOf (this.values.valueColumn) : null,
         function: this.functions.indexOf (this.values.function),
         chartType: this.chartTypes.indexOf (this.values.currentChartType),
-        categoryOptions: JSON.stringify (this.values.currentOptionCategories),
+        categoryOptions: this.values.currentOptionCategories ? JSON.stringify (this.values.currentOptionCategories) : null,
         paletteColors: JSON.stringify (this.values.paletteColors),
         updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0)
       };
@@ -1032,7 +1323,6 @@ export class MsfDashboardPanelComponent implements OnInit {
   loadTableData (moreResults, handlerSuccess, handlerError): void
   {
     let url, urlBase, urlArg;
-    let tableVariableIds = [];
 
     this.msfTableRef.displayedColumns = [];
   
@@ -1055,7 +1345,10 @@ export class MsfDashboardPanelComponent implements OnInit {
     url = this.service.host + "/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
 
     for (let tableVariable of this.values.tableVariables)
-      url += "&metaDataIds=" + tableVariable.item.id;
+    {
+      if (tableVariable.checked)
+        url += "&metaDataIds=" + tableVariable.itemId;
+    }
 
     this.http.get (this.msfTableRef, url, handlerSuccess, handlerError, null);
   }
@@ -1064,7 +1357,9 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     this.globals.startTimestamp = new Date ();
 
-    if (this.values.currentChartType.flags & ChartFlags.TABLE)
+    if (this.values.currentChartType.flags & ChartFlags.MAP)
+      this.loadFormData (this.handlerMapSuccess, this.handlerMapError);
+    else if (this.values.currentChartType.flags & ChartFlags.TABLE)
       this.loadTableData (false, this.msfTableRef.handlerSuccess, this.msfTableRef.handlerError);
     else if (this.values.currentChartType.flags & ChartFlags.PICTURE)
       this.loadPicData (this.handlerPicSuccess, this.handlerPicError);
@@ -1086,6 +1381,42 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.destroyChart ();
   }
 
+  isResponseValid(): boolean
+  {
+    if (this.values.currentChartType.flags & ChartFlags.MAP)
+    {
+      if (this.utils.isJSONEmpty (this.values.lastestResponse))
+        return false;
+    }
+    else if (this.values.currentChartType.flags & ChartFlags.INFO)
+    {
+      if (this.values.currentChartType.flags & ChartFlags.FORM)
+      {
+        if (!this.values.lastestResponse.length)
+          return false;
+      }
+      else if (this.values.currentChartType.flags & ChartFlags.PICTURE)
+      {
+      }
+      else
+      {
+        if (!this.haveDataInfo (this.values.lastestResponse))
+          return false;
+      }
+    }
+    else
+    {
+      if (this.values.currentChartType.flags & ChartFlags.XYCHART && this.utils.isJSONEmpty (this.values.lastestResponse.data))
+        return false;
+
+      if ((!(this.values.currentChartType.flags & ChartFlags.XYCHART) && this.values.lastestResponse.dataProvider == null) ||
+        (this.values.currentChartType.flags & ChartFlags.XYCHART && !this.values.lastestResponse.filter))
+        return false;
+    }
+
+    return true;
+  }
+
   noDataFound(): void
   {
     this.values.lastestResponse = null;
@@ -1096,7 +1427,19 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.tableGenerated = false;
     this.values.isLoading = false;
 
-    if (this.values.currentChartType.flags & ChartFlags.PICTURE)
+    if (this.values.currentChartType.flags & ChartFlags.MAP)
+    {
+      this.dialog.open (MessageComponent, {
+        data: { title: "Error", message: "No data available for the map." }
+      });
+    }
+    else if (this.values.currentChartType.flags & ChartFlags.TABLE)
+    {
+      this.dialog.open (MessageComponent, {
+        data: { title: "Error", message: "No data available for the table." }
+      });
+    }
+    else if (this.values.currentChartType.flags & ChartFlags.PICTURE)
     {
       this.dialog.open (MessageComponent, {
         data: { title: "Error", message: "No picture available." }
@@ -1138,6 +1481,48 @@ export class MsfDashboardPanelComponent implements OnInit {
       return true;
   }
 
+  getMainKey(keys, response)
+  {
+    for (let i of keys)
+    {
+      let obj = response[i];
+
+      if (obj instanceof Object)
+        return obj;
+    }
+
+    return null;
+  }
+
+  handlerMapSuccess(_this, data): void
+  {
+    let response, result;
+
+    if (_this.utils.isJSONEmpty (data) || _this.utils.isJSONEmpty (data.Response))
+    {
+      _this.noDataFound ();
+      return;
+    }
+
+    // only use the first result and filter out the values
+    response = data.Response;
+    for (let key in response)
+    {
+      let array = response[key];
+      if (array != null)
+      {
+        if (Array.isArray (array))
+        {
+          result = array[0];
+          break;
+        }
+      }
+    }
+
+    _this.service.saveLastestResponse (_this, _this.getPanelInfo (), JSON.stringify (result),
+      _this.handlerMapLastestResponse, _this.handlerMapError);
+  }
+
   handlerPicSuccess(_this, data): void
   {
     if (data == null)
@@ -1174,12 +1559,6 @@ export class MsfDashboardPanelComponent implements OnInit {
       return;
     }
 
-    if (!data.Response.total)
-    {
-      _this.noDataFound ();
-      return;
-    }
-
     // only use the first result and filter out the values
     response = data.Response;
     for (let key in response)
@@ -1209,7 +1588,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
 
     // save the panel into the database
-    _this.service.saveLastestResponse (_this, _this.getPanelInfo (), JSON.stringify (formResults), _this.handlerFormLastestResponse, _this.handlerFormError);
+    _this.service.saveLastestResponse (_this, _this.getPanelInfo (), JSON.stringify (formResults),
+      _this.handlerFormLastestResponse, _this.handlerFormError);
   }
 
   handlerFormLastestResponse(_this, data): void
@@ -1255,6 +1635,26 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.formGenerated = false;
     _this.values.picGenerated = false;
     _this.values.tableGenerated = true;
+
+    _this.stopUpdateInterval ();
+    _this.startUpdateInterval ();
+  }
+
+  handlerMapLastestResponse(_this, data): void
+  {
+    _this.values.lastestResponse = data;
+
+    // destroy current chart if it's already generated to avoid a blank chart
+    _this.destroyChart ();
+
+    _this.makeChart (data);
+    _this.values.displayChart = true;
+    _this.values.chartGenerated = true;
+    _this.values.infoGenerated = false;
+    _this.values.formGenerated = false;
+    _this.values.picGenerated = false;
+    _this.values.tableGenerated = false;
+    _this.values.isLoading = false;
 
     _this.stopUpdateInterval ();
     _this.startUpdateInterval ();
@@ -1318,8 +1718,54 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   loadChartFilterValues(component): void
   {
-    this.values.isLoading = true;
-    this.getChartFilterValues (component.id, this.addChartFilterValues);
+    this.values.chartColumnOptions = [];
+    this.values.tableVariables = [];
+
+    for (let columnConfig of component.columnOptions)
+    {
+      this.values.chartColumnOptions.push ( { id: columnConfig.columnName, name: columnConfig.columnLabel, item: columnConfig } );
+      this.values.tableVariables.push ( { id: columnConfig.columnName, name: columnConfig.columnLabel, itemId: columnConfig.id, grouping: columnConfig.grouping, checked: true } );
+    }
+
+    // load the initial filter variables list
+    this.filteredVariables.next (this.values.chartColumnOptions.slice ());
+
+    this.searchChange (this.variableFilterCtrl);
+    this.searchChange (this.xaxisFilterCtrl);
+    this.searchChange (this.valueFilterCtrl);
+
+    this.searchChange (this.infoVar1FilterCtrl);
+    this.searchChange (this.infoVar2FilterCtrl);
+    this.searchChange (this.infoVar3FilterCtrl);
+
+    this.searchChange (this.columnFilterCtrl);
+
+    // reset chart filter values and disable generate chart button
+    this.chartForm.get ('variableCtrl').reset ();
+    this.chartForm.get ('xaxisCtrl').reset ();
+    this.chartForm.get ('valueCtrl').reset ();
+    this.chartForm.get ('columnCtrl').reset ();
+    this.chartForm.get ('fontSizeCtrl').setValue (this.fontSizes[1]);
+    this.chartForm.get ('valueFontSizeCtrl').setValue (this.fontSizes[1]);
+    this.chartForm.get ('valueOrientationCtrl').setValue (this.orientations[0]);
+    this.checkChartFilters ();
+
+    this.values.formVariables = [];
+    this.variableCtrlBtnEnabled = true;
+
+    this.chartForm.get ('variableCtrl').enable ();
+    this.chartForm.get ('infoNumVarCtrl').enable ();
+
+    if (this.values.currentChartType.flags & ChartFlags.XYCHART)
+      this.chartForm.get ('xaxisCtrl').enable ();
+
+    this.chartForm.get ('valueCtrl').enable ();
+    this.chartForm.get ('columnCtrl').enable ();
+    this.chartForm.get ('fontSizeCtrl').enable ();
+    this.chartForm.get ('valueFontSizeCtrl').enable ();
+    this.chartForm.get ('valueOrientationCtrl').enable ();
+
+    this.values.currentOptionCategories = null;
   }
 
   handlerChartError(_this, result): void
@@ -1405,6 +1851,22 @@ export class MsfDashboardPanelComponent implements OnInit {
     });
   }
 
+  handlerMapError(_this, result): void
+  {
+    console.log (result);
+    _this.values.lastestResponse = null;
+    _this.values.chartGenerated = false;
+    _this.values.infoGenerated = false;
+    _this.values.formGenerated = false;
+    _this.values.picGenerated = false;
+    _this.values.tableGenerated = false;
+    _this.values.isLoading = false;
+
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Error", message: "Failed to generate map." }
+    });
+  }
+
   handlerError(_this, result): void
   {
     console.log (result);
@@ -1419,8 +1881,13 @@ export class MsfDashboardPanelComponent implements OnInit {
   addChartFilterValues(_this, data): void
   {
     _this.values.chartColumnOptions = [];
+    _this.values.tableVariables = [];
+
     for (let columnConfig of data)
+    {
       _this.values.chartColumnOptions.push ( { id: columnConfig.columnName, name: columnConfig.columnLabel, item: columnConfig } );
+      _this.values.tableVariables.push ( { id: columnConfig.columnName, name: columnConfig.columnLabel, itemId: columnConfig.id, grouping: columnConfig.grouping, checked: true } );
+    }
 
     // load the initial filter variables list
     _this.filteredVariables.next (_this.values.chartColumnOptions.slice ());
@@ -1434,7 +1901,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.searchChange (_this.infoVar3FilterCtrl);
 
     _this.searchChange (_this.columnFilterCtrl);
-    _this.searchChange (_this.tableFilterCtrl);
 
     // reset chart filter values and disable generate chart button
     _this.chartForm.get ('variableCtrl').reset ();
@@ -1447,21 +1913,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.checkChartFilters ();
 
     _this.values.formVariables = [];
-
-    // initiate another query to get the category arguments
-    _this.service.loadOptionCategoryArguments (_this, _this.values.currentOption, _this.setCategories, _this.handlerError);
-  }
-
-  setCategories(_this, data): void
-  {
-    _this.values.currentOptionCategories = [];
-
-    for (let optionCategory of data)
-    {
-      for (let category of optionCategory.categoryArgumentsId)
-        _this.values.currentOptionCategories.push (category);
-    }
-
     _this.variableCtrlBtnEnabled = true;
 
     _this.chartForm.get ('variableCtrl').enable ();
@@ -1475,9 +1926,68 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.chartForm.get ('fontSizeCtrl').enable ();
     _this.chartForm.get ('valueFontSizeCtrl').enable ();
     _this.chartForm.get ('valueOrientationCtrl').enable ();
-    _this.chartForm.get ('tableCtrl').enable ();
 
     _this.values.isLoading = false;
+    _this.values.currentOptionCategories = null;
+  }
+
+  setCategories(_this, data): void
+  {
+    let optionCategories = [];
+
+    for (let optionCategory of data)
+    {
+      for (let category of optionCategory.categoryArgumentsId)
+        optionCategories.push (category);
+    }
+
+    // if the category is not empty, add the categories that are missing
+    if (_this.values.currentOptionCategories != null)
+    {
+      for (let optionCategory of optionCategories)
+      {
+        for (let curOptionCategory of _this.values.currentOptionCategories)
+        {
+          if (curOptionCategory.id == optionCategory.id)
+          {
+            for (let curCategoryArgument of curOptionCategory.arguments)
+            {
+              for (let argument of optionCategory.arguments)
+              {
+                if (curCategoryArgument.id == argument.id)
+                {
+                  argument.value1 = curCategoryArgument.value1;
+                  argument.value2 = curCategoryArgument.value2;
+                  argument.value3 = curCategoryArgument.value3;
+                  break;
+                }
+              }
+            }
+
+            break;
+          }
+        }
+      }
+    }
+
+    _this.values.currentOptionCategories = optionCategories;
+
+    // workaround to prevent errors on certain data forms
+    if (!_this.haveSortingCheckboxes ())
+      _this.globals.isLoading = false;
+
+    // console.log (_this.values.currentOptionCategories);
+
+    _this.dialog.open (MsfDashboardControlVariablesComponent, {
+      height: '605px',
+      width: '400px',
+      panelClass: 'msf-dashboard-control-variables-dialog',
+      data: {
+        currentOptionCategories: _this.values.currentOptionCategories,
+        currentOptionId: _this.values.currentOption.id,
+        title: _this.values.chartName
+      }
+    });
   }
 
   searchChange(filterCtrl): void
@@ -1536,22 +2046,11 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   goToControlVariables(): void
   {
-    // workaround to prevent errors on certain data forms
-    if (this.haveSortingCheckboxes ())
-      this.globals.isLoading = true;
+    this.globals.isLoading = true;
 
-    // console.log (this.values.currentOptionCategories);
-
-    this.dialog.open (MsfDashboardControlVariablesComponent, {
-      height: '605px',
-      width: '400px',
-      panelClass: 'msf-dashboard-control-variables-dialog',
-      data: {
-        currentOptionCategories: this.values.currentOptionCategories,
-        currentOptionId: this.values.currentOption.id,
-        title: this.values.chartName
-      }
-    });
+    // load the category arguments before opening the dialog
+    this.service.loadOptionCategoryArguments (this, this.values.currentOption,
+      this.setCategories, this.handlerError);
   }
 
   // save chart data into a temporary value
@@ -1575,6 +2074,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.temp.currentOptionCategories = JSON.parse (JSON.stringify (this.values.currentOptionCategories));
 
     this.temp.formVariables = [];
+    this.temp.tableVariables = JSON.parse (JSON.stringify (this.values.tableVariables));
 
     if (this.values.currentChartType.flags & ChartFlags.FORM)
     {
@@ -1735,6 +2235,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
 
     this.values.formVariables = JSON.parse (JSON.stringify (this.temp.formVariables));
+    this.values.tableVariables = JSON.parse (JSON.stringify (this.temp.tableVariables));
 
     this.values.updateIntervalSwitch = this.temp.updateIntervalSwitch;
     this.values.updateTimeLeft = this.temp.updateTimeLeft;
@@ -1781,8 +2282,16 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.values.infoNumVariables = 0;
       this.chartForm.get ('infoNumVarCtrl').setValue (0);
 
-      if (this.values.currentChartType.flags & ChartFlags.TABLE)
+      if (this.values.currentChartType.flags & ChartFlags.TABLE
+        || this.values.currentChartType.flags & ChartFlags.MAP)
       {
+        if (this.values.currentChartType.flags & ChartFlags.MAP
+          && this.values.currentOption.metaData != 2)
+        {
+          this.values.currentOption = null;
+          this.chartForm.get ('dataFormCtrl').reset ();
+        }
+
         this.values.xaxis = null;
         this.chartForm.get ('xaxisCtrl').reset ();
     
@@ -1791,24 +2300,16 @@ export class MsfDashboardPanelComponent implements OnInit {
     
         this.values.variable = null;
         this.chartForm.get ('variableCtrl').reset ();
-
-        this.chartForm.get ('tableCtrl').enable ();
       }
       else if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
       {
         this.values.xaxis = null;
         this.chartForm.get ('xaxisCtrl').reset ();
         this.chartForm.get ('xaxisCtrl').disable ();
-
-        this.values.tableVariables = [];
-        this.chartForm.get ('tableCtrl').reset ();
       }
       else
       {
         this.chartForm.get ('xaxisCtrl').enable ();
-
-        this.values.tableVariables = [];
-        this.chartForm.get ('tableCtrl').reset ();
       }
 
       this.chartForm.get ('variableCtrl').enable ();
@@ -1853,9 +2354,10 @@ export class MsfDashboardPanelComponent implements OnInit {
   checkChartFilters(): void
   {
     if (this.values.currentChartType.flags & ChartFlags.PICTURE
-      || this.values.currentChartType.flags & ChartFlags.TABLE)
+      || this.values.currentChartType.flags & ChartFlags.TABLE
+      || this.values.currentChartType.flags & ChartFlags.MAP)
     {
-      if (this.values.options != null)
+      if (this.values.currentOption != null)
       {
         this.generateBtnEnabled = true;
         return;
@@ -1951,8 +2453,17 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     let i, options, option;
 
-    if (this.values.chartColumnOptions)
+    if (this.values.currentOption)
     {
+      this.values.chartColumnOptions = [];
+      this.values.tableVariables = [];
+  
+      for (let columnConfig of this.values.currentOption.columnOptions)
+      {
+        this.values.chartColumnOptions.push ( { id: columnConfig.columnName, name: columnConfig.columnLabel, item: columnConfig } );
+        this.values.tableVariables.push ( { id: columnConfig.columnName, name: columnConfig.columnLabel, itemId: columnConfig.id, grouping: columnConfig.grouping, checked: true } );
+      }
+
       this.filteredVariables.next (this.values.chartColumnOptions.slice ());
 
       this.searchChange (this.variableFilterCtrl);
@@ -2005,15 +2516,15 @@ export class MsfDashboardPanelComponent implements OnInit {
             this.chartForm.get ('xaxisCtrl').enable ();
 
           this.chartForm.get ('valueCtrl').enable ();
-          this.chartForm.get ('tableCtrl').enable ();
           this.values.currentOption = option;
           break;
         }
       }
     }
 
-    // picture panels doesn't need any data
-    if (this.values.currentChartType.flags & ChartFlags.PICTURE)
+    // picture and map panels doesn't need any data
+    if (this.values.currentChartType.flags & ChartFlags.PICTURE
+      && this.values.currentChartType.flags & ChartFlags.MAP)
     {
       if (this.values.currentOptionCategories)
         this.variableCtrlBtnEnabled = true;
@@ -2027,11 +2538,12 @@ export class MsfDashboardPanelComponent implements OnInit {
       if (this.values.currentOptionCategories)
         this.variableCtrlBtnEnabled = true;
 
-      this.chartForm.get ('tableCtrl').reset ();
-
       // set table column filters settings if loaded from database
       this.values.tableVariables = [];
-  
+
+      for (let columnConfig of this.values.chartColumnOptions)
+        this.values.tableVariables.push ( { id: columnConfig.id, name: columnConfig.name, itemId: columnConfig.item.id, grouping: columnConfig.item.grouping, checked: true } );
+
       for (i = 0; i < this.values.lastestResponse.length; i++)
       {
         let tableColumn = this.values.lastestResponse[i];
@@ -2039,13 +2551,13 @@ export class MsfDashboardPanelComponent implements OnInit {
         if (tableColumn.id == null)
           continue;
   
-        for (let j = 0; j < this.values.chartColumnOptions.length; j++)
+        for (let j = 0; j < this.values.tableVariables.length; j++)
         {
-          let curVariable = this.values.chartColumnOptions[j];
+          let curVariable = this.values.tableVariables[j];
   
-          if (curVariable.item.id == tableColumn.id)
+          if (curVariable.itemId == tableColumn.id)
           {
-            this.values.tableVariables.push (curVariable);
+            curVariable.checked = tableColumn.checked;
             break;
           }
         }
@@ -2308,7 +2820,8 @@ export class MsfDashboardPanelComponent implements OnInit {
           for (let tableVariable of _this.values.tableVariables)
           {
             tableVariableIds.push ({
-              id: tableVariable.item.id
+              id: tableVariable.itemId,
+              checked: tableVariable.checked
             });
           }
   
@@ -2335,7 +2848,8 @@ export class MsfDashboardPanelComponent implements OnInit {
           panel.lastestResponse = JSON.stringify (formVariables);
         }
         else if (_this.values.currentChartType.flags & ChartFlags.INFO
-          && !(_this.values.currentChartType.flags & ChartFlags.PICTURE))
+          && !(_this.values.currentChartType.flags & ChartFlags.PICTURE)
+          && !(_this.values.currentChartType.flags & ChartFlags.MAP))
         {
           let variables;
 
@@ -2417,6 +2931,11 @@ export class MsfDashboardPanelComponent implements OnInit {
   isTablePanel(): boolean
   {
     return (this.values.currentChartType.flags & ChartFlags.TABLE) ? true : false;
+  }
+
+  isMapPanel(): boolean
+  {
+    return (this.values.currentChartType.flags & ChartFlags.MAP) ? true : false;
   }
 
   checkNumVariables(): void
@@ -2553,7 +3072,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         categoryOptions: JSON.stringify (this.values.currentOptionCategories),
         functions: this.functions,
         childChart: childChart,
-        updateTimeInterval: 0
+        updateTimeInterval: 0,
+        options: this.values.options
       }
     });
 
@@ -2582,7 +3102,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         for (let tableVariable of value.tableVariables)
         {
           tableVariableIds.push ({
-            id: tableVariable.item.id
+            id: tableVariable.itemId,
+            checked: tableVariable.checked
           });
         }
 
@@ -2771,17 +3292,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     moveItemInArray (this.values.formVariables, event.previousIndex, event.currentIndex);
   }
 
-  isTableVariableValid(): boolean
-  {
-    return this.chartForm.get ('tableCtrl').value;
-  }
-
-  addTableVariable(): void
-  {
-    this.values.tableVariables.push (this.chartForm.get ('tableCtrl').value);
-    this.chartForm.get ('tableCtrl').reset ();
-  }
-
   deleteColumnFromTable(index): void
   {
     this.values.tableVariables.splice (index, 1);
@@ -2795,13 +3305,44 @@ export class MsfDashboardPanelComponent implements OnInit {
       return;
     }
 
-    this.values.lastestResponse = [];
+    // only save the lastest response if the page number of the table is the first one
+    if (!this.actualPageNumber)
+    {
+      this.values.lastestResponse = [];
 
-    for (let tableVariable of this.values.tableVariables)
-      this.values.lastestResponse.push ({ id: tableVariable.item.id });
+      for (let tableVariable of this.values.tableVariables)
+        this.values.lastestResponse.push ({ id: tableVariable.itemId, checked: tableVariable.checked });
 
-    this.service.saveLastestResponse (this, this.getPanelInfo (), JSON.stringify (this.values.lastestResponse),
-      this.handlerTableLastestResponse, this.handlerTableError);
+      this.service.saveLastestResponse (this, this.getPanelInfo (), JSON.stringify (this.values.lastestResponse),
+        this.handlerTableLastestResponse, this.handlerTableError);
+    }
+    else
+    {
+      this.values.isLoading = false;
+
+      this.values.displayTable = true;
+      this.values.chartGenerated = false;
+      this.values.infoGenerated = false;
+      this.values.formGenerated = false;
+      this.values.picGenerated = false;
+      this.values.tableGenerated = true;
+
+      // resume the update interval if activated
+      if (this.values.updateIntervalSwitch)
+      {
+        this.updateInterval = setInterval (() =>
+        {
+          if (this.updateTimeLeft)
+            this.updateTimeLeft--;
+  
+          if (!this.updateTimeLeft)
+          {
+            this.updateTimeLeft = this.values.updateTimeLeft;
+            this.loadData ();
+          }
+        }, 60000); // update interval each minute
+      }
+    }
   }
 
   moreTableResults()
@@ -2810,10 +3351,19 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       this.moreResults = false;
       this.values.isLoading = true;
+      this.stopUpdateInterval ();
 
       setTimeout (() => {
         this.loadTableData (true, this.msfTableRef.handlerSuccess, this.msfTableRef.handlerError);
       }, 3000);
     }
+  }
+
+  haveTableDataSource(): boolean
+  {
+    if (!this.msfTableRef)
+      return false;
+
+    return this.msfTableRef.dataSource ? true : false;
   }
 }

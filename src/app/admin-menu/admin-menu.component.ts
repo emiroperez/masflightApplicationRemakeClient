@@ -11,6 +11,7 @@ import { DrillDown } from '../model/DrillDown';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil, take } from 'rxjs/operators';
 import { CategoryArguments } from '../model/CategoryArguments';
+import { DialogArgumentPreviewComponent } from '../dialog-argument-preview/dialog-argument-preview.component';
 //import  clonedeep from 'lodash.clonedeep';
 
 @Component({
@@ -59,6 +60,8 @@ export class NewCategoryDialog {
 onNoClick(){
   this.dialogRef.close();
 }
+
+
 
 sendData() {
   this.dataToSend = this.categories.concat(this.categoryDelete);
@@ -225,11 +228,10 @@ export class EditOutputOptionsMetaDialog {
   arg: any[];
 
   constructor(
-    public dialogRef: MatDialogRef<EditOutputOptionsMetaDialog>,
+    public dialogRef: MatDialogRef<EditOutputOptionsMetaDialog>,public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data : {outputs: any, option: any, arguments: any}) {
       this.arg = data.arguments;
      }
-
 
     displayedColumns = ['columnLabel','columnName', 'columnType', 'columnFormat', 'grouping', 'unit', 'arguments'];
     dataSource = this.data.outputs;
@@ -313,7 +315,7 @@ export class EditCategoryArgumentDialog {
 
   constructor(
     public dialogRef: MatDialogRef<EditCategoryArgumentDialog>,
-    @Inject(MAT_DIALOG_DATA) public data) {
+    @Inject(MAT_DIALOG_DATA) public data,public dialog:MatDialog) {
 
      }
 
@@ -322,10 +324,16 @@ export class EditCategoryArgumentDialog {
   onNoClick(): void {
     this.dialogRef.close();
   }
+  showPreview(argument){
+    this.dialog.open (DialogArgumentPreviewComponent, {
+      height: "560px",
+      width: "500px",
+      panelClass: 'msf-argument-preview-popup',
+      data:argument
+    });
+}
 
-
-
-  selectArgumentCategory(category) {
+selectArgumentCategory(category) {
     if (this.itemSelected != category) {
       category.isSelected = !category.isSelected;
       this.itemSelected.isSelected = !this.itemSelected.isSelected;
@@ -424,6 +432,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   optionsCategoriesArguments: any[] = [];
   categoryArgumentSelected: any = {};
   searchText: string;
+  searchTextOption: string;
   idDomOptionSelected: any;
   emptyError: any = 0;
   menuString: any[] = [];
@@ -441,6 +450,85 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+  }
+
+  filterMenuOptions(){
+    for (let index = 0; index < this.menu.length; index++) {
+      const option = this.menu[index];
+      this.setShowOption(option,this)
+        this.recursiveOption(option,this);
+    }
+
+  }
+  recursiveOption(option: any,_this) {
+    if(option.children.length!=0){
+      for (let index = 0; index < option.children.length; index++) {
+        const element = option.children[index];
+        _this.setShowOption(element,_this)
+        _this.recursiveOption(element,this);
+      }
+    }else{
+      _this.setShowOption(option,_this)
+    }
+
+  }
+
+  setShowOption(option,_this){
+    if(_this.searchTextOption!="" && _this.searchTextOption!=null){
+      if(option.label.toLowerCase().indexOf(_this.searchTextOption)!=-1){
+        option.show = true;
+        if(option.menuParentId!=null){
+          _this.findOnMenu(option.menuParentId)
+        }
+        if(option.categoryParentId!=null){
+          _this.findOnMenu(option.categoryParentId)
+        }
+      }else{
+        option.show = false;
+      }
+    }else{
+      option.show = true;
+      option.isOpened = false;
+    }
+  }
+
+  findOnMenu(optionId){
+    for (let index = 0; index < this.menu.length; index++) {
+      const option = this.menu[index];
+      if(optionId==option.id){
+        option.isOpened=true;
+        if(option.menuParentId!=null){
+          this.findOnMenu(option.menuParentId)
+        }
+        if(option.categoryParentId!=null){
+          this.findOnMenu(option.categoryParentId)
+        }
+      }else{
+        if(option.children.length!=0){
+            this.findOnMenuRecursive(option.children,this,optionId);
+        }
+      }
+
+    }
+  }
+
+  findOnMenuRecursive(options: any[], _this,optionId) {
+      for (let index = 0; index < options.length; index++) {
+        const element = options[index];
+          if(optionId==element.id){
+            element.isOpened=true;
+            if(element.menuParentId!=null){
+              _this.findOnMenu(element.menuParentId)
+            }
+            if(element.categoryParentId!=null){
+              _this.findOnMenu(element.categoryParentId)
+            }
+          }else{
+            if(element.children.length!=0){
+              this.findOnMenuRecursive(element.children,this,optionId);
+          }
+        }
+      }
   }
 
   getCategoryArguments() {
@@ -756,7 +844,6 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   }
 
   setSelectedCategoryArguments(category) {
-    category.selected = !category.selected;
     // var index = this.optionSelected.menuOptionArgumentsAdmin.findIndex(el => el.categoryArgumentsId.id == category.id);
     var index = -1;
     this.optionSelected.menuOptionArgumentsAdmin.forEach(function(element,i){

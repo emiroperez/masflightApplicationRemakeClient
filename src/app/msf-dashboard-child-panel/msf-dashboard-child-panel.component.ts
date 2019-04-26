@@ -63,6 +63,14 @@ export class MsfDashboardChildPanelComponent {
   msfTableRef: MsfTableComponent;
 
   actualPageNumber: number;
+  dataSource: boolean = false;
+  template: boolean = false;
+  moreResults: boolean = false;
+  moreResultsBtn: boolean = false;
+  displayedColumns;
+  selectedIndex = 0;
+  totalRecord = 0;
+  metadata;
 
   constructor(
     public dialogRef: MatDialogRef<MsfDashboardChildPanelComponent>,
@@ -79,6 +87,12 @@ export class MsfDashboardChildPanelComponent {
     // generate drill down chart
     this.globals.popupLoading = true;
     this.service.getChildPanel (this, data.parentPanelId, this.data.drillDownId, this.configureChildPanel, this.handlerChildPanelError);
+  }
+
+  ngAfterViewInit(): void
+  {
+    if (this.isTablePanel ())
+      this.msfTableRef.tableOptions = this;
   }
 
   ngOnDestroy()
@@ -108,13 +122,13 @@ export class MsfDashboardChildPanelComponent {
     // Parse date if available
     if (parseDate)
     {
-      series.dataFields.dateY = values.xaxis.id;
+      series.dataFields.dateY = values.xaxis.columnName;
       series.dateFormatter.dateFormat = "MMM d, yyyy";
       series.columns.template.tooltipText = "{dateY}: {valueX}";
     }
     else
     {
-      series.dataFields.categoryY = values.xaxis.id;
+      series.dataFields.categoryY = values.xaxis.columnName;
       series.columns.template.tooltipText = "{categoryY}: {valueX}";
     }
 
@@ -134,13 +148,13 @@ export class MsfDashboardChildPanelComponent {
 
     if (parseDate)
     {
-      series.dataFields.dateX = values.xaxis.id;
+      series.dataFields.dateX = values.xaxis.columnName;
       series.dateFormatter.dateFormat = "MMM d, yyyy";
       series.columns.template.tooltipText = "{dateX}: {valueY}";
     }
     else
     {
-      series.dataFields.categoryX = values.xaxis.id;
+      series.dataFields.categoryX = values.xaxis.columnName;
       series.columns.template.tooltipText = "{categoryX}: {valueY}";
     }
 
@@ -167,13 +181,13 @@ export class MsfDashboardChildPanelComponent {
 
     if (parseDate)
     {
-      series.dataFields.dateX = values.xaxis.id;
+      series.dataFields.dateX = values.xaxis.columnName;
       series.dateFormatter.dateFormat = "MMM d, yyyy";
       series.tooltipText = "{dateX}: {valueY}";
     }
     else
     {
-      series.dataFields.categoryX = values.xaxis.id;
+      series.dataFields.categoryX = values.xaxis.columnName;
       series.tooltipText = "{categoryX}: {valueY}";
     }
 
@@ -317,7 +331,7 @@ export class MsfDashboardChildPanelComponent {
         if (this.values.currentChartType.flags & ChartFlags.XYCHART)
         {
           chart.data = chartInfo.data;
-          parseDate = this.values.xaxis.id.includes ('date');
+          parseDate = this.values.xaxis.columnName.includes ('date');
         }
         else
         {
@@ -399,7 +413,7 @@ export class MsfDashboardChildPanelComponent {
         if (this.values.currentChartType.flags & ChartFlags.XYCHART)
         {
           // The category will be the x axis if the chart type has it
-          categoryAxis.dataFields.category = this.values.xaxis.id;
+          categoryAxis.dataFields.category = this.values.xaxis.columnName;
 
           stacked = (this.values.currentChartType.flags & ChartFlags.STACKED) ? true : false;
           if (this.values.currentChartType.flags & ChartFlags.LINECHART && stacked)
@@ -465,7 +479,7 @@ export class MsfDashboardChildPanelComponent {
             // if the category axis is a date type
             if (parseDate && this.values.currentChartType.flags & ChartFlags.LINECHART)
             {
-              let axisField = this.values.xaxis.id;
+              let axisField = this.values.xaxis.columnName;
   
               chart.events.on ("beforedatavalidated", function(event) {
                 chart.data.sort (function(e1, e2) {
@@ -524,7 +538,8 @@ export class MsfDashboardChildPanelComponent {
 
       // Add export button
       chart.exporting.menu = new am4core.ExportMenu ();
-      chart.exporting.menu.verticalAlign = "bottom";
+      chart.exporting.menu.verticalAlign = "top";
+      chart.exporting.menu.align = "left";
 
       this.chart = chart;
     });
@@ -543,6 +558,9 @@ export class MsfDashboardChildPanelComponent {
 
   checkGroupingValue(categoryColumnName, values): boolean
   {
+    if (values == null)
+      return false;
+
     for (let value of values)
     {
       if (value.columnName === categoryColumnName)
@@ -550,6 +568,76 @@ export class MsfDashboardChildPanelComponent {
     }
 
     return false;
+  }
+
+  checkGroupingCategory(argument)
+  {
+    let params: string = "";
+
+    if (argument.name1 != null && argument.name1.toLowerCase ().includes ("grouping"))
+    {
+      let haveValues: boolean = false;
+
+      if (argument.value1 != null && argument.value1.length)
+        haveValues = true;
+
+      if (this.values.currentChartType.flags & ChartFlags.TABLE)
+      {
+        for (let tableVariable of this.values.tableVariables)
+        {
+          if (tableVariable.checked && tableVariable.grouping && !this.checkGroupingValue (tableVariable.id, argument.value1))
+          {
+            if (!haveValues)
+            {
+              params += "" + tableVariable.id;
+              haveValues = true;
+            }
+            else
+              params += "," + tableVariable.id;
+          }
+        }
+      }
+      else if (!(this.values.currentChartType.flags & ChartFlags.INFO))
+      {
+        if (this.values.variable.grouping && !this.checkGroupingValue (this.values.variable.columnName, argument.value1))
+        {
+          if (!haveValues)
+          {
+            params += "" + this.values.variable.columnName;
+            haveValues = true;
+          }
+          else
+            params += "," + this.values.variable.columnName;
+        }
+
+        if (this.values.currentChartType.flags & ChartFlags.XYCHART)
+        {
+          if (this.values.xaxis.grouping && !this.checkGroupingValue (this.values.xaxis.columnName, argument.value1))
+          {
+            if (!haveValues)
+            {
+              params += "" + this.values.xaxis.columnName;
+              haveValues = true;
+            }
+            else
+              params += "," + this.values.xaxis.columnName;
+          }
+        }
+
+        if (this.values.valueColumn.grouping && !this.checkGroupingValue (this.values.valueColumn.columnName, argument.value1))
+        {
+          if (!haveValues)
+          {
+            params += "" + this.values.valueColumn.columnName;
+            haveValues = true;
+          }
+          else
+            params += "," + this.values.valueColumn.columnName;
+        }
+      }
+    }
+
+    return params;
   }
 
   getParameters()
@@ -598,26 +686,14 @@ export class MsfDashboardChildPanelComponent {
             else
             {
               if (params)
-                params += "&" + this.utils.getArguments (argument);
-              else
-                params = this.utils.getArguments (argument);
-
-              // check if the argument uses grouping to add chart values that requires grouping
-              // to work properly
-              if (!(this.values.currentChartType.flags & ChartFlags.TABLE) && argument.name1 != null && argument.name1.toLowerCase ().includes ("grouping"))
               {
-                if (this.values.variable.item.grouping && !this.checkGroupingValue (this.values.variable.item.columnName, argument.value1))
-                  params += "," + this.values.variable.item.columnName;
-
-                if (this.values.currentChartType.flags & ChartFlags.XYCHART)
-                {
-                  if (this.values.xaxis.item.grouping && !this.checkGroupingValue (this.values.xaxis.item.columnName, argument.value1))
-                    params += "," + this.values.xaxis.item.columnName;
-                }
-
-                if (this.values.valueColumn.item.grouping && !this.checkGroupingValue (this.values.valueColumn.item.columnName, argument.value1))
-                  params += "," + this.values.valueColumn.item.columnName;
+                if (argument.type != "singleCheckbox" && argument.type != "serviceClasses" && argument.type != "fareLower" && argument.type != "airportsRoutes" && argument.name1 != "intermediateCitiesList")
+                  params += "&" + this.utils.getArguments (argument) + this.checkGroupingCategory (argument);
+                else if (argument.value1 != false && argument.value1 != "" && argument.value1 != undefined && argument.value1 != null)
+                  params += "&" + this.utils.getArguments (argument) + this.checkGroupingCategory (argument);
               }
+              else
+                params = this.utils.getArguments (argument) + this.checkGroupingCategory (argument);
             }
           }
         }        
@@ -625,6 +701,20 @@ export class MsfDashboardChildPanelComponent {
     }
   
     return params;
+  }
+
+  getOption(dashboardPanelOption)
+  {
+    if (dashboardPanelOption != null)
+    {
+      for (let option of this.data.options)
+      {
+        if (option.id == dashboardPanelOption.id)
+          return option;
+      }
+    }
+
+    return null;
   }
 
   configureChildPanel(_this, data)
@@ -639,10 +729,15 @@ export class MsfDashboardChildPanelComponent {
       return;
     }
 
-    _this.values = new MsfDashboardPanelValues (data.id, data.title,
-      data.id, null, null, data.option, data.chartColumnOptions, data.analysis, data.xaxis,
+    _this.values = new MsfDashboardPanelValues (_this.data.options, data.title,
+      data.id, null, null, _this.getOption (data.option), data.analysis, data.xaxis,
       data.values, data.function, data.chartType, JSON.stringify (_this.data.currentOptionCategories),
       data.lastestResponse, data.paletteColors);
+
+    _this.values.tableVariables = [];
+
+    for (let columnConfig of _this.values.currentOption.columnOptions)
+      _this.values.tableVariables.push ( { id: columnConfig.columnName, name: columnConfig.columnLabel, itemId: columnConfig.id, grouping: columnConfig.grouping, checked: true } );
 
     // init child panel settings
     if (_this.values.currentChartType != null && _this.values.currentChartType != -1)
@@ -666,19 +761,19 @@ export class MsfDashboardChildPanelComponent {
     {
       if (_this.values.xaxis != null && _this.values.xaxis != -1)
       {
-        for (i = 0; i < _this.values.chartColumnOptions.length; i++)
+        for (i = 0; i < _this.values.currentOption.columnOptions.length; i++)
         {
           if (i == _this.values.xaxis)
           {
-            _this.values.xaxis = _this.values.chartColumnOptions[i];
+            _this.values.xaxis = _this.values.currentOption.columnOptions[i];
             break;
           }
         }
       }
       else
-        i = _this.values.chartColumnOptions.length;
+        i = _this.values.currentOption.columnOptions.length;
 
-      if (i == _this.values.chartColumnOptions.length)
+      if (i == _this.values.currentOption.columnOptions.length)
         notConfigured = true;
     }
 
@@ -688,13 +783,16 @@ export class MsfDashboardChildPanelComponent {
       {
         let tableColumn = _this.values.lastestResponse[i];
 
-        for (let j = 0; j < _this.values.chartColumnOptions.length; j++)
+        if (tableColumn.id == null)
+          continue;
+  
+        for (let j = 0; j < _this.values.tableVariables.length; j++)
         {
-          let curVariable = _this.values.chartColumnOptions[j];
-
-          if (curVariable.item.id == tableColumn.id)
+          let curVariable = _this.values.tableVariables[j];
+  
+          if (curVariable.itemId == tableColumn.id)
           {
-            _this.values.tableVariables.push (curVariable);
+            curVariable.checked = tableColumn.checked;
             break;
           }
         }
@@ -704,36 +802,36 @@ export class MsfDashboardChildPanelComponent {
     {
       if (_this.values.variable != null && _this.values.variable != -1)
       {
-        for (i = 0; i < _this.values.chartColumnOptions.length; i++)
+        for (i = 0; i < _this.values.currentOption.columnOptions.length; i++)
         {
           if (i == _this.values.variable)
           {
-            _this.values.variable = _this.values.chartColumnOptions[i];
+            _this.values.variable = _this.values.currentOption.columnOptions[i];
             break;
           }
         }
       }
       else
-        i = _this.values.chartColumnOptions.length;
+        i = _this.values.currentOption.columnOptions.length;
   
-      if (i == _this.values.chartColumnOptions.length)
+      if (i == _this.values.currentOption.columnOptions.length)
         notConfigured = true;
 
       if (_this.values.valueColumn != null && _this.values.valueColumn != -1)
       {
-        for (i = 0; i < _this.values.chartColumnOptions.length; i++)
+        for (i = 0; i < _this.values.currentOption.columnOptions.length; i++)
         {
           if (i == _this.values.valueColumn)
           {
-            _this.values.valueColumn = _this.values.chartColumnOptions[i];
+            _this.values.valueColumn = _this.values.currentOption.columnOptions[i];
             break;
           }
         }
       }
       else
-        i = _this.values.chartColumnOptions.length;
+        i = _this.values.currentOption.columnOptions.length;
 
-      if (i == _this.values.chartColumnOptions.length)
+      if (i == _this.values.currentOption.columnOptions.length)
         notConfigured = true;
 
       if (_this.values.function != null && _this.values.function != -1)
@@ -830,7 +928,7 @@ export class MsfDashboardChildPanelComponent {
     if (moreResults)
     {
       this.actualPageNumber++;
-      this.globals.moreResults = true;
+      this.moreResults = true;
     }
     else
       this.actualPageNumber = 0;
@@ -845,7 +943,10 @@ export class MsfDashboardChildPanelComponent {
     url = this.service.host + "/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
 
     for (let tableVariable of this.values.tableVariables)
-      url += "&metaDataIds=" + tableVariable.item.id;
+    {
+      if (tableVariable.checked)
+        url += "&metaDataIds=" + tableVariable.itemId;
+    }
 
     this.http.get (this.msfTableRef, url, handlerSuccess, handlerError, null);
   }
@@ -858,14 +959,14 @@ export class MsfDashboardChildPanelComponent {
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
     console.log (urlBase);
     urlArg = encodeURIComponent (urlBase);
-    url = this.service.host + "/getChartData?url=" + urlArg + "&variable=" + this.values.variable.id +
-      "&valueColumn=" + this.values.valueColumn.id + "&function=" + this.values.function.id;
+    url = this.service.host + "/getChartData?url=" + urlArg + "&variable=" + this.values.variable.columnName +
+      "&valueColumn=" + this.values.valueColumn.columnName + "&function=" + this.values.function.id;
 
     // don't use the xaxis parameter if the chart type is pie, donut or radar
     if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
       url += "&chartType=pie";
     else
-      url += "&xaxis=" + this.values.xaxis.id;
+      url += "&xaxis=" + this.values.xaxis.columnName;
 
     this.http.post (this, url, null, handlerSuccess, handlerError);
   }
@@ -906,13 +1007,11 @@ export class MsfDashboardChildPanelComponent {
     this.globals.popupLoading = false;
   }
 
-  moreResults()
+  moreTableResults()
   {
-    if (this.globals.moreResultsBtn)
+    if (this.moreResultsBtn)
     {
-      this.globals.moreResults = false;
-      this.globals.query = true;
-      this.globals.mapsc = false;
+      this.moreResults = false;
 
       this.globals.popupLoading = true;
 

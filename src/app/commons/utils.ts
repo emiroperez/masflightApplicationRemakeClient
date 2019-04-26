@@ -117,14 +117,14 @@ export class Utils{
         let args = '';
 
         if (argument.name1)
-            args = argument.name1 + "=" + this.getValueFormat (argument.type, argument.value1);
+            args = argument.name1 + "=" + this.getValueFormat (argument.type, argument.value1,argument);
 
         if (argument.name2)
         {
             if (args !== '')
                 args += "&";
 
-            args += argument.name2 + "=" + this.getValueFormat (argument.type, argument.value2);          
+            args += argument.name2 + "=" + this.getValueFormat (argument.type, argument.value2,argument);          
         }
 
         if (argument.name3)
@@ -132,7 +132,7 @@ export class Utils{
             if (args !== '')
                 args += "&";
 
-            args += argument.name3 + "=" + this.getValueFormat (argument.type, argument.value3);
+            args += argument.name3 + "=" + this.getValueFormat (argument.type, argument.value3,argument);
         }
 
         return args;
@@ -241,9 +241,27 @@ export class Utils{
         return args;
     }
 
-    getValueFormat(type: string, value:any){
+    getValueFormat(type: string, value:any,argument:any){
         if( typeof value === 'undefined'){
             return '';
+        }
+        if(argument.url!=null && argument.url!='' && type != ComponentType.sortingCheckboxes){
+            var valueAux="";
+            var i = 0;
+            if(Array.isArray(value)){
+                for(var val of value){
+                    if(i == 0){
+                        valueAux = val[argument.selectedAttribute];
+                    }else{
+                        valueAux += ","+ val[argument.selectedAttribute];
+                    }                
+                    i++;
+                }
+            }else{
+                return value[argument.selectedAttribute];
+            }
+
+            return valueAux;
         }
         if(type == ComponentType.timeRange){
             return new DateTimeFormatPipe('en-US').transform(new Date("2000-01-01 " + value).getTime());
@@ -355,7 +373,7 @@ export class Utils{
                 i++;
             }
             return valueAux;
-        }else if (type == ComponentType.selectBoxMultipleOption || type == ComponentType.totalType || type == ComponentType.flightSegments || type == ComponentType.states
+        }else if (type == ComponentType.totalType || type == ComponentType.flightSegments || type == ComponentType.states
             || type == ComponentType.flightDelaysCheckbox){
                 var valueAux="";
                 var i = 0;
@@ -395,10 +413,28 @@ export class Utils{
     };
 
 
-    getValueFormatView(type: string, value:any){
+    getValueFormatView(type: string, value:any,argument:any){
         if(value!=null){
             if( typeof value === 'undefined'){
                 return '';
+            }
+            if(argument.url!=null && argument.url!='' && type != ComponentType.sortingCheckboxes){
+                var valueAux="";
+                var i = 0;
+                if(Array.isArray(value)){
+                    for(var val of value){
+                        if(i == 0){
+                            valueAux = val[argument.selectedAttribute];
+                        }else{
+                            valueAux += ","+ val[argument.selectedAttribute];
+                        }                
+                        i++;
+                    }
+                }else{
+                    return value[argument.selectedAttribute];
+                }
+    
+                return valueAux;
             }
             if(type == ComponentType.dateRange || 
                 type == ComponentType.date){
@@ -530,7 +566,7 @@ export class Utils{
                  return '';
              }
             return value.name;
-        }else if (type == ComponentType.selectBoxMultipleOption|| type == ComponentType.totalType || type == ComponentType.flightSegments || type == ComponentType.states){
+        }else if ( type == ComponentType.totalType || type == ComponentType.flightSegments || type == ComponentType.states){
             var valueAux="";
             var i = 0;
             for(var val of value){
@@ -557,7 +593,7 @@ export class Utils{
     } 
             return value;
         }
-    };
+    }
 
     getDateFormat(value, format){
         if(value != null){

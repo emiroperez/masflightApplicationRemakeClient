@@ -103,7 +103,8 @@ export class MsfDashboardComponent implements OnInit {
         baseUrl: columnConfig.url,
         drillDownOptions: [],
         tabType: columnConfig.tabType,
-        metaData: columnConfig.metaData
+        metaData: columnConfig.metaData,
+        columnOptions: null
       });
 
       optionIds.push (columnConfig.id);
@@ -114,8 +115,29 @@ export class MsfDashboardComponent implements OnInit {
       _this.setDrillDownOptions, _this.handlerError);
   }
 
+  addWebServicesMeta(_this, data): void
+  {
+    for (let option of _this.options)
+    {
+      for (let columnOptions of data)
+      {
+        if (columnOptions[0].optionId == option.id)
+        {
+          option.columnOptions = columnOptions;
+          break;
+        }
+      }
+    }
+
+    // get dashboard panels after getting the data forms
+    _this.service.getDashboardPanels (_this, _this.currentDashboardMenu.id,
+      _this.loadDashboardPanels, _this.handlerError);
+  }
+
   setDrillDownOptions(_this, data): void
   {
+    let optionIds = [];
+
     for (let drillDown of data)
     {
       for (let i = 0; i < _this.options.length; i++)
@@ -128,9 +150,25 @@ export class MsfDashboardComponent implements OnInit {
       }
     }
 
-    // get dashboard panels after getting the data forms
-    _this.service.getDashboardPanels (_this, _this.currentDashboardMenu.id,
-      _this.loadDashboardPanels, _this.handlerError);
+    for (let option of _this.options)
+      optionIds.push (option.id);
+
+    _this.service.getWebServicesMeta (_this, optionIds,
+      _this.addWebServicesMeta, _this.handlerError);
+  }
+
+  getOption(dashboardPanelOption)
+  {
+    if (dashboardPanelOption != null)
+    {
+      for (let option of this.options)
+      {
+        if (option.id == dashboardPanelOption.id)
+          return option;
+      }
+    }
+
+    return null;
   }
 
   loadDashboardPanels(_this, data): void
@@ -170,9 +208,11 @@ export class MsfDashboardComponent implements OnInit {
       dashboardPanelIds.push (dashboardPanel.id);
       dashboardRows.push (new MsfDashboardPanelValues (_this.options, dashboardPanel.title,
         dashboardPanel.id, dashboardPanel.width, _this.heightValues[dashboardPanel.height],
-        dashboardPanel.option, dashboardPanel.chartColumnOptions, dashboardPanel.analysis, dashboardPanel.xaxis,
-        dashboardPanel.values, dashboardPanel.function, dashboardPanel.chartType, dashboardPanel.categoryOptions,
-        dashboardPanel.lastestResponse, dashboardPanel.paletteColors, dashboardPanel.updateTimeInterval, dashboardPanel.row));
+        _this.getOption (dashboardPanel.option), dashboardPanel.analysis, dashboardPanel.xaxis,
+        dashboardPanel.values, dashboardPanel.function, dashboardPanel.chartType,
+        dashboardPanel.categoryOptions, dashboardPanel.lastestResponse,
+        dashboardPanel.paletteColors, dashboardPanel.updateTimeInterval,
+        dashboardPanel.row));
     }
 
     // add the last dashboard column
@@ -427,7 +467,7 @@ export class MsfDashboardComponent implements OnInit {
     this.service.updateDashboardPanelHeight (this, dashboardIds, this.heightValues.indexOf (index), this.handlerSuccess, this.handlerError);
   }
 
-  swapSucess(_this): void
+  rowSwapSucess(_this): void
   {
     if (_this.currentColumn)
       _this.dashboardColumnsReAppendCharts[_this.currentColumn] = false;
@@ -435,7 +475,7 @@ export class MsfDashboardComponent implements OnInit {
     console.log ("The changes to the dashboard were successful.");
   }
 
-  swapError(_this): void
+  rowSwapError(_this): void
   {
     if (_this.currentColumn)
       _this.dashboardColumnsReAppendCharts[_this.currentColumn] = false;
@@ -564,7 +604,7 @@ export class MsfDashboardComponent implements OnInit {
     }
 
     // this.globals.isLoading = true;
-    this.service.setDashboardPanelRowPositions (this, newPanelPos, this.swapSucess, this.swapError);
+    this.service.setDashboardPanelRowPositions (this, newPanelPos, this.rowSwapSucess, this.rowSwapError);
   }
 
   onrightClick(event, dashboardColumn, rowindex): boolean
@@ -637,6 +677,7 @@ export class MsfDashboardComponent implements OnInit {
       width: '800px',
       panelClass: 'msf-dashboard-child-panel-dialog',
       data: {
+        options: this.options,
         parentPanelId: this.contextParentPanel.id,
         drillDownId: contextDrillDownId,
         currentOptionCategories: this.contextParentPanel.currentOptionCategories,
@@ -647,5 +688,57 @@ export class MsfDashboardComponent implements OnInit {
         secondaryCategoryFilter: this.contextParentPanel.chartSecondaryObjectSelected
       }
     });
+  }
+
+  columnSwapSucess(_this): void
+  {
+    for (let i = 0; i < _this.dashboardColumns.length; i++)
+      _this.dashboardColumnsReAppendCharts[i] = false;
+
+    console.log ("The changes to the dashboard were successful.");
+  }
+
+  columnSwapError(_this): void
+  {
+    for (let i = 0; i < _this.dashboardColumns.length; i++)
+      _this.dashboardColumnsReAppendCharts[i] = false;
+  }
+
+  swapColumnPositions(event: CdkDragDrop<MsfDashboardPanelValues[]>): void
+  {
+    let newColumnPos = [];
+    let i;
+
+    // reappend the chart div elements of every panel
+    for (i = 0; i < this.dashboardColumns.length; i++)
+      this.dashboardColumnsReAppendCharts[i] = true;
+
+    // do not perform query if the columns are now swapped
+    if (event.previousIndex == event.currentIndex)
+      return;
+
+    // move items
+    moveItemInArray (this.dashboardColumns, event.previousIndex, event.currentIndex);
+    moveItemInArray (this.dashboardColumnsProperties, event.previousIndex, event.currentIndex);
+    moveItemInArray (this.dashboardColumnsReAppendCharts, event.previousIndex, event.currentIndex);
+
+    // update the database the new column positions
+    for (i = 0; i < this.dashboardColumns.length; i++)
+    {
+      let dashboardColumn = this.dashboardColumns[i];
+
+      // swap column position by swapping the dashboard ids
+      for (let j = 0; j < dashboardColumn.length; j++)
+      {
+        newColumnPos.push ({
+          id: dashboardColumn[j].id,
+          column : i
+        });
+      }
+    }
+
+    // this.globals.isLoading = true;
+    this.service.setDashboardColumnPositions (this, newColumnPos,
+      this.columnSwapSucess, this.columnSwapError);
   }
 }

@@ -15,8 +15,8 @@
     <app-msf-table #msfTableRef [isLoading]="globals.popupLoading" (finishLoading)="finishLoadingTable($event)" [categoryArguments]="values.currentOptionCategories" [currentOption]="values.currentOption" [isPanel]="true"></app-msf-table>
   </div>
   <div *ngIf="isTablePanel()" class="msf-dashboard-child-panel-table-more-button">
-    <div [ngClass]="globals.moreResultsBtn ? 'msf-menu-more-button' : 'msf-menu-more-button disabled-more-button'"
-        (click)="moreResults()" *ngIf="msfTableRef && msfTableRef.dataSource">
+    <div [ngClass]="moreResultsBtn ? 'msf-menu-more-button' : 'msf-menu-more-button disabled-more-button'"
+        (click)="moreTableResults()" *ngIf="msfTableRef && msfTableRef.dataSource">
       <img style="width: 16px;height: 16px;" src="../../assets/images/more.png" class="msf-menu-image msf-vertical-middle msf-line">
       <div class="msf-vertical-middle msf-line" style="font-size: 13px">More Result</div>
     </div>

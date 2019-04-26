@@ -24,11 +24,26 @@ export class MsfAirportRouteComponent implements OnInit {
 
   ngOnInit() { 
     // this.globals.isLoading = true;
-    // this.getAirports(null, this.handlerSuccess);
+    // var search = null;
+    // if(this.argument.value1){
+    //   search = this.argument.value1;
+    // }
+    // if(this.argument.value2){
+    //   search = this.argument.value2;
+    // }
+    this.getAirports(null, this.handlerSuccess);
   }
 
+
+
   getAirports(search, handlerSuccess){
-      let url = this.globals.baseUrl + this.argument.url + "?search="+ (search != null?search:'');
+    let url
+    if(this.argument.url.substring(0,1)=="/"){
+
+      url = this.globals.baseUrl + this.argument.url + "?search="+ (search != null?search:'');
+    }else{
+     url = this.argument.url+ (search != null?search:'');
+    }
       this.http.get(this,url,handlerSuccess,this.handlerError, null);  
   }
 

@@ -9,8 +9,10 @@
       loadingText="Loading..."
       [closeOnSelect]="true"
       [hideSelected]="false"
-      bindLabel="name"
+      bindLabel="{{argument.visibleAttribute}}"
+      
       (search)="onSearch($event)" 
-      [(ngModel)]="argument.value1">
+      [(ngModel)]="argument.value1"
+      (change)="onChange()">
   </ng-select>
 </div> 

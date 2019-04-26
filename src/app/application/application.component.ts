@@ -253,7 +253,7 @@ toggle(){
                 if(category && category.arguments){
                   for( let j = 0; j < category.arguments.length;j++){
                     let argument: Arguments = category.arguments[j];
-                    if(argument.required){
+                    if(argument.required==1){
                       if(argument.value1 == null || (argument.name2 && argument.value2 == null)){
                         return true;
                       }
