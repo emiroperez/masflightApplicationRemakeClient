@@ -1897,29 +1897,31 @@ home.events.on("hit", function(ev) {
     {
       for (let optionCategory of optionCategories)
       {
-        let curCategory;
-        let avail = false;
-
-        for (curCategory of _this.values.currentOptionCategories)
+        for (let curOptionCategory of _this.values.currentOptionCategories)
         {
-          if (curCategory.id == optionCategory.id)
+          if (curOptionCategory.id == optionCategory.id)
           {
-            avail = true;
+            for (let curCategoryArgument of curOptionCategory.arguments)
+            {
+              for (let argument of optionCategory.arguments)
+              {
+                if (curCategoryArgument.id == argument.id)
+                {
+                  argument.value1 = curCategoryArgument.value1;
+                  argument.value2 = curCategoryArgument.value2;
+                  argument.value3 = curCategoryArgument.value3;
+                  break;
+                }
+              }
+            }
+
             break;
           }
         }
-  
-        if (!avail)
-          _this.values.currentOptionCategories.push (optionCategory);
-        /*else
-        {
-
-          curCategory
-        }*/
       }
     }
-    else
-      _this.values.currentOptionCategories = optionCategories;
+
+    _this.values.currentOptionCategories = optionCategories;
 
     // workaround to prevent errors on certain data forms
     if (!_this.haveSortingCheckboxes ())
