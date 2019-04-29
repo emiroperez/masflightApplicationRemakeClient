@@ -71,8 +71,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     { name: 'Donut', flags: ChartFlags.DONUTCHART, createSeries: this.createPieSeries },
     { name: 'Information', flags: ChartFlags.INFO },
     { name: 'Simple Form', flags: ChartFlags.INFO | ChartFlags.FORM },
-    { name: 'Table', flags: ChartFlags.TABLE },
-    { name: 'Map', flags: ChartFlags.MAP }/*,
+    { name: 'Table', flags: ChartFlags.TABLE }/*,
+    { name: 'Map', flags: ChartFlags.MAP },
     { name: 'Simple Picture', flags: ChartFlags.INFO | ChartFlags.PICTURE },*/
   ];
 
@@ -438,34 +438,49 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   makeChart(chartInfo): void
   {
-    var planeContainer, plane;
+    let planeContainer, plane;
 
-    function goForward() {
+    function goForward()
+    {
+      let animation;
 
-
-      if (plane.rotation != 0)
+      if (plane.rotation)
       {
-      plane.animate({ to: 0, property: "rotation" }, 1000).events.on("animationended", goForward);
-      return;
+        plane.animate ({
+          to: 0,
+          property: "rotation"
+        }, 1000).events.on ("animationended", goForward);
+        return;
       }
 
-      var animation = planeContainer.animate({ property: "position", from: 0, to: 1 }, 6000).delay(300);
-//      plane.rotation = 0;
-      animation.events.on("animationended", goBack);
-
-  }
-  
-  function goBack() {
-    if (plane.rotation != 180)
-    {
-    plane.animate({ to: 180, property: "rotation" }, 1000).events.on("animationended", goBack);
-    return;
+      animation = planeContainer.animate ({
+        property: "position",
+        from: 0,
+        to: 1
+      }, 6000).delay (300);
+      animation.events.on ("animationended", goBack);
     }
 
-      var animation = planeContainer.animate({ property: "position", from: 1, to: 0 }, 6000).delay(300);
-      animation.events.on("animationended", goForward);
-      // plane.rotation = 180;
-  }
+    function goBack()
+    {
+      let animation;
+
+      if (plane.rotation != 180)
+      {
+        plane.animate ({
+          to: 180,
+          property: "rotation"
+        }, 1000).events.on ("animationended", goBack);
+        return;
+      }
+
+      animation = planeContainer.animate ({
+        property: "position",
+        from: 1,
+        to: 0
+      }, 6000).delay (300);
+      animation.events.on ("animationended", goForward);
+    }
 
     this.zone.runOutsideAngular (() => {
       let chart;
@@ -481,11 +496,11 @@ export class MsfDashboardPanelComponent implements OnInit {
 var mapChart = chart;
 mapChart.geodata = am4geodata_worldLow;
 mapChart.projection = new am4maps.projections.Miller();
-mapChart.homeZoomLevel = 1;
+/*mapChart.homeZoomLevel = 1;
 mapChart.homeGeoPoint = {
   latitude: 48.8567,
   longitude: 2.3510
-}
+}*/
 
 var continentSeries = mapChart.series.push(new am4maps.MapPolygonSeries());
 continentSeries.useGeodata = true;
@@ -502,7 +517,7 @@ var imageSeries = mapChart.series.push(new am4maps.MapImageSeries());
 let imageSeriesTemplate = imageSeries.mapImages.template;
 var circle2 = imageSeriesTemplate.createChild (am4core.Sprite);
 circle2.path = targetSVG;
-circle2.scale = 0.5;
+circle2.scale = 0.75;
 circle2.fill = white;
 
 // set propertyfields
@@ -515,7 +530,7 @@ imageSeriesTemplate.align = "center";
 imageSeriesTemplate.valign = "middle";
 imageSeriesTemplate.width = 8;
 imageSeriesTemplate.height = 8;
-imageSeriesTemplate.scale = 0.5;
+imageSeriesTemplate.scale = 1;
 imageSeriesTemplate.tooltipText = "{title}";
 imageSeriesTemplate.fill = black;
 imageSeriesTemplate.background.fillOpacity = 0;
@@ -525,18 +540,19 @@ imageSeriesTemplate.states.create("hover");
 
 var l = imageSeriesTemplate.createChild(am4core.Label);
 l.text = "{title}";
-l.scale = 0.5;
-l.horizontalCenter = "right";
+l.scale = 1;
+l.horizontalCenter = "left";
 l.verticalCenter = "middle";
-l.dx += 12;
-l.dy += 6;
+l.dx += 20;
+l.dy += 7;
 
 var city1 = imageSeries.mapImages.create();
 // London's latitude/longitude
 var city1Info = chartInfo.airports[0];
 city1.latitude = city1Info.latitude;
 city1.longitude = city1Info.longitude;
-city1.scale = 0.0025;
+// city1.scale = 0.0025;
+city1.nonScaling = true;
 city1.title = city1Info.title;
 
 // second city, New York
@@ -545,7 +561,8 @@ var city2 = imageSeries.mapImages.create();
 var city2Info = chartInfo.airports[1];
 city2.latitude = city2Info.latitude;
 city2.longitude = city2Info.longitude;
-city2.scale = 0.0025;
+// city2.scale = 0.0025;
+city2.nonScaling = true;
 city2.title = city2Info.title;
 
 // create line series
@@ -556,28 +573,18 @@ mapLine.imagesToConnect = [city1, city2];
 mapLine.line.strokeOpacity = 0.3;
 mapLine.line.stroke = cyan;
 
-mapChart.homeZoomLevel = 3;
-mapChart.homeGeoPoint = { latitude: 50, longitude: -30 };
-
 // create plane container
 planeContainer = mapLine.lineObjects.create();
 planeContainer.position = 0;
 // set svg path of a plane for the sprite
 plane = planeContainer.createChild(am4core.Sprite);
-
 plane.path = planeSVG;
 plane.fill = cyan;
-plane.scale = 0.0075;
+plane.scale = 0.75;
+// plane.scale = 0.0075;
 
 plane.horizontalCenter = "middle";
 plane.verticalCenter = "middle";
-
-mapChart.events.on("ready", goForward);
-
-// make the plane to be bigger in the middle of the line
-planeContainer.adapter.add("scale", function(scale, target) {
-  return 0.02 * (1 - (Math.abs(0.5 - target.position)));
-});
 
 // Create a zoom control
 var zoomControl = new am4maps.ZoomControl();
@@ -596,6 +603,13 @@ home.width = 70;
 home.events.on("hit", function(ev) {
   chart.goHome();
 });
+
+// make the plane to be bigger in the middle of the line
+planeContainer.adapter.add("scale", function(scale, target) {
+  return 0.02 * (1 - (Math.abs(0.5 - target.position)));
+});
+
+mapChart.events.on("ready", goForward);
       }
       else if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART
         || this.values.currentChartType.flags & ChartFlags.PIECHART)
@@ -852,7 +866,6 @@ home.events.on("hit", function(ev) {
     if (this.chart)
     {
       this.zone.runOutsideAngular (() => {
-        if (this.chart)
           this.chart.dispose ();
       });
     }
