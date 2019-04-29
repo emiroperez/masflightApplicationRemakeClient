@@ -669,14 +669,14 @@ export class MsfDashboardChildPanelComponent {
           {
             let argument: Arguments = category.arguments[j];
 
-            if (parentArgument != null && argument.id == parentArgument.id)
+            if (parentArgument != null && argument.id == parentArgument.argumentId.id)
             {
               if (params)
                 params += "&" + this.utils.getArguments2 (parentArgument, parentCategoryId, filterValue);
               else
                 params = this.utils.getArguments2 (parentArgument, parentCategoryId, filterValue);
             }
-            else if (secondaryParentArgument != null && argument.id == secondaryParentArgument.id)
+            else if (secondaryParentArgument != null && argument.id == secondaryParentArgument.argumentId.id)
             {
               if (params)
                 params += "&" + this.utils.getArguments2 (secondaryParentArgument, secondaryParentCategoryId, secondaryFilterValue);
