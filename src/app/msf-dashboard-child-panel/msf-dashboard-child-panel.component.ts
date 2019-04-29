@@ -672,16 +672,16 @@ export class MsfDashboardChildPanelComponent {
             if (parentArgument != null && argument.id == parentArgument.argumentId.id)
             {
               if (params)
-                params += "&" + this.utils.getArguments2 (parentArgument, parentCategoryId, filterValue);
+                params += "&" + this.utils.getArguments2 (argument, parentCategoryId, filterValue);
               else
-                params = this.utils.getArguments2 (parentArgument, parentCategoryId, filterValue);
+                params = this.utils.getArguments2 (argument, parentCategoryId, filterValue);
             }
             else if (secondaryParentArgument != null && argument.id == secondaryParentArgument.argumentId.id)
             {
               if (params)
-                params += "&" + this.utils.getArguments2 (secondaryParentArgument, secondaryParentCategoryId, secondaryFilterValue);
+                params += "&" + this.utils.getArguments2 (argument, secondaryParentCategoryId, secondaryFilterValue);
               else
-                params = this.utils.getArguments2 (secondaryParentArgument, secondaryParentCategoryId, secondaryFilterValue);
+                params = this.utils.getArguments2 (argument, secondaryParentCategoryId, secondaryFilterValue);
             }
             else
             {

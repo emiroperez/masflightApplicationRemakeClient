@@ -138,11 +138,11 @@ export class Utils{
         return args;
     }
 
-    getArguments2(parentArgument: Arguments, parentCategoryId, categoryFilter)
+    getArguments2(argument: Arguments, parentCategoryId, categoryFilter)
     {
         let args = '';
 
-        if (parentArgument.name1 != null && parentArgument.name1.toLowerCase ().includes ("date"))
+        if (argument.name1 != null && argument.name1.toLowerCase ().includes ("date"))
         {
             let dateVal1, dateVal2, numSlashes;
 
@@ -216,26 +216,26 @@ export class Utils{
               }
             }
 
-            args = parentArgument.name1 + "=" + dateVal1 + "&" + parentArgument.name2 + "=" + dateVal2;
+            args = argument.name1 + "=" + dateVal1 + "&" + argument.name2 + "=" + dateVal2;
         }
-        else if (parentArgument.name1 != null && parentArgument.name1.toLowerCase ().includes ("origin"))
+        else if (argument.name1 != null && argument.name1.toLowerCase ().includes ("origin"))
         {
             if (parentCategoryId.includes ("origin"))
-                args = parentArgument.name1 + "=" + categoryFilter + "&" + parentArgument.name2 + "=";
+                args = argument.name1 + "=" + categoryFilter + "&" + argument.name2 + "=";
             else
-                args = parentArgument.name1 + "=&" + parentArgument.name2 + "=" + categoryFilter;
+                args = argument.name1 + "=&" + argument.name2 + "=" + categoryFilter;
         }
         else
         {
             // Duplicate the value into the three parameters
-            if (parentArgument.name1)
-                args = parentArgument.name1 + "=" + categoryFilter;
+            if (argument.name1)
+                args = argument.name1 + "=" + categoryFilter;
 
-            if (parentArgument.name2)
-                args += "&" + parentArgument.name2 + "=" + categoryFilter;
+            if (argument.name2)
+                args += "&" + argument.name2 + "=" + categoryFilter;
 
-            if (parentArgument.name3)
-                args += "&" + parentArgument.name3 + "=" + categoryFilter;
+            if (argument.name3)
+                args += "&" + argument.name3 + "=" + categoryFilter;
         }
 
         return args;
