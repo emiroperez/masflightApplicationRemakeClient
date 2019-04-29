@@ -874,6 +874,20 @@ export class MsfDashboardChildPanelComponent {
           if (curCategory.id == category.id)
           {
             avail = true;
+
+            // use child panel argument name
+            for (let i = 0; i < curCategory.arguments.length; i++)
+            {
+              if (curCategory.arguments[i].name1 != null)
+                curCategory.arguments[i].name1 = category.arguments[i].name1;
+
+              if (curCategory.arguments[i].name2 != null)
+                curCategory.arguments[i].name2 = category.arguments[i].name2;
+
+              if (curCategory.arguments[i].name3 != null)
+                curCategory.arguments[i].name3 = category.arguments[i].name3;
+            }
+
             break;
           }
         }
