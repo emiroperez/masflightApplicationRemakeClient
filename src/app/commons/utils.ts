@@ -608,4 +608,14 @@ export class Utils{
         }
         return value;
     }
+
+    rad2degr(rad)
+    {
+        return rad * 180 / Math.PI;
+    }
+
+    degr2rad(degr)
+    {
+        return degr * Math.PI / 180;
+    }
 }

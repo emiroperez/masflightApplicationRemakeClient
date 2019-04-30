@@ -37,7 +37,9 @@ const darkGray = am4core.color ("#3b3b3b");
 const white = am4core.color ("#ffffff");
 const cyan = am4core.color ("#00a3e1");
 const darkBlue = am4core.color ("#30303d");
+const darkGreen = am4core.color ("#00be11");
 const blueJeans = am4core.color ("#67b7dc");
+const comet = am4core.color ("#585869");
 
 // SVG used for maps
 const planeSVG = "m2,106h28l24,30h72l-44,-133h35l80,132h98c21,0 21,34 0,34l-98,0 -80,134h-35l43,-133h-71l-24,30h-28l15,-47";
@@ -490,22 +492,19 @@ export class MsfDashboardPanelComponent implements OnInit {
       if (this.values.currentChartType.flags & ChartFlags.MAP)
       {
         let continentSeries, imageSeries, imageSeriesTemplate, lineSeries, mapLine, zoomControl, home;
-        let circle, label, city1, city1Info, city2, city2Info;
+        let tempLat, tempLng, tempLatCos, sumX, sumY, sumZ, avgX, avgY, avgZ;
+        let circle, label, hoverState, city1, city1Info, city2, city2Info;
 
         chart = am4core.create ("msf-dashboard-chart-display-" + this.values.id, am4maps.MapChart);
 
         // Create map instance
         chart.geodata = am4geodata_worldLow;
         chart.projection = new am4maps.projections.Miller ();
-        chart.homeZoomLevel = 1;
-        chart.homeGeoPoint = {
-          latitude: 48.8567,
-          longitude: 2.3510
-        };
+        chart.homeZoomLevel = 4;
 
         continentSeries = chart.series.push (new am4maps.MapPolygonSeries ());
         continentSeries.useGeodata = true;
-        continentSeries.exclude = ["antarctica"];
+        continentSeries.exclude = ["AQ"];
         continentSeries.mapPolygons.template.fill = darkGray;
         continentSeries.mapPolygons.template.stroke = black;
         continentSeries.mapPolygons.template.strokeOpacity = 0.25;
@@ -528,23 +527,36 @@ export class MsfDashboardPanelComponent implements OnInit {
         imageSeriesTemplate.background.fillOpacity = 0;
         imageSeriesTemplate.background.fill = white;
         imageSeriesTemplate.setStateOnChildren = true;
-        imageSeriesTemplate.states.create ("hover");
 
         // Configure circle and city labels
         circle = imageSeriesTemplate.createChild (am4core.Sprite);
+        circle.defaultState.properties.fillOpacity = 1;
         circle.path = targetSVG;
         circle.scale = 0.75;
         circle.fill = white;
-        circle.dy -= 2;
+        circle.dx -= 2.5;
+        circle.dy -= 2.5;
+        hoverState = circle.states.create ("hover");
+        hoverState.properties.fill = comet;
 
         label = imageSeriesTemplate.createChild (am4core.Label);
         label.text = "{title}";
         label.scale = 1;
         label.horizontalCenter = "left";
         label.verticalCenter = "middle";
-        label.dx += 20;
-        label.dy += 6;
+        label.dx += 17.5;
+        label.dy += 5.5;
+        hoverState = label.states.create ("hover");
+        hoverState.properties.fill = darkGreen;
 
+        imageSeriesTemplate.events.on ("over", function (event) {
+          event.target.setState ("hover");
+        });
+
+        imageSeriesTemplate.events.on ("out", function (event) {
+          event.target.setState ("default");
+        });
+  
         // Put the latitude/longitude for the cities
         city1 = imageSeries.mapImages.create ();
         city1Info = chartInfo.airports[0];
@@ -559,6 +571,34 @@ export class MsfDashboardPanelComponent implements OnInit {
         city2.longitude = city2Info.longitude;
         city2.nonScaling = true;
         city2.title = city2Info.title;
+
+        // Calculate middle point of both cities and set home location to it
+        tempLat = this.utils.degr2rad (city1.latitude);
+        tempLng = this.utils.degr2rad (city1.longitude);
+        tempLatCos = Math.cos (tempLat);
+        sumX = tempLatCos * Math.cos (tempLng);
+        sumY = tempLatCos * Math.sin (tempLng);
+        sumZ = Math.sin (tempLat);
+
+        tempLat = this.utils.degr2rad (city2.latitude);
+        tempLng = this.utils.degr2rad (city2.longitude);
+        tempLatCos = Math.cos (tempLat);
+        sumX += tempLatCos * Math.cos (tempLng);
+        sumY += tempLatCos * Math.sin (tempLng);
+        sumZ += Math.sin (tempLat);
+
+        avgX = sumX / 2;
+        avgY = sumY / 2;
+        avgZ = sumZ / 2;
+
+        // Convert average x, y, z coordinate to latitude and longitude
+        tempLng = Math.atan2 (avgY, avgX);
+        tempLat = Math.atan2 (avgZ, Math.sqrt (avgX * avgX + avgY * avgY));
+
+        chart.homeGeoPoint = {
+          latitude: this.utils.rad2degr (tempLat),
+          longitude: this.utils.rad2degr (tempLng)
+        };
 
         // Create map line series and connect to the cities
         lineSeries = chart.series.push(new am4maps.MapLineSeries ());
@@ -576,7 +616,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         plane = planeContainer.createChild (am4core.Sprite);
         plane.path = planeSVG;
         plane.fill = cyan;
-        plane.scale = 0.5;
+        plane.scale = 0.75;
         plane.horizontalCenter = "middle";
         plane.verticalCenter = "middle";
 
@@ -584,8 +624,9 @@ export class MsfDashboardPanelComponent implements OnInit {
         zoomControl = new am4maps.ZoomControl ();
         chart.zoomControl = zoomControl;
         zoomControl.slider.height = 100;
+        zoomControl.valign = "top";
         zoomControl.align = "right";
-        zoomControl.marginBottom = 150;
+        zoomControl.marginTop = 35;
         zoomControl.marginRight = 10;
 
         // Add home buttom to zoom out
@@ -1660,10 +1701,11 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.formGenerated = false;
     _this.values.picGenerated = false;
     _this.values.tableGenerated = false;
-    _this.values.isLoading = false;
 
     prepareChart = setInterval (() =>
     {
+      _this.values.isLoading = false;
+
       _this.makeChart (data);
   
       _this.stopUpdateInterval ();
@@ -1724,10 +1766,11 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.formGenerated = false;
     _this.values.picGenerated = false;
     _this.values.tableGenerated = false;
-    _this.values.isLoading = false;
 
     prepareChart = setInterval (() =>
     {
+      _this.values.isLoading = false;
+
       _this.makeChart (data);
   
       _this.stopUpdateInterval ();
