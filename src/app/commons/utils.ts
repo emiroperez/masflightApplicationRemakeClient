@@ -42,7 +42,7 @@ export class Utils{
         return false;
     }
 
-    getUrlParameters(option: any){
+    getUrlParameters(option: any, urlBase:boolean){
         console.log(option);
         let params;        
         if(option.menuOptionArguments){            
@@ -73,7 +73,7 @@ export class Utils{
             }
         }
         
-        if(option.baseUrl){
+        if(option.baseUrl && urlBase){
             return {tab:option.tab,url:option.baseUrl + "?" + params};
         }
         return {tab:option.tab,url: params};

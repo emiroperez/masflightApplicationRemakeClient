@@ -211,9 +211,10 @@ toggle(){
   }
 
   search2(){
-    if(this.globals.currentOption.tabType === 'map'){
+    if(this.globals.currentOption.tabType === 'map'&& this.globals.currentOption.url!=null){
       this.globals.map = true;
       this.msfContainerRef.msfMapRef.getTrackingDataSource();
+      this.msfContainerRef.msfTableRef.getData(false);
     }else if(this.globals.currentOption.tabType === 'usageStatistics'){
       this.msfContainerRef.msfTableRef.getDataUsageStatistics();
     }else{
@@ -253,9 +254,10 @@ toggle(){
   }
 
   moreResults2(){
-    if(this.globals.currentOption.tabType === 'map'){
+    if(this.globals.currentOption.tabType === 'map' && this.globals.currentOption.url!=null){
       this.globals.map = true;
-      this.msfContainerRef.msfMapRef.getTrackingDataSource();
+      // this.msfContainerRef.msfMapRef.getTrackingDataSource();
+      this.msfContainerRef.msfTableRef.getData(true);
       this.msfContainerRef.msfTableRef.getData(true);
     }else if(this.globals.currentOption.tabType === 'usageStatistics'){
       this.msfContainerRef.msfTableRef.getDataUsageStatistics();

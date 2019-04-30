@@ -30,14 +30,14 @@ export class ApplicationService {
   }
 
   getTracking(_this, successHandler, errorHandler) {
-    let params = this.utils.getUrlParameters(_this.globals.currentOption);
+    let params = this.utils.getUrlParameters(_this.globals.currentOption,false);
     let url = this.host1 + "/getTracking?" + params.url;
     this.http.get(_this, url, successHandler, errorHandler, null);
   }
 
 
   getMapBoxTracking(_this, successHandler, errorHandler) {
-    let params = this.utils.getUrlParameters(_this.globals.currentOption);
+    let params = this.utils.getUrlParameters(_this.globals.currentOption,false);
     let url = this.host1 + "/getMapBoxTracking?" + params.url;
     console.log(url)
     this.http.get(_this, url, successHandler, errorHandler, null);
@@ -46,7 +46,7 @@ export class ApplicationService {
   getDataTableSource(_this, handlerSuccess, handlerError,pageNumber: String) {
     // _this.globals.isLoading = true;
     _this.displayedColumns = [];
-    let param = this.utils.getUrlParameters(_this.globals.currentOption);
+    let param = this.utils.getUrlParameters(_this.globals.currentOption,true);
     let urlBase = param.url;
     if(!urlBase.includes("MIN_VALUE")){
       urlBase += "&MIN_VALUE=0";
@@ -70,7 +70,7 @@ export class ApplicationService {
 
   loadChartData(_this, handlerSuccess, handlerError) {
     _this.globals.isLoading = true;
-    let param = this.utils.getUrlParameters(_this.globals.currentOption);
+    let param = this.utils.getUrlParameters(_this.globals.currentOption,true);
     let urlBase = param.url;
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
     console.log(urlBase);
@@ -85,7 +85,7 @@ export class ApplicationService {
     _this.columns = [];
 
     _this.jqxTreeGridRef.clear();
-    let param = this.utils.getUrlParameters(_this.globals.currentOption);
+    let param = this.utils.getUrlParameters(_this.globals.currentOption,true);
     let urlBase = param.url;
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
     console.log(urlBase);
@@ -261,7 +261,7 @@ export class ApplicationService {
     _this.dataSource = null;
     _this.displayedColumns = [];
     _this.globals.isLoading = true;
-    let param = this.utils.getUrlParameters(_this.globals.currentOption);
+    let param = this.utils.getUrlParameters(_this.globals.currentOption,true);
     let urlBase = param.url;
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=100";
     console.log(urlBase);
