@@ -490,6 +490,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       if (this.values.currentChartType.flags & ChartFlags.MAP)
       {
         let continentSeries, imageSeries, imageSeriesTemplate, lineSeries, mapLine, zoomControl, home;
+        let tempLat, tempLng, tempLatCos, sumX, sumY, sumZ, avgX, avgY, avgZ;
         let circle, label, city1, city1Info, city2, city2Info;
 
         chart = am4core.create ("msf-dashboard-chart-display-" + this.values.id, am4maps.MapChart);
@@ -497,11 +498,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         // Create map instance
         chart.geodata = am4geodata_worldLow;
         chart.projection = new am4maps.projections.Miller ();
-        chart.homeZoomLevel = 1;
-        chart.homeGeoPoint = {
-          latitude: 48.8567,
-          longitude: 2.3510
-        };
+        chart.homeZoomLevel = 4;
 
         continentSeries = chart.series.push (new am4maps.MapPolygonSeries ());
         continentSeries.useGeodata = true;
@@ -560,6 +557,34 @@ export class MsfDashboardPanelComponent implements OnInit {
         city2.nonScaling = true;
         city2.title = city2Info.title;
 
+        // Calculate middle point of both cities and set home location to it
+        tempLat = this.utils.degr2rad (city1.latitude);
+        tempLng = this.utils.degr2rad (city1.longitude);
+        tempLatCos = Math.cos (tempLat);
+        sumX = tempLatCos * Math.cos (tempLng);
+        sumY = tempLatCos * Math.sin (tempLng);
+        sumZ = Math.sin (tempLat);
+
+        tempLat = this.utils.degr2rad (city2.latitude);
+        tempLng = this.utils.degr2rad (city2.longitude);
+        tempLatCos = Math.cos (tempLat);
+        sumX += tempLatCos * Math.cos (tempLng);
+        sumY += tempLatCos * Math.sin (tempLng);
+        sumZ += Math.sin (tempLat);
+
+        avgX = sumX / 2;
+        avgY = sumY / 2;
+        avgZ = sumZ / 2;
+
+        // Convert average x, y, z coordinate to latitude and longitude
+        tempLng = Math.atan2 (avgY, avgX);
+        tempLat = Math.atan2 (avgZ, Math.sqrt (avgX * avgX + avgY * avgY));
+
+        chart.homeGeoPoint = {
+          latitude: this.utils.rad2degr (tempLat),
+          longitude: this.utils.rad2degr (tempLng)
+        };
+
         // Create map line series and connect to the cities
         lineSeries = chart.series.push(new am4maps.MapLineSeries ());
         mapLine = lineSeries.mapLines.create ();
@@ -576,7 +601,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         plane = planeContainer.createChild (am4core.Sprite);
         plane.path = planeSVG;
         plane.fill = cyan;
-        plane.scale = 0.5;
+        plane.scale = 0.75;
         plane.horizontalCenter = "middle";
         plane.verticalCenter = "middle";
 
@@ -1660,10 +1685,11 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.formGenerated = false;
     _this.values.picGenerated = false;
     _this.values.tableGenerated = false;
-    _this.values.isLoading = false;
 
     prepareChart = setInterval (() =>
     {
+      _this.values.isLoading = false;
+
       _this.makeChart (data);
   
       _this.stopUpdateInterval ();
@@ -1724,10 +1750,11 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.formGenerated = false;
     _this.values.picGenerated = false;
     _this.values.tableGenerated = false;
-    _this.values.isLoading = false;
 
     prepareChart = setInterval (() =>
     {
+      _this.values.isLoading = false;
+
       _this.makeChart (data);
   
       _this.stopUpdateInterval ();

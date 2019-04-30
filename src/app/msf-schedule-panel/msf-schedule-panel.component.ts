@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Globals } from '../globals/Globals';
 import { AmChart, AmChartsService } from '@amcharts/amcharts3-angular';
+import { Utils } from '../commons/utils';
 
 @Component({
   selector: 'app-msf-schedule-panel',
@@ -9,9 +10,15 @@ import { AmChart, AmChartsService } from '@amcharts/amcharts3-angular';
 })
 
 export class MsfSchedulePanelComponent implements OnInit {
+  utils: Utils;
+
   panelOpenState = false;
   private mapaairports : Map<String, any>;
-  constructor(private AmCharts: AmChartsService,public globals: Globals) { }
+
+  constructor(private AmCharts: AmChartsService,public globals: Globals) {
+    this.utils = new Utils ();
+  }
+
   aux=this.globals.scheduledata;
   checkarray(aux2){
     return Array.isArray(aux2);
@@ -23,15 +30,14 @@ export class MsfSchedulePanelComponent implements OnInit {
   }
  return html;
  }
-  rad2degr(rad) { return rad * 180 / Math.PI; }
-  degr2rad(degr) { return degr * Math.PI / 180; }
+
   calcCrow(lat1, lon1, lat2, lon2) 
   {
     var R = 6371; // km
-    var dLat = this.degr2rad(lat2-lat1);
-    var dLon = this.degr2rad(lon2-lon1);
-    var latb1 = this.degr2rad(lat1);
-    var latb2 = this.degr2rad(lat2);
+    var dLat = this.utils.degr2rad(lat2-lat1);
+    var dLon = this.utils.degr2rad(lon2-lon1);
+    var latb1 = this.utils.degr2rad(lat1);
+    var latb2 = this.utils.degr2rad(lat2);
 
     var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
       Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(latb1) * Math.cos(latb2); 
@@ -95,8 +101,8 @@ export class MsfSchedulePanelComponent implements OnInit {
       var sumZ = 0;
   
       for (var i=0; i<mapToArray.length; i++) {
-          var lat = this.degr2rad(mapToArray[i].latitude);
-          var lng = this.degr2rad(mapToArray[i].longitude);
+          var lat = this.utils.degr2rad(mapToArray[i].latitude);
+          var lng = this.utils.degr2rad(mapToArray[i].longitude);
           // sum of cartesian coordinates
           sumX += Math.cos(lat) * Math.cos(lng);
           sumY += Math.cos(lat) * Math.sin(lng);
@@ -111,8 +117,8 @@ export class MsfSchedulePanelComponent implements OnInit {
       var lng = Math.atan2(avgY, avgX);
       var hyp = Math.sqrt(avgX * avgX + avgY * avgY);
       var lat = Math.atan2(avgZ, hyp);
-      var zoomlat =  this.rad2degr(lat);
-      var zoomlong =this.rad2degr(lng);
+      var zoomlat =  this.utils.rad2degr(lat);
+      var zoomlong =this.utils.rad2degr(lng);
       if(mapToArray.length>0){
         var dist = this.calcCrow(mapToArray[0].latitude,mapToArray[0].longitude,mapToArray[1].latitude,mapToArray[1].longitude);
       }
