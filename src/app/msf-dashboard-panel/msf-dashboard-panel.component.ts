@@ -460,7 +460,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         return;
       }
       else
-        shadowPlane.opacity = 0.5;
+        shadowPlane.opacity = 0.75;
 
       animation = planeContainer.animate ({
         property: "position",
@@ -494,7 +494,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         return;
       }
       else
-        shadowPlane.opacity = 0.5;
+        shadowPlane.opacity = 0.75;
 
       animation = planeContainer.animate ({
         property: "position",
@@ -627,8 +627,14 @@ export class MsfDashboardPanelComponent implements OnInit {
           longitude: this.utils.rad2degr (tempLng)
         };
 
+        if (Math.abs (city1.longitude) > Math.abs (city2.longtitude))
+          chart.deltaLongitude = 360 - city1.longitude;
+        else
+          chart.deltaLongitude = 360 - city2.longitude;
+
         // Create map line series and connect to the cities
         lineSeries = chart.series.push (new am4maps.MapLineSeries ());
+        lineSeries.zIndex = 10;
         mapLine = lineSeries.mapLines.create ();
         mapLine.imagesToConnect = [city1, city2];
         mapLine.line.strokeOpacity = 0.3;
@@ -640,6 +646,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         shadowLineSeries.mapLines.template.line.strokeOpacity = 0;
         shadowLineSeries.mapLines.template.line.nonScalingStroke = true;
         shadowLineSeries.mapLines.template.shortestDistance = false;
+        shadowLineSeries.zIndex = 5;
         shadowMapLine = shadowLineSeries.mapLines.create ();
         shadowMapLine.imagesToConnect = [city1, city2];
         shadowMapLine.line.horizontalCenter = "middle";
