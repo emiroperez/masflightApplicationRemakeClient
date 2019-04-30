@@ -609,8 +609,9 @@ export class MsfDashboardPanelComponent implements OnInit {
         zoomControl = new am4maps.ZoomControl ();
         chart.zoomControl = zoomControl;
         zoomControl.slider.height = 100;
+        zoomControl.valign = "top";
         zoomControl.align = "right";
-        zoomControl.marginBottom = 150;
+        zoomControl.marginTop = 35;
         zoomControl.marginRight = 10;
 
         // Add home buttom to zoom out
