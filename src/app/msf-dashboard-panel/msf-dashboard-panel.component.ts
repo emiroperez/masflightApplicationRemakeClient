@@ -33,6 +33,7 @@ am4core.useTheme(am4themes_dark);
 
 // AmChart colors
 const black = am4core.color ("#000000");
+const darkGray = am4core.color ("#3b3b3b");
 const white = am4core.color ("#ffffff");
 const cyan = am4core.color ("#00a3e1");
 const darkBlue = am4core.color ("#30303d");
@@ -71,8 +72,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     { name: 'Donut', flags: ChartFlags.DONUTCHART, createSeries: this.createPieSeries },
     { name: 'Information', flags: ChartFlags.INFO },
     { name: 'Simple Form', flags: ChartFlags.INFO | ChartFlags.FORM },
-    { name: 'Table', flags: ChartFlags.TABLE }/*,
-    { name: 'Map', flags: ChartFlags.MAP },
+    { name: 'Table', flags: ChartFlags.TABLE },
+    { name: 'Map', flags: ChartFlags.MAP }/*,
     { name: 'Simple Picture', flags: ChartFlags.INFO | ChartFlags.PICTURE },*/
   ];
 
@@ -216,7 +217,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     series.columns.template.width = am4core.percent (60);
 
     // Display a special context menu when a chart column is right clicked
-    series.columns.template.events.on ("rightclick", function(event) {
+    series.columns.template.events.on ("rightclick", function (event) {
       if (!values.currentOption.drillDownOptions.length)
         return;
 
@@ -250,7 +251,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     series.columns.template.strokeWidth = 0;
     series.columns.template.width = am4core.percent (60);
 
-    series.columns.template.events.on ("rightclick", function(event) {
+    series.columns.template.events.on ("rightclick", function (event) {
       if (!values.currentOption.drillDownOptions.length)
         return;
 
@@ -296,7 +297,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     // Display a special context menu when a chart line segment is right clicked
     series.segments.template.interactionsEnabled = true;
-    series.segments.template.events.on ("rightclick", function(event) {
+    series.segments.template.events.on ("rightclick", function (event) {
       if (!values.currentOption.drillDownOptions.length)
         return;
 
@@ -324,7 +325,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     });
 
     // Display a special context menu when a chart column is right clicked
-    series.columns.template.events.on ("rightclick", function(event) {
+    series.columns.template.events.on ("rightclick", function (event) {
       if (!values.currentOption.drillDownOptions.length)
         return;
 
@@ -350,7 +351,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       return am4core.color (values.paletteColors[0]);
     });
 
-    series.columns.template.events.on ("rightclick", function(event) {
+    series.columns.template.events.on ("rightclick", function (event) {
       if (!values.currentOption.drillDownOptions.length)
         return;
 
@@ -386,13 +387,13 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     // Set the color for the chart to display
     colorSet = new am4core.ColorSet ();
-    colorSet.list = values.paletteColors.map (function(color) {
+    colorSet.list = values.paletteColors.map (function (color) {
       return am4core.color (color);
     });
     series.colors = colorSet;
 
     // Display a special context menu when a pie slice is right clicked
-    series.slices.template.events.on ("rightclick", function(event) {
+    series.slices.template.events.on ("rightclick", function (event) {
       if (!values.currentOption.drillDownOptions.length)
         return;
 
@@ -420,13 +421,13 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     // Set the color for the chart to display
     colorSet = new am4core.ColorSet ();
-    colorSet.list = values.paletteColors.map (function(color) {
+    colorSet.list = values.paletteColors.map (function (color) {
       return am4core.color (color);
     });
     series.colors = colorSet;
 
     // Display a special context menu when a funnel slice is right clicked
-    series.slices.template.events.on ("rightclick", function(event) {
+    series.slices.template.events.on ("rightclick", function (event) {
       if (!values.currentOption.drillDownOptions.length)
         return;
 
@@ -488,128 +489,122 @@ export class MsfDashboardPanelComponent implements OnInit {
       // Check chart type before generating it
       if (this.values.currentChartType.flags & ChartFlags.MAP)
       {
+        let continentSeries, imageSeries, imageSeriesTemplate, lineSeries, mapLine, zoomControl, home;
+        let circle, label, city1, city1Info, city2, city2Info;
+
         chart = am4core.create ("msf-dashboard-chart-display-" + this.values.id, am4maps.MapChart);
 
         // Create map instance
-/*        chart.geodata = am4geodata_worldLow;
-        chart.projection = new am4maps.projections.Miller ();*/
-var mapChart = chart;
-mapChart.geodata = am4geodata_worldLow;
-mapChart.projection = new am4maps.projections.Miller();
-/*mapChart.homeZoomLevel = 1;
-mapChart.homeGeoPoint = {
-  latitude: 48.8567,
-  longitude: 2.3510
-}*/
+        chart.geodata = am4geodata_worldLow;
+        chart.projection = new am4maps.projections.Miller ();
+        chart.homeZoomLevel = 1;
+        chart.homeGeoPoint = {
+          latitude: 48.8567,
+          longitude: 2.3510
+        };
 
-var continentSeries = mapChart.series.push(new am4maps.MapPolygonSeries());
-continentSeries.useGeodata = true;
-continentSeries.exclude = ["antarctica"];
-continentSeries.mapPolygons.template.fill = am4core.color("#3b3b3b");
-continentSeries.mapPolygons.template.stroke = black;
-continentSeries.mapPolygons.template.strokeOpacity = 0.25;
-continentSeries.mapPolygons.template.strokeWidth = 0.5;
+        continentSeries = chart.series.push (new am4maps.MapPolygonSeries ());
+        continentSeries.useGeodata = true;
+        continentSeries.exclude = ["antarctica"];
+        continentSeries.mapPolygons.template.fill = darkGray;
+        continentSeries.mapPolygons.template.stroke = black;
+        continentSeries.mapPolygons.template.strokeOpacity = 0.25;
+        continentSeries.mapPolygons.template.strokeWidth = 0.5;
 
-// create first image container
-var imageSeries = mapChart.series.push(new am4maps.MapImageSeries());
+        // Create image container for the circles and city labels
+        imageSeries = chart.series.push (new am4maps.MapImageSeries ());
+        imageSeriesTemplate = imageSeries.mapImages.template;
 
-// add circle to it
-let imageSeriesTemplate = imageSeries.mapImages.template;
-var circle2 = imageSeriesTemplate.createChild (am4core.Sprite);
-circle2.path = targetSVG;
-circle2.scale = 0.75;
-circle2.fill = white;
+        // Set property fields for the cities
+        imageSeriesTemplate.propertyFields.latitude = "latitude";
+        imageSeriesTemplate.propertyFields.longitude = "longitude";
+        imageSeriesTemplate.horizontalCenter = "middle";
+        imageSeriesTemplate.verticalCenter = "middle";
+        imageSeriesTemplate.width = 8;
+        imageSeriesTemplate.height = 8;
+        imageSeriesTemplate.scale = 1;
+        imageSeriesTemplate.tooltipText = "{title}";
+        imageSeriesTemplate.fill = black;
+        imageSeriesTemplate.background.fillOpacity = 0;
+        imageSeriesTemplate.background.fill = white;
+        imageSeriesTemplate.setStateOnChildren = true;
+        imageSeriesTemplate.states.create ("hover");
 
-// set propertyfields
-imageSeriesTemplate.propertyFields.latitude = "latitude";
-imageSeriesTemplate.propertyFields.longitude = "longitude";
+        // Configure circle and city labels
+        circle = imageSeriesTemplate.createChild (am4core.Sprite);
+        circle.path = targetSVG;
+        circle.scale = 0.75;
+        circle.fill = white;
+        circle.dy -= 2;
 
-imageSeriesTemplate.horizontalCenter = "middle";
-imageSeriesTemplate.verticalCenter = "middle";
-imageSeriesTemplate.align = "center";
-imageSeriesTemplate.valign = "middle";
-imageSeriesTemplate.width = 8;
-imageSeriesTemplate.height = 8;
-imageSeriesTemplate.scale = 1;
-imageSeriesTemplate.tooltipText = "{title}";
-imageSeriesTemplate.fill = black;
-imageSeriesTemplate.background.fillOpacity = 0;
-imageSeriesTemplate.background.fill = white;
-imageSeriesTemplate.setStateOnChildren = true;
-imageSeriesTemplate.states.create("hover");
+        label = imageSeriesTemplate.createChild (am4core.Label);
+        label.text = "{title}";
+        label.scale = 1;
+        label.horizontalCenter = "left";
+        label.verticalCenter = "middle";
+        label.dx += 20;
+        label.dy += 6;
 
-var l = imageSeriesTemplate.createChild(am4core.Label);
-l.text = "{title}";
-l.scale = 1;
-l.horizontalCenter = "left";
-l.verticalCenter = "middle";
-l.dx += 20;
-l.dy += 7;
+        // Put the latitude/longitude for the cities
+        city1 = imageSeries.mapImages.create ();
+        city1Info = chartInfo.airports[0];
+        city1.latitude = city1Info.latitude;
+        city1.longitude = city1Info.longitude;
+        city1.nonScaling = true;
+        city1.title = city1Info.title;
 
-var city1 = imageSeries.mapImages.create();
-// London's latitude/longitude
-var city1Info = chartInfo.airports[0];
-city1.latitude = city1Info.latitude;
-city1.longitude = city1Info.longitude;
-// city1.scale = 0.0025;
-city1.nonScaling = true;
-city1.title = city1Info.title;
+        city2 = imageSeries.mapImages.create ();
+        city2Info = chartInfo.airports[1];
+        city2.latitude = city2Info.latitude;
+        city2.longitude = city2Info.longitude;
+        city2.nonScaling = true;
+        city2.title = city2Info.title;
 
-// second city, New York
-var city2 = imageSeries.mapImages.create();
-// NY latitude/longitude
-var city2Info = chartInfo.airports[1];
-city2.latitude = city2Info.latitude;
-city2.longitude = city2Info.longitude;
-// city2.scale = 0.0025;
-city2.nonScaling = true;
-city2.title = city2Info.title;
+        // Create map line series and connect to the cities
+        lineSeries = chart.series.push(new am4maps.MapLineSeries ());
+        mapLine = lineSeries.mapLines.create ();
+        mapLine.imagesToConnect = [city1, city2];
+        mapLine.line.strokeOpacity = 0.3;
+        mapLine.line.stroke = cyan;
+        mapLine.line.horizontalCenter = "middle";
+        mapLine.line.verticalCenter = "middle";
 
-// create line series
-var lineSeries = mapChart.series.push(new am4maps.MapLineSeries());
-var mapLine = lineSeries.mapLines.create();
-// tell the line to connect cities (alternatevely you can also specify latitudes/longitudes)
-mapLine.imagesToConnect = [city1, city2];
-mapLine.line.strokeOpacity = 0.3;
-mapLine.line.stroke = cyan;
+        // Add plane sprite
+        planeContainer = mapLine.lineObjects.create ();
+        planeContainer.position = 0;
 
-// create plane container
-planeContainer = mapLine.lineObjects.create();
-planeContainer.position = 0;
-// set svg path of a plane for the sprite
-plane = planeContainer.createChild(am4core.Sprite);
-plane.path = planeSVG;
-plane.fill = cyan;
-plane.scale = 0.75;
-// plane.scale = 0.0075;
+        plane = planeContainer.createChild (am4core.Sprite);
+        plane.path = planeSVG;
+        plane.fill = cyan;
+        plane.scale = 0.5;
+        plane.horizontalCenter = "middle";
+        plane.verticalCenter = "middle";
 
-plane.horizontalCenter = "middle";
-plane.verticalCenter = "middle";
+        // Add zoom control buttons
+        zoomControl = new am4maps.ZoomControl ();
+        chart.zoomControl = zoomControl;
+        zoomControl.slider.height = 100;
+        zoomControl.align = "right";
+        zoomControl.marginBottom = 150;
+        zoomControl.marginRight = 10;
 
-// Create a zoom control
-var zoomControl = new am4maps.ZoomControl();
-chart.zoomControl = zoomControl;
-zoomControl.slider.height = 100;
-zoomControl.align = "right";
-zoomControl.marginBottom = 150;
-zoomControl.marginRight = 10;
+        // Add home buttom to zoom out
+        home = chart.chartContainer.createChild (am4core.Button);
+        home.label.text = "Home";
+        home.align = "right";
+        home.marginRight = 15;
+        home.width = 70;
+        home.events.on ("hit", function (ev) {
+          chart.goHome ();
+        });
 
-// Add button to zoom out
-var home = chart.chartContainer.createChild(am4core.Button);
-home.label.text = "Home";
-home.align = "right";
-home.marginRight = 15;
-home.width = 70;
-home.events.on("hit", function(ev) {
-  chart.goHome();
-});
+        // Make the plane bigger in the middle of the line
+        planeContainer.adapter.add ("scale", function (scale, target) {
+          return 0.02 * (1 - (Math.abs (0.5 - target.position)));
+        });
 
-// make the plane to be bigger in the middle of the line
-planeContainer.adapter.add("scale", function(scale, target) {
-  return 0.02 * (1 - (Math.abs(0.5 - target.position)));
-});
-
-mapChart.events.on("ready", goForward);
+        // Start flying the plname
+        chart.events.on ("ready", goForward);
       }
       else if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART
         || this.values.currentChartType.flags & ChartFlags.PIECHART)
@@ -630,8 +625,8 @@ mapChart.events.on("ready", goForward);
         if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART)
         {
           // Sort values from greatest to least on funnel chart types
-          chart.events.on ("beforedatavalidated", function(event) {
-            chart.data.sort (function(e1, e2) {
+          chart.events.on ("beforedatavalidated", function (event) {
+            chart.data.sort (function (e1, e2) {
               return e2[chartInfo.valueField] - e1[chartInfo.valueField];
             });
           });
@@ -768,8 +763,8 @@ mapChart.events.on("ready", goForward);
               item["sum"] = total;
             }
 
-            chart.events.on ("beforedatavalidated", function(event) {
-              chart.data.sort (function(e1, e2) {
+            chart.events.on ("beforedatavalidated", function (event) {
+              chart.data.sort (function (e1, e2) {
                 return e1.sum - e2.sum;
               });
             });
@@ -797,14 +792,14 @@ mapChart.events.on("ready", goForward);
             {
               let axisField = this.values.xaxis.id;
   
-              chart.events.on ("beforedatavalidated", function(event) {
-                chart.data.sort (function(e1, e2) {
+              chart.events.on ("beforedatavalidated", function (event) {
+                chart.data.sort (function (e1, e2) {
                   return +(new Date(e1[axisField])) - +(new Date(e2[axisField]));
                 });
               });
             }
 
-            chartInfo.filter.sort (function(e1, e2) {
+            chartInfo.filter.sort (function (e1, e2) {
               return e1.avg - e2.avg;
             });
           }
@@ -832,8 +827,8 @@ mapChart.events.on("ready", goForward);
           categoryAxis.dataFields.category = chartInfo.titleField;
 
           // Sort values from least to greatest
-          chart.events.on ("beforedatavalidated", function(event) {
-            chart.data.sort (function(e1, e2) {
+          chart.events.on ("beforedatavalidated", function (event) {
+            chart.data.sort (function (e1, e2) {
               return e1[chartInfo.valueField] - e2[chartInfo.valueField];
             });
           });
@@ -1652,12 +1647,13 @@ mapChart.events.on("ready", goForward);
 
   handlerMapLastestResponse(_this, data): void
   {
+    let prepareChart;
+
     _this.values.lastestResponse = data;
 
     // destroy current chart if it's already generated to avoid a blank chart
     _this.destroyChart ();
 
-    _this.makeChart (data);
     _this.values.displayChart = true;
     _this.values.chartGenerated = true;
     _this.values.infoGenerated = false;
@@ -1666,8 +1662,15 @@ mapChart.events.on("ready", goForward);
     _this.values.tableGenerated = false;
     _this.values.isLoading = false;
 
-    _this.stopUpdateInterval ();
-    _this.startUpdateInterval ();
+    prepareChart = setInterval (() =>
+    {
+      _this.makeChart (data);
+  
+      _this.stopUpdateInterval ();
+      _this.startUpdateInterval ();
+
+      clearInterval (prepareChart);
+    }, 50);
   }
 
   handlerTextSuccess(_this, data): void
@@ -1697,6 +1700,8 @@ mapChart.events.on("ready", goForward);
 
   handlerChartSuccess(_this, data): void
   {
+    let prepareChart;
+
     if (_this.values.currentChartType.flags & ChartFlags.XYCHART && _this.utils.isJSONEmpty (data.data))
     {
       _this.noDataFound ();
@@ -1713,7 +1718,6 @@ mapChart.events.on("ready", goForward);
     // destroy current chart if it's already generated to avoid a blank chart
     _this.destroyChart ();
 
-    _this.makeChart (data);
     _this.values.displayChart = true;
     _this.values.chartGenerated = true;
     _this.values.infoGenerated = false;
@@ -1722,8 +1726,15 @@ mapChart.events.on("ready", goForward);
     _this.values.tableGenerated = false;
     _this.values.isLoading = false;
 
-    _this.stopUpdateInterval ();
-    _this.startUpdateInterval ();
+    prepareChart = setInterval (() =>
+    {
+      _this.makeChart (data);
+  
+      _this.stopUpdateInterval ();
+      _this.startUpdateInterval ();
+
+      clearInterval (prepareChart);
+    }, 50);
   }
 
   loadChartFilterValues(component): void
@@ -3196,7 +3207,7 @@ mapChart.events.on("ready", goForward);
 
     if (_this.values.childPanels.length > 1)
     {
-      _this.values.childPanels.sort (function(e1, e2) {
+      _this.values.childPanels.sort (function (e1, e2) {
         return e1.id - e2.id;
       });
     }
