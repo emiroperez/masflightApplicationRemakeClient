@@ -71,19 +71,22 @@ export class MsfMapComponent implements OnInit {
   }
 
   successHandler(_this,features){
-    _this.globals.endTimestamp = new Date();
-    _this.data = features;
-    _this.setCoordinates(features);
-    if(features.length > 0){  
-      let size =  Math.round(features[0].features.length/2);
-      _this.center = features[0].features[size].geometry.coordinates;       
-      // _this.getChart(_this);  
-      _this.zoom = [4];    
+    if(_this.isLoading){
+      _this.globals.endTimestamp = new Date();
+      _this.data = features;
+      _this.setCoordinates(features);
+      if(features.length > 0){  
+        let size =  Math.round(features[0].features.length/2);
+        _this.center = features[0].features[size].geometry.coordinates;       
+        // _this.getChart(_this);  
+        _this.zoom = [4];    
+      }
+      _this.isLoading = false;
+      if(!_this.globals.isLoading){
+        _this.globals.showBigLoading = true;
+      }
     }
-    _this.isLoading = false;
-    if(!_this.globals.isLoading){
-      _this.globals.showBigLoading = true;
-    }
+
 }
 
   errorHandler(_this,data){

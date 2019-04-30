@@ -80,6 +80,7 @@ export class MenuComponent implements OnInit {
   {
     this.globals.minDate=null;
     this.globals.maxDate=null;
+    this.globals.showBigLoading = true;
     this.globals.currentDashboardMenu = dashboard;
     this.globals.currentOption = 'dashboard';
     this.globals.readOnlyDashboard = readOnly;

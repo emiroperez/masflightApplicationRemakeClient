@@ -556,6 +556,6 @@ export class MsfTableComponent implements OnInit {
   }
 
   cancelLoading(){
-    this.globals.isLoading = false;
+    this.isLoading = false;
   }
 }

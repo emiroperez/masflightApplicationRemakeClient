@@ -76,7 +76,7 @@ export class MsfContainerComponent implements OnInit {
 
   finishLoadingTable(error)
   {
-    this.globals.isLoading = false;
+    this.msfTableRef.isLoading = false;
   }
 
   onLinkClick(event: any) {
