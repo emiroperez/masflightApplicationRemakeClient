@@ -467,7 +467,7 @@
   <div class="msf-dashboard-panel-title" *ngIf="values.displayChart">{{values.chartName}}</div>
   <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard.chart-display-container-{{values.id}}">
     <div id="msf-dashboard-chart-display-{{values.id}}" [ngStyle]="{'width': (globals.readOnlyDashboard || isMapPanel()) ? '100%' : 'calc(100% - 35px)'}" [style.height.px]="calcPanelHeight()"></div>
-    <div class="msf-dashboard-map-panelinfo" *ngIf="isMapPanel()">
+    <div class="msf-dashboard-map-panelinfo" *ngIf="isMapPanel() && values.lastestResponse != null">
       <table class="msf-dashboard-map-panelinfo-container">
         <tr><td>Touched Airports</td><td>{{values.lastestResponse.TouchedAirports}}</td></tr>
         <tr><td>Total Distance</td><td>{{values.lastestResponse.TotalDistance}}</td></tr>
