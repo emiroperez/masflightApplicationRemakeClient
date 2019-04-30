@@ -441,7 +441,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   makeChart(chartInfo): void
   {
-    let planeContainer, plane;
+    let planeContainer, shadowPlaneContainer, plane, shadowPlane;
 
     function goForward()
     {
@@ -449,18 +449,31 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       if (plane.rotation)
       {
+        shadowPlane.rotation = 0;
+        shadowPlane.opacity = 0;
+
         plane.animate ({
           to: 0,
           property: "rotation"
         }, 1000).events.on ("animationended", goForward);
+
         return;
       }
+      else
+        shadowPlane.opacity = 0.5;
 
       animation = planeContainer.animate ({
         property: "position",
         from: 0,
         to: 1
       }, 6000).delay (300);
+
+      shadowPlaneContainer.animate ({
+        property: "position",
+        from: 0,
+        to: 1
+      }, 6000).delay (300);
+
       animation.events.on ("animationended", goBack);
     }
 
@@ -470,18 +483,31 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       if (plane.rotation != 180)
       {
+        shadowPlane.rotation = 180;
+        shadowPlane.opacity = 0;
+
         plane.animate ({
           to: 180,
           property: "rotation"
         }, 1000).events.on ("animationended", goBack);
+
         return;
       }
+      else
+        shadowPlane.opacity = 0.5;
 
       animation = planeContainer.animate ({
         property: "position",
         from: 1,
         to: 0
       }, 6000).delay (300);
+  
+      shadowPlaneContainer.animate ({
+        property: "position",
+        from: 1,
+        to: 0
+      }, 6000).delay (300);
+
       animation.events.on ("animationended", goForward);
     }
 
@@ -491,9 +517,10 @@ export class MsfDashboardPanelComponent implements OnInit {
       // Check chart type before generating it
       if (this.values.currentChartType.flags & ChartFlags.MAP)
       {
-        let continentSeries, imageSeries, imageSeriesTemplate, lineSeries, mapLine, zoomControl, home;
+        let continentSeries, imageSeries, imageSeriesTemplate, zoomControl, home;
         let tempLat, tempLng, tempLatCos, sumX, sumY, sumZ, avgX, avgY, avgZ;
         let circle, label, hoverState, city1, city1Info, city2, city2Info;
+        let lineSeries, mapLine, shadowLineSeries, shadowMapLine;
 
         chart = am4core.create ("msf-dashboard-chart-display-" + this.values.id, am4maps.MapChart);
 
@@ -601,7 +628,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         };
 
         // Create map line series and connect to the cities
-        lineSeries = chart.series.push(new am4maps.MapLineSeries ());
+        lineSeries = chart.series.push (new am4maps.MapLineSeries ());
         mapLine = lineSeries.mapLines.create ();
         mapLine.imagesToConnect = [city1, city2];
         mapLine.line.strokeOpacity = 0.3;
@@ -609,9 +636,20 @@ export class MsfDashboardPanelComponent implements OnInit {
         mapLine.line.horizontalCenter = "middle";
         mapLine.line.verticalCenter = "middle";
 
+        shadowLineSeries = chart.series.push (new am4maps.MapLineSeries ());
+        shadowLineSeries.mapLines.template.line.strokeOpacity = 0;
+        shadowLineSeries.mapLines.template.line.nonScalingStroke = true;
+        shadowLineSeries.mapLines.template.shortestDistance = false;
+        shadowMapLine = shadowLineSeries.mapLines.create ();
+        shadowMapLine.imagesToConnect = [city1, city2];
+        shadowMapLine.line.horizontalCenter = "middle";
+        shadowMapLine.line.verticalCenter = "middle";
+
         // Add plane sprite
         planeContainer = mapLine.lineObjects.create ();
         planeContainer.position = 0;
+        shadowPlaneContainer = shadowMapLine.lineObjects.create ();
+        shadowPlaneContainer.position = 0;
 
         plane = planeContainer.createChild (am4core.Sprite);
         plane.path = planeSVG;
@@ -619,6 +657,13 @@ export class MsfDashboardPanelComponent implements OnInit {
         plane.scale = 0.75;
         plane.horizontalCenter = "middle";
         plane.verticalCenter = "middle";
+
+        shadowPlane = shadowPlaneContainer.createChild (am4core.Sprite);
+        shadowPlane.path = planeSVG;
+        shadowPlane.scale = 0.0275;
+        shadowPlane.opacity = 0;
+        shadowPlane.horizontalCenter = "middle";
+        shadowPlane.verticalCenter = "middle";
 
         // Add zoom control buttons
         zoomControl = new am4maps.ZoomControl ();
@@ -642,6 +687,12 @@ export class MsfDashboardPanelComponent implements OnInit {
         // Make the plane bigger in the middle of the line
         planeContainer.adapter.add ("scale", function (scale, target) {
           return 0.02 * (1 - (Math.abs (0.5 - target.position)));
+        });
+
+        // Make the shadow of the plane smaller and more visible in the middle of the line
+        shadowPlaneContainer.adapter.add ("scale", function (scale, target) {
+          target.opacity = (0.6 - (Math.abs (0.5 - target.position)));
+          return 0.5 - 0.3 * (1 - (Math.abs (0.5 - target.position)));
         });
 
         // Start flying the plname
