@@ -63,7 +63,7 @@ export class MsfMapComponent implements OnInit {
     this.zoom = [1];
     this.globals.startTimestamp = new Date();
     this.data = [];
-    this.globals.isLoading = true;
+    // this.globals.isLoading = true;
     this.services.getMapBoxTracking(this,this.successHandler, this.errorHandler);    
   }
 
@@ -79,12 +79,14 @@ export class MsfMapComponent implements OnInit {
       _this.zoom = [4];    
     }
     _this.globals.isLoading = false;
+    _this.globals.showBigLoading = true;
     
   }
 }
 
   errorHandler(_this,data){
     _this.globals.isLoading = false;
+    _this.globals.showBigLoading = true;
   }
 
   getHeight(){
@@ -185,6 +187,10 @@ export class MsfMapComponent implements OnInit {
         this.coordinates.push(feature.geometry.coordinates);
       }
     }    
+  }
+  
+  cancelLoading(){
+    this.globals.isLoading = false;
   }
 
 }

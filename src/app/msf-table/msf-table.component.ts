@@ -367,12 +367,13 @@ export class MsfTableComponent implements OnInit {
       
       if(_this.template){
         _this.tableOptions.template = true;
-        _this.tableOptions.selectedIndex = 2;
+
       }else{
         _this.tableOptions.template = false;
       }
-
+      _this.tableOptions.selectedIndex = 2;
       _this.finishLoading.emit (false);
+      _this.globals.showBigLoading = true;
     }
   }
 
@@ -383,6 +384,7 @@ export class MsfTableComponent implements OnInit {
   }
 
   handlerError(_this,result) {
+    _this.globals.showBigLoading = true;
     _this.finishLoading.emit (true);
     _this.tableOptions.dataSource = false;
     _this.tableOptions.template = false;
@@ -547,5 +549,9 @@ export class MsfTableComponent implements OnInit {
       return false;
 
     return ((this.tableOptions.dataSource && !this.tableOptions.template && this.currentOption.metaData==1) || (this.currentOption.tabType=='scmap'));
+  }
+
+  cancelLoading(){
+    this.globals.isLoading = false;
   }
 }

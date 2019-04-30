@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Globals } from '../globals/Globals';
-import { MatTab, MatTabGroup } from '@angular/material';
+import { MatTab, MatTabGroup, MatTabChangeEvent } from '@angular/material';
 import { MsfTableComponent } from '../msf-table/msf-table.component';
 import { MsfChartOnTimeDelayComponent } from '../msf-chart-on-time-delay/msf-chart-on-time-delay.component';
 import { MsfDynamicTableComponent } from '../msf-dynamic-table/msf-dynamic-table.component';
@@ -77,5 +77,10 @@ export class MsfContainerComponent implements OnInit {
   finishLoadingTable(error)
   {
     this.globals.isLoading = false;
+  }
+
+  onLinkClick(event: any) {
+    this.globals.selectedIndex = event;
+  
   }
 }

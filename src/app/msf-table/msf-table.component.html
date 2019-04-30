@@ -65,5 +65,12 @@
         </div>
     </div>
 
+    <div class="loading-panel table-loading" *ngIf="isLoading">
+        <button mat-button class="cancel-button" (click)="cancelLoading()">
+          Cancel
+        <mat-icon  class="close-icon">close</mat-icon> 
+        </button>
+    </div>
+
   
 

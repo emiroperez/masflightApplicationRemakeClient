@@ -248,19 +248,22 @@ export class Utils{
         if(argument.url!=null && argument.url!='' && type != ComponentType.sortingCheckboxes){
             var valueAux="";
             var i = 0;
-            if(Array.isArray(value)){
-                for(var val of value){
-                    if(i == 0){
-                        valueAux = val[argument.selectedAttribute];
-                    }else{
-                        valueAux += ","+ val[argument.selectedAttribute];
-                    }                
-                    i++;
+            if(value!=null){
+                if(Array.isArray(value)){
+                    for(var val of value){
+                        if(i == 0){
+                            valueAux = val[argument.selectedAttribute];
+                        }else{
+                            valueAux += ","+ val[argument.selectedAttribute];
+                        }                
+                        i++;
+                    }
+                }else{
+                    return value[argument.selectedAttribute];
                 }
             }else{
-                return value[argument.selectedAttribute];
+                return '';
             }
-
             return valueAux;
         }
         if(type == ComponentType.timeRange){
