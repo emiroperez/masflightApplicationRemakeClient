@@ -373,7 +373,9 @@ export class MsfTableComponent implements OnInit {
       }
       _this.tableOptions.selectedIndex = 2;
       _this.finishLoading.emit (false);
-      _this.globals.showBigLoading = true;
+      if(!_this.globals.isLoading){
+        _this.globals.showBigLoading = true;
+      }
     }
   }
 
@@ -384,8 +386,10 @@ export class MsfTableComponent implements OnInit {
   }
 
   handlerError(_this,result) {
-    _this.globals.showBigLoading = true;
     _this.finishLoading.emit (true);
+    if(!_this.globals.isLoading){
+      _this.globals.showBigLoading = true;
+    }
     _this.tableOptions.dataSource = false;
     _this.tableOptions.template = false;
     console.log(result);

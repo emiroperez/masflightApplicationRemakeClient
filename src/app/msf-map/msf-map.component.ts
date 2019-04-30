@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { ApplicationService } from '../services/application.service';
 import { Globals } from '../globals/Globals';
 // import { AgmMap } from '@agm/core';
@@ -19,6 +19,9 @@ export class MsfMapComponent implements OnInit {
 
   @ViewChild('map')
   map: mapboxgl.Map;
+
+  @Input('isLoading')
+  isLoading: any;
 
   mapReady: boolean=false;
 
@@ -63,12 +66,11 @@ export class MsfMapComponent implements OnInit {
     this.zoom = [1];
     this.globals.startTimestamp = new Date();
     this.data = [];
-    // this.globals.isLoading = true;
+    this.isLoading = true;
     this.services.getMapBoxTracking(this,this.successHandler, this.errorHandler);    
   }
 
   successHandler(_this,features){
-    if(_this.globals.isLoading){
     _this.globals.endTimestamp = new Date();
     _this.data = features;
     _this.setCoordinates(features);
@@ -78,15 +80,17 @@ export class MsfMapComponent implements OnInit {
       // _this.getChart(_this);  
       _this.zoom = [4];    
     }
-    _this.globals.isLoading = false;
-    _this.globals.showBigLoading = true;
-    
-  }
+    _this.isLoading = false;
+    if(!_this.globals.isLoading){
+      _this.globals.showBigLoading = true;
+    }
 }
 
   errorHandler(_this,data){
-    _this.globals.isLoading = false;
-    _this.globals.showBigLoading = true;
+    _this.isLoading = false;
+    if(!_this.globals.isLoading){
+      _this.globals.showBigLoading = true;
+    }
   }
 
   getHeight(){
@@ -188,9 +192,9 @@ export class MsfMapComponent implements OnInit {
       }
     }    
   }
-  
+
   cancelLoading(){
-    this.globals.isLoading = false;
+    this.isLoading = false;
   }
 
 }
