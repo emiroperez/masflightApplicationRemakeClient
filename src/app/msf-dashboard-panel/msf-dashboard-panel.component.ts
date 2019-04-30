@@ -527,8 +527,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         // Create map instance
         chart.geodata = am4geodata_worldLow;
         chart.projection = new am4maps.projections.Miller ();
-        chart.homeZoomLevel = 4;
 
+        // Add map polygons and exclude Antartica
         continentSeries = chart.series.push (new am4maps.MapPolygonSeries ());
         continentSeries.useGeodata = true;
         continentSeries.exclude = ["AQ"];
@@ -622,15 +622,14 @@ export class MsfDashboardPanelComponent implements OnInit {
         tempLng = Math.atan2 (avgY, avgX);
         tempLat = Math.atan2 (avgZ, Math.sqrt (avgX * avgX + avgY * avgY));
 
+        // Set home location and zoom level
         chart.homeGeoPoint = {
           latitude: this.utils.rad2degr (tempLat),
           longitude: this.utils.rad2degr (tempLng)
         };
 
-        if (Math.abs (city1.longitude) > Math.abs (city2.longtitude))
-          chart.deltaLongitude = 360 - city1.longitude;
-        else
-          chart.deltaLongitude = 360 - city2.longitude;
+        chart.homeZoomLevel = 4;
+        chart.deltaLongitude = 360 - chart.homeGeoPoint.longitude;
 
         // Create map line series and connect to the cities
         lineSeries = chart.series.push (new am4maps.MapLineSeries ());
