@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import {Option} from '../model/Option';
 import { MatSort, MatTab } from '@angular/material';
 import { Observable } from 'rxjs';
-import { AmChart, AmChartsService } from '@amcharts/amcharts3-angular';
 @Injectable()
 export class Globals {
   currentOption: any;
@@ -10,6 +9,7 @@ export class Globals {
   currentUser: any;
   currentArgs: any;
   isLoading: boolean = false;
+  showBigLoading: boolean = true;
   popupLoading: boolean = false;
   popupLoading2: boolean = false;
   sort: MatSort;
@@ -50,7 +50,7 @@ export class Globals {
   currentAirline: any;
   template : boolean = false;
   isFullscreen: boolean = false;
-  baseUrl = "http://192.168.1.6:8887";
+  baseUrl = "http://staging.pulse.aspsols.com:8887";
   // baseUrl = "";
   // baseUrl2 = "http://localhost:8886";
   baseUrl2 = "http://69.64.45.220:8886";
@@ -60,7 +60,7 @@ export class Globals {
   hideParametersPanels : boolean =false;
   Airportdataorigin:any;
   Airportdatadest:any;
-  scheduleChart :AmChart;
+  scheduleChart :any;
   schedulepanelinfo :any;
   subTotalRecord = 0;
   currentDrillDown: any;
