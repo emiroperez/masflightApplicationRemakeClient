@@ -76,7 +76,23 @@ export class MsfContainerComponent implements OnInit {
 
   finishLoadingTable(error)
   {
-    this.msfTableRef.isLoading = false;
+
+    if(this.globals.currentOption.tabType=='scmap'){
+      this.globals.isLoading = false;
+    }else{
+      this.msfTableRef.isLoading = false;
+      if(!this.msfMapRef.isLoading){
+        this.globals.isLoading = false;
+      }
+    }
+  }
+
+  finishLoadingMap(error)
+  {
+    this.msfMapRef.isLoading = false;
+    if(!this.msfTableRef.isLoading){
+      this.globals.isLoading = false;
+    }
   }
 
   onLinkClick(event: any) {

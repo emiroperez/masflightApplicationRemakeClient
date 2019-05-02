@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { ApplicationService } from '../services/application.service';
 import { Globals } from '../globals/Globals';
 // import { AgmMap } from '@agm/core';
@@ -22,6 +22,9 @@ export class MsfMapComponent implements OnInit {
 
   @Input('isLoading')
   isLoading: any;
+
+  @Output('finishLoading')
+  finishLoading = new EventEmitter ();
 
   mapReady: boolean=false;
 
@@ -66,7 +69,7 @@ export class MsfMapComponent implements OnInit {
     this.zoom = [1];
     this.globals.startTimestamp = new Date();
     this.data = [];
-    this.isLoading = true;
+    // this.isLoading = true;
     this.services.getMapBoxTracking(this,this.successHandler, this.errorHandler);    
   }
 
@@ -81,7 +84,7 @@ export class MsfMapComponent implements OnInit {
         // _this.getChart(_this);  
         _this.zoom = [4];    
       }
-      _this.isLoading = false;
+      _this.finishLoading.emit (false);
       if(!_this.globals.isLoading){
         _this.globals.showBigLoading = true;
       }
@@ -90,7 +93,7 @@ export class MsfMapComponent implements OnInit {
 }
 
   errorHandler(_this,data){
-    _this.isLoading = false;
+    _this.finishLoading.emit (true);
     if(!_this.globals.isLoading){
       _this.globals.showBigLoading = true;
     }
