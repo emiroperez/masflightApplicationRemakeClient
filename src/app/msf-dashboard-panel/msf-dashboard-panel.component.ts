@@ -478,7 +478,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         };
 
         chart.homeZoomLevel = 1;
-        chart.deltaLongitude = 0;
+        // chart.deltaLongitude = 0;
 
         // Copy the results into a list of flight routes
         if (this.values.flightRoutes.length)
@@ -3561,7 +3561,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         };
 
         this.chart.homeZoomLevel = 1;
-        this.chart.deltaLongitude = 0;
+        // this.chart.deltaLongitude = 0;
       }
       else
       {
@@ -3605,7 +3605,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         };
 
         this.chart.homeZoomLevel = 4;
-        this.chart.deltaLongitude = 360 - this.chart.homeGeoPoint.longitude;
+        // this.chart.deltaLongitude = 360 - this.chart.homeGeoPoint.longitude;
 
         // Create map line series and connect to the cities
         if (this.lineSeries != null)
