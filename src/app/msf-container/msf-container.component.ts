@@ -81,7 +81,11 @@ export class MsfContainerComponent implements OnInit {
       this.globals.isLoading = false;
     }else{
       this.msfTableRef.isLoading = false;
-      if(!this.msfMapRef.isLoading){
+      if(this.msfMapRef){
+        if(!this.msfMapRef.isLoading){
+          this.globals.isLoading = false;
+        }
+      }else{
         this.globals.isLoading = false;
       }
     }
