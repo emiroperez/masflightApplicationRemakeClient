@@ -485,25 +485,6 @@ export class MsfDashboardPanelComponent implements OnInit {
         {
           this.checkedRoutes = [];
           this.checkedCities = [];
-
-          if (this.imageSeries != null)
-          {
-            this.imageSeries.dispose ();
-            this.imageSeries = null;
-          }
-  
-          if (this.lineSeries != null)
-          {
-            this.lineSeries.dispose ();
-            this.lineSeries = null;
-          }
-  
-          if (this.shadowLineSeries != null)
-          {
-            this.shadowLineSeries.dispose ();
-            this.shadowLineSeries = null;
-          }
-
           this.values.flightRoutes = [];
         }
 
@@ -787,7 +768,25 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (this.chart)
     {
       this.zone.runOutsideAngular (() => {
-          this.chart.dispose ();
+        if (this.imageSeries != null)
+        {
+          this.imageSeries.dispose ();
+          this.imageSeries = null;
+        }
+
+        if (this.lineSeries != null)
+        {
+          this.lineSeries.dispose ();
+          this.lineSeries = null;
+        }
+
+        if (this.shadowLineSeries != null)
+        {
+          this.shadowLineSeries.dispose ();
+          this.shadowLineSeries = null;
+        }
+
+        this.chart.dispose ();
       });
     }
   }
