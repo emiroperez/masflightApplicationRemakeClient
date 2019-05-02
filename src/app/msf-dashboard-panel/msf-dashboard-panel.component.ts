@@ -480,13 +480,9 @@ export class MsfDashboardPanelComponent implements OnInit {
         chart.homeZoomLevel = 1;
         chart.deltaLongitude = 0;
 
-        // Copy the results into a list of flight routes
-        if (this.values.flightRoutes.length)
-        {
-          this.checkedRoutes = [];
-          this.checkedCities = [];
-          this.values.flightRoutes = [];
-        }
+        // Reset checked cities and routes
+        this.checkedRoutes = [];
+        this.checkedCities = [];
 
         // Add zoom control buttons
         zoomControl = new am4maps.ZoomControl ();
