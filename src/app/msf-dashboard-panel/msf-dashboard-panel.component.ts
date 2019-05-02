@@ -1579,8 +1579,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.picGenerated = false;
     _this.values.tableGenerated = false;
 
-    //prepareChart = setInterval (() =>
-    // {
+    prepareChart = setInterval (() =>
+    {
       _this.values.isLoading = false;
 
       _this.makeChart (_this.values.lastestResponse);
@@ -1588,8 +1588,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       _this.stopUpdateInterval ();
       _this.startUpdateInterval ();
 
-      // clearInterval (prepareChart);
-    //}, 50);
+      clearInterval (prepareChart);
+    }, 50);
   }
 
   handlerTextSuccess(_this, data): void
@@ -1644,8 +1644,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.picGenerated = false;
     _this.values.tableGenerated = false;
 
-    //prepareChart = setInterval (() =>
-    // {
+    prepareChart = setInterval (() =>
+    {
       _this.values.isLoading = false;
 
       _this.makeChart (data);
@@ -1653,8 +1653,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       _this.stopUpdateInterval ();
       _this.startUpdateInterval ();
 
-      // clearInterval (prepareChart);
-    //}, 50);
+      clearInterval (prepareChart);
+    }, 50);
   }
 
   loadChartFilterValues(component): void
