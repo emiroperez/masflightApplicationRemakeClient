@@ -583,7 +583,18 @@ export class MsfDashboardPanelComponent implements OnInit {
         imageSeriesTemplate.events.on ("out", function (event) {
           event.target.setState ("default");
         });
-  
+
+/*
+        // Set default location and zoom level
+        chart.homeGeoPoint = {
+          latitude: 48.8567,
+          longitude: 2.3510
+        };
+
+        chart.homeZoomLevel = 1;
+        chart.deltaLongitude = 0;
+*/
+        
         // Put the latitude/longitude for the cities
         city1 = imageSeries.mapImages.create ();
         city1Info = chartInfo.airports[0];
@@ -670,6 +681,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         shadowPlane.opacity = 0;
         shadowPlane.horizontalCenter = "middle";
         shadowPlane.verticalCenter = "middle";
+        
 
         // Add zoom control buttons
         zoomControl = new am4maps.ZoomControl ();
@@ -690,6 +702,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           chart.goHome ();
         });
 
+        
         // Make the plane bigger in the middle of the line
         planeContainer.adapter.add ("scale", function (scale, target) {
           return 0.02 * (1 - (Math.abs (0.5 - target.position)));
@@ -703,6 +716,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
         // Start flying the plname
         chart.events.on ("ready", goForward);
+        
       }
       else if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART
         || this.values.currentChartType.flags & ChartFlags.PIECHART)
@@ -1275,7 +1289,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         chartType: this.chartTypes.indexOf (this.values.currentChartType),
         categoryOptions: this.values.currentOptionCategories ? JSON.stringify (this.values.currentOptionCategories) : null,
         function: 1,
-        updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0)
+        updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0),
+        lastestResponse: JSON.stringify (this.values.lastestResponse)
       };
     }
     else if (this.values.currentChartType.flags & ChartFlags.INFO)
@@ -1616,14 +1631,15 @@ export class MsfDashboardPanelComponent implements OnInit {
       {
         if (Array.isArray (array))
         {
-          result = array[0];
+          result = array;
           break;
         }
       }
     }
 
-    _this.service.saveLastestResponse (_this, _this.getPanelInfo (), JSON.stringify (result),
-      _this.handlerMapLastestResponse, _this.handlerMapError);
+    _this.values.lastestResponse = result;
+
+    _this.service.saveLastestResponse (_this, _this.getPanelInfo (), _this.handlerMapLastestResponse, _this.handlerMapError);
   }
 
   handlerPicSuccess(_this, data): void
@@ -1637,7 +1653,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     // destroy current chart if it's already generated to avoid a blank chart later
     _this.destroyChart ();
 
-    _this.valus.lastestResponse = data;
     _this.values.isLoading = false;
     _this.values.displayPic = true;
     _this.values.chartGenerated = false;
@@ -1690,13 +1705,16 @@ export class MsfDashboardPanelComponent implements OnInit {
       });
     }
 
+    _this.values.lastestResponse = formResults;
+
     // save the panel into the database
-    _this.service.saveLastestResponse (_this, _this.getPanelInfo (), JSON.stringify (formResults),
-      _this.handlerFormLastestResponse, _this.handlerFormError);
+    _this.service.saveLastestResponse (_this, _this.getPanelInfo (), _this.handlerFormLastestResponse, _this.handlerFormError);
   }
 
-  handlerFormLastestResponse(_this, data): void
+  handlerFormLastestResponse(_this): void
   {
+    let data = JSON.parse (JSON.stringify (_this.values.lastestResponse));
+
     _this.values.lastestResponse = [];
 
     for (let formVariable of data)
@@ -1725,7 +1743,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.startUpdateInterval ();
   }
 
-  handlerTableLastestResponse(_this, data): void
+  handlerTableLastestResponse(_this): void
   {
     _this.values.isLoading = false;
 
@@ -1743,11 +1761,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.startUpdateInterval ();
   }
 
-  handlerMapLastestResponse(_this, data): void
+  handlerMapLastestResponse(_this): void
   {
     let prepareChart;
-
-    _this.values.lastestResponse = data;
 
     // destroy current chart if it's already generated to avoid a blank chart
     _this.destroyChart ();
@@ -1763,7 +1779,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       _this.values.isLoading = false;
 
-      _this.makeChart (data);
+      _this.makeChart (_this.values.lastestResponse);
   
       _this.stopUpdateInterval ();
       _this.startUpdateInterval ();
@@ -3434,8 +3450,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       for (let tableVariable of this.values.tableVariables)
         this.values.lastestResponse.push ({ id: tableVariable.itemId, checked: tableVariable.checked });
 
-      this.service.saveLastestResponse (this, this.getPanelInfo (), JSON.stringify (this.values.lastestResponse),
-        this.handlerTableLastestResponse, this.handlerTableError);
+      this.service.saveLastestResponse (this, this.getPanelInfo (), this.handlerTableLastestResponse, this.handlerTableError);
     }
     else
     {

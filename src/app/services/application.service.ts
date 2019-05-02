@@ -406,9 +406,9 @@ export class ApplicationService {
     this.http.get (_this, url, handlerSuccess, handlerError, null);
   }
 
-  saveLastestResponse(_this, panel, lastestResponse, handlerSuccess, handlerError)
+  saveLastestResponse(_this, panel, handlerSuccess, handlerError)
   {
-    let url = this.host + "/saveLastestResponse?lastestResponse=" + lastestResponse;
+    let url = this.host + "/saveLastestResponse?lastestResponse";
     this.http.post (_this, url, panel, handlerSuccess, handlerError);
   }
 
