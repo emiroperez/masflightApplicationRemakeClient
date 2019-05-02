@@ -466,12 +466,24 @@
 <div class="{{values.displayChart ? 'msf-dashboard-panel-container-chart' : 'msf-dashboard-panel-container-invisible'}}" [style.height.px]="panelHeight">
   <div class="msf-dashboard-panel-title" *ngIf="values.displayChart">{{values.chartName}}</div>
   <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard.chart-display-container-{{values.id}}">
+    <div class="msf-dashboard-map-routelist" *ngIf="isMapPanel() && values.flightRoutes != null">
+      <div class="msf-dashboard-map-routelist-container" [style.height.px]="calcRouteListHeight()">
+        <div class="msf-dashboard-map-routelist-item" *ngFor="let item of values.flightRoutes">
+          <div class="msf-dashboard-map-item-flight">
+            {{item.Flight.Marketing_Airline}} {{item.Flight.Airline}} - F# {{item.Flight.FlightNo}} {{item.TouchedAirports}}
+          </div>
+          <div class="msf-dashboard-map-item-checkbox">
+            <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="item.checked" (ngModelChange)="toggleMapRoute(item)"></mat-checkbox>
+          </div>
+        </div>
+      </div>
+    </div>
     <div id="msf-dashboard-chart-display-{{values.id}}" [ngStyle]="{'width': (globals.readOnlyDashboard || isMapPanel()) ? '100%' : 'calc(100% - 35px)'}" [style.height.px]="calcPanelHeight()"></div>
-    <div class="msf-dashboard-map-panelinfo" *ngIf="isMapPanel() && values.lastestResponse != null">
+    <div class="msf-dashboard-map-panelinfo" *ngIf="isMapPanel() && checkedRoutes.length == 1">
       <table class="msf-dashboard-map-panelinfo-container">
-        <tr><td>Touched Airports</td><td>{{values.lastestResponse.TouchedAirports}}</td></tr>
-        <tr><td>Total Distance</td><td>{{values.lastestResponse.TotalDistance}}</td></tr>
-        <tr><td>Total Time</td><td>{{values.lastestResponse.TotalTime}}</td></tr>
+        <tr><td>Touched Airports</td><td>{{checkedRoutes[0].TouchedAirports}}</td></tr>
+        <tr><td>Total Distance</td><td>{{checkedRoutes[0].TotalDistance}}</td></tr>
+        <tr><td>Total Time</td><td>{{checkedRoutes[0].TotalTime}}</td></tr>
       </table>
     </div>
     <div class="msf-dashboard-panel-config-button" *ngIf="!globals.readOnlyDashboard">

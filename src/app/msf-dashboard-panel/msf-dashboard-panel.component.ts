@@ -118,6 +118,13 @@ export class MsfDashboardPanelComponent implements OnInit {
   @ViewChild('msfTableRef')
   msfTableRef: MsfTableComponent;
 
+  // map variables
+  imageSeries: any;
+  lineSeries: any;
+  shadowLineSeries: any;
+  checkedCities: any[] = [];
+  checkedRoutes: any[] = [];
+
   actualPageNumber: number;
   dataSource: boolean = false;
   template: boolean = false;
@@ -441,86 +448,13 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   makeChart(chartInfo): void
   {
-    let planeContainer, shadowPlaneContainer, plane, shadowPlane;
-
-    function goForward()
-    {
-      let animation;
-
-      if (plane.rotation)
-      {
-        shadowPlane.rotation = 0;
-        shadowPlane.opacity = 0;
-
-        plane.animate ({
-          to: 0,
-          property: "rotation"
-        }, 1000).events.on ("animationended", goForward);
-
-        return;
-      }
-      else
-        shadowPlane.opacity = 0.75;
-
-      animation = planeContainer.animate ({
-        property: "position",
-        from: 0,
-        to: 1
-      }, 6000).delay (300);
-
-      shadowPlaneContainer.animate ({
-        property: "position",
-        from: 0,
-        to: 1
-      }, 6000).delay (300);
-
-      animation.events.on ("animationended", goBack);
-    }
-
-    function goBack()
-    {
-      let animation;
-
-      if (plane.rotation != 180)
-      {
-        shadowPlane.rotation = 180;
-        shadowPlane.opacity = 0;
-
-        plane.animate ({
-          to: 180,
-          property: "rotation"
-        }, 1000).events.on ("animationended", goBack);
-
-        return;
-      }
-      else
-        shadowPlane.opacity = 0.75;
-
-      animation = planeContainer.animate ({
-        property: "position",
-        from: 1,
-        to: 0
-      }, 6000).delay (300);
-  
-      shadowPlaneContainer.animate ({
-        property: "position",
-        from: 1,
-        to: 0
-      }, 6000).delay (300);
-
-      animation.events.on ("animationended", goForward);
-    }
-
     this.zone.runOutsideAngular (() => {
       let chart;
 
       // Check chart type before generating it
       if (this.values.currentChartType.flags & ChartFlags.MAP)
       {
-        let continentSeries, imageSeries, imageSeriesTemplate, zoomControl, home;
-        let tempLat, tempLng, tempLatCos, sumX, sumY, sumZ, avgX, avgY, avgZ;
-        let circle, label, hoverState, city1, city1Info, city2, city2Info;
-        let lineSeries, mapLine, shadowLineSeries, shadowMapLine;
+        let continentSeries, flightInterval, zoomControl, home;
 
         chart = am4core.create ("msf-dashboard-chart-display-" + this.values.id, am4maps.MapChart);
 
@@ -537,54 +471,6 @@ export class MsfDashboardPanelComponent implements OnInit {
         continentSeries.mapPolygons.template.strokeOpacity = 0.25;
         continentSeries.mapPolygons.template.strokeWidth = 0.5;
 
-        // Create image container for the circles and city labels
-        imageSeries = chart.series.push (new am4maps.MapImageSeries ());
-        imageSeriesTemplate = imageSeries.mapImages.template;
-
-        // Set property fields for the cities
-        imageSeriesTemplate.propertyFields.latitude = "latitude";
-        imageSeriesTemplate.propertyFields.longitude = "longitude";
-        imageSeriesTemplate.horizontalCenter = "middle";
-        imageSeriesTemplate.verticalCenter = "middle";
-        imageSeriesTemplate.width = 8;
-        imageSeriesTemplate.height = 8;
-        imageSeriesTemplate.scale = 1;
-        imageSeriesTemplate.tooltipText = "{title}";
-        imageSeriesTemplate.fill = black;
-        imageSeriesTemplate.background.fillOpacity = 0;
-        imageSeriesTemplate.background.fill = white;
-        imageSeriesTemplate.setStateOnChildren = true;
-
-        // Configure circle and city labels
-        circle = imageSeriesTemplate.createChild (am4core.Sprite);
-        circle.defaultState.properties.fillOpacity = 1;
-        circle.path = targetSVG;
-        circle.scale = 0.75;
-        circle.fill = white;
-        circle.dx -= 2.5;
-        circle.dy -= 2.5;
-        hoverState = circle.states.create ("hover");
-        hoverState.properties.fill = comet;
-
-        label = imageSeriesTemplate.createChild (am4core.Label);
-        label.text = "{title}";
-        label.scale = 1;
-        label.horizontalCenter = "left";
-        label.verticalCenter = "middle";
-        label.dx += 17.5;
-        label.dy += 5.5;
-        hoverState = label.states.create ("hover");
-        hoverState.properties.fill = darkGreen;
-
-        imageSeriesTemplate.events.on ("over", function (event) {
-          event.target.setState ("hover");
-        });
-
-        imageSeriesTemplate.events.on ("out", function (event) {
-          event.target.setState ("default");
-        });
-
-/*
         // Set default location and zoom level
         chart.homeGeoPoint = {
           latitude: 48.8567,
@@ -593,95 +479,13 @@ export class MsfDashboardPanelComponent implements OnInit {
 
         chart.homeZoomLevel = 1;
         chart.deltaLongitude = 0;
-*/
-        
-        // Put the latitude/longitude for the cities
-        city1 = imageSeries.mapImages.create ();
-        city1Info = chartInfo.airports[0];
-        city1.latitude = city1Info.latitude;
-        city1.longitude = city1Info.longitude;
-        city1.nonScaling = true;
-        city1.title = city1Info.title;
 
-        city2 = imageSeries.mapImages.create ();
-        city2Info = chartInfo.airports[1];
-        city2.latitude = city2Info.latitude;
-        city2.longitude = city2Info.longitude;
-        city2.nonScaling = true;
-        city2.title = city2Info.title;
-
-        // Calculate middle point of both cities and set home location to it
-        tempLat = this.utils.degr2rad (city1.latitude);
-        tempLng = this.utils.degr2rad (city1.longitude);
-        tempLatCos = Math.cos (tempLat);
-        sumX = tempLatCos * Math.cos (tempLng);
-        sumY = tempLatCos * Math.sin (tempLng);
-        sumZ = Math.sin (tempLat);
-
-        tempLat = this.utils.degr2rad (city2.latitude);
-        tempLng = this.utils.degr2rad (city2.longitude);
-        tempLatCos = Math.cos (tempLat);
-        sumX += tempLatCos * Math.cos (tempLng);
-        sumY += tempLatCos * Math.sin (tempLng);
-        sumZ += Math.sin (tempLat);
-
-        avgX = sumX / 2;
-        avgY = sumY / 2;
-        avgZ = sumZ / 2;
-
-        // Convert average x, y, z coordinate to latitude and longitude
-        tempLng = Math.atan2 (avgY, avgX);
-        tempLat = Math.atan2 (avgZ, Math.sqrt (avgX * avgX + avgY * avgY));
-
-        // Set home location and zoom level
-        chart.homeGeoPoint = {
-          latitude: this.utils.rad2degr (tempLat),
-          longitude: this.utils.rad2degr (tempLng)
-        };
-
-        chart.homeZoomLevel = 4;
-        chart.deltaLongitude = 360 - chart.homeGeoPoint.longitude;
-
-        // Create map line series and connect to the cities
-        lineSeries = chart.series.push (new am4maps.MapLineSeries ());
-        lineSeries.zIndex = 10;
-        mapLine = lineSeries.mapLines.create ();
-        mapLine.imagesToConnect = [city1, city2];
-        mapLine.line.strokeOpacity = 0.3;
-        mapLine.line.stroke = cyan;
-        mapLine.line.horizontalCenter = "middle";
-        mapLine.line.verticalCenter = "middle";
-
-        shadowLineSeries = chart.series.push (new am4maps.MapLineSeries ());
-        shadowLineSeries.mapLines.template.line.strokeOpacity = 0;
-        shadowLineSeries.mapLines.template.line.nonScalingStroke = true;
-        shadowLineSeries.mapLines.template.shortestDistance = false;
-        shadowLineSeries.zIndex = 5;
-        shadowMapLine = shadowLineSeries.mapLines.create ();
-        shadowMapLine.imagesToConnect = [city1, city2];
-        shadowMapLine.line.horizontalCenter = "middle";
-        shadowMapLine.line.verticalCenter = "middle";
-
-        // Add plane sprite
-        planeContainer = mapLine.lineObjects.create ();
-        planeContainer.position = 0;
-        shadowPlaneContainer = shadowMapLine.lineObjects.create ();
-        shadowPlaneContainer.position = 0;
-
-        plane = planeContainer.createChild (am4core.Sprite);
-        plane.path = planeSVG;
-        plane.fill = cyan;
-        plane.scale = 0.75;
-        plane.horizontalCenter = "middle";
-        plane.verticalCenter = "middle";
-
-        shadowPlane = shadowPlaneContainer.createChild (am4core.Sprite);
-        shadowPlane.path = planeSVG;
-        shadowPlane.scale = 0.0275;
-        shadowPlane.opacity = 0;
-        shadowPlane.horizontalCenter = "middle";
-        shadowPlane.verticalCenter = "middle";
-        
+        // Copy the results into a list of flight routes
+        flightInterval = setInterval (() =>
+        {
+          this.values.flightRoutes = JSON.parse (JSON.stringify (chartInfo));
+          clearInterval (flightInterval);
+        }, 10);
 
         // Add zoom control buttons
         zoomControl = new am4maps.ZoomControl ();
@@ -701,22 +505,6 @@ export class MsfDashboardPanelComponent implements OnInit {
         home.events.on ("hit", function (ev) {
           chart.goHome ();
         });
-
-        
-        // Make the plane bigger in the middle of the line
-        planeContainer.adapter.add ("scale", function (scale, target) {
-          return 0.02 * (1 - (Math.abs (0.5 - target.position)));
-        });
-
-        // Make the shadow of the plane smaller and more visible in the middle of the line
-        shadowPlaneContainer.adapter.add ("scale", function (scale, target) {
-          target.opacity = (0.6 - (Math.abs (0.5 - target.position)));
-          return 0.5 - 0.3 * (1 - (Math.abs (0.5 - target.position)));
-        });
-
-        // Start flying the plname
-        chart.events.on ("ready", goForward);
-        
       }
       else if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART
         || this.values.currentChartType.flags & ChartFlags.PIECHART)
@@ -3048,6 +2836,24 @@ export class MsfDashboardPanelComponent implements OnInit {
     return this.panelHeight - 14;
   }
 
+  calcRouteListHeight(): number
+  {
+    switch (this.panelHeight)
+    {
+      case 303: // Small
+        return 273;
+
+      case 333: // Medium
+        return 303;
+
+      case 378: // Large
+        return 348;
+
+      default: // 12 = Very Large
+        return 438;
+    }
+  }
+
   isInformationPanel(): boolean
   {
     return (this.values.currentChartType.flags & ChartFlags.INFO
@@ -3501,5 +3307,362 @@ export class MsfDashboardPanelComponent implements OnInit {
       return false;
 
     return this.msfTableRef.dataSource ? true : false;
+  }
+
+  toggleMapRoute(route): void
+  {
+    let tempLat, tempLng, sumX, sumY, sumZ, avgX, avgY, avgZ;
+    let circle, label, imageSeriesTemplate, hoverState;
+    let newCities, flightRoutes;
+    let city1, city2;
+
+    flightRoutes = [];
+    newCities = [];
+
+    function goForward(plane, shadowPlane, planeContainer, shadowPlaneContainer)
+    {
+      let animation;
+
+      if (plane.rotation)
+      {
+        shadowPlane.rotation = 0;
+        shadowPlane.opacity = 0;
+
+        plane.animate ({
+          to: 0,
+          property: "rotation"
+        }, 1000).events.on ("animationended",
+          function() {
+            goForward (plane, shadowPlane, planeContainer, shadowPlaneContainer);
+          }
+        );
+
+        return;
+      }
+      else
+        shadowPlane.opacity = 0.75;
+
+      animation = planeContainer.animate ({
+        property: "position",
+        from: 0,
+        to: 1
+      }, 6000).delay (300);
+
+      shadowPlaneContainer.animate ({
+        property: "position",
+        from: 0,
+        to: 1
+      }, 6000).delay (300);
+
+      animation.events.on ("animationended",
+        function() {
+          goBack (plane, shadowPlane, planeContainer, shadowPlaneContainer);
+        }
+      );
+    }
+
+    function goBack(plane, shadowPlane, planeContainer, shadowPlaneContainer)
+    {
+      let animation;
+
+      if (plane.rotation != 180)
+      {
+        shadowPlane.rotation = 180;
+        shadowPlane.opacity = 0;
+
+        plane.animate ({
+          to: 180,
+          property: "rotation"
+        }, 1000).events.on ("animationended",
+          function() {
+            goBack (plane, shadowPlane, planeContainer, shadowPlaneContainer);
+          }
+        );
+
+        return;
+      }
+      else
+        shadowPlane.opacity = 0.75;
+
+      animation = planeContainer.animate ({
+        property: "position",
+        from: 1,
+        to: 0
+      }, 6000).delay (300);
+  
+      shadowPlaneContainer.animate ({
+        property: "position",
+        from: 1,
+        to: 0
+      }, 6000).delay (300);
+
+      animation.events.on ("animationended",
+        function() {
+          goForward (plane, shadowPlane, planeContainer, shadowPlaneContainer);
+        }
+      );
+    }
+
+    city1 = null;
+    city2 = null;
+
+    // Check if the cities exists before adding or removing them
+    for (let city of this.checkedCities)
+    {
+      if (city.title === route.airports[0].title)
+        city1 = city;
+
+      if (city.title == route.airports[1].title)
+        city2 = city;
+    }
+
+    if (!route.checked)
+    {
+      if (city1)
+      {
+        city1.numRoutes--;
+        if (!city1.numRoutes)
+          this.checkedCities.splice (this.checkedCities.indexOf (city1), 1);
+      }
+
+      if (city2)
+      {
+        city2.numRoutes--;
+        if (!city2.numRoutes)
+          this.checkedCities.splice (this.checkedCities.indexOf (city2), 1);
+      }
+
+      for (let checkedRoute of this.checkedRoutes)
+      {
+        if (route === checkedRoute)
+        {
+          this.checkedRoutes.splice (this.checkedRoutes.indexOf (checkedRoute), 1);
+          break;
+        }
+      }
+    }
+    else
+    {
+      if (city1)
+        city1.numRoutes++;
+      else
+      {
+        this.checkedCities.push (route.airports[0]);
+        this.checkedCities[this.checkedCities.length - 1].numRoutes = 1;
+      }
+
+      if (city2)
+        city2.numRoutes++;
+      else
+      {
+        this.checkedCities.push (route.airports[1]);
+        this.checkedCities[this.checkedCities.length - 1].numRoutes = 1;
+      }
+
+      this.checkedRoutes.push (route);
+    }
+
+    this.zone.runOutsideAngular (() => {
+      if (this.imageSeries != null)
+        this.imageSeries.dispose ();
+
+      // Create image container for the circles and city labels
+      this.imageSeries = this.chart.series.push (new am4maps.MapImageSeries ());
+      imageSeriesTemplate = this.imageSeries.mapImages.template;
+
+      // Set property fields for the cities
+      imageSeriesTemplate.propertyFields.latitude = "latitude";
+      imageSeriesTemplate.propertyFields.longitude = "longitude";
+      imageSeriesTemplate.horizontalCenter = "middle";
+      imageSeriesTemplate.verticalCenter = "middle";
+      imageSeriesTemplate.width = 8;
+      imageSeriesTemplate.height = 8;
+      imageSeriesTemplate.scale = 1;
+      imageSeriesTemplate.tooltipText = "{title}";
+      imageSeriesTemplate.fill = black;
+      imageSeriesTemplate.background.fillOpacity = 0;
+      imageSeriesTemplate.background.fill = white;
+      imageSeriesTemplate.setStateOnChildren = true;
+
+      // Configure circle and city labels
+      circle = imageSeriesTemplate.createChild (am4core.Sprite);
+      circle.defaultState.properties.fillOpacity = 1;
+      circle.path = targetSVG;
+      circle.scale = 0.75;
+      circle.fill = white;
+      circle.dx -= 2.5;
+      circle.dy -= 2.5;
+      hoverState = circle.states.create ("hover");
+      hoverState.properties.fill = comet;
+
+      label = imageSeriesTemplate.createChild (am4core.Label);
+      label.text = "{title}";
+      label.scale = 1;
+      label.horizontalCenter = "left";
+      label.verticalCenter = "middle";
+      label.dx += 17.5;
+      label.dy += 5.5;
+      hoverState = label.states.create ("hover");
+      hoverState.properties.fill = darkGreen;
+      hoverState.properties.fillOpacity = 1;
+
+      imageSeriesTemplate.events.on ("over", function (event) {
+        event.target.setState ("hover");
+      });
+
+      imageSeriesTemplate.events.on ("out", function (event) {
+        event.target.setState ("default");
+      });
+
+      if (!this.checkedCities.length)
+      {
+        // Dispose any route lines
+        if (this.lineSeries != null)
+        {
+          this.lineSeries.dispose ();
+          this.lineSeries = null;
+        }
+
+        if (this.shadowLineSeries != null)
+        {
+          this.shadowLineSeries.dispose ();
+          this.shadowLineSeries = null;
+        }
+
+        // Set default location and zoom level if there are no cities
+        this.chart.homeGeoPoint = {
+          latitude: 48.8567,
+          longitude: 2.3510
+        };
+
+        this.chart.homeZoomLevel = 1;
+        this.chart.deltaLongitude = 0;
+      }
+      else
+      {
+        sumX = 0;
+        sumY = 0;
+        sumZ = 0;
+
+        for (let city of this.checkedCities)
+        {
+          let newCity, newCityInfo, tempLatCos;
+
+          newCity = this.imageSeries.mapImages.create ();
+          newCityInfo = city;
+          newCity.latitude = newCityInfo.latitude;
+          newCity.longitude = newCityInfo.longitude;
+          newCity.nonScaling = true;
+          newCity.title = newCityInfo.title;
+
+          newCities.push (newCity);
+
+          tempLat = this.utils.degr2rad (newCity.latitude);
+          tempLng = this.utils.degr2rad (newCity.longitude);
+          tempLatCos = Math.cos (tempLat);
+          sumX += tempLatCos * Math.cos (tempLng);
+          sumY += tempLatCos * Math.sin (tempLng);
+          sumZ += Math.sin (tempLat);
+        }
+
+        avgX = sumX / this.checkedCities.length;
+        avgY = sumY / this.checkedCities.length;
+        avgZ = sumZ / this.checkedCities.length;
+
+        // Convert average x, y, z coordinate to latitude and longitude
+        tempLng = Math.atan2 (avgY, avgX);
+        tempLat = Math.atan2 (avgZ, Math.sqrt (avgX * avgX + avgY * avgY));
+
+        // Set home location and zoom level
+        this.chart.homeGeoPoint = {
+          latitude: this.utils.rad2degr (tempLat),
+          longitude: this.utils.rad2degr (tempLng)
+        };
+
+        this.chart.homeZoomLevel = 4;
+        this.chart.deltaLongitude = 360 - this.chart.homeGeoPoint.longitude;
+
+        // Create map line series and connect to the cities
+        if (this.lineSeries != null)
+          this.lineSeries.dispose ();
+
+        this.lineSeries = this.chart.series.push (new am4maps.MapLineSeries ());
+        this.lineSeries.zIndex = 10;
+
+        if (this.shadowLineSeries != null)
+          this.shadowLineSeries.dispose ();
+
+        this.shadowLineSeries = this.chart.series.push (new am4maps.MapLineSeries ());
+        this.shadowLineSeries.mapLines.template.line.strokeOpacity = 0;
+        this.shadowLineSeries.mapLines.template.line.nonScalingStroke = true;
+        this.shadowLineSeries.mapLines.template.shortestDistance = false;
+        this.shadowLineSeries.zIndex = 5;
+
+        // Add the selected routes into the map
+        for (let checkedRoute of this.checkedRoutes)
+        {
+          let planeContainer, shadowPlaneContainer, plane, shadowPlane;
+          let mapLine, shadowMapLine;
+
+          // Get the cities connected to the route
+          for (let city of newCities)
+          {
+            if (city.title === checkedRoute.airports[0].title)
+              city1 = city;
+    
+            if (city.title == checkedRoute.airports[1].title)
+              city2 = city;
+          }
+
+          mapLine = this.lineSeries.mapLines.create ();
+          mapLine.imagesToConnect = [city1, city2];
+          mapLine.line.strokeOpacity = 0.3;
+          mapLine.line.stroke = cyan;
+          mapLine.line.horizontalCenter = "middle";
+          mapLine.line.verticalCenter = "middle";
+
+          shadowMapLine = this.shadowLineSeries.mapLines.create ();
+          shadowMapLine.imagesToConnect = [city1, city2];
+          shadowMapLine.line.horizontalCenter = "middle";
+          shadowMapLine.line.verticalCenter = "middle";
+
+          // Add plane sprite
+          planeContainer = mapLine.lineObjects.create ();
+          planeContainer.position = 0;
+          shadowPlaneContainer = shadowMapLine.lineObjects.create ();
+          shadowPlaneContainer.position = 0;
+
+          plane = planeContainer.createChild (am4core.Sprite);
+          plane.path = planeSVG;
+          plane.fill = cyan;
+          plane.scale = 0.75;
+          plane.horizontalCenter = "middle";
+          plane.verticalCenter = "middle";
+
+          shadowPlane = shadowPlaneContainer.createChild (am4core.Sprite);
+          shadowPlane.path = planeSVG;
+          shadowPlane.scale = 0.0275;
+          shadowPlane.opacity = 0;
+          shadowPlane.horizontalCenter = "middle";
+          shadowPlane.verticalCenter = "middle";
+
+          // Make the plane bigger in the middle of the line
+          planeContainer.adapter.add ("scale", function (scale, target) {
+            return 0.02 * (1 - (Math.abs (0.5 - target.position)));
+          });
+
+          // Make the shadow of the plane smaller and more visible in the middle of the line
+          shadowPlaneContainer.adapter.add ("scale", function (scale, target) {
+            target.opacity = (0.6 - (Math.abs (0.5 - target.position)));
+            return 0.5 - 0.3 * (1 - (Math.abs (0.5 - target.position)));
+          });
+
+          // Start flying the plane
+          goForward (plane, shadowPlane, planeContainer, shadowPlaneContainer);
+        }
+      }
+
+      this.chart.goHome (0);
+    });
   }
 }

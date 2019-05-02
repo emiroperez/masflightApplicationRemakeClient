@@ -70,6 +70,7 @@ export class MsfDashboardPanelValues {
 
     row: number;
     childPanels: any[] = [];
+    flightRoutes: any[] = [];
 
     constructor(options: any[], chartName: String, id: number, width: any, height: any, currentOption?: any, variable?: any,
         xaxis?: any, valueColumn?: any, func?: any, chartType?: any, currentOptionCategories?: any, lastestResponse?: string,
