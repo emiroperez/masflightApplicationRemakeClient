@@ -478,7 +478,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         };
 
         chart.homeZoomLevel = 1;
-        // chart.deltaLongitude = 0;
+        chart.deltaLongitude = 0;
 
         // Copy the results into a list of flight routes
         if (this.values.flightRoutes.length)
@@ -487,12 +487,6 @@ export class MsfDashboardPanelComponent implements OnInit {
           this.checkedCities = [];
           this.values.flightRoutes = [];
         }
-
-        flightInterval = setInterval (() =>
-        {
-          this.values.flightRoutes = JSON.parse (JSON.stringify (chartInfo));
-          clearInterval (flightInterval);
-        }, 10);
 
         // Add zoom control buttons
         zoomControl = new am4maps.ZoomControl ();
@@ -1451,6 +1445,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
 
     _this.values.lastestResponse = result;
+    _this.values.flightRoutes = JSON.parse (JSON.stringify (_this.values.lastestResponse));
 
     _this.service.saveLastestResponse (_this, _this.getPanelInfo (), _this.handlerMapLastestResponse, _this.handlerMapError);
   }
@@ -3338,10 +3333,8 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     let tempLat, tempLng, sumX, sumY, sumZ, avgX, avgY, avgZ;
     let circle, label, imageSeriesTemplate, hoverState;
-    let newCities, flightRoutes;
-    let city1, city2;
+    let newCities, city1, city2;
 
-    flightRoutes = [];
     newCities = [];
 
     function goForward(plane, shadowPlane, planeContainer, shadowPlaneContainer)
@@ -3561,7 +3554,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         };
 
         this.chart.homeZoomLevel = 1;
-        // this.chart.deltaLongitude = 0;
+        this.chart.deltaLongitude = 0;
       }
       else
       {
@@ -3605,7 +3598,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         };
 
         this.chart.homeZoomLevel = 4;
-        // this.chart.deltaLongitude = 360 - this.chart.homeGeoPoint.longitude;
+        this.chart.deltaLongitude = 360 - this.chart.homeGeoPoint.longitude;
 
         // Create map line series and connect to the cities
         if (this.lineSeries != null)
@@ -3687,7 +3680,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         }
       }
 
-      this.chart.goHome (0);
+      this.chart.goHome ();
     });
   }
 }

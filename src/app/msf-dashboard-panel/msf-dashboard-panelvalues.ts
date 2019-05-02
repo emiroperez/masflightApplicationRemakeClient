@@ -1,3 +1,5 @@
+import { ChartFlags } from '../msf-dashboard-panel/msf-dashboard-chartflags';
+
 // Object used to mantain data values for each dashboard panel
 export class MsfDashboardPanelValues {
     options:any[] = [];
@@ -93,7 +95,12 @@ export class MsfDashboardPanelValues {
             this.paletteColors = JSON.parse (paletteColors);
 
         if (lastestResponse)
+        {
             this.lastestResponse = JSON.parse (lastestResponse);
+
+            if (this.currentChartType.flags & ChartFlags.MAP)
+                this.flightRoutes = JSON.parse (lastestResponse);
+        }
         else
             this.lastestResponse = null;
 
