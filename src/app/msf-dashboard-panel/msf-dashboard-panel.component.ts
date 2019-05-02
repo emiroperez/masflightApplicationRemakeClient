@@ -471,24 +471,6 @@ export class MsfDashboardPanelComponent implements OnInit {
         continentSeries.mapPolygons.template.strokeOpacity = 0.25;
         continentSeries.mapPolygons.template.strokeWidth = 0.5;
 
-        // Test
-        this.imageSeries = chart.series.push (new am4maps.MapImageSeries ());
-        imageSeriesTemplate = this.imageSeries.mapImages.template;
-
-        imageSeriesTemplate.propertyFields.latitude = "latitude";
-        imageSeriesTemplate.propertyFields.longitude = "longitude";
-        imageSeriesTemplate.horizontalCenter = "middle";
-        imageSeriesTemplate.verticalCenter = "middle";
-        imageSeriesTemplate.width = 8;
-        imageSeriesTemplate.height = 8;
-        imageSeriesTemplate.scale = 1;
-        imageSeriesTemplate.tooltipText = "{title}";
-        imageSeriesTemplate.fill = black;
-        imageSeriesTemplate.background.fillOpacity = 0;
-        imageSeriesTemplate.background.fill = white;
-        imageSeriesTemplate.setStateOnChildren = true;
-        // End Test
-
         // Set default location and zoom level
         chart.homeGeoPoint = {
           latitude: 48.8567,
@@ -1597,8 +1579,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.picGenerated = false;
     _this.values.tableGenerated = false;
 
-    prepareChart = setInterval (() =>
-    {
+    //prepareChart = setInterval (() =>
+    // {
       _this.values.isLoading = false;
 
       _this.makeChart (_this.values.lastestResponse);
@@ -1606,8 +1588,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       _this.stopUpdateInterval ();
       _this.startUpdateInterval ();
 
-      clearInterval (prepareChart);
-    }, 50);
+      // clearInterval (prepareChart);
+    //}, 50);
   }
 
   handlerTextSuccess(_this, data): void
@@ -1662,8 +1644,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.picGenerated = false;
     _this.values.tableGenerated = false;
 
-    prepareChart = setInterval (() =>
-    {
+    //prepareChart = setInterval (() =>
+    // {
       _this.values.isLoading = false;
 
       _this.makeChart (data);
@@ -1671,8 +1653,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       _this.stopUpdateInterval ();
       _this.startUpdateInterval ();
 
-      clearInterval (prepareChart);
-    }, 50);
+      // clearInterval (prepareChart);
+    //}, 50);
   }
 
   loadChartFilterValues(component): void
