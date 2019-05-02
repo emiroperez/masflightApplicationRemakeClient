@@ -481,6 +481,32 @@ export class MsfDashboardPanelComponent implements OnInit {
         chart.deltaLongitude = 0;
 
         // Copy the results into a list of flight routes
+        if (this.values.flightRoutes.length)
+        {
+          this.checkedRoutes = [];
+          this.checkedCities = [];
+
+          if (this.imageSeries != null)
+          {
+            this.imageSeries.dispose ();
+            this.imageSeries = null;
+          }
+  
+          if (this.lineSeries != null)
+          {
+            this.lineSeries.dispose ();
+            this.lineSeries = null;
+          }
+  
+          if (this.shadowLineSeries != null)
+          {
+            this.shadowLineSeries.dispose ();
+            this.shadowLineSeries = null;
+          }
+
+          this.values.flightRoutes = [];
+        }
+
         flightInterval = setInterval (() =>
         {
           this.values.flightRoutes = JSON.parse (JSON.stringify (chartInfo));
