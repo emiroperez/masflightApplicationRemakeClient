@@ -158,19 +158,19 @@ export class MsfSchedulePanelComponent implements OnInit {
       // Dispose any existing image and lines from the map
       if (this.globals.scheduleImageSeries != null)
       {
-        this.globals.scheduleImageSeries.dispose ();
+        this.globals.scheduleChart.series.removeIndex (this.globals.scheduleChart.series.indexOf (this.globals.scheduleImageSeries));
         this.globals.scheduleImageSeries = null;
       }
 
       if (this.globals.scheduleLineSeries != null)
       {
-        this.globals.scheduleLineSeries.dispose ();
+        this.globals.scheduleChart.series.removeIndex (this.globals.scheduleChart.series.indexOf (this.globals.scheduleLineSeries));
         this.globals.scheduleLineSeries = null;
       }
 
       if (this.globals.scheduleShadowLineSeries != null)
       {
-        this.globals.scheduleShadowLineSeries.dispose ();
+        this.globals.scheduleChart.series.removeIndex (this.globals.scheduleChart.series.indexOf (this.globals.scheduleShadowLineSeries));
         this.globals.scheduleShadowLineSeries = null;
       }
 
@@ -430,19 +430,19 @@ export class MsfSchedulePanelComponent implements OnInit {
     this.zone.runOutsideAngular (() => {
       if (this.globals.scheduleImageSeries != null)
       {
-        this.globals.scheduleImageSeries.dispose ();
+        this.globals.scheduleChart.series.removeIndex (this.globals.scheduleChart.series.indexOf (this.globals.scheduleImageSeries));
         this.globals.scheduleImageSeries = null;
       }
 
       if (this.globals.scheduleLineSeries != null)
       {
-        this.globals.scheduleLineSeries.dispose ();
+        this.globals.scheduleChart.series.removeIndex (this.globals.scheduleChart.series.indexOf (this.globals.scheduleLineSeries));
         this.globals.scheduleLineSeries = null;
       }
 
       if (this.globals.scheduleShadowLineSeries != null)
       {
-        this.globals.scheduleShadowLineSeries.dispose ();
+        this.globals.scheduleChart.series.removeIndex (this.globals.scheduleChart.series.indexOf (this.globals.scheduleShadowLineSeries));
         this.globals.scheduleShadowLineSeries = null;
       }
 

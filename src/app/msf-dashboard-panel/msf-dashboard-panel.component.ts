@@ -760,19 +760,19 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.zone.runOutsideAngular (() => {
         if (this.imageSeries != null)
         {
-          this.imageSeries.dispose ();
+          this.chart.series.removeIndex (this.chart.series.indexOf (this.imageSeries));
           this.imageSeries = null;
         }
 
         if (this.lineSeries != null)
         {
-          this.lineSeries.dispose ();
+          this.chart.series.removeIndex (this.chart.series.indexOf (this.lineSeries));
           this.lineSeries = null;
         }
 
         if (this.shadowLineSeries != null)
         {
-          this.shadowLineSeries.dispose ();
+          this.chart.series.removeIndex (this.chart.series.indexOf (this.shadowLineSeries));
           this.shadowLineSeries = null;
         }
 
@@ -3476,7 +3476,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     this.zone.runOutsideAngular (() => {
       if (this.imageSeries != null)
-        this.imageSeries.dispose ();
+        this.chart.series.removeIndex (this.chart.series.indexOf (this.imageSeries));
 
       // Create image container for the circles and city labels
       this.imageSeries = this.chart.series.push (new am4maps.MapImageSeries ());
@@ -3531,13 +3531,13 @@ export class MsfDashboardPanelComponent implements OnInit {
         // Dispose any route lines
         if (this.lineSeries != null)
         {
-          this.lineSeries.dispose ();
+          this.chart.series.removeIndex (this.chart.series.indexOf (this.lineSeries));
           this.lineSeries = null;
         }
 
         if (this.shadowLineSeries != null)
         {
-          this.shadowLineSeries.dispose ();
+          this.chart.series.removeIndex (this.chart.series.indexOf (this.shadowLineSeries));
           this.shadowLineSeries = null;
         }
 
@@ -3596,13 +3596,13 @@ export class MsfDashboardPanelComponent implements OnInit {
 
         // Create map line series and connect to the cities
         if (this.lineSeries != null)
-          this.lineSeries.dispose ();
+          this.chart.series.removeIndex (this.chart.series.indexOf (this.lineSeries));
 
         this.lineSeries = this.chart.series.push (new am4maps.MapLineSeries ());
         this.lineSeries.zIndex = 10;
 
         if (this.shadowLineSeries != null)
-          this.shadowLineSeries.dispose ();
+          this.chart.series.removeIndex (this.chart.series.indexOf (this.shadowLineSeries));
 
         this.shadowLineSeries = this.chart.series.push (new am4maps.MapLineSeries ());
         this.shadowLineSeries.mapLines.template.line.strokeOpacity = 0;
@@ -3674,7 +3674,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         }
       }
 
-      this.chart.homeZoomLevel = zoomLevel - 0.1;
+      this.chart.homeZoomLevel = zoomLevel;
       this.chart.goHome ();
 
       // Workaround to avoid double lines
