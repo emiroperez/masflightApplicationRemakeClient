@@ -454,7 +454,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       // Check chart type before generating it
       if (this.values.currentChartType.flags & ChartFlags.MAP)
       {
-        let continentSeries, imageSeriesTemplate, zoomControl, home;
+        let continentSeries, zoomControl, home;
 
         chart = am4core.create ("msf-dashboard-chart-display-" + this.values.id, am4maps.MapChart);
 
@@ -473,7 +473,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
         // Set default location and zoom level
         chart.homeGeoPoint = {
-          latitude: 48.8567,
+          latitude: 24.8567,
           longitude: 2.3510
         };
 
@@ -2191,9 +2191,6 @@ export class MsfDashboardPanelComponent implements OnInit {
   // check if the x axis should be enabled or not depending of the chart type
   checkChartType(): void
   {
-    if (this.values.currentOptionCategories == null)
-      return;
-
     if (this.values.currentChartType.flags & ChartFlags.INFO)
     {
       // disable and reset unused variables
@@ -3545,7 +3542,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
         // Set default location and zoom level if there are no cities
         this.chart.homeGeoPoint = {
-          latitude: 48.8567,
+          latitude: 24.8567,
           longitude: 2.3510
         };
 
