@@ -445,6 +445,7 @@ export class MsfSchedulePanelComponent implements OnInit {
       this.globals.scheduleChart.homeZoomLevel = 1;
       this.globals.scheduleChart.homeGeoPoint.longitude = 2.3510;
       this.globals.scheduleChart.homeGeoPoint.latitude = 24.8567;
+      this.globals.scheduleChart.deltaLongitude = 0;
       this.globals.scheduleChart.goHome ();
     });
   }
