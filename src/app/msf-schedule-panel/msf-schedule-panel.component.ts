@@ -44,6 +44,10 @@ export class MsfSchedulePanelComponent implements OnInit {
  return html;
  }
 
+ ngOnDestroy(): void {
+  this.globals.schedulepanelinfo=false;
+ }
+
   calcCrow(lat1, lon1, lat2, lon2) 
   {
     var R = 6371; // km
@@ -58,7 +62,6 @@ export class MsfSchedulePanelComponent implements OnInit {
     var d = R * c;
     return d;
   }
-  
 
   expandFlight(index,$event){
     let imageSeriesTemplate, circle, hoverState, label, zoomLevel;
@@ -388,7 +391,8 @@ export class MsfSchedulePanelComponent implements OnInit {
         goForward (plane, shadowPlane, planeContainer, shadowPlaneContainer);
       }
       
-      if(newCities.length===0){
+      if (!newCities.length)
+      {
         zoomLevel = 1;
         zoomlat = 24.8567;
         zoomlong = 2.3510;
@@ -396,7 +400,7 @@ export class MsfSchedulePanelComponent implements OnInit {
       else
         zoomLevel = 4;
 
-      if(newCities.length!=2){
+      if(newCities.length != 2){
         this.globals.schedulepanelinfo=false;
       }else{
         this.globals.schedulepanelinfo = this.aux[index];
