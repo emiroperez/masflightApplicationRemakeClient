@@ -62,6 +62,9 @@ export class Globals {
   Airportdatadest:any;
   scheduleChart :any;
   schedulepanelinfo :any;
+  scheduleImageSeries: any;
+  scheduleLineSeries: any;
+  scheduleShadowLineSeries: any;
   subTotalRecord = 0;
   currentDrillDown: any;
   popupMainElement: any;

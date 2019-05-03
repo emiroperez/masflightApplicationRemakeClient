@@ -3326,7 +3326,8 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     let tempLat, tempLng, sumX, sumY, sumZ, avgX, avgY, avgZ;
     let circle, label, imageSeriesTemplate, hoverState;
-    let newCities, city1, city2;
+    let newCities, city1, city2, updateChartInterval;
+    let zoomLevel;
 
     newCities = [];
 
@@ -3423,7 +3424,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       if (city.title === route.airports[0].title)
         city1 = city;
 
-      if (city.title == route.airports[1].title)
+      if (city.title === route.airports[1].title)
         city2 = city;
     }
 
@@ -3546,7 +3547,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           longitude: 2.3510
         };
 
-        this.chart.homeZoomLevel = 1;
+        zoomLevel = 1;
         this.chart.deltaLongitude = 0;
       }
       else
@@ -3590,7 +3591,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           longitude: this.utils.rad2degr (tempLng)
         };
 
-        this.chart.homeZoomLevel = 4;
+        zoomLevel = 4;
         this.chart.deltaLongitude = 360 - this.chart.homeGeoPoint.longitude;
 
         // Create map line series and connect to the cities
@@ -3621,7 +3622,7 @@ export class MsfDashboardPanelComponent implements OnInit {
             if (city.title === checkedRoute.airports[0].title)
               city1 = city;
     
-            if (city.title == checkedRoute.airports[1].title)
+            if (city.title === checkedRoute.airports[1].title)
               city2 = city;
           }
 
@@ -3673,7 +3674,17 @@ export class MsfDashboardPanelComponent implements OnInit {
         }
       }
 
+      this.chart.homeZoomLevel = zoomLevel - 0.1;
       this.chart.goHome ();
+
+      // Workaround to avoid double lines
+      updateChartInterval = setInterval (() =>
+      {
+        this.chart.homeZoomLevel = zoomLevel;
+        this.chart.goHome ();
+
+        clearInterval (updateChartInterval);
+      }, 50);
     });
   }
 }

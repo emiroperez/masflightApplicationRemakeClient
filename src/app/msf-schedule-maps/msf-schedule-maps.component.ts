@@ -1,6 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { AmChart, AmChartsService } from '@amcharts/amcharts3-angular';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { Globals } from '../globals/Globals';
+import * as am4core from "@amcharts/amcharts4/core";
+import * as am4maps from "@amcharts/amcharts4/maps";
+import am4geodata_worldLow from "@amcharts/amcharts4-geodata/worldLow";
+import am4themes_animated from "@amcharts/amcharts4/themes/animated";
+import am4themes_dark from "@amcharts/amcharts4/themes/dark";
+
+am4core.useTheme(am4themes_animated);
+am4core.useTheme(am4themes_dark);
+
+// AmChart colors
+const black = am4core.color ("#000000");
+const darkGray = am4core.color ("#3b3b3b");
+
 @Component({
   selector: 'app-msf-schedule-maps',
   templateUrl: './msf-schedule-maps.component.html',
@@ -8,63 +20,106 @@ import { Globals } from '../globals/Globals';
 })
 export class MsfScheduleMapsComponent implements OnInit {
 
-  constructor(private AmCharts: AmChartsService, public globals: Globals) { }
+  constructor(private zone: NgZone, public globals: Globals) { }
 
 
   ngOnInit() {
   }
-  makeOptions(dataProvider)
-  {
 
-   return {
-    "type": "map",
-    "theme": "none",
-      "backgroundColor" : "#FFFFFF",
-      "dataProvider": {
-        "map": "worldLow",
-        "zoomLevel": 1,
-        "zoomLongitude": 2.3510,
-        "zoomLatitude": 48.8567
-       },
-    
-      "areasSettings": {
-        "outlineColor ": "#3b3b3b",
-        "unlistedAreasOutlineColor " : "#3b3b3b",
-        "unlistedAreasColor": "#3b3b3b",
-        "outlineColor": "#000000",
-        "outlineAlpha": 0.5,
-        "outlineThickness": 0.5,
-        "rollOverBrightness": 30,
-        "slectedBrightness": 50,
-        "rollOverOutlineColor": "#3b3b3b",
-        "selectedOutlineColor": "#3b3b3b",
-        "unlistedAreasOutlineColor": "#000000",
-        "unlistedAreasOutlineAlpha": 0.2
-      },
-    
-      "imagesSettings": {
-        "color": "#dedef7",
-        "rollOverColor": "#585869",
-        "selectedColor": "#585869",
-        "pauseDuration": 0.5,
-        "animationDuration": 10,
-        "adjustAnimationSpeed": true
-      },
-    
-      "linesSettings": {
-        "color": "#00a3e1",
-        "arrowSize" : 40,
-        "size" :40
-      },
-    
-      "export": {
-        "enabled": true
-      }  
+  destroyScheduleChart()
+  {
+    if (this.globals.scheduleChart)
+    {
+      this.zone.runOutsideAngular (() => {
+        if (this.globals.scheduleImageSeries != null)
+        {
+          this.globals.scheduleImageSeries.dispose ();
+          this.globals.scheduleImageSeries = null;
+        }
+  
+        if (this.globals.scheduleLineSeries != null)
+        {
+          this.globals.scheduleLineSeries.dispose ();
+          this.globals.scheduleLineSeries = null;
+        }
+  
+        if (this.globals.scheduleShadowLineSeries != null)
+        {
+          this.globals.scheduleShadowLineSeries.dispose ();
+          this.globals.scheduleShadowLineSeries = null;
+        }
+
+        this.globals.scheduleChart.dispose ();
+      });
+    }
   }
 
-}
+  makeScheduleChart()
+  {
+    let prepareChart, chart, continentSeries, zoomControl, home;
+
+    this.destroyScheduleChart ();
+
+    prepareChart = setInterval (() =>
+    {
+      this.zone.runOutsideAngular (() => {
+        chart = am4core.create ("chartdivmap", am4maps.MapChart);
+
+        // Create map instance
+        chart.geodata = am4geodata_worldLow;
+        chart.projection = new am4maps.projections.Miller ();
+
+        // Add map polygons and exclude Antartica
+        continentSeries = chart.series.push (new am4maps.MapPolygonSeries ());
+        continentSeries.useGeodata = true;
+        continentSeries.exclude = ["AQ"];
+        continentSeries.mapPolygons.template.fill = darkGray;
+        continentSeries.mapPolygons.template.stroke = black;
+        continentSeries.mapPolygons.template.strokeOpacity = 0.25;
+        continentSeries.mapPolygons.template.strokeWidth = 0.5;
+
+        // Set default location and zoom level
+        chart.homeGeoPoint = {
+          latitude: 24.8567,
+          longitude: 2.3510
+        };
+
+        chart.homeZoomLevel = 1;
+        chart.deltaLongitude = 0;
+
+        // Add zoom control buttons
+        zoomControl = new am4maps.ZoomControl ();
+        chart.zoomControl = zoomControl;
+        zoomControl.slider.height = 100;
+        zoomControl.valign = "top";
+        zoomControl.align = "left";
+        zoomControl.marginTop = 35;
+        zoomControl.marginLeft = 10;
+
+        // Add home buttom to zoom out
+        home = chart.chartContainer.createChild (am4core.Button);
+        home.label.text = "Home";
+        home.align = "left";
+        home.marginLeft = 15;
+        home.width = 70;
+        home.events.on ("hit", function (ev) {
+          chart.goHome ();
+        });
+
+        // Add export button
+        chart.exporting.menu = new am4core.ExportMenu ();
+        chart.exporting.menu.verticalAlign = "top";
+        chart.exporting.menu.align = "right";
+
+        this.globals.scheduleChart = chart;
+      });
+
+      clearInterval (prepareChart);
+    }, 50);
+  }
+
   ngAfterViewInit() {
-       this.globals.scheduleChart = this.AmCharts.makeChart ("chartdivmap", this.makeOptions (""));
+    this.makeScheduleChart ();
   }
 
 }

@@ -14,7 +14,7 @@
       <mat-panel-title class="msf-schedule-panel-header">
        {{item.Flight.Marketing_Airline}} {{item.Flight.Airline}} - F# {{item.Flight.FlightNo}} {{item.TouchedAirports}}
       </mat-panel-title>
-      <mat-panel-description><mat-checkbox  [disabled]="!globals.mapsc" (change)="expandFligth(indexopen,$event)" (click)="$event.stopPropagation();"></mat-checkbox></mat-panel-description>
+      <mat-panel-description><mat-checkbox  [disabled]="!globals.mapsc" (change)="expandFlight(indexopen,$event)" (click)="$event.stopPropagation();"></mat-checkbox></mat-panel-description>
     </mat-expansion-panel-header>
     <table class="msf-schedule-panel-table">
       <tr><td>Touched Airports</td><td>{{item.TouchedAirports}}</td></tr>
