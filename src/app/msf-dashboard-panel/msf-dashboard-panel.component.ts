@@ -758,24 +758,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (this.chart)
     {
       this.zone.runOutsideAngular (() => {
-        if (this.imageSeries != null)
-        {
-          this.chart.series.removeIndex (this.chart.series.indexOf (this.imageSeries));
-          this.imageSeries = null;
-        }
-
-        if (this.lineSeries != null)
-        {
-          this.chart.series.removeIndex (this.chart.series.indexOf (this.lineSeries));
-          this.lineSeries = null;
-        }
-
-        if (this.shadowLineSeries != null)
-        {
-          this.chart.series.removeIndex (this.chart.series.indexOf (this.shadowLineSeries));
-          this.shadowLineSeries = null;
-        }
-
         this.chart.dispose ();
       });
     }
@@ -3325,17 +3307,18 @@ export class MsfDashboardPanelComponent implements OnInit {
   toggleMapRoute(route): void
   {
     let tempLat, tempLng, sumX, sumY, sumZ, avgX, avgY, avgZ;
+    let newCities, curcity, city1, city2, updateChartInterval;
     let circle, label, imageSeriesTemplate, hoverState;
-    let newCities, city1, city2, updateChartInterval;
-    let zoomLevel;
+    let zoomLevel, self;
 
+    self = this;
     newCities = [];
 
-    function goForward(plane, shadowPlane, planeContainer, shadowPlaneContainer)
+    function goForward(plane, shadowPlane, planeContainer, shadowPlaneContainer, routes, curRoute)
     {
       let animation;
 
-      if (plane.rotation)
+      if (curRoute == -1 && plane.rotation)
       {
         shadowPlane.rotation = 0;
         shadowPlane.opacity = 0;
@@ -3345,7 +3328,14 @@ export class MsfDashboardPanelComponent implements OnInit {
           property: "rotation"
         }, 1000).events.on ("animationended",
           function() {
-            goForward (plane, shadowPlane, planeContainer, shadowPlaneContainer);
+            curRoute = 0;
+
+            planeContainer.mapLine = routes[curRoute].normal;
+            planeContainer.parent = self.lineSeries;
+            shadowPlaneContainer.mapLine = routes[curRoute].shadow;
+            shadowPlaneContainer.parent = self.shadowLineSeries;
+
+            goForward (plane, shadowPlane, planeContainer, shadowPlaneContainer, routes, curRoute);
           }
         );
 
@@ -3368,16 +3358,27 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       animation.events.on ("animationended",
         function() {
-          goBack (plane, shadowPlane, planeContainer, shadowPlaneContainer);
+          curRoute++;
+          if (curRoute == routes.length)
+            goBack (plane, shadowPlane, planeContainer, shadowPlaneContainer, routes, curRoute);
+          else
+          {
+            planeContainer.mapLine = routes[curRoute].normal;
+            planeContainer.parent = self.lineSeries;
+            shadowPlaneContainer.mapLine = routes[curRoute].shadow;
+            shadowPlaneContainer.parent = self.shadowLineSeries;
+
+            goForward (plane, shadowPlane, planeContainer, shadowPlaneContainer, routes, curRoute);
+          }
         }
       );
     }
 
-    function goBack(plane, shadowPlane, planeContainer, shadowPlaneContainer)
+    function goBack(plane, shadowPlane, planeContainer, shadowPlaneContainer, routes, curRoute)
     {
       let animation;
 
-      if (plane.rotation != 180)
+      if (curRoute == routes.length && plane.rotation != 180)
       {
         shadowPlane.rotation = 180;
         shadowPlane.opacity = 0;
@@ -3387,7 +3388,14 @@ export class MsfDashboardPanelComponent implements OnInit {
           property: "rotation"
         }, 1000).events.on ("animationended",
           function() {
-            goBack (plane, shadowPlane, planeContainer, shadowPlaneContainer);
+            curRoute = routes.length - 1;
+
+            planeContainer.mapLine = routes[curRoute].normal;
+            planeContainer.parent = self.lineSeries;
+            shadowPlaneContainer.mapLine = routes[curRoute].shadow;
+            shadowPlaneContainer.parent = self.shadowLineSeries;
+
+            goBack (plane, shadowPlane, planeContainer, shadowPlaneContainer, routes, curRoute);
           }
         );
 
@@ -3410,38 +3418,41 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       animation.events.on ("animationended",
         function() {
-          goForward (plane, shadowPlane, planeContainer, shadowPlaneContainer);
+          curRoute--;
+          if (curRoute == -1)
+            goForward (plane, shadowPlane, planeContainer, shadowPlaneContainer, routes, curRoute);
+          else
+          {
+            planeContainer.mapLine = routes[curRoute].normal;
+            planeContainer.parent = self.lineSeries;
+            shadowPlaneContainer.mapLine = routes[curRoute].shadow;
+            shadowPlaneContainer.parent = self.shadowLineSeries;
+
+            goBack (plane, shadowPlane, planeContainer, shadowPlaneContainer, routes, curRoute);
+          }
         }
       );
     }
 
-    city1 = null;
-    city2 = null;
-
-    // Check if the cities exists before adding or removing them
-    for (let city of this.checkedCities)
-    {
-      if (city.title === route.airports[0].title)
-        city1 = city;
-
-      if (city.title === route.airports[1].title)
-        city2 = city;
-    }
-
     if (!route.checked)
     {
-      if (city1)
+      for (let airport of route.airports)
       {
-        city1.numRoutes--;
-        if (!city1.numRoutes)
-          this.checkedCities.splice (this.checkedCities.indexOf (city1), 1);
-      }
+        curcity = null;
 
-      if (city2)
-      {
-        city2.numRoutes--;
-        if (!city2.numRoutes)
-          this.checkedCities.splice (this.checkedCities.indexOf (city2), 1);
+        // Check if the cities exists before adding or removing them
+        for (let city of this.checkedCities)
+        {
+          if (city.title === airport.title)
+            curcity = city;
+        }
+
+        if (curcity)
+        {
+          curcity.numRoutes--;
+          if (!curcity.numRoutes)
+            this.checkedCities.splice (this.checkedCities.indexOf (curcity), 1);
+        }
       }
 
       for (let checkedRoute of this.checkedRoutes)
@@ -3455,20 +3466,24 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
     else
     {
-      if (city1)
-        city1.numRoutes++;
-      else
+      for (let airport of route.airports)
       {
-        this.checkedCities.push (route.airports[0]);
-        this.checkedCities[this.checkedCities.length - 1].numRoutes = 1;
-      }
+        curcity = null;
 
-      if (city2)
-        city2.numRoutes++;
-      else
-      {
-        this.checkedCities.push (route.airports[1]);
-        this.checkedCities[this.checkedCities.length - 1].numRoutes = 1;
+        // Check if the cities exists before adding or removing them
+        for (let city of this.checkedCities)
+        {
+          if (city.title === airport.title)
+            curcity = city;
+        }
+
+        if (curcity)
+          curcity.numRoutes++;
+        else
+        {
+          this.checkedCities.push (airport);
+          this.checkedCities[this.checkedCities.length - 1].numRoutes = 1;
+        }
       }
 
       this.checkedRoutes.push (route);
@@ -3490,8 +3505,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       imageSeriesTemplate.width = 8;
       imageSeriesTemplate.height = 8;
       imageSeriesTemplate.scale = 1;
-      imageSeriesTemplate.tooltipText = "{title}";
       imageSeriesTemplate.fill = black;
+      imageSeriesTemplate.tooltipText = "{title}";
       imageSeriesTemplate.background.fillOpacity = 0;
       imageSeriesTemplate.background.fill = white;
       imageSeriesTemplate.setStateOnChildren = true;
@@ -3507,6 +3522,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       hoverState = circle.states.create ("hover");
       hoverState.properties.fill = comet;
 
+      /*
       label = imageSeriesTemplate.createChild (am4core.Label);
       label.text = "{title}";
       label.scale = 1;
@@ -3517,6 +3533,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       hoverState = label.states.create ("hover");
       hoverState.properties.fill = darkGreen;
       hoverState.properties.fillOpacity = 1;
+      */
 
       imageSeriesTemplate.events.on ("over", function (event) {
         event.target.setState ("hover");
@@ -3614,29 +3631,43 @@ export class MsfDashboardPanelComponent implements OnInit {
         for (let checkedRoute of this.checkedRoutes)
         {
           let planeContainer, shadowPlaneContainer, plane, shadowPlane;
-          let mapLine, shadowMapLine;
+          let curRoute, numRoutes, mapLine, shadowMapLine, routes;
 
-          // Get the cities connected to the route
-          for (let city of newCities)
+          routes = [];
+          curRoute = 0;
+          numRoutes = 1;
+          if (checkedRoute.airports.length > 2)
+            numRoutes += checkedRoute.airports.length - 2;
+
+          for (let i = 0; i < numRoutes; i++)
           {
-            if (city.title === checkedRoute.airports[0].title)
-              city1 = city;
+            // Get the cities connected to the route
+            for (let city of newCities)
+            {
+              if (city.title === checkedRoute.airports[i].title)
+                city1 = city;
     
-            if (city.title === checkedRoute.airports[1].title)
-              city2 = city;
+              if (city.title === checkedRoute.airports[i + 1].title)
+                city2 = city;
+            }
+
+            mapLine = this.lineSeries.mapLines.create ();
+            mapLine.imagesToConnect = [city1, city2];
+            mapLine.line.strokeOpacity = 0.3;
+            mapLine.line.stroke = cyan;
+            mapLine.line.horizontalCenter = "middle";
+            mapLine.line.verticalCenter = "middle";
+  
+            shadowMapLine = this.shadowLineSeries.mapLines.create ();
+            shadowMapLine.imagesToConnect = [city1, city2];
+            shadowMapLine.line.horizontalCenter = "middle";
+            shadowMapLine.line.verticalCenter = "middle";
+
+            routes.push ({
+              normal: mapLine,
+              shadow: shadowMapLine
+            });
           }
-
-          mapLine = this.lineSeries.mapLines.create ();
-          mapLine.imagesToConnect = [city1, city2];
-          mapLine.line.strokeOpacity = 0.3;
-          mapLine.line.stroke = cyan;
-          mapLine.line.horizontalCenter = "middle";
-          mapLine.line.verticalCenter = "middle";
-
-          shadowMapLine = this.shadowLineSeries.mapLines.create ();
-          shadowMapLine.imagesToConnect = [city1, city2];
-          shadowMapLine.line.horizontalCenter = "middle";
-          shadowMapLine.line.verticalCenter = "middle";
 
           // Add plane sprite
           planeContainer = mapLine.lineObjects.create ();
@@ -3658,6 +3689,12 @@ export class MsfDashboardPanelComponent implements OnInit {
           shadowPlane.horizontalCenter = "middle";
           shadowPlane.verticalCenter = "middle";
 
+          // Set first route for the plane
+          planeContainer.mapLine = routes[0].normal;
+          planeContainer.parent = this.lineSeries;
+          shadowPlaneContainer.mapLine = routes[0].shadow;
+          shadowPlaneContainer.parent = this.shadowLineSeries;
+
           // Make the plane bigger in the middle of the line
           planeContainer.adapter.add ("scale", function (scale, target) {
             return 0.02 * (1 - (Math.abs (0.5 - target.position)));
@@ -3670,11 +3707,11 @@ export class MsfDashboardPanelComponent implements OnInit {
           });
 
           // Start flying the plane
-          goForward (plane, shadowPlane, planeContainer, shadowPlaneContainer);
+          goForward (plane, shadowPlane, planeContainer, shadowPlaneContainer, routes, curRoute);
         }
       }
 
-      this.chart.homeZoomLevel = zoomLevel;
+      this.chart.homeZoomLevel = zoomLevel - 0.1;
       this.chart.goHome ();
 
       // Workaround to avoid double lines
