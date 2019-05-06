@@ -40,7 +40,6 @@ import { MsfTabSelectorComponent } from './msf-tab-selector/msf-tab-selector.com
 import { DateFormatPipe } from './commons/DateFormatPipe ';
 import { DateTimeFormatPipe } from './commons/DateTimeFormatPipe';
 import { MsfAirlineComponent } from './msf-airline/msf-airline.component';
-import { AmChartsModule } from '@amcharts/amcharts3-angular';
 import { MsfChartOnTimeDelayComponent } from './msf-chart-on-time-delay/msf-chart-on-time-delay.component';
 import { MsfDynamicTableVariablesComponent } from './msf-dynamic-table-variables/msf-dynamic-table-variables.component';
 import { MsfDynamicTableComponent } from './msf-dynamic-table/msf-dynamic-table.component';
@@ -365,7 +364,6 @@ import { MsfDashboardPanelTypePipe } from './msf-dashboard-panel/msf-dashboard-p
     MatSelectModule,
     MatFormFieldModule,
     NgxMatSelectSearchModule,
-    AmChartsModule,
 //    AgmCoreModule.forRoot({
       // apiKey: 'AIzaSyArd7Sqcy7bB0ucBKhm2ik4r2xZPG9wPtU'
     // }),
