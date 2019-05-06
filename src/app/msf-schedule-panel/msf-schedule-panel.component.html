@@ -1,15 +1,15 @@
-<mat-toolbar  class="panel-toolbar" > 
+<mat-toolbar  class="panel-toolbar"> 
       <mat-toolbar-row>
           <span></span>
           <span class="example-spacer"></span>
-          <mat-icon class="example-icon" (click)="returnSearch()">chevron_left</mat-icon>
-            <mat-icon *ngIf="globals.mapsc"  (click)="showTable(false)" class="example-icon">view_list</mat-icon>
-            <mat-icon *ngIf="!globals.mapsc"  (click)="showTable(true)" class="example-icon">flight</mat-icon>
+          <mat-icon class="example-icon" *ngIf="globals.status" (click)="returnSearch()">chevron_left</mat-icon>
+            <mat-icon *ngIf="globals.mapsc && globals.status"  (click)="showTable(false)" class="example-icon">view_list</mat-icon>
+            <mat-icon *ngIf="!globals.mapsc && globals.status"  (click)="showTable(true)" class="example-icon">flight</mat-icon>
             <span></span>
         </mat-toolbar-row>
 </mat-toolbar>
 <mat-accordion>
-  <mat-expansion-panel  [disabled]="!globals.mapsc" class="msf-schedule-panel" *ngFor="let item of aux; let indexopen = index" >
+  <mat-expansion-panel  [disabled]="!globals.mapsc || !globals.status" class="msf-schedule-panel" *ngFor="let item of aux; let indexopen = index" >
     <mat-expansion-panel-header  class="msf-schedule-mat-expansion-panel-header" > 
       <mat-panel-title class="msf-schedule-panel-header">
        {{item.Flight.Marketing_Airline}} {{item.Flight.Airline}} - F# {{item.Flight.FlightNo}} {{item.TouchedAirports}}
