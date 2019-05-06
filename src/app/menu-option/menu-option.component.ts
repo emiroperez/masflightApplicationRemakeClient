@@ -11,6 +11,9 @@ import am4themes_dark from "@amcharts/amcharts4/themes/dark";
 am4core.useTheme(am4themes_animated);
 am4core.useTheme(am4themes_dark);
 
+// Home button SVG
+const homeSVG = "M16,8 L14,8 L14,16 L10,16 L10,10 L6,10 L6,16 L2,16 L2,8 L0,8 L8,0 L16,8 Z M16,8";
+
 // AmChart colors
 const black = am4core.color ("#000000");
 const darkGray = am4core.color ("#3b3b3b");
@@ -88,15 +91,17 @@ export class MenuOptionComponent implements OnInit {
         zoomControl.slider.height = 100;
         zoomControl.valign = "top";
         zoomControl.align = "left";
-        zoomControl.marginTop = 35;
+        zoomControl.marginTop = 40;
         zoomControl.marginLeft = 10;
 
         // Add home buttom to zoom out
         home = chart.chartContainer.createChild (am4core.Button);
-        home.label.text = "Home";
+        home.icon = new am4core.Sprite ();
+        home.icon.dx -= 9;
+        home.width = 30;
+        home.icon.path = homeSVG;
         home.align = "left";
         home.marginLeft = 15;
-        home.width = 70;
         home.events.on ("hit", function (ev) {
           chart.goHome ();
         });
