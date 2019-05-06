@@ -437,7 +437,7 @@ export class MsfSchedulePanelComponent implements OnInit {
       else
         zoomLevel = 4;
 
-      if(newCities.length != 2){
+      if(this.maproutes.length != 1){
         this.globals.schedulepanelinfo=false;
       }else{
         this.globals.schedulepanelinfo = this.aux[index];
