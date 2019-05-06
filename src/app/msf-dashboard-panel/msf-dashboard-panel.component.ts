@@ -3310,8 +3310,8 @@ export class MsfDashboardPanelComponent implements OnInit {
   toggleMapRoute(route): void
   {
     let tempLat, tempLng, sumX, sumY, sumZ, avgX, avgY, avgZ;
-    let newCities, curcity, city1, city2, updateChartInterval;
-    let circle, label, imageSeriesTemplate, hoverState;
+    let newCities, curcity, updateChartInterval;
+    let circle, imageSeriesTemplate, hoverState;
     let zoomLevel, self;
 
     self = this;
@@ -3443,7 +3443,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       {
         curcity = null;
 
-        // Check if the cities exists before adding or removing them
+        // Check if the cities city before removing it
         for (let city of this.checkedCities)
         {
           if (city.title === airport.title)
@@ -3473,7 +3473,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       {
         curcity = null;
 
-        // Check if the cities exists before adding or removing them
+        // Check if the city exists before adding it
         for (let city of this.checkedCities)
         {
           if (city.title === airport.title)
@@ -3633,7 +3633,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         for (let checkedRoute of this.checkedRoutes)
         {
           let planeContainer, shadowPlaneContainer, plane, shadowPlane;
-          let curRoute, numRoutes, mapLine, shadowMapLine, routes;
+          let curRoute, numRoutes, routes, mapLine, shadowMapLine;
+          let city1, city2;
 
           routes = [];
           curRoute = 0;

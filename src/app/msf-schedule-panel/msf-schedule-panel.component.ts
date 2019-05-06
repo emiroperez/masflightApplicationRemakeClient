@@ -48,33 +48,18 @@ export class MsfSchedulePanelComponent implements OnInit {
   this.globals.schedulepanelinfo=false;
  }
 
-  calcCrow(lat1, lon1, lat2, lon2) 
-  {
-    var R = 6371; // km
-    var dLat = this.utils.degr2rad(lat2-lat1);
-    var dLon = this.utils.degr2rad(lon2-lon1);
-    var latb1 = this.utils.degr2rad(lat1);
-    var latb2 = this.utils.degr2rad(lat2);
-
-    var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-      Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(latb1) * Math.cos(latb2); 
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-    var d = R * c;
-    return d;
-  }
-
   expandFlight(index,$event){
     let imageSeriesTemplate, circle, hoverState, label, zoomLevel;
-    let city1, city2, updateChartInterval;
-    var airportsarray = this.aux[index].airports;
+    let curcity, updateChartInterval;
     var route = this.aux[index];
     let newCities = [];
+    let self = this;
 
-    function goForward(plane, shadowPlane, planeContainer, shadowPlaneContainer)
+    function goForward(plane, shadowPlane, planeContainer, shadowPlaneContainer, routes, curRoute)
     {
       let animation;
 
-      if (plane.rotation)
+      if (curRoute == -1 && plane.rotation)
       {
         shadowPlane.rotation = 0;
         shadowPlane.opacity = 0;
@@ -84,7 +69,14 @@ export class MsfSchedulePanelComponent implements OnInit {
           property: "rotation"
         }, 1000).events.on ("animationended",
           function() {
-            goForward (plane, shadowPlane, planeContainer, shadowPlaneContainer);
+            curRoute = 0;
+
+            planeContainer.mapLine = routes[curRoute].normal;
+            planeContainer.parent = self.globals.scheduleLineSeries;
+            shadowPlaneContainer.mapLine = routes[curRoute].shadow;
+            shadowPlaneContainer.parent = self.globals.scheduleShadowLineSeries;
+
+            goForward (plane, shadowPlane, planeContainer, shadowPlaneContainer, routes, curRoute);
           }
         );
 
@@ -107,16 +99,27 @@ export class MsfSchedulePanelComponent implements OnInit {
 
       animation.events.on ("animationended",
         function() {
-          goBack (plane, shadowPlane, planeContainer, shadowPlaneContainer);
+          curRoute++;
+          if (curRoute == routes.length)
+            goBack (plane, shadowPlane, planeContainer, shadowPlaneContainer, routes, curRoute);
+          else
+          {
+            planeContainer.mapLine = routes[curRoute].normal;
+            planeContainer.parent = self.globals.scheduleLineSeries;
+            shadowPlaneContainer.mapLine = routes[curRoute].shadow;
+            shadowPlaneContainer.parent = self.globals.scheduleShadowLineSeries;
+
+            goForward (plane, shadowPlane, planeContainer, shadowPlaneContainer, routes, curRoute);
+          }
         }
       );
     }
 
-    function goBack(plane, shadowPlane, planeContainer, shadowPlaneContainer)
+    function goBack(plane, shadowPlane, planeContainer, shadowPlaneContainer, routes, curRoute)
     {
       let animation;
 
-      if (plane.rotation != 180)
+      if (curRoute == routes.length && plane.rotation != 180)
       {
         shadowPlane.rotation = 180;
         shadowPlane.opacity = 0;
@@ -126,7 +129,14 @@ export class MsfSchedulePanelComponent implements OnInit {
           property: "rotation"
         }, 1000).events.on ("animationended",
           function() {
-            goBack (plane, shadowPlane, planeContainer, shadowPlaneContainer);
+            curRoute = routes.length - 1;
+
+            planeContainer.mapLine = routes[curRoute].normal;
+            planeContainer.parent = self.globals.scheduleLineSeries;
+            shadowPlaneContainer.mapLine = routes[curRoute].shadow;
+            shadowPlaneContainer.parent = self.globals.scheduleShadowLineSeries;
+
+            goBack (plane, shadowPlane, planeContainer, shadowPlaneContainer, routes, curRoute);
           }
         );
 
@@ -149,13 +159,24 @@ export class MsfSchedulePanelComponent implements OnInit {
 
       animation.events.on ("animationended",
         function() {
-          goForward (plane, shadowPlane, planeContainer, shadowPlaneContainer);
+          curRoute--;
+          if (curRoute == -1)
+            goForward (plane, shadowPlane, planeContainer, shadowPlaneContainer, routes, curRoute);
+          else
+          {
+            planeContainer.mapLine = routes[curRoute].normal;
+            planeContainer.parent = self.globals.scheduleLineSeries;
+            shadowPlaneContainer.mapLine = routes[curRoute].shadow;
+            shadowPlaneContainer.parent = self.globals.scheduleShadowLineSeries;
+
+            goBack (plane, shadowPlane, planeContainer, shadowPlaneContainer, routes, curRoute);
+          }
         }
       );
     }
 
      this.zone.runOutsideAngular (() => {
-      // Dispose any existing image and lines from the map
+      // Remove any existing image and lines series from the map
       if (this.globals.scheduleImageSeries != null)
       {
         this.globals.scheduleChart.series.removeIndex (this.globals.scheduleChart.series.indexOf (this.globals.scheduleImageSeries));
@@ -186,7 +207,6 @@ export class MsfSchedulePanelComponent implements OnInit {
       imageSeriesTemplate.width = 8;
       imageSeriesTemplate.height = 8;
       imageSeriesTemplate.scale = 1;
-      imageSeriesTemplate.tooltipText = "{title}";
       imageSeriesTemplate.fill = black;
       imageSeriesTemplate.background.fillOpacity = 0;
       imageSeriesTemplate.background.fill = white;
@@ -222,33 +242,25 @@ export class MsfSchedulePanelComponent implements OnInit {
         event.target.setState ("default");
       });
 
-      city1 = null;
-      city2 = null;
-
-      // Check if the cities exists before adding or removing them
-      for (let city of this.mapairports)
-      {
-        if (city.title === airportsarray[0].title)
-          city1 = city;
-
-        if (city.title === airportsarray[1].title)
-          city2 = city;
-      }
-
       if (!$event.checked)
       {
-        if (city1)
+        for (let airport of route.airports)
         {
-          city1.numRoutes--;
-          if (!city1.numRoutes)
-            this.mapairports.splice (this.mapairports.indexOf (city1), 1);
-        }
+          curcity = null;
   
-        if (city2)
-        {
-          city2.numRoutes--;
-          if (!city2.numRoutes)
-            this.mapairports.splice (this.mapairports.indexOf (city2), 1);
+          // Check if the cities city before removing it
+          for (let city of this.mapairports)
+          {
+            if (city.title === airport.title)
+              curcity = city;
+          }
+  
+          if (curcity)
+          {
+            curcity.numRoutes--;
+            if (!curcity.numRoutes)
+              this.mapairports.splice (this.mapairports.indexOf (curcity), 1);
+          }
         }
   
         for (let maproute of this.maproutes)
@@ -262,20 +274,24 @@ export class MsfSchedulePanelComponent implements OnInit {
       }
       else
       {
-        if (city1)
-          city1.numRoutes++;
-        else
+        for (let airport of route.airports)
         {
-          this.mapairports.push (airportsarray[0]);
-          this.mapairports[this.mapairports.length - 1].numRoutes = 1;
-        }
-
-        if (city2)
-          city2.numRoutes++;
-        else
-        {
-          this.mapairports.push (airportsarray[1]);
-          this.mapairports[this.mapairports.length - 1].numRoutes = 1;
+          curcity = null;
+  
+          // Check if the city exists before adding it
+          for (let city of this.mapairports)
+          {
+            if (city.title === airport.title)
+              curcity = city;
+          }
+  
+          if (curcity)
+            curcity.numRoutes++;
+          else
+          {
+            this.mapairports.push (airport);
+            this.mapairports[this.mapairports.length - 1].numRoutes = 1;
+          }
         }
 
         this.maproutes.push (route);
@@ -294,7 +310,7 @@ export class MsfSchedulePanelComponent implements OnInit {
         newCity.latitude = newCityInfo.latitude;
         newCity.longitude = newCityInfo.longitude;
         newCity.nonScaling = true;
-        newCity.title = newCityInfo.title;
+        newCity.tooltipText = newCityInfo.title;
 
         newCities.push (newCity);
 
@@ -332,29 +348,44 @@ export class MsfSchedulePanelComponent implements OnInit {
       for (let maproute of this.maproutes)
       {
         let planeContainer, shadowPlaneContainer, plane, shadowPlane;
-        let mapLine, shadowMapLine;
+        let curRoute, numRoutes, routes, mapLine, shadowMapLine;
+        let city1, city2;
 
-        // Get the cities connected to the route
-        for (let city of newCities)
+        routes = [];
+        curRoute = 0;
+        numRoutes = 1;
+        if (maproute.airports.length > 2)
+          numRoutes += maproute.airports.length - 2;
+
+        for (let i = 0; i < numRoutes; i++)
         {
-          if (city.title === maproute.airports[0].title)
-            city1 = city;
+          // Get the cities connected to the route
+          for (let city of newCities)
+          {
+            if (city.tooltipText === maproute.airports[i].title)
+              city1 = city;
     
-          if (city.title === maproute.airports[1].title)
-            city2 = city;
+            if (city.tooltipText === maproute.airports[i + 1].title)
+              city2 = city;
+          }
+
+          mapLine = this.globals.scheduleLineSeries.mapLines.create ();
+          mapLine.imagesToConnect = [city1, city2];
+          mapLine.line.strokeOpacity = 0.3;
+          mapLine.line.stroke = cyan;
+          mapLine.line.horizontalCenter = "middle";
+          mapLine.line.verticalCenter = "middle";
+
+          shadowMapLine = this.globals.scheduleShadowLineSeries.mapLines.create ();
+          shadowMapLine.imagesToConnect = [city1, city2];
+          shadowMapLine.line.horizontalCenter = "middle";
+          shadowMapLine.line.verticalCenter = "middle";
+
+          routes.push ({
+            normal: mapLine,
+            shadow: shadowMapLine
+          });
         }
-
-        mapLine = this.globals.scheduleLineSeries.mapLines.create ();
-        mapLine.imagesToConnect = [city1, city2];
-        mapLine.line.strokeOpacity = 0.3;
-        mapLine.line.stroke = cyan;
-        mapLine.line.horizontalCenter = "middle";
-        mapLine.line.verticalCenter = "middle";
-
-        shadowMapLine = this.globals.scheduleShadowLineSeries.mapLines.create ();
-        shadowMapLine.imagesToConnect = [city1, city2];
-        shadowMapLine.line.horizontalCenter = "middle";
-        shadowMapLine.line.verticalCenter = "middle";
 
         // Add plane sprite
         planeContainer = mapLine.lineObjects.create ();
@@ -376,6 +407,12 @@ export class MsfSchedulePanelComponent implements OnInit {
         shadowPlane.horizontalCenter = "middle";
         shadowPlane.verticalCenter = "middle";
 
+        // Set first route for the plane
+        planeContainer.mapLine = routes[0].normal;
+        planeContainer.parent = this.globals.scheduleLineSeries;
+        shadowPlaneContainer.mapLine = routes[0].shadow;
+        shadowPlaneContainer.parent = this.globals.scheduleShadowLineSeries;
+
         // Make the plane bigger in the middle of the line
         planeContainer.adapter.add ("scale", function (scale, target) {
           return 0.02 * (1 - (Math.abs (0.5 - target.position)));
@@ -388,7 +425,7 @@ export class MsfSchedulePanelComponent implements OnInit {
         });
 
         // Start flying the plane
-        goForward (plane, shadowPlane, planeContainer, shadowPlaneContainer);
+        goForward (plane, shadowPlane, planeContainer, shadowPlaneContainer, routes, curRoute);
       }
       
       if (!newCities.length)

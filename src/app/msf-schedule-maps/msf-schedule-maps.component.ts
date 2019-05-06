@@ -31,24 +31,9 @@ export class MsfScheduleMapsComponent implements OnInit {
     if (this.globals.scheduleChart)
     {
       this.zone.runOutsideAngular (() => {
-        if (this.globals.scheduleImageSeries != null)
-        {
-          this.globals.scheduleChart.series.removeIndex (this.globals.scheduleChart.series.indexOf (this.globals.scheduleImageSeries));
-          this.globals.scheduleImageSeries = null;
-        }
-  
-        if (this.globals.scheduleLineSeries != null)
-        {
-          this.globals.scheduleChart.series.removeIndex (this.globals.scheduleChart.series.indexOf (this.globals.scheduleLineSeries));
-          this.globals.scheduleLineSeries = null;
-        }
-  
-        if (this.globals.scheduleShadowLineSeries != null)
-        {
-          this.globals.scheduleChart.series.removeIndex (this.globals.scheduleChart.series.indexOf (this.globals.scheduleShadowLineSeries));
-          this.globals.scheduleShadowLineSeries = null;
-        }
-
+        this.globals.scheduleImageSeries = null;
+        this.globals.scheduleLineSeries = null;
+        this.globals.scheduleShadowLineSeries = null;
         this.globals.scheduleChart.dispose ();
       });
     }
