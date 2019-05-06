@@ -33,7 +33,7 @@
       </mat-form-field>
     </div>
   </div>
-  <ng-container *ngIf="!isInformationPanel() && !isSimpleFormPanel() && !isPicturePanel() && !isTablePanel() && !isMapPanel()">
+  <ng-container *ngIf="!isInformationPanel() && !isSimpleFormPanel() && !isPicturePanel() && !isTablePanel() && !isMapPanel() && !isHeatMapPanel()">
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-addmenu-icon-item">
         <mat-icon class="msf-dashboard-chart-icon" aria-label="Filter List">filter_list</mat-icon>
@@ -411,6 +411,74 @@
           <div class="msf-dashboard-panel-control-variable-button">
             <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated" mat-mini-fab (click)="goToChart()" color="primary">
               <mat-icon aria-label="Go To Picture">bar_chart</mat-icon>
+            </button>
+          </div>
+          <div class="msf-dashboard-panel-control-variable-button">
+            <button mat-mini-fab (click)="savePanel()" color="primary">
+              <mat-icon aria-label="Save Changes">save</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="isHeatMapPanel()">
+    <div class="msf-dashboard-panel-sub-container-column">
+      <div class="msf-dashboard-addmenu-icon-item">
+        <mat-icon class="msf-dashboard-chart-icon" aria-label="Heat Map Variable">filter_list</mat-icon>
+        <span class="msf-dashboard-addmenu-item-text">Heat Map Configuration</span>
+      </div>
+    </div>
+    <div class="msf-dashboard-panel-sub-container-column">
+      <div class="msf-dashboard-chart-options-container">
+        <div class="msf-dashboard-chart-selector">
+          <div class="msf-dashboard-chart-analysis-title">
+            <mat-icon class="msf-dashboard-chart-icon">place</mat-icon>
+          </div>
+          <div class="msf-dashboard-chart-op-container">
+            <mat-form-field class="msf-full-width">
+              <mat-select placeholder="Geography Data" [(ngModel)]="values.function">
+                <mat-option *ngFor="let geodata of geodatas" [value]="geodata">
+                  {{geodata.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="msf-dashboard-chart-selector">
+          <div class="msf-dashboard-chart-analysis-title">
+            <mat-icon class="msf-dashboard-chart-icon">data_usage</mat-icon>
+          </div>
+          <div class="msf-dashboard-chart-op-container">
+            <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+              <mat-select formControlName="variableCtrl" placeholder="Value To Display" #variableSelect [(value)]="values.variable" (selectionChange)="checkChartFilters()">
+                <ngx-mat-select-search [formControl]="variableFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+                <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
+                  {{variable.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="msf-dashboard-panel-sub-container-column">
+      <div class="msf-dashboard-chart-options-container">
+        <div class="msf-dashboard-panel-sub-container-column-reverse">
+          <button [disabled]="!generateBtnEnabled" mat-flat-button [ngClass]="generateBtnEnabled ? 'flat-button' : 'flat-button-disabled'" (click)="loadData()">Generate</button>
+          <div class="msf-dashboard-panel-control-variable-button">
+            <button [disabled]="!variableCtrlBtnEnabled" mat-mini-fab (click)="goToControlVariables()" color="primary">
+              <mat-icon aria-label="Control Variables">more_vert</mat-icon>
+            </button>
+          </div>
+          <div class="msf-dashboard-panel-control-variable-button">
+            <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated" mat-mini-fab (click)="goToChart()" color="primary">
+              <mat-icon aria-label="Go To Picture">bar_chart</mat-icon>
+            </button>
+          </div>
+          <div class="msf-dashboard-panel-control-variable-button">
+            <button mat-mini-fab (click)="goToColorPicker()" color="primary">
+              <mat-icon aria-label="Color Picker">palette</mat-icon>
             </button>
           </div>
           <div class="msf-dashboard-panel-control-variable-button">
