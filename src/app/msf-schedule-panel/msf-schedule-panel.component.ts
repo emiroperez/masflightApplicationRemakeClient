@@ -224,7 +224,7 @@ export class MsfSchedulePanelComponent implements OnInit {
       hoverState.properties.fill = comet;
 
       label = imageSeriesTemplate.createChild (am4core.Label);
-      label.text = "{title}";
+      label.text = "{tooltipText}";
       label.scale = 1;
       label.horizontalCenter = "left";
       label.verticalCenter = "middle";
