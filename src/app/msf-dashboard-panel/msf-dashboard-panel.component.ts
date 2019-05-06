@@ -758,6 +758,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (this.chart)
     {
       this.zone.runOutsideAngular (() => {
+        this.imageSeries = null;
+        this.lineSeries = null;
+        this.shadowLineSeries = null;
         this.chart.dispose ();
       });
     }
