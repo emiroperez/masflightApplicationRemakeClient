@@ -4647,4 +4647,25 @@ th.msf-show-table, td.msf-show-table {
   position: absolute;
 }
 
+span.msf-subCell {
+  display: block;
+  margin: -10px 0;
+}
+
+.msf-subCell .msf-border-top {
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.msf-sub-cell {
+  display: table;
+  width: 100%;
+  min-height: 40px;
+}
+
+.msf-sub-cell span {
+  width: 100%;
+  display: table-cell;
+  vertical-align: middle;
+}
+
 /*# sourceMappingURL=styles.css.map */
