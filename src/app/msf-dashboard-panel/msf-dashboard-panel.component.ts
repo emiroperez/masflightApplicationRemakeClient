@@ -3509,7 +3509,6 @@ export class MsfDashboardPanelComponent implements OnInit {
       imageSeriesTemplate.height = 8;
       imageSeriesTemplate.scale = 1;
       imageSeriesTemplate.fill = black;
-      imageSeriesTemplate.tooltipText = "{title}";
       imageSeriesTemplate.background.fillOpacity = 0;
       imageSeriesTemplate.background.fill = white;
       imageSeriesTemplate.setStateOnChildren = true;
@@ -3585,7 +3584,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           newCity.latitude = newCityInfo.latitude;
           newCity.longitude = newCityInfo.longitude;
           newCity.nonScaling = true;
-          newCity.title = newCityInfo.title;
+          newCity.tooltipText = newCityInfo.title;
 
           newCities.push (newCity);
 
@@ -3647,10 +3646,10 @@ export class MsfDashboardPanelComponent implements OnInit {
             // Get the cities connected to the route
             for (let city of newCities)
             {
-              if (city.title === checkedRoute.airports[i].title)
+              if (city.tooltipText === checkedRoute.airports[i].title)
                 city1 = city;
     
-              if (city.title === checkedRoute.airports[i + 1].title)
+              if (city.tooltipText === checkedRoute.airports[i + 1].title)
                 city2 = city;
             }
 
