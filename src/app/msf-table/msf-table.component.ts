@@ -411,29 +411,15 @@ export class MsfTableComponent implements OnInit {
     if(value==undefined){
       if(this.currentOption.tabType=='scmap'&& this.currentOption.metaData==2){
         var flight  = element['Flight'];
-        if(flight!=undefined){
-          aux =""+ flight[column.columnName]!=undefined ? String(flight[column.columnName]) : "";
-        }else{
-          if(flightArray){
-            aux =""+ flightArray[column.columnName]!=undefined ? String(flightArray[column.columnName]) : "";
+          if(flight!=undefined){
+            aux =""+ flight[column.columnName]!=undefined ? String(flight[column.columnName]) : "";
+          }else{
+            if(flightArray){
+              aux =""+ flightArray[column.columnName]!=undefined ? String(flightArray[column.columnName]) : "";
+            }
           }
         }
-        // if(flight instanceof Array){
-        //   for (let index = 0; index < flight.length; index++) {
-        //     const f = flight[index];
-        //     if(index>0){
-        //       if(aux!="")
-        //       aux+=" - ";
-        //       aux += f[column.columnName]!=undefined ? String(f[column.columnName]) : "";
-        //     }else{
-        //       aux =f[column.columnName]!=undefined ? String(f[column.columnName]) : "";
-        //     }
-        //   }
-
-        }
       }
-
-    // }
     aux = aux.replace("%","");
     aux = aux.replace("$","");
     aux = aux.replace("ï¿½","0");
