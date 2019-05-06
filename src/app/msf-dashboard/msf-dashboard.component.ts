@@ -582,8 +582,9 @@ export class MsfDashboardComponent implements OnInit {
     // do not perform query if the panels are now swapped
     if (event.previousIndex == event.currentIndex)
     {
-      setTimeout(() => {
+      let appendInterval = setTimeout(() => {
         this.dashboardColumnsReAppendCharts[this.currentColumn] = false;
+        clearInterval (appendInterval);
       }, 100);
 
       return;
