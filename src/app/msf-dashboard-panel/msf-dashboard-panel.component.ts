@@ -3311,7 +3311,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     let tempLat, tempLng, sumX, sumY, sumZ, avgX, avgY, avgZ;
     let newCities, curcity, updateChartInterval;
-    let circle, imageSeriesTemplate, hoverState;
+    let circle, label, imageSeriesTemplate, hoverState;
     let zoomLevel, self;
 
     self = this;
@@ -3524,9 +3524,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       hoverState = circle.states.create ("hover");
       hoverState.properties.fill = comet;
 
-      /*
       label = imageSeriesTemplate.createChild (am4core.Label);
-      label.text = "{title}";
+      label.text = "{tooltipText}";
       label.scale = 1;
       label.horizontalCenter = "left";
       label.verticalCenter = "middle";
@@ -3535,7 +3534,6 @@ export class MsfDashboardPanelComponent implements OnInit {
       hoverState = label.states.create ("hover");
       hoverState.properties.fill = darkGreen;
       hoverState.properties.fillOpacity = 1;
-      */
 
       imageSeriesTemplate.events.on ("over", function (event) {
         event.target.setState ("hover");
