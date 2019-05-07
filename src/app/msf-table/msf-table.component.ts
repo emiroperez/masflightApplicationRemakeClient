@@ -315,6 +315,9 @@ export class MsfTableComponent implements OnInit {
               _this.tableOptions.moreResultsBtn = true;
             }
           }else{  
+            if(_this.tableOptions.actualPageNumber==undefined)
+            _this.tableOptions.actualPageNumber = _this.actualPageNumber
+            
             var aux = (_this.tableOptions.actualPageNumber+1)*100;
             aux = aux!=0 ? aux : 100;
             if( _this.tableOptions.totalRecord<aux){
