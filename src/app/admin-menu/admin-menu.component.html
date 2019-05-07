@@ -24,13 +24,13 @@
                                 <h2 class="title-section">Menu</h2>
                             </div>
                             <div style="flex: 2">
-                            <mat-form-field class="msf-admin-search-option" >
-                                    <input class="search-input"  matInput [(ngModel)]="searchTextOption" autocomplete="off" style="width:93%;height:24px;" (ngModelChange)="filterMenuOptions()">
+                                <mat-form-field class="msf-admin-search-option" style="display: none">
+                                    <input class="search-input" matInput [(ngModel)]="searchTextOption" autocomplete="off" style="width:93%;height:24px;" (ngModelChange)="filterMenuOptions()">
                                     <mat-icon style="color: white" aria-label="search">search</mat-icon>
-                            </mat-form-field>
+                                </mat-form-field>
                             </div>
                             <div style="flex: 1">
-                                <button mat-icon-button (click)="addOption()">
+                                <button mat-icon-button (click)="addNewItem()">
                                     <mat-icon style="color: white" aria-label="add">add_circle</mat-icon>
                                 </button>
                                 <button mat-icon-button (click)="deleteOption()">
@@ -41,12 +41,34 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="invisible-scrollbar" style="max-height: 420px; overflow: auto;">
-                            <div cdkDropList class="draggable-list" (cdkDropListDropped)="drop($event)">
+                        <div class="invisible-scrollbar" style="max-height: 400px; overflow: auto;width:90%">
+                            <!-- <div cdkDropList class="draggable-list" id="firstOne" [cdkDropListData]="menu" [cdkDropListConnectedTo]="idList" (cdkDropListDropped)="drop($event)">
                                 <div cdkDrag class="draggable-box" *ngFor="let option of menu ; let i = index " style="color: white; width: 86%">
-                                    <app-admin-menu-recursive [menu]="option" [index]="i" (optionSelected)="getOptionSelected($event)" (idSelected)="getSelectIdDom($event)"></app-admin-menu-recursive>
+                                    <app-admin-menu-recursive [menu]="option" [idList]="idList" [index]="i" (optionSelected)="getOptionSelected($event)" (idSelected)="getSelectIdDom($event)"></app-admin-menu-recursive>
                                 </div>
-                            </div>
+                            </div> -->
+                            <mat-tree style="background: transparent" [dataSource]="dataSource" [treeControl]="treeControl" cdkDropList (cdkDropListDropped)="drop($event)">
+                                <mat-tree-node style="display:flex; flex-direction:column;" matTreeNodePadding *matTreeNodeDef="let node" cdkDrag [cdkDragData]="node" (mouseenter)="dragHover(node)" (mouseleave)="dragHoverEnd()" (cdkDragStarted)="dragStart()" (cdkDragReleased)="dragEnd()"
+                                    (click)=" getOptionSelected(node)">
+                                    <div style="display:flex; flex-direction:row" [ngClass]="{'is-active': node.isActive,'is-inactive': !node.isActive }" class="menu-node">
+                                        <button mat-icon-button disabled></button>
+                                        <input type="text" name="optionname" autocomplete="off" matInput class="input-option-tree" [(ngModel)]="node.label" (ngModelChange)="setChange(node, node.labe)">
+                                    </div>
+                                    <mat-divider></mat-divider>
+                                </mat-tree-node>
+                                <mat-tree-node style="display:flex; flex-direction:column;" matTreeNodePadding *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding cdkDrag [cdkDragData]="node" (mouseenter)="dragHover(node)" (mouseleave)="dragHoverEnd()" (cdkDragStarted)="dragStart()"
+                                    (cdkDragReleased)="dragEnd()" (click)=" getOptionSelected(node)">
+                                    <div style="display:flex; flex-direction:row" [ngClass]="{'is-active': node.isActive,'is-inactive': !node.isActive }" class="menu-node">
+                                        <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.label">
+                                  <mat-icon class="mat-icon-rtl-mirror">
+                                    {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                                  </mat-icon>
+                                </button>
+                                        <input type="text" name="optionname" autocomplete="off" matInput class="input-option-tree" [(ngModel)]="node.label" (ngModelChange)="setChange(node)">
+                                    </div>
+                                    <mat-divider></mat-divider>
+                                </mat-tree-node>
+                            </mat-tree>
                         </div>
                     </div>
 
@@ -121,13 +143,13 @@
 
                             <div *ngIf="optionSelected.children.length == 0">
                                 <div *ngIf="!optionSelected.isRoot && optionSelected.id ">
-                                    <mat-form-field class="msf-admin-search" >
-                                        <input class="search-input"  matInput [(ngModel)]="searchText" style="width:95%;" autocomplete="off">
+                                    <mat-form-field class="msf-admin-search">
+                                        <input class="search-input" matInput [(ngModel)]="searchText" style="width:95%;" autocomplete="off">
                                         <mat-icon style="color: white" aria-label="search">search</mat-icon>
                                     </mat-form-field>
-                                    <div class="msf-admin-show-selected" >
+                                    <div class="msf-admin-show-selected">
                                         <mat-checkbox class="admin-checkboxes" color="primary" [(ngModel)]="showSelected">Only Selected</mat-checkbox>
-                                     </div>
+                                    </div>
                                     <div class="dialog-category-arguments-container">
                                         <div style="display: flex;flex-direction: row; height: 30px; background-color: #333333; color:white">
                                             <div style="width: 40%; margin:5px">Category</div>
@@ -136,7 +158,7 @@
                                         <div style="max-height: 220px; overflow-y: auto">
                                             <div *ngFor="let item of categories | filter : searchText" style="color: white">
                                                 <div *ngIf="!item.toDelete" class="dialog-item" [ngClass]="{ 'is-active': item.isSelected, 'is-inactive': !item.isSelected ,'msf-hide':showSelected && !item.selected}">
-                                                    <mat-checkbox (change)="setSelectedCategoryArguments(item)" class="admin-checkboxes"  color="primary" [(ngModel)]="item.selected" style="margin: 5px"></mat-checkbox>
+                                                    <mat-checkbox (change)="setSelectedCategoryArguments(item)" class="admin-checkboxes" color="primary" [(ngModel)]="item.selected" style="margin: 5px"></mat-checkbox>
                                                     <img class="img-item-category-argument" src="{{item.icon}}">
                                                     <input [disabled]="true" type="text" matInput [(ngModel)]="item.label" class="text-item-category-argument" style="width: 35%">
                                                     <input [disabled]="true" type="text" matInput [(ngModel)]="item.description" class="text-item-category-argument" style="width: 55%; font-size: 11px">
@@ -156,4 +178,4 @@
             </div>
         </div>
     </mat-card-content>
-</mat-card>s
+</mat-card>

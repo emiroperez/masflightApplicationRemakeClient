@@ -2,16 +2,17 @@ import { OnInit, Component, Inject, AfterViewInit, ChangeDetectorRef, Renderer2,
 import { ApiClient } from '../api/api-client';
 import { Globals } from '../globals/Globals';
 import { ApplicationService } from '../services/application.service';
-import { MatSnackBar, MatTableDataSource, MatTable, MatSelect } from '@angular/material';
+import { MatSnackBar, MatTableDataSource, MatTable, MatSelect, MatTreeFlattener, MatTreeFlatDataSource } from '@angular/material';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { MessageComponent } from '../message/message.component';
-import {CdkDragDrop, moveItemInArray, CdkDropList} from '@angular/cdk/drag-drop';
+import {CdkDragDrop, moveItemInArray, CdkDropList, transferArrayItem} from '@angular/cdk/drag-drop';
 import { FormControl } from '@angular/forms';
 import { DrillDown } from '../model/DrillDown';
-import { ReplaySubject, Subject } from 'rxjs';
+import { ReplaySubject, Subject, BehaviorSubject } from 'rxjs';
 import { takeUntil, take } from 'rxjs/operators';
 import { CategoryArguments } from '../model/CategoryArguments';
 import { DialogArgumentPreviewComponent } from '../dialog-argument-preview/dialog-argument-preview.component';
+import { FlatTreeControl } from '@angular/cdk/tree';
 //import  clonedeep from 'lodash.clonedeep';
 
 @Component({
@@ -414,14 +415,87 @@ selectArgumentCategory(category) {
   }
 }
 
+export class ExampleFlatNode {
+  id: string;
+  expandable: boolean;
+  label: string;
+  level: number;
+  menuOptionArgumentsAdmin: any[];
+      categoryParentId: string;
+      baseUrl: string;
+      icon: string;
+      tab: string;
+      tabType: string;
+      menuParentId: string;
+      toDelete: boolean;
+      dataAvailability: string;
+      metaData: string;
+      order: any;
+      selected: any;
+      applicationId: any;
+      isRoot :any;
+      children : any[];
+}
+
 @Component({
   selector: 'app-admin-menu, FilterPipe',
   templateUrl: './admin-menu.component.html',
   styleUrls: ['./admin-menu.component.css']
 })
 export class AdminMenuComponent implements OnInit, AfterViewInit {
+  dataChange = new BehaviorSubject<any[]>([]);
+  get data(): any[] { return this.dataChange.value; }
+  expandedNodeSet = new Set<string>();
+  dragging = false;
+  expandTimeout: any;
+  expandDelay = 1000;
+  flatNodeMap = new Map<ExampleFlatNode, any>();
+  nestedNodeMap = new Map<any, ExampleFlatNode>();
+  private transformer = (node: any, level: number) => {
+    const existingNode = this.nestedNodeMap.get(node);
+    const flatNode = existingNode && existingNode.label === node.label
+        ? existingNode
+        : new ExampleFlatNode();
+        flatNode.expandable= !!node.children && node.children.length > 0;
+        flatNode.id= node.id;
+        flatNode.label=node.label;
+        flatNode.level=level;
+        flatNode.menuOptionArgumentsAdmin=node.menuOptionArgumentsAdmin;
+        flatNode.categoryParentId=node.categoryParentId;
+        flatNode.baseUrl= node.baseUrl;
+        flatNode.icon= node.iconicon;
+        flatNode.tab= node.tab;
+        flatNode.tabType= node.tabType;
+        flatNode.menuParentId= node.menuParentId;
+        flatNode.toDelete= node.toDelete;
+        flatNode.dataAvailability= node.dataAvailability;
+        flatNode.metaData=node.metaData;
+        flatNode.order=node.order,
+        flatNode.selected= node.selected;
+        flatNode.applicationId= node.applicationId;
+        flatNode.isRoot = node.isRoot;
+        flatNode.children = node.children;
+        this.flatNodeMap.set(flatNode, node);
+        this.nestedNodeMap.set(node, flatNode);
+    return flatNode;
+  };
+  treeControl = new FlatTreeControl<ExampleFlatNode>(
+    node => node.level,
+    node => node.expandable
+  );
+
+  treeFlattener = new MatTreeFlattener(
+    this.transformer,
+    node => node.level,
+    node => node.expandable,
+    node => node.children
+  );
+
+  dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
+
 
   menu: any[] = [];
+  idList: any[] = ['firstOne'];
   categoryArguments: any[] = [];
   drillDown: any[] = [];
   categories: any[] = [];
@@ -442,6 +516,15 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     private service: ApplicationService, public snackBar: MatSnackBar,
     public dialog: MatDialog, private ref: ChangeDetectorRef,
     public rend: Renderer2) {
+      this.dataChange.subscribe(data => {
+        this.dataSource.data = data;
+      });
+  }
+
+  setChange(node){
+    const nestedNode = this.flatNodeMap.get(node);
+    nestedNode.label = node.label;
+    this.dataChange.next(this.data);
   }
 
   ngOnInit() {
@@ -493,8 +576,8 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   }
 
   findOnMenu(optionId){
-    for (let index = 0; index < this.menu.length; index++) {
-      const option = this.menu[index];
+    for (let index = 0; index < this.dataSource.data.length; index++) {
+      const option = this.dataSource.data[index];
       if(optionId==option.id){
         option.isOpened=true;
         if(option.menuParentId!=null){
@@ -612,10 +695,6 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     }
   }
 
-  drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.menu, event.previousIndex, event.currentIndex);
-  }
-
   getSelectIdDom(idDomOption) {
     this.idDomOptionSelected = idDomOption;
   }
@@ -696,14 +775,24 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
         data: { message: message, confirm: confirm }
       });
       dialogRef.afterClosed().subscribe((result: any) => {
+        console.log(result.confirm);
         if (result.confirm){
+
+          console.log("entra");
           this.optionSelected.toDelete = true;
           this.optionSelected.label+="....";
+          const nestedNode = this.flatNodeMap.get(this.optionSelected);
+          nestedNode.toDelete = true;
+          this.dataChange.next(this.data);
+          console.log(this.optionSelected)
+          console.log(this.flatNodeMap)
+          console.log(this.dataSource.data)
           this.saveMenu();
         }
       });
     }
   }
+
 
   saveNewArgumentsCategory(category){
     let arrayArg = [];
@@ -741,7 +830,9 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
       });
     }else {
       this.verifyOrder();
-      this.service.saveMenu(this, this.menu, this.handlerSuccessSaveMenuData, this.handlerErrorSaveMenuData);
+      console.log(this.menu);
+      console.log(this.dataSource.data);
+      this.service.saveMenu(this, this.dataSource.data, this.handlerSuccessSaveMenuData, this.handlerErrorSaveMenuData);
     }
   }
 
@@ -784,12 +875,18 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
   verifyOrder(){
 
-    for (let i=0; i < this.menu.length; i++){
-      let optionMenu = this.menu[i];
-      this.menu[i].order = i;
-      this.recursiveOrder(optionMenu);
+    for (let i=0; i < this.dataSource.data.length; i++){
+      let optionMenu = this.dataSource.data[i];
+      optionMenu.order = i;
+      for (let j=0; j < optionMenu.children.length;j++){
+        let optionCat = optionMenu.children[j];
+        optionCat.order = j;
+        optionCat.categoryParentId = optionMenu.id;
+        this.recursiveOrder(optionCat);
+      }
     }
-    return this.menu;
+
+
     }
 
 
@@ -797,6 +894,8 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     if(option.children.length > 0){
       for (let i=0; i<option.children.length; i++){
         option.children[i].order = i;
+        option.children[i].parentId = option.id;
+        option.children[i].categoryParentId = null;
         if(option.children[i].children.length > 0){
           this.recursiveOrder(option.children[i]);
       }
@@ -832,15 +931,184 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     this.service.loadMenuOptions(this, this.handlerGetSuccessMenuData, this.handlerGetErrorMenuData);
     this.optionSelected = {};
   }
+  getIdList(menu){
+    for (let j = 0; j < menu.length; j++) {
+      let optionMenu = this.menu[j];
+      this.idList.push(optionMenu.id);
+      this.getIdListRecursive(optionMenu);
+    }
+    console.log(this.idList)
+  }
+
+  getIdListRecursive(option){
+    if (option.children.length !== 0) {
+      for (let i=0; i<option.children.length;i++){
+        this.idList.push(option.children[i].id);
+        if(option.children[i].children.length > 0){
+          this.getIdListRecursive(option.children[i]);
+      }
+    }
+  }
+}
+
+hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
 
   handlerGetSuccessMenuData(_this, data) {
     _this.menu = data;
+    _this.dataSource.data = data;
     _this.globals.isLoading = false;
+    _this.dataChange.next(data);
   }
 
   handlerGetErrorMenuData(_this, result) {
     console.log(result);
     _this.globals.isLoading = false;
+  }
+
+  visibleNodes(): any[] {
+    this.rememberExpandedTreeNodes(this.treeControl, this.expandedNodeSet);
+    const result = [];
+
+    function addExpandedChildren(node: any, expanded: Set<string>) {
+      result.push(node);
+      if (expanded.has(node.id)) {
+        node.children.map(child => addExpandedChildren(child, expanded));
+      }
+    }
+    this.dataSource.data.forEach(node => {
+      addExpandedChildren(node, this.expandedNodeSet);
+    });
+    return result;
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    const visibleNodes = this.visibleNodes();
+    const changedData = JSON.parse(JSON.stringify(this.dataSource.data));
+    function findNodeSiblings(arr: Array<any>, id: string): Array<any> {
+      let result, subResult;
+      arr.forEach(item => {
+        if (item.id === id) {
+          result = arr;
+        } else if (item.children) {
+          subResult = findNodeSiblings(item.children, id);
+          if (subResult) result = subResult;
+        }
+      });
+      return result;
+    }
+    const node = event.item.data;
+    const siblings = findNodeSiblings(changedData, node.id);
+    const siblingIndex = siblings.findIndex(n => n.id === node.id);
+    const nodeToInsert: any = siblings.splice(siblingIndex, 1)[0];
+    const nodeAtDest = visibleNodes[event.currentIndex];
+    if (nodeAtDest.id === nodeToInsert.id) return;
+    let relativeIndex = event.currentIndex;
+    const nodeAtDestFlatNode = this.treeControl.dataNodes.find(
+      n => nodeAtDest.id === n.id
+    );
+    const parent = this.getParentNode(nodeAtDestFlatNode);
+    if (parent) {
+      const parentIndex = visibleNodes.findIndex(n => n.id === parent.id) + 1;
+      relativeIndex = event.currentIndex - parentIndex;
+    }
+    const newSiblings = findNodeSiblings(changedData, nodeAtDest.id);
+    newSiblings.splice(relativeIndex, 0, nodeToInsert);
+    this.rebuildTreeForData(changedData);
+  }
+
+  dragStart() {
+    this.dragging = true;
+  }
+  dragEnd() {
+    this.dragging = false;
+  }
+  dragHover(node: ExampleFlatNode) {
+    if (this.dragging) {
+      clearTimeout(this.expandTimeout);
+      this.expandTimeout = setTimeout(() => {
+        this.treeControl.expand(node);
+      }, this.expandDelay);
+    }
+  }
+  dragHoverEnd() {
+    if (this.dragging) {
+      clearTimeout(this.expandTimeout);
+    }
+  }
+
+  rebuildTreeForData(data: any) {
+    this.rememberExpandedTreeNodes(this.treeControl, this.expandedNodeSet);
+    this.dataSource.data = data;
+    //this.forgetMissingExpandedNodes(this.treeControl, this.expandedNodeSet);
+    this.expandNodesById(
+      this.treeControl.dataNodes,
+      Array.from(this.expandedNodeSet)
+    );
+  }
+
+  private rememberExpandedTreeNodes(
+    treeControl: FlatTreeControl<ExampleFlatNode>,
+    expandedNodeSet: Set<string>
+  ) {
+    if (treeControl.dataNodes) {
+      treeControl.dataNodes.forEach(node => {
+        if (treeControl.isExpandable(node) && treeControl.isExpanded(node)) {
+          // capture latest expanded state
+          expandedNodeSet.add(node.id);
+        }
+      });
+    }
+  }
+
+  private forgetMissingExpandedNodes(
+    treeControl: FlatTreeControl<ExampleFlatNode>,
+    expandedNodeSet: Set<string>
+  ) {
+    if (treeControl.dataNodes) {
+      expandedNodeSet.forEach(nodeId => {
+        if (!treeControl.dataNodes.find(n => n.id === nodeId)) {
+          expandedNodeSet.delete(nodeId);
+        }
+      });
+    }
+  }
+
+  private expandNodesById(flatNodes: ExampleFlatNode[], ids: string[]) {
+    if (!flatNodes || flatNodes.length === 0) return;
+    const idSet = new Set(ids);
+    return flatNodes.forEach(node => {
+      if (idSet.has(node.id)) {
+        this.treeControl.expand(node);
+        let parent = this.getParentNode(node);
+        while (parent) {
+          this.treeControl.expand(parent);
+          parent = this.getParentNode(parent);
+        }
+      }
+    });
+  }
+
+  private getParentNode(node: ExampleFlatNode): ExampleFlatNode | null {
+    const currentLevel = node.level;
+    if (currentLevel < 1) {
+      return null;
+    }
+    const startIndex = this.treeControl.dataNodes.indexOf(node) - 1;
+    for (let i = startIndex; i >= 0; i--) {
+      const currentNode = this.treeControl.dataNodes[i];
+      if (currentNode.level < currentLevel) {
+        return currentNode;
+      }
+    }
+    return null;
+  }
+
+  print(node) {
+    console.log(node);
+  }
+
+  printAll(){
+    console.log(this.dataSource.data)
   }
 
   setSelectedCategoryArguments(category) {
@@ -868,6 +1136,9 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
       };
       this.optionSelected.menuOptionArgumentsAdmin.push(itemToAdd);
     }
+
+    const nestedNode = this.flatNodeMap.get(this.optionSelected);
+    this.dataChange.next(this.data);
   }
 
   addCategoryArgument() {
@@ -936,39 +1207,10 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     this.getDrillDowns();
   }
 
-  fillArguments(data){
-    console.log(data)
-    if(!data.hasOwnProperty('id')){
-      data.id = null;
-    }
-
-    console.log(data)
-    for(let i=0; i<data.categoryArgumentsId.arguments.length;i++){
-    if(data.categoryArgumentsId.arguments[i].optionCategoryArguments == null){
-      data.categoryArgumentsId.arguments[i].optionCategoryArguments = {};
-        data.categoryArgumentsId.arguments[i].optionCategoryArguments.id= null;
-        data.categoryArgumentsId.arguments[i].optionCategoryArguments.label1= '';
-        data.categoryArgumentsId.arguments[i].optionCategoryArguments.label2= '';
-        data.categoryArgumentsId.arguments[i].optionCategoryArguments.label3='';
-        data.categoryArgumentsId.arguments[i].optionCategoryArguments.name1= '';
-        data.categoryArgumentsId.arguments[i].optionCategoryArguments.name2= '';
-        data.categoryArgumentsId.arguments[i].optionCategoryArguments.name3= '';
-        data.categoryArgumentsId.arguments[i].optionCategoryArguments.required= false;
-        data.categoryArgumentsId.arguments[i].optionCategoryArguments.title= '';
-        data.categoryArgumentsId.arguments[i].optionCategoryArguments.url= '';
-    }
-    data.categoryArgumentsId.arguments[i].optionCategoryArguments.menuOptionId = this.optionSelected.id;
-    data.categoryArgumentsId.arguments[i].optionCategoryArguments.menuOptionArguments = data.id;
-    data.categoryArgumentsId.arguments[i].optionCategoryArguments.argumentCategoryId = data.categoryArgumentsId.id;
-    data.categoryArgumentsId.arguments[i].optionCategoryArguments.argumentId = data.categoryArgumentsId.arguments[i].id;
-
-  }
-  }
 
   editCategoryArguments(cat) {
 
     var duplicateObject = JSON.parse(JSON.stringify(cat));
-    //this.fillArguments(duplicateObject);
     console.log(duplicateObject)
     const dialogRef = this.dialog.open(EditCategoryArgumentDialog, {
       width: '45%',
@@ -1013,6 +1255,66 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   this.saveCategoryArgument();
   }
 
+  addNewItem() {
+    const parentNode = this.flatNodeMap.get(this.optionSelected);
+    this.insertItem(parentNode!, '');
+    this.treeControl.expand(this.optionSelected);
+  }
 
+  insertItem(parent: any, name: string) {
+    if (parent.children) {
+      parent.children.push({label: null,
+      baseUrl: null,
+      icon: null,
+      tab: null,
+      tabType: null,
+      parentId: null,
+      children: [],
+      toDelete: false,
+      isRoot: false,
+      applicationId: this.globals.currentApplication.id,
+      metaData: 1,} as any);
+      this.dataChange.next(this.data);
+    }
+  }
+
+  filterChanged(filterText: string) {
+    this.filter(filterText);
+    if(filterText)
+    {
+      this.treeControl.expandAll();
+    } else {
+      this.treeControl.collapseAll();
+    }
+  }
+
+  public filter(filterText: string) {
+    let filteredTreeData;
+    if (filterText) {
+      console.log(this.dataSource.data);
+      filteredTreeData = this.dataSource.data.filter(d => d.label.toLocaleLowerCase().indexOf(filterText.toLocaleLowerCase()) > -1);
+      Object.assign([], filteredTreeData).forEach(ftd => {
+        let str = (<string>ftd.id);
+        while (str.lastIndexOf('.') > -1) {
+          const index = str.lastIndexOf('.');
+          str = str.substring(0, index);
+          if (filteredTreeData.findIndex(t => t.id === str) === -1) {
+            const obj = this.dataSource.data.find(d => d.id === str);
+            if (obj) {
+              filteredTreeData.push(obj);
+            }
+          }
+        }
+      });
+    } else {
+      filteredTreeData = this.dataSource.data;
+    }
+
+    // Build the tree nodes from Json object. The result is a list of `TodoItemNode` with nested
+    // file node as children.
+
+    // Notify the change.
+    this.dataChange.next(filteredTreeData);
+  }
 
 }

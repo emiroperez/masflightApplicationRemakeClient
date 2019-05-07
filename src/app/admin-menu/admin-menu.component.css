@@ -287,3 +287,11 @@
         height: 30px;
         width: 90%;
     }
+
+    .menu-node {
+        color: white; display:flex; flex-direction:row; width:100%;
+    }
+
+    .mat-tree-node{
+        min-height: 40px;
+    }
