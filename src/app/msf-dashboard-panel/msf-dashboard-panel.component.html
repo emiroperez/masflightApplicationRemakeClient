@@ -451,7 +451,7 @@
           </div>
           <div class="msf-dashboard-chart-op-container">
             <mat-form-field [formGroup]="chartForm" class="msf-full-width">
-              <mat-select formControlName="variableCtrl" placeholder="Value To Display" #variableSelect [(value)]="values.variable" (selectionChange)="checkChartFilters()">
+              <mat-select formControlName="geodataValueCtrl" placeholder="Value To Display" #variableSelect [(value)]="values.variable" (selectionChange)="checkChartFilters()">
                 <ngx-mat-select-search [formControl]="variableFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
                 <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
                   {{variable.name}}
