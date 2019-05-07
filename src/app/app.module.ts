@@ -182,7 +182,6 @@ import { MsfArgumentComponent } from './msf-argument/msf-argument.component';
 import { DialogArgumentPreviewComponent } from './dialog-argument-preview/dialog-argument-preview.component';
 import { MsfDashboardPanelOptionPipe } from './msf-dashboard-panel/msf-dashboard-panel-option-pipe';
 import { MsfDashboardPanelTypePipe } from './msf-dashboard-panel/msf-dashboard-panel-type-pipe';
-import { AdminMenuTreeComponent } from './admin-menu-tree/admin-menu-tree.component';
 import {MatTreeModule} from '@angular/material/tree';
 
 @NgModule({
@@ -346,8 +345,7 @@ import {MatTreeModule} from '@angular/material/tree';
     MsfArgumentComponent,
     DialogArgumentPreviewComponent,
     MsfDashboardPanelOptionPipe,
-    MsfDashboardPanelTypePipe,
-    AdminMenuTreeComponent
+    MsfDashboardPanelTypePipe
   ],
   imports: [
     BrowserModule,

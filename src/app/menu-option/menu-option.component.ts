@@ -54,11 +54,11 @@ export class MenuOptionComponent implements OnInit {
 
   makeScheduleChart()
   {
-    let prepareChart, chart, continentSeries, zoomControl, home;
+    let chart, continentSeries, zoomControl, home;
 
     this.destroyScheduleChart ();
 
-    prepareChart = setInterval (() =>
+    setTimeout (() =>
     {
       this.zone.runOutsideAngular (() => {
         chart = am4core.create ("chartdivmap", am4maps.MapChart);
@@ -113,8 +113,6 @@ export class MenuOptionComponent implements OnInit {
 
         this.globals.scheduleChart = chart;
       });
-
-      clearInterval (prepareChart);
     }, 50);
   }
 

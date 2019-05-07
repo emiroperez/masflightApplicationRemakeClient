@@ -570,74 +570,55 @@ export class MsfDashboardChildPanelComponent {
     return false;
   }
 
-  checkGroupingCategory(argument)
+  checkGroupingCategory(argument): boolean
   {
-    let params: string = "";
-
     if (argument.name1 != null && argument.name1.toLowerCase ().includes ("grouping"))
     {
-      let haveValues: boolean = false;
-
-      if (argument.value1 != null && argument.value1.length)
-        haveValues = true;
-
       if (this.values.currentChartType.flags & ChartFlags.TABLE)
-      {
-        for (let tableVariable of this.values.tableVariables)
-        {
-          if (tableVariable.checked && tableVariable.grouping && !this.checkGroupingValue (tableVariable.id, argument.value1))
-          {
-            if (!haveValues)
-            {
-              params += "" + tableVariable.id;
-              haveValues = true;
-            }
-            else
-              params += "," + tableVariable.id;
-          }
-        }
-      }
+        return true; // tables must not check this!
       else if (!(this.values.currentChartType.flags & ChartFlags.INFO))
       {
         if (this.values.variable.grouping && !this.checkGroupingValue (this.values.variable.columnName, argument.value1))
-        {
-          if (!haveValues)
-          {
-            params += "" + this.values.variable.columnName;
-            haveValues = true;
-          }
-          else
-            params += "," + this.values.variable.columnName;
-        }
+          return false;
 
         if (this.values.currentChartType.flags & ChartFlags.XYCHART)
         {
           if (this.values.xaxis.grouping && !this.checkGroupingValue (this.values.xaxis.columnName, argument.value1))
-          {
-            if (!haveValues)
-            {
-              params += "" + this.values.xaxis.columnName;
-              haveValues = true;
-            }
-            else
-              params += "," + this.values.xaxis.columnName;
-          }
+            return false;
         }
 
         if (this.values.valueColumn.grouping && !this.checkGroupingValue (this.values.valueColumn.columnName, argument.value1))
+          return false;
+      }
+    }
+
+    return true;
+  }
+
+  checkPanelVariables(): boolean
+  {
+    let currentOptionCategories = this.values.currentOptionCategories;
+
+    if (currentOptionCategories)
+    {
+      for (let i = 0; i < currentOptionCategories.length; i++)
+      {
+        let category: CategoryArguments = currentOptionCategories[i];
+
+        if (category && category.arguments)
         {
-          if (!haveValues)
+          for (let j = 0; j < category.arguments.length; j++)
           {
-            params += "" + this.values.valueColumn.columnName;
-            haveValues = true;
+            let argument: Arguments = category.arguments[j];
+
+            if (!this.checkGroupingCategory (argument))
+              return false;
           }
-          else
-            params += "," + this.values.valueColumn.columnName;
         }
       }
     }
 
-    return params;
+    return true;
   }
 
   getParameters()
@@ -688,12 +669,12 @@ export class MsfDashboardChildPanelComponent {
               if (params)
               {
                 if (argument.type != "singleCheckbox" && argument.type != "serviceClasses" && argument.type != "fareLower" && argument.type != "airportsRoutes" && argument.name1 != "intermediateCitiesList")
-                  params += "&" + this.utils.getArguments (argument) + this.checkGroupingCategory (argument);
+                  params += "&" + this.utils.getArguments (argument);
                 else if (argument.value1 != false && argument.value1 != "" && argument.value1 != undefined && argument.value1 != null)
-                  params += "&" + this.utils.getArguments (argument) + this.checkGroupingCategory (argument);
+                  params += "&" + this.utils.getArguments (argument);
               }
               else
-                params = this.utils.getArguments (argument) + this.checkGroupingCategory (argument);
+                params = this.utils.getArguments (argument);
             }
           }
         }        
@@ -863,6 +844,14 @@ export class MsfDashboardChildPanelComponent {
 
   setCategories(_this, data)
   {
+    // check if any variable that requires grouping are in configure properly
+    if (!_this.checkPanelVariables ())
+    {
+      _this.globals.popupLoading = false;
+      _this.errorMessage = "Some variables used to get the results must be added in the grouping inside the parent control variables";
+      return;
+    }
+
     // add category arguments not available on the parent to the child panel, so the service will work properly
     for (let optionCategory of data)
     {
