@@ -85,8 +85,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     { name: 'Information', flags: ChartFlags.INFO },
     { name: 'Simple Form', flags: ChartFlags.INFO | ChartFlags.FORM },
     { name: 'Table', flags: ChartFlags.TABLE },
-    { name: 'Map', flags: ChartFlags.MAP }/*,
-    { name: 'Heat Map', flags: ChartFlags.HEATMAP },
+    { name: 'Map', flags: ChartFlags.MAP },
+    { name: 'Heat Map', flags: ChartFlags.HEATMAP }/*,
     { name: 'Simple Picture', flags: ChartFlags.INFO | ChartFlags.PICTURE },*/
   ];
 
@@ -1219,7 +1219,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       if (this.values.currentChartType.flags & ChartFlags.TABLE)
       {
-        for (let tableVariable of this.values.tableVariables)
+        /*for (let tableVariable of this.values.tableVariables)
         {
           if (tableVariable.checked && tableVariable.grouping && !this.checkGroupingValue (tableVariable.id, argument.value1))
           {
@@ -1231,7 +1231,7 @@ export class MsfDashboardPanelComponent implements OnInit {
             else
               params += "," + tableVariable.id;
           }
-        }
+        }*/
       }
       else if (this.values.currentChartType.flags & ChartFlags.INFO)
       {
@@ -2748,7 +2748,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       this.values.chartColumnOptions = [];
       this.values.tableVariables = [];
-  
+
       for (let columnConfig of this.values.currentOption.columnOptions)
       {
         this.values.chartColumnOptions.push ( { id: columnConfig.columnName, name: columnConfig.columnLabel, item: columnConfig } );
