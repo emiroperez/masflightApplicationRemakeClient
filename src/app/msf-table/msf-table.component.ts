@@ -68,7 +68,7 @@ export class MsfTableComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(public globals: Globals, private service: ApplicationService,private ref: ChangeDetectorRef,public dialog: MatDialog) { }
+  constructor(public globals: Globals, private service: ApplicationService,public dialog: MatDialog) { }
 
   ngOnInit() {      
     this.tableOptions = this.globals;
@@ -315,7 +315,7 @@ export class MsfTableComponent implements OnInit {
               _this.tableOptions.moreResultsBtn = true;
             }
           }else{  
-            var aux = (_this.actualPageNumber+1)*100;
+            var aux = (_this.tableOptions.actualPageNumber+1)*100;
             aux = aux!=0 ? aux : 100;
             if( _this.tableOptions.totalRecord<aux){
               _this.tableOptions.moreResultsBtn = false;
@@ -354,7 +354,6 @@ export class MsfTableComponent implements OnInit {
         }
       }  
       if(_this.dataSource){
-        _this.ref.detectChanges();
         if(_this.sort!=undefined){
           _this.dataSource.sort =_this.sort;
         }
