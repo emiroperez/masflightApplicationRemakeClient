@@ -182,6 +182,8 @@ import { MsfArgumentComponent } from './msf-argument/msf-argument.component';
 import { DialogArgumentPreviewComponent } from './dialog-argument-preview/dialog-argument-preview.component';
 import { MsfDashboardPanelOptionPipe } from './msf-dashboard-panel/msf-dashboard-panel-option-pipe';
 import { MsfDashboardPanelTypePipe } from './msf-dashboard-panel/msf-dashboard-panel-type-pipe';
+import { AdminMenuTreeComponent } from './admin-menu-tree/admin-menu-tree.component';
+import {MatTreeModule} from '@angular/material/tree';
 
 @NgModule({
   declarations: [
@@ -344,7 +346,8 @@ import { MsfDashboardPanelTypePipe } from './msf-dashboard-panel/msf-dashboard-p
     MsfArgumentComponent,
     DialogArgumentPreviewComponent,
     MsfDashboardPanelOptionPipe,
-    MsfDashboardPanelTypePipe
+    MsfDashboardPanelTypePipe,
+    AdminMenuTreeComponent
   ],
   imports: [
     BrowserModule,
@@ -364,6 +367,7 @@ import { MsfDashboardPanelTypePipe } from './msf-dashboard-panel/msf-dashboard-p
     MatSelectModule,
     MatFormFieldModule,
     NgxMatSelectSearchModule,
+    MatTreeModule,
 //    AgmCoreModule.forRoot({
       // apiKey: 'AIzaSyArd7Sqcy7bB0ucBKhm2ik4r2xZPG9wPtU'
     // }),
