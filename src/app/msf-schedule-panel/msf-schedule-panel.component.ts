@@ -50,10 +50,10 @@ export class MsfSchedulePanelComponent implements OnInit {
 
   expandFlight(index,$event){
     let imageSeriesTemplate, circle, hoverState, label, zoomLevel;
-    let curcity, updateChartInterval;
     var route = this.aux[index];
     let newCities = [];
     let self = this;
+    let curcity;
 
     function goForward(plane, shadowPlane, planeContainer, shadowPlaneContainer, routes, curRoute)
     {
@@ -451,12 +451,10 @@ export class MsfSchedulePanelComponent implements OnInit {
       this.globals.scheduleChart.goHome ();
 
       // Workaround to avoid double lines
-      updateChartInterval = setInterval (() =>
+      setTimeout (() =>
       {
         this.globals.scheduleChart.homeZoomLevel = zoomLevel;
         this.globals.scheduleChart.goHome ();
-
-        clearInterval (updateChartInterval);
       }, 50);
     });
    }

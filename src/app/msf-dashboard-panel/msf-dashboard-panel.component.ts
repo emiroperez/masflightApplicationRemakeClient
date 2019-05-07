@@ -1123,10 +1123,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       if (this.values.function == 1)
       {
-        let prepareTable = setInterval (() =>
+        setTimeout (() =>
         {
           this.loadData ();
-          clearInterval (prepareTable);
         }, 100);
       }
     }
@@ -1672,8 +1671,6 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   handlerHeatMapSuccess(_this, data): void
   {
-    let prepareChart;
-
     // destroy current chart if it's already generated to avoid a blank chart
     _this.destroyChart ();
 
@@ -1684,7 +1681,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.picGenerated = false;
     _this.values.tableGenerated = false;
 
-    prepareChart = setInterval (() =>
+    setTimeout (() =>
     {
       _this.values.isLoading = false;
 
@@ -1692,8 +1689,6 @@ export class MsfDashboardPanelComponent implements OnInit {
   
       _this.stopUpdateInterval ();
       _this.startUpdateInterval ();
-
-      clearInterval (prepareChart);
     }, 50);
   }
 
@@ -1849,8 +1844,6 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   handlerMapLastestResponse(_this): void
   {
-    let prepareChart;
-
     // destroy current chart if it's already generated to avoid a blank chart
     _this.destroyChart ();
 
@@ -1861,7 +1854,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.picGenerated = false;
     _this.values.tableGenerated = false;
 
-    prepareChart = setInterval (() =>
+    setTimeout (() =>
     {
       _this.values.isLoading = false;
 
@@ -1869,8 +1862,6 @@ export class MsfDashboardPanelComponent implements OnInit {
   
       _this.stopUpdateInterval ();
       _this.startUpdateInterval ();
-
-      clearInterval (prepareChart);
     }, 50);
   }
 
@@ -1926,7 +1917,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.picGenerated = false;
     _this.values.tableGenerated = false;
 
-    prepareChart = setInterval (() =>
+    setTimeout (() =>
     {
       _this.values.isLoading = false;
 
@@ -1934,8 +1925,6 @@ export class MsfDashboardPanelComponent implements OnInit {
   
       _this.stopUpdateInterval ();
       _this.startUpdateInterval ();
-
-      clearInterval (prepareChart);
     }, 50);
   }
 
