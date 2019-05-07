@@ -4668,4 +4668,12 @@ span.msf-subCell {
   vertical-align: middle;
 }
 
+.msf-visible {
+  visibility: visible;
+}
+
+.msf-no-visible {
+  visibility: hidden;
+}
+
 /*# sourceMappingURL=styles.css.map */

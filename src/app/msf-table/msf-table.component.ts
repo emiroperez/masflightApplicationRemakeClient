@@ -565,15 +565,29 @@ export class MsfTableComponent implements OnInit {
     return aux;
   }
 
-  resultsAvailable(): boolean
+  resultsAvailable()
   {
     if (this.currentOption == null)
-      return false;
+      return 'msf-no-visible';
 
-    return ((this.tableOptions.dataSource && !this.tableOptions.template && this.currentOption.metaData==1) || (this.currentOption.tabType=='scmap'));
+    if ((this.tableOptions.dataSource && !this.tableOptions.template && this.currentOption.metaData==1) || (this.currentOption.tabType=='scmap')) {
+        return 'msf-visible'
+    } else {
+      return 'msf-no-visible'
+    }
   }
 
   cancelLoading(){
     this.isLoading = false;
   }
+
+  noResults(){
+    if(this.tableOptions){
+      if(!this.tableOptions.dataSource && !this.tableOptions.template){
+        return "msf-show";
+      }
+    }
+    return "msf-hide";
+  }
+
 }
