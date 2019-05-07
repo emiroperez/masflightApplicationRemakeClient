@@ -4,6 +4,14 @@ import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import * as am4maps from "@amcharts/amcharts4/maps";
 import am4geodata_worldLow from "@amcharts/amcharts4-geodata/worldLow";
+import am4geodata_northAmericaLow from "@amcharts/amcharts4-geodata/region/world/northAmericaLow";
+import am4geodata_centralAmericaLow from "@amcharts/amcharts4-geodata/region/world/centralAmericaLow";
+import am4geodata_southAmericaLow from "@amcharts/amcharts4-geodata/region/world/southAmericaLow";
+import am4geodata_asiaLow from "@amcharts/amcharts4-geodata/region/world/asiaLow";
+import am4geodata_africaLow from "@amcharts/amcharts4-geodata/region/world/africaLow";
+import am4geodata_europeLow from "@amcharts/amcharts4-geodata/region/world/europeLow";
+import am4geodata_oceaniaLow from "@amcharts/amcharts4-geodata/region/world/oceaniaLow";
+import am4geodata_usaAlbersLow from "@amcharts/amcharts4-geodata/usaAlbersLow";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import am4themes_dark from "@amcharts/amcharts4/themes/dark";
 import { CategoryArguments } from '../model/CategoryArguments';
@@ -34,6 +42,7 @@ am4core.useTheme(am4themes_dark);
 // AmChart colors
 const black = am4core.color ("#000000");
 const darkGray = am4core.color ("#3b3b3b");
+const gray = am4core.color ("#4b4b4b");
 const white = am4core.color ("#ffffff");
 const cyan = am4core.color ("#00a3e1");
 const darkBlue = am4core.color ("#30303d");
@@ -77,7 +86,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     { name: 'Simple Form', flags: ChartFlags.INFO | ChartFlags.FORM },
     { name: 'Table', flags: ChartFlags.TABLE },
     { name: 'Map', flags: ChartFlags.MAP }/*,
-    { name: 'Heat Map', flags: ChartFlags.MAP | ChartFlags.HEATMAP },
+    { name: 'Heat Map', flags: ChartFlags.HEATMAP },
     { name: 'Simple Picture', flags: ChartFlags.INFO | ChartFlags.PICTURE },*/
   ];
 
@@ -98,6 +107,21 @@ export class MsfDashboardPanelComponent implements OnInit {
   orientations:any[] = [
     { name: 'Horizontal', value: false },
     { name: 'Vertical', value: true }
+  ];
+
+  // NOTE: am4maps.projections.AlbersUsa is not available
+  // on AmCharts v4 4.2.0 and using anything higher than 4.2.0
+  // causes heap issues when compiling the app :(
+  geodatas:any[] = [
+    { name: 'U.S. States', value: am4geodata_usaAlbersLow },
+    { name: 'North America', value: am4geodata_northAmericaLow },
+    { name: 'Central America', value: am4geodata_centralAmericaLow },
+    { name: 'South America', value: am4geodata_southAmericaLow },
+    { name: 'Asia', value: am4geodata_asiaLow },
+    { name: 'Africa', value: am4geodata_africaLow },
+    { name: 'Europe', value: am4geodata_europeLow },
+    { name: 'Oceania', value: am4geodata_oceaniaLow },
+    { name: 'World', value: am4geodata_worldLow }
   ];
 
   @Input()
@@ -454,9 +478,290 @@ export class MsfDashboardPanelComponent implements OnInit {
       let chart;
 
       // Check chart type before generating it
-      if (this.values.currentChartType.flags & ChartFlags.MAP)
+      if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
       {
-        let continentSeries, zoomControl, home;
+        let chartColor, polygonSeries, polygonTemplate, hoverState, zoomControl, home, heatLegend;
+
+        chart = am4core.create ("msf-dashboard-chart-display-" + this.values.id, am4maps.MapChart);
+        chartColor = am4core.color (this.values.paletteColors[0]);
+
+        // Create map instance displaying the chosen geography data
+        chart.geodata = this.values.function.value;
+        chart.projection = new am4maps.projections.Miller ();
+
+        // Add map polygons
+        polygonSeries = chart.series.push (new am4maps.MapPolygonSeries ());
+        polygonSeries.useGeodata = true;
+        polygonSeries.mapPolygons.template.fill = chartColor;
+        polygonSeries.mapPolygons.template.stroke = black;
+        polygonSeries.mapPolygons.template.strokeOpacity = 0.25;
+        polygonSeries.mapPolygons.template.strokeWidth = 0.5;
+        polygonSeries.heatRules.push ({
+          property: "fill",
+          target: polygonSeries.mapPolygons.template,
+          min: chartColor.brighten (0.5),
+          max: chartColor.brighten (-0.5)
+        });
+
+        // Exclude Antartica if the geography data is the world
+        if (chart.geodata === am4geodata_worldLow)
+          polygonSeries.exclude = ["AQ"];
+
+        // Move the delta longitude a bit to the left if the geography
+        // data is Asia
+        if (chart.geodata === am4geodata_asiaLow)
+          chart.deltaLongitude = -90;
+
+        chart.homeZoomLevel = 1;
+
+        // Configure series tooltip
+        polygonTemplate = polygonSeries.mapPolygons.template;
+        polygonTemplate.tooltipText = "{name}: {value}";
+        polygonTemplate.nonScalingStroke = true;
+        polygonTemplate.strokeWidth = 0.5;
+        hoverState = polygonTemplate.states.create ("hover");
+        hoverState.properties.fill = chartColor;
+
+        // Set the values for each US state
+        /*
+        stateSeries.data = [
+          {
+            id: "US-AL",
+            value: 4447100
+          },
+          {
+            id: "US-AK",
+            value: 626932
+          },
+          {
+            id: "US-AZ",
+            value: 5130632
+          },
+          {
+            id: "US-AR",
+            value: 2673400
+          },
+          {
+            id: "US-CA",
+            value: 33871648
+          },
+          {
+            id: "US-CO",
+            value: 4301261
+          },
+          {
+            id: "US-CT",
+            value: 3405565
+          },
+          {
+            id: "US-DE",
+            value: 783600
+          },
+          {
+            id: "US-FL",
+            value: 15982378
+          },
+          {
+            id: "US-GA",
+            value: 8186453
+          },
+          {
+            id: "US-HI",
+            value: 1211537
+          },
+          {
+            id: "US-ID",
+            value: 1293953
+          },
+          {
+            id: "US-IL",
+            value: 12419293
+          },
+          {
+            id: "US-IN",
+            value: 6080485
+          },
+          {
+            id: "US-IA",
+            value: 2926324
+          },
+          {
+            id: "US-KS",
+            value: 2688418
+          },
+          {
+            id: "US-KY",
+            value: 4041769
+          },
+          {
+            id: "US-LA",
+            value: 4468976
+          },
+          {
+            id: "US-ME",
+            value: 1274923
+          },
+          {
+            id: "US-MD",
+            value: 5296486
+          },
+          {
+            id: "US-MA",
+            value: 6349097
+          },
+          {
+            id: "US-MI",
+            value: 9938444
+          },
+          {
+            id: "US-MN",
+            value: 4919479
+          },
+          {
+            id: "US-MS",
+            value: 2844658
+          },
+          {
+            id: "US-MO",
+            value: 5595211
+          },
+          {
+            id: "US-MT",
+            value: 902195
+          },
+          {
+            id: "US-NE",
+            value: 1711263
+          },
+          {
+            id: "US-NV",
+            value: 1998257
+          },
+          {
+            id: "US-NH",
+            value: 1235786
+          },
+          {
+            id: "US-NJ",
+            value: 8414350
+          },
+          {
+            id: "US-NM",
+            value: 1819046
+          },
+          {
+            id: "US-NY",
+            value: 18976457
+          },
+          {
+            id: "US-NC",
+            value: 8049313
+          },
+          {
+            id: "US-ND",
+            value: 642200
+          },
+          {
+            id: "US-OH",
+            value: 11353140
+          },
+          {
+            id: "US-OK",
+            value: 3450654
+          },
+          {
+            id: "US-OR",
+            value: 3421399
+          },
+          {
+            id: "US-PA",
+            value: 12281054
+          },
+          {
+            id: "US-RI",
+            value: 1048319
+          },
+          {
+            id: "US-SC",
+            value: 4012012
+          },
+          {
+            id: "US-SD",
+            value: 754844
+          },
+          {
+            id: "US-TN",
+            value: 5689283
+          },
+          {
+            id: "US-TX",
+            value: 20851820
+          },
+          {
+            id: "US-UT",
+            value: 2233169
+          },
+          {
+            id: "US-VT",
+            value: 608827
+          },
+          {
+            id: "US-VA",
+            value: 7078515
+          },
+          {
+            id: "US-WA",
+            value: 5894121
+          },
+          {
+            id: "US-WV",
+            value: 1808344
+          },
+          {
+            id: "US-WI",
+            value: 5363675
+          },
+          {
+            id: "US-WY",
+            value: 493782
+          }
+        ];
+        */
+
+        // Display heat legend
+        heatLegend = chart.createChild (am4maps.HeatLegend);
+        heatLegend.series = polygonSeries;
+        heatLegend.align = "right";
+        heatLegend.valign = "bottom";
+        heatLegend.width = am4core.percent (20);
+        heatLegend.marginRight = am4core.percent (4);
+        heatLegend.minValue = 0;
+        heatLegend.maxValue = 40000000;
+
+        // Add zoom control buttons
+        zoomControl = new am4maps.ZoomControl ();
+        chart.zoomControl = zoomControl;
+        zoomControl.slider.height = 100;
+        zoomControl.valign = "top";
+        zoomControl.align = "right";
+        zoomControl.marginTop = 40;
+        zoomControl.marginRight = 10;
+
+        // Add home buttom to zoom out
+        home = chart.chartContainer.createChild (am4core.Button);
+        home.icon = new am4core.Sprite ();
+        home.icon.dx -= 9;
+        home.width = 30;
+        home.icon.path = homeSVG;
+        home.align = "right";
+        home.marginRight = 15;
+        home.events.on ("hit", function (ev) {
+          chart.goHome ();
+        });
+      }
+      else if (this.values.currentChartType.flags & ChartFlags.MAP)
+      {
+        let polygonSeries, zoomControl, home;
 
         chart = am4core.create ("msf-dashboard-chart-display-" + this.values.id, am4maps.MapChart);
 
@@ -465,13 +770,13 @@ export class MsfDashboardPanelComponent implements OnInit {
         chart.projection = new am4maps.projections.Miller ();
 
         // Add map polygons and exclude Antartica
-        continentSeries = chart.series.push (new am4maps.MapPolygonSeries ());
-        continentSeries.useGeodata = true;
-        continentSeries.exclude = ["AQ"];
-        continentSeries.mapPolygons.template.fill = darkGray;
-        continentSeries.mapPolygons.template.stroke = black;
-        continentSeries.mapPolygons.template.strokeOpacity = 0.25;
-        continentSeries.mapPolygons.template.strokeWidth = 0.5;
+        polygonSeries = chart.series.push (new am4maps.MapPolygonSeries ());
+        polygonSeries.useGeodata = true;
+        polygonSeries.exclude = ["AQ"];
+        polygonSeries.mapPolygons.template.fill = darkGray;
+        polygonSeries.mapPolygons.template.stroke = black;
+        polygonSeries.mapPolygons.template.strokeOpacity = 0.25;
+        polygonSeries.mapPolygons.template.strokeWidth = 0.5;
 
         // Set default location and zoom level
         chart.homeGeoPoint = {
@@ -1267,7 +1572,9 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     this.globals.startTimestamp = new Date ();
 
-    if (this.values.currentChartType.flags & ChartFlags.MAP)
+    if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
+      this.loadFormData (this.handlerHeatMapSuccess, this.handlerHeatMapError);
+    else if (this.values.currentChartType.flags & ChartFlags.MAP)
       this.loadFormData (this.handlerMapSuccess, this.handlerMapError);
     else if (this.values.currentChartType.flags & ChartFlags.TABLE)
       this.loadTableData (false, this.msfTableRef.handlerSuccess, this.msfTableRef.handlerError);
@@ -1402,6 +1709,33 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
 
     return null;
+  }
+
+  handlerHeatMapSuccess(_this, data): void
+  {
+    let prepareChart;
+
+    // destroy current chart if it's already generated to avoid a blank chart
+    _this.destroyChart ();
+
+    _this.values.displayChart = true;
+    _this.values.chartGenerated = true;
+    _this.values.infoGenerated = false;
+    _this.values.formGenerated = false;
+    _this.values.picGenerated = false;
+    _this.values.tableGenerated = false;
+
+    prepareChart = setInterval (() =>
+    {
+      _this.values.isLoading = false;
+
+      _this.makeChart (data);
+  
+      _this.stopUpdateInterval ();
+      _this.startUpdateInterval ();
+
+      clearInterval (prepareChart);
+    }, 50);
   }
 
   handlerMapSuccess(_this, data): void
@@ -1778,6 +2112,22 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     _this.dialog.open (MessageComponent, {
       data: { title: "Error", message: "Failed to generate table panel." }
+    });
+  }
+
+  handlerHeatMapError(_this, result): void
+  {
+    console.log (result);
+    _this.values.lastestResponse = null;
+    _this.values.chartGenerated = false;
+    _this.values.infoGenerated = false;
+    _this.values.formGenerated = false;
+    _this.values.picGenerated = false;
+    _this.values.tableGenerated = false;
+    _this.values.isLoading = false;
+
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Error", message: "Failed to generate heat map." }
     });
   }
 
@@ -2210,14 +2560,19 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.chartForm.get ('infoNumVarCtrl').setValue (0);
 
       if (this.values.currentChartType.flags & ChartFlags.TABLE
-        || this.values.currentChartType.flags & ChartFlags.MAP)
+        || this.values.currentChartType.flags & ChartFlags.MAP
+        || this.values.currentChartType.flags & ChartFlags.HEATMAP)
       {
-        if (this.values.currentChartType.flags & ChartFlags.MAP
-          && this.values.currentOption.metaData != 2)
+        if (this.values.currentChartType.flags & ChartFlags.MAP)
         {
-          this.values.currentOption = null;
-          this.chartForm.get ('dataFormCtrl').reset ();
+          if (this.values.currentOption == null)
+          {
+            this.values.currentOption = null;
+            this.chartForm.get ('dataFormCtrl').reset ();
+          }
         }
+        else if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
+          this.values.function = null;
 
         this.values.xaxis = null;
         this.chartForm.get ('xaxisCtrl').reset ();
@@ -2235,9 +2590,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         this.chartForm.get ('xaxisCtrl').disable ();
       }
       else
-      {
         this.chartForm.get ('xaxisCtrl').enable ();
-      }
 
       this.chartForm.get ('variableCtrl').enable ();
       this.chartForm.get ('valueCtrl').enable ();
@@ -2274,13 +2627,24 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.values.formVariables = [];
     }
 
+    if (this.values.function == null && !(this.values.currentChartType.flags & ChartFlags.HEATMAP))
+      this.values.function = this.functions[0];
+
     // check the chart filters to see if the chart generation is to be enabled or not
     this.checkChartFilters ();
   }
 
   checkChartFilters(): void
   {
-    if (this.values.currentChartType.flags & ChartFlags.PICTURE
+    if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
+    {
+      if (this.values.variable != null && this.values.function != null)
+      {
+        this.generateBtnEnabled = true;
+        return;
+      }
+    }
+    else if (this.values.currentChartType.flags & ChartFlags.PICTURE
       || this.values.currentChartType.flags & ChartFlags.TABLE
       || this.values.currentChartType.flags & ChartFlags.MAP)
     {
