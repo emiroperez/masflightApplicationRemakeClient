@@ -486,7 +486,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         chartColor = am4core.color (this.values.paletteColors[0]);
 
         // Create map instance displaying the chosen geography data
-        chart.geodata = this.values.function.value;
+        chart.geodata = this.values.geodata.value;
         chart.projection = new am4maps.projections.Miller ();
 
         // Add map polygons
@@ -1206,33 +1206,12 @@ export class MsfDashboardPanelComponent implements OnInit {
     return false;
   }
 
-  checkGroupingCategory(argument)
+  checkGroupingCategory(argument): boolean
   {
-    let params: string = "";
-
     if (argument.name1 != null && argument.name1.toLowerCase ().includes ("grouping"))
     {
-      let haveValues: boolean = false;
-
-      if (argument.value1 != null && argument.value1.length)
-        haveValues = true;
-
       if (this.values.currentChartType.flags & ChartFlags.TABLE)
-      {
-        /*for (let tableVariable of this.values.tableVariables)
-        {
-          if (tableVariable.checked && tableVariable.grouping && !this.checkGroupingValue (tableVariable.id, argument.value1))
-          {
-            if (!haveValues)
-            {
-              params += "" + tableVariable.id;
-              haveValues = true;
-            }
-            else
-              params += "," + tableVariable.id;
-          }
-        }*/
-      }
+        return true; // tables must not check this!
       else if (this.values.currentChartType.flags & ChartFlags.INFO)
       {
         if (this.values.currentChartType.flags & ChartFlags.FORM)
@@ -1240,94 +1219,64 @@ export class MsfDashboardPanelComponent implements OnInit {
           for (let formVariable of this.values.formVariables)
           {
             if (formVariable.column.item.grouping && !this.checkGroupingValue (formVariable.column.item.columnName, argument.value1))
-            {
-              if (!haveValues)
-              {
-                params += "" + formVariable.column.item.columnName;
-                haveValues = true;
-              }
-              else
-                params += "," + formVariable.column.item.columnName;
-            }
+              return false;
           }
         }
         else if (!(this.values.currentChartType.flags & ChartFlags.PICTURE))
         {
           if (this.values.infoVar1 != null && this.values.infoVar1.grouping)
-          {
-            if (!haveValues)
-            {
-              params += "" + this.values.infoVar1.id;
-              haveValues = true;
-            }
-            else
-              params += "," + this.values.infoVar1.id;
-          }
+            return false;
 
           if (this.values.infoVar2 != null && this.values.infoVar2.grouping)
-          {
-            if (!haveValues)
-            {
-              params += "" + this.values.infoVar2.id;
-              haveValues = true;
-            }
-            else
-              params += "," + this.values.infoVar2.id;
-          }
+            return false;
 
           if (this.values.infoVar3 != null && this.values.infoVar3.grouping)
-          {
-            if (!haveValues)
-            {
-              params += "" + this.values.infoVar3.id;
-              haveValues = true;
-            }
-            else
-              params += "," + this.values.infoVar3.id;
-          }
+            return false;
         }
       }
       else if (!(this.values.currentChartType.flags & ChartFlags.MAP))
       {
         if (this.values.variable.item.grouping && !this.checkGroupingValue (this.values.variable.item.columnName, argument.value1))
-        {
-          if (!haveValues)
-          {
-            params += "" + this.values.variable.item.columnName;
-            haveValues = true;
-          }
-          else
-            params += "," + this.values.variable.item.columnName;
-        }
+          return false;
 
         if (this.values.currentChartType.flags & ChartFlags.XYCHART)
         {
           if (this.values.xaxis.item.grouping && !this.checkGroupingValue (this.values.xaxis.item.columnName, argument.value1))
-          {
-            if (!haveValues)
-            {
-              params += "" + this.values.xaxis.item.columnName;
-              haveValues = true;
-            }
-            else
-              params += "," + this.values.xaxis.item.columnName;
-          }
+            return false;
         }
 
         if (this.values.valueColumn.item.grouping && !this.checkGroupingValue (this.values.valueColumn.item.columnName, argument.value1))
+          return false;
+      }
+    }
+
+    return true;
+  }
+
+  checkPanelVariables(): boolean
+  {
+    let currentOptionCategories = this.values.currentOptionCategories;
+
+    if (currentOptionCategories)
+    {
+      for (let i = 0; i < currentOptionCategories.length; i++)
+      {
+        let category: CategoryArguments = currentOptionCategories[i];
+
+        if (category && category.arguments)
         {
-          if (!haveValues)
+          for (let j = 0; j < category.arguments.length; j++)
           {
-            params += "" + this.values.valueColumn.item.columnName;
-            haveValues = true;
+            let argument: Arguments = category.arguments[j];
+
+            if (!this.checkGroupingCategory (argument))
+              return false;
           }
-          else
-            params += "," + this.values.valueColumn.item.columnName;
         }
       }
     }
 
-    return params;
+    return true;
   }
 
   getParameters()
@@ -1350,12 +1299,12 @@ export class MsfDashboardPanelComponent implements OnInit {
             if (params)
             {
               if (argument.type != "singleCheckbox" && argument.type != "serviceClasses" && argument.type != "fareLower" && argument.type != "airportsRoutes" && argument.name1 != "intermediateCitiesList")
-                params += "&" + this.utils.getArguments (argument) + this.checkGroupingCategory (argument);
+                params += "&" + this.utils.getArguments (argument);
               else if (argument.value1 != false && argument.value1 != "" && argument.value1 != undefined && argument.value1 != null)
-                params += "&" + this.utils.getArguments (argument) + this.checkGroupingCategory (argument);
+                params += "&" + this.utils.getArguments (argument);
             }
             else
-              params = this.utils.getArguments (argument) + this.checkGroupingCategory (argument);
+              params = this.utils.getArguments (argument);
           }
         }        
       }
@@ -1571,6 +1520,16 @@ export class MsfDashboardPanelComponent implements OnInit {
   loadData(): void
   {
     this.globals.startTimestamp = new Date ();
+
+    // check if any variable that requires grouping are in configure properly
+    if (!this.checkPanelVariables ())
+    {
+      this.dialog.open (MessageComponent, {
+        data: { title: "Error", message: "Some variables used to get the results must be added in the grouping inside the control variables." }
+      });
+
+      return;
+    }
 
     if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
       this.loadFormData (this.handlerHeatMapSuccess, this.handlerHeatMapError);
@@ -2349,6 +2308,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.temp.xaxis = this.values.chartColumnOptions.indexOf (this.values.xaxis);
     this.temp.valueColumn = this.values.chartColumnOptions.indexOf (this.values.valueColumn);
     this.temp.function = this.functions.indexOf (this.values.function);
+    this.temp.geodata = this.geodatas.indexOf (this.values.geodata);
     this.temp.currentChartType = JSON.parse (JSON.stringify (this.values.currentChartType));
     this.temp.chartColumnOptions = JSON.parse (JSON.stringify (this.values.chartColumnOptions));
     this.temp.currentOptionCategories = JSON.parse (JSON.stringify (this.values.currentOptionCategories));
@@ -2452,6 +2412,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.xaxis = this.temp.xaxis;
     this.values.valueColumn = this.temp.valueColumn;
     this.values.function = this.temp.function;
+    this.values.geodata = this.temp.geodata;
     this.values.chartColumnOptions = JSON.parse (JSON.stringify (this.temp.chartColumnOptions));
     this.values.currentOptionCategories = JSON.parse (JSON.stringify (this.temp.currentOptionCategories));
 
@@ -2571,8 +2532,6 @@ export class MsfDashboardPanelComponent implements OnInit {
             this.chartForm.get ('dataFormCtrl').reset ();
           }
         }
-        else if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
-          this.values.function = null;
 
         this.values.xaxis = null;
         this.chartForm.get ('xaxisCtrl').reset ();
@@ -2627,9 +2586,6 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.values.formVariables = [];
     }
 
-    if (this.values.function == null && !(this.values.currentChartType.flags & ChartFlags.HEATMAP))
-      this.values.function = this.functions[0];
-
     // check the chart filters to see if the chart generation is to be enabled or not
     this.checkChartFilters ();
   }
@@ -2638,7 +2594,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
     {
-      if (this.values.variable != null && this.values.function != null)
+      if (this.values.variable != null && this.values.geodata != null)
       {
         this.generateBtnEnabled = true;
         return;
@@ -2857,6 +2813,9 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.checkChartType ();
       return;
     }
+
+    // TODO: Load Heat Map values if saved
+    this.values.geodata = this.geodatas[0];
 
     if (this.values.currentChartType.flags & ChartFlags.FORM)
     {
