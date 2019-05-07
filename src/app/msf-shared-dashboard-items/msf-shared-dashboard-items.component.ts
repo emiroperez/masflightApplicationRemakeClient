@@ -50,18 +50,19 @@ export class MsfSharedDashboardItemsComponent implements OnInit {
         id: item.dashboardContentId,
         name: item.name + " (" + (item.isPanel ? "Panel" : "Dashboard") + ", from ",
         isPanel: item.isPanel,
-        userId: item.userId             // just to make things simpler
+        userId: item.userId,            // just to make things simpler
+        ownerId: item.ownerId
       });
 
-      // add user ids just to get the email
+      // add user ids just to get the user name
       for (i = 0; i < userIds.length; i++)
       {
-        if (userIds[i] == item.userId)
+        if (userIds[i] == item.ownerId)
           break;
       }
 
       if (i == userIds.length)
-        userIds.push (item.userId);
+        userIds.push (item.ownerId);
     }
 
     _this.appService.getUsersById (_this, userIds, _this.contentUsersSuccess, _this.contentError);
@@ -76,7 +77,7 @@ export class MsfSharedDashboardItemsComponent implements OnInit {
     {
       for (let user of users)
       {
-        if (item.userId == user.id)
+        if (item.ownerId == user.id)
         {
           item.name += user.name + ")";
           break;
