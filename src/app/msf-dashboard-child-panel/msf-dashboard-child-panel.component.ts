@@ -583,7 +583,7 @@ export class MsfDashboardChildPanelComponent {
 
       if (this.values.currentChartType.flags & ChartFlags.TABLE)
       {
-        for (let tableVariable of this.values.tableVariables)
+        /*for (let tableVariable of this.values.tableVariables)
         {
           if (tableVariable.checked && tableVariable.grouping && !this.checkGroupingValue (tableVariable.id, argument.value1))
           {
@@ -595,7 +595,7 @@ export class MsfDashboardChildPanelComponent {
             else
               params += "," + tableVariable.id;
           }
-        }
+        }*/
       }
       else if (!(this.values.currentChartType.flags & ChartFlags.INFO))
       {
