@@ -418,6 +418,12 @@ export class MsfTableComponent implements OnInit {
               aux =""+ flightArray[column.columnName]!=undefined ? String(flightArray[column.columnName]) : "";
             }
           }
+        }else{
+          if(column.columnType=='number'){
+            aux = "0";
+          }else{
+            aux = "";
+          }
         }
       }
     aux = aux.replace("%","");
