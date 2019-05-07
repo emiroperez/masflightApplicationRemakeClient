@@ -1,4 +1,13 @@
-<div class="msf-dashboard-panel-container" [style.height.px]="panelHeight" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable">
+<div class="msf-dashboard-panel-container" [style.height.px]="panelHeight" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && globals.readOnlyDashboard">
+  <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-picture-container">
+    <div class="msf-dashboard-panel-picture-label-container">
+      <div class="msf-dashboard-panel-picture-label">
+        This panel has no results generated
+      </div>
+    </div>
+  </div>
+</div>
+<div class="msf-dashboard-panel-container" [style.height.px]="panelHeight" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !globals.readOnlyDashboard">
   <div class="msf-dashboard-panel-sub-container-column">
     <div class="msf-dashboard-panel-sub-container-row">
       <mat-form-field class="msf-width-80">
@@ -451,7 +460,7 @@
           </div>
           <div class="msf-dashboard-chart-op-container">
             <mat-form-field [formGroup]="chartForm" class="msf-full-width">
-              <mat-select formControlName="variableCtrl" placeholder="Value To Display" #variableSelect [(value)]="values.variable" (selectionChange)="checkChartFilters()">
+              <mat-select formControlName="geodataValueCtrl" placeholder="Value To Display" #variableSelect [(value)]="values.variable" (selectionChange)="checkChartFilters()">
                 <ngx-mat-select-search [formControl]="variableFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
                 <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
                   {{variable.name}}

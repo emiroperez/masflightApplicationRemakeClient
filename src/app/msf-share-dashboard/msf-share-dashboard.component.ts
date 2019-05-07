@@ -192,7 +192,7 @@ export class MsfShareDashboardComponent implements OnInit {
       return;
     }
 
-    _this.appService.addSharedContent (_this, shareInfo, _this.addSuccess, _this.addError);
+    _this.menuService.addSharedContent (_this, shareInfo, _this.addSuccess, _this.addError);
   }
 
   addSuccess(_this): void
