@@ -527,6 +527,23 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     this.dataChange.next(this.data);
   }
 
+  setChangeURL(node){
+    const nestedNode = this.flatNodeMap.get(node);
+    nestedNode.baseUrl = node.baseUrl;
+    this.dataChange.next(this.data);
+  }
+
+  setChangeIcon(node){
+    const nestedNode = this.flatNodeMap.get(node);
+    nestedNode.icon = node.icon;
+    this.dataChange.next(this.data);
+  }
+
+  setChangeTab(node){
+    const nestedNode = this.flatNodeMap.get(node);
+    nestedNode.tab = node.tab;
+    this.dataChange.next(this.data);
+  }
   ngOnInit() {
     this.getMenuData();
     this.getCategoryArguments();
@@ -679,20 +696,12 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     _this.globals.isLoading = false;
   }
   getOptionSelected(option) {
-    //this.categoryArguments = [];
-    //this.clearSelectedCategoryArguments();
-    if (this.optionSelected == option) {
-      this.optionSelected.isActive = false;
-      this.optionSelected = {};
-      this.idDomOptionSelected = {};
-    } else {
       this.optionSelected.isActive = false;
       option.isActive = option.isActive == null ? true : !option.isActive;
       this.optionSelected = option;
       if (!option.isRoot && option.id) {
         this.getOptionCategoryArguments();
       }
-    }
   }
 
   getSelectIdDom(idDomOption) {
