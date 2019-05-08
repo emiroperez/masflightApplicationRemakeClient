@@ -481,7 +481,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       // Check chart type before generating it
       if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
       {
-        let chartColor, polygonSeries, polygonTemplate, hoverState, zoomControl, home, heatLegend;
+        let chartColor, polygonSeries, polygonTemplate, hoverState;
+        let minRange, maxRange, heatLegend, pow, home, zoomControl;
 
         chart = am4core.create ("msf-dashboard-chart-display-" + this.values.id, am4maps.MapChart);
         chartColor = am4core.color (this.values.paletteColors[0]);
@@ -555,10 +556,45 @@ export class MsfDashboardPanelComponent implements OnInit {
         // Display heat legend
         heatLegend = chart.createChild (am4maps.HeatLegend);
         heatLegend.series = polygonSeries;
-        heatLegend.align = "right";
+        heatLegend.align = "left";
         heatLegend.valign = "bottom";
         heatLegend.width = am4core.percent (20);
         heatLegend.marginRight = am4core.percent (4);
+
+        // Set minimum and maximum value for the heat legend
+        heatLegend.minValue = 0;
+        heatLegend.maxValue = 10;
+
+        // For the maximum value, get the highest value of the result and calculate
+        // it by doing an division with the power of 10
+        for (let item of polygonSeries.data)
+        {
+          if (heatLegend.maxValue < item.value)
+            heatLegend.maxValue = item.value;
+        }
+
+        // Find the power of 10 from the maximum result
+        pow = 1;
+        while (pow <= heatLegend.maxValue)
+          pow = (pow << 3) + (pow << 1);
+
+        pow /= 10; // notch down one power
+        heatLegend.maxValue = Math.ceil (heatLegend.maxValue / pow) * pow;
+
+        // Set minimum and maximum values for the heat legend
+        minRange = heatLegend.valueAxis.axisRanges.create ();
+        minRange.value = heatLegend.minValue;
+        minRange.label.text = "0";
+        maxRange = heatLegend.valueAxis.axisRanges.create ();
+        maxRange.value = heatLegend.maxValue;
+        maxRange.label.text = "" + maxRange.value;
+
+        // Hide internal heat legend value labels
+        heatLegend.valueAxis.renderer.labels.template.adapter.add ("text",
+          function (labelText) {
+            return "";
+          }
+        );
 
         // Add zoom control buttons
         zoomControl = new am4maps.ZoomControl ();
