@@ -100,6 +100,24 @@ export class MsfSharedDashboardItemsComponent implements OnInit {
 
   addItem(): void
   {
+    if (this.globals.readOnlyDashboardPlan)
+    {
+      // Only allow read-only dashboards if this plan is enabled
+      if (this.selectedDashboardItem.isPanel)
+      {
+        this.dialog.open (MessageComponent, {
+          data: { title: "Error", message: "You are not allowed to add this shared dashboard panel." }
+        });
+      }
+      else
+      {
+        this.menuService.addSharedReadOnlyDashboard (this, this.selectedDashboardItem.id, this.handlerReadOnlySuccess,
+          this.handlerError);
+      }
+
+      return;
+    }
+
     if (this.selectedDashboardItem.isPanel)
     {
       this.dialog.open (MsfAddSharedDashboardPanelComponent, {
@@ -125,6 +143,38 @@ export class MsfSharedDashboardItemsComponent implements OnInit {
         }
       });
     }
+  }
+
+  handlerReadOnlySuccess(_this, data): void
+  {
+    let newDashboard = data;
+
+    if (!newDashboard)
+    {
+      _this.handlerError (_this);
+      return;
+    }
+
+    // add read-only dashboard into the menu
+    _this.data.sharedDashboards.push (newDashboard.dashboardMenuId);
+
+    _this.globals.isLoading = false;
+    _this.dialog.closeAll ();
+
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Success", message: "Shared dashboard has been added into the menu." }
+    });
+  }
+
+  handlerError(_this): void
+  {
+    _this.dialog.closeAll ();
+
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Error", message: "Failed to add shared dashboard." }
+    });
+
+    _this.globals.isLoading = false;
   }
 
   removeItem(): void

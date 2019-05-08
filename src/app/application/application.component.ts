@@ -31,7 +31,6 @@ export class ApplicationComponent implements OnInit {
   isFullscreen: boolean;
   animal: string;
   name: string;
-  chartPlan: boolean;
   dynamicTablePlan: boolean;
   exportExcelPlan: boolean;
   dashboardPlan: boolean;
@@ -106,11 +105,24 @@ export class ApplicationComponent implements OnInit {
 
   handlerSuccessAF(_this,data){
     _this.planAdvanceFeatures = data;
-    _this.planAdvanceFeatures.forEach(item => {
-      item.advanceFeatureId == 1 ? _this.chartPlan = true : false;
-      item.advanceFeatureId == 2 ? _this.dashboardPlan = true : false;
-      item.advanceFeatureId == 3 ? _this.dynamicTablePlan = true : false;
-      item.advanceFeatureId == 4 ? _this.exportExcelPlan = true : false;
+
+    _this.globals.readOnlyDashboardPlan = false;
+    _this.dashboardPlan = false;
+    _this.dynamicTablePlan = false;
+    _this.exportExcelPlan = false;
+
+    _this.planAdvanceFeatures.forEach (item => {
+      if (item.advanceFeatureId == 1)
+        _this.globals.readOnlyDashboardPlan = true;
+
+      if (item.advanceFeatureId == 2)
+        _this.dashboardPlan = true;
+
+      if (item.advanceFeatureId == 3)
+        _this.dynamicTablePlan = true;
+
+      if (item.advanceFeatureId == 4)
+        _this.exportExcelPlan = true;
     });
 
     _this.validateAdmin ();
