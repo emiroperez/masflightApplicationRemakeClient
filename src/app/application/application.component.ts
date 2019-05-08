@@ -18,6 +18,7 @@ import { MsfEditDashboardComponent } from '../msf-edit-dashboard/msf-edit-dashbo
 import { ApplicationService } from '../services/application.service';
 import { MsfColumnSelectorComponent } from '../msf-column-selector/msf-column-selector.component';
 import { MsfShareDashboardComponent } from '../msf-share-dashboard/msf-share-dashboard.component';
+import { length } from '@amcharts/amcharts4/.internal/core/utils/Iterator';
 
 
 @Component({
@@ -140,25 +141,52 @@ export class ApplicationComponent implements OnInit {
   temporalSelectOption(_this){
     _this.menu.categories.forEach(category => {
       category.options.forEach(option => {
-        if(option.id==166 && this.globals.currentApplication.id==3){
+        if(option.children.length>0){
+          _this.recursiveSearch(option.children,_this,category);
+        }else{
+          if(option.id==166 && this.globals.currentApplication.id==3){
+            _this.globals.clearVariables();
+            this.globals.currentMenuCategory = category;
+            _this.globals.currentOption = option;
+            _this.globals.initDataSource();
+            _this.globals.dataAvailabilityInit();
+            _this.globals.status = true;
+          }else if(option.id==14 && this.globals.currentApplication.id==4){
+            _this.globals.clearVariables();
+            this.globals.currentMenuCategory = category;
+            _this.globals.currentOption = option;
+            _this.globals.initDataSource();
+            _this.globals.dataAvailabilityInit();
+            _this.globals.status = true;
+          }
+        }
+      });
+    });
+    _this.getDashboardsUser();
+  }
+
+  recursiveSearch(childrens,_this,category){
+    childrens.forEach(option => {
+      if(option.children.length>0){
+        _this.recursiveSearch(option.children,_this,category);
+      }else{
+        if(option.id==166 && _this.globals.currentApplication.id==3){
           _this.globals.clearVariables();
-          this.globals.currentMenuCategory = category;
+          _this.globals.currentMenuCategory = category;
           _this.globals.currentOption = option;
           _this.globals.initDataSource();
           _this.globals.dataAvailabilityInit();
           _this.globals.status = true;
-        }else if(option.id==14 && this.globals.currentApplication.id==4){
+        }else if(option.id==14 && _this.globals.currentApplication.id==4){
           _this.globals.clearVariables();
-          this.globals.currentMenuCategory = category;
+          _this.globals.currentMenuCategory = category;
           _this.globals.currentOption = option;
           _this.globals.initDataSource();
           _this.globals.dataAvailabilityInit();
           _this.globals.status = true;
         }
-      });
-    });
-    _this.getDashboardsUser();
-
+      }
+    })
   }
 
 
