@@ -553,12 +553,16 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   }
 
   filterMenuOptions(){
-    for (let index = 0; index < this.menu.length; index++) {
-      const option = this.menu[index];
+    for (let index = 0; index < this.treeControl.dataNodes.length; index++) {
+      const option = this.treeControl.dataNodes[index];
       this.setShowOption(option,this)
         this.recursiveOption(option,this);
     }
-
+    if(this.searchTextOption){
+      this.treeControl.expandAll();
+    } else {
+      this.treeControl.collapseAll();
+    }
   }
   recursiveOption(option: any,_this) {
     if(option.children.length!=0){
@@ -577,26 +581,27 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     if(_this.searchTextOption!="" && _this.searchTextOption!=null){
       if(option.label.toLowerCase().indexOf(_this.searchTextOption)!=-1){
         option.show = true;
-        if(option.menuParentId!=null){
-          _this.findOnMenu(option.menuParentId)
-        }
-        if(option.categoryParentId!=null){
-          _this.findOnMenu(option.categoryParentId)
-        }
+        // if(option.menuParentId!=null){
+        //   _this.findOnMenu(option.menuParentId)
+        // }
+        // if(option.categoryParentId!=null){
+        //   _this.findOnMenu(option.categoryParentId)
+        // }
       }else{
         option.show = false;
       }
     }else{
       option.show = true;
-      option.isOpened = false;
+      // this.treeControl.expand(option);
     }
   }
 
   findOnMenu(optionId){
-    for (let index = 0; index < this.dataSource.data.length; index++) {
-      const option = this.dataSource.data[index];
+    for (let index = 0; index < this.treeControl.dataNodes.length; index++) {
+      const option = this.treeControl.dataNodes[index];
       if(optionId==option.id){
-        option.isOpened=true;
+        this.treeControl.expand(option);
+        // option.isOpened=true;
         if(option.menuParentId!=null){
           this.findOnMenu(option.menuParentId)
         }
@@ -1287,9 +1292,9 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
     }
   }
 
-  filterChanged(filterText: string) {
-    this.filter(filterText);
-    if(filterText)
+  filterChanged() {
+    this.filter(this.searchTextOption);
+    if(this.searchTextOption)
     {
       this.treeControl.expandAll();
     } else {
@@ -1303,7 +1308,7 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
       console.log(this.dataSource.data);
       filteredTreeData = this.dataSource.data.filter(d => d.label.toLocaleLowerCase().indexOf(filterText.toLocaleLowerCase()) > -1);
       Object.assign([], filteredTreeData).forEach(ftd => {
-        let str = (<string>ftd.id);
+        let str = String(ftd.id);
         while (str.lastIndexOf('.') > -1) {
           const index = str.lastIndexOf('.');
           str = str.substring(0, index);
