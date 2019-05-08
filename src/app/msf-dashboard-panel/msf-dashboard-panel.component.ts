@@ -1169,6 +1169,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         chartType: this.chartTypes.indexOf (this.values.currentChartType),
         categoryOptions: this.values.currentOptionCategories ? JSON.stringify (this.values.currentOptionCategories) : null,
         updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0),
+        function: 1,
         lastestResponse: JSON.stringify (this.values.lastestResponse)
       };
     }
