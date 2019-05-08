@@ -687,9 +687,7 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 }
 
 .msf-register-header-content {
-  display: flex;
-  right: 15%;
-  position: absolute;
+  width: 75%;
 }
 
 .msf-register-header-little-title {

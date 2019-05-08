@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import {FormControl, Validators,ValidatorFn, ValidationErrors, AbstractControl, FormGroup} from '@angular/forms';
 import { User} from '../model/User';
@@ -21,6 +21,8 @@ import { MatTableDataSource, MatPaginator } from '@angular/material';
 })
 export class UserActivationComponent implements OnInit {
 
+  innerHeight: number;
+  innerWidth: number;
   users: any[] = [];
   usersToAdd: any[] = [];
   plans:any[] = [];
@@ -38,6 +40,8 @@ export class UserActivationComponent implements OnInit {
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit() {
+    this.innerHeight = window.innerHeight;
+    this.innerWidth = window.innerWidth;
     this.getUsers();
   }
 
@@ -131,6 +135,22 @@ export class UserActivationComponent implements OnInit {
     console.log(this.usersToAdd);
   }
 
+  @HostListener('window:resize', ['$event'])
+  checkScreen(event): void
+  {
+    this.innerHeight = event.target.innerHeight;
+    this.innerWidth = event.target.innerWidth;
+  }
+
+  getInnerHeight(): number
+  {
+    return this.innerHeight;
+  }
+
+  getInnerWidth(): number
+  {
+    return this.innerWidth;
+  }
   }
 
 

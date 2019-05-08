@@ -1,4 +1,4 @@
-import { OnInit, Component, Inject, AfterViewInit, ChangeDetectorRef, Renderer2, ViewChild, ViewChildren } from '@angular/core';
+import { OnInit, Component, Inject, AfterViewInit, ChangeDetectorRef, Renderer2, ViewChild, ViewChildren, HostListener } from '@angular/core';
 import { ApiClient } from '../api/api-client';
 import { Globals } from '../globals/Globals';
 import { ApplicationService } from '../services/application.service';
@@ -493,7 +493,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
-
+  innerHeight: number;
   menu: any[] = [];
   idList: any[] = ['firstOne'];
   categoryArguments: any[] = [];
@@ -545,6 +545,8 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     this.dataChange.next(this.data);
   }
   ngOnInit() {
+    this.innerHeight = window.innerHeight;
+
     this.getMenuData();
     this.getCategoryArguments();
   }
@@ -1331,4 +1333,14 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
     this.dataChange.next(filteredTreeData);
   }
 
+  @HostListener('window:resize', ['$event'])
+  checkScreen(event): void
+  {
+    this.innerHeight = event.target.innerHeight;
+  }
+
+  getInnerHeight(): number
+  {
+    return this.innerHeight;
+  }
 }
