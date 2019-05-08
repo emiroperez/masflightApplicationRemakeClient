@@ -1153,7 +1153,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         categoryOptions: this.values.currentOptionCategories ? JSON.stringify (this.values.currentOptionCategories) : null,
         function: this.geodatas.indexOf (this.values.geodata),
         updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0),
-        analysis: this.values.chartColumnOptions ? this.values.chartColumnOptions.indexOf (this.values.variable) : null
+        analysis: this.values.chartColumnOptions ? this.values.chartColumnOptions.indexOf (this.values.variable) : null,
+        paletteColors: JSON.stringify (this.values.paletteColors)
       };
     }
     else if (this.values.currentChartType.flags & ChartFlags.FORM
@@ -1168,6 +1169,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         chartType: this.chartTypes.indexOf (this.values.currentChartType),
         categoryOptions: this.values.currentOptionCategories ? JSON.stringify (this.values.currentOptionCategories) : null,
         updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0),
+        function: 1,
         lastestResponse: JSON.stringify (this.values.lastestResponse)
       };
     }
