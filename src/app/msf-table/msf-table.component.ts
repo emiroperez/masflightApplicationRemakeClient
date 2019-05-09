@@ -285,7 +285,7 @@ export class MsfTableComponent implements OnInit {
         mainElement = [mainElement];
       }
       if( _this.tableOptions.totalRecord > 0){
-        if(_this.currentOption.metaData==1 || _this.currentOption.tabType=='scmap'){  
+        if(_this.currentOption.metaData==1 || _this.currentOption.metaData==3 || _this.currentOption.tabType=='scmap'){  
           _this.tableOptions.displayedColumns = data.metadata;
           // if(_this.groupingArgument!=null){
             _this.tableOptions.displayedColumns  = _this.addGroupingColumns(_this.tableOptions.displayedColumns);
@@ -573,7 +573,7 @@ export class MsfTableComponent implements OnInit {
     if (this.currentOption == null)
       return 'msf-no-visible';
 
-    if ((this.tableOptions.dataSource && !this.tableOptions.template && this.currentOption.metaData==1) || (this.currentOption.tabType=='scmap')) {
+    if (this.tableOptions.dataSource && !this.tableOptions.template && ((this.currentOption.metaData==1) || (this.currentOption.metaData==3) || (this.currentOption.tabType=='scmap'))) {
         return 'msf-visible'
     } else {
       return 'msf-no-visible'

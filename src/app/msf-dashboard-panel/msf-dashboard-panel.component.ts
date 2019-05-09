@@ -536,25 +536,19 @@ export class MsfDashboardPanelComponent implements OnInit {
           });
         }
 
-        // If the geography data displays only the U.S. states check if the
-        // last two characters of the id of each polygon are equal to one of
-        // the id of each result before setting the value
-        if (chart.geodata === am4geodata_usaAlbersLow)
+        for (let result of chartInfo)
         {
-          for (let result of chartInfo)
+          for (let item of polygonSeries.data)
           {
-            for (let item of polygonSeries.data)
+            let resultInfo = result[this.values.valueColumn.id];
+
+            if (resultInfo == null)
+              continue;
+
+            if (item.id.includes (resultInfo))
             {
-              let resultInfo = result[this.values.valueColumn.id];
-
-              if (resultInfo == null)
-                continue;
-
-              if (item.id.includes (resultInfo))
-              {
-                item.value = result[this.values.variable.id];
-                break;
-              }
+              item.value = result[this.values.variable.id];
+              break;
             }
           }
         }
