@@ -94,7 +94,7 @@
                             </div>
                             <div formArrayName="fares" *ngFor="let price of getPlanPrices(i); let k=index;">
                                 <div [formGroupName]="k" class="msf-prices-membership-container" *ngIf="isFareDelete(i,k)">
-                                    <div class="price-container">
+                                    <div id="ng-fare-select" class="price-container">
                                         <mat-form-field class=" msf-card-footer-item">
                                             <input matInput class="msf-price-fare" autocomplete="off" type="text" formControlName="fare" placeholder="Fare" />
                                         </mat-form-field>

@@ -115,12 +115,12 @@
     padding-right: 5px;
 }
 
-.ng-select {
+#ng-fare-select .ng-select {
     min-width: 100px;
     min-height: 70px;
 }
 
-.ng-select .ng-select-container .ng-value-container {
+#ng-fare-select .ng-select .ng-select-container .ng-value-container {
     align-items: stretch;
     padding: 0.4375em 0;
     background: white;
@@ -128,7 +128,7 @@
     border-bottom: 0 !important;
 }
 
-.ng-select .ng-select-container .ng-value-container .ng-input>input {
+#ng-fare-select .ng-select .ng-select-container .ng-value-container .ng-input>input {
     box-sizing: content-box;
     border: 0;
     box-shadow: none;
@@ -137,7 +137,7 @@
     width: 100%;
 }
 
-.msf-periodicity-select.ng-select .ng-select-container {
+#ng-fare-select .msf-periodicity-select.ng-select .ng-select-container {
     background: white !important;
     color: black !important;
 }
