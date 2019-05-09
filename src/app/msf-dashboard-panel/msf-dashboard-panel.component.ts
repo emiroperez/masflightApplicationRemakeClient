@@ -1191,7 +1191,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         function: this.geodatas.indexOf (this.values.geodata),
         updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0),
         analysis: this.values.chartColumnOptions ? this.values.chartColumnOptions.indexOf (this.values.variable) : null,
-        paletteColors: JSON.stringify (this.values.paletteColors)
+        paletteColors: JSON.stringify (this.values.paletteColors),
+        lastestResponse: JSON.stringify (this.values.lastestResponse)
       };
     }
     else if (this.values.currentChartType.flags & ChartFlags.FORM
@@ -1428,7 +1429,8 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   isResponseValid(): boolean
   {
-    if (this.values.currentChartType.flags & ChartFlags.MAP)
+    if (this.values.currentChartType.flags & ChartFlags.MAP
+      || this.values.currentChartType.flags & ChartFlags.HEATMAP)
     {
       if (this.utils.isJSONEmpty (this.values.lastestResponse))
         return false;
@@ -1565,27 +1567,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
 
     _this.values.lastestResponse = result;
-    // _this.values.flightRoutes = JSON.parse (JSON.stringify (_this.values.lastestResponse));
-
-    // _this.service.saveLastestResponse (_this, _this.getPanelInfo (), _this.handlerMapLastestResponse, _this.handlerMapError);
-    _this.destroyChart ();
-
-    _this.values.displayChart = true;
-    _this.values.chartGenerated = true;
-    _this.values.infoGenerated = false;
-    _this.values.formGenerated = false;
-    _this.values.picGenerated = false;
-    _this.values.tableGenerated = false;
-
-    setTimeout (() =>
-    {
-      _this.values.isLoading = false;
-
-      _this.makeChart (_this.values.lastestResponse);
-  
-      _this.stopUpdateInterval ();
-      _this.startUpdateInterval ();
-    }, 50);
+    _this.service.saveLastestResponse (_this, _this.getPanelInfo (), _this.handlerHeatMapLastestResponse, _this.handlerHeatMapError);
   }
 
   handlerMapSuccess(_this, data): void
@@ -1736,6 +1718,28 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     _this.stopUpdateInterval ();
     _this.startUpdateInterval ();
+  }
+
+  handlerHeatMapLastestResponse(_this): void
+  {
+    _this.destroyChart ();
+
+    _this.values.displayChart = true;
+    _this.values.chartGenerated = true;
+    _this.values.infoGenerated = false;
+    _this.values.formGenerated = false;
+    _this.values.picGenerated = false;
+    _this.values.tableGenerated = false;
+
+    setTimeout (() =>
+    {
+      _this.values.isLoading = false;
+
+      _this.makeChart (_this.values.lastestResponse);
+  
+      _this.stopUpdateInterval ();
+      _this.startUpdateInterval ();
+    }, 50);
   }
 
   handlerMapLastestResponse(_this): void
