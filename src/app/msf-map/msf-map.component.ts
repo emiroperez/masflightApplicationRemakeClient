@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, NgZone } from '@angular/core';
 import { ApplicationService } from '../services/application.service';
 import { Globals } from '../globals/Globals';
 // import { AgmMap } from '@agm/core';
@@ -16,8 +16,8 @@ import * as mapboxgl from 'mapbox-gl';
 })
 export class MsfMapComponent implements OnInit {
 
-  @ViewChild('map')
   map: mapboxgl.Map;
+  map2: mapboxgl.Map;
 
   @Input('isLoading')
   isLoading: any;
@@ -54,12 +54,28 @@ export class MsfMapComponent implements OnInit {
   ]; 
 
   currentMapType;
+  resizeInterval: any;
 
-  constructor( private services: ApplicationService, public globals: Globals) { }
+  constructor( private zone: NgZone, private services: ApplicationService, public globals: Globals) { }
 
 
   ngOnInit() {
     this.currentMapType = this.mapTypes[1];
+
+    // poll every 350 ms to keep the mapbox with proper size
+    this.resizeInterval = setInterval (() => {
+      this.zone.runOutsideAngular (() => {
+        if (this.map && this.currentMapType.id == 'point')
+          this.map.resize ();
+
+        if (this.map2 && this.currentMapType.id == 'line')
+          this.map2.resize ();
+      });
+    }, 350);
+  }
+
+  ngOnDestroy(): void {
+    clearInterval (this.resizeInterval);
   }
 
   getTrackingDataSource(){
@@ -124,5 +140,4 @@ export class MsfMapComponent implements OnInit {
   cancelLoading(){
     this.isLoading = false;
   }
-
 }

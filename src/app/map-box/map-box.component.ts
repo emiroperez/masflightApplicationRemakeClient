@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChildren, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChildren, ViewChild, SimpleChanges, Input } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
 import { ApplicationService } from '../services/application.service';
 import { Globals } from '../globals/Globals';
@@ -14,6 +14,9 @@ import { Globals } from '../globals/Globals';
   `]
 })
 export class MapBoxComponent implements OnInit{
+
+  @Input('showCategoryPanel')
+  showCategoryPanel: boolean;
 
   @ViewChild('map')
   map: mapboxgl.Map;
@@ -37,14 +40,17 @@ export class MapBoxComponent implements OnInit{
     this.getTrackingDataSource();
   }
 
-  
-
-  ngAfterViewInit() {
-    this.map.resize;
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['showCategoryPanel'])
+    {
+      if (this.map)
+        this.map.resize ();
+    }
   }
 
   refresh(){
-    this.map.resize;
+    if (this.map)
+      this.map.resize ();
   }
 
   
