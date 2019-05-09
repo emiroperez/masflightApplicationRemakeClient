@@ -103,6 +103,45 @@
     border-color: white !important;
 }
 
+.msf-mem-button {
+    width: 100% !important;
+    padding-top: 5px;
+    padding-right: 5px;
+}
+
+.msf-fare-button {
+    width: 95% !important;
+    padding-top: 5px;
+    padding-right: 5px;
+}
+
+.ng-select {
+    min-width: 100px;
+    min-height: 70px;
+}
+
+.ng-select .ng-select-container .ng-value-container {
+    align-items: stretch;
+    padding: 0.4375em 0;
+    background: white;
+    border-top: 0.84375em solid transparent !important;
+    border-bottom: 0 !important;
+}
+
+.ng-select .ng-select-container .ng-value-container .ng-input>input {
+    box-sizing: content-box;
+    border: 0;
+    box-shadow: none;
+    outline: 0;
+    cursor: default;
+    width: 100%;
+}
+
+.msf-periodicity-select.ng-select .ng-select-container {
+    background: white !important;
+    color: black !important;
+}
+
 /* .ng-select-container.ng-has-value {
     padding-bottom: 0px !important;
 }

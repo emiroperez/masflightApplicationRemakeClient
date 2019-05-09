@@ -46,7 +46,7 @@
 
                             <div class="feature-options-container">
                                 <h3 class="feature-tittle">Options</h3>
-                                <div class="msf-fab-button-container msf-fab-button msf-center-container msf-fab-button-features">
+                                <div class="msf-mem-button msf-fab-button-container msf-fab-button msf-center-container msf-fab-button-features">
                                     <button mat-mini-fab color="basic" (click)="editOptionsMembership(i)">+</button>
                                 </div>
                             </div>
@@ -55,13 +55,13 @@
                                 <h3 class="feature-tittle">Advance Features</h3>
                             </div>
                             <div formArrayName="advanceFeatures" *ngFor="let adfeature of getPlanAdvanceFeatures(i); let j=index;">
-                                <mat-checkbox [disabled]="false" color="primary" [(ngModel)]="adfeature.controls.selected.value" [ngModelOptions]="{standalone: true}"> {{adfeature.controls.label.value}}</mat-checkbox>
+                                <mat-checkbox style="padding-left: 8px" [disabled]="false" color="primary" [(ngModel)]="adfeature.controls.selected.value" [ngModelOptions]="{standalone: true}"> {{adfeature.controls.label.value}}</mat-checkbox>
                             </div>
 
 
                             <div class="feature-tittle-container">
                                 <h3 class="feature-tittle">Features</h3>
-                                <div class="msf-fab-button-container msf-fab-button msf-center-container msf-fab-button-features">
+                                <div class="msf-mem-button msf-fab-button-container msf-fab-button msf-center-container msf-fab-button-features">
                                     <button mat-mini-fab color="basic" (click)="addNewFeature(i)">+</button>
                                 </div>
                             </div>
@@ -89,7 +89,7 @@
 
                         </mat-card-content>
                         <mat-card-footer>
-                            <div class="msf-fab-button-container msf-fab-button msf-center-container">
+                            <div class="msf-fare-button msf-fab-button-container msf-fab-button msf-center-container">
                                 <button mat-mini-fab color="primary" (click)="addNewPrice(i)">+</button>
                             </div>
                             <div formArrayName="fares" *ngFor="let price of getPlanPrices(i); let k=index;">
