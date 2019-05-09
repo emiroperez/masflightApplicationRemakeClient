@@ -540,13 +540,13 @@ export class MsfDashboardPanelComponent implements OnInit {
         // the id of each result before setting the value
         if (chart.geodata === am4geodata_usaAlbersLow)
         {
-          for (let result of this.values.lastestResponse)
+          for (let result of chartInfo)
           {
             for (let item of polygonSeries.data)
             {
               if (item.id.includes (result.originstate))
               {
-                item.value = result.tracked;
+                item.value = result[this.values.variable.id];
                 break;
               }
             }
@@ -556,10 +556,11 @@ export class MsfDashboardPanelComponent implements OnInit {
         // Display heat legend
         heatLegend = chart.createChild (am4maps.HeatLegend);
         heatLegend.series = polygonSeries;
-        heatLegend.align = "left";
+        heatLegend.align = "right";
         heatLegend.valign = "bottom";
         heatLegend.width = am4core.percent (20);
         heatLegend.marginRight = am4core.percent (4);
+        heatLegend.dx -= 10;
 
         // Set minimum and maximum value for the heat legend
         heatLegend.minValue = 0;
@@ -1324,15 +1325,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.http.post (this, url, panel, handlerSuccess, handlerError);
   }
 
-  loadHeatMapData(handlerSuccess, handlerError): void
-  {
-    let urlArg = encodeURIComponent ("http://staging.pulse.aspsols.com:8882/engineWebServices/FlightsTrackedByState2?initialDate=20190101&finalDate=20190131&mktcarriers=AA,UA,DL&originStates=FL,CA,IL,TX,OR,GA,AL,NC,SC,VA,DC,NJ,PA,NY,AZ,MN,UT,KS,OK");
-    let url = this.service.host + "/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
-
-    this.values.isLoading = true;
-    this.http.get (this, url, handlerSuccess, handlerError, null);
-  }
-
   loadFormData(handlerSuccess, handlerError): void
   {
     let url, urlBase, urlArg;
@@ -1409,7 +1401,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
 
     if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
-      this.loadHeatMapData (this.handlerHeatMapSuccess, this.handlerHeatMapError);
+      this.loadFormData (this.handlerHeatMapSuccess, this.handlerHeatMapError);
     else if (this.values.currentChartType.flags & ChartFlags.MAP)
       this.loadFormData (this.handlerMapSuccess, this.handlerMapError);
     else if (this.values.currentChartType.flags & ChartFlags.TABLE)
