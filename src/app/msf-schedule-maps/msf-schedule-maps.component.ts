@@ -30,14 +30,45 @@ export class MsfScheduleMapsComponent implements OnInit {
 
   ngOnInit() {
     this.globals.scheduleChart = null;
+    this.makeScheduleChart ();
   }
 
   ngOnChanges(changes: SimpleChanges)
   {
-    // Rebuild schedule chart if the option has changed and still related to
+    // Remove cities and routes if the option has changed but still related to
     // the schedule maps
-    if (changes['currentOption'] && this.globals.scheduleChart)
-      this.makeScheduleChart ();
+    if (changes['currentOption'] && this.globals.scheduleChart && this.globals.mapsc)
+    {
+      this.zone.runOutsideAngular (() => {
+        if (this.globals.scheduleImageSeries)
+        {
+          this.globals.scheduleChart.series.removeIndex (this.globals.scheduleChart.series.indexOf (this.globals.scheduleImageSeries));
+          this.globals.scheduleImageSeries = null;
+        }
+
+        if (this.globals.scheduleLineSeries)
+        {
+          this.globals.scheduleChart.series.removeIndex (this.globals.scheduleChart.series.indexOf (this.globals.scheduleLineSeries));
+          this.globals.scheduleLineSeries = null;
+        }
+
+        if (this.globals.scheduleShadowLineSeries)
+        {
+          this.globals.scheduleChart.series.removeIndex (this.globals.scheduleChart.series.indexOf (this.globals.scheduleShadowLineSeries));
+          this.globals.scheduleShadowLineSeries = null;
+        }
+
+        // Set it back to the default location and zoom level
+        this.globals.scheduleChart.homeGeoPoint = {
+          latitude: 24.8567,
+          longitude: 2.3510
+        };
+
+        this.globals.scheduleChart.homeZoomLevel = 1;
+        this.globals.scheduleChart.deltaLongitude = 0;
+        this.globals.scheduleChart.goHome ();
+      });
+    }
   }
 
   destroyScheduleChart()
@@ -117,9 +148,4 @@ export class MsfScheduleMapsComponent implements OnInit {
       });
     }, 50);
   }
-
-  ngAfterViewInit() {
-    this.makeScheduleChart ();
-  }
-
 }
