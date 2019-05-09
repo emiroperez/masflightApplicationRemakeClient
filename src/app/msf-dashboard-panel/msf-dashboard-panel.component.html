@@ -456,6 +456,21 @@
         </div>
         <div class="msf-dashboard-chart-selector">
           <div class="msf-dashboard-chart-analysis-title">
+            <mat-icon class="msf-dashboard-chart-icon">vpn_key</mat-icon>
+          </div>
+          <div class="msf-dashboard-chart-op-container">
+            <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+              <mat-select formControlName="geodataKeyCtrl" placeholder="Geography Data Key" #valueSelect [(value)]="values.valueColumn" (selectionChange)="checkChartFilters()">
+                <ngx-mat-select-search [formControl]="valueFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+                <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
+                  {{variable.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="msf-dashboard-chart-selector">
+          <div class="msf-dashboard-chart-analysis-title">
             <mat-icon class="msf-dashboard-chart-icon">data_usage</mat-icon>
           </div>
           <div class="msf-dashboard-chart-op-container">

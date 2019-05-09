@@ -201,7 +201,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       valueFontSizeCtrl: new FormControl ({ value: this.fontSizes[1], disabled: true }),
       valueOrientationCtrl: new FormControl ({ value: this.orientations[0], disabled: true }),
       intervalCtrl: new FormControl ({ value: 5, disabled: true }),
-      geodataValueCtrl: new FormControl ({ value: '', disabled: true })
+      geodataValueCtrl: new FormControl ({ value: '', disabled: true }),
+      geodataKeyCtrl: new FormControl ({ value: '', disabled: true }),
     });
   }
 
@@ -544,7 +545,12 @@ export class MsfDashboardPanelComponent implements OnInit {
           {
             for (let item of polygonSeries.data)
             {
-              if (item.id.includes (result.originstate))
+              let resultInfo = result[this.values.valueColumn.id];
+
+              if (resultInfo == null)
+                continue;
+
+              if (item.id.includes (resultInfo))
               {
                 item.value = result[this.values.variable.id];
                 break;
@@ -1191,6 +1197,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         function: this.geodatas.indexOf (this.values.geodata),
         updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0),
         analysis: this.values.chartColumnOptions ? this.values.chartColumnOptions.indexOf (this.values.variable) : null,
+        values: this.values.chartColumnOptions ? this.values.chartColumnOptions.indexOf (this.values.valueColumn) : null,
         paletteColors: JSON.stringify (this.values.paletteColors),
         lastestResponse: JSON.stringify (this.values.lastestResponse)
       };
@@ -1856,6 +1863,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.chartForm.get ('valueCtrl').reset ();
     this.chartForm.get ('columnCtrl').reset ();
     this.chartForm.get ('geodataValueCtrl').reset ();
+    this.chartForm.get ('geodataKeyCtrl').reset ();
     this.chartForm.get ('fontSizeCtrl').setValue (this.fontSizes[1]);
     this.chartForm.get ('valueFontSizeCtrl').setValue (this.fontSizes[1]);
     this.chartForm.get ('valueOrientationCtrl').setValue (this.orientations[0]);
@@ -1876,6 +1884,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.chartForm.get ('valueFontSizeCtrl').enable ();
     this.chartForm.get ('valueOrientationCtrl').enable ();
     this.chartForm.get ('geodataValueCtrl').enable ();
+    this.chartForm.get ('geodataKeyCtrl').enable ();
 
     this.values.currentOptionCategories = null;
   }
@@ -2036,6 +2045,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.chartForm.get ('valueCtrl').reset ();
     _this.chartForm.get ('columnCtrl').reset ();
     _this.chartForm.get ('geodataValueCtrl').reset ();
+    _this.chartForm.get ('geodataKeyCtrl').reset ();
     _this.chartForm.get ('fontSizeCtrl').setValue (_this.fontSizes[1]);
     _this.chartForm.get ('valueFontSizeCtrl').setValue (_this.fontSizes[1]);
     _this.chartForm.get ('valueOrientationCtrl').setValue (_this.orientations[0]);
@@ -2056,6 +2066,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.chartForm.get ('valueFontSizeCtrl').enable ();
     _this.chartForm.get ('valueOrientationCtrl').enable ();
     _this.chartForm.get ('geodataValueCtrl').enable ();
+    _this.chartForm.get ('geodataKeyCtrl').enable ();
 
     _this.values.isLoading = false;
     _this.values.currentOptionCategories = null;
@@ -2394,6 +2405,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       this.values.valueColumn = null;
       this.chartForm.get ('valueCtrl').reset ();
+      this.chartForm.get ('geodataKeyCtrl').reset ();
 
       if (!(this.values.currentChartType.flags & ChartFlags.FORM))
       {
@@ -2428,13 +2440,15 @@ export class MsfDashboardPanelComponent implements OnInit {
         this.values.xaxis = null;
         this.chartForm.get ('xaxisCtrl').reset ();
     
-        this.values.valueColumn = null;
         this.chartForm.get ('valueCtrl').reset ();
 
         if (!(this.values.currentChartType.flags & ChartFlags.HEATMAP))
         {
           this.chartForm.get ('geodataValueCtrl').reset ();
           this.values.variable = null;
+
+          this.chartForm.get ('geodataKeyCtrl').reset ();
+          this.values.valueColumn = null;
         }
 
         this.chartForm.get ('variableCtrl').reset ();
@@ -2451,6 +2465,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.chartForm.get ('variableCtrl').enable ();
       this.chartForm.get ('valueCtrl').enable ();
       this.chartForm.get ('geodataValueCtrl').enable ();
+      this.chartForm.get ('geodataKeyCtrl').enable ();
 
       this.values.infoVar1 = null;
 
@@ -2662,6 +2677,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
           this.chartForm.get ('valueCtrl').enable ();
           this.chartForm.get ('geodataValueCtrl').enable ();
+          this.chartForm.get ('geodataKeyCtrl').enable ();
           this.values.currentOption = option;
           break;
         }
@@ -2682,6 +2698,19 @@ export class MsfDashboardPanelComponent implements OnInit {
             {
               this.chartForm.get ('geodataValueCtrl').setValue (this.values.chartColumnOptions[i]);
               this.values.variable = this.values.chartColumnOptions[i];
+              break;
+            }
+          }
+        }
+
+        if (this.values.valueColumn != null && this.values.valueColumn != -1)
+        {
+          for (i = 0; i < this.values.chartColumnOptions.length; i++)
+          {
+            if (i == this.values.valueColumn)
+            {
+              this.chartForm.get ('geodataKeyCtrl').setValue (this.values.chartColumnOptions[i]);
+              this.values.valueColumn = this.values.chartColumnOptions[i];
               break;
             }
           }
