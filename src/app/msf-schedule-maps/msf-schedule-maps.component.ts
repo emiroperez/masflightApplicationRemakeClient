@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit, NgZone, SimpleChanges, Input } from '@angular/core';
 import { Globals } from '../globals/Globals';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4maps from "@amcharts/amcharts4/maps";
@@ -23,10 +23,21 @@ const darkGray = am4core.color ("#3b3b3b");
 })
 export class MsfScheduleMapsComponent implements OnInit {
 
+  @Input("currentOption")
+  currentOption: any;
+
   constructor(private zone: NgZone, public globals: Globals) { }
 
-
   ngOnInit() {
+    this.globals.scheduleChart = null;
+  }
+
+  ngOnChanges(changes: SimpleChanges)
+  {
+    // Rebuild schedule chart if the option has changed and still related to
+    // the schedule maps
+    if (changes['currentOption'] && this.globals.scheduleChart)
+      this.makeScheduleChart ();
   }
 
   destroyScheduleChart()
@@ -38,6 +49,7 @@ export class MsfScheduleMapsComponent implements OnInit {
         this.globals.scheduleLineSeries = null;
         this.globals.scheduleShadowLineSeries = null;
         this.globals.scheduleChart.dispose ();
+        this.globals.scheduleChart = null;
       });
     }
   }
