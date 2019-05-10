@@ -19,6 +19,7 @@ import { ApplicationService } from '../services/application.service';
 import { MsfColumnSelectorComponent } from '../msf-column-selector/msf-column-selector.component';
 import { MsfShareDashboardComponent } from '../msf-share-dashboard/msf-share-dashboard.component';
 import { length } from '@amcharts/amcharts4/.internal/core/utils/Iterator';
+import { AuthService } from '../services/auth.service';
 
 
 @Component({
@@ -50,8 +51,8 @@ export class ApplicationComponent implements OnInit {
   @ViewChild('msfContainerRef')
   msfContainerRef: MsfContainerComponent;
 
-  constructor(public dialog: MatDialog, public globals: Globals, private service: MenuService,private router: Router,private excelService:ExcelService,
-    private appService: ApplicationService) {
+  constructor(public dialog: MatDialog, public globals: Globals, private menuService: MenuService,private router: Router,private excelService:ExcelService,
+    private appService: ApplicationService, private authService: AuthService) {
     this.status = false;
   }
 
@@ -64,7 +65,7 @@ export class ApplicationComponent implements OnInit {
 
 
   validateAdmin(){
-    this.service.getUserLoggedin(this, this.handleLogin, this.errorLogin);
+    this.menuService.getUserLoggedin(this, this.handleLogin, this.errorLogin);
   }
 
   handleLogin(_this,data){
@@ -81,12 +82,12 @@ export class ApplicationComponent implements OnInit {
   }
 
   getDashboardsUser(){
-    this.service.getDashboardsByUser(this, this.handlerDashboard, this.errorHandler);
+    this.menuService.getDashboardsByUser(this, this.handlerDashboard, this.errorHandler);
   }
 
   handlerDashboard(_this, data){
     _this.dashboards = data;
-    _this.service.getSharedDashboardsByUser(_this, _this.handlerSharedDashboard, _this.errorHandler);
+    _this.menuService.getSharedDashboardsByUser(_this, _this.handlerSharedDashboard, _this.errorHandler);
   }
 
   handlerSharedDashboard(_this, data){
@@ -99,7 +100,7 @@ export class ApplicationComponent implements OnInit {
     _this.globals.isLoading = false;
   }
   getAdvanceFeatures(){
-    this.service.getAdvanceFeatures(this,this.handlerSuccessAF,this.handlerErrorAF);
+    this.menuService.getAdvanceFeatures(this,this.handlerSuccessAF,this.handlerErrorAF);
 
     }
 
@@ -136,7 +137,7 @@ export class ApplicationComponent implements OnInit {
 
   getMenu(){
     this.globals.isLoading = true;
-    this.service.getMenu(this,this.handlerSuccess,this.handlerError);
+    this.menuService.getMenu(this,this.handlerSuccess,this.handlerError);
   }
 
   handlerSuccess(_this,data){
@@ -375,8 +376,7 @@ toggle(){
   }
 
   logOut(){
-    window.localStorage.removeItem("token");
-    this.router.navigate(['']);
+    this.authService.removeToken ();
   }
 
   goToFullscreen(): void
@@ -447,12 +447,12 @@ toggle(){
 
         if (_this.globals.readOnlyDashboard)
         {
-          _this.service.deleteSharedDashboard (_this, _this.globals.currentDashboardMenu.id,
+          _this.menuService.deleteSharedDashboard (_this, _this.globals.currentDashboardMenu.id,
             _this.deleteSuccess, _this.deleteError);
         }
         else
         {
-          _this.service.deleteDashboard (_this, _this.globals.currentDashboardMenu.id,
+          _this.menuService.deleteDashboard (_this, _this.globals.currentDashboardMenu.id,
             _this.deleteSuccess, _this.deleteError);
         }
       }
