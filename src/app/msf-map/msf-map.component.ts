@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, NgZone } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, NgZone, SimpleChanges, HostListener } from '@angular/core';
 import { ApplicationService } from '../services/application.service';
 import { Globals } from '../globals/Globals';
 // import { AgmMap } from '@agm/core';
@@ -56,26 +56,35 @@ export class MsfMapComponent implements OnInit {
   currentMapType;
   resizeInterval: any;
 
+  @Input("displayOptionPanel")
+  displayOptionPanel: boolean;
+
   constructor( private zone: NgZone, private services: ApplicationService, public globals: Globals) { }
 
 
   ngOnInit() {
     this.currentMapType = this.mapTypes[1];
-
-    // poll every 350 ms to keep the mapbox with proper size
-    this.resizeInterval = setInterval (() => {
-      this.zone.runOutsideAngular (() => {
-        if (this.map && this.currentMapType.id == 'point')
-          this.map.resize ();
-
-        if (this.map2 && this.currentMapType.id == 'line')
-          this.map2.resize ();
-      });
-    }, 350);
   }
 
-  ngOnDestroy(): void {
-    clearInterval (this.resizeInterval);
+  ngOnChanges(changes: SimpleChanges): void
+  {
+    if (changes['displayOptionPanel'])
+    {
+      // poll every 50 ms to keep the mapbox with proper size
+      this.resizeInterval = setInterval (() => {
+        this.zone.runOutsideAngular (() => {
+          if (this.map && this.currentMapType.id == 'point')
+            this.map.resize ();
+
+          if (this.map2 && this.currentMapType.id == 'line')
+            this.map2.resize ();
+        });
+      }, 50);
+
+      setTimeout (() => {
+        clearInterval (this.resizeInterval);
+      }, 2000);
+    }
   }
 
   getTrackingDataSource(){
@@ -121,10 +130,12 @@ export class MsfMapComponent implements OnInit {
   mapTypeChange(type){
     switch (type.id) {
       case 'line':
-
+        if (this.map2)
+          this.map2.resize ();
         break;
       case 'point':
-        
+        if (this.map)
+          this.map.resize ();
         break;
     }
   }
@@ -139,5 +150,15 @@ export class MsfMapComponent implements OnInit {
 
   cancelLoading(){
     this.isLoading = false;
+  }
+
+  @HostListener('window:resize', ['$event'])
+  checkScreen(event): void
+  {
+    if (this.map && this.currentMapType.id == 'point')
+      this.map.resize ();
+
+    if (this.map2 && this.currentMapType.id == 'line')
+      this.map2.resize ();
   }
 }
