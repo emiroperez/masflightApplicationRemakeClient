@@ -3,7 +3,7 @@
         <button mat-button #trigger #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu.childMenu" (click)="setMenuCategory(category)" [ngClass]="{'msf-menu-op-2':i == 0, 'msf-menu-op-1':i != 0}">
             {{category.label}}
         </button>
-        <app-menu-option #menu [options]="category.options" [trigger]="trigger"></app-menu-option>
+        <app-menu-option #menu [options]="category.options" [trigger]="trigger" (optionChanged)="optionChangedFromChildren()"></app-menu-option>
     </ng-container>
     <button mat-button class='msf-menu-op-3' [matMenuTriggerFor]="dashboardMenu">Dashboards</button>
     <mat-menu #dashboardMenu="matMenu">

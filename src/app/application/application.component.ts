@@ -469,4 +469,10 @@ toggle(){
       panelClass: 'msf-column-selector-popup'
     });
   }
+
+  optionHandler()
+  {
+    if (this.msfContainerRef && this.msfContainerRef.msfTableRef)
+      this.msfContainerRef.msfTableRef = null;
+  }
 }
