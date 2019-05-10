@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {AuthService} from '../services/auth.service';
-import {NotificationComponent} from '../notification/notification.component';
-import { FormGroup, FormBuilder, FormControl, Validators} from '@angular/forms';
+import { AuthService } from '../services/auth.service';
+import { NotificationComponent } from '../notification/notification.component';
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { User } from '../model/User';
 import { Utils } from '../commons/utils';
 import { MenuService } from '../services/menu.service';
@@ -10,7 +10,7 @@ import { Globals } from '../globals/Globals';
 
 @Component({
   selector: 'app-login-screen',
-  templateUrl: './login-screen.component.html'
+  templateUrl: './login-screen.component.html',
 })
 export class LoginScreenComponent implements OnInit {
 
@@ -37,8 +37,8 @@ export class LoginScreenComponent implements OnInit {
     this.user.password = "";
 
     this.loginForm = this.formBuilder.group ({
-      usernameValidator: new FormControl('username', [Validators.required]),
-      passwordValidator: new FormControl('password', [Validators.required])
+      usernameValidator: new FormControl('', [Validators.required]),
+      passwordValidator: new FormControl('', [Validators.required])
     });
 
   }
