@@ -26,7 +26,7 @@ export class AuthGuard implements CanActivate {
         () => this.router.navigate ([''])
       );
     }
-    else
+    else if (!this.router.isActive ('', true))
       this.router.navigate (['']);
   }
 
@@ -36,7 +36,7 @@ export class AuthGuard implements CanActivate {
     {
       if (!this.sessionInterval)
       {
-        // poll each 1 second while checking the token
+        // poll each 5 seconds while checking the status of the token
         this.sessionInterval = setInterval (() => {
           if (!this.authService.isTokenExpired ())
             return;
@@ -45,7 +45,7 @@ export class AuthGuard implements CanActivate {
 
           clearInterval (this.sessionInterval);
           this.sessionInterval = null;
-        }, 1000);
+        }, 5000);
       }
 
       return true;
