@@ -50,4 +50,9 @@ export class MenuOptionComponent implements OnInit {
   closeMenu() {
     //this.trigger.closeMenu();
   }
+
+  optionChangedFromChildren()
+  {
+    this.optionChanged.emit ();
+  }
 }
