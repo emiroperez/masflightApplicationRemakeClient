@@ -247,6 +247,7 @@ export class EditOutputOptionsMetaDialog {
 
     addOption() {
       this.data.outputs.push({
+        uid:null,
         id: null,
         checked: false,
         order: 'desc',
@@ -417,24 +418,28 @@ selectArgumentCategory(category) {
 
 export class ExampleFlatNode {
   id: string;
+  uid: string;
   expandable: boolean;
   label: string;
   level: number;
   menuOptionArgumentsAdmin: any[];
-      categoryParentId: string;
-      baseUrl: string;
-      icon: string;
-      tab: string;
-      tabType: string;
-      menuParentId: string;
-      toDelete: boolean;
-      dataAvailability: string;
-      metaData: string;
-      order: any;
-      selected: any;
-      applicationId: any;
-      isRoot :any;
-      children : any[];
+  categoryParentId: string;
+  baseUrl: string;
+  icon: string;
+  tab: string;
+  tabType: string;
+  menuParentId: string;
+  toDelete: boolean;
+  dataAvailability: string;
+  metaData: string;
+  order: any;
+  selected: any;
+  applicationId: any;
+  isRoot :any;
+  children : any[];
+  initialRol: string;
+  finalRol: string;
+  typeOption: string;
 }
 
 @Component({
@@ -458,6 +463,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
         : new ExampleFlatNode();
         flatNode.expandable= !!node.children && node.children.length > 0;
         flatNode.id= node.id;
+        flatNode.uid= node.uid;
         flatNode.label=node.label;
         flatNode.level=level;
         flatNode.menuOptionArgumentsAdmin=node.menuOptionArgumentsAdmin;
@@ -475,6 +481,9 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
         flatNode.applicationId= node.applicationId;
         flatNode.isRoot = node.isRoot;
         flatNode.children = node.children;
+        flatNode.initialRol = node.initialRol;
+        flatNode.finalRol = node.finalRol;
+        flatNode.typeOption = node.typeOption;
         this.flatNodeMap.set(flatNode, node);
         this.nestedNodeMap.set(node, flatNode);
     return flatNode;
@@ -493,7 +502,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
-
+ innerHeight: number;
   menu: any[] = [];
   idList: any[] = ['firstOne'];
   categoryArguments: any[] = [];
@@ -553,10 +562,15 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   }
 
   filterMenuOptions(){
-    for (let index = 0; index < this.menu.length; index++) {
-      const option = this.menu[index];
+    for (let index = 0; index < this.treeControl.dataNodes.length; index++) {
+      const option = this.treeControl.dataNodes[index];
       this.setShowOption(option,this)
         this.recursiveOption(option,this);
+    }
+    if(this.searchTextOption){
+      this.treeControl.expandAll();
+    } else {
+      this.treeControl.collapseAll();
     }
 
   }
@@ -577,26 +591,29 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     if(_this.searchTextOption!="" && _this.searchTextOption!=null){
       if(option.label.toLowerCase().indexOf(_this.searchTextOption)!=-1){
         option.show = true;
-        if(option.menuParentId!=null){
-          _this.findOnMenu(option.menuParentId)
-        }
-        if(option.categoryParentId!=null){
-          _this.findOnMenu(option.categoryParentId)
-        }
+        // if(option.menuParentId!=null){
+        //   _this.findOnMenu(option.menuParentId)
+        // }
+
+        // if(option.categoryParentId!=null){
+        //   _this.findOnMenu(option.categoryParentId)
+        // }
+
       }else{
         option.show = false;
       }
     }else{
       option.show = true;
-      option.isOpened = false;
+      // this.treeControl.expand(option);
+
     }
   }
-
   findOnMenu(optionId){
-    for (let index = 0; index < this.dataSource.data.length; index++) {
-      const option = this.dataSource.data[index];
+    for (let index = 0; index < this.treeControl.dataNodes.length; index++) {
+      const option = this.treeControl.dataNodes[index];
       if(optionId==option.id){
-        option.isOpened=true;
+        this.treeControl.expand(option);
+        // option.isOpened=true;
         if(option.menuParentId!=null){
           this.findOnMenu(option.menuParentId)
         }
@@ -839,9 +856,8 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
       });
     }else {
       this.verifyOrder();
-      console.log(this.menu);
       console.log(this.dataSource.data);
-      this.service.saveMenu(this, this.dataSource.data, this.handlerSuccessSaveMenuData, this.handlerErrorSaveMenuData);
+     this.service.saveMenu(this, this.dataSource.data, this.handlerSuccessSaveMenuData, this.handlerErrorSaveMenuData);
     }
   }
 
@@ -857,7 +873,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
     for (let i=0; i < this.menu.length; i++){
       let optionMenu = this.menu[i];
-      if ((optionMenu['label'] == null) || (optionMenu['label'] == "")){
+      if (((optionMenu['label'] == null) || (optionMenu['label'] == ""))  &&  !optionMenu.toDelete){
         this.emptyError = this.emptyError+1;
       }
       this.recursiveVerify(optionMenu);
@@ -883,19 +899,29 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   }
 
   verifyOrder(){
-
     for (let i=0; i < this.dataSource.data.length; i++){
       let optionMenu = this.dataSource.data[i];
       optionMenu.order = i;
+      optionMenu.finalRol = 'cat';
+      if(optionMenu.initialRol == 'opt'  &&  optionMenu.finalRol == 'cat') {
+        optionMenu.toChange = true;
+        optionMenu.applicationId= this.globals.currentApplication.id;
+      }
       for (let j=0; j < optionMenu.children.length;j++){
         let optionCat = optionMenu.children[j];
         optionCat.order = j;
+        optionCat.finalRol = 'opt';
         optionCat.categoryParentId = optionMenu.id;
+        if(optionCat.initialRol == 'cat'  &&  optionCat.finalRol == 'opt') {
+          optionCat.toChange = true;
+          optionCat.idToChange = optionCat.id;
+          optionCat.id = null;
+        }
+        if(optionCat.children){
         this.recursiveOrder(optionCat);
+        }
       }
     }
-
-
     }
 
 
@@ -904,13 +930,16 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
       for (let i=0; i<option.children.length; i++){
         option.children[i].order = i;
         option.children[i].parentId = option.id;
+        option.children[i].finalRol = 'opt';
         option.children[i].categoryParentId = null;
+        if(option.children[i].initialRol == 'cat'  &&  option.children[i].finalRol == 'opt') {
+          option.children[i].toChange = true;
+        }
         if(option.children[i].children.length > 0){
           this.recursiveOrder(option.children[i]);
       }
       }
     }
-
   }
 
   saveMeta() {
@@ -940,34 +969,46 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     this.service.loadMenuOptions(this, this.handlerGetSuccessMenuData, this.handlerGetErrorMenuData);
     this.optionSelected = {};
   }
-  getIdList(menu){
-    for (let j = 0; j < menu.length; j++) {
-      let optionMenu = this.menu[j];
-      this.idList.push(optionMenu.id);
-      this.getIdListRecursive(optionMenu);
-    }
-    console.log(this.idList)
-  }
-
-  getIdListRecursive(option){
-    if (option.children.length !== 0) {
-      for (let i=0; i<option.children.length;i++){
-        this.idList.push(option.children[i].id);
-        if(option.children[i].children.length > 0){
-          this.getIdListRecursive(option.children[i]);
-      }
-    }
-  }
-}
 
 hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
 
   handlerGetSuccessMenuData(_this, data) {
     _this.menu = data;
     _this.dataSource.data = data;
+    _this.getUniqueIdDrop(_this.dataSource.data);
     _this.globals.isLoading = false;
+    console.log(_this.dataSource.data);
     _this.dataChange.next(data);
   }
+
+  getUniqueIdDrop(data){
+    for (let i=0; i < data.length; i++){
+      let option = data[i];
+      option.uid = `cat${option.id}`;
+      option.initialRol = 'cat';
+      for (let j=0; j < option.children.length;j++){
+        let optionChild = option.children[j];
+        optionChild.uid = `op${optionChild.id}`;
+        optionChild.initialRol = 'opt';
+        this.getUniqueIdDropRecursive(optionChild);
+      }
+    }
+  }
+
+  getUniqueIdDropRecursive(option){
+    if(option.children.length > 0){
+      for (let i=0; i<option.children.length; i++){
+        let optionChild = option.children[i];
+        optionChild.initialRol = 'opt';
+        optionChild.uid = `opr${optionChild.id}`;
+        if(optionChild.children.length > 0){
+          this.getUniqueIdDropRecursive(optionChild);
+        }
+      }
+    }
+
+  }
+
 
   handlerGetErrorMenuData(_this, result) {
     console.log(result);
@@ -980,7 +1021,7 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
 
     function addExpandedChildren(node: any, expanded: Set<string>) {
       result.push(node);
-      if (expanded.has(node.id)) {
+      if (expanded.has(node.uid)) {
         node.children.map(child => addExpandedChildren(child, expanded));
       }
     }
@@ -996,7 +1037,7 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
     function findNodeSiblings(arr: Array<any>, id: string): Array<any> {
       let result, subResult;
       arr.forEach(item => {
-        if (item.id === id) {
+        if (item.uid === id) {
           result = arr;
         } else if (item.children) {
           subResult = findNodeSiblings(item.children, id);
@@ -1006,21 +1047,21 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
       return result;
     }
     const node = event.item.data;
-    const siblings = findNodeSiblings(changedData, node.id);
-    const siblingIndex = siblings.findIndex(n => n.id === node.id);
+    const siblings = findNodeSiblings(changedData, node.uid);
+    const siblingIndex = siblings.findIndex(n => n.uid === node.uid);
     const nodeToInsert: any = siblings.splice(siblingIndex, 1)[0];
     const nodeAtDest = visibleNodes[event.currentIndex];
-    if (nodeAtDest.id === nodeToInsert.id) return;
+    if (nodeAtDest.uid === nodeToInsert.uid) return;
     let relativeIndex = event.currentIndex;
     const nodeAtDestFlatNode = this.treeControl.dataNodes.find(
-      n => nodeAtDest.id === n.id
+      n => nodeAtDest.uid === n.uid
     );
     const parent = this.getParentNode(nodeAtDestFlatNode);
     if (parent) {
-      const parentIndex = visibleNodes.findIndex(n => n.id === parent.id) + 1;
+      const parentIndex = visibleNodes.findIndex(n => n.uid === parent.uid) + 1;
       relativeIndex = event.currentIndex - parentIndex;
     }
-    const newSiblings = findNodeSiblings(changedData, nodeAtDest.id);
+    const newSiblings = findNodeSiblings(changedData, nodeAtDest.uid);
     newSiblings.splice(relativeIndex, 0, nodeToInsert);
     this.rebuildTreeForData(changedData);
   }
@@ -1031,24 +1072,11 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
   dragEnd() {
     this.dragging = false;
   }
-  dragHover(node: ExampleFlatNode) {
-    if (this.dragging) {
-      clearTimeout(this.expandTimeout);
-      this.expandTimeout = setTimeout(() => {
-        this.treeControl.expand(node);
-      }, this.expandDelay);
-    }
-  }
-  dragHoverEnd() {
-    if (this.dragging) {
-      clearTimeout(this.expandTimeout);
-    }
-  }
 
   rebuildTreeForData(data: any) {
     this.rememberExpandedTreeNodes(this.treeControl, this.expandedNodeSet);
     this.dataSource.data = data;
-    //this.forgetMissingExpandedNodes(this.treeControl, this.expandedNodeSet);
+    this.forgetMissingExpandedNodes(this.treeControl, this.expandedNodeSet);
     this.expandNodesById(
       this.treeControl.dataNodes,
       Array.from(this.expandedNodeSet)
@@ -1063,7 +1091,7 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
       treeControl.dataNodes.forEach(node => {
         if (treeControl.isExpandable(node) && treeControl.isExpanded(node)) {
           // capture latest expanded state
-          expandedNodeSet.add(node.id);
+          expandedNodeSet.add(node.uid);
         }
       });
     }
@@ -1075,7 +1103,7 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
   ) {
     if (treeControl.dataNodes) {
       expandedNodeSet.forEach(nodeId => {
-        if (!treeControl.dataNodes.find(n => n.id === nodeId)) {
+        if (!treeControl.dataNodes.find(n => n.uid === nodeId)) {
           expandedNodeSet.delete(nodeId);
         }
       });
@@ -1086,7 +1114,7 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
     if (!flatNodes || flatNodes.length === 0) return;
     const idSet = new Set(ids);
     return flatNodes.forEach(node => {
-      if (idSet.has(node.id)) {
+      if (idSet.has(node.uid)) {
         this.treeControl.expand(node);
         let parent = this.getParentNode(node);
         while (parent) {
@@ -1121,6 +1149,7 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
   }
 
   setSelectedCategoryArguments(category) {
+    console.log(category)
     // var index = this.optionSelected.menuOptionArgumentsAdmin.findIndex(el => el.categoryArgumentsId.id == category.id);
     var index = -1;
     this.optionSelected.menuOptionArgumentsAdmin.forEach(function(element,i){
@@ -1164,7 +1193,8 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
     for(let i =0; i <this.optionSelected.menuOptionArgumentsAdmin.length;i++){
       arrayMenuOptionArg.push(this.optionSelected.menuOptionArgumentsAdmin[i]);
     }
-    this.service.saveOptionsArgumentsCategory(this, arrayMenuOptionArg, this.optionSelected.id, this.handlerSuccessSaveCategoryArgument, this.handlerErrorSaveCategoryArgument);
+    console.log(this.dataSource.data);
+   this.service.saveOptionsArgumentsCategory(this, arrayMenuOptionArg, this.optionSelected.id, this.handlerSuccessSaveCategoryArgument, this.handlerErrorSaveCategoryArgument);
   }
 
   handlerSuccessSaveCategoryArgument(_this, result) {
@@ -1230,37 +1260,25 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
       if (result != undefined) {
         console.log(result)
         duplicateObject = result;
-        console.log("objeto")
-        console.log(duplicateObject);
         this.saveMenuArguments(duplicateObject);
       }
     });
   }
   saveMenuArguments(catId){
-    console.log("met");
-    console.log(catId);
     if(this.optionSelected.menuOptionArgumentsAdmin.length>0){
-      console.log("priimer if")
     for (let i=0; i < this.optionSelected.menuOptionArgumentsAdmin.length;i++){
       let aux = this.optionSelected.menuOptionArgumentsAdmin[i];
-      console.log(aux.id)
       if(aux.id==catId.id){
-        console.log("entra")
         aux = catId;
         this.optionSelected.menuOptionArgumentsAdmin[i] = aux;
-        console.log("aux")
-        console.log(aux)
       }
     }
   }else{
-    console.log("entra al else")
     catId.id = null;
     catId.optionId = this.optionSelected.id;
-    console.log(catId)
     this.optionSelected.menuOptionArgumentsAdmin.push(catId);
 
   }
-  console.log(this.optionSelected)
   this.saveCategoryArgument();
   }
 
@@ -1271,8 +1289,10 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
   }
 
   insertItem(parent: any, name: string) {
-    if (parent.children) {
+    if(parent){
       parent.children.push({label: null,
+      uid: 'optnew'+parent.id+parent.children.length,
+      isActive:true,
       baseUrl: null,
       icon: null,
       tab: null,
@@ -1284,12 +1304,26 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
       applicationId: this.globals.currentApplication.id,
       metaData: 1,} as any);
       this.dataChange.next(this.data);
-    }
+  }else{
+    this.dataSource.data.push({label: null,
+      uid: 'catnew'+this.dataSource.data.length,
+      baseUrl: null,
+      icon: null,
+      tab: null,
+      tabType: null,
+      parentId: null,
+      children: [],
+      toDelete: false,
+      isRoot: false,
+      applicationId: this.globals.currentApplication.id,
+      metaData: 1,} as any);
+      this.dataChange.next(this.data);
   }
+  }
+  filterChanged() {
+    this.filter(this.searchTextOption);
+    if(this.searchTextOption)
 
-  filterChanged(filterText: string) {
-    this.filter(filterText);
-    if(filterText)
     {
       this.treeControl.expandAll();
     } else {
@@ -1303,7 +1337,7 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
       console.log(this.dataSource.data);
       filteredTreeData = this.dataSource.data.filter(d => d.label.toLocaleLowerCase().indexOf(filterText.toLocaleLowerCase()) > -1);
       Object.assign([], filteredTreeData).forEach(ftd => {
-        let str = (<string>ftd.id);
+        let str = (<string>ftd.uid);
         while (str.lastIndexOf('.') > -1) {
           const index = str.lastIndexOf('.');
           str = str.substring(0, index);

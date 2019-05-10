@@ -24,7 +24,7 @@
                                 <h2 class="title-section">Menu</h2>
                             </div>
                             <div style="flex: 2">
-                                <mat-form-field class="msf-admin-search-option" style="display: none">
+                                <mat-form-field class="msf-admin-search-option" >
                                     <input class="search-input" matInput [(ngModel)]="searchTextOption" autocomplete="off" style="width:93%;height:24px;" (ngModelChange)="filterMenuOptions()">
                                     <mat-icon style="color: white" aria-label="search">search</mat-icon>
                                 </mat-form-field>
@@ -48,7 +48,7 @@
                                 </div>
                             </div> -->
                             <mat-tree style="background: transparent" [dataSource]="dataSource" [treeControl]="treeControl" cdkDropList (cdkDropListDropped)="drop($event)">
-                                <mat-tree-node style="display:flex; flex-direction:column;" matTreeNodePadding *matTreeNodeDef="let node" cdkDrag [cdkDragData]="node" (mouseenter)="dragHover(node)" (mouseleave)="dragHoverEnd()" (cdkDragStarted)="dragStart()" (cdkDragReleased)="dragEnd()"
+                                <mat-tree-node [ngClass]="{'msf-show' : node.show,'msf-show' : node.show==null,'msf-hide': node.show==false}" style="display:flex; flex-direction:column;" matTreeNodePadding *matTreeNodeDef="let node" cdkDrag [cdkDragData]="node" (cdkDragStarted)="dragStart()" (cdkDragReleased)="dragEnd()"
                                     (click)=" getOptionSelected(node)">
                                     <div style="display:flex; flex-direction:row" [ngClass]="{'is-active': node.isActive,'is-inactive': !node.isActive }" class="menu-node">
                                         <button mat-icon-button disabled></button>
@@ -56,8 +56,8 @@
                                     </div>
                                     <mat-divider></mat-divider>
                                 </mat-tree-node>
-                                <mat-tree-node style="display:flex; flex-direction:column;" matTreeNodePadding *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding cdkDrag [cdkDragData]="node" (mouseenter)="dragHover(node)" (mouseleave)="dragHoverEnd()" (cdkDragStarted)="dragStart()"
-                                    (cdkDragReleased)="dragEnd()" (click)=" getOptionSelected(node)">
+                                <mat-tree-node [ngClass]="{'msf-show' : node.show,'msf-show' : node.show==null,'msf-hide': node.show==false}" style="display:flex; flex-direction:column;" matTreeNodePadding *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding cdkDrag [cdkDragData]="node" (cdkDragStarted)="dragStart()"
+                                   (click)=" getOptionSelected(node)">
                                     <div style="display:flex; flex-direction:row" [ngClass]="{'is-active': node.isActive,'is-inactive': !node.isActive }" class="menu-node">
                                         <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.label">
                                   <mat-icon class="mat-icon-rtl-mirror">
@@ -89,7 +89,7 @@
                                 </div>
                             </div>
                         </div> -->
-                        <div *ngIf="!optionSelected.isRoot && optionSelected.isActive">
+                        <div *ngIf="!optionSelected.isRoot && optionSelected.isActive && optionSelected.id">
                             <div *ngIf="optionSelected.children.length == 0">
                                 <h2 class="title-section">Menu Option Configuration</h2>
                                 <mat-form-field class="standard-text" style="width: 95%">
@@ -103,7 +103,7 @@
                                 </mat-form-field>
                             </div>
                         </div>
-                        <div *ngIf="!optionSelected.isRoot && optionSelected.isActive">
+                        <div *ngIf="!optionSelected.isRoot && optionSelected.isActive && optionSelected.id">
                             <div *ngIf="optionSelected.children.length == 0" style="display: flex; flex-direction: row;">
                                 <div class="button-setup">
                                     <div style="flex: 4">
@@ -139,10 +139,10 @@
                             </div>
                         </div>
 
-                        <div *ngIf="!optionSelected.isRoot && optionSelected.isActive" style="flex: 1; flex-direction: column; justify-content: center">
+                        <div *ngIf="!optionSelected.isRoot && optionSelected.isActive && optionSelected.id" style="flex: 1; flex-direction: column; justify-content: center">
 
                             <div *ngIf="optionSelected.children.length == 0">
-                                <div *ngIf="!optionSelected.isRoot && optionSelected.id ">
+                                <div *ngIf="!optionSelected.isRoot && optionSelected.id">
                                     <mat-form-field class="msf-admin-search">
                                         <input class="search-input" matInput [(ngModel)]="searchText" style="width:95%;" autocomplete="off">
                                         <mat-icon style="color: white" aria-label="search">search</mat-icon>
