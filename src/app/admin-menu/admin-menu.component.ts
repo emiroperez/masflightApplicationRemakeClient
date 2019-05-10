@@ -507,6 +507,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   idList: any[] = ['firstOne'];
   categoryArguments: any[] = [];
   categories: any[] = [];
+  drillDown: any[] = [];
   outputs: any[] = [];
   argumentsDrillDown: any[] = [];
   optionSelected: any = {};
@@ -1197,6 +1198,9 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
 
   handlerSuccessSaveCategoryArgument(_this, result) {
     _this.optionSelected.menuOptionArgumentsAdmin = result;
+    const nestedNode = _this.flatNodeMap.get(_this.optionSelected);
+    nestedNode.menuOptionArgumentsAdmin = result;
+    _this.dataChange.next(_this.data);
     _this.getOptionCategoryArguments();
   }
 
