@@ -1353,9 +1353,6 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
       filteredTreeData = this.dataSource.data;
     }
 
-    // Build the tree nodes from Json object. The result is a list of `TodoItemNode` with nested
-    // file node as children.
-
     // Notify the change.
     this.dataChange.next(filteredTreeData);
   }
