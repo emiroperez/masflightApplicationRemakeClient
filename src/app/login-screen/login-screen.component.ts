@@ -63,7 +63,7 @@ export class LoginScreenComponent implements OnInit {
 
 
   storeSecurityToken(token){
-    window.localStorage.setItem ("token", token);
+    this.authService.setToken (token);
   }
 
   handleResponse(_this,data){

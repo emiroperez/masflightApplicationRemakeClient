@@ -18,13 +18,23 @@ export class AuthService {
   login (_this, credentials, successHandler, errorHandler)
   {
     // let url = 'http://localhost:8887/login';
-    let url = this.globals.baseUrl+'/login';
+    let url = this.globals.baseUrl + '/login';
     this.post (_this, url, credentials, successHandler, errorHandler);
+  }
+
+  getToken(): string
+  {
+    return localStorage.getItem ("token");
+  }
+
+  setToken(token: string)
+  {
+    localStorage.setItem ("token", token);
   }
 
   createAuthorizationHeader()
   {
-    let token = localStorage.getItem ('token');
+    let token = this.getToken ();
 
     if (!token)
       token = "noUser";
