@@ -5,6 +5,7 @@ import { WelcomeService } from '../services/welcome.service';
 import { Router } from '@angular/router';
 import { trigger, transition, style, animate, state } from '@angular/animations';
 import { MenuService } from '../services/menu.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-welcome',
@@ -70,7 +71,7 @@ export class WelcomeComponent implements OnInit {
 
 
 
-  constructor(public globals: Globals, private menuService: MenuService, private service: WelcomeService,private router: Router) {
+  constructor(public globals: Globals, private menuService: MenuService, private service: WelcomeService, private authService: AuthService, private router: Router) {
   }
 
   setState(option){
@@ -82,6 +83,9 @@ export class WelcomeComponent implements OnInit {
     this.getUserLoggedIn();
   }
   getUserLoggedIn(){
+    if (!this.authService.getToken ())
+      return;
+
     this.globals.isLoading = true;
     this.menuService.getUserLoggedin(this, this.handleLogin, this.errorLogin);
   }

@@ -118,7 +118,8 @@ export class LoginScreenComponent implements OnInit {
 
 
   getUserLoggedIn(){
-    this.service.getUserLoggedin(this, this.handleLogin, this.errorLogin);
+    if (this.authService.getToken ())
+      this.service.getUserLoggedin(this, this.handleLogin, this.errorLogin);
   }
 
   handleLogin(_this,data){
