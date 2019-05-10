@@ -55,6 +55,7 @@ export class MsfMapComponent implements OnInit {
 
   currentMapType;
   resizeInterval: any;
+  resizeTimeout: any;
 
   @Input("displayOptionPanel")
   displayOptionPanel: boolean;
@@ -70,7 +71,20 @@ export class MsfMapComponent implements OnInit {
   {
     if (changes['displayOptionPanel'])
     {
-      // poll every 50 ms to keep the mapbox with proper size
+      if (this.resizeTimeout)
+      {
+        clearInterval (this.resizeTimeout);
+        this.resizeTimeout = null;
+      }
+
+      if (this.resizeInterval)
+      {
+        clearInterval (this.resizeInterval);
+        this.resizeInterval = null;
+      }
+
+      // poll every 50 ms to keep the mapbox with proper size during
+      // the interval
       this.resizeInterval = setInterval (() => {
         this.zone.runOutsideAngular (() => {
           if (this.map && this.currentMapType.id == 'point')
@@ -81,8 +95,14 @@ export class MsfMapComponent implements OnInit {
         });
       }, 50);
 
-      setTimeout (() => {
-        clearInterval (this.resizeInterval);
+      this.resizeTimeout = setTimeout (() => {
+        if (this.resizeInterval)
+        {
+          clearInterval (this.resizeTimeout);
+          clearInterval (this.resizeInterval);
+          this.resizeInterval = null;
+          this.resizeTimeout = null;
+        }
       }, 2000);
     }
   }
