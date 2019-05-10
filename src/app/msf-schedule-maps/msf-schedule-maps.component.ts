@@ -30,6 +30,10 @@ export class MsfScheduleMapsComponent implements OnInit {
 
   ngOnInit() {
     this.globals.scheduleChart = null;
+  }
+
+  ngAfterViewInit()
+  {
     this.makeScheduleChart ();
   }
 
@@ -71,6 +75,11 @@ export class MsfScheduleMapsComponent implements OnInit {
     }
   }
 
+  ngOnDestroy()
+  {
+    this.destroyScheduleChart ();
+  }
+
   destroyScheduleChart()
   {
     if (this.globals.scheduleChart)
@@ -89,63 +98,58 @@ export class MsfScheduleMapsComponent implements OnInit {
   {
     let chart, continentSeries, zoomControl, home;
 
-    this.destroyScheduleChart ();
+    this.zone.runOutsideAngular (() => {
+      chart = am4core.create ("chartdivmap", am4maps.MapChart);
 
-    setTimeout (() =>
-    {
-      this.zone.runOutsideAngular (() => {
-        chart = am4core.create ("chartdivmap", am4maps.MapChart);
+      // Create map instance
+      chart.geodata = am4geodata_worldLow;
+      chart.projection = new am4maps.projections.Miller ();
 
-        // Create map instance
-        chart.geodata = am4geodata_worldLow;
-        chart.projection = new am4maps.projections.Miller ();
+      // Add map polygons and exclude Antartica
+      continentSeries = chart.series.push (new am4maps.MapPolygonSeries ());
+      continentSeries.useGeodata = true;
+      continentSeries.exclude = ["AQ"];
+      continentSeries.mapPolygons.template.fill = darkGray;
+      continentSeries.mapPolygons.template.stroke = black;
+      continentSeries.mapPolygons.template.strokeOpacity = 0.25;
+      continentSeries.mapPolygons.template.strokeWidth = 0.5;
 
-        // Add map polygons and exclude Antartica
-        continentSeries = chart.series.push (new am4maps.MapPolygonSeries ());
-        continentSeries.useGeodata = true;
-        continentSeries.exclude = ["AQ"];
-        continentSeries.mapPolygons.template.fill = darkGray;
-        continentSeries.mapPolygons.template.stroke = black;
-        continentSeries.mapPolygons.template.strokeOpacity = 0.25;
-        continentSeries.mapPolygons.template.strokeWidth = 0.5;
+      // Set default location and zoom level
+      chart.homeGeoPoint = {
+        latitude: 24.8567,
+        longitude: 2.3510
+      };
 
-        // Set default location and zoom level
-        chart.homeGeoPoint = {
-          latitude: 24.8567,
-          longitude: 2.3510
-        };
+      chart.homeZoomLevel = 1;
+      chart.deltaLongitude = 0;
 
-        chart.homeZoomLevel = 1;
-        chart.deltaLongitude = 0;
+      // Add zoom control buttons
+      zoomControl = new am4maps.ZoomControl ();
+      chart.zoomControl = zoomControl;
+      zoomControl.slider.height = 100;
+      zoomControl.valign = "top";
+      zoomControl.align = "left";
+      zoomControl.marginTop = 40;
+      zoomControl.marginLeft = 10;
 
-        // Add zoom control buttons
-        zoomControl = new am4maps.ZoomControl ();
-        chart.zoomControl = zoomControl;
-        zoomControl.slider.height = 100;
-        zoomControl.valign = "top";
-        zoomControl.align = "left";
-        zoomControl.marginTop = 40;
-        zoomControl.marginLeft = 10;
-
-        // Add home buttom to zoom out
-        home = chart.chartContainer.createChild (am4core.Button);
-        home.icon = new am4core.Sprite ();
-        home.icon.dx -= 9;
-        home.width = 30;
-        home.icon.path = homeSVG;
-        home.align = "left";
-        home.marginLeft = 15;
-        home.events.on ("hit", function (ev) {
-          chart.goHome ();
-        });
-
-        // Add export button
-        chart.exporting.menu = new am4core.ExportMenu ();
-        chart.exporting.menu.verticalAlign = "top";
-        chart.exporting.menu.align = "right";
-
-        this.globals.scheduleChart = chart;
+      // Add home buttom to zoom out
+      home = chart.chartContainer.createChild (am4core.Button);
+      home.icon = new am4core.Sprite ();
+      home.icon.dx -= 9;
+      home.width = 30;
+      home.icon.path = homeSVG;
+      home.align = "left";
+      home.marginLeft = 15;
+      home.events.on ("hit", function (ev) {
+        chart.goHome ();
       });
-    }, 50);
+
+      // Add export button
+      chart.exporting.menu = new am4core.ExportMenu ();
+      chart.exporting.menu.verticalAlign = "top";
+      chart.exporting.menu.align = "right";
+
+      this.globals.scheduleChart = chart;
+    });
   }
 }
