@@ -506,7 +506,6 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   menu: any[] = [];
   idList: any[] = ['firstOne'];
   categoryArguments: any[] = [];
-  drillDown: any[] = [];
   categories: any[] = [];
   drillDown: any[] = [];
   outputs: any[] = [];
