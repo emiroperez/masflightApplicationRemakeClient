@@ -182,6 +182,7 @@ import { MsfArgumentComponent } from './msf-argument/msf-argument.component';
 import { DialogArgumentPreviewComponent } from './dialog-argument-preview/dialog-argument-preview.component';
 import { MsfDashboardPanelOptionPipe } from './msf-dashboard-panel/msf-dashboard-panel-option-pipe';
 import { MsfDashboardPanelTypePipe } from './msf-dashboard-panel/msf-dashboard-panel-type-pipe';
+import { AuthGuard } from './guards/auth.guard';
 import {MatTreeModule} from '@angular/material/tree';
 
 @NgModule({
@@ -397,7 +398,8 @@ import {MatTreeModule} from '@angular/material/tree';
     MsfContainerComponent,
     DateFormatPipe,
     DateTimeFormatPipe,
-    Utils
+    Utils,
+    AuthGuard
   ],
   bootstrap: [AppComponent],
   entryComponents: [

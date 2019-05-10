@@ -436,12 +436,6 @@ export class ApplicationService {
     this.http.get (_this, url, handlerSuccess, handlerError, null);
   }
 
-  addSharedContent(_this, sharedContent, handlerSuccess, handlerError)
-  {
-    let url = this.host + "/addSharedContent";
-    this.http.post (_this, url, sharedContent, handlerSuccess, handlerError);
-  }
-
   deleteSharedContent(_this, shareInfo, handlerSuccess, handlerError)
   {
     let url = this.host + "/deleteSharedContent";

@@ -1,28 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpEventType } from '@angular/common/http';
-import {Http, Headers} from '@angular/http';
-import { throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
-import * as xml2js from 'xml2js';
-
-const httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-  };
+import { HttpClient, HttpEventType } from '@angular/common/http';
 
 @Injectable()
 export class ApiClient {
-    SECURITY_HEADER = "Authorization";
-    TOKEN_STORAGE_KEY = "token";
-    
     constructor(private http: HttpClient) {
     }
-
-
-    createAuthorizationHeader() {
-        httpOptions.headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-        // httpOptions.headers = httpOptions.headers.append(this.SECURITY_HEADER, localStorage.getItem(this.TOKEN_STORAGE_KEY));
-        httpOptions.headers = httpOptions.headers.append('Authorization', localStorage.getItem('token'));
-      }
 
     post = function (_this,url, data, successHandler, errorHandler) {
         this.http.post(url, data).subscribe(result => {

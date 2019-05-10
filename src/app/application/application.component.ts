@@ -18,6 +18,8 @@ import { MsfEditDashboardComponent } from '../msf-edit-dashboard/msf-edit-dashbo
 import { ApplicationService } from '../services/application.service';
 import { MsfColumnSelectorComponent } from '../msf-column-selector/msf-column-selector.component';
 import { MsfShareDashboardComponent } from '../msf-share-dashboard/msf-share-dashboard.component';
+import { length } from '@amcharts/amcharts4/.internal/core/utils/Iterator';
+import { AuthService } from '../services/auth.service';
 
 
 @Component({
@@ -30,7 +32,6 @@ export class ApplicationComponent implements OnInit {
   isFullscreen: boolean;
   animal: string;
   name: string;
-  chartPlan: boolean;
   dynamicTablePlan: boolean;
   exportExcelPlan: boolean;
   dashboardPlan: boolean;
@@ -50,8 +51,8 @@ export class ApplicationComponent implements OnInit {
   @ViewChild('msfContainerRef')
   msfContainerRef: MsfContainerComponent;
 
-  constructor(public dialog: MatDialog, public globals: Globals, private service: MenuService,private router: Router,private excelService:ExcelService,
-    private appService: ApplicationService) {
+  constructor(public dialog: MatDialog, public globals: Globals, private menuService: MenuService,private router: Router,private excelService:ExcelService,
+    private appService: ApplicationService, private authService: AuthService) {
     this.status = false;
   }
 
@@ -64,7 +65,7 @@ export class ApplicationComponent implements OnInit {
 
 
   validateAdmin(){
-    this.service.getUserLoggedin(this, this.handleLogin, this.errorLogin);
+    this.menuService.getUserLoggedin(this, this.handleLogin, this.errorLogin);
   }
 
   handleLogin(_this,data){
@@ -81,12 +82,12 @@ export class ApplicationComponent implements OnInit {
   }
 
   getDashboardsUser(){
-    this.service.getDashboardsByUser(this, this.handlerDashboard, this.errorHandler);
+    this.menuService.getDashboardsByUser(this, this.handlerDashboard, this.errorHandler);
   }
 
   handlerDashboard(_this, data){
     _this.dashboards = data;
-    _this.service.getSharedDashboardsByUser(_this, _this.handlerSharedDashboard, _this.errorHandler);
+    _this.menuService.getSharedDashboardsByUser(_this, _this.handlerSharedDashboard, _this.errorHandler);
   }
 
   handlerSharedDashboard(_this, data){
@@ -99,17 +100,30 @@ export class ApplicationComponent implements OnInit {
     _this.globals.isLoading = false;
   }
   getAdvanceFeatures(){
-    this.service.getAdvanceFeatures(this,this.handlerSuccessAF,this.handlerErrorAF);
+    this.menuService.getAdvanceFeatures(this,this.handlerSuccessAF,this.handlerErrorAF);
 
     }
 
   handlerSuccessAF(_this,data){
     _this.planAdvanceFeatures = data;
-    _this.planAdvanceFeatures.forEach(item => {
-      item.advanceFeatureId == 1 ? _this.chartPlan = true : false;
-      item.advanceFeatureId == 2 ? _this.dashboardPlan = true : false;
-      item.advanceFeatureId == 3 ? _this.dynamicTablePlan = true : false;
-      item.advanceFeatureId == 4 ? _this.exportExcelPlan = true : false;
+
+    _this.globals.readOnlyDashboardPlan = false;
+    _this.dashboardPlan = false;
+    _this.dynamicTablePlan = false;
+    _this.exportExcelPlan = false;
+
+    _this.planAdvanceFeatures.forEach (item => {
+      if (item.advanceFeatureId == 1)
+        _this.globals.readOnlyDashboardPlan = true;
+
+      if (item.advanceFeatureId == 2)
+        _this.dashboardPlan = true;
+
+      if (item.advanceFeatureId == 3)
+        _this.dynamicTablePlan = true;
+
+      if (item.advanceFeatureId == 4)
+        _this.exportExcelPlan = true;
     });
 
     _this.validateAdmin ();
@@ -123,7 +137,7 @@ export class ApplicationComponent implements OnInit {
 
   getMenu(){
     this.globals.isLoading = true;
-    this.service.getMenu(this,this.handlerSuccess,this.handlerError);
+    this.menuService.getMenu(this,this.handlerSuccess,this.handlerError);
   }
 
   handlerSuccess(_this,data){
@@ -140,25 +154,52 @@ export class ApplicationComponent implements OnInit {
   temporalSelectOption(_this){
     _this.menu.categories.forEach(category => {
       category.options.forEach(option => {
-        if(option.id==166 && this.globals.currentApplication.id==3){
+        if(option.children.length>0){
+          _this.recursiveSearch(option.children,_this,category);
+        }else{
+          if(option.id==166 && this.globals.currentApplication.id==3){
+            _this.globals.clearVariables();
+            this.globals.currentMenuCategory = category;
+            _this.globals.currentOption = option;
+            _this.globals.initDataSource();
+            _this.globals.dataAvailabilityInit();
+            _this.globals.status = true;
+          }else if(option.id==14 && this.globals.currentApplication.id==4){
+            _this.globals.clearVariables();
+            this.globals.currentMenuCategory = category;
+            _this.globals.currentOption = option;
+            _this.globals.initDataSource();
+            _this.globals.dataAvailabilityInit();
+            _this.globals.status = true;
+          }
+        }
+      });
+    });
+    _this.getDashboardsUser();
+  }
+
+  recursiveSearch(childrens,_this,category){
+    childrens.forEach(option => {
+      if(option.children.length>0){
+        _this.recursiveSearch(option.children,_this,category);
+      }else{
+        if(option.id==166 && _this.globals.currentApplication.id==3){
           _this.globals.clearVariables();
-          this.globals.currentMenuCategory = category;
+          _this.globals.currentMenuCategory = category;
           _this.globals.currentOption = option;
           _this.globals.initDataSource();
           _this.globals.dataAvailabilityInit();
           _this.globals.status = true;
-        }else if(option.id==14 && this.globals.currentApplication.id==4){
+        }else if(option.id==14 && _this.globals.currentApplication.id==4){
           _this.globals.clearVariables();
-          this.globals.currentMenuCategory = category;
+          _this.globals.currentMenuCategory = category;
           _this.globals.currentOption = option;
           _this.globals.initDataSource();
           _this.globals.dataAvailabilityInit();
           _this.globals.status = true;
         }
-      });
-    });
-    _this.getDashboardsUser();
-
+      }
+    })
   }
 
 
@@ -335,8 +376,7 @@ toggle(){
   }
 
   logOut(){
-    window.localStorage.removeItem("token");
-    this.router.navigate(['']);
+    this.authService.removeToken ();
   }
 
   goToFullscreen(): void
@@ -407,12 +447,12 @@ toggle(){
 
         if (_this.globals.readOnlyDashboard)
         {
-          _this.service.deleteSharedDashboard (_this, _this.globals.currentDashboardMenu.id,
+          _this.menuService.deleteSharedDashboard (_this, _this.globals.currentDashboardMenu.id,
             _this.deleteSuccess, _this.deleteError);
         }
         else
         {
-          _this.service.deleteDashboard (_this, _this.globals.currentDashboardMenu.id,
+          _this.menuService.deleteDashboard (_this, _this.globals.currentDashboardMenu.id,
             _this.deleteSuccess, _this.deleteError);
         }
       }

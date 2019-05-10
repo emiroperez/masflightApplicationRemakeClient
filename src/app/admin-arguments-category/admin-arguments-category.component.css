@@ -3,6 +3,13 @@
     width: 100%;
 }
 
+#category-card {
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 9.5px;
+    padding-bottom: 9.5px;
+}
+
 .is-active {
     background-color: #232323;
 }

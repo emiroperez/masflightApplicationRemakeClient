@@ -40,7 +40,7 @@
                         Map
                         <mat-icon (click)="closeTab(5)" class="close-icon">close</mat-icon> 
                 </ng-template>
-            <app-msf-map #msfMapRef [isLoading]="globals.isLoading" (finishLoading)="finishLoadingMap($event)"></app-msf-map>
+            <app-msf-map #msfMapRef [isLoading]="globals.isLoading" [displayOptionPanel]="globals.status" (finishLoading)="finishLoadingMap($event)"></app-msf-map>
         </mat-tab> 
 
        <!-- <mat-tab  [style.visibility]= "globals.mapsc ? 'visible' : 'hidden' " #tabRef >
@@ -53,7 +53,7 @@
         
     </mat-tab-group>
     </div>
-    <app-msf-schedule-maps   [hidden]= "!globals.mapsc" > </app-msf-schedule-maps>
+    <app-msf-schedule-maps [currentOption]="globals.currentOption" [hidden]="!globals.mapsc"></app-msf-schedule-maps>
 </div>
 <app-msf-dashboard [currentDashboardMenu]="globals.currentDashboardMenu" *ngIf="globals.currentOption === 'dashboard'"></app-msf-dashboard>
 <app-intro *ngIf="!globals.currentOption"></app-intro>

@@ -1,83 +1,84 @@
-<div class="msf-register-header">
-    <button mat-icon-button routerLink="/application">
+<div style="overflow-y: auto; overflow-x: hidden" [style.height.px]="getInnerHeight()">
+    <div class="msf-register-header">
+        <button mat-icon-button routerLink="/application">
       <mat-icon>arrow_back</mat-icon>
     </button>
-    <img class="msf-medium-logo" src="../../assets/images/logo.png">
-    <div class="msf-register-header-content">
-        <div class="msf-register-header-title">
-            <div class="msf-register-header-title-content"> MENU ADMINISTRATION
-                <br /> Application: {{globals.currentApplication.name}}</div>
-        </div>
-        <div class="msf-register-header-image-content">
-            <img class="medium-user-image" src="../../assets/images/icon-user-white.png">
+        <img class="msf-medium-logo" src="../../assets/images/logo.png">
+        <div class="msf-register-header-content">
+            <div class="msf-register-header-title">
+                <div class="msf-register-header-title-content"> MENU ADMINISTRATION
+                    <br /> Application: {{globals.currentApplication.name}}</div>
+            </div>
+            <div class="msf-register-header-image-content">
+                <img class="medium-user-image" src="../../assets/images/icon-user-white.png">
+            </div>
         </div>
     </div>
-</div>
-<mat-card class="card-principal msf-center-container" style="height:87vh">
-    <mat-card-content>
-        <div style="display: flex; flex-direction: row;">
-            <div style="flex: 1; flex-direction: column; justify-content: center">
-                <div style="display: flex; flex-direction: row; flex-wrap: wrap">
-                    <div style="flex: 1; min-width: 455px; margin-left: 1%; margin-right: 1%">
-                        <div style="display: flex; flex-direction: row;align-items: center;">
-                            <div style="flex: 0.4">
-                                <h2 class="title-section">Menu</h2>
-                            </div>
-                            <div style="flex: 2">
-                                <mat-form-field class="msf-admin-search-option" >
-                                    <input class="search-input" matInput [(ngModel)]="searchTextOption" autocomplete="off" style="width:93%;height:24px;" (ngModelChange)="filterMenuOptions()">
-                                    <mat-icon style="color: white" aria-label="search">search</mat-icon>
-                                </mat-form-field>
-                            </div>
-                            <div style="flex: 1">
-                                <button mat-icon-button (click)="addNewItem()">
+    <mat-card class="card-principal msf-center-container" style="height:87vh">
+        <mat-card-content>
+            <div style="display: flex; flex-direction: row;">
+                <div style="flex: 1; flex-direction: column; justify-content: center">
+                    <div style="display: flex; flex-direction: row; flex-wrap: wrap">
+                        <div style="flex: 1; min-width: 455px; margin-left: 1%; margin-right: 1%">
+                            <div style="display: flex; flex-direction: row;align-items: center;">
+                                <div style="flex: 0.4">
+                                    <h2 class="title-section">Menu</h2>
+                                </div>
+                                <div style="flex: 2">
+                                    <mat-form-field class="msf-admin-search-option">
+                                        <input class="search-input" matInput [(ngModel)]="searchTextOption" autocomplete="off" style="width:93%;height:24px;" (ngModelChange)="filterMenuOptions()">
+                                        <mat-icon style="color: white" aria-label="search">search</mat-icon>
+                                    </mat-form-field>
+                                </div>
+                                <div style="flex: 1">
+                                    <button mat-icon-button (click)="addNewItem()">
                                     <mat-icon style="color: white" aria-label="add">add_circle</mat-icon>
                                 </button>
-                                <button mat-icon-button (click)="deleteOption()">
+                                    <button mat-icon-button (click)="deleteOption()">
                                     <mat-icon style="color: white" aria-label="delete">remove_circle</mat-icon>
                                 </button>
-                                <button mat-icon-button (click)="saveMenu()">
+                                    <button mat-icon-button (click)="saveMenu()">
                                     <mat-icon style="color: white" aria-label="save">save</mat-icon>
                                 </button>
+                                </div>
                             </div>
-                        </div>
-                        <div class="invisible-scrollbar" style="max-height: 400px; overflow: auto;width:90%">
-                            <!-- <div cdkDropList class="draggable-list" id="firstOne" [cdkDropListData]="menu" [cdkDropListConnectedTo]="idList" (cdkDropListDropped)="drop($event)">
+                            <div class="invisible-scrollbar" style="max-height: 400px; overflow: auto;width:90%">
+                                <!-- <div cdkDropList class="draggable-list" id="firstOne" [cdkDropListData]="menu" [cdkDropListConnectedTo]="idList" (cdkDropListDropped)="drop($event)">
                                 <div cdkDrag class="draggable-box" *ngFor="let option of menu ; let i = index " style="color: white; width: 86%">
                                     <app-admin-menu-recursive [menu]="option" [idList]="idList" [index]="i" (optionSelected)="getOptionSelected($event)" (idSelected)="getSelectIdDom($event)"></app-admin-menu-recursive>
                                 </div>
                             </div> -->
-                            <mat-tree style="background: transparent" [dataSource]="dataSource" [treeControl]="treeControl" cdkDropList (cdkDropListDropped)="drop($event)">
-                                <mat-tree-node [ngClass]="{'msf-show' : node.show,'msf-show' : node.show==null,'msf-hide': node.show==false}" style="display:flex; flex-direction:column;" matTreeNodePadding *matTreeNodeDef="let node" cdkDrag [cdkDragData]="node" (cdkDragStarted)="dragStart()" (cdkDragReleased)="dragEnd()"
-                                    (click)=" getOptionSelected(node)">
-                                    <div style="display:flex; flex-direction:row" [ngClass]="{'is-active': node.isActive,'is-inactive': !node.isActive }" class="menu-node">
-                                        <button mat-icon-button disabled></button>
-                                        <input type="text" name="optionname" autocomplete="off" matInput class="input-option-tree" [(ngModel)]="node.label" (ngModelChange)="setChange(node, node.label)">
-                                    </div>
-                                    <mat-divider></mat-divider>
-                                </mat-tree-node>
-                                <mat-tree-node [ngClass]="{'msf-show' : node.show,'msf-show' : node.show==null,'msf-hide': node.show==false}" style="display:flex; flex-direction:column;" matTreeNodePadding *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding cdkDrag [cdkDragData]="node" (cdkDragStarted)="dragStart()"
-                                   (click)=" getOptionSelected(node)">
-                                    <div style="display:flex; flex-direction:row" [ngClass]="{'is-active': node.isActive,'is-inactive': !node.isActive }" class="menu-node">
-                                        <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.label">
+                                <mat-tree style="background: transparent" [dataSource]="dataSource" [treeControl]="treeControl" cdkDropList (cdkDropListDropped)="drop($event)">
+                                    <mat-tree-node [ngClass]="{'msf-show' : node.show,'msf-show' : node.show==null,'msf-hide': node.show==false}" style="display:flex; flex-direction:column;" matTreeNodePadding *matTreeNodeDef="let node" cdkDrag [cdkDragData]="node" (cdkDragStarted)="dragStart()"
+                                        (cdkDragReleased)="dragEnd()" (click)=" getOptionSelected(node)">
+                                        <div style="display:flex; flex-direction:row" [ngClass]="{'is-active': node.isActive,'is-inactive': !node.isActive }" class="menu-node">
+                                            <button mat-icon-button disabled></button>
+                                            <input type="text" name="optionname" autocomplete="off" matInput class="input-option-tree" [(ngModel)]="node.label" (ngModelChange)="setChange(node, node.label)">
+                                        </div>
+                                        <mat-divider></mat-divider>
+                                    </mat-tree-node>
+                                    <mat-tree-node [ngClass]="{'msf-show' : node.show,'msf-show' : node.show==null,'msf-hide': node.show==false}" style="display:flex; flex-direction:column;" matTreeNodePadding *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding cdkDrag [cdkDragData]="node"
+                                        (cdkDragStarted)="dragStart()" (click)=" getOptionSelected(node)">
+                                        <div style="display:flex; flex-direction:row" [ngClass]="{'is-active': node.isActive,'is-inactive': !node.isActive }" class="menu-node">
+                                            <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.label">
                                   <mat-icon class="mat-icon-rtl-mirror">
                                     {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
                                   </mat-icon>
                                 </button>
-                                        <input type="text" name="optionname" autocomplete="off" matInput class="input-option-tree" [(ngModel)]="node.label" (ngModelChange)="setChange(node)">
-                                    </div>
-                                    <mat-divider></mat-divider>
-                                </mat-tree-node>
-                            </mat-tree>
+                                            <input type="text" name="optionname" autocomplete="off" matInput class="input-option-tree" [(ngModel)]="node.label" (ngModelChange)="setChange(node)">
+                                        </div>
+                                        <mat-divider></mat-divider>
+                                    </mat-tree-node>
+                                </mat-tree>
+                            </div>
                         </div>
-                    </div>
 
 
-                    <!------------------------------------------------------------------------------------------------------------------
+                        <!------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------->
-                    <div style="flex: 1; min-width: 400px; margin-left: 1%; margin-right: 1%">
-                        <!-- <div *ngIf="!optionSelected.isActive || optionSelected.isRoot">
+                        <div style="flex: 1; min-width: 400px; margin-left: 1%; margin-right: 1%">
+                            <!-- <div *ngIf="!optionSelected.isActive || optionSelected.isRoot">
                             <div class="button-setup" style="width: 100%">
                                 <div style="flex: 2">
                                     <h2 class="button-section">Add Category Arguments</h2>
@@ -89,44 +90,44 @@
                                 </div>
                             </div>
                         </div> -->
-                        <div *ngIf="!optionSelected.isRoot && optionSelected.isActive && optionSelected.id">
-                            <div *ngIf="optionSelected.children.length == 0">
-                                <h2 class="title-section">Menu Option Configuration</h2>
-                                <mat-form-field class="standard-text" style="width: 95%">
-                                    <input matInput class="standard-input-text" placeholder="URL Base" [(ngModel)]="optionSelected.baseUrl" (ngModelChange)="setChangeURL(optionSelected, optionSelected.baseUrl)">
-                                </mat-form-field>
-                                <mat-form-field class="standard-text" style="width: 45%; padding-right: 5%;">
-                                    <input matInput class="standard-input-text" placeholder="Icon" [(ngModel)]="optionSelected.icon" (ngModelChange)="setChangeIcon(optionSelected, optionSelected.icon)">
-                                </mat-form-field>
-                                <mat-form-field class="standard-text" style="width: 45%">
-                                    <input matInput class="standard-input-text" placeholder="Tab" [(ngModel)]="optionSelected.tab" (ngModelChange)="setChangeTab(optionSelected, optionSelected.tab)">
-                                </mat-form-field>
+                            <div *ngIf="!optionSelected.isRoot && optionSelected.isActive && optionSelected.id">
+                                <div *ngIf="optionSelected.children.length == 0">
+                                    <h2 class="title-section">Menu Option Configuration</h2>
+                                    <mat-form-field class="standard-text" style="width: 95%">
+                                        <input matInput class="standard-input-text" placeholder="URL Base" [(ngModel)]="optionSelected.baseUrl" (ngModelChange)="setChangeURL(optionSelected, optionSelected.baseUrl)">
+                                    </mat-form-field>
+                                    <mat-form-field class="standard-text" style="width: 45%; padding-right: 5%;">
+                                        <input matInput class="standard-input-text" placeholder="Icon" [(ngModel)]="optionSelected.icon" (ngModelChange)="setChangeIcon(optionSelected, optionSelected.icon)">
+                                    </mat-form-field>
+                                    <mat-form-field class="standard-text" style="width: 45%">
+                                        <input matInput class="standard-input-text" placeholder="Tab" [(ngModel)]="optionSelected.tab" (ngModelChange)="setChangeTab(optionSelected, optionSelected.tab)">
+                                    </mat-form-field>
+                                </div>
                             </div>
-                        </div>
-                        <div *ngIf="!optionSelected.isRoot && optionSelected.isActive && optionSelected.id">
-                            <div *ngIf="optionSelected.children.length == 0" style="display: flex; flex-direction: row;">
-                                <div class="button-setup">
-                                    <div style="flex: 4">
-                                        <h2 class="button-section">Drill Down Setup</h2>
-                                    </div>
-                                    <div style="flex: 1">
-                                        <button mat-icon-button (click)="editDrillDown()">
+                            <div *ngIf="!optionSelected.isRoot && optionSelected.isActive && optionSelected.id">
+                                <div *ngIf="optionSelected.children.length == 0" style="display: flex; flex-direction: row;">
+                                    <div class="button-setup">
+                                        <div style="flex: 4">
+                                            <h2 class="button-section">Drill Down Setup</h2>
+                                        </div>
+                                        <div style="flex: 1">
+                                            <button mat-icon-button (click)="editDrillDown()">
                   <mat-icon style="color: white" aria-label="delete">settings</mat-icon>
                 </button>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="button-setup">
-                                    <div style="flex: 4">
-                                        <h2 class="button-section">Output Options</h2>
-                                    </div>
-                                    <div style="flex: 1">
-                                        <button mat-icon-button (click)="editOutputOptions()">
+                                    <div class="button-setup">
+                                        <div style="flex: 4">
+                                            <h2 class="button-section">Output Options</h2>
+                                        </div>
+                                        <div style="flex: 1">
+                                            <button mat-icon-button (click)="editOutputOptions()">
                   <mat-icon style="color: white" aria-label="delete">settings</mat-icon>
                 </button>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <!-- <div class="button-setup" (click)="addCategoryArguments()">
+                                    <!-- <div class="button-setup" (click)="addCategoryArguments()">
                                     <div style="flex: 4">
                                         <h2 class="button-section">Category Arguments</h2>
                                     </div>
@@ -136,37 +137,38 @@
                       </button>
                                     </div>
                                 </div> -->
+                                </div>
                             </div>
-                        </div>
 
-                        <div *ngIf="!optionSelected.isRoot && optionSelected.isActive && optionSelected.id" style="flex: 1; flex-direction: column; justify-content: center">
+                            <div *ngIf="!optionSelected.isRoot && optionSelected.isActive && optionSelected.id" style="flex: 1; flex-direction: column; justify-content: center">
 
-                            <div *ngIf="optionSelected.children.length == 0">
-                                <div *ngIf="!optionSelected.isRoot && optionSelected.id">
-                                    <mat-form-field class="msf-admin-search">
-                                        <input class="search-input" matInput [(ngModel)]="searchText" style="width:95%;" autocomplete="off">
-                                        <mat-icon style="color: white" aria-label="search">search</mat-icon>
-                                    </mat-form-field>
-                                    <div class="msf-admin-show-selected">
-                                        <mat-checkbox class="admin-checkboxes" color="primary" [(ngModel)]="showSelected">Only Selected</mat-checkbox>
-                                    </div>
-                                    <div class="dialog-category-arguments-container">
-                                        <div style="display: flex;flex-direction: row; height: 30px; background-color: #333333; color:white">
-                                            <div style="width: 40%; margin:5px">Category</div>
-                                            <div style="width: 60%; margin: 5px">Description</div>
+                                <div *ngIf="optionSelected.children.length == 0">
+                                    <div *ngIf="!optionSelected.isRoot && optionSelected.id">
+                                        <mat-form-field class="msf-admin-search">
+                                            <input class="search-input" matInput [(ngModel)]="searchText" style="width:95%;" autocomplete="off">
+                                            <mat-icon style="color: white" aria-label="search">search</mat-icon>
+                                        </mat-form-field>
+                                        <div class="msf-admin-show-selected">
+                                            <mat-checkbox class="admin-checkboxes" color="primary" [(ngModel)]="showSelected">Only Selected</mat-checkbox>
                                         </div>
-                                        <div style="max-height: 220px; overflow-y: auto">
-                                            <div *ngFor="let item of categories | filter : searchText" style="color: white">
-                                                <div *ngIf="!item.toDelete" class="dialog-item" [ngClass]="{ 'is-active': item.isSelected, 'is-inactive': !item.isSelected ,'msf-hide':showSelected && !item.selected}">
-                                                    <mat-checkbox (change)="setSelectedCategoryArguments(item)" class="admin-checkboxes" color="primary" [(ngModel)]="item.selected" style="margin: 5px"></mat-checkbox>
-                                                    <img class="img-item-category-argument" src="{{item.icon}}">
-                                                    <input [disabled]="true" type="text" matInput [(ngModel)]="item.label" class="text-item-category-argument" style="width: 35%">
-                                                    <input [disabled]="true" type="text" matInput [(ngModel)]="item.description" class="text-item-category-argument" style="width: 55%; font-size: 11px">
-                                                    <button [ngClass]="item.selected?'background-principal':'background-principal-empty'" mat-icon-button (click)="editVariables(item)" style="text-align: right;margin-left: 10px;">
+                                        <div class="dialog-category-arguments-container">
+                                            <div style="display: flex;flex-direction: row; height: 30px; background-color: #333333; color:white">
+                                                <div style="width: 40%; margin:5px">Category</div>
+                                                <div style="width: 60%; margin: 5px">Description</div>
+                                            </div>
+                                            <div style="max-height: 220px; overflow-y: auto">
+                                                <div *ngFor="let item of categories | filter : searchText" style="color: white">
+                                                    <div *ngIf="!item.toDelete" class="dialog-item" [ngClass]="{ 'is-active': item.isSelected, 'is-inactive': !item.isSelected ,'msf-hide':showSelected && !item.selected}">
+                                                        <mat-checkbox (change)="setSelectedCategoryArguments(item)" class="admin-checkboxes" color="primary" [(ngModel)]="item.selected" style="margin: 5px"></mat-checkbox>
+                                                        <img class="img-item-category-argument" src="{{item.icon}}">
+                                                        <input [disabled]="true" type="text" matInput [(ngModel)]="item.label" class="text-item-category-argument" style="width: 35%">
+                                                        <input [disabled]="true" type="text" matInput [(ngModel)]="item.description" class="text-item-category-argument" style="width: 55%; font-size: 11px">
+                                                        <button [ngClass]="item.selected?'background-principal':'background-principal-empty'" mat-icon-button (click)="editVariables(item)" style="text-align: right;margin-left: 10px;">
                                                         <mat-icon *ngIf="item.selected" style="color: white; line-height: 10px;" aria-label="delete">settings</mat-icon>
                                                     </button>
-                                                </div>
+                                                    </div>
 
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -176,6 +178,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </mat-card-content>
-</mat-card>
+        </mat-card-content>
+    </mat-card>
+</div>

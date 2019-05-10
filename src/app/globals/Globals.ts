@@ -38,6 +38,7 @@ export class Globals {
   currentApplication : any;
   currentDashboardMenu : any;
   readOnlyDashboard : boolean = false;
+  readOnlyDashboardPlan: boolean = false;
   minDate:any;
   maxDate:any;
   welcome:any;

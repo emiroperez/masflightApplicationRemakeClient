@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Inject, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, Input, Inject, ChangeDetectorRef, ViewEncapsulation, HostListener } from '@angular/core';
 import { FormControl, Validators, FormGroup, FormArray, FormBuilder } from '@angular/forms';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Globals } from '../globals/Globals';
@@ -161,6 +161,8 @@ export class CreateMempershipsComponent implements OnInit {
 
   @Input('argument') public argument: Arguments;
 
+  innerHeight: number;
+  innerWidth: number;
   utils: Utils;
   index: any;
   menu: any[];
@@ -195,6 +197,9 @@ export class CreateMempershipsComponent implements OnInit {
 
 
   ngOnInit() {
+    this.innerHeight = window.innerHeight;
+    this.innerWidth = window.innerWidth;
+
     this.getAdvanceFeatures();
     this.getMenuData();
 
@@ -799,6 +804,23 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
       }
     });
 
+  }
+
+  @HostListener('window:resize', ['$event'])
+  checkScreen(event): void
+  {
+    this.innerHeight = event.target.innerHeight;
+    this.innerWidth = event.target.innerWidth;
+  }
+
+  getInnerHeight(): number
+  {
+    return this.innerHeight;
+  }
+
+  getInnerWidth(): number
+  {
+    return this.innerWidth;
   }
 
 }

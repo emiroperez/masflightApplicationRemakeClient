@@ -1,3 +1,4 @@
+<div style="overflow-y: auto; overflow-x: hidden" [style.height.px]="getInnerHeight()">
 <div class="msf-register-header" style="color: white">
     <button mat-icon-button routerLink="/application">
     <mat-icon>arrow_back</mat-icon>
@@ -17,7 +18,7 @@
 </div>
 
 
-<mat-card class="card-principal msf-center-container" style="color: white">
+<mat-card id="category-card" class="card-principal msf-center-container" style="color: white">
     <mat-card-content style="padding-right: 5%">
         <div style="display: flex; flex-direction: row;">
             <div style="display: flex; flex-direction: column;width:30%">
@@ -197,3 +198,4 @@
 
     </mat-card-content>
 </mat-card>
+</div>

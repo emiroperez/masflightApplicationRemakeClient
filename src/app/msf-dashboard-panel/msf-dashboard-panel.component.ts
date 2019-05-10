@@ -200,7 +200,9 @@ export class MsfDashboardPanelComponent implements OnInit {
       fontSizeCtrl: new FormControl ({ value: this.fontSizes[1], disabled: true }),
       valueFontSizeCtrl: new FormControl ({ value: this.fontSizes[1], disabled: true }),
       valueOrientationCtrl: new FormControl ({ value: this.orientations[0], disabled: true }),
-      intervalCtrl: new FormControl ({ value: 5, disabled: true })
+      intervalCtrl: new FormControl ({ value: 5, disabled: true }),
+      geodataValueCtrl: new FormControl ({ value: '', disabled: true }),
+      geodataKeyCtrl: new FormControl ({ value: '', disabled: true }),
     });
   }
 
@@ -480,7 +482,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       // Check chart type before generating it
       if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
       {
-        let chartColor, polygonSeries, polygonTemplate, hoverState, zoomControl, home, heatLegend;
+        let chartColor, polygonSeries, polygonTemplate, hoverState;
+        let minRange, maxRange, heatLegend, pow, home, zoomControl;
 
         chart = am4core.create ("msf-dashboard-chart-display-" + this.values.id, am4maps.MapChart);
         chartColor = am4core.color (this.values.paletteColors[0]);
@@ -522,211 +525,33 @@ export class MsfDashboardPanelComponent implements OnInit {
         hoverState = polygonTemplate.states.create ("hover");
         hoverState.properties.fill = chartColor;
 
-        // Set the values for each US state
-        /*
-        stateSeries.data = [
+        // Set the values for each polygon
+        polygonSeries.data = [];
+
+        for (let item of chart.geodata.features)
+        {
+          polygonSeries.data.push ({
+            id: item.id,
+            value: 0
+          });
+        }
+
+        for (let result of chartInfo)
+        {
+          for (let item of polygonSeries.data)
           {
-            id: "US-AL",
-            value: 4447100
-          },
-          {
-            id: "US-AK",
-            value: 626932
-          },
-          {
-            id: "US-AZ",
-            value: 5130632
-          },
-          {
-            id: "US-AR",
-            value: 2673400
-          },
-          {
-            id: "US-CA",
-            value: 33871648
-          },
-          {
-            id: "US-CO",
-            value: 4301261
-          },
-          {
-            id: "US-CT",
-            value: 3405565
-          },
-          {
-            id: "US-DE",
-            value: 783600
-          },
-          {
-            id: "US-FL",
-            value: 15982378
-          },
-          {
-            id: "US-GA",
-            value: 8186453
-          },
-          {
-            id: "US-HI",
-            value: 1211537
-          },
-          {
-            id: "US-ID",
-            value: 1293953
-          },
-          {
-            id: "US-IL",
-            value: 12419293
-          },
-          {
-            id: "US-IN",
-            value: 6080485
-          },
-          {
-            id: "US-IA",
-            value: 2926324
-          },
-          {
-            id: "US-KS",
-            value: 2688418
-          },
-          {
-            id: "US-KY",
-            value: 4041769
-          },
-          {
-            id: "US-LA",
-            value: 4468976
-          },
-          {
-            id: "US-ME",
-            value: 1274923
-          },
-          {
-            id: "US-MD",
-            value: 5296486
-          },
-          {
-            id: "US-MA",
-            value: 6349097
-          },
-          {
-            id: "US-MI",
-            value: 9938444
-          },
-          {
-            id: "US-MN",
-            value: 4919479
-          },
-          {
-            id: "US-MS",
-            value: 2844658
-          },
-          {
-            id: "US-MO",
-            value: 5595211
-          },
-          {
-            id: "US-MT",
-            value: 902195
-          },
-          {
-            id: "US-NE",
-            value: 1711263
-          },
-          {
-            id: "US-NV",
-            value: 1998257
-          },
-          {
-            id: "US-NH",
-            value: 1235786
-          },
-          {
-            id: "US-NJ",
-            value: 8414350
-          },
-          {
-            id: "US-NM",
-            value: 1819046
-          },
-          {
-            id: "US-NY",
-            value: 18976457
-          },
-          {
-            id: "US-NC",
-            value: 8049313
-          },
-          {
-            id: "US-ND",
-            value: 642200
-          },
-          {
-            id: "US-OH",
-            value: 11353140
-          },
-          {
-            id: "US-OK",
-            value: 3450654
-          },
-          {
-            id: "US-OR",
-            value: 3421399
-          },
-          {
-            id: "US-PA",
-            value: 12281054
-          },
-          {
-            id: "US-RI",
-            value: 1048319
-          },
-          {
-            id: "US-SC",
-            value: 4012012
-          },
-          {
-            id: "US-SD",
-            value: 754844
-          },
-          {
-            id: "US-TN",
-            value: 5689283
-          },
-          {
-            id: "US-TX",
-            value: 20851820
-          },
-          {
-            id: "US-UT",
-            value: 2233169
-          },
-          {
-            id: "US-VT",
-            value: 608827
-          },
-          {
-            id: "US-VA",
-            value: 7078515
-          },
-          {
-            id: "US-WA",
-            value: 5894121
-          },
-          {
-            id: "US-WV",
-            value: 1808344
-          },
-          {
-            id: "US-WI",
-            value: 5363675
-          },
-          {
-            id: "US-WY",
-            value: 493782
+            let resultInfo = result[this.values.valueColumn.id];
+
+            if (resultInfo == null)
+              continue;
+
+            if (item.id.includes (resultInfo))
+            {
+              item.value = result[this.values.variable.id];
+              break;
+            }
           }
-        ];
-        */
+        }
 
         // Display heat legend
         heatLegend = chart.createChild (am4maps.HeatLegend);
@@ -735,8 +560,42 @@ export class MsfDashboardPanelComponent implements OnInit {
         heatLegend.valign = "bottom";
         heatLegend.width = am4core.percent (20);
         heatLegend.marginRight = am4core.percent (4);
+        heatLegend.dx -= 10;
+
+        // Set minimum and maximum value for the heat legend
         heatLegend.minValue = 0;
-        heatLegend.maxValue = 40000000;
+        heatLegend.maxValue = 10;
+
+        // For the maximum value, get the highest value of the result and calculate
+        // it by doing an division with the power of 10
+        for (let item of polygonSeries.data)
+        {
+          if (heatLegend.maxValue < item.value)
+            heatLegend.maxValue = item.value;
+        }
+
+        // Find the power of 10 from the maximum result
+        pow = 1;
+        while (pow <= heatLegend.maxValue)
+          pow = (pow << 3) + (pow << 1);
+
+        pow /= 10; // notch down one power
+        heatLegend.maxValue = Math.ceil (heatLegend.maxValue / pow) * pow;
+
+        // Set minimum and maximum values for the heat legend
+        minRange = heatLegend.valueAxis.axisRanges.create ();
+        minRange.value = heatLegend.minValue;
+        minRange.label.text = "0";
+        maxRange = heatLegend.valueAxis.axisRanges.create ();
+        maxRange.value = heatLegend.maxValue;
+        maxRange.label.text = "" + maxRange.value;
+
+        // Hide internal heat legend value labels
+        heatLegend.valueAxis.renderer.labels.template.adapter.add ("text",
+          function (labelText) {
+            return "";
+          }
+        );
 
         // Add zoom control buttons
         zoomControl = new am4maps.ZoomControl ();
@@ -1321,7 +1180,23 @@ export class MsfDashboardPanelComponent implements OnInit {
   // values and results (if it was generated)
   getPanelInfo(): any
   {
-    if (this.values.currentChartType.flags & ChartFlags.FORM
+    if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
+    {
+      return {
+        id: this.values.id,
+        option: this.values.currentOption,
+        title: this.values.chartName,
+        chartType: this.chartTypes.indexOf (this.values.currentChartType),
+        categoryOptions: this.values.currentOptionCategories ? JSON.stringify (this.values.currentOptionCategories) : null,
+        function: this.geodatas.indexOf (this.values.geodata),
+        updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0),
+        analysis: this.values.chartColumnOptions ? this.values.chartColumnOptions.indexOf (this.values.variable) : null,
+        values: this.values.chartColumnOptions ? this.values.chartColumnOptions.indexOf (this.values.valueColumn) : null,
+        paletteColors: JSON.stringify (this.values.paletteColors),
+        lastestResponse: JSON.stringify (this.values.lastestResponse)
+      };
+    }
+    else if (this.values.currentChartType.flags & ChartFlags.FORM
       || this.values.currentChartType.flags & ChartFlags.PICTURE
       || this.values.currentChartType.flags & ChartFlags.TABLE
       || this.values.currentChartType.flags & ChartFlags.MAP)
@@ -1330,11 +1205,10 @@ export class MsfDashboardPanelComponent implements OnInit {
         id: this.values.id,
         option: this.values.currentOption,
         title: this.values.chartName,
-        chartColumnOptions: this.values.chartColumnOptions ? JSON.stringify (this.values.chartColumnOptions) : null,
         chartType: this.chartTypes.indexOf (this.values.currentChartType),
         categoryOptions: this.values.currentOptionCategories ? JSON.stringify (this.values.currentOptionCategories) : null,
-        function: 1,
         updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0),
+        function: 1,
         lastestResponse: JSON.stringify (this.values.lastestResponse)
       };
     }
@@ -1344,7 +1218,6 @@ export class MsfDashboardPanelComponent implements OnInit {
         id: this.values.id,
         option: this.values.currentOption,
         title: this.values.chartName,
-        chartColumnOptions: this.values.chartColumnOptions ? JSON.stringify (this.values.chartColumnOptions) : null,
         analysis: this.values.chartColumnOptions ? this.values.chartColumnOptions.indexOf (this.values.infoVar1) : null,
         xaxis: this.values.chartColumnOptions ? this.values.chartColumnOptions.indexOf (this.values.infoVar2) : null,
         values: this.values.chartColumnOptions ? this.values.chartColumnOptions.indexOf (this.values.infoVar3) : null,
@@ -1360,7 +1233,6 @@ export class MsfDashboardPanelComponent implements OnInit {
         id: this.values.id,
         option: this.values.currentOption,
         title: this.values.chartName,
-        chartColumnOptions: this.values.chartColumnOptions ? JSON.stringify (this.values.chartColumnOptions) : null,
         analysis: this.values.chartColumnOptions ? this.values.chartColumnOptions.indexOf (this.values.variable) : null,
         xaxis: this.values.chartColumnOptions ? this.values.chartColumnOptions.indexOf (this.values.xaxis) : null,
         values: this.values.chartColumnOptions ? this.values.chartColumnOptions.indexOf (this.values.valueColumn) : null,
@@ -1558,7 +1430,8 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   isResponseValid(): boolean
   {
-    if (this.values.currentChartType.flags & ChartFlags.MAP)
+    if (this.values.currentChartType.flags & ChartFlags.MAP
+      || this.values.currentChartType.flags & ChartFlags.HEATMAP)
     {
       if (this.utils.isJSONEmpty (this.values.lastestResponse))
         return false;
@@ -1671,25 +1544,31 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   handlerHeatMapSuccess(_this, data): void
   {
-    // destroy current chart if it's already generated to avoid a blank chart
-    _this.destroyChart ();
+    let response, result;
 
-    _this.values.displayChart = true;
-    _this.values.chartGenerated = true;
-    _this.values.infoGenerated = false;
-    _this.values.formGenerated = false;
-    _this.values.picGenerated = false;
-    _this.values.tableGenerated = false;
-
-    setTimeout (() =>
+    if (_this.utils.isJSONEmpty (data) || _this.utils.isJSONEmpty (data.Response))
     {
-      _this.values.isLoading = false;
+      _this.noDataFound ();
+      return;
+    }
 
-      _this.makeChart (data);
-  
-      _this.stopUpdateInterval ();
-      _this.startUpdateInterval ();
-    }, 50);
+    // only use the first result and filter out the values
+    response = data.Response;
+    for (let key in response)
+    {
+      let array = response[key];
+      if (array != null)
+      {
+        if (Array.isArray (array))
+        {
+          result = array;
+          break;
+        }
+      }
+    }
+
+    _this.values.lastestResponse = result;
+    _this.service.saveLastestResponse (_this, _this.getPanelInfo (), _this.handlerHeatMapLastestResponse, _this.handlerHeatMapError);
   }
 
   handlerMapSuccess(_this, data): void
@@ -1842,6 +1721,28 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.startUpdateInterval ();
   }
 
+  handlerHeatMapLastestResponse(_this): void
+  {
+    _this.destroyChart ();
+
+    _this.values.displayChart = true;
+    _this.values.chartGenerated = true;
+    _this.values.infoGenerated = false;
+    _this.values.formGenerated = false;
+    _this.values.picGenerated = false;
+    _this.values.tableGenerated = false;
+
+    setTimeout (() =>
+    {
+      _this.values.isLoading = false;
+
+      _this.makeChart (_this.values.lastestResponse);
+  
+      _this.stopUpdateInterval ();
+      _this.startUpdateInterval ();
+    }, 50);
+  }
+
   handlerMapLastestResponse(_this): void
   {
     // destroy current chart if it's already generated to avoid a blank chart
@@ -1892,8 +1793,6 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   handlerChartSuccess(_this, data): void
   {
-    let prepareChart;
-
     if (_this.values.currentChartType.flags & ChartFlags.XYCHART && _this.utils.isJSONEmpty (data.data))
     {
       _this.noDataFound ();
@@ -1957,6 +1856,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.chartForm.get ('xaxisCtrl').reset ();
     this.chartForm.get ('valueCtrl').reset ();
     this.chartForm.get ('columnCtrl').reset ();
+    this.chartForm.get ('geodataValueCtrl').reset ();
+    this.chartForm.get ('geodataKeyCtrl').reset ();
     this.chartForm.get ('fontSizeCtrl').setValue (this.fontSizes[1]);
     this.chartForm.get ('valueFontSizeCtrl').setValue (this.fontSizes[1]);
     this.chartForm.get ('valueOrientationCtrl').setValue (this.orientations[0]);
@@ -1976,6 +1877,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.chartForm.get ('fontSizeCtrl').enable ();
     this.chartForm.get ('valueFontSizeCtrl').enable ();
     this.chartForm.get ('valueOrientationCtrl').enable ();
+    this.chartForm.get ('geodataValueCtrl').enable ();
+    this.chartForm.get ('geodataKeyCtrl').enable ();
 
     this.values.currentOptionCategories = null;
   }
@@ -2135,6 +2038,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.chartForm.get ('xaxisCtrl').reset ();
     _this.chartForm.get ('valueCtrl').reset ();
     _this.chartForm.get ('columnCtrl').reset ();
+    _this.chartForm.get ('geodataValueCtrl').reset ();
+    _this.chartForm.get ('geodataKeyCtrl').reset ();
     _this.chartForm.get ('fontSizeCtrl').setValue (_this.fontSizes[1]);
     _this.chartForm.get ('valueFontSizeCtrl').setValue (_this.fontSizes[1]);
     _this.chartForm.get ('valueOrientationCtrl').setValue (_this.orientations[0]);
@@ -2154,6 +2059,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.chartForm.get ('fontSizeCtrl').enable ();
     _this.chartForm.get ('valueFontSizeCtrl').enable ();
     _this.chartForm.get ('valueOrientationCtrl').enable ();
+    _this.chartForm.get ('geodataValueCtrl').enable ();
+    _this.chartForm.get ('geodataKeyCtrl').enable ();
 
     _this.values.isLoading = false;
     _this.values.currentOptionCategories = null;
@@ -2485,12 +2392,14 @@ export class MsfDashboardPanelComponent implements OnInit {
       // disable and reset unused variables
       this.values.variable = null;
       this.chartForm.get ('variableCtrl').reset ();
+      this.chartForm.get ('geodataValueCtrl').reset ();
 
       this.values.xaxis = null;
       this.chartForm.get ('xaxisCtrl').reset ();
 
       this.values.valueColumn = null;
       this.chartForm.get ('valueCtrl').reset ();
+      this.chartForm.get ('geodataKeyCtrl').reset ();
 
       if (!(this.values.currentChartType.flags & ChartFlags.FORM))
       {
@@ -2525,10 +2434,17 @@ export class MsfDashboardPanelComponent implements OnInit {
         this.values.xaxis = null;
         this.chartForm.get ('xaxisCtrl').reset ();
     
-        this.values.valueColumn = null;
         this.chartForm.get ('valueCtrl').reset ();
-    
-        this.values.variable = null;
+
+        if (!(this.values.currentChartType.flags & ChartFlags.HEATMAP))
+        {
+          this.chartForm.get ('geodataValueCtrl').reset ();
+          this.values.variable = null;
+
+          this.chartForm.get ('geodataKeyCtrl').reset ();
+          this.values.valueColumn = null;
+        }
+
         this.chartForm.get ('variableCtrl').reset ();
       }
       else if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
@@ -2542,6 +2458,8 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       this.chartForm.get ('variableCtrl').enable ();
       this.chartForm.get ('valueCtrl').enable ();
+      this.chartForm.get ('geodataValueCtrl').enable ();
+      this.chartForm.get ('geodataKeyCtrl').enable ();
 
       this.values.infoVar1 = null;
 
@@ -2752,17 +2670,73 @@ export class MsfDashboardPanelComponent implements OnInit {
             this.chartForm.get ('xaxisCtrl').enable ();
 
           this.chartForm.get ('valueCtrl').enable ();
+          this.chartForm.get ('geodataValueCtrl').enable ();
+          this.chartForm.get ('geodataKeyCtrl').enable ();
           this.values.currentOption = option;
           break;
         }
       }
     }
 
+    if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
+    {
+      if (this.values.chartColumnOptions != null)
+      {
+        this.variableCtrlBtnEnabled = true;
+
+        if (this.values.variable != null && this.values.variable != -1)
+        {
+          for (i = 0; i < this.values.chartColumnOptions.length; i++)
+          {
+            if (i == this.values.variable)
+            {
+              this.chartForm.get ('geodataValueCtrl').setValue (this.values.chartColumnOptions[i]);
+              this.values.variable = this.values.chartColumnOptions[i];
+              break;
+            }
+          }
+        }
+
+        if (this.values.valueColumn != null && this.values.valueColumn != -1)
+        {
+          for (i = 0; i < this.values.chartColumnOptions.length; i++)
+          {
+            if (i == this.values.valueColumn)
+            {
+              this.chartForm.get ('geodataKeyCtrl').setValue (this.values.chartColumnOptions[i]);
+              this.values.valueColumn = this.values.chartColumnOptions[i];
+              break;
+            }
+          }
+        }
+      }
+
+      if (this.values.function != null && this.values.function != -1)
+      {
+        for (i = 0; i < this.geodatas.length; i++)
+        {
+          if (i == this.values.function)
+          {
+            this.values.geodata = this.geodatas[i];
+            break;
+          }
+        }
+      }
+      else
+        this.values.geodata = this.geodatas[0];
+
+      this.values.function = this.functions[0];
+      this.checkChartType ();
+      return;
+    }
+    else
+      this.values.geodata = this.geodatas[0];
+
     // picture and map panels doesn't need any data
     if (this.values.currentChartType.flags & ChartFlags.PICTURE
       && this.values.currentChartType.flags & ChartFlags.MAP)
     {
-      if (this.values.currentOptionCategories)
+      if (this.values.chartColumnOptions != null)
         this.variableCtrlBtnEnabled = true;
 
       this.checkChartType ();
@@ -2771,7 +2745,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     if (this.values.currentChartType.flags & ChartFlags.TABLE)
     {
-      if (this.values.currentOptionCategories)
+      if (this.values.chartColumnOptions != null)
         this.variableCtrlBtnEnabled = true;
 
       // set table column filters settings if loaded from database
@@ -2802,9 +2776,6 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.checkChartType ();
       return;
     }
-
-    // TODO: Load Heat Map values if saved
-    this.values.geodata = this.geodatas[0];
 
     if (this.values.currentChartType.flags & ChartFlags.FORM)
     {
@@ -3018,7 +2989,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       }
     }
 
-    if (this.values.currentOptionCategories)
+    if (this.values.chartColumnOptions != null)
       this.variableCtrlBtnEnabled = true;
 
     this.checkChartType ();
@@ -3088,7 +3059,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         }
         else if (_this.values.currentChartType.flags & ChartFlags.INFO
           && !(_this.values.currentChartType.flags & ChartFlags.PICTURE)
-          && !(_this.values.currentChartType.flags & ChartFlags.MAP))
+          && !(_this.values.currentChartType.flags & ChartFlags.MAP)
+          && !(_this.values.currentChartType.flags & ChartFlags.HEATMAP))
         {
           let variables;
 
@@ -3138,7 +3110,10 @@ export class MsfDashboardPanelComponent implements OnInit {
           panel.lastestResponse = JSON.stringify (variables);
         }
         else
+        {
           panel = _this.getPanelInfo ();
+          panel.lastestResponse = null;
+        }
 
         _this.values.isLoading = true;
         _this.service.updateDashboardPanel (_this, panel, _this.handlerUpdateSuccess, _this.handlerError);

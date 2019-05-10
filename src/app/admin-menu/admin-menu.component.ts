@@ -1,4 +1,4 @@
-import { OnInit, Component, Inject, AfterViewInit, ChangeDetectorRef, Renderer2, ViewChild, ViewChildren } from '@angular/core';
+import { OnInit, Component, Inject, AfterViewInit, ChangeDetectorRef, Renderer2, ViewChild, ViewChildren, HostListener } from '@angular/core';
 import { ApiClient } from '../api/api-client';
 import { Globals } from '../globals/Globals';
 import { ApplicationService } from '../services/application.service';
@@ -502,11 +502,10 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
- innerHeight: number;
+  innerHeight: number;
   menu: any[] = [];
   idList: any[] = ['firstOne'];
   categoryArguments: any[] = [];
-  drillDown: any[] = [];
   categories: any[] = [];
   outputs: any[] = [];
   argumentsDrillDown: any[] = [];
@@ -553,7 +552,9 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     nestedNode.tab = node.tab;
     this.dataChange.next(this.data);
   }
+
   ngOnInit() {
+    this.innerHeight = window.innerHeight;
     this.getMenuData();
     this.getCategoryArguments();
   }
@@ -572,7 +573,6 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     } else {
       this.treeControl.collapseAll();
     }
-
   }
   recursiveOption(option: any,_this) {
     if(option.children.length!=0){
@@ -594,20 +594,18 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
         // if(option.menuParentId!=null){
         //   _this.findOnMenu(option.menuParentId)
         // }
-
         // if(option.categoryParentId!=null){
         //   _this.findOnMenu(option.categoryParentId)
         // }
-
       }else{
         option.show = false;
       }
     }else{
       option.show = true;
       // this.treeControl.expand(option);
-
     }
   }
+
   findOnMenu(optionId){
     for (let index = 0; index < this.treeControl.dataNodes.length; index++) {
       const option = this.treeControl.dataNodes[index];
@@ -630,23 +628,23 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   }
 
   findOnMenuRecursive(options: any[], _this,optionId) {
-      for (let index = 0; index < options.length; index++) {
-        const element = options[index];
-          if(optionId==element.id){
-            element.isOpened=true;
-            if(element.menuParentId!=null){
-              _this.findOnMenu(element.menuParentId)
-            }
-            if(element.categoryParentId!=null){
-              _this.findOnMenu(element.categoryParentId)
-            }
-          }else{
-            if(element.children.length!=0){
-              this.findOnMenuRecursive(element.children,this,optionId);
+    for (let index = 0; index < options.length; index++) {
+      const element = options[index];
+        if(optionId==element.id){
+          element.isOpened=true;
+          if(element.menuParentId!=null){
+            _this.findOnMenu(element.menuParentId)
           }
+          if(element.categoryParentId!=null){
+            _this.findOnMenu(element.categoryParentId)
+          }
+        }else{
+          if(element.children.length!=0){
+            this.findOnMenuRecursive(element.children,this,optionId);
         }
       }
-  }
+    }
+}
 
   getCategoryArguments() {
     this.service.loadCategoryArguments(this, this.handlerSuccessCategoryArguments, this.handlerErrorCategoryArguments);
@@ -1320,10 +1318,10 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
       this.dataChange.next(this.data);
   }
   }
+
   filterChanged() {
     this.filter(this.searchTextOption);
     if(this.searchTextOption)
-
     {
       this.treeControl.expandAll();
     } else {
@@ -1335,9 +1333,8 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
     let filteredTreeData;
     if (filterText) {
       console.log(this.dataSource.data);
-      filteredTreeData = this.dataSource.data.filter(d => d.label.toLocaleLowerCase().indexOf(filterText.toLocaleLowerCase()) > -1);
       Object.assign([], filteredTreeData).forEach(ftd => {
-        let str = (<string>ftd.uid);
+        let str = String(ftd.id);
         while (str.lastIndexOf('.') > -1) {
           const index = str.lastIndexOf('.');
           str = str.substring(0, index);
@@ -1357,4 +1354,14 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
     this.dataChange.next(filteredTreeData);
   }
 
+  @HostListener('window:resize', ['$event'])
+  checkScreen(event): void
+  {
+    this.innerHeight = event.target.innerHeight;
+  }
+
+  getInnerHeight(): number
+  {
+    return this.innerHeight;
+  }
 }

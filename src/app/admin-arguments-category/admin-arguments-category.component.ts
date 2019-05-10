@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
+import { Component, OnInit, Renderer2, HostListener } from '@angular/core';
 import { Globals } from '../globals/Globals';
 import { ApiClient } from '../api/api-client';
 import { ApplicationService } from '../services/application.service';
@@ -12,6 +12,7 @@ import { MessageComponent } from '../message/message.component';
 })
 export class AdminArgumentsCategoryComponent implements OnInit {
 
+  innerHeight: number;
   category: any = {label: '', icon: '', description: '', isSelected: false};
   categories: any[] = [];
   optionSelected: any;
@@ -24,6 +25,8 @@ export class AdminArgumentsCategoryComponent implements OnInit {
   constructor(private http: ApiClient,  public dialog: MatDialog, public globals: Globals, private service: ApplicationService) { }
 
   ngOnInit() {
+    this.innerHeight = window.innerHeight;
+
     this.getCategoryArguments();
 
   }
@@ -106,5 +109,14 @@ deleteArgument(argument) {
   argument.toDelete = true;
 }
 
+  @HostListener('window:resize', ['$event'])
+  checkScreen(event): void
+  {
+    this.innerHeight = event.target.innerHeight;
+  }
 
+  getInnerHeight(): number
+  {
+    return this.innerHeight;
+  }
 }

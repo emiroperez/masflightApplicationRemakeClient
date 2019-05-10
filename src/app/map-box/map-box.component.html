@@ -1,7 +1,8 @@
-<mgl-map #map
+<mgl-map
     [style]="'mapbox://styles/mapbox/dark-v9'"
     [zoom]="zoom"
     [center]="center"
+    (load)="map = $event"
   >
 
   <mgl-geojson-source

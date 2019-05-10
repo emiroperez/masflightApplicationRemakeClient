@@ -13,20 +13,21 @@ import { UserActivationComponent } from '../user-activation/user-activation.comp
 import { ForgotPasswordComponent } from '../forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from '../reset-password/reset-password.component';
 import { AdminArgumentsCategoryComponent } from '../admin-arguments-category/admin-arguments-category.component'
+import { AuthGuard } from '../guards/auth.guard';
 
 export const routes: Routes = [
   { path: '', component: LoginScreenComponent },
-  { path: 'welcome', component: WelcomeComponent },
-  { path: 'register', component: RegisterComponent },
-  { path: 'application', component: ApplicationComponent },
-  { path: 'admin-menu', component: AdminMenuComponent },
-  { path: 'create-membership', component: CreateMempershipsComponent },
-  { path: 'category-arguments', component: CategoryArgumentsComponent },
-  { path: 'app-msf-test', component: MsfTestComponent},
-  { path: 'user-activation', component: UserActivationComponent},
-  { path: 'forgot-password', component: ForgotPasswordComponent},
-  { path: 'reset-password', component: ResetPasswordComponent},
-  { path: 'arguments-category', component: AdminArgumentsCategoryComponent}
+  { path: 'welcome', component: WelcomeComponent, canActivate: [AuthGuard] },
+  { path: 'register', component: RegisterComponent, canActivate: [AuthGuard] },
+  { path: 'application', component: ApplicationComponent, canActivate: [AuthGuard] },
+  { path: 'admin-menu', component: AdminMenuComponent, canActivate: [AuthGuard] },
+  { path: 'create-membership', component: CreateMempershipsComponent, canActivate: [AuthGuard] },
+  { path: 'category-arguments', component: CategoryArgumentsComponent, canActivate: [AuthGuard] },
+  { path: 'app-msf-test', component: MsfTestComponent, canActivate: [AuthGuard] },
+  { path: 'user-activation', component: UserActivationComponent, canActivate: [AuthGuard] },
+  { path: 'forgot-password', component: ForgotPasswordComponent, canActivate: [AuthGuard] },
+  { path: 'reset-password', component: ResetPasswordComponent, canActivate: [AuthGuard] },
+  { path: 'arguments-category', component: AdminArgumentsCategoryComponent, canActivate: [AuthGuard] }
 
 ];
 

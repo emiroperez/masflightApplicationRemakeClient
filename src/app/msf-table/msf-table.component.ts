@@ -285,7 +285,7 @@ export class MsfTableComponent implements OnInit {
         mainElement = [mainElement];
       }
       if( _this.tableOptions.totalRecord > 0){
-        if(_this.currentOption.metaData==1 || _this.currentOption.tabType=='scmap'){  
+        if(_this.currentOption.metaData==1 || _this.currentOption.metaData==3 || _this.currentOption.tabType=='scmap'){  
           _this.tableOptions.displayedColumns = data.metadata;
           // if(_this.groupingArgument!=null){
             _this.tableOptions.displayedColumns  = _this.addGroupingColumns(_this.tableOptions.displayedColumns);
@@ -315,6 +315,9 @@ export class MsfTableComponent implements OnInit {
               _this.tableOptions.moreResultsBtn = true;
             }
           }else{  
+            if(_this.tableOptions.actualPageNumber==undefined)
+              _this.tableOptions.actualPageNumber = _this.actualPageNumber;
+            
             var aux = (_this.tableOptions.actualPageNumber+1)*100;
             aux = aux!=0 ? aux : 100;
             if( _this.tableOptions.totalRecord<aux){
@@ -565,15 +568,29 @@ export class MsfTableComponent implements OnInit {
     return aux;
   }
 
-  resultsAvailable(): boolean
+  resultsAvailable()
   {
     if (this.currentOption == null)
-      return false;
+      return 'msf-no-visible';
 
-    return ((this.tableOptions.dataSource && !this.tableOptions.template && this.currentOption.metaData==1) || (this.currentOption.tabType=='scmap'));
+    if (this.tableOptions.dataSource && !this.tableOptions.template && ((this.currentOption.metaData==1) || (this.currentOption.metaData==3) || (this.currentOption.tabType=='scmap'))) {
+        return 'msf-visible'
+    } else {
+      return 'msf-no-visible'
+    }
   }
 
   cancelLoading(){
     this.isLoading = false;
   }
+
+  noResults(){
+    if(this.tableOptions){
+      if(!this.tableOptions.dataSource && !this.tableOptions.template){
+        return "msf-show";
+      }
+    }
+    return "msf-hide";
+  }
+
 }
