@@ -377,6 +377,7 @@ toggle(){
 
   logOut(){
     this.authService.removeToken ();
+    this.router.navigate (['']);
   }
 
   goToFullscreen(): void
