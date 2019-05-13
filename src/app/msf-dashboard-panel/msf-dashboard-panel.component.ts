@@ -624,14 +624,14 @@ export class MsfDashboardPanelComponent implements OnInit {
           chart.goHome ();
         });
 
-        this.chart.homeZoomLevel = 0.9;
-        this.chart.goHome ();
+        chart.homeZoomLevel = 0.9;
+        chart.goHome ();
 
         // Workaround to make sure that the heat map displays correctly
         setTimeout (() =>
         {
-          this.chart.homeZoomLevel = 1;
-          this.chart.goHome ();
+          chart.homeZoomLevel = 1;
+          chart.goHome ();
         }, 50);
       }
       else if (this.values.currentChartType.flags & ChartFlags.MAP)
