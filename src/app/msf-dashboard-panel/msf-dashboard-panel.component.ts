@@ -603,7 +603,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         chart.zoomControl = zoomControl;
         zoomControl.slider.height = 100;
         zoomControl.valign = "top";
-        zoomControl.align = "left";
+        zoomControl.align = "right";
         zoomControl.marginTop = 40;
         zoomControl.marginRight = 10;
         zoomControl.plusButton.height = 26;
@@ -617,7 +617,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         home.width = 30;
         home.height = 30;
         home.icon.path = homeSVG;
-        home.align = "left";
+        home.align = "right";
         home.marginRight = 15;
         home.dy += 10;
         home.events.on ("hit", function (ev) {

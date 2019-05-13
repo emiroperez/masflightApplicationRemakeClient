@@ -128,9 +128,9 @@ export class MsfScheduleMapsComponent implements OnInit {
       chart.zoomControl = zoomControl;
       zoomControl.slider.height = 100;
       zoomControl.valign = "top";
-      zoomControl.align = "right";
+      zoomControl.align = "left";
       zoomControl.marginTop = 40;
-      zoomControl.marginRight = 10;
+      zoomControl.marginLeft = 10;
       zoomControl.plusButton.height = 26;
       zoomControl.minusButton.height = 26;
 
@@ -142,8 +142,8 @@ export class MsfScheduleMapsComponent implements OnInit {
       home.width = 30;
       home.height = 30;
       home.icon.path = homeSVG;
-      home.align = "right";
-      home.marginRight = 15;
+      home.align = "left";
+      home.marginLeft = 15;
       home.dy += 10;
       home.events.on ("hit", function (ev) {
         chart.goHome ();
