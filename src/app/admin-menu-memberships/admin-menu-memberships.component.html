@@ -1,4 +1,4 @@
-<div *ngIf="option && !option.toDelete">
+<div *ngIf="option && !option.toDelete" class="admin-menu-checkbox-container">
     <mat-checkbox style="height: 35px" (change)="cascadeState(option)" [disabled]="false" color="primary" [checked]="descendantsAllSelected(option)" [indeterminate]="descendantsPartiallySelected(option)" [(ngModel)]="option.selected" [ngModelOptions]="{standalone: true}">{{ option.label }}</mat-checkbox>
     <button mat-icon-button (click)="toggle(option)" *ngIf="option.children && option.children.length > 0" style="vertical-align: super;">
         <mat-icon *ngIf="!option.isOpened" style="color: white" aria-label="Toggle">keyboard_arrow_down</mat-icon>
