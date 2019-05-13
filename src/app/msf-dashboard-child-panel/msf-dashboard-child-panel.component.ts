@@ -304,6 +304,7 @@ export class MsfDashboardChildPanelComponent {
           chart = am4core.create ("msf-dashboard-child-panel-chart-display", am4charts.PieChart);
 
         chart.data = chartInfo.dataProvider;
+        chart.numberFormatter.numberFormat = "#,###.#";
 
         // Set label font size
         chart.fontSize = 10;
@@ -326,6 +327,7 @@ export class MsfDashboardChildPanelComponent {
         let categoryAxis, valueAxis, parseDate, stacked;
 
         chart = am4core.create ("msf-dashboard-child-panel-chart-display", am4charts.XYChart);
+        chart.numberFormatter.numberFormat = "#,###.#";
 
         // Don't parse dates if the chart is a simple version
         if (this.values.currentChartType.flags & ChartFlags.XYCHART)
