@@ -509,12 +509,21 @@ export class MsfDashboardPanelComponent implements OnInit {
 
         // Exclude Antartica if the geography data is the world
         if (chart.geodata === am4geodata_worldLow)
+        {
           polygonSeries.exclude = ["AQ"];
+
+          chart.homeGeoPoint = {
+            latitude: 24.8567,
+            longitude: 2.3510
+          };
+        }
 
         // Move the delta longitude a bit to the left if the geography
         // data is Asia
         if (chart.geodata === am4geodata_asiaLow)
           chart.deltaLongitude = -90;
+        else
+          chart.deltaLongitude = 0;
 
         chart.homeZoomLevel = 1;
 
@@ -555,7 +564,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         }
 
         // Display heat legend
-        heatLegend = chart.createChild (am4maps.HeatLegend);
+        heatLegend = chart.chartContainer.createChild (am4maps.HeatLegend);
         heatLegend.series = polygonSeries;
         heatLegend.align = "right";
         heatLegend.valign = "bottom";
@@ -623,11 +632,6 @@ export class MsfDashboardPanelComponent implements OnInit {
         home.events.on ("hit", function (ev) {
           chart.goHome ();
         });
-
-        // Make sure that the map is visible
-        setTimeout (() => {
-          polygonSeries.appear ();
-        }, 100);
       }
       else if (this.values.currentChartType.flags & ChartFlags.MAP)
       {
