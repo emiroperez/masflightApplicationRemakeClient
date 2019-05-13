@@ -623,6 +623,16 @@ export class MsfDashboardPanelComponent implements OnInit {
         home.events.on ("hit", function (ev) {
           chart.goHome ();
         });
+
+        this.chart.homeZoomLevel = 0.9;
+        this.chart.goHome ();
+
+        // Workaround to make sure that the heat map displays correctly
+        setTimeout (() =>
+        {
+          this.chart.homeZoomLevel = 1;
+          this.chart.goHome ();
+        }, 50);
       }
       else if (this.values.currentChartType.flags & ChartFlags.MAP)
       {
@@ -981,10 +991,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       else
       {
         this.values.chartGenerated = true;
-
-        setTimeout (() => {
-          this.makeChart (this.values.lastestResponse);
-        }, 1000);
+        this.makeChart (this.values.lastestResponse);
       }
     }
   }
@@ -3623,8 +3630,8 @@ export class MsfDashboardPanelComponent implements OnInit {
   toggleMapRoute(route): void
   {
     let tempLat, tempLng, sumX, sumY, sumZ, avgX, avgY, avgZ;
-    let newCities, curcity, updateChartInterval;
     let circle, label, imageSeriesTemplate, hoverState;
+    let newCities, curcity;
     let zoomLevel, self;
 
     self = this;
@@ -4029,12 +4036,10 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.chart.goHome ();
 
       // Workaround to avoid double lines
-      updateChartInterval = setInterval (() =>
+      setTimeout (() =>
       {
         this.chart.homeZoomLevel = zoomLevel;
         this.chart.goHome ();
-
-        clearInterval (updateChartInterval);
       }, 50);
     });
   }
