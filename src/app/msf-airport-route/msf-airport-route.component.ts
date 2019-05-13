@@ -37,7 +37,14 @@ export class MsfAirportRouteComponent implements OnInit {
 
 
   getAirports(search, handlerSuccess){
-    let url
+    let url;
+
+    if (!this.argument.url)
+    {
+      this.loading = false;
+      return;
+    }
+
     if(this.argument.url.substring(0,1)=="/"){
 
       url = this.globals.baseUrl + this.argument.url + "?search="+ (search != null?search:'');
