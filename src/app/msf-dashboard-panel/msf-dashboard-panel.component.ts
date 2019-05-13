@@ -623,6 +623,11 @@ export class MsfDashboardPanelComponent implements OnInit {
         home.events.on ("hit", function (ev) {
           chart.goHome ();
         });
+
+        // Make sure that the map is visible
+        setTimeout (() => {
+          polygonSeries.appear ();
+        }, 100);
       }
       else if (this.values.currentChartType.flags & ChartFlags.MAP)
       {
