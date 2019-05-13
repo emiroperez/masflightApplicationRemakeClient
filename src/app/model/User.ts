@@ -24,6 +24,14 @@ export class User{
 
     constructor(private paymentIn: Payment){
         this.payment = paymentIn;
+        this.name = "";
+        this.lastname = "";
+        this.password = "";
+        this.repeatPassword = "";
+        this.email = "";
+        this.address = "";
+        this.postalCode = "";
+        this.phoneNumber = "";
     }
 
 }

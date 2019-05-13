@@ -37,20 +37,6 @@ export class RegisterComponent implements OnInit {
   isLinear = true;
   title: string = 'Personal Information';
 
-  /* nameValidator = new FormControl('name', [Validators.required]);
-  lastNameValidator = new FormControl('lastName', [Validators.required]);
-  passwordValidator = new FormControl('password', [Validators.required]);
-  repeatPasswordValidator = new FormControl('repeatPassword', [Validators.required, RegisterComponent.passwordMatchValidator(this)]);
-  emailValidator = new FormControl('email', [Validators.required,Validators.email]);
-  addressValidator = new FormControl('address', [Validators.required]);
-  countryValidator = new FormControl('country', [Validators.required]);
-  stateValidator = new FormControl('state', [Validators.required]);
-  postalCodeValidator = new FormControl('postalCode', [Validators.required]);
-  phoneNumberValidator = new FormControl('phoneNumber', [Validators.required]);
-  cardNumberValidator = new FormControl('cardNumber', [Validators.required]);
-  expiryDateValidator = new FormControl('expiryDate', [Validators.required]);
-  cvvValidator = new FormControl('cvv', [Validators.required]); */
-
   personalInformationForm = new FormGroup({
     nameValidator:new FormControl('name', [Validators.required]),
     lastNameValidator : new FormControl('lastName', [Validators.required]),
@@ -83,7 +69,6 @@ export class RegisterComponent implements OnInit {
     expiryDateValidator : new FormControl('expiryDate', [Validators.required, RegisterComponent.expiriDateValidator(this)]),
     cvvValidator : new FormControl('cvv', [Validators.required])
   })
-
 
  /*  states: State[] = [
     {name: 'California', id: '1'},
@@ -128,6 +113,10 @@ export class RegisterComponent implements OnInit {
   }
 
   selectionChange(event){
+    this.setUserValues ();
+    this.setPlanValue ();
+    this.setPaymentValues ();
+
     if(event.selectedIndex == 0){
       this.title = 'Personal Information';
     }else if(event.selectedIndex == 1){
@@ -135,7 +124,6 @@ export class RegisterComponent implements OnInit {
     }else if(event.selectedIndex == 2){
       this.title = 'Payment Method';
     }
-
   }
 
 
@@ -253,7 +241,7 @@ export class RegisterComponent implements OnInit {
   static passwordMatchValidator(comp: RegisterComponent): ValidatorFn {
     return (control: AbstractControl): ValidationErrors => {
       if(comp.users!=undefined){
-        return comp.users.password !== control.value ? { mismatch: true } : null;
+        return comp.personalInformationForm.get ('passwordValidator').value !== control.value ? { mismatch: true } : null;
       }else{
         return null;
       }
@@ -377,6 +365,7 @@ export class RegisterComponent implements OnInit {
 
   insertUser(){
 		if(this.personalInformationForm.valid && this.planInformationForm.valid && this.paymentInformationForm.valid ){
+      this.setPaymentValues ();
       this.userPlan.IdUser=this.users;
       this.userPlan.planPayment = this.users.payment;
       this.userServices.saveUser(this,this.userPlan, this.saveUserHandleResponse,this.errorHandleResponsen);
@@ -391,6 +380,8 @@ export class RegisterComponent implements OnInit {
         data: { title:"Error", message: "No valid form, you must choose a plan"}
       });
     }
+    else
+      this.setPlanValue ();
   }
 
   saveUserHandleResponse(this_,data){
@@ -457,5 +448,30 @@ export class RegisterComponent implements OnInit {
     return result;
   }
 
+  setUserValues()
+  {
+    this.users.name = this.personalInformationForm.get ('nameValidator').value;
+    this.users.lastname = this.personalInformationForm.get ('lastNameValidator').value;
+    this.users.password = this.personalInformationForm.get ('passwordValidator').value;
+    this.users.repeatPassword = this.personalInformationForm.get ('repeatPasswordValidator').value;
+    this.users.email = this.personalInformationForm.get ('emailValidator').value;
+    this.users.address = this.personalInformationForm.get ('addressValidator').value;
+    this.users.country = this.personalInformationForm.get ('countryValidator').value;
+    this.users.postalCode = this.personalInformationForm.get ('postalCodeValidator').value;
+    this.users.phoneNumber = this.personalInformationForm.get ('phoneNumberValidator').value;
+  }
+
+  setPlanValue()
+  {
+    this.userPlan.IdFare = this.planInformationForm.get ('planValidator').value;
+  }
+
+  setPaymentValues()
+  {
+    this.users.payment.cardNumber = this.paymentInformationForm.get ('cardNumberValidator').value;
+    this.users.payment.expiryDate = this.paymentInformationForm.get ('expiryDateValidator').value;
+    this.users.payment.cvv = this.paymentInformationForm.get ('cvvValidator').value;
+    this.users.payment.paymentType = this.paymentInformationForm.get ('paymentTypeValidator').value;
+  }
 }
 
