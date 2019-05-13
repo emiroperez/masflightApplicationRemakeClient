@@ -606,15 +606,20 @@ export class MsfDashboardPanelComponent implements OnInit {
         zoomControl.align = "right";
         zoomControl.marginTop = 40;
         zoomControl.marginRight = 10;
+        zoomControl.plusButton.height = 26;
+        zoomControl.minusButton.height = 26;
 
         // Add home buttom to zoom out
         home = chart.chartContainer.createChild (am4core.Button);
         home.icon = new am4core.Sprite ();
         home.icon.dx -= 9;
+        home.icon.dy -= 9;
         home.width = 30;
+        home.height = 30;
         home.icon.path = homeSVG;
         home.align = "right";
         home.marginRight = 15;
+        home.dy += 10;
         home.events.on ("hit", function (ev) {
           chart.goHome ();
         });
@@ -659,15 +664,20 @@ export class MsfDashboardPanelComponent implements OnInit {
         zoomControl.align = "right";
         zoomControl.marginTop = 40;
         zoomControl.marginRight = 10;
+        zoomControl.plusButton.height = 26;
+        zoomControl.minusButton.height = 26;
 
         // Add home buttom to zoom out
         home = chart.chartContainer.createChild (am4core.Button);
         home.icon = new am4core.Sprite ();
         home.icon.dx -= 9;
+        home.icon.dy -= 9;
         home.width = 30;
+        home.height = 30;
         home.icon.path = homeSVG;
         home.align = "right";
         home.marginRight = 15;
+        home.dy += 10;
         home.events.on ("hit", function (ev) {
           chart.goHome ();
         });
