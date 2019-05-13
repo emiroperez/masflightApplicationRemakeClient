@@ -105,7 +105,12 @@ export class RegisterComponent implements OnInit {
 
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.paymentInformationForm.get ('paymentTypeValidator').setValue ('');
+    this.paymentInformationForm.get ('cardNumberValidator').setValue ('');
+    this.paymentInformationForm.get ('expiryDateValidator').setValue ('');
+    this.paymentInformationForm.get ('cvvValidator').setValue ('');
+  }
 
   ngOnDestroy(): void {
     this._onDestroy.next ();
