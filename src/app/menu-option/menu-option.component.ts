@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, EventEmitter, Output } from '@angular/core';
 import { Option } from '../model/Option';
 import { Globals } from '../globals/Globals'
 import { MatMenuTrigger } from '@angular/material';
@@ -16,7 +16,8 @@ export class MenuOptionComponent implements OnInit {
   @ViewChild('childMenu') public childMenu;
 
 
-
+  @Output('optionChanged')
+  optionChanged = new EventEmitter ();
 
 
   constructor(private globals: Globals) { }
@@ -25,6 +26,7 @@ export class MenuOptionComponent implements OnInit {
   }
 
   optionClickHandler(option) {
+    this.optionChanged.emit ();
     this.globals.clearVariables();
     this.globals.currentOption = option;
     this.globals.initDataSource();
@@ -47,5 +49,10 @@ export class MenuOptionComponent implements OnInit {
 
   closeMenu() {
     //this.trigger.closeMenu();
+  }
+
+  optionChangedFromChildren()
+  {
+    this.optionChanged.emit ();
   }
 }

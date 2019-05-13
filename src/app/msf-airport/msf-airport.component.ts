@@ -56,14 +56,21 @@ getBindName(){
   return this.argument.selectedAttribute;
 }
 
-getRecords(search, handlerSuccess){
-  let url
+ getRecords(search, handlerSuccess){
+  let url;
+
+  if (!this.argument.url)
+  {
+    this.loading = false;
+    return;
+  }
+
   if(this.argument.url.substring(0,1)=="/"){
     url = this.globals.baseUrl + this.argument.url + "?search="+ (search != null?search:'');
   }else{
    url = this.argument.url+ (search != null?search:'');
   }
-    this.http.get(this,url,handlerSuccess,this.handlerError, null);  
+  this.http.get(this,url,handlerSuccess,this.handlerError, null);  
 }
 
 handlerSuccess(_this,data, tab){   

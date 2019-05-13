@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
 import { Menu } from '../model/Menu';
 import { MatMenuTrigger } from '@angular/material';
 import { MatDialog} from '@angular/material';
@@ -26,6 +26,9 @@ export class MenuComponent implements OnInit {
 
   @Input('optionWelcomeComponent')
   optionWelcomeComponent: OptionWelcomeComponent;
+
+  @Output('optionChanged')
+  optionChanged = new EventEmitter ();
 
   trigger: MatMenuTrigger;
 
@@ -78,6 +81,7 @@ export class MenuComponent implements OnInit {
 
   goToDashboard(dashboard, readOnly): void
   {
+    this.optionChanged.emit ();
     this.globals.minDate=null;
     this.globals.maxDate=null;
     this.globals.showBigLoading = true;
@@ -109,5 +113,8 @@ export class MenuComponent implements OnInit {
 
   }
 
-
+  optionChangedFromChildren()
+  {
+    this.optionChanged.emit ();
+  }
 }
