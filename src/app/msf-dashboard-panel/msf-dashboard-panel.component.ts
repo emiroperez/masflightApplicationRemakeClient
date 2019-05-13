@@ -970,8 +970,11 @@ export class MsfDashboardPanelComponent implements OnInit {
       }
       else
       {
-        this.makeChart (this.values.lastestResponse);
         this.values.chartGenerated = true;
+
+        setTimeout (() => {
+          this.makeChart (this.values.lastestResponse);
+        }, 1000);
       }
     }
   }
