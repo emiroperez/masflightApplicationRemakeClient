@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import {FormControl, Validators,ValidatorFn, ValidationErrors, AbstractControl, FormGroup} from '@angular/forms';
 import { User} from '../model/User';
 import { State } from '../model/State';
-import { County } from '../model/Country';
+import { Country } from '../model/Country';
 import { Plan } from '../model/Plan';
 import { UserPlan } from '../model/UserPlan';
 import { Utils } from '../commons/utils';
@@ -14,6 +14,8 @@ import { Globals } from '../globals/Globals';
 import { NgSelectConfig } from '@ng-select/ng-select';
 import { MessageComponent } from '../message/message.component';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { takeUntil } from 'rxjs/operators';
+import { ReplaySubject, Subject } from 'rxjs';
 
 
 
@@ -28,12 +30,13 @@ export class RegisterComponent implements OnInit {
   utils: Utils;
   plans: Plan[];
   userPlan : UserPlan;
-  countries: County[];
+  countries: Country[];
   states : State[];
-  selectedCountries: County[];
+  selectedCountries: Country[];
   selectedStates: State[];
   isLinear = true;
   title: string = 'Personal Information';
+
   /* nameValidator = new FormControl('name', [Validators.required]);
   lastNameValidator = new FormControl('lastName', [Validators.required]);
   passwordValidator = new FormControl('password', [Validators.required]);
@@ -63,6 +66,12 @@ export class RegisterComponent implements OnInit {
   });
 
   public countryFilterCtrl: FormControl = new FormControl();
+  public stateFilterCtrl: FormControl = new FormControl();
+
+  public filteredCountries: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
+  public filteredStates: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
+
+  private _onDestroy = new Subject<void> ();
 
   planInformationForm = new FormGroup({
     planValidator : new FormControl('prices',[Validators.required])
@@ -83,7 +92,7 @@ export class RegisterComponent implements OnInit {
     {name: 'Washington', id: '4'},
   ];
 
-  countries: County[] = [
+  countries: Country[] = [
     {name: 'Australia', id: '4'},
     {name: 'Canada', id: '3'},
     {name: 'China', id: '1'},
@@ -107,12 +116,16 @@ export class RegisterComponent implements OnInit {
     this.states = new Array();
     this.globals.isLoading = true;
     this.registerServices.getCountries(this,this.renderCountries,this.errorCountries);
-    this.registerServices.getPlans(this,this.renderPlans,this.errorPlans);
 
 
   }
 
   ngOnInit() {}
+
+  ngOnDestroy(): void {
+    this._onDestroy.next ();
+    this._onDestroy.complete ();
+  }
 
   selectionChange(event){
     if(event.selectedIndex == 0){
@@ -137,13 +150,78 @@ export class RegisterComponent implements OnInit {
     _this.globals.isLoading = false;
   }
 
+  filterCountries(): void
+  {
+    if (!this.countries)
+      return;
+
+    // get the search keyword
+    let search = this.countryFilterCtrl.value;
+    if (!search)
+    {
+      this.filteredCountries.next (this.countries.slice ());
+      return;
+    }
+
+    search = search.toLowerCase ();
+    this.filteredCountries.next (
+      this.countries.filter (a => a.fullName.toLowerCase ().indexOf (search) > -1)
+    );
+  }
+
+  countriesSearchChange(): void
+  {
+    // load the initial option list
+    this.filteredCountries.next (this.countries.slice ());
+    // listen for search field value changes
+    this.countryFilterCtrl.valueChanges
+      .pipe (takeUntil (this._onDestroy))
+      .subscribe (() => {
+        this.filterCountries ();
+      });
+  }
+
   renderCountries(_this,data){
     _this.countries = data;
     _this.selectedCountries = _this.countries;
+    _this.countriesSearchChange ();
+    _this.registerServices.getPlans(_this,_this.renderPlans,_this.errorPlans);
   }
 
   errorCountries(_this,error){
     //console.log(error);
+    _this.registerServices.getPlans(_this,_this.renderPlans,_this.errorPlans);
+  }
+
+  filterStates(): void
+  {
+    if (!this.states)
+      return;
+
+    // get the search keyword
+    let search = this.stateFilterCtrl.value;
+    if (!search)
+    {
+      this.filteredStates.next (this.states.slice ());
+      return;
+    }
+
+    search = search.toLowerCase ();
+    this.filteredStates.next (
+      this.states.filter (a => a.fullName.toLowerCase ().indexOf (search) > -1)
+    );
+  }
+
+  stateSearchChange(): void
+  {
+    // load the initial option list
+    this.filteredStates.next (this.states.slice ());
+    // listen for search field value changes
+    this.stateFilterCtrl.valueChanges
+      .pipe (takeUntil (this._onDestroy))
+      .subscribe (() => {
+        this.filterStates ();
+      });
   }
 
   CountryChangeEvent(event){
@@ -151,8 +229,10 @@ export class RegisterComponent implements OnInit {
     if (event != undefined){
       this.states = event.value.states;
       this.selectedStates = this.states;
+      this.stateSearchChange ();
     }else{
       this.states=[];
+      this.filteredStates.next ([]);
     }
   }
 
@@ -357,8 +437,8 @@ export class RegisterComponent implements OnInit {
     this.selectedStates = result;
   }
 
-  selectCountries(query: string):County[]{
-    let result: County[] = [];
+  selectCountries(query: string):Country[]{
+    let result: Country[] = [];
     for(let a of this.countries){
       if(a.name.toLowerCase().indexOf(query) > -1){
         result.push(a)
