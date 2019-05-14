@@ -4,10 +4,8 @@
 }
 
 #category-card {
-    padding-left: 16px;
-    padding-right: 16px;
-    padding-top: 9.5px;
-    padding-bottom: 9.5px;
+    padding: 16px;
+    height: 523px;
 }
 
 .is-active {
