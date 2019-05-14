@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
-import {FormControl, Validators,ValidatorFn, ValidationErrors, AbstractControl, FormGroup} from '@angular/forms';
+import { FormControl, Validators,ValidatorFn, ValidationErrors, AbstractControl, FormGroup } from '@angular/forms';
 import { User} from '../model/User';
 import { State } from '../model/State';
 import { Country } from '../model/Country';
@@ -26,6 +26,7 @@ import { ReplaySubject, Subject } from 'rxjs';
   encapsulation: ViewEncapsulation.None
 })
 export class RegisterComponent implements OnInit {
+  innerHeight: number;
   users: User;
   utils: Utils;
   plans: Plan[];
@@ -106,6 +107,7 @@ export class RegisterComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.innerHeight = window.innerHeight;
     this.paymentInformationForm.get ('paymentTypeValidator').setValue ('');
     this.paymentInformationForm.get ('cardNumberValidator').setValue ('');
     this.paymentInformationForm.get ('expiryDateValidator').setValue ('');
@@ -477,6 +479,17 @@ export class RegisterComponent implements OnInit {
     this.users.payment.expiryDate = this.paymentInformationForm.get ('expiryDateValidator').value;
     this.users.payment.cvv = this.paymentInformationForm.get ('cvvValidator').value;
     this.users.payment.paymentType = this.paymentInformationForm.get ('paymentTypeValidator').value;
+  }
+
+  @HostListener('window:resize', ['$event'])
+  checkScreen(event): void
+  {
+    this.innerHeight = event.target.innerHeight;
+  }
+
+  getInnerHeight(): number
+  {
+    return this.innerHeight;
   }
 }
 
