@@ -1,4 +1,4 @@
-<div style="overflow-y: auto; overflow-x: hidden" [style.height.px]="getInnerHeight()">
+<div style="overflow-y: auto;-webkit-overflow-scrolling: touch; overflow-x: hidden" [style.height.px]="getInnerHeight()">
     <div class="msf-register-header">
         <button mat-icon-button routerLink="/application">
       <mat-icon>arrow_back</mat-icon>
@@ -156,7 +156,7 @@
                                                 <div style="width: 40%; margin:5px">Category</div>
                                                 <div style="width: 60%; margin: 5px">Description</div>
                                             </div>
-                                            <div style="max-height: 220px; overflow-y: auto">
+                                            <div style="max-height: 220px; overflow-y: auto ;-webkit-overflow-scrolling: touch;">
                                                 <div *ngFor="let item of categories | filter : searchText" style="color: white">
                                                     <div *ngIf="!item.toDelete" class="dialog-item" [ngClass]="{ 'is-active': item.isSelected, 'is-inactive': !item.isSelected ,'msf-hide':showSelected && !item.selected}">
                                                         <mat-checkbox (change)="setSelectedCategoryArguments(item)" class="admin-checkboxes" color="primary" [(ngModel)]="item.selected" style="margin: 5px"></mat-checkbox>
