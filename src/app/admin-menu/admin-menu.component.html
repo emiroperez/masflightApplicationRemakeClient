@@ -14,12 +14,12 @@
             </div>
         </div>
     </div>
-    <mat-card class="card-principal msf-center-container" style="height:87vh">
-        <mat-card-content>
-            <div style="display: flex; flex-direction: row;">
+    <mat-card class="card-principal msf-center-container" style="height: calc(100% - 134px)">
+        <mat-card-content [style.height.%]="100">
+            <div style="display: flex; flex-direction: row;" [style.height.%]="100">
                 <div style="flex: 1; flex-direction: column; justify-content: center">
-                    <div style="display: flex; flex-direction: row; flex-wrap: wrap">
-                        <div style="flex: 1; min-width: 455px; margin-left: 1%; margin-right: 1%">
+                    <div style="display: flex; flex-direction: row; flex-wrap: wrap" [style.height.%]="100">
+                        <div style="flex: 1; min-width: 455px; margin-left: 1%; margin-right: 1%" [style.height.%]="100">
                             <div style="display: flex; flex-direction: row;align-items: center;">
                                 <div style="flex: 0.4">
                                     <h2 class="title-section">Menu</h2>
@@ -42,7 +42,7 @@
                                 </button>
                                 </div>
                             </div>
-                            <div class="invisible-scrollbar" style="max-height: 400px; overflow: auto;width:90%">
+                            <div class="invisible-scrollbar" style="max-height: 400px; overflow: auto;width:90%; height: calc(100% - 100px)">
                                 <!-- <div cdkDropList class="draggable-list" id="firstOne" [cdkDropListData]="menu" [cdkDropListConnectedTo]="idList" (cdkDropListDropped)="drop($event)">
                                 <div cdkDrag class="draggable-box" *ngFor="let option of menu ; let i = index " style="color: white; width: 86%">
                                     <app-admin-menu-recursive [menu]="option" [idList]="idList" [index]="i" (optionSelected)="getOptionSelected($event)" (idSelected)="getSelectIdDom($event)"></app-admin-menu-recursive>
