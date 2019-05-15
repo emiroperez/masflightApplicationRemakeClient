@@ -1,0 +1,18 @@
+<div class="msf-dashboard-control-variables-title">
+  <div class="msf-two-factor-auth-close-button">
+    <mat-icon class="msf-dashboard-close-icon" aria-label="close" (click)="closeDialog()">close</mat-icon>
+  </div>
+</div>
+<div class="two-factor-auth-container">
+  Your account is beign used to sign in to a new device. We've sent you an e-mail with the verification code.
+</div>
+<div class="two-factor-auth-form two-factor-auth-container">
+  <div class="block-item-input">
+    <mat-form-field>
+      <input matInput autocomplete="off" type="number" placeholder="Enter Verification Code" [(ngModel)]="code"/>
+    </mat-form-field>
+  </div>
+</div>
+<div class="msf-dashboard-control-variables-button">
+  <button mat-flat-button class="login-button" (click)="validate2FACode()">OK</button>
+</div>

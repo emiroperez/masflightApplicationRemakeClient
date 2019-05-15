@@ -183,7 +183,9 @@ import { DialogArgumentPreviewComponent } from './dialog-argument-preview/dialog
 import { MsfDashboardPanelOptionPipe } from './msf-dashboard-panel/msf-dashboard-panel-option-pipe';
 import { MsfDashboardPanelTypePipe } from './msf-dashboard-panel/msf-dashboard-panel-type-pipe';
 import { AuthGuard } from './guards/auth.guard';
-import {MatTreeModule} from '@angular/material/tree';
+import { MatTreeModule } from '@angular/material/tree';
+import { DeviceDetectorModule } from 'ngx-device-detector';
+import { TwoFactorLoginDialogComponent } from './two-factor-login-dialog/two-factor-login-dialog.component';
 
 @NgModule({
   declarations: [
@@ -346,7 +348,8 @@ import {MatTreeModule} from '@angular/material/tree';
     MsfArgumentComponent,
     DialogArgumentPreviewComponent,
     MsfDashboardPanelOptionPipe,
-    MsfDashboardPanelTypePipe
+    MsfDashboardPanelTypePipe,
+    TwoFactorLoginDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -383,7 +386,8 @@ import {MatTreeModule} from '@angular/material/tree';
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     ColorPickerModule,
-    DragScrollModule
+    DragScrollModule,
+    DeviceDetectorModule.forRoot()
   ],
   providers: [
     AuthService,
@@ -425,7 +429,8 @@ import {MatTreeModule} from '@angular/material/tree';
     MsfShareDashboardComponent,
     MsfSharedDashboardItemsComponent,
     MsfAddSharedDashboardPanelComponent,
-    MsfAddSharedDashboardComponent
+    MsfAddSharedDashboardComponent,
+    TwoFactorLoginDialogComponent
   ]
 })
 export class AppModule { }

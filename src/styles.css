@@ -26,6 +26,10 @@ body {
   background-color: #ED5C27;
 }
 
+.two-factor-auth-form .mat-checkbox-checked.mat-primary .mat-checkbox-background {
+  background-color: #ED5C27;
+}
+
 .mat-card {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
@@ -435,6 +439,10 @@ p {
 }
 
 .login-form .mat-form-field.mat-focused .mat-form-field-ripple {
+  background-color: #ED5C27;
+}
+
+.two-factor-auth-form .mat-form-field.mat-focused .mat-form-field-ripple {
   background-color: #ED5C27;
 }
 
@@ -2515,6 +2523,29 @@ mat-tab-group {
   margin-top: -10px;
   margin-right: -9px;
   color: #01abec;
+  cursor: pointer;
+}
+
+.msf-two-factor-auth-close-button {
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  position: absolute;
+  width: 100%;
+}
+.msf-two-factor-auth-close-button .msf-dashboard-close-icon {
+  font-size: 16px;
+  margin-top: -10px;
+  margin-right: -9px;
+  color: inherit;
+  cursor: inherit;
+}
+.msf-two-factor-auth-close-button .msf-dashboard-close-icon:hover {
+  font-size: 16px;
+  margin-top: -10px;
+  margin-right: -9px;
+  color: #ed5c27;
   cursor: pointer;
 }
 
@@ -4750,6 +4781,12 @@ span.msf-subCell {
 
 .msf-no-visible {
   visibility: hidden;
+}
+
+.two-factor-auth-container {
+  color: #ffffff;
+  width: 100%;
+  text-align: justify;
 }
 
 /*# sourceMappingURL=styles.css.map */

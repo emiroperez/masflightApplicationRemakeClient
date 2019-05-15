@@ -35,6 +35,8 @@ body
 .login-form .mat-checkbox-checked.mat-primary .mat-checkbox-background
     background-color: $msf-secondary-color-orange
 
+.two-factor-auth-form .mat-checkbox-checked.mat-primary .mat-checkbox-background
+    background-color: $msf-secondary-color-orange
 
 .mat-card
     font-family: $msf-font-family
@@ -404,6 +406,9 @@ p
 
 //kp20032019
 .login-form .mat-form-field.mat-focused .mat-form-field-ripple
+    background-color: $msf-secondary-color-orange
+
+.two-factor-auth-form .mat-form-field.mat-focused .mat-form-field-ripple
     background-color: $msf-secondary-color-orange
 
 .mat-error
@@ -2142,6 +2147,18 @@ mat-tab-group
         .msf-dashboard-close-icon:hover
             @include msf-dashboard-control-variables-close-icon(#01abec, pointer)
 
+.msf-two-factor-auth-close-button
+    z-index: 99999
+    display: flex
+    flex-direction: column
+    align-items: flex-end
+    position: absolute
+    width: 100%
+    .msf-dashboard-close-icon
+        @include msf-dashboard-control-variables-close-icon
+    .msf-dashboard-close-icon:hover
+        @include msf-dashboard-control-variables-close-icon(#ed5c27, pointer)
+
 @mixin msf-dashboard-dialog-title($font-size, $padding-bottom)
     text-align: center
     font-size: $font-size
@@ -3535,7 +3552,7 @@ table.datasource
 .login-form .mat-checkbox-frame 
     // border-color: $msf-font-color !important kp20032019
     border-color: $msf-font-color-black !important
-    
+ 
 .mat-icon.input_img
     color: #ED5C27 !important
 
@@ -4013,3 +4030,8 @@ span.msf-subCell
 
 .msf-no-visible
     visibility: hidden
+
+.two-factor-auth-container
+    color: #ffffff
+    width: 100%
+    text-align: justify

@@ -14,15 +14,27 @@ const TOKEN_STORAGE_KEY = "token";
 export class AuthService {
   jwtHelper: JwtHelperService = new JwtHelperService ();
 
-  constructor(private http: HttpClient, private globals:Globals)
+  constructor(public http: HttpClient, private globals: Globals)
   { 
   }
 
-  login (_this, credentials, successHandler, errorHandler)
+  login(_this, credentials, successHandler, errorHandler)
   {
     // let url = 'http://localhost:8887/login';
     let url = this.globals.baseUrl + '/login';
     this.post (_this, url, credentials, successHandler, errorHandler);
+  }
+
+  validateLogin(_this, session, successHandler, errorHandler)
+  {
+    let url = this.globals.baseUrl + '/validateLogin';
+    this.post (_this, url, session, successHandler, errorHandler);
+  }
+
+  verify2FACode(_this, session, code, successHandler, errorHandler)
+  {
+    let url = this.globals.baseUrl + '/verify2FACode?code=' + code;
+    this.post (_this, url, session, successHandler, errorHandler);
   }
 
   getToken(): string
