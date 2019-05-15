@@ -3299,6 +3299,7 @@ mat-dialog-container {
   padding: 10px !important;
   height: auto !important;
   font-size: 100% !important;
+  background-color: #333333 !important;
 }
 
 .mat-radio-label-content {
@@ -3475,7 +3476,12 @@ mat-dialog-container {
 }
 
 .mat-tab-header, .mat-tab-nav-bar {
+  background: #333333;
   border-bottom: 1px solid rgba(62, 60, 60, 0.8) !important;
+}
+
+.mat-tab-header-pagination-chevron {
+  border-color: white !important;
 }
 
 .msf-card-container {
