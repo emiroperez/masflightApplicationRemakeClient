@@ -1270,7 +1270,7 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
     if(this.optionSelected.menuOptionArgumentsAdmin.length>0){
     for (let i=0; i < this.optionSelected.menuOptionArgumentsAdmin.length;i++){
       let aux = this.optionSelected.menuOptionArgumentsAdmin[i];
-      if(aux.id==catId.id){
+      if(aux.id==catId.id && aux.id!=null && catId.id!=null){
         aux = catId;
         this.optionSelected.menuOptionArgumentsAdmin[i] = aux;
       }
