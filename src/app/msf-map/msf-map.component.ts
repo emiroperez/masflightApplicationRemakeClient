@@ -53,7 +53,13 @@ export class MsfMapComponent implements OnInit {
     {id:'point',name:'Dots'}
   ]; 
 
+  mapStyles:any[] = [                  
+    {id:"mapbox://styles/mapbox/dark-v9",name:'Dark'},
+    {id:"mapbox://styles/mapbox/light-v10",name:'Light'}
+  ]; 
+
   currentMapType;
+  currentMapStyle;
   resizeInterval: any;
   resizeTimeout: any;
 
@@ -65,6 +71,7 @@ export class MsfMapComponent implements OnInit {
 
   ngOnInit() {
     this.currentMapType = this.mapTypes[1];
+    this.currentMapStyle = this.mapStyles[1];
   }
 
   ngOnChanges(changes: SimpleChanges): void
@@ -160,6 +167,25 @@ export class MsfMapComponent implements OnInit {
     }
   }
 
+  mapStyleChange(style){
+    switch (style.name) {
+      case 'light':
+        if (this.map2) {
+          this.map2.resize ();
+        }else if (this.map) {
+          this.map.resize ();
+        }
+        break;
+      case 'dark':        
+        if (this.map2) {
+          this.map2.resize ();
+       }else if (this.map) {
+          this.map.resize ();
+        }
+        break;
+    }
+  }
+  
   setCoordinates(data){
     for(let features of data){
       for(let feature of features.features){
