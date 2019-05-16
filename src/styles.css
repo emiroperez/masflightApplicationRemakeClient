@@ -526,8 +526,8 @@ p {
 }
 
 .msf-register-header {
-  width: 70%;
   margin: 30px auto;
+  justify-content: center;
   display: flex;
   height: 42px;
 }
@@ -706,7 +706,6 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 }
 
 .msf-register-header-content {
-  width: 75%;
   margin-left: 350px;
 }
 

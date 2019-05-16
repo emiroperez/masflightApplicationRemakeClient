@@ -21,8 +21,8 @@
         <mat-form-field style="width:50%; float: right;">
             <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
         </mat-form-field>
-        <div style="overflow: auto; width: 100%; height: 100%">
-        <table mat-table matSort [dataSource]="dataSource" class="datasource welcome-table">
+        <div style="display: flex; flex-direction: column; overflow: hidden; width: 100%; height: 100%; align-items: center; margin-left: -17px">
+        <table mat-table matSort style="overflow: auto;" [dataSource]="dataSource" class="datasource welcome-table">
 
             <ng-container matColumnDef="columnName">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
@@ -93,9 +93,8 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         </table>
+        <mat-paginator style="width: 100%; max-width: 2000px" class="activation-form" [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons></mat-paginator>
         </div>
-
-        <mat-paginator class="activation-form" [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons></mat-paginator>
     </div>
 </mat-card>
 </div>
