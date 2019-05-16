@@ -112,13 +112,13 @@ export class LoginScreenComponent implements OnInit {
     this.router.navigate(['/welcome']);
   }
 
-  verifyLogin(_this, pass)
+  verifyLogin(_this, result)
   {
     let self = _this;
 
     _this.globals.isLoading = false;
 
-    if (pass)
+    if (!result)
       _this.goToWelcomeScreen ();
     else
     {
@@ -127,6 +127,7 @@ export class LoginScreenComponent implements OnInit {
         width: '300px',
         panelClass: 'msf-dashboard-control-variables-dialog',
         data: {
+          message: result == 2 ? "You haven't logged in for 5 days." : "Your account is being used to sign in to a new device.",
           session: _this.session
         }
       });

@@ -21,11 +21,11 @@ export class TwoFactorLoginDialogComponent {
     this.authService.verify2FACode (this, this.data.session, this.code, this.handleResponse, this.handleError);
   }
 
-  handleResponse(_this, pass)
+  handleResponse(_this, result)
   {
     _this.dialogRef.close ({
-      pass: pass,
-      message: !pass ? "Invalid Authorization Code" : null
+      pass: result,
+      message: !result ? "Authorization Failed." : null
     });
   }
 
