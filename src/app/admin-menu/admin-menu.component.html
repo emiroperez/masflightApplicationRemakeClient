@@ -126,6 +126,16 @@
                 </button>
                                         </div>
                                     </div>
+                                    <div class="button-setup">
+                                        <mat-form-field style="height: 40px; border:0; line-height: 30px" class="select-dark button-section" [floatLabel]="'never'">
+                                            <mat-label class="select-dark">Type of use</mat-label>
+                                            <mat-select class="select-dark" style="width: 100%;" autocomplete="off" name="optionUse" [(value)]=optionSelected.optionUse (selectionChange)="setChangeUse()">
+                                                <mat-option value="1">Menu Option</mat-option>
+                                                <mat-option value="2">Dashboard Option</mat-option>
+                                                <mat-option value="0">Both</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
 
                                     <!-- <div class="button-setup" (click)="addCategoryArguments()">
                                     <div style="flex: 4">

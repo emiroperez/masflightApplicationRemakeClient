@@ -424,6 +424,7 @@ export class ExampleFlatNode {
   level: number;
   menuOptionArgumentsAdmin: any[];
   categoryParentId: string;
+  optionUse: string;
   baseUrl: string;
   icon: string;
   tab: string;
@@ -468,6 +469,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
         flatNode.level=level;
         flatNode.menuOptionArgumentsAdmin=node.menuOptionArgumentsAdmin;
         flatNode.categoryParentId=node.categoryParentId;
+        flatNode.optionUse = node.optionUse;
         flatNode.baseUrl= node.baseUrl;
         flatNode.icon= node.iconicon;
         flatNode.tab= node.tab;
@@ -508,7 +510,6 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   categoryArguments: any[] = [];
   drillDown: any[] = [];
   categories: any[] = [];
-  drillDown: any[] = [];
   outputs: any[] = [];
   argumentsDrillDown: any[] = [];
   optionSelected: any = {};
@@ -552,6 +553,12 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   setChangeTab(node){
     const nestedNode = this.flatNodeMap.get(node);
     nestedNode.tab = node.tab;
+    this.dataChange.next(this.data);
+  }
+
+  setChangeUse() {
+    const nestedNode = this.flatNodeMap.get(this.optionSelected);
+    nestedNode.optionUse = this.optionSelected.optionUse;
     this.dataChange.next(this.data);
   }
 
@@ -1271,10 +1278,18 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
     if(this.optionSelected.menuOptionArgumentsAdmin.length>0){
     for (let i=0; i < this.optionSelected.menuOptionArgumentsAdmin.length;i++){
       let aux = this.optionSelected.menuOptionArgumentsAdmin[i];
-      if(aux.id==catId.id){
-        aux = catId;
-        this.optionSelected.menuOptionArgumentsAdmin[i] = aux;
+      if(aux.id==null && catId.id==null){
+        if(aux.categoryArgumentsId[0].id == catId.categoryArgumentsId[0].id){
+          aux = catId;
+          this.optionSelected.menuOptionArgumentsAdmin[i] = aux;
+        }
+      }else{
+        if(aux.id==catId.id){
+          aux = catId;
+          this.optionSelected.menuOptionArgumentsAdmin[i] = aux;
+        }
       }
+
     }
   }else{
     catId.id = null;
