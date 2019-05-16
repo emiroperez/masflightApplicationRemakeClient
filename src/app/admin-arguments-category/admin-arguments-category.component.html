@@ -18,11 +18,11 @@
 </div>
 
 
-<mat-card id="category-card" class="card-principal msf-center-container" style="color: white; height: calc(100% - 134px);">
+<mat-card id="category-card" class="card-principal msf-center-container" style="color: white; height: calc(100% - 134px)">
     <mat-card-content style="padding-right: 50px; height: 100%">
         <div style="display: flex; flex-direction: row; height: calc(100% - 30px);">
-            <div style="display: flex; flex-direction: column;width:30%">
-                <div style="flex: 1">
+            <div style="display: flex; flex-direction: column; width: 30%; padding-right: 30px">
+                <div>
                     <div style="display: flex; flex-direction: row;">
                         <h2 class="title-section">Arguments Categories</h2>
                         <div style=" text-align: right;margin-left:12%">
@@ -35,12 +35,12 @@
                         </div>
                     </div>
                 </div>
-                <mat-form-field style="width: 87%">
+                <mat-form-field>
                     <input matInput [(ngModel)]="searchText">
                     <mat-icon style="font-size: 22px;" matSuffix>search</mat-icon>
                 </mat-form-field>
-                <div style="flex: 1;">
-                    <div style="flex: 1;margin-right: 50px;">
+                <div style="flex: 1; height: 100%">
+                    <div style="flex: 1; height: 100%">
                         <div class="dark-scrollbar" style="flex: 1; background-color: #1a1a1a;overflow-y: auto ;-webkit-overflow-scrolling: touch ; max-height: 385px;height: 385px;">
                             <div *ngFor="let item of categories | filter : searchText">
                                 <div style="color:white; margin: 10px;width: 100%" [ngClass]="{
@@ -62,7 +62,7 @@
 
 
 
-            <div style="flex: 1; margin-top: 40px; height: 100%">
+            <div style="flex: 1; display:flex; flex-direction: column; margin-top: 40px; height: 100%">
                 <div>
                     <div style="display: flex; flex-direction: column">
                         <div style="display: flex; flex-direction: column;flex: 2">
@@ -92,7 +92,7 @@
                       >
                     </button>
                 </div>
-                <div class="dark-scrollbar" style="max-height: 170px; height: 170px; overflow-y: auto;-webkit-overflow-scrolling: touch; background-color:#1a1a1a;padding:3px">
+                <div class="dark-scrollbar" style="height: 100%; overflow-y: auto;-webkit-overflow-scrolling: touch; background-color:#1a1a1a;padding:3px">
                     <div *ngFor="let argument of category.arguments">
                         <div *ngIf="!argument.toDelete">
                             <div style="display: flex; flex-direction: row; height: 55px;margin-top: 3px">
@@ -184,7 +184,7 @@
                     </div>
                 </div>
 
-                <div style="text-align: right; margin-top: 10px">
+                <div style="text-align: right; margin-top: 10px; margin-bottom: 10px">
                     <button mat-button class="flat-button" (click)="sendData()">
                 Save all
               </button>
