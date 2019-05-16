@@ -184,7 +184,6 @@ import { MsfDashboardPanelOptionPipe } from './msf-dashboard-panel/msf-dashboard
 import { MsfDashboardPanelTypePipe } from './msf-dashboard-panel/msf-dashboard-panel-type-pipe';
 import { AuthGuard } from './guards/auth.guard';
 import { MatTreeModule } from '@angular/material/tree';
-import { DeviceDetectorModule } from 'ngx-device-detector';
 import { TwoFactorLoginDialogComponent } from './two-factor-login-dialog/two-factor-login-dialog.component';
 
 @NgModule({
@@ -386,8 +385,7 @@ import { TwoFactorLoginDialogComponent } from './two-factor-login-dialog/two-fac
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     ColorPickerModule,
-    DragScrollModule,
-    DeviceDetectorModule.forRoot()
+    DragScrollModule
   ],
   providers: [
     AuthService,
