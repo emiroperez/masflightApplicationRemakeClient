@@ -7,6 +7,10 @@ import { User } from '../model/User';
 import { Utils } from '../commons/utils';
 import { MenuService } from '../services/menu.service';
 import { Globals } from '../globals/Globals';
+import { HttpClient } from '@angular/common/http';
+import { DeviceDetectorService } from 'ngx-device-detector';
+import { TwoFactorLoginDialogComponent } from '../two-factor-login-dialog/two-factor-login-dialog.component';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-login-screen',
@@ -23,6 +27,8 @@ export class LoginScreenComponent implements OnInit {
   user: User;
   utils: Utils;
   userId: string;
+  securityToken: string;
+  session: any;
 
   loginForm: FormGroup;
   loggedIn = false;
@@ -30,7 +36,8 @@ export class LoginScreenComponent implements OnInit {
 
   constructor(private router: Router,  public globals: Globals, private service: MenuService,
     private authService: AuthService, private notification: NotificationComponent,
-    private formBuilder: FormBuilder) {
+    private formBuilder: FormBuilder, public http: HttpClient, private deviceService: DeviceDetectorService,
+    public dialog: MatDialog) {
     this.user = new User(null);
     this.utils = new Utils();
     this.user.username = "";
@@ -71,19 +78,86 @@ export class LoginScreenComponent implements OnInit {
     if (response.status == _this.OK_STATUS){
       _this.userId = response.userId;
       if (response.token!= null){
-        _this.storeSecurityToken(response.token);
+        let self = _this;
+
+        _this.securityToken = response.token;
         _this.username = response.username;
-        _this.authenticated = true;
+
+        /*
+        // get public IP address
+        _this.http.get ("https://api.ipify.org?format=json").subscribe (data => {
+          self.session = {
+            userId: _this.userId,
+            ipAddress: data["ip"],
+            machineName: self.deviceService.getDeviceInfo ().userAgent
+          };
+
+          _this.globals.isLoading = true;
+          _this.authService.validateLogin (self, self.session, self.verifyLogin, self.errorAutentication);
+        });
+        */
+        _this.goToWelcomeScreen ();
       }
-      _this.router.navigate(['/welcome']);
     } else {
       _this.utils.showAlert ('warning', data.errorMessage);
       _this.credentials = {};
     }
   }
 
-  errorAutentication(_this,data){
+  goToWelcomeScreen()
+  {
+    this.storeSecurityToken (this.securityToken);
+    this.securityToken = null;
+    this.authenticated = true;
+    this.router.navigate(['/welcome']);
+  }
 
+  verifyLogin(_this, pass)
+  {
+    let self = _this;
+
+    _this.globals.isLoading = false;
+
+    if (pass)
+      _this.goToWelcomeScreen ();
+    else
+    {
+      let dialogRef = _this.dialog.open (TwoFactorLoginDialogComponent, {
+        height: '200px',
+        width: '300px',
+        panelClass: 'msf-dashboard-control-variables-dialog',
+        data: {
+          session: _this.session
+        }
+      });
+
+      dialogRef.afterClosed ().subscribe (results => {
+        if (results.pass)
+          self.goToWelcomeScreen ();
+        else
+        {
+          _this.securityToken = null;
+          _this.username = null;
+          _this.userId = null;
+          _this.session = null;
+
+          if (results.message)
+          {
+            _this.utils.showAlert ('warning', results.message);
+            _this.credentials = {};
+          }
+        }
+      });
+    }
+  }
+
+  errorAutentication(_this, error)
+  {
+    console.log (error);
+    _this.securityToken = null;
+    _this.username = null;
+    _this.userId = null;
+    _this.session = null;
   }
 
 

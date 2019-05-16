@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import {FormControl, Validators,ValidatorFn, ValidationErrors, AbstractControl, FormGroup} from '@angular/forms';
 import { User} from '../model/User';
 import { State } from '../model/State';
-import { County } from '../model/Country';
+import { Country } from '../model/Country';
 import { Plan } from '../model/Plan';
 import { UserPlan } from '../model/UserPlan';
 import { Utils } from '../commons/utils';

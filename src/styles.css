@@ -26,6 +26,10 @@ body {
   background-color: #ED5C27;
 }
 
+.two-factor-auth-form .mat-checkbox-checked.mat-primary .mat-checkbox-background {
+  background-color: #ED5C27;
+}
+
 .mat-card {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
@@ -60,10 +64,17 @@ body {
 }
 
 .msf-header-icons2 {
-  width: 100px;
-  height: 100%;
+  width: 30%;
+  height: 60px;
   vertical-align: middle;
   margin-right: 20px;
+  background-repeat: no-repeat;
+  background-position: left;
+  background-size: contain;
+  padding: 0px;
+  margin: 0px;
+  border: 0px;
+  object-fit: contain;
 }
 
 .msf-header-image {
@@ -91,16 +102,18 @@ body {
 }
 
 .msf-header-icons {
-  display: inline-block;
-  right: 0;
-  position: relative;
-  line-height: 4;
-  vertical-align: middle;
-  min-height: 60px;
-  color: white;
-  margin-right: 10px;
-  text-align: right;
-  width: 21%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  /* position: relative; */
+  /* line-height: 4; */
+  /* vertical-align: middle; */
+  /* min-height: 60px; */
+  /* color: white; */
+  /* margin-right: 10px; */
+  /* text-align: right; */
+  width: 25%;
 }
 
 .header-icon {
@@ -429,6 +442,10 @@ p {
   background-color: #ED5C27;
 }
 
+.two-factor-auth-form .mat-form-field.mat-focused .mat-form-field-ripple {
+  background-color: #ED5C27;
+}
+
 .mat-error {
   margin-left: 31px;
 }
@@ -511,6 +528,8 @@ p {
 .msf-register-header {
   width: 70%;
   margin: 30px auto;
+  display: flex;
+  height: 42px;
 }
 
 .msf-field-2-column {
@@ -688,6 +707,7 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 
 .msf-register-header-content {
   width: 75%;
+  margin-left: 350px;
 }
 
 .msf-register-header-little-title {
@@ -703,6 +723,32 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 .msf-register-header-title-content {
   font-size: 200%;
   font-weight: bold;
+}
+
+.msf-arguments-category-header {
+  display: flex !important;
+  margin-top: 3px;
+}
+
+.msf-admin-menu-header-title-content {
+  margin-left: -81px !important;
+}
+
+.msf-arguments-category-header-title-content {
+  margin-top: -4px !important;
+  margin-left: -102px !important;
+  width: 290px;
+}
+
+.msf-create-memberships-header-title-content {
+  margin-top: -4px !important;
+  margin-left: -61px !important;
+  width: 290px;
+}
+
+.msf-admin-menu-header-little-title {
+  font-weight: normal;
+  font-size: 105%;
 }
 
 .msf-register-header-image-content {
@@ -1051,45 +1097,59 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
   min-height: 60px;
   background-color: #333333;
   position: relative;
+  display: flex;
+  flex-direction: row;
+  max-height: 60px;
+  align-items: center;
+  max-width: 100%;
+  min-width: 100%;
 }
 
 .msf-menu-header-image-container {
-  width: 13%;
+  width: 15%;
   height: 100%;
+  max-height: 60px;
   min-height: 60px;
-  vertical-align: middle;
-  display: inline-block;
+  display: flex;
+  flex-direction: row;
   border-bottom-right-radius: 40px;
   border-top-right-radius: 40px;
   background-color: #3d3d3d;
+  align-items: center;
+  padding: 0px 10px;
+  vertical-align: middle;
 }
 
 .msf-menu-logo {
-  width: 55%;
-  height: 20%;
-  margin-left: 17px;
-  vertical-align: middle;
-  display: inline-block;
-  margin-top: 17px;
+  width: 70%;
+  height: 30px;
+  display: flex;
+  cursor: pointer;
+  background-position: left;
+  background-repeat: no-repeat;
+  background-size: contain;
+  object-fit: contain;
 }
 
 .msf-menu-ajustes-icon {
-  vertical-align: middle;
-  display: inline-block;
-  width: 30px;
-  height: 30px;
-  margin-left: 17px;
-  margin-top: 17px;
+  display: flex;
+  width: 30%;
+  height: 20px;
   cursor: pointer;
+  background-position: right;
+  background-repeat: no-repeat;
+  background-size: contain;
+  object-fit: contain;
 }
 
 .msf-menu-container {
   height: 100%;
   vertical-align: middle;
-  display: inline-block;
-  /* margin-left: 90px; */
-  width: 65%;
+  display: flex;
+  width: 60%;
   text-align: center;
+  flex-direction: row;
+  justify-content: center;
 }
 
 .msf-menu-option, .msf-menu-op-3, .msf-menu-op-2, .msf-menu-op-1 {
@@ -1149,11 +1209,18 @@ button[aria-expanded=true] {
 }
 
 .msf-menu-icons-container {
-  width: 100%;
+  width: calc(100% - 10px);
   height: 20px;
   display: flex;
-  margin: 5px 5px 5px 0px;
+  margin: 5px;
   color: white;
+  align-items: center;
+}
+
+.msf-menu-icons-left {
+  width: 30%;
+  display: flex;
+  justify-content: flex-start;
 }
 
 .msf-menu-adm {
@@ -1162,13 +1229,15 @@ button[aria-expanded=true] {
 }
 
 .msf-menu-icon {
-  margin-right: 10px;
+  margin: 0px 10px;
   cursor: pointer;
   font-size: 80%;
   background: none;
   color: white;
   border: none;
   outline: none;
+  display: flex;
+  align-items: center;
 }
 .msf-menu-icon:disabled {
   color: #9E9E9E;
@@ -1188,9 +1257,11 @@ button[aria-expanded=true] {
 
 .msf-menu-icons-right {
   right: 0px;
-  position: absolute;
+  position: relative;
   line-height: 1px;
-  margin-top: 3px;
+  display: flex;
+  width: 70%;
+  justify-content: flex-end;
 }
 
 .msf-vertical-middle {
@@ -1937,6 +2008,7 @@ mat-tab-group {
   width: 170px;
   font-size: 11px;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .msf-dashboard-map-routelist .msf-dashboard-map-routelist-container .msf-dashboard-map-routelist-item {
   display: flex;
@@ -2006,6 +2078,7 @@ mat-tab-group {
   flex-direction: column;
   width: 100%;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   transition: 0.5s;
 }
 .msf-dashboard-container .msf-dashboard-title {
@@ -2061,6 +2134,7 @@ mat-tab-group {
   flex-direction: row;
   width: 100%;
   overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
 }
 .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items {
   width: 100%;
@@ -2300,6 +2374,7 @@ mat-tab-group {
   padding: 10px;
   background-color: #3b3b3b;
   overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
@@ -2356,6 +2431,7 @@ mat-tab-group {
   background-color: #222222;
   color: #ffffff;
   overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
 }
 .msf-dashboard-panel-container-chart .msf-dashboard-panel-title {
   font-size: 12px;
@@ -2412,6 +2488,7 @@ mat-tab-group {
   background-color: #1f1f1f;
   color: #ffffff;
   overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
 }
 .msf-dashboard-child-panel-container-chart .msf-dashboard-child-panel-table {
   width: 100%;
@@ -2446,6 +2523,29 @@ mat-tab-group {
   margin-top: -10px;
   margin-right: -9px;
   color: #01abec;
+  cursor: pointer;
+}
+
+.msf-two-factor-auth-close-button {
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  position: absolute;
+  width: 100%;
+}
+.msf-two-factor-auth-close-button .msf-dashboard-close-icon {
+  font-size: 16px;
+  margin-top: -10px;
+  margin-right: -9px;
+  color: inherit;
+  cursor: inherit;
+}
+.msf-two-factor-auth-close-button .msf-dashboard-close-icon:hover {
+  font-size: 16px;
+  margin-top: -10px;
+  margin-right: -9px;
+  color: #ed5c27;
   cursor: pointer;
 }
 
@@ -2515,6 +2615,7 @@ mat-tab-group {
 
 .msf-dashboard-control-variables {
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   font-size: 10px;
   min-height: 85%;
   max-height: 85%;
@@ -2924,6 +3025,7 @@ mat-tab-group {
   align-items: baseline;
   height: 200px;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 #msf-add-shared-dashboard-content {
@@ -2940,6 +3042,7 @@ mat-tab-group {
   align-items: baseline;
   height: 200px;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 #msf-dashboard-panel-form-container-column {
@@ -2982,6 +3085,7 @@ mat-tab-group {
 #msf-dashboard-panel-table-container-column {
   flex-direction: column;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   height: initial;
   align-items: center;
   margin-bottom: 10px;
@@ -3226,6 +3330,7 @@ mat-dialog-container {
   padding: 10px !important;
   height: auto !important;
   font-size: 100% !important;
+  background-color: #333333 !important;
 }
 
 .mat-radio-label-content {
@@ -3402,7 +3507,12 @@ mat-dialog-container {
 }
 
 .mat-tab-header, .mat-tab-nav-bar {
+  background: #333333;
   border-bottom: 1px solid rgba(62, 60, 60, 0.8) !important;
+}
+
+.mat-tab-header-pagination-chevron {
+  border-color: white !important;
 }
 
 .msf-card-container {
@@ -3516,7 +3626,6 @@ li.msf-select:before {
   margin: auto;
   margin-right: 15px;
   margin-left: 0;
-  width: 2%;
 }
 
 .msf-select-input .ng-placeholder {
@@ -3828,7 +3937,7 @@ tr.mat-footer-row, tr.mat-row {
 
 .msf-welcome-inline {
   font-weight: lighter;
-  line-height: 2;
+  line-height: 1.2;
 }
 
 .mat-list .mat-list-item, .mat-nav-list .mat-list-item, .mat-selection-list .mat-list-item {
@@ -4672,6 +4781,12 @@ span.msf-subCell {
 
 .msf-no-visible {
   visibility: hidden;
+}
+
+.two-factor-auth-container {
+  color: #ffffff;
+  width: 100%;
+  text-align: justify;
 }
 
 /*# sourceMappingURL=styles.css.map */

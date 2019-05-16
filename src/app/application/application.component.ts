@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener, ChangeDetectorRef } from '@angular/core';
 import { Menu } from '../model/Menu';
 import { Option } from '../model/Option';
 import { CategoryArguments } from '../model/CategoryArguments';
@@ -20,6 +20,7 @@ import { MsfColumnSelectorComponent } from '../msf-column-selector/msf-column-se
 import { MsfShareDashboardComponent } from '../msf-share-dashboard/msf-share-dashboard.component';
 import { length } from '@amcharts/amcharts4/.internal/core/utils/Iterator';
 import { AuthService } from '../services/auth.service';
+import { MediaMatcher } from '@angular/cdk/layout';
 
 
 @Component({
@@ -51,16 +52,25 @@ export class ApplicationComponent implements OnInit {
   @ViewChild('msfContainerRef')
   msfContainerRef: MsfContainerComponent;
 
+  mobileQuery: MediaQueryList;
+  private _mobileQueryListener: () => void;
+
   constructor(public dialog: MatDialog, public globals: Globals, private menuService: MenuService,private router: Router,private excelService:ExcelService,
-    private appService: ApplicationService, private authService: AuthService) {
+    private appService: ApplicationService, private authService: AuthService,changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
     this.status = false;
+
+    this.mobileQuery = media.matchMedia('(max-width: 768px)');
+    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+    this.mobileQuery.addListener(this._mobileQueryListener);
   }
 
   ngOnInit() {
     this.globals.clearVariables();
     this.getMenu();
+  }
 
-
+  ngOnDestroy(): void {
+    this.mobileQuery.removeListener(this._mobileQueryListener);
   }
 
 
@@ -397,10 +407,17 @@ toggle(){
   @HostListener('window:resize', ['$event'])
   checkScreen(event)
   {
-    if (event.target.innerHeight == window.screen.height && event.target.innerWidth == window.screen.width)
+    // if(!this.mobileQuery.matches)
+    // {
+      if (event.target.innerHeight == window.screen.height && event.target.innerWidth == window.screen.width)
       this.globals.isFullscreen = true;
     else
       this.globals.isFullscreen = false;
+    // }
+    // else{
+    //   this.globals.isFullscreen = false;
+    // }
+
   }
 
   changeDashboardName(): void
@@ -468,5 +485,11 @@ toggle(){
       maxWidth: "1000px",
       panelClass: 'msf-column-selector-popup'
     });
+  }
+
+  optionHandler()
+  {
+    if (this.msfContainerRef && this.msfContainerRef.msfTableRef)
+      this.msfContainerRef.msfTableRef = null;
   }
 }

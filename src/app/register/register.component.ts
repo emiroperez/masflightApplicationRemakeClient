@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
-import {FormControl, Validators,ValidatorFn, ValidationErrors, AbstractControl, FormGroup} from '@angular/forms';
+import { FormControl, Validators,ValidatorFn, ValidationErrors, AbstractControl, FormGroup } from '@angular/forms';
 import { User} from '../model/User';
 import { State } from '../model/State';
-import { County } from '../model/Country';
+import { Country } from '../model/Country';
 import { Plan } from '../model/Plan';
 import { UserPlan } from '../model/UserPlan';
 import { Utils } from '../commons/utils';
@@ -14,6 +14,8 @@ import { Globals } from '../globals/Globals';
 import { NgSelectConfig } from '@ng-select/ng-select';
 import { MessageComponent } from '../message/message.component';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { takeUntil } from 'rxjs/operators';
+import { ReplaySubject, Subject } from 'rxjs';
 
 
 
@@ -24,29 +26,17 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
   encapsulation: ViewEncapsulation.None
 })
 export class RegisterComponent implements OnInit {
+  innerHeight: number;
   users: User;
   utils: Utils;
   plans: Plan[];
   userPlan : UserPlan;
-  countries: County[];
+  countries: Country[];
   states : State[];
-  selectedCountries: County[];
+  selectedCountries: Country[];
   selectedStates: State[];
   isLinear = true;
   title: string = 'Personal Information';
-  /* nameValidator = new FormControl('name', [Validators.required]);
-  lastNameValidator = new FormControl('lastName', [Validators.required]);
-  passwordValidator = new FormControl('password', [Validators.required]);
-  repeatPasswordValidator = new FormControl('repeatPassword', [Validators.required, RegisterComponent.passwordMatchValidator(this)]);
-  emailValidator = new FormControl('email', [Validators.required,Validators.email]);
-  addressValidator = new FormControl('address', [Validators.required]);
-  countryValidator = new FormControl('country', [Validators.required]);
-  stateValidator = new FormControl('state', [Validators.required]);
-  postalCodeValidator = new FormControl('postalCode', [Validators.required]);
-  phoneNumberValidator = new FormControl('phoneNumber', [Validators.required]);
-  cardNumberValidator = new FormControl('cardNumber', [Validators.required]);
-  expiryDateValidator = new FormControl('expiryDate', [Validators.required]);
-  cvvValidator = new FormControl('cvv', [Validators.required]); */
 
   personalInformationForm = new FormGroup({
     nameValidator:new FormControl('name', [Validators.required]),
@@ -63,6 +53,12 @@ export class RegisterComponent implements OnInit {
   });
 
   public countryFilterCtrl: FormControl = new FormControl();
+  public stateFilterCtrl: FormControl = new FormControl();
+
+  public filteredCountries: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
+  public filteredStates: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
+
+  private _onDestroy = new Subject<void> ();
 
   planInformationForm = new FormGroup({
     planValidator : new FormControl('prices',[Validators.required])
@@ -75,7 +71,6 @@ export class RegisterComponent implements OnInit {
     cvvValidator : new FormControl('cvv', [Validators.required])
   })
 
-
  /*  states: State[] = [
     {name: 'California', id: '1'},
     {name: 'Florida', id: '3'},
@@ -83,7 +78,7 @@ export class RegisterComponent implements OnInit {
     {name: 'Washington', id: '4'},
   ];
 
-  countries: County[] = [
+  countries: Country[] = [
     {name: 'Australia', id: '4'},
     {name: 'Canada', id: '3'},
     {name: 'China', id: '1'},
@@ -107,14 +102,28 @@ export class RegisterComponent implements OnInit {
     this.states = new Array();
     this.globals.isLoading = true;
     this.registerServices.getCountries(this,this.renderCountries,this.errorCountries);
-    this.registerServices.getPlans(this,this.renderPlans,this.errorPlans);
 
 
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.innerHeight = window.innerHeight;
+    this.paymentInformationForm.get ('paymentTypeValidator').setValue ('');
+    this.paymentInformationForm.get ('cardNumberValidator').setValue ('');
+    this.paymentInformationForm.get ('expiryDateValidator').setValue ('');
+    this.paymentInformationForm.get ('cvvValidator').setValue ('');
+  }
+
+  ngOnDestroy(): void {
+    this._onDestroy.next ();
+    this._onDestroy.complete ();
+  }
 
   selectionChange(event){
+    this.setUserValues ();
+    this.setPlanValue ();
+    this.setPaymentValues ();
+
     if(event.selectedIndex == 0){
       this.title = 'Personal Information';
     }else if(event.selectedIndex == 1){
@@ -122,7 +131,6 @@ export class RegisterComponent implements OnInit {
     }else if(event.selectedIndex == 2){
       this.title = 'Payment Method';
     }
-
   }
 
 
@@ -137,13 +145,78 @@ export class RegisterComponent implements OnInit {
     _this.globals.isLoading = false;
   }
 
+  filterCountries(): void
+  {
+    if (!this.countries)
+      return;
+
+    // get the search keyword
+    let search = this.countryFilterCtrl.value;
+    if (!search)
+    {
+      this.filteredCountries.next (this.countries.slice ());
+      return;
+    }
+
+    search = search.toLowerCase ();
+    this.filteredCountries.next (
+      this.countries.filter (a => a.fullName.toLowerCase ().indexOf (search) > -1)
+    );
+  }
+
+  countriesSearchChange(): void
+  {
+    // load the initial option list
+    this.filteredCountries.next (this.countries.slice ());
+    // listen for search field value changes
+    this.countryFilterCtrl.valueChanges
+      .pipe (takeUntil (this._onDestroy))
+      .subscribe (() => {
+        this.filterCountries ();
+      });
+  }
+
   renderCountries(_this,data){
     _this.countries = data;
     _this.selectedCountries = _this.countries;
+    _this.countriesSearchChange ();
+    _this.registerServices.getPlans(_this,_this.renderPlans,_this.errorPlans);
   }
 
   errorCountries(_this,error){
     //console.log(error);
+    _this.registerServices.getPlans(_this,_this.renderPlans,_this.errorPlans);
+  }
+
+  filterStates(): void
+  {
+    if (!this.states)
+      return;
+
+    // get the search keyword
+    let search = this.stateFilterCtrl.value;
+    if (!search)
+    {
+      this.filteredStates.next (this.states.slice ());
+      return;
+    }
+
+    search = search.toLowerCase ();
+    this.filteredStates.next (
+      this.states.filter (a => a.fullName.toLowerCase ().indexOf (search) > -1)
+    );
+  }
+
+  stateSearchChange(): void
+  {
+    // load the initial option list
+    this.filteredStates.next (this.states.slice ());
+    // listen for search field value changes
+    this.stateFilterCtrl.valueChanges
+      .pipe (takeUntil (this._onDestroy))
+      .subscribe (() => {
+        this.filterStates ();
+      });
   }
 
   CountryChangeEvent(event){
@@ -151,8 +224,10 @@ export class RegisterComponent implements OnInit {
     if (event != undefined){
       this.states = event.value.states;
       this.selectedStates = this.states;
+      this.stateSearchChange ();
     }else{
       this.states=[];
+      this.filteredStates.next ([]);
     }
   }
 
@@ -173,7 +248,7 @@ export class RegisterComponent implements OnInit {
   static passwordMatchValidator(comp: RegisterComponent): ValidatorFn {
     return (control: AbstractControl): ValidationErrors => {
       if(comp.users!=undefined){
-        return comp.users.password !== control.value ? { mismatch: true } : null;
+        return comp.personalInformationForm.get ('passwordValidator').value !== control.value ? { mismatch: true } : null;
       }else{
         return null;
       }
@@ -297,6 +372,7 @@ export class RegisterComponent implements OnInit {
 
   insertUser(){
 		if(this.personalInformationForm.valid && this.planInformationForm.valid && this.paymentInformationForm.valid ){
+      this.setPaymentValues ();
       this.userPlan.IdUser=this.users;
       this.userPlan.planPayment = this.users.payment;
       this.userServices.saveUser(this,this.userPlan, this.saveUserHandleResponse,this.errorHandleResponsen);
@@ -311,6 +387,8 @@ export class RegisterComponent implements OnInit {
         data: { title:"Error", message: "No valid form, you must choose a plan"}
       });
     }
+    else
+      this.setPlanValue ();
   }
 
   saveUserHandleResponse(this_,data){
@@ -357,8 +435,8 @@ export class RegisterComponent implements OnInit {
     this.selectedStates = result;
   }
 
-  selectCountries(query: string):County[]{
-    let result: County[] = [];
+  selectCountries(query: string):Country[]{
+    let result: Country[] = [];
     for(let a of this.countries){
       if(a.name.toLowerCase().indexOf(query) > -1){
         result.push(a)
@@ -377,5 +455,41 @@ export class RegisterComponent implements OnInit {
     return result;
   }
 
+  setUserValues()
+  {
+    this.users.name = this.personalInformationForm.get ('nameValidator').value;
+    this.users.lastname = this.personalInformationForm.get ('lastNameValidator').value;
+    this.users.password = this.personalInformationForm.get ('passwordValidator').value;
+    this.users.repeatPassword = this.personalInformationForm.get ('repeatPasswordValidator').value;
+    this.users.email = this.personalInformationForm.get ('emailValidator').value;
+    this.users.address = this.personalInformationForm.get ('addressValidator').value;
+    this.users.country = this.personalInformationForm.get ('countryValidator').value;
+    this.users.postalCode = this.personalInformationForm.get ('postalCodeValidator').value;
+    this.users.phoneNumber = this.personalInformationForm.get ('phoneNumberValidator').value;
+  }
+
+  setPlanValue()
+  {
+    this.userPlan.IdFare = this.planInformationForm.get ('planValidator').value;
+  }
+
+  setPaymentValues()
+  {
+    this.users.payment.cardNumber = this.paymentInformationForm.get ('cardNumberValidator').value;
+    this.users.payment.expiryDate = this.paymentInformationForm.get ('expiryDateValidator').value;
+    this.users.payment.cvv = this.paymentInformationForm.get ('cvvValidator').value;
+    this.users.payment.paymentType = this.paymentInformationForm.get ('paymentTypeValidator').value;
+  }
+
+  @HostListener('window:resize', ['$event'])
+  checkScreen(event): void
+  {
+    this.innerHeight = event.target.innerHeight;
+  }
+
+  getInnerHeight(): number
+  {
+    return this.innerHeight;
+  }
 }
 

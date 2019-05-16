@@ -1,4 +1,4 @@
-<div style="overflow-y: auto; overflow-x: hidden" [style.height.px]="getInnerHeight()">
+<div style="overflow-y: auto;-webkit-overflow-scrolling: touch; overflow-x: hidden" [style.height.px]="getInnerHeight()">
     <div class="msf-register-header">
         <button mat-icon-button routerLink="/application">
       <mat-icon>arrow_back</mat-icon>
@@ -6,20 +6,20 @@
         <img class="msf-medium-logo" src="../../assets/images/logo.png">
         <div class="msf-register-header-content">
             <div class="msf-register-header-title">
-                <div class="msf-register-header-title-content"> MENU ADMINISTRATION
-                    <br /> Application: {{globals.currentApplication.name}}</div>
+                <div class="msf-register-header-title-content msf-admin-menu-header-title-content"> MENU ADMINISTRATION</div>
+                <div class="msf-admin-menu-header-little-title">Application: {{globals.currentApplication.name}}</div>
             </div>
             <div class="msf-register-header-image-content">
                 <img class="medium-user-image" src="../../assets/images/icon-user-white.png">
             </div>
         </div>
     </div>
-    <mat-card class="card-principal msf-center-container" style="height:87vh">
-        <mat-card-content>
-            <div style="display: flex; flex-direction: row;">
+    <mat-card class="card-principal msf-center-container" style="height: calc(100% - 134px)">
+        <mat-card-content [style.height.%]="100">
+            <div style="display: flex; flex-direction: row;" [style.height.%]="100">
                 <div style="flex: 1; flex-direction: column; justify-content: center">
-                    <div style="display: flex; flex-direction: row; flex-wrap: wrap">
-                        <div style="flex: 1; min-width: 455px; margin-left: 1%; margin-right: 1%">
+                    <div style="display: flex; flex-direction: row; flex-wrap: wrap" [style.height.%]="100">
+                        <div style="flex: 1; min-width: 455px; margin-left: 1%; margin-right: 1%" [style.height.%]="100">
                             <div style="display: flex; flex-direction: row;align-items: center;">
                                 <div style="flex: 0.4">
                                     <h2 class="title-section">Menu</h2>
@@ -42,7 +42,7 @@
                                 </button>
                                 </div>
                             </div>
-                            <div class="invisible-scrollbar" style="max-height: 400px; overflow: auto;width:90%">
+                            <div class="invisible-scrollbar" style="overflow: auto;width:90%; height: calc(100% - 100px)">
                                 <!-- <div cdkDropList class="draggable-list" id="firstOne" [cdkDropListData]="menu" [cdkDropListConnectedTo]="idList" (cdkDropListDropped)="drop($event)">
                                 <div cdkDrag class="draggable-box" *ngFor="let option of menu ; let i = index " style="color: white; width: 86%">
                                     <app-admin-menu-recursive [menu]="option" [idList]="idList" [index]="i" (optionSelected)="getOptionSelected($event)" (idSelected)="getSelectIdDom($event)"></app-admin-menu-recursive>
@@ -166,7 +166,7 @@
                                                 <div style="width: 40%; margin:5px">Category</div>
                                                 <div style="width: 60%; margin: 5px">Description</div>
                                             </div>
-                                            <div style="max-height: 220px; overflow-y: auto">
+                                            <div style="max-height: 220px; overflow-y: auto ;-webkit-overflow-scrolling: touch;">
                                                 <div *ngFor="let item of categories | filter : searchText" style="color: white">
                                                     <div *ngIf="!item.toDelete" class="dialog-item" [ngClass]="{ 'is-active': item.isSelected, 'is-inactive': !item.isSelected ,'msf-hide':showSelected && !item.selected}">
                                                         <mat-checkbox (change)="setSelectedCategoryArguments(item)" class="admin-checkboxes" color="primary" [(ngModel)]="item.selected" style="margin: 5px"></mat-checkbox>

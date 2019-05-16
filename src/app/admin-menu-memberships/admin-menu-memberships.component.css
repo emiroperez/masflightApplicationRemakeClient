@@ -1,14 +1,11 @@
-.mat-checkbox-label {
-    color: white;
-    font-size: 14px;
-}
-
-.mat-checkbox-layout {
+.admin-menu-checkbox-container .mat-checkbox-layout {
     height: 40px;
 }
 
-.mat-checkbox-layout .mat-checkbox-label {
+.admin-menu-checkbox-container .mat-checkbox-layout .mat-checkbox-label {
     line-height: 41px;
+    color: white;
+    font-size: 14px;
 }
 
 .mat-divider {

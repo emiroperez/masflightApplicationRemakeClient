@@ -1,6 +1,6 @@
 import { Payment } from "./Payment";
 import { State } from "./State";
-import { County } from "./Country";
+import { Country } from "./Country";
 import { UserPlan } from "./UserPlan";
 
 export class User{
@@ -13,7 +13,7 @@ export class User{
     repeatPassword: string;
     email: string;
     address: string;
-    country: County;
+    country: Country;
     CState: State;
     postalCode: string;
     phoneNumber: string;
@@ -24,6 +24,14 @@ export class User{
 
     constructor(private paymentIn: Payment){
         this.payment = paymentIn;
+        this.name = "";
+        this.lastname = "";
+        this.password = "";
+        this.repeatPassword = "";
+        this.email = "";
+        this.address = "";
+        this.postalCode = "";
+        this.phoneNumber = "";
     }
 
 }

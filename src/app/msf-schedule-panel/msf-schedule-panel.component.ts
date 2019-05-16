@@ -1,8 +1,9 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit, NgZone, ChangeDetectorRef } from '@angular/core';
 import { Globals } from '../globals/Globals';
 import { Utils } from '../commons/utils';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4maps from "@amcharts/amcharts4/maps";
+import { MediaMatcher } from '@angular/cdk/layout';
 
 // AmChart colors
 const black = am4core.color ("#000000");
@@ -28,8 +29,17 @@ export class MsfSchedulePanelComponent implements OnInit {
   private mapairports : any[];
   private maproutes : any[];
 
-  constructor(private zone: NgZone, public globals: Globals) {
+  
+  mobileQuery: MediaQueryList;
+  private _mobileQueryListener: () => void;
+
+  constructor(private zone: NgZone, public globals: Globals, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
     this.utils = new Utils ();
+
+    this.mobileQuery = media.matchMedia('(max-width: 1024px)');
+    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+    this.mobileQuery.addListener(this._mobileQueryListener);
+
   }
 
   aux=this.globals.scheduledata;

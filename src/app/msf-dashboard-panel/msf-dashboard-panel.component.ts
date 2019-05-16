@@ -487,6 +487,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
         chart = am4core.create ("msf-dashboard-chart-display-" + this.values.id, am4maps.MapChart);
         chartColor = am4core.color (this.values.paletteColors[0]);
+        chart.numberFormatter.numberFormat = "#,###.#";
 
         // Create map instance displaying the chosen geography data
         chart.geodata = this.values.geodata.value;
@@ -508,12 +509,21 @@ export class MsfDashboardPanelComponent implements OnInit {
 
         // Exclude Antartica if the geography data is the world
         if (chart.geodata === am4geodata_worldLow)
+        {
           polygonSeries.exclude = ["AQ"];
+
+          chart.homeGeoPoint = {
+            latitude: 24.8567,
+            longitude: 2.3510
+          };
+        }
 
         // Move the delta longitude a bit to the left if the geography
         // data is Asia
         if (chart.geodata === am4geodata_asiaLow)
           chart.deltaLongitude = -90;
+        else
+          chart.deltaLongitude = 0;
 
         chart.homeZoomLevel = 1;
 
@@ -554,7 +564,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         }
 
         // Display heat legend
-        heatLegend = chart.createChild (am4maps.HeatLegend);
+        heatLegend = chart.chartContainer.createChild (am4maps.HeatLegend);
         heatLegend.series = polygonSeries;
         heatLegend.align = "right";
         heatLegend.valign = "bottom";
@@ -602,18 +612,23 @@ export class MsfDashboardPanelComponent implements OnInit {
         chart.zoomControl = zoomControl;
         zoomControl.slider.height = 100;
         zoomControl.valign = "top";
-        zoomControl.align = "right";
+        zoomControl.align = "left";
         zoomControl.marginTop = 40;
-        zoomControl.marginRight = 10;
+        zoomControl.marginLeft = 10;
+        zoomControl.plusButton.height = 26;
+        zoomControl.minusButton.height = 26;
 
         // Add home buttom to zoom out
         home = chart.chartContainer.createChild (am4core.Button);
         home.icon = new am4core.Sprite ();
         home.icon.dx -= 9;
+        home.icon.dy -= 9;
         home.width = 30;
+        home.height = 30;
         home.icon.path = homeSVG;
-        home.align = "right";
-        home.marginRight = 15;
+        home.align = "left";
+        home.marginLeft = 15;
+        home.dy += 10;
         home.events.on ("hit", function (ev) {
           chart.goHome ();
         });
@@ -655,18 +670,23 @@ export class MsfDashboardPanelComponent implements OnInit {
         chart.zoomControl = zoomControl;
         zoomControl.slider.height = 100;
         zoomControl.valign = "top";
-        zoomControl.align = "right";
+        zoomControl.align = "left";
         zoomControl.marginTop = 40;
-        zoomControl.marginRight = 10;
+        zoomControl.marginLeft = 10;
+        zoomControl.plusButton.height = 26;
+        zoomControl.minusButton.height = 26;
 
         // Add home buttom to zoom out
         home = chart.chartContainer.createChild (am4core.Button);
         home.icon = new am4core.Sprite ();
         home.icon.dx -= 9;
+        home.icon.dy -= 9;
         home.width = 30;
+        home.height = 30;
         home.icon.path = homeSVG;
-        home.align = "right";
-        home.marginRight = 15;
+        home.align = "left";
+        home.marginLeft = 15;
+        home.dy += 10;
         home.events.on ("hit", function (ev) {
           chart.goHome ();
         });
@@ -680,6 +700,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           chart = am4core.create ("msf-dashboard-chart-display-" + this.values.id, am4charts.PieChart);
 
         chart.data = chartInfo.dataProvider;
+        chart.numberFormatter.numberFormat = "#,###.#";
 
         // Set label font size
         chart.fontSize = 10;
@@ -702,6 +723,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         let categoryAxis, valueAxis, parseDate, stacked;
 
         chart = am4core.create ("msf-dashboard-chart-display-" + this.values.id, am4charts.XYChart);
+        chart.numberFormatter.numberFormat = "#,###.#";
 
         // Don't parse dates if the chart is a simple version
         if (this.values.currentChartType.flags & ChartFlags.XYCHART)
@@ -915,7 +937,11 @@ export class MsfDashboardPanelComponent implements OnInit {
       // Add export button
       chart.exporting.menu = new am4core.ExportMenu ();
       chart.exporting.menu.verticalAlign = "top";
-      chart.exporting.menu.align = "left";
+      if (this.values.currentChartType.flags & ChartFlags.HEATMAP
+        || this.values.currentChartType.flags & ChartFlags.MAP)
+        chart.exporting.menu.align = "right";
+      else
+        chart.exporting.menu.align = "left";
 
       this.chart = chart;
     });
@@ -967,8 +993,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       }
       else
       {
-        this.makeChart (this.values.lastestResponse);
         this.values.chartGenerated = true;
+        this.makeChart (this.values.lastestResponse);
       }
     }
   }
@@ -3607,8 +3633,8 @@ export class MsfDashboardPanelComponent implements OnInit {
   toggleMapRoute(route): void
   {
     let tempLat, tempLng, sumX, sumY, sumZ, avgX, avgY, avgZ;
-    let newCities, curcity, updateChartInterval;
     let circle, label, imageSeriesTemplate, hoverState;
+    let newCities, curcity;
     let zoomLevel, self;
 
     self = this;
@@ -4013,12 +4039,10 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.chart.goHome ();
 
       // Workaround to avoid double lines
-      updateChartInterval = setInterval (() =>
+      setTimeout (() =>
       {
         this.chart.homeZoomLevel = zoomLevel;
         this.chart.goHome ();
-
-        clearInterval (updateChartInterval);
       }, 50);
     });
   }
