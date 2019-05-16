@@ -1270,10 +1270,18 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
     if(this.optionSelected.menuOptionArgumentsAdmin.length>0){
     for (let i=0; i < this.optionSelected.menuOptionArgumentsAdmin.length;i++){
       let aux = this.optionSelected.menuOptionArgumentsAdmin[i];
-      if(aux.id==catId.id && aux.id!=null && catId.id!=null){
-        aux = catId;
-        this.optionSelected.menuOptionArgumentsAdmin[i] = aux;
+      if(aux.id==null && catId.id==null){
+        if(aux.categoryArgumentsId[0].id == catId.categoryArgumentsId[0].id){
+          aux = catId;
+          this.optionSelected.menuOptionArgumentsAdmin[i] = aux;
+        }
+      }else{
+        if(aux.id==catId.id){
+          aux = catId;
+          this.optionSelected.menuOptionArgumentsAdmin[i] = aux;
+        }
       }
+
     }
   }else{
     catId.id = null;
@@ -1369,3 +1377,4 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
     return this.innerHeight;
   }
 }
+
