@@ -42,7 +42,7 @@
                               </button>
                                 </div>
                             </div>
-                            <div class="invisible-scrollbar" style="overflow: auto;width:90%; height: calc(100% - 100px)">
+                            <div class="invisible-scrollbar" style="overflow: auto;width: calc(100% - 30px); height: calc(100% - 100px)">
                                 <!-- <div cdkDropList class="draggable-list" id="firstOne" [cdkDropListData]="menu" [cdkDropListConnectedTo]="idList" (cdkDropListDropped)="drop($event)">
                               <div cdkDrag class="draggable-box" *ngFor="let option of menu ; let i = index " style="color: white; width: 86%">
                                   <app-admin-menu-recursive [menu]="option" [idList]="idList" [index]="i" (optionSelected)="getOptionSelected($event)" (idSelected)="getSelectIdDom($event)"></app-admin-menu-recursive>
@@ -77,7 +77,7 @@
                         <!------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------->
-                        <div style="flex: 1; min-width: 400px; margin-left: 1%; margin-right: 1%">
+                        <div style="flex: 1; display: flex; flex-direction: column; height: 100%; min-width: 400px; margin-left: 1%; margin-right: 1%">
                             <!-- <div *ngIf="!optionSelected.isActive || optionSelected.isRoot">
                           <div class="button-setup" style="width: 100%">
                               <div style="flex: 2">
@@ -140,10 +140,10 @@
                                 </div>
                             </div>
 
-                            <div *ngIf="!optionSelected.isRoot && optionSelected.isActive && optionSelected.id" style="flex: 1; flex-direction: column; justify-content: center">
+                            <div *ngIf="!optionSelected.isRoot && optionSelected.isActive && optionSelected.id" style="flex: 1; flex-direction: column; justify-content: center; height: calc(100% - 190px)">
 
-                                <div *ngIf="optionSelected.children.length == 0">
-                                    <div *ngIf="!optionSelected.isRoot && optionSelected.id">
+                                <div *ngIf="optionSelected.children.length == 0" [style.height.%]="100">
+                                    <div *ngIf="!optionSelected.isRoot && optionSelected.id" style="height: 100%">
                                         <mat-form-field class="msf-admin-search">
                                             <input class="search-input" matInput [(ngModel)]="searchText" style="width:95%;" autocomplete="off">
                                             <mat-icon style="color: white" aria-label="search">search</mat-icon>
@@ -156,16 +156,18 @@
                                                 <div style="width: 40%; margin:5px">Category</div>
                                                 <div style="width: 60%; margin: 5px">Description</div>
                                             </div>
-                                            <div style="max-height: 190px; overflow-y: auto ;-webkit-overflow-scrolling: touch;">
+                                            <div style="max-height: calc(100% - 30px); overflow-y: auto ;-webkit-overflow-scrolling: touch;">
                                                 <div *ngFor="let item of categories | filter : searchText" style="color: white">
                                                     <div *ngIf="!item.toDelete" class="dialog-item" [ngClass]="{ 'is-active': item.isSelected, 'is-inactive': !item.isSelected ,'msf-hide':showSelected && !item.selected}">
                                                         <mat-checkbox (change)="setSelectedCategoryArguments(item)" class="admin-checkboxes" color="primary" [(ngModel)]="item.selected" style="margin: 5px"></mat-checkbox>
                                                         <img class="img-item-category-argument" src="{{item.icon}}">
                                                         <input [disabled]="true" type="text" matInput [(ngModel)]="item.label" class="text-item-category-argument" style="width: 35%">
                                                         <input [disabled]="true" type="text" matInput [(ngModel)]="item.description" class="text-item-category-argument" style="width: 55%; font-size: 11px">
-                                                        <button [ngClass]="item.selected?'background-principal':'background-principal-empty'" mat-icon-button (click)="editVariables(item)" style="text-align: right;margin-left: 10px;">
-                                                      <mat-icon *ngIf="item.selected" style="color: white; line-height: 10px;" aria-label="delete">settings</mat-icon>
-                                                  </button>
+                                                        <div style="width: 10%; text-align: end">
+                                                            <button [ngClass]="item.selected?'background-principal':'background-principal-empty'" mat-icon-button (click)="editVariables(item)" style="text-align: right;margin-left: 10px; margin-right: 2px">
+                                                                <mat-icon *ngIf="item.selected" style="color: white; line-height: 10px;" aria-label="delete">settings</mat-icon>
+                                                            </button>
+                                                        </div>
                                                     </div>
 
                                                 </div>
