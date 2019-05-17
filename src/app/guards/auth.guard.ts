@@ -12,6 +12,15 @@ export class AuthGuard implements CanActivate {
   {
   }
 
+  disableSessionInterval()
+  {
+    if (this.sessionInterval)
+    {
+      clearInterval (this.sessionInterval);
+      this.sessionInterval = null;
+    }
+  }
+
   redirectToLogIn()
   {
     if (this.authService.getToken ())

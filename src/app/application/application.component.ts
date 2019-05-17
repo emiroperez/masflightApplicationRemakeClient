@@ -21,6 +21,7 @@ import { MsfShareDashboardComponent } from '../msf-share-dashboard/msf-share-das
 import { length } from '@amcharts/amcharts4/.internal/core/utils/Iterator';
 import { AuthService } from '../services/auth.service';
 import { MediaMatcher } from '@angular/cdk/layout';
+import { AuthGuard } from '../guards/auth.guard';
 
 
 @Component({
@@ -56,7 +57,7 @@ export class ApplicationComponent implements OnInit {
   private _mobileQueryListener: () => void;
 
   constructor(public dialog: MatDialog, public globals: Globals, private menuService: MenuService,private router: Router,private excelService:ExcelService,
-    private appService: ApplicationService, private authService: AuthService,changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
+    private appService: ApplicationService, private authService: AuthService,changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private authGuard: AuthGuard) {
     this.status = false;
 
     this.mobileQuery = media.matchMedia('(max-width: 768px)');
@@ -386,6 +387,7 @@ toggle(){
   }
 
   logOut(){
+    this.authGuard.disableSessionInterval ();
     this.authService.removeToken ();
     this.router.navigate (['']);
   }
