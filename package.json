@@ -34,7 +34,6 @@
     "ag-grid-community": "^20.1.0",
     "buffer": "^5.2.1",
     "cdk-drag-scroll": "0.0.2",
-    "clientjs": "^0.1.11",
     "core-js": "^2.5.4",
     "events": "^3.0.0",
     "file-saver": "^2.0.0",

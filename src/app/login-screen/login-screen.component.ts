@@ -10,10 +10,16 @@ import { Globals } from '../globals/Globals';
 import { HttpClient } from '@angular/common/http';
 import { TwoFactorLoginDialogComponent } from '../two-factor-login-dialog/two-factor-login-dialog.component';
 import { MatDialog } from '@angular/material';
-import 'clientjs';
 
-// ClientJS must be imported in a different way
-declare let ClientJS: any;
+declare var Fingerprint2: any;
+
+var options = {
+  NOT_AVAILABLE: 'not available',
+  ERROR: 'error',
+  EXCLUDED: 'excluded',
+};
+
+var hash;
 
 @Component({
   selector: 'app-login-screen',
@@ -27,7 +33,6 @@ export class LoginScreenComponent implements OnInit {
   credentials = {};
   authenticated = false;
 
-  fingerprint: any;
   user: User;
   utils: Utils;
   userId: string;
@@ -41,7 +46,6 @@ export class LoginScreenComponent implements OnInit {
   constructor(private router: Router,  public globals: Globals, private service: MenuService,
     private authService: AuthService, private notification: NotificationComponent,
     private formBuilder: FormBuilder, public http: HttpClient, public dialog: MatDialog) {
-    this.fingerprint = new ClientJS ().getFingerprint ();
     this.user = new User (null);
     this.utils = new Utils();
     this.user.username = "";
@@ -52,6 +56,12 @@ export class LoginScreenComponent implements OnInit {
       passwordValidator: new FormControl('', [Validators.required])
     });
 
+    new Fingerprint2.getV18 (options, function (result, components)
+    {
+      hash = result;
+      console.log (result); //a hash, representing your device fingerprint
+      console.log (components); // an array of FP components
+    });
   }
 
   isUsernameInvalid(): boolean
@@ -87,8 +97,7 @@ export class LoginScreenComponent implements OnInit {
         _this.securityToken = response.token;
         _this.username = response.username;
 
-        /*
-        _this.globals.isLoading = true;
+        /*_this.globals.isLoading = true;
 
         // get public IP address
         _this.http.get ("https://api.ipify.org?format=json").subscribe (data =>
@@ -96,12 +105,11 @@ export class LoginScreenComponent implements OnInit {
           self.session = {
             userId: _this.userId,
             ipAddress: data["ip"],
-            machineName: _this.fingerprint
+            machineName: hash
           };
 
           _this.authService.validateLogin (self, self.session, self.verifyLogin, self.errorAutentication);
-        });
-        */
+        });*/
 
         _this.goToWelcomeScreen ();
       }
