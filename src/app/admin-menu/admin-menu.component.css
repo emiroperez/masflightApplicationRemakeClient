@@ -35,6 +35,7 @@
     .dialog-category-arguments-container {
         overflow-y: hidden;
         -webkit-overflow-scrolling: touch;
+        min-height: 190px;
         width: calc(100% - 25px);
         height: calc(100% - 125px);
         margin-top: 30px;
