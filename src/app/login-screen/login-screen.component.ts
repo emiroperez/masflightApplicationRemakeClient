@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { NotificationComponent } from '../notification/notification.component';
@@ -10,9 +10,10 @@ import { Globals } from '../globals/Globals';
 import { HttpClient } from '@angular/common/http';
 import { TwoFactorLoginDialogComponent } from '../two-factor-login-dialog/two-factor-login-dialog.component';
 import { MatDialog } from '@angular/material';
+import 'clientjs';
 
-declare var require: any;
-const Fingerprint2 = require ('fingerprintjs2');
+// ClientJS must be imported in a different way
+declare let ClientJS: any;
 
 @Component({
   selector: 'app-login-screen',
@@ -26,6 +27,7 @@ export class LoginScreenComponent implements OnInit {
   credentials = {};
   authenticated = false;
 
+  fingerprint: any;
   user: User;
   utils: Utils;
   userId: string;
@@ -38,8 +40,8 @@ export class LoginScreenComponent implements OnInit {
 
   constructor(private router: Router,  public globals: Globals, private service: MenuService,
     private authService: AuthService, private notification: NotificationComponent,
-    private formBuilder: FormBuilder, public http: HttpClient, public zone: NgZone,
-    public dialog: MatDialog) {
+    private formBuilder: FormBuilder, public http: HttpClient, public dialog: MatDialog) {
+    this.fingerprint = new ClientJS ().getFingerprint ();
     this.user = new User (null);
     this.utils = new Utils();
     this.user.username = "";
@@ -85,30 +87,21 @@ export class LoginScreenComponent implements OnInit {
         _this.securityToken = response.token;
         _this.username = response.username;
 
-        /*_this.globals.isLoading = true;
+        _this.globals.isLoading = true;
 
         // get public IP address
-        _this.http.get ("https://api.ipify.org?format=json").subscribe (data => {
-          Fingerprint2.get ({}, function (components) {
-            let values, murmur;
+        _this.http.get ("https://api.ipify.org?format=json").subscribe (data =>
+        {
+          self.session = {
+            userId: _this.userId,
+            ipAddress: data["ip"],
+            machineName: _this.fingerprint
+          };
 
-            values = components.map (function (component)
-            {
-              return component.value
-            });
-            murmur = Fingerprint2.x64hash128 (values.join (''), 31);
+          _this.authService.validateLogin (self, self.session, self.verifyLogin, self.errorAutentication);
+        });
 
-            self.session = {
-              userId: _this.userId,
-              ipAddress: data["ip"],
-              machineName: murmur
-            };
-
-            _this.authService.validateLogin (self, self.session, self.verifyLogin, self.errorAutentication);
-          });
-        });*/
-
-        _this.goToWelcomeScreen ();
+        // _this.goToWelcomeScreen ();
       }
     } else {
       _this.utils.showAlert ('warning', data.errorMessage);
@@ -118,12 +111,10 @@ export class LoginScreenComponent implements OnInit {
 
   goToWelcomeScreen()
   {
-    this.zone.run (() => {
-      this.storeSecurityToken (this.securityToken);
-      this.securityToken = null;
-      this.authenticated = true;
-      this.router.navigate(['/welcome']);
-    });
+    this.storeSecurityToken (this.securityToken);
+    this.securityToken = null;
+    this.authenticated = true;
+    this.router.navigate(['/welcome']);
   }
 
   verifyLogin(_this, result)
@@ -136,34 +127,31 @@ export class LoginScreenComponent implements OnInit {
       _this.goToWelcomeScreen ();
     else
     {
-      _this.zone.run (() => {
-        let dialogRef = _this.dialog.open (TwoFactorLoginDialogComponent, {
-          height: '200px',
-          width: '300px',
-          panelClass: 'msf-dashboard-control-variables-dialog',
-          data: {
-            message: result == 2 ? "You haven't logged in for 5 days." : "Your account is being used to sign in to a new device.",
-            session: _this.session
-          }
-        });
+      let dialogRef = _this.dialog.open (TwoFactorLoginDialogComponent,
+      {
+        height: '200px',
+        width: '300px',
+        panelClass: 'msf-dashboard-control-variables-dialog',
+        data: {
+          message: result == 2 ? "You haven't logged in for 5 days." : "Your account is being used to sign in to a new device.",
+          session: _this.session
+        }
+      });
 
-        dialogRef.afterClosed ().subscribe (results => {
-          if (results.pass)
-            self.goToWelcomeScreen ();
-          else
-          {
-            _this.securityToken = null;
-            _this.username = null;
-            _this.userId = null;
-            _this.session = null;
+      dialogRef.afterClosed ().subscribe (results =>
+      {
+        if (results.pass)
+          self.goToWelcomeScreen ();
+        else
+        {
+          _this.securityToken = null;
+          _this.username = null;
+          _this.userId = null;
+          _this.session = null;
 
-            if (results.message)
-            {
-              _this.utils.showAlert ('warning', results.message);
-              _this.credentials = {};
-            }
-          }
-        });
+          if (results.message)
+            _this.utils.showAlert ('warning', results.message);
+        }
       });
     }
   }
