@@ -41,7 +41,7 @@
                 </mat-form-field>
                 <div style="flex: 1; height: 0">
                     <div style="flex: 1; height: 100%">
-                        <div class="dark-scrollbar" style="flex: 1; background-color: #1a1a1a;overflow-y: auto ;-webkit-overflow-scrolling: touch; height: calc(100% - 16px)">
+                        <div class="dark-scrollbar" style="flex: 1; background-color: #1a1a1a;overflow-y: auto ;-webkit-overflow-scrolling: touch; height: calc(100% - 16px); overflow-x: hidden">
                             <div *ngFor="let item of categories | filter : searchText">
                                 <div style="color:white; margin: 10px;width: 100%" [ngClass]="{
                         'is-active': item.isSelected,
