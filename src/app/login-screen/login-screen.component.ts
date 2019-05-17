@@ -87,6 +87,7 @@ export class LoginScreenComponent implements OnInit {
         _this.securityToken = response.token;
         _this.username = response.username;
 
+        /*
         _this.globals.isLoading = true;
 
         // get public IP address
@@ -100,8 +101,9 @@ export class LoginScreenComponent implements OnInit {
 
           _this.authService.validateLogin (self, self.session, self.verifyLogin, self.errorAutentication);
         });
+        */
 
-        // _this.goToWelcomeScreen ();
+        _this.goToWelcomeScreen ();
       }
     } else {
       _this.utils.showAlert ('warning', data.errorMessage);
