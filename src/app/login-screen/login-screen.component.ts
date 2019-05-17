@@ -105,7 +105,7 @@ export class LoginScreenComponent implements OnInit {
           self.session = {
             userId: _this.userId,
             ipAddress: data["ip"],
-            machineName: hash
+            hash: hash
           };
 
           _this.authService.validateLogin (self, self.session, self.verifyLogin, self.errorAutentication);
