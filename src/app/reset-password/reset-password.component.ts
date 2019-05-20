@@ -136,7 +136,7 @@ resetHandler(_this,data) {
   getErrorRepeatPasswordMessage() {
     return this.personalInformationForm.get('repeatPasswordValidator').hasError("required")
       ? "You must repeat password"
-      : this.personalInformationForm.get('repeatPasswordValidator').hasError("mismath")
+      : this.personalInformationForm.get('repeatPasswordValidator').hasError("mismatch")
       ? "You must enter the same password"
       : "";
   }
