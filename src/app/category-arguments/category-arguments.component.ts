@@ -95,7 +95,12 @@ export class CategoryArgumentsComponent implements OnInit {
 
   columnApiArgument: any;
 
-  constructor(public globals: Globals, private service: ApplicationService) { }
+  innerHeight: number;
+
+  constructor(public globals: Globals, private service: ApplicationService)
+  {
+    this.innerHeight = window.innerHeight;
+  }
 
   onGridReady(params) {
     this.gridApi = params.api;
@@ -267,6 +272,8 @@ export class CategoryArgumentsComponent implements OnInit {
   @HostListener('window:resize', ['$event'])
   checkScreen(event): void
   {
+    this.innerHeight = event.target.innerHeight;
+
     // if(!this.mobileQuery.matches)
     // {
     if (event.target.innerHeight == window.screen.height && event.target.innerWidth == window.screen.width)
@@ -277,5 +284,10 @@ export class CategoryArgumentsComponent implements OnInit {
     // else{
     //   this.globals.isFullscreen = false;
     // }
+  }
+
+  getInnerHeight(): number
+  {
+    return this.innerHeight;
   }
 }
