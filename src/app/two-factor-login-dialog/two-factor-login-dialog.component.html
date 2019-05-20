@@ -9,7 +9,7 @@
 <div class="two-factor-auth-form two-factor-auth-container">
   <div class="block-item-input">
     <mat-form-field>
-      <input matInput autocomplete="off" type="number" placeholder="Enter Verification Code" [(ngModel)]="code"/>
+      <input matInput autocomplete="off" maxlength="6" type="numeric" placeholder="Enter Verification Code" [(ngModel)]="code" pattern="[0-9]*" digitOnly/>
     </mat-form-field>
   </div>
 </div>

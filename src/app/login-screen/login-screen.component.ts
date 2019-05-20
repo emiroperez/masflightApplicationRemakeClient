@@ -11,15 +11,8 @@ import { HttpClient } from '@angular/common/http';
 import { TwoFactorLoginDialogComponent } from '../two-factor-login-dialog/two-factor-login-dialog.component';
 import { MatDialog } from '@angular/material';
 
-declare var Fingerprint2: any;
-
-var options = {
-  NOT_AVAILABLE: 'not available',
-  ERROR: 'error',
-  EXCLUDED: 'excluded',
-};
-
-var hash;
+declare let ClientJS: any;
+import 'clientjs';
 
 @Component({
   selector: 'app-login-screen',
@@ -38,6 +31,7 @@ export class LoginScreenComponent implements OnInit {
   userId: string;
   securityToken: string;
   session: any;
+  hash: any;
 
   loginForm: FormGroup;
   loggedIn = false;
@@ -56,12 +50,8 @@ export class LoginScreenComponent implements OnInit {
       passwordValidator: new FormControl('', [Validators.required])
     });
 
-    new Fingerprint2.getV18 (options, function (result, components)
-    {
-      hash = result;
-      console.log (result); //a hash, representing your device fingerprint
-      console.log (components); // an array of FP components
-    });
+    this.hash = new ClientJS ().getFingerprint ();
+    // console.log (this.hash);
   }
 
   isUsernameInvalid(): boolean
@@ -97,7 +87,8 @@ export class LoginScreenComponent implements OnInit {
         _this.securityToken = response.token;
         _this.username = response.username;
 
-        /*_this.globals.isLoading = true;
+        /*
+        _this.globals.isLoading = true;
 
         // get public IP address
         _this.http.get ("https://api.ipify.org?format=json").subscribe (data =>
@@ -105,11 +96,12 @@ export class LoginScreenComponent implements OnInit {
           self.session = {
             userId: _this.userId,
             ipAddress: data["ip"],
-            hash: hash
+            hash: _this.hash
           };
 
           _this.authService.validateLogin (self, self.session, self.verifyLogin, self.errorAutentication);
-        });*/
+        });
+        */
 
         _this.goToWelcomeScreen ();
       }
@@ -124,6 +116,7 @@ export class LoginScreenComponent implements OnInit {
     this.storeSecurityToken (this.securityToken);
     this.securityToken = null;
     this.authenticated = true;
+    this.hash = null;
     this.router.navigate(['/welcome']);
   }
 

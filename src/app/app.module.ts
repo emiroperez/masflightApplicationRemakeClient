@@ -185,6 +185,7 @@ import { MsfDashboardPanelTypePipe } from './msf-dashboard-panel/msf-dashboard-p
 import { AuthGuard } from './guards/auth.guard';
 import { MatTreeModule } from '@angular/material/tree';
 import { TwoFactorLoginDialogComponent } from './two-factor-login-dialog/two-factor-login-dialog.component';
+import { DigitOnlyModule } from '@uiowa/digit-only';
 
 @NgModule({
   declarations: [
@@ -385,7 +386,8 @@ import { TwoFactorLoginDialogComponent } from './two-factor-login-dialog/two-fac
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     ColorPickerModule,
-    DragScrollModule
+    DragScrollModule,
+    DigitOnlyModule
   ],
   providers: [
     AuthService,
