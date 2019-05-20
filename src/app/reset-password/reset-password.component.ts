@@ -48,6 +48,7 @@ export class ResetPasswordComponent implements OnInit {
       {
         console.log(self.tokenEmail);
         self.user.email = self.tokenEmail.split(":")[0];
+        self.personalInformationForm.get ('emailValidator').setValue (self.user.email);
         self.verifyToken();
       }
     });
@@ -81,6 +82,10 @@ export class ResetPasswordComponent implements OnInit {
 
 
 resetPassword() {
+  this.user.email = this.personalInformationForm.get ('emailValidator').value;
+  this.user.password = this.personalInformationForm.get ('passwordValidator').value;
+  this.user.repeatPassword = this.personalInformationForm.get ('repeatPasswordValidator').value;
+
   if(this.personalInformationForm.valid){
     this.userSave.password = this.user.password;
     this.userSave.repeatPassword = this.user.repeatPassword;
@@ -105,7 +110,7 @@ resetHandler(_this,data) {
   static passwordMatchValidator(comp: ResetPasswordComponent): ValidatorFn {
     return (control: AbstractControl): ValidationErrors => {
       if (comp.user != undefined) {
-        return comp.user.password !== control.value
+        return comp.personalInformationForm.get ('passwordValidator').value !== control.value
           ? { mismatch: true }
           : null;
       } else {
