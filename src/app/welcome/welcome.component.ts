@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { Globals } from '../globals/Globals';
 import { WelcomeService } from '../services/welcome.service';
@@ -156,5 +156,20 @@ export class WelcomeComponent implements OnInit {
     var aux = option.name;
     aux = aux.replace(" ","");
     return "../../assets/images/w_"+aux+".png"
+  }
+
+  @HostListener('window:resize', ['$event'])
+  checkScreen(event)
+  {
+    // if(!this.mobileQuery.matches)
+    // {
+    if (event.target.innerHeight == window.screen.height && event.target.innerWidth == window.screen.width)
+      this.globals.isFullscreen = true;
+    else
+      this.globals.isFullscreen = false;
+    // }
+    // else{
+    //   this.globals.isFullscreen = false;
+    // }
   }
 }

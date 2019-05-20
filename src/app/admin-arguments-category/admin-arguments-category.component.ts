@@ -113,6 +113,17 @@ deleteArgument(argument) {
   checkScreen(event): void
   {
     this.innerHeight = event.target.innerHeight;
+
+    // if(!this.mobileQuery.matches)
+    // {
+    if (event.target.innerHeight == window.screen.height && event.target.innerWidth == window.screen.width)
+      this.globals.isFullscreen = true;
+    else
+      this.globals.isFullscreen = false;
+    // }
+    // else{
+    //   this.globals.isFullscreen = false;
+    // }
   }
 
   getInnerHeight(): number

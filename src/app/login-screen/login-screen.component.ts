@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { NotificationComponent } from '../notification/notification.component';
@@ -212,5 +212,18 @@ export class LoginScreenComponent implements OnInit {
     console.log(result);
   }
 
-
+  @HostListener('window:resize', ['$event'])
+  checkScreen(event)
+  {
+    // if(!this.mobileQuery.matches)
+    // {
+    if (event.target.innerHeight == window.screen.height && event.target.innerWidth == window.screen.width)
+      this.globals.isFullscreen = true;
+    else
+      this.globals.isFullscreen = false;
+    // }
+    // else{
+    //   this.globals.isFullscreen = false;
+    // }
+  }
 }

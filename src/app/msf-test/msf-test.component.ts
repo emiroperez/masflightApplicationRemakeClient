@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { ApplicationService } from '../services/application.service';
 import { delay } from 'rxjs/operators';
 import { ApiClient } from '../api/api-client';
+import { Globals } from '../globals/Globals';
 
 @Component({
   selector: 'app-msf-test',
@@ -17,7 +18,7 @@ export class MsfTestComponent implements OnInit {
   
   loading = false;
 
-  constructor(private services: ApplicationService, private http: ApiClient) { }
+  constructor(private services: ApplicationService, private http: ApiClient, private globals: Globals) { }
 
   ngOnInit() {
 
@@ -45,6 +46,19 @@ export class MsfTestComponent implements OnInit {
   }
 
 
-  
+  @HostListener('window:resize', ['$event'])
+  checkScreen(event): void
+  {
+    // if(!this.mobileQuery.matches)
+    // {
+    if (event.target.innerHeight == window.screen.height && event.target.innerWidth == window.screen.width)
+      this.globals.isFullscreen = true;
+    else
+      this.globals.isFullscreen = false;
+    // }
+    // else{
+    //   this.globals.isFullscreen = false;
+    // }
+  }
 
 }

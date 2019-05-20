@@ -25,8 +25,8 @@ export const routes: Routes = [
   { path: 'category-arguments', component: CategoryArgumentsComponent, canActivate: [AuthGuard] },
   { path: 'app-msf-test', component: MsfTestComponent, canActivate: [AuthGuard] },
   { path: 'user-activation', component: UserActivationComponent, canActivate: [AuthGuard] },
-  { path: 'forgot-password', component: ForgotPasswordComponent, canActivate: [AuthGuard] },
-  { path: 'reset-password', component: ResetPasswordComponent, canActivate: [AuthGuard] },
+  { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'arguments-category', component: AdminArgumentsCategoryComponent, canActivate: [AuthGuard] }
 
 ];
