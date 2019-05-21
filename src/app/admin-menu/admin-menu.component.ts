@@ -6,7 +6,7 @@ import { MatSnackBar, MatTableDataSource, MatTable, MatSelect, MatTreeFlattener,
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { MessageComponent } from '../message/message.component';
 import {CdkDragDrop, moveItemInArray, CdkDropList, transferArrayItem} from '@angular/cdk/drag-drop';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormBuilder, FormGroup } from '@angular/forms';
 import { DrillDown } from '../model/DrillDown';
 import { ReplaySubject, Subject, BehaviorSubject } from 'rxjs';
 import { takeUntil, take } from 'rxjs/operators';
@@ -139,6 +139,7 @@ export class DrillDownDialog {
   constructor(
     public dialogRef: MatDialogRef<DrillDownDialog>,
     @Inject(MAT_DIALOG_DATA) public data : {optionString: any, option:any, drillDown:any}) {
+
       this.menuString = data.optionString;
       this.optCtrl = this.menuString[0];
     this.filteredOpts.next(this.menuString.slice());
@@ -520,11 +521,22 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   emptyError: any = 0;
   menuString: any[] = [];
   @ViewChildren('tooltip') tooltips;
+  optionForm: FormGroup;
+
+  optionTypes:any[] = [
+    { name: 'Normal', value: 0 },
+    { name: 'Main Menu Only', value: 1 },
+    { name: 'Dashboard Only', value: 2 }
+  ];
 
   constructor(private http: ApiClient, public globals: Globals,
     private service: ApplicationService, public snackBar: MatSnackBar,
     public dialog: MatDialog, private ref: ChangeDetectorRef,
-    public rend: Renderer2) {
+    private formBuilder: FormBuilder, public rend: Renderer2) {
+      this.optionForm = this.formBuilder.group ({
+        optionTypeCtrl: new FormControl ()
+      });
+
       this.dataChange.subscribe(data => {
         this.dataSource.data = data;
       });
@@ -552,6 +564,14 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     const nestedNode = this.flatNodeMap.get(node);
     nestedNode.tab = node.tab;
     this.dataChange.next(this.data);
+  }
+
+  setChangeOptionType(item, node)
+  {
+    node.typeOption = item.value.value;
+    const nestedNode = this.flatNodeMap.get (node);
+    nestedNode.typeOption = node.typeOption;
+    this.dataChange.next (this.data);
   }
 
   ngOnInit() {
@@ -715,6 +735,18 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
       this.optionSelected.isActive = false;
       option.isActive = option.isActive == null ? true : !option.isActive;
       this.optionSelected = option;
+
+      this.optionForm.get ('optionTypeCtrl').setValue (null);
+
+      for (let i = 0; i < this.optionTypes.length; i++)
+      {
+        if (option.typeOption == this.optionTypes[i].value)
+        {
+          this.optionForm.get ('optionTypeCtrl').setValue (this.optionTypes[i]);
+          break;
+        }
+      }
+
       if (!option.isRoot && option.id) {
         this.getOptionCategoryArguments();
       }
@@ -1311,6 +1343,7 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
       children: [],
       toDelete: false,
       isRoot: false,
+      typeOption: "0",
       applicationId: this.globals.currentApplication.id,
       metaData: 1,} as any);
       this.dataChange.next(this.data);
@@ -1325,6 +1358,7 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
       children: [],
       toDelete: false,
       isRoot: false,
+      typeOption: "0",
       applicationId: this.globals.currentApplication.id,
       metaData: 1,} as any);
       this.dataChange.next(this.data);

@@ -53,7 +53,7 @@
                                         (cdkDragReleased)="dragEnd()" (click)=" getOptionSelected(node)">
                                         <div style="display:flex; flex-direction:row" [ngClass]="{'is-active': node.isActive,'is-inactive': !node.isActive }" class="menu-node">
                                             <button mat-icon-button disabled></button>
-                                            <input type="text" name="optionname" autocomplete="off" matInput class="input-option-tree" [(ngModel)]="node.label" (ngModelChange)="setChange(node, node.label)">
+                                            <input type="text" name="optionname" autocomplete="off" matInput class="input-option-tree" [(ngModel)]="node.label" (ngModelChange)="setChange(node)">
                                         </div>
                                         <mat-divider></mat-divider>
                                     </mat-tree-node>
@@ -94,13 +94,13 @@
                                 <div *ngIf="optionSelected.children.length == 0">
                                     <h2 class="title-section">Menu Option Configuration</h2>
                                     <mat-form-field class="standard-text" style="width: 95%">
-                                        <input matInput class="standard-input-text" placeholder="URL Base" [(ngModel)]="optionSelected.baseUrl" (ngModelChange)="setChangeURL(optionSelected, optionSelected.baseUrl)">
+                                        <input matInput class="standard-input-text" placeholder="URL Base" [(ngModel)]="optionSelected.baseUrl" (ngModelChange)="setChangeURL(optionSelected)">
                                     </mat-form-field>
                                     <mat-form-field class="standard-text" style="width: 45%; padding-right: 5%;">
-                                        <input matInput class="standard-input-text" placeholder="Icon" [(ngModel)]="optionSelected.icon" (ngModelChange)="setChangeIcon(optionSelected, optionSelected.icon)">
+                                        <input matInput class="standard-input-text" placeholder="Icon" [(ngModel)]="optionSelected.icon" (ngModelChange)="setChangeIcon(optionSelected)">
                                     </mat-form-field>
                                     <mat-form-field class="standard-text" style="width: 45%">
-                                        <input matInput class="standard-input-text" placeholder="Tab" [(ngModel)]="optionSelected.tab" (ngModelChange)="setChangeTab(optionSelected, optionSelected.tab)">
+                                        <input matInput class="standard-input-text" placeholder="Tab" [(ngModel)]="optionSelected.tab" (ngModelChange)="setChangeTab(optionSelected)">
                                     </mat-form-field>
                                 </div>
                             </div>
@@ -126,7 +126,15 @@
               </button>
                                         </div>
                                     </div>
-
+                                    <div class="dropdown-setup">
+                                        <mat-form-field style="flex: 1" [formGroup]="optionForm">
+                                            <mat-select placeholder="Option Type" formControlName="optionTypeCtrl" (selectionChange)="setChangeOptionType($event, optionSelected)">
+                                                <mat-option *ngFor="let optionType of optionTypes" [value]="optionType">
+                                                    {{optionType.name}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
                                     <!-- <div class="button-setup" (click)="addCategoryArguments()">
                                   <div style="flex: 4">
                                       <h2 class="button-section">Category Arguments</h2>

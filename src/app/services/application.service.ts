@@ -276,6 +276,12 @@ export class ApplicationService {
     this.http.get (_this, url, handlerSuccess, handlerError, null);
   }
 
+  getMenuForDashboardString(_this, applicationId, handlerSuccess, handlerError): void
+  {
+    let url = this.host + "/getMenuForDashboardString?appId=" + applicationId;
+    this.http.get (_this, url, handlerSuccess, handlerError, null);
+  }
+
   getChartFilterValues(_this, id, handlerSuccess, handlerError): void
   {
     let url = this.host + "/getMetaByOptionId?optionId=" + id;

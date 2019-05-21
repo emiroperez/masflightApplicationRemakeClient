@@ -66,7 +66,7 @@ export class MsfDashboardComponent implements OnInit {
   {
     this.globals.isLoading = true;
 
-    this.service.getMenuString (this, this.globals.currentApplication.id,
+    this.service.getMenuForDashboardString (this, this.globals.currentApplication.id,
       this.addDataForms, this.handlerError);
   }
 
