@@ -87,7 +87,6 @@ export class LoginScreenComponent implements OnInit {
         _this.securityToken = response.token;
         _this.username = response.username;
 
-        /*
         _this.globals.isLoading = true;
 
         // get public IP address
@@ -101,9 +100,6 @@ export class LoginScreenComponent implements OnInit {
 
           _this.authService.validateLogin (self, self.session, self.verifyLogin, self.errorAutentication);
         });
-        */
-
-        _this.goToWelcomeScreen ();
       }
     } else {
       _this.utils.showAlert ('warning', data.errorMessage);
@@ -130,6 +126,9 @@ export class LoginScreenComponent implements OnInit {
       _this.goToWelcomeScreen ();
     else
     {
+      console.log (result >>> 8); // print the code
+      result = result & 255; // remove the code from the result
+
       let dialogRef = _this.dialog.open (TwoFactorLoginDialogComponent,
       {
         height: '200px',
@@ -143,17 +142,20 @@ export class LoginScreenComponent implements OnInit {
 
       dialogRef.afterClosed ().subscribe (results =>
       {
-        if (results.pass)
-          self.goToWelcomeScreen ();
-        else
+        if (results)
         {
-          _this.securityToken = null;
-          _this.username = null;
-          _this.userId = null;
-          _this.session = null;
+          if (results.pass)
+            self.goToWelcomeScreen ();
+          else
+          {
+            _this.securityToken = null;
+            _this.username = null;
+            _this.userId = null;
+            _this.session = null;
 
-          if (results.message)
-            _this.utils.showAlert ('warning', results.message);
+            if (results.message)
+              _this.utils.showAlert ('warning', results.message);
+          }
         }
       });
     }
