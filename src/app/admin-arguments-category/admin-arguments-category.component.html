@@ -100,73 +100,10 @@
                                 <div class="arguments-child" style="width: 30%;">
                                     <mat-form-field style="width: 80%">
                                         <mat-select class="white" placeholder="Type" [(ngModel)]="argument.type">
-                                            <mat-option value="airline">Airline</mat-option>
-                                            <mat-option value="airportRoute">Airport route</mat-option>
-                                            <mat-option value="timeRange">Time range</mat-option>
-                                            <mat-option value="dateRange">Date range</mat-option>
-                                            <mat-option value="tailnumber">Tail number</mat-option>
-                                            <mat-option value="singleairline">Single airline</mat-option>
-                                            <mat-option value="aircraftType">Aircraft type</mat-option>
-                                            <mat-option value="flightNumber">Flight number</mat-option>
-                                            <mat-option value="airport">Airport</mat-option>
-                                            <mat-option value="grouping">Grouping</mat-option>
-                                            <mat-option value="rounding">Rounding</mat-option>
-                                            <mat-option value="date">Date</mat-option>
-                                            <mat-option value="windDirection">Wind direction</mat-option>
-                                            <mat-option value="ceiling">Ceiling</mat-option>
-                                            <mat-option value="windSpeed">Wind Speed</mat-option>
-                                            <mat-option value="temperature">Temperature</mat-option>
-                                            <mat-option value="freeTextInput">Free text input</mat-option>
-                                            <mat-option value="selectBoxSingleOption">Select box single option</mat-option>
-                                            <mat-option value="selectBoxMultipleOption">Select box multiple option</mat-option>
-                                            <mat-option value="datePicker">Date picker</mat-option>
-                                            <mat-option value="timePicker">Time picker</mat-option>
-                                            <mat-option value="dateTimePicker">Date time picker</mat-option>
-                                            <mat-option value="checkBox">Check box</mat-option>
-                                            <mat-option value="cancelsCheckBox">Cancels check boxes</mat-option>
-                                            <mat-option value="diversionsCheckbox">Diversions check boxes</mat-option>
-                                            <mat-option value="flightDelaysCheckbox">Flight Delays check box</mat-option>
-                                            <mat-option value="causesFlightDelaysCheckbox">Causes Of Flight Delays check boxes</mat-option>
-                                            <mat-option value="taxiTimes">Taxi times</mat-option>
-                                            <mat-option value="taxiTimesCheckbox">Taxi times checkbox</mat-option>
-                                            <mat-option value="taxiTimesCheckboxes">Taxi times checkboxes</mat-option>
-                                            <mat-option value="datePeriod">Date period (year-quarter)</mat-option>
-                                            <mat-option value="region">Region</mat-option>
-                                            <mat-option value="datePeriodYear">Date period (year)</mat-option>
-                                            <mat-option value="datePeriodYearMonth">Date period (year-month)</mat-option>
-                                            <mat-option value="sortingCheckboxes">Sorting checkboxes</mat-option>
-                                            <mat-option value="groupingAthena">New Grouping</mat-option>
-                                            <mat-option value="flightDistance">Flight Distance</mat-option>
-                                            <mat-option value="fareTypes">Fare Types</mat-option>
-                                            <mat-option value="summary">Summary</mat-option>
-                                            <mat-option value="serviceClasses">Service Classes</mat-option>
-                                            <mat-option value="resultsLess">Group Results Less Than</mat-option>
-                                            <mat-option value="geography">Geography</mat-option>
-                                            <mat-option value="excludeItineraries">Itineraries</mat-option>
-                                            <mat-option value="excludeFollowing">Exclude The Following Fares</mat-option>
-                                            <mat-option value="singleCheckbox">Single checkbox</mat-option>
-                                            <mat-option value="filterAirlineType">Filter Airline Type</mat-option>
-                                            <mat-option value="fareIncrements">Fare Increments</mat-option>
-                                            <mat-option value="fareIncrementMiddle">Fare Increments Middle</mat-option>
-                                            <mat-option value="fareIncrementMax">Fare Increments Max</mat-option>
-                                            <mat-option value="title">Title</mat-option>
-                                            <mat-option value="airportsRoutes">Airports Routes</mat-option>
-                                            <mat-option value="fareLower">Exclude Fares lower than</mat-option>
-                                            <mat-option value="percentIncrement">Pecent Increment</mat-option>
-                                            <mat-option value="groupingDailyStatics">Grouping Daily Statics</mat-option>
-                                            <mat-option value="quarterHour">Quarter Hour</mat-option>
-                                            <mat-option value="functions">Functions</mat-option>
-                                            <mat-option value="groupingOperationsSummary">Grouping Operatins Summary</mat-option>
-                                            <mat-option value="groupingHubSummaries">Grouping Hub Summaries</mat-option>
-                                            <mat-option value="regionSchedule">Region Schedule</mat-option>
-                                            <mat-option value="aircraftTypeCheckboxes">Aircraft Type Checkboxes</mat-option>
-                                            <mat-option value="seats">Seats</mat-option>
-                                            <mat-option value="sortingNostop">Sorting Nostop</mat-option>
-                                            <mat-option value="connectionTime">Connection Time</mat-option>
-                                            <mat-option value="stops">Stops</mat-option>
-                                            <mat-option value="circuityType">Circuity Type</mat-option>
-                                            <mat-option value="circuity">Circuity</mat-option>
-                                            <mat-option value="singleAirport">Single airport</mat-option>
+                                            <ngx-mat-select-search [formControl]="typeFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+                                            <mat-option *ngFor="let types of filteredTypes | async" [value]="types.value">
+                                                {{types.name}}
+                                            </mat-option>
                                         </mat-select>
                                     </mat-form-field>
                                     <div></div>

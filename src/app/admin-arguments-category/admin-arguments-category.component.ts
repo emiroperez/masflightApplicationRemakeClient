@@ -4,6 +4,9 @@ import { ApiClient } from '../api/api-client';
 import { ApplicationService } from '../services/application.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { MessageComponent } from '../message/message.component';
+import { ReplaySubject, Subject } from 'rxjs';
+import { FormControl } from '@angular/forms';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-admin-arguments-category, FilterPipeArg',
@@ -11,6 +14,10 @@ import { MessageComponent } from '../message/message.component';
   styleUrls: ['./admin-arguments-category.component.css']
 })
 export class AdminArgumentsCategoryComponent implements OnInit {
+
+  typeFilterCtrl: FormControl = new FormControl ();
+  filteredTypes: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
+  private _onDestroy = new Subject<void> ();
 
   innerHeight: number;
   category: any = {label: '', icon: '', description: '', isSelected: false};
@@ -22,13 +29,119 @@ export class AdminArgumentsCategoryComponent implements OnInit {
   dataToSend: any[] = [];
   searchText:string;
 
-  constructor(private http: ApiClient,  public dialog: MatDialog, public globals: Globals, private service: ApplicationService) { }
+  argTypes: any[] = [
+    { value: "airline", name: "Airline" },
+    { value: "airportRoute", name: "Airport route" },
+    { value: "timeRange", name: "Time range" },
+    { value: "dateRange", name: "Date range" },
+    { value: "tailnumber", name: "Tail number" },
+    { value: "singleairline", name: "Single airline" },
+    { value: "aircraftType", name: "Aircraft type" },
+    { value: "flightNumber", name: "Flight number" },
+    { value: "airport", name: "Airport" },
+    { value: "grouping", name: "Grouping" },
+    { value: "rounding", name: "Rounding" },
+    { value: "date", name: "Date" },
+    { value: "windDirection", name: "Wind direction" },
+    { value: "ceiling", name: "Ceiling" },
+    { value: "windSpeed", name: "Wind Speed" },
+    { value: "temperature", name: "Temperature" },
+    { value: "freeTextInput", name: "Free text input" },
+    { value: "selectBoxSingleOption", name: "Select box single option" },
+    { value: "selectBoxMultipleOption", name: "Select box multiple option" },
+    { value: "datePicker", name: "Date picker" },
+    { value: "timePicker", name: "Time picker" },
+    { value: "dateTimePicker", name: "Date time picker" },
+    { value: "checkBox", name: "Check box" },
+    { value: "cancelsCheckBox", name: "Cancels check boxes" },
+    { value: "diversionsCheckbox", name: "Diversions check boxes" },
+    { value: "flightDelaysCheckbox", name: "Flight Delays check box" },
+    { value: "causesFlightDelaysCheckbox", name: "Causes Of Flight Delays check boxes" },
+    { value: "taxiTimes", name: "Taxi times" },
+    { value: "taxiTimesCheckbox", name: "Taxi times checkbox" },
+    { value: "taxiTimesCheckboxes", name: "Taxi times checkboxes" },
+    { value: "datePeriod", name: "Date period (year-quarter)" },
+    { value: "region", name: "Region" },
+    { value: "datePeriodYear", name: "Date period (year)" },
+    { value: "datePeriodYearMonth", name: "Date period (year-month)" },
+    { value: "sortingCheckboxes", name: "Sorting checkboxes" },
+    { value: "groupingAthena", name: "New Grouping" },
+    { value: "flightDistance", name: "Flight Distance" },
+    { value: "fareTypes", name: "Fare Types" },
+    { value: "summary", name: "Summary" },
+    { value: "serviceClasses", name: "Service Classes" },
+    { value: "resultsLess", name: "Group Results Less Than" },
+    { value: "geography", name: "Geography" },
+    { value: "excludeItineraries", name: "Itineraries" },
+    { value: "excludeFollowing", name: "Exclude The Following Fares" },
+    { value: "singleCheckbox", name: "Single checkbox" },
+    { value: "filterAirlineType", name: "Filter Airline Type" },
+    { value: "fareIncrements", name: "Fare Increments" },
+    { value: "fareIncrementMiddle", name: "Fare Increments Middle" },
+    { value: "fareIncrementMax", name: "Fare Increments Max" },
+    { value: "title", name: "Title" },
+    { value: "airportsRoutes", name: "Airports Routes" },
+    { value: "fareLower", name: "Exclude Fares lower than" },
+    { value: "percentIncrement", name: "Pecent Increment" },
+    { value: "groupingDailyStatics", name: "Grouping Daily Statics" },
+    { value: "quarterHour", name: "Quarter Hour" },
+    { value: "functions", name: "Functions" },
+    { value: "groupingOperationsSummary", name: "Grouping Operatins Summary" },
+    { value: "groupingHubSummaries", name: "Grouping Hub Summaries" },
+    { value: "regionSchedule", name: "Region Schedule" },
+    { value: "aircraftTypeCheckboxes", name: "Aircraft Type Checkboxes" },
+    { value: "seats", name: "Seats" },
+    { value: "sortingNostop", name: "Sorting Nostop" },
+    { value: "connectionTime", name: "Connection Time" },
+    { value: "stops", name: "Stops" },
+    { value: "circuityType", name: "Circuity Type" },
+    { value: "circuity", name: "Circuity" },
+    { value: "singleAirport", name: "Single airport" }
+  ];
+
+  constructor(private http: ApiClient,  public dialog: MatDialog, public globals: Globals, private service: ApplicationService)
+  {
+    this.filteredTypes.next (this.argTypes.slice ());
+    this.searchChange ();
+  }
 
   ngOnInit() {
     this.innerHeight = window.innerHeight;
 
     this.getCategoryArguments();
 
+  }
+
+  ngOnDestroy()
+  {
+    this._onDestroy.next ();
+    this._onDestroy.complete ();
+  }
+
+  private filterTypes(): void
+  {
+    // get the search keyword
+    let search = this.typeFilterCtrl.value;
+    if (!search)
+    {
+      this.filteredTypes.next (this.argTypes.slice ());
+      return;
+    }
+
+    search = search.toLowerCase ();
+    this.filteredTypes.next (
+      this.argTypes.filter (a => a.name.toLowerCase ().indexOf (search) > -1)
+    );
+  }
+
+  searchChange(): void
+  {
+    // listen for search field value changes
+    this.typeFilterCtrl.valueChanges
+      .pipe (takeUntil (this._onDestroy))
+      .subscribe (() => {
+        this.filterTypes ();
+      });
   }
 
   getCategoryArguments() {
