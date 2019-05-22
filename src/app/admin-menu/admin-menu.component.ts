@@ -522,6 +522,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   menuString: any[] = [];
   @ViewChildren('tooltip') tooltips;
   optionForm: FormGroup;
+  recursiveDeleteDone: boolean;
 
   optionTypes:any[] = [
     { name: 'Normal', value: 0 },
@@ -835,16 +836,21 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
         console.log(result.confirm);
         if (result.confirm){
 
-          console.log("entra");
-          this.optionSelected.toDelete = true;
-          this.optionSelected.label+="....";
-          const nestedNode = this.flatNodeMap.get(this.optionSelected);
-          nestedNode.toDelete = true;
-          this.dataChange.next(this.data);
-          console.log(this.optionSelected)
-          console.log(this.flatNodeMap)
-          console.log(this.dataSource.data)
-          this.saveMenu();
+          if (this.optionSelected.uid.includes ("catnew") || this.optionSelected.uid.includes ("optnew"))
+            this.deleteNewItem ();
+          else
+          {
+            console.log("entra");
+            this.optionSelected.toDelete = true;
+            this.optionSelected.label+="....";
+            const nestedNode = this.flatNodeMap.get(this.optionSelected);
+            nestedNode.toDelete = true;
+            this.dataChange.next(this.data);
+            console.log(this.optionSelected)
+            console.log(this.flatNodeMap)
+            console.log(this.dataSource.data)
+            this.saveMenu();
+          }
         }
       });
     }
@@ -1328,6 +1334,51 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
     const parentNode = this.flatNodeMap.get(this.optionSelected);
     this.insertItem(parentNode!, '');
     this.treeControl.expand(this.optionSelected);
+  }
+
+  recursiveDelete(node)
+  {
+    if (!node.children)
+      return;
+
+    for (let i = 0; i < node.children.length; i++)
+    {
+      if (this.recursiveDeleteDone)
+        break;
+
+      if (node.children[i].uid === this.optionSelected.uid)
+      {
+        node.children.splice (node.children.indexOf (this.optionSelected), 1);
+        this.dataChange.next (this.data);
+        this.recursiveDeleteDone = true;
+        break;
+      }
+      else
+        this.recursiveDelete (node.children[i]);
+    }
+  }
+
+  deleteNewItem()
+  {
+    this.recursiveDeleteDone = false;
+
+    // find the node and delete it
+    for (let i = 0; i < this.dataSource.data.length; i++)
+    {
+      if (this.dataSource.data[i].uid === this.optionSelected.uid)
+      {
+        this.dataSource.data.splice (this.dataSource.data.indexOf (this.optionSelected), 1);
+        this.dataChange.next (this.data);
+        this.recursiveDeleteDone = true;
+      }
+      else
+        this.recursiveDelete (this.dataSource.data[i]);
+
+      if (this.recursiveDeleteDone)
+        break;
+    }
+
+    this.optionSelected = {};
   }
 
   insertItem(parent: any, name: string) {
