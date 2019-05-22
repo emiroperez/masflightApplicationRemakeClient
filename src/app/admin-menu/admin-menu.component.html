@@ -91,6 +91,18 @@
                           </div>
                       </div> -->
                             <div *ngIf="!optionSelected.isRoot && optionSelected.isActive && optionSelected.id">
+                                <div *ngIf="optionSelected.children.length != 0">
+                                    <h2 class="title-section">Submenu Configuration</h2>
+                                    <mat-form-field [formGroup]="optionForm" style="width: 95%">
+                                        <mat-select placeholder="Type" formControlName="optionTypeCtrl" (selectionChange)="setChangeOptionType($event, optionSelected)">
+                                            <mat-option *ngFor="let optionType of optionTypes" [value]="optionType">
+                                                {{optionType.name}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div *ngIf="!optionSelected.isRoot && optionSelected.isActive && optionSelected.id">
                                 <div *ngIf="optionSelected.children.length == 0">
                                     <h2 class="title-section">Menu Option Configuration</h2>
                                     <mat-form-field class="standard-text" style="width: 95%">
