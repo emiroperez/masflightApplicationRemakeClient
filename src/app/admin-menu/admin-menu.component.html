@@ -90,7 +90,7 @@
                               </div>
                           </div>
                       </div> -->
-                            <div *ngIf="!optionSelected.isRoot && optionSelected.isActive && optionSelected.id">
+                            <div *ngIf="!optionSelected.isRoot && optionSelected.isActive">
                                 <div *ngIf="optionSelected.children.length != 0">
                                     <h2 class="title-section">Submenu Configuration</h2>
                                     <mat-form-field [formGroup]="optionForm" style="width: 95%">
@@ -104,7 +104,7 @@
                                     </mat-form-field>
                                 </div>
                             </div>
-                            <div *ngIf="!optionSelected.isRoot && optionSelected.isActive && optionSelected.id">
+                            <div *ngIf="!optionSelected.isRoot && optionSelected.isActive">
                                 <div *ngIf="optionSelected.children.length == 0">
                                     <h2 class="title-section">Menu Option Configuration</h2>
                                     <mat-form-field class="standard-text" style="width: 95%">
@@ -118,7 +118,7 @@
                                     </mat-form-field>
                                 </div>
                             </div>
-                            <div *ngIf="!optionSelected.isRoot && optionSelected.isActive && optionSelected.id">
+                            <div *ngIf="!optionSelected.isRoot && optionSelected.isActive">
                                 <div *ngIf="optionSelected.children.length == 0" style="display: flex; flex-direction: row;">
                                     <div class="button-setup">
                                         <div style="flex: 4">
@@ -162,10 +162,10 @@
                                 </div>
                             </div>
 
-                            <div *ngIf="!optionSelected.isRoot && optionSelected.isActive && optionSelected.id" style="flex: 1; flex-direction: column; justify-content: center; height: calc(100% - 13em)">
+                            <div *ngIf="!optionSelected.isRoot && optionSelected.isActive" style="flex: 1; flex-direction: column; justify-content: center; height: calc(100% - 13em)">
 
                                 <div *ngIf="optionSelected.children.length == 0" [style.height.%]="100">
-                                    <div *ngIf="!optionSelected.isRoot && optionSelected.id" style="height: 100%">
+                                    <div *ngIf="!optionSelected.isRoot" style="height: 100%">
                                         <mat-form-field class="msf-admin-search">
                                             <input class="search-input" matInput [(ngModel)]="searchText" style="width:95%;" autocomplete="off">
                                             <mat-icon style="color: white" aria-label="search">search</mat-icon>
