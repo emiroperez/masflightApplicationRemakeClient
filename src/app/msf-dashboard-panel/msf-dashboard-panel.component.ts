@@ -1353,6 +1353,20 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.http.post (this, url, panel, handlerSuccess, handlerError);
   }
 
+  loadMapData(handlerSuccess, handlerError): void
+  {
+    let url, urlBase, urlArg;
+
+    this.values.isLoading = true;
+    urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
+    urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=100&page_number=0";
+    console.log (urlBase);
+    urlArg = encodeURIComponent (urlBase);
+    url = this.service.host + "/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
+
+    this.http.get (this, url, handlerSuccess, handlerError, null);
+  }
+
   loadFormData(handlerSuccess, handlerError): void
   {
     let url, urlBase, urlArg;
@@ -1429,9 +1443,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
 
     if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
-      this.loadFormData (this.handlerHeatMapSuccess, this.handlerHeatMapError);
+      this.loadMapData (this.handlerHeatMapSuccess, this.handlerHeatMapError);
     else if (this.values.currentChartType.flags & ChartFlags.MAP)
-      this.loadFormData (this.handlerMapSuccess, this.handlerMapError);
+      this.loadMapData (this.handlerMapSuccess, this.handlerMapError);
     else if (this.values.currentChartType.flags & ChartFlags.TABLE)
       this.loadTableData (false, this.msfTableRef.handlerSuccess, this.msfTableRef.handlerError);
     else if (this.values.currentChartType.flags & ChartFlags.PICTURE)
