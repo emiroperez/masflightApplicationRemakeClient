@@ -1343,18 +1343,17 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
 
     for (let i = 0; i < node.children.length; i++)
     {
-      if (this.recursiveDeleteDone)
-        break;
-
       if (node.children[i].uid === this.optionSelected.uid)
       {
         node.children.splice (node.children.indexOf (this.optionSelected), 1);
         this.dataChange.next (this.data);
         this.recursiveDeleteDone = true;
-        break;
       }
       else
         this.recursiveDelete (node.children[i]);
+
+      if (this.recursiveDeleteDone)
+        break;
     }
   }
 
