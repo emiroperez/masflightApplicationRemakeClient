@@ -94,10 +94,12 @@
                                 <div *ngIf="optionSelected.children.length != 0">
                                     <h2 class="title-section">Submenu Configuration</h2>
                                     <mat-form-field [formGroup]="optionForm" style="width: 95%">
-                                        <mat-select placeholder="Type" formControlName="optionTypeCtrl" (selectionChange)="setChangeOptionType($event, optionSelected)">
-                                            <mat-option *ngFor="let optionType of optionTypes" [value]="optionType">
-                                                {{optionType.name}}
-                                            </mat-option>
+                                        <mat-select placeholder="Submenu Type" formControlName="optionTypeCtrl" (selectionChange)="setChangeOptionType($event, optionSelected)">
+                                            <ng-container *ngFor="let optionType of optionTypes; let type = index">
+                                                <mat-option *ngIf="type != 1" [value]="optionType">
+                                                    {{optionType.name}}
+                                                </mat-option>
+                                            </ng-container>
                                         </mat-select>
                                     </mat-form-field>
                                 </div>
