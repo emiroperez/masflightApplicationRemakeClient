@@ -287,7 +287,11 @@
         background-color: transparent;
     }
 
-    .mat-form-field.mat-focused .mat-form-field-ripple {
+    .input-option-tree.mat-input-element {
+        caret-color: #b3b3b3;
+    }
+
+    .is-active-cat.mat-focused .mat-form-field-ripple {
         background-color: transparent;
     }
 
