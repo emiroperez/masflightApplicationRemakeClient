@@ -1,6 +1,6 @@
 <mat-form-field>
   <span class="material-icon-picker-selector-container">
-    <input #materialIconResultTextField matInput autocomplete="off" class="material-icon-result-text" placeholder="Icon" [(ngModel)]="iconSelected" (ngModelChange)="setChangeIcon(iconSelected)" (focus)="enableIconPicker()">
+    <input #materialIconResultTextField matInput autocomplete="off" class="material-icon-result-text" placeholder="Icon" [(ngModel)]="iconSelected" (ngModelChange)="setChangeIcon()" (focus)="enableIconPicker()">
     <mat-icon class="material-icon-picker-remove-icon-button" (click)="setIcon($event, null)" aria-label="Remove Icon">close</mat-icon>
   </span>
   <div *ngIf="useIconPicker" class="material-icon-picker" (click)="$event.stopPropagation()">
