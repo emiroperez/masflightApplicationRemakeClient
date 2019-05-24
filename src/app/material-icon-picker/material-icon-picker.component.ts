@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter, SimpleChanges, ViewChildren, QueryList } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -162,8 +162,8 @@ export class MaterialIconPickerComponent implements OnInit {
   iconSelected: string;
   private _onDestroy = new Subject<void> ();
 
-  @ViewChild("materialIconSeachText")
-  materialIconSearchTextField: ElementRef;
+  @ViewChildren("materialIconSeachText")
+  materialIconSearchTextField: QueryList<ElementRef>;
 
   @ViewChild("materialIconResultTextField")
   materialIconResultTextField: ElementRef;
@@ -183,6 +183,20 @@ export class MaterialIconPickerComponent implements OnInit {
   ngOnInit()
   {
     this.iconSelected = this.value;
+  }
+
+  ngAfterViewInit()
+  {
+    let self = this;
+
+    this.materialIconSearchTextField.changes.subscribe ((textField) =>
+    {
+      if (textField.length > 0)
+        textField.first.nativeElement.focus();
+
+      if (self.iconSelected && self.materialIcons.indexOf (self.iconSelected) != -1)
+        document.getElementById (self.iconSelected).scrollIntoView ();
+    });
   }
 
   ngOnChanges(changes: SimpleChanges)
@@ -215,14 +229,7 @@ export class MaterialIconPickerComponent implements OnInit {
 
     setTimeout (() => {
       this.useIconPicker = true;
-
-      setTimeout (() => {
-        this.materialIconSearchTextField.nativeElement.focus ();
-
-        if (this.iconSelected)
-          document.getElementById (this.iconSelected).scrollIntoView ();
-      }, 50);
-    }, 100);
+    }, 10);
   }
 
   setIcon(event, icon): void
