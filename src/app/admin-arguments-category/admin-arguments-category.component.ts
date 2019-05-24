@@ -180,19 +180,22 @@ handlerError(_this,result){
   });
 }
 
-getSelectedOption(option) {
-  if (this.category !== option) {
-    option.isSelected = !option.isSelected;
-    this.category.isSelected = !this.category.isSelected;
-    option.focus=true;
-    this.category = option;
-  } else {
-    option.isSelected = !option.isSelected;
-    option.focus=false;
-    this.category = {};
-  }
+  getSelectedOption(option) {
+    setTimeout(() =>
+    {
+      if (this.category !== option) {
+        option.isSelected = !option.isSelected;
+        this.category.isSelected = !this.category.isSelected;
+        option.focus = true;
+        this.category = option;
+      } else {
+        option.isSelected = !option.isSelected;
+        option.focus = false;
+        this.category = {};
+      }
 
-  console.log(this.category);
+      console.log(this.category);
+    }, 10);
 }
 
 addCategory() {
@@ -256,14 +259,11 @@ deleteArgument(argument) {
   hideIconPicker(): void
   {
     if (this.materialIconPicker)
-      this.materialIconPicker.disableIconPicker();
+      this.materialIconPicker.disableIconPicker ();
   }
 
-  checkIcon(): boolean
+  isMatIcon(icon): boolean
   {
-    if (!this.materialIconPicker)
-      return false;
-
-    return this.materialIconPicker.validateIcon();
+    return !icon.endsWith (".png");
   }
 }

@@ -82,8 +82,8 @@
                                 </mat-form-field>
                                 -->
                                 <div style="padding: 5px; height: 29px; min-width: 26px; margin-right: 10px; background: #1a1a1a; display: flex; align-items: center; text-align: center">
-                                    <mat-icon *ngIf="checkIcon()" class="img-item-category-argument">{{category.icon}}</mat-icon>
-                                    <img *ngIf="category.icon && !checkIcon()" class="img-item-category-argument" src="{{category.icon}}" />
+                                    <mat-icon *ngIf="category.icon && isMatIcon(category.icon)" class="img-item-category-argument">{{category.icon}}</mat-icon>
+                                    <img *ngIf="category.icon && !isMatIcon(category.icon)" class="img-item-category-argument" src="{{category.icon}}" />
                                 </div>
                                 <span [style.width.%]="100">
                                     <app-material-icon-picker #materialIconPicker [value]="category.icon" (iconChanged)="setChangeIcon($event)"></app-material-icon-picker>
