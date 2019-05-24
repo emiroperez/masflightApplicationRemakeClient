@@ -1482,5 +1482,10 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
     if (this.materialIconPicker)
       this.materialIconPicker.disableIconPicker ();
   }
+
+  isMatIcon(icon): boolean
+  {
+    return !icon.endsWith (".png");
+  }
 }
 

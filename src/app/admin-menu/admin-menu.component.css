@@ -93,7 +93,9 @@
         height: 16px;
         width: 16px;
         margin-right: 8px;
-        margin-top: 6px
+        margin-top: 6px;
+        color: #c7dcf1;
+        font-size: 17px;
     }
 
     .group-category {
