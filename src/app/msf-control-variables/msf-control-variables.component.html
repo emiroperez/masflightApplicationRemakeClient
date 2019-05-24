@@ -1,6 +1,7 @@
 <ng-container *ngFor="let category of currentOptionCategories">
     <div [ngClass]="argsContainer.open ? 'msf-dashboard-menu-component-active' : 'msf-dashboard-menu-component'" (click)="componentClickHandler(argsContainer, icon)">
-      <img src="{{category.icon}}" class="msf-menu-image-border msf-vertical-middle">
+      <mat-icon *ngIf="category.icon && isMatIcon(category.icon)" class="msf-menu-image-border msf-vertical-middle msf-menu-mat-icon">{{category.icon}}</mat-icon>
+      <img *ngIf="category.icon && !isMatIcon(category.icon)" src="{{category.icon}}" class="msf-menu-image-border msf-vertical-middle">
       <span class="msf-menu-component-text">{{category.label}}</span>
       <i #icon class="material-icons msf-menu-cmpte-row">expand_more</i>
     </div>

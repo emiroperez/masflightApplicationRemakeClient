@@ -269,4 +269,12 @@ export class MaterialIconPickerComponent implements OnInit {
         this.filterMaterialIcons ();
       });
   }
+
+  validateIcon(): boolean
+  {
+    if (!this.iconSelected || this.materialIcons.indexOf (this.iconSelected) == -1)
+      return false;
+
+    return true;
+  }
 }

@@ -25,6 +25,11 @@ export class MsfControlVariablesComponent implements OnInit {
   ngOnInit() {
   }
 
+  isMatIcon(icon): boolean
+  {
+    return !icon.endsWith (".png");
+  }
+
   componentClickHandler(argsContainer, icon): void
   {
     if (this.globals.currentArgs)

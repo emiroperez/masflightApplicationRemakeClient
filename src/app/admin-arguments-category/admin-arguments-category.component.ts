@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2, HostListener } from '@angular/core';
+import { Component, OnInit, Renderer2, HostListener, ViewChild } from '@angular/core';
 import { Globals } from '../globals/Globals';
 import { ApiClient } from '../api/api-client';
 import { ApplicationService } from '../services/application.service';
@@ -7,6 +7,7 @@ import { MessageComponent } from '../message/message.component';
 import { ReplaySubject, Subject } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
+import { MaterialIconPickerComponent } from '../material-icon-picker/material-icon-picker.component';
 
 @Component({
   selector: 'app-admin-arguments-category, FilterPipeArg',
@@ -27,7 +28,10 @@ export class AdminArgumentsCategoryComponent implements OnInit {
   categoryDelete: any[] = [];
   argumentDelete: any[] = [];
   dataToSend: any[] = [];
-  searchText:string;
+  searchText: string;
+
+  @ViewChild("materialIconPicker")
+  materialIconPicker: MaterialIconPickerComponent;
 
   argTypes: any[] = [
     { value: "airline", name: "Airline" },
@@ -242,5 +246,24 @@ deleteArgument(argument) {
   getInnerHeight(): number
   {
     return this.innerHeight;
+  }
+
+  setChangeIcon(icon): void
+  {
+    this.category.icon = icon;
+  }
+
+  hideIconPicker(): void
+  {
+    if (this.materialIconPicker)
+      this.materialIconPicker.disableIconPicker();
+  }
+
+  checkIcon(): boolean
+  {
+    if (!this.materialIconPicker)
+      return false;
+
+    return this.materialIconPicker.validateIcon();
   }
 }
