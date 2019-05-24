@@ -186,6 +186,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { MatTreeModule } from '@angular/material/tree';
 import { TwoFactorLoginDialogComponent } from './two-factor-login-dialog/two-factor-login-dialog.component';
 import { DigitOnlyModule } from '@uiowa/digit-only';
+import { MaterialIconPickerComponent } from './material-icon-picker/material-icon-picker.component';
 
 @NgModule({
   declarations: [
@@ -349,7 +350,8 @@ import { DigitOnlyModule } from '@uiowa/digit-only';
     DialogArgumentPreviewComponent,
     MsfDashboardPanelOptionPipe,
     MsfDashboardPanelTypePipe,
-    TwoFactorLoginDialogComponent
+    TwoFactorLoginDialogComponent,
+    MaterialIconPickerComponent
   ],
   imports: [
     BrowserModule,

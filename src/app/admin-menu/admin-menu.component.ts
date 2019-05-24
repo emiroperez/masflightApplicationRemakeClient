@@ -13,6 +13,7 @@ import { takeUntil, take } from 'rxjs/operators';
 import { CategoryArguments } from '../model/CategoryArguments';
 import { DialogArgumentPreviewComponent } from '../dialog-argument-preview/dialog-argument-preview.component';
 import { FlatTreeControl } from '@angular/cdk/tree';
+import { MaterialIconPickerComponent } from '../material-icon-picker/material-icon-picker.component';
 //import  clonedeep from 'lodash.clonedeep';
 
 @Component({
@@ -470,7 +471,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
         flatNode.menuOptionArgumentsAdmin=node.menuOptionArgumentsAdmin;
         flatNode.categoryParentId=node.categoryParentId;
         flatNode.baseUrl= node.baseUrl;
-        flatNode.icon= node.iconicon;
+        flatNode.icon= node.icon;
         flatNode.tab= node.tab;
         flatNode.tabType= node.tabType;
         flatNode.menuParentId= node.menuParentId;
@@ -524,6 +525,9 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   optionForm: FormGroup;
   recursiveDeleteDone: boolean;
 
+  @ViewChild("materialIconPicker")
+  materialIconPicker: MaterialIconPickerComponent;
+
   optionTypes:any[] = [
     { name: 'Normal', value: 0 },
     { name: 'Main Menu Only', value: 1 },
@@ -555,9 +559,10 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     this.dataChange.next(this.data);
   }
 
-  setChangeIcon(node){
+  setChangeIcon(icon, node){
+    node.icon = icon;
     const nestedNode = this.flatNodeMap.get(node);
-    nestedNode.icon = node.icon;
+    nestedNode.icon = icon;
     this.dataChange.next(this.data);
   }
 
@@ -1470,6 +1475,12 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
   getInnerHeight(): number
   {
     return this.innerHeight;
+  }
+
+  hideIconPicker(): void
+  {
+    if (this.materialIconPicker)
+      this.materialIconPicker.disableIconPicker ();
   }
 }
 

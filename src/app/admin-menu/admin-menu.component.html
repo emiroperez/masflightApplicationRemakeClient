@@ -1,4 +1,4 @@
-<div style="overflow-y: auto;-webkit-overflow-scrolling: touch; overflow-x: hidden" [style.height.px]="getInnerHeight()">
+<div (click)="hideIconPicker()" style="overflow-y: auto;-webkit-overflow-scrolling: touch; overflow-x: hidden" [style.height.px]="getInnerHeight()">
     <div class="msf-register-header">
         <button mat-icon-button routerLink="/application">
     <mat-icon>arrow_back</mat-icon>
@@ -110,9 +110,22 @@
                                     <mat-form-field class="standard-text" style="width: 95%">
                                         <input matInput class="standard-input-text" placeholder="URL Base" [(ngModel)]="optionSelected.baseUrl" (ngModelChange)="setChangeURL(optionSelected)">
                                     </mat-form-field>
-                                    <mat-form-field class="standard-text" style="width: 45%; padding-right: 5%;">
-                                        <input matInput class="standard-input-text" placeholder="Icon" [(ngModel)]="optionSelected.icon" (ngModelChange)="setChangeIcon(optionSelected)">
-                                    </mat-form-field>
+                                    <div class="standard-text" style="width: 45%; padding-right: 5%; display: inline-block;">
+                                        <!--
+                                        <input matInput autocomplete="off" class="standard-input-text" placeholder="Icon" [(ngModel)]="optionSelected.icon" (ngModelChange)="setChangeIcon(optionSelected)" (focus)="enableIconPicker()">
+                                        <div *ngIf="useIconPicker" class="material-icon-picker" (click)="$event.stopPropagation()">
+                                            <div class="material-icon-picker-input-container">
+                                                <input #materialIconSeachText class="material-icon-picker-input" [formControl]="materialIconCtrl" placeholder="Search">
+                                            </div>
+                                            <div class="material-icon-selector">
+                                                <ng-container *ngFor="let materialIcon of filteredMaterialIcon | async">
+                                                    <mat-icon id="{{materialIcon}}" [ngClass]="optionSelected.icon === materialIcon ? 'material-icon-picker-container-selected' : 'material-icon-picker-container'" (click)="setIcon($event, materialIcon)">{{ materialIcon }}</mat-icon>
+                                                </ng-container>
+                                            </div>
+                                        </div>
+                                        -->
+                                        <app-material-icon-picker #materialIconPicker [value]="optionSelected.icon" (iconChanged)="setChangeIcon($event, optionSelected)"></app-material-icon-picker>
+                                    </div>
                                     <mat-form-field class="standard-text" style="width: 45%">
                                         <input matInput class="standard-input-text" placeholder="Tab" [(ngModel)]="optionSelected.tab" (ngModelChange)="setChangeTab(optionSelected)">
                                     </mat-form-field>
