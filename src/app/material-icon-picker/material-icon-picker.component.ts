@@ -160,7 +160,8 @@ export class MaterialIconPickerComponent implements OnInit {
   materialIconCtrl: FormControl = new FormControl ();
   filteredMaterialIcon: ReplaySubject<any[]> = new ReplaySubject<any[]> (1);
   iconSelected: string;
-  private _onDestroy = new Subject<void> ();
+  private _onDestroy = new Subject<void>();
+  searchTextFieldVisible: boolean;
 
   @ViewChildren("materialIconSeachText")
   materialIconSearchTextField: QueryList<ElementRef>;
@@ -191,11 +192,15 @@ export class MaterialIconPickerComponent implements OnInit {
 
     this.materialIconSearchTextField.changes.subscribe ((textField) =>
     {
-      if (textField.length > 0)
-        textField.first.nativeElement.focus();
+      if (!self.searchTextFieldVisible && textField.length)
+      {
+        textField.first.nativeElement.focus ();
 
-      if (self.iconSelected && self.materialIcons.indexOf (self.iconSelected) != -1)
-        document.getElementById (self.iconSelected).scrollIntoView ();
+        if (self.iconSelected && self.materialIcons.indexOf (self.iconSelected) != -1)
+          document.getElementById (self.iconSelected).scrollIntoView ();
+
+        self.searchTextFieldVisible = true;
+      }
     });
   }
 
@@ -221,6 +226,7 @@ export class MaterialIconPickerComponent implements OnInit {
   {
     this.useIconPicker = false;
     this.materialIconCtrl.setValue (null);
+    this.searchTextFieldVisible = false;
   }
 
   enableIconPicker(): void
