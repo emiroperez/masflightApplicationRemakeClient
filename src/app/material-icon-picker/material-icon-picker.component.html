@@ -1,0 +1,16 @@
+<mat-form-field>
+  <span class="material-icon-picker-selector-container">
+    <input #materialIconResultTextField matInput autocomplete="off" class="material-icon-result-text" placeholder="Icon" [(ngModel)]="iconSelected" (ngModelChange)="setChangeIcon(iconSelected)" (focus)="enableIconPicker()">
+    <mat-icon class="material-icon-picker-remove-icon-button" (click)="setIcon($event, null)" aria-label="Remove Icon">close</mat-icon>
+  </span>
+  <div *ngIf="useIconPicker" class="material-icon-picker" (click)="$event.stopPropagation()">
+    <div class="material-icon-picker-input-container">
+      <input #materialIconSeachText class="material-icon-picker-input" [formControl]="materialIconCtrl" placeholder="Search">
+    </div>
+    <div class="material-icon-selector">
+      <ng-container *ngFor="let materialIcon of filteredMaterialIcon | async">
+        <mat-icon id="{{materialIcon}}" [ngClass]="iconSelected === materialIcon ? 'material-icon-picker-container-selected' : 'material-icon-picker-container'" (click)="setIcon($event, materialIcon)">{{ materialIcon }}</mat-icon>
+      </ng-container>
+    </div>
+  </div>
+</mat-form-field>
