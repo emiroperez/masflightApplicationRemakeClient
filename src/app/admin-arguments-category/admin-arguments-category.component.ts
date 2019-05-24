@@ -181,21 +181,18 @@ handlerError(_this,result){
 }
 
   getSelectedOption(option) {
-    setTimeout(() =>
-    {
-      if (this.category !== option) {
-        option.isSelected = !option.isSelected;
-        this.category.isSelected = !this.category.isSelected;
-        option.focus = true;
-        this.category = option;
-      } else {
-        option.isSelected = !option.isSelected;
-        option.focus = false;
-        this.category = {};
-      }
+    if (this.category !== option) {
+      option.isSelected = !option.isSelected;
+      this.category.isSelected = !this.category.isSelected;
+      option.focus = true;
+      this.category = option;
+    } else {
+      option.isSelected = !option.isSelected;
+      option.focus = false;
+      this.category = {};
+    }
 
-      console.log(this.category);
-    }, 10);
+    console.log(this.category);
 }
 
 addCategory() {
