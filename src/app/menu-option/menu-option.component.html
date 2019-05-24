@@ -12,7 +12,7 @@
       <!-- Handle leaf node menu items -->
       <ng-container *ngIf="(!option.children || option.children.length === 0) && option.typeOption != '2'">
         <button mat-menu-item (click)="optionClickHandler(option)">
-          <mat-icon *ngIf="option.icon">{{option.icon}}</mat-icon>   
+          <mat-icon class="mat-menu-item-icon" *ngIf="option.icon">{{option.icon}}</mat-icon>   
           {{option.label}}
         </button>
       </ng-container>
