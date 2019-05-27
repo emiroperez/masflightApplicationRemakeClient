@@ -4872,8 +4872,8 @@ span.msf-subCell {
   cursor: pointer;
 }
 .msf-customer-two-columns .msf-customer-left-container .mat-elevation-z8 .msf-customer-table-scroll .msf-customer-table .mat-row-highlighted {
-  background-color: #282828;
-  border-color: #11688b;
+  background-color: #282828 !important;
+  border-color: #11688b !important;
   cursor: pointer;
 }
 .msf-customer-two-columns .msf-customer-left-container .mat-elevation-z8 .msf-customer-table-scroll .msf-customer-table th.mat-header-cell {
