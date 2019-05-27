@@ -199,6 +199,24 @@ export class MsfTableComponent implements OnInit {
     return displayedColumns;
   }
 
+
+  deleteEmptyColumns(dataResult,displayedColumns: any[]){
+    var aux = displayedColumns.slice();
+    var cont = 0;
+    for (let index = 0; index < displayedColumns.length; index++) {
+      const element = displayedColumns[index];
+      var x = index;
+      if(element.grouping==1){
+        if(dataResult.data[0][element.columnName]==null){
+            x = x-cont;
+            aux.splice(x,1);
+            cont++;
+        }
+      }
+    }
+    return aux;
+  }
+
   setMsfChartRef(msfChartRef){
     msfChartRef.setColumns(this.displayedColumns);
   }
@@ -287,16 +305,16 @@ export class MsfTableComponent implements OnInit {
       if( _this.tableOptions.totalRecord > 0){
         if(_this.currentOption.metaData==1 || _this.currentOption.metaData==3 || _this.currentOption.tabType=='scmap'){  
           _this.tableOptions.displayedColumns = data.metadata;
-          // if(_this.groupingArgument!=null){
+          let dataResult = new MatTableDataSource(mainElement);     
             _this.tableOptions.displayedColumns  = _this.addGroupingColumns(_this.tableOptions.displayedColumns);
-          // }
+            _this.tableOptions.displayedColumns  = _this.deleteEmptyColumns(dataResult,_this.tableOptions.displayedColumns);
           _this.metadata = _this.tableOptions.displayedColumns;
           _this.tableOptions.metadata = data.metadata;
           console.log( _this.tableOptions.displayedColumns);
           
           _this.setColumnsDisplayed(_this);
           
-          let dataResult = new MatTableDataSource(mainElement);     
+
           if( _this.tableOptions.moreResults){
             if(_this.currentOption.tabType!="athena"&&_this.currentOption.tabType!="mariadb"){
               _this.dataSource.data = _this.dataSource.data.concat(dataResult.data);
