@@ -30,7 +30,7 @@
         <!-- <div> -->
         <mat-menu #userMenu="matMenu">
             <button mat-menu-item (click)="logOut()">
-                <mat-icon>settings</mat-icon>
+                <mat-icon class="mat-menu-item-icon">settings</mat-icon>
                 <span>Log out</span>
             </button>
         </mat-menu>
@@ -44,21 +44,27 @@
 
         <mat-menu #adminMenu="matMenu">
             <button mat-menu-item routerLink="/admin-menu">
-                <mat-icon>settings</mat-icon>
+                <mat-icon class="mat-menu-item-icon">settings</mat-icon>
                 <span>Admin Menu</span>
             </button>
             <button mat-menu-item routerLink="/arguments-category">
-                <mat-icon>settings</mat-icon>
+                <mat-icon class="mat-menu-item-icon">settings</mat-icon>
                 <span>Admin Argument Category</span>
             </button>
             <button mat-menu-item routerLink="/create-membership">
-                <mat-icon>settings</mat-icon>
+                <mat-icon class="mat-menu-item-icon">settings</mat-icon>
                 <span>Memberships</span>
             </button>
             <button mat-menu-item routerLink="/user-activation">
-                <mat-icon>settings</mat-icon>
+                <mat-icon class="mat-menu-item-icon">settings</mat-icon>
                 <span>Users Activation</span>
             </button>
+            <!--
+            <button mat-menu-item routerLink="/create-customer">
+                <mat-icon class="mat-menu-item-icon">settings</mat-icon>
+                <span>Customers</span>
+            </button>
+            -->
         </mat-menu>
         <!-- </div> -->
     </div>
