@@ -21,7 +21,7 @@
         <mat-form-field style="width:50%; float: right;">
             <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
         </mat-form-field>
-        <div style="display: flex; flex-direction: column; overflow: hidden; width: 100%; height: 100%; align-items: center; margin-left: -17px">
+        <div class="mat-elevation-z8" style="display: flex; flex-direction: column; overflow: hidden; width: 102%; height: 100%; align-items: center; margin-left: -17px">
         <table mat-table matSort style="overflow: auto;" [dataSource]="dataSource" class="datasource welcome-table">
 
             <ng-container matColumnDef="columnName">
