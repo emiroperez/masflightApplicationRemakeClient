@@ -4053,3 +4053,76 @@ span.msf-subCell
     color: #ffffff
     width: 100%
     text-align: justify
+
+.msf-customer-card-container
+    height: calc(100% - 134px)
+    width: calc(100% - 32px) !important
+    background: #171717
+    width: 100%
+    position: fixed !important
+
+.msf-customer-input-field
+    width: 50%
+    display: flex
+    flex-direction: row
+    .msf-customer-filter-text-field
+        font-size: inherit
+        color: white
+        font-weight: 400
+        line-height: 3.125
+        font-family: Roboto, "Helvetica Neue", sans-serif
+        width: 100%
+        margin-top: -15px
+        .msf-customer-search-icon
+            float: right
+            margin-top: -28px
+    .msf-customer-button
+        .msf-customer-create-icon
+            color: #ffffff
+
+.msf-customer-two-columns
+    display: flex
+    flex-direction: row
+    .msf-customer-left-container
+        width: 50%
+        padding-right: 4px
+        .mat-elevation-z8
+            .msf-customer-table-scroll
+                overflow-y: auto
+                .msf-customer-table
+                    overflow: auto
+                    margin-bottom: 0px !important
+                    tr.mat-header-row
+                        height: 23px
+                    tr.mat-row
+                        background-color: #171717
+                        border-color: #1c1c1c
+                        height: 23px
+                    tr.mat-row:hover
+                        background-color: #282828
+                        cursor: pointer
+                    .mat-row-highlighted
+                        background-color: #282828
+                        border-color: #11688b
+                        cursor: pointer
+                    th.mat-header-cell
+                        font-size: 12px
+                        border: none
+                        background-color: #1e1e1e
+                    td.mat-cell
+                        border-color: inherit
+                        border-style: solid
+                        border-width: 1px 0
+                        text-align: center
+                        font-size: 12px
+                        color: #ffffff
+            .msf-customer-paginator
+                width: 100%
+                .mat-paginator-outer-container
+                    .mat-paginator-container
+                        color: #ffffff
+                        background-color: #1e1e1e
+    .msf-customer-right-container
+        width: 50%
+        padding-left: 4px
+        color: #ffffff

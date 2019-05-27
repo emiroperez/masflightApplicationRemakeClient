@@ -187,6 +187,7 @@ import { MatTreeModule } from '@angular/material/tree';
 import { TwoFactorLoginDialogComponent } from './two-factor-login-dialog/two-factor-login-dialog.component';
 import { DigitOnlyModule } from '@uiowa/digit-only';
 import { MaterialIconPickerComponent } from './material-icon-picker/material-icon-picker.component';
+import { CreateCustomerComponent } from './create-customer/create-customer.component';
 
 @NgModule({
   declarations: [
@@ -351,7 +352,8 @@ import { MaterialIconPickerComponent } from './material-icon-picker/material-ico
     MsfDashboardPanelOptionPipe,
     MsfDashboardPanelTypePipe,
     TwoFactorLoginDialogComponent,
-    MaterialIconPickerComponent
+    MaterialIconPickerComponent,
+    CreateCustomerComponent
   ],
   imports: [
     BrowserModule,
