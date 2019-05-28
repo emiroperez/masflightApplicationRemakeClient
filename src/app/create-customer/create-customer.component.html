@@ -72,19 +72,22 @@
             </h1>
             <div class="msf-customer-right-editor" [ngStyle]="{ 'height': getEditorHeight() }">
               <div class="msf-customer-left-edit-panel">
-                <mat-form-field class="customer-form-field">
-                  <input matInput autocomplete="off" type="text" placeholder="Name" [(ngModel)]="selectedCustomer.name"/>
+                <mat-form-field [formGroup]="customerForm" class="customer-form-field">
+                  <input matInput formControlName="nameValidator" autocomplete="off" type="text" placeholder="Name"/>
+                  <mat-error *ngIf="customerForm.get('nameValidator')?.invalid">{{getNameErrorMessage()}}</mat-error>
                 </mat-form-field>
-                <mat-form-field class="customer-form-field">
-                  <input matInput autocomplete="off" type="number" placeholder="Customer Code" [(ngModel)]="selectedCustomer.customerCode"/>
+                <mat-form-field [formGroup]="customerForm" class="customer-form-field">
+                  <input matInput formControlName="customerCodeValidator" autocomplete="off" type="number" placeholder="Customer Code"/>
+                  <mat-error *ngIf="customerForm.get('customerCodeValidator')?.invalid">{{getCustomerCodeErrorMessage()}}</mat-error>
                 </mat-form-field>
-                <mat-form-field class="customer-form-field">
-                  <mat-select placeholder="Type" autocomplete="off" [(ngModel)]="selectedCustomer.type">
+                <mat-form-field [formGroup]="customerForm" class="customer-form-field">
+                  <mat-select formControlName="typeValidator" placeholder="Type" autocomplete="off">
                     <mat-option [value]="0">Internal</mat-option>
                     <mat-option [value]="1">Airline</mat-option>
                     <mat-option [value]="2">Airport</mat-option>
                     <mat-option [value]="3">Custom</mat-option>
                   </mat-select>
+                  <mat-error *ngIf="customerForm.get('typeValidator')?.invalid">{{getTypeErrorMessage()}}</mat-error>
                 </mat-form-field>
                 <mat-form-field class="customer-form-field">
                   <mat-select placeholder="Status" autocomplete="off" [(ngModel)]="selectedCustomer.status">
@@ -128,11 +131,13 @@
                 </mat-form-field>
               </div>
               <div class="msf-customer-right-edit-panel">
-                <mat-form-field class="customer-form-field">
-                  <input matInput autocomplete="off" type="text" placeholder="Short Name" [(ngModel)]="selectedCustomer.shortName"/>
+                <mat-form-field [formGroup]="customerForm" class="customer-form-field">
+                  <input matInput formControlName="shortNameValidator" autocomplete="off" type="text" placeholder="Short Name"/>
+                  <mat-error *ngIf="customerForm.get('shortNameValidator')?.invalid">{{getShortNameErrorMessage()}}</mat-error>
                 </mat-form-field>
-                <mat-form-field class="customer-form-field">
-                  <input matInput autocomplete="off" type="text" placeholder="Contact Full Name" [(ngModel)]="selectedCustomer.contactFullName"/>
+                <mat-form-field [formGroup]="customerForm" class="customer-form-field">
+                  <input matInput formControlName="contactFullNameValidator" autocomplete="off" type="text" placeholder="Contact Full Name"/>
+                  <mat-error *ngIf="customerForm.get('contactFullNameValidator')?.invalid">{{getContactFullNameErrorMessage()}}</mat-error>
                 </mat-form-field>
                 <mat-form-field class="customer-form-field">
                   <input matInput autocomplete="off" type="text" placeholder="Contact E-Mail" [(ngModel)]="selectedCustomer.contactEmail"/>

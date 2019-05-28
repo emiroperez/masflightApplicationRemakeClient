@@ -1,13 +1,14 @@
 import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
-import { MatTableDataSource, MatPaginator } from '@angular/material';
+import { MatTableDataSource, MatPaginator, MatDialog } from '@angular/material';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter } from '@angular/material/core';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { Globals } from '../globals/Globals';
 import { RegisterService } from '../services/register.service';
+import { MessageComponent } from '../message/message.component';
 import { State } from '../model/State';
 import { Country } from '../model/Country';
 import { Plan } from '../model/Plan';
@@ -49,6 +50,7 @@ export class CreateCustomerComponent implements OnInit {
 
   customerColumns: string[] = ['name', 'shortName', 'licenseType', 'status', 'endDate', 'numberOfLicenses'];
   customerTable: MatTableDataSource<any> = new MatTableDataSource (this.customers);
+  customerForm: FormGroup;
 
   public countryFilterCtrl: FormControl = new FormControl ();
   public stateFilterCtrl: FormControl = new FormControl ();
@@ -61,9 +63,31 @@ export class CreateCustomerComponent implements OnInit {
   @ViewChild(MatPaginator)
   paginator: MatPaginator;
 
-  constructor(public globals: Globals, private registerServices: RegisterService)
+  constructor(public globals: Globals, private registerServices: RegisterService, private dialog: MatDialog)
   {
-    this.selectedCustomer = {};
+    this.customerForm = new FormGroup ({
+      nameValidator: new FormControl ('', [Validators.required]),
+      shortNameValidator: new FormControl ('', [Validators.required]),
+      customerCodeValidator: new FormControl ('', [Validators.required]),
+      contactFullNameValidator: new FormControl ('', [Validators.required, CreateCustomerComponent.contactFullNameFieldValidator(this)]),
+      typeValidator: new FormControl ('', [Validators.required])
+/*      contactEmailValidator:
+      statusValidator:
+      countryValidator:
+      stateValidator:
+      cityValidator:
+      address1Validator:
+      licenseTypeValidator:
+      numberOfLicensesValidator:
+      startDateValidator:
+      endDateValidator:
+      paymentTypeValidator:
+      termsValidator:*/
+    });
+
+    this.selectedCustomer = {
+      "invalid": true
+    };
   }
 
   ngOnInit()
@@ -74,12 +98,47 @@ export class CreateCustomerComponent implements OnInit {
 
     this.globals.isLoading = true;
     this.registerServices.getCountries (this, this.setCountries, this.errorCountries);
+
+    this.onChanges ();
   }
 
   ngOnDestroy()
   {
     this._onDestroy.next ();
     this._onDestroy.complete ();
+  }
+
+  onChanges(): void
+  {
+    this.customerForm.get ('nameValidator').valueChanges.subscribe (value =>
+    {
+      if (this.selectedCustomer)
+        this.selectedCustomer.name = value;
+    });
+
+    this.customerForm.get ('shortNameValidator').valueChanges.subscribe (value =>
+    {
+      if (this.selectedCustomer)
+        this.selectedCustomer.shortName = value;
+    });
+
+    this.customerForm.get ('customerCodeValidator').valueChanges.subscribe (value =>
+    {
+      if (this.selectedCustomer)
+        this.selectedCustomer.customerCode = value;
+    });
+
+    this.customerForm.get ('typeValidator').valueChanges.subscribe (value =>
+    {
+      if (this.selectedCustomer)
+        this.selectedCustomer.type = value;
+    });
+
+    this.customerForm.get ('contactFullNameValidator').valueChanges.subscribe (value =>
+    {
+      if (this.selectedCustomer)
+        this.selectedCustomer.contactFullName = value;
+    });
   }
 
   getTableHeight(): string
@@ -136,15 +195,54 @@ export class CreateCustomerComponent implements OnInit {
     this.customerTable.filter = filterValue.trim ().toLowerCase ();
   }
 
+  checkSelectedCustomer(): boolean
+  {
+    let error: boolean = false;
+
+    if (!this.selectedCustomer || this.selectedCustomer.invalid)
+      return true;
+
+    // validate customer form before continuing
+    Object.keys (this.customerForm.controls).forEach (field =>
+    {
+      this.customerForm.get (field).markAsTouched ({ onlySelf: true });
+    });
+
+    if (this.customerForm.get ('nameValidator').hasError ('required')
+      || this.customerForm.get ('shortNameValidator').hasError ('required')
+      || this.customerForm.get ('customerCodeValidator').hasError ('required')
+      || this.customerForm.get ('typeValidator').hasError ('required')
+      || this.customerForm.get ('contactFullNameValidator').hasError ('required'))
+      error = true;
+
+    if (error)
+    {
+      this.dialog.open (MessageComponent, {
+        data: { title: "Error", message: "One or more form values are not valid, please correct them before continuing." }
+      });
+
+      return false;
+    }
+
+    this.selectedCustomer.highlight = false;
+    return true;
+  }
+
   createCustomer(): void
   {
-    if (this.selectedCustomer)
-      this.selectedCustomer.highlight = false;
+    if (!this.checkSelectedCustomer ())
+      return;
 
     this.customers.push ({});
     this.customerTable._updateChangeSubscription ();
     this.selectedCustomer = this.customers[this.customers.length - 1];
     this.selectedCustomer.highlight = true;
+
+    this.customerForm.get ('nameValidator').reset ();
+    this.customerForm.get ('shortNameValidator').reset ();
+    this.customerForm.get ('customerCodeValidator').reset ();
+    this.customerForm.get ('typeValidator').reset ();
+    this.customerForm.get ('contactFullNameValidator').reset ();
 
     // go to the last page after adding a new customer
     setTimeout (() => {
@@ -154,16 +252,23 @@ export class CreateCustomerComponent implements OnInit {
 
   saveCustomers(): void
   {
-
+    if (!this.checkSelectedCustomer ())
+      return;
   }
 
   selectCustomer(row): void
   {
-    if (this.selectedCustomer)
-      this.selectedCustomer.highlight = false;
+    if (!this.checkSelectedCustomer ())
+      return;
 
     this.selectedCustomer = row;
     this.selectedCustomer.highlight = true;
+
+    this.customerForm.get ('nameValidator').setValue (this.selectedCustomer.name);
+    this.customerForm.get ('shortNameValidator').setValue (this.selectedCustomer.shortName);
+    this.customerForm.get ('customerCodeValidator').setValue (this.selectedCustomer.customerCode);
+    this.customerForm.get ('typeValidator').setValue (this.selectedCustomer.type);
+    this.customerForm.get ('contactFullNameValidator').setValue (this.selectedCustomer.contactFullName);
   }
 
   setCountries(_this, data)
@@ -266,6 +371,50 @@ export class CreateCustomerComponent implements OnInit {
       this.states = [];
       this.filteredStates.next ([]);
     }
+  }
+
+  static contactFullNameFieldValidator(obj: CreateCustomerComponent): ValidatorFn
+  {
+    return (control: AbstractControl): ValidationErrors =>
+    {
+      if (obj.selectedCustomer)
+      {
+        if (!obj.customerForm.get ('contactFullNameValidator').value || !obj.customerForm.get ('contactFullNameValidator').value.length)
+          return { required: true, shortValue: false };
+
+        return obj.customerForm.get ('contactFullNameValidator').value.length < 4 ? { shortValue: true, required: false } : null;
+      }
+      else
+        return null;
+    };
+  }
+
+  getNameErrorMessage(): string
+  {
+    return this.customerForm.get ('nameValidator').hasError ('required') ? 'You must enter the name' : '';
+  }
+
+  getShortNameErrorMessage(): string
+  {
+    return this.customerForm.get ('shortNameValidator').hasError ('required') ? 'You must enter the short name' : '';
+  }
+
+  getCustomerCodeErrorMessage(): string
+  {
+    return this.customerForm.get ('customerCodeValidator').hasError ('required') ? 'You must enter the customer code' : '';
+  }
+
+  getTypeErrorMessage(): string
+  {
+    return this.customerForm.get ('typeValidator').hasError ('required') ? 'You must select the customer type' : '';
+  }
+
+  getContactFullNameErrorMessage(): string
+  {
+    if (this.customerForm.get ('contactFullNameValidator').hasError ('shortValue'))
+      return 'The contact full name is too short';
+
+    return this.customerForm.get ('contactFullNameValidator').hasError ('required') ? 'You must enter the contact name' : '';
   }
 
   @HostListener('window:resize', ['$event'])

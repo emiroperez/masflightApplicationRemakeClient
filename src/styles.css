@@ -4871,6 +4871,9 @@ span.msf-subCell {
 .msf-customer-edit-panel-form-field .mat-button-wrapper, .msf-customer-two-columns .msf-customer-right-container .mat-elevation-z8 .msf-customer-right-editor .msf-customer-right-edit-panel .mat-button-wrapper, .msf-customer-two-columns .msf-customer-right-container .mat-elevation-z8 .msf-customer-right-editor .msf-customer-left-edit-panel .mat-button-wrapper {
   color: #636363;
 }
+.msf-customer-edit-panel-form-field .mat-error, .msf-customer-two-columns .msf-customer-right-container .mat-elevation-z8 .msf-customer-right-editor .msf-customer-right-edit-panel .mat-error, .msf-customer-two-columns .msf-customer-right-container .mat-elevation-z8 .msf-customer-right-editor .msf-customer-left-edit-panel .mat-error {
+  text-align: right;
+}
 
 .msf-customer-two-columns {
   display: flex;
