@@ -14,6 +14,7 @@ import { ChartFlags } from '../msf-dashboard-panel/msf-dashboard-chartflags';
 import { CategoryArguments } from '../model/CategoryArguments';
 import { Arguments } from '../model/Arguments';
 import { Utils } from '../commons/utils';
+import { AuthService } from '../services/auth.service';
 
 am4core.useTheme(am4themes_animated);
 am4core.useTheme(am4themes_dark);
@@ -77,6 +78,7 @@ export class MsfDashboardChildPanelComponent {
     private zone: NgZone,
     public globals: Globals,
     private http: ApiClient,
+    private authService: AuthService,
     private service: ApplicationService,
     @Inject(MAT_DIALOG_DATA) public data: any)
   {
@@ -945,7 +947,7 @@ export class MsfDashboardChildPanelComponent {
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&&pageSize=100&page_number=" + this.actualPageNumber;
     console.log(urlBase);
     urlArg = encodeURIComponent(urlBase);
-    url = this.service.host + "/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
+    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
 
     for (let tableVariable of this.values.tableVariables)
     {
@@ -953,7 +955,7 @@ export class MsfDashboardChildPanelComponent {
         url += "&metaDataIds=" + tableVariable.itemId;
     }
 
-    this.http.get (this.msfTableRef, url, handlerSuccess, handlerError, null);
+    this.authService.get (this.msfTableRef, url, handlerSuccess, handlerError);
   }
 
   loadChartData(handlerSuccess, handlerError): void

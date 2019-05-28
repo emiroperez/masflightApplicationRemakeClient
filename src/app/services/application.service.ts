@@ -8,6 +8,7 @@ import { Globals } from '../globals/Globals';
 
 import { MatDialog } from '@angular/material';
 import { MsfConfirmationDialogComponent } from '../msf-confirmation-dialog/msf-confirmation-dialog.component';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,7 @@ export class ApplicationService {
   //host1 = "http://localhost:8886";
   host1 = "http://69.64.45.220:8886";
 
-  constructor(private http: ApiClient, private globals:Globals, private dialog: MatDialog) {
+  constructor(private http: ApiClient, private authService: AuthService, private globals:Globals, private dialog: MatDialog) {
     this.utils = new Utils();
     this.host = this.globals.baseUrl;
     this.host1 = this.globals.baseUrl2;
@@ -63,8 +64,8 @@ export class ApplicationService {
     }
     console.log(urlBase);
     let urlArg = encodeURIComponent(urlBase);
-    let url = this.host + "/consumeWebServices?url=" + urlArg + "&optionId=" + _this.globals.currentOption.id;
-    this.http.get(_this, url, handlerSuccess, handlerError, null);
+    let url = this.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + _this.globals.currentOption.id;
+    this.authService.get(_this, url, handlerSuccess, handlerError);
     console.log(url);
   }
 
@@ -378,8 +379,8 @@ export class ApplicationService {
     console.log(urlBase);
     let urlArg = encodeURIComponent(urlBase);
     console.log(urlArg);
-    let url = this.host + "/consumeWebServices?url=" + urlArg + "&optionId=" + option.id;
-    this.http.get(_this, url, handlerSuccess, handlerError, null);
+    let url = this.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + option.id;
+    this.authService.get(_this, url, handlerSuccess, handlerError);
     console.log(url);
   }
 

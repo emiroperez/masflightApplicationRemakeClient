@@ -35,6 +35,7 @@ import { MsfDashboardPanelValues } from '../msf-dashboard-panel/msf-dashboard-pa
 import { ComponentType } from '../commons/ComponentType';
 import { MessageComponent } from '../message/message.component';
 import { ChartFlags } from '../msf-dashboard-panel/msf-dashboard-chartflags';
+import { AuthService } from '../services/auth.service';
 
 am4core.useTheme(am4themes_animated);
 am4core.useTheme(am4themes_dark);
@@ -182,7 +183,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   private _onDestroy = new Subject<void> ();
 
   constructor(private zone: NgZone, public globals: Globals,
-    private service: ApplicationService, private http: ApiClient, public dialog: MatDialog,
+    private service: ApplicationService, private http: ApiClient, private authService: AuthService, public dialog: MatDialog,
     private formBuilder: FormBuilder)
   {
     this.utils = new Utils ();
@@ -1362,9 +1363,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=100&page_number=0";
     console.log (urlBase);
     urlArg = encodeURIComponent (urlBase);
-    url = this.service.host + "/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
+    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
 
-    this.http.get (this, url, handlerSuccess, handlerError, null);
+    this.authService.get (this, url, handlerSuccess, handlerError);
   }
 
   loadFormData(handlerSuccess, handlerError): void
@@ -1376,9 +1377,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=1&page_number=0";
     console.log (urlBase);
     urlArg = encodeURIComponent (urlBase);
-    url = this.service.host + "/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
+    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
 
-    this.http.get (this, url, handlerSuccess, handlerError, null);
+    this.authService.get (this, url, handlerSuccess, handlerError);
   }
 
   loadPicData(handlerSuccess, handlerError): void
@@ -1390,9 +1391,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=1&page_number=0";
     urlArg = encodeURIComponent (urlBase);
-    url = this.service.host + "/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
+    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
 
-    this.http.get (this, url, handlerSuccess, handlerError, null);
+    this.authService.get (this, url, handlerSuccess, handlerError);
   }
 
   loadTableData (moreResults, handlerSuccess, handlerError): void
@@ -1417,7 +1418,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&&pageSize=100&page_number=" + this.actualPageNumber;
     console.log (urlBase);
     urlArg = encodeURIComponent (urlBase);
-    url = this.service.host + "/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
+    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
 
     for (let tableVariable of this.values.tableVariables)
     {
@@ -1425,7 +1426,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         url += "&metaDataIds=" + tableVariable.itemId;
     }
 
-    this.http.get (this.msfTableRef, url, handlerSuccess, handlerError, null);
+    this.authService.get (this.msfTableRef, url, handlerSuccess, handlerError);
   }
 
   loadData(): void
