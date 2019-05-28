@@ -4844,6 +4844,34 @@ span.msf-subCell {
   color: #ffffff;
 }
 
+.msf-customer-edit-panel-form-field, .msf-customer-two-columns .msf-customer-right-container .mat-elevation-z8 .msf-customer-right-editor .msf-customer-right-edit-panel, .msf-customer-two-columns .msf-customer-right-container .mat-elevation-z8 .msf-customer-right-editor .msf-customer-left-edit-panel {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+}
+.msf-customer-edit-panel-form-field .customer-form-field, .msf-customer-two-columns .msf-customer-right-container .mat-elevation-z8 .msf-customer-right-editor .msf-customer-right-edit-panel .customer-form-field, .msf-customer-two-columns .msf-customer-right-container .mat-elevation-z8 .msf-customer-right-editor .msf-customer-left-edit-panel .customer-form-field {
+  margin-bottom: -0.5em;
+  flex: 1;
+}
+.msf-customer-edit-panel-form-field .mat-form-field-empty.mat-form-field-label, .msf-customer-two-columns .msf-customer-right-container .mat-elevation-z8 .msf-customer-right-editor .msf-customer-right-edit-panel .mat-form-field-empty.mat-form-field-label, .msf-customer-two-columns .msf-customer-right-container .mat-elevation-z8 .msf-customer-right-editor .msf-customer-left-edit-panel .mat-form-field-empty.mat-form-field-label {
+  color: #01a6e5 !important;
+}
+.msf-customer-edit-panel-form-field .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label, .msf-customer-two-columns .msf-customer-right-container .mat-elevation-z8 .msf-customer-right-editor .msf-customer-right-edit-panel .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label, .msf-customer-two-columns .msf-customer-right-container .mat-elevation-z8 .msf-customer-right-editor .msf-customer-left-edit-panel .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+  color: #01a6e5 !important;
+}
+.msf-customer-edit-panel-form-field .mat-form-field-appearance-legacy .mat-form-field-underline, .msf-customer-two-columns .msf-customer-right-container .mat-elevation-z8 .msf-customer-right-editor .msf-customer-right-edit-panel .mat-form-field-appearance-legacy .mat-form-field-underline, .msf-customer-two-columns .msf-customer-right-container .mat-elevation-z8 .msf-customer-right-editor .msf-customer-left-edit-panel .mat-form-field-appearance-legacy .mat-form-field-underline {
+  background-color: #232323;
+}
+.msf-customer-edit-panel-form-field .mat-select .mat-select-trigger .mat-select-arrow-wrapper .mat-select-arrow, .msf-customer-two-columns .msf-customer-right-container .mat-elevation-z8 .msf-customer-right-editor .msf-customer-right-edit-panel .mat-select .mat-select-trigger .mat-select-arrow-wrapper .mat-select-arrow, .msf-customer-two-columns .msf-customer-right-container .mat-elevation-z8 .msf-customer-right-editor .msf-customer-left-edit-panel .mat-select .mat-select-trigger .mat-select-arrow-wrapper .mat-select-arrow {
+  color: #636363;
+}
+.msf-customer-edit-panel-form-field .mat-select:focus .mat-select-trigger .mat-select-arrow-wrapper .mat-select-arrow, .msf-customer-two-columns .msf-customer-right-container .mat-elevation-z8 .msf-customer-right-editor .msf-customer-right-edit-panel .mat-select:focus .mat-select-trigger .mat-select-arrow-wrapper .mat-select-arrow, .msf-customer-two-columns .msf-customer-right-container .mat-elevation-z8 .msf-customer-right-editor .msf-customer-left-edit-panel .mat-select:focus .mat-select-trigger .mat-select-arrow-wrapper .mat-select-arrow {
+  color: #01a6e5;
+}
+.msf-customer-edit-panel-form-field .mat-button-wrapper, .msf-customer-two-columns .msf-customer-right-container .mat-elevation-z8 .msf-customer-right-editor .msf-customer-right-edit-panel .mat-button-wrapper, .msf-customer-two-columns .msf-customer-right-container .mat-elevation-z8 .msf-customer-right-editor .msf-customer-left-edit-panel .mat-button-wrapper {
+  color: #636363;
+}
+
 .msf-customer-two-columns {
   display: flex;
   flex-direction: row;
@@ -4865,7 +4893,7 @@ span.msf-subCell {
 .msf-customer-two-columns .msf-customer-left-container .mat-elevation-z8 .msf-customer-table-scroll .msf-customer-table tr.mat-row {
   background-color: #171717;
   border-color: #1c1c1c;
-  height: 23px;
+  height: 36px;
 }
 .msf-customer-two-columns .msf-customer-left-container .mat-elevation-z8 .msf-customer-table-scroll .msf-customer-table tr.mat-row:hover {
   background-color: #282828;
@@ -4900,6 +4928,19 @@ span.msf-subCell {
   width: 50%;
   padding-left: 4px;
   color: #ffffff;
+  margin-top: -77px;
+}
+.msf-customer-two-columns .msf-customer-right-container .mat-elevation-z8 .msf-customer-right-header {
+  background-color: #282828;
+  margin-bottom: 0px;
+  padding: 15px;
+}
+.msf-customer-two-columns .msf-customer-right-container .mat-elevation-z8 .msf-customer-right-editor {
+  padding: 15px;
+  display: flex;
+}
+.msf-customer-two-columns .msf-customer-right-container .mat-elevation-z8 .msf-customer-right-editor .msf-customer-left-edit-panel {
+  padding-right: 15px;
 }
 
 /*# sourceMappingURL=styles.css.map */

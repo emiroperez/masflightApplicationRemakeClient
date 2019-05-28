@@ -4080,6 +4080,26 @@ span.msf-subCell
         .msf-customer-create-icon
             color: #ffffff
 
+.msf-customer-edit-panel-form-field
+    display: flex
+    flex-direction: column
+    width: 50%
+    .customer-form-field
+        margin-bottom: -0.5em
+        flex: 1
+    .mat-form-field-empty.mat-form-field-label
+        color: #01a6e5 !important
+    .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label
+        color: #01a6e5 !important
+    .mat-form-field-appearance-legacy .mat-form-field-underline
+        background-color: #232323
+    .mat-select .mat-select-trigger .mat-select-arrow-wrapper .mat-select-arrow
+        color: #636363
+    .mat-select:focus .mat-select-trigger .mat-select-arrow-wrapper .mat-select-arrow
+        color: #01a6e5
+    .mat-button-wrapper
+        color: #636363
+
 .msf-customer-two-columns
     display: flex
     flex-direction: row
@@ -4097,7 +4117,7 @@ span.msf-subCell
                     tr.mat-row
                         background-color: #171717
                         border-color: #1c1c1c
-                        height: 23px
+                        height: 36px
                     tr.mat-row:hover
                         background-color: #282828
                         cursor: pointer
@@ -4126,3 +4146,17 @@ span.msf-subCell
         width: 50%
         padding-left: 4px
         color: #ffffff
+        margin-top: -77px
+        .mat-elevation-z8
+            .msf-customer-right-header
+                background-color: #282828
+                margin-bottom: 0px
+                padding: 15px
+            .msf-customer-right-editor
+                padding: 15px
+                display: flex
+                .msf-customer-left-edit-panel
+                    padding-right: 15px
+                    @extend .msf-customer-edit-panel-form-field
+                .msf-customer-right-edit-panel
+                    @extend .msf-customer-edit-panel-form-field
