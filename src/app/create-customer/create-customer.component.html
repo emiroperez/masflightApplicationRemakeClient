@@ -71,16 +71,24 @@
               Edit Customer
             </h1>
             <div class="msf-customer-right-editor" [ngStyle]="{ 'height': getEditorHeight() }">
-              <div class="msf-customer-left-edit-panel">
-                <mat-form-field [formGroup]="customerForm" class="customer-form-field">
-                  <input matInput formControlName="nameValidator" autocomplete="off" type="text" placeholder="Name"/>
+              <div class="msf-customer-edit-panel">
+                <mat-form-field [formGroup]="customerForm" [ngClass]="{ 'customer-form-field-disabled' : customerForm.disabled, 'customer-form-field' : !customerForm.disabled }">
+                  <input #customerNameField matInput formControlName="nameValidator" autocomplete="off" type="text" placeholder="Name"/>
                   <mat-error *ngIf="customerForm.get('nameValidator')?.invalid">{{getNameErrorMessage()}}</mat-error>
                 </mat-form-field>
-                <mat-form-field [formGroup]="customerForm" class="customer-form-field">
+                <mat-form-field [formGroup]="customerForm" [ngClass]="{ 'customer-form-field-disabled' : customerForm.disabled, 'customer-form-field' : !customerForm.disabled }">
+                  <input matInput formControlName="shortNameValidator" autocomplete="off" type="text" placeholder="Short Name"/>
+                  <mat-error *ngIf="customerForm.get('shortNameValidator')?.invalid">{{getShortNameErrorMessage()}}</mat-error>
+                </mat-form-field>
+                <mat-form-field [formGroup]="customerForm" [ngClass]="{ 'customer-form-field-disabled' : customerForm.disabled, 'customer-form-field' : !customerForm.disabled }">
                   <input matInput formControlName="customerCodeValidator" autocomplete="off" type="number" placeholder="Customer Code"/>
                   <mat-error *ngIf="customerForm.get('customerCodeValidator')?.invalid">{{getCustomerCodeErrorMessage()}}</mat-error>
                 </mat-form-field>
-                <mat-form-field [formGroup]="customerForm" class="customer-form-field">
+                <mat-form-field [formGroup]="customerForm" [ngClass]="{ 'customer-form-field-disabled' : customerForm.disabled, 'customer-form-field' : !customerForm.disabled }">
+                  <input matInput formControlName="contactFullNameValidator" autocomplete="off" type="text" placeholder="Contact Full Name"/>
+                  <mat-error *ngIf="customerForm.get('contactFullNameValidator')?.invalid">{{getContactFullNameErrorMessage()}}</mat-error>
+                </mat-form-field>
+                <mat-form-field [formGroup]="customerForm" [ngClass]="{ 'customer-form-field-disabled' : customerForm.disabled, 'customer-form-field' : !customerForm.disabled }">
                   <mat-select formControlName="typeValidator" placeholder="Type" autocomplete="off">
                     <mat-option [value]="0">Internal</mat-option>
                     <mat-option [value]="1">Airline</mat-option>
@@ -89,86 +97,88 @@
                   </mat-select>
                   <mat-error *ngIf="customerForm.get('typeValidator')?.invalid">{{getTypeErrorMessage()}}</mat-error>
                 </mat-form-field>
-                <mat-form-field class="customer-form-field">
-                  <mat-select placeholder="Status" autocomplete="off" [(ngModel)]="selectedCustomer.status">
+                <mat-form-field [formGroup]="customerForm" [ngClass]="{ 'customer-form-field-disabled' : customerForm.disabled, 'customer-form-field' : !customerForm.disabled }">
+                  <input matInput formControlName="contactEmailValidator" autocomplete="off" type="text" placeholder="Contact E-Mail"/>
+                  <mat-error *ngIf="customerForm.get('contactEmailValidator')?.invalid">{{getContactEmailErrorMessage()}}</mat-error>
+                </mat-form-field>
+                <mat-form-field [formGroup]="customerForm" [ngClass]="{ 'customer-form-field-disabled' : customerForm.disabled, 'customer-form-field' : !customerForm.disabled }">
+                  <mat-select formControlName="statusValidator" placeholder="Status" autocomplete="off">
                     <mat-option *ngFor="let status of statuses" [value]="status.value">
                       {{status.name}}
                     </mat-option>
                   </mat-select>
+                  <mat-error *ngIf="customerForm.get('statusValidator')?.invalid">{{getStatusErrorMessage()}}</mat-error>
                 </mat-form-field>
-                <mat-form-field class="customer-form-field">
-                  <mat-select placeholder="State" autocomplete="off" [(ngModel)]="selectedCustomer.state">
-                    <ngx-mat-select-search [formControl]="stateFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
-                    <mat-option *ngFor="let state of filteredStates | async" [value]="state">
-                      {{state.fullName}}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-                <mat-form-field class="customer-form-field">
-                  <input matInput autocomplete="off" type="text" placeholder="Address 1" [(ngModel)]="selectedCustomer.address1"/>
-                </mat-form-field>
-                <mat-form-field class="customer-form-field">
-                  <input matInput autocomplete="off" type="number" placeholder="Zip Code" [(ngModel)]="selectedCustomer.zipCode"/>
-                </mat-form-field>
-                <mat-form-field class="customer-form-field">
-                  <!-- TODO: Create a dialog for the license type -->
-                  <mat-select placeholder="License Type" autocomplete="off" [(ngModel)]="selectedCustomer.licenseType">
-                    <mat-option *ngFor="let plan of plans" [value]="plan">
-                      {{plan.name}}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-                <mat-form-field class="customer-form-field">
-                  <input matInput autocomplete="off" [matDatepicker]="startDatePicker" placeholder="Start Date" [(ngModel)]="selectedCustomer.startDate">
-                  <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
-                  <mat-datepicker #startDatePicker></mat-datepicker>
-                </mat-form-field>
-                <mat-form-field class="customer-form-field">
-                  <mat-select autocomplete="off" placeholder="Payment Type" [(ngModel)]="selectedCustomer.paymentType">
-                    <mat-option [value]="0">Credit Card</mat-option>
-                    <mat-option [value]="1">PayPal</mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-              <div class="msf-customer-right-edit-panel">
-                <mat-form-field [formGroup]="customerForm" class="customer-form-field">
-                  <input matInput formControlName="shortNameValidator" autocomplete="off" type="text" placeholder="Short Name"/>
-                  <mat-error *ngIf="customerForm.get('shortNameValidator')?.invalid">{{getShortNameErrorMessage()}}</mat-error>
-                </mat-form-field>
-                <mat-form-field [formGroup]="customerForm" class="customer-form-field">
-                  <input matInput formControlName="contactFullNameValidator" autocomplete="off" type="text" placeholder="Contact Full Name"/>
-                  <mat-error *ngIf="customerForm.get('contactFullNameValidator')?.invalid">{{getContactFullNameErrorMessage()}}</mat-error>
-                </mat-form-field>
-                <mat-form-field class="customer-form-field">
-                  <input matInput autocomplete="off" type="text" placeholder="Contact E-Mail" [(ngModel)]="selectedCustomer.contactEmail"/>
-                </mat-form-field>
-                <mat-form-field class="customer-form-field">
-                  <mat-select placeholder="Country" autocomplete="off" [(ngModel)]="selectedCustomer.country" (ngModelChange)="countryChangeEvent($event)">
+                <mat-form-field [formGroup]="customerForm" [ngClass]="{ 'customer-form-field-disabled' : customerForm.disabled, 'customer-form-field' : !customerForm.disabled }">
+                  <mat-select formControlName="countryValidator" placeholder="Country" autocomplete="off" (selectionChange)="countryChangeEvent($event,true)">
                     <ngx-mat-select-search [formControl]="countryFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
                     <mat-option *ngFor="let country of filteredCountries | async" [value]="country">
                       {{country.fullName}}
                     </mat-option>
                   </mat-select>
+                  <mat-error *ngIf="customerForm.get('countryValidator')?.invalid">{{getCountryErrorMessage()}}</mat-error>
                 </mat-form-field>
-                <mat-form-field class="customer-form-field">
-                  <input matInput autocomplete="off" type="text" placeholder="City" [(ngModel)]="selectedCustomer.city"/>
+                <mat-form-field [formGroup]="customerForm" [ngClass]="{ 'customer-form-field-disabled' : customerForm.get('stateValidator').disabled, 'customer-form-field' : !customerForm.get('stateValidator').disabled }">
+                  <mat-select formControlName="stateValidator" placeholder="State" autocomplete="off">
+                    <ngx-mat-select-search [formControl]="stateFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+                    <mat-option *ngFor="let state of filteredStates | async" [value]="state">
+                      {{state.fullName}}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="customerForm.get('stateValidator')?.invalid">{{getStateErrorMessage()}}</mat-error>
                 </mat-form-field>
-                <mat-form-field class="customer-form-field">
-                  <input matInput autocomplete="off" type="text" placeholder="Address 2" [(ngModel)]="selectedCustomer.address2"/>
+                <mat-form-field [formGroup]="customerForm" [ngClass]="{ 'customer-form-field-disabled' : customerForm.disabled, 'customer-form-field' : !customerForm.disabled }">
+                  <input matInput formControlName="cityValidator" autocomplete="off" type="text" placeholder="City"/>
                 </mat-form-field>
-                <mat-form-field class="customer-form-field">
-                  <input matInput autocomplete="off" type="text" placeholder="Billing Type" [(ngModel)]="selectedCustomer.billingType"/>
+                <mat-form-field [formGroup]="customerForm" [ngClass]="{ 'customer-form-field-disabled' : customerForm.disabled, 'customer-form-field' : !customerForm.disabled }">
+                  <input matInput formControlName="address1Validator" autocomplete="off" type="text" placeholder="Address 1"/>
+                  <mat-error *ngIf="customerForm.get('address1Validator')?.invalid">{{getAddress1ErrorMessage()}}</mat-error>
                 </mat-form-field>
-                <mat-form-field class="customer-form-field">
-                  <input matInput autocomplete="off" type="number" placeholder="Number of Licenses" [(ngModel)]="selectedCustomer.numberOfLicenses"/>
+                <mat-form-field [formGroup]="customerForm" [ngClass]="{ 'customer-form-field-disabled' : customerForm.disabled, 'customer-form-field' : !customerForm.disabled }">
+                  <input matInput formControlName="address2Validator" autocomplete="off" type="text" placeholder="Address 2"/>
                 </mat-form-field>
-                <mat-form-field class="customer-form-field">
-                  <input matInput autocomplete="off" [matDatepicker]="endDatePicker" placeholder="End Date" [(ngModel)]="selectedCustomer.endDate">
+                <mat-form-field [formGroup]="customerForm" [ngClass]="{ 'customer-form-field-disabled' : customerForm.disabled, 'customer-form-field' : !customerForm.disabled }">
+                  <input matInput formControlName="zipCodeValidator" autocomplete="off" type="number" placeholder="Zip Code"/>
+                  <mat-error *ngIf="customerForm.get('zipCodeValidator')?.invalid">{{getZipCodeErrorMessage()}}</mat-error>
+                </mat-form-field>
+                <mat-form-field [formGroup]="customerForm" [ngClass]="{ 'customer-form-field-disabled' : customerForm.disabled, 'customer-form-field' : !customerForm.disabled }">
+                  <input matInput formControlName="billingTypeValidator" autocomplete="off" type="text" placeholder="Billing Type"/>
+                  <mat-error *ngIf="customerForm.get('billingTypeValidator')?.invalid">{{getBillingTypeErrorMessage()}}</mat-error>
+                </mat-form-field>
+                <mat-form-field [formGroup]="customerForm" [ngClass]="{ 'customer-form-field-disabled' : customerForm.disabled, 'customer-form-field' : !customerForm.disabled }">
+                  <mat-select formControlName="licenseTypeValidator" placeholder="License Type" autocomplete="off">
+                    <mat-option *ngFor="let plan of plans" [value]="plan">
+                      {{plan.name}}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="customerForm.get('licenseTypeValidator')?.invalid">{{getLicenseTypeErrorMessage()}}</mat-error>
+                </mat-form-field>
+                <mat-form-field [formGroup]="customerForm" [ngClass]="{ 'customer-form-field-disabled' : customerForm.disabled, 'customer-form-field' : !customerForm.disabled }">
+                  <input matInput formControlName="numberOfLicensesValidator" autocomplete="off" type="number" placeholder="Number of Licenses"/>
+                  <mat-error *ngIf="customerForm.get('numberOfLicensesValidator')?.invalid">{{getNumberOfLicensesErrorMessage()}}</mat-error>
+                </mat-form-field>
+                <mat-form-field [formGroup]="customerForm" [ngClass]="{ 'customer-form-field-disabled' : customerForm.disabled, 'customer-form-field' : !customerForm.disabled }">
+                  <input matInput formControlName="startDateValidator" autocomplete="off" [matDatepicker]="startDatePicker" placeholder="Start Date">
+                  <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                  <mat-datepicker #startDatePicker></mat-datepicker>
+                  <mat-error *ngIf="customerForm.get('startDateValidator')?.invalid">{{getStartDateErrorMessage()}}</mat-error>
+                </mat-form-field>
+                <mat-form-field [formGroup]="customerForm" [ngClass]="{ 'customer-form-field-disabled' : customerForm.disabled, 'customer-form-field' : !customerForm.disabled }">
+                  <input matInput formControlName="endDateValidator" autocomplete="off" [matDatepicker]="endDatePicker" placeholder="End Date">
                   <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
                   <mat-datepicker #endDatePicker></mat-datepicker>
+                  <mat-error *ngIf="customerForm.get('endDateValidator')?.invalid">{{getEndDateErrorMessage()}}</mat-error>
                 </mat-form-field>
-                <mat-form-field class="customer-form-field">
-                  <input matInput autocomplete="off" type="text" placeholder="Terms" [(ngModel)]="selectedCustomer.terms"/>
+                <mat-form-field [formGroup]="customerForm" [ngClass]="{ 'customer-form-field-disabled' : customerForm.disabled, 'customer-form-field' : !customerForm.disabled }">
+                  <mat-select formControlName="paymentTypeValidator" autocomplete="off" placeholder="Payment Type">
+                    <mat-option [value]="0">Credit Card</mat-option>
+                    <mat-option [value]="1">PayPal</mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="customerForm.get('paymentTypeValidator')?.invalid">{{getPaymentTypeErrorMessage()}}</mat-error>
+                </mat-form-field>
+                <mat-form-field [formGroup]="customerForm" [ngClass]="{ 'customer-form-field-disabled' : customerForm.disabled, 'customer-form-field' : !customerForm.disabled }">
+                  <input matInput formControlName="termsValidator" autocomplete="off" type="text" placeholder="Terms"/>
+                  <mat-error *ngIf="customerForm.get('termsValidator')?.invalid">{{getTermsErrorMessage()}}</mat-error>
                 </mat-form-field>
               </div>
             </div>
