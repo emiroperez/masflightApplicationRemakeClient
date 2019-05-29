@@ -4086,14 +4086,12 @@ span.msf-subCell
     width: 50%
     .customer-form-field
         margin-bottom: -0.5em
-        flex: 1
     .mat-form-field-empty.mat-form-field-label
         color: #01a6e5 !important
     .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label
         color: #01a6e5 !important
     .customer-form-field-disabled
         margin-bottom: -0.5em
-        flex: 1
         .mat-form-field-empty.mat-form-field-label
             color: #636363 !important
         .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label
@@ -4168,8 +4166,9 @@ span.msf-subCell
             .msf-customer-right-editor
                 padding: 15px
                 display: flex
-                .msf-customer-left-edit-panel
-                    padding-right: 15px
-                    @extend .msf-customer-edit-panel-form-field
-                .msf-customer-right-edit-panel
+                .msf-customer-edit-panel
+                    display: grid
+                    grid-template-columns: auto auto
+                    grid-gap: 0px 15px
+                    width: 100%
                     @extend .msf-customer-edit-panel-form-field

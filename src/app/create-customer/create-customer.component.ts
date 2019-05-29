@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { MatTableDataSource, MatPaginator, MatDialog } from '@angular/material';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter } from '@angular/material/core';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
@@ -8,6 +8,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { Globals } from '../globals/Globals';
 import { RegisterService } from '../services/register.service';
+import { ApplicationService } from '../services/application.service';
 import { MessageComponent } from '../message/message.component';
 import { State } from '../model/State';
 import { Country } from '../model/Country';
@@ -49,7 +50,7 @@ export class CreateCustomerComponent implements OnInit {
   ];
 
   customerColumns: string[] = ['name', 'shortName', 'licenseType', 'status', 'endDate', 'numberOfLicenses'];
-  customerTable: MatTableDataSource<any> = new MatTableDataSource (this.customers);
+  customerTable: MatTableDataSource<any>;
   customerForm: FormGroup;
 
   public countryFilterCtrl: FormControl = new FormControl ();
@@ -63,7 +64,11 @@ export class CreateCustomerComponent implements OnInit {
   @ViewChild(MatPaginator)
   paginator: MatPaginator;
 
-  constructor(public globals: Globals, private registerServices: RegisterService, private dialog: MatDialog)
+  @ViewChild('customerNameField')
+  customerNameField: ElementRef;
+
+  constructor(public globals: Globals, private registerServices: RegisterService,
+    private dialog: MatDialog, private appServices: ApplicationService)
   {
     this.customerForm = new FormGroup ({
       nameValidator: new FormControl ('', [Validators.required]),
@@ -95,7 +100,6 @@ export class CreateCustomerComponent implements OnInit {
   {
     this.innerHeight = window.innerHeight;
     this.innerWidth = window.innerWidth;
-    this.customerTable.paginator = this.paginator;
 
     this.globals.isLoading = true;
     this.registerServices.getCountries (this, this.setCountries, this.errorCountries);
@@ -322,6 +326,7 @@ export class CreateCustomerComponent implements OnInit {
     this.selectedCustomer.highlight = true;
 
     this.customerForm.reset ();
+    this.customerNameField.nativeElement.focus ();
 
     // go to the last page after adding a new customer
     setTimeout (() => {
@@ -381,10 +386,23 @@ export class CreateCustomerComponent implements OnInit {
   setPlans(_this, data)
   {
     _this.plans = data;
-    _this.globals.isLoading = false;
+    _this.appServices.getCustomers (_this, _this.setCustomers, _this.errorCustomers);
   }
 
   errorPlans(_this)
+  {
+    _this.appServices.getCustomers (_this, _this.setCustomers, _this.errorCustomers);
+  }
+
+  setCustomers(_this, data)
+  {
+    _this.customers = data;
+    _this.customerTable = new MatTableDataSource (_this.customers);
+    _this.customerTable.paginator = _this.paginator;
+    _this.globals.isLoading = false;
+  }
+
+  errorCustomers(_this)
   {
     _this.globals.isLoading = false;
   }

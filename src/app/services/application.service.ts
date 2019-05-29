@@ -472,4 +472,10 @@ export class ApplicationService {
     let url = this.host + "/updateDashboardColumnPositions";
     this.http.post (_this, url, columns, handlerSuccess, handlerError);
   }
+
+  getCustomers(_this, handlerSuccess, handlerError): void
+  {
+    let url = this.host + "/getCustomers";
+    this.http.get (_this, url, handlerSuccess, handlerError, null);
+  }
 }
