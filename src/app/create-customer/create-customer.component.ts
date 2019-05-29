@@ -272,8 +272,13 @@ export class CreateCustomerComponent implements OnInit {
       return "";
 
     d = new Date (date);
-    if (Object.prototype.toString.call (d) !== '[object Date]')
-      return;
+    if (Object.prototype.toString.call (d) === "[object Date]")
+    {
+      if (isNaN (d.getTime()))
+        return "";
+    }
+    else
+      return "";
 
     month = (d.getMonth () + 1);
     if (month < 10)
