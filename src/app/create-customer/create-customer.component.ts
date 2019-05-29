@@ -13,6 +13,7 @@ import { MessageComponent } from '../message/message.component';
 import { State } from '../model/State';
 import { Country } from '../model/Country';
 import { Plan } from '../model/Plan';
+import { Customer } from '../model/Customer';
 
 export const US_DATE_FORMAT = {
   parse: {
@@ -37,11 +38,11 @@ export const US_DATE_FORMAT = {
 export class CreateCustomerComponent implements OnInit {
   innerHeight: number;
   innerWidth: number;
-  selectedCustomer: any;
+  selectedCustomer: Customer;
   countries: Country[];
   states : State[] = [];
   plans: Plan[];
-  customers: any[] = [];
+  customers: Customer[] = [];
 
   statuses: any[] = [
     { value: 0, name: "Active" },
@@ -50,14 +51,14 @@ export class CreateCustomerComponent implements OnInit {
   ];
 
   customerColumns: string[] = ['name', 'shortName', 'licenseType', 'status', 'endDate', 'numberOfLicenses'];
-  customerTable: MatTableDataSource<any>;
+  customerTable: MatTableDataSource<Customer>;
   customerForm: FormGroup;
 
   public countryFilterCtrl: FormControl = new FormControl ();
   public stateFilterCtrl: FormControl = new FormControl ();
 
-  public filteredCountries: ReplaySubject<any[]> = new ReplaySubject<any[]> (1);
-  public filteredStates: ReplaySubject<any[]> = new ReplaySubject<any[]> (1);
+  public filteredCountries: ReplaySubject<Country[]> = new ReplaySubject<Country[]> (1);
+  public filteredStates: ReplaySubject<State[]> = new ReplaySubject<State[]> (1);
 
   private _onDestroy = new Subject<void> ();
 
@@ -202,7 +203,7 @@ export class CreateCustomerComponent implements OnInit {
     this.customerForm.get ('licenseTypeValidator').valueChanges.subscribe (value =>
     {
       if (this.selectedCustomer)
-        this.selectedCustomer.licenseTypeValidator = value;
+        this.selectedCustomer.licenseType = value;
     });
 
     this.customerForm.get ('numberOfLicensesValidator').valueChanges.subscribe (value =>
@@ -220,7 +221,7 @@ export class CreateCustomerComponent implements OnInit {
     this.customerForm.get ('endDateValidator').valueChanges.subscribe (value =>
     {
       if (this.selectedCustomer)
-        this.selectedCustomer.endDateValidator = value;
+        this.selectedCustomer.endDate = value;
     });
 
     this.customerForm.get ('paymentTypeValidator').valueChanges.subscribe (value =>
@@ -319,8 +320,11 @@ export class CreateCustomerComponent implements OnInit {
     if (!this.checkSelectedCustomer ())
       return;
 
+    // enable the form except the state validator
     this.customerForm.enable ();
-    this.customers.push ({});
+    this.customerForm.get ('stateValidator').disable ();
+
+    this.customers.push (new Customer ());
     this.customerTable._updateChangeSubscription ();
     this.selectedCustomer = this.customers[this.customers.length - 1];
     this.selectedCustomer.highlight = true;
@@ -338,6 +342,9 @@ export class CreateCustomerComponent implements OnInit {
   {
     if (!this.checkSelectedCustomer ())
       return;
+
+    this.globals.isLoading = true;
+    this.appServices.saveCustomers (this, this.customers, this.saveSuccess, this.saveError);
   }
 
   selectCustomer(row): void
@@ -345,7 +352,9 @@ export class CreateCustomerComponent implements OnInit {
     if (!this.checkSelectedCustomer ())
       return;
 
+    // enable the customer form except the state validator
     this.customerForm.enable ();
+
     this.selectedCustomer = row;
     this.selectedCustomer.highlight = true;
 
@@ -356,19 +365,48 @@ export class CreateCustomerComponent implements OnInit {
     this.customerForm.get ('contactFullNameValidator').setValue (this.selectedCustomer.contactFullName);
     this.customerForm.get ('contactEmailValidator').setValue (this.selectedCustomer.contactEmail);
     this.customerForm.get ('statusValidator').setValue (this.selectedCustomer.status);
-    this.customerForm.get ('countryValidator').setValue (this.selectedCustomer.country);
-    this.customerForm.get ('stateValidator').setValue (this.selectedCustomer.state);
     this.customerForm.get ('cityValidator').setValue (this.selectedCustomer.city);
     this.customerForm.get ('address1Validator').setValue (this.selectedCustomer.address1);
     this.customerForm.get ('address2Validator').setValue (this.selectedCustomer.address2);
     this.customerForm.get ('zipCodeValidator').setValue (this.selectedCustomer.zipCode);
-    this.customerForm.get ('billingTypeValidator').setValue (this.selectedCustomer.billingTypeValidator);
-    this.customerForm.get ('licenseTypeValidator').setValue (this.selectedCustomer.licenseTypeValidator);
-    this.customerForm.get ('numberOfLicensesValidator').setValue (this.selectedCustomer.numberOfLicensesValidator);
-    this.customerForm.get ('startDateValidator').setValue (this.selectedCustomer.startDateValidator);
-    this.customerForm.get ('endDateValidator').setValue (this.selectedCustomer.endDateValidator);
+    this.customerForm.get ('billingTypeValidator').setValue (this.selectedCustomer.billingType);
+    this.customerForm.get ('numberOfLicensesValidator').setValue (this.selectedCustomer.numberOfLicenses);
+    this.customerForm.get ('startDateValidator').setValue (new Date (this.selectedCustomer.startDate));
+    this.customerForm.get ('endDateValidator').setValue (new Date (this.selectedCustomer.endDate));
+    this.customerForm.get ('termsValidator').setValue (this.selectedCustomer.terms);
+
+    for (let country of this.countries)
+    {
+      if (this.selectedCustomer.country.id == country.id)
+      {
+        this.customerForm.get ('countryValidator').setValue (country);
+        this.countryChangeEvent ({ value: country }, false);
+        break;
+      }
+    }
+
+    if (this.states.length)
+    {
+      for (let state of this.states)
+      {
+        if (this.selectedCustomer.state.id == state.id)
+        {
+          this.customerForm.get ('stateValidator').setValue (state);
+          break;
+        }
+      }
+    }
+
+    for (let plan of this.plans)
+    {
+      if (this.selectedCustomer.licenseType.id == plan.id)
+      {
+        this.customerForm.get ('licenseTypeValidator').setValue (plan);
+        break;
+      }
+    }
+
     this.customerForm.get ('paymentTypeValidator').setValue (this.selectedCustomer.paymentType);
-    this.customerForm.get ('termsValidator').setValue (this.selectedCustomer.terns);
   }
 
   setCountries(_this, data)
@@ -404,6 +442,22 @@ export class CreateCustomerComponent implements OnInit {
 
   errorCustomers(_this)
   {
+    _this.globals.isLoading = false;
+  }
+
+  saveSuccess(_this)
+  {
+    _this.globals.isLoading = false;
+  }
+
+  saveError(_this, error)
+  {
+    console.log (error);
+
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Error", message: "Unable to save the customers." }
+    });
+
     _this.globals.isLoading = false;
   }
 
@@ -469,20 +523,29 @@ export class CreateCustomerComponent implements OnInit {
       });
   }
 
-  countryChangeEvent(event)
+  countryChangeEvent(event, resetStateValidator)
   {
+    let opts = { onlySelf: false, emitEvent: false };
+
     if (event != undefined)
     {
       this.states = event.value.states;
       this.stateSearchChange ();
+
+      if (this.states.length)
+        this.customerForm.get ('stateValidator').enable (opts);
+      else
+        this.customerForm.get ('stateValidator').disable (opts);
     }
     else
     {
       this.states = [];
       this.filteredStates.next ([]);
+      this.customerForm.get ('stateValidator').disable (opts);
     }
 
-    this.customerForm.get ('stateValidator').reset ();
+    if (resetStateValidator)
+      this.customerForm.get ('stateValidator').reset ();
     this.customerForm.get ('zipCodeValidator').updateValueAndValidity ();
   }
 

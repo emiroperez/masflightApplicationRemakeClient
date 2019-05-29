@@ -478,4 +478,10 @@ export class ApplicationService {
     let url = this.host + "/getCustomers";
     this.http.get (_this, url, handlerSuccess, handlerError, null);
   }
+
+  saveCustomers(_this, customers, handlerSuccess, handlerError): void
+  {
+    let url = this.host + "/saveCustomers";
+    this.http.post (_this, url, customers, handlerSuccess, handlerError);
+  }
 }

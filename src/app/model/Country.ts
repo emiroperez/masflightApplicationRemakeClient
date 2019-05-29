@@ -1,5 +1,6 @@
 export class Country{
-    "code": string;
+    "id": number;
     "name": string;
     "fullName": string;
+    "zipCodeRequired": boolean;
 }

@@ -110,7 +110,7 @@
                   <mat-error *ngIf="customerForm.get('statusValidator')?.invalid">{{getStatusErrorMessage()}}</mat-error>
                 </mat-form-field>
                 <mat-form-field [formGroup]="customerForm" [ngClass]="{ 'customer-form-field-disabled' : customerForm.disabled, 'customer-form-field' : !customerForm.disabled }">
-                  <mat-select formControlName="countryValidator" placeholder="Country" autocomplete="off" (selectionChange)="countryChangeEvent($event)">
+                  <mat-select formControlName="countryValidator" placeholder="Country" autocomplete="off" (selectionChange)="countryChangeEvent($event,true)">
                     <ngx-mat-select-search [formControl]="countryFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
                     <mat-option *ngFor="let country of filteredCountries | async" [value]="country">
                       {{country.fullName}}
@@ -118,7 +118,7 @@
                   </mat-select>
                   <mat-error *ngIf="customerForm.get('countryValidator')?.invalid">{{getCountryErrorMessage()}}</mat-error>
                 </mat-form-field>
-                <mat-form-field [formGroup]="customerForm" [ngClass]="{ 'customer-form-field-disabled' : customerForm.disabled, 'customer-form-field' : !customerForm.disabled }">
+                <mat-form-field [formGroup]="customerForm" [ngClass]="{ 'customer-form-field-disabled' : customerForm.get('stateValidator').disabled, 'customer-form-field' : !customerForm.get('stateValidator').disabled }">
                   <mat-select formControlName="stateValidator" placeholder="State" autocomplete="off">
                     <ngx-mat-select-search [formControl]="stateFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
                     <mat-option *ngFor="let state of filteredStates | async" [value]="state">
