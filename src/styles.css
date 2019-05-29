@@ -4945,5 +4945,12 @@ span.msf-subCell {
 .msf-customer-two-columns .msf-customer-right-container .mat-elevation-z8 .msf-customer-right-editor .msf-customer-left-edit-panel {
   padding-right: 15px;
 }
+.msf-table-input.mat-form-field-appearance-legacy .mat-form-field-underline {
+  background: none !important;
+}
+
+mat-form-field.msf-table-input {
+  text-align: center !important;
+}
 
 /*# sourceMappingURL=styles.css.map */

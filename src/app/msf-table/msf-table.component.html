@@ -5,27 +5,49 @@
           <th [ngClass]="column.show?'msf-show-table':'msf-hide'" mat-header-cell *matHeaderCellDef mat-sort-header > {{column.columnLabel}} </th>
           <td [ngClass]="column.show?'msf-show-table':'msf-hide'" mat-cell *matCellDef="let element;let rowNumber = dataIndex"> 
             <span *ngIf="column.drillDowns.length==0 && !isArray(element['Flight'])">
-              <span *ngIf="column.columnType!='number'">{{getFormatCell(element[column.columnName],element,column)}} </span>
-              <span *ngIf="column.columnType=='number' && column.columnFormat=='$'">${{getFormatCell(element[column.columnName],element,column,null) | number:'.0-2':'en'}} </span>
-              <span *ngIf="column.columnType=='number' && column.columnFormat=='%'"> {{getFormatCell(element[column.columnName],element,column,null) | number:'.0-2':'en'}}%</span>
-              <span *ngIf="column.columnType=='number' && column.columnFormat=='temp'"> {{getFormatCell(element[column.columnName],element,column,null) | number:'.0-2':'en'}}°</span>
-              <span *ngIf="column.columnType=='number' && column.columnFormat==null"> {{getFormatCell(element[column.columnName],element,column,null) | number:'.0-2':'en'}} </span>
-            </span>
+              <mat-form-field class="msf-table-input"*ngIf="column.columnType!='number'">
+                <input [readonly]="true" type="text" matInput  [specialCharacters]="specialCharacters" 
+                mask="{{column.columnFormat}}" [(ngModel)]="element[column.columnName]" sufix="{{column.suffix}}" prefix="{{column.prefix}}"/>
+            </mat-form-field>
+              <mat-form-field class="msf-table-input" *ngIf="column.columnType=='number' && column.columnFormat!=null">
+                  <input [readonly]="true" type="text" matInput  [specialCharacters]="specialCharacters" 
+                  mask="{{column.columnFormat}}" [(ngModel)]="element[column.columnName]" sufix="{{column.suffix}}" prefix="{{column.prefix}}"/>
+              </mat-form-field>
+              <mat-form-field class="msf-table-input" *ngIf="column.columnType=='number' && column.columnFormat==null">
+                <input [readonly]="true" type="text" matInput  [specialCharacters]="specialCharacters" 
+                mask="comma_separator.2" [(ngModel)]="element[column.columnName]" sufix="{{column.suffix}}" prefix="{{column.prefix}}"/>
+              </mat-form-field>
+              </span>
             <span class="msf-subCell" *ngIf="column.drillDowns.length==0 && isArray(element['Flight'])">
               <span class="{{getDecoration(element['Flight'],j)}}" *ngFor="let subElement of element['Flight']; let j = index">
                 <span *ngIf="column.columnType!='number'">{{getFormatCell(subElement[column.columnName],subElement,column,element)}} </span>
-                <span *ngIf="column.columnType=='number' && column.columnFormat=='$'">${{getFormatCell(subElement[column.columnName],subElement,column,element) | number:'.0-2':'en'}} </span>
-                <span *ngIf="column.columnType=='number' && column.columnFormat=='%'"> {{getFormatCell(subElement[column.columnName],subElement,column,element) | number:'.0-2':'en'}}%</span>
-                <span *ngIf="column.columnType=='number' && column.columnFormat=='temp'"> {{getFormatCell(subElement[column.columnName],subElement,column,element) | number:'.0-2':'en'}}°</span>
-                <span *ngIf="column.columnType=='number' && column.columnFormat==null"> {{getFormatCell(subElement[column.columnName],subElement,column,element) | number:'.0-2':'en'}} </span>
+                <mat-form-field class="msf-table-input" *ngIf="column.columnType!='number' && column.columnFormat!=null">
+                  <input [readonly]="true" type="text" matInput  [specialCharacters]="specialCharacters"  
+                  mask="{{column.columnFormat}}" [(ngModel)]="subElement[column.columnName]" sufix="{{column.suffix}}" prefix="{{column.prefix}}"/>
+              </mat-form-field>
+                <mat-form-field class="msf-table-input" *ngIf="column.columnType=='number' && column.columnFormat!=null">
+                  <input [readonly]="true" type="text" matInput  [specialCharacters]="specialCharacters"  
+                  mask="{{column.columnFormat}}" [(ngModel)]="subElement[column.columnName]" sufix="{{column.suffix}}" prefix="{{column.prefix}}"/>
+              </mat-form-field>
+              <mat-form-field class="msf-table-input" *ngIf="column.columnType=='number' && column.columnFormat==null">
+                <input [readonly]="true" type="text" matInput  [specialCharacters]="specialCharacters"  
+                mask="comma_separator.2" [(ngModel)]="subElement[column.columnName]" sufix="{{column.suffix}}" prefix="{{column.prefix}}"/>
+              </mat-form-field>            
               </span>
             </span>
           <span class="drillDown-decoration" *ngIf="column.drillDowns.length>0 && !isArray(element['Flight'])" [matMenuTriggerFor]="menu">
-            <span *ngIf="column.columnType!='number'">{{getFormatCell(element[column.columnName],element,column)}} </span>
-            <span *ngIf="column.columnType=='number' && column.columnFormat=='$'">${{getFormatCell(element[column.columnName],element,column,null) | number:'.0-2':'en'}} </span>
-            <span *ngIf="column.columnType=='number' && column.columnFormat=='%'"> {{getFormatCell(element[column.columnName],element,column,null) | number:'.0-2':'en'}}%</span>
-            <span *ngIf="column.columnType=='number' && column.columnFormat=='temp'"> {{getFormatCell(element[column.columnName],element,column,null) | number:'.0-2':'en'}}°</span>
-            <span *ngIf="column.columnType=='number' && column.columnFormat==null"> {{getFormatCell(element[column.columnName],element,column,null) | number:'.0-2':'en'}} </span>
+            <mat-form-field class="msf-table-input" *ngIf="column.columnType!='number'">
+              <input [readonly]="true" type="text" matInput  [specialCharacters]="specialCharacters" 
+              mask="{{column.columnFormat}}" [(ngModel)]="element[column.columnName]" sufix="{{column.suffix}}" prefix="{{column.prefix}}"/>
+          </mat-form-field>
+            <mat-form-field class="msf-table-input" *ngIf="column.columnType=='number' && column.columnFormat!=null">
+              <input [readonly]="true" type="text" matInput  [specialCharacters]="specialCharacters" 
+              mask="{{column.columnFormat}}" [(ngModel)]="element[column.columnName]" sufix="{{column.suffix}}" prefix="{{column.prefix}}"/>
+          </mat-form-field>
+          <mat-form-field class="msf-table-input" *ngIf="column.columnType=='number' && column.columnFormat==null">
+            <input [readonly]="true" type="text" matInput  [specialCharacters]="specialCharacters" 
+            mask="comma_separator.2" [(ngModel)]="element[column.columnName]" sufix="{{column.suffix}}" prefix="{{column.prefix}}"/>
+          </mat-form-field>
           </span>
           <mat-menu #menu="matMenu" [style.visibility]="column.drillDowns.length!=0? 'visible' : 'hidden'">
               <button mat-menu-item *ngFor="let drillDown of column.drillDowns" (click)="openSubQuery(drillDown,element)">{{drillDown.title}}</button>

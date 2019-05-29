@@ -66,6 +66,9 @@ export class MsfTableComponent implements OnInit {
 
   tableOptions: any;
 
+  specialCharacters = [ '[',']','/','!','"','#','$','%','&',"'",'(',')','*','+',';','<','=','>' 
+                          ,'?','@','\\',']','^','`','{','|','}','~','°'];
+
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(public globals: Globals, private service: ApplicationService,public dialog: MatDialog) { }
@@ -449,7 +452,7 @@ export class MsfTableComponent implements OnInit {
     aux = aux.replace("%","");
     aux = aux.replace("$","");
     aux = aux.replace("ï¿½","0");
-    return aux;
+    element[column.columnName] = aux;
   }
 
   isArray( element:any){

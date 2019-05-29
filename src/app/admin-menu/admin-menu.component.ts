@@ -236,7 +236,7 @@ export class EditOutputOptionsMetaDialog {
       this.arg = data.arguments;
      }
 
-    displayedColumns = ['columnLabel','columnName', 'columnType', 'columnFormat', 'grouping', 'unit', 'arguments'];
+    displayedColumns = ['columnLabel','columnName', 'columnType', 'columnFormat','prefix','suffix', 'grouping', 'unit', 'arguments'];
     dataSource = this.data.outputs;
 
     dropTable(event: CdkDragDrop<any[]>) {
