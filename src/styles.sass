@@ -2778,9 +2778,9 @@ mat-dialog-container
     .mat-checkbox-frame
         border-radius: 10px
 
-
-.mat-datepicker-popup
-    bottom: auto!important
+.msf-full-width
+    .mat-datepicker-popup
+        bottom: auto!important
 
 .msf-margin-r-10
     margin-right: 10px
@@ -4091,12 +4091,23 @@ span.msf-subCell
         color: #01a6e5 !important
     .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label
         color: #01a6e5 !important
+    .customer-form-field-disabled
+        margin-bottom: -0.5em
+        flex: 1
+        .mat-form-field-empty.mat-form-field-label
+            color: #636363 !important
+        .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label
+            color: #636363 !important
     .mat-form-field-appearance-legacy .mat-form-field-underline
         background-color: #232323
     .mat-select .mat-select-trigger .mat-select-arrow-wrapper .mat-select-arrow
         color: #636363
+    .mat-select.mat-select-disabled .mat-select-arrow-wrapper .mat-select-arrow
+        color: #636363
     .mat-select:focus .mat-select-trigger .mat-select-arrow-wrapper .mat-select-arrow
         color: #01a6e5
+    .mat-select.mat-select-disabled:focus .mat-select-arrow-wrapper .mat-select-arrow
+        color: #636363
     .mat-button-wrapper
         color: #636363
     .mat-error

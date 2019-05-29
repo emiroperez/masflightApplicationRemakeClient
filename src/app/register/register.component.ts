@@ -314,7 +314,7 @@ export class RegisterComponent implements OnInit {
   }
 
   getErrorFormatEmailMessage() {
-    return this.personalInformationForm.get('emailValidator').hasError('email') ? 'Bad format e-mail' :'';
+    return this.personalInformationForm.get('emailValidator').hasError('email') ? 'Bad e-mail format' :'';
   }
 
   getErrorEmaiExistlMessage() {
