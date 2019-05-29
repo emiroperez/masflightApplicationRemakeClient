@@ -465,7 +465,7 @@ export class CreateCustomerComponent implements OnInit {
     }
 
     this.customerForm.get ('stateValidator').reset ();
-    this.customerForm.get ('zipCodeValidator').updateValueAndValidity (this.selectedCustomer.zipCode);
+    this.customerForm.get ('zipCodeValidator').updateValueAndValidity ();
   }
 
   static contactFullNameFieldValidator(obj: CreateCustomerComponent): ValidatorFn
@@ -508,8 +508,7 @@ export class CreateCustomerComponent implements OnInit {
     {
       if (obj.selectedCustomer)
       {
-        // TODO: Check if the country requires zip code from the database
-        if (obj.selectedCustomer.country && obj.selectedCustomer.country.fullName === "United States of America")
+        if (obj.selectedCustomer.country && obj.selectedCustomer.country.zipCodeRequired)
         {
           if (!obj.customerForm.get ('zipCodeValidator').value)
             return { required: true, shortValue: false };
