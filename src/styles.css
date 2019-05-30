@@ -4941,6 +4941,9 @@ span.msf-subCell {
   color: #ffffff;
   background-color: #1e1e1e;
 }
+.msf-customer-two-columns .msf-customer-left-container .mat-elevation-z8 .msf-customer-paginator .mat-paginator-outer-container .mat-paginator-container .mat-icon-button[disabled] .mat-button-wrapper {
+  color: #333333;
+}
 .msf-customer-two-columns .msf-customer-right-container {
   width: 50%;
   padding-left: 4px;
@@ -4962,6 +4965,7 @@ span.msf-subCell {
   grid-gap: 0px 15px;
   width: 100%;
 }
+
 .msf-table-input.mat-form-field-appearance-legacy .mat-form-field-underline {
   background: none !important;
 }

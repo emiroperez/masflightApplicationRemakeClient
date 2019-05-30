@@ -239,12 +239,12 @@ export class CreateCustomerComponent implements OnInit {
 
   getTableHeight(): string
   {
-    return "calc(" + this.innerHeight + "px - 22em)";
+    return "calc(" + this.innerHeight + "px - 21.9em)";
   }
 
   getEditorHeight(): string
   {
-    return "calc(" + this.innerHeight + "px - 19.65em)";
+    return "calc(" + this.innerHeight + "px - 19.55em)";
   }
 
   getPlanName(licenseType): string
