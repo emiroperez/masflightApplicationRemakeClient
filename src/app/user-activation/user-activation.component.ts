@@ -47,7 +47,6 @@ export class UserActivationComponent implements OnInit {
 
 
   getPlansService() {
-    this.globals.isLoading = true;
     // let url = "http://localhost:8887/getPlans";
     let url = this.globals.baseUrl+'/getPlans';
     this.http.get(this, url, this.handlerSuccessInit, this.handlerError, null);
@@ -65,6 +64,7 @@ export class UserActivationComponent implements OnInit {
         }
       }
     }
+    _this.globals.isLoading = false;
   }
 
   handlerError(_this, result) {
@@ -102,7 +102,6 @@ export class UserActivationComponent implements OnInit {
     console.log(_this.users);
     _this.dataSource = new MatTableDataSource(_this.users);
     _this.dataSource.paginator = _this.paginator;
-    _this.globals.isLoading = false;
   }
 
   handlerErrorUsers(_this, result){

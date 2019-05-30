@@ -4498,16 +4498,22 @@ img.msf-calendar-image {
   color: #2d3436 !important;
 }
 
-.activation-form .mat-paginator-icon {
-  color: #2d3436 !important;
-}
-
 .activation-form .mat-select-arrow {
   color: #2d3436 !important;
 }
 
 .activation-form .mat-icon-button {
   float: left;
+}
+.activation-form .mat-icon-button .mat-button-wrapper {
+  color: #2d3436 !important;
+}
+
+.activation-form .mat-icon-button[disabled] {
+  float: left;
+}
+.activation-form .mat-icon-button[disabled] .mat-button-wrapper {
+  color: #dddddd !important;
 }
 
 .activation-form .mat-form-field {
