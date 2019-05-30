@@ -1666,7 +1666,7 @@ app-msf-airport {
 
 td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
   text-align: center;
-  padding: 10px 0 !important;
+  padding: 0 0 !important;
 }
 
 .mat-header-cell {
@@ -4929,11 +4929,13 @@ span.msf-subCell {
   cursor: pointer;
 }
 .msf-customer-two-columns .msf-customer-left-container .mat-elevation-z8 .msf-customer-table-scroll .msf-customer-table th.mat-header-cell {
+  padding: 10px 0 !important;
   font-size: 12px;
   border: none;
   background-color: #1e1e1e;
 }
 .msf-customer-two-columns .msf-customer-left-container .mat-elevation-z8 .msf-customer-table-scroll .msf-customer-table td.mat-cell {
+  padding: 10px 0 !important;
   border-color: inherit;
   border-style: solid;
   border-width: 1px 0;
