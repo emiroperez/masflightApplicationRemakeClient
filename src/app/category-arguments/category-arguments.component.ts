@@ -140,7 +140,7 @@ export class CategoryArgumentsComponent implements OnInit {
 
   handlerErrorCategoryArguments(_this, result) {
     _this.globals.isLoading = false;
-    console.log(result);
+    _this.globals.consoleLog(result);
   }
 
   getDataCategoryArguments() {
@@ -163,7 +163,7 @@ export class CategoryArgumentsComponent implements OnInit {
       this.rowDataArguments = [];
       this.rowDataArgumentsToDelete = [];
     }
-    console.log(selectedRows);
+    this.globals.consoleLog(selectedRows);
   }
 
   handlerSuccessArgumentsByCategory(_this, result) {
@@ -174,7 +174,7 @@ export class CategoryArgumentsComponent implements OnInit {
 
   handlerErrorArgumentsByCategory(_this, result) {
     _this.globals.isLoading = false;
-    console.log(result);
+    _this.globals.consoleLog(result);
   }
 
   addCategoryArgument() {
@@ -191,7 +191,7 @@ export class CategoryArgumentsComponent implements OnInit {
     var selectedData = this.gridApi.getSelectedRows();
     this.rowDataToDelete.push(selectedData[0]);
     var res = this.gridApi.updateRowData({ remove: selectedData });
-    console.log(this.rowData);
+    this.globals.consoleLog(this.rowData);
   }
 
   saveCategoryArgument() {    
@@ -215,7 +215,7 @@ export class CategoryArgumentsComponent implements OnInit {
   }
 
   handlerErrorDeleteArgumentsCategory(_this, result) {
-    console.log(result);
+    _this.globals.consoleLog(result);
   }
 
   addArgument() {
@@ -244,14 +244,14 @@ export class CategoryArgumentsComponent implements OnInit {
 
   handlerErrorSaveArguments(_this, result) {
     _this.globals.isLoading = false;
-    console.log(result);
+    _this.globals.consoleLog(result);
   }
 
   removeArgument() {
     var selectedData = this.gridApiArgument.getSelectedRows();
     this.rowDataArgumentsToDelete.push(selectedData[0]);
     var res = this.gridApiArgument.updateRowData({ remove: selectedData });
-    console.log(this.rowDataArgumentsToDelete);
+    this.globals.consoleLog(this.rowDataArgumentsToDelete);
   }
 
   deleteArgument(){
@@ -261,11 +261,11 @@ export class CategoryArgumentsComponent implements OnInit {
   handlerSuccessDeleteArguments(_this, result){    
     _this.onSelectionChanged();
     _this.globals.isLoading = false;
-    console.log(result);
+    _this.globals.consoleLog(result);
   }
 
   handlerErrorDeleteArguments(_this, result){
-    console.log(result);
+    _this.globals.consoleLog(result);
     
   }
 

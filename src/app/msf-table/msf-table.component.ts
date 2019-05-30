@@ -313,7 +313,7 @@ export class MsfTableComponent implements OnInit {
             _this.tableOptions.displayedColumns  = _this.deleteEmptyColumns(dataResult,_this.tableOptions.displayedColumns);
           _this.metadata = _this.tableOptions.displayedColumns;
           _this.tableOptions.metadata = data.metadata;
-          console.log( _this.tableOptions.displayedColumns);
+          _this.globals.consoleLog( _this.tableOptions.displayedColumns);
           
           _this.setColumnsDisplayed(_this);
           
@@ -383,7 +383,7 @@ export class MsfTableComponent implements OnInit {
         }
         _this.tableOptions.dataSource = true;
         _this.tableOptions.selectedIndex = 2;
-        console.log(_this.dataSource);
+        _this.globals.consoleLog(_this.dataSource);
       }else{
         _this.tableOptions.dataSource = false;
       }
@@ -415,7 +415,7 @@ export class MsfTableComponent implements OnInit {
     }
     _this.tableOptions.dataSource = false;
     _this.tableOptions.template = false;
-    console.log(result);
+    _this.globals.consoleLog(result);
   }
 
   getCurrentClass(tableItem:any){
@@ -429,8 +429,64 @@ export class MsfTableComponent implements OnInit {
     return aux;
   }
 
+  parseDate(date): string
+  {
+    let day, month;
+    let d: Date;
+
+    if (date == null)
+      return "";
+
+    d = new Date (date);
+    if (Object.prototype.toString.call (d) === "[object Date]")
+    {
+      if (isNaN (d.getTime()))
+        return "";
+    }
+    else
+      return "";
+
+    month = (d.getMonth () + 1);
+    if (month < 10)
+      month = "0" + month;
+
+    day = d.getDate ();
+    if (day < 10)
+      day = "0" + day;
+
+    return month + "-" + day + "-" + d.getFullYear ();
+  }
+
+  parseTime(date): string
+  {
+    let minute, hour;
+    let d: Date;
+
+    if (date == null)
+      return "";
+
+    d = new Date (date);
+    if (Object.prototype.toString.call (d) === "[object Date]")
+    {
+      if (isNaN (d.getTime()))
+        return "";
+    }
+    else
+      return "";
+
+    hour = d.getHours ();
+    if (hour < 10)
+      hour = "0" + hour;
+
+    minute = d.getMinutes ();
+    if (minute < 10)
+      minute = "0" + minute;
+
+    return hour + ":" + minute;
+  }
+
   getFormatCell(value:any,element:any,column:any,flightArray:any[]){
-    var aux = String(value);
+    var aux: any = String(value);
     if(value==undefined){
       if(this.currentOption.tabType=='scmap'&& this.currentOption.metaData==2){
         var flight  = element['Flight'];
@@ -448,11 +504,20 @@ export class MsfTableComponent implements OnInit {
             aux = "";
           }
         }
-      }
-    aux = aux.replace("%","");
-    aux = aux.replace("$","");
-    aux = aux.replace("ï¿½","0");
-    element[column.columnName] = aux;
+    }
+    else if (column.columnType == 'date')
+      aux = this.parseDate (value);
+    else if (column.columnType == 'time')
+      aux = this.parseTime (value);
+    else
+    {
+      aux = aux.replace("%","");
+      aux = aux.replace("$","");
+      aux = aux.replace("ï¿½","0");
+    }
+
+    // element[column.columnName] = aux;
+    return aux;
   }
 
   isArray( element:any){
@@ -481,7 +546,7 @@ export class MsfTableComponent implements OnInit {
 
   popupInfoError(_this,data) {
     _this.globals.popupLoading2 = false;
-    console.log("ERROR")
+    _this.globals.consoleLog("ERROR")
   }
 
   getPopupInfo(_this,data){
@@ -490,7 +555,7 @@ export class MsfTableComponent implements OnInit {
     let keys = Object.keys(response);
     let dataResult;
     _this.globals.subDisplayedColumns = data.metadata;
-    console.log( _this.globals.subDisplayedColumns);
+    _this.globals.consoleLog( _this.globals.subDisplayedColumns);
     if( _this.globals.subTotalRecord > 1){
       let mainElement = _this.getMainKey(keys,response);
     if(!(mainElement instanceof Array)){
@@ -507,8 +572,8 @@ export class MsfTableComponent implements OnInit {
       }
       _this.globals.popupResponse = response;
       _this.globals.popupMainElement = mainElement;
-      console.log(_this.globals.popupResponse)
-      console.log(_this.globals.popupMainElement)
+      _this.globals.consoleLog(_this.globals.popupResponse)
+      _this.globals.consoleLog(_this.globals.popupMainElement)
     }else{
       if( _this.globals.subMoreResults){
         _this.globals.moreResultsBtn = false;

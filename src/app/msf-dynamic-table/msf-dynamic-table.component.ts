@@ -148,7 +148,7 @@ addColumnConfigObj(value : any,dataField: any[]){
 }
 
 handlerError(_this,result){
-  console.log(result);
+  _this.globals.consoleLog(result);
   _this.globals.isLoading = false;  
 }
 

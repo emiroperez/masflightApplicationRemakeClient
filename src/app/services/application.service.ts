@@ -40,7 +40,7 @@ export class ApplicationService {
   getMapBoxTracking(_this, successHandler, errorHandler) {
     let params = this.utils.getUrlParameters(_this.globals.currentOption,false);
     let url = this.host1 + "/getMapBoxTracking?" + params.url;
-    console.log(url)
+    this.globals.consoleLog(url)
     this.http.get(_this, url, successHandler, errorHandler, null);
   }
 
@@ -62,11 +62,11 @@ export class ApplicationService {
     if(pageNumber=="0"){
       _this.dataSource = null;
     }
-    console.log(urlBase);
+    this.globals.consoleLog(urlBase);
     let urlArg = encodeURIComponent(urlBase);
     let url = this.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + _this.globals.currentOption.id;
     this.authService.get(_this, url, handlerSuccess, handlerError);
-    console.log(url);
+    this.globals.consoleLog(url);
   }
 
   loadChartData(_this, handlerSuccess, handlerError) {
@@ -74,7 +74,7 @@ export class ApplicationService {
     let param = this.utils.getUrlParameters(_this.globals.currentOption,true);
     let urlBase = param.url;
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
-    console.log(urlBase);
+    this.globals.consoleLog(urlBase);
     let urlArg = encodeURIComponent(urlBase);
     let url = this.host + "/getChartData?url=" + urlArg + "&variable=" + _this.variable.id + "&xaxis=" + _this.xaxis.id + "&valueColumn=" + _this.valueColumn.id + "&function=" + _this.function.id;
     this.http.post(_this, url, null, handlerSuccess, handlerError);
@@ -89,7 +89,7 @@ export class ApplicationService {
     let param = this.utils.getUrlParameters(_this.globals.currentOption,true);
     let urlBase = param.url;
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
-    console.log(urlBase);
+    this.globals.consoleLog(urlBase);
     let urlArg = encodeURIComponent(urlBase);
     let url = this.host + "/getDynamicTableData?url=" + urlArg;
     let data = { variables: _this.globals.variables, values: _this.globals.values };
@@ -253,7 +253,7 @@ export class ApplicationService {
     _this.globals.isLoading = true;
     let params = this.utils.getParameters(_this.globals.currentOption);
     params += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999";
-    console.log(params);
+    this.globals.consoleLog(params);
     let url = this.host + "/getChartDataUsageStatistics?variable=" + _this.variable.id + "&xaxis=" + _this.xaxis.id + "&valueColumn=" + _this.valueColumn.id + "&function=" + _this.function.id + "&" +params+ "&optionId=" + _this.globals.currentOption.id;;
     this.http.get(_this, url, handlerSuccess, handlerError, null);
   }
@@ -265,7 +265,7 @@ export class ApplicationService {
     let param = this.utils.getUrlParameters(_this.globals.currentOption,true);
     let urlBase = param.url;
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=100";
-    console.log(urlBase);
+    this.globals.consoleLog(urlBase);
     let urlArg = encodeURIComponent(urlBase);
     urlBase += "&optionId=" + _this.globals.currentOption.id;
     this.http.get(_this, urlBase, handlerSuccess, handlerError, null);
@@ -376,12 +376,12 @@ export class ApplicationService {
     // _this.globals.isLoading = true;
     // let param = this.utils.getUrlParameters(_this.globals.currentOption);
     let urlBase = option.baseUrl + parameters;
-    console.log(urlBase);
+    this.globals.consoleLog(urlBase);
     let urlArg = encodeURIComponent(urlBase);
-    console.log(urlArg);
+    this.globals.consoleLog(urlArg);
     let url = this.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + option.id;
     this.authService.get(_this, url, handlerSuccess, handlerError);
-    console.log(url);
+    this.globals.consoleLog(url);
   }
 
   getDrillDownAdmin(_this, optionId, handlerSuccess, handlerError)

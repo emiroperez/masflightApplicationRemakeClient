@@ -46,7 +46,7 @@ export class ResetPasswordComponent implements OnInit {
 
       if (self.tokenEmail)
       {
-        console.log(self.tokenEmail);
+        self.globals.consoleLog (self.tokenEmail);
         self.user.email = self.tokenEmail.split(":")[0];
         self.personalInformationForm.get ('emailValidator').setValue (self.user.email);
         self.verifyToken();
@@ -62,7 +62,7 @@ export class ResetPasswordComponent implements OnInit {
   }
   successHandler(_this,data){
     _this.globals.isLoading = false;
-    console.log(data);
+    _this.globals.consoleLog(data);
     if(data==null){
       const dialogRef = _this.dialog.open(MessageComponent, {
         data: { title:"Error", message:"Token has expired" }
@@ -77,7 +77,7 @@ export class ResetPasswordComponent implements OnInit {
 
   errorHandler(_this, result){
     _this.globals.isLoading = false;
-    console.log(result);
+    _this.globals.consoleLog(result);
   }
 
 

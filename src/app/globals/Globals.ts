@@ -51,11 +51,12 @@ export class Globals {
   currentAirline: any;
   template : boolean = false;
   isFullscreen: boolean = false;
-  baseUrl = "http://staging.pulse.aspsols.com:8887";
-  // baseUrl = "";
+  // baseUrl = "http://staging.pulse.aspsols.com:8887";
+  // baseUrl = "http://192.168.1.50:8887";
+  baseUrl = "";
   // baseUrl2 = "http://localhost:8886";
   baseUrl2 = "http://69.64.45.220:8886";
-    // popupUrl = "http://localhost:8900";
+  // popupUrl = "http://localhost:8900";
   popupUrl = "http://testing.pulse.aspsols.com:8900";
   scheduledata:any;
   hideParametersPanels : boolean =false;
@@ -95,7 +96,7 @@ export class Globals {
         this.welcomeDataSource.push(this.currentMenuCategory.options[index]);
       }
     }
-    console.log(this.welcomeDataSource)
+    this.consoleLog(this.welcomeDataSource)
   }
 
   recursiveOption(option:any){
@@ -231,6 +232,15 @@ export class Globals {
     }else{
       this.minDate = null;
       this.maxDate = null;
+    }
+  }
+
+  consoleLog(message)
+  {
+    if (window.console)
+    {
+      console.log (message);
+      console.debug (message);
     }
   }
 }

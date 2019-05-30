@@ -53,9 +53,9 @@ export class UserActivationComponent implements OnInit {
   }
 
   handlerSuccessInit(_this, data, tab) {
-    console.log('data: ' + data);
+    _this.globals.consoleLog('data: ' + data);
     _this.plans = data;
-    console.log(_this.plans);
+    _this.globals.consoleLog(_this.plans);
      for (let i = 0; i < _this.users.length;i++){
       for(let j=0; j<_this.plans.length;j++){
         if(_this.plans[j].id == _this.users[i].userPlan[0].Plan_Id){
@@ -69,12 +69,12 @@ export class UserActivationComponent implements OnInit {
 
   handlerError(_this, result) {
     _this.globals.isLoading = false;
-    console.log(result);
+    _this.globals.consoleLog(result);
   }
 
   checkFare(element){
     for(let j=0; j< this.plans.length;j++){
-      console.log(this.plans[j]);
+      this.globals.consoleLog(this.plans[j]);
       if(this.plans[j].id == element.userPlan[0].Plan_Id){
         let plans = this.plans[j];
         element.auxplans= plans.fares;
@@ -91,21 +91,21 @@ export class UserActivationComponent implements OnInit {
   handlerSuccessUsers(_this, data){
     _this.users = data;
     for(let i = 0; i < _this.users.length; i++){
-      console.log(i)
-      console.log(_this.users[i])
+      _this.globals.consoleLog(i)
+      _this.globals.consoleLog(_this.users[i])
     if (_this.users[i].userPlan.length == 0){
       _this.users[i].userPlan.push({"id": null,"Plan_Id":null,"Fare_Id":null});
     }
     }
-    console.log(_this.users)
+    _this.globals.consoleLog(_this.users)
     _this.getPlansService();
-    console.log(_this.users);
+    _this.globals.consoleLog(_this.users);
     _this.dataSource = new MatTableDataSource(_this.users);
     _this.dataSource.paginator = _this.paginator;
   }
 
   handlerErrorUsers(_this, result){
-    console.log(result);
+    _this.globals.consoleLog(result);
     _this.globals.isLoading = false;
   }
 
@@ -123,7 +123,7 @@ export class UserActivationComponent implements OnInit {
   }
 
   handlerErrorSave(_this, result){
-    console.log(result);
+    _this.globals.consoleLog(result);
     _this.globals.isLoading = false;
   }
 
@@ -131,7 +131,7 @@ export class UserActivationComponent implements OnInit {
     this.userSelected = element;
     this.userSelected.state ? this.userSelected.state = 1 : this.userSelected.state = 0;
     this.usersToAdd.push(this.userSelected);
-    console.log(this.usersToAdd);
+    this.globals.consoleLog(this.usersToAdd);
   }
 
   @HostListener('window:resize', ['$event'])

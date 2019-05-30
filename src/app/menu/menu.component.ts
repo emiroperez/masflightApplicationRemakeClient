@@ -46,7 +46,6 @@ export class MenuComponent implements OnInit {
       //if(!menu.menu.menuOpen()){
         menu.openMenu();
         this.currentTrigger = menu;
-        console.log('mouseover');
       //}
     }else{
       menu.openMenu();
@@ -106,11 +105,9 @@ export class MenuComponent implements OnInit {
     if(menu === this.currentTrigger)  {
       //if(menu.menu.menuOpen()){
         menu.closeMenu();
-        console.log('mouseout');
       //}
     }else{
         menu.closeMenu();
-        console.log('mouseout');
     }
 
   }

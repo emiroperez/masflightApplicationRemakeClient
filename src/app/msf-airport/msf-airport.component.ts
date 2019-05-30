@@ -80,7 +80,7 @@ handlerSuccess(_this,data, tab){
 
 handlerError(_this,result){
   _this.loading = false;
-  console.log(result);
+  _this.globals.consoleLog (result);
 }
 
 onSearch($event: any){

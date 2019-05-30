@@ -60,7 +60,7 @@ export class ForgotPasswordComponent implements OnInit {
   }
   errorHandleResponsen(_this,result) {
     _this.globals.isLoading = false;
-    console.log(result);
+    _this.globals.consoleLog(result);
   }
 
   enviarEmail(){
@@ -87,8 +87,8 @@ export class ForgotPasswordComponent implements OnInit {
     });
   }
 
-  errorEmailResponse(result){
-    console.log(result);
+  errorEmailResponse(_this, result){
+    _this.globals.consoleLog(result);
   }
 
   @HostListener('window:resize', ['$event'])

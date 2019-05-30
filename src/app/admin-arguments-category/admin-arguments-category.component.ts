@@ -158,12 +158,12 @@ export class AdminArgumentsCategoryComponent implements OnInit {
   }
 
   handlerErrorCategoryArguments(_this, result) {
-    console.log(result);
+    _this.globals.consoleLog(result);
     _this.globals.isLoading = false;
   }
 sendData() {
   this.dataToSend = this.categories.concat(this.categoryDelete);
-  console.log(this.dataToSend);
+  this.globals.consoleLog(this.dataToSend);
   this.service.saveNewCategoryArguments(this, this.dataToSend, this.handlerSuccess, this.handlerError);
 }
 
@@ -173,7 +173,7 @@ handlerSuccess(_this, result){
 }
 
 handlerError(_this,result){
-  console.log(result);
+  _this.globals.consoleLog(result);
   _this.globals.isLoading = false;
   const dialogRef = _this.dialog.open(MessageComponent, {
     data: { title:"Error", message: "It was an error, try again."}
@@ -192,7 +192,7 @@ handlerError(_this,result){
       this.category = {};
     }
 
-    console.log(this.category);
+    this.globals.consoleLog(this.category);
 }
 
 addCategory() {

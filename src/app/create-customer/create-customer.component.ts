@@ -457,7 +457,7 @@ export class CreateCustomerComponent implements OnInit {
 
   saveError(_this, error)
   {
-    console.log (error);
+    _this.globals.consoleLog (error);
 
     _this.dialog.open (MessageComponent, {
       data: { title: "Error", message: "Unable to save the customers." }

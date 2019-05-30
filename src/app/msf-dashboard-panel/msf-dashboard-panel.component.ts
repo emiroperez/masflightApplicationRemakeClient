@@ -1279,7 +1279,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.isLoading = true;
     urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
-    console.log (urlBase);
+    this.globals.consoleLog (urlBase);
     urlArg = encodeURIComponent (urlBase);
 
     // Prepare list of variables
@@ -1340,7 +1340,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.isLoading = true;
     urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
-    console.log (urlBase);
+    this.globals.consoleLog (urlBase);
     urlArg = encodeURIComponent (urlBase);
     url = this.service.host + "/getChartData?url=" + urlArg + "&variable=" + this.values.variable.id +
       "&valueColumn=" + this.values.valueColumn.id + "&function=" + this.values.function.id;
@@ -1361,7 +1361,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.isLoading = true;
     urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=100&page_number=0";
-    console.log (urlBase);
+    this.globals.consoleLog (urlBase);
     urlArg = encodeURIComponent (urlBase);
     url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
 
@@ -1375,7 +1375,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.isLoading = true;
     urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=1&page_number=0";
-    console.log (urlBase);
+    this.globals.consoleLog (urlBase);
     urlArg = encodeURIComponent (urlBase);
     url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
 
@@ -1416,7 +1416,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.isLoading = true;
     urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&&pageSize=100&page_number=" + this.actualPageNumber;
-    console.log (urlBase);
+    this.globals.consoleLog (urlBase);
     urlArg = encodeURIComponent (urlBase);
     url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
 
@@ -1926,7 +1926,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   handlerChartError(_this, result): void
   {
-    console.log (result);
+    _this.globals.consoleLog (result);
     _this.values.lastestResponse = null;
     _this.values.chartGenerated = false;
     _this.values.infoGenerated = false;
@@ -1942,7 +1942,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   handlerTextError(_this, result): void
   {
-    console.log (result);
+    _this.globals.consoleLog (result);
     _this.values.lastestResponse = null;
     _this.values.chartGenerated = false;
     _this.values.infoGenerated = false;
@@ -1958,7 +1958,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   handlerFormError(_this, result): void
   {
-    console.log (result);
+    _this.globals.consoleLog (result);
     _this.values.lastestResponse = null;
     _this.values.chartGenerated = false;
     _this.values.infoGenerated = false;
@@ -1974,7 +1974,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   handlerPicError(_this, result): void
   {
-    console.log (result);
+    _this.globals.consoleLog (result);
     _this.values.lastestResponse = null;
     _this.values.chartGenerated = false;
     _this.values.infoGenerated = false;
@@ -1993,7 +1993,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.isLoading = false;
 
     if (result != null)
-      console.log (result);
+      _this.globals.consoleLog (result);
 
     _this.values.lastestResponse = null;
     _this.values.chartGenerated = false;
@@ -2009,7 +2009,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   handlerHeatMapError(_this, result): void
   {
-    console.log (result);
+    _this.globals.consoleLog (result);
     _this.values.lastestResponse = null;
     _this.values.chartGenerated = false;
     _this.values.infoGenerated = false;
@@ -2025,7 +2025,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   handlerMapError(_this, result): void
   {
-    console.log (result);
+    _this.globals.consoleLog (result);
     _this.values.lastestResponse = null;
     _this.values.chartGenerated = false;
     _this.values.infoGenerated = false;
@@ -2041,7 +2041,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   handlerError(_this, result): void
   {
-    console.log (result);
+    _this.globals.consoleLog (result);
     _this.values.isLoading = false;  
   }
 
@@ -2152,7 +2152,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (!_this.haveSortingCheckboxes ())
       _this.globals.isLoading = false;
 
-    // console.log (_this.values.currentOptionCategories);
+    // _this.globals.consoleLog (_this.values.currentOptionCategories);
 
     _this.dialog.open (MsfDashboardControlVariablesComponent, {
       height: '605px',

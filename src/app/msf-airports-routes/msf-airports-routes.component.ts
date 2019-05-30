@@ -39,7 +39,7 @@ export class MsfAirportsRoutesComponent implements OnInit {
   
   handlerError(_this,result){
     _this.loading = false; 
-    console.log(result);
+    _this.globals.consoleLog (result);
   }
 
   onSearch($event: any){

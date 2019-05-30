@@ -51,7 +51,7 @@ export class LoginScreenComponent implements OnInit {
     });
 
     this.hash = new ClientJS ().getFingerprint ();
-    // console.log (this.hash);
+    // this.globals.consoleLog (this.hash);
   }
 
   isUsernameInvalid(): boolean
@@ -126,7 +126,7 @@ export class LoginScreenComponent implements OnInit {
       _this.goToWelcomeScreen ();
     else
     {
-      console.log (result >>> 8); // print the code
+      _this.globals.consoleLog (result >>> 8); // print the code
       result = result & 255; // remove the code from the result
 
       let dialogRef = _this.dialog.open (TwoFactorLoginDialogComponent,
@@ -163,7 +163,7 @@ export class LoginScreenComponent implements OnInit {
 
   errorAutentication(_this, error)
   {
-    console.log (error);
+    _this.globals.consoleLog (error);
     _this.securityToken = null;
     _this.username = null;
     _this.userId = null;
@@ -211,7 +211,7 @@ export class LoginScreenComponent implements OnInit {
     _this.router.navigate(["/welcome"]);
   }
   errorLogin(_this,result){
-    console.log(result);
+    _this.globals.consoleLog(result);
   }
 
   @HostListener('window:resize', ['$event'])
