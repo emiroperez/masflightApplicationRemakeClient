@@ -67,7 +67,7 @@ export class MsfTableComponent implements OnInit {
   tableOptions: any;
 
   specialCharacters = [ '[',']','/','!','"','#','$','%','&',"'",'(',')','*','+',';','<','=','>' 
-                          ,'?','@','\\',']','^','`','{','|','}','~','°'];
+                          ,'?','@','\\','^','`','{','|','}','~','°','-',':'];
 
   @ViewChild(MatSort) sort: MatSort;
 
@@ -328,6 +328,22 @@ export class MsfTableComponent implements OnInit {
             _this.dataSource = dataResult;
           }
 
+          for (let i = 0; i < _this.tableOptions.displayedColumns.length; i++)
+          {
+            let column = _this.tableOptions.displayedColumns[i];
+
+            if (column.columnType == 'time')
+            {
+              for (let j = 0; j < _this.dataSource.data.length; j++)
+                _this.dataSource.data[j][column.columnName] = _this.parseTime (_this.dataSource.data[j][column.columnName]);
+            }
+            else if (column.columnType == 'date')
+            {
+              for (let j = 0; j < _this.dataSource.data.length; j++)
+                _this.dataSource.data[j][column.columnName] = _this.parseDate (_this.dataSource.data[j][column.columnName]);
+            }
+          }
+
           if(_this.currentOption.tabType!="athena"&&_this.currentOption.tabType!="mariadb"){
             if( _this.tableOptions.totalRecord<100 ||  _this.tableOptions.totalRecord>100){
               _this.tableOptions.moreResultsBtn = false;
@@ -440,7 +456,7 @@ export class MsfTableComponent implements OnInit {
     d = new Date (date);
     if (Object.prototype.toString.call (d) === "[object Date]")
     {
-      if (isNaN (d.getTime()))
+      if (isNaN (d.getTime ()))
         return "";
     }
     else
@@ -454,12 +470,12 @@ export class MsfTableComponent implements OnInit {
     if (day < 10)
       day = "0" + day;
 
-    return month + "-" + day + "-" + d.getFullYear ();
+    return day + "-" + month + "-" + d.getFullYear ();
   }
 
   parseTime(date): string
   {
-    let minute, hour;
+    let hour, minute, second;
     let d: Date;
 
     if (date == null)
@@ -468,7 +484,7 @@ export class MsfTableComponent implements OnInit {
     d = new Date (date);
     if (Object.prototype.toString.call (d) === "[object Date]")
     {
-      if (isNaN (d.getTime()))
+      if (isNaN (d.getTime ()))
         return "";
     }
     else
@@ -482,7 +498,11 @@ export class MsfTableComponent implements OnInit {
     if (minute < 10)
       minute = "0" + minute;
 
-    return hour + ":" + minute;
+    second = d.getSeconds ();
+    if (second < 10)
+      second = "0" + second;
+
+    return hour + ":" + minute + ":" + second + "." + d.getMilliseconds ();
   }
 
   getFormatCell(value:any,element:any,column:any,flightArray:any[]){
@@ -505,19 +525,12 @@ export class MsfTableComponent implements OnInit {
           }
         }
     }
-    else if (column.columnType == 'date')
-      aux = this.parseDate (value);
-    else if (column.columnType == 'time')
-      aux = this.parseTime (value);
-    else
-    {
-      aux = aux.replace("%","");
-      aux = aux.replace("$","");
-      aux = aux.replace("ï¿½","0");
-    }
 
-    // element[column.columnName] = aux;
-    return aux;
+    aux = aux.replace("%","");
+    aux = aux.replace("$","");
+    aux = aux.replace("ï¿½","0");
+
+    element[column.columnName] = aux;
   }
 
   isArray( element:any){
