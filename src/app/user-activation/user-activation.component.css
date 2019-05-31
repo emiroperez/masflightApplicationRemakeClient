@@ -42,6 +42,6 @@ input {
     padding-left: 0px;
 }
 
-.mat-elevation-z8 {
-    width: 103%;
+.mat-cell-centered {
+    text-align: center;
 }

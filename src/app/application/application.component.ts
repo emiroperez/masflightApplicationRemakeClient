@@ -123,24 +123,35 @@ export class ApplicationComponent implements OnInit {
     _this.dynamicTablePlan = false;
     _this.exportExcelPlan = false;
 
-    _this.planAdvanceFeatures.forEach (item => {
-      if (item.advanceFeatureId == 1)
-        _this.globals.readOnlyDashboardPlan = true;
+    // Do not allow a user without customer to use any advanced features
+    if (!_this.planAdvanceFeatures)
+      _this.globals.readOnlyDashboardPlan = true;
+    else
+    {
+      _this.planAdvanceFeatures.forEach (item => {
+        if (item.advanceFeatureId == 1)
+          _this.globals.readOnlyDashboardPlan = true;
 
-      if (item.advanceFeatureId == 2)
-        _this.dashboardPlan = true;
+        if (item.advanceFeatureId == 2)
+          _this.dashboardPlan = true;
 
-      if (item.advanceFeatureId == 3)
-        _this.dynamicTablePlan = true;
+        if (item.advanceFeatureId == 3)
+          _this.dynamicTablePlan = true;
 
-      if (item.advanceFeatureId == 4)
-        _this.exportExcelPlan = true;
-    });
+        if (item.advanceFeatureId == 4)
+          _this.exportExcelPlan = true;
+      });
+    }
 
     _this.validateAdmin ();
   }
 
   handlerErrorAF(_this,result){
+    _this.globals.readOnlyDashboardPlan = true;
+    _this.dashboardPlan = false;
+    _this.dynamicTablePlan = false;
+    _this.exportExcelPlan = false;
+
     _this.globals.consoleLog(result);
     _this.validateAdmin ();
   }

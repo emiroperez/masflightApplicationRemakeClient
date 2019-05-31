@@ -16,6 +16,8 @@ import { MessageComponent } from '../message/message.component';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { takeUntil } from 'rxjs/operators';
 import { ReplaySubject, Subject } from 'rxjs';
+import { ApplicationService } from '../services/application.service';
+import { Customer } from '../model/Customer';
 
 
 
@@ -29,12 +31,12 @@ export class RegisterComponent implements OnInit {
   innerHeight: number;
   users: User;
   utils: Utils;
-  plans: Plan[];
   userPlan : UserPlan;
   countries: Country[];
   states : State[];
   selectedCountries: Country[];
   selectedStates: State[];
+  customers: Customer[];
   isLinear = true;
   title: string = 'Personal Information';
 
@@ -49,45 +51,22 @@ export class RegisterComponent implements OnInit {
     stateValidator : new FormControl('state', [Validators.required]),
     postalCodeValidator : new FormControl('postalCode', [Validators.required]),
     phoneNumberValidator : new FormControl('phoneNumber', [Validators.required]),
-
+    customerValidator : new FormControl('customer', [Validators.required])
   });
 
   public countryFilterCtrl: FormControl = new FormControl();
   public stateFilterCtrl: FormControl = new FormControl();
+  public customerFilterCtrl: FormControl = new FormControl();
 
   public filteredCountries: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
   public filteredStates: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
+  public filteredCustomers: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
 
   private _onDestroy = new Subject<void> ();
 
-  planInformationForm = new FormGroup({
-    planValidator : new FormControl('prices',[Validators.required])
-  })
-
-  paymentInformationForm = new FormGroup({
-    paymentTypeValidator : new FormControl('paymentType',[Validators.required]),
-    cardNumberValidator : new FormControl('cardNumber', [Validators.required]),
-    expiryDateValidator : new FormControl('expiryDate', [Validators.required, RegisterComponent.expiriDateValidator(this)]),
-    cvvValidator : new FormControl('cvv', [Validators.required])
-  })
-
- /*  states: State[] = [
-    {name: 'California', id: '1'},
-    {name: 'Florida', id: '3'},
-    {name: 'Texas', id: '2'},
-    {name: 'Washington', id: '4'},
-  ];
-
-  countries: Country[] = [
-    {name: 'Australia', id: '4'},
-    {name: 'Canada', id: '3'},
-    {name: 'China', id: '1'},
-    {name: 'Russia', id: '2'}
-  ]; */
-
-
   constructor(private userServices: UserService,
     private registerServices:RegisterService,
+    private appServices: ApplicationService,
     public dialog: MatDialog,
     private globals: Globals,private router: Router,
     private config: NgSelectConfig) {
@@ -97,7 +76,6 @@ export class RegisterComponent implements OnInit {
     this.users = new User( new Payment());
     this.userPlan=new UserPlan();
     this.utils = new Utils();
-    this.plans=new Array();
     this.countries = new Array();
     this.states = new Array();
     this.globals.isLoading = true;
@@ -108,41 +86,11 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit() {
     this.innerHeight = window.innerHeight;
-    this.paymentInformationForm.get ('paymentTypeValidator').setValue ('');
-    this.paymentInformationForm.get ('cardNumberValidator').setValue ('');
-    this.paymentInformationForm.get ('expiryDateValidator').setValue ('');
-    this.paymentInformationForm.get ('cvvValidator').setValue ('');
   }
 
   ngOnDestroy(): void {
     this._onDestroy.next ();
     this._onDestroy.complete ();
-  }
-
-  selectionChange(event){
-    this.setUserValues ();
-    this.setPlanValue ();
-    this.setPaymentValues ();
-
-    if(event.selectedIndex == 0){
-      this.title = 'Personal Information';
-    }else if(event.selectedIndex == 1){
-      this.title = 'Membership Plan';
-    }else if(event.selectedIndex == 2){
-      this.title = 'Payment Method';
-    }
-  }
-
-
-
-  renderPlans(_this,data){
-    _this.plans = data;
-    _this.globals.isLoading = false;
-  }
-
-  errorPlans(_this,error){
-   // _this.globals.consoleLog(error);
-    _this.globals.isLoading = false;
   }
 
   filterCountries(): void
@@ -180,12 +128,56 @@ export class RegisterComponent implements OnInit {
     _this.countries = data;
     _this.selectedCountries = _this.countries;
     _this.countriesSearchChange ();
-    _this.registerServices.getPlans(_this,_this.renderPlans,_this.errorPlans);
+    _this.appServices.getCustomers (_this, _this.setCustomers, _this.errorCustomers);
   }
 
   errorCountries(_this,error){
     //_this.globals.consoleLog(error);
-    _this.registerServices.getPlans(_this,_this.renderPlans,_this.errorPlans);
+    _this.appServices.getCustomers (_this, _this.setCustomers, _this.errorCustomers);
+  }
+
+  setCustomers(_this, data): void
+  {
+    _this.customers = data;
+    _this.customerSearchChange ();
+    _this.globals.isLoading = false;
+  }
+
+  errorCustomers(_this, error)
+  {
+    _this.globals.consoleLog (error);
+    _this.globals.isLoading = false;
+  }
+
+  filterCustomers(): void
+  {
+    if (!this.customers)
+      return;
+
+    // get the search keyword
+    let search = this.customerFilterCtrl.value;
+    if (!search)
+    {
+      this.filteredCustomers.next (this.customers.slice ());
+      return;
+    }
+
+    search = search.toLowerCase ();
+    this.filteredCustomers.next (
+      this.customers.filter (a => a.name.toLowerCase ().indexOf (search) > -1)
+    );
+  }
+
+  customerSearchChange(): void
+  {
+    // load the initial option list
+    this.filteredCustomers.next (this.customers.slice ());
+    // listen for search field value changes
+    this.customerFilterCtrl.valueChanges
+      .pipe (takeUntil (this._onDestroy))
+      .subscribe (() => {
+        this.filterCustomers ();
+      });
   }
 
   filterStates(): void
@@ -231,7 +223,6 @@ export class RegisterComponent implements OnInit {
     }
   }
 
-
   setPlan(plan){
     this.userPlan.IdPlan=plan;
 
@@ -249,31 +240,6 @@ export class RegisterComponent implements OnInit {
     return (control: AbstractControl): ValidationErrors => {
       if(comp.users!=undefined){
         return comp.personalInformationForm.get ('passwordValidator').value !== control.value ? { mismatch: true } : null;
-      }else{
-        return null;
-      }
-    };
-  }
-
-  static expiriDateValidator(comp: RegisterComponent): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors => {
-      if(comp.users!=undefined){
-        if(comp.users.payment!=undefined){
-
-          if(control.value!= undefined && control.value.length==4){
-            let today = new Date();
-            let inputDate: string = control.value;
-            let dateString : string=inputDate.substring(0,2)+'/01/'+today.getFullYear().toString().substring(0,2)+inputDate.substring(2,4)
-            let date = new Date(dateString);
-              return date<today ? {outdate : true} : null;
-          }else{
-            return null;
-          }
-
-
-        }else{
-          return null;
-        }
       }else{
         return null;
       }
@@ -341,24 +307,8 @@ export class RegisterComponent implements OnInit {
     return this.personalInformationForm.get('phoneNumberValidator').hasError('required') ? 'You must enter a phone number' :'';
   }
 
-  getPamentTypeMessage() {
-    return this.paymentInformationForm.get('paymentTypeValidator').hasError('required') ? 'You must choose a payment type method' :'';
-  }
-
-  getErrorCardNumberMessage() {
-    return this.paymentInformationForm.get('cardNumberValidator').hasError('required') ? 'You must enter the card number' :'';
-  }
-
-  getErrorExpiryDateMessage() {
-    return this.paymentInformationForm.get('expiryDateValidator').hasError('required') ? 'You must enter the expiry date' : this.paymentInformationForm.get('expiryDateValidator').hasError('outdate')? 'You must enter a correct expiry date':'';
-  }
-
-  getErrorCvvMessage() {
-    return this.paymentInformationForm.get('cvvValidator').hasError('required') ? 'You must enter the cvv' :'';
-  }
-
-  getErrorPlan() {
-    return this.planInformationForm.get('planValidator').hasError('required') ? 'You must choose a plan' :'';
+  getErrorCustomerMessage() {
+    return this.personalInformationForm.get('customerValidator').hasError('required') ? 'You must select the customer' :'';
   }
 
   successHandleResponse(_this,data){
@@ -371,24 +321,20 @@ export class RegisterComponent implements OnInit {
 
 
   insertUser(){
-		if(this.personalInformationForm.valid && this.planInformationForm.valid && this.paymentInformationForm.valid ){
-      this.setPaymentValues ();
+		if(this.personalInformationForm.valid){
+      let paymentType;
+
+      this.setUserValues ();
+      paymentType = this.users.customer.paymentType + 1;
       this.userPlan.IdUser=this.users;
+      this.userPlan.IdPlan=this.users.customer.licenseType;
+      this.userPlan.IdFare=this.users.customer.licenseType.fares[0];
       this.userPlan.planPayment = this.users.payment;
+      this.userPlan.planPayment.paymentType = paymentType.toString ();
       this.userServices.saveUser(this,this.userPlan, this.saveUserHandleResponse,this.errorHandleResponsen);
     }else{
-      this.utils.showAlert('info','No valid form, you must complete all fields including payment type, card number, expiration date and cvv');
+      this.utils.showAlert('info','No valid form, you must complete all fields');
     }
-  }
-
-  validatePlan() {
-    if(this.planInformationForm.get('planValidator').hasError('required')){
-      const dialogRef = this.dialog.open(MessageComponent, {
-        data: { title:"Error", message: "No valid form, you must choose a plan"}
-      });
-    }
-    else
-      this.setPlanValue ();
   }
 
   saveUserHandleResponse(this_,data){
@@ -466,19 +412,7 @@ export class RegisterComponent implements OnInit {
     this.users.country = this.personalInformationForm.get ('countryValidator').value;
     this.users.postalCode = this.personalInformationForm.get ('postalCodeValidator').value;
     this.users.phoneNumber = this.personalInformationForm.get ('phoneNumberValidator').value;
-  }
-
-  setPlanValue()
-  {
-    this.userPlan.IdFare = this.planInformationForm.get ('planValidator').value;
-  }
-
-  setPaymentValues()
-  {
-    this.users.payment.cardNumber = this.paymentInformationForm.get ('cardNumberValidator').value;
-    this.users.payment.expiryDate = this.paymentInformationForm.get ('expiryDateValidator').value;
-    this.users.payment.cvv = this.paymentInformationForm.get ('cvvValidator').value;
-    this.users.payment.paymentType = this.paymentInformationForm.get ('paymentTypeValidator').value;
+    this.users.customer = this.personalInformationForm.get ('customerValidator').value;
   }
 
   @HostListener('window:resize', ['$event'])

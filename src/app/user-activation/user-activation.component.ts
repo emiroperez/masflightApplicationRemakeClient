@@ -25,8 +25,6 @@ export class UserActivationComponent implements OnInit {
   innerWidth: number;
   users: any[] = [];
   usersToAdd: any[] = [];
-  plans:any[] = [];
-  plansFare: Plan = new Plan();
   userSelected: any;
   dataSource;
 
@@ -35,7 +33,7 @@ export class UserActivationComponent implements OnInit {
 
 
     displayedColumns = ['columnName', 'columnLastName', 'columnEmail', 'columnAddress', 'columnPostalCode',
-    'columnCountry', 'columnCountryState', 'columnPhone', 'columnState', 'columnMembership','columnMembershipFare'];
+    'columnCountry', 'columnCountryState', 'columnPhone', 'columnState', 'columnCustomer'];
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -45,25 +43,24 @@ export class UserActivationComponent implements OnInit {
     this.getUsers();
   }
 
-
-  getPlansService() {
-    // let url = "http://localhost:8887/getPlans";
-    let url = this.globals.baseUrl+'/getPlans';
-    this.http.get(this, url, this.handlerSuccessInit, this.handlerError, null);
-  }
-
   handlerSuccessInit(_this, data, tab) {
-    _this.globals.consoleLog('data: ' + data);
-    _this.plans = data;
-    _this.globals.consoleLog(_this.plans);
-     for (let i = 0; i < _this.users.length;i++){
-      for(let j=0; j<_this.plans.length;j++){
-        if(_this.plans[j].id == _this.users[i].userPlan[0].Plan_Id){
-          let plans = _this.plans[j];
-          _this.users[i].auxplans= plans.fares;
+    _this.customers = data;
+
+    for (let user of _this.users)
+    {
+      if (!user.customer)
+        continue;
+
+      for (let customer of _this.customers)
+      {
+        if (user.customer.id == customer.id)
+        {
+          user.customer = customer;
+          continue;
         }
       }
     }
+
     _this.globals.isLoading = false;
   }
 
@@ -72,36 +69,16 @@ export class UserActivationComponent implements OnInit {
     _this.globals.consoleLog(result);
   }
 
-  checkFare(element){
-    for(let j=0; j< this.plans.length;j++){
-      this.globals.consoleLog(this.plans[j]);
-      if(this.plans[j].id == element.userPlan[0].Plan_Id){
-        let plans = this.plans[j];
-        element.auxplans= plans.fares;
-      }
-    }
-    this.addToJson(element);
-  }
-
-
   getUsers(){
     this.service.loadAllUsers(this, this.handlerSuccessUsers, this.handlerErrorUsers);
   }
 
   handlerSuccessUsers(_this, data){
     _this.users = data;
-    for(let i = 0; i < _this.users.length; i++){
-      _this.globals.consoleLog(i)
-      _this.globals.consoleLog(_this.users[i])
-    if (_this.users[i].userPlan.length == 0){
-      _this.users[i].userPlan.push({"id": null,"Plan_Id":null,"Fare_Id":null});
-    }
-    }
-    _this.globals.consoleLog(_this.users)
-    _this.getPlansService();
     _this.globals.consoleLog(_this.users);
     _this.dataSource = new MatTableDataSource(_this.users);
     _this.dataSource.paginator = _this.paginator;
+    _this.service.getCustomers (_this, _this.handlerSuccessInit, _this.handlerError);
   }
 
   handlerErrorUsers(_this, result){

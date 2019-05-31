@@ -2,6 +2,7 @@ import { Payment } from "./Payment";
 import { State } from "./State";
 import { Country } from "./Country";
 import { UserPlan } from "./UserPlan";
+import { Customer } from './Customer';
 
 export class User{
     id: string;
@@ -20,7 +21,7 @@ export class User{
     payment: Payment;
     userPlan: UserPlan;
     admin: boolean;
-
+    customer: Customer;
 
     constructor(private paymentIn: Payment){
         this.payment = paymentIn;

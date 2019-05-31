@@ -10,6 +10,11 @@
     width: 100% !important;
 }
 
+.register-step-header {
+    color: #ffffff;
+    text-align: center;
+}
+
 .mat-select-trigger {
     padding-top: 10px;
     padding-left: 30px;
