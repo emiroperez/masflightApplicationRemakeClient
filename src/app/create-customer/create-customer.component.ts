@@ -450,10 +450,17 @@ export class CreateCustomerComponent implements OnInit {
     _this.globals.isLoading = false;
   }
 
-  saveSuccess(_this)
+  saveSuccess(_this, data)
   {
-    _this.selectedCustomer.highlight = false;
-    _this.selectedCustomer = null;
+    if (_this.selectedCustomer)
+    {
+      _this.selectedCustomer.highlight = false;
+      _this.selectedCustomer = null;
+    }
+
+    _this.customers = data;
+    _this.customerTable.data = _this.customers;
+    _this.customerTable._updateChangeSubscription ();
 
     _this.customerForm.reset ();
     _this.customerForm.disable ();
