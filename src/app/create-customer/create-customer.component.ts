@@ -81,7 +81,7 @@ export class CreateCustomerComponent implements OnInit {
       statusValidator: new FormControl ('', [Validators.required]),
       countryValidator: new FormControl ('', [Validators.required]),
       stateValidator: new FormControl ('', [CreateCustomerComponent.stateFieldValidator(this)]),
-      cityValidator: new FormControl (''),
+      cityValidator: new FormControl ('', [Validators.required]),
       address1Validator: new FormControl ('', [Validators.required]),
       address2Validator: new FormControl (''),
       zipCodeValidator: new FormControl ('', [CreateCustomerComponent.zipCodeFieldValidator(this)]),
@@ -91,7 +91,7 @@ export class CreateCustomerComponent implements OnInit {
       startDateValidator: new FormControl ('', [Validators.required]),
       endDateValidator: new FormControl ('', [Validators.required]),
       paymentTypeValidator: new FormControl ('', [Validators.required]),
-      termsValidator: new FormControl ('', [Validators.required])
+      termsValidator: new FormControl ('')
     });
 
     this.customerForm.disable ();
@@ -452,6 +452,12 @@ export class CreateCustomerComponent implements OnInit {
 
   saveSuccess(_this)
   {
+    _this.selectedCustomer.highlight = false;
+    _this.selectedCustomer = null;
+
+    _this.customerForm.reset ();
+    _this.customerForm.disable ();
+
     _this.globals.isLoading = false;
   }
 
@@ -657,6 +663,11 @@ export class CreateCustomerComponent implements OnInit {
   getStateErrorMessage(): string
   {
     return this.customerForm.get ('stateValidator').hasError ('required') ? 'You must select a state' : '';
+  }
+
+  getCityErrorMessage(): string
+  {
+    return this.customerForm.get ('cityValidator').hasError ('required') ? 'You must enter a city' : '';
   }
 
   getAddress1ErrorMessage(): string

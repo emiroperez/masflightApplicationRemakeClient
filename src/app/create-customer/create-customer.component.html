@@ -129,6 +129,7 @@
                 </mat-form-field>
                 <mat-form-field [formGroup]="customerForm" [ngClass]="{ 'customer-form-field-disabled' : customerForm.disabled, 'customer-form-field' : !customerForm.disabled }">
                   <input matInput formControlName="cityValidator" autocomplete="off" type="text" placeholder="City"/>
+                  <mat-error *ngIf="customerForm.get('getCityErrorMessage')?.invalid">{{getCityErrorMessage()}}</mat-error>
                 </mat-form-field>
                 <mat-form-field [formGroup]="customerForm" [ngClass]="{ 'customer-form-field-disabled' : customerForm.disabled, 'customer-form-field' : !customerForm.disabled }">
                   <input matInput formControlName="address1Validator" autocomplete="off" type="text" placeholder="Address 1"/>
