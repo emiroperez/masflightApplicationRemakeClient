@@ -1204,15 +1204,59 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
 
     if (index != -1) {
       if (this.optionSelected.menuOptionArgumentsAdmin[index].id == undefined) {
+        /*for (let i = 0; i < this.optionSelected.menuOptionArgumentsAdmin.length; i++)
+        {
+          if (this.optionSelected.menuOptionArgumentsAdmin[i].order && this.optionSelected.menuOptionArgumentsAdmin[i].order > this.optionSelected.menuOptionArgumentsAdmin[index].order)
+            this.optionSelected.menuOptionArgumentsAdmin[i].order--;
+        }
+
+        this.optionSelected.menuOptionArgumentsAdmin[index].order = -1;*/
         this.optionSelected.menuOptionArgumentsAdmin.splice(index, 1);
       } else {
+        /*if (category.selected)
+        {
+          let newOrder = 0;
+
+          // set new order for the argument
+          for (let categorySelected of this.optionSelected.menuOptionArgumentsAdmin)
+          {
+            if (categorySelected.order > newOrder)
+              newOrder = categorySelected.order;
+          }
+    
+          newOrder++;
+          this.optionSelected.menuOptionArgumentsAdmin[index].order = newOrder;
+        }
+        else
+        {
+          for (let i = 0; i < this.optionSelected.menuOptionArgumentsAdmin.length; i++)
+          {
+            if (this.optionSelected.menuOptionArgumentsAdmin[i].order && this.optionSelected.menuOptionArgumentsAdmin[i].order > this.optionSelected.menuOptionArgumentsAdmin[index].order)
+              this.optionSelected.menuOptionArgumentsAdmin[i].order--;
+          }
+
+          this.optionSelected.menuOptionArgumentsAdmin[index].order = -1;
+        }*/
+
         this.optionSelected.menuOptionArgumentsAdmin[index].toDelete = !category.selected;
       }
     } else {
+      let newOrder = 0;
+
+      // set new order for the argument
+      for (let categorySelected of this.optionSelected.menuOptionArgumentsAdmin)
+      {
+        if (categorySelected.order > newOrder)
+          newOrder = categorySelected.order;
+      }
+
+      newOrder++;
+
       var itemToAdd = {
         "categoryArgumentsId": [category],
         "selected": true,
-        "toDelete": false
+        "toDelete": false,
+        "order": newOrder
       };
       this.optionSelected.menuOptionArgumentsAdmin.push(itemToAdd);
     }
@@ -1454,6 +1498,25 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
     // Notify the change.
     this.dataChange.next(filteredTreeData);
   }
+
+  /*getIndex(checkbox: any)
+  {
+    let index = -1;
+
+    for (let categorySelected of this.optionSelected.menuOptionArgumentsAdmin)
+    {
+      if (checkbox.label === categorySelected.categoryArgumentsId[0].label && !categorySelected.toDelete)
+      {
+        if (!categorySelected.order)
+          categorySelected.order = this.optionSelected.menuOptionArgumentsAdmin.indexOf (categorySelected) + 1;
+
+        index = categorySelected.order;
+        break;
+      }
+    }
+
+    return index;
+  }*/
 
   @HostListener('window:resize', ['$event'])
   checkScreen(event): void

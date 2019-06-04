@@ -44,7 +44,7 @@
     }
 
     .dialog-item {
-        padding: 5px;
+        padding: 12px 5px;
         display: flex;
         height: 25px;
         justify-content: left;
