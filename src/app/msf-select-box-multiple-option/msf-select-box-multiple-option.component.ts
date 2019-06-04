@@ -50,7 +50,7 @@ export class MsfSelectBoxMultipleOptionComponent implements OnInit {
 
   handlerError(_this,result){
     _this.loading = false;
-    _this.globals.consoleLog(result);
+    console.log(result);
   }
 
   onSearch($event: any){
@@ -60,7 +60,7 @@ export class MsfSelectBoxMultipleOptionComponent implements OnInit {
     }
   }
   onChange(){
-    this.globals.consoleLog(this.argument.value1)
+    console.log(this.argument.value1)
   }
 
 }

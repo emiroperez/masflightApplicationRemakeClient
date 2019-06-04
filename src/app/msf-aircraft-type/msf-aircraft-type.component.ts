@@ -68,7 +68,7 @@ export class MsfAircraftTypeComponent implements OnInit {
 
   handlerError(_this,result){
     _this.loading = false;
-    _this.globals.consoleLog(result);
+    console.log(result);
   }
 
   onSearch($event: any){

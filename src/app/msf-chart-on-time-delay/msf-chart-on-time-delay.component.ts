@@ -212,7 +212,7 @@ export class MsfChartOnTimeDelayComponent implements OnInit {
   }
 
   handlerError(_this,result){
-    _this.globals.consoleLog (result);
+    console.log (result);
     _this.globals.isLoading = false;  
   }
 

@@ -132,7 +132,7 @@ export class RegisterComponent implements OnInit {
   }
 
   errorCountries(_this,error){
-    //_this.globals.consoleLog(error);
+    //console.log(error);
     _this.appServices.getCustomers (_this, _this.setCustomers, _this.errorCustomers);
   }
 
@@ -145,7 +145,7 @@ export class RegisterComponent implements OnInit {
 
   errorCustomers(_this, error)
   {
-    _this.globals.consoleLog (error);
+    console.log (error);
     _this.globals.isLoading = false;
   }
 
@@ -312,7 +312,7 @@ export class RegisterComponent implements OnInit {
   }
 
   successHandleResponse(_this,data){
-		//_this.globals.consoleLog(data);
+		//console.log(data);
 	}
 
   errorHandleResponsen(){

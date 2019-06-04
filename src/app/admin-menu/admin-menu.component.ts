@@ -80,7 +80,7 @@ getSelectedOption(option) {
     this.category = {};
   }
 
-  this.globals.consoleLog(this.category)
+  console.log(this.category)
 }
 
 addCategory(){
@@ -243,7 +243,7 @@ export class EditOutputOptionsMetaDialog {
       const prevIndex = this.dataSource.findIndex((d) => d === event.item.data);
       moveItemInArray(this.dataSource, prevIndex, event.currentIndex);
       this.table.renderRows();
-      this.globals.consoleLog(this.dataSource)
+      console.log(this.dataSource)
     }
 
 
@@ -279,7 +279,7 @@ export class EditOutputOptionsMetaDialog {
     saveOrder(){
       for (let i=0; i< this.data.outputs.length;i++){
         this.data.outputs[i].columnOrder = i;
-        this.globals.consoleLog(this.data.outputs[i]);
+        console.log(this.data.outputs[i]);
       }
     }
 
@@ -685,7 +685,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   }
 
   handlerErrorCategoryArguments(_this, result) {
-    _this.globals.consoleLog(result);
+    console.log(result);
   }
 
   getMeta() {
@@ -734,7 +734,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
   }
   handlerErrorMeta(_this, result) {
-    _this.globals.consoleLog(result);
+    console.log(result);
     _this.globals.isLoading = false;
   }
   getOptionSelected(option) {
@@ -838,22 +838,22 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
         data: { message: message, confirm: confirm }
       });
       dialogRef.afterClosed().subscribe((result: any) => {
-        this.globals.consoleLog(result.confirm);
+        console.log(result.confirm);
         if (result.confirm){
 
           if (this.optionSelected.uid.includes ("catnew") || this.optionSelected.uid.includes ("optnew"))
             this.deleteNewItem ();
           else
           {
-            this.globals.consoleLog("entra");
+            console.log("entra");
             this.optionSelected.toDelete = true;
             this.optionSelected.label+="....";
             const nestedNode = this.flatNodeMap.get(this.optionSelected);
             nestedNode.toDelete = true;
             this.dataChange.next(this.data);
-            this.globals.consoleLog(this.optionSelected)
-            this.globals.consoleLog(this.flatNodeMap)
-            this.globals.consoleLog(this.dataSource.data)
+            console.log(this.optionSelected)
+            console.log(this.flatNodeMap)
+            console.log(this.dataSource.data)
             this.saveMenu();
           }
         }
@@ -898,7 +898,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
       });
     }else {
       this.verifyOrder();
-      this.globals.consoleLog(this.dataSource.data);
+      console.log(this.dataSource.data);
      this.service.saveMenu(this, this.dataSource.data, this.handlerSuccessSaveMenuData, this.handlerErrorSaveMenuData);
     }
   }
@@ -993,7 +993,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   }
 
   handlerErrorSaveMeta(_this, data) {
-    _this.globals.consoleLog(data);
+    console.log(data);
     _this.globals.isLoading = false;
   }
 
@@ -1019,7 +1019,7 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
     _this.dataSource.data = data;
     _this.getUniqueIdDrop(_this.dataSource.data);
     _this.globals.isLoading = false;
-    _this.globals.consoleLog(_this.dataSource.data);
+    console.log(_this.dataSource.data);
     _this.dataChange.next(data);
   }
 
@@ -1053,7 +1053,7 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
 
 
   handlerGetErrorMenuData(_this, result) {
-    _this.globals.consoleLog(result);
+    console.log(result);
     _this.globals.isLoading = false;
   }
 
@@ -1183,15 +1183,15 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
   }
 
   print(node) {
-    this.globals.consoleLog(node);
+    console.log(node);
   }
 
   printAll(){
-    this.globals.consoleLog(this.dataSource.data)
+    console.log(this.dataSource.data)
   }
 
   setSelectedCategoryArguments(category) {
-    this.globals.consoleLog(category)
+    console.log(category)
     // var index = this.optionSelected.menuOptionArgumentsAdmin.findIndex(el => el.categoryArgumentsId.id == category.id);
     var index = -1;
     this.optionSelected.menuOptionArgumentsAdmin.forEach(function(element,i){
@@ -1279,7 +1279,7 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
     for(let i =0; i <this.optionSelected.menuOptionArgumentsAdmin.length;i++){
       arrayMenuOptionArg.push(this.optionSelected.menuOptionArgumentsAdmin[i]);
     }
-    this.globals.consoleLog(this.dataSource.data);
+    console.log(this.dataSource.data);
    this.service.saveOptionsArgumentsCategory(this, arrayMenuOptionArg, this.optionSelected.id, this.handlerSuccessSaveCategoryArgument, this.handlerErrorSaveCategoryArgument);
   }
 
@@ -1304,9 +1304,9 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
   }
 
   handleSuccessString(_this,data){
-    _this.globals.consoleLog(data);
-    _this.globals.consoleLog(_this.optionSelected);
-    _this.globals.consoleLog(_this.drillDown);
+    console.log(data);
+    console.log(_this.optionSelected);
+    console.log(_this.drillDown);
     let menuString = data;
     const dialogRef = _this.dialog.open(DrillDownDialog, {
       width: '90%',
@@ -1327,7 +1327,7 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
   }
 
   handlerSuccessDrillDown(_this,data){
-    _this.globals.consoleLog(data);
+    console.log(data);
     _this.drillDown = data;
     _this.getMenuOptionsString(_this);
   }
@@ -1339,7 +1339,7 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
   editCategoryArguments(cat) {
 
     var duplicateObject = JSON.parse(JSON.stringify(cat));
-    this.globals.consoleLog(duplicateObject)
+    console.log(duplicateObject)
     const dialogRef = this.dialog.open(EditCategoryArgumentDialog, {
       width: '45%',
       data: duplicateObject
@@ -1347,7 +1347,7 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
 
     dialogRef.afterClosed().subscribe(result => {
       if (result != undefined) {
-        this.globals.consoleLog(result)
+        console.log(result)
         duplicateObject = result;
         this.saveMenuArguments(duplicateObject);
       }
@@ -1477,7 +1477,7 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
   public filter(filterText: string) {
     let filteredTreeData;
     if (filterText) {
-      this.globals.consoleLog(this.dataSource.data);
+      console.log(this.dataSource.data);
       Object.assign([], filteredTreeData).forEach(ftd => {
         let str = String(ftd.id);
         while (str.lastIndexOf('.') > -1) {

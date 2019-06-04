@@ -96,7 +96,7 @@ export class WelcomeComponent implements OnInit {
     _this.getApplications();
   }
   errorLogin(_this,result){
-    _this.globals.consoleLog(result);
+    console.log(result);
     _this.getApplications();
 
   }
@@ -120,7 +120,7 @@ export class WelcomeComponent implements OnInit {
   }
 
   handlerError(_this,result){
-    _this.globals.consoleLog(result);
+    console.log(result);
     _this.globals.isLoading = false;
   }
 

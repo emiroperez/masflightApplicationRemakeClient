@@ -107,7 +107,7 @@ export class MsfMoreInfoPopupComponent{
       this.chart = null;
       let urlBase = this.globals.popupUrl + "/CategoryInfoPax";
       // urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
-      this.globals.consoleLog(urlBase);
+      console.log(urlBase);
       let urlArg = encodeURIComponent(urlBase);
       let url = this.globals.baseUrl + "/getChartData?url=" + urlArg 
       + "&variable=" + this.variable + "&xaxis=" + this.xaxis 

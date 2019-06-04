@@ -39,6 +39,6 @@ export class TwoFactorLoginDialogComponent {
 
   handleError(_this, error)
   {
-    _this.globals.consoleLog (error);
+    console.log (error);
   }
 }

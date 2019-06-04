@@ -335,7 +335,7 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
 
   handlerError(_this, result) {
     _this.globals.isLoading = false;
-    _this.globals.consoleLog(result);
+    console.log(result);
   }
 
 
@@ -399,7 +399,7 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
 
   isPlanDelete(index): boolean {
     this.items = this.plansForms.get('items') as FormArray;
-    //this.globals.consoleLog(this.items.at(index).get('deleted').value);
+    //console.log(this.items.at(index).get('deleted').value);
     return !(this.items.at(index).get('deleted').value);
 
   }
@@ -456,7 +456,7 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
   isFeatureDelete(indexPlan, indexFeature): boolean {
     this.items = this.plansForms.get('items') as FormArray;
     this.features = this.items.controls[indexPlan]['controls']['features'];
-    //this.globals.consoleLog(this.features.at(indexFeature).get('deleted').value);
+    //console.log(this.features.at(indexFeature).get('deleted').value);
     return !(this.features.at(indexFeature).get('deleted').value);
   }
 
@@ -472,7 +472,7 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
   getPlansJson() {
     let plansJsons: Array<Plan> = new Array();
     this.items = this.plansForms.get('items') as FormArray;
-    this.globals.consoleLog(this.items);
+    console.log(this.items);
     for (let i = 0; i < this.items.length; i++) {
       let plan: Plan = new Plan();
 
@@ -484,15 +484,15 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
         plan.delete = false;
       }
       plan.name = this.items.at(i).get("name").value.toUpperCase();
-      this.globals.consoleLog(plan.name);
+      console.log(plan.name);
       plan.options = this.getOptionsPlanJson(i);
       plan.features = this.getFeaturesJson(i);
       plan.fares = this.getPricesJson(i);
       plan.advanceFeatures = this.getAdvanceFeaturesJson(i);
       plansJsons.push(plan);
     }
-    this.globals.consoleLog("ENVIO");
-    this.globals.consoleLog(plansJsons);
+    console.log("ENVIO");
+    console.log(plansJsons);
     return plansJsons;
   }
 
@@ -599,7 +599,7 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
   isFareDelete(indexPlan, indexFare): boolean {
     this.items = this.plansForms.get('items') as FormArray;
     this.features = this.items.controls[indexPlan]['controls']['fares'];
-    //this.globals.consoleLog(this.features.at(indexFare).get('deleted').value);
+    //console.log(this.features.at(indexFare).get('deleted').value);
     return !(this.features.at(indexFare).get('deleted').value);
 
   }
@@ -677,7 +677,7 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
   }
 
   savePlansResponse(this_, data) {
-    this_.globals.consoleLog(data);
+    console.log(data);
 
     this_.deleteRemoveItems(this_);
     this_.items = this_.plansForms.get('items') as FormArray;
@@ -697,7 +697,7 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
       }
 
     }
-    this_.globals.consoleLog(this_.items);
+    console.log(this_.items);
     this_.globals.isLoading = false;
   }
 
@@ -736,7 +736,7 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
         this.recursiveOptionData(menuData[i], opData);
       }
     }
-    this.globals.consoleLog(menuData);
+    console.log(menuData);
     return menuData;
 
   }
@@ -795,12 +795,12 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
-      this.globals.consoleLog("result");
-      this.globals.consoleLog(result);
+      console.log("result");
+      console.log(result);
       if (result) {
         this.planJson[index]['options'] = [];
         this.planJson[index]['options'] = result;
-        this.globals.consoleLog(this.planJson);
+        console.log(this.planJson);
       }
     });
 

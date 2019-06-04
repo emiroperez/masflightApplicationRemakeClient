@@ -20,7 +20,7 @@ export class CurrentQuerySummaryComponent implements OnInit {
    }
 
   ngOnInit() {
-    this.globals.consoleLog(this.globals)
+    console.log(this.globals)
   }
 
 

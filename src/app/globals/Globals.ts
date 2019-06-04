@@ -96,7 +96,7 @@ export class Globals {
         this.welcomeDataSource.push(this.currentMenuCategory.options[index]);
       }
     }
-    this.consoleLog(this.welcomeDataSource)
+    console.log (this.welcomeDataSource);
   }
 
   recursiveOption(option:any){
@@ -232,15 +232,6 @@ export class Globals {
     }else{
       this.minDate = null;
       this.maxDate = null;
-    }
-  }
-
-  consoleLog(message)
-  {
-    if (window.console)
-    {
-      console.log (message);
-      console.debug (message);
     }
   }
 }

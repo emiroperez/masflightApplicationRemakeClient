@@ -267,7 +267,7 @@ export class MsfDashboardComponent implements OnInit {
 
   handlerError(_this, result): void
   {
-    _this.globals.consoleLog (result);
+    console.log (result);
 
     _this.globals.isLoading = false;
   }
@@ -472,7 +472,7 @@ export class MsfDashboardComponent implements OnInit {
     if (_this.currentColumn)
       _this.dashboardColumnsReAppendCharts[_this.currentColumn] = false;
 
-    _this.globals.consoleLog ("The changes to the dashboard were successful.");
+    console.log ("The changes to the dashboard were successful.");
   }
 
   rowSwapError(_this): void
@@ -483,7 +483,7 @@ export class MsfDashboardComponent implements OnInit {
 
   handlerSuccess(_this): void
   {
-    _this.globals.consoleLog ("The changes to the dashboard were successful.");
+    console.log ("The changes to the dashboard were successful.");
     // _this.globals.isLoading = false;
   }
 
@@ -695,7 +695,7 @@ export class MsfDashboardComponent implements OnInit {
     for (let i = 0; i < _this.dashboardColumns.length; i++)
       _this.dashboardColumnsReAppendCharts[i] = false;
 
-    _this.globals.consoleLog ("The changes to the dashboard were successful.");
+    console.log ("The changes to the dashboard were successful.");
   }
 
   columnSwapError(_this): void

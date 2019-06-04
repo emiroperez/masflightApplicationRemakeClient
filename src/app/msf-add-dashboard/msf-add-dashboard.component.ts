@@ -36,7 +36,7 @@ export class MsfAddDashboardComponent {
         let dashboard = new DashboardMenu();
         dashboard.title = this.title;
         dashboard.applicationId = this.globals.currentApplication.id;
-        this.globals.consoleLog (dashboard);
+        console.log (dashboard);
         this.globals.isLoading = true;
         this.service.addDashboard(this, dashboard, this.successHandler, this.errorHandler);
 
@@ -56,7 +56,7 @@ export class MsfAddDashboardComponent {
         data: { title: "Error", message: "Failed to add dashboard." }
       });
 
-      _this.globals.consoleLog (result);
+      console.log (result);
       _this.globals.isLoading = false;
     }
 

@@ -427,7 +427,7 @@ export class MsfDashboardDrillDownComponent {
 
   handlerError(_this, result): void
   {
-    _this.globals.consoleLog (result);
+    console.log (result);
     _this.globals.popupLoading = false;  
   }
 

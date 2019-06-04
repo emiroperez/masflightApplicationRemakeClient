@@ -43,7 +43,7 @@ export class Utils{
     }
 
     getUrlParameters(option: any, urlBase:boolean){
-        this.consoleLog(option);
+        console.log(option);
         let params;        
         if(option.menuOptionArguments){            
             for( let menuOptionArguments of option.menuOptionArguments){
@@ -617,14 +617,5 @@ export class Utils{
     degr2rad(degr)
     {
         return degr * Math.PI / 180;
-    }
-
-    consoleLog(message)
-    {
-        if (window.console)
-        {
-            console.log (message);
-            console.debug (message);
-        }
     }
 }

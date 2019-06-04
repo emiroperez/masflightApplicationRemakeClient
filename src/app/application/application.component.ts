@@ -88,7 +88,7 @@ export class ApplicationComponent implements OnInit {
   }
 
   errorLogin(_this,result){
-    _this.globals.consoleLog(result);
+    console.log(result);
      _this.globals.isLoading = false;
   }
 
@@ -107,7 +107,7 @@ export class ApplicationComponent implements OnInit {
   }
 
   errorHandler(_this,result){
-    _this.globals.consoleLog(result);
+    console.log(result);
     _this.globals.isLoading = false;
   }
   getAdvanceFeatures(){
@@ -152,7 +152,7 @@ export class ApplicationComponent implements OnInit {
     _this.dynamicTablePlan = false;
     _this.exportExcelPlan = false;
 
-    _this.globals.consoleLog(result);
+    console.log(result);
     _this.validateAdmin ();
   }
 
@@ -168,7 +168,7 @@ export class ApplicationComponent implements OnInit {
   }
 
   handlerError(_this,result){
-    _this.globals.consoleLog(result);
+    console.log(result);
     _this.getAdvanceFeatures();
   }
 
@@ -380,7 +380,7 @@ toggle(){
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.globals.consoleLog('The dialog was closed');
+      console.log('The dialog was closed');
       this.animal = result;
     });
   }
