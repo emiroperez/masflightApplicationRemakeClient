@@ -13,6 +13,11 @@ export class MsfDashboardColorPickerComponent {
     public globals: Globals,
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
+    trackColor(index): number
+    {
+      return index;
+    }
+
     onNoClick(): void
     {
       this.dialogRef.close ();

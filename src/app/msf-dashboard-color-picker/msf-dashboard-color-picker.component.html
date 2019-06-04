@@ -18,66 +18,10 @@
     </div>
   </div>
   <div class="msf-dashboard-color-picker-grid-layout" *ngIf="data.numColors != 1">
-    <!-- ngFor doesn't work well with ngx-color-picker -->
-    <div class="msf-dashboard-color-picker-selector-container">
-      <span class="msf-dashboard-color-picker-selector-label">Color #1:</span>
-      <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="data.colors[0]" [style.background]="data.colors[0]" [(cpOutputFormat)]="hex"/>
-      <span class="msf-dashboard-color-picker-color-label">{{data.colors[0]}}</span>
-    </div>
-    <div class="msf-dashboard-color-picker-selector-container">
-      <span class="msf-dashboard-color-picker-selector-label">Color #2:</span>
-      <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="data.colors[1]" [style.background]="data.colors[1]" [(cpOutputFormat)]="hex"/>
-      <span class="msf-dashboard-color-picker-color-label">{{data.colors[1]}}</span>
-    </div>
-    <div class="msf-dashboard-color-picker-selector-container">
-      <span class="msf-dashboard-color-picker-selector-label">Color #3:</span>
-      <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="data.colors[2]" [style.background]="data.colors[2]" [(cpOutputFormat)]="hex"/>
-      <span class="msf-dashboard-color-picker-color-label">{{data.colors[2]}}</span>
-    </div>
-    <div class="msf-dashboard-color-picker-selector-container">
-      <span class="msf-dashboard-color-picker-selector-label">Color #4:</span>
-      <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="data.colors[3]" [style.background]="data.colors[3]" [(cpOutputFormat)]="hex"/>
-      <span class="msf-dashboard-color-picker-color-label">{{data.colors[3]}}</span>
-    </div>
-    <div class="msf-dashboard-color-picker-selector-container">
-      <span class="msf-dashboard-color-picker-selector-label">Color #5:</span>
-      <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="data.colors[4]" [style.background]="data.colors[4]" [(cpOutputFormat)]="hex"/>
-      <span class="msf-dashboard-color-picker-color-label">{{data.colors[4]}}</span>
-    </div>
-    <div class="msf-dashboard-color-picker-selector-container">
-      <span class="msf-dashboard-color-picker-selector-label">Color #6:</span>
-      <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="data.colors[5]" [style.background]="data.colors[5]" [(cpOutputFormat)]="hex"/>
-      <span class="msf-dashboard-color-picker-color-label">{{data.colors[5]}}</span>
-    </div>
-    <div class="msf-dashboard-color-picker-selector-container">
-      <span class="msf-dashboard-color-picker-selector-label">Color #7:</span>
-      <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="data.colors[6]" [style.background]="data.colors[6]" [(cpOutputFormat)]="hex"/>
-      <span class="msf-dashboard-color-picker-color-label">{{data.colors[6]}}</span>
-    </div>
-    <div class="msf-dashboard-color-picker-selector-container">
-      <span class="msf-dashboard-color-picker-selector-label">Color #8:</span>
-      <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="data.colors[7]" [style.background]="data.colors[7]" [(cpOutputFormat)]="hex"/>
-      <span class="msf-dashboard-color-picker-color-label">{{data.colors[7]}}</span>
-    </div>
-    <div class="msf-dashboard-color-picker-selector-container">
-      <span class="msf-dashboard-color-picker-selector-label">Color #9:</span>
-      <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="data.colors[8]" [style.background]="data.colors[8]" [(cpOutputFormat)]="hex"/>
-      <span class="msf-dashboard-color-picker-color-label">{{data.colors[8]}}</span>
-    </div>
-    <div class="msf-dashboard-color-picker-selector-container">
-      <span class="msf-dashboard-color-picker-selector-label">Color #10:</span>
-      <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="data.colors[9]" [style.background]="data.colors[9]" [(cpOutputFormat)]="hex"/>
-      <span class="msf-dashboard-color-picker-color-label">{{data.colors[9]}}</span>
-    </div>
-    <div class="msf-dashboard-color-picker-selector-container">
-      <span class="msf-dashboard-color-picker-selector-label">Color #11:</span>
-      <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="data.colors[10]" [style.background]="data.colors[10]" [(cpOutputFormat)]="hex"/>
-      <span class="msf-dashboard-color-picker-color-label">{{data.colors[10]}}</span>
-    </div>
-    <div class="msf-dashboard-color-picker-selector-container">
-      <span class="msf-dashboard-color-picker-selector-label">Color #12:</span>
-      <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="data.colors[11]" [style.background]="data.colors[11]" [(cpOutputFormat)]="hex"/>
-      <span class="msf-dashboard-color-picker-color-label">{{data.colors[11]}}</span>
+    <div *ngFor="let color of data.colors; let i = index; trackBy: trackColor" class="msf-dashboard-color-picker-selector-container">
+      <span class="msf-dashboard-color-picker-selector-label">Color #{{i + 1}}:</span>
+      <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="data.colors[i]" [style.background]="data.colors[i]" [(cpOutputFormat)]="hex"/>
+      <span class="msf-dashboard-color-picker-color-label">{{data.colors[i]}}</span>
     </div>
   </div>
 </div>
