@@ -179,16 +179,16 @@ export class ApplicationComponent implements OnInit {
         if(option.children.length>0){
           _this.recursiveSearch(option.children,_this,category);
         }else{
-          if(option.id==166 && this.globals.currentApplication.id==3){
+          if(option.id==166 && _this.globals.currentApplication.id==3){
             _this.globals.clearVariables();
-            this.globals.currentMenuCategory = category;
+            _this.globals.currentMenuCategory = category;
             _this.globals.currentOption = option;
             _this.globals.initDataSource();
             _this.globals.dataAvailabilityInit();
             _this.globals.status = true;
-          }else if(option.id==14 && this.globals.currentApplication.id==4){
+          }else if(option.id==64 && _this.globals.currentApplication.id==4){
             _this.globals.clearVariables();
-            this.globals.currentMenuCategory = category;
+            _this.globals.currentMenuCategory = category;
             _this.globals.currentOption = option;
             _this.globals.initDataSource();
             _this.globals.dataAvailabilityInit();
@@ -212,7 +212,7 @@ export class ApplicationComponent implements OnInit {
           _this.globals.initDataSource();
           _this.globals.dataAvailabilityInit();
           _this.globals.status = true;
-        }else if(option.id==14 && _this.globals.currentApplication.id==4){
+        }else if(option.id==64 && _this.globals.currentApplication.id==4){
           _this.globals.clearVariables();
           _this.globals.currentMenuCategory = category;
           _this.globals.currentOption = option;
