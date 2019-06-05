@@ -1319,7 +1319,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         analysis: this.values.chartColumnOptions ? this.values.chartColumnOptions.indexOf (this.values.variable) : null,
         values: this.values.chartColumnOptions ? this.values.chartColumnOptions.indexOf (this.values.valueColumn) : null,
         paletteColors: JSON.stringify (this.values.paletteColors),
-        lastestResponse: JSON.stringify (this.values.lastestResponse)
+        lastestResponse: JSON.stringify (this.values.lastestResponse),
+        thresholds: JSON.stringify (this.values.thresholds)
       };
     }
     else if (this.values.currentChartType.flags & ChartFlags.FORM
@@ -1366,7 +1367,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         chartType: this.chartTypes.indexOf (this.values.currentChartType),
         categoryOptions: this.values.currentOptionCategories ? JSON.stringify (this.values.currentOptionCategories) : null,
         paletteColors: JSON.stringify (this.values.paletteColors),
-        updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0)
+        updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0),
+        thresholds: JSON.stringify (this.values.thresholds)
       };
     }
   }
