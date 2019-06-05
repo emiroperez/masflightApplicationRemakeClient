@@ -18,6 +18,21 @@ export class MsfDashboardColorPickerComponent {
       return index;
     }
 
+    addThreshold(): void
+    {
+      this.data.thresholds.push ({
+        min: 0,
+        max: 0,
+        color: "#000000"
+      });
+    }
+
+    removeThreshold(): void
+    {
+      if (this.data.thresholds.length)
+        this.data.thresholds.pop ();
+    }
+
     onNoClick(): void
     {
       this.dialogRef.close ();

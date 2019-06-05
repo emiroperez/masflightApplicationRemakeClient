@@ -254,6 +254,20 @@ export class MsfDashboardPanelComponent implements OnInit {
     series.columns.template.strokeWidth = 0;
     series.columns.template.width = am4core.percent (60);
 
+    // Set thresholds
+    series.columns.template.adapter.add ("fill", (fill, target) => {
+      if (target.dataItem)
+      {
+        for (let threshold of values.thresholds)
+        {
+          if (target.dataItem.valueX >= threshold.min && target.dataItem.valueX <= threshold.max)
+            return am4core.color (threshold.color);
+        }
+      }
+
+      return fill;
+    });
+
     // Display a special context menu when a chart column is right clicked
     series.columns.template.events.on ("rightclick", function (event) {
       if (!values.currentOption.drillDownOptions.length)
@@ -288,6 +302,19 @@ export class MsfDashboardPanelComponent implements OnInit {
     series.stacked = stacked;
     series.columns.template.strokeWidth = 0;
     series.columns.template.width = am4core.percent (60);
+
+    series.columns.template.adapter.add ("fill", (fill, target) => {
+      if (target.dataItem)
+      {
+        for (let threshold of values.thresholds)
+        {
+          if (target.dataItem.valueY >= threshold.min && target.dataItem.valueY <= threshold.max)
+            return am4core.color (threshold.color);
+        }
+      }
+
+      return fill;
+    });
 
     series.columns.template.events.on ("rightclick", function (event) {
       if (!values.currentOption.drillDownOptions.length)
@@ -359,6 +386,15 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     // Set colors
     series.columns.template.adapter.add ("fill", (fill, target) => {
+      if (target.dataItem)
+      {
+        for (let threshold of values.thresholds)
+        {
+          if (target.dataItem.valueY >= threshold.min && target.dataItem.valueY <= threshold.max)
+            return am4core.color (threshold.color);
+        }
+      }
+
       return am4core.color (values.paletteColors[0]);
     });
 
@@ -386,6 +422,15 @@ export class MsfDashboardPanelComponent implements OnInit {
     series.stacked = stacked;
 
     series.columns.template.adapter.add ("fill", (fill, target) => {
+      if (target.dataItem)
+      {
+        for (let threshold of values.thresholds)
+        {
+          if (target.dataItem.valueX >= threshold.min && target.dataItem.valueX <= threshold.max)
+            return am4core.color (threshold.color);
+        }
+      }
+
       return am4core.color (values.paletteColors[0]);
     });
 
@@ -430,6 +475,33 @@ export class MsfDashboardPanelComponent implements OnInit {
     });
     series.colors = colorSet;
 
+    // Set thresholds
+    series.slices.template.adapter.add ("fill", (fill, target) => {
+      if (target.dataItem)
+      {
+        for (let threshold of values.thresholds)
+        {
+          if (target.dataItem.value >= threshold.min && target.dataItem.value <= threshold.max)
+            return am4core.color (threshold.color);
+        }
+      }
+
+      return fill;
+    });
+
+    series.slices.template.adapter.add ("stroke", (stroke, target) => {
+      if (target.dataItem)
+      {
+        for (let threshold of values.thresholds)
+        {
+          if (target.dataItem.value >= threshold.min && target.dataItem.value <= threshold.max)
+            return am4core.color (threshold.color);
+        }
+      }
+
+      return stroke;
+    });
+
     // Display a special context menu when a pie slice is right clicked
     series.slices.template.events.on ("rightclick", function (event) {
       if (!values.currentOption.drillDownOptions.length)
@@ -463,6 +535,33 @@ export class MsfDashboardPanelComponent implements OnInit {
       return am4core.color (color);
     });
     series.colors = colorSet;
+
+    // Set thresholds
+    series.slices.template.adapter.add ("fill", (fill, target) => {
+      if (target.dataItem)
+      {
+        for (let threshold of values.thresholds)
+        {
+          if (target.dataItem.value >= threshold.min && target.dataItem.value <= threshold.max)
+            return am4core.color (threshold.color);
+        }
+      }
+
+      return fill;
+    });
+
+    series.slices.template.adapter.add ("stroke", (stroke, target) => {
+      if (target.dataItem)
+      {
+        for (let threshold of values.thresholds)
+        {
+          if (target.dataItem.value >= threshold.min && target.dataItem.value <= threshold.max)
+            return am4core.color (threshold.color);
+        }
+      }
+
+      return stroke;
+    });
 
     // Display a special context menu when a funnel slice is right clicked
     series.slices.template.events.on ("rightclick", function (event) {
@@ -2249,6 +2348,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.temp.currentChartType = JSON.parse (JSON.stringify (this.values.currentChartType));
     this.temp.chartColumnOptions = JSON.parse (JSON.stringify (this.values.chartColumnOptions));
     this.temp.currentOptionCategories = JSON.parse (JSON.stringify (this.values.currentOptionCategories));
+    this.temp.thresholds = JSON.parse (JSON.stringify (this.values.thresholds));
 
     this.temp.formVariables = [];
     this.temp.tableVariables = JSON.parse (JSON.stringify (this.values.tableVariables));
@@ -2352,6 +2452,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.geodata = this.temp.geodata;
     this.values.chartColumnOptions = JSON.parse (JSON.stringify (this.temp.chartColumnOptions));
     this.values.currentOptionCategories = JSON.parse (JSON.stringify (this.temp.currentOptionCategories));
+    this.values.thresholds = JSON.parse (JSON.stringify (this.temp.thresholds));
 
     for (i = 0; i < this.chartTypes.length; i++)
     {
@@ -3305,12 +3406,12 @@ export class MsfDashboardPanelComponent implements OnInit {
       || this.values.currentChartType.flags & ChartFlags.PIECHART
       || this.values.currentChartType.flags & ChartFlags.FUNNELCHART)
     {
-      dialogHeight = '340px';
+      dialogHeight = '500px';
       numColors = 12;
     }
     else
     {
-      dialogHeight = '178px';
+      dialogHeight = '338px';
       numColors = 1;
     }
 
@@ -3322,6 +3423,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       data: {
         title: this.values.chartName,
         colors: this.values.paletteColors,
+        thresholds: this.values.thresholds,
         numColors: numColors
       }
     });

@@ -63,6 +63,8 @@ export class MsfDashboardPanelValues {
         "#fffefe"
     ];
 
+    thresholds: any[];
+
     chartClicked: boolean;
     chartObjectSelected: any;
     chartSecondaryObjectSelected: any;
@@ -77,7 +79,7 @@ export class MsfDashboardPanelValues {
 
     constructor(options: any[], chartName: String, id: number, width: any, height: any, currentOption?: any, variable?: any,
         xaxis?: any, valueColumn?: any, func?: any, chartType?: any, currentOptionCategories?: any, lastestResponse?: string,
-        paletteColors?: any, updateTimeInterval?: number, row?: number)
+        paletteColors?: any, updateTimeInterval?: number, row?: number, thresholds?: any[])
     {
         this.options = options;
         this.chartName = chartName;
@@ -90,6 +92,11 @@ export class MsfDashboardPanelValues {
         this.currentChartType = chartType;
         this.width = width;
         this.height = height;
+
+        if (thresholds)
+            this.thresholds = thresholds;
+        else
+            this.thresholds = [];
 
         // load palette colors if there is any
         if (paletteColors)
