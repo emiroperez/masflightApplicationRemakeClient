@@ -360,6 +360,33 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     series.stacked = stacked;
 
+    // Set thresholds
+    series.segments.template.adapter.add ("fill", (fill, target) => {
+      if (target.dataItem)
+      {
+        for (let threshold of values.thresholds)
+        {
+          if (target.dataItem.values.valueY.average >= threshold.min && target.dataItem.values.valueY.average <= threshold.max)
+            return am4core.color (threshold.color);
+        }
+      }
+
+      return fill;
+    });
+
+    series.adapter.add ("stroke", (stroke, target) => {
+      if (target.dataItem)
+      {
+        for (let threshold of values.thresholds)
+        {
+          if (target.dataItem.values.valueY.average >= threshold.min && target.dataItem.values.valueY.average <= threshold.max)
+            return am4core.color (threshold.color);
+        }
+      }
+
+      return stroke;
+    });
+
     // Display a special context menu when a chart line segment is right clicked
     series.segments.template.interactionsEnabled = true;
     series.segments.template.events.on ("rightclick", function (event) {
