@@ -3440,6 +3440,11 @@ export class MsfDashboardPanelComponent implements OnInit {
       dialogHeight = '500px';
       numColors = 12;
     }
+    else if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
+    {
+      dialogHeight = '178px';
+      numColors = 1;
+    }
     else
     {
       dialogHeight = '338px';
@@ -3454,7 +3459,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       data: {
         title: this.values.chartName,
         colors: this.values.paletteColors,
-        thresholds: this.values.thresholds,
+        thresholds: (this.values.currentChartType.flags & ChartFlags.HEATMAP) ? null : this.values.thresholds,
         numColors: numColors
       }
     });
