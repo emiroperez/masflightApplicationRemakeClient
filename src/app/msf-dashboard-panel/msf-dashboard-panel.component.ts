@@ -3445,6 +3445,11 @@ export class MsfDashboardPanelComponent implements OnInit {
       dialogHeight = '178px';
       numColors = 1;
     }
+    else if (this.values.currentChartType.flags & ChartFlags.FORM)
+    {
+      dialogHeight = '278px';
+      numColors = 0;
+    }
     else
     {
       dialogHeight = '338px';
@@ -3648,6 +3653,20 @@ export class MsfDashboardPanelComponent implements OnInit {
   getValueFormFontSize(column): number
   {
     return this.values.formVariables[column].valueFontSize.value;
+  }
+
+  getColor(result): string
+  {
+    if (result)
+    {
+      for (let threshold of this.values.thresholds)
+      {
+        if (result >= threshold.min && result <= threshold.max)
+          return threshold.color;
+      }
+    }
+
+    return "#ffffff";
   }
 
   startUpdateInterval(): void

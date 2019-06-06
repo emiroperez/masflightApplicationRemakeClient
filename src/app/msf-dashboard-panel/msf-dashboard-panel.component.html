@@ -361,6 +361,11 @@
             </button>
           </div>
           <div class="msf-dashboard-panel-control-variable-button">
+            <button mat-mini-fab (click)="goToColorPicker()" color="primary">
+              <mat-icon aria-label="Thresholds">palette</mat-icon>
+            </button>
+          </div>
+          <div class="msf-dashboard-panel-control-variable-button">
             <button mat-mini-fab (click)="savePanel()" color="primary">
               <mat-icon aria-label="Save Changes">save</mat-icon>
             </button>
@@ -630,7 +635,7 @@
       <div class="msf-media-title-container" id="msf-dashboard-form-display">
         <div [ngClass]="values.formVariables[column].valueOrientation.value ? 'msf-dashboard-form-display-result-vertical' : 'msf-dashboard-form-display-result-horizontal'" *ngFor="let formResult of values.lastestResponse; let column = index">
           <span class="msf-media-title-value" id="msf-dashboard-form-display-title" [style.font-size.px]="getFormFontSize(column)">{{formResult.column.name}}: </span>
-          <span class="msf-media-title-value" id="msf-dashboard-form-display-value" [style.font-size.px]="getValueFormFontSize(column)">{{formResult.value}}</span>
+          <span class="msf-media-title-value" id="msf-dashboard-form-display-value" [style.font-size.px]="getValueFormFontSize(column)" [style.color]="getColor(formResult.value)">{{formResult.value}}</span>
         </div>
       </div>
     </div>
