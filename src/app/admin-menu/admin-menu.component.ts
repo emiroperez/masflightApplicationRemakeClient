@@ -1503,15 +1503,18 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
   {
     let index = -1;
 
-    for (let categorySelected of this.optionSelected.menuOptionArgumentsAdmin)
+    if (this.optionSelected.menuOptionArgumentsAdmin)
     {
-      if (checkbox.label === categorySelected.categoryArgumentsId[0].label && !categorySelected.toDelete)
+      for (let categorySelected of this.optionSelected.menuOptionArgumentsAdmin)
       {
-        if (!categorySelected.position)
-          categorySelected.position = this.optionSelected.menuOptionArgumentsAdmin.indexOf (categorySelected) + 1;
+        if (checkbox.label === categorySelected.categoryArgumentsId[0].label && !categorySelected.toDelete)
+        {
+          if (!categorySelected.position)
+            categorySelected.position = this.optionSelected.menuOptionArgumentsAdmin.indexOf (categorySelected) + 1;
 
-        index = categorySelected.position;
-        break;
+          index = categorySelected.position;
+          break;
+        }
       }
     }
 
