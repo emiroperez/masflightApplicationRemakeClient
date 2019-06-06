@@ -11,4 +11,9 @@ export class MsfComponentComponent implements OnInit {
 
   ngOnInit() {
   }
+
+  orderOptionArgumentsBy(prop: string)
+  {
+    return this.globals.currentOption.menuOptionArguments.sort ((a, b) => a[prop] > b[prop] ? 1 : a[prop] === b[prop] ? 0 : -1);
+  }
 }

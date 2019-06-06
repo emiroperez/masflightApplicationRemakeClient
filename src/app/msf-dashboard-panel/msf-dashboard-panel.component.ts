@@ -2239,6 +2239,8 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     let optionCategories = [];
 
+    data = data.sort ((a, b) => a["position"] > b["position"] ? 1 : a["position"] === b["position"] ? 0 : -1);
+
     for (let optionCategory of data)
     {
       for (let category of optionCategory.categoryArgumentsId)

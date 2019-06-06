@@ -1204,59 +1204,59 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
 
     if (index != -1) {
       if (this.optionSelected.menuOptionArgumentsAdmin[index].id == undefined) {
-        /*for (let i = 0; i < this.optionSelected.menuOptionArgumentsAdmin.length; i++)
+        for (let i = 0; i < this.optionSelected.menuOptionArgumentsAdmin.length; i++)
         {
-          if (this.optionSelected.menuOptionArgumentsAdmin[i].order && this.optionSelected.menuOptionArgumentsAdmin[i].order > this.optionSelected.menuOptionArgumentsAdmin[index].order)
-            this.optionSelected.menuOptionArgumentsAdmin[i].order--;
+          if (this.optionSelected.menuOptionArgumentsAdmin[i].position && this.optionSelected.menuOptionArgumentsAdmin[i].position > this.optionSelected.menuOptionArgumentsAdmin[index].position)
+            this.optionSelected.menuOptionArgumentsAdmin[i].position--;
         }
 
-        this.optionSelected.menuOptionArgumentsAdmin[index].order = -1;*/
+        this.optionSelected.menuOptionArgumentsAdmin[index].position = -1;
         this.optionSelected.menuOptionArgumentsAdmin.splice(index, 1);
       } else {
-        /*if (category.selected)
+        if (category.selected)
         {
-          let newOrder = 0;
+          let newPos = 0;
 
-          // set new order for the argument
+          // set new position for the argument
           for (let categorySelected of this.optionSelected.menuOptionArgumentsAdmin)
           {
-            if (categorySelected.order > newOrder)
-              newOrder = categorySelected.order;
+            if (categorySelected.position > newPos)
+              newPos = categorySelected.position;
           }
     
-          newOrder++;
-          this.optionSelected.menuOptionArgumentsAdmin[index].order = newOrder;
+          newPos++;
+          this.optionSelected.menuOptionArgumentsAdmin[index].position = newPos;
         }
         else
         {
           for (let i = 0; i < this.optionSelected.menuOptionArgumentsAdmin.length; i++)
           {
-            if (this.optionSelected.menuOptionArgumentsAdmin[i].order && this.optionSelected.menuOptionArgumentsAdmin[i].order > this.optionSelected.menuOptionArgumentsAdmin[index].order)
-              this.optionSelected.menuOptionArgumentsAdmin[i].order--;
+            if (this.optionSelected.menuOptionArgumentsAdmin[i].position && this.optionSelected.menuOptionArgumentsAdmin[i].position > this.optionSelected.menuOptionArgumentsAdmin[index].position)
+              this.optionSelected.menuOptionArgumentsAdmin[i].position--;
           }
 
-          this.optionSelected.menuOptionArgumentsAdmin[index].order = -1;
-        }*/
+          this.optionSelected.menuOptionArgumentsAdmin[index].position = -1;
+        }
 
         this.optionSelected.menuOptionArgumentsAdmin[index].toDelete = !category.selected;
       }
     } else {
-      let newOrder = 0;
+      let newPos = 0;
 
-      // set new order for the argument
+      // set new position for the argument
       for (let categorySelected of this.optionSelected.menuOptionArgumentsAdmin)
       {
-        if (categorySelected.order > newOrder)
-          newOrder = categorySelected.order;
+        if (categorySelected.position > newPos)
+          newPos = categorySelected.position;
       }
 
-      newOrder++;
+      newPos++;
 
       var itemToAdd = {
         "categoryArgumentsId": [category],
         "selected": true,
         "toDelete": false,
-        "order": newOrder
+        "order": newPos
       };
       this.optionSelected.menuOptionArgumentsAdmin.push(itemToAdd);
     }
@@ -1499,7 +1499,7 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
     this.dataChange.next(filteredTreeData);
   }
 
-  /*getIndex(checkbox: any)
+  getIndex(checkbox: any)
   {
     let index = -1;
 
@@ -1507,16 +1507,16 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
     {
       if (checkbox.label === categorySelected.categoryArgumentsId[0].label && !categorySelected.toDelete)
       {
-        if (!categorySelected.order)
-          categorySelected.order = this.optionSelected.menuOptionArgumentsAdmin.indexOf (categorySelected) + 1;
+        if (!categorySelected.position)
+          categorySelected.position = this.optionSelected.menuOptionArgumentsAdmin.indexOf (categorySelected) + 1;
 
-        index = categorySelected.order;
+        index = categorySelected.position;
         break;
       }
     }
 
     return index;
-  }*/
+  }
 
   @HostListener('window:resize', ['$event'])
   checkScreen(event): void

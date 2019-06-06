@@ -201,10 +201,10 @@
                                                         <input [disabled]="true" type="text" matInput [(ngModel)]="item.label" class="text-item-category-argument" style="width: 35%">
                                                         <input [disabled]="true" type="text" matInput [(ngModel)]="item.description" class="text-item-category-argument" style="width: 55%; font-size: 11px">
                                                         <div style="width: 10%; text-align: end">
-                                                            <!--
                                                             <button matBadge="{{getIndex(item)}}" [matBadgeHidden]="!item.selected" [ngClass]="item.selected?'background-principal':'background-principal-empty'" mat-icon-button (click)="editVariables(item)" style="text-align: right;margin-left: 10px; margin-right: 12px">
-                                                            -->
+                                                            <!--
                                                             <button [ngClass]="item.selected?'background-principal':'background-principal-empty'" mat-icon-button (click)="editVariables(item)" style="text-align: right;margin-left: 10px; margin-right: 12px">
+                                                            -->
                                                                 <mat-icon *ngIf="item.selected" style="color: white; line-height: 10px;" aria-label="delete">settings</mat-icon>
                                                             </button>
                                                         </div>

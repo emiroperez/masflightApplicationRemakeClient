@@ -1,5 +1,5 @@
 
-<ng-container *ngFor="let menuOptionArguments of globals.currentOption.menuOptionArguments">
+<ng-container *ngFor="let menuOptionArguments of orderOptionArgumentsBy('position')">
     <app-msf-control-variables [currentOptionCategories]="menuOptionArguments.categoryArguments" [currentOptionId]="globals.currentOption.id"></app-msf-control-variables>
 </ng-container>
 
