@@ -3037,7 +3037,12 @@ mat-tab-group {
   position: relative;
 }
 
+#msf-dashboard-parent-title {
+  height: 10%;
+}
+
 #msf-dashboard-drill-down-container {
+  height: 87%;
   background-color: inherit;
   padding: inherit;
   color: #fff;
