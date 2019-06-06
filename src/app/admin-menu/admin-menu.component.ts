@@ -854,13 +854,13 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     }
   }
 
-  checkSuccess(_this, msg)
+  checkSuccess(_this, result)
   {
-    if (msg != null)
+    if (!result)
     {
       _this.globals.isLoading = false;
       _this.dialog.open (MessageComponent, {
-        data: { title:"Error", message: msg }
+        data: { title:"Error", message: "Unable to delete menu option, it or its children is being used on dashboard panels." }
       });
 
       return;
@@ -880,6 +880,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
   checkError(_this, error)
   {
+    _this.globals.isLoading = false;
     console.log (error);
   }
 
