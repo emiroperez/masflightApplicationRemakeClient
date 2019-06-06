@@ -845,22 +845,43 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
             this.deleteNewItem ();
           else
           {
-            console.log("entra");
-            this.optionSelected.toDelete = true;
-            this.optionSelected.label+="....";
-            const nestedNode = this.flatNodeMap.get(this.optionSelected);
-            nestedNode.toDelete = true;
-            this.dataChange.next(this.data);
-            console.log(this.optionSelected)
-            console.log(this.flatNodeMap)
-            console.log(this.dataSource.data)
-            this.saveMenu();
+            // check if any dashboard panel is using the selected option
+            this.globals.isLoading = true;
+            this.service.checkMenuOption (this, this.optionSelected.id, this.checkSuccess, this.checkError);
           }
         }
       });
     }
   }
 
+  checkSuccess(_this, msg)
+  {
+    if (msg != null)
+    {
+      _this.globals.isLoading = false;
+      _this.dialog.open (MessageComponent, {
+        data: { title:"Error", message: msg }
+      });
+
+      return;
+    }
+
+    console.log("entra");
+    _this.optionSelected.toDelete = true;
+    _this.optionSelected.label+="....";
+    const nestedNode = _this.flatNodeMap.get(_this.optionSelected);
+    nestedNode.toDelete = true;
+    _this.dataChange.next(_this.data);
+    console.log(_this.optionSelected)
+    console.log(_this.flatNodeMap)
+    console.log(_this.dataSource.data)
+    _this.saveMenu();
+  }
+
+  checkError(_this, error)
+  {
+    console.log (error);
+  }
 
   saveNewArgumentsCategory(category){
     let arrayArg = [];

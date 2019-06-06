@@ -484,4 +484,10 @@ export class ApplicationService {
     let url = this.host + "/saveCustomers";
     this.http.post (_this, url, customers, handlerSuccess, handlerError);
   }
+
+  checkMenuOption(_this, menuOptionId, handlerSuccess, handlerError): void
+  {
+    let url = this.host + "/checkMenuOption?id=" + menuOptionId;
+    this.http.get (_this, url, handlerSuccess, handlerError, null);
+  }
 }
