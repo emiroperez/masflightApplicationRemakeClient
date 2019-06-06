@@ -67,7 +67,7 @@ export class MsfTableComponent implements OnInit {
   tableOptions: any;
 
   specialCharacters = [ '[',']','/','!','"','#','$','%','&',"'",'(',')','*','+',';','<','=','>' 
-                          ,'?','@','\\','^','`','{','|','}','~','°','-',':'];
+                          ,'?','@','\\','^','`','{','|','}','~','°','-',':',','];
 
   @ViewChild(MatSort) sort: MatSort;
 
