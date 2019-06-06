@@ -198,7 +198,8 @@
                                                         <mat-icon *ngIf="item.icon && isMatIcon(item.icon)" class="img-item-category-argument">{{item.icon}}</mat-icon>
                                                         <img *ngIf="item.icon && !isMatIcon(item.icon)" class="img-item-category-argument" src="{{item.icon}}">
                                                         <div *ngIf="!item.icon" class="img-item-category-argument"></div>
-                                                        <input [disabled]="true" type="text" matInput [(ngModel)]="item.label" class="text-item-category-argument" style="width: 35%">
+                                                        <input [disabled]="true" type="text" matInput [(ngModel)]="item.id" class="text-item-category-argument" style="width: 5%">
+                                                        <input [disabled]="true" type="text" matInput [(ngModel)]="item.label" class="text-item-category-argument" style="width: 30%">
                                                         <input [disabled]="true" type="text" matInput [(ngModel)]="item.description" class="text-item-category-argument" style="width: 55%; font-size: 11px">
                                                         <div style="width: 10%; text-align: end">
                                                             <button matBadge="{{getIndex(item)}}" [matBadgeHidden]="!item.selected" [ngClass]="item.selected?'background-principal':'background-principal-empty'" mat-icon-button (click)="editVariables(item)" style="text-align: right;margin-left: 10px; margin-right: 12px">
