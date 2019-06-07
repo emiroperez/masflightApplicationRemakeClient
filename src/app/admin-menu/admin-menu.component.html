@@ -43,11 +43,6 @@
                                 </div>
                             </div>
                             <div #scrollContainer class="invisible-scrollbar" style="overflow: auto;width: calc(100% - 30px); height: calc(100% - 100px)">
-                                <!-- <div cdkDropList class="draggable-list" id="firstOne" [cdkDropListData]="menu" [cdkDropListConnectedTo]="idList" (cdkDropListDropped)="drop($event)">
-                              <div cdkDrag class="draggable-box" *ngFor="let option of menu ; let i = index " style="color: white; width: 86%">
-                                  <app-admin-menu-recursive [menu]="option" [idList]="idList" [index]="i" (optionSelected)="getOptionSelected($event)" (idSelected)="getSelectIdDom($event)"></app-admin-menu-recursive>
-                              </div>
-                          </div> -->
                                 <mat-tree style="background: transparent" [dataSource]="dataSource" [treeControl]="treeControl" cdkDropList (cdkDropListDropped)="drop($event)">
                                     <mat-tree-node [ngClass]="{'msf-show' : node.show,'msf-show' : node.show==null,'msf-hide': node.show==false}" style="display:flex; flex-direction:column;" matTreeNodePadding *matTreeNodeDef="let node" cdkDrag cdkDragLockAxis="y" [cdkDragData]="node" (cdkDragStarted)="dragStart()"
                                         (cdkDragReleased)="dragEnd()" (click)=" getOptionSelected(node)" cdkDragBoundary=".invisible-scrollbar" vsDragScroll [vsDragScrollContainer]="scrollContainer">
