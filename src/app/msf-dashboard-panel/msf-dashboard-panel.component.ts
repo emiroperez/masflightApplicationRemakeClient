@@ -20,6 +20,7 @@ import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { ReplaySubject, Subject } from 'rxjs';
 import { MatSelect, MatDialog } from '@angular/material';
 import { takeUntil } from 'rxjs/operators';
+import * as mapboxgl from 'mapbox-gl';
 
 import { ApiClient } from '../api/api-client';
 import { Arguments } from '../model/Arguments';
@@ -87,8 +88,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     { name: 'Simple Form', flags: ChartFlags.INFO | ChartFlags.FORM },
     { name: 'Table', flags: ChartFlags.TABLE },
     { name: 'Map', flags: ChartFlags.MAP },
-    { name: 'Heat Map', flags: ChartFlags.HEATMAP }/*,
-    { name: 'Simple Picture', flags: ChartFlags.INFO | ChartFlags.PICTURE },*/
+    { name: 'Heat Map', flags: ChartFlags.HEATMAP },
+    { name: 'Map Tracker', flags: ChartFlags.MAP | ChartFlags.MAPBOX }/*,
+    { name: 'Simple Picture', flags: ChartFlags.INFO | ChartFlags.PICTURE }*/
   ];
 
   functions:any[] = [
@@ -181,6 +183,29 @@ export class MsfDashboardPanelComponent implements OnInit {
   @ViewChild('valueSelect') valueSelect: MatSelect;
 
   private _onDestroy = new Subject<void> ();
+
+  mapbox1: mapboxgl.Map;
+
+  zoom = [1];
+  
+  center = [-73.968285, 40.785091];
+
+  data = [];
+
+  coordinates = [];
+
+  paint = {        
+            'circle-radius': 2,
+            'circle-color': '#B42222'
+          };
+
+  layout = {
+              "icon-image": "{icon}-15",
+              "text-field": "{title}",
+              "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
+              "text-offset": [0, 0.6],
+              "text-anchor": "top"
+          };
 
   constructor(private zone: NgZone, public globals: Globals,
     private service: ApplicationService, private http: ApiClient, private authService: AuthService, public dialog: MatDialog,
@@ -1101,7 +1126,18 @@ export class MsfDashboardPanelComponent implements OnInit {
       if (!this.isResponseValid ())
         return;
 
-      if (this.values.currentChartType.flags & ChartFlags.INFO)
+      if (this.values.currentChartType.flags & ChartFlags.MAPBOX)
+      {
+        if (this.values.function != null && this.values.function != -1)
+        {
+          if (this.values.function == 1)
+          {
+            this.values.mapboxGenerated = true;
+            this.values.function = -1;
+          }
+        }
+      }
+      else if (this.values.currentChartType.flags & ChartFlags.INFO)
       {
         if (this.values.function != null && this.values.function != -1)
         {
@@ -1147,6 +1183,11 @@ export class MsfDashboardPanelComponent implements OnInit {
         return;
 
       if (this.values.currentChartType.flags & ChartFlags.INFO)
+      {
+        if (this.values.function == 1)
+          this.values.displayMapbox = true;
+      }
+      else if (this.values.currentChartType.flags & ChartFlags.INFO)
       {
         if (this.values.function == 1)
         {
@@ -1496,6 +1537,17 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.authService.get (this, url, handlerSuccess, handlerError);
   }
 
+  loadMapboxData(handlerSuccess, handlerError): void
+  {
+    let params, url;
+
+    this.values.isLoading = true;
+    params = this.getParameters ();
+    url = this.globals.baseUrl2 + "/getMapBoxTracking?" + params;
+    console.log (url);
+    this.http.get (this, url, handlerSuccess, handlerError, null);
+  }
+
   loadFormData(handlerSuccess, handlerError): void
   {
     let url, urlBase, urlArg;
@@ -1571,7 +1623,9 @@ export class MsfDashboardPanelComponent implements OnInit {
       return;
     }
 
-    if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
+    if (this.values.currentChartType.flags & ChartFlags.MAPBOX)
+      this.loadMapboxData (this.handlerMapboxSuccess, this.handlerMapboxError);
+    else if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
       this.loadMapData (this.handlerHeatMapSuccess, this.handlerHeatMapError);
     else if (this.values.currentChartType.flags & ChartFlags.MAP)
       this.loadMapData (this.handlerMapSuccess, this.handlerMapError);
@@ -1642,6 +1696,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.formGenerated = false;
     this.values.picGenerated = false;
     this.values.tableGenerated = false;
+    this.values.mapboxGenerated = false;
     this.values.isLoading = false;
 
     if (this.values.currentChartType.flags & ChartFlags.MAP)
@@ -1709,6 +1764,23 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
 
     return null;
+  }
+
+  handlerMapboxSuccess(_this, data): void
+  {
+    if (_this.utils.isJSONEmpty (data))
+    {
+      _this.noDataFound ();
+      return;
+    }
+
+    _this.values.lastestResponse = {
+      'type': 'FeatureCollection',
+      'features': data
+    };
+
+    _this.handlerMapboxLastestResponse (_this);
+    // _this.service.saveLastestResponse (_this, _this.getPanelInfo (), _this.handlerMapboxLastestResponse, _this.handlerMapboxError);
   }
 
   handlerHeatMapSuccess(_this, data): void
@@ -1789,6 +1861,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.formGenerated = false;
     _this.values.picGenerated = true;
     _this.values.tableGenerated = false;
+    _this.values.mapboxGenerated = false;
 
     _this.stopUpdateInterval ();
     _this.startUpdateInterval ();
@@ -1867,6 +1940,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.formGenerated = true;
     _this.values.picGenerated = false;
     _this.values.tableGenerated = false;
+    _this.values.mapboxGenerated = false;
 
     _this.stopUpdateInterval ();
     _this.startUpdateInterval ();
@@ -1885,9 +1959,25 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.formGenerated = false;
     _this.values.picGenerated = false;
     _this.values.tableGenerated = true;
+    _this.values.mapboxGenerated = false;
 
     _this.stopUpdateInterval ();
     _this.startUpdateInterval ();
+  }
+
+  handlerMapboxLastestResponse(_this): void
+  {
+    _this.values.isLoading = false;
+
+    _this.destroyChart ();
+
+    _this.values.displayMapbox = true;
+    _this.values.chartGenerated = false;
+    _this.values.infoGenerated = false;
+    _this.values.formGenerated = false;
+    _this.values.picGenerated = false;
+    _this.values.tableGenerated = false;
+    _this.values.mapboxGenerated = true;
   }
 
   handlerHeatMapLastestResponse(_this): void
@@ -1900,6 +1990,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.formGenerated = false;
     _this.values.picGenerated = false;
     _this.values.tableGenerated = false;
+    _this.values.mapboxGenerated = false;
 
     setTimeout (() =>
     {
@@ -1923,6 +2014,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.formGenerated = false;
     _this.values.picGenerated = false;
     _this.values.tableGenerated = false;
+    _this.values.mapboxGenerated = false;
 
     setTimeout (() =>
     {
@@ -1954,6 +2046,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.formGenerated = false;
     _this.values.picGenerated = false;
     _this.values.tableGenerated = false;
+    _this.values.mapboxGenerated = false;
     _this.values.isLoading = false;
 
     _this.stopUpdateInterval ();
@@ -1984,6 +2077,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.formGenerated = false;
     _this.values.picGenerated = false;
     _this.values.tableGenerated = false;
+    _this.values.mapboxGenerated = false;
 
     setTimeout (() =>
     {
@@ -2061,6 +2155,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.formGenerated = false;
     _this.values.picGenerated = false;
     _this.values.tableGenerated = false;
+    _this.values.mapboxGenerated = false;
     _this.values.isLoading = false;
 
     _this.dialog.open (MessageComponent, {
@@ -2077,6 +2172,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.formGenerated = false;
     _this.values.picGenerated = false;
     _this.values.tableGenerated = false;
+    _this.values.mapboxGenerated = false;
     _this.values.isLoading = false;
 
     _this.dialog.open (MessageComponent, {
@@ -2093,6 +2189,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.formGenerated = false;
     _this.values.picGenerated = false;
     _this.values.tableGenerated = false;
+    _this.values.mapboxGenerated = false;
     _this.values.isLoading = false;
 
     _this.dialog.open (MessageComponent, {
@@ -2109,6 +2206,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.formGenerated = false;
     _this.values.picGenerated = false;
     _this.values.tableGenerated = false;
+    _this.values.mapboxGenerated = false;
     _this.values.isLoading = false;
 
     _this.dialog.open (MessageComponent, {
@@ -2129,9 +2227,27 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.formGenerated = false;
     _this.values.picGenerated = false;
     _this.values.tableGenerated = false;
+    _this.values.mapboxGenerated = false;
 
     _this.dialog.open (MessageComponent, {
       data: { title: "Error", message: "Failed to generate table panel." }
+    });
+  }
+
+  handlerMapboxError(_this, result): void
+  {
+    console.log (result);
+    _this.values.lastestResponse = null;
+    _this.values.chartGenerated = false;
+    _this.values.infoGenerated = false;
+    _this.values.formGenerated = false;
+    _this.values.picGenerated = false;
+    _this.values.tableGenerated = false;
+    _this.values.mapboxGenerated = false;
+    _this.values.isLoading = false;
+
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Error", message: "Failed to generate map tracker." }
     });
   }
 
@@ -2144,6 +2260,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.formGenerated = false;
     _this.values.picGenerated = false;
     _this.values.tableGenerated = false;
+    _this.values.mapboxGenerated = false;
     _this.values.isLoading = false;
 
     _this.dialog.open (MessageComponent, {
@@ -2160,6 +2277,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.formGenerated = false;
     _this.values.picGenerated = false;
     _this.values.tableGenerated = false;
+    _this.values.mapboxGenerated = false;
     _this.values.isLoading = false;
 
     _this.dialog.open (MessageComponent, {
@@ -2458,6 +2576,12 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.storeChartValues ();
   }
 
+  goToMapboxConfiguration(): void
+  {
+    this.values.displayMapbox = false;
+    this.storeChartValues ();
+  }
+
   goToChart(): void
   {
     let i, item;
@@ -2470,6 +2594,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.values.displayInfo = true;
     else if (this.values.tableGenerated)
       this.values.displayTable = true;
+    else if (this.values.mapboxGenerated)
+      this.values.displayMapbox = true;
     else
       this.values.displayChart = true;
 
@@ -3182,6 +3308,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.formGenerated = false;
     _this.values.picGenerated = false;
     _this.values.tableGenerated = false;
+    _this.values.mapboxGenerated = false;
     _this.temp = null;
     _this.values.isLoading = false;
   }
@@ -3341,12 +3468,18 @@ export class MsfDashboardPanelComponent implements OnInit {
   isMapPanel(): boolean
   {
     return (this.values.currentChartType.flags & ChartFlags.MAP
-      && !(this.values.currentChartType.flags & ChartFlags.HEATMAP)) ? true : false;
+      && !(this.values.currentChartType.flags & ChartFlags.HEATMAP)
+      && !(this.values.currentChartType.flags & ChartFlags.MAPBOX)) ? true : false;
   }
 
   isHeatMapPanel(): boolean
   {
     return (this.values.currentChartType.flags & ChartFlags.HEATMAP) ? true : false;
+  }
+
+  isMapboxPanel(): boolean
+  {
+    return (this.values.currentChartType.flags & ChartFlags.MAPBOX) ? true : false;
   }
 
   checkNumVariables(): void
@@ -3761,6 +3894,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.values.formGenerated = false;
       this.values.picGenerated = false;
       this.values.tableGenerated = true;
+      this.values.mapboxGenerated = false;
 
       // resume the update interval if activated
       if (this.values.updateIntervalSwitch)

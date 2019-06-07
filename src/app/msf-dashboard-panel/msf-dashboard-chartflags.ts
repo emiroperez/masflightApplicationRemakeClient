@@ -16,5 +16,6 @@ export enum ChartFlags
   FORM        = 0x00000400,
   TABLE       = 0x00000800,
   MAP         = 0x00001000,
-  HEATMAP     = 0x00002000
+  HEATMAP     = 0x00002000,
+  MAPBOX      = 0x00004000
 };

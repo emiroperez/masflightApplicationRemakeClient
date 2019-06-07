@@ -1,4 +1,4 @@
-<div class="msf-dashboard-panel-container" [style.height.px]="panelHeight" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && globals.readOnlyDashboard">
+<div class="msf-dashboard-panel-container" [style.height.px]="panelHeight" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && globals.readOnlyDashboard">
   <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-picture-container">
     <div class="msf-dashboard-panel-picture-label-container">
       <div class="msf-dashboard-panel-picture-label">
@@ -7,7 +7,7 @@
     </div>
   </div>
 </div>
-<div class="msf-dashboard-panel-container" [style.height.px]="panelHeight" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !globals.readOnlyDashboard">
+<div class="msf-dashboard-panel-container" [style.height.px]="panelHeight" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !globals.readOnlyDashboard">
   <div class="msf-dashboard-panel-sub-container-column">
     <div class="msf-dashboard-panel-sub-container-row">
       <mat-form-field class="msf-width-80">
@@ -28,9 +28,9 @@
     </div>
     <div class="msf-dashboard-panel-sub-container-row msf-dashboard-panel-sub-container-space msf-dashboard-panel-chart-type">
       <mat-form-field class="msf-full-width">
-        <mat-select placeholder="Chart Type" [(ngModel)]="values.currentChartType" (selectionChange)="checkChartType()">
-          <mat-option *ngFor="let chartType of chartTypes | panelTypeFilter:globals.currentApplication.name" [value]="chartType">
-            {{chartType.name}}
+        <mat-select placeholder="Panel Type" [(ngModel)]="values.currentChartType" (selectionChange)="checkChartType()">
+          <mat-option *ngFor="let panelType of chartTypes | panelTypeFilter:globals.currentApplication.name" [value]="panelType">
+            {{panelType.name}}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -42,7 +42,7 @@
       </mat-form-field>
     </div>
   </div>
-  <ng-container *ngIf="!isInformationPanel() && !isSimpleFormPanel() && !isPicturePanel() && !isTablePanel() && !isMapPanel() && !isHeatMapPanel()">
+  <ng-container *ngIf="!isInformationPanel() && !isSimpleFormPanel() && !isPicturePanel() && !isTablePanel() && !isMapPanel() && !isHeatMapPanel() && !isMapboxPanel()">
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-addmenu-icon-item">
         <mat-icon class="msf-dashboard-chart-icon" aria-label="Filter List">filter_list</mat-icon>
@@ -117,7 +117,7 @@
             </button>
           </div>
           <div class="msf-dashboard-panel-control-variable-button">
-            <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated" mat-mini-fab (click)="goToChart()" color="primary">
+            <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated" mat-mini-fab (click)="goToChart()" color="primary">
               <mat-icon aria-label="Go To Chart">bar_chart</mat-icon>
             </button>
           </div>
@@ -225,7 +225,7 @@
             </button>
           </div>
           <div class="msf-dashboard-panel-control-variable-button">
-            <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated" mat-mini-fab (click)="goToChart()" color="primary">
+            <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated" mat-mini-fab (click)="goToChart()" color="primary">
               <mat-icon aria-label="Go To Information">bar_chart</mat-icon>
             </button>
           </div>
@@ -356,7 +356,7 @@
             </button>
           </div>
           <div class="msf-dashboard-panel-control-variable-button">
-            <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated" mat-mini-fab (click)="goToChart()" color="primary">
+            <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated" mat-mini-fab (click)="goToChart()" color="primary">
               <mat-icon aria-label="Go To Form">bar_chart</mat-icon>
             </button>
           </div>
@@ -392,7 +392,7 @@
             </button>
           </div>
           <div class="msf-dashboard-panel-control-variable-button">
-            <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated" mat-mini-fab (click)="goToChart()" color="primary">
+            <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated" mat-mini-fab (click)="goToChart()" color="primary">
               <mat-icon aria-label="Go To Picture">bar_chart</mat-icon>
             </button>
           </div>
@@ -405,7 +405,7 @@
       </div>
     </div>
   </ng-container>
-  <ng-container *ngIf="isMapPanel()">
+  <ng-container *ngIf="isMapPanel() || isMapboxPanel()">
     <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-picture-container">
       <div class="msf-dashboard-panel-picture-label-container">
         <div class="msf-dashboard-panel-picture-label">
@@ -423,8 +423,8 @@
             </button>
           </div>
           <div class="msf-dashboard-panel-control-variable-button">
-            <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated" mat-mini-fab (click)="goToChart()" color="primary">
-              <mat-icon aria-label="Go To Picture">bar_chart</mat-icon>
+            <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated" mat-mini-fab (click)="goToChart()" color="primary">
+              <mat-icon aria-label="Go To Map">bar_chart</mat-icon>
             </button>
           </div>
           <div class="msf-dashboard-panel-control-variable-button">
@@ -501,7 +501,7 @@
             </button>
           </div>
           <div class="msf-dashboard-panel-control-variable-button">
-            <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated" mat-mini-fab (click)="goToChart()" color="primary">
+            <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated" mat-mini-fab (click)="goToChart()" color="primary">
               <mat-icon aria-label="Go To Picture">bar_chart</mat-icon>
             </button>
           </div>
@@ -545,7 +545,7 @@
             </button>
           </div>
           <div class="msf-dashboard-panel-control-variable-button">
-            <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated" mat-mini-fab (click)="goToChart()" color="primary">
+            <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated" mat-mini-fab (click)="goToChart()" color="primary">
               <mat-icon aria-label="Go To Table">bar_chart</mat-icon>
             </button>
           </div>
@@ -678,6 +678,43 @@
         <div class="msf-vertical-middle msf-line" style="font-size: 13px">More Result</div>
       </div>
       <div *ngIf="!haveTableDataSource()" [style.height.px]="35"></div>
+    </div>
+  </div>
+</div>
+<div class="msf-dashboard-panel-container-chart" *ngIf="values.displayMapbox" [style.height.px]="panelHeight">
+  <div class="msf-dashboard-panel-title">{{values.chartName}}</div>
+  <div class="msf-dashboard-panel-sub-container-column">
+    <div class="msf-dashboard-panel-config-button" *ngIf="!globals.readOnlyDashboard">
+      <button mat-mini-fab (click)="goToMapboxConfiguration()" color="primary">
+        <mat-icon aria-label="Edit Configuration">menu</mat-icon>
+      </button>
+      <button mat-mini-fab color="primary" style="margin-bottom: 7px" (click)="sharePanel()">
+        <mat-icon aria-label="Share Panel">share</mat-icon>
+      </button>
+    </div>
+    <div [style.height.px]="calcPanelHeight()">
+<!--
+        <mgl-map [style]="point" [zoom]="zoom" [center]="center" [style.height.%]="98" (load)="mapbox1 = $event; mapbox1.resize ()">
+          -->
+          <app-msf-map></app-msf-map>
+          <!--
+            <ng-container *ngFor="let feature of data; let i = index ">
+              <mgl-marker  [lngLat]="[feature.features[0].origin.longitude, feature.features[0].origin.latitude]">
+                  <div style="justify-content: center; color: #01abec">            
+                    {{feature.features[0].origin.iata}}
+                  </div>
+              </mgl-marker> 
+              <mgl-marker  [lngLat]="[feature.features[0].dest.longitude, feature.features[0].dest.latitude]">
+                  <div style="justify-content: center; color: #01abec">            
+                    {{feature.features[0].dest.iata}}
+                  </div>
+              </mgl-marker>            
+              <mgl-geojson-source *ngIf="feature" id="feature_{{i}}" [data]="feature"></mgl-geojson-source>
+              <mgl-layer *ngIf="feature"  id="feature_{{i}}" type="circle" source="feature_{{i}}" [paint]="paint"></mgl-layer>          
+          </ng-container>
+
+        </mgl-map>
+          -->
     </div>
   </div>
 </div>
