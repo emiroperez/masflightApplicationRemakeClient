@@ -313,3 +313,11 @@
     .mat-tree-node{
         min-height: 40px;
     }
+
+    .menu-drag-handle {
+        line-height: 40px;
+    }
+
+    .menu-drag-handle:hover {
+        cursor: move;
+    }
