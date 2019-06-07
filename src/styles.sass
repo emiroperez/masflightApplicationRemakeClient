@@ -1371,7 +1371,7 @@ button[aria-expanded="true"]
 .msf-menu-component-text
     color: white
     margin-left: 5px
-    max-width: 155px
+    max-width: 200px
     word-break: break-word
 
 .mat-menu-item-icon
@@ -2080,6 +2080,9 @@ mat-tab-group
             width: 50px
             flex-direction: column
 
+.mapboxgl-canvas
+    position: relative !important
+
 .msf-dashboard-panel-container-invisible
     display: none
 
@@ -2090,6 +2093,7 @@ mat-tab-group
     top: calc(100% - 90px)
     align-items: flex-end
     flex-direction: column-reverse
+    z-index: 1
 
 .msf-dashboard-panel-container-chart
     padding: 10px

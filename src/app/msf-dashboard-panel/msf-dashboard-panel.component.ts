@@ -20,7 +20,6 @@ import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { ReplaySubject, Subject } from 'rxjs';
 import { MatSelect, MatDialog } from '@angular/material';
 import { takeUntil } from 'rxjs/operators';
-import * as mapboxgl from 'mapbox-gl';
 
 import { ApiClient } from '../api/api-client';
 import { Arguments } from '../model/Arguments';
@@ -37,6 +36,7 @@ import { ComponentType } from '../commons/ComponentType';
 import { MessageComponent } from '../message/message.component';
 import { ChartFlags } from '../msf-dashboard-panel/msf-dashboard-chartflags';
 import { AuthService } from '../services/auth.service';
+import { MsfMapComponent } from '../msf-map/msf-map.component';
 
 am4core.useTheme(am4themes_animated);
 am4core.useTheme(am4themes_dark);
@@ -184,28 +184,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   private _onDestroy = new Subject<void> ();
 
-  mapbox1: mapboxgl.Map;
-
-  zoom = [1];
-  
-  center = [-73.968285, 40.785091];
-
-  data = [];
-
-  coordinates = [];
-
-  paint = {        
-            'circle-radius': 2,
-            'circle-color': '#B42222'
-          };
-
-  layout = {
-              "icon-image": "{icon}-15",
-              "text-field": "{title}",
-              "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
-              "text-offset": [0, 0.6],
-              "text-anchor": "top"
-          };
+  // mapbox variables
+  @ViewChild('msfMapRef')
+  msfMapRef: MsfMapComponent;
 
   constructor(private zone: NgZone, public globals: Globals,
     private service: ApplicationService, private http: ApiClient, private authService: AuthService, public dialog: MatDialog,
@@ -245,10 +226,15 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void
   {
-    if (changes['reAppendChart'] && this.reAppendChart && this.values.chartGenerated)
+    if (changes['reAppendChart'] && this.reAppendChart)
     {
-      let chartElement = document.getElementById ("msf-dashboard-chart-display-" + this.values.id);
-      document.getElementById ("msf-dashboard.chart-display-container-" + this.values.id).appendChild (chartElement);
+      if (this.values.chartGenerated)
+      {
+        let chartElement = document.getElementById ("msf-dashboard-chart-display-" + this.values.id);
+        document.getElementById ("msf-dashboard.chart-display-container-" + this.values.id).appendChild (chartElement);
+      }
+      else if (this.values.mapboxGenerated)
+        this.msfMapRef.resizeMap ();
     }
   }
 
@@ -1116,7 +1102,8 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     this.msfTableRef.tableOptions = this;
 
-    if (this.values.currentChartType.flags & ChartFlags.TABLE)
+    if ((this.values.currentChartType.flags & ChartFlags.TABLE)
+      || (this.values.currentChartType.flags & ChartFlags.MAPBOX))
     {
       if (this.values.function != null && this.values.function != -1)
         this.values.function = -1;
@@ -1126,18 +1113,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       if (!this.isResponseValid ())
         return;
 
-      if (this.values.currentChartType.flags & ChartFlags.MAPBOX)
-      {
-        if (this.values.function != null && this.values.function != -1)
-        {
-          if (this.values.function == 1)
-          {
-            this.values.mapboxGenerated = true;
-            this.values.function = -1;
-          }
-        }
-      }
-      else if (this.values.currentChartType.flags & ChartFlags.INFO)
+      if (this.values.currentChartType.flags & ChartFlags.INFO)
       {
         if (this.values.function != null && this.values.function != -1)
         {
@@ -1167,7 +1143,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     // these parts must be here because it generate an error if inserted on ngAfterViewInit
     this.initPanelSettings ();
 
-    if (this.values.currentChartType.flags & ChartFlags.TABLE)
+    if ((this.values.currentChartType.flags & ChartFlags.TABLE)
+      || (this.values.currentChartType.flags & ChartFlags.MAPBOX))
     {
       if (this.values.function == 1)
       {
@@ -1183,11 +1160,6 @@ export class MsfDashboardPanelComponent implements OnInit {
         return;
 
       if (this.values.currentChartType.flags & ChartFlags.INFO)
-      {
-        if (this.values.function == 1)
-          this.values.displayMapbox = true;
-      }
-      else if (this.values.currentChartType.flags & ChartFlags.INFO)
       {
         if (this.values.function == 1)
         {
@@ -1542,10 +1514,11 @@ export class MsfDashboardPanelComponent implements OnInit {
     let params, url;
 
     this.values.isLoading = true;
+    this.values.displayMapbox = true;
     params = this.getParameters ();
     url = this.globals.baseUrl2 + "/getMapBoxTracking?" + params;
     console.log (url);
-    this.http.get (this, url, handlerSuccess, handlerError, null);
+    this.http.get (this.msfMapRef, url, handlerSuccess, handlerError, null);
   }
 
   loadFormData(handlerSuccess, handlerError): void
@@ -1624,7 +1597,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
 
     if (this.values.currentChartType.flags & ChartFlags.MAPBOX)
-      this.loadMapboxData (this.handlerMapboxSuccess, this.handlerMapboxError);
+      this.loadMapboxData (this.msfMapRef.successHandler, this.msfMapRef.errorHandler);
     else if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
       this.loadMapData (this.handlerHeatMapSuccess, this.handlerHeatMapError);
     else if (this.values.currentChartType.flags & ChartFlags.MAP)
@@ -1766,21 +1739,18 @@ export class MsfDashboardPanelComponent implements OnInit {
     return null;
   }
 
-  handlerMapboxSuccess(_this, data): void
+  finishMapboxLoading(error)
   {
-    if (_this.utils.isJSONEmpty (data))
+    if (error)
     {
-      _this.noDataFound ();
-      return;
+      this.values.isLoading = false;
+      this.handlerMapboxError (this, "Failed to generate the results for the map tracker.");
     }
-
-    _this.values.lastestResponse = {
-      'type': 'FeatureCollection',
-      'features': data
-    };
-
-    _this.handlerMapboxLastestResponse (_this);
-    // _this.service.saveLastestResponse (_this, _this.getPanelInfo (), _this.handlerMapboxLastestResponse, _this.handlerMapboxError);
+    else
+    {
+      this.values.lastestResponse = 1;
+      this.service.saveLastestResponse (this, this.getPanelInfo (), this.handlerMapboxLastestResponse, this.handlerMapboxError);
+    }
   }
 
   handlerHeatMapSuccess(_this, data): void
@@ -1971,13 +1941,17 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     _this.destroyChart ();
 
-    _this.values.displayMapbox = true;
     _this.values.chartGenerated = false;
     _this.values.infoGenerated = false;
     _this.values.formGenerated = false;
     _this.values.picGenerated = false;
     _this.values.tableGenerated = false;
     _this.values.mapboxGenerated = true;
+
+    _this.msfMapRef.resizeMap ();
+
+    _this.stopUpdateInterval ();
+    _this.startUpdateInterval ();
   }
 
   handlerHeatMapLastestResponse(_this): void
@@ -3032,8 +3006,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.values.geodata = this.geodatas[0];
 
     // picture and map panels doesn't need any data
-    if (this.values.currentChartType.flags & ChartFlags.PICTURE
-      && this.values.currentChartType.flags & ChartFlags.MAP)
+    if ((this.values.currentChartType.flags & ChartFlags.PICTURE)
+      || (this.values.currentChartType.flags & ChartFlags.MAP))
     {
       if (this.values.chartColumnOptions != null)
         this.variableCtrlBtnEnabled = true;

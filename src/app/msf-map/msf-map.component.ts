@@ -22,6 +22,12 @@ export class MsfMapComponent implements OnInit {
   @Input('isLoading')
   isLoading: any;
 
+  @Input('heightOffset')
+  heightOffset: number;
+
+  @Input('useCancelButton')
+  useCancelButton: boolean;
+
   @Output('finishLoading')
   finishLoading = new EventEmitter ();
 
@@ -147,11 +153,11 @@ export class MsfMapComponent implements OnInit {
     }
   }
 
-  getHeight(){
+  getHeight(): string {
     // if(this.data != null && this.data.length == 1 ){
     //   return 60;
     // }
-    return 100;
+    return "calc(100% - " + this.heightOffset + "px)";
   }
 
   mapTypeChange(type){
@@ -198,13 +204,18 @@ export class MsfMapComponent implements OnInit {
     this.isLoading = false;
   }
 
-  @HostListener('window:resize', ['$event'])
-  checkScreen(event): void
+  resizeMap(): void
   {
     if (this.map && this.currentMapType.id == 'point')
       this.map.resize ();
 
     if (this.map2 && this.currentMapType.id == 'line')
       this.map2.resize ();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  checkScreen(event): void
+  {
+    this.resizeMap ();
   }
 }

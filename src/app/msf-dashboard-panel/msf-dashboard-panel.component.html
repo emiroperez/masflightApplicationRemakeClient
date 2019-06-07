@@ -681,7 +681,7 @@
     </div>
   </div>
 </div>
-<div class="msf-dashboard-panel-container-chart" *ngIf="values.displayMapbox" [style.height.px]="panelHeight">
+<div class="msf-dashboard-panel-container-chart" [style.display]="values.displayMapbox ? 'block' : 'none'" [style.height.px]="panelHeight">
   <div class="msf-dashboard-panel-title">{{values.chartName}}</div>
   <div class="msf-dashboard-panel-sub-container-column">
     <div class="msf-dashboard-panel-config-button" *ngIf="!globals.readOnlyDashboard">
@@ -692,29 +692,8 @@
         <mat-icon aria-label="Share Panel">share</mat-icon>
       </button>
     </div>
-    <div [style.height.px]="calcPanelHeight()">
-<!--
-        <mgl-map [style]="point" [zoom]="zoom" [center]="center" [style.height.%]="98" (load)="mapbox1 = $event; mapbox1.resize ()">
-          -->
-          <app-msf-map></app-msf-map>
-          <!--
-            <ng-container *ngFor="let feature of data; let i = index ">
-              <mgl-marker  [lngLat]="[feature.features[0].origin.longitude, feature.features[0].origin.latitude]">
-                  <div style="justify-content: center; color: #01abec">            
-                    {{feature.features[0].origin.iata}}
-                  </div>
-              </mgl-marker> 
-              <mgl-marker  [lngLat]="[feature.features[0].dest.longitude, feature.features[0].dest.latitude]">
-                  <div style="justify-content: center; color: #01abec">            
-                    {{feature.features[0].dest.iata}}
-                  </div>
-              </mgl-marker>            
-              <mgl-geojson-source *ngIf="feature" id="feature_{{i}}" [data]="feature"></mgl-geojson-source>
-              <mgl-layer *ngIf="feature"  id="feature_{{i}}" type="circle" source="feature_{{i}}" [paint]="paint"></mgl-layer>          
-          </ng-container>
-
-        </mgl-map>
-          -->
+    <div [style.height.px]="calcPanelHeight()" style="width: calc(100% - 50px)">
+      <app-msf-map #msfMapRef [isLoading]="values.isLoading" [heightOffset]="50" [useCancelButton]="false" (finishLoading)="finishMapboxLoading($event)"></app-msf-map>
     </div>
   </div>
 </div>
