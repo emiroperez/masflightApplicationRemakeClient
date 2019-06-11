@@ -40,7 +40,7 @@
                         Map
                         <mat-icon (click)="closeTab(5)" class="close-icon">close</mat-icon> 
                 </ng-template>
-            <app-msf-map #msfMapRef [heightOffset]="0" [useCancelButton]="true" [isLoading]="globals.isLoading" [displayOptionPanel]="globals.status" (finishLoading)="finishLoadingMap($event)"></app-msf-map>
+            <app-msf-map #msfMapRef [useCancelButton]="true" [isLoading]="globals.isLoading" [displayOptionPanel]="globals.status" (finishLoading)="finishLoadingMap($event)"></app-msf-map>
         </mat-tab> 
 
        <!-- <mat-tab  [style.visibility]= "globals.mapsc ? 'visible' : 'hidden' " #tabRef >

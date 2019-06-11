@@ -528,7 +528,7 @@
           </div>
           <div class="msf-dashboard-chart-op-container">
             <mat-form-field class="msf-full-width">
-              <mat-select placeholder="Style" [(ngModel)]="msfMapRef.currentMapType">
+              <mat-select placeholder="Style" [(ngModel)]="values.style">
                 <mat-option *ngFor="let style of msfMapRef.mapTypes" [value]="style">
                   {{style.name}}
                 </mat-option>
@@ -542,7 +542,7 @@
           </div>
           <div class="msf-dashboard-chart-op-container">
             <mat-form-field class="msf-full-width">
-              <mat-select placeholder="Theme" [(ngModel)]="msfMapRef.currentMapStyle">
+              <mat-select placeholder="Theme" [(ngModel)]="values.theme">
                 <mat-option *ngFor="let theme of msfMapRef.mapStyles" [value]="theme">
                   {{theme.name}}
                 </mat-option>
@@ -749,7 +749,7 @@
       </button>
     </div>
     <div [style.height.px]="calcPanelHeight()" style="width: calc(100% - 50px)">
-      <app-msf-map #msfMapRef [isLoading]="values.isLoading" [heightOffset]="50" [useCancelButton]="false" (finishLoading)="finishMapboxLoading($event)"></app-msf-map>
+      <app-msf-map #msfMapRef [isLoading]="values.isLoading" [useCancelButton]="false" [displayMapMenu]="false" [currentMapType]="values.style" [currentMapStyle]="values.theme" (finishLoading)="finishMapboxLoading($event)"></app-msf-map>
     </div>
   </div>
 </div>

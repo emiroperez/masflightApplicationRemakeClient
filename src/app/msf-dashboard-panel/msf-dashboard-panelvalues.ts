@@ -34,6 +34,8 @@ export class MsfDashboardPanelValues {
     valueColumn: any;
     function: any;
     geodata: any;
+    theme: any;
+    style: any;
 
     infoVar1: any;
     infoVar2: any;

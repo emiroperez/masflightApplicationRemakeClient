@@ -223,8 +223,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.infoFunc2 = JSON.parse (JSON.stringify (this.functions));
     this.values.infoFunc3 = JSON.parse (JSON.stringify (this.functions));
 
-    this.msfMapRef.currentMapType = this.msfMapRef.mapTypes[1];
-    this.msfMapRef.currentMapStyle = this.msfMapRef.mapStyles[0];
+    this.values.style = this.msfMapRef.mapTypes[1];
+    this.values.theme = this.msfMapRef.mapStyles[0];
   }
 
   ngOnChanges(changes: SimpleChanges): void
@@ -1377,8 +1377,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0),
         function: 1,
         lastestResponse: JSON.stringify (this.values.lastestResponse),
-        analysis: this.msfMapRef.mapTypes.indexOf (this.msfMapRef.currentMapType),
-        values: this.msfMapRef.mapStyles.indexOf (this.msfMapRef.currentMapStyle)
+        analysis: this.msfMapRef.mapTypes.indexOf (this.values.style),
+        values: this.msfMapRef.mapStyles.indexOf (this.values.theme)
       };
     }
     else if (this.values.currentChartType.flags & ChartFlags.FORM
@@ -2490,6 +2490,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.temp.chartColumnOptions = JSON.parse (JSON.stringify (this.values.chartColumnOptions));
     this.temp.currentOptionCategories = JSON.parse (JSON.stringify (this.values.currentOptionCategories));
     this.temp.thresholds = JSON.parse (JSON.stringify (this.values.thresholds));
+    this.temp.style = JSON.parse (JSON.stringify (this.values.style));
+    this.temp.theme = JSON.parse (JSON.stringify (this.values.theme));
 
     this.temp.formVariables = [];
     this.temp.tableVariables = JSON.parse (JSON.stringify (this.values.tableVariables));
@@ -2602,6 +2604,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.chartColumnOptions = JSON.parse (JSON.stringify (this.temp.chartColumnOptions));
     this.values.currentOptionCategories = JSON.parse (JSON.stringify (this.temp.currentOptionCategories));
     this.values.thresholds = JSON.parse (JSON.stringify (this.temp.thresholds));
+    this.values.style = JSON.parse (JSON.stringify (this.temp.style));
+    this.values.theme = JSON.parse (JSON.stringify (this.temp.theme));
 
     for (i = 0; i < this.chartTypes.length; i++)
     {
@@ -2673,6 +2677,13 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.initPanelSettings ();
 
     this.startUpdateInterval ();
+
+    if (this.values.currentChartType.flags & ChartFlags.MAPBOX)
+    {
+      setTimeout (() => {
+        this.msfMapRef.resizeMap ();
+      }, 10);
+    }
   }
 
   // check if the x axis should be enabled or not depending of the chart type
@@ -3032,33 +3043,58 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       if (this.values.currentChartType.flags & ChartFlags.MAPBOX)
       {
-        if (this.values.variable != null && this.values.variable != -1)
+        if (this.values.function == 1)
+        {
+          if (this.values.variable != null && this.values.variable != -1)
+          {
+            for (i = 0; i < this.msfMapRef.mapTypes.length; i++)
+            {
+              if (i == this.values.variable)
+              {
+                this.values.style = this.msfMapRef.mapTypes[i];
+                this.values.variable = -1;
+                break;
+              }
+            }
+          }
+          else
+            this.values.style = this.msfMapRef.mapTypes[1];
+
+          if (this.values.valueColumn != null && this.values.valueColumn != -1)
+          {
+            for (i = 0; i < this.msfMapRef.mapStyles.length; i++)
+            {
+              if (i == this.values.valueColumn)
+              {
+                this.values.theme = this.msfMapRef.mapStyles[i];
+                this.values.valueColumn = -1;
+                break;
+              }
+            }
+          }
+          else
+            this.values.theme = this.msfMapRef.mapStyles[0];
+        }
+        else
         {
           for (i = 0; i < this.msfMapRef.mapTypes.length; i++)
           {
-            if (i == this.values.variable)
+            if (this.msfMapRef.mapTypes[i].id == this.values.style.id)
             {
-              this.values.variable = this.msfMapRef.mapTypes[i];
+              this.values.style = this.msfMapRef.mapTypes[i];
               break;
             }
           }
-        }
-        else
-          this.values.variable = this.msfMapRef.mapTypes[1];
 
-        if (this.values.valueColumn != null && this.values.valueColumn != -1)
-        {
           for (i = 0; i < this.msfMapRef.mapStyles.length; i++)
           {
-            if (i == this.values.valueColumn)
+            if (this.msfMapRef.mapStyles[i].id == this.values.theme.id)
             {
-              this.values.valueColumn = this.msfMapRef.mapStyles[i];
+              this.values.theme = this.msfMapRef.mapStyles[i];
               break;
             }
           }
         }
-        else
-          this.values.valueColumn = this.msfMapRef.mapStyles[0];
       }
 
       this.checkChartType ();

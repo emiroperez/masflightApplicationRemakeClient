@@ -22,9 +22,6 @@ export class MsfMapComponent implements OnInit {
   @Input('isLoading')
   isLoading: any;
 
-  @Input('heightOffset')
-  heightOffset: number;
-
   @Input('useCancelButton')
   useCancelButton: boolean;
 
@@ -64,7 +61,10 @@ export class MsfMapComponent implements OnInit {
     {id:"mapbox://styles/mapbox/light-v10",name:'Light'}
   ]; 
 
+  @Input('currentMapType')
   currentMapType = this.mapTypes[1];
+
+  @Input('currentMapStyle')
   currentMapStyle = this.mapStyles[1];
 
   resizeInterval: any;
@@ -72,6 +72,9 @@ export class MsfMapComponent implements OnInit {
 
   @Input("displayOptionPanel")
   displayOptionPanel: boolean;
+
+  @Input("displayMapMenu")
+  displayMapMenu: boolean = true;
 
   constructor( private zone: NgZone, private services: ApplicationService, public globals: Globals) { }
 
@@ -156,7 +159,7 @@ export class MsfMapComponent implements OnInit {
     // if(this.data != null && this.data.length == 1 ){
     //   return 60;
     // }
-    return "calc(100% - " + this.heightOffset + "px)";
+    return "100%";
   }
 
   mapTypeChange(type){
