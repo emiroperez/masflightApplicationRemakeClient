@@ -1533,7 +1533,8 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     this.values.isLoading = true;
     this.values.displayMapbox = true;
-    this.msfMapRef.data = null;
+    this.msfMapRef.data = [];
+    this.msfMapRef.coordinates = [];
  
     params = this.getParameters ();
     url = this.globals.baseUrl2 + "/getMapBoxTracking?" + params;
@@ -1968,7 +1969,23 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.tableGenerated = false;
     _this.values.mapboxGenerated = true;
 
-    _this.msfMapRef.resizeMap ();
+    if (_this.values.style.id === 'line')
+    {
+      _this.msfMapRef.currentMapType.id = 'point';
+
+      setTimeout (() => {
+        _this.values.isLoading = false;
+        _this.msfMapRef.currentMapType.id = 'line';
+        _this.msfMapRef.resizeMap ();
+      }, 50);
+    }
+    else
+    {
+      setTimeout (() => {
+        _this.values.isLoading = false;
+        _this.msfMapRef.resizeMap ();
+      }, 50);
+    }
 
     _this.stopUpdateInterval ();
     _this.startUpdateInterval ();
