@@ -126,6 +126,7 @@ export class MsfMapComponent implements OnInit {
     this.zoom = [1];
     this.globals.startTimestamp = new Date();
     this.data = [];
+    this.coordinates = [];
     // this.isLoading = true;
     this.services.getMapBoxTracking(this,this.successHandler, this.errorHandler);    
   }
