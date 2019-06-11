@@ -367,7 +367,15 @@ export class MsfDashboardComponent implements OnInit {
         _this.columnToUpdate, _this.deleteColumn, _this.handlerError);
     }
     else
+    {
+      _this.dashboardColumnsReAppendCharts[_this.columnToUpdate] = false;
+
+      setTimeout (() => {
+        _this.dashboardColumnsReAppendCharts[_this.columnToUpdate] = false;
+      }, 100);
+
       _this.globals.isLoading = false;
+    }
   }
 
   deleteColumn (_this): void
@@ -469,7 +477,7 @@ export class MsfDashboardComponent implements OnInit {
 
   rowSwapSucess(_this): void
   {
-    if (_this.currentColumn)
+    if (_this.currentColumn != null)
       _this.dashboardColumnsReAppendCharts[_this.currentColumn] = false;
 
     console.log ("The changes to the dashboard were successful.");
@@ -477,12 +485,15 @@ export class MsfDashboardComponent implements OnInit {
 
   rowSwapError(_this): void
   {
-    if (_this.currentColumn)
+    if (_this.currentColumn != null)
       _this.dashboardColumnsReAppendCharts[_this.currentColumn] = false;
   }
 
   handlerSuccess(_this): void
   {
+    if (_this.currentColumn != null)
+      _this.dashboardColumnsReAppendCharts[_this.currentColumn] = false;
+
     console.log ("The changes to the dashboard were successful.");
     // _this.globals.isLoading = false;
   }
@@ -534,6 +545,7 @@ export class MsfDashboardComponent implements OnInit {
     if (!this.resizePanel)
       return;
 
+    this.dashboardColumnsReAppendCharts[this.currentColumn] = true;
     this.resizePanel = false;
     this.saveResizedPanels ();
   }

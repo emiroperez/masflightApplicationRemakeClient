@@ -14,9 +14,10 @@
     </mat-select>
 </mat-form-field>
 
-  <!-- <mgl-map *ngIf="currentMapType.id == 'point'" [style]="'mapbox://styles/mapbox/dark-v9'" [zoom]="zoom" [center]="center"  [style.height.%]="getHeight()" (load)="map = $event; map.resize ()">       -->
-    <!-- <mgl-map *ngIf="currentMapType.id == 'point'" [style]="'mapbox://styles/mapbox/light-v10'" [zoom]="zoom" [center]="center"  [style.height.%]="getHeight()" (load)="map = $event; map.resize ()">       -->
-      <mgl-map *ngIf="currentMapType.id == 'point'" [style]=currentMapStyle.id [zoom]="zoom" [center]="center"  [style.height.%]="getHeight()" (load)="map = $event; map.resize ()">      
+  <!-- <mgl-map *ngIf="currentMapType.id == 'point'" [style]="'mapbox://styles/mapbox/dark-v9'" [zoom]="zoom" [center]="center" (load)="map = $event; map.resize ()">       -->
+    <!-- <mgl-map *ngIf="currentMapType.id == 'point'" [style]="'mapbox://styles/mapbox/light-v10'" [zoom]="zoom" [center]="center" (load)="map = $event; map.resize ()">       -->
+      <div [style.width.%]="100" [ngStyle]="{ 'height': getHeight() }">
+      <mgl-map *ngIf="currentMapType.id == 'point'" [style]=currentMapStyle.id [zoom]="zoom" [center]="center" (load)="map = $event; map.resize ()">      
       <ng-container *ngFor="let feature of data; let i = index ">
         <mgl-marker  [lngLat]="[feature.features[0].origin.longitude, feature.features[0].origin.latitude]">
             <div style="justify-content: center; color: #01abec">            
@@ -33,9 +34,9 @@
     </ng-container>
   </mgl-map>
 
-  <!-- <mgl-map *ngIf="currentMapType.id == 'line'" [style]="'mapbox://styles/mapbox/dark-v9'" [zoom]="zoom" [center]="center"  [style.height.%]="getHeight()" (load)="map2 = $event; map2.resize ()"> -->
-    <!-- <mgl-map *ngIf="currentMapType.id == 'line'" [style]="'mapbox://styles/mapbox/light-v10'" [zoom]="zoom" [center]="center"  [style.height.%]="getHeight()" (load)="map2 = $event; map2.resize ()"> -->
-      <mgl-map *ngIf="currentMapType.id == 'line'" [style]=currentMapStyle.id [zoom]="zoom" [center]="center"  [style.height.%]="getHeight()" (load)="map2 = $event; map2.resize ()">
+  <!-- <mgl-map *ngIf="currentMapType.id == 'line'" [style]="'mapbox://styles/mapbox/dark-v9'" [zoom]="zoom" [center]="center" (load)="map2 = $event; map2.resize ()"> -->
+    <!-- <mgl-map *ngIf="currentMapType.id == 'line'" [style]="'mapbox://styles/mapbox/light-v10'" [zoom]="zoom" [center]="center" (load)="map2 = $event; map2.resize ()"> -->
+      <mgl-map *ngIf="currentMapType.id == 'line'" [style]=currentMapStyle.id [zoom]="zoom" [center]="center" (load)="map2 = $event; map2.resize ()">
         <mgl-layer
       id="route"
       type="line"
@@ -61,7 +62,8 @@
     >
     </mgl-layer>
   </mgl-map>
-  <div class="loading-panel table-loading" *ngIf="isLoading">
+  </div>
+  <div class="loading-panel table-loading" *ngIf="isLoading && useCancelButton">
     <button mat-button class="cancel-button" (click)="cancelLoading()">
       Cancel
     <mat-icon  class="close-icon">close</mat-icon> 
