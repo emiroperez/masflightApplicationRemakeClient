@@ -12,6 +12,8 @@ import am4geodata_africaLow from "@amcharts/amcharts4-geodata/region/world/afric
 import am4geodata_europeLow from "@amcharts/amcharts4-geodata/region/world/europeLow";
 import am4geodata_oceaniaLow from "@amcharts/amcharts4-geodata/region/world/oceaniaLow";
 import am4geodata_usaAlbersLow from "@amcharts/amcharts4-geodata/usaAlbersLow";
+import am4geodata_colombiaLow from "@amcharts/amcharts4-geodata/colombiaLow";
+import am4geodata_colombiaMuniLow from "@amcharts/amcharts4-geodata/colombiaMuniLow";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import am4themes_dark from "@amcharts/amcharts4/themes/dark";
 import { CategoryArguments } from '../model/CategoryArguments';
@@ -124,7 +126,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     { name: 'Africa', value: am4geodata_africaLow },
     { name: 'Europe', value: am4geodata_europeLow },
     { name: 'Oceania', value: am4geodata_oceaniaLow },
-    { name: 'World', value: am4geodata_worldLow }
+    { name: 'World', value: am4geodata_worldLow },
+    { name: 'Colombia Departments', value: am4geodata_colombiaLow },
+    { name: 'Colombia Municipals', value: am4geodata_colombiaMuniLow }
   ];
 
   @Input()
