@@ -5,7 +5,7 @@ import { ApplicationService } from '../services/application.service';
 import { MatSnackBar, MatTableDataSource, MatTable, MatSelect, MatTreeFlattener, MatTreeFlatDataSource } from '@angular/material';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { MessageComponent } from '../message/message.component';
-import {CdkDragDrop, moveItemInArray, CdkDropList, transferArrayItem} from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray, CdkDropList, transferArrayItem } from '@angular/cdk/drag-drop';
 import { FormControl, FormBuilder, FormGroup } from '@angular/forms';
 import { DrillDown } from '../model/DrillDown';
 import { ReplaySubject, Subject, BehaviorSubject } from 'rxjs';
@@ -23,12 +23,12 @@ import { MaterialIconPickerComponent } from '../material-icon-picker/material-ic
 
 export class ConfirmDeleteDialog {
 
-  constructor(public dialogRef: MatDialogRef<ConfirmDeleteDialog>, private dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: {message: string, confirm: boolean}) {
+  constructor(public dialogRef: MatDialogRef<ConfirmDeleteDialog>, private dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: { message: string, confirm: boolean }) {
   }
 
   close() {
     this.data.confirm = false;
-    this.dialogRef.close ();
+    this.dialogRef.close();
   }
 
   confirm() {
@@ -45,8 +45,8 @@ export class ConfirmDeleteDialog {
 })
 
 export class NewCategoryDialog {
-  category:any = {label:'',icon:'',description:'',isSelected:false};
-  categories: any[] =[];
+  category: any = { label: '', icon: '', description: '', isSelected: false };
+  categories: any[] = [];
   optionSelected: any;
   idDomOptionSelected: any;
   categoryDelete: any[] = [];
@@ -54,67 +54,67 @@ export class NewCategoryDialog {
   dataToSend: any[] = [];
 
   constructor(
-    public dialogRef: MatDialogRef<NewCategoryDialog>,private service: ApplicationService, private globals: Globals,
+    public dialogRef: MatDialogRef<NewCategoryDialog>, private service: ApplicationService, private globals: Globals,
     @Inject(MAT_DIALOG_DATA) public data) {
-      this.categories = data;
-}
-
-onNoClick(){
-  this.dialogRef.close();
-}
-
-
-
-sendData() {
-  this.dataToSend = this.categories.concat(this.categoryDelete);
-  this.dialogRef.close(this.dataToSend);
-}
-
-getSelectedOption(option) {
-  if (this.category != option) {
-    option.isSelected = !option.isSelected;
-    this.category.isSelected = !this.category.isSelected;
-    this.category = option;
-  } else {
-    option.isSelected = !option.isSelected;
-    this.category = {};
+    this.categories = data;
   }
 
-  console.log(this.category)
-}
-
-addCategory(){
-  let cat = {
-    label:'',
-    icon:'',
-    description:'',
-    arguments: []
+  onNoClick() {
+    this.dialogRef.close();
   }
-  this.categories.unshift(cat);
-  this.getSelectedOption(this.categories[0]);
-}
 
-deleteCategory(){
-  this.category.delete=true;
-  this.categoryDelete.push(this.category);
-  const index: number = this.categories.findIndex(d => d === this.category);
-  this.categories.splice(index,1);
-}
 
-addArgument(){
-  let arg = {
-    description:'',
-    type:''
+
+  sendData() {
+    this.dataToSend = this.categories.concat(this.categoryDelete);
+    this.dialogRef.close(this.dataToSend);
   }
-  this.category.arguments.push(arg);
-}
 
-deleteArgument(argument){
-  argument.delete=true;
-  this.argumentDelete.push(argument);
-  const index: number = this.category.arguments.findIndex(d => d === argument);
-  this.category.arguments.spice(index,1);
-}
+  getSelectedOption(option) {
+    if (this.category != option) {
+      option.isSelected = !option.isSelected;
+      this.category.isSelected = !this.category.isSelected;
+      this.category = option;
+    } else {
+      option.isSelected = !option.isSelected;
+      this.category = {};
+    }
+
+    console.log(this.category)
+  }
+
+  addCategory() {
+    let cat = {
+      label: '',
+      icon: '',
+      description: '',
+      arguments: []
+    }
+    this.categories.unshift(cat);
+    this.getSelectedOption(this.categories[0]);
+  }
+
+  deleteCategory() {
+    this.category.delete = true;
+    this.categoryDelete.push(this.category);
+    const index: number = this.categories.findIndex(d => d === this.category);
+    this.categories.splice(index, 1);
+  }
+
+  addArgument() {
+    let arg = {
+      description: '',
+      type: ''
+    }
+    this.category.arguments.push(arg);
+  }
+
+  deleteArgument(argument) {
+    argument.delete = true;
+    this.argumentDelete.push(argument);
+    const index: number = this.category.arguments.findIndex(d => d === argument);
+    this.category.arguments.spice(index, 1);
+  }
 
 }
 
@@ -128,7 +128,7 @@ deleteArgument(argument){
 export class DrillDownDialog {
   drillDownSelected: any;
   menuString;
-  dataToSend : any [] = [];
+  dataToSend: any[] = [];
   dataToDelete: any[] = [];
   protected options: any[];
   public optCtrl: FormControl = new FormControl();
@@ -139,10 +139,10 @@ export class DrillDownDialog {
 
   constructor(
     public dialogRef: MatDialogRef<DrillDownDialog>,
-    @Inject(MAT_DIALOG_DATA) public data : {optionString: any, option:any, drillDown:any}) {
+    @Inject(MAT_DIALOG_DATA) public data: { optionString: any, option: any, drillDown: any }) {
 
-      this.menuString = data.optionString;
-      this.optCtrl = this.menuString[0];
+    this.menuString = data.optionString;
+    this.optCtrl = this.menuString[0];
     this.filteredOpts.next(this.menuString.slice());
 
     // listen for search field value changes
@@ -151,58 +151,59 @@ export class DrillDownDialog {
       .subscribe(() => {
         this.filterOptions();
       });
-     }
+  }
 
-     protected setInitialValue() {
-      this.filteredOpts
-        .pipe(take(1), takeUntil(this._onDestroy))
-        .subscribe(() => {
-          this.singleSelect.compareWith = (a: any, b: any) => a && b && a.id === b.id;
-        });
+  protected setInitialValue() {
+    this.filteredOpts
+      .pipe(take(1), takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.singleSelect.compareWith = (a: any, b: any) => a && b && a.id === b.id;
+      });
+  }
+
+  protected filterOptions() {
+    if (!this.menuString) {
+      return;
     }
-
-    protected filterOptions() {
-      if (!this.menuString) {
-        return;
-      }
-      let search = this.optFilterCtrl.value;
-      if (!search) {
-        this.filteredOpts.next(this.menuString.slice());
-        return;
-      } else {
-        search = search.toLowerCase();
-      }
-      this.filteredOpts.next(
-        this.menuString.filter(mString => mString.stringSearch.toLowerCase().indexOf(search) > -1)
-      );
+    let search = this.optFilterCtrl.value;
+    if (!search) {
+      this.filteredOpts.next(this.menuString.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
     }
+    this.filteredOpts.next(
+      this.menuString.filter(mString => mString.stringSearch.toLowerCase().indexOf(search) > -1)
+    );
+  }
 
 
-    displayedColumns = ['title','childrenOptionId'];
-    dataSource = this.data.drillDown;
+  displayedColumns = ['title', 'childrenOptionId'];
+  dataSource = this.data.drillDown;
 
 
-    addDrillDown() {
-      this.data.drillDown.push({
-        id: null,
-        title: '',
-        childrenOptionId: 0,
-        parentOptionId: this.data.option,
-        delete: false});
-      this.dataSource = new MatTableDataSource(this.data.drillDown);
-    }
+  addDrillDown() {
+    this.data.drillDown.push({
+      id: null,
+      title: '',
+      childrenOptionId: 0,
+      parentOptionId: this.data.option,
+      delete: false
+    });
+    this.dataSource = new MatTableDataSource(this.data.drillDown);
+  }
 
-    onNoClick(): void {
-      this.dialogRef.close();
-    }
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
 
-    sendData() {
-      this.dataToSend = this.data.drillDown.concat(this.dataToDelete);
-      this.dialogRef.close(this.dataToSend);
-    }
+  sendData() {
+    this.dataToSend = this.data.drillDown.concat(this.dataToDelete);
+    this.dialogRef.close(this.dataToSend);
+  }
 
-    selectRow(row) {
-      this.drillDownSelected = row;
+  selectRow(row) {
+    this.drillDownSelected = row;
   }
 
   deleteDrillDown() {
@@ -225,66 +226,114 @@ export class DrillDownDialog {
 export class EditOutputOptionsMetaDialog {
   @ViewChild('table') table: MatTable<any>;
   @ViewChild('list') list: CdkDropList;
-  optionSelected : any;
-  dataToSend : any [] = [];
-  dataToDelete : any [] = [];
+  optionSelected: any;
+  dataToSend: any[] = [];
+  dataToDelete: any[] = [];
   arg: any[];
 
   constructor(
-    public dialogRef: MatDialogRef<EditOutputOptionsMetaDialog>,public dialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data : {outputs: any, option: any, arguments: any}, private globals: Globals) {
-      this.arg = data.arguments;
-     }
+    public dialogRef: MatDialogRef<EditOutputOptionsMetaDialog>, public dialog: MatDialog,
+    private service: ApplicationService,
+    @Inject(MAT_DIALOG_DATA) public data: { outputs: any, option: any, arguments: any }, private globals: Globals) {
+    this.arg = data.arguments;
+  }
 
-    displayedColumns = ['columnLabel','columnName', 'columnType', 'columnFormat','prefix','suffix', 'grouping', 'unit', 'arguments'];
-    dataSource = this.data.outputs;
+  displayedColumns = ['columnLabel', 'columnName', 'columnType', 'columnFormat', 'prefix', 'suffix', 'grouping', 'unit', 'arguments'];
+  dataSource = this.data.outputs;
 
-    dropTable(event: CdkDragDrop<any[]>) {
-      const prevIndex = this.dataSource.findIndex((d) => d === event.item.data);
-      moveItemInArray(this.dataSource, prevIndex, event.currentIndex);
-      this.table.renderRows();
-      console.log(this.dataSource)
+  dropTable(event: CdkDragDrop<any[]>) {
+    const prevIndex = this.dataSource.findIndex((d) => d === event.item.data);
+    moveItemInArray(this.dataSource, prevIndex, event.currentIndex);
+    this.table.renderRows();
+    console.log(this.dataSource)
+  }
+
+
+  addOption() {
+    this.data.outputs.push({
+      uid: null,
+      id: null,
+      checked: false,
+      order: 'desc',
+      optionId: this.data.option.id,
+      columnLabel: '',
+      columnName: '',
+      columnType: 'string',
+      columnFormat: null,
+      grouping: 0,
+      unit: '',
+      argumentsId: '',
+      function: '1',
+      delete: false
+    });
+    this.dataSource = new MatTableDataSource(this.data.outputs);
+  }
+
+  UploadColumn() {
+    if (this.data.outputs.length==0){
+    this.service.loadWebservicColumn(this, this.data.option.baseUrl, this.handlerSuccessMetaColumn, this.handlerErrorMetaColumn);
+    }else {
+      //mostrar MJ
+      const dialogRef2 = this.dialog.open(MessageComponent, {
+        data: { title: "Information", message: "if you want to load the columns, you should delete the columns that exist" }
+      });
     }
+  }
 
-
-    addOption() {
-      this.data.outputs.push({
-        uid:null,
-        id: null,
-        checked: false,
-        order: 'desc',
-        optionId: this.data.option.id,
-        columnLabel: '',
-        columnName: '',
-        columnType: 'string',
-        columnFormat: null,
-        grouping: 0,
-        unit: '',
-        argumentsId: '',
-        function:'1',
-        delete: false});
-      this.dataSource = new MatTableDataSource(this.data.outputs);
-    }
-
-    onNoClick(): void {
-      this.dialogRef.close();
-    }
-
-    sendData() {
-      this.saveOrder();
-      this.dataToSend = this.data.outputs.concat(this.dataToDelete);
-      this.dialogRef.close(this.dataToSend);
-    }
-
-    saveOrder(){
-      for (let i=0; i< this.data.outputs.length;i++){
-        this.data.outputs[i].columnOrder = i;
-        console.log(this.data.outputs[i]);
+  handlerSuccessMetaColumn(_this, result) {
+    if (result.length!=0) {
+      for (let i = 0; i < result.length; i++) {
+        _this.data.outputs.push({
+          uid: null,
+          id: null,
+          checked: false,
+          order: 'desc',
+          optionId: _this.data.option.id,
+          columnLabel: result[i].name,
+          columnName: result[i].name,
+          columnType: 'string',
+          columnFormat: null,
+          grouping: 0,
+          unit: '',
+          argumentsId: '',
+          function: '1',
+          delete: false
+        });
       }
+      _this.dataSource = new MatTableDataSource(_this.data.outputs);
+    } else {
+      //mostrar MJ
+      const dialogRef2 = _this.dialog.open(MessageComponent, {
+        data: { title: "Error", message: "Columns not found" }
+      });
     }
+  }
 
-    selectRow(row) {
-      this.optionSelected = row;
+
+  handlerErrorMetaColumn(_this, result) {
+    console.log(result);
+    _this.globals.isLoading = false;
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  sendData() {
+    this.saveOrder();
+    this.dataToSend = this.data.outputs.concat(this.dataToDelete);
+    this.dialogRef.close(this.dataToSend);
+  }
+
+  saveOrder() {
+    for (let i = 0; i < this.data.outputs.length; i++) {
+      this.data.outputs[i].columnOrder = i;
+      console.log(this.data.outputs[i]);
+    }
+  }
+
+  selectRow(row) {
+    this.optionSelected = row;
   }
 
   deleteOption() {
@@ -319,25 +368,25 @@ export class EditCategoryArgumentDialog {
 
   constructor(
     public dialogRef: MatDialogRef<EditCategoryArgumentDialog>,
-    @Inject(MAT_DIALOG_DATA) public data,public dialog:MatDialog) {
+    @Inject(MAT_DIALOG_DATA) public data, public dialog: MatDialog) {
 
-     }
+  }
 
 
 
   onNoClick(): void {
     this.dialogRef.close();
   }
-  showPreview(argument){
-    this.dialog.open (DialogArgumentPreviewComponent, {
+  showPreview(argument) {
+    this.dialog.open(DialogArgumentPreviewComponent, {
       height: "560px",
       width: "500px",
       panelClass: 'msf-argument-preview-popup',
-      data:argument
+      data: argument
     });
-}
+  }
 
-selectArgumentCategory(category) {
+  selectArgumentCategory(category) {
     if (this.itemSelected != category) {
       category.isSelected = !category.isSelected;
       this.itemSelected.isSelected = !this.itemSelected.isSelected;
@@ -437,8 +486,8 @@ export class ExampleFlatNode {
   order: any;
   selected: any;
   applicationId: any;
-  isRoot :any;
-  children : any[];
+  isRoot: any;
+  children: any[];
   initialRol: string;
   finalRol: string;
   typeOption: string;
@@ -461,33 +510,33 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   private transformer = (node: any, level: number) => {
     const existingNode = this.nestedNodeMap.get(node);
     const flatNode = existingNode && existingNode.label === node.label
-        ? existingNode
-        : new ExampleFlatNode();
-        flatNode.expandable= !!node.children && node.children.length > 0;
-        flatNode.id= node.id;
-        flatNode.uid= node.uid;
-        flatNode.label=node.label;
-        flatNode.level=level;
-        flatNode.menuOptionArgumentsAdmin=node.menuOptionArgumentsAdmin;
-        flatNode.categoryParentId=node.categoryParentId;
-        flatNode.baseUrl= node.baseUrl;
-        flatNode.icon= node.icon;
-        flatNode.tab= node.tab;
-        flatNode.tabType= node.tabType;
-        flatNode.menuParentId= node.menuParentId;
-        flatNode.toDelete= node.toDelete;
-        flatNode.dataAvailability= node.dataAvailability;
-        flatNode.metaData=node.metaData;
-        flatNode.order=node.order,
-        flatNode.selected= node.selected;
-        flatNode.applicationId= node.applicationId;
-        flatNode.isRoot = node.isRoot;
-        flatNode.children = node.children;
-        flatNode.initialRol = node.initialRol;
-        flatNode.finalRol = node.finalRol;
-        flatNode.typeOption = node.typeOption;
-        this.flatNodeMap.set(flatNode, node);
-        this.nestedNodeMap.set(node, flatNode);
+      ? existingNode
+      : new ExampleFlatNode();
+    flatNode.expandable = !!node.children && node.children.length > 0;
+    flatNode.id = node.id;
+    flatNode.uid = node.uid;
+    flatNode.label = node.label;
+    flatNode.level = level;
+    flatNode.menuOptionArgumentsAdmin = node.menuOptionArgumentsAdmin;
+    flatNode.categoryParentId = node.categoryParentId;
+    flatNode.baseUrl = node.baseUrl;
+    flatNode.icon = node.icon;
+    flatNode.tab = node.tab;
+    flatNode.tabType = node.tabType;
+    flatNode.menuParentId = node.menuParentId;
+    flatNode.toDelete = node.toDelete;
+    flatNode.dataAvailability = node.dataAvailability;
+    flatNode.metaData = node.metaData;
+    flatNode.order = node.order,
+      flatNode.selected = node.selected;
+    flatNode.applicationId = node.applicationId;
+    flatNode.isRoot = node.isRoot;
+    flatNode.children = node.children;
+    flatNode.initialRol = node.initialRol;
+    flatNode.finalRol = node.finalRol;
+    flatNode.typeOption = node.typeOption;
+    this.flatNodeMap.set(flatNode, node);
+    this.nestedNodeMap.set(node, flatNode);
     return flatNode;
   };
   treeControl = new FlatTreeControl<ExampleFlatNode>(
@@ -528,7 +577,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   @ViewChild("materialIconPicker")
   materialIconPicker: MaterialIconPickerComponent;
 
-  optionTypes:any[] = [
+  optionTypes: any[] = [
     { name: 'Normal', value: 0 },
     { name: 'Main Menu Only', value: 1 },
     { name: 'Dashboard Only', value: 2 }
@@ -538,46 +587,45 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     private service: ApplicationService, public snackBar: MatSnackBar,
     public dialog: MatDialog, private ref: ChangeDetectorRef,
     private formBuilder: FormBuilder, public rend: Renderer2) {
-      this.optionForm = this.formBuilder.group ({
-        optionTypeCtrl: new FormControl ()
-      });
+    this.optionForm = this.formBuilder.group({
+      optionTypeCtrl: new FormControl()
+    });
 
-      this.dataChange.subscribe(data => {
-        this.dataSource.data = data;
-      });
+    this.dataChange.subscribe(data => {
+      this.dataSource.data = data;
+    });
   }
 
-  setChange(node){
+  setChange(node) {
     const nestedNode = this.flatNodeMap.get(node);
     nestedNode.label = node.label;
     this.dataChange.next(this.data);
   }
 
-  setChangeURL(node){
+  setChangeURL(node) {
     const nestedNode = this.flatNodeMap.get(node);
     nestedNode.baseUrl = node.baseUrl;
     this.dataChange.next(this.data);
   }
 
-  setChangeIcon(icon, node){
+  setChangeIcon(icon, node) {
     node.icon = icon;
     const nestedNode = this.flatNodeMap.get(node);
     nestedNode.icon = icon;
     this.dataChange.next(this.data);
   }
 
-  setChangeTab(node){
+  setChangeTab(node) {
     const nestedNode = this.flatNodeMap.get(node);
     nestedNode.tab = node.tab;
     this.dataChange.next(this.data);
   }
 
-  setChangeOptionType(item, node)
-  {
+  setChangeOptionType(item, node) {
     node.typeOption = item.value.value;
-    const nestedNode = this.flatNodeMap.get (node);
+    const nestedNode = this.flatNodeMap.get(node);
     nestedNode.typeOption = node.typeOption;
-    this.dataChange.next (this.data);
+    this.dataChange.next(this.data);
   }
 
   ngOnInit() {
@@ -589,34 +637,34 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
   }
 
-  filterMenuOptions(){
+  filterMenuOptions() {
     for (let index = 0; index < this.treeControl.dataNodes.length; index++) {
       const option = this.treeControl.dataNodes[index];
-      this.setShowOption(option,this)
-        this.recursiveOption(option,this);
+      this.setShowOption(option, this)
+      this.recursiveOption(option, this);
     }
-    if(this.searchTextOption){
+    if (this.searchTextOption) {
       this.treeControl.expandAll();
     } else {
       this.treeControl.collapseAll();
     }
   }
-  recursiveOption(option: any,_this) {
-    if(option.children.length!=0){
+  recursiveOption(option: any, _this) {
+    if (option.children.length != 0) {
       for (let index = 0; index < option.children.length; index++) {
         const element = option.children[index];
-        _this.setShowOption(element,_this)
-        _this.recursiveOption(element,this);
+        _this.setShowOption(element, _this)
+        _this.recursiveOption(element, this);
       }
-    }else{
-      _this.setShowOption(option,_this)
+    } else {
+      _this.setShowOption(option, _this)
     }
 
   }
 
-  setShowOption(option,_this){
-    if(_this.searchTextOption!="" && _this.searchTextOption!=null){
-      if(option.label.toLowerCase().indexOf(_this.searchTextOption)!=-1){
+  setShowOption(option, _this) {
+    if (_this.searchTextOption != "" && _this.searchTextOption != null) {
+      if (option.label.toLowerCase().indexOf(_this.searchTextOption) != -1) {
         option.show = true;
         // if(option.menuParentId!=null){
         //   _this.findOnMenu(option.menuParentId)
@@ -624,54 +672,54 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
         // if(option.categoryParentId!=null){
         //   _this.findOnMenu(option.categoryParentId)
         // }
-      }else{
+      } else {
         option.show = false;
       }
-    }else{
+    } else {
       option.show = true;
       // this.treeControl.expand(option);
     }
   }
 
-  findOnMenu(optionId){
+  findOnMenu(optionId) {
     for (let index = 0; index < this.treeControl.dataNodes.length; index++) {
       const option = this.treeControl.dataNodes[index];
-      if(optionId==option.id){
+      if (optionId == option.id) {
         this.treeControl.expand(option);
         // option.isOpened=true;
-        if(option.menuParentId!=null){
+        if (option.menuParentId != null) {
           this.findOnMenu(option.menuParentId)
         }
-        if(option.categoryParentId!=null){
+        if (option.categoryParentId != null) {
           this.findOnMenu(option.categoryParentId)
         }
-      }else{
-        if(option.children.length!=0){
-            this.findOnMenuRecursive(option.children,this,optionId);
+      } else {
+        if (option.children.length != 0) {
+          this.findOnMenuRecursive(option.children, this, optionId);
         }
       }
 
     }
   }
 
-  findOnMenuRecursive(options: any[], _this,optionId) {
+  findOnMenuRecursive(options: any[], _this, optionId) {
     for (let index = 0; index < options.length; index++) {
       const element = options[index];
-        if(optionId==element.id){
-          element.isOpened=true;
-          if(element.menuParentId!=null){
-            _this.findOnMenu(element.menuParentId)
-          }
-          if(element.categoryParentId!=null){
-            _this.findOnMenu(element.categoryParentId)
-          }
-        }else{
-          if(element.children.length!=0){
-            this.findOnMenuRecursive(element.children,this,optionId);
+      if (optionId == element.id) {
+        element.isOpened = true;
+        if (element.menuParentId != null) {
+          _this.findOnMenu(element.menuParentId)
+        }
+        if (element.categoryParentId != null) {
+          _this.findOnMenu(element.categoryParentId)
+        }
+      } else {
+        if (element.children.length != 0) {
+          this.findOnMenuRecursive(element.children, this, optionId);
         }
       }
     }
-}
+  }
 
   getCategoryArguments() {
     this.service.loadCategoryArguments(this, this.handlerSuccessCategoryArguments, this.handlerErrorCategoryArguments);
@@ -692,15 +740,15 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     this.service.loadWebservicMetaAdmin(this, this.optionSelected, this.handlerSuccessMeta, this.handlerErrorMeta);
   }
 
-  getArgumentsByOption(){
+  getArgumentsByOption() {
     this.service.loadArgumentsMeta(this, this.optionSelected, this.handlerSuccessArgumentsMeta, this.handlerErrorMeta);
   }
 
-  editVariables(item){
+  editVariables(item) {
     var index;
     this.optionSelected.menuOptionArgumentsAdmin.forEach(element => {
       element.categoryArgumentsId.forEach(element2 => {
-        if (element2.id==item.id) {
+        if (element2.id == item.id) {
           index = element;
         }
       });
@@ -712,11 +760,11 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
 
 
-  handlerSuccessArgumentsMeta(___this,result){
+  handlerSuccessArgumentsMeta(___this, result) {
     ___this.argumentsDrillDown = result;
     const dialogRef = ___this.dialog.open(EditOutputOptionsMetaDialog, {
       width: '90%',
-      data: {outputs : ___this.outputs, option : ___this.optionSelected, arguments: ___this.argumentsDrillDown}
+      data: { outputs: ___this.outputs, option: ___this.optionSelected, arguments: ___this.argumentsDrillDown }
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
@@ -727,8 +775,8 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     });
   }
   handlerSuccessMeta(__this, result) {
-      __this.outputs = result;
-      __this.getArgumentsByOption();
+    __this.outputs = result;
+    __this.getArgumentsByOption();
 
 
 
@@ -738,24 +786,22 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     _this.globals.isLoading = false;
   }
   getOptionSelected(option) {
-      this.optionSelected.isActive = false;
-      option.isActive = option.isActive == null ? true : !option.isActive;
-      this.optionSelected = option;
+    this.optionSelected.isActive = false;
+    option.isActive = option.isActive == null ? true : !option.isActive;
+    this.optionSelected = option;
 
-      this.optionForm.get ('optionTypeCtrl').setValue (null);
+    this.optionForm.get('optionTypeCtrl').setValue(null);
 
-      for (let i = 0; i < this.optionTypes.length; i++)
-      {
-        if (option.typeOption == this.optionTypes[i].value)
-        {
-          this.optionForm.get ('optionTypeCtrl').setValue (this.optionTypes[i]);
-          break;
-        }
+    for (let i = 0; i < this.optionTypes.length; i++) {
+      if (option.typeOption == this.optionTypes[i].value) {
+        this.optionForm.get('optionTypeCtrl').setValue(this.optionTypes[i]);
+        break;
       }
+    }
 
-      if (!option.isRoot && option.id) {
-        this.getOptionCategoryArguments();
-      }
+    if (!option.isRoot && option.id) {
+      this.getOptionCategoryArguments();
+    }
   }
 
   getSelectIdDom(idDomOption) {
@@ -839,28 +885,25 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
       });
       dialogRef.afterClosed().subscribe((result: any) => {
         console.log(result.confirm);
-        if (result.confirm){
+        if (result.confirm) {
 
-          if (this.optionSelected.uid.includes ("catnew") || this.optionSelected.uid.includes ("optnew"))
-            this.deleteNewItem ();
-          else
-          {
+          if (this.optionSelected.uid.includes("catnew") || this.optionSelected.uid.includes("optnew"))
+            this.deleteNewItem();
+          else {
             // check if any dashboard panel is using the selected option
             this.globals.isLoading = true;
-            this.service.checkMenuOption (this, this.optionSelected.id, this.checkSuccess, this.checkError);
+            this.service.checkMenuOption(this, this.optionSelected.id, this.checkSuccess, this.checkError);
           }
         }
       });
     }
   }
 
-  checkSuccess(_this, result)
-  {
-    if (!result)
-    {
+  checkSuccess(_this, result) {
+    if (!result) {
       _this.globals.isLoading = false;
-      _this.dialog.open (MessageComponent, {
-        data: { title:"Error", message: "Unable to delete menu option, it or its children is being used on dashboard panels." }
+      _this.dialog.open(MessageComponent, {
+        data: { title: "Error", message: "Unable to delete menu option, it or its children is being used on dashboard panels." }
       });
 
       return;
@@ -868,7 +911,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
     console.log("entra");
     _this.optionSelected.toDelete = true;
-    _this.optionSelected.label+="....";
+    _this.optionSelected.label += "....";
     const nestedNode = _this.flatNodeMap.get(_this.optionSelected);
     nestedNode.toDelete = true;
     _this.dataChange.next(_this.data);
@@ -878,32 +921,31 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     _this.saveMenu();
   }
 
-  checkError(_this, error)
-  {
+  checkError(_this, error) {
     _this.globals.isLoading = false;
-    console.log (error);
+    console.log(error);
   }
 
-  saveNewArgumentsCategory(category){
+  saveNewArgumentsCategory(category) {
     let arrayArg = [];
     arrayArg.push(category);
     this.service.saveNewCategoryArguments(this, arrayArg, this.handlerSuccess, this.handlerErrorMeta);
 
   }
 
-   handlerSuccess(_this, result){
-     _this.categories = result;
-     _this.getOptionCategoryArguments();
+  handlerSuccess(_this, result) {
+    _this.categories = result;
+    _this.getOptionCategoryArguments();
 
   }
 
-  addCategoryArguments(){
+  addCategoryArguments() {
     const dialogRef = this.dialog.open(NewCategoryDialog, {
       width: '70%',
       data: this.categories
     });
     dialogRef.afterClosed().subscribe((result: any) => {
-      if (result){
+      if (result) {
         this.categories = result;
         this.saveNewArgumentsCategory(result);
       }
@@ -912,16 +954,16 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
 
   saveMenu() {
-    this.emptyError=0;
+    this.emptyError = 0;
     let verify = this.verifyMenu();
-    if (verify > 0){
+    if (verify > 0) {
       const dialogRef = this.dialog.open(MessageComponent, {
-        data: { title:"Error", message: "You have empty options, please complete them and try again."}
+        data: { title: "Error", message: "You have empty options, please complete them and try again." }
       });
-    }else {
+    } else {
       this.verifyOrder();
       console.log(this.dataSource.data);
-     this.service.saveMenu(this, this.dataSource.data, this.handlerSuccessSaveMenuData, this.handlerErrorSaveMenuData);
+      this.service.saveMenu(this, this.dataSource.data, this.handlerSuccessSaveMenuData, this.handlerErrorSaveMenuData);
     }
   }
 
@@ -933,75 +975,75 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     _this.getMenuData();
   }
 
-  verifyMenu(){
+  verifyMenu() {
 
-    for (let i=0; i < this.menu.length; i++){
+    for (let i = 0; i < this.menu.length; i++) {
       let optionMenu = this.menu[i];
-      if (((optionMenu['label'] == null) || (optionMenu['label'] == ""))  &&  !optionMenu.toDelete){
-        this.emptyError = this.emptyError+1;
+      if (((optionMenu['label'] == null) || (optionMenu['label'] == "")) && !optionMenu.toDelete) {
+        this.emptyError = this.emptyError + 1;
       }
       this.recursiveVerify(optionMenu);
     }
-    let valueError =  this.emptyError;
+    let valueError = this.emptyError;
     return valueError;
-    }
+  }
 
 
-  recursiveVerify(option){
-    if(option.children.length > 0){
-      for (let i=0; i<option.children.length; i++){
+  recursiveVerify(option) {
+    if (option.children.length > 0) {
+      for (let i = 0; i < option.children.length; i++) {
         const element = option.children[i];
-        if((element['label'] == null) || (element['label'] == "")){
-          this.emptyError = this.emptyError+1;
+        if ((element['label'] == null) || (element['label'] == "")) {
+          this.emptyError = this.emptyError + 1;
         }
-        if(element.children.length > 0){
+        if (element.children.length > 0) {
           this.recursiveVerify(element);
-      }
+        }
       }
     }
 
   }
 
-  verifyOrder(){
-    for (let i=0; i < this.dataSource.data.length; i++){
+  verifyOrder() {
+    for (let i = 0; i < this.dataSource.data.length; i++) {
       let optionMenu = this.dataSource.data[i];
       optionMenu.order = i;
       optionMenu.finalRol = 'cat';
-      if(optionMenu.initialRol == 'opt'  &&  optionMenu.finalRol == 'cat') {
+      if (optionMenu.initialRol == 'opt' && optionMenu.finalRol == 'cat') {
         optionMenu.toChange = true;
-        optionMenu.applicationId= this.globals.currentApplication.id;
+        optionMenu.applicationId = this.globals.currentApplication.id;
       }
-      for (let j=0; j < optionMenu.children.length;j++){
+      for (let j = 0; j < optionMenu.children.length; j++) {
         let optionCat = optionMenu.children[j];
         optionCat.order = j;
         optionCat.finalRol = 'opt';
         optionCat.categoryParentId = optionMenu.id;
-        if(optionCat.initialRol == 'cat'  &&  optionCat.finalRol == 'opt') {
+        if (optionCat.initialRol == 'cat' && optionCat.finalRol == 'opt') {
           optionCat.toChange = true;
           optionCat.idToChange = optionCat.id;
           optionCat.id = null;
         }
-        if(optionCat.children){
-        this.recursiveOrder(optionCat);
+        if (optionCat.children) {
+          this.recursiveOrder(optionCat);
         }
       }
     }
-    }
+  }
 
 
-  recursiveOrder(option){
-    if(option.children.length > 0){
-      for (let i=0; i<option.children.length; i++){
+  recursiveOrder(option) {
+    if (option.children.length > 0) {
+      for (let i = 0; i < option.children.length; i++) {
         option.children[i].order = i;
         option.children[i].parentId = option.id;
         option.children[i].finalRol = 'opt';
         option.children[i].categoryParentId = null;
-        if(option.children[i].initialRol == 'cat'  &&  option.children[i].finalRol == 'opt') {
+        if (option.children[i].initialRol == 'cat' && option.children[i].finalRol == 'opt') {
           option.children[i].toChange = true;
         }
-        if(option.children[i].children.length > 0){
+        if (option.children[i].children.length > 0) {
           this.recursiveOrder(option.children[i]);
-      }
+        }
       }
     }
   }
@@ -1034,7 +1076,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     this.optionSelected = {};
   }
 
-hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
+  hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
 
   handlerGetSuccessMenuData(_this, data) {
     _this.menu = data;
@@ -1045,12 +1087,12 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
     _this.dataChange.next(data);
   }
 
-  getUniqueIdDrop(data){
-    for (let i=0; i < data.length; i++){
+  getUniqueIdDrop(data) {
+    for (let i = 0; i < data.length; i++) {
       let option = data[i];
       option.uid = `cat${option.id}`;
       option.initialRol = 'cat';
-      for (let j=0; j < option.children.length;j++){
+      for (let j = 0; j < option.children.length; j++) {
         let optionChild = option.children[j];
         optionChild.uid = `op${optionChild.id}`;
         optionChild.initialRol = 'opt';
@@ -1059,13 +1101,13 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
     }
   }
 
-  getUniqueIdDropRecursive(option){
-    if(option.children.length > 0){
-      for (let i=0; i<option.children.length; i++){
+  getUniqueIdDropRecursive(option) {
+    if (option.children.length > 0) {
+      for (let i = 0; i < option.children.length; i++) {
         let optionChild = option.children[i];
         optionChild.initialRol = 'opt';
         optionChild.uid = `opr${optionChild.id}`;
-        if(optionChild.children.length > 0){
+        if (optionChild.children.length > 0) {
           this.getUniqueIdDropRecursive(optionChild);
         }
       }
@@ -1208,7 +1250,7 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
     console.log(node);
   }
 
-  printAll(){
+  printAll() {
     console.log(this.dataSource.data)
   }
 
@@ -1216,18 +1258,17 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
     console.log(category)
     // var index = this.optionSelected.menuOptionArgumentsAdmin.findIndex(el => el.categoryArgumentsId.id == category.id);
     var index = -1;
-    this.optionSelected.menuOptionArgumentsAdmin.forEach(function(element,i){
-        element.categoryArgumentsId.forEach(function(element2,i2){
-          if(element2.id==category.id){
-              index = i;
-          }
-        })
+    this.optionSelected.menuOptionArgumentsAdmin.forEach(function (element, i) {
+      element.categoryArgumentsId.forEach(function (element2, i2) {
+        if (element2.id == category.id) {
+          index = i;
+        }
+      })
     });
 
     if (index != -1) {
       if (this.optionSelected.menuOptionArgumentsAdmin[index].id == undefined) {
-        for (let i = 0; i < this.optionSelected.menuOptionArgumentsAdmin.length; i++)
-        {
+        for (let i = 0; i < this.optionSelected.menuOptionArgumentsAdmin.length; i++) {
           if (this.optionSelected.menuOptionArgumentsAdmin[i].position && this.optionSelected.menuOptionArgumentsAdmin[i].position > this.optionSelected.menuOptionArgumentsAdmin[index].position)
             this.optionSelected.menuOptionArgumentsAdmin[i].position--;
         }
@@ -1235,24 +1276,20 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
         this.optionSelected.menuOptionArgumentsAdmin[index].position = -1;
         this.optionSelected.menuOptionArgumentsAdmin.splice(index, 1);
       } else {
-        if (category.selected)
-        {
+        if (category.selected) {
           let newPos = 0;
 
           // set new position for the argument
-          for (let categorySelected of this.optionSelected.menuOptionArgumentsAdmin)
-          {
+          for (let categorySelected of this.optionSelected.menuOptionArgumentsAdmin) {
             if (categorySelected.position > newPos)
               newPos = categorySelected.position;
           }
-    
+
           newPos++;
           this.optionSelected.menuOptionArgumentsAdmin[index].position = newPos;
         }
-        else
-        {
-          for (let i = 0; i < this.optionSelected.menuOptionArgumentsAdmin.length; i++)
-          {
+        else {
+          for (let i = 0; i < this.optionSelected.menuOptionArgumentsAdmin.length; i++) {
             if (this.optionSelected.menuOptionArgumentsAdmin[i].position && this.optionSelected.menuOptionArgumentsAdmin[i].position > this.optionSelected.menuOptionArgumentsAdmin[index].position)
               this.optionSelected.menuOptionArgumentsAdmin[i].position--;
           }
@@ -1266,8 +1303,7 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
       let newPos = 0;
 
       // set new position for the argument
-      for (let categorySelected of this.optionSelected.menuOptionArgumentsAdmin)
-      {
+      for (let categorySelected of this.optionSelected.menuOptionArgumentsAdmin) {
         if (categorySelected.position > newPos)
           newPos = categorySelected.position;
       }
@@ -1298,11 +1334,11 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
 
   saveCategoryArgument() {
     let arrayMenuOptionArg = [];
-    for(let i =0; i <this.optionSelected.menuOptionArgumentsAdmin.length;i++){
+    for (let i = 0; i < this.optionSelected.menuOptionArgumentsAdmin.length; i++) {
       arrayMenuOptionArg.push(this.optionSelected.menuOptionArgumentsAdmin[i]);
     }
     console.log(this.dataSource.data);
-   this.service.saveOptionsArgumentsCategory(this, arrayMenuOptionArg, this.optionSelected.id, this.handlerSuccessSaveCategoryArgument, this.handlerErrorSaveCategoryArgument);
+    this.service.saveOptionsArgumentsCategory(this, arrayMenuOptionArg, this.optionSelected.id, this.handlerSuccessSaveCategoryArgument, this.handlerErrorSaveCategoryArgument);
   }
 
   handlerSuccessSaveCategoryArgument(_this, result) {
@@ -1321,18 +1357,18 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
     this.getMeta();
   }
 
-  getMenuOptionsString(_this){
+  getMenuOptionsString(_this) {
     _this.service.getMenuString(_this, _this.globals.currentApplication.id, _this.handleSuccessString, _this.handlerErrorMeta);
   }
 
-  handleSuccessString(_this,data){
+  handleSuccessString(_this, data) {
     console.log(data);
     console.log(_this.optionSelected);
     console.log(_this.drillDown);
     let menuString = data;
     const dialogRef = _this.dialog.open(DrillDownDialog, {
       width: '90%',
-      data: {optionString : menuString, option : _this.optionSelected, drillDown : _this.drillDown}
+      data: { optionString: menuString, option: _this.optionSelected, drillDown: _this.drillDown }
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
@@ -1344,16 +1380,16 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
 
   }
 
-  getDrillDowns(){
+  getDrillDowns() {
     this.service.getDrillDownAdmin(this, this.optionSelected.id, this.handlerSuccessDrillDown, this.handlerErrorMeta);
   }
 
-  handlerSuccessDrillDown(_this,data){
+  handlerSuccessDrillDown(_this, data) {
     console.log(data);
     _this.drillDown = data;
     _this.getMenuOptionsString(_this);
   }
-  editDrillDown(){
+  editDrillDown() {
     this.getDrillDowns();
   }
 
@@ -1375,30 +1411,30 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
       }
     });
   }
-  saveMenuArguments(catId){
-    if(this.optionSelected.menuOptionArgumentsAdmin.length>0){
-    for (let i=0; i < this.optionSelected.menuOptionArgumentsAdmin.length;i++){
-      let aux = this.optionSelected.menuOptionArgumentsAdmin[i];
-      if(aux.id==null && catId.id==null){
-        if(aux.categoryArgumentsId[0].id == catId.categoryArgumentsId[0].id){
-          aux = catId;
-          this.optionSelected.menuOptionArgumentsAdmin[i] = aux;
+  saveMenuArguments(catId) {
+    if (this.optionSelected.menuOptionArgumentsAdmin.length > 0) {
+      for (let i = 0; i < this.optionSelected.menuOptionArgumentsAdmin.length; i++) {
+        let aux = this.optionSelected.menuOptionArgumentsAdmin[i];
+        if (aux.id == null && catId.id == null) {
+          if (aux.categoryArgumentsId[0].id == catId.categoryArgumentsId[0].id) {
+            aux = catId;
+            this.optionSelected.menuOptionArgumentsAdmin[i] = aux;
+          }
+        } else {
+          if (aux.id == catId.id) {
+            aux = catId;
+            this.optionSelected.menuOptionArgumentsAdmin[i] = aux;
+          }
         }
-      }else{
-        if(aux.id==catId.id){
-          aux = catId;
-          this.optionSelected.menuOptionArgumentsAdmin[i] = aux;
-        }
+
       }
+    } else {
+      catId.id = null;
+      catId.optionId = this.optionSelected.id;
+      this.optionSelected.menuOptionArgumentsAdmin.push(catId);
 
     }
-  }else{
-    catId.id = null;
-    catId.optionId = this.optionSelected.id;
-    this.optionSelected.menuOptionArgumentsAdmin.push(catId);
-
-  }
-  this.saveCategoryArgument();
+    this.saveCategoryArgument();
   }
 
   addNewItem() {
@@ -1407,42 +1443,36 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
     this.treeControl.expand(this.optionSelected);
   }
 
-  recursiveDelete(node)
-  {
+  recursiveDelete(node) {
     if (!node.children)
       return;
 
-    for (let i = 0; i < node.children.length; i++)
-    {
-      if (node.children[i].uid === this.optionSelected.uid)
-      {
-        node.children.splice (node.children.indexOf (this.optionSelected), 1);
-        this.dataChange.next (this.data);
+    for (let i = 0; i < node.children.length; i++) {
+      if (node.children[i].uid === this.optionSelected.uid) {
+        node.children.splice(node.children.indexOf(this.optionSelected), 1);
+        this.dataChange.next(this.data);
         this.recursiveDeleteDone = true;
       }
       else
-        this.recursiveDelete (node.children[i]);
+        this.recursiveDelete(node.children[i]);
 
       if (this.recursiveDeleteDone)
         break;
     }
   }
 
-  deleteNewItem()
-  {
+  deleteNewItem() {
     this.recursiveDeleteDone = false;
 
     // find the node and delete it
-    for (let i = 0; i < this.dataSource.data.length; i++)
-    {
-      if (this.dataSource.data[i].uid === this.optionSelected.uid)
-      {
-        this.dataSource.data.splice (this.dataSource.data.indexOf (this.optionSelected), 1);
-        this.dataChange.next (this.data);
+    for (let i = 0; i < this.dataSource.data.length; i++) {
+      if (this.dataSource.data[i].uid === this.optionSelected.uid) {
+        this.dataSource.data.splice(this.dataSource.data.indexOf(this.optionSelected), 1);
+        this.dataChange.next(this.data);
         this.recursiveDeleteDone = true;
       }
       else
-        this.recursiveDelete (this.dataSource.data[i]);
+        this.recursiveDelete(this.dataSource.data[i]);
 
       if (this.recursiveDeleteDone)
         break;
@@ -1452,44 +1482,47 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
   }
 
   insertItem(parent: any, name: string) {
-    if(parent){
-      parent.children.push({label: null,
-      uid: 'optnew'+parent.id+parent.children.length,
-      isActive:true,
-      baseUrl: null,
-      icon: null,
-      tab: null,
-      tabType: null,
-      parentId: null,
-      children: [],
-      toDelete: false,
-      isRoot: false,
-      typeOption: "0",
-      applicationId: this.globals.currentApplication.id,
-      metaData: 1,} as any);
+    if (parent) {
+      parent.children.push({
+        label: null,
+        uid: 'optnew' + parent.id + parent.children.length,
+        isActive: true,
+        baseUrl: null,
+        icon: null,
+        tab: null,
+        tabType: null,
+        parentId: null,
+        children: [],
+        toDelete: false,
+        isRoot: false,
+        typeOption: "0",
+        applicationId: this.globals.currentApplication.id,
+        metaData: 1,
+      } as any);
       this.dataChange.next(this.data);
-  }else{
-    this.dataSource.data.push({label: null,
-      uid: 'catnew'+this.dataSource.data.length,
-      baseUrl: null,
-      icon: null,
-      tab: null,
-      tabType: null,
-      parentId: null,
-      children: [],
-      toDelete: false,
-      isRoot: false,
-      typeOption: "0",
-      applicationId: this.globals.currentApplication.id,
-      metaData: 1,} as any);
+    } else {
+      this.dataSource.data.push({
+        label: null,
+        uid: 'catnew' + this.dataSource.data.length,
+        baseUrl: null,
+        icon: null,
+        tab: null,
+        tabType: null,
+        parentId: null,
+        children: [],
+        toDelete: false,
+        isRoot: false,
+        typeOption: "0",
+        applicationId: this.globals.currentApplication.id,
+        metaData: 1,
+      } as any);
       this.dataChange.next(this.data);
-  }
+    }
   }
 
   filterChanged() {
     this.filter(this.searchTextOption);
-    if(this.searchTextOption)
-    {
+    if (this.searchTextOption) {
       this.treeControl.expandAll();
     } else {
       this.treeControl.collapseAll();
@@ -1521,18 +1554,14 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
     this.dataChange.next(filteredTreeData);
   }
 
-  getIndex(checkbox: any)
-  {
+  getIndex(checkbox: any) {
     let index = -1;
 
-    if (this.optionSelected.menuOptionArgumentsAdmin)
-    {
-      for (let categorySelected of this.optionSelected.menuOptionArgumentsAdmin)
-      {
-        if (checkbox.label === categorySelected.categoryArgumentsId[0].label && !categorySelected.toDelete)
-        {
+    if (this.optionSelected.menuOptionArgumentsAdmin) {
+      for (let categorySelected of this.optionSelected.menuOptionArgumentsAdmin) {
+        if (checkbox.label === categorySelected.categoryArgumentsId[0].label && !categorySelected.toDelete) {
           if (!categorySelected.position)
-            categorySelected.position = this.optionSelected.menuOptionArgumentsAdmin.indexOf (categorySelected) + 1;
+            categorySelected.position = this.optionSelected.menuOptionArgumentsAdmin.indexOf(categorySelected) + 1;
 
           index = categorySelected.position;
           break;
@@ -1544,8 +1573,7 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
   }
 
   @HostListener('window:resize', ['$event'])
-  checkScreen(event): void
-  {
+  checkScreen(event): void {
     this.innerHeight = event.target.innerHeight;
 
     // if(!this.mobileQuery.matches)
@@ -1560,20 +1588,17 @@ hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
     // }
   }
 
-  getInnerHeight(): number
-  {
+  getInnerHeight(): number {
     return this.innerHeight;
   }
 
-  hideIconPicker(): void
-  {
+  hideIconPicker(): void {
     if (this.materialIconPicker)
-      this.materialIconPicker.disableIconPicker ();
+      this.materialIconPicker.disableIconPicker();
   }
 
-  isMatIcon(icon): boolean
-  {
-    return !icon.endsWith (".png");
+  isMatIcon(icon): boolean {
+    return !icon.endsWith(".png");
   }
 }
 

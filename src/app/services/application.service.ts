@@ -140,6 +140,11 @@ export class ApplicationService {
     this.http.get(_this, url, handlerSuccess, handlerError, null);
   }
 
+  loadWebservicColumn(_this,data,handlerSuccess, handlerError) {
+    let url = this.host+"/getAppColumnsRepository?search=" + data;
+    this.http.get(_this, url, handlerSuccess, handlerError, null);
+  }
+
   loadArgumentsMeta(_this,data,handlerSuccess, handlerError) {
     let url = this.host+"/getArgumentsByOption?optionId=" + data.id;
     this.http.get(_this, url, handlerSuccess, handlerError, null);
