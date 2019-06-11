@@ -528,8 +528,8 @@
           </div>
           <div class="msf-dashboard-chart-op-container">
             <mat-form-field class="msf-full-width">
-              <mat-select placeholder="Style" [(ngModel)]="values.analysis">
-                <mat-option *ngFor="let style of styles" [value]="style">
+              <mat-select placeholder="Style" [(ngModel)]="msfMapRef.currentMapType">
+                <mat-option *ngFor="let style of msfMapRef.mapTypes" [value]="style">
                   {{style.name}}
                 </mat-option>
               </mat-select>
@@ -542,8 +542,8 @@
           </div>
           <div class="msf-dashboard-chart-op-container">
             <mat-form-field class="msf-full-width">
-              <mat-select placeholder="Theme" [(ngModel)]="values.valueColumn">
-                <mat-option *ngFor="let theme of themes" [value]="theme">
+              <mat-select placeholder="Theme" [(ngModel)]="msfMapRef.currentMapStyle">
+                <mat-option *ngFor="let theme of msfMapRef.mapStyles" [value]="theme">
                   {{theme.name}}
                 </mat-option>
               </mat-select>
@@ -730,7 +730,7 @@
       </div>
       <div [ngClass]="moreResultsBtn ? 'msf-menu-more-button' : 'msf-menu-more-button disabled-more-button'"
           (click)="moreTableResults()" *ngIf="msfTableRef && msfTableRef.dataSource">
-        <img style="width: 16px;height: 16px;" src="../../assets/images/more.png" class="msf-menu-image msf-vertical-middle msf-line">
+        <img style="width: 16px; height: 16px;" src="../../assets/images/more.png" class="msf-menu-image msf-vertical-middle msf-line">
         <div class="msf-vertical-middle msf-line" style="font-size: 13px">More Result</div>
       </div>
       <div *ngIf="!haveTableDataSource()" [style.height.px]="35"></div>
@@ -749,7 +749,7 @@
       </button>
     </div>
     <div [style.height.px]="calcPanelHeight()" style="width: calc(100% - 50px)">
-      <app-msf-map #msfMapRef [isLoading]="values.isLoading" [heightOffset]="50" [useCancelButton]="false" [currentMapType]="values.analysis" [currentMapStyle]="values.valueColumn" (finishLoading)="finishMapboxLoading($event)"></app-msf-map>
+      <app-msf-map #msfMapRef [isLoading]="values.isLoading" [heightOffset]="50" [useCancelButton]="false" (finishLoading)="finishMapboxLoading($event)"></app-msf-map>
     </div>
   </div>
 </div>

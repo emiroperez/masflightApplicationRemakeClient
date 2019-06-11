@@ -64,10 +64,7 @@ export class MsfMapComponent implements OnInit {
     {id:"mapbox://styles/mapbox/light-v10",name:'Light'}
   ]; 
 
-  @Input("currentMapType")
   currentMapType = this.mapTypes[1];
-
-  @Input("currentMapStyle")
   currentMapStyle = this.mapStyles[1];
 
   resizeInterval: any;

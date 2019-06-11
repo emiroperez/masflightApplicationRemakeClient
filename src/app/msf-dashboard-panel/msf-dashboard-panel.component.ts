@@ -127,16 +127,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     { name: 'World', value: am4geodata_worldLow }
   ];
 
-  styles:any[] = [
-    { id:'line', name:'Lines' },                      
-    { id:'point', name:'Dots' }
-  ];
-
-  themes:any[] = [                  
-    { id:"mapbox://styles/mapbox/dark-v9", name:'Dark' },
-    { id:"mapbox://styles/mapbox/light-v10", name:'Light' }
-  ];
-
   @Input()
   values: MsfDashboardPanelValues;
   temp: MsfDashboardPanelValues;
@@ -232,6 +222,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.infoFunc1 = JSON.parse (JSON.stringify (this.functions));
     this.values.infoFunc2 = JSON.parse (JSON.stringify (this.functions));
     this.values.infoFunc3 = JSON.parse (JSON.stringify (this.functions));
+
+    this.msfMapRef.currentMapType = this.msfMapRef.mapTypes[1];
+    this.msfMapRef.currentMapStyle = this.msfMapRef.mapStyles[0];
   }
 
   ngOnChanges(changes: SimpleChanges): void
@@ -1371,6 +1364,21 @@ export class MsfDashboardPanelComponent implements OnInit {
         paletteColors: JSON.stringify (this.values.paletteColors),
         lastestResponse: JSON.stringify (this.values.lastestResponse),
         thresholds: JSON.stringify (this.values.thresholds)
+      };
+    }
+    else if (this.values.currentChartType.flags & ChartFlags.MAPBOX)
+    {
+      return {
+        id: this.values.id,
+        option: this.values.currentOption,
+        title: this.values.chartName,
+        chartType: this.chartTypes.indexOf (this.values.currentChartType),
+        categoryOptions: this.values.currentOptionCategories ? JSON.stringify (this.values.currentOptionCategories) : null,
+        updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0),
+        function: 1,
+        lastestResponse: JSON.stringify (this.values.lastestResponse),
+        analysis: this.msfMapRef.mapTypes.indexOf (this.msfMapRef.currentMapType),
+        values: this.msfMapRef.mapStyles.indexOf (this.msfMapRef.currentMapStyle)
       };
     }
     else if (this.values.currentChartType.flags & ChartFlags.FORM
@@ -3021,6 +3029,37 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       if (this.values.chartColumnOptions != null)
         this.variableCtrlBtnEnabled = true;
+
+      if (this.values.currentChartType.flags & ChartFlags.MAPBOX)
+      {
+        if (this.values.variable != null && this.values.variable != -1)
+        {
+          for (i = 0; i < this.msfMapRef.mapTypes.length; i++)
+          {
+            if (i == this.values.variable)
+            {
+              this.values.variable = this.msfMapRef.mapTypes[i];
+              break;
+            }
+          }
+        }
+        else
+          this.values.variable = this.msfMapRef.mapTypes[1];
+
+        if (this.values.valueColumn != null && this.values.valueColumn != -1)
+        {
+          for (i = 0; i < this.msfMapRef.mapStyles.length; i++)
+          {
+            if (i == this.values.valueColumn)
+            {
+              this.values.valueColumn = this.msfMapRef.mapStyles[i];
+              break;
+            }
+          }
+        }
+        else
+          this.values.valueColumn = this.msfMapRef.mapStyles[0];
+      }
 
       this.checkChartType ();
       return;
