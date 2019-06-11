@@ -405,7 +405,7 @@
       </div>
     </div>
   </ng-container>
-  <ng-container *ngIf="isMapPanel() || isMapboxPanel()">
+  <ng-container *ngIf="isMapPanel()">
     <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-picture-container">
       <div class="msf-dashboard-panel-picture-label-container">
         <div class="msf-dashboard-panel-picture-label">
@@ -508,6 +508,62 @@
           <div class="msf-dashboard-panel-control-variable-button">
             <button mat-mini-fab (click)="goToColorPicker()" color="primary">
               <mat-icon aria-label="Color Picker">palette</mat-icon>
+            </button>
+          </div>
+          <div class="msf-dashboard-panel-control-variable-button">
+            <button mat-mini-fab (click)="savePanel()" color="primary">
+              <mat-icon aria-label="Save Changes">save</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="isMapboxPanel()">
+    <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-picture-container">
+      <div class="msf-dashboard-chart-options-container">
+        <div class="msf-dashboard-chart-selector">
+          <div class="msf-dashboard-chart-analysis-title">
+            <mat-icon class="msf-dashboard-chart-icon">style</mat-icon>
+          </div>
+          <div class="msf-dashboard-chart-op-container">
+            <mat-form-field class="msf-full-width">
+              <mat-select placeholder="Style" [(ngModel)]="values.analysis">
+                <mat-option *ngFor="let style of styles" [value]="style">
+                  {{style.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="msf-dashboard-chart-selector">
+          <div class="msf-dashboard-chart-analysis-title">
+            <mat-icon class="msf-dashboard-chart-icon">brush</mat-icon>
+          </div>
+          <div class="msf-dashboard-chart-op-container">
+            <mat-form-field class="msf-full-width">
+              <mat-select placeholder="Theme" [(ngModel)]="values.valueColumn">
+                <mat-option *ngFor="let theme of themes" [value]="theme">
+                  {{theme.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="msf-dashboard-panel-sub-container-column">
+      <div class="msf-dashboard-chart-options-container">
+        <div class="msf-dashboard-panel-sub-container-column-reverse">
+          <button [disabled]="!generateBtnEnabled" mat-flat-button [ngClass]="generateBtnEnabled ? 'flat-button' : 'flat-button-disabled'" (click)="loadData()">Generate</button>
+          <div class="msf-dashboard-panel-control-variable-button">
+            <button [disabled]="!variableCtrlBtnEnabled" mat-mini-fab (click)="goToControlVariables()" color="primary">
+              <mat-icon aria-label="Control Variables">more_vert</mat-icon>
+            </button>
+          </div>
+          <div class="msf-dashboard-panel-control-variable-button">
+            <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated" mat-mini-fab (click)="goToChart()" color="primary">
+              <mat-icon aria-label="Go To Map">bar_chart</mat-icon>
             </button>
           </div>
           <div class="msf-dashboard-panel-control-variable-button">
@@ -693,7 +749,7 @@
       </button>
     </div>
     <div [style.height.px]="calcPanelHeight()" style="width: calc(100% - 50px)">
-      <app-msf-map #msfMapRef [isLoading]="values.isLoading" [heightOffset]="50" [useCancelButton]="false" (finishLoading)="finishMapboxLoading($event)"></app-msf-map>
+      <app-msf-map #msfMapRef [isLoading]="values.isLoading" [heightOffset]="50" [useCancelButton]="false" [currentMapType]="values.analysis" [currentMapStyle]="values.valueColumn" (finishLoading)="finishMapboxLoading($event)"></app-msf-map>
     </div>
   </div>
 </div>

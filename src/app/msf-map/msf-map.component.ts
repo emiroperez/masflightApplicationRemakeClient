@@ -64,8 +64,12 @@ export class MsfMapComponent implements OnInit {
     {id:"mapbox://styles/mapbox/light-v10",name:'Light'}
   ]; 
 
-  currentMapType;
-  currentMapStyle;
+  @Input("currentMapType")
+  currentMapType = this.mapTypes[1];
+
+  @Input("currentMapStyle")
+  currentMapStyle = this.mapStyles[1];
+
   resizeInterval: any;
   resizeTimeout: any;
 
@@ -76,8 +80,6 @@ export class MsfMapComponent implements OnInit {
 
 
   ngOnInit() {
-    this.currentMapType = this.mapTypes[1];
-    this.currentMapStyle = this.mapStyles[1];
   }
 
   ngOnChanges(changes: SimpleChanges): void

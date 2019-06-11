@@ -127,6 +127,16 @@ export class MsfDashboardPanelComponent implements OnInit {
     { name: 'World', value: am4geodata_worldLow }
   ];
 
+  styles:any[] = [
+    { id:'line', name:'Lines' },                      
+    { id:'point', name:'Dots' }
+  ];
+
+  themes:any[] = [                  
+    { id:"mapbox://styles/mapbox/dark-v9", name:'Dark' },
+    { id:"mapbox://styles/mapbox/light-v10", name:'Light' }
+  ];
+
   @Input()
   values: MsfDashboardPanelValues;
   temp: MsfDashboardPanelValues;
@@ -209,7 +219,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       valueOrientationCtrl: new FormControl ({ value: this.orientations[0], disabled: true }),
       intervalCtrl: new FormControl ({ value: 5, disabled: true }),
       geodataValueCtrl: new FormControl ({ value: '', disabled: true }),
-      geodataKeyCtrl: new FormControl ({ value: '', disabled: true }),
+      geodataKeyCtrl: new FormControl ({ value: '', disabled: true })
     });
   }
 
