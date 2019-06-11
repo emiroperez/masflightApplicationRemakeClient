@@ -1533,6 +1533,8 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     this.values.isLoading = true;
     this.values.displayMapbox = true;
+    this.msfMapRef.data = null;
+ 
     params = this.getParameters ();
     url = this.globals.baseUrl2 + "/getMapBoxTracking?" + params;
     console.log (url);
