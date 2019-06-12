@@ -9,7 +9,7 @@
   </div>
   Shared With Me
 </div>
-<div class="msf-dashboard-panel-container" id="msf-dashboard-drill-down-container" *ngIf="!globals.popupLoading">
+<div class="msf-dashboard-panel-container msf-dashboard-share-content-container" id="msf-dashboard-drill-down-container" *ngIf="!globals.popupLoading">
   <div class="msf-dashboard-panel-sub-container-column">
     <div class="msf-dashboard-panel-sub-container-column" id="msf-share-dashboard-container" *ngIf="dashboardItems.length">
       <mat-radio-group [(ngModel)]="selectedDashboardItem" style="flex-direction: column; display: flex">
@@ -25,7 +25,7 @@
     </div>
   </div>
 </div>
-<div class="msf-dashboard-control-variables-button" id="msf-dashboard-drill-down-container" *ngIf="!globals.popupLoading">
+<div class="msf-dashboard-control-variables-buttonr msf-dashboard-share-content-container" id="msf-dashboard-drill-down-container" *ngIf="!globals.popupLoading">
   <button [disabled]="!selectedDashboardItem" mat-flat-button [ngClass]="selectedDashboardItem ? 'flat-button' : 'flat-button-disabled'" (click)="addItem()">Add Item</button>
   <span class="button-separator"></span>
   <button [disabled]="!selectedDashboardItem" mat-flat-button [ngClass]="selectedDashboardItem ? 'flat-button' : 'flat-button-disabled'" (click)="removeItem()">Remove Item</button>
