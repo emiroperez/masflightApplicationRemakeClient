@@ -188,6 +188,7 @@ import { TwoFactorLoginDialogComponent } from './two-factor-login-dialog/two-fac
 import { DigitOnlyModule } from '@uiowa/digit-only';
 import { MaterialIconPickerComponent } from './material-icon-picker/material-icon-picker.component';
 import { CreateCustomerComponent } from './create-customer/create-customer.component';
+import { MsfMapCoordinatesComponent } from './msf-map-coordinates/msf-map-coordinates.component';
 
 @NgModule({
   declarations: [
@@ -353,7 +354,8 @@ import { CreateCustomerComponent } from './create-customer/create-customer.compo
     MsfDashboardPanelTypePipe,
     TwoFactorLoginDialogComponent,
     MaterialIconPickerComponent,
-    CreateCustomerComponent
+    CreateCustomerComponent,
+    MsfMapCoordinatesComponent
   ],
   imports: [
     BrowserModule,

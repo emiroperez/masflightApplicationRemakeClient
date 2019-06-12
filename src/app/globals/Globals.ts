@@ -72,6 +72,7 @@ export class Globals {
   popupMainElement: any;
   popupResponse: any;
   iconBefore: any;
+  coordinates: string = "";
   subDisplayedColumnNames: string[] = []; 
    initDataSource(){
     if(this.currentMenuCategory!= null){

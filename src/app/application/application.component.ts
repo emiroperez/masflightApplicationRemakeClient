@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, HostListener, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener, ChangeDetectorRef, NgZone } from '@angular/core';
 import { Menu } from '../model/Menu';
 import { Option } from '../model/Option';
 import { CategoryArguments } from '../model/CategoryArguments';
@@ -22,7 +22,18 @@ import { length } from '@amcharts/amcharts4/.internal/core/utils/Iterator';
 import { AuthService } from '../services/auth.service';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { AuthGuard } from '../guards/auth.guard';
+import * as am4core from "@amcharts/amcharts4/core";
+import * as am4maps from "@amcharts/amcharts4/maps";
+import { Utils } from '../commons/utils';
 
+// AmChart colors
+const black = am4core.color ("#000000");
+const white = am4core.color ("#ffffff");
+const cyan = am4core.color ("#00a3e1");
+const darkGreen = am4core.color ("#00be11");
+
+// SVG used for maps
+const targetSVG = "M9,0C4.029,0,0,4.029,0,9s4.029,9,9,9s9-4.029,9-9S13.971,0,9,0z M9,15.93 c-3.83,0-6.93-3.1-6.93-6.93S5.17,2.07,9,2.07s6.93,3.1,6.93,6.93S12.83,15.93,9,15.93 M12.5,9c0,1.933-1.567,3.5-3.5,3.5S5.5,10.933,5.5,9S7.067,5.5,9,5.5 S12.5,7.067,12.5,9z";
 
 @Component({
   selector: 'app-application',
@@ -47,6 +58,7 @@ export class ApplicationComponent implements OnInit {
 
   admin: boolean = false;
   ELEMENT_DATA: any[];
+  coordinates: any[] = [];
   //displayedColumns: string[] = [];
   variables;
 
@@ -57,7 +69,9 @@ export class ApplicationComponent implements OnInit {
   private _mobileQueryListener: () => void;
 
   constructor(public dialog: MatDialog, public globals: Globals, private menuService: MenuService,private router: Router,private excelService:ExcelService,
-    private appService: ApplicationService, private authService: AuthService,changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private authGuard: AuthGuard) {
+    private appService: ApplicationService, private authService: AuthService, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private authGuard: AuthGuard,
+    private zone: NgZone, private utils: Utils)
+  {
     this.status = false;
 
     this.mobileQuery = media.matchMedia('(max-width: 768px)');
@@ -242,7 +256,13 @@ toggle(){
     }
   }
 
-  search(){
+  search() {
+    if (this.globals.currentOption.metaData == 3)
+    {
+      this.configureCoordinates ();
+      return;
+    }
+
     this.globals.moreResults = false;
     this.globals.query = true;
     if(this.globals.currentOption.metaData==2){
@@ -333,17 +353,24 @@ toggle(){
   disabled(){
     let option:any = this.globals.currentOption;
     let disabled = false;
-    if(option && option.menuOptionArguments){
-      for( let menuOptionArguments of option.menuOptionArguments){
-          if(menuOptionArguments.categoryArguments){
-            if( menuOptionArguments.categoryArguments){
-              for( let i = 0; i < menuOptionArguments.categoryArguments.length;i++){
+    if (option)
+    {
+      if (option.metaData == 3)
+      {
+        if (!this.globals.coordinates.length)
+          disabled = true;
+      }
+      else if (option.menuOptionArguments) {
+        for (let menuOptionArguments of option.menuOptionArguments) {
+          if (menuOptionArguments.categoryArguments) {
+            if (menuOptionArguments.categoryArguments) {
+              for (let i = 0; i < menuOptionArguments.categoryArguments.length; i++) {
                 let category: CategoryArguments = menuOptionArguments.categoryArguments[i];
-                if(category && category.arguments){
-                  for( let j = 0; j < category.arguments.length;j++){
+                if (category && category.arguments) {
+                  for (let j = 0; j < category.arguments.length; j++) {
                     let argument: Arguments = category.arguments[j];
-                    if(argument.required==1){
-                      if((argument.value1 == null || argument.value1 == "") || (argument.name2 && (argument.value2 == null || argument.value2 == ""))){
+                    if (argument.required == 1) {
+                      if ((argument.value1 == null || argument.value1 == "") || (argument.name2 && (argument.value2 == null || argument.value2 == ""))) {
                         return true;
                       }
                     }
@@ -354,6 +381,7 @@ toggle(){
           }
         }
       }
+    }
 
     return disabled;
   }
@@ -504,5 +532,154 @@ toggle(){
   {
     if (this.msfContainerRef && this.msfContainerRef.msfTableRef)
       this.msfContainerRef.msfTableRef = null;
+  }
+
+  parseCoordinates(): void
+  {
+    let coordsString;
+    let pos = 0;
+
+    this.coordinates = [];
+
+    do
+    {
+      let commaPos, endCoords;
+
+      coordsString = this.globals.coordinates.substring(pos);
+      commaPos = coordsString.indexOf (',');
+      endCoords = coordsString.indexOf ('\n');
+      if (endCoords == -1)
+        endCoords = coordsString.length;
+
+      this.coordinates.push ({
+        latitude: parseFloat (coordsString.substring (0, commaPos)),
+        longitude: parseFloat (coordsString.substring (commaPos + 1, endCoords))
+      });
+
+      pos += endCoords + 1;
+    }
+    while (pos < this.globals.coordinates.length);
+  }
+
+  configureCoordinates(): void
+  {
+    let sumX, sumY, sumZ, avgX, avgY, avgZ, lng, hyp, lat, zoomlat, zoomlong;
+    let imageSeriesTemplate, circle, zoomLevel;
+    let coordinates = [];
+
+    this.parseCoordinates ();
+
+    this.zone.runOutsideAngular(() => {
+      // Remove any existing image and lines series from the map
+      if (this.globals.scheduleImageSeries != null)
+      {
+        this.globals.scheduleChart.series.removeIndex (this.globals.scheduleChart.series.indexOf (this.globals.scheduleImageSeries));
+        this.globals.scheduleImageSeries = null;
+      }
+
+      if (this.globals.scheduleLineSeries != null)
+      {
+        this.globals.scheduleChart.series.removeIndex (this.globals.scheduleChart.series.indexOf (this.globals.scheduleLineSeries));
+        this.globals.scheduleLineSeries = null;
+      }
+
+      if (this.globals.scheduleShadowLineSeries != null)
+      {
+        this.globals.scheduleChart.series.removeIndex (this.globals.scheduleChart.series.indexOf (this.globals.scheduleShadowLineSeries));
+        this.globals.scheduleShadowLineSeries = null;
+      }
+
+      // Create image container for the circles and city labels
+      this.globals.scheduleImageSeries = this.globals.scheduleChart.series.push (new am4maps.MapImageSeries ());
+      imageSeriesTemplate = this.globals.scheduleImageSeries.mapImages.template;
+
+      // Set property fields for the coordinates
+      imageSeriesTemplate.propertyFields.latitude = "latitude";
+      imageSeriesTemplate.propertyFields.longitude = "longitude";
+      imageSeriesTemplate.horizontalCenter = "middle";
+      imageSeriesTemplate.verticalCenter = "middle";
+      imageSeriesTemplate.width = 8;
+      imageSeriesTemplate.height = 8;
+      imageSeriesTemplate.scale = 1;
+      imageSeriesTemplate.fill = black;
+      imageSeriesTemplate.background.fillOpacity = 0;
+      imageSeriesTemplate.background.fill = white;
+      imageSeriesTemplate.setStateOnChildren = true;
+
+      // Configure circle
+      circle = imageSeriesTemplate.createChild (am4core.Sprite);
+      circle.defaultState.properties.fillOpacity = 1;
+      circle.path = targetSVG;
+      circle.scale = 0.75;
+      circle.fill = white;
+      circle.dx -= 2.5;
+      circle.dy -= 2.5;
+
+      sumX = 0;
+      sumY = 0;
+      sumZ = 0;
+
+      for (let coordinate of this.coordinates)
+      {
+        let newCoordinate, tempLatCos, tempLat, tempLng;
+
+        newCoordinate = this.globals.scheduleImageSeries.mapImages.create ();
+        newCoordinate.latitude = coordinate.latitude;
+        newCoordinate.longitude = coordinate.longitude;
+        newCoordinate.nonScaling = true;
+
+        coordinates.push (newCoordinate);
+
+        tempLat = this.utils.degr2rad (newCoordinate.latitude);
+        tempLng = this.utils.degr2rad (newCoordinate.longitude);
+        tempLatCos = Math.cos(tempLat);
+        sumX += tempLatCos * Math.cos (tempLng);
+        sumY += tempLatCos * Math.sin (tempLng);
+        sumZ += Math.sin (tempLat);
+      }
+
+      console.log (sumX + "-" + sumY + "-" + sumZ);
+      avgX = sumX / coordinates.length;
+      avgY = sumY / coordinates.length;
+      avgZ = sumZ / coordinates.length;
+
+      // convert average x, y, z coordinate to latitude and longtitude
+      lng = Math.atan2 (avgY, avgX);
+      hyp = Math.sqrt (avgX * avgX + avgY * avgY);
+      lat = Math.atan2 (avgZ, hyp);
+      zoomlat = this.utils.rad2degr (lat);
+      zoomlong = this.utils.rad2degr (lng);
+
+      // Create map line series and connect to the cities
+      this.globals.scheduleLineSeries = this.globals.scheduleChart.series.push (new am4maps.MapLineSeries ());
+      this.globals.scheduleLineSeries.zIndex = 10;
+
+      this.globals.scheduleShadowLineSeries = this.globals.scheduleChart.series.push (new am4maps.MapLineSeries ());
+      this.globals.scheduleShadowLineSeries.mapLines.template.line.strokeOpacity = 0;
+      this.globals.scheduleShadowLineSeries.mapLines.template.line.nonScalingStroke = true;
+      this.globals.scheduleShadowLineSeries.mapLines.template.shortestDistance = false;
+      this.globals.scheduleShadowLineSeries.zIndex = 5;
+
+      if (!coordinates.length)
+      {
+        zoomLevel = 1;
+        zoomlat = 24.8567;
+        zoomlong = 2.3510;
+      }
+      else
+        zoomLevel = 4;
+
+      this.globals.scheduleChart.deltaLongitude = 360 - Number (zoomlong);
+      this.globals.scheduleChart.homeGeoPoint.longitude = Number (zoomlong);
+      this.globals.scheduleChart.homeGeoPoint.latitude = Number (zoomlat);
+      this.globals.scheduleChart.homeZoomLevel = zoomLevel - 0.1;
+      this.globals.scheduleChart.goHome();
+
+      // Workaround to avoid double lines
+      setTimeout(() => {
+        this.globals.scheduleChart.homeZoomLevel = zoomLevel;
+        this.globals.scheduleChart.goHome ();
+      }, 50);
+    });
   }
 }
