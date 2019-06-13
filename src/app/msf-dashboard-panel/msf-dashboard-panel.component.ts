@@ -1973,23 +1973,10 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.tableGenerated = false;
     _this.values.mapboxGenerated = true;
 
-    if (_this.values.style.id === 'line')
-    {
-      _this.msfMapRef.currentMapType.id = 'point';
-
-      setTimeout (() => {
-        _this.values.isLoading = false;
-        _this.msfMapRef.currentMapType.id = 'line';
-        _this.msfMapRef.resizeMap ();
-      }, 50);
-    }
-    else
-    {
-      setTimeout (() => {
-        _this.values.isLoading = false;
-        _this.msfMapRef.resizeMap ();
-      }, 50);
-    }
+    setTimeout (() => {
+      _this.values.isLoading = false;
+      _this.msfMapRef.resizeMap ();
+    }, 50);
 
     _this.stopUpdateInterval ();
     _this.startUpdateInterval ();

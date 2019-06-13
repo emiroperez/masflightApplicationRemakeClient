@@ -74,7 +74,7 @@ export class MsfMapComponent implements OnInit {
   displayOptionPanel: boolean;
 
   @Input("displayMapMenu")
-  displayMapMenu: boolean = true;
+  displayMapMenu: number = 1;
 
   constructor( private zone: NgZone, private services: ApplicationService, public globals: Globals) { }
 
@@ -84,6 +84,17 @@ export class MsfMapComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void
   {
+    if (changes['displayMapMenu'] && this.displayMapMenu)
+    {
+      // use dots as the default map type
+      this.mapReady = false;
+      this.zoom = [1];
+      this.center = [-73.968285, 40.785091];
+      this.data = [];
+      this.coordinates = [];
+      this.refreshDotMapType ();
+    }
+
     if (changes['displayOptionPanel'])
     {
       if (this.resizeTimeout)
@@ -122,6 +133,24 @@ export class MsfMapComponent implements OnInit {
     }
   }
 
+  refreshDotMapType()
+  {
+    this.currentMapType = this.mapTypes[0];
+
+    setTimeout (() => {
+      this.currentMapType = this.mapTypes[1];
+    }, 10);
+  }
+
+  refreshLineMapType()
+  {
+    this.currentMapType = this.mapTypes[1];
+
+    setTimeout (() => {
+      this.currentMapType = this.mapTypes[0];
+    }, 10);
+  }
+
   getTrackingDataSource(){
     this.zoom = [1];
     this.globals.startTimestamp = new Date();
@@ -141,6 +170,12 @@ export class MsfMapComponent implements OnInit {
         _this.center = features[0].features[size].geometry.coordinates;       
         _this.zoom = [4];    
       }
+
+      if (_this.currentMapType.id == 'point')
+        _this.refreshDotMapType ();
+      else if (_this.currentMapType.id == 'line')
+        _this.refreshLineMapType ();
+
       _this.finishLoading.emit (false);
       if(!_this.globals.isLoading){
         _this.globals.showBigLoading = true;
@@ -161,6 +196,9 @@ export class MsfMapComponent implements OnInit {
       this.center = coordinates[0].features[size].geometry.coordinates;       
       this.zoom = [4];    
     }
+
+    if (this.data)
+      this.refreshDotMapType ();
   }
 
   errorHandler(_this,data){

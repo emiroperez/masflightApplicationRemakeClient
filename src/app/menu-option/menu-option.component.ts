@@ -49,7 +49,12 @@ export class MenuOptionComponent implements OnInit {
       this.globals.usageStatistics = true;
 
     if (this.globals.currentOption.metaData == 3)
+    {
       this.globals.coordinates = "";
+      this.globals.displayMapMenu = 2;
+    }
+    else
+      this.globals.displayMapMenu = 1;
 
     this.globals.status = true;
   }

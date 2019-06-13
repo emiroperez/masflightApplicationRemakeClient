@@ -1,4 +1,4 @@
-  <mat-form-field class="msf-width-20 padding-5" *ngIf="displayMapMenu">
+  <mat-form-field class="msf-width-20 padding-5" *ngIf="displayMapMenu == 1">
       <mat-select placeholder="" [(ngModel)]="currentMapType" (selectionChange)="mapTypeChange($event.value)">
           <mat-option *ngFor="let mapType of mapTypes" [value]="mapType">
           {{mapType.name}}
