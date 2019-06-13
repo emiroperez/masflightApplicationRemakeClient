@@ -1032,12 +1032,14 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 .ng-select .ng-select-container .ng-value-container .ng-placeholder {
   color: #5b5b5f;
   /*  pending register
+  *
   *      padding-left: 15px*/
 }
 
 .ng-select .ng-has-value .ng-placeholder, .ng-select.ng-select-opened .ng-placeholder {
   color: white !important;
   /**register pending
+  *
   *  padding-left: 22px!important*/
 }
 
@@ -1047,6 +1049,7 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 
 .ng-select.ng-select-single .ng-select-container .ng-value-container, .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-value {
   /**register pending
+  *
   *  padding-left: 17px*/
 }
 
@@ -4046,6 +4049,14 @@ tr.mat-footer-row, tr.mat-row {
 table.datasource {
   width: 100% !important;
   max-width: 2000px !important;
+}
+
+table.results {
+  position: absolute;
+}
+
+.results-container {
+  position: relative;
 }
 
 .datasource.welcome-table {
