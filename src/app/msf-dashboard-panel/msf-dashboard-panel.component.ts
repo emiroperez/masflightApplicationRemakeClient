@@ -191,6 +191,8 @@ export class MsfDashboardPanelComponent implements OnInit {
   // mapbox variables
   @ViewChild('msfMapRef')
   msfMapRef: MsfMapComponent;
+  mapboxInterval: any;
+  lastWidth: number;
 
   constructor(private zone: NgZone, public globals: Globals,
     private service: ApplicationService, private http: ApiClient, private authService: AuthService, public dialog: MatDialog,
@@ -240,8 +242,6 @@ export class MsfDashboardPanelComponent implements OnInit {
         let chartElement = document.getElementById ("msf-dashboard-chart-display-" + this.values.id);
         document.getElementById ("msf-dashboard.chart-display-container-" + this.values.id).appendChild (chartElement);
       }
-      else if (this.values.mapboxGenerated)
-        this.msfMapRef.resizeMap ();
     }
   }
 
@@ -1978,6 +1978,15 @@ export class MsfDashboardPanelComponent implements OnInit {
       _this.msfMapRef.resizeMap ();
     }, 50);
 
+    _this.mapboxInterval = setInterval (() =>
+    {
+      if (_this.lastWidth != _this.values.width)
+      {
+        _this.msfMapRef.resizeMap ();
+        _this.lastWidth = _this.values.width;
+      }
+    }, 500);
+
     _this.stopUpdateInterval ();
     _this.startUpdateInterval ();
   }
@@ -2548,6 +2557,12 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.temp.updateTimeLeft = this.values.updateTimeLeft;
 
     this.stopUpdateInterval ();
+
+    if (this.mapboxInterval)
+    {
+      clearInterval (this.mapboxInterval);
+      this.mapboxInterval = null;
+    }
   }
 
   goToChartConfiguration(): void
@@ -2693,6 +2708,15 @@ export class MsfDashboardPanelComponent implements OnInit {
       setTimeout (() => {
         this.msfMapRef.resizeMap ();
       }, 10);
+
+      this.mapboxInterval = setInterval (() =>
+      {
+        if (this.lastWidth != this.values.width)
+        {
+          this.msfMapRef.resizeMap ();
+          this.lastWidth = this.values.width;
+        }
+      }, 500);
     }
   }
 
