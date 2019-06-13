@@ -65,7 +65,7 @@ export class MsfMapComponent implements OnInit {
   currentMapType = this.mapTypes[1];
 
   @Input('currentMapStyle')
-  currentMapStyle = this.mapStyles[1];
+  currentMapStyle = this.mapStyles[0];
 
   resizeInterval: any;
   resizeTimeout: any;
@@ -88,12 +88,14 @@ export class MsfMapComponent implements OnInit {
   {
     if (changes['displayMapMenu'] && this.displayMapMenu)
     {
-      // use dots as the default map type
+      // use dots and dark theme as the default map type and style respectively
       this.mapReady = false;
       this.zoom = [1];
       this.center = [-73.968285, 40.785091];
       this.data = [];
       this.coordinates = [];
+      this.currentMapStyle = this.mapStyles[0];
+      this.currentMapType = this.mapTypes[1];
       this.refreshMap ();
     }
 
