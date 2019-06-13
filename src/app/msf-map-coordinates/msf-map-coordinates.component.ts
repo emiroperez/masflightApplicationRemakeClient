@@ -8,11 +8,11 @@ import { Globals } from '../globals/Globals';
 })
 export class MsfMapCoordinatesComponent implements OnInit
 {
-  constructor (public globals : Globals)
+  constructor(public globals : Globals)
   {
   }
 
-  ngOnInit ()
+  ngOnInit()
   {
   }
 }
