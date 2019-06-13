@@ -76,6 +76,8 @@ export class MsfMapComponent implements OnInit {
   @Input("displayMapMenu")
   displayMapMenu: number = 1;
 
+  mapRefresh: boolean = false;
+
   constructor( private zone: NgZone, private services: ApplicationService, public globals: Globals) { }
 
 
@@ -92,7 +94,7 @@ export class MsfMapComponent implements OnInit {
       this.center = [-73.968285, 40.785091];
       this.data = [];
       this.coordinates = [];
-      this.refreshDotMapType ();
+      this.refreshMap ();
     }
 
     if (changes['displayOptionPanel'])
@@ -133,21 +135,12 @@ export class MsfMapComponent implements OnInit {
     }
   }
 
-  refreshDotMapType()
+  refreshMap()
   {
-    this.currentMapType = this.mapTypes[0];
+    this.mapRefresh = true;
 
     setTimeout (() => {
-      this.currentMapType = this.mapTypes[1];
-    }, 10);
-  }
-
-  refreshLineMapType()
-  {
-    this.currentMapType = this.mapTypes[1];
-
-    setTimeout (() => {
-      this.currentMapType = this.mapTypes[0];
+      this.mapRefresh = false;
     }, 10);
   }
 
@@ -171,10 +164,7 @@ export class MsfMapComponent implements OnInit {
         _this.zoom = [4];    
       }
 
-      if (_this.currentMapType.id == 'point')
-        _this.refreshDotMapType ();
-      else if (_this.currentMapType.id == 'line')
-        _this.refreshLineMapType ();
+      _this.refreshMap ();
 
       _this.finishLoading.emit (false);
       if(!_this.globals.isLoading){
@@ -198,7 +188,7 @@ export class MsfMapComponent implements OnInit {
     }
 
     if (this.data)
-      this.refreshDotMapType ();
+      this.refreshMap ();
   }
 
   errorHandler(_this,data){
