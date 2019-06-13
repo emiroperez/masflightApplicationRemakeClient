@@ -149,6 +149,20 @@ export class MsfMapComponent implements OnInit {
 
 }
 
+  generateCoordinates(coordinates)
+  {
+    this.globals.endTimestamp = new Date();
+    this.data = coordinates;
+    this.setCoordinates (coordinates);
+
+    if (coordinates.length > 0)
+    {  
+      let size =  Math.round (coordinates[0].features.length / 2);
+      this.center = coordinates[0].features[size].geometry.coordinates;       
+      this.zoom = [4];    
+    }
+  }
+
   errorHandler(_this,data){
     _this.finishLoading.emit (true);
     if(!_this.globals.isLoading){
