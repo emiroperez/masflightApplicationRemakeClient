@@ -12,6 +12,8 @@ import am4geodata_africaLow from "@amcharts/amcharts4-geodata/region/world/afric
 import am4geodata_europeLow from "@amcharts/amcharts4-geodata/region/world/europeLow";
 import am4geodata_oceaniaLow from "@amcharts/amcharts4-geodata/region/world/oceaniaLow";
 import am4geodata_usaAlbersLow from "@amcharts/amcharts4-geodata/usaAlbersLow";
+import am4geodata_colombiaLow from "@amcharts/amcharts4-geodata/colombiaLow";
+import am4geodata_colombiaMuniLow from "@amcharts/amcharts4-geodata/colombiaMuniLow";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import am4themes_dark from "@amcharts/amcharts4/themes/dark";
 import { CategoryArguments } from '../model/CategoryArguments';
@@ -124,7 +126,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     { name: 'Africa', value: am4geodata_africaLow },
     { name: 'Europe', value: am4geodata_europeLow },
     { name: 'Oceania', value: am4geodata_oceaniaLow },
-    { name: 'World', value: am4geodata_worldLow }
+    { name: 'World', value: am4geodata_worldLow },
+    { name: 'Colombia Departments', value: am4geodata_colombiaLow },
+    { name: 'Colombia Municipals', value: am4geodata_colombiaMuniLow }
   ];
 
   @Input()
@@ -187,6 +191,8 @@ export class MsfDashboardPanelComponent implements OnInit {
   // mapbox variables
   @ViewChild('msfMapRef')
   msfMapRef: MsfMapComponent;
+  mapboxInterval: any;
+  lastWidth: number;
 
   constructor(private zone: NgZone, public globals: Globals,
     private service: ApplicationService, private http: ApiClient, private authService: AuthService, public dialog: MatDialog,
@@ -236,8 +242,6 @@ export class MsfDashboardPanelComponent implements OnInit {
         let chartElement = document.getElementById ("msf-dashboard-chart-display-" + this.values.id);
         document.getElementById ("msf-dashboard.chart-display-container-" + this.values.id).appendChild (chartElement);
       }
-      else if (this.values.mapboxGenerated)
-        this.msfMapRef.resizeMap ();
     }
   }
 
@@ -1570,7 +1574,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.authService.get (this, url, handlerSuccess, handlerError);
   }
 
-  loadTableData (moreResults, handlerSuccess, handlerError): void
+  loadTableData(moreResults, handlerSuccess, handlerError): void
   {
     let url, urlBase, urlArg;
 
@@ -1969,23 +1973,19 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.tableGenerated = false;
     _this.values.mapboxGenerated = true;
 
-    if (_this.values.style.id === 'line')
-    {
-      _this.msfMapRef.currentMapType.id = 'point';
+    setTimeout (() => {
+      _this.values.isLoading = false;
+      _this.msfMapRef.resizeMap ();
+    }, 50);
 
-      setTimeout (() => {
-        _this.values.isLoading = false;
-        _this.msfMapRef.currentMapType.id = 'line';
-        _this.msfMapRef.resizeMap ();
-      }, 50);
-    }
-    else
+    _this.mapboxInterval = setInterval (() =>
     {
-      setTimeout (() => {
-        _this.values.isLoading = false;
+      if (_this.lastWidth != _this.values.width)
+      {
         _this.msfMapRef.resizeMap ();
-      }, 50);
-    }
+        _this.lastWidth = _this.values.width;
+      }
+    }, 500);
 
     _this.stopUpdateInterval ();
     _this.startUpdateInterval ();
@@ -2557,6 +2557,12 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.temp.updateTimeLeft = this.values.updateTimeLeft;
 
     this.stopUpdateInterval ();
+
+    if (this.mapboxInterval)
+    {
+      clearInterval (this.mapboxInterval);
+      this.mapboxInterval = null;
+    }
   }
 
   goToChartConfiguration(): void
@@ -2702,6 +2708,15 @@ export class MsfDashboardPanelComponent implements OnInit {
       setTimeout (() => {
         this.msfMapRef.resizeMap ();
       }, 10);
+
+      this.mapboxInterval = setInterval (() =>
+      {
+        if (this.lastWidth != this.values.width)
+        {
+          this.msfMapRef.resizeMap ();
+          this.lastWidth = this.values.width;
+        }
+      }, 500);
     }
   }
 
@@ -3001,7 +3016,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
     {
-      if (this.values.chartColumnOptions != null)
+      if (this.values.chartColumnOptions.length)
       {
         this.variableCtrlBtnEnabled = true;
 
@@ -3057,7 +3072,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     if ((this.values.currentChartType.flags & ChartFlags.PICTURE)
       || (this.values.currentChartType.flags & ChartFlags.MAP))
     {
-      if (this.values.chartColumnOptions != null)
+      if (this.values.chartColumnOptions.length)
         this.variableCtrlBtnEnabled = true;
 
       if (this.values.currentChartType.flags & ChartFlags.MAPBOX)
@@ -3122,7 +3137,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     if (this.values.currentChartType.flags & ChartFlags.TABLE)
     {
-      if (this.values.chartColumnOptions != null)
+      if (this.values.chartColumnOptions.length)
         this.variableCtrlBtnEnabled = true;
 
       // set table column filters settings if loaded from database
@@ -3198,7 +3213,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       this.values.infoNumVariables = 0;
 
-      if (this.values.chartColumnOptions != null)
+      if (this.values.chartColumnOptions.length)
       {
         if (this.values.variable != null && this.values.variable != -1)
         {
@@ -3323,7 +3338,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       else
         this.values.function = this.functions[0];
 
-      if (this.values.chartColumnOptions != null)
+      if (this.values.chartColumnOptions.length)
       {
         if (this.values.variable != null && this.values.variable != -1)
         {
@@ -3366,7 +3381,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       }
     }
 
-    if (this.values.chartColumnOptions != null)
+    if (this.values.chartColumnOptions.length)
       this.variableCtrlBtnEnabled = true;
 
     this.checkChartType ();
@@ -4428,6 +4443,15 @@ export class MsfDashboardPanelComponent implements OnInit {
         this.chart.homeZoomLevel = zoomLevel;
         this.chart.goHome ();
       }, 50);
+    });
+  }
+
+  copyControlVariables(): void
+  {
+    this.globals.copiedPanelInfo = JSON.stringify (this.values.currentOptionCategories);
+
+    this.dialog.open (MessageComponent, {
+      data: { title: "Information", message: "Control variables copied sucessfully." }
     });
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, HostListener, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener, ChangeDetectorRef, NgZone } from '@angular/core';
 import { Menu } from '../model/Menu';
 import { Option } from '../model/Option';
 import { CategoryArguments } from '../model/CategoryArguments';
@@ -23,7 +23,6 @@ import { AuthService } from '../services/auth.service';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { AuthGuard } from '../guards/auth.guard';
 
-
 @Component({
   selector: 'app-application',
   templateUrl: './application.component.html',
@@ -47,6 +46,7 @@ export class ApplicationComponent implements OnInit {
 
   admin: boolean = false;
   ELEMENT_DATA: any[];
+  coordinates: any;
   //displayedColumns: string[] = [];
   variables;
 
@@ -57,7 +57,8 @@ export class ApplicationComponent implements OnInit {
   private _mobileQueryListener: () => void;
 
   constructor(public dialog: MatDialog, public globals: Globals, private menuService: MenuService,private router: Router,private excelService:ExcelService,
-    private appService: ApplicationService, private authService: AuthService,changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private authGuard: AuthGuard) {
+    private appService: ApplicationService, private authService: AuthService, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private authGuard: AuthGuard)
+  {
     this.status = false;
 
     this.mobileQuery = media.matchMedia('(max-width: 768px)');
@@ -242,7 +243,13 @@ toggle(){
     }
   }
 
-  search(){
+  search() {
+    if (this.globals.currentOption.metaData == 3)
+    {
+      this.configureCoordinates ();
+      return;
+    }
+
     this.globals.moreResults = false;
     this.globals.query = true;
     if(this.globals.currentOption.metaData==2){
@@ -333,17 +340,24 @@ toggle(){
   disabled(){
     let option:any = this.globals.currentOption;
     let disabled = false;
-    if(option && option.menuOptionArguments){
-      for( let menuOptionArguments of option.menuOptionArguments){
-          if(menuOptionArguments.categoryArguments){
-            if( menuOptionArguments.categoryArguments){
-              for( let i = 0; i < menuOptionArguments.categoryArguments.length;i++){
+    if (option)
+    {
+      if (option.metaData == 3)
+      {
+        if (!this.globals.coordinates.length)
+          disabled = true;
+      }
+      else if (option.menuOptionArguments) {
+        for (let menuOptionArguments of option.menuOptionArguments) {
+          if (menuOptionArguments.categoryArguments) {
+            if (menuOptionArguments.categoryArguments) {
+              for (let i = 0; i < menuOptionArguments.categoryArguments.length; i++) {
                 let category: CategoryArguments = menuOptionArguments.categoryArguments[i];
-                if(category && category.arguments){
-                  for( let j = 0; j < category.arguments.length;j++){
+                if (category && category.arguments) {
+                  for (let j = 0; j < category.arguments.length; j++) {
                     let argument: Arguments = category.arguments[j];
-                    if(argument.required==1){
-                      if((argument.value1 == null || argument.value1 == "") || (argument.name2 && (argument.value2 == null || argument.value2 == ""))){
+                    if (argument.required == 1) {
+                      if ((argument.value1 == null || argument.value1 == "") || (argument.name2 && (argument.value2 == null || argument.value2 == ""))) {
                         return true;
                       }
                     }
@@ -354,6 +368,7 @@ toggle(){
           }
         }
       }
+    }
 
     return disabled;
   }
@@ -504,5 +519,65 @@ toggle(){
   {
     if (this.msfContainerRef && this.msfContainerRef.msfTableRef)
       this.msfContainerRef.msfTableRef = null;
+  }
+
+  parseCoordinates(): void
+  {
+    let coordsString;
+    let pos = 0;
+
+    this.coordinates = [{
+      type: "FeatureCollection",
+      features: []
+    }];
+
+    do
+    {
+      let commaPos, endCoords, latitude, longitude;
+
+      coordsString = this.globals.coordinates.substring(pos);
+      commaPos = coordsString.indexOf (',');
+      endCoords = coordsString.indexOf ('\n');
+      if (endCoords == -1)
+        endCoords = coordsString.length;
+
+      latitude = parseFloat (coordsString.substring (0, commaPos));
+      longitude = parseFloat (coordsString.substring (commaPos + 1, endCoords));
+
+      this.coordinates[0].features.push (
+      {
+        type: "Feature",
+        geometry: 
+        {
+          type: "Point",
+          coordinates:
+          [
+            longitude,
+            latitude
+          ]
+        },
+        origin:
+        {
+          iata: "",
+          latitude: latitude,
+          longitude: longitude
+        },
+        dest:
+        {
+          iata: "",
+          latitude: latitude,
+          longitude: longitude
+        }
+      });
+
+      pos += endCoords + 1;
+    }
+    while (pos < this.globals.coordinates.length);
+  }
+
+  configureCoordinates(): void
+  {
+    this.parseCoordinates ();
+    this.msfContainerRef.msfMapRef.generateCoordinates (this.coordinates);
   }
 }

@@ -25,25 +25,37 @@ export class MenuOptionComponent implements OnInit {
   ngOnInit() {
   }
 
-  optionClickHandler(option) {
+  optionClickHandler(option)
+  {
     this.optionChanged.emit ();
-    this.globals.clearVariables();
+    this.globals.clearVariables ();
     this.globals.currentOption = option;
-    this.globals.initDataSource();
-    this.globals.dataAvailabilityInit();
-    if(this.globals.currentOption.tabType === 'map'){
+    this.globals.initDataSource ();
+    this.globals.dataAvailabilityInit ();
+
+    if (this.globals.currentOption.tabType === 'map')
+    {
       this.globals.map = true;
       this.globals.moreResultsBtn = false;
       this.globals.selectedIndex = 1;
     }
-    if(this.globals.currentOption.tabType === 'scmap'){
+    else if (this.globals.currentOption.tabType === 'scmap')
+    {
       this.globals.mapsc = true;
       this.globals.moreResultsBtn = false;
       this.globals.selectedIndex = 1;
     }
-    if(this.globals.currentOption.tabType === 'statistics'){
+    else if(this.globals.currentOption.tabType === 'statistics')
       this.globals.usageStatistics = true;
+
+    if (this.globals.currentOption.metaData == 3)
+    {
+      this.globals.coordinates = "";
+      this.globals.displayMapMenu = 2;
     }
+    else
+      this.globals.displayMapMenu = 1;
+
     this.globals.status = true;
   }
 

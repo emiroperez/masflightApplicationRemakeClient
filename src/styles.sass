@@ -527,6 +527,9 @@ p
 .flat-button-disabled
     background-color: #343434!important
 
+.flat-control-variable-button-disabled
+    background-color: #545454 !important
+
 .flat-share-button-disabled
     background-color: #242424!important
 
@@ -1530,8 +1533,7 @@ td.mat-cell, td.mat-footer-cell, th.mat-header-cell
 .mat-sort-header-button
     margin: 0 auto
 
-
-.msf-component-airport-container input.mat-input-element
+.msf-component-airport-container input.mat-input-element, .msf-component-airport-container textarea.mat-input-element
     text-align: center
     cursor: pointer !important
     border-radius: 4px
@@ -2090,7 +2092,7 @@ mat-tab-group
     position: absolute
     display: flex
     left: calc(100% - 45px)
-    top: calc(100% - 90px)
+    top: calc(100% - 135px)
     align-items: flex-end
     flex-direction: column-reverse
     z-index: 1
@@ -2110,6 +2112,8 @@ mat-tab-group
             opacity: 0.05
             transition: opacity 0.5s ease-out
             @include msf-dashboard-panel-config-button
+            .msf-dashboard-panel-margin-button
+                margin-bottom: 7px
         .msf-dashboard-panel-config-button:hover
             opacity: 1
             transition: opacity 0.5s ease-in
@@ -2548,6 +2552,9 @@ mat-tab-group
     background-color: inherit
     padding: inherit
     color: #fff
+
+.msf-dashboard-share-content-container
+    height: inherit !important
 
 #msf-dashboard-drill-down-sub-container-column-reverse
     margin-top: 9px
@@ -3375,6 +3382,12 @@ tr.mat-footer-row, tr.mat-row
 table.datasource
     width: 100% !important
     max-width: 2000px !important
+
+table.results
+    position: absolute
+
+.results-container
+    position: relative
 
 .datasource.welcome-table
     margin-bottom: 20px

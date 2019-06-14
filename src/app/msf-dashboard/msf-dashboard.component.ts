@@ -367,15 +367,7 @@ export class MsfDashboardComponent implements OnInit {
         _this.columnToUpdate, _this.deleteColumn, _this.handlerError);
     }
     else
-    {
-      _this.dashboardColumnsReAppendCharts[_this.columnToUpdate] = false;
-
-      setTimeout (() => {
-        _this.dashboardColumnsReAppendCharts[_this.columnToUpdate] = false;
-      }, 100);
-
       _this.globals.isLoading = false;
-    }
   }
 
   deleteColumn (_this): void

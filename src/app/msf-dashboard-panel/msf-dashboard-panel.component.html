@@ -10,20 +10,20 @@
 <div class="msf-dashboard-panel-container" [style.height.px]="panelHeight" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !globals.readOnlyDashboard">
   <div class="msf-dashboard-panel-sub-container-column">
     <div class="msf-dashboard-panel-sub-container-row">
-      <mat-form-field class="msf-width-80">
-        <input matInput autocomplete="off" type="text" placeholder="Panel Name" [(ngModel)]="values.chartName"/>
-      </mat-form-field>
-    </div>
-  </div>
-  <div class="msf-dashboard-panel-sub-container-column">
-    <div class="msf-dashboard-panel-sub-container-row">
-      <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+      <mat-form-field [formGroup]="chartForm" class="msf-width-80">
         <mat-select formControlName="dataFormCtrl" placeholder="Select Data From" [(value)]="values.currentOption" (selectionChange)="loadChartFilterValues($event.value)">
           <ngx-mat-select-search [formControl]="dataFormFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
           <mat-option *ngFor="let option of filteredOptions | async | panelOptionFilter:values.currentChartType" [value]="option">
             {{option.name}}
           </mat-option>
         </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="msf-dashboard-panel-sub-container-column">
+    <div class="msf-dashboard-panel-sub-container-row">
+      <mat-form-field class="msf-full-width">
+        <input matInput autocomplete="off" type="text" placeholder="Panel Name" [(ngModel)]="values.chartName"/>
       </mat-form-field>
     </div>
     <div class="msf-dashboard-panel-sub-container-row msf-dashboard-panel-sub-container-space msf-dashboard-panel-chart-type">
@@ -643,8 +643,11 @@
       <button mat-mini-fab (click)="goToChartConfiguration()" color="primary">
         <mat-icon aria-label="Edit Configuration">menu</mat-icon>
       </button>
-      <button mat-mini-fab color="primary" style="margin-bottom: 7px" (click)="sharePanel()">
+      <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="sharePanel()">
         <mat-icon aria-label="Share Panel">share</mat-icon>
+      </button>
+      <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="copyControlVariables()">
+        <mat-icon aria-label="Copy Control Variables">file_copy</mat-icon>
       </button>
     </div>
   </div>
@@ -656,8 +659,11 @@
       <button mat-mini-fab (click)="goToInfoConfiguration()" color="primary">
         <mat-icon aria-label="Edit Configuration">menu</mat-icon>
       </button>
-      <button mat-mini-fab color="primary" style="margin-bottom: 7px" (click)="sharePanel()">
+      <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="sharePanel()">
         <mat-icon aria-label="Share Panel">share</mat-icon>
+      </button>
+      <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="copyControlVariables()">
+        <mat-icon aria-label="Copy Control Variables">file_copy</mat-icon>
       </button>
     </div>
     <div style="width: 100%" [style.height.px]="calcPanelHeight()">
@@ -683,8 +689,11 @@
       <button mat-mini-fab (click)="goToFormConfiguration()" color="primary">
         <mat-icon aria-label="Edit Configuration">menu</mat-icon>
       </button>
-      <button mat-mini-fab color="primary" style="margin-bottom: 7px" (click)="sharePanel()">
+      <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="sharePanel()">
         <mat-icon aria-label="Share Panel">share</mat-icon>
+      </button>
+      <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="copyControlVariables()">
+        <mat-icon aria-label="Copy Control Variables">file_copy</mat-icon>
       </button>
     </div>
     <div style="width: 100%; display: table" [style.height.px]="calcPanelHeight()">
@@ -704,8 +713,11 @@
       <button mat-mini-fab (click)="goToFormConfiguration()" color="primary">
         <mat-icon aria-label="Edit Configuration">menu</mat-icon>
       </button>
-      <button mat-mini-fab color="primary" style="margin-bottom: 7px" (click)="sharePanel()">
+      <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="sharePanel()">
         <mat-icon aria-label="Share Panel">share</mat-icon>
+      </button>
+      <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="copyControlVariables()">
+        <mat-icon aria-label="Copy Control Variables">file_copy</mat-icon>
       </button>
     </div>
     <div [style.height.px]="calcPanelHeight()">
@@ -720,8 +732,11 @@
       <button mat-mini-fab (click)="goToTableConfiguration()" color="primary">
         <mat-icon aria-label="Edit Configuration">menu</mat-icon>
       </button>
-      <button mat-mini-fab color="primary" style="margin-bottom: 7px" (click)="sharePanel()">
+      <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="sharePanel()">
         <mat-icon aria-label="Share Panel">share</mat-icon>
+      </button>
+      <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="copyControlVariables()">
+        <mat-icon aria-label="Copy Control Variables">file_copy</mat-icon>
       </button>
     </div>
     <div class="msf-dashboard-table-container">
@@ -744,12 +759,15 @@
       <button mat-mini-fab (click)="goToMapboxConfiguration()" color="primary">
         <mat-icon aria-label="Edit Configuration">menu</mat-icon>
       </button>
-      <button mat-mini-fab color="primary" style="margin-bottom: 7px" (click)="sharePanel()">
+      <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="sharePanel()">
         <mat-icon aria-label="Share Panel">share</mat-icon>
+      </button>
+      <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="copyControlVariables()">
+        <mat-icon aria-label="Copy Control Variables">file_copy</mat-icon>
       </button>
     </div>
     <div [style.height.px]="calcPanelHeight()" style="width: calc(100% - 50px)">
-      <app-msf-map #msfMapRef [isLoading]="values.isLoading" [useCancelButton]="false" [displayMapMenu]="false" [currentMapType]="values.style" [currentMapStyle]="values.theme" (finishLoading)="finishMapboxLoading($event)"></app-msf-map>
+      <app-msf-map #msfMapRef [isLoading]="values.isLoading" [useCancelButton]="false" [displayMapMenu]="0" [currentMapType]="values.style" [currentMapStyle]="values.theme" (finishLoading)="finishMapboxLoading($event)"></app-msf-map>
     </div>
   </div>
 </div>

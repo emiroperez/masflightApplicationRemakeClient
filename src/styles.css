@@ -576,6 +576,10 @@ p {
   background-color: #343434 !important;
 }
 
+.flat-control-variable-button-disabled {
+  background-color: #545454 !important;
+}
+
 .flat-share-button-disabled {
   background-color: #242424 !important;
 }
@@ -1694,7 +1698,7 @@ td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
   margin: 0 auto;
 }
 
-.msf-component-airport-container input.mat-input-element {
+.msf-component-airport-container input.mat-input-element, .msf-component-airport-container textarea.mat-input-element {
   text-align: center;
   cursor: pointer !important;
   border-radius: 4px;
@@ -2478,10 +2482,13 @@ mat-tab-group {
   position: absolute;
   display: flex;
   left: calc(100% - 45px);
-  top: calc(100% - 90px);
+  top: calc(100% - 135px);
   align-items: flex-end;
   flex-direction: column-reverse;
   z-index: 1;
+}
+.msf-dashboard-panel-container-chart .msf-dashboard-panel-sub-container-column .msf-dashboard-panel-config-button .msf-dashboard-panel-margin-button {
+  margin-bottom: 7px;
 }
 .msf-dashboard-panel-container-chart .msf-dashboard-panel-sub-container-column .msf-dashboard-panel-config-button:hover {
   opacity: 1;
@@ -2489,7 +2496,7 @@ mat-tab-group {
   position: absolute;
   display: flex;
   left: calc(100% - 45px);
-  top: calc(100% - 90px);
+  top: calc(100% - 135px);
   align-items: flex-end;
   flex-direction: column-reverse;
   z-index: 1;
@@ -3052,6 +3059,10 @@ mat-tab-group {
   background-color: inherit;
   padding: inherit;
   color: #fff;
+}
+
+.msf-dashboard-share-content-container {
+  height: inherit !important;
 }
 
 #msf-dashboard-drill-down-sub-container-column-reverse {
@@ -4045,6 +4056,14 @@ tr.mat-footer-row, tr.mat-row {
 table.datasource {
   width: 100% !important;
   max-width: 2000px !important;
+}
+
+table.results {
+  position: absolute;
+}
+
+.results-container {
+  position: relative;
 }
 
 .datasource.welcome-table {

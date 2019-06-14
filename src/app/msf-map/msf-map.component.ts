@@ -65,7 +65,7 @@ export class MsfMapComponent implements OnInit {
   currentMapType = this.mapTypes[1];
 
   @Input('currentMapStyle')
-  currentMapStyle = this.mapStyles[1];
+  currentMapStyle = this.mapStyles[0];
 
   resizeInterval: any;
   resizeTimeout: any;
@@ -74,7 +74,9 @@ export class MsfMapComponent implements OnInit {
   displayOptionPanel: boolean;
 
   @Input("displayMapMenu")
-  displayMapMenu: boolean = true;
+  displayMapMenu: number = 1;
+
+  mapRefresh: boolean = false;
 
   constructor( private zone: NgZone, private services: ApplicationService, public globals: Globals) { }
 
@@ -84,6 +86,19 @@ export class MsfMapComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void
   {
+    if (changes['displayMapMenu'] && this.displayMapMenu)
+    {
+      // use dots and dark theme as the default map type and style respectively
+      this.mapReady = false;
+      this.zoom = [1];
+      this.center = [-73.968285, 40.785091];
+      this.data = [];
+      this.coordinates = [];
+      this.currentMapStyle = this.mapStyles[0];
+      this.currentMapType = this.mapTypes[1];
+      this.refreshMap ();
+    }
+
     if (changes['displayOptionPanel'])
     {
       if (this.resizeTimeout)
@@ -122,6 +137,15 @@ export class MsfMapComponent implements OnInit {
     }
   }
 
+  refreshMap()
+  {
+    this.mapRefresh = true;
+
+    setTimeout (() => {
+      this.mapRefresh = false;
+    }, 10);
+  }
+
   getTrackingDataSource(){
     this.zoom = [1];
     this.globals.startTimestamp = new Date();
@@ -141,6 +165,9 @@ export class MsfMapComponent implements OnInit {
         _this.center = features[0].features[size].geometry.coordinates;       
         _this.zoom = [4];    
       }
+
+      _this.refreshMap ();
+
       _this.finishLoading.emit (false);
       if(!_this.globals.isLoading){
         _this.globals.showBigLoading = true;
@@ -148,6 +175,23 @@ export class MsfMapComponent implements OnInit {
     }
 
 }
+
+  generateCoordinates(coordinates)
+  {
+    this.globals.endTimestamp = new Date();
+    this.data = coordinates;
+    this.setCoordinates (coordinates);
+
+    if (coordinates.length > 0)
+    {  
+      let size =  Math.round (coordinates[0].features.length / 2);
+      this.center = coordinates[0].features[size].geometry.coordinates;       
+      this.zoom = [4];    
+    }
+
+    if (this.data)
+      this.refreshMap ();
+  }
 
   errorHandler(_this,data){
     _this.finishLoading.emit (true);
