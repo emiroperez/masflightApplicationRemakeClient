@@ -576,6 +576,10 @@ p {
   background-color: #343434 !important;
 }
 
+.flat-control-variable-button-disabled {
+  background-color: #545454 !important;
+}
+
 .flat-share-button-disabled {
   background-color: #242424 !important;
 }
@@ -2478,10 +2482,13 @@ mat-tab-group {
   position: absolute;
   display: flex;
   left: calc(100% - 45px);
-  top: calc(100% - 90px);
+  top: calc(100% - 135px);
   align-items: flex-end;
   flex-direction: column-reverse;
   z-index: 1;
+}
+.msf-dashboard-panel-container-chart .msf-dashboard-panel-sub-container-column .msf-dashboard-panel-config-button .msf-dashboard-panel-margin-button {
+  margin-bottom: 7px;
 }
 .msf-dashboard-panel-container-chart .msf-dashboard-panel-sub-container-column .msf-dashboard-panel-config-button:hover {
   opacity: 1;
@@ -2489,7 +2496,7 @@ mat-tab-group {
   position: absolute;
   display: flex;
   left: calc(100% - 45px);
-  top: calc(100% - 90px);
+  top: calc(100% - 135px);
   align-items: flex-end;
   flex-direction: column-reverse;
   z-index: 1;

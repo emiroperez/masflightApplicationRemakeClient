@@ -1574,7 +1574,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.authService.get (this, url, handlerSuccess, handlerError);
   }
 
-  loadTableData (moreResults, handlerSuccess, handlerError): void
+  loadTableData(moreResults, handlerSuccess, handlerError): void
   {
     let url, urlBase, urlArg;
 
@@ -4443,6 +4443,18 @@ export class MsfDashboardPanelComponent implements OnInit {
         this.chart.homeZoomLevel = zoomLevel;
         this.chart.goHome ();
       }, 50);
+    });
+  }
+
+  copyControlVariables(): void
+  {
+    this.globals.copiedPanelInfo = {
+      optionId: this.values.currentOption.id,
+      controlVariables: JSON.stringify (this.values.currentOptionCategories)
+    }
+
+    this.dialog.open (MessageComponent, {
+      data: { title: "Information", message: "Control variables copied sucessfully." }
     });
   }
 }
