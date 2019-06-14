@@ -10,20 +10,20 @@
 <div class="msf-dashboard-panel-container" [style.height.px]="panelHeight" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !globals.readOnlyDashboard">
   <div class="msf-dashboard-panel-sub-container-column">
     <div class="msf-dashboard-panel-sub-container-row">
-      <mat-form-field class="msf-width-80">
-        <input matInput autocomplete="off" type="text" placeholder="Panel Name" [(ngModel)]="values.chartName"/>
-      </mat-form-field>
-    </div>
-  </div>
-  <div class="msf-dashboard-panel-sub-container-column">
-    <div class="msf-dashboard-panel-sub-container-row">
-      <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+      <mat-form-field [formGroup]="chartForm" class="msf-width-80">
         <mat-select formControlName="dataFormCtrl" placeholder="Select Data From" [(value)]="values.currentOption" (selectionChange)="loadChartFilterValues($event.value)">
           <ngx-mat-select-search [formControl]="dataFormFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
           <mat-option *ngFor="let option of filteredOptions | async | panelOptionFilter:values.currentChartType" [value]="option">
             {{option.name}}
           </mat-option>
         </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="msf-dashboard-panel-sub-container-column">
+    <div class="msf-dashboard-panel-sub-container-row">
+      <mat-form-field class="msf-full-width">
+        <input matInput autocomplete="off" type="text" placeholder="Panel Name" [(ngModel)]="values.chartName"/>
       </mat-form-field>
     </div>
     <div class="msf-dashboard-panel-sub-container-row msf-dashboard-panel-sub-container-space msf-dashboard-panel-chart-type">
