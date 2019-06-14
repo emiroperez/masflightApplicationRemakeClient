@@ -1,10 +1,23 @@
 import { Component, OnInit, Input, Injectable, ChangeDetectorRef } from '@angular/core';
 import { Arguments } from '../model/Arguments';
-import { DateAdapter, MAT_DATE_FORMATS, MatDialog } from '@angular/material';
+import { DateAdapter, MAT_DATE_FORMATS, MatDialog, MAT_DATE_LOCALE } from '@angular/material';
 import { AppDateAdapter, APP_DATE_FORMATS } from '../commons/date.adapters';
 import { DatePipe } from '@angular/common';
 import { Globals } from '../globals/Globals';
 import { MessageComponent } from '../message/message.component';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
+
+export const US_DATE_FORMAT = {
+  parse: {
+    dateInput: 'MM-DD-YYYY',
+  },
+  display: {
+    dateInput: 'MM-DD-YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
 
 @Component({
   selector: 'app-msf-date-range',
@@ -12,10 +25,10 @@ import { MessageComponent } from '../message/message.component';
   styleUrls: ['./msf-date-range.component.css'],
   providers: [
     {
-        provide: DateAdapter, useClass: AppDateAdapter
+        provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]
     },
     {   
-        provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS
+        provide: MAT_DATE_FORMATS, useValue: US_DATE_FORMAT
     }
     ]
 })
