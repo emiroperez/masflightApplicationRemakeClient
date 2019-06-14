@@ -1,8 +1,7 @@
 import { Component, Inject } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Globals } from '../globals/Globals';
-import { MessageComponent } from '../message/message.component';
 
 @Component({
   selector: 'app-msf-dashboard-control-variables',
@@ -13,7 +12,6 @@ export class MsfDashboardControlVariablesComponent {
   constructor(
     public dialogRef: MatDialogRef<MsfDashboardControlVariablesComponent>,
     public globals: Globals,
-    public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any) {}
 
     onNoClick(): void
@@ -28,22 +26,9 @@ export class MsfDashboardControlVariablesComponent {
 
     pasteControlVariables(): void
     {
-      let optionCategories;
-
-      // check if the option id matches
-      if (this.data.currentOptionId != this.globals.copiedPanelInfo.optionId)
-      {
-        // doesn't match
-        this.dialog.open (MessageComponent, {
-          data: { title: "Error", message: "The copied information option doesn't match with the current panel." }
-        });
-
-        return;
-      }
+      let optionCategories = JSON.parse (this.globals.copiedPanelInfo);
 
       // pass the arguments values
-      optionCategories = JSON.parse (this.globals.copiedPanelInfo.controlVariables);
-
       for (let optionCategory of this.data.currentOptionCategories)
       {
         for (let curOptionCategory of optionCategories)

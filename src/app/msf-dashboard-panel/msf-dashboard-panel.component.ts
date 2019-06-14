@@ -4448,10 +4448,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   copyControlVariables(): void
   {
-    this.globals.copiedPanelInfo = {
-      optionId: this.values.currentOption.id,
-      controlVariables: JSON.stringify (this.values.currentOptionCategories)
-    }
+    this.globals.copiedPanelInfo = JSON.stringify (this.values.currentOptionCategories);
 
     this.dialog.open (MessageComponent, {
       data: { title: "Information", message: "Control variables copied sucessfully." }
