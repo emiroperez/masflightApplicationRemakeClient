@@ -141,7 +141,7 @@ export class ApplicationService {
   }
 
   loadWebservicColumn(_this,data,handlerSuccess, handlerError) {
-    let url = this.host+"/getAppColumnsRepository?search=" + data;
+    let url = this.host+"/getAppColumns?search=" + data;
     this.http.get(_this, url, handlerSuccess, handlerError, null);
   }
 
