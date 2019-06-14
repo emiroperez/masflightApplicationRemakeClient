@@ -3016,7 +3016,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
     {
-      if (this.values.chartColumnOptions != null)
+      if (this.values.chartColumnOptions.length)
       {
         this.variableCtrlBtnEnabled = true;
 
@@ -3072,7 +3072,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     if ((this.values.currentChartType.flags & ChartFlags.PICTURE)
       || (this.values.currentChartType.flags & ChartFlags.MAP))
     {
-      if (this.values.chartColumnOptions != null)
+      if (this.values.chartColumnOptions.length)
         this.variableCtrlBtnEnabled = true;
 
       if (this.values.currentChartType.flags & ChartFlags.MAPBOX)
@@ -3137,7 +3137,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     if (this.values.currentChartType.flags & ChartFlags.TABLE)
     {
-      if (this.values.chartColumnOptions != null)
+      if (this.values.chartColumnOptions.length)
         this.variableCtrlBtnEnabled = true;
 
       // set table column filters settings if loaded from database
@@ -3213,7 +3213,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       this.values.infoNumVariables = 0;
 
-      if (this.values.chartColumnOptions != null)
+      if (this.values.chartColumnOptions.length)
       {
         if (this.values.variable != null && this.values.variable != -1)
         {
@@ -3338,7 +3338,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       else
         this.values.function = this.functions[0];
 
-      if (this.values.chartColumnOptions != null)
+      if (this.values.chartColumnOptions.length)
       {
         if (this.values.variable != null && this.values.variable != -1)
         {
@@ -3381,7 +3381,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       }
     }
 
-    if (this.values.chartColumnOptions != null)
+    if (this.values.chartColumnOptions.length)
       this.variableCtrlBtnEnabled = true;
 
     this.checkChartType ();
