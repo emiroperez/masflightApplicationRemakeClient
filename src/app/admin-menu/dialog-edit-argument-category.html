@@ -14,43 +14,47 @@
                 </mat-form-field>
             </div>
             <div style="display: flex; flex-wrap: wrap; align-content: flex-start; margin-bottom: 50px">
-
                 <div style="width: 100%">
                     <mat-form-field style="width: 100%">
                         <input matInput placeholder="Type" [(ngModel)]="item.type">
                     </mat-form-field>
                 </div>
-                <div class="arguments-child" style="margin-right: 20%">
-                    <mat-form-field style="width: 100%">
-                        <input matInput placeholder="Label 1" [(ngModel)]="item.label1">
-                    </mat-form-field>
-                </div>
-                <div class="arguments-child">
-                    <mat-form-field style="width: 100%">
-                        <input matInput placeholder="Service Arg. 1" [(ngModel)]="item.name1">
-                    </mat-form-field>
-                </div>
-
-                <div class="arguments-child" style="margin-right: 20%">
-                    <mat-form-field style="width: 100%">
-                        <input matInput placeholder="Label 2" [(ngModel)]="item.label2">
-                    </mat-form-field>
-                </div>
-                <div class="arguments-child">
-                    <mat-form-field style="width: 100%">
-                        <input matInput placeholder="Service Arg. 2" [(ngModel)]="item.name2">
-                    </mat-form-field>
-                </div>
-                <div class="arguments-child" style="margin-right: 20%">
-                    <mat-form-field style="width: 100%">
-                        <input matInput placeholder="Label 3" [(ngModel)]="item.label3">
-                    </mat-form-field>
-                </div>
-                <div class="arguments-child">
-                    <mat-form-field style="width: 100%">
-                        <input matInput placeholder="Service Arg. 3" [(ngModel)]="item.name3">
-                    </mat-form-field>
-                </div>
+                <ng-container *ngIf="item.numArguments >= 1">
+                    <div class="arguments-child" style="margin-right: 20%">
+                        <mat-form-field style="width: 100%">
+                            <input matInput placeholder="Label 1" [(ngModel)]="item.label1">
+                        </mat-form-field>
+                    </div>
+                    <div class="arguments-child">
+                        <mat-form-field style="width: 100%">
+                            <input matInput placeholder="Service Arg. 1" [(ngModel)]="item.name1">
+                        </mat-form-field>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="item.numArguments >= 2">
+                    <div class="arguments-child" style="margin-right: 20%">
+                        <mat-form-field style="width: 100%">
+                            <input matInput placeholder="Label 2" [(ngModel)]="item.label2">
+                        </mat-form-field>
+                    </div>
+                    <div class="arguments-child">
+                        <mat-form-field style="width: 100%">
+                            <input matInput placeholder="Service Arg. 2" [(ngModel)]="item.name2">
+                        </mat-form-field>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="item.numArguments == 3">
+                    <div class="arguments-child" style="margin-right: 20%">
+                        <mat-form-field style="width: 100%">
+                            <input matInput placeholder="Label 3" [(ngModel)]="item.label3">
+                        </mat-form-field>
+                    </div>
+                    <div class="arguments-child">
+                        <mat-form-field style="width: 100%">
+                            <input matInput placeholder="Service Arg. 3" [(ngModel)]="item.name3">
+                        </mat-form-field>
+                    </div>
+                </ng-container>
                 <div class="arguments-child" style="margin-right: 20%">
                     <mat-form-field >
                         <input matInput placeholder="Url" [(ngModel)]="item.url">
@@ -77,7 +81,8 @@
                 <div style="width: 100%;text-align: right;" *ngIf="item.url!='' && item.url!=null">                 
                     <button mat-button class="flat-button" (click)="showPreview(item)" style="margin-right: 5px">Preview</button>
                 </div>
+            </div>
         </div>
     </div>
-
 </div>
+

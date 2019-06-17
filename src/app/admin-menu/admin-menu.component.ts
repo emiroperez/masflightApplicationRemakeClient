@@ -583,6 +583,94 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     { name: 'Dashboard Only', value: 2 }
   ];
 
+  numArgumentsPerType: any[] = [
+    { type: "airline", numArguments: 1 },
+    { type: "airport", numArguments: 1 },
+    { type: "airportRoute", numArguments: 2 },
+    { type: "ceiling", numArguments: 2 },
+    { type: "timeRange", numArguments: 2 },
+    { type: "dateRange", numArguments: 2 },
+    { type: "tailnumber", numArguments: 2 },
+    { type: "singleairline", numArguments: 1 },
+    { type: "flightNumber", numArguments: 1 },
+    { type: "windSpeed", numArguments: 3 },
+    { type: "windDirection", numArguments: 2 },
+    { type: "temperature", numArguments: 3 },
+    { type: "aircraftType", numArguments: 1 },
+    { type: "grouping", numArguments: 1 },
+    { type: "rounding", numArguments: 1 },
+    { type: "date", numArguments: 1 },
+    { type: "userList", numArguments: 1 },
+    { type: "optionList", numArguments: 1 },
+    { type: "freeTextInput", numArguments: 1 },
+    { type: "selectBoxSingleOption", numArguments: 1 },
+    { type: "selectBoxMultipleOption", numArguments: 1 },
+    { type: "datePicker", numArguments: 1 },
+    { type: "timePicker", numArguments: 1 },
+    { type: "dateTimePicker", numArguments: 2 },
+    { type: "checkBox", numArguments: 1 },
+    { type: "cancelsCheckBox", numArguments: 1 },
+    { type: "diversionsCheckbox", numArguments: 1 },
+    { type: "flightDelaysCheckbox", numArguments: 1 },
+    { type: "causesFlightDelaysCheckbox", numArguments: 1 },
+    { type: "taxiTimes", numArguments: 2 },
+    { type: "taxiTimesCheckbox", numArguments: 1 },
+    { type: "taxiTimesCheckboxes", numArguments: 1 },
+    { type: "datePeriod", numArguments: 2 },
+    { type: "region", numArguments: 1 },
+    { type: "datePeriodYear", numArguments: 2 },
+    { type: "datePeriodYearMonth", numArguments: 2 },
+    { type: "sorting", numArguments: 1 },
+    { type: "sortingCheckboxes", numArguments: 1 },
+    { type: "groupingAthena", numArguments: 1 },
+    { type: "flightDistance", numArguments: 2 },
+    { type: "fareTypes", numArguments: 1 },
+    { type: "serviceClasses", numArguments: 1 },
+    { type: "summary", numArguments: 1 },
+    { type: "resultsLess", numArguments: 1 },
+    { type: "geography", numArguments: 1 },
+    { type: "excludeFollowing", numArguments: 1 },
+    { type: "singleCheckbox", numArguments:  1 },
+    { type: "excludeItineraries", numArguments: 1 },
+    { type: "filterAirlineType", numArguments: 1 },
+    { type: "fareIncrements", numArguments: 1 },
+    { type: "fareIncrementMiddle", numArguments: 1 },
+    { type: "fareIncrementMax", numArguments: 1 },
+    { type: "title", numArguments: 0 },
+    { type: "airportsRoutes", numArguments: 2 },
+    { type: "fareLower", numArguments: 1 },
+    { type: "percentIncrement", numArguments: 1 },
+    { type: "groupingDailyStatics", numArguments: 1 },
+    { type: "quarterHour", numArguments: 2 },
+    { type: "functions", numArguments: 1 },
+    { type: "groupingOperationsSummary", numArguments: 1 },
+    { type: "groupingHubSummaries", numArguments: 1 },
+    { type: "regionSchedule", numArguments: 1 },
+    { type: "aircraftTypeCheckboxes", numArguments: 1 },
+    { type: "seats", numArguments: 2 },
+    { type: "sortingNostop", numArguments: 1 },
+    { type: "sortingConnectionBuilder", numArguments: 1 },
+    { type: "stops", numArguments: 1 },
+    { type: "connectionTime", numArguments: 2 },
+    { type: "circuityType", numArguments: 1 },
+    { type: "circuity", numArguments: 1 },
+    { type: "singleAirport", numArguments: 1 },
+    { type: "summaryRevenueBuilds", numArguments: 1 },
+    { type: "datePeriodRevenue", numArguments: 2 },
+    { type: "fareIncrementsMarketHistograms", numArguments: 1 },
+    { type: "topNumber", numArguments: 1 },
+    { type: "seatClass", numArguments: 1 },
+    { type: "groupingMariaDB", numArguments: 1 },
+    { type: "contentType", numArguments: 1 },
+    { type: "totalType", numArguments: 1 },
+    { type: "groupingCompGenre", numArguments: 1 },
+    { type: "groupingCompTotal", numArguments: 1 },
+    { type: "groupingOpSum", numArguments: 1 },
+    { type: "groupingOpSum2", numArguments: 1 },
+    { type: "states", numArguments: 1 },
+    { type: "flightSegments", numArguments: 1 }
+  ]
+
   constructor(private http: ApiClient, public globals: Globals,
     private service: ApplicationService, public snackBar: MatSnackBar,
     public dialog: MatDialog, private ref: ChangeDetectorRef,
@@ -823,12 +911,35 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   }
 
   getOptionCategoryArguments() {
+    let self = this;
+
     this.clearSelectedCategoryArguments();
     var categories = this.categories;
     this.optionSelected.menuOptionArgumentsAdmin.forEach(function (itemOptionCategory, indexOptionCategory, arrayOptionCategory) {
       categories.forEach(function (itemCategory, indexCategory, arrayCategory) {
         for (let index = 0; index < itemOptionCategory.categoryArgumentsId.length; index++) {
           const element = itemOptionCategory.categoryArgumentsId[index];
+
+          for (let j = 0; j < element.arguments.length; j++)
+          {
+            let argumentType = itemOptionCategory.categoryArgumentsIdDB.arguments[j].type;
+            let numArguments = 3; // display all sub-arguments if no type
+
+            // set the number of sub-arguments depending of the argument type
+            for (let k = 0; k < self.numArgumentsPerType.length; k++)
+            {
+              let item = self.numArgumentsPerType[k];
+
+              if (item.type === argumentType)
+              {
+                numArguments = item.numArguments;
+                break;
+              }
+            }
+
+            element.arguments[j].numArguments = numArguments;
+          }
+
           if (element.id == itemCategory.id) {
             itemCategory.selected = true;
           }

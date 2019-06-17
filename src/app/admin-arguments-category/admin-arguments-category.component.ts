@@ -100,7 +100,21 @@ export class AdminArgumentsCategoryComponent implements OnInit {
     { value: "stops", name: "Stops" },
     { value: "circuityType", name: "Circuity Type" },
     { value: "circuity", name: "Circuity" },
-    { value: "singleAirport", name: "Single airport" }
+    { value: "singleAirport", name: "Single airport" },
+    { value: "summaryRevenueBuilds", name: "Summary Revenue Builds" },
+    { value: "datePeriodRevenue", name: "Date Period Revenue" },
+    { value: "fareIncrementsMarketHistograms", name: "Fare Increments Market Histograms" },
+    { value: "topNumber", name: "Top Number" },
+    { value: "seatClass", name: "Seat Class" },
+    { value: "groupingMariaDB", name: "Grouping (MariaDB)" },
+    { value: "contentType", name: "Content Type" },
+    { value: "totalType", name: "Total Type" },
+    { value: "groupingCompGenre",  name: "Grouping Compare Genre" },
+    { value: "groupingCompTotal",  name: "Grouping Compare Total" },
+    { value: "groupingOpSum", name: "Grouping Sum Operation" },
+    { value: "groupingOpSum2", name: "Grouping Sum Operation 2" },
+    { value: "states", name: "States" },
+    { value: "flightSegments", name: "Flight Segments" }
   ];
 
   constructor(private http: ApiClient,  public dialog: MatDialog, public globals: Globals, private service: ApplicationService)
