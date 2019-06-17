@@ -1173,7 +1173,13 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   }
 
   saveDrillDown() {
+    this.prepareDrillDowns();
     this.service.saveDrillDown(this, this.drillDown, this.handlerSuccessdrillDown, this.handlerErrorSaveMeta);
+  }
+  prepareDrillDowns() {
+    for(let dD of this.drillDown){
+      dD.parentOptionId = dD.parentOptionId.id;
+    }
   }
 
   handlerSuccessdrillDown(_this, data) {
