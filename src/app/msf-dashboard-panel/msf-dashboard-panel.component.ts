@@ -3707,7 +3707,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.childPanelsConfigured = [];
 
     let dialogRef = this.dialog.open (MsfDashboardDrillDownComponent, {
-      height: '500px',
+      height: (this.values.chartName && this.values.chartName.length >= 45) ? '500px ': '470px',
       width: '450px',
       panelClass: 'msf-dashboard-child-panel-dialog',
       data: {
