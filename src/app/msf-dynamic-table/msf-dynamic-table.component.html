@@ -6,3 +6,10 @@
 <jqxTreeGrid
     #jqxTreeGridRef [width]="getWidth()" [height]="getHeight()" [source]="dataAdapter" [columns]="columns" [sortable]="true">
 </jqxTreeGrid>
+
+<div class="loading-panel table-loading" *ngIf="globals.isLoading">
+  <button *ngIf="globals.currentOption !== 'dashboard'" mat-button class="cancel-button" (click)="cancelLoading()">
+    Cancel
+  <mat-icon  class="close-icon">close</mat-icon> 
+  </button>
+</div>

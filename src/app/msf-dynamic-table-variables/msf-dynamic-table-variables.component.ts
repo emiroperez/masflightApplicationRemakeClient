@@ -58,7 +58,7 @@ export class MsfDynamicTableVariablesComponent {
   onNoClick(): void {
     this.globals.values = [];
     this.globals.variables = [];
-    this.dialogRef.close();
+    this.dialogRef.close(false);
   }
 
   ngOnInit() {
@@ -150,9 +150,9 @@ export class MsfDynamicTableVariablesComponent {
 
   generateTable(){
     this.globals.generateDynamicTable = true;
-    this.globals.selectedIndex = 2;
-    this.dynamicTableOpen.emit();
-    this.dialogRef.close();
+    this.globals.selectedIndex = 3;
+    this.dynamicTableOpen.emit ();
+    this.dialogRef.close (true);
   }
 
   order=0;

@@ -31,7 +31,6 @@ import { AuthGuard } from '../guards/auth.guard';
 export class ApplicationComponent implements OnInit {
 
   isFullscreen: boolean;
-  animal: string;
   name: string;
   dynamicTablePlan: boolean;
   exportExcelPlan: boolean;
@@ -384,19 +383,16 @@ toggle(){
   }
 
   openDialog(): void {
-    this.globals.generateDynamicTable = true;
     const dialogRef = this.dialog.open(MsfDynamicTableVariablesComponent, {
       width: '600px',
       data: {metadata:this.msfContainerRef.msfTableRef.metadata, variables: this.variables}
     });
-
-    const sub = dialogRef.componentInstance.dynamicTableOpen.subscribe(() => {
-      this.msfContainerRef.msfDynamicTableRef.loadData();
-    });
-
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      this.animal = result;
+      if (result)
+      {
+        this.globals.showBigLoading = false;
+        this.msfContainerRef.msfDynamicTableRef.loadData ();
+      }
     });
   }
 

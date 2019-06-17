@@ -71,8 +71,8 @@ handlerSuccess(_this,data){
     };
     _this.dataAdapter = new jqx.dataAdapter(source);
     _this.columns = _this.getColumns();    
-    _this.globals.isLoading = false; 
-    
+    _this.globals.isLoading = false;
+    _this.globals.showBigLoading = true;
 }
 
 getColumns(){
@@ -149,8 +149,14 @@ addColumnConfigObj(value : any,dataField: any[]){
 
 handlerError(_this,result){
   console.log(result);
-  _this.globals.isLoading = false;  
+  _this.globals.isLoading = false;
+  _this.globals.showBigLoading = true;
 }
 
+  cancelLoading()
+  {
+    this.globals.isLoading = false;
+    this.globals.showBigLoading = true;
+  }
 
 }

@@ -249,6 +249,7 @@ export class MsfMapComponent implements OnInit {
 
   cancelLoading(){
     this.isLoading = false;
+    this.globals.showBigLoading = true;
   }
 
   resizeMap(): void
