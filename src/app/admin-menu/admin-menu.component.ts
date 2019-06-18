@@ -922,7 +922,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
           for (let j = 0; j < element.arguments.length; j++)
           {
-            let argumentType = itemOptionCategory.categoryArgumentsIdDB.arguments[j].type;
+            let argumentType = element.arguments[j].type;
             let numArguments = 3; // display all sub-arguments if no type
 
             // set the number of sub-arguments depending of the argument type
@@ -1457,7 +1457,8 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
       this.optionSelected.menuOptionArgumentsAdmin.push (itemToAdd);
     }
 
-    const nestedNode = this.flatNodeMap.get(this.optionSelected);
+    const nestedNode = this.flatNodeMap.get (this.optionSelected);
+    nestedNode.menuOptionArgumentsAdmin = this.optionSelected.menuOptionArgumentsAdmin;
     this.dataChange.next(this.data);
   }
 
@@ -1697,7 +1698,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
     if (this.optionSelected.menuOptionArgumentsAdmin) {
       for (let categorySelected of this.optionSelected.menuOptionArgumentsAdmin) {
-        if (checkbox.label === categorySelected.categoryArgumentsId[0].label && !categorySelected.toDelete) {
+        if (checkbox.id === categorySelected.categoryArgumentsId[0].id && !categorySelected.toDelete) {
           if (!categorySelected.position)
             categorySelected.position = this.optionSelected.menuOptionArgumentsAdmin.indexOf(categorySelected) + 1;
 
