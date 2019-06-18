@@ -6,40 +6,40 @@
             <app-option-welcome></app-option-welcome> 
         </mat-tab>        
         <mat-tab *ngIf="globals.query">
-                <ng-template mat-tab-label>
-                    Current Query General Summary
-                    <mat-icon (click)="closeTab(1)" class="close-icon">close</mat-icon> 
-                </ng-template>
+            <ng-template mat-tab-label>
+                Current Query General Summary
+                <mat-icon (click)="closeTab(1)" class="close-icon">close</mat-icon> 
+            </ng-template>
             <app-current-query-summary></app-current-query-summary> 
         </mat-tab>
         <!-- <mat-tab> -->
         <mat-tab *ngIf="globals.tab">
             <ng-template mat-tab-label>
-                    {{globals.currentOption.tab}} <mat-icon (click)="closeTab(2)" class="close-icon">close</mat-icon> 
+                {{globals.currentOption.tab}} <mat-icon (click)="closeTab(2)" class="close-icon">close</mat-icon> 
             </ng-template>
             <div class="msf-viewport-container">
                 <app-msf-table #msfTableRef [tabRef]="tabRef" [isLoading]="globals.isLoading" (finishLoading)="finishLoadingTable($event)" [categoryArguments]="getCategoryArguments()" [currentOption]="globals.currentOption" [isPanel]="false"></app-msf-table>
             </div>    
         </mat-tab>        
-        <mat-tab  *ngIf="globals.generateDynamicTable"  #msfDynamicTableTabRef >
-                <ng-template mat-tab-label>
-                        Dynamic Table
-                        <mat-icon (click)="closeTab(3)" class="close-icon">close</mat-icon> 
-                </ng-template>
-            <app-msf-dynamic-table  #msfDynamicTableRef ></app-msf-dynamic-table>
+        <mat-tab *ngIf="globals.generateDynamicTable" #msfDynamicTableTabRef>
+            <ng-template mat-tab-label>
+                Dynamic Table
+                <mat-icon (click)="closeTab(3)" class="close-icon">close</mat-icon> 
+            </ng-template>
+            <app-msf-dynamic-table #msfDynamicTableRef [displayOptionPanel]="globals.status"></app-msf-dynamic-table>
         </mat-tab>    
-        <mat-tab  *ngIf="globals.chart" #tabRef label="Chart">
-                <ng-template mat-tab-label>
-                        Chart
-                        <mat-icon (click)="closeTab(4)" class="close-icon">close</mat-icon> 
-                </ng-template>
-            <app-msf-chart-on-time-delay  #msfChartRef ></app-msf-chart-on-time-delay> 
+        <mat-tab *ngIf="globals.chart" #tabRef label="Chart">
+            <ng-template mat-tab-label>
+                Chart
+                <mat-icon (click)="closeTab(4)" class="close-icon">close</mat-icon> 
+            </ng-template>
+            <app-msf-chart-on-time-delay #msfChartRef></app-msf-chart-on-time-delay> 
         </mat-tab> 
         <mat-tab *ngIf="globals.map"  #tabRef>
-                <ng-template mat-tab-label>
-                        Map
-                        <mat-icon (click)="closeTab(5)" class="close-icon">close</mat-icon> 
-                </ng-template>
+            <ng-template mat-tab-label>
+                Map
+                <mat-icon (click)="closeTab(5)" class="close-icon">close</mat-icon> 
+            </ng-template>
             <app-msf-map #msfMapRef [useCancelButton]="true" [isLoading]="globals.isLoading" [displayMapMenu]="globals.displayMapMenu" [displayOptionPanel]="globals.status" (finishLoading)="finishLoadingMap($event)"></app-msf-map>
         </mat-tab> 
 

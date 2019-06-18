@@ -273,6 +273,9 @@ toggle(){
       this.globals.selectedIndex = 2;
     }
 
+    // close dynamic table tab if visible
+    this.globals.generateDynamicTable = false;
+
     setTimeout(() => {
       this.search2();
   }, 3000);

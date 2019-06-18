@@ -125,7 +125,7 @@ export class MsfMapComponent implements OnInit {
         });
       }, 50);
 
-      this.resizeTimeout = setTimeout (() => {
+      this.resizeTimeout = setInterval (() => {
         if (this.resizeInterval)
         {
           clearInterval (this.resizeTimeout);

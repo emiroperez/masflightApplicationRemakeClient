@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, SimpleChanges } from '@angular/core';
 import { ApiClient } from '../api/api-client';
 import { Globals } from '../globals/Globals';
 import { jqxTreeGridComponent } from 'jqwidgets-scripts/jqwidgets-ts/angular_jqxtreegrid';
@@ -34,6 +34,13 @@ export class MsfDynamicTableComponent implements OnInit {
   columns: any[] = [];
 
   @ViewChild(jqxTreeGridComponent) jqxTreeGridRef: jqxTreeGridComponent;
+  jqxWidth: string = '99%';
+
+  @Input("displayOptionPanel")
+  displayOptionPanel: boolean;
+
+  resizeInterval: any;
+  resizeTimeout: any;
 
   constructor(private http: ApiClient, public globals: Globals, private service: ApplicationService) { 
 
@@ -42,6 +49,28 @@ export class MsfDynamicTableComponent implements OnInit {
   ngOnInit() {
   }
 
+  ngOnChanges(changes: SimpleChanges): void
+  {
+    if (changes['displayOptionPanel'])
+    {
+      if (this.resizeTimeout)
+      {
+        clearInterval (this.resizeTimeout);
+        this.resizeTimeout = null;
+      }
+
+      this.resizeTimeout = setInterval (() => {
+        this.jqxWidth = '98.9%';
+
+        setTimeout (() => {
+          this.jqxWidth = '99%';
+        }, 50);
+
+        clearInterval (this.resizeTimeout);
+        this.resizeTimeout = null;
+      }, 500);
+    }
+  }
 
  loadData(){  
   this.service.loadDynamicTableData(this, this.handlerSuccess, this.handlerError);
@@ -49,7 +78,7 @@ export class MsfDynamicTableComponent implements OnInit {
 
 
 getWidth() : any {
-  return '99%';
+  return this.jqxWidth;
 }
 
 getHeight(): any {

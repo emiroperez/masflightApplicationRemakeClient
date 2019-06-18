@@ -4,9 +4,8 @@
     </mat-progress-spinner>
   </mat-card>-->
 <jqxTreeGrid
-    #jqxTreeGridRef [width]="getWidth()" [height]="getHeight()" [source]="dataAdapter" [columns]="columns" [sortable]="true">
+  #jqxTreeGridRef [width]="getWidth()" [height]="getHeight()" [source]="dataAdapter" [columns]="columns" [sortable]="true">
 </jqxTreeGrid>
-
 <div class="loading-panel table-loading" *ngIf="globals.isLoading">
   <button *ngIf="globals.currentOption !== 'dashboard'" mat-button class="cancel-button" (click)="cancelLoading()">
     Cancel
