@@ -1433,7 +1433,28 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
         "toDelete": false,
         "order": newPos
       };
-      this.optionSelected.menuOptionArgumentsAdmin.push(itemToAdd);
+
+      for (let j = 0; j < category.arguments.length; j++)
+      {
+        let argumentType = category.arguments[j].type;
+        let numArguments = 3; // display all sub-arguments if no type
+
+        // set the number of sub-arguments depending of the argument type
+        for (let k = 0; k < this.numArgumentsPerType.length; k++)
+        {
+          let item = this.numArgumentsPerType[k];
+
+          if (item.type === argumentType)
+          {
+            numArguments = item.numArguments;
+            break;
+          }
+        }
+
+        category.arguments[j].numArguments = numArguments;
+      }
+
+      this.optionSelected.menuOptionArgumentsAdmin.push (itemToAdd);
     }
 
     const nestedNode = this.flatNodeMap.get(this.optionSelected);
