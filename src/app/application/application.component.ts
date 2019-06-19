@@ -330,7 +330,6 @@ toggle(){
       this.globals.map = true;
       // this.msfContainerRef.msfMapRef.getTrackingDataSource();
       this.msfContainerRef.msfTableRef.getData(true);
-      this.msfContainerRef.msfTableRef.getData(true);
     }else if(this.globals.currentOption.tabType === 'usageStatistics'){
       this.msfContainerRef.msfTableRef.getDataUsageStatistics();
     }else{

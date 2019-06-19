@@ -232,7 +232,7 @@ export class MsfTableComponent implements OnInit {
   getData(moreResults: boolean){
     // if(this.tableOptions.moreResultsBtn){
       this.globals.startTimestamp = new Date();
-      var pageSize = 100;
+
         if(moreResults){
           this.actualPageNumber++;
           this.tableOptions.moreResults = true;
@@ -319,11 +319,10 @@ export class MsfTableComponent implements OnInit {
           
 
           if( _this.tableOptions.moreResults){
-            if(_this.currentOption.tabType!="athena"&&_this.currentOption.tabType!="mariadb"){
+            if(_this.currentOption.tabType === "legacy" || _this.currentOption.tabType === "scmap")
               _this.dataSource.data = _this.dataSource.data.concat(dataResult.data);
-            }else{
+            else
               _this.dataSource = dataResult;
-            }
           }else{
             _this.dataSource = dataResult;
           }
@@ -345,7 +344,7 @@ export class MsfTableComponent implements OnInit {
             }
           }
 
-          if(_this.currentOption.tabType!="athena"&&_this.currentOption.tabType!="mariadb"){
+          if(_this.currentOption.tabType === "legacy" || _this.currentOption.tabType === "scmap"){
             if( _this.tableOptions.totalRecord<100 ||  _this.tableOptions.totalRecord>100){
               _this.tableOptions.moreResultsBtn = false;
               _this.tableOptions.moreResults = false;
