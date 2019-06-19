@@ -91,7 +91,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     { name: 'Table', flags: ChartFlags.TABLE },
     { name: 'Map', flags: ChartFlags.MAP },
     { name: 'Heat Map', flags: ChartFlags.HEATMAP },
-    { name: 'Map Tracker', flags: ChartFlags.MAP | ChartFlags.MAPBOX }/*,
+    { name: 'Map Tracker', flags: ChartFlags.MAP | ChartFlags.MAPBOX },
+    { name: 'Simple Bars With Line', flags: ChartFlags.XYCHART, createSeries: this.createVertColumnSeries }/*,
     { name: 'Simple Picture', flags: ChartFlags.INFO | ChartFlags.PICTURE }*/
   ];
 
@@ -1612,14 +1613,14 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.globals.startTimestamp = new Date ();
 
     // check if any variable that requires grouping are in configure properly
-    if (!this.checkPanelVariables ())
+    /*if (!this.checkPanelVariables ())
     {
       this.dialog.open (MessageComponent, {
         data: { title: "Error", message: "Some variables used to get the results must be added in the grouping inside the control variables." }
       });
 
       return;
-    }
+    }*/
 
     if (this.values.currentChartType.flags & ChartFlags.MAPBOX)
       this.loadMapboxData (this.msfMapRef.successHandler, this.msfMapRef.errorHandler);
