@@ -6,7 +6,7 @@
   <div class="msf-dynamic-table-variable-content">
       <div class="msf-var-content">
           <mat-form-field class="msf-full-width">
-              <mat-select [formControl]="variableCtrl" [multiple]="true" placeholder="Variables" #variableSelect [(ngModel)]="this.globals.variables" (ngModelChange)="orderVariable($event)" openedChange="show()">
+              <mat-select [multiple]="true" placeholder="Variables" #variableSelect [(ngModel)]="this.globals.variables" (ngModelChange)="orderVariable($event)" openedChange="show()">
                   <ngx-mat-select-search [formControl]="variableFilterCtrl"  placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>
                   <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
                   {{variable.name}}
@@ -23,7 +23,7 @@
       <img src="../../assets/images/flechas.png" class="msf-var-img" alt="">
       <div class="msf-var-content">
           <mat-form-field class="msf-full-width">
-              <mat-select [formControl]="valueCtrl" [multiple]="true" placeholder="Values" #valueSelect [(ngModel)]="this.globals.values" (ngModelChange)="orderValues($event)">
+              <mat-select [multiple]="true" placeholder="Values" #valueSelect [(ngModel)]="this.globals.values" (ngModelChange)="orderValues($event)">
                   <ngx-mat-select-search [formControl]="valueFilterCtrl"  placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>
                   <mat-option *ngFor="let value of filteredValues | async" [value]="value">
                   {{value.name}}

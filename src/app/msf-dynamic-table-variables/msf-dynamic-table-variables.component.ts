@@ -26,14 +26,10 @@ export class MsfDynamicTableVariablesComponent {
 
   @Output() dynamicTableOpen = new EventEmitter();
 
-  public variableCtrl: FormControl = new FormControl();
   public variableFilterCtrl: FormControl = new FormControl();
   public filteredVariables: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
 
   @ViewChild('variableSelect') variableSelect: MatSelect;
-
- /** control for the selected variable */
- public valueCtrl: FormControl = new FormControl();
 
  /** control for the MatSelect filter keyword */
  public valueFilterCtrl: FormControl = new FormControl();
@@ -65,7 +61,7 @@ export class MsfDynamicTableVariablesComponent {
 
     this.setColumns();
 
-    this.variableCtrl.setValue([this.columns[0], this.columns[1], this.columns[2]]);
+    this.globals.variables = [];
 
     this.filteredVariables.next(this.columns.slice());
     this.variableFilterCtrl.valueChanges
@@ -74,7 +70,7 @@ export class MsfDynamicTableVariablesComponent {
         this.filterVariables();
       });
 
-    this.valueCtrl.setValue([this.columns[0], this.columns[1], this.columns[2]]);
+    this.globals.values = [];
 
     this.filteredValues.next(this.columns.slice());
     this.valueFilterCtrl.valueChanges
@@ -82,7 +78,6 @@ export class MsfDynamicTableVariablesComponent {
       .subscribe(() => {
         this.filterValues();
       });
-   
   }
 
   ngAfterViewInit() {
@@ -93,8 +88,8 @@ export class MsfDynamicTableVariablesComponent {
     this.filteredVariables
       .pipe(take(1), takeUntil(this._onDestroy))
       .subscribe(() => {
-        this.variableSelect.compareWith = (a: Airport, b: Airport) => a.id === b.id;
-        this.valueSelect.compareWith = (a: Airport, b: Airport) => a.id === b.id;
+        this.variableSelect.compareWith = (a: Airport, b: Airport) => (a.id === b.id);
+        this.valueSelect.compareWith = (a: Airport, b: Airport) => (a.id === b.id);
       });
   }
 
@@ -138,14 +133,9 @@ export class MsfDynamicTableVariablesComponent {
   }
 
 
-  deleteVariable(variable){
-    let i = 0;
-    for(let vari of this.globals.variables){
-      if (vari === variable) {
-        this.globals.variables.splice(i, 1);
-      }
-      i++;
-    }
+  deleteVariable(variable)
+  {
+    this.globals.variables.splice(this.globals.variables.indexOf (variable), 1);
   }
 
   generateTable(){
