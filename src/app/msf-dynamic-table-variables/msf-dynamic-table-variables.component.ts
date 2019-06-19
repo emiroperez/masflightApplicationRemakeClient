@@ -135,7 +135,9 @@ export class MsfDynamicTableVariablesComponent {
 
   deleteVariable(variable)
   {
-    this.globals.variables.splice(this.globals.variables.indexOf (variable), 1);
+    variable.order = null;
+    this.globals.variables.splice (this.globals.variables.indexOf (variable), 1);
+    this.globals.variables = JSON.parse (JSON.stringify (this.globals.variables)); // force update on the variables combo box
   }
 
   generateTable(){
