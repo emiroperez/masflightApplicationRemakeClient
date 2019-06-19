@@ -201,7 +201,6 @@ export class CreateMempershipsComponent implements OnInit {
     this.innerWidth = window.innerWidth;
 
     this.getAdvanceFeatures();
-    this.getMenuData();
 
 
 
@@ -212,7 +211,6 @@ export class CreateMempershipsComponent implements OnInit {
   }
 
   getPlansService() {
-    this.globals.isLoading = true;
     let url= this.globals.baseUrl+'/getPlans';
     this.http.get(this, url, this.handlerSuccessInit, this.handlerError, null);
   }
@@ -223,6 +221,7 @@ export class CreateMempershipsComponent implements OnInit {
   }
 
   handlerSuccessInit(_this, data, tab) {
+    _this.globals.isLoading = false;
     _this.plans = data;
     _this.planJson = data;
     _this.plans.forEach(plan => {
@@ -376,14 +375,15 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
   handlerGetSuccessMenuData(_this, data) {
     _this.menu = data;
     _this.getPlansService();
-    _this.globals.isLoading = false;
   }
 
   getAdvanceFeatures(): void {
+    this.globals.isLoading = true;
     this.service.loadAdvanceFeatures(this, this.handlerGetSuccessAF, this.handlerError);
   }
   handlerGetSuccessAF(_this, data) {
     _this.advanceFeatures = data;
+    _this.getMenuData();
   }
 
   deleteOption(index, index2, index3) {
