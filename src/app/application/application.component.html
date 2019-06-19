@@ -72,49 +72,37 @@
     <!-- <div class="msf-secondary-color msf-menu-icon-container msf-menu-adm" *ngIf="!mobileQuery.matches">connected</div> -->
     <div class="msf-menu-icon-container msf-menu-icons-left">{{globals.currentOption ? globals.currentOption.label:''}}</div>
     <div class="msf-menu-icon-container msf-menu-icons-right">
-        <button
-            [disabled]="(!msfContainerRef.msfTableRef || !msfContainerRef.msfTableRef.dataSource || msfContainerRef.msfTableRef.dataSource.length < 0 || globals.mapsc) || !dynamicTablePlan"
-            class="msf-menu-icon" (click)="dynamicTable()"><img src="../../assets/images/dynamicTable.png"
-                class="msf-menu-image msf-vertical-middle">
+        <button *ngIf="globals.currentOption !== 'dashboard'" [disabled]="(!msfContainerRef.msfTableRef || !msfContainerRef.msfTableRef.dataSource || msfContainerRef.msfTableRef.dataSource.length < 0 || globals.mapsc) || !dynamicTablePlan" class="msf-menu-icon" (click)="dynamicTable()">
+            <img src="../../assets/images/dynamicTable.png" class="msf-menu-image msf-vertical-middle">
             <span class="msf-vertical-middle" *ngIf="!mobileQuery.matches">Dynamic Table</span>
         </button>
         <!-- <button [disabled]="(!msfContainerRef.msfTableRef || !msfContainerRef.msfTableRef.dataSource || msfContainerRef.msfTableRef.dataSource.length < 0) || !chartPlan" class="msf-menu-icon" (click)="openChart()"><img src="../../assets/images/Chart.png" class="msf-menu-image msf-vertical-middle" ><span  class="msf-vertical-middle">Chart</span></button> -->
-        <button
-            [disabled]="(!msfContainerRef.msfTableRef || !msfContainerRef.msfTableRef.dataSource || msfContainerRef.msfTableRef.dataSource.length < 0 || globals.mapsc) || !exportExcelPlan"
-            class="msf-menu-icon" (click)="exportToExcel()"><img src="../../assets/images/ExporttoExcel.png"
-                class="msf-menu-image msf-vertical-middle">
-                <span class="msf-vertical-middle" *ngIf="!mobileQuery.matches">Export Excel</span>
-            </button>
-        <button
-            [disabled]="(!msfContainerRef.msfTableRef || !msfContainerRef.msfTableRef.dataSource || msfContainerRef.msfTableRef.dataSource.length < 0 || globals.mapsc) || !exportExcelPlan"
-            class="msf-menu-icon" (click)="columnSelector()"><img src="../../assets/images/ColumnSelector.png"
-                class="msf-menu-image msf-vertical-middle">
-                <span class="msf-vertical-middle" *ngIf="!mobileQuery.matches">Column Selector</span>
-            </button>
-
+        <button *ngIf="globals.currentOption !== 'dashboard'" [disabled]="(!msfContainerRef.msfTableRef || !msfContainerRef.msfTableRef.dataSource || msfContainerRef.msfTableRef.dataSource.length < 0 || globals.mapsc) || !exportExcelPlan" class="msf-menu-icon" (click)="exportToExcel()">
+            <img src="../../assets/images/ExporttoExcel.png" class="msf-menu-image msf-vertical-middle">
+            <span class="msf-vertical-middle" *ngIf="!mobileQuery.matches">Export Excel</span>
+        </button>
+        <button *ngIf="globals.currentOption !== 'dashboard'" [disabled]="(!msfContainerRef.msfTableRef || !msfContainerRef.msfTableRef.dataSource || msfContainerRef.msfTableRef.dataSource.length < 0 || globals.mapsc) || !exportExcelPlan" class="msf-menu-icon" (click)="columnSelector()">
+            <img src="../../assets/images/ColumnSelector.png" class="msf-menu-image msf-vertical-middle">
+            <span class="msf-vertical-middle" *ngIf="!mobileQuery.matches">Column Selector</span>
+        </button>
         <!-- <button class="msf-menu-icon"><img src="../../assets/images/CopytoClipboard.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Copy to Clipboard</span></button>
         <button class="msf-menu-icon"><img src="../../assets/images/LoadingOptions.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Loading Options</span></button> -->
-        <button *ngIf="!globals.readOnlyDashboardPlan"
-            [disabled]="globals.currentOption !== 'dashboard' || globals.readOnlyDashboard" class="msf-menu-icon"
-            (click)="changeDashboardName()"><img src="../../assets/images/Chart.png"
-                class="msf-menu-image msf-vertical-middle">
-                <span class="msf-vertical-middle" *ngIf="!mobileQuery.matches">Edit Dashboard Title</span>
-            </button>
-        <button *ngIf="!globals.readOnlyDashboardPlan"
-            [disabled]="globals.currentOption !== 'dashboard' || globals.readOnlyDashboard" class="msf-menu-icon"
-            (click)="shareDashboard()"><img src="../../assets/images/share.png"
-                class="msf-menu-image msf-vertical-middle">
-                <span class="msf-vertical-middle" *ngIf="!mobileQuery.matches"> Share Dashboard</span>
-            </button>
-        <button [disabled]="globals.currentOption !== 'dashboard'" class="msf-menu-icon"
-            (click)="deleteDashboard()"><img src="../../assets/images/trash-blue-small.png"
-                class="msf-menu-image msf-vertical-middle">
-                <span class="msf-vertical-middle" *ngIf="!mobileQuery.matches">Delete Dashboard</span>
-            </button>
-        <button class="msf-menu-icon" *ngIf="!globals.isFullscreen" (click)="goToFullscreen()"><img
-                src="../../assets/images/fullscreen.png" class="msf-menu-image msf-vertical-middle">
-                <span class="msf-vertical-middle" *ngIf="!mobileQuery.matches">Full Screen</span>
-            </button>
+        <button *ngIf="globals.currentOption === 'dashboard' && !globals.readOnlyDashboardPlan" class="msf-menu-icon" (click)="changeDashboardName()">
+            <img src="../../assets/images/Chart.png" class="msf-menu-image msf-vertical-middle">
+            <span class="msf-vertical-middle" *ngIf="!mobileQuery.matches">Edit Dashboard Title</span>
+        </button>
+        <button *ngIf="globals.currentOption === 'dashboard' && !globals.readOnlyDashboardPlan" class="msf-menu-icon" (click)="shareDashboard()">
+            <img src="../../assets/images/share.png" class="msf-menu-image msf-vertical-middle">
+            <span class="msf-vertical-middle" *ngIf="!mobileQuery.matches"> Share Dashboard</span>
+        </button>
+        <button *ngIf="globals.currentOption === 'dashboard'" class="msf-menu-icon" (click)="deleteDashboard()">
+            <img src="../../assets/images/trash-blue-small.png" class="msf-menu-image msf-vertical-middle">
+            <span class="msf-vertical-middle" *ngIf="!mobileQuery.matches">Delete Dashboard</span>
+        </button>
+        <button class="msf-menu-icon" *ngIf="!globals.isFullscreen" (click)="goToFullscreen()">
+            <img src="../../assets/images/fullscreen.png" class="msf-menu-image msf-vertical-middle">
+            <span class="msf-vertical-middle" *ngIf="!mobileQuery.matches">Full Screen</span>
+        </button>
     </div>
 </div>
 
