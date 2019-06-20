@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { trigger, transition, style, animate, state } from '@angular/animations';
 import { MenuService } from '../services/menu.service';
 import { AuthService } from '../services/auth.service';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-welcome',
@@ -20,58 +21,56 @@ export class WelcomeComponent implements OnInit {
   activeElement ='Landing';
   userName: string;
 
+  lastTime: Date;
 
-  customer = {
-    name: 'Emiro Perez',
-    lastSession:'July 12, 2018',
-    overview:{
-                since:'12/14/2011',
-                plan: 'Administrator',
-                username:'admin',
-                email: 'emiro.perez@aspsols.com',
-                expDate: '12/14/3011(over 994 year)',
-                company: 'Jet Blue',
-                jobTitle: '',
-                website: 'none',
-                phone: 'none',
-                querySaved: '99 left',
-                resultsSaved: '99 left',
-              },
-    lastestQueries:[
-                    {
-                      name:'Full Reports(234)',
-                      date: 'July 10,2018 16:48',
-                    },
-                    {
-                      name:'Full Reports(234)',
-                      date: 'July 10,2018 16:48',
-                    },
-                    {
-                      name:'Full Reports(234)',
-                      date: 'July 10,2018 16:48',
-                    },
-                    {
-                      name:'Full Reports(234)',
-                      date: 'July 10,2018 16:48',
-                    },
-                    {
-                      name:'Full Reports(234)',
-                      date: 'July 10,2018 16:48',
-                    }
-                  ],
-    SavedQueries:[
-                    {
-                      name:'IAD-Marchist',
-                      date: 'July 10,2018 16:48',
-                      desc:'Daily Statistics'
-                    }
-                  ]
-  };
+  constructor(public globals: Globals, private menuService: MenuService, private service: WelcomeService, private authService: AuthService, private userService: UserService, private router: Router) {
+  }
 
+  parseTimeStamp(timeStamp): string
+  {
+    let hours: number;
+    let minutes: any;
+    let ampm: string;
+    let date: Date;
 
+    const monthNames: string[] =
+    [
+      "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+    ];
 
+    if (timeStamp == null)
+      return null;
 
-  constructor(public globals: Globals, private menuService: MenuService, private service: WelcomeService, private authService: AuthService, private router: Router) {
+    date = new Date (timeStamp);
+    if (Object.prototype.toString.call (date) === "[object Date]")
+    {
+      if (isNaN (date.getTime()))
+        return null;
+    }
+    else
+      return null;
+
+    hours = date.getHours ();
+    if (hours >= 12)
+    {
+      if (hours > 12)
+        hours -= 12;
+
+      ampm = " PM";
+    }
+    else
+    {
+      if (!hours)
+        hours = 12;
+
+      ampm = " AM";
+    }
+
+    minutes = date.getMinutes ();
+    if (minutes < 10)
+      minutes = "0" + minutes;
+
+    return monthNames[date.getMonth ()] + " " + date.getDate () + ", " + date.getFullYear () + " " + hours + ":" + minutes + ampm;
   }
 
   setState(option){
@@ -82,6 +81,7 @@ export class WelcomeComponent implements OnInit {
   ngOnInit() {
     this.getUserLoggedIn();
   }
+
   getUserLoggedIn(){
     if (!this.authService.getToken ())
       return;
@@ -93,13 +93,20 @@ export class WelcomeComponent implements OnInit {
   handleLogin(_this,data){
     _this.globals.currentUser = data.name;
     _this.userName = _this.globals.currentUser;
+    _this.userService.getUserLastLoginTime (_this, _this.lastTimeSuccess, _this.errorLogin);
+  }
+
+  lastTimeSuccess (_this, data)
+  {
+    _this.lastTime = _this.parseTimeStamp (data);
     _this.getApplications();
   }
+
   errorLogin(_this,result){
     console.log(result);
     _this.getApplications();
-
   }
+
   ngAfterViewInit() {
   }
 

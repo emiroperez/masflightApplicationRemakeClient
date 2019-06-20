@@ -2,7 +2,7 @@
 <div class="msf-intro-body" style="overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 2%;">
     <div>
         <div class="msf-intro-welcome" style="font-size: 120%;font-weight: 500;">Welcome to {{globals.currentApplication.name}}, {{globals.currentUser}}</div>
-        <div>Your last visit was on September 24, 2018</div>
+        <div *ngIf="globals.lastTime">Your last visit was on {{globals.lastTime}}</div>
         <!--
           <img *ngIf="globals.currentApplication.id==3" src="../../assets/images/dashboard-02.png"
           style="width: 91.5%;padding-bottom: 5%;margin: 1% 0;"> -->

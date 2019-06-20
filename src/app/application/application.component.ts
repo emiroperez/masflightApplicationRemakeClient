@@ -22,6 +22,7 @@ import { length } from '@amcharts/amcharts4/.internal/core/utils/Iterator';
 import { AuthService } from '../services/auth.service';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { AuthGuard } from '../guards/auth.guard';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-application',
@@ -56,7 +57,8 @@ export class ApplicationComponent implements OnInit {
   private _mobileQueryListener: () => void;
 
   constructor(public dialog: MatDialog, public globals: Globals, private menuService: MenuService,private router: Router,private excelService:ExcelService,
-    private appService: ApplicationService, private authService: AuthService, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private authGuard: AuthGuard)
+    private appService: ApplicationService, private authService: AuthService, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private authGuard: AuthGuard,
+    private userService: UserService)
   {
     this.status = false;
 
@@ -74,6 +76,52 @@ export class ApplicationComponent implements OnInit {
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
 
+  parseTimeStamp(timeStamp): string
+  {
+    let hours: number;
+    let minutes: any;
+    let ampm: string;
+    let date: Date;
+
+    const monthNames: string[] =
+    [
+      "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
+    ];
+
+    if (timeStamp == null)
+      return null;
+
+    date = new Date (timeStamp);
+    if (Object.prototype.toString.call (date) === "[object Date]")
+    {
+      if (isNaN (date.getTime()))
+        return null;
+    }
+    else
+      return null;
+
+    hours = date.getHours ();
+    if (hours >= 12)
+    {
+      if (hours > 12)
+        hours -= 12;
+
+      ampm = " PM";
+    }
+    else
+    {
+      if (!hours)
+        hours = 12;
+
+      ampm = " AM";
+    }
+
+    minutes = date.getMinutes ();
+    if (minutes < 10)
+      minutes = "0" + minutes;
+
+    return monthNames[date.getMonth ()] + " " + date.getDate () + ", " + date.getFullYear () + " " + hours + ":" + minutes + ampm;
+  }
 
   validateAdmin(){
     this.menuService.getUserLoggedin(this, this.handleLogin, this.errorLogin);
@@ -84,7 +132,13 @@ export class ApplicationComponent implements OnInit {
     _this.globals.currentUser = data.name;
     _this.userName = data.name;
     _this.admin = data.admin;
-     _this.globals.isLoading = false;
+    _this.userService.getUserLastLoginTime (_this, _this.lastTimeSuccess, _this.errorLogin);
+  }
+
+  lastTimeSuccess(_this, data)
+  {
+    _this.globals.lastTime = _this.parseTimeStamp (data);
+    _this.globals.isLoading = false;
   }
 
   errorLogin(_this,result){
@@ -176,17 +230,13 @@ export class ApplicationComponent implements OnInit {
   temporalSelectOption(_this){
     _this.menu.categories.forEach(category => {
       category.options.forEach(option => {
-        if(option.children.length>0){
-          _this.recursiveSearch(option.children,_this,category);
-        }else{
-          if(option.id==166 && _this.globals.currentApplication.id==3){
-            _this.globals.clearVariables();
-            _this.globals.currentMenuCategory = category;
-            _this.globals.currentOption = option;
-            _this.globals.initDataSource();
-            _this.globals.dataAvailabilityInit();
-            _this.globals.status = true;
-          }else if(option.id==64 && _this.globals.currentApplication.id==4){
+        if (option.children.length > 0)
+          _this.recursiveSearch (option.children,_this,category);
+        else
+        {
+          if ((option.id==166 && _this.globals.currentApplication.id == 3) ||
+            (option.id==64 && _this.globals.currentApplication.id == 4))
+          {
             _this.globals.clearVariables();
             _this.globals.currentMenuCategory = category;
             _this.globals.currentOption = option;
@@ -202,17 +252,13 @@ export class ApplicationComponent implements OnInit {
 
   recursiveSearch(childrens,_this,category){
     childrens.forEach(option => {
-      if(option.children.length>0){
-        _this.recursiveSearch(option.children,_this,category);
-      }else{
-        if(option.id==166 && _this.globals.currentApplication.id==3){
-          _this.globals.clearVariables();
-          _this.globals.currentMenuCategory = category;
-          _this.globals.currentOption = option;
-          _this.globals.initDataSource();
-          _this.globals.dataAvailabilityInit();
-          _this.globals.status = true;
-        }else if(option.id==64 && _this.globals.currentApplication.id==4){
+      if (option.children.length > 0)
+        _this.recursiveSearch (option.children,_this,category);
+      else
+      {
+        if ((option.id == 166 && _this.globals.currentApplication.id == 3) ||
+          (option.id == 64 && _this.globals.currentApplication.id == 4))
+        {
           _this.globals.clearVariables();
           _this.globals.currentMenuCategory = category;
           _this.globals.currentOption = option;
@@ -411,9 +457,22 @@ toggle(){
   }
 
   logOut(){
-    this.authGuard.disableSessionInterval ();
-    this.authService.removeToken ();
-    this.router.navigate (['']);
+    this.userService.setUserLastLoginTime (this, this.logoutSuccess, this.logoutError);
+  }
+
+  logoutSuccess(_this): void
+  {
+    _this.authGuard.disableSessionInterval ();
+    _this.authService.removeToken ();
+    _this.router.navigate (['']);
+  }
+
+  logoutError(_this, error): void
+  {
+    console.log (error);
+    _this.authGuard.disableSessionInterval ();
+    _this.authService.removeToken ();
+    _this.router.navigate (['']);
   }
 
   goToFullscreen(): void

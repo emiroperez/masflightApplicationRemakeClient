@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { ApiClient } from '../api/api-client';
 import { Globals } from '../globals/Globals';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  constructor(private http: ApiClient, private globals:Globals) {
+  constructor(private http: ApiClient, private globals:Globals, private authService: AuthService) {
   }
 
   save(_this,user,successHandler, errorHandler){
@@ -52,4 +53,15 @@ export class UserService {
     this.http.get(_this,url,successHandler,errorHandler,null);
   }
 
+  getUserLastLoginTime(_this, handlerSuccess, handlerError): void
+  {
+    let url = this.globals.baseUrl + "/secure/users/getLastTime";
+    this.authService.get (_this, url, handlerSuccess, handlerError);
+  }
+
+  setUserLastLoginTime(_this, handlerSuccess, handlerError): void
+  {
+    let url = this.globals.baseUrl + "/secure/users/setLastTime";
+    this.authService.post (_this, url, null, handlerSuccess, handlerError);
+  }
 }

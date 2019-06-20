@@ -76,6 +76,7 @@ export class Globals {
   coordinates: string = "";
   subDisplayedColumnNames: string[] = []; 
   copiedPanelInfo: any;
+  lastTime: string;
    initDataSource(){
     if(this.currentMenuCategory!= null){
     if(this.currentMenuCategory.welcome!= null){

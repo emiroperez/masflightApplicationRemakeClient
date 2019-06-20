@@ -3,8 +3,9 @@
     <div class="msf-header-image">
         <img src="../../assets/images/opciones.png" class="header-icon2"></div>
     <div class="msf-header-title" style="margin-top: -6px;color:white;width: 55%;">
-        <div class="msf-intro-welcome" style="font-size: 16px;font-weight: lighter;">Welcome {{userName}}</div>
-        <div style="font-size: 12px;font-weight: lighter;">Last time: jan 31, 2019 4:00 pm</div>
+        <div class="msf-intro-welcome msf-intro-welcome-font">Welcome {{userName}}</div>
+        <div *ngIf="lastTime" class="msf-intro-welcome-font">Last time: {{lastTime}}</div>
+        <div *ngIf="!lastTime" class="msf-intro-welcome-font"><br></div>
     </div>
     <div class="msf-header-icons" style="min-height: 50px;width: 20%;">
         <img src="../../assets/images/logo_global_peqe.png" class="msf-header-image2">
