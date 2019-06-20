@@ -68,6 +68,7 @@ export class ApplicationComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.globals.lastTime = null;
     this.globals.clearVariables();
     this.getMenu();
   }
