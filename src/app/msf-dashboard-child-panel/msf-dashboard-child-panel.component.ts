@@ -947,7 +947,7 @@ export class MsfDashboardChildPanelComponent {
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&&pageSize=100&page_number=" + this.actualPageNumber;
     console.log (urlBase);
     urlArg = encodeURIComponent(urlBase);
-    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
+    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
 
     for (let tableVariable of this.values.tableVariables)
     {
@@ -966,8 +966,8 @@ export class MsfDashboardChildPanelComponent {
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
     console.log (urlBase);
     urlArg = encodeURIComponent (urlBase);
-    url = this.service.host + "/getChartData?url=" + urlArg + "&variable=" + this.values.variable.columnName +
-      "&valueColumn=" + this.values.valueColumn.columnName + "&function=" + this.values.function.id;
+    url = this.service.host + "/secure/getChartData?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress () +
+      "&variable=" + this.values.variable.columnName + "&valueColumn=" + this.values.valueColumn.columnName + "&function=" + this.values.function.id;
 
     // don't use the xaxis parameter if the chart type is pie, donut or radar
     if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
@@ -975,7 +975,7 @@ export class MsfDashboardChildPanelComponent {
     else
       url += "&xaxis=" + this.values.xaxis.columnName;
 
-    this.http.post (this, url, null, handlerSuccess, handlerError);
+    this.authService.post (this, url, null, handlerSuccess, handlerError);
   }
 
   handlerChartSuccess(_this, data): void

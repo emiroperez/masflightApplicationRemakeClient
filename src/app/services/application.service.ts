@@ -64,7 +64,7 @@ export class ApplicationService {
     }
     console.log(urlBase);
     let urlArg = encodeURIComponent(urlBase);
-    let url = this.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + _this.globals.currentOption.id;
+    let url = this.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + _this.globals.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
     this.authService.get(_this, url, handlerSuccess, handlerError);
     console.log(url);
   }
@@ -76,8 +76,8 @@ export class ApplicationService {
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
     console.log(urlBase);
     let urlArg = encodeURIComponent(urlBase);
-    let url = this.host + "/getChartData?url=" + urlArg + "&variable=" + _this.variable.id + "&xaxis=" + _this.xaxis.id + "&valueColumn=" + _this.valueColumn.id + "&function=" + _this.function.id;
-    this.http.post(_this, url, null, handlerSuccess, handlerError);
+    let url = this.host + "/secure/getChartData?url=" + urlArg + "&optionId=" + _this.globals.currentOption.id + "&ipAddress=" + this.authService.getIpAddress () + "&variable=" + _this.variable.id + "&xaxis=" + _this.xaxis.id + "&valueColumn=" + _this.valueColumn.id + "&function=" + _this.function.id;
+    this.authService.post(_this, url, null, handlerSuccess, handlerError);
   }
 
 
@@ -91,9 +91,10 @@ export class ApplicationService {
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
     console.log(urlBase);
     let urlArg = encodeURIComponent(urlBase);
-    let url = this.host + "/getDynamicTableData?url=" + urlArg;
+    let url = this.host + "/secure/getDynamicTableData?url=" + urlArg + "&optionId=" + _this.globals.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
     let data = { variables: _this.globals.variables, values: _this.globals.values };
     this.http.post(_this, url, data, handlerSuccess, handlerError);
+    this.authService.post(_this, url, data, handlerSuccess, handlerError);
   }
 
   loadMenuOptions(_this, handlerSuccess, handlerError) {
@@ -254,15 +255,6 @@ export class ApplicationService {
     this.http.post(_this, url, data, handlerSuccess, handlerError);
   }
 
-  loadChartDataUsageStatistics(_this, handlerSuccess, handlerError) {
-    _this.globals.isLoading = true;
-    let params = this.utils.getParameters(_this.globals.currentOption);
-    params += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999";
-    console.log(params);
-    let url = this.host + "/getChartDataUsageStatistics?variable=" + _this.variable.id + "&xaxis=" + _this.xaxis.id + "&valueColumn=" + _this.valueColumn.id + "&function=" + _this.function.id + "&" +params+ "&optionId=" + _this.globals.currentOption.id;;
-    this.http.get(_this, url, handlerSuccess, handlerError, null);
-  }
-
   getDataTableSourceUsageStatistics(_this, handlerSuccess, handlerError) {
     _this.dataSource = null;
     _this.displayedColumns = [];
@@ -384,7 +376,7 @@ export class ApplicationService {
     console.log(urlBase);
     let urlArg = encodeURIComponent(urlBase);
     console.log(urlArg);
-    let url = this.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + option.id;
+    let url = this.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + option.id + "&ipAddress=" + this.authService.getIpAddress ();
     this.authService.get(_this, url, handlerSuccess, handlerError);
     console.log(url);
   }

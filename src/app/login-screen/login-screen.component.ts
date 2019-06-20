@@ -82,24 +82,18 @@ export class LoginScreenComponent implements OnInit {
     if (response.status == _this.OK_STATUS){
       _this.userId = response.userId;
       if (response.token!= null){
-        let self = _this;
-
         _this.securityToken = response.token;
         _this.username = response.username;
 
         _this.globals.isLoading = true;
 
-        // get public IP address
-        _this.http.get ("https://api.ipify.org?format=json").subscribe (data =>
-        {
-          self.session = {
-            userId: _this.userId,
-            ipAddress: data["ip"],
-            hash: _this.hash
-          };
+        _this.session = {
+          userId: _this.userId,
+          ipAddress: _this.authService.getIpAddress (),
+          hash: _this.hash
+        };
 
-          _this.authService.validateLogin (self, self.session, self.verifyLogin, self.errorAutentication);
-        });
+        _this.authService.validateLogin (_this, _this.session, _this.verifyLogin, _this.errorAutentication);
       }
     } else {
       _this.utils.showAlert ('warning', data.errorMessage);

@@ -13,9 +13,13 @@ const TOKEN_STORAGE_KEY = "token";
 @Injectable()
 export class AuthService {
   jwtHelper: JwtHelperService = new JwtHelperService ();
+  ipAddress: string;
 
   constructor(public http: HttpClient, private globals: Globals)
-  { 
+  {
+    this.http.get ("https://api.ipify.org?format=json").subscribe (data => {
+      this.ipAddress = data["ip"];
+    });
   }
 
   login(_this, credentials, successHandler, errorHandler)
@@ -73,6 +77,11 @@ export class AuthService {
       return true;
 
     return this.jwtHelper.isTokenExpired (token);
+  }
+
+  getIpAddress(): string
+  {
+    return this.ipAddress;
   }
 
   get = function (_this, url, successHandler, errorHandler)

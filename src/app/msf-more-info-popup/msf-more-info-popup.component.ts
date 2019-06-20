@@ -8,6 +8,7 @@ import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import am4themes_dark from "@amcharts/amcharts4/themes/dark";
 import { Subject } from 'rxjs';
 import { MessageComponent } from '../message/message.component';
+import { AuthService } from '../services/auth.service';
 
 am4core.useTheme(am4themes_animated);
 am4core.useTheme(am4themes_dark);
@@ -58,6 +59,7 @@ export class MsfMoreInfoPopupComponent{
     public globals: Globals,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private http: ApiClient,
+    private authService: AuthService,
     private zone: NgZone) {}
 
     onNoClick(): void
@@ -109,10 +111,12 @@ export class MsfMoreInfoPopupComponent{
       // urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
       console.log(urlBase);
       let urlArg = encodeURIComponent(urlBase);
-      let url = this.globals.baseUrl + "/getChartData?url=" + urlArg 
+      let url = this.globals.baseUrl + "/secure/getChartData?url=" + urlArg 
+      + "&optionId=" + this.globals.currentOption.id
+      + "&ipAddress=" + this.authService.getIpAddress ()
       + "&variable=" + this.variable + "&xaxis=" + this.xaxis 
       + "&valueColumn=" + this.valueColumn + "&function=" + this.functions[1].id
-      this.http.post(this, url, null, handlerSuccess, handlerError);
+      this.authService.post(this, url, null, handlerSuccess, handlerError);
     }
 
     handlerChartSuccess(_this, data): void

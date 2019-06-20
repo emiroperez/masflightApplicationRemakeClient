@@ -420,7 +420,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   // Function to create simple vertical column chart series
   createSimpleVertColumnSeries(values, stacked, chart, item, parseDate): void
   {
-    let series = chart.series.push (new am4charts.ColumnSeries());
+    let series = chart.series.push (new am4charts.ColumnSeries ());
     series.dataFields.valueY = item.valueField;
     series.dataFields.categoryX = item.titleField;
     series.name = item.valueField;
@@ -457,7 +457,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   // Function to create simple horizontal column chart series
   createSimpleHorizColumnSeries(values, stacked, chart, item, parseDate): void
   {
-    let series = chart.series.push (new am4charts.ColumnSeries());
+    let series = chart.series.push (new am4charts.ColumnSeries ());
     series.dataFields.valueX = item.valueField;
     series.dataFields.categoryY = item.titleField;
     series.name = item.valueField;
@@ -1489,9 +1489,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     panel = this.getPanelInfo ();
     panel.paletteColors = JSON.stringify (variables); // store the variables into the paletteColors for temporary use
 
-    url = this.service.host + "/getTextSummaryResponse?url=" + urlArg;
+    url = this.service.host + "/secure/getTextSummaryResponse?url=" + urlArg + "&ipAddress=" + this.authService.getIpAddress ();
 
-    this.http.post (this, url, panel, handlerSuccess, handlerError);
+    this.authService.post (this, url, panel, handlerSuccess, handlerError);
   }
 
   loadChartData(handlerSuccess, handlerError): void
@@ -1505,8 +1505,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
     console.log (urlBase);
     urlArg = encodeURIComponent (urlBase);
-    url = this.service.host + "/getChartData?url=" + urlArg + "&variable=" + this.values.variable.id +
-      "&valueColumn=" + this.values.valueColumn.id + "&function=" + this.values.function.id;
+    url = this.service.host + "/secure/getChartData?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress () +
+      "&variable=" + this.values.variable.id + "&valueColumn=" + this.values.valueColumn.id + "&function=" + this.values.function.id;
 
     // don't use the xaxis parameter if the chart type is pie, donut or radar
     if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
@@ -1514,7 +1514,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     else
       url += "&xaxis=" + this.values.xaxis.id;
 
-    this.http.post (this, url, panel, handlerSuccess, handlerError);
+    this.authService.post (this, url, panel, handlerSuccess, handlerError);
   }
 
   loadMapData(handlerSuccess, handlerError): void
@@ -1526,7 +1526,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=100&page_number=0";
     console.log (urlBase);
     urlArg = encodeURIComponent (urlBase);
-    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
+    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
 
     this.authService.get (this, url, handlerSuccess, handlerError);
   }
@@ -1555,7 +1555,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=1&page_number=0";
     console.log (urlBase);
     urlArg = encodeURIComponent (urlBase);
-    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
+    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
 
     this.authService.get (this, url, handlerSuccess, handlerError);
   }
@@ -1569,7 +1569,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=1&page_number=0";
     urlArg = encodeURIComponent (urlBase);
-    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
+    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
 
     this.authService.get (this, url, handlerSuccess, handlerError);
   }
@@ -1596,7 +1596,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&&pageSize=100&page_number=" + this.actualPageNumber;
     console.log (urlBase);
     urlArg = encodeURIComponent (urlBase);
-    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
+    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
 
     for (let tableVariable of this.values.tableVariables)
     {
