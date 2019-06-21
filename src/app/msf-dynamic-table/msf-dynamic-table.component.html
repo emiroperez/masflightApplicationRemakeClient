@@ -7,7 +7,7 @@
     </tr>
     <tr class="dynamic-table-body-container" *ngFor="let body of dataAdapter.body">
       <th class="dynamic-table-body-title">{{body[0].value}}</th>
-      <td class="dynamic-table-value" *ngFor="let value of body | slice: 1"><span *ngIf="value">{{value.value}}</span></td>
+      <td class="dynamic-table-value" *ngFor="let value of body | slice: 1; let valueindex = index"><span *ngIf="body[valueindex + 1]">{{body[valueindex + 1]}}</span></td>
     </tr>
   </table>
 </div>

@@ -48,7 +48,7 @@ export class MsfDynamicTableComponent implements OnInit {
 
 handlerSuccess(_this,data){
     _this.dataAdapter = data;
-    _this.dataAdapter.headers.pop ();  // remove blank header that appears at the end of the header array
+    console.log (_this.dataAdapter);
     _this.globals.isLoading = false;
     _this.globals.showBigLoading = true;
 }
