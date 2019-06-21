@@ -16,7 +16,11 @@
           <ng-container *ngFor="let variable of this.globals.variables">
               <mat-card class="msf-var-name-content">
                 {{variable.name}}
-                <i class="material-icons" (click)="deleteVariable(variable)">close</i>
+                <div class="msf-var-buttons">
+                    <i class="material-icons" *ngIf="variable.direction === 'vertical'" (click)="changeVariableDirection(variable)">arrow_downward</i>
+                    <i class="material-icons" *ngIf="variable.direction === 'horizontal'" (click)="changeVariableDirection(variable)">arrow_forward</i>
+                    <i class="material-icons" (click)="deleteVariable(variable)">close</i>
+                </div>
               </mat-card>
           </ng-container>
       </div>
@@ -72,6 +76,6 @@
   </div>
   <div class="msf-dynamic-table-variable-fotter">
       <button class="msf-cancel-button" mat-button (click)="onNoClick()" >Cancel</button>
-      <button  [disabled]="disabled()" [ngClass]="disabled()?'msf-disabled msf-ok-button ':'msf-ok-button'" mat-button (click)="generateTable()" >Generate Table</button>      
+      <button [disabled]="disabled()" [ngClass]="disabled()?'msf-disabled msf-ok-button ':'msf-ok-button'" mat-button (click)="generateTable()" >Generate Table</button>      
   </div>
 </div>

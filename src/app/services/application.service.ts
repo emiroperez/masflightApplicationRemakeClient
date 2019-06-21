@@ -85,16 +85,14 @@ export class ApplicationService {
     _this.globals.isLoading = true;
     _this.columns = [];
 
-    _this.jqxTreeGridRef.clear();
     let param = this.utils.getUrlParameters(_this.globals.currentOption,true);
     let urlBase = param.url;
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
     console.log(urlBase);
     let urlArg = encodeURIComponent(urlBase);
-    let url = this.host + "/secure/getDynamicTableData?url=" + urlArg + "&optionId=" + _this.globals.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
     let data = { variables: _this.globals.variables, values: _this.globals.values };
-    this.http.post(_this, url, data, handlerSuccess, handlerError);
-    this.authService.post(_this, url, data, handlerSuccess, handlerError);
+    let url = this.host + "/secure/getHorizontalMatrix?url=" + urlArg + "&optionId=" + _this.globals.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
+    this.authService.post (_this, url, data, handlerSuccess, handlerError);
   }
 
   loadMenuOptions(_this, handlerSuccess, handlerError) {

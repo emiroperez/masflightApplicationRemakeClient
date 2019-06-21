@@ -3390,11 +3390,14 @@ mat-dialog-container {
   align-items: center;
   justify-content: space-between;
 }
-.msf-var-name-content i {
+.msf-var-name-content .msf-var-buttons {
+  display: flex;
+}
+.msf-var-name-content .msf-var-buttons i {
   font-size: 15px;
   cursor: pointer;
 }
-.msf-var-name-content i:hover {
+.msf-var-name-content .msf-var-buttons i:hover {
   background-color: #1e1e1e;
 }
 
@@ -5054,6 +5057,59 @@ span.msf-subCell {
 
 mat-form-field.msf-table-input {
   text-align: center !important;
+}
+
+.dynamic-table-scroll {
+  overflow: auto;
+  width: 100%;
+  height: 100%;
+}
+.dynamic-table-scroll .dynamic-table-container {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: unset !important;
+}
+.dynamic-table-scroll .dynamic-table-container tr.dynamic-table-header-container th.dyanmic-table-padding {
+  padding: 10px 10px !important;
+  background-color: #333333;
+  color: white;
+  position: sticky;
+  z-index: 3;
+  font-size: 100%;
+  font-weight: 500;
+  top: 0;
+}
+.dynamic-table-scroll .dynamic-table-container tr.dynamic-table-header-container th.dynamic-table-header {
+  padding: 10px 10px !important;
+  background-color: #333333;
+  color: white;
+  position: sticky;
+  z-index: 1;
+  font-size: 100%;
+  font-weight: 500;
+  white-space: nowrap;
+  border: 1px solid #777676;
+  top: 0;
+}
+.dynamic-table-scroll .dynamic-table-container tr.dynamic-table-body-container th.dynamic-table-body-title {
+  padding: 10px 10px !important;
+  background-color: #333333;
+  color: white;
+  position: sticky;
+  z-index: 2;
+  font-size: 100%;
+  font-weight: 500;
+  border: 1px solid #777676;
+  max-width: 120px;
+  left: 0;
+}
+.dynamic-table-scroll .dynamic-table-container tr.dynamic-table-body-container td.dynamic-table-value {
+  padding: 10px 10px !important;
+  background-color: white;
+  text-align: right;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: #ddd;
 }
 
 /*# sourceMappingURL=styles.css.map */

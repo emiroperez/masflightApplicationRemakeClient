@@ -151,6 +151,9 @@ export class MsfDynamicTableVariablesComponent {
   orderVariable(elements){
     if(elements){
       for(let element of elements){
+        if (!element.direction)
+          element.direction = "vertical";
+
         if(element.order == null){
           element.order = this.order;  
           this.order++;  
@@ -175,21 +178,59 @@ export class MsfDynamicTableVariablesComponent {
     }    
   }
 
-  disabled(){
-    if((!this.globals.values || this.globals.values.length < 1 || !this.hasFunctions())
-    ||(!this.globals.variables || this.globals.variables.length < 1 )){
+  changeVariableDirection(variable)
+  {
+    if (variable.direction === "vertical")
+      variable.direction = "horizontal";
+    else
+      variable.direction = "vertical";
+  }
+
+  disabled()
+  {
+    if (!this.variablesSet () || !this.hasFunctions ())
       return true;
-    }
+
     return false;
   }
 
-  hasFunctions(){
-    for(let value of this.globals.values){
-      if(!value.average && !value.summary && !value.min && !value.max 
-        && !value.count && !value.mean && !value.mean){
-        return false;
-      }
+  // check if there are any horizontal and vertical variables
+  variablesSet(): boolean
+  {
+    let hasHorizontalVariables, hasVerticalVariables: boolean;
+
+    if (!this.globals.variables || this.globals.values.variables < 1)
+      return false;
+
+    hasHorizontalVariables = false;
+    hasVerticalVariables = false;
+
+    for (let value of this.globals.variables)
+    {
+      if (value.direction === "vertical")
+        hasVerticalVariables = true;
+      else
+        hasHorizontalVariables = true;
     }
+
+    if (!hasVerticalVariables || !hasHorizontalVariables)
+      return false;
+
+    return true;
+  }
+
+  hasFunctions(): boolean
+  {
+    if (!this.globals.values || this.globals.values.length < 1)
+      return false;
+
+    for (let value of this.globals.values)
+    {
+      if (!value.average && !value.summary && !value.min && !value.max 
+        && !value.count && !value.mean && !value.mean)
+        return false;
+    }
+
     return true;
   }
 

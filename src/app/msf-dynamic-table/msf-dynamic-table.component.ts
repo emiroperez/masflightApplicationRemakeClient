@@ -1,7 +1,6 @@
-import { Component, OnInit, ViewChild, Input, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ApiClient } from '../api/api-client';
 import { Globals } from '../globals/Globals';
-import { jqxTreeGridComponent } from 'jqwidgets-scripts/jqwidgets-ts/angular_jqxtreegrid';
 import { ApplicationService } from '../services/application.service';
 
 @Component({
@@ -33,12 +32,6 @@ export class MsfDynamicTableComponent implements OnInit {
 
   columns: any[] = [];
 
-  @ViewChild(jqxTreeGridComponent) jqxTreeGridRef: jqxTreeGridComponent;
-  jqxWidth: string = '99%';
-
-  @Input("displayOptionPanel")
-  displayOptionPanel: boolean;
-
   resizeInterval: any;
   resizeTimeout: any;
 
@@ -49,57 +42,13 @@ export class MsfDynamicTableComponent implements OnInit {
   ngOnInit() {
   }
 
-  ngOnChanges(changes: SimpleChanges): void
-  {
-    if (changes['displayOptionPanel'])
-    {
-      if (this.resizeTimeout)
-      {
-        clearInterval (this.resizeTimeout);
-        this.resizeTimeout = null;
-      }
-
-      this.resizeTimeout = setInterval (() => {
-        this.jqxWidth = '98.9%';
-
-        setTimeout (() => {
-          this.jqxWidth = '99%';
-        }, 50);
-
-        clearInterval (this.resizeTimeout);
-        this.resizeTimeout = null;
-      }, 500);
-    }
-  }
-
  loadData(){  
   this.service.loadDynamicTableData(this, this.handlerSuccess, this.handlerError);
 }
 
-
-getWidth() : any {
-  return this.jqxWidth;
-}
-
-getHeight(): any {
-  return '96%';
-}
-
-
 handlerSuccess(_this,data){
- let source: any =
-    {
-       dataType: 'json',
-       dataFields: _this.getDataField(),
-       hierarchy:
-       {
-           root: 'children'
-       },
-       id: 'id',
-       localData: data
-    };
-    _this.dataAdapter = new jqx.dataAdapter(source);
-    _this.columns = _this.getColumns();    
+    _this.dataAdapter = data;
+    _this.dataAdapter.headers.pop ();  // remove blank header that appears at the end of the header array
     _this.globals.isLoading = false;
     _this.globals.showBigLoading = true;
 }
