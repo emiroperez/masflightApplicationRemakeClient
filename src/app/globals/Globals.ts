@@ -51,9 +51,9 @@ export class Globals {
   currentAirline: any;
   template : boolean = false;
   isFullscreen: boolean = false;
-  // baseUrl = "http://staging.pulse.aspsols.com:8887";
+  baseUrl = "http://staging.pulse.aspsols.com:8887";
   // baseUrl = "http://192.168.1.50:8887";
-  baseUrl = "";
+  // baseUrl = "";
   // baseUrl2 = "http://localhost:8886";
   baseUrl2 = "http://69.64.45.220:8886";
   // popupUrl = "http://localhost:8900";
@@ -77,6 +77,7 @@ export class Globals {
   subDisplayedColumnNames: string[] = []; 
   copiedPanelInfo: any;
   lastTime: string;
+  theme: string = "light-theme";
    initDataSource(){
     if(this.currentMenuCategory!= null){
     if(this.currentMenuCategory.welcome!= null){

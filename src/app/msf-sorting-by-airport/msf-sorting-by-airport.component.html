@@ -15,7 +15,7 @@
               {{checkbox.name}}
             </mat-checkbox>
             <button mat-button (click)="checkBoxChangeOrder(checkbox)" 
-             [ngClass]="checkbox.checked  ? 'arrow-button arrow-blue-button' : 'arrow-button'">
+             [ngClass]="checkbox.checked  ? 'arrow-button arrow-theme-button' : 'arrow-button'">
                 <mat-icon *ngIf="checkbox.order=='desc'">arrow_downward</mat-icon>
                 <mat-icon *ngIf="checkbox.order=='asc'">arrow_upward</mat-icon>
             </button>    

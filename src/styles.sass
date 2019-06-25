@@ -19,6 +19,131 @@
 
 @import "~@angular/material/prebuilt-themes/deeppurple-amber.css"
 
+// Color themes
+// (theme name, font-color, background-color, secondary-background-color, tertiary-background-color, primary-color, tab-label-color, tab-border-color, menu-header-color, badge-color)
+$color-scheme: ((dark-theme, #ffffff, #333333, #1e1e1e, #3d3d3d, #01abec, #f7f5f5, rgba(62, 60, 60, 0.8), #3d3d3d, #ffffff), (light-theme, #4d4d4d, #ffffff, #dcdcdc, #ededed, #eb5c1b, #070505, rgba(230, 230, 230, 0.8), #eb5c1b, #ededed))
+
+@mixin theme($name, $font-color, $background-color, $secondary-background-color, $tertiary-background-color, $primary-color, $tab-label-color, $tab-border-color, $menu-header-color, $badge-color)
+    .#{$name}
+        width: 100%
+        height: 100%
+        .msf-menu-body
+            background-color: $secondary-background-color
+        .mat-tab-body-wrapper
+            height: 100%
+            background: $background-color
+        .mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar
+            background-color: $primary-color !important
+        .mat-tab-labels
+            background-color: $background-color
+        .mat-tab-label
+            color: $tab-label-color
+        .mat-tab-header, .mat-tab-nav-bar
+            background: $background-color
+            border-bottom: 1px solid $tab-border-color !important
+        .mat-tab-header-pagination-chevron
+            border-color: $font-color !important
+        .msf-secondary-bg-color
+            background-color: $primary-color
+        .msf-menu-hide-button
+            &:hover
+                background-color: rgba($primary-color, .7)
+        .msf-menu-components-container-hide
+            background-color: rgba($background-color, .3)
+        .msf-menu-components-container-show
+            background-color: $background-color
+        .msf-menu-header-image-container 
+            background-color: $menu-header-color
+        .ng-dropdown-panel .ng-dropdown-panel-items
+            background-color: $tertiary-background-color
+        .msf-dashboard-menu-component
+            background-color: $tertiary-background-color
+            &:hover
+                background-color: $secondary-background-color
+        .msf-dashboard-menu-component-active
+            background-color: $secondary-background-color !important
+        .msf-menu-component-text
+            color: $font-color
+        .msf-menu-cmpte-row
+            color: $font-color
+        .msf-menu-arguments-container
+            color: $font-color
+            background-color: inherit
+        .msf-intro-body1
+            color: $font-color
+            background-color: $background-color
+            display: flex
+            justify-content: space-between
+            overflow: auto
+        .msf-welcome-title
+            color: $font-color
+            margin-bottom: 10px
+            font-weight: 500
+        .mat-list .mat-list-item, .mat-nav-list .mat-list-item, .mat-selection-list .mat-list-item
+            color: $font-color
+            font-size: 100%
+            font-weight: lighter
+            height: 30px !important
+        .msf-component-airport-title
+            background: $tertiary-background-color
+            color: $font-color
+        .msf-component-airport-sub-title
+            color: $font-color
+        .msf-dashboard-menu-arguments-container
+            color: $font-color
+        .mat-radio-button.mat-accent .mat-radio-inner-circle
+            background-color: $primary-color
+        .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle
+            border-color: $primary-color
+        .mat-checkbox-frame
+            border-color: $font-color !important
+        .arrow-theme-button
+            background-color: $primary-color
+        .mat-badge-content
+            background-color: $badge-color !important
+            color: $primary-color !important
+        .mat-checkbox-checked.mat-accent .mat-checkbox-background, .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background
+            background-color: $primary-color
+        .msf-secondary-color
+            color: $primary-color
+        .msf-menu-search-button-enabled
+            background-color: $primary-color
+            &:hover
+                background-color: rgba($primary-color, .3)
+        .ng-select .ng-select-container
+            color: $font-color !important
+        .ng-select .ng-select-container:after
+            border-bottom: 1px solid $msf-primary-light-color
+        .ng-select .ng-select-container .ng-value-container .ng-placeholder
+            color: $font-color
+        .ng-select .ng-clear-wrapper
+            color: $font-color
+        .ng-select .ng-clear-wrapper:hover
+            color: $font-color
+        .mat-button-wrapper
+            color: $font-color
+        .ng-select .ng-arrow-wrapper .ng-arrow
+            color: $font-color
+        .ng-dropdown-panel .ng-dropdown-panel-items .ng-option
+            color: $font-color
+        .ng-select.ng-select-focused .ng-select-container .ng-arrow-wrapper .ng-arrow
+            color: $font-color !important
+        .ng-select.ng-select-focused .ng-select-container .ng-value-container .ng-placeholder
+            color: $font-color !important
+        .ng-select.ng-select-focused .ng-select-container
+            &:after
+                border-color: $primary-color !important
+        .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked
+            color: $primary-color !important
+        .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected
+            color: $primary-color !important
+        ::-webkit-scrollbar-thumb
+            background-color: $primary-color
+            border-radius: 10px
+            outline: 1px solid $primary-color
+
+@each $name, $font-color, $background-color, $secondary-background-color, $tertiary-background-color, $primary-color, $tab-label-color, $tab-border-color, $menu-header-color, $badge-color in $color-scheme
+    @include theme($name, $font-color, $background-color, $secondary-background-color, $tertiary-background-color, $primary-color, $tab-label-color, $tab-border-color, $menu-header-color, $badge-color)
 
 body
     background-image: url("assets/images/fondo.png") 
@@ -858,9 +983,6 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button
 .msf-input-prompt-field
     width: calc(100% - 45%)!important
 
-.mat-button-wrapper
-    color: white
-
 .mat-select-search-clear
     .mat-button-wrapper
         color: black
@@ -919,37 +1041,16 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button
 .msf-input-icon-text
     width: calc(100% - 200px) !important
 
-.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle
-
-
-.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle
-    border-color: $msf-secondary-color
-
-.mat-radio-button.mat-accent .mat-radio-inner-circle
-    background-color: $msf-secondary-color
-
 .msf-flex
     display: flex
 
-.ng-select .ng-select-container
-    color: white!important
-
 .msf-select
     margin-left: 20px
-
-.ng-select .ng-select-container .ng-value-container .ng-placeholder
-    color: $msf-login-font-color
-    /*
-        pending register
-            padding-left: 15px*/
 
 .ng-select .ng-has-value .ng-placeholder, .ng-select.ng-select-opened .ng-placeholder
     color: white!important
     /**register pending
         padding-left: 22px!important*/
-
-.ng-select .ng-select-container:after
-    border-bottom: 1px solid $msf-primary-light-color
 
 .ng-select.ng-select-single .ng-select-container .ng-value-container, .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-value
     /**register pending
@@ -960,44 +1061,7 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button
     position: initial!important
 
 .ng-dropdown-panel .ng-dropdown-panel-items
-    background-color: #3d3d3d
     box-shadow: 0 -5px 5px -3px rgba(0,0,0,0.2), 0 -8px 10px 1px rgba(0,0,0,0.14), 0 -3px 14px 2px rgba(0,0,0,0.12)
-
-.ng-dropdown-panel .ng-dropdown-panel-items .ng-option
-    color: white
-
-.ng-select .ng-arrow-wrapper .ng-arrow
-    color: white
-
-.ng-select.ng-select-focused .ng-select-container .ng-arrow-wrapper .ng-arrow
-    color: white!important
-
-.ng-select.ng-select-focused .ng-select-container .ng-value-container .ng-placeholder
-    color: white!important
-
-.ng-select.ng-select-focused .ng-select-container
-    &:after
-        border-color: $msf-secondary-color!important
-
-.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked
-    color: $msf-secondary-color!important
-
-.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-disabled
-    color: white!important
-
-.ng-select .ng-clear-wrapper
-    color: white
-
-.ng-select .ng-clear-wrapper:hover
-    color: white
-
-.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected
-    color: $msf-secondary-color!important
-
-
-
-
-
 
 /*Menu*/
 .msf-menu-header
@@ -1012,7 +1076,7 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button
     max-width: 100%
     min-width: 100%
 
-.msf-menu-header-image-container 
+.msf-menu-header-image-container
     width: 15%
     height: 100%
     max-height: 60px
@@ -1021,7 +1085,6 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button
     flex-direction: row
     border-bottom-right-radius: 40px
     border-top-right-radius: 40px
-    background-color: #3d3d3d
     align-items: center
     padding: 0px 10px
     vertical-align: middle			
@@ -1225,9 +1288,6 @@ button[aria-expanded="true"]
     height: 40px
     cursor: pointer
     display: inline-block
-    &:hover
-        background-color: rgba($msf-secondary-color,.7)
-
 
 .msf-menu-hide-button-close
     @extend .msf-menu-hide-button
@@ -1255,13 +1315,11 @@ button[aria-expanded="true"]
 
 .msf-menu-components-container-hide
     @extend .msf-menu-components-container
-    background-color: rgba($msf-primary-color, .3)
     opacity: 0
     transition: 0.1s
 
 .msf-menu-components-container-show
     @extend .msf-menu-components-container
-    background-color: $msf-primary-color
     opacity: 1
     transition: 2s
     position: relative
@@ -1301,7 +1359,6 @@ button[aria-expanded="true"]
     margin-right: 5px
 
 .msf-menu-component
-    @extend .msf-primary-light-bg-color
     display: flex
     align-items: center
     position: relative
@@ -1339,14 +1396,9 @@ button[aria-expanded="true"]
     cursor: not-allowed
 
 .msf-menu-search-button-enabled
-    background-color: $msf-secondary-color
     @extend .msf-menu-search-button
-    &:hover
-         background-color: #0589bb
-
 
 .msf-menu-cmpte-row
-    color: white
     position: absolute
     right: 3px
 
@@ -1354,8 +1406,6 @@ button[aria-expanded="true"]
     margin: 4%
     padding: 1%
     display: flex
-    color: white
-    background-color: inherit
     font-size: 90%
 
 .msf-menu-arguments-container-hidden
@@ -1376,7 +1426,6 @@ button[aria-expanded="true"]
     transition: opacity 2s ease-out
 
 .msf-menu-component-text
-    color: white
     margin-left: 5px
     max-width: 200px
     word-break: break-word
@@ -1413,13 +1462,10 @@ button[aria-expanded="true"]
     width: 100%
     padding: 5px 0 5px 0
     margin-bottom: 10px
-    background: $msf-primary-light-color
-    color: $msf-primary-white-color
 
 .msf-component-airport-sub-title
     margin-bottom: 5px
     padding-left: 10px
-    color: $msf-primary-white-color
 
 .msf-component-airport-input-container
     display: flex
@@ -1505,10 +1551,6 @@ app-msf-airport
 .mat-tab-body
     font-size: 90%
 
-.mat-tab-body-wrapper
-    height: 100%
-    background: $msf-primary-color
-
 .mat-cell
     font-size: 90%
 
@@ -1578,9 +1620,6 @@ input[role="combobox"]
 .mat-calendar-body-selected
     background-color: $msf-secondary-color!important
 
-.mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar
-    background-color: $msf-secondary-color!important
-
 .clock-face__number--outer span
     color: white!important
 
@@ -1608,28 +1647,8 @@ mat-tab-group
 .msf-primary-light-color
     color: $msf-primary-light-color
 
-.msf-secondary-color
-    color: $msf-secondary-color
-
 .msf-surface-color
     color: $msf-surface-color
-
-/*Background color*/
-
-.msf-primary-bg-color
-    background-color:  $msf-primary-color
-
-.msf-primary-dark-bg-color
-    background-color: $msf-primary-dark-color
-
-.msf-primary-light-bg-color
-    background-color: $msf-primary-light-color
-
-.msf-secondary-bg-color
-    background-color: $msf-secondary-color
-
-.msf-surface-bg-color
-    background-color: $msf-surface-color
 
 /*Media query*/
 
@@ -2306,7 +2325,6 @@ mat-tab-group
     width: 100%
 
 .msf-dashboard-menu-component
-    @extend .msf-primary-light-bg-color
     display: flex
     align-items: center
     position: relative
@@ -2317,8 +2335,6 @@ mat-tab-group
     border-bottom-right-radius: 5px
     border-top-left-radius: 40px
     border-bottom-left-radius: 40px
-    &:hover
-        background-color: $msf-primary-dark-color
 
 .msf-dashboard-menu-component-active
     @extend .msf-dashboard-menu-component
@@ -2328,7 +2344,6 @@ mat-tab-group
     margin: 10px
     padding: 5px
     display: flex
-    color: white
     background-color: inherit
     font-size: 90%
 
@@ -2907,12 +2922,6 @@ mat-dialog-container
 .msf-width-90
     width: 90%
 
-.mat-tab-labels
-    background-color: $msf-primary-color
-
-.mat-tab-label
-    color: #f7f5f5
-
 .landing-icon
 
 
@@ -2978,17 +2987,6 @@ mat-dialog-container
     background-repeat: no-repeat
     background-position: center
     background-size: 25%
-
-.mat-tab-header, .mat-tab-nav-bar
-    background: #333333 //kp20190515
-    border-bottom: 1px solid rgba(62, 60, 60, 0.8)!important
-
-.mat-tab-header-pagination-chevron
-    border-color: white !important
-//kp20190515
-// .mat-tab-header-pagination-controls-enabled .mat-tab-header-pagination
-//     display: none  !important
-
 
 .msf-card-container
   display: inline-flex
@@ -3157,12 +3155,6 @@ li.msf-select:before
 
 .msf-summary-subtitle
 
-.msf-intro-body1
-    color: white
-    display: flex
-    justify-content: space-between
-    overflow: auto
-
 .msf-summary-value
     margin-left: 5px
     color: $msf-little-font-color
@@ -3191,7 +3183,6 @@ li.msf-select:before
     color: $msf-secondary-color
 
 .msf-searc-complete-option
-    @extend .msf-primary-light-bg-color
     display: flex
     align-items: center
     position: relative
@@ -3281,9 +3272,6 @@ input[role=combobox]
 .ng-dropdown-panel .ng-dropdown-header
     color: $msf-secondary-color
 
-.ng-select .ng-select-container .ng-value-container .ng-placeholder
-    color: $msf-font-color
-
 .ng-select .ng-select-container
     cursor: pointer!important
     border-radius: 4px
@@ -3302,10 +3290,6 @@ input[role=combobox]
     width: 1.5em!important
     text-align: center
     vertical-align: -webkit-baseline-middle
-
-.mat-checkbox-checked.mat-accent .mat-checkbox-background,
-.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background
-        background-color: $msf-secondary-color
 
 .checkbox-container
     padding: 10px 0 10px 0
@@ -3349,11 +3333,6 @@ tr.mat-footer-row, tr.mat-row
 .no-show
     display: none !important
 
-.msf-welcome-title
-    color: $msf-font-color
-    margin-bottom: 10px
-    font-weight: 500
-
 .msf-option-welcome-container
     margin-left: 70px
     margin-right: 20px
@@ -3361,12 +3340,6 @@ tr.mat-footer-row, tr.mat-row
 .msf-welcome-inline
     font-weight: lighter
     line-height: 1.2
-
-.mat-list .mat-list-item, .mat-nav-list .mat-list-item, .mat-selection-list .mat-list-item
-    color: white
-    font-size: 100%
-    font-weight: lighter
-    height: 30px !important
 
 .mat-list.what-do-list .mat-list-item .mat-list-item-content
     display: list-item
@@ -3595,9 +3568,6 @@ table.results
 .msf-ident
     margin-left: 10px !important
 
-.arrow-blue-button
-    background-color: #01abec
-
 .arrow-button
     color: white !important
     min-width: 40px !important
@@ -3623,9 +3593,6 @@ table.results
     padding: 0 !important
     margin: 0 !important
 
-.mat-checkbox-frame
-    border-color: white !important
-
 .login-form .mat-checkbox-frame 
     // border-color: $msf-font-color !important kp20032019
     border-color: $msf-font-color-black !important
@@ -3642,9 +3609,6 @@ table.results
 
 .ng-select-multiple .ng-select-container.ng-has-value
     padding-bottom: 20px !important
-
-.mat-checkbox-frame
-    border-color: white !important
 
 .mat-card .mat-divider-horizontal
     position: relative !important

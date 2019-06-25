@@ -1,6 +1,6 @@
 <!--Header-->
-<div *ngIf="!globals.isFullscreen || (globals.isFullscreen && globals.currentOption !== 'dashboard')"
-    class="msf-menu-header">
+<div [ngClass]="globals.theme">
+<div *ngIf="!globals.isFullscreen || (globals.isFullscreen && globals.currentOption !== 'dashboard')" class="msf-menu-header">
     <div class="msf-menu-header-image-container">
         <!-- <div (click)="goHome()" class="msf-menu-logo"></div> -->
         <!-- <div class="msf-menu-ajustes-icon"></div> -->
@@ -148,3 +148,4 @@
             </div>
         </div>
     </div>
+</div>
