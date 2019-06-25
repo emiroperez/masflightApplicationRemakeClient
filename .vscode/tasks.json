@@ -16,6 +16,14 @@
             "args" : [
                 "build", "--aot", "--output-hashing=all", "--prod"
             ]
+        },
+        {
+            "label": "Watch styles.sass For Changes",
+            "type": "shell",
+            "command": "sass",
+            "args" : [
+                "--watch", "./src/styles.sass", "./src/styles.css", "--style", "compressed"
+            ]
         }
     ]
 }
