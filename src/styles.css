@@ -973,25 +973,25 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
   margin-top: 6px;
 }
 
-.msf-component-redio {
+.msf-component-radio {
   margin-bottom: 10px;
 }
 
-.msf-component-redio .msf-radio {
+.msf-component-radio .msf-radio {
   padding-left: 10px;
 }
 
-.msf-component-redio .mat-radio-checked .mat-radio-inner-circle {
+.msf-component-radio .mat-radio-checked .mat-radio-inner-circle {
   transform: scale(0.6);
 }
 
-.msf-component-redio .mat-radio-inner-circle {
+.msf-component-radio .mat-radio-inner-circle {
   height: 15px;
   width: 15px;
   transform: scale(0);
 }
 
-.msf-component-redio .mat-radio-outer-circle {
+.msf-component-radio .mat-radio-outer-circle {
   height: 15px;
   width: 15px;
 }
@@ -2057,7 +2057,7 @@ mat-tab-group {
   display: none !important;
 }
 
-.msf-chart-analysis-container .msf-component-redio {
+.msf-chart-analysis-container .msf-component-radio {
   margin-top: 20px;
 }
 
@@ -5110,6 +5110,31 @@ mat-form-field.msf-table-input {
   border-bottom-width: 1px;
   border-bottom-style: solid;
   border-bottom-color: #ddd;
+}
+
+.alias-container {
+  width: 100%;
+  display: flex;
+}
+
+.alias-label {
+  width: 100%;
+  padding-left: 5px;
+}
+
+.alias-button-disabled {
+  vertical-align: middle;
+  padding-right: 5px;
+  color: #333333;
+}
+
+.alias-button {
+  vertical-align: middle;
+  padding-right: 5px;
+}
+
+.alias-button:hover {
+  cursor: pointer;
 }
 
 /*# sourceMappingURL=styles.css.map */

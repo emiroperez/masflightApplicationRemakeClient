@@ -189,6 +189,7 @@ import { DigitOnlyModule } from '@uiowa/digit-only';
 import { MaterialIconPickerComponent } from './material-icon-picker/material-icon-picker.component';
 import { CreateCustomerComponent } from './create-customer/create-customer.component';
 import { MsfMapCoordinatesComponent } from './msf-map-coordinates/msf-map-coordinates.component';
+import { MsfDynamicTableAliasComponent } from './msf-dynamic-table-alias/msf-dynamic-table-alias.component';
 
 @NgModule({
   declarations: [
@@ -355,7 +356,8 @@ import { MsfMapCoordinatesComponent } from './msf-map-coordinates/msf-map-coordi
     TwoFactorLoginDialogComponent,
     MaterialIconPickerComponent,
     CreateCustomerComponent,
-    MsfMapCoordinatesComponent
+    MsfMapCoordinatesComponent,
+    MsfDynamicTableAliasComponent
   ],
   imports: [
     BrowserModule,
@@ -436,7 +438,8 @@ import { MsfMapCoordinatesComponent } from './msf-map-coordinates/msf-map-coordi
     MsfSharedDashboardItemsComponent,
     MsfAddSharedDashboardPanelComponent,
     MsfAddSharedDashboardComponent,
-    TwoFactorLoginDialogComponent
+    TwoFactorLoginDialogComponent,
+    MsfDynamicTableAliasComponent
   ]
 })
 export class AppModule { }

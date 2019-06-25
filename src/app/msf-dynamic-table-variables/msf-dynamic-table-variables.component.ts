@@ -1,11 +1,12 @@
 import { Component, Inject, ViewChild, Input, Output, EventEmitter } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA, MatSelect } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatSelect, MatDialog } from '@angular/material';
 import { Airport } from '../model/Airport';
 import { ReplaySubject, Subject } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { take, takeUntil } from 'rxjs/operators';
 import { Utils } from '../commons/utils';
 import { Globals } from '../globals/Globals';
+import { MsfDynamicTableAliasComponent } from '../msf-dynamic-table-alias/msf-dynamic-table-alias.component';
 
 export interface DialogData {
   metadata: string[];
@@ -44,7 +45,8 @@ export class MsfDynamicTableVariablesComponent {
  private _onDestroy = new Subject<void>();
 
   constructor(public dialogRef: MatDialogRef<MsfDynamicTableVariablesComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData, public globals: Globals) {
+    @Inject(MAT_DIALOG_DATA) public data: DialogData, public globals: Globals,
+    public dialog: MatDialog) {
 
       this.metadata = data.metadata;
       this.utils = new Utils();
@@ -234,6 +236,88 @@ export class MsfDynamicTableVariablesComponent {
     return true;
   }
 
+  configureAlias(value, name)
+  {
+    let dialogRef, alias;
 
+    switch (name)
+    {
+      case 'Summary':
+        alias = value.sumAlias;
+        break;
 
+      case 'Average':
+        alias = value.avgAlias;
+        break;
+
+      case 'Mean':
+        alias = value.meanAlias;
+        break;
+
+      case 'Max':
+        alias = value.maxAlias;
+        break;
+
+      case 'Min':
+        alias = value.minAlias;
+        break;
+
+      case 'Std Deviation':
+        alias = value.stdDevAlias;
+        break;
+
+      case 'Count':
+        alias = value.cntAlias;
+        break;
+    }
+
+    dialogRef = this.dialog.open (MsfDynamicTableAliasComponent, {
+      height: '180px',
+      width: '300px',
+      panelClass: 'msf-dashboard-control-variables-dialog',
+      autoFocus: false,
+      data: {
+        alias: alias,
+        valueName: value.name,
+        name: name
+      }
+    });
+
+    dialogRef.afterClosed ().subscribe ((result: any) =>
+    {
+      if (result)
+      {
+        switch (name)
+        {
+          case 'Summary':
+            value.sumAlias = result;
+            break;
+
+          case 'Average':
+            value.avgAlias = result;
+            break;
+
+          case 'Mean':
+            value.meanAlias = result;
+            break;
+
+          case 'Max':
+            value.maxAlias = result;
+            break;
+
+          case 'Min':
+            value.minAlias = result;
+            break;
+
+          case 'Std Deviation':
+            value.stdDevAlias = result;
+            break;
+
+          case 'Count':
+            value.cntAlias = result;
+            break;
+        }
+      }
+    });
+  }
 }
