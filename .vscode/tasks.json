@@ -1,0 +1,21 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Serve App",
+            "type": "shell",
+            "command": "ng",
+            "args" : [
+                "serve"
+            ]
+        },
+        {
+            "label": "Compile App",
+            "type": "shell",
+            "command": "ng",
+            "args" : [
+                "build", "--aot", "--output-hashing=all", "--prod"
+            ]
+        }
+    ]
+}
