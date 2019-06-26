@@ -79,6 +79,9 @@
 .dark-theme .msf-menu-option:hover, .dark-theme .msf-menu-op-3:hover, .dark-theme .msf-menu-op-2:hover, .dark-theme .msf-menu-op-1:hover {
   background-color: #1e1e1e;
 }
+.dark-theme .msf-header-icons .mat-button[aria-expanded=true], .dark-theme .msf-header-icons .mat-icon-button[aria-expanded=true] {
+  background-color: #1e1e1e;
+}
 .dark-theme .ng-dropdown-panel .ng-dropdown-panel-items {
   background-color: #3d3d3d;
 }
@@ -479,6 +482,9 @@
 .dark-theme .msf-summary-category-container {
   color: #01abec;
 }
+.dark-theme .msf-summary-ok-icon {
+  color: #01abec !important;
+}
 .dark-theme .msf-search-title {
   color: #01abec;
 }
@@ -487,6 +493,51 @@
 }
 .dark-theme .msf-summary-arg-label {
   color: #bfb9b9;
+}
+.dark-theme .msf-summary-icon, .dark-theme .msf-summary-ok-icon {
+  color: #ffffff;
+}
+.dark-theme .mat-primary .mat-pseudo-checkbox-checked, .dark-theme .mat-primary .mat-pseudo-checkbox-indeterminate {
+  background-color: #01abec;
+}
+.dark-theme .drillDown-decoration {
+  color: #01abec;
+}
+.dark-theme .msf-media-title {
+  color: #01abec;
+}
+.dark-theme .msf-media-title-value {
+  color: #ffffff;
+}
+.dark-theme .msf-media-info {
+  color: #01abec;
+}
+.dark-theme .msf-media-info-value {
+  color: #ffffff;
+}
+.dark-theme .mat-checkbox:not(.mat-checkbox-disabled).mat-accent .mat-checkbox-ripple .mat-ripple-element {
+  background-color: #0589bb;
+}
+.dark-theme mat-dialog-container {
+  background-color: #333333 !important;
+}
+.dark-theme .msf-moreinfo-control-variables-title {
+  color: #ffffff;
+}
+.dark-theme .column-selector-checkbox {
+  color: #ffffff;
+}
+.dark-theme .msf-dynamic-table-variable-title span {
+  color: #ffffff;
+}
+.dark-theme .msf-dynamic-table-variable-fotter .msf-cancel-button {
+  background-color: #01abec;
+}
+.dark-theme .msf-dynamic-table-variable-fotter .msf-ok-button {
+  background-color: #01abec;
+}
+.dark-theme .msf-disabled {
+  background-color: #3d3d3d !important;
 }
 .dark-theme .msf-header-image {
   background-image: url(assets/images/dark-theme-pulse_welc.png);
@@ -585,6 +636,9 @@
   background-color: #d53502;
 }
 .light-theme .msf-menu-option:hover, .light-theme .msf-menu-op-3:hover, .light-theme .msf-menu-op-2:hover, .light-theme .msf-menu-op-1:hover {
+  background-color: #d53502;
+}
+.light-theme .msf-header-icons .mat-button[aria-expanded=true], .light-theme .msf-header-icons .mat-icon-button[aria-expanded=true] {
   background-color: #d53502;
 }
 .light-theme .ng-dropdown-panel .ng-dropdown-panel-items {
@@ -987,6 +1041,9 @@
 .light-theme .msf-summary-category-container {
   color: #eb5c1b;
 }
+.light-theme .msf-summary-ok-icon {
+  color: #eb5c1b !important;
+}
 .light-theme .msf-search-title {
   color: #eb5c1b;
 }
@@ -994,7 +1051,52 @@
   color: #4d4d4d;
 }
 .light-theme .msf-summary-arg-label {
-  color: #bfb9b9;
+  color: #6f8989;
+}
+.light-theme .msf-summary-icon, .light-theme .msf-summary-ok-icon {
+  color: #4d4d4d;
+}
+.light-theme .mat-primary .mat-pseudo-checkbox-checked, .light-theme .mat-primary .mat-pseudo-checkbox-indeterminate {
+  background-color: #eb5c1b;
+}
+.light-theme .drillDown-decoration {
+  color: #eb5c1b;
+}
+.light-theme .msf-media-title {
+  color: #eb5c1b;
+}
+.light-theme .msf-media-title-value {
+  color: #4d4d4d;
+}
+.light-theme .msf-media-info {
+  color: #eb5c1b;
+}
+.light-theme .msf-media-info-value {
+  color: #4d4d4d;
+}
+.light-theme .mat-checkbox:not(.mat-checkbox-disabled).mat-accent .mat-checkbox-ripple .mat-ripple-element {
+  background-color: #d54505;
+}
+.light-theme mat-dialog-container {
+  background-color: #ffffff !important;
+}
+.light-theme .msf-moreinfo-control-variables-title {
+  color: #4d4d4d;
+}
+.light-theme .column-selector-checkbox {
+  color: #4d4d4d;
+}
+.light-theme .msf-dynamic-table-variable-title span {
+  color: #4d4d4d;
+}
+.light-theme .msf-dynamic-table-variable-fotter .msf-cancel-button {
+  background-color: #eb5c1b;
+}
+.light-theme .msf-dynamic-table-variable-fotter .msf-ok-button {
+  background-color: #eb5c1b;
+}
+.light-theme .msf-disabled {
+  background-color: #e6e6e6 !important;
 }
 .light-theme .msf-header-image {
   background-image: url(assets/images/light-theme-pulse_welc.png);
@@ -3444,7 +3546,6 @@ mat-tab-group {
 }
 .msf-dynamic-table-variable-title span {
   display: flex;
-  color: white;
   font-weight: 500;
   font-size: 125%;
   margin-left: 10px;
@@ -3468,11 +3569,9 @@ mat-tab-group {
 }
 .msf-dynamic-table-variable-fotter .msf-cancel-button {
   width: 35%;
-  background-color: #01abec;
 }
 .msf-dynamic-table-variable-fotter .msf-ok-button {
   width: 35%;
-  background-color: #01abec;
 }
 
 .msf-dashboard-info-display {
@@ -3932,6 +4031,7 @@ mat-tab-group {
   height: 70%;
   justify-content: center;
   align-items: center;
+  /*Scroll style*/
 }
 #msf-dashboard-panel-picture-container .msf-dashboard-panel-picture-label-container {
   width: 250px;
@@ -3943,11 +4043,6 @@ mat-tab-group {
 #msf-dashboard-panel-picture-container .msf-dashboard-panel-picture-label-container .msf-dashboard-panel-picture-label {
   font-size: 15px;
   width: 100%;
-}
-
-mat-dialog-container {
-  background-color: #333333 !important;
-  /*Scroll style*/
 }
 
 ::-webkit-scrollbar {
@@ -3966,7 +4061,6 @@ mat-dialog-container {
 
 .mat-primary .mat-pseudo-checkbox-checked, .mat-primary .mat-pseudo-checkbox-indeterminate {
   border-radius: 10px;
-  background-color: #01abec;
 }
 
 .mat-pseudo-checkbox {
@@ -4122,7 +4216,6 @@ mat-dialog-container {
 }
 
 .msf-disabled {
-  background-color: #3d3d3d !important;
   cursor: not-allowed !important;
 }
 
@@ -4434,13 +4527,8 @@ li.msf-select:before {
 }
 
 .msf-summary-icon, .msf-summary-ok-icon {
-  color: white;
   position: absolute;
   right: 5px;
-}
-
-.msf-summary-ok-icon {
-  color: #01abec;
 }
 
 .msf-menu-complete-row {
@@ -5146,8 +5234,10 @@ img.msf-calendar-image {
 }
 
 .drillDown-decoration {
-  color: #01abec;
   text-decoration: underline;
+}
+
+.drillDown-decoration:hover {
   cursor: pointer;
 }
 
@@ -5172,13 +5262,11 @@ img.msf-calendar-image {
 }
 
 .msf-media-title {
-  color: #01abec;
   font-size: 14px;
   font-weight: 500;
 }
 
 .msf-media-title-value {
-  color: white;
   font-size: 35px;
   margin-left: 3px;
   font-weight: bold;
@@ -5186,13 +5274,11 @@ img.msf-calendar-image {
 
 .msf-media-info {
   display: inline-block;
-  color: #01abec;
   font-weight: 500;
 }
 
 .msf-media-info-value {
   display: inline-block;
-  color: white;
   margin-left: 5px;
 }
 
@@ -5208,7 +5294,6 @@ img.msf-calendar-image {
   padding-top: 17px;
   padding-bottom: 10px;
   padding-right: 23px;
-  color: #fff;
   position: relative;
 }
 
@@ -5244,10 +5329,6 @@ img.msf-calendar-image {
 
 .msf-filter-container {
   margin: 10px;
-}
-
-.column-selector-checkbox {
-  color: white;
 }
 
 .column-title {
