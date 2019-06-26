@@ -19,10 +19,24 @@
 
 @import "~@angular/material/prebuilt-themes/deeppurple-amber.css"
 
-// Color themes (see _variables.sass if you want to change the colors)
-$color-scheme: ((dark-theme, $dark-font-color, $dark-menu-disabled-font-color, $dark-background-color, $dark-secondary-background-color, $dark-tertiary-background-color, $dark-body-background-color, $dark-primary-color, $dark-secondary-color, $dark-tab-label-color, $dark-tab-border-color, $dark-menu-header-color, $dark-secondary-menu-header-color, $dark-selected-menu-color, $dark-menu-border-color, $dark-badge-color, $dark-control-variable-icon-color, $dark-menu-background-color), (light-theme, $light-font-color, $light-menu-disabled-font-color, $light-background-color, $light-secondary-background-color, $light-tertiary-background-color, $light-body-background-color, $light-primary-color, $light-secondary-color, $light-tab-label-color, $light-tab-border-color, $light-menu-header-color, $light-secondary-menu-header-color, $light-selected-menu-color, $light-menu-border-color, $light-badge-color, $light-control-variable-icon-color, $light-menu-background-color))
+@mixin msf-dashboard-addmenu-item-text($color, $border-color)
+    border: 1px solid $border-color
+    color: $color
+    display: table-cell
+    align-items: center
+    padding: 10px 40px
 
-@mixin theme($name, $font-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $body-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $menu-background-color)
+@mixin msf-dashboard-addmenu-item($bgcolor, $fgcolor, $cursor: default)
+    background-color: $bgcolor
+    color: $fgcolor
+    display: table-row
+    vertical-align: middle
+    cursor: $cursor
+
+// Color themes (see _variables.sass if you want to change the colors)
+$color-scheme: ((dark-theme, $dark-font-color, $dark-menu-disabled-font-color, $dark-background-color, $dark-secondary-background-color, $dark-tertiary-background-color, $dark-body-background-color, $dark-primary-color, $dark-secondary-color, $dark-tab-label-color, $dark-tab-border-color, $dark-menu-header-color, $dark-secondary-menu-header-color, $dark-selected-menu-color, $dark-menu-border-color, $dark-badge-color, $dark-control-variable-icon-color, $dark-scrollbar-background-color, $dark-menu-background-color), (light-theme, $light-font-color, $light-menu-disabled-font-color, $light-background-color, $light-secondary-background-color, $light-tertiary-background-color, $light-body-background-color, $light-primary-color, $light-secondary-color, $light-tab-label-color, $light-tab-border-color, $light-menu-header-color, $light-secondary-menu-header-color, $light-selected-menu-color, $light-menu-border-color, $light-badge-color, $light-control-variable-icon-color, $light-scrollbar-background-color, $light-menu-background-color))
+
+@mixin theme($name, $font-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $body-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $scrollbar-background-color, $menu-background-color)
     .#{$name}
         width: 100%
         height: 100%
@@ -187,13 +201,27 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-menu-disabled-font-color, $
             color: $font-color !important
         .msf-menu-mat-icon
             color: $control-variable-icon-color
+        .msf-dashboard-container
+            color: $font-color
+            background-color: $background-color
+            .msf-dashboard-addmenu
+                .msf-dashboard-addmenu-item:hover
+                    @include msf-dashboard-addmenu-item($primary-color, #ffffff, pointer)
+                .msf-dashboard-addmenu-item
+                    @include msf-dashboard-addmenu-item($background-color, $font-color)
+                .msf-dashboard-addmenu-item-text:hover
+                    @include msf-dashboard-addmenu-item-text(#ffffff, $font-color)
+                .msf-dashboard-addmenu-item-text
+                    @include msf-dashboard-addmenu-item-text($font-color, $font-color)
         ::-webkit-scrollbar-thumb
             background-color: $primary-color
             border-radius: 10px
             outline: 1px solid $primary-color
+        ::-webkit-scrollbar-track
+            background-color: $scrollbar-background-color
 
-@each $name, $font-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $body-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $menu-background-color in $color-scheme
-    @include theme($name, $font-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $body-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $menu-background-color)
+@each $name, $font-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $body-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $scrollbar-background-color, $menu-background-color in $color-scheme
+    @include theme($name, $font-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $body-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $scrollbar-background-color, $menu-background-color)
 
 body
     background-image: url("assets/images/fondo.png") 
@@ -1866,20 +1894,6 @@ mat-tab-group
     .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus+.mat-form-field-label-wrapper .mat-form-field-label, .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label
         margin-left: 0px
 
-@mixin msf-dashboard-addmenu-item-text($color)
-    border: 1px solid #fff
-    color: $color
-    display: table-cell
-    align-items: center
-    padding: 10px 40px
-
-@mixin msf-dashboard-addmenu-item($bgcolor, $fgcolor, $cursor: default)
-    background-color: $bgcolor
-    color: $fgcolor
-    display: table-row
-    vertical-align: middle
-    cursor: $cursor
-
 .msf-dashboard-icon
     vertical-align: middle
     margin-top: -5%
@@ -1959,8 +1973,6 @@ mat-tab-group
 .msf-dashboard-container
     font-size: 14px
     text-align: center
-    color: #fff
-    background-color: #333333
     display: flex
     flex-direction: column
     width: 100%
@@ -1979,14 +1991,6 @@ mat-tab-group
         margin-left: 40%
         margin-right: 40%
         margin-bottom: 2%
-        .msf-dashboard-addmenu-item:hover
-            @include msf-dashboard-addmenu-item(#01abec, #fff, pointer)
-        .msf-dashboard-addmenu-item
-            @include msf-dashboard-addmenu-item(#333333, #fff)
-        .msf-dashboard-addmenu-item-text:hover
-            @include msf-dashboard-addmenu-item-text(#fff)
-        .msf-dashboard-addmenu-item-text
-            @include msf-dashboard-addmenu-item-text(#fff)
     .msf-dashboard-chartbox
         padding: 10px
         flex-direction: column
@@ -2096,6 +2100,7 @@ mat-tab-group
     .msf-dashboard-panel-sub-container-column
         @include msf-dashboard-panel-sub-container(row, 5px)
         .msf-dashboard-addmenu-item-text
+            border: 1px solid #fff
             font-size: 12px
         .msf-full-width
             @extend .msf-dashboard-form-field
@@ -2769,10 +2774,8 @@ mat-dialog-container
 ::-webkit-scrollbar-track
     //-webkit-box-shadow: inset 0 0 6px rgba($msf-primary-color,0.3)
     border-radius: 10px
-    background-color: $msf-primary-dark-color
 
 ::-webkit-scrollbar-thumb
-  background-color: $msf-secondary-color
   border-radius: 10px
   outline: 1px solid blue
 

@@ -240,10 +240,45 @@
 .dark-theme .msf-menu-mat-icon {
   color: #c7dcf1;
 }
+.dark-theme .msf-dashboard-container {
+  color: #ffffff;
+  background-color: #333333;
+}
+.dark-theme .msf-dashboard-container .msf-dashboard-addmenu .msf-dashboard-addmenu-item:hover {
+  background-color: #01abec;
+  color: #ffffff;
+  display: table-row;
+  vertical-align: middle;
+  cursor: pointer;
+}
+.dark-theme .msf-dashboard-container .msf-dashboard-addmenu .msf-dashboard-addmenu-item {
+  background-color: #333333;
+  color: #ffffff;
+  display: table-row;
+  vertical-align: middle;
+  cursor: default;
+}
+.dark-theme .msf-dashboard-container .msf-dashboard-addmenu .msf-dashboard-addmenu-item-text:hover {
+  border: 1px solid #ffffff;
+  color: #ffffff;
+  display: table-cell;
+  align-items: center;
+  padding: 10px 40px;
+}
+.dark-theme .msf-dashboard-container .msf-dashboard-addmenu .msf-dashboard-addmenu-item-text {
+  border: 1px solid #ffffff;
+  color: #ffffff;
+  display: table-cell;
+  align-items: center;
+  padding: 10px 40px;
+}
 .dark-theme ::-webkit-scrollbar-thumb {
   background-color: #01abec;
   border-radius: 10px;
   outline: 1px solid #01abec;
+}
+.dark-theme ::-webkit-scrollbar-track {
+  background-color: #1e1e1e;
 }
 
 .light-theme {
@@ -477,10 +512,45 @@
 .light-theme .msf-menu-mat-icon {
   color: #4d4d4d;
 }
+.light-theme .msf-dashboard-container {
+  color: #4d4d4d;
+  background-color: #ffffff;
+}
+.light-theme .msf-dashboard-container .msf-dashboard-addmenu .msf-dashboard-addmenu-item:hover {
+  background-color: #eb5c1b;
+  color: #ffffff;
+  display: table-row;
+  vertical-align: middle;
+  cursor: pointer;
+}
+.light-theme .msf-dashboard-container .msf-dashboard-addmenu .msf-dashboard-addmenu-item {
+  background-color: #ffffff;
+  color: #4d4d4d;
+  display: table-row;
+  vertical-align: middle;
+  cursor: default;
+}
+.light-theme .msf-dashboard-container .msf-dashboard-addmenu .msf-dashboard-addmenu-item-text:hover {
+  border: 1px solid #4d4d4d;
+  color: #ffffff;
+  display: table-cell;
+  align-items: center;
+  padding: 10px 40px;
+}
+.light-theme .msf-dashboard-container .msf-dashboard-addmenu .msf-dashboard-addmenu-item-text {
+  border: 1px solid #4d4d4d;
+  color: #4d4d4d;
+  display: table-cell;
+  align-items: center;
+  padding: 10px 40px;
+}
 .light-theme ::-webkit-scrollbar-thumb {
   background-color: #eb5c1b;
   border-radius: 10px;
   outline: 1px solid #eb5c1b;
+}
+.light-theme ::-webkit-scrollbar-track {
+  background-color: #bfbfbf;
 }
 
 body {
@@ -2399,8 +2469,6 @@ mat-tab-group {
 .msf-dashboard-container {
   font-size: 14px;
   text-align: center;
-  color: #fff;
-  background-color: #333333;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -2422,34 +2490,6 @@ mat-tab-group {
   margin-left: 40%;
   margin-right: 40%;
   margin-bottom: 2%;
-}
-.msf-dashboard-container .msf-dashboard-addmenu .msf-dashboard-addmenu-item:hover {
-  background-color: #01abec;
-  color: #fff;
-  display: table-row;
-  vertical-align: middle;
-  cursor: pointer;
-}
-.msf-dashboard-container .msf-dashboard-addmenu .msf-dashboard-addmenu-item {
-  background-color: #333333;
-  color: #fff;
-  display: table-row;
-  vertical-align: middle;
-  cursor: default;
-}
-.msf-dashboard-container .msf-dashboard-addmenu .msf-dashboard-addmenu-item-text:hover {
-  border: 1px solid #fff;
-  color: #fff;
-  display: table-cell;
-  align-items: center;
-  padding: 10px 40px;
-}
-.msf-dashboard-container .msf-dashboard-addmenu .msf-dashboard-addmenu-item-text {
-  border: 1px solid #fff;
-  color: #fff;
-  display: table-cell;
-  align-items: center;
-  padding: 10px 40px;
 }
 .msf-dashboard-container .msf-dashboard-chartbox {
   padding: 10px;
@@ -2725,6 +2765,7 @@ mat-tab-group {
   font-size: 12px;
 }
 .msf-dashboard-panel-container .msf-dashboard-panel-sub-container-column .msf-dashboard-addmenu-item-text {
+  border: 1px solid #fff;
   font-size: 12px;
 }
 .msf-dashboard-panel-container .msf-dashboard-panel-sub-container-column .msf-dashboard-addmenu-icon-item {
@@ -3626,11 +3667,9 @@ mat-dialog-container {
 
 ::-webkit-scrollbar-track {
   border-radius: 10px;
-  background-color: #1e1e1e;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #01abec;
   border-radius: 10px;
   outline: 1px solid blue;
 }
