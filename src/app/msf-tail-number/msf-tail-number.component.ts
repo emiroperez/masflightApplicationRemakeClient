@@ -4,6 +4,7 @@ import { FormControl } from '@angular/forms';
 import { ReplaySubject, Subject } from 'rxjs';
 import { MatSelect } from '@angular/material';
 import { takeUntil, take } from 'rxjs/operators';
+import { Globals } from '../globals/Globals';
 
 @Component({
   selector: 'app-msf-tail-number',
@@ -47,7 +48,9 @@ export class MsfTailNumberComponent implements OnInit {
   private _onDestroy = new Subject<void>();
 
   
-
+  constructor(public globals: Globals)
+  {
+  }
 
   ngOnInit() {
   }

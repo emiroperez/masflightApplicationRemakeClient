@@ -230,7 +230,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.infoFunc3 = JSON.parse (JSON.stringify (this.functions));
 
     this.values.style = this.msfMapRef.mapTypes[1];
-    this.values.theme = this.msfMapRef.mapStyles[0];
   }
 
   ngOnChanges(changes: SimpleChanges): void
@@ -1381,8 +1380,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0),
         function: 1,
         lastestResponse: JSON.stringify (this.values.lastestResponse),
-        analysis: this.msfMapRef.mapTypes.indexOf (this.values.style),
-        values: this.msfMapRef.mapStyles.indexOf (this.values.theme)
+        analysis: this.msfMapRef.mapTypes.indexOf (this.values.style)
       };
     }
     else if (this.values.currentChartType.flags & ChartFlags.FORM
@@ -2510,7 +2508,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.temp.currentOptionCategories = JSON.parse (JSON.stringify (this.values.currentOptionCategories));
     this.temp.thresholds = JSON.parse (JSON.stringify (this.values.thresholds));
     this.temp.style = JSON.parse (JSON.stringify (this.values.style));
-    this.temp.theme = JSON.parse (JSON.stringify (this.values.theme));
 
     this.temp.formVariables = [];
     this.temp.tableVariables = JSON.parse (JSON.stringify (this.values.tableVariables));
@@ -2630,7 +2627,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.currentOptionCategories = JSON.parse (JSON.stringify (this.temp.currentOptionCategories));
     this.values.thresholds = JSON.parse (JSON.stringify (this.temp.thresholds));
     this.values.style = JSON.parse (JSON.stringify (this.temp.style));
-    this.values.theme = JSON.parse (JSON.stringify (this.temp.theme));
 
     for (i = 0; i < this.chartTypes.length; i++)
     {
@@ -3093,21 +3089,6 @@ export class MsfDashboardPanelComponent implements OnInit {
           }
           else
             this.values.style = this.msfMapRef.mapTypes[1];
-
-          if (this.values.valueColumn != null && this.values.valueColumn != -1)
-          {
-            for (i = 0; i < this.msfMapRef.mapStyles.length; i++)
-            {
-              if (i == this.values.valueColumn)
-              {
-                this.values.theme = this.msfMapRef.mapStyles[i];
-                this.values.valueColumn = -1;
-                break;
-              }
-            }
-          }
-          else
-            this.values.theme = this.msfMapRef.mapStyles[0];
         }
         else
         {
@@ -3116,15 +3097,6 @@ export class MsfDashboardPanelComponent implements OnInit {
             if (this.msfMapRef.mapTypes[i].id == this.values.style.id)
             {
               this.values.style = this.msfMapRef.mapTypes[i];
-              break;
-            }
-          }
-
-          for (i = 0; i < this.msfMapRef.mapStyles.length; i++)
-          {
-            if (this.msfMapRef.mapStyles[i].id == this.values.theme.id)
-            {
-              this.values.theme = this.msfMapRef.mapStyles[i];
               break;
             }
           }

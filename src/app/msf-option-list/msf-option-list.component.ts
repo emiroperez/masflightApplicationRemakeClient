@@ -6,6 +6,7 @@ import { MatSelect } from '@angular/material';
 import { takeUntil, take } from 'rxjs/operators';
 import { SimpleOption } from '../model/SimpleOption';
 import { ApiClient } from '../api/api-client';
+import { Globals } from '../globals/Globals';
 
 @Component({
   selector: 'app-msf-option-list',
@@ -36,7 +37,7 @@ export class MsfOptionListComponent implements OnInit {
    /** Subject that emits when the component has been destroyed. */
    private _onDestroy = new Subject<void>();
  
-   constructor(private http: ApiClient) { }
+   constructor(public globals: Globals, private http: ApiClient) { }
  
  
    ngOnInit() {

@@ -20,14 +20,14 @@
       <mgl-map *ngIf="currentMapType.id == 'point' && !mapRefresh" [style]=currentMapStyle.id [zoom]="zoom" [center]="center" (load)="map = $event; map.resize ()">      
       <ng-container *ngFor="let feature of data; let i = index ">
         <mgl-marker  [lngLat]="[feature.features[0].origin.longitude, feature.features[0].origin.latitude]">
-            <div style="justify-content: center; color: #01abec">            
-              {{feature.features[0].origin.iata}}
-            </div>
+          <div class="mapbox-text">
+            {{feature.features[0].origin.iata}}
+          </div>
         </mgl-marker> 
         <mgl-marker  [lngLat]="[feature.features[0].dest.longitude, feature.features[0].dest.latitude]">
-            <div style="justify-content: center; color: #01abec">            
-              {{feature.features[0].dest.iata}}
-            </div>
+          <div class="mapbox-text">
+            {{feature.features[0].dest.iata}}
+          </div>
         </mgl-marker>            
         <mgl-geojson-source *ngIf="feature" id="feature_{{i}}" [data]="feature"></mgl-geojson-source>
         <mgl-layer *ngIf="feature"  id="feature_{{i}}" type="circle" source="feature_{{i}}" [paint]="paint"></mgl-layer>          

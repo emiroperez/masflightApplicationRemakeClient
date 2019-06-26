@@ -9,6 +9,10 @@
 @import "~ag-grid-community/dist/styles/ag-theme-balham-dark.css";
 @import "~ng-pick-datetime/assets/style/picker.min.css";
 @import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+.msf-dashboard-form-field .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-chart-op-container-row .msf-dashboard-field-function .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-chart-op-container-row .msf-dashboard-field-valuectrl .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-full-width .mat-form-field-underline, .msf-dashboard-panel-sub-container-row .msf-full-width .mat-form-field-underline, .msf-dashboard-panel-sub-container-row .msf-width-90 .mat-form-field-underline, .msf-dashboard-panel-sub-container-row .msf-width-80 .mat-form-field-underline, .msf-dashboard-panel-container .msf-dashboard-panel-sub-container-column .msf-full-width .mat-form-field-underline {
+  background-color: #595959;
+}
+
 .dark-theme {
   width: 100%;
   height: 100%;
@@ -115,7 +119,7 @@
   overflow: auto;
 }
 .dark-theme .msf-welcome-title {
-  color: #ffffff;
+  color: #ffffff !important;
   margin-bottom: 10px;
   font-weight: 500;
 }
@@ -272,6 +276,242 @@
   align-items: center;
   padding: 10px 40px;
 }
+.dark-theme .msf-dashboard-button .msf-dashboard-button-close-icon:hover {
+  color: #01abec;
+  cursor: pointer;
+  font-size: 16px;
+  padding-right: 2px;
+  padding-top: 5px;
+}
+.dark-theme .msf-dashboard-button .msf-dashboard-button-icon:hover {
+  color: #01abec;
+  cursor: pointer;
+  font-size: 16px;
+  padding-right: 5px;
+  padding-top: 5px;
+}
+.dark-theme .msf-dashboard-panel-container {
+  background-color: #3b3b3b;
+}
+.dark-theme .mat-select-value {
+  color: #ffffff;
+}
+.dark-theme .mat-select-arrow {
+  color: #ffffff;
+}
+.dark-theme .mat-form-field.mat-focused.mat-primary .mat-select-arrow {
+  color: #01abec;
+}
+.dark-theme .close-icon {
+  color: #01abec;
+}
+.dark-theme .msf-dashboard-panel-button .msf-dashboard-button-close-icon:hover {
+  color: #01abec;
+  cursor: pointer;
+  font-size: 16px;
+  padding-right: 2px;
+  padding-top: 5px;
+}
+.dark-theme .msf-dashboard-panel-button .msf-dashboard-button-move-icon {
+  background-image: url(assets/images/dark-theme-horiz-move.png);
+}
+.dark-theme .msf-dashboard-panel-button .msf-dashboard-button-move-icon:hover {
+  background-image: url(assets/images/dark-theme-horiz-move-hover.png);
+  color: #01abec;
+  cursor: move;
+  font-size: 16px;
+  padding-right: 2px;
+  padding-top: 5px;
+}
+.dark-theme .msf-dashboard-column-properties-form-field .mat-select-value-text, .light-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-button .dark-theme .msf-dashboard-column-properties-form-field .mat-select-value-text, .light-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-button .dark-theme .msf-dashboard-column-properties-form-field .mat-select-value-text, .dark-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-button .msf-dashboard-column-properties-form-field .mat-select-value-text, .dark-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-button .msf-dashboard-column-properties-form-field .mat-select-value-text {
+  color: #ffffff;
+}
+.dark-theme .flat-button {
+  background-color: #01abec !important;
+}
+.dark-theme .mat-fab.mat-primary, .dark-theme .mat-flat-button.mat-primary, .dark-theme .mat-mini-fab.mat-primary, .dark-theme .mat-raised-button.mat-primary {
+  background-color: #01abec;
+}
+.dark-theme .mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
+  color: #01abec;
+}
+.dark-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed {
+  position: relative;
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+  margin-left: 2px;
+  margin-right: 2px;
+  padding-top: 2px;
+  height: 20px;
+  transition: 0.5s;
+  font-size: 14px;
+}
+.dark-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-properties-align {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 20%;
+}
+.dark-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 10px;
+}
+.dark-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-button .msf-dashboard-column-properties-button {
+  padding-left: 10px;
+}
+.dark-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-button .msf-dashboard-column-properties-height-label {
+  width: 60%;
+}
+.dark-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-columns-move-button {
+  display: flex;
+  flex-direction: bottom;
+  align-items: center;
+  padding-left: 10px;
+}
+.dark-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-columns-move-button .msf-dashboard-button-move-icon {
+  color: inherit;
+  cursor: default;
+  font-size: 16px;
+  padding-right: 2px;
+  padding-top: 5px;
+  background-image: url(assets/images/dark-theme-vert-move.png);
+  background-repeat: no-repeat;
+  width: 20px;
+  height: 30px;
+  background-size: 95%;
+}
+.dark-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-columns-move-button .msf-dashboard-button-move-icon:hover {
+  color: #01abec;
+  cursor: move;
+  font-size: 16px;
+  padding-right: 2px;
+  padding-top: 5px;
+  background-image: url(assets/images/dark-theme-vert-move-hover.png);
+}
+.dark-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open {
+  position: relative;
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+  margin-left: 2px;
+  margin-right: 2px;
+  padding-top: 2px;
+  height: 60px;
+  transition: 0.5s;
+  font-size: 14px;
+}
+.dark-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-properties-align {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 20%;
+}
+.dark-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 10px;
+}
+.dark-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-button .msf-dashboard-column-properties-button {
+  padding-left: 10px;
+}
+.dark-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-button .msf-dashboard-column-properties-height-label {
+  width: 60%;
+}
+.dark-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-columns-move-button {
+  display: flex;
+  flex-direction: bottom;
+  align-items: center;
+  padding-left: 10px;
+}
+.dark-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-columns-move-button .msf-dashboard-button-move-icon {
+  color: inherit;
+  cursor: default;
+  font-size: 16px;
+  padding-right: 2px;
+  padding-top: 5px;
+  background-image: url(assets/images/dark-theme-vert-move.png);
+  background-repeat: no-repeat;
+  width: 20px;
+  height: 30px;
+  background-size: 95%;
+}
+.dark-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-columns-move-button .msf-dashboard-button-move-icon:hover {
+  color: #01abec;
+  cursor: move;
+  font-size: 16px;
+  padding-right: 2px;
+  padding-top: 5px;
+  background-image: url(assets/images/dark-theme-vert-move-hover.png);
+}
+.dark-theme #msf-dashboard-form-button .mat-icon-button .msf-dashboard-chart-icon:hover {
+  color: #01abec;
+}
+.dark-theme #msf-dashboard-form-button .mat-icon-drag-button .msf-dashboard-chart-move-icon {
+  background-image: url(assets/images/dark-theme-vert-move.png);
+}
+.dark-theme #msf-dashboard-form-button .mat-icon-drag-button .msf-dashboard-chart-move-icon:hover {
+  background-image: url(assets/images/dark-theme-vert-move-hover.png);
+}
+.dark-theme .mapbox-text {
+  justify-content: center;
+  color: #01abec;
+}
+.dark-theme .msf-dashboard-panel-container-chart {
+  background-color: #222222;
+  color: #ffffff;
+}
+.dark-theme input[role=combobox] {
+  color: #ffffff;
+}
+.dark-theme .msf-no-results {
+  background: #01abec;
+}
+.dark-theme .msf-summary-title {
+  color: #01abec;
+}
+.dark-theme .msf-summary-category-label {
+  color: #01abec;
+}
+.dark-theme .msf-summary-category-container {
+  color: #01abec;
+}
+.dark-theme .msf-search-title {
+  color: #01abec;
+}
+.dark-theme .msf-summary-arg-title {
+  color: #ffffff;
+}
+.dark-theme .msf-summary-arg-label {
+  color: #bfb9b9;
+}
+.dark-theme .msf-header-image {
+  background-image: url(assets/images/dark-theme-pulse_welc.png);
+}
+.dark-theme .msf-menu-arg-ceiling-image {
+  background-image: url(assets/images/components/arguments/weather/dark-theme-Ceiling.png);
+}
+.dark-theme .msf-menu-arg-wind-speed-image {
+  background-image: url(assets/images/components/arguments/weather/dark-theme-ReportedWindSpeed.png);
+}
+.dark-theme .msf-menu-arg-temperature-image {
+  background-image: url(assets/images/components/arguments/weather/dark-theme-Temperature.png);
+}
+.dark-theme .msf-menu-arg-wind-direction-image {
+  background-image: url(assets/images/components/arguments/weather/dark-theme-Winddirection.png);
+}
+.dark-theme .msf-menu-arg-airport-image {
+  background-image: url(assets/images/components/arguments/airport/dark-theme-aerop_a_aerop.png);
+}
+.dark-theme .msf-menu-arg-single-airport-image {
+  background-image: url(assets/images/components/arguments/airport/dark-theme-aerop_a_todos.png);
+}
+.dark-theme .msf-menu-arg-date-image {
+  background-image: url(assets/images/components/arguments/airport/dark-theme-date.png);
+}
 .dark-theme ::-webkit-scrollbar-thumb {
   background-color: #01abec;
   border-radius: 10px;
@@ -387,7 +627,7 @@
   overflow: auto;
 }
 .light-theme .msf-welcome-title {
-  color: #4d4d4d;
+  color: #4d4d4d !important;
   margin-bottom: 10px;
   font-weight: 500;
 }
@@ -544,6 +784,242 @@
   align-items: center;
   padding: 10px 40px;
 }
+.light-theme .msf-dashboard-button .msf-dashboard-button-close-icon:hover {
+  color: #eb5c1b;
+  cursor: pointer;
+  font-size: 16px;
+  padding-right: 2px;
+  padding-top: 5px;
+}
+.light-theme .msf-dashboard-button .msf-dashboard-button-icon:hover {
+  color: #eb5c1b;
+  cursor: pointer;
+  font-size: 16px;
+  padding-right: 5px;
+  padding-top: 5px;
+}
+.light-theme .msf-dashboard-panel-container {
+  background-color: #e6e6e6;
+}
+.light-theme .mat-select-value {
+  color: #4d4d4d;
+}
+.light-theme .mat-select-arrow {
+  color: #4d4d4d;
+}
+.light-theme .mat-form-field.mat-focused.mat-primary .mat-select-arrow {
+  color: #eb5c1b;
+}
+.light-theme .close-icon {
+  color: #eb5c1b;
+}
+.light-theme .msf-dashboard-panel-button .msf-dashboard-button-close-icon:hover {
+  color: #eb5c1b;
+  cursor: pointer;
+  font-size: 16px;
+  padding-right: 2px;
+  padding-top: 5px;
+}
+.light-theme .msf-dashboard-panel-button .msf-dashboard-button-move-icon {
+  background-image: url(assets/images/light-theme-horiz-move.png);
+}
+.light-theme .msf-dashboard-panel-button .msf-dashboard-button-move-icon:hover {
+  background-image: url(assets/images/light-theme-horiz-move-hover.png);
+  color: #eb5c1b;
+  cursor: move;
+  font-size: 16px;
+  padding-right: 2px;
+  padding-top: 5px;
+}
+.light-theme .msf-dashboard-column-properties-form-field .mat-select-value-text, .light-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-button .msf-dashboard-column-properties-form-field .mat-select-value-text, .light-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-button .msf-dashboard-column-properties-form-field .mat-select-value-text, .dark-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-button .light-theme .msf-dashboard-column-properties-form-field .mat-select-value-text, .dark-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-button .light-theme .msf-dashboard-column-properties-form-field .mat-select-value-text {
+  color: #4d4d4d;
+}
+.light-theme .flat-button {
+  background-color: #eb5c1b !important;
+}
+.light-theme .mat-fab.mat-primary, .light-theme .mat-flat-button.mat-primary, .light-theme .mat-mini-fab.mat-primary, .light-theme .mat-raised-button.mat-primary {
+  background-color: #eb5c1b;
+}
+.light-theme .mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
+  color: #eb5c1b;
+}
+.light-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed {
+  position: relative;
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+  margin-left: 2px;
+  margin-right: 2px;
+  padding-top: 2px;
+  height: 20px;
+  transition: 0.5s;
+  font-size: 14px;
+}
+.light-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-properties-align {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 20%;
+}
+.light-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 10px;
+}
+.light-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-button .msf-dashboard-column-properties-button {
+  padding-left: 10px;
+}
+.light-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-button .msf-dashboard-column-properties-height-label {
+  width: 60%;
+}
+.light-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-columns-move-button {
+  display: flex;
+  flex-direction: bottom;
+  align-items: center;
+  padding-left: 10px;
+}
+.light-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-columns-move-button .msf-dashboard-button-move-icon {
+  color: inherit;
+  cursor: default;
+  font-size: 16px;
+  padding-right: 2px;
+  padding-top: 5px;
+  background-image: url(assets/images/light-theme-vert-move.png);
+  background-repeat: no-repeat;
+  width: 20px;
+  height: 30px;
+  background-size: 95%;
+}
+.light-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-columns-move-button .msf-dashboard-button-move-icon:hover {
+  color: #eb5c1b;
+  cursor: move;
+  font-size: 16px;
+  padding-right: 2px;
+  padding-top: 5px;
+  background-image: url(assets/images/light-theme-vert-move-hover.png);
+}
+.light-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open {
+  position: relative;
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+  margin-left: 2px;
+  margin-right: 2px;
+  padding-top: 2px;
+  height: 60px;
+  transition: 0.5s;
+  font-size: 14px;
+}
+.light-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-properties-align {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 20%;
+}
+.light-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 10px;
+}
+.light-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-button .msf-dashboard-column-properties-button {
+  padding-left: 10px;
+}
+.light-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-button .msf-dashboard-column-properties-height-label {
+  width: 60%;
+}
+.light-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-columns-move-button {
+  display: flex;
+  flex-direction: bottom;
+  align-items: center;
+  padding-left: 10px;
+}
+.light-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-columns-move-button .msf-dashboard-button-move-icon {
+  color: inherit;
+  cursor: default;
+  font-size: 16px;
+  padding-right: 2px;
+  padding-top: 5px;
+  background-image: url(assets/images/light-theme-vert-move.png);
+  background-repeat: no-repeat;
+  width: 20px;
+  height: 30px;
+  background-size: 95%;
+}
+.light-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-columns-move-button .msf-dashboard-button-move-icon:hover {
+  color: #eb5c1b;
+  cursor: move;
+  font-size: 16px;
+  padding-right: 2px;
+  padding-top: 5px;
+  background-image: url(assets/images/light-theme-vert-move-hover.png);
+}
+.light-theme #msf-dashboard-form-button .mat-icon-button .msf-dashboard-chart-icon:hover {
+  color: #eb5c1b;
+}
+.light-theme #msf-dashboard-form-button .mat-icon-drag-button .msf-dashboard-chart-move-icon {
+  background-image: url(assets/images/light-theme-vert-move.png);
+}
+.light-theme #msf-dashboard-form-button .mat-icon-drag-button .msf-dashboard-chart-move-icon:hover {
+  background-image: url(assets/images/light-theme-vert-move-hover.png);
+}
+.light-theme .mapbox-text {
+  justify-content: center;
+  color: #eb5c1b;
+}
+.light-theme .msf-dashboard-panel-container-chart {
+  background-color: #e6e6e6;
+  color: #4d4d4d;
+}
+.light-theme input[role=combobox] {
+  color: #4d4d4d;
+}
+.light-theme .msf-no-results {
+  background: #eb5c1b;
+}
+.light-theme .msf-summary-title {
+  color: #eb5c1b;
+}
+.light-theme .msf-summary-category-label {
+  color: #eb5c1b;
+}
+.light-theme .msf-summary-category-container {
+  color: #eb5c1b;
+}
+.light-theme .msf-search-title {
+  color: #eb5c1b;
+}
+.light-theme .msf-summary-arg-title {
+  color: #4d4d4d;
+}
+.light-theme .msf-summary-arg-label {
+  color: #bfb9b9;
+}
+.light-theme .msf-header-image {
+  background-image: url(assets/images/light-theme-pulse_welc.png);
+}
+.light-theme .msf-menu-arg-ceiling-image {
+  background-image: url(assets/images/components/arguments/weather/light-theme-Ceiling.png);
+}
+.light-theme .msf-menu-arg-wind-speed-image {
+  background-image: url(assets/images/components/arguments/weather/light-theme-ReportedWindSpeed.png);
+}
+.light-theme .msf-menu-arg-temperature-image {
+  background-image: url(assets/images/components/arguments/weather/light-theme-Temperature.png);
+}
+.light-theme .msf-menu-arg-wind-direction-image {
+  background-image: url(assets/images/components/arguments/weather/light-theme-Winddirection.png);
+}
+.light-theme .msf-menu-arg-airport-image {
+  background-image: url(assets/images/components/arguments/airport/light-theme-aerop_a_aerop.png);
+}
+.light-theme .msf-menu-arg-single-airport-image {
+  background-image: url(assets/images/components/arguments/airport/light-theme-aerop_a_todos.png);
+}
+.light-theme .msf-menu-arg-date-image {
+  background-image: url(assets/images/components/arguments/airport/light-theme-date.png);
+}
 .light-theme ::-webkit-scrollbar-thumb {
   background-color: #eb5c1b;
   border-radius: 10px;
@@ -631,7 +1107,6 @@ body {
   border-top-right-radius: 40px;
   background-color: #3d3d3d;
   background-repeat: no-repeat;
-  background-image: url(assets/images/pulse_welc.png);
   background-position: 15% 55%;
   background-size: 45%;
 }
@@ -1072,10 +1547,6 @@ p {
   width: 48%;
 }
 
-.mat-form-field.mat-focused.mat-primary .mat-select-arrow {
-  color: #01abec;
-}
-
 .mat-form-field.mat-focused.mat-primary .mat-input-element {
   caret-color: #b3b3b3;
 }
@@ -1102,10 +1573,6 @@ p {
 
 .center {
   text-align: center;
-}
-
-.flat-button {
-  background-color: #01abec !important;
 }
 
 .flat-button-disabled {
@@ -1375,18 +1842,6 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
   -webkit-transform: translateY(-1.339125em) scale(0.75) perspective(100px) translateZ(0.001px);
   transform: translateY(-1.339125em) scale(0.75) perspective(100px) translateZ(0.001px);
   -ms-transform: translateY(-1.339125em) scale(0.75);
-}
-
-.mat-select-value {
-  color: white;
-}
-
-.mat-select-arrow {
-  color: white;
-}
-
-.mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
-  color: #01abec;
 }
 
 .mat-step-label-selected {
@@ -2037,37 +2492,30 @@ button[aria-expanded=true] {
 }
 
 .msf-menu-arg-airport-image {
-  background-image: url("assets/images/components/arguments/airport/aerop_a_aerop.png");
   background-position: center;
 }
 
 .msf-menu-arg-single-airport-image {
-  background-image: url("assets/images/components/arguments/airport/aerop_a_todos.png");
   background-position: center;
 }
 
 .msf-menu-arg-date-image {
-  background-image: url("assets/images/components/arguments/airport/fecha.png");
   background-position: center;
 }
 
 .msf-menu-arg-ceiling-image {
-  background-image: url("assets/images/components/arguments/weather/Ceiling.png");
   background-position: center;
 }
 
 .msf-menu-arg-wind-speed-image {
-  background-image: url("assets/images/components/arguments/weather/ReportedWindSpeed.png");
   background-position: center;
 }
 
 .msf-menu-arg-temperature-image {
-  background-image: url("assets/images/components/arguments/weather/Temperature.png");
   background-position: center;
 }
 
 .msf-menu-arg-wind-direction-image {
-  background-image: url("assets/images/components/arguments/weather/Winddirection.png");
   background-position: center;
 }
 
@@ -2518,118 +2966,6 @@ mat-tab-group {
 .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-padding {
   padding-top: 4px;
 }
-.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed {
-  position: relative;
-  justify-content: center;
-  display: flex;
-  flex-direction: row;
-  margin-left: 2px;
-  margin-right: 2px;
-  padding-top: 2px;
-  height: 20px;
-  transition: 0.5s;
-  font-size: 14px;
-}
-.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-properties-align {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 20%;
-}
-.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-button {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding-left: 10px;
-}
-.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-button .msf-dashboard-column-properties-button {
-  padding-left: 10px;
-}
-.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-button .msf-dashboard-column-properties-height-label {
-  width: 60%;
-}
-.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-columns-move-button {
-  display: flex;
-  flex-direction: bottom;
-  align-items: center;
-  padding-left: 10px;
-}
-.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-columns-move-button .msf-dashboard-button-move-icon {
-  color: inherit;
-  cursor: default;
-  font-size: 16px;
-  padding-right: 2px;
-  padding-top: 5px;
-  background-image: url(assets/images/vert-move.png);
-  background-repeat: no-repeat;
-  width: 20px;
-  height: 30px;
-  background-size: 95%;
-}
-.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-columns-move-button .msf-dashboard-button-move-icon:hover {
-  color: #01abec;
-  cursor: move;
-  font-size: 16px;
-  padding-right: 2px;
-  padding-top: 5px;
-  background-image: url(assets/images/vert-move-hover.png);
-}
-.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open {
-  position: relative;
-  justify-content: center;
-  display: flex;
-  flex-direction: row;
-  margin-left: 2px;
-  margin-right: 2px;
-  padding-top: 2px;
-  height: 60px;
-  transition: 0.5s;
-  font-size: 14px;
-}
-.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-properties-align {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 20%;
-}
-.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-button {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding-left: 10px;
-}
-.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-button .msf-dashboard-column-properties-button {
-  padding-left: 10px;
-}
-.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-button .msf-dashboard-column-properties-height-label {
-  width: 60%;
-}
-.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-columns-move-button {
-  display: flex;
-  flex-direction: bottom;
-  align-items: center;
-  padding-left: 10px;
-}
-.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-columns-move-button .msf-dashboard-button-move-icon {
-  color: inherit;
-  cursor: default;
-  font-size: 16px;
-  padding-right: 2px;
-  padding-top: 5px;
-  background-image: url(assets/images/vert-move.png);
-  background-repeat: no-repeat;
-  width: 20px;
-  height: 30px;
-  background-size: 95%;
-}
-.msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-columns-move-button .msf-dashboard-button-move-icon:hover {
-  color: #01abec;
-  cursor: move;
-  font-size: 16px;
-  padding-right: 2px;
-  padding-top: 5px;
-  background-image: url(assets/images/vert-move-hover.png);
-}
 .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-invisible {
   display: none;
 }
@@ -2648,23 +2984,9 @@ mat-tab-group {
   padding-right: 2px;
   padding-top: 5px;
 }
-.msf-dashboard-button .msf-dashboard-button-close-icon:hover {
-  color: #01abec;
-  cursor: pointer;
-  font-size: 16px;
-  padding-right: 2px;
-  padding-top: 5px;
-}
 .msf-dashboard-button .msf-dashboard-button-icon {
   color: inherit;
   cursor: default;
-  font-size: 16px;
-  padding-right: 5px;
-  padding-top: 5px;
-}
-.msf-dashboard-button .msf-dashboard-button-icon:hover {
-  color: #01abec;
-  cursor: pointer;
   font-size: 16px;
   padding-right: 5px;
   padding-top: 5px;
@@ -2684,16 +3006,8 @@ mat-tab-group {
   padding-right: 2px;
   padding-top: 5px;
 }
-.msf-dashboard-panel-button .msf-dashboard-button-close-icon:hover {
-  color: #01abec;
-  cursor: pointer;
-  font-size: 16px;
-  padding-right: 2px;
-  padding-top: 5px;
-}
 .msf-dashboard-panel-button .msf-dashboard-button-move-icon {
   margin-right: -8px;
-  background-image: url(assets/images/horiz-move.png);
   background-repeat: no-repeat;
   width: 45px;
   height: 20px;
@@ -2706,22 +3020,9 @@ mat-tab-group {
 }
 .msf-dashboard-panel-button .msf-dashboard-button-move-icon:hover {
   margin-right: -8px;
-  background-image: url(assets/images/horiz-move-hover.png);
-  color: #01abec;
-  cursor: move;
-  font-size: 16px;
-  padding-right: 2px;
-  padding-top: 5px;
 }
 
-.msf-dashboard-form-field .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-chart-op-container-row .msf-dashboard-field-function .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-chart-op-container-row .msf-dashboard-field-valuectrl .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-full-width .mat-form-field-underline, .msf-dashboard-panel-sub-container-row .msf-full-width .mat-form-field-underline, .msf-dashboard-panel-sub-container-row .msf-width-90 .mat-form-field-underline, .msf-dashboard-panel-sub-container-row .msf-width-80 .mat-form-field-underline, .msf-dashboard-panel-container .msf-dashboard-panel-sub-container-column .msf-full-width .mat-form-field-underline {
-  background-color: #595959;
-}
-
-.msf-dashboard-column-properties-form-field .mat-select-value-text, .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-button .msf-dashboard-column-properties-form-field .mat-select-value-text, .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-button .msf-dashboard-column-properties-form-field .mat-select-value-text {
-  color: #fff;
-}
-.msf-dashboard-column-properties-form-field .mat-form-field-underline, .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-button .msf-dashboard-column-properties-form-field .mat-form-field-underline, .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-button .msf-dashboard-column-properties-form-field .mat-form-field-underline {
+.msf-dashboard-column-properties-form-field .mat-form-field-underline, .dark-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-button .msf-dashboard-column-properties-form-field .mat-form-field-underline, .dark-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-button .msf-dashboard-column-properties-form-field .mat-form-field-underline, .light-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-button .msf-dashboard-column-properties-form-field .mat-form-field-underline, .light-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-button .msf-dashboard-column-properties-form-field .mat-form-field-underline {
   background-color: #595959;
 }
 
@@ -2739,7 +3040,6 @@ mat-tab-group {
 
 .msf-dashboard-panel-container {
   padding: 10px;
-  background-color: #3b3b3b;
   overflow-y: visible;
   -webkit-overflow-scrolling: touch;
   display: flex;
@@ -2765,7 +3065,7 @@ mat-tab-group {
   font-size: 12px;
 }
 .msf-dashboard-panel-container .msf-dashboard-panel-sub-container-column .msf-dashboard-addmenu-item-text {
-  border: 1px solid #fff;
+  border: none;
   font-size: 12px;
 }
 .msf-dashboard-panel-container .msf-dashboard-panel-sub-container-column .msf-dashboard-addmenu-icon-item {
@@ -2800,8 +3100,6 @@ mat-tab-group {
 
 .msf-dashboard-panel-container-chart {
   padding: 10px;
-  background-color: #222222;
-  color: #ffffff;
   overflow-y: visible;
   -webkit-overflow-scrolling: touch;
 }
@@ -3492,7 +3790,6 @@ mat-tab-group {
 }
 #msf-dashboard-panel-form-container-column-empty .msf-no-results {
   color: white;
-  background: #01abec;
   margin: 0 100px;
   text-align: center;
   align-items: center;
@@ -3531,7 +3828,6 @@ mat-tab-group {
 }
 #msf-dashboard-panel-table-container-column-empty .msf-no-results {
   color: white;
-  background: #01abec;
   margin: 0 100px;
   text-align: center;
   align-items: center;
@@ -3555,7 +3851,6 @@ mat-tab-group {
 }
 #msf-add-shared-dashboard-content-empty .msf-no-results {
   color: white;
-  background: #01abec;
   margin: 0 100px;
   text-align: center;
   align-items: center;
@@ -3595,21 +3890,16 @@ mat-tab-group {
 #msf-dashboard-form-button .mat-icon-button {
   padding-left: 6px;
 }
-#msf-dashboard-form-button .mat-icon-button .msf-dashboard-chart-icon:hover {
-  color: #01abec;
-}
 #msf-dashboard-form-button .mat-icon-drag-button {
   padding-left: 6px;
 }
 #msf-dashboard-form-button .mat-icon-drag-button .msf-dashboard-chart-move-icon {
-  background-image: url(assets/images/vert-move.png);
   background-repeat: no-repeat;
   width: 20px;
   height: 30px;
   background-size: 95%;
 }
 #msf-dashboard-form-button .mat-icon-drag-button .msf-dashboard-chart-move-icon:hover {
-  background-image: url(assets/images/vert-move-hover.png);
   cursor: move;
 }
 
@@ -3775,10 +4065,6 @@ mat-dialog-container {
 
 .msf-margin-r-10 {
   margin-right: 10px;
-}
-
-.mat-fab.mat-primary, .mat-flat-button.mat-primary, .mat-mini-fab.mat-primary, .mat-raised-button.mat-primary {
-  background-color: #01abec;
 }
 
 .msf-dynamic-table {
@@ -4078,14 +4364,12 @@ li.msf-select:before {
 }
 
 .msf-summary-title {
-  color: #01abec;
   font-size: 161%;
   font-weight: 500;
   margin-bottom: 20px;
 }
 
 .msf-summary-category-container {
-  color: #01abec;
   font-size: 100%;
 }
 
@@ -4099,7 +4383,6 @@ li.msf-select:before {
 }
 
 .msf-search-title {
-  color: white;
   font-size: 161%;
   font-weight: bold;
 }
@@ -4116,12 +4399,10 @@ li.msf-select:before {
 }
 
 .msf-summary-arg-label {
-  color: #bfb9b9;
   font-size: 100%;
 }
 
 .msf-summary-arg-title {
-  color: #ffffff;
   display: block;
   font-size: 120%;
   margin-top: 5px;
@@ -4131,10 +4412,6 @@ li.msf-select:before {
   margin-top: 10px;
   margin-bottom: 10px;
   font-size: 120%;
-}
-
-.msf-summary-category-label {
-  color: #01abec;
 }
 
 .msf-searc-complete-option {
@@ -4208,10 +4485,6 @@ input[type=checkbox]:checked + label {
   width: 16px;
   display: inline-block;
   padding: 0 0 0 0px;
-}
-
-input[role=combobox] {
-  color: #ffffff;
 }
 
 .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-label {
@@ -4546,7 +4819,6 @@ table.results {
 }
 
 .close-icon {
-  color: #01abec;
   margin-left: 10px;
 }
 
@@ -4581,7 +4853,6 @@ table.results {
 
 .msf-no-results {
   color: white;
-  background: #01abec;
   font-size: 15px;
   margin: 0 100px;
   text-align: center;

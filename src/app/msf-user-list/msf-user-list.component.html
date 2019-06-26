@@ -3,9 +3,9 @@
       <div class="msf-component-airport-title">Select an User</div>        
   </div> 
   <div class="msf-airline-container">
-      <img src="../../assets/images/components/arguments/usageStatistics/searchuser.png" class="msf-user-image">
+      <img src="../../assets/images/components/arguments/usageStatistics/{{globals.theme}}-searchuser.png" class="msf-user-image">
       <div [style.width.%]="100">   
-          <div class="msf-component-airline-title ">Input an User</div>         
+          <div class="msf-component-airline-title ">Input an User</div>
           <mat-form-field class="msf-field msf-full-width">
               <mat-select [formControl]="userCtrl"  #userSelect [(ngModel)]="argument.value1">
                   <ngx-mat-select-search [formControl]="userFilterCtrl" placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>

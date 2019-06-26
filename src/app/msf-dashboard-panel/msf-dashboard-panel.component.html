@@ -540,15 +540,6 @@
           <div class="msf-dashboard-chart-analysis-title">
             <mat-icon class="msf-dashboard-chart-icon">brush</mat-icon>
           </div>
-          <div class="msf-dashboard-chart-op-container">
-            <mat-form-field class="msf-full-width">
-              <mat-select placeholder="Theme" [(ngModel)]="values.theme">
-                <mat-option *ngFor="let theme of msfMapRef.mapStyles" [value]="theme">
-                  {{theme.name}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
         </div>
       </div>
     </div>
@@ -767,7 +758,7 @@
       </button>
     </div>
     <div [style.height.px]="calcPanelHeight()" style="width: calc(100% - 50px)">
-      <app-msf-map #msfMapRef [isLoading]="values.isLoading" [useCancelButton]="false" [displayMapMenu]="0" [currentMapType]="values.style" [currentMapStyle]="values.theme" (finishLoading)="finishMapboxLoading($event)"></app-msf-map>
+      <app-msf-map #msfMapRef [isLoading]="values.isLoading" [useCancelButton]="false" [displayMapMenu]="0" [currentMapType]="values.style" (finishLoading)="finishMapboxLoading($event)"></app-msf-map>
     </div>
   </div>
 </div>
