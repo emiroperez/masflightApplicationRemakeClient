@@ -1,7 +1,9 @@
-import { Injectable } from '@angular/core';
-import {Option} from '../model/Option';
+import { Injectable, HostBinding } from '@angular/core';
+import { Option } from '../model/Option';
 import { MatSort, MatTab } from '@angular/material';
 import { Observable } from 'rxjs';
+import { OverlayContainer } from '@angular/cdk/overlay';
+
 @Injectable()
 export class Globals {
   currentOption: any;
@@ -77,7 +79,15 @@ export class Globals {
   subDisplayedColumnNames: string[] = []; 
   copiedPanelInfo: any;
   lastTime: string;
+
+  @HostBinding('class')
   theme: string = "light-theme";
+
+  constructor(public overlayContainer: OverlayContainer)
+  {
+    this.overlayContainer.getContainerElement ().classList.add (this.theme);
+  }
+
    initDataSource(){
     if(this.currentMenuCategory!= null){
     if(this.currentMenuCategory.welcome!= null){

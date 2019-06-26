@@ -19,16 +19,15 @@
 
 @import "~@angular/material/prebuilt-themes/deeppurple-amber.css"
 
-// Color themes
-// (theme name, font-color, background-color, secondary-background-color, tertiary-background-color, primary-color, tab-label-color, tab-border-color, menu-header-color, badge-color)
-$color-scheme: ((dark-theme, #ffffff, #333333, #1e1e1e, #3d3d3d, #01abec, #f7f5f5, rgba(62, 60, 60, 0.8), #3d3d3d, #ffffff), (light-theme, #4d4d4d, #ffffff, #dcdcdc, #ededed, #eb5c1b, #070505, rgba(230, 230, 230, 0.8), #eb5c1b, #ededed))
+// Color themes (see _variables.sass if you want to change the colors)
+$color-scheme: ((dark-theme, $dark-font-color, $dark-menu-disabled-font-color, $dark-background-color, $dark-secondary-background-color, $dark-tertiary-background-color, $dark-body-background-color, $dark-primary-color, $dark-secondary-color, $dark-tab-label-color, $dark-tab-border-color, $dark-menu-header-color, $dark-secondary-menu-header-color, $dark-selected-menu-color, $dark-menu-border-color, $dark-badge-color, $dark-control-variable-icon-color, $dark-menu-background-color), (light-theme, $light-font-color, $light-menu-disabled-font-color, $light-background-color, $light-secondary-background-color, $light-tertiary-background-color, $light-body-background-color, $light-primary-color, $light-secondary-color, $light-tab-label-color, $light-tab-border-color, $light-menu-header-color, $light-secondary-menu-header-color, $light-selected-menu-color, $light-menu-border-color, $light-badge-color, $light-control-variable-icon-color, $light-menu-background-color))
 
-@mixin theme($name, $font-color, $background-color, $secondary-background-color, $tertiary-background-color, $primary-color, $tab-label-color, $tab-border-color, $menu-header-color, $badge-color)
+@mixin theme($name, $font-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $body-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $menu-background-color)
     .#{$name}
         width: 100%
         height: 100%
         .msf-menu-body
-            background-color: $secondary-background-color
+            background-color: $body-background-color
         .mat-tab-body-wrapper
             height: 100%
             background: $background-color
@@ -47,13 +46,30 @@ $color-scheme: ((dark-theme, #ffffff, #333333, #1e1e1e, #3d3d3d, #01abec, #f7f5f
             background-color: $primary-color
         .msf-menu-hide-button
             &:hover
-                background-color: rgba($primary-color, .7)
+                background-color: $secondary-color
         .msf-menu-components-container-hide
             background-color: rgba($background-color, .3)
         .msf-menu-components-container-show
             background-color: $background-color
         .msf-menu-header-image-container 
             background-color: $menu-header-color
+        .msf-menu-header
+            background-color: $secondary-menu-header-color
+        .msf-menu-op-1
+            background-color: $menu-header-color
+        .msf-menu-op-2
+            background-color: $menu-header-color
+        .msf-menu-op-3
+            background-color: $menu-header-color
+        .mat-menu-panel
+            background-color: $menu-header-color
+        .mat-menu-item
+            border-bottom: 1px solid $menu-border-color !important
+        .mat-menu-item-highlighted:not([disabled]), .mat-menu-item.cdk-keyboard-focused:not([disabled]), .mat-menu-item.cdk-program-focused:not([disabled]), .mat-menu-item:hover:not([disabled])
+            background-color: $selected-menu-color
+        .msf-menu-option
+            &:hover
+                background-color: $selected-menu-color
         .ng-dropdown-panel .ng-dropdown-panel-items
             background-color: $tertiary-background-color
         .msf-dashboard-menu-component
@@ -69,6 +85,13 @@ $color-scheme: ((dark-theme, #ffffff, #333333, #1e1e1e, #3d3d3d, #01abec, #f7f5f
         .msf-menu-arguments-container
             color: $font-color
             background-color: inherit
+        .msf-menu-icons-container
+            color: $font-color
+            background-color: $menu-background-color
+        .msf-menu-icon
+            color: $font-color
+            &:disabled
+                color: $menu-disabled-font-color
         .msf-intro-body1
             color: $font-color
             background-color: $background-color
@@ -109,7 +132,7 @@ $color-scheme: ((dark-theme, #ffffff, #333333, #1e1e1e, #3d3d3d, #01abec, #f7f5f
         .msf-menu-search-button-enabled
             background-color: $primary-color
             &:hover
-                background-color: rgba($primary-color, .3)
+                background-color: $secondary-color
         .ng-select .ng-select-container
             color: $font-color !important
         .ng-select .ng-select-container:after
@@ -119,8 +142,6 @@ $color-scheme: ((dark-theme, #ffffff, #333333, #1e1e1e, #3d3d3d, #01abec, #f7f5f
         .ng-select .ng-clear-wrapper
             color: $font-color
         .ng-select .ng-clear-wrapper:hover
-            color: $font-color
-        .mat-button-wrapper
             color: $font-color
         .ng-select .ng-arrow-wrapper .ng-arrow
             color: $font-color
@@ -135,15 +156,44 @@ $color-scheme: ((dark-theme, #ffffff, #333333, #1e1e1e, #3d3d3d, #01abec, #f7f5f
                 border-color: $primary-color !important
         .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked
             color: $primary-color !important
+            background: rgba(0, 0, 0, 0.10)
         .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected
             color: $primary-color !important
+            background: rgba(0, 0, 0, 0.225)
+        .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value
+            background-color: $primary-color
+        .mat-form-field-appearance-legacy .mat-form-field-prefix .mat-datepicker-toggle-default-icon, .mat-form-field-appearance-legacy .mat-form-field-suffix .mat-datepicker-toggle-default-icon
+            color: $font-color
+        .mat-form-field-appearance-legacy .mat-form-field-label
+            color: $font-color
+        .mat-calendar-body-selected
+            background-color: $primary-color !important
+        .timepicker__header
+            background-color: $primary-color !important
+        .clock-face__number
+            span.active
+                background-color: $primary-color !important
+        .clock-face, .timepicker__actions
+            background-color: $tertiary-background-color !important
+        .timepicker__body
+            background-color: $background-color !important
+        .timepicker-button
+            color: $primary-color !important
+        .mat-form-field.mat-focused .mat-form-field-ripple
+            background-color: $primary-color
+        .mat-form-field-ripple
+            background-color: $primary-color
+        .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus+.mat-form-field-label-wrapper .mat-form-field-label, .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label
+            color: $font-color !important
+        .msf-menu-mat-icon
+            color: $control-variable-icon-color
         ::-webkit-scrollbar-thumb
             background-color: $primary-color
             border-radius: 10px
             outline: 1px solid $primary-color
 
-@each $name, $font-color, $background-color, $secondary-background-color, $tertiary-background-color, $primary-color, $tab-label-color, $tab-border-color, $menu-header-color, $badge-color in $color-scheme
-    @include theme($name, $font-color, $background-color, $secondary-background-color, $tertiary-background-color, $primary-color, $tab-label-color, $tab-border-color, $menu-header-color, $badge-color)
+@each $name, $font-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $body-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $menu-background-color in $color-scheme
+    @include theme($name, $font-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $body-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $menu-background-color)
 
 body
     background-image: url("assets/images/fondo.png") 
@@ -155,6 +205,9 @@ body
 .application-class
     background-color: white
     height: 100%
+
+//.mat-calendar-body-selected
+//    background-color: #666666 !important
 
 // kp20032019
 .login-form .mat-checkbox-checked.mat-primary .mat-checkbox-background
@@ -505,15 +558,12 @@ p
 .login-card .mat-form-field-appearance-legacy .mat-form-field-label
     padding-left: 33px
     line-height: 3
-    color:$msf-surface-color!important
+    color:$msf-surface-color !important
 
 .msf-register-card .mat-form-field-appearance-legacy .mat-form-field-label
     padding-left: 33px
     line-height: 3
-    color:$msf-surface-color!important
-
-.mat-form-field-appearance-legacy .mat-form-field-label
-    color:$msf-font-color!important
+    color:$msf-surface-color !important
 
 .mat-form-field
     width: 100%
@@ -530,8 +580,6 @@ p
     -ms-transform: translateY(-1.739125em) scale(.75)
     width: 133.33333%
     margin-left: 7px
-    // color: white!important kp20032019
-    color: $msf-font-color !important
 
 //kp20032019
 .login-form .mat-form-field.mat-focused .mat-form-field-ripple
@@ -542,13 +590,6 @@ p
 
 .mat-error
     margin-left: 31px
-
-
-.mat-form-field.mat-focused .mat-form-field-ripple
-    background-color: $msf-secondary-color
-
-.mat-form-field-ripple
-    background-color: $msf-secondary-color
 
 .notification
     @extend  .msf-font-smaller
@@ -1067,7 +1108,6 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button
 .msf-menu-header
     width: 100%
     min-height: 60px
-    background-color: #333333
     position: relative
     display: flex
     flex-direction: row
@@ -1128,41 +1168,27 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button
     text-align: center
     padding-left: 20px!important
     padding-right: 20px!important
-    &:hover
-        background-color: $msf-primary-dark-color
 
 button[aria-expanded="true"]
     background-color: $msf-primary-dark-color
 
-.mat-menu-item
-    border-bottom: 1px solid #444343!important
-
-.mat-menu-item-highlighted:not([disabled]), .mat-menu-item.cdk-keyboard-focused:not([disabled]), .mat-menu-item.cdk-program-focused:not([disabled]), .mat-menu-item:hover:not([disabled])
-    background-color: $msf-primary-dark-color
-
 .msf-menu-op-1
     @extend .msf-menu-option
-    background-color: $msf-primary-light-color
     margin-right: 1px
     margin-left: 1px!important
 
 .msf-menu-op-2
     @extend .msf-menu-option
     border-top-left-radius: 60px!important
-    background-color: $msf-primary-light-color
     span
         margin-left: 15px
 
 .msf-menu-op-3
     @extend .msf-menu-option
     border-top-right-radius: 60px!important
-    background-color: $msf-primary-light-color
     margin-left: 1px!important
     span
         margin-right: 15px
-
-.mat-menu-panel
-    background-color: $msf-primary-light-color
 
 .mat-menu-item
     font-size: 90%!important
@@ -1172,8 +1198,7 @@ button[aria-expanded="true"]
     width: calc(100% - 10px)
     height: 20px
     display: flex
-    margin: 5px
-    color: white
+    padding: 5px
     align-items: center
 
 .msf-menu-icons-left
@@ -1192,13 +1217,11 @@ button[aria-expanded="true"]
     cursor: pointer
     font-size: 80%
     background: none
-    color: white
     border: none
     outline: none
     display: flex
     align-items: center
     &:disabled
-        color: #9E9E9E
         cursor: context-menu
         opacity: 0.3
 
@@ -1213,7 +1236,6 @@ button[aria-expanded="true"]
 
 .msf-menu-mat-icon
     font-size: 15px
-    color: #c7dcf1
 
 .msf-menu-icons-right
     right: 0px
@@ -1601,33 +1623,14 @@ input[role="combobox"]
     .mat-form-field-infix
         line-height: 2.125
 
-.timepicker__header
-    background-color: $msf-secondary-color!important
-
-.clock-face__number
-    span.active
-        background-color: $msf-secondary-color!important
-
-.clock-face, .timepicker__actions
-    background-color: $msf-primary-light-color!important
-
-.timepicker__body
-    background-color: $msf-primary-color!important
-
-.timepicker-button
-    color: $msf-secondary-color!important
-
-.mat-calendar-body-selected
-    background-color: $msf-secondary-color!important
-
 .clock-face__number--outer span
-    color: white!important
+    color: white !important
 
 table
-  width: 2000px
+    width: 2000px
 
 th.mat-sort-header-sorted
-  color: black
+    color: black
 
 mat-tab-group
     height: 100%
@@ -1728,6 +1731,9 @@ mat-tab-group
 
 .msf-component-airline-title
     font-size: 70%
+
+.mat-button-wrapper
+    color: white
 
 .mat-calendar-controls button .mat-button-wrapper
     color: $msf-surface-color
@@ -3247,9 +3253,6 @@ input[type=checkbox]:checked + label
 
 input[role=combobox]
     color: $msf-font-color
-
-.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value
-    background-color: $msf-secondary-color
 
 .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-label
     font-size: 100%

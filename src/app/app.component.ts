@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+
 import { routerTransition } from './animations/animations';
+import { Globals } from './globals/Globals';
 
 @Component({
   selector: 'app-root',
@@ -9,5 +11,7 @@ import { routerTransition } from './animations/animations';
 })
 
 export class AppComponent {
-  
+  constructor (public globals: Globals)
+  {    
+  }
 }
