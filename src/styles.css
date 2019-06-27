@@ -585,6 +585,15 @@
 .dark-theme .msf-summary-icon, .dark-theme .msf-summary-ok-icon {
   color: #ffffff;
 }
+.dark-theme .msf-search-complete-option {
+  background-color: #3d3d3d;
+}
+.dark-theme .msf-search-complete-option:hover {
+  background-color: #1e1e1e;
+}
+.dark-theme .msf-menu-complete-row {
+  color: #ffffff;
+}
 .dark-theme .mat-primary .mat-pseudo-checkbox-checked, .dark-theme .mat-primary .mat-pseudo-checkbox-indeterminate {
   background-color: #01abec;
 }
@@ -1299,6 +1308,15 @@
   color: #6f8989;
 }
 .light-theme .msf-summary-icon, .light-theme .msf-summary-ok-icon {
+  color: #4d4d4d;
+}
+.light-theme .msf-search-complete-option {
+  background-color: #e6e6e6;
+}
+.light-theme .msf-search-complete-option:hover {
+  background-color: #c0c0c0;
+}
+.light-theme .msf-menu-complete-row {
   color: #4d4d4d;
 }
 .light-theme .mat-primary .mat-pseudo-checkbox-checked, .light-theme .mat-primary .mat-pseudo-checkbox-indeterminate {
@@ -4731,7 +4749,7 @@ li.msf-select:before {
   font-size: 120%;
 }
 
-.msf-searc-complete-option {
+.msf-search-complete-option {
   display: flex;
   align-items: center;
   position: relative;
@@ -4746,9 +4764,6 @@ li.msf-select:before {
   border-bottom-left-radius: 40px;
   justify-content: center;
 }
-.msf-searc-complete-option:hover {
-  background-color: #1e1e1e;
-}
 
 .msf-summary-icon, .msf-summary-ok-icon {
   position: absolute;
@@ -4756,7 +4771,6 @@ li.msf-select:before {
 }
 
 .msf-menu-complete-row {
-  color: white;
   position: absolute;
   left: 20px;
 }

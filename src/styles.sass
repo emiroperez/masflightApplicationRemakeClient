@@ -396,6 +396,12 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             color: $little-font-color
         .msf-summary-icon
             color: $font-color
+        .msf-search-complete-option
+            background-color: $tertiary-background-color
+            &:hover
+                background-color: $secondary-background-color
+        .msf-menu-complete-row
+            color: $font-color
         .mat-primary .mat-pseudo-checkbox-checked, .mat-primary .mat-pseudo-checkbox-indeterminate
             background-color: $primary-color
         .drillDown-decoration
@@ -3295,7 +3301,7 @@ li.msf-select:before
     margin-bottom: 10px
     font-size: 120%
 
-.msf-searc-complete-option
+.msf-search-complete-option
     display: flex
     align-items: center
     position: relative
@@ -3309,8 +3315,6 @@ li.msf-select:before
     border-top-left-radius: 40px
     border-bottom-left-radius: 40px
     justify-content: center
-    &:hover
-        background-color: $msf-primary-dark-color
 
 .msf-summary-icon
     position: absolute
@@ -3320,7 +3324,6 @@ li.msf-select:before
     @extend .msf-summary-icon
 
 .msf-menu-complete-row
-    color: white
     position: absolute
     left: 20px
 
