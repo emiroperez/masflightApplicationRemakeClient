@@ -732,6 +732,31 @@
 .dark-theme .msf-menu-arg-date-image {
   background-image: url(assets/images/components/arguments/airport/dark-theme-date.png);
 }
+.dark-theme .loading-panel {
+  background-color: #1f1f1f;
+  background-image: url(assets/images/dark-theme-loading_pulse.gif);
+}
+.dark-theme .loading-panel-popup {
+  background-color: #1f1f1f;
+  background-image: url(assets/images/dark-theme-loading_pulse.gif);
+}
+.dark-theme .cancel-button.mat-button {
+  border: 1px solid #ffffff;
+}
+.dark-theme .loading-panel .close-icon {
+  color: inherit;
+}
+.dark-theme .loading-panel .mat-button-wrapper {
+  color: inherit;
+}
+.dark-theme .loading-panel .mat-button {
+  color: #ffffff !important;
+}
+.dark-theme .loading-panel .mat-button:hover {
+  color: #ffffff !important;
+  background: #01abec;
+  border-color: #01abec;
+}
 .dark-theme .footer-hover {
   background-color: #01abec;
   color: #ffffff;
@@ -1456,6 +1481,31 @@
 }
 .light-theme .msf-menu-arg-date-image {
   background-image: url(assets/images/components/arguments/airport/light-theme-date.png);
+}
+.light-theme .loading-panel {
+  background-color: #ffffff;
+  background-image: url(assets/images/light-theme-loading_pulse.gif);
+}
+.light-theme .loading-panel-popup {
+  background-color: #ffffff;
+  background-image: url(assets/images/light-theme-loading_pulse.gif);
+}
+.light-theme .cancel-button.mat-button {
+  border: 1px solid #4d4d4d;
+}
+.light-theme .loading-panel .close-icon {
+  color: inherit;
+}
+.light-theme .loading-panel .mat-button-wrapper {
+  color: inherit;
+}
+.light-theme .loading-panel .mat-button {
+  color: #4d4d4d !important;
+}
+.light-theme .loading-panel .mat-button:hover {
+  color: #ffffff !important;
+  background: #eb5c1b;
+  border-color: #eb5c1b;
 }
 .light-theme .footer-hover {
   background-color: #eb5c1b;
@@ -4014,7 +4064,7 @@ mat-tab-group {
   width: 100%;
   height: 100%;
   background-color: #1f1f1f;
-  background-image: url(assets/images/loading_pulse.gif);
+  background-image: url(assets/images/dark-theme-loading_pulse.gif);
   background-repeat: no-repeat;
   background-position: center;
   background-size: 40%;
@@ -4025,7 +4075,7 @@ mat-tab-group {
   width: 100%;
   height: 100%;
   background-color: #1f1f1f;
-  background-image: url(assets/images/loading_pulse.gif);
+  background-image: url(assets/images/dark-theme-loading_pulse.gif);
   background-repeat: no-repeat;
   background-position: center;
   background-size: 50%;
@@ -4039,7 +4089,7 @@ mat-tab-group {
   width: 100%;
   height: 100%;
   background-color: #1f1f1f;
-  background-image: url(assets/images/loading_pulse.gif);
+  background-image: url(assets/images/dark-theme-loading_pulse.gif);
   background-repeat: no-repeat;
   background-position: center;
   background-size: 250px;
@@ -4527,8 +4577,6 @@ mat-tab-group {
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: #1F1F1F;
-  background-image: url(assets/images/loading_pulse.gif);
   background-repeat: no-repeat;
   background-position: center;
   background-size: 25%;
@@ -4537,8 +4585,6 @@ mat-tab-group {
 .loading-panel-popup {
   z-index: 99999;
   height: 100%;
-  background-color: #1F1F1F;
-  background-image: url(assets/images/loading_pulse.gif);
   background-repeat: no-repeat;
   background-position: center;
   background-size: 25%;
@@ -5409,16 +5455,10 @@ img.msf-calendar-image {
   padding: 5px 20px;
   display: flex;
   align-items: center;
-  border: 1px solid white;
 }
 
-.cancel-button.mat-button:hover {
-  background: #01abec;
-  border-color: #01abec;
-}
-
-.cancel-button .close-icon {
-  color: white;
+.cancel-button.mat-button-wrapper:hover {
+  color: #ffffff;
 }
 
 .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-disabled {
