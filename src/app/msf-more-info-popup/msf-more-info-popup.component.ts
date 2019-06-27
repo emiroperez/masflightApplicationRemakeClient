@@ -30,6 +30,9 @@ export class MsfMoreInfoPopupComponent{
   xaxis = "category";
   valueColumn = "total";
   variable = "language";
+
+  imgwidth: number = 0;
+  backgroundImage: any = new Image ();
     
   chart: any;
   private _onDestroy = new Subject<void> ();
@@ -60,7 +63,8 @@ export class MsfMoreInfoPopupComponent{
     @Inject(MAT_DIALOG_DATA) public data: any,
     private http: ApiClient,
     private authService: AuthService,
-    private zone: NgZone) {}
+    private zone: NgZone)
+    { }
 
     onNoClick(): void
     {
@@ -88,20 +92,48 @@ export class MsfMoreInfoPopupComponent{
       }
     }
 
-    getBackground(){
-      var titulo = this.globals.popupMainElement[0].title;
-      var passenger = this.globals.popupMainElement[0].passenger_name;
-      if(titulo!=null){
-        titulo = titulo.replace(/ /g, '_');
-        return "../../assets/images/Top_Ten_Movie_Posters/"+titulo+".png";
-      }else if(passenger!=null){
-        passenger = passenger.replace(/ /g, '_');
-        return "../../assets/images/"+passenger+".png";
-      }else{
-        return "";
+    getBackground(): string
+    {
+      let self, title, passenger;
+
+      self = this;
+      title = this.globals.popupMainElement[0].title;
+      passenger = this.globals.popupMainElement[0].passenger_name;
+
+      if (title)
+      {
+        title = title.replace (/ /g, '_');
+
+        if (!this.backgroundImage.src)
+        {
+          this.backgroundImage.src = "../../assets/images/Top_Ten_Movie_Posters/" + title + ".png";
+          this.backgroundImage.onload = function ()
+          {
+            let aspect = self.backgroundImage.width / self.backgroundImage.height;
+            self.imgWidth = Math.ceil (500 * aspect);
+          }
+        }
+
+       return this.backgroundImage.src;    
       }
+      else if (passenger)
+      {
+        passenger = passenger.replace (/ /g, '_');
 
+        if (!this.backgroundImage.src)
+        {
+          this.backgroundImage.src = "../../assets/images/" + passenger + ".png";
+          this.backgroundImage.onload = function ()
+          {
+            let aspect = self.backgroundImage.width / self.backgroundImage.height;
+            self.imgWidth = Math.ceil (500 * aspect);
+          }
+        }
 
+        return this.backgroundImage.src;
+      }
+      else
+        return "";
     }
 
     loadChartData(handlerSuccess, handlerError) {

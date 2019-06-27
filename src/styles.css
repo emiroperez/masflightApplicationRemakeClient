@@ -13,6 +13,13 @@
   background-color: #595959;
 }
 
+.msf-drill-down-info-close-icon-template, .light-theme .msf-drill-down-info-image-close-icon, .light-theme .msf-drill-down-info-close-icon, .dark-theme .msf-drill-down-info-image-close-icon, .dark-theme .msf-drill-down-info-close-icon {
+  height: 35px;
+  width: 35px;
+  font-size: 35px;
+  cursor: pointer;
+}
+
 .dark-theme {
   width: 100%;
   height: 100%;
@@ -368,7 +375,7 @@
   font-size: 16px;
   margin-top: -10px;
   margin-right: -9px;
-  color: #ffffff;
+  color: #01abec;
   cursor: pointer;
 }
 .dark-theme .msf-menu-component-text {
@@ -581,6 +588,14 @@
 .dark-theme .drillDown-decoration {
   color: #01abec;
 }
+.dark-theme .msf-drill-down-info-close-icon {
+  color: #ffffff !important;
+}
+.dark-theme .msf-drill-down-info-image-close-icon {
+  background-color: rgba(1, 171, 236, 0.5);
+  border-radius: 25px;
+  color: #ffffff !important;
+}
 .dark-theme .msf-media-title {
   color: #01abec;
 }
@@ -661,8 +676,25 @@
 .dark-theme .msf-plan-card-content .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label, .dark-theme .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
   color: #ffffff !important;
 }
+.dark-theme .msf-more-info-popup .mat-dialog-container {
+  background-color: #000000 !important;
+}
+.dark-theme .msf-more-info-gradient {
+  background-image: linear-gradient(to right, #000000, rgba(0, 0, 0, 0));
+  background-size: 150px;
+  background-repeat: no-repeat;
+  height: 100%;
+}
 .dark-theme .msf-header-image {
   background-image: url(assets/images/dark-theme-pulse_welc.png);
+  background-color: #3d3d3d;
+}
+.dark-theme .msf-header {
+  background-color: #333333;
+}
+.dark-theme .msf-content {
+  background-color: #1e1e1e;
+  color: #ffffff;
 }
 .dark-theme .msf-menu-arg-ceiling-image {
   background-image: url(assets/images/components/arguments/weather/dark-theme-Ceiling.png);
@@ -684,6 +716,10 @@
 }
 .dark-theme .msf-menu-arg-date-image {
   background-image: url(assets/images/components/arguments/airport/dark-theme-date.png);
+}
+.dark-theme .footer-hover {
+  background-color: #01abec;
+  color: #ffffff;
 }
 .dark-theme ::-webkit-scrollbar-thumb {
   background-color: #01abec;
@@ -1049,7 +1085,7 @@
   font-size: 16px;
   margin-top: -10px;
   margin-right: -9px;
-  color: #4d4d4d;
+  color: #eb5c1b;
   cursor: pointer;
 }
 .light-theme .msf-menu-component-text {
@@ -1262,6 +1298,14 @@
 .light-theme .drillDown-decoration {
   color: #eb5c1b;
 }
+.light-theme .msf-drill-down-info-close-icon {
+  color: #4d4d4d !important;
+}
+.light-theme .msf-drill-down-info-image-close-icon {
+  background-color: rgba(235, 92, 27, 0.5);
+  border-radius: 25px;
+  color: #ffffff !important;
+}
 .light-theme .msf-media-title {
   color: #eb5c1b;
 }
@@ -1342,8 +1386,25 @@
 .light-theme .msf-plan-card-content .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label, .light-theme .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
   color: #4d4d4d !important;
 }
+.light-theme .msf-more-info-popup .mat-dialog-container {
+  background-color: #ffffff !important;
+}
+.light-theme .msf-more-info-gradient {
+  background-image: linear-gradient(to right, #ffffff, rgba(0, 0, 0, 0));
+  background-size: 150px;
+  background-repeat: no-repeat;
+  height: 100%;
+}
 .light-theme .msf-header-image {
   background-image: url(assets/images/light-theme-pulse_welc.png);
+  background-color: #eb5c1b;
+}
+.light-theme .msf-header {
+  background-color: #d54505;
+}
+.light-theme .msf-content {
+  background-color: #c0c0c0;
+  color: #4d4d4d;
 }
 .light-theme .msf-menu-arg-ceiling-image {
   background-image: url(assets/images/components/arguments/weather/light-theme-Ceiling.png);
@@ -1365,6 +1426,10 @@
 }
 .light-theme .msf-menu-arg-date-image {
   background-image: url(assets/images/components/arguments/airport/light-theme-date.png);
+}
+.light-theme .footer-hover {
+  background-color: #eb5c1b;
+  color: #ffffff;
 }
 .light-theme ::-webkit-scrollbar-thumb {
   background-color: #eb5c1b;
@@ -1402,7 +1467,6 @@ body {
 .msf-header {
   width: 100%;
   height: 50px;
-  background-color: #333333;
   position: relative;
 }
 
@@ -1446,7 +1510,6 @@ body {
   display: inline-block;
   border-bottom-right-radius: 40px;
   border-top-right-radius: 40px;
-  background-color: #3d3d3d;
   background-repeat: no-repeat;
   background-position: 15% 55%;
   background-size: 45%;
@@ -1525,11 +1588,9 @@ body {
 
 .msf-content {
   width: 100%;
-  background-color: #161616;
   position: absolute;
   top: 0px;
   bottom: 0;
-  color: white;
   display: flex;
   align-items: center;
 }
@@ -4446,7 +4507,6 @@ mat-tab-group {
 
 .loading-panel-popup {
   z-index: 99999;
-  width: 100%;
   height: 100%;
   background-color: #1F1F1F;
   background-image: url(assets/images/loading_pulse.gif);
@@ -5336,10 +5396,6 @@ img.msf-calendar-image {
   color: white;
 }
 
-.footer-hover {
-  background-color: #01abec;
-}
-
 .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-disabled {
   color: #8e8e8e !important;
 }
@@ -5391,22 +5447,13 @@ img.msf-calendar-image {
 }
 
 .msf-more-info-popup .mat-dialog-container {
-  background-color: #1F1F1F !important;
   padding: 0;
 }
 
 .msf-more-info-popup-image {
-  background-size: contain;
+  background-size: cover;
   background-repeat: no-repeat;
   background-position: right;
-  height: 100%;
-}
-
-.msf-more-info-black {
-  background-image: url("assets/images/banner_negro.png");
-  background-size: contain;
-  background-position: -1px -1px;
-  background-repeat: no-repeat;
   height: 100%;
 }
 

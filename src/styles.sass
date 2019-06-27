@@ -103,10 +103,16 @@
     .mat-form-field-underline
         background-color: #595959
 
-// Color themes (see _variables.sass if you want to change the colors)
-$color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-disabled-color, $dark-secondary-disabled-color, $dark-menu-disabled-font-color, $dark-background-color, $dark-secondary-background-color, $dark-tertiary-background-color, $dark-body-background-color, $dark-primary-color, $dark-secondary-color, $dark-tab-label-color, $dark-tab-border-color, $dark-menu-header-color, $dark-secondary-menu-header-color, $dark-selected-menu-color, $dark-menu-border-color, $dark-badge-color, $dark-control-variable-icon-color, $dark-scrollbar-background-color, $dark-dashboard-panel-background-color, $dark-dashboard-panel-chart-background-color), (light-theme, $light-font-color, $light-little-font-color, $light-disabled-color, $light-secondary-disabled-color, $light-menu-disabled-font-color, $light-background-color, $light-secondary-background-color, $light-tertiary-background-color, $light-body-background-color, $light-primary-color, $light-secondary-color, $light-tab-label-color, $light-tab-border-color, $light-menu-header-color, $light-secondary-menu-header-color, $light-selected-menu-color, $light-menu-border-color, $light-badge-color, $light-control-variable-icon-color, $light-scrollbar-background-color, $light-dashboard-panel-background-color, $light-dashboard-panel-chart-background-color))
+.msf-drill-down-info-close-icon-template
+    height: 35px
+    width: 35px
+    font-size: 35px
+    cursor: pointer
 
-@mixin theme($name, $font-color, $little-font-color, $disabled-color, $secondary-disabled-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $body-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $scrollbar-background-color, $dashboard-panel-background-color, $dashboard-panel-chart-background-color)
+// Color themes (see _variables.sass if you want to change the colors)
+$color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-disabled-color, $dark-secondary-disabled-color, $dark-menu-disabled-font-color, $dark-background-color, $dark-secondary-background-color, $dark-tertiary-background-color, $dark-drilldown-moreinfo-background-color, $dark-body-background-color, $dark-primary-color, $dark-secondary-color, $dark-tab-label-color, $dark-tab-border-color, $dark-menu-header-color, $dark-secondary-menu-header-color, $dark-selected-menu-color, $dark-menu-border-color, $dark-badge-color, $dark-control-variable-icon-color, $dark-scrollbar-background-color, $dark-dashboard-panel-background-color, $dark-dashboard-panel-chart-background-color), (light-theme, $light-font-color, $light-little-font-color, $light-disabled-color, $light-secondary-disabled-color, $light-menu-disabled-font-color, $light-background-color, $light-secondary-background-color, $light-tertiary-background-color, $light-drilldown-moreinfo-background-color, $light-body-background-color, $light-primary-color, $light-secondary-color, $light-tab-label-color, $light-tab-border-color, $light-menu-header-color, $light-secondary-menu-header-color, $light-selected-menu-color, $light-menu-border-color, $light-badge-color, $light-control-variable-icon-color, $light-scrollbar-background-color, $light-dashboard-panel-background-color, $light-dashboard-panel-chart-background-color))
+
+@mixin theme($name, $font-color, $little-font-color, $disabled-color, $secondary-disabled-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $drilldown-moreinfo-background-color, $body-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $scrollbar-background-color, $dashboard-panel-background-color, $dashboard-panel-chart-background-color)
     .#{$name}
         width: 100%
         height: 100%
@@ -244,7 +250,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                 .msf-dashboard-close-icon
                     @include msf-dashboard-control-variables-close-icon
                 .msf-dashboard-close-icon:hover
-                    @include msf-dashboard-control-variables-close-icon($font-color, pointer)
+                    @include msf-dashboard-control-variables-close-icon($primary-color, pointer)
         .msf-menu-component-text
             color: $font-color
         .msf-menu-cmpte-row
@@ -392,6 +398,14 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             background-color: $primary-color
         .drillDown-decoration
             color: $primary-color
+        .msf-drill-down-info-close-icon
+            color: $font-color !important
+            @extend .msf-drill-down-info-close-icon-template
+        .msf-drill-down-info-image-close-icon
+            background-color: rgba($primary-color, 0.5)
+            border-radius: 25px
+            color: #ffffff !important
+            @extend .msf-drill-down-info-close-icon-template
         .msf-media-title 
             color: $primary-color
         .msf-media-title-value 
@@ -450,8 +464,21 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             caret-color: $font-color
         .msf-plan-card-content .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label, .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label
             color: $font-color !important
+        .msf-more-info-popup .mat-dialog-container
+            background-color: $drilldown-moreinfo-background-color !important
+        .msf-more-info-gradient
+            background-image: linear-gradient(to right, $drilldown-moreinfo-background-color, rgba(0, 0, 0, 0))
+            background-size: 150px
+            background-repeat: no-repeat
+            height: 100%
         .msf-header-image
             background-image: url(assets/images/#{$name}-pulse_welc.png)
+            background-color: $menu-header-color
+        .msf-header
+            background-color: $secondary-menu-header-color
+        .msf-content
+            background-color: $secondary-background-color
+            color: $font-color
         .msf-menu-arg-ceiling-image
             background-image: url(assets/images/components/arguments/weather/#{$name}-Ceiling.png)
         .msf-menu-arg-wind-speed-image
@@ -466,6 +493,9 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             background-image: url(assets/images/components/arguments/airport/#{$name}-aerop_a_todos.png)
         .msf-menu-arg-date-image
             background-image: url(assets/images/components/arguments/airport/#{$name}-date.png)
+        .footer-hover
+            background-color: $primary-color
+            color: #ffffff
         ::-webkit-scrollbar-thumb
             background-color: $primary-color
             border-radius: 10px
@@ -473,8 +503,8 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
         ::-webkit-scrollbar-track
             background-color: $scrollbar-background-color
 
-@each $name, $font-color, $little-font-color, $disabled-color, $secondary-disabled-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $body-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $scrollbar-background-color, $dashboard-panel-background-color, $dashboard-panel-chart-background-color in $color-scheme
-    @include theme($name, $font-color, $little-font-color, $disabled-color, $secondary-disabled-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $body-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $scrollbar-background-color, $dashboard-panel-background-color, $dashboard-panel-chart-background-color)
+@each $name, $font-color, $little-font-color, $disabled-color, $secondary-disabled-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $drilldown-moreinfo-background-color, $body-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $scrollbar-background-color, $dashboard-panel-background-color, $dashboard-panel-chart-background-color in $color-scheme
+    @include theme($name, $font-color, $little-font-color, $disabled-color, $secondary-disabled-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $drilldown-moreinfo-background-color, $body-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $scrollbar-background-color, $dashboard-panel-background-color, $dashboard-panel-chart-background-color)
 
 body
     font-family: $msf-font-family
@@ -502,7 +532,6 @@ body
 .msf-header
     width: 100%
     height: 50px
-    background-color: $msf-primary-color
     position: relative
 
 .msf-header-image-container
@@ -543,7 +572,6 @@ body
     display: inline-block
     border-bottom-right-radius: 40px
     border-top-right-radius: 40px
-    background-color: $msf-primary-light-color
     // background-size: 70%  //kp28032019
     background-repeat: no-repeat
     // background-position: 30% 55% //kp28032019
@@ -614,14 +642,11 @@ body
     bottom: 0
     background-size: cover
 
-
 .msf-content
     width: 100%
-    background-color: #161616
     position: absolute
     top: 0px
     bottom: 0
-    color: white
     display: flex
     align-items: center
 
@@ -3074,7 +3099,6 @@ mat-tab-group
 
 .loading-panel-popup
     z-index: 99999
-    width: 100%
     height: 100%
     background-color: #1F1F1F
     background-image: url(assets/images/loading_pulse.gif)
@@ -3871,9 +3895,6 @@ img.msf-calendar-image
 .cancel-button .close-icon
     color: white
 
-.footer-hover
-    background-color: $msf-secondary-color
-
 .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-disabled
     color: #8e8e8e !important
 
@@ -3913,21 +3934,13 @@ img.msf-calendar-image
     cursor: pointer
 
 .msf-more-info-popup .mat-dialog-container
-    background-color: #1F1F1F !important
     padding: 0
 
 
 .msf-more-info-popup-image
-    background-size: contain
+    background-size: cover
     background-repeat: no-repeat
     background-position: right
-    height: 100%
-
-.msf-more-info-black
-    background-image: url("assets/images/banner_negro.png")
-    background-size: contain
-    background-position: -1px -1px
-    background-repeat: no-repeat
     height: 100%
 
 .msf-media-title 

@@ -147,22 +147,28 @@ export class WelcomeComponent implements OnInit {
 
   }
 
-  getBackground(option : any){
+  getBackground(option : any): string
+  {
     var aux = option.name;
-    aux = aux.replace(" ","");
-    if(option.hover){
-      return "../../assets/images/w_"+aux+"2.png"
-    }else{
-      return "../../assets/images/w_"+aux+"1.png"
-    }
 
+    aux = aux.replace (" ","");
+
+    if (option.hover)
+      return "../../assets/images/w_" + aux + "2.png"
+    else
+      return "../../assets/images/" + this.globals.theme + "-w_" + aux + "1.png"
   }
 
 
-  getBackground2(option : any){
+  getBackground2(option : any): string
+  {
     var aux = option.name;
     aux = aux.replace(" ","");
-    return "../../assets/images/w_"+aux+".png"
+
+    if (option.hover)
+      return "../../assets/images/dark-theme-w_" + aux + ".png"
+    else
+      return "../../assets/images/" + this.globals.theme + "-w_" + aux + ".png"
   }
 
   @HostListener('window:resize', ['$event'])
