@@ -397,6 +397,9 @@
 .dark-theme .msf-menu-icon:disabled {
   color: #9e9e9e;
 }
+.dark-theme .msf-intro-body {
+  color: #ffffff;
+}
 .dark-theme .msf-intro-body1 {
   color: #ffffff;
   background-color: #333333;
@@ -1107,6 +1110,9 @@
 .light-theme .msf-menu-icon:disabled {
   color: #000000;
 }
+.light-theme .msf-intro-body {
+  color: #4d4d4d;
+}
 .light-theme .msf-intro-body1 {
   color: #4d4d4d;
   background-color: #ffffff;
@@ -1560,7 +1566,6 @@ body {
 }
 
 .msf-intro-body {
-  color: white;
   padding: 5%;
 }
 
