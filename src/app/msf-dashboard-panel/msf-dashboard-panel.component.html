@@ -736,7 +736,7 @@
       </div>
       <div [ngClass]="moreResultsBtn ? 'msf-menu-more-button' : 'msf-menu-more-button disabled-more-button'"
           (click)="moreTableResults()" *ngIf="msfTableRef && msfTableRef.dataSource">
-        <img style="width: 16px; height: 16px;" src="../../assets/images/more.png" class="msf-menu-image msf-vertical-middle msf-line">
+        <img style="width: 16px; height: 16px;" src="../../assets/images/{{globals.theme}}-more.png" class="msf-menu-image msf-vertical-middle msf-line">
         <div class="msf-vertical-middle msf-line" style="font-size: 13px">More Result</div>
       </div>
       <div *ngIf="!haveTableDataSource()" [style.height.px]="35"></div>
