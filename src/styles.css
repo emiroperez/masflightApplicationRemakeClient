@@ -578,6 +578,12 @@
 .dark-theme .msf-menu-search-button-enabled:hover {
   background-color: #0589bb;
 }
+.dark-theme .ng-select .ng-spinner-loader {
+  border-top: 2px solid rgba(1, 171, 236, 0.2) !important;
+  border-right: 2px solid rgba(1, 171, 236, 0.2) !important;
+  border-bottom: 2px solid rgba(1, 171, 236, 0.2) !important;
+  border-left: 2px solid #01abec !important;
+}
 .dark-theme .ng-select .ng-select-container {
   color: #ffffff !important;
 }
@@ -1472,6 +1478,12 @@
 }
 .light-theme .msf-menu-search-button-enabled:hover {
   background-color: #d54505;
+}
+.light-theme .ng-select .ng-spinner-loader {
+  border-top: 2px solid rgba(235, 92, 27, 0.2) !important;
+  border-right: 2px solid rgba(235, 92, 27, 0.2) !important;
+  border-bottom: 2px solid rgba(235, 92, 27, 0.2) !important;
+  border-left: 2px solid #eb5c1b !important;
 }
 .light-theme .ng-select .ng-select-container {
   color: #4d4d4d !important;
@@ -5116,13 +5128,6 @@ mat-form-field.standard-text div div div span label {
 
 .msf-menu-arg-image-circle, .msf-menu-arg-wind-speed-image, .msf-menu-arg-temperature-image, .msf-menu-arg-wind-direction-image {
   background-position-x: center;
-}
-
-.ng-select .ng-spinner-loader {
-  border-top: 2px solid rgba(1, 171, 236, 0.2) !important;
-  border-right: 2px solid rgba(1, 171, 236, 0.2) !important;
-  border-bottom: 2px solid rgba(1, 171, 236, 0.2) !important;
-  border-left: 2px solid #01abec !important;
 }
 
 tr.mat-footer-row, tr.mat-row {

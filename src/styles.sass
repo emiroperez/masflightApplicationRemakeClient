@@ -389,6 +389,11 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             background-color: $primary-color
             &:hover
                 background-color: $secondary-color
+        .ng-select .ng-spinner-loader
+            border-top: 2px solid rgba($primary-color,.2) !important
+            border-right: 2px solid rgba($primary-color,.2) !important
+            border-bottom: 2px solid rgba($primary-color,.2) !important
+            border-left: 2px solid $primary-color !important
         .ng-select .ng-select-container
             color: $font-color !important
         .ng-select .ng-select-container:after
@@ -3469,12 +3474,6 @@ mat-form-field.standard-text
 
 .msf-menu-arg-image-circle, .msf-menu-arg-wind-speed-image, .msf-menu-arg-temperature-image, .msf-menu-arg-wind-direction-image
     background-position-x: center
-
-.ng-select .ng-spinner-loader
-    border-top: 2px solid rgba(1,171, 236,.2) !important
-    border-right: 2px solid rgba(1,171, 236,.2) !important
-    border-bottom: 2px solid rgba(1,171, 236,.2) !important
-    border-left: 2px solid $msf-secondary-color !important
 
 tr.mat-footer-row, tr.mat-row
     height: 30px
