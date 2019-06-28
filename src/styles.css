@@ -572,11 +572,14 @@
 .dark-theme .msf-secondary-color, .dark-theme .msf-menu-arg-right-row, .dark-theme .msf-menu-more-button {
   color: #01abec;
 }
-.dark-theme .msf-menu-search-button-enabled {
+.dark-theme .msf-menu-search-button {
   background-color: #01abec;
 }
-.dark-theme .msf-menu-search-button-enabled:hover {
+.dark-theme .msf-menu-search-button:hover {
   background-color: #0589bb;
+}
+.dark-theme .msf-menu-search-button:disabled {
+  background-color: #727277;
 }
 .dark-theme .ng-select .ng-spinner-loader {
   border-top: 2px solid rgba(1, 171, 236, 0.2) !important;
@@ -825,9 +828,6 @@
 }
 .dark-theme .msf-disabled {
   background-color: #3d3d3d !important;
-}
-.dark-theme .msf-menu-search-button-disabled {
-  background-color: #727277;
 }
 .dark-theme .mat-input-element {
   caret-color: #ffffff;
@@ -1473,11 +1473,14 @@
 .light-theme .msf-secondary-color, .light-theme .msf-menu-arg-right-row, .light-theme .msf-menu-more-button {
   color: #eb5c1b;
 }
-.light-theme .msf-menu-search-button-enabled {
+.light-theme .msf-menu-search-button {
   background-color: #eb5c1b;
 }
-.light-theme .msf-menu-search-button-enabled:hover {
+.light-theme .msf-menu-search-button:hover {
   background-color: #d54505;
+}
+.light-theme .msf-menu-search-button:disabled {
+  background-color: #b2b2b7;
 }
 .light-theme .ng-select .ng-spinner-loader {
   border-top: 2px solid rgba(235, 92, 27, 0.2) !important;
@@ -1726,9 +1729,6 @@
 }
 .light-theme .msf-disabled {
   background-color: #e6e6e6 !important;
-}
-.light-theme .msf-menu-search-button-disabled {
-  background-color: #b2b2b7;
 }
 .light-theme .mat-input-element {
   caret-color: #4d4d4d;
@@ -3105,7 +3105,7 @@ button[aria-expanded=true] {
   background-color: #1e1e1e !important;
 }
 
-.msf-menu-search-button, .msf-menu-search-button-enabled, .msf-menu-search-button-disabled {
+.msf-menu-search-button-attributes, .msf-menu-search-button, .msf-menu-search-button:disabled {
   width: 100%;
   position: absolute;
   bottom: 90px;
@@ -3119,8 +3119,7 @@ button[aria-expanded=true] {
   cursor: pointer;
 }
 
-.msf-menu-search-button-disabled {
-  background-color: #727277;
+.msf-menu-search-button:disabled {
   cursor: not-allowed;
 }
 

@@ -385,10 +385,12 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             background-color: $primary-color
         .msf-secondary-color
             color: $primary-color
-        .msf-menu-search-button-enabled
+        .msf-menu-search-button
             background-color: $primary-color
             &:hover
                 background-color: $secondary-color
+        .msf-menu-search-button:disabled
+            background-color: $tertiary-disabled-color
         .ng-select .ng-spinner-loader
             border-top: 2px solid rgba($primary-color,.2) !important
             border-right: 2px solid rgba($primary-color,.2) !important
@@ -566,8 +568,6 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             color: $disabled-color
         .msf-disabled
             background-color: $tertiary-background-color !important
-        .msf-menu-search-button-disabled
-            background-color: $tertiary-disabled-color
         .mat-input-element
             caret-color: $font-color
         .msf-plan-card-content .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label, .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label
@@ -1784,7 +1784,7 @@ button[aria-expanded="true"]
     @extend .msf-menu-component
     background-color: $msf-primary-dark-color!important
 
-.msf-menu-search-button
+.msf-menu-search-button-attributes
      width: 100%
      position: absolute
      bottom: 90px
@@ -1798,13 +1798,12 @@ button[aria-expanded="true"]
      //margin-top: calc(100% - 116px)
      cursor: pointer
 
-.msf-menu-search-button-disabled
-    background-color: #727277
-    @extend .msf-menu-search-button
+.msf-menu-search-button:disabled
+    @extend .msf-menu-search-button-attributes
     cursor: not-allowed
 
-.msf-menu-search-button-enabled
-    @extend .msf-menu-search-button
+.msf-menu-search-button
+    @extend .msf-menu-search-button-attributes
 
 .msf-menu-cmpte-row
     position: absolute

@@ -118,9 +118,9 @@
                 <div class="msf-category-container" [ngClass]="(globals.currentOption && globals.currentOption.metaData != 3) ? 'msf-hide' : (globals.hideParametersPanels ? 'msf-hide':'msf-category-container')">
                   <app-msf-map-coordinates></app-msf-map-coordinates>
                 </div>
-                <button [disabled]="disabled()" [ngClass]="{'msf-menu-search-button-disabled' : disabled() && !globals.hideParametersPanels,
-                            'msf-menu-search-button-enabled' : !disabled() && !globals.hideParametersPanels,
-                            'msf-hide' : globals.hideParametersPanels && !disabled()}"
+                <button [disabled]="disabled()" [ngClass]="{
+                    'msf-menu-search-button' : !globals.hideParametersPanels,
+                    'msf-hide' : globals.hideParametersPanels}"
                     (click)="search()">Search</button>
                 <app-msf-schedule-panel *ngIf="globals.hideParametersPanels"></app-msf-schedule-panel>
             </div>
