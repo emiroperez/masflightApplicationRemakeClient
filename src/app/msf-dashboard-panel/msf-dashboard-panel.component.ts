@@ -3853,20 +3853,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     return this.values.formVariables[column].valueFontSize.value;
   }
 
-  getColor(result): string
-  {
-    if (result)
-    {
-      for (let threshold of this.values.thresholds)
-      {
-        if (result >= threshold.min && result <= threshold.max)
-          return threshold.color;
-      }
-    }
-
-    return "#ffffff";
-  }
-
   startUpdateInterval(): void
   {
     if (!this.values.updateIntervalSwitch)

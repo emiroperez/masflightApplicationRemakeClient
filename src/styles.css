@@ -9,10 +9,6 @@
 @import "~ag-grid-community/dist/styles/ag-theme-balham-dark.css";
 @import "~ng-pick-datetime/assets/style/picker.min.css";
 @import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
-.msf-dashboard-form-field .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-chart-op-container-row .msf-dashboard-field-function .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-chart-op-container-row .msf-dashboard-field-valuectrl .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-full-width .mat-form-field-underline, .msf-dashboard-panel-sub-container-row .msf-full-width .mat-form-field-underline, .msf-dashboard-panel-sub-container-row .msf-width-90 .mat-form-field-underline, .msf-dashboard-panel-sub-container-row .msf-width-80 .mat-form-field-underline, .msf-dashboard-panel-container .msf-dashboard-panel-sub-container-column .msf-full-width .mat-form-field-underline {
-  background-color: #595959;
-}
-
 .msf-drill-down-info-close-icon-template, .light-theme .msf-drill-down-info-image-close-icon, .light-theme .msf-drill-down-info-close-icon, .dark-theme .msf-drill-down-info-image-close-icon, .dark-theme .msf-drill-down-info-close-icon {
   height: 35px;
   width: 35px;
@@ -377,6 +373,135 @@
   margin-right: -9px;
   color: #01abec;
   cursor: pointer;
+}
+.dark-theme .func-button .mat-button-wrapper {
+  color: #ffffff !important;
+}
+.dark-theme .func-button-disabled .mat-button-wrapper {
+  color: #333333 !important;
+}
+.dark-theme .msf-dashboard-child-panel-loading {
+  z-index: 99998;
+  width: 100%;
+  height: 100%;
+  background-color: #1f1f1f;
+  background-image: url(assets/images/dark-theme-loading_pulse.gif);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 40%;
+}
+.dark-theme .msf-dashboard-drill-down-loading {
+  z-index: 99998;
+  width: 100%;
+  height: 100%;
+  background-color: #1f1f1f;
+  background-image: url(assets/images/dark-theme-loading_pulse.gif);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 50%;
+}
+.dark-theme .msf-dashboard-panel-loading {
+  z-index: 99998;
+  width: 100%;
+  height: 100%;
+  background-color: #1f1f1f;
+  background-image: url(assets/images/dark-theme-loading_pulse.gif);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 250px;
+}
+.dark-theme .msf-dashboard-info-display .msf-dashboard-info-container .msf-dashboard-info-table .msf-dashboard-info-title {
+  background-color: #3b3b3b;
+  color: #01abec;
+  vertical-align: middle;
+  height: 45px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 170px;
+  font-size: 16px;
+}
+.dark-theme .msf-dashboard-info-display .msf-dashboard-info-container .msf-dashboard-info-table .msf-dashboard-info-value {
+  background-color: #333333;
+  color: #ffffff;
+  vertical-align: middle;
+  height: 37px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 170px;
+  font-size: 14px;
+}
+.dark-theme .msf-dashboard-info-display .msf-dashboard-info-container .msf-dashboard-info-table .msf-dashboard-info-separator-background {
+  background-color: #333333;
+}
+.dark-theme .msf-dashboard-info-display .msf-dashboard-info-container .msf-dashboard-info-table .msf-dashboard-info-separator-background .msf-dashboard-info-separator {
+  border-color: #3b3b3b;
+}
+.dark-theme .msf-dashboard-info-display .msf-dashboard-info-container .msf-dashboard-info-table .msf-dashboard-info-measure {
+  background-color: #333333;
+  color: #ffffff;
+  vertical-align: middle;
+  height: 37px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 170px;
+  font-size: 14px;
+}
+.dark-theme .msf-dashboard-child-panel-dialog .mat-dialog-container {
+  background-color: #1f1f1f !important;
+}
+.dark-theme #msf-dashboard-drill-down-container {
+  color: #ffffff;
+}
+.dark-theme .msf-dashboard-color-picker-threshold-conatiner {
+  background-color: #222222;
+  border-color: #595959;
+}
+.dark-theme .msf-dashboard-color-picker-container {
+  color: #ffffff;
+}
+.dark-theme .msf-dashboard-color-picker-threshold-input .mat-button-wrapper {
+  color: #ffffff;
+}
+.dark-theme .flat-button-disabled {
+  background-color: #333333 !important;
+}
+.dark-theme .flat-control-variable-button-disabled {
+  background-color: #333333 !important;
+}
+.dark-theme .flat-share-button-disabled {
+  background-color: #333333 !important;
+}
+.dark-theme .msf-dashboard-edit-container {
+  color: #ffffff !important;
+  padding-top: 10px !important;
+}
+.dark-theme .msf-confirm-container {
+  color: #ffffff !important;
+  font-size: 12px !important;
+}
+.dark-theme .msf-dashboard-form-field .mat-form-field-underline, .dark-theme .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-chart-op-container-row .msf-dashboard-field-function .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-chart-op-container-row .dark-theme .msf-dashboard-field-function .mat-form-field-underline, .dark-theme .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-chart-op-container-row .msf-dashboard-field-valuectrl .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-chart-op-container-row .dark-theme .msf-dashboard-field-valuectrl .mat-form-field-underline, .dark-theme .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-full-width .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .dark-theme .msf-full-width .mat-form-field-underline, .dark-theme .msf-dashboard-panel-sub-container-row .msf-full-width .mat-form-field-underline, .msf-dashboard-panel-sub-container-row .dark-theme .msf-full-width .mat-form-field-underline, .dark-theme .msf-dashboard-panel-sub-container-row .msf-width-90 .mat-form-field-underline, .msf-dashboard-panel-sub-container-row .dark-theme .msf-width-90 .mat-form-field-underline, .dark-theme .msf-dashboard-panel-sub-container-row .msf-width-80 .mat-form-field-underline, .msf-dashboard-panel-sub-container-row .dark-theme .msf-width-80 .mat-form-field-underline, .dark-theme .msf-dashboard-panel-container .msf-dashboard-panel-sub-container-column .msf-full-width .mat-form-field-underline, .msf-dashboard-panel-container .msf-dashboard-panel-sub-container-column .dark-theme .msf-full-width .mat-form-field-underline {
+  background-color: #595959;
+}
+.dark-theme #msf-dashboard-form-display-title {
+  color: #01abec;
+}
+.dark-theme #msf-dashboard-form-display-value {
+  color: #ffffff;
+}
+.dark-theme .msf-dashboard-column-properties-form-field .mat-form-field-underline, .light-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-button .dark-theme .msf-dashboard-column-properties-form-field .mat-form-field-underline, .light-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-button .dark-theme .msf-dashboard-column-properties-form-field .mat-form-field-underline, .dark-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-button .msf-dashboard-column-properties-form-field .mat-form-field-underline, .dark-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-button .msf-dashboard-column-properties-form-field .mat-form-field-underline {
+  background-color: #595959;
+}
+.dark-theme .mat-form-field .mat-select.mat-select-disabled .mat-select-arrow {
+  color: rgba(0, 0, 0, 0.38);
+}
+.dark-theme .mat-form-field-appearance-legacy.mat-form-field-disabled .mat-form-field-underline {
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.42) 0, rgba(0, 0, 0, 0.42) 33%, transparent 0);
+}
+.dark-theme .mat-input-element:disabled {
+  color: #727277;
 }
 .dark-theme .msf-menu-component-text {
   color: #ffffff;
@@ -761,6 +886,9 @@
   background-color: #01abec;
   color: #ffffff;
 }
+.dark-theme .two-factor-auth-container {
+  color: #ffffff;
+}
 .dark-theme ::-webkit-scrollbar-thumb {
   background-color: #01abec;
   border-radius: 10px;
@@ -1127,6 +1255,135 @@
   margin-right: -9px;
   color: #eb5c1b;
   cursor: pointer;
+}
+.light-theme .func-button .mat-button-wrapper {
+  color: #4d4d4d !important;
+}
+.light-theme .func-button-disabled .mat-button-wrapper {
+  color: #c6c6c6 !important;
+}
+.light-theme .msf-dashboard-child-panel-loading {
+  z-index: 99998;
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+  background-image: url(assets/images/light-theme-loading_pulse.gif);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 40%;
+}
+.light-theme .msf-dashboard-drill-down-loading {
+  z-index: 99998;
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+  background-image: url(assets/images/light-theme-loading_pulse.gif);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 50%;
+}
+.light-theme .msf-dashboard-panel-loading {
+  z-index: 99998;
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+  background-image: url(assets/images/light-theme-loading_pulse.gif);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 250px;
+}
+.light-theme .msf-dashboard-info-display .msf-dashboard-info-container .msf-dashboard-info-table .msf-dashboard-info-title {
+  background-color: #e6e6e6;
+  color: #eb5c1b;
+  vertical-align: middle;
+  height: 45px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 170px;
+  font-size: 16px;
+}
+.light-theme .msf-dashboard-info-display .msf-dashboard-info-container .msf-dashboard-info-table .msf-dashboard-info-value {
+  background-color: #c6c6c6;
+  color: #4d4d4d;
+  vertical-align: middle;
+  height: 37px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 170px;
+  font-size: 14px;
+}
+.light-theme .msf-dashboard-info-display .msf-dashboard-info-container .msf-dashboard-info-table .msf-dashboard-info-separator-background {
+  background-color: #c6c6c6;
+}
+.light-theme .msf-dashboard-info-display .msf-dashboard-info-container .msf-dashboard-info-table .msf-dashboard-info-separator-background .msf-dashboard-info-separator {
+  border-color: #e6e6e6;
+}
+.light-theme .msf-dashboard-info-display .msf-dashboard-info-container .msf-dashboard-info-table .msf-dashboard-info-measure {
+  background-color: #c6c6c6;
+  color: #4d4d4d;
+  vertical-align: middle;
+  height: 37px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 170px;
+  font-size: 14px;
+}
+.light-theme .msf-dashboard-child-panel-dialog .mat-dialog-container {
+  background-color: #ffffff !important;
+}
+.light-theme #msf-dashboard-drill-down-container {
+  color: #4d4d4d;
+}
+.light-theme .msf-dashboard-color-picker-threshold-conatiner {
+  background-color: #e6e6e6;
+  border-color: #bdbdbd;
+}
+.light-theme .msf-dashboard-color-picker-container {
+  color: #4d4d4d;
+}
+.light-theme .msf-dashboard-color-picker-threshold-input .mat-button-wrapper {
+  color: #4d4d4d;
+}
+.light-theme .flat-button-disabled {
+  background-color: #c6c6c6 !important;
+}
+.light-theme .flat-control-variable-button-disabled {
+  background-color: #c6c6c6 !important;
+}
+.light-theme .flat-share-button-disabled {
+  background-color: #c6c6c6 !important;
+}
+.light-theme .msf-dashboard-edit-container {
+  color: #4d4d4d !important;
+  padding-top: 10px !important;
+}
+.light-theme .msf-confirm-container {
+  color: #4d4d4d !important;
+  font-size: 12px !important;
+}
+.light-theme .msf-dashboard-form-field .mat-form-field-underline, .light-theme .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-chart-op-container-row .msf-dashboard-field-function .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-chart-op-container-row .light-theme .msf-dashboard-field-function .mat-form-field-underline, .light-theme .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-chart-op-container-row .msf-dashboard-field-valuectrl .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-chart-op-container-row .light-theme .msf-dashboard-field-valuectrl .mat-form-field-underline, .light-theme .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-full-width .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .light-theme .msf-full-width .mat-form-field-underline, .light-theme .msf-dashboard-panel-sub-container-row .msf-full-width .mat-form-field-underline, .msf-dashboard-panel-sub-container-row .light-theme .msf-full-width .mat-form-field-underline, .light-theme .msf-dashboard-panel-sub-container-row .msf-width-90 .mat-form-field-underline, .msf-dashboard-panel-sub-container-row .light-theme .msf-width-90 .mat-form-field-underline, .light-theme .msf-dashboard-panel-sub-container-row .msf-width-80 .mat-form-field-underline, .msf-dashboard-panel-sub-container-row .light-theme .msf-width-80 .mat-form-field-underline, .light-theme .msf-dashboard-panel-container .msf-dashboard-panel-sub-container-column .msf-full-width .mat-form-field-underline, .msf-dashboard-panel-container .msf-dashboard-panel-sub-container-column .light-theme .msf-full-width .mat-form-field-underline {
+  background-color: #bdbdbd;
+}
+.light-theme #msf-dashboard-form-display-title {
+  color: #eb5c1b;
+}
+.light-theme #msf-dashboard-form-display-value {
+  color: #4d4d4d;
+}
+.light-theme .msf-dashboard-column-properties-form-field .mat-form-field-underline, .dark-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-button .light-theme .msf-dashboard-column-properties-form-field .mat-form-field-underline, .dark-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-button .light-theme .msf-dashboard-column-properties-form-field .mat-form-field-underline, .light-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-button .msf-dashboard-column-properties-form-field .mat-form-field-underline, .light-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-button .msf-dashboard-column-properties-form-field .mat-form-field-underline {
+  background-color: #bdbdbd;
+}
+.light-theme .mat-form-field .mat-select.mat-select-disabled .mat-select-arrow {
+  color: #c6c6c6;
+}
+.light-theme .mat-form-field-appearance-legacy.mat-form-field-disabled .mat-form-field-underline {
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.42) 0, rgba(255, 255, 255, 0.42) 50%, transparent 0);
+}
+.light-theme .mat-input-element:disabled {
+  color: #b2b2b7;
 }
 .light-theme .msf-menu-component-text {
   color: #4d4d4d;
@@ -1510,6 +1767,9 @@
 .light-theme .footer-hover {
   background-color: #eb5c1b;
   color: #ffffff;
+}
+.light-theme .two-factor-auth-container {
+  color: #4d4d4d;
 }
 .light-theme ::-webkit-scrollbar-thumb {
   background-color: #eb5c1b;
@@ -2052,28 +2312,8 @@ p {
   text-align: center;
 }
 
-.flat-button-disabled {
-  background-color: #343434 !important;
-}
-
-.flat-control-variable-button-disabled {
-  background-color: #545454 !important;
-}
-
-.flat-share-button-disabled {
-  background-color: #242424 !important;
-}
-
 .button-separator {
   padding: 0 5px;
-}
-
-.func-button .mat-button-wrapper {
-  color: white !important;
-}
-
-.func-button-disabled .mat-button-wrapper {
-  color: #343434 !important;
 }
 
 .login-button, .msf-medium-button, .msf-big-button {
@@ -3495,10 +3735,6 @@ mat-tab-group {
   margin-right: -8px;
 }
 
-.msf-dashboard-column-properties-form-field .mat-form-field-underline, .dark-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-button .msf-dashboard-column-properties-form-field .mat-form-field-underline, .dark-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-button .msf-dashboard-column-properties-form-field .mat-form-field-underline, .light-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-button .msf-dashboard-column-properties-form-field .mat-form-field-underline, .light-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-button .msf-dashboard-column-properties-form-field .mat-form-field-underline {
-  background-color: #595959;
-}
-
 #msf-dashboard-drill-down-container-column .mat-form-field-underline {
   background-color: #353535;
 }
@@ -3628,7 +3864,6 @@ mat-tab-group {
 .msf-dashboard-child-panel-dialog .mat-dialog-container {
   padding: 12px;
   overflow: hidden;
-  background-color: #1f1f1f !important;
 }
 
 .msf-dashboard-child-panel-container-chart {
@@ -3918,55 +4153,16 @@ mat-tab-group {
   margin-right: 5px;
   flex: 1 1 45%;
 }
-.msf-dashboard-info-display .msf-dashboard-info-container .msf-dashboard-info-table .msf-dashboard-info-title {
-  font-weight: bold;
-  background-color: #3b3b3b;
-  color: #01abec;
-  vertical-align: middle;
-  height: 45px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-width: 170px;
-  font-size: 16px;
-}
-.msf-dashboard-info-display .msf-dashboard-info-container .msf-dashboard-info-table .msf-dashboard-info-value {
-  background-color: #333333;
-  color: #fff;
-  vertical-align: middle;
-  height: 37px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-width: 170px;
-  font-size: 14px;
-}
-.msf-dashboard-info-display .msf-dashboard-info-container .msf-dashboard-info-table .msf-dashboard-info-separator-background {
-  background-color: #333333;
-}
 .msf-dashboard-info-display .msf-dashboard-info-container .msf-dashboard-info-table .msf-dashboard-info-separator-background .msf-dashboard-info-separator {
-  border-color: #3b3b3b;
   border-bottom: 0;
   border-style: solid;
   width: 90%;
   margin-top: 0;
   margin-bottom: 0;
 }
-.msf-dashboard-info-display .msf-dashboard-info-container .msf-dashboard-info-table .msf-dashboard-info-measure {
-  background-color: #333333;
-  color: #fff;
-  vertical-align: middle;
-  height: 37px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-width: 170px;
-  font-size: 14px;
-}
 
 .msf-dashboard-color-picker-container {
   text-align: center;
-  color: #fff;
 }
 
 .msf-dashboard-color-picker-grid-layout {
@@ -4025,10 +4221,8 @@ mat-tab-group {
   overflow-y: auto;
   height: 101px;
   padding-top: 5px;
-  background-color: #222222;
   border-style: solid;
   border-width: 1px;
-  border-color: #595959;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -4055,40 +4249,10 @@ mat-tab-group {
   width: 40px;
 }
 
-.msf-dashboard-child-panel-loading {
-  z-index: 99998;
-  width: 100%;
-  height: 100%;
-  background-color: #1f1f1f;
-  background-image: url(assets/images/dark-theme-loading_pulse.gif);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 40%;
-}
-
-.msf-dashboard-drill-down-loading {
-  z-index: 99998;
-  width: 100%;
-  height: 100%;
-  background-color: #1f1f1f;
-  background-image: url(assets/images/dark-theme-loading_pulse.gif);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 50%;
-}
-
 .msf-dashboard-panel-loading {
   position: absolute !important;
   padding-top: 0 !important;
   padding-bottom: 0 !important;
-  z-index: 99998;
-  width: 100%;
-  height: 100%;
-  background-color: #1f1f1f;
-  background-image: url(assets/images/dark-theme-loading_pulse.gif);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 250px;
 }
 
 #msf-dashboard-parent-title {
@@ -4099,7 +4263,6 @@ mat-tab-group {
   height: 87%;
   background-color: inherit;
   padding: inherit;
-  color: #fff;
 }
 
 .msf-dashboard-share-content-container {
@@ -4325,7 +4488,6 @@ mat-tab-group {
 }
 
 #msf-dashboard-form-display-title {
-  color: #01abec;
   font-weight: normal;
 }
 
@@ -5764,7 +5926,6 @@ span.msf-subCell {
 }
 
 .two-factor-auth-container {
-  color: #ffffff;
   width: 100%;
   text-align: justify;
 }
