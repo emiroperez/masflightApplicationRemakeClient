@@ -426,8 +426,17 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             background-color: $primary-color !important
         .timepicker__header
             background-color: $primary-color !important
+        .clock-face__clock-hand
+            background-color: $primary-color !important
+            &::after
+                background-color: $primary-color !important
+            &::before
+                border-color: $primary-color !important
         .clock-face__number
+            span
+                color: $font-color !important
             span.active
+                color: #ffffff !important
                 background-color: $primary-color !important
         .clock-face, .timepicker__actions
             background-color: $tertiary-background-color !important
@@ -1987,9 +1996,6 @@ input[role="combobox"]
 .msf-component-date-input-container
     .mat-form-field-infix
         line-height: 2.125
-
-.clock-face__number--outer span
-    color: white !important
 
 table
     width: 2000px

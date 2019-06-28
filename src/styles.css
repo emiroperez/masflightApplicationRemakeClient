@@ -631,7 +631,20 @@
 .dark-theme .timepicker__header {
   background-color: #01abec !important;
 }
+.dark-theme .clock-face__clock-hand {
+  background-color: #01abec !important;
+}
+.dark-theme .clock-face__clock-hand::after {
+  background-color: #01abec !important;
+}
+.dark-theme .clock-face__clock-hand::before {
+  border-color: #01abec !important;
+}
+.dark-theme .clock-face__number span {
+  color: #ffffff !important;
+}
 .dark-theme .clock-face__number span.active {
+  color: #ffffff !important;
   background-color: #01abec !important;
 }
 .dark-theme .clock-face, .dark-theme .timepicker__actions {
@@ -1513,7 +1526,20 @@
 .light-theme .timepicker__header {
   background-color: #eb5c1b !important;
 }
+.light-theme .clock-face__clock-hand {
+  background-color: #eb5c1b !important;
+}
+.light-theme .clock-face__clock-hand::after {
+  background-color: #eb5c1b !important;
+}
+.light-theme .clock-face__clock-hand::before {
+  border-color: #eb5c1b !important;
+}
+.light-theme .clock-face__number span {
+  color: #4d4d4d !important;
+}
 .light-theme .clock-face__number span.active {
+  color: #ffffff !important;
   background-color: #eb5c1b !important;
 }
 .light-theme .clock-face, .light-theme .timepicker__actions {
@@ -3302,10 +3328,6 @@ input[role=combobox] {
 
 .msf-component-date-input-container .mat-form-field-infix {
   line-height: 2.125;
-}
-
-.clock-face__number--outer span {
-  color: white !important;
 }
 
 table {
