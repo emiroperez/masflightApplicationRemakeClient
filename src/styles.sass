@@ -127,9 +127,9 @@
     background-size: $background-size
 
 // Color themes (see _variables.sass if you want to change the colors)
-$color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-disabled-color, $dark-secondary-disabled-color, $dark-tertiary-disabled-color, $dark-menu-disabled-font-color, $dark-background-color, $dark-secondary-background-color, $dark-tertiary-background-color, $dark-quaternary-background-color, $dark-body-background-color, $dark-primary-color, $dark-secondary-color, $dark-tab-label-color, $dark-tab-border-color, $dark-menu-header-color, $dark-secondary-menu-header-color, $dark-selected-menu-color, $dark-menu-border-color, $dark-badge-color, $dark-control-variable-icon-color, $dark-scrollbar-background-color, $dark-dashboard-panel-background-color, $dark-dashboard-panel-chart-background-color, $dark-dashboard-border-color, $dark-disabled-combo-box-color, $dark-disabled-underline), (light-theme, $light-font-color, $light-little-font-color, $light-disabled-color, $light-secondary-disabled-color, $light-tertiary-disabled-color, $light-menu-disabled-font-color, $light-background-color, $light-secondary-background-color, $light-tertiary-background-color, $light-quaternary-background-color, $light-body-background-color, $light-primary-color, $light-secondary-color, $light-tab-label-color, $light-tab-border-color, $light-menu-header-color, $light-secondary-menu-header-color, $light-selected-menu-color, $light-menu-border-color, $light-badge-color, $light-control-variable-icon-color, $light-scrollbar-background-color, $light-dashboard-panel-background-color, $light-dashboard-panel-chart-background-color, $light-dashboard-border-color, $light-disabled-combo-box-color, $light-disabled-underline))
+$color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-disabled-color, $dark-secondary-disabled-color, $dark-tertiary-disabled-color, $dark-menu-disabled-font-color, $dark-background-color, $dark-secondary-background-color, $dark-tertiary-background-color, $dark-quaternary-background-color, $dark-body-background-color, $dark-primary-color, $dark-secondary-color, $dark-tab-label-color, $dark-tab-border-color, $dark-menu-header-color, $dark-secondary-menu-header-color, $dark-selected-menu-color, $dark-menu-border-color, $dark-badge-color, $dark-control-variable-icon-color, $dark-scrollbar-background-color, $dark-dashboard-panel-background-color, $dark-dashboard-panel-chart-background-color, $dark-dashboard-border-color, $dark-schedule-map-background-color, $dark-schedule-map-info-border, $dark-disabled-combo-box-color, $dark-disabled-underline), (light-theme, $light-font-color, $light-little-font-color, $light-disabled-color, $light-secondary-disabled-color, $light-tertiary-disabled-color, $light-menu-disabled-font-color, $light-background-color, $light-secondary-background-color, $light-tertiary-background-color, $light-quaternary-background-color, $light-body-background-color, $light-primary-color, $light-secondary-color, $light-tab-label-color, $light-tab-border-color, $light-menu-header-color, $light-secondary-menu-header-color, $light-selected-menu-color, $light-menu-border-color, $light-badge-color, $light-control-variable-icon-color, $light-scrollbar-background-color, $light-dashboard-panel-background-color, $light-dashboard-panel-chart-background-color, $light-dashboard-border-color, $light-schedule-map-background-color, $light-schedule-map-info-border, $light-disabled-combo-box-color, $light-disabled-underline))
 
-@mixin theme($name, $font-color, $little-font-color, $disabled-color, $secondary-disabled-color, $tertiary-disabled-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $quaternary-background-color, $body-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $scrollbar-background-color, $dashboard-panel-background-color, $dashboard-panel-chart-background-color, $dashboard-border-color, $disabled-combo-box-color, $disabled-underline)
+@mixin theme($name, $font-color, $little-font-color, $disabled-color, $secondary-disabled-color, $tertiary-disabled-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $quaternary-background-color, $body-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $scrollbar-background-color, $dashboard-panel-background-color, $dashboard-panel-chart-background-color, $dashboard-border-color, $schedule-map-background-color, $schedule-map-info-border, $disabled-combo-box-color, $disabled-underline)
     .#{$name}
         width: 100%
         height: 100%
@@ -295,6 +295,16 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                     .msf-dashboard-info-measure
                         @include msf-dashboard-info-table($disabled-color, $font-color, 14px, 37px)
 
+        .msf-dashboard-map-routelist
+            background-color: $schedule-map-background-color
+            border-color: $schedule-map-info-border
+            .msf-dashboard-map-routelist-container
+                color: $font-color
+        .msf-dashboard-map-panelinfo
+            background-color: $schedule-map-background-color
+            border-color: $schedule-map-info-border
+            .msf-dashboard-map-panelinfo-container
+                color: $font-color
         .msf-dashboard-child-panel-dialog .mat-dialog-container
             background-color: $quaternary-background-color !important
         #msf-dashboard-drill-down-container
@@ -625,6 +635,34 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             color: #ffffff
         .two-factor-auth-container
             color: $font-color
+        .msf-schedule-panel-subs
+            background-color: $primary-color
+            color: #ffffff
+            padding: 12px
+            font-size: 12px
+            font-weight: 400
+        .msf-schedule-panel
+            color: $font-color
+            background-color: $background-color
+        .mat-expanded mat-expansion-panel-header
+            border-bottom: 2px solid $primary-color
+            padding: 20px !important
+        .panel-toolbar
+            background: $schedule-map-background-color
+            color: $primary-color
+            cursor: pointer
+        .panel-toolbar2
+            background: $schedule-map-background-color
+            color: $primary-color
+            cursor: pointer
+            height: 88px
+        .panelinfo
+            background-color: $quaternary-background-color
+            border-color: $schedule-map-info-border
+        #chartdivmap
+            background: $schedule-map-background-color
+        .msf-schedule-panel-info
+            color: $font-color
         ::-webkit-scrollbar-thumb
             background-color: $primary-color
             border-radius: 10px
@@ -632,8 +670,8 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
         ::-webkit-scrollbar-track
             background-color: $scrollbar-background-color
 
-@each $name, $font-color, $little-font-color, $disabled-color, $secondary-disabled-color, $tertiary-disabled-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $quaternary-background-color, $body-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $scrollbar-background-color, $dashboard-panel-background-color, $dashboard-panel-chart-background-color, $dashboard-border-color, $disabled-combo-box-color, $disabled-underline in $color-scheme
-    @include theme($name, $font-color, $little-font-color, $disabled-color, $secondary-disabled-color, $tertiary-disabled-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $quaternary-background-color, $body-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $scrollbar-background-color, $dashboard-panel-background-color, $dashboard-panel-chart-background-color, $dashboard-border-color, $disabled-combo-box-color, $disabled-underline)
+@each $name, $font-color, $little-font-color, $disabled-color, $secondary-disabled-color, $tertiary-disabled-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $quaternary-background-color, $body-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $scrollbar-background-color, $dashboard-panel-background-color, $dashboard-panel-chart-background-color, $dashboard-border-color, $schedule-map-background-color, $schedule-map-info-border, $disabled-combo-box-color, $disabled-underline in $color-scheme
+    @include theme($name, $font-color, $little-font-color, $disabled-color, $secondary-disabled-color, $tertiary-disabled-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $quaternary-background-color, $body-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $scrollbar-background-color, $dashboard-panel-background-color, $dashboard-panel-chart-background-color, $dashboard-border-color, $schedule-map-background-color, $schedule-map-info-border, $disabled-combo-box-color, $disabled-underline)
 
 body
     font-family: $msf-font-family
@@ -2186,7 +2224,6 @@ mat-tab-group
 .msf-dashboard-map-panelinfo
     width: 184px
     height: 95px
-    background-color: #1e1e1e
     border-bottom-right-radius: 10px
     border-top-right-radius: 10px
     border-bottom-left-radius: 10px
@@ -2197,24 +2234,19 @@ mat-tab-group
     bottom: 0px
     padding: 5px
     border-style: solid
-    border-color: #343332
     .msf-dashboard-map-panelinfo-container
-        color: white
         width: 170px
         padding-left: 5px
 
 .msf-dashboard-map-routelist
     width: 184px
-    background-color: #1e1e1e
     border-bottom-right-radius: 10px
     border-top-right-radius: 10px
     border-bottom-left-radius: 10px
     border-top-left-radius: 10px
     padding: 5px
     border-style: solid
-    border-color: #343332
     .msf-dashboard-map-routelist-container
-        color: white
         width: 170px
         font-size: 11px
         overflow-y: auto
@@ -2229,7 +2261,7 @@ mat-tab-group
                 margin-right: -5px
 
 #chartdiv2 > div > div.amcharts-chart-div > a
-    display: none!important
+    display: none !important
 
 .msf-chart-analysis-container .msf-component-radio
     margin-top: 20px
@@ -4090,15 +4122,15 @@ th.msf-show-table, td.msf-show-table
     border-top: .84375em solid transparent
     border-bottom: .84375em solid transparent
 
-.msf-dashboard-child-panel-table th 
+.dark-theme .msf-dashboard-child-panel-table th 
     border: none
     border-bottom-color: rgba(0,0,0,.12)
     background: #1F1F1F
 
-.msf-dashboard-child-panel-table .mat-row 
+.dark-theme .msf-dashboard-child-panel-table .mat-row 
     background: #171717
 
-.msf-dashboard-child-panel-table td.mat-cell 
+.dark-theme .msf-dashboard-child-panel-table td.mat-cell 
     color: white
     border-color: #1F1F1F
 
@@ -4380,3 +4412,48 @@ mat-form-field.msf-table-input
 
 .alias-button:hover
     cursor: pointer
+
+.msf-schedule-mat-expansion-panel-header
+    height: 48px
+    padding: 20px !important
+    font-size: 13px !important
+
+.msf-schedule-panel-table
+    width: 100%
+    padding: 10px 0px 24px 16px
+    font-size: 12px !important
+
+.msf-schedule-panel-table td:nth-child(2)
+    font-weight: 400
+    padding-left: 22px
+
+.msf-schedule-panel-header
+    width: 142px
+
+.example-icon 
+    padding: 0 14px
+
+.example-spacer
+    flex: 1 1 auto
+
+.panelinfo
+    width: 224px
+    height: 85px
+    border-bottom-left-radius: 10px
+    border-top-left-radius: 10px
+    border-bottom-right-radius: 10px
+    border-top-right-radius: 10px
+    position: absolute
+    bottom: 126px
+    right: 26px
+    padding: 5px
+    border-style: solid
+
+.msf-schedule-panel-info
+    width: 100%
+    padding-top: 8px
+    padding-left: 5px
+
+.msf-schedule-panel-info td:nth-child(2)
+    font-size: 15px
+    padding-left: 5px

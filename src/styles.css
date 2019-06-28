@@ -449,6 +449,20 @@
   min-width: 170px;
   font-size: 14px;
 }
+.dark-theme .msf-dashboard-map-routelist {
+  background-color: #1a1a1a;
+  border-color: #333333;
+}
+.dark-theme .msf-dashboard-map-routelist .msf-dashboard-map-routelist-container {
+  color: #ffffff;
+}
+.dark-theme .msf-dashboard-map-panelinfo {
+  background-color: #1a1a1a;
+  border-color: #333333;
+}
+.dark-theme .msf-dashboard-map-panelinfo .msf-dashboard-map-panelinfo-container {
+  color: #ffffff;
+}
 .dark-theme .msf-dashboard-child-panel-dialog .mat-dialog-container {
   background-color: #1f1f1f !important;
 }
@@ -908,6 +922,42 @@
 .dark-theme .two-factor-auth-container {
   color: #ffffff;
 }
+.dark-theme .msf-schedule-panel-subs {
+  background-color: #01abec;
+  color: #ffffff;
+  padding: 12px;
+  font-size: 12px;
+  font-weight: 400;
+}
+.dark-theme .msf-schedule-panel {
+  color: #ffffff;
+  background-color: #333333;
+}
+.dark-theme .mat-expanded mat-expansion-panel-header {
+  border-bottom: 2px solid #01abec;
+  padding: 20px !important;
+}
+.dark-theme .panel-toolbar {
+  background: #1a1a1a;
+  color: #01abec;
+  cursor: pointer;
+}
+.dark-theme .panel-toolbar2 {
+  background: #1a1a1a;
+  color: #01abec;
+  cursor: pointer;
+  height: 88px;
+}
+.dark-theme .panelinfo {
+  background-color: #1f1f1f;
+  border-color: #333333;
+}
+.dark-theme #chartdivmap {
+  background: #1a1a1a;
+}
+.dark-theme .msf-schedule-panel-info {
+  color: #ffffff;
+}
 .dark-theme ::-webkit-scrollbar-thumb {
   background-color: #01abec;
   border-radius: 10px;
@@ -1350,6 +1400,20 @@
   min-width: 170px;
   font-size: 14px;
 }
+.light-theme .msf-dashboard-map-routelist {
+  background-color: #f0f0f0;
+  border-color: #c0c0c0;
+}
+.light-theme .msf-dashboard-map-routelist .msf-dashboard-map-routelist-container {
+  color: #4d4d4d;
+}
+.light-theme .msf-dashboard-map-panelinfo {
+  background-color: #f0f0f0;
+  border-color: #c0c0c0;
+}
+.light-theme .msf-dashboard-map-panelinfo .msf-dashboard-map-panelinfo-container {
+  color: #4d4d4d;
+}
 .light-theme .msf-dashboard-child-panel-dialog .mat-dialog-container {
   background-color: #ffffff !important;
 }
@@ -1402,7 +1466,7 @@
   background-image: linear-gradient(to right, rgba(255, 255, 255, 0.42) 0, rgba(255, 255, 255, 0.42) 50%, transparent 0);
 }
 .light-theme .mat-input-element:disabled {
-  color: #b2b2b7;
+  color: #b2b2b2;
 }
 .light-theme .msf-menu-component-text {
   color: #4d4d4d;
@@ -1480,7 +1544,7 @@
   background-color: #d54505;
 }
 .light-theme .msf-menu-search-button:disabled {
-  background-color: #b2b2b7;
+  background-color: #b2b2b2;
 }
 .light-theme .ng-select .ng-spinner-loader {
   border-top: 2px solid rgba(235, 92, 27, 0.2) !important;
@@ -1807,6 +1871,42 @@
   color: #ffffff;
 }
 .light-theme .two-factor-auth-container {
+  color: #4d4d4d;
+}
+.light-theme .msf-schedule-panel-subs {
+  background-color: #eb5c1b;
+  color: #ffffff;
+  padding: 12px;
+  font-size: 12px;
+  font-weight: 400;
+}
+.light-theme .msf-schedule-panel {
+  color: #4d4d4d;
+  background-color: #ffffff;
+}
+.light-theme .mat-expanded mat-expansion-panel-header {
+  border-bottom: 2px solid #eb5c1b;
+  padding: 20px !important;
+}
+.light-theme .panel-toolbar {
+  background: #f0f0f0;
+  color: #eb5c1b;
+  cursor: pointer;
+}
+.light-theme .panel-toolbar2 {
+  background: #f0f0f0;
+  color: #eb5c1b;
+  cursor: pointer;
+  height: 88px;
+}
+.light-theme .panelinfo {
+  background-color: #ffffff;
+  border-color: #c0c0c0;
+}
+.light-theme #chartdivmap {
+  background: #f0f0f0;
+}
+.light-theme .msf-schedule-panel-info {
   color: #4d4d4d;
 }
 .light-theme ::-webkit-scrollbar-thumb {
@@ -3564,7 +3664,6 @@ mat-tab-group {
 .msf-dashboard-map-panelinfo {
   width: 184px;
   height: 95px;
-  background-color: #1e1e1e;
   border-bottom-right-radius: 10px;
   border-top-right-radius: 10px;
   border-bottom-left-radius: 10px;
@@ -3575,27 +3674,22 @@ mat-tab-group {
   bottom: 0px;
   padding: 5px;
   border-style: solid;
-  border-color: #343332;
 }
 .msf-dashboard-map-panelinfo .msf-dashboard-map-panelinfo-container {
-  color: white;
   width: 170px;
   padding-left: 5px;
 }
 
 .msf-dashboard-map-routelist {
   width: 184px;
-  background-color: #1e1e1e;
   border-bottom-right-radius: 10px;
   border-top-right-radius: 10px;
   border-bottom-left-radius: 10px;
   border-top-left-radius: 10px;
   padding: 5px;
   border-style: solid;
-  border-color: #343332;
 }
 .msf-dashboard-map-routelist .msf-dashboard-map-routelist-container {
-  color: white;
   width: 170px;
   font-size: 11px;
   overflow-y: auto;
@@ -5833,17 +5927,17 @@ th.msf-show-table, td.msf-show-table {
   border-bottom: 0.84375em solid transparent;
 }
 
-.msf-dashboard-child-panel-table th {
+.dark-theme .msf-dashboard-child-panel-table th {
   border: none;
   border-bottom-color: rgba(0, 0, 0, 0.12);
   background: #1F1F1F;
 }
 
-.msf-dashboard-child-panel-table .mat-row {
+.dark-theme .msf-dashboard-child-panel-table .mat-row {
   background: #171717;
 }
 
-.msf-dashboard-child-panel-table td.mat-cell {
+.dark-theme .msf-dashboard-child-panel-table td.mat-cell {
   color: white;
   border-color: #1F1F1F;
 }
@@ -6193,6 +6287,60 @@ mat-form-field.msf-table-input {
 
 .alias-button:hover {
   cursor: pointer;
+}
+
+.msf-schedule-mat-expansion-panel-header {
+  height: 48px;
+  padding: 20px !important;
+  font-size: 13px !important;
+}
+
+.msf-schedule-panel-table {
+  width: 100%;
+  padding: 10px 0px 24px 16px;
+  font-size: 12px !important;
+}
+
+.msf-schedule-panel-table td:nth-child(2) {
+  font-weight: 400;
+  padding-left: 22px;
+}
+
+.msf-schedule-panel-header {
+  width: 142px;
+}
+
+.example-icon {
+  padding: 0 14px;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.panelinfo {
+  width: 224px;
+  height: 85px;
+  border-bottom-left-radius: 10px;
+  border-top-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border-top-right-radius: 10px;
+  position: absolute;
+  bottom: 126px;
+  right: 26px;
+  padding: 5px;
+  border-style: solid;
+}
+
+.msf-schedule-panel-info {
+  width: 100%;
+  padding-top: 8px;
+  padding-left: 5px;
+}
+
+.msf-schedule-panel-info td:nth-child(2) {
+  font-size: 15px;
+  padding-left: 5px;
 }
 
 /*# sourceMappingURL=styles.css.map */

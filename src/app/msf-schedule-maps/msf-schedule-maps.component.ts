@@ -1,20 +1,15 @@
 import { Component, OnInit, NgZone, SimpleChanges, Input } from '@angular/core';
 import { Globals } from '../globals/Globals';
+import { Themes } from '../globals/Themes';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4maps from "@amcharts/amcharts4/maps";
 import am4geodata_worldLow from "@amcharts/amcharts4-geodata/worldLow";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
-import am4themes_dark from "@amcharts/amcharts4/themes/dark";
 
 am4core.useTheme(am4themes_animated);
-am4core.useTheme(am4themes_dark);
 
 // Home button SVG
 const homeSVG = "M16,8 L14,8 L14,16 L10,16 L10,10 L6,10 L6,16 L2,16 L2,8 L0,8 L8,0 L16,8 Z M16,8";
-
-// AmChart colors
-const black = am4core.color ("#000000");
-const darkGray = am4core.color ("#3b3b3b");
 
 @Component({
   selector: 'app-msf-schedule-maps',
@@ -96,7 +91,10 @@ export class MsfScheduleMapsComponent implements OnInit {
 
   makeScheduleChart()
   {
-    let chart, continentSeries, zoomControl, home;
+    let theme, chart, continentSeries, zoomControl, home;
+
+    theme = this.globals.theme;
+    am4core.useTheme (Themes.AmCharts[theme].mainTheme);
 
     this.zone.runOutsideAngular (() => {
       chart = am4core.create ("chartdivmap", am4maps.MapChart);
@@ -109,8 +107,8 @@ export class MsfScheduleMapsComponent implements OnInit {
       continentSeries = chart.series.push (new am4maps.MapPolygonSeries ());
       continentSeries.useGeodata = true;
       continentSeries.exclude = ["AQ"];
-      continentSeries.mapPolygons.template.fill = darkGray;
-      continentSeries.mapPolygons.template.stroke = black;
+      continentSeries.mapPolygons.template.fill = Themes.AmCharts[theme].mapPolygonColor;
+      continentSeries.mapPolygons.template.stroke = Themes.AmCharts[theme].mapPolygonStroke;
       continentSeries.mapPolygons.template.strokeOpacity = 0.25;
       continentSeries.mapPolygons.template.strokeWidth = 0.5;
 
