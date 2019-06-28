@@ -119,8 +119,8 @@
                   <app-msf-map-coordinates></app-msf-map-coordinates>
                 </div>
                 <button [disabled]="disabled()" [ngClass]="{
-                    'msf-menu-search-button' : !globals.hideParametersPanels,
-                    'msf-hide' : globals.hideParametersPanels}"
+                    'msf-menu-search-button' : (!globals.hideParametersPanels || globals.status),
+                    'msf-hide' : (globals.hideParametersPanels || !globals.status)}"
                     (click)="search()">Search</button>
                 <app-msf-schedule-panel *ngIf="globals.hideParametersPanels"></app-msf-schedule-panel>
             </div>
