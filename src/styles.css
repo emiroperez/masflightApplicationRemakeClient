@@ -5223,6 +5223,11 @@ table.results {
   padding: 15px;
 }
 
+.msf-no-results-more-info-drilldown {
+  margin: 210px !important;
+  padding: 30px !important;
+}
+
 .single-checkbox {
   padding: 0 !important;
   margin: 0 !important;
@@ -5516,6 +5521,11 @@ img.msf-calendar-image {
   background-repeat: no-repeat;
   background-position: right;
   height: 100%;
+}
+
+.msf-media-info-flex {
+  display: flex;
+  flex-direction: row;
 }
 
 .msf-media-title {

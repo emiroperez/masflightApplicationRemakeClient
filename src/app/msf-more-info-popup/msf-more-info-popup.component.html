@@ -1,4 +1,4 @@
-<div *ngIf="globals.subTotalRecord==1 && globals.popupMainElement && !globals.popupLoading2" style="display: flex; flex-direction: row;" [style.height.%]="100">
+<div *ngIf="globals.subTotalRecord==1 && globals.popupMainElement && !globals.popupLoading2" class="msf-media-info-flex" [style.height.%]="100">
   <div *ngIf="globals.popupMainElement" [style.width.px]="500" [style.padding-top.px]="45">
     <div [ngClass]="globals.currentDrillDown.title!='More Info Passenger'?'msf-more-info-popup-content':'msf-media-info-container msf-padding-passenger'">
       <div class="msf-media-title-container">
@@ -37,7 +37,7 @@
     </div>
   </div>
 </div>
-<div  [ngClass]="globals.subTotalRecord>1?'msf-show-table':'msf-hide'" #TABLE>
+<div [style.width.px]="data.loadingWidth" [ngClass]="globals.subTotalRecord>1?'msf-show-table':'msf-hide'" #TABLE>
     <div class="msf-moreinfo-control-variables-title ">
         <div class="msf-dashboard-control-variables-close-button">
           <mat-icon class="msf-dashboard-close-icon msf-drill-down-info-close-icon" aria-label="close" (click)="closeDialog()">close</mat-icon>
@@ -70,14 +70,14 @@
       </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="globals.subDisplayedColumnNames" ></tr>
-    <tr mat-row *matRowDef="let row; columns: globals.subDisplayedColumnNames;" style="height:30px;"></tr>
+    <tr mat-row *matRowDef="let row; columns: globals.subDisplayedColumnNames;" [style.height.px]="30"></tr>
   </table>
   </div>
   
-<div *ngIf="chart!=null&&globals.subTotalRecord>0 && globals.popupMainElement" class="msf-media-title msf-passenger-chart-title">Play Duration In Minutes</div>
+<div *ngIf="chart!=null&&globals.subTotalRecord>0 && globals.popupMainElement" [style.width.px]="data.loadingWidth" class="msf-media-title msf-passenger-chart-title">Play Duration In Minutes</div>
 <div [style.visibility]="chart!=null&&globals.subTotalRecord>0 && globals.popupMainElement? 'visible' : 'hidden'" id="msf-dashboard-chart-display" [ngClass]="chart!=null&&globals.subTotalRecord>0 && globals.popupMainElement? 'msf-chart' : ''"></div>
 <div *ngIf="globals.subTotalRecord==0 && !globals.popupMainElement && !globals.popupLoading2">
-    <div class="msf-no-results" style="margin: 210px;padding: 30px;">Results not available</div>
+    <div class="msf-no-results msf-no-results-more-info-drilldown">Results not available</div>
 </div>
 
 <div [ngClass]="globals.popupLoading2? 'tab-show':'tab-hide'" id='loading-panel-popup' [style.width.px]="data.loadingWidth" class='loading-panel-popup'>
