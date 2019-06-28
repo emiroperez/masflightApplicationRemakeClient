@@ -4215,6 +4215,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       label.verticalCenter = "middle";
       label.dx += 17.5;
       label.dy += 5.5;
+      label.fill = Themes.AmCharts[theme].mapCityColor;
       hoverState = label.states.create ("hover");
       hoverState.properties.fill = Themes.AmCharts[theme].mapCityLabelHoverColor;
       hoverState.properties.fillOpacity = 1;
