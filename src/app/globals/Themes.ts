@@ -14,6 +14,7 @@ const darkOrange = am4core.color ("#d54505");
 const darkGreen = am4core.color ("#00be11");
 const comet = am4core.color ("#585869");
 const darkBlue = am4core.color ("#30303d");
+const blueJeans = am4core.color ("#67b7dc");
 
 // Light theme
 
@@ -46,7 +47,8 @@ export class Themes {
             mapLineColor: cyan,
             planeColor: cyan,
             stroke: darkBlue,
-            fontColor: white
+            fontColor: white,
+            chartZoomScrollBar: blueJeans
         },
         "light-theme": {
             mainTheme: am4themes_light,
@@ -57,7 +59,8 @@ export class Themes {
             mapLineColor: orange,
             mapPlaneColor: orange,
             stroke: lightGray2,
-            fontColor: darkGray2
+            fontColor: darkGray2,
+            chartZoomScrollBar: orange
         }
     };
 }

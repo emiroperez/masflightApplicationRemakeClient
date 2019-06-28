@@ -45,7 +45,6 @@ am4core.useTheme(am4themes_animated);
 
 // AmChart colors
 const black = am4core.color ("#000000");
-const blueJeans = am4core.color ("#67b7dc");
 const comet = am4core.color ("#585869");
 
 // SVG used for maps
@@ -709,6 +708,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
         // Display heat legend
         heatLegend = chart.chartContainer.createChild (am4maps.HeatLegend);
+        heatLegend.valueAxis.renderer.labels.template.fill = Themes.AmCharts[theme].fontColor;
         heatLegend.series = polygonSeries;
         heatLegend.align = "right";
         heatLegend.valign = "bottom";
@@ -903,7 +903,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           if (chart.data.length > 1)
           {
             chart.scrollbarY = new am4core.Scrollbar ();
-            chart.scrollbarY.background.fill = blueJeans;
+            chart.scrollbarY.background.fill = Themes.AmCharts[theme].chartZoomScrollBar;
           }
         }
         else
@@ -929,7 +929,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           if (chart.data.length > 1)
           {
             chart.scrollbarX = new am4core.Scrollbar ();
-            chart.scrollbarX.background.fill = blueJeans;
+            chart.scrollbarX.background.fill = Themes.AmCharts[theme].chartZoomScrollBar;
           }
         }
 
