@@ -1604,7 +1604,7 @@
   font-size: 16px;
 }
 .light-theme .msf-dashboard-info-display .msf-dashboard-info-container .msf-dashboard-info-table .msf-dashboard-info-value {
-  background-color: #ffffff;
+  background-color: #f0f0f0;
   color: #4d4d4d;
   vertical-align: middle;
   height: 37px;
@@ -1615,13 +1615,13 @@
   font-size: 14px;
 }
 .light-theme .msf-dashboard-info-display .msf-dashboard-info-container .msf-dashboard-info-table .msf-dashboard-info-separator-background {
-  background-color: #ffffff;
+  background-color: #f0f0f0;
 }
 .light-theme .msf-dashboard-info-display .msf-dashboard-info-container .msf-dashboard-info-table .msf-dashboard-info-separator-background .msf-dashboard-info-separator {
-  border-color: #e6e6e6;
+  border-color: #d0d0d0;
 }
 .light-theme .msf-dashboard-info-display .msf-dashboard-info-container .msf-dashboard-info-table .msf-dashboard-info-measure {
-  background-color: #ffffff;
+  background-color: #f0f0f0;
   color: #4d4d4d;
   vertical-align: middle;
   height: 37px;
