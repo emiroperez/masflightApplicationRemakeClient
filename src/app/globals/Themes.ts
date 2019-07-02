@@ -49,7 +49,8 @@ export class Themes {
             ticks: darkBlue,
             stroke: darkBlue,
             fontColor: white,
-            chartZoomScrollBar: blueJeans
+            chartZoomScrollBar: blueJeans,
+            axisTooltipFontColor: white
         },
         "light-theme": {
             mainTheme: am4themes_light,
@@ -63,7 +64,8 @@ export class Themes {
             ticks: lightGray,
             stroke: lightGray2,
             fontColor: darkGray2,
-            chartZoomScrollBar: orange
+            chartZoomScrollBar: orange,
+            axisTooltipFontColor: black
         }
     };
 }

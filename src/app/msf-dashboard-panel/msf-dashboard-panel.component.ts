@@ -957,7 +957,9 @@ export class MsfDashboardPanelComponent implements OnInit {
         if (this.values.currentChartType.flags & ChartFlags.LINECHART)
         {
           // Set axis tooltip background color depending of the theme
+          valueAxis.tooltip.label.fill = Themes.AmCharts[theme].axisTooltipFontColor;
           valueAxis.tooltip.background.fill = Themes.AmCharts[theme].tooltipFill;
+          categoryAxis.tooltip.label.fill = Themes.AmCharts[theme].axisTooltipFontColor;
           categoryAxis.tooltip.background.fill = Themes.AmCharts[theme].tooltipFill;
         }
 
