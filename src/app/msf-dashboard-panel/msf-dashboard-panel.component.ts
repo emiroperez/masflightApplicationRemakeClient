@@ -350,7 +350,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     series.tooltip.background.cornerRadius = 20;
     series.tooltip.background.fillOpacity = 0.5;
     series.tooltip.label.padding (12, 12, 12, 12);
-    series.tooltip.background.fill = Themes.AmCharts[theme].tooltipFill;
     series.tensionX = 0.8;
 
     if (parseDate)
@@ -954,6 +953,13 @@ export class MsfDashboardPanelComponent implements OnInit {
         valueAxis.renderer.grid.template.strokeOpacity = 1;
         valueAxis.renderer.grid.template.stroke = Themes.AmCharts[theme].stroke;
         valueAxis.renderer.grid.template.strokeWidth = 1;
+
+        if (this.values.currentChartType.flags & ChartFlags.LINECHART)
+        {
+          // Set axis tooltip background color depending of the theme
+          valueAxis.tooltip.background.fill = Themes.AmCharts[theme].tooltipFill;
+          categoryAxis.tooltip.background.fill = Themes.AmCharts[theme].tooltipFill;
+        }
 
         if (this.values.currentChartType.flags & ChartFlags.XYCHART)
         {
