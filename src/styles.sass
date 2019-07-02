@@ -40,7 +40,7 @@
     padding-right: $padding-right
     padding-top: 5px
 
-@mixin msf-dashboard-column-properties ($height, $primary-color, $name)
+@mixin msf-dashboard-column-properties ($height, $primary-color, $font-color, $name)
     position: relative
     justify-content: center
     display: flex
@@ -64,6 +64,7 @@
         .msf-dashboard-column-properties-button
             padding-left: 10px
         .msf-dashboard-column-properties-height-label
+            color: $font-color
             width: 60%
         .msf-dashboard-column-properties-form-field
             @extend .msf-dashboard-column-properties-form-field
@@ -153,6 +154,10 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             background-image: url(assets/images/#{$name}-background2.png)
         .msf-menu-body
             background-color: $body-background-color
+        .msf-menu-row-left-icon
+            color: $background-color
+        .msf-menu-row-right-icon
+            color: $background-color
         .mat-tab-body-wrapper
             height: 100%
             background: $background-color
@@ -233,14 +238,21 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
         .msf-dashboard-button
             .msf-dashboard-button-close-icon:hover
                 @include msf-dashboard-icon(2px, $primary-color, pointer)
+            .msf-dashboard-button-icon
+                color: $font-color
             .msf-dashboard-button-icon:hover
                 @include msf-dashboard-icon(5px, $primary-color, pointer)
+        .msf-dashboard-column-properties-align
+            color: $font-color
         .msf-dashboard-panel-container
             background-color: $dashboard-panel-background-color
+            color: $font-color
             .msf-dashboard-panel-sub-container-column
                 .msf-full-width
                     @extend .msf-dashboard-form-field
         .msf-dashboard-panel-button
+            .msf-dashboard-button-close-icon
+                color: $font-color
             .msf-dashboard-button-close-icon:hover
                 @include msf-dashboard-icon(2px, $primary-color, pointer)
             .msf-dashboard-button-move-icon
@@ -254,9 +266,9 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
         .msf-dashboard-chartbox-column
             .msf-dashboard-chartbox-items
                 .msf-dashboard-panel-size-properties-closed
-                    @include msf-dashboard-column-properties(20px, $primary-color, $name)
+                    @include msf-dashboard-column-properties(20px, $primary-color, $font-color, $name)
                 .msf-dashboard-panel-size-properties-open
-                    @include msf-dashboard-column-properties(60px, $primary-color, $name)
+                    @include msf-dashboard-column-properties(60px, $primary-color, $font-color, $name)
         #msf-dashboard-form-button
             .mat-icon-button
                 .msf-dashboard-chart-icon:hover
@@ -1819,7 +1831,7 @@ button[aria-expanded="true"]
     line-height: 38px
 
 .msf-menu-row-right-icon
-    line-height: 42px
+    line-height: 38px
     margin-left: -4px
 
 .msf-menu-components-container
