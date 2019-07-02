@@ -483,6 +483,9 @@
 .dark-theme .msf-dashboard-color-picker-threshold-input .mat-button-wrapper {
   color: #ffffff;
 }
+.dark-theme #msf-dashboard-drill-down-container-column .mat-form-field-underline {
+  background-color: #353535;
+}
 .dark-theme .flat-button-disabled {
   background-color: #333333 !important;
 }
@@ -601,6 +604,10 @@
 }
 .dark-theme #msf-dashboard-form-button .mat-icon-button .mat-button-wrapper {
   color: #ffffff;
+}
+.dark-theme .msf-shared-dashboard-container {
+  color: #ffffff !important;
+  padding: 10px 0;
 }
 .dark-theme .msf-dashboard-info-dialog-container {
   color: #ffffff !important;
@@ -808,6 +815,9 @@
 }
 .dark-theme .mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
   color: #01abec;
+}
+.dark-theme .mat-mini-fab.mat-primary[disabled], .dark-theme .mat-mini-fab[disabled][disabled] {
+  background-color: #333333;
 }
 .dark-theme .mapbox-text {
   justify-content: center;
@@ -1051,6 +1061,14 @@
 }
 .dark-theme #chartdivmap {
   background: #1a1a1a;
+}
+.dark-theme .dialog-title {
+  flex: 1;
+  color: #ffffff !important;
+}
+.dark-theme .dialog-message {
+  font-size: 14px;
+  color: #ffffff !important;
 }
 .dark-theme .msf-schedule-panel-info {
   color: #ffffff;
@@ -1463,8 +1481,8 @@
   background-size: 250px;
 }
 .light-theme .msf-dashboard-info-display .msf-dashboard-info-container .msf-dashboard-info-table .msf-dashboard-info-title {
-  background-color: #e6e6e6;
-  color: #eb5c1b;
+  background-color: #eb5c1b;
+  color: #ffffff;
   vertical-align: middle;
   height: 45px;
   display: flex;
@@ -1474,7 +1492,7 @@
   font-size: 16px;
 }
 .light-theme .msf-dashboard-info-display .msf-dashboard-info-container .msf-dashboard-info-table .msf-dashboard-info-value {
-  background-color: #c6c6c6;
+  background-color: #ffffff;
   color: #4d4d4d;
   vertical-align: middle;
   height: 37px;
@@ -1485,13 +1503,13 @@
   font-size: 14px;
 }
 .light-theme .msf-dashboard-info-display .msf-dashboard-info-container .msf-dashboard-info-table .msf-dashboard-info-separator-background {
-  background-color: #c6c6c6;
+  background-color: #ffffff;
 }
 .light-theme .msf-dashboard-info-display .msf-dashboard-info-container .msf-dashboard-info-table .msf-dashboard-info-separator-background .msf-dashboard-info-separator {
   border-color: #e6e6e6;
 }
 .light-theme .msf-dashboard-info-display .msf-dashboard-info-container .msf-dashboard-info-table .msf-dashboard-info-measure {
-  background-color: #c6c6c6;
+  background-color: #ffffff;
   color: #4d4d4d;
   vertical-align: middle;
   height: 37px;
@@ -1530,6 +1548,9 @@
 }
 .light-theme .msf-dashboard-color-picker-threshold-input .mat-button-wrapper {
   color: #4d4d4d;
+}
+.light-theme #msf-dashboard-drill-down-container-column .mat-form-field-underline {
+  background-color: #bdbdbd;
 }
 .light-theme .flat-button-disabled {
   background-color: #c6c6c6 !important;
@@ -1649,6 +1670,10 @@
 }
 .light-theme #msf-dashboard-form-button .mat-icon-button .mat-button-wrapper {
   color: #4d4d4d;
+}
+.light-theme .msf-shared-dashboard-container {
+  color: #4d4d4d !important;
+  padding: 10px 0;
 }
 .light-theme .msf-dashboard-info-dialog-container {
   color: #4d4d4d !important;
@@ -1856,6 +1881,9 @@
 }
 .light-theme .mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
   color: #eb5c1b;
+}
+.light-theme .mat-mini-fab.mat-primary[disabled], .light-theme .mat-mini-fab[disabled][disabled] {
+  background-color: #c6c6c6;
 }
 .light-theme .mapbox-text {
   justify-content: center;
@@ -2099,6 +2127,14 @@
 }
 .light-theme #chartdivmap {
   background: #f0f0f0;
+}
+.light-theme .dialog-title {
+  flex: 1;
+  color: #4d4d4d !important;
+}
+.light-theme .dialog-message {
+  font-size: 14px;
+  color: #4d4d4d !important;
 }
 .light-theme .msf-schedule-panel-info {
   color: #4d4d4d;
@@ -4054,10 +4090,6 @@ mat-tab-group {
 }
 .msf-dashboard-panel-button .msf-dashboard-button-move-icon:hover {
   margin-right: -8px;
-}
-
-#msf-dashboard-drill-down-container-column .mat-form-field-underline {
-  background-color: #353535;
 }
 
 .msf-dashboard-chart-icon {

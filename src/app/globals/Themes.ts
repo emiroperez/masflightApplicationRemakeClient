@@ -12,7 +12,6 @@ const cyan = am4core.color ("#00a3e1");
 const orange = am4core.color ("#eb5c1b");
 const darkOrange = am4core.color ("#d54505");
 const darkGreen = am4core.color ("#00be11");
-const comet = am4core.color ("#585869");
 const darkBlue = am4core.color ("#30303d");
 const blueJeans = am4core.color ("#67b7dc");
 
@@ -45,7 +44,9 @@ export class Themes {
             mapCityColor: white,
             mapCityLabelHoverColor: darkGreen,
             mapLineColor: cyan,
-            planeColor: cyan,
+            mapPlaneColor: cyan,
+            tooltipFill: black,
+            ticks: darkBlue,
             stroke: darkBlue,
             fontColor: white,
             chartZoomScrollBar: blueJeans
@@ -58,6 +59,8 @@ export class Themes {
             mapCityColor: darkGray2,
             mapLineColor: orange,
             mapPlaneColor: orange,
+            tooltipFill: white,
+            ticks: lightGray,
             stroke: lightGray2,
             fontColor: darkGray2,
             chartZoomScrollBar: orange

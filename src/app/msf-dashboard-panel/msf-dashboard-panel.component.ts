@@ -43,7 +43,7 @@ import { MsfMapComponent } from '../msf-map/msf-map.component';
 
 am4core.useTheme(am4themes_animated);
 
-// AmChart colors
+// AmCharts colors
 const black = am4core.color ("#000000");
 const comet = am4core.color ("#585869");
 
@@ -350,6 +350,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     series.tooltip.background.cornerRadius = 20;
     series.tooltip.background.fillOpacity = 0.5;
     series.tooltip.label.padding (12, 12, 12, 12);
+    series.tooltip.background.fill = Themes.AmCharts[theme].tooltipFill;
     series.tensionX = 0.8;
 
     if (parseDate)
@@ -503,7 +504,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     // Set ticks color
     series.labels.template.fill = Themes.AmCharts[theme].fontColor;
     series.ticks.template.strokeOpacity = 1;
-    series.ticks.template.stroke = Themes.AmCharts[theme].stroke;
+    series.ticks.template.stroke = Themes.AmCharts[theme].ticks;
     series.ticks.template.strokeWidth = 1;
 
     // Set the color for the chart to display
@@ -564,7 +565,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     series.sliceLinks.template.fillOpacity = 0;
     series.labels.template.fill = Themes.AmCharts[theme].fontColor;
     series.ticks.template.strokeOpacity = 1;
-    series.ticks.template.stroke = Themes.AmCharts[theme].stroke;
+    series.ticks.template.stroke = Themes.AmCharts[theme].ticks;
     series.ticks.template.strokeWidth = 1;
     series.alignLabels = true;
 
@@ -4192,7 +4193,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       imageSeriesTemplate.width = 8;
       imageSeriesTemplate.height = 8;
       imageSeriesTemplate.scale = 1;
-      imageSeriesTemplate.fill = black;
+      imageSeriesTemplate.fill = Themes.AmCharts[theme].tooltipFill;
       imageSeriesTemplate.background.fillOpacity = 0;
       imageSeriesTemplate.background.fill = Themes.AmCharts[theme].mapCityColor;
       imageSeriesTemplate.setStateOnChildren = true;

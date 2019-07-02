@@ -7,7 +7,6 @@ import * as am4maps from "@amcharts/amcharts4/maps";
 import { MediaMatcher } from '@angular/cdk/layout';
 
 // AmChart colors
-const black = am4core.color ("#000000");
 const comet = am4core.color ("#585869");
 
 // SVG used for maps
@@ -217,7 +216,7 @@ export class MsfSchedulePanelComponent implements OnInit {
       imageSeriesTemplate.width = 8;
       imageSeriesTemplate.height = 8;
       imageSeriesTemplate.scale = 1;
-      imageSeriesTemplate.fill = black;
+      imageSeriesTemplate.fill = Themes.AmCharts[theme].tooltipFill;
       imageSeriesTemplate.background.fillOpacity = 0;
       imageSeriesTemplate.background.fill = Themes.AmCharts[theme].mapCityColor;
       imageSeriesTemplate.setStateOnChildren = true;
