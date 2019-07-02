@@ -1112,7 +1112,7 @@
   height: 88px;
 }
 .dark-theme .panelinfo {
-  background-color: #1f1f1f;
+  background-color: #1a1a1a;
   border-color: #333333;
 }
 .dark-theme #chartdivmap {
@@ -1632,14 +1632,14 @@
   font-size: 14px;
 }
 .light-theme .msf-dashboard-map-routelist {
-  background-color: #ffffff;
+  background-color: #f0f0f0;
   border-color: #c0c0c0;
 }
 .light-theme .msf-dashboard-map-routelist .msf-dashboard-map-routelist-container {
   color: #4d4d4d;
 }
 .light-theme .msf-dashboard-map-panelinfo {
-  background-color: #ffffff;
+  background-color: #f0f0f0;
   border-color: #c0c0c0;
 }
 .light-theme .msf-dashboard-map-panelinfo .msf-dashboard-map-panelinfo-container {
@@ -2223,18 +2223,18 @@
   padding: 20px !important;
 }
 .light-theme .panel-toolbar {
-  background: #ffffff;
+  background: #f0f0f0;
   color: #eb5c1b;
   cursor: pointer;
 }
 .light-theme .panel-toolbar2 {
-  background: #ffffff;
+  background: #f0f0f0;
   color: #eb5c1b;
   cursor: pointer;
   height: 88px;
 }
 .light-theme .panelinfo {
-  background-color: #ffffff;
+  background-color: #f0f0f0;
   border-color: #c0c0c0;
 }
 .light-theme #chartdivmap {
