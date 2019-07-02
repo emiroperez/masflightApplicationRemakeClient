@@ -2,7 +2,6 @@ import { Component, Inject, NgZone, ViewChild } from '@angular/core';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
-import am4themes_dark from "@amcharts/amcharts4/themes/dark";
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import { Globals } from '../globals/Globals';
