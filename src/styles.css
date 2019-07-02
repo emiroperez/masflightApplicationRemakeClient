@@ -374,6 +374,10 @@
   color: #01abec;
   cursor: pointer;
 }
+.dark-theme #msf-dashboard-panel-picture-container .msf-dashboard-panel-picture-label-container {
+  background-color: #01abec;
+  color: #ffffff;
+}
 .dark-theme .func-button .mat-button-wrapper {
   color: #ffffff !important;
 }
@@ -507,6 +511,99 @@
 }
 .dark-theme .msf-dashboard-column-properties-form-field .mat-form-field-underline, .light-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-button .dark-theme .msf-dashboard-column-properties-form-field .mat-form-field-underline, .light-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-button .dark-theme .msf-dashboard-column-properties-form-field .mat-form-field-underline, .dark-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-button .msf-dashboard-column-properties-form-field .mat-form-field-underline, .dark-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-button .msf-dashboard-column-properties-form-field .mat-form-field-underline {
   background-color: #595959;
+}
+.dark-theme #msf-dashboard-panel-form-container-column {
+  height: 40%;
+  align-items: center;
+  margin-bottom: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #595959;
+  background-color: #333333;
+  padding: 10px;
+  width: inherit;
+}
+.dark-theme #msf-dashboard-panel-form-container-column-empty {
+  height: 40%;
+  align-items: center;
+  margin-bottom: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #595959;
+  background-color: #333333;
+  padding: 10px;
+  width: inherit;
+}
+.dark-theme #msf-share-dashboard-container {
+  height: 40%;
+  align-items: center;
+  margin-bottom: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #595959;
+  background-color: #333333;
+  padding: 10px;
+  width: inherit;
+  flex-direction: column;
+  align-items: baseline;
+  height: 200px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.dark-theme #msf-add-shared-dashboard-content {
+  height: 40%;
+  align-items: center;
+  margin-bottom: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #595959;
+  background-color: #242424;
+  padding: 10px;
+  width: inherit;
+  flex-direction: column;
+  align-items: baseline;
+  height: 200px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.dark-theme #msf-dashboard-panel-table-container-column {
+  height: initial;
+  align-items: center;
+  margin-bottom: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #595959;
+  background-color: #333333;
+  padding: 10px;
+  width: inherit;
+}
+.dark-theme #msf-dashboard-panel-table-container-column-empty {
+  height: initial;
+  align-items: center;
+  margin-bottom: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #595959;
+  background-color: #333333;
+  padding: 10px;
+  width: inherit;
+}
+.dark-theme #msf-add-shared-dashboard-content-empty {
+  height: 40%;
+  align-items: center;
+  margin-bottom: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #595959;
+  background-color: #242424;
+  padding: 10px;
+  width: inherit;
+}
+.dark-theme #msf-dashboard-form-button .mat-icon-button .mat-button-wrapper {
+  color: #ffffff;
+}
+.dark-theme .msf-dashboard-info-dialog-container {
+  color: #ffffff !important;
 }
 .dark-theme .mat-form-field .mat-select.mat-select-disabled .mat-select-arrow {
   color: rgba(0, 0, 0, 0.38);
@@ -1064,7 +1161,7 @@
 }
 .light-theme .msf-dashboard-container {
   color: #4d4d4d;
-  background-color: #ffffff;
+  background-color: #efefef;
 }
 .light-theme .msf-dashboard-container .msf-dashboard-addmenu .msf-dashboard-addmenu-item:hover {
   background-color: #eb5c1b;
@@ -1074,7 +1171,7 @@
   cursor: pointer;
 }
 .light-theme .msf-dashboard-container .msf-dashboard-addmenu .msf-dashboard-addmenu-item {
-  background-color: #ffffff;
+  background-color: #efefef;
   color: #4d4d4d;
   display: table-row;
   vertical-align: middle;
@@ -1325,6 +1422,10 @@
   color: #eb5c1b;
   cursor: pointer;
 }
+.light-theme #msf-dashboard-panel-picture-container .msf-dashboard-panel-picture-label-container {
+  background-color: #eb5c1b;
+  color: #ffffff;
+}
 .light-theme .func-button .mat-button-wrapper {
   color: #4d4d4d !important;
 }
@@ -1458,6 +1559,99 @@
 }
 .light-theme .msf-dashboard-column-properties-form-field .mat-form-field-underline, .dark-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-button .light-theme .msf-dashboard-column-properties-form-field .mat-form-field-underline, .dark-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-button .light-theme .msf-dashboard-column-properties-form-field .mat-form-field-underline, .light-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-button .msf-dashboard-column-properties-form-field .mat-form-field-underline, .light-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-button .msf-dashboard-column-properties-form-field .mat-form-field-underline {
   background-color: #bdbdbd;
+}
+.light-theme #msf-dashboard-panel-form-container-column {
+  height: 40%;
+  align-items: center;
+  margin-bottom: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #bdbdbd;
+  background-color: #ffffff;
+  padding: 10px;
+  width: inherit;
+}
+.light-theme #msf-dashboard-panel-form-container-column-empty {
+  height: 40%;
+  align-items: center;
+  margin-bottom: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #bdbdbd;
+  background-color: #ffffff;
+  padding: 10px;
+  width: inherit;
+}
+.light-theme #msf-share-dashboard-container {
+  height: 40%;
+  align-items: center;
+  margin-bottom: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #bdbdbd;
+  background-color: #ffffff;
+  padding: 10px;
+  width: inherit;
+  flex-direction: column;
+  align-items: baseline;
+  height: 200px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.light-theme #msf-add-shared-dashboard-content {
+  height: 40%;
+  align-items: center;
+  margin-bottom: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #bdbdbd;
+  background-color: #cdcdcd;
+  padding: 10px;
+  width: inherit;
+  flex-direction: column;
+  align-items: baseline;
+  height: 200px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.light-theme #msf-dashboard-panel-table-container-column {
+  height: initial;
+  align-items: center;
+  margin-bottom: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #bdbdbd;
+  background-color: #ffffff;
+  padding: 10px;
+  width: inherit;
+}
+.light-theme #msf-dashboard-panel-table-container-column-empty {
+  height: initial;
+  align-items: center;
+  margin-bottom: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #bdbdbd;
+  background-color: #ffffff;
+  padding: 10px;
+  width: inherit;
+}
+.light-theme #msf-add-shared-dashboard-content-empty {
+  height: 40%;
+  align-items: center;
+  margin-bottom: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #bdbdbd;
+  background-color: #cdcdcd;
+  padding: 10px;
+  width: inherit;
+}
+.light-theme #msf-dashboard-form-button .mat-icon-button .mat-button-wrapper {
+  color: #4d4d4d;
+}
+.light-theme .msf-dashboard-info-dialog-container {
+  color: #4d4d4d !important;
 }
 .light-theme .mat-form-field .mat-select.mat-select-disabled .mat-select-arrow {
   color: #c6c6c6;
@@ -4424,64 +4618,12 @@ mat-tab-group {
   font-size: 22px;
 }
 
-#msf-share-dashboard-container {
-  height: 40%;
-  align-items: center;
-  margin-bottom: 10px;
-  border-style: solid;
-  border-width: 1px;
-  border-color: #595959;
-  background-color: #333333;
-  padding: 10px;
-  width: inherit;
-  flex-direction: column;
-  align-items: baseline;
-  height: 200px;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-#msf-add-shared-dashboard-content {
-  height: 40%;
-  align-items: center;
-  margin-bottom: 10px;
-  border-style: solid;
-  border-width: 1px;
-  border-color: #595959;
-  background-color: #242424;
-  padding: 10px;
-  width: inherit;
-  flex-direction: column;
-  align-items: baseline;
-  height: 200px;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
 #msf-dashboard-panel-form-container-column {
   flex-direction: column;
-  height: 40%;
-  align-items: center;
-  margin-bottom: 10px;
-  border-style: solid;
-  border-width: 1px;
-  border-color: #595959;
-  background-color: #333333;
-  padding: 10px;
-  width: inherit;
 }
 
 #msf-dashboard-panel-form-container-column-empty {
   justify-content: center;
-  height: 40%;
-  align-items: center;
-  margin-bottom: 10px;
-  border-style: solid;
-  border-width: 1px;
-  border-color: #595959;
-  background-color: #333333;
-  padding: 10px;
-  width: inherit;
 }
 #msf-dashboard-panel-form-container-column-empty .msf-no-results {
   color: white;
@@ -4498,28 +4640,10 @@ mat-tab-group {
   flex-direction: column;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  height: initial;
-  align-items: center;
-  margin-bottom: 10px;
-  border-style: solid;
-  border-width: 1px;
-  border-color: #595959;
-  background-color: #333333;
-  padding: 10px;
-  width: inherit;
 }
 
 #msf-dashboard-panel-table-container-column-empty {
   justify-content: center;
-  height: initial;
-  align-items: center;
-  margin-bottom: 10px;
-  border-style: solid;
-  border-width: 1px;
-  border-color: #595959;
-  background-color: #333333;
-  padding: 10px;
-  width: inherit;
 }
 #msf-dashboard-panel-table-container-column-empty .msf-no-results {
   color: white;
@@ -4534,15 +4658,6 @@ mat-tab-group {
 
 #msf-add-shared-dashboard-content-empty {
   justify-content: center;
-  height: 40%;
-  align-items: center;
-  margin-bottom: 10px;
-  border-style: solid;
-  border-width: 1px;
-  border-color: #595959;
-  background-color: #242424;
-  padding: 10px;
-  width: inherit;
 }
 #msf-add-shared-dashboard-content-empty .msf-no-results {
   color: white;
@@ -4633,7 +4748,6 @@ mat-tab-group {
   height: 60px;
   display: flex;
   align-items: center;
-  background-color: #01abec;
 }
 #msf-dashboard-panel-picture-container .msf-dashboard-panel-picture-label-container .msf-dashboard-panel-picture-label {
   font-size: 15px;
