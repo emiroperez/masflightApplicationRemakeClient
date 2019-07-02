@@ -1,8 +1,10 @@
 <div #scrollContainer (click)="disableContextMenu()" (contextmenu)="disableContextMenu()" (scroll)="disableContextMenu()" class="msf-dashboard-container" [style.height]="screenHeight">
   <div class="msf-dashboard-title" *ngIf="currentDashboardMenu">
-    {{currentDashboardMenu.title}}
-    <span *ngIf="globals.readOnlyDashboard">
+    <span class="msf-dashboard-title-label">
+      {{currentDashboardMenu.title}}
+      <span *ngIf="globals.readOnlyDashboard">
        (Read Only)
+      </span>
     </span>
   </div>
   <ng-container *ngIf="dashboardColumns.length">
