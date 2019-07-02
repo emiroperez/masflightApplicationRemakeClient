@@ -1,7 +1,7 @@
 .cdk-drag-preview
 {
     margin-top: 5px;
-    color: #fff;
+    color: inherit !important;
     position: relative;
     text-align: center;
     display: flex;

@@ -3,8 +3,10 @@
     display: inherit;
     margin: inherit;
     padding: inherit;
-    color: #fff;
-    background-color: #333333;
+    width: inherit;
+    font-size: inherit;
+    color: inherit !important;
+    background-color: inherit !important;
     opacity: 0.5;
     position: relative;
     text-align: center;
