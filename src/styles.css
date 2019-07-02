@@ -1632,14 +1632,14 @@
   font-size: 14px;
 }
 .light-theme .msf-dashboard-map-routelist {
-  background-color: #f0f0f0;
+  background-color: #ffffff;
   border-color: #c0c0c0;
 }
 .light-theme .msf-dashboard-map-routelist .msf-dashboard-map-routelist-container {
   color: #4d4d4d;
 }
 .light-theme .msf-dashboard-map-panelinfo {
-  background-color: #f0f0f0;
+  background-color: #ffffff;
   border-color: #c0c0c0;
 }
 .light-theme .msf-dashboard-map-panelinfo .msf-dashboard-map-panelinfo-container {
@@ -2223,12 +2223,12 @@
   padding: 20px !important;
 }
 .light-theme .panel-toolbar {
-  background: #f0f0f0;
+  background: #ffffff;
   color: #eb5c1b;
   cursor: pointer;
 }
 .light-theme .panel-toolbar2 {
-  background: #f0f0f0;
+  background: #ffffff;
   color: #eb5c1b;
   cursor: pointer;
   height: 88px;
@@ -2238,7 +2238,7 @@
   border-color: #c0c0c0;
 }
 .light-theme #chartdivmap {
-  background: #f0f0f0;
+  background: #ffffff;
 }
 .light-theme .dialog-title {
   flex: 1;
