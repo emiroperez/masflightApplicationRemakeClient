@@ -95,6 +95,18 @@
 .dark-theme .msf-header-icons .mat-button[aria-expanded=true], .dark-theme .msf-header-icons .mat-icon-button[aria-expanded=true] {
   background-color: #1e1e1e;
 }
+.dark-theme .msf-dashboard-panel-context-menu #msf-dashboard-panel-context-menu-container {
+  background-color: #3d3d3d;
+}
+.dark-theme .msf-dashboard-panel-context-menu #msf-dashboard-panel-context-menu-container .msf-dashboard-panel-context-menu-item {
+  border-bottom: 1px solid #444343 !important;
+}
+.dark-theme .msf-dashboard-panel-context-menu #msf-dashboard-panel-context-menu-container .msf-dashboard-panel-context-menu-item:hover {
+  background-color: #1e1e1e;
+}
+.dark-theme .msf-dashboard-panel-context-menu #msf-dashboard-panel-context-menu-container .msf-dashboard-panel-context-menu-top-bound {
+  border-bottom: 1px solid #444343 !important;
+}
 .dark-theme .ng-dropdown-panel .ng-dropdown-panel-items {
   background-color: #3d3d3d;
 }
@@ -375,6 +387,11 @@
 }
 .dark-theme #msf-dashboard-panel-picture-container .msf-dashboard-panel-picture-label-container {
   background-color: #01abec;
+  color: #ffffff;
+}
+.dark-theme .msf-dashboard-child-panel-container-chart {
+  padding: 10px;
+  background-color: #1f1f1f;
   color: #ffffff;
 }
 .dark-theme .func-button .mat-button-wrapper {
@@ -1160,6 +1177,18 @@
 .light-theme .msf-header-icons .mat-button[aria-expanded=true], .light-theme .msf-header-icons .mat-icon-button[aria-expanded=true] {
   background-color: #d53502;
 }
+.light-theme .msf-dashboard-panel-context-menu #msf-dashboard-panel-context-menu-container {
+  background-color: #eb5c1b;
+}
+.light-theme .msf-dashboard-panel-context-menu #msf-dashboard-panel-context-menu-container .msf-dashboard-panel-context-menu-item {
+  border-bottom: 1px solid #fb6c2b !important;
+}
+.light-theme .msf-dashboard-panel-context-menu #msf-dashboard-panel-context-menu-container .msf-dashboard-panel-context-menu-item:hover {
+  background-color: #d53502;
+}
+.light-theme .msf-dashboard-panel-context-menu #msf-dashboard-panel-context-menu-container .msf-dashboard-panel-context-menu-top-bound {
+  border-bottom: 1px solid #fb6c2b !important;
+}
 .light-theme .ng-dropdown-panel .ng-dropdown-panel-items {
   background-color: #e6e6e6;
 }
@@ -1441,6 +1470,11 @@
 .light-theme #msf-dashboard-panel-picture-container .msf-dashboard-panel-picture-label-container {
   background-color: #eb5c1b;
   color: #ffffff;
+}
+.light-theme .msf-dashboard-child-panel-container-chart {
+  padding: 10px;
+  background-color: #ffffff;
+  color: #4d4d4d;
 }
 .light-theme .func-button .mat-button-wrapper {
   color: #4d4d4d !important;
@@ -4219,8 +4253,6 @@ mat-tab-group {
 
 .msf-dashboard-child-panel-container-chart {
   padding: 10px;
-  background-color: #1f1f1f;
-  color: #ffffff;
   overflow-y: visible;
   -webkit-overflow-scrolling: touch;
 }
@@ -4434,20 +4466,12 @@ mat-tab-group {
   z-index: 1;
 }
 .msf-dashboard-panel-context-menu #msf-dashboard-panel-context-menu-container {
-  background-color: #333333;
   border-radius: 4px;
   font-size: 12px;
   box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
 }
-.msf-dashboard-panel-context-menu #msf-dashboard-panel-context-menu-container .msf-dashboard-panel-context-menu-item {
-  border-bottom: 1px solid #444343 !important;
-}
-.msf-dashboard-panel-context-menu #msf-dashboard-panel-context-menu-container .msf-dashboard-panel-context-menu-item:hover {
-  background-color: #1e1e1e;
-}
 .msf-dashboard-panel-context-menu #msf-dashboard-panel-context-menu-container .msf-dashboard-panel-context-menu-top-bound {
   height: 7px;
-  border-bottom: 1px solid #444343 !important;
 }
 .msf-dashboard-panel-context-menu #msf-dashboard-panel-context-menu-container .msf-dashboard-panel-context-menu-bottom-bound {
   height: 7px;
@@ -4607,7 +4631,7 @@ mat-tab-group {
 }
 
 #msf-dashboard-parent-title {
-  height: 10%;
+  height: 25px;
 }
 
 #msf-dashboard-drill-down-container {
