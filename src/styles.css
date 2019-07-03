@@ -5978,11 +5978,6 @@ table.results {
   padding: 0 !important;
 }
 
-.mat-badge-content {
-  background-color: white !important;
-  color: #01abec !important;
-}
-
 .checkbox-component {
   margin: 10px 0;
 }
@@ -6962,13 +6957,16 @@ mat-form-field.msf-table-input {
   width: 10%;
   text-align: end;
 }
+.category-argument-config-button .mat-badge-content {
+  background-color: #ffffff !important;
+}
 .category-argument-config-button .category-argument-config-button-background {
   text-align: right;
   margin-left: 10px;
   margin-right: 12px;
 }
 .category-argument-config-button .category-argument-config-button-background .config-button-icon {
-  color: white;
+  color: #ffffff;
   line-height: 10px;
 }
 
