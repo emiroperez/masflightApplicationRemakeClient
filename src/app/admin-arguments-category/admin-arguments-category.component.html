@@ -1,9 +1,9 @@
 <div (click)="hideIconPicker()" style="overflow-y: auto;-webkit-overflow-scrolling: touch; overflow-x: hidden" [style.height.px]="getInnerHeight()">
-<div class="msf-register-header" style="color: white">
+<div class="msf-register-header">
     <button mat-icon-button routerLink="/application">
     <mat-icon>arrow_back</mat-icon>
   </button>
-    <img class="msf-medium-logo" src="../../assets/images/logo.png" />
+    <img class="msf-medium-logo" src="../../assets/images/{{globals.theme}}-logo.png" />
     <div class="msf-register-header-content msf-arguments-category-header">
         <div class="msf-register-header-title">
             <div class="msf-register-header-title-content msf-arguments-category-header-title-content">
@@ -12,13 +12,13 @@
             </div>
         </div>
         <div class="msf-register-header-image-content">
-            <img class="medium-user-image" src="../../assets/images/icon-user-white.png" />
+            <img class="medium-user-image" src="../../assets/images/{{globals.theme}}-icon-user.png" />
         </div>
     </div>
 </div>
 
 
-<mat-card id="category-card" class="card-principal msf-center-container" style="color: white; height: calc(100% - 134px)">
+<mat-card id="category-card" class="card-container msf-center-container" style="color: white; height: calc(100% - 134px)">
     <mat-card-content style="padding-right: 50px; height: 100%">
         <div style="display: flex; flex-direction: row; height: calc(100% - 30px);">
             <div style="display: flex; flex-direction: column; width: 30%; padding-right: 30px">
