@@ -31,7 +31,7 @@ export class ResetPasswordComponent implements OnInit {
 
 
   constructor(private authService: AuthService, private notification: NotificationComponent,
-    private registerServices:UserService, private globals: Globals,
+    private registerServices:UserService, public globals: Globals,
     private activatedRoute: ActivatedRoute, public dialog: MatDialog,
     private router: Router) {
     this.user = new User(null);

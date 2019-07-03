@@ -68,7 +68,7 @@ export class RegisterComponent implements OnInit {
     private registerServices:RegisterService,
     private appServices: ApplicationService,
     public dialog: MatDialog,
-    private globals: Globals,private router: Router,
+    public globals: Globals,private router: Router,
     private config: NgSelectConfig) {
 
     this.config.notFoundText = 'There is no options';

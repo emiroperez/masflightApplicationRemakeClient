@@ -24,7 +24,7 @@ export class ForgotPasswordComponent implements OnInit {
 
   constructor(private authService: AuthService, private notification: NotificationComponent,
     private registerServices:UserService, public dialog: MatDialog,
-    private globals: Globals) {
+    public globals: Globals) {
     this.user = new User(null);
     this.utils = new Utils();
   }
