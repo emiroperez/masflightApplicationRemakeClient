@@ -4,9 +4,8 @@ import am4themes_dark from "@amcharts/amcharts4/themes/dark";
 // AmChart colors
 const black = am4core.color ("#000000");
 const darkGray = am4core.color ("#3b3b3b");
-const darkGray2 = am4core.color ("#4d4d4d");
+const darkGray2 = am4core.color ("#2d2d2d");
 const lightGray = am4core.color ("#b2b2b2");
-const lightGray2 = am4core.color ("#d2d2d2");
 const white = am4core.color ("#ffffff");
 const cyan = am4core.color ("#00a3e1");
 const orange = am4core.color ("#eb5c1b");
@@ -61,7 +60,7 @@ export class Themes {
             mapLineColor: orange,
             mapPlaneColor: orange,
             tooltipFill: white,
-            ticks: lightGray2,
+            ticks: lightGray,
             stroke: lightGray.lighten (0.65),
             fontColor: darkGray2,
             chartZoomScrollBar: orange,
