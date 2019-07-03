@@ -147,11 +147,6 @@ export class MsfScheduleMapsComponent implements OnInit {
         chart.goHome ();
       });
 
-      // Add export button
-      chart.exporting.menu = new am4core.ExportMenu ();
-      chart.exporting.menu.verticalAlign = "top";
-      chart.exporting.menu.align = "right";
-
       this.globals.scheduleChart = chart;
     });
   }

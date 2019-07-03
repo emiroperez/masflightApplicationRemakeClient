@@ -280,10 +280,6 @@ export class MsfMoreInfoPopupComponent{
       chart.legend.markers.template.height = 15;
       chart.legend.labels.template.fontSize = 10;
 
-      // Add export button
-      chart.exporting.menu = new am4core.ExportMenu ();
-      chart.exporting.menu.verticalAlign = "bottom";
-
       this.chart = chart;
       this.globals.popupLoading2 = false;
     });

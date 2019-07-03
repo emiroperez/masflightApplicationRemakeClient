@@ -1090,15 +1090,6 @@ export class MsfDashboardPanelComponent implements OnInit {
         chart.legend.labels.template.fill = Themes.AmCharts[theme].fontColor;
       }
 
-      // Add export button
-      chart.exporting.menu = new am4core.ExportMenu ();
-      chart.exporting.menu.verticalAlign = "top";
-      if (this.values.currentChartType.flags & ChartFlags.HEATMAP
-        || this.values.currentChartType.flags & ChartFlags.MAP)
-        chart.exporting.menu.align = "right";
-      else
-        chart.exporting.menu.align = "left";
-
       this.chart = chart;
     });
   }
@@ -3499,7 +3490,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   calcPanelHeight(): number
   {
-    return this.panelHeight - 19;
+    return this.panelHeight - 39;
   }
 
   calcRouteListHeight(): number
@@ -3507,16 +3498,16 @@ export class MsfDashboardPanelComponent implements OnInit {
     switch (this.panelHeight)
     {
       case 303: // Small
-        return 263;
+        return 243;
 
       case 333: // Medium
-        return 293;
+        return 273;
 
       case 378: // Large
-        return 338;
+        return 318;
 
       default: // 12 = Very Large
-        return 428;
+        return 408;
     }
   }
 

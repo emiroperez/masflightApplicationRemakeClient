@@ -552,11 +552,6 @@ export class MsfDashboardChildPanelComponent {
         chart.legend.labels.template.fill = Themes.AmCharts[theme].fontColor;
       }
 
-      // Add export button
-      chart.exporting.menu = new am4core.ExportMenu ();
-      chart.exporting.menu.verticalAlign = "top";
-      chart.exporting.menu.align = "left";
-
       this.chart = chart;
     });
   }

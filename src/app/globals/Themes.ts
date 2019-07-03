@@ -61,8 +61,8 @@ export class Themes {
             mapLineColor: orange,
             mapPlaneColor: orange,
             tooltipFill: white,
-            ticks: lightGray,
-            stroke: lightGray2,
+            ticks: lightGray2,
+            stroke: lightGray.lighten (0.65),
             fontColor: darkGray2,
             chartZoomScrollBar: orange,
             axisTooltipFontColor: black

@@ -136,11 +136,17 @@
   color: #ffffff;
   background-color: #333333;
 }
-.dark-theme .msf-dashboard-container .msf-dashboard-title .msf-dashboard-title-label {
+.dark-theme .msf-dashboard-container .msf-dashboard-title .msf-dashboard-title-border {
+  background-color: #01abec;
+  border-radius: 5px;
+  padding: 15px 1px;
+  box-shadow: 0 0 1px 0 #1a6f90 inset, 0 0 1px 0 #1a6f90;
+}
+.dark-theme .msf-dashboard-container .msf-dashboard-title .msf-dashboard-title-border .msf-dashboard-title-label {
   color: #ffffff;
   background-color: #222222;
-  border-color: #01abec;
   font-weight: 550;
+  box-shadow: 0 0 1px 0 #1a6f90 inset, 0 0 1px 0 #1a6f90;
 }
 .dark-theme .msf-dashboard-container .msf-dashboard-addmenu .msf-dashboard-addmenu-item:hover {
   background-color: #01abec;
@@ -190,13 +196,21 @@
 .dark-theme .msf-dashboard-column-properties-align {
   color: #ffffff;
 }
+.dark-theme .msf-dashboard-panel-container-border {
+  background-color: #01abec;
+  border-radius: 25px;
+  padding: 1px;
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 0 1px 0 #1a6f90 inset, 0 0 1px 0 #1a6f90;
+}
+.dark-theme .msf-dashboard-panel-container-border .msf-dashboard-panel-container, .dark-theme .msf-dashboard-panel-container-border .msf-dashboard-panel-container-chart, .dark-theme .msf-dashboard-panel-container-border .msf-dashboard-panel-loading {
+  border-radius: 25px;
+  box-shadow: 0 0 1px 0 #1a6f90 inset, 0 0 1px 0 #1a6f90;
+}
 .dark-theme .msf-dashboard-panel-container {
   background-color: #3b3b3b;
   color: #ffffff;
-  border-radius: 25px;
-  border-color: #01abec;
-  border-style: solid;
-  border-width: 1px;
 }
 .dark-theme .msf-dashboard-panel-button .msf-dashboard-button-close-icon {
   color: #ffffff;
@@ -348,10 +362,6 @@
 .dark-theme .msf-dashboard-panel-container-chart {
   background-color: #222222;
   color: #ffffff;
-  border-radius: 25px;
-  border-color: #01abec;
-  border-style: solid;
-  border-width: 1px;
 }
 .dark-theme .msf-dashboard-control-variables-title {
   text-align: center;
@@ -399,10 +409,6 @@
   position: relative;
 }
 .dark-theme .msf-dashboard-panel-loading {
-  border-radius: 25px;
-  border-color: #01abec;
-  border-style: solid;
-  border-width: 1px;
   text-align: center;
   font-size: 20px;
   font-weight: bold;
@@ -551,7 +557,7 @@
 .dark-theme .flat-share-button-disabled {
   background-color: #333333 !important;
 }
-.dark-theme .msf-dashboard-edit-container {
+.dark-theme .msf-add-dashboard-container, .dark-theme .msf-dashboard-edit-container {
   color: #ffffff !important;
   padding-top: 10px !important;
 }
@@ -1258,11 +1264,17 @@
   color: #4d4d4d;
   background-color: #efefef;
 }
-.light-theme .msf-dashboard-container .msf-dashboard-title .msf-dashboard-title-label {
+.light-theme .msf-dashboard-container .msf-dashboard-title .msf-dashboard-title-border {
+  background-color: #eb5c1b;
+  border-radius: 5px;
+  padding: 15px 1px;
+  box-shadow: 0 0 1px 0 #f5ae8d inset, 0 0 1px 0 #f5ae8d;
+}
+.light-theme .msf-dashboard-container .msf-dashboard-title .msf-dashboard-title-border .msf-dashboard-title-label {
   color: #000000;
   background-color: #ffffff;
-  border-color: #eb5c1b;
   font-weight: 550;
+  box-shadow: 0 0 1px 0 #f5ae8d inset, 0 0 1px 0 #f5ae8d;
 }
 .light-theme .msf-dashboard-container .msf-dashboard-addmenu .msf-dashboard-addmenu-item:hover {
   background-color: #eb5c1b;
@@ -1312,13 +1324,21 @@
 .light-theme .msf-dashboard-column-properties-align {
   color: #4d4d4d;
 }
+.light-theme .msf-dashboard-panel-container-border {
+  background-color: #eb5c1b;
+  border-radius: 25px;
+  padding: 1px;
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 0 1px 0 #f5ae8d inset, 0 0 1px 0 #f5ae8d;
+}
+.light-theme .msf-dashboard-panel-container-border .msf-dashboard-panel-container, .light-theme .msf-dashboard-panel-container-border .msf-dashboard-panel-container-chart, .light-theme .msf-dashboard-panel-container-border .msf-dashboard-panel-loading {
+  border-radius: 25px;
+  box-shadow: 0 0 1px 0 #f5ae8d inset, 0 0 1px 0 #f5ae8d;
+}
 .light-theme .msf-dashboard-panel-container {
   background-color: #e6e6e6;
   color: #4d4d4d;
-  border-radius: 25px;
-  border-color: #eb5c1b;
-  border-style: solid;
-  border-width: 1px;
 }
 .light-theme .msf-dashboard-panel-button .msf-dashboard-button-close-icon {
   color: #4d4d4d;
@@ -1470,10 +1490,6 @@
 .light-theme .msf-dashboard-panel-container-chart {
   background-color: #ffffff;
   color: #4d4d4d;
-  border-radius: 25px;
-  border-color: #eb5c1b;
-  border-style: solid;
-  border-width: 1px;
 }
 .light-theme .msf-dashboard-control-variables-title {
   text-align: center;
@@ -1521,10 +1537,6 @@
   position: relative;
 }
 .light-theme .msf-dashboard-panel-loading {
-  border-radius: 25px;
-  border-color: #eb5c1b;
-  border-style: solid;
-  border-width: 1px;
   text-align: center;
   font-size: 20px;
   font-weight: bold;
@@ -1673,7 +1685,7 @@
 .light-theme .flat-share-button-disabled {
   background-color: #c6c6c6 !important;
 }
-.light-theme .msf-dashboard-edit-container {
+.light-theme .msf-add-dashboard-container, .light-theme .msf-dashboard-edit-container {
   color: #4d4d4d !important;
   padding-top: 10px !important;
 }
@@ -4108,14 +4120,16 @@ mat-tab-group {
   transition: 0.5s;
 }
 .msf-dashboard-container .msf-dashboard-title {
-  padding-top: 20px;
-  padding-bottom: 10px;
+  padding-top: 30px;
+  padding-bottom: 20px;
   font-size: 16px;
 }
-.msf-dashboard-container .msf-dashboard-title .msf-dashboard-title-label {
+.msf-dashboard-container .msf-dashboard-title .msf-dashboard-title-border {
   border-radius: 5px;
-  border-style: solid;
-  border-width: 1px;
+  padding: 1px;
+}
+.msf-dashboard-container .msf-dashboard-title .msf-dashboard-title-border .msf-dashboard-title-label {
+  border-radius: 5px;
   padding: 14px;
 }
 .msf-dashboard-container .msf-dashboard-empty {
