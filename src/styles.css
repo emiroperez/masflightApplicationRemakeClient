@@ -1697,7 +1697,7 @@
   background-color: #bdbdbd;
 }
 .light-theme #msf-dashboard-form-display-title {
-  color: #eb5c1b;
+  color: #000000;
 }
 .light-theme #msf-dashboard-form-display-value {
   color: #4d4d4d;
@@ -4891,7 +4891,7 @@ mat-tab-group {
 }
 
 #msf-dashboard-form-display-title {
-  font-weight: normal;
+  font-weight: bold;
 }
 
 #msf-dashboard-form-display-value {
