@@ -4,9 +4,6 @@
 @import "~jqwidgets-scripts/jqwidgets/styles/jqx.base.css";
 @import "~mapbox-gl/dist/mapbox-gl.css";
 @import "~@mapbox/mapbox-gl-geocoder/lib/mapbox-gl-geocoder.css";
-@import "~ag-grid-community/dist/styles/ag-grid.css";
-@import "~ag-grid-community/dist/styles/ag-theme-balham.css";
-@import "~ag-grid-community/dist/styles/ag-theme-balham-dark.css";
 @import "~ng-pick-datetime/assets/style/picker.min.css";
 @import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
 .msf-drill-down-info-close-icon-template, .light-theme .msf-drill-down-info-image-close-icon, .light-theme .msf-drill-down-info-close-icon, .dark-theme .msf-drill-down-info-image-close-icon, .dark-theme .msf-drill-down-info-close-icon {
