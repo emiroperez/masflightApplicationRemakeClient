@@ -16,7 +16,7 @@
           <div class="msf-dashboard-chartbox-column" cdkDropList cdkDropListOrientation="horizontal" [cdkDropListData]="dashboardColumns[column]" (cdkDropListDropped)="swapPanelRowPositions($event, dashboardColumns[column], column)">
             <div (contextmenu)="onrightClick($event, dashboardColumns[column], row)" class="{{globals.theme}} msf-dashboard-chartbox-item" [style.width.%]="getPanelWidth(column, row)" *ngFor="let dashboardPanel of dashboardColumn; let row = index" [attr.data-index]="row" cdkDragLockAxis="x" cdkDrag [cdkDragDisabled]="dashboardColumn.length == 1 || globals.readOnlyDashboard">
               <div class="msf-dashboard-panel-container-border" [style.height.px]="calcBorderHeight(column)">
-                <div [ngClass]="dashboardPanel.isLoading? 'tab-show' : 'tab-hide'" id="msf-dashboard-panel-loading" class="msf-dashboard-panel-loading">
+                <div [ngClass]="dashboardPanel.isLoading? 'tab-show' : 'tab-hide'" id="msf-dashboard-panel-loading" class="msf-dashboard-panel-loading" [style.height.px]="getColumnHeight(column) + 18">
                   <div class="msf-dashboard-panel-button">
                     <mat-icon class="msf-dashboard-button-close-icon" aria-label="close" (click)="removePanel(column, row)">close</mat-icon>
                     <div class="msf-dashboard-button-move-icon" *ngIf="dashboardColumn.length != 1" cdkDragHandle (click)="disableContextMenu()"></div>
