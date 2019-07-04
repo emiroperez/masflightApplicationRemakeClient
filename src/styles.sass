@@ -4302,6 +4302,8 @@ th.msf-show-table, td.msf-show-table
     height: 24px
     display: inline-block
     margin-bottom: 20px
+    .search-input
+        width: 95%
 
 .msf-admin-search-option
     width: 95%
@@ -4583,6 +4585,11 @@ mat-form-field.msf-table-input
     font-size: 15px
     padding-left: 5px
 
+.admin-menu-background
+    overflow-y: auto
+    -webkit-overflow-scrolling: touch
+    overflow-x: hidden
+
 .card-container
     width: 100%
 
@@ -4598,7 +4605,7 @@ mat-form-field.msf-table-input
     flex-direction: row
     width: 100%
 
-.invisible-scrollbar
+.admin-menu-tree
     .mat-tree-node
         display: flex
         flex-direction: column
@@ -4611,11 +4618,33 @@ mat-form-field.msf-table-input
 .is-active-cat.mat-focused .mat-form-field-ripple
     background-color: transparent
 
-.admin-menu-left-panel-container
+@mixin admin-menu-side-panel-container
     flex: 1
-    min-width: 455px
     margin-left: 1%
     margin-right: 1%
+    height: 100%
+
+.admin-menu-outer-container
+    display: flex
+    flex-direction: row
+    height: 100%
+    .admin-menu-inner-container
+        flex: 1
+        flex-direction: column
+        justify-content: center
+        .admin-menu-panel-container
+            display: flex
+            flex-direction: row
+            flex-wrap: wrap
+            height: 100%
+            .admin-menu-left-panel-container
+                min-width: 455px
+                @include admin-menu-side-panel-container
+            .admin-menu-right-panel-container
+                display: flex
+                flex-direction: column
+                min-width: 400px
+                @include admin-menu-side-panel-container
 
 .standard-input-text
     height: 15px
@@ -4792,3 +4821,57 @@ mat-form-field.msf-table-input
 
 .admin-checkboxes
     margin: 5px
+
+.admin-menu-tree-header
+    display: flex
+    flex-direction: row
+    align-items: center
+    .admin-menu-tree-menu-title
+        flex: 0.4
+    .admin-menu-tree-search-input
+        flex: 2
+        .search-input
+            width: 93%
+            height: 24px
+    .admin-menu-tree-buttons
+        flex: 1
+
+.admin-menu-tree-body
+    overflow: auto
+    width: calc(100% - 30px)
+    height: calc(100% - 100px)
+    .admin-menu-tree
+        background: transparent
+
+.admin-menu-background
+    h2
+        font-weight: 500
+
+.dropdown-setup
+    display: flex
+    flex-direction: row
+    width: 30%
+    margin-right: 5%
+    margin-bottom: -20px
+    .dropdown-form-field
+        flex: 1
+
+.option-type-form-container
+    width: 95%
+
+.admin-input-base-url
+    width: 95% !important
+
+.admin-input-icon
+    width: 45% !important
+    padding-right: 5%
+    display: inline-block
+
+.admin-input-tab
+    width: 45% !important
+
+.admin-menu-category-argumets-header
+    flex: 1
+    flex-direction: column
+    justify-content: center
+    height: calc(100% - 13em)

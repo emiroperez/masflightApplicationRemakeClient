@@ -149,14 +149,6 @@
         transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
     }
 
-    .dropdown-setup {
-        display: flex;
-        flex-direction: row;
-        width: 30%;
-        margin-right: 5%;
-        margin-bottom: -20px;
-    }
-
     .category-list-item {
         margin-bottom: 5px;
     }
