@@ -7216,4 +7216,24 @@ mat-form-field.msf-table-input {
   object-fit: contain;
 }
 
+.login-body {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 100vh;
+}
+.login-body .login-body-logo {
+  width: 40%;
+  display: flex;
+  align-items: center;
+}
+.login-body .login-body-logo .login-pulse-logo {
+  width: 100% !important;
+  height: 90px !important;
+  object-fit: contain;
+}
+.login-body .login-body-container {
+  width: 40%;
+}
+
 /*# sourceMappingURL=styles.css.map */
