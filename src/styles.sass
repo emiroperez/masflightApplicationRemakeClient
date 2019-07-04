@@ -162,7 +162,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             height: 100%
             background: $background-color
         .mat-select-search-inner
-            background-color: $admin-secondary-background-color
+            background-color: $admin-secondary-background-color !important
         .mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar
             background-color: $primary-color !important
         .mat-tab-labels
@@ -868,6 +868,16 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             background-color: $primary-color !important
         .login-form .mat-checkbox-checked.mat-primary .mat-checkbox-background, .two-factor-auth-form .mat-checkbox-checked.mat-primary .mat-checkbox-background
             background-color: $primary-color
+        .msf-card, .msf-membership-card, .login-card
+            background: rgba($background-color, 0.5)
+        .register-step-header
+            color: $font-color
+        .msf-register-list
+            li
+                &:before
+                    color: $primary-color
+        .mat-focused .mat-form-field-required-marker
+            color: $font-color !important
         ::-webkit-scrollbar-thumb
             background-color: $primary-color
             border-radius: 10px
@@ -1502,7 +1512,6 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button
         list-style-type: none
         &:before
             content: "*"
-            color: $msf-secondary-color
             font-size: 120%
             margin-right: 15px
 
@@ -3141,8 +3150,8 @@ mat-tab-group
     caret-color: #333333
 
 .mat-select-search-inner
-    display: flex!important
-    justify-content: center!important
+    display: flex !important
+    justify-content: center !important
 
 .msf-var-content
     width: 35%
@@ -3713,13 +3722,9 @@ table.results
     text-align: left
     padding-left:8px
 
-
-
 .msf-card, .msf-membership-card, .login-card
     border-radius: 10px !important
-    background: rgba(30, 30, 30, 0.5)
     padding: 50px !important
-
 
 .msf-card-content-item input[type=text], .msf-card-content-item input[type=password], .msf-card-content-item input[type=number], .msf-card-content-item input[type=email]
     padding: 8px
@@ -4882,3 +4887,15 @@ mat-form-field.msf-table-input
             object-fit: contain
     .login-body-container
         width: 40%
+
+.register-step-header
+    text-align: center
+    .msf-select
+        margin-left: 0px
+    .mat-select
+        height: 34px
+    .input-register
+        width: 100% !important
+    .mat-select-trigger
+        padding-top: 10px
+        padding-left: 30px

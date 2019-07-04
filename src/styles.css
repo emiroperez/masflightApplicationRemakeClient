@@ -44,7 +44,7 @@
   background: #333333;
 }
 .dark-theme .mat-select-search-inner {
-  background-color: #333333;
+  background-color: #333333 !important;
 }
 .dark-theme .mat-tab-group.mat-primary .mat-ink-bar, .dark-theme .mat-tab-nav-bar.mat-primary .mat-ink-bar {
   background-color: #01abec !important;
@@ -1280,6 +1280,18 @@
 .dark-theme .login-form .mat-checkbox-checked.mat-primary .mat-checkbox-background, .dark-theme .two-factor-auth-form .mat-checkbox-checked.mat-primary .mat-checkbox-background {
   background-color: #01abec;
 }
+.dark-theme .msf-card, .dark-theme .msf-register-card, .dark-theme .login-card, .dark-theme .msf-membership-card, .dark-theme .login-card {
+  background: rgba(51, 51, 51, 0.5);
+}
+.dark-theme .register-step-header {
+  color: #ffffff;
+}
+.dark-theme .msf-register-list li:before, .dark-theme .msf-register-list-big li:before, .dark-theme .msf-register-list-aux li:before {
+  color: #01abec;
+}
+.dark-theme .mat-focused .mat-form-field-required-marker {
+  color: #ffffff !important;
+}
 .dark-theme ::-webkit-scrollbar-thumb {
   background-color: #01abec;
   border-radius: 10px;
@@ -1317,7 +1329,7 @@
   background: #ffffff;
 }
 .light-theme .mat-select-search-inner {
-  background-color: #eb5c1b;
+  background-color: #eb5c1b !important;
 }
 .light-theme .mat-tab-group.mat-primary .mat-ink-bar, .light-theme .mat-tab-nav-bar.mat-primary .mat-ink-bar {
   background-color: #eb5c1b !important;
@@ -2553,6 +2565,18 @@
 .light-theme .login-form .mat-checkbox-checked.mat-primary .mat-checkbox-background, .light-theme .two-factor-auth-form .mat-checkbox-checked.mat-primary .mat-checkbox-background {
   background-color: #eb5c1b;
 }
+.light-theme .msf-card, .light-theme .msf-register-card, .light-theme .login-card, .light-theme .msf-membership-card, .light-theme .login-card {
+  background: rgba(255, 255, 255, 0.5);
+}
+.light-theme .register-step-header {
+  color: #4d4d4d;
+}
+.light-theme .msf-register-list li:before, .light-theme .msf-register-list-big li:before, .light-theme .msf-register-list-aux li:before {
+  color: #eb5c1b;
+}
+.light-theme .mat-focused .mat-form-field-required-marker {
+  color: #4d4d4d !important;
+}
 .light-theme ::-webkit-scrollbar-thumb {
   background-color: #eb5c1b;
   border-radius: 10px;
@@ -3273,7 +3297,6 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 }
 .msf-register-list li:before, .msf-register-list-big li:before, .msf-register-list-aux li:before {
   content: "*";
-  color: #01abec;
   font-size: 120%;
   margin-right: 15px;
 }
@@ -5844,7 +5867,6 @@ table.results {
 
 .msf-card, .msf-register-card, .msf-membership-card, .login-card {
   border-radius: 10px !important;
-  background: rgba(30, 30, 30, 0.5);
   padding: 50px !important;
 }
 
@@ -7234,6 +7256,23 @@ mat-form-field.msf-table-input {
 }
 .login-body .login-body-container {
   width: 40%;
+}
+
+.register-step-header {
+  text-align: center;
+}
+.register-step-header .msf-select {
+  margin-left: 0px;
+}
+.register-step-header .mat-select {
+  height: 34px;
+}
+.register-step-header .input-register {
+  width: 100% !important;
+}
+.register-step-header .mat-select-trigger {
+  padding-top: 10px;
+  padding-left: 30px;
 }
 
 /*# sourceMappingURL=styles.css.map */
