@@ -1,89 +1,67 @@
-<div (click)="hideIconPicker()" style="overflow-y: auto;-webkit-overflow-scrolling: touch; overflow-x: hidden" [style.height.px]="getInnerHeight()">
-<div class="msf-register-header">
-    <button mat-icon-button routerLink="/application">
-    <mat-icon>arrow_back</mat-icon>
-  </button>
-    <img class="msf-medium-logo" src="../../assets/images/{{globals.theme}}-logo.png" />
-    <div class="msf-register-header-content msf-arguments-category-header">
-        <div class="msf-register-header-title">
-            <div class="msf-register-header-title-content msf-arguments-category-header-title-content">
-                ARGUMENTS CATEGORY ADMINISTRATION <br />
-                <!-- Application: {{ globals.currentApplication.name }} -->
+<div class="admin-menu-background" (click)="hideIconPicker()" [style.height.px]="getInnerHeight()">
+    <div class="msf-register-header">
+        <button mat-icon-button routerLink="/application">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+        <img class="msf-medium-logo" src="../../assets/images/{{globals.theme}}-logo.png"/>
+        <div class="msf-register-header-content msf-arguments-category-header">
+            <div class="msf-register-header-title">
+                <div class="msf-register-header-title-content msf-arguments-category-header-title-content">
+                    ARGUMENTS CATEGORY ADMINISTRATION<br>
+                </div>
+            </div>
+            <div class="msf-register-header-image-content">
+                <img class="medium-user-image" src="../../assets/images/{{globals.theme}}-icon-user.png"/>
             </div>
         </div>
-        <div class="msf-register-header-image-content">
-            <img class="medium-user-image" src="../../assets/images/{{globals.theme}}-icon-user.png" />
-        </div>
     </div>
-</div>
 
-
-<mat-card id="category-card" class="card-container msf-center-container" style="color: white; height: calc(100% - 134px)">
-    <mat-card-content style="padding-right: 50px; height: 100%">
-        <div style="display: flex; flex-direction: row; height: calc(100% - 30px);">
-            <div style="display: flex; flex-direction: column; width: 30%; padding-right: 30px">
-                <div>
-                    <div style="display: flex; flex-direction: row;">
+    <mat-card id="category-card" class="card-container msf-center-container admin-arguments-category-container">
+        <mat-card-content class="admin-arguments-category-outer-container">
+            <div class="admin-arguments-category-inner-container">
+                <div class="admin-arguments-category-left-panel">
+                    <div class="admin-arguments-category-left-panel-header">
                         <h2 class="title-section">Arguments Categories</h2>
-                        <div style=" text-align: right;margin-left:12%">
+                        <div class="admin-arguments-category-buttons">
                             <button mat-icon-button (click)="addCategory()">
-                                  <mat-icon style="color: white" aria-label="add">add_circle</mat-icon>
-                                </button>
+                                <mat-icon class="admin-mat-icon-button" aria-label="add">add_circle</mat-icon>
+                            </button>
                             <button mat-icon-button (click)="deleteCategory()">
-                                  <mat-icon style="color: white" aria-label="delete">remove_circle</mat-icon>
-                                </button>
+                                <mat-icon class="admin-mat-icon-button" aria-label="delete">remove_circle</mat-icon>
+                            </button>
                         </div>
                     </div>
-                </div>
-                <mat-form-field>
-                    <input matInput [(ngModel)]="searchText">
-                    <mat-icon style="font-size: 22px;" matSuffix>search</mat-icon>
-                </mat-form-field>
-                <div style="flex: 1; height: 0">
-                    <div style="flex: 1; height: 100%">
-                        <div class="dark-scrollbar" style="flex: 1; background-color: #1a1a1a;overflow-y: auto ;-webkit-overflow-scrolling: touch; height: calc(100% - 16px); overflow-x: hidden">
-                            <div *ngFor="let item of categories | filter : searchText">
-                                <div style="color:white; margin: 10px;width: 100%" [ngClass]="{
-                        'is-active': item.isSelected,
-                        'is-inactive': !item.isSelected
-                      }">
-                                    <div style="padding-bottom:3px; padding-top:3px" (click)="getSelectedOption(item)">
-                                        <input style="color: white; " disabled="true" type="text" name="optionname" autocomplete="off" matInput [(ngModel)]="item.label" />
+                    <mat-form-field>
+                        <input matInput [(ngModel)]="searchText">
+                        <mat-icon class="admin-arguments-search-icon" matSuffix>search</mat-icon>
+                    </mat-form-field>
+                    <div class="admin-arguments-category-left-panel-body">
+                        <div class="admin-arguments-categories-container">
+                            <div class="category-arguments-scrollbar arguments-categories-list-container">
+                                <div class="arguments-categories-list-item" *ngFor="let item of categories | filter : searchText">
+                                    <div class="arguments-categories-list-item-label" [ngClass]="{ 'is-active': item.isSelected, 'is-inactive': !item.isSelected }">
+                                        <div class="arguments-categories-list-item-label-container" (click)="getSelectedOption(item)">
+                                            <input class="arguments-categories-list-item-label-color" disabled="true" type="text" name="optionname" autocomplete="off" matInput [(ngModel)]="item.label"/>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <!-- -------- -->
-
-
-
-
-
-            <div *ngIf="category" style="flex: 1; display:flex; flex-direction: column; margin-top: 40px; height: 100%">
-                <div>
-                    <div style="display: flex; flex-direction: column">
-                        <div style="display: flex; flex-direction: column;flex: 2">
+                <div class="admin-arguments-category-right-panel" *ngIf="category">
+                    <div class="admin-arguments-category-right-panel-header">
+                        <div class="admin-arguments-category-form-container">
                             <mat-form-field>
-                                <input matInput (focus)="category.focus" placeholder="Name Category" [(ngModel)]="category.label" />
+                                <input matInput (focus)="category.focus" placeholder="Name Category" [(ngModel)]="category.label"/>
                             </mat-form-field>
                             <mat-form-field>
-                                <input matInput placeholder="Description" [(ngModel)]="category.description" />
+                                <input matInput placeholder="Description" [(ngModel)]="category.description"/>
                             </mat-form-field>
-                            <div style="display: flex; flex-direction: row; flex: 2">
-                                <!--
-                                <div style="flex: 1; padding: 5px; height: 29px; min-width: 26px; margin-right: 10px; background: #1a1a1a">
-                                    <img *ngIf="category.icon" class="img-item-category-argument" src="{{category.icon}}" />
-                                </div>
-                                <mat-form-field>
-                                    <input matInput placeholder="Icon URL" [(ngModel)]="category.icon" />
-                                </mat-form-field>
-                                -->
-                                <div style="padding: 5px; height: 29px; min-width: 26px; margin-right: 10px; background: #1a1a1a; display: flex; align-items: center; text-align: center">
-                                    <mat-icon *ngIf="category.icon && isMatIcon(category.icon)" class="img-item-category-argument">{{category.icon}}</mat-icon>
-                                    <img *ngIf="category.icon && !isMatIcon(category.icon)" class="img-item-category-argument" src="{{category.icon}}" />
+                            <div class="admin-arguments-category-form-icon-container">
+                                <div class="img-item-category-argument-container">
+                                    <mat-icon *ngIf="category.icon && isMatIcon(category.icon)" class="img-item-category-argument img-item-category-argument-mat-icon">{{category.icon}}</mat-icon>
+                                    <img *ngIf="category.icon && !isMatIcon(category.icon)" class="img-item-category-argument img-item-category-argument-pic" src="{{getImageIcon(category.icon)}}" />
                                 </div>
                                 <span [style.width.%]="100">
                                     <app-material-icon-picker #materialIconPicker [value]="category.icon" (iconChanged)="setChangeIcon($event)"></app-material-icon-picker>
@@ -91,56 +69,45 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div style="display: flex;flex-direction: row">
-                    <h2 class="title-section">Arguments</h2>
-                    <button mat-icon-button (click)="addArgument()">
-                      <mat-icon style="color: white; flex: 1" aria-label="add"
-                        >add_circle</mat-icon
-                      >
-                    </button>
-                </div>
-                <div class="dark-scrollbar" style="height: 100%; overflow-y: auto;-webkit-overflow-scrolling: touch; background-color:#1a1a1a;padding:3px">
-                    <div *ngFor="let argument of category.arguments">
-                        <div *ngIf="!argument.toDelete">
-                            <div style="display: flex; flex-direction: row; height: 55px;margin-top: 3px">
-
-                                <div class="arguments-child" style="width: 30%;">
-                                    <mat-form-field style="width: 80%">
-                                        <mat-select class="white" placeholder="Type" [(ngModel)]="argument.type">
-                                            <ngx-mat-select-search [formControl]="typeFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
-                                            <mat-option *ngFor="let types of filteredTypes | async" [value]="types.value">
-                                                {{types.name}}
-                                            </mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
-                                    <div></div>
+                    <div class="arguments-list-header">
+                        <h2 class="title-section">Arguments</h2>
+                        <button mat-icon-button (click)="addArgument()">
+                            <mat-icon class="admin-mat-icon-button argument-list-add-button" aria-label="add">add_circle</mat-icon>
+                        </button>
+                    </div>
+                    <div class="category-arguments-scrollbar arguments-list-container">
+                        <div *ngFor="let argument of category.arguments">
+                            <div *ngIf="!argument.toDelete">
+                                <div class="arguments-list-item">
+                                    <div class="arguments-child" [style.width.%]="30">
+                                        <mat-form-field [style.width.%]="80">
+                                            <mat-select class="white" placeholder="Type" [(ngModel)]="argument.type">
+                                                <ngx-mat-select-search [formControl]="typeFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+                                                <mat-option *ngFor="let types of filteredTypes | async" [value]="types.value">
+                                                    {{types.name}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                    <div [style.width.%]="70">
+                                        <mat-form-field [style.width.%]="100">
+                                            <input matInput placeholder="Description" [(ngModel)]="argument.description" />
+                                        </mat-form-field>
+                                    </div>
+                                    <button mat-icon-button (click)="deleteArgument(argument)">
+                                        <mat-icon aria-label="close">close</mat-icon>
+                                    </button>
                                 </div>
-                                <div style="width: 70%;">
-                                    <mat-form-field style="width: 100%">
-                                        <input matInput placeholder="Description" [(ngModel)]="argument.description" />
-                                    </mat-form-field>
-                                </div>
-                                <button mat-icon-button (click)="deleteArgument(argument)">
-                                <mat-icon style="color: white; flex:1;margin-left: 1%;margin-top: 2%;font-size: 18px" aria-label="close" >close</mat-icon>
-                              </button>
                             </div>
                         </div>
                     </div>
+                    <div class="admin-arguments-category-right-panel-footer">
+                        <button mat-button class="flat-button" (click)="sendData()">
+                            Save all
+                        </button>
+                    </div>
                 </div>
-
-                <div style="text-align: right; margin-top: 10px; margin-bottom: 10px">
-                    <button mat-button class="flat-button" (click)="sendData()">
-                Save all
-              </button>
-                </div>
-
             </div>
-
-
-
-        </div>
-
-    </mat-card-content>
-</mat-card>
+        </mat-card-content>
+    </mat-card>
 </div>

@@ -797,8 +797,6 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
         .admin-menu-left-panel-container
             ::-webkit-scrollbar-track
                 display: none
-        .is-inactive
-            background-color: transparent
         .input-option-tree.mat-input-element
             caret-color: $font-color
         .mat-icon-rtl-mirror
@@ -874,6 +872,24 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             color: $font-color !important
         .test
             background: $background-color
+        .admin-arguments-category-container
+            color: $font-color !important
+        .img-item-category-argument-container
+            background: $admin-table-background-color
+        .arguments-categories-list-container
+            background-color: $admin-table-background-color
+        .arguments-categories-list-item
+            .is-active
+                background-color: $admin-table-hover-color
+        .arguments-categories-list-item-label-color
+            color: $font-color !important
+        .arguments-list-container
+            background-color: $admin-table-background-color
+            .arguments-list-item
+                .mat-button-wrapper
+                    color: $font-color
+        .category-arguments-scrollbar::-webkit-scrollbar-thumb 
+            background-color: $admin-secondary-background-color
         ::-webkit-scrollbar-thumb
             background-color: $primary-color
             border-radius: 10px
@@ -4242,15 +4258,10 @@ th.msf-show-table, td.msf-show-table
     overflow: auto
 
 .invisible-scrollbar::-webkit-scrollbar-thumb 
-  background-color: transparent
+    background-color: transparent
 
-
-.dark-scrollbar::-webkit-scrollbar-thumb 
-  background-color: #333333
-
-
-.dark-scrollbar::-webkit-scrollbar-track 
-  background-color: transparent
+.category-arguments-scrollbar::-webkit-scrollbar-track 
+    background-color: transparent
 
 .config-background
     border-radius: 0px !important
@@ -4585,6 +4596,9 @@ mat-form-field.msf-table-input
 .is-active-cat.mat-focused .mat-form-field-ripple
     background-color: transparent
 
+.is-inactive
+    background-color: transparent
+
 @mixin admin-menu-side-panel-container
     flex: 1
     margin-left: 1%
@@ -4894,3 +4908,114 @@ mat-form-field.msf-table-input
     .mat-select-trigger
         padding-top: 10px
         padding-left: 30px
+
+.admin-arguments-category-container
+    height: calc(100% - 134px)
+
+#category-card
+    padding: 16px
+    height: 523px
+
+.arguments-categories-list-container
+    flex: 1
+    overflow-y: auto
+    -webkit-overflow-scrolling: touch
+    height: calc(100% - 16px)
+    overflow-x: hidden
+
+.admin-arguments-category-outer-container
+    padding-right: 50px
+    height: 100%
+    .admin-arguments-category-inner-container
+        display: flex
+        flex-direction: row
+        height: calc(100% - 30px)
+        .admin-arguments-category-left-panel
+            display: flex
+            flex-direction: column
+            width: 30%
+            padding-right: 30px
+            .admin-arguments-category-left-panel-header
+                display: flex
+                flex-direction: row
+                .admin-arguments-category-buttons
+                    text-align: right
+                    margin-left: 12%
+            .admin-arguments-search-icon
+                font-size: 22px
+            .admin-arguments-category-left-panel-body
+                flex: 1
+                height: 0
+                .admin-arguments-categories-container
+                    flex: 1
+                    height: 100%
+        .admin-arguments-category-right-panel
+            flex: 1
+            display: flex
+            flex-direction: column
+            margin-top: 40px
+            height: 100%
+            .admin-arguments-category-right-panel-header
+                display: flex
+                flex-direction: column
+                height: 70%
+                .admin-arguments-category-form-container
+                    display: flex
+                    flex-direction: column
+                    flex: 2
+                    .admin-arguments-category-form-icon-container
+                        display: flex
+                        flex-direction: row
+                        flex: 2
+            .arguments-list-header
+                display: flex
+                flex-direction: row
+                .argument-list-add-button
+                    flex: 1
+            .admin-arguments-category-right-panel-footer
+                text-align: right
+                margin-top: 10px
+                margin-bottom: 10px
+
+.img-item-category-argument-container
+    padding: 5px
+    height: 29px
+    min-width: 29px
+    max-width: 29px
+    margin-right: 10px
+    display: flex
+    align-items: center
+    text-align: center
+    .img-item-category-argument
+        height: 100%
+        width: 100%
+
+.arguments-list-container
+    height: 100%
+    overflow-y: auto
+    -webkit-overflow-scrolling: touch
+    padding: 3px
+    .arguments-list-item
+        display: flex
+        flex-direction: row
+        height: 55px
+        margin-top: 3px
+        .mat-button-wrapper
+            flex: 1
+            margin-left: 1%
+            margin-top: 2%
+            font-size: 18px
+
+.arguments-categories-list-item-label
+    padding: 10px
+    width: 100%
+    .arguments-categories-list-item-label-container
+        padding-bottom: 3px
+        padding-top: 3px
+
+.img-item-category-argument-mat-icon
+    margin-left: 1px
+    font-size: 25px
+
+.img-item-category-argument-pic
+    margin-top: -1px
