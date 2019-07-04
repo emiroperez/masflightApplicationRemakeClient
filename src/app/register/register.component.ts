@@ -24,7 +24,6 @@ import { Customer } from '../model/Customer';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.css'],
   encapsulation: ViewEncapsulation.None
 })
 export class RegisterComponent implements OnInit {

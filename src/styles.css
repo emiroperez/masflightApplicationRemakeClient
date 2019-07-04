@@ -1292,6 +1292,9 @@
 .dark-theme .mat-focused .mat-form-field-required-marker {
   color: #ffffff !important;
 }
+.dark-theme .test {
+  background: #333333;
+}
 .dark-theme ::-webkit-scrollbar-thumb {
   background-color: #01abec;
   border-radius: 10px;
@@ -2576,6 +2579,9 @@
 }
 .light-theme .mat-focused .mat-form-field-required-marker {
   color: #4d4d4d !important;
+}
+.light-theme .test {
+  background: #ffffff;
 }
 .light-theme ::-webkit-scrollbar-thumb {
   background-color: #eb5c1b;
@@ -5692,7 +5698,6 @@ input[type=checkbox]:checked + label {
 .test {
   width: 100%;
   height: 600px;
-  background: #252424;
   padding: 50px;
 }
 

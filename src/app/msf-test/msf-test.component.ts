@@ -7,8 +7,7 @@ import { Globals } from '../globals/Globals';
 
 @Component({
   selector: 'app-msf-test',
-  templateUrl: './msf-test.component.html',
-  styleUrls: ['./msf-test.component.css']
+  templateUrl: './msf-test.component.html'
 })
 export class MsfTestComponent implements OnInit {
 

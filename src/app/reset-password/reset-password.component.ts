@@ -12,8 +12,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
   selector: "app-reset-password",
-  templateUrl: "./reset-password.component.html",
-  styleUrls: ["./reset-password.component.css"]
+  templateUrl: "./reset-password.component.html"
 })
 export class ResetPasswordComponent implements OnInit {
   user: User;
