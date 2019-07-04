@@ -44,12 +44,13 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   validate(){
+    this.user.email = this.emailValidator.get ('email').value;
     this.registerServices.checkEmail(this,this.checkEmailResponse,this.errorHandleResponsen, this.user.email);
   }
   checkEmailResponse(_this, data) {
     if (data){
       _this.globals.isLoading = true;
-      _this.enviarEmail();
+      _this.sendEmail();
     }else {
       const title = "Error";
       const message= "The email doesn't exist";
@@ -66,7 +67,7 @@ export class ForgotPasswordComponent implements OnInit {
     console.log(result);
   }
 
-  enviarEmail(){
+  sendEmail(){
     this.globals.isLoading = true;
     this.registerServices.sendEmailPassword(this, this.sendEmailResponse, this.errorEmailResponse, this.user.email);
   }
