@@ -63,12 +63,10 @@ import { MapBoxComponent } from './map-box/map-box.component';
 import { AdminMenuComponent } from './admin-menu/admin-menu.component';
 import { CreateMempershipsComponent } from './create-memperships/create-memperships.component';
 import {MatSnackBarModule} from '@angular/material';
-import { CategoryArgumentsComponent } from './category-arguments/category-arguments.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material';
 import { AdminMenuRecursiveComponent } from './admin-menu-recursive/admin-menu-recursive.component';
 import { AdminMenuMembershipsComponent } from './admin-menu-memberships/admin-menu-memberships.component';
-import { AgGridModule } from 'ag-grid-angular';
 import { Utils } from './commons/utils';
 import { MsfUserListComponent } from './msf-user-list/msf-user-list.component';
 import { MsfOptionListComponent } from './msf-option-list/msf-option-list.component';
@@ -76,7 +74,6 @@ import { ConfirmDeleteDialog } from './admin-menu/admin-menu.component';
 import { EditOutputOptionsMetaDialog } from './admin-menu/admin-menu.component';
 import { EditCategoryArgumentDialog } from './admin-menu/admin-menu.component';
 import { EditOptionsDialog } from './create-memperships/create-memperships.component';
-import { MsfTestComponent } from './msf-test/msf-test.component';
 import { MsfFreeTextInputComponent } from './msf-free-text-input/msf-free-text-input.component';
 import { MsfSelectBoxSingleOptionComponent } from './msf-select-box-single-option/msf-select-box-single-option.component';
 import { MsfSelectBoxMultipleOptionComponent } from './msf-select-box-multiple-option/msf-select-box-multiple-option.component';
@@ -241,7 +238,6 @@ import { MsfDynamicTableAliasComponent } from './msf-dynamic-table-alias/msf-dyn
     MapBoxComponent,
     AdminMenuComponent,
     AdminMenuComponent,
-    CategoryArgumentsComponent,
     AdminMenuRecursiveComponent,
     AdminMenuMembershipsComponent,
     MsfUserListComponent,
@@ -252,7 +248,6 @@ import { MsfDynamicTableAliasComponent } from './msf-dynamic-table-alias/msf-dyn
     EditCategoryArgumentDialog,
     EditOptionsDialog,
     DrillDownDialog,
-    MsfTestComponent,
     MsfFreeTextInputComponent,
     MsfSelectBoxSingleOptionComponent,
     MsfSelectBoxMultipleOptionComponent,
@@ -390,7 +385,6 @@ import { MsfDynamicTableAliasComponent } from './msf-dynamic-table-alias/msf-dyn
     MatSnackBarModule,
     MatTableModule,
     MatPaginatorModule,
-    AgGridModule.withComponents(null),
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     ColorPickerModule,
