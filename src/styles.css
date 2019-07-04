@@ -848,10 +848,7 @@
 .dark-theme .timepicker-button {
   color: #01abec !important;
 }
-.dark-theme .mat-form-field.mat-focused .mat-form-field-ripple {
-  background-color: #01abec;
-}
-.dark-theme .mat-form-field-ripple {
+.dark-theme .mat-form-field.mat-focused .mat-form-field-ripple, .dark-theme .mat-form-field-ripple {
   background-color: #01abec;
 }
 .dark-theme .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label, .dark-theme .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
@@ -953,7 +950,7 @@
 .dark-theme .msf-media-info-value {
   color: #ffffff;
 }
-.dark-theme .mat-checkbox:not(.mat-checkbox-disabled).mat-accent .mat-checkbox-ripple .mat-ripple-element {
+.dark-theme .mat-checkbox:not(.mat-checkbox-disabled).mat-accent .mat-checkbox-ripple .mat-ripple-element, .dark-theme .mat-radio-button.mat-accent .mat-radio-inner-circle, .dark-theme .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element:not(.mat-radio-persistent-ripple), .dark-theme .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-persistent-ripple, .dark-theme .mat-radio-button.mat-accent:active .mat-radio-persistent-ripple {
   background-color: #0589bb;
 }
 .dark-theme mat-dialog-container {
@@ -1248,6 +1245,40 @@
 }
 .dark-theme .admin-checkboxes.mat-checkbox-disabled.mat-checkbox-checked .mat-checkbox-background, .dark-theme .mat-checkbox-disabled.mat-checkbox-indeterminate .mat-checkbox-background {
   background-color: #01abec !important;
+}
+.dark-theme .theme-picker {
+  background: rgba(51, 51, 51, 0.5) !important;
+  color: #ffffff;
+}
+.dark-theme .theme-picker .mat-radio-outer-circle {
+  border-color: #ffffff;
+}
+.dark-theme .login-card {
+  background: rgba(51, 51, 51, 0.5) !important;
+}
+.dark-theme .msf-item input[type=text], .dark-theme .msf-item input[type=password], .dark-theme .msf-item input[type=number], .dark-theme .msf-item input[type=email], .dark-theme .login-card input[type=text], .dark-theme .login-card input[type=password], .dark-theme .login-card nput[type=number], .dark-theme .login-card input[type=email] {
+  color: #ffffff;
+}
+.dark-theme .password-card input[type=email], .dark-theme .password-card input[type=password] {
+  color: #ffffff !important;
+}
+.dark-theme .mat-icon.input_img, .dark-theme .login-form .block-item-input .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix .mat-form-field-label-wrapper .mat-form-field-label {
+  color: #01abec !important;
+}
+.dark-theme .login-link-reg {
+  color: #ffffff;
+}
+.dark-theme .login-link-reg2 {
+  color: #01abec;
+}
+.dark-theme .login-font-color {
+  color: #046988;
+}
+.dark-theme .login-button, .dark-theme .msf-medium-button, .dark-theme .msf-big-button, .dark-theme .msf-big-button {
+  background-color: #01abec !important;
+}
+.dark-theme .login-form .mat-checkbox-checked.mat-primary .mat-checkbox-background, .dark-theme .two-factor-auth-form .mat-checkbox-checked.mat-primary .mat-checkbox-background {
+  background-color: #01abec;
 }
 .dark-theme ::-webkit-scrollbar-thumb {
   background-color: #01abec;
@@ -2090,10 +2121,7 @@
 .light-theme .timepicker-button {
   color: #eb5c1b !important;
 }
-.light-theme .mat-form-field.mat-focused .mat-form-field-ripple {
-  background-color: #eb5c1b;
-}
-.light-theme .mat-form-field-ripple {
+.light-theme .mat-form-field.mat-focused .mat-form-field-ripple, .light-theme .mat-form-field-ripple {
   background-color: #eb5c1b;
 }
 .light-theme .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label, .light-theme .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
@@ -2195,7 +2223,7 @@
 .light-theme .msf-media-info-value {
   color: #4d4d4d;
 }
-.light-theme .mat-checkbox:not(.mat-checkbox-disabled).mat-accent .mat-checkbox-ripple .mat-ripple-element {
+.light-theme .mat-checkbox:not(.mat-checkbox-disabled).mat-accent .mat-checkbox-ripple .mat-ripple-element, .light-theme .mat-radio-button.mat-accent .mat-radio-inner-circle, .light-theme .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element:not(.mat-radio-persistent-ripple), .light-theme .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-persistent-ripple, .light-theme .mat-radio-button.mat-accent:active .mat-radio-persistent-ripple {
   background-color: #d54505;
 }
 .light-theme mat-dialog-container {
@@ -2491,6 +2519,40 @@
 .light-theme .admin-checkboxes.mat-checkbox-disabled.mat-checkbox-checked .mat-checkbox-background, .light-theme .mat-checkbox-disabled.mat-checkbox-indeterminate .mat-checkbox-background {
   background-color: #eb5c1b !important;
 }
+.light-theme .theme-picker {
+  background: rgba(255, 255, 255, 0.5) !important;
+  color: #4d4d4d;
+}
+.light-theme .theme-picker .mat-radio-outer-circle {
+  border-color: #4d4d4d;
+}
+.light-theme .login-card {
+  background: rgba(255, 255, 255, 0.5) !important;
+}
+.light-theme .msf-item input[type=text], .light-theme .msf-item input[type=password], .light-theme .msf-item input[type=number], .light-theme .msf-item input[type=email], .light-theme .login-card input[type=text], .light-theme .login-card input[type=password], .light-theme .login-card nput[type=number], .light-theme .login-card input[type=email] {
+  color: #4d4d4d;
+}
+.light-theme .password-card input[type=email], .light-theme .password-card input[type=password] {
+  color: #4d4d4d !important;
+}
+.light-theme .mat-icon.input_img, .light-theme .login-form .block-item-input .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix .mat-form-field-label-wrapper .mat-form-field-label {
+  color: #eb5c1b !important;
+}
+.light-theme .login-link-reg {
+  color: #4d4d4d;
+}
+.light-theme .login-link-reg2 {
+  color: #eb5c1b;
+}
+.light-theme .login-font-color {
+  color: #5b5b5f;
+}
+.light-theme .login-button, .light-theme .msf-medium-button, .light-theme .msf-big-button, .light-theme .msf-big-button {
+  background-color: #eb5c1b !important;
+}
+.light-theme .login-form .mat-checkbox-checked.mat-primary .mat-checkbox-background, .light-theme .two-factor-auth-form .mat-checkbox-checked.mat-primary .mat-checkbox-background {
+  background-color: #eb5c1b;
+}
 .light-theme ::-webkit-scrollbar-thumb {
   background-color: #eb5c1b;
   border-radius: 10px;
@@ -2508,16 +2570,7 @@ body {
 }
 
 .application-class {
-  background-color: white;
   height: 100%;
-}
-
-.login-form .mat-checkbox-checked.mat-primary .mat-checkbox-background {
-  background-color: #ED5C27;
-}
-
-.two-factor-auth-form .mat-checkbox-checked.mat-primary .mat-checkbox-background {
-  background-color: #ED5C27;
 }
 
 .mat-card {
@@ -2910,14 +2963,6 @@ p {
   margin-left: 7px;
 }
 
-.login-form .mat-form-field.mat-focused .mat-form-field-ripple {
-  background-color: #ED5C27;
-}
-
-.two-factor-auth-form .mat-form-field.mat-focused .mat-form-field-ripple {
-  background-color: #ED5C27;
-}
-
 .mat-error {
   margin-left: 31px;
 }
@@ -2968,7 +3013,6 @@ p {
 
 .login-card {
   max-width: 280px;
-  background: rgba(255, 255, 255, 0.5) !important;
 }
 
 .register-card {
@@ -3029,13 +3073,11 @@ p {
 }
 
 .login-button, .msf-medium-button, .msf-big-button {
-  background-color: #ED5C27 !important;
   line-height: 50px !important;
   padding: 0 50px !important;
 }
 
 .msf-big-button {
-  background-color: #01abec !important;
   margin-left: 40px !important;
   color: white;
   margin-top: 10px !important;
@@ -3059,17 +3101,8 @@ p {
 }
 
 .login-link-reg {
-  color: #1e1e1e;
   margin: 2px;
   font-size: smaller;
-}
-
-.login-link-reg2 {
-  color: #ED5C27;
-}
-
-.login-font-color {
-  color: #5b5b5f;
 }
 
 .input-username {
@@ -3098,15 +3131,10 @@ p {
   width: 230px;
   outline: none;
   border: none;
-  color: #1e1e1e;
   padding-left: 31px;
   background-size: 0 2px, 100% 1px;
   background-position: 50% 100%, 50% 100%;
   transition: background-size 0.3s cubic-bezier(0.64, 0.09, 0.08, 1);
-}
-
-.password-card input[type=email], .password-card input[type=password] {
-  color: #ffffff !important;
 }
 
 .msf-item input[type=text], .msf-item input[type=password], .msf-item input[type=number], .msf-item input[type=email] {
@@ -3114,7 +3142,6 @@ p {
   width: 230px;
   outline: none;
   border: none;
-  color: white;
   padding-left: 31px;
   background-size: 0 2px, 100% 1px;
   background-position: 50% 100%, 50% 100%;
@@ -5864,10 +5891,6 @@ table.results {
   background-color: white !important;
 }
 
-.login-form .block-item-input .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix .mat-form-field-label-wrapper .mat-form-field-label {
-  color: #ED5C27 !important;
-}
-
 .msf-plan-card-content .mat-form-field.mat-focused .mat-form-field-ripple {
   background-color: white;
 }
@@ -5998,14 +6021,6 @@ table.results {
 .single-checkbox {
   padding: 0 !important;
   margin: 0 !important;
-}
-
-.login-form .mat-checkbox-frame {
-  border-color: #1e1e1e !important;
-}
-
-.mat-icon.input_img {
-  color: #ED5C27 !important;
 }
 
 .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
@@ -7169,6 +7184,36 @@ mat-form-field.msf-table-input {
   flex-direction: column;
   justify-content: center;
   height: calc(100% - 13em);
+}
+
+.login-header {
+  display: flex;
+  flex-direction: row;
+  width: 98%;
+  position: absolute;
+}
+.login-header .theme-picker {
+  margin-top: -5px;
+  margin-left: 40px;
+  width: 240px;
+  font-size: 14px;
+}
+.login-header .theme-picker .theme-picker-label {
+  padding: 20px;
+}
+.login-header .theme-picker .theme-picker-radio-group {
+  flex-direction: column;
+}
+.login-header .theme-picker .theme-picker-radio-group .theme-picker-radio {
+  margin: 10px;
+}
+.login-header .login-header-logo {
+  float: right;
+  padding: 30px;
+  padding-top: 10px;
+  height: 20px;
+  width: 211px !important;
+  object-fit: contain;
 }
 
 /*# sourceMappingURL=styles.css.map */

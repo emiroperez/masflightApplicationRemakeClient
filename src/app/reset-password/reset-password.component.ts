@@ -20,6 +20,8 @@ export class ResetPasswordComponent implements OnInit {
   userSave: User;
   utils: Utils;
   tokenEmail: string;
+  innerHeight: number;
+
   personalInformationForm = new FormGroup({
     emailValidator: new FormControl("email", [Validators.required, Validators.email]),
     passwordValidator: new FormControl("password", [Validators.required]),
@@ -41,6 +43,7 @@ export class ResetPasswordComponent implements OnInit {
   ngOnInit() {
     let self = this;
 
+    this.innerHeight = window.innerHeight;
     this.activatedRoute.queryParams.subscribe(params => {
       self.tokenEmail = params['token'];
 
@@ -144,6 +147,8 @@ resetHandler(_this,data) {
   @HostListener('window:resize', ['$event'])
   checkScreen(event): void
   {
+    this.innerHeight = event.target.innerHeight;
+
     // if(!this.mobileQuery.matches)
     // {
     if (event.target.innerHeight == window.screen.height && event.target.innerWidth == window.screen.width)
@@ -154,5 +159,9 @@ resetHandler(_this,data) {
     // else{
     //   this.globals.isFullscreen = false;
     // }
+  }
+
+  getInnerHeight(): number {
+    return this.innerHeight;
   }
 }

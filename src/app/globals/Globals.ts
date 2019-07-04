@@ -79,13 +79,26 @@ export class Globals {
   subDisplayedColumnNames: string[] = []; 
   copiedPanelInfo: any;
   lastTime: string;
+  lastTheme: string;
 
   @HostBinding('class')
   theme: string = "light-theme";
 
   constructor(public overlayContainer: OverlayContainer)
   {
-    this.overlayContainer.getContainerElement ().classList.add (this.theme);
+    this.setOverlayTheme ();
+  }
+
+  setOverlayTheme(): void
+  {
+    let containerElement = this.overlayContainer.getContainerElement ();
+
+    // remove previous theme class form the overlay container
+    if (this.lastTheme && containerElement.classList.contains (this.lastTheme))
+      containerElement.classList.remove (this.lastTheme);
+
+    containerElement.classList.add (this.theme);
+    this.lastTheme = this.theme;
   }
 
    initDataSource(){

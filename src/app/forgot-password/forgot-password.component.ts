@@ -20,6 +20,8 @@ export class ForgotPasswordComponent implements OnInit {
 
   user: User;
   utils: Utils;
+  innerHeight: number;
+
   emailValidator = new FormControl('email', [Validators.required, Validators.email]);
 
   constructor(private authService: AuthService, private notification: NotificationComponent,
@@ -38,6 +40,7 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.innerHeight = window.innerHeight;
   }
 
   validate(){
@@ -94,6 +97,8 @@ export class ForgotPasswordComponent implements OnInit {
   @HostListener('window:resize', ['$event'])
   checkScreen(event): void
   {
+    this.innerHeight = event.target.innerHeight;
+
     // if(!this.mobileQuery.matches)
     // {
     if (event.target.innerHeight == window.screen.height && event.target.innerWidth == window.screen.width)
@@ -106,4 +111,7 @@ export class ForgotPasswordComponent implements OnInit {
     // }
   }
 
+  getInnerHeight(): number {
+    return this.innerHeight;
+  }
 }

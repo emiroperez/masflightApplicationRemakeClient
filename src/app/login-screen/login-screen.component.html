@@ -1,10 +1,19 @@
 <div class="application-class">
-<div style="display: inline-block;width: 98%; position: absolute">
-    <img style="float: right; padding: 30px; height: 20px; width: 211px !important;object-fit: contain;" mat-card-image src="../../assets/images/light-theme-logo.png">
-</div>
+    <div class="login-header">
+        <div [style.width.%]="100">
+            <mat-card class="theme-picker">
+                <span class="theme-picker-label">Theme:</span>
+                <mat-radio-group [(ngModel)]="globals.theme" (ngModelChange)="globals.setOverlayTheme()" class="theme-picker-radio-group">
+                    <mat-radio-button class="theme-picker-radio" class="cancels-checkbox" value="light-theme">Light</mat-radio-button>
+                    <mat-radio-button class="theme-picker-radio" class="cancels-checkbox" value="dark-theme">Dark</mat-radio-button>
+                </mat-radio-group>
+            </mat-card>
+        </div>
+        <img class="login-header-logo" mat-card-image src="../../assets/images/{{globals.theme}}-logo.png">
+    </div>
 <div style="display: flex; align-items: center; justify-content: space-around; height: 100vh;">
     <div style="width: 40%; display: flex; align-items: center;">
-        <img mat-card-image style="width: 100% !important; height: 90px; object-fit: contain;"    class="login-header-image"  src="../../assets/images/logo.jpg">
+        <img mat-card-image style="width: 100% !important; height: 90px; object-fit: contain;"    class="login-header-image"  src="../../assets/images/{{globals.theme}}-login-logo.png">
         <!--kp20032019  descomentar cuando quiera el nuevo diseño-->
     </div>
     <div style="width: 40%;">
