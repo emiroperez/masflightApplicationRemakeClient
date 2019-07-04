@@ -1,5 +1,5 @@
 <div [style.height.px]="panelHeight">
-  <div class="msf-dashboard-panel-container" [style.height.px]="panelHeight - 18" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && globals.readOnlyDashboard">
+  <div class="msf-dashboard-panel-container" [style.height.px]="panelHeight - 2" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && globals.readOnlyDashboard">
     <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-picture-container">
       <div class="msf-dashboard-panel-picture-label-container">
         <div class="msf-dashboard-panel-picture-label">
@@ -8,7 +8,7 @@
       </div>
     </div>
   </div>
-  <div class="msf-dashboard-panel-container" [style.height.px]="panelHeight - 18" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !globals.readOnlyDashboard">
+  <div class="msf-dashboard-panel-container" [style.height.px]="panelHeight - 2" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !globals.readOnlyDashboard">
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-panel-sub-container-row">
         <mat-form-field [formGroup]="chartForm" class="msf-width-80">
@@ -598,7 +598,7 @@
     </ng-container>
   </div>
   <!-- ngIf doesn't work with AmCharts -->
-  <div class="{{values.displayChart ? 'msf-dashboard-panel-container-chart' : 'msf-dashboard-panel-container-invisible'}}" [style.height.px]="panelHeight - 18">
+  <div class="{{values.displayChart ? 'msf-dashboard-panel-container-chart' : 'msf-dashboard-panel-container-invisible'}}" [style.height.px]="panelHeight - 2">
     <div class="msf-dashboard-panel-title" *ngIf="values.displayChart">{{values.chartName}}</div>
     <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard.chart-display-container-{{values.id}}">
       <div class="msf-dashboard-map-routelist" *ngIf="isMapPanel() && values.flightRoutes != null">
@@ -634,7 +634,7 @@
       </div>
     </div>
   </div>
-  <div class="msf-dashboard-panel-container-chart" *ngIf="values.displayInfo" [style.height.px]="panelHeight - 18">
+  <div class="msf-dashboard-panel-container-chart" *ngIf="values.displayInfo" [style.height.px]="panelHeight - 2">
     <div class="msf-dashboard-panel-title">{{values.chartName}}</div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-panel-config-button" *ngIf="!globals.readOnlyDashboard">
@@ -664,7 +664,7 @@
       </div>
     </div>
   </div>
-  <div class="msf-dashboard-panel-container-chart" *ngIf="values.displayForm" [style.height.px]="panelHeight - 18">
+  <div class="msf-dashboard-panel-container-chart" *ngIf="values.displayForm" [style.height.px]="panelHeight - 2">
     <div class="msf-dashboard-panel-title">{{values.chartName}}</div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-panel-config-button" *ngIf="!globals.readOnlyDashboard">
@@ -688,7 +688,7 @@
       </div>
     </div>
   </div>
-  <div class="msf-dashboard-panel-container-chart" *ngIf="values.displayPic" [style.height.px]="panelHeight - 18">
+  <div class="msf-dashboard-panel-container-chart" *ngIf="values.displayPic" [style.height.px]="panelHeight - 2">
     <div class="msf-dashboard-panel-title"><br></div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-panel-config-button" *ngIf="!globals.readOnlyDashboard">
@@ -707,7 +707,7 @@
       </div>
     </div>
   </div>
-  <div class="msf-dashboard-panel-container-chart" [style.display]="values.displayTable ? 'block' : 'none'" [style.height.px]="panelHeight - 18">
+  <div class="msf-dashboard-panel-container-chart" [style.display]="values.displayTable ? 'block' : 'none'" [style.height.px]="panelHeight - 2">
     <div class="msf-dashboard-panel-title" [style.padding-bottom.px]="5">{{values.chartName}}</div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-panel-config-button" *ngIf="!globals.readOnlyDashboard">
@@ -734,7 +734,7 @@
       </div>
     </div>
   </div>
-  <div class="msf-dashboard-panel-container-chart" [style.display]="values.displayMapbox ? 'block' : 'none'" [style.height.px]="panelHeight - 18">
+  <div class="msf-dashboard-panel-container-chart" [style.display]="values.displayMapbox ? 'block' : 'none'" [style.height.px]="panelHeight - 2">
     <div class="msf-dashboard-panel-title">{{values.chartName}}</div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-panel-config-button" *ngIf="!globals.readOnlyDashboard">

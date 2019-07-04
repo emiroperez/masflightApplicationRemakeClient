@@ -60,6 +60,11 @@
     padding-left: 10px;
 }
 
+.cdk-drag-preview .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-button .msf-dashboard-column-properties-button
+{
+    padding-left: 10px;
+}
+
 .cdk-drag-placeholder
 {
     opacity: 0;

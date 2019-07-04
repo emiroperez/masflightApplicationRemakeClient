@@ -3490,7 +3490,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   calcPanelHeight(): number
   {
-    return this.panelHeight - 39;
+    return this.panelHeight - 19;
   }
 
   calcRouteListHeight(): number
@@ -3498,16 +3498,16 @@ export class MsfDashboardPanelComponent implements OnInit {
     switch (this.panelHeight)
     {
       case 303: // Small
-        return 243;
+        return 263;
 
       case 333: // Medium
-        return 273;
+        return 293;
 
       case 378: // Large
-        return 318;
+        return 338;
 
       default: // 12 = Very Large
-        return 408;
+        return 428;
     }
   }
 

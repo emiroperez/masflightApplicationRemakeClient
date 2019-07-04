@@ -745,4 +745,9 @@ export class MsfDashboardComponent implements OnInit {
     this.service.setDashboardColumnPositions (this, newColumnPos,
       this.columnSwapSucess, this.columnSwapError);
   }
+
+  calcBorderHeight(column): number
+  {
+    return this.getColumnHeight(column) + 18;
+  }
 }
