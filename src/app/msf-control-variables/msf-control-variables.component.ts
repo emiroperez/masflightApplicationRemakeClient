@@ -30,7 +30,7 @@ export class MsfControlVariablesComponent implements OnInit {
     return !icon.endsWith (".png");
   }
 
-  getImageIcon(url): string
+  getImageIcon(url, argsContainer): string
   {
     let newurl, filename: string;
     let path: string[];
@@ -43,7 +43,11 @@ export class MsfControlVariablesComponent implements OnInit {
     for (let dir of path)
       newurl += dir + "/";
 
-    newurl += this.globals.theme + "-" + filename;
+    if (argsContainer.hover || argsContainer.open)
+      newurl += this.globals.theme + "-hover-" + filename;
+    else
+      newurl += this.globals.theme + "-" + filename;
+
     return newurl;
   }
 

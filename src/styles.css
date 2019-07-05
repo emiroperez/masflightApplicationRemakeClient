@@ -119,11 +119,35 @@
 .dark-theme .msf-dashboard-menu-component, .dark-theme .msf-dashboard-menu-component-active {
   background-color: #3d3d3d;
 }
+.dark-theme .msf-dashboard-menu-component .msf-menu-cmpte-row, .dark-theme .msf-dashboard-menu-component-active .msf-menu-cmpte-row {
+  color: #ffffff;
+}
+.dark-theme .msf-dashboard-menu-component .msf-menu-mat-icon, .dark-theme .msf-dashboard-menu-component-active .msf-menu-mat-icon {
+  color: #c7dcf1;
+}
+.dark-theme .msf-dashboard-menu-component .msf-menu-image-border, .dark-theme .msf-dashboard-menu-component-active .msf-menu-image-border {
+  border-right: 1px solid #5b5b5f;
+}
 .dark-theme .msf-dashboard-menu-component:hover, .dark-theme .msf-dashboard-menu-component-active:hover {
   background-color: #1e1e1e;
 }
+.dark-theme .msf-dashboard-menu-component:hover .msf-menu-mat-icon, .dark-theme .msf-dashboard-menu-component-active:hover .msf-menu-mat-icon {
+  color: #5b5b5f;
+}
+.dark-theme .msf-dashboard-menu-component:hover .msf-menu-component-text, .dark-theme .msf-dashboard-menu-component-active:hover .msf-menu-component-text, .dark-theme .msf-dashboard-menu-component:hover .msf-menu-cmpte-row, .dark-theme .msf-dashboard-menu-component-active:hover .msf-menu-cmpte-row {
+  color: #ffffff;
+}
+.dark-theme .msf-dashboard-menu-component:hover .msf-menu-image-border, .dark-theme .msf-dashboard-menu-component-active:hover .msf-menu-image-border {
+  border-right: 1px solid #5b5b5f;
+}
 .dark-theme .msf-dashboard-menu-component-active {
   background-color: #1e1e1e !important;
+}
+.dark-theme .msf-dashboard-menu-component-active .msf-menu-component-text, .dark-theme .msf-dashboard-menu-component-active .msf-menu-cmpte-row {
+  color: #ffffff;
+}
+.dark-theme .msf-dashboard-menu-component-active .msf-menu-image-border {
+  border-right: 1px solid #ffffff;
 }
 .dark-theme .msf-dashboard-menu-arguments-container, .dark-theme .msf-dashboard-menu-arguments-container-show, .dark-theme .msf-dashboard-menu-arguments-container-hidden {
   color: #ffffff;
@@ -686,9 +710,6 @@
 .dark-theme .msf-menu-component-text {
   color: #ffffff;
 }
-.dark-theme .msf-menu-cmpte-row {
-  color: #ffffff;
-}
 .dark-theme .msf-menu-arguments-container, .dark-theme .msf-menu-arguments-container-show, .dark-theme .msf-menu-arguments-container-hidden {
   color: #ffffff;
   background-color: inherit;
@@ -787,6 +808,7 @@
 }
 .dark-theme .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
   color: #ffffff;
+  font-weight: 450;
 }
 .dark-theme .ng-select.ng-select-focused .ng-select-container .ng-arrow-wrapper .ng-arrow {
   color: #ffffff !important;
@@ -807,6 +829,9 @@
 }
 .dark-theme .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
   background-color: #01abec;
+}
+.dark-theme .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-disabled {
+  color: #727277 !important;
 }
 .dark-theme .mat-form-field-appearance-legacy .mat-form-field-prefix .mat-datepicker-toggle-default-icon, .dark-theme .mat-form-field-appearance-legacy .mat-form-field-suffix .mat-datepicker-toggle-default-icon {
   color: #ffffff;
@@ -850,9 +875,6 @@
 }
 .dark-theme .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label, .dark-theme .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
   color: #ffffff !important;
-}
-.dark-theme .msf-menu-mat-icon {
-  color: #c7dcf1;
 }
 .dark-theme .mat-select-value {
   color: #ffffff;
@@ -1159,6 +1181,9 @@
 }
 .dark-theme .mat-form-field-appearance-legacy .mat-form-field-underline {
   background-color: #9e9e9e;
+}
+.dark-theme .msf-dashboard-menu-arguments-container-show .mat-form-field-appearance-legacy .mat-form-field-underline {
+  background-color: #4e4e4e;
 }
 .dark-theme .menu-drag-handle {
   color: #ffffff;
@@ -1470,11 +1495,35 @@
 .light-theme .msf-dashboard-menu-component, .light-theme .msf-dashboard-menu-component-active {
   background-color: #e6e6e6;
 }
+.light-theme .msf-dashboard-menu-component .msf-menu-cmpte-row, .light-theme .msf-dashboard-menu-component-active .msf-menu-cmpte-row {
+  color: #4d4d4d;
+}
+.light-theme .msf-dashboard-menu-component .msf-menu-mat-icon, .light-theme .msf-dashboard-menu-component-active .msf-menu-mat-icon {
+  color: #ff6131;
+}
+.light-theme .msf-dashboard-menu-component .msf-menu-image-border, .light-theme .msf-dashboard-menu-component-active .msf-menu-image-border {
+  border-right: 1px solid #ff6131;
+}
 .light-theme .msf-dashboard-menu-component:hover, .light-theme .msf-dashboard-menu-component-active:hover {
-  background-color: #c0c0c0;
+  background-color: #eb5c1b;
+}
+.light-theme .msf-dashboard-menu-component:hover .msf-menu-mat-icon, .light-theme .msf-dashboard-menu-component-active:hover .msf-menu-mat-icon {
+  color: #ffffff;
+}
+.light-theme .msf-dashboard-menu-component:hover .msf-menu-component-text, .light-theme .msf-dashboard-menu-component-active:hover .msf-menu-component-text, .light-theme .msf-dashboard-menu-component:hover .msf-menu-cmpte-row, .light-theme .msf-dashboard-menu-component-active:hover .msf-menu-cmpte-row {
+  color: #ffffff;
+}
+.light-theme .msf-dashboard-menu-component:hover .msf-menu-image-border, .light-theme .msf-dashboard-menu-component-active:hover .msf-menu-image-border {
+  border-right: 1px solid #ffffff;
 }
 .light-theme .msf-dashboard-menu-component-active {
-  background-color: #c0c0c0 !important;
+  background-color: #eb5c1b !important;
+}
+.light-theme .msf-dashboard-menu-component-active .msf-menu-component-text, .light-theme .msf-dashboard-menu-component-active .msf-menu-cmpte-row {
+  color: #ffffff;
+}
+.light-theme .msf-dashboard-menu-component-active .msf-menu-image-border {
+  border-right: 1px solid #ffffff;
 }
 .light-theme .msf-dashboard-menu-arguments-container, .light-theme .msf-dashboard-menu-arguments-container-show, .light-theme .msf-dashboard-menu-arguments-container-hidden {
   color: #4d4d4d;
@@ -2037,9 +2086,6 @@
 .light-theme .msf-menu-component-text {
   color: #4d4d4d;
 }
-.light-theme .msf-menu-cmpte-row {
-  color: #4d4d4d;
-}
 .light-theme .msf-menu-arguments-container, .light-theme .msf-menu-arguments-container-show, .light-theme .msf-menu-arguments-container-hidden {
   color: #4d4d4d;
   background-color: inherit;
@@ -2138,6 +2184,7 @@
 }
 .light-theme .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
   color: #4d4d4d;
+  font-weight: 450;
 }
 .light-theme .ng-select.ng-select-focused .ng-select-container .ng-arrow-wrapper .ng-arrow {
   color: #4d4d4d !important;
@@ -2149,15 +2196,18 @@
   border-color: #eb5c1b !important;
 }
 .light-theme .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
-  color: #eb5c1b !important;
-  background: rgba(0, 0, 0, 0.1);
+  color: #ffffff !important;
+  background: #eb5c1b;
 }
 .light-theme .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected {
-  color: #eb5c1b !important;
-  background: rgba(0, 0, 0, 0.225);
+  color: #ffffff !important;
+  background: #d54505;
 }
 .light-theme .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
   background-color: #eb5c1b;
+}
+.light-theme .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-disabled {
+  color: #b2b2b2 !important;
 }
 .light-theme .mat-form-field-appearance-legacy .mat-form-field-prefix .mat-datepicker-toggle-default-icon, .light-theme .mat-form-field-appearance-legacy .mat-form-field-suffix .mat-datepicker-toggle-default-icon {
   color: #4d4d4d;
@@ -2201,9 +2251,6 @@
 }
 .light-theme .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label, .light-theme .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
   color: #4d4d4d !important;
-}
-.light-theme .msf-menu-mat-icon {
-  color: #4d4d4d;
 }
 .light-theme .mat-select-value {
   color: #4d4d4d;
@@ -2511,6 +2558,9 @@
 .light-theme .mat-form-field-appearance-legacy .mat-form-field-underline {
   background-color: #4e4e4e;
 }
+.light-theme .msf-dashboard-menu-arguments-container-show .mat-form-field-appearance-legacy .mat-form-field-underline {
+  background-color: #e6e6e6;
+}
 .light-theme .menu-drag-handle {
   color: #4d4d4d;
   line-height: 40px;
@@ -2574,7 +2624,7 @@
   color: #4d4d4d !important;
 }
 .light-theme .img-item-category-argument {
-  color: #4d4d4d;
+  color: #ff6131;
 }
 .light-theme .dialog-category-arguments-body {
   background-color: #e6e6e6;
@@ -3751,6 +3801,7 @@ button[aria-expanded=true] {
   display: flex;
   justify-content: flex-start;
   margin-left: 10px;
+  font-weight: 500;
 }
 
 .msf-menu-adm {
@@ -3777,10 +3828,6 @@ button[aria-expanded=true] {
   padding-right: 5px;
   width: 15px !important;
   height: 15px !important;
-}
-
-.msf-menu-image-border {
-  border-right: 1px solid #5b5b5f;
 }
 
 .msf-menu-mat-icon {
@@ -6406,10 +6453,6 @@ img.msf-calendar-image {
   color: #ffffff;
 }
 
-.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-disabled {
-  color: #8e8e8e !important;
-}
-
 .activation-form .mat-checkbox-frame {
   border-color: #2d3436 !important;
 }
@@ -7693,6 +7736,18 @@ mat-form-field.msf-table-input {
 
 .login-card .mat-form-field-appearance-legacy .mat-form-field-underline {
   transition: 0.5s;
+}
+
+.msf-control-variables-text {
+  font-weight: 500;
+}
+
+.mat-option-text {
+  display: inline-block;
+  flex-grow: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 450;
 }
 
 /*# sourceMappingURL=styles.css.map */
