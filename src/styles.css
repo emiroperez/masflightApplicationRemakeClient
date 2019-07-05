@@ -1345,6 +1345,9 @@
 .dark-theme .dialog-edit-argument-category-container {
   color: #ffffff !important;
 }
+.dark-theme .header-icon2 {
+  color: #c7dcf1;
+}
 .dark-theme ::-webkit-scrollbar-thumb {
   background-color: #01abec;
   border-radius: 10px;
@@ -2685,6 +2688,9 @@
 }
 .light-theme .dialog-edit-argument-category-container {
   color: #4d4d4d !important;
+}
+.light-theme .header-icon2 {
+  color: #ffffff;
 }
 .light-theme ::-webkit-scrollbar-thumb {
   background-color: #eb5c1b;
@@ -7633,6 +7639,10 @@ mat-form-field.msf-table-input {
 .dialog-edit-argument-category-container .dialog-edit-argument-category-item-footer {
   width: 100%;
   text-align: right;
+}
+
+.header-icon2:hover {
+  cursor: pointer;
 }
 
 /*# sourceMappingURL=styles.css.map */
