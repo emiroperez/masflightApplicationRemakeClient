@@ -1241,11 +1241,20 @@
   background-color: #01abec !important;
 }
 .dark-theme .theme-picker {
-  background: rgba(51, 51, 51, 0.5) !important;
+  background: #333333;
   color: #ffffff;
 }
-.dark-theme .theme-picker .mat-radio-outer-circle {
-  border-color: #ffffff;
+.dark-theme .theme-picker .theme-picker-label-container {
+  background: #01abec;
+}
+.dark-theme .theme-picker .mat-slide-toggle-thumb {
+  background-color: #01abec;
+}
+.dark-theme .theme-picker .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
+  background-color: rgba(1, 171, 236, 0.54);
+}
+.dark-theme .theme-picker .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+  background-color: #01abec;
 }
 .dark-theme .login-card {
   background: rgba(51, 51, 51, 0.5) !important;
@@ -2550,11 +2559,20 @@
   background-color: #eb5c1b !important;
 }
 .light-theme .theme-picker {
-  background: rgba(255, 255, 255, 0.5) !important;
+  background: #ffffff;
   color: #4d4d4d;
 }
-.light-theme .theme-picker .mat-radio-outer-circle {
-  border-color: #4d4d4d;
+.light-theme .theme-picker .theme-picker-label-container {
+  background: #eb5c1b;
+}
+.light-theme .theme-picker .mat-slide-toggle-thumb {
+  background-color: #eb5c1b;
+}
+.light-theme .theme-picker .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
+  background-color: rgba(235, 92, 27, 0.54);
+}
+.light-theme .theme-picker .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+  background-color: #eb5c1b;
 }
 .light-theme .login-card {
   background: rgba(255, 255, 255, 0.5) !important;
@@ -2704,6 +2722,9 @@ body {
   margin: 0px 30px;
   font-weight: bold;
   font-size: x-large;
+  margin-top: -6px;
+  color: #ffffff;
+  width: 55%;
 }
 
 .msf-header-icons {
@@ -7255,30 +7276,42 @@ mat-form-field.msf-table-input {
 .login-header {
   display: flex;
   flex-direction: row;
-  width: 98%;
+  width: 100%;
   position: absolute;
 }
 .login-header .theme-picker {
-  margin-top: -5px;
-  margin-left: 40px;
-  width: 240px;
+  width: 100%;
+  height: 50px;
   font-size: 14px;
 }
-.login-header .theme-picker .theme-picker-label {
-  padding: 20px;
+.login-header .theme-picker .theme-picker-switch-container {
+  float: right;
+  display: flex;
+  height: 100%;
 }
-.login-header .theme-picker .theme-picker-radio-group {
-  flex-direction: column;
+.login-header .theme-picker .theme-picker-switch-container .theme-picker-slider-label {
+  padding-top: 16px;
+  padding-right: 16px;
+  font-weight: 500;
 }
-.login-header .theme-picker .theme-picker-radio-group .theme-picker-radio {
-  margin: 10px;
+.login-header .theme-picker .theme-picker-switch-container .theme-picker-slider {
+  padding-top: 12px;
+  padding-right: 12px;
+}
+.login-header .theme-picker .theme-picker-switch-container .theme-picker-label-container {
+  border-radius: 30px 0 0 30px;
+  padding-top: 16px;
+}
+.login-header .theme-picker .theme-picker-switch-container .theme-picker-label-container .theme-picker-label {
+  padding: 0px 18px;
+  color: #ffffff;
+  font-weight: 450;
 }
 .login-header .login-header-logo {
-  float: right;
-  padding: 30px;
-  padding-top: 10px;
-  height: 20px;
-  width: 211px !important;
+  margin-top: 13px !important;
+  margin-left: 6px;
+  width: 200px;
+  height: 25px;
   object-fit: contain;
 }
 

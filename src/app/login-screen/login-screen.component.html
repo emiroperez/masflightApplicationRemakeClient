@@ -1,15 +1,16 @@
 <div class="application-class">
     <div class="login-header">
-        <div [style.width.%]="100">
-            <mat-card class="theme-picker">
-                <span class="theme-picker-label">Theme:</span>
-                <mat-radio-group [(ngModel)]="globals.theme" (ngModelChange)="globals.setOverlayTheme()" class="theme-picker-radio-group">
-                    <mat-radio-button class="theme-picker-radio" class="cancels-checkbox" value="light-theme">Light</mat-radio-button>
-                    <mat-radio-button class="theme-picker-radio" class="cancels-checkbox" value="dark-theme">Dark</mat-radio-button>
-                </mat-radio-group>
-            </mat-card>
+        <div class="theme-picker">
+            <img class="login-header-logo" mat-card-image src="../../assets/images/{{globals.theme}}-logo.png">
+            <div class="theme-picker-switch-container">
+                <span class="theme-picker-slider-label">DARK</span>
+                <mat-slide-toggle class="theme-picker-slider" [checked]="globals.theme === 'dark-theme' ? false : true" (change)="globals.setOverlayTheme($event)"></mat-slide-toggle>
+                <span class="theme-picker-slider-label">LIGHT</span>
+                <div class="theme-picker-label-container">
+                    <span class="theme-picker-label">THEME</span>
+                </div>
+            </div>
         </div>
-        <img class="login-header-logo" mat-card-image src="../../assets/images/{{globals.theme}}-logo.png">
     </div>
     <div class="login-body">
         <div class="login-body-logo">

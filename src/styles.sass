@@ -838,10 +838,16 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
         .admin-checkboxes.mat-checkbox-disabled.mat-checkbox-checked .mat-checkbox-background, .mat-checkbox-disabled.mat-checkbox-indeterminate .mat-checkbox-background
             background-color: $primary-color !important
         .theme-picker
-            background: rgba($background-color, 0.5) !important
+            background: $background-color
             color: $font-color
-            .mat-radio-outer-circle
-                border-color: $font-color
+            .theme-picker-label-container
+                background: $primary-color
+            .mat-slide-toggle-thumb
+                background-color: $primary-color
+            .mat-slide-toggle.mat-checked .mat-slide-toggle-bar
+                background-color: rgba($primary-color, .54)
+            .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb
+                background-color: $primary-color
         .login-card
             background: rgba($background-color, 0.5) !important
         .msf-item input[type="text"], .msf-item input[type="password"], .msf-item input[type="number"], .msf-item input[type="email"], .login-card input[type="text"], .login-card input[type="password"], .login-card  nput[type="number"], .login-card input[type="email"]
@@ -969,6 +975,9 @@ body
     margin: 0px 30px
     font-weight: bold
     font-size: x-large
+    margin-top: -6px
+    color: #ffffff
+    width: 55%
 
 .msf-header-icons 
     display: flex
@@ -4860,25 +4869,35 @@ mat-form-field.msf-table-input
 .login-header
     display: flex
     flex-direction: row
-    width: 98%
+    width: 100%
     position: absolute
     .theme-picker
-        margin-top: -5px
-        margin-left: 40px
-        width: 240px
+        width: 100%
+        height: 50px
         font-size: 14px
-        .theme-picker-label
-            padding: 20px
-        .theme-picker-radio-group
-            flex-direction: column
-            .theme-picker-radio
-                margin: 10px
+        .theme-picker-switch-container
+            float: right
+            display: flex
+            height: 100%
+            .theme-picker-slider-label
+                padding-top: 16px
+                padding-right: 16px
+                font-weight: 500
+            .theme-picker-slider
+                padding-top: 12px
+                padding-right: 12px
+            .theme-picker-label-container
+                border-radius: 30px 0 0 30px
+                padding-top: 16px
+                .theme-picker-label
+                    padding: 0px 18px
+                    color: #ffffff
+                    font-weight: 450
     .login-header-logo
-        float: right
-        padding: 30px
-        padding-top: 10px
-        height: 20px
-        width: 211px !important
+        margin-top: 13px !important
+        margin-left: 6px
+        width: 200px
+        height: 25px
         object-fit: contain
 
 .login-body
