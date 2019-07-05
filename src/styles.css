@@ -7419,7 +7419,7 @@ mat-form-field.msf-table-input {
 .admin-arguments-category-outer-container .admin-arguments-category-inner-container .admin-arguments-category-right-panel .admin-arguments-category-right-panel-header {
   display: flex;
   flex-direction: column;
-  height: 70%;
+  height: 350px;
 }
 .admin-arguments-category-outer-container .admin-arguments-category-inner-container .admin-arguments-category-right-panel .admin-arguments-category-right-panel-header .admin-arguments-category-form-container {
   display: flex;
