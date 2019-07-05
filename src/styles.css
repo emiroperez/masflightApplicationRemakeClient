@@ -7333,9 +7333,10 @@ mat-form-field.msf-table-input {
   height: 100%;
 }
 .login-header .theme-picker .theme-picker-switch-container .theme-picker-slider-label {
-  padding-top: 16px;
+  padding-top: 18px;
   padding-right: 16px;
   font-weight: 500;
+  font-size: 12px;
 }
 .login-header .theme-picker .theme-picker-switch-container .theme-picker-slider {
   padding-top: 12px;
