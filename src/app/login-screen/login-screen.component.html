@@ -1,7 +1,7 @@
 <div class="application-class">
     <div class="login-header">
         <div class="theme-picker">
-            <img class="login-header-logo" mat-card-image src="../../assets/images/{{globals.theme}}-logo.png">
+            <div class="login-header-logo" mat-card-image></div>
             <div class="theme-picker-switch-container">
                 <span class="theme-picker-slider-label">DARK</span>
                 <mat-slide-toggle class="theme-picker-slider" [checked]="globals.theme === 'dark-theme' ? false : true" (change)="globals.setOverlayTheme($event)"></mat-slide-toggle>
@@ -14,7 +14,7 @@
     </div>
     <div class="login-body">
         <div class="login-body-logo">
-            <img mat-card-image class="login-header-image login-pulse-logo" src="../../assets/images/{{globals.theme}}-login-logo.png">
+            <div mat-card-image class="login-header-image login-pulse-logo"></div>
         </div>
         <div class="login-body-container">
             <mat-card class="login-card" [style.margin.px]="30">

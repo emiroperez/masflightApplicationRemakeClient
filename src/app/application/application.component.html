@@ -68,9 +68,9 @@
 </div>
 <div *ngIf="!globals.isFullscreen || (globals.isFullscreen && globals.currentOption !== 'dashboard')"
     class="msf-menu-icons-container">
-    <!-- <div class="msf-secondary-color msf-menu-icon-container msf-menu-adm" *ngIf="!mobileQuery.matches">connected</div> -->
-    <div class="msf-menu-icon-container msf-menu-icons-left">{{globals.currentOption ? globals.currentOption.label:''}}</div>
-    <div class="msf-menu-icon-container msf-menu-icons-right">
+    <!-- <div class="msf-secondary-color msf-menu-adm" *ngIf="!mobileQuery.matches">connected</div> -->
+    <div class="msf-menu-icons-left">{{globals.currentOption ? globals.currentOption.label:''}}</div>
+    <div class="msf-menu-icons-right">
         <button *ngIf="globals.currentOption !== 'dashboard'" [disabled]="(!msfContainerRef.msfTableRef || !msfContainerRef.msfTableRef.dataSource || msfContainerRef.msfTableRef.dataSource.length < 0 || globals.mapsc) || !dynamicTablePlan" class="msf-menu-icon" (click)="dynamicTable()">
             <img src="../../assets/images/{{globals.theme}}-dynamicTable.png" class="msf-menu-image msf-vertical-middle">
             <span class="msf-vertical-middle" *ngIf="!mobileQuery.matches">Dynamic Table</span>

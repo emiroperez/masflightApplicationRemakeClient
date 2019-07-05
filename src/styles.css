@@ -1269,6 +1269,7 @@
 }
 .dark-theme .login-card {
   background: rgba(51, 51, 51, 0.5) !important;
+  transition: 0.5s;
 }
 .dark-theme .msf-item input[type=text], .dark-theme .msf-item input[type=password], .dark-theme .msf-item input[type=number], .dark-theme .msf-item input[type=email], .dark-theme .login-card input[type=text], .dark-theme .login-card input[type=password], .dark-theme .login-card nput[type=number], .dark-theme .login-card input[type=email] {
   color: #ffffff;
@@ -1347,6 +1348,12 @@
 }
 .dark-theme .header-icon2 {
   color: #c7dcf1;
+}
+.dark-theme .login-header-logo {
+  background-image: url(assets/images/dark-theme-logo.png);
+}
+.dark-theme .login-pulse-logo {
+  background-image: url(assets/images/dark-theme-login-logo.png);
 }
 .dark-theme ::-webkit-scrollbar-thumb {
   background-color: #01abec;
@@ -2613,6 +2620,7 @@
 }
 .light-theme .login-card {
   background: rgba(255, 255, 255, 0.5) !important;
+  transition: 0.5s;
 }
 .light-theme .msf-item input[type=text], .light-theme .msf-item input[type=password], .light-theme .msf-item input[type=number], .light-theme .msf-item input[type=email], .light-theme .login-card input[type=text], .light-theme .login-card input[type=password], .light-theme .login-card nput[type=number], .light-theme .login-card input[type=email] {
   color: #4d4d4d;
@@ -2692,6 +2700,12 @@
 .light-theme .header-icon2 {
   color: #ffffff;
 }
+.light-theme .login-header-logo {
+  background-image: url(assets/images/light-theme-logo.png);
+}
+.light-theme .login-pulse-logo {
+  background-image: url(assets/images/light-theme-login-logo.png);
+}
 .light-theme ::-webkit-scrollbar-thumb {
   background-color: #eb5c1b;
   border-radius: 10px;
@@ -2721,6 +2735,7 @@ body {
   width: 100%;
   height: 50px;
   position: relative;
+  transition: 0.5s;
 }
 
 .msf-header-image-container {
@@ -2766,6 +2781,7 @@ body {
   background-repeat: no-repeat;
   background-position: 15% 55%;
   background-size: 45%;
+  transition: 0.5s;
 }
 
 .msf-intro-welcome-labels {
@@ -2851,6 +2867,7 @@ body {
   bottom: 0;
   display: flex;
   align-items: center;
+  transition: 0.5s;
 }
 
 .msf-option {
@@ -3221,6 +3238,7 @@ p {
 .login-button, .msf-medium-button, .msf-big-button {
   line-height: 50px !important;
   padding: 0 50px !important;
+  transition: 0.5s;
 }
 
 .msf-big-button {
@@ -3732,6 +3750,7 @@ button[aria-expanded=true] {
   width: 30%;
   display: flex;
   justify-content: flex-start;
+  margin-left: 10px;
 }
 
 .msf-menu-adm {
@@ -6289,6 +6308,7 @@ table.results {
   margin: 0 !important;
   width: 100% !important;
   background-position: center !important;
+  transition: background-image 0.5s ease-in-out;
 }
 
 /* kp */
@@ -7350,16 +7370,21 @@ mat-form-field.msf-table-input {
 }
 .login-header .login-header-logo {
   margin-top: 13px !important;
-  margin-left: 6px;
+  margin-left: 21px;
   width: 200px;
   height: 25px;
   object-fit: contain;
+  transition: background-image 0.5s ease-in-out;
+  background-size: contain;
+  background-repeat: no-repeat;
+  flex: 1;
 }
 
 .theme-picker {
   width: 100%;
   height: 50px;
   font-size: 14px;
+  transition: 0.5s;
 }
 .theme-picker .theme-picker-switch-container {
   float: right;
@@ -7379,11 +7404,16 @@ mat-form-field.msf-table-input {
 .theme-picker .theme-picker-switch-container .theme-picker-label-container {
   border-radius: 30px 0 0 30px;
   padding-top: 16px;
+  transition: 0.5s;
 }
 .theme-picker .theme-picker-switch-container .theme-picker-label-container .theme-picker-label {
   padding: 0px 18px;
   color: #ffffff;
   font-weight: 450;
+}
+
+.login-header .theme-picker {
+  display: flex;
 }
 
 .login-body {
@@ -7400,7 +7430,11 @@ mat-form-field.msf-table-input {
 .login-body .login-body-logo .login-pulse-logo {
   width: 100% !important;
   height: 90px !important;
+  margin-left: 102px !important;
   object-fit: contain;
+  transition: background-image 0.5s ease-in-out;
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 .login-body .login-body-container {
   width: 40%;
@@ -7641,8 +7675,24 @@ mat-form-field.msf-table-input {
   text-align: right;
 }
 
+.header-icon2 {
+  transition: 0.5s;
+}
+
 .header-icon2:hover {
   cursor: pointer;
+}
+
+.body-background {
+  transition: background-image 0.5s ease-in-out;
+}
+
+.login-font-color, .login-link-reg, .login-link-reg2, .mat-icon.input_img {
+  transition: 0.5s;
+}
+
+.login-card .mat-form-field-appearance-legacy .mat-form-field-underline {
+  transition: 0.5s;
 }
 
 /*# sourceMappingURL=styles.css.map */

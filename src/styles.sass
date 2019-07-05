@@ -859,6 +859,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                     background-color: rgba(0, 0, 0, .25)
         .login-card
             background: rgba($background-color, 0.5) !important
+            transition: 0.5s
         .msf-item input[type="text"], .msf-item input[type="password"], .msf-item input[type="number"], .msf-item input[type="email"], .login-card input[type="text"], .login-card input[type="password"], .login-card  nput[type="number"], .login-card input[type="email"]
             color: $font-color
         .password-card input[type="email"], .password-card input[type="password"]
@@ -915,6 +916,10 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             color: $font-color !important
         .header-icon2
             color: $intro-logout-icon-color
+        .login-header-logo
+            background-image: url(assets/images/#{$name}-logo.png)
+        .login-pulse-logo
+            background-image: url(assets/images/#{$name}-login-logo.png)
         ::-webkit-scrollbar-thumb
             background-color: $primary-color
             border-radius: 10px
@@ -942,6 +947,7 @@ body
     width: 100%
     height: 50px
     position: relative
+    transition: 0.5s
 
 .msf-header-image-container
     width: 30%
@@ -987,6 +993,7 @@ body
     // background-image: url(assets/images/logo_global_peqe.png) //kp28032019
     background-position: 15% 55% //kp28032019
     background-size: 45% //kp28032019
+    transition: 0.5s
 
 .msf-intro-welcome-labels
     margin-top: -3px
@@ -1062,6 +1069,7 @@ body
     bottom: 0
     display: flex
     align-items: center
+    transition: 0.5s
 
 .msf-option
     color: white
@@ -1366,13 +1374,14 @@ p
     width: 48%
 
 .login-header-image
-                width: 80%!important
-                // height: 30px
-                height: 50px //descomentar para el nuevo diseño KP20032019
-                margin: 0 auto!important
+    width: 80%!important
+    // height: 30px
+    height: 50px //descomentar para el nuevo diseño KP20032019
+    margin: 0 auto!important
+
 .image-avatar
-            width: 20px
-            height: 20px
+    width: 20px
+    height: 20px
 
 .password-header
     width: 100% !important
@@ -1390,6 +1399,7 @@ p
 .login-button
     line-height: 50px !important
     padding: 0 50px !important
+    transition: 0.5s
 
 .msf-big-button
     @extend .login-button
@@ -1833,8 +1843,7 @@ button[aria-expanded="true"]
     width: 30%
     display: flex
     justify-content: flex-start
-
-.msf-menu-icon-container
+    margin-left: 10px
 
 .msf-menu-adm
     margin-right: 100px
@@ -4042,6 +4051,7 @@ table.results
     margin: 0 !important
     width: 100% !important
     background-position: center !important
+    transition: background-image 0.5s ease-in-out
 
 /* kp */
 .footer-container
@@ -4905,15 +4915,20 @@ mat-form-field.msf-table-input
     position: absolute
     .login-header-logo
         margin-top: 13px !important
-        margin-left: 6px
+        margin-left: 21px
         width: 200px
         height: 25px
         object-fit: contain
+        transition: background-image 0.5s ease-in-out
+        background-size: contain
+        background-repeat: no-repeat
+        flex: 1
 
 .theme-picker
     width: 100%
     height: 50px
     font-size: 14px
+    transition: 0.5s
     .theme-picker-switch-container
         float: right
         display: flex
@@ -4929,10 +4944,15 @@ mat-form-field.msf-table-input
         .theme-picker-label-container
             border-radius: 30px 0 0 30px
             padding-top: 16px
+            transition: 0.5s
             .theme-picker-label
                 padding: 0px 18px
                 color: #ffffff
                 font-weight: 450
+
+.login-header
+    .theme-picker
+        display: flex
 
 .login-body
     display: flex
@@ -4946,7 +4966,11 @@ mat-form-field.msf-table-input
         .login-pulse-logo
             width: 100% !important
             height: 90px !important
+            margin-left: 102px !important
             object-fit: contain
+            transition: background-image 0.5s ease-in-out
+            background-size: contain
+            background-repeat: no-repeat
     .login-body-container
         width: 40%
 
@@ -5132,5 +5156,18 @@ mat-form-field.msf-table-input
         width: 100%
         text-align: right
 
+.header-icon2
+    transition: 0.5s
+
 .header-icon2:hover
     cursor: pointer
+
+.body-background
+    transition: background-image 0.5s ease-in-out
+
+.login-font-color, .login-link-reg, .login-link-reg2, .mat-icon.input_img
+    transition: 0.5s
+
+.login-card
+    .mat-form-field-appearance-legacy .mat-form-field-underline
+        transition: 0.5s
