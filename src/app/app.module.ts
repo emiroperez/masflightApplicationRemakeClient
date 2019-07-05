@@ -171,7 +171,6 @@ import { MsfAddSharedDashboardPanelComponent } from './msf-add-shared-dashboard-
 import { DrillDownDialog } from './admin-menu/admin-menu.component';
 import { FilterPipe } from './admin-menu/pipe-filter';
 import { FilterPipeArg } from './admin-arguments-category/pipe-filter';
-import { NewCategoryDialog } from './admin-menu/admin-menu.component'
 import { MsfAddSharedDashboardComponent } from './msf-add-shared-dashboard/msf-add-shared-dashboard.component';
 import { AdminArgumentsCategoryComponent } from './admin-arguments-category/admin-arguments-category.component';
 import { DragScrollModule } from 'cdk-drag-scroll';
@@ -243,7 +242,6 @@ import { MsfDynamicTableAliasComponent } from './msf-dynamic-table-alias/msf-dyn
     MsfUserListComponent,
     MsfOptionListComponent,
     ConfirmDeleteDialog,
-    NewCategoryDialog,
     EditOutputOptionsMetaDialog,
     EditCategoryArgumentDialog,
     EditOptionsDialog,
@@ -416,7 +414,6 @@ import { MsfDynamicTableAliasComponent } from './msf-dynamic-table-alias/msf-dyn
     EditCategoryArgumentDialog,
     EditOptionsDialog,
     DrillDownDialog,
-    NewCategoryDialog,
     MsfDashboardControlVariablesComponent,
     MsfConfirmationDialogComponent,
     MsfDashboardInfoFunctionsComponent,

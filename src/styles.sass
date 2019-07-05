@@ -795,7 +795,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                 color: #ffffff !important
                 caret-color: #ffffff !important
         .admin-menu-left-panel-container
-            ::-webkit-scrollbar-track
+            ::-webkit-scrollbar-thumb, ::-webkit-scrollbar-track
                 display: none
         .input-option-tree.mat-input-element
             caret-color: $font-color
@@ -896,8 +896,16 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             .arguments-list-item
                 .mat-button-wrapper
                     color: $font-color
+        .admin-menu-dialog-container
+            color: $font-color
         .category-arguments-scrollbar::-webkit-scrollbar-thumb 
             background-color: $admin-secondary-background-color
+        .admin-menu-confirmation-dialog-title, .admin-menu-confirmation-dialog-body-label
+            color: $font-color
+        .dialog-edit-argument-category-item-title-label
+            color: $primary-color
+        .dialog-edit-argument-category-container
+            color: $font-color !important
         ::-webkit-scrollbar-thumb
             background-color: $primary-color
             border-radius: 10px
@@ -4754,12 +4762,19 @@ mat-form-field.msf-table-input
     width: 55% !important
     font-size: 11px !important
 
+.img-item-picture
+    margin-left: 2px
+
+.img-item-empty
+    margin-left: 6px
+
 .img-item-category-argument
-    height: 16px
-    width: 16px
+    height: 17px
+    width: 17px
     margin-right: 8px
     margin-top: 6px
     font-size: 17px
+    object-fit: contain
 
 .dialog-item
     padding: 12px 5px
@@ -4836,6 +4851,9 @@ mat-form-field.msf-table-input
         background: transparent
 
 .admin-menu-background
+    .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label, .msf-price-fare .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus+.mat-form-field-label-wrapper .mat-form-field-label
+        -webkit-transform: translateY(-1.239125em) scale(.75) perspective(100px) translateZ(.001px) !important
+        transform: translateY(-1.239125em) scale(.75) perspective(100px) translateZ(.001px) !important
     h2
         font-weight: 500
 
@@ -5040,3 +5058,62 @@ mat-form-field.msf-table-input
 
 .img-item-category-argument-pic
     margin-top: -1px
+
+.admin-menu-content-dialog-container
+    flex: 1
+    .admin-menu-content-buttons-header
+        text-align: right
+    table
+        width: 100%
+    .mat-select-value
+        color: #2d3436
+    .mat-select-arrow
+        color: #2d3436
+    .selected
+        background-color: #f2f2f2
+    .mat-column-unit
+        max-width: 40px
+    .mat-column-argument
+        max-width: 100px
+
+.admin-menu-content-dialog-buttons
+    margin-top: 10px
+
+.admin-menu-content-cancel-button
+    margin-right: 5px !important
+
+.admin-dialog-box:last-child
+    border: none
+
+.admin-menu-confirmation-dialog-title
+    flex: 1
+
+.admin-menu-confirmation-dialog-body
+    flex: 1
+
+.admin-menu-confirmation-dialog-body-label
+    font-size: 14px
+
+.admin-menu-confirmation-dialog-footer
+    text-align: right
+
+.arguments-child
+    width: 40%
+
+.dialog-edit-argument-category-container
+    min-height: 70%
+    .dialog-edit-argument-category-item-title
+        width: 100%
+        margin: auto
+        font-size: 15px
+        .dialog-edit-argument-category-item-title-container
+            width: 100%
+            margin-bottom: 10px
+    .dialog-edit-argument-category-item-body
+        display: flex
+        flex-wrap: wrap
+        align-content: flex-start
+        margin-bottom: 50px
+    .dialog-edit-argument-category-item-footer
+        width: 100%
+        text-align: right

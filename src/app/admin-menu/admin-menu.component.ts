@@ -36,89 +36,6 @@ export class ConfirmDeleteDialog {
   }
 }
 
-
-
-@Component({
-  selector: 'new-category-dialog-app',
-  templateUrl: 'new-category-dialog.html',
-  styleUrls: ['./admin-menu.component.css']
-})
-
-export class NewCategoryDialog {
-  category: any = { label: '', icon: '', description: '', isSelected: false };
-  categories: any[] = [];
-  optionSelected: any;
-  idDomOptionSelected: any;
-  categoryDelete: any[] = [];
-  argumentDelete: any[] = [];
-  dataToSend: any[] = [];
-
-  constructor(
-    public dialogRef: MatDialogRef<NewCategoryDialog>, private service: ApplicationService, private globals: Globals,
-    @Inject(MAT_DIALOG_DATA) public data) {
-    this.categories = data;
-  }
-
-  onNoClick() {
-    this.dialogRef.close();
-  }
-
-
-
-  sendData() {
-    this.dataToSend = this.categories.concat(this.categoryDelete);
-    this.dialogRef.close(this.dataToSend);
-  }
-
-  getSelectedOption(option) {
-    if (this.category != option) {
-      option.isSelected = !option.isSelected;
-      this.category.isSelected = !this.category.isSelected;
-      this.category = option;
-    } else {
-      option.isSelected = !option.isSelected;
-      this.category = {};
-    }
-
-    console.log(this.category)
-  }
-
-  addCategory() {
-    let cat = {
-      label: '',
-      icon: '',
-      description: '',
-      arguments: []
-    }
-    this.categories.unshift(cat);
-    this.getSelectedOption(this.categories[0]);
-  }
-
-  deleteCategory() {
-    this.category.delete = true;
-    this.categoryDelete.push(this.category);
-    const index: number = this.categories.findIndex(d => d === this.category);
-    this.categories.splice(index, 1);
-  }
-
-  addArgument() {
-    let arg = {
-      description: '',
-      type: ''
-    }
-    this.category.arguments.push(arg);
-  }
-
-  deleteArgument(argument) {
-    argument.delete = true;
-    this.argumentDelete.push(argument);
-    const index: number = this.category.arguments.findIndex(d => d === argument);
-    this.category.arguments.spice(index, 1);
-  }
-
-}
-
-
 @Component({
   selector: 'drill-down-app',
   templateUrl: 'drill-down-setup.html',
@@ -1049,20 +966,6 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     _this.getOptionCategoryArguments();
 
   }
-
-  addCategoryArguments() {
-    const dialogRef = this.dialog.open(NewCategoryDialog, {
-      width: '70%',
-      data: this.categories
-    });
-    dialogRef.afterClosed().subscribe((result: any) => {
-      if (result) {
-        this.categories = result;
-        this.saveNewArgumentsCategory(result);
-      }
-    });
-  }
-
 
   saveMenu() {
     this.emptyError = 0;
