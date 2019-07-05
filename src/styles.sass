@@ -850,6 +850,13 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                 background-color: $primary-color
             .mat-slide-toggle.mat-checked .mat-ripple-element
                 background-color: $primary-color
+        .msf-header-title
+            .theme-picker
+                background: $secondary-menu-header-color
+                color: #ffffff
+                flex: 1
+                .mat-slide-toggle.mat-checked .mat-slide-toggle-bar
+                    background-color: rgba(0, 0, 0, .25)
         .login-card
             background: rgba($background-color, 0.5) !important
         .msf-item input[type="text"], .msf-item input[type="password"], .msf-item input[type="number"], .msf-item input[type="email"], .login-card input[type="text"], .login-card input[type="password"], .login-card  nput[type="number"], .login-card input[type="email"]
@@ -929,6 +936,7 @@ body
     font-family: $msf-font-family
 
 .msf-header
+    display: flex
     width: 100%
     height: 50px
     position: relative
@@ -978,16 +986,18 @@ body
     background-position: 15% 55% //kp28032019
     background-size: 45% //kp28032019
 
+.msf-intro-welcome-labels
+    margin-top: -3px
+
 .msf-header-title
-    display: inline-block
+    display: flex
     vertical-align: middle
-    color: $msf-secondary-color
-    margin: 0px 30px
+    color: #ffffff
+    margin-left: 30px
     font-weight: bold
     font-size: x-large
-    margin-top: -6px
-    color: #ffffff
     width: 55%
+    flex: 1
 
 .msf-header-icons 
     display: flex
@@ -4891,35 +4901,36 @@ mat-form-field.msf-table-input
     flex-direction: row
     width: 100%
     position: absolute
-    .theme-picker
-        width: 100%
-        height: 50px
-        font-size: 14px
-        .theme-picker-switch-container
-            float: right
-            display: flex
-            height: 100%
-            .theme-picker-slider-label
-                padding-top: 18px
-                padding-right: 16px
-                font-weight: 500
-                font-size: 12px
-            .theme-picker-slider
-                padding-top: 12px
-                padding-right: 12px
-            .theme-picker-label-container
-                border-radius: 30px 0 0 30px
-                padding-top: 16px
-                .theme-picker-label
-                    padding: 0px 18px
-                    color: #ffffff
-                    font-weight: 450
     .login-header-logo
         margin-top: 13px !important
         margin-left: 6px
         width: 200px
         height: 25px
         object-fit: contain
+
+.theme-picker
+    width: 100%
+    height: 50px
+    font-size: 14px
+    .theme-picker-switch-container
+        float: right
+        display: flex
+        height: 100%
+        .theme-picker-slider-label
+            padding-top: 18px
+            padding-right: 16px
+            font-weight: 500
+            font-size: 12px
+        .theme-picker-slider
+            padding-top: 12px
+            padding-right: 12px
+        .theme-picker-label-container
+            border-radius: 30px 0 0 30px
+            padding-top: 16px
+            .theme-picker-label
+                padding: 0px 18px
+                color: #ffffff
+                font-weight: 450
 
 .login-body
     display: flex

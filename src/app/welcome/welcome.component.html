@@ -1,16 +1,24 @@
 <!--Header-->
 <div class="msf-header">
     <div class="msf-header-image">
-        <img src="../../assets/images/{{globals.theme}}-options.png" class="header-icon2"></div>
-    <div class="msf-header-title">
-        <div class="msf-intro-welcome msf-intro-welcome-font">Welcome {{userName}}</div>
-        <div *ngIf="lastTime" class="msf-intro-welcome-font">Last time: {{lastTime}}</div>
-        <div *ngIf="!lastTime" class="msf-intro-welcome-font"><br></div>
+        <img src="../../assets/images/{{globals.theme}}-options.png" class="header-icon2">
     </div>
-    <div class="msf-header-icons" style="min-height: 50px;width: 20%;">
-        <img src="../../assets/images/logo_global_peqe.png" class="msf-header-image2">
-        <img src="../../assets/images/play.png" class="header-icon">
-        <!-- <img src="../../assets/images/opciones.png" class="header-icon">kp28032019 -->
+    <div class="msf-header-title">
+        <div class="msf-intro-welcome-labels">
+            <div class="msf-intro-welcome msf-intro-welcome-font">Welcome {{userName}}</div>
+            <div *ngIf="lastTime" class="msf-intro-welcome-font">Last time: {{lastTime}}</div>
+            <div *ngIf="!lastTime" class="msf-intro-welcome-font"><br></div>
+        </div>
+        <div class="theme-picker">
+            <div class="theme-picker-switch-container">
+                <span class="theme-picker-slider-label">DARK</span>
+                <mat-slide-toggle class="theme-picker-slider" [checked]="globals.theme === 'dark-theme' ? false : true" (change)="globals.setOverlayTheme($event)"></mat-slide-toggle>
+                <span class="theme-picker-slider-label">LIGHT</span>
+                <div class="theme-picker-label-container">
+                    <span class="theme-picker-label">THEME</span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <!--body-->
