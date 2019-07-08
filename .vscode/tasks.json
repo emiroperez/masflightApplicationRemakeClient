@@ -29,7 +29,9 @@
             "args": [
                 "--watch",
                 "./src/styles.sass",
-                "./src/styles.css"
+                "./src/styles.css",
+                "--style",
+                "compressed"
             ],
             "problemMatcher": []
         }
