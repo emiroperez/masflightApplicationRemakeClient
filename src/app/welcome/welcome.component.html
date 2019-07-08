@@ -21,41 +21,22 @@
         </div>
     </div>
 </div>
-<!--body-->
 <div [style.visibility]="globals.isLoading ? 'hidden' : 'visible'" class="msf-body msf-body-welcome">
-    <!--nav-->
-    <!--kp
-  <div class="msf-nav">
-    <ul>
-      <li *ngFor="let option of options" routerLink="{{option.url}}" (click)="setState(option)" class="{{activeElement==option?'msf-active-li':'msf-off'}}">
-        <img src="../../assets/images/check.png" class="msf-li-icon">
-        <a class="msf-option">{{option.name}}</a>
-      </li>
-    </ul>
-    <a class="msf-link msf-support-text" >Need support?</a>
-  </div>-->
-    <!--content-->
     <div class="fade-in msf-container-welcome">
-        <div *ngFor="let option of options" id="option.id" class="{{activeElement==option?'msf-show-panel':'msf-hide'}} msf-content">
-            <!--Dashboard-->
-            <div style="height: 100%;overflow-x: hidden;" class="msf-internal-content">
-                <!--<div class="landing-name-content" style="text-align: center;">
-                    <img src="../../assets/images/pulse_welc.png" class="msf-intro-div-image" style="width: auto;">
-                </div>kp28032019-->
+        <div *ngFor="let option of options" id="option.id" class="{{ activeElement==option ? 'msf-show-panel' : 'msf-hide' }} msf-content">
+            <div class="msf-internal-content">
                 <div class="landing-icon-content">
-                    <div class="landing-icon-content-child" (mouseover)="option.hover=true" (mouseleave)="option.hover=false" (click)="goTo(option)" *ngFor="let option of options2" style="cursor:pointer; ">
-                        <div class="icon-container" [ngStyle]="{'background-image': 'url(' + getBackground(option) + ')'}">
-                            <!-- <div  [ngStyle]="{'display': none}" class="landing-title">{{option.name}}</div> -->
-                        </div>
-                        <div [ngClass]="option.hover?'footer-container footer-hover':'footer-container'" class="footer-container" style="height: auto !important; width: 100%; display: flex;">
-                            <div style="width: 25%;"></div>
-                            <div style="width: 25%;">
+                    <div class="landing-icon-content-child" (mouseover)="option.hover=true" (mouseleave)="option.hover=false" (click)="goTo(option)" *ngFor="let option of options2">
+                        <div class="icon-container" [ngStyle]="{'background-image': 'url(' + getBackground(option) + ')'}"></div>
+                        <div [ngClass]="option.hover? 'footer-container footer-hover' : 'footer-container'">
+                            <div [style.width.%]="25"></div>
+                            <div [style.width.%]="25">
                                 <div class="icon-container-bk" [ngStyle]="{'background-image': 'url(' + getBackground2(option) + ')'}"></div>
                             </div>
-                            <div style="width: 25%; margin: auto;">
+                            <div [style.width.%]="25" class="msf-welcome-option-label">
                                 <span>{{option.name}}</span>
                             </div>
-                            <div style="width: 25%;"></div>
+                            <div [style.width.%]="25"></div>
                         </div>
                     </div>
                 </div>
