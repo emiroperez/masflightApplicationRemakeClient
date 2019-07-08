@@ -464,7 +464,7 @@
   background-color: #1f1f1f;
   color: #ffffff;
 }
-.dark-theme .func-button .mat-button-wrapper {
+.dark-theme .func-button .mat-button-wrapper, .dark-theme .arrow-back-button .mat-button-wrapper {
   color: #ffffff !important;
 }
 .dark-theme .func-button-disabled .mat-button-wrapper {
@@ -1034,8 +1034,17 @@
 .dark-theme .mat-input-element {
   caret-color: #ffffff;
 }
-.dark-theme .msf-plan-card-content .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label, .dark-theme .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+.dark-theme .feature-title-container, .dark-theme .feature-options-container {
+  background-color: #33c0f9;
+}
+.dark-theme .msf-plan-card-content {
+  background-color: #0081b4;
+}
+.dark-theme .msf-plan-card-content .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label, .dark-theme .msf-plan-card-content .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
   color: #ffffff !important;
+}
+.dark-theme .msf-fab-button-features .mat-button-wrapper {
+  color: #0081b4;
 }
 .dark-theme .msf-more-info-popup .mat-dialog-container {
   background-color: #1f1f1f !important;
@@ -1175,9 +1184,6 @@
 .dark-theme .msf-admin-search, .dark-theme .msf-admin-search-option {
   background-color: #1e1e1e;
   color: #ffffff;
-}
-.dark-theme .mat-form-field.mat-focused.mat-primary .mat-input-element {
-  caret-color: #ffffff;
 }
 .dark-theme .mat-form-field-appearance-legacy .mat-form-field-underline {
   background-color: #9e9e9e;
@@ -1374,6 +1380,15 @@
 .dark-theme .header-icon2 {
   color: #c7dcf1;
 }
+.dark-theme .membership-dialog-title, .dark-theme .admin-menu-checkbox-container .mat-checkbox-layout .mat-checkbox-label {
+  color: #ffffff;
+}
+.dark-theme .membership-button .membership-button-icon {
+  color: #ffffff;
+}
+.dark-theme .button-delete {
+  background-image: url(assets/images/dark-theme-trash.png);
+}
 .dark-theme .login-header-logo {
   background-image: url(assets/images/dark-theme-logo.png);
 }
@@ -1529,7 +1544,7 @@
   color: #4d4d4d;
 }
 .light-theme .msf-dashboard-panel-title {
-  color: #000000;
+  color: #2d2d2d;
   font-weight: 550;
 }
 .light-theme .msf-dashboard-container {
@@ -1543,7 +1558,7 @@
   box-shadow: 0 0 1px 0 #f5ae8d inset, 0 0 1px 0 #f5ae8d;
 }
 .light-theme .msf-dashboard-container .msf-dashboard-title .msf-dashboard-title-border .msf-dashboard-title-label {
-  color: #000000;
+  color: #2d2d2d;
   background-color: #ffffff;
   font-weight: 550;
   box-shadow: 0 0 1px 0 #f5ae8d inset, 0 0 1px 0 #f5ae8d;
@@ -1840,7 +1855,7 @@
   background-color: #ffffff;
   color: #4d4d4d;
 }
-.light-theme .func-button .mat-button-wrapper {
+.light-theme .func-button .mat-button-wrapper, .light-theme .arrow-back-button .mat-button-wrapper {
   color: #4d4d4d !important;
 }
 .light-theme .func-button-disabled .mat-button-wrapper {
@@ -1966,16 +1981,16 @@
   font-size: 12px !important;
 }
 .light-theme .msf-dashboard-form-field .mat-form-field-underline, .light-theme .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-chart-op-container-row .msf-dashboard-field-function .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-chart-op-container-row .light-theme .msf-dashboard-field-function .mat-form-field-underline, .light-theme .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-chart-op-container-row .msf-dashboard-field-valuectrl .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-chart-op-container-row .light-theme .msf-dashboard-field-valuectrl .mat-form-field-underline, .light-theme .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-full-width .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .light-theme .msf-full-width .mat-form-field-underline, .light-theme .msf-dashboard-panel-sub-container-row .msf-full-width .mat-form-field-underline, .msf-dashboard-panel-sub-container-row .light-theme .msf-full-width .mat-form-field-underline, .light-theme .msf-dashboard-panel-sub-container-row .msf-width-90 .mat-form-field-underline, .msf-dashboard-panel-sub-container-row .light-theme .msf-width-90 .mat-form-field-underline, .light-theme .msf-dashboard-panel-sub-container-row .msf-width-80 .mat-form-field-underline, .msf-dashboard-panel-sub-container-row .light-theme .msf-width-80 .mat-form-field-underline, .light-theme .msf-dashboard-panel-container .msf-dashboard-panel-sub-container-column .msf-full-width .mat-form-field-underline, .msf-dashboard-panel-container .msf-dashboard-panel-sub-container-column .light-theme .msf-full-width .mat-form-field-underline {
-  background-color: #bdbdbd;
+  background-color: #9e9e9e;
 }
 .light-theme #msf-dashboard-form-display-title {
-  color: #000000;
+  color: #2d2d2d;
 }
 .light-theme #msf-dashboard-form-display-value {
   color: #4d4d4d;
 }
 .light-theme .msf-dashboard-column-properties-form-field .mat-form-field-underline, .dark-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-button .light-theme .msf-dashboard-column-properties-form-field .mat-form-field-underline, .dark-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-button .light-theme .msf-dashboard-column-properties-form-field .mat-form-field-underline, .light-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-column-button .msf-dashboard-column-properties-form-field .mat-form-field-underline, .light-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-column-button .msf-dashboard-column-properties-form-field .mat-form-field-underline {
-  background-color: #bdbdbd;
+  background-color: #9e9e9e;
 }
 .light-theme #msf-dashboard-panel-form-container-column {
   height: 40%;
@@ -2097,7 +2112,7 @@
   color: #4d4d4d;
 }
 .light-theme .msf-menu-icon:disabled {
-  color: #000000;
+  color: #2d2d2d;
 }
 .light-theme .msf-intro-body {
   color: #4d4d4d;
@@ -2410,8 +2425,17 @@
 .light-theme .mat-input-element {
   caret-color: #4d4d4d;
 }
-.light-theme .msf-plan-card-content .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label, .light-theme .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+.light-theme .feature-title-container, .light-theme .feature-options-container {
+  background-color: #ff651f;
+}
+.light-theme .msf-plan-card-content {
+  background-color: #d44017;
+}
+.light-theme .msf-plan-card-content .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label, .light-theme .msf-plan-card-content .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
   color: #4d4d4d !important;
+}
+.light-theme .msf-fab-button-features .mat-button-wrapper {
+  color: #d44017;
 }
 .light-theme .msf-more-info-popup .mat-dialog-container {
   background-color: #ffffff !important;
@@ -2551,9 +2575,6 @@
 .light-theme .msf-admin-search, .light-theme .msf-admin-search-option {
   background-color: #ffffff;
   color: #4d4d4d;
-}
-.light-theme .mat-form-field.mat-focused.mat-primary .mat-input-element {
-  caret-color: #4d4d4d;
 }
 .light-theme .mat-form-field-appearance-legacy .mat-form-field-underline {
   background-color: #4e4e4e;
@@ -2750,6 +2771,15 @@
 .light-theme .header-icon2 {
   color: #ffffff;
 }
+.light-theme .membership-dialog-title, .light-theme .admin-menu-checkbox-container .mat-checkbox-layout .mat-checkbox-label {
+  color: #4d4d4d;
+}
+.light-theme .membership-button .membership-button-icon {
+  color: #4d4d4d;
+}
+.light-theme .button-delete {
+  background-image: url(assets/images/light-theme-trash.png);
+}
 .light-theme .login-header-logo {
   background-image: url(assets/images/light-theme-logo.png);
 }
@@ -2858,7 +2888,7 @@ body {
   /* line-height: 4; */
   /* vertical-align: middle; */
   /* min-height: 60px; */
-  /* color: white; */
+  /* color: #ffffff; */
   /* margin-right: 10px; */
   /* text-align: right; */
   width: 25%;
@@ -2921,7 +2951,7 @@ body {
 }
 
 .msf-option {
-  color: white;
+  color: #ffffff;
 }
 
 .msf-nav ul {
@@ -3027,7 +3057,7 @@ body {
   display: inline-block;
   font-weight: normal;
   margin-right: 5px;
-  color: white;
+  color: #ffffff;
 }
 
 p {
@@ -3295,14 +3325,8 @@ p {
 
 .msf-big-button {
   margin-left: 40px !important;
-  color: white;
+  color: #ffffff;
   margin-top: 10px !important;
-}
-
-.login-check {
-  color: #1e1e1e;
-  text-align: center;
-  font-size: smaller;
 }
 
 .login-link {
@@ -3325,7 +3349,6 @@ p {
   background-position: 12px center;
   background-repeat: no-repeat;
   background-size: 20px;
-  background-image: url(assets/images/usuario.png);
 }
 
 .input-register {
@@ -3339,7 +3362,6 @@ p {
   background-position: 12px center;
   background-repeat: no-repeat;
   background-size: 20px;
-  background-image: url(assets/images/password.png);
 }
 
 .login-card input[type=text], .login-card input[type=password], .login-card input[type=number], .login-card input[type=email] {
@@ -3456,8 +3478,8 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 }
 
 .mat-step-header .mat-step-icon {
-  color: black;
-  background-color: white;
+  color: #000000;
+  background-color: #ffffff;
 }
 
 .mat-stepper-horizontal, .mat-stepper-vertical {
@@ -3512,16 +3534,16 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 }
 
 .mat-step-label-selected {
-  color: white !important;
+  color: #ffffff !important;
 }
 
 .ng-star-inserted .mat-step-icon {
   background-color: #01abec;
-  color: white;
+  color: #ffffff;
 }
 
 .msf-medium-title {
-  color: white;
+  color: #ffffff;
   font-size: 150%;
   font-weight: bold;
   letter-spacing: 1px;
@@ -3537,7 +3559,7 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 }
 
 .msf-row-info {
-  color: white;
+  color: #ffffff;
   margin-top: 15px;
   margin-bottom: 15px;
   font-size: 90%;
@@ -3546,7 +3568,7 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 .msf-medium-button {
   background-color: #01abec !important;
   margin-left: 70% !important;
-  color: white;
+  color: #ffffff;
   margin-top: 10px !important;
   padding: 0 !important;
   line-height: 35px !important;
@@ -3576,7 +3598,7 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 }
 
 .msf-input-prompt {
-  color: white;
+  color: #ffffff;
   width: 74px;
   height: 17px;
   display: inline-block;
@@ -3585,7 +3607,7 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 }
 
 .msf-input-prompt-litle {
-  color: white;
+  color: #ffffff;
   width: 10px;
   height: 17px;
   display: inline-block;
@@ -3612,7 +3634,7 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 
 .msf-prompt {
   width: 60px;
-  color: white;
+  color: #ffffff;
   vertical-align: middle;
 }
 
@@ -3676,7 +3698,7 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 }
 
 .ng-select .ng-has-value .ng-placeholder, .ng-select.ng-select-opened .ng-placeholder {
-  color: white !important;
+  color: #ffffff !important;
   /**register pending
   *
   *  padding-left: 22px!important*/
@@ -3787,7 +3809,7 @@ button[aria-expanded=true] {
 
 .mat-menu-item {
   font-size: 90% !important;
-  color: white !important;
+  color: #ffffff !important;
 }
 
 .msf-menu-icons-container {
@@ -3888,7 +3910,7 @@ button[aria-expanded=true] {
 
 .msf-menu-internal-content {
   height: calc(100% - 120px);
-  background-color: white;
+  background-color: #ffffff;
   vertical-align: middle;
 }
 
@@ -4020,7 +4042,7 @@ button[aria-expanded=true] {
   position: absolute;
   bottom: 90px;
   height: 60px;
-  color: white;
+  color: #ffffff;
   text-align: center;
   line-height: 3;
   font-size: 170%;
@@ -4073,11 +4095,11 @@ button[aria-expanded=true] {
 }
 
 .mat-menu-item .mat-icon:not([color]) {
-  color: white;
+  color: #ffffff;
 }
 
 .mat-menu-item-submenu-trigger:after {
-  color: white;
+  color: #ffffff;
 }
 
 .mat-menu-panel:mouseleave .mat-menu-content {
@@ -4204,7 +4226,7 @@ td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
 .mat-header-cell {
   background-color: #333333;
   border: 1px solid #777676;
-  color: white;
+  color: #ffffff;
   font-size: 100%;
   position: sticky;
   z-index: 1;
@@ -4217,7 +4239,7 @@ td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
 }
 
 .mat-row, .mat-header-row {
-  background: white;
+  background: #ffffff;
   min-width: 1200px;
   color: rgba(0, 0, 0, 0.87);
 }
@@ -4256,7 +4278,7 @@ table {
 }
 
 th.mat-sort-header-sorted {
-  color: black;
+  color: #000000;
 }
 
 mat-tab-group {
@@ -4381,7 +4403,7 @@ mat-tab-group {
 }
 
 .mat-button-wrapper {
-  color: white;
+  color: #ffffff;
 }
 
 .mat-calendar-controls button .mat-button-wrapper {
@@ -5243,7 +5265,7 @@ mat-tab-group {
   justify-content: center;
 }
 #msf-dashboard-panel-form-container-column-empty .msf-no-results {
-  color: white;
+  color: #ffffff;
   margin: 0 100px;
   text-align: center;
   align-items: center;
@@ -5263,7 +5285,7 @@ mat-tab-group {
   justify-content: center;
 }
 #msf-dashboard-panel-table-container-column-empty .msf-no-results {
-  color: white;
+  color: #ffffff;
   margin: 0 100px;
   text-align: center;
   align-items: center;
@@ -5277,7 +5299,7 @@ mat-tab-group {
   justify-content: center;
 }
 #msf-add-shared-dashboard-content-empty .msf-no-results {
-  color: white;
+  color: #ffffff;
   margin: 0 100px;
   text-align: center;
   align-items: center;
@@ -5495,12 +5517,12 @@ mat-tab-group {
 }
 
 .jqx-widget .jqx-grid-cell, .jqx-widget .jqx-grid-column-header, .jqx-widget .jqx-grid-group-cell {
-  border-color: white;
+  border-color: #ffffff;
   border-bottom-color: #aaa;
 }
 
 .jqx-widget-header {
-  color: white;
+  color: #ffffff;
   background: #1e1e1e;
   padding-top: 5px;
   padding-block-start: 5px;
@@ -5627,7 +5649,6 @@ mat-tab-group {
 
 .msf-plan-card-content {
   padding-top: 2%;
-  background-color: #0081B4;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   min-height: 350px;
@@ -5655,15 +5676,14 @@ mat-tab-group {
   margin-block-end: 0;
   margin-block-start: 0;
   margin-top: 0;
-  color: white;
+  color: #ffffff;
   padding: 0;
   list-style-type: none;
 }
 
 .msf-plan-card-content li {
   margin-top: 10px;
-  width: fit-content;
-  background-image: url(assets/images/check-09.png);
+  background-image: url("assets/images/check-09.png");
   background-repeat: no-repeat;
   background-position-x: 0%;
   background-position-y: center;
@@ -5672,11 +5692,10 @@ mat-tab-group {
 
 .mat-card-footer {
   padding: 1%;
-  background-color: white;
+  background-color: #ffffff;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
   margin: 0 !important;
-  box-shadow: 0 -5px 35px -1px #333;
 }
 
 .msf-prices-container {
@@ -5724,7 +5743,7 @@ li.msf-select:before {
 }
 
 .msf-medium-title-centered {
-  color: white;
+  color: #ffffff;
   font-size: 150%;
   font-weight: bold;
   letter-spacing: 1px;
@@ -5851,7 +5870,7 @@ li.msf-select:before {
 }
 
 .dialog-container-agument-category {
-  color: white !important;
+  color: #ffffff !important;
 }
 
 input[type=checkbox] {
@@ -6030,26 +6049,26 @@ table.results {
 
 .msf-membership-card .mat-form-field-appearance-legacy .mat-form-field-label {
   line-height: 2;
-  color: white !important;
+  color: #ffffff !important;
   text-align: center;
 }
 
 .msf-membership-card mat-card-footer.mat-form-field-appearance-legacy .mat-form-field-label {
   line-height: 2;
-  color: black !important;
+  color: #000000 !important;
   text-align: left;
 }
 
 .msf-features-membership-container .mat-form-field-appearance-legacy .mat-form-field-label {
   line-height: 2;
-  color: white !important;
+  color: #ffffff !important;
   text-align: left;
   padding-left: 8px;
 }
 
 .msf-features-prices-container .mat-form-field-appearance-legacy .mat-form-field-label {
   line-height: 2;
-  color: black !important;
+  color: #000000 !important;
   text-align: left;
   padding-left: 8px;
 }
@@ -6063,11 +6082,16 @@ table.results {
   padding: 8px;
   outline: none;
   border: none;
-  color: white;
+  color: #ffffff;
+  caret-color: #ffffff;
   background-size: 0 2px, 100% 1px;
   background-position: 50% 100%, 50% 100%;
   transition: background-size 0.3s cubic-bezier(0.64, 0.09, 0.08, 1);
   text-align: center;
+}
+
+.msf-card-feature-item input[type=text] .mat-form-field.mat-focused.mat-primary .mat-input-element, .msf-card-content-item input[type=password] .mat-form-field.mat-focused.mat-primary .mat-input-element, .msf-card-content-item input[type=number] .mat-form-field.mat-focused.mat-primary .mat-input-element, .msf-card-content-item input[type=email] .mat-form-field.mat-focused.mat-primary .mat-input-element {
+  caret-color: #ffffff !important;
 }
 
 .msf-card-feature-item input[type=text] {
@@ -6076,7 +6100,8 @@ table.results {
 }
 
 .msf-card-footer-item input[type=text] {
-  color: black;
+  color: #2d2d2d;
+  caret-color: #2d2d2d;
   text-align: left;
 }
 
@@ -6099,15 +6124,15 @@ table.results {
 }
 
 .msf-plan-card-content .mat-form-field-appearance-legacy .mat-form-field-underline {
-  background-color: white !important;
+  background-color: #ffffff !important;
 }
 
 .msf-plan-card-content .mat-form-field.mat-focused .mat-form-field-ripple {
-  background-color: white;
+  background-color: #ffffff;
 }
 
 .msf-plan-card-content .mat-form-field-ripple {
-  background-color: white;
+  background-color: #ffffff;
 }
 
 .msf-plan-card-content .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label, .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
@@ -6115,7 +6140,6 @@ table.results {
 }
 
 .msf-fab-button-features .mat-button-wrapper {
-  color: #0081B4;
   width: 100% !important;
 }
 
@@ -6125,18 +6149,18 @@ table.results {
 }
 
 .msf-periodicity-select {
-  color: black !important;
+  color: #000000 !important;
   display: inline-flex !important;
   position: absolute !important;
   margin-left: 2%;
 }
 
 .msf-periodicity-select.ng-select .ng-arrow-wrapper .ng-arrow {
-  color: black;
+  color: #000000;
 }
 
 .msf-periodicity-select.ng-select.ng-select-focused .ng-select-container .ng-value-container .ng-placeholder {
-  color: black !important;
+  color: #000000 !important;
 }
 
 .msf-price-fare .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label, .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
@@ -6146,26 +6170,26 @@ table.results {
 }
 
 .msf-periodicity-select input {
-  color: black;
+  color: #000000;
   font: inherit;
   caret-color: #3f51b5;
 }
 
 .msf-periodicity-select.ng-select .ng-select-container {
-  color: black !important;
+  color: #000000 !important;
 }
 
 .msf-periodicity-select.ng-select .ng-select-container .ng-value-container .ng-placeholder {
-  color: black !important;
+  color: #000000 !important;
 }
 
 .msf-periodicity-select .ng-star-inserted .mat-step-icon {
   background-color: #01abec;
-  color: black;
+  color: #000000;
 }
 
 .msf-periodicity-select .ng-select .ng-select-container .ng-value-container .ng-placeholder {
-  color: black !important;
+  color: #000000 !important;
   padding-left: 0 !important;
 }
 
@@ -6206,7 +6230,7 @@ table.results {
 }
 
 .arrow-button {
-  color: white !important;
+  color: #ffffff !important;
   min-width: 40px !important;
   margin: 0 5px !important;
   padding: 0 !important;
@@ -6217,7 +6241,7 @@ table.results {
 }
 
 .msf-no-results {
-  color: white;
+  color: #ffffff;
   font-size: 15px;
   margin: 0 100px;
   text-align: center;
@@ -6266,7 +6290,7 @@ table.results {
 }
 
 .financial-table-container {
-  background: white;
+  background: #ffffff;
   display: table;
   width: 100%;
 }
@@ -6274,19 +6298,19 @@ table.results {
 .financial-title {
   background: #3C3C3C;
   padding: 15px 10px;
-  color: white;
+  color: #ffffff;
   border: 1px solid #777676;
   display: table-caption;
 }
 
 .financial-table-item-label-title {
-  background: white;
+  background: #ffffff;
   display: table-row;
   width: auto;
 }
 
 .financial-table-item-label {
-  background: white;
+  background: #ffffff;
   display: table-row;
 }
 
@@ -6487,14 +6511,14 @@ img.msf-calendar-image {
 
 .activation-form .mat-form-field {
   font-size: inherit;
-  color: white;
+  color: #ffffff;
   font-weight: 400;
   line-height: 3.125;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 .activation-form input {
-  color: white !important;
+  color: #ffffff !important;
 }
 
 .drillDown-decoration {
@@ -6584,7 +6608,7 @@ img.msf-calendar-image {
 
 .msf-passenger-chart-title {
   text-align: center;
-  color: white;
+  color: #ffffff;
 }
 
 .msf-filter-container {
@@ -6614,7 +6638,7 @@ img.msf-calendar-image {
 }
 
 .msf-full-width .search-text-filter {
-  color: white;
+  color: #ffffff;
 }
 
 th.msf-show-table, td.msf-show-table {
@@ -6649,7 +6673,7 @@ th.msf-show-table, td.msf-show-table {
 }
 
 .dark-theme .msf-dashboard-child-panel-table td.mat-cell {
-  color: white;
+  color: #ffffff;
   border-color: #1F1F1F;
 }
 
@@ -6762,7 +6786,7 @@ span.msf-subCell {
 }
 .msf-customer-input-field .msf-customer-filter-text-field {
   font-size: inherit;
-  color: white;
+  color: #ffffff;
   font-weight: 400;
   line-height: 3.125;
   font-family: Roboto, "Helvetica Neue", sans-serif;
@@ -6922,7 +6946,7 @@ mat-form-field.msf-table-input {
 .dynamic-table-scroll .dynamic-table-container tr.dynamic-table-header-container th.dyanmic-table-padding {
   padding: 10px 10px !important;
   background-color: #333333;
-  color: white;
+  color: #ffffff;
   position: sticky;
   z-index: 3;
   font-size: 100%;
@@ -6932,7 +6956,7 @@ mat-form-field.msf-table-input {
 .dynamic-table-scroll .dynamic-table-container tr.dynamic-table-header-container th.dynamic-table-header {
   padding: 10px 10px !important;
   background-color: #333333;
-  color: white;
+  color: #ffffff;
   position: sticky;
   z-index: 1;
   font-size: 100%;
@@ -6944,7 +6968,7 @@ mat-form-field.msf-table-input {
 .dynamic-table-scroll .dynamic-table-container tr.dynamic-table-body-container th.dynamic-table-body-title {
   padding: 10px 10px !important;
   background-color: #333333;
-  color: white;
+  color: #ffffff;
   position: sticky;
   z-index: 2;
   font-size: 100%;
@@ -6955,7 +6979,7 @@ mat-form-field.msf-table-input {
 }
 .dynamic-table-scroll .dynamic-table-container tr.dynamic-table-body-container td.dynamic-table-value {
   padding: 10px 10px !important;
-  background-color: white;
+  background-color: #ffffff;
   text-align: right;
   border-bottom-width: 1px;
   border-bottom-style: solid;
@@ -7131,7 +7155,7 @@ mat-form-field.msf-table-input {
   margin-top: 7px;
   width: 216px;
   height: 295px;
-  background-color: white;
+  background-color: #ffffff;
   position: absolute;
   z-index: 1;
   border-radius: 4px;
@@ -7472,21 +7496,21 @@ mat-form-field.msf-table-input {
   height: 100vh;
 }
 .login-body .login-body-logo {
-  width: 40%;
+  width: 50%;
   display: flex;
   align-items: center;
 }
 .login-body .login-body-logo .login-pulse-logo {
   width: 100% !important;
   height: 90px !important;
-  margin-left: 102px !important;
   object-fit: contain;
   transition: background-image 0.5s ease-in-out;
   background-size: contain;
   background-repeat: no-repeat;
+  background-position-x: center;
 }
 .login-body .login-body-container {
-  width: 40%;
+  width: 50%;
 }
 
 .register-step-header {
@@ -7644,6 +7668,15 @@ mat-form-field.msf-table-input {
   margin-top: -1px;
 }
 
+.membership-dialog-title {
+  flex: 1;
+}
+
+.membership-dialog-content {
+  flex: 1;
+  padding-left: 4%;
+}
+
 .admin-menu-content-dialog-container {
   flex: 1;
 }
@@ -7675,6 +7708,10 @@ mat-form-field.msf-table-input {
 
 .admin-menu-content-cancel-button {
   margin-right: 5px !important;
+}
+
+.membership-cancel-button {
+  margin-right: 10px !important;
 }
 
 .admin-dialog-box:last-child {
@@ -7759,6 +7796,139 @@ mat-form-field.msf-table-input {
 .msf-welcome-option-label {
   width: 25%;
   margin: auto;
+}
+
+.arrow-back-button {
+  float: left;
+  margin-top: 30px !important;
+}
+
+.msf-plan-card-footer .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+  color: #2d2d2d !important;
+}
+
+.msf-mem-button {
+  width: 100% !important;
+  padding-top: 5px;
+  padding-right: 5px;
+}
+
+.msf-fare-button {
+  width: 95% !important;
+  padding-top: 5px;
+  padding-right: 5px;
+}
+
+#ng-fare-select .ng-select {
+  min-width: 100px;
+  min-height: 70px;
+}
+
+#ng-fare-select .ng-select .ng-select-container .ng-value-container {
+  align-items: stretch;
+  padding: 0.4375em 0;
+  background: #ffffff;
+  border-top: 0.84375em solid transparent !important;
+  border-bottom: 0 !important;
+}
+
+#ng-fare-select .ng-select .ng-select-container .ng-value-container .ng-input > input {
+  box-sizing: content-box;
+  border: 0;
+  box-shadow: none;
+  outline: 0;
+  cursor: default;
+  width: 100%;
+}
+
+#ng-fare-select .msf-periodicity-select.ng-select .ng-select-container {
+  background: #ffffff !important;
+  color: #2d2d2d !important;
+}
+
+#ng-fare-select .ng-select .ng-select-container:after {
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.msf-plan-card-footer .mat-form-field-appearance-legacy .mat-form-field-underline {
+  background-color: #4e4e4e;
+}
+
+.msf-fab-button-features {
+  width: 100% !important;
+}
+
+.membership-button {
+  vertical-align: super;
+}
+
+.feature-checkbox .mat-checkbox-frame {
+  border-color: #ffffff !important;
+}
+
+.feature-title {
+  color: #ffffff;
+  padding-left: 10px;
+}
+
+.feature-title-container {
+  padding: 4px;
+  display: flex;
+  flex: auto;
+}
+
+.feature-options-container {
+  padding: 4px;
+  display: flex;
+  flex: auto;
+  margin-bottom: 10px;
+}
+
+.features-container {
+  border-bottom: 1px dashed;
+  padding-bottom: 10px;
+}
+
+.price-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-end;
+}
+
+.padding-periodicity-select {
+  padding-right: 15px;
+}
+
+.button-delete {
+  background-position-x: center;
+  background-position-y: center;
+  background-size: 30px 30px;
+}
+
+.button-delete-pos {
+  margin-right: 10px !important;
+}
+
+.admin-menu-checkbox-container .mat-checkbox-layout {
+  height: 40px;
+}
+
+.admin-menu-checkbox-container .mat-checkbox-layout .mat-checkbox-label {
+  line-height: 41px;
+  font-size: 14px;
+}
+
+.membership-dialog-container {
+  max-height: 600px;
+}
+
+.msf-membership-card .mat-form-field-underline, .membership-dialog-container .mat-form-field-underline {
+  height: 0px;
+}
+
+.feature-checkbox .mat-checkbox-layout .mat-checkbox-label {
+  color: #ffffff !important;
 }
 
 /*# sourceMappingURL=styles.css.map */

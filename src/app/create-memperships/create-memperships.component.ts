@@ -24,7 +24,6 @@ import { MessageComponent } from '../message/message.component';
 @Component({
   selector: 'app-dialog-edit-options',
   templateUrl: 'dialog-edit-options.html',
-  styleUrls: ['./membership.css'],
   encapsulation: ViewEncapsulation.None,
   animations: [
     trigger('animationOption2', [
@@ -119,42 +118,10 @@ export class EditOptionsDialog {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 @Component({
   selector: 'app-create-memperships',
   templateUrl: './create-memperships.component.html',
-  encapsulation: ViewEncapsulation.None,
-  styleUrls: ['./membership.css']
+  encapsulation: ViewEncapsulation.None
 })
 export class CreateMempershipsComponent implements OnInit {
 

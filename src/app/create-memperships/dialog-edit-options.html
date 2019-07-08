@@ -1,10 +1,10 @@
-<div style='max-height: 600px;'>
-    <div mat-dialog-title style="flex: 1; color: white">Options</div>
-    <div mat-dialog-content style="flex: 1; padding-left: 4%">
+<div class="membership-dialog-container">
+    <div mat-dialog-title class="membership-dialog-title">Options</div>
+    <div mat-dialog-content class="membership-dialog-content">
         <div *ngFor="let option of data.menuSelected; let i = index;">
             <app-admin-menu-memberships [menu]="option" [index]="i"></app-admin-menu-memberships>
         </div>
     </div>
-    <button mat-button class="flat-button" (click)="onNoClick()" style="margin-right:10px">Cancel</button>
+    <button mat-button class="flat-button membership-cancel-button" (click)="onNoClick()">Cancel</button>
     <button mat-button class="flat-button" (click)="getItemsSelected(data.menuSelected)" [mat-dialog-close]="data.auxOptions">OK</button>
 </div>

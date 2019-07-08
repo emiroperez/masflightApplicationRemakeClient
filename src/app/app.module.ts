@@ -1,28 +1,28 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule} from '@angular/core';
+import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { LoginScreenComponent } from './login-screen/login-screen.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { AppRoutingModule } from './routing/app.routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from '@angular/cdk/layout';
-import {MaterialModule} from './material/material';
+import { MaterialModule } from './material/material';
 import { MessageComponent } from './message/message.component';
-import { FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {AuthService} from './services/auth.service';
-import {HttpClientModule} from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AuthService } from './services/auth.service';
+import { HttpClientModule } from '@angular/common/http';
 import { NotificationComponent } from './notification/notification.component';
 import { ApiClient } from './api/api-client';
 import { RegisterComponent } from './register/register.component';
-import {NgxMaskModule} from 'ngx-mask'
+import { NgxMaskModule } from 'ngx-mask'
 import { NgSelectModule } from '@ng-select/ng-select';
 import { MenuComponent } from './menu/menu.component';
 import { MenuOptionComponent } from './menu-option/menu-option.component';
 import { ApplicationComponent } from './application/application.component';
 import { MsfComponentComponent } from './msf-component/msf-component.component';
-import {Globals} from './globals/Globals';
+import { Globals } from './globals/Globals';
 import { MsfAirportComponent } from './msf-airport/msf-airport.component';
-import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { MatFormFieldModule, MatSelectModule } from '@angular/material';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MsfContainerComponent } from './msf-container/msf-container.component';
@@ -62,10 +62,9 @@ import { MsfDateComponent } from './msf-date/msf-date.component';
 import { MapBoxComponent } from './map-box/map-box.component';
 import { AdminMenuComponent } from './admin-menu/admin-menu.component';
 import { CreateMempershipsComponent } from './create-memperships/create-memperships.component';
-import {MatSnackBarModule} from '@angular/material';
+import { MatSnackBarModule } from '@angular/material';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material';
-import { AdminMenuRecursiveComponent } from './admin-menu-recursive/admin-menu-recursive.component';
 import { AdminMenuMembershipsComponent } from './admin-menu-memberships/admin-menu-memberships.component';
 import { Utils } from './commons/utils';
 import { MsfUserListComponent } from './msf-user-list/msf-user-list.component';
@@ -237,7 +236,6 @@ import { MsfDynamicTableAliasComponent } from './msf-dynamic-table-alias/msf-dyn
     MapBoxComponent,
     AdminMenuComponent,
     AdminMenuComponent,
-    AdminMenuRecursiveComponent,
     AdminMenuMembershipsComponent,
     MsfUserListComponent,
     MsfOptionListComponent,
