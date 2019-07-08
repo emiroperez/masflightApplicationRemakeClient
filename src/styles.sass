@@ -343,7 +343,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             padding: 10px
             background-color: $quaternary-background-color
             color: $font-color
-        .func-button, .arrow-back-button
+        .func-button, .arrow-back-button, .save-button
             .mat-button-wrapper
                 color: $font-color !important
         .func-button-disabled
@@ -943,6 +943,8 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
         .membership-button
             .membership-button-icon
                 color: $font-color
+        .form-field-container .mat-form-field
+            color: $font-color
         .button-delete
             background-image: url(assets/images/#{$name}-trash.png)
         .login-header-logo
@@ -5213,8 +5215,11 @@ mat-form-field.msf-table-input
     margin: auto
 
 .arrow-back-button
-    float: left
+    float: left !important
     margin-top: 30px !important
+
+.save-button
+    float: right !important
 
 .msf-plan-card-footer
     .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label
@@ -5333,3 +5338,53 @@ mat-form-field.msf-table-input
 .feature-checkbox
     .mat-checkbox-layout .mat-checkbox-label
         color: #ffffff !important
+
+.form-field-container .mat-form-field
+    font-size: inherit
+    font-weight: 400
+    line-height: 3.125
+    font-family: Roboto, "Helvetica Neue", sans-serif
+
+.user-activation-search-input
+    width: 50%
+    float: right
+
+.user-activation-table
+    display: flex
+    flex-direction: column
+    overflow: hidden
+    width: 100%
+    height: 100%
+    align-items: center
+    margin-left: -17px
+    .datasource
+        overflow: auto !important
+        .user-activation-data-centered
+            text-align: center
+    .user-activation-paginator
+        width: 100% !important
+        max-width: 2000px !important
+
+.msf-user-activation-card
+    width: 85% !important
+
+.msf-user-activation-card .mat-checkbox-frame
+    border-color: #2d3436 !important
+
+.msf-user-activation-card .mat-select-value
+    color: #2d3436 !important
+
+.msf-user-activation-card .mat-paginator-icon
+    color: #2d3436 !important
+
+.msf-user-activation-card .mat-select-arrow
+    color: #2d3436 !important
+
+.msf-user-activation-card .datasource.welcome-table
+    margin-bottom: 0px !important
+
+.msf-user-activation-card .mat-form-field-appearance-legacy .mat-form-field-label
+    padding-left: 0px
+
+.msf-user-activation-card .mat-cell-centered
+    text-align: center
