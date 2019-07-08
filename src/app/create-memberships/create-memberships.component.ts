@@ -119,11 +119,11 @@ export class EditOptionsDialog {
 
 
 @Component({
-  selector: 'app-create-memperships',
-  templateUrl: './create-memperships.component.html',
+  selector: 'app-create-memberships',
+  templateUrl: './create-memberships.component.html',
   encapsulation: ViewEncapsulation.None
 })
-export class CreateMempershipsComponent implements OnInit {
+export class CreateMembershipsComponent implements OnInit {
 
   @Input('argument') public argument: Arguments;
 

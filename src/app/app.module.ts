@@ -61,7 +61,7 @@ import { MsfRoundingComponent } from './msf-rounding/msf-rounding.component';
 import { MsfDateComponent } from './msf-date/msf-date.component';
 import { MapBoxComponent } from './map-box/map-box.component';
 import { AdminMenuComponent } from './admin-menu/admin-menu.component';
-import { CreateMempershipsComponent } from './create-memperships/create-memperships.component';
+import { CreateMembershipsComponent } from './create-memberships/create-memberships.component';
 import { MatSnackBarModule } from '@angular/material';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material';
@@ -72,7 +72,7 @@ import { MsfOptionListComponent } from './msf-option-list/msf-option-list.compon
 import { ConfirmDeleteDialog } from './admin-menu/admin-menu.component';
 import { EditOutputOptionsMetaDialog } from './admin-menu/admin-menu.component';
 import { EditCategoryArgumentDialog } from './admin-menu/admin-menu.component';
-import { EditOptionsDialog } from './create-memperships/create-memperships.component';
+import { EditOptionsDialog } from './create-memberships/create-memberships.component';
 import { MsfFreeTextInputComponent } from './msf-free-text-input/msf-free-text-input.component';
 import { MsfSelectBoxSingleOptionComponent } from './msf-select-box-single-option/msf-select-box-single-option.component';
 import { MsfSelectBoxMultipleOptionComponent } from './msf-select-box-multiple-option/msf-select-box-multiple-option.component';
@@ -232,7 +232,7 @@ import { MsfDynamicTableAliasComponent } from './msf-dynamic-table-alias/msf-dyn
     MsfRoundingComponent,
     MsfDateComponent,
     AdminMenuComponent,
-    CreateMempershipsComponent,
+    CreateMembershipsComponent,
     MapBoxComponent,
     AdminMenuComponent,
     AdminMenuComponent,
