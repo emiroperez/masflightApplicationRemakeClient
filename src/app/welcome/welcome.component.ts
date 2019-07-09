@@ -7,6 +7,7 @@ import { trigger, transition, style, animate, state } from '@angular/animations'
 import { MenuService } from '../services/menu.service';
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
+import { AuthGuard } from '../guards/auth.guard';
 
 @Component({
   selector: 'app-welcome',
@@ -23,7 +24,7 @@ export class WelcomeComponent implements OnInit {
 
   lastTime: Date;
 
-  constructor(public globals: Globals, private menuService: MenuService, private service: WelcomeService, private authService: AuthService, private userService: UserService, private router: Router) {
+  constructor(public globals: Globals, private menuService: MenuService, private service: WelcomeService, private authService: AuthService, private authGuard: AuthGuard, private userService: UserService, private router: Router) {
   }
 
   parseTimeStamp(timeStamp): string
@@ -147,22 +148,28 @@ export class WelcomeComponent implements OnInit {
 
   }
 
-  getBackground(option : any){
+  getBackground(option : any): string
+  {
     var aux = option.name;
-    aux = aux.replace(" ","");
-    if(option.hover){
-      return "../../assets/images/w_"+aux+"2.png"
-    }else{
-      return "../../assets/images/w_"+aux+"1.png"
-    }
 
+    aux = aux.replace (" ","");
+
+    if (option.hover)
+      return "../../assets/images/w_" + aux + "2.png"
+    else
+      return "../../assets/images/" + this.globals.theme + "-w_" + aux + "1.png"
   }
 
 
-  getBackground2(option : any){
+  getBackground2(option : any): string
+  {
     var aux = option.name;
     aux = aux.replace(" ","");
-    return "../../assets/images/w_"+aux+".png"
+
+    if (option.hover)
+      return "../../assets/images/dark-theme-w_" + aux + ".png"
+    else
+      return "../../assets/images/" + this.globals.theme + "-w_" + aux + ".png"
   }
 
   @HostListener('window:resize', ['$event'])
@@ -178,5 +185,25 @@ export class WelcomeComponent implements OnInit {
     // else{
     //   this.globals.isFullscreen = false;
     // }
+  }
+
+  logOut(): void
+  {
+    this.userService.setUserLastLoginTime (this, this.logoutSuccess, this.logoutError);
+  }
+
+  logoutSuccess(_this): void
+  {
+    _this.authGuard.disableSessionInterval ();
+    _this.authService.removeToken ();
+    _this.router.navigate (['']);
+  }
+
+  logoutError(_this, error): void
+  {
+    console.log (error);
+    _this.authGuard.disableSessionInterval ();
+    _this.authService.removeToken ();
+    _this.router.navigate (['']);
   }
 }

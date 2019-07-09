@@ -39,7 +39,7 @@
       </div>
       <div class="msf-search-complete-container">
             <div class="msf-search-title">Search Complete</div>            
-            <div  class="msf-searc-complete-option" (click)="componentClickHandler(argsContainer, icon2)">   
+            <div  class="msf-search-complete-option" (click)="componentClickHandler(argsContainer, icon2)">   
                 <i #icon2 class="material-icons msf-menu-complete-row ">expand_more</i>             
                 <span class="msf-menu-component-text">{{globals.currentOption.label}} : ({{globals.getTime()}} s)</span>
                 <i #icon [ngClass]="globals.getTime() != 0 ?'material-icons msf-summary-ok-icon':'material-icons msf-summary-icon'">check_circle</i>
@@ -66,15 +66,15 @@
                 -->
             </div>
             <div class="msf-summary-category-label ">Having Problems?</div>
-            <div  class="msf-searc-complete-option" >                
+            <div  class="msf-search-complete-option" >                
                 <span class="msf-menu-component-text">Having Problems?</span>
                 <i #icon class="material-icons msf-summary-icon">warning</i>
             </div>
-            <div  class="msf-searc-complete-option" >                
+            <div  class="msf-search-complete-option" >                
                 <span class="msf-menu-component-text">Documentation</span>
                 <i #icon class="material-icons msf-summary-icon">find_in_page</i>
             </div>
-            <div  class="msf-searc-complete-option" >                
+            <div  class="msf-search-complete-option" >                
                 <span class="msf-menu-component-text">Forum</span>
                 <i #icon class="material-icons msf-summary-icon">question_answer</i>
             </div>

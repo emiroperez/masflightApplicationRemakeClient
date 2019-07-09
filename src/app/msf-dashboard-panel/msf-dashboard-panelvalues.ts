@@ -34,7 +34,6 @@ export class MsfDashboardPanelValues {
     valueColumn: any;
     function: any;
     geodata: any;
-    theme: any;
     style: any;
 
     infoVar1: any;
@@ -81,6 +80,8 @@ export class MsfDashboardPanelValues {
     childPanels: any[] = [];
     flightRoutes: any[] = [];
 
+    calculatedHeight: number;
+
     constructor(options: any[], chartName: String, id: number, width: any, height: any, currentOption?: any, variable?: any,
         xaxis?: any, valueColumn?: any, func?: any, chartType?: any, currentOptionCategories?: any, lastestResponse?: string,
         paletteColors?: any, updateTimeInterval?: number, row?: number, thresholds?: any)
@@ -96,6 +97,7 @@ export class MsfDashboardPanelValues {
         this.currentChartType = chartType;
         this.width = width;
         this.height = height;
+        this.calculatedHeight = 303 + ((height.value - 1) * 15);
 
         if (thresholds)
             this.thresholds = JSON.parse (thresholds);

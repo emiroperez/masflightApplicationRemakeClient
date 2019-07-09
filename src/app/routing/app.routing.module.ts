@@ -6,9 +6,7 @@ import { WelcomeComponent } from '../welcome/welcome.component';
 import { RegisterComponent } from '../register/register.component';
 import { ApplicationComponent } from '../application/application.component';
 import { AdminMenuComponent } from '../admin-menu/admin-menu.component';
-import { CreateMempershipsComponent } from '../create-memperships/create-memperships.component';
-import { CategoryArgumentsComponent } from '../category-arguments/category-arguments.component';
-import { MsfTestComponent } from '../msf-test/msf-test.component';
+import { CreateMembershipsComponent } from '../create-memberships/create-memberships.component';
 import { UserActivationComponent } from '../user-activation/user-activation.component';
 import { ForgotPasswordComponent } from '../forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from '../reset-password/reset-password.component';
@@ -22,9 +20,7 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'application', component: ApplicationComponent, canActivate: [AuthGuard] },
   { path: 'admin-menu', component: AdminMenuComponent, canActivate: [AuthGuard] },
-  { path: 'create-membership', component: CreateMempershipsComponent, canActivate: [AuthGuard] },
-  { path: 'category-arguments', component: CategoryArgumentsComponent, canActivate: [AuthGuard] },
-  { path: 'app-msf-test', component: MsfTestComponent, canActivate: [AuthGuard] },
+  { path: 'create-membership', component: CreateMembershipsComponent, canActivate: [AuthGuard] },
   { path: 'user-activation', component: UserActivationComponent, canActivate: [AuthGuard] },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'reset-password', component: ResetPasswordComponent },

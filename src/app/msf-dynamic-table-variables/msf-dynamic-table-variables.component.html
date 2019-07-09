@@ -1,6 +1,6 @@
 <div class="msf-dynamic-table-variable-containner">
   <div class="msf-dynamic-table-variable-title">
-    <img src="../../assets/images/dynamicTable.png" alt="">
+    <img src="../../assets/images/{{globals.theme}}-dynamicTable.png" [style.width.px]="20" [style.height.px]="20">
     <span>Dynamic Table</span>
   </div>
   <div class="msf-dynamic-table-variable-content">
@@ -24,7 +24,7 @@
               </mat-card>
           </ng-container>
       </div>
-      <img src="../../assets/images/flechas.png" class="msf-var-img" alt="">
+      <img src="../../assets/images/{{globals.theme}}-arrows.png" class="msf-var-img" alt="">
       <div class="msf-var-content">
           <mat-form-field class="msf-full-width">
               <mat-select [multiple]="true" placeholder="Values" #valueSelect [(ngModel)]="this.globals.values" (ngModelChange)="orderValues($event)">

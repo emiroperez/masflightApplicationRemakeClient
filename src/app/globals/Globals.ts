@@ -1,7 +1,9 @@
-import { Injectable } from '@angular/core';
-import {Option} from '../model/Option';
+import { Injectable, HostBinding } from '@angular/core';
+import { Option } from '../model/Option';
 import { MatSort, MatTab } from '@angular/material';
 import { Observable } from 'rxjs';
+import { OverlayContainer } from '@angular/cdk/overlay';
+
 @Injectable()
 export class Globals {
   currentOption: any;
@@ -51,9 +53,9 @@ export class Globals {
   currentAirline: any;
   template : boolean = false;
   isFullscreen: boolean = false;
-  // baseUrl = "http://staging.pulse.aspsols.com:8887";
+  baseUrl = "http://staging.pulse.aspsols.com:8887";
   // baseUrl = "http://192.168.1.50:8887";
-  baseUrl = "";
+  // baseUrl = "";
   // baseUrl2 = "http://localhost:8886";
   baseUrl2 = "http://69.64.45.220:8886";
   // popupUrl = "http://localhost:8900";
@@ -77,6 +79,33 @@ export class Globals {
   subDisplayedColumnNames: string[] = []; 
   copiedPanelInfo: any;
   lastTime: string;
+
+  @HostBinding('class')
+  theme: string = "light-theme";
+
+  constructor(public overlayContainer: OverlayContainer)
+  {
+    this.setOverlayTheme ({checked : true});
+  }
+
+  setOverlayTheme(themeSwitch): void
+  {
+    let containerElement = this.overlayContainer.getContainerElement ();
+    let themeName;
+
+    if (themeSwitch.checked)
+      themeName = "light-theme";
+    else
+      themeName = "dark-theme";
+
+    // remove previous theme class form the overlay container
+    if (this.theme && containerElement.classList.contains (this.theme))
+      containerElement.classList.remove (this.theme);
+
+    containerElement.classList.add (themeName);
+    this.theme = themeName;
+  }
+
    initDataSource(){
     if(this.currentMenuCategory!= null){
     if(this.currentMenuCategory.welcome!= null){

@@ -443,17 +443,18 @@ export class MsfDashboardComponent implements OnInit {
     return this.dashboardColumns[column][row].width;
   }
 
-  getColumnHeight(column): number
+  getHeight(column): number
   {
-    const minHeight = 303;
-    return minHeight + ((this.dashboardColumns[column][0].height.value - 1) * 15);
+    return this.dashboardColumns[column][0].calculatedHeight;
   }
 
   changePanelHeight(column, index): void
   {
     let dashboardColumn = this.dashboardColumns[column];
+    let i, calculatedHeight;
     let dashboardIds = [];
-    let i;
+  
+    calculatedHeight = 303 + ((this.dashboardColumns[column][0].height.value - 1) * 15);
 
     for (i = 0; i < dashboardColumn.length; i++)
     {
@@ -461,6 +462,8 @@ export class MsfDashboardComponent implements OnInit {
 
       if (i >= 1)
         dashboardColumn[i].height = dashboardColumn[0].height;
+
+      dashboardColumn[i].calculatedHeight = calculatedHeight;
     }
 
     // this.globals.isLoading = true;

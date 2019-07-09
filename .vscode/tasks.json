@@ -5,25 +5,35 @@
             "label": "Serve App",
             "type": "shell",
             "command": "ng",
-            "args" : [
+            "args": [
                 "serve"
-            ]
+            ],
+            "problemMatcher": []
         },
         {
             "label": "Compile App",
             "type": "shell",
             "command": "ng",
-            "args" : [
-                "build", "--aot", "--output-hashing=all", "--prod"
-            ]
+            "args": [
+                "build",
+                "--aot",
+                "--output-hashing=all",
+                "--prod"
+            ],
+            "problemMatcher": []
         },
         {
             "label": "Watch styles.sass For Changes",
             "type": "shell",
             "command": "sass",
-            "args" : [
-                "--watch", "./src/styles.sass", "./src/styles.css"
-            ]
+            "args": [
+                "--watch",
+                "./src/styles.sass",
+                "./src/styles.css",
+                "--style",
+                "compressed"
+            ],
+            "problemMatcher": []
         }
     ]
 }

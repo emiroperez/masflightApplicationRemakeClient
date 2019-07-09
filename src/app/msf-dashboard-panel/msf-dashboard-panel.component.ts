@@ -18,6 +18,7 @@ import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import am4themes_dark from "@amcharts/amcharts4/themes/dark";
 import { CategoryArguments } from '../model/CategoryArguments';
 import { Globals } from '../globals/Globals';
+import { Themes } from '../globals/Themes';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { ReplaySubject, Subject } from 'rxjs';
 import { MatSelect, MatDialog } from '@angular/material';
@@ -41,17 +42,9 @@ import { AuthService } from '../services/auth.service';
 import { MsfMapComponent } from '../msf-map/msf-map.component';
 
 am4core.useTheme(am4themes_animated);
-am4core.useTheme(am4themes_dark);
 
-// AmChart colors
+// AmCharts colors
 const black = am4core.color ("#000000");
-const darkGray = am4core.color ("#3b3b3b");
-const gray = am4core.color ("#4b4b4b");
-const white = am4core.color ("#ffffff");
-const cyan = am4core.color ("#00a3e1");
-const darkBlue = am4core.color ("#30303d");
-const darkGreen = am4core.color ("#00be11");
-const blueJeans = am4core.color ("#67b7dc");
 const comet = am4core.color ("#585869");
 
 // SVG used for maps
@@ -230,7 +223,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.infoFunc3 = JSON.parse (JSON.stringify (this.functions));
 
     this.values.style = this.msfMapRef.mapTypes[1];
-    this.values.theme = this.msfMapRef.mapStyles[0];
   }
 
   ngOnChanges(changes: SimpleChanges): void
@@ -246,7 +238,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   }
 
   // Function to create horizontal column chart series
-  createHorizColumnSeries(values, stacked, chart, item, parseDate): void
+  createHorizColumnSeries(values, stacked, chart, item, parseDate, theme): void
   {
     // Set up series
     let series = chart.series.push (new am4charts.ColumnSeries ());
@@ -298,7 +290,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   }
 
   // Function to create vertical column chart series
-  createVertColumnSeries(values, stacked, chart, item, parseDate): void
+  createVertColumnSeries(values, stacked, chart, item, parseDate, theme): void
   {
     let series = chart.series.push (new am4charts.ColumnSeries ());
     series.name = item.valueAxis;
@@ -345,7 +337,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   }
 
   // Function to create line chart series
-  createLineSeries(values, stacked, chart, item, parseDate): void
+  createLineSeries(values, stacked, chart, item, parseDate, theme): void
   {
     // Set up series
     let series = chart.series.push (new am4charts.LineSeries ());
@@ -418,7 +410,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   }
 
   // Function to create simple vertical column chart series
-  createSimpleVertColumnSeries(values, stacked, chart, item, parseDate): void
+  createSimpleVertColumnSeries(values, stacked, chart, item, parseDate, theme): void
   {
     let series = chart.series.push (new am4charts.ColumnSeries ());
     series.dataFields.valueY = item.valueField;
@@ -455,7 +447,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   }
 
   // Function to create simple horizontal column chart series
-  createSimpleHorizColumnSeries(values, stacked, chart, item, parseDate): void
+  createSimpleHorizColumnSeries(values, stacked, chart, item, parseDate, theme): void
   {
     let series = chart.series.push (new am4charts.ColumnSeries ());
     series.dataFields.valueX = item.valueField;
@@ -490,7 +482,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   }
 
   // Function to create pie chart series
-  createPieSeries(values, stacked, chart, item, parseDate): void
+  createPieSeries(values, stacked, chart, item, parseDate, theme): void
   {
     let series, colorSet;
 
@@ -509,8 +501,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     series.hiddenState.properties.startAngle = -90;
 
     // Set ticks color
+    series.labels.template.fill = Themes.AmCharts[theme].fontColor;
     series.ticks.template.strokeOpacity = 1;
-    series.ticks.template.stroke = darkBlue;
+    series.ticks.template.stroke = Themes.AmCharts[theme].ticks;
     series.ticks.template.strokeWidth = 1;
 
     // Set the color for the chart to display
@@ -559,7 +552,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   }
 
   // Function to create funnel chart series
-  createFunnelSeries(values, stacked, chart, item, parseDate): void
+  createFunnelSeries(values, stacked, chart, item, parseDate, theme): void
   {
     let series, colorSet;
 
@@ -569,8 +562,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     // Set chart apparence
     series.sliceLinks.template.fillOpacity = 0;
+    series.labels.template.fill = Themes.AmCharts[theme].fontColor;
     series.ticks.template.strokeOpacity = 1;
-    series.ticks.template.stroke = darkBlue;
+    series.ticks.template.stroke = Themes.AmCharts[theme].ticks;
     series.ticks.template.strokeWidth = 1;
     series.alignLabels = true;
 
@@ -621,6 +615,10 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   makeChart(chartInfo): void
   {
+    let theme = this.globals.theme;
+
+    am4core.useTheme (Themes.AmCharts[theme].mainTheme);
+
     this.zone.runOutsideAngular (() => {
       let chart;
 
@@ -710,6 +708,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
         // Display heat legend
         heatLegend = chart.chartContainer.createChild (am4maps.HeatLegend);
+        heatLegend.valueAxis.renderer.labels.template.fill = Themes.AmCharts[theme].fontColor;
         heatLegend.series = polygonSeries;
         heatLegend.align = "right";
         heatLegend.valign = "bottom";
@@ -792,8 +791,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         polygonSeries = chart.series.push (new am4maps.MapPolygonSeries ());
         polygonSeries.useGeodata = true;
         polygonSeries.exclude = ["AQ"];
-        polygonSeries.mapPolygons.template.fill = darkGray;
-        polygonSeries.mapPolygons.template.stroke = black;
+        polygonSeries.mapPolygons.template.fill = Themes.AmCharts[theme].mapPolygonColor;
+        polygonSeries.mapPolygons.template.stroke = Themes.AmCharts[theme].mapPolygonStroke;
         polygonSeries.mapPolygons.template.strokeOpacity = 0.25;
         polygonSeries.mapPolygons.template.strokeWidth = 0.5;
 
@@ -851,7 +850,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         chart.fontSize = 10;
 
         // Create the series
-        this.values.currentChartType.createSeries (this.values, false, chart, chartInfo, null);
+        this.values.currentChartType.createSeries (this.values, false, chart, chartInfo, null, theme);
 
         if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART)
         {
@@ -904,7 +903,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           if (chart.data.length > 1)
           {
             chart.scrollbarY = new am4core.Scrollbar ();
-            chart.scrollbarY.background.fill = blueJeans;
+            chart.scrollbarY.background.fill = Themes.AmCharts[theme].chartZoomScrollBar;
           }
         }
         else
@@ -930,7 +929,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           if (chart.data.length > 1)
           {
             chart.scrollbarX = new am4core.Scrollbar ();
-            chart.scrollbarX.background.fill = blueJeans;
+            chart.scrollbarX.background.fill = Themes.AmCharts[theme].chartZoomScrollBar;
           }
         }
 
@@ -939,19 +938,30 @@ export class MsfDashboardPanelComponent implements OnInit {
         categoryAxis.renderer.labels.template.wrap = true;
         categoryAxis.renderer.labels.template.horizontalCenter  = "right";
         categoryAxis.renderer.labels.template.textAlign  = "end";
+        categoryAxis.renderer.labels.template.fill = Themes.AmCharts[theme].fontColor;
         categoryAxis.renderer.grid.template.location = 0;
         categoryAxis.renderer.grid.template.strokeOpacity = 1;
         categoryAxis.renderer.line.strokeOpacity = 1;
-        categoryAxis.renderer.grid.template.stroke = darkBlue;
-        categoryAxis.renderer.line.stroke = darkBlue;
+        categoryAxis.renderer.grid.template.stroke = Themes.AmCharts[theme].stroke;
+        categoryAxis.renderer.line.stroke = Themes.AmCharts[theme].stroke;
         categoryAxis.renderer.grid.template.strokeWidth = 1;
         categoryAxis.renderer.line.strokeWidth = 1;
 
         // Set value axis properties
         valueAxis.renderer.labels.template.fontSize = 10;
+        valueAxis.renderer.labels.template.fill = Themes.AmCharts[theme].fontColor;
         valueAxis.renderer.grid.template.strokeOpacity = 1;
-        valueAxis.renderer.grid.template.stroke = darkBlue;
+        valueAxis.renderer.grid.template.stroke = Themes.AmCharts[theme].stroke;
         valueAxis.renderer.grid.template.strokeWidth = 1;
+
+        if (this.values.currentChartType.flags & ChartFlags.LINECHART)
+        {
+          // Set axis tooltip background color depending of the theme
+          valueAxis.tooltip.label.fill = Themes.AmCharts[theme].axisTooltipFontColor;
+          valueAxis.tooltip.background.fill = Themes.AmCharts[theme].tooltipFill;
+          categoryAxis.tooltip.label.fill = Themes.AmCharts[theme].axisTooltipFontColor;
+          categoryAxis.tooltip.background.fill = Themes.AmCharts[theme].tooltipFill;
+        }
 
         if (this.values.currentChartType.flags & ChartFlags.XYCHART)
         {
@@ -1043,7 +1053,7 @@ export class MsfDashboardPanelComponent implements OnInit {
             chart.colors.list.push (am4core.color (color));
 
           for (let object of chartInfo.filter)
-            this.values.currentChartType.createSeries (this.values, stacked, chart, object, parseDate);
+            this.values.currentChartType.createSeries (this.values, stacked, chart, object, parseDate, theme);
 
           // Add cursor if the chart type is line, area or stacked area
           if (this.values.currentChartType.flags & ChartFlags.LINECHART)
@@ -1066,7 +1076,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           });
 
           // Create the series
-          this.values.currentChartType.createSeries (this.values, false, chart, chartInfo, parseDate);
+          this.values.currentChartType.createSeries (this.values, false, chart, chartInfo, parseDate, theme);
         }
       }
 
@@ -1077,16 +1087,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         chart.legend.markers.template.width = 15;
         chart.legend.markers.template.height = 15;
         chart.legend.labels.template.fontSize = 10;
+        chart.legend.labels.template.fill = Themes.AmCharts[theme].fontColor;
       }
-
-      // Add export button
-      chart.exporting.menu = new am4core.ExportMenu ();
-      chart.exporting.menu.verticalAlign = "top";
-      if (this.values.currentChartType.flags & ChartFlags.HEATMAP
-        || this.values.currentChartType.flags & ChartFlags.MAP)
-        chart.exporting.menu.align = "right";
-      else
-        chart.exporting.menu.align = "left";
 
       this.chart = chart;
     });
@@ -1381,8 +1383,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0),
         function: 1,
         lastestResponse: JSON.stringify (this.values.lastestResponse),
-        analysis: this.msfMapRef.mapTypes.indexOf (this.values.style),
-        values: this.msfMapRef.mapStyles.indexOf (this.values.theme)
+        analysis: this.msfMapRef.mapTypes.indexOf (this.values.style)
       };
     }
     else if (this.values.currentChartType.flags & ChartFlags.FORM
@@ -2510,7 +2511,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.temp.currentOptionCategories = JSON.parse (JSON.stringify (this.values.currentOptionCategories));
     this.temp.thresholds = JSON.parse (JSON.stringify (this.values.thresholds));
     this.temp.style = JSON.parse (JSON.stringify (this.values.style));
-    this.temp.theme = JSON.parse (JSON.stringify (this.values.theme));
 
     this.temp.formVariables = [];
     this.temp.tableVariables = JSON.parse (JSON.stringify (this.values.tableVariables));
@@ -2630,7 +2630,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.currentOptionCategories = JSON.parse (JSON.stringify (this.temp.currentOptionCategories));
     this.values.thresholds = JSON.parse (JSON.stringify (this.temp.thresholds));
     this.values.style = JSON.parse (JSON.stringify (this.temp.style));
-    this.values.theme = JSON.parse (JSON.stringify (this.temp.theme));
 
     for (i = 0; i < this.chartTypes.length; i++)
     {
@@ -3093,21 +3092,6 @@ export class MsfDashboardPanelComponent implements OnInit {
           }
           else
             this.values.style = this.msfMapRef.mapTypes[1];
-
-          if (this.values.valueColumn != null && this.values.valueColumn != -1)
-          {
-            for (i = 0; i < this.msfMapRef.mapStyles.length; i++)
-            {
-              if (i == this.values.valueColumn)
-              {
-                this.values.theme = this.msfMapRef.mapStyles[i];
-                this.values.valueColumn = -1;
-                break;
-              }
-            }
-          }
-          else
-            this.values.theme = this.msfMapRef.mapStyles[0];
         }
         else
         {
@@ -3116,15 +3100,6 @@ export class MsfDashboardPanelComponent implements OnInit {
             if (this.msfMapRef.mapTypes[i].id == this.values.style.id)
             {
               this.values.style = this.msfMapRef.mapTypes[i];
-              break;
-            }
-          }
-
-          for (i = 0; i < this.msfMapRef.mapStyles.length; i++)
-          {
-            if (this.msfMapRef.mapStyles[i].id == this.values.theme.id)
-            {
-              this.values.theme = this.msfMapRef.mapStyles[i];
               break;
             }
           }
@@ -3515,7 +3490,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   calcPanelHeight(): number
   {
-    return this.panelHeight - 14;
+    return this.panelHeight - 19;
   }
 
   calcRouteListHeight(): number
@@ -3523,16 +3498,16 @@ export class MsfDashboardPanelComponent implements OnInit {
     switch (this.panelHeight)
     {
       case 303: // Small
-        return 273;
+        return 263;
 
       case 333: // Medium
-        return 303;
+        return 293;
 
       case 378: // Large
-        return 348;
+        return 338;
 
       default: // 12 = Very Large
-        return 438;
+        return 428;
     }
   }
 
@@ -3881,20 +3856,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     return this.values.formVariables[column].valueFontSize.value;
   }
 
-  getColor(result): string
-  {
-    if (result)
-    {
-      for (let threshold of this.values.thresholds)
-      {
-        if (result >= threshold.min && result <= threshold.max)
-          return threshold.color;
-      }
-    }
-
-    return "#ffffff";
-  }
-
   startUpdateInterval(): void
   {
     if (!this.values.updateIntervalSwitch)
@@ -4031,11 +3992,12 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   toggleMapRoute(route): void
   {
-    let tempLat, tempLng, sumX, sumY, sumZ, avgX, avgY, avgZ;
+    let theme, tempLat, tempLng, sumX, sumY, sumZ, avgX, avgY, avgZ;
     let circle, label, imageSeriesTemplate, hoverState;
     let newCities, curcity;
     let zoomLevel, self;
 
+    theme = this.globals.theme;
     self = this;
     newCities = [];
 
@@ -4230,9 +4192,9 @@ export class MsfDashboardPanelComponent implements OnInit {
       imageSeriesTemplate.width = 8;
       imageSeriesTemplate.height = 8;
       imageSeriesTemplate.scale = 1;
-      imageSeriesTemplate.fill = black;
+      imageSeriesTemplate.fill = Themes.AmCharts[theme].tooltipFill;
       imageSeriesTemplate.background.fillOpacity = 0;
-      imageSeriesTemplate.background.fill = white;
+      imageSeriesTemplate.background.fill = Themes.AmCharts[theme].mapCityColor;
       imageSeriesTemplate.setStateOnChildren = true;
 
       // Configure circle and city labels
@@ -4240,7 +4202,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       circle.defaultState.properties.fillOpacity = 1;
       circle.path = targetSVG;
       circle.scale = 0.75;
-      circle.fill = white;
+      circle.fill = Themes.AmCharts[theme].mapCityColor;
       circle.dx -= 2.5;
       circle.dy -= 2.5;
       hoverState = circle.states.create ("hover");
@@ -4253,8 +4215,9 @@ export class MsfDashboardPanelComponent implements OnInit {
       label.verticalCenter = "middle";
       label.dx += 17.5;
       label.dy += 5.5;
+      label.fill = Themes.AmCharts[theme].mapCityColor;
       hoverState = label.states.create ("hover");
-      hoverState.properties.fill = darkGreen;
+      hoverState.properties.fill = Themes.AmCharts[theme].mapCityLabelHoverColor;
       hoverState.properties.fillOpacity = 1;
 
       imageSeriesTemplate.events.on ("over", function (event) {
@@ -4377,7 +4340,7 @@ export class MsfDashboardPanelComponent implements OnInit {
             mapLine = this.lineSeries.mapLines.create ();
             mapLine.imagesToConnect = [city1, city2];
             mapLine.line.strokeOpacity = 0.3;
-            mapLine.line.stroke = cyan;
+            mapLine.line.stroke = Themes.AmCharts[theme].mapLineColor;
             mapLine.line.horizontalCenter = "middle";
             mapLine.line.verticalCenter = "middle";
   
@@ -4400,7 +4363,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
           plane = planeContainer.createChild (am4core.Sprite);
           plane.path = planeSVG;
-          plane.fill = cyan;
+          plane.fill = Themes.AmCharts[theme].mapPlaneColor;
           plane.scale = 0.75;
           plane.horizontalCenter = "middle";
           plane.verticalCenter = "middle";

@@ -1,28 +1,28 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule} from '@angular/core';
+import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { LoginScreenComponent } from './login-screen/login-screen.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { AppRoutingModule } from './routing/app.routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from '@angular/cdk/layout';
-import {MaterialModule} from './material/material';
+import { MaterialModule } from './material/material';
 import { MessageComponent } from './message/message.component';
-import { FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {AuthService} from './services/auth.service';
-import {HttpClientModule} from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AuthService } from './services/auth.service';
+import { HttpClientModule } from '@angular/common/http';
 import { NotificationComponent } from './notification/notification.component';
 import { ApiClient } from './api/api-client';
 import { RegisterComponent } from './register/register.component';
-import {NgxMaskModule} from 'ngx-mask'
+import { NgxMaskModule } from 'ngx-mask'
 import { NgSelectModule } from '@ng-select/ng-select';
 import { MenuComponent } from './menu/menu.component';
 import { MenuOptionComponent } from './menu-option/menu-option.component';
 import { ApplicationComponent } from './application/application.component';
 import { MsfComponentComponent } from './msf-component/msf-component.component';
-import {Globals} from './globals/Globals';
+import { Globals } from './globals/Globals';
 import { MsfAirportComponent } from './msf-airport/msf-airport.component';
-import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { MatFormFieldModule, MatSelectModule } from '@angular/material';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MsfContainerComponent } from './msf-container/msf-container.component';
@@ -61,22 +61,18 @@ import { MsfRoundingComponent } from './msf-rounding/msf-rounding.component';
 import { MsfDateComponent } from './msf-date/msf-date.component';
 import { MapBoxComponent } from './map-box/map-box.component';
 import { AdminMenuComponent } from './admin-menu/admin-menu.component';
-import { CreateMempershipsComponent } from './create-memperships/create-memperships.component';
-import {MatSnackBarModule} from '@angular/material';
-import { CategoryArgumentsComponent } from './category-arguments/category-arguments.component';
+import { CreateMembershipsComponent } from './create-memberships/create-memberships.component';
+import { MatSnackBarModule } from '@angular/material';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material';
-import { AdminMenuRecursiveComponent } from './admin-menu-recursive/admin-menu-recursive.component';
 import { AdminMenuMembershipsComponent } from './admin-menu-memberships/admin-menu-memberships.component';
-import { AgGridModule } from 'ag-grid-angular';
 import { Utils } from './commons/utils';
 import { MsfUserListComponent } from './msf-user-list/msf-user-list.component';
 import { MsfOptionListComponent } from './msf-option-list/msf-option-list.component';
 import { ConfirmDeleteDialog } from './admin-menu/admin-menu.component';
 import { EditOutputOptionsMetaDialog } from './admin-menu/admin-menu.component';
 import { EditCategoryArgumentDialog } from './admin-menu/admin-menu.component';
-import { EditOptionsDialog } from './create-memperships/create-memperships.component';
-import { MsfTestComponent } from './msf-test/msf-test.component';
+import { EditOptionsDialog } from './create-memberships/create-memberships.component';
 import { MsfFreeTextInputComponent } from './msf-free-text-input/msf-free-text-input.component';
 import { MsfSelectBoxSingleOptionComponent } from './msf-select-box-single-option/msf-select-box-single-option.component';
 import { MsfSelectBoxMultipleOptionComponent } from './msf-select-box-multiple-option/msf-select-box-multiple-option.component';
@@ -174,7 +170,6 @@ import { MsfAddSharedDashboardPanelComponent } from './msf-add-shared-dashboard-
 import { DrillDownDialog } from './admin-menu/admin-menu.component';
 import { FilterPipe } from './admin-menu/pipe-filter';
 import { FilterPipeArg } from './admin-arguments-category/pipe-filter';
-import { NewCategoryDialog } from './admin-menu/admin-menu.component'
 import { MsfAddSharedDashboardComponent } from './msf-add-shared-dashboard/msf-add-shared-dashboard.component';
 import { AdminArgumentsCategoryComponent } from './admin-arguments-category/admin-arguments-category.component';
 import { DragScrollModule } from 'cdk-drag-scroll';
@@ -237,22 +232,18 @@ import { MsfDynamicTableAliasComponent } from './msf-dynamic-table-alias/msf-dyn
     MsfRoundingComponent,
     MsfDateComponent,
     AdminMenuComponent,
-    CreateMempershipsComponent,
+    CreateMembershipsComponent,
     MapBoxComponent,
     AdminMenuComponent,
     AdminMenuComponent,
-    CategoryArgumentsComponent,
-    AdminMenuRecursiveComponent,
     AdminMenuMembershipsComponent,
     MsfUserListComponent,
     MsfOptionListComponent,
     ConfirmDeleteDialog,
-    NewCategoryDialog,
     EditOutputOptionsMetaDialog,
     EditCategoryArgumentDialog,
     EditOptionsDialog,
     DrillDownDialog,
-    MsfTestComponent,
     MsfFreeTextInputComponent,
     MsfSelectBoxSingleOptionComponent,
     MsfSelectBoxMultipleOptionComponent,
@@ -390,7 +381,6 @@ import { MsfDynamicTableAliasComponent } from './msf-dynamic-table-alias/msf-dyn
     MatSnackBarModule,
     MatTableModule,
     MatPaginatorModule,
-    AgGridModule.withComponents(null),
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     ColorPickerModule,
@@ -422,7 +412,6 @@ import { MsfDynamicTableAliasComponent } from './msf-dynamic-table-alias/msf-dyn
     EditCategoryArgumentDialog,
     EditOptionsDialog,
     DrillDownDialog,
-    NewCategoryDialog,
     MsfDashboardControlVariablesComponent,
     MsfConfirmationDialogComponent,
     MsfDashboardInfoFunctionsComponent,

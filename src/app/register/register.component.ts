@@ -24,7 +24,6 @@ import { Customer } from '../model/Customer';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.css'],
   encapsulation: ViewEncapsulation.None
 })
 export class RegisterComponent implements OnInit {
@@ -68,7 +67,7 @@ export class RegisterComponent implements OnInit {
     private registerServices:RegisterService,
     private appServices: ApplicationService,
     public dialog: MatDialog,
-    private globals: Globals,private router: Router,
+    public globals: Globals,private router: Router,
     private config: NgSelectConfig) {
 
     this.config.notFoundText = 'There is no options';

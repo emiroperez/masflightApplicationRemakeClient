@@ -11,8 +11,7 @@ import { MaterialIconPickerComponent } from '../material-icon-picker/material-ic
 
 @Component({
   selector: 'app-admin-arguments-category, FilterPipeArg',
-  templateUrl: './admin-arguments-category.component.html',
-  styleUrls: ['./admin-arguments-category.component.css']
+  templateUrl: './admin-arguments-category.component.html'
 })
 export class AdminArgumentsCategoryComponent implements OnInit {
 
@@ -276,5 +275,22 @@ deleteArgument(argument) {
   isMatIcon(icon): boolean
   {
     return !icon.endsWith (".png");
+  }
+
+  getImageIcon(url): string
+  {
+    let newurl, filename: string;
+    let path: string[];
+
+    path = url.split ('/');
+    filename = path.pop ().split ('?')[0];
+    newurl = "";
+
+    // recreate the url with the theme selected
+    for (let dir of path)
+      newurl += dir + "/";
+
+    newurl += this.globals.theme + "-" + filename;
+    return newurl;
   }
 }

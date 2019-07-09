@@ -5,7 +5,6 @@ import { ApplicationService } from '../services/application.service';
 @Component({
   selector: 'app-admin-menu-memberships',
   templateUrl: './admin-menu-memberships.component.html',
-  styleUrls: ['./admin-menu-memberships.component.css'],
   encapsulation: ViewEncapsulation.None,
   animations: [
     trigger('animationOption2', [

@@ -605,23 +605,28 @@ export class MsfTableComponent implements OnInit {
 }
 
 
-  goToPopup(drillDown:any){
+  goToPopup(drillDown:any)
+  {
     var width = drillDown.width;
-    var height =drillDown.height;
-    if(width=="" || width==null){
-      width = "1200px";
-    }else{
-      width +="px";
-    }
-    if(height=="" || height==null){
+    var height = drillDown.height;
+
+    if (!width || width == "")
+      width = "auto";
+    else
+      width += "px";
+
+    if (!height || height == "")
       height = "500px";
-    }else{
-      height +="px";
-    }
+    else
+      height += "px";
+
     this.dialog.open (MsfMoreInfoPopupComponent, {
       height: height,
       width: width,
-      panelClass: 'msf-more-info-popup'
+      panelClass: 'msf-more-info-popup',
+      data: {
+        loadingWidth: (drillDown.width && drillDown.width != "" ? (drillDown.width - 116) : 1084)
+      }
     });
   }
 

@@ -20,11 +20,13 @@ export class ForgotPasswordComponent implements OnInit {
 
   user: User;
   utils: Utils;
+  innerHeight: number;
+
   emailValidator = new FormControl('email', [Validators.required, Validators.email]);
 
   constructor(private authService: AuthService, private notification: NotificationComponent,
     private registerServices:UserService, public dialog: MatDialog,
-    private globals: Globals) {
+    public globals: Globals) {
     this.user = new User(null);
     this.utils = new Utils();
   }
@@ -38,15 +40,17 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.innerHeight = window.innerHeight;
   }
 
   validate(){
+    this.user.email = this.emailValidator.get ('email').value;
     this.registerServices.checkEmail(this,this.checkEmailResponse,this.errorHandleResponsen, this.user.email);
   }
   checkEmailResponse(_this, data) {
     if (data){
       _this.globals.isLoading = true;
-      _this.enviarEmail();
+      _this.sendEmail();
     }else {
       const title = "Error";
       const message= "The email doesn't exist";
@@ -63,7 +67,7 @@ export class ForgotPasswordComponent implements OnInit {
     console.log(result);
   }
 
-  enviarEmail(){
+  sendEmail(){
     this.globals.isLoading = true;
     this.registerServices.sendEmailPassword(this, this.sendEmailResponse, this.errorEmailResponse, this.user.email);
   }
@@ -94,6 +98,8 @@ export class ForgotPasswordComponent implements OnInit {
   @HostListener('window:resize', ['$event'])
   checkScreen(event): void
   {
+    this.innerHeight = event.target.innerHeight;
+
     // if(!this.mobileQuery.matches)
     // {
     if (event.target.innerHeight == window.screen.height && event.target.innerWidth == window.screen.width)
@@ -106,4 +112,7 @@ export class ForgotPasswordComponent implements OnInit {
     // }
   }
 
+  getInnerHeight(): number {
+    return this.innerHeight;
+  }
 }

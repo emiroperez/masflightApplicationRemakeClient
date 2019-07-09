@@ -16,8 +16,7 @@ import { MatTableDataSource, MatPaginator } from '@angular/material';
 
 @Component({
   selector: 'app-user-activation',
-  templateUrl: './user-activation.component.html',
-  styleUrls: ['./user-activation.component.css']
+  templateUrl: './user-activation.component.html'
 })
 export class UserActivationComponent implements OnInit {
 

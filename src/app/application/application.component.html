@@ -1,11 +1,10 @@
 <!--Header-->
-<div *ngIf="!globals.isFullscreen || (globals.isFullscreen && globals.currentOption !== 'dashboard')"
-    class="msf-menu-header">
+<div *ngIf="!globals.isFullscreen || (globals.isFullscreen && globals.currentOption !== 'dashboard')" class="msf-menu-header">
     <div class="msf-menu-header-image-container">
         <!-- <div (click)="goHome()" class="msf-menu-logo"></div> -->
         <!-- <div class="msf-menu-ajustes-icon"></div> -->
-        <img (click)="goHome()" style="cursor:pointer;" src="../../assets/images/pulse_welc.png" class="msf-menu-logo">
-        <img src="../../assets/images/ajustes.png" class="msf-menu-ajustes-icon">
+        <img (click)="goHome()" style="cursor:pointer;" src="../../assets/images/{{globals.theme}}-pulse_welc.png" class="msf-menu-logo">
+        <img src="../../assets/images/{{globals.theme}}-adjust.png" class="msf-menu-ajustes-icon">
     </div>
     <div class="msf-menu-container">
         <app-menu [menu]="menu" [dashboards]="dashboards" [sharedDashboards]="sharedDashboards"
@@ -30,7 +29,7 @@
         <!-- <div> -->
         <mat-menu #userMenu="matMenu">
             <button mat-menu-item (click)="logOut()">
-                <mat-icon class="mat-menu-item-icon">settings</mat-icon>
+                <mat-icon class="mat-menu-item-icon">exit_to_app</mat-icon>
                 <span>Log out</span>
             </button>
         </mat-menu>
@@ -48,19 +47,19 @@
                 <span>Admin Menu</span>
             </button>
             <button mat-menu-item routerLink="/arguments-category">
-                <mat-icon class="mat-menu-item-icon">settings</mat-icon>
+                <mat-icon class="mat-menu-item-icon">category</mat-icon>
                 <span>Admin Argument Category</span>
             </button>
             <button mat-menu-item routerLink="/create-membership">
-                <mat-icon class="mat-menu-item-icon">settings</mat-icon>
+                <mat-icon class="mat-menu-item-icon">contacts</mat-icon>
                 <span>Memberships</span>
             </button>
             <button mat-menu-item routerLink="/user-activation">
-                <mat-icon class="mat-menu-item-icon">settings</mat-icon>
+                <mat-icon class="mat-menu-item-icon">supervisor_account</mat-icon>
                 <span>Users Activation</span>
             </button>
             <button mat-menu-item routerLink="/create-customer">
-                <mat-icon class="mat-menu-item-icon">settings</mat-icon>
+                <mat-icon class="mat-menu-item-icon">business</mat-icon>
                 <span>Customers</span>
             </button>
         </mat-menu>
@@ -69,38 +68,38 @@
 </div>
 <div *ngIf="!globals.isFullscreen || (globals.isFullscreen && globals.currentOption !== 'dashboard')"
     class="msf-menu-icons-container">
-    <!-- <div class="msf-secondary-color msf-menu-icon-container msf-menu-adm" *ngIf="!mobileQuery.matches">connected</div> -->
-    <div class="msf-menu-icon-container msf-menu-icons-left">{{globals.currentOption ? globals.currentOption.label:''}}</div>
-    <div class="msf-menu-icon-container msf-menu-icons-right">
+    <!-- <div class="msf-secondary-color msf-menu-adm" *ngIf="!mobileQuery.matches">connected</div> -->
+    <div class="msf-menu-icons-left">{{globals.currentOption ? globals.currentOption.label:''}}</div>
+    <div class="msf-menu-icons-right">
         <button *ngIf="globals.currentOption !== 'dashboard'" [disabled]="(!msfContainerRef.msfTableRef || !msfContainerRef.msfTableRef.dataSource || msfContainerRef.msfTableRef.dataSource.length < 0 || globals.mapsc) || !dynamicTablePlan" class="msf-menu-icon" (click)="dynamicTable()">
-            <img src="../../assets/images/dynamicTable.png" class="msf-menu-image msf-vertical-middle">
+            <img src="../../assets/images/{{globals.theme}}-dynamicTable.png" class="msf-menu-image msf-vertical-middle">
             <span class="msf-vertical-middle" *ngIf="!mobileQuery.matches">Dynamic Table</span>
         </button>
         <!-- <button [disabled]="(!msfContainerRef.msfTableRef || !msfContainerRef.msfTableRef.dataSource || msfContainerRef.msfTableRef.dataSource.length < 0) || !chartPlan" class="msf-menu-icon" (click)="openChart()"><img src="../../assets/images/Chart.png" class="msf-menu-image msf-vertical-middle" ><span  class="msf-vertical-middle">Chart</span></button> -->
         <button *ngIf="globals.currentOption !== 'dashboard'" [disabled]="(!msfContainerRef.msfTableRef || !msfContainerRef.msfTableRef.dataSource || msfContainerRef.msfTableRef.dataSource.length < 0 || globals.mapsc) || !exportExcelPlan" class="msf-menu-icon" (click)="exportToExcel()">
-            <img src="../../assets/images/ExporttoExcel.png" class="msf-menu-image msf-vertical-middle">
+            <img src="../../assets/images/{{globals.theme}}-ExporttoExcel.png" class="msf-menu-image msf-vertical-middle">
             <span class="msf-vertical-middle" *ngIf="!mobileQuery.matches">Export Excel</span>
         </button>
         <button *ngIf="globals.currentOption !== 'dashboard'" [disabled]="(!msfContainerRef.msfTableRef || !msfContainerRef.msfTableRef.dataSource || msfContainerRef.msfTableRef.dataSource.length < 0 || globals.mapsc) || !exportExcelPlan" class="msf-menu-icon" (click)="columnSelector()">
-            <img src="../../assets/images/ColumnSelector.png" class="msf-menu-image msf-vertical-middle">
+            <img src="../../assets/images/{{globals.theme}}-ColumnSelector.png" class="msf-menu-image msf-vertical-middle">
             <span class="msf-vertical-middle" *ngIf="!mobileQuery.matches">Column Selector</span>
         </button>
         <!-- <button class="msf-menu-icon"><img src="../../assets/images/CopytoClipboard.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Copy to Clipboard</span></button>
         <button class="msf-menu-icon"><img src="../../assets/images/LoadingOptions.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Loading Options</span></button> -->
         <button *ngIf="globals.currentOption === 'dashboard' && !globals.readOnlyDashboardPlan" class="msf-menu-icon" (click)="changeDashboardName()">
-            <img src="../../assets/images/Chart.png" class="msf-menu-image msf-vertical-middle">
+            <img src="../../assets/images/{{globals.theme}}-Chart.png" class="msf-menu-image msf-vertical-middle">
             <span class="msf-vertical-middle" *ngIf="!mobileQuery.matches">Edit Dashboard Title</span>
         </button>
         <button *ngIf="globals.currentOption === 'dashboard' && !globals.readOnlyDashboardPlan" class="msf-menu-icon" (click)="shareDashboard()">
-            <img src="../../assets/images/share.png" class="msf-menu-image msf-vertical-middle">
+            <img src="../../assets/images/{{globals.theme}}-share.png" class="msf-menu-image msf-vertical-middle">
             <span class="msf-vertical-middle" *ngIf="!mobileQuery.matches"> Share Dashboard</span>
         </button>
         <button *ngIf="globals.currentOption === 'dashboard'" class="msf-menu-icon" (click)="deleteDashboard()">
-            <img src="../../assets/images/trash-blue-small.png" class="msf-menu-image msf-vertical-middle">
+            <img src="../../assets/images/{{globals.theme}}-trash-small.png" class="msf-menu-image msf-vertical-middle">
             <span class="msf-vertical-middle" *ngIf="!mobileQuery.matches">Delete Dashboard</span>
         </button>
         <button class="msf-menu-icon" *ngIf="!globals.isFullscreen" (click)="goToFullscreen()">
-            <img src="../../assets/images/fullscreen.png" class="msf-menu-image msf-vertical-middle">
+            <img src="../../assets/images/{{globals.theme}}-fullscreen.png" class="msf-menu-image msf-vertical-middle">
             <span class="msf-vertical-middle" *ngIf="!mobileQuery.matches">Full Screen</span>
         </button>
     </div>
@@ -119,9 +118,9 @@
                 <div class="msf-category-container" [ngClass]="(globals.currentOption && globals.currentOption.metaData != 3) ? 'msf-hide' : (globals.hideParametersPanels ? 'msf-hide':'msf-category-container')">
                   <app-msf-map-coordinates></app-msf-map-coordinates>
                 </div>
-                <button [disabled]="disabled()" [ngClass]="{'msf-menu-search-button-disabled' : disabled() && !globals.hideParametersPanels,
-                            'msf-menu-search-button-enabled' : !disabled() && !globals.hideParametersPanels,
-                            'msf-hide' : globals.hideParametersPanels && !disabled()}"
+                <button [disabled]="disabled()" [ngClass]="{
+                    'msf-menu-search-button' : (!globals.hideParametersPanels || globals.status),
+                    'msf-hide' : (globals.hideParametersPanels || !globals.status)}"
                     (click)="search()">Search</button>
                 <app-msf-schedule-panel *ngIf="globals.hideParametersPanels"></app-msf-schedule-panel>
             </div>
@@ -142,9 +141,10 @@
             </div>
             <div [ngClass]="globals.moreResultsBtn && !globals.isLoading? 'msf-menu-more-button' : 'msf-menu-more-button disabled-more-button'"
                 (click)="moreResults()" *ngIf="globals.dataSource && !globals.mapsc">
-                <img style="width: 16px;height: 16px;" src="../../assets/images/more.png"
+                <img style="width: 16px;height: 16px;" src="../../assets/images/{{globals.theme}}-more.png"
                     class="msf-menu-image msf-vertical-middle msf-line">
                 <div class="msf-vertical-middle msf-line" style="font-size: 13px">More Result</div>
             </div>
         </div>
     </div>
+</div>
