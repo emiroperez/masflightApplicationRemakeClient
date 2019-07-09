@@ -185,6 +185,7 @@ import { MaterialIconPickerComponent } from './material-icon-picker/material-ico
 import { CreateCustomerComponent } from './create-customer/create-customer.component';
 import { MsfMapCoordinatesComponent } from './msf-map-coordinates/msf-map-coordinates.component';
 import { MsfDynamicTableAliasComponent } from './msf-dynamic-table-alias/msf-dynamic-table-alias.component';
+import { Cookie } from './api/cookie';
 
 @NgModule({
   declarations: [
@@ -401,7 +402,8 @@ import { MsfDynamicTableAliasComponent } from './msf-dynamic-table-alias/msf-dyn
     DateFormatPipe,
     DateTimeFormatPipe,
     Utils,
-    AuthGuard
+    AuthGuard,
+    Cookie
   ],
   bootstrap: [AppComponent],
   entryComponents: [

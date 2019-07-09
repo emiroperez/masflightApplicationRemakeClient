@@ -3,6 +3,7 @@ import { Option } from '../model/Option';
 import { MatSort, MatTab } from '@angular/material';
 import { Observable } from 'rxjs';
 import { OverlayContainer } from '@angular/cdk/overlay';
+import { Cookie } from '../api/cookie';
 
 @Injectable()
 export class Globals {
@@ -83,9 +84,23 @@ export class Globals {
   @HostBinding('class')
   theme: string = "light-theme";
 
-  constructor(public overlayContainer: OverlayContainer)
+  constructor (public overlayContainer: OverlayContainer, private cookie: Cookie)
   {
-    this.setOverlayTheme ({checked : true});
+    let pulseTheme, useLightTheme;
+
+    // get theme setting from cookies
+    pulseTheme = cookie.get ("pulseTheme");
+    if (!pulseTheme)
+      useLightTheme = true;
+    else
+    {
+      if (pulseTheme === "light-theme")
+        useLightTheme = true;
+      else
+        useLightTheme = false;
+    }
+
+    this.setOverlayTheme ({ checked : useLightTheme });
   }
 
   setOverlayTheme(themeSwitch): void
@@ -104,6 +119,9 @@ export class Globals {
 
     containerElement.classList.add (themeName);
     this.theme = themeName;
+
+    // save current theme into the cookies
+    this.cookie.set ("pulseTheme", themeName);
   }
 
    initDataSource(){

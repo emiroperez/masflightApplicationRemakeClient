@@ -244,7 +244,6 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             .msf-dashboard-title
                 .msf-dashboard-title-border
                     background-color: $primary-color
-                    border-radius: 5px
                     padding: 15px 1px
                     box-shadow: 0 0 1px 0 $dashboard-panel-border-anti-alias-color inset, 0 0 1px 0 $dashboard-panel-border-anti-alias-color
                     .msf-dashboard-title-label
@@ -272,13 +271,11 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             color: $font-color
         .msf-dashboard-panel-container-border
             background-color: $primary-color
-            border-radius: 25px
             padding: 1px
             width: 100%
             height: 100%
             box-shadow: 0 0 1px 0 $dashboard-panel-border-anti-alias-color inset, 0 0 1px 0 $dashboard-panel-border-anti-alias-color
             .msf-dashboard-panel-container, .msf-dashboard-panel-container-chart, .msf-dashboard-panel-loading
-                border-radius: 25px
                 box-shadow: 0 0 1px 0 $dashboard-panel-border-anti-alias-color inset, 0 0 1px 0 $dashboard-panel-border-anti-alias-color
         .msf-dashboard-panel-container
             background-color: $dashboard-panel-background-color
@@ -2624,10 +2621,8 @@ mat-tab-group
         padding-bottom: 20px
         font-size: 16px
         .msf-dashboard-title-border
-            border-radius: 5px
             padding: 1px
             .msf-dashboard-title-label
-                border-radius: 5px
                 padding: 14px
     .msf-dashboard-empty
         padding-top: 45px
@@ -2674,8 +2669,6 @@ mat-tab-group
         @include msf-dashboard-icon(5px)
 
 .msf-dashboard-panel-button
-    margin-top: 5px
-    margin-left: -5px
     display: flex
     flex-direction: row-reverse
     align-items: flex-end
