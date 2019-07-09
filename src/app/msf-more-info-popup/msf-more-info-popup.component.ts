@@ -9,14 +9,9 @@ import am4themes_dark from "@amcharts/amcharts4/themes/dark";
 import { Subject } from 'rxjs';
 import { MessageComponent } from '../message/message.component';
 import { AuthService } from '../services/auth.service';
+import { Themes } from '../globals/Themes';
 
 am4core.useTheme(am4themes_animated);
-am4core.useTheme(am4themes_dark);
-
-// Grid, scrollbar and legend label colors
-const white = am4core.color ("#ffffff");
-const darkBlue = am4core.color ("#30303d");
-const blueJeans = am4core.color ("#67b7dc");
 
 @Component({
   selector: 'app-msf-more-info-popup',
@@ -186,6 +181,11 @@ export class MsfMoreInfoPopupComponent{
 
   makeChart(chartInfo): void
   {
+    let theme;
+
+    theme = this.globals.theme;
+    am4core.useTheme (Themes.AmCharts[theme].mainTheme);
+
     this.zone.runOutsideAngular (() => {
       let chart;
 
@@ -216,7 +216,7 @@ export class MsfMoreInfoPopupComponent{
       if (chart.data.length > 1)
       {
         chart.scrollbarY = new am4core.Scrollbar ();
-        chart.scrollbarY.background.fill = blueJeans;
+        chart.scrollbarY.background.fill = Themes.AmCharts[theme].chartZoomScrollBar;
       }
 
       // Set category axis properties
@@ -224,18 +224,20 @@ export class MsfMoreInfoPopupComponent{
       categoryAxis.renderer.labels.template.wrap = true;
       categoryAxis.renderer.labels.template.horizontalCenter  = "right";
       categoryAxis.renderer.labels.template.textAlign  = "end";
+      categoryAxis.renderer.labels.template.fill = Themes.AmCharts[theme].fontColor;
       categoryAxis.renderer.grid.template.location = 0;
       categoryAxis.renderer.grid.template.strokeOpacity = 1;
       categoryAxis.renderer.line.strokeOpacity = 1;
-      categoryAxis.renderer.grid.template.stroke = darkBlue;
-      categoryAxis.renderer.line.stroke = darkBlue;
+      categoryAxis.renderer.grid.template.stroke = Themes.AmCharts[theme].stroke;
+      categoryAxis.renderer.line.stroke = Themes.AmCharts[theme].stroke;
       categoryAxis.renderer.grid.template.strokeWidth = 1;
       categoryAxis.renderer.line.strokeWidth = 1;
 
       // Set value axis properties
       valueAxis.renderer.labels.template.fontSize = 10;
+      valueAxis.renderer.labels.template.fill = Themes.AmCharts[theme].fontColor;
       valueAxis.renderer.grid.template.strokeOpacity = 1;
-      valueAxis.renderer.grid.template.stroke = darkBlue;
+      valueAxis.renderer.grid.template.stroke = Themes.AmCharts[theme].stroke;
       valueAxis.renderer.grid.template.strokeWidth = 1;
 
       // The category will be the x axis if the chart type has it
@@ -272,13 +274,14 @@ export class MsfMoreInfoPopupComponent{
         chart.colors.list.push (am4core.color (color));
 
       for (let object of chartInfo.filter)
-	this.createHorizColumnSeries (this.xaxis, chart, object, parseDate);
+      	this.createHorizColumnSeries (this.xaxis, chart, object, parseDate);
 
       // Display Legend
       chart.legend = new am4charts.Legend ();
       chart.legend.markers.template.width = 15;
       chart.legend.markers.template.height = 15;
       chart.legend.labels.template.fontSize = 10;
+      chart.legend.labels.template.fill = Themes.AmCharts[theme].fontColor;
 
       this.chart = chart;
       this.globals.popupLoading2 = false;
