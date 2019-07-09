@@ -485,4 +485,10 @@ export class ApplicationService {
     let url = this.host + "/checkMenuOption?id=" + menuOptionId;
     this.http.get (_this, url, handlerSuccess, handlerError, null);
   }
+
+  removeDashboardPanelByOptionId(_this, optionId, handlerSuccess, handlerError): void
+  {
+    let url = this.host + "/removeDashboardPanelByOptionId";
+    this.http.post (_this, url, optionId, handlerSuccess, handlerError);
+  }
 }

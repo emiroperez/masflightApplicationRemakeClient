@@ -908,8 +908,12 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     const confirm: boolean = false;
     if (this.optionSelected) {
       const dialogRef = this.dialog.open(ConfirmDeleteDialog, {
-        width: '40%',
-        data: { message: message, confirm: confirm }
+        width: '550px',
+        data: {
+          message: message,
+          title: "Confirmation required",
+          confirm: confirm
+        }
       });
       dialogRef.afterClosed().subscribe((result: any) => {
         console.log(result.confirm);
@@ -929,9 +933,26 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
   checkSuccess(_this, result) {
     if (!result) {
+      const confirm: boolean = false;
+      let dialogRef;
+
       _this.globals.isLoading = false;
-      _this.dialog.open(MessageComponent, {
-        data: { title: "Error", message: "Unable to delete menu option, it or its children is being used on dashboard panels." }
+
+      dialogRef = _this.dialog.open(ConfirmDeleteDialog, {
+        width: '360px',
+        data: {
+          message: "Several dashboard panels are using this option. Do you want to continue?",
+          title: "Warning",
+          confirm: confirm
+        }
+      });
+
+      dialogRef.afterClosed().subscribe((result: any) => {
+        if (result.confirm)
+        {
+          _this.globals.isLoading = true;
+          _this.service.removeDashboardPanelByOptionId (_this, _this.optionSelected.id, _this.checkSuccess, _this.checkError);
+        }
       });
 
       return;
