@@ -181,6 +181,15 @@ sendData() {
 }
 
 handlerSuccess(_this, result){
+
+  if (_this.categories.length != result.length)
+  {
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Information", message: "Some arguments category/ies were not deleted because some options are using it."}
+    });
+  }
+
+  _this.category = { label: '', icon: '', description: '', isSelected: false };
   _this.categories = result;
   _this.globals.isLoading = false;
 }
@@ -188,7 +197,7 @@ handlerSuccess(_this, result){
 handlerError(_this,result){
   console.log(result);
   _this.globals.isLoading = false;
-  const dialogRef = _this.dialog.open(MessageComponent, {
+  _this.dialog.open(MessageComponent, {
     data: { title:"Error", message: "It was an error, try again."}
   });
 }
@@ -224,7 +233,7 @@ deleteCategory() {
   this.categoryDelete.push(this.category);
   const index: number = this.categories.findIndex(d => d === this.category);
   this.categories.splice(index, 1);
-  this.category = null;
+  this.category = { label: '', icon: '', description: '', isSelected: false };
 }
 
 addArgument() {
