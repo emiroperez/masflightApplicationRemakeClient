@@ -23,7 +23,7 @@ import { MaterialIconPickerComponent } from '../material-icon-picker/material-ic
 
 export class ConfirmDeleteDialog {
 
-  constructor(public dialogRef: MatDialogRef<ConfirmDeleteDialog>, private dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: { message: string, confirm: boolean }) {
+  constructor(public dialogRef: MatDialogRef<ConfirmDeleteDialog>, private dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: { message: string, title: string, confirm: boolean }) {
   }
 
   close() {
