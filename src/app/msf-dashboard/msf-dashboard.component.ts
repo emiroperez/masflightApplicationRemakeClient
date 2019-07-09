@@ -748,4 +748,9 @@ export class MsfDashboardComponent implements OnInit {
     this.service.setDashboardColumnPositions (this, newColumnPos,
       this.columnSwapSucess, this.columnSwapError);
   }
+
+  cancelLoading(dashboardPanel): void
+  {
+    dashboardPanel.isLoading = false;
+  }
 }

@@ -1613,14 +1613,14 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.globals.startTimestamp = new Date ();
 
     // check if any variable that requires grouping are in configure properly
-    if (!this.checkPanelVariables ())
+    /*if (!this.checkPanelVariables ())
     {
       this.dialog.open (MessageComponent, {
         data: { title: "Error", message: "Some variables used to get the results must be added in the grouping inside the control variables." }
       });
 
       return;
-    }
+    }*/
 
     if (this.values.currentChartType.flags & ChartFlags.MAPBOX)
       this.loadMapboxData (this.msfMapRef.successHandler, this.msfMapRef.errorHandler);

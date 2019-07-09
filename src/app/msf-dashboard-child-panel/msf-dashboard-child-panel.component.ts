@@ -856,12 +856,12 @@ export class MsfDashboardChildPanelComponent {
   setCategories(_this, data)
   {
     // check if any variable that requires grouping are in configure properly
-    if (!_this.checkPanelVariables ())
+    /*if (!_this.checkPanelVariables ())
     {
       _this.globals.popupLoading = false;
       _this.errorMessage = "Some variables used to get the results must be added in the grouping inside the parent control variables";
       return;
-    }
+    }*/
 
     // add category arguments not available on the parent to the child panel, so the service will work properly
     for (let optionCategory of data)
