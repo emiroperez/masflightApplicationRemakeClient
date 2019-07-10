@@ -24,21 +24,22 @@ export class AuthGuard implements CanActivate {
   logout()
   {
     if (this.authService.getToken ())
+    {
       this.authService.setUserLastLoginTime (this, this.authService.getUserIdFromToken (), this.logoutSuccess, this.redirectToLogin);
+      this.authService.removeToken ();
+    }
     else
       this.redirectToLogin (this);
   }
 
   logoutSuccess(_this)
   {
-    _this.authService.removeToken ();
-
     const dialogRef = _this.dialog.open (MessageComponent, {
       data: { title: "Session Expired", message: "Your session has expired. If you want to continue, please log in again." }
     });
   
     dialogRef.afterClosed ().subscribe (
-      () => _this.router.navigate ([''])
+      () => _this.redirectToLogin (_this)
     );
   }
 
