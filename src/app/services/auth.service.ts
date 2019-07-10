@@ -3,6 +3,9 @@ import { Globals } from '../globals/Globals';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
+declare let ClientJS: any;
+import 'clientjs';
+
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
@@ -99,6 +102,11 @@ export class AuthService {
   getIpAddress(): string
   {
     return this.ipAddress;
+  }
+
+  getFingerprint(): any
+  {
+    return new ClientJS ().getFingerprint ();
   }
 
   get = function (_this, url, successHandler, errorHandler)
