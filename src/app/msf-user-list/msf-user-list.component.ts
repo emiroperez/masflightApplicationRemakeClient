@@ -74,7 +74,8 @@ export class MsfUserListComponent implements OnInit {
    }
  
    handlerError(_this,result){
-     _this.globals.isLoading = false; 
+    if (!_this.globals.appLoading)
+      _this.globals.isLoading = false;
      console.log(result);
    }
  

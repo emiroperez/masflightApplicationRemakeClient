@@ -491,4 +491,22 @@ export class ApplicationService {
     let url = this.host + "/removeDashboardPanelByOptionId";
     this.http.post (_this, url, optionId, handlerSuccess, handlerError);
   }
+
+  getDefaultDashboard(_this, handlerSuccess, handlerError): void
+  {
+    let url = this.host + "/secure/getDefaultDashboard?applicationId=" + this.globals.currentApplication.id;
+    this.authService.get (_this, url, handlerSuccess, handlerError);
+  }
+
+  setDefaultDashboard(_this, dashboard, handlerSuccess, handlerError): void
+  {
+    let url = this.host + "/secure/setDefaultDashboard?applicationId=" + this.globals.currentApplication.id;
+    this.authService.post (_this, url, dashboard, handlerSuccess, handlerError);
+  }
+
+  unsetDefaultDashboard(_this, handlerSuccess, handlerError): void
+  {
+    let url = this.host + "/secure/setDefaultDashboard?applicationId=" + this.globals.currentApplication.id;
+    this.authService.post (_this, url, null, handlerSuccess, handlerError);
+  }
 }

@@ -86,6 +86,11 @@
         </button>
         <!-- <button class="msf-menu-icon"><img src="../../assets/images/CopytoClipboard.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Copy to Clipboard</span></button>
         <button class="msf-menu-icon"><img src="../../assets/images/LoadingOptions.png" class="msf-menu-image msf-vertical-middle"><span class="msf-vertical-middle">Loading Options</span></button> -->
+        <button *ngIf="globals.currentOption === 'dashboard'" class="msf-menu-icon" (click)="setDefaultDashboard()">
+            <img src="../../assets/images/{{globals.theme}}-thumbtack.png" class="msf-menu-image msf-vertical-middle">
+            <span class="msf-vertical-middle" *ngIf="!mobileQuery.matches && !isDefaultDashboard()">Set As Default Dashboard</span>
+            <span class="msf-vertical-middle" *ngIf="!mobileQuery.matches && isDefaultDashboard()">Unset Default Dashboard</span>
+        </button>
         <button *ngIf="globals.currentOption === 'dashboard' && !globals.readOnlyDashboardPlan" class="msf-menu-icon" (click)="changeDashboardName()">
             <img src="../../assets/images/{{globals.theme}}-Chart.png" class="msf-menu-image msf-vertical-middle">
             <span class="msf-vertical-middle" *ngIf="!mobileQuery.matches">Edit Dashboard Title</span>

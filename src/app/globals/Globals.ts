@@ -80,6 +80,7 @@ export class Globals {
   subDisplayedColumnNames: string[] = []; 
   copiedPanelInfo: any;
   lastTime: string;
+  appLoading: boolean;
 
   @HostBinding('class')
   theme: string = "light-theme";

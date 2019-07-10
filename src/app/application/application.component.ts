@@ -23,6 +23,7 @@ import { AuthService } from '../services/auth.service';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { AuthGuard } from '../guards/auth.guard';
 import { UserService } from '../services/user.service';
+import { MessageComponent } from '../message/message.component';
 
 @Component({
   selector: 'app-application',
@@ -36,6 +37,7 @@ export class ApplicationComponent implements OnInit {
   dynamicTablePlan: boolean;
   exportExcelPlan: boolean;
   dashboardPlan: boolean;
+  defaultDashboardId: number;
   menu: Menu;
   dashboards: Array<DashboardMenu>;
   sharedDashboards: Array<DashboardMenu>;
@@ -139,12 +141,61 @@ export class ApplicationComponent implements OnInit {
   lastTimeSuccess(_this, data)
   {
     _this.globals.lastTime = _this.parseTimeStamp (data);
-    _this.globals.isLoading = false;
+    _this.appService.getDefaultDashboard (_this, _this.handlerDefaultDashboard, _this.errorLogin);
   }
 
-  errorLogin(_this,result){
+  handlerDefaultDashboard(_this, data): void
+  {
+    // if the user has a default dashboard selected, go to it
+    if (data)
+    {
+      _this.defaultDashboardId = data.id;
+      _this.globals.currentDashboardMenu = null;
+
+      for (let dashboard of _this.dashboards)
+      {
+        if (dashboard.id == data.id)
+        {
+          _this.globals.currentDashboardMenu = data;
+          _this.globals.currentOption = 'dashboard';
+          _this.globals.readOnlyDashboard = false;
+          break;
+        }
+      }
+    
+      if (!_this.globals.currentDashboardMenu)
+      {
+        for (let dashboard of _this.sharedDashboards)
+        {
+          if (dashboard.id == data.id)
+          {
+            _this.globals.currentDashboardMenu = data;
+            _this.globals.currentOption = 'dashboard';
+            _this.globals.readOnlyDashboard = true;
+            break;
+          }
+        }
+      }
+
+      if (!_this.globals.currentDashboardMenu)
+      {
+        _this.globals.appLoading = false;
+        _this.globals.isLoading = false;
+      }
+    }
+    else
+    {
+      _this.defaultDashboardId = null;
+      _this.globals.appLoading = false;
+      _this.globals.isLoading = false;
+    }
+  }
+
+  errorLogin(_this, result)
+  {
     console.log(result);
-     _this.globals.isLoading = false;
+    _this.globals.appLoading = false;
+    _this.globals.isLoading = false;
   }
 
   getDashboardsUser(){
@@ -156,13 +207,15 @@ export class ApplicationComponent implements OnInit {
     _this.menuService.getSharedDashboardsByUser(_this, _this.handlerSharedDashboard, _this.errorHandler);
   }
 
-  handlerSharedDashboard(_this, data){
+  handlerSharedDashboard(_this, data)
+  {
     _this.sharedDashboards = data;
     _this.getAdvanceFeatures();
   }
 
   errorHandler(_this,result){
     console.log(result);
+    _this.globals.appLoading = false;
     _this.globals.isLoading = false;
   }
   getAdvanceFeatures(){
@@ -213,6 +266,7 @@ export class ApplicationComponent implements OnInit {
 
 
   getMenu(){
+    this.globals.appLoading = true;
     this.globals.isLoading = true;
     this.menuService.getMenu(this,this.handlerSuccess,this.handlerError);
   }
@@ -239,6 +293,7 @@ export class ApplicationComponent implements OnInit {
             (option.id==64 && _this.globals.currentApplication.id == 4))
           {
             _this.globals.clearVariables();
+            _this.globals.isLoading = true;
             _this.globals.currentMenuCategory = category;
             _this.globals.currentOption = option;
             _this.globals.initDataSource();
@@ -248,6 +303,7 @@ export class ApplicationComponent implements OnInit {
         }
       });
     });
+
     _this.getDashboardsUser();
   }
 
@@ -261,6 +317,7 @@ export class ApplicationComponent implements OnInit {
           (option.id == 64 && _this.globals.currentApplication.id == 4))
         {
           _this.globals.clearVariables();
+          _this.globals.isLoading = true;
           _this.globals.currentMenuCategory = category;
           _this.globals.currentOption = option;
           _this.globals.initDataSource();
@@ -637,5 +694,57 @@ toggle(){
   {
     this.parseCoordinates ();
     this.msfContainerRef.msfMapRef.generateCoordinates (this.coordinates);
+  }
+
+  setDefaultDashboard(): void
+  {
+    this.appService.confirmationDialog (this, "Do you want to set this dashboard as the default?",
+      function (_this)
+      {
+        _this.globals.isLoading = true;
+
+        if (_this.isDefaultDashboard ())
+          _this.appService.unsetDefaultDashboard (_this, _this.unsetDashboardDefaultSuccess, _this.setDashboardDefaultError);
+        else
+          _this.appService.setDefaultDashboard (_this, _this.globals.currentDashboardMenu, _this.setDashboardDefaultSuccess, _this.setDashboardDefaultError);
+      }
+    );
+  }
+
+  unsetDashboardDefaultSuccess(_this): void
+  {
+    _this.globals.isLoading = false;
+    _this.defaultDashboardId = null;
+
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Information", message: "This dashboard is no longer the default." }
+    });
+  }
+
+  setDashboardDefaultSuccess(_this): void
+  {
+    _this.globals.isLoading = false;
+    _this.defaultDashboardId = _this.globals.currentDashboardMenu.id;
+
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Information", message: "This dashboard has been set to default successfully." }
+    });
+  }
+
+  setDashboardDefaultError(_this): void
+  {
+    _this.globals.isLoading = false;
+
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Error", message: "Unable to set default dashboard." }
+    });
+  }
+
+  isDefaultDashboard(): boolean
+  {
+    if (!this.globals.currentDashboardMenu || !this.defaultDashboardId)
+      return false;
+
+    return this.defaultDashboardId == this.globals.currentDashboardMenu.id;
   }
 }
