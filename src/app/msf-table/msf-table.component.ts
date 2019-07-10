@@ -220,10 +220,6 @@ export class MsfTableComponent implements OnInit {
     return aux;
   }
 
-  setMsfChartRef(msfChartRef){
-    msfChartRef.setColumns(this.displayedColumns);
-  }
-
   replaceAll(text: string){
      let re = /_/gi;
      return text.replace(re, ' ');

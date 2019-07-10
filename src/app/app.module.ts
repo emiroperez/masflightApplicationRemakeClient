@@ -40,7 +40,6 @@ import { MsfTabSelectorComponent } from './msf-tab-selector/msf-tab-selector.com
 import { DateFormatPipe } from './commons/DateFormatPipe ';
 import { DateTimeFormatPipe } from './commons/DateTimeFormatPipe';
 import { MsfAirlineComponent } from './msf-airline/msf-airline.component';
-import { MsfChartOnTimeDelayComponent } from './msf-chart-on-time-delay/msf-chart-on-time-delay.component';
 import { MsfDynamicTableVariablesComponent } from './msf-dynamic-table-variables/msf-dynamic-table-variables.component';
 import { MsfDynamicTableComponent } from './msf-dynamic-table/msf-dynamic-table.component';
 import { MsfTailNumberComponent } from './msf-tail-number/msf-tail-number.component';
@@ -217,7 +216,6 @@ import { Cookie } from './api/cookie';
     DateFormatPipe,
     DateTimeFormatPipe,
     MsfAirlineComponent,
-    MsfChartOnTimeDelayComponent,
     MsfDynamicTableVariablesComponent,
     MsfDynamicTableComponent,
     MsfTailNumberComponent,
