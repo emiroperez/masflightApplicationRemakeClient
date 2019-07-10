@@ -41,6 +41,12 @@ export class AuthService {
     this.post (_this, url, session, successHandler, errorHandler);
   }
 
+  setUserLastLoginTime(_this, userId, handlerSuccess, handlerError): void
+  {
+    let url = this.globals.baseUrl + "/users/setLastTime";
+    this.post (_this, url, userId, handlerSuccess, handlerError);
+  }
+
   getToken(): string
   {
     return localStorage.getItem ("token");
@@ -77,6 +83,17 @@ export class AuthService {
       return true;
 
     return this.jwtHelper.isTokenExpired (token);
+  }
+
+  getUserIdFromToken(token?): number
+  {
+    let tokenItem;
+
+    if (!token)
+      token = this.getToken ();
+
+    tokenItem = this.jwtHelper.decodeToken (token);
+    return parseInt (tokenItem["sub"]);
   }
 
   getIpAddress(): string
