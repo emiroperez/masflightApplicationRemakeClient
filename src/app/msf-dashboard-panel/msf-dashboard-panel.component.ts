@@ -131,6 +131,8 @@ export class MsfDashboardPanelComponent implements OnInit {
   @Input()
   panelHeight: number;
 
+  panelHeightOffset: number;
+
   @Input()
   reAppendChart: boolean;
 
@@ -214,6 +216,8 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   ngOnInit()
   {
+    this.panelHeightOffset = this.panelHeight - 18;
+
     // prepare the data form combo box
     this.optionSearchChange (this.dataFormFilterCtrl);
 
@@ -235,6 +239,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         document.getElementById ("msf-dashboard.chart-display-container-" + this.values.id).appendChild (chartElement);
       }
     }
+    else if (changes['panelHeight'])
+      this.panelHeightOffset = this.panelHeight - 18;
   }
 
   // Function to create horizontal column chart series
@@ -3492,7 +3498,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   calcPanelHeight(): number
   {
-    return this.panelHeight - 19;
+    return this.panelHeight - 39;
   }
 
   calcRouteListHeight(): number
@@ -3500,16 +3506,16 @@ export class MsfDashboardPanelComponent implements OnInit {
     switch (this.panelHeight)
     {
       case 303: // Small
-        return 263;
+        return 243;
 
       case 333: // Medium
-        return 293;
+        return 273;
 
       case 378: // Large
-        return 338;
+        return 318;
 
       default: // 12 = Very Large
-        return 428;
+        return 408;
     }
   }
 
