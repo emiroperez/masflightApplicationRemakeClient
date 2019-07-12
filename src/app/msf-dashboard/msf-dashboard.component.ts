@@ -44,7 +44,6 @@ export class MsfDashboardComponent implements OnInit {
   currentDashboardMenu: any;
 
   controlPanelOpen: boolean;
-  globalControlVariables: any = [];
   controlVariablesAvailable: any = [];
 
   // variables for panel resizing

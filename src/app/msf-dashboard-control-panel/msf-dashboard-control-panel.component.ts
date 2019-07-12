@@ -9,9 +9,10 @@ import { Globals } from '../globals/Globals';
 export class MsfDashboardControlPanelComponent implements OnInit {
 
   addVariableMenu: boolean;
+  controlVariables: any = [];
 
-  @Input("controlVariables")
-  controlVariables: any;
+  @Input("controlPanelOpen")
+  controlPanelOpen: boolean;
 
   @Input("controlVariablesAvailable")
   controlVariablesAvailable: any;
@@ -74,5 +75,22 @@ export class MsfDashboardControlPanelComponent implements OnInit {
   {
     controlVariable.selected = false;
     this.numControlVariablesSelected--;
+  }
+
+  addControlVariables(): void
+  {
+    this.numControlVariablesSelected = 0;
+
+    for (let controlVariable of this.controlVariablesAvailable)
+    {
+      if (controlVariable.selected)
+      {
+        controlVariable.selected = false;
+        controlVariable.added = true;
+        this.controlVariables.push (controlVariable);
+      }
+    }
+
+    this.addVariableMenu = false;
   }
 }
