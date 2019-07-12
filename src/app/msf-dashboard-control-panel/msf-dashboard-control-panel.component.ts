@@ -16,7 +16,12 @@ export class MsfDashboardControlPanelComponent implements OnInit {
   @Input("controlVariablesAvailable")
   controlVariablesAvailable: any;
 
-  constructor(public globals: Globals) { }
+  numControlVariablesSelected: number;
+
+  constructor(public globals: Globals)
+  {
+    this.numControlVariablesSelected = 0;
+  }
 
   ngOnInit() {
   }
@@ -56,6 +61,18 @@ export class MsfDashboardControlPanelComponent implements OnInit {
     else
       newurl += this.globals.theme + "-" + filename;
 
-    return newurl;
+    return "url(" + newurl + ")";
+  }
+
+  checkControlVariable(controlVariable): void
+  {
+    controlVariable.selected = true;
+    this.numControlVariablesSelected++;
+  }
+
+  uncheckControlVariable(controlVariable): void
+  {
+    controlVariable.selected = false;
+    this.numControlVariablesSelected--;
   }
 }

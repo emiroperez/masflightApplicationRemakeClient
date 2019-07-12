@@ -234,7 +234,7 @@ export class MsfDashboardComponent implements OnInit {
             id: categoryOption.id,
             icon: categoryOption.icon,
             label: categoryOption.label
-          })
+          });
         }
       }
 

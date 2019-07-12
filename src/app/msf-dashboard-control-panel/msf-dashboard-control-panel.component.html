@@ -6,13 +6,19 @@
 </div>
 <div *ngIf="addVariableMenu" class="msf-dashboard-control-panel-container">
   <div class="msf-dashboard-control-panel-variable-container">
-    <div class="msf-dashboard-control-panel-variable" *ngFor="let controlVariable of controlVariablesAvailable; let controlVariableIndex = index" (mouseover)="controlVariablesAvailable[controlVariableIndex].hover = true" (mouseleave)="controlVariablesAvailable[controlVariableIndex].hover = false">
-      <mat-icon *ngIf="controlVariable.icon && isMatIcon(controlVariable.icon)" class="msf-menu-image-border msf-vertical-middle msf-menu-mat-icon">{{controlVariable.icon}}</mat-icon>
-      <img *ngIf="controlVariable.icon && !isMatIcon(controlVariable.icon)" src="{{getImageIcon(controlVariable)}}" class="msf-menu-image-border msf-vertical-middle">
-      <span class="msf-menu-component-text msf-control-variables-text">{{controlVariable.label}}</span>
-    </div>
+    <ng-container *ngFor="let controlVariable of controlVariablesAvailable">
+      <div *ngIf="!controlVariable.selected" class="msf-dashboard-control-panel-variable" (mouseover)="controlVariable.hover = true" (mouseleave)="controlVariable.hover = false" (click)="checkControlVariable(controlVariable)">
+        <mat-icon *ngIf="controlVariable.icon && isMatIcon(controlVariable.icon)" class="msf-menu-image-border msf-vertical-middle msf-menu-mat-icon msf-dashboard-control-panel-variable-icon">{{controlVariable.icon}}</mat-icon>
+        <div *ngIf="controlVariable.icon && !isMatIcon(controlVariable.icon)" [style.background-image]="getImageIcon(controlVariable)" class="msf-menu-image-border msf-vertical-middle msf-dashboard-control-panel-variable-icon"></div>
+        <span class="msf-menu-component-text msf-control-variables-text msf-dashboard-control-panel-variable-label">{{controlVariable.label}}</span>
+      </div>
+      <div *ngIf="controlVariable.selected" class="msf-dashboard-control-panel-variable-selected" (click)="uncheckControlVariable(controlVariable)">
+        <mat-icon class="msf-menu-image-border msf-vertical-middle msf-menu-mat-icon msf-dashboard-control-panel-variable-icon">check</mat-icon>
+        <span class="msf-menu-component-text msf-control-variables-text msf-dashboard-control-panel-variable-label">{{controlVariable.label}}</span>
+      </div>
+    </ng-container>
   </div>
-  <button mat-flat-button class="flat-button msf-dashboard-control-panel-button">
+  <button [disabled]="!numControlVariablesSelected" mat-flat-button [ngClass]="numControlVariablesSelected ? 'flat-button' : 'flat-button-disabled'" class="msf-dashboard-control-panel-button">
     OK
   </button>
   <button mat-flat-button (click)="cancelAddVariable()" class="flat-button msf-dashboard-control-panel-button">
