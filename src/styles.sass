@@ -13,6 +13,13 @@
 
 @import "~@angular/material/prebuilt-themes/deeppurple-amber.css"
 
+@mixin disable-text-selection
+    -moz-user-select: none
+    -ms-user-select: none
+    -khtml-user-select: none
+    -webkit-user-select: none
+    -webkit-touch-callout: none
+
 @mixin msf-dashboard-addmenu-item-text($color, $border-color)
     border: 1px solid $border-color
     color: $color
@@ -241,11 +248,18 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
         .msf-dashboard-container
             color: $font-color
             background-color: $dashboard-background-color
-            .msf-dashboard-title
-                .msf-dashboard-title-label
-                    color: $dashboard-title-font-color
-                    background-color: $dashboard-panel-chart-background-color
-                    font-weight: 550
+            .msf-dashboard-header
+                .msf-dashboard-title
+                    .msf-dashboard-title-label
+                        color: $dashboard-title-font-color
+                        background-color: $dashboard-panel-chart-background-color
+                        font-weight: 550
+                .msf-dashboard-control-panel-button
+                    background-color: $primary-color
+                    &:hover
+                        background-color: $secondary-color
+                .msf-dashboard-control-panel-button-open
+                    background-color: $secondary-color
             .msf-dashboard-addmenu
                 .msf-dashboard-addmenu-item:hover
                     @include msf-dashboard-addmenu-item($primary-color, #ffffff, pointer)
@@ -432,6 +446,19 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             padding: 10px 0
         .msf-dashboard-info-dialog-container
             color: $font-color !important
+        .msf-dashboard-control-panel-container
+            background-color: $background-color
+            .msf-dashboard-control-panel-variable-container
+                .msf-dashboard-control-panel-variable
+                    background-color: $tertiary-background-color
+                    .msf-menu-mat-icon
+                        color: $control-variable-icon-color
+                    &:hover
+                        background-color: $control-variable-hover-background-color
+                        .msf-menu-mat-icon
+                            color: $control-variable-hover-icon-color
+                        .msf-menu-component-text, .msf-menu-cmpte-row
+                            color: #ffffff
         .mat-form-field .mat-select.mat-select-disabled .mat-select-arrow
             color: $disabled-combo-box-color
         .mat-form-field-appearance-legacy.mat-form-field-disabled .mat-form-field-underline
@@ -2117,18 +2144,19 @@ button[aria-expanded="true"]
     background-color: $msf-primary-dark-color!important
 
 .msf-menu-search-button-attributes
-     width: 100%
-     position: absolute
-     bottom: 90px
-     height: 60px
-     color: #ffffff
-     text-align: center
-     line-height: 3
-     font-size: 170%
-     font-weight: bold
-     border: none
-     //margin-top: calc(100% - 116px)
-     cursor: pointer
+    @include disable-text-selection
+    width: 100%
+    position: absolute
+    bottom: 90px
+    height: 60px
+    color: #ffffff
+    text-align: center
+    line-height: 3
+    font-size: 170%
+    font-weight: bold
+    border: none
+    //margin-top: calc(100% - 116px)
+    cursor: pointer
 
 .msf-menu-search-button:disabled
     @extend .msf-menu-search-button-attributes
@@ -2594,6 +2622,20 @@ mat-tab-group
 #msf-dashboard-panel-left-resize
     left: -5px
 
+@mixin msf-dashboard-control-panel-button
+    @include disable-text-selection
+    color: #ffffff
+    margin-top: -49px
+    padding: 30px 60px 20px 50px
+    font-size: 14px
+    position: absolute
+    right: 0
+    .msf-dashboard-control-panel-button-arrow
+        position: absolute
+        margin-top: -22px
+        margin-right: 30px
+        right: 0
+
 .msf-dashboard-container
     font-size: 14px
     text-align: center
@@ -2603,12 +2645,19 @@ mat-tab-group
     overflow-y: auto
     -webkit-overflow-scrolling: touch
     transition: 0.5s
-    .msf-dashboard-title
-        padding-top: 30px
-        padding-bottom: 20px
-        font-size: 16px
-        .msf-dashboard-title-label
-            padding: 14px
+    .msf-dashboard-header
+        position: relative
+        .msf-dashboard-title
+            padding-top: 20px
+            padding-bottom: 10px
+            font-size: 16px
+            .msf-dashboard-title-label
+                padding: 14px
+        .msf-dashboard-control-panel-button
+            @include msf-dashboard-control-panel-button
+        .msf-dashboard-control-panel-button:hover, .msf-dashboard-control-panel-button-open
+            @include msf-dashboard-control-panel-button
+            cursor: pointer
     .msf-dashboard-empty
         padding-top: 45px
     .msf-dashboard-addmenu
@@ -2908,6 +2957,7 @@ mat-tab-group
     width: 100%
 
 .msf-dashboard-menu-component
+    @include disable-text-selection
     display: flex
     align-items: center
     position: relative
@@ -3246,6 +3296,31 @@ mat-tab-group
         .msf-dashboard-panel-picture-label
             font-size: 15px
             width: 100%
+
+.msf-dashboard-control-panel-container
+    max-height: 250px
+    margin-top: 8px
+    padding: 15px
+    .msf-dashboard-control-panel-variable-container
+        display: grid
+        grid-template-columns: 24.5% 24.5% 24.5% 24.5%
+        grid-template-rows: 48px
+        grid-column-gap: 10px
+        grid-row-gap: 10px
+        padding-bottom: 10px
+        .msf-dashboard-control-panel-variable
+            @include disable-text-selection
+            align-self: center
+            text-align: left
+            padding: 15px
+        .msf-dashboard-control-panel-variable:hover
+            cursor: pointer
+    .msf-dashboard-control-panel-button
+        height: 50px
+        width: 200px
+        margin: 10px
+        .mat-icon
+            font-size: 22px !important
 
     /*Scroll style*/
 

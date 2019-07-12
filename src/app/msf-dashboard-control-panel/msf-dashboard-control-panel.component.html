@@ -1,0 +1,21 @@
+<div *ngIf="!addVariableMenu && !controlVariables.length" class="msf-dashboard-control-panel-container">
+  <button mat-flat-button (click)="addVariable()" class="flat-button msf-dashboard-control-panel-button">
+    <mat-icon aria-label="Add Variable">add</mat-icon>
+    Add Variable
+  </button>
+</div>
+<div *ngIf="addVariableMenu" class="msf-dashboard-control-panel-container">
+  <div class="msf-dashboard-control-panel-variable-container">
+    <div class="msf-dashboard-control-panel-variable" *ngFor="let controlVariable of controlVariablesAvailable; let controlVariableIndex = index" (mouseover)="controlVariablesAvailable[controlVariableIndex].hover = true" (mouseleave)="controlVariablesAvailable[controlVariableIndex].hover = false">
+      <mat-icon *ngIf="controlVariable.icon && isMatIcon(controlVariable.icon)" class="msf-menu-image-border msf-vertical-middle msf-menu-mat-icon">{{controlVariable.icon}}</mat-icon>
+      <img *ngIf="controlVariable.icon && !isMatIcon(controlVariable.icon)" src="{{getImageIcon(controlVariable)}}" class="msf-menu-image-border msf-vertical-middle">
+      <span class="msf-menu-component-text msf-control-variables-text">{{controlVariable.label}}</span>
+    </div>
+  </div>
+  <button mat-flat-button class="flat-button msf-dashboard-control-panel-button">
+    OK
+  </button>
+  <button mat-flat-button (click)="cancelAddVariable()" class="flat-button msf-dashboard-control-panel-button">
+    Cancel
+  </button>
+</div>

@@ -43,6 +43,10 @@ export class MsfDashboardComponent implements OnInit {
   @Input()
   currentDashboardMenu: any;
 
+  controlPanelOpen: boolean;
+  globalControlVariables: any = [];
+  controlVariablesAvailable: any = [];
+
   // variables for panel resizing
   currentColumn: number;
   resizePanel: boolean;
@@ -203,6 +207,35 @@ export class MsfDashboardComponent implements OnInit {
         _this.dashboardColumnsProperties.push (false);
         _this.dashboardColumnsReAppendCharts.push (false);
         dashboardRows = [];
+      }
+
+      // add required global control variables if available
+      if (dashboardPanel.categoryOptions)
+      {
+        let categoryOptions = JSON.parse (dashboardPanel.categoryOptions);
+
+        for (let categoryOption of categoryOptions)
+        {
+          let exists: boolean = false;
+
+          for (let controlVariable of _this.controlVariablesAvailable)
+          {
+            if (categoryOption.id == controlVariable.id)
+            {
+              exists = true;
+              break;
+            }
+          }
+
+          if (exists)
+            continue;
+
+          _this.controlVariablesAvailable.push ({
+            id: categoryOption.id,
+            icon: categoryOption.icon,
+            label: categoryOption.label
+          })
+        }
       }
 
       dashboardPanelIds.push (dashboardPanel.id);
@@ -752,5 +785,10 @@ export class MsfDashboardComponent implements OnInit {
   cancelLoading(dashboardPanel): void
   {
     dashboardPanel.isLoading = false;
+  }
+
+  toggleControlPanel(): void
+  {
+    this.controlPanelOpen = !this.controlPanelOpen;
   }
 }
