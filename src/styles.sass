@@ -598,6 +598,10 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             color: $little-font-color
         .msf-summary-icon
             color: $font-color
+        .msf-border-passenger
+            border-bottom: 1px solid $primary-color
+        .msf-passenger-chart-title
+            color: $font-color
         .msf-search-complete-option
             background-color: $tertiary-background-color
             &:hover
@@ -682,6 +686,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             color: $membership-primary-background-color
         .msf-more-info-popup .mat-dialog-container
             background-color: $quaternary-background-color !important
+            overflow-y: hidden
         .msf-more-info-gradient
             background-image: linear-gradient(to right, $quaternary-background-color, rgba(0, 0, 0, 0))
             background-size: 150px
@@ -3448,9 +3453,14 @@ mat-tab-group
     background-position: center
     background-size: 25%
 
+.msf-drill-down-results-not-available
+    width: 700px
+    height: 300px
+
 .loading-panel-popup
     z-index: 99999
-    height: 100%
+    width: 1084px
+    height: 500px
     background-repeat: no-repeat
     background-position: center
     background-size: 25%
@@ -4258,7 +4268,6 @@ img.msf-calendar-image
 
 .msf-media-info-flex
     display: flex
-    flex-direction: row
 
 .msf-media-title 
     font-size: 14px
@@ -4296,24 +4305,23 @@ img.msf-calendar-image
 .msf-more-info-popup-passenger
     background-size: 200px
     background-repeat: no-repeat
-    background-position: left 65%
-    height: 100%
-
+    background-position: center
+    width: 200px !important
+    height: 200px
 
 .msf-border-passenger
-    border-bottom: 1px solid #01ABEC
-    margin: 0 20px
+    margin: 20px 20px
+    padding-top: 20px
     margin-bottom: 25px
 
 .msf-padding-passenger
-        padding-left: 250px
+    padding-left: 25px
 
 .msf-chart
     height: 199px !important
 
 .msf-passenger-chart-title
     text-align: center
-    color: #ffffff
 
 .msf-filter-container
     margin: 10px

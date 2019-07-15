@@ -322,4 +322,11 @@ export class MsfMoreInfoPopupComponent{
       return aux;
     }
 
+    getFlexDirection(): string
+    {
+      if (this.globals.currentDrillDown.title !== 'More Info Passenger')
+        return "row";
+      else
+        return "row-reverse";
+    }
   }

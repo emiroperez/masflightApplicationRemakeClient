@@ -609,19 +609,19 @@ export class MsfTableComponent implements OnInit {
     if (!width || width == "")
       width = "auto";
     else
-      width += "px";
+      width += "px !important";
 
     if (!height || height == "")
       height = "500px";
     else
-      height += "px";
+      height += "px !important";
 
     this.dialog.open (MsfMoreInfoPopupComponent, {
       height: height,
       width: width,
       panelClass: 'msf-more-info-popup',
       data: {
-        loadingWidth: (drillDown.width && drillDown.width != "" ? (drillDown.width - 116) : 1084)
+        loadingWidth: 1084
       }
     });
   }
