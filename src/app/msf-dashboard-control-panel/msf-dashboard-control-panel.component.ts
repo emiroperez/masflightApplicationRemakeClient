@@ -10,6 +10,7 @@ export class MsfDashboardControlPanelComponent implements OnInit {
 
   addVariableMenu: boolean;
   controlVariables: any = [];
+  selectedIndex: any;
 
   @Input("controlPanelOpen")
   controlPanelOpen: boolean;
@@ -72,5 +73,10 @@ export class MsfDashboardControlPanelComponent implements OnInit {
     }
 
     this.addVariableMenu = false;
+  }
+
+  onLinkClick(event: any)
+  {
+    this.selectedIndex = event;
   }
 }
