@@ -48,6 +48,9 @@ export class MsfDashboardControlPanelComponent implements OnInit {
 
   checkControlVariable(controlVariable): void
   {
+    if (!this.numControlVariablesSelected)
+      this.selectedIndex = 1;
+
     controlVariable.selected = true;
     this.numControlVariablesSelected++;
   }

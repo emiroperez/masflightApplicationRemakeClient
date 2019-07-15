@@ -269,6 +269,8 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                     @include msf-dashboard-addmenu-item-text(#ffffff, $font-color)
                 .msf-dashboard-addmenu-item-text
                     @include msf-dashboard-addmenu-item-text($font-color, $font-color)
+        .msf-dashboard-control-panel-tab-icon
+            color: $control-variable-icon-color
         .msf-dashboard-button
             .msf-dashboard-button-close-icon:hover
                 @include msf-dashboard-icon(2px, $primary-color, pointer)
@@ -3352,6 +3354,15 @@ mat-tab-group
 .msf-dashboard-control-panel-tabs-container
     height: 250px
     margin-top: 8px
+
+.msf-dashboard-control-panel-tab-icon
+    width: 30px !important
+    height: 30px !important
+    font-size: 30px
+    background-position: center
+    background-repeat: no-repeat
+    margin-left: -10%
+    padding-right: 10px
 
     /*Scroll style*/
 
