@@ -37,32 +37,12 @@ export class MsfDashboardControlPanelComponent implements OnInit {
     this.addVariableMenu = false;
   }
 
-  isMatIcon(icon): boolean
-  {
-    return !icon.endsWith (".png");
-  }
-
   getImageIcon(controlVariable): string
   {
-    let newurl, filename: string;
-    let path: string[];
-    let url;
-
-    url = controlVariable.icon;
-    path = url.split ('/');
-    filename = path.pop ().split ('?')[0];
-    newurl = "";
-
-    // recreate the url with the theme selected
-    for (let dir of path)
-      newurl += dir + "/";
-
     if (controlVariable.hover)
-      newurl += this.globals.theme + "-hover-" + filename;
+      return controlVariable.iconHover;
     else
-      newurl += this.globals.theme + "-" + filename;
-
-    return "url(" + newurl + ")";
+      return controlVariable.icon;
   }
 
   checkControlVariable(controlVariable): void

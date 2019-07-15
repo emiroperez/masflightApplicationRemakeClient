@@ -174,6 +174,37 @@ export class MsfDashboardComponent implements OnInit {
     return null;
   }
 
+  isMatIcon(icon): boolean
+  {
+    return !icon.endsWith (".png");
+  }
+
+  getImageIcon(controlVariable, hover): string
+  {
+    let newurl, filename: string;
+    let path: string[];
+    let url;
+
+    if (this.isMatIcon (controlVariable.icon))
+      return controlVariable.icon;
+
+    url = controlVariable.icon;
+    path = url.split ('/');
+    filename = path.pop ().split ('?')[0];
+    newurl = "";
+
+    // recreate the url with the theme selected
+    for (let dir of path)
+      newurl += dir + "/";
+
+    if (hover)
+      newurl += this.globals.theme + "-hover-" + filename;
+    else
+      newurl += this.globals.theme + "-" + filename;
+
+    return "url(" + newurl + ")";
+  }
+
   loadDashboardPanels(_this, data): void
   {
     let dashboardPanelIds: number[] = [];
@@ -212,6 +243,7 @@ export class MsfDashboardComponent implements OnInit {
       if (dashboardPanel.categoryOptions)
       {
         let categoryOptions = JSON.parse (dashboardPanel.categoryOptions);
+        let lastCategoryOption;
 
         for (let categoryOption of categoryOptions)
         {
@@ -229,11 +261,11 @@ export class MsfDashboardComponent implements OnInit {
           if (exists)
             continue;
 
-          _this.controlVariablesAvailable.push ({
-            id: categoryOption.id,
-            icon: categoryOption.icon,
-            label: categoryOption.label
-          });
+          _this.controlVariablesAvailable.push (categoryOption);
+          lastCategoryOption = _this.controlVariablesAvailable[_this.controlVariablesAvailable.length - 1];
+          lastCategoryOption.isMatIcon = _this.isMatIcon (lastCategoryOption.icon);
+          lastCategoryOption.iconHover = _this.getImageIcon (lastCategoryOption, true);
+          lastCategoryOption.icon = _this.getImageIcon (lastCategoryOption, false);
         }
       }
 
