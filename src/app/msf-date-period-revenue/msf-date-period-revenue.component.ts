@@ -66,7 +66,17 @@ export class MsfDatePeriodRevenueComponent implements OnInit {
     this.argument.value1 = this.date.value.year();
     this.argument.value2 = {id: 1, name: '1st Quarter',value:"1"};
   }
+
+  this.onChanges ();
 }
+
+  onChanges(): void
+  {
+    this.date.valueChanges.subscribe (value =>
+    {
+      this.argument.value1 = value.year ();
+    });
+  }
 
   chosenYearHandler(normalizedYear: Moment, datepicker: MatDatepicker<Moment>) {
     const ctrlValue = this.date.value;

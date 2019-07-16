@@ -58,6 +58,18 @@ export class MsfDatePeriodYearMonthComponent implements OnInit {
     this.argument.value1 = this.date.value.year();
     this.argument.value2 = this.date.value.month()+1;
     }
+
+    this.onChanges ();
+  }
+
+  onChanges(): void
+  {
+    this.date.valueChanges.subscribe (value =>
+    {
+      let normalizedDate: Moment = moment (value, "MMM/YYYY");
+      this.argument.value1 = normalizedDate.year ();
+      this.argument.value2 = normalizedDate.month () + 1;
+    });
   }
 
   chosenYearHandler(normalizedYear: Moment) {

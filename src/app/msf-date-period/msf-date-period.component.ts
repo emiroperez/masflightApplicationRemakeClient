@@ -69,6 +69,14 @@ export class MsfDatePeriodComponent implements OnInit {
     }
   }
 
+  onChanges(): void
+  {
+    this.date.valueChanges.subscribe (value =>
+    {
+      this.argument.value1 = value.year ();
+    });
+  }
+
   chosenYearHandler(normalizedYear: Moment, datepicker: MatDatepicker<Moment>) {
     const ctrlValue = this.date.value;
     ctrlValue.year(normalizedYear.year());

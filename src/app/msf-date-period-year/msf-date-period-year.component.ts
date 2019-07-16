@@ -61,6 +61,21 @@ export class MsfDatePeriodYearComponent implements OnInit {
     this.argument.value1 = this.date.value.year();
     this.argument.value2 = this.date2.value.year();
     }
+
+    this.onChanges ();
+  }
+
+  onChanges(): void
+  {
+    this.date.valueChanges.subscribe (value =>
+    {
+      this.argument.value1 = value.year ();
+    });
+
+    this.date2.valueChanges.subscribe (value =>
+    {
+      this.argument.value2 = value.year ();
+    });
   }
 
   chosenYearHandler(normalizedYear: Moment, datepicker: MatDatepicker<Moment>) {
