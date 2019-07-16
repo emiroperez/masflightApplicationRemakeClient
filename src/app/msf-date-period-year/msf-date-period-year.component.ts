@@ -69,12 +69,14 @@ export class MsfDatePeriodYearComponent implements OnInit {
   {
     this.date.valueChanges.subscribe (value =>
     {
-      this.argument.value1 = value.year ();
+      let normalizedDate: Moment = moment (value, "YYYY");
+      this.argument.value1 = normalizedDate.year ();
     });
 
     this.date2.valueChanges.subscribe (value =>
     {
-      this.argument.value2 = value.year ();
+      let normalizedDate: Moment = moment (value, "YYYY");
+      this.argument.value2 = normalizedDate.year ();
     });
   }
 

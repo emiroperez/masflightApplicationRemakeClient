@@ -55,7 +55,6 @@ export class MsfDatePeriodRevenueComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
   
-  quarter
   ngOnInit() {
     if(this.globals.maxDate!=null){
       this.date =  new FormControl(moment(this.globals.maxDate));
@@ -74,7 +73,8 @@ export class MsfDatePeriodRevenueComponent implements OnInit {
   {
     this.date.valueChanges.subscribe (value =>
     {
-      this.argument.value1 = value.year ();
+      let normalizedDate: Moment = moment (value, "YYYY");
+      this.argument.value1 = normalizedDate.year ();
     });
   }
 
