@@ -450,13 +450,21 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             color: $font-color !important
         .msf-dashboard-control-panel-tabs-container
             background-color: $dashboard-control-panel-background-color
-            .mat-button-wrapper
-                color: $primary-color
-                border-color: $primary-color !important
-                background-color: $dashboard-control-panel-background-color !important
-                &:hover
-                    color: #ffffff
-                    background-color: $primary-color
+            .mat-tab-labels
+                background-color: $dashboard-control-panel-background-color   
+            .msf-dashboard-control-panel-variable-tab-container
+                background-color: $dashboard-control-panel-background-color
+                .mat-flat-button
+                    border-color: $primary-color !important
+                    border-style: solid
+                    border-width: 1px
+                    background-color: $dashboard-control-panel-background-color !important
+                    .mat-button-wrapper
+                        color: $primary-color
+                    &:hover
+                        background-color: $primary-color !important
+                        .mat-button-wrapper
+                            color: #ffffff
         .msf-dashboard-control-panel-container
             background-color: $dashboard-control-panel-background-color
             .msf-dashboard-control-panel-variable-container
