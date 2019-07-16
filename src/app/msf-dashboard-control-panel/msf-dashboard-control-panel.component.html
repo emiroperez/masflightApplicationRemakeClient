@@ -1,6 +1,6 @@
 <ng-container *ngIf="controlPanelOpen">
   <div *ngIf="!addVariableMenu && !controlVariables.length" class="msf-dashboard-control-panel-container">
-    <button mat-flat-button (click)="addVariable()" class="flat-button msf-dashboard-control-panel-button">
+    <button mat-flat-button [disabled]="!controlVariablesAvailable.length" (click)="addVariable()" [ngClass]="controlVariablesAvailable.length ? 'flat-button' : 'flat-button-disabled'" class="msf-dashboard-control-panel-button">
       <mat-icon aria-label="Add Variable">add</mat-icon>
       Add Variable
     </button>
@@ -19,11 +19,11 @@
               <mat-icon aria-label="Update">refresh</mat-icon>
               Update
             </button>
-            <button mat-flat-button (click)="addVariable()" class="flat-button msf-dashboard-control-panel-variable-button">
+            <button mat-flat-button [disabled]="controlVariables.length == controlVariablesAvailable.length" (click)="addVariable()" [ngClass]="controlVariables.length != controlVariablesAvailable.length ? 'flat-button' : 'flat-button-disabled'" class="msf-dashboard-control-panel-variable-button">
               <mat-icon aria-label="Add Variable">add</mat-icon>
               Add Variable
             </button>
-            <button mat-flat-button (click)="removeVariable(controlVariable)" class="flat-button msf-dashboard-control-panel-variable-button">
+            <button mat-flat-button (click)="removeVariable()" class="flat-button msf-dashboard-control-panel-variable-button">
               <mat-icon aria-label="Remove">close</mat-icon>
               Remove
             </button>

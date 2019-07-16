@@ -454,7 +454,14 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                 background-color: $dashboard-control-panel-background-color   
             .msf-dashboard-control-panel-variable-tab-container
                 background-color: $dashboard-control-panel-background-color
-                .mat-flat-button
+                .flat-button-disabled
+                    border-color: $font-color !important
+                    border-style: solid
+                    border-width: 1px
+                    background-color: $dashboard-control-panel-background-color !important
+                    .mat-button-wrapper
+                        color: $font-color
+                .flat-button
                     border-color: $primary-color !important
                     border-style: solid
                     border-width: 1px

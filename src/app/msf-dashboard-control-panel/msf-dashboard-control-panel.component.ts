@@ -9,7 +9,7 @@ import { Globals } from '../globals/Globals';
 export class MsfDashboardControlPanelComponent implements OnInit {
 
   addVariableMenu: boolean;
-  controlVariables: any = [];
+  controlVariables: any[] = [];
   selectedIndex: number = -1;
 
   @Input("controlPanelOpen")
@@ -81,5 +81,14 @@ export class MsfDashboardControlPanelComponent implements OnInit {
   onLinkClick(event: any)
   {
     this.selectedIndex = event;
+  }
+
+  removeVariable(): void
+  {
+    this.controlVariables[this.selectedIndex].added = false;
+    this.controlVariables.splice (this.selectedIndex, 1);
+
+    if (this.selectedIndex)
+      this.selectedIndex--;
   }
 }
