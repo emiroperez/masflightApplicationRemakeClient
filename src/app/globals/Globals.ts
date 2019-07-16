@@ -26,6 +26,7 @@ export class Globals {
   selectedIndex = 0;
   displayedColumns;
   subDisplayedColumns;
+  subPdfViewer: string;
   metadata;
   subDataSource : any
   totalRecord = 0;

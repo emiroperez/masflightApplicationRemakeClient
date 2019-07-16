@@ -7,6 +7,7 @@ import { Utils } from '../commons/utils';
 import { MessageComponent } from '../message/message.component';
 import { parseIntAutoRadix } from '@angular/common/src/i18n/format_number';
 import { MsfMoreInfoPopupComponent } from '../msf-more-info-popup/msf-more-info-popup.component';
+import { DomSanitizer } from '@angular/platform-browser';
 
 
 
@@ -71,7 +72,7 @@ export class MsfTableComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(public globals: Globals, private service: ApplicationService,public dialog: MatDialog) { }
+  constructor(public globals: Globals, private service: ApplicationService,public dialog: MatDialog, private sanitizer: DomSanitizer) { }
 
   ngOnInit() {      
     this.tableOptions = this.globals;
@@ -545,9 +546,10 @@ export class MsfTableComponent implements OnInit {
     this.globals.popupMainElement = null;
     this.globals.popupResponse = null;
     this.globals.subDataSource = null;
+    this.globals.subPdfViewer = null;
     this.goToPopup(drillDown);
     this.globals.currentDrillDown = drillDown;
-    var rowNumber = this.dataSource.filteredData.indexOf(element)
+    var rowNumber = this.dataSource.filteredData.indexOf(element);
     this.globals.popupLoading2 = true;
     var parameters = this.getSubOptionParameters(drillDown.drillDownParameter,rowNumber);
     this.service.getSubDataTableSource(this,drillDown.childrenOptionId,parameters,this.getPopupInfo,this.popupInfoError)
@@ -563,6 +565,17 @@ export class MsfTableComponent implements OnInit {
     _this.globals.subTotalRecord = response.total;
     let keys = Object.keys(response);
     let dataResult;
+
+    if (response.url && response.url != "")
+    {
+      // sanitize this html code in order to be able to use the pdf viewer for the drill down
+      _this.globals.subPdfViewer = _this.sanitizer.bypassSecurityTrustHtml (
+        "<object data='" + response.url + "' type='application/pdf' width='100%' height='100%'>" + 
+          "<embed src='" + response.url + "' type='application/pdf' width='100%' height='100%'/>" +
+        "</object>"
+      );
+    }
+ 
     _this.globals.subDisplayedColumns = data.metadata;
     console.log( _this.globals.subDisplayedColumns);
     if( _this.globals.subTotalRecord > 1){
@@ -621,7 +634,7 @@ export class MsfTableComponent implements OnInit {
       width: width,
       panelClass: 'msf-more-info-popup',
       data: {
-        loadingWidth: 1084
+        tableWidth: (drillDown.width && drillDown.width != "" ? (drillDown.width - 116) : 1084)
       }
     });
   }

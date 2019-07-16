@@ -109,7 +109,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   // NOTE: am4maps.projections.AlbersUsa is not available
   // on AmCharts v4 4.2.0 and using anything higher than 4.2.0
-  // causes heap issues when compiling the app :(
+  // causes the map chart polygons not to be visible :(
   geodatas:any[] = [
     { name: 'U.S. States', value: am4geodata_usaAlbersLow },
     { name: 'North America', value: am4geodata_northAmericaLow },

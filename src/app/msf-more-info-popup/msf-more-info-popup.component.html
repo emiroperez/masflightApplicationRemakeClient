@@ -37,7 +37,7 @@
     </div>
   </div>
 </div>
-<div [style.width.px]="data.loadingWidth" [ngClass]="globals.subTotalRecord>1?'msf-show-table':'msf-hide'" #TABLE>
+<div [style.width.px]="data.tableWidth" [ngClass]="globals.subTotalRecord>1?'msf-show-table':'msf-hide'" #TABLE>
     <div class="msf-moreinfo-control-variables-title ">
         <div class="msf-dashboard-control-variables-close-button">
           <mat-icon class="msf-dashboard-close-icon msf-drill-down-info-close-icon" aria-label="close" (click)="closeDialog()">close</mat-icon>
@@ -72,13 +72,13 @@
     <tr mat-header-row *matHeaderRowDef="globals.subDisplayedColumnNames" ></tr>
     <tr mat-row *matRowDef="let row; columns: globals.subDisplayedColumnNames;" [style.height.px]="30"></tr>
   </table>
-  </div>
-  
+</div>
+<div *ngIf="globals.subPdfViewer" [style.width.px]="500" [style.height.px]="650">
+  <div [innerHTML]="globals.subPdfViewer" [style.height.px]="650"></div>
+</div>
 <div *ngIf="chart!=null&&globals.subTotalRecord>0 && globals.popupMainElement" class="msf-media-title msf-passenger-chart-title">Play Duration In Minutes</div>
 <div [style.visibility]="chart!=null&&globals.subTotalRecord>0 && globals.popupMainElement? 'visible' : 'hidden'" id="msf-dashboard-chart-display" [ngClass]="chart!=null&&globals.subTotalRecord>0 && globals.popupMainElement? 'msf-chart' : ''"></div>
-<div *ngIf="globals.subTotalRecord==0 && !globals.popupMainElement && !globals.popupLoading2" class="msf-drill-down-results-not-available">
+<div *ngIf="globals.subTotalRecord==0 && !globals.subPdfViewer && !globals.popupMainElement && !globals.popupLoading2" class="msf-drill-down-results-not-available">
     <div class="msf-no-results msf-no-results-more-info-drilldown">Results not available</div>
 </div>
-
-<div [ngClass]="globals.popupLoading2? 'tab-show':'tab-hide'" id='loading-panel-popup' class='loading-panel-popup'>
-</div>
+<div [ngClass]="globals.popupLoading2? 'tab-show':'tab-hide'" id='loading-panel-popup' class='loading-panel-popup'></div>
