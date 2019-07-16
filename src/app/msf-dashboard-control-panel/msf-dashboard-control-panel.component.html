@@ -13,14 +13,24 @@
           <div *ngIf="controlVariable.icon && !controlVariable.isMatIcon" [style.background-image]="controlVariable.icon" class="msf-dashboard-control-panel-tab-icon"></div>
           {{controlVariable.label}}
         </ng-template>
+        <div class="msf-dashboard-control-panel-variable-tab-container">
+          <div class="msf-dashboard-control-panel-variable-buttons">
+            <button mat-flat-button (click)="refreshDashboard()" class="flat-button msf-dashboard-control-panel-variable-button">
+              <mat-icon aria-label="Update">refresh</mat-icon>
+              Update
+            </button>
+            <button mat-flat-button (click)="addVariable()" class="flat-button msf-dashboard-control-panel-variable-button">
+              <mat-icon aria-label="Add Variable">add</mat-icon>
+              Add Variable
+            </button>
+            <button mat-flat-button (click)="removeVariable(controlVariable)" class="flat-button msf-dashboard-control-panel-variable-button">
+              <mat-icon aria-label="Remove">close</mat-icon>
+              Remove
+            </button>
+          </div>
+        </div>
       </mat-tab>
     </mat-tab-group>
-    <!--
-    <button mat-flat-button (click)="addVariable()" class="flat-button msf-dashboard-control-panel-button">
-      <mat-icon aria-label="Add Variable">add</mat-icon>
-      Add Variable
-    </button>
-    -->
   </div>
   <div *ngIf="addVariableMenu" class="msf-dashboard-control-panel-container">
     <div class="msf-dashboard-control-panel-variable-container">

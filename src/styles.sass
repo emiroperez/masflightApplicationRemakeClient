@@ -448,7 +448,16 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             padding: 10px 0
         .msf-dashboard-info-dialog-container
             color: $font-color !important
-        .msf-dashboard-control-panel-container, .msf-dashboard-control-panel-tabs-container
+        .msf-dashboard-control-panel-tabs-container
+            background-color: $dashboard-control-panel-background-color
+            .mat-button-wrapper
+                color: $primary-color
+                border-color: $primary-color !important
+                background-color: $dashboard-control-panel-background-color !important
+                &:hover
+                    color: #ffffff
+                    background-color: $primary-color
+        .msf-dashboard-control-panel-container
             background-color: $dashboard-control-panel-background-color
             .msf-dashboard-control-panel-variable-container
                 .msf-dashboard-control-panel-variable
@@ -3354,6 +3363,19 @@ mat-tab-group
 .msf-dashboard-control-panel-tabs-container
     height: 250px
     margin-top: 8px
+    .msf-dashboard-control-panel-variable-tab-container
+        display: flex
+        flex-direction: row-reverse
+        height: 100%
+        width: 100%
+        .msf-dashboard-control-panel-variable-buttons
+            height: 100%
+            width: 200px
+            padding-top: 5px
+            .msf-dashboard-control-panel-variable-button
+                margin-top: 10px
+                width: 180px
+                height: 50px
 
 .msf-dashboard-control-panel-tab-icon
     width: 30px !important
