@@ -69,6 +69,7 @@ export class MsfDashboardControlPanelComponent implements OnInit {
     {
       if (controlVariable.selected)
       {
+        controlVariable.hover = false;
         controlVariable.selected = false;
         controlVariable.added = true;
         this.controlVariables.push (controlVariable);

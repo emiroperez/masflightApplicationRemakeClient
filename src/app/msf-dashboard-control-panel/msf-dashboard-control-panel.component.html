@@ -28,6 +28,11 @@
               Remove
             </button>
           </div>
+          <div class="msf-dashboard-control-panel-variable-arguments">
+            <div *ngFor="let argument of controlVariable.arguments" class="msf-dashboard-control-panel-variable-argument">
+              <app-msf-argument [currentArgument]="argument" [currentGlobalOptionId]="currentOptionId"></app-msf-argument>
+            </div>
+          </div>
         </div>
       </mat-tab>
     </mat-tab-group>
