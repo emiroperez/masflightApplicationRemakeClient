@@ -202,7 +202,7 @@ export class MsfDashboardComponent implements OnInit {
     else
       newurl += this.globals.theme + "-" + filename;
 
-    return "url(" + newurl + ")";
+    return newurl;
   }
 
   loadDashboardPanels(_this, data): void

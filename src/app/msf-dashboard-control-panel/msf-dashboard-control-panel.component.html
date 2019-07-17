@@ -10,7 +10,7 @@
       <mat-tab *ngFor="let controlVariable of controlVariables" label="controlVariable.label" [style.height.%]="100">
         <ng-template mat-tab-label>
           <mat-icon *ngIf="controlVariable.icon && controlVariable.isMatIcon" class="msf-dashboard-control-panel-tab-icon">{{controlVariable.icon}}</mat-icon>
-          <div *ngIf="controlVariable.icon && !controlVariable.isMatIcon" [style.background-image]="controlVariable.icon" class="msf-dashboard-control-panel-tab-icon"></div>
+          <img *ngIf="controlVariable.icon && !controlVariable.isMatIcon" src="{{getImageIcon(controlVariable)}}" class="msf-dashboard-control-panel-tab-icon">
           {{controlVariable.label}}
         </ng-template>
         <div class="msf-dashboard-control-panel-variable-tab-container">
@@ -43,7 +43,7 @@
         <ng-container *ngIf="!controlVariable.added">
           <div *ngIf="!controlVariable.selected" class="msf-dashboard-control-panel-variable" (mouseover)="controlVariable.hover = true" (mouseleave)="controlVariable.hover = false" (click)="checkControlVariable(controlVariable)">
             <mat-icon *ngIf="controlVariable.icon && controlVariable.isMatIcon" class="msf-menu-image-border msf-vertical-middle msf-menu-mat-icon msf-dashboard-control-panel-variable-icon">{{controlVariable.icon}}</mat-icon>
-            <div *ngIf="controlVariable.icon && !controlVariable.isMatIcon" [style.background-image]="getImageIcon(controlVariable)" class="msf-menu-image-border msf-vertical-middle msf-dashboard-control-panel-variable-icon"></div>
+            <div *ngIf="controlVariable.icon && !controlVariable.isMatIcon" [style.background-image]="'url(' + getImageIcon(controlVariable) + ')'" class="msf-menu-image-border msf-vertical-middle msf-dashboard-control-panel-variable-icon"></div>
             <span class="msf-menu-component-text msf-control-variables-text msf-dashboard-control-panel-variable-label">{{controlVariable.label}}</span>
           </div>
           <div *ngIf="controlVariable.selected" class="msf-dashboard-control-panel-variable-selected" (click)="uncheckControlVariable(controlVariable)">

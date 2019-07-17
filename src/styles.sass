@@ -3391,9 +3391,9 @@ mat-tab-group
         .msf-dashboard-control-panel-variable-arguments
             height: 100%
             width: 100%
+            font-size: 11px
             display: flex
             flex-direction: row
-            font-size: 11px
             overflow-y: auto
             overflow-x: hidden
             .msf-dashboard-control-panel-variable-argument
@@ -3402,6 +3402,13 @@ mat-tab-group
                     flex-direction: row
                     .msf-component-argument-container
                         padding: 10px 20px
+                        width: 249px
+                .msf-single-checkbox-outer-container
+                    display: flex
+                    flex-direction: row
+                    position: absolute
+                    .msf-component-argument-container
+                        padding: 2px 20px
                         width: 249px
                 .msf-component-airport-title
                     background: inherit !important
@@ -3418,7 +3425,7 @@ mat-tab-group
                 .ng-select .ng-select-container .ng-value-container
                     border-top: 0
                     border-bottom: 0
-                    height: 28px
+                    min-height: 28px
                 .ng-select .ng-select-container:after
                     display: none
                 .ng-select.ng-select-multiple .ng-select-container.ng-has-value .ng-clear-wrapper, .ng-select.ng-select-multiple .ng-select-container.ng-has-value .ng-arrow-wrapper
@@ -3454,11 +3461,29 @@ mat-tab-group
                 .msf-component-no-argument-title-input-container
                     margin-top: 28px !important
                 .msf-component-radio
-                    padding-bottom: 0 !important
+                    margin-bottom: 0 !important
                 .checkbox-container
                     padding: 1px 0
                     .checkbox-component
                         margin: 0
+                .msf-component-taxi-min-title
+                    width: 100% !important
+                    text-align: center !important
+                    padding-left: 0 !important
+                    margin-left: 0 !important
+                .msf-component-seats-title
+                    margin: 0 !important
+                    border: 0 !important
+                    width: 100%
+                    text-align: center
+                    font-weight: initial !important
+                .msf-seats-input
+                    margin: 0 !important
+                .msf-content-type-radio-group-container
+                    display: flex
+                    flex-direction: column
+                    .checkbox-component
+                        height: 30px
         .msf-dashboard-control-panel-variable-buttons
             height: 100%
             width: 180px
@@ -3473,20 +3498,30 @@ mat-tab-group
     padding: 0
     margin: 0
 
+.msf-component-taxi-min-title
+    width: 20% !important
+    padding: 0 !important
+    margin-left: 10px !important
+
+.msf-component-seats-title
+    background: none
+    margin: 0 10px
+
 .msf-dashboard-control-panel-tabs-container .msf-dashboard-control-panel-variable-tab-container .msf-dashboard-control-panel-variable-argument input.mat-input-element, .msf-dashboard-control-panel-tabs-container .msf-dashboard-control-panel-variable-tab-container .msf-dashboard-control-panel-variable-argument textarea.mat-input-element
     cursor: pointer !important
     border-radius: 4px
     min-height: 28px
     align-items: center
-    width: calc(100% - 5px)
+    width: calc(100% - 5px) !important
     padding-left: 5px
 
+.msf-seats-input
+    margin: 0 10px
+
 .msf-dashboard-control-panel-tab-icon
-    width: 30px !important
-    height: 30px !important
-    font-size: 30px
-    background-position: center
-    background-repeat: no-repeat
+    width: 24px !important
+    height: 24px !important
+    font-size: 24px
     margin-left: -10%
     padding-right: 10px
 

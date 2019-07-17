@@ -1,21 +1,23 @@
-<div>
-    <div class="center">
-        <div class="msf-component-airport-title">Format</div>        
-    </div>    
-    <div class="msf-airline-container">
-        <div class="msf-full-width">   
-            <div class="msf-component-airport-sub-title">Rounding (Decimals)</div>         
-            <ng-select
-            [items]="roundingList"
-            [multiple]="false"
-            [loading]="loading"
-            loadingText="Loading..."
-            [closeOnSelect]="true"
-            [hideSelected]="false"
-            bindLabel="name"
-            bindName="id"
-            [(ngModel)]="argument.value1">
-        </ng-select>          
+<div class="msf-component-outer-container">
+    <div class="msf-component-argument-container">
+        <div class="center">
+            <div class="msf-component-airport-title">Format</div>        
+        </div>    
+        <div class="msf-airline-container">
+            <div class="msf-full-width">   
+                <div class="msf-component-airport-sub-title">Rounding (Decimals)</div>         
+                <ng-select
+                    [items]="roundingList"
+                    [multiple]="false"
+                    [loading]="loading"
+                    loadingText="Loading..."
+                    [closeOnSelect]="true"
+                    [hideSelected]="false"
+                    bindLabel="name"
+                    bindName="id"
+                    [(ngModel)]="argument.value1">
+                </ng-select>          
+            </div>
         </div>
-    </div>    
-</div>  
+    </div>
+</div>
