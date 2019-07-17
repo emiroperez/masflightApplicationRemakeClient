@@ -3395,6 +3395,7 @@ mat-tab-group
             flex-direction: row
             font-size: 11px
             overflow-y: auto
+            overflow-x: hidden
             .msf-dashboard-control-panel-variable-argument
                 .msf-component-outer-container
                     display: flex
@@ -3406,11 +3407,18 @@ mat-tab-group
                     background: inherit !important
                     font-weight: bold
                     text-align: left
+                .msf-component-checkbox-title
+                    margin-bottom: 0 !important
+                    margin-top: -7px
+                    padding-bottom: 2px !important
+                    .msf-component-airport-title
+                        border: 0 !important
                 .msf-component-airport-sub-title
                     text-align: left
                 .ng-select .ng-select-container .ng-value-container
                     border-top: 0
                     border-bottom: 0
+                    height: 28px
                 .ng-select .ng-select-container:after
                     display: none
                 .ng-select.ng-select-multiple .ng-select-container.ng-has-value .ng-clear-wrapper, .ng-select.ng-select-multiple .ng-select-container.ng-has-value .ng-arrow-wrapper
@@ -3423,11 +3431,20 @@ mat-tab-group
                     z-index: 2
                 .ng-select.ng-select-multiple.ng-select-searchable.ng-valid.ng-select-bottom.ng-touched.ng-dirty.ng-select-opened .ng-select-container .ng-value-container
                     border-bottom: 0
-                .msf-menu-arg-airport-image, .msf-menu-arg-date-image, .msf-airline-image, .mat-form-field-appearance-legacy .mat-form-field-underline, .msf-menu-arg-right-row
+                .msf-menu-arg-airport-image, .msf-menu-arg-date-image, .msf-airline-image, .mat-form-field-appearance-legacy .mat-form-field-underline, .msf-menu-arg-right-row, .msf-menu-arg-wind-direction-image, .msf-menu-arg-ceiling-image, .msf-menu-arg-wind-speed-image, .msf-menu-arg-temperature-image
                     display: none
+                .ng-select
+                    padding-bottom: 1.14em !important
+                    margin-top: 1px !important
                 .msf-component-airport-input-container
                     flex-direction: column
+                    align-items: baseline
                     margin-top: -1px !important
+                    margin-bottom: 0 !important
+                    .msf-component-input-sub-title
+                        width: inherit !important
+                        margin-bottom: 5px
+                        padding-left: 10px
                     .mat-form-field-appearance-legacy .mat-form-field-wrapper
                         padding-bottom: 0.7em
                 .msf-component-date-input-container
@@ -3436,6 +3453,12 @@ mat-tab-group
                         padding-bottom: 1.3em
                 .msf-component-no-argument-title-input-container
                     margin-top: 28px !important
+                .msf-component-radio
+                    padding-bottom: 0 !important
+                .checkbox-container
+                    padding: 1px 0
+                    .checkbox-component
+                        margin: 0
         .msf-dashboard-control-panel-variable-buttons
             height: 100%
             width: 180px
@@ -3444,6 +3467,11 @@ mat-tab-group
                 margin-top: 10px
                 width: 180px
                 height: 50px
+
+.msf-component-input-sub-title
+    width: 50%
+    padding: 0
+    margin: 0
 
 .msf-dashboard-control-panel-tabs-container .msf-dashboard-control-panel-variable-tab-container .msf-dashboard-control-panel-variable-argument input.mat-input-element, .msf-dashboard-control-panel-tabs-container .msf-dashboard-control-panel-variable-tab-container .msf-dashboard-control-panel-variable-argument textarea.mat-input-element
     cursor: pointer !important

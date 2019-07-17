@@ -1,15 +1,17 @@
-<div class="center">
-    <div class="msf-component-airport-title">Wind direction (degrees)</div>
-    <div class="msf-menu-arg-wind-direction-image"></div>
-</div>    
-<div class="msf-component-airport-input-container">
-    
-    <mat-form-field class="example-full-width">
-        <input  class="input-margin" matInput type="number" placeholder="Min" autocomplete="off"  [(ngModel)]="argument.value1">
-    </mat-form-field>    
-              
-    <i class="material-icons msf-menu-arg-right-row">chevron_right</i>
-    <mat-form-field class="example-full-width">
-        <input class="input-margin" matInput type="number" placeholder="Max" autocomplete="off"  [(ngModel)]="argument.value2">
-    </mat-form-field>        
+<div class="msf-component-outer-container">
+    <div class="msf-component-argument-container">
+        <div class="center">
+            <div class="msf-component-airport-title">Wind direction (degrees)</div>
+            <div class="msf-menu-arg-wind-direction-image"></div>
+        </div>
+        <div class="msf-component-airport-input-container">
+            <mat-form-field class="example-full-width">
+                <input  class="input-margin" matInput type="number" placeholder="Min" autocomplete="off"  [(ngModel)]="argument.value1">
+            </mat-form-field>    
+            <i class="material-icons msf-menu-arg-right-row">chevron_right</i>
+            <mat-form-field class="example-full-width">
+                <input class="input-margin" matInput type="number" placeholder="Max" autocomplete="off"  [(ngModel)]="argument.value2">
+            </mat-form-field>
+        </div>
+    </div>
 </div>
