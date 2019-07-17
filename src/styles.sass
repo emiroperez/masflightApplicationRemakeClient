@@ -454,6 +454,11 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                 background-color: $dashboard-control-panel-background-color   
             .msf-dashboard-control-panel-variable-tab-container
                 background-color: $dashboard-control-panel-background-color
+                .msf-dashboard-control-panel-variable-argument
+                    .msf-component-airport-title
+                        border-bottom: 1px solid $control-variables-input-underline
+                    .ng-select .ng-select-container, input.mat-input-element, textarea.mat-input-element
+                        border: 1px solid $primary-color
                 .flat-button-disabled
                     border-color: $font-color !important
                     border-style: solid
@@ -3388,11 +3393,49 @@ mat-tab-group
             width: 100%
             display: flex
             flex-direction: row
+            font-size: 11px
+            overflow-y: auto
             .msf-dashboard-control-panel-variable-argument
-                padding: 5px
-                width: 24.5%
-                .msf-menu-arg-airport-image, .msf-menu-arg-date-image, .msf-airline-image
+                .msf-component-outer-container
+                    display: flex
+                    flex-direction: row
+                    .msf-component-argument-container
+                        padding: 10px 20px
+                        width: 249px
+                .msf-component-airport-title
+                    background: inherit !important
+                    font-weight: bold
+                    text-align: left
+                .msf-component-airport-sub-title
+                    text-align: left
+                .ng-select .ng-select-container .ng-value-container
+                    border-top: 0
+                    border-bottom: 0
+                .ng-select .ng-select-container:after
                     display: none
+                .ng-select.ng-select-multiple .ng-select-container.ng-has-value .ng-clear-wrapper, .ng-select.ng-select-multiple .ng-select-container.ng-has-value .ng-arrow-wrapper
+                    border-top: 0
+                .ng-select-multiple .ng-select-container.ng-has-value
+                    padding-bottom: 0 !important
+                    padding-left: 5px
+                .ng-dropdown-panel .ng-dropdown-panel-items
+                    position: fixed
+                    z-index: 2
+                .ng-select.ng-select-multiple.ng-select-searchable.ng-valid.ng-select-bottom.ng-touched.ng-dirty.ng-select-opened .ng-select-container .ng-value-container
+                    border-bottom: 0
+                .msf-menu-arg-airport-image, .msf-menu-arg-date-image, .msf-airline-image, .mat-form-field-appearance-legacy .mat-form-field-underline, .msf-menu-arg-right-row
+                    display: none
+                .msf-component-airport-input-container
+                    flex-direction: column
+                    margin-top: -1px !important
+                    .mat-form-field-appearance-legacy .mat-form-field-wrapper
+                        padding-bottom: 0.7em
+                .msf-component-date-input-container
+                    margin-top: 15px !important
+                    .mat-form-field-appearance-legacy .mat-form-field-wrapper
+                        padding-bottom: 1.3em
+                .msf-component-no-argument-title-input-container
+                    margin-top: 28px !important
         .msf-dashboard-control-panel-variable-buttons
             height: 100%
             width: 180px
@@ -3401,6 +3444,14 @@ mat-tab-group
                 margin-top: 10px
                 width: 180px
                 height: 50px
+
+.msf-dashboard-control-panel-tabs-container .msf-dashboard-control-panel-variable-tab-container .msf-dashboard-control-panel-variable-argument input.mat-input-element, .msf-dashboard-control-panel-tabs-container .msf-dashboard-control-panel-variable-tab-container .msf-dashboard-control-panel-variable-argument textarea.mat-input-element
+    cursor: pointer !important
+    border-radius: 4px
+    min-height: 28px
+    align-items: center
+    width: calc(100% - 5px)
+    padding-left: 5px
 
 .msf-dashboard-control-panel-tab-icon
     width: 30px !important

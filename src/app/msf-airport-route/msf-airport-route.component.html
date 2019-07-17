@@ -1,34 +1,36 @@
-<div>
-    <div class="center">
-        <div class="msf-component-airport-title">Limit to Flight(s) from</div>
+<div class="msf-component-outer-container">
+    <div class="msf-component-argument-container">
+        <div class="center">
+            <div class="msf-component-airport-title">Limit to Flight(s) from</div>
+        </div>
+        <div class="msf-component-airport-sub-title">From</div>     
+        <ng-select
+            [items]="this.globals.airports | async"
+            [multiple]="true"
+            [loading]="loading"
+            loadingText="Loading..."
+            [closeOnSelect]="true"
+            [hideSelected]="false"
+            bindLabel="{{argument.visibleAttribute}}"
+            (search)="onSearch($event)" 
+            [(ngModel)]="argument.value1"
+            (change) ="onAirportSelect(1)">
+        </ng-select>
+        <div class="center">
+            <div class="msf-menu-arg-airport-image"></div>
+        </div>
+        <div class="msf-component-airport-sub-title">To</div>  
+        <ng-select
+            [items]="this.globals.airports | async"
+            [multiple]="true"
+            [loading]="loading"
+            loadingText="Loading..."
+            [closeOnSelect]="true"
+            [hideSelected]="false"
+            bindLabel="{{argument.visibleAttribute}}"
+            (search)="onSearch($event)" 
+            [(ngModel)]="argument.value2"
+            (change) ="onAirportSelect(2)">
+        </ng-select> 
     </div>
-    <div class="msf-component-airport-sub-title">From</div>     
-    <ng-select
-        [items]="this.globals.airports | async"
-        [multiple]="true"
-        [loading]="loading"
-        loadingText="Loading..."
-        [closeOnSelect]="true"
-        [hideSelected]="false"
-        bindLabel="{{argument.visibleAttribute}}"
-        (search)="onSearch($event)" 
-        [(ngModel)]="argument.value1"
-        (change) ="onAirportSelect(1)" >
-    </ng-select>
-    <div class="center">
-        <div class="msf-menu-arg-airport-image"></div>
-    </div>   
-    <div class="msf-component-airport-sub-title">To</div>  
-    <ng-select
-        [items]="this.globals.airports | async"
-        [multiple]="true"
-        [loading]="loading"
-        loadingText="Loading..."
-        [closeOnSelect]="true"
-        [hideSelected]="false"
-        bindLabel="{{argument.visibleAttribute}}"
-        (search)="onSearch($event)" 
-        [(ngModel)]="argument.value2"
-        (change) ="onAirportSelect(2)">
-    </ng-select> 
-</div>  
+</div>
