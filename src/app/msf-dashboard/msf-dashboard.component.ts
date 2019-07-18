@@ -454,7 +454,7 @@ export class MsfDashboardComponent implements OnInit {
     let i, calculatedHeight;
     let dashboardIds = [];
   
-    calculatedHeight = 303 + ((this.dashboardColumns[column][0].height.value - 1) * 15);
+    calculatedHeight = 323 + ((this.dashboardColumns[column][0].height.value - 1) * 15);
 
     for (i = 0; i < dashboardColumn.length; i++)
     {
