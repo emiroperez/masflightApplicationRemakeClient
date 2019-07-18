@@ -1,20 +1,22 @@
-<div>
-  <div class="center">
-      <div class="msf-component-airport-title">Summary</div>        
-  </div>    
-  <div class="msf-airline-container">
-      <div class="msf-full-width">   
-      <div class="msf-component-airport-sub-title">Summary by</div>         
-      <ng-select
-          [items]="summaryList"
-          [multiple]="true"
-          loadingText="Loading..."
-          [closeOnSelect]="true"
-          [hideSelected]="false"
-          bindLabel="columnLabel"
-          bindName="id"
-          [(ngModel)]="argument.value1">
-      </ng-select>          
-      </div>
-  </div>
-</div>  
+<div class="msf-component-outer-container">
+    <div class="msf-component-argument-container">
+        <div class="center">
+            <div class="msf-component-airport-title">Summary</div>
+        </div>
+        <div class="msf-airline-container">
+            <div class="msf-full-width">
+                <div class="msf-component-airport-sub-title">Summary by</div>
+                <ng-select
+                    [items]="summaryList"
+                    [multiple]="true"
+                    loadingText="Loading..."
+                    [closeOnSelect]="true"
+                    [hideSelected]="false"
+                    bindLabel="columnLabel"
+                    bindName="id"
+                    [(ngModel)]="argument.value1">
+                </ng-select>
+            </div>
+        </div>
+    </div>
+</div>

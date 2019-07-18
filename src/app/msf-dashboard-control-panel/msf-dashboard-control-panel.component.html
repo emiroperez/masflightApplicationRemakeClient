@@ -44,6 +44,7 @@
           <div *ngIf="!controlVariable.selected" class="msf-dashboard-control-panel-variable" (mouseover)="controlVariable.hover = true" (mouseleave)="controlVariable.hover = false" (click)="checkControlVariable(controlVariable)">
             <mat-icon *ngIf="controlVariable.icon && controlVariable.isMatIcon" class="msf-menu-image-border msf-vertical-middle msf-menu-mat-icon msf-dashboard-control-panel-variable-icon">{{controlVariable.icon}}</mat-icon>
             <div *ngIf="controlVariable.icon && !controlVariable.isMatIcon" [style.background-image]="'url(' + getImageIcon(controlVariable) + ')'" class="msf-menu-image-border msf-vertical-middle msf-dashboard-control-panel-variable-icon"></div>
+            <div *ngIf="!controlVariable.icon" class="msf-menu-image-border msf-vertical-middle msf-dashboard-control-panel-variable-icon-empty"></div>
             <span class="msf-menu-component-text msf-control-variables-text msf-dashboard-control-panel-variable-label">{{controlVariable.label}}</span>
           </div>
           <div *ngIf="controlVariable.selected" class="msf-dashboard-control-panel-variable-selected" (click)="uncheckControlVariable(controlVariable)">

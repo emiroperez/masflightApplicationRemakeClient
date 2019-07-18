@@ -3350,8 +3350,8 @@ mat-tab-group
         grid-column-gap: 10px
         grid-row-gap: 10px
         padding-bottom: 10px
-        overflow-y: auto
         overflow-x: hidden
+        overflow-y: auto
         max-height: 180px
         .msf-dashboard-control-panel-variable, .msf-dashboard-control-panel-variable-selected
             @include disable-text-selection
@@ -3369,6 +3369,10 @@ mat-tab-group
                 font-size: 35px
                 align-items: center
                 justify-content: center
+            .msf-dashboard-control-panel-variable-icon-empty
+                width: 0px !important
+                height: 45px !important
+                display: inline-flex
             .msf-dashboard-control-panel-variable-label
                 margin-left: 25px !important
         .msf-dashboard-control-panel-variable:hover, .msf-dashboard-control-panel-variable-selected:hover
@@ -3394,15 +3398,15 @@ mat-tab-group
             font-size: 11px
             display: flex
             flex-direction: row
+            overflow-x: auto
             overflow-y: auto
-            overflow-x: hidden
             .msf-dashboard-control-panel-variable-argument
                 .msf-component-outer-container
                     display: flex
                     flex-direction: row
                     .msf-component-argument-container
                         padding: 10px 20px
-                        width: 249px
+                        width: 247px
                 .msf-single-checkbox-outer-container
                     display: flex
                     flex-direction: row
@@ -3422,10 +3426,17 @@ mat-tab-group
                         border: 0 !important
                 .msf-component-airport-sub-title
                     text-align: left
+                    font-size: 8px
+                    margin-bottom: 2px !important
                 .ng-select .ng-select-container .ng-value-container
                     border-top: 0
                     border-bottom: 0
                     min-height: 28px
+                    padding: 0.3500em 0
+                    padding-left: 5px
+                .ng-select.ng-select-multiple .ng-select-container.ng-has-value .ng-value-container
+                    padding: 0 !important
+                    padding-top: .1875em !important
                 .ng-select .ng-select-container:after
                     display: none
                 .ng-select.ng-select-multiple .ng-select-container.ng-has-value .ng-clear-wrapper, .ng-select.ng-select-multiple .ng-select-container.ng-has-value .ng-arrow-wrapper
@@ -3439,7 +3450,7 @@ mat-tab-group
                     width: 249px
                 .ng-select.ng-select-multiple.ng-select-searchable.ng-valid.ng-select-bottom.ng-touched.ng-dirty.ng-select-opened .ng-select-container .ng-value-container
                     border-bottom: 0
-                .msf-menu-arg-airport-image, .msf-menu-arg-date-image, .msf-airline-image, .mat-form-field-appearance-legacy .mat-form-field-underline, .msf-menu-arg-right-row, .msf-menu-arg-wind-direction-image, .msf-menu-arg-ceiling-image, .msf-menu-arg-wind-speed-image, .msf-menu-arg-temperature-image
+                .msf-menu-arg-airport-image, .msf-menu-arg-date-image, .msf-airline-image, .mat-form-field-appearance-legacy .mat-form-field-underline, .msf-menu-arg-right-row, .msf-menu-arg-wind-direction-image, .msf-menu-arg-ceiling-image, .msf-menu-arg-wind-speed-image, .msf-menu-arg-temperature-image, .msf-menu-arg-single-airport-image, .msf-tail-image
                     display: none
                 .ng-select
                     padding-bottom: 1.14em !important
