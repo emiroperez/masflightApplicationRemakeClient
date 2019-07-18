@@ -4,8 +4,8 @@
             <div class="msf-component-airport-title">Ceiling (Above Ground Level)</div>
             <div class="msf-menu-arg-ceiling-image"></div>
         </div>
-        <div class="msf-component-airport-input-container" style="margin:10px 0">
-            <div class="msf-component-airport-sub-title msf-component-input-sub-title">{{argument.label1}}</div>   
+        <div class="msf-component-airport-input-container msf-component-airport-ceiling-container">
+            <div class="msf-component-airport-sub-title msf-component-input-sub-title msf-component-airport-ceiling-sub-title">{{argument.label1}}</div>   
             <ng-select style="width:100%; padding-bottom:0;"
                 [items]="filteredOriginAirports | async"
                 [multiple]="false"
@@ -19,7 +19,7 @@
                 [(ngModel)]="argument.value1">
             </ng-select>
             <i class="material-icons msf-menu-arg-right-row">chevron_right</i>
-            <div class="msf-component-airport-sub-title msf-component-input-sub-title">{{argument.label2}}</div>   
+            <div class="msf-component-airport-sub-title msf-component-input-sub-title msf-component-airport-ceiling-sub-title">{{argument.label2}}</div>   
             <ng-select style="width:100%;  padding-bottom:0;"
                 [items]="filteredDestAirports | async"
                 [multiple]="false"
