@@ -30,7 +30,22 @@
           </div>
           <div class="msf-dashboard-control-panel-variable-arguments">
             <div *ngFor="let argument of controlVariable.arguments" class="msf-dashboard-control-panel-variable-argument">
-              <app-msf-argument [currentArgument]="argument" [currentGlobalOptionId]="currentOptionId"></app-msf-argument>
+              <ng-container *ngIf="!isTitleOnly(argument) && !isSingleCheckbox(argument)">
+                <app-msf-argument [currentArgument]="argument" [currentGlobalOptionId]="currentOptionId"></app-msf-argument>
+              </ng-container>
+              <!-- Special case for title only arguments followed by single checkboxes -->
+              <div *ngIf="isTitleOnly(argument)">
+                <div class="msf-component-outer-container">
+                  <div class="msf-component-argument-container">
+                    <app-msf-argument-title [argument]="argument"></app-msf-argument-title>
+                    <ng-container *ngIf="argument.checkboxes">
+                      <ng-container *ngFor="let checkbox of argument.checkboxes">
+                        <app-msf-single-checkbox [argument]="checkbox"></app-msf-single-checkbox>
+                      </ng-container>
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 import { Globals } from '../globals/Globals';
+import { ComponentType } from '../commons/ComponentType';
 
 @Component({
   selector: 'app-msf-dashboard-control-panel',
@@ -72,6 +73,36 @@ export class MsfDashboardControlPanelComponent implements OnInit {
         controlVariable.hover = false;
         controlVariable.selected = false;
         controlVariable.added = true;
+
+        if (controlVariable.arguments)
+        {
+          for (let i = 0; i < controlVariable.arguments.length; i++)
+          {
+            let controlVariableArgument = controlVariable.arguments[i];
+
+            // If the argument is just a title, count the number of checkboxes for a special case
+            if (this.isTitleOnly (controlVariableArgument))
+            {
+              let args: any[];
+
+              controlVariableArgument.checkboxes = [];
+
+              if (i + 1 < controlVariable.arguments.length)
+              {
+                args = controlVariable.arguments.slice (i + 1, controlVariable.arguments.length);
+
+                for (let argument of args)
+                {
+                  if (!this.isSingleCheckbox (argument))
+                    break;
+
+                  controlVariableArgument.checkboxes.push (argument);
+                }
+              }
+            }
+          }
+        }
+
         this.controlVariables.push (controlVariable);
       }
     }
@@ -91,5 +122,15 @@ export class MsfDashboardControlPanelComponent implements OnInit {
 
     if (this.selectedIndex)
       this.selectedIndex--;
+  }
+
+  isTitleOnly(argument): boolean
+  {
+    return ComponentType.title == argument.type;
+  }
+
+  isSingleCheckbox(argument): boolean
+  {
+    return ComponentType.singleCheckbox == argument.type;
   }
 }
