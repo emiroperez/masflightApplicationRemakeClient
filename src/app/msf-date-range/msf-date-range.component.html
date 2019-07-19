@@ -1,37 +1,34 @@
-<div class="msf-component-outer-container">
-    <div class="msf-component-argument-container">
-        <div class="center">
-            <div class="msf-component-airport-title">{{argument.title}}</div>
-        </div>
-        <div class="msf-component-date-input-container msf-single-date">
-            <mat-form-field class="msf-full-width">
-                <input matInput [min]="globals.minDate" [max]="globals.maxDate" [matDatepicker]="picker3" placeholder="{{argument.label1}}" autocomplete="off" class=" msf-full-width msf-menu-arg-select"  [(ngModel)]="argument.value1" (ngModelChange)="dateChange($event)">
-                <mat-datepicker-toggle matSuffix [for]="picker3">            
-                </mat-datepicker-toggle>
-                <mat-datepicker #picker3></mat-datepicker>
-            </mat-form-field>            
-            <mat-form-field class="msf-full-width msf-single-date">
-                <input [min]="minDate" [max]="globals.maxDate" class="msf-component-airport-container mat-input-element" matInput [matDatepicker]="picker4" placeholder="{{argument.label2}}" autocomplete="off" class=" msf-full-width msf-menu-arg-select"  (ngModelChange)="hasDate()" [(ngModel)]="argument.value2">
-                <mat-datepicker-toggle matSuffix [for]="picker4">           
-                </mat-datepicker-toggle>
-                <mat-datepicker #picker4></mat-datepicker>
-            </mat-form-field>       
-        </div>
+<!-- Treat the two sub-arguments as if they were two separate arguments for the dashboard control panel -->
+<div class="msf-component-argument-container">
+    <div class="center">
+        <div class="msf-component-airport-title">{{argument.title}}</div>
     </div>
-    <div class="msf-component-argument-container">
-        <div class="center">
-            <div class="msf-component-airport-title">Auto select the date range:</div>
-        </div>
+    <div class="msf-component-date-input-container msf-single-date">
+        <mat-form-field class="msf-full-width">
+            <input matInput [min]="globals.minDate" [max]="globals.maxDate" [matDatepicker]="picker3" placeholder="{{argument.label1}}" autocomplete="off" class=" msf-full-width msf-menu-arg-select"  [(ngModel)]="argument.value1" (ngModelChange)="dateChange($event)">
+            <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+            <mat-datepicker #picker3></mat-datepicker>
+        </mat-form-field>            
+        <mat-form-field class="msf-full-width msf-single-date">
+            <input [min]="minDate" [max]="globals.maxDate" class="msf-component-airport-container mat-input-element" matInput [matDatepicker]="picker4" placeholder="{{argument.label2}}" autocomplete="off" class=" msf-full-width msf-menu-arg-select"  (ngModelChange)="hasDate()" [(ngModel)]="argument.value2">
+            <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+            <mat-datepicker #picker4></mat-datepicker>
+        </mat-form-field>       
+    </div>
+</div>
+<div class="msf-component-argument-container">
+    <div class="center">
+        <div class="msf-component-airport-title">Auto select the date range:</div>
+    </div>
         <div class="msf-component-date-input-container msf-component-no-argument-title-input-container" style="display: flex; align-items: center;">         
-            <ng-select style="width: 100%;"
-                [items]="dates"
-                [multiple]="false"
-                [closeOnSelect]="true"
-                [hideSelected]="false"
-                bindLabel="name"
-                (change)="autoSelect()"
-                [(ngModel)]="argument.value3">
-            </ng-select> 
-        </div>
+        <ng-select style="width: 100%;"
+            [items]="dates"
+            [multiple]="false"
+            [closeOnSelect]="true"
+            [hideSelected]="false"
+            bindLabel="name"
+            (change)="autoSelect()"
+            [(ngModel)]="argument.value3">
+        </ng-select>
     </div>
 </div>

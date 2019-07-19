@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 
 import { Globals } from '../globals/Globals';
 import { ComponentType } from '../commons/ComponentType';
+import { Arguments } from '../model/Arguments';
 
 @Component({
   selector: 'app-msf-dashboard-control-panel',
@@ -79,25 +80,23 @@ export class MsfDashboardControlPanelComponent implements OnInit {
           for (let i = 0; i < controlVariable.arguments.length; i++)
           {
             let controlVariableArgument = controlVariable.arguments[i];
+            let args: any[];
 
-            // If the argument is just a title, count the number of checkboxes for a special case
-            if (this.isTitleOnly (controlVariableArgument))
+            controlVariableArgument.checkboxes = [];
+
+            // Count the number of checkboxes for a special case
+            if (i + 1 < controlVariable.arguments.length
+              && (this.isSingleCheckbox (controlVariable.arguments[i + 1])
+               || this.isTaxiTimesCheckbox (controlVariable.arguments[i + 1])))
             {
-              let args: any[];
+              args = controlVariable.arguments.slice (i + 1, controlVariable.arguments.length);
 
-              controlVariableArgument.checkboxes = [];
-
-              if (i + 1 < controlVariable.arguments.length)
+              for (let argument of args)
               {
-                args = controlVariable.arguments.slice (i + 1, controlVariable.arguments.length);
+                if (!this.isSingleCheckbox(argument) && !this.isTaxiTimesCheckbox(argument))
+                  break;
 
-                for (let argument of args)
-                {
-                  if (!this.isSingleCheckbox (argument))
-                    break;
-
-                  controlVariableArgument.checkboxes.push (argument);
-                }
+                controlVariableArgument.checkboxes.push (argument);
               }
             }
           }
@@ -124,13 +123,23 @@ export class MsfDashboardControlPanelComponent implements OnInit {
       this.selectedIndex--;
   }
 
-  isTitleOnly(argument): boolean
+  isTitleOnly(argument: Arguments): boolean
   {
     return ComponentType.title == argument.type;
   }
 
-  isSingleCheckbox(argument): boolean
+  isSingleCheckbox(argument: Arguments): boolean
   {
     return ComponentType.singleCheckbox == argument.type;
+  }
+
+  isTaxiTimesCheckbox(argument: Arguments): boolean
+  {
+    return ComponentType.taxiTimesCheckbox == argument.type;
+  }
+
+  isDateRange(argument: Arguments): boolean
+  {
+    return ComponentType.dateRange == argument.type;
   }
 }

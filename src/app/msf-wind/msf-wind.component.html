@@ -1,23 +1,19 @@
-<div class="msf-component-outer-container">
-    <div class="msf-component-argument-container">
-        <div class="center">
-            <div class="msf-component-airport-title">Reported Wind Speed</div>
-            <div class="msf-menu-arg-wind-speed-image"></div>
-        </div>
-        <div class="msf-component-airport-input-container">
-            <mat-form-field>
-                <input class="input-margin" matInput type="number" placeholder="From" autocomplete="off" [(ngModel)]="argument.value1">
-            </mat-form-field>
-            <i class="material-icons msf-menu-arg-right-row">chevron_right</i>
-            <mat-form-field>
-                <input class="input-margin" matInput type="number" placeholder="To" autocomplete="off"  [(ngModel)]="argument.value2">            
-            </mat-form-field>
-        </div>
-        <div class="center msf-component-radio">
-            <mat-radio-group [(ngModel)]="argument.value3">
-                <mat-radio-button value="kts">Kts</mat-radio-button>
-                <mat-radio-button class="msf-radio" value="mph">Mph</mat-radio-button>
-            </mat-radio-group>
-        </div>
-    </div>
+<div class="center">
+    <div class="msf-component-airport-title">Reported Wind Speed</div>
+    <div class="msf-menu-arg-wind-speed-image"></div>
+</div>
+<div class="msf-component-airport-input-container">
+    <mat-form-field>
+        <input class="input-margin" matInput type="number" placeholder="From" autocomplete="off" [(ngModel)]="argument.value1">
+    </mat-form-field>
+    <i class="material-icons msf-menu-arg-right-row">chevron_right</i>
+    <mat-form-field>
+        <input class="input-margin" matInput type="number" placeholder="To" autocomplete="off"  [(ngModel)]="argument.value2">            
+    </mat-form-field>
+</div>
+<div class="center msf-component-radio">
+    <mat-radio-group [(ngModel)]="argument.value3">
+        <mat-radio-button value="kts">Kts</mat-radio-button>
+        <mat-radio-button class="msf-radio" value="mph">Mph</mat-radio-button>
+    </mat-radio-group>
 </div>

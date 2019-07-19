@@ -30,22 +30,28 @@
           </div>
           <div class="msf-dashboard-control-panel-variable-arguments">
             <div *ngFor="let argument of controlVariable.arguments" class="msf-dashboard-control-panel-variable-argument">
-              <ng-container *ngIf="!isTitleOnly(argument) && !isSingleCheckbox(argument)">
-                <app-msf-argument [currentArgument]="argument" [currentGlobalOptionId]="currentOptionId"></app-msf-argument>
-              </ng-container>
-              <!-- Special case for title only arguments followed by single checkboxes -->
-              <div *ngIf="isTitleOnly(argument)">
+              <ng-container *ngIf="!isSingleCheckbox(argument) && !isTaxiTimesCheckbox(argument)">
                 <div class="msf-component-outer-container">
-                  <div class="msf-component-argument-container">
-                    <app-msf-argument-title [argument]="argument"></app-msf-argument-title>
+                  <div *ngIf="!isDateRange(argument)" class="msf-component-argument-container">
+                    <app-msf-argument [currentArgument]="argument" [currentGlobalOptionId]="currentOptionId"></app-msf-argument>
+                    <!-- Special treatment for single checkbox arguments -->
                     <ng-container *ngIf="argument.checkboxes">
                       <ng-container *ngFor="let checkbox of argument.checkboxes">
-                        <app-msf-single-checkbox [argument]="checkbox"></app-msf-single-checkbox>
+                        <div class="msf-single-checkbox-outer-container">
+                          <div class="msf-component-argument-container">
+                            <app-msf-single-checkbox *ngIf="isSingleCheckbox(checkbox)" [argument]="checkbox"></app-msf-single-checkbox>
+                            <app-msf-taxi-times-checkbox *ngIf="isTaxiTimesCheckbox(checkbox)" [argument]="checkbox"></app-msf-taxi-times-checkbox>
+                          </div>
+                        </div>
                       </ng-container>
                     </ng-container>
                   </div>
+                  <!-- Another special treatment for the date range argument -->
+                  <ng-container *ngIf="isDateRange(argument)">
+                    <app-msf-date-range class="msf-component-date-range-container" [argument]="argument"></app-msf-date-range>
+                  </ng-container>
                 </div>
-              </div>
+              </ng-container>
             </div>
           </div>
         </div>

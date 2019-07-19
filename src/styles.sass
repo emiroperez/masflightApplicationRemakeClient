@@ -3375,6 +3375,8 @@ mat-tab-group
                 display: inline-flex
             .msf-dashboard-control-panel-variable-label
                 margin-left: 25px !important
+            .msf-component-airport-route-sub-title
+                margin-top: 7px !important
         .msf-dashboard-control-panel-variable:hover, .msf-dashboard-control-panel-variable-selected:hover
             cursor: pointer
     .msf-dashboard-control-panel-button
@@ -3385,7 +3387,7 @@ mat-tab-group
             font-size: 22px !important
 
 .msf-dashboard-control-panel-tabs-container
-    height: 250px
+    min-height: 250px
     margin-top: 8px
     .msf-dashboard-control-panel-variable-tab-container
         display: flex
@@ -3407,6 +3409,9 @@ mat-tab-group
                     .msf-component-argument-container
                         padding: 10px 20px
                         width: 247px
+                .msf-component-date-range-container
+                    display: flex
+                    flex-direction: row
                 .msf-single-checkbox-outer-container
                     .msf-component-argument-container
                         padding: 2px 0
@@ -3500,6 +3505,9 @@ mat-tab-group
                     line-height: 1.65
                 .msf-component-airport-ceiling-sub-title
                     padding-top: 7px
+                .msf-region-checkbox-container
+                    flex-wrap: nowrap !important
+                    flex-direction: column
         .msf-dashboard-control-panel-variable-buttons
             height: 100%
             width: 180px
@@ -3520,7 +3528,7 @@ mat-tab-group
     margin-left: 10px !important
 
 .msf-component-seats-title
-    background: none
+    background: none !important
     margin: 0 10px
 
 .msf-component-airport-ceiling-container

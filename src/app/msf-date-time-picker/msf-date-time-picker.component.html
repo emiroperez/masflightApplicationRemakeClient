@@ -1,16 +1,12 @@
-<div class="msf-component-outer-container">
-  <div class="msf-component-argument-container">
-    <div class="center">
-      <div class="msf-component-airport-title">{{argument.title}}</div>
-    </div>    
-    <div class="msf-component-airport-input-container">
-      <mat-form-field class="msf-full-width">
-        <input [min]="globals.minDate" [max]="globals.maxDate" matInput placeholder="{{argument.label1}}" [(ngModel)]="argument.value1" [owlDateTime]="dt1" autocomplete="off">
-        <div matSuffix style="height: 1.5em;">
-          <mat-icon  class="trigger" [owlDateTimeTrigger]="dt1">today</mat-icon>
-          <owl-date-time #dt1></owl-date-time>
-        </div>
-      </mat-form-field>      
+<div class="center">
+  <div class="msf-component-airport-title">{{argument.title}}</div>
+</div>    
+<div class="msf-component-airport-input-container">
+  <mat-form-field class="msf-full-width">
+    <input [min]="globals.minDate" [max]="globals.maxDate" matInput placeholder="{{argument.label1}}" [(ngModel)]="argument.value1" [owlDateTime]="dt1" autocomplete="off">
+    <div matSuffix style="height: 1.5em;">
+      <mat-icon class="trigger" [owlDateTimeTrigger]="dt1">today</mat-icon>
+      <owl-date-time #dt1></owl-date-time>
     </div>
-  </div>
+  </mat-form-field>      
 </div>
