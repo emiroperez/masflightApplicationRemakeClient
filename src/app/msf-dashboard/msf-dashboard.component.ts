@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, Input, SimpleChanges } from '@angular/core';
+import { Component, HostListener, OnInit, Input, SimpleChanges, ViewChild } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MatDialog } from '@angular/material';
 
@@ -7,6 +7,7 @@ import { MsfDashboardPanelValues } from '../msf-dashboard-panel/msf-dashboard-pa
 import { ApplicationService } from '../services/application.service';
 import { MsfDashboardChildPanelComponent } from '../msf-dashboard-child-panel/msf-dashboard-child-panel.component';
 import { ChartFlags } from '../msf-dashboard-panel/msf-dashboard-chartflags';
+import { MsfDashboardControlPanelComponent } from '../msf-dashboard-control-panel/msf-dashboard-control-panel.component';
 
 const minPanelWidth = 25;
 
@@ -42,6 +43,9 @@ export class MsfDashboardComponent implements OnInit {
 
   @Input()
   currentDashboardMenu: any;
+
+  @ViewChild("dashboardControlPanel")
+  dashboardControlPanel: MsfDashboardControlPanelComponent;
 
   controlPanelOpen: boolean;
   controlVariablesAvailable: any = [];
@@ -88,6 +92,10 @@ export class MsfDashboardComponent implements OnInit {
         this.service.getDashboardPanels (this, this.currentDashboardMenu.id,
           this.loadDashboardPanels, this.handlerError);
       }
+
+      this.dashboardControlPanel.removeControlVariables ();
+      this.controlVariablesAvailable = [];
+      this.controlPanelOpen = false;
     }
   }
 
@@ -261,11 +269,12 @@ export class MsfDashboardComponent implements OnInit {
           if (exists)
             continue;
 
-          _this.controlVariablesAvailable.push (categoryOption);
+          _this.controlVariablesAvailable.push (JSON.parse (JSON.stringify (categoryOption)));
           lastCategoryOption = _this.controlVariablesAvailable[_this.controlVariablesAvailable.length - 1];
           lastCategoryOption.isMatIcon = _this.isMatIcon (lastCategoryOption.icon);
           lastCategoryOption.iconHover = _this.getImageIcon (lastCategoryOption, true);
           lastCategoryOption.icon = _this.getImageIcon (lastCategoryOption, false);
+          lastCategoryOption.optionId = dashboardPanel.option.id;
         }
       }
 

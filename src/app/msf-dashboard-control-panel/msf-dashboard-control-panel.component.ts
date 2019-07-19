@@ -71,25 +71,29 @@ export class MsfDashboardControlPanelComponent implements OnInit {
     {
       if (controlVariable.selected)
       {
+        let newControlVariable;
+
         controlVariable.hover = false;
         controlVariable.selected = false;
         controlVariable.added = true;
 
-        if (controlVariable.arguments)
+        newControlVariable = JSON.parse (JSON.stringify (controlVariable));
+
+        if (newControlVariable.arguments)
         {
-          for (let i = 0; i < controlVariable.arguments.length; i++)
+          for (let i = 0; i < newControlVariable.arguments.length; i++)
           {
-            let controlVariableArgument = controlVariable.arguments[i];
+            let controlVariableArgument = newControlVariable.arguments[i];
             let args: any[];
 
             controlVariableArgument.checkboxes = [];
 
             // Count the number of checkboxes for a special case
-            if (i + 1 < controlVariable.arguments.length
-              && (this.isSingleCheckbox (controlVariable.arguments[i + 1])
-               || this.isTaxiTimesCheckbox (controlVariable.arguments[i + 1])))
+            if (i + 1 < newControlVariable.arguments.length
+              && (this.isSingleCheckbox (newControlVariable.arguments[i + 1])
+               || this.isTaxiTimesCheckbox (newControlVariable.arguments[i + 1])))
             {
-              args = controlVariable.arguments.slice (i + 1, controlVariable.arguments.length);
+              args = newControlVariable.arguments.slice (i + 1, newControlVariable.arguments.length);
 
               for (let argument of args)
               {
@@ -102,7 +106,7 @@ export class MsfDashboardControlPanelComponent implements OnInit {
           }
         }
 
-        this.controlVariables.push (controlVariable);
+        this.controlVariables.push (newControlVariable);
       }
     }
 
@@ -121,6 +125,12 @@ export class MsfDashboardControlPanelComponent implements OnInit {
 
     if (this.selectedIndex)
       this.selectedIndex--;
+  }
+
+  removeControlVariables(): void
+  {
+    this.selectedIndex = -1;
+    this.controlVariables = [];
   }
 
   isTitleOnly(argument: Arguments): boolean

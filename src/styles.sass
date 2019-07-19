@@ -3427,10 +3427,9 @@ mat-tab-group
                     .msf-component-airport-title
                         border: 0 !important
                 .msf-component-airport-sub-title
+                    height: 7px
                     text-align: left
                     font-size: 10px
-                    margin-bottom: -2px !important
-                    height: 13px
                 .ng-select .ng-select-container .ng-value-container
                     border-top: 0
                     border-bottom: 0
@@ -3474,7 +3473,7 @@ mat-tab-group
                     .mat-form-field-appearance-legacy .mat-form-field-wrapper
                         padding-bottom: 1.3em
                 .msf-component-no-argument-title-input-container
-                    margin-top: 27px !important
+                    margin-top: 28px !important
                 .msf-component-radio
                     margin-bottom: 0 !important
                 .msf-component-airport-route-container
@@ -3496,6 +3495,7 @@ mat-tab-group
                     font-weight: initial !important
                 .msf-seats-input
                     margin: 0 !important
+                    margin-top: 6px !important
                 .msf-content-type-radio-group-container
                     display: flex
                     flex-direction: column
@@ -3508,6 +3508,14 @@ mat-tab-group
                 .msf-region-checkbox-container
                     flex-wrap: nowrap !important
                     flex-direction: column
+            .msf-airline-input-container, .msf-grouping-input-container
+                margin-top: 6px !important
+                text-align: left !important
+                font-size: 10px
+            .msf-component-connection-input-container .mat-form-field-infix
+                line-height: inherit !important
+            .msf-component-auto-select-date-range
+                margin-top: 27px !important
         .msf-dashboard-control-panel-variable-buttons
             height: 100%
             width: 180px
@@ -3533,6 +3541,9 @@ mat-tab-group
 
 .msf-component-airport-ceiling-container
     margin: 10px 0
+
+.msf-airline-input-container
+    text-align: center !important
 
 .msf-dashboard-control-panel-tabs-container .msf-dashboard-control-panel-variable-tab-container .msf-dashboard-control-panel-variable-argument input.mat-input-element, .msf-dashboard-control-panel-tabs-container .msf-dashboard-control-panel-variable-tab-container .msf-dashboard-control-panel-variable-argument textarea.mat-input-element
     cursor: pointer !important
