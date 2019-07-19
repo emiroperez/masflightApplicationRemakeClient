@@ -8,6 +8,7 @@ import { ApplicationService } from '../services/application.service';
 import { MsfDashboardChildPanelComponent } from '../msf-dashboard-child-panel/msf-dashboard-child-panel.component';
 import { ChartFlags } from '../msf-dashboard-panel/msf-dashboard-chartflags';
 import { MsfDashboardControlPanelComponent } from '../msf-dashboard-control-panel/msf-dashboard-control-panel.component';
+import { CategoryArguments } from '../model/CategoryArguments';
 
 const minPanelWidth = 25;
 
@@ -250,7 +251,7 @@ export class MsfDashboardComponent implements OnInit {
       // add required global control variables if available
       if (dashboardPanel.categoryOptions)
       {
-        let categoryOptions = JSON.parse (dashboardPanel.categoryOptions);
+        let categoryOptions: CategoryArguments[] = JSON.parse (dashboardPanel.categoryOptions);
         let lastCategoryOption;
 
         for (let categoryOption of categoryOptions)
@@ -262,6 +263,14 @@ export class MsfDashboardComponent implements OnInit {
             if (categoryOption.id == controlVariable.id)
             {
               exists = true;
+
+              for (let i = 0; i < controlVariable.arguments.length; i++)
+              {
+                // copy visible attribute if the value didn't have it
+                if (!controlVariable.arguments[i].visibleAttribute)
+                  controlVariable.arguments[i].visibleAttribute = categoryOption.arguments[i].visibleAttribute;
+              }
+
               break;
             }
           }

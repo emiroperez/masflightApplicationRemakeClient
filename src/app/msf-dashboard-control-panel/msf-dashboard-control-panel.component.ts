@@ -120,7 +120,15 @@ export class MsfDashboardControlPanelComponent implements OnInit {
 
   removeVariable(): void
   {
-    this.controlVariables[this.selectedIndex].added = false;
+    for (let controlVariable of this.controlVariablesAvailable)
+    {
+      if (this.controlVariables[this.selectedIndex].id == controlVariable.id)
+      {
+        controlVariable.added = false;
+        break;
+      }
+    }
+
     this.controlVariables.splice (this.selectedIndex, 1);
 
     if (this.selectedIndex)
