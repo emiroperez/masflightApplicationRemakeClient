@@ -2400,7 +2400,7 @@ input[role="combobox"]
     .mat-form-field-infix
         line-height: 2.125
 
-.msf-component-date-input-container
+.msf-component-date-input-container, .msf-component-auto-select-date-range
     .mat-form-field-infix
         line-height: 2.125
 
@@ -2488,10 +2488,10 @@ mat-tab-group
     text-align: center
     padding-left: 0px
 
-.msf-component-airport-input-container  .mat-select-value
+.msf-component-airport-input-container .mat-select-value
     padding-left: 7px
 
-.msf-component-date-input-container  .mat-select-value
+.msf-component-date-input-container .mat-select-value, .msf-component-auto-select-date-range  .mat-select-value
     padding-left: 7px
 
 .msf-airline-container
@@ -2531,7 +2531,7 @@ mat-tab-group
 .msf-component-airport-input-container .mat-form-field-appearance-legacy .mat-form-field-label
     padding-left: 10px
 
-.msf-component-date-input-container .mat-form-field-appearance-legacy .mat-form-field-label
+.msf-component-date-input-container .mat-form-field-appearance-legacy .mat-form-field-label, .msf-component-auto-select-date-range .mat-form-field-appearance-legacy .mat-form-field-label
     padding-left: 10px
 
 .msf-airline-container .mat-form-field-appearance-legacy .mat-form-field-label
@@ -3472,6 +3472,10 @@ mat-tab-group
                     margin-top: 15px !important
                     .mat-form-field-appearance-legacy .mat-form-field-wrapper
                         padding-bottom: 1.3em
+                .msf-component-auto-select-date-range
+                    margin-top: 27px !important
+                    .mat-form-field-appearance-legacy .mat-form-field-wrapper
+                        padding-bottom: 1.3em
                 .msf-component-no-argument-title-input-container
                     margin-top: 28px !important
                 .msf-component-radio
@@ -3501,7 +3505,7 @@ mat-tab-group
                     flex-direction: column
                     .checkbox-component
                         height: 30px
-                .msf-component-date-input-container .mat-form-field-infix
+                .msf-component-date-input-container .mat-form-field-infix, .msf-component-auto-select-date-range .mat-form-field-infix
                     line-height: 1.65
                 .msf-component-airport-ceiling-sub-title
                     padding-top: 7px
@@ -3514,8 +3518,6 @@ mat-tab-group
                 font-size: 10px
             .msf-component-connection-input-container .mat-form-field-infix
                 line-height: inherit !important
-            .msf-component-auto-select-date-range
-                margin-top: 27px !important
             .msf-category-argument-arrow-icon
                 font-size: 15px !important
                 padding-top: 4px !important
@@ -4313,9 +4315,13 @@ table.results
 .close-icon
     margin-left: 10px
 
-.msf-component-date-input-container .mat-form-field-appearance-legacy .mat-form-field-label
+.msf-component-date-input-container .mat-form-field-appearance-legacy .mat-form-field-label, .msf-component-auto-select-date-range .mat-form-field-appearance-legacy .mat-form-field-label
     padding: 5px !important
     padding-left: 10px !important
+
+.msf-component-auto-select-date-range
+    display: flex
+    align-items: center
 
 .msf-low-bold
     font-weight: 500 !important
