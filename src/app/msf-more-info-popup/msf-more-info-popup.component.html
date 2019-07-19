@@ -73,8 +73,8 @@
     <tr mat-row *matRowDef="let row; columns: globals.subDisplayedColumnNames;" [style.height.px]="30"></tr>
   </table>
 </div>
-<div *ngIf="globals.subPdfViewer" [style.width.px]="500" [style.height.px]="650">
-  <div [innerHTML]="globals.subPdfViewer" [style.height.px]="650"></div>
+<div *ngIf="globals.subPdfViewer" [style.width.px]="550">
+  <div [innerHTML]="globals.subPdfViewer" [style.height.px]="pdfViewerHeight"></div>
 </div>
 <div *ngIf="chart!=null&&globals.subTotalRecord>0 && globals.popupMainElement" class="msf-media-title msf-passenger-chart-title">Play Duration In Minutes</div>
 <div [style.visibility]="chart!=null&&globals.subTotalRecord>0 && globals.popupMainElement? 'visible' : 'hidden'" id="msf-dashboard-chart-display" [ngClass]="chart!=null&&globals.subTotalRecord>0 && globals.popupMainElement? 'msf-chart' : ''"></div>

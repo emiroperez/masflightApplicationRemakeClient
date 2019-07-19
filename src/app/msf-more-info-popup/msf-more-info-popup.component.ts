@@ -1,16 +1,13 @@
-import { Component, OnInit, Inject, NgZone } from '@angular/core';
+import { Component, OnInit, Inject, NgZone, HostListener } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { Globals } from '../globals/Globals';
 import { ApiClient } from '../api/api-client';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
-import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import { Subject } from 'rxjs';
 import { MessageComponent } from '../message/message.component';
 import { AuthService } from '../services/auth.service';
 import { Themes } from '../globals/Themes';
-
-am4core.useTheme(am4themes_animated);
 
 @Component({
   selector: 'app-msf-more-info-popup',
@@ -51,6 +48,9 @@ export class MsfMoreInfoPopupComponent{
     "#3d67ce",
       "#fffefe"
   ];
+
+  pdfViewerHeight: number;
+
   constructor(
     public dialogRef: MatDialogRef<MsfMoreInfoPopupComponent>,
     public globals: Globals,
@@ -58,7 +58,9 @@ export class MsfMoreInfoPopupComponent{
     private http: ApiClient,
     private authService: AuthService,
     private zone: NgZone)
-    { }
+    {
+      this.pdfViewerHeight = window.innerHeight - 10;
+    }
 
     onNoClick(): void
     {
@@ -183,7 +185,6 @@ export class MsfMoreInfoPopupComponent{
     let theme;
 
     theme = this.globals.theme;
-    am4core.useTheme (Themes.AmCharts[theme].mainTheme);
 
     this.zone.runOutsideAngular (() => {
       let chart;
@@ -327,5 +328,10 @@ export class MsfMoreInfoPopupComponent{
         return "row";
       else
         return "row-reverse";
+    }
+
+    @HostListener('window:resize', ['$event'])
+    checkScreen(event): void {
+      this.pdfViewerHeight = event.target.innerHeight - 10;
     }
   }

@@ -4,9 +4,6 @@ import { Themes } from '../globals/Themes';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4maps from "@amcharts/amcharts4/maps";
 import am4geodata_worldLow from "@amcharts/amcharts4-geodata/worldLow";
-import am4themes_animated from "@amcharts/amcharts4/themes/animated";
-
-am4core.useTheme(am4themes_animated);
 
 // Home button SVG
 const homeSVG = "M16,8 L14,8 L14,16 L10,16 L10,10 L6,10 L6,16 L2,16 L2,8 L0,8 L8,0 L16,8 Z M16,8";
@@ -94,7 +91,6 @@ export class MsfScheduleMapsComponent implements OnInit {
     let theme, chart, continentSeries, zoomControl, home;
 
     theme = this.globals.theme;
-    am4core.useTheme (Themes.AmCharts[theme].mainTheme);
 
     this.zone.runOutsideAngular (() => {
       chart = am4core.create ("chartdivmap", am4maps.MapChart);

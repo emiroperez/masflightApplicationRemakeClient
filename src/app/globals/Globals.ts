@@ -4,6 +4,11 @@ import { MatSort, MatTab } from '@angular/material';
 import { Observable } from 'rxjs';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Cookie } from '../api/cookie';
+import * as am4core from "@amcharts/amcharts4/core";
+import am4themes_animated from "@amcharts/amcharts4/themes/animated";
+import { Themes } from './Themes';
+
+am4core.useTheme(am4themes_animated);
 
 @Injectable()
 export class Globals {
@@ -117,8 +122,12 @@ export class Globals {
 
     // remove previous theme class form the overlay container
     if (this.theme && containerElement.classList.contains (this.theme))
+    {
       containerElement.classList.remove (this.theme);
+      am4core.unuseTheme (Themes.AmCharts[themeName].mainTheme);
+    }
 
+    am4core.useTheme (Themes.AmCharts[themeName].mainTheme);
     containerElement.classList.add (themeName);
     this.theme = themeName;
 

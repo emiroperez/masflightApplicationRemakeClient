@@ -1,7 +1,6 @@
 import { Component, Inject, NgZone, ViewChild } from '@angular/core';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
-import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import { Globals } from '../globals/Globals';
@@ -15,8 +14,6 @@ import { CategoryArguments } from '../model/CategoryArguments';
 import { Arguments } from '../model/Arguments';
 import { Utils } from '../commons/utils';
 import { AuthService } from '../services/auth.service';
-
-am4core.useTheme(am4themes_animated);
 
 @Component({
   selector: 'app-msf-dashboard-child-panel',
@@ -290,8 +287,6 @@ export class MsfDashboardChildPanelComponent {
   makeChart(chartInfo): void
   {
     let theme = this.globals.theme;
-
-    am4core.useTheme (Themes.AmCharts[theme].mainTheme);
 
     this.zone.runOutsideAngular (() => {
       let chart;

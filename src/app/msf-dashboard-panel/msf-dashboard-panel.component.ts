@@ -14,8 +14,6 @@ import am4geodata_oceaniaLow from "@amcharts/amcharts4-geodata/region/world/ocea
 import am4geodata_usaAlbersLow from "@amcharts/amcharts4-geodata/usaAlbersLow";
 import am4geodata_colombiaLow from "@amcharts/amcharts4-geodata/colombiaLow";
 import am4geodata_colombiaMuniLow from "@amcharts/amcharts4-geodata/colombiaMuniLow";
-import am4themes_animated from "@amcharts/amcharts4/themes/animated";
-import am4themes_dark from "@amcharts/amcharts4/themes/dark";
 import { CategoryArguments } from '../model/CategoryArguments';
 import { Globals } from '../globals/Globals';
 import { Themes } from '../globals/Themes';
@@ -40,8 +38,6 @@ import { MessageComponent } from '../message/message.component';
 import { ChartFlags } from '../msf-dashboard-panel/msf-dashboard-chartflags';
 import { AuthService } from '../services/auth.service';
 import { MsfMapComponent } from '../msf-map/msf-map.component';
-
-am4core.useTheme(am4themes_animated);
 
 // AmCharts colors
 const black = am4core.color ("#000000");
@@ -622,8 +618,6 @@ export class MsfDashboardPanelComponent implements OnInit {
   makeChart(chartInfo): void
   {
     let theme = this.globals.theme;
-
-    am4core.useTheme (Themes.AmCharts[theme].mainTheme);
 
     this.zone.runOutsideAngular (() => {
       let chart;
