@@ -39,8 +39,7 @@
                       <ng-container *ngFor="let checkbox of argument.checkboxes">
                         <div class="msf-single-checkbox-outer-container">
                           <div class="msf-component-argument-container">
-                            <app-msf-single-checkbox *ngIf="isSingleCheckbox(checkbox)" [argument]="checkbox"></app-msf-single-checkbox>
-                            <app-msf-taxi-times-checkbox *ngIf="isTaxiTimesCheckbox(checkbox)" [argument]="checkbox"></app-msf-taxi-times-checkbox>
+                            <app-msf-single-checkbox [argument]="checkbox"></app-msf-single-checkbox>
                           </div>
                         </div>
                       </ng-container>
@@ -53,6 +52,16 @@
                 </div>
               </ng-container>
             </div>
+            <!-- The taxi times single checkbox will be always the last one of the arguments -->
+            <ng-container *ngIf="controlVariable.taxiTimesCheckbox">
+              <div class="msf-dashboard-control-panel-variable-argument">
+                <div class="msf-component-outer-container">
+                  <div class="msf-component-taxi-times-single-checkbox">
+                    <app-msf-taxi-times-checkbox [argument]="controlVariable.taxiTimesCheckbox"></app-msf-taxi-times-checkbox>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
           </div>
         </div>
       </mat-tab>

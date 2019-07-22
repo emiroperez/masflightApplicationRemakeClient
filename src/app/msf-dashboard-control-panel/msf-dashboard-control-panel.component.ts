@@ -88,16 +88,20 @@ export class MsfDashboardControlPanelComponent implements OnInit {
 
             controlVariableArgument.checkboxes = [];
 
-            // Count the number of checkboxes for a special case
-            if (i + 1 < newControlVariable.arguments.length
-              && (this.isSingleCheckbox (newControlVariable.arguments[i + 1])
-               || this.isTaxiTimesCheckbox (newControlVariable.arguments[i + 1])))
+            if (this.isTaxiTimesCheckbox (newControlVariable.arguments[i]) && !newControlVariable.taxiTimesCheckbox)
             {
+              // Make sure that this specific checkbox is always the last argument in a control variable
+              newControlVariable.taxiTimesCheckbox = newControlVariable.arguments[i];
+            }
+            else if (i + 1 < newControlVariable.arguments.length
+              && (this.isSingleCheckbox (newControlVariable.arguments[i + 1])))
+            {
+              // Count the number of checkboxes for a special case
               args = newControlVariable.arguments.slice (i + 1, newControlVariable.arguments.length);
 
               for (let argument of args)
               {
-                if (!this.isSingleCheckbox(argument) && !this.isTaxiTimesCheckbox(argument))
+                if (!this.isSingleCheckbox(argument))
                   break;
 
                 controlVariableArgument.checkboxes.push (argument);
