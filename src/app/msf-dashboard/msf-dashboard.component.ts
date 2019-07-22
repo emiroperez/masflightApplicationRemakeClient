@@ -266,9 +266,18 @@ export class MsfDashboardComponent implements OnInit {
 
               for (let i = 0; i < controlVariable.arguments.length; i++)
               {
-                // copy visible attribute if the value didn't have it
+                // copy some values and visible attribute if the argument didn't have them
                 if (!controlVariable.arguments[i].visibleAttribute)
                   controlVariable.arguments[i].visibleAttribute = categoryOption.arguments[i].visibleAttribute;
+
+                if (!controlVariable.arguments[i].value1)
+                  controlVariable.arguments[i].value1 = categoryOption.arguments[i].value1;
+
+                if (!controlVariable.arguments[i].value2)
+                  controlVariable.arguments[i].value2 = categoryOption.arguments[i].value2;
+
+                if (!controlVariable.arguments[i].value3)
+                  controlVariable.arguments[i].value3 = categoryOption.arguments[i].value3;
               }
 
               break;
