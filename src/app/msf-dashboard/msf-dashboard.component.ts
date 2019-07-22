@@ -45,6 +45,9 @@ export class MsfDashboardComponent implements OnInit {
   @Input()
   currentDashboardMenu: any;
 
+  @Input()
+  refreshDashboard: boolean;
+
   @ViewChild("dashboardControlPanel")
   dashboardControlPanel: MsfDashboardControlPanelComponent;
 
@@ -97,6 +100,12 @@ export class MsfDashboardComponent implements OnInit {
       this.dashboardControlPanel.removeControlVariables ();
       this.controlVariablesAvailable = [];
       this.controlPanelOpen = false;
+    }
+    else if (changes['refreshDashboard'] && this.refreshDashboard)
+    {
+      setTimeout (() => {
+        this.globals.refreshDashboard = false;
+      }, 10);
     }
   }
 

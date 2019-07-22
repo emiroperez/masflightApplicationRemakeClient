@@ -136,6 +136,9 @@ export class MsfDashboardPanelComponent implements OnInit {
   @Input()
   reAppendChart: boolean;
 
+  @Input()
+  refreshPanel: boolean;
+
   childPanelValues: any[] = [];
   childPanelsConfigured: boolean[] = [];
 
@@ -238,6 +241,15 @@ export class MsfDashboardPanelComponent implements OnInit {
         let chartElement = document.getElementById ("msf-dashboard-chart-display-" + this.values.id);
         document.getElementById ("msf-dashboard.chart-display-container-" + this.values.id).appendChild (chartElement);
       }
+    }
+    else if (changes['refreshPanel'] && this.refreshPanel)
+    {
+      // TODO: Pass control variables from the dashboard control panel
+      setTimeout (() =>
+      {
+        if (!this.values.isLoading)
+          this.loadData ();
+      }, 10);
     }
     else if (changes['panelHeight'])
       this.panelHeightOffset = this.panelHeight - 18;

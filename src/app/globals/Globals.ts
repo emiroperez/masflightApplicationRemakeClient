@@ -81,6 +81,7 @@ export class Globals {
   copiedPanelInfo: any;
   lastTime: string;
   appLoading: boolean;
+  refreshDashboard: boolean;
 
   @HostBinding('class')
   theme: string = "light-theme";

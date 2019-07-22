@@ -54,5 +54,5 @@
     </div>
     <app-msf-schedule-maps [currentOption]="globals.currentOption" [hidden]="!globals.mapsc"></app-msf-schedule-maps>
 </div>
-<app-msf-dashboard [currentDashboardMenu]="globals.currentDashboardMenu" *ngIf="globals.currentOption === 'dashboard'"></app-msf-dashboard>
+<app-msf-dashboard [currentDashboardMenu]="globals.currentDashboardMenu" [refreshDashboard]="globals.refreshDashboard" *ngIf="globals.currentOption === 'dashboard'"></app-msf-dashboard>
 <app-intro *ngIf="!globals.currentOption"></app-intro>
