@@ -285,7 +285,7 @@ export class MsfDashboardComponent implements OnInit {
 
                 for (let args of controlVariable.arguments)
                 {
-                  if (newArgs.id == args.id || newArgs.label1 === args.label1)
+                  if (newArgs.id == args.id || newArgs.label1 === args.label1 || newArgs.title === args.title)
                   {
                     argexists = true;
                     break;
