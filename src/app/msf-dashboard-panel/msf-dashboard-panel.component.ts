@@ -244,7 +244,38 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
     else if (changes['refreshPanel'] && this.refreshPanel)
     {
-      // TODO: Pass control variables from the dashboard control panel
+      // copy the dashboard control panel variables into the dashboard panel
+      for (let categoryOption of this.values.currentOptionCategories)
+      {
+        for (let categoryOptionArgument of categoryOption.arguments)
+        {
+          for (let controlVariable of this.globals.controlPanelVariables)
+          {
+            let found: boolean = false;
+
+            for (let controlVariableArgument of controlVariable.arguments)
+            {
+              if (categoryOptionArgument.id == controlVariableArgument.id)
+              {
+                categoryOptionArgument.value1 = controlVariableArgument.value1;
+
+                if (controlVariableArgument.value2)
+                  categoryOptionArgument.value2 = controlVariableArgument.value2;
+
+                if (controlVariableArgument.value3)
+                  categoryOptionArgument.value3 = controlVariableArgument.value3;
+
+                found = true;
+                break;
+              }
+            }
+
+            if (found)
+              break;
+          }
+        }
+      }
+
       setTimeout (() =>
       {
         if (!this.values.isLoading)

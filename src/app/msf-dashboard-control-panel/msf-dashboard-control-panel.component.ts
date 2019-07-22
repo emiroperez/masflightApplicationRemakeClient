@@ -147,7 +147,7 @@ export class MsfDashboardControlPanelComponent implements OnInit {
 
   updateDashboard(): void
   {
-    this.globals.refreshDashboard = true;
+    this.globals.controlPanelVariables = this.controlVariables;
   }
 
   isTitleOnly(argument: Arguments): boolean

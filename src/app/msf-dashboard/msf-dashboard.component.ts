@@ -104,7 +104,7 @@ export class MsfDashboardComponent implements OnInit {
     else if (changes['refreshDashboard'] && this.refreshDashboard)
     {
       setTimeout (() => {
-        this.globals.refreshDashboard = false;
+        this.globals.controlPanelVariables = null;
       }, 10);
     }
   }
