@@ -1,13 +1,15 @@
 <div class="center">
     <div class="msf-component-airport-title">{{argument.title}}</div>
 </div>
-<ng-select
-    [items]="data"
-    [multiple]="true"
-    loadingText="Loading..."
-    [closeOnSelect]="true"
-    [hideSelected]="false"
-    bindLabel="name"
-    bindName="id"
-    [(ngModel)]="argument.value1">
-</ng-select>
+<div class="msf-component-flight-duration-selection">
+    <ng-select
+        [items]="data"
+        [multiple]="true"
+        loadingText="Loading..."
+        [closeOnSelect]="true"
+        [hideSelected]="false"
+        bindLabel="name"
+        bindName="id"
+        [(ngModel)]="argument.value1">
+    </ng-select>
+</div>
