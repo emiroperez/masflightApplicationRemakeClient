@@ -273,6 +273,31 @@ export class MsfDashboardComponent implements OnInit {
 
               break;
             }
+            else if (categoryOption.label === controlVariable.label)
+            {
+              // avoid repeating category arguments with the same label but different id,
+              // instead copy the arguments that are not in the added one
+              exists = true;
+
+              for (let newArgs of categoryOption.arguments)
+              {
+                let argexists = false;
+
+                for (let args of controlVariable.arguments)
+                {
+                  if (newArgs.id == args.id || newArgs.label1 === args.label1)
+                  {
+                    argexists = true;
+                    break;
+                  }
+                }
+
+                if (!argexists)
+                  controlVariable.arguments.push (JSON.parse (JSON.stringify (newArgs)));
+              }
+
+              break;
+            }
           }
 
           if (exists)
