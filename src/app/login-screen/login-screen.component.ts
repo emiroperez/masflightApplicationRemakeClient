@@ -147,54 +147,10 @@ export class LoginScreenComponent implements OnInit {
     }
   }
 
-  verifyLogin2(_this, result)
+  errorLogin(_this, error)
   {
-    let self = _this;
-
+    console.log (error);
     _this.globals.isLoading = false;
-
-    if (!result)
-    {
-      _this.loggedIn = true;
-      _this.router.navigate (["/welcome"]);
-    }
-    else
-    {
-      console.log (result >>> 8); // print the code
-      result = result & 255; // remove the code from the result
-
-      let dialogRef = _this.dialog.open (TwoFactorLoginDialogComponent,
-      {
-        height: '200px',
-        width: '300px',
-        panelClass: 'msf-dashboard-control-variables-dialog',
-        data: {
-          message: result == 2 ? "You haven't logged in for 5 days." : "Your account is being used to sign in to a new device.",
-          session: _this.session
-        }
-      });
-
-      dialogRef.afterClosed ().subscribe (results =>
-      {
-        if (results)
-        {
-          if (results.pass)
-          {
-            self.loggedIn = true;
-            self.router.navigate (["/welcome"]);
-          }
-          else
-          {
-            self.username = null;
-            self.userId = null;
-            self.session = null;
-
-            if (results.message)
-              self.utils.showAlert ('warning', results.message);
-          }
-        }
-      });
-    }
   }
 
   errorAutentication(_this, error)
@@ -238,25 +194,20 @@ export class LoginScreenComponent implements OnInit {
   }
 
 
-  getUserLoggedIn(){
+  getUserLoggedIn()
+  {
     if (this.authService.getToken ())
     {
       this.globals.isLoading = true;
-      this.service.getUserLoggedin (this, this.handleLogin, this.errorAutentication);
+      this.service.getUserLoggedin (this, this.handleLogin, this.errorLogin);
     }
   }
 
-  handleLogin(_this, user)
+  handleLogin(_this)
   {
-    _this.userId = user.id;
-
-    _this.session = {
-      userId: user.id,
-      ipAddress: _this.authService.getIpAddress (),
-      hash: _this.authService.getFingerprint ()
-    };
-
-    _this.authService.validateLogin (_this, _this.session, _this.verifyLogin2, _this.errorAutentication);
+    _this.globals.isLoading = false;
+    _this.loggedIn = true;
+    _this.router.navigate (["/welcome"]);
   }
 
   @HostListener('window:resize', ['$event'])
