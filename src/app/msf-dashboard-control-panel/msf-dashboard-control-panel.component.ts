@@ -1,8 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { Globals } from '../globals/Globals';
 import { ComponentType } from '../commons/ComponentType';
 import { Arguments } from '../model/Arguments';
+import { MsfDashboardComponent } from '../msf-dashboard/msf-dashboard.component';
 
 @Component({
   selector: 'app-msf-dashboard-control-panel',
@@ -19,6 +20,9 @@ export class MsfDashboardControlPanelComponent implements OnInit {
 
   @Input("controlVariablesAvailable")
   controlVariablesAvailable: any;
+
+  @Output("updateAllPanels")
+  updateAllPanels = new EventEmitter ();
 
   numControlVariablesSelected: number;
 
@@ -147,7 +151,7 @@ export class MsfDashboardControlPanelComponent implements OnInit {
 
   updateDashboard(): void
   {
-    this.globals.controlPanelVariables = this.controlVariables;
+    this.updateAllPanels.emit ();
   }
 
   isTitleOnly(argument: Arguments): boolean

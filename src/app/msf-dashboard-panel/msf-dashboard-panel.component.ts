@@ -137,7 +137,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   reAppendChart: boolean;
 
   @Input()
-  refreshPanel: boolean;
+  controlPanelVariables: CategoryArguments[];
 
   childPanelValues: any[] = [];
   childPanelsConfigured: boolean[] = [];
@@ -242,14 +242,18 @@ export class MsfDashboardPanelComponent implements OnInit {
         document.getElementById ("msf-dashboard.chart-display-container-" + this.values.id).appendChild (chartElement);
       }
     }
-    else if (changes['refreshPanel'] && this.refreshPanel)
+    else if (changes['controlPanelVariables'] && this.controlPanelVariables)
     {
+      // validate the panel configuration before updating
+      if (!this.checkPanelConfiguration ())
+        return;
+
       // copy the dashboard control panel variables into the dashboard panel
       for (let categoryOption of this.values.currentOptionCategories)
       {
         for (let categoryOptionArgument of categoryOption.arguments)
         {
-          for (let controlVariable of this.globals.controlPanelVariables)
+          for (let controlVariable of this.controlPanelVariables)
           {
             let found: boolean = false;
 
@@ -278,8 +282,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       setTimeout (() =>
       {
-        if (!this.values.isLoading)
-          this.loadData ();
+        this.loadData ();
       }, 10);
     }
     else if (changes['panelHeight'])
@@ -2184,7 +2187,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.chartForm.get ('fontSizeCtrl').setValue (this.fontSizes[1]);
     this.chartForm.get ('valueFontSizeCtrl').setValue (this.fontSizes[1]);
     this.chartForm.get ('valueOrientationCtrl').setValue (this.orientations[0]);
-    this.checkChartFilters ();
+    this.checkPanelConfiguration ();
 
     this.values.formVariables = [];
     this.variableCtrlBtnEnabled = true;
@@ -2354,7 +2357,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.chartForm.get ('fontSizeCtrl').setValue (_this.fontSizes[1]);
     _this.chartForm.get ('valueFontSizeCtrl').setValue (_this.fontSizes[1]);
     _this.chartForm.get ('valueOrientationCtrl').setValue (_this.orientations[0]);
-    _this.checkChartFilters ();
+    _this.checkPanelConfiguration ();
 
     _this.values.formVariables = [];
     _this.variableCtrlBtnEnabled = true;
@@ -2734,6 +2737,9 @@ export class MsfDashboardPanelComponent implements OnInit {
   // check if the x axis should be enabled or not depending of the chart type
   checkChartType(): void
   {
+    if (this.values.currentOption == null)
+      return;
+
     if (this.values.currentChartType.flags & ChartFlags.INFO)
     {
       // disable and reset unused variables
@@ -2841,17 +2847,23 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
 
     // check the chart filters to see if the chart generation is to be enabled or not
-    this.checkChartFilters ();
+    this.checkPanelConfiguration ();
   }
 
-  checkChartFilters(): void
+  checkPanelConfiguration(): boolean
   {
+    if (!this.values.currentChartType)
+    {
+      this.generateBtnEnabled = false;
+      return false;
+    }
+
     if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
     {
       if (this.values.variable != null && this.values.geodata != null)
       {
         this.generateBtnEnabled = true;
-        return;
+        return true;
       }
     }
     else if (this.values.currentChartType.flags & ChartFlags.PICTURE
@@ -2861,7 +2873,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       if (this.values.currentOption != null)
       {
         this.generateBtnEnabled = true;
-        return;
+        return true;
       }
     }
     else if (this.values.currentChartType.flags & ChartFlags.FORM)
@@ -2869,7 +2881,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       if (this.values.formVariables.length)
       {
         this.generateBtnEnabled = true;
-        return;
+        return true;
       }
     }
     else if (this.values.currentChartType.flags & ChartFlags.INFO)
@@ -2924,7 +2936,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       if (infoFunc1Ready && infoFunc2Ready && infoFunc3Ready)
       {
         this.generateBtnEnabled = true;
-        return;
+        return true;
       }
     }
     else
@@ -2934,7 +2946,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         if (this.values.variable != null && this.values.valueColumn != null)
         {
           this.generateBtnEnabled = true;
-          return;
+          return true;
         }
       }
       else
@@ -2942,12 +2954,13 @@ export class MsfDashboardPanelComponent implements OnInit {
         if (this.values.variable != null && this.values.xaxis != null && this.values.valueColumn != null)
         {
           this.generateBtnEnabled = true;
-          return;
+          return true;
         }
       }
     }
 
     this.generateBtnEnabled = false;
+    return false;
   }
 
   initPanelSettings(): void
@@ -3595,7 +3608,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.chartForm.get ('infoVar3Ctrl').disable ();
     }
 
-    this.checkChartFilters ();
+    this.checkPanelConfiguration ();
   }
 
   goToFunctions(infoVarNum): void
@@ -3633,7 +3646,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     });
 
     dialogRef.afterClosed ().subscribe (
-      () => this.checkChartFilters ()
+      () => this.checkPanelConfiguration ()
     );
   }
 
@@ -3849,13 +3862,13 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.chartForm.get ('fontSizeCtrl').setValue (this.fontSizes[1]);
     this.chartForm.get ('valueFontSizeCtrl').setValue (this.fontSizes[1]);
     this.chartForm.get ('valueOrientationCtrl').setValue (this.orientations[0]);
-    this.checkChartFilters ();
+    this.checkPanelConfiguration ();
   }
 
   deleteColumnFromForm(index): void
   {
     this.values.formVariables.splice (index, 1);
-    this.checkChartFilters ();
+    this.checkPanelConfiguration ();
   }
 
   getFormFontSize(column): number

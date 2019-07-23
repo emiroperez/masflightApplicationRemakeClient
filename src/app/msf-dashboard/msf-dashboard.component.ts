@@ -45,14 +45,12 @@ export class MsfDashboardComponent implements OnInit {
   @Input()
   currentDashboardMenu: any;
 
-  @Input()
-  refreshDashboard: boolean;
-
   @ViewChild("dashboardControlPanel")
   dashboardControlPanel: MsfDashboardControlPanelComponent;
 
   controlPanelOpen: boolean;
   controlVariablesAvailable: any = [];
+  controlPanelVariables: CategoryArguments[];
 
   // variables for panel resizing
   currentColumn: number;
@@ -86,6 +84,7 @@ export class MsfDashboardComponent implements OnInit {
     if (changes['currentDashboardMenu'] && this.options.length != 0)
     {
       // replace dashboard panels if the menu has changed and we're still on the dashboard
+      this.controlPanelVariables = null;
       this.dashboardColumns.splice (0, this.dashboardColumns.length);
       this.dashboardColumnsProperties.splice (0, this.dashboardColumnsProperties.length);
       this.dashboardColumnsReAppendCharts.splice (0, this.dashboardColumnsReAppendCharts.length);
@@ -101,12 +100,11 @@ export class MsfDashboardComponent implements OnInit {
       this.controlVariablesAvailable = [];
       this.controlPanelOpen = false;
     }
-    else if (changes['refreshDashboard'] && this.refreshDashboard)
-    {
-      setTimeout (() => {
-        this.globals.controlPanelVariables = null;
-      }, 10);
-    }
+  }
+
+  updateAllPanels(): void
+  {
+    this.controlPanelVariables = JSON.parse (JSON.stringify (this.dashboardControlPanel.controlVariables));
   }
 
   // store any data form depending of the selected dashboard from menu

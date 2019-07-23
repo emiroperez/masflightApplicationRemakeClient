@@ -4,7 +4,6 @@ import { MatSort, MatTab } from '@angular/material';
 import { Observable } from 'rxjs';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Cookie } from '../api/cookie';
-import { CategoryArguments } from '../model/CategoryArguments';
 
 @Injectable()
 export class Globals {
@@ -82,7 +81,6 @@ export class Globals {
   copiedPanelInfo: any;
   lastTime: string;
   appLoading: boolean;
-  controlPanelVariables: CategoryArguments[];
 
   @HostBinding('class')
   theme: string = "light-theme";
