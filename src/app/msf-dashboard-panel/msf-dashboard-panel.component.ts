@@ -2724,6 +2724,9 @@ export class MsfDashboardPanelComponent implements OnInit {
   // check if the x axis should be enabled or not depending of the chart type
   checkChartType(): void
   {
+    if (this.values.currentOption == null)
+      return;
+
     if (this.values.currentChartType.flags & ChartFlags.INFO)
     {
       // disable and reset unused variables
