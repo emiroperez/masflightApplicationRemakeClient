@@ -1819,10 +1819,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   finishMapboxLoading(error)
   {
     if (error)
-    {
-      this.values.isLoading = false;
       this.handlerMapboxError (this, "Failed to generate the results for the map tracker.");
-    }
     else
     {
       this.values.lastestResponse = 1;
@@ -2219,11 +2216,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.picGenerated = false;
     _this.values.tableGenerated = false;
     _this.values.mapboxGenerated = false;
-    _this.values.isLoading = false;
-
-    _this.dialog.open (MessageComponent, {
-      data: { title: "Error", message: "Failed to generate chart." }
-    });
   }
 
   handlerTextError(_this, result): void
@@ -2253,11 +2245,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.picGenerated = false;
     _this.values.tableGenerated = false;
     _this.values.mapboxGenerated = false;
-    _this.values.isLoading = false;
-
-    _this.dialog.open (MessageComponent, {
-      data: { title: "Error", message: "Failed to generate simple form panel." }
-    });
   }
 
   handlerPicError(_this, result): void
@@ -2270,17 +2257,10 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.picGenerated = false;
     _this.values.tableGenerated = false;
     _this.values.mapboxGenerated = false;
-    _this.values.isLoading = false;
-
-    _this.dialog.open (MessageComponent, {
-      data: { title: "Error", message: "Failed to generate picture panel." }
-    });
   }
 
   handlerTableError(_this, result): void
   {
-    _this.values.isLoading = false;
-
     if (result != null)
       console.log (result);
 
@@ -2291,10 +2271,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.picGenerated = false;
     _this.values.tableGenerated = false;
     _this.values.mapboxGenerated = false;
-
-    _this.dialog.open (MessageComponent, {
-      data: { title: "Error", message: "Failed to generate table panel." }
-    });
   }
 
   handlerMapboxError(_this, result): void
@@ -2307,11 +2283,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.picGenerated = false;
     _this.values.tableGenerated = false;
     _this.values.mapboxGenerated = false;
-    _this.values.isLoading = false;
-
-    _this.dialog.open (MessageComponent, {
-      data: { title: "Error", message: "Failed to generate map tracker." }
-    });
   }
 
   handlerHeatMapError(_this, result): void
@@ -2324,11 +2295,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.picGenerated = false;
     _this.values.tableGenerated = false;
     _this.values.mapboxGenerated = false;
-    _this.values.isLoading = false;
-
-    _this.dialog.open (MessageComponent, {
-      data: { title: "Error", message: "Failed to generate heat map." }
-    });
   }
 
   handlerMapError(_this, result): void
@@ -2341,11 +2307,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.picGenerated = false;
     _this.values.tableGenerated = false;
     _this.values.mapboxGenerated = false;
-    _this.values.isLoading = false;
-
-    _this.dialog.open (MessageComponent, {
-      data: { title: "Error", message: "Failed to generate map." }
-    });
   }
 
   handlerError(_this, result): void
