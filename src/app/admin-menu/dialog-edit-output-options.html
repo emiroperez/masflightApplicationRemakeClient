@@ -10,7 +10,7 @@
             <mat-icon class="admin-mat-icon-button" aria-label="cloud_upload">cloud_upload</mat-icon>
         </button>
     </div>
-    <div mat-dialog-content class="admin-menu-content-dialog-container">
+    <div #tableScrollContainer mat-dialog-content class="admin-menu-content-dialog-container">
         <table class="admin-dialog-list" mat-table #table [dataSource]="dataSource" cdkDropList [cdkDropListData]="dataSource" (cdkDropListDropped)="dropTable($event)" class="mat-elevation-z8 datasource welcome-table">
             <ng-container matColumnDef="columnLabel" class="admin-dialog-box">
                 <th mat-header-cell *matHeaderCellDef>Column Label</th>
@@ -78,7 +78,7 @@
                 </td>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="selectRow(row)" [ngClass]="{ 'selected': row === optionSelected }" cdkDrag [cdkDragDisabled]="!row.enabled" [cdkDragData]="row" cdkDragLockAxis="y"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="selectRow(row)" [ngClass]="{ 'selected': row === optionSelected }" cdkDrag [cdkDragDisabled]="!row.enabled" [cdkDragData]="row" cdkDragLockAxis="y" vsDragScroll [vsDragScrollContainer]="tableScrollContainer"></tr>
         </table>
     </div>
     <div class="admin-menu-content-dialog-buttons">
