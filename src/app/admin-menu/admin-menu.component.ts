@@ -263,6 +263,15 @@ export class EditOutputOptionsMetaDialog {
     }
   }
 
+  enableDrag(element): void
+  {
+    element.enabled = true;
+  }
+
+  disableDrag(element): void
+  {
+    element.enabled = null;
+  }
 }
 
 @Component({
