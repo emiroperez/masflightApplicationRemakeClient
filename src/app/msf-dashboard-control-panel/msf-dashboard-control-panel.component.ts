@@ -166,6 +166,11 @@ export class MsfDashboardControlPanelComponent implements OnInit {
     this.setCategoriesTitles = true;
   }
 
+  returnToVariables(): void
+  {
+    this.setCategoriesTitles = false;
+  }
+
   isTitleOnly(argument: Arguments): boolean
   {
     return ComponentType.title == argument.type;

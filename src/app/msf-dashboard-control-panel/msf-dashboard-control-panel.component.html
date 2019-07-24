@@ -5,6 +5,7 @@
       Add Variable
     </button>
     <button mat-flat-button [disabled]="!controlVariablesAvailable.length" (click)="setCategories()" [ngClass]="controlVariablesAvailable.length ? 'flat-button' : 'flat-button-disabled'" class="msf-dashboard-control-panel-button">
+      <mat-icon aria-label="Set Categories">category</mat-icon>
       Set Categories
     </button>
   </div>
@@ -29,6 +30,10 @@
             <button mat-flat-button (click)="removeVariable()" class="flat-button msf-dashboard-control-panel-variable-button">
               <mat-icon aria-label="Remove">close</mat-icon>
               Remove
+            </button>
+            <button mat-flat-button (click)="setCategories()" class="flat-button msf-dashboard-control-panel-variable-button">
+              <mat-icon aria-label="Set Categories">category</mat-icon>
+              Set Categories
             </button>
           </div>
           <div class="msf-dashboard-control-panel-variable-arguments">
@@ -94,14 +99,14 @@
       Cancel
     </button>
   </div>
-  <div *ngIf="!addVariableMenu && setCategoriesTitles" class="msf-dashboard-control-panel-container">
+  <div *ngIf="setCategoriesTitles" class="msf-dashboard-control-panel-container">
     <div class="msf-dashboard-control-panel-variable-container">
       <mat-checkbox *ngFor="let categoryTitle of categoryTitles" class="cancels-checkbox" [(ngModel)]="categoryTitle.checked" (ngModelChange)="this.hideCategoryFromCharts.emit(categoryTitle)">
         {{categoryTitle.name}}
       </mat-checkbox>
     </div>
-    <button [disabled]="!numControlVariablesSelected" mat-flat-button (click)="addControlVariables()" [ngClass]="numControlVariablesSelected ? 'flat-button' : 'flat-button-disabled'" class="msf-dashboard-control-panel-button">
-      OK
+    <button mat-flat-button (click)="returnToVariables()" class="flat-button msf-dashboard-control-panel-button">
+      Set Variables
     </button>
   </div>
 </ng-container>

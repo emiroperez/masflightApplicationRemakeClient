@@ -390,7 +390,10 @@ export class MsfDashboardComponent implements OnInit {
           if (exist)
             continue;
 
-          _this.categoryTitles.push ({ name: filter.valueAxis });
+          _this.categoryTitles.push ({
+            name: filter.valueAxis,
+            checked: true
+          });
         }
       }
 
