@@ -44,7 +44,7 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   validate(){
-    this.user.email = this.emailValidator.get ('email').value;
+    this.user.email = this.emailValidator.value;
     this.registerServices.checkEmail(this,this.checkEmailResponse,this.errorHandleResponsen, this.user.email);
   }
   checkEmailResponse(_this, data) {
