@@ -2106,6 +2106,8 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   loadChartFilterValues(component): void
   {
+    let i;
+
     this.values.chartColumnOptions = [];
     this.values.tableVariables = [];
 
@@ -2160,13 +2162,19 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.variable = null;
     this.values.valueColumn = null;
     this.values.infoVar1 = null;
-    this.values.infoFunc1 = null;
     this.values.infoVar2 = null;
-    this.values.infoFunc2 = null;
     this.values.infoVar3 = null;
-    this.values.infoFunc3 = null;
     this.values.geodata = null;
     this.values.currentOptionCategories = null;
+
+    for (i = 0; i < this.values.infoFunc1.length; i++)
+      this.values.infoFunc1[i].checked = false;
+
+    for (i = 0; i < this.values.infoFunc2.length; i++)
+      this.values.infoFunc2[i].checked = false;
+
+    for (i = 0; i < this.values.infoFunc3.length; i++)
+      this.values.infoFunc3[i].checked = false;
 
     this.checkChartFilters ();
   }
