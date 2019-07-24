@@ -139,6 +139,9 @@ export class MsfDashboardPanelComponent implements OnInit {
   @Input()
   controlPanelVariables: CategoryArguments[];
 
+  @Input()
+  currentHiddenCategories: any;
+
   childPanelValues: any[] = [];
   childPanelsConfigured: boolean[] = [];
 
@@ -287,6 +290,27 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
     else if (changes['panelHeight'])
       this.panelHeightOffset = this.panelHeight - 18;
+    else if (changes['currentHiddenCategories'])
+    {
+      for (let series of this.values.chartSeries)
+      {
+        let hidden: boolean = false;
+
+        for (let hiddenCategory of this.currentHiddenCategories)
+        {
+          if (hiddenCategory === series.name)
+          {
+            hidden = true;
+            break;
+          }
+        }
+
+        if (hidden)
+          series.hide ();
+        else
+          series.show ();
+      }
+    }
   }
 
   // Function to create horizontal column chart series
@@ -339,10 +363,12 @@ export class MsfDashboardPanelComponent implements OnInit {
       values.chartObjectSelected = event.target.dataItem.dataContext[values.xaxis.id];
       values.chartSecondaryObjectSelected = series.dataFields.valueX;
     });
+
+    return series;
   }
 
   // Function to create vertical column chart series
-  createVertColumnSeries(values, stacked, chart, item, parseDate, theme): void
+  createVertColumnSeries(values, stacked, chart, item, parseDate, theme): any
   {
     let series = chart.series.push (new am4charts.ColumnSeries ());
     series.name = item.valueAxis;
@@ -386,10 +412,12 @@ export class MsfDashboardPanelComponent implements OnInit {
       values.chartObjectSelected = event.target.dataItem.dataContext[values.xaxis.id];
       values.chartSecondaryObjectSelected = series.dataFields.valueY;
     });
+
+    return series;
   }
 
   // Function to create line chart series
-  createLineSeries(values, stacked, chart, item, parseDate, theme): void
+  createLineSeries(values, stacked, chart, item, parseDate, theme): any
   {
     // Set up series
     let series = chart.series.push (new am4charts.LineSeries ());
@@ -459,10 +487,12 @@ export class MsfDashboardPanelComponent implements OnInit {
       values.chartObjectSelected = event.target.dataItem.component.tooltipDataItem.dataContext[values.xaxis.id];
       values.chartSecondaryObjectSelected = series.dataFields.valueY;
     });
+
+    return series;
   }
 
   // Function to create simple vertical column chart series
-  createSimpleVertColumnSeries(values, stacked, chart, item, parseDate, theme): void
+  createSimpleVertColumnSeries(values, stacked, chart, item, parseDate, theme): any
   {
     let series = chart.series.push (new am4charts.ColumnSeries ());
     series.dataFields.valueY = item.valueField;
@@ -496,10 +526,12 @@ export class MsfDashboardPanelComponent implements OnInit {
       values.chartObjectSelected = event.target.dataItem.dataContext[item.titleField];
       values.chartSecondaryObjectSelected = null;
     });
+
+    return series;
   }
 
   // Function to create simple horizontal column chart series
-  createSimpleHorizColumnSeries(values, stacked, chart, item, parseDate, theme): void
+  createSimpleHorizColumnSeries(values, stacked, chart, item, parseDate, theme): any
   {
     let series = chart.series.push (new am4charts.ColumnSeries ());
     series.dataFields.valueX = item.valueField;
@@ -531,10 +563,12 @@ export class MsfDashboardPanelComponent implements OnInit {
       values.chartObjectSelected = event.target.dataItem.dataContext[item.titleField];
       values.chartSecondaryObjectSelected = null;
     });
+
+    return series;
   }
 
   // Function to create pie chart series
-  createPieSeries(values, stacked, chart, item, parseDate, theme): void
+  createPieSeries(values, stacked, chart, item, parseDate, theme): any
   {
     let series, colorSet;
 
@@ -601,10 +635,12 @@ export class MsfDashboardPanelComponent implements OnInit {
       values.chartObjectSelected = event.target.dataItem.dataContext[item.titleField];
       values.chartSecondaryObjectSelected = null;
     });
+
+    return series;
   }
 
   // Function to create funnel chart series
-  createFunnelSeries(values, stacked, chart, item, parseDate, theme): void
+  createFunnelSeries(values, stacked, chart, item, parseDate, theme): any
   {
     let series, colorSet;
 
@@ -663,6 +699,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       values.chartObjectSelected = event.target.dataItem.dataContext[item.titleField];
       values.chartSecondaryObjectSelected = null;
     });
+
+    return series;
   }
 
   makeChart(chartInfo): void
@@ -670,6 +708,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     let theme = this.globals.theme;
 
     am4core.useTheme (Themes.AmCharts[theme].mainTheme);
+    this.values.chartSeries = [];
 
     this.zone.runOutsideAngular (() => {
       let chart;
@@ -902,7 +941,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         chart.fontSize = 10;
 
         // Create the series
-        this.values.currentChartType.createSeries (this.values, false, chart, chartInfo, null, theme);
+        this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, false, chart, chartInfo, null, theme));
 
         if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART)
         {
@@ -1107,7 +1146,7 @@ export class MsfDashboardPanelComponent implements OnInit {
             chart.colors.list.push (am4core.color (color));
 
           for (let object of chartInfo.filter)
-            this.values.currentChartType.createSeries (this.values, stacked, chart, object, parseDate, theme);
+            this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, stacked, chart, object, parseDate, theme));
 
           // Add cursor if the chart type is line, area or stacked area
           if (this.values.currentChartType.flags & ChartFlags.LINECHART)
@@ -1130,7 +1169,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           });
 
           // Create the series
-          this.values.currentChartType.createSeries (this.values, false, chart, chartInfo, parseDate, theme);
+          this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, false, chart, chartInfo, parseDate, theme));
         }
       }
 

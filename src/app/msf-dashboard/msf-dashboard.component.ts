@@ -35,6 +35,27 @@ export class MsfDashboardComponent implements OnInit {
   contextMenuItems: any;
   contextParentPanel: MsfDashboardPanelValues;
 
+  isAmChartWithMultipleSeries: boolean[] = [
+    true,     // Bars
+    true,     // Horizontal Bars
+    false,    // Simple Bars
+    false,    // Simple Horizontal Bars
+    true,     // Stacked Bars
+    true,     // Horizontal Stacked Bars
+    false,    // Funnel
+    true,     // Lines
+    true,     // Area
+    true,     // Stacked Area
+    false,    // Pie
+    false,    // Donut
+    false,    // Information
+    false,    // Simple Form
+    false,    // Table
+    false,    // Map
+    false,    // Heat Map
+    false     // Map Tracker
+  ];
+
   heightValues:any[] = [
     { value: 1, name: 'Small' },
     { value: 3, name: 'Medium' },
@@ -49,8 +70,11 @@ export class MsfDashboardComponent implements OnInit {
   dashboardControlPanel: MsfDashboardControlPanelComponent;
 
   controlPanelOpen: boolean;
-  controlVariablesAvailable: any = [];
+  controlVariablesAvailable: any[] = [];
   controlPanelVariables: CategoryArguments[];
+  hiddenCategoriesTitle: any[] = [];
+  categoryTitles: any[] = [];
+  currentHiddenCategories: any;
 
   // variables for panel resizing
   currentColumn: number;
@@ -98,6 +122,7 @@ export class MsfDashboardComponent implements OnInit {
 
       this.dashboardControlPanel.removeControlVariables ();
       this.controlVariablesAvailable = [];
+      this.categoryTitles = [];
       this.controlPanelOpen = false;
     }
   }
@@ -105,6 +130,22 @@ export class MsfDashboardComponent implements OnInit {
   updateAllPanels(): void
   {
     this.controlPanelVariables = JSON.parse (JSON.stringify (this.dashboardControlPanel.controlVariables));
+  }
+
+  hideCategoryFromCharts(categoryTitle): void
+  {
+    for (let hiddenCategoryTitle of this.hiddenCategoriesTitle)
+    {
+      if (categoryTitle.name === hiddenCategoryTitle)
+      {
+        this.hiddenCategoriesTitle.splice (this.hiddenCategoriesTitle.indexOf (hiddenCategoryTitle), 1);
+        this.currentHiddenCategories = JSON.parse (JSON.stringify (this.hiddenCategoriesTitle));
+        return;
+      }
+    }
+
+    this.hiddenCategoriesTitle.push (categoryTitle.name);
+    this.currentHiddenCategories = JSON.parse (JSON.stringify (this.hiddenCategoriesTitle));
   }
 
   // store any data form depending of the selected dashboard from menu
@@ -325,6 +366,31 @@ export class MsfDashboardComponent implements OnInit {
           lastCategoryOption.iconHover = _this.getImageIcon (lastCategoryOption, true);
           lastCategoryOption.icon = _this.getImageIcon (lastCategoryOption, false);
           lastCategoryOption.optionId = dashboardPanel.option.id;
+        }
+      }
+
+      // get the title results from the lastest response if the panel is a chart type with multiple series
+      if (_this.isAmChartWithMultipleSeries[dashboardPanel.chartType] && dashboardPanel.lastestResponse)
+      {
+        let lastestResponse = JSON.parse (dashboardPanel.lastestResponse);
+
+        for (let filter of lastestResponse.filter)
+        {
+          let exist: boolean = false;
+
+          for (let categoryTitle of _this.categoryTitles)
+          {
+            if (categoryTitle.name === filter.valueAxis)
+            {
+              exist = true;
+              break;
+            }
+          }
+
+          if (exist)
+            continue;
+
+          _this.categoryTitles.push ({ name: filter.valueAxis });
         }
       }
 

@@ -82,6 +82,7 @@ export class MsfDashboardPanelValues {
     flightRoutes: any[] = [];
 
     calculatedHeight: number;
+    chartSeries: any[] = [];
 
     constructor(options: any[], chartName: String, id: number, width: any, height: any, currentOption?: any, variable?: any,
         xaxis?: any, valueColumn?: any, func?: any, chartType?: any, currentOptionCategories?: any, lastestResponse?: string,

@@ -12,6 +12,7 @@ import { MsfDashboardComponent } from '../msf-dashboard/msf-dashboard.component'
 export class MsfDashboardControlPanelComponent implements OnInit {
 
   addVariableMenu: boolean;
+  setCategoriesTitles: boolean;
   controlVariables: any[] = [];
   selectedIndex: number = -1;
 
@@ -21,8 +22,14 @@ export class MsfDashboardControlPanelComponent implements OnInit {
   @Input("controlVariablesAvailable")
   controlVariablesAvailable: any;
 
+  @Input("categoryTitles")
+  categoryTitles: any;
+
   @Output("updateAllPanels")
   updateAllPanels = new EventEmitter ();
+
+  @Output("hideCategoryFromCharts")
+  hideCategoryFromCharts = new EventEmitter ();
 
   numControlVariablesSelected: number;
 
@@ -152,6 +159,11 @@ export class MsfDashboardControlPanelComponent implements OnInit {
   updateDashboard(): void
   {
     this.updateAllPanels.emit ();
+  }
+
+  setCategories(): void
+  {
+    this.setCategoriesTitles = true;
   }
 
   isTitleOnly(argument: Arguments): boolean
