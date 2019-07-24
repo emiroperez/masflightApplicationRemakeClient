@@ -280,6 +280,7 @@ export class MsfDashboardComponent implements OnInit {
     for (let i = 0, curColumn = 0; i < dashboardPanels.length; i++)
     {
       let dashboardPanel = dashboardPanels[i];
+      let option;
 
       if (dashboardPanel.column != curColumn)
       {
@@ -295,6 +296,8 @@ export class MsfDashboardComponent implements OnInit {
         _this.dashboardColumnsReAppendCharts.push (false);
         dashboardRows = [];
       }
+
+      option = _this.getOption (dashboardPanel.option);
 
       // add required global control variables if available
       if (dashboardPanel.categoryOptions)
@@ -373,6 +376,17 @@ export class MsfDashboardComponent implements OnInit {
       if (_this.isAmChartWithMultipleSeries[dashboardPanel.chartType] && dashboardPanel.lastestResponse)
       {
         let lastestResponse = JSON.parse (dashboardPanel.lastestResponse);
+        let categoryName;
+
+        // get category name form the option
+        for (let i = 0; i < option.columnOptions.length; i++)
+        {
+          if (i == dashboardPanel.xaxis)
+          {
+            categoryName = option.columnOptions[i].columnLabel;
+            break;
+          }
+        }
 
         for (let filter of lastestResponse.filter)
         {
@@ -400,7 +414,7 @@ export class MsfDashboardComponent implements OnInit {
       dashboardPanelIds.push (dashboardPanel.id);
       dashboardRows.push (new MsfDashboardPanelValues (_this.options, dashboardPanel.title,
         dashboardPanel.id, dashboardPanel.width, _this.heightValues[dashboardPanel.height],
-        _this.getOption (dashboardPanel.option), dashboardPanel.analysis, dashboardPanel.xaxis,
+        option, dashboardPanel.analysis, dashboardPanel.xaxis,
         dashboardPanel.values, dashboardPanel.function, dashboardPanel.chartType,
         dashboardPanel.categoryOptions, dashboardPanel.lastestResponse,
         dashboardPanel.paletteColors, dashboardPanel.updateTimeInterval,
