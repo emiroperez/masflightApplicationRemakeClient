@@ -2138,7 +2138,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.chartForm.get ('fontSizeCtrl').setValue (this.fontSizes[1]);
     this.chartForm.get ('valueFontSizeCtrl').setValue (this.fontSizes[1]);
     this.chartForm.get ('valueOrientationCtrl').setValue (this.orientations[0]);
-    this.checkChartFilters ();
 
     this.values.formVariables = [];
     this.variableCtrlBtnEnabled = true;
@@ -2157,7 +2156,19 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.chartForm.get ('geodataValueCtrl').enable ();
     this.chartForm.get ('geodataKeyCtrl').enable ();
 
+    this.values.xaxis = null;
+    this.values.variable = null;
+    this.values.valueColumn = null;
+    this.values.infoVar1 = null;
+    this.values.infoFunc1 = null;
+    this.values.infoVar2 = null;
+    this.values.infoFunc2 = null;
+    this.values.infoVar3 = null;
+    this.values.infoFunc3 = null;
+    this.values.geodata = null;
     this.values.currentOptionCategories = null;
+
+    this.checkChartFilters ();
   }
 
   handlerChartError(_this, result): void
