@@ -16,7 +16,7 @@
                 <th mat-header-cell *matHeaderCellDef>Column Label</th>
                 <td class="admin-column-label" mat-cell *matCellDef="let element">
                     <mat-icon class="menu-drag-handle" (mouseover)="enableDrag(element)" (mouseout)="disableDrag(element)">drag_handle</mat-icon>
-                    <input class="admin-column-cell" matInput placeholder="Label" [value]="element.columnLabel" [(ngModel)]="element.columnLabel">
+                    <input matInput placeholder="Label" [value]="element.columnLabel" [(ngModel)]="element.columnLabel">
                 </td>
             </ng-container>
             <ng-container matColumnDef="columnName" class="admin-dialog-box">

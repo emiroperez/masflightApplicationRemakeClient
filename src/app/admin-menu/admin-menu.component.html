@@ -42,7 +42,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <div #scrollContainer class="invisible-scrollbar" class="admin-menu-tree-body">
+                            <div #scrollContainer class="invisible-scrollbar admin-menu-tree-body">
                                 <mat-tree class="admin-menu-tree" [dataSource]="dataSource" [treeControl]="treeControl" cdkDropList (cdkDropListDropped)="drop($event)">
                                     <mat-tree-node [ngClass]="{'msf-show' : node.show,'msf-show' : node.show==null,'msf-hide': node.show==false}" matTreeNodePadding *matTreeNodeDef="let node" cdkDrag cdkDragLockAxis="y" [cdkDragData]="node" (cdkDragStarted)="dragStart()"
                                         (cdkDragReleased)="dragEnd()" (click)=" getOptionSelected(node)" cdkDragBoundary=".invisible-scrollbar" vsDragScroll [vsDragScrollContainer]="scrollContainer">
