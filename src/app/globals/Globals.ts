@@ -95,8 +95,6 @@ export class Globals {
   {
     let pulseTheme, useLightTheme;
 
-    am4core.options.commercialLicense = true;
-
     // get theme setting from cookies
     pulseTheme = cookie.get ("pulseTheme");
     if (!pulseTheme)
