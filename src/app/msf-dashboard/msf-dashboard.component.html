@@ -14,7 +14,7 @@
       </div>
     </div>
   </div>
-  <app-msf-dashboard-control-panel #dashboardControlPanel (updateAllPanels)="updateAllPanels()" (hideCategoryFromCharts)="hideCategoryFromCharts($event)" [controlPanelOpen]="controlPanelOpen" [controlVariablesAvailable]="controlVariablesAvailable" [categoryTitles]="categoryTitles"></app-msf-dashboard-control-panel>
+  <app-msf-dashboard-control-panel #dashboardControlPanel (updateAllPanels)="updateAllPanels()" (hideCategoryFromCharts)="hideCategoryFromCharts($event)" [controlPanelOpen]="controlPanelOpen" [controlVariablesAvailable]="controlVariablesAvailable" [controlPanelCategories]="controlPanelCategories"></app-msf-dashboard-control-panel>
   <ng-container *ngIf="dashboardColumns.length">
     <div class="msf-dashboard-chartbox" cdkDropList cdkDropListOrientation="vertical" [cdkDropListData]="dashboardColumns" (cdkDropListDropped)="swapColumnPositions($event)">
       <div class="{{globals.theme}} msf-dashboard-chartbox-column" *ngFor="let dashboardColumn of dashboardColumns; let column = index" [attr.data-index]="column" cdkDragLockAxis="y" vsDragScroll [vsDragScrollContainer]="scrollContainer" cdkDrag [cdkDragDisabled]="dashboardColumns.length == 1 || globals.readOnlyDashboard || !dashboardColumnsProperties[column]">

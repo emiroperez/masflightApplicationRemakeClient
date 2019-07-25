@@ -101,9 +101,11 @@
   </div>
   <div *ngIf="setCategoriesTitles" class="msf-dashboard-control-panel-container">
     <div class="msf-dashboard-control-panel-variable-container">
-      <mat-checkbox *ngFor="let categoryTitle of categoryTitles" class="cancels-checkbox" [(ngModel)]="categoryTitle.checked" (ngModelChange)="this.hideCategoryFromCharts.emit(categoryTitle)">
-        {{categoryTitle.name}}
+      <!--
+      <mat-checkbox *ngFor="let category of controlPanelCategories" class="cancels-checkbox" [(ngModel)]="category.checked" (ngModelChange)="this.hideCategoryFromCharts.emit(category)">
+        {{category.name}}
       </mat-checkbox>
+      -->
     </div>
     <button mat-flat-button (click)="returnToVariables()" class="flat-button msf-dashboard-control-panel-button">
       Set Variables

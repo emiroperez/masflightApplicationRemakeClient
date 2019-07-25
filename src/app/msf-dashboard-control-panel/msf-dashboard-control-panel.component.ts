@@ -22,8 +22,8 @@ export class MsfDashboardControlPanelComponent implements OnInit {
   @Input("controlVariablesAvailable")
   controlVariablesAvailable: any;
 
-  @Input("categoryTitles")
-  categoryTitles: any;
+  @Input("controlPanelCategories")
+  controlPanelCategories: any;
 
   @Output("updateAllPanels")
   updateAllPanels = new EventEmitter ();
