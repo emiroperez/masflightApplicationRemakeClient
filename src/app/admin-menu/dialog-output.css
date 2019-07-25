@@ -11,14 +11,23 @@
     font-weight: 500;
 }
 
+.cdk-drag-preview .admin-column-inner-container .mat-input-element
+{
+    text-align: left;
+}
+
+.cdk-drag-preview .mat-cell
+{
+    padding: 10px !important;
+    font-weight: 500;
+}
+
+.cdk-drag-preview .admin-column-label-cell
+{
+    padding-top: 5px !important;
+    margin-left: -15px !important;
+}
+
 .cdk-drag-placeholder {
     opacity: 0;
-}
-
-.cdk-drag-animating {
-    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-}
-
-.admin-dialog-list.cdk-drop-list-dragging .admin-dialog-box:not(.cdk-drag-placeholder) {
-    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }

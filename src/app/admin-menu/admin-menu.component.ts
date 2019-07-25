@@ -827,7 +827,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   handlerSuccessArgumentsMeta(___this, result) {
     ___this.argumentsDrillDown = result;
     const dialogRef = ___this.dialog.open(EditOutputOptionsMetaDialog, {
-      width: '90%',
+      width: '1090px',
       data: { outputs: ___this.outputs, option: ___this.optionSelected, arguments: ___this.argumentsDrillDown }
     });
 

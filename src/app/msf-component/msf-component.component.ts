@@ -25,8 +25,10 @@ export class MsfComponentComponent implements OnInit {
         {
           for (let argument of category.arguments)
           {
-            if (argument.value1)
+            if (argument.value1 && !argument.valueLoaded)
               argument.value1 = JSON.parse (argument.value1);
+
+            argument.valueLoaded = true;
           }
         }
       }
