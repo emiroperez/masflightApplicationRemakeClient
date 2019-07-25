@@ -515,9 +515,24 @@ toggle(){
       let excelItem = {};
   
       for (let column of this.msfContainerRef.msfTableRef.metadata)
-        excelItem[column.columnLabel] = item[column.columnName];
+      {
+        excelItem[column.columnLabel] = "";
+
+        if (item[column.columnName] == undefined)
+          continue;
+
+        // Set prefixes and suffixes if necessary
+        if (column.prefix)
+          excelItem[column.columnLabel] += column.prefix;
+
+        excelItem[column.columnLabel] += item[column.columnName];
+
+        if (column.suffix)
+          excelItem[column.columnLabel] += column.suffix;
+      }
 
       excelData.push (excelItem);
+
     }
 
     this.excelService.exportAsExcelFile(excelData, this.globals.currentOption.label);

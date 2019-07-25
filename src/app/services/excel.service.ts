@@ -18,6 +18,7 @@ export class ExcelService {
 
     const ws: XLSX.WorkSheet=XLSX.utils.json_to_sheet(tableSource);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
     
     /* save to file */

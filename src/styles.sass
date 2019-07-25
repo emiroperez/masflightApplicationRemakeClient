@@ -3634,12 +3634,17 @@ li.msf-select:before
     margin-bottom: 0
     margin-top: 0
 
-.msf-current-query-summay-container
+.msf-current-query-summary-container
     display: inline-block
     margin-left: 20px
     margin-top: 20px
     width: 50%
     height: 90%
+
+.msf-current-query-summary-body
+    .msf-current-query-summary-container
+        width: 75% !important
+        overflow-x: hidden
 
 .msf-search-complete-container
     display: inline-block
@@ -3659,6 +3664,8 @@ li.msf-select:before
     -webkit-columns: 2 200px
     -moz-columns: 2 200px
     columns: 2 200px
+    display: flex
+    flex-direction: column
     -moz-column-fill: auto
     column-fill: auto
     height: 80%
