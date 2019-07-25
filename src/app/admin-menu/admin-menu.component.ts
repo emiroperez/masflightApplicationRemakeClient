@@ -1531,7 +1531,10 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
         duplicateObject = result;
 
         for (let argument of duplicateObject.categoryArgumentsId[0].arguments)
-          argument.value1 = JSON.stringify (argument.value1);
+        {
+          if (argument.value1)
+            argument.value1 = JSON.stringify (argument.value1);
+        }
 
         this.saveMenuArguments(duplicateObject);
       }

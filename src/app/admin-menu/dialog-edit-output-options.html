@@ -10,8 +10,8 @@
             <mat-icon class="admin-mat-icon-button" aria-label="cloud_upload">cloud_upload</mat-icon>
         </button>
     </div>
-    <div #tableScrollContainer mat-dialog-content class="admin-menu-content-dialog-container">
-        <table class="admin-dialog-list" mat-table #table [dataSource]="dataSource" cdkDropList [cdkDropListData]="dataSource" (cdkDropListDropped)="dropTable($event)" class="mat-elevation-z8 datasource welcome-table">
+    <div #tableScrollContainer mat-dialog-content class="admin-menu-content-dialog-container admin-output-table-dialog-content">
+        <table mat-table #table [dataSource]="dataSource" cdkDropList [cdkDropListData]="dataSource" (cdkDropListDropped)="dropTable($event)" class="mat-elevation-z8 datasource welcome-table">
             <ng-container matColumnDef="columnLabel" class="admin-dialog-box">
                 <th mat-header-cell *matHeaderCellDef>Column Label</th>
                 <td class="admin-column-label-cell" mat-cell *matCellDef="let element">
