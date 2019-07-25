@@ -16,7 +16,7 @@ export class ExcelService {
   public exportAsExcelFile(tableSource: any, excelFileName: string): void {
 
 
-    const ws: XLSX.WorkSheet=XLSX.utils.table_to_sheet(tableSource.nativeElement);
+    const ws: XLSX.WorkSheet=XLSX.utils.json_to_sheet(tableSource);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
     

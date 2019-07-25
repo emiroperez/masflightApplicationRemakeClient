@@ -507,7 +507,20 @@ toggle(){
   }
 
   exportToExcel():void {
-    this.excelService.exportAsExcelFile(this.msfContainerRef.msfTableRef.table, this.globals.currentOption.label);
+    let excelData: any = [];
+
+    // create a new JSON for the XLSX creation
+    for (let item of this.msfContainerRef.msfTableRef.dataSource.data)
+    {
+      let excelItem = {};
+  
+      for (let column of this.msfContainerRef.msfTableRef.metadata)
+        excelItem[column.columnLabel] = item[column.columnName];
+
+      excelData.push (excelItem);
+    }
+
+    this.excelService.exportAsExcelFile(excelData, this.globals.currentOption.label);
   }
 
   isSimpleContent(): boolean {
