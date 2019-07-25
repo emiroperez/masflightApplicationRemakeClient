@@ -64,7 +64,7 @@ export class Globals {
   // baseUrl = "http://192.168.1.50:8887";
   // baseUrl = "";
   // baseUrl2 = "http://localhost:8886";
-  baseUrl2 = "http://3.221.111.202:8886";
+  baseUrl2 = "http://3.221.111.202:8886/mapBoxServices";
   // popupUrl = "http://localhost:8900";
   popupUrl = "http://3.221.111.202:8900";
   scheduledata:any;
@@ -94,6 +94,8 @@ export class Globals {
   constructor (public overlayContainer: OverlayContainer, private cookie: Cookie)
   {
     let pulseTheme, useLightTheme;
+
+    am4core.options.commercialLicense = true;
 
     // get theme setting from cookies
     pulseTheme = cookie.get ("pulseTheme");
