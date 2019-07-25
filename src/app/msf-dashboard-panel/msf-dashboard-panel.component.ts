@@ -2395,7 +2395,15 @@ export class MsfDashboardPanelComponent implements OnInit {
     for (let optionCategory of data)
     {
       for (let category of optionCategory.categoryArgumentsId)
+      {
+        for (let argument of category.arguments)
+        {
+          if (argument.value1)
+            argument.value1 = JSON.parse (argument.value1);
+        }
+
         optionCategories.push (category);
+      }
     }
 
     // if the category is not empty, add the categories that are missing
