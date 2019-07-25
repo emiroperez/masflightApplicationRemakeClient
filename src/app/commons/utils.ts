@@ -242,7 +242,7 @@ export class Utils{
     }
 
     getValueFormat(type: string, value:any,argument:any){
-        if( typeof value === 'undefined'){
+        if( typeof value === 'undefined' || value == null){
             return '';
         }
         if(argument.url!=null && argument.url!='' && type != ComponentType.sortingCheckboxes){
