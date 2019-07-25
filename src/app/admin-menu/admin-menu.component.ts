@@ -8,12 +8,13 @@ import { MessageComponent } from '../message/message.component';
 import { CdkDragDrop, moveItemInArray, CdkDropList, transferArrayItem } from '@angular/cdk/drag-drop';
 import { FormControl, FormBuilder, FormGroup } from '@angular/forms';
 import { DrillDown } from '../model/DrillDown';
-import { ReplaySubject, Subject, BehaviorSubject } from 'rxjs';
-import { takeUntil, take } from 'rxjs/operators';
+import { ReplaySubject, Subject, BehaviorSubject, of, Observable } from 'rxjs';
+import { takeUntil, take, delay } from 'rxjs/operators';
 import { CategoryArguments } from '../model/CategoryArguments';
 import { DialogArgumentPreviewComponent } from '../dialog-argument-preview/dialog-argument-preview.component';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MaterialIconPickerComponent } from '../material-icon-picker/material-icon-picker.component';
+import { ComponentType } from '../commons/ComponentType';
 //import  clonedeep from 'lodash.clonedeep';
 
 @Component({
@@ -281,8 +282,9 @@ export class EditOutputOptionsMetaDialog {
 })
 
 export class EditCategoryArgumentDialog {
-
+  groupingData: Observable<any[]>;
   itemSelected: any = {};
+  loading: boolean;
 
   argumentSelected: any = {};
 
@@ -293,9 +295,18 @@ export class EditCategoryArgumentDialog {
   displayedColumns: string[] = ['label1', 'label2', 'name1', 'name2'];
 
   constructor(
+    private globals: Globals,
+    private http: ApiClient,
     public dialogRef: MatDialogRef<EditCategoryArgumentDialog>,
     @Inject(MAT_DIALOG_DATA) public data, public dialog: MatDialog) {
+      for (let argument of data.categoryArgumentsId[0].arguments)
+      {
+        if (this.isSelectBoxMultipleOption (argument) && argument.url)
+          this.getRecords (argument, "", this.handlerSuccess);
 
+        if (argument.value1)
+          argument.value1 = JSON.parse (argument.value1);
+      }
   }
 
 
@@ -390,6 +401,45 @@ export class EditCategoryArgumentDialog {
       this.argumentSelected = item;
       this.argumentSelected.isSelected = true;
     }
+  }
+
+  onSearch(item, $event: any){
+    if($event.term.length>=2){
+      this.loading = true;
+      this.getRecords(item, $event.term, this.handlerSuccess);
+    }
+  }
+
+  getRecords(item, search, handlerSuccess){
+    let url;
+
+    if (!item.url)
+    {
+      this.loading = false;
+      return;
+    }
+
+    if(item.url.substring(0,1)=="/"){
+      url = this.globals.baseUrl + item.url + "?search="+ (search != null?search:'');
+    }else{
+     url = item.url + "/?search=" + (search != null?search:'');
+    }
+
+    this.http.get(this,url,handlerSuccess, this.handlerError, null);  
+  }
+
+  handlerSuccess(_this,data, tab){   
+    _this.loading = false;
+    _this.groupingData = of(data).pipe(delay(500));
+  }
+
+  handlerError(_this,result){
+    _this.loading = false;
+    console.log(result);
+  }
+
+  isSelectBoxMultipleOption(item){
+    return ComponentType.selectBoxMultipleOption == item.type;
   }
 }
 
@@ -1479,6 +1529,10 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
       if (result != undefined) {
         console.log(result)
         duplicateObject = result;
+
+        for (let argument of duplicateObject.categoryArgumentsId[0].arguments)
+          argument.value1 = JSON.stringify (argument.value1);
+
         this.saveMenuArguments(duplicateObject);
       }
     });
@@ -1506,6 +1560,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
       this.optionSelected.menuOptionArgumentsAdmin.push(catId);
 
     }
+
     this.saveCategoryArgument();
   }
 

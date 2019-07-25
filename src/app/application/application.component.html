@@ -117,8 +117,7 @@
         <div [ngClass]="globals.status ? 'msf-menu-nav msf-menu-show-nav' : 'msf-menu-nav msf-menu-hide-nav'">
             <div [ngClass]="globals.status ? 'msf-menu-components-container-show' : 'msf-menu-components-container-hide'">
                 <div class="msf-category-container" [ngClass]="(globals.currentOption && globals.currentOption.metaData == 3) ? 'msf-hide' : (globals.hideParametersPanels ? 'msf-hide':'msf-category-container')">
-                    <app-msf-component *ngIf="globals.currentOption && globals.currentOption.menuOptionArguments && globals.currentOption.menuOptionArguments.length > 0 && globals.currentOption.menuOptionArguments[0].categoryArguments.length > 0">
-                    </app-msf-component>
+                    <app-msf-component [currentOption]="globals.currentOption" *ngIf="globals.currentOption && globals.currentOption.menuOptionArguments && globals.currentOption.menuOptionArguments.length > 0 && globals.currentOption.menuOptionArguments[0].categoryArguments.length > 0"></app-msf-component>
                 </div>
                 <div class="msf-category-container" [ngClass]="(globals.currentOption && globals.currentOption.metaData != 3) ? 'msf-hide' : (globals.hideParametersPanels ? 'msf-hide':'msf-category-container')">
                   <app-msf-map-coordinates></app-msf-map-coordinates>
