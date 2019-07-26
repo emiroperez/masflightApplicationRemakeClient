@@ -4,7 +4,7 @@
       <mat-icon aria-label="Add Variable">add</mat-icon>
       Add Variable
     </button>
-    <button mat-flat-button [disabled]="!controlVariablesAvailable.length" (click)="setCategories()" [ngClass]="controlVariablesAvailable.length ? 'flat-button' : 'flat-button-disabled'" class="msf-dashboard-control-panel-button">
+    <button mat-flat-button [disabled]="!controlPanelCategories.length" (click)="setCategories()" [ngClass]="controlPanelCategories.length ? 'flat-button' : 'flat-button-disabled'" class="msf-dashboard-control-panel-button">
       <mat-icon aria-label="Set Categories">category</mat-icon>
       Set Categories
     </button>
@@ -31,7 +31,7 @@
               <mat-icon aria-label="Remove">close</mat-icon>
               Remove
             </button>
-            <button mat-flat-button (click)="setCategories()" class="flat-button msf-dashboard-control-panel-variable-button">
+            <button mat-flat-button [disabled]="!controlPanelCategories.length" (click)="setCategories()" [ngClass]="controlPanelCategories.length ? 'flat-button' : 'flat-button-disabled'" class="msf-dashboard-control-panel-variable-button">
               <mat-icon aria-label="Set Categories">category</mat-icon>
               Set Categories
             </button>
