@@ -28,12 +28,12 @@ export class ExcelService {
         let format = "";
 
         if (tableColumnFormat.prefix)
-          format += "\"" + tableColumnFormat.prefix + "\"\ ";
+          format += "\"" + tableColumnFormat.prefix + "\"";
 
         format += "0.##";
 
         if (tableColumnFormat.suffix)
-          format += "\"" + tableColumnFormat.suffix + "\"\ ";
+          format += "\"" + tableColumnFormat.suffix + "\"";
 
         this.SheetSetColumnFormat (ws, tableColumnFormat.pos, format, "n");
       }
