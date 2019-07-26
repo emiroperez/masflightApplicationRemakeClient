@@ -111,8 +111,8 @@
               Set Variables
             </button>
           </div>
-          <div class="msf-dashboard-control-panel-variable-arguments">
-            <mat-checkbox *ngFor="let category of controlPanelCategory.values" class="cancels-checkbox" [(ngModel)]="category.checked" (ngModelChange)="this.hideCategoryFromCharts.emit(category)">
+          <div class="msf-dashboard-control-panel-category-checkboxes">
+            <mat-checkbox *ngFor="let category of controlPanelCategory.values" class="msf-dashboard-control-panel-category-checkbox cancels-checkbox" [(ngModel)]="category.checked" (ngModelChange)="this.hideCategoryFromCharts.emit(category)">
               {{category.name}}
             </mat-checkbox>
           </div>

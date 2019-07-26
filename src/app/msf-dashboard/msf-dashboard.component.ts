@@ -386,7 +386,7 @@ export class MsfDashboardComponent implements OnInit {
             // check if category exists
             for (let curCategory of _this.controlPanelCategories)
             {
-              if (curCategory.name === option.columnOptions[i].columnLabel)
+              if (curCategory.name.toLowerCase () === option.columnOptions[i].columnLabel.toLowerCase ())
               {
                 category = curCategory;
                 break;
@@ -411,7 +411,7 @@ export class MsfDashboardComponent implements OnInit {
         {
           let exist: boolean = false;
 
-          for (let curCategory of category)
+          for (let curCategory of category.values)
           {
             if (curCategory.name === filter.valueAxis)
             {

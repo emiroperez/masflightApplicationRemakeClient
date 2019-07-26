@@ -3346,7 +3346,7 @@ mat-tab-group
     padding: 15px
     .msf-dashboard-control-panel-variable-container
         display: grid
-        grid-template-columns: 24.5% 24.5% 24.5% 24.5%
+        grid-template-columns: repeat(auto-fill, 325px)
         grid-column-gap: 10px
         grid-row-gap: 10px
         padding-bottom: 10px
@@ -3392,6 +3392,23 @@ mat-tab-group
         flex-direction: row-reverse
         height: 100%
         width: 100%
+        .msf-dashboard-control-panel-category-checkboxes
+            height: 100%
+            width: 100%
+            font-size: 11px
+            display: flex
+            flex-direction: row
+            overflow-x: auto
+            overflow-y: auto
+            display: grid
+            grid-template-columns: repeat(auto-fill, 120px)
+            grid-template-rows: repeat(auto-fill, 30px)
+            grid-column-gap: 10px
+            grid-row-gap: 10px
+            text-align: left
+            padding: 20px
+            .msf-dashboard-control-panel-category-checkbox
+                align-self: center
         .msf-dashboard-control-panel-variable-arguments
             height: 100%
             width: 100%
