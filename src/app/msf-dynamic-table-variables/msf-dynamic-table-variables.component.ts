@@ -199,23 +199,23 @@ export class MsfDynamicTableVariablesComponent {
   // check if there are any horizontal and vertical variables
   variablesSet(): boolean
   {
-    let hasHorizontalVariables, hasVerticalVariables: boolean;
+    let hasVerticalVariables: boolean;
 
     if (!this.globals.variables || this.globals.values.variables < 1)
       return false;
 
-    hasHorizontalVariables = false;
     hasVerticalVariables = false;
 
     for (let value of this.globals.variables)
     {
       if (value.direction === "vertical")
+      {
         hasVerticalVariables = true;
-      else
-        hasHorizontalVariables = true;
+        break;
+      }
     }
 
-    if (!hasVerticalVariables || !hasHorizontalVariables)
+    if (!hasVerticalVariables)
       return false;
 
     return true;

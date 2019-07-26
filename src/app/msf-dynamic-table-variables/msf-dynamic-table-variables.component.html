@@ -9,7 +9,7 @@
               <mat-select [multiple]="true" placeholder="Variables" #variableSelect [(ngModel)]="this.globals.variables" (ngModelChange)="orderVariable($event)" openedChange="show()">
                   <ngx-mat-select-search [formControl]="variableFilterCtrl" placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>
                   <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
-                  {{variable.name}}
+                      {{variable.name}}
                   </mat-option>
               </mat-select>
           </mat-form-field>
@@ -34,7 +34,6 @@
                   </mat-option>
               </mat-select>
           </mat-form-field>
-                       
           <mat-accordion>
               <ng-container *ngFor="let val of this.globals.values"> 
                 <mat-expansion-panel class="msf-val-name-content">
