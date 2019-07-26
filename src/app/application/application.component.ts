@@ -523,24 +523,19 @@ toggle(){
       for (let i = 0; i < this.msfContainerRef.msfTableRef.metadata.length; i++)
       {
         let column = this.msfContainerRef.msfTableRef.metadata[i];
-  
-        excelItem[column.columnLabel] = "";
+        let curitem = item[column.columnName];
 
-        if (item[column.columnName] == undefined)
+        if (curitem == undefined)
+        {
+          excelItem[column.columnLabel] = "";
           continue;
+        }
 
-        // Set prefixes and suffixes if necessary
-        if (column.columnType !== "number" && column.prefix)
-          excelItem[column.columnLabel] += column.prefix;
-
-        excelItem[column.columnLabel] += item[column.columnName];
-
-        if (column.columnType !== "number" && column.suffix)
-          excelItem[column.columnLabel] += column.suffix;
+        excelItem[column.columnLabel] = curitem;
 
         // Get the maximun width for visible results for each column
-        if (item[column.columnName].length > columnMaxWidth[i])
-          columnMaxWidth[i] = item[column.columnName].length;
+        if (curitem.length > columnMaxWidth[i])
+          columnMaxWidth[i] = curitem.length;
       }
 
       excelData.push (excelItem);
