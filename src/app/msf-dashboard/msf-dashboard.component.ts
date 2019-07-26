@@ -381,7 +381,7 @@ export class MsfDashboardComponent implements OnInit {
         // get category name from the option
         for (let i = 0; i < option.columnOptions.length; i++)
         {
-          if (i == dashboardPanel.xaxis)
+          if (i == dashboardPanel.analysis)
           {
             // check if category exists
             for (let curCategory of _this.controlPanelCategories)
