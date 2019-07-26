@@ -507,35 +507,60 @@ toggle(){
   }
 
   exportToExcel():void {
-    let excelData: any = [];
+    let tableColumnFormats: any[] = [];
+    let columnMaxWidth: any[] = [];
+    let excelData: any[] = [];
+
+    // prepare the column max width values
+    for (let column of this.msfContainerRef.msfTableRef.metadata)
+      columnMaxWidth.push (column.columnName.length);
 
     // create a new JSON for the XLSX creation
     for (let item of this.msfContainerRef.msfTableRef.dataSource.data)
     {
-      let excelItem = {};
+      let excelItem: any = {};
   
-      for (let column of this.msfContainerRef.msfTableRef.metadata)
+      for (let i = 0; i < this.msfContainerRef.msfTableRef.metadata.length; i++)
       {
+        let column = this.msfContainerRef.msfTableRef.metadata[i];
+  
         excelItem[column.columnLabel] = "";
 
         if (item[column.columnName] == undefined)
           continue;
 
         // Set prefixes and suffixes if necessary
-        if (column.prefix)
+        if (column.columnType !== "number" && column.prefix)
           excelItem[column.columnLabel] += column.prefix;
 
         excelItem[column.columnLabel] += item[column.columnName];
 
-        if (column.suffix)
+        if (column.columnType !== "number" && column.suffix)
           excelItem[column.columnLabel] += column.suffix;
+
+        // Get the maximun width for visible results for each column
+        if (item[column.columnName].length > columnMaxWidth[i])
+          columnMaxWidth[i] = item[column.columnName].length;
       }
 
       excelData.push (excelItem);
-
     }
 
-    this.excelService.exportAsExcelFile(excelData, this.globals.currentOption.label);
+    // prepare Excel column formats
+    for (let i = 0; i < this.msfContainerRef.msfTableRef.metadata.length; i++)
+    {
+      let column = this.msfContainerRef.msfTableRef.metadata[i];
+
+      tableColumnFormats.push ({
+        type: column.columnType,
+        prefix: column.prefix,
+        suffix: column.suffix,
+        pos: i,
+        width: columnMaxWidth[i] + 1
+      });
+    }
+
+    this.excelService.exportAsExcelFile(excelData, this.globals.currentOption.label, tableColumnFormats);
   }
 
   isSimpleContent(): boolean {

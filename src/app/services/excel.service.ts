@@ -13,24 +13,62 @@ export class ExcelService {
 
   constructor() { }
 
-  public exportAsExcelFile(tableSource: any, excelFileName: string): void {
+  public exportAsExcelFile(tableSource: any, excelFileName: string, tableColumnFormats: any): void
+  {
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet (tableSource);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new ();
+    let wscols: any[] = [];
 
+    XLSX.utils.book_append_sheet (wb, ws, 'Sheet1');
 
-    const ws: XLSX.WorkSheet=XLSX.utils.json_to_sheet(tableSource);
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    
-    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-    
+    for (let tableColumnFormat of tableColumnFormats)
+    {
+      if (tableColumnFormat.type === "number")
+      {
+        let format = "";
+
+        if (tableColumnFormat.prefix)
+          format += tableColumnFormat.prefix;
+
+        format += "0.##";
+
+        if (tableColumnFormat.suffix)
+          format += tableColumnFormat.suffix;
+
+        this.SheetSetColumnFormat (ws, tableColumnFormat.pos, format, "n");
+      }
+      /*
+      // TODO: Test the date and time format for Excel export
+      else if (tableColumnFormat.type === "date")
+        this.SheetSetColumnFormat (ws, tableColumnFormat.pos, "m/d/yy", "n");
+      else if (tableColumnFormat.type === "time")
+        this.SheetSetColumnFormat (ws, tableColumnFormat.pos, "h:mm", "n");
+      */
+
+      wscols.push ({ wch: tableColumnFormat.width });
+    }
+
+    /* set column width */
+    ws['!cols'] = wscols;
+
     /* save to file */
-    XLSX.writeFile(wb, excelFileName+'.xlsx');
-    
+    XLSX.writeFile (wb, excelFileName + '.xlsx'); 
   }
 
-  private saveAsExcelFile(buffer: any, fileName: string): void {
-    const data: Blob = new Blob([buffer], {
-      type: EXCEL_TYPE
-    });
-    FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
-  }
+  private SheetSetColumnFormat(ws, C, Z, T)
+  {
+    let range = XLSX.utils.decode_range (ws["!ref"]);
 
+    /* this loop starts on the second row, as it assumes the first row is a header */
+    for(let R = range.s.r + 1; R <= range.e.r; R++)
+    {
+      let cell = ws[XLSX.utils.encode_cell ({ r: R, c: C })];
+
+      if (!cell)
+        continue;
+
+      cell.t = T;
+      cell.z = Z;
+    }
+  }
 }
