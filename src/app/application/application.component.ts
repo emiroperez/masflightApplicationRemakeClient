@@ -512,7 +512,7 @@ toggle(){
     let excelData: any[] = [];
 
     // prepare the column max width values
-    for (let column of this.msfContainerRef.msfTableRef.metadata)
+    for (let column of this.msfContainerRef.msfTableRef.tableOptions.displayedColumns)
       columnMaxWidth.push (column.columnName.length);
 
     // create a new JSON for the XLSX creation
@@ -520,9 +520,9 @@ toggle(){
     {
       let excelItem: any = {};
   
-      for (let i = 0; i < this.msfContainerRef.msfTableRef.metadata.length; i++)
+      for (let i = 0; i < this.msfContainerRef.msfTableRef.tableOptions.displayedColumns.length; i++)
       {
-        let column = this.msfContainerRef.msfTableRef.metadata[i];
+        let column = this.msfContainerRef.msfTableRef.tableOptions.displayedColumns[i];
         let curitem = item[column.columnName];
 
         if (curitem == undefined)
@@ -542,9 +542,9 @@ toggle(){
     }
 
     // prepare Excel column formats
-    for (let i = 0; i < this.msfContainerRef.msfTableRef.metadata.length; i++)
+    for (let i = 0; i < this.msfContainerRef.msfTableRef.tableOptions.displayedColumns.length; i++)
     {
-      let column = this.msfContainerRef.msfTableRef.metadata[i];
+      let column = this.msfContainerRef.msfTableRef.tableOptions.displayedColumns[i];
 
       tableColumnFormats.push ({
         type: column.columnType,
