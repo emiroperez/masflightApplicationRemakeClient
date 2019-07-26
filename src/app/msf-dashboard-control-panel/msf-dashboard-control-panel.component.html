@@ -1,5 +1,5 @@
 <ng-container *ngIf="controlPanelOpen">
-  <div *ngIf="!addVariableMenu && !setCategoriesTitles && !controlVariables.length" class="msf-dashboard-control-panel-container">
+  <div *ngIf="!addVariableMenu && !setCategoriesValues && !controlVariables.length" class="msf-dashboard-control-panel-container">
     <button mat-flat-button [disabled]="!controlVariablesAvailable.length" (click)="addVariable()" [ngClass]="controlVariablesAvailable.length ? 'flat-button' : 'flat-button-disabled'" class="msf-dashboard-control-panel-button">
       <mat-icon aria-label="Add Variable">add</mat-icon>
       Add Variable
@@ -9,7 +9,7 @@
       Set Categories
     </button>
   </div>
-  <div *ngIf="!addVariableMenu && !setCategoriesTitles && controlVariables.length" class="msf-dashboard-control-panel-tabs-container">
+  <div *ngIf="!addVariableMenu && !setCategoriesValues && controlVariables.length" class="msf-dashboard-control-panel-tabs-container">
     <mat-tab-group [selectedIndex]="selectedIndex" (selectedIndexChange)="onLinkClick($event)">
       <mat-tab *ngFor="let controlVariable of controlVariables" [style.height.%]="100">
         <ng-template mat-tab-label>
@@ -75,7 +75,7 @@
       </mat-tab>
     </mat-tab-group>
   </div>
-  <div *ngIf="addVariableMenu && !setCategoriesTitles" class="msf-dashboard-control-panel-container">
+  <div *ngIf="addVariableMenu && !setCategoriesValues" class="msf-dashboard-control-panel-container">
     <div class="msf-dashboard-control-panel-variable-container">
       <ng-container *ngFor="let controlVariable of controlVariablesAvailable">
         <ng-container *ngIf="!controlVariable.added">
@@ -99,7 +99,7 @@
       Cancel
     </button>
   </div>
-  <div *ngIf="setCategoriesTitles" class="msf-dashboard-control-panel-tabs-container">
+  <div *ngIf="setCategoriesValues" class="msf-dashboard-control-panel-category-tabs-container">
     <mat-tab-group [selectedIndex]="selectedCategoryIndex" (selectedIndexChange)="onLinkClick($event)">
       <mat-tab *ngFor="let controlPanelCategory of controlPanelCategories" [style.height.%]="100">
         <ng-template mat-tab-label>

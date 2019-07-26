@@ -448,7 +448,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             padding: 10px 0
         .msf-dashboard-info-dialog-container
             color: $font-color !important
-        .msf-dashboard-control-panel-tabs-container
+        .msf-dashboard-control-panel-tabs-container, .msf-dashboard-control-panel-category-tabs-container
             background-color: $dashboard-control-panel-background-color
             .mat-tab-labels
                 background-color: $dashboard-control-panel-background-color   
@@ -3384,8 +3384,9 @@ mat-tab-group
         .mat-icon
             font-size: 22px !important
 
-.msf-dashboard-control-panel-tabs-container
-    min-height: 300px
+.msf-dashboard-control-panel-category-tabs-container
+    min-height: 120px
+    max-height: 300px
     margin-top: 8px
     .msf-dashboard-control-panel-variable-tab-container
         display: flex
@@ -3409,6 +3410,23 @@ mat-tab-group
             padding: 20px
             .msf-dashboard-control-panel-category-checkbox
                 align-self: center
+        .msf-dashboard-control-panel-variable-buttons
+            height: 100%
+            width: 180px
+            padding: 0 10px
+            .msf-dashboard-control-panel-variable-button
+                margin-top: 10px
+                width: 180px
+                height: 50px
+
+.msf-dashboard-control-panel-tabs-container
+    min-height: 300px
+    margin-top: 8px
+    .msf-dashboard-control-panel-variable-tab-container
+        display: flex
+        flex-direction: row-reverse
+        height: 100%
+        width: 100%
         .msf-dashboard-control-panel-variable-arguments
             height: 100%
             width: 100%
