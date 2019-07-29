@@ -11,15 +11,15 @@
               -->
               <mat-form-field class="msf-table-input"*ngIf="column.columnType!='number'">
                 <input [readonly]="true" matInput  [specialCharacters]="specialCharacters" 
-                  mask="{{column.columnFormat}}" [(ngModel)]="element[column.columnName]" suffix="{{column.suffix}}" prefix="{{column.prefix}}"/>
+                  mask="{{column.columnFormat}}" [(ngModel)]="element[column.columnName]" sufix="{{column.suffix}}" prefix="{{column.prefix}}"/>
               </mat-form-field>
               <mat-form-field class="msf-table-input" *ngIf="column.columnType=='number' && element[column.columnName]!='' && column.columnFormat!=null && column.columnFormat!=''">
                 <input [readonly]="true" matInput  [specialCharacters]="specialCharacters" 
-                  mask="{{column.columnFormat}}" [(ngModel)]="element[column.columnName]" suffix="{{column.suffix}}" prefix="{{column.prefix}}"/>
+                  mask="{{column.columnFormat}}" [(ngModel)]="element[column.columnName]" sufix="{{column.suffix}}" prefix="{{column.prefix}}"/>
               </mat-form-field>
               <mat-form-field class="msf-table-input" *ngIf="column.columnType=='number' && element[column.columnName]!='' && (column.columnFormat==null || column.columnFormat=='')">
                 <input [readonly]="true" matInput  [specialCharacters]="specialCharacters" 
-                 mask="comma_separator.2" [(ngModel)]="element[column.columnName]" suffix="{{column.suffix}}" prefix="{{column.prefix}}"/>
+                 mask="comma_separator.2" [(ngModel)]="element[column.columnName]" sufix="{{column.suffix}}" prefix="{{column.prefix}}"/>
               </mat-form-field>
               </span>
             <span class="msf-subCell" *ngIf="column.drillDowns.length==0 && isArray(element['Flight'])">
@@ -30,15 +30,15 @@
                 -->
                 <mat-form-field class="msf-table-input" *ngIf="column.columnType!='number' && column.columnFormat!=null && column.columnFormat!=''">
                   <input [readonly]="true" matInput  [specialCharacters]="specialCharacters"  
-                    mask="{{column.columnFormat}}" [(ngModel)]="subElement[column.columnName]" suffix="{{column.suffix}}" prefix="{{column.prefix}}"/>
+                    mask="{{column.columnFormat}}" [(ngModel)]="subElement[column.columnName]" sufix="{{column.suffix}}" prefix="{{column.prefix}}"/>
                 </mat-form-field>
                 <mat-form-field class="msf-table-input" *ngIf="column.columnType=='number' && subElement[column.columnName]!='' && column.columnFormat!=null && column.columnFormat!=''">
                   <input [readonly]="true" matInput  [specialCharacters]="specialCharacters"  
-                    mask="{{column.columnFormat}}" [(ngModel)]="subElement[column.columnName]" suffix="{{column.suffix}}" prefix="{{column.prefix}}"/>
+                    mask="{{column.columnFormat}}" [(ngModel)]="subElement[column.columnName]" sufix="{{column.suffix}}" prefix="{{column.prefix}}"/>
                 </mat-form-field>
                 <mat-form-field class="msf-table-input" *ngIf="column.columnType=='number' && subElement[column.columnName]!='' && (column.columnFormat==null || column.columnFormat=='')">
                   <input [readonly]="true" matInput  [specialCharacters]="specialCharacters"  
-                    mask="comma_separator.2" [(ngModel)]="subElement[column.columnName]" suffix="{{column.suffix}}" prefix="{{column.prefix}}"/>
+                    mask="comma_separator.2" [(ngModel)]="subElement[column.columnName]" sufix="{{column.suffix}}" prefix="{{column.prefix}}"/>
                 </mat-form-field>
               </span>
             </span>
@@ -49,15 +49,15 @@
             -->
             <mat-form-field class="msf-table-input" *ngIf="column.columnType!='number'">
               <input [readonly]="true" matInput  [specialCharacters]="specialCharacters" 
-                mask="{{column.columnFormat}}" [(ngModel)]="element[column.columnName]" suffix="{{column.suffix}}" prefix="{{column.prefix}}"/>
+                mask="{{column.columnFormat}}" [(ngModel)]="element[column.columnName]" sufix="{{column.suffix}}" prefix="{{column.prefix}}"/>
             </mat-form-field>
             <mat-form-field class="msf-table-input" *ngIf="column.columnType=='number' && element[column.columnName]!='' && column.columnFormat!=null && column.columnFormat!=''">
               <input [readonly]="true" matInput  [specialCharacters]="specialCharacters" 
-                mask="{{column.columnFormat}}" [(ngModel)]="element[column.columnName]" suffix="{{column.suffix}}" prefix="{{column.prefix}}"/>
+                mask="{{column.columnFormat}}" [(ngModel)]="element[column.columnName]" sufix="{{column.suffix}}" prefix="{{column.prefix}}"/>
             </mat-form-field>
             <mat-form-field class="msf-table-input" *ngIf="column.columnType=='number' && element[column.columnName]!='' && (column.columnFormat==null || column.columnFormat=='')">
               <input [readonly]="true" matInput  [specialCharacters]="specialCharacters" 
-                mask="comma_separator.2" [(ngModel)]="element[column.columnName]" suffix="{{column.suffix}}" prefix="{{column.prefix}}"/>
+                mask="comma_separator.2" [(ngModel)]="element[column.columnName]" sufix="{{column.suffix}}" prefix="{{column.prefix}}"/>
             </mat-form-field>
           </span>
           <mat-menu #menu="matMenu" [style.visibility]="column.drillDowns.length!=0? 'visible' : 'hidden'">
