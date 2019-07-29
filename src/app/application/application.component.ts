@@ -555,6 +555,8 @@ toggle(){
 
           excelItem[column.columnLabel] = moment (curitem, format).add (1, 'days').toDate ().toISOString ();
         }
+        else if (column.columnType === "time")
+          excelItem[column.columnLabel] = moment (curitem, "HHmm").toDate ().toISOString ();
         else
           excelItem[column.columnLabel] = curitem;
 
