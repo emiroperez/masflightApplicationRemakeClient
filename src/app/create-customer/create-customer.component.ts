@@ -17,10 +17,10 @@ import { Customer } from '../model/Customer';
 
 export const US_DATE_FORMAT = {
   parse: {
-    dateInput: 'MM-DD-YYYY',
+    dateInput: 'MM/DD/YYYY',
   },
   display: {
-    dateInput: 'MM-DD-YYYY',
+    dateInput: 'MM/DD/YYYY',
     monthYearLabel: 'MMM YYYY',
     dateA11yLabel: 'LL',
     monthYearA11yLabel: 'MMMM YYYY',
@@ -288,7 +288,7 @@ export class CreateCustomerComponent implements OnInit {
     if (day < 10)
       day = "0" + day;
 
-    return month + "-" + day + "-" + d.getFullYear ();
+    return month + "/" + day + "/" + d.getFullYear ();
   }
 
   applyFilter(filterValue: string)
