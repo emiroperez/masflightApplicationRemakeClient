@@ -518,14 +518,14 @@ toggle(){
     // prepare the column max width values
     for (let column of this.msfContainerRef.msfTableRef.tableOptions.displayedColumns)
     {
-      if (column.columnFormat && column.columnFormat.length > column.columnName.length
+      if (column.columnFormat && column.columnFormat.length > column.columnLabel.length
         && column.columnType === "date")
       {
         columnMaxWidth.push (column.columnFormat.length);
         continue;
       }
 
-      columnMaxWidth.push (column.columnName.length);
+      columnMaxWidth.push (column.columnLabel.length);
     }
 
     // create a new JSON for the XLSX creation
@@ -561,8 +561,8 @@ toggle(){
           excelItem[column.columnLabel] = curitem;
 
         // Get the maximun width for visible results for each column
-        if (curitem.length > columnMaxWidth[i])
-          columnMaxWidth[i] = curitem.length;
+        if (curitem.toString ().length > columnMaxWidth[i])
+          columnMaxWidth[i] = curitem.toString ().length;
       }
 
       excelData.push (excelItem);
