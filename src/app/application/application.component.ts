@@ -518,7 +518,8 @@ toggle(){
     // prepare the column max width values
     for (let column of this.msfContainerRef.msfTableRef.tableOptions.displayedColumns)
     {
-      if (column.columnFormat && column.columnFormat.length > column.columnName.length)
+      if (column.columnFormat && column.columnFormat.length > column.columnName.length
+        && column.columnType === "date")
       {
         columnMaxWidth.push (column.columnFormat.length);
         continue;
