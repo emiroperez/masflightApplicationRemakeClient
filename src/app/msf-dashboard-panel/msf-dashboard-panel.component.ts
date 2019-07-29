@@ -873,7 +873,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         if (this.values.currentChartType.flags & ChartFlags.XYCHART)
         {
           chart.data = chartInfo.data;
-          parseDate = this.values.xaxis.id.includes ('date');
+          parseDate = (this.values.xaxis.item.columnType === "date" && this.values.xaxis.id.includes ('date'));
         }
         else
         {
