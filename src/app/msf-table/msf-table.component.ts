@@ -510,7 +510,7 @@ export class MsfTableComponent implements OnInit {
     if (date == null)
       return "";
 
-    d = new Date (date);
+    d = moment (date, "HHmm").toDate ();
     if (Object.prototype.toString.call (d) === "[object Date]")
     {
       if (isNaN (d.getTime ()))

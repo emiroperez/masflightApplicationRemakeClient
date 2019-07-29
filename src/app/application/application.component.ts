@@ -579,7 +579,7 @@ toggle(){
         prefix: column.prefix,
         suffix: column.suffix,
         pos: i,
-        width: columnMaxWidth[i] + 1
+        width: columnMaxWidth[i]
       });
     }
 
