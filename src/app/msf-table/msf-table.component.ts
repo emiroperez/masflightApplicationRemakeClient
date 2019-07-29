@@ -461,6 +461,8 @@ export class MsfTableComponent implements OnInit {
 
     if (format === "M0/0000")
       d = moment (date, "MMYYYY").toDate ();
+    else if (format === "0000/M0")
+      d = moment (date, "YYYYMM").toDate ();
     else
       d = new Date (date);
 
@@ -479,6 +481,14 @@ export class MsfTableComponent implements OnInit {
         month = "0" + month;
 
       return month + "/" + d.getFullYear ();
+    }
+    else if (format == "0000/M0")
+    {
+      month = (d.getMonth () + 1);
+      if (month < 10)
+        month = "0" + month;
+
+      return d.getFullYear () + "/" + month;
     }
 
     month = (d.getMonth () + 1);

@@ -550,6 +550,8 @@ toggle(){
 
           if (column.columnFormat === "M0/0000")
             format = "MMYYYY";
+          else if (column.columnFormat == "0000/M0")
+            format = "YYYYMM";
 
           excelItem[column.columnLabel] = moment (curitem, format).add (1, 'days').toDate ().toISOString ();
         }

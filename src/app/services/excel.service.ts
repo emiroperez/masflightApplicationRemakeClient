@@ -41,6 +41,8 @@ export class ExcelService {
       {
         if (tableColumnFormat.format === "M0/0000")
           this.SheetSetColumnFormat (ws, tableColumnFormat.pos, "mm/yyyy", "d");
+        else if (tableColumnFormat.format == "0000/M0")
+          this.SheetSetColumnFormat (ws, tableColumnFormat.pos, "yyyy/mm", "d");
         else
           this.SheetSetColumnFormat (ws, tableColumnFormat.pos, "m/d/yy", "d");
       }
