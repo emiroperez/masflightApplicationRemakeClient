@@ -38,7 +38,12 @@ export class ExcelService {
         this.SheetSetColumnFormat (ws, tableColumnFormat.pos, format, "n");
       }
       else if (tableColumnFormat.type === "date")
-        this.SheetSetColumnFormat (ws, tableColumnFormat.pos, "m/d/yy", "d");
+      {
+        if (tableColumnFormat.format === "M0/0000")
+          this.SheetSetColumnFormat (ws, tableColumnFormat.pos, "mm/yyyy", "d");
+        else
+          this.SheetSetColumnFormat (ws, tableColumnFormat.pos, "m/d/yy", "d");
+      }
       /*
       // TODO: Test time format for Excel export
       else if (tableColumnFormat.type === "time")

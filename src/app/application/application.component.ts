@@ -516,7 +516,10 @@ toggle(){
     for (let column of this.msfContainerRef.msfTableRef.tableOptions.displayedColumns)
     {
       if (column.columnFormat && column.columnFormat.length > column.columnName.length)
+      {
         columnMaxWidth.push (column.columnFormat.length);
+        continue;
+      }
 
       columnMaxWidth.push (column.columnName.length);
     }
@@ -538,7 +541,14 @@ toggle(){
         }
 
         if (column.columnType === "date")
-          excelItem[column.columnLabel] = moment (curitem, "DDMMYYYY").add (1, 'days').toDate ().toISOString ();
+        {
+          let format = "DDMMYYYY";
+
+          if (column.columnFormat === "M0/0000")
+            format = "MMYYYY";
+
+          excelItem[column.columnLabel] = moment (curitem, format).add (1, 'days').toDate ().toISOString ();
+        }
         else
           excelItem[column.columnLabel] = curitem;
 

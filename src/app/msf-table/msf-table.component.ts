@@ -8,7 +8,7 @@ import { MessageComponent } from '../message/message.component';
 import { parseIntAutoRadix } from '@angular/common/src/i18n/format_number';
 import { MsfMoreInfoPopupComponent } from '../msf-more-info-popup/msf-more-info-popup.component';
 import { DomSanitizer } from '@angular/platform-browser';
-
+import * as moment from 'moment';
 
 
 
@@ -345,7 +345,7 @@ export class MsfTableComponent implements OnInit {
             else if (column.columnType == 'date')
             {
               for (let j = 0; j < _this.dataSource.data.length; j++)
-                _this.dataSource.data[j][column.columnName] = _this.parseDate (_this.dataSource.data[j][column.columnName]);
+                _this.dataSource.data[j][column.columnName] = _this.parseDate (_this.dataSource.data[j][column.columnName], column.columnFormat);
             }
           }
 
@@ -450,7 +450,7 @@ export class MsfTableComponent implements OnInit {
     return aux;
   }
 
-  parseDate(date): string
+  parseDate(date, format): string
   {
     let day, month;
     let d: Date;
@@ -458,7 +458,12 @@ export class MsfTableComponent implements OnInit {
     if (date == null)
       return "";
 
-    d = new Date (date);
+
+    if (format === "M0/0000")
+      d = moment (date, "MMYYYY").toDate ();
+    else
+      d = new Date (date);
+
     if (Object.prototype.toString.call (d) === "[object Date]")
     {
       if (isNaN (d.getTime ()))
@@ -466,6 +471,15 @@ export class MsfTableComponent implements OnInit {
     }
     else
       return "";
+
+    if (format === "M0/0000")
+    {
+      month = (d.getMonth () + 1);
+      if (month < 10)
+        month = "0" + month;
+
+      return month + "/" + d.getFullYear ();
+    }
 
     month = (d.getMonth () + 1);
     if (month < 10)
