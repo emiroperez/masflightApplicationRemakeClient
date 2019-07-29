@@ -46,6 +46,7 @@ export class ApplicationComponent implements OnInit {
   status: boolean;
   user: any[];
   userName : any;
+  firstOption: boolean;
 
   admin: boolean = false;
   ELEMENT_DATA: any[];
@@ -284,14 +285,15 @@ export class ApplicationComponent implements OnInit {
 
 
   temporalSelectOption(_this){
+    _this.firstOption = false;
+
     _this.menu.categories.forEach(category => {
       category.options.forEach(option => {
         if (option.children.length > 0)
           _this.recursiveSearch (option.children,_this,category);
         else
         {
-          if ((option.id==166 && _this.globals.currentApplication.id == 3) ||
-            (option.id==64 && _this.globals.currentApplication.id == 4))
+          if (!_this.firstOption)
           {
             _this.globals.clearVariables();
             _this.globals.isLoading = true;
@@ -300,6 +302,7 @@ export class ApplicationComponent implements OnInit {
             _this.globals.initDataSource();
             _this.globals.dataAvailabilityInit();
             _this.globals.status = true;
+            _this.firstOption = true;
           }
         }
       });
@@ -314,8 +317,7 @@ export class ApplicationComponent implements OnInit {
         _this.recursiveSearch (option.children,_this,category);
       else
       {
-        if ((option.id == 166 && _this.globals.currentApplication.id == 3) ||
-          (option.id == 64 && _this.globals.currentApplication.id == 4))
+        if (!_this.firstOption)
         {
           _this.globals.clearVariables();
           _this.globals.isLoading = true;
@@ -324,6 +326,7 @@ export class ApplicationComponent implements OnInit {
           _this.globals.initDataSource();
           _this.globals.dataAvailabilityInit();
           _this.globals.status = true;
+          _this.firstOption = true;
         }
       }
     })
