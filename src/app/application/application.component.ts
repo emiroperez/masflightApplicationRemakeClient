@@ -24,6 +24,7 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { AuthGuard } from '../guards/auth.guard';
 import { UserService } from '../services/user.service';
 import { MessageComponent } from '../message/message.component';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-application',
@@ -513,7 +514,12 @@ toggle(){
 
     // prepare the column max width values
     for (let column of this.msfContainerRef.msfTableRef.tableOptions.displayedColumns)
+    {
+      if (column.columnFormat && column.columnFormat.length > column.columnName.length)
+        columnMaxWidth.push (column.columnFormat.length);
+
       columnMaxWidth.push (column.columnName.length);
+    }
 
     // create a new JSON for the XLSX creation
     for (let item of this.msfContainerRef.msfTableRef.dataSource.data)
@@ -531,7 +537,10 @@ toggle(){
           continue;
         }
 
-        excelItem[column.columnLabel] = curitem;
+        if (column.columnType === "date")
+          excelItem[column.columnLabel] = moment (curitem, "DDMMYYYY").add (1, 'days').toDate ().toISOString ();
+        else
+          excelItem[column.columnLabel] = curitem;
 
         // Get the maximun width for visible results for each column
         if (curitem.length > columnMaxWidth[i])
@@ -548,6 +557,7 @@ toggle(){
 
       tableColumnFormats.push ({
         type: column.columnType,
+        format: column.columnFormat,
         prefix: column.prefix,
         suffix: column.suffix,
         pos: i,

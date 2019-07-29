@@ -151,7 +151,7 @@ export class MsfTableComponent implements OnInit {
           const element = array2[index];
           const indexColumn = displayedColumns.findIndex(column => column.columnName === element.columnName);
           if(indexColumn==-1){
-            displayedColumns.unshift({ columnType:"string",
+            displayedColumns.unshift({ columnType: "string",
             columnName:element.columnName,
             columnLabel:element.columnLabel,
             drillDowns: [],
@@ -165,17 +165,21 @@ export class MsfTableComponent implements OnInit {
           const element = array[index];
           const indexColumn = displayedColumns.findIndex(column => column.columnName.toLowerCase() === element.columnName.toLowerCase());
           if(indexColumn==-1){
-            displayedColumns.unshift({ columnType:"string",
+            displayedColumns.unshift({ columnType: "string",
             columnName:element.columnName,
             columnLabel:element.columnLabel,
             drillDowns: [],
             show:true
           });
           }else{
+            let columnType = displayedColumns[indexColumn].columnType;
+            let columnFormat = displayedColumns[indexColumn].columnFormat;
+  
               displayedColumns.splice(indexColumn,1);
-              displayedColumns.unshift({ columnType:"string",
+              displayedColumns.unshift({ columnType:columnType,
               columnName:element.columnName,
               columnLabel:element.columnLabel,
+              columnFormat:columnFormat,
               drillDowns: [],
               show:true});
           }
@@ -183,16 +187,20 @@ export class MsfTableComponent implements OnInit {
       }else{
         const indexColumn = displayedColumns.findIndex(column => column.columnName === array.columnName);
         if(indexColumn==-1){
-          displayedColumns.unshift({ columnType:"string",
+          displayedColumns.unshift({ columnType: "string",
           columnName:array.columnName,
           columnLabel:array.columnLabel,
           drillDowns: [],
           show:true});
         }else{
+          let columnType = displayedColumns[indexColumn].columnType;
+          let columnFormat = displayedColumns[indexColumn].columnFormat;
+
             displayedColumns.splice(indexColumn,1);
-            displayedColumns.unshift({ columnType:"string",
+            displayedColumns.unshift({ columnType: columnType,
             columnName:array.columnName,
             columnLabel:array.columnLabel,
+            columnFormat:columnFormat,
             drillDowns: [],
             show:true});
         }
@@ -467,7 +475,7 @@ export class MsfTableComponent implements OnInit {
     if (day < 10)
       day = "0" + day;
 
-    return day + "-" + month + "-" + d.getFullYear ();
+    return month + "/" + day + "/" + d.getFullYear ();
   }
 
   parseTime(date): string
