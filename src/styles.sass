@@ -3346,7 +3346,8 @@ mat-tab-group
     padding: 15px
     .msf-dashboard-control-panel-variable-container
         display: grid
-        grid-template-columns: repeat(auto-fill, 320px)
+        grid-template-columns: repeat(auto-fill, minmax(230px, 19.3%))
+        grid-template-rows: repeat(auto-fill, 55px)
         grid-column-gap: 10px
         grid-row-gap: 10px
         padding-bottom: 10px
@@ -3435,12 +3436,13 @@ mat-tab-group
             flex-direction: row
             overflow-x: auto
             overflow-y: auto
+            padding: 0 13px
             .msf-dashboard-control-panel-variable-argument
                 .msf-component-outer-container
                     display: flex
                     flex-direction: row
                     .msf-component-argument-container
-                        padding: 10px 20px
+                        padding: 10px 7px
                         width: 247px
                     .msf-component-taxi-times-single-checkbox
                         padding: 0
