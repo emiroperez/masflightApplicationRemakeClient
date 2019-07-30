@@ -1,6 +1,6 @@
 <ng-container *ngFor="let category of currentOptionCategories">
     <div [ngClass]="argsContainer.open ? 'msf-dashboard-menu-component-active' : 'msf-dashboard-menu-component'" (click)="componentClickHandler(argsContainer, icon)" (mouseover)="argsContainer.hover = true" (mouseleave)="argsContainer.hover = false">
-      <mat-icon *ngIf="category.icon && isMatIcon(category.icon)" class="msf-menu-image-border msf-vertical-middle msf-menu-mat-icon">{{category.icon}}</mat-icon>
+      <mat-icon *ngIf="category.icon && isMatIcon(category.icon)" class="msf-menu-image-border msf-vertical-middle" [ngClass]="{ 'msf-menu-mat-icon-open' : argsContainer.open, 'msf-menu-mat-icon' : !argsContainer.open }">{{category.icon}}</mat-icon>
       <img *ngIf="category.icon && !isMatIcon(category.icon)" src="{{getImageIcon(category.icon, argsContainer)}}" class="msf-menu-image-border msf-vertical-middle">
       <span class="msf-menu-component-text msf-control-variables-text">{{category.label}}</span>
       <i #icon class="material-icons msf-menu-cmpte-row">expand_more</i>

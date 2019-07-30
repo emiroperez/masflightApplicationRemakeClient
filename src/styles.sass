@@ -217,6 +217,8 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                 color: $font-color
             .msf-menu-mat-icon
                 color: $control-variable-icon-color
+            .msf-menu-mat-icon-open
+                color: $control-variable-hover-icon-color !important
             .msf-menu-image-border
                 border-right: 1px solid $control-variables-border-color
             &:hover
@@ -1957,7 +1959,7 @@ button[aria-expanded="true"]
 .msf-menu-image-border
     @extend .msf-menu-image
 
-.msf-menu-mat-icon
+.msf-menu-mat-icon, .msf-menu-mat-icon-open
     font-size: 15px
 
 .msf-menu-icons-right
