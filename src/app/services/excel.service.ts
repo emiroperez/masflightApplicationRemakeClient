@@ -46,14 +46,19 @@ export class ExcelService {
         if (tableColumnFormat.prefix)
           format += "\"" + tableColumnFormat.prefix + "\"";
 
-        while (minIntegerDigits)
+        if (minIntegerDigits >= 4)
         {
-          format += "0";
-          minIntegerDigits--;
+          while (minIntegerDigits)
+          {
+            format += "0";
+            minIntegerDigits--;
 
-          if (minIntegerDigits && !(minIntegerDigits % 3))
-            format += ",";
+            if (minIntegerDigits && !(minIntegerDigits % 3))
+              format += ",";
+          }
         }
+        else // Default number format if the minimum number of integer digits is less than 4
+          format += "#,##0";
 
         if (minFractionDigits || maxFractionDigits)
         {
