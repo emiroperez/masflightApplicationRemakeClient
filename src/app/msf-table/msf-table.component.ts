@@ -20,6 +20,7 @@ import * as moment from 'moment';
 export class MsfTableComponent implements OnInit {
 
   utils: Utils;
+  resultsAvailable: string = "msf-no-visible";
   
   color = 'primary';
 
@@ -66,9 +67,6 @@ export class MsfTableComponent implements OnInit {
   template;
 
   tableOptions: any;
-
-  specialCharacters = [ '[',']','/','!','"','#','$','%','&',"'",'(',')','*','+',';','<','=','>' 
-                          ,'?','@','\\','^','`','{','|','}','~','°','-',':',','];
 
   @ViewChild(MatSort) sort: MatSort;
 
@@ -337,15 +335,25 @@ export class MsfTableComponent implements OnInit {
           {
             let column = _this.tableOptions.displayedColumns[i];
 
-            if (column.columnType == 'time')
+            if (column.columnType === "time")
             {
               for (let j = 0; j < _this.dataSource.data.length; j++)
-                _this.dataSource.data[j][column.columnName] = _this.parseTime (_this.dataSource.data[j][column.columnName]);
+                _this.dataSource.data[j][column.columnName] = _this.parseTime (_this.dataSource.data[j][column.columnName], column.columnFormat);
             }
-            else if (column.columnType == 'date')
+            else if (column.columnType === "date")
             {
               for (let j = 0; j < _this.dataSource.data.length; j++)
                 _this.dataSource.data[j][column.columnName] = _this.parseDate (_this.dataSource.data[j][column.columnName], column.columnFormat);
+            }
+            else if (column.columnType === "number")
+            {
+              for (let j = 0; j < _this.dataSource.data.length; j++)
+                _this.dataSource.data[j][column.columnName] = _this.parseNumber (_this.dataSource.data[j][column.columnName]);
+            }
+            else // string
+            {
+              for (let j = 0; j < _this.dataSource.data.length; j++)
+                _this.dataSource.data[j][column.columnName] = _this.parseString (_this.dataSource.data[j][column.columnName]);
             }
           }
 
@@ -360,8 +368,8 @@ export class MsfTableComponent implements OnInit {
             if(_this.tableOptions.actualPageNumber==undefined)
               _this.tableOptions.actualPageNumber = _this.actualPageNumber;
             
-            var aux = (_this.tableOptions.actualPageNumber+1)*100;
-            aux = aux!=0 ? aux : 100;
+            var aux = (_this.tableOptions.actualPageNumber+1)*25;
+            aux = aux!=0 ? aux : 25;
             if( _this.tableOptions.totalRecord<aux){
               _this.tableOptions.moreResultsBtn = false;
               _this.tableOptions.moreResults = false;
@@ -420,6 +428,11 @@ export class MsfTableComponent implements OnInit {
       if(!_this.globals.isLoading){
         _this.globals.showBigLoading = true;
       }
+
+      if (_this.tableOptions.dataSource && !_this.tableOptions.template && ((_this.currentOption.metaData==1) || (_this.currentOption.metaData==3) || (_this.currentOption.tabType=='scmap')))
+        _this.resultsAvailable = "msf-visible";
+      else
+        _this.resultsAvailable = "msf-no-visible";
     }
   }
 
@@ -437,6 +450,8 @@ export class MsfTableComponent implements OnInit {
     _this.tableOptions.dataSource = false;
     _this.tableOptions.template = false;
     console.log(result);
+
+    _this.resultsAvailable = "msf-no-visible";
   }
 
   getCurrentClass(tableItem:any){
@@ -450,116 +465,60 @@ export class MsfTableComponent implements OnInit {
     return aux;
   }
 
-  parseDate(date, format): string
+  parseDate(date: any, format: string): Date
   {
-    let day, month;
-    let d: Date;
+    let momentFormat: string;
 
     if (date == null)
-      return "";
+      return null;
 
+    // replace lower case letters with uppercase ones for the moment date format
+    momentFormat = format.replace (/m/g, "M");
+    momentFormat = momentFormat.replace (/y/g, "Y");
+    momentFormat = momentFormat.replace (/d/g, "D");
 
-    if (format === "M0/0000")
-      d = moment (date, "MMYYYY").toDate ();
-    else if (format === "0000/M0")
-      d = moment (date, "YYYYMM").toDate ();
-    else
-      d = new Date (date);
-
-    if (Object.prototype.toString.call (d) === "[object Date]")
-    {
-      if (isNaN (d.getTime ()))
-        return "";
-    }
-    else
-      return "";
-
-    if (format === "M0/0000")
-    {
-      month = (d.getMonth () + 1);
-      if (month < 10)
-        month = "0" + month;
-
-      return month + "/" + d.getFullYear ();
-    }
-    else if (format == "0000/M0")
-    {
-      month = (d.getMonth () + 1);
-      if (month < 10)
-        month = "0" + month;
-
-      return d.getFullYear () + "/" + month;
-    }
-
-    month = (d.getMonth () + 1);
-    if (month < 10)
-      month = "0" + month;
-
-    day = d.getDate ();
-    if (day < 10)
-      day = "0" + day;
-
-    return month + "/" + day + "/" + d.getFullYear ();
+    return moment (date, momentFormat).toDate ();
   }
 
-  parseTime(date): string
+  parseTime(time: any, format: string): Date
   {
-    let hour, minute, second;
-    let d: Date;
+    let date: Date;
 
-    if (date == null)
-      return "";
+    if (time == null)
+      return null;
 
-    d = moment (date, "HHmm").toDate ();
-    if (Object.prototype.toString.call (d) === "[object Date]")
+    date = new Date (time);
+
+    if (isNaN (date.getTime ()))
     {
-      if (isNaN (d.getTime ()))
-        return "";
+      let momentFormat: string;
+
+      // replace some cases in order for moment date format compatibility
+      momentFormat = format.replace (/h/g, "H");
+      momentFormat = momentFormat.replace (/M/g, "m");
+      momentFormat = momentFormat.replace (/S/g, "s");
+
+      return moment (time, momentFormat).toDate ();
     }
-    else
-      return "";
 
-    hour = d.getHours ();
-    if (hour < 10)
-      hour = "0" + hour;
-
-    minute = d.getMinutes ();
-    if (minute < 10)
-      minute = "0" + minute;
-
-    second = d.getSeconds ();
-    if (second < 10)
-      second = "0" + second;
-
-    return hour + ":" + minute + ":" + second + "." + d.getMilliseconds ();
+    // use full date format if the time value is a valid date
+    return moment (time, "MM/DD/YYYY HH:mm:ss").toDate ();
   }
 
-  getFormatCell(value:any,element:any,column:any,flightArray:any[]){
-    var aux: any = String(value);
-    if(value==undefined){
-      if(this.currentOption.tabType=='scmap'&& this.currentOption.metaData==2){
-        var flight  = element['Flight'];
-          if(flight!=undefined){
-            aux =""+ flight[column.columnName]!=undefined ? String(flight[column.columnName]) : "";
-          }else{
-            if(flightArray){
-              aux =""+ flightArray[column.columnName]!=undefined ? String(flightArray[column.columnName]) : "";
-            }
-          }
-        }else{
-          if(column.columnType=='number'){
-            aux = "0";
-          }else{
-            aux = "";
-          }
-        }
-    }
+  parseNumber(value: any): string
+  {
+    let aux: string = String (value);
 
-    aux = aux.replace("%","");
-    aux = aux.replace("$","");
-    aux = aux.replace("ï¿½","0");
+    // remove any non-numeric characters except dot
+    return aux.replace (/[^0-9.]/g, "");
+  }
 
-    element[column.columnName] = aux;
+  parseString(value: any): string
+  {
+    let aux: string = String (value);
+
+    // remove any newline charaters
+    return aux.replace (/\n/g, "");
   }
 
   isArray( element:any){
@@ -711,18 +670,6 @@ export class MsfTableComponent implements OnInit {
       }
     }
     return aux;
-  }
-
-  resultsAvailable()
-  {
-    if (this.currentOption == null)
-      return 'msf-no-visible';
-
-    if (this.tableOptions.dataSource && !this.tableOptions.template && ((this.currentOption.metaData==1) || (this.currentOption.metaData==3) || (this.currentOption.tabType=='scmap'))) {
-        return 'msf-visible'
-    } else {
-      return 'msf-no-visible'
-    }
   }
 
   cancelLoading(){

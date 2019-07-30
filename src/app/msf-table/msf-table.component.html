@@ -1,64 +1,37 @@
 
-    <div class="{{resultsAvailable()}} results-container" #TABLE>
+    <div class="{{resultsAvailable}} results-container" #TABLE>
     <table  #table mat-table  [dataSource]="dataSource" matSort class="mat-elevation-z8 datasource results">
         <ng-container  [matColumnDef]="column.columnName" *ngFor="let column of metadata; let i = index">
           <th [ngClass]="column.show?'msf-show-table':'msf-hide'" mat-header-cell *matHeaderCellDef mat-sort-header > {{column.columnLabel}} </th>
           <td [ngClass]="column.show?'msf-show-table':'msf-hide'" mat-cell *matCellDef="let element;let rowNumber = dataIndex"> 
             <span *ngIf="column.drillDowns.length==0 && !isArray(element['Flight'])">
-              <!--
-              <span *ngIf="column.columnType!='number'"><span *ngIf="column.prefix">{{column.prefix}}</span>{{getFormatCell(element[column.columnName],element,column)}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
-              <span *ngIf="column.columnType=='number'"><span *ngIf="column.prefix">{{column.prefix}}</span>{{getFormatCell(element[column.columnName],element,column,null) | number:'.0-2':'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
-              -->
-              <mat-form-field class="msf-table-input"*ngIf="column.columnType!='number'">
-                <input [readonly]="true" matInput  [specialCharacters]="specialCharacters" 
-                  mask="{{column.columnFormat}}" [(ngModel)]="element[column.columnName]" sufix="{{column.suffix}}" prefix="{{column.prefix}}"/>
-              </mat-form-field>
-              <mat-form-field class="msf-table-input" *ngIf="column.columnType=='number' && element[column.columnName]!='' && column.columnFormat!=null && column.columnFormat!=''">
-                <input [readonly]="true" matInput  [specialCharacters]="specialCharacters" 
-                  mask="{{column.columnFormat}}" [(ngModel)]="element[column.columnName]" sufix="{{column.suffix}}" prefix="{{column.prefix}}"/>
-              </mat-form-field>
-              <mat-form-field class="msf-table-input" *ngIf="column.columnType=='number' && element[column.columnName]!='' && (column.columnFormat==null || column.columnFormat=='')">
-                <input [readonly]="true" matInput  [specialCharacters]="specialCharacters" 
-                 mask="comma_separator.2" [(ngModel)]="element[column.columnName]" sufix="{{column.suffix}}" prefix="{{column.prefix}}"/>
-              </mat-form-field>
-              </span>
+              <ng-container *ngIf="element[column.columnName] != null && element[column.columnName] != ''">
+                <span *ngIf="column.columnType=='time'">{{element[column.columnName] | date: column.columnFormat}}</span>
+                <span *ngIf="column.columnType=='date'">{{element[column.columnName] | date: column.columnFormat}}</span>
+                <span *ngIf="column.columnType=='string'">{{element[column.columnName]}}</span>
+                <span *ngIf="column.columnType=='number' && column.columnFormat != null && column.columnFormat != ''"><span *ngIf="column.prefix">{{column.prefix}}</span>{{element[column.columnName] | number:column.columnFormat:'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
+                <span *ngIf="column.columnType=='number' && (column.columnFormat == null || column.columnFormat == '')"><span *ngIf="column.prefix">{{column.prefix}}</span>{{element[column.columnName] | number:'.0-2':'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
+              </ng-container>
+            </span>
             <span class="msf-subCell" *ngIf="column.drillDowns.length==0 && isArray(element['Flight'])">
               <span class="{{getDecoration(element['Flight'],j)}}" *ngFor="let subElement of element['Flight']; let j = index">
-                <!--
-                <span *ngIf="column.columnType!='number'"><span *ngIf="column.prefix">{{column.prefix}}</span>{{getFormatCell(element[column.columnName],element,column,element)}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
-                <span *ngIf="column.columnType=='number'"><span *ngIf="column.prefix">{{column.prefix}}</span>{{getFormatCell(element[column.columnName],element,column,element) | number:'.0-2':'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
-                -->
-                <mat-form-field class="msf-table-input" *ngIf="column.columnType!='number' && column.columnFormat!=null && column.columnFormat!=''">
-                  <input [readonly]="true" matInput  [specialCharacters]="specialCharacters"  
-                    mask="{{column.columnFormat}}" [(ngModel)]="subElement[column.columnName]" sufix="{{column.suffix}}" prefix="{{column.prefix}}"/>
-                </mat-form-field>
-                <mat-form-field class="msf-table-input" *ngIf="column.columnType=='number' && subElement[column.columnName]!='' && column.columnFormat!=null && column.columnFormat!=''">
-                  <input [readonly]="true" matInput  [specialCharacters]="specialCharacters"  
-                    mask="{{column.columnFormat}}" [(ngModel)]="subElement[column.columnName]" sufix="{{column.suffix}}" prefix="{{column.prefix}}"/>
-                </mat-form-field>
-                <mat-form-field class="msf-table-input" *ngIf="column.columnType=='number' && subElement[column.columnName]!='' && (column.columnFormat==null || column.columnFormat=='')">
-                  <input [readonly]="true" matInput  [specialCharacters]="specialCharacters"  
-                    mask="comma_separator.2" [(ngModel)]="subElement[column.columnName]" sufix="{{column.suffix}}" prefix="{{column.prefix}}"/>
-                </mat-form-field>
+                <ng-container *ngIf="subElement[column.columnName] != null && subElement[column.columnName] != ''">
+                  <span *ngIf="column.columnType=='time'">{{subElement[column.columnName] | date: column.columnFormat}}</span>
+                  <span *ngIf="column.columnType=='date'">{{subElement[column.columnName] | date: column.columnFormat}}</span>
+                  <span *ngIf="column.columnType=='string'">{{subElement[column.columnName]}}</span>
+                  <span *ngIf="column.columnType=='number' && column.columnFormat != null && column.columnFormat != ''"><span *ngIf="column.prefix">{{column.prefix}}</span>{{subElement[column.columnName] | number:column.columnFormat:'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
+                  <span *ngIf="column.columnType=='number' && (column.columnFormat == null || column.columnFormat == '')"><span *ngIf="column.prefix">{{column.prefix}}</span>{{subElement[column.columnName] | number:'.0-2':'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
+                </ng-container>
               </span>
             </span>
           <span class="drillDown-decoration" *ngIf="column.drillDowns.length>0 && !isArray(element['Flight'])" [matMenuTriggerFor]="menu">
-            <!--
-            <span *ngIf="column.columnType!='number'"><span *ngIf="column.prefix">{{column.prefix}}</span>{{getFormatCell(element[column.columnName],element,column)}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
-            <span *ngIf="column.columnType=='number'"><span *ngIf="column.prefix">{{column.prefix}}</span>{{getFormatCell(element[column.columnName],element,column,null) | number:'.0-2':'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
-            -->
-            <mat-form-field class="msf-table-input" *ngIf="column.columnType!='number'">
-              <input [readonly]="true" matInput  [specialCharacters]="specialCharacters" 
-                mask="{{column.columnFormat}}" [(ngModel)]="element[column.columnName]" sufix="{{column.suffix}}" prefix="{{column.prefix}}"/>
-            </mat-form-field>
-            <mat-form-field class="msf-table-input" *ngIf="column.columnType=='number' && element[column.columnName]!='' && column.columnFormat!=null && column.columnFormat!=''">
-              <input [readonly]="true" matInput  [specialCharacters]="specialCharacters" 
-                mask="{{column.columnFormat}}" [(ngModel)]="element[column.columnName]" sufix="{{column.suffix}}" prefix="{{column.prefix}}"/>
-            </mat-form-field>
-            <mat-form-field class="msf-table-input" *ngIf="column.columnType=='number' && element[column.columnName]!='' && (column.columnFormat==null || column.columnFormat=='')">
-              <input [readonly]="true" matInput  [specialCharacters]="specialCharacters" 
-                mask="comma_separator.2" [(ngModel)]="element[column.columnName]" sufix="{{column.suffix}}" prefix="{{column.prefix}}"/>
-            </mat-form-field>
+            <ng-container *ngIf="element[column.columnName] != null && element[column.columnName] != ''">
+              <span *ngIf="column.columnType=='time'">{{element[column.columnName] | date: column.columnFormat}}</span>
+              <span *ngIf="column.columnType=='date'">{{element[column.columnName] | date: column.columnFormat}}</span>
+              <span *ngIf="column.columnType=='string'">{{element[column.columnName]}}</span>
+              <span *ngIf="column.columnType=='number' && column.columnFormat != null && column.columnFormat != ''"><span *ngIf="column.prefix">{{column.prefix}}</span>{{element[column.columnName] | number:column.columnFormat:'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
+              <span *ngIf="column.columnType=='number' && (column.columnFormat == null || column.columnFormat == '')"><span *ngIf="column.prefix">{{column.prefix}}</span>{{element[column.columnName] | number:'.0-2':'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
+            </ng-container>
           </span>
           <mat-menu #menu="matMenu" [style.visibility]="column.drillDowns.length!=0? 'visible' : 'hidden'">
               <button mat-menu-item *ngFor="let drillDown of column.drillDowns" (click)="openSubQuery(drillDown,element)">{{drillDown.title}}</button>
@@ -68,7 +41,7 @@
         </ng-container>
   
       <tr mat-header-row *matHeaderRowDef="displayedColumns" ></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;" style="height:30px;"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" [style.height.px]="40"></tr>
     </table>
     </div>
 

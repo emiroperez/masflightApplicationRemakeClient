@@ -1,14 +1,10 @@
 import { Injectable } from '@angular/core';
-import * as FileSaver from 'file-saver';
-import * as XLSX from 'xlsx';
-import { AnimationStyleMetadata } from '@angular/animations';
 
-const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
-const EXCEL_EXTENSION = '.xlsx';
+import * as XLSX from 'xlsx';
 
 @Injectable({
     providedIn: 'root'
-  })
+})
 export class ExcelService {
 
   constructor() { }
@@ -25,29 +21,68 @@ export class ExcelService {
     {
       if (tableColumnFormat.type === "number")
       {
-        let format = "";
+        let minIntegerDigits, minFractionDigits, maxFractionDigits: number;
+        let format: string = "";
+
+        minIntegerDigits = 1;
+        minFractionDigits = 0;
+        maxFractionDigits = 2;
+
+        // get the digits from the column format if available
+        if (tableColumnFormat.format)
+        {
+          let digits: number[] = tableColumnFormat.format.match (/\d+/g).map (Number);
+
+          if (digits[0])
+            minIntegerDigits = digits[0];
+
+          if (digits[1])
+            minFractionDigits = digits[1];
+
+          if (digits[2])
+            maxFractionDigits = digits[2];
+        }
 
         if (tableColumnFormat.prefix)
           format += "\"" + tableColumnFormat.prefix + "\"";
 
-        format += "0.##";
+        while (minIntegerDigits)
+        {
+          format += "0";
+          minIntegerDigits--;
+
+          if (minIntegerDigits && !(minIntegerDigits % 3))
+            format += ",";
+        }
+
+        if (minFractionDigits || maxFractionDigits)
+        {
+          format += ".";
+
+          maxFractionDigits -= minFractionDigits;
+          if (maxFractionDigits < 0)
+            maxFractionDigits = 0;
+
+          while (minFractionDigits)
+          {
+            format += "0";
+            minFractionDigits--;
+          }
+
+          while (maxFractionDigits)
+          {
+            format += "#";
+            maxFractionDigits--;
+          }
+        }
 
         if (tableColumnFormat.suffix)
           format += "\"" + tableColumnFormat.suffix + "\"";
 
         this.SheetSetColumnFormat (ws, tableColumnFormat.pos, format, "n");
       }
-      else if (tableColumnFormat.type === "date")
-      {
-        if (tableColumnFormat.format === "M0/0000")
-          this.SheetSetColumnFormat (ws, tableColumnFormat.pos, "mm/yyyy", "d");
-        else if (tableColumnFormat.format == "0000/M0")
-          this.SheetSetColumnFormat (ws, tableColumnFormat.pos, "yyyy/mm", "d");
-        else
-          this.SheetSetColumnFormat (ws, tableColumnFormat.pos, "m/d/yy", "d");
-      }
-      else if (tableColumnFormat.type === "time")
-        this.SheetSetColumnFormat (ws, tableColumnFormat.pos, "h:mm", "d");
+      else if (tableColumnFormat.type === "date" || tableColumnFormat.type === "time")
+        this.SheetSetColumnFormat (ws, tableColumnFormat.pos, tableColumnFormat.format.toLowerCase (), "d");
 
       wscols.push ({ wch: tableColumnFormat.width });
     }

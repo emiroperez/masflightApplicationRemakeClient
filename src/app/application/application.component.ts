@@ -519,7 +519,7 @@ toggle(){
     for (let column of this.msfContainerRef.msfTableRef.tableOptions.displayedColumns)
     {
       if (column.columnFormat && column.columnFormat.length > column.columnLabel.length
-        && column.columnType === "date")
+        && (column.columnType === "date" || column.columnType === "time"))
       {
         columnMaxWidth.push (column.columnFormat.length);
         continue;
@@ -546,23 +546,30 @@ toggle(){
 
         if (column.columnType === "date")
         {
-          let format = "DDMMYYYY";
+          let date: Date = new Date (curitem);
 
-          if (column.columnFormat === "M0/0000")
-            format = "MMYYYY";
-          else if (column.columnFormat == "0000/M0")
-            format = "YYYYMM";
+          // Advance one day, since on Excel files will be one day behind
+          date.setDate (date.getDate () + 1);
 
-          excelItem[column.columnLabel] = moment (curitem, format).add (1, 'days').toDate ().toISOString ();
+          excelItem[column.columnLabel] = date.toISOString ();
         }
         else if (column.columnType === "time")
-          excelItem[column.columnLabel] = moment (curitem, "HHmm").toDate ().toISOString ();
+        {
+          let time: Date = new Date (curitem);
+
+          // Advance one minute, since on time on Excel files will be one minute behind
+          time.setMinutes (time.getMinutes () + 1);
+
+          excelItem[column.columnLabel] = time.toISOString ();
+        }
         else
+        {
           excelItem[column.columnLabel] = curitem;
 
-        // Get the maximun width for visible results for each column
-        if (curitem.toString ().length > columnMaxWidth[i])
-          columnMaxWidth[i] = curitem.toString ().length;
+          // Get the maximun width for visible results for each column
+          if (curitem.toString ().length > columnMaxWidth[i])
+            columnMaxWidth[i] = curitem.toString ().length;
+        }
       }
 
       excelData.push (excelItem);
@@ -579,7 +586,7 @@ toggle(){
         prefix: column.prefix,
         suffix: column.suffix,
         pos: i,
-        width: columnMaxWidth[i]
+        width: columnMaxWidth[i] + 1
       });
     }
 
