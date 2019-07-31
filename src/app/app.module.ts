@@ -14,7 +14,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { NotificationComponent } from './notification/notification.component';
 import { ApiClient } from './api/api-client';
 import { RegisterComponent } from './register/register.component';
-import { NgxMaskModule } from 'ngx-mask'
 import { NgSelectModule } from '@ng-select/ng-select';
 import { MenuComponent } from './menu/menu.component';
 import { MenuOptionComponent } from './menu-option/menu-option.component';
@@ -361,7 +360,6 @@ import { MsfDashboardControlPanelComponent } from './msf-dashboard-control-panel
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
-    NgxMaskModule.forRoot(),
     NgSelectModule,
     NgxMaterialTimepickerModule.forRoot(),
     ReactiveFormsModule,

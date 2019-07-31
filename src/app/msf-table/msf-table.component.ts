@@ -345,7 +345,7 @@ export class MsfTableComponent implements OnInit {
             _this.dataSource = dataResult;
           }
 
-          // special cases for date and time formats, so ngx-mask can display those values properly
+          // parse table values
           for (let i = 0; i < _this.tableOptions.displayedColumns.length; i++)
           {
             let column = _this.tableOptions.displayedColumns[i];
