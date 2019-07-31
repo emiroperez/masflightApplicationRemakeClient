@@ -298,7 +298,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
         for (let hiddenCategory of this.currentHiddenCategories)
         {
-          if (hiddenCategory === series.name)
+          if (hiddenCategory.name === series.name && hiddenCategory.variable.toLowerCase () === this.values.variable.name.toLowerCase ())
           {
             hidden = true;
             break;

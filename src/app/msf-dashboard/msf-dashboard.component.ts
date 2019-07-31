@@ -136,7 +136,7 @@ export class MsfDashboardComponent implements OnInit {
   {
     for (let hiddenCategoryValue of this.hiddenCategoriesValues)
     {
-      if (category.name === hiddenCategoryValue)
+      if (category.name === hiddenCategoryValue.name && category.variable.toLowerCase () === hiddenCategoryValue.variable.toLowerCase ()) 
       {
         this.hiddenCategoriesValues.splice (this.hiddenCategoriesValues.indexOf (hiddenCategoryValue), 1);
         this.currentHiddenCategories = JSON.parse (JSON.stringify (this.hiddenCategoriesValues));
@@ -144,7 +144,11 @@ export class MsfDashboardComponent implements OnInit {
       }
     }
 
-    this.hiddenCategoriesValues.push (category.name);
+    this.hiddenCategoriesValues.push ({
+      name: category.name,
+      variable: category.variable
+    });
+
     this.currentHiddenCategories = JSON.parse (JSON.stringify (this.hiddenCategoriesValues));
   }
 

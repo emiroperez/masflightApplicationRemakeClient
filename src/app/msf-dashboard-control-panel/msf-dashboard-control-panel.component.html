@@ -112,7 +112,7 @@
             </button>
           </div>
           <div class="msf-dashboard-control-panel-category-checkboxes">
-            <mat-checkbox *ngFor="let category of controlPanelCategory.values" class="msf-dashboard-control-panel-category-checkbox cancels-checkbox" [(ngModel)]="category.checked" (ngModelChange)="this.hideCategoryFromCharts.emit(category)">
+            <mat-checkbox *ngFor="let category of controlPanelCategory.values" class="msf-dashboard-control-panel-category-checkbox cancels-checkbox" [(ngModel)]="category.checked" (ngModelChange)="this.hideCategoryFromCharts.emit({ name: category.name, variable: controlPanelCategory.name })">
               {{category.name}}
             </mat-checkbox>
           </div>
