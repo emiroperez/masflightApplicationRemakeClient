@@ -6,28 +6,43 @@
           <td [ngClass]="column.show?'msf-show-table':'msf-hide'" mat-cell *matCellDef="let element;let rowNumber = dataIndex"> 
             <span *ngIf="column.drillDowns.length==0 && !isArray(element['Flight'])">
               <ng-container *ngIf="element[column.columnName] != null && element[column.columnName] != ''">
-                <span *ngIf="column.columnType=='date' || column.columnType=='time'">{{element[column.columnName] | date: column.columnFormat}}</span>
-                <span *ngIf="column.columnType=='string'">{{element[column.columnName]}}</span>
-                <span *ngIf="column.columnType=='number' && column.columnFormat != null && column.columnFormat != ''"><span *ngIf="column.prefix">{{column.prefix}}</span>{{element[column.columnName] | number:column.columnFormat:'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
-                <span *ngIf="column.columnType=='number' && (column.columnFormat == null || column.columnFormat == '')"><span *ngIf="column.prefix">{{column.prefix}}</span>{{element[column.columnName] | number:'.0-2':'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
+                <ng-container *ngIf="column.columnFormat != null && column.columnFormat != ''">
+                  <span *ngIf="column.columnType=='date' || column.columnType=='time'">{{element[column.columnName] | date: column.columnFormat}}</span>
+                  <span *ngIf="column.columnType=='string'">{{element[column.columnName]}}</span>
+                  <span *ngIf="column.columnType=='number'"><span *ngIf="column.prefix">{{column.prefix}}</span>{{element[column.columnName] | number:column.columnFormat:'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
+                </ng-container>
+                <ng-container *ngIf="column.columnFormat == null || column.columnFormat == ''">
+                  <span *ngIf="column.columnType!='number'">{{element[column.columnName]}}</span>
+                  <span *ngIf="column.columnType=='number'"><span *ngIf="column.prefix">{{column.prefix}}</span>{{element[column.columnName] | number:'.0-2':'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
+                </ng-container>
               </ng-container>
             </span>
             <span class="msf-subCell" *ngIf="column.drillDowns.length==0 && isArray(element['Flight'])">
               <span class="{{getDecoration(element['Flight'],j)}}" *ngFor="let subElement of element['Flight']; let j = index">
                 <ng-container *ngIf="subElement[column.columnName] != null && subElement[column.columnName] != ''">
-                  <span *ngIf="column.columnType=='date' || column.columnType=='time'">{{subElement[column.columnName] | date: column.columnFormat}}</span>
-                  <span *ngIf="column.columnType=='string'">{{subElement[column.columnName]}}</span>
-                  <span *ngIf="column.columnType=='number' && column.columnFormat != null && column.columnFormat != ''"><span *ngIf="column.prefix">{{column.prefix}}</span>{{subElement[column.columnName] | number:column.columnFormat:'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
-                  <span *ngIf="column.columnType=='number' && (column.columnFormat == null || column.columnFormat == '')"><span *ngIf="column.prefix">{{column.prefix}}</span>{{subElement[column.columnName] | number:'.0-2':'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
+                  <ng-container *ngIf="column.columnFormat != null && column.columnFormat != ''">
+                    <span *ngIf="column.columnType=='date' || column.columnType=='time'">{{subElement[column.columnName] | date: column.columnFormat}}</span>
+                    <span *ngIf="column.columnType=='string'">{{subElement[column.columnName]}}</span>
+                    <span *ngIf="column.columnType=='number'"><span *ngIf="column.prefix">{{column.prefix}}</span>{{subElement[column.columnName] | number:column.columnFormat:'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
+                  </ng-container>
+                  <ng-container *ngIf="column.columnFormat == null || column.columnFormat == ''">
+                    <span *ngIf="column.columnType!='number'">{{subElement[column.columnName]}}</span>
+                    <span *ngIf="column.columnType=='number'"><span *ngIf="column.prefix">{{column.prefix}}</span>{{subElement[column.columnName] | number:'.0-2':'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
+                  </ng-container>
                 </ng-container>
               </span>
             </span>
           <span class="drillDown-decoration" *ngIf="column.drillDowns.length>0 && !isArray(element['Flight'])" [matMenuTriggerFor]="menu">
             <ng-container *ngIf="element[column.columnName] != null && element[column.columnName] != ''">
-              <span *ngIf="column.columnType=='date' || column.columnType=='time'">{{element[column.columnName] | date: column.columnFormat}}</span>
-              <span *ngIf="column.columnType=='string'">{{element[column.columnName]}}</span>
-              <span *ngIf="column.columnType=='number' && column.columnFormat != null && column.columnFormat != ''"><span *ngIf="column.prefix">{{column.prefix}}</span>{{element[column.columnName] | number:column.columnFormat:'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
-              <span *ngIf="column.columnType=='number' && (column.columnFormat == null || column.columnFormat == '')"><span *ngIf="column.prefix">{{column.prefix}}</span>{{element[column.columnName] | number:'.0-2':'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
+              <ng-container *ngIf="column.columnFormat != null && column.columnFormat != ''">
+                <span *ngIf="column.columnType=='date' || column.columnType=='time'">{{element[column.columnName] | date: column.columnFormat}}</span>
+                <span *ngIf="column.columnType=='string'">{{element[column.columnName]}}</span>
+                <span *ngIf="column.columnType=='number'"><span *ngIf="column.prefix">{{column.prefix}}</span>{{element[column.columnName] | number:column.columnFormat:'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
+              </ng-container>
+              <ng-container *ngIf="column.columnFormat == null || column.columnFormat == ''">
+                <span *ngIf="column.columnType!='number'">{{element[column.columnName]}}</span>
+                <span *ngIf="column.columnType=='number'"><span *ngIf="column.prefix">{{column.prefix}}</span>{{element[column.columnName] | number:'.0-2':'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
+              </ng-container>
             </ng-container>
           </span>
           <mat-menu #menu="matMenu" [style.visibility]="column.drillDowns.length!=0? 'visible' : 'hidden'">
