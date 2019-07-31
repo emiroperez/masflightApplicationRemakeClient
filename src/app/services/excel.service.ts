@@ -98,7 +98,11 @@ export class ExcelService {
               format += ",";
           }
         }
-        else // Default number format if the minimum number of integer digits is less than 4
+        else if (minIntegerDigits == 3) // Default number formats if the minimum number of integer digits is less than 4
+          format += "#,000";
+        else if (minIntegerDigits == 2)
+          format += "#,#00";
+        else
           format += "#,##0";
 
         if (minFractionDigits || maxFractionDigits)
