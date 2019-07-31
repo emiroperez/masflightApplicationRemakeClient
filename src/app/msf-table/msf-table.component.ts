@@ -472,10 +472,15 @@ export class MsfTableComponent implements OnInit {
     if (date == null)
       return null;
 
-    // replace lower case letters with uppercase ones for the moment date format
-    momentFormat = format.replace (/m/g, "M");
-    momentFormat = momentFormat.replace (/y/g, "Y");
-    momentFormat = momentFormat.replace (/d/g, "D");
+    if (format == null || format == "")
+      momentFormat = "MM/DD/YYYY"; // Fallback for date values with no column format set
+    else
+    {
+      // replace lower case letters with uppercase ones for the moment date format
+      momentFormat = format.replace (/m/g, "M");
+      momentFormat = momentFormat.replace (/y/g, "Y");
+      momentFormat = momentFormat.replace (/d/g, "D");
+    }
 
     return moment (date, momentFormat).toDate ();
   }
@@ -493,10 +498,15 @@ export class MsfTableComponent implements OnInit {
     {
       let momentFormat: string;
 
-      // replace some cases in order for moment date format compatibility
-      momentFormat = format.replace (/h/g, "H");
-      momentFormat = momentFormat.replace (/M/g, "m");
-      momentFormat = momentFormat.replace (/S/g, "s");
+      if (format == null || format == "")
+        momentFormat = "HH:mm:ss"; // Fallback for time values with no column format set
+      else
+      {
+        // replace some cases in order for moment date format compatibility
+        momentFormat = format.replace (/h/g, "H");
+        momentFormat = momentFormat.replace (/M/g, "m");
+        momentFormat = momentFormat.replace (/S/g, "s");
+      }
 
       return moment (time, momentFormat).toDate ();
     }
