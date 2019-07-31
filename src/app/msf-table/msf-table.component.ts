@@ -517,10 +517,18 @@ export class MsfTableComponent implements OnInit {
 
   parseNumber(value: any): string
   {
-    let aux: string = String (value);
+    if (isNaN (value))
+    {
+      let aux: string = String (value);
 
-    // remove any non-numeric characters except dot
-    return aux.replace (/[^0-9.]/g, "");
+      // remove any non-numeric characters except dot if the value is not a number
+      value = aux.replace (/[^0-9.]/g, "");
+    }
+
+    if (value.toString () == "0")
+      value = "0";
+
+    return value;
   }
 
   parseString(value: any): string

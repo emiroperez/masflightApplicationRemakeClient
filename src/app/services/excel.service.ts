@@ -33,14 +33,25 @@ export class ExcelService {
         {
           let digits: number[] = tableColumnFormat.format.match (/\d+/g).map (Number);
 
-          if (digits[0])
-            minIntegerDigits = digits[0];
+          if (tableColumnFormat.format.startsWith ("."))
+          {
+            if (digits[0])
+              minFractionDigits = digits[0];
 
-          if (digits[1])
-            minFractionDigits = digits[1];
+            if (digits[1])
+              maxFractionDigits = digits[1];
+          }
+          else
+          {
+            if (digits[0])
+              minIntegerDigits = digits[0];
 
-          if (digits[2])
-            maxFractionDigits = digits[2];
+            if (digits[1])
+              minFractionDigits = digits[1];
+
+            if (digits[2])
+              maxFractionDigits = digits[2];
+          }
         }
 
         if (tableColumnFormat.prefix)
