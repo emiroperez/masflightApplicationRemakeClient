@@ -7,6 +7,36 @@ import * as XLSX from 'xlsx';
 })
 export class ExcelService {
 
+  predefinedTimeFormats: any = {
+    "short": "h:mm AM/PM",
+    "medium": "h:mm:ss AM/PM",
+    "long": "h:mm:ss AM/PM",
+    "full": "h:mm:ss AM/PM",
+    "shortDate": "h:mm AM/PM",
+    "mediumDate": "h:mm:ss AM/PM",
+    "longDate": "h:mm:ss AM/PM",
+    "fullDate": "h:mm:ss AM/PM",
+    "shortTime": "h:mm AM/PM",
+    "mediumTime": "h:mm:ss AM/PM",
+    "longTime": "h:mm:ss AM/PM",
+    "fullTime": "h:mm:ss AM/PM"
+  };
+
+  predefinedDateFormats: any = {
+    "short": "m/d/yy",
+    "medium": "MMM d, yy",
+    "long": "MMMM d, yy",
+    "full": "NNNNMMMM d, y",
+    "shortDate": "m/d/yy",
+    "mediumDate": "MMM d, yy",
+    "longDate": "MMMM d, yy",
+    "fullDate": "NNNNMMMM d, yy",
+    "shortTime": "m/d/yy",
+    "mediumTime": "MMM d, yy",
+    "longTime": "MMMM d, yy",
+    "fullTime": "NNNNMMMM d, yy"
+  };
+
   constructor() { }
 
   public exportAsExcelFile(tableSource: any, excelFileName: string, tableColumnFormats: any): void
@@ -97,8 +127,20 @@ export class ExcelService {
 
         this.SheetSetColumnFormat (ws, tableColumnFormat.pos, format, "n");
       }
-      else if (tableColumnFormat.type === "date" || tableColumnFormat.type === "time")
-        this.SheetSetColumnFormat (ws, tableColumnFormat.pos, tableColumnFormat.format.toLowerCase (), "d");
+      else if (tableColumnFormat.type === "date")
+      {
+        if (this.predefinedDateFormats[tableColumnFormat.format])
+          this.SheetSetColumnFormat (ws, tableColumnFormat.pos, this.predefinedDateFormats[tableColumnFormat.format], "d");
+        else
+          this.SheetSetColumnFormat (ws, tableColumnFormat.pos, tableColumnFormat.format.toLowerCase (), "d");
+      }
+      else if (tableColumnFormat.type === "time")
+      {
+        if (this.predefinedTimeFormats[tableColumnFormat.format])
+          this.SheetSetColumnFormat (ws, tableColumnFormat.pos, this.predefinedTimeFormats[tableColumnFormat.format], "d");
+        else
+          this.SheetSetColumnFormat (ws, tableColumnFormat.pos, tableColumnFormat.format.toLowerCase (), "d");
+      }
 
       wscols.push ({ wch: tableColumnFormat.width });
     }

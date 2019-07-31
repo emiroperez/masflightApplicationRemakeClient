@@ -68,6 +68,21 @@ export class MsfTableComponent implements OnInit {
 
   tableOptions: any;
 
+  predefinedColumnFormats: any = {
+    "short": true,
+    "medium": true,
+    "long": true,
+    "full": true,
+    "shortDate": true,
+    "mediumDate": true,
+    "longDate": true,
+    "fullDate": true,
+    "shortTime": true,
+    "mediumTime": true,
+    "longTime": true,
+    "fullTime": true
+  };
+
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(public globals: Globals, private service: ApplicationService,public dialog: MatDialog, private sanitizer: DomSanitizer) { }
@@ -472,8 +487,8 @@ export class MsfTableComponent implements OnInit {
     if (date == null)
       return null;
 
-    if (format == null || format == "")
-      momentFormat = "MM/DD/YYYY"; // Fallback for date values with no column format set
+    if (format == null || format == "" || this.predefinedColumnFormats[format])
+      momentFormat = "MM/DD/YYYY HH:mm:ss"; // fallback for date values with no column or pre-defined format set
     else
     {
       // replace lower case letters with uppercase ones for the moment date format
@@ -498,8 +513,8 @@ export class MsfTableComponent implements OnInit {
     {
       let momentFormat: string;
 
-      if (format == null || format == "")
-        momentFormat = "HH:mm:ss"; // Fallback for time values with no column format set
+      if (format == null || format == "" || this.predefinedColumnFormats[format])
+        momentFormat = "HH:mm:ss";          // fallback for time values with no column or pre-defined format set
       else
       {
         // replace some cases in order for moment date format compatibility
