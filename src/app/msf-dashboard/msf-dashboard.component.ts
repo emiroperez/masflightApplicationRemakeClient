@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, Input, SimpleChanges } from '@angular/core';
+import { Component, HostListener, OnInit, Input, SimpleChanges, ViewChild } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MatDialog } from '@angular/material';
 
@@ -7,6 +7,8 @@ import { MsfDashboardPanelValues } from '../msf-dashboard-panel/msf-dashboard-pa
 import { ApplicationService } from '../services/application.service';
 import { MsfDashboardChildPanelComponent } from '../msf-dashboard-child-panel/msf-dashboard-child-panel.component';
 import { ChartFlags } from '../msf-dashboard-panel/msf-dashboard-chartflags';
+import { MsfDashboardControlPanelComponent } from '../msf-dashboard-control-panel/msf-dashboard-control-panel.component';
+import { CategoryArguments } from '../model/CategoryArguments';
 
 const minPanelWidth = 25;
 
@@ -33,6 +35,27 @@ export class MsfDashboardComponent implements OnInit {
   contextMenuItems: any;
   contextParentPanel: MsfDashboardPanelValues;
 
+  isAmChartWithMultipleSeries: boolean[] = [
+    true,     // Bars
+    true,     // Horizontal Bars
+    false,    // Simple Bars
+    false,    // Simple Horizontal Bars
+    true,     // Stacked Bars
+    true,     // Horizontal Stacked Bars
+    false,    // Funnel
+    true,     // Lines
+    true,     // Area
+    true,     // Stacked Area
+    false,    // Pie
+    false,    // Donut
+    false,    // Information
+    false,    // Simple Form
+    false,    // Table
+    false,    // Map
+    false,    // Heat Map
+    false     // Map Tracker
+  ];
+
   heightValues:any[] = [
     { value: 1, name: 'Small' },
     { value: 3, name: 'Medium' },
@@ -42,6 +65,16 @@ export class MsfDashboardComponent implements OnInit {
 
   @Input()
   currentDashboardMenu: any;
+
+  @ViewChild("dashboardControlPanel")
+  dashboardControlPanel: MsfDashboardControlPanelComponent;
+
+  controlPanelOpen: boolean;
+  controlVariablesAvailable: any[] = [];
+  controlPanelVariables: CategoryArguments[];
+  hiddenCategoriesValues: any[] = [];
+  controlPanelCategories: any[] = [];
+  currentHiddenCategories: any;
 
   // variables for panel resizing
   currentColumn: number;
@@ -75,6 +108,7 @@ export class MsfDashboardComponent implements OnInit {
     if (changes['currentDashboardMenu'] && this.options.length != 0)
     {
       // replace dashboard panels if the menu has changed and we're still on the dashboard
+      this.controlPanelVariables = null;
       this.dashboardColumns.splice (0, this.dashboardColumns.length);
       this.dashboardColumnsProperties.splice (0, this.dashboardColumnsProperties.length);
       this.dashboardColumnsReAppendCharts.splice (0, this.dashboardColumnsReAppendCharts.length);
@@ -85,7 +119,37 @@ export class MsfDashboardComponent implements OnInit {
         this.service.getDashboardPanels (this, this.currentDashboardMenu.id,
           this.loadDashboardPanels, this.handlerError);
       }
+
+      this.dashboardControlPanel.removeControlVariables ();
+      this.controlVariablesAvailable = [];
+      this.controlPanelCategories = [];
+      this.controlPanelOpen = false;
     }
+  }
+
+  updateAllPanels(): void
+  {
+    this.controlPanelVariables = JSON.parse (JSON.stringify (this.dashboardControlPanel.controlVariables));
+  }
+
+  hideCategoryFromCharts(category): void
+  {
+    for (let hiddenCategoryValue of this.hiddenCategoriesValues)
+    {
+      if (category.name === hiddenCategoryValue.name && category.variable.toLowerCase () === hiddenCategoryValue.variable.toLowerCase ()) 
+      {
+        this.hiddenCategoriesValues.splice (this.hiddenCategoriesValues.indexOf (hiddenCategoryValue), 1);
+        this.currentHiddenCategories = JSON.parse (JSON.stringify (this.hiddenCategoriesValues));
+        return;
+      }
+    }
+
+    this.hiddenCategoriesValues.push ({
+      name: category.name,
+      variable: category.variable
+    });
+
+    this.currentHiddenCategories = JSON.parse (JSON.stringify (this.hiddenCategoriesValues));
   }
 
   // store any data form depending of the selected dashboard from menu
@@ -171,6 +235,37 @@ export class MsfDashboardComponent implements OnInit {
     return null;
   }
 
+  isMatIcon(icon): boolean
+  {
+    return !icon.endsWith (".png");
+  }
+
+  getImageIcon(controlVariable, hover): string
+  {
+    let newurl, filename: string;
+    let path: string[];
+    let url;
+
+    if (this.isMatIcon (controlVariable.icon))
+      return controlVariable.icon;
+
+    url = controlVariable.icon;
+    path = url.split ('/');
+    filename = path.pop ().split ('?')[0];
+    newurl = "";
+
+    // recreate the url with the theme selected
+    for (let dir of path)
+      newurl += dir + "/";
+
+    if (hover)
+      newurl += this.globals.theme + "-hover-" + filename;
+    else
+      newurl += this.globals.theme + "-" + filename;
+
+    return newurl;
+  }
+
   loadDashboardPanels(_this, data): void
   {
     let dashboardPanelIds: number[] = [];
@@ -189,6 +284,7 @@ export class MsfDashboardComponent implements OnInit {
     for (let i = 0, curColumn = 0; i < dashboardPanels.length; i++)
     {
       let dashboardPanel = dashboardPanels[i];
+      let option;
 
       if (dashboardPanel.column != curColumn)
       {
@@ -205,10 +301,143 @@ export class MsfDashboardComponent implements OnInit {
         dashboardRows = [];
       }
 
+      option = _this.getOption (dashboardPanel.option);
+
+      // add required global control variables if available
+      if (dashboardPanel.categoryOptions)
+      {
+        let categoryOptions: CategoryArguments[] = JSON.parse (dashboardPanel.categoryOptions);
+        let lastCategoryOption;
+
+        for (let categoryOption of categoryOptions)
+        {
+          let exists: boolean = false;
+
+          for (let controlVariable of _this.controlVariablesAvailable)
+          {
+            if (categoryOption.id == controlVariable.id)
+            {
+              exists = true;
+
+              for (let i = 0; i < controlVariable.arguments.length; i++)
+              {
+                // copy some values and visible attribute if the argument didn't have them
+                if (!controlVariable.arguments[i].visibleAttribute)
+                  controlVariable.arguments[i].visibleAttribute = categoryOption.arguments[i].visibleAttribute;
+
+                if (!controlVariable.arguments[i].value1)
+                  controlVariable.arguments[i].value1 = categoryOption.arguments[i].value1;
+
+                if (!controlVariable.arguments[i].value2)
+                  controlVariable.arguments[i].value2 = categoryOption.arguments[i].value2;
+
+                if (!controlVariable.arguments[i].value3)
+                  controlVariable.arguments[i].value3 = categoryOption.arguments[i].value3;
+              }
+
+              break;
+            }
+            else if (categoryOption.label === controlVariable.label)
+            {
+              // avoid repeating category arguments with the same label but different id,
+              // instead copy the arguments that are not in the added one
+              exists = true;
+
+              for (let newArgs of categoryOption.arguments)
+              {
+                let argexists = false;
+
+                for (let args of controlVariable.arguments)
+                {
+                  if (newArgs.id == args.id || newArgs.label1 === args.label1 || newArgs.title === args.title)
+                  {
+                    argexists = true;
+                    break;
+                  }
+                }
+
+                if (!argexists)
+                  controlVariable.arguments.push (JSON.parse (JSON.stringify (newArgs)));
+              }
+
+              break;
+            }
+          }
+
+          if (exists)
+            continue;
+
+          _this.controlVariablesAvailable.push (JSON.parse (JSON.stringify (categoryOption)));
+          lastCategoryOption = _this.controlVariablesAvailable[_this.controlVariablesAvailable.length - 1];
+          lastCategoryOption.isMatIcon = _this.isMatIcon (lastCategoryOption.icon);
+          lastCategoryOption.iconHover = _this.getImageIcon (lastCategoryOption, true);
+          lastCategoryOption.icon = _this.getImageIcon (lastCategoryOption, false);
+          lastCategoryOption.optionId = dashboardPanel.option.id;
+        }
+      }
+
+      // get the title results from the lastest response if the panel is a chart type with multiple series
+      if (_this.isAmChartWithMultipleSeries[dashboardPanel.chartType] && dashboardPanel.lastestResponse)
+      {
+        let lastestResponse = JSON.parse (dashboardPanel.lastestResponse);
+        let category;
+
+        // get category name from the option
+        for (let i = 0; i < option.columnOptions.length; i++)
+        {
+          if (i == dashboardPanel.analysis)
+          {
+            // check if category exists
+            for (let curCategory of _this.controlPanelCategories)
+            {
+              if (curCategory.name.toLowerCase () === option.columnOptions[i].columnLabel.toLowerCase ())
+              {
+                category = curCategory;
+                break;
+              }
+            }
+
+            if (!category)
+            {
+              _this.controlPanelCategories.push ({
+                name: option.columnOptions[i].columnLabel,
+                values: []
+              });
+
+              category = _this.controlPanelCategories[_this.controlPanelCategories.length - 1];
+            }
+
+            break;
+          }
+        }
+
+        for (let filter of lastestResponse.filter)
+        {
+          let exist: boolean = false;
+
+          for (let curCategory of category.values)
+          {
+            if (curCategory.name === filter.valueAxis)
+            {
+              exist = true;
+              break;
+            }
+          }
+
+          if (exist)
+            continue;
+
+          category.values.push ({
+            name: filter.valueAxis,
+            checked: true
+          });
+        }
+      }
+
       dashboardPanelIds.push (dashboardPanel.id);
       dashboardRows.push (new MsfDashboardPanelValues (_this.options, dashboardPanel.title,
         dashboardPanel.id, dashboardPanel.width, _this.heightValues[dashboardPanel.height],
-        _this.getOption (dashboardPanel.option), dashboardPanel.analysis, dashboardPanel.xaxis,
+        option, dashboardPanel.analysis, dashboardPanel.xaxis,
         dashboardPanel.values, dashboardPanel.function, dashboardPanel.chartType,
         dashboardPanel.categoryOptions, dashboardPanel.lastestResponse,
         dashboardPanel.paletteColors, dashboardPanel.updateTimeInterval,
@@ -752,5 +981,10 @@ export class MsfDashboardComponent implements OnInit {
   cancelLoading(dashboardPanel): void
   {
     dashboardPanel.isLoading = false;
+  }
+
+  toggleControlPanel(): void
+  {
+    this.controlPanelOpen = !this.controlPanelOpen;
   }
 }

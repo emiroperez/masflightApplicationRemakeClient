@@ -1,12 +1,12 @@
 <div>
-        <div class="center">
-            <div class="msf-component-airport-title">{{argument.title}}</div>        
-        </div> 
-        <div class="msf-airline-container">
-            <div class="msf-full-width" style="text-align: center;">   
-                <img src="../../assets/images/components/arguments/airline/{{globals.theme}}-aerolin.png" class="msf-airline-image">
-                <div class="msf-component-airport-sub-title">{{argument.label1}}</div>         
-                <ng-select
+    <div class="center">
+        <div class="msf-component-airport-title">{{argument.title}}</div>        
+    </div> 
+    <div class="msf-airline-container">
+        <div class="msf-full-width msf-airline-input-container">   
+            <img src="../../assets/images/components/arguments/airline/{{globals.theme}}-aerolin.png" class="msf-airline-image">
+            <div class="msf-component-airport-sub-title">{{argument.label1}}</div>
+            <ng-select
                 [items]="data | async"
                 [multiple]="false"
                 [loading]="loading"
@@ -14,13 +14,11 @@
                 [closeOnSelect]="true"
                 [hideSelected]="false"
                 bindLabel="{{argument.visibleAttribute}}"
-                
                 (search)="onSearch($event)" 
                 (change)="airlineChange()"
                 (focus)="onFocus()"
                 [(ngModel)]="argument.value1">
-            </ng-select>          
-            </div>
+            </ng-select>
         </div>
-      </div>
-  
+    </div>
+</div>

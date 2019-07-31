@@ -97,6 +97,5 @@ export class MsfContainerComponent implements OnInit {
 
   onLinkClick(event: any) {
     this.globals.selectedIndex = event;
-  
   }
 }

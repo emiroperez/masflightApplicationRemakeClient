@@ -1,4 +1,5 @@
 import { ChartFlags } from '../msf-dashboard-panel/msf-dashboard-chartflags';
+import { CategoryArguments } from '../model/CategoryArguments';
 
 // Object used to mantain data values for each dashboard panel
 export class MsfDashboardPanelValues {
@@ -22,7 +23,7 @@ export class MsfDashboardPanelValues {
     chartColumnOptions:any[] = []; 
     currentChartType;
     currentOption: any;
-    currentOptionCategories: any;
+    currentOptionCategories: CategoryArguments[];
 
     width: number;
     height: any;
@@ -81,6 +82,7 @@ export class MsfDashboardPanelValues {
     flightRoutes: any[] = [];
 
     calculatedHeight: number;
+    chartSeries: any[] = [];
 
     constructor(options: any[], chartName: String, id: number, width: any, height: any, currentOption?: any, variable?: any,
         xaxis?: any, valueColumn?: any, func?: any, chartType?: any, currentOptionCategories?: any, lastestResponse?: string,

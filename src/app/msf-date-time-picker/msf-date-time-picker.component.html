@@ -3,12 +3,10 @@
 </div>    
 <div class="msf-component-airport-input-container">
   <mat-form-field class="msf-full-width">
-    <input [min]="globals.minDate" [max]="globals.maxDate" matInput placeholder="{{argument.label1}}" [(ngModel)]="argument.value1" 
-        [owlDateTime]="dt1" autocomplete="off" >
+    <input [min]="globals.minDate" [max]="globals.maxDate" matInput placeholder="{{argument.label1}}" [(ngModel)]="argument.value1" [owlDateTime]="dt1" autocomplete="off">
     <div matSuffix style="height: 1.5em;">
-      <mat-icon  class="trigger" [owlDateTimeTrigger]="dt1">today</mat-icon>
+      <mat-icon class="trigger" [owlDateTimeTrigger]="dt1">today</mat-icon>
       <owl-date-time #dt1></owl-date-time>
     </div>
-   
   </mat-form-field>      
 </div>

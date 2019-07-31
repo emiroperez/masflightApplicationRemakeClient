@@ -185,6 +185,7 @@ import { CreateCustomerComponent } from './create-customer/create-customer.compo
 import { MsfMapCoordinatesComponent } from './msf-map-coordinates/msf-map-coordinates.component';
 import { MsfDynamicTableAliasComponent } from './msf-dynamic-table-alias/msf-dynamic-table-alias.component';
 import { Cookie } from './api/cookie';
+import { MsfDashboardControlPanelComponent } from './msf-dashboard-control-panel/msf-dashboard-control-panel.component';
 
 @NgModule({
   declarations: [
@@ -347,7 +348,8 @@ import { Cookie } from './api/cookie';
     MaterialIconPickerComponent,
     CreateCustomerComponent,
     MsfMapCoordinatesComponent,
-    MsfDynamicTableAliasComponent
+    MsfDynamicTableAliasComponent,
+    MsfDashboardControlPanelComponent
   ],
   imports: [
     BrowserModule,

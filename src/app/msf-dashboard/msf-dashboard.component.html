@@ -1,12 +1,20 @@
 <div #scrollContainer (click)="disableContextMenu()" (contextmenu)="disableContextMenu()" (scroll)="disableContextMenu()" class="msf-dashboard-container" [style.height]="screenHeight">
-  <div class="msf-dashboard-title" *ngIf="currentDashboardMenu">
-    <span class="msf-dashboard-title-label">
-      {{currentDashboardMenu.title}}
-      <span *ngIf="globals.readOnlyDashboard">
-       (Read Only)
+  <div class="msf-dashboard-header" *ngIf="currentDashboardMenu">
+    <div class="msf-dashboard-title">
+      <span class="msf-dashboard-title-label">
+        {{currentDashboardMenu.title}}
+        <span *ngIf="globals.readOnlyDashboard">
+         (Read Only)
+        </span>
       </span>
-    </span>
+      <div [ngClass]="{ 'msf-dashboard-control-panel-button' : !controlPanelOpen, 'msf-dashboard-control-panel-button-open' : controlPanelOpen }" (click)="toggleControlPanel()" *ngIf="!globals.readOnlyDashboard">
+        Control Panel
+        <mat-icon *ngIf="!controlPanelOpen" class="msf-dashboard-control-panel-button-arrow" aria-label="open">arrow_drop_down</mat-icon>
+        <mat-icon *ngIf="controlPanelOpen" class="msf-dashboard-control-panel-button-arrow" aria-label="open">arrow_drop_up</mat-icon>
+      </div>
+    </div>
   </div>
+  <app-msf-dashboard-control-panel #dashboardControlPanel (updateAllPanels)="updateAllPanels()" (hideCategoryFromCharts)="hideCategoryFromCharts($event)" [controlPanelOpen]="controlPanelOpen" [controlVariablesAvailable]="controlVariablesAvailable" [controlPanelCategories]="controlPanelCategories"></app-msf-dashboard-control-panel>
   <ng-container *ngIf="dashboardColumns.length">
     <div class="msf-dashboard-chartbox" cdkDropList cdkDropListOrientation="vertical" [cdkDropListData]="dashboardColumns" (cdkDropListDropped)="swapColumnPositions($event)">
       <div class="{{globals.theme}} msf-dashboard-chartbox-column" *ngFor="let dashboardColumn of dashboardColumns; let column = index" [attr.data-index]="column" cdkDragLockAxis="y" vsDragScroll [vsDragScrollContainer]="scrollContainer" cdkDrag [cdkDragDisabled]="dashboardColumns.length == 1 || globals.readOnlyDashboard || !dashboardColumnsProperties[column]">
@@ -29,7 +37,7 @@
                 <mat-icon class="msf-dashboard-button-close-icon" aria-label="close" (click)="removePanel(column, row)">close</mat-icon>
                 <div class="msf-dashboard-button-move-icon" *ngIf="dashboardColumn.length != 1" cdkDragHandle (click)="disableContextMenu()"></div>
               </div>
-              <app-msf-dashboard-panel [values]="dashboardPanel" [reAppendChart]="dashboardColumnsReAppendCharts[column]" [panelHeight]="getHeight(column)"></app-msf-dashboard-panel>
+              <app-msf-dashboard-panel [values]="dashboardPanel" [reAppendChart]="dashboardColumnsReAppendCharts[column]" [panelHeight]="getHeight(column)" [controlPanelVariables]="controlPanelVariables" [currentHiddenCategories]="currentHiddenCategories"></app-msf-dashboard-panel>
             </div>
           </div>
           <div class="msf-dashboard-panel-padding" *ngIf="globals.readOnlyDashboard"></div>
