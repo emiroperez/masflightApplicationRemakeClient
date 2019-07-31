@@ -64,7 +64,7 @@ export class Globals {
   // baseUrl = "http://192.168.1.50:8887";
   // baseUrl = "";
   // baseUrl2 = "http://localhost:8886";
-  baseUrl2 = "http://pulse.globaleagle.com:8886/mapBoxServices";
+  baseUrl2 = "https://pulse.globaleagle.com:8886/mapBoxServices";
   // popupUrl = "http://localhost:8900";
   popupUrl = "https://pulse.globaleagle.com:8900";
   scheduledata:any;
