@@ -47,7 +47,7 @@
       <mgl-layer *ngIf="feature" id="route_{{i}}" type="line" [source]="{ 'type': 'geojson', 'data': { 'type': 'Feature', 'properties': {}, 'geometry': { 'type': 'LineString', 'coordinates': coordinates[i] } } }" [layout]="{ 'line-join': 'round', 'line-cap': 'round' }" [paint]="{ 'line-color': paletteColors[i], 'line-width': 4 }"></mgl-layer>
     </ng-container>
   </mgl-map>
-  <div class="mapbox-panelinfo" *ngIf="data.length">
+  <div class="mapbox-panelinfo" [style.right.px]="legendOffset" *ngIf="data.length && globals.currentOption.metaData != 3">
     <ng-container *ngFor="let feature of data; let i = index">
       <div [ngStyle]="{ 'color': paletteColors[i] }">{{getRouteInfo(feature)}}</div>
     </ng-container>
