@@ -38,10 +38,19 @@ export class MsfMapComponent implements OnInit {
 
   coordinates = [];
 
-  paint = {        
-            'circle-radius': 2,
-            'circle-color': '#B42222'
-          };
+  paletteColors: string[] = [
+    "#B42222",
+    "#2222B4",
+    "#22B422",
+    "#B4B422",
+    "#B422B4",
+    "#22B4B4",
+    "#E18000",
+    "#FF0080"
+  ];
+
+  airlineDotColor: any[];
+  airlineLineColor: any[];
 
   layout = {
               "icon-image": "{icon}-15",
@@ -159,10 +168,32 @@ export class MsfMapComponent implements OnInit {
       _this.globals.endTimestamp = new Date();
       _this.data = features;
       _this.setCoordinates(features);
-      if(features.length > 0){  
+      if(features.length > 0){
+        let colindex = 0;
         let size =  Math.round(features[0].features.length/2);
         _this.center = features[0].features[size].geometry.coordinates;       
-        _this.zoom = [4];    
+        _this.zoom = [4];
+
+        _this.airlineDotColor = [];
+        _this.airlineLineColor = [];
+
+        // set colors depending of the airline
+        for (let i = 0; i < features.length; i++)
+        {
+          _this.airlineDotColor.push ({
+            'circle-radius': 2,
+            'circle-color': _this.paletteColors[colindex]
+          });
+  
+          _this.airlineLineColor.push ({
+            'line-color': _this.paletteColors[colindex],
+            'line-width': 4
+          });
+
+          colindex++;
+          if (colindex >= _this.paletteColors.length)
+            colindex = _this.paletteColors.length - 1;
+        }
       }
 
       _this.refreshMap ();
@@ -238,12 +269,17 @@ export class MsfMapComponent implements OnInit {
     }
   }
   
-  setCoordinates(data){
-    for(let features of data){
-      for(let feature of features.features){
-        this.coordinates.push(feature.geometry.coordinates);
-      }
-    }    
+  setCoordinates(data)
+  {
+    for (let features of data)
+    {
+      let airlineCoordinates = [];
+
+      for (let feature of features.features)
+        airlineCoordinates.push (feature.geometry.coordinates);
+
+      this.coordinates.push (airlineCoordinates);
+    }
   }
 
   cancelLoading(){

@@ -30,37 +30,41 @@
           </div>
         </mgl-marker>            
         <mgl-geojson-source *ngIf="feature" id="feature_{{i}}" [data]="feature"></mgl-geojson-source>
-        <mgl-layer *ngIf="feature"  id="feature_{{i}}" type="circle" source="feature_{{i}}" [paint]="paint"></mgl-layer>          
+        <mgl-layer *ngIf="feature"  id="feature_{{i}}" type="circle" source="feature_{{i}}" [paint]="airlineDotColor[i]"></mgl-layer>          
     </ng-container>
   </mgl-map>
 
-  <!-- <mgl-map *ngIf="currentMapType.id == 'line'" [style]="'mapbox://styles/mapbox/dark-v9'" [zoom]="zoom" [center]="center" (load)="map2 = $event; map2.resize ()"> -->
-    <!-- <mgl-map *ngIf="currentMapType.id == 'line'" [style]="'mapbox://styles/mapbox/light-v10'" [zoom]="zoom" [center]="center" (load)="map2 = $event; map2.resize ()"> -->
-      <mgl-map *ngIf="currentMapType.id == 'line' && !mapRefresh" [style]=currentMapStyle.id [zoom]="zoom" [center]="center" (load)="map2 = $event; map2.resize ()">
-        <mgl-layer
-      id="route"
-      type="line"
-      [source]="{
-        'type': 'geojson',
-        'data': {
-            'type': 'Feature',
-            'properties': {},
-            'geometry': {
-                'type': 'LineString',
-                'coordinates': coordinates
-            }
-        }
-      }"
-      [layout]="{
-        'line-join': 'round',
-        'line-cap': 'round'
-      }"
-      [paint]="{
-        'line-color': '#B42222',
-        'line-width': 4
-      }"
-    >
-    </mgl-layer>
+  <mgl-map *ngIf="currentMapType.id == 'line' && !mapRefresh" [style]=currentMapStyle.id [zoom]="zoom" [center]="center" (load)="map2 = $event; map2.resize ()">
+    <ng-container *ngFor="let feature of data; let i = index ">
+      <mgl-marker [lngLat]="[feature.features[0].origin.longitude, feature.features[0].origin.latitude]">
+        <div class="mapbox-text">
+          {{feature.features[0].origin.iata}}
+        </div>
+      </mgl-marker> 
+      <mgl-marker [lngLat]="[feature.features[0].dest.longitude, feature.features[0].dest.latitude]">
+        <div class="mapbox-text">
+          {{feature.features[0].dest.iata}}
+        </div>
+      </mgl-marker> 
+      <mgl-layer *ngIf="feature" id="route_{{i}}" type="line"
+        [source]="{
+          'type': 'geojson',
+          'data': {
+              'type': 'Feature',
+              'properties': {},
+              'geometry': {
+                  'type': 'LineString',
+                  'coordinates': coordinates[i]
+              }
+          }
+        }"
+        [layout]="{
+          'line-join': 'round',
+          'line-cap': 'round'
+        }"
+        [paint]="airlineLineColor[i]">
+      </mgl-layer>
+    </ng-container>
   </mgl-map>
   </div>
   <div class="loading-panel table-loading" *ngIf="isLoading && useCancelButton">
