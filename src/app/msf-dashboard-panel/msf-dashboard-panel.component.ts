@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input, NgZone, SimpleChanges } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, NgZone, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
@@ -62,7 +62,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   chartForm: FormGroup;
   chart: any;
 
-  chartTypes:any[] = [
+  chartTypes: any[] = [
     { name: 'Bars', flags: ChartFlags.XYCHART, createSeries: this.createVertColumnSeries },
     { name: 'Horizontal Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED, createSeries: this.createHorizColumnSeries },
     { name: 'Simple Bars', flags: ChartFlags.NONE, createSeries: this.createSimpleVertColumnSeries },
@@ -84,7 +84,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     { name: 'Simple Picture', flags: ChartFlags.INFO | ChartFlags.PICTURE }*/
   ];
 
-  functions:any[] = [
+  functions: any[] = [
     { id: 'avg', name: 'Average' },
     { id: 'sum', name: 'Sum' },
     { id: 'max', name: 'Max' },
@@ -92,13 +92,13 @@ export class MsfDashboardPanelComponent implements OnInit {
     { id: 'count', name: 'Count' }
   ];
 
-  fontSizes:any[] = [
+  fontSizes: any[] = [
     { name: 'Small', value: 12 },
     { name: 'Medium', value: 18 },
     { name: 'Large', value: 30 }
   ];
 
-  orientations:any[] = [
+  orientations: any[] = [
     { name: 'Horizontal', value: false },
     { name: 'Vertical', value: true }
   ];
@@ -106,7 +106,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   // NOTE: am4maps.projections.AlbersUsa is not available
   // on AmCharts v4 4.2.0 and using anything higher than 4.2.0
   // causes the map chart polygons not to be visible :(
-  geodatas:any[] = [
+  geodatas: any[] = [
     { name: 'U.S. States', value: am4geodata_usaAlbersLow },
     { name: 'North America', value: am4geodata_northAmericaLow },
     { name: 'Central America', value: am4geodata_centralAmericaLow },
@@ -120,26 +120,35 @@ export class MsfDashboardPanelComponent implements OnInit {
     { name: 'Colombia Municipals', value: am4geodata_colombiaMuniLow }
   ];
 
-  @Input()
+  @Input("values")
   values: MsfDashboardPanelValues;
   temp: MsfDashboardPanelValues;
 
-  @Input()
+  @Input("panelHeight")
   panelHeight: number;
 
   panelHeightOffset: number;
 
-  @Input()
+  @Input("reAppendChart")
   reAppendChart: boolean;
 
-  @Input()
+  @Input("controlPanelVariables")
   controlPanelVariables: CategoryArguments[];
 
-  @Input()
+  @Input("currentHiddenCategories")
   currentHiddenCategories: any;
+
+  @Output("removeDeadVariablesAndCategories")
+  removeDeadVariablesAndCategories = new EventEmitter ();
+
+  @Output("addNewVariablesAndCategories")
+  addNewVariablesAndCategories = new EventEmitter ();
 
   childPanelValues: any[] = [];
   childPanelsConfigured: boolean[] = [];
+
+  oldChartType: any;
+  oldVariableName: string = "";
 
   updateTimeLeft: number = 60;
   updateInterval: any;
@@ -703,6 +712,13 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     let theme = this.globals.theme;
 
+    this.removeDeadVariablesAndCategories.emit ({
+      type: this.chartTypes.indexOf (this.oldChartType),
+      analysisName: this.oldVariableName,
+      chartSeries: this.values.chartSeries,
+      controlVariables: null
+    });
+
     this.values.chartSeries = [];
 
     this.zone.runOutsideAngular (() => {
@@ -1179,6 +1195,17 @@ export class MsfDashboardPanelComponent implements OnInit {
       }
 
       this.chart = chart;
+
+      // add variable and categories into the dashboard control panel if they are not added
+      this.addNewVariablesAndCategories.emit ({
+        type: this.chartTypes.indexOf (this.values.currentChartType),
+        analysisName: this.values.variable.name,
+        controlVariables: this.values.currentOptionCategories,
+        chartSeries: this.values.chartSeries
+      });
+
+      this.oldChartType = this.values.currentChartType;
+      this.oldVariableName = this.values.variable.name;
     });
   }
 

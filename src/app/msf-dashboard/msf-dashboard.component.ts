@@ -376,64 +376,6 @@ export class MsfDashboardComponent implements OnInit {
         }
       }
 
-      // get the title results from the lastest response if the panel is a chart type with multiple series
-      if (_this.isAmChartWithMultipleSeries[dashboardPanel.chartType] && dashboardPanel.lastestResponse)
-      {
-        let lastestResponse = JSON.parse (dashboardPanel.lastestResponse);
-        let category;
-
-        // get category name from the option
-        for (let i = 0; i < option.columnOptions.length; i++)
-        {
-          if (i == dashboardPanel.analysis)
-          {
-            // check if category exists
-            for (let curCategory of _this.controlPanelCategories)
-            {
-              if (curCategory.name.toLowerCase () === option.columnOptions[i].columnLabel.toLowerCase ())
-              {
-                category = curCategory;
-                break;
-              }
-            }
-
-            if (!category)
-            {
-              _this.controlPanelCategories.push ({
-                name: option.columnOptions[i].columnLabel,
-                values: []
-              });
-
-              category = _this.controlPanelCategories[_this.controlPanelCategories.length - 1];
-            }
-
-            break;
-          }
-        }
-
-        for (let filter of lastestResponse.filter)
-        {
-          let exist: boolean = false;
-
-          for (let curCategory of category.values)
-          {
-            if (curCategory.name === filter.valueAxis)
-            {
-              exist = true;
-              break;
-            }
-          }
-
-          if (exist)
-            continue;
-
-          category.values.push ({
-            name: filter.valueAxis,
-            checked: true
-          });
-        }
-      }
-
       dashboardPanelIds.push (dashboardPanel.id);
       dashboardRows.push (new MsfDashboardPanelValues (_this.options, dashboardPanel.title,
         dashboardPanel.id, dashboardPanel.width, _this.heightValues[dashboardPanel.height],
@@ -986,5 +928,97 @@ export class MsfDashboardComponent implements OnInit {
   toggleControlPanel(): void
   {
     this.controlPanelOpen = !this.controlPanelOpen;
+  }
+
+  removeDeadVariablesAndCategories(panel): void
+  {
+    if (this.isAmChartWithMultipleSeries[panel.type])
+    {
+      // check if category exists
+      for (let curCategory of this.controlPanelCategories)
+      {
+        if (curCategory.name.toLowerCase () === panel.analysisName.toLowerCase ())
+        {
+          for (let series of panel.chartSeries)
+          {
+            for (let curCategoryValue of curCategory.values)
+            {
+              if (curCategoryValue.name === series.name)
+              {
+                curCategoryValue.count--;
+                if (!curCategoryValue.count)
+                  curCategory.values.splice (curCategory.values.indexOf (curCategoryValue, 1));
+
+                break;
+              }
+            }
+          }
+
+          curCategory.count--;
+          if (!curCategory.count)
+            this.controlPanelCategories.splice (this.controlPanelCategories.indexOf (curCategory), 1);
+        }
+      }
+
+      this.controlPanelCategories = JSON.parse (JSON.stringify (this.controlPanelCategories));
+    }
+  }
+
+  addNewVariablesAndCategories(panel): void
+  {
+    // get the title results if the panel is a chart type with multiple series
+    if (this.isAmChartWithMultipleSeries[panel.type])
+    {
+      let category;
+
+      // check if category exists
+      for (let curCategory of this.controlPanelCategories)
+      {
+        if (curCategory.name.toLowerCase () === panel.analysisName.toLowerCase ())
+        {
+          category = curCategory;
+          break;
+        }
+      }
+
+      if (!category)
+      {
+        this.controlPanelCategories.push ({
+          name: panel.analysisName,
+          values: [],
+          count: 1
+        });
+
+        category = this.controlPanelCategories[this.controlPanelCategories.length - 1];
+      }
+      else
+        category.count++;
+
+        for (let series of panel.chartSeries)
+        {
+          let exist: boolean = false;
+
+          for (let curCategory of category.values)
+          {
+            if (curCategory.name === series.name)
+            {
+              curCategory.count++;
+              exist = true;
+              break;
+            }
+          }
+
+          if (exist)
+            continue;
+
+          category.values.push ({
+            name: series.name,
+            checked: true,
+            count: 1
+          });
+        }
+
+      this.controlPanelCategories = JSON.parse (JSON.stringify (this.controlPanelCategories));
+    }
   }
 }
