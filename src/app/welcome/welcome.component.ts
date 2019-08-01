@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, ElementRef, HostListener, ChangeDetectorRef } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { Globals } from '../globals/Globals';
 import { WelcomeService } from '../services/welcome.service';
@@ -8,6 +8,8 @@ import { MenuService } from '../services/menu.service';
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
 import { AuthGuard } from '../guards/auth.guard';
+import { MediaMatcher } from '@angular/cdk/layout';
+import { ApplicationService } from '../services/application.service';	 
 
 @Component({
   selector: 'app-welcome',
@@ -24,9 +26,27 @@ export class WelcomeComponent implements OnInit {
 
   lastTime: Date;
 
-  constructor(public globals: Globals, private menuService: MenuService, private service: WelcomeService, private authService: AuthService, private authGuard: AuthGuard, private userService: UserService, private router: Router) {
+  mobileQuery: MediaQueryList;
+  private _mobileQueryListener: () => void;				
+
+  constructor(public globals: Globals, private menuService: MenuService, 
+    private service: WelcomeService, private authService: AuthService, 
+    private authGuard: AuthGuard, private userService: UserService,
+     private router: Router, media: MediaMatcher, 
+     changeDetectorRef: ChangeDetectorRef,private appService: ApplicationService) {
+        
+//media querys
+this.mobileQuery = media.matchMedia('(max-width: 480px)');
+this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+this.mobileQuery.addListener(this._mobileQueryListener);
+
   }
 
+    
+  ngOnDestroy(): void {
+    this.mobileQuery.removeListener(this._mobileQueryListener);
+  }
+	
   parseTimeStamp(timeStamp): string
   {
     let hours: number;
@@ -187,9 +207,17 @@ export class WelcomeComponent implements OnInit {
     // }
   }
 
-  logOut(): void
-  {
-    this.userService.setUserLastLoginTime (this, this.logoutSuccess, this.logoutError);
+  // logOut(): void
+  // {
+  //   this.userService.setUserLastLoginTime (this, this.logoutSuccess, this.logoutError);
+  // }
+
+  logOut(){
+    this.appService.confirmationDialog (this, "Are you sure you want to Log Out?",
+      function (_this)
+      {
+        _this.userService.setUserLastLoginTime (_this, _this.logoutSuccess, _this.logoutError);
+      });
   }
 
   logoutSuccess(_this): void

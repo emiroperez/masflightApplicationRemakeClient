@@ -1,9 +1,9 @@
 <div class="msf-header">
-    <div class="msf-header-image">
-        <mat-icon class="header-icon2" aria-label="Log Out" (click)="logOut()">exit_to_app</mat-icon>
+    <div class="msf-header-image" [class.is-mobile]="mobileQuery.matches">
+        <mat-icon class="header-icon2" [class.is-mobile]="mobileQuery.matches" aria-label="Log Out" (click)="logOut()">exit_to_app</mat-icon>
     </div>
-    <div class="msf-header-title">
-        <div class="msf-intro-welcome-labels">
+    <div class="msf-header-title" [class.is-mobile]="mobileQuery.matches">
+        <div *ngIf="!mobileQuery.matches" class="msf-intro-welcome-labels">
             <div class="msf-intro-welcome msf-intro-welcome-font">Welcome {{userName}}</div>
             <div *ngIf="lastTime" class="msf-intro-welcome-font">Last time: {{lastTime}}</div>
             <div *ngIf="!lastTime" class="msf-intro-welcome-font"><br></div>
@@ -24,10 +24,24 @@
     <div class="fade-in msf-container-welcome">
         <div *ngFor="let option of options" id="option.id" class="{{ activeElement==option ? 'msf-show-panel' : 'msf-hide' }} msf-content">
             <div class="msf-internal-content">
-                <div class="landing-icon-content">
-                    <div class="landing-icon-content-child" (mouseover)="option.hover=true" (mouseleave)="option.hover=false" (click)="goTo(option)" *ngFor="let option of options2">
-                        <div class="icon-container" [ngStyle]="{'background-image': 'url(' + getBackground(option) + ')'}"></div>
-                        <div [ngClass]="option.hover? 'footer-container footer-hover' : 'footer-container'">
+                <div *ngIf="mobileQuery.matches" class="landing-name-content">
+                        <div class="msf-intro-welcome msf-intro-welcome-font">Welcome {{userName}}</div>
+                        <div *ngIf="lastTime" class="msf-intro-welcome-font">Last time: {{lastTime}}</div>
+                        <div *ngIf="!lastTime" class="msf-intro-welcome-font"><br></div>
+                </div>
+                <div [ngClass]="mobileQuery.matches? 'landing-icon-content_is-mobile' : 'landing-icon-content'" >
+                    <div class="landing-icon-content-child" (mouseover)="option.hover=true" 
+                    (mouseleave)="option.hover=false" (click)="goTo(option)" *ngFor="let option of options2">
+                        <div class="icon-container" [class.is-mobile]="mobileQuery.matches" [ngStyle]="{'background-image': 'url(' + getBackground(option) + ')'}">
+                            <!--Only to mobile-->
+                            <div *ngIf="mobileQuery.matches" class="icon-container-title">
+                                <div class="icon-container-bk" [class.is-mobile]="mobileQuery.matches"
+                                [ngStyle]="{'background-image': 'url(../' + getBackground2(option) + ')'}"></div>
+                                <span>{{option.name}}</span>
+                            </div>
+                            <!---->
+                        </div>
+                        <div *ngIf="!mobileQuery.matches" [ngClass]="option.hover? 'footer-container footer-hover' : 'footer-container'">
                             <div [style.width.%]="25"></div>
                             <div [style.width.%]="25">
                                 <div class="icon-container-bk" [ngStyle]="{'background-image': 'url(' + getBackground2(option) + ')'}"></div>

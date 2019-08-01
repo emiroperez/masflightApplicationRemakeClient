@@ -1,0 +1,59 @@
+<div class="menu-nav-container">    
+    <div class="menu-option-container-first-line"></div>
+    <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" >
+        <mat-tree-node class="menu-child-option"
+        matTreeNodePadding [matTreeNodePaddingIndent]="getNodeIndent(node)" 
+        *matTreeNodeDef="let node" (click)=" getOptionSelected(node)" 
+        [ngClass]="parentIsOpen(node)? 'menu-opened' : 'menu-parent-option'">         
+        <div class="menu-option-container-second-line"></div>
+        <div [ngClass]="{'is-active-mobile': node.isActive,'is-inactive': !node.isActive }"
+                class="{{globals.theme}} menu-node">
+                <div class="menu-option-text" 
+                [style.padding-left.%]="(node.level*5)+2" 
+                [style.min-width.%]="85-((node.level*5)+2)">{{node.label}}</div>  
+        </div>
+        </mat-tree-node>
+        
+        <mat-tree-node [ngClass]="treeControl.isExpanded(node) || parentIsOpen(node)? 'menu-opened' : 'menu-parent-option'"
+            matTreeNodePadding  [matTreeNodePaddingIndent]="getNodeIndent(node)" 
+            *matTreeNodeDef="let node;when: hasChild" >          
+            <div class="menu-option-container-second-line"></div>
+            <div matTreeNodeToggle [ngClass]="treeControl.isExpanded(node) ? 'is-active-mobile' : 'is-inactive'"
+                class="{{globals.theme}} menu-node">
+                    <div class="menu-option-text"  [style.padding-left.%]="(node.level*5)+2" [style.min-width.%]="85-((node.level*5)+2)">{{node.label}}</div>  
+                    <button mat-icon-button  [attr.aria-label]="'toggle ' + node.label">
+                            <mat-icon class="mat-icon-rtl-mirror">
+                                {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                            </mat-icon>
+                    </button>
+            </div>            
+        </mat-tree-node>
+    </mat-tree>
+
+    <mat-tree [dataSource]="dataSourceDashboard" [treeControl]="treeControlDashboard" >
+        <mat-tree-node class="menu-child-option"
+        matTreeNodePadding [matTreeNodePaddingIndent]="getNodeIndent(node)" *matTreeNodeDef="let node" (click)="goToDashboard(node, node.readOnly)" 
+        [ngClass]="parentIsOpen(node)? 'menu-opened' : 'menu-parent-option'">         
+        <div class="menu-option-container-second-line"></div>
+        <div [ngClass]="{'is-active-mobile': node.isActive,'is-inactive': !node.isActive }"
+                class="{{globals.theme}} menu-node">
+                <div class="menu-option-text" [style.padding-left.%]="(node.level*5)+2" [style.min-width.%]="85-((node.level*5)+2)">{{node.title}}</div>  
+        </div>
+        </mat-tree-node>
+        
+        <mat-tree-node [ngClass]="treeControlDashboard.isExpanded(node) || parentIsOpen(node)? 'menu-opened' : 'menu-parent-option'"
+            matTreeNodePadding  [matTreeNodePaddingIndent]="getNodeIndent(node)" *matTreeNodeDef="let node;when: hasChild">          
+            <div class="menu-option-container-second-line"></div>
+            <div matTreeNodeToggle [ngClass]="treeControlDashboard.isExpanded(node) ? 'is-active-mobile' : 'is-inactive'"
+                class="{{globals.theme}} menu-node">
+                    <div class="menu-option-text"  [style.padding-left.%]="(node.level*5)+2" [style.min-width.%]="85-((node.level*5)+2)">{{node.title}}</div>  
+                    <button mat-icon-button  [attr.aria-label]="'toggle ' + node.title">
+                            <mat-icon class="mat-icon-rtl-mirror">
+                                {{treeControlDashboard.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                            </mat-icon>
+                    </button>
+            </div>            
+        </mat-tree-node>
+    </mat-tree>
+    <div class="menu-option-container-second-line"></div>
+</div>

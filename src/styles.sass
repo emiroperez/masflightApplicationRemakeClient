@@ -1103,12 +1103,16 @@ body
 
 .application-class
     height: 100%
+    display: flex 
+    flex-direction: column 
 
 .mat-card
     font-family: $msf-font-family
 
 .msf-header
     display: flex
+    flex-direction: row
+    align-items: center
     width: 100%
     height: 50px
     position: relative
@@ -1145,20 +1149,22 @@ body
     object-fit: contain
 
 .msf-header-image
-    width: 30%
-    max-width: 250px
+    width: calc(15% - 15px)
+    max-width: calc(15% - 15px)
     height: 100%
-    vertical-align: middle
-    display: inline-block
+    display: flex
+    flex-direction: row
+    align-items: center
+    justify-content: flex-end				
     border-bottom-right-radius: 40px
-    border-top-right-radius: 40px
-    // background-size: 70%  //kp28032019
-    background-repeat: no-repeat
-    // background-position: 30% 55% //kp28032019
-    // background-image: url(assets/images/logo_global_peqe.png) //kp28032019
-    background-position: 15% 55% //kp28032019
-    background-size: 45% //kp28032019
+    border-top-right-radius: 40px	
+    background-repeat: no-repeat										 
+    background-position: 15% 50%
+    background-size: 50%
     transition: 0.5s
+    padding-right: 15px    
+    margin-right: 30px
+
 
 .msf-intro-welcome-labels
     margin-top: -3px
@@ -1167,11 +1173,11 @@ body
     display: flex
     vertical-align: middle
     color: #ffffff
-    margin-left: 30px
+    // margin-left: 30px
     font-weight: bold
     font-size: x-large
-    width: 55%
-    flex: 1
+    width: calc(85% - 30px)
+    // flex: 1
 
 .msf-header-icons 
     display: flex
@@ -1196,7 +1202,7 @@ body
 .header-icon2
     width: 22px
     height: 22px
-    margin: 5% 0% 5% 75%
+    // margin: 5% 0% 5% 75%
     vertical-align: middle
 
 .msf-body
@@ -1540,9 +1546,9 @@ p
     width: 48%
 
 .login-header-image
-    width: 80%!important
+    width: 100%!important
     // height: 30px
-    height: 50px //descomentar para el nuevo diseño KP20032019
+    height: 50px 
     margin: 0 auto!important
 
 .image-avatar
@@ -3855,12 +3861,6 @@ td.mat-cell.admin-column-arguments-cell
             /* height: 70px*/
             height: calc(100% - 90px)
 
-.landing-name-content
-    display: flex
-    align-items: center
-    justify-content: center
-    padding: 0 50px
-
 .msf-show-panel2
     opacity: 1
     -webkit-transition: opacity 1s ease-in-out
@@ -5385,17 +5385,22 @@ mat-form-field.msf-table-input
     display: flex
     flex-direction: row
     width: 100%
-    position: absolute
+    /*position: absolute*/
     .login-header-logo
-        margin-top: 13px !important
+        // margin-top: 13px !important
         margin-left: 21px
-        width: 200px
+        // width: 200px
+        width: 20%
         height: 25px
         object-fit: contain
         transition: background-image 0.5s ease-in-out
         background-size: contain
         background-repeat: no-repeat
-        flex: 1
+        background-position-y: center
+        // flex: 1        
+        margin-top: 0px !important
+        margin-bottom: 0px !important
+        margin-right: 0px !important
 
 .theme-picker
     width: 100%
@@ -5405,19 +5410,29 @@ mat-form-field.msf-table-input
     .theme-picker-switch-container
         float: right
         display: flex
-        height: 100%
+        height: 100%        
+        width: 80%
+        flex-direction: row
+        align-items: center
+        justify-content: flex-end
         .theme-picker-slider-label
-            padding-top: 18px
-            padding-right: 16px
+            // padding-top: 18px
+            // padding-right: 16px
             font-weight: 500
             font-size: 12px
         .theme-picker-slider
-            padding-top: 12px
-            padding-right: 12px
+            // padding-top: 12px
+            // padding-right: 16px
+            margin: 0px 5px
         .theme-picker-label-container
             border-radius: 30px 0 0 30px
-            padding-top: 16px
-            transition: 0.5s
+            // padding-top: 16px
+            transition: 0.5s            
+            height: 100%
+            display: flex
+            flex-direction: row
+            align-items: center
+            margin-left: 5px
             .theme-picker-label
                 padding: 0px 18px
                 color: #ffffff
@@ -5426,24 +5441,25 @@ mat-form-field.msf-table-input
 .login-header
     .theme-picker
         display: flex
+        align-items: center
 
 .login-body
     display: flex
     align-items: center
     justify-content: space-around
-    height: 100vh
+    height: calc(100vh - 50px) //modifiying kp20190716
     .login-body-logo
         width: 50%
         display: flex
         align-items: center
-        .login-pulse-logo
-            width: 100% !important
-            height: 90px !important
-            object-fit: contain
-            transition: background-image 0.5s ease-in-out
-            background-size: contain
-            background-repeat: no-repeat
-            background-position-x: center
+        // .login-pulse-logo
+            // width: 100% !important
+            // height: 90px !important
+            // object-fit: contain
+            // transition: background-image 0.5s ease-in-out
+            // background-size: contain
+            // background-repeat: no-repeat
+            // background-position-x: center
     .login-body-container
         width: 50%
 
@@ -5853,3 +5869,253 @@ mat-form-field.msf-table-input
     font-size: 12px
     border-radius: 10px
     border-style: solid
+
+.login-card .mat-card-header .mat-card-header-text
+    margin: 0px !important
+
+.login-pulse-logo
+    width: 100% !important
+    height: 90px !important
+    object-fit: contain
+    transition: background-image 0.5s ease-in-out
+    background-size: contain
+    background-repeat: no-repeat
+    background-position-x: center
+
+//Media Querys
+	
+.login-card.is-mobile
+    padding: 25px !important
+
+.login-body-container.is-mobile
+    width: 80% !important
+
+.msf-header-image.is-mobile
+    width: calc(30% - 15px) !important
+    max-width: calc(30% - 15px) !important  
+    margin-right: 15px !important 
+
+.msf-header-title.is-mobile    
+    width: calc(70% - 15px) !important 
+
+.msf-header-title.is-mobile .theme-picker .theme-picker-switch-container
+    width: 100% !important
+
+.landing-name-content
+    display: flex
+    flex-direction: column
+    align-items: flex-start
+    justify-content: center
+    height: calc(10% - 20px)
+    padding: 10px 20px
+
+.landing-icon-content_is-mobile   
+    margin-top: 0%
+    padding: 0px
+    align-items: center
+    margin: 0%
+    display: flex
+    flex-direction: column
+    height: 90%
+    div
+        width: 100%
+        height: -moz-available
+        height: -webkit-fill-available
+        height: stretch
+        text-align: center
+        display: inline-block
+        margin: 0
+        // background: 0 0/cover no-repeat
+    span
+        text-align: center
+        display: block
+        font-size: 18px
+        font-weight: lighter
+        margin-top: 10%
+    img
+        cursor: pointer
+        outline: none
+        width: 50px
+        height: 40px 
+        margin-bottom: 10%
+
+.icon-container-bk.is-mobile
+    height: 43px !important
+    width: AUTO !important
+    background-repeat: no-repeat
+    background-size: contain !important
+    display: block !important
+    margin: 0px 62px !important
+    background-position: center !important
+    transition: background-image 0.5s ease-in-out   
+    
+.icon-container.is-mobile  
+    width: 100% !important
+    height: 100% !important
+    background-repeat: space
+    display: table !important
+
+.icon-container-title
+    display: table-cell !important
+    vertical-align: middle
+
+.msf-header-iconss
+    display: flex
+    color: white
+
+.msf-header-icons.is-mobile
+    margin-left: 15px
+    width: calc(55% - 15px) !important
+
+.msf-menu-header-image-container.is-mobile
+        width: calc(45% - 60px) !important
+
+.header-icon2.is-mobile
+    width: 20px !important
+    height: 20px !important
+    // margin: 5% 0% 5% 75%
+    vertical-align: middle
+
+
+.msf-menu-icons-left-mobile
+    width: calc(100% - 10px)
+    display: flex
+    justify-content: flex-start
+    margin-left: 10px
+    font-weight: 500
+
+.msf-menu-icons-right-mobile
+    right: 0px
+    position: relative
+    line-height: 1px
+    display: flex
+    width: 100%
+    justify-content: flex-end
+    
+.msf-menu-body.is-mobile
+    height: calc(100% - 90px) !important
+    min-height: calc(100% - 90px) !important
+
+.menu-nav-container::-webkit-scrollbar-thumb    
+    background-color: transparent !important
+    border-radius: 10px !important
+    outline: transparent !important
+
+.menu-nav-container
+    height: 97%
+    width: 97%
+    padding: 3%
+    overflow-y: Scroll
+    background-color: #333333
+
+.menu-parent-option
+    background-color: #333333
+
+.menu-child-option
+    background-color: #3d3d3d
+
+.menu-option-container-first-line
+    border-bottom: 1px solid #171717
+    display: flex
+    width: 100%
+
+.menu-option-container-second-line
+    border-bottom: 1px solid #4a4a4a
+    display: flex
+    width: 100%
+
+.menu-nav-container 
+    .mat-tree
+        background: none !important
+        .mat-tree-node
+            flex-direction: column
+            border-bottom: 1px solid #171717
+
+.menu-opened
+    border-left: 4px solid $msf-secondary-color
+    background-color: #3e3e3e
+
+.menu-option-text
+    height: 60px
+    line-height: 60px
+    white-space: nowrap
+    padding-left: 4%
+
+.is-active-mobile
+    background-color:  rgb(0,0,0,.3)
+
+button.mat-icon-button-menu
+    width: 15% !important
+
+.msf-menu-hide-nav-mobile
+    width: 0px
+    transition: 0.25s
+
+.msf-menu-tabs-content-mobile
+    width: calc(100% + 20px)
+    transition: 0.25s
+
+.msf-menu-internal-content-mobile 
+    height: calc(100% - 20px)
+    background-color: #ffffff
+    vertical-align: middle
+    margin-bottom: 20px
+
+.msf-menu-internal-content-all
+    height: 100%
+    background-color: #ffffff
+    vertical-align: middle
+
+.msf-menu-internal-content-tabs 
+    height: calc(100% - 34px)
+    background-color: #ffffff
+    vertical-align: middle
+
+.msf-option-welcome-container.is-mobile
+    margin: 20px !important
+
+.msf-menu-show-full-nav-component-hide
+    width: 0px
+    transition: 0.25s
+
+.msf-menu-show-full-nav-mobile
+    min-width: 100% 
+
+.msf-menu-show-nav-mobile
+    width: 100%
+    transition: 0.5s
+    
+.msf-category-container.is-mobile
+    height: calc(100% - 60px)
+    max-height: calc(100% - 60px)
+    transition: height 1s
+
+.msf-category-container-mobile-component-active
+    height: 100%
+    max-height: 100%
+    transition: height 1s  
+
+.msf-menu-search-button.is-mobile
+    position: relative !important
+    vertical-align: bottom
+    bottom: 0% !important
+    line-height: 0
+
+.msf-menu-components-container-show-mobile
+    padding: 10px
+    width: calc(100% - 20px)
+    height: calc(100% - 20px)
+    vertical-align: middle
+    display: inline-block
+    opacity: 1
+    transition: 2s
+    position: relative
+    overflow: auto
+
+.mat-tab-body-content
+    .msf-viewport-container 
+        background: #f3f3f2
+        app-msf-table
+            .results-container 
+                .mat-elevation-z8
+                    box-shadow: 0 5px 5px -3px rgba(0,0,0,.05), 0 8px 10px 1px rgba(0,0,0,.05), 0 3px 14px 2px rgba(0,0,0,.05)

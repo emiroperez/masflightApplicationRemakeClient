@@ -13,12 +13,15 @@
         </div>
     </div>
     <div class="login-body">
-        <div class="login-body-logo">
+        <div *ngIf="!mobileQuery.matches" class="login-body-logo">
             <div mat-card-image class="login-header-image login-pulse-logo"></div>
         </div>
-        <div class="login-body-container">
-            <mat-card class="login-card">
-                <mat-card-header></mat-card-header>
+         <div class="login-body-container" [class.is-mobile]="mobileQuery.matches">
+            <mat-card class="login-card" [class.is-mobile]="mobileQuery.matches">
+                <mat-card-header>
+                    <div *ngIf="mobileQuery.matches" mat-card-image class="login-header-image login-pulse-logo"></div>
+                    <!-- <img *ngIf="mobileQuery.matches" mat-card-image class="login-header-ima ge" src="../../assets/images/light-theme-login-logo.png" > -->
+                </mat-card-header>
                 <mat-card-content>
                     <app-notification [show]="utils.notificationShow" [message]="utils.notificationMessage" [type]="utils.notificationType"></app-notification>
                     <form class="login-form" name="login">
