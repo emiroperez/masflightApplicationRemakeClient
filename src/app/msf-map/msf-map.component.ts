@@ -26,12 +26,12 @@ export class MsfMapComponent implements OnInit {
   useCancelButton: boolean;
 
   @Output('finishLoading')
-  finishLoading = new EventEmitter ();
+  finishLoading = new EventEmitter();
 
-  mapReady: boolean=false;
+  mapReady: boolean = false;
 
   zoom = [1];
-  
+
   center = [-73.968285, 40.785091];
 
   data = [];
@@ -49,26 +49,23 @@ export class MsfMapComponent implements OnInit {
     "#FF0080"
   ];
 
-  airlineDotColor: any[];
-  airlineLineColor: any[];
-
   layout = {
-              "icon-image": "{icon}-15",
-              "text-field": "{title}",
-              "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
-              "text-offset": [0, 0.6],
-              "text-anchor": "top"
-          };
+    "icon-image": "{icon}-15",
+    "text-field": "{title}",
+    "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
+    "text-offset": [0, 0.6],
+    "text-anchor": "top"
+  };
 
-  mapTypes:any[] = [
-    {id:'line',name:'Lines'},                      
-    {id:'point',name:'Dots'}
-  ]; 
+  mapTypes: any[] = [
+    { id: 'line', name: 'Lines' },
+    { id: 'point', name: 'Dots' }
+  ];
 
-  mapStyles:any[] = [                  
-    {id:"mapbox://styles/mapbox/dark-v9",name:'Dark'},
-    {id:"mapbox://styles/mapbox/light-v10",name:'Light'}
-  ]; 
+  mapStyles: any[] = [
+    { id: "mapbox://styles/mapbox/dark-v9", name: 'Dark' },
+    { id: "mapbox://styles/mapbox/light-v10", name: 'Light' }
+  ];
 
   @Input('currentMapType')
   currentMapType = this.mapTypes[1];
@@ -86,16 +83,14 @@ export class MsfMapComponent implements OnInit {
 
   mapRefresh: boolean = false;
 
-  constructor( private zone: NgZone, private services: ApplicationService, public globals: Globals) { }
+  constructor(private zone: NgZone, private services: ApplicationService, public globals: Globals) { }
 
 
   ngOnInit() {
   }
 
-  ngOnChanges(changes: SimpleChanges): void
-  {
-    if (changes['displayMapMenu'] && this.displayMapMenu)
-    {
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['displayMapMenu'] && this.displayMapMenu) {
       // use dots and current theme as the default map type and style respectively
       this.mapReady = false;
       this.zoom = [1];
@@ -104,40 +99,36 @@ export class MsfMapComponent implements OnInit {
       this.coordinates = [];
       this.currentMapStyle = this.mapStyles[this.globals.theme === 'light-theme' ? 1 : 0];
       this.currentMapType = this.mapTypes[1];
-      this.refreshMap ();
+      this.refreshMap();
     }
 
-    if (changes['displayOptionPanel'])
-    {
-      if (this.resizeTimeout)
-      {
-        clearInterval (this.resizeTimeout);
+    if (changes['displayOptionPanel']) {
+      if (this.resizeTimeout) {
+        clearInterval(this.resizeTimeout);
         this.resizeTimeout = null;
       }
 
-      if (this.resizeInterval)
-      {
-        clearInterval (this.resizeInterval);
+      if (this.resizeInterval) {
+        clearInterval(this.resizeInterval);
         this.resizeInterval = null;
       }
 
       // poll every 50 ms to keep the mapbox with proper size during
       // the interval
-      this.resizeInterval = setInterval (() => {
-        this.zone.runOutsideAngular (() => {
+      this.resizeInterval = setInterval(() => {
+        this.zone.runOutsideAngular(() => {
           if (this.map && this.currentMapType.id == 'point')
-            this.map.resize ();
+            this.map.resize();
 
           if (this.map2 && this.currentMapType.id == 'line')
-            this.map2.resize ();
+            this.map2.resize();
         });
       }, 50);
 
-      this.resizeTimeout = setInterval (() => {
-        if (this.resizeInterval)
-        {
-          clearInterval (this.resizeTimeout);
-          clearInterval (this.resizeInterval);
+      this.resizeTimeout = setInterval(() => {
+        if (this.resizeInterval) {
+          clearInterval(this.resizeTimeout);
+          clearInterval(this.resizeInterval);
           this.resizeInterval = null;
           this.resizeTimeout = null;
         }
@@ -145,87 +136,62 @@ export class MsfMapComponent implements OnInit {
     }
   }
 
-  refreshMap()
-  {
+  refreshMap() {
     this.mapRefresh = true;
 
-    setTimeout (() => {
+    setTimeout(() => {
       this.mapRefresh = false;
     }, 10);
   }
 
-  getTrackingDataSource(){
+  getTrackingDataSource() {
     this.zoom = [1];
     this.globals.startTimestamp = new Date();
     this.data = [];
     this.coordinates = [];
     // this.isLoading = true;
-    this.services.getMapBoxTracking(this,this.successHandler, this.errorHandler);    
+    this.services.getMapBoxTracking(this, this.successHandler, this.errorHandler);
   }
 
-  successHandler(_this,features){
-    if(_this.isLoading){
+  successHandler(_this, features) {
+    if (_this.isLoading) {
       _this.globals.endTimestamp = new Date();
       _this.data = features;
       _this.setCoordinates(features);
-      if(features.length > 0){
-        let colindex = 0;
-        let size =  Math.round(features[0].features.length/2);
-        _this.center = features[0].features[size].geometry.coordinates;       
+      if (features.length > 0) {
+        let size = Math.round(features[0].features.length / 2);
+        _this.center = features[0].features[size].geometry.coordinates;
         _this.zoom = [4];
-
-        _this.airlineDotColor = [];
-        _this.airlineLineColor = [];
-
-        // set colors depending of the airline
-        for (let i = 0; i < features.length; i++)
-        {
-          _this.airlineDotColor.push ({
-            'circle-radius': 2,
-            'circle-color': _this.paletteColors[colindex]
-          });
-  
-          _this.airlineLineColor.push ({
-            'line-color': _this.paletteColors[colindex],
-            'line-width': 4
-          });
-
-          colindex++;
-          if (colindex >= _this.paletteColors.length)
-            colindex = _this.paletteColors.length - 1;
-        }
       }
 
-      _this.refreshMap ();
+      _this.refreshMap();
 
-      _this.finishLoading.emit (false);
-      if(!_this.globals.isLoading){
+      _this.finishLoading.emit(false);
+      if (!_this.globals.isLoading) {
         _this.globals.showBigLoading = true;
       }
     }
 
-}
+  }
 
-  generateCoordinates(coordinates)
-  {
+  generateCoordinates(coordinates) {
     this.globals.endTimestamp = new Date();
     this.data = coordinates;
-    this.setCoordinates (coordinates);
+    this.setCoordinates(coordinates);
 
-    if (coordinates.length > 0)
-    {  
-      let size =  Math.round (coordinates[0].features.length / 2);
-      this.center = coordinates[0].features[size].geometry.coordinates;       
-      this.zoom = [4];    
+    if (coordinates.length > 0) {
+      let size = Math.round(coordinates[0].features.length / 2);
+      this.center = coordinates[0].features[size].geometry.coordinates;
+      this.zoom = [4];
     }
 
     if (this.data)
-      this.refreshMap ();
+      this.refreshMap();
   }
 
-  errorHandler(_this,data){
-    _this.finishLoading.emit (true);
-    if(!_this.globals.isLoading){
+  errorHandler(_this, data) {
+    _this.finishLoading.emit(true);
+    if (!_this.globals.isLoading) {
       _this.globals.showBigLoading = true;
     }
   }
@@ -237,68 +203,68 @@ export class MsfMapComponent implements OnInit {
     return "100%";
   }
 
-  mapTypeChange(type){
+  mapTypeChange(type) {
     switch (type.id) {
       case 'line':
         if (this.map2)
-          this.map2.resize ();
+          this.map2.resize();
         break;
       case 'point':
         if (this.map)
-          this.map.resize ();
+          this.map.resize();
         break;
     }
   }
 
-  mapStyleChange(style){
+  mapStyleChange(style) {
     switch (style.name) {
       case 'light':
         if (this.map2) {
-          this.map2.resize ();
-        }else if (this.map) {
-          this.map.resize ();
+          this.map2.resize();
+        } else if (this.map) {
+          this.map.resize();
         }
         break;
-      case 'dark':        
+      case 'dark':
         if (this.map2) {
-          this.map2.resize ();
-       }else if (this.map) {
-          this.map.resize ();
+          this.map2.resize();
+        } else if (this.map) {
+          this.map.resize();
         }
         break;
     }
   }
-  
-  setCoordinates(data)
-  {
-    for (let features of data)
-    {
+
+  setCoordinates(data) {
+    for (let features of data) {
       let airlineCoordinates = [];
 
       for (let feature of features.features)
-        airlineCoordinates.push (feature.geometry.coordinates);
+        airlineCoordinates.push(feature.geometry.coordinates);
 
-      this.coordinates.push (airlineCoordinates);
+      this.coordinates.push(airlineCoordinates);
     }
   }
 
-  cancelLoading(){
+  cancelLoading() {
     this.isLoading = false;
     this.globals.showBigLoading = true;
   }
 
-  resizeMap(): void
-  {
+  getRouteInfo(feature): string {
+    return feature.features[0].airline + " - " + feature.features[0].tailNumber;
+  }
+
+  resizeMap(): void {
     if (this.map && this.currentMapType.id == 'point')
-      this.map.resize ();
+      this.map.resize();
 
     if (this.map2 && this.currentMapType.id == 'line')
-      this.map2.resize ();
+      this.map2.resize();
   }
 
   @HostListener('window:resize', ['$event'])
-  checkScreen(event): void
-  {
-    this.resizeMap ();
+  checkScreen(event): void {
+    this.resizeMap();
   }
 }

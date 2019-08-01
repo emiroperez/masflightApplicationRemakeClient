@@ -831,7 +831,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             color: $primary-color
             cursor: pointer
             height: 88px
-        .panelinfo
+        .panelinfo, .mapbox-panelinfo
             background-color: $map-panelinfo-background-color
             border-color: $schedule-map-info-border
         #chartdivmap
@@ -5843,3 +5843,14 @@ mat-form-field.msf-table-input
 
 .msf-user-activation-card .mat-cell-centered
     text-align: center
+
+.mapbox-panelinfo
+    width: 80px
+    position: absolute
+    right: 0
+    bottom: 0
+    margin: 10px
+    padding: 10px
+    font-size: 12px
+    border-radius: 10px
+    border-style: solid
