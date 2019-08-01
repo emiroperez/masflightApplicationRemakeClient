@@ -502,26 +502,22 @@ export class MsfTableComponent implements OnInit {
 
   parseTime(time: any, format: string): Date
   {
-    let date: Date;
+    let momentFormat: string;
 
     if (time == null)
       return null;
 
-    date = new Date (time);
+    if (format == null || format == "" || this.predefinedColumnFormats[format])
+      momentFormat = "HH:mm:ss";          // fallback for time values with no column or pre-defined format set
+    else
+    {
+      // replace some cases in order for moment date format compatibility
+      momentFormat = format.replace (/h/g, "H");
+      momentFormat = momentFormat.replace (/M/g, "m");
+      momentFormat = momentFormat.replace (/S/g, "s");
+    }
 
-      let momentFormat: string;
-
-      if (format == null || format == "" || this.predefinedColumnFormats[format])
-        momentFormat = "HH:mm:ss";          // fallback for time values with no column or pre-defined format set
-      else
-      {
-        // replace some cases in order for moment date format compatibility
-        momentFormat = format.replace (/h/g, "H");
-        momentFormat = momentFormat.replace (/M/g, "m");
-        momentFormat = momentFormat.replace (/S/g, "s");
-      }
-
-      return moment (time, momentFormat).toDate ();
+    return moment (time, momentFormat).toDate ();
   }
 
   parseNumber(value: any): string
