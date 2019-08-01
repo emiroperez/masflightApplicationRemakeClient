@@ -509,8 +509,6 @@ export class MsfTableComponent implements OnInit {
 
     date = new Date (time);
 
-    if (isNaN (date.getTime ()))
-    {
       let momentFormat: string;
 
       if (format == null || format == "" || this.predefinedColumnFormats[format])
@@ -524,10 +522,6 @@ export class MsfTableComponent implements OnInit {
       }
 
       return moment (time, momentFormat).toDate ();
-    }
-
-    // use full date format if the time value is a valid date
-    return moment (time, "MM/DD/YYYY HH:mm:ss").toDate ();
   }
 
   parseNumber(value: any): string
