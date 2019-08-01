@@ -200,10 +200,10 @@ export class MsfMapComponent implements OnInit {
   }
 
   getHeight(): string {
-    // if(this.data != null && this.data.length == 1 ){
-    //   return 60;
-    // }
-    return "100%";
+    if (!this.displayMapMenu)
+      return "100%";
+
+    return "calc(100% - 40px)";
   }
 
   mapTypeChange(type) {
