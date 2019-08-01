@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { NotificationComponent } from '../notification/notification.component';
@@ -10,6 +10,7 @@ import { Globals } from '../globals/Globals';
 import { HttpClient } from '@angular/common/http';
 import { TwoFactorLoginDialogComponent } from '../two-factor-login-dialog/two-factor-login-dialog.component';
 import { MatDialog } from '@angular/material';
+import { MediaMatcher } from '@angular/cdk/layout';  
 
 @Component({
   selector: 'app-login-screen',
@@ -33,9 +34,18 @@ export class LoginScreenComponent implements OnInit {
   loggedIn = false;
   _this = this;
 
+  mobileQuery: MediaQueryList;
+  private _mobileQueryListener: () => void;
+  
   constructor(private router: Router,  public globals: Globals, private service: MenuService,
     private authService: AuthService, private notification: NotificationComponent,
-    private formBuilder: FormBuilder, public http: HttpClient, public dialog: MatDialog) {
+    private formBuilder: FormBuilder, public http: HttpClient, public dialog: MatDialog, media: MediaMatcher, changeDetectorRef: ChangeDetectorRef) {
+    
+//media querys
+    this.mobileQuery = media.matchMedia('(max-width: 480px)');
+    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+    this.mobileQuery.addListener(this._mobileQueryListener);
+	
     this.user = new User (null);
     this.utils = new Utils ();
     this.user.username = "";
@@ -47,6 +57,9 @@ export class LoginScreenComponent implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {
+    this.mobileQuery.removeListener(this._mobileQueryListener);
+  }
   isUsernameInvalid(): boolean
   {
     return this.loginForm.get ('usernameValidator').invalid;

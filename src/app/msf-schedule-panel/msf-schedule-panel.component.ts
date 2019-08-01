@@ -27,15 +27,23 @@ export class MsfSchedulePanelComponent implements OnInit {
   private maproutes : any[];
 
   
-  mobileQuery: MediaQueryList;
-  private _mobileQueryListener: () => void;
+  // mobileQuery: MediaQueryList;
+  // private _mobileQueryListener: () => void;
+
+  TabletQuery: MediaQueryList;
+  private _TabletQueryListener: () => void;
 
   constructor(private zone: NgZone, public globals: Globals, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
     this.utils = new Utils ();
 
-    this.mobileQuery = media.matchMedia('(max-width: 1024px)');
-    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
-    this.mobileQuery.addListener(this._mobileQueryListener);
+    // this.mobileQuery = media.matchMedia('(max-width: 1024px)');
+    // this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+    // this.mobileQuery.addListener(this._mobileQueryListener);
+
+    
+    this.TabletQuery = media.matchMedia('(max-width: 1024px)');
+    this._TabletQueryListener = () => changeDetectorRef.detectChanges();
+    this.TabletQuery.addListener(this._TabletQueryListener);
 
   }
 
@@ -53,7 +61,9 @@ export class MsfSchedulePanelComponent implements OnInit {
 
  ngOnDestroy(): void {
   this.globals.schedulepanelinfo=false;
+  this.TabletQuery.removeListener(this._TabletQueryListener);
  }
+
 
   expandFlight(index,$event){
     let theme, imageSeriesTemplate, circle, hoverState, label, zoomLevel;

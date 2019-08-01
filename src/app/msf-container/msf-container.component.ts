@@ -1,10 +1,11 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Globals } from '../globals/Globals';
 import { MatTab, MatTabGroup, MatTabChangeEvent } from '@angular/material';
 import { MsfTableComponent } from '../msf-table/msf-table.component';
 import { MsfDynamicTableComponent } from '../msf-dynamic-table/msf-dynamic-table.component';
 import { MsfMapComponent } from '../msf-map/msf-map.component';
 import { MsfDashboardComponent } from '../msf-dashboard/msf-dashboard.component';
+import { MediaMatcher } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-msf-container',
@@ -34,11 +35,20 @@ export class MsfContainerComponent implements OnInit {
 
   @ViewChild(MatTabGroup) tabGroup: MatTabGroup;
 
-  constructor(public globals: Globals) { }
-
+  mobileQuery: MediaQueryList;
+  private _mobileQueryListener: () => void;							   
+  constructor(public globals: Globals, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) { 
+    
+    this.mobileQuery = media.matchMedia('(max-width: 480px)');
+    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+    this.mobileQuery.addListener(this._mobileQueryListener);}
+	
   ngOnInit() {
   }
 
+  ngOnDestroy(): void {
+    this.mobileQuery.removeListener(this._mobileQueryListener);
+  }
   ngAfterViewInit(){
   }
 

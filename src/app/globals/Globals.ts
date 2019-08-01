@@ -88,6 +88,13 @@ export class Globals {
   lastTime: string;
   appLoading: boolean;
 
+  //mobile
+  showIntroWelcome : boolean = true;
+  showMenu : boolean = false;
+  showCategoryArguments: boolean = false;
+  showTabs: boolean = false;
+  showDashboard: boolean = false;
+  
   @HostBinding('class')
   theme: string = "light-theme";
 
@@ -238,6 +245,15 @@ export class Globals {
       }
   }
   option.outputs = option.outputs.replace(" :","");
+}
+
+
+clearVariablesMenu(){
+  this.showIntroWelcome = true;
+  this.showMenu = false;
+  this.showCategoryArguments = false;
+  this.showTabs  = false;
+  this.showDashboard = false;
 }
 
   clearVariables(){

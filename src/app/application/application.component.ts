@@ -53,11 +53,14 @@ export class ApplicationComponent implements OnInit {
   coordinates: any;
   //displayedColumns: string[] = [];
   variables;
+  currentOptionBackUp: any;		   
 
   @ViewChild('msfContainerRef')
   msfContainerRef: MsfContainerComponent;
 
+  TabletQuery: MediaQueryList;
   mobileQuery: MediaQueryList;
+  private _TabletQueryListener: () => void;
   private _mobileQueryListener: () => void;
 
   constructor(public dialog: MatDialog, public globals: Globals, private menuService: MenuService,private router: Router,private excelService:ExcelService,
@@ -65,8 +68,13 @@ export class ApplicationComponent implements OnInit {
     private userService: UserService)
   {
     this.status = false;
+    //media querys
 
-    this.mobileQuery = media.matchMedia('(max-width: 768px)');
+    this.TabletQuery = media.matchMedia('(max-width: 768px)');
+    this._TabletQueryListener = () => changeDetectorRef.detectChanges();
+    this.TabletQuery.addListener(this._TabletQueryListener);
+    
+    this.mobileQuery = media.matchMedia('(max-width: 480px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
   }
@@ -74,11 +82,13 @@ export class ApplicationComponent implements OnInit {
   ngOnInit() {
     this.globals.lastTime = null;
     this.globals.clearVariables();
+    this.globals.clearVariablesMenu()
     this.getMenu();
   }
 
   ngOnDestroy(): void {
-    this.mobileQuery.removeListener(this._mobileQueryListener);
+    this.TabletQuery.removeListener(this._TabletQueryListener);
+	this.mobileQuery.removeListener(this._mobileQueryListener);
   }
 
   parseTimeStamp(timeStamp): string
@@ -276,6 +286,7 @@ export class ApplicationComponent implements OnInit {
   handlerSuccess(_this,data){
     _this.menu = data;
     _this.temporalSelectOption(_this);
+    _this.currentOptionBackUp = _this.globals.currentOption; 
   }
 
   handlerError(_this,result){
@@ -351,6 +362,12 @@ toggle(){
   }
 
   search() {
+    if(!this.globals.showMenu && this.globals.showCategoryArguments){
+		//para mobile
+      this.globals.showCategoryArguments=false;
+      this.globals.showIntroWelcome=false;
+      this.globals.showTabs=true;
+    }
     if (this.globals.currentOption.metaData == 3)
     {
       this.configureCoordinates ();
@@ -597,10 +614,19 @@ toggle(){
     return (this.globals.currentOption === "dashboard" || !this.globals.currentOption);
   }
 
-  logOut(){
-    this.userService.setUserLastLoginTime (this, this.logoutSuccess, this.logoutError);
-  }
 
+  // logOut(){
+  //   this.userService.setUserLastLoginTime (this, this.logoutSuccess, this.logoutError);
+  // }
+
+  logOut(){
+    this.appService.confirmationDialog (this, "Are you sure you want to Log Out?",
+      function (_this)
+      {
+        _this.userService.setUserLastLoginTime (_this, _this.logoutSuccess, _this.logoutError);
+      });
+  }
+  
   logoutSuccess(_this): void
   {
     _this.authGuard.disableSessionInterval ();
@@ -829,5 +855,40 @@ toggle(){
       return false;
 
     return this.defaultDashboardId == this.globals.currentDashboardMenu.id;
+  }
+  
+  showMenu(){
+    if(!this.globals.showMenu){
+      this.globals.showCategoryArguments= false;
+      this.globals.showIntroWelcome = false;
+      this.globals.showTabs=false;
+      this.globals.showDashboard=false;
+      this.globals.showMenu = true;
+    }else if(this.globals.showMenu && !this.globals.showIntroWelcome){
+      this.globals.clearVariables ();
+      this.globals.currentOption = this.currentOptionBackUp;
+      this.globals.showMenu = false;
+      this.globals.showCategoryArguments= false;
+      this.globals.showTabs=false;
+      this.globals.showDashboard=false;
+      this.globals.showIntroWelcome = true;
+    }
+
+  }
+
+  backMenu(){
+    if(!this.globals.showMenu && (this.globals.showCategoryArguments || this.globals.showDashboard)){
+      this.globals.showIntroWelcome = false;
+      this.globals.showCategoryArguments = false;
+      this.globals.showTabs=false;
+      this.globals.showDashboard=false;
+      this.globals.showMenu = true;
+    }else if(!this.globals.showMenu && this.globals.showTabs){
+      this.globals.showMenu = false;
+      this.globals.showIntroWelcome = false;
+      this.globals.showTabs=false;
+      this.globals.showDashboard=false;
+      this.globals.showCategoryArguments = true;
+    }
   }
 }

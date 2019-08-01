@@ -185,6 +185,7 @@ import { MsfMapCoordinatesComponent } from './msf-map-coordinates/msf-map-coordi
 import { MsfDynamicTableAliasComponent } from './msf-dynamic-table-alias/msf-dynamic-table-alias.component';
 import { Cookie } from './api/cookie';
 import { MsfDashboardControlPanelComponent } from './msf-dashboard-control-panel/msf-dashboard-control-panel.component';
+import { MenuNavComponent } from './menu-nav/menu-nav.component';
 
 @NgModule({
   declarations: [
@@ -348,7 +349,8 @@ import { MsfDashboardControlPanelComponent } from './msf-dashboard-control-panel
     CreateCustomerComponent,
     MsfMapCoordinatesComponent,
     MsfDynamicTableAliasComponent,
-    MsfDashboardControlPanelComponent
+    MsfDashboardControlPanelComponent,
+    MenuNavComponent
   ],
   imports: [
     BrowserModule,
