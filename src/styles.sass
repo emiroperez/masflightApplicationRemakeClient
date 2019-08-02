@@ -537,6 +537,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             color: $font-color
             font-size: 100%
             font-weight: lighter
+        .mat-nav-list .mat-list-item, .mat-selection-list .mat-list-item
             height: 30px !important
         .msf-component-airport-title
             background: $tertiary-background-color
@@ -4020,6 +4021,7 @@ li.msf-select:before
     margin-bottom: 0
     margin-top: 0
 
+
 .msf-current-query-summary-container
     display: inline-block
     margin-left: 20px
@@ -6052,7 +6054,8 @@ button.mat-icon-button-menu
     transition: 0.25s
 
 .msf-menu-tabs-content-mobile
-    width: calc(100% + 20px)
+    // width: calc(100% + 20px)
+    width: 100%
     transition: 0.25s
 
 .msf-menu-internal-content-mobile 
@@ -6111,6 +6114,15 @@ button.mat-icon-button-menu
     transition: 2s
     position: relative
     overflow: auto
+
+.menu-node.is-mobile
+    align-items: center
+
+.msf-container-tabs
+    height: 100%
+
+.msf-container-tabs-hide
+    height: 0px
 
 .mat-tab-body-content
     .msf-viewport-container 

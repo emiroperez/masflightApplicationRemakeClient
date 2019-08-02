@@ -7,7 +7,7 @@
         [ngClass]="parentIsOpen(node)? 'menu-opened' : 'menu-parent-option'">         
         <div class="menu-option-container-second-line"></div>
         <div [ngClass]="{'is-active-mobile': node.isActive,'is-inactive': !node.isActive }"
-                class="{{globals.theme}} menu-node">
+                class="{{globals.theme}} menu-node is-mobile">
                 <div class="menu-option-text" 
                 [style.padding-left.%]="(node.level*5)+2" 
                 [style.min-width.%]="85-((node.level*5)+2)">{{node.label}}</div>  
@@ -19,7 +19,7 @@
             *matTreeNodeDef="let node;when: hasChild" >          
             <div class="menu-option-container-second-line"></div>
             <div matTreeNodeToggle [ngClass]="treeControl.isExpanded(node) ? 'is-active-mobile' : 'is-inactive'"
-                class="{{globals.theme}} menu-node">
+                class="{{globals.theme}} menu-node is-mobile">
                     <div class="menu-option-text"  [style.padding-left.%]="(node.level*5)+2" [style.min-width.%]="85-((node.level*5)+2)">{{node.label}}</div>  
                     <button mat-icon-button  [attr.aria-label]="'toggle ' + node.label">
                             <mat-icon class="mat-icon-rtl-mirror">
@@ -36,7 +36,7 @@
         [ngClass]="parentIsOpen(node)? 'menu-opened' : 'menu-parent-option'">         
         <div class="menu-option-container-second-line"></div>
         <div [ngClass]="{'is-active-mobile': node.isActive,'is-inactive': !node.isActive }"
-                class="{{globals.theme}} menu-node">
+                class="{{globals.theme}} menu-node is-mobile">
                 <div class="menu-option-text" [style.padding-left.%]="(node.level*5)+2" [style.min-width.%]="85-((node.level*5)+2)">{{node.title}}</div>  
         </div>
         </mat-tree-node>
@@ -45,7 +45,7 @@
             matTreeNodePadding  [matTreeNodePaddingIndent]="getNodeIndent(node)" *matTreeNodeDef="let node;when: hasChild">          
             <div class="menu-option-container-second-line"></div>
             <div matTreeNodeToggle [ngClass]="treeControlDashboard.isExpanded(node) ? 'is-active-mobile' : 'is-inactive'"
-                class="{{globals.theme}} menu-node">
+                class="{{globals.theme}} menu-node is-mobile">
                     <div class="menu-option-text"  [style.padding-left.%]="(node.level*5)+2" [style.min-width.%]="85-((node.level*5)+2)">{{node.title}}</div>  
                     <button mat-icon-button  [attr.aria-label]="'toggle ' + node.title">
                             <mat-icon class="mat-icon-rtl-mirror">

@@ -1,7 +1,11 @@
 
-<div style="height: 100%;" *ngIf="(globals.currentOption && globals.currentOption !== 'dashboard' && !mobileQuery.matches) || (!globals.showMenu && mobileQuery.matches && globals.currentOption && globals.currentOption !== 'dashboard')">
+<!-- <div style="height: 100%;" *ngIf="(globals.currentOption && globals.currentOption !== 'dashboard' && !mobileQuery.matches) 
+|| (!globals.showMenu && mobileQuery.matches && globals.currentOption && globals.currentOption !== 'dashboard')"> -->
+<div [ngClass]="mobileQuery.matches? (globals.showMenu ? 'msf-container-tabs-hide':'msf-container-tabs'):'msf-container-tabs'"
+*ngIf="(globals.currentOption && globals.currentOption !== 'dashboard')">
     <div style="height: 100%;"  [hidden]= "globals.mapsc">
-    <mat-tab-group [selectedIndex]="globals.getSelectedIndex()" (selectedIndexChange)="onLinkClick($event)" #tabs >
+    <mat-tab-group [ngClass]="mobileQuery.matches? (globals.showMenu? 'msf-hide':'msf-show-panel'):'msf-show-panel' "
+    [selectedIndex]="globals.getSelectedIndex()" (selectedIndexChange)="onLinkClick($event)" #tabs >
         <mat-tab *ngIf="globals.showWelcome" label="Welcome" style="height: 100%;">
             <app-option-welcome></app-option-welcome> 
         </mat-tab>        

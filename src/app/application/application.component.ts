@@ -865,8 +865,8 @@ toggle(){
       this.globals.showDashboard=false;
       this.globals.showMenu = true;
     }else if(this.globals.showMenu && !this.globals.showIntroWelcome){
-      this.globals.clearVariables ();
-      this.globals.currentOption = this.currentOptionBackUp;
+      // this.globals.clearVariables ();
+      // this.globals.currentOption = this.currentOptionBackUp;
       this.globals.showMenu = false;
       this.globals.showCategoryArguments= false;
       this.globals.showTabs=false;
