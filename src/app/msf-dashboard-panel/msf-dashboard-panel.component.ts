@@ -878,6 +878,9 @@ export class MsfDashboardPanelComponent implements OnInit {
         home.events.on ("hit", function (ev) {
           chart.goHome ();
         });
+
+        this.oldChartType = null;
+        this.oldVariableName = "";
       }
       else if (this.values.currentChartType.flags & ChartFlags.MAP)
       {
@@ -936,6 +939,9 @@ export class MsfDashboardPanelComponent implements OnInit {
         home.events.on ("hit", function (ev) {
           chart.goHome ();
         });
+
+        this.oldChartType = null;
+        this.oldVariableName = "";
       }
       else if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART
         || this.values.currentChartType.flags & ChartFlags.PIECHART)
@@ -963,6 +969,9 @@ export class MsfDashboardPanelComponent implements OnInit {
             });
           });
         }
+
+        this.oldChartType = null;
+        this.oldVariableName = "";
       }
       else
       {
@@ -1182,6 +1191,17 @@ export class MsfDashboardPanelComponent implements OnInit {
           // Create the series
           this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, false, chart, chartInfo, parseDate, theme));
         }
+
+        // add variable and categories into the dashboard control panel if they are not added
+        this.addNewVariablesAndCategories.emit ({
+          type: this.chartTypes.indexOf (this.values.currentChartType),
+          analysisName: this.values.variable.name,
+          controlVariables: this.values.currentOptionCategories,
+          chartSeries: this.values.chartSeries
+        });
+
+        this.oldChartType = this.values.currentChartType;
+        this.oldVariableName = this.values.variable.name;
       }
 
       if (this.values.currentChartType.flags & ChartFlags.XYCHART)
@@ -1195,17 +1215,6 @@ export class MsfDashboardPanelComponent implements OnInit {
       }
 
       this.chart = chart;
-
-      // add variable and categories into the dashboard control panel if they are not added
-      this.addNewVariablesAndCategories.emit ({
-        type: this.chartTypes.indexOf (this.values.currentChartType),
-        analysisName: this.values.variable.name,
-        controlVariables: this.values.currentOptionCategories,
-        chartSeries: this.values.chartSeries
-      });
-
-      this.oldChartType = this.values.currentChartType;
-      this.oldVariableName = this.values.variable.name;
     });
   }
 
@@ -1971,6 +1980,18 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.tableGenerated = false;
     _this.values.mapboxGenerated = false;
 
+    _this.removeDeadVariablesAndCategories.emit ({
+      type: _this.chartTypes.indexOf (_this.oldChartType),
+      analysisName: _this.oldVariableName,
+      chartSeries: _this.values.chartSeries,
+      controlVariables: null
+    });
+
+    _this.values.chartSeries = [];
+
+    _this.oldChartType = null;
+    _this.oldVariableName = "";
+
     _this.stopUpdateInterval ();
     _this.startUpdateInterval ();
   }
@@ -2050,6 +2071,18 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.tableGenerated = false;
     _this.values.mapboxGenerated = false;
 
+    _this.removeDeadVariablesAndCategories.emit ({
+      type: _this.chartTypes.indexOf (_this.oldChartType),
+      analysisName: _this.oldVariableName,
+      chartSeries: _this.values.chartSeries,
+      controlVariables: null
+    });
+
+    _this.values.chartSeries = [];
+
+    _this.oldChartType = null;
+    _this.oldVariableName = "";
+
     _this.stopUpdateInterval ();
     _this.startUpdateInterval ();
   }
@@ -2069,6 +2102,18 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.tableGenerated = true;
     _this.values.mapboxGenerated = false;
 
+    _this.removeDeadVariablesAndCategories.emit ({
+      type: _this.chartTypes.indexOf (_this.oldChartType),
+      analysisName: _this.oldVariableName,
+      chartSeries: _this.values.chartSeries,
+      controlVariables: null
+    });
+
+    _this.values.chartSeries = [];
+
+    _this.oldChartType = null;
+    _this.oldVariableName = "";
+
     _this.stopUpdateInterval ();
     _this.startUpdateInterval ();
   }
@@ -2085,6 +2130,18 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.picGenerated = false;
     _this.values.tableGenerated = false;
     _this.values.mapboxGenerated = true;
+
+    _this.removeDeadVariablesAndCategories.emit ({
+      type: _this.chartTypes.indexOf (_this.oldChartType),
+      analysisName: _this.oldVariableName,
+      chartSeries: _this.values.chartSeries,
+      controlVariables: null
+    });
+
+    _this.values.chartSeries = [];
+
+    _this.oldChartType = null;
+    _this.oldVariableName = "";
 
     setTimeout (() => {
       _this.values.isLoading = false;
@@ -2172,6 +2229,18 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.tableGenerated = false;
     _this.values.mapboxGenerated = false;
     _this.values.isLoading = false;
+
+    _this.removeDeadVariablesAndCategories.emit ({
+      type: _this.chartTypes.indexOf (_this.oldChartType),
+      analysisName: _this.oldVariableName,
+      chartSeries: _this.values.chartSeries,
+      controlVariables: null
+    });
+
+    _this.values.chartSeries = [];
+
+    _this.oldChartType = null;
+    _this.oldVariableName = "";
 
     _this.stopUpdateInterval ();
     _this.startUpdateInterval ();
@@ -2289,57 +2358,51 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.checkPanelConfiguration ();
   }
 
+  generateError(): void
+  {
+    this.values.lastestResponse = null;
+    this.values.chartGenerated = false;
+    this.values.infoGenerated = false;
+    this.values.formGenerated = false;
+    this.values.picGenerated = false;
+    this.values.tableGenerated = false;
+    this.values.mapboxGenerated = false;
+
+    this.removeDeadVariablesAndCategories.emit ({
+      type: this.chartTypes.indexOf (this.oldChartType),
+      analysisName: this.oldVariableName,
+      chartSeries: this.values.chartSeries,
+      controlVariables: null
+    });
+
+    this.values.chartSeries = [];
+
+    this.oldChartType = null;
+    this.oldVariableName = "";
+  }
+
   handlerChartError(_this, result): void
   {
     console.log (result);
-    _this.values.lastestResponse = null;
-    _this.values.chartGenerated = false;
-    _this.values.infoGenerated = false;
-    _this.values.formGenerated = false;
-    _this.values.picGenerated = false;
-    _this.values.tableGenerated = false;
-    _this.values.mapboxGenerated = false;
+    _this.generateError ();
   }
 
   handlerTextError(_this, result): void
   {
     console.log (result);
-    _this.values.lastestResponse = null;
-    _this.values.chartGenerated = false;
-    _this.values.infoGenerated = false;
-    _this.values.formGenerated = false;
-    _this.values.picGenerated = false;
-    _this.values.tableGenerated = false;
-    _this.values.mapboxGenerated = false;
-    _this.values.isLoading = false;
-
-    _this.dialog.open (MessageComponent, {
-      data: { title: "Error", message: "Failed to get summary." }
-    });
+    _this.generateError ();
   }
 
   handlerFormError(_this, result): void
   {
     console.log (result);
-    _this.values.lastestResponse = null;
-    _this.values.chartGenerated = false;
-    _this.values.infoGenerated = false;
-    _this.values.formGenerated = false;
-    _this.values.picGenerated = false;
-    _this.values.tableGenerated = false;
-    _this.values.mapboxGenerated = false;
+    _this.generateError ();
   }
 
   handlerPicError(_this, result): void
   {
     console.log (result);
-    _this.values.lastestResponse = null;
-    _this.values.chartGenerated = false;
-    _this.values.infoGenerated = false;
-    _this.values.formGenerated = false;
-    _this.values.picGenerated = false;
-    _this.values.tableGenerated = false;
-    _this.values.mapboxGenerated = false;
+    _this.generateError ();
   }
 
   handlerTableError(_this, result): void
@@ -2347,49 +2410,25 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (result != null)
       console.log (result);
 
-    _this.values.lastestResponse = null;
-    _this.values.chartGenerated = false;
-    _this.values.infoGenerated = false;
-    _this.values.formGenerated = false;
-    _this.values.picGenerated = false;
-    _this.values.tableGenerated = false;
-    _this.values.mapboxGenerated = false;
+    _this.generateError ();
   }
 
   handlerMapboxError(_this, result): void
   {
     console.log (result);
-    _this.values.lastestResponse = null;
-    _this.values.chartGenerated = false;
-    _this.values.infoGenerated = false;
-    _this.values.formGenerated = false;
-    _this.values.picGenerated = false;
-    _this.values.tableGenerated = false;
-    _this.values.mapboxGenerated = false;
+    _this.generateError ();
   }
 
   handlerHeatMapError(_this, result): void
   {
     console.log (result);
-    _this.values.lastestResponse = null;
-    _this.values.chartGenerated = false;
-    _this.values.infoGenerated = false;
-    _this.values.formGenerated = false;
-    _this.values.picGenerated = false;
-    _this.values.tableGenerated = false;
-    _this.values.mapboxGenerated = false;
+    _this.generateError ();
   }
 
   handlerMapError(_this, result): void
   {
     console.log (result);
-    _this.values.lastestResponse = null;
-    _this.values.chartGenerated = false;
-    _this.values.infoGenerated = false;
-    _this.values.formGenerated = false;
-    _this.values.picGenerated = false;
-    _this.values.tableGenerated = false;
-    _this.values.mapboxGenerated = false;
+    _this.generateError ();
   }
 
   handlerError(_this, result): void
