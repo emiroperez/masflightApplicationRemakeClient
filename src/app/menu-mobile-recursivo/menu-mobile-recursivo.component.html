@@ -1,9 +1,0 @@
-<div>
-<div style="width: 84%; height: 40px;display: inline-block; vertical-align: middle !important;"class="msf-item menu-field" [ngClass]="{'is-active': option.isActive,'is-inactive': !option.isActive}">
-    <div (click)="selectOption(option)" class="msf-item-label menu-option-text">{{option.label}}</div>  
-</div>
-<button style="width: 16% !important; height: 40px !important; vertical-align: middle !important;" mat-icon-button (click)="toggle(option)" *ngIf="option.children && option.children.length > 0">
-    <mat-icon *ngIf="!option.isOpened" style="color: white" aria-label="Toogle">keyboard_arrow_down</mat-icon>
-    <mat-icon *ngIf="option.isOpened" style="color: white" aria-label="Toogle">keyboard_arrow_up</mat-icon>
-  </button>
-</div>
