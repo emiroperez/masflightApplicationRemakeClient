@@ -549,6 +549,58 @@ toggle(){
     for (let item of this.msfContainerRef.msfTableRef.dataSource.data)
     {
       let excelItem: any = {};
+
+      // if there are any flight connections, check the sub elements instead
+      if (this.globals.currentOption.tabType === "scmap" && this.msfContainerRef.msfTableRef.isArray (item.Flight))
+      {
+        for (let subItem of item.Flight)
+        {
+          excelItem = {};
+
+          for (let i = 0; i < this.msfContainerRef.msfTableRef.tableOptions.displayedColumns.length; i++)
+          {
+            let column = this.msfContainerRef.msfTableRef.tableOptions.displayedColumns[i];
+            let curitem = subItem[column.columnName].parsedValue;
+
+            if (curitem == undefined)
+            {
+              excelItem[column.columnLabel] = "";
+              continue;
+            }
+    
+            if (column.columnType === "date")
+            {
+              let date: Date = new Date (curitem);
+    
+              // Advance one day, since on Excel files will be one day behind
+              date.setDate (date.getDate () + 1);
+    
+              excelItem[column.columnLabel] = date.toISOString ();
+            }
+            else if (column.columnType === "time")
+            {
+              let time: Date = new Date (curitem);
+    
+              // Advance one minute, since on time on Excel files will be one minute behind
+              time.setMinutes (time.getMinutes () + 1);
+    
+              excelItem[column.columnLabel] = time.toISOString ();
+            }
+            else
+            {
+              excelItem[column.columnLabel] = curitem;
+    
+              // Get the maximun width for visible results for each column
+              if (curitem.toString ().length > columnMaxWidth[i])
+                columnMaxWidth[i] = curitem.toString ().length;
+            }
+          }
+
+          excelData.push (excelItem);
+        }
+
+        continue;
+      }
   
       for (let i = 0; i < this.msfContainerRef.msfTableRef.tableOptions.displayedColumns.length; i++)
       {
