@@ -960,6 +960,7 @@ export class MsfDashboardComponent implements OnInit {
         }
       }
 
+      // refresh dashboard control panel categories
       this.controlPanelCategories = JSON.parse (JSON.stringify (this.controlPanelCategories));
     }
   }
@@ -994,30 +995,31 @@ export class MsfDashboardComponent implements OnInit {
       else
         category.count++;
 
-        for (let series of panel.chartSeries)
+      for (let series of panel.chartSeries)
+      {
+        let exist: boolean = false;
+
+        for (let curCategory of category.values)
         {
-          let exist: boolean = false;
-
-          for (let curCategory of category.values)
+          if (curCategory.name === series.name)
           {
-            if (curCategory.name === series.name)
-            {
-              curCategory.count++;
-              exist = true;
-              break;
-            }
+            curCategory.count++;
+            exist = true;
+            break;
           }
-
-          if (exist)
-            continue;
-
-          category.values.push ({
-            name: series.name,
-            checked: true,
-            count: 1
-          });
         }
 
+        if (exist)
+          continue;
+
+        category.values.push ({
+          name: series.name,
+          checked: true,
+          count: 1
+        });
+      }
+
+      // refresh dashboard control panel categories
       this.controlPanelCategories = JSON.parse (JSON.stringify (this.controlPanelCategories));
     }
   }

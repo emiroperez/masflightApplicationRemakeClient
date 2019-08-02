@@ -14,6 +14,13 @@
         (search)="onSearch($event)" 
         [(ngModel)]="argument.value1"
         (change) ="onAirportSelect(1)">
+        <ng-template ng-label-tmp let-item="item" let-clear="clear">
+          <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+          <span>{{item.iata}} - {{item.name}}</span>
+        </ng-template>
+        <ng-template ng-option-tmp let-item="item">
+          <div>{{item.iata}} - {{item.name}}</div>
+        </ng-template>
     </ng-select>
     <div class="center">
         <div class="msf-menu-arg-airport-image"></div>
@@ -30,5 +37,12 @@
         (search)="onSearch($event)" 
         [(ngModel)]="argument.value2"
         (change) ="onAirportSelect(2)">
+        <ng-template ng-label-tmp let-item="item" let-clear="clear">
+          <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+          <span>{{item.iata}} - {{item.name}}</span>
+        </ng-template>
+        <ng-template ng-option-tmp let-item="item">
+          <div>{{item.iata}} - {{item.name}}</div>
+        </ng-template>
     </ng-select>
 </div>
