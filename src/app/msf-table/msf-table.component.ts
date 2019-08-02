@@ -353,22 +353,170 @@ export class MsfTableComponent implements OnInit {
             if (column.columnType === "time")
             {
               for (let j = 0; j < _this.dataSource.data.length; j++)
+              {
+                if (_this.currentOption.tabType === "scmap" && _this.dataSource.data[j].Flight)
+                {
+                  if (_this.isArray (_this.dataSource.data[j].Flight))
+                  {
+                    for (let element of _this.dataSource.data[j].Flight)
+                    {
+                      let value;
+
+                      if (element[column.columnName] == undefined)
+                        value = _this.dataSource.data[j][column.columnName];
+                      else
+                        value = element[column.columnName];
+
+                      element[column.columnName] = {
+                        value: value,
+                        parsedValue: _this.parseTime (value, column.columnFormat),
+                      }
+                    }
+
+                    continue;
+                  }
+                  else if (_this.dataSource.data[j][column.columnName] == undefined)
+                  {
+                    let value = _this.dataSource.data[j].Flight[column.columnName];
+
+                    _this.dataSource.data[j].Flight[column.columnName] = {
+                      value: value,
+                      parsedValue: _this.parseTime (value, column.columnFormat),
+                    };
+
+                    _this.dataSource.data[j][column.columnName] = _this.dataSource.data[j].Flight[column.columnName].parsedValue;
+                    continue;
+                  }
+                }
+
                 _this.dataSource.data[j][column.columnName] = _this.parseTime (_this.dataSource.data[j][column.columnName], column.columnFormat);
+              }
             }
             else if (column.columnType === "date")
             {
               for (let j = 0; j < _this.dataSource.data.length; j++)
+              {
+                if (_this.currentOption.tabType === "scmap" && _this.dataSource.data[j].Flight)
+                {
+                  if (_this.isArray (_this.dataSource.data[j].Flight))
+                  {
+                    for (let element of _this.dataSource.data[j].Flight)
+                    {
+                      let value;
+
+                      if (element[column.columnName] == undefined)
+                        value = _this.dataSource.data[j][column.columnName];
+                      else
+                        value = element[column.columnName];
+
+                      element[column.columnName] = {
+                        value: value,
+                        parsedValue: _this.parseDate (value, column.columnFormat),
+                      }
+                    }
+
+                    continue;
+                  }
+                  else if (_this.dataSource.data[j][column.columnName] == undefined)
+                  {
+                    let value = _this.dataSource.data[j].Flight[column.columnName];
+
+                    _this.dataSource.data[j].Flight[column.columnName] = {
+                      value: value,
+                      parsedValue: _this.parseDate (value, column.columnFormat),
+                    };
+
+                    _this.dataSource.data[j][column.columnName] = _this.dataSource.data[j].Flight[column.columnName].parsedValue;
+                    continue;
+                  }
+                }
+
                 _this.dataSource.data[j][column.columnName] = _this.parseDate (_this.dataSource.data[j][column.columnName], column.columnFormat);
+              }
             }
             else if (column.columnType === "number")
             {
               for (let j = 0; j < _this.dataSource.data.length; j++)
+              {
+                if (_this.currentOption.tabType === "scmap" && _this.dataSource.data[j].Flight)
+                {
+                  if (_this.isArray (_this.dataSource.data[j].Flight))
+                  {
+                    for (let element of _this.dataSource.data[j].Flight)
+                    {
+                      let value;
+
+                      if (element[column.columnName] == undefined)
+                        value = _this.dataSource.data[j][column.columnName];
+                      else
+                        value = element[column.columnName];
+
+                      element[column.columnName] = {
+                        value: value,
+                        parsedValue: _this.parseNumber (value),
+                      }
+                    }
+
+                    continue;
+                  }
+                  else if (_this.dataSource.data[j][column.columnName] == undefined)
+                  {
+                    let value = _this.dataSource.data[j].Flight[column.columnName];
+
+                    _this.dataSource.data[j].Flight[column.columnName] = {
+                      value: value,
+                      parsedValue: _this.parseNumber (value, column),
+                    };
+
+                    _this.dataSource.data[j][column.columnName] = _this.dataSource.data[j].Flight[column.columnName].parsedValue;
+                    continue;
+                  }
+                }
+
                 _this.dataSource.data[j][column.columnName] = _this.parseNumber (_this.dataSource.data[j][column.columnName]);
+              }
             }
             else // string
             {
               for (let j = 0; j < _this.dataSource.data.length; j++)
+              {
+                if (_this.currentOption.tabType === "scmap" && _this.dataSource.data[j].Flight)
+                {
+                  if (_this.isArray (_this.dataSource.data[j].Flight))
+                  {
+                    for (let element of _this.dataSource.data[j].Flight)
+                    {
+                      let value;
+
+                      if (element[column.columnName] == undefined)
+                        value = _this.dataSource.data[j][column.columnName];
+                      else
+                        value = element[column.columnName];
+
+                      element[column.columnName] = {
+                        value: value,
+                        parsedValue: _this.parseString (value),
+                      }
+                    }
+
+                    continue;
+                  }
+                  else if (_this.dataSource.data[j][column.columnName] == undefined)
+                  {
+                    let value = _this.dataSource.data[j].Flight[column.columnName];
+
+                    _this.dataSource.data[j].Flight[column.columnName] = {
+                      value: value,
+                      parsedValue: _this.parseString (value, column.columnFormat),
+                    };
+
+                    _this.dataSource.data[j][column.columnName] = _this.dataSource.data[j].Flight[column.columnName].parsedValue;
+                    continue;
+                  }
+                }
+
                 _this.dataSource.data[j][column.columnName] = _this.parseString (_this.dataSource.data[j][column.columnName]);
+              }
             }
           }
 
@@ -561,7 +709,7 @@ export class MsfTableComponent implements OnInit {
     if(j > 0 && j < array.length){
       return 'msf-sub-cell msf-border-top';
     }else{
-      return 'msf-sub-cell'
+      return 'msf-sub-cell';
     }
   }
 

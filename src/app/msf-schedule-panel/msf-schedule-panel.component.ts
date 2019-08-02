@@ -64,6 +64,30 @@ export class MsfSchedulePanelComponent implements OnInit {
   this.TabletQuery.removeListener(this._TabletQueryListener);
  }
 
+ printRouteName(item): string
+ {
+   let label = "";
+
+   if (this.checkarray (item.Flight))
+    return item.TouchedAirports;
+
+   if (item.Flight.Marketing_Airline)
+    label += item.Flight.Marketing_Airline.value;
+
+   label += " ";
+
+   if (item.Flight.Airline)
+    label += item.Flight.Airline.value;
+
+   label += " - F# ";
+
+   if (item.Flight.FlightNo)
+    label += item.Flight.FlightNo.value;
+
+   label += " " + item.TouchedAirports;
+   return label;
+ }
+
 
   expandFlight(index,$event){
     let theme, imageSeriesTemplate, circle, hoverState, label, zoomLevel;

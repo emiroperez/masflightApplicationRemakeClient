@@ -17,17 +17,17 @@
                 </ng-container>
               </ng-container>
             </span>
-            <span class="msf-subCell" *ngIf="column.drillDowns.length==0 && isArray(element['Flight'])">
+            <span class="msf-table-sub-cell" *ngIf="column.drillDowns.length==0 && isArray(element['Flight'])">
               <span class="{{getDecoration(element['Flight'],j)}}" *ngFor="let subElement of element['Flight']; let j = index">
-                <ng-container *ngIf="subElement[column.columnName] != null && subElement[column.columnName] != ''">
+                <ng-container *ngIf="subElement[column.columnName].parsedValue != null && subElement[column.columnName].parsedValue != ''">
                   <ng-container *ngIf="column.columnFormat != null && column.columnFormat != ''">
-                    <span *ngIf="column.columnType=='date' || column.columnType=='time'">{{subElement[column.columnName] | date: column.columnFormat}}</span>
-                    <span *ngIf="column.columnType=='string'">{{subElement[column.columnName]}}</span>
-                    <span *ngIf="column.columnType=='number'"><span *ngIf="column.prefix">{{column.prefix}}</span>{{subElement[column.columnName] | number:column.columnFormat:'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
+                    <span *ngIf="column.columnType=='date' || column.columnType=='time'">{{subElement[column.columnName].parsedValue | date: column.columnFormat}}</span>
+                    <span *ngIf="column.columnType=='string'">{{subElement[column.columnName].parsedValue}}</span>
+                    <span *ngIf="column.columnType=='number'"><span *ngIf="column.prefix">{{column.prefix}}</span>{{subElement[column.columnName].parsedValue | number:column.columnFormat:'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
                   </ng-container>
                   <ng-container *ngIf="column.columnFormat == null || column.columnFormat == ''">
-                    <span *ngIf="column.columnType!='number'">{{subElement[column.columnName]}}</span>
-                    <span *ngIf="column.columnType=='number'"><span *ngIf="column.prefix">{{column.prefix}}</span>{{subElement[column.columnName] | number:'.0-2':'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
+                    <span *ngIf="column.columnType!='number'">{{subElement[column.columnName].parsedValue}}</span>
+                    <span *ngIf="column.columnType=='number'"><span *ngIf="column.prefix">{{column.prefix}}</span>{{subElement[column.columnName].parsedValue | number:'.0-2':'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
                   </ng-container>
                 </ng-container>
               </span>
