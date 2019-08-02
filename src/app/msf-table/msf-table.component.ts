@@ -503,21 +503,30 @@ export class MsfTableComponent implements OnInit {
   parseTime(time: any, format: string): Date
   {
     let momentFormat: string;
+    let date: Date;
 
     if (time == null)
       return null;
 
-    if (format == null || format == "" || this.predefinedColumnFormats[format])
-      momentFormat = "HH:mm:ss";          // fallback for time values with no column or pre-defined format set
-    else
+    date = new Date (time);
+
+    if (isNaN (date.getTime ()))
     {
-      // replace some cases in order for moment date format compatibility
-      momentFormat = format.replace (/h/g, "H");
-      momentFormat = momentFormat.replace (/M/g, "m");
-      momentFormat = momentFormat.replace (/S/g, "s");
+      if (format == null || format == "" || this.predefinedColumnFormats[format])
+        momentFormat = "HH:mm:ss";          // fallback for time values with no column or pre-defined format set
+      else
+      {
+        // replace some cases in order for moment date format compatibility
+        momentFormat = format.replace (/h/g, "H");
+        momentFormat = momentFormat.replace (/M/g, "m");
+        momentFormat = momentFormat.replace (/S/g, "s");
+      }
+
+      return moment (time, momentFormat).toDate ();
     }
 
-    return moment (time, momentFormat).toDate ();
+    // use full date format if the time value is a valid date
+    return moment (date.toISOString (), "YYYY-MM-DDTHH:mm:ss.sssZ").toDate ();
   }
 
   parseNumber(value: any): string
