@@ -4556,4 +4556,9 @@ export class MsfDashboardPanelComponent implements OnInit {
       data: { title: "Information", message: "Control variables copied sucessfully." }
     });
   }
+
+  isArray(item): boolean
+  {
+    return Array.isArray(item);
+  }
 }
