@@ -1,4 +1,5 @@
-<div class="menu-nav-container">    
+<div class="menu-nav-container" >  
+<!-- <div [ngClass] = "ResponsiveQuery ? 'msf-menu-nav msf-menu-show-nav':'menu-nav-container'">     -->
     <div class="menu-option-container-first-line"></div>
     <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" >
         <mat-tree-node class="menu-child-option"
@@ -8,9 +9,9 @@
         <div class="menu-option-container-second-line"></div>
         <div [ngClass]="{'is-active-mobile': node.isActive,'is-inactive': !node.isActive }"
                 class="{{globals.theme}} menu-node is-mobile">
-                <div class="menu-option-text" 
+                <span  
                 [style.padding-left.%]="(node.level*5)+2" 
-                [style.min-width.%]="85-((node.level*5)+2)">{{node.label}}</div>  
+                [style.min-width.%]="85-((node.level*5)+2)">{{node.label}}</span>  
         </div>
         </mat-tree-node>
         
@@ -20,7 +21,7 @@
             <div class="menu-option-container-second-line"></div>
             <div matTreeNodeToggle [ngClass]="treeControl.isExpanded(node) ? 'is-active-mobile' : 'is-inactive'"
                 class="{{globals.theme}} menu-node is-mobile">
-                    <div class="menu-option-text"  [style.padding-left.%]="(node.level*5)+2" [style.min-width.%]="85-((node.level*5)+2)">{{node.label}}</div>  
+                    <div [style.padding-left.%]="(node.level*5)+2" [style.min-width.%]="85-((node.level*5)+2)">{{node.label}}</div>  
                     <button mat-icon-button  [attr.aria-label]="'toggle ' + node.label">
                             <mat-icon class="mat-icon-rtl-mirror">
                                 {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}

@@ -60,8 +60,10 @@ export class ApplicationComponent implements OnInit {
 
   TabletQuery: MediaQueryList;
   mobileQuery: MediaQueryList;
+  ResponsiveQuery: MediaQueryList;
   private _TabletQueryListener: () => void;
   private _mobileQueryListener: () => void;
+  private _ResponsiveQueryListener: () => void; 
 
   constructor(public dialog: MatDialog, public globals: Globals, private menuService: MenuService,private router: Router,private excelService:ExcelService,
     private appService: ApplicationService, private authService: AuthService, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private authGuard: AuthGuard,
@@ -77,6 +79,10 @@ export class ApplicationComponent implements OnInit {
     this.mobileQuery = media.matchMedia('(max-width: 480px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
+
+    this.ResponsiveQuery = media.matchMedia('(max-width: 759px)');
+    this._ResponsiveQueryListener = () => changeDetectorRef.detectChanges();
+    this.ResponsiveQuery.addListener(this._ResponsiveQueryListener);
   }
 
   ngOnInit() {
@@ -89,6 +95,7 @@ export class ApplicationComponent implements OnInit {
   ngOnDestroy(): void {
     this.TabletQuery.removeListener(this._TabletQueryListener);
 	this.mobileQuery.removeListener(this._mobileQueryListener);
+	  this.ResponsiveQuery.removeListener(this._ResponsiveQueryListener);
   }
 
   parseTimeStamp(timeStamp): string
@@ -910,25 +917,43 @@ toggle(){
   }
   
   showMenu(){
-    if(!this.globals.showMenu){
-      this.globals.showCategoryArguments= false;
-      this.globals.showIntroWelcome = false;
-      this.globals.showTabs=false;
-      this.globals.showDashboard=false;
-      this.globals.showMenu = true;
-    }else if(this.globals.showMenu && !this.globals.showIntroWelcome){
-      // this.globals.clearVariables ();
-      // this.globals.currentOption = this.currentOptionBackUp;
-      this.globals.showMenu = false;
-      this.globals.showCategoryArguments= false;
-      this.globals.showTabs=false;
-      this.globals.showDashboard=false;
-      this.globals.showIntroWelcome = true;
-    }
+    if (this.mobileQuery.matches){
+      if(!this.globals.showMenu){
+        this.globals.showCategoryArguments= false;
+        this.globals.showIntroWelcome = false;
+        this.globals.showTabs=false;
+        this.globals.showDashboard=false;
+        this.globals.showMenu = true;
+      }else if(this.globals.showMenu && !this.globals.showIntroWelcome){
+        // this.globals.clearVariables ();
+        // this.globals.currentOption = this.currentOptionBackUp;
+        this.globals.showMenu = false;
+        this.globals.showCategoryArguments= false;
+        this.globals.showTabs=false;
+        this.globals.showDashboard=false;
+        this.globals.showIntroWelcome = true;
+        this.globals.selectedIndex = 0;
+      }
+    }else if (this.ResponsiveQuery.matches){
+      if(!this.globals.showMenu){
+        this.globals.showCategoryArguments= false;
+        this.globals.showIntroWelcome = false;
+        this.globals.showTabs=false;
+        this.globals.showDashboard=false;
+        this.globals.showMenu = true;
+      }else{
+        this.globals.showCategoryArguments= false;
+        this.globals.showIntroWelcome = true;
+        this.globals.showTabs=false;
+        this.globals.showDashboard=false;
+        this.globals.showMenu = false;
+      }
+    }    
 
   }
 
   backMenu(){
+    if (this.mobileQuery.matches){
     if(!this.globals.showMenu && (this.globals.showCategoryArguments || this.globals.showDashboard)){
       this.globals.showIntroWelcome = false;
       this.globals.showCategoryArguments = false;
@@ -942,5 +967,13 @@ toggle(){
       this.globals.showDashboard=false;
       this.globals.showCategoryArguments = true;
     }
+  }
+    /*else if(!this.globals.showMenu && this.globals.showTabs && this.ResponsiveQuery.matches){
+      this.globals.showIntroWelcome = false;
+      this.globals.showCategoryArguments = false;
+      this.globals.showTabs=false;
+      this.globals.showDashboard=false;
+      this.globals.showMenu = true;
+    }*/
   }
 }

@@ -2,29 +2,33 @@
 <div *ngIf="mobileQuery.matches ||(!globals.isFullscreen && !mobileQuery.matches || (globals.isFullscreen && globals.currentOption !== 'dashboard' && !mobileQuery.matches ))"
     class="msf-menu-header">
     <!-- div to Menu Mobile-->
-    <div *ngIf="mobileQuery.matches" class="msf-header-iconss">
-        <button *ngIf="globals.showMenu || globals.showIntroWelcome" class="mat-icon-menu" mat-icon-button
+    <div *ngIf="mobileQuery.matches || ResponsiveQuery.matches" class="msf-header-iconss">
+        <button *ngIf="((globals.showMenu || globals.showIntroWelcome) && mobileQuery.matches) 
+        || ResponsiveQuery.matches && !mobileQuery.matches" class="mat-icon-menu" mat-icon-button
             (click)="showMenu()">
             <mat-icon>menu</mat-icon>
         </button>
-        <button *ngIf="!globals.showMenu && !globals.showIntroWelcome" class="mat-icon-menu" mat-icon-button
+        <button *ngIf="!globals.showMenu && !globals.showIntroWelcome && mobileQuery.matches" class="mat-icon-menu" mat-icon-button
             (click)="backMenu()">
             <mat-icon>arrow_back</mat-icon>
         </button>
     </div>
     <!---->
-    <div class="msf-menu-header-image-container" [class.is-mobile]="mobileQuery.matches">
-        <img (click)="goHome()" style="cursor:pointer;" src="../../assets/images/{{globals.theme}}-pulse_welc.png"
+    <div 
+    [ngClass]="mobileQuery.matches ? 'msf-menu-header-image-container is-mobile'
+                                     :(ResponsiveQuery.matches ? 'msf-menu-header-image-container is-MQueryresponsive':'msf-menu-header-image-container')">
+         <img (click)="goHome()" style="cursor:pointer;" src="../../assets/images/{{globals.theme}}-pulse_welc.png"
             class="msf-menu-logo">
         <img src="../../assets/images/{{globals.theme}}-adjust.png" class="msf-menu-ajustes-icon">
     </div>
-    <div *ngIf="!mobileQuery.matches" class="msf-menu-container">
+    <div *ngIf="!mobileQuery.matches && !ResponsiveQuery.matches" class="msf-menu-container">
         <app-menu [menu]="menu" [dashboards]="dashboards" [sharedDashboards]="sharedDashboards"
             (optionChanged)="optionHandler()"></app-menu>
     </div>
-    <div class="msf-header-icons" [class.is-mobile]="mobileQuery.matches">
+    <div [ngClass]="mobileQuery.matches ? 'msf-header-icons is-mobile'
+                                     :(ResponsiveQuery.matches ? 'msf-header-icons is-MQueryresponsive':'msf-header-icons')">
         <!-- <div class="msf-header-icons2"></div> -->
-        <img src="../../assets/images/logo_global_peqe.png" class="msf-header-icons2">
+        <img *ngIf="!mobileQuery.matches" src="../../assets/images/logo_global_peqe.png" class="msf-header-icons2">
 
         <div *ngIf="globals.currentUser" style="padding: 0px; margin: 0px;
         border: 0px; margin-left: 5px;
@@ -79,8 +83,9 @@
     </div>
 </div>
 <div *ngIf="(!globals.isFullscreen && !mobileQuery.matches 
-            || (globals.isFullscreen && globals.currentOption !== 'dashboard' ) &&  !mobileQuery.matches) 
-            || (mobileQuery.matches && !globals.showMenu) " class="msf-menu-icons-container">
+            || (globals.isFullscreen && globals.currentOption !== 'dashboard' ) &&  !mobileQuery.matches )  
+            || (mobileQuery.matches && !globals.showMenu) " 
+            class="msf-menu-icons-container">
     <div *ngIf="!mobileQuery.matches || (mobileQuery.matches && !globals.showMenu && !globals.showDashboard) "
         [ngClass]="mobileQuery.matches ? (globals.showTabs ? 'msf-menu-icons-left':'msf-menu-icons-left-mobile') :'msf-menu-icons-left'">
         {{globals.currentOption ? globals.currentOption.label:''}}</div>
@@ -142,29 +147,38 @@
 <div class="msf-menu-body" [class.is-mobile]="mobileQuery.matches">
     <!--nav-->
     <div
-        [ngClass]="isSimpleContent() ? 'msf-menu-hide-full-nav' : (mobileQuery.matches ? (globals.showCategoryArguments ? 'msf-menu-show-full-nav-mobile':'msf-menu-show-full-nav'):'msf-menu-show-full-nav')">
-        
-        <!-- [ngClass]="mobileQuery.matches ? (globals.showCategoryArguments ? 'msf-menu-nav msf-menu-show-nav-mobile' : (globals.showIntroWelcome ? 'msf-menu-nav msf-menu-hide-nav' :'msf-menu-nav msf-menu-hide-nav-mobile')) : (globals.status ? 'msf-menu-nav msf-menu-show-nav' : 'msf-menu-nav msf-menu-hide-nav')"> -->
+        [ngClass]="isSimpleContent() ? 'msf-menu-hide-full-nav' : 
+        (mobileQuery.matches ? (globals.showCategoryArguments || globals.showMenu ? 'msf-menu-show-full-nav-mobile':'msf-menu-show-full-nav')
+        :'msf-menu-show-full-nav')">        
         <div
-            [ngClass]="mobileQuery.matches ? (globals.showCategoryArguments ? 'msf-menu-nav msf-menu-show-nav-mobile' : 'msf-menu-nav msf-menu-hide-nav-mobile') : (globals.status ? 'msf-menu-nav msf-menu-show-nav' : 'msf-menu-nav msf-menu-hide-nav')">
+            [ngClass]="mobileQuery.matches ? 
+            (globals.showCategoryArguments || globals.showMenu ? 'msf-menu-nav msf-menu-show-nav-mobile' 
+                                             :'msf-menu-nav msf-menu-hide-nav-mobile') 
+                                        : (globals.status ? 'msf-menu-nav msf-menu-show-nav' : 'msf-menu-nav msf-menu-hide-nav')">
             <div
-                [ngClass]="mobileQuery.matches ? (globals.showCategoryArguments ? 'msf-menu-components-container-show-mobile':'msf-menu-components-container-hide') : (globals.status ? 'msf-menu-components-container-show' : 'msf-menu-components-container-hide')">
+                [ngClass]="mobileQuery.matches ? (globals.showCategoryArguments || globals.showMenu? 'msf-menu-components-container-show-mobile':'msf-menu-components-container-hide') : (globals.status ? 'msf-menu-components-container-show' : 'msf-menu-components-container-hide')"
+                [class.is-mobile]="mobileQuery.matches && globals.showMenu">
 
                 <div class="msf-category-container" [class.is-mobile]="mobileQuery.matches"
-                    [ngClass]="(globals.currentOption && globals.currentOption.metaData == 3) ? 'msf-hide' : (globals.hideParametersPanels ? 'msf-hide':'msf-category-container')">
+                    [ngClass]="(globals.currentOption && globals.currentOption.metaData == 3) ? 'msf-hide' : (globals.hideParametersPanels ? 'msf-hide':'msf-category-container')"
+                    *ngIf="((mobileQuery.matches || ResponsiveQuery.matches) && !globals.showMenu) || (!mobileQuery.matches && !ResponsiveQuery.matches)">
                     <app-msf-component [currentOption]="globals.currentOption"
                         *ngIf="globals.currentOption && globals.currentOption.menuOptionArguments && globals.currentOption.menuOptionArguments.length > 0 && globals.currentOption.menuOptionArguments[0].categoryArguments.length > 0">
                     </app-msf-component>
                 </div>
+                <app-menu-nav *ngIf="(ResponsiveQuery.matches || mobileQuery.matches) && globals.showMenu " [menu]="menu" [dashboards]="dashboards"
+                [sharedDashboards]="sharedDashboards"></app-menu-nav>
                 <div class="msf-category-container"
                     [ngClass]="(globals.currentOption && globals.currentOption.metaData != 3) ? 'msf-hide' : (globals.hideParametersPanels ? 'msf-hide':'msf-category-container')">
                     <app-msf-map-coordinates></app-msf-map-coordinates>
                 </div>
-                <button [disabled]="disabled()" [ngClass]="{
+                <button  *ngIf="((ResponsiveQuery.matches || mobileQuery.matches) && !globals.showMenu) || (!ResponsiveQuery.matches || !mobileQuery.matches)"
+                 [disabled]="disabled()" [ngClass]="{
                     'msf-menu-search-button' : (!globals.hideParametersPanels || globals.status),
                     'msf-hide' : (globals.hideParametersPanels || !globals.status)}"
                     [class.is-mobile]="mobileQuery.matches" (click)="search()">Search</button>
-                <app-msf-schedule-panel *ngIf="globals.hideParametersPanels"></app-msf-schedule-panel>
+                <app-msf-schedule-panel *ngIf="((mobileQuery.matches || ResponsiveQuery.matches) && !globals.showMenu && globals.hideParametersPanels) 
+                || (!ResponsiveQuery.matches && !globals.showMenu  && globals.hideParametersPanels)"></app-msf-schedule-panel>
             </div>
             <div *ngIf="!mobileQuery.matches" (click)="toggle()"
                 [ngClass]="globals.status ? 'msf-menu-hide-button-open': 'msf-menu-hide-button-close'">
@@ -176,14 +190,22 @@
 
     <!--container-->
     <div
-        [ngClass]="isSimpleContent() ? 'msf-menu-simple-content' : (mobileQuery.matches ? (globals.showCategoryArguments ? 'msf-menu-show-full-nav-component-hide' :'msf-menu-show-full-nav-component-wide') : (globals.status ? 'msf-menu-show-full-nav-component' : 'msf-menu-show-full-nav-component-wide'))">
+        [ngClass]="isSimpleContent() ? 'msf-menu-simple-content' 
+                                       : (mobileQuery.matches ? (globals.showCategoryArguments || globals.showMenu ? 'msf-menu-show-full-nav-component-hide' 
+                                                                                                 :'msf-menu-show-full-nav-component-wide is-mobile')                                 
+                                                                                                                            : (globals.status ? 'msf-menu-show-full-nav-component' : 'msf-menu-show-full-nav-component-wide'))">
         <div
-            [ngClass]="isSimpleContent()  ? 'msf-menu-simple-content' : (mobileQuery.matches ? 'msf-menu-content msf-menu-tabs-content-mobile' : 'msf-menu-content msf-menu-tabs-content')">
+            [ngClass]="isSimpleContent()  ? 'msf-menu-simple-content' 
+                                            : (mobileQuery.matches ? 'msf-menu-content msf-menu-tabs-content-mobile'
+                                                                        : 'msf-menu-content msf-menu-tabs-content')">
             <div
-                [ngClass]="isSimpleContent() ? 'msf-menu-internal-simple-content' : (mobileQuery.matches ? (globals.showMenu ? 'msf-menu-internal-content-all': (globals.showTabs ? 'msf-menu-internal-content-tabs':'msf-menu-internal-content-mobile')):'msf-menu-internal-content')">
+                [ngClass]="isSimpleContent() ? 'msf-menu-internal-simple-content' 
+                                               : (mobileQuery.matches ? (globals.showMenu ? 'msf-menu-internal-content-all-mobile'
+                                                                        : (globals.showTabs ? 'msf-menu-internal-content-tabs':'msf-menu-internal-content-mobile'))
+                                                                        :'msf-menu-internal-content') "  [class.is-MQueryresponsive]="ResponsiveQuery.matches">
                 <app-msf-container #msfContainerRef></app-msf-container>
-                <app-menu-nav *ngIf="(mobileQuery.matches && globals.showMenu)" [menu]="menu" [dashboards]="dashboards"
-                    [sharedDashboards]="sharedDashboards"></app-menu-nav>
+                <!-- <app-menu-nav *ngIf="(ResponsiveQuery.matches || mobileQuery.matches) && globals.showMenu " [menu]="menu" [dashboards]="dashboards"
+                    [sharedDashboards]="sharedDashboards"></app-menu-nav> -->
             </div>
             <div [ngClass]="globals.moreResultsBtn && !globals.isLoading? 'msf-menu-more-button' : 'msf-menu-more-button disabled-more-button'"
                 (click)="moreResults()"

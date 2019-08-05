@@ -1185,13 +1185,13 @@ body
     flex-direction: row
     align-items: center    
     justify-content: flex-end
-    /* position: relative; */
-    /* line-height: 4; */
-    /* vertical-align: middle; */
-    /* min-height: 60px; */
-    /* color: #ffffff; */
-    /* margin-right: 10px; */
-    /* text-align: right; */
+    // position: relative; 
+    // line-height: 4; 
+    // vertical-align: middle; 
+    // min-height: 60px; 
+    // color: #ffffff; 
+    // margin-right: 10px; 
+    // text-align: right; 
     width: 25%
 
 .header-icon
@@ -1910,7 +1910,7 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button
     background-color: $msf-primary-light-color!important
     position: initial!important
 
-/*Menu*/
+// Menu
 .msf-menu-header
     width: 100%
     min-height: 60px
@@ -2172,7 +2172,7 @@ button[aria-expanded="true"]
     transition: 0.5s
 
 .msf-menu-show-full-nav-component-wide
-    width: 100%
+    width: calc(100% - 20px)
     transition: 0.5s
 
 .msf-menu-admin-icon
@@ -2273,7 +2273,7 @@ button[aria-expanded="true"]
         padding-top: 8px
         padding-bottom: 8px
 
-/*Airport component*/
+// Airport component
 
 .msf-component-airport-icon
     width: 60%
@@ -2431,7 +2431,7 @@ mat-tab-group
     padding-left: 18px
 
 
-/*Font color*/
+// Font color
 
 .msf-primary-color
     color : $msf-primary-color
@@ -2445,7 +2445,7 @@ mat-tab-group
 .msf-surface-color
     color: $msf-surface-color
 
-/*Media query*/
+// Media query
 
 @media screen and (max-width: 480px)
     .msf-nav
@@ -2490,7 +2490,7 @@ mat-tab-group
         width: 100%
 
 
-/*table*/
+// table
 .mat-sort-header-button
     text-transform: capitalize
 
@@ -4556,14 +4556,14 @@ table.results
     display: block
     width: 100%
 
-/* kp */
+    
 .msf-container-welcome
     @extend  .msf-container
     width: 100% !important
     left: 0px !important
     height: calc(100% - 50px)
 
-/* kp */
+    
 .msf-intro-div-image
     align-items: center
     float: right
@@ -4571,7 +4571,7 @@ table.results
     width: 90px
     height: 75px
 
-/* kp */
+    
 .icon-container-bk
     height: 50px !important
     background-size: contain !important
@@ -4582,7 +4582,7 @@ table.results
     background-position: center !important
     transition: background-image 0.5s ease-in-out
 
-/* kp */
+    
 .footer-container
     height: auto !important
     width: 100%
@@ -4590,7 +4590,7 @@ table.results
     padding: 20px 0
     transition: background-image 0.5s ease-in-out
 
-/* kp */
+    
 .icon-container
     width: 100.3% !important
     height: calc(100% - 90px) !important
@@ -4600,7 +4600,7 @@ table.results
     background-position: center
     transition: background-image 0.5s ease-in-out
 
-/* kp */
+    
 .landing-icon-content2
     display: flex
     align-items: center
@@ -5968,6 +5968,13 @@ mat-form-field.msf-table-input
 .msf-menu-header-image-container.is-mobile
         width: calc(45% - 60px) !important
 
+.msf-header-icons.is-MQueryresponsive
+    margin-left: 15px
+    width: calc(70% - 15px) !important
+
+.msf-menu-header-image-container.is-MQueryresponsive
+    width: calc(30% - 60px) !important
+
 .header-icon2.is-mobile
     width: 20px !important
     height: 20px !important
@@ -6000,10 +6007,11 @@ mat-form-field.msf-table-input
     outline: transparent !important
 
 .menu-nav-container
-    height: 97%
+    height: 96%
     width: 97%
-    padding: 3%
-    overflow-y: Scroll
+    padding: 3% 0px 3% 3%
+    overflow-y: auto
+    overflow-x: hidden
     background-color: #333333
 
 .menu-parent-option
@@ -6060,10 +6068,14 @@ button.mat-icon-button-menu
     vertical-align: middle
     margin-bottom: 20px
 
-.msf-menu-internal-content-all
+.msf-menu-internal-content-all-mobile
     height: 100%
     background-color: #ffffff
     vertical-align: middle
+
+.msf-menu-internal-content-all-mobile.is-MQueryresponsive
+    display: flex !important
+    flex-direction: row-reverse !important
 
 .msf-menu-internal-content-tabs 
     height: calc(100% - 34px)
@@ -6100,10 +6112,21 @@ button.mat-icon-button-menu
     bottom: 0% !important
     line-height: 0
 
+// .msf-menu-components-container-show-mobile
+//     padding: 10px
+//     width: calc(100% - 20px)
+//     height: calc(100% - 20px)
+//     vertical-align: middle
+//     display: inline-block
+//     opacity: 1
+//     transition: 2s
+//     position: relative
+//     overflow: auto
+
 .msf-menu-components-container-show-mobile
-    padding: 10px
-    width: calc(100% - 20px)
-    height: calc(100% - 20px)
+    padding: 0px
+    width: 100%
+    height: 100%
     vertical-align: middle
     display: inline-block
     opacity: 1
@@ -6111,8 +6134,12 @@ button.mat-icon-button-menu
     position: relative
     overflow: auto
 
+.msf-menu-components-container-show-mobile.is-mobile
+    width: 103% !important
+
 .menu-node.is-mobile
     align-items: center
+    height: 60px
 
 .msf-container-tabs
     height: 100%
@@ -6120,6 +6147,9 @@ button.mat-icon-button-menu
 .msf-container-tabs-hide
     height: 0px
 
+.msf-menu-show-full-nav-component-wide.is-mobile
+    width: 100% !important
+    
 .mat-tab-body-content
     .msf-viewport-container 
         background: #f3f3f2
