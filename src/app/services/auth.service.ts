@@ -17,6 +17,7 @@ const TOKEN_STORAGE_KEY = "token";
 export class AuthService {
   jwtHelper: JwtHelperService = new JwtHelperService ();
   ipAddress: string;
+  clientjs: any = new ClientJS ();
 
   constructor(public http: HttpClient, private globals: Globals)
   {
@@ -106,7 +107,27 @@ export class AuthService {
 
   getFingerprint(): any
   {
-    return new ClientJS ().getFingerprint ();
+    let fingerprint = this.clientjs.getCustomFingerprint (
+      this.clientjs.getBrowser (),
+      this.clientjs.getEngine (),
+      this.clientjs.getFonts (),
+      this.clientjs.getOS (),
+      this.clientjs.isMobile (),
+      this.clientjs.getTimeZone (),
+      this.clientjs.getLanguage (),
+      this.clientjs.getSystemLanguage (),
+      this.clientjs.getColorDepth (),
+      this.clientjs.getCurrentResolution (),
+      this.clientjs.getAvailableResolution (),
+      this.clientjs.getDeviceXDPI (),
+      this.clientjs.getDeviceYDPI (),
+      this.clientjs.getDevice (),
+      this.clientjs.getDeviceType (),
+      this.clientjs.getDeviceVendor (),
+      this.clientjs.getCPU ()
+    );
+
+    return fingerprint;
   }
 
   get = function (_this, url, successHandler, errorHandler)
