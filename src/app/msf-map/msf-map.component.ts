@@ -46,7 +46,19 @@ export class MsfMapComponent implements OnInit {
     "#B422B4",
     "#22B4B4",
     "#E18000",
-    "#FF0080"
+    "#FF0080",
+    "#72FF48",
+    "#65009F",
+    "#B4A6FF",
+    "#229AF4",
+    "#FF726D",
+    "#00CCBE",
+    "#E3480E",
+    "#4263B9",
+    "#FFC918",
+    "#778C6D",
+    "#EA223B",
+    "#00FFFF"
   ];
 
   layout = {
