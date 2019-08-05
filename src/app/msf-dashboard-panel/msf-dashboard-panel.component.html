@@ -605,7 +605,8 @@
         <div class="msf-dashboard-map-routelist-container" [style.height.px]="calcRouteListHeight()">
           <div class="msf-dashboard-map-routelist-item" *ngFor="let item of values.flightRoutes">
             <div class="msf-dashboard-map-item-flight">
-              {{item.Flight.Marketing_Airline}} {{item.Flight.Airline}} - F# {{item.Flight.FlightNo}} {{item.TouchedAirports}}
+              <span *ngIf="isArray(item.Flight)">{{item.TouchedAirports}}</span>
+              <span *ngIf="!isArray(item.Flight)">{{item.Flight.Marketing_Airline}} {{item.Flight.Airline}} - F# {{item.Flight.FlightNo}} {{item.TouchedAirports}}</span>
             </div>
             <div class="msf-dashboard-map-item-checkbox">
               <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="item.checked" (ngModelChange)="toggleMapRoute(item)"></mat-checkbox>

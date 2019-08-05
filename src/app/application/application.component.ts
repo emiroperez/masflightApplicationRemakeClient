@@ -383,12 +383,7 @@ toggle(){
 
     this.globals.moreResults = false;
     this.globals.query = true;
-    if(this.globals.currentOption.metaData==2){
-      this.globals.mapsc=true;
-
-    }else{
-      this.globals.mapsc=false;
-    }
+    this.globals.mapsc=false;
     this.globals.tab = true;
 
     this.globals.isLoading = true;
@@ -398,9 +393,7 @@ toggle(){
       this.msfContainerRef.msfMapRef.getTrackingDataSource();
     }else if(this.globals.currentOption.tabType === 'usageStatistics'){
       this.msfContainerRef.msfTableRef.getDataUsageStatistics();
-    }else if(this.globals.currentOption.tabType === 'scmap'){
-
-    }else{
+    }else {
       this.globals.showBigLoading = false;
       this.globals.selectedIndex = 2;
     }
@@ -430,12 +423,7 @@ toggle(){
     if(this.globals.moreResultsBtn){
       this.globals.moreResults = false;
       this.globals.query = true;
-      if(this.globals.currentOption.metaData==2){
-        this.globals.mapsc=true;
-
-      }else{
-        this.globals.mapsc=false;
-      }
+      this.globals.mapsc=false;
       this.globals.tab = true;
 
       this.globals.isLoading = true;
@@ -445,9 +433,7 @@ toggle(){
         this.msfContainerRef.msfMapRef.getTrackingDataSource();
       }else if(this.globals.currentOption.tabType === 'usageStatistics'){
         this.msfContainerRef.msfTableRef.getDataUsageStatistics();
-      }else if(this.globals.currentOption.tabType === 'scmap'){
-  
-      }else{
+      }else {
         this.globals.showBigLoading = false;
         this.globals.selectedIndex = 2;
       }
