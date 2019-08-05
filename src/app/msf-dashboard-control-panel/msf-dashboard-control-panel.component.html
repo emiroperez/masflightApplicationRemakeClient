@@ -19,21 +19,17 @@
         </ng-template>
         <div class="msf-dashboard-control-panel-variable-tab-container">
           <div class="msf-dashboard-control-panel-variable-buttons">
-            <button mat-flat-button (click)="updateDashboard()" class="flat-button msf-dashboard-control-panel-variable-button">
-              <mat-icon aria-label="Update">refresh</mat-icon>
-              Update
-            </button>
             <button mat-flat-button [disabled]="controlVariables.length == controlVariablesAvailable.length" (click)="addVariable()" [ngClass]="controlVariables.length != controlVariablesAvailable.length ? 'flat-button' : 'flat-button-disabled'" class="msf-dashboard-control-panel-variable-button">
               <mat-icon aria-label="Add Variable">add</mat-icon>
-              Add Variable
             </button>
             <button mat-flat-button (click)="removeVariable()" class="flat-button msf-dashboard-control-panel-variable-button">
               <mat-icon aria-label="Remove">close</mat-icon>
-              Remove
+            </button>
+            <button mat-flat-button (click)="updateDashboard()" class="flat-button msf-dashboard-control-panel-variable-button">
+              <mat-icon aria-label="Update">refresh</mat-icon>
             </button>
             <button mat-flat-button [disabled]="!controlPanelCategories.length" (click)="setCategories()" [ngClass]="controlPanelCategories.length ? 'flat-button' : 'flat-button-disabled'" class="msf-dashboard-control-panel-variable-button">
               <mat-icon aria-label="Set Categories">category</mat-icon>
-              Set Categories
             </button>
           </div>
           <div class="msf-dashboard-control-panel-variable-arguments">
@@ -112,9 +108,11 @@
             </button>
           </div>
           <div class="msf-dashboard-control-panel-category-checkboxes">
-            <mat-checkbox *ngFor="let category of controlPanelCategory.values" class="msf-dashboard-control-panel-category-checkbox cancels-checkbox" [(ngModel)]="category.checked" (ngModelChange)="this.hideCategoryFromCharts.emit({ name: category.name, variable: controlPanelCategory.name })">
-              {{category.name}}
-            </mat-checkbox>
+            <div *ngFor="let category of controlPanelCategory.values" [ngClass]="{'msf-dashboard-control-panel-category-checkbox-border': !category.checked, 'msf-dashboard-control-panel-category-checkbox-checked-border': category.checked }">
+              <mat-checkbox [ngClass]="{'msf-dashboard-control-panel-category-checkbox': !category.checked, 'msf-dashboard-control-panel-category-checkbox-checked': category.checked }" class="category-checkbox" [(ngModel)]="category.checked" (ngModelChange)="this.hideCategoryFromCharts.emit({ name: category.name, variable: controlPanelCategory.name })">
+                {{category.name}}
+              </mat-checkbox>
+            </div>
           </div>
         </div>
       </mat-tab>
