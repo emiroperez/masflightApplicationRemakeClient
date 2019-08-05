@@ -1,10 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MenuMobileNode } from '../model/MenuMobileNode';
 import { Globals } from '../globals/Globals';
 import { MenuDashboardMobileNode } from '../model/MenuDashboardMobileNode';
 import { DashboardMenu } from '../model/DashboardMenu';
+import { MediaMatcher } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-menu-nav',
@@ -12,6 +13,9 @@ import { DashboardMenu } from '../model/DashboardMenu';
   styleUrls: ['./menu-nav.component.css']
 })
 export class MenuNavComponent implements OnInit {
+
+  
+
 
   optionSelected: any = {};
     
@@ -112,7 +116,11 @@ export class MenuNavComponent implements OnInit {
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
   dataSourceDashboard = new MatTreeFlatDataSource(this.treeControlDashboard, this.treeFlattenerDashboard);
 
-  constructor(public globals:Globals) { }
+  constructor(public globals:Globals, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
+
+   }
+
+   
 
   @Input("menu")
   menu: any;
