@@ -41,7 +41,7 @@ export class MenuOptionComponent implements OnInit {
     }
     else if (this.globals.currentOption.tabType === 'scmap')
     {
-      this.globals.mapsc = true;
+      this.globals.mapsc = false;
       this.globals.moreResultsBtn = false;
       this.globals.selectedIndex = 1;
     }
