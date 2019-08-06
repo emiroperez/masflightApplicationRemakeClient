@@ -390,6 +390,7 @@ toggle(){
     if(this.globals.currentOption.tabType === 'map'){
       this.globals.map = true;
       this.globals.showBigLoading = false;
+      this.globals.selectedIndex = 3;
       this.msfContainerRef.msfMapRef.getTrackingDataSource();
     }else if(this.globals.currentOption.tabType === 'usageStatistics'){
       this.msfContainerRef.msfTableRef.getDataUsageStatistics();
@@ -430,6 +431,7 @@ toggle(){
       if(this.globals.currentOption.tabType === 'map'){
         this.globals.map = true;
         this.globals.showBigLoading = false;
+        this.globals.selectedIndex = 3;
         this.msfContainerRef.msfMapRef.getTrackingDataSource();
       }else if(this.globals.currentOption.tabType === 'usageStatistics'){
         this.msfContainerRef.msfTableRef.getDataUsageStatistics();

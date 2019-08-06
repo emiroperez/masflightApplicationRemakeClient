@@ -574,7 +574,10 @@ export class MsfTableComponent implements OnInit {
           _this.dataSource.sort =_this.sort;
         }
         _this.tableOptions.dataSource = true;
-        _this.tableOptions.selectedIndex = 2;
+
+        if (_this.currentOption.tabType !== "map")
+          _this.tableOptions.selectedIndex = 2;
+
         console.log(_this.dataSource);
       }else{
         _this.tableOptions.dataSource = false;
@@ -586,7 +589,10 @@ export class MsfTableComponent implements OnInit {
       }else{
         _this.tableOptions.template = false;
       }
-      _this.tableOptions.selectedIndex = 2;
+
+      if (_this.currentOption.tabType !== "map")
+        _this.tableOptions.selectedIndex = 2;
+
       _this.finishLoading.emit (false);
       if(!_this.globals.isLoading){
         _this.globals.showBigLoading = true;

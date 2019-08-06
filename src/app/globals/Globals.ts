@@ -63,9 +63,9 @@ export class Globals {
   baseUrl = "http://pulse.globaleagle.com:8887";
   // baseUrl = "http://192.168.1.50:8887";
   // baseUrl = "";
-  // baseUrl2 = "http://pulse.globaleagle.com:8885";
+  baseUrl2 = "http://pulse.globaleagle.com:8885";
   // baseUrl2 = "http://localhost:8886";
-  baseUrl2 = "https://pulse.globaleagle.com:8886/mapBoxServices";
+  // baseUrl2 = "https://pulse.globaleagle.com:8886/mapBoxServices";
   // popupUrl = "http://localhost:8900";
   popupUrl = "https://pulse.globaleagle.com:8900";
   scheduledata:any;
@@ -292,15 +292,6 @@ clearVariablesMenu(){
       return this.bytesLoaded;
     }
     return 0;
-  }
-
-  getSelectedIndex(){
-    if(this.currentOption.tabType==="map"){
-      return 1;
-    }else{
-      return this.selectedIndex;
-    }
-
   }
 
   dataAvailabilityInit(){
