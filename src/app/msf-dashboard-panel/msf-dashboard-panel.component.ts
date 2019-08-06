@@ -149,6 +149,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   oldChartType: any;
   oldVariableName: string = "";
+  oldOptionCategories: any;
 
   updateTimeLeft: number = 60;
   updateInterval: any;
@@ -716,7 +717,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       type: this.chartTypes.indexOf (this.oldChartType),
       analysisName: this.oldVariableName,
       chartSeries: this.values.chartSeries,
-      controlVariables: null
+      controlVariables: this.oldOptionCategories
     });
 
     this.values.chartSeries = [];
@@ -881,6 +882,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
         this.oldChartType = null;
         this.oldVariableName = "";
+        this.oldOptionCategories = JSON.parse (JSON.stringify (this.values.currentOptionCategories));
       }
       else if (this.values.currentChartType.flags & ChartFlags.MAP)
       {
@@ -942,6 +944,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
         this.oldChartType = null;
         this.oldVariableName = "";
+        this.oldOptionCategories = JSON.parse (JSON.stringify (this.values.currentOptionCategories));
       }
       else if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART
         || this.values.currentChartType.flags & ChartFlags.PIECHART)
@@ -972,6 +975,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
         this.oldChartType = null;
         this.oldVariableName = "";
+        this.oldOptionCategories = JSON.parse (JSON.stringify (this.values.currentOptionCategories));
       }
       else
       {
@@ -1194,6 +1198,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
         this.oldChartType = this.values.currentChartType;
         this.oldVariableName = this.values.variable.name;
+        this.oldOptionCategories = JSON.parse (JSON.stringify (this.values.currentOptionCategories));
       }
 
       if (this.values.currentChartType.flags & ChartFlags.XYCHART)
@@ -1309,6 +1314,10 @@ export class MsfDashboardPanelComponent implements OnInit {
               chartSeries: this.values.chartSeries,
               optionId: this.values.currentOption.id
             });
+
+            this.oldChartType = null;
+            this.oldVariableName = "";
+            this.oldOptionCategories = JSON.parse (JSON.stringify (this.values.currentOptionCategories));
           }, 100);
 
           if (this.values.currentChartType.flags & ChartFlags.PICTURE)
@@ -1999,7 +2008,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       type: _this.chartTypes.indexOf (_this.oldChartType),
       analysisName: _this.oldVariableName,
       chartSeries: _this.values.chartSeries,
-      controlVariables: null
+      controlVariables: _this.oldOptionCategories
     });
 
     _this.values.chartSeries = [];
@@ -2014,6 +2023,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     _this.oldChartType = null;
     _this.oldVariableName = "";
+    _this.oldOptionCategories = JSON.parse (JSON.stringify (_this.values.currentOptionCategories));
 
     _this.stopUpdateInterval ();
     _this.startUpdateInterval ();
@@ -2098,7 +2108,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       type: _this.chartTypes.indexOf (_this.oldChartType),
       analysisName: _this.oldVariableName,
       chartSeries: _this.values.chartSeries,
-      controlVariables: null
+      controlVariables: _this.oldOptionCategories
     });
 
     _this.values.chartSeries = [];
@@ -2113,6 +2123,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     _this.oldChartType = null;
     _this.oldVariableName = "";
+    _this.oldOptionCategories = JSON.parse (JSON.stringify (_this.values.currentOptionCategories));
 
     _this.stopUpdateInterval ();
     _this.startUpdateInterval ();
@@ -2137,7 +2148,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       type: _this.chartTypes.indexOf (_this.oldChartType),
       analysisName: _this.oldVariableName,
       chartSeries: _this.values.chartSeries,
-      controlVariables: null
+      controlVariables: _this.oldOptionCategories
     });
 
     _this.values.chartSeries = [];
@@ -2152,6 +2163,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     _this.oldChartType = null;
     _this.oldVariableName = "";
+    _this.oldOptionCategories = JSON.parse (JSON.stringify (_this.values.currentOptionCategories));
 
     _this.stopUpdateInterval ();
     _this.startUpdateInterval ();
@@ -2174,7 +2186,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       type: _this.chartTypes.indexOf (_this.oldChartType),
       analysisName: _this.oldVariableName,
       chartSeries: _this.values.chartSeries,
-      controlVariables: null
+      controlVariables: _this.oldOptionCategories
     });
 
     _this.values.chartSeries = [];
@@ -2189,6 +2201,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     _this.oldChartType = null;
     _this.oldVariableName = "";
+    _this.oldOptionCategories = JSON.parse (JSON.stringify (_this.values.currentOptionCategories));
 
     setTimeout (() => {
       _this.values.isLoading = false;
@@ -2281,7 +2294,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       type: _this.chartTypes.indexOf (_this.oldChartType),
       analysisName: _this.oldVariableName,
       chartSeries: _this.values.chartSeries,
-      controlVariables: null
+      controlVariables: _this.oldOptionCategories
     });
 
     _this.values.chartSeries = [];
@@ -2296,6 +2309,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     _this.oldChartType = null;
     _this.oldVariableName = "";
+    _this.oldOptionCategories = JSON.parse (JSON.stringify (_this.values.currentOptionCategories));
 
     _this.stopUpdateInterval ();
     _this.startUpdateInterval ();
@@ -2427,13 +2441,14 @@ export class MsfDashboardPanelComponent implements OnInit {
       type: this.chartTypes.indexOf (this.oldChartType),
       analysisName: this.oldVariableName,
       chartSeries: this.values.chartSeries,
-      controlVariables: null
+      controlVariables: this.oldOptionCategories
     });
 
     this.values.chartSeries = [];
 
     this.oldChartType = null;
     this.oldVariableName = "";
+    this.oldOptionCategories = JSON.parse (JSON.stringify (this.values.currentOptionCategories));
   }
 
   handlerChartError(_this, result): void
