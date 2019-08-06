@@ -632,7 +632,7 @@ export class MsfTableComponent implements OnInit {
   {
     let momentFormat: string;
 
-    if (date == null)
+    if (date == null || date == "")
       return null;
 
     if (format == null || format == "" || this.predefinedColumnFormats[format])
@@ -653,7 +653,7 @@ export class MsfTableComponent implements OnInit {
     let momentFormat: string;
     let date: Date;
 
-    if (time == null)
+    if (time == null || time == "")
       return null;
 
     date = new Date (time);
