@@ -1616,6 +1616,9 @@
 .dark-theme .menu-nav-container .mat-tree .mat-tree-node {
   border-bottom: 1px solid #171717;
 }
+.dark-theme .msf-menu-components-container-show-mobile {
+  background-color: #333333;
+}
 
 .light-theme {
   color: #4d4d4d;
@@ -3220,6 +3223,9 @@
 }
 .light-theme .menu-nav-container .mat-tree .mat-tree-node {
   border-bottom: 1px solid #B2B2B2;
+}
+.light-theme .msf-menu-components-container-show-mobile {
+  background-color: #ffffff;
 }
 
 body {
