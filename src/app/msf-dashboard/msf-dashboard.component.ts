@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, Input, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, Input, SimpleChanges, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MatDialog } from '@angular/material';
 
@@ -83,7 +83,7 @@ export class MsfDashboardComponent implements OnInit {
   rightPanel: any;
 
   constructor(public globals: Globals, private service: ApplicationService,
-    public dialog: MatDialog)
+    public dialog: MatDialog, private changeDetector: ChangeDetectorRef)
   {
     if (globals.isFullscreen)
       this.screenHeight = "100%";
@@ -890,6 +890,7 @@ export class MsfDashboardComponent implements OnInit {
     }
 
     // then the control variables
+    this.changeDetector.detectChanges ();
   }
 
   addNewVariablesAndCategories(panel): void
@@ -1022,5 +1023,7 @@ export class MsfDashboardComponent implements OnInit {
         lastCategoryOption.optionId = panel.optionId;
       }
     }
+
+    this.changeDetector.detectChanges ();
   }
 }

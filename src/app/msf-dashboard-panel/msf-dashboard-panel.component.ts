@@ -1297,16 +1297,19 @@ export class MsfDashboardPanelComponent implements OnInit {
       {
         if (this.values.function == 1)
         {
-          this.values.chartSeries = [];
+          setTimeout (() =>
+          {
+            this.values.chartSeries = [];
 
-          // add the control variables into the control panel
-          this.addNewVariablesAndCategories.emit ({
-            type: this.chartTypes.indexOf (this.values.currentChartType),
-            analysisName: this.values.variable.name,
-            controlVariables: this.values.currentOptionCategories,
-            chartSeries: this.values.chartSeries,
-            optionId: this.values.currentOption.id
-          });
+            // add the control variables into the control panel
+            this.addNewVariablesAndCategories.emit ({
+              type: this.chartTypes.indexOf (this.values.currentChartType),
+              analysisName: null,
+              controlVariables: this.values.currentOptionCategories,
+              chartSeries: this.values.chartSeries,
+              optionId: this.values.currentOption.id
+            });
+          }, 100);
 
           if (this.values.currentChartType.flags & ChartFlags.PICTURE)
             this.values.displayPic = true;
@@ -2003,7 +2006,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     _this.addNewVariablesAndCategories.emit ({
       type: _this.chartTypes.indexOf (_this.values.currentChartType),
-      analysisName: _this.values.variable.name,
+      analysisName: null,
       controlVariables: _this.values.currentOptionCategories,
       chartSeries: _this.values.chartSeries,
       optionId: _this.values.currentOption.id
@@ -2102,7 +2105,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     _this.addNewVariablesAndCategories.emit ({
       type: _this.chartTypes.indexOf (_this.values.currentChartType),
-      analysisName: _this.values.variable.name,
+      analysisName: null,
       controlVariables: _this.values.currentOptionCategories,
       chartSeries: _this.values.chartSeries,
       optionId: _this.values.currentOption.id
@@ -2141,7 +2144,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     _this.addNewVariablesAndCategories.emit ({
       type: _this.chartTypes.indexOf (_this.values.currentChartType),
-      analysisName: _this.values.variable.name,
+      analysisName: null,
       controlVariables: _this.values.currentOptionCategories,
       chartSeries: _this.values.chartSeries,
       optionId: _this.values.currentOption.id
@@ -2178,7 +2181,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     _this.addNewVariablesAndCategories.emit ({
       type: _this.chartTypes.indexOf (_this.values.currentChartType),
-      analysisName: _this.values.variable.name,
+      analysisName: null,
       controlVariables: _this.values.currentOptionCategories,
       chartSeries: _this.values.chartSeries,
       optionId: _this.values.currentOption.id
@@ -2285,7 +2288,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     _this.addNewVariablesAndCategories.emit ({
       type: _this.chartTypes.indexOf (_this.values.currentChartType),
-      analysisName: _this.values.variable.name,
+      analysisName: null,
       controlVariables: _this.values.currentOptionCategories,
       chartSeries: _this.values.chartSeries,
       optionId: _this.values.currentOption.id
@@ -2428,14 +2431,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     });
 
     this.values.chartSeries = [];
-
-    this.addNewVariablesAndCategories.emit ({
-      type: this.chartTypes.indexOf (this.values.currentChartType),
-      analysisName: this.values.variable.name,
-      controlVariables: this.values.currentOptionCategories,
-      chartSeries: this.values.chartSeries,
-      optionId: this.values.currentOption.id
-    });
 
     this.oldChartType = null;
     this.oldVariableName = "";
