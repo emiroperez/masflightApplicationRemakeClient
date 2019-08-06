@@ -1,5 +1,5 @@
 <!--Header-->
-<div *ngIf="mobileQuery.matches ||(!globals.isFullscreen && !mobileQuery.matches || (globals.isFullscreen && globals.currentOption !== 'dashboard' && !mobileQuery.matches ))"
+<div *ngIf="(mobileQuery.matches || ResponsiveQuery.matches) ||(!globals.isFullscreen && !mobileQuery.matches || (globals.isFullscreen && globals.currentOption !== 'dashboard' && !mobileQuery.matches && !ResponsiveQuery.matches))"
     class="msf-menu-header">
     <!-- div to Menu Mobile-->
     <div *ngIf="mobileQuery.matches || ResponsiveQuery.matches" class="msf-header-iconss">
@@ -147,7 +147,8 @@
 <div class="msf-menu-body" [class.is-mobile]="mobileQuery.matches">
     <!--nav-->
     <div
-        [ngClass]="isSimpleContent() ? 'msf-menu-hide-full-nav' : 
+        [ngClass]="(isSimpleContent() && !mobileQuery.matches) 
+        || (mobileQuery.matches && isSimpleContent() && globals.showDashboard) ? 'msf-menu-hide-full-nav' : 
         (mobileQuery.matches ? (globals.showCategoryArguments || globals.showMenu ? 'msf-menu-show-full-nav-mobile':'msf-menu-show-full-nav')
         :'msf-menu-show-full-nav')">        
         <div
@@ -190,16 +191,19 @@
 
     <!--container-->
     <div
-        [ngClass]="isSimpleContent() ? 'msf-menu-simple-content' 
+        [ngClass]="(isSimpleContent() && !mobileQuery.matches) 
+        || (mobileQuery.matches && isSimpleContent() && globals.showDashboard)  ? 'msf-menu-simple-content' 
                                        : (mobileQuery.matches ? (globals.showCategoryArguments || globals.showMenu ? 'msf-menu-show-full-nav-component-hide' 
                                                                                                  :'msf-menu-show-full-nav-component-wide is-mobile')                                 
                                                                                                                             : (globals.status ? 'msf-menu-show-full-nav-component' : 'msf-menu-show-full-nav-component-wide'))">
         <div
-            [ngClass]="isSimpleContent()  ? 'msf-menu-simple-content' 
+            [ngClass]="(isSimpleContent() && !mobileQuery.matches) 
+            || (mobileQuery.matches && isSimpleContent() && globals.showDashboard)   ? 'msf-menu-simple-content' 
                                             : (mobileQuery.matches ? 'msf-menu-content msf-menu-tabs-content-mobile'
                                                                         : 'msf-menu-content msf-menu-tabs-content')">
             <div
-                [ngClass]="isSimpleContent() ? 'msf-menu-internal-simple-content' 
+                [ngClass]="(isSimpleContent() && !mobileQuery.matches) 
+                || (mobileQuery.matches && isSimpleContent() && globals.showDashboard)  ? 'msf-menu-internal-simple-content' 
                                                : (mobileQuery.matches ? (globals.showMenu ? 'msf-menu-internal-content-all-mobile'
                                                                         : (globals.showTabs ? 'msf-menu-internal-content-tabs':'msf-menu-internal-content-mobile'))
                                                                         :'msf-menu-internal-content') "  [class.is-MQueryresponsive]="ResponsiveQuery.matches">
