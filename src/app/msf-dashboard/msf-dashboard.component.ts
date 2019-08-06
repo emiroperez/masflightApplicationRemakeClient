@@ -284,7 +284,6 @@ export class MsfDashboardComponent implements OnInit {
     for (let i = 0, curColumn = 0; i < dashboardPanels.length; i++)
     {
       let dashboardPanel = dashboardPanels[i];
-      let option;
 
       if (dashboardPanel.column != curColumn)
       {
@@ -301,85 +300,10 @@ export class MsfDashboardComponent implements OnInit {
         dashboardRows = [];
       }
 
-      option = _this.getOption (dashboardPanel.option);
-
-      // add required global control variables if available
-      if (dashboardPanel.categoryOptions)
-      {
-        let categoryOptions: CategoryArguments[] = JSON.parse (dashboardPanel.categoryOptions);
-        let lastCategoryOption;
-
-        for (let categoryOption of categoryOptions)
-        {
-          let exists: boolean = false;
-
-          for (let controlVariable of _this.controlVariablesAvailable)
-          {
-            if (categoryOption.id == controlVariable.id)
-            {
-              exists = true;
-
-              for (let i = 0; i < controlVariable.arguments.length; i++)
-              {
-                // copy some values and visible attribute if the argument didn't have them
-                if (!controlVariable.arguments[i].visibleAttribute)
-                  controlVariable.arguments[i].visibleAttribute = categoryOption.arguments[i].visibleAttribute;
-
-                if (!controlVariable.arguments[i].value1)
-                  controlVariable.arguments[i].value1 = categoryOption.arguments[i].value1;
-
-                if (!controlVariable.arguments[i].value2)
-                  controlVariable.arguments[i].value2 = categoryOption.arguments[i].value2;
-
-                if (!controlVariable.arguments[i].value3)
-                  controlVariable.arguments[i].value3 = categoryOption.arguments[i].value3;
-              }
-
-              break;
-            }
-            else if (categoryOption.label === controlVariable.label)
-            {
-              // avoid repeating category arguments with the same label but different id,
-              // instead copy the arguments that are not in the added one
-              exists = true;
-
-              for (let newArgs of categoryOption.arguments)
-              {
-                let argexists = false;
-
-                for (let args of controlVariable.arguments)
-                {
-                  if (newArgs.id == args.id || newArgs.label1 === args.label1 || newArgs.title === args.title)
-                  {
-                    argexists = true;
-                    break;
-                  }
-                }
-
-                if (!argexists)
-                  controlVariable.arguments.push (JSON.parse (JSON.stringify (newArgs)));
-              }
-
-              break;
-            }
-          }
-
-          if (exists)
-            continue;
-
-          _this.controlVariablesAvailable.push (JSON.parse (JSON.stringify (categoryOption)));
-          lastCategoryOption = _this.controlVariablesAvailable[_this.controlVariablesAvailable.length - 1];
-          lastCategoryOption.isMatIcon = _this.isMatIcon (lastCategoryOption.icon);
-          lastCategoryOption.iconHover = _this.getImageIcon (lastCategoryOption, true);
-          lastCategoryOption.icon = _this.getImageIcon (lastCategoryOption, false);
-          lastCategoryOption.optionId = dashboardPanel.option.id;
-        }
-      }
-
       dashboardPanelIds.push (dashboardPanel.id);
       dashboardRows.push (new MsfDashboardPanelValues (_this.options, dashboardPanel.title,
         dashboardPanel.id, dashboardPanel.width, _this.heightValues[dashboardPanel.height],
-        option, dashboardPanel.analysis, dashboardPanel.xaxis,
+        _this.getOption (dashboardPanel.option), dashboardPanel.analysis, dashboardPanel.xaxis,
         dashboardPanel.values, dashboardPanel.function, dashboardPanel.chartType,
         dashboardPanel.categoryOptions, dashboardPanel.lastestResponse,
         dashboardPanel.paletteColors, dashboardPanel.updateTimeInterval,
@@ -689,7 +613,7 @@ export class MsfDashboardComponent implements OnInit {
 
     // begin resizing the panels
     if (offsetX > 0 && this.rightPanel.width - offsetX < minPanelWidth)
-    {    
+    {
       this.rightPanel.width = minPanelWidth;
       this.leftPanel.width = totalWidth - minPanelWidth;
       return;
@@ -932,6 +856,7 @@ export class MsfDashboardComponent implements OnInit {
 
   removeDeadVariablesAndCategories(panel): void
   {
+    // first remove the dead categories
     if (this.isAmChartWithMultipleSeries[panel.type])
     {
       // check if category exists
@@ -963,6 +888,8 @@ export class MsfDashboardComponent implements OnInit {
       // refresh dashboard control panel categories
       this.controlPanelCategories = JSON.parse (JSON.stringify (this.controlPanelCategories));
     }
+
+    // then the control variables
   }
 
   addNewVariablesAndCategories(panel): void
@@ -1021,6 +948,79 @@ export class MsfDashboardComponent implements OnInit {
 
       // refresh dashboard control panel categories
       this.controlPanelCategories = JSON.parse (JSON.stringify (this.controlPanelCategories));
+    }
+
+    // add new control variables into the control panel
+    if (panel.controlVariables)
+    {
+      let categoryOptions: CategoryArguments[] = panel.controlVariables;
+      let lastCategoryOption;
+
+      for (let categoryOption of categoryOptions)
+      {
+        let exists: boolean = false;
+
+        for (let controlVariable of this.controlVariablesAvailable)
+        {
+          if (categoryOption.id == controlVariable.id)
+          {
+            exists = true;
+
+            for (let i = 0; i < controlVariable.arguments.length; i++)
+            {
+              // copy some values and visible attribute if the argument didn't have them
+              if (!controlVariable.arguments[i].visibleAttribute)
+                controlVariable.arguments[i].visibleAttribute = categoryOption.arguments[i].visibleAttribute;
+
+              if (!controlVariable.arguments[i].value1)
+                controlVariable.arguments[i].value1 = categoryOption.arguments[i].value1;
+
+              if (!controlVariable.arguments[i].value2)
+                controlVariable.arguments[i].value2 = categoryOption.arguments[i].value2;
+
+              if (!controlVariable.arguments[i].value3)
+                controlVariable.arguments[i].value3 = categoryOption.arguments[i].value3;
+            }
+
+            break;
+          }
+          else if (categoryOption.label === controlVariable.label)
+          {
+            // avoid repeating category arguments with the same label but different id,
+            // instead copy the arguments that are not in the added one
+            exists = true;
+
+            for (let newArgs of categoryOption.arguments)
+            {
+              let argexists = false;
+
+              for (let args of controlVariable.arguments)
+              {
+                if (newArgs.id == args.id || newArgs.label1 === args.label1 || newArgs.title === args.title)
+                {
+                  argexists = true;
+                  break;
+                }
+              }
+
+              if (!argexists)
+                controlVariable.arguments.push (JSON.parse (JSON.stringify (newArgs)));
+            }
+
+            break;
+          }
+        }
+
+        if (exists)
+          continue;
+
+        this.controlVariablesAvailable.push (JSON.parse (JSON.stringify (categoryOption)));
+        lastCategoryOption = this.controlVariablesAvailable[this.controlVariablesAvailable.length - 1];
+        lastCategoryOption.isMatIcon = this.isMatIcon (lastCategoryOption.icon);
+        lastCategoryOption.iconHover = this.getImageIcon (lastCategoryOption, true);
+        lastCategoryOption.icon = this.getImageIcon (lastCategoryOption, false);
+        lastCategoryOption.optionId = panel.optionId;
+      }
     }
   }
 }
