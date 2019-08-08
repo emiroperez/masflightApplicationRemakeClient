@@ -173,6 +173,12 @@ export class MsfDashboardControlPanelComponent implements OnInit {
     this.setCategoriesValues = false;
   }
 
+  toggleCategory(category, controlPanelCategory): void
+  {
+    category.checked = !category.checked;
+    this.hideCategoryFromCharts.emit({ name: category.name, variable: controlPanelCategory.name });
+  }
+
   isTitleOnly(argument: Arguments): boolean
   {
     return ComponentType.title == argument.type;

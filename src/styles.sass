@@ -1094,9 +1094,9 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             background-color: $primary-color
         .msf-dashboard-control-panel-category-checkbox-border
             background-color: $font-color
-        .msf-dashboard-control-panel-category-checkbox-checked
+        .msf-dashboard-control-panel-category-checkbox-checked-container
             background-color: $primary-color
-        .msf-dashboard-control-panel-category-checkbox
+        .msf-dashboard-control-panel-category-checkbox-container
             background-color: $background-color
             color: $font-color
         ::-webkit-scrollbar-thumb
@@ -3459,12 +3459,15 @@ mat-tab-group
             .msf-dashboard-control-panel-category-checkbox-checked
                 color: #ffffff
                 align-self: center
-                padding: 5px 10px
                 border-radius: 5px
                 margin: 0
+            .msf-dashboard-control-panel-category-checkbox-container, .msf-dashboard-control-panel-category-checkbox-checked-container
+                padding: 5px 10px
+                border-radius: 5px
+            .msf-dashboard-control-panel-category-checkbox-container:hover, .msf-dashboard-control-panel-category-checkbox-checked-container:hover
+                cursor: pointer
             .msf-dashboard-control-panel-category-checkbox
                 align-self: center
-                padding: 5px 10px
                 border-radius: 5px
                 margin: 0
         .msf-dashboard-control-panel-variable-buttons

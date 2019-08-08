@@ -109,9 +109,11 @@
           </div>
           <div class="msf-dashboard-control-panel-category-checkboxes">
             <div *ngFor="let category of controlPanelCategory.values" [ngClass]="{'msf-dashboard-control-panel-category-checkbox-border': !category.checked, 'msf-dashboard-control-panel-category-checkbox-checked-border': category.checked }">
-              <mat-checkbox [ngClass]="{'msf-dashboard-control-panel-category-checkbox': !category.checked, 'msf-dashboard-control-panel-category-checkbox-checked': category.checked }" class="category-checkbox" [(ngModel)]="category.checked" (ngModelChange)="this.hideCategoryFromCharts.emit({ name: category.name, variable: controlPanelCategory.name })">
-                {{category.name}}
-              </mat-checkbox>
+              <div [ngClass]="{'msf-dashboard-control-panel-category-checkbox-container': !category.checked, 'msf-dashboard-control-panel-category-checkbox-checked-container': category.checked }" (click)="toggleCategory(category, controlPanelCategory)">
+                <mat-checkbox [ngClass]="{'msf-dashboard-control-panel-category-checkbox': !category.checked, 'msf-dashboard-control-panel-category-checkbox-checked': category.checked }" class="category-checkbox" [(ngModel)]="category.checked" (click)="$event.stopPropagation()" (ngModelChange)="this.hideCategoryFromCharts.emit({ name: category.name, variable: controlPanelCategory.name })">
+                  {{category.name}}
+                </mat-checkbox>
+              </div>
             </div>
           </div>
         </div>
