@@ -940,6 +940,7 @@ toggle(){
       }
     }    
 
+    this.changeDetectorRef.detectChanges ();
   }
 
   backMenu(){
@@ -965,6 +966,8 @@ toggle(){
       this.globals.showDashboard=false;
       this.globals.showMenu = true;
     }*/
+
+    this.changeDetectorRef.detectChanges ();
   }
 
   getMenuVisibility(): string
