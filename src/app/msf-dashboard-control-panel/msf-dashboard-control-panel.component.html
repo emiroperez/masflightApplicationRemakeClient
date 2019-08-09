@@ -19,16 +19,16 @@
         </ng-template>
         <div class="msf-dashboard-control-panel-variable-tab-container">
           <div class="msf-dashboard-control-panel-variable-buttons">
-            <button mat-flat-button [disabled]="controlVariables.length == controlVariablesAvailable.length" (click)="addVariable()" [ngClass]="controlVariables.length != controlVariablesAvailable.length ? 'flat-button' : 'flat-button-disabled'" class="msf-dashboard-control-panel-variable-button">
+            <button mat-flat-button [disabled]="controlVariables.length == controlVariablesAvailable.length" (click)="addVariable()" [ngClass]="controlVariables.length != controlVariablesAvailable.length ? 'flat-button' : 'flat-button-disabled'" class="msf-dashboard-control-panel-variable-button" matTooltip="Add Variable">
               <mat-icon aria-label="Add Variable">add</mat-icon>
             </button>
-            <button mat-flat-button (click)="removeVariable()" class="flat-button msf-dashboard-control-panel-variable-button">
+            <button mat-flat-button (click)="removeVariable()" class="flat-button msf-dashboard-control-panel-variable-button" matTooltip="Remove">
               <mat-icon aria-label="Remove">close</mat-icon>
             </button>
-            <button mat-flat-button (click)="updateDashboard()" class="flat-button msf-dashboard-control-panel-variable-button">
+            <button mat-flat-button (click)="updateDashboard()" class="flat-button msf-dashboard-control-panel-variable-button" matTooltip="Refresh">
               <mat-icon aria-label="Update">refresh</mat-icon>
             </button>
-            <button mat-flat-button [disabled]="!controlPanelCategories.length" (click)="setCategories()" [ngClass]="controlPanelCategories.length ? 'flat-button' : 'flat-button-disabled'" class="msf-dashboard-control-panel-variable-button">
+            <button mat-flat-button [disabled]="!controlPanelCategories.length" (click)="setCategories()" [ngClass]="controlPanelCategories.length ? 'flat-button' : 'flat-button-disabled'" class="msf-dashboard-control-panel-variable-button" matTooltip="Set Categoroes">
               <mat-icon aria-label="Set Categories">category</mat-icon>
             </button>
           </div>

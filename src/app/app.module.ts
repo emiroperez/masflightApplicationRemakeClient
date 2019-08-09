@@ -186,6 +186,7 @@ import { MsfDynamicTableAliasComponent } from './msf-dynamic-table-alias/msf-dyn
 import { Cookie } from './api/cookie';
 import { MsfDashboardControlPanelComponent } from './msf-dashboard-control-panel/msf-dashboard-control-panel.component';
 import { MenuNavComponent } from './menu-nav/menu-nav.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -386,7 +387,8 @@ import { MenuNavComponent } from './menu-nav/menu-nav.component';
     OwlNativeDateTimeModule,
     ColorPickerModule,
     DragScrollModule,
-    DigitOnlyModule
+    DigitOnlyModule,
+    MatTooltipModule
   ],
   providers: [
     AuthService,

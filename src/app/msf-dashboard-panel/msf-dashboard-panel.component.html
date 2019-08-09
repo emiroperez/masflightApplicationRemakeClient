@@ -113,27 +113,27 @@
           <div class="msf-dashboard-panel-sub-container-column-reverse">
             <button [disabled]="!generateBtnEnabled" mat-flat-button [ngClass]="generateBtnEnabled ? 'flat-button' : 'flat-button-disabled'" (click)="loadData()">Generate</button>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button [disabled]="!variableCtrlBtnEnabled" mat-mini-fab (click)="goToControlVariables()" color="primary">
+              <button [disabled]="!variableCtrlBtnEnabled" mat-mini-fab (click)="goToControlVariables()" color="primary" matTooltip="Control Variables">
                 <mat-icon aria-label="Control Variables">more_vert</mat-icon>
               </button>
             </div>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated" mat-mini-fab (click)="goToChart()" color="primary">
+              <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated" mat-mini-fab (click)="goToChart()" color="primary" matTooltip="Go To Chart">
                 <mat-icon aria-label="Go To Chart">bar_chart</mat-icon>
               </button>
             </div>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button mat-mini-fab (click)="goToColorPicker()" color="primary">
+              <button mat-mini-fab (click)="goToColorPicker()" color="primary" matTooltip="Color Picker">
                 <mat-icon aria-label="Color Picker">palette</mat-icon>
               </button>
             </div>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button [disabled]="values.currentOption == null || !values.currentOption.drillDownOptions.length" mat-mini-fab (click)="goToDrillDownSettings()" color="primary">
+              <button [disabled]="values.currentOption == null || !values.currentOption.drillDownOptions.length" mat-mini-fab (click)="goToDrillDownSettings()" color="primary" matTooltip="Drill Down">
                 <mat-icon aria-label="Drill Down">subtitles</mat-icon>
               </button>
             </div>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button mat-mini-fab (click)="savePanel()" color="primary">
+              <button mat-mini-fab (click)="savePanel()" color="primary" matTooltip="Save Changes">
                 <mat-icon aria-label="Save Changes">save</mat-icon>
               </button>
             </div>
@@ -221,17 +221,17 @@
           <div class="msf-dashboard-panel-sub-container-column-reverse">
             <button [disabled]="!generateBtnEnabled" mat-flat-button [ngClass]="generateBtnEnabled ? 'flat-button' : 'flat-button-disabled'" (click)="loadData()">Generate</button>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button [disabled]="!variableCtrlBtnEnabled" mat-mini-fab (click)="goToControlVariables()" color="primary">
+              <button [disabled]="!variableCtrlBtnEnabled" mat-mini-fab (click)="goToControlVariables()" color="primary" matTooltip="Control Variables">
                 <mat-icon aria-label="Control Variables">more_vert</mat-icon>
               </button>
             </div>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated" mat-mini-fab (click)="goToChart()" color="primary">
+              <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated" mat-mini-fab (click)="goToChart()" color="primary" matTooltip="Go To Information">
                 <mat-icon aria-label="Go To Information">bar_chart</mat-icon>
               </button>
             </div>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button mat-mini-fab (click)="savePanel()" color="primary">
+              <button mat-mini-fab (click)="savePanel()" color="primary" matTooltip="Save Changes">
                 <mat-icon aria-label="Save Changes">save</mat-icon>
               </button>
             </div>
@@ -352,17 +352,17 @@
           <div class="msf-dashboard-panel-sub-container-column-reverse">
             <button [disabled]="!generateBtnEnabled" mat-flat-button [ngClass]="generateBtnEnabled ? 'flat-button' : 'flat-button-disabled'" (click)="loadData()">Generate</button>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button [disabled]="!variableCtrlBtnEnabled" mat-mini-fab (click)="goToControlVariables()" color="primary">
+              <button [disabled]="!variableCtrlBtnEnabled" mat-mini-fab (click)="goToControlVariables()" color="primary" matTooltip="Control Variables">
                 <mat-icon aria-label="Control Variables">more_vert</mat-icon>
               </button>
             </div>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated" mat-mini-fab (click)="goToChart()" color="primary">
+              <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated" mat-mini-fab (click)="goToChart()" color="primary" matTooltip="Go To Form">
                 <mat-icon aria-label="Go To Form">bar_chart</mat-icon>
               </button>
             </div>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button mat-mini-fab (click)="savePanel()" color="primary">
+              <button mat-mini-fab (click)="savePanel()" color="primary" matTooltip="Save Changes">
                 <mat-icon aria-label="Save Changes">save</mat-icon>
               </button>
             </div>
@@ -383,17 +383,17 @@
           <div class="msf-dashboard-panel-sub-container-column-reverse">
             <button [disabled]="!generateBtnEnabled" mat-flat-button [ngClass]="generateBtnEnabled ? 'flat-button' : 'flat-button-disabled'" (click)="loadData()">Generate</button>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button [disabled]="!variableCtrlBtnEnabled" mat-mini-fab (click)="goToControlVariables()" color="primary">
+              <button [disabled]="!variableCtrlBtnEnabled" mat-mini-fab (click)="goToControlVariables()" color="primary" matTooltip="Control Variables">
                 <mat-icon aria-label="Control Variables">more_vert</mat-icon>
               </button>
             </div>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated" mat-mini-fab (click)="goToChart()" color="primary">
+              <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated" mat-mini-fab (click)="goToChart()" color="primary" matTooltip="Go To Picture">
                 <mat-icon aria-label="Go To Picture">bar_chart</mat-icon>
               </button>
             </div>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button mat-mini-fab (click)="savePanel()" color="primary">
+              <button mat-mini-fab (click)="savePanel()" color="primary" matTooltip="Save Changes">
                 <mat-icon aria-label="Save Changes">save</mat-icon>
               </button>
             </div>
@@ -414,17 +414,17 @@
           <div class="msf-dashboard-panel-sub-container-column-reverse">
             <button [disabled]="!generateBtnEnabled" mat-flat-button [ngClass]="generateBtnEnabled ? 'flat-button' : 'flat-button-disabled'" (click)="loadData()">Generate</button>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button [disabled]="!variableCtrlBtnEnabled" mat-mini-fab (click)="goToControlVariables()" color="primary">
+              <button [disabled]="!variableCtrlBtnEnabled" mat-mini-fab (click)="goToControlVariables()" color="primary" matTooltip="Control Variables">
                 <mat-icon aria-label="Control Variables">more_vert</mat-icon>
               </button>
             </div>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated" mat-mini-fab (click)="goToChart()" color="primary">
+              <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated" mat-mini-fab (click)="goToChart()" color="primary" matTooltip="Go To Map">
                 <mat-icon aria-label="Go To Map">bar_chart</mat-icon>
               </button>
             </div>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button mat-mini-fab (click)="savePanel()" color="primary">
+              <button mat-mini-fab (click)="savePanel()" color="primary" matTooltip="Save Changes">
                 <mat-icon aria-label="Save Changes">save</mat-icon>
               </button>
             </div>
@@ -492,22 +492,22 @@
           <div class="msf-dashboard-panel-sub-container-column-reverse">
             <button [disabled]="!generateBtnEnabled" mat-flat-button [ngClass]="generateBtnEnabled ? 'flat-button' : 'flat-button-disabled'" (click)="loadData()">Generate</button>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button [disabled]="!variableCtrlBtnEnabled" mat-mini-fab (click)="goToControlVariables()" color="primary">
+              <button [disabled]="!variableCtrlBtnEnabled" mat-mini-fab (click)="goToControlVariables()" color="primary" matTooltip="Control Variables">
                 <mat-icon aria-label="Control Variables">more_vert</mat-icon>
               </button>
             </div>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated" mat-mini-fab (click)="goToChart()" color="primary">
-                <mat-icon aria-label="Go To Picture">bar_chart</mat-icon>
+              <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated" mat-mini-fab (click)="goToChart()" color="primary" matTooltip="Go To Map">
+                <mat-icon aria-label="Go To Map">bar_chart</mat-icon>
               </button>
             </div>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button mat-mini-fab (click)="goToColorPicker()" color="primary">
+              <button mat-mini-fab (click)="goToColorPicker()" color="primary" matTooltip="Color Picker">
                 <mat-icon aria-label="Color Picker">palette</mat-icon>
               </button>
             </div>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button mat-mini-fab (click)="savePanel()" color="primary">
+              <button mat-mini-fab (click)="savePanel()" color="primary" matTooltip="Save Changes">
                 <mat-icon aria-label="Save Changes">save</mat-icon>
               </button>
             </div>
@@ -539,17 +539,17 @@
           <div class="msf-dashboard-panel-sub-container-column-reverse">
             <button [disabled]="!generateBtnEnabled" mat-flat-button [ngClass]="generateBtnEnabled ? 'flat-button' : 'flat-button-disabled'" (click)="loadData()">Generate</button>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button [disabled]="!variableCtrlBtnEnabled" mat-mini-fab (click)="goToControlVariables()" color="primary">
+              <button [disabled]="!variableCtrlBtnEnabled" mat-mini-fab (click)="goToControlVariables()" color="primary" matTooltip="Control Variables">
                 <mat-icon aria-label="Control Variables">more_vert</mat-icon>
               </button>
             </div>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated" mat-mini-fab (click)="goToChart()" color="primary">
+              <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated" mat-mini-fab (click)="goToChart()" color="primary" matTooltip="Go To Map">
                 <mat-icon aria-label="Go To Map">bar_chart</mat-icon>
               </button>
             </div>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button mat-mini-fab (click)="savePanel()" color="primary">
+              <button mat-mini-fab (click)="savePanel()" color="primary" matTooltip="Save Changes">
                 <mat-icon aria-label="Save Changes">save</mat-icon>
               </button>
             </div>
@@ -578,17 +578,17 @@
           <div class="msf-dashboard-panel-sub-container-column-reverse">
             <button [disabled]="!generateBtnEnabled" mat-flat-button [ngClass]="generateBtnEnabled ? 'flat-button' : 'flat-button-disabled'" (click)="loadData()">Generate</button>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button [disabled]="!variableCtrlBtnEnabled" mat-mini-fab (click)="goToControlVariables()" color="primary">
+              <button [disabled]="!variableCtrlBtnEnabled" mat-mini-fab (click)="goToControlVariables()" color="primary" matTooltip="Control Variables">
                 <mat-icon aria-label="Control Variables">more_vert</mat-icon>
               </button>
             </div>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated" mat-mini-fab (click)="goToChart()" color="primary">
+              <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated" mat-mini-fab (click)="goToChart()" color="primary" matTooltip="Go To Table">
                 <mat-icon aria-label="Go To Table">bar_chart</mat-icon>
               </button>
             </div>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button mat-mini-fab (click)="savePanel()" color="primary">
+              <button mat-mini-fab (click)="savePanel()" color="primary" matTooltip="Save Changes">
                 <mat-icon aria-label="Save Changes">save</mat-icon>
               </button>
             </div>
@@ -623,13 +623,13 @@
         </table>
       </div>
       <div class="msf-dashboard-panel-config-button" *ngIf="!globals.readOnlyDashboard">
-        <button mat-mini-fab (click)="goToChartConfiguration()" color="primary">
+        <button mat-mini-fab (click)="goToChartConfiguration()" color="primary" matTooltip="Edit Configuration">
           <mat-icon aria-label="Edit Configuration">menu</mat-icon>
         </button>
-        <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="sharePanel()">
+        <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="sharePanel()" matTooltip="Share Panel">
           <mat-icon aria-label="Share Panel">share</mat-icon>
         </button>
-        <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="copyControlVariables()">
+        <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="copyControlVariables()" matTooltip="Copy Control Variables">
           <mat-icon aria-label="Copy Control Variables">file_copy</mat-icon>
         </button>
       </div>
@@ -639,13 +639,13 @@
     <div class="msf-dashboard-panel-title">{{values.chartName}}</div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-panel-config-button" *ngIf="!globals.readOnlyDashboard">
-        <button mat-mini-fab (click)="goToInfoConfiguration()" color="primary">
+        <button mat-mini-fab (click)="goToInfoConfiguration()" color="primary" matTooltip="Edit Configuration">
           <mat-icon aria-label="Edit Configuration">menu</mat-icon>
         </button>
-        <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="sharePanel()">
+        <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="sharePanel()" matTooltip="Share Panel">
           <mat-icon aria-label="Share Panel">share</mat-icon>
         </button>
-        <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="copyControlVariables()">
+        <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="copyControlVariables()" matTooltip="Copy Control Variables">
           <mat-icon aria-label="Copy Control Variables">file_copy</mat-icon>
         </button>
       </div>
@@ -669,13 +669,13 @@
     <div class="msf-dashboard-panel-title">{{values.chartName}}</div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-panel-config-button" *ngIf="!globals.readOnlyDashboard">
-        <button mat-mini-fab (click)="goToFormConfiguration()" color="primary">
+        <button mat-mini-fab (click)="goToFormConfiguration()" color="primary" matTooltip="Edit Configuration">
           <mat-icon aria-label="Edit Configuration">menu</mat-icon>
         </button>
-        <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="sharePanel()">
+        <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="sharePanel()" matTooltip="Share Panel">
           <mat-icon aria-label="Share Panel">share</mat-icon>
         </button>
-        <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="copyControlVariables()">
+        <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="copyControlVariables()" matTooltip="Copy Control Variables">
           <mat-icon aria-label="Copy Control Variables">file_copy</mat-icon>
         </button>
       </div>
@@ -693,13 +693,13 @@
     <div class="msf-dashboard-panel-title"><br></div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-panel-config-button" *ngIf="!globals.readOnlyDashboard">
-        <button mat-mini-fab (click)="goToFormConfiguration()" color="primary">
+        <button mat-mini-fab (click)="goToFormConfiguration()" color="primary" matTooltip="Edit Configuration">
           <mat-icon aria-label="Edit Configuration">menu</mat-icon>
         </button>
-        <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="sharePanel()">
+        <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="sharePanel()" matTooltip="Share Panel">
           <mat-icon aria-label="Share Panel">share</mat-icon>
         </button>
-        <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="copyControlVariables()">
+        <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="copyControlVariables()" matTooltip="Copy Control Variables">
           <mat-icon aria-label="Copy Control Variables">file_copy</mat-icon>
         </button>
       </div>
@@ -712,13 +712,13 @@
     <div class="msf-dashboard-panel-title" [style.padding-bottom.px]="5">{{values.chartName}}</div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-panel-config-button" *ngIf="!globals.readOnlyDashboard">
-        <button mat-mini-fab (click)="goToTableConfiguration()" color="primary">
+        <button mat-mini-fab (click)="goToTableConfiguration()" color="primary" matTooltip="Edit Configuration">
           <mat-icon aria-label="Edit Configuration">menu</mat-icon>
         </button>
-        <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="sharePanel()">
+        <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="sharePanel()" matTooltip="Share Panel">
           <mat-icon aria-label="Share Panel">share</mat-icon>
         </button>
-        <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="copyControlVariables()">
+        <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="copyControlVariables()" matTooltip="Copy Control Variables">
           <mat-icon aria-label="Copy Control Variables">file_copy</mat-icon>
         </button>
       </div>
@@ -739,13 +739,13 @@
     <div class="msf-dashboard-panel-title">{{values.chartName}}</div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-panel-config-button" *ngIf="!globals.readOnlyDashboard">
-        <button mat-mini-fab (click)="goToMapboxConfiguration()" color="primary">
+        <button mat-mini-fab (click)="goToMapboxConfiguration()" color="primary" matTooltip="Edit Configuration">
           <mat-icon aria-label="Edit Configuration">menu</mat-icon>
         </button>
-        <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="sharePanel()">
+        <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="sharePanel()" matTooltip="Share Panel">
           <mat-icon aria-label="Share Panel">share</mat-icon>
         </button>
-        <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="copyControlVariables()">
+        <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="copyControlVariables()" matTooltip="Copy Control Variables">
           <mat-icon aria-label="Copy Control Variables">file_copy</mat-icon>
         </button>
       </div>
