@@ -365,7 +365,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     ReactiveFormsModule,
     NgSelectModule,
     NgxMaterialTimepickerModule.forRoot(),
-    ReactiveFormsModule,
     BrowserAnimationsModule,
     MatSelectModule,
     MatFormFieldModule,
