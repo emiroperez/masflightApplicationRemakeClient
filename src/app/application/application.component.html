@@ -168,7 +168,7 @@
                     </app-msf-component>
                 </div>
                 <app-menu-nav *ngIf="(ResponsiveQuery.matches || mobileQuery.matches) && globals.showMenu " [menu]="menu" [dashboards]="dashboards"
-                [sharedDashboards]="sharedDashboards"></app-menu-nav>
+                [sharedDashboards]="sharedDashboards" (optionChanged)="optionHandler()"></app-menu-nav>
                 <div class="msf-category-container"
                     [ngClass]="(globals.currentOption && globals.currentOption.metaData != 3) ? 'msf-hide' : (globals.hideParametersPanels ? 'msf-hide':'msf-category-container')">
                     <app-msf-map-coordinates></app-msf-map-coordinates>

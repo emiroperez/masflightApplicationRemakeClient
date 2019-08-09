@@ -66,7 +66,7 @@ export class ApplicationComponent implements OnInit {
   private _ResponsiveQueryListener: () => void; 
 
   constructor(public dialog: MatDialog, public globals: Globals, private menuService: MenuService,private router: Router,private excelService:ExcelService,
-    private appService: ApplicationService, private authService: AuthService, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private authGuard: AuthGuard,
+    private appService: ApplicationService, private authService: AuthService, private changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private authGuard: AuthGuard,
     private userService: UserService)
   {
     this.status = false;
@@ -88,7 +88,7 @@ export class ApplicationComponent implements OnInit {
   ngOnInit() {
     this.globals.lastTime = null;
     this.globals.clearVariables();
-    this.globals.clearVariablesMenu()
+    this.globals.clearVariablesMenu();
     this.getMenu();
   }
 
@@ -790,6 +790,8 @@ toggle(){
   {
     if (this.msfContainerRef && this.msfContainerRef.msfTableRef)
       this.msfContainerRef.msfTableRef = null;
+
+    this.changeDetectorRef.detectChanges ();
   }
 
   parseCoordinates(): void

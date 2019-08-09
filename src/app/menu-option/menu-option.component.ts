@@ -27,7 +27,6 @@ export class MenuOptionComponent implements OnInit {
 
   optionClickHandler(option)
   {
-    this.optionChanged.emit ();
     this.globals.clearVariables ();
     this.globals.currentOption = option;
     this.globals.initDataSource ();
@@ -57,6 +56,7 @@ export class MenuOptionComponent implements OnInit {
       this.globals.displayMapMenu = 1;
 
     this.globals.status = true;
+    this.optionChanged.emit ();
   }
 
   closeMenu() {

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MenuMobileNode } from '../model/MenuMobileNode';
@@ -131,6 +131,9 @@ export class MenuNavComponent implements OnInit {
   @Input("sharedDashboards")
   sharedDashboards: any[];
 
+  @Output('optionChanged')
+  optionChanged = new EventEmitter ();
+
   ngOnInit() {
     this.dataSource.data = this.menu.categories;
     this.dashboards.forEach(element => {
@@ -179,7 +182,6 @@ export class MenuNavComponent implements OnInit {
 
   optionClickHandler(option)
   {
-    // this.optionChanged.emit ();
     this.globals.clearVariables ();
     // this.globals.isLoading=true;    
     this.globals.currentOption = option;
@@ -210,6 +212,7 @@ export class MenuNavComponent implements OnInit {
       this.globals.displayMapMenu = 1;
 
     this.globals.status = true;
+    this.optionChanged.emit ();
   }  
 
   goToDashboard(dashboard, readOnly): void
@@ -222,12 +225,12 @@ export class MenuNavComponent implements OnInit {
     this.globals.showIntroWelcome = false;
     this.globals.showDashboard = true;
 
-    // this.optionChanged.emit ();
     this.globals.minDate=null;
     this.globals.maxDate=null;
     this.globals.showBigLoading = true;
     this.globals.currentDashboardMenu = dashboard;
     this.globals.currentOption = 'dashboard';
     this.globals.readOnlyDashboard = readOnly;
+    this.optionChanged.emit ();
   }
 }

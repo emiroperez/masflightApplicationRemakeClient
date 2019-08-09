@@ -80,13 +80,13 @@ export class MenuComponent implements OnInit {
 
   goToDashboard(dashboard, readOnly): void
   {
-    this.optionChanged.emit ();
     this.globals.minDate=null;
     this.globals.maxDate=null;
     this.globals.showBigLoading = true;
     this.globals.currentDashboardMenu = dashboard;
     this.globals.currentOption = 'dashboard';
     this.globals.readOnlyDashboard = readOnly;
+    this.optionChanged.emit ();
   }
 
   setMenuCategory(category: any){
