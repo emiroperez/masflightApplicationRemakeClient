@@ -966,4 +966,12 @@ toggle(){
       this.globals.showMenu = true;
     }*/
   }
+
+  getMenuVisibility(): string
+  {
+    if (!this.mobileQuery.matches && !this.ResponsiveQuery.matches)
+      return "block";
+
+    return "none";
+  }
 }

@@ -21,7 +21,7 @@
             class="msf-menu-logo">
         <img src="../../assets/images/{{globals.theme}}-adjust.png" class="msf-menu-ajustes-icon">
     </div>
-    <div *ngIf="!mobileQuery.matches && !ResponsiveQuery.matches" class="msf-menu-container">
+    <div [style.display]="getMenuVisibility()" class="msf-menu-container">
         <app-menu [menu]="menu" [dashboards]="dashboards" [sharedDashboards]="sharedDashboards"
             (optionChanged)="optionHandler()"></app-menu>
     </div>
