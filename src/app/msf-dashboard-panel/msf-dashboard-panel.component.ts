@@ -890,6 +890,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         chart.exporting.menu.verticalAlign = "bottom";
         chart.exporting.title = this.values.chartName;
         chart.exporting.filePrefix = this.values.chartName;
+        chart.exporting.useWebFonts = false;
 
         // Remove "Saved from..." message on PDF files
         options = chart.exporting.getFormatOptions ("pdf");
@@ -995,6 +996,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         chart.exporting.menu.verticalAlign = "bottom";
         chart.exporting.title = this.values.chartName;
         chart.exporting.filePrefix = this.values.chartName;
+        chart.exporting.useWebFonts = false;
 
         // Remove "Saved from..." message on PDF files
         options = chart.exporting.getFormatOptions ("pdf");
@@ -1230,6 +1232,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         chart.exporting.menu.verticalAlign = "bottom";
         chart.exporting.title = this.values.chartName;
         chart.exporting.filePrefix = this.values.chartName;
+        chart.exporting.useWebFonts = false;
 
         // Remove "Saved from..." message on PDF files
         options = chart.exporting.getFormatOptions ("pdf");
