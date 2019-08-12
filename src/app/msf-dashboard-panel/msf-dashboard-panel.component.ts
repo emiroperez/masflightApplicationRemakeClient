@@ -723,7 +723,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.chartSeries = [];
 
     this.zone.runOutsideAngular (() => {
-      let chart;
+      let chart, options;
 
       // Check chart type before generating it
       if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
@@ -883,6 +883,18 @@ export class MsfDashboardPanelComponent implements OnInit {
         this.oldChartType = null;
         this.oldVariableName = "";
         this.oldOptionCategories = JSON.parse (JSON.stringify (this.values.currentOptionCategories));
+
+        // Add export menu
+        chart.exporting.menu = new am4core.ExportMenu ();
+        chart.exporting.menu.align = "left";
+        chart.exporting.menu.verticalAlign = "bottom";
+        chart.exporting.title = this.values.chartName;
+        chart.exporting.filePrefix = this.values.chartName;
+
+        // Remove "Saved from..." message on PDF files
+        options = chart.exporting.getFormatOptions ("pdf");
+        options.addURL = false;
+        chart.exporting.setFormatOptions ("pdf", options);
       }
       else if (this.values.currentChartType.flags & ChartFlags.MAP)
       {
@@ -976,6 +988,18 @@ export class MsfDashboardPanelComponent implements OnInit {
         this.oldChartType = null;
         this.oldVariableName = "";
         this.oldOptionCategories = JSON.parse (JSON.stringify (this.values.currentOptionCategories));
+
+        // Add export menu
+        chart.exporting.menu = new am4core.ExportMenu ();
+        chart.exporting.menu.align = "left";
+        chart.exporting.menu.verticalAlign = "bottom";
+        chart.exporting.title = this.values.chartName;
+        chart.exporting.filePrefix = this.values.chartName;
+
+        // Remove "Saved from..." message on PDF files
+        options = chart.exporting.getFormatOptions ("pdf");
+        options.addURL = false;
+        chart.exporting.setFormatOptions ("pdf", options);
       }
       else
       {
@@ -1199,6 +1223,18 @@ export class MsfDashboardPanelComponent implements OnInit {
         this.oldChartType = this.values.currentChartType;
         this.oldVariableName = this.values.variable.name;
         this.oldOptionCategories = JSON.parse (JSON.stringify (this.values.currentOptionCategories));
+
+        // Add export menu
+        chart.exporting.menu = new am4core.ExportMenu ();
+        chart.exporting.menu.align = "left";
+        chart.exporting.menu.verticalAlign = "bottom";
+        chart.exporting.title = this.values.chartName;
+        chart.exporting.filePrefix = this.values.chartName;
+
+        // Remove "Saved from..." message on PDF files
+        options = chart.exporting.getFormatOptions ("pdf");
+        options.addURL = false;
+        chart.exporting.setFormatOptions ("pdf", options);
       }
 
       if (this.values.currentChartType.flags & ChartFlags.XYCHART)
@@ -1211,7 +1247,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         chart.legend.labels.template.fill = Themes.AmCharts[theme].fontColor;
       }
 
-      // add variable and categories into the dashboard control panel if they are not added
+      // Add variable and categories into the dashboard control panel if they are not added
       this.addNewVariablesAndCategories.emit ({
         type: this.chartTypes.indexOf (this.values.currentChartType),
         analysisName: this.values.variable.name,

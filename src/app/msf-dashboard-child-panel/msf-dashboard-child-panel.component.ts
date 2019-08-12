@@ -289,7 +289,7 @@ export class MsfDashboardChildPanelComponent {
     let theme = this.globals.theme;
 
     this.zone.runOutsideAngular (() => {
-      let chart;
+      let chart, options;
 
       // Check chart type before generating it
       if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART
@@ -538,6 +538,18 @@ export class MsfDashboardChildPanelComponent {
           this.values.currentChartType.createSeries (this.values, false, chart, chartInfo, parseDate, theme);
         }
       }
+
+      // Add export menu
+      chart.exporting.menu = new am4core.ExportMenu ();
+      chart.exporting.menu.align = "left";
+      chart.exporting.menu.verticalAlign = "bottom";
+      chart.exporting.title = this.values.chartName;
+      chart.exporting.filePrefix = this.values.chartName;
+
+      // Remove "Saved from..." message on PDF files
+      options = chart.exporting.getFormatOptions ("pdf");
+      options.addURL = false;
+      chart.exporting.setFormatOptions ("pdf", options);
 
       if (this.values.currentChartType.flags & ChartFlags.XYCHART)
       {
