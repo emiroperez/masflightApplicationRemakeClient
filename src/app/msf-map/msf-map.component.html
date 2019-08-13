@@ -5,13 +5,6 @@
     </mat-option>
   </mat-select>
 </mat-form-field>
-<mat-form-field class="msf-width-20 padding-5" *ngIf="displayMapMenu">
-  <mat-select placeholder="" [(ngModel)]="currentMapStyle" (selectionChange)="mapStyleChange($event.value)">
-    <mat-option *ngFor="let mapStyle of mapStyles" [value]="mapStyle">
-      {{mapStyle.name}}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
 <div [style.width.%]="100" [ngStyle]="{ 'height': getHeight() }">
   <mgl-map *ngIf="currentMapType.id == 'point' && !mapRefresh" [style]=currentMapStyle.id [zoom]="zoom"
     [center]="center" (load)="map = $event; map.resize ()">
