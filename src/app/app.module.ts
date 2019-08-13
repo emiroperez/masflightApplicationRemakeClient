@@ -187,6 +187,7 @@ import { Cookie } from './api/cookie';
 import { MsfDashboardControlPanelComponent } from './msf-dashboard-control-panel/msf-dashboard-control-panel.component';
 import { MenuNavComponent } from './menu-nav/menu-nav.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { ExportAsModule } from 'ngx-export-as';
 
 @NgModule({
   declarations: [
@@ -387,7 +388,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     ColorPickerModule,
     DragScrollModule,
     DigitOnlyModule,
-    MatTooltipModule
+    MatTooltipModule,
+    ExportAsModule
   ],
   providers: [
     AuthService,

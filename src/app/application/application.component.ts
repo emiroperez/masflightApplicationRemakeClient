@@ -24,6 +24,7 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { AuthGuard } from '../guards/auth.guard';
 import { UserService } from '../services/user.service';
 import { MessageComponent } from '../message/message.component';
+import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
 import * as moment from 'moment';
 
 @Component({
@@ -53,7 +54,13 @@ export class ApplicationComponent implements OnInit {
   coordinates: any;
   //displayedColumns: string[] = [];
   variables;
-  currentOptionBackUp: any;		   
+  currentOptionBackUp: any;
+
+  exportConfig: ExportAsConfig = {
+    type: 'png',
+    elementId: 'msf-dashboard-element',
+    options: {}
+  };
 
   @ViewChild('msfContainerRef')
   msfContainerRef: MsfContainerComponent;
@@ -67,7 +74,7 @@ export class ApplicationComponent implements OnInit {
 
   constructor(public dialog: MatDialog, public globals: Globals, private menuService: MenuService,private router: Router,private excelService:ExcelService,
     private appService: ApplicationService, private authService: AuthService, private changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private authGuard: AuthGuard,
-    private userService: UserService)
+    private userService: UserService, private exportAsService: ExportAsService)
   {
     this.status = false;
     //media querys
@@ -976,5 +983,26 @@ toggle(){
       return "block";
 
     return "none";
+  }
+
+
+  exportDashboardAsPNG(): void
+  {
+    let dashboardElement: any = document.getElementById ("msf-dashboard-element");
+
+    let contentHeight: number = dashboardElement.scrollHeight;
+    let contentWidth: number = dashboardElement.scrollWidth;
+
+    // Set PNG width and height for the dashboard content
+    this.globals.isLoading = true;
+    this.exportConfig.options.width = contentWidth;
+    this.exportConfig.options.windowWidth = contentWidth;
+    this.exportConfig.options.height = contentHeight;
+    this.exportConfig.options.windowHeight = contentHeight;
+
+    this.exportAsService.save (this.exportConfig, this.globals.currentDashboardMenu.title).subscribe (() => 
+    {
+      this.globals.isLoading = false;
+    });
   }
 }

@@ -1,4 +1,4 @@
-<div #scrollContainer (click)="disableContextMenu()" (contextmenu)="disableContextMenu()" (scroll)="disableContextMenu()" class="msf-dashboard-container" [style.height]="screenHeight">
+<div id="msf-dashboard-element" #scrollContainer (click)="disableContextMenu()" (contextmenu)="disableContextMenu()" (scroll)="disableContextMenu()" class="msf-dashboard-container" [style.height]="screenHeight">
   <div class="msf-dashboard-header" *ngIf="currentDashboardMenu">
     <div class="msf-dashboard-title">
       <span class="msf-dashboard-title-label">
