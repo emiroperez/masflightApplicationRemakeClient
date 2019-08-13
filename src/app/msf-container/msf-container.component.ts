@@ -110,6 +110,6 @@ export class MsfContainerComponent implements OnInit {
 
     // refresh mapbox if tab changed when it is not loading the coordinates
     if (event.tab.textLabel === "Map" && !this.msfMapRef.isLoading)
-      this.msfMapRef.refreshMap ();
+      this.msfMapRef.resizeMap ();
   }
 }
