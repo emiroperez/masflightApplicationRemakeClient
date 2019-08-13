@@ -105,7 +105,11 @@ export class MsfContainerComponent implements OnInit {
     }
   }
 
-  onLinkClick(event: any) {
-    this.globals.selectedIndex = event;
+  onLinkClick(event: MatTabChangeEvent) {
+    this.globals.selectedIndex = event.index;
+
+    // refresh mapbox if tab changed when it is not loading the coordinates
+    if (event.tab.textLabel === "Map" && !this.msfMapRef.isLoading)
+      this.msfMapRef.refreshMap ();
   }
 }

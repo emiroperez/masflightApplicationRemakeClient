@@ -5,7 +5,7 @@
 *ngIf="(globals.currentOption && globals.currentOption !== 'dashboard')">
     <div style="height: 100%;"  [hidden]= "globals.mapsc">
     <mat-tab-group [ngClass]="mobileQuery.matches? (globals.showMenu? 'msf-hide':'msf-show-panel'):'msf-show-panel' "
-    [selectedIndex]="globals.selectedIndex" (selectedIndexChange)="onLinkClick($event)" #tabs >
+    [selectedIndex]="globals.selectedIndex" (selectedTabChange)="onLinkClick($event)" #tabs >
         <mat-tab *ngIf="globals.showWelcome" label="Welcome" style="height: 100%;">
             <app-option-welcome></app-option-welcome> 
         </mat-tab>        
@@ -38,7 +38,7 @@
                 <mat-icon (click)="closeTab(4)" class="close-icon">close</mat-icon> 
             </ng-template>
         </mat-tab> 
-        <mat-tab *ngIf="globals.map"  #tabRef>
+        <mat-tab *ngIf="globals.map" #tabRef label="Map">
             <ng-template mat-tab-label>
                 Map
                 <mat-icon (click)="closeTab(5)" class="close-icon">close</mat-icon> 
