@@ -189,6 +189,7 @@ import { MenuNavComponent } from './menu-nav/menu-nav.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ExportAsModule } from 'ngx-export-as';
 import { DatalakeComponent } from './datalake/datalake.component';
+import { DatalakeExplorerComponent } from './datalake-explorer/datalake-explorer.component';
 
 @NgModule({
   declarations: [
@@ -354,7 +355,8 @@ import { DatalakeComponent } from './datalake/datalake.component';
     MsfDynamicTableAliasComponent,
     MsfDashboardControlPanelComponent,
     MenuNavComponent,
-    DatalakeComponent
+    DatalakeComponent,
+    DatalakeExplorerComponent
   ],
   imports: [
     BrowserModule,

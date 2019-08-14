@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, HostListener } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { Router } from '@angular/router';
 
@@ -20,7 +20,9 @@ export class DatalakeComponent implements OnInit {
   ResponsiveQuery: MediaQueryList;
   private _TabletQueryListener: () => void;
   private _mobileQueryListener: () => void;
-  private _ResponsiveQueryListener: () => void; 
+  private _ResponsiveQueryListener: () => void;
+
+  bodyHeight: number;
 
   constructor(public globals: Globals, private appService: ApplicationService, private changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher, private router: Router, public authGuard: AuthGuard, public authService: AuthService,
@@ -37,6 +39,8 @@ export class DatalakeComponent implements OnInit {
     this.ResponsiveQuery = media.matchMedia('(max-width: 759px)');
     this._ResponsiveQueryListener = () => changeDetectorRef.detectChanges ();
     this.ResponsiveQuery.addListener (this._ResponsiveQueryListener);
+
+    this.bodyHeight = window.innerHeight - 60;
   }
 
   ngOnInit()
@@ -104,5 +108,11 @@ export class DatalakeComponent implements OnInit {
   {
     console.log(result);
     _this.globals.isLoading = false;
+  }
+
+  @HostListener('window:resize', ['$event'])
+  checkScreen(event): void
+  {
+    this.bodyHeight = window.innerHeight - 60;
   }
 }
