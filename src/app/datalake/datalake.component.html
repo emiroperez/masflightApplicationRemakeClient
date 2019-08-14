@@ -15,10 +15,11 @@
     <div [ngClass]="mobileQuery.matches ? 'msf-header-icons is-mobile'
                                      :(ResponsiveQuery.matches ? 'msf-header-icons is-MQueryresponsive':'msf-header-icons')">
         <!-- <div class="msf-header-icons2"></div> -->
-        <img *ngIf="!mobileQuery.matches" src="../../assets/images/logo_global_peqe.png" class="msf-header-icons2">
+        <img *ngIf="!mobileQuery.matches" src="../../assets/images/datalake-logo.png" class="msf-header-icons2 datalake-logo">
 
         <div *ngIf="globals.currentUser" style="padding: 0px; margin: 0px;
         border: 0px; margin-left: 5px;
+        padding-right: 10px;
         /*width: calc(70% - 35px);*/
         display: flex;
         justify-content: center;">

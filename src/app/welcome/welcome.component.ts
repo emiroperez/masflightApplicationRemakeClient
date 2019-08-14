@@ -140,10 +140,11 @@ this.mobileQuery.addListener(this._mobileQueryListener);
     _this.options2 = data.slice();
 
     _this.activeElement = _this.options[0];
-    //Cambio temporal------------------------------------------------------
+    /*
+    Temporal change
     const indexColumn = _this.options2.findIndex(column => column.id === 2);
     _this.options2.splice(indexColumn,1);
-    //---------------------------------------------------------------------
+    */
     _this.globals.isLoading = false;
   }
 
