@@ -188,6 +188,7 @@ import { MsfDashboardControlPanelComponent } from './msf-dashboard-control-panel
 import { MenuNavComponent } from './menu-nav/menu-nav.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ExportAsModule } from 'ngx-export-as';
+import { DatalakeComponent } from './datalake/datalake.component';
 
 @NgModule({
   declarations: [
@@ -352,7 +353,8 @@ import { ExportAsModule } from 'ngx-export-as';
     MsfMapCoordinatesComponent,
     MsfDynamicTableAliasComponent,
     MsfDashboardControlPanelComponent,
-    MenuNavComponent
+    MenuNavComponent,
+    DatalakeComponent
   ],
   imports: [
     BrowserModule,
