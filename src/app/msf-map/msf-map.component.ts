@@ -58,7 +58,9 @@ export class MsfMapComponent implements OnInit {
     "#FFC918",
     "#778C6D",
     "#EA223B",
-    "#00FFFF"
+    "#00FFFF",
+    "#FFFFFF",
+    "#4D4D4D"
   ];
 
   layout = {
@@ -169,6 +171,8 @@ export class MsfMapComponent implements OnInit {
   }
 
   successHandler(_this, features) {
+    let index = 0;
+
     if (_this.isLoading) {
       _this.globals.endTimestamp = new Date();
       _this.data = features;
@@ -177,6 +181,13 @@ export class MsfMapComponent implements OnInit {
         let size = Math.round(features[0].features.length / 2);
         _this.center = features[0].features[size].geometry.coordinates;
         _this.zoom = [4];
+
+        for (let feature of features)
+        {
+          feature.features[0].colorIndex = index++;
+          if (index >= _this.paletteColors.length - 2)
+            index = (_this.globals.theme === "light-theme" ? _this.paletteColors.length - 1 : _this.paletteColors.length - 2);
+        }
       }
 
       _this.refreshMap();
@@ -198,6 +209,8 @@ export class MsfMapComponent implements OnInit {
       let size = Math.round(coordinates[0].features.length / 2);
       this.center = coordinates[0].features[size].geometry.coordinates;
       this.zoom = [4];
+
+      coordinates[0].features[0].colorIndex = 0;
     }
 
     if (this.data)

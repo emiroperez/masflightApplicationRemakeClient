@@ -21,7 +21,7 @@
       </mgl-marker>
       <mgl-geojson-source *ngIf="feature" id="feature_{{i}}" [data]="feature"></mgl-geojson-source>
       <mgl-layer *ngIf="feature" id="feature_{{i}}" type="circle" source="feature_{{i}}"
-        [paint]="{ 'circle-radius': 2, 'circle-color': paletteColors[i] }"></mgl-layer>
+        [paint]="{ 'circle-radius': 2, 'circle-color': paletteColors[feature.features[0].colorIndex] }"></mgl-layer>
     </ng-container>
   </mgl-map>
   <mgl-map *ngIf="currentMapType.id == 'line' && !mapRefresh" [style]=currentMapStyle.id [zoom]="zoom" [center]="center"
@@ -41,8 +41,8 @@
     </ng-container>
   </mgl-map>
   <div class="mapbox-panelinfo" [style.right.px]="legendOffset" *ngIf="data.length && globals.currentOption.metaData != 3">
-    <ng-container *ngFor="let feature of data; let i = index">
-      <div [ngStyle]="{ 'color': paletteColors[i] }">{{getRouteInfo(feature)}}</div>
+    <ng-container *ngFor="let feature of data">
+      <div [ngStyle]="{ 'color': paletteColors[feature.features[0].colorIndex] }">{{getRouteInfo(feature)}}</div>
     </ng-container>
   </div>
 </div>
