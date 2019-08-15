@@ -192,7 +192,7 @@ export class MsfMapComponent implements OnInit {
         for (let feature of features)
         {
           feature.features[0].colorIndex = index++;
-          feature.features[0].hidden = false;
+          feature.features[0].shown = false;
           if (index >= _this.paletteColors.length - 2)
             index = (_this.globals.theme === "light-theme" ? _this.paletteColors.length - 1 : _this.paletteColors.length - 2);
         }
@@ -219,7 +219,7 @@ export class MsfMapComponent implements OnInit {
       this.zoom = [4];
 
       coordinates[0].features[0].colorIndex = 0;
-      coordinates[0].features[0].hidden = false;
+      coordinates[0].features[0].shown = false;
     }
 
     if (this.data)

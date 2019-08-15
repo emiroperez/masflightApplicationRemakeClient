@@ -5921,7 +5921,8 @@ mat-form-field.msf-table-input
     text-align: center
 
 .mapbox-panelinfo
-    width: 80px
+    width: 110px
+    max-height: 300px
     position: absolute
     bottom: 0
     margin: 10px
@@ -5929,6 +5930,13 @@ mat-form-field.msf-table-input
     font-size: 12px
     border-radius: 10px
     border-style: solid
+    overflow-y: auto
+    .mapbox-panelinfo-item
+        display: flex
+        flex-direction: row
+        margin-bottom: 2px
+        .mapbox-panelinfo-item-checkbox
+            padding-right: 5px
 
 .login-card .mat-card-header .mat-card-header-text
     margin: 0px !important
