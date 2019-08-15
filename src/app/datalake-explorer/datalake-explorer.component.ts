@@ -6,9 +6,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DatalakeExplorerComponent implements OnInit {
 
+  tablecards: any[] = [];
+
   constructor() { }
 
   ngOnInit() {
   }
 
+  addTableCard(): void
+  {
+    this.tablecards.push ({ test: "test" });
+  }
 }

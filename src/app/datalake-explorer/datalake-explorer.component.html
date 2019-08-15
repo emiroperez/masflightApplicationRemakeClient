@@ -8,9 +8,14 @@
             Datalake Explorer
         </div>
         <div class="datalake-explorer-buttons">
-            <button mat-button class="datalake-explorer-button">
+            <button mat-button class="datalake-explorer-button" (click)="addTableCard()">
                 <mat-icon class="add-icon">add</mat-icon>
             </button>
         </div>
+    </div>
+    <div class="datalake-explorer-grid-layout">
+        <ng-container *ngFor="let tablecard of tablecards">
+            <app-datalake-table-card></app-datalake-table-card>
+        </ng-container>
     </div>
 </div>

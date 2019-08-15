@@ -1140,7 +1140,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
         .datalake-explorer-container
             background-color: $background-color
             .datalake-explorer-header
-                background-color: $secondary-background-color
+                background-color: $dashboard-secondary-background-color
                 .datalake-explorer-search-input
                     border-color: $datalake-search-input-border-color
                     caret-color: $font-color
@@ -1149,9 +1149,17 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             .datalake-explorer-buttons
                 .datalake-explorer-button
                     border: 1px solid $font-color
+                    .mat-button-wrapper
+                        color: inherit !important
                     &:hover
                         border: 1px solid $primary-color
                         background-color: $primary-color
+        .datalake-table-card-container
+            background-color: $dashboard-secondary-background-color
+            .datalake-table-card-header
+                border-bottom: 1px solid $datalake-search-input-border-color
+                .datalake-table-card-subtitle, .datalake-table-card-update-title
+                    color: $primary-color
 
 @each $name, $font-color, $little-font-color, $disabled-color, $secondary-disabled-color, $tertiary-disabled-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $quaternary-background-color, $body-background-color, $dashboard-background-color, $dashboard-secondary-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $scrollbar-background-color, $dashboard-panel-background-color, $dashboard-panel-chart-background-color, $dashboard-border-color, $schedule-map-background-color, $schedule-map-info-border, $disabled-combo-box-color, $disabled-underline, $dashboard-info-background-color, $dashboard-info-secondary-background-color, $dashboard-info-font-color, $dashboard-drill-down-border-color, $dashboard-threshold-background-color, $dashboard-title-font-color, $map-panelinfo-background-color, $dashboard-info-border-color, $dashboard-form-font-color, $admin-menu-background, $admin-menu-input-underline, $admin-tree-active-color, $admin-button-color, $admin-secondary-background-color, $admin-table-background-color, $admin-table-hover-color, $admin-secondary-button-color, $login-font-color, $intro-logout-icon-color, $control-variables-border-color, $control-variable-hover-background-color, $control-variable-hover-icon-color, $control-variables-input-underline, $control-variables-dropdown-hover-font-color, $control-variables-dropdown-hover-background-hover-color, $control-variables-selected-background-selected-color, $dashboard-input-underline-color, $membership-primary-background-color, $membership-secondary-background-color, $customer-edit-header-color, $customer-table-header-background-color, $customer-table-row-background-color, $customer-table-row-border-color, $customer-table-row-hover-background-color, $customer-table-row-selected-background-color, $customer-table-row-border-selected-color, $customer-input-color, $customer-input-underline-color, $customer-disabled-underline, $dashboard-control-panel-background-color, $menu-open-background-color, $menu-open-active-background-color, $menu-first-line, $menu-second-line, $menu-background-color, $menu-child-background-color, $datalake-search-input-border-color in $color-scheme
     @include theme($name, $font-color, $little-font-color, $disabled-color, $secondary-disabled-color, $tertiary-disabled-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $quaternary-background-color, $body-background-color, $dashboard-background-color, $dashboard-secondary-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $scrollbar-background-color, $dashboard-panel-background-color, $dashboard-panel-chart-background-color, $dashboard-border-color, $schedule-map-background-color, $schedule-map-info-border, $disabled-combo-box-color, $disabled-underline, $dashboard-info-background-color, $dashboard-info-secondary-background-color, $dashboard-info-font-color, $dashboard-drill-down-border-color, $dashboard-threshold-background-color, $dashboard-title-font-color, $map-panelinfo-background-color, $dashboard-info-border-color, $dashboard-form-font-color, $admin-menu-background, $admin-menu-input-underline, $admin-tree-active-color, $admin-button-color, $admin-secondary-background-color, $admin-table-background-color, $admin-table-hover-color, $admin-secondary-button-color, $login-font-color, $intro-logout-icon-color, $control-variables-border-color, $control-variable-hover-background-color, $control-variable-hover-icon-color, $control-variables-input-underline, $control-variables-dropdown-hover-font-color, $control-variables-dropdown-hover-background-hover-color, $control-variables-selected-background-selected-color, $dashboard-input-underline-color, $membership-primary-background-color, $membership-secondary-background-color, $customer-edit-header-color, $customer-table-header-background-color, $customer-table-row-background-color, $customer-table-row-border-color, $customer-table-row-hover-background-color, $customer-table-row-selected-background-color, $customer-table-row-border-selected-color, $customer-input-color, $customer-input-underline-color, $customer-disabled-underline, $dashboard-control-panel-background-color, $menu-open-background-color, $menu-open-active-background-color,$menu-first-line, $menu-second-line, $menu-background-color, $menu-child-background-color, $datalake-search-input-border-color)
@@ -6284,11 +6292,12 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     padding-right: 10px
 
 .datalake-explorer-container
+    display: flex
+    flex-direction: column
     width: 100%
     height: 100%
     .datalake-explorer-header
         display: flex
-        width: 100%
         height: 20px
         padding: 20px
         .datalake-explorer-search-input-container
@@ -6320,7 +6329,6 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
             width: 25%
         .datalake-explorer-buttons
             flex-direction: row-reverse
-            padding-right: 35px
             margin-top: -10px
             display: flex
             width: 50%
@@ -6334,4 +6342,31 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                 .add-icon
                     margin-left: -8.5px
                 &:hover
-                    color: #ffffff
+                    color: #ffffff !important
+    .datalake-explorer-grid-layout
+        height: 100%
+        display: grid
+        padding: 20px
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr))
+        grid-column-gap: 10px
+        overflow-x: hidden
+        overflow-y: auto
+
+.datalake-table-card-container
+    margin-bottom: 10px
+    border-radius: 7px
+    height: 250px
+    .datalake-table-card-header
+        display: flex
+        padding: 10px
+        .datalake-table-card-title-container
+            display: flex
+            flex-direction: column
+            width: 60%
+            .datalake-table-card-title
+                font-weight: 500
+        .datalake-table-card-update-container
+            display: flex
+            flex-direction: column
+            width: 40%
+            text-align: end
