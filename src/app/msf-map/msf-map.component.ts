@@ -47,7 +47,7 @@ export class MsfMapComponent implements OnInit {
     "#22B4B4",
     "#E18000",
     "#FF0080",
-    "#72FF48",
+    "#72C048",
     "#65009F",
     "#B4A6FF",
     "#229AF4",
@@ -58,7 +58,7 @@ export class MsfMapComponent implements OnInit {
     "#FFC918",
     "#778C6D",
     "#EA223B",
-    "#00FFFF",
+    "#0080FF",
     "#FFFFFF",
     "#4D4D4D"
   ];
@@ -76,6 +76,11 @@ export class MsfMapComponent implements OnInit {
     { id: 'point', name: 'Dots' }
   ];
 
+  legendTypes: any[] = [
+    { id: 'tailno', name: 'Tail Number' },
+    { id: 'flightno', name: 'Flight Number' }
+  ];
+
   mapStyles: any[] = [
     { id: "mapbox://styles/mapbox/dark-v9", name: 'Dark' },
     { id: "mapbox://styles/mapbox/light-v10", name: 'Light' }
@@ -85,6 +90,7 @@ export class MsfMapComponent implements OnInit {
   currentMapType = this.mapTypes[1];
 
   currentMapStyle = this.mapStyles[this.globals.theme === 'light-theme' ? 1 : 0];
+  currentLegendType = this.legendTypes[0];
 
   resizeInterval: any;
   resizeTimeout: any;
@@ -116,6 +122,7 @@ export class MsfMapComponent implements OnInit {
       this.coordinates = [];
       this.currentMapStyle = this.mapStyles[this.globals.theme === 'light-theme' ? 1 : 0];
       this.currentMapType = this.mapTypes[1];
+      this.currentLegendType = this.legendTypes[0];
       this.refreshMap();
     }
 
@@ -185,6 +192,7 @@ export class MsfMapComponent implements OnInit {
         for (let feature of features)
         {
           feature.features[0].colorIndex = index++;
+          feature.features[0].hidden = false;
           if (index >= _this.paletteColors.length - 2)
             index = (_this.globals.theme === "light-theme" ? _this.paletteColors.length - 1 : _this.paletteColors.length - 2);
         }
@@ -211,6 +219,7 @@ export class MsfMapComponent implements OnInit {
       this.zoom = [4];
 
       coordinates[0].features[0].colorIndex = 0;
+      coordinates[0].features[0].hidden = false;
     }
 
     if (this.data)
@@ -280,7 +289,10 @@ export class MsfMapComponent implements OnInit {
   }
 
   getRouteInfo(feature): string {
-    return feature.features[0].airline + " - " + feature.features[0].tailNumber;
+    if (this.currentLegendType === this.legendTypes[0])
+      return feature.features[0].airline + " - " + feature.features[0].tailNumber;
+
+    return feature.features[0].airline + " - " + feature.features[0].flightNumber;
   }
 
   resizeMap(): void {
