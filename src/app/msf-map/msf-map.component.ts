@@ -194,7 +194,7 @@ export class MsfMapComponent implements OnInit {
         for (let feature of features)
         {
           feature.features[0].colorIndex = index++;
-          feature.features[0].shown = false;
+          feature.features[0].shown = true;
           if (index >= _this.paletteColors.length - 2)
             index = (_this.globals.theme === "light-theme" ? _this.paletteColors.length - 1 : _this.paletteColors.length - 2);
         }
