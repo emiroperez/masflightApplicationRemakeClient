@@ -750,7 +750,7 @@
         </button>
       </div>
       <div [style.height.px]="calcPanelHeight()" style="width: calc(100% - 50px)">
-        <app-msf-map #msfMapRef [isLoading]="values.isLoading" [useCancelButton]="false" [displayMapMenu]="0" [currentMapType]="values.style" [legendOffset]="55" (finishLoading)="finishMapboxLoading($event)"></app-msf-map>
+        <app-msf-map #msfMapRef [isLoading]="values.isLoading" [useCancelButton]="false" [displayMapMenu]="2" [currentMapType]="values.style" [legendOffset]="55" (finishLoading)="finishMapboxLoading($event)"></app-msf-map>
       </div>
     </div>
   </div>

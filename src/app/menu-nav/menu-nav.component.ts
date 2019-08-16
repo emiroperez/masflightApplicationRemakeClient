@@ -206,7 +206,7 @@ export class MenuNavComponent implements OnInit {
     if (this.globals.currentOption.metaData == 3)
     {
       this.globals.coordinates = "";
-      this.globals.displayMapMenu = 2;
+      this.globals.displayMapMenu = 0;
     }
     else
       this.globals.displayMapMenu = 1;

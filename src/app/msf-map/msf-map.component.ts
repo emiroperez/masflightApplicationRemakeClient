@@ -238,7 +238,7 @@ export class MsfMapComponent implements OnInit {
   }
 
   getHeight(): string {
-    if (this.displayMapMenu == 2)
+    if (!this.displayMapMenu)
       return "100%";
 
     return "calc(100% - 40px)";

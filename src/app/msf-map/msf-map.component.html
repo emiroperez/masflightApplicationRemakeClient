@@ -5,14 +5,14 @@
     </mat-option>
   </mat-select>
 </mat-form-field>
-<mat-form-field class="msf-width-20 padding-5" *ngIf="displayMapMenu != 2">
+<mat-form-field class="msf-width-20 padding-5" *ngIf="displayMapMenu">
   <mat-select placeholder="" [(ngModel)]="currentLegendType">
     <mat-option *ngFor="let legendType of legendTypes" [value]="legendType">
       {{legendType.name}}
     </mat-option>
   </mat-select>
 </mat-form-field>
-<div class="msf-width-20 padding-5 msf-mapbox-checkbox" *ngIf="displayMapMenu != 2">
+<div class="msf-width-20 padding-5 msf-mapbox-checkbox" *ngIf="displayMapMenu">
   <mat-checkbox [(ngModel)]="showAllRoutes" (ngModelChange)="toggleRoutes()">Show All Routes</mat-checkbox>
 </div>
 <div [style.width.%]="100" [ngStyle]="{ 'height': getHeight() }">
