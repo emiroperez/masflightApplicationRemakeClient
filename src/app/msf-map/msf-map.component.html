@@ -5,7 +5,7 @@
     </mat-option>
   </mat-select>
 </mat-form-field>
-<mat-form-field class="msf-width-20 padding-5" *ngIf="displayMapMenu">
+<mat-form-field class="msf-width-20 padding-5" *ngIf="displayMapMenu == 1">
   <mat-select placeholder="" [(ngModel)]="currentLegendType">
     <mat-option *ngFor="let legendType of legendTypes" [value]="legendType">
       {{legendType.name}}
