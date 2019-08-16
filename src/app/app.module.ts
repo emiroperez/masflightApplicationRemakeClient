@@ -191,6 +191,7 @@ import { ExportAsModule } from 'ngx-export-as';
 import { DatalakeComponent } from './datalake/datalake.component';
 import { DatalakeExplorerComponent } from './datalake-explorer/datalake-explorer.component';
 import { DatalakeTableCardComponent } from './datalake-table-card/datalake-table-card.component';
+import { NgxGaugeModule } from 'ngx-gauge';
 
 @NgModule({
   declarations: [
@@ -395,7 +396,8 @@ import { DatalakeTableCardComponent } from './datalake-table-card/datalake-table
     DragScrollModule,
     DigitOnlyModule,
     MatTooltipModule,
-    ExportAsModule
+    ExportAsModule,
+    NgxGaugeModule
   ],
   providers: [
     AuthService,

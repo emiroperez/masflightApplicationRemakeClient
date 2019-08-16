@@ -36,6 +36,8 @@
     </mat-tab>
     <mat-tab label="Table Stats">
       <div class="datalake-table-stats-container">
+        <ngx-gauge [size]="115" [thick]="10" [type]="gaugeType" [value]="gaugeLastHourValue" [label]="gaugeLastHourIngestionText" [append]="gaugeAppendText" [foregroundColor]="gaugeLastHourForegroundColor" [backgroundColor]="gaugeBackgroundColor"></ngx-gauge>
+        <span class="datalake-table-stats-right-gauge"><ngx-gauge [size]="115" [thick]="10" [type]="gaugeType" [value]="gaugeLastDayValue" [label]="gaugeLastDayIngestionText" [append]="gaugeAppendText" [foregroundColor]="gaugeLastDayForegroundColor" [backgroundColor]="gaugeBackgroundColor"></ngx-gauge></span>
       </div>
     </mat-tab>
   </mat-tab-group>

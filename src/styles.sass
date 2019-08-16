@@ -6398,6 +6398,8 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
             flex-direction: column
             width: 40%
             text-align: end
+    .mat-tab-header-pagination-controls-enabled .mat-tab-header-pagination
+        display: none !important
     .mat-tab-group
         height: auto !important
     .mat-tab-header
@@ -6408,16 +6410,23 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         font-size: 12px
         opacity: 1 !important
         width: 50%
+        height: 40px
     .datalake-table-card-info
         .datalake-table-card-info-header
             display: flex
-            padding: 10px
+            padding: 12.5px 10px
             .datalake-table-card-info-title-left-container
                 @include datalake-table-card-info-title-container(start, 40%)
             .datalake-table-card-info-title-right-container
                 @include datalake-table-card-info-title-container(end, 60%)
     .datalake-table-stats-container
-        height: 109px
+        display: flex
+        flex-direction: row
+        height: 89px
+        padding: 15px 0
+        justify-content: center
+        .datalake-table-stats-right-gauge
+            margin-left: 12.5%
     .datalake-table-card-buttons
         padding: 5px 10px
         .datalake-table-card-button
