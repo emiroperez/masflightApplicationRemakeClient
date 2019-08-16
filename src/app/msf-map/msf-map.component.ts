@@ -219,7 +219,7 @@ export class MsfMapComponent implements OnInit {
       this.zoom = [4];
 
       coordinates[0].features[0].colorIndex = 0;
-      coordinates[0].features[0].shown = false;
+      coordinates[0].features[0].shown = true;    // always display the coordinates
     }
 
     if (this.data)
