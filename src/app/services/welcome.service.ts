@@ -10,8 +10,7 @@ export class WelcomeService {
    }
 
   getApplications(_this,successHandler, errorHandler){
-    // let url= this.globals.baseUrl+"/secure/getApplications";
-    let url= this.globals.baseUrl+"/getApplications";
+    let url= this.globals.baseUrl+"/secure/getApplications";
     _this.globals.isLoading = true;
     this.authService.get(_this,url,successHandler, errorHandler);
   }
