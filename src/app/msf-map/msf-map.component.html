@@ -55,7 +55,7 @@
     <ng-container *ngFor="let feature of data">
       <div class="mapbox-panelinfo-item">
         <mat-checkbox class="mapbox-panelinfo-item-checkbox" [(ngModel)]="feature.features[0].shown"></mat-checkbox>
-        <div [ngStyle]="{ 'color': paletteColors[feature.features[0].colorIndex] }">{{getRouteInfo(feature)}}</div>
+        <div [ngStyle]="{ 'color': paletteColors[feature.features[0].colorIndex] }" style="align-self: center">{{getRouteInfo(feature)}}</div>
       </div>
     </ng-container>
   </div>

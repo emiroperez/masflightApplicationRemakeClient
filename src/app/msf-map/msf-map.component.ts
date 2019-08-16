@@ -59,6 +59,8 @@ export class MsfMapComponent implements OnInit {
     "#778C6D",
     "#EA223B",
     "#0080FF",
+
+    // Generic colors for the dark and light themes when the there are more than 20 routes
     "#FFFFFF",
     "#4D4D4D"
   ];
