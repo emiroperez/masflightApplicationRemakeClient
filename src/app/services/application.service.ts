@@ -509,4 +509,10 @@ export class ApplicationService {
     let url = this.host + "/secure/setDefaultDashboard?applicationId=" + this.globals.currentApplication.id;
     this.authService.post (_this, url, null, handlerSuccess, handlerError);
   }
+
+  getDatalakeTables(_this, handlerSuccess, handlerError): void
+  {
+    let url = this.host + "/GetDatalakeTables?token=hXqvOqntnC1!p4hNnX4i7hM5xJ60eShoxt2";
+    this.http.get (_this, url, handlerSuccess, handlerError, null);
+  }
 }
