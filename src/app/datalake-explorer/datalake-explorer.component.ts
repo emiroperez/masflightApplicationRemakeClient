@@ -1,13 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { DatalakeTableCardValues } from '../datalake-table-card/datalake-table-card-values';
+import { ReplaySubject, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-datalake-explorer',
   templateUrl: './datalake-explorer.component.html'
 })
 export class DatalakeExplorerComponent implements OnInit {
+  filter: string;
+  filteredTableCards: ReplaySubject<any[]> = new ReplaySubject<any[]> (1);
+  _onDestroy = new Subject<void> ();
 
-  tablecards: DatalakeTableCardValues[] = [
+  tableCards: DatalakeTableCardValues[] = [
     {
       tableName: "fradar24_r",
       descr: "Flight Radar24 Tracking table",
@@ -96,12 +100,48 @@ export class DatalakeExplorerComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
+  ngOnInit()
+  {
+    this.filteredTableCards.next (this.tableCards.slice ());
+  }
+
+  ngOnDestroy(): void
+  {
+    this._onDestroy.next ();
+    this._onDestroy.complete ();
+  }
+
+  filterTableCards(): void
+  {
+    let search, filteredResults;
+
+    if (!this.tableCards.length)
+      return;
+
+    // get the search keyword
+    search = this.filter;
+    if (!search)
+    {
+      this.filteredTableCards.next (this.tableCards.slice ());
+      return;
+    }
+
+    search = search.toLowerCase ();
+    filteredResults = this.tableCards.filter (a => (a.longName.toLowerCase ().indexOf (search) > -1
+      || a.tableName.toLowerCase ().indexOf (search) > -1));
+
+    this.filteredTableCards.next (
+      filteredResults.filter (function (elem, index, self)
+      {
+        return index === self.indexOf(elem);
+      })
+    );
   }
 
   addTableCard(): void
   {
-    this.tablecards.push (new DatalakeTableCardValues ("fradar24_r",
+    this.tableCards.push (new DatalakeTableCardValues ("fradar24_r",
       "Flight Radar24 Tracking table", "fradar24-r", "fr24p", "Flight Radar24 Tracking"));
+    this.filteredTableCards.next (this.tableCards.slice ());
   }
 }
