@@ -29,6 +29,7 @@ export class MsfMapComponent implements OnInit {
   finishLoading = new EventEmitter();
 
   mapReady: boolean = false;
+  showAllRoutes: boolean = true;
 
   zoom = [1];
 
@@ -125,6 +126,7 @@ export class MsfMapComponent implements OnInit {
       this.currentMapStyle = this.mapStyles[this.globals.theme === 'light-theme' ? 1 : 0];
       this.currentMapType = this.mapTypes[1];
       this.currentLegendType = this.legendTypes[0];
+      this.showAllRoutes = true;
       this.refreshMap();
     }
 
@@ -194,7 +196,7 @@ export class MsfMapComponent implements OnInit {
         for (let feature of features)
         {
           feature.features[0].colorIndex = index++;
-          feature.features[0].shown = true;
+          feature.features[0].shown = _this.showAllRoutes;
           if (index >= _this.paletteColors.length - 2)
             index = (_this.globals.theme === "light-theme" ? _this.paletteColors.length - 1 : _this.paletteColors.length - 2);
         }
@@ -303,6 +305,15 @@ export class MsfMapComponent implements OnInit {
 
     if (this.map2 && this.currentMapType.id == 'line')
       this.map2.resize();
+  }
+
+  toggleRoutes(): void
+  {
+    if (!this.data || !this.data.length)
+      return;
+
+    for (let feature of this.data)
+      feature.features[0].shown = this.showAllRoutes;
   }
 
   @HostListener('window:resize', ['$event'])

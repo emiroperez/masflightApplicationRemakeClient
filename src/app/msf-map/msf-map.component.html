@@ -12,6 +12,9 @@
     </mat-option>
   </mat-select>
 </mat-form-field>
+<div class="msf-width-20 padding-5 msf-mapbox-checkbox" *ngIf="displayMapMenu == 1">
+  <mat-checkbox [(ngModel)]="showAllRoutes" (ngModelChange)="toggleRoutes()">Show All Routes</mat-checkbox>
+</div>
 <div [style.width.%]="100" [ngStyle]="{ 'height': getHeight() }">
   <mgl-map *ngIf="currentMapType.id == 'point' && !mapRefresh" [style]=currentMapStyle.id [zoom]="zoom"
     [center]="center" (load)="map = $event; map.resize ()">
