@@ -238,7 +238,7 @@ export class MsfMapComponent implements OnInit {
   }
 
   getHeight(): string {
-    if (!this.displayMapMenu || this.globals.currentOption.metaData == 3)
+    if (this.displayMapMenu == 2)
       return "100%";
 
     return "calc(100% - 40px)";
