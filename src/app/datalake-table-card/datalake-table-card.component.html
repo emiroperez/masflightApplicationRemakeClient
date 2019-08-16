@@ -1,8 +1,8 @@
 <div class="datalake-table-card-container">
   <div class="datalake-table-card-header">
     <div class="datalake-table-card-title-container">
-      <span class="datalake-table-card-title">FLIGHT RADAR24 TRACKING</span>
-      <span class="datalake-table-card-subtitle">(fradar24_r)</span>
+      <span class="datalake-table-card-title">{{values.longName}}</span>
+      <span class="datalake-table-card-subtitle">({{values.tableName}})</span>
     </div>
     <div class="datalake-table-card-update-container">
       <span class="datalake-table-card-update-title">Last Update</span>
@@ -25,11 +25,11 @@
         <div class="datalake-table-card-info-header">
           <div class="datalake-table-card-info-title-left-container">
             <span class="datalake-table-card-info-title">Schema</span>
-            <span>fr24p</span>
+            <span>{{values.schemaName}}</span>
           </div>
           <div class="datalake-table-card-info-title-right-container">
             <span class="datalake-table-card-info-title">Table Description</span>
-            <span>Flight Radar24 Tracking table</span>
+            <span>{{values.descr}}</span>
           </div>
         </div>
       </div>

@@ -15,7 +15,7 @@
     </div>
     <div class="datalake-explorer-grid-layout">
         <ng-container *ngFor="let tablecard of tablecards">
-            <app-datalake-table-card></app-datalake-table-card>
+            <app-datalake-table-card [values]="tablecard"></app-datalake-table-card>
         </ng-container>
     </div>
 </div>

@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 import { Globals } from '../globals/Globals';
+import { DatalakeTableCardValues } from './datalake-table-card-values';
 
 @Component({
   selector: 'app-datalake-table-card',
@@ -18,6 +19,9 @@ export class DatalakeTableCardComponent implements OnInit {
   gaugeLastHourForegroundColor: string = "#FFDD27";
   gaugeLastDayForegroundColor: string = "#36C7C7";
   gaugeBackgroundColor: string = "#4D4D4D";
+
+  @Input("values")
+  values: DatalakeTableCardValues;
 
   constructor(public globals: Globals) { }
 
