@@ -16,14 +16,22 @@ export class DatalakeTableCardComponent implements OnInit {
   gaugeLastHourIngestionText: string = "Last Hour Data Ingestion";
   gaugeLastDayIngestionText: string = "Last Day Data Ingestion";
   gaugeAppendText: string = "%";
-  gaugeLastHourForegroundColor: string = "#FFDD27";
-  gaugeLastDayForegroundColor: string = "#36C7C7";
   gaugeBackgroundColor: string = "#4D4D4D";
 
   @Input("values")
   values: DatalakeTableCardValues;
 
   constructor(public globals: Globals) { }
+
+  getForegroundColorFromValue(value: number): string
+  {
+    if (value < 25)
+      return "#FF3232";
+    else if (value < 75)
+      return "#FFDD27";
+
+    return "#36C7C7";
+  }
 
   ngOnInit() {
   }
