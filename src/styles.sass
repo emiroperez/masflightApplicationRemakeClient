@@ -1178,7 +1178,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                 background-color: $background-color !important
                 &:hover
                     background-color: $primary-color !important
-        .datalake-table-show-column-header
+        .datalake-table-show-table-header
             color: $font-color
             .mat-button-wrapper
                 color: $font-color !important
@@ -6449,24 +6449,25 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
             .datalake-table-card-button-query-complete-image
                 margin-left: -13px !important
 
-.datalake-table-show-column-dialog
+.datalake-table-show-table-dialog
+    max-width: 76% !important
     .mat-dialog-container
         padding: 0
-        .datalake-table-show-column-header
+        .datalake-table-show-table-header
             display: flex
             height: 60px
-            .datalake-table-show-column-title
+            .datalake-table-show-table-title
                 min-width: 300px
                 width: 100%
                 padding: 15px
-                .datalake-table-show-column-longname
+                .datalake-table-show-table-longname
                     font-weight: 550
-                .datalake-table-show-column-tablename
+                .datalake-table-show-table-tablename
                     padding-top: 5px
-            .datalake-table-show-column-close-button
+            .datalake-table-show-table-close-button
                 align-self: center
                 padding-right: 5px
-        .datalake-table-show-column-body
+        .datalake-table-show-table-body
             height: 536px
             overflow: auto
             th.mat-header-cell

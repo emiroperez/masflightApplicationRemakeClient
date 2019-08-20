@@ -42,7 +42,7 @@ export class DatalakeTableCardComponent implements OnInit {
   showColumns(): void
   {
     this.dialog.open (DatalakeTableShowColumnsComponent, {
-      panelClass: 'datalake-table-show-column-dialog',
+      panelClass: 'datalake-table-show-table-dialog',
       data: { values: this.values }
     });
   }

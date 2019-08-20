@@ -1,15 +1,15 @@
-<div class="datalake-table-show-column-header">
-  <div class="datalake-table-show-column-title">
-    <div class="datalake-table-show-column-longname">{{data.values.longName}} - Column</div>
-    <div class="datalake-table-show-column-tablename">{{data.values.tableName}}</div>
+<div class="datalake-table-show-table-header">
+  <div class="datalake-table-show-table-title">
+    <div class="datalake-table-show-table-longname">{{data.values.longName}} - Column</div>
+    <div class="datalake-table-show-table-tablename">{{data.values.tableName}}</div>
   </div>
-  <div class="datalake-table-show-column-close-button">
+  <div class="datalake-table-show-table-close-button">
     <button mat-icon-button (click)="onNoClick()">
       <mat-icon aria-label="Close">close</mat-icon>
     </button>
   </div>
 </div>
-<div class="datalake-table-show-column-body">
+<div class="datalake-table-show-table-body">
   <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8 datasource">
     <ng-container matColumnDef="column">
       <th mat-header-cell *matHeaderCellDef>Column</th>
