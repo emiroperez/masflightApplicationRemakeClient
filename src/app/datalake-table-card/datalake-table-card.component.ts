@@ -1,7 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { MatDialog } from '@angular/material';
 
 import { Globals } from '../globals/Globals';
 import { DatalakeTableCardValues } from './datalake-table-card-values';
+import { DatalakeTableShowColumnsComponent } from '../datalake-table-show-columns/datalake-table-show-columns.component';
 
 @Component({
   selector: 'app-datalake-table-card',
@@ -21,7 +23,7 @@ export class DatalakeTableCardComponent implements OnInit {
   @Input("values")
   values: DatalakeTableCardValues;
 
-  constructor(public globals: Globals) { }
+  constructor(public globals: Globals, private dialog: MatDialog) { }
 
   getForegroundColorFromValue(value: number): string
   {
@@ -33,7 +35,16 @@ export class DatalakeTableCardComponent implements OnInit {
     return "#36C7C7";
   }
 
-  ngOnInit() {
+  ngOnInit()
+  {
+  }
+
+  showColumns(): void
+  {
+    this.dialog.open (DatalakeTableShowColumnsComponent, {
+      panelClass: 'datalake-table-show-column-dialog',
+      data: { values: this.values }
+    });
   }
 
 }

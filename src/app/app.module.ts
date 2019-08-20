@@ -192,6 +192,7 @@ import { DatalakeComponent } from './datalake/datalake.component';
 import { DatalakeExplorerComponent } from './datalake-explorer/datalake-explorer.component';
 import { DatalakeTableCardComponent } from './datalake-table-card/datalake-table-card.component';
 import { NgxGaugeModule } from 'ngx-gauge';
+import { DatalakeTableShowColumnsComponent } from './datalake-table-show-columns/datalake-table-show-columns.component';
 
 @NgModule({
   declarations: [
@@ -359,7 +360,8 @@ import { NgxGaugeModule } from 'ngx-gauge';
     MenuNavComponent,
     DatalakeComponent,
     DatalakeExplorerComponent,
-    DatalakeTableCardComponent
+    DatalakeTableCardComponent,
+    DatalakeTableShowColumnsComponent
   ],
   imports: [
     BrowserModule,
@@ -409,7 +411,6 @@ import { NgxGaugeModule } from 'ngx-gauge';
     Globals,
     MsfAirportComponent,
     MsfContainerComponent,
-    MsfContainerComponent,
     DateFormatPipe,
     DateTimeFormatPipe,
     Utils,
@@ -441,7 +442,8 @@ import { NgxGaugeModule } from 'ngx-gauge';
     MsfAddSharedDashboardPanelComponent,
     MsfAddSharedDashboardComponent,
     TwoFactorLoginDialogComponent,
-    MsfDynamicTableAliasComponent
+    MsfDynamicTableAliasComponent,
+    DatalakeTableShowColumnsComponent
   ]
 })
 export class AppModule { }
