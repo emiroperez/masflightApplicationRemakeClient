@@ -1,35 +1,47 @@
-<div class="datalake-table-show-table-header">
-  <div class="datalake-table-show-table-title">
-    <div class="datalake-table-show-table-longname">{{data.values.longName}} - Column</div>
-    <div class="datalake-table-show-table-tablename">{{data.values.tableName}}</div>
+<ng-container *ngIf="!dataSource.length">
+  <div *ngIf="globals.popupLoading" class="datalake-dialog-loading"></div>
+  <div *ngIf="!globals.popupLoading" class="datalake-dialog-loading">
+    <div class="datalake-dialog-label-container">
+      <div class="datalake-dialog-label">
+        Unable to display the columns
+      </div>
+    </div>
   </div>
-  <div class="datalake-table-show-table-close-button">
-    <button mat-icon-button (click)="onNoClick()">
-      <mat-icon aria-label="Close">close</mat-icon>
-    </button>
+</ng-container>
+<ng-container *ngIf="dataSource.length">
+  <div class="datalake-table-show-table-header">
+    <div class="datalake-table-show-table-title">
+      <div class="datalake-table-show-table-longname">{{data.values.longName}} - Column</div>
+      <div class="datalake-table-show-table-tablename">{{data.values.tableName}}</div>
+    </div>
+    <div class="datalake-table-show-table-close-button">
+      <button mat-icon-button (click)="onNoClick()">
+        <mat-icon aria-label="Close">close</mat-icon>
+      </button>
+    </div>
   </div>
-</div>
-<div class="datalake-table-show-table-body">
-  <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8 datasource">
-    <ng-container matColumnDef="column">
-      <th mat-header-cell *matHeaderCellDef>Column</th>
-      <td mat-cell *matCellDef="let element">
-        {{element.column}}
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef>Name</th>
-      <td mat-cell *matCellDef="let element">
-        {{element.name}}
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="datatype">
-      <th mat-header-cell *matHeaderCellDef>Data Type</th>
-      <td mat-cell *matCellDef="let element">
-        {{element.datatype}}
-      </td>
-    </ng-container>
-    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-  </table>
-</div>
+  <div class="datalake-table-show-table-body">
+    <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8 datasource">
+      <ng-container matColumnDef="Column">
+        <th mat-header-cell *matHeaderCellDef>Column</th>
+        <td mat-cell *matCellDef="let element">
+          {{element.Column}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="Name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let element">
+          {{element.Name}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="DataType">
+        <th mat-header-cell *matHeaderCellDef>Data Type</th>
+        <td mat-cell *matCellDef="let element">
+          {{element.DataType}}
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+</ng-container>

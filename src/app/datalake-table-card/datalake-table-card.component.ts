@@ -41,9 +41,13 @@ export class DatalakeTableCardComponent implements OnInit {
 
   showColumns(): void
   {
-    this.dialog.open (DatalakeTableShowColumnsComponent, {
+    let dialogRef = this.dialog.open (DatalakeTableShowColumnsComponent, {
       panelClass: 'datalake-table-show-table-dialog',
       data: { values: this.values }
+    });
+
+    dialogRef.afterClosed ().subscribe (() => {
+      this.globals.popupLoading = false;
     });
   }
 

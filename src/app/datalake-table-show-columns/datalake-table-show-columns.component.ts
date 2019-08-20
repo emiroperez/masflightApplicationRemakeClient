@@ -1,6 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
+import { ApplicationService } from '../services/application.service';
+import { Globals } from '../globals/Globals';
+
 @Component({
   selector: 'app-datalake-table-show-columns',
   templateUrl: './datalake-table-show-columns.component.html'
@@ -8,84 +11,46 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 export class DatalakeTableShowColumnsComponent {
 
   displayedColumns: string[] = [
-    "column",
-    "name",
-    "datatype"
+    "Column",
+    "Name",
+    "DataType"
   ];
 
-  dataSource: any = [
-    {
-      column: "Column #1",
-      name: "Aircraft_id",
-      datatype: "String"
-    },
-    {
-      column: "Column #2",
-      name: "latitude",
-      datatype: "String"
-    },
-    {
-      column: "Column #3",
-      name: "longitude",
-      datatype: "String"
-    },
-    {
-      column: "Column #4",
-      name: "track",
-      datatype: "String"
-    },
-    {
-      column: "Column #5",
-      name: "altitude",
-      datatype: "String"
-    },
-    {
-      column: "Column #6",
-      name: "track 2",
-      datatype: "String"
-    },
-    {
-      column: "Column #7",
-      name: "track 3",
-      datatype: "String"
-    },
-    {
-      column: "Column #8",
-      name: "altitude",
-      datatype: "String"
-    },
-    {
-      column: "Column #9",
-      name: "track 2",
-      datatype: "String"
-    },
-    {
-      column: "Column #10",
-      name: "track 3",
-      datatype: "String"
-    },
-    {
-      column: "Column #11",
-      name: "altitude",
-      datatype: "String"
-    },
-    {
-      column: "Column #12",
-      name: "track 2",
-      datatype: "String"
-    },
-    {
-      column: "Column #13",
-      name: "track 3",
-      datatype: "String"
-    }
-  ];
+  dataSource: any[] = [];
 
   constructor(public dialogRef: MatDialogRef<DatalakeTableShowColumnsComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any) { }
+    @Inject(MAT_DIALOG_DATA) public data: any, private service: ApplicationService,
+    public globals: Globals)
+  {
+    this.globals.popupLoading = true;
+    this.service.getDatalakeTableColumns (this, data.values.schemaName, data.values.tableName, this.handlerSuccess, this.handlerError);
+  }
 
   onNoClick(): void
   {
     this.dialogRef.close ();
+  }
+
+  handlerSuccess(_this, data): void
+  {
+    _this.globals.popupLoading = false;
+
+    if (!data || !data.sources || !data.sources.length)
+      return;
+
+    for (let i = 0; i < data.sources.length; i++)
+    {
+      let result = data.sources[i];
+
+      // Set column number
+      result.Column = i + 1;
+      _this.dataSource.push (result);
+    }
+  }
+
+  handlerError(_this, result): void
+  {
+    _this.globals.popupLoading = false;
+    console.log (result);
   }
 }

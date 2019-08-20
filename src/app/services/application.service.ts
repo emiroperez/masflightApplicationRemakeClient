@@ -515,4 +515,10 @@ export class ApplicationService {
     let url = this.host + "/GetDatalakeTables?token=hXqvOqntnC1!p4hNnX4i7hM5xJ60eShoxt2";
     this.http.get (_this, url, handlerSuccess, handlerError, null);
   }
+
+  getDatalakeTableColumns(_this, schemaName, tableName, handlerSuccess, handlerError): void
+  {
+    let url = this.host + "/GetDatalakeTableColumns?token=hXqvOqntnC1!p4hNnX4i7hM5xJ60eShoxt2&schemaName=" + schemaName + "&tableName=" + tableName;
+    this.http.get (_this, url, handlerSuccess, handlerError, null);
+  }
 }
