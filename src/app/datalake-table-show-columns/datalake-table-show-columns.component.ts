@@ -33,13 +33,17 @@ export class DatalakeTableShowColumnsComponent {
 
   handlerSuccess(_this, data): void
   {
-    _this.globals.popupLoading = false;
-
     if (!data)
+    {
+      _this.globals.popupLoading = false;
       return;
+    }
 
     if (!data.sources || (data.sources && !data.sources.length))
+    {
+      _this.globals.popupLoading = false;
       return;
+    }
 
     for (let i = 0; i < data.sources.length; i++)
     {
@@ -49,6 +53,8 @@ export class DatalakeTableShowColumnsComponent {
       result.Column = i + 1;
       _this.dataSource.push (result);
     }
+
+    _this.globals.popupLoading = false;
   }
 
   handlerError(_this, result): void

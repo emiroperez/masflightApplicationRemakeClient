@@ -30,22 +30,38 @@ export class DatalakeTablePreviewComponent {
 
   handlerSuccess(_this, data): void
   {
-    _this.globals.popupLoading = false;
-
     if (!data)
+    {
+      _this.globals.popupLoading = false;
       return;
+    }
 
     if (!data.Columns || (data.Columns && !data.Columns.length))
+    {
+      _this.globals.popupLoading = false;
       return;
+    }
 
     if (!data.Values || (data.Values && !data.Values.length))
+    {
+      _this.globals.popupLoading = false;
       return;
+    }
 
     for (let column of data.Columns)
       _this.displayedColumns.push (column.title);
 
     for (let result of data.Values)
-      _this.dataSource.push (result);
+    {
+      let item = {};
+
+      for (let i = 0; i < _this.displayedColumns.length; i++)
+        item[_this.displayedColumns[i]] = result[i];
+
+      _this.dataSource.push (item);
+    }
+
+    _this.globals.popupLoading = false;
   }
 
   handlerError(_this, result): void
