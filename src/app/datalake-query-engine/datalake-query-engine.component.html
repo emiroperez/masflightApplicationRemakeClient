@@ -16,6 +16,12 @@
             </div>
           </ng-template>
           <div class="datalake-query-tab">
+            <div class="datalake-query-tab-header">
+              <span class="datalake-query-editor-label">Query Editor</span>
+              <div class="datalake-query-editor-buttons"></div>
+            </div>
+            <div class="datalake-query-editor-input">
+            </div>
           </div>
         </mat-tab>
         <mat-tab disabled>
@@ -23,8 +29,6 @@
             <div class="add-icon-container" (click)="addQueryTab()">
               <mat-icon class="add-icon">add</mat-icon> 
             </div>
-            <!-- The div below is used for more consistency with the rest of the tabs -->
-            <div class="datalake-query-tab"></div>
           </ng-template>
         </mat-tab>
       </mat-tab-group>

@@ -1201,6 +1201,8 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                 background-color: $customer-edit-header-color !important
             .datalake-query-tab
                 background-color: $schedule-map-background-color
+                .datalake-query-editor-input
+                    background-color: $background-color
             .close-icon-container
                 background-color: $background-color
                 &:hover
@@ -6609,7 +6611,25 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                     height: inherit !important
                     width: inherit !important
             .datalake-query-tab
+                display: flex
+                flex-direction: column
+                padding: 15px
                 height: 100%
+                .datalake-query-tab-header
+                    display: flex
+                    flex-direction: row
+                    .datalake-query-editor-label
+                        font-size: 14px
+                        font-weight: 500
+                        width: 150px
+                    .datalake-query-editor-buttons
+                        display: flex
+                        flex-direction: column-reverse
+                        width: 100%
+                .datalake-query-editor-input
+                    height: 100%
+                    margin-top: 10px
+                    margin-bottom: 30px
         .datalake-query-execution-time-container
             padding-top: 10px
             .datalake-query-execution-time-header
