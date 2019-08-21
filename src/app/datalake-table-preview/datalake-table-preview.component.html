@@ -1,4 +1,4 @@
-<ng-container *ngIf="!dataSource.length">
+<ng-container *ngIf="!displayedColumns.length">
   <div *ngIf="globals.popupLoading" class="datalake-dialog-loading"></div>
   <div *ngIf="!globals.popupLoading" class="datalake-dialog-finish-loading">
     <div class="datalake-dialog-label-container">
@@ -8,7 +8,7 @@
     </div>
   </div>
 </ng-container>
-<ng-container *ngIf="dataSource.length">
+<ng-container *ngIf="displayedColumns.length">
   <div class="datalake-table-show-table-header">
     <div class="datalake-table-show-table-title">
       <div class="datalake-table-show-table-longname">{{data.values.longName}} - Table</div>

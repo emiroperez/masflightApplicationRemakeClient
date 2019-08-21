@@ -42,23 +42,20 @@ export class DatalakeTablePreviewComponent {
       return;
     }
 
-    if (!data.Values || (data.Values && !data.Values.length))
-    {
-      _this.globals.popupLoading = false;
-      return;
-    }
-
     for (let column of data.Columns)
       _this.displayedColumns.push (column.title);
 
-    for (let result of data.Values)
+    if (data.Values)
     {
-      let item = {};
+      for (let result of data.Values)
+      {
+        let item = {};
 
-      for (let i = 0; i < _this.displayedColumns.length; i++)
-        item[_this.displayedColumns[i]] = result[i];
+        for (let i = 0; i < _this.displayedColumns.length; i++)
+          item[_this.displayedColumns[i]] = result[i];
 
-      _this.dataSource.push (item);
+        _this.dataSource.push (item);
+      }
     }
 
     _this.globals.popupLoading = false;
