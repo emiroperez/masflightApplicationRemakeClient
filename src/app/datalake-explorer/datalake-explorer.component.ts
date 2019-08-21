@@ -26,20 +26,25 @@ export class DatalakeExplorerComponent implements OnInit {
 
   handlerSuccess(_this, data): void
   {
-    _this.globals.isLoading = false;
-
-    if (!data || !data.sources || !data.sources.length)
+    if (!data)
+    {
+      _this.globals.isLoading = false;
       return;
+    }
 
     _this.tableCards = [];
 
-    for (let result of data.sources)
+    if (data.sources)
     {
-      _this.tableCards.push (new DatalakeTableCardValues (result.tableName,
-        result.descr, result.bucketName, result.schemaName, result.longName));
+      for (let result of data.sources)
+      {
+        _this.tableCards.push (new DatalakeTableCardValues (result.tableName,
+          result.descr, result.bucketName, result.schemaName, result.longName));
+      }
     }
 
     _this.filteredTableCards.next (_this.tableCards.slice ());
+    _this.globals.isLoading = false;
   }
 
   handlerError(_this, results): void

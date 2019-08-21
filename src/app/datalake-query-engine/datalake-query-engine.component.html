@@ -1,11 +1,41 @@
-<div class="datalake-query-engine-container">
+<div class="datalake-query-engine-container" [ngStyle]="{ 'cursor': getHoverCursor() }">
   <div [style.width.%]="leftPanelWidth" class="datalake-query-engine-left-panel">
-    Left Panel
+    <!-- Insert schemas here -->
   </div>
-  <div class='datalake-query-engine-line-resize'>
-    S
+  <div class="datalake-query-engine-line-resize">
+    <mat-icon class="datalake-query-engine-drag-handler" aria-label="Drag Handler" (mousedown)="onDragClick($event)" (mouseup)="onDragRelease()">more_vert</mat-icon>
   </div>
   <div [style.width.%]="rightPanelWidth" class="datalake-query-engine-right-panel">
-    Right Panel
+    <div class="datalake-query-container">
+      <mat-tab-group [selectedIndex]="selectedIndex" (selectedIndexChange)="onIndexChange($event)">
+        <mat-tab *ngFor="let queryTab of queryTabs; let i = index">
+          <ng-template mat-tab-label>
+            Query {{i + 1}}
+            <div *ngIf="queryTabs.length > 1" class="close-icon-container" (click)="closeQueryTab(i)">
+              <mat-icon class="close-icon">close</mat-icon> 
+            </div>
+          </ng-template>
+          <div class="datalake-query-tab">
+          </div>
+        </mat-tab>
+        <mat-tab disabled>
+          <ng-template mat-tab-label>
+            <div class="add-icon-container" (click)="addQueryTab()">
+              <mat-icon class="add-icon">add</mat-icon> 
+            </div>
+            <!-- The div below is used for more consistency with the rest of the tabs -->
+            <div class="datalake-query-tab"></div>
+          </ng-template>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+    <div class="datalake-query-execution-time-container">
+      <div class="datalake-query-execution-time-header">
+        <div class="datalake-query-execution-time-title">Query Execution Time</div>
+        <div class="datalake-query-execution-time-sub-title">0.02 milliseconds</div>
+      </div>
+      <div class="datalake-query-execution-time-body">
+      </div>
+    </div>
   </div>
 </div>

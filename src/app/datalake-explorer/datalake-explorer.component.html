@@ -12,10 +12,10 @@
                 <img class="datalake-explorer-query-engine-button-image" src="../../assets/images/datalake-query.png"/>
             </button>
             <button *ngIf="!currentScreen" mat-button class="datalake-explorer-button" (click)="addTableCard()" matTooltip="Add Table Card">
-                <mat-icon class="datalake-explorer-button-icon">add</mat-icon>
+                <mat-icon class="datalake-explorer-button-add-icon">add</mat-icon>
             </button>
             <button *ngIf="currentScreen" mat-button class="datalake-explorer-button" (click)="goToScreen(0)" matTooltip="Table Cards">
-                <mat-icon class="datalake-explorer-button-icon">apps</mat-icon>
+                <mat-icon class="datalake-explorer-button-table-card-icon">apps</mat-icon>
             </button>
         </div>
     </div>
