@@ -194,6 +194,7 @@ import { DatalakeTableCardComponent } from './datalake-table-card/datalake-table
 import { NgxGaugeModule } from 'ngx-gauge';
 import { DatalakeTableShowColumnsComponent } from './datalake-table-show-columns/datalake-table-show-columns.component';
 import { DatalakeTablePreviewComponent } from './datalake-table-preview/datalake-table-preview.component';
+import { DatalakeQueryEngineComponent } from './datalake-query-engine/datalake-query-engine.component';
 
 @NgModule({
   declarations: [
@@ -363,7 +364,8 @@ import { DatalakeTablePreviewComponent } from './datalake-table-preview/datalake
     DatalakeExplorerComponent,
     DatalakeTableCardComponent,
     DatalakeTableShowColumnsComponent,
-    DatalakeTablePreviewComponent
+    DatalakeTablePreviewComponent,
+    DatalakeQueryEngineComponent
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,6 @@
 <div class="datalake-explorer-container">
     <div class="datalake-explorer-header">
-        <mat-form-field class="datalake-explorer-search-input-container">
+        <mat-form-field *ngIf="!currentScreen" class="datalake-explorer-search-input-container">
             <input matInput class="datalake-explorer-search-input" type="text" placeholder="Search" autocomplete="off" [(ngModel)]="filter" (ngModelChange)="filterTableCards()">
             <mat-icon class="search-icon" aria-label="search">search</mat-icon>
         </mat-form-field>
@@ -8,14 +8,23 @@
             Datalake Explorer
         </div>
         <div class="datalake-explorer-buttons">
-            <button mat-button class="datalake-explorer-button" (click)="addTableCard()" matTooltip="Add Table Card">
-                <mat-icon class="add-icon">add</mat-icon>
+            <button *ngIf="!currentScreen" mat-button class="datalake-explorer-button" (click)="goToScreen(1)" matTooltip="Query Engine">
+                <img class="datalake-explorer-query-engine-button-image" src="../../assets/images/datalake-query.png"/>
+            </button>
+            <button *ngIf="!currentScreen" mat-button class="datalake-explorer-button" (click)="addTableCard()" matTooltip="Add Table Card">
+                <mat-icon class="datalake-explorer-button-icon">add</mat-icon>
+            </button>
+            <button *ngIf="currentScreen" mat-button class="datalake-explorer-button" (click)="goToScreen(0)" matTooltip="Table Cards">
+                <mat-icon class="datalake-explorer-button-icon">apps</mat-icon>
             </button>
         </div>
     </div>
-    <div class="datalake-explorer-grid-layout">
+    <div *ngIf="!currentScreen" class="datalake-explorer-grid-layout">
         <ng-container *ngFor="let tableCard of filteredTableCards | async">
             <app-datalake-table-card [values]="tableCard"></app-datalake-table-card>
         </ng-container>
+    </div>
+    <div *ngIf="currentScreen == 1" [style.height.%]="100">
+        <app-datalake-query-engine></app-datalake-query-engine>
     </div>
 </div>

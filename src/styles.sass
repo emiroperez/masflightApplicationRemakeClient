@@ -6333,7 +6333,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
             padding-right: 50px
             margin-top: -18px
             margin-left: -5px
-            width: 25%
+            width: 45%
             .datalake-explorer-search-input
                 border-style: solid
                 border-width: 1px
@@ -6355,7 +6355,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
             align-self: center
             font-size: 1.5em
             font-weight: 500
-            width: 25%
+            width: 100%
         .datalake-explorer-buttons
             flex-direction: row-reverse
             margin-top: -10px
@@ -6368,7 +6368,9 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                 font-size: 11px
                 height: 40px
                 width: 40px
-                .add-icon
+                .datalake-explorer-query-engine-button-image
+                    margin-left: -9.75px
+                .datalake-explorer-button-icon
                     margin-left: -8.5px
                 &:hover
                     color: #ffffff !important
@@ -6513,3 +6515,23 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         .datalake-dialog-label
             font-size: 15px
             width: 100%
+
+@mixin datalake-query-engine-line-resize
+    height: 100%
+    width: 5px
+
+.datalake-query-engine-container
+    display: flex
+    width: 100%
+    height: 100%
+    overflow: hidden
+    .datalake-query-engine-left-panel
+        display: block
+    .datalake-query-engine-right-panel
+        display: block
+    .datalake-query-engine-line-resize
+        display: flex
+        height: 100%
+        width: 20px
+        align-items: center
+        justify-content: center

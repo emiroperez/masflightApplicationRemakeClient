@@ -15,13 +15,13 @@ export class DatalakeExplorerComponent implements OnInit {
   _onDestroy = new Subject<void> ();
 
   tableCards: DatalakeTableCardValues[] = [];
+  currentScreen: number = 0;
 
   constructor(public globals: Globals, private service: ApplicationService) { }
 
   ngOnInit()
   {
-    this.globals.isLoading = true;
-    this.service.getDatalakeTables (this, this.handlerSuccess, this.handlerError);
+    this.goToScreen (0);
   }
 
   handlerSuccess(_this, data): void
@@ -30,6 +30,8 @@ export class DatalakeExplorerComponent implements OnInit {
 
     if (!data || !data.sources || !data.sources.length)
       return;
+
+    _this.tableCards = [];
 
     for (let result of data.sources)
     {
@@ -84,5 +86,19 @@ export class DatalakeExplorerComponent implements OnInit {
     this.tableCards.push (new DatalakeTableCardValues ("fradar24_r",
       "Flight Radar24 Tracking table", "fradar24-r", "fr24p", "Flight Radar24 Tracking"));
     this.filteredTableCards.next (this.tableCards.slice ());
+  }
+
+  goToScreen(index: number): void
+  {
+    this.currentScreen = index;
+
+    switch (this.currentScreen)
+    {
+      case 0:
+        this.globals.isLoading = true;
+        this.service.getDatalakeTables (this, this.handlerSuccess, this.handlerError);
+        this.filter = "";
+        break;
+    }
   }
 }
