@@ -193,6 +193,7 @@ import { DatalakeExplorerComponent } from './datalake-explorer/datalake-explorer
 import { DatalakeTableCardComponent } from './datalake-table-card/datalake-table-card.component';
 import { NgxGaugeModule } from 'ngx-gauge';
 import { DatalakeTableShowColumnsComponent } from './datalake-table-show-columns/datalake-table-show-columns.component';
+import { DatalakeTablePreviewComponent } from './datalake-table-preview/datalake-table-preview.component';
 
 @NgModule({
   declarations: [
@@ -361,7 +362,8 @@ import { DatalakeTableShowColumnsComponent } from './datalake-table-show-columns
     DatalakeComponent,
     DatalakeExplorerComponent,
     DatalakeTableCardComponent,
-    DatalakeTableShowColumnsComponent
+    DatalakeTableShowColumnsComponent,
+    DatalakeTablePreviewComponent
   ],
   imports: [
     BrowserModule,
@@ -443,7 +445,8 @@ import { DatalakeTableShowColumnsComponent } from './datalake-table-show-columns
     MsfAddSharedDashboardComponent,
     TwoFactorLoginDialogComponent,
     MsfDynamicTableAliasComponent,
-    DatalakeTableShowColumnsComponent
+    DatalakeTableShowColumnsComponent,
+    DatalakeTablePreviewComponent
   ]
 })
 export class AppModule { }

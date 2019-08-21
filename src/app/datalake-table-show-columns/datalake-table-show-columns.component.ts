@@ -35,7 +35,10 @@ export class DatalakeTableShowColumnsComponent {
   {
     _this.globals.popupLoading = false;
 
-    if (!data || !data.sources || !data.sources.length)
+    if (!data)
+      return;
+
+    if (!data.sources || (data.sources && !data.sources.length))
       return;
 
     for (let i = 0; i < data.sources.length; i++)

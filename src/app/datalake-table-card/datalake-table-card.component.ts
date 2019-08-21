@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material';
 import { Globals } from '../globals/Globals';
 import { DatalakeTableCardValues } from './datalake-table-card-values';
 import { DatalakeTableShowColumnsComponent } from '../datalake-table-show-columns/datalake-table-show-columns.component';
+import { DatalakeTablePreviewComponent } from '../datalake-table-preview/datalake-table-preview.component';
 
 @Component({
   selector: 'app-datalake-table-card',
@@ -51,4 +52,15 @@ export class DatalakeTableCardComponent implements OnInit {
     });
   }
 
+  previewTable(): void
+  {
+    let dialogRef = this.dialog.open (DatalakeTablePreviewComponent, {
+      panelClass: 'datalake-table-show-table-dialog',
+      data: { values: this.values }
+    });
+
+    dialogRef.afterClosed ().subscribe (() => {
+      this.globals.popupLoading = false;
+    });
+  }
 }

@@ -1185,6 +1185,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
         .datalake-dialog-loading
             @include msf-dashboard-dialog-title(20px, 10px, $font-color)
             @include msf-dashboard-dialog-loading(55%, $quaternary-background-color, url(assets/images/#{$name}-loading_pulse.gif))
+        .datalake-dialog-finish-loading
             .datalake-dialog-label-container
                 background-color: $primary-color
                 color: #ffffff
@@ -6484,7 +6485,11 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                 background-color: #F2F2F2
                 color: #000000
                 border: 0
-                min-width: 80px
+                padding: 10px !important
+                white-space: nowrap
+            td.mat-cell
+                white-space: nowrap
+                padding: 10px !important
         ::-webkit-scrollbar-thumb
             background-color: #B3B3B3
             border-radius: 10px
@@ -6493,7 +6498,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
             background-color: #FFFFFF
             border-radius: 0 !important
 
-.datalake-dialog-loading
+.datalake-dialog-loading, .datalake-dialog-finish-loading
     width: 400px !important
     height: 400px !important
     display: flex
