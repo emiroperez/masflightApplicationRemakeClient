@@ -44,7 +44,7 @@
                         <div *ngIf="!mobileQuery.matches" [ngClass]="option.hover? 'footer-container footer-hover' : 'footer-container'">
                             <div class="msf-welcome-option-label">
                                 <div class="icon-container-bk" [ngStyle]="{'background-image': 'url(' + getBackground2(option) + ')'}"></div>
-                                <span>{{option.name}}</span>
+                                <span class="msf-app-label">{{option.name}}</span>
                             </div>
                         </div>
                     </div>
