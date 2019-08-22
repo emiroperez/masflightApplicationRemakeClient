@@ -1,6 +1,23 @@
 <div class="datalake-query-engine-container" [ngStyle]="{ 'cursor': getHoverCursor() }">
   <div [style.width.%]="leftPanelWidth" class="datalake-query-engine-left-panel">
     <!-- Insert schemas here -->
+    <div class="datalake-schema-container" *ngFor="let schema of [1, 2]; let i = index">
+      <div class="datalake-schema-header">
+        <span class="datalake-schema-title">Schema {{i + 1}}</span>
+        <div class="datalake-schema-filter-input-container">
+          <ng-container>
+            <mat-icon class="search-icon" aria-label="search">search</mat-icon>
+            <!--
+            <input matInput class="datalake-schema-filter-input" type="text" autocomplete="off" [(ngModel)]="filter" (ngModelChange)="filterTableCards()">
+            -->
+            <input matInput class="datalake-schema-filter-input" type="text" autocomplete="off">
+          </ng-container>
+        </div>
+        <div class="datalake-schema-tree-expander">
+          <mat-icon aria-label="Expand Schema">keyboard_arrow_down</mat-icon>
+        </div>
+      </div>
+    </div>
   </div>
   <div class="datalake-query-engine-line-resize">
     <mat-icon class="datalake-query-engine-drag-handler" aria-label="Drag Handler" (mousedown)="onDragClick($event)" (mouseup)="onDragRelease()">more_vert</mat-icon>
@@ -44,12 +61,12 @@
         </mat-tab>
       </mat-tab-group>
     </div>
-    <div class="datalake-query-execution-time-container">
-      <div class="datalake-query-execution-time-header">
+    <div class="datalake-query-execution-result-container">
+      <div class="datalake-query-execution-result-header">
         <div class="datalake-query-execution-time-title">Query Execution Time</div>
         <div class="datalake-query-execution-time-sub-title">0.02 milliseconds</div>
       </div>
-      <div class="datalake-query-execution-time-body">
+      <div class="datalake-query-execution-result-body">
       </div>
     </div>
   </div>
