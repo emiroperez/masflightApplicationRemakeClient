@@ -1201,6 +1201,11 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                 background-color: $customer-edit-header-color !important
             .datalake-query-tab
                 background-color: $schedule-map-background-color
+                .datalake-query-editor-button
+                    border-color: $font-color !important
+                    &:hover
+                        border-color: $primary-color !important
+                        background-color: $primary-color !important
                 .datalake-query-editor-input
                     textarea.mat-input-element
                         background-color: $customer-edit-header-color
@@ -6564,7 +6569,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     .datalake-query-engine-right-panel
         padding: 10px
         .datalake-query-container
-            height: 35%
+            height: 40%
             .mat-tab-header-pagination-controls-enabled .mat-tab-header-pagination
                 display: none !important
             .mat-tab-header
@@ -6619,22 +6624,48 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                 .datalake-query-tab-header
                     display: flex
                     flex-direction: row
+                    margin-top: -6px
+                    padding-bottom: 4px
                     .datalake-query-editor-label
+                        align-self: center
                         font-size: 14px
                         font-weight: 500
                         width: 150px
                     .datalake-query-editor-buttons
                         display: flex
-                        flex-direction: column-reverse
+                        flex-direction: row-reverse
                         width: 100%
+                        .datalake-query-editor-button
+                            border-style: solid
+                            border-width: 1px
+                            margin-left: 5px
+                            min-width: 30px
+                            width: 30px
+                            height: 30px
+                            padding: 0 !important
+                            .datalake-run-query-image
+                                width: 30px
+                                height: 30px
+                                margin-top: -8px
+                            .datalake-query-history-image
+                                width: 25px
+                                height: 25px
+                                margin-top: -8px
+                                margin-left: -1px
+                            .datalake-save-query-image
+                                width: 30px
+                                height: 30px
+                                margin-top: -8px
+                                margin-left: -1px
                 .datalake-query-editor-input
                     height: 100%
                     margin-top: 10px
                     margin-bottom: 30px
                     textarea.mat-input-element
-                        height: calc(100% - 7px)
                         width: calc(100% - 7px)
+                        height: calc(100% - 2px)
                         margin-left: -3px
+                        margin-top: -7px
                         font-size: 12px
                         padding: 7px
                         resize: none

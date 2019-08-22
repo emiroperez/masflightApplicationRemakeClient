@@ -18,7 +18,17 @@
           <div class="datalake-query-tab">
             <div class="datalake-query-tab-header">
               <span class="datalake-query-editor-label">Query Editor</span>
-              <div class="datalake-query-editor-buttons"></div>
+              <div class="datalake-query-editor-buttons">
+                <button mat-button class="datalake-query-editor-button" matTooltip="Save Query">
+                  <img class="datalake-save-query-image" src="../../assets/images/datalake-save-query.png"/>
+                </button>
+                <button mat-button class="datalake-query-editor-button" matTooltip="Query History">
+                  <img class="datalake-query-history-image" src="../../assets/images/datalake-query-history.png"/>
+                </button>
+                <button mat-button class="datalake-query-editor-button" matTooltip="Run Query">
+                  <img class="datalake-run-query-image" src="../../assets/images/datalake-run-query.png"/>
+                </button>
+              </div>
             </div>
             <div class="datalake-query-editor-input">
               <textarea matInput></textarea>
