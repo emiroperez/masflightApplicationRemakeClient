@@ -772,6 +772,15 @@ export class MsfDashboardComponent implements OnInit {
     return this.contextMenuY;
   }
 
+  getHoverCursor(): string
+  {
+    // Use column resize while dragging the panels
+    if (this.resizePanel)
+      return "col-resize";
+
+    return "inherit";
+  }
+
   displayChildPanel(contextDrillDownId): void
   {
     this.dialog.open (MsfDashboardChildPanelComponent, {
