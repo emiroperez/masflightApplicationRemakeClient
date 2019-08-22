@@ -509,4 +509,11 @@ export class ApplicationService {
     let url = this.host + "/secure/setDefaultDashboard?applicationId=" + this.globals.currentApplication.id;
     this.authService.post (_this, url, null, handlerSuccess, handlerError);
   }
+
+  getConnections(_this, handlerSucess, handlerError){
+    _this.globals.isLoading = true;
+    let url = this.host + "/getConnections";
+    this.http.get(_this, url, handlerSucess, handlerError, null);
+  }
+  
 }

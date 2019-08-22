@@ -6335,3 +6335,31 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                     margin-left: -8.5px
                 &:hover
                     color: #ffffff
+
+.queryEngine-body
+    width: 100%
+    position: fixed
+    display: flex
+    height: 100%
+    background-color: #333333
+
+.queryEngine-show-full-nav
+
+.queryEngine-schemas-container
+    width: calc(100% - 25px)
+    height: 100%
+    vertical-align: middle
+    display: inline-block
+
+.queryEngine-schemas-container-hide
+    @extend .queryEngine-schemas-container
+    opacity: 0
+    transition: 0.1s
+
+.queryEngine-schemas-container-show
+    @extend .queryEngine-schemas-container
+    opacity: 1
+    transition: 2s
+    position: relative
+    overflow: auto
+    background-color: #1a1a1a

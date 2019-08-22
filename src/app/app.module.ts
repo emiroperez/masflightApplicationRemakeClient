@@ -190,6 +190,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ExportAsModule } from 'ngx-export-as';
 import { DatalakeComponent } from './datalake/datalake.component';
 import { DatalakeExplorerComponent } from './datalake-explorer/datalake-explorer.component';
+import { QueryEngineComponent } from './query-engine/query-engine.component';
 
 @NgModule({
   declarations: [
@@ -356,7 +357,8 @@ import { DatalakeExplorerComponent } from './datalake-explorer/datalake-explorer
     MsfDashboardControlPanelComponent,
     MenuNavComponent,
     DatalakeComponent,
-    DatalakeExplorerComponent
+    DatalakeExplorerComponent,
+    QueryEngineComponent
   ],
   imports: [
     BrowserModule,
