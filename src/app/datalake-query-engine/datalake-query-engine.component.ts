@@ -14,6 +14,67 @@ export class DatalakeQueryEngineComponent implements OnInit {
   selectedIndex: number = 0;
 
   queryTabs: any[] = ["Query 1"];
+  querySchemas: any[] =
+  [
+    {
+      open: false,
+      tables: [
+        {
+          longName: "FLIGHT RADAR24 TRACKING",
+          schemaName: "fradar24_r"
+        },
+        {
+          longName: "FLIGHT RADAR24 TRACKING",
+          schemaName: "fradar24_r"
+        },
+        {
+          longName: "FLIGHT RADAR24 TRACKING",
+          schemaName: "fradar24_r"
+        },
+        {
+          longName: "FLIGHT RADAR24 TRACKING",
+          schemaName: "fradar24_r"
+        },
+        {
+          longName: "FLIGHT RADAR24 TRACKING",
+          schemaName: "fradar24_r"
+        },
+        {
+          longName: "FLIGHT RADAR24 TRACKING",
+          schemaName: "fradar24_r"
+        },
+        {
+          longName: "FLIGHT RADAR24 TRACKING",
+          schemaName: "fradar24_r"
+        },
+        {
+          longName: "FLIGHT RADAR24 TRACKING",
+          schemaName: "fradar24_r"
+        },
+        {
+          longName: "FLIGHT RADAR24 TRACKING",
+          schemaName: "fradar24_r"
+        },
+        {
+          longName: "FLIGHT RADAR24 TRACKING",
+          schemaName: "fradar24_r"
+        }
+      ]
+    },
+    {
+      open: false,
+      tables: [
+        {
+          longName: "Test",
+          schemaName: "test_r"
+        },
+        {
+          longName: "FLIGHT RADAR24 TRACKING",
+          schemaName: "fradar24_r"
+        }
+      ]
+    }
+  ];
 
   constructor() { }
 
@@ -93,5 +154,10 @@ export class DatalakeQueryEngineComponent implements OnInit {
       return "col-resize";
 
     return "inherit";
+  }
+
+  toggleSchema(querySchema: any): void
+  {
+    querySchema.open = !querySchema.open;
   }
 }

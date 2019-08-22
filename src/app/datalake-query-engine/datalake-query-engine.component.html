@@ -1,11 +1,11 @@
 <div class="datalake-query-engine-container" [ngStyle]="{ 'cursor': getHoverCursor() }">
   <div [style.width.%]="leftPanelWidth" class="datalake-query-engine-left-panel">
     <!-- Insert schemas here -->
-    <div class="datalake-schema-container" *ngFor="let schema of [1, 2]; let i = index">
+    <div class="datalake-schema-container" *ngFor="let querySchema of querySchemas; let i = index">
       <div class="datalake-schema-header">
         <span class="datalake-schema-title">Schema {{i + 1}}</span>
         <div class="datalake-schema-filter-input-container">
-          <ng-container>
+          <ng-container *ngIf="querySchema.open">
             <mat-icon class="search-icon" aria-label="search">search</mat-icon>
             <!--
             <input matInput class="datalake-schema-filter-input" type="text" autocomplete="off" [(ngModel)]="filter" (ngModelChange)="filterTableCards()">
@@ -13,8 +13,14 @@
             <input matInput class="datalake-schema-filter-input" type="text" autocomplete="off">
           </ng-container>
         </div>
-        <div class="datalake-schema-tree-expander">
-          <mat-icon aria-label="Expand Schema">keyboard_arrow_down</mat-icon>
+        <div class="datalake-schema-tree-expander" (click)="toggleSchema(querySchema)">
+          <mat-icon *ngIf="!querySchema.open" aria-label="Expand Schema">keyboard_arrow_down</mat-icon>
+          <mat-icon *ngIf="querySchema.open" aria-label="Collapse Schema">keyboard_arrow_up</mat-icon>
+        </div>
+      </div>
+      <div class="datalake-schema-body" *ngIf="querySchema.open">
+        <div class="datalake-schema-item" *ngFor="let table of querySchema.tables">
+          {{table.longName}} ({{table.schemaName}})
         </div>
       </div>
     </div>
