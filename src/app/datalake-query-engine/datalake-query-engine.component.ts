@@ -1,4 +1,5 @@
 import { Component, OnInit, HostListener } from '@angular/core';
+import { ReplaySubject, Subject } from 'rxjs';
 
 const minPanelWidth = 25;
 
@@ -18,59 +19,65 @@ export class DatalakeQueryEngineComponent implements OnInit {
   [
     {
       open: false,
+      filter: "",
+      filteredTables: new ReplaySubject<any[]> (1),
+      _onDestroy: new Subject<void> (),
       tables: [
         {
           longName: "FLIGHT RADAR24 TRACKING",
-          schemaName: "fradar24_r"
+          tableName: "fradar24_r"
         },
         {
           longName: "FLIGHT RADAR24 TRACKING",
-          schemaName: "fradar24_r"
+          tableName: "fradar24_r"
         },
         {
           longName: "FLIGHT RADAR24 TRACKING",
-          schemaName: "fradar24_r"
+          tableName: "fradar24_r"
         },
         {
           longName: "FLIGHT RADAR24 TRACKING",
-          schemaName: "fradar24_r"
+          tableName: "fradar24_r"
         },
         {
           longName: "FLIGHT RADAR24 TRACKING",
-          schemaName: "fradar24_r"
+          tableName: "fradar24_r"
         },
         {
           longName: "FLIGHT RADAR24 TRACKING",
-          schemaName: "fradar24_r"
+          tableName: "fradar24_r"
         },
         {
           longName: "FLIGHT RADAR24 TRACKING",
-          schemaName: "fradar24_r"
+          tableName: "fradar24_r"
         },
         {
           longName: "FLIGHT RADAR24 TRACKING",
-          schemaName: "fradar24_r"
+          tableName: "fradar24_r"
         },
         {
           longName: "FLIGHT RADAR24 TRACKING",
-          schemaName: "fradar24_r"
+          tableName: "fradar24_r"
         },
         {
           longName: "FLIGHT RADAR24 TRACKING",
-          schemaName: "fradar24_r"
+          tableName: "fradar24_r"
         }
       ]
     },
     {
       open: false,
+      filter: "",
+      filteredTables: new ReplaySubject<any[]> (1),
+      _onDestroy: new Subject<void> (),
       tables: [
         {
           longName: "Test",
-          schemaName: "test_r"
+          tableName: "test_r"
         },
         {
           longName: "FLIGHT RADAR24 TRACKING",
-          schemaName: "fradar24_r"
+          tableName: "fradar24_r"
         }
       ]
     }
@@ -78,7 +85,19 @@ export class DatalakeQueryEngineComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
+  ngOnInit()
+  {
+    for (let querySchema of this.querySchemas)
+      querySchema.filteredTables.next (querySchema.tables.slice ());
+  }
+
+  ngOnDestroy(): void
+  {
+    for (let querySchema of this.querySchemas)
+    {
+      querySchema._onDestroy.next ();
+      querySchema._onDestroy.complete ();
+    }
   }
 
   addQueryTab(): void
@@ -159,5 +178,32 @@ export class DatalakeQueryEngineComponent implements OnInit {
   toggleSchema(querySchema: any): void
   {
     querySchema.open = !querySchema.open;
+  }
+
+  filterSchema(querySchema: any): void
+  {
+    let search, filteredResults;
+
+    if (!querySchema.tables.length)
+      return;
+
+    // get the search keyword
+    search = querySchema.filter;
+    if (!search)
+    {
+      querySchema.filteredTables.next (querySchema.tables.slice ());
+      return;
+    }
+
+    search = search.toLowerCase ();
+    filteredResults = querySchema.tables.filter (a => (a.longName.toLowerCase ().indexOf (search) > -1
+      || a.tableName.toLowerCase ().indexOf (search) > -1));
+
+    querySchema.filteredTables.next (
+      filteredResults.filter (function (elem, index, self)
+      {
+        return index === self.indexOf(elem);
+      })
+    );
   }
 }
