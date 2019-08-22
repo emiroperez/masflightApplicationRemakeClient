@@ -40,8 +40,10 @@ export class ApplicationService {
   getMapBoxTracking(_this, successHandler, errorHandler) {
     let params = this.utils.getUrlParameters(_this.globals.currentOption,false);
     let url = this.host1 + "/getMapBoxTracking?" + params.url;
-    console.log(url)
-    this.http.get(_this, url, successHandler, errorHandler, null);
+    console.log(url); 
+    let urlArg = encodeURIComponent (url);
+    url = this.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.globals.currentOption.id + "&ipAddress=" + this.authService.getIpAddress () + "&noXml=true";
+    this.authService.get (_this, url, successHandler, errorHandler);
   }
 
   getDataTableSource(_this, handlerSuccess, handlerError,pageNumber: String) {

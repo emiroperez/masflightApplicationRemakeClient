@@ -1721,7 +1721,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   loadMapboxData(handlerSuccess, handlerError): void
   {
-    let params, url;
+    let params, url, urlArg;
 
     this.values.isLoading = true;
     this.values.displayMapbox = true;
@@ -1731,7 +1731,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     params = this.getParameters ();
     url = this.globals.baseUrl2 + "/getMapBoxTracking?" + params;
     console.log (url);
-    this.http.get (this.msfMapRef, url, handlerSuccess, handlerError, null);
+    urlArg = encodeURIComponent (url);
+    url = this.globals.baseUrl + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress () + "&noXml=true";
+    this.authService.get (this.msfMapRef, url, handlerSuccess, handlerError);
   }
 
   loadFormData(handlerSuccess, handlerError): void
