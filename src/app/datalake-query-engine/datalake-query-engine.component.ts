@@ -110,7 +110,7 @@ export class DatalakeQueryEngineComponent implements OnInit {
   {
     this.queryTabs.splice (index, 1);
 
-    if (this.selectedIndex == index && this.selectedIndex)
+    if (this.selectedIndex == this.queryTabs.length)
       this.selectedIndex--;
   }
 
