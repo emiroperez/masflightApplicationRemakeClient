@@ -190,11 +190,14 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ExportAsModule } from 'ngx-export-as';
 import { DatalakeComponent } from './datalake/datalake.component';
 import { DatalakeExplorerComponent } from './datalake-explorer/datalake-explorer.component';
+<<<<<<< HEAD
 import { DatalakeTableCardComponent } from './datalake-table-card/datalake-table-card.component';
 import { NgxGaugeModule } from 'ngx-gauge';
 import { DatalakeTableShowColumnsComponent } from './datalake-table-show-columns/datalake-table-show-columns.component';
 import { DatalakeTablePreviewComponent } from './datalake-table-preview/datalake-table-preview.component';
 import { DatalakeQueryEngineComponent } from './datalake-query-engine/datalake-query-engine.component';
+=======
+>>>>>>> parent of faf6905... .
 
 @NgModule({
   declarations: [
@@ -361,11 +364,15 @@ import { DatalakeQueryEngineComponent } from './datalake-query-engine/datalake-q
     MsfDashboardControlPanelComponent,
     MenuNavComponent,
     DatalakeComponent,
+<<<<<<< HEAD
     DatalakeExplorerComponent,
     DatalakeTableCardComponent,
     DatalakeTableShowColumnsComponent,
     DatalakeTablePreviewComponent,
     DatalakeQueryEngineComponent
+=======
+    DatalakeExplorerComponent
+>>>>>>> parent of faf6905... .
   ],
   imports: [
     BrowserModule,
