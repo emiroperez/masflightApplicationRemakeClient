@@ -106,12 +106,15 @@ export class DatalakeQueryEngineComponent implements OnInit {
     this.selectedIndex = this.queryTabs.length - 1;
   }
 
-  closeQueryTab(index: number): void
+  closeQueryTab(event, index: number): void
   {
     this.queryTabs.splice (index, 1);
 
     if (this.selectedIndex == this.queryTabs.length)
       this.selectedIndex--;
+
+    event.preventDefault ();
+    event.stopPropagation ();
   }
 
   onIndexChange(event: any): void
