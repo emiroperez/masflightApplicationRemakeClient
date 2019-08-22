@@ -1202,7 +1202,8 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             .datalake-query-tab
                 background-color: $schedule-map-background-color
                 .datalake-query-editor-input
-                    background-color: $background-color
+                    textarea.mat-input-element
+                        background-color: $customer-edit-header-color
             .close-icon-container
                 background-color: $background-color
                 &:hover
@@ -6630,6 +6631,13 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                     height: 100%
                     margin-top: 10px
                     margin-bottom: 30px
+                    textarea.mat-input-element
+                        height: calc(100% - 7px)
+                        width: calc(100% - 7px)
+                        margin-left: -3px
+                        font-size: 12px
+                        padding: 7px
+                        resize: none
         .datalake-query-execution-time-container
             padding-top: 10px
             .datalake-query-execution-time-header
