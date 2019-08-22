@@ -190,7 +190,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ExportAsModule } from 'ngx-export-as';
 import { DatalakeComponent } from './datalake/datalake.component';
 import { DatalakeExplorerComponent } from './datalake-explorer/datalake-explorer.component';
-import { QueryEngineComponent } from './query-engine/query-engine.component';
+import { DatalakeTableCardComponent } from './datalake-table-card/datalake-table-card.component';
+import { NgxGaugeModule } from 'ngx-gauge';
+import { DatalakeTableShowColumnsComponent } from './datalake-table-show-columns/datalake-table-show-columns.component';
+import { DatalakeTablePreviewComponent } from './datalake-table-preview/datalake-table-preview.component';
+import { DatalakeQueryEngineComponent } from './datalake-query-engine/datalake-query-engine.component';
 
 @NgModule({
   declarations: [
@@ -358,7 +362,10 @@ import { QueryEngineComponent } from './query-engine/query-engine.component';
     MenuNavComponent,
     DatalakeComponent,
     DatalakeExplorerComponent,
-    QueryEngineComponent
+    DatalakeTableCardComponent,
+    DatalakeTableShowColumnsComponent,
+    DatalakeTablePreviewComponent,
+    DatalakeQueryEngineComponent
   ],
   imports: [
     BrowserModule,
@@ -395,7 +402,8 @@ import { QueryEngineComponent } from './query-engine/query-engine.component';
     DragScrollModule,
     DigitOnlyModule,
     MatTooltipModule,
-    ExportAsModule
+    ExportAsModule,
+    NgxGaugeModule
   ],
   providers: [
     AuthService,
@@ -406,7 +414,6 @@ import { QueryEngineComponent } from './query-engine/query-engine.component';
     MsfComponentComponent,
     Globals,
     MsfAirportComponent,
-    MsfContainerComponent,
     MsfContainerComponent,
     DateFormatPipe,
     DateTimeFormatPipe,
@@ -439,7 +446,9 @@ import { QueryEngineComponent } from './query-engine/query-engine.component';
     MsfAddSharedDashboardPanelComponent,
     MsfAddSharedDashboardComponent,
     TwoFactorLoginDialogComponent,
-    MsfDynamicTableAliasComponent
+    MsfDynamicTableAliasComponent,
+    DatalakeTableShowColumnsComponent,
+    DatalakeTablePreviewComponent
   ]
 })
 export class AppModule { }

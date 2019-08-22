@@ -1,0 +1,80 @@
+<div class="datalake-query-engine-container" [ngStyle]="{ 'cursor': getHoverCursor() }">
+  <div [style.width.%]="leftPanelWidth" class="datalake-query-engine-left-panel">
+    <div class="datalake-schema-container" *ngFor="let querySchema of querySchemas; let i = index">
+      <div class="datalake-schema-header">
+        <span class="datalake-schema-title">Schema {{i + 1}}</span>
+        <div class="datalake-schema-filter-input-container">
+          <ng-container *ngIf="querySchema.open">
+            <mat-icon class="search-icon" aria-label="search">search</mat-icon>
+            <input matInput class="datalake-schema-filter-input" type="text" autocomplete="off" [(ngModel)]="querySchema.filter" (ngModelChange)="filterSchema(querySchema)">
+          </ng-container>
+        </div>
+        <div class="datalake-schema-tree-expander" (click)="toggleSchema(querySchema)">
+          <mat-icon *ngIf="!querySchema.open" aria-label="Expand Schema">keyboard_arrow_down</mat-icon>
+          <mat-icon *ngIf="querySchema.open" aria-label="Collapse Schema">keyboard_arrow_up</mat-icon>
+        </div>
+      </div>
+      <div class="datalake-schema-body" *ngIf="querySchema.open">
+        <div class="datalake-schema-item" *ngFor="let table of querySchema.filteredTables | async">
+          {{table.longName}} ({{table.tableName}})
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="datalake-query-engine-line-resize">
+    <mat-icon class="datalake-query-engine-drag-handler" aria-label="Drag Handler" (mousedown)="onDragClick($event)" (mouseup)="onDragRelease()">more_vert</mat-icon>
+  </div>
+  <div [style.width.%]="rightPanelWidth" class="datalake-query-engine-right-panel">
+    <div class="datalake-query-container">
+      <mat-tab-group [selectedIndex]="selectedIndex" (selectedIndexChange)="onIndexChange($event)">
+        <mat-tab *ngFor="let queryTab of queryTabs; let i = index">
+          <ng-template mat-tab-label>
+            Query {{i + 1}}
+            <div *ngIf="queryTabs.length > 1" class="close-icon-container" (click)="closeQueryTab($event, i)">
+              <mat-icon class="close-icon">close</mat-icon> 
+            </div>
+          </ng-template>
+          <div class="datalake-query-tab">
+            <div class="datalake-query-tab-header">
+              <span class="datalake-query-editor-label">Query Editor</span>
+              <div class="datalake-query-editor-buttons">
+                <button mat-button class="datalake-query-editor-button" matTooltip="Save Query">
+                  <img class="datalake-save-query-image" src="../../assets/images/datalake-save-query.png"/>
+                </button>
+                <button mat-button class="datalake-query-editor-button" matTooltip="Query History">
+                  <img class="datalake-query-history-image" src="../../assets/images/datalake-query-history.png"/>
+                </button>
+                <button mat-button class="datalake-query-editor-button" matTooltip="Run Query">
+                  <img class="datalake-run-query-image" src="../../assets/images/datalake-run-query.png"/>
+                </button>
+              </div>
+            </div>
+            <div class="datalake-query-editor-input">
+              <textarea matInput></textarea>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab disabled>
+          <ng-template mat-tab-label>
+            <div class="add-icon-container" (click)="addQueryTab()">
+              <mat-icon class="add-icon">add</mat-icon> 
+            </div>
+          </ng-template>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+    <div class="datalake-query-execution-result-container">
+      <div class="datalake-query-execution-result-header">
+        <div class="datalake-query-execution-time-title">Query Execution Time</div>
+        <div class="datalake-query-execution-time-sub-title">Not run</div>
+      </div>
+      <div class="datalake-query-execution-result-body">
+        <div class="datalake-no-execution">
+          <div class="datalake-no-execution-label">
+            Run Query to see results
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

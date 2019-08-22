@@ -1140,7 +1140,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
         .datalake-explorer-container
             background-color: $background-color
             .datalake-explorer-header
-                background-color: $secondary-background-color
+                background-color: $dashboard-secondary-background-color
                 .datalake-explorer-search-input
                     border-color: $datalake-search-input-border-color
                     caret-color: $font-color
@@ -1149,9 +1149,102 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             .datalake-explorer-buttons
                 .datalake-explorer-button
                     border: 1px solid $font-color
+                    .mat-button-wrapper
+                        color: inherit !important
                     &:hover
                         border: 1px solid $primary-color
                         background-color: $primary-color
+        .datalake-table-card-container
+            background-color: $dashboard-secondary-background-color
+            .datalake-table-card-header
+                border-bottom: 1px solid $datalake-search-input-border-color
+                .datalake-table-card-subtitle, .datalake-table-card-update-title
+                    color: $primary-color
+            .mat-tab-labels
+                background-color: $secondary-background-color !important
+            .mat-tab-label-active
+                background-color: $dashboard-secondary-background-color !important
+            .mat-tab-label
+                color: $font-color !important
+            .datalake-table-card-info
+                background-color: $dashboard-secondary-background-color
+                .datalake-table-card-info-header
+                    border-bottom: 1px solid $datalake-search-input-border-color
+                    .datalake-table-card-info-title
+                        color: $primary-color
+            .datalake-table-stats-container
+                background-color: $admin-table-background-color
+            .datalake-table-card-button
+                background-color: $background-color !important
+                &:hover
+                    background-color: $primary-color !important
+        .datalake-table-show-table-header
+            color: $font-color
+            .mat-button-wrapper
+                color: $font-color !important
+        .datalake-dialog-loading
+            @include msf-dashboard-dialog-title(20px, 10px, $font-color)
+            @include msf-dashboard-dialog-loading(55%, $quaternary-background-color, url(assets/images/#{$name}-loading_pulse.gif))
+        .datalake-dialog-finish-loading
+            .datalake-dialog-label-container
+                background-color: $primary-color
+                color: #ffffff
+        .datalake-query-engine-left-panel
+            background-color: $schedule-map-background-color
+            .datalake-schema-container
+                border-bottom: 1px solid $customer-edit-header-color
+                .datalake-schema-filter-input
+                    border-color: $datalake-search-input-border-color
+                    caret-color: $font-color
+                .datalake-schema-tree-expander
+                    .mat-icon
+                        color: $dashboard-border-color !important
+                    &:hover
+                        .mat-icon
+                            color: $primary-color !important
+                .datalake-schema-body
+                    background-color: $customer-edit-header-color
+                    .datalake-schema-item:not(:last-child)
+                        border-bottom: 1px solid $background-color
+        .datalake-query-engine-right-panel
+            background-color: $customer-edit-header-color
+            .mat-tab-label-active
+                background-color: $schedule-map-background-color !important
+            .mat-tab-label
+                background-color: $dashboard-secondary-background-color
+            .mat-tab-labels, .mat-tab-label.mat-tab-disabled
+                background-color: $customer-edit-header-color !important
+            .datalake-query-tab
+                background-color: $schedule-map-background-color
+                .datalake-query-editor-button
+                    border-color: $font-color !important
+                    &:hover
+                        border-color: $primary-color !important
+                        background-color: $primary-color !important
+                .datalake-query-editor-input
+                    textarea.mat-input-element
+                        background-color: $customer-edit-header-color
+            .close-icon-container
+                background-color: $background-color
+                &:hover
+                    background-color: $primary-color
+                    .close-icon
+                        color: #ffffff
+            .add-icon-container
+                border-color: $font-color
+                &:hover
+                    border-color: $primary-color
+                    background-color: $primary-color
+                    .add-icon
+                        color: #ffffff
+            .datalake-query-execution-result-header
+                background-color: $schedule-map-background-color
+                .datalake-query-execution-time-sub-title
+                    color: $primary-color
+            .datalake-query-execution-result-body
+                background-color: $background-color
+                .datalake-no-execution-label
+                    background-color: $primary-color
 
 @each $name, $font-color, $little-font-color, $disabled-color, $secondary-disabled-color, $tertiary-disabled-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $quaternary-background-color, $body-background-color, $dashboard-background-color, $dashboard-secondary-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $scrollbar-background-color, $dashboard-panel-background-color, $dashboard-panel-chart-background-color, $dashboard-border-color, $schedule-map-background-color, $schedule-map-info-border, $disabled-combo-box-color, $disabled-underline, $dashboard-info-background-color, $dashboard-info-secondary-background-color, $dashboard-info-font-color, $dashboard-drill-down-border-color, $dashboard-threshold-background-color, $dashboard-title-font-color, $map-panelinfo-background-color, $dashboard-info-border-color, $dashboard-form-font-color, $admin-menu-background, $admin-menu-input-underline, $admin-tree-active-color, $admin-button-color, $admin-secondary-background-color, $admin-table-background-color, $admin-table-hover-color, $admin-secondary-button-color, $login-font-color, $intro-logout-icon-color, $control-variables-border-color, $control-variable-hover-background-color, $control-variable-hover-icon-color, $control-variables-input-underline, $control-variables-dropdown-hover-font-color, $control-variables-dropdown-hover-background-hover-color, $control-variables-selected-background-selected-color, $dashboard-input-underline-color, $membership-primary-background-color, $membership-secondary-background-color, $customer-edit-header-color, $customer-table-header-background-color, $customer-table-row-background-color, $customer-table-row-border-color, $customer-table-row-hover-background-color, $customer-table-row-selected-background-color, $customer-table-row-border-selected-color, $customer-input-color, $customer-input-underline-color, $customer-disabled-underline, $dashboard-control-panel-background-color, $menu-open-background-color, $menu-open-active-background-color, $menu-first-line, $menu-second-line, $menu-background-color, $menu-child-background-color, $datalake-search-input-border-color in $color-scheme
     @include theme($name, $font-color, $little-font-color, $disabled-color, $secondary-disabled-color, $tertiary-disabled-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $quaternary-background-color, $body-background-color, $dashboard-background-color, $dashboard-secondary-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $scrollbar-background-color, $dashboard-panel-background-color, $dashboard-panel-chart-background-color, $dashboard-border-color, $schedule-map-background-color, $schedule-map-info-border, $disabled-combo-box-color, $disabled-underline, $dashboard-info-background-color, $dashboard-info-secondary-background-color, $dashboard-info-font-color, $dashboard-drill-down-border-color, $dashboard-threshold-background-color, $dashboard-title-font-color, $map-panelinfo-background-color, $dashboard-info-border-color, $dashboard-form-font-color, $admin-menu-background, $admin-menu-input-underline, $admin-tree-active-color, $admin-button-color, $admin-secondary-background-color, $admin-table-background-color, $admin-table-hover-color, $admin-secondary-button-color, $login-font-color, $intro-logout-icon-color, $control-variables-border-color, $control-variable-hover-background-color, $control-variable-hover-icon-color, $control-variables-input-underline, $control-variables-dropdown-hover-font-color, $control-variables-dropdown-hover-background-hover-color, $control-variables-selected-background-selected-color, $dashboard-input-underline-color, $membership-primary-background-color, $membership-secondary-background-color, $customer-edit-header-color, $customer-table-header-background-color, $customer-table-row-background-color, $customer-table-row-border-color, $customer-table-row-hover-background-color, $customer-table-row-selected-background-color, $customer-table-row-border-selected-color, $customer-input-color, $customer-input-underline-color, $customer-disabled-underline, $dashboard-control-panel-background-color, $menu-open-background-color, $menu-open-active-background-color,$menu-first-line, $menu-second-line, $menu-background-color, $menu-child-background-color, $datalake-search-input-border-color)
@@ -4990,6 +5083,7 @@ th.msf-show-table, td.msf-show-table
         .msf-customer-search-icon
             float: right
             margin-top: -28px
+            @include disable-text-selection
 
 .msf-customer-two-columns
     display: flex
@@ -5584,6 +5678,7 @@ mat-form-field.msf-table-input
                     margin-left: 12%
             .admin-arguments-search-icon
                 font-size: 22px
+                @include disable-text-selection
             .admin-arguments-category-left-panel-body
                 flex: 1
                 height: 0
@@ -6284,18 +6379,19 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     padding-right: 10px
 
 .datalake-explorer-container
+    display: flex
+    flex-direction: column
     width: 100%
     height: 100%
     .datalake-explorer-header
         display: flex
-        width: 100%
         height: 20px
         padding: 20px
         .datalake-explorer-search-input-container
             padding-right: 50px
             margin-top: -18px
             margin-left: -5px
-            width: 25%
+            width: 45%
             .datalake-explorer-search-input
                 border-style: solid
                 border-width: 1px
@@ -6306,6 +6402,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                 font-size: 16px
                 margin-left: 7px
                 margin-top: -24px
+                @include disable-text-selection
             input.mat-input-element
                 padding-left: 27px
             .mat-form-field-label
@@ -6317,10 +6414,9 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
             align-self: center
             font-size: 1.5em
             font-weight: 500
-            width: 25%
+            width: 100%
         .datalake-explorer-buttons
             flex-direction: row-reverse
-            padding-right: 35px
             margin-top: -10px
             display: flex
             width: 50%
@@ -6331,35 +6427,350 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                 font-size: 11px
                 height: 40px
                 width: 40px
-                .add-icon
+                .datalake-explorer-query-engine-button-image
+                    margin-left: -9.75px
+                .datalake-explorer-button-add-icon
                     margin-left: -8.5px
+                .datalake-explorer-button-table-card-icon
+                    margin-left: -9px
                 &:hover
-                    color: #ffffff
+                    color: #ffffff !important
+    .datalake-explorer-grid-layout
+        height: 100%
+        display: grid
+        padding: 10px 20px
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr))
+        grid-template-rows: repeat(auto-fill, 260px)
+        grid-column-gap: 10px
+        overflow-x: hidden
+        overflow-y: auto
 
-.queryEngine-body
-    width: 100%
-    position: fixed
+@mixin datalake-table-card-info-title-container($text-align, $width)
     display: flex
+    flex-direction: column
+    width: $width
+    text-align: $text-align
+    .datalake-table-card-info-title
+        font-weight: 550
+        padding-bottom: 6px
+
+.datalake-table-card-container
+    margin-bottom: 10px
+    border-radius: 7px
+    height: 250px
+    .datalake-table-card-header
+        display: flex
+        padding: 10px
+        .datalake-table-card-title-container
+            display: flex
+            flex-direction: column
+            width: 60%
+            .datalake-table-card-title
+                font-weight: 500
+        .datalake-table-card-update-container
+            display: flex
+            flex-direction: column
+            width: 40%
+            text-align: end
+    .mat-tab-header-pagination-controls-enabled .mat-tab-header-pagination
+        display: none !important
+    .mat-tab-group
+        height: auto !important
+    .mat-tab-header
+        background: 0 !important
+        border-bottom: 0 !important
+    .mat-tab-label
+        font-weight: normal
+        font-size: 12px
+        opacity: 1 !important
+        width: 50%
+        height: 40px
+    .datalake-table-card-info
+        .datalake-table-card-info-header
+            display: flex
+            padding: 12.5px 10px
+            height: 33.5px
+            .datalake-table-card-info-title-left-container
+                @include datalake-table-card-info-title-container(start, 40%)
+            .datalake-table-card-info-title-right-container
+                @include datalake-table-card-info-title-container(end, 60%)
+    .datalake-table-stats-container
+        display: flex
+        flex-direction: row
+        height: 89px
+        padding: 15px 0
+        justify-content: center
+        .datalake-table-stats-right-gauge
+            margin-left: 12.5%
+    .datalake-table-card-buttons
+        padding: 5px 10px
+        .datalake-table-card-button
+            margin-right: 5px
+            min-width: 20px
+            width: 30px
+            height: 30px
+            .datalake-table-card-button-image
+                margin-left: -12px
+                margin-top: -5px
+                width: 25px
+                height: 25px
+            .datalake-table-card-button-query-image
+                margin-top: -3px !important
+            .datalake-table-card-button-query-complete-image
+                margin-left: -13px !important
+
+.datalake-table-show-table-dialog
+    max-width: 76% !important
+    .mat-dialog-container
+        padding: 0
+        .datalake-table-show-table-header
+            display: flex
+            height: 60px
+            .datalake-table-show-table-title
+                min-width: 300px
+                width: 100%
+                padding: 15px
+                .datalake-table-show-table-longname
+                    font-weight: 550
+                .datalake-table-show-table-tablename
+                    padding-top: 5px
+                    font-size: 11px
+            .datalake-table-show-table-close-button
+                align-self: center
+                padding-right: 5px
+        .datalake-table-show-table-body
+            max-height: 536px
+            overflow: auto
+            tr.mat-header-row, tr.mat-row
+                height: 35px !important
+            th.mat-header-cell
+                text-align: center
+                background-color: #F2F2F2
+                color: #000000
+                border: 0
+                padding: 10px !important
+                white-space: nowrap
+            td.mat-cell
+                white-space: nowrap
+                padding: 10px !important
+        ::-webkit-scrollbar-thumb
+            background-color: #B3B3B3
+            border-radius: 10px
+            outline: 1px solid #B3B3B3
+        ::-webkit-scrollbar-track
+            background-color: #FFFFFF
+            border-radius: 0 !important
+
+.datalake-dialog-loading, .datalake-dialog-finish-loading
+    width: 400px !important
+    height: 400px !important
+    display: flex
+    justify-content: center
+    align-items: center
+    .datalake-dialog-label-container
+        width: 250px
+        height: 60px
+        display: flex
+        align-items: center
+        text-align: center
+        .datalake-dialog-label
+            font-size: 15px
+            width: 100%
+
+@mixin datalake-query-engine-line-resize
     height: 100%
-    background-color: #333333
+    width: 5px
 
-.queryEngine-show-full-nav
-
-.queryEngine-schemas-container
-    width: calc(100% - 25px)
+.datalake-query-engine-container
+    display: flex
+    width: 100%
     height: 100%
-    vertical-align: middle
-    display: inline-block
-
-.queryEngine-schemas-container-hide
-    @extend .queryEngine-schemas-container
-    opacity: 0
-    transition: 0.1s
-
-.queryEngine-schemas-container-show
-    @extend .queryEngine-schemas-container
-    opacity: 1
-    transition: 2s
-    position: relative
-    overflow: auto
-    background-color: #1a1a1a
+    overflow: hidden
+    .datalake-query-engine-left-panel
+        overflow-y: auto
+        .datalake-schema-container
+            width: 100%
+            .datalake-schema-header
+                width: 100%
+                display: flex
+                height: 40px
+                .datalake-schema-title
+                    margin: 13px 15px
+                    font-weight: 575
+                    min-width: 65px
+                    text-align: justify
+                .datalake-schema-filter-input-container
+                    margin-top: 5px
+                    margin-left: -5px
+                    margin-right: 25px
+                    width: 100%
+                    .search-icon
+                        position: absolute
+                        font-size: 16px
+                        margin-left: 7px
+                        margin-top: 7px
+                        @include disable-text-selection
+                    .datalake-schema-filter-input
+                        border-style: solid
+                        border-width: 1px
+                        border-radius: 5px
+                        padding: 8px
+                        padding-left: 27px
+                        width: calc(100% - 20px)
+                .datalake-schema-tree-expander
+                    display: flex
+                    flex-direction: row-reverse
+                    margin-right: 10px
+                    .mat-icon
+                        margin-top: 10px !important
+                        font-size: 20px !important
+                        height: 20px !important
+                        width: 20px !important
+                        @include disable-text-selection
+                    &:hover
+                        cursor: pointer
+            .datalake-schema-body
+                overflow-y: auto
+                max-height: 174px
+                .datalake-schema-item
+                    padding: 10px
+    .datalake-query-engine-right-panel
+        padding: 10px
+        .datalake-query-container
+            height: 40%
+            .mat-tab-header-pagination-controls-enabled .mat-tab-header-pagination
+                display: none !important
+            .mat-tab-header
+                background: 0 !important
+                border-bottom: 0 !important
+            .mat-tab-label
+                font-weight: normal
+                font-size: 12px
+                opacity: 1 !important
+                justify-content: end !important
+                height: 35px
+                padding: 0 12.5px !important
+                min-width: 0 !important
+                @include disable-text-selection
+            .mat-ink-bar
+                height: 3px !important
+            .close-icon-container
+                color: inherit !important
+                font-size: 13px
+                width: 13px
+                height: 13px
+                padding: 3px
+                border-radius: 15px
+                margin-right: -5px
+                margin-left: 10px
+                @include disable-text-selection
+                .close-icon
+                    font-size: 13px
+                    margin: auto
+                    color: inherit !important
+                    height: inherit !important
+                    width: inherit !important
+            .add-icon-container
+                width: 13px
+                height: 13px
+                padding: 3px
+                border-radius: 15px
+                margin-left: -5px
+                border-style: solid
+                border-width: 1px
+                &:hover
+                    cursor: pointer
+                .add-icon
+                    font-size: 13px
+                    margin: auto
+                    color: inherit !important
+                    height: inherit !important
+                    width: inherit !important
+            .datalake-query-tab
+                display: flex
+                flex-direction: column
+                padding: 15px
+                height: 100%
+                .datalake-query-tab-header
+                    display: flex
+                    flex-direction: row
+                    margin-top: -6px
+                    padding-bottom: 4px
+                    .datalake-query-editor-label
+                        align-self: center
+                        font-size: 14px
+                        font-weight: 500
+                        width: 150px
+                    .datalake-query-editor-buttons
+                        display: flex
+                        flex-direction: row-reverse
+                        width: 100%
+                        .datalake-query-editor-button
+                            border-style: solid
+                            border-width: 1px
+                            margin-left: 5px
+                            min-width: 30px
+                            width: 30px
+                            height: 30px
+                            padding: 0 !important
+                            .datalake-run-query-image
+                                width: 30px
+                                height: 30px
+                                margin-top: -8px
+                            .datalake-query-history-image
+                                width: 30px
+                                height: 30px
+                                margin-top: -8px
+                                margin-left: -1px
+                            .datalake-save-query-image
+                                width: 30px
+                                height: 30px
+                                margin-top: -8px
+                                margin-left: -1px
+                .datalake-query-editor-input
+                    height: 100%
+                    margin-top: 10px
+                    margin-bottom: 30px
+                    textarea.mat-input-element
+                        width: calc(100% - 7px)
+                        height: calc(100% - 2px)
+                        margin-left: -3px
+                        margin-top: -7px
+                        font-size: 12px
+                        padding: 7px
+                        resize: none
+        .datalake-query-execution-result-container
+            padding-top: 10px
+            height: 60%
+            .datalake-query-execution-result-header
+                display: flex
+                flex-direction: column
+                padding: 15px
+                height: 35px
+                .datalake-query-execution-time-title
+                    font-weight: 550
+                    font-size: 13px
+                .datalake-query-execution-time-sub-title
+                    font-size: 11px
+                    padding-top: 5px
+            .datalake-query-execution-result-body
+                height: calc(100% - 75px)
+                .datalake-no-execution
+                    justify-content: center
+                    display: flex
+                    height: 100%
+                    .datalake-no-execution-label
+                        align-self: center
+                        padding: 20px
+                        font-weight: 500
+                        font-size: 14px
+    .datalake-query-engine-line-resize
+        display: flex
+        height: 100%
+        width: 20px
+        align-items: center
+        justify-content: center
+        @include disable-text-selection
+        .datalake-query-engine-drag-handler
+            &:hover
+                cursor: col-resize

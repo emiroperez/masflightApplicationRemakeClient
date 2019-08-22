@@ -9,8 +9,7 @@
         <img src="../../assets/images/{{globals.theme}}-adjust.png" class="msf-menu-ajustes-icon">
     </div>
     <div [style.display]="getMenuVisibility()" class="msf-menu-container">
-        <app-menu [menu]="menu" [dashboards]="dashboards" [sharedDashboards]="sharedDashboards"
-            (optionChanged)="optionHandler()"></app-menu>
+        <app-menu (optionChanged)="optionHandler()"></app-menu>
     </div>
     <div [ngClass]="mobileQuery.matches ? 'msf-header-icons is-mobile'
                                      :(ResponsiveQuery.matches ? 'msf-header-icons is-MQueryresponsive':'msf-header-icons')">
@@ -39,6 +38,6 @@
     </div>
 </div>
 <!-- Body -->
-<div [style.height.px]="bodyHeight">
+<div [style.height.px]="bodyHeight" [class.is-mobile]="mobileQuery.matches">
     <app-datalake-explorer></app-datalake-explorer>
 </div>
