@@ -1,8 +1,8 @@
 import { Component, OnInit, HostListener } from '@angular/core';
-import { ReplaySubject, Subject } from 'rxjs';
 
 import { Globals } from '../globals/Globals';
 import { ApplicationService } from '../services/application.service';
+import { DatalakeQuerySchema } from '../datalake-query-engine/datalake-query-schema';
 
 const minPanelWidth = 25;
 
@@ -18,7 +18,7 @@ export class DatalakeQueryEngineComponent implements OnInit {
   selectedIndex: number = 0;
 
   queryTabs: any[] = ["Query 1"];
-  querySchemas: any[] = [];
+  querySchemas: DatalakeQuerySchema[] = [];
 
   constructor(public globals: Globals, private service: ApplicationService) { }
 
@@ -124,16 +124,7 @@ export class DatalakeQueryEngineComponent implements OnInit {
     }
 
     for (let schema of data.Schemas)
-    {
-      _this.querySchemas.push ({
-        schemaName: schema,
-        open: false,
-        filter: "",
-        filteredTables: new ReplaySubject<any[]> (1),
-        _onDestroy: new Subject<void> (),
-        tables: []
-      });
-    }
+      _this.querySchemas.push (new DatalakeQuerySchema (schema));
 
     _this.globals.isLoading = false;
   }

@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
+import { DatalakeQuerySchema } from '../datalake-query-engine/datalake-query-schema';
 import { ApplicationService } from '../services/application.service';
 import { Globals } from '../globals/Globals';
 
@@ -12,7 +13,7 @@ export class DatalakeQueryEngineSchemaComponent {
   schemasLoaded: boolean = false;
 
   @Input("querySchema")
-  querySchema: any;
+  querySchema: DatalakeQuerySchema;
 
   constructor(public globals: Globals, private service: ApplicationService) { }
 
