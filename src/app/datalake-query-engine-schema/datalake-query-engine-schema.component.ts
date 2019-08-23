@@ -16,36 +16,38 @@ export class DatalakeQueryEngineSchemaComponent {
 
   constructor(public globals: Globals, private service: ApplicationService) { }
 
-  toggleSchema(querySchema: any): void
+  toggleSchema(): void
   {
-    querySchema.open = !querySchema.open;
+    this.querySchema.open = !this.querySchema.open;
 
-    if (querySchema.open && !this.schemasLoaded)
+    if (this.querySchema.open && !this.schemasLoaded)
     {
       this.globals.isLoading = true;
-      this.service.getDatalakeSchemaTables (this, querySchema.schemaName, this.setSchemaTables, this.handlerError);
+      this.service.getDatalakeSchemaTables (this, this.querySchema.schemaName, this.setSchemaTables, this.handlerError);
     }
+    else if (!this.querySchema.open)
+      this.querySchema.filter = "";    // clear search filter when closing
   }
 
-  filterSchema(querySchema: any): void
+  filterSchema(): void
   {
     let search, filteredResults;
 
-    if (!querySchema.tables.length)
+    if (!this.querySchema.tables.length)
       return;
 
     // get the search keyword
-    search = querySchema.filter;
+    search = this.querySchema.filter;
     if (!search)
     {
-      querySchema.filteredTables.next (querySchema.tables.slice ());
+      this.querySchema.filteredTables.next (this.querySchema.tables.slice ());
       return;
     }
 
     search = search.toLowerCase ();
-    filteredResults = querySchema.tables.filter (a => (a.toLowerCase ().indexOf (search) > -1));
+    filteredResults = this.querySchema.tables.filter (a => (a.toLowerCase ().indexOf (search) > -1));
 
-    querySchema.filteredTables.next (
+    this.querySchema.filteredTables.next (
       filteredResults.filter (function (elem, index, self)
       {
         return index === self.indexOf(elem);

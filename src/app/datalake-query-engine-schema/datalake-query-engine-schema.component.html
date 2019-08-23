@@ -3,10 +3,10 @@
   <div class="datalake-schema-filter-input-container">
     <ng-container *ngIf="querySchema.open">
       <mat-icon class="search-icon" aria-label="search">search</mat-icon>
-      <input matInput class="datalake-schema-filter-input" type="text" autocomplete="off" [(ngModel)]="querySchema.filter" (ngModelChange)="filterSchema(querySchema)">
+      <input matInput class="datalake-schema-filter-input" type="text" autocomplete="off" [(ngModel)]="querySchema.filter" (ngModelChange)="filterSchema()">
     </ng-container>
   </div>
-  <div class="datalake-schema-tree-expander" (click)="toggleSchema(querySchema)">
+  <div class="datalake-schema-tree-expander" (click)="toggleSchema()">
     <mat-icon *ngIf="!querySchema.open" aria-label="Expand Schema">keyboard_arrow_down</mat-icon>
     <mat-icon *ngIf="querySchema.open" aria-label="Collapse Schema">keyboard_arrow_up</mat-icon>
   </div>
