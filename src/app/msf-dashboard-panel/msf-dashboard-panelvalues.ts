@@ -99,7 +99,9 @@ export class MsfDashboardPanelValues {
         this.currentChartType = chartType;
         this.width = width;
         this.height = height;
-        this.calculatedHeight = 323 + ((height.value - 1) * 15);
+
+        if (height != null)
+            this.calculatedHeight = 323 + ((height.value - 1) * 15);
 
         if (thresholds)
             this.thresholds = JSON.parse (thresholds);

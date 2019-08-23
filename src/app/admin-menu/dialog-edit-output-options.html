@@ -86,11 +86,13 @@
                 </td>
             </ng-container>
             <ng-container matColumnDef="arguments" class="admin-dialog-box">
-                <th mat-header-cell *matHeaderCellDef>Argument</th>
+                <th mat-header-cell *matHeaderCellDef>Drill Down Argument</th>
                 <td class="admin-column-arguments-cell" mat-cell *matCellDef="let element">
                     <div class="admin-column-inner-container">
                         <mat-select class="activation-form" placeholder="Argument" [(ngModel)]="element.argumentsId">
-                            <mat-option *ngFor="let item of arg" [value]="item.id">{{item.title}}</mat-option>
+                            <ng-container *ngFor="let item of arg">
+                                <mat-option *ngIf="item.name1" [value]="item.id">{{item.name1}}</mat-option>
+                            </ng-container>
                         </mat-select>
                     </div>
                 </td>
