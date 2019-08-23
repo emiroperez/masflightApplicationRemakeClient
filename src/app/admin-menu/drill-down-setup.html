@@ -20,7 +20,7 @@
                 <td mat-cell class="drill-down-cell" *matCellDef="let element">
                     <mat-select class="activation-form" placeholder="Children" [(ngModel)]="element.childrenOptionId" #singleSelect>
                         <ngx-mat-select-search [formControl]="optFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
-                        <mat-option *ngFor="let item of filteredOpts  | async" [value]="item.id">{{item.string}}</mat-option>
+                        <mat-option *ngFor="let item of filteredOpts | async" [value]="item.id">{{item.string}}</mat-option>
                     </mat-select>
                 </td>
             </ng-container>

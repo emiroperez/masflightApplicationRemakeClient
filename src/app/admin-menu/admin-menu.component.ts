@@ -105,7 +105,7 @@ export class DrillDownDialog {
       id: null,
       title: '',
       childrenOptionId: 0,
-      parentOptionId: this.data.option,
+      parentOptionId: this.data.option.id,
       delete: false
     });
     this.dataSource = new MatTableDataSource(this.data.drillDown);
@@ -1156,13 +1156,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   }
 
   saveDrillDown() {
-    this.prepareDrillDowns();
     this.service.saveDrillDown(this, this.drillDown, this.handlerSuccessdrillDown, this.handlerErrorSaveMeta);
-  }
-  prepareDrillDowns() {
-    for(let dD of this.drillDown){
-      dD.parentOptionId = dD.parentOptionId.id;
-    }
   }
 
   handlerSuccessdrillDown(_this, data) {
@@ -1488,6 +1482,20 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     console.log(_this.optionSelected);
     console.log(_this.drillDown);
     let menuString = data;
+
+    // prepare drill down for option selection
+    for(let dD of _this.drillDown)
+    {
+      for (let data of menuString)
+      {
+        if (dD.childrenOptionId == data.id)
+        {
+          dD.childrenOptionId = data.id;
+          break;
+        }
+      }
+    }
+
     const dialogRef = _this.dialog.open(DrillDownDialog, {
       width: '90%',
       data: { optionString: menuString, option: _this.optionSelected, drillDown: _this.drillDown }
