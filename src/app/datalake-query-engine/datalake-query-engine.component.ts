@@ -1,6 +1,9 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { ReplaySubject, Subject } from 'rxjs';
 
+import { Globals } from '../globals/Globals';
+import { ApplicationService } from '../services/application.service';
+
 const minPanelWidth = 25;
 
 @Component({
@@ -15,80 +18,14 @@ export class DatalakeQueryEngineComponent implements OnInit {
   selectedIndex: number = 0;
 
   queryTabs: any[] = ["Query 1"];
-  querySchemas: any[] =
-  [
-    {
-      open: false,
-      filter: "",
-      filteredTables: new ReplaySubject<any[]> (1),
-      _onDestroy: new Subject<void> (),
-      tables: [
-        {
-          longName: "FLIGHT RADAR24 TRACKING",
-          tableName: "fradar24_r"
-        },
-        {
-          longName: "FLIGHT RADAR24 TRACKING",
-          tableName: "fradar24_r"
-        },
-        {
-          longName: "FLIGHT RADAR24 TRACKING",
-          tableName: "fradar24_r"
-        },
-        {
-          longName: "FLIGHT RADAR24 TRACKING",
-          tableName: "fradar24_r"
-        },
-        {
-          longName: "FLIGHT RADAR24 TRACKING",
-          tableName: "fradar24_r"
-        },
-        {
-          longName: "FLIGHT RADAR24 TRACKING",
-          tableName: "fradar24_r"
-        },
-        {
-          longName: "FLIGHT RADAR24 TRACKING",
-          tableName: "fradar24_r"
-        },
-        {
-          longName: "FLIGHT RADAR24 TRACKING",
-          tableName: "fradar24_r"
-        },
-        {
-          longName: "FLIGHT RADAR24 TRACKING",
-          tableName: "fradar24_r"
-        },
-        {
-          longName: "FLIGHT RADAR24 TRACKING",
-          tableName: "fradar24_r"
-        }
-      ]
-    },
-    {
-      open: false,
-      filter: "",
-      filteredTables: new ReplaySubject<any[]> (1),
-      _onDestroy: new Subject<void> (),
-      tables: [
-        {
-          longName: "Test",
-          tableName: "test_r"
-        },
-        {
-          longName: "FLIGHT RADAR24 TRACKING",
-          tableName: "fradar24_r"
-        }
-      ]
-    }
-  ];
+  querySchemas: any[] = [];
 
-  constructor() { }
+  constructor(public globals: Globals, private service: ApplicationService) { }
 
   ngOnInit()
   {
-    for (let querySchema of this.querySchemas)
-      querySchema.filteredTables.next (querySchema.tables.slice ());
+    this.globals.isLoading = true;
+    this.service.getDatalakeSchemas (this, this.setSchemas, this.handlerError);
   }
 
   ngOnDestroy(): void
@@ -178,35 +115,32 @@ export class DatalakeQueryEngineComponent implements OnInit {
     return "inherit";
   }
 
-  toggleSchema(querySchema: any): void
+  setSchemas(_this, data): void
   {
-    querySchema.open = !querySchema.open;
-  }
-
-  filterSchema(querySchema: any): void
-  {
-    let search, filteredResults;
-
-    if (!querySchema.tables.length)
-      return;
-
-    // get the search keyword
-    search = querySchema.filter;
-    if (!search)
+    if (!data.Schemas.length)
     {
-      querySchema.filteredTables.next (querySchema.tables.slice ());
+      _this.globals.isLoading = false;
       return;
     }
 
-    search = search.toLowerCase ();
-    filteredResults = querySchema.tables.filter (a => (a.longName.toLowerCase ().indexOf (search) > -1
-      || a.tableName.toLowerCase ().indexOf (search) > -1));
+    for (let schema of data.Schemas)
+    {
+      _this.querySchemas.push ({
+        schemaName: schema,
+        open: false,
+        filter: "",
+        filteredTables: new ReplaySubject<any[]> (1),
+        _onDestroy: new Subject<void> (),
+        tables: []
+      });
+    }
 
-    querySchema.filteredTables.next (
-      filteredResults.filter (function (elem, index, self)
-      {
-        return index === self.indexOf(elem);
-      })
-    );
+    _this.globals.isLoading = false;
+  }
+
+  handlerError(_this, result): void
+  {
+    console.log (result);
+    _this.globals.isLoading = false;
   }
 }

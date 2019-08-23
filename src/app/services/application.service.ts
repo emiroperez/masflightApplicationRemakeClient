@@ -527,4 +527,30 @@ export class ApplicationService {
     let url = this.host + "/GetDatalakeTableData?userName=karen1&token=nv5bcpKxzl7LevwEhU03kYVYl3VeLg8drUj&schemaName=" + schemaName + "&tableName=" + tableName + "&limit=" + limit;
     this.http.get (_this, url, handlerSuccess, handlerError, null);
   }
+
+  getDatalakeSchemas(_this, handlerSuccess, handlerError): void
+  {
+    let url = this.host + "/GetSchemas";
+
+    let request = {
+      Schema: "",
+      userName: "karen1",
+      Token: "nv5bcpKxzl7LevwEhU03kYVYl3VeLg8drUj"
+    };
+
+    this.http.post (_this, url, request, handlerSuccess, handlerError);
+  }
+
+  getDatalakeSchemaTables(_this, schemaName, handlerSuccess, handlerError): void
+  {
+    let url = this.host + "/GetSchemaTables";
+
+    let request = {
+      Schema: schemaName,
+      userName: "karen1",
+      Token: "nv5bcpKxzl7LevwEhU03kYVYl3VeLg8drUj"
+    };
+
+    this.http.post (_this, url, request, handlerSuccess, handlerError);
+  }
 }
