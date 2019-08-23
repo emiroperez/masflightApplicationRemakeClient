@@ -19,6 +19,11 @@ export class DatalakeQueryEngineComponent implements OnInit {
 
   queryTabs: any[] = ["Query 1"];
   querySchemas: DatalakeQuerySchema[] = [];
+  queryInput: string = "";
+
+  // Query execution table result
+  displayedColumns: string[] = [];
+  dataSource: any[] = [];
 
   constructor(public globals: Globals, private service: ApplicationService) { }
 
@@ -35,6 +40,12 @@ export class DatalakeQueryEngineComponent implements OnInit {
       querySchema._onDestroy.next ();
       querySchema._onDestroy.complete ();
     }
+  }
+
+  runQuery(): void
+  {
+    this.globals.isLoading = true;
+    this.service.datalakeExecuteQuery (this, "pruebaperformancepq", this.queryInput, this.showQueryResults, this.handlerError);
   }
 
   addQueryTab(): void
@@ -125,6 +136,39 @@ export class DatalakeQueryEngineComponent implements OnInit {
 
     for (let schema of data.Schemas)
       _this.querySchemas.push (new DatalakeQuerySchema (schema));
+
+    _this.globals.isLoading = false;
+  }
+
+  showQueryResults(_this, data): void
+  {
+    if (!data)
+    {
+      _this.globals.isLoading = false;
+      return;
+    }
+
+    if (!data.Columns || (data.Columns && !data.Columns.length))
+    {
+      _this.globals.isLoading = false;
+      return;
+    }
+
+    for (let column of data.Columns)
+      _this.displayedColumns.push (column.title);
+
+    if (data.Values)
+    {
+      for (let result of data.Values)
+      {
+        let item = {};
+
+        for (let i = 0; i < _this.displayedColumns.length; i++)
+          item[_this.displayedColumns[i]] = result[i];
+
+        _this.dataSource.push (item);
+      }
+    }
 
     _this.globals.isLoading = false;
   }

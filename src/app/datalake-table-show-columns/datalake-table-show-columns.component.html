@@ -8,7 +8,7 @@
     </div>
   </div>
 </ng-container>
-<ng-container *ngIf="dataSource.length">
+<div class="datalake-table" *ngIf="dataSource.length">
   <div class="datalake-table-show-table-header">
     <div class="datalake-table-show-table-title">
       <div class="datalake-table-show-table-longname">{{data.values.longName}} - Column</div>
@@ -20,7 +20,7 @@
       </button>
     </div>
   </div>
-  <div class="datalake-table-show-table-body">
+  <div class="datalake-table-body">
     <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8 datasource">
       <ng-container matColumnDef="Column">
         <th mat-header-cell *matHeaderCellDef>Column</th>
@@ -44,4 +44,4 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
   </div>
-</ng-container>
+</div>

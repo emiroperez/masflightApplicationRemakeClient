@@ -553,4 +553,18 @@ export class ApplicationService {
 
     this.http.post (_this, url, request, handlerSuccess, handlerError);
   }
+
+  datalakeExecuteQuery(_this, schemaName, queryInput, handlerSuccess, handlerError): void
+  {
+    let url = this.host + "/executeQuery";
+
+    let request = {
+      Schema: schemaName,
+      userName: "karen1",
+      Token: "nv5bcpKxzl7LevwEhU03kYVYl3VeLg8drUj",
+      Raw: queryInput
+    };
+
+    this.http.post (_this, url, request, handlerSuccess, handlerError);
+  }
 }
