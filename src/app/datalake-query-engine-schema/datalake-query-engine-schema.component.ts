@@ -26,7 +26,11 @@ export class DatalakeQueryEngineSchemaComponent {
       this.service.getDatalakeSchemaTables (this, this.querySchema.schemaName, this.setSchemaTables, this.handlerError);
     }
     else if (!this.querySchema.open)
-      this.querySchema.filter = "";    // clear search filter when closing
+    {
+      // clear search filter when closing
+      this.querySchema.filter = "";
+      this.querySchema.filteredTables.next (this.querySchema.tables.slice ());
+    }
   }
 
   filterSchema(): void
