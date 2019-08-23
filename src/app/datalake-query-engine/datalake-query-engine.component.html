@@ -10,7 +10,7 @@
   <div [style.width.%]="rightPanelWidth" class="datalake-query-engine-right-panel">
     <div class="datalake-query-container">
       <mat-tab-group [selectedIndex]="selectedIndex" (selectedIndexChange)="onIndexChange($event)">
-        <mat-tab *ngFor="let queryTab of queryTabs; let i = index">
+        <mat-tab *ngFor="let query of queryTabs; let i = index">
           <ng-template mat-tab-label>
             Query {{i + 1}}
             <div *ngIf="queryTabs.length > 1" class="close-icon-container" (click)="closeQueryTab($event, i)">
@@ -27,13 +27,23 @@
                 <button mat-button class="datalake-query-editor-button" matTooltip="Query History">
                   <img class="datalake-query-history-image" src="../../assets/images/datalake-query-history.png"/>
                 </button>
-                <button mat-button class="datalake-query-editor-button" matTooltip="Run Query" (click)="runQuery()">
+                <button mat-button class="datalake-query-editor-button" matTooltip="Run Query" (click)="runQuery(query)">
                   <img class="datalake-run-query-image" src="../../assets/images/datalake-run-query.png"/>
                 </button>
+                <mat-form-field class="datalake-schema-select">
+                  <mat-select placeholder="Schema" [(ngModel)]="query.schema">
+                    <!--
+                    <ngx-mat-select-search [formControl]="query.schemaFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+                    -->
+                    <mat-option *ngFor="let querySchema of querySchemas" [value]="querySchema.schemaName">
+                        {{querySchema.schemaName}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
               </div>
             </div>
             <div class="datalake-query-editor-input">
-              <textarea matInput [(ngModel)]="queryInput"></textarea>
+              <textarea matInput [(ngModel)]="query.input"></textarea>
             </div>
           </div>
         </mat-tab>
@@ -49,7 +59,9 @@
     <div class="datalake-query-execution-result-container">
       <div class="datalake-query-execution-result-header">
         <div class="datalake-query-execution-time-title">Query Execution Time</div>
-        <div class="datalake-query-execution-time-sub-title">Not run</div>
+        <div class="datalake-query-execution-time-sub-title" *ngIf="!startQueryTime && !endQueryTime">Not run</div>
+        <div class="datalake-query-execution-time-sub-title" *ngIf="startQueryTime && !endQueryTime">Running...</div>
+        <div class="datalake-query-execution-time-sub-title" *ngIf="startQueryTime && endQueryTime">{{calcExecutionTime()}}</div>
       </div>
       <div class="datalake-query-execution-result-body">
         <div class="datalake-no-execution" *ngIf="!displayedColumns.length">
@@ -58,7 +70,7 @@
           </div>
         </div>
         <div class="datalake-query-result datalake-table" *ngIf="displayedColumns.length">
-          <div class="datalake-table-body">
+          <div class="datalake-query-table-body">
             <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8 datasource">
               <ng-container *ngFor="let column of displayedColumns; let j = index" [matColumnDef]="column">
                 <th mat-header-cell *matHeaderCellDef>{{column}}</th>

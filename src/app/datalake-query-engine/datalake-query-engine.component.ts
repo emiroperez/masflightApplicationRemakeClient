@@ -3,6 +3,7 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { Globals } from '../globals/Globals';
 import { ApplicationService } from '../services/application.service';
 import { DatalakeQuerySchema } from '../datalake-query-engine/datalake-query-schema';
+import { DatalakeQueryTab } from './datalake-query-tab';
 
 const minPanelWidth = 25;
 
@@ -17,11 +18,12 @@ export class DatalakeQueryEngineComponent implements OnInit {
   resizePanels: boolean = false;
   selectedIndex: number = 0;
 
-  queryTabs: any[] = ["Query 1"];
+  queryTabs: DatalakeQueryTab[] = [ new DatalakeQueryTab () ];
   querySchemas: DatalakeQuerySchema[] = [];
-  queryInput: string = "";
 
   // Query execution table result
+  startQueryTime: number;
+  endQueryTime: number;
   displayedColumns: string[] = [];
   dataSource: any[] = [];
 
@@ -42,15 +44,22 @@ export class DatalakeQueryEngineComponent implements OnInit {
     }
   }
 
-  runQuery(): void
+  runQuery(query: DatalakeQueryTab): void
   {
     this.globals.isLoading = true;
-    this.service.datalakeExecuteQuery (this, "pruebaperformancepq", this.queryInput, this.showQueryResults, this.handlerError);
+    this.startQueryTime = Date.now ();
+    this.endQueryTime = null;
+
+    // clear query result table
+    this.displayedColumns = [];
+    this.dataSource = [];
+
+    this.service.datalakeExecuteQuery (this, query.schema, query.input, this.showQueryResults, this.handlerError);
   }
 
   addQueryTab(): void
   {
-    this.queryTabs.push ("Query " + (this.queryTabs.length + 1));
+    this.queryTabs.push (new DatalakeQueryTab ());
     this.selectedIndex = this.queryTabs.length - 1;
   }
 
@@ -144,6 +153,7 @@ export class DatalakeQueryEngineComponent implements OnInit {
   {
     if (!data)
     {
+      _this.startQueryTime = null;
       _this.globals.isLoading = false;
       return;
     }
@@ -170,6 +180,7 @@ export class DatalakeQueryEngineComponent implements OnInit {
       }
     }
 
+    _this.endQueryTime = Date.now ();
     _this.globals.isLoading = false;
   }
 
@@ -177,5 +188,39 @@ export class DatalakeQueryEngineComponent implements OnInit {
   {
     console.log (result);
     _this.globals.isLoading = false;
+    _this.startQueryTime = null;
+  }
+
+  calcExecutionTime(): string
+  {
+    let queryTime: number = this.endQueryTime - this.startQueryTime;
+    let result: string = "";
+
+    // print milliseconds if query time is below 1 second
+    if (queryTime < 1000)
+      return queryTime + "ms";
+
+    // print seconds with fractional digits if query time is below 1 minute
+    if (queryTime < 60000)
+    {
+      let seconds = queryTime / 1000;
+      return seconds.toFixed (2) + "s";
+    }
+
+    if (queryTime >= 3600000)
+      result += Math.trunc (queryTime / 3600000) + "h";
+
+    if (queryTime >= 60000)
+    {
+      if (result)
+        result += " ";
+
+      result += Math.trunc ((queryTime % 60000) / 60000) + "m";
+    }
+
+    if (result)
+      result += " ";
+
+    return result + Math.trunc ((queryTime % 1000) / 1000) + "s";
   }
 }

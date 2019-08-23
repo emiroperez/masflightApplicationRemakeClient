@@ -6539,9 +6539,12 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                 align-self: center
                 padding-right: 5px
 
+.datalake-table-body
+    max-height: 536px
+
 .datalake-table
-    .datalake-table-body
-        max-height: 536px
+    .datalake-table-body, .datalake-query-table-body
+        background-color: #ffffff
         overflow: auto
         tr.mat-header-row, tr.mat-row
             height: 35px !important
@@ -6702,6 +6705,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                         font-size: 14px
                         font-weight: 500
                         width: 150px
+                        margin-bottom: 10px
                     .datalake-query-editor-buttons
                         display: flex
                         flex-direction: row-reverse
@@ -6728,9 +6732,10 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                                 height: 30px
                                 margin-top: -8px
                                 margin-left: -1px
+                        .datalake-schema-select
+                            width: 200px
                 .datalake-query-editor-input
                     height: 100%
-                    margin-top: 10px
                     margin-bottom: 30px
                     textarea.mat-input-element
                         width: calc(100% - 7px)
@@ -6767,7 +6772,8 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                         font-size: 14px
                 .datalake-query-result
                     height: 100%
-                    overflow: auto
+                    .datalake-query-table-body
+                        height: 100%
     .datalake-query-engine-line-resize
         display: flex
         height: 100%
