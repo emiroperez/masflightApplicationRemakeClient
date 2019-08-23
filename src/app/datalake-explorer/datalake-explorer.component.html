@@ -19,7 +19,6 @@
             </button>
         </div>
     </div>
-<<<<<<< HEAD
     <div *ngIf="!currentScreen" class="datalake-explorer-grid-layout">
         <ng-container *ngFor="let tableCard of filteredTableCards | async">
             <app-datalake-table-card [values]="tableCard"></app-datalake-table-card>
@@ -28,6 +27,4 @@
     <div *ngIf="currentScreen == 1" [style.height.%]="100">
         <app-datalake-query-engine></app-datalake-query-engine>
     </div>
-=======
->>>>>>> parent of faf6905... .
 </div>

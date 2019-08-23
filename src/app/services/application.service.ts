@@ -509,7 +509,6 @@ export class ApplicationService {
     let url = this.host + "/secure/setDefaultDashboard?applicationId=" + this.globals.currentApplication.id;
     this.authService.post (_this, url, null, handlerSuccess, handlerError);
   }
-<<<<<<< HEAD
 
   getDatalakeTables(_this, handlerSuccess, handlerError): void
   {
@@ -528,6 +527,4 @@ export class ApplicationService {
     let url = this.host + "/GetDatalakeTableData?userName=karen1&token=nv5bcpKxzl7LevwEhU03kYVYl3VeLg8drUj&schemaName=" + schemaName + "&tableName=" + tableName + "&limit=" + limit;
     this.http.get (_this, url, handlerSuccess, handlerError, null);
   }
-=======
->>>>>>> parent of faf6905... .
 }
