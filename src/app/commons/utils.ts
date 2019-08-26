@@ -149,9 +149,9 @@ export class Utils{
             numSlashes = -1;
 
             // check number of slashes if the value to filter is a date format
-            if (parentCategoryId.includes ("date"))
+            if (parentCategoryId.includes ("date") || parentCategoryId.includes ("yyyymmdd"))
             {
-              let numSlashes = 0;
+              numSlashes = 0;
         
               for (let i = 0; i < categoryFilter.length; i++)
               {

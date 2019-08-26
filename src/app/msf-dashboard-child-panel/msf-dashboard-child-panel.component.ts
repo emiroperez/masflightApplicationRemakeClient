@@ -1,7 +1,9 @@
 import { Component, Inject, NgZone, ViewChild } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import * as moment from 'moment';
 
 import { Globals } from '../globals/Globals';
 import { Themes } from '../globals/Themes';
@@ -673,6 +675,12 @@ export class MsfDashboardChildPanelComponent {
 
             if (parentArgument != null && argument.id == parentArgument.argumentId.id)
             {
+              if (parentCategoryId.toLowerCase () === "yyyymmdd")
+              {
+                filterValue = moment (filterValue, "YYYYMMDD").toDate ().toString ();
+                filterValue = new DatePipe ('en-US').transform (filterValue, 'yyyy/MM/dd');
+              }
+
               if (params)
                 params += "&" + this.utils.getArguments2 (argument, parentCategoryId, filterValue);
               else
@@ -680,6 +688,12 @@ export class MsfDashboardChildPanelComponent {
             }
             else if (secondaryParentArgument != null && argument.id == secondaryParentArgument.argumentId.id)
             {
+              if (secondaryParentCategoryId.toLowerCase () === "yyyymmdd")
+              {
+                secondaryFilterValue = moment (secondaryFilterValue, "YYYYMMDD").toDate ().toString ();
+                secondaryFilterValue = new DatePipe ('en-US').transform (secondaryFilterValue, 'yyyy/MM/dd');
+              }
+
               if (params)
                 params += "&" + this.utils.getArguments2 (argument, secondaryParentCategoryId, secondaryFilterValue);
               else
