@@ -196,6 +196,7 @@ import { DatalakeTableShowColumnsComponent } from './datalake-table-show-columns
 import { DatalakeTablePreviewComponent } from './datalake-table-preview/datalake-table-preview.component';
 import { DatalakeQueryEngineComponent } from './datalake-query-engine/datalake-query-engine.component';
 import { DatalakeQueryEngineSchemaComponent } from './datalake-query-engine-schema/datalake-query-engine-schema.component';
+import { CodemirrorModule } from '@ctrl/ngx-codemirror';
 
 @NgModule({
   declarations: [
@@ -405,7 +406,8 @@ import { DatalakeQueryEngineSchemaComponent } from './datalake-query-engine-sche
     DigitOnlyModule,
     MatTooltipModule,
     ExportAsModule,
-    NgxGaugeModule
+    NgxGaugeModule,
+    CodemirrorModule
   ],
   providers: [
     AuthService,

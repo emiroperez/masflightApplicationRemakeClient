@@ -1,9 +1,13 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChildren, QueryList, ChangeDetectorRef } from '@angular/core';
+import { MatDialog } from '@angular/material';
+import { CodemirrorComponent } from '@ctrl/ngx-codemirror';
+import "codemirror/mode/sql/sql";
 
 import { Globals } from '../globals/Globals';
 import { ApplicationService } from '../services/application.service';
 import { DatalakeQuerySchema } from '../datalake-query-engine/datalake-query-schema';
 import { DatalakeQueryTab } from './datalake-query-tab';
+import { MessageComponent } from '../message/message.component';
 
 const minPanelWidth = 25;
 
@@ -12,7 +16,6 @@ const minPanelWidth = 25;
   templateUrl: './datalake-query-engine.component.html'
 })
 export class DatalakeQueryEngineComponent implements OnInit {
-
   leftPanelWidth: number = 25;
   rightPanelWidth: number = 75;
   resizePanels: boolean = false;
@@ -21,18 +24,39 @@ export class DatalakeQueryEngineComponent implements OnInit {
   queryTabs: DatalakeQueryTab[] = [ new DatalakeQueryTab () ];
   querySchemas: DatalakeQuerySchema[] = [];
 
+  // ngx-codemirror variables
+  @ViewChildren(CodemirrorComponent)
+  queryEditors: QueryList<CodemirrorComponent>; 
+
+  queryEditorOptions: any = {
+    lineNumbers: true,
+    theme: 'material',
+    mode: {
+      name: 'text/x-mariadb'
+    }
+  };
+
   // Query execution table result
   startQueryTime: number;
   endQueryTime: number;
   displayedColumns: string[] = [];
   dataSource: any[] = [];
 
-  constructor(public globals: Globals, private service: ApplicationService) { }
+  constructor(public globals: Globals, private changeDetectorRef: ChangeDetectorRef,
+    private dialog: MatDialog, private service: ApplicationService) { }
 
   ngOnInit()
   {
     this.globals.isLoading = true;
     this.service.getDatalakeSchemas (this, this.setSchemas, this.handlerError);
+  }
+
+  ngAfterViewInit(): void
+  {
+    // display first column number on the query editor
+    this.queryEditors.forEach ((queryEditor) => {
+      queryEditor.codeMirror.refresh ();
+    });
   }
 
   ngOnDestroy(): void
@@ -46,6 +70,15 @@ export class DatalakeQueryEngineComponent implements OnInit {
 
   runQuery(query: DatalakeQueryTab): void
   {
+    if (!query.schema)
+    {
+      this.dialog.open (MessageComponent, {
+        data: { title: "Error", message: "You must select a schema before running the query." }
+      });
+
+      return;
+    }
+
     this.globals.isLoading = true;
     this.startQueryTime = Date.now ();
     this.endQueryTime = null;
@@ -61,6 +94,8 @@ export class DatalakeQueryEngineComponent implements OnInit {
   {
     this.queryTabs.push (new DatalakeQueryTab ());
     this.selectedIndex = this.queryTabs.length - 1;
+    this.changeDetectorRef.detectChanges (); // detect changes, so we can refresh the query editor on the new tab
+    this.queryEditors.last.codeMirror.refresh ();
   }
 
   closeQueryTab(event, index: number): void
