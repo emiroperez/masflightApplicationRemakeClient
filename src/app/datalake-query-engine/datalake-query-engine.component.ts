@@ -23,6 +23,7 @@ export class DatalakeQueryEngineComponent implements OnInit {
 
   queryTabs: DatalakeQueryTab[] = [ new DatalakeQueryTab () ];
   querySchemas: DatalakeQuerySchema[] = [];
+  queryLoading: boolean;
 
   // ngx-codemirror variables
   @ViewChildren(CodemirrorComponent)
@@ -48,7 +49,7 @@ export class DatalakeQueryEngineComponent implements OnInit {
   ngOnInit()
   {
     this.globals.isLoading = true;
-    this.service.getDatalakeSchemas (this, this.setSchemas, this.handlerError);
+    this.service.getDatalakeSchemas (this, this.setSchemas, this.setSchemasError);
   }
 
   ngAfterViewInit(): void
@@ -79,7 +80,7 @@ export class DatalakeQueryEngineComponent implements OnInit {
       return;
     }
 
-    this.globals.isLoading = true;
+    this.queryLoading = true;
     this.startQueryTime = Date.now ();
     this.endQueryTime = null;
 
@@ -87,7 +88,7 @@ export class DatalakeQueryEngineComponent implements OnInit {
     this.displayedColumns = [];
     this.dataSource = [];
 
-    this.service.datalakeExecuteQuery (this, query.schema, query.input, this.showQueryResults, this.handlerError);
+    this.service.datalakeExecuteQuery (this, query.schema, query.input, this.showQueryResults, this.queryError);
   }
 
   addQueryTab(): void
@@ -184,18 +185,24 @@ export class DatalakeQueryEngineComponent implements OnInit {
     _this.globals.isLoading = false;
   }
 
+  setSchemasError(_this, result): void
+  {
+    console.log (result);
+    _this.globals.isLoading = false;
+  }
+
   showQueryResults(_this, data): void
   {
     if (!data)
     {
       _this.startQueryTime = null;
-      _this.globals.isLoading = false;
+      _this.queryLoading = false;
       return;
     }
 
     if (!data.Columns || (data.Columns && !data.Columns.length))
     {
-      _this.globals.isLoading = false;
+      _this.queryLoading = false;
       return;
     }
 
@@ -216,13 +223,13 @@ export class DatalakeQueryEngineComponent implements OnInit {
     }
 
     _this.endQueryTime = Date.now ();
-    _this.globals.isLoading = false;
+    _this.queryLoading = false;
   }
 
-  handlerError(_this, result): void
+  queryError(_this, result): void
   {
     console.log (result);
-    _this.globals.isLoading = false;
+    _this.queryLoading = false;
     _this.startQueryTime = null;
   }
 
@@ -257,5 +264,11 @@ export class DatalakeQueryEngineComponent implements OnInit {
       result += " ";
 
     return result + Math.trunc ((queryTime % 1000) / 1000) + "s";
+  }
+
+  cancelQueryLoading(): void
+  {
+    this.queryLoading = false;
+    this.startQueryTime = null;
   }
 }

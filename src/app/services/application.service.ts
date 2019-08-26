@@ -524,7 +524,7 @@ export class ApplicationService {
 
   getDatalakeTableData(_this, schemaName, tableName, limit, handlerSuccess, handlerError): void
   {
-    let url = this.host + "/GetDatalakeTableData?userName=karen1&token=nv5bcpKxzl7LevwEhU03kYVYl3VeLg8drUj&schemaName=" + schemaName + "&tableName=" + tableName + "&limit=" + limit;
+    let url = this.host + "/GetDatalakeTableData?userName=karen1&token=GNyxXuOEw1McIR8PpWG9yT43OLakvXHxN83&schemaName=" + schemaName + "&tableName=" + tableName + "&limit=" + limit;
     this.http.get (_this, url, handlerSuccess, handlerError, null);
   }
 
@@ -535,7 +535,7 @@ export class ApplicationService {
     let request = {
       Schema: "",
       userName: "karen1",
-      Token: "nv5bcpKxzl7LevwEhU03kYVYl3VeLg8drUj"
+      Token: "GNyxXuOEw1McIR8PpWG9yT43OLakvXHxN83"
     };
 
     this.http.post (_this, url, request, handlerSuccess, handlerError);
@@ -548,7 +548,7 @@ export class ApplicationService {
     let request = {
       Schema: schemaName,
       userName: "karen1",
-      Token: "nv5bcpKxzl7LevwEhU03kYVYl3VeLg8drUj"
+      Token: "GNyxXuOEw1McIR8PpWG9yT43OLakvXHxN83"
     };
 
     this.http.post (_this, url, request, handlerSuccess, handlerError);
@@ -561,7 +561,7 @@ export class ApplicationService {
     let request = {
       Schema: schemaName,
       userName: "karen1",
-      Token: "nv5bcpKxzl7LevwEhU03kYVYl3VeLg8drUj",
+      Token: "GNyxXuOEw1McIR8PpWG9yT43OLakvXHxN83",
       Raw: queryInput
     };
 

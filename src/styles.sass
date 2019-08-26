@@ -1244,8 +1244,17 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                 background-color: $schedule-map-background-color
                 .datalake-query-execution-time-sub-title
                     color: $primary-color
+                .datalake-query-cancel-button
+                    border-color: $font-color !important
+                    .close-icon
+                        color: $font-color !important
+                    &:hover
+                        background-color: $primary-color !important
+                        border-color: $primary-color !important
             .datalake-query-execution-result-body
                 background-color: $background-color
+                .datalake-query-loading
+                    @include msf-dashboard-dialog-loading(250px, $quaternary-background-color, url(assets/images/#{$name}-loading_pulse.gif))
                 .datalake-no-execution-label
                     background-color: $primary-color
         .CodeMirror, .CodeMirror-gutters
@@ -6767,12 +6776,27 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                 flex-direction: column
                 padding: 15px
                 height: 35px
+                position: relative
                 .datalake-query-execution-time-title
                     font-weight: 550
                     font-size: 13px
                 .datalake-query-execution-time-sub-title
                     font-size: 11px
                     padding-top: 5px
+                .datalake-query-cancel-button
+                    position: absolute
+                    align-items: center
+                    min-width: 0px !important
+                    width: 20px !important
+                    height: 35px !important
+                    right: 15px
+                    top: 14px
+                    border-style: solid
+                    border-width: 1px
+                    .mat-button-wrapper
+                        margin-left: -21.75px !important
+                        .close-icon
+                            margin-top: -3.25px !important
             .datalake-query-execution-result-body
                 height: calc(100% - 75px)
                 .datalake-no-execution
