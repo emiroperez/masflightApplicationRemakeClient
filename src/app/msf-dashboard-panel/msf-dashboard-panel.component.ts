@@ -1552,8 +1552,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         categoryOptions: this.values.currentOptionCategories ? JSON.stringify (this.values.currentOptionCategories) : null,
         function: this.geodatas.indexOf (this.values.geodata),
         updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0),
-        analysis: this.values.chartColumnOptions ? this.values.chartColumnOptions.indexOf (this.values.variable) : null,
-        values: this.values.chartColumnOptions ? this.values.chartColumnOptions.indexOf (this.values.valueColumn) : null,
+        analysis: this.values.chartColumnOptions ? this.values.variable.item.id : null,
+        values: this.values.chartColumnOptions ? this.values.valueColumn.item.id : null,
         paletteColors: JSON.stringify (this.values.paletteColors),
         lastestResponse: JSON.stringify (this.values.lastestResponse),
         thresholds: JSON.stringify (this.values.thresholds)
@@ -1595,9 +1595,9 @@ export class MsfDashboardPanelComponent implements OnInit {
         id: this.values.id,
         option: this.values.currentOption,
         title: this.values.chartName,
-        analysis: this.values.chartColumnOptions ? this.values.chartColumnOptions.indexOf (this.values.infoVar1) : null,
-        xaxis: this.values.chartColumnOptions ? this.values.chartColumnOptions.indexOf (this.values.infoVar2) : null,
-        values: this.values.chartColumnOptions ? this.values.chartColumnOptions.indexOf (this.values.infoVar3) : null,
+        analysis: this.values.chartColumnOptions ? (this.values.infoVar1 ? this.values.infoVar1.item.id : null) : null,
+        xaxis: this.values.chartColumnOptions ? (this.values.infoVar2 ? this.values.infoVar2.item.id : null) : null,
+        values: this.values.chartColumnOptions ? (this.values.infoVar3 ? this.values.infoVar3.item.id : null) : null,
         function: 1,
         chartType: this.chartTypes.indexOf (this.values.currentChartType),
         categoryOptions: this.values.currentOptionCategories ? JSON.stringify (this.values.currentOptionCategories) : null,
@@ -1610,9 +1610,9 @@ export class MsfDashboardPanelComponent implements OnInit {
         id: this.values.id,
         option: this.values.currentOption,
         title: this.values.chartName,
-        analysis: this.values.chartColumnOptions ? this.values.chartColumnOptions.indexOf (this.values.variable) : null,
-        xaxis: this.values.chartColumnOptions ? this.values.chartColumnOptions.indexOf (this.values.xaxis) : null,
-        values: this.values.chartColumnOptions ? this.values.chartColumnOptions.indexOf (this.values.valueColumn) : null,
+        analysis: this.values.chartColumnOptions ? this.values.variable.item.id : null,
+        xaxis: this.values.chartColumnOptions ? (this.values.xaxis ? this.values.xaxis.item.id : null) : null,
+        values: this.values.chartColumnOptions ? this.values.valueColumn.item.id : null,
         function: this.functions.indexOf (this.values.function),
         chartType: this.chartTypes.indexOf (this.values.currentChartType),
         categoryOptions: this.values.currentOptionCategories ? JSON.stringify (this.values.currentOptionCategories) : null,
@@ -2754,9 +2754,9 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.temp.chartName = this.values.chartName;
 
     this.temp.currentOption = JSON.parse (JSON.stringify (this.values.currentOption));
-    this.temp.variable = this.values.chartColumnOptions.indexOf (this.values.variable);
-    this.temp.xaxis = this.values.chartColumnOptions.indexOf (this.values.xaxis);
-    this.temp.valueColumn = this.values.chartColumnOptions.indexOf (this.values.valueColumn);
+    this.temp.variable = this.values.variable.item.id;
+    this.temp.xaxis = this.values.xaxis ? this.values.xaxis.item.id : null;
+    this.temp.valueColumn = this.values.valueColumn.item.id;
     this.temp.function = this.functions.indexOf (this.values.function);
     this.temp.geodata = this.geodatas.indexOf (this.values.geodata);
     this.temp.currentChartType = JSON.parse (JSON.stringify (this.values.currentChartType));
@@ -3286,7 +3286,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         {
           for (i = 0; i < this.values.chartColumnOptions.length; i++)
           {
-            if (i == this.values.variable)
+            // if (i == this.values.variable)
+            if (this.values.variable == this.values.chartColumnOptions[i].item.id)
             {
               this.chartForm.get ('geodataValueCtrl').setValue (this.values.chartColumnOptions[i]);
               this.values.variable = this.values.chartColumnOptions[i];
@@ -3299,7 +3300,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         {
           for (i = 0; i < this.values.chartColumnOptions.length; i++)
           {
-            if (i == this.values.valueColumn)
+            // if (i == this.values.valueColumn)
+            if (this.values.valueColumn == this.values.chartColumnOptions[i].item.id)
             {
               this.chartForm.get ('geodataKeyCtrl').setValue (this.values.chartColumnOptions[i]);
               this.values.valueColumn = this.values.chartColumnOptions[i];
@@ -3457,7 +3459,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         {
           for (i = 0; i < this.values.chartColumnOptions.length; i++)
           {
-            if (i == this.values.variable)
+            // if (i == this.values.variable)
+            if (this.values.variable == this.values.chartColumnOptions[i].item.id)
             {
               this.chartForm.get ('infoVar1Ctrl').setValue (this.values.chartColumnOptions[i]);
               this.chartForm.get ('infoVar1Ctrl').enable ();
@@ -3473,7 +3476,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         {
           for (i = 0; i < this.values.chartColumnOptions.length; i++)
           {
-            if (i == this.values.xaxis)
+            // if (i == this.values.xaxis)
+            if (this.values.xaxis == this.values.chartColumnOptions[i].item.id)
             {
               this.chartForm.get ('infoVar2Ctrl').setValue (this.values.chartColumnOptions[i]);
               this.chartForm.get ('infoVar2Ctrl').enable ();
@@ -3489,7 +3493,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         {
           for (i = 0; i < this.values.chartColumnOptions.length; i++)
           {
-            if (i == this.values.valueColumn)
+            // if (i == this.values.valueColumn)
+            if (this.values.valueColumn == this.values.chartColumnOptions[i].item.id)
             {
               this.chartForm.get ('infoVar3Ctrl').setValue (this.values.chartColumnOptions[i]);
               this.chartForm.get ('infoVar3Ctrl').enable ();
@@ -3583,6 +3588,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           for (i = 0; i < this.values.chartColumnOptions.length; i++)
           {
             if (i == this.values.variable)
+            // if (this.values.variable == this.values.chartColumnOptions[i].item.id)
             {
               this.chartForm.get ('variableCtrl').setValue (this.values.chartColumnOptions[i]);
               this.values.variable = this.values.chartColumnOptions[i];
@@ -3596,6 +3602,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           for (i = 0; i < this.values.chartColumnOptions.length; i++)
           {
             if (i == this.values.xaxis)
+            // if (this.values.xaxis == this.values.chartColumnOptions[i].item.id)
             {
               this.chartForm.get ('xaxisCtrl').setValue (this.values.chartColumnOptions[i]);
               this.values.xaxis = this.values.chartColumnOptions[i];
@@ -3609,6 +3616,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           for (i = 0; i < this.values.chartColumnOptions.length; i++)
           {
             if (i == this.values.valueColumn)
+            // if (this.values.valueColumn == this.values.chartColumnOptions[i].item.id)
             {
               this.chartForm.get ('valueCtrl').setValue (this.values.chartColumnOptions[i]);
               this.values.valueColumn = this.values.chartColumnOptions[i];
