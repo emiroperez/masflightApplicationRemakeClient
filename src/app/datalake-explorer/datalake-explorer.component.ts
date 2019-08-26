@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material';
 import { ReplaySubject, Subject } from 'rxjs';
 
 import { DatalakeTableCardValues } from '../datalake-table-card/datalake-table-card-values';
 import { ApplicationService } from '../services/application.service';
 import { Globals } from '../globals/Globals';
+import { DatalakeCreateTableComponent } from '../datalake-create-table/datalake-create-table.component';
 
 @Component({
   selector: 'app-datalake-explorer',
@@ -17,7 +19,8 @@ export class DatalakeExplorerComponent implements OnInit {
   tableCards: DatalakeTableCardValues[] = [];
   currentScreen: number = 0;
 
-  constructor(public globals: Globals, private service: ApplicationService) { }
+  constructor(public globals: Globals, private dialog: MatDialog,
+    private service: ApplicationService) { }
 
   ngOnInit()
   {
@@ -86,11 +89,12 @@ export class DatalakeExplorerComponent implements OnInit {
     );
   }
 
-  addTableCard(): void
+  createTable(): void
   {
-    this.tableCards.push (new DatalakeTableCardValues ("fradar24_r",
-      "Flight Radar24 Tracking table", "fradar24-r", "fr24p", "Flight Radar24 Tracking"));
-    this.filteredTableCards.next (this.tableCards.slice ());
+    let dialogRef = this.dialog.open (DatalakeCreateTableComponent, {
+      panelClass: 'datalake-create-table-dialog',
+      data: { }
+    });
   }
 
   goToScreen(index: number): void

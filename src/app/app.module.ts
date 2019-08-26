@@ -197,6 +197,7 @@ import { DatalakeTablePreviewComponent } from './datalake-table-preview/datalake
 import { DatalakeQueryEngineComponent } from './datalake-query-engine/datalake-query-engine.component';
 import { DatalakeQueryEngineSchemaComponent } from './datalake-query-engine-schema/datalake-query-engine-schema.component';
 import { CodemirrorModule } from '@ctrl/ngx-codemirror';
+import { DatalakeCreateTableComponent } from './datalake-create-table/datalake-create-table.component';
 
 @NgModule({
   declarations: [
@@ -368,7 +369,8 @@ import { CodemirrorModule } from '@ctrl/ngx-codemirror';
     DatalakeTableShowColumnsComponent,
     DatalakeTablePreviewComponent,
     DatalakeQueryEngineComponent,
-    DatalakeQueryEngineSchemaComponent
+    DatalakeQueryEngineSchemaComponent,
+    DatalakeCreateTableComponent
   ],
   imports: [
     BrowserModule,
@@ -452,7 +454,8 @@ import { CodemirrorModule } from '@ctrl/ngx-codemirror';
     TwoFactorLoginDialogComponent,
     MsfDynamicTableAliasComponent,
     DatalakeTableShowColumnsComponent,
-    DatalakeTablePreviewComponent
+    DatalakeTablePreviewComponent,
+    DatalakeCreateTableComponent
   ]
 })
 export class AppModule { }
