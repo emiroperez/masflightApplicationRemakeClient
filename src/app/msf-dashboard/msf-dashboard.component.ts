@@ -188,6 +188,9 @@ export class MsfDashboardComponent implements OnInit {
         if (columnOptions[0].optionId == option.id)
         {
           option.columnOptions = columnOptions;
+          option.columnOptions.sort (function (a1, a2) {
+            return a1.columnOrder - a2.columnOrder;
+          });
           break;
         }
       }
