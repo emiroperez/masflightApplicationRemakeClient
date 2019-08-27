@@ -701,6 +701,9 @@ export class MsfDashboardChildPanelComponent {
             }
             else
             {
+              if (!argument.value1)
+                continue;
+
               if (params)
               {
                 if (argument.type != "singleCheckbox" && argument.type != "serviceClasses" && argument.type != "fareLower" && argument.type != "airportsRoutes" && argument.name1 != "intermediateCitiesList")
