@@ -1265,6 +1265,8 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                 background-color: $dashboard-secondary-background-color
                 .datalake-create-table-step
                     background-color: $admin-menu-background
+                    .mat-stepper-vertical-line::before
+                        border-left-color: $tertiary-disabled-color
                     .mat-step-label, .mat-step-header .mat-step-label.mat-step-label-active
                         .datalake-create-table-step-label
                             color: $font-color
