@@ -779,7 +779,7 @@ export class MsfDashboardChildPanelComponent {
       {
         for (i = 0; i < _this.values.currentOption.columnOptions.length; i++)
         {
-          if (i == _this.values.xaxis)
+          if (_this.values.currentOption.columnOptions[i].id == _this.values.xaxis)
           {
             _this.values.xaxis = _this.values.currentOption.columnOptions[i];
             break;
@@ -820,7 +820,7 @@ export class MsfDashboardChildPanelComponent {
       {
         for (i = 0; i < _this.values.currentOption.columnOptions.length; i++)
         {
-          if (i == _this.values.variable)
+          if (_this.values.currentOption.columnOptions[i].id == _this.values.variable)
           {
             _this.values.variable = _this.values.currentOption.columnOptions[i];
             break;
@@ -837,7 +837,7 @@ export class MsfDashboardChildPanelComponent {
       {
         for (i = 0; i < _this.values.currentOption.columnOptions.length; i++)
         {
-          if (i == _this.values.valueColumn)
+          if (_this.values.currentOption.columnOptions[i].id == _this.values.valueColumn)
           {
             _this.values.valueColumn = _this.values.currentOption.columnOptions[i];
             break;

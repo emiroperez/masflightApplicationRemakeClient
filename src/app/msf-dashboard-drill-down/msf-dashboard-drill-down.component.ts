@@ -237,18 +237,37 @@ export class MsfDashboardDrillDownComponent {
     // convert values if loaded from the database
     if (this.convertValues[this.currentIndex])
     {
+      let variableIndex = -1, xAxisIndex = -1, valueColumnIndex = -1;
+
       this.convertValues[this.currentIndex] = false;
 
+      for (let i = 0; i < this.currentValue.chartColumnOptions.length; i++)
+      {
+        let chartColumnOption = this.currentValue.chartColumnOptions[i];
+
+        if (this.lastValue.variable === chartColumnOption.item.id && variableIndex == -1)
+          variableIndex = i;
+
+        if (this.lastValue.xaxis === chartColumnOption.item.id && xAxisIndex == -1)
+          xAxisIndex = i;
+
+        if (this.lastValue.valueColumn === chartColumnOption.item.id && valueColumnIndex == -1)
+          valueColumnIndex = i;
+
+        if (variableIndex != -1 && xAxisIndex != -1 && valueColumnIndex != -1)
+          break;
+      }
+
       this.lastValue.currentChartType = this.chartTypes[this.lastValue.currentChartType];
-      this.lastValue.variable = this.currentValue.chartColumnOptions[this.lastValue.variable];
-      this.lastValue.xaxis = this.currentValue.chartColumnOptions[this.lastValue.xaxis];
-      this.lastValue.valueColumn = this.currentValue.chartColumnOptions[this.lastValue.valueColumn];
+      this.lastValue.variable = (variableIndex != -1 ? this.currentValue.chartColumnOptions[variableIndex] : null);
+      this.lastValue.xaxis = (xAxisIndex != -1 ? this.currentValue.chartColumnOptions[xAxisIndex] : null);
+      this.lastValue.valueColumn = (valueColumnIndex != -1 ? this.currentValue.chartColumnOptions[valueColumnIndex] : null);
       this.lastValue.function = this.data.functions[this.lastValue.function];
 
       this.currentValue.currentChartType = this.chartTypes[this.currentValue.currentChartType];
-      this.currentValue.variable = this.currentValue.chartColumnOptions[this.currentValue.variable];
-      this.currentValue.xaxis = this.currentValue.chartColumnOptions[this.currentValue.xaxis];
-      this.currentValue.valueColumn = this.currentValue.chartColumnOptions[this.currentValue.valueColumn];
+      this.currentValue.variable = (variableIndex != -1 ? this.currentValue.chartColumnOptions[variableIndex] : null);
+      this.currentValue.xaxis = (xAxisIndex != -1 ? this.currentValue.chartColumnOptions[xAxisIndex] : null);
+      this.currentValue.valueColumn = (valueColumnIndex != -1 ? this.currentValue.chartColumnOptions[valueColumnIndex] : null);
       this.currentValue.function = this.data.functions[this.currentValue.function];
 
       if (this.currentValue.currentChartType.flags & ChartFlags.TABLE)
