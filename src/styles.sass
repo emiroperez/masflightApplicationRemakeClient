@@ -1265,11 +1265,16 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                 background-color: $dashboard-secondary-background-color
                 .datalake-create-table-step
                     background-color: $admin-menu-background
-                    .mat-step-header .mat-step-label.mat-step-label-active
-                        color: $font-color !important
+                    .mat-step-label, .mat-step-header .mat-step-label.mat-step-label-active
+                        .datalake-create-table-step-label
+                            color: $font-color
+                        .datalake-create-table-step-subtitle
+                            color: $tertiary-disabled-color
                     .mat-step-label-selected
                         .datalake-create-table-step-label
                             color: $primary-color !important
+                        .datalake-create-table-step-subtitle
+                            color: $font-color !important
         .CodeMirror, .CodeMirror-gutters
             background-color: $customer-edit-header-color !important
             color: $font-color !important
