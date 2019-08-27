@@ -188,9 +188,9 @@ export class MsfDashboardComponent implements OnInit {
         if (columnOptions[0].optionId == option.id)
         {
           option.columnOptions = columnOptions;
-          /*option.columnOptions.sort (function (a1, a2) {
+          option.columnOptions.sort (function (a1, a2) {
             return a1.columnOrder - a2.columnOrder;
-          });*/
+          });
           break;
         }
       }
@@ -983,7 +983,10 @@ export class MsfDashboardComponent implements OnInit {
             {
               // copy some values and visible attribute if the argument didn't have them
               if (!controlVariable.arguments[i].visibleAttribute)
-                controlVariable.arguments[i].visibleAttribute = categoryOption.arguments[i].visibleAttribute;
+              {
+                if (categoryOption.arguments[i].visibleAttribute)
+                  controlVariable.arguments[i].visibleAttribute = categoryOption.arguments[i].visibleAttribute;
+              }
 
               if (!controlVariable.arguments[i].value1)
                 controlVariable.arguments[i].value1 = categoryOption.arguments[i].value1;
