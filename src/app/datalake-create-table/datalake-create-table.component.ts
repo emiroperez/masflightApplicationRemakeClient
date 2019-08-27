@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialogRef } from '@angular/material';
 
 @Component({
   selector: 'app-datalake-create-table',
@@ -6,6 +7,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DatalakeCreateTableComponent {
 
-  constructor() { }
+  constructor(public dialogRef: MatDialogRef<DatalakeCreateTableComponent>) { }
 
+  onNoClick(): void
+  {
+    this.dialogRef.close ();
+  }
 }

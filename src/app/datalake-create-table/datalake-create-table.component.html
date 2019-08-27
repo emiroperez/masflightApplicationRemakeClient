@@ -1,6 +1,60 @@
 <div class="datalake-create-table-header">
   <div class="datalake-create-table-title">
+    Data Ingestions
   </div>
   <div class="datalake-create-table-button">
+    <button mat-icon-button (click)="onNoClick()">
+      <mat-icon aria-label="Close">close</mat-icon>
+    </button>
   </div>
+</div>
+<div class="datalake-create-table-body">
+  <mat-tab-group>
+    <mat-tab label="Create New Structure">
+      <div class="datalake-create-table-tab">
+        <div class="datalake-create-table-step">
+          <mat-vertical-stepper [linear]="true">
+            <mat-step>
+              <ng-template matStepLabel>
+                <div class="datalake-create-table-step-container">
+                  <span class="datalake-create-table-step-label">STEP 1</span>
+                  <span class="datalake-create-table-step-subtitle">TABLE CONFIGURATION</span>
+                </div>
+              </ng-template>
+            </mat-step>
+            <mat-step>
+              <ng-template matStepLabel>
+                <div class="datalake-create-table-step-container">
+                  <span class="datalake-create-table-step-label">STEP 2</span>
+                  <span class="datalake-create-table-step-subtitle">DATA PREVIEW</span>
+                </div>
+              </ng-template>
+            </mat-step>
+            <mat-step>
+              <ng-template matStepLabel>
+                <div class="datalake-create-table-step-container">
+                  <span class="datalake-create-table-step-label">STEP 3</span>
+                  <span class="datalake-create-table-step-subtitle">PARTITIONS</span>
+                </div>
+              </ng-template>
+            </mat-step>
+            <mat-step>
+              <ng-template matStepLabel>
+                <div class="datalake-create-table-step-container">
+                  <span class="datalake-create-table-step-label">STEP 4</span>
+                  <span class="datalake-create-table-step-subtitle">DISCOVERY RESULT</span>
+                </div>
+              </ng-template>
+            </mat-step>
+          </mat-vertical-stepper>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label="Data Upload">
+      <div class="datalake-create-table-tab">
+        <div class="datalake-create-table-step">
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
 </div>
