@@ -468,27 +468,6 @@ export class MsfDashboardDrillDownComponent {
     return different;
   }
 
-  checkTableVariables(): boolean
-  {
-    let different: boolean;
-
-    different = false;
-
-    if (this.lastValue.tableVariables != null)
-    {
-      for (let i = 0; i < this.currentValue.tableVariables.length; i++)
-      {
-        if (this.currentValue.tableVariables[i].checked != this.lastValue.tableVariables[i].checked)
-        {
-          different = true;
-          break;
-        }
-      }
-    }
-
-    return different;
-  }
-
   checkIfPanelIsConfigured(): void
   {
     // make sure that every value is not null
@@ -518,10 +497,6 @@ export class MsfDashboardDrillDownComponent {
       && (this.currentValue.currentChartType.flags & ChartFlags.XYCHART
         && this.currentValue.xaxis == this.lastValue.xaxis)
       && !this.checkPaletteColors ())
-      return;
-
-    if (this.currentValue.currentChartType.flags & ChartFlags.TABLE
-      && !this.checkTableVariables ())
       return;
 
     this.data.childPanelsConfigured[this.currentIndex] = true;
