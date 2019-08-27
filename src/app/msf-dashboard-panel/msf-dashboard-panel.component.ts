@@ -2103,7 +2103,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       formResults.push ({
         value: (isNaN (value) ? value : _this.getResultValue (value)),
-        column: _this.values.chartColumnOptions.indexOf (formVariable.column),
+        column: formVariable.column.item.id,
         fontSize: _this.fontSizes.indexOf (formVariable.fontSize),
         valueFontSize: _this.fontSizes.indexOf (formVariable.valueFontSize),
         valueOrientation: _this.orientations.indexOf (formVariable.valueOrientation)
@@ -2126,7 +2126,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       _this.values.lastestResponse.push ({
         value: formVariable.value,
-        column: _this.values.chartColumnOptions[formVariable.column],
+        column: _this.values.chartColumnOptions[formVariable.column].item,
         fontSize: _this.fontSizes[formVariable.fontSize],
         valueFontSize: _this.fontSizes[formVariable.valueFontSize],
         valueOrientation: _this.orientations[formVariable.valueOrientation]
@@ -2754,9 +2754,9 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.temp.chartName = this.values.chartName;
 
     this.temp.currentOption = JSON.parse (JSON.stringify (this.values.currentOption));
-    this.temp.variable = this.values.variable.item.id;
+    this.temp.variable = this.values.variable ? this.values.variable.item.id : null;
     this.temp.xaxis = this.values.xaxis ? this.values.xaxis.item.id : null;
-    this.temp.valueColumn = this.values.valueColumn.item.id;
+    this.temp.valueColumn = this.values.valueColumn ? this.values.valueColumn.item.id : null;
     this.temp.function = this.functions.indexOf (this.values.function);
     this.temp.geodata = this.geodatas.indexOf (this.values.geodata);
     this.temp.currentChartType = JSON.parse (JSON.stringify (this.values.currentChartType));
@@ -2777,14 +2777,26 @@ export class MsfDashboardPanelComponent implements OnInit {
       for (let i = 0; i < this.values.formVariables.length; i++)
       {
         let formVariable = this.values.formVariables[i];
+        let columnIndex = 0;
+
+        for (let j = 0; j < this.values.chartColumnOptions.length; j++)
+        {
+          if (this.values.chartColumnOptions[j].item.id === formVariable.column.id)
+          {
+            columnIndex = j;
+            break;
+          }
+        }
 
         this.temp.formVariables.push ({
           value: this.values.lastestResponse[i].value,
-          column: this.values.chartColumnOptions.indexOf (formVariable.column),
+          column: formVariable.column,
           fontSize: this.fontSizes.indexOf (formVariable.fontSize),
           valueFontSize: this.fontSizes.indexOf (formVariable.valueFontSize),
           valueOrientation: this.orientations.indexOf (formVariable.valueOrientation)
         });
+
+        formVariable.column = this.values.chartColumnOptions[columnIndex];
       }
     }
     else if (this.values.currentChartType.flags & ChartFlags.INFO
@@ -2943,7 +2955,21 @@ export class MsfDashboardPanelComponent implements OnInit {
       }
     }
 
-    this.values.formVariables = JSON.parse (JSON.stringify (this.temp.formVariables));
+    this.values.formVariables = [];
+
+    for (let i = 0; i < this.temp.formVariables.length; i++)
+    {
+      let formVariable = this.temp.formVariables[i];
+
+      this.values.formVariables.push ({
+        value: this.values.lastestResponse[i].value,
+        column: formVariable.column.id,
+        fontSize: formVariable.fontSize,
+        valueFontSize: formVariable.valueFontSize,
+        valueOrientation: formVariable.valueOrientation
+      });
+    }
+
     this.values.tableVariables = JSON.parse (JSON.stringify (this.temp.tableVariables));
 
     this.values.updateIntervalSwitch = this.temp.updateIntervalSwitch;
@@ -3286,7 +3312,6 @@ export class MsfDashboardPanelComponent implements OnInit {
         {
           for (i = 0; i < this.values.chartColumnOptions.length; i++)
           {
-            // if (i == this.values.variable)
             if (this.values.variable == this.values.chartColumnOptions[i].item.id)
             {
               this.chartForm.get ('geodataValueCtrl').setValue (this.values.chartColumnOptions[i]);
@@ -3300,7 +3325,6 @@ export class MsfDashboardPanelComponent implements OnInit {
         {
           for (i = 0; i < this.values.chartColumnOptions.length; i++)
           {
-            // if (i == this.values.valueColumn)
             if (this.values.valueColumn == this.values.chartColumnOptions[i].item.id)
             {
               this.chartForm.get ('geodataKeyCtrl').setValue (this.values.chartColumnOptions[i]);
@@ -3438,9 +3462,20 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       for (let formVariable of this.values.formVariables)
       {
+        let columnIndex = 0;
+
+        for (let i = 0; i < this.values.chartColumnOptions.length; i++)
+        {
+          if (this.values.chartColumnOptions[i].item.id == formVariable.column)
+          {
+            columnIndex = i;
+            break;
+          }
+        }
+
         this.values.lastestResponse.push ({
           value: formVariable.value,
-          column: this.values.chartColumnOptions[formVariable.column],
+          column: this.values.chartColumnOptions[columnIndex].item,
           fontSize: this.fontSizes[formVariable.fontSize],
           valueFontSize: this.fontSizes[formVariable.valueFontSize],
           valueOrientation: this.orientations[formVariable.valueOrientation]
@@ -3459,7 +3494,6 @@ export class MsfDashboardPanelComponent implements OnInit {
         {
           for (i = 0; i < this.values.chartColumnOptions.length; i++)
           {
-            // if (i == this.values.variable)
             if (this.values.variable == this.values.chartColumnOptions[i].item.id)
             {
               this.chartForm.get ('infoVar1Ctrl').setValue (this.values.chartColumnOptions[i]);
@@ -3476,7 +3510,6 @@ export class MsfDashboardPanelComponent implements OnInit {
         {
           for (i = 0; i < this.values.chartColumnOptions.length; i++)
           {
-            // if (i == this.values.xaxis)
             if (this.values.xaxis == this.values.chartColumnOptions[i].item.id)
             {
               this.chartForm.get ('infoVar2Ctrl').setValue (this.values.chartColumnOptions[i]);
@@ -3493,7 +3526,6 @@ export class MsfDashboardPanelComponent implements OnInit {
         {
           for (i = 0; i < this.values.chartColumnOptions.length; i++)
           {
-            // if (i == this.values.valueColumn)
             if (this.values.valueColumn == this.values.chartColumnOptions[i].item.id)
             {
               this.chartForm.get ('infoVar3Ctrl').setValue (this.values.chartColumnOptions[i]);
@@ -3587,8 +3619,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         {
           for (i = 0; i < this.values.chartColumnOptions.length; i++)
           {
-            if (i == this.values.variable)
-            // if (this.values.variable == this.values.chartColumnOptions[i].item.id)
+            if (this.values.variable == this.values.chartColumnOptions[i].item.id)
             {
               this.chartForm.get ('variableCtrl').setValue (this.values.chartColumnOptions[i]);
               this.values.variable = this.values.chartColumnOptions[i];
@@ -3601,8 +3632,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         {
           for (i = 0; i < this.values.chartColumnOptions.length; i++)
           {
-            if (i == this.values.xaxis)
-            // if (this.values.xaxis == this.values.chartColumnOptions[i].item.id)
+            if (this.values.xaxis == this.values.chartColumnOptions[i].item.id)
             {
               this.chartForm.get ('xaxisCtrl').setValue (this.values.chartColumnOptions[i]);
               this.values.xaxis = this.values.chartColumnOptions[i];
@@ -3615,8 +3645,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         {
           for (i = 0; i < this.values.chartColumnOptions.length; i++)
           {
-            if (i == this.values.valueColumn)
-            // if (this.values.valueColumn == this.values.chartColumnOptions[i].item.id)
+            if (this.values.valueColumn == this.values.chartColumnOptions[i].item.id)
             {
               this.chartForm.get ('valueCtrl').setValue (this.values.chartColumnOptions[i]);
               this.values.valueColumn = this.values.chartColumnOptions[i];
@@ -3687,7 +3716,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           {
             formVariables.push ({
               value: null,
-              column: _this.values.chartColumnOptions.indexOf (formVariable.column),
+              column: formVariable.column.item.id,
               fontSize: _this.fontSizes.indexOf (formVariable.fontSize),
               valueFontSize: _this.fontSizes.indexOf (formVariable.valueFontSize),
               valueOrientation: _this.orientations.indexOf (formVariable.valueOrientation)
