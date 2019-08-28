@@ -64,7 +64,7 @@
                 <span class="datalake-create-table-step-description">Basic information of the table</span>
               </div>
               <div class="datalake-create-table-step-buttons">
-                <button class="datalake-create-table-step-button flat-button" mat-button (click)="goForward(createTableStepper)">
+                <button class="datalake-create-table-step-button flat-button" mat-button (click)="goForward(newStep1FormGroup, createTableStepper)">
                   NEXT
                   <mat-icon>arrow_forward_ios</mat-icon>
                 </button>
@@ -123,7 +123,7 @@
                 <span class="datalake-create-table-step-description">If the source is CSV, it allows to choose the delimiter chart</span>
               </div>
               <div class="datalake-create-table-step-buttons">
-                <button class="datalake-create-table-step-button flat-button" mat-button (click)="goForward(createTableStepper)">
+                <button class="datalake-create-table-step-button flat-button" mat-button (click)="goForward(newStep2FormGroup, createTableStepper)">
                   NEXT
                   <mat-icon>arrow_forward_ios</mat-icon>
                 </button>
@@ -141,7 +141,7 @@
                 <span class="datalake-create-table-step-description">Chose the table partitions. Keep first options checked if it is a partition</span>
               </div>
               <div class="datalake-create-table-step-buttons">
-                <button class="datalake-create-table-step-button flat-button" mat-button (click)="goForward(createTableStepper)">
+                <button class="datalake-create-table-step-button flat-button" mat-button (click)="goForward(newStep3FormGroup, createTableStepper)">
                   NEXT
                   <mat-icon>arrow_forward_ios</mat-icon>
                 </button>
@@ -218,7 +218,7 @@
                 <span class="datalake-create-table-step-description">Select the schema and table to load the data, file type and filename. You must specify the path in the bucket</span>
               </div>
               <div class="datalake-create-table-step-buttons">
-                <button class="datalake-create-table-step-button flat-button" mat-button (click)="goForward(dataUploadStepper)">
+                <button class="datalake-create-table-step-button flat-button" mat-button (click)="goForward(uploadStep1FormGroup, dataUploadStepper)">
                   NEXT
                   <mat-icon>arrow_forward_ios</mat-icon>
                 </button>
@@ -267,7 +267,7 @@
                 <span class="datalake-create-table-step-description">If the source is CSV, it allows to choose the delimiter chart</span>
               </div>
               <div class="datalake-create-table-step-buttons">
-                <button class="datalake-create-table-step-button flat-button" mat-button (click)="goForward(dataUploadStepper)">
+                <button class="datalake-create-table-step-button flat-button" mat-button (click)="goForward(uploadStep2FormGroup, dataUploadStepper)">
                   NEXT
                   <mat-icon>arrow_forward_ios</mat-icon>
                 </button>

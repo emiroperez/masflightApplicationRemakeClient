@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
-import { MatDialogRef, MatStepper } from '@angular/material';
+import { MatDialogRef, MatStepper, MatDialog } from '@angular/material';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+
+import { MessageComponent } from '../message/message.component';
 
 @Component({
   selector: 'app-datalake-create-table',
@@ -16,6 +18,7 @@ export class DatalakeCreateTableComponent {
   uploadStep3FormGroup: FormGroup;
 
   constructor(public dialogRef: MatDialogRef<DatalakeCreateTableComponent>,
+    private dialog: MatDialog,
     private formBuilder: FormBuilder)
   {
     // initialize all form groups
@@ -66,8 +69,23 @@ export class DatalakeCreateTableComponent {
     stepper.previous ();
   }
 
-  goForward(stepper: MatStepper): void
+  goForward(formGroup: FormGroup, stepper: MatStepper): void
   {
+    // validate form before going forward
+    Object.keys (formGroup.controls).forEach (field =>
+    {
+      formGroup.get (field).markAsTouched ({ onlySelf: true });
+    });
+  
+    if (formGroup.invalid)
+    {
+      this.dialog.open (MessageComponent, {
+        data: { title: "Error", message: "The required information is incomplete, please complete them and try again." }
+      });
+  
+      return;
+    }
+  
     stepper.next ();
   }
 
