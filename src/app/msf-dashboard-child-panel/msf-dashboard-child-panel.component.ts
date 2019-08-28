@@ -1,4 +1,4 @@
-import { Component, Inject, NgZone, ViewChild } from '@angular/core';
+import { Component, Inject, NgZone, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
@@ -70,7 +70,7 @@ export class MsfDashboardChildPanelComponent {
     public dialogRef: MatDialogRef<MsfDashboardChildPanelComponent>,
     private zone: NgZone,
     public globals: Globals,
-    private http: ApiClient,
+    public changeDetectorRef: ChangeDetectorRef,
     private authService: AuthService,
     private service: ApplicationService,
     @Inject(MAT_DIALOG_DATA) public data: any)
@@ -82,14 +82,6 @@ export class MsfDashboardChildPanelComponent {
     // generate drill down chart
     this.globals.popupLoading = true;
     this.service.getChildPanel (this, data.parentPanelId, this.data.drillDownId, this.configureChildPanel, this.handlerChildPanelError);
-  }
-
-  ngAfterViewInit(): void
-  {
-    setTimeout (() => {
-      if (this.msfTableRef)
-        this.msfTableRef.tableOptions = this;
-    }, 10);
   }
 
   ngOnDestroy()
@@ -877,6 +869,12 @@ export class MsfDashboardChildPanelComponent {
     {
       _this.panelNotConfigured ();
       return;
+    }
+
+    if (_this.isTablePanel ())
+    {
+      _this.changeDetectorRef.detectChanges ();
+      _this.msfTableRef.tableOptions = _this;
     }
 
     _this.service.loadOptionCategoryArguments (_this, _this.values.currentOption, _this.setCategories, _this.handlerCategoryError);
