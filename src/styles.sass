@@ -1261,22 +1261,28 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                 color: $font-color
                 .mat-button-wrapper
                     color: $font-color !important
-            .datalake-create-table-tab
+            .datalake-create-table-tab, .datalake-data-upload-tab
                 background-color: $dashboard-secondary-background-color
                 .datalake-create-table-step
                     background-color: $admin-menu-background
                     .mat-stepper-vertical-line::before
                         border-left-color: $tertiary-disabled-color
-                    .mat-step-label, .mat-step-header .mat-step-label.mat-step-label-active
+                    .mat-step-label
                         .datalake-create-table-step-label
                             color: $font-color
                         .datalake-create-table-step-subtitle
                             color: $tertiary-disabled-color
-                    .mat-step-label-selected
+                    .mat-step-header .mat-step-label.mat-step-label-active, .mat-step-label-selected
                         .datalake-create-table-step-label
                             color: $primary-color !important
                         .datalake-create-table-step-subtitle
                             color: $font-color !important
+                .datalake-create-table-step-content
+                    color: $font-color
+        .ng-star-inserted
+            .mat-step-icon
+                background-color: $primary-color
+                color: $font-color
         .CodeMirror, .CodeMirror-gutters
             background-color: $customer-edit-header-color !important
             color: $font-color !important
@@ -1944,11 +1950,6 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button
 
 .mat-step-label-selected
     color: #ffffff !important
-
-.ng-star-inserted
-    .mat-step-icon
-        background-color: $msf-secondary-color
-        color: #ffffff
 
 .msf-medium-title
     color: #ffffff
@@ -6849,10 +6850,31 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 .CodeMirror-linenumber
     text-align: end
 
+.datalake-create-table-tab
+    .mat-vertical-content-container
+        padding-top: 70px
+
+.datalake-data-upload-tab
+    .mat-vertical-content-container
+        padding-top: 140px
+
+.datalake-create-table-tab, .datalake-data-upload-tab
+    display: flex
+    height: 500px
+    .mat-vertical-content
+        display: none
+    .datalake-create-table-step
+        width: 255px
+        height: 100%
+        .datalake-create-table-step-container
+            display: flex
+            flex-direction: column
+            font-weight: 500
+
 .datalake-create-table-dialog
-    min-width: 900px !important
-    max-width: 900px !important
-    width: 900px !important
+    min-width: 1050px !important
+    max-width: 1050px !important
+    width: 1050px !important
     .mat-dialog-container
         padding: 0
         .datalake-create-table-header
@@ -6870,16 +6892,31 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         .datalake-create-table-body
             .mat-tab-label
                 opacity: 1 !important
-            .datalake-create-table-tab
-                height: 500px
-                .mat-vertical-content
-                    display: none
-                .mat-vertical-content-container
-                    padding-top: 70px
-                .datalake-create-table-step
-                    width: 250px
-                    height: 100%
-                    .datalake-create-table-step-container
+            .datalake-create-table-step-content
+                padding: 30px
+                width: 100%
+                .datalake-create-table-content-header
+                    display: flex
+                    flex-direction: row
+                    .datalake-create-table-step-title
                         display: flex
                         flex-direction: column
-                        font-weight: 500
+                        width: 72%
+                        .datalake-create-table-step-title-label
+                            font-size: 14px
+                            font-weight: 550
+                        .datalake-create-table-step-description
+                            font-size: 11px
+                    .datalake-create-table-step-buttons
+                        display: flex
+                        flex-direction: row-reverse
+                        width: 28%
+                        .datalake-create-table-step-button
+                            margin-left: 5px
+                            width: 90px
+                            .mat-icon
+                                color: #ffffff !important
+                                height: 15px !important
+                                font-size: 15px !important
+                                width: 15px !important
+                                margin-bottom: 2px

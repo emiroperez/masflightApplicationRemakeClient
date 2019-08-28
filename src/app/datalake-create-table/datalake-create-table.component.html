@@ -13,8 +13,15 @@
     <mat-tab label="Create New Structure">
       <div class="datalake-create-table-tab">
         <div class="datalake-create-table-step">
-          <mat-vertical-stepper [linear]="true">
-            <mat-step>
+          <mat-vertical-stepper [linear]="true" #createTableStepper>
+            <ng-template matStepperIcon="edit">
+              <mat-icon>check</mat-icon>
+            </ng-template>
+            <ng-template matStepperIcon="number" let-index="index" let-active="active">
+              <span *ngIf="active"><mat-icon>edit</mat-icon></span>
+              <span *ngIf="!active">{{index + 1}}</span>
+            </ng-template>
+            <mat-step [stepControl]="newStep1FormGroup">
               <ng-template matStepLabel>
                 <div class="datalake-create-table-step-container">
                   <span class="datalake-create-table-step-label">STEP 1</span>
@@ -22,7 +29,7 @@
                 </div>
               </ng-template>
             </mat-step>
-            <mat-step>
+            <mat-step [stepControl]="newStep2FormGroup">
               <ng-template matStepLabel>
                 <div class="datalake-create-table-step-container">
                   <span class="datalake-create-table-step-label">STEP 2</span>
@@ -30,7 +37,7 @@
                 </div>
               </ng-template>
             </mat-step>
-            <mat-step>
+            <mat-step [stepControl]="newStep3FormGroup">
               <ng-template matStepLabel>
                 <div class="datalake-create-table-step-container">
                   <span class="datalake-create-table-step-label">STEP 3</span>
@@ -38,7 +45,7 @@
                 </div>
               </ng-template>
             </mat-step>
-            <mat-step>
+            <mat-step [stepControl]="newStep4FormGroup">
               <ng-template matStepLabel>
                 <div class="datalake-create-table-step-container">
                   <span class="datalake-create-table-step-label">STEP 4</span>
@@ -48,11 +55,180 @@
             </mat-step>
           </mat-vertical-stepper>
         </div>
+        <div class="datalake-create-table-step-content">
+          <ng-container *ngIf="!createTableStepper.selectedIndex">
+            <form [formGroup]="newStep1FormGroup">
+              <div class="datalake-create-table-content-header">
+                <div class="datalake-create-table-step-title">
+                  <span class="datalake-create-table-step-title-label">STEP 1 - TABLE CONFIGURATION</span>
+                  <span class="datalake-create-table-step-description">Basic information of the table</span>
+                </div>
+                <div class="datalake-create-table-step-buttons">
+                  <button class="datalake-create-table-step-button flat-button" mat-button (click)="goForward(createTableStepper)">
+                    NEXT
+                    <mat-icon>arrow_forward_ios</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </ng-container>
+          <ng-container *ngIf="createTableStepper.selectedIndex == 1">
+            <form [formGroup]="newStep2FormGroup">
+              <div class="datalake-create-table-content-header">
+                <div class="datalake-create-table-step-title">
+                  <span class="datalake-create-table-step-title-label">STEP 2 - DATA PREVIEW</span>
+                  <span class="datalake-create-table-step-description">If the source is CSV, it allows to choose the delimiter chart</span>
+                </div>
+                <div class="datalake-create-table-step-buttons">
+                  <button class="datalake-create-table-step-button flat-button" mat-button (click)="goForward(createTableStepper)">
+                    NEXT
+                    <mat-icon>arrow_forward_ios</mat-icon>
+                  </button>
+                  <button class="datalake-create-table-step-button flat-button" mat-button (click)="goBack(createTableStepper)">
+                    <mat-icon>arrow_back_ios</mat-icon>
+                    BACK
+                  </button>
+                </div>
+              </div>
+            </form>
+          </ng-container>
+          <ng-container *ngIf="createTableStepper.selectedIndex == 2">
+            <form [formGroup]="newStep3FormGroup">
+              <div class="datalake-create-table-content-header">
+                <div class="datalake-create-table-step-title">
+                  <span class="datalake-create-table-step-title-label">STEP 3 - PARTITIONS</span>
+                  <span class="datalake-create-table-step-description">Chose the table partitions. Keep first options checked if it is a partition</span>
+                </div>
+                <div class="datalake-create-table-step-buttons">
+                  <button class="datalake-create-table-step-button flat-button" mat-button (click)="goForward(createTableStepper)">
+                    NEXT
+                    <mat-icon>arrow_forward_ios</mat-icon>
+                  </button>
+                  <button class="datalake-create-table-step-button flat-button" mat-button (click)="goBack(createTableStepper)">
+                    <mat-icon>arrow_back_ios</mat-icon>
+                    BACK
+                  </button>
+                </div>
+              </div>
+            </form>
+          </ng-container>
+          <ng-container *ngIf="createTableStepper.selectedIndex == 3">
+            <form [formGroup]="newStep4FormGroup">
+              <div class="datalake-create-table-content-header">
+                <div class="datalake-create-table-step-title">
+                  <span class="datalake-create-table-step-title-label">STEP 4 - DISCOVERY RESULT</span>
+                  <span class="datalake-create-table-step-description">Show the data in columns and allow to change the column header</span>
+                </div>
+                <div class="datalake-create-table-step-buttons">
+                  <button class="datalake-create-table-step-button flat-button" mat-button>
+                    FINISH
+                    <mat-icon>flag</mat-icon>
+                  </button>
+                  <button class="datalake-create-table-step-button flat-button" mat-button (click)="goBack(createTableStepper)">
+                    <mat-icon>arrow_back_ios</mat-icon>
+                    BACK
+                  </button>
+                </div>
+              </div>
+            </form>
+          </ng-container>
+        </div>
       </div>
     </mat-tab>
     <mat-tab label="Data Upload">
-      <div class="datalake-create-table-tab">
+      <div class="datalake-data-upload-tab">
         <div class="datalake-create-table-step">
+          <mat-vertical-stepper [linear]="true" #dataUploadStepper>
+            <ng-template matStepperIcon="edit">
+              <mat-icon>check</mat-icon>
+            </ng-template>
+            <ng-template matStepperIcon="number" let-index="index" let-active="active">
+              <span *ngIf="active"><mat-icon>edit</mat-icon></span>
+              <span *ngIf="!active">{{index + 1}}</span>
+            </ng-template>
+            <mat-step [stepControl]="uploadStep1FormGroup">
+              <ng-template matStepLabel>
+                <div class="datalake-create-table-step-container">
+                  <span class="datalake-create-table-step-label">STEP 1</span>
+                  <span class="datalake-create-table-step-subtitle">TABLE CONFIGURATION</span>
+                </div>
+              </ng-template>
+            </mat-step>
+            <mat-step [stepControl]="uploadStep2FormGroup">
+              <ng-template matStepLabel>
+                <div class="datalake-create-table-step-container">
+                  <span class="datalake-create-table-step-label">STEP 2</span>
+                  <span class="datalake-create-table-step-subtitle">DATA PREVIEW</span>
+                </div>
+              </ng-template>
+            </mat-step>
+            <mat-step [stepControl]="uploadStep3FormGroup">
+              <ng-template matStepLabel>
+                <div class="datalake-create-table-step-container">
+                  <span class="datalake-create-table-step-label">STEP 3</span>
+                  <span class="datalake-create-table-step-subtitle">PARTITION MANAGEMENT</span>
+                </div>
+              </ng-template>
+            </mat-step>
+          </mat-vertical-stepper>
+        </div>
+        <div class="datalake-create-table-step-content">
+          <ng-container *ngIf="!dataUploadStepper.selectedIndex">
+            <form [formGroup]="uploadStep1FormGroup">
+              <div class="datalake-create-table-content-header">
+                <div class="datalake-create-table-step-title">
+                  <span class="datalake-create-table-step-title-label">STEP 1 - TABLE CONFIGURATION</span>
+                  <span class="datalake-create-table-step-description">Select the schema and table to load the data, file type and filename. You must specify the path in the bucket</span>
+                </div>
+                <div class="datalake-create-table-step-buttons">
+                  <button class="datalake-create-table-step-button flat-button" mat-button (click)="goForward(dataUploadStepper)">
+                    NEXT
+                    <mat-icon>arrow_forward_ios</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </ng-container>
+          <ng-container *ngIf="dataUploadStepper.selectedIndex == 1">
+            <form [formGroup]="uploadStep2FormGroup">
+              <div class="datalake-create-table-content-header">
+                <div class="datalake-create-table-step-title">
+                  <span class="datalake-create-table-step-title-label">STEP 2 - DATA PREVIEW</span>
+                  <span class="datalake-create-table-step-description">If the source is CSV, it allows to choose the delimiter chart</span>
+                </div>
+                <div class="datalake-create-table-step-buttons">
+                  <button class="datalake-create-table-step-button flat-button" mat-button (click)="goForward(dataUploadStepper)">
+                    NEXT
+                    <mat-icon>arrow_forward_ios</mat-icon>
+                  </button>
+                  <button class="datalake-create-table-step-button flat-button" mat-button (click)="goBack(dataUploadStepper)">
+                    <mat-icon>arrow_back_ios</mat-icon>
+                    BACK
+                  </button>
+                </div>
+              </div>
+            </form>
+          </ng-container>
+          <ng-container *ngIf="dataUploadStepper.selectedIndex == 2">
+            <form [formGroup]="uploadStep3FormGroup">
+              <div class="datalake-create-table-content-header">
+                <div class="datalake-create-table-step-title">
+                  <span class="datalake-create-table-step-title-label">STEP 3 - PARTITION MANAGEMENT</span>
+                  <span class="datalake-create-table-step-description">Create Partition Manager</span>
+                </div>
+                <div class="datalake-create-table-step-buttons">
+                  <button class="datalake-create-table-step-button flat-button" mat-button>
+                    FINISH
+                    <mat-icon>flag</mat-icon>
+                  </button>
+                  <button class="datalake-create-table-step-button flat-button" mat-button (click)="goBack(dataUploadStepper)">
+                    <mat-icon>arrow_back_ios</mat-icon>
+                    BACK
+                  </button>
+                </div>
+              </div>
+            </form>
+          </ng-container>
         </div>
       </div>
     </mat-tab>
