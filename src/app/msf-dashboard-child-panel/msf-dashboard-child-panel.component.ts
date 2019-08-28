@@ -86,8 +86,10 @@ export class MsfDashboardChildPanelComponent {
 
   ngAfterViewInit(): void
   {
-    if (this.isTablePanel ())
-      this.msfTableRef.tableOptions = this;
+    setTimeout (() => {
+      if (this.msfTableRef)
+        this.msfTableRef.tableOptions = this;
+    }, 10);
   }
 
   ngOnDestroy()
