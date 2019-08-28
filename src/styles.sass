@@ -1279,8 +1279,17 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                             color: $font-color !important
                 .datalake-create-table-step-content
                     color: $font-color
+                    .mat-form-field-appearance-legacy.mat-form-field-disabled .mat-form-field-underline
+                        background-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0, $dashboard-input-underline-color 50%, transparent 0)
+                    .mat-select.mat-select-disabled .mat-select-arrow-wrapper .mat-select-arrow, .mat-form-field-disabled .mat-form-field-label
+                        color: $dashboard-input-underline-color !important
+                    .mat-error
+                        margin-left: 0 !important
         .ng-star-inserted
             .mat-step-icon
+                background-color: $background-color
+                color: $font-color
+            .mat-step-icon-selected, .mat-step-icon-state-edit
                 background-color: $primary-color
                 color: $font-color
         .CodeMirror, .CodeMirror-gutters
@@ -6920,3 +6929,16 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                                 font-size: 15px !important
                                 width: 15px !important
                                 margin-bottom: 2px
+            .datalake-create-table-input-body
+                display: flex
+                flex-direction: row
+                padding-top: 30px
+                .datalake-create-table-input
+                    padding-left: 30px
+                .datalake-browse-file-button
+                    margin-left: 30px
+                    width: 120px
+                    height: 40px
+            .datalake-max-filesize-label
+                padding-top: 15px
+                font-size: 12px

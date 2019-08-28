@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialogRef, MatStepper } from '@angular/material';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-datalake-create-table',
@@ -18,27 +18,41 @@ export class DatalakeCreateTableComponent {
   constructor(public dialogRef: MatDialogRef<DatalakeCreateTableComponent>,
     private formBuilder: FormBuilder)
   {
+    // initialize all form groups
     this.newStep1FormGroup = this.formBuilder.group ({
-      firstCtrl: ['']
+      tableName: ['', Validators.required],
+      tableLongName: ['', Validators.required],
+      schema: ['', Validators.required],
+      bucket: new FormControl ({ value: '', disabled: true }, Validators.required),
+      tableDescription: new FormControl ({ value: '', disabled: true }),
+      fileLocation: ['', Validators.required]
     });
+
     this.newStep2FormGroup = this.formBuilder.group ({
-      secondCtrl: ['']
+      step2Ctrl: ['']
     });
+
     this.newStep3FormGroup = this.formBuilder.group ({
-      secondCtrl: ['']
+      step3Ctrl: ['']
     });
+
     this.newStep4FormGroup = this.formBuilder.group ({
-      secondCtrl: ['', Validators.required]
+      step4Ctrl: ['', Validators.required]
     });
 
     this.uploadStep1FormGroup = this.formBuilder.group ({
-      secondCtrl: ['']
+      schema: ['', Validators.required],
+      bucket: new FormControl ({ value: '', disabled: true }, Validators.required),
+      tableDescription: new FormControl ({ value: '', disabled: true }),
+      fileLocation: ['', Validators.required]
     });
+
     this.uploadStep2FormGroup = this.formBuilder.group ({
-      secondCtrl: ['']
+      step2Ctrl: ['']
     });
+
     this.uploadStep3FormGroup = this.formBuilder.group ({
-      secondCtrl: ['', Validators.required]
+      step3Ctrl: ['', Validators.required]
     });
   }
 
@@ -55,5 +69,11 @@ export class DatalakeCreateTableComponent {
   goForward(stepper: MatStepper): void
   {
     stepper.next ();
+  }
+
+  schemaChanged(formGroup: FormGroup): void
+  {
+    formGroup.get ("bucket").enable ();
+    formGroup.get ("tableDescription").enable ();
   }
 }
