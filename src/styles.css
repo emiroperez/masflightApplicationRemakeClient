@@ -8365,6 +8365,7 @@ mat-form-field.msf-table-input {
   display: flex;
   flex-direction: row;
   width: 100%;
+  z-index: 99999999;
   /*position: absolute*/
 }
 .login-header .login-header-logo {
