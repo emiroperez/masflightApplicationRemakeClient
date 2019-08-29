@@ -198,6 +198,8 @@ import { DatalakeQueryEngineComponent } from './datalake-query-engine/datalake-q
 import { DatalakeQueryEngineSchemaComponent } from './datalake-query-engine-schema/datalake-query-engine-schema.component';
 import { CodemirrorModule } from '@ctrl/ngx-codemirror';
 import { DatalakeCreateTableComponent } from './datalake-create-table/datalake-create-table.component';
+import { DatalakeCreateNewStructureComponent } from './datalake-create-new-structure/datalake-create-new-structure.component';
+import { DatalakeDataUploadComponent } from './datalake-data-upload/datalake-data-upload.component';
 
 @NgModule({
   declarations: [
@@ -370,7 +372,9 @@ import { DatalakeCreateTableComponent } from './datalake-create-table/datalake-c
     DatalakeTablePreviewComponent,
     DatalakeQueryEngineComponent,
     DatalakeQueryEngineSchemaComponent,
-    DatalakeCreateTableComponent
+    DatalakeCreateTableComponent,
+    DatalakeCreateNewStructureComponent,
+    DatalakeDataUploadComponent
   ],
   imports: [
     BrowserModule,

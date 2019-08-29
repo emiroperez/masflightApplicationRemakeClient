@@ -1,0 +1,170 @@
+<div class="datalake-create-table-tab">
+  <div class="datalake-create-table-step">
+    <mat-vertical-stepper [linear]="true" #stepper>
+      <ng-template matStepperIcon="edit">
+        <mat-icon>check</mat-icon>
+      </ng-template>
+      <ng-template matStepperIcon="number" let-index="index" let-active="active">
+        <span *ngIf="active">
+          <mat-icon>edit</mat-icon>
+        </span>
+        <span *ngIf="!active">{{index + 1}}</span>
+      </ng-template>
+      <mat-step [stepControl]="newStep1FormGroup">
+        <ng-template matStepLabel>
+          <div class="datalake-create-table-step-container">
+            <span class="datalake-create-table-step-label">STEP 1</span>
+            <span class="datalake-create-table-step-subtitle">TABLE CONFIGURATION</span>
+          </div>
+        </ng-template>
+      </mat-step>
+      <mat-step [stepControl]="newStep2FormGroup">
+        <ng-template matStepLabel>
+          <div class="datalake-create-table-step-container">
+            <span class="datalake-create-table-step-label">STEP 2</span>
+            <span class="datalake-create-table-step-subtitle">DATA PREVIEW</span>
+          </div>
+        </ng-template>
+      </mat-step>
+      <mat-step [stepControl]="newStep3FormGroup">
+        <ng-template matStepLabel>
+          <div class="datalake-create-table-step-container">
+            <span class="datalake-create-table-step-label">STEP 3</span>
+            <span class="datalake-create-table-step-subtitle">PARTITIONS</span>
+          </div>
+        </ng-template>
+      </mat-step>
+      <mat-step [stepControl]="newStep4FormGroup">
+        <ng-template matStepLabel>
+          <div class="datalake-create-table-step-container">
+            <span class="datalake-create-table-step-label">STEP 4</span>
+            <span class="datalake-create-table-step-subtitle">DISCOVERY RESULT</span>
+          </div>
+        </ng-template>
+      </mat-step>
+    </mat-vertical-stepper>
+  </div>
+  <div class="datalake-create-table-step-content">
+    <ng-container *ngIf="!stepper.selectedIndex">
+      <div class="datalake-create-table-content-header">
+        <div class="datalake-create-table-step-title">
+          <span class="datalake-create-table-step-title-label">STEP 1 - TABLE CONFIGURATION</span>
+          <span class="datalake-create-table-step-description">Basic information of the table</span>
+        </div>
+        <div class="datalake-create-table-step-buttons">
+          <button class="datalake-create-table-step-button flat-button" mat-button
+            (click)="goForward(newStep1FormGroup, stepper)">
+            NEXT
+            <mat-icon>arrow_forward_ios</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="datalake-create-table-input-body">
+        <mat-form-field [formGroup]="newStep1FormGroup">
+          <input matInput placeholder="Table Name" autocomplete="off" formControlName="tableName" required>
+          <mat-error *ngIf="newStep1FormGroup.get('tableName')?.invalid">You must specify a table name</mat-error>
+        </mat-form-field>
+        <mat-form-field [formGroup]="newStep1FormGroup" class="datalake-create-table-input">
+          <input matInput placeholder="Table Long Name" autocomplete="off" formControlName="tableLongName" required>
+          <mat-error *ngIf="newStep1FormGroup.get('tableLongName')?.invalid">You must specify a table long name
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="datalake-create-table-input-body">
+        <mat-form-field [formGroup]="newStep1FormGroup">
+          <mat-select placeholder="Schema" autocomplete="off" formControlName="schema"
+            (selectionChange)="schemaChanged(newStep1FormGroup)" required>
+            <mat-option *ngFor="let types of ['1', '2', '3']" [value]="types">
+              {{types}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="newStep1FormGroup.get('schema')?.invalid">You must select a schema</mat-error>
+        </mat-form-field>
+        <mat-form-field [formGroup]="newStep1FormGroup" class="datalake-create-table-input">
+          <mat-select placeholder="Bucket" autocomplete="off" formControlName="bucket" required>
+            <mat-option *ngFor="let types of ['1', '2', '3']" [value]="types">
+              {{types}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="newStep1FormGroup.get('bucket')?.invalid">You must select a bucket</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="datalake-create-table-input-body">
+        <mat-form-field [formGroup]="newStep1FormGroup">
+          <input matInput placeholder="Table Description" autocomplete="off" formControlName="tableDescription">
+        </mat-form-field>
+      </div>
+      <div class="datalake-create-table-input-body">
+        <mat-form-field [formGroup]="newStep1FormGroup">
+          <input matInput placeholder="File Location" formControlName="fileLocation" required>
+          <mat-error *ngIf="newStep1FormGroup.get('fileLocation')?.invalid">You must specify a file location</mat-error>
+        </mat-form-field>
+        <button class="datalake-browse-file-button flat-button" mat-button>
+          Browse
+        </button>
+      </div>
+      <div class="datalake-max-filesize-label">
+        Maximum upload size: 100 MB
+      </div>
+    </ng-container>
+    <ng-container *ngIf="stepper.selectedIndex == 1">
+      <div class="datalake-create-table-content-header">
+        <div class="datalake-create-table-step-title">
+          <span class="datalake-create-table-step-title-label">STEP 2 - DATA PREVIEW</span>
+          <span class="datalake-create-table-step-description">If the source is CSV, it allows to choose the delimiter
+            chart</span>
+        </div>
+        <div class="datalake-create-table-step-buttons">
+          <button class="datalake-create-table-step-button flat-button" mat-button
+            (click)="goForward(newStep2FormGroup, stepper)">
+            NEXT
+            <mat-icon>arrow_forward_ios</mat-icon>
+          </button>
+          <button class="datalake-create-table-step-button flat-button" mat-button (click)="goBack(stepper)">
+            <mat-icon>arrow_back_ios</mat-icon>
+            BACK
+          </button>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="stepper.selectedIndex == 2">
+      <div class="datalake-create-table-content-header">
+        <div class="datalake-create-table-step-title">
+          <span class="datalake-create-table-step-title-label">STEP 3 - PARTITIONS</span>
+          <span class="datalake-create-table-step-description">Chose the table partitions. Keep first options checked if
+            it is a partition</span>
+        </div>
+        <div class="datalake-create-table-step-buttons">
+          <button class="datalake-create-table-step-button flat-button" mat-button
+            (click)="goForward(newStep3FormGroup, stepper)">
+            NEXT
+            <mat-icon>arrow_forward_ios</mat-icon>
+          </button>
+          <button class="datalake-create-table-step-button flat-button" mat-button (click)="goBack(stepper)">
+            <mat-icon>arrow_back_ios</mat-icon>
+            BACK
+          </button>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="stepper.selectedIndex == 3">
+      <div class="datalake-create-table-content-header">
+        <div class="datalake-create-table-step-title">
+          <span class="datalake-create-table-step-title-label">STEP 4 - DISCOVERY RESULT</span>
+          <span class="datalake-create-table-step-description">Show the data in columns and allow to change the column
+            header</span>
+        </div>
+        <div class="datalake-create-table-step-buttons">
+          <button class="datalake-create-table-step-button flat-button" mat-button>
+            FINISH
+            <mat-icon>flag</mat-icon>
+          </button>
+          <button class="datalake-create-table-step-button flat-button" mat-button (click)="goBack(stepper)">
+            <mat-icon>arrow_back_ios</mat-icon>
+            BACK
+          </button>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
