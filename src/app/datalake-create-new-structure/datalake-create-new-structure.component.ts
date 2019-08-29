@@ -1,14 +1,24 @@
-import { Component } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { Component, Input } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl } from '@angular/forms';
 import { MatStepper, MatDialog } from '@angular/material';
 
 import { MessageComponent } from '../message/message.component';
+import { DatalakeQuerySchema } from '../datalake-query-engine/datalake-query-schema';
+import { DatalakeBucket } from '../datalake-create-table/datalake-bucket';
 
 @Component({
   selector: 'app-datalake-create-new-structure',
   templateUrl: './datalake-create-new-structure.component.html'
 })
 export class DatalakeCreateNewStructureComponent {
+  @Input("schemas")
+  schemas: DatalakeQuerySchema[] = [];
+
+  @Input("buckets")
+  buckets: DatalakeBucket[] = [];
+
+  currentBuckets: DatalakeBucket[] = [];
+
   newStep1FormGroup: FormGroup;
   newStep2FormGroup: FormGroup;
   newStep3FormGroup: FormGroup;
@@ -66,7 +76,22 @@ export class DatalakeCreateNewStructureComponent {
 
   schemaChanged(): void
   {
-    this.newStep1FormGroup.get ("bucket").enable ();
+    let bucketValue: AbstractControl;
+    let schema: DatalakeQuerySchema;
+
+    bucketValue = this.newStep1FormGroup.get ("bucket");
+    bucketValue.enable ();
     this.newStep1FormGroup.get ("tableDescription").enable ();
+
+    schema = this.newStep1FormGroup.get ("schema").value;
+    bucketValue.setValue (null);
+    bucketValue.markAsUntouched ();
+    this.currentBuckets = [];
+
+    for (let bucket of this.buckets)
+    {
+      if (bucket.schemaName === schema.schemaName)
+        this.currentBuckets.push (bucket);
+    }
   }
 }

@@ -541,6 +541,12 @@ export class ApplicationService {
     this.http.post (_this, url, request, handlerSuccess, handlerError);
   }
 
+  getDatalakeBuckets(_this, handlerSuccess, handlerError): void
+  {
+    let url = this.host + "/GetDatalakeBuckets?token=GNyxXuOEw1McIR8PpWG9yT43OLakvXHxN83";
+    this.http.get (_this, url, handlerSuccess, handlerError, null);
+  }
+
   getDatalakeSchemaTables(_this, schemaName, handlerSuccess, handlerError): void
   {
     let url = this.host + "/GetSchemaTables";

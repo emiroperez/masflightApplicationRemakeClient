@@ -74,16 +74,16 @@
         <mat-form-field [formGroup]="newStep1FormGroup">
           <mat-select placeholder="Schema" autocomplete="off" formControlName="schema"
             (selectionChange)="schemaChanged(newStep1FormGroup)" required>
-            <mat-option *ngFor="let types of ['1', '2', '3']" [value]="types">
-              {{types}}
+            <mat-option *ngFor="let schema of schemas" [value]="schema">
+              {{schema.schemaName}}
             </mat-option>
           </mat-select>
           <mat-error *ngIf="newStep1FormGroup.get('schema')?.invalid">You must select a schema</mat-error>
         </mat-form-field>
         <mat-form-field [formGroup]="newStep1FormGroup" class="datalake-create-table-input">
           <mat-select placeholder="Bucket" autocomplete="off" formControlName="bucket" required>
-            <mat-option *ngFor="let types of ['1', '2', '3']" [value]="types">
-              {{types}}
+            <mat-option *ngFor="let bucket of currentBuckets" [value]="bucket">
+              {{bucket.bucketName}}
             </mat-option>
           </mat-select>
           <mat-error *ngIf="newStep1FormGroup.get('bucket')?.invalid">You must select a bucket</mat-error>

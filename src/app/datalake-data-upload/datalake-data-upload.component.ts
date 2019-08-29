@@ -1,14 +1,24 @@
-import { Component } from '@angular/core';
-import { FormGroup, Validators, FormControl, FormBuilder } from '@angular/forms';
+import { Component, Input } from '@angular/core';
+import { FormGroup, Validators, FormControl, FormBuilder, AbstractControl } from '@angular/forms';
 import { MatStepper, MatDialog } from '@angular/material';
 
 import { MessageComponent } from '../message/message.component';
+import { DatalakeQuerySchema } from '../datalake-query-engine/datalake-query-schema';
+import { DatalakeBucket } from '../datalake-create-table/datalake-bucket';
 
 @Component({
   selector: 'app-datalake-data-upload',
   templateUrl: './datalake-data-upload.component.html'
 })
 export class DatalakeDataUploadComponent {
+  @Input("schemas")
+  schemas: DatalakeQuerySchema[] = [];
+
+  @Input("buckets")
+  buckets: DatalakeBucket[] = [];
+
+  currentBuckets: DatalakeBucket[] = [];
+
   uploadStep1FormGroup: FormGroup;
   uploadStep2FormGroup: FormGroup;
   uploadStep3FormGroup: FormGroup;
@@ -59,7 +69,22 @@ export class DatalakeDataUploadComponent {
 
   schemaChanged(): void
   {
-    this.uploadStep1FormGroup.get ("bucket").enable ();
+    let bucketValue: AbstractControl;
+    let schema: DatalakeQuerySchema;
+
+    bucketValue = this.uploadStep1FormGroup.get ("bucket");
+    bucketValue.enable ();
     this.uploadStep1FormGroup.get ("tableDescription").enable ();
+
+    schema = this.uploadStep1FormGroup.get ("schema").value;
+    bucketValue.setValue (null);
+    bucketValue.markAsUntouched ();
+    this.currentBuckets = [];
+
+    for (let bucket of this.buckets)
+    {
+      if (bucket.schemaName === schema.schemaName)
+        this.currentBuckets.push (bucket);
+    }
   }
 }

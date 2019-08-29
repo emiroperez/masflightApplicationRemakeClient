@@ -1,20 +1,23 @@
-<div class="datalake-create-table-header">
-  <div class="datalake-create-table-title">
-    Data Ingestions
+<div class="datalake-create-table-loading" *ngIf="isLoading"></div>
+<div [ngStyle]="{ 'display': checkVisibility() }">
+  <div class="datalake-create-table-header">
+    <div class="datalake-create-table-title">
+      Data Ingestions
+    </div>
+    <div class="datalake-create-table-button">
+      <button mat-icon-button (click)="onNoClick()">
+        <mat-icon aria-label="Close">close</mat-icon>
+      </button>
+    </div>
   </div>
-  <div class="datalake-create-table-button">
-    <button mat-icon-button (click)="onNoClick()">
-      <mat-icon aria-label="Close">close</mat-icon>
-    </button>
+  <div class="datalake-create-table-body">
+    <mat-tab-group>
+      <mat-tab label="Create New Structure">
+        <app-datalake-create-new-structure [schemas]="schemas" [buckets]="buckets"></app-datalake-create-new-structure>
+      </mat-tab>
+      <mat-tab label="Data Upload">
+        <app-datalake-data-upload [schemas]="schemas" [buckets]="buckets"></app-datalake-data-upload>
+      </mat-tab>
+    </mat-tab-group>
   </div>
-</div>
-<div class="datalake-create-table-body">
-  <mat-tab-group>
-    <mat-tab label="Create New Structure">
-      <app-datalake-create-new-structure></app-datalake-create-new-structure>
-    </mat-tab>
-    <mat-tab label="Data Upload">
-      <app-datalake-data-upload></app-datalake-data-upload>
-    </mat-tab>
-  </mat-tab-group>
 </div>

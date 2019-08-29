@@ -1255,6 +1255,8 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                     @include msf-dashboard-dialog-loading(250px, $quaternary-background-color, url(assets/images/#{$name}-loading_pulse.gif))
                 .datalake-no-execution-label
                     background-color: $primary-color
+        .datalake-create-table-loading
+            @include msf-dashboard-dialog-loading(250px, $quaternary-background-color, url(assets/images/#{$name}-loading_pulse.gif))
         .datalake-create-table-dialog
             .datalake-create-table-header
                 background-color: $admin-menu-background
@@ -6880,10 +6882,11 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
             flex-direction: column
             font-weight: 500
 
-.datalake-create-table-dialog
+.datalake-create-table-dialog, .datalake-create-table-loading
     min-width: 1050px !important
     max-width: 1050px !important
     width: 1050px !important
+    height: 609px !important
     .mat-dialog-container
         padding: 0
         .datalake-create-table-header
