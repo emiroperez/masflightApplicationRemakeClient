@@ -5,7 +5,7 @@
     </div>
   </div>
   <div class="datalake-query-engine-line-resize">
-    <mat-icon class="datalake-query-engine-drag-handler" aria-label="Drag Handler" (mousedown)="onDragClick($event)" (mouseup)="onDragRelease()">more_vert</mat-icon>
+    <mat-icon class="datalake-query-engine-drag-handler" aria-label="Drag Handler" (mousedown)="onDragClick($event)" (mouseup)="onDragRelease($event)">more_vert</mat-icon>
   </div>
   <div [style.width.%]="rightPanelWidth" class="datalake-query-engine-right-panel">
     <div class="datalake-query-container">
