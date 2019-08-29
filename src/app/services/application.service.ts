@@ -511,4 +511,10 @@ export class ApplicationService {
     let url = this.host + "/secure/setDefaultDashboard?applicationId=" + this.globals.currentApplication.id;
     this.authService.post (_this, url, null, handlerSuccess, handlerError);
   }
+
+  deleteChildPanel(_this, childPanelId, handlerSuccess, handlerError): void
+  {
+    let url = this.host + "/deleteChildPanel";
+    this.authService.post (_this, url, childPanelId, handlerSuccess, handlerError);
+  }
 }
