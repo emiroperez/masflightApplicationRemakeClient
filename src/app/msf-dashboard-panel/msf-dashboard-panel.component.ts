@@ -3988,8 +3988,14 @@ export class MsfDashboardPanelComponent implements OnInit {
     });
 
     dialogRef.afterClosed ().subscribe (
-      () => {
-        this.saveChildPanels (childChart.types);
+      (panelToDelete) => {
+        if (panelToDelete)
+        {
+          this.values.isLoading = true;
+          this.service.deleteChildPanel (this, panelToDelete, this.drillDownPanelDeleted, this.drillDownSettingsError);
+        }
+        else
+          this.saveChildPanels (childChart.types);
       }
     );
   }
@@ -4058,7 +4064,28 @@ export class MsfDashboardPanelComponent implements OnInit {
       return;
 
     this.values.isLoading = true;
-    this.service.saveChildPanels (this, childPanels, this.values.id, drillDownIds, this.drillDownSettingsClear, this.drillDownSettingsClear);
+    this.service.saveChildPanels (this, childPanels, this.values.id, drillDownIds, this.drillDownSettingsClear, this.drillDownSettingsError);
+  }
+
+  drillDownPanelDeleted(_this, data): void
+  {
+    for (let childPanel of _this.values.childPanels)
+    {
+      if (childPanel.childPanelId == data)
+      {
+        _this.values.childPanels.splice (_this.values.childPanels.indexOf (childPanel), 1);
+        break;
+      }
+    }
+
+    if (_this.values.childPanels.length > 1)
+    {
+      _this.values.childPanels.sort (function (e1, e2) {
+        return e1.id - e2.id;
+      });
+    }
+
+    _this.values.isLoading = false;
   }
 
   // update child panel list after success or failure
@@ -4080,6 +4107,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         if (drillDownId == childPanel.id)
         {
           childPanel.title = data.childPanels[i].title;
+          childPanel.id = data.childPanels[i].id;
           newChildPanel = false;
           break;
         }
@@ -4089,7 +4117,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       {
         _this.values.childPanels.push ({
           id: drillDownId,
-          title: data.childPanels[i].title
+          title: data.childPanels[i].title,
+          childPanelId: data.childPanels[i].id
         });
       }
     }
@@ -4101,6 +4130,12 @@ export class MsfDashboardPanelComponent implements OnInit {
       });
     }
 
+    _this.values.isLoading = false;
+  }
+
+  drillDownSettingsError(_this, results): void
+  {
+    console.log (results);
     _this.values.isLoading = false;
   }
 

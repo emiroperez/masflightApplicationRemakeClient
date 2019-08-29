@@ -353,7 +353,8 @@ export class MsfDashboardComponent implements OnInit {
           {
             panel.childPanels.push ({
               id: drillDownInfo[k].drillDownId,
-              title: childPanelNames[k]
+              title: childPanelNames[k],
+              childPanelId: drillDownInfo[k].childPanelId
             });
           }
         }

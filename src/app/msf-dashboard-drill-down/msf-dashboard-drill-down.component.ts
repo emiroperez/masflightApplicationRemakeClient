@@ -35,7 +35,8 @@ export class MsfDashboardDrillDownComponent {
   public xaxisFilterCtrl: FormControl = new FormControl ();
   public valueFilterCtrl: FormControl = new FormControl ();
 
-  private convertValues: any[] = [];
+  private convertValues: boolean[] = [];
+  private newPanel: boolean[] = [];
 
   chartTypes:any[] = [
     { name: 'Bars', flags: ChartFlags.XYCHART },
@@ -414,6 +415,7 @@ export class MsfDashboardDrillDownComponent {
               panel.chartType, null, panel.lastestResponse, panel.paletteColors));
 
             _this.convertValues.push (true);
+            _this.newPanel.push (false);
             break;
           }
           else if (j == data.length - 1)
@@ -423,6 +425,7 @@ export class MsfDashboardDrillDownComponent {
 
             _this.data.childPanelValues[i].currentChartType = _this.chartTypes[0];
             _this.convertValues.push (false);
+            _this.newPanel.push (true);
           }
         }
       }
@@ -438,6 +441,7 @@ export class MsfDashboardDrillDownComponent {
 
         _this.data.childPanelValues[i].currentChartType = _this.chartTypes[0];
         _this.convertValues.push (false);
+        _this.newPanel.push (true);
       }
     }
 
@@ -571,5 +575,15 @@ export class MsfDashboardDrillDownComponent {
   deleteColumnFromTable(index): void
   {
     this.currentValue.tableVariables.splice (index, 1);
+  }
+
+  deletePanel(index: number): void
+  {
+    this.service.confirmationDialog (this, "Are you sure you want to delete this panel?",
+      function (_this)
+      {
+        _this.dialogRef.close (_this.currentValue.id);
+      }
+    );
   }
 }
