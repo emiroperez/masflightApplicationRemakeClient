@@ -241,10 +241,61 @@ export class Utils{
         return args;
     }
 
+    getNameGroup(value:any,group: string){
+        var names="";
+        var i = 0;
+        for(var val of value){
+            if(group == "Airline"){
+                if(i == 0){
+                    names = val.airline.iata;
+                }else{
+                    names += ","+ val.airline.iata;
+                }
+            }else if(group == "Airport"){
+                if(i == 0){
+                    names = val.airport.iata;
+                }else{
+                    names += ","+ val.airport.iata;
+                }
+            }else if(group == "Aircraft"){
+                if(i == 0){
+                    names = val.Aircraft.name;
+                }else{
+                    names += ","+ val.Aircraft.name;
+                }
+            }
+            i++;
+        }
+        return names
+    }
+
     getValueFormat(type: string, value:any,argument:any){
         if( typeof value === 'undefined' || value == null){
             return '';
         }
+        
+        if(type == ComponentType.AAA_Group){
+            var valueAux="";
+            var i = 0;
+            if(value!=null){
+                // if(Array.isArray(value)){
+                    for(var val of value){
+                        if(i == 0){
+                            valueAux = this.getNameGroup(val.aaa_GroupDet,val.group);
+                        }else{
+                            valueAux += ","+ this.getNameGroup(val.aaa_GroupDet,val.group);
+                        }                
+                        i++;
+                    }
+                // }else{
+                //     return value[argument.selectedAttribute];
+                // }
+            }else{
+                return '';
+            }
+            return valueAux;            
+        }
+
         if(argument.url!=null && argument.url!='' && type != ComponentType.sortingCheckboxes){
             var valueAux="";
             var i = 0;

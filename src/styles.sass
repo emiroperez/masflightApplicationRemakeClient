@@ -1137,6 +1137,18 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             border-bottom: 1px solid $menu-border-color !important
         .amcharts-amexport-bottom .amcharts-amexport-item > ul > .amcharts-amexport-item:hover, .amcharts-amexport-bottom .amcharts-amexport-item > ul > .amcharts-amexport-item:active
             background-color: $selected-menu-color
+        .GroupAAA-Container
+            .GroupAAA-item
+                .mat-radio-label 
+                    .mat-radio-container 
+                        .mat-radio-outer-circle
+                            border-color: $font-color
+            .mat-radio-checked
+                background-color: $primary-color
+                .mat-radio-label 
+                    .mat-radio-container 
+                        .mat-radio-inner-circle
+                            background-color: $font-color
 
 @each $name, $font-color, $little-font-color, $disabled-color, $secondary-disabled-color, $tertiary-disabled-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $quaternary-background-color, $body-background-color, $dashboard-background-color, $dashboard-secondary-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $scrollbar-background-color, $dashboard-panel-background-color, $dashboard-panel-chart-background-color, $dashboard-border-color, $schedule-map-background-color, $schedule-map-info-border, $disabled-combo-box-color, $disabled-underline, $dashboard-info-background-color, $dashboard-info-secondary-background-color, $dashboard-info-font-color, $dashboard-drill-down-border-color, $dashboard-threshold-background-color, $dashboard-title-font-color, $map-panelinfo-background-color, $dashboard-info-border-color, $dashboard-form-font-color, $admin-menu-background, $admin-menu-input-underline, $admin-tree-active-color, $admin-button-color, $admin-secondary-background-color, $admin-table-background-color, $admin-table-hover-color, $admin-secondary-button-color, $login-font-color, $intro-logout-icon-color, $control-variables-border-color, $control-variable-hover-background-color, $control-variable-hover-icon-color, $control-variables-input-underline, $control-variables-dropdown-hover-font-color, $control-variables-dropdown-hover-background-hover-color, $control-variables-selected-background-selected-color, $dashboard-input-underline-color, $membership-primary-background-color, $membership-secondary-background-color, $customer-edit-header-color, $customer-table-header-background-color, $customer-table-row-background-color, $customer-table-row-border-color, $customer-table-row-hover-background-color, $customer-table-row-selected-background-color, $customer-table-row-border-selected-color, $customer-input-color, $customer-input-underline-color, $customer-disabled-underline, $dashboard-control-panel-background-color, $menu-open-background-color, $menu-open-active-background-color, $menu-first-line, $menu-second-line, $menu-background-color, $menu-child-background-color, $control-variable-disabled-color in $color-scheme
     @include theme($name, $font-color, $little-font-color, $disabled-color, $secondary-disabled-color, $tertiary-disabled-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $quaternary-background-color, $body-background-color, $dashboard-background-color, $dashboard-secondary-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $scrollbar-background-color, $dashboard-panel-background-color, $dashboard-panel-chart-background-color, $dashboard-border-color, $schedule-map-background-color, $schedule-map-info-border, $disabled-combo-box-color, $disabled-underline, $dashboard-info-background-color, $dashboard-info-secondary-background-color, $dashboard-info-font-color, $dashboard-drill-down-border-color, $dashboard-threshold-background-color, $dashboard-title-font-color, $map-panelinfo-background-color, $dashboard-info-border-color, $dashboard-form-font-color, $admin-menu-background, $admin-menu-input-underline, $admin-tree-active-color, $admin-button-color, $admin-secondary-background-color, $admin-table-background-color, $admin-table-hover-color, $admin-secondary-button-color, $login-font-color, $intro-logout-icon-color, $control-variables-border-color, $control-variable-hover-background-color, $control-variable-hover-icon-color, $control-variables-input-underline, $control-variables-dropdown-hover-font-color, $control-variables-dropdown-hover-background-hover-color, $control-variables-selected-background-selected-color, $dashboard-input-underline-color, $membership-primary-background-color, $membership-secondary-background-color, $customer-edit-header-color, $customer-table-header-background-color, $customer-table-row-background-color, $customer-table-row-border-color, $customer-table-row-hover-background-color, $customer-table-row-selected-background-color, $customer-table-row-border-selected-color, $customer-input-color, $customer-input-underline-color, $customer-disabled-underline, $dashboard-control-panel-background-color, $menu-open-background-color, $menu-open-active-background-color,$menu-first-line, $menu-second-line, $menu-background-color, $menu-child-background-color, $control-variable-disabled-color)
@@ -5675,6 +5687,14 @@ mat-form-field.msf-table-input
     .mat-column-argument
         max-width: 100px
 
+.admin-menu-content-dialog-container-title
+    display: flex !important
+    flex-direction: row
+    justify-content: space-between
+    color: #fff
+    align-items: center
+    margin-bottom: 10px
+
 .admin-menu-content-dialog-buttons
     margin-top: 10px
 
@@ -6283,3 +6303,18 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 .amcharts-amexport-bottom .amcharts-amexport-item > ul > .amcharts-amexport-item:hover, .amcharts-amexport-bottom .amcharts-amexport-item > ul > .amcharts-amexport-item:active
     color: #ffffff !important
     cursor: pointer
+
+.GroupAAA-Container
+    width: 100%
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    margin-bottom: 10px
+    
+.GroupAAA-item
+    height: 40px
+    border: 1px solid #fff
+    display: flex !important
+    flex-direction: row
+    padding: 0px 10px
+    width: 27%

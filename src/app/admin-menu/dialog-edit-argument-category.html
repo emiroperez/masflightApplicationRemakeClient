@@ -1,5 +1,6 @@
-<div mat-dialog-title class="admin-menu-content-dialog-container">
-    <div class="admin-menu-content-buttons-header">
+<div mat-dialog-title class="admin-menu-content-dialog-container admin-menu-content-dialog-container-title">
+        <h4>Category Arguments Settings</h4>
+        <div class="admin-menu-content-buttons-header">
         <button mat-button class="flat-button admin-menu-content-cancel-button" (click)="onNoClick()">Cancel</button>
         <button mat-button class="flat-button" [mat-dialog-close]="data" cdkFocusInitial>Save</button>
     </div>
@@ -19,6 +20,15 @@
                         <input matInput placeholder="Type" [(ngModel)]="item.type">
                     </mat-form-field>
                 </div>
+
+                <ng-container *ngIf="isGroupAAA(item)">
+                    <mat-radio-group class="GroupAAA-Container" aria-label="Select an option" [(ngModel)]="item.aaaGroup">
+                        <mat-radio-button class="GroupAAA-item" value="Airline">Group Airline</mat-radio-button>
+                        <mat-radio-button class="GroupAAA-item" value="Airport">Group Airport</mat-radio-button>
+                        <mat-radio-button class="GroupAAA-item" value="Aircraft">Group Aircraft</mat-radio-button>
+                    </mat-radio-group>
+                </ng-container>
+                
                 <ng-container *ngIf="item.numArguments >= 1">
                     <div class="arguments-child" [style.margin-right.%]="20">
                         <mat-form-field [style.width.%]="100">
@@ -55,17 +65,17 @@
                         </mat-form-field>
                     </div>
                 </ng-container>
-                <div class="arguments-child" [style.margin-right.%]="20">
-                    <mat-form-field >
-                        <input matInput placeholder="Url" [(ngModel)]="item.url">
-                    </mat-form-field>
-                </div>
-                <div class="arguments-child">
+                <div class="arguments-child"  [style.margin-right.%]="20">
                     <mat-form-field [style.width.%]="100">
                         <mat-select [(value)]="item.required" placeholder="Required" [(ngModel)]="item.required">
                             <mat-option [value]=1>Yes</mat-option>
                             <mat-option [value]=0>No</mat-option>
                         </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="arguments-child">
+                    <mat-form-field >
+                        <input matInput placeholder="Url" [(ngModel)]="item.url">
                     </mat-form-field>
                 </div>
                 <div class="arguments-child" *ngIf="item.url!='' && item.url!=null" [style.margin-right.%]="20">

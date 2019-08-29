@@ -15,6 +15,7 @@ import { DialogArgumentPreviewComponent } from '../dialog-argument-preview/dialo
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MaterialIconPickerComponent } from '../material-icon-picker/material-icon-picker.component';
 import { ComponentType } from '../commons/ComponentType';
+import { Arguments } from '../model/Arguments';
 //import  clonedeep from 'lodash.clonedeep';
 
 @Component({
@@ -309,12 +310,14 @@ export class EditCategoryArgumentDialog {
       }
   }
 
-
+  isGroupAAA(argument: Arguments){
+    return ComponentType.AAA_Group == argument.type;
+  }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
-  showPreview(argument) {
+  showPreview(argument,group) {
     this.dialog.open(DialogArgumentPreviewComponent, {
       height: "560px",
       width: "500px",
@@ -644,7 +647,8 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     { type: "groupingOpSum", numArguments: 1 },
     { type: "groupingOpSum2", numArguments: 1 },
     { type: "states", numArguments: 1 },
-    { type: "flightSegments", numArguments: 1 }
+    { type: "flightSegments", numArguments: 1 },
+    { type: "AAA_Group", numArguments: 1 }
   ]
 
   constructor(private http: ApiClient, public globals: Globals,

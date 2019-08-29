@@ -294,4 +294,7 @@ export class MsfArgumentComponent implements OnInit {
   isFlightSegments(argument: Arguments){
     return ComponentType.flightSegments == argument.type;
   }
+  isGroupAAA(argument: Arguments){
+    return ComponentType.AAA_Group == argument.type;
+  }
 }

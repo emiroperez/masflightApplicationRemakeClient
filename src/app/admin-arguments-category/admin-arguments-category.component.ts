@@ -113,7 +113,8 @@ export class AdminArgumentsCategoryComponent implements OnInit {
     { value: "groupingOpSum", name: "Grouping Sum Operation" },
     { value: "groupingOpSum2", name: "Grouping Sum Operation 2" },
     { value: "states", name: "States" },
-    { value: "flightSegments", name: "Flight Segments" }
+    { value: "flightSegments", name: "Flight Segments" },
+    { value: "AAA_Group", name: "AAA Group" }
   ];
 
   constructor(private http: ApiClient,  public dialog: MatDialog, public globals: Globals, private service: ApplicationService)
