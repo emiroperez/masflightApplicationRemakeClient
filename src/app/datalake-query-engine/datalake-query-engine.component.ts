@@ -80,6 +80,15 @@ export class DatalakeQueryEngineComponent implements OnInit {
       return;
     }
 
+    if (this.queryLoading)
+    {
+      this.dialog.open (MessageComponent, {
+        data: { title: "Error", message: "A query is already running, you must cancel it before running a new query." }
+      });
+
+      return;
+    }
+
     this.queryLoading = true;
     this.startQueryTime = Date.now ();
     this.endQueryTime = null;
