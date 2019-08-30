@@ -66,8 +66,7 @@
         </mat-form-field>
         <mat-form-field [formGroup]="newStep1FormGroup" class="datalake-create-table-input">
           <input matInput placeholder="Table Long Name" autocomplete="off" formControlName="tableLongName" required>
-          <mat-error *ngIf="newStep1FormGroup.get('tableLongName')?.invalid">You must specify a table long name
-          </mat-error>
+          <mat-error *ngIf="newStep1FormGroup.get('tableLongName')?.invalid">You must specify a table long name</mat-error>
         </mat-form-field>
       </div>
       <div class="datalake-create-table-input-body">
@@ -125,6 +124,16 @@
             BACK
           </button>
         </div>
+      </div>
+      <div class="datalake-create-table-input-body">
+        <mat-form-field [formGroup]="newStep2FormGroup">
+          <input matInput placeholder="Delimiter" autocomplete="off" formControlName="delimiter" required>
+          <mat-error *ngIf="newStep2FormGroup.get('delimiter')?.invalid">You must select a delimiter</mat-error>
+        </mat-form-field>
+        <mat-form-field [formGroup]="newStep2FormGroup" class="datalake-create-table-input">
+          <input matInput placeholder="Custom Delimiter" autocomplete="off" formControlName="customDelimiter" required>
+          <mat-error *ngIf="newStep2FormGroup.get('customDelimiter')?.invalid">You must select a custom delimiter</mat-error>
+        </mat-form-field>
       </div>
     </ng-container>
     <ng-container *ngIf="stepper.selectedIndex == 2">

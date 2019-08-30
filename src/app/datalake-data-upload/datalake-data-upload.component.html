@@ -109,6 +109,16 @@
           </button>
         </div>
       </div>
+      <div class="datalake-create-table-input-body">
+        <mat-form-field [formGroup]="uploadStep2FormGroup">
+          <input matInput placeholder="Delimiter" autocomplete="off" formControlName="delimiter" required>
+          <mat-error *ngIf="uploadStep2FormGroup.get('delimiter')?.invalid">You must select a delimiter</mat-error>
+        </mat-form-field>
+        <mat-form-field [formGroup]="uploadStep2FormGroup" class="datalake-create-table-input">
+          <input matInput placeholder="Custom Delimiter" autocomplete="off" formControlName="customDelimiter" required>
+          <mat-error *ngIf="uploadStep2FormGroup.get('customDelimiter')?.invalid">You must select a custom delimiter</mat-error>
+        </mat-form-field>
+      </div>
     </ng-container>
     <ng-container *ngIf="stepper.selectedIndex == 2">
       <div class="datalake-create-table-content-header">

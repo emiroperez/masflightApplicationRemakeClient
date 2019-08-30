@@ -271,4 +271,9 @@ export class DatalakeQueryEngineComponent implements OnInit {
     this.queryLoading = false;
     this.startQueryTime = null;
   }
+
+  calcTableWidth(): number
+  {
+    return document.getElementById ("query-engine-result-header").clientWidth;
+  }
 }

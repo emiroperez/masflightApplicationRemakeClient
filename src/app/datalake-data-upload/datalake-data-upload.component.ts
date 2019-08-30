@@ -34,7 +34,8 @@ export class DatalakeDataUploadComponent {
     });
 
     this.uploadStep2FormGroup = this.formBuilder.group ({
-      step2Ctrl: ['']
+      delimiter: ['', Validators.required],
+      customDelimiter: ['', Validators.required]
     });
 
     this.uploadStep3FormGroup = this.formBuilder.group ({

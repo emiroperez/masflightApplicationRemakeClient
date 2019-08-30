@@ -54,7 +54,7 @@
       </mat-tab-group>
     </div>
     <div class="datalake-query-execution-result-container">
-      <div class="datalake-query-execution-result-header">
+      <div class="datalake-query-execution-result-header" id="query-engine-result-header">
         <div class="datalake-query-execution-time-title">Query Execution Time</div>
         <div class="datalake-query-execution-time-sub-title" *ngIf="!startQueryTime && !endQueryTime">Not run</div>
         <div class="datalake-query-execution-time-sub-title" *ngIf="startQueryTime && !endQueryTime">Running...</div>
@@ -63,7 +63,7 @@
           <mat-icon class="close-icon">close</mat-icon> 
         </button>
       </div>
-      <div class="datalake-query-execution-result-body">
+      <div class="datalake-query-execution-result-body" [style.width.px]="calcTableWidth()">
         <ng-container *ngIf="queryLoading">
           <div class="datalake-query-loading"></div>
         </ng-container>

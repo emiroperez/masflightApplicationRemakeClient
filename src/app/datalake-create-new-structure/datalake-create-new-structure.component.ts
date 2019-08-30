@@ -37,7 +37,8 @@ export class DatalakeCreateNewStructureComponent {
     });
 
     this.newStep2FormGroup = this.formBuilder.group ({
-      step2Ctrl: ['']
+      delimiter: ['', Validators.required],
+      customDelimiter: ['', Validators.required]
     });
 
     this.newStep3FormGroup = this.formBuilder.group ({
