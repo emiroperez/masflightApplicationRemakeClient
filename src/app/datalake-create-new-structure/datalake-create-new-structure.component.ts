@@ -24,6 +24,12 @@ export class DatalakeCreateNewStructureComponent {
   newStep3FormGroup: FormGroup;
   newStep4FormGroup: FormGroup;
 
+  fileTypes: string[] = [ "CSV", "PARQUET" ];
+  selectedFileType: string = "CSV";
+  fileLoading: boolean = false;
+  targetFileSize: string;
+  targetFile: any;
+
   constructor(private dialog: MatDialog, private formBuilder: FormBuilder)
   {
     // initialize all form groups
@@ -94,5 +100,33 @@ export class DatalakeCreateNewStructureComponent {
       if (bucket.schemaName === schema.schemaName)
         this.currentBuckets.push (bucket);
     }
+  }
+
+  calcFileSize (size: number): string
+  {
+    if (size > 1024 * 1024 * 1024)
+    {
+      size /= 1073741824;
+      return size.toFixed (2) +  " GB";
+    }
+    else if (size > 1024 * 1024)
+    {
+      size /= 1048576;
+      return size.toFixed (2) +  " MB";
+    }
+    else if (size >= 1024)
+    {
+      size /= 1024;
+      return size.toFixed (2) + " KB";
+    }
+
+    return size + " bytes";
+  }
+
+  uploadFile(event): void
+  {
+    this.newStep1FormGroup.get ("fileLocation").setValue (event.target.files[0].name);
+    this.targetFileSize = this.calcFileSize (event.target.files[0].size);
+    this.targetFile = event.target.files[0];
   }
 }

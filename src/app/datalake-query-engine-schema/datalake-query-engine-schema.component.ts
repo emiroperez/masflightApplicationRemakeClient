@@ -11,6 +11,7 @@ import { Globals } from '../globals/Globals';
 export class DatalakeQueryEngineSchemaComponent {
 
   schemasLoaded: boolean = false;
+  isLoading: boolean = false;
 
   @Input("querySchema")
   querySchema: DatalakeQuerySchema;
@@ -23,7 +24,7 @@ export class DatalakeQueryEngineSchemaComponent {
 
     if (this.querySchema.open && !this.schemasLoaded)
     {
-      this.globals.isLoading = true;
+      this.isLoading = true;
       this.service.getDatalakeSchemaTables (this, this.querySchema.schemaName, this.setSchemaTables, this.handlerError);
     }
     else if (!this.querySchema.open)
@@ -64,7 +65,7 @@ export class DatalakeQueryEngineSchemaComponent {
   {
     if (!data.Tables.length)
     {
-      _this.globals.isLoading = false;
+      _this.isLoading = false;
       return;
     }
 
@@ -72,7 +73,7 @@ export class DatalakeQueryEngineSchemaComponent {
       _this.querySchema.tables.push (tableName);
 
     _this.querySchema.filteredTables.next (_this.querySchema.tables.slice ());
-    _this.globals.isLoading = false;
+    _this.isLoading = false;
     _this.schemasLoaded = true;
   }
 
@@ -80,7 +81,7 @@ export class DatalakeQueryEngineSchemaComponent {
   {
     // TODO: Show dialog
     console.log (result);
-    _this.globals.isLoading = false;
+    _this.isLoading = false;
     _this.querySchema.open = false;
   }
 }
