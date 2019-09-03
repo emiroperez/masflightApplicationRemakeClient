@@ -23,9 +23,9 @@
 
                 <ng-container *ngIf="isGroupAAA(item)">
                     <mat-radio-group class="GroupAAA-Container" aria-label="Select an option" [(ngModel)]="item.aaaGroup">
-                        <mat-radio-button class="GroupAAA-item" value="Airline">Group Airline</mat-radio-button>
-                        <mat-radio-button class="GroupAAA-item" value="Airport">Group Airport</mat-radio-button>
-                        <mat-radio-button class="GroupAAA-item" value="Aircraft">Group Aircraft</mat-radio-button>
+                        <mat-radio-button class="GroupAAA-item" value="Airline">Airline Group</mat-radio-button>
+                        <mat-radio-button class="GroupAAA-item" value="Airport">Airport Group</mat-radio-button>
+                        <mat-radio-button class="GroupAAA-item" value="Aircraft">Aircraft Group</mat-radio-button>
                     </mat-radio-group>
                 </ng-container>
                 
@@ -37,7 +37,8 @@
                     </div>
                     <div class="arguments-child">
                         <mat-form-field [style.width.%]="100">
-                            <input matInput placeholder="Service Arg. 1" [(ngModel)]="item.name1">
+                            <input *ngIf="!isGroupAAA(item)" matInput placeholder="Service Arg. 1" [(ngModel)]="item.name1">
+                            <input *ngIf="isGroupAAA(item)" matInput placeholder="Target" [(ngModel)]="item.targetGroup">
                         </mat-form-field>
                     </div>
                 </ng-container>

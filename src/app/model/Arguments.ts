@@ -18,6 +18,7 @@ export class Arguments{
     visibleAttribute:string;
     selectedAttribute:string;
     aaaGroup : string; //kp20190827
+    targetGroup : string; //kp20190827
     
 
     constructor(requiredIn: number,typeIn: string, name1In: string,name2In: string,

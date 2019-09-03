@@ -36,9 +36,11 @@ export class MsfGroupAaaComponent implements OnInit {
     }
 
     if(this.argument.url.substring(0,1)=="/"){
-      url = this.globals.baseUrl + this.argument.url +this.argument.aaaGroup;
+      // url = this.globals.baseUrl + this.argument.url +this.argument.aaaGroup;
+      url = this.globals.baseUrl + this.argument.url ;
     }else{
-     url = this.argument.url +this.argument.aaaGroup;
+    //  url = this.argument.url +this.argument.aaaGroup;
+     url = this.argument.url;
     }
     this.http.get(this,url,handlerSuccess,this.handlerError, null);  
   }

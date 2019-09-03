@@ -44,7 +44,8 @@ export class Utils{
 
     getUrlParameters(option: any, urlBase:boolean){
         console.log(option);
-        let params;        
+        let params;    
+        let paramsGroup = [];     
         if(option.menuOptionArguments){            
             for( let menuOptionArguments of option.menuOptionArguments){
                 if(menuOptionArguments.categoryArguments){            
@@ -53,6 +54,7 @@ export class Utils{
                         if(category && category.arguments){
                             for( let j = 0; j < category.arguments.length;j++){
                                 let argument: Arguments = category.arguments[j];
+                                if(argument.type!="AAA_Group"){
                                 if(params){
                                     if(argument.type!="singleCheckbox"&& argument.type!="serviceClasses" && argument.type!="fareLower"&& argument.type!="airportsRoutes"&&argument.name1!="intermediateCitiesList"){
                                         params += "&" + this.getArguments(argument);
@@ -66,17 +68,77 @@ export class Utils{
                                 }else{
                                     params = this.getArguments(argument);
                                 }
+                            }//kp 20190902
+                            else{
+                                paramsGroup.push({target: argument.targetGroup , val: this.getValueFormat (argument.type, argument.value1,argument)})
+                            }//kp 20190902
                             }
                         }        
                     }
                 }
             }
         }
-        
+        let newParam = this.setTarget(paramsGroup,params);
         if(option.baseUrl && urlBase){
-            return {tab:option.tab,url:option.baseUrl + "?" + params};
+            // return {tab:option.tab,url:option.baseUrl + "?" + params};
+            return {tab:option.tab,url:option.baseUrl + "?" + newParam};
         }
-        return {tab:option.tab,url: params};
+        // return {tab:option.tab,url: params};
+        return {tab:option.tab,url: newParam};
+    }
+
+    setTarget(paramsGroup: any,params: any){
+        let paramsUrl = params ;
+        let index;
+        let indexIni;
+        let indexEnd;
+        let longParam;
+        let longVal;
+        let valParamOld: String ="";
+        let newParameter: String="";
+        let oldParameter: String="";
+            
+        for (let i = 0; i < paramsGroup.length; i++) {
+        if (paramsGroup[i].val != ""){
+            index = -1;
+            indexIni = -1;
+            indexEnd= -1;
+            longParam = 0 ;
+            longVal = 0;
+            valParamOld ="";
+            newParameter ="";
+            oldParameter ="";
+            index = paramsUrl.indexOf(paramsGroup[i].target);
+            if(index!=-1){
+                indexIni = paramsUrl.indexOf("=",index);
+                indexEnd = paramsUrl.indexOf("&",index);  
+                if(indexEnd==-1){
+                    //significa que el el parametro final no termina en &
+                    indexEnd=paramsUrl.length;
+                    longParam= indexEnd-index;
+                    longVal= indexEnd - indexIni-1;
+                }else{                    
+                    longParam=indexEnd-index;
+                    longVal=indexEnd-indexIni-1;
+                }
+                //busco los valores que tenia el parametro de la url, para agregarlos al nuevo parametro que se armara con el grupo
+                if(indexIni+1!=indexEnd){
+                valParamOld = paramsUrl.substr(indexIni+1,longVal);
+                }   
+                //armo un nuevo parametro con lo que tenia y lo parametros del grupo
+                if (valParamOld=="" || valParamOld==null){
+                    newParameter=paramsGroup[i].target+"="+paramsGroup[i].val;
+                }else{
+                    newParameter = paramsGroup[i].target+"="+paramsGroup[i].val+","+valParamOld;
+                }
+                //busco el parametro que voy a remplazar
+                oldParameter = paramsUrl.substr(index,longParam);
+                //remplazo el parametro que tenia por el nuevo que tiene todos los valores 
+                paramsUrl = paramsUrl.replace(oldParameter, newParameter);
+            }
+        }
+        }   
+        return paramsUrl;
     }
 
     getParameters(option: any){
@@ -110,6 +172,17 @@ export class Utils{
         }
         
         return params;
+    }
+
+    
+    getTarget(argument: Arguments)
+    {
+        let args = '';
+
+        if (argument.targetGroup){
+            args = argument.targetGroup + "=" + this.getValueFormat (argument.type, argument.value1,argument);
+        }
+        return args;
     }
 
     getArguments(argument: Arguments)
