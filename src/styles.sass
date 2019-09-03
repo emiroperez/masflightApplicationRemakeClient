@@ -1263,6 +1263,36 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                 color: $font-color
                 .mat-button-wrapper
                     color: $font-color !important
+            .datalake-create-table-body
+                .datalake-file-type-picker
+                    .mat-radio-checked
+                        color: #ffffff !important
+                        background-color: $primary-color
+                        border-color: $primary-color !important
+                        .mat-radio-outer-circle
+                            border-color: $font-color !important
+                        .mat-radio-inner-circle
+                            background-color: $font-color !important
+                    .datalake-file-type-radio
+                        color: rgba($font-color, 0.5)
+                        border-color: rgba($font-color, 0.5)
+                        .mat-radio-outer-circle
+                            border-color: rgba($font-color, 0.5)
+                        .mat-radio-inner-circle
+                            background-color: rgba($font-color, 0.5)
+                        &:hover
+                            color: #ffffff !important
+                            background-color: $primary-color
+                            border-color: $primary-color !important
+                            .mat-radio-outer-circle
+                                border-color: $font-color !important
+                            .mat-radio-inner-circle
+                                background-color: $font-color !important
+                .datalake-create-table-input-file-picker
+                    .mat-input-element:disabled
+                        color: $font-color !important
+                    .mat-form-field-infix
+                        background-color: $admin-menu-background
             .datalake-create-table-tab, .datalake-data-upload-tab
                 background-color: $dashboard-secondary-background-color
                 .datalake-create-table-step
@@ -6881,10 +6911,18 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     .datalake-create-table-step
         width: 255px
         height: 100%
+        .mat-vertical-stepper-header
+            padding: 25px 11px !important
         .datalake-create-table-step-container
             display: flex
             flex-direction: column
             font-weight: 500
+
+.datalake-create-table-input-secondary-body
+    padding-top: 20px !important
+
+.datalake-create-table-input-tertiary-body
+    padding-top: 10px !important
 
 .datalake-create-table-dialog, .datalake-create-table-loading
     min-width: 1050px !important
@@ -6936,24 +6974,46 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                                 font-size: 15px !important
                                 width: 15px !important
                                 margin-bottom: 2px
-            .datalake-create-table-input-body
+            .datalake-create-table-input-body, .datalake-create-table-input-secondary-body
                 display: flex
                 flex-direction: row
                 padding-top: 30px
                 .datalake-create-table-input
                     padding-left: 30px
+                .datalake-delimiter-label
+                    padding-left: 10px
+            .datalake-create-table-input-file-picker
+                display: flex
+                flex-direction: row
+                .datalake-file-picker-label
+                    width: 100px
+                    align-self: center
+                    margin-bottom: 7.5px
+                .mat-form-field-infix
+                    margin-top: 3px
+                .mat-input-element:disabled
+                    margin-bottom: 5px
+                    padding: 0 10px
+                .mat-form-field-appearance-legacy.mat-form-field-disabled .mat-form-field-underline, .mat-form-field-subscript-wrapper
+                    display: none
                 .datalake-browse-file-button
                     margin-left: 30px
                     width: 120px
                     height: 40px
             .datalake-max-filesize-label
-                padding-top: 15px
+                padding-top: 7px
                 font-size: 12px
             .datalake-file-type-picker
                 margin-top: -5px
-                margin-left: 10px
                 .datalake-file-type-radio
-                    margin: 0 !important
-                    padding-left: 20px
+                    margin: 0
+                    margin-left: 10px
+                    margin-top: -10px
+                    padding: 10px
+                    border-style: solid
+                    border-width: 1px
+                    border-radius: 5px
+                    .mat-radio-outer-circle, .mat-radio-inner-circle
+                        transition: 0s !important
             .datalake-create-table-progress
                 padding-top: 25px

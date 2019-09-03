@@ -30,6 +30,9 @@ export class DatalakeCreateNewStructureComponent {
   targetFileSize: string;
   targetFile: any;
 
+  delimiters: string[] = [ "COMMA", "SEMICOLON", "TABULAR", "CUSTOM" ];
+  selectedDelimiter: string = "COMMA";
+
   constructor(private dialog: MatDialog, private formBuilder: FormBuilder)
   {
     // initialize all form groups
@@ -39,7 +42,8 @@ export class DatalakeCreateNewStructureComponent {
       schema: ['', Validators.required],
       bucket: new FormControl ({ value: '', disabled: true }, Validators.required),
       tableDescription: new FormControl ({ value: '', disabled: true }),
-      fileLocation: ['', Validators.required]
+      customDelimiter: new FormControl ({ value: '', disabled: true }),
+      fileLocation: new FormControl ({ value: '', disabled: true }, Validators.required)
     });
 
     this.newStep2FormGroup = this.formBuilder.group ({
@@ -102,7 +106,21 @@ export class DatalakeCreateNewStructureComponent {
     }
   }
 
-  calcFileSize (size: number): string
+  toggleCustomDelimiter(): void
+  {
+    let customDelimiter = this.newStep1FormGroup.get ("customDelimiter");
+
+    if (this.selectedDelimiter === "CUSTOM")
+    {
+      customDelimiter.enable ();
+      return;
+    }
+
+    customDelimiter.setValue ("");
+    customDelimiter.disable ();
+  }
+
+  calcFileSize(size: number): string
   {
     if (size > 1024 * 1024 * 1024)
     {
@@ -121,6 +139,31 @@ export class DatalakeCreateNewStructureComponent {
     }
 
     return size + " bytes";
+  }
+
+  getAcceptedFileFormat(): string
+  {
+    if (this.selectedFileType === "CSV")
+      return ".csv";
+
+    return ".parquet";
+  }
+
+  browseFile(uploader): void
+  {
+    if (this.selectedDelimiter === "CUSTOM")
+    {
+      if (this.newStep1FormGroup.get ("customDelimiter").value === "")
+      {
+        this.dialog.open (MessageComponent, {
+          data: { title: "Error", message: "You must specify a delimiter before importing a file." }
+        });
+
+        return;
+      }
+    }
+
+    uploader.click ();
   }
 
   uploadFile(event): void

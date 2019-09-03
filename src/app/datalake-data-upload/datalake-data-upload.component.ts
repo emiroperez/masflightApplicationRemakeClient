@@ -23,6 +23,15 @@ export class DatalakeDataUploadComponent {
   uploadStep2FormGroup: FormGroup;
   uploadStep3FormGroup: FormGroup;
 
+  fileTypes: string[] = [ "CSV", "PARQUET" ];
+  selectedFileType: string = "CSV";
+  fileLoading: boolean = false;
+  targetFileSize: string;
+  targetFile: any;
+
+  delimiters: string[] = [ "COMMA", "SEMICOLON", "TABULAR", "CUSTOM" ];
+  selectedDelimiter: string = "COMMA";
+
   constructor(private dialog: MatDialog, private formBuilder: FormBuilder)
   {
     // initialize all form groups
@@ -30,7 +39,8 @@ export class DatalakeDataUploadComponent {
       schema: ['', Validators.required],
       bucket: new FormControl ({ value: '', disabled: true }, Validators.required),
       tableDescription: new FormControl ({ value: '', disabled: true }),
-      fileLocation: ['', Validators.required]
+      customDelimiter: new FormControl ({ value: '', disabled: true }),
+      fileLocation: new FormControl ({ value: '', disabled: true }, Validators.required)
     });
 
     this.uploadStep2FormGroup = this.formBuilder.group ({
@@ -87,5 +97,72 @@ export class DatalakeDataUploadComponent {
       if (bucket.schemaName === schema.schemaName)
         this.currentBuckets.push (bucket);
     }
+  }
+
+  toggleCustomDelimiter(): void
+  {
+    let customDelimiter = this.uploadStep1FormGroup.get ("customDelimiter");
+
+    if (this.selectedDelimiter === "CUSTOM")
+    {
+      customDelimiter.enable ();
+      return;
+    }
+
+    customDelimiter.setValue ("");
+    customDelimiter.disable ();
+  }
+
+  calcFileSize(size: number): string
+  {
+    if (size > 1024 * 1024 * 1024)
+    {
+      size /= 1073741824;
+      return size.toFixed (2) +  " GB";
+    }
+    else if (size > 1024 * 1024)
+    {
+      size /= 1048576;
+      return size.toFixed (2) +  " MB";
+    }
+    else if (size >= 1024)
+    {
+      size /= 1024;
+      return size.toFixed (2) + " KB";
+    }
+
+    return size + " bytes";
+  }
+
+  getAcceptedFileFormat(): string
+  {
+    if (this.selectedFileType === "CSV")
+      return ".csv";
+
+    return ".parquet";
+  }
+
+  browseFile(uploader): void
+  {
+    if (this.selectedDelimiter === "CUSTOM")
+    {
+      if (this.uploadStep1FormGroup.get ("customDelimiter").value === "")
+      {
+        this.dialog.open (MessageComponent, {
+          data: { title: "Error", message: "You must specify a delimiter before importing a file." }
+        });
+
+        return;
+      }
+    }
+
+    uploader.click ();
+  }
+
+  uploadFile(event): void
+  {
+    this.uploadStep1FormGroup.get ("fileLocation").setValue (event.target.files[0].name);
+    this.targetFileSize = this.calcFileSize (event.target.files[0].size);
+    this.targetFile = event.target.files[0];
   }
 }

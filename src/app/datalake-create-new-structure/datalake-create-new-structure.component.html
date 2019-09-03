@@ -69,7 +69,7 @@
           <mat-error *ngIf="newStep1FormGroup.get('tableLongName')?.invalid">You must specify a table long name</mat-error>
         </mat-form-field>
       </div>
-      <div class="datalake-create-table-input-body">
+      <div class="datalake-create-table-input-secondary-body">
         <mat-form-field [formGroup]="newStep1FormGroup">
           <mat-select placeholder="Schema" autocomplete="off" formControlName="schema"
             (selectionChange)="schemaChanged(newStep1FormGroup)" required>
@@ -88,7 +88,7 @@
           <mat-error *ngIf="newStep1FormGroup.get('bucket')?.invalid">You must select a bucket</mat-error>
         </mat-form-field>
       </div>
-      <div class="datalake-create-table-input-body">
+      <div class="datalake-create-table-input-secondary-body">
         <mat-form-field [formGroup]="newStep1FormGroup">
           <input matInput placeholder="Table Description" autocomplete="off" formControlName="tableDescription">
         </mat-form-field>
@@ -100,14 +100,25 @@
         <mat-radio-group [(ngModel)]="selectedFileType" class="datalake-file-type-picker">
           <mat-radio-button class="cancels-checkbox datalake-file-type-radio" *ngFor="let fileType of fileTypes" [value]="fileType">{{fileType}}</mat-radio-button>
         </mat-radio-group>
+        <span class="datalake-delimiter-label">
+          Delimiter *:
+        </span>
+        <mat-radio-group [(ngModel)]="selectedDelimiter" (ngModelChange)="toggleCustomDelimiter()" class="datalake-file-type-picker">
+          <mat-radio-button class="cancels-checkbox datalake-file-type-radio" *ngFor="let delimiter of delimiters" [value]="delimiter">{{delimiter}}</mat-radio-button>
+        </mat-radio-group>
       </div>
-      <div class="datalake-create-table-input-body">
+      <div class="datalake-create-table-input-tertiary-body">
         <mat-form-field [formGroup]="newStep1FormGroup">
-          <input matInput placeholder="File Location" formControlName="fileLocation" required>
-          <mat-error *ngIf="newStep1FormGroup.get('fileLocation')?.invalid">You must specify a file location</mat-error>
+          <input matInput placeholder="Custom Delimiter" autocomplete="off" formControlName="customDelimiter">
         </mat-form-field>
-        <input hidden type="file" accept=".csv, .parquet" #uploader (change)="uploadFile($event)">
-        <button class="datalake-browse-file-button flat-button" mat-button (click)="uploader.click()">
+      </div>
+      <div class="datalake-create-table-input-file-picker">
+        <span class="datalake-file-picker-label">Filename *:</span>
+        <mat-form-field [formGroup]="newStep1FormGroup">
+          <input matInput formControlName="fileLocation" required>
+        </mat-form-field>
+        <input hidden type="file" accept="{{getAcceptedFileFormat()}}" #uploader (change)="uploadFile($event)">
+        <button class="datalake-browse-file-button flat-button" mat-button (click)="browseFile(uploader)">
           Browse
         </button>
       </div>
