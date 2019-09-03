@@ -20,7 +20,6 @@ export class DatalakeDataUploadComponent {
   currentBuckets: DatalakeBucket[] = [];
 
   uploadStep1FormGroup: FormGroup;
-  uploadStep2FormGroup: FormGroup;
   uploadStep3FormGroup: FormGroup;
 
   fileTypes: string[] = [ "CSV", "PARQUET" ];
@@ -41,11 +40,6 @@ export class DatalakeDataUploadComponent {
       tableDescription: new FormControl ({ value: '', disabled: true }),
       customDelimiter: new FormControl ({ value: '', disabled: true }),
       fileLocation: new FormControl ({ value: '', disabled: true }, Validators.required)
-    });
-
-    this.uploadStep2FormGroup = this.formBuilder.group ({
-      delimiter: ['', Validators.required],
-      customDelimiter: ['', Validators.required]
     });
 
     this.uploadStep3FormGroup = this.formBuilder.group ({

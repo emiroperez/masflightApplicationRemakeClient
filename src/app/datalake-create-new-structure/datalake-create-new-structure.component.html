@@ -18,7 +18,7 @@
           </div>
         </ng-template>
       </mat-step>
-      <mat-step [stepControl]="newStep2FormGroup">
+      <mat-step>
         <ng-template matStepLabel>
           <div class="datalake-create-table-step-container">
             <span class="datalake-create-table-step-label">STEP 2</span>
@@ -131,12 +131,11 @@
       <div class="datalake-create-table-content-header">
         <div class="datalake-create-table-step-title">
           <span class="datalake-create-table-step-title-label">STEP 2 - DATA PREVIEW</span>
-          <span class="datalake-create-table-step-description">If the source is CSV, it allows to choose the delimiter
-            chart</span>
+          <span class="datalake-create-table-step-description">View the data after importing a file containing the results</span>
         </div>
         <div class="datalake-create-table-step-buttons">
           <button class="datalake-create-table-step-button flat-button" mat-button
-            (click)="goForward(newStep2FormGroup, stepper)">
+            (click)="goForward(null, stepper)">
             NEXT
             <mat-icon>arrow_forward_ios</mat-icon>
           </button>
@@ -146,15 +145,19 @@
           </button>
         </div>
       </div>
-      <div class="datalake-create-table-input-body">
-        <mat-form-field [formGroup]="newStep2FormGroup">
-          <input matInput placeholder="Delimiter" autocomplete="off" formControlName="delimiter" required>
-          <mat-error *ngIf="newStep2FormGroup.get('delimiter')?.invalid">You must select a delimiter</mat-error>
-        </mat-form-field>
-        <mat-form-field [formGroup]="newStep2FormGroup" class="datalake-create-table-input">
-          <input matInput placeholder="Custom Delimiter" autocomplete="off" formControlName="customDelimiter" required>
-          <mat-error *ngIf="newStep2FormGroup.get('customDelimiter')?.invalid">You must select a custom delimiter</mat-error>
-        </mat-form-field>
+      <div class="datalake-create-table-input-body datalake-data-preview-body">
+        <div class="datalake-data-preview">
+          <div class="datalake-raw-data">
+            <span>Raw View</span>
+            <div class="datalake-raw-data-preview">
+            </div>
+          </div>
+          <div class="datalake-table-data">
+            <span>Table View</span>
+            <div class="datalake-table-data-preview">
+            </div>
+          </div>
+        </div>
       </div>
     </ng-container>
     <ng-container *ngIf="stepper.selectedIndex == 2">

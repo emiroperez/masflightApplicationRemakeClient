@@ -20,7 +20,6 @@ export class DatalakeCreateNewStructureComponent {
   currentBuckets: DatalakeBucket[] = [];
 
   newStep1FormGroup: FormGroup;
-  newStep2FormGroup: FormGroup;
   newStep3FormGroup: FormGroup;
   newStep4FormGroup: FormGroup;
 
@@ -46,11 +45,6 @@ export class DatalakeCreateNewStructureComponent {
       fileLocation: new FormControl ({ value: '', disabled: true }, Validators.required)
     });
 
-    this.newStep2FormGroup = this.formBuilder.group ({
-      delimiter: ['', Validators.required],
-      customDelimiter: ['', Validators.required]
-    });
-
     this.newStep3FormGroup = this.formBuilder.group ({
       step3Ctrl: ['']
     });
@@ -67,6 +61,12 @@ export class DatalakeCreateNewStructureComponent {
 
   goForward(formGroup: FormGroup, stepper: MatStepper): void
   {
+    if (!formGroup)
+    {
+      stepper.next ();
+      return;
+    }
+
     // validate form before going forward
     Object.keys (formGroup.controls).forEach (field =>
     {
