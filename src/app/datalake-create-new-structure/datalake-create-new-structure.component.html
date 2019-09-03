@@ -100,15 +100,15 @@
         <mat-radio-group [(ngModel)]="selectedFileType" class="datalake-file-type-picker">
           <mat-radio-button class="cancels-checkbox datalake-file-type-radio" *ngFor="let fileType of fileTypes" [value]="fileType">{{fileType}}</mat-radio-button>
         </mat-radio-group>
-        <span class="datalake-delimiter-label">
+      </div>
+      <div class="datalake-create-table-input-body">
+        <span>
           Delimiter *:
         </span>
         <mat-radio-group [(ngModel)]="selectedDelimiter" (ngModelChange)="toggleCustomDelimiter()" class="datalake-file-type-picker">
           <mat-radio-button class="cancels-checkbox datalake-file-type-radio" *ngFor="let delimiter of delimiters" [value]="delimiter">{{delimiter}}</mat-radio-button>
         </mat-radio-group>
-      </div>
-      <div class="datalake-create-table-input-tertiary-body">
-        <mat-form-field [formGroup]="newStep1FormGroup">
+        <mat-form-field class="datalake-custom-delimiter" [formGroup]="newStep1FormGroup">
           <input matInput placeholder="Custom Delimiter" autocomplete="off" formControlName="customDelimiter">
         </mat-form-field>
       </div>
