@@ -204,7 +204,11 @@ export class DatalakeCreateNewStructureComponent {
 
   uploadFailed(_this, result): void
   {
+    // remove filename from input if the upload failed
     _this.fileLoading = false;
+    _this.targetFile = null;
+    _this.newStep1FormGroup.get ("fileLocation").setValue (null);
+
     console.log (result);
   }
 }
