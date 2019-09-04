@@ -150,11 +150,32 @@
           <div class="datalake-raw-data">
             <span>Raw View</span>
             <div class="datalake-raw-data-preview">
+              <div class="datalake-raw-data-item" *ngFor="let data of rawData">
+                {{data}}
+              </div>
             </div>
           </div>
           <div class="datalake-table-data">
             <span>Table View</span>
             <div class="datalake-table-data-preview">
+              <div class="datalake-table-data-display">
+                <div class="datalake-table-data-item">
+                  <div class="datalake-table-data-subitem">
+                    test
+                  </div>
+                  <div class="datalake-table-data-subitem">
+                    test
+                  </div>
+                </div>
+                <div class="datalake-table-data-item">
+                  <div class="datalake-table-data-subitem">
+                    test2
+                  </div>
+                  <div class="datalake-table-data-subitem">
+                    test2
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

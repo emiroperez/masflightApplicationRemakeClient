@@ -18,6 +18,7 @@ export class DatalakeCreateNewStructureComponent {
   buckets: DatalakeBucket[] = [];
 
   currentBuckets: DatalakeBucket[] = [];
+  rawData: string[] = [ "test,,test", "test2,test2,test2" ];
 
   newStep1FormGroup: FormGroup;
   newStep3FormGroup: FormGroup;

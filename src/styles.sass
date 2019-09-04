@@ -1326,6 +1326,10 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                 color: $font-color
         .datalake-raw-data-preview
             background-color: $background-color
+            .datalake-raw-data-item
+                border-bottom: solid 1px $dashboard-border-color
+        .datalake-table-data-subitem
+            border-bottom: solid 1px $background-color
         .datalake-table-data-preview
             background-color: $secondary-background-color
         .CodeMirror, .CodeMirror-gutters
@@ -7050,3 +7054,15 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     margin-top: 25px
     width: 100%
     height: 100%
+    overflow: auto
+    .datalake-raw-data-item
+        padding: 10px
+    .datalake-table-data-display
+        display: table
+        width: 100%
+        .datalake-table-data-item
+            display: table-row
+            .datalake-table-data-subitem
+                display: table-cell
+                white-space: nowrap
+                padding: 10px

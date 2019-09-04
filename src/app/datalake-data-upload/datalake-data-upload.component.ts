@@ -18,6 +18,7 @@ export class DatalakeDataUploadComponent {
   buckets: DatalakeBucket[] = [];
 
   currentBuckets: DatalakeBucket[] = [];
+  rawData: string[] = [ "test,,test", "test2,test2,test2" ];
 
   uploadStep1FormGroup: FormGroup;
   uploadStep3FormGroup: FormGroup;
