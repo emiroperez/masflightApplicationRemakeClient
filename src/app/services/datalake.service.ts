@@ -15,17 +15,17 @@ export class DatalakeService {
     }
 
     getDatalakeTables(_this, handlerSuccess, handlerError): void {
-        let url = this.host + "/GetDatalakeTables?token=!edhnOCfSX3m5QYnpxQO5h9IWUukcLNvDwb";
+        let url = this.host + "/GetDatalakeTables?token=rHgGv10eoP1PmScdpki!8buJYKmT93Mrvj!";
         this.http.get(_this, url, handlerSuccess, handlerError, null);
     }
 
     getDatalakeTableColumns(_this, schemaName, tableName, handlerSuccess, handlerError): void {
-        let url = this.host + "/GetDatalakeTableColumns?token=!edhnOCfSX3m5QYnpxQO5h9IWUukcLNvDwb&schemaName=" + schemaName + "&tableName=" + tableName;
+        let url = this.host + "/GetDatalakeTableColumns?token=rHgGv10eoP1PmScdpki!8buJYKmT93Mrvj!&schemaName=" + schemaName + "&tableName=" + tableName;
         this.http.get(_this, url, handlerSuccess, handlerError, null);
     }
 
     getDatalakeTableData(_this, schemaName, tableName, limit, handlerSuccess, handlerError): void {
-        let url = this.host + "/GetDatalakeTableData?userName=erich&token=!edhnOCfSX3m5QYnpxQO5h9IWUukcLNvDwb&schemaName=" + schemaName + "&tableName=" + tableName + "&limit=" + limit;
+        let url = this.host + "/GetDatalakeTableData?userName=erich&token=rHgGv10eoP1PmScdpki!8buJYKmT93Mrvj!&schemaName=" + schemaName + "&tableName=" + tableName + "&limit=" + limit;
         this.http.get(_this, url, handlerSuccess, handlerError, null);
     }
 
@@ -35,14 +35,14 @@ export class DatalakeService {
         let request = {
             Schema: "",
             userName: "erich",
-            Token: "!edhnOCfSX3m5QYnpxQO5h9IWUukcLNvDwb"
+            Token: "rHgGv10eoP1PmScdpki!8buJYKmT93Mrvj!"
         };
 
         this.http.post(_this, url, request, handlerSuccess, handlerError);
     }
 
     getDatalakeBuckets(_this, handlerSuccess, handlerError): void {
-        let url = this.host + "/GetDatalakeBuckets?token=!edhnOCfSX3m5QYnpxQO5h9IWUukcLNvDwb";
+        let url = this.host + "/GetDatalakeBuckets?token=rHgGv10eoP1PmScdpki!8buJYKmT93Mrvj!";
         this.http.get(_this, url, handlerSuccess, handlerError, null);
     }
 
@@ -52,7 +52,7 @@ export class DatalakeService {
         let request = {
             Schema: schemaName,
             userName: "erich",
-            Token: "!edhnOCfSX3m5QYnpxQO5h9IWUukcLNvDwb"
+            Token: "rHgGv10eoP1PmScdpki!8buJYKmT93Mrvj!"
         };
 
         this.http.post(_this, url, request, handlerSuccess, handlerError);
@@ -64,7 +64,7 @@ export class DatalakeService {
         let request = {
             Schema: schemaName,
             userName: "erich",
-            Token: "!edhnOCfSX3m5QYnpxQO5h9IWUukcLNvDwb",
+            Token: "rHgGv10eoP1PmScdpki!8buJYKmT93Mrvj!",
             Raw: queryInput
         };
 
@@ -74,7 +74,7 @@ export class DatalakeService {
     uploadDatalakeTableFile(_this, config, file, handlerSuccess, handlerError)
     {
         let url = this.host + "/uploadDatalakeTableFile?separator=" + config.separator +
-            "&token=" + config.token + "&format=" + config.format + "&s3filepath=" +
+            "&token=rHgGv10eoP1PmScdpki!8buJYKmT93Mrvj!" + "&format=" + config.format + "&s3filepath=" +
             config.s3filepath;
 
         this.http.post (_this, url, file, handlerSuccess, handlerError);

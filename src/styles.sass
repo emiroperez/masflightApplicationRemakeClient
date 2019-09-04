@@ -6905,17 +6905,15 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 .CodeMirror-linenumber
     text-align: end
 
-.datalake-create-table-tab
+.datalake-create-table-tab, .datalake-data-upload-tab
     .mat-vertical-content-container
         padding-top: 70px
-
-.datalake-data-upload-tab
-    .mat-vertical-content-container
-        padding-top: 140px
 
 .datalake-create-table-tab, .datalake-data-upload-tab
     display: flex
     height: 500px
+    .mat-vertical-content-container
+        padding-top: 70px
     .mat-vertical-content
         display: none
     .datalake-create-table-step
@@ -6932,6 +6930,11 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 
 .datalake-create-table-input-secondary-body
     padding-top: 12.5px !important
+
+.datalake-table-location, .datalake-upload-data-table-location
+    margin-top: -15px
+    margin-left: 10px
+    padding-bottom: 5px
 
 .datalake-create-table-dialog, .datalake-create-table-loading
     min-width: 1050px !important
@@ -6995,6 +6998,10 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                     width: 258px
                     padding-left: 15px
                     margin-top: -10px
+                .datalake-table-location
+                    width: 521px !important
+                .datalake-upload-data-table-location
+                    width: 505px !important
                 .datalake-upload-data-custom-delimiter
                     width: 242px !important
             .datalake-create-table-input-file-picker
@@ -7035,6 +7042,9 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
             .datalake-create-table-progress
                 padding-top: 25px
 
+.datalake-delimiter-selector
+    padding-top: 15px !important
+
 .datalake-data-preview-body
     height: calc(100% - 100px)
     .datalake-data-preview
@@ -7044,11 +7054,11 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
             padding-right: 20px
             font-weight: 550
             font-size: 12px
-            width: 40%
+            width: 325px
         .datalake-table-data
             font-weight: 550
             font-size: 12px
-            width: 60%
+            width: 425px
 
 .datalake-raw-data-preview, .datalake-table-data-preview
     margin-top: 25px
@@ -7056,6 +7066,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     height: 100%
     overflow: auto
     .datalake-raw-data-item
+        white-space: nowrap
         padding: 10px
     .datalake-table-data-display
         display: table
@@ -7065,4 +7076,5 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
             .datalake-table-data-subitem
                 display: table-cell
                 white-space: nowrap
+                text-align: center
                 padding: 10px

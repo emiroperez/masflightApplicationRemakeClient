@@ -20,8 +20,8 @@ export class DatalakeDataUploadComponent {
 
   currentBuckets: DatalakeBucket[] = [];
 
-  uploadStep1FormGroup: FormGroup;
-  uploadStep3FormGroup: FormGroup;
+  tableConfigurationFormGroup: FormGroup;
+  partitionManagementFormGroup: FormGroup;
 
   fileTypes: string[] = [ "CSV", "PARQUET" ];
   selectedFileType: string = "CSV";
@@ -31,22 +31,25 @@ export class DatalakeDataUploadComponent {
 
   delimiters: string[] = [ "COMMA", "SEMICOLON", "TABULAR", "CUSTOM" ];
   selectedDelimiter: string = "COMMA";
+  delimiterCharacter: string = ",";
 
   dataSource: any[];
+  rawData: string[][];
 
   constructor(private dialog: MatDialog, private formBuilder: FormBuilder,
     private service: DatalakeService)
   {
     // initialize all form groups
-    this.uploadStep1FormGroup = this.formBuilder.group ({
+    this.tableConfigurationFormGroup = this.formBuilder.group ({
       schema: ['', Validators.required],
       bucket: new FormControl ({ value: '', disabled: true }, Validators.required),
       tableDescription: new FormControl ({ value: '', disabled: true }),
       customDelimiter: new FormControl ({ value: '', disabled: true }),
-      fileLocation: new FormControl ({ value: '', disabled: true }, Validators.required)
+      tableLocation: ['', Validators.required],
+      fileName: new FormControl ({ value: '', disabled: true }, Validators.required)
     });
 
-    this.uploadStep3FormGroup = this.formBuilder.group ({
+    this.partitionManagementFormGroup = this.formBuilder.group ({
       step3Ctrl: ['', Validators.required]
     });
   }
@@ -58,6 +61,12 @@ export class DatalakeDataUploadComponent {
 
   goForward(formGroup: FormGroup, stepper: MatStepper): void
   {
+    if (!formGroup)
+    {
+      stepper.next ();
+      return;
+    }
+
     // validate form before going forward
     Object.keys (formGroup.controls).forEach (field =>
     {
@@ -81,11 +90,11 @@ export class DatalakeDataUploadComponent {
     let bucketValue: AbstractControl;
     let schema: DatalakeQuerySchema;
 
-    bucketValue = this.uploadStep1FormGroup.get ("bucket");
+    bucketValue = this.tableConfigurationFormGroup.get ("bucket");
     bucketValue.enable ();
-    this.uploadStep1FormGroup.get ("tableDescription").enable ();
+    this.tableConfigurationFormGroup.get ("tableDescription").enable ();
 
-    schema = this.uploadStep1FormGroup.get ("schema").value;
+    schema = this.tableConfigurationFormGroup.get ("schema").value;
     bucketValue.setValue (null);
     bucketValue.markAsUntouched ();
     this.currentBuckets = [];
@@ -99,7 +108,7 @@ export class DatalakeDataUploadComponent {
 
   toggleCustomDelimiter(): void
   {
-    let customDelimiter = this.uploadStep1FormGroup.get ("customDelimiter");
+    let customDelimiter = this.tableConfigurationFormGroup.get ("customDelimiter");
 
     if (this.selectedDelimiter === "CUSTOM")
     {
@@ -142,9 +151,9 @@ export class DatalakeDataUploadComponent {
 
   browseFile(uploader): void
   {
-    if (this.selectedDelimiter === "CUSTOM")
+    if (this.selectedFileType === "CSV" && this.selectedDelimiter === "CUSTOM")
     {
-      if (this.uploadStep1FormGroup.get ("customDelimiter").value === "")
+      if (this.tableConfigurationFormGroup.get ("customDelimiter").value === "")
       {
         this.dialog.open (MessageComponent, {
           data: { title: "Error", message: "You must specify a delimiter before importing a file." }
@@ -157,28 +166,48 @@ export class DatalakeDataUploadComponent {
     uploader.click ();
   }
 
+  getDelimiterCharacter(): string
+  {
+    switch (this.selectedDelimiter)
+    {
+      case "COMMA":
+        return ",";
+
+      case "SEMICOLON":
+        return ";";
+
+      case "TABULAR":
+        return "\t";
+
+      default:
+        return this.tableConfigurationFormGroup.get ("customDelimiter").value;
+    }
+  }
+
   uploadFile(event): void
   {
     let fileInfo = new FormData ();
-    let config;
+    let tableFileConfig;
 
+    this.delimiterCharacter = this.getDelimiterCharacter ();
     this.targetFile = event.target.files[0];
     fileInfo.append ('file', this.targetFile, this.targetFile.name);
 
-    config = {
-      separator: this.selectedDelimiter,
-      token: "!edhnOCfSX3m5QYnpxQO5h9IWUukcLNvDwb",
+    tableFileConfig = {
+      separator: this.delimiterCharacter,
       format: this.selectedFileType,
-      s3filepath: ""
+      s3filepath: this.tableConfigurationFormGroup.get ("tableLocation").value
     };
 
     this.fileLoading = true;
-    this.service.uploadDatalakeTableFile (this, config, fileInfo, this.uploadSuccess, this.uploadFailed);
+    this.service.uploadDatalakeTableFile (this, tableFileConfig, fileInfo, this.uploadSuccess, this.uploadFailed);
   }
 
   uploadSuccess(_this, data): void
   {
-    _this.uploadStep1FormGroup.get ("fileLocation").setValue (_this.targetFile.name);
+    let fileReader: FileReader;
+
+    _this.tableConfigurationFormGroup.get ("fileName").setValue (_this.targetFile.name);
     _this.targetFileSize = _this.calcFileSize (_this.targetFile.size);
 
     _this.dataSource = [];
@@ -186,7 +215,38 @@ export class DatalakeDataUploadComponent {
     for (let column of data.columns)
       _this.dataSource.push (column);
 
-    _this.fileLoading = false;
+    // do not read as text the parquet file type
+    if (_this.selectedFileType === "PARQUET")
+    {
+      _this.rawData = [];
+      _this.fileLoading = false;
+      return;
+    }
+
+    fileReader = new FileReader ();
+    fileReader.onload = (e) => {
+      let data: string = fileReader.result as string;
+      let columns: string[];
+
+      // split the columns first
+      columns = data.split ("\r\n");
+
+      _this.rawData = [];
+
+      // then the rows by the selected delimiter
+      for (let i = 0; i < columns.length; i++)
+      {
+        if (i >= 15)
+          break;    // limit it to 25 for better performance
+
+        _this.rawData.push (columns[i].split (_this.delimiterCharacter));
+      }
+
+      _this.fileLoading = false;
+    };
+
+    // read file as text for data preview
+    fileReader.readAsText (_this.targetFile);
   }
 
   uploadFailed(_this, result): void
@@ -194,7 +254,7 @@ export class DatalakeDataUploadComponent {
     // remove filename from input if the upload failed
     _this.fileLoading = false;
     _this.targetFile = null;
-    _this.uploadStep1FormGroup.get ("fileLocation").setValue (null);
+    _this.tableConfigurationFormGroup.get ("fileName").setValue (null);
 
     console.log (result);
   }

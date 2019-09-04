@@ -10,9 +10,8 @@ import { DatalakeBucket } from '../datalake-create-table/datalake-bucket';
   templateUrl: './datalake-create-table.component.html'
 })
 export class DatalakeCreateTableComponent {
-  // schemas: DatalakeQuerySchema[] = [];
-  schemas: DatalakeQuerySchema[] = [ new DatalakeQuerySchema ("test") ];
-  buckets: DatalakeBucket[] = [ new DatalakeBucket ("testbucket", "test") ];
+  schemas: DatalakeQuerySchema[] = [];
+  buckets: DatalakeBucket[] = [];
   isLoading: boolean = false;
 
   constructor(public dialogRef: MatDialogRef<DatalakeCreateTableComponent>,
