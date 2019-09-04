@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
-import { ApplicationService } from '../services/application.service';
+import { DatalakeService } from '../services/datalake.service';
 import { Globals } from '../globals/Globals';
 
 const TABLE_PREVIEW_LIMIT: number = 10;
@@ -16,7 +16,7 @@ export class DatalakeTablePreviewComponent {
   dataSource: any[] = [];
 
   constructor(public dialogRef: MatDialogRef<DatalakeTablePreviewComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any, private service: ApplicationService,
+    @Inject(MAT_DIALOG_DATA) public data: any, private service: DatalakeService,
     public globals: Globals)
   {
     this.globals.popupLoading = true;

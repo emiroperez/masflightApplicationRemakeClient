@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material';
 import { ReplaySubject, Subject } from 'rxjs';
 
 import { DatalakeTableCardValues } from '../datalake-table-card/datalake-table-card-values';
-import { ApplicationService } from '../services/application.service';
+import { DatalakeService } from '../services/datalake.service';
 import { Globals } from '../globals/Globals';
 import { DatalakeCreateTableComponent } from '../datalake-create-table/datalake-create-table.component';
 
@@ -20,7 +20,7 @@ export class DatalakeExplorerComponent implements OnInit {
   currentScreen: number = 0;
 
   constructor(public globals: Globals, private dialog: MatDialog,
-    private service: ApplicationService) { }
+    private service: DatalakeService) { }
 
   ngOnInit()
   {

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
 
-import { ApplicationService } from '../services/application.service';
+import { DatalakeService } from '../services/datalake.service';
 import { DatalakeQuerySchema } from '../datalake-query-engine/datalake-query-schema';
 import { DatalakeBucket } from '../datalake-create-table/datalake-bucket';
 
@@ -16,7 +16,7 @@ export class DatalakeCreateTableComponent {
   isLoading: boolean = false;
 
   constructor(public dialogRef: MatDialogRef<DatalakeCreateTableComponent>,
-    private service: ApplicationService)
+    private service: DatalakeService)
   {
     this.isLoading = true;
     this.service.getDatalakeSchemas (this, this.setSchemas, this.handlerError);

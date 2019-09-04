@@ -4,7 +4,7 @@ import { CodemirrorComponent } from '@ctrl/ngx-codemirror';
 import "codemirror/mode/sql/sql";
 
 import { Globals } from '../globals/Globals';
-import { ApplicationService } from '../services/application.service';
+import { DatalakeService } from '../services/datalake.service';
 import { DatalakeQuerySchema } from '../datalake-query-engine/datalake-query-schema';
 import { DatalakeQueryTab } from './datalake-query-tab';
 import { MessageComponent } from '../message/message.component';
@@ -44,7 +44,7 @@ export class DatalakeQueryEngineComponent implements OnInit {
   dataSource: any[] = [];
 
   constructor(public globals: Globals, private changeDetectorRef: ChangeDetectorRef,
-    private dialog: MatDialog, private service: ApplicationService) { }
+    private dialog: MatDialog, private service: DatalakeService) { }
 
   ngOnInit()
   {

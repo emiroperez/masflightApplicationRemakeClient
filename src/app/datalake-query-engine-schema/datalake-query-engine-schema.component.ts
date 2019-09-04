@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 import { DatalakeQuerySchema } from '../datalake-query-engine/datalake-query-schema';
-import { ApplicationService } from '../services/application.service';
+import { DatalakeService } from '../services/datalake.service';
 import { Globals } from '../globals/Globals';
 
 @Component({
@@ -16,7 +16,7 @@ export class DatalakeQueryEngineSchemaComponent {
   @Input("querySchema")
   querySchema: DatalakeQuerySchema;
 
-  constructor(public globals: Globals, private service: ApplicationService) { }
+  constructor(public globals: Globals, private service: DatalakeService) { }
 
   toggleSchema(): void
   {

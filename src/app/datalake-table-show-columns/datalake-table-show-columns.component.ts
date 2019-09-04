@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
-import { ApplicationService } from '../services/application.service';
+import { DatalakeService } from '../services/datalake.service';
 import { Globals } from '../globals/Globals';
 
 @Component({
@@ -19,7 +19,7 @@ export class DatalakeTableShowColumnsComponent {
   dataSource: any[] = [];
 
   constructor(public dialogRef: MatDialogRef<DatalakeTableShowColumnsComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any, private service: ApplicationService,
+    @Inject(MAT_DIALOG_DATA) public data: any, private service: DatalakeService,
     public globals: Globals)
   {
     this.globals.popupLoading = true;

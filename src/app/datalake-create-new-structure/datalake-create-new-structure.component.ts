@@ -169,8 +169,8 @@ export class DatalakeCreateNewStructureComponent {
 
   uploadFile(event): void
   {
-    this.newStep1FormGroup.get ("fileLocation").setValue (event.target.files[0].name);
-    this.targetFileSize = this.calcFileSize (event.target.files[0].size);
+    /*this.newStep1FormGroup.get ("fileLocation").setValue (event.target.files[0].name);
+    this.targetFileSize = this.calcFileSize (event.target.files[0].size);*/
     this.targetFile = event.target.files[0];
   }
 }
