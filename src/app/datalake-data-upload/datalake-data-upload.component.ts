@@ -5,6 +5,7 @@ import { MatStepper, MatDialog } from '@angular/material';
 import { MessageComponent } from '../message/message.component';
 import { DatalakeQuerySchema } from '../datalake-query-engine/datalake-query-schema';
 import { DatalakeBucket } from '../datalake-create-table/datalake-bucket';
+import { DatalakeService } from '../services/datalake.service';
 
 @Component({
   selector: 'app-datalake-data-upload',
@@ -18,7 +19,6 @@ export class DatalakeDataUploadComponent {
   buckets: DatalakeBucket[] = [];
 
   currentBuckets: DatalakeBucket[] = [];
-  rawData: string[] = [ "test,,test", "test2,test2,test2" ];
 
   uploadStep1FormGroup: FormGroup;
   uploadStep3FormGroup: FormGroup;
@@ -32,7 +32,10 @@ export class DatalakeDataUploadComponent {
   delimiters: string[] = [ "COMMA", "SEMICOLON", "TABULAR", "CUSTOM" ];
   selectedDelimiter: string = "COMMA";
 
-  constructor(private dialog: MatDialog, private formBuilder: FormBuilder)
+  dataSource: any[];
+
+  constructor(private dialog: MatDialog, private formBuilder: FormBuilder,
+    private service: DatalakeService)
   {
     // initialize all form groups
     this.uploadStep1FormGroup = this.formBuilder.group ({
@@ -156,8 +159,39 @@ export class DatalakeDataUploadComponent {
 
   uploadFile(event): void
   {
-    this.uploadStep1FormGroup.get ("fileLocation").setValue (event.target.files[0].name);
-    this.targetFileSize = this.calcFileSize (event.target.files[0].size);
+    let fileInfo = new FormData ();
+    let config;
+
     this.targetFile = event.target.files[0];
+    fileInfo.append ('file', this.targetFile, this.targetFile.name);
+
+    config = {
+      separator: this.selectedDelimiter,
+      token: "!edhnOCfSX3m5QYnpxQO5h9IWUukcLNvDwb",
+      format: this.selectedFileType,
+      s3filepath: ""
+    };
+
+    this.fileLoading = true;
+    this.service.uploadDatalakeTableFile (this, config, fileInfo, this.uploadSuccess, this.uploadFailed);
+  }
+
+  uploadSuccess(_this, data): void
+  {
+    _this.uploadStep1FormGroup.get ("fileLocation").setValue (_this.targetFile.name);
+    _this.targetFileSize = _this.calcFileSize (_this.targetFile.size);
+
+    _this.dataSource = [];
+
+    for (let column of data.columns)
+      _this.dataSource.push (column);
+
+    _this.fileLoading = false;
+  }
+
+  uploadFailed(_this, result): void
+  {
+    _this.fileLoading = false;
+    console.log (result);
   }
 }

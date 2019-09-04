@@ -6,7 +6,7 @@ export class ApiClient {
     constructor(private http: HttpClient) {
     }
 
-    post = function (_this,url, data, successHandler, errorHandler) {
+    post = function (_this, url, data, successHandler, errorHandler) {
         this.http.post(url, data).subscribe(result => {
 
             successHandler(_this,result);
@@ -14,7 +14,6 @@ export class ApiClient {
           errorHandler(_this,error)
         );
     };
-
 
     get = function (_this,url, successHandler, errorHandler, tab) {
         this.http.get(url, {observe: 'events', reportProgress: true}).subscribe(result => {

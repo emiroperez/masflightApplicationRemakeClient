@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { HttpHeaders } from '@angular/common/http';
 
 import { ApiClient } from '../api/api-client';
 import { Globals } from '../globals/Globals';
@@ -68,5 +69,14 @@ export class DatalakeService {
         };
 
         this.http.post(_this, url, request, handlerSuccess, handlerError);
+    }
+
+    uploadDatalakeTableFile(_this, config, file, handlerSuccess, handlerError)
+    {
+        let url = this.host + "/uploadDatalakeTableFile?separator=" + config.separator +
+            "&token=" + config.token + "&format=" + config.format + "&s3filepath=" +
+            config.s3filepath;
+
+        this.http.post (_this, url, file, handlerSuccess, handlerError);
     }
 }
