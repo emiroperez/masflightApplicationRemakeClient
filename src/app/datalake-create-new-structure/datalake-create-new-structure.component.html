@@ -182,8 +182,7 @@
       <div class="datalake-create-table-content-header">
         <div class="datalake-create-table-step-title">
           <span class="datalake-create-table-step-title-label">STEP {{stepper.selectedIndex + 1}} - PARTITIONS</span>
-          <span class="datalake-create-table-step-description">Chose the table partitions. Keep first options checked if
-            it is a partition</span>
+          <span class="datalake-create-table-step-description">Chose the table partitions. Keep first options checked if it is a partition</span>
         </div>
         <div class="datalake-create-table-step-buttons">
           <button class="datalake-create-table-step-button flat-button" mat-button
@@ -202,8 +201,7 @@
       <div class="datalake-create-table-content-header">
         <div class="datalake-create-table-step-title">
           <span class="datalake-create-table-step-title-label">STEP {{stepper.selectedIndex + 1}} - DISCOVERY RESULT</span>
-          <span class="datalake-create-table-step-description">Show the data in columns and allow to change the column
-            header</span>
+          <span class="datalake-create-table-step-description">Show the data in columns and allow to change the column header</span>
         </div>
         <div class="datalake-create-table-step-buttons">
           <button class="datalake-create-table-step-button flat-button" mat-button>
@@ -214,6 +212,43 @@
             <mat-icon>arrow_back_ios</mat-icon>
             BACK
           </button>
+        </div>
+      </div>
+      <div class="datalake-create-table-input-body">
+        <mat-form-field class="datalake-discovery-result-search-input">
+          <mat-icon class="search-icon" aria-label="search">search</mat-icon>
+          <input matInput placeholder="Search" autocomplete="off">
+        </mat-form-field>
+      </div>
+      <div class="datalake-discover-result-container">
+        <div class="datalake-discover-result-table">
+          <div class="datalake-discover-result-header">
+            <span class="datalake-discover-result-cell">#</span>
+            <span class="datalake-discover-result-cell">Name</span>
+            <span class="datalake-discover-result-cell">Map name to</span>
+            <span class="datalake-discover-result-cell datalake-discover-result-datatype">Datatype</span>
+            <span class="datalake-discover-result-cell datalake-discover-result-datatype">Map datatype to</span>
+          </div>
+          <div class="datalake-discover-result-body" *ngFor="let column of dataColumns; let colIndex = index">
+            <span class="datalake-discover-result-cell">{{colIndex + 1}}</span>
+            <span class="datalake-discover-result-cell">{{column.name}}</span>
+            <span class="datalake-discover-result-cell">
+              <mat-form-field class="datalake-map-input">
+                <input matInput [(ngModel)]="column.mapName" autocomplete="off">
+                <mat-icon class="edit-icon" aria-label="search">edit</mat-icon>
+              </mat-form-field>
+            </span>
+            <span class="datalake-discover-result-cell">{{column.dataType}}</span>
+            <span class="datalake-discover-result-cell">
+              <mat-form-field class="datalake-map-input">
+                <mat-select [(ngModel)]="column.mapDataType" autocomplete="off">
+                  <mat-option *ngFor="let dataType of dataTypes" [value]="dataType">
+                    {{dataType}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </span>
+          </div>
         </div>
       </div>
     </ng-container>

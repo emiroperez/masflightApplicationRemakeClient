@@ -34,7 +34,9 @@ export class DatalakeCreateNewStructureComponent {
   selectedDelimiter: string = "COMMA";
   delimiterCharacter: string = ",";
 
-  dataSource: any[];
+  dataTypes: string[] = [ "string", "double", "bigint", "timestamp" ];
+
+  dataColumns: any[];
   rawData: string[][];
 
   constructor(private dialog: MatDialog, private formBuilder: FormBuilder,
@@ -217,10 +219,17 @@ export class DatalakeCreateNewStructureComponent {
     _this.tableConfigurationFormGroup.get ("fileName").setValue (_this.targetFile.name);
     _this.targetFileSize = _this.calcFileSize (_this.targetFile.size);
 
-    _this.dataSource = [];
+    _this.dataColumns = [];
 
     for (let column of data.columns)
-      _this.dataSource.push (column);
+    {
+      _this.dataColumns.push ({
+        name: column.Name,
+        mapName: column.Name,
+        dataType: column.DataType,
+        mapDataType: column.DataType
+      });
+    }
 
     // do not read as text the parquet file type
     if (_this.selectedFileType === "PARQUET")

@@ -1332,6 +1332,13 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             border-bottom: solid 1px $background-color
         .datalake-table-data-preview
             background-color: $secondary-background-color
+        .datalake-discover-result-container
+            background-color: $secondary-background-color
+            .datalake-discover-result-header
+                .datalake-discover-result-cell
+                    background-color: $background-color
+            .datalake-map-input
+                background-color: $map-panelinfo-background-color
         .CodeMirror, .CodeMirror-gutters
             background-color: $customer-edit-header-color !important
             color: $font-color !important
@@ -7004,6 +7011,66 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                     width: 505px !important
                 .datalake-upload-data-custom-delimiter
                     width: 242px !important
+                .datalake-discovery-result-search-input
+                    .search-icon
+                        position: absolute
+                        font-size: 16px
+                        margin-top: -3px
+                        @include disable-text-selection
+                    .mat-form-field-label
+                        padding-left: 20px
+                        margin-top: -1px
+                    .mat-input-element
+                        margin-left: 20px
+                        padding-bottom: 1px
+                        width: calc(100% - 20px)
+            .datalake-discover-result-container
+                width: 100%
+                height: calc(100% - 115px)
+                margin-top: 10px
+                overflow: auto
+                .datalake-discover-result-table
+                    display: table
+                    width: 100%
+                    height: 100%
+                    .datalake-discover-result-header
+                        display: table-header-group
+                        .datalake-discover-result-cell
+                            position: sticky
+                            z-index: 2
+                            top: 0
+                    .datalake-discover-result-body
+                        display: table-row-group
+                    .datalake-discover-result-cell
+                        display: table-cell
+                        text-align: center
+                        padding: 10px
+                        .datalake-map-input
+                            border-radius: 5px
+                            padding: 8px
+                            margin: -8px
+                            .mat-input-element
+                                width: calc(100% - 20px) !important
+                            .mat-form-field-wrapper
+                                padding: 0 !important
+                            .mat-form-field-infix
+                                padding: 0 !important
+                                border: 0 !important
+                            .mat-form-field-underline
+                                display: none
+                            .edit-icon
+                                position: absolute
+                                padding-left: 5px
+                                margin-top: -2px
+                                font-size: 14px
+                                width: 14px
+                                height: 14px
+                    .datalake-discover-result-datatype
+                        width: 100px
+                        max-width: 100px
+                    .datalake-discover-result-mame
+                        width: 215px
+                        max-width: 215px
             .datalake-create-table-input-file-picker
                 display: flex
                 flex-direction: row
