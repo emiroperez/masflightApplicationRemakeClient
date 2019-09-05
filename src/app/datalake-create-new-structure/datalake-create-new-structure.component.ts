@@ -81,8 +81,8 @@ export class DatalakeCreateNewStructureComponent {
     {
       formGroup.get (field).markAsTouched ({ onlySelf: true });
     });
-  
-    if (formGroup.invalid)
+
+    if (formGroup.invalid || !this.tableConfigurationFormGroup.get ("fileName").value)
     {
       this.dialog.open (MessageComponent, {
         data: { title: "Error", message: "The required information is incomplete, please complete them and try again." }
@@ -276,7 +276,7 @@ export class DatalakeCreateNewStructureComponent {
     // remove filename from input if the upload failed
     _this.fileLoading = false;
     _this.targetFile = null;
-    _this.tableConfigurationFormGroup.get ("fileName").setValue (null);
+    _this.tableConfigurationFormGroup.get ("fileName").setValue ("");
 
     console.log (result);
   }
@@ -319,7 +319,7 @@ export class DatalakeCreateNewStructureComponent {
 
     this.targetFileSize = null;
     this.targetFile = null;
-    this.tableConfigurationFormGroup.get ("fileName").setValue (null);
+    this.tableConfigurationFormGroup.get ("fileName").setValue ("");
     uploader.value = null;
 
     this.filteredDataColumns.next (this.dataColumns.slice ());

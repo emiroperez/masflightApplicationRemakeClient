@@ -43,7 +43,6 @@ export class DatalakeDataUploadComponent {
     this.tableConfigurationFormGroup = this.formBuilder.group ({
       schema: ['', Validators.required],
       bucket: new FormControl ({ value: '', disabled: true }, Validators.required),
-      tableDescription: new FormControl ({ value: '', disabled: true }),
       customDelimiter: new FormControl ({ value: '', disabled: true }),
       tableLocation: ['', Validators.required],
       fileName: new FormControl ({ value: '', disabled: true }, Validators.required)
@@ -73,7 +72,7 @@ export class DatalakeDataUploadComponent {
       formGroup.get (field).markAsTouched ({ onlySelf: true });
     });
   
-    if (formGroup.invalid)
+    if (formGroup.invalid || !this.tableConfigurationFormGroup.get ("fileName").value)
     {
       this.dialog.open (MessageComponent, {
         data: { title: "Error", message: "The required information is incomplete, please complete them and try again." }
@@ -92,7 +91,6 @@ export class DatalakeDataUploadComponent {
 
     bucketValue = this.tableConfigurationFormGroup.get ("bucket");
     bucketValue.enable ();
-    this.tableConfigurationFormGroup.get ("tableDescription").enable ();
 
     schema = this.tableConfigurationFormGroup.get ("schema").value;
     bucketValue.setValue (null);
