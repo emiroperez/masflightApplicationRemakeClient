@@ -11,12 +11,12 @@
     <mat-icon *ngIf="querySchema.open" aria-label="Collapse Schema">keyboard_arrow_up</mat-icon>
   </div>
 </div>
-<div class="datalake-schema-body" *ngIf="querySchema.open && querySchema.isLoading">
+<div class="datalake-schema-body" *ngIf="querySchema.open && isLoading">
   <div class="datalake-schema-loading">
     <mat-progress-bar class="datalake-query-engine-table-progress" mode="indeterminate"></mat-progress-bar>
   </div>
 </div>
-<div class="datalake-schema-body" *ngIf="querySchema.open && !querySchema.isLoading">
+<div class="datalake-schema-body" *ngIf="querySchema.open && !isLoading">
   <div class="datalake-schema-item" *ngFor="let tableName of querySchema.filteredTables | async">
     {{tableName}}
   </div>
