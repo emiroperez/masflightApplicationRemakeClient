@@ -25,7 +25,7 @@ export class MsfGroupAaaComponent implements OnInit {
   }
 
 
-  
+
   getRecords(search, handlerSuccess){
     let url;
 
@@ -36,11 +36,9 @@ export class MsfGroupAaaComponent implements OnInit {
     }
 
     if(this.argument.url.substring(0,1)=="/"){
-      // url = this.globals.baseUrl + this.argument.url +this.argument.aaaGroup;
-      url = this.globals.baseUrl + this.argument.url ;
+      url = this.globals.baseUrl + this.argument.url + "?search="+ (search != null?search:'');
     }else{
-    //  url = this.argument.url +this.argument.aaaGroup;
-     url = this.argument.url;
+     url = this.argument.url+ (search != null?search:'');
     }
     this.http.get(this,url,handlerSuccess,this.handlerError, null);  
   }
@@ -61,6 +59,7 @@ export class MsfGroupAaaComponent implements OnInit {
       this.getRecords($event.term, this.handlerSuccess);
     }
   }
+  
   onChange(){
     console.log(this.argument.value1)
   }
