@@ -220,26 +220,26 @@
           <input matInput placeholder="Search" autocomplete="off">
         </mat-form-field>
       </div>
-      <div class="datalake-discover-result-container">
-        <div class="datalake-discover-result-table">
-          <div class="datalake-discover-result-header">
-            <span class="datalake-discover-result-cell">#</span>
-            <span class="datalake-discover-result-cell">Name</span>
-            <span class="datalake-discover-result-cell">Map name to</span>
-            <span class="datalake-discover-result-cell datalake-discover-result-datatype">Datatype</span>
-            <span class="datalake-discover-result-cell datalake-discover-result-datatype">Map datatype to</span>
+      <div class="datalake-discovery-result-container">
+        <div class="datalake-discovery-result-table">
+          <div class="datalake-discovery-result-header">
+            <span class="datalake-discovery-result-cell">#</span>
+            <span class="datalake-discovery-result-cell datalake-discovery-result-name">Name</span>
+            <span class="datalake-discovery-result-cell datalake-discovery-result-name">Map name to</span>
+            <span class="datalake-discovery-result-cell datalake-discovery-result-datatype">Datatype</span>
+            <span class="datalake-discovery-result-cell datalake-discovery-result-datatype">Map datatype to</span>
           </div>
-          <div class="datalake-discover-result-body" *ngFor="let column of dataColumns; let colIndex = index">
-            <span class="datalake-discover-result-cell">{{colIndex + 1}}</span>
-            <span class="datalake-discover-result-cell">{{column.name}}</span>
-            <span class="datalake-discover-result-cell">
+          <div class="datalake-discovery-result-body" *ngFor="let column of dataColumns; let colIndex = index">
+            <span class="datalake-discovery-result-cell">{{colIndex + 1}}</span>
+            <span class="datalake-discovery-result-cell">{{column.name}}</span>
+            <span class="datalake-discovery-result-cell">
               <mat-form-field class="datalake-map-input">
                 <input matInput [(ngModel)]="column.mapName" autocomplete="off">
                 <mat-icon class="edit-icon" aria-label="search">edit</mat-icon>
               </mat-form-field>
             </span>
-            <span class="datalake-discover-result-cell">{{column.dataType}}</span>
-            <span class="datalake-discover-result-cell">
+            <span class="datalake-discovery-result-cell">{{column.dataType}}</span>
+            <span class="datalake-discovery-result-cell">
               <mat-form-field class="datalake-map-input">
                 <mat-select [(ngModel)]="column.mapDataType" autocomplete="off">
                   <mat-option *ngFor="let dataType of dataTypes" [value]="dataType">
