@@ -11,7 +11,7 @@
     </div>
   </div>
   <div class="datalake-create-table-body">
-    <mat-tab-group>
+    <mat-tab-group #tabs>
       <mat-tab label="Create New Structure">
         <app-datalake-create-new-structure [schemas]="schemas" [buckets]="buckets"></app-datalake-create-new-structure>
       </mat-tab>

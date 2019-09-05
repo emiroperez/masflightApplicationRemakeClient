@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
+import { Component, ViewChild } from '@angular/core';
+import { MatDialogRef, MatTabGroup } from '@angular/material';
 
 import { DatalakeService } from '../services/datalake.service';
 import { DatalakeQuerySchema } from '../datalake-query-engine/datalake-query-schema';
@@ -14,6 +14,9 @@ export class DatalakeCreateTableComponent {
   buckets: DatalakeBucket[] = [];
   isLoading: boolean = false;
 
+  @ViewChild("tabs")
+  tabs: MatTabGroup;
+
   constructor(public dialogRef: MatDialogRef<DatalakeCreateTableComponent>,
     private service: DatalakeService)
   {
@@ -26,6 +29,7 @@ export class DatalakeCreateTableComponent {
     if (!data.Schemas.length)
     {
       _this.isLoading = false;
+      _this.tabs.realignInkBar ();
       return;
     }
 
@@ -40,6 +44,7 @@ export class DatalakeCreateTableComponent {
     if (!data.sources || !data.sources.length)
     {
       _this.isLoading = false;
+      _this.tabs.realignInkBar ();
       return;
     }
 
@@ -47,12 +52,14 @@ export class DatalakeCreateTableComponent {
       _this.buckets.push (new DatalakeBucket (bucket.bucketName, bucket.schemaName));
 
     _this.isLoading = false;
+    _this.tabs.realignInkBar ();
   }
 
   handlerError(_this, result): void
   {
     console.log (result);
     _this.isLoading = false;
+    _this.tabs.realignInkBar ();
   }
 
   onNoClick(): void
