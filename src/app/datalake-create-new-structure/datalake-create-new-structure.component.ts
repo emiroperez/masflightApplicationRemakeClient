@@ -27,7 +27,7 @@ export class DatalakeCreateNewStructureComponent {
   selectedFileType: string = "CSV";
   fileLoading: boolean = false;
   targetFileSize: string;
-  targetFile: any;
+  targetFile: File;
 
   delimiters: string[] = [ "COMMA", "SEMICOLON", "TABULAR", "CUSTOM" ];
   selectedDelimiter: string = "COMMA";
@@ -307,5 +307,21 @@ export class DatalakeCreateNewStructureComponent {
         return index === self.indexOf (elem);
       })
     );
+  }
+
+  ResetStepper(stepper: MatStepper, uploader): void
+  {
+    stepper.reset ();
+
+    // clear other related variables after changing the file type
+    this.dataColumns = [];
+    this.rawData = [];
+
+    this.targetFileSize = null;
+    this.targetFile = null;
+    this.tableConfigurationFormGroup.get ("fileName").setValue (null);
+    uploader.value = null;
+
+    this.filteredDataColumns.next (this.dataColumns.slice ());
   }
 }

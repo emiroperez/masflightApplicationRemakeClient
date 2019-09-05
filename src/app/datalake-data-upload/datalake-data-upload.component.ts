@@ -258,4 +258,17 @@ export class DatalakeDataUploadComponent {
 
     console.log (result);
   }
+
+  ResetStepper(stepper: MatStepper, uploader): void
+  {
+    stepper.reset ();
+
+    // clear other related variables after changing the file type
+    this.rawData = [];
+
+    this.targetFileSize = null;
+    this.targetFile = null;
+    this.tableConfigurationFormGroup.get ("fileName").setValue (null);
+    uploader.value = null;
+  }
 }

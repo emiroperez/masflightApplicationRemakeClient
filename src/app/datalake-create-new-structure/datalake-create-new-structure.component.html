@@ -10,7 +10,7 @@
         </span>
         <span *ngIf="!active">{{index + 1}}</span>
       </ng-template>
-      <mat-step [stepControl]="tableConfigurationFormGroup">
+      <mat-step>
         <ng-template matStepLabel>
           <div class="datalake-create-table-step-container">
             <span class="datalake-create-table-step-label">STEP 1</span>
@@ -99,7 +99,7 @@
         <span>
           File Type *:
         </span>
-        <mat-radio-group [(ngModel)]="selectedFileType" class="datalake-file-type-picker">
+        <mat-radio-group [(ngModel)]="selectedFileType" (ngModelChange)="ResetStepper(stepper, uploader)" class="datalake-file-type-picker">
           <mat-radio-button class="cancels-checkbox datalake-file-type-radio" *ngFor="let fileType of fileTypes" [value]="fileType">{{fileType}}</mat-radio-button>
         </mat-radio-group>
         <mat-form-field class="datalake-table-location" [formGroup]="tableConfigurationFormGroup">
