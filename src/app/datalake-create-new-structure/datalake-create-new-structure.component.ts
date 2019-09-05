@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl } from '@angular/forms';
 import { MatStepper, MatDialog } from '@angular/material';
+import { ReplaySubject, Subject } from 'rxjs';
 
 import { MessageComponent } from '../message/message.component';
 import { DatalakeQuerySchema } from '../datalake-query-engine/datalake-query-schema';
@@ -35,6 +36,9 @@ export class DatalakeCreateNewStructureComponent {
   delimiterCharacter: string = ",";
 
   dataTypes: string[] = [ "string", "double", "bigint", "timestamp" ];
+  filteredDataColumns: ReplaySubject<any[]> = new ReplaySubject<any[]> (1);
+  _onDestroy = new Subject<void> ();
+  dataColumnFilter: string;
 
   dataColumns: any[];
   rawData: string[][];
@@ -61,6 +65,12 @@ export class DatalakeCreateNewStructureComponent {
     this.newStep4FormGroup = this.formBuilder.group ({
       step4Ctrl: ['', Validators.required]
     });
+  }
+
+  ngOnDestroy(): void
+  {
+    this._onDestroy.next ();
+    this._onDestroy.complete ();
   }
 
   goBack(stepper: MatStepper): void
@@ -215,6 +225,7 @@ export class DatalakeCreateNewStructureComponent {
   uploadSuccess(_this, data): void
   {
     let fileReader: FileReader;
+    let i: number = 0;
 
     _this.tableConfigurationFormGroup.get ("fileName").setValue (_this.targetFile.name);
     _this.targetFileSize = _this.calcFileSize (_this.targetFile.size);
@@ -224,12 +235,17 @@ export class DatalakeCreateNewStructureComponent {
     for (let column of data.columns)
     {
       _this.dataColumns.push ({
+        index: i,
         name: column.Name,
         mapName: column.Name,
         dataType: column.DataType,
         mapDataType: column.DataType
       });
+
+      i++;
     }
+
+    _this.filteredDataColumns.next (_this.dataColumns.slice ());
 
     // do not read as text the parquet file type
     if (_this.selectedFileType === "PARQUET")
@@ -273,5 +289,33 @@ export class DatalakeCreateNewStructureComponent {
     _this.tableConfigurationFormGroup.get ("fileName").setValue (null);
 
     console.log (result);
+  }
+
+  filterDataColumns(): void
+  {
+    let search, filteredResults;
+
+    if (!this.dataColumns.length)
+      return;
+
+    // get the search keyword
+    search = this.dataColumnFilter;
+    if (!search)
+    {
+      this.filteredDataColumns.next (this.dataColumns.slice ());
+      return;
+    }
+
+    search = search.toLowerCase ();
+    filteredResults = this.dataColumns.filter (a => (a.name.toLowerCase ().indexOf (search) > -1
+      || a.mapName.toLowerCase ().indexOf (search) > -1 || a.dataType.toLowerCase ().indexOf (search) > -1
+      || a.mapDataType.toLowerCase ().indexOf (search) > -1));
+
+    this.filteredDataColumns.next (
+      filteredResults.filter (function (elem, index, self)
+      {
+        return index === self.indexOf (elem);
+      })
+    );
   }
 }

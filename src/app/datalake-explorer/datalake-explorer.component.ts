@@ -84,7 +84,7 @@ export class DatalakeExplorerComponent implements OnInit {
     this.filteredTableCards.next (
       filteredResults.filter (function (elem, index, self)
       {
-        return index === self.indexOf(elem);
+        return index === self.indexOf (elem);
       })
     );
   }

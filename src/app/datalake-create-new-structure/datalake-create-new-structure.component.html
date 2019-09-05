@@ -217,7 +217,7 @@
       <div class="datalake-create-table-input-body">
         <mat-form-field class="datalake-discovery-result-search-input">
           <mat-icon class="search-icon" aria-label="search">search</mat-icon>
-          <input matInput placeholder="Search" autocomplete="off">
+          <input matInput [(ngModel)]="dataColumnFilter" (ngModelChange)="filterDataColumns()" placeholder="Search" autocomplete="off">
         </mat-form-field>
       </div>
       <div class="datalake-discovery-result-container">
@@ -229,8 +229,8 @@
             <span class="datalake-discovery-result-cell datalake-discovery-result-datatype">Datatype</span>
             <span class="datalake-discovery-result-cell datalake-discovery-result-datatype">Map datatype to</span>
           </div>
-          <div class="datalake-discovery-result-body" *ngFor="let column of dataColumns; let colIndex = index">
-            <span class="datalake-discovery-result-cell">{{colIndex + 1}}</span>
+          <div class="datalake-discovery-result-body" *ngFor="let column of filteredDataColumns | async">
+            <span class="datalake-discovery-result-cell">{{column.index}}</span>
             <span class="datalake-discovery-result-cell">{{column.name}}</span>
             <span class="datalake-discovery-result-cell">
               <mat-form-field class="datalake-map-input">
