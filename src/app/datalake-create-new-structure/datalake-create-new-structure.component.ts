@@ -22,8 +22,6 @@ export class DatalakeCreateNewStructureComponent {
   currentBuckets: DatalakeBucket[] = [];
 
   tableConfigurationFormGroup: FormGroup;
-  newStep3FormGroup: FormGroup;
-  newStep4FormGroup: FormGroup;
 
   fileTypes: string[] = [ "CSV", "PARQUET" ];
   selectedFileType: string = "CSV";
@@ -56,14 +54,6 @@ export class DatalakeCreateNewStructureComponent {
       tableLocation: ['', Validators.required],
       customDelimiter: new FormControl ({ value: '', disabled: true }),
       fileName: new FormControl ({ value: '', disabled: true }, Validators.required)
-    });
-
-    this.newStep3FormGroup = this.formBuilder.group ({
-      step3Ctrl: ['']
-    });
-
-    this.newStep4FormGroup = this.formBuilder.group ({
-      step4Ctrl: ['', Validators.required]
     });
   }
 
@@ -225,7 +215,7 @@ export class DatalakeCreateNewStructureComponent {
   uploadSuccess(_this, data): void
   {
     let fileReader: FileReader;
-    let i: number = 0;
+    let i: number = 1;
 
     _this.tableConfigurationFormGroup.get ("fileName").setValue (_this.targetFile.name);
     _this.targetFileSize = _this.calcFileSize (_this.targetFile.size);
