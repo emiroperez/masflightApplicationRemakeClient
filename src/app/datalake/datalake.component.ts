@@ -15,6 +15,8 @@ import { MenuService } from '../services/menu.service';
 })
 export class DatalakeComponent implements OnInit {
 
+  currentOption: number = 0;
+
   TabletQuery: MediaQueryList;
   mobileQuery: MediaQueryList;
   ResponsiveQuery: MediaQueryList;
@@ -102,12 +104,18 @@ export class DatalakeComponent implements OnInit {
   {
     _this.globals.currentUser = data.name;
     _this.globals.isLoading = false;
+    _this.currentOption = 2;
   }
 
   errorLogin(_this, result): void
   {
     console.log(result);
     _this.globals.isLoading = false;
+  }
+
+  setOption(option: number): void
+  {
+    this.currentOption = option;
   }
 
   @HostListener('window:resize', ['$event'])

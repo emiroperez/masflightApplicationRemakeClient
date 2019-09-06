@@ -200,6 +200,8 @@ import { CodemirrorModule } from '@ctrl/ngx-codemirror';
 import { DatalakeCreateTableComponent } from './datalake-create-table/datalake-create-table.component';
 import { DatalakeCreateNewStructureComponent } from './datalake-create-new-structure/datalake-create-new-structure.component';
 import { DatalakeDataUploadComponent } from './datalake-data-upload/datalake-data-upload.component';
+import { DatalakeMenuComponent } from './datalake-menu/datalake-menu.component';
+import { DatalakeAlarmsComponent } from './datalake-alarms/datalake-alarms.component';
 
 @NgModule({
   declarations: [
@@ -374,7 +376,9 @@ import { DatalakeDataUploadComponent } from './datalake-data-upload/datalake-dat
     DatalakeQueryEngineSchemaComponent,
     DatalakeCreateTableComponent,
     DatalakeCreateNewStructureComponent,
-    DatalakeDataUploadComponent
+    DatalakeDataUploadComponent,
+    DatalakeMenuComponent,
+    DatalakeAlarmsComponent
   ],
   imports: [
     BrowserModule,

@@ -1341,6 +1341,14 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                     background-color: $background-color
             .datalake-map-input
                 background-color: $map-panelinfo-background-color
+        .datalake-new-alarm-button
+            .mat-icon
+                background-color: $dashboard-secondary-background-color
+                &:hover
+                    background-color: $primary-color
+                    color: #ffffff
+        .datalake-new-alarm-container
+            background-color: $dashboard-secondary-background-color
         .CodeMirror, .CodeMirror-gutters
             background-color: $customer-edit-header-color !important
             color: $font-color !important
@@ -7157,3 +7165,43 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                 white-space: nowrap
                 text-align: center
                 padding: 10px
+
+.datalake-alarms-body
+    display: flex
+    height: 100%
+    .datalake-alarms-item
+        height: calc(100% - 85px)
+        padding: 20px
+        width: 50%
+        .datalake-alarms-header
+            display: flex
+            margin-top: -10px
+            .datalake-new-alarm-title
+                font-size: 16px
+                font-weight: 550
+                width: 200px
+                margin-top: 10px
+                .datalake-new-alarm-icon
+                    margin-top: -5px
+                    vertical-align: middle
+                .datalake-new-alarm-title-label
+                    padding-left: 5px
+            .datalake-new-alarm-buttons
+                align-self: center
+                text-align: right
+                margin-top: -3px
+                margin-right: 10px
+                width: 100%
+                .datalake-new-alarm-button
+                    margin-left: 15px
+                    margin-right: 5px
+                    line-height: 20px
+                    font-size: 20px
+                    width: 20px
+                    height: 20px
+                    .mat-icon
+                        border-radius: 2.5px
+                        padding: 5px
+        .datalake-new-alarm-container
+            margin-top: 20px
+            height: 100%

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { ReplaySubject, Subject } from 'rxjs';
 
@@ -12,19 +12,36 @@ import { DatalakeCreateTableComponent } from '../datalake-create-table/datalake-
   templateUrl: './datalake-explorer.component.html'
 })
 export class DatalakeExplorerComponent implements OnInit {
+  @Input("currentOption")
+  currentOption: number;
+
   filter: string;
   filteredTableCards: ReplaySubject<any[]> = new ReplaySubject<any[]> (1);
   _onDestroy = new Subject<void> ();
 
   tableCards: DatalakeTableCardValues[] = [];
-  currentScreen: number = 0;
+  currentScreen: number;
 
   constructor(public globals: Globals, private dialog: MatDialog,
     private service: DatalakeService) { }
 
   ngOnInit()
   {
-    this.goToScreen (0);
+    this.setCurrentScreen ();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void
+  {
+    if (changes['currentOption'])
+      this.setCurrentScreen ();
+  }
+
+  setCurrentScreen(): void
+  {
+    if (this.currentOption == 3)
+      this.goToScreen (1);
+    else
+      this.goToScreen (0);
   }
 
   handlerSuccess(_this, data): void
