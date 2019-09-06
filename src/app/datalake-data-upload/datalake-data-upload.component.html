@@ -172,6 +172,34 @@
           </button>
         </div>
       </div>
+      <div class="datalake-create-table-input-tertiary-body">
+        <mat-form-field [formGroup]="partitionManagementFormGroup">
+          <input matInput placeholder="Schema Name" autocomplete="off" formControlName="schemaName" required>
+          <mat-error *ngIf="partitionManagementFormGroup.get('schemaName')?.invalid">You enter a schema name</mat-error>
+        </mat-form-field>
+        <mat-form-field [formGroup]="partitionManagementFormGroup" class="datalake-create-table-input">
+          <input matInput placeholder="Table Name" autocomplete="off" formControlName="tableName" required>
+          <mat-error *ngIf="tableConfigurationFormGroup.get('tableName')?.invalid">You enter a table name</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="datalake-create-table-input-tertiary-body">
+        <mat-form-field [formGroup]="partitionManagementFormGroup">
+          <mat-select placeholder="Run Type" autocomplete="off" formControlName="runType" required>
+            <mat-option *ngFor="let schema of [1, 2, 3]" [value]="schema">
+              {{schema}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="partitionManagementFormGroup.get('runType')?.invalid">You must select a run type</mat-error>
+        </mat-form-field>
+        <mat-form-field [formGroup]="partitionManagementFormGroup" class="datalake-create-table-input">
+          <mat-select placeholder="Status" autocomplete="off" formControlName="status" required>
+            <mat-option *ngFor="let schema of [1, 2, 3]" [value]="schema">
+              {{schema}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="partitionManagementFormGroup.get('status')?.invalid">You must select a status</mat-error>
+        </mat-form-field>
+      </div>
     </ng-container>
   </div>
 </div>

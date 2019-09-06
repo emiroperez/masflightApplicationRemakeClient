@@ -1332,6 +1332,8 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             border-bottom: solid 1px $background-color
         .datalake-table-data-preview
             background-color: $secondary-background-color
+        .datalake-partition-container
+            background-color: $secondary-background-color
         .datalake-discovery-result-container
             background-color: $secondary-background-color
             .datalake-discovery-result-header
@@ -6938,6 +6940,9 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 .datalake-create-table-input-secondary-body
     padding-top: 12.5px !important
 
+.datalake-create-table-input-tertiary-body
+    padding-top: 50px !important
+
 .datalake-table-location, .datalake-upload-data-table-location
     margin-top: -15px
     margin-left: 10px
@@ -6995,7 +7000,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                                 font-size: 15px !important
                                 width: 15px !important
                                 margin-bottom: 2px
-            .datalake-create-table-input-body, .datalake-create-table-input-secondary-body
+            .datalake-create-table-input-body, .datalake-create-table-input-secondary-body, .datalake-create-table-input-tertiary-body
                 display: flex
                 flex-direction: row
                 padding-top: 30px
@@ -7026,6 +7031,11 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                         margin-left: 20px
                         padding-bottom: 1px
                         width: calc(100% - 20px)
+            .datalake-partition-container
+                width: 100%
+                height: calc(100% - 70px)
+                overflow: auto
+                margin-top: 40px
             .datalake-discovery-result-container
                 width: 100%
                 height: calc(100% - 115px)

@@ -49,7 +49,10 @@ export class DatalakeDataUploadComponent {
     });
 
     this.partitionManagementFormGroup = this.formBuilder.group ({
-      step3Ctrl: ['', Validators.required]
+      schemaName: ['', Validators.required],
+      tableName: ['', Validators.required],
+      runType: ['', Validators.required],
+      status: ['', Validators.required]
     });
   }
 
