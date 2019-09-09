@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { timePicker } from 'analogue-time-picker';
 
 import { Globals } from '../globals/Globals';
 import { DatalakeService } from '../services/datalake.service';
@@ -35,6 +36,14 @@ export class DatalakeAlarmsComponent implements OnInit {
 
   ngOnInit()
   {
+    let clock = timePicker ({
+      element: document.getElementById ("time-picker"),
+      time: new Date (),
+      width: "100%"
+    });
+
+    clock.set12h ();
+
     this.globals.isLoading = true;
     this.service.getDatalakeSchemas (this, this.setSchemas, this.setSchemasError);
   }

@@ -32,6 +32,7 @@
     "@types/moment": "^2.13.0",
     "@uiowa/digit-only": "0.0.5",
     "acorn": "^6.0.0",
+    "analogue-time-picker": "^1.0.2",
     "buffer": "^5.2.1",
     "cdk-drag-scroll": "0.0.2",
     "clientjs": "^0.1.11",
