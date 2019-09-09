@@ -10,7 +10,7 @@
   </div>
   <div class="datalake-alarms-body">
     <div class="datalake-alarms-item">
-      asfasf
+      Work in progress...
     </div>
     <div class="datalake-alarms-item">
       <div class="datalake-alarms-header">
@@ -49,8 +49,8 @@
           </mat-form-field>
         </div>
         <mat-radio-group class="datalake-alarm-radio-group" [(ngModel)]="notifyMode">
-          <mat-radio-button class="cancels-checkbox" [ngClass]="{'datalake-alarm-radio-button': notifyMode, 'datalake-alarm-radio-button-selected': !notifyMode }" [value]="0">Notify me every time</mat-radio-button>
-          <mat-radio-button class="cancels-checkbox datalake-alarm-radio-button-right" [ngClass]="{'datalake-alarm-radio-button': !notifyMode, 'datalake-alarm-radio-button-selected': notifyMode }" [value]="1">Notify me at this specific time</mat-radio-button>
+          <mat-radio-button class="cancels-checkbox" [ngClass]="{'datalake-alarm-radio-button': notifyMode, 'datalake-alarm-radio-button-selected': !notifyMode }" [value]="false">Notify me every time</mat-radio-button>
+          <mat-radio-button class="cancels-checkbox datalake-alarm-radio-button-right" [ngClass]="{'datalake-alarm-radio-button': !notifyMode, 'datalake-alarm-radio-button-selected': notifyMode }" [value]="true">Notify me at this specific time</mat-radio-button>
         </mat-radio-group>
         <div class="datalake-alarm-time-picker">
           Can't find a time picker component that doesn't use a popup dialog. :(
