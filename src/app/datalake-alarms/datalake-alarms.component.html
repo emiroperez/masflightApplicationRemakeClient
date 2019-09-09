@@ -20,10 +20,10 @@
         </div>
         <div class="datalake-new-alarm-buttons">
           Status
-          <button mat-icon-button class="datalake-new-alarm-button">
+          <button mat-icon-button (click)="setAlarmStatus(false)" [ngClass]="{'datalake-new-alarm-button': selectedStatus, 'datalake-new-alarm-button-selected': !selectedStatus }">
             <mat-icon>check</mat-icon>
           </button>
-          <button mat-icon-button class="datalake-new-alarm-button">
+          <button mat-icon-button (click)="setAlarmStatus(true)" [ngClass]="{'datalake-new-alarm-button': !selectedStatus, 'datalake-new-alarm-button-selected': selectedStatus }">
             <mat-icon>priority_high</mat-icon>
           </button>
         </div>
@@ -53,7 +53,7 @@
           <mat-radio-button class="cancels-checkbox datalake-alarm-radio-button-right" [ngClass]="{'datalake-alarm-radio-button': !notifyMode, 'datalake-alarm-radio-button-selected': notifyMode }" [value]="1">Notify me at this specific time</mat-radio-button>
         </mat-radio-group>
         <div class="datalake-alarm-time-picker">
-          Can't find a time picker component which is not a popup dialog.
+          Can't find a time picker component that doesn't use a popup dialog. :(
         </div>
         <div class="datalake-alarm-buttons">
           <button mat-button class="flat-button">Save</button>

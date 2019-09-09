@@ -15,7 +15,8 @@ export class DatalakeAlarmsComponent implements OnInit {
   tables: string[] = [];
 
   alarmFormGroup: FormGroup;
-  notifyMode: number = 0;
+  notifyMode: boolean = false;
+  selectedStatus: boolean = false;
 
   tableFilterCtrl: FormControl = new FormControl ();
   filteredTables: ReplaySubject<any[]> = new ReplaySubject<any[]> (1);
@@ -42,6 +43,11 @@ export class DatalakeAlarmsComponent implements OnInit {
   {
     this._onDestroy.next ();
     this._onDestroy.complete ();
+  }
+
+  setAlarmStatus(status): void
+  {
+    this.selectedStatus = status;
   }
 
   schemaChanged(): void

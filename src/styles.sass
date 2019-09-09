@@ -1347,6 +1347,10 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                 &:hover
                     background-color: $primary-color
                     color: #ffffff
+        .datalake-new-alarm-button-selected
+            .mat-icon
+                background-color: $primary-color
+                color: #ffffff
         .datalake-new-alarm-container
             background-color: $dashboard-secondary-background-color
         .datalake-alarm-radio-button
@@ -7206,13 +7210,15 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                 margin-top: -3px
                 margin-right: 10px
                 width: 100%
-                .datalake-new-alarm-button
+                .datalake-new-alarm-button, .datalake-new-alarm-button-selected
                     margin-left: 15px
                     margin-right: 5px
                     line-height: 20px
                     font-size: 20px
                     width: 20px
                     height: 20px
+                    .mat-button-ripple
+                        display: none !important
                     .mat-icon
                         border-radius: 2.5px
                         padding: 5px
