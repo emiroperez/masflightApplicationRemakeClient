@@ -1309,14 +1309,14 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                             color: $primary-color !important
                         .datalake-create-table-step-subtitle
                             color: $font-color !important
-                .datalake-create-table-step-content
-                    color: $font-color
-                    .mat-form-field-appearance-legacy.mat-form-field-disabled .mat-form-field-underline
-                        background-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0, $dashboard-input-underline-color 50%, transparent 0)
-                    .mat-select.mat-select-disabled .mat-select-arrow-wrapper .mat-select-arrow, .mat-form-field-disabled .mat-form-field-label
-                        color: $dashboard-input-underline-color !important
-                    .mat-error
-                        margin-left: 0 !important
+        .datalake-create-table-step-content, .datalake-alarm-comboboxes
+            color: $font-color
+            .mat-form-field-appearance-legacy.mat-form-field-disabled .mat-form-field-underline
+                background-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0, $dashboard-input-underline-color 50%, transparent 0)
+            .mat-select.mat-select-disabled .mat-select-arrow-wrapper .mat-select-arrow, .mat-form-field-disabled .mat-form-field-label
+                color: $dashboard-input-underline-color !important
+                .mat-error
+                    margin-left: 0 !important
         .ng-star-inserted
             .mat-step-icon
                 background-color: $background-color
@@ -1349,6 +1349,20 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                     color: #ffffff
         .datalake-new-alarm-container
             background-color: $dashboard-secondary-background-color
+        .datalake-alarm-radio-button
+            background-color: $map-panelinfo-background-color
+            color: $font-color
+            .mat-radio-outer-circle
+                border-color: $font-color
+            .mat-radio-inner-circle
+                background-color: $font-color
+        .datalake-alarm-radio-button:hover, .datalake-alarm-radio-button-selected
+            color: #ffffff !important
+            background-color: $primary-color
+            .mat-radio-outer-circle
+                border-color: $font-color !important
+            .mat-radio-inner-circle
+                background-color: $font-color !important
         .CodeMirror, .CodeMirror-gutters
             background-color: $customer-edit-header-color !important
             color: $font-color !important
@@ -7205,3 +7219,28 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         .datalake-new-alarm-container
             margin-top: 20px
             height: 100%
+            .datalake-alarm-comboboxes
+                display: flex
+                padding: 30px
+                padding-bottom: 20px
+                .datalake-alarm-right-combobox
+                    padding-left: 20px
+            .datalake-alarm-radio-group
+                padding: 20px
+                padding-top: 0px
+                .datalake-alarm-radio-button-right
+                    margin-left: 12.5px
+                .datalake-alarm-radio-button, .datalake-alarm-radio-button-selected
+                    width: calc(50% - 42px)
+                    border-radius: 5px
+                    transition: 0 !important
+                    .mat-radio-label
+                        padding: 10px
+                        width: calc(100% - 20px)
+            .datalake-alarm-time-picker
+                height: calc(100% - 250px)
+                padding: 30px
+            .datalake-alarm-buttons
+                text-align: center
+                .datalake-alarm-cancel-button
+                    margin-left: 10px
