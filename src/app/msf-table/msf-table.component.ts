@@ -642,13 +642,13 @@ export class MsfTableComponent implements OnInit {
       return null;
 
     if (format == null || format == "" || this.predefinedColumnFormats[format])
-      momentFormat = "MM/DD/YYYY HH:mm:ss"; // fallback for date values with no column or pre-defined format set
+      momentFormat = "yyyyMMdd"; // fallback for date values with no column or pre-defined format set
     else
     {
       // replace lower case letters with uppercase ones for the moment date format
       momentFormat = format.replace (/m/g, "M");
-      momentFormat = momentFormat.replace (/y/g, "Y");
-      momentFormat = momentFormat.replace (/d/g, "D");
+      momentFormat = momentFormat.replace (/y/g, "y");
+      momentFormat = momentFormat.replace (/d/g, "d");
     }
 
     return moment (date, momentFormat).toDate ();
