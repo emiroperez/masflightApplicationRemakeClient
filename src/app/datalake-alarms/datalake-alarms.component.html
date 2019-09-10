@@ -54,7 +54,7 @@
         </mat-radio-group>
         <div class="datalake-alarm-time-picker" *ngIf="!notifyMode">
           <div class="datalake-alarm-minute-input">
-            <input matInput type="number" class="datalake-alarm-minutes-input"/>
+            <input matInput maxlength="4" type="numeric" class="datalake-alarm-minutes-input"/>
             <span class="datalake-alarm-minutes-label">Minutes</span>
           </div>
         </div>
