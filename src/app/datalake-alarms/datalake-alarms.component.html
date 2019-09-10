@@ -10,7 +10,35 @@
   </div>
   <div class="datalake-alarms-body">
     <div class="datalake-alarms-item">
-      Work in progress...
+      <div class="mat-elevation-z8">
+        <div class="msf-customer-table-scroll" [ngStyle]="{ 'height': getTableHeight() }">
+          <table mat-table matSort [dataSource]="alarmTable" class="datasource welcome-table msf-customer-table">
+            <ng-container matColumnDef="schemaName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Schema Name</th>
+              <td mat-cell *matCellDef="let element">{{ element.schemaName }}</td>
+            </ng-container>
+            <ng-container matColumnDef="tableName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Table Name</th>
+              <td mat-cell *matCellDef="let element">{{ element.tableName }}</td>
+            </ng-container>
+            <ng-container matColumnDef="cron">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Cron</th>
+              <td mat-cell *matCellDef="let element">{{ element.cron }}</td>
+            </ng-container>
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+              <td mat-cell *matCellDef="let element">{{ element.status }}</td>
+            </ng-container>
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
+              <td mat-cell *matCellDef="let element">{{ element.actions }}</td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="alarmColumns"></tr>
+            <tr mat-row [ngClass]="{ 'mat-row-highlighted': row.highlight }" *matRowDef="let row; columns: alarmColumns;" (click)="selectCustomer(row)"></tr>
+          </table>
+        </div>
+        <mat-paginator class="msf-customer-paginator" [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons></mat-paginator>
+      </div>
     </div>
     <div class="datalake-alarms-item">
       <div class="datalake-alarms-header">

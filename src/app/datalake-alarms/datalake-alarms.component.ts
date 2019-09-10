@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, HostListener } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -23,6 +23,11 @@ export class DatalakeAlarmsComponent implements OnInit {
   filteredTables: ReplaySubject<any[]> = new ReplaySubject<any[]> (1);
   _onDestroy: Subject<void> = new Subject<void> ();
 
+  alarmColumns: string[] = ['schemaName', 'tableName', 'cron', 'status', 'actions'];
+  alarmTable: any[] = [];
+
+  innerHeight: number;
+
   constructor(public globals: Globals, private formBuilder: FormBuilder,
     private service: DatalakeService, private changeDetectorRef: ChangeDetectorRef) {
     this.alarmFormGroup = this.formBuilder.group ({
@@ -36,6 +41,8 @@ export class DatalakeAlarmsComponent implements OnInit {
 
   ngOnInit()
   {
+    this.innerHeight = window.innerHeight;
+
     this.globals.isLoading = true;
     this.service.getDatalakeSchemas (this, this.setSchemas, this.setSchemasError);
   }
@@ -169,5 +176,16 @@ export class DatalakeAlarmsComponent implements OnInit {
     });
 
     clock.set12h ();
+  }
+
+  getTableHeight(): string
+  {
+    return "calc(" + this.innerHeight + "px - 18.5em)";
+  }
+
+  @HostListener('window:resize', ['$event'])
+  checkScreen(event): void
+  {
+    this.innerHeight = event.target.innerHeight;
   }
 }
