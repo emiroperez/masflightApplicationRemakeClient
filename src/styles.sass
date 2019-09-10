@@ -1367,6 +1367,9 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                 border-color: $font-color !important
             .mat-radio-inner-circle
                 background-color: $font-color !important
+        .datalake-alarm-minute-input
+            .datalake-alarm-minutes-input
+                background-color: $map-panelinfo-background-color
         #time-picker
             .atp-number-color, .atp-number-selected
                 color: rgba($font-color, 0.5)
@@ -1374,6 +1377,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                 background-color: $background-color !important
             .atp-time .atp-hour, .atp-time .atp-minute
                 background-color: $map-panelinfo-background-color
+                color: $font-color
             .atp-color--primary
                 background-color: $dashboard-secondary-background-color
         .CodeMirror, .CodeMirror-gutters
@@ -7268,6 +7272,22 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                         margin-left: -25px
                     .datalake-alarm-minutes-label
                         margin-left: 27px
+                .datalake-alarm-minute-input
+                    width: 100%
+                    display: flex
+                    align-self: center
+                    justify-content: center
+                    .datalake-alarm-minutes-input
+                        text-align: right
+                        border-radius: 5px
+                        width: 47px
+                        font-size: 40px
+                        border: 0
+                        outline-width: 0
+                    .datalake-alarm-minutes-label
+                        padding-left: 10px
+                        align-self: center
+                        margin-top: -6px
                 #time-picker
                     width: 100%
                     .atp-time .atp-hour, .atp-time .atp-minute

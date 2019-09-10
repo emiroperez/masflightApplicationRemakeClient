@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -24,7 +24,7 @@ export class DatalakeAlarmsComponent implements OnInit {
   _onDestroy: Subject<void> = new Subject<void> ();
 
   constructor(public globals: Globals, private formBuilder: FormBuilder,
-    private service: DatalakeService) {
+    private service: DatalakeService, private changeDetectorRef: ChangeDetectorRef) {
     this.alarmFormGroup = this.formBuilder.group ({
       schema: ['', Validators.required],
       table: new FormControl ({ value: '', disabled: true }, Validators.required)
@@ -36,14 +36,6 @@ export class DatalakeAlarmsComponent implements OnInit {
 
   ngOnInit()
   {
-    let clock = timePicker ({
-      element: document.getElementById ("time-picker"),
-      time: new Date (),
-      width: "100%"
-    });
-
-    clock.set12h ();
-
     this.globals.isLoading = true;
     this.service.getDatalakeSchemas (this, this.setSchemas, this.setSchemasError);
   }
@@ -159,5 +151,23 @@ export class DatalakeAlarmsComponent implements OnInit {
         return index === self.indexOf(elem);
       })
     );
+  }
+
+  enableTimePicker(): void
+  {
+    let clock;
+
+    if (!this.notifyMode)
+      return;
+
+    this.changeDetectorRef.detectChanges ();
+
+    clock = timePicker ({
+      element: document.getElementById ("time-picker"),
+      time: new Date (),
+      width: "100%"
+    });
+
+    clock.set12h ();
   }
 }
