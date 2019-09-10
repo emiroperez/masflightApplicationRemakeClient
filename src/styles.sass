@@ -1368,8 +1368,8 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             .mat-radio-inner-circle
                 background-color: $font-color !important
         #time-picker
-            .atp-number-color
-                color: $font-color
+            .atp-number-color, .atp-number-selected
+                color: rgba($font-color, 0.5)
             .atp-face-color
                 background-color: $background-color !important
             .atp-time .atp-hour, .atp-time .atp-minute
@@ -7256,6 +7256,18 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                 height: calc(100% - 250px)
                 display: flex
                 padding: 30px
+                position: relative
+                .datalake-alarm-time-labels
+                    position: absolute
+                    width: calc(50% - 20px)
+                    font-size: 13px
+                    text-align: center
+                    align-self: center
+                    margin-top: -35px
+                    .datalake-alarm-hours-label
+                        margin-left: -25px
+                    .datalake-alarm-minutes-label
+                        margin-left: 27px
                 #time-picker
                     width: 100%
                     .atp-time .atp-hour, .atp-time .atp-minute
