@@ -55,7 +55,7 @@
         </div>
         <div class="datalake-create-table-step-buttons">
           <button class="datalake-create-table-step-button flat-button" mat-button
-            (click)="goForward(tableConfigurationFormGroup, stepper)">
+            (click)="goForward(stepper)">
             NEXT
             <mat-icon>arrow_forward_ios</mat-icon>
           </button>
@@ -141,7 +141,7 @@
         </div>
         <div class="datalake-create-table-step-buttons">
           <button class="datalake-create-table-step-button flat-button" mat-button
-            (click)="goForward(null, stepper)">
+            (click)="goForward(stepper)">
             NEXT
             <mat-icon>arrow_forward_ios</mat-icon>
           </button>
@@ -186,7 +186,7 @@
         </div>
         <div class="datalake-create-table-step-buttons">
           <button class="datalake-create-table-step-button flat-button" mat-button
-            (click)="goForward(newStep3FormGroup, stepper)">
+            (click)="goForward(stepper)">
             NEXT
             <mat-icon>arrow_forward_ios</mat-icon>
           </button>
@@ -196,7 +196,25 @@
           </button>
         </div>
       </div>
+      <div class="datalake-add-partition-button">
+        <button class="add-partition-button flat-button" mat-button (click)="addPartition()">Add Partition</button>
+      </div>
       <div class="datalake-partition-container">
+        <div class="datalake-partition" *ngFor="let partition of partitions">
+          <mat-form-field>
+            <input matInput [(ngModel)]="partition.name" placeholder="Partition Name" autocomplete="off">
+          </mat-form-field>
+          <mat-form-field class="datalake-partition-type">
+            <mat-select [(ngModel)]="partition.dataType" placeholder="Type" autocomplete="off">
+              <mat-option *ngFor="let partitionDataType of partitionDataTypes" [value]="partitionDataType">
+                {{partitionDataType}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <button class="close-button" mat-icon-button>
+            <mat-icon aria-label="add" (click)="removePartition(partition)">close</mat-icon>
+          </button>
+        </div>
       </div>
     </ng-container>
     <ng-container *ngIf="(stepper.selectedIndex == 3 && selectedFileType === 'CSV') || (stepper.selectedIndex == 2 && selectedFileType === 'PARQUET')">
@@ -206,7 +224,7 @@
           <span class="datalake-create-table-step-description">Show the data in columns and allow to change the column header</span>
         </div>
         <div class="datalake-create-table-step-buttons">
-          <button class="datalake-create-table-step-button flat-button" mat-button>
+          <button class="datalake-create-table-step-button flat-button" mat-button (click)="createTable()">
             FINISH
             <mat-icon>flag</mat-icon>
           </button>

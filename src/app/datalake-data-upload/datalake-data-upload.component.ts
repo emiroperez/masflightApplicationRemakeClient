@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, Validators, FormControl, FormBuilder, AbstractControl } from '@angular/forms';
 import { MatStepper, MatDialog } from '@angular/material';
 
@@ -17,6 +17,9 @@ export class DatalakeDataUploadComponent {
 
   @Input("buckets")
   buckets: DatalakeBucket[] = [];
+
+  @Output("closeDialog")
+  closeDialog = new EventEmitter ();
 
   currentBuckets: DatalakeBucket[] = [];
 

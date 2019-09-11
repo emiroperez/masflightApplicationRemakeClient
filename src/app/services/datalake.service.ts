@@ -10,26 +10,31 @@ import { Globals } from '../globals/Globals';
 export class DatalakeService {
     host: string;
 
-    constructor(private http: ApiClient, private globals: Globals) {
+    constructor(private http: ApiClient, private globals: Globals)
+    {
         this.host = this.globals.baseUrl;
     }
 
-    getDatalakeTables(_this, handlerSuccess, handlerError): void {
+    getDatalakeTables(_this, handlerSuccess, handlerError): void
+    {
         let url = this.host + "/GetDatalakeTables?token=rHgGv10eoP1PmScdpki!8buJYKmT93Mrvj!";
         this.http.get(_this, url, handlerSuccess, handlerError, null);
     }
 
-    getDatalakeTableColumns(_this, schemaName, tableName, handlerSuccess, handlerError): void {
+    getDatalakeTableColumns(_this, schemaName, tableName, handlerSuccess, handlerError): void
+    {
         let url = this.host + "/GetDatalakeTableColumns?token=rHgGv10eoP1PmScdpki!8buJYKmT93Mrvj!&schemaName=" + schemaName + "&tableName=" + tableName;
         this.http.get(_this, url, handlerSuccess, handlerError, null);
     }
 
-    getDatalakeTableData(_this, schemaName, tableName, limit, handlerSuccess, handlerError): void {
+    getDatalakeTableData(_this, schemaName, tableName, limit, handlerSuccess, handlerError): void
+    {
         let url = this.host + "/GetDatalakeTableData?userName=erich&token=rHgGv10eoP1PmScdpki!8buJYKmT93Mrvj!&schemaName=" + schemaName + "&tableName=" + tableName + "&limit=" + limit;
         this.http.get(_this, url, handlerSuccess, handlerError, null);
     }
 
-    getDatalakeSchemas(_this, handlerSuccess, handlerError): void {
+    getDatalakeSchemas(_this, handlerSuccess, handlerError): void
+    {
         let url = this.host + "/GetSchemas";
 
         let request = {
@@ -46,7 +51,8 @@ export class DatalakeService {
         this.http.get(_this, url, handlerSuccess, handlerError, null);
     }
 
-    getDatalakeSchemaTables(_this, schemaName, handlerSuccess, handlerError): void {
+    getDatalakeSchemaTables(_this, schemaName, handlerSuccess, handlerError): void
+    {
         let url = this.host + "/GetSchemaTables";
 
         let request = {
@@ -58,7 +64,8 @@ export class DatalakeService {
         this.http.post(_this, url, request, handlerSuccess, handlerError);
     }
 
-    datalakeExecuteQuery(_this, schemaName, queryInput, handlerSuccess, handlerError): void {
+    datalakeExecuteQuery(_this, schemaName, queryInput, handlerSuccess, handlerError): void
+    {
         let url = this.host + "/executeQuery";
 
         let request = {
@@ -71,12 +78,21 @@ export class DatalakeService {
         this.http.post(_this, url, request, handlerSuccess, handlerError);
     }
 
-    uploadDatalakeTableFile(_this, config, file, handlerSuccess, handlerError)
+    uploadDatalakeTableFile(_this, config, file, handlerSuccess, handlerError): void
     {
         let url = this.host + "/uploadDatalakeTableFile?separator=" + config.separator +
             "&token=rHgGv10eoP1PmScdpki!8buJYKmT93Mrvj!" + "&format=" + config.format + "&s3filepath=" +
             config.s3filepath;
 
         this.http.post (_this, url, file, handlerSuccess, handlerError);
+    }
+
+    createDatalakeTable(_this, request, handlerSuccess, handlerError): void
+    {
+        let url = this.host + "/createDatalakeTable";
+
+        request.username = "erich";
+        request.token = "rHgGv10eoP1PmScdpki!8buJYKmT93Mrvj!";
+        this.http.post (_this, url, request, handlerSuccess, handlerError);
     }
 }

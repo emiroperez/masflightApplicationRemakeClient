@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl } from '@angular/forms';
 import { MatStepper, MatDialog } from '@angular/material';
 import { ReplaySubject, Subject } from 'rxjs';
@@ -19,6 +19,9 @@ export class DatalakeCreateNewStructureComponent {
   @Input("buckets")
   buckets: DatalakeBucket[] = [];
 
+  @Output("closeDialog")
+  closeDialog = new EventEmitter ();
+
   currentBuckets: DatalakeBucket[] = [];
 
   tableConfigurationFormGroup: FormGroup;
@@ -34,11 +37,13 @@ export class DatalakeCreateNewStructureComponent {
   delimiterCharacter: string = ",";
 
   dataTypes: string[] = [ "string", "double", "bigint", "timestamp" ];
+  partitionDataTypes: string[] = [ "String", "Double", "Bigint", "Timestamp" ];
   filteredDataColumns: ReplaySubject<any[]> = new ReplaySubject<any[]> (1);
   _onDestroy = new Subject<void> ();
   dataColumnFilter: string;
 
   dataColumns: any[];
+  partitions: any[] = [];
   rawData: string[][];
 
   constructor(private dialog: MatDialog, private formBuilder: FormBuilder,
@@ -68,27 +73,36 @@ export class DatalakeCreateNewStructureComponent {
     stepper.previous ();
   }
 
-  goForward(formGroup: FormGroup, stepper: MatStepper): void
+  goForward(stepper: MatStepper): void
   {
-    if (!formGroup)
+    if (!stepper.selectedIndex)
     {
-      stepper.next ();
-      return;
-    }
-
-    // validate form before going forward
-    Object.keys (formGroup.controls).forEach (field =>
-    {
-      formGroup.get (field).markAsTouched ({ onlySelf: true });
-    });
-
-    if (formGroup.invalid || !this.tableConfigurationFormGroup.get ("fileName").value)
-    {
-      this.dialog.open (MessageComponent, {
-        data: { title: "Error", message: "The required information is incomplete, please complete them and try again." }
+      // validate form before going forward
+      Object.keys (this.tableConfigurationFormGroup.controls).forEach (field =>
+      {
+        this.tableConfigurationFormGroup.get (field).markAsTouched ({ onlySelf: true });
       });
+
+      if (this.tableConfigurationFormGroup.invalid || !this.tableConfigurationFormGroup.get ("fileName").value)
+      {
+        this.dialog.open (MessageComponent, {
+          data: { title: "Error", message: "The required information is incomplete, please complete them and try again." }
+        });
   
-      return;
+        return;
+      }
+    }
+    else if ((stepper.selectedIndex == 2 && this.selectedFileType === 'CSV')
+      || (stepper.selectedIndex == 1 && this.selectedFileType === 'PARQUET'))
+    {
+      if (!this.partitions.length)
+      {
+        this.dialog.open (MessageComponent, {
+          data: { title: "Error", message: "You must at least add one partition." }
+        });
+  
+        return;
+      }
     }
 
     stepper.next ();
@@ -323,5 +337,73 @@ export class DatalakeCreateNewStructureComponent {
     uploader.value = null;
 
     this.filteredDataColumns.next (this.dataColumns.slice ());
+  }
+
+  createTable(): void
+  {
+    let columnList = [];
+    let partitionList = [];
+    let request;
+
+    for (let column of this.dataColumns)
+    {
+      columnList.push ({
+        Row: column.index - 1,
+        Name: column.mapName,
+        DataType: column.mapDataType
+      });
+    }
+
+    for (let partition of this.partitions)
+    {
+      partitionList.push ({
+        name: partition.name,
+        isPartition: "YES",
+        dataType: partition.dataType
+      });
+    }
+
+    request = {
+      columns: columnList,
+      partitions: partitionList,
+      format: this.selectedFileType,
+      tableName: this.tableConfigurationFormGroup.get ("tableName").value,
+      schemaName: this.tableConfigurationFormGroup.get ("schema").value.schemaName,
+      s3TableLocation: "s3://" + this.tableConfigurationFormGroup.get ("bucket").value.bucketName,
+      s3FilePath: this.tableConfigurationFormGroup.get ("tableLocation").value,
+      tableDescription: this.tableConfigurationFormGroup.get ("tableDescription").value,
+      separator: this.delimiterCharacter,
+      longName: this.tableConfigurationFormGroup.get ("tableLongName").value
+    };
+
+    this.service.createDatalakeTable (this, request, this.tableCreated, this.createTableError);
+  }
+
+  tableCreated(_this, data): void
+  {
+    console.log (data);
+    // _this.closeDialog.emit ();
+  }
+
+  createTableError(_this, result): void
+  {
+    console.log (result);
+
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Error", message: "Failed to create new table." }
+    });
+  }
+
+  addPartition(): void
+  {
+    this.partitions.push ({
+      name: "New Partition",
+      dataType: "String"
+    });
+  }
+
+  removePartition(partition): void
+  {
+    this.partitions.splice (this.partitions.indexOf (partition), 1);
   }
 }
