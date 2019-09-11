@@ -714,7 +714,12 @@ export class MsfTableComponent implements OnInit {
 
   parseString(value: any): string
   {
-    let aux: string = String (value);
+    let aux: string;
+
+    if (value == null)
+      return null;
+
+    aux = String (value);
 
     // remove any newline charaters
     return aux.replace (/\n/g, "");
