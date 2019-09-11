@@ -1,5 +1,6 @@
-import { Component, OnInit, ChangeDetectorRef, HostListener } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, HostListener, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { MatTableDataSource, MatPaginator } from '@angular/material';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { timePicker } from 'analogue-time-picker';
@@ -15,6 +16,9 @@ export class DatalakeAlarmsComponent implements OnInit {
   schemas: string[] = [];
   tables: string[] = [];
 
+  @ViewChild(MatPaginator)
+  paginator: MatPaginator;
+
   alarmFormGroup: FormGroup;
   notifyMode: boolean = false;
   selectedStatus: boolean = false;
@@ -24,7 +28,8 @@ export class DatalakeAlarmsComponent implements OnInit {
   _onDestroy: Subject<void> = new Subject<void> ();
 
   alarmColumns: string[] = ['schemaName', 'tableName', 'cron', 'status', 'actions'];
-  alarmTable: any[] = [];
+  alarmTable: MatTableDataSource<any>;
+  alarms: any[] = [];
 
   innerHeight: number;
 
@@ -42,6 +47,9 @@ export class DatalakeAlarmsComponent implements OnInit {
   ngOnInit()
   {
     this.innerHeight = window.innerHeight;
+
+    this.alarmTable = new MatTableDataSource (this.alarms);
+    this.alarmTable.paginator = this.paginator;
 
     this.globals.isLoading = true;
     this.service.getDatalakeSchemas (this, this.setSchemas, this.setSchemasError);
