@@ -636,22 +636,29 @@ export class MsfTableComponent implements OnInit {
 
   parseDate(date: any, format: string): Date
   {
+    let momentDate: moment.Moment;
     let momentFormat: string;
 
     if (date == null || date == "")
       return null;
 
-    if (format == null || format == "" || this.predefinedColumnFormats[format])
-      momentFormat = "yyyyMMdd"; // fallback for date values with no column or pre-defined format set
+    if (format == null || format == "")
+      momentFormat = "YYYYMMDD"; // fallback for date values with no column or pre-defined format set
+    else if (this.predefinedColumnFormats[format])
+      momentFormat = "DD/MM/YYYY";
     else
     {
       // replace lower case letters with uppercase ones for the moment date format
       momentFormat = format.replace (/m/g, "M");
-      momentFormat = momentFormat.replace (/y/g, "y");
-      momentFormat = momentFormat.replace (/d/g, "d");
+      momentFormat = momentFormat.replace (/y/g, "Y");
+      momentFormat = momentFormat.replace (/d/g, "D");
     }
 
-    return moment (date, momentFormat).toDate ();
+    momentDate = moment (date, momentFormat);
+    if (!momentDate.isValid ())
+      return null; // invalid date value will be null
+
+    return momentDate.toDate ();
   }
 
   parseTime(time: any, format: string): Date
@@ -666,6 +673,8 @@ export class MsfTableComponent implements OnInit {
 
     if (isNaN (date.getTime ()))
     {
+      let momentDate: moment.Moment;
+
       if (format == null || format == "" || this.predefinedColumnFormats[format])
         momentFormat = "HH:mm:ss";          // fallback for time values with no column or pre-defined format set
       else
@@ -676,7 +685,11 @@ export class MsfTableComponent implements OnInit {
         momentFormat = momentFormat.replace (/S/g, "s");
       }
 
-      return moment (time, momentFormat).toDate ();
+      momentDate = moment (date, momentFormat);
+      if (!momentDate.isValid ())
+        return null; // invalid time value will be null
+
+      return momentDate.toDate ();
     }
 
     // use full date format if the time value is a valid date
