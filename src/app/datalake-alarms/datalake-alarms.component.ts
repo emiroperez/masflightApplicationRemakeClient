@@ -29,7 +29,16 @@ export class DatalakeAlarmsComponent implements OnInit {
 
   alarmColumns: string[] = ['schemaName', 'tableName', 'cron', 'status', 'actions'];
   alarmTable: MatTableDataSource<any>;
-  alarms: any[] = [];
+  alarms: any[] = [
+  /*
+  {
+    schemaName: "test",
+    tableName: "test",
+    cron: "**5**",
+    selectedStatus: 1
+  }
+  */
+  ];
 
   innerHeight: number;
 
@@ -184,6 +193,18 @@ export class DatalakeAlarmsComponent implements OnInit {
     });
 
     clock.set12h ();
+  }
+
+  editAlarm(alarm): void
+  {
+  }
+
+  removeAlarm(alarm): void
+  {
+    this.alarms.splice (this.alarms.indexOf (alarm), 1);
+
+    this.alarmTable.data = this.alarms;
+    this.alarmTable._updateChangeSubscription ();
   }
 
   getTableHeight(): string
