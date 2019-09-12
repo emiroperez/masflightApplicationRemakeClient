@@ -7,6 +7,8 @@ import { timePicker } from 'analogue-time-picker';
 
 import { Globals } from '../globals/Globals';
 import { DatalakeService } from '../services/datalake.service';
+import { ConfirmDeleteDialog } from '../admin-menu/admin-menu.component';
+import { ApplicationService } from '../services/application.service';
 
 @Component({
   selector: 'app-datalake-alarms',
@@ -30,20 +32,20 @@ export class DatalakeAlarmsComponent implements OnInit {
   alarmColumns: string[] = ['schemaName', 'tableName', 'cron', 'status', 'actions'];
   alarmTable: MatTableDataSource<any>;
   alarms: any[] = [
-  /*
   {
     schemaName: "test",
     tableName: "test",
     cron: "**5**",
-    selectedStatus: 1
+    selectedStatus: 1,
+    notifyMode: 0
   }
-  */
   ];
 
   innerHeight: number;
 
   constructor(public globals: Globals, private formBuilder: FormBuilder,
-    private service: DatalakeService, private changeDetectorRef: ChangeDetectorRef) {
+    private service: DatalakeService, private changeDetectorRef: ChangeDetectorRef,
+    private appService: ApplicationService) {
     this.alarmFormGroup = this.formBuilder.group ({
       schema: ['', Validators.required],
       table: new FormControl ({ value: '', disabled: true }, Validators.required)
@@ -201,10 +203,15 @@ export class DatalakeAlarmsComponent implements OnInit {
 
   removeAlarm(alarm): void
   {
-    this.alarms.splice (this.alarms.indexOf (alarm), 1);
+    this.appService.confirmationDialog (this, "Do you want to delete this alarm?",
+      function (_this)
+      {
+        _this.alarms.splice (_this.alarms.indexOf (alarm), 1);
 
-    this.alarmTable.data = this.alarms;
-    this.alarmTable._updateChangeSubscription ();
+        _this.alarmTable.data = _this.alarms;
+        _this.alarmTable._updateChangeSubscription ();
+      }
+    );
   }
 
   getTableHeight(): string
