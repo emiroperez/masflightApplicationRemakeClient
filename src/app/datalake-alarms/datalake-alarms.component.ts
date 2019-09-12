@@ -33,8 +33,8 @@ export class DatalakeAlarmsComponent implements OnInit {
   alarmTable: MatTableDataSource<any>;
   alarms: any[] = [
   {
-    schemaName: "test",
-    tableName: "test",
+    schemaName: "fr24p",
+    tableName: "fradar24_r",
     cron: "**5**",
     selectedStatus: 1,
     notifyMode: 0
