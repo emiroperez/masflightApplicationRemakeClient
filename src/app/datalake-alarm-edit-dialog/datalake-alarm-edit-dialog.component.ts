@@ -187,6 +187,15 @@ export class DatalakeAlarmEditDialogComponent {
     this.dialogRef.close ();
   }
 
+  saveAlarm(): void
+  {
+    this.dialogRef.close ({
+      schemaName: this.alarmFormGroup.get ("schema").value,
+      tableName: this.alarmFormGroup.get ("table").value,
+      selectedStatus: this.selectedStatus
+    });
+  }
+
   getHeaderDisplayStatus(): string
   {
     if (this.isLoading)

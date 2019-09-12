@@ -199,12 +199,21 @@ export class DatalakeAlarmsComponent implements OnInit {
 
   editAlarm(alarm): void
   {
-    this.dialog.open (DatalakeAlarmEditDialogComponent, {
+    let dialogRef = this.dialog.open (DatalakeAlarmEditDialogComponent, {
       width: '600px',
       panelClass: 'datalake-edit-alarm-dialog',
       data: {
         alarm: alarm,
         schemas: this.schemas
+      }
+    });
+
+    dialogRef.afterClosed ().subscribe ((result) => {
+      if (result)
+      {
+        alarm.schemaName = result.schemaName;
+        alarm.tableName = result.tableName;
+        alarm.selectedStatus = result.selectedStatus;
       }
     });
   }
