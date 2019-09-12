@@ -979,15 +979,18 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
         }
       });
       dialogRef.afterClosed().subscribe((result: any) => {
-        console.log(result.confirm);
-        if (result.confirm) {
+        if (result)
+        {
+          console.log(result.confirm);
+          if (result.confirm) {
 
-          if (this.optionSelected.uid.includes("catnew") || this.optionSelected.uid.includes("optnew"))
-            this.deleteNewItem();
-          else {
-            // check if any dashboard panel is using the selected option
-            this.globals.isLoading = true;
-            this.service.checkMenuOption(this, this.optionSelected.id, this.checkSuccess, this.checkError);
+            if (this.optionSelected.uid.includes("catnew") || this.optionSelected.uid.includes("optnew"))
+              this.deleteNewItem();
+            else {
+              // check if any dashboard panel is using the selected option
+              this.globals.isLoading = true;
+              this.service.checkMenuOption(this, this.optionSelected.id, this.checkSuccess, this.checkError);
+            }
           }
         }
       });
@@ -1011,7 +1014,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
       });
 
       dialogRef.afterClosed().subscribe((result: any) => {
-        if (result.confirm)
+        if (result && result.confirm)
         {
           _this.globals.isLoading = true;
           _this.service.removeDashboardPanelByOptionId (_this, _this.optionSelected.id, _this.checkSuccess, _this.checkError);
