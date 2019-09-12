@@ -1,0 +1,58 @@
+<div class="datalake-edit-alarm-dialog-loading" *ngIf="isLoading"></div>
+<div class="datalake-alarms-header" [ngStyle]="{ 'display': getHeaderDisplayStatus() }">
+  <div class="datalake-new-alarm-title">
+    <mat-icon class="datalake-new-alarm-icon">alarm</mat-icon>
+    <span class="datalake-new-alarm-title-label">Edit alarm</span>
+  </div>
+  <div class="datalake-new-alarm-buttons">
+    Status
+    <button mat-icon-button (click)="setAlarmStatus(false)" [ngClass]="{'datalake-new-alarm-button': selectedStatus, 'datalake-new-alarm-button-selected': !selectedStatus }">
+      <mat-icon>check</mat-icon>
+    </button>
+    <button mat-icon-button (click)="setAlarmStatus(true)" [ngClass]="{'datalake-new-alarm-button': !selectedStatus, 'datalake-new-alarm-button-selected': selectedStatus }">
+      <mat-icon>priority_high</mat-icon>
+    </button>
+  </div>
+</div>
+<div class="datalake-new-alarm-container" [ngStyle]="{ 'display': getFormDisplayStatus() }">
+  <div class="datalake-alarm-comboboxes">
+    <mat-form-field class="datalake-alarm-left-combobox" [formGroup]="alarmFormGroup">
+      <mat-select placeholder="Schema Name" autocomplete="off" formControlName="schema" (selectionChange)="schemaChanged()">
+        <mat-option *ngFor="let schema of schemas" [value]="schema">
+          {{schema}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="alarmFormGroup.get('schema')?.invalid">You must select a schema</mat-error>
+    </mat-form-field>
+    <mat-form-field class="datalake-alarm-right-combobox" [formGroup]="alarmFormGroup">
+      <mat-select placeholder="Table Name" autocomplete="off" formControlName="table">
+        <ngx-mat-select-search [formControl]="tableFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+        <mat-option *ngFor="let table of filteredTables | async" [value]="table">
+          {{table}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="alarmFormGroup.get('table')?.invalid">You must select a table</mat-error>
+    </mat-form-field>
+  </div>
+  <mat-radio-group class="datalake-alarm-radio-group" [(ngModel)]="notifyMode" (ngModelChange)="enableTimePicker()">
+    <mat-radio-button class="cancels-checkbox" [ngClass]="{'datalake-alarm-radio-button': notifyMode, 'datalake-alarm-radio-button-selected': !notifyMode }" [value]="false">Notify me every</mat-radio-button>
+    <mat-radio-button class="cancels-checkbox datalake-alarm-radio-button-right" [ngClass]="{'datalake-alarm-radio-button': !notifyMode, 'datalake-alarm-radio-button-selected': notifyMode }" [value]="true">Notify me at this specific time</mat-radio-button>
+  </mat-radio-group>
+  <div class="datalake-alarm-time-picker datalake-edit-alamr-time-picker" *ngIf="!notifyMode">
+    <div class="datalake-alarm-minute-input">
+      <input matInput maxlength="4" type="numeric" autocomplete="off" class="datalake-alarm-minutes-input"/>
+      <span class="datalake-alarm-minutes-label">Minutes</span>
+    </div>
+  </div>
+  <div class="datalake-alarm-time-picker datalake-edit-alamr-time-picker" *ngIf="notifyMode">
+    <div id="time-picker-edit"></div>
+    <div class="datalake-alarm-time-labels">
+      <span class="datalake-alarm-hours-label">Hours</span>
+      <span class="datalake-alarm-minutes-label">Minutes</span>
+    </div>
+  </div>
+  <div class="datalake-alarm-buttons datalake-edit-alarm-buttons">
+    <button cdkFocusInitial mat-button class="flat-button">Save</button>
+    <button mat-button class="flat-button datalake-alarm-cancel-button">Cancel</button>
+  </div>
+</div>

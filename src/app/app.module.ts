@@ -202,6 +202,7 @@ import { DatalakeCreateNewStructureComponent } from './datalake-create-new-struc
 import { DatalakeDataUploadComponent } from './datalake-data-upload/datalake-data-upload.component';
 import { DatalakeMenuComponent } from './datalake-menu/datalake-menu.component';
 import { DatalakeAlarmsComponent } from './datalake-alarms/datalake-alarms.component';
+import { DatalakeAlarmEditDialogComponent } from './datalake-alarm-edit-dialog/datalake-alarm-edit-dialog.component';
 
 @NgModule({
   declarations: [
@@ -378,7 +379,8 @@ import { DatalakeAlarmsComponent } from './datalake-alarms/datalake-alarms.compo
     DatalakeCreateNewStructureComponent,
     DatalakeDataUploadComponent,
     DatalakeMenuComponent,
-    DatalakeAlarmsComponent
+    DatalakeAlarmsComponent,
+    DatalakeAlarmEditDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -463,7 +465,8 @@ import { DatalakeAlarmsComponent } from './datalake-alarms/datalake-alarms.compo
     MsfDynamicTableAliasComponent,
     DatalakeTableShowColumnsComponent,
     DatalakeTablePreviewComponent,
-    DatalakeCreateTableComponent
+    DatalakeCreateTableComponent,
+    DatalakeAlarmEditDialogComponent
   ]
 })
 export class AppModule { }

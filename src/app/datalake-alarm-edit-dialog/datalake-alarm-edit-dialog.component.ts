@@ -1,69 +1,43 @@
-import { Component, OnInit, ChangeDetectorRef, HostListener, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { MatTableDataSource, MatPaginator, MatDialog } from '@angular/material';
+import { Component, ChangeDetectorRef, Inject } from '@angular/core';
+import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
+import { MAT_DIALOG_DATA } from '@angular/material';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { timePicker } from 'analogue-time-picker';
 
 import { Globals } from '../globals/Globals';
 import { DatalakeService } from '../services/datalake.service';
-import { ApplicationService } from '../services/application.service';
-import { DatalakeAlarmEditDialogComponent } from '../datalake-alarm-edit-dialog/datalake-alarm-edit-dialog.component';
 
 @Component({
-  selector: 'app-datalake-alarms',
-  templateUrl: './datalake-alarms.component.html'
+  selector: 'app-datalake-alarm-edit-dialog',
+  templateUrl: './datalake-alarm-edit-dialog.component.html'
 })
-export class DatalakeAlarmsComponent implements OnInit {
+export class DatalakeAlarmEditDialogComponent {
   schemas: string[] = [];
   tables: string[] = [];
-
-  @ViewChild(MatPaginator)
-  paginator: MatPaginator;
 
   alarmFormGroup: FormGroup;
   notifyMode: boolean = false;
   selectedStatus: boolean = false;
+  isLoading: boolean = false;
 
   tableFilterCtrl: FormControl = new FormControl ();
   filteredTables: ReplaySubject<any[]> = new ReplaySubject<any[]> (1);
   _onDestroy: Subject<void> = new Subject<void> ();
 
-  alarmColumns: string[] = ['schemaName', 'tableName', 'cron', 'status', 'actions'];
-  alarmTable: MatTableDataSource<any>;
-  alarms: any[] = [
-  {
-    schemaName: "test",
-    tableName: "test",
-    cron: "**5**",
-    selectedStatus: 1,
-    notifyMode: 0
-  }
-  ];
-
-  innerHeight: number;
-
   constructor(public globals: Globals, private formBuilder: FormBuilder,
     private service: DatalakeService, private changeDetectorRef: ChangeDetectorRef,
-    private dialog: MatDialog, private appService: ApplicationService) {
+    @Inject(MAT_DIALOG_DATA) public data: { alarm: any, schemas: string[] })
+  {
     this.alarmFormGroup = this.formBuilder.group ({
       schema: ['', Validators.required],
       table: new FormControl ({ value: '', disabled: true }, Validators.required)
     });
 
+    this.schemas = JSON.parse (JSON.stringify (this.data.schemas));
+
     this.filteredTables.next (this.tables.slice ());
     this.searchChange ();
-  }
-
-  ngOnInit()
-  {
-    this.innerHeight = window.innerHeight;
-
-    this.alarmTable = new MatTableDataSource (this.alarms);
-    this.alarmTable.paginator = this.paginator;
-
-    this.globals.isLoading = true;
-    this.service.getDatalakeSchemas (this, this.setSchemas, this.setSchemasError);
   }
 
   ngOnDestroy(): void
@@ -81,28 +55,14 @@ export class DatalakeAlarmsComponent implements OnInit {
   {
     let schemaName: string = this.alarmFormGroup.get ("schema").value;
 
-    this.globals.isLoading = true;
+    this.isLoading = true;
     this.service.getDatalakeSchemaTables (this, schemaName, this.setSchemaTables, this.setSchemaTablesError);
-  }
-
-  setSchemas(_this, data): void
-  {
-    if (!data.Schemas.length)
-    {
-      _this.globals.isLoading = false;
-      return;
-    }
-
-    for (let schema of data.Schemas)
-      _this.schemas.push (schema);
-
-    _this.globals.isLoading = false;
   }
 
   setSchemasError(_this, result): void
   {
     console.log (result);
-    _this.globals.isLoading = false;
+    _this.isLoading = false;
   }
 
   setSchemaTables(_this, data): void
@@ -111,7 +71,7 @@ export class DatalakeAlarmsComponent implements OnInit {
 
     if (!data.Tables.length)
     {
-      _this.globals.isLoading = false;
+      _this.isLoading = false;
 
       tableSelector.setValue (null);
       tableSelector.disable ();
@@ -128,7 +88,7 @@ export class DatalakeAlarmsComponent implements OnInit {
     tableSelector.setValue (null);
     tableSelector.enable ();
     tableSelector.markAsUntouched ();
-    _this.globals.isLoading = false;
+    _this.isLoading = false;
   }
 
   setSchemaTablesError(_this, result): void
@@ -142,7 +102,7 @@ export class DatalakeAlarmsComponent implements OnInit {
     tableSelector.setValue (null);
     tableSelector.disable ();
     tableSelector.markAsUntouched ();
-    _this.globals.isLoading = false;
+    _this.isLoading = false;
   }
 
   searchChange(): void
@@ -189,7 +149,7 @@ export class DatalakeAlarmsComponent implements OnInit {
     this.changeDetectorRef.detectChanges ();
 
     clock = timePicker ({
-      element: document.getElementById ("time-picker"),
+      element: document.getElementById ("time-picker-edit"),
       time: new Date (),
       width: "100%"
     });
@@ -197,39 +157,19 @@ export class DatalakeAlarmsComponent implements OnInit {
     clock.set12h ();
   }
 
-  editAlarm(alarm): void
+  getHeaderDisplayStatus(): string
   {
-    this.dialog.open (DatalakeAlarmEditDialogComponent, {
-      width: '600px',
-      panelClass: 'datalake-edit-alarm-dialog',
-      data: {
-        alarm: alarm,
-        schemas: this.schemas
-      }
-    });
+    if (this.isLoading)
+      return "none";
+
+    return "flex";
   }
 
-  removeAlarm(alarm): void
+  getFormDisplayStatus(): string
   {
-    this.appService.confirmationDialog (this, "Do you want to delete this alarm?",
-      function (_this)
-      {
-        _this.alarms.splice (_this.alarms.indexOf (alarm), 1);
+    if (this.isLoading)
+      return "none";
 
-        _this.alarmTable.data = _this.alarms;
-        _this.alarmTable._updateChangeSubscription ();
-      }
-    );
-  }
-
-  getTableHeight(): string
-  {
-    return "calc(" + this.innerHeight + "px - 18.5em)";
-  }
-
-  @HostListener('window:resize', ['$event'])
-  checkScreen(event): void
-  {
-    this.innerHeight = event.target.innerHeight;
+    return "block";
   }
 }
