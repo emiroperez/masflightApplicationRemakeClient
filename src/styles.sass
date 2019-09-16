@@ -1142,7 +1142,16 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                 .mat-radio-label 
                     .mat-radio-container 
                         .mat-radio-outer-circle
-                            border-color: $font-color
+                            border-color: $font-color               
+        .admin-arguments-group-det-body-left
+            background-color: $admin-table-background-color        
+        .items-rows
+            .mat-pseudo-checkbox-checked
+                background: $primary-color        
+        .select-group
+            background-color: $admin-table-background-color
+            .ng-select-container
+                background-color: $admin-table-background-color
             .mat-radio-checked
                 background-color: $primary-color
                 .mat-radio-label 
@@ -6328,3 +6337,110 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     .msf-dashboard-chartbox-items
         .msf-dashboard-chartbox-column.is-mobile
             flex-direction: Column !important
+
+.select-group
+    width: 100%
+    .ng-select-container
+        border: 0px !important
+
+
+.arguments-list-container-group
+    height: 100%
+    overflow-y: auto
+    -webkit-overflow-scrolling: touch
+    padding: 3px
+    .arguments-list-item
+        display: flex
+        flex-direction: row
+        height: 55px
+        margin-top: 3px
+        .mat-button-wrapper
+            flex: 1
+            margin-left: 1%
+            margin-top: 2%
+            font-size: 18px
+
+.admin-arguments-group
+    display: flex
+    flex-direction: row
+    align-items: center
+    justify-content: space-between
+
+.admin-arguments-group-type
+    idth: calc(45% - 10px)
+    padding-right: 10px
+
+.admin-arguments-group-save
+    width: 10%
+    display: flex
+    justify-content: flex-end
+
+.admin-arguments-category-container-group
+    height: calc(100% - 138px) !important
+    width: calc(100% - 32px) !important
+
+.admin-arguments-category-right-panel-group
+    height: calc(100% - 40px) !important
+
+.admin-arguments-category-form-container-group
+    min-height: 120px !important
+
+.admin-arguments-category-inner-container
+    height: 100% !important
+
+.admin-arguments-group-select
+    height: calc(100% - 120px)
+    max-height: calc(100% - 120px)
+    .search-input
+        width: calc(70% - 10px)
+        padding-left: 10px!important
+
+.search-input-group
+    .mat-form-field-infix
+        display: flex
+        .iconSearch
+            text-align: right
+
+
+.admin-arguments-group-det-body-left
+    width: 100%
+    max-height:100%
+    display: flex
+    overflow-y: auto
+    flex-direction: column
+    flex-wrap: wrap
+
+.items-rows::-webkit-scrollbar-track
+    background-color: transparent
+
+.items-rows
+    display: flex !important
+    overflow-y: auto
+    flex-direction: column
+    flex-wrap: wrap    
+    .mat-list-item
+        width: auto !important
+        .mat-list-item-content .mat-pseudo-checkbox
+            border-radius: 0px !important
+
+.admin-arguments-group-det-body
+    height: 80%
+    display: flex
+    flex-direction: row
+
+.admin-arguments-group-det-header
+    height: 20%
+    display: flex
+    flex-direction: row
+    align-items: center
+
+.admin-arguments-group-det-header-left
+    display: flex
+    align-items: center
+    width: 40%
+
+.admin-arguments-group-det-header-right
+    width: calc(60% - 30px)
+    display: flex
+    justify-content: right
+    padding: 0px 10px
