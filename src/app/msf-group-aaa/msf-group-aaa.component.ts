@@ -4,6 +4,7 @@ import { Arguments } from '../model/Arguments';
 import { Globals } from '../globals/Globals';
 import { ApiClient } from '../api/api-client';
 import { delay } from 'rxjs/operators';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-msf-group-aaa',
@@ -17,7 +18,7 @@ export class MsfGroupAaaComponent implements OnInit {
   @Input("argument") public argument: Arguments;
 
   loading = false;
-  constructor(private http: ApiClient, public globals: Globals) { }
+  constructor(private authService: AuthService, public globals: Globals) { }
 
 
   ngOnInit() { 
@@ -40,7 +41,7 @@ export class MsfGroupAaaComponent implements OnInit {
     }else{
      url = this.argument.url+ (search != null?search:'');
     }
-    this.http.get(this,url,handlerSuccess,this.handlerError, null);  
+    this.authService.get(this,url,handlerSuccess,this.handlerError);  
   }
 
   handlerSuccess(_this,data, tab){   

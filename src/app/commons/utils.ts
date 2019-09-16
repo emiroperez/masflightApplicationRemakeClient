@@ -321,6 +321,7 @@ export class Utils{
             if(group == "Airline"){
                 if(i == 0){
                     names = val.airline.iata;
+                    names = val.airline.iata;
                 }else{
                     names += ","+ val.airline.iata;
                 }
@@ -337,6 +338,19 @@ export class Utils{
                     names += ","+ val.Aircraft.name;
                 }
             }
+            // if(group == "Aircraft"){
+            //     if(i == 0){
+            //         names = val.Aircraft.name;
+            //     }else{
+            //         names += ","+ val.Aircraft.name;
+            //     }
+            // }else{
+            //     if(i == 0){
+            //         names = val.iata;
+            //     }else{
+            //         names += ","+ val.iata;
+            //     }
+            // }
             i++;
         }
         return names

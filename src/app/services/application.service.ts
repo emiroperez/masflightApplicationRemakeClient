@@ -18,7 +18,7 @@ export class ApplicationService {
 
   utils: Utils;
 
-  // host = "http://localhost:8887";
+  // host = "http://192.168.1.5:8887";
   host = "";
 
   //host1 = "http://localhost:8886";
@@ -517,4 +517,19 @@ export class ApplicationService {
     let url = this.host + "/deleteChildPanel";
     this.authService.post (_this, url, childPanelId, handlerSuccess, handlerError);
   }
+
+  loadGroupArguments(_this, handlerSuccess, handlerError) {
+    _this.globals.isLoading = true;
+    let url = this.host + "/secure/Names_Group?Group=";
+    // let url = this.host + "/Names_Group?Group=";
+    this.authService.get(_this, url, handlerSuccess, handlerError);
+  }
+
+  
+  saveNewGroupArguments(_this, data, handlerSuccess, handlerError){
+    _this.globals.isLoading = true;
+    let url = this.host + "/secure/saveNewGroupArguments";
+    this.authService.post(_this, url, data, handlerSuccess, handlerError);
+  }
+
 }

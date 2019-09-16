@@ -13,6 +13,7 @@ import { ResetPasswordComponent } from '../reset-password/reset-password.compone
 import { AdminArgumentsCategoryComponent } from '../admin-arguments-category/admin-arguments-category.component'
 import { AuthGuard } from '../guards/auth.guard';
 import { CreateCustomerComponent } from '../create-customer/create-customer.component';
+import { AdminArgumentsGroupComponent } from '../admin-arguments-group/admin-arguments-group.component';
 
 export const routes: Routes = [
   { path: '', component: LoginScreenComponent },
@@ -25,6 +26,7 @@ export const routes: Routes = [
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'arguments-category', component: AdminArgumentsCategoryComponent, canActivate: [AuthGuard] },
+  { path: 'arguments-groups', component: AdminArgumentsGroupComponent, canActivate: [AuthGuard] },
   { path: 'create-customer', component: CreateCustomerComponent, canActivate: [AuthGuard] }
 ];
 

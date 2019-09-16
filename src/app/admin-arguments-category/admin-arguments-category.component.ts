@@ -117,7 +117,8 @@ export class AdminArgumentsCategoryComponent implements OnInit {
     { value: "AAA_Group", name: "AAA Group" }
   ];
 
-  constructor(private http: ApiClient,  public dialog: MatDialog, public globals: Globals, private service: ApplicationService)
+  constructor(private http: ApiClient,  
+    public dialog: MatDialog, public globals: Globals, private service: ApplicationService)
   {
     this.filteredTypes.next (this.argTypes.slice ());
     this.searchChange ();
@@ -175,6 +176,7 @@ export class AdminArgumentsCategoryComponent implements OnInit {
     console.log(result);
     _this.globals.isLoading = false;
   }
+  
 sendData() {
   this.dataToSend = this.categories.concat(this.categoryDelete);
   console.log(this.dataToSend);

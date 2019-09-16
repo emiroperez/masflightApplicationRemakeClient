@@ -189,6 +189,8 @@ import { MenuNavComponent } from './menu-nav/menu-nav.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ExportAsModule } from 'ngx-export-as';
 import { MsfGroupAaaComponent } from './msf-group-aaa/msf-group-aaa.component';
+import { AdminArgumentsGroupComponent } from './admin-arguments-group/admin-arguments-group.component';
+import { FilterPipeGroupArg } from './admin-arguments-group/pipe-filter-group';
 
 @NgModule({
   declarations: [
@@ -340,6 +342,7 @@ import { MsfGroupAaaComponent } from './msf-group-aaa/msf-group-aaa.component';
     MsfAddSharedDashboardPanelComponent,
     FilterPipe,
     FilterPipeArg,
+    FilterPipeGroupArg,
     MsfAddSharedDashboardComponent,
     AdminArgumentsCategoryComponent,
     MsfAddSharedDashboardComponent,
@@ -354,7 +357,8 @@ import { MsfGroupAaaComponent } from './msf-group-aaa/msf-group-aaa.component';
     MsfDynamicTableAliasComponent,
     MsfDashboardControlPanelComponent,
     MenuNavComponent,
-    MsfGroupAaaComponent
+    MsfGroupAaaComponent,
+    AdminArgumentsGroupComponent
   ],
   imports: [
     BrowserModule,
