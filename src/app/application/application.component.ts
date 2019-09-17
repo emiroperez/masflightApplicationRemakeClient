@@ -49,7 +49,7 @@ export class ApplicationComponent implements OnInit {
   userName : any;
   firstOption: boolean;
 
-  admin: boolean = false;
+  // admin: boolean = false;
   ELEMENT_DATA: any[];
   coordinates: any;
   //displayedColumns: string[] = [];
@@ -160,7 +160,7 @@ export class ApplicationComponent implements OnInit {
     _this.user = data;
     _this.globals.currentUser = data.name;
     _this.userName = data.name;
-    _this.admin = data.admin;
+    _this.globals.admin = data.admin;
     _this.userService.getUserLastLoginTime (_this, _this.lastTimeSuccess, _this.errorLogin);
   }
 

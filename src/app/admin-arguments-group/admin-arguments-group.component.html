@@ -67,13 +67,16 @@
                                             </mat-option>
                                         </mat-select>
                                     </mat-form-field>
-                                    <mat-form-field  class="admin-arguments-group-type">
+                                    <mat-form-field  *ngIf="globals.admin" class="admin-arguments-group-type">
                                         <mat-select class="white" placeholder="Type" [(ngModel)]="ArgumentGroup.type" >
                                             <mat-option [disabled]="disable" *ngFor="let types of argTypes " [value]="types.value">
                                                 {{types.name}}
                                             </mat-option>
                                         </mat-select>
                                     </mat-form-field>
+                                    <button *ngIf="globals.admin" mat-button class="flat-button" (click)="share()">
+                                        Share
+                                    </button>
                                     <div class="admin-arguments-group-save">
                                             <!-- [disabled]="ArgumentGroup.name === '' && ArgumentGroup.group === ''" -->
                                         <button mat-button class="flat-button" (click)="sendData()">

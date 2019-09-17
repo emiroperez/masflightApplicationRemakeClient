@@ -42,8 +42,8 @@ export class AdminArgumentsGroupComponent implements OnInit {
   ];
   argTypes: any[] = [
     { value: 0, name: "Public" },
-    { value: 1, name: "Private" },
-    { value: 2, name: "Shared" }
+    { value: 1, name: "Private" }
+    // { value: 2, name: "Shared" }
   ];
 
   loading: boolean;
@@ -296,10 +296,14 @@ addCategory() {
     name: '',
     group: '',
     owner:'',
-    type: 0,
+    type: 1,
+    share: 0,
     aaa_GroupDet: [],
     iataList: [],
     delete: false
+  }
+  if (!this.globals.admin){
+    ArgGroup.type=1;
   }
   this.ArgumentsGroups.unshift(ArgGroup);
   this.getSelectedOption(this.ArgumentsGroups[0]);
@@ -316,7 +320,7 @@ deleteCategory() {
       }
       this.ArgumentGroup.delete = true;
       this.ArgumentsGroups.splice(index, 1);
-      this.ArgumentGroup = { name: '', group: '',owner:'', type: 0,aaa_GroupDet: [],iataList: [],delete: false, isSelected: false };
+      this.ArgumentGroup = { name: '', group: '',owner:'', type: 1,share: 0, aaa_GroupDet: [],iataList: [],delete: false, isSelected: false };
       this.disable = true;
     }
   }
@@ -342,7 +346,7 @@ handlerSuccessSend(_this, result){
   //   });
   // }
 
-  _this.ArgumentGroup = { name: '', group: '',owner:'', type: 0, isSelected: false };
+  _this.ArgumentGroup = { name: '', group: '',owner:'', type: 1,share: 0, isSelected: false };
   _this.ArgumentsGroups = result;
   _this.globals.isLoading = false;
   _this.disable = true;
@@ -417,6 +421,9 @@ sendData() {
   this.searchAirport="";
 }
 
+share(){
+  
+}
 addGroupDet(ArgGroupDet, type) {
   if (!ArgGroupDet.option.selected) {
     if(type === 'Airline'){

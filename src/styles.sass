@@ -1147,7 +1147,11 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             background-color: $admin-table-background-color        
         .items-rows
             .mat-pseudo-checkbox-checked
-                background: $primary-color        
+                background: $primary-color
+            .mat-list-item
+                .mat-list-item-content
+                    .mat-pseudo-checkbox
+                        border: 2px solid $font-color !important      
         .select-group
             background-color: $admin-table-background-color
             .ng-select-container
@@ -6371,8 +6375,9 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     padding-right: 10px
 
 .admin-arguments-group-save
-    width: 10%
+    width: calc(10% - 10px)
     display: flex
+    margin-left: 10px
     justify-content: flex-end
 
 .admin-arguments-category-container-group

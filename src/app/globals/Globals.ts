@@ -60,12 +60,12 @@ export class Globals {
   currentAirline: any;
   template : boolean = false;
   isFullscreen: boolean = false;
-  baseUrl = "http://pulse.globaleagle.com:8887";
-  // baseUrl = "http://192.168.1.50:8887";
+  // baseUrl = "http://pulse.globaleagle.com:8887";
+  baseUrl = "http://pulse.globaleagle.com:8881";
   // baseUrl = "";
-  baseUrl2 = "http://pulse.globaleagle.com:8885";
+  // baseUrl2 = "http://pulse.globaleagle.com:8885";
   // baseUrl2 = "http://localhost:8886";
-  // baseUrl2 = "https://pulse.globaleagle.com:8886/mapBoxServices";
+  baseUrl2 = "https://pulse.globaleagle.com:8886/mapBoxServices";
   // popupUrl = "http://localhost:8900";
   popupUrl = "https://pulse.globaleagle.com:8900";
   scheduledata:any;
@@ -88,6 +88,8 @@ export class Globals {
   copiedPanelInfo: any;
   lastTime: string;
   appLoading: boolean;
+
+  admin: boolean = false;
 
   //mobile
   showIntroWelcome : boolean = true;

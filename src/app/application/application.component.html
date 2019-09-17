@@ -50,7 +50,7 @@
             </button>
         </mat-menu>
 
-        <button *ngIf="admin" mat-icon-button [matMenuTriggerFor]="adminMenu" style="padding: 0px;
+        <button mat-icon-button [matMenuTriggerFor]="adminMenu" style="padding: 0px;
             margin: 0px;
             border: 0px;
             width: 30px;">
@@ -58,23 +58,23 @@
         </button>
 
         <mat-menu #adminMenu="matMenu">
-            <button mat-menu-item routerLink="/admin-menu">
+            <button *ngIf="globals.admin"  mat-menu-item routerLink="/admin-menu">
                 <mat-icon class="mat-menu-item-icon">settings</mat-icon>
                 <span>Admin Menu</span>
             </button>
-            <button mat-menu-item routerLink="/arguments-category">
+            <button *ngIf="globals.admin" mat-menu-item routerLink="/arguments-category">
                 <mat-icon class="mat-menu-item-icon">category</mat-icon>
                 <span>Admin Argument Category</span>
             </button>
-            <button mat-menu-item routerLink="/create-membership">
+            <button  *ngIf="globals.admin" mat-menu-item routerLink="/create-membership">
                 <mat-icon class="mat-menu-item-icon">contacts</mat-icon>
                 <span>Memberships</span>
             </button>
-            <button mat-menu-item routerLink="/user-activation">
+            <button *ngIf="globals.admin" mat-menu-item routerLink="/user-activation">
                 <mat-icon class="mat-menu-item-icon">supervisor_account</mat-icon>
                 <span>Users Activation</span>
             </button>
-            <button mat-menu-item routerLink="/create-customer">
+            <button  *ngIf="globals.admin" mat-menu-item routerLink="/create-customer">
                 <mat-icon class="mat-menu-item-icon">business</mat-icon>
                 <span>Customers</span>
             </button>

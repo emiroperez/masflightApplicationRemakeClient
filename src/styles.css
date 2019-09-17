@@ -1644,6 +1644,9 @@
 .dark-theme .items-rows .mat-pseudo-checkbox-checked {
   background: #01abec;
 }
+.dark-theme .items-rows .mat-list-item .mat-list-item-content .mat-pseudo-checkbox {
+  border: 2px solid #ffffff !important;
+}
 .dark-theme .select-group {
   background-color: #101010;
 }
@@ -3288,6 +3291,9 @@
 }
 .light-theme .items-rows .mat-pseudo-checkbox-checked {
   background: #eb5c1b;
+}
+.light-theme .items-rows .mat-list-item .mat-list-item-content .mat-pseudo-checkbox {
+  border: 2px solid #4d4d4d !important;
 }
 .light-theme .select-group {
   background-color: #e6e6e6;
@@ -9402,8 +9408,9 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
 }
 
 .admin-arguments-group-save {
-  width: 10%;
+  width: calc(10% - 10px);
   display: flex;
+  margin-left: 10px;
   justify-content: flex-end;
 }
 
@@ -9467,7 +9474,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
 }
 
 .admin-arguments-group-det-body {
-  height: 80%;
+  height: 77%;
   display: flex;
   flex-direction: row;
 }
