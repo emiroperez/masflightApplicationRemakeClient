@@ -357,32 +357,40 @@ export class DatalakeCreateNewStructureComponent {
     for (let partition of this.partitions)
     {
       partitionList.push ({
-        name: partition.name,
+        Name: partition.name,
         isPartition: "YES",
-        dataType: partition.dataType
+        DataType: partition.dataType
       });
     }
 
     request = {
       columns: columnList,
-      partitions: partitionList,
+      Partitions: partitionList,
       format: this.selectedFileType,
       tableName: this.tableConfigurationFormGroup.get ("tableName").value,
       schemaName: this.tableConfigurationFormGroup.get ("schema").value.schemaName,
       s3TableLocation: "s3://" + this.tableConfigurationFormGroup.get ("bucket").value.bucketName,
       s3FilePath: this.tableConfigurationFormGroup.get ("tableLocation").value,
-      tableDescription: this.tableConfigurationFormGroup.get ("tableDescription").value,
+      tableDesc: this.tableConfigurationFormGroup.get ("tableDescription").value,
       separator: this.delimiterCharacter,
       longName: this.tableConfigurationFormGroup.get ("tableLongName").value
     };
-
     this.service.createDatalakeTable (this, request, this.tableCreated, this.createTableError);
   }
 
   tableCreated(_this, data): void
   {
-    console.log (data);
-    // _this.closeDialog.emit ();
+    if (data.message){
+      _this.dialog.open (MessageComponent, {
+        data: { title: "Error", message: data.message }
+      });
+    }else{
+      _this.dialog.open (MessageComponent, {
+        data: { title: "Success", message: "Table created successfull" }
+      });      
+    _this.closeDialog.emit ();
+    }
+    console.log (data);    
   }
 
   createTableError(_this, result): void
