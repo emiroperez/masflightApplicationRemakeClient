@@ -18,18 +18,21 @@ export class AdminArgumentsGroupComponent implements OnInit {
   innerHeight: number;
   @ViewChild("materialIconPicker")
   materialIconPicker: MaterialIconPickerComponent;
+
+
+  filteredAirline: any[] = [];
+  filteredAirport: any[] = [];
+  filteredAircraft: any[] = [];
+
   searchText: string;
   searchAirport: string;
   ArgumentsGroups: any[] = [];  
   ArgumentGroupDelete: any[] = [];
   ArgumentGroup: any = {name: '', group: '', isSelected: false};
   dataToSend: any[] = [];
-  AirportSelect: any[] = [];  
   
   typeFilterCtrl: FormControl = new FormControl ();
   filteredTypes: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
-  filteredAirline: any[] = [];
-  filteredAirport: any[] = [];
   private _onDestroy = new Subject<void> ();
 
   argGroupTypes: any[] = [
@@ -45,7 +48,6 @@ export class AdminArgumentsGroupComponent implements OnInit {
 
   loading: boolean;
   showSelected: boolean = false;
-  groupSelect: any;
   disable: boolean = true;
   
   constructor( private http: ApiClient,public globals: Globals, 
@@ -53,18 +55,40 @@ export class AdminArgumentsGroupComponent implements OnInit {
     //add airports and airlines 
     this.getAirports(null,this.AirportHandlerSuccess,this.AirportHandlerError);
     this.getAirlines(null,this.AirlineHandlerSuccess,this.AirlineHandlerError);
+    this.getAircraft(null,this.AircraftHandlerSuccess,this.AircraftHandlerError);
     this.searchChange ();
   }
 
-  getAirports(search,HandlerSuccess, HandlerError){
+  getAirports(search,AirportHandlerSuccess, AirportHandlerError){
     let url = this.globals.baseUrl + "/getAirports?search="+ (search != null?search:'');
-    this.http.get(this,url,HandlerSuccess,HandlerError, null); 
+    this.http.get(this,url,AirportHandlerSuccess,AirportHandlerError, null); 
+  }
+  
+  getAirlines(search,AirlineHandlerSuccess, AirlineHandlerError){
+    let url = this.globals.baseUrl + "/getAirlines?search="+ (search != null?search:'');
+    this.http.get(this,url,AirlineHandlerSuccess,AirlineHandlerError, null); 
+  }
+
+  getAircraft(search,AircraftHandlerSuccess, AircraftHandlerError){
+    let url = this.globals.baseUrl+ "/getAircraftTypes"+ "?search="+ (search != null?search:'');
+    this.http.get(this,url,AircraftHandlerSuccess,AircraftHandlerError, null); 
   }
       
   AirportHandlerError(_this,result){
     _this.loading = false; 
     console.log (result);
+  }   
+
+  AirlineHandlerError(_this,result){
+    _this.loading = false; 
+    console.log (result);
+  }    
+  
+  AircraftHandlerError(_this,result){
+    _this.loading = false; 
+    console.log (result);
   }
+
   AirportHandlerSuccess(_this,data){   
     if(_this.filteredAirport.length != 0){
     for (let i = 0; i < data.length; i++) {
@@ -77,11 +101,6 @@ export class AdminArgumentsGroupComponent implements OnInit {
     }else{
       _this.filteredAirport = data;       
     }         
-  }
-
-  getAirlines(search,AirlineHandlerSuccess, AirlineHandlerError){
-    let url = this.globals.baseUrl + "/getAirlines?search="+ (search != null?search:'');
-    this.http.get(this,url,AirlineHandlerSuccess,AirlineHandlerError, null); 
   }
 
   AirlineHandlerSuccess(_this,data){   
@@ -97,10 +116,20 @@ export class AdminArgumentsGroupComponent implements OnInit {
       _this.filteredAirline = data;       
     }         
   }
-      
-  AirlineHandlerError(_this,result){
-    _this.loading = false; 
-    console.log (result);
+
+  AircraftHandlerSuccess(_this,data){   
+    if(_this.filteredAircraft.length != 0){
+    for (let i = 0; i < data.length; i++) {
+        const index: number = _this.filteredAircraft.findIndex(d => d.iata === data[i].iata);
+        if(index === -1){
+          let NewReg = data[i];
+          _this.filteredAircraft.push(NewReg);
+        }
+      }
+    }else{
+      _this.filteredAircraft = data;       
+    }         
+    console.log(_this.filteredAircraft);
   }
 
   ngOnInit() {
@@ -115,6 +144,7 @@ export class AdminArgumentsGroupComponent implements OnInit {
 
   handlerSuccessGroupsArguments(_this, result) {
     _this.ArgumentsGroups = result;
+    console.log(result);
     _this.globals.isLoading = false;
   }
 
@@ -154,6 +184,12 @@ checkArgGroupDet(ArgGroup: any){
         this.filteredAirline.unshift(ArgGroup.iataList[i]);
         // this.filteredAirline.push(ArgGroup.iataList[i]);
       }
+    }else if (ArgGroup.group === 'AircraftType'){
+      const index: number = this.filteredAircraft.findIndex(d => d.id === ArgGroup.iataList[i].id);
+      if(index === -1){
+        this.filteredAircraft.unshift(ArgGroup.iataList[i]);
+        // this.filteredAirline.push(ArgGroup.iataList[i]);
+      }
     }
   }
 }
@@ -178,8 +214,34 @@ onSearch(group: any){
     this.getAirports(this.searchAirport.toUpperCase(),this.searchHandlerSuccess,this.AirportHandlerError);  
   } else if(group === 'Airline'){
     this.getAirlines(this.searchAirport.toUpperCase(),this.searchHandlerSuccessAirline,this.AirportHandlerError);  
+  }else if(group === 'Aircraft'){
+    this.getAircraft(this.searchAirport.toUpperCase(),this.searchHandlerSuccessAircraft,this.AirportHandlerError);  
   }
   // }
+}
+
+searchHandlerSuccess(_this,data){   
+  if(_this.filteredAirport.length != 0){
+  for (let i = 0; i < data.length; i++) {
+      const index: number = _this.filteredAirport.findIndex(d => d.iata === data[i].iata);
+      if(index === -1){
+        let NewReg = data[i];
+        _this.filteredAirport.push(NewReg);
+      }
+    }      
+  }else{
+    _this.filteredAirport = data;       
+  } 
+  let search = _this.filteredAirport.filter( it => {
+    let aux = it.iata + ' - ' +it.name;  
+    if(aux.toUpperCase().includes(_this.searchAirport)){
+      it.visible = true;
+    }else{
+      it.visible = false;
+    }
+    return aux.toUpperCase().includes(_this.searchAirport);
+  });
+
 }
 
 searchHandlerSuccessAirline(_this,data){   
@@ -206,30 +268,29 @@ searchHandlerSuccessAirline(_this,data){
 
 }
 
-  searchHandlerSuccess(_this,data){   
-    if(_this.filteredAirport.length != 0){
-    for (let i = 0; i < data.length; i++) {
-        const index: number = _this.filteredAirport.findIndex(d => d.iata === data[i].iata);
-        if(index === -1){
-          let NewReg = data[i];
-          _this.filteredAirport.push(NewReg);
-        }
-      }      
-    }else{
-      _this.filteredAirport = data;       
-    } 
-    let search = _this.filteredAirport.filter( it => {
-      let aux = it.iata + ' - ' +it.name;  
-      if(aux.toUpperCase().includes(_this.searchAirport)){
-        it.visible = true;
-      }else{
-        it.visible = false;
+searchHandlerSuccessAircraft(_this,data){   
+  if(_this.filteredAircraft.length != 0){
+  for (let i = 0; i < data.length; i++) {
+      const index: number = _this.filteredAircraft.findIndex(d => d.iata === data[i].iata);
+      if(index === -1){
+        let NewReg = data[i];
+        _this.filteredAircraft.push(NewReg);
       }
-      return aux.toUpperCase().includes(_this.searchAirport);
-    });
+    }      
+  }else{
+    _this.filteredAircraft = data;       
+  } 
+  let search = _this.filteredAircraft.filter( it => {
+    let aux = it.name + ' - ' +it.airlineIata;  
+    if(aux.toUpperCase().includes(_this.searchAirport)){
+      it.visible = true;
+    }else{
+      it.visible = false;
+    }
+    return aux.toUpperCase().includes(_this.searchAirport);
+  });
 
-  }
-
+}
 addCategory() {
   const ArgGroup = {
     name: '',
@@ -328,13 +389,21 @@ handlerSuccess(_this,data, tab){
   _this.globals.airports = of(data).pipe(delay(500));;        
 }
 
-compareElement(st1: any, st2: any) {
+compareElementAircraft(st1: any, st2: any, group: any) {
+  return st1 && st2 ? st1.id === st2.id : st1 === st2;
+}
+
+compareElement(st1: any, st2: any, group: any) {
   return st1 && st2 ? st1.iata === st2.iata : st1 === st2;
 }
 
-isSelected(Airport,iataList){
-  if(iataList){
-    return iataList.findIndex(a => a.iata === Airport.iata) == -1 && this.showSelected;
+isSelected(Airport,iataList,group){
+  if(iataList){    
+    if (group != 'AircraftType' ){
+      return iataList.findIndex(a => a.iata === Airport.iata) == -1 && this.showSelected;
+    }else{
+      return iataList.findIndex(a => a.id === Airport.id) == -1 && this.showSelected;
+    }
   }else{
     return false;
   }   
@@ -368,6 +437,15 @@ addGroupDet(ArgGroupDet, type) {
           this.ArgumentGroup.aaa_GroupDet.splice(index, 1);
         }
       }
+    }else if(type === 'AircraftType'){
+      let index = this.ArgumentGroup.aaa_GroupDet.findIndex(d => d.aircraftType.id === ArgGroupDet.option.value.id);
+      if (index != -1){
+        if(this.ArgumentGroup.aaa_GroupDet[index].id){
+          this.ArgumentGroup.aaa_GroupDet[index].delete = true;
+        }else{
+          this.ArgumentGroup.aaa_GroupDet.splice(index, 1);
+        }
+      }
   }
   }else {
     if(type === 'Airline'){
@@ -379,7 +457,7 @@ addGroupDet(ArgGroupDet, type) {
           id: null,
           airline: ArgGroupDet.option.value,
           airport: null,
-          aircraftTail: null,
+          aircraftType: null,
           delete: false
         }
         this.ArgumentGroup.aaa_GroupDet.push(airline);
@@ -393,10 +471,24 @@ addGroupDet(ArgGroupDet, type) {
             id: null,
             airline: null,
             airport: ArgGroupDet.option.value,
-            aircraftTail: null,
+            aircraftType: null,
             delete: false
           }
         this.ArgumentGroup.aaa_GroupDet.push(airport);
+      }
+    }else if(type === 'AircraftType'){
+      let index = this.ArgumentGroup.aaa_GroupDet.findIndex(d => d.aircraftType.id === ArgGroupDet.option.value.id);
+      if (index != -1){
+        this.ArgumentGroup.aaa_GroupDet[index].delete = false;
+        }else{
+          const AircraftType = {
+            id: null,
+            airline: null,
+            airport: null,
+            aircraftType: ArgGroupDet.option.value,
+            delete: false
+          }
+        this.ArgumentGroup.aaa_GroupDet.push(AircraftType);
       }
     }
   }

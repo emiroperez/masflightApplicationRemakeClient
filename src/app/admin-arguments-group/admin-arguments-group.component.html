@@ -37,7 +37,7 @@
                         <div class="admin-arguments-category-left-panel-body">
                             <div class="admin-arguments-categories-container">
                                 <div class="category-arguments-scrollbar arguments-categories-list-container">
-                                    <div class="arguments-categories-list-item" *ngFor="let item of ArgumentsGroups">
+                                    <div class="arguments-categories-list-item" *ngFor="let item of ArgumentsGroups | filter : searchText">
                                         <div class="arguments-categories-list-item-label" [ngClass]="{ 'is-active': item.isSelected, 'is-inactive': !item.isSelected }">
                                             <div 
                                             class="arguments-categories-list-item-label-container" (click)="getSelectedOption(item)">
@@ -104,17 +104,28 @@
                                 <!--body-->
                             <div class="admin-arguments-group-det-body">
                                 <div class="admin-arguments-group-det-body-left">
-                                <mat-selection-list [class.msf-hide]="ArgumentGroup.group === ''" class="items-rows" (selectionChange)="addGroupDet($event, ArgumentGroup.group)"
-                                 [compareWith]="compareElement" [(ngModel)]="ArgumentGroup.iataList" multiple>
+                                <mat-selection-list *ngIf="ArgumentGroup.group === 'Airport'" [class.msf-hide]="ArgumentGroup.group === ''" class="items-rows" (selectionChange)="addGroupDet($event, ArgumentGroup.group)"
+                                     [compareWith]="compareElement" [(ngModel)]="ArgumentGroup.iataList" multiple>
+                                        <mat-list-option  
+                                        [class.msf-hide]="isSelected(Airport,ArgumentGroup.iataList,ArgumentGroup.group) || !Airport.visible || ArgumentGroup.group!='Airport'"
+                                        checkboxPosition="before" [value]="Airport" *ngFor="let Airport of filteredAirport;" >
+                                            {{Airport.iata}}  -  {{Airport.name}}
+                                        </mat-list-option>
+                                </mat-selection-list>
+                                <mat-selection-list *ngIf="ArgumentGroup.group === 'Airline'"  [class.msf-hide]="ArgumentGroup.group === ''" class="items-rows" (selectionChange)="addGroupDet($event, ArgumentGroup.group)"
+                                     [compareWith]="compareElement" [(ngModel)]="ArgumentGroup.iataList" multiple>
                                     <mat-list-option  
-                                    [class.msf-hide]="isSelected(Airport,ArgumentGroup.iataList) || !Airport.visible || ArgumentGroup.group!='Airport'"
-                                    checkboxPosition="before" [value]="Airport" *ngFor="let Airport of filteredAirport;" >
-                                        {{Airport.iata}}  -  {{Airport.name}}
-                                    </mat-list-option>
-                                    <mat-list-option  
-                                        [class.msf-hide]="isSelected(Airline,ArgumentGroup.iataList) || !Airline.visible || ArgumentGroup.group!='Airline'"
+                                        [class.msf-hide]="isSelected(Airline,ArgumentGroup.iataList,ArgumentGroup.group) || !Airline.visible || ArgumentGroup.group!='Airline'"
                                         checkboxPosition="before" [value]="Airline" *ngFor="let Airline of filteredAirline;">
                                         {{Airline.name}}
+                                    </mat-list-option>
+                                </mat-selection-list>
+                                <mat-selection-list *ngIf="ArgumentGroup.group === 'AircraftType'" [class.msf-hide]="ArgumentGroup.group === ''" class="items-rows" (selectionChange)="addGroupDet($event, ArgumentGroup.group)"
+                                 [compareWith]="compareElementAircraft" [(ngModel)]="ArgumentGroup.iataList" multiple>
+                                    <mat-list-option  
+                                        [class.msf-hide]="isSelected(Aircraft,ArgumentGroup.iataList,ArgumentGroup.group) || !Aircraft.visible || ArgumentGroup.group!='AircraftType'"
+                                        checkboxPosition="before" [value]="Aircraft" *ngFor="let Aircraft of filteredAircraft;">
+                                        {{Aircraft.name}} -  Iata: {{Aircraft.airlineIata}}
                                     </mat-list-option>
                                 </mat-selection-list>
                                 </div>

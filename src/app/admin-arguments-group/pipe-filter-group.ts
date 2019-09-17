@@ -11,7 +11,7 @@ export class FilterPipeGroupArg implements PipeTransform {
     if(!searchText) return items;
 searchText = searchText.toLowerCase();
 return items.filter( it => {
-      return it.label.toLowerCase().includes(searchText);
+      return it.name.toLowerCase().includes(searchText);
     });
    }
 }
