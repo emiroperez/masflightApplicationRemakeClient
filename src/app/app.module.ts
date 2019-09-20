@@ -191,6 +191,7 @@ import { ExportAsModule } from 'ngx-export-as';
 import { MsfGroupAaaComponent } from './msf-group-aaa/msf-group-aaa.component';
 import { AdminArgumentsGroupComponent } from './admin-arguments-group/admin-arguments-group.component';
 import { FilterPipeGroupArg } from './admin-arguments-group/pipe-filter-group';
+import { AdminShareGroupsArgumentsComponent } from './admin-share-groups-arguments/admin-share-groups-arguments.component';
 
 @NgModule({
   declarations: [
@@ -358,7 +359,8 @@ import { FilterPipeGroupArg } from './admin-arguments-group/pipe-filter-group';
     MsfDashboardControlPanelComponent,
     MenuNavComponent,
     MsfGroupAaaComponent,
-    AdminArgumentsGroupComponent
+    AdminArgumentsGroupComponent,
+    AdminShareGroupsArgumentsComponent
   ],
   imports: [
     BrowserModule,
@@ -435,6 +437,7 @@ import { FilterPipeGroupArg } from './admin-arguments-group/pipe-filter-group';
     DialogArgumentPreviewComponent,
     MsfColumnSelectorComponent,
     MsfShareDashboardComponent,
+    AdminShareGroupsArgumentsComponent,
     MsfSharedDashboardItemsComponent,
     MsfAddSharedDashboardPanelComponent,
     MsfAddSharedDashboardComponent,

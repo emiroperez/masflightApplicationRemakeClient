@@ -94,4 +94,5 @@ export class MenuService {
     let url = _this.globals.baseUrl + "/secure/addSharedContent";
     this.authService.post (_this, url, sharedContent, handlerSuccess, handlerError);
   }
+
 }

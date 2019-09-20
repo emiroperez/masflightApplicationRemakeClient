@@ -319,23 +319,29 @@ export class Utils{
         var i = 0;
         for(var val of value){
             if(group == "Airline"){
-                if(i == 0){
-                    names = val.airline.iata;
-                    names = val.airline.iata;
-                }else{
-                    names += ","+ val.airline.iata;
+                if(val.airline.iata != null){
+                    if(i == 0){
+                        names = val.airline.iata;
+                        names = val.airline.iata;
+                    }else{
+                        names += ","+ val.airline.iata;
+                    }
                 }
             }else if(group == "Airport"){
-                if(i == 0){
-                    names = val.airport.iata;
-                }else{
-                    names += ","+ val.airport.iata;
+                if(val.airline.iata != null){
+                    if(i == 0){
+                        names = val.airport.iata;
+                    }else{
+                        names += ","+ val.airport.iata;
+                    }
                 }
-            }else if(group == "Aircraft"){
-                if(i == 0){
-                    names = val.Aircraft.name;
-                }else{
-                    names += ","+ val.Aircraft.name;
+            }else if(group == "AircraftType"){
+                if(val.airline.name != null){
+                    if(i == 0){
+                        names = val.aircraftType.name;
+                    }else{
+                        names += ","+ val.aircraftType.name;
+                    }
                 }
             }
             // if(group == "Aircraft"){

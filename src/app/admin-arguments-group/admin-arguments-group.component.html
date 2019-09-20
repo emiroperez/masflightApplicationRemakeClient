@@ -74,8 +74,9 @@
                                             </mat-option>
                                         </mat-select>
                                     </mat-form-field>
-                                    <button *ngIf="globals.admin" mat-button class="flat-button" (click)="share()">
-                                        Share
+                                    <button  
+                                        (click)="share(ArgumentGroup)" class="msf-menu-icon" [disabled]="ArgumentGroup.id === null || ArgumentGroup.type != Private">
+                                        <img src="../../assets/images/{{globals.theme}}-share.png" >
                                     </button>
                                     <div class="admin-arguments-group-save">
                                             <!-- [disabled]="ArgumentGroup.name === '' && ArgumentGroup.group === ''" -->
@@ -128,7 +129,8 @@
                                     <mat-list-option  
                                         [class.msf-hide]="isSelected(Aircraft,ArgumentGroup.iataList,ArgumentGroup.group) || !Aircraft.visible || ArgumentGroup.group!='AircraftType'"
                                         checkboxPosition="before" [value]="Aircraft" *ngFor="let Aircraft of filteredAircraft;">
-                                        {{Aircraft.name}} -  Iata: {{Aircraft.airlineIata}}
+                                        <!-- {{Aircraft.name}} -  Iata: {{Aircraft.airlineIata}} -->
+                                        {{Aircraft.name}}
                                     </mat-list-option>
                                 </mat-selection-list>
                                 </div>

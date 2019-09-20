@@ -532,4 +532,22 @@ export class ApplicationService {
     this.authService.post(_this, url, data, handlerSuccess, handlerError);
   }
 
+  getSharedGroupsArg(_this, groupId, handlerSuccess, handlerError)
+  {
+    let url = this.host + "/getUserGroupShared?search=" + groupId;
+    this.http.get (_this, url, handlerSuccess, handlerError, null);
+  }
+
+  addSharedGroupArgs(_this, sharedContent, handlerSuccess, handlerError)
+  {
+    let url = _this.globals.baseUrl + "/addSharedGroupArgs";
+    this.http.post (_this, url, sharedContent, handlerSuccess, handlerError);
+  }
+
+  deleteSharedGroupArgs(_this, shareInfo, handlerSuccess, handlerError)
+  {
+    let url = this.host + "/deleteSharedGroupArgs";
+    this.http.post (_this, url, shareInfo, handlerSuccess, handlerError);
+  }
+
 }

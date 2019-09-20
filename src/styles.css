@@ -1647,6 +1647,9 @@
 .dark-theme .items-rows .mat-list-item .mat-list-item-content .mat-pseudo-checkbox {
   border: 2px solid #ffffff !important;
 }
+.dark-theme .items-rows .mat-list-item .mat-list-item-content .mat-pseudo-checkbox-checked {
+  border-color: transparent !important;
+}
 .dark-theme .select-group {
   background-color: #101010;
 }
@@ -3294,6 +3297,9 @@
 }
 .light-theme .items-rows .mat-list-item .mat-list-item-content .mat-pseudo-checkbox {
   border: 2px solid #4d4d4d !important;
+}
+.light-theme .items-rows .mat-list-item .mat-list-item-content .mat-pseudo-checkbox-checked {
+  border-color: transparent !important;
 }
 .light-theme .select-group {
   background-color: #e6e6e6;
