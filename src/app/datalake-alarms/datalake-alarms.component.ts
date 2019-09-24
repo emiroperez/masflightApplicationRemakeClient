@@ -17,6 +17,7 @@ import { DatalakeAlarmEditDialogComponent } from '../datalake-alarm-edit-dialog/
 export class DatalakeAlarmsComponent implements OnInit {
   schemas: string[] = [];
   tables: string[] = [];
+  alarms: any[] = [];
 
   @ViewChild(MatPaginator)
   paginator: MatPaginator;
@@ -29,17 +30,18 @@ export class DatalakeAlarmsComponent implements OnInit {
   filteredTables: ReplaySubject<any[]> = new ReplaySubject<any[]> (1);
   _onDestroy: Subject<void> = new Subject<void> ();
 
+  // alarmColumns: string[] = ['schemaName', 'tableName', 'cron', 'status', 'actions'];
   alarmColumns: string[] = ['schemaName', 'tableName', 'cron', 'status', 'actions'];
   alarmTable: MatTableDataSource<any>;
-  alarms: any[] = [
-  {
-    schemaName: "fr24p",
-    tableName: "fradar24_r",
-    cron: "**5**",
-    selectedStatus: 1,
-    notifyMode: 0
-  }
-  ];
+  // alarms: any[] = [
+  // {
+  //   schemaName: "fr24p",
+  //   tableName: "fradar24_r",
+  //   cron: "**5**",
+  //   selectedStatus: 1,
+  //   notifyMode: 0
+  // }
+  // ];
 
   innerHeight: number;
 
@@ -59,11 +61,35 @@ export class DatalakeAlarmsComponent implements OnInit {
   {
     this.innerHeight = window.innerHeight;
 
-    this.alarmTable = new MatTableDataSource (this.alarms);
-    this.alarmTable.paginator = this.paginator;
 
     this.globals.isLoading = true;
+    this.service.getDatalakeAlarms (this, this.setAlarms, this.setAlarmsError);
     this.service.getDatalakeSchemas (this, this.setSchemas, this.setSchemasError);
+  }
+
+  
+  setAlarms(_this, data): void
+  {
+    if (!data.alarms.length)
+    {
+      _this.globals.isLoading = false;
+      return;
+    }
+
+    for (let alarm of data.alarms){
+      _this.alarms.push (alarm);
+    }
+
+    
+    _this.alarmTable = new MatTableDataSource (_this.alarms);
+    _this.alarmTable.paginator = _this.paginator;
+    _this.globals.isLoading = false;
+  }
+
+  setAlarmsError(_this, result): void
+  {
+    console.log (result);
+    _this.globals.isLoading = false;
   }
 
   ngOnDestroy(): void

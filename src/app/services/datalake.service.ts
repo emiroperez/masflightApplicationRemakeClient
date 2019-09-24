@@ -95,4 +95,10 @@ export class DatalakeService {
         request.token = "rHgGv10eoP1PmScdpki!8buJYKmT93Mrvj!";
         this.http.post (_this, url, request, handlerSuccess, handlerError);
     }
+
+    getDatalakeAlarms(_this, handlerSuccess, handlerError): void
+    {
+        let url = this.host + "/GetDatalakeAlarms?token=rHgGv10eoP1PmScdpki!8buJYKmT93Mrvj!";
+        this.http.get(_this, url, handlerSuccess, handlerError, null);
+    }
 }
