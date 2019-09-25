@@ -30,7 +30,6 @@ export class DatalakeAlarmsComponent implements OnInit {
   filteredTables: ReplaySubject<any[]> = new ReplaySubject<any[]> (1);
   _onDestroy: Subject<void> = new Subject<void> ();
 
-  // alarmColumns: string[] = ['schemaName', 'tableName', 'cron', 'status', 'actions'];
   alarmColumns: string[] = ['schemaName', 'tableName', 'cron', 'status', 'actions'];
   alarmTable: MatTableDataSource<any>;
   // alarms: any[] = [
