@@ -60,7 +60,6 @@ export class DatalakeAlarmsComponent implements OnInit {
   {
     this.innerHeight = window.innerHeight;
 
-
     this.globals.isLoading = true;
     this.service.getDatalakeAlarms (this, this.setAlarms, this.setAlarmsError);
     this.service.getDatalakeSchemas (this, this.setSchemas, this.setSchemasError);
