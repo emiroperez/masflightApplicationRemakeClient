@@ -6,10 +6,10 @@
   </div>
   <div class="datalake-new-alarm-buttons">
     Status
-    <button mat-icon-button (click)="setAlarmStatus(false)" [ngClass]="{'datalake-new-alarm-button': selectedStatus, 'datalake-new-alarm-button-selected': !selectedStatus }">
+    <button mat-icon-button (click)="setAlarmStatus('A')" [ngClass]="{'datalake-new-alarm-button': monitoringStatus === 'I', 'datalake-new-alarm-button-selected': monitoringStatus === 'A' }">
       <mat-icon>check</mat-icon>
     </button>
-    <button mat-icon-button (click)="setAlarmStatus(true)" [ngClass]="{'datalake-new-alarm-button': !selectedStatus, 'datalake-new-alarm-button-selected': selectedStatus }">
+    <button mat-icon-button (click)="setAlarmStatus('I')" [ngClass]="{'datalake-new-alarm-button': monitoringStatus === 'A', 'datalake-new-alarm-button-selected': monitoringStatus === 'I' }">
       <mat-icon>priority_high</mat-icon>
     </button>
   </div>

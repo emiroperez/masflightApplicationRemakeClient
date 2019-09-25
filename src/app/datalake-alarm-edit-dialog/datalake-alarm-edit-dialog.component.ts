@@ -18,7 +18,7 @@ export class DatalakeAlarmEditDialogComponent {
 
   alarmFormGroup: FormGroup;
   notifyMode: boolean = false;
-  selectedStatus: boolean = false;
+  monitoringStatus: string = 'A';
   isLoading: boolean = false;
 
   tableFilterCtrl: FormControl = new FormControl ();
@@ -31,7 +31,7 @@ export class DatalakeAlarmEditDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: { alarm: any, schemas: string[] })
   {
     this.schemas = JSON.parse (JSON.stringify (this.data.schemas));
-    this.selectedStatus = this.data.alarm.selectedStatus;
+    this.monitoringStatus = this.data.alarm.monitoringStatus;
 
     this.alarmFormGroup = this.formBuilder.group ({
       schema: [this.data.alarm.schemaName, Validators.required],
@@ -50,7 +50,7 @@ export class DatalakeAlarmEditDialogComponent {
 
   setAlarmStatus(status): void
   {
-    this.selectedStatus = status;
+    this.monitoringStatus = status;
   }
 
   schemaChanged(): void
@@ -192,7 +192,7 @@ export class DatalakeAlarmEditDialogComponent {
     this.dialogRef.close ({
       schemaName: this.alarmFormGroup.get ("schema").value,
       tableName: this.alarmFormGroup.get ("table").value,
-      selectedStatus: this.selectedStatus
+      monitoringStatus: this.monitoringStatus
     });
   }
 

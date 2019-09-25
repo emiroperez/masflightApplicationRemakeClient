@@ -24,7 +24,7 @@ export class DatalakeAlarmsComponent implements OnInit {
 
   alarmFormGroup: FormGroup;
   notifyMode: boolean = false;
-  selectedStatus: boolean = false;
+  monitoringStatus: string = 'A';
 
   tableFilterCtrl: FormControl = new FormControl ();
   filteredTables: ReplaySubject<any[]> = new ReplaySubject<any[]> (1);
@@ -38,7 +38,7 @@ export class DatalakeAlarmsComponent implements OnInit {
   //   schemaName: "fr24p",
   //   tableName: "fradar24_r",
   //   cron: "**5**",
-  //   selectedStatus: 1,
+  //   monitoringStatus: 'I',
   //   notifyMode: 0
   // }
   // ];
@@ -100,7 +100,7 @@ export class DatalakeAlarmsComponent implements OnInit {
 
   setAlarmStatus(status): void
   {
-    this.selectedStatus = status;
+    this.monitoringStatus = status;
   }
 
   schemaChanged(): void
@@ -239,7 +239,7 @@ export class DatalakeAlarmsComponent implements OnInit {
       {
         alarm.schemaName = result.schemaName;
         alarm.tableName = result.tableName;
-        alarm.selectedStatus = result.selectedStatus;
+        alarm.monitoringStatus = result.monitoringStatus;
       }
     });
   }
