@@ -19,11 +19,15 @@ export class DatalakeAlarmEditDialogComponent {
   alarmFormGroup: FormGroup;
   notifyMode: boolean = false;
   monitoringStatus: string = 'A';
+  cron: string ;
+  minutes: any;
   isLoading: boolean = false;
 
   tableFilterCtrl: FormControl = new FormControl ();
   filteredTables: ReplaySubject<any[]> = new ReplaySubject<any[]> (1);
   _onDestroy: Subject<void> = new Subject<void> ();
+  time: any;
+  clock: any;
 
   constructor(public dialogRef: MatDialogRef<DatalakeAlarmEditDialogComponent>,
     public globals: Globals, private formBuilder: FormBuilder,
@@ -38,9 +42,38 @@ export class DatalakeAlarmEditDialogComponent {
       table: [this.data.alarm.tableName, Validators.required]
     });
 
+    // this.transformManualExpression(this.data.alarm.cron);
+    this.cron = this.data.alarm.cron;
     this.isLoading = true;
     this.service.getDatalakeSchemaTables (this, this.data.alarm.schemaName, this.setSchemaTablesAfterOpening, this.setSchemaTablesError);
   }
+
+  transformManualExpression(cron: any){
+    let cronExp =cron.split(" "),
+    i = 0, 
+    mins = cronExp[0], 
+    hours = cronExp[1], 
+    days = cronExp[2], 
+    month = cronExp[3],
+    weekDays = cronExp[4];
+    const h = this.getTimeFormat(hours);
+    const m = this.getTimeFormat(mins);
+    if(hours === '*'){
+      this.notifyMode = false;
+      this.minutes = m ;
+    }else{
+      this.notifyMode = true;
+    }
+    this.enableTimePicker(h, m);
+
+}
+
+getTimeFormat(value){
+  if(value.length==1){
+      return '0'+value;
+  }
+      return value;
+}
 
   ngOnDestroy(): void
   {
@@ -113,7 +146,9 @@ export class DatalakeAlarmEditDialogComponent {
       _this.tables.push (tableName);
 
     _this.filteredTables.next (_this.tables.slice ());
+
     _this.isLoading = false;
+    _this.transformManualExpression(_this.cron);
   }
 
   setSchemaTablesError(_this, result): void
@@ -164,22 +199,24 @@ export class DatalakeAlarmEditDialogComponent {
     );
   }
 
-  enableTimePicker(): void
+  enableTimePicker(pHour, pMin): void
   {
-    let clock;
+    // let clock;
 
     if (!this.notifyMode)
       return;
 
     this.changeDetectorRef.detectChanges ();
 
-    clock = timePicker ({
+    this.clock = timePicker ({
       element: document.getElementById ("time-picker-edit"),
-      time: new Date (),
+      mode: 12,
+      // time: new Date (),
+      time: { hour: pHour, minute: pMin },
       width: "100%"
     });
-
-    clock.set12h ();
+    this.clock.set12h ();
+    // this.time = clock.getTime();
   }
 
   onNoClick(): void
@@ -189,10 +226,15 @@ export class DatalakeAlarmEditDialogComponent {
 
   saveAlarm(): void
   {
+    //armo el cron
+    if (this.notifyMode){
+      this.time = this.clock.getTime();
+    }
     this.dialogRef.close ({
       schemaName: this.alarmFormGroup.get ("schema").value,
       tableName: this.alarmFormGroup.get ("table").value,
-      monitoringStatus: this.monitoringStatus
+      monitoringStatus: this.monitoringStatus,
+      cron: this.cron
     });
   }
 

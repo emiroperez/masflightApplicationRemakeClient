@@ -238,6 +238,7 @@ export class DatalakeAlarmsComponent implements OnInit {
         alarm.schemaName = result.schemaName;
         alarm.tableName = result.tableName;
         alarm.monitoringStatus = result.monitoringStatus;
+        alarm.cron = result.cron;
       }
     });
   }

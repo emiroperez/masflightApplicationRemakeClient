@@ -60,8 +60,8 @@ export class Globals {
   currentAirline: any;
   template : boolean = false;
   isFullscreen: boolean = false;
-  baseUrl = "http://pulse.globaleagle.com:8887";
-  // baseUrl = "http://192.168.1.50:8887";
+  // baseUrl = "http://pulse.globaleagle.com:8887";
+  baseUrl = "http://localhost:8881";
   // baseUrl = "";
   baseUrl2 = "http://pulse.globaleagle.com:8885";
   // baseUrl2 = "http://localhost:8886";
@@ -88,6 +88,8 @@ export class Globals {
   copiedPanelInfo: any;
   lastTime: string;
   appLoading: boolean;
+
+  token = "Gtk5zI0GAeMbFBRgU191vZmJt8YLUGytwuf";
 
   //mobile
   showIntroWelcome : boolean = true;
