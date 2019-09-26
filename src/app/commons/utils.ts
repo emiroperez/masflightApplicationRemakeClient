@@ -322,13 +322,12 @@ export class Utils{
                 if(val.airline.iata != null){
                     if(i == 0){
                         names = val.airline.iata;
-                        names = val.airline.iata;
                     }else{
                         names += ","+ val.airline.iata;
                     }
                 }
             }else if(group == "Airport"){
-                if(val.airline.iata != null){
+                if(val.airport.iata != null){
                     if(i == 0){
                         names = val.airport.iata;
                     }else{
@@ -336,7 +335,7 @@ export class Utils{
                     }
                 }
             }else if(group == "AircraftType"){
-                if(val.airline.name != null){
+                if(val.aircraftType.name != null){
                     if(i == 0){
                         names = val.aircraftType.name;
                     }else{
