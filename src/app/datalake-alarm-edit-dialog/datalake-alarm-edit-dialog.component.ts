@@ -51,8 +51,8 @@ export class DatalakeAlarmEditDialogComponent {
   transformManualExpression(cron: any){
     let cronExp =cron.split(" "),
     i = 0, 
-    mins = cronExp[0], 
-    hours = cronExp[1], 
+    mins = cronExp[0].replace("*/", ""),
+    hours = cronExp[1].replace("*/", ""), 
     days = cronExp[2], 
     month = cronExp[3],
     weekDays = cronExp[4];
@@ -225,20 +225,40 @@ getTimeFormat(value){
   }
 
   saveAlarm(): void
-  {
+  {    
+    let request;
     //armo el cron
     if (this.notifyMode){
       // this.time = this.clock.getTime();
-      this.cron = this.transformCronExpression(this.clock.getTime().hour,this.clock.getTime().minute);
+      this.cron = this.transformCronExpression(""+this.clock.getTime().hour,""+this.clock.getTime().minute);
     }else{
-      this.cron = this.transformCronExpression(null,this.minutes);
+      this.cron = this.transformCronExpression(null,""+this.minutes);
     }
-    this.dialogRef.close ({
+
+    request = {
       schemaName: this.alarmFormGroup.get ("schema").value,
       tableName: this.alarmFormGroup.get ("table").value,
-      monitoringStatus: this.monitoringStatus,
-      cron: this.cron
-    });
+      cron: this.cron,
+      monitoringStatus: this.monitoringStatus
+    };
+    this.service.saveDatalakeAlarm (this, request, this.saveAlarmHandler, this.saveAlarmError);
+
+  }
+
+  saveAlarmHandler(_this, data) {
+    if (data.Message === "OK"){
+      _this.dialogRef.close ({
+        schemaName: _this.alarmFormGroup.get ("schema").value,
+        tableName: _this.alarmFormGroup.get ("table").value,
+        monitoringStatus: _this.monitoringStatus,
+        cron: _this.cron
+      });
+    }
+    
+  }
+
+  saveAlarmError() {
+
   }
 
   transformCronExpression(hour: any, minute: any) {
@@ -252,8 +272,12 @@ getTimeFormat(value){
       if(minute){
         mins = this.getTimePart('min', minute);
       }
-      if(){
+      if(hour){
         hours = this.getTimePart('hour',hour);
+      }else{
+        if(mins){
+          mins = "*/"+mins;
+        }
       }
 
       cronExpression = cronExpression.replace('mins', mins);
@@ -266,19 +290,10 @@ getTimeFormat(value){
   }
 
   getTimePart(type,time){
-    if(type=='min'){
-      let aux = time.split(":")[1]
-      if(aux.charAt(0)=='0'){
-        return aux.charAt(1)
+      if(time.charAt(0)=='0'){        
+        return time.charAt(1)
       }
-        return aux;
-    }else{
-      let aux = time.split(":")[0]
-      if(aux.charAt(0)=='0'){
-        return aux.charAt(1)
-      }
-        return aux;
-    }
+        return time;
   }
 
   getHeaderDisplayStatus(): string

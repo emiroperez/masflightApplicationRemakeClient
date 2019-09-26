@@ -240,6 +240,7 @@ export class DatalakeAlarmsComponent implements OnInit {
         alarm.monitoringStatus = result.monitoringStatus;
         alarm.cron = result.cron;
       }
+      
     });
   }
 
