@@ -228,7 +228,10 @@ getTimeFormat(value){
   {
     //armo el cron
     if (this.notifyMode){
-      this.time = this.clock.getTime();
+      // this.time = this.clock.getTime();
+      this.cron = this.transformCronExpression(this.clock.getTime().hour,this.clock.getTime().minute);
+    }else{
+      this.cron = this.transformCronExpression(null,this.minutes);
     }
     this.dialogRef.close ({
       schemaName: this.alarmFormGroup.get ("schema").value,
@@ -236,6 +239,46 @@ getTimeFormat(value){
       monitoringStatus: this.monitoringStatus,
       cron: this.cron
     });
+  }
+
+  transformCronExpression(hour: any, minute: any) {
+      let cronExpression = "mins hours days month weekDay",
+      i = 0, 
+      mins = '*', 
+      hours = '*', 
+      days = '*', 
+      month = '*',
+      weekDays = '*';
+      if(minute){
+        mins = this.getTimePart('min', minute);
+      }
+      if(){
+        hours = this.getTimePart('hour',hour);
+      }
+
+      cronExpression = cronExpression.replace('mins', mins);
+      cronExpression = cronExpression.replace('hours', hours);
+      cronExpression = cronExpression.replace('days', days);
+      cronExpression = cronExpression.replace('month', month);
+      cronExpression = cronExpression.replace('weekDay', weekDays);
+      console.log(cronExpression);
+      return cronExpression;
+  }
+
+  getTimePart(type,time){
+    if(type=='min'){
+      let aux = time.split(":")[1]
+      if(aux.charAt(0)=='0'){
+        return aux.charAt(1)
+      }
+        return aux;
+    }else{
+      let aux = time.split(":")[0]
+      if(aux.charAt(0)=='0'){
+        return aux.charAt(1)
+      }
+        return aux;
+    }
   }
 
   getHeaderDisplayStatus(): string
