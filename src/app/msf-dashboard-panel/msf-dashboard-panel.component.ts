@@ -1108,6 +1108,10 @@ export class MsfDashboardPanelComponent implements OnInit {
 
         if (this.values.currentChartType.flags & ChartFlags.XYCHART)
         {
+          // Set axis name into the chart
+          categoryAxis.title.text = this.values.xaxis.name;
+          valueAxis.title.text = this.values.valueColumn.name;
+
           // The category will be the x axis if the chart type has it
           categoryAxis.dataFields.category = this.values.xaxis.id;
 
@@ -1208,6 +1212,10 @@ export class MsfDashboardPanelComponent implements OnInit {
         }
         else
         {
+          // Set axis name into the chart
+          categoryAxis.title.text = this.values.variable.name;
+          valueAxis.title.text = this.values.valueColumn.name;
+
           // The category will the values if the chart type lacks an x axis
           categoryAxis.dataFields.category = chartInfo.titleField;
 

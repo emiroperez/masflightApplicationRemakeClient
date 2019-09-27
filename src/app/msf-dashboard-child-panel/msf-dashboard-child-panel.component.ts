@@ -420,6 +420,10 @@ export class MsfDashboardChildPanelComponent {
 
         if (this.values.currentChartType.flags & ChartFlags.XYCHART)
         {
+          // Set axis name into the chart
+          categoryAxis.title.text = this.values.xaxis.columnLabel;
+          valueAxis.title.text = this.values.valueColumn.columnLabel;
+
           // The category will be the x axis if the chart type has it
           categoryAxis.dataFields.category = this.values.xaxis.columnName;
 
@@ -520,6 +524,10 @@ export class MsfDashboardChildPanelComponent {
         }
         else
         {
+          // Set axis name into the chart
+          categoryAxis.title.text = this.values.variable.columnLabel;
+          valueAxis.title.text = this.values.valueColumn.columnLabel;
+
           // The category will the values if the chart type lacks an x axis
           categoryAxis.dataFields.category = chartInfo.titleField;
 
