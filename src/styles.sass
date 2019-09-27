@@ -200,6 +200,12 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             background-color: $menu-header-color
         .msf-menu-op-3
             background-color: $menu-header-color
+        .msf-menu-op-1:disabled, .msf-menu-op-2:disabled, .msf-menu-op-3:disabled
+            background-color: rgba($selected-menu-color, .3)
+            &:hover
+                background-color: rgba($selected-menu-color, .3)
+            .mat-button-wrapper
+                color: rgba(#ffffff, .3)
         .mat-menu-panel
             background-color: $menu-header-color
         .mat-menu-item
