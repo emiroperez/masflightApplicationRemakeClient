@@ -18,6 +18,10 @@ export class DatalakeAlarmsComponent implements OnInit {
   schemas: string[] = [];
   tables: string[] = [];
   alarms: any[] = [];
+  schemaName: any = "";
+  tableName: any= "";
+  cron: any= "";
+  minutes: any= "";
 
   @ViewChild(MatPaginator)
   paginator: MatPaginator;
@@ -43,6 +47,8 @@ export class DatalakeAlarmsComponent implements OnInit {
   // ];
 
   innerHeight: number;
+  clock: any;
+  request: { schemaName: any; tableName: any; cron: any; monitoringStatus: string; };
 
   constructor(public globals: Globals, private formBuilder: FormBuilder,
     private service: DatalakeService, private changeDetectorRef: ChangeDetectorRef,
@@ -103,10 +109,10 @@ export class DatalakeAlarmsComponent implements OnInit {
 
   schemaChanged(): void
   {
-    let schemaName: string = this.alarmFormGroup.get ("schema").value;
+    this.schemaName = this.alarmFormGroup.get ("schema").value;
 
     this.globals.isLoading = true;
-    this.service.getDatalakeSchemaTables (this, schemaName, this.setSchemaTables, this.setSchemaTablesError);
+    this.service.getDatalakeSchemaTables (this, this.schemaName, this.setSchemaTables, this.setSchemaTablesError);
   }
 
   setSchemas(_this, data): void
@@ -203,22 +209,24 @@ export class DatalakeAlarmsComponent implements OnInit {
     );
   }
 
-  enableTimePicker(): void
+  enableTimePicker(pHour, pMin): void
   {
-    let clock;
+    // let clock;
 
     if (!this.notifyMode)
       return;
 
     this.changeDetectorRef.detectChanges ();
 
-    clock = timePicker ({
+    this.clock = timePicker ({
       element: document.getElementById ("time-picker"),
-      time: new Date (),
+      mode: 12,
+      // time: new Date (),
+      time: { hour: pHour, minute: pMin },
       width: "100%"
     });
-
-    clock.set12h ();
+    this.clock.set12h ();
+    // this.time = clock.getTime();
   }
 
   editAlarm(alarm): void
@@ -240,7 +248,7 @@ export class DatalakeAlarmsComponent implements OnInit {
         alarm.monitoringStatus = result.monitoringStatus;
         alarm.cron = result.cron;
       }
-      
+
     });
   }
 
@@ -267,4 +275,88 @@ export class DatalakeAlarmsComponent implements OnInit {
   {
     this.innerHeight = event.target.innerHeight;
   }
+
+  addAlarm() {
+    if (this.notifyMode){
+      this.cron = this.transformCronExpression(""+this.clock.getTime().hour,""+this.clock.getTime().minute);
+    }else{
+      this.cron = this.transformCronExpression(null,""+this.minutes);
+    }
+
+    this.cron ;
+    this.request = {
+      schemaName: this.schemaName,
+      tableName: this.tableName,
+      cron: this.cron,
+      monitoringStatus: this.monitoringStatus
+    }
+
+    this.service.saveDatalakeAlarm (this, this.request, this.saveAlarmHandler, this.saveAlarmError);
+  }
+
+  
+  transformCronExpression(hour: any, minute: any) {
+    let cronExpression = "mins hours days month weekDay",
+    i = 0, 
+    mins = '*', 
+    hours = '*', 
+    days = '*', 
+    month = '*',
+    weekDays = '*';
+    if(minute){
+      mins = this.getTimePart('min', minute);
+    }
+    if(hour){
+      hours = this.getTimePart('hour',hour);
+    }else{
+      if(mins){
+        mins = "*/"+mins;
+      }
+    }
+
+    cronExpression = cronExpression.replace('mins', mins);
+    cronExpression = cronExpression.replace('hours', hours);
+    cronExpression = cronExpression.replace('days', days);
+    cronExpression = cronExpression.replace('month', month);
+    cronExpression = cronExpression.replace('weekDay', weekDays);
+    console.log(cronExpression);
+    return cronExpression;
+}
+
+getTimePart(type,time){
+  if(time.length > 1){
+    if(time.charAt(0)=='0'){        
+      return time.charAt(1)
+    }else{
+      return time;
+    }
+  }else{
+    return time;
+  }
+}
+
+saveAlarmHandler(_this, data) {
+  if (data.Message === "OK"){
+
+    _this.alarms.unshift(_this.request);
+    _this.request = {
+      schemaName: "",
+      tableName: "",
+      cron: "",
+      monitoringStatus: ""
+    }
+    _this.alarmTable.data = _this.alarms;
+    _this.alarmTable._updateChangeSubscription ();
+  }
+  
+}
+
+tableChanged(): void
+{
+  this.tableName = this.alarmFormGroup.get ("table").value;
+}
+
+saveAlarmError() {
+}
+
 }
