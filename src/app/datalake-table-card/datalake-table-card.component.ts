@@ -11,6 +11,7 @@ import { DatalakeTablePreviewComponent } from '../datalake-table-preview/datalak
   templateUrl: './datalake-table-card.component.html'
 })
 export class DatalakeTableCardComponent implements OnInit {
+  selectedTabIndex: number = 0;
 
   // Gauge templates
   gaugeType: string = "semi";
@@ -62,5 +63,15 @@ export class DatalakeTableCardComponent implements OnInit {
     dialogRef.afterClosed ().subscribe (() => {
       this.globals.popupLoading = false;
     });
+  }
+
+  viewTableInformation(): void
+  {
+    this.selectedTabIndex = 0;
+  }
+
+  viewTableStats(): void
+  {
+    this.selectedTabIndex = 1;
   }
 }

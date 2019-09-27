@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, ViewChildren, QueryList } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { ReplaySubject, Subject } from 'rxjs';
 
@@ -6,6 +6,7 @@ import { DatalakeTableCardValues } from '../datalake-table-card/datalake-table-c
 import { DatalakeService } from '../services/datalake.service';
 import { Globals } from '../globals/Globals';
 import { DatalakeCreateTableComponent } from '../datalake-create-table/datalake-create-table.component';
+import { DatalakeTableCardComponent } from '../datalake-table-card/datalake-table-card.component';
 
 @Component({
   selector: 'app-datalake-explorer',
@@ -18,6 +19,9 @@ export class DatalakeExplorerComponent implements OnInit {
   filter: string;
   filteredTableCards: ReplaySubject<any[]> = new ReplaySubject<any[]> (1);
   _onDestroy = new Subject<void> ();
+
+  @ViewChildren(DatalakeTableCardComponent)
+  tableCardComponents: QueryList<DatalakeTableCardComponent>; 
 
   tableCards: DatalakeTableCardValues[] = [];
   currentScreen: number;
@@ -108,9 +112,23 @@ export class DatalakeExplorerComponent implements OnInit {
 
   createTable(): void
   {
-    let dialogRef = this.dialog.open (DatalakeCreateTableComponent, {
+    this.dialog.open (DatalakeCreateTableComponent, {
       panelClass: 'datalake-create-table-dialog',
       data: { }
+    });
+  }
+
+  viewTableInformation(): void
+  {
+    this.tableCardComponents.forEach ((tableCard) => {
+      tableCard.viewTableInformation ();
+    });
+  }
+
+  viewTableStats(): void
+  {
+    this.tableCardComponents.forEach ((tableCard) => {
+      tableCard.viewTableStats ();
     });
   }
 

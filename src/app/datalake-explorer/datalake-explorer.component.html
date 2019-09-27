@@ -11,6 +11,12 @@
             <button *ngIf="!currentScreen" mat-button class="datalake-explorer-button" (click)="goToScreen(1)" matTooltip="Query Engine">
                 <img class="datalake-explorer-query-engine-button-image" src="../../assets/images/datalake-query.png"/>
             </button>
+            <button *ngIf="!currentScreen" mat-button class="datalake-explorer-button" (click)="viewTableStats()" matTooltip="View Table Stats">
+                <mat-icon class="datalake-explorer-button-info-icon">pie_chart</mat-icon>
+            </button>
+            <button *ngIf="!currentScreen" mat-button class="datalake-explorer-button" (click)="viewTableInformation()" matTooltip="View Table Information">
+                <mat-icon class="datalake-explorer-button-info-icon">info</mat-icon>
+            </button>
             <button *ngIf="!currentScreen" mat-button class="datalake-explorer-button" (click)="createTable()" matTooltip="Create Table">
                 <mat-icon class="datalake-explorer-button-add-icon">add</mat-icon>
             </button>
