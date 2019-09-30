@@ -16,8 +16,12 @@ import { ApplicationService } from '../services/application.service';
 })
 export class MsfDashboardDrillDownComponent {
 
+  vertAxisDisabled: boolean = true;
+  horizAxisDisabled: boolean = true;
+
   chartForm: FormGroup;
-  currentValue: MsfDashboardPanelValues;
+  nullValue: MsfDashboardPanelValues = new MsfDashboardPanelValues (null, "", 0, 0, null);
+  currentValue: MsfDashboardPanelValues = this.nullValue;
   lastValue: MsfDashboardPanelValues;
   currentIndex: number = -1;
 
@@ -62,6 +66,7 @@ export class MsfDashboardDrillDownComponent {
     private service: ApplicationService,
     @Inject(MAT_DIALOG_DATA) public data: any)
   {
+    this.nullValue.currentChartType = this.chartTypes[0];
     this.data.childChart.types = this.chartTypes;
 
     // prepare the drill down form combo box
@@ -526,15 +531,33 @@ export class MsfDashboardDrillDownComponent {
 
       this.currentValue.variable = null;
       this.chartForm.get ('variableCtrl').reset ();
+
+      this.currentValue.vertAxisName = null;
+      this.currentValue.horizAxisName = null;
     }
     else if (!(this.currentValue.currentChartType.flags & ChartFlags.XYCHART))
     {
       this.currentValue.xaxis = null;
       this.chartForm.get ('xaxisCtrl').reset ();
       this.chartForm.get ('xaxisCtrl').disable ();
+
+      if (this.currentValue.currentChartType.flags & ChartFlags.FUNNELCHART
+        || this.currentValue.currentChartType.flags & ChartFlags.PIECHART)
+      {
+        this.currentValue.vertAxisName = null;
+        this.currentValue.horizAxisName = null;
+
+        this.vertAxisDisabled = true;
+        this.horizAxisDisabled = true;
+      }
     }
     else
+    {
       this.chartForm.get ('xaxisCtrl').enable ();
+
+      this.vertAxisDisabled = false;
+      this.horizAxisDisabled = false;
+    }
 
     this.chartForm.get ('variableCtrl').enable ();
     this.chartForm.get ('valueCtrl').enable ();

@@ -102,6 +102,16 @@
             </mat-form-field>
           </div>
         </div>
+        <div class="msf-dashboard-chart-selector">
+          <mat-form-field class="msf-full-width" id="msf-dashboard-drill-down-container-column">
+            <input matInput autocomplete="off" placeholder="Vertical Axis Name" [disabled]="vertAxisDisabled" [(ngModel)]="currentValue.vertAxisName">
+          </mat-form-field>
+        </div>
+        <div class="msf-dashboard-chart-selector">
+          <mat-form-field class="msf-full-width" id="msf-dashboard-drill-down-container-column">
+            <input matInput autocomplete="off" placeholder="Horizontal Axis Name" [disabled]="horizAxisDisabled" [(ngModel)]="currentValue.horizAxisName">
+          </mat-form-field>
+        </div>
         <div class="msf-dashboard-panel-sub-container-column-reverse" id="msf-dashboard-drill-down-sub-container-column-reverse">
           <button mat-flat-button class="flat-button" (click)="closeDialog()">OK</button>
           <div class="msf-dashboard-panel-control-variable-button msf-child-panel-control-variable-button">

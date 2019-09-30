@@ -3110,6 +3110,9 @@ export class MsfDashboardPanelComponent implements OnInit {
         if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART
           || this.values.currentChartType.flags & ChartFlags.PIECHART)
         {
+          this.values.vertAxisName = null;
+          this.values.horizAxisName = null;
+
           this.vertAxisDisabled = true;
           this.horizAxisDisabled = true;
         }
@@ -4018,7 +4021,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.childPanelsConfigured = [];
 
     let dialogRef = this.dialog.open (MsfDashboardDrillDownComponent, {
-      height: (this.values.chartName && this.values.chartName.length >= 45) ? '500px ': '470px',
+      height: (this.values.chartName && this.values.chartName.length >= 45) ? '590px ': '560px',
       width: '450px',
       panelClass: 'msf-dashboard-child-panel-dialog',
       data: {
