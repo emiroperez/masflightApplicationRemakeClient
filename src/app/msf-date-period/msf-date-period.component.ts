@@ -57,8 +57,8 @@ export class MsfDatePeriodComponent implements OnInit {
   @Input("argument") public argument: Arguments;
   
   ngOnInit() {
-    if(this.globals.maxDate!=null){
-      this.date =  new FormControl(moment(this.globals.maxDate));
+    if(this.argument.maxDate!=null){
+      this.date =  new FormControl(moment(this.argument.maxDate));
     }else{
       this.date =  new FormControl(moment());
     }

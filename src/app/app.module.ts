@@ -192,6 +192,7 @@ import { MsfGroupAaaComponent } from './msf-group-aaa/msf-group-aaa.component';
 import { AdminArgumentsGroupComponent } from './admin-arguments-group/admin-arguments-group.component';
 import { FilterPipeGroupArg } from './admin-arguments-group/pipe-filter-group';
 import { AdminShareGroupsArgumentsComponent } from './admin-share-groups-arguments/admin-share-groups-arguments.component';
+import { MsfDashboardAssistantComponent } from './msf-dashboard-assistant/msf-dashboard-assistant.component';
 
 @NgModule({
   declarations: [
@@ -360,7 +361,8 @@ import { AdminShareGroupsArgumentsComponent } from './admin-share-groups-argumen
     MenuNavComponent,
     MsfGroupAaaComponent,
     AdminArgumentsGroupComponent,
-    AdminShareGroupsArgumentsComponent
+    AdminShareGroupsArgumentsComponent,
+    MsfDashboardAssistantComponent
   ],
   imports: [
     BrowserModule,
@@ -442,7 +444,8 @@ import { AdminShareGroupsArgumentsComponent } from './admin-share-groups-argumen
     MsfAddSharedDashboardPanelComponent,
     MsfAddSharedDashboardComponent,
     TwoFactorLoginDialogComponent,
-    MsfDynamicTableAliasComponent
+    MsfDynamicTableAliasComponent,
+    MsfDashboardAssistantComponent
   ]
 })
 export class AppModule { }

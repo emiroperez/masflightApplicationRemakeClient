@@ -38,6 +38,7 @@ import { MessageComponent } from '../message/message.component';
 import { ChartFlags } from '../msf-dashboard-panel/msf-dashboard-chartflags';
 import { AuthService } from '../services/auth.service';
 import { MsfMapComponent } from '../msf-map/msf-map.component';
+import { MsfDashboardAssistantComponent } from '../msf-dashboard-assistant/msf-dashboard-assistant.component';
 
 // AmCharts colors
 const black = am4core.color ("#000000");
@@ -2651,6 +2652,12 @@ export class MsfDashboardPanelComponent implements OnInit {
         {
           if (argument.value1)
             argument.value1 = JSON.parse (argument.value1);
+
+          if (argument.minDate)
+            argument.minDate = new Date (argument.minDate);
+
+          if (argument.maxDate)
+            argument.maxDate = new Date (argument.maxDate);
         }
 
         optionCategories.push (category);
@@ -4797,5 +4804,12 @@ export class MsfDashboardPanelComponent implements OnInit {
   isArray(item): boolean
   {
     return Array.isArray(item);
+  }
+
+  openAssistant(): void
+  {
+    this.dialog.open (MsfDashboardAssistantComponent, {
+      data: { title: "Assistant", message: "This is the assistant." }
+    });
   }
 }

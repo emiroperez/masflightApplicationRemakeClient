@@ -42,7 +42,8 @@ export const MY_FORMATS = {
 export class MsfDatePeriodYearComponent implements OnInit {
 
   constructor(public globals: Globals) { }
-  
+
+  minDate: Date;
   date: FormControl;
   date2: FormControl;
   loading = false;
@@ -50,9 +51,9 @@ export class MsfDatePeriodYearComponent implements OnInit {
   @Input("argument") public argument: Arguments;
   
   ngOnInit() {
-    if(this.globals.maxDate!=null){
-      this.date =  new FormControl(moment(this.globals.maxDate));
-      this.date2 =  new FormControl(moment(this.globals.maxDate));
+    if(this.argument.maxDate!=null){
+      this.date =  new FormControl(moment(this.argument.maxDate));
+      this.date2 =  new FormControl(moment(this.argument.maxDate));
     }else{
       this.date =  new FormControl(moment());
       this.date2 =  new FormControl(moment());
@@ -62,6 +63,10 @@ export class MsfDatePeriodYearComponent implements OnInit {
     this.argument.value2 = this.date2.value.year();
     }
 
+    if (this.argument.minDate != null)
+      this.minDate = this.argument.minDate;
+    else
+      this.minDate = this.date.value;
     this.onChanges ();
   }
 
@@ -96,4 +101,8 @@ export class MsfDatePeriodYearComponent implements OnInit {
     datepicker.close();
   }
 
+  dateChange(event)
+  {
+    this.minDate = this.argument.value1;
+  }
 }

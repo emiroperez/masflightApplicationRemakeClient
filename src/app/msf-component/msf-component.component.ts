@@ -25,8 +25,17 @@ export class MsfComponentComponent implements OnInit {
         {
           for (let argument of category.arguments)
           {
-            if (argument.value1 && !argument.valueLoaded)
-              argument.value1 = JSON.parse (argument.value1);
+            if (!argument.valueLoaded)
+            {
+              if (argument.value1)
+                argument.value1 = JSON.parse (argument.value1);
+
+              if (argument.minDate)
+                argument.minDate = new Date (argument.minDate);
+
+              if (argument.maxDate)
+                argument.maxDate = new Date (argument.maxDate);
+            }
 
             argument.valueLoaded = true;
           }

@@ -28,6 +28,23 @@
                         <mat-radio-button class="GroupAAA-item" value="Aircraft">Aircraft Group</mat-radio-button>
                     </mat-radio-group>
                 </ng-container>
+
+                <ng-container *ngIf="isDate(item)">
+                    <div class="arguments-child" [style.margin-right.%]="20">
+                        <mat-form-field [style.width.%]="100">
+                            <input matInput placeholder="Start Date Availability" [(ngModel)]="item.minDate" [matDatepicker]="startDatePicker">
+                            <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                            <mat-datepicker #startDatePicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="arguments-child">
+                        <mat-form-field [style.width.%]="100">
+                            <input matInput placeholder="End Date Availability" [(ngModel)]="item.maxDate" [matDatepicker]="endDatePicker">
+                            <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                            <mat-datepicker #endDatePicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </ng-container>
                 
                 <ng-container *ngIf="item.numArguments >= 1">
                     <div class="arguments-child" [style.margin-right.%]="20">

@@ -35,7 +35,8 @@ export const US_DATE_FORMAT = {
 export class MsfDateRangeComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
-  
+
+  minDate: Date;
   autoSelectDate;
   dates: any[] = [
     {id: 1, name: 'Yesterday',value:"YESTERDAY"},
@@ -52,7 +53,7 @@ export class MsfDateRangeComponent implements OnInit {
   constructor(public globals: Globals,public dialog: MatDialog) { }
 
   ngOnInit() {
-    this.minDate = this.globals.minDate;
+    this.minDate = this.argument.minDate;
   }
 
   dateChange(event){      
@@ -71,14 +72,6 @@ export class MsfDateRangeComponent implements OnInit {
       if(this.argument.value1){
         this.argument.value1 = new DatePipe('en-US').transform(this.argument.value1, 'MM/dd/yyyy');
       }    
-  }
-
-  minDate(){
-    if(this.argument.value1!=null){
-        return this.globals.minDate;
-    }else{
-      return this.argument.value1; 
-    }
   }
 
   autoSelect(){
@@ -120,12 +113,12 @@ export class MsfDateRangeComponent implements OnInit {
   calculateDate(type: string,milis: any) {
     var today = new Date();
     var maximunDateMessage = "the maximun date of the option is ";
-        if(this.globals.maxDate==null){
+        if(this.argument.maxDate==null){
           this.argument.value2 = today;
           maximunDateMessage = "the option doesn't have maximun date";
         }else{
-          this.argument.value2 = this.globals.maxDate;
-          maximunDateMessage += this.globals.maxDate.toLocaleString("en-US").split(",")[0];
+          this.argument.value2 = this.argument.maxDate;
+          maximunDateMessage += this.argument.maxDate.toLocaleString("en-US").split(",")[0];
         }
           this.argument.value1 = new Date(this.argument.value2.getTime() - milis);
 
@@ -138,12 +131,12 @@ export class MsfDateRangeComponent implements OnInit {
     var aux;
     var maximunDateMessage = "the maximun date of the option is ";
       if(this.argument.value1){
-        if(this.globals.maxDate==null){
+        if(this.argument.maxDate==null){
           aux = today
           maximunDateMessage = "the option doesn't have maximun date"
         }else{
-          aux = this.globals.maxDate;
-          maximunDateMessage += this.globals.maxDate.toLocaleString("en-US").split(",")[0];
+          aux = this.argument.maxDate;
+          maximunDateMessage += this.argument.maxDate.toLocaleString("en-US").split(",")[0];
         }
         var diff = aux.getTime() - milis;
         if(this.argument.value1.getTime()<=diff){

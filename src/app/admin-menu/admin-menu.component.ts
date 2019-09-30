@@ -307,7 +307,23 @@ export class EditCategoryArgumentDialog {
 
         if (argument.value1)
           argument.value1 = JSON.parse (argument.value1);
+
+        if (argument.minDate)
+          argument.minDate = new Date (argument.minDate);
+
+        if (argument.maxDate)
+          argument.maxDate = new Date (argument.maxDate);
       }
+  }
+
+  isDate(argument: Arguments){
+    if (ComponentType.dateRange == argument.type || ComponentType.date == argument.type
+      || ComponentType.datePicker == argument.type || ComponentType.dateTimePicker == argument.type
+      || ComponentType.datePeriod == argument.type || ComponentType.datePeriodYear == argument.type
+      || ComponentType.datePeriodYearMonth == argument.type || ComponentType.datePeriodRevenue == argument.type)
+      return true;
+
+    return false;
   }
 
   isGroupAAA(argument: Arguments){
