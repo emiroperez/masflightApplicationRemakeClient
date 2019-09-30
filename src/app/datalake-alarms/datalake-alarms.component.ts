@@ -280,10 +280,18 @@ export class DatalakeAlarmsComponent implements OnInit {
     if (this.notifyMode){
       this.cron = this.transformCronExpression(""+this.clock.getTime().hour,""+this.clock.getTime().minute);
     }else{
-      this.cron = this.transformCronExpression(null,""+this.minutes);
+      //notificarme cada X minutos
+      //trasformo los minutos a horas si pasan de 60
+      if(this.minutes>=60){
+        const calc = this.minutes / 60 ;
+        const h = Math.trunc(calc);
+        const m = this.minutes - (h * 60) ;
+        this.cron = this.transformCronExpression(""+h,""+m);
+      }else{
+        this.cron = this.transformCronExpression(null,""+this.minutes);
+      }
     }
 
-    this.cron ;
     this.request = {
       schemaName: this.schemaName,
       tableName: this.tableName,
@@ -308,9 +316,19 @@ export class DatalakeAlarmsComponent implements OnInit {
     }
     if(hour){
       hours = this.getTimePart('hour',hour);
-    }else{
-      if(mins){
-        mins = "*/"+mins;
+    }
+    // else{
+    //   if(mins){
+    //     mins = "*/"+mins;
+    //   }
+    // }
+    if (!this.notifyMode){
+      if(hours){
+        hours = "*/"+hours;
+      }else{
+        if(mins){
+          mins = "*/"+mins;
+        }
       }
     }
 

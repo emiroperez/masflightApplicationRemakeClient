@@ -58,12 +58,26 @@ export class DatalakeAlarmEditDialogComponent {
     weekDays = cronExp[4];
     const h = this.getTimeFormat(hours);
     const m = this.getTimeFormat(mins);
-    if(hours === '*'){
+
+    if ((cronExp[1].indexOf ("/") > -1) || (cronExp[0].indexOf ("/") > -1)){
       this.notifyMode = false;
-      this.minutes = m ;
+      if(hours != '*'){
+        //convierto las horas y los minutos a minutos
+        this.minutes = (parseInt(hours)*60) + parseInt(mins);
+      }else {
+        if(mins != '*'){
+          this.minutes = m ;
+        }
+      }
     }else{
       this.notifyMode = true;
     }
+    // if(hours === '*'){
+    //   this.notifyMode = false;
+    //   this.minutes = m ;
+    // }else{
+    //   this.notifyMode = true;
+    // }
     this.enableTimePicker(h, m);
 
 }
@@ -229,10 +243,18 @@ getTimeFormat(value){
     let request;
     //armo el cron
     if (this.notifyMode){
-      // this.time = this.clock.getTime();
       this.cron = this.transformCronExpression(""+this.clock.getTime().hour,""+this.clock.getTime().minute);
     }else{
-      this.cron = this.transformCronExpression(null,""+this.minutes);
+      //notificarme cada X minutos
+      //trasformo los minutos a horas si pasan de 60
+      if(this.minutes>=60){
+        const calc = this.minutes / 60 ;
+        const h = Math.trunc(calc);
+        const m = this.minutes - (h * 60) ;
+        this.cron = this.transformCronExpression(""+h,""+m);
+      }else{
+        this.cron = this.transformCronExpression(null,""+this.minutes);
+      }
     }
 
     request = {
@@ -261,40 +283,56 @@ getTimeFormat(value){
 
   }
 
+  
   transformCronExpression(hour: any, minute: any) {
-      let cronExpression = "mins hours days month weekDay",
-      i = 0, 
-      mins = '*', 
-      hours = '*', 
-      days = '*', 
-      month = '*',
-      weekDays = '*';
-      if(minute){
-        mins = this.getTimePart('min', minute);
-      }
-      if(hour){
-        hours = this.getTimePart('hour',hour);
+    let cronExpression = "mins hours days month weekDay",
+    i = 0, 
+    mins = '*', 
+    hours = '*', 
+    days = '*', 
+    month = '*',
+    weekDays = '*';
+    if(minute){
+      mins = this.getTimePart('min', minute);
+    }
+    if(hour){
+      hours = this.getTimePart('hour',hour);
+    }
+    // else{
+    //   if(mins){
+    //     mins = "*/"+mins;
+    //   }
+    // }
+    if (!this.notifyMode){
+      if(hours){
+        hours = "*/"+hours;
       }else{
         if(mins){
           mins = "*/"+mins;
         }
       }
+    }
 
-      cronExpression = cronExpression.replace('mins', mins);
-      cronExpression = cronExpression.replace('hours', hours);
-      cronExpression = cronExpression.replace('days', days);
-      cronExpression = cronExpression.replace('month', month);
-      cronExpression = cronExpression.replace('weekDay', weekDays);
-      console.log(cronExpression);
-      return cronExpression;
-  }
+    cronExpression = cronExpression.replace('mins', mins);
+    cronExpression = cronExpression.replace('hours', hours);
+    cronExpression = cronExpression.replace('days', days);
+    cronExpression = cronExpression.replace('month', month);
+    cronExpression = cronExpression.replace('weekDay', weekDays);
+    console.log(cronExpression);
+    return cronExpression;
+}
 
-  getTimePart(type,time){
-      if(time.charAt(0)=='0'){        
-        return time.charAt(1)
-      }
-        return time;
+getTimePart(type,time){
+  if(time.length > 1){
+    if(time.charAt(0)=='0'){        
+      return time.charAt(1)
+    }else{
+      return time;
+    }
+  }else{
+    return time;
   }
+}
 
   getHeaderDisplayStatus(): string
   {
