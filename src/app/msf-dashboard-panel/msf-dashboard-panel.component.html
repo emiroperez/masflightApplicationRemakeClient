@@ -70,7 +70,7 @@
                 </div>
                 <div class="msf-dashboard-field-function">
                   <mat-form-field>
-                    <input matInput autocomplete="off" placeholder="Vertical Axis Name" [(ngModel)]="values.vertAxisName">
+                    <input matInput autocomplete="off" placeholder="Vertical Axis Name" [disabled]="vertAxisDisabled" [(ngModel)]="values.vertAxisName">
                   </mat-form-field>
                 </div>
               </div>
@@ -94,7 +94,7 @@
                 </div>
                 <div class="msf-dashboard-field-function">
                   <mat-form-field>
-                    <input matInput autocomplete="off" placeholder="Horizontal Axis Name" [(ngModel)]="values.horizAxisName">
+                    <input matInput autocomplete="off" placeholder="Horizontal Axis Name" [disabled]="horizAxisDisabled" [(ngModel)]="values.horizAxisName">
                   </mat-form-field>
                 </div>
               </div>

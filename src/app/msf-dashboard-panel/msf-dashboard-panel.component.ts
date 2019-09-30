@@ -56,6 +56,9 @@ const targetSVG = "M9,0C4.029,0,0,4.029,0,9s4.029,9,9,9s9-4.029,9-9S13.971,0,9,0
 export class MsfDashboardPanelComponent implements OnInit {
   utils: Utils;
 
+  vertAxisDisabled: boolean = false;
+  horizAxisDisabled: boolean = false;
+
   variableCtrlBtnEnabled: boolean = false;
   generateBtnEnabled: boolean = false;
 
@@ -3055,6 +3058,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
         this.values.formVariables = [];
       }
+
+      this.values.vertAxisName = null;
+      this.values.horizAxisName = null;
     }
     else
     {
@@ -3091,15 +3097,30 @@ export class MsfDashboardPanelComponent implements OnInit {
         }
 
         this.chartForm.get ('variableCtrl').reset ();
+
+        this.values.vertAxisName = null;
+        this.values.horizAxisName = null;
       }
       else if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
       {
         this.values.xaxis = null;
         this.chartForm.get ('xaxisCtrl').reset ();
         this.chartForm.get ('xaxisCtrl').disable ();
+
+        if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART
+          || this.values.currentChartType.flags & ChartFlags.PIECHART)
+        {
+          this.vertAxisDisabled = true;
+          this.horizAxisDisabled = true;
+        }
       }
       else
+      {
         this.chartForm.get ('xaxisCtrl').enable ();
+
+        this.vertAxisDisabled = false;
+        this.horizAxisDisabled = false;
+      }
 
       this.chartForm.get ('variableCtrl').enable ();
       this.chartForm.get ('valueCtrl').enable ();
