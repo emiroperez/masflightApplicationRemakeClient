@@ -32,6 +32,7 @@
     "@uiowa/digit-only": "0.0.5",
     "acorn": "^6.0.0",
     "buffer": "^5.2.1",
+    "caniuse-lite": "^1.0.30000997",
     "cdk-drag-scroll": "0.0.2",
     "clientjs": "^0.1.11",
     "core-js": "^2.5.4",
