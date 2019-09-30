@@ -57,14 +57,23 @@
               <mat-icon class="msf-dashboard-chart-icon">bar_chart</mat-icon>
             </div>
             <div class="msf-dashboard-chart-op-container">
-              <mat-form-field [formGroup]="chartForm" class="msf-full-width">
-                <mat-select formControlName="variableCtrl" placeholder="Analysis by" #variableSelect [(value)]="values.variable" (selectionChange)="checkPanelConfiguration()">
-                  <ngx-mat-select-search [formControl]="variableFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
-                  <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
-                    {{variable.name}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
+              <div class="msf-dashboard-chart-op-container-row">
+                <div class="msf-dashboard-field-valuectrl">
+                  <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+                    <mat-select formControlName="variableCtrl" placeholder="Analysis by" #variableSelect [(value)]="values.variable" (selectionChange)="checkPanelConfiguration()">
+                      <ngx-mat-select-search [formControl]="variableFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+                      <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
+                        {{variable.name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="msf-dashboard-field-function">
+                  <mat-form-field>
+                    <input matInput autocomplete="off" placeholder="Vertical Axis Name" [(ngModel)]="values.vertAxisName">
+                  </mat-form-field>
+                </div>
+              </div>
             </div>
           </div>
           <div class="msf-dashboard-chart-selector">
@@ -72,14 +81,23 @@
               <mat-icon class="msf-dashboard-chart-icon">multiline_chart</mat-icon>
             </div>
             <div class="msf-dashboard-chart-op-container">
-              <mat-form-field [formGroup]="chartForm" class="msf-full-width">
-                <mat-select formControlName="xaxisCtrl" placeholder="x - Axis" #xaxisSelect [(value)]="values.xaxis" (selectionChange)="checkPanelConfiguration()">
-                  <ngx-mat-select-search [formControl]="xaxisFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
-                  <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
-                    {{variable.name}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
+              <div class="msf-dashboard-chart-op-container-row">
+                <div class="msf-dashboard-field-valuectrl">
+                  <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+                    <mat-select formControlName="xaxisCtrl" placeholder="x - Axis" #xaxisSelect [(value)]="values.xaxis" (selectionChange)="checkPanelConfiguration()">
+                      <ngx-mat-select-search [formControl]="xaxisFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+                      <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
+                        {{variable.name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="msf-dashboard-field-function">
+                  <mat-form-field>
+                    <input matInput autocomplete="off" placeholder="Horizontal Axis Name" [(ngModel)]="values.horizAxisName">
+                  </mat-form-field>
+                </div>
+              </div>
             </div>
           </div>
           <div class="msf-dashboard-chart-selector">

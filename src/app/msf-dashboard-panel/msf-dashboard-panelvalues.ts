@@ -84,9 +84,12 @@ export class MsfDashboardPanelValues {
     calculatedHeight: number;
     chartSeries: any[] = [];
 
+    vertAxisName: string;
+    horizAxisName: string;
+
     constructor(options: any[], chartName: String, id: number, width: any, height: any, currentOption?: any, variable?: any,
         xaxis?: any, valueColumn?: any, func?: any, chartType?: any, currentOptionCategories?: any, lastestResponse?: string,
-        paletteColors?: any, updateTimeInterval?: number, row?: number, thresholds?: any)
+        paletteColors?: any, updateTimeInterval?: number, row?: number, thresholds?: any, vertAxisName?: string, horizAxisName?: string)
     {
         this.options = options;
         this.chartName = chartName;
@@ -134,5 +137,8 @@ export class MsfDashboardPanelValues {
         }
 
         this.row = row;
+
+        this.vertAxisName = vertAxisName;
+        this.horizAxisName = horizAxisName;
     }
 }

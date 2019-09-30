@@ -1109,8 +1109,15 @@ export class MsfDashboardPanelComponent implements OnInit {
         if (this.values.currentChartType.flags & ChartFlags.XYCHART)
         {
           // Set axis name into the chart
-          categoryAxis.title.text = this.values.xaxis.name;
-          valueAxis.title.text = this.values.valueColumn.name;
+          if (this.values.vertAxisName && this.values.vertAxisName != "")
+            categoryAxis.title.text = this.values.vertAxisName;
+          else
+            categoryAxis.title.text = this.values.xaxis.name;
+
+          if (this.values.horizAxisName && this.values.horizAxisName != "")
+            valueAxis.title.text = this.values.horizAxisName;
+          else
+            valueAxis.title.text = this.values.valueColumn.name;
 
           // The category will be the x axis if the chart type has it
           categoryAxis.dataFields.category = this.values.xaxis.id;
@@ -1213,8 +1220,15 @@ export class MsfDashboardPanelComponent implements OnInit {
         else
         {
           // Set axis name into the chart
-          categoryAxis.title.text = this.values.variable.name;
-          valueAxis.title.text = this.values.valueColumn.name;
+          if (this.values.vertAxisName && this.values.vertAxisName != "")
+            categoryAxis.title.text = this.values.vertAxisName;
+          else
+            categoryAxis.title.text = this.values.variable.name;
+
+          if (this.values.horizAxisName && this.values.horizAxisName != "")
+            valueAxis.title.text = this.values.horizAxisName;
+          else
+            valueAxis.title.text = this.values.valueColumn.name;
 
           // The category will the values if the chart type lacks an x axis
           categoryAxis.dataFields.category = chartInfo.titleField;
@@ -1626,7 +1640,9 @@ export class MsfDashboardPanelComponent implements OnInit {
         categoryOptions: this.values.currentOptionCategories ? JSON.stringify (this.values.currentOptionCategories) : null,
         paletteColors: JSON.stringify (this.values.paletteColors),
         updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0),
-        thresholds: JSON.stringify (this.values.thresholds)
+        thresholds: JSON.stringify (this.values.thresholds),
+        vertAxisName: this.values.vertAxisName,
+        horizAxisName: this.values.horizAxisName
       };
     }
   }
@@ -2772,6 +2788,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.temp.currentOptionCategories = JSON.parse (JSON.stringify (this.values.currentOptionCategories));
     this.temp.thresholds = JSON.parse (JSON.stringify (this.values.thresholds));
     this.temp.style = JSON.parse (JSON.stringify (this.values.style));
+    this.temp.vertAxisName = this.values.vertAxisName;
+    this.temp.horizAxisName = this.values.horizAxisName;
 
     this.temp.formVariables = [];
     this.temp.tableVariables = JSON.parse (JSON.stringify (this.values.tableVariables));
@@ -2903,6 +2921,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.currentOptionCategories = JSON.parse (JSON.stringify (this.temp.currentOptionCategories));
     this.values.thresholds = JSON.parse (JSON.stringify (this.temp.thresholds));
     this.values.style = JSON.parse (JSON.stringify (this.temp.style));
+    this.values.vertAxisName = this.temp.vertAxisName;
+    this.values.horizAxisName = this.temp.horizAxisName;
 
     for (i = 0; i < this.chartTypes.length; i++)
     {
@@ -4052,7 +4072,9 @@ export class MsfDashboardPanelComponent implements OnInit {
           values: value.chartColumnOptions ? (value.valueColumn ? value.valueColumn.item.id : null) : null,
           function: this.functions.indexOf (value.function),
           chartType: childChartTypes.indexOf (value.currentChartType),
-          paletteColors: JSON.stringify (value.paletteColors)
+          paletteColors: JSON.stringify (value.paletteColors),
+          vertAxisName: value.vertAxisName,
+          horizAxisName: value.horizAxisName
         });
       }
 
