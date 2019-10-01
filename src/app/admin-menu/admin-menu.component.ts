@@ -349,6 +349,10 @@ export class EditCategoryArgumentDialog {
     return ComponentType.datePeriod == argument.type;
   }
 
+  isDatePeriodYear(argument: Arguments) {
+    return ComponentType.datePeriodYear == argument.type;
+  }
+
   isMsFreeTextInput(argument: Arguments){
     return ComponentType.freeTextInput == argument.type;
   }

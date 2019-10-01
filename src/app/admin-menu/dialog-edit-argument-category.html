@@ -127,7 +127,7 @@
                         <mat-datepicker #defaultDatePicker></mat-datepicker>
                     </mat-form-field>
                 </div>
-                <div class="arguments-child" [style.margin-right.%]="20" *ngIf="isDatePeriod(item)">
+                <div class="arguments-child" [style.margin-right.%]="20" *ngIf="isDatePeriod(item) || isDatePeriodYear(item)">
                     <mat-form-field [style.width.%]="100">
                         <input matInput autocomplete="off" type="numeric" placeholder="Default Value" [(ngModel)]="item.value1">
                     </mat-form-field>
