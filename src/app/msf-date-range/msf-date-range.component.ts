@@ -39,15 +39,16 @@ export class MsfDateRangeComponent implements OnInit {
   minDate: Date;
   autoSelectDate;
   dates: any[] = [
-    {id: 1, name: 'Yesterday',value:"YESTERDAY"},
-    {id: 2, name: 'Last week',value:"LASTWEEK"},
-    {id: 3, name: 'Last Month',value:"LASTMONTH"},
-    {id: 4, name: 'Last Year',value:"LASTYEAR"},
-    {id: 5, name: 'Until Yesterday',value:"UNTILYESTERDAY"},
-    {id: 6, name: 'Until Last week',value:"UNTILLASTWEEK"},
-    {id: 7, name: 'Until Last Month',value:"UNTILLASTMONTH"},
-    {id: 8, name: 'Until Last Year',value:"UNTILLASTYEAR"},
-    {id: 8, name: 'Until Today',value:"UNTILTODAY"}
+    {id: 1, name: 'Today',value:"TODAY"},
+    {id: 2, name: 'Yesterday',value:"YESTERDAY"},
+    {id: 3, name: 'Last week',value:"LASTWEEK"},
+    {id: 4, name: 'Last Month',value:"LASTMONTH"},
+    {id: 5, name: 'Last Year',value:"LASTYEAR"},
+    {id: 6, name: 'Until Yesterday',value:"UNTILYESTERDAY"},
+    {id: 7, name: 'Until Last week',value:"UNTILLASTWEEK"},
+    {id: 8, name: 'Until Last Month',value:"UNTILLASTMONTH"},
+    {id: 9, name: 'Until Last Year',value:"UNTILLASTYEAR"},
+    {id: 10, name: 'Until Today',value:"UNTILTODAY"}
   ];
 
   constructor(public globals: Globals,public dialog: MatDialog) { }
@@ -80,6 +81,9 @@ export class MsfDateRangeComponent implements OnInit {
       option = option.value;
     }
     switch (option) {
+      case 'TODAY':
+        this.calculateDate('Today', 0);
+        break;
       case 'YESTERDAY':
       this.calculateDate('Yesterday',24*60*60*1000);
         break;
