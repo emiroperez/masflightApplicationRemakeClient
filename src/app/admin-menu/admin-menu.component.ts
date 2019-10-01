@@ -596,6 +596,8 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   optionForm: FormGroup;
   recursiveDeleteDone: boolean;
 
+  filteredCategories: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
+
   @ViewChild("materialIconPicker")
   materialIconPicker: MaterialIconPickerComponent;
 
@@ -838,6 +840,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
   handlerSuccessCategoryArguments(_this, result) {
     _this.categories = result;
+    _this.filteredCategories.next (_this.categories.slice ());
     if (_this.optionSelected.id) {
       _this.getOptionCategoryArguments(_this.optionSelected);
     }
@@ -1804,6 +1807,22 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
     newurl += this.globals.theme + "-" + filename;
     return newurl;
+  }
+
+  filterCategories(): void
+  {
+    // get the search keyword
+    let search = this.searchText;
+    if (!search)
+    {
+      this.filteredCategories.next (this.categories.slice ());
+      return;
+    }
+
+    search = search.toLowerCase ();
+    this.filteredCategories.next (
+      this.categories.filter (a => a.label.toLowerCase ().indexOf (search) > -1)
+    );
   }
 }
 
