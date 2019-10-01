@@ -57,7 +57,10 @@ export class MsfDatePeriodComponent implements OnInit {
   @Input("argument") public argument: Arguments;
   
   ngOnInit() {
-    if(this.argument.maxDate!=null){
+    if (this.argument.value1 != null) {
+      this.date =  new FormControl(moment(this.argument.value1, "YYYY"));
+    }
+    else if(this.argument.maxDate!=null){
       this.date =  new FormControl(moment(this.argument.maxDate));
     }else{
       this.date =  new FormControl(moment());
@@ -66,6 +69,8 @@ export class MsfDatePeriodComponent implements OnInit {
       this.argument.value1 = this.date.value.year();
       this.argument.value2 = {id: 4, name: '4st Quarter',value:"4"};
     }
+    else if (this.argument.value1)
+      this.argument.value2 = {id: 4, name: '4st Quarter',value:"4"};
 
     this.onChanges ();
   }

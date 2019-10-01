@@ -2,7 +2,7 @@ import { OnInit, Component, Inject, AfterViewInit, ChangeDetectorRef, Renderer2,
 import { ApiClient } from '../api/api-client';
 import { Globals } from '../globals/Globals';
 import { ApplicationService } from '../services/application.service';
-import { MatSnackBar, MatTableDataSource, MatTable, MatSelect, MatTreeFlattener, MatTreeFlatDataSource } from '@angular/material';
+import { MatSnackBar, MatTableDataSource, MatTable, MatSelect, MatTreeFlattener, MatTreeFlatDataSource, MatDatepicker } from '@angular/material';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { MessageComponent } from '../message/message.component';
 import { CdkDragDrop, moveItemInArray, CdkDropList, transferArrayItem } from '@angular/cdk/drag-drop';
@@ -16,6 +16,7 @@ import { FlatTreeControl } from '@angular/cdk/tree';
 import { MaterialIconPickerComponent } from '../material-icon-picker/material-icon-picker.component';
 import { ComponentType } from '../commons/ComponentType';
 import { Arguments } from '../model/Arguments';
+import { Moment } from 'moment';
 //import  clonedeep from 'lodash.clonedeep';
 
 @Component({
@@ -309,14 +310,20 @@ export class EditCategoryArgumentDialog {
           argument.value1 = JSON.parse (argument.value1);
 
         if (argument.minDate)
+        {
           argument.minDate = new Date (argument.minDate);
+          argument.minDate.setDate (argument.minDate.getDate () + 1);
+        }
 
         if (argument.maxDate)
-          argument.maxDate = new Date (argument.maxDate);
+        {
+          argument.maxDate = new Date (argument.maxDate + 1);
+          argument.maxDate.setDate (argument.maxDate.getDate () + 1);
+        }
       }
   }
 
-  isDate(argument: Arguments){
+  isDateArgument(argument: Arguments){
     if (ComponentType.dateRange == argument.type || ComponentType.date == argument.type
       || ComponentType.datePicker == argument.type || ComponentType.dateTimePicker == argument.type
       || ComponentType.datePeriod == argument.type || ComponentType.datePeriodYear == argument.type
@@ -324,6 +331,26 @@ export class EditCategoryArgumentDialog {
       return true;
 
     return false;
+  }
+
+  isDateRange(argument: Arguments){
+    return ComponentType.dateRange == argument.type;
+  }
+
+  isDate(argument: Arguments) {
+    return ComponentType.date == argument.type;
+  }
+
+  isDatePicker(argument: Arguments) {
+    return ComponentType.datePicker == argument.type;
+  }
+
+  isDatePeriod(argument: Arguments) {
+    return ComponentType.datePeriod == argument.type;
+  }
+
+  isMsFreeTextInput(argument: Arguments){
+    return ComponentType.freeTextInput == argument.type;
   }
 
   isGroupAAA(argument: Arguments){

@@ -29,7 +29,7 @@
                     </mat-radio-group>
                 </ng-container>
 
-                <ng-container *ngIf="isDate(item)">
+                <ng-container *ngIf="isDateArgument(item)">
                     <div class="arguments-child" [style.margin-right.%]="20">
                         <mat-form-field [style.width.%]="100">
                             <input matInput placeholder="Start Date Availability" [(ngModel)]="item.minDate" [matDatepicker]="startDatePicker">
@@ -119,6 +119,23 @@
                         (search)="onSearch(item,$event)" 
                         [(ngModel)]="item.value1">
                     </ng-select>
+                </div>
+                <div class="arguments-child" [style.margin-right.%]="20" *ngIf="isDateRange(item) || isDate(item) || isDatePicker(item)">
+                    <mat-form-field [style.width.%]="100">
+                        <input matInput placeholder="Default Value" [(ngModel)]="item.value1" [matDatepicker]="defaultDatePicker">
+                        <mat-datepicker-toggle matSuffix [for]="defaultDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker #defaultDatePicker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div class="arguments-child" [style.margin-right.%]="20" *ngIf="isDatePeriod(item)">
+                    <mat-form-field [style.width.%]="100">
+                        <input matInput autocomplete="off" type="numeric" placeholder="Default Value" [(ngModel)]="item.value1">
+                    </mat-form-field>
+                </div>
+                <div class="arguments-child" [style.margin-right.%]="20" *ngIf="isMsFreeTextInput(item)">
+                    <mat-form-field [style.width.%]="100">
+                        <input matInput autocomplete="off" placeholder="Default Value" [(ngModel)]="item.value1">
+                    </mat-form-field>
                 </div>
                 <div class="dialog-edit-argument-category-item-footer" *ngIf="item.url != '' && item.url != null">
                     <button mat-button class="flat-button admin-menu-content-cancel-button" (click)="showPreview(item)">Preview</button>
