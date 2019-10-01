@@ -296,6 +296,19 @@ export class EditCategoryArgumentDialog {
 
   displayedColumns: string[] = ['label1', 'label2', 'name1', 'name2'];
 
+  dates: any[] = [
+    {id: 1, name: 'Today',value:"TODAY"},
+    {id: 2, name: 'Yesterday',value:"YESTERDAY"},
+    {id: 3, name: 'Last week',value:"LASTWEEK"},
+    {id: 4, name: 'Last Month',value:"LASTMONTH"},
+    {id: 5, name: 'Last Year',value:"LASTYEAR"},
+    {id: 6, name: 'Until Yesterday',value:"UNTILYESTERDAY"},
+    {id: 7, name: 'Until Last week',value:"UNTILLASTWEEK"},
+    {id: 8, name: 'Until Last Month',value:"UNTILLASTMONTH"},
+    {id: 9, name: 'Until Last Year',value:"UNTILLASTYEAR"},
+    {id: 10, name: 'Until Today',value:"UNTILTODAY"}
+  ];
+
   constructor(
     private globals: Globals,
     private http: ApiClient,
@@ -333,28 +346,8 @@ export class EditCategoryArgumentDialog {
     return false;
   }
 
-  isDateRange(argument: Arguments){
+  isDateRange(argument: Arguments) {
     return ComponentType.dateRange == argument.type;
-  }
-
-  isDate(argument: Arguments) {
-    return ComponentType.date == argument.type;
-  }
-
-  isDatePicker(argument: Arguments) {
-    return ComponentType.datePicker == argument.type;
-  }
-
-  isDatePeriod(argument: Arguments) {
-    return ComponentType.datePeriod == argument.type;
-  }
-
-  isDatePeriodYear(argument: Arguments) {
-    return ComponentType.datePeriodYear == argument.type;
-  }
-
-  isDatePeriodRevenue(argument: Arguments) {
-    return ComponentType.datePeriodRevenue == argument.type;
   }
 
   isMsFreeTextInput(argument: Arguments){

@@ -36,6 +36,7 @@ export class MsfDateRangeComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
 
+  loadingDefaults: boolean = false;
   minDate: Date;
   autoSelectDate;
   dates: any[] = [
@@ -54,6 +55,27 @@ export class MsfDateRangeComponent implements OnInit {
   constructor(public globals: Globals,public dialog: MatDialog) { }
 
   ngOnInit() {
+    if (this.argument.value1)
+    {
+      this.loadingDefaults = true;
+
+      // auto select date range after loading the default value
+      for (let dateRange of this.dates)
+      {
+        if (dateRange.value === this.argument.value1)
+        {
+          this.argument.value3 = dateRange;
+          this.autoSelect ();
+          break;
+        }
+      }
+
+      if (this.argument.value3 == null)
+        this.argument.value1 = null;
+
+      this.loadingDefaults = false;
+    }
+
     this.minDate = this.argument.minDate;
   }
 
@@ -157,10 +179,13 @@ export class MsfDateRangeComponent implements OnInit {
   }
   
   openDialog(text:string){
-    this.dialog.open (MessageComponent, {
-      data: { title: "Message", 
-      message: text}
-    });
+    if (!this.loadingDefaults)
+    {
+      this.dialog.open (MessageComponent, {
+        data: { title: "Message", 
+        message: text}
+      });
+    }
   }
 
 }
