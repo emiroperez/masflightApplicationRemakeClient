@@ -56,7 +56,35 @@ export class MsfDatePeriodYearMonthComponent implements OnInit {
     }
     if(!this.argument.value1&&!this.argument.value2){
     this.argument.value1 = this.date.value.year();
-    this.argument.value2 = this.date.value.month()+1;
+    this.argument.value2 = this.date.value.month();
+    }
+    else if (this.argument.value1)
+    {
+      let ctrlValue;
+  
+      switch (this.argument.value1)
+      {
+        case "CURRENTYEAR":
+        default:
+          this.argument.value1 = this.date.value.year ();
+          this.argument.value2 = this.date.value.month ();
+          break;
+
+        case 'LASTMONTH':
+          this.argument.value1 = this.date.value.year ();
+          this.argument.value2 = this.date.value.month () - 1;
+          break;
+  
+        case 'LASTYEAR':
+          this.argument.value1 = this.date.value.year () - 1;
+          this.argument.value2 = this.date.value.month ();
+          break;
+      }
+  
+      ctrlValue = this.date.value;
+      ctrlValue.year (this.argument.value1);
+      ctrlValue.month (this.argument.value2);
+      this.date.setValue (ctrlValue);
     }
 
     this.onChanges ();
