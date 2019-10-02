@@ -1,3 +1,64 @@
-<p>
-  msf-dashboard-assistant works!
-</p>
+<div class="msf-dashboard-assistant-loading" *ngIf="isLoading"></div>
+<div [ngStyle]="{ 'display': checkVisibility() }">
+  <div class="msf-dashboard-assistant-header">
+    <span class="msf-dashboard-assistant-title">
+      Chart Configuration Assistant
+    </span>
+    <div class="msf-dashboard-assistant-buttons">
+      <button *ngIf="stepper.selectedIndex" class="msf-dashboard-assistant-step-button flat-button" mat-button (click)="goBack(stepper)">
+        <mat-icon>arrow_back_ios</mat-icon>
+        BACK
+      </button>
+      <button *ngIf="stepper.selectedIndex != 2" class="msf-dashboard-assistant-step-button msf-dashboard-assistant-next-button flat-button" mat-button (click)="goForward(stepper)">
+        NEXT
+        <mat-icon>arrow_forward_ios</mat-icon>
+      </button>
+      <button *ngIf="stepper.selectedIndex == 2" class="msf-dashboard-assistant-step-button msf-dashboard-assistant-next-button flat-button" mat-button>
+        FINISH
+        <mat-icon>flag</mat-icon>
+      </button>
+    </div>
+    <div class="close-button" (click)="closeWindow()">
+      <mat-icon>close</mat-icon>
+    </div>
+  </div>
+  <div class="msf-dashboard-assistant-body">
+    <div class="msf-dashboard-assistant-stepper">
+      <mat-vertical-stepper [linear]="true" #stepper>
+        <ng-template matStepperIcon="edit">
+          <mat-icon>check</mat-icon>
+        </ng-template>
+        <ng-template matStepperIcon="number" let-index="index" let-active="active">
+          <span *ngIf="active">
+            <mat-icon>edit</mat-icon>
+          </span>
+          <span *ngIf="!active">{{index + 1}}</span>
+        </ng-template>
+        <mat-step>
+          <ng-template matStepLabel>
+            <div class="msf-dashboard-assistant-step-container">
+              <span class="msf-dashboard-assistant-label">STEP 1</span>
+              <span class="msf-dashboard-assistant-subtitle">TABLE CONFIGURATION</span>
+            </div>
+          </ng-template>
+        </mat-step>
+        <mat-step>
+          <ng-template matStepLabel>
+            <div class="msf-dashboard-assistant-step-container">
+              <span class="msf-dashboard-assistant-label">STEP 2</span>
+              <span class="msf-dashboard-assistant-subtitle">CHART TYPE</span>
+            </div>
+          </ng-template>
+        </mat-step>
+        <mat-step>
+          <ng-template matStepLabel>
+            <div class="msf-dashboard-assistant-step-container">
+              <span class="msf-dashboard-assistant-label">STEP 3</span>
+              <span class="msf-dashboard-assistant-subtitle">DISTRIBUTION CHART</span>
+            </div>
+          </ng-template>
+        </mat-step>
+      </mat-vertical-stepper>
+    </div>
+  </div>
+</div>

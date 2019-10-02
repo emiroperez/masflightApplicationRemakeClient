@@ -4809,7 +4809,8 @@ export class MsfDashboardPanelComponent implements OnInit {
   openAssistant(): void
   {
     this.dialog.open (MsfDashboardAssistantComponent, {
-      data: { title: "Assistant", message: "This is the assistant." }
+      panelClass: 'msf-dashboard-assistant-dialog',
+      data: { }
     });
   }
 }
