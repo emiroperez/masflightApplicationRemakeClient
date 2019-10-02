@@ -316,11 +316,11 @@ export class EditCategoryArgumentDialog {
   dates: any[] = [
     {id: 1, name: 'Today',value:"TODAY"},
     {id: 2, name: 'Yesterday',value:"YESTERDAY"},
-    {id: 3, name: 'Last week',value:"LASTWEEK"},
+    {id: 3, name: 'Last Week',value:"LASTWEEK"},
     {id: 4, name: 'Last Month',value:"LASTMONTH"},
     {id: 5, name: 'Last Year',value:"LASTYEAR"},
     {id: 6, name: 'Until Yesterday',value:"UNTILYESTERDAY"},
-    {id: 7, name: 'Until Last week',value:"UNTILLASTWEEK"},
+    {id: 7, name: 'Until Last Week',value:"UNTILLASTWEEK"},
     {id: 8, name: 'Until Last Month',value:"UNTILLASTMONTH"},
     {id: 9, name: 'Until Last Year',value:"UNTILLASTYEAR"},
     {id: 10, name: 'Until Today',value:"UNTILTODAY"}
@@ -329,7 +329,7 @@ export class EditCategoryArgumentDialog {
   dates2: any[] = [
     {id: 1, name: 'Today',value:"TODAY"},
     {id: 2, name: 'Yesterday',value:"YESTERDAY"},
-    {id: 3, name: 'Last week',value:"LASTWEEK"},
+    {id: 3, name: 'Last Week',value:"LASTWEEK"},
     {id: 4, name: 'Last Month',value:"LASTMONTH"},
     {id: 5, name: 'Last Year',value:"LASTYEAR"}
   ];
@@ -370,9 +370,9 @@ export class EditCategoryArgumentDialog {
     return false;
   }
 
-  isDateArgumentWithNoRangePeriodAndTime(argument: Arguments) {
-    if (ComponentType.date == argument.type || ComponentType.datePicker == argument.type
-      || ComponentType.datePeriodYearMonth == argument.type || ComponentType.datePeriodYear == argument.type)
+  isDatePicker(argument: Arguments) {
+    if (ComponentType.date == argument.type || ComponentType.datePicker == argument.type/*
+      || ComponentType.datePeriodYearMonth == argument.type || ComponentType.datePeriodYear == argument.type*/)
       return true;
 
     return false;

@@ -129,8 +129,7 @@
                         </mat-select>
                     </mat-form-field>
                 </div>
-                <!--
-                <div class="arguments-child" [style.margin-right.%]="20" *ngIf="isDateArgumentWithNoRangePeriodAndTime(item)">
+                <div class="arguments-child" [style.margin-right.%]="20" *ngIf="isDatePicker(item)">
                     <mat-form-field [style.width.%]="100">
                         <mat-select placeholder="Default Value" [(ngModel)]="item.value1">
                             <mat-option *ngFor="let dateRange of dates2" [value]="dateRange.value">
@@ -139,7 +138,6 @@
                         </mat-select>
                     </mat-form-field>
                 </div>
-                -->
                 <div class="arguments-child" [style.margin-right.%]="20" *ngIf="isDatePeriod(item)">
                     <mat-form-field [style.width.%]="100">
                         <mat-select placeholder="Default Value" [(ngModel)]="item.value1">
