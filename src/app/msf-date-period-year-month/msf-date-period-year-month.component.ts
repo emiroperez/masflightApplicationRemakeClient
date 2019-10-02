@@ -70,12 +70,12 @@ export class MsfDatePeriodYearMonthComponent implements OnInit {
           this.argument.value2 = this.date.value.month () + 1;
           break;
 
-        case 'LASTMONTH':
+        case "LASTMONTH":
           this.argument.value1 = this.date.value.year ();
           this.argument.value2 = this.date.value.month ();
           break;
   
-        case 'LASTYEAR':
+        case "LASTYEAR":
           this.argument.value1 = this.date.value.year () - 1;
           this.argument.value2 = this.date.value.month () + 1;
           break;

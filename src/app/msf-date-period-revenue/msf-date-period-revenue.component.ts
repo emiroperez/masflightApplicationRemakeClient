@@ -67,7 +67,6 @@ export class MsfDatePeriodRevenueComponent implements OnInit {
   }
   else if (this.argument.value1)
   {
-    let normalizedYear: Moment;
     let ctrlValue;
 
     switch (this.argument.value1)
@@ -84,9 +83,8 @@ export class MsfDatePeriodRevenueComponent implements OnInit {
         this.argument.value1 = this.date.value.year ();
     }
 
-    normalizedYear = moment (this.argument.value1, "YYYY");
     ctrlValue = this.date.value;
-    ctrlValue.year (normalizedYear.year ());
+    ctrlValue.year (this.argument.value1);
     this.date.setValue (ctrlValue);
     this.argument.value2 = {id: 1, name: '1st Quarter',value:"1"};
   }

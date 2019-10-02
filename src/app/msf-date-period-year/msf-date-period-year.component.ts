@@ -62,6 +62,37 @@ export class MsfDatePeriodYearComponent implements OnInit {
     this.argument.value1 = this.date.value.year();
     this.argument.value2 = this.date2.value.year();
     }
+    else if (this.argument.value1)
+    {
+      let ctrlValue;
+
+      switch (this.argument.value1)
+      {
+        case "CURRENTYEAR":
+        default:
+          this.argument.value1 = this.date.value.year ();
+          this.argument.value2 = this.date.value.year ();
+          break;
+
+        case "LASTYEAR":
+          this.argument.value1 = this.date.value.year () - 1;
+          this.argument.value2 = this.date.value.year () - 1;
+          break;
+  
+        case "UNTILLASTYEAR":
+          this.argument.value1 = this.date.value.year () - 1;
+          this.argument.value2 = this.date.value.year ();
+          break;
+      }
+
+      ctrlValue = this.date.value;
+      ctrlValue.year (this.argument.value1);
+      this.date.setValue (ctrlValue);
+
+      ctrlValue = this.date2.value;
+      ctrlValue.year (this.argument.value2);
+      this.date2.setValue (ctrlValue);
+    }
 
     if (this.argument.minDate != null)
       this.minDate = this.argument.minDate;

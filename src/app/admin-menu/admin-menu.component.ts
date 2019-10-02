@@ -345,6 +345,12 @@ export class EditCategoryArgumentDialog {
     {id: 3, name: 'Last Year',value:"LASTYEAR"}
   ];
 
+  dates5: any[] = [
+    {id: 1, name: 'Current Year',value:"CURRENTYEAR"},
+    {id: 2, name: 'Last Year',value:"LASTYEAR"},
+    {id: 3, name: 'Until Last Year',value:"UNTILLASTYEAR"}
+  ];
+
   constructor(
     private globals: Globals,
     private http: ApiClient,
@@ -377,7 +383,7 @@ export class EditCategoryArgumentDialog {
   }
 
   isDatePicker(argument: Arguments) {
-    if (ComponentType.date == argument.type || ComponentType.datePicker == argument.type)/* || ComponentType.datePeriodYear == argument.type)*/
+    if (ComponentType.date == argument.type || ComponentType.datePicker == argument.type)
       return true;
 
     return false;
@@ -385,6 +391,10 @@ export class EditCategoryArgumentDialog {
 
   isDatePeriodYearMonth(argument: Arguments) {
     return ComponentType.datePeriodYearMonth == argument.type;
+  }
+
+  isDatePeriodYear(argument: Arguments) {
+    return ComponentType.datePeriodYear == argument.type;
   }
 
   isDatePeriod(argument: Arguments) {
