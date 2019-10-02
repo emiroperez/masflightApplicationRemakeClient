@@ -129,6 +129,26 @@
                         </mat-select>
                     </mat-form-field>
                 </div>
+                <!--
+                <div class="arguments-child" [style.margin-right.%]="20" *ngIf="isDateArgumentWithNoRangePeriodAndTime(item)">
+                    <mat-form-field [style.width.%]="100">
+                        <mat-select placeholder="Default Value" [(ngModel)]="item.value1">
+                            <mat-option *ngFor="let dateRange of dates2" [value]="dateRange.value">
+                                {{dateRange.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                -->
+                <div class="arguments-child" [style.margin-right.%]="20" *ngIf="isDatePeriod(item)">
+                    <mat-form-field [style.width.%]="100">
+                        <mat-select placeholder="Default Value" [(ngModel)]="item.value1">
+                            <mat-option *ngFor="let dateRange of dates3" [value]="dateRange.value">
+                                {{dateRange.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
                 <div class="arguments-child" [style.margin-right.%]="20" *ngIf="isMsFreeTextInput(item)">
                     <mat-form-field [style.width.%]="100">
                         <input matInput autocomplete="off" placeholder="Default Value" [(ngModel)]="item.value1">

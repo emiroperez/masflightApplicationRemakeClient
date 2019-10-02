@@ -2,7 +2,7 @@ import { OnInit, Component, Inject, AfterViewInit, ChangeDetectorRef, Renderer2,
 import { ApiClient } from '../api/api-client';
 import { Globals } from '../globals/Globals';
 import { ApplicationService } from '../services/application.service';
-import { MatSnackBar, MatTableDataSource, MatTable, MatSelect, MatTreeFlattener, MatTreeFlatDataSource, MatDatepicker } from '@angular/material';
+import { MatSnackBar, MatTableDataSource, MatTable, MatSelect, MatTreeFlattener, MatTreeFlatDataSource, MatDatepicker, DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { MessageComponent } from '../message/message.component';
 import { CdkDragDrop, moveItemInArray, CdkDropList, transferArrayItem } from '@angular/cdk/drag-drop';
@@ -17,6 +17,7 @@ import { MaterialIconPickerComponent } from '../material-icon-picker/material-ic
 import { ComponentType } from '../commons/ComponentType';
 import { Arguments } from '../model/Arguments';
 import { Moment } from 'moment';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
 //import  clonedeep from 'lodash.clonedeep';
 
 @Component({
@@ -277,10 +278,26 @@ export class EditOutputOptionsMetaDialog {
   }
 }
 
+export const US_DATE_FORMAT = {
+  parse: {
+    dateInput: 'MM/DD/YYYY',
+  },
+  display: {
+    dateInput: 'MM/DD/YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
+
 @Component({
   selector: 'dialog-overview-example-dialog',
   templateUrl: 'dialog-edit-argument-category.html',
-  styleUrls: ['./admin-menu.component.css']
+  styleUrls: ['./admin-menu.component.css'],
+  providers: [
+    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
+    { provide: MAT_DATE_FORMATS, useValue: US_DATE_FORMAT },
+  ]
 })
 
 export class EditCategoryArgumentDialog {
@@ -309,6 +326,19 @@ export class EditCategoryArgumentDialog {
     {id: 10, name: 'Until Today',value:"UNTILTODAY"}
   ];
 
+  dates2: any[] = [
+    {id: 1, name: 'Today',value:"TODAY"},
+    {id: 2, name: 'Yesterday',value:"YESTERDAY"},
+    {id: 3, name: 'Last week',value:"LASTWEEK"},
+    {id: 4, name: 'Last Month',value:"LASTMONTH"},
+    {id: 5, name: 'Last Year',value:"LASTYEAR"}
+  ];
+
+  dates3: any[] = [
+    {id: 1, name: 'Current Year',value:"CURRENTYEAR"},
+    {id: 2, name: 'Last Year',value:"LASTYEAR"}
+  ];
+
   constructor(
     private globals: Globals,
     private http: ApiClient,
@@ -323,16 +353,10 @@ export class EditCategoryArgumentDialog {
           argument.value1 = JSON.parse (argument.value1);
 
         if (argument.minDate)
-        {
           argument.minDate = new Date (argument.minDate);
-          argument.minDate.setDate (argument.minDate.getDate () + 1);
-        }
 
         if (argument.maxDate)
-        {
-          argument.maxDate = new Date (argument.maxDate + 1);
-          argument.maxDate.setDate (argument.maxDate.getDate () + 1);
-        }
+          argument.maxDate = new Date (argument.maxDate);
       }
   }
 
@@ -341,6 +365,21 @@ export class EditCategoryArgumentDialog {
       || ComponentType.datePicker == argument.type || ComponentType.dateTimePicker == argument.type
       || ComponentType.datePeriod == argument.type || ComponentType.datePeriodYear == argument.type
       || ComponentType.datePeriodYearMonth == argument.type || ComponentType.datePeriodRevenue == argument.type)
+      return true;
+
+    return false;
+  }
+
+  isDateArgumentWithNoRangePeriodAndTime(argument: Arguments) {
+    if (ComponentType.date == argument.type || ComponentType.datePicker == argument.type
+      || ComponentType.datePeriodYearMonth == argument.type || ComponentType.datePeriodYear == argument.type)
+      return true;
+
+    return false;
+  }
+
+  isDatePeriod(argument: Arguments) {
+    if (ComponentType.datePeriod == argument.type || ComponentType.datePeriodRevenue == argument.type)
       return true;
 
     return false;
@@ -1596,6 +1635,12 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
         {
           if (argument.value1)
             argument.value1 = JSON.stringify (argument.value1);
+  
+          if (argument.minDate)
+            argument.minDate = argument.minDate.toString ();
+
+          if (argument.maxDate)
+            argument.maxDate = argument.maxDate.toString ();
         }
 
         this.saveMenuArguments(duplicateObject);

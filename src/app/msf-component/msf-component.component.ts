@@ -31,16 +31,10 @@ export class MsfComponentComponent implements OnInit {
                 argument.value1 = JSON.parse (argument.value1);
 
               if (argument.minDate)
-              {
                 argument.minDate = new Date (argument.minDate);
-                argument.minDate.setDate (argument.minDate.getDate () + 1);
-              }
 
               if (argument.maxDate)
-              {
-                argument.maxDate = new Date (argument.maxDate + 1);
-                argument.maxDate.setDate (argument.maxDate.getDate () + 1);
-              }
+                argument.maxDate = new Date (argument.maxDate);
             }
 
             argument.valueLoaded = true;

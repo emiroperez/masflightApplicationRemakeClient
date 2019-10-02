@@ -57,20 +57,41 @@ export class MsfDatePeriodComponent implements OnInit {
   @Input("argument") public argument: Arguments;
   
   ngOnInit() {
-    if (this.argument.value1 != null) {
-      this.date =  new FormControl(moment(this.argument.value1, "YYYY"));
-    }
-    else if(this.argument.maxDate!=null){
+    if(this.argument.maxDate!=null && this.argument.value1 == null){
       this.date =  new FormControl(moment(this.argument.maxDate));
     }else{
       this.date =  new FormControl(moment());
     }
+
     if(!this.argument.value1&&!this.argument.value2){
       this.argument.value1 = this.date.value.year();
       this.argument.value2 = {id: 4, name: '4st Quarter',value:"4"};
     }
     else if (this.argument.value1)
+    {
+      let normalizedYear: Moment;
+      let ctrlValue;
+
+      switch (this.argument.value1)
+      {
+        case "CURRENTYEAR":
+          this.argument.value1 = this.date.value.year ();
+          break;
+  
+        case 'LASTYEAR':
+          this.argument.value1 = this.date.value.year () - 1;
+          break;
+  
+        default:
+          this.argument.value1 = this.date.value.year ();
+      }
+
+      normalizedYear = moment (this.argument.value1, "YYYY");
+      ctrlValue = this.date.value;
+      ctrlValue.year (normalizedYear.year ());
+      this.date.setValue (ctrlValue);
       this.argument.value2 = {id: 4, name: '4st Quarter',value:"4"};
+    }
 
     this.onChanges ();
   }
