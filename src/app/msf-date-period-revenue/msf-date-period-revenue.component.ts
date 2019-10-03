@@ -67,30 +67,32 @@ export class MsfDatePeriodRevenueComponent implements OnInit {
   }
   else if (this.argument.value1)
   {
-    let ctrlValue;
-
     switch (this.argument.value1)
     {
       case "CURRENTYEAR":
         this.argument.value1 = this.date.value.year ();
+        this.setCtrlValue ();
         break;
 
       case 'LASTYEAR':
         this.argument.value1 = this.date.value.year () - 1;
+        this.setCtrlValue ();
         break;
-
-      default:
-        this.argument.value1 = this.date.value.year ();
     }
+  }
+
+  this.onChanges ();
+}
+
+  setCtrlValue(): void
+  {
+    let ctrlValue;
 
     ctrlValue = this.date.value;
     ctrlValue.year (this.argument.value1);
     this.date.setValue (ctrlValue);
     this.argument.value2 = {id: 1, name: '1st Quarter',value:"1"};
   }
-
-  this.onChanges ();
-}
 
   onChanges(): void
   {
