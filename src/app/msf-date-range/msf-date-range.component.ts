@@ -70,9 +70,6 @@ export class MsfDateRangeComponent implements OnInit {
         }
       }
 
-      if (this.argument.value3 == null)
-        this.argument.value1 = null;
-
       this.loadingDefaults = false;
     }
 
