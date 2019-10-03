@@ -421,15 +421,30 @@ export class MsfDashboardChildPanelComponent {
         if (this.values.currentChartType.flags & ChartFlags.XYCHART)
         {
           // Set axis name into the chart
-          if (this.values.horizAxisName && this.values.horizAxisName != "")
-            categoryAxis.title.text = this.values.horizAxisName;
+          if (!(this.values.currentChartType.flags & ChartFlags.ROTATED))
+          {
+            if (this.values.horizAxisName && this.values.horizAxisName != "")
+              categoryAxis.title.text = this.values.horizAxisName;
+            else
+              categoryAxis.title.text = this.values.xaxis.columnLabel;
+    
+            if (this.values.vertAxisName && this.values.vertAxisName != "")
+              valueAxis.title.text = this.values.vertAxisName;
+            else
+              valueAxis.title.text = this.values.valueColumn.columnLabel;
+          }
           else
-            categoryAxis.title.text = this.values.xaxis.columnLabel;
-
-          if (this.values.vertAxisName && this.values.vertAxisName != "")
-            valueAxis.title.text = this.values.vertAxisName;
-          else
-            valueAxis.title.text = this.values.valueColumn.columnLabel;
+          {
+            if (this.values.vertAxisName && this.values.vertAxisName != "")
+              categoryAxis.title.text = this.values.vertAxisName;
+            else
+              categoryAxis.title.text = this.values.xaxis.columnLabel;
+    
+            if (this.values.horizAxisName && this.values.horizAxisName != "")
+              valueAxis.title.text = this.values.horizAxisName;
+            else
+              valueAxis.title.text = this.values.valueColumn.columnLabel;
+          }
 
           // The category will be the x axis if the chart type has it
           categoryAxis.dataFields.category = this.values.xaxis.columnName;
@@ -531,16 +546,30 @@ export class MsfDashboardChildPanelComponent {
         }
         else
         {
-          // Set axis name into the chart
-          if (this.values.horizAxisName && this.values.horizAxisName != "")
-            categoryAxis.title.text = this.values.horizAxisName;
+          if (!(this.values.currentChartType.flags & ChartFlags.ROTATED))
+          {
+            if (this.values.horizAxisName && this.values.horizAxisName != "")
+              categoryAxis.title.text = this.values.horizAxisName;
+            else
+              categoryAxis.title.text = this.values.variable.columnLabel;
+  
+            if (this.values.vertAxisName && this.values.vertAxisName != "")
+              valueAxis.title.text = this.values.vertAxisName;
+            else
+              valueAxis.title.text = this.values.valueColumn.columnLabel;
+          }
           else
-            categoryAxis.title.text = this.values.variable.columnLabel;
-
-          if (this.values.vertAxisName && this.values.vertAxisName != "")
-            valueAxis.title.text = this.values.vertAxisName;
-          else
-            valueAxis.title.text = this.values.valueColumn.columnLabel;
+          {
+            if (this.values.vertAxisName && this.values.vertAxisName != "")
+              categoryAxis.title.text = this.values.vertAxisName;
+            else
+              categoryAxis.title.text = this.values.variable.columnLabel;
+  
+            if (this.values.horizAxisName && this.values.horizAxisName != "")
+              valueAxis.title.text = this.values.horizAxisName;
+            else
+              valueAxis.title.text = this.values.valueColumn.columnLabel;
+          }
 
           // The category will the values if the chart type lacks an x axis
           categoryAxis.dataFields.category = chartInfo.titleField;
