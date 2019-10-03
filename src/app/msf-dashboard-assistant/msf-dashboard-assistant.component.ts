@@ -178,6 +178,44 @@ export class MsfDashboardAssistantComponent {
     return newurl;
   }
 
+  isArray(value): boolean
+  {
+    return Array.isArray (value);
+  }
+
+  isDate(value): boolean
+  {
+    let date: Date = new Date (Date.parse (value));
+    return !isNaN (date.getTime ());
+  }
+
+  parseDate(date): string
+  {
+    let day, month;
+    let d: Date;
+
+    if (date == null)
+      return "";
+
+    d = new Date (date);
+    if (Object.prototype.toString.call (d) === "[object Date]")
+    {
+      if (isNaN (d.getTime()))
+        return "";
+    }
+    else
+      return "";
+
+    month = (d.getMonth () + 1);
+    if (month < 10)
+      month = "0" + month;
+
+    day = d.getDate ();
+    if (day < 10)
+      day = "0" + day;
+
+    return month + "/" + day + "/" + d.getFullYear ();
+  }
   /*
   moreTableResults()
   {

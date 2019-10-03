@@ -72,7 +72,60 @@
               </ng-template>
               <div class="msf-dashboard-assistant-tab-container">
                 <div class="msf-dashboard-assistant-tab-info">
-                  Work in progress...
+                  <div class="msf-dashboard-assistant-argument">
+                    <span *ngFor="let argument of controlVariable.arguments">
+                      <span *ngIf="argument.label1">{{argument.label1}}<span *ngIf="!argument.label1.endsWith(':')"> :</span></span>
+                      <span *ngIf="!argument.value1 || argument.value1 === ''">
+                        N/A
+                      </span>
+                      <ng-container *ngIf="argument.value1">
+                        <span *ngIf="isArray(argument.value1)">
+                          <span *ngFor="let value of argument.value1; let i = index">
+                            <span *ngIf="value.name">
+                              {{value.name}}
+                            </span>
+                            <span *ngIf="value.label">
+                              {{value.label}}
+                            </span>
+                            <span *ngIf="i != argument.value1.length - 1">,</span>
+                          </span>
+                        </span>
+                        <span *ngIf="!isArray(argument.value1)">
+                          <span *ngIf="isDate(argument.value1)">
+                            {{parseDate(argument.value1)}}
+                          </span>
+                          <span *ngIf="!isDate(argument.value1)">
+                            {{argument.value1}}
+                          </span>
+                        </span>
+                      </ng-container>
+                    </span>
+                  </div>
+                  <div class="msf-dashboard-assistant-argument">
+                    <span *ngFor="let argument of controlVariable.arguments">
+                      <ng-container *ngIf="argument.value2">
+                        <span *ngIf="argument.label2">{{argument.label2}}</span>
+                        <span *ngIf="isArray(argument.value2)">
+                          <span *ngFor="let value of argument.value2">
+                            <span *ngIf="value.name">
+                              {{value.name}}
+                            </span>
+                            <span *ngIf="value.label">
+                              {{value.label}}
+                            </span>
+                          </span>
+                        </span>
+                        <span *ngIf="!isArray(argument.value2)">
+                          <span *ngIf="isDate(argument.value2)">
+                            {{parseDate(argument.value2)}}
+                          </span>
+                          <span *ngIf="!isDate(argument.value2)">
+                            {{argument.value2}}
+                          </span>
+                        </span>
+                      </ng-container>
+                    </span>
+                  </div>
                 </div>
               </div>
             </mat-tab>
