@@ -421,13 +421,13 @@ export class MsfDashboardChildPanelComponent {
         if (this.values.currentChartType.flags & ChartFlags.XYCHART)
         {
           // Set axis name into the chart
-          if (this.values.vertAxisName && this.values.vertAxisName != "")
-            categoryAxis.title.text = this.values.vertAxisName;
+          if (this.values.horizAxisName && this.values.horizAxisName != "")
+            categoryAxis.title.text = this.values.horizAxisName;
           else
             categoryAxis.title.text = this.values.xaxis.columnLabel;
 
-          if (this.values.horizAxisName && this.values.horizAxisName != "")
-            valueAxis.title.text = this.values.horizAxisName;
+          if (this.values.vertAxisName && this.values.vertAxisName != "")
+            valueAxis.title.text = this.values.vertAxisName;
           else
             valueAxis.title.text = this.values.valueColumn.columnLabel;
 
@@ -532,13 +532,13 @@ export class MsfDashboardChildPanelComponent {
         else
         {
           // Set axis name into the chart
-          if (this.values.vertAxisName && this.values.vertAxisName != "")
-            categoryAxis.title.text = this.values.vertAxisName;
+          if (this.values.horizAxisName && this.values.horizAxisName != "")
+            categoryAxis.title.text = this.values.horizAxisName;
           else
             categoryAxis.title.text = this.values.variable.columnLabel;
 
-          if (this.values.horizAxisName && this.values.horizAxisName != "")
-            valueAxis.title.text = this.values.horizAxisName;
+          if (this.values.vertAxisName && this.values.vertAxisName != "")
+            valueAxis.title.text = this.values.vertAxisName;
           else
             valueAxis.title.text = this.values.valueColumn.columnLabel;
 
