@@ -4810,7 +4810,10 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     this.dialog.open (MsfDashboardAssistantComponent, {
       panelClass: 'msf-dashboard-assistant-dialog',
-      data: { }
+      data: {
+        currentOption: JSON.parse (JSON.stringify (this.values.currentOption)),
+        currentOptionCategories: JSON.parse (JSON.stringify (this.values.currentOptionCategories))
+      }
     });
   }
 }

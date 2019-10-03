@@ -60,5 +60,15 @@
         </mat-step>
       </mat-vertical-stepper>
     </div>
+    <span [ngStyle]="{ 'display': checkStep1Visibility(stepper) }">
+      <div class="msf-dashboard-assistant-content">
+        <div class="msf-dashboard-assistant-tab-group">
+
+        </div>
+        <div class="msf-dashboard-assistant-table msf-dashboard-child-panel-table">
+          <app-msf-table #msfTableRef [isLoading]="isLoading" (finishLoading)="finishLoadingTable($event)" [categoryArguments]="currentOptionCategories" [currentOption]="currentOption" [isPanel]="false"></app-msf-table>
+        </div>
+      </div>
+    </span>
   </div>
 </div>
