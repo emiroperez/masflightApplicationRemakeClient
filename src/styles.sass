@@ -454,12 +454,17 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             padding: 10px 0
         .msf-dashboard-info-dialog-container
             color: $font-color !important
-        .msf-dashboard-control-panel-tabs-container, .msf-dashboard-control-panel-category-tabs-container
+        .msf-dashboard-assistant-tab-group
+            .mat-tab-label-active
+                background-color: $dashboard-secondary-background-color !important
+        .msf-dashboard-control-panel-tabs-container, .msf-dashboard-control-panel-category-tabs-container, .msf-dashboard-assistant-tab-group
             background-color: $dashboard-control-panel-background-color
             .mat-tab-labels
-                background-color: $dashboard-control-panel-background-color   
-            .msf-dashboard-control-panel-variable-tab-container
                 background-color: $dashboard-control-panel-background-color
+            .msf-dashboard-control-panel-variable-tab-container, .msf-dashboard-assistant-tab-container
+                background-color: $dashboard-control-panel-background-color
+                .msf-dashboard-assistant-tab-info
+                    background-color: $background-color
                 .msf-dashboard-control-panel-variable-argument
                     .msf-component-airport-title
                         border-bottom: 1px solid $control-variables-input-underline
@@ -3546,7 +3551,15 @@ mat-tab-group
     align-self: center
     margin: 5px
 
-.msf-dashboard-control-panel-tabs-container
+.msf-dashboard-assistant-tab-container
+    margin-top: 0 !important
+    padding: 10px
+    height: 60px
+    .msf-dashboard-assistant-tab-info
+        padding: 15px
+        height: 30px
+
+.msf-dashboard-control-panel-tabs-container, .msf-dashboard-assistant-tab-container
     margin-top: 8px
     .msf-dashboard-control-panel-variable-tab-container
         display: flex
@@ -6537,7 +6550,13 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                 flex-direction: column
                 .msf-dashboard-assistant-tab-group
                     height: 143px
+                    margin-top: -3px
+                    .mat-tab-label
+                        opacity: 1 !important
+                        background-color: inherit
+                    .mat-tab-labels
+                        background-color: inherit
                 .msf-dashboard-assistant-table
                     overflow: auto
                     width: 730px
-                    height: 300px
+                    height: 303px

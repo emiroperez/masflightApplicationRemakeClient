@@ -1,5 +1,5 @@
 import { Component, Inject, ViewChild, ChangeDetectorRef } from '@angular/core';
-import { MatDialogRef, MatStepper, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MatStepper, MAT_DIALOG_DATA, MatTabGroup } from '@angular/material';
 
 import { ApplicationService } from '../services/application.service';
 import { CategoryArguments } from '../model/CategoryArguments';
@@ -7,6 +7,7 @@ import { MsfTableComponent } from '../msf-table/msf-table.component';
 import { AuthService } from '../services/auth.service';
 import { Arguments } from '../model/Arguments';
 import { Utils } from '../commons/utils';
+import { Globals } from '../globals/Globals';
 
 @Component({
   selector: 'app-msf-dashboard-assistant',
@@ -27,7 +28,11 @@ export class MsfDashboardAssistantComponent {
   @ViewChild('msfTableRef')
   msfTableRef: MsfTableComponent;
 
+  @ViewChild("tabs")
+  tabs: MatTabGroup;
+
   constructor(public dialogRef: MatDialogRef<MsfDashboardAssistantComponent>,
+    public globals: Globals,
     private service: ApplicationService,
     private authService: AuthService,
     private changeDetectorRef: ChangeDetectorRef,
@@ -141,7 +146,36 @@ export class MsfDashboardAssistantComponent {
 
   finishLoadingTable(error): void
   {
+    this.tabs.realignInkBar ();
     this.isLoading = false;
+  }
+
+  isMatIcon(icon): boolean
+  {
+    return !icon.endsWith (".png");
+  }
+
+  getImageIcon(controlVariable, hover): string
+  {
+    let newurl, filename: string;
+    let path: string[];
+    let url;
+
+    url = controlVariable.icon;
+    path = url.split ('/');
+    filename = path.pop ().split ('?')[0];
+    newurl = "";
+
+    // recreate the url with the theme selected
+    for (let dir of path)
+      newurl += dir + "/";
+
+    if (hover)
+      newurl += this.globals.theme + "-hover-" + filename;
+    else
+      newurl += this.globals.theme + "-" + filename;
+
+    return newurl;
   }
 
   /*

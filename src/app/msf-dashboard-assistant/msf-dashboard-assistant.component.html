@@ -63,7 +63,20 @@
     <span [ngStyle]="{ 'display': checkStep1Visibility(stepper) }">
       <div class="msf-dashboard-assistant-content">
         <div class="msf-dashboard-assistant-tab-group">
-
+          <mat-tab-group #tabs>
+            <mat-tab *ngFor="let controlVariable of currentOptionCategories">
+              <ng-template mat-tab-label>
+                <mat-icon *ngIf="controlVariable.icon && isMatIcon(controlVariable.icon)" class="msf-dashboard-control-panel-tab-icon">{{controlVariable.icon}}</mat-icon>
+                <img *ngIf="controlVariable.icon && !isMatIcon(controlVariable.icon)" src="{{getImageIcon(controlVariable)}}" class="msf-dashboard-control-panel-tab-icon">
+                {{controlVariable.label}}
+              </ng-template>
+              <div class="msf-dashboard-assistant-tab-container">
+                <div class="msf-dashboard-assistant-tab-info">
+                  Work in progress...
+                </div>
+              </div>
+            </mat-tab>
+          </mat-tab-group>
         </div>
         <div class="msf-dashboard-assistant-table msf-dashboard-child-panel-table">
           <app-msf-table #msfTableRef [isLoading]="isLoading" (finishLoading)="finishLoadingTable($event)" [categoryArguments]="currentOptionCategories" [currentOption]="currentOption" [isPanel]="false"></app-msf-table>
