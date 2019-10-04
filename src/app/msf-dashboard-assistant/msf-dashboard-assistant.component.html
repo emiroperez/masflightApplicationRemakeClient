@@ -9,9 +9,15 @@
         <mat-icon>arrow_back_ios</mat-icon>
         BACK
       </button>
-      <button *ngIf="stepper.selectedIndex != 2" class="msf-dashboard-assistant-step-button msf-dashboard-assistant-next-button flat-button" mat-button (click)="goForward(stepper)">
+      <button *ngIf="stepper.selectedIndex != 2 && tablePreview" class="msf-dashboard-assistant-step-button msf-dashboard-assistant-next-button flat-button" mat-button (click)="goForward(stepper)">
         NEXT
         <mat-icon>arrow_forward_ios</mat-icon>
+      </button>
+      <button *ngIf="!tablePreview" class="msf-dashboard-assistant-step-button msf-dashboard-assistant-next-button flat-button" mat-button (click)="cancelEdit()">
+        CANCEL
+      </button>
+      <button *ngIf="!tablePreview" class="msf-dashboard-assistant-step-button msf-dashboard-assistant-next-button flat-button" mat-button>
+        REFRESH
       </button>
       <button *ngIf="stepper.selectedIndex == 2" class="msf-dashboard-assistant-step-button msf-dashboard-assistant-next-button flat-button" mat-button>
         FINISH
@@ -24,7 +30,7 @@
   </div>
   <div class="msf-dashboard-assistant-body">
     <div class="msf-dashboard-assistant-stepper">
-      <mat-vertical-stepper [linear]="true" #stepper>
+      <mat-vertical-stepper [linear]="true" (selectionChange)="indexChanged()" #stepper>
         <ng-template matStepperIcon="edit">
           <mat-icon>check</mat-icon>
         </ng-template>

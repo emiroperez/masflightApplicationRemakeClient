@@ -182,6 +182,12 @@ export class MsfDashboardAssistantComponent {
     return newurl;
   }
 
+  indexChanged(): void
+  {
+    // set table preview to true if the index changed
+    this.tablePreview = true;
+  }
+
   checkTablePreviewVisibility(): string
   {
     if (this.tablePreview)
@@ -196,6 +202,11 @@ export class MsfDashboardAssistantComponent {
       return "block";
 
     return "none";
+  }
+
+  cancelEdit(): void
+  {
+    this.tablePreview = true;
   }
 
   goToEditor(): void
