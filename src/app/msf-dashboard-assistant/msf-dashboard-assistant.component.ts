@@ -8,6 +8,7 @@ import { AuthService } from '../services/auth.service';
 import { Arguments } from '../model/Arguments';
 import { Utils } from '../commons/utils';
 import { Globals } from '../globals/Globals';
+import { ComponentType } from '../commons/ComponentType';
 
 @Component({
   selector: 'app-msf-dashboard-assistant',
@@ -18,12 +19,14 @@ export class MsfDashboardAssistantComponent {
   isLoading: boolean;
 
   currentOption: any;
-  currentOptionCategories: CategoryArguments[];
+  currentOptionCategories: any[];
 
   actualPageNumber: number;
   moreResults: boolean = false;
   moreResultsBtn: boolean = false;
   displayedColumns;
+
+  tablePreview: boolean = true;
 
   @ViewChild('msfTableRef')
   msfTableRef: MsfTableComponent;
@@ -43,6 +46,7 @@ export class MsfDashboardAssistantComponent {
     this.isLoading = true;
     this.currentOption = data.currentOption;
     this.currentOptionCategories = data.currentOptionCategories;
+    this.configureControlVariables ();
   }
 
   ngAfterViewInit(): void
@@ -178,6 +182,27 @@ export class MsfDashboardAssistantComponent {
     return newurl;
   }
 
+  checkTablePreviewVisibility(): string
+  {
+    if (this.tablePreview)
+      return "block";
+
+    return "none";
+  }
+
+  checkEditVisibility(): string
+  {
+    if (!this.tablePreview)
+      return "block";
+
+    return "none";
+  }
+
+  goToEditor(): void
+  {
+    this.tablePreview = false;
+  }
+
   isArray(value): boolean
   {
     return Array.isArray (value);
@@ -216,6 +241,64 @@ export class MsfDashboardAssistantComponent {
 
     return month + "/" + day + "/" + d.getFullYear ();
   }
+
+  configureControlVariables(): void
+  {
+    for (let controlVariable of this.currentOptionCategories)
+    {
+      if (controlVariable.arguments)
+      {
+        for (let i = 0; i < controlVariable.arguments.length; i++)
+        {
+          let controlVariableArgument = controlVariable.arguments[i];
+          let args: any[];
+
+          controlVariableArgument.checkboxes = [];
+
+          if (this.isTaxiTimesCheckbox (controlVariable.arguments[i]) && !controlVariable.taxiTimesCheckbox)
+          {
+            // Make sure that this specific checkbox is always the last argument in a control variable
+            controlVariable.taxiTimesCheckbox = controlVariable.arguments[i];
+          }
+          else if (i + 1 < controlVariable.arguments.length
+            && (this.isSingleCheckbox (controlVariable.arguments[i + 1])))
+          {
+            // Count the number of checkboxes for a special case
+            args = controlVariable.arguments.slice (i + 1, controlVariable.arguments.length);
+
+            for (let argument of args)
+            {
+              if (!this.isSingleCheckbox(argument))
+                break;
+
+              controlVariableArgument.checkboxes.push (argument);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  isTitleOnly(argument: Arguments): boolean
+  {
+    return ComponentType.title == argument.type;
+  }
+
+  isSingleCheckbox(argument: Arguments): boolean
+  {
+    return ComponentType.singleCheckbox == argument.type;
+  }
+
+  isTaxiTimesCheckbox(argument: Arguments): boolean
+  {
+    return ComponentType.taxiTimesCheckbox == argument.type;
+  }
+
+  isDateRange(argument: Arguments): boolean
+  {
+    return ComponentType.dateRange == argument.type;
+  }
+
   /*
   moreTableResults()
   {

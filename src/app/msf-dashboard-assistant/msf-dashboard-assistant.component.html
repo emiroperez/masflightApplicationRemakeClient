@@ -61,122 +61,184 @@
       </mat-vertical-stepper>
     </div>
     <span [ngStyle]="{ 'display': checkStep1Visibility(stepper) }">
-      <div class="msf-dashboard-assistant-content">
-        <div class="msf-dashboard-assistant-tab-group">
-          <mat-tab-group #tabs>
-            <mat-tab *ngFor="let controlVariable of currentOptionCategories">
-              <ng-template mat-tab-label>
-                <mat-icon *ngIf="controlVariable.icon && isMatIcon(controlVariable.icon)" class="msf-dashboard-control-panel-tab-icon">{{controlVariable.icon}}</mat-icon>
-                <img *ngIf="controlVariable.icon && !isMatIcon(controlVariable.icon)" src="{{getImageIcon(controlVariable)}}" class="msf-dashboard-control-panel-tab-icon">
-                {{controlVariable.label}}
-              </ng-template>
-              <div class="msf-dashboard-assistant-tab-container">
-                <div class="msf-dashboard-assistant-tab-info">
-                  <div class="msf-dashboard-assistant-argument">
-                    <span *ngFor="let argument of controlVariable.arguments">
-                      <span *ngIf="argument.label1">
-                        {{argument.label1}}
-                        <span *ngIf="!argument.label1.endsWith(':')">
-                          :
-                        </span>
-                      </span>
-                      <span class="msf-dashboard-assistant-argument-value" *ngIf="!argument.value1 || argument.value1 === ''">
-                        N/A
-                      </span>
-                      <ng-container *ngIf="argument.value1">
-                        <span class="msf-dashboard-assistant-argument-value" *ngIf="isArray(argument.value1)">
-                          <span *ngFor="let value of argument.value1; let i = index">
-                            <span *ngIf="value.name">
-                              {{value.name}}
-                            </span>
-                            <span *ngIf="value.label">
-                              {{value.label}}
-                            </span>
-                            <span *ngIf="i != argument.value1.length - 1">,</span>
-                          </span>
-                        </span>
-                        <span class="msf-dashboard-assistant-argument-value" *ngIf="!isArray(argument.value1)">
-                          <span *ngIf="isDate(argument.value1)">
-                            {{parseDate(argument.value1)}}
-                          </span>
-                          <span *ngIf="!isDate(argument.value1)">
-                            {{argument.value1}}
-                          </span>
-                        </span>
-                      </ng-container>
-                    </span>
-                  </div>
-                  <div class="msf-dashboard-assistant-argument">
-                    <span *ngFor="let argument of controlVariable.arguments">
-                      <ng-container *ngIf="argument.value2">
-                        <span *ngIf="argument.label2">
-                          {{argument.label2}}
-                          <span *ngIf="!argument.label2.endsWith(':')">
+      <span [ngStyle]="{ 'display': checkTablePreviewVisibility() }">
+        <div class="msf-dashboard-assistant-content">
+          <div class="msf-dashboard-assistant-tab-group">
+            <mat-tab-group #tabs>
+              <mat-tab *ngFor="let controlVariable of currentOptionCategories">
+                <ng-template mat-tab-label>
+                  <mat-icon *ngIf="controlVariable.icon && isMatIcon(controlVariable.icon)" class="msf-dashboard-control-panel-tab-icon">{{controlVariable.icon}}</mat-icon>
+                  <img *ngIf="controlVariable.icon && !isMatIcon(controlVariable.icon)" src="{{getImageIcon(controlVariable)}}" class="msf-dashboard-control-panel-tab-icon">
+                  {{controlVariable.label}}
+                </ng-template>
+                <div class="msf-dashboard-assistant-tab-container">
+                  <div class="msf-dashboard-assistant-tab-info">
+                    <div class="msf-dashboard-assistant-edit-button">
+                      <button mat-button (click)="goToEditor()">
+                        <mat-icon>create</mat-icon>
+                        Edit
+                      </button>
+                    </div>
+                    <div class="msf-dashboard-assistant-argument">
+                      <span *ngFor="let argument of controlVariable.arguments">
+                        <span *ngIf="argument.label1">
+                          {{argument.label1}}
+                          <span *ngIf="!argument.label1.endsWith(':')">
                             :
                           </span>
                         </span>
-                        <span class="msf-dashboard-assistant-argument-value" *ngIf="isArray(argument.value2)">
-                          <span *ngFor="let value of argument.value2; let i = index">
-                            <span *ngIf="value.name">
-                              {{value.name}}
+                        <span class="msf-dashboard-assistant-argument-value" *ngIf="!argument.value1 || argument.value1 === ''">
+                          N/A
+                        </span>
+                        <ng-container *ngIf="argument.value1">
+                          <span class="msf-dashboard-assistant-argument-value" *ngIf="isArray(argument.value1)">
+                            <span *ngFor="let value of argument.value1; let i = index">
+                              <span *ngIf="value.name">
+                                {{value.name}}
+                              </span>
+                              <span *ngIf="value.label">
+                                {{value.label}}
+                              </span>
+                              <span *ngIf="i != argument.value1.length - 1">,</span>
                             </span>
-                            <span *ngIf="value.label">
-                              {{value.label}}
+                          </span>
+                          <span class="msf-dashboard-assistant-argument-value" *ngIf="!isArray(argument.value1)">
+                            <span *ngIf="isDate(argument.value1)">
+                              {{parseDate(argument.value1)}}
                             </span>
-                            <span *ngIf="i != argument.value2.length - 1">,</span>
-                          </span>
-                        </span>
-                        <span class="msf-dashboard-assistant-argument-value" *ngIf="!isArray(argument.value2)">
-                          <span *ngIf="isDate(argument.value2)">
-                            {{parseDate(argument.value2)}}
-                          </span>
-                          <span *ngIf="!isDate(argument.value2)">
-                            {{argument.value2}}
-                          </span>
-                        </span>
-                      </ng-container>
-                    </span>
-                  </div>
-                  <div class="msf-dashboard-assistant-argument">
-                    <span *ngFor="let argument of controlVariable.arguments">
-                      <ng-container *ngIf="argument.value3">
-                        <span *ngIf="argument.label3">
-                          {{argument.label3}}
-                          <span *ngIf="!argument.label3.endsWith(':')">
-                            :
-                          </span>
-                        </span>
-                        <span class="msf-dashboard-assistant-argument-value" *ngIf="isArray(argument.value3)">
-                          <span *ngFor="let value of argument.value3; let i = index">
-                            <span *ngIf="value.name">
-                              {{value.name}}
+                            <span *ngIf="!isDate(argument.value1)">
+                              {{argument.value1}}
                             </span>
-                            <span *ngIf="value.label">
-                              {{value.label}}
+                          </span>
+                        </ng-container>
+                      </span>
+                    </div>
+                    <div class="msf-dashboard-assistant-argument">
+                      <span *ngFor="let argument of controlVariable.arguments">
+                        <ng-container *ngIf="argument.value2">
+                          <span *ngIf="argument.label2">
+                            {{argument.label2}}
+                            <span *ngIf="!argument.label2.endsWith(':')">
+                              :
                             </span>
-                            <span *ngIf="i != argument.value3.length - 1">,</span>
                           </span>
-                        </span>
-                        <span class="msf-dashboard-assistant-argument-value" *ngIf="!isArray(argument.value3)">
-                          <span *ngIf="isDate(argument.value3)">
-                            {{parseDate(argument.value3)}}
+                          <span class="msf-dashboard-assistant-argument-value" *ngIf="isArray(argument.value2)">
+                            <span *ngFor="let value of argument.value2; let i = index">
+                              <span *ngIf="value.name">
+                                {{value.name}}
+                              </span>
+                              <span *ngIf="value.label">
+                                {{value.label}}
+                              </span>
+                              <span *ngIf="i != argument.value2.length - 1">,</span>
+                            </span>
                           </span>
-                          <span *ngIf="!isDate(argument.value3)">
-                            {{argument.value3}}
+                          <span class="msf-dashboard-assistant-argument-value" *ngIf="!isArray(argument.value2)">
+                            <span *ngIf="isDate(argument.value2)">
+                              {{parseDate(argument.value2)}}
+                            </span>
+                            <span *ngIf="!isDate(argument.value2)">
+                              {{argument.value2}}
+                            </span>
                           </span>
-                        </span>
-                      </ng-container>
-                    </span>
+                        </ng-container>
+                      </span>
+                    </div>
+                    <div class="msf-dashboard-assistant-argument">
+                      <span *ngFor="let argument of controlVariable.arguments">
+                        <ng-container *ngIf="argument.value3">
+                          <span *ngIf="argument.label3">
+                            {{argument.label3}}
+                            <span *ngIf="!argument.label3.endsWith(':')">
+                              :
+                            </span>
+                          </span>
+                          <span class="msf-dashboard-assistant-argument-value" *ngIf="isArray(argument.value3)">
+                            <span *ngFor="let value of argument.value3; let i = index">
+                              <span *ngIf="value.name">
+                                {{value.name}}
+                              </span>
+                              <span *ngIf="value.label">
+                                {{value.label}}
+                              </span>
+                              <span *ngIf="i != argument.value3.length - 1">,</span>
+                            </span>
+                          </span>
+                          <span class="msf-dashboard-assistant-argument-value" *ngIf="!isArray(argument.value3)">
+                            <span *ngIf="isDate(argument.value3)">
+                              {{parseDate(argument.value3)}}
+                            </span>
+                            <span *ngIf="!isDate(argument.value3)">
+                              {{argument.value3}}
+                            </span>
+                          </span>
+                        </ng-container>
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </mat-tab>
-          </mat-tab-group>
+              </mat-tab>
+            </mat-tab-group>
+          </div>
+          <div class="msf-dashboard-assistant-table msf-dashboard-child-panel-table">
+            <app-msf-table #msfTableRef [isLoading]="isLoading" (finishLoading)="finishLoadingTable($event)" [categoryArguments]="currentOptionCategories" [currentOption]="currentOption" [isPanel]="false"></app-msf-table>
+          </div>
         </div>
-        <div class="msf-dashboard-assistant-table msf-dashboard-child-panel-table">
-          <app-msf-table #msfTableRef [isLoading]="isLoading" (finishLoading)="finishLoadingTable($event)" [categoryArguments]="currentOptionCategories" [currentOption]="currentOption" [isPanel]="false"></app-msf-table>
+      </span>
+      <span [ngStyle]="{ 'display': checkEditVisibility() }">
+        <div class="msf-dashboard-assistant-content">
+          <div class="msf-dashboard-assistant-tab-group msf-dashboard-assistant-edit-tab-group">
+            <mat-tab-group #editTabs>
+              <mat-tab *ngFor="let controlVariable of currentOptionCategories">
+                <ng-template mat-tab-label>
+                  <mat-icon *ngIf="controlVariable.icon && isMatIcon(controlVariable.icon)" class="msf-dashboard-control-panel-tab-icon">{{controlVariable.icon}}</mat-icon>
+                  <img *ngIf="controlVariable.icon && !isMatIcon(controlVariable.icon)" src="{{getImageIcon(controlVariable)}}" class="msf-dashboard-control-panel-tab-icon">
+                  {{controlVariable.label}}
+                </ng-template>
+                <div class="msf-dashboard-assistant-tab-container msf-dashboard-assistant-edit-tab-container">
+                  <div class="msf-dashboard-control-panel-variable-tab-container">
+                    <div class="msf-dashboard-control-panel-variable-arguments">
+                      <div *ngFor="let argument of controlVariable.arguments" class="msf-dashboard-control-panel-variable-argument">
+                        <ng-container *ngIf="!isSingleCheckbox(argument) && !isTaxiTimesCheckbox(argument)">
+                          <div class="msf-component-outer-container">
+                            <div *ngIf="!isDateRange(argument)" class="msf-component-argument-container">
+                              <app-msf-argument [currentArgument]="argument" [currentGlobalOptionId]="controlVariable.optionId"></app-msf-argument>
+                              <!-- Special treatment for single checkbox arguments -->
+                              <ng-container *ngIf="argument.checkboxes">
+                                <ng-container *ngFor="let checkbox of argument.checkboxes">
+                                  <div class="msf-single-checkbox-outer-container">
+                                    <div class="msf-component-argument-container">
+                                      <app-msf-single-checkbox [argument]="checkbox"></app-msf-single-checkbox>
+                                    </div>
+                                  </div>
+                                </ng-container>
+                              </ng-container>
+                            </div>
+                            <!-- Another special treatment for the date range argument -->
+                            <ng-container *ngIf="isDateRange(argument)">
+                              <app-msf-date-range class="msf-component-date-range-container" [argument]="argument"></app-msf-date-range>
+                            </ng-container>
+                          </div>
+                        </ng-container>
+                      </div>
+                      <!-- The taxi times single checkbox will be always the last one of the arguments -->
+                      <ng-container *ngIf="controlVariable.taxiTimesCheckbox">
+                        <div class="msf-dashboard-control-panel-variable-argument">
+                          <div class="msf-component-outer-container">
+                            <div class="msf-component-taxi-times-single-checkbox">
+                              <app-msf-taxi-times-checkbox [argument]="controlVariable.taxiTimesCheckbox"></app-msf-taxi-times-checkbox>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-container>
+                    </div>
+                  </div>
+                </div>
+              </mat-tab>
+            </mat-tab-group>
+          </div>
         </div>
-      </div>
+      </span>
     </span>
   </div>
 </div>

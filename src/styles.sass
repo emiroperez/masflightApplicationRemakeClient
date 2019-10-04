@@ -652,6 +652,12 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             color: $primary-color
         .flat-button
             background-color: $primary-color !important
+        .msf-dashboard-assistant-edit-button
+            .mat-button
+                color: #ffffff
+                background-color: $primary-color !important
+                .mat-icon
+                    color: #ffffff
         .mat-fab.mat-primary, .mat-flat-button.mat-primary, .mat-mini-fab.mat-primary, .mat-raised-button.mat-primary
             background-color: $primary-color
         .mat-primary .mat-option.mat-selected:not(.mat-option-disabled)
@@ -3557,10 +3563,25 @@ mat-tab-group
 .msf-dashboard-assistant-tab-container
     margin-top: 0 !important
     padding: 10px
-    height: 60px
+    height: 65px
     .msf-dashboard-assistant-tab-info
+        position: relative
         padding: 15px
-        height: 30px
+        padding-right: 115px
+        width: 580px
+        height: 35px
+        overflow-x: auto
+        overflow-y: hidden
+        .msf-dashboard-assistant-edit-button
+            position: absolute
+            right: 24px
+
+.msf-dashboard-assistant-edit-tab-group
+    height: 446px !important
+    .msf-dashboard-assistant-edit-tab-container
+        width: 730px
+        height: 100% !important
+        padding: 0 !important
 
 .msf-dashboard-control-panel-tabs-container, .msf-dashboard-assistant-tab-container
     margin-top: 8px
@@ -3751,7 +3772,7 @@ mat-tab-group
 .msf-airline-input-container
     text-align: center !important
 
-.msf-dashboard-control-panel-tabs-container .msf-dashboard-control-panel-variable-tab-container .msf-dashboard-control-panel-variable-argument input.mat-input-element, .msf-dashboard-control-panel-tabs-container .msf-dashboard-control-panel-variable-tab-container .msf-dashboard-control-panel-variable-argument textarea.mat-input-element
+.msf-dashboard-control-panel-tabs-container .msf-dashboard-control-panel-variable-tab-container .msf-dashboard-control-panel-variable-argument input.mat-input-element, .msf-dashboard-control-panel-tabs-container .msf-dashboard-control-panel-variable-tab-container .msf-dashboard-control-panel-variable-argument textarea.mat-input-element, .msf-dashboard-assistant-tab-container .msf-dashboard-control-panel-variable-tab-container .msf-dashboard-control-panel-variable-argument input.mat-input-element, .msf-dashboard-assistant-tab-container .msf-dashboard-control-panel-variable-tab-container .msf-dashboard-control-panel-variable-argument textarea.mat-input-element
     cursor: pointer !important
     border-radius: 4px
     min-height: 28px
