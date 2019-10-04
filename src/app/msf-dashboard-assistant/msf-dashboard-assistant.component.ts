@@ -9,6 +9,7 @@ import { Arguments } from '../model/Arguments';
 import { Utils } from '../commons/utils';
 import { Globals } from '../globals/Globals';
 import { ComponentType } from '../commons/ComponentType';
+import { ChartFlags } from '../msf-dashboard-panel/msf-dashboard-chartflags';
 
 @Component({
   selector: 'app-msf-dashboard-assistant',
@@ -17,6 +18,21 @@ import { ComponentType } from '../commons/ComponentType';
 export class MsfDashboardAssistantComponent {
   utils: Utils;
   isLoading: boolean;
+
+  chartTypes: any[] = [
+    { name: 'Bars', flags: ChartFlags.XYCHART, image: 'vert-bar-chart.png' }, //: this.createVertColumnSeries },
+    { name: 'Horizontal Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED, image: 'horiz-bar-chart.png' }, //: this.createHorizColumnSeries },
+    { name: 'Simple Bars', flags: ChartFlags.NONE, image: 'simple-vert-bar-chart.png' }, //: this.createSimpleVertColumnSeries },
+    { name: 'Simple Horizontal Bars', flags: ChartFlags.ROTATED, image: 'simple-horiz-bar-chart.png' }, //: this.createSimpleHorizColumnSeries },
+    { name: 'Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.STACKED, image: 'stacked-vert-column-chart.png' }, //: this.createVertColumnSeries },
+    { name: 'Horizontal Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED | ChartFlags.STACKED, image: 'stacked-horiz-column-chart.png' }, //: this.createHorizColumnSeries },
+    { name: 'Funnel', flags: ChartFlags.FUNNELCHART, image: 'funnel-chart.png' }, //: this.createFunnelSeries },
+    { name: 'Lines', flags: ChartFlags.XYCHART | ChartFlags.LINECHART, image: 'line-chart.png' }, //: this.createLineSeries },                      
+    { name: 'Area', flags: ChartFlags.XYCHART | ChartFlags.AREACHART, image: 'area-chart.png' }, //: this.createLineSeries },
+    { name: 'Stacked Area', flags: ChartFlags.XYCHART | ChartFlags.STACKED | ChartFlags.AREACHART, image: 'stacked-area-chart.png' }, //: this.createLineSeries },
+    { name: 'Pie', flags: ChartFlags.PIECHART, image: 'pie-chart.png' }, //: this.createPieSeries },
+    { name: 'Donut', flags: ChartFlags.DONUTCHART, image: 'donut-chart.png' } //: this.createPieSeries },
+  ];
 
   currentOption: any;
   currentOptionCategories: any[];

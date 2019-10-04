@@ -1197,6 +1197,20 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                     color: $font-color !important
         .msf-dashboard-assistant-argument-value
             color: $primary-color
+        .msf-dashboard-assistant-chart-picker
+            .msf-dashboard-assistant-chart-item
+                .chart-item-image
+                    border-style: solid
+                    border-color: $admin-menu-background
+                    background-color: $admin-menu-background
+                .chart-item-label
+                    background-color: $admin-menu-background
+                &:hover
+                    .chart-item-image
+                        border-style: solid
+                        border-color: $primary-color
+                    .chart-item-label
+                        background-color: $primary-color
 
 @each $name, $font-color, $little-font-color, $disabled-color, $secondary-disabled-color, $tertiary-disabled-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $quaternary-background-color, $body-background-color, $dashboard-background-color, $dashboard-secondary-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $scrollbar-background-color, $dashboard-panel-background-color, $dashboard-panel-chart-background-color, $dashboard-border-color, $schedule-map-background-color, $schedule-map-info-border, $disabled-combo-box-color, $disabled-underline, $dashboard-info-background-color, $dashboard-info-secondary-background-color, $dashboard-info-font-color, $dashboard-drill-down-border-color, $dashboard-threshold-background-color, $dashboard-title-font-color, $map-panelinfo-background-color, $dashboard-info-border-color, $dashboard-form-font-color, $admin-menu-background, $admin-menu-input-underline, $admin-tree-active-color, $admin-button-color, $admin-secondary-background-color, $admin-table-background-color, $admin-table-hover-color, $admin-secondary-button-color, $login-font-color, $intro-logout-icon-color, $control-variables-border-color, $control-variable-hover-background-color, $control-variable-hover-icon-color, $control-variables-input-underline, $control-variables-dropdown-hover-font-color, $control-variables-dropdown-hover-background-hover-color, $control-variables-selected-background-selected-color, $dashboard-input-underline-color, $membership-primary-background-color, $membership-secondary-background-color, $customer-edit-header-color, $customer-table-header-background-color, $customer-table-row-background-color, $customer-table-row-border-color, $customer-table-row-hover-background-color, $customer-table-row-selected-background-color, $customer-table-row-border-selected-color, $customer-input-color, $customer-input-underline-color, $customer-disabled-underline, $dashboard-control-panel-background-color, $menu-open-background-color, $menu-open-active-background-color, $menu-first-line, $menu-second-line, $menu-background-color, $menu-child-background-color, $control-variable-disabled-color in $color-scheme
     @include theme($name, $font-color, $little-font-color, $disabled-color, $secondary-disabled-color, $tertiary-disabled-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $quaternary-background-color, $body-background-color, $dashboard-background-color, $dashboard-secondary-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $scrollbar-background-color, $dashboard-panel-background-color, $dashboard-panel-chart-background-color, $dashboard-border-color, $schedule-map-background-color, $schedule-map-info-border, $disabled-combo-box-color, $disabled-underline, $dashboard-info-background-color, $dashboard-info-secondary-background-color, $dashboard-info-font-color, $dashboard-drill-down-border-color, $dashboard-threshold-background-color, $dashboard-title-font-color, $map-panelinfo-background-color, $dashboard-info-border-color, $dashboard-form-font-color, $admin-menu-background, $admin-menu-input-underline, $admin-tree-active-color, $admin-button-color, $admin-secondary-background-color, $admin-table-background-color, $admin-table-hover-color, $admin-secondary-button-color, $login-font-color, $intro-logout-icon-color, $control-variables-border-color, $control-variable-hover-background-color, $control-variable-hover-icon-color, $control-variables-input-underline, $control-variables-dropdown-hover-font-color, $control-variables-dropdown-hover-background-hover-color, $control-variables-selected-background-selected-color, $dashboard-input-underline-color, $membership-primary-background-color, $membership-secondary-background-color, $customer-edit-header-color, $customer-table-header-background-color, $customer-table-row-background-color, $customer-table-row-border-color, $customer-table-row-hover-background-color, $customer-table-row-selected-background-color, $customer-table-row-border-selected-color, $customer-input-color, $customer-input-underline-color, $customer-disabled-underline, $dashboard-control-panel-background-color, $menu-open-background-color, $menu-open-active-background-color,$menu-first-line, $menu-second-line, $menu-background-color, $menu-child-background-color, $control-variable-disabled-color)
@@ -6588,3 +6602,38 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                     height: 303px
             .msf-dashboard-assistant-argument-value
                 font-weight: 550
+
+.msf-dashboard-assistant-chart-type-label
+    font-weight: 550
+    font-size: 14px
+    margin-left: 10px
+
+.msf-dashboard-assistant-chart-picker
+    display: grid
+    grid-template: repeat(2, 1fr) / repeat(6, 1fr)
+    grid-row-gap: 20px
+    width: 730px
+    height: 100%
+    .msf-dashboard-assistant-chart-item
+        width: 100px
+        height: 140px
+        align-self: center
+        text-align: center
+        margin: auto
+        display: flex
+        flex-direction: column
+        cursor: pointer
+        &:hover
+            .chart-item-label
+                color: #ffffff
+        .chart-item-image
+            border-radius: 5px
+            padding: 10px
+        .chart-item-label
+            display: flex
+            font-size: 11px
+            margin-top: 5px
+            height: 80px
+            width: 100px
+            .label-align
+                margin: auto
