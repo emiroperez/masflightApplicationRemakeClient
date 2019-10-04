@@ -47,13 +47,19 @@ export class MsfDashboardAssistantComponent {
     this.isLoading = true;
     this.currentOption = data.currentOption;
     this.currentOptionCategories = data.currentOptionCategories;
+
     this.configureControlVariables ();
   }
 
   ngAfterViewInit(): void
   {
     this.msfTableRef.tableOptions = this;
-    this.loadTableData (false, this.msfTableRef.handlerSuccess, this.msfTableRef.handlerError);
+
+    if (!this.currentOptionCategories)
+      this.service.loadOptionCategoryArguments (this, this.currentOption, this.setCategories, this.handlerError);
+    else
+      this.loadTableData (false, this.msfTableRef.handlerSuccess, this.msfTableRef.handlerError);
+
     this.changeDetectorRef.detectChanges ();
   }
 
@@ -153,7 +159,54 @@ export class MsfDashboardAssistantComponent {
   {
     this.tabs.realignInkBar ();
     this.isLoading = false;
+
+    if (error)
+    {
+      return;
+    }
+
     this.tablePreview = true;
+  }
+
+  setCategories(_this, data): void
+  {
+    let optionCategories = [];
+
+    _this.tabs.realignInkBar ();
+    _this.tablePreview = false;
+
+    data = data.sort ((a, b) => a["position"] > b["position"] ? 1 : a["position"] === b["position"] ? 0 : -1);
+
+    for (let optionCategory of data)
+    {
+      for (let category of optionCategory.categoryArgumentsId)
+      {
+        for (let argument of category.arguments)
+        {
+          if (argument.value1)
+            argument.value1 = JSON.parse (argument.value1);
+
+          if (argument.minDate)
+            argument.minDate = new Date (argument.minDate);
+    
+          if (argument.maxDate)
+            argument.maxDate = new Date (argument.maxDate);
+        }
+
+        optionCategories.push (category);
+      }
+    }
+
+    _this.currentOptionCategories = optionCategories;
+
+    _this.configureControlVariables ();
+    _this.isLoading = false;
+    _this.changeDetectorRef.detectChanges ();
+  }
+
+  handlerError(_this): void
+  {
+    _this.isLoading = false;
   }
 
   isMatIcon(icon): boolean
@@ -268,6 +321,9 @@ export class MsfDashboardAssistantComponent {
 
   configureControlVariables(): void
   {
+    if (!this.currentOptionCategories)
+      return;
+
     for (let controlVariable of this.currentOptionCategories)
     {
       if (controlVariable.arguments)
