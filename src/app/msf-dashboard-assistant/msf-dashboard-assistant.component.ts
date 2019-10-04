@@ -20,6 +20,7 @@ export class MsfDashboardAssistantComponent {
 
   currentOption: any;
   currentOptionCategories: any[];
+  tempOptionCategories: any[];
 
   actualPageNumber: number;
   moreResults: boolean = false;
@@ -152,6 +153,7 @@ export class MsfDashboardAssistantComponent {
   {
     this.tabs.realignInkBar ();
     this.isLoading = false;
+    this.tablePreview = true;
   }
 
   isMatIcon(icon): boolean
@@ -184,8 +186,10 @@ export class MsfDashboardAssistantComponent {
 
   indexChanged(): void
   {
-    // set table preview to true if the index changed
-    this.tablePreview = true;
+    // cancel changes in the control variables if they are
+    // currently being edited
+    if (!this.tablePreview)
+      this.cancelEdit ();
   }
 
   checkTablePreviewVisibility(): string
@@ -206,11 +210,20 @@ export class MsfDashboardAssistantComponent {
 
   cancelEdit(): void
   {
+    this.currentOptionCategories = JSON.parse (JSON.stringify (this.tempOptionCategories));
     this.tablePreview = true;
+  }
+
+  refreshTable(): void
+  {
+    this.isLoading = true;
+    this.loadTableData (false, this.msfTableRef.handlerSuccess, this.msfTableRef.handlerError);
+    this.changeDetectorRef.detectChanges ();
   }
 
   goToEditor(): void
   {
+    this.tempOptionCategories = JSON.parse (JSON.stringify (this.currentOptionCategories));
     this.tablePreview = false;
   }
 

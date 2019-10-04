@@ -16,7 +16,7 @@
       <button *ngIf="!tablePreview" class="msf-dashboard-assistant-step-button msf-dashboard-assistant-next-button flat-button" mat-button (click)="cancelEdit()">
         CANCEL
       </button>
-      <button *ngIf="!tablePreview" class="msf-dashboard-assistant-step-button msf-dashboard-assistant-next-button flat-button" mat-button>
+      <button *ngIf="!tablePreview" class="msf-dashboard-assistant-step-button msf-dashboard-assistant-next-button flat-button" mat-button (click)="refreshTable()">
         REFRESH
       </button>
       <button *ngIf="stepper.selectedIndex == 2" class="msf-dashboard-assistant-step-button msf-dashboard-assistant-next-button flat-button" mat-button>
