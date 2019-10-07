@@ -35,6 +35,15 @@ export class MsfDashboardAssistantComponent {
   ];
 
   selectedChartType: any = this.chartTypes[0];
+  analysisSelected: any = null;
+  selectingAnalysis: boolean = false;
+  xAxisSelected: any = null;
+  selectingXAxis: boolean = false;
+  valueSelected: any = null;
+  selectingValue: boolean = false;
+  chartPreviewHover: boolean = false;
+  lastColumn: any;
+
   currentOption: any;
   currentOptionCategories: any[];
   tempOptionCategories: any[];
@@ -407,5 +416,61 @@ export class MsfDashboardAssistantComponent {
       return true;
 
     return false;
+  }
+
+  selectAnalysis(): void
+  {
+    this.selectingAnalysis = true;
+    this.selectingXAxis = false;
+    this.selectingValue = false;
+    this.lastColumn = null;
+    this.analysisSelected = null;
+  }
+
+  selectXAxis(): void
+  {
+    this.selectingAnalysis = false;
+    this.selectingXAxis = true;
+    this.selectingValue = false;
+    this.lastColumn = null;
+    this.xAxisSelected = null;
+  }
+
+  selectValue(): void
+  {
+    this.selectingAnalysis = false;
+    this.selectingXAxis = false;
+    this.selectingValue = true;
+    this.lastColumn = null;
+    this.valueSelected = null;
+  }
+
+  hoverTableColumn(index): void
+  {
+    if (this.lastColumn !== index)
+      this.lastColumn = index;
+  }
+
+  setChartValue(): void
+  {
+    if (this.selectingAnalysis)
+    {
+      this.analysisSelected = this.lastColumn;
+      this.selectingAnalysis = false;
+    }
+
+    if (this.selectingXAxis)
+    {
+      this.xAxisSelected = this.lastColumn;
+      this.selectingXAxis = false;
+    }
+
+    if (this.selectingValue)
+    {
+      this.valueSelected = this.lastColumn;
+      this.selectingValue = false;
+    }
+
+    this.lastColumn = null;
   }
 }
