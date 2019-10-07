@@ -186,7 +186,7 @@
               </mat-tab>
             </mat-tab-group>
           </div>
-          <div class="msf-dashboard-assistant-table msf-dashboard-child-panel-table">
+          <div class="msf-dashboard-assistant-table msf-dashboard-child-panel-table mat-elevation-z8">
             <app-msf-table #msfTableRef [isLoading]="isLoading" (finishLoading)="finishLoadingTable($event)" [categoryArguments]="currentOptionCategories" [currentOption]="currentOption" [isPanel]="false"></app-msf-table>
           </div>
         </div>
@@ -266,13 +266,13 @@
     <span *ngIf="stepper.selectedIndex == 2">
       <span class="msf-dashboard-assistant-chart-type-label">Select Distributon Chart</span>
       <div class="msf-dashboard-assistant-chart-config-buttons">
-        <div class="msf-dashboard-assistant-chart-config-button">
+        <div class="msf-dashboard-assistant-chart-config-button msf-dashboard-assistant-chart-config-analysis-button">
           Analysis by
         </div>
-        <div class="msf-dashboard-assistant-chart-config-button">
+        <div class="msf-dashboard-assistant-chart-config-button msf-dashboard-assistant-chart-config-axis-button" *ngIf="haveXAxis()">
           X - Axis
         </div>
-        <div class="msf-dashboard-assistant-chart-config-button">
+        <div class="msf-dashboard-assistant-chart-config-button msf-dashboard-assistant-chart-config-values-button">
           Values
         </div>
         <div class="msf-dashboard-assistant-chart-preview-button">
@@ -280,7 +280,7 @@
           Chart Preview
         </div>
       </div>
-      <div class="msf-dashboard-child-panel-table mat-elevation-z8">
+      <div class="msf-dashboard-select-distribution-chart-table-container msf-dashboard-child-panel-table mat-elevation-z8">
         <div class="results-container msf-dashboard-select-distribution-chart-table">
           <table mat-table matSort [dataSource]="msfTableRef.dataSource" class="mat-elevation-z8 datasource results">
             <ng-container [matColumnDef]="column.columnName" *ngFor="let column of msfTableRef.metadata; let i = index">

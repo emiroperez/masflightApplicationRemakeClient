@@ -401,18 +401,11 @@ export class MsfDashboardAssistantComponent {
     return ComponentType.dateRange == argument.type;
   }
 
-  /*
-  moreTableResults()
+  haveXAxis(): boolean
   {
-    if (this.moreResultsBtn)
-    {
-      this.moreResults = false;
-      this.isLoading = true;
+    if (this.selectedChartType.flags & ChartFlags.XYCHART)
+      return true;
 
-      setTimeout (() => {
-        this.loadTableData (true, this.msfTableRef.handlerSuccess, this.msfTableRef.handlerError);
-      }, 3000);
-    }
+    return false;
   }
-  */
 }
