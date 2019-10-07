@@ -263,5 +263,64 @@
         </ng-container>
       </div>
     </span>
+    <span *ngIf="stepper.selectedIndex == 2">
+      <span class="msf-dashboard-assistant-chart-type-label">Select Distributon Chart</span>
+      <div class="msf-dashboard-assistant-chart-config-buttons">
+        <div class="msf-dashboard-assistant-chart-config-button">
+          Analysis by
+        </div>
+        <div class="msf-dashboard-assistant-chart-config-button">
+          X - Axis
+        </div>
+        <div class="msf-dashboard-assistant-chart-config-button">
+          Values
+        </div>
+        <div class="msf-dashboard-assistant-chart-preview-button">
+          <img class="msf-dashboard-assistant-chart-preview-pic" src="../../assets/images/{{globals.theme}}-chart-preview.png"/>
+          Chart Preview
+        </div>
+      </div>
+      <div class="msf-dashboard-child-panel-table mat-elevation-z8">
+        <div class="results-container msf-dashboard-select-distribution-chart-table">
+          <table mat-table matSort [dataSource]="msfTableRef.dataSource" class="mat-elevation-z8 datasource results">
+            <ng-container [matColumnDef]="column.columnName" *ngFor="let column of msfTableRef.metadata; let i = index">
+              <th [ngClass]="column.show ?'msf-show-table':'msf-hide'" mat-header-cell *matHeaderCellDef mat-sort-header>{{column.columnLabel}}</th>
+              <td [ngClass]="column.show ?'msf-show-table':'msf-hide'" mat-cell *matCellDef="let element; let rowNumber = dataIndex">
+                <span *ngIf="!isArray(element['Flight'])">
+                  <ng-container *ngIf="element[column.columnName] != null && element[column.columnName] != ''">
+                    <ng-container *ngIf="column.columnFormat != null && column.columnFormat != ''">
+                      <span *ngIf="column.columnType=='date' || column.columnType=='time'">{{element[column.columnName] | date: column.columnFormat}}</span>
+                      <span *ngIf="column.columnType=='string'">{{element[column.columnName]}}</span>
+                      <span *ngIf="column.columnType=='number'"><span *ngIf="column.prefix">{{column.prefix}}</span>{{element[column.columnName] | number:column.columnFormat:'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
+                    </ng-container>
+                    <ng-container *ngIf="column.columnFormat == null || column.columnFormat == ''">
+                      <span *ngIf="column.columnType!='number'">{{element[column.columnName]}}</span>
+                      <span *ngIf="column.columnType=='number'"><span *ngIf="column.prefix">{{column.prefix}}</span>{{element[column.columnName] | number:'.0-2':'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
+                    </ng-container>
+                  </ng-container>
+                </span>
+                <span class="msf-table-sub-cell" *ngIf="isArray(element['Flight'])">
+                  <span class="{{getDecoration(element['Flight'],j)}}" *ngFor="let subElement of element['Flight']; let j = index">
+                    <ng-container *ngIf="subElement[column.columnName].parsedValue != null && subElement[column.columnName].parsedValue != ''">
+                      <ng-container *ngIf="column.columnFormat != null && column.columnFormat != ''">
+                        <span *ngIf="column.columnType=='date' || column.columnType=='time'">{{subElement[column.columnName].parsedValue | date: column.columnFormat}}</span>
+                        <span *ngIf="column.columnType=='string'">{{subElement[column.columnName].parsedValue}}</span>
+                        <span *ngIf="column.columnType=='number'"><span *ngIf="column.prefix">{{column.prefix}}</span>{{subElement[column.columnName].parsedValue | number:column.columnFormat:'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
+                      </ng-container>
+                      <ng-container *ngIf="column.columnFormat == null || column.columnFormat == ''">
+                        <span *ngIf="column.columnType!='number'">{{subElement[column.columnName].parsedValue}}</span>
+                        <span *ngIf="column.columnType=='number'"><span *ngIf="column.prefix">{{column.prefix}}</span>{{subElement[column.columnName].parsedValue | number:'.0-2':'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
+                      </ng-container>
+                    </ng-container>
+                  </span>
+                </span>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="msfTableRef.displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: msfTableRef.displayedColumns;" [style.height.px]="40"></tr>
+          </table>
+        </div>
+      </div>
+    </span>
   </div>
 </div>
