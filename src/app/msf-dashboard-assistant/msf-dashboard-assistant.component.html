@@ -249,16 +249,18 @@
     <span *ngIf="stepper.selectedIndex == 1">
       <span class="msf-dashboard-assistant-chart-type-label">Chart Type Selection</span>
       <div class="msf-dashboard-assistant-chart-picker">
-        <div class="msf-dashboard-assistant-chart-item" *ngFor="let chartType of chartTypes">
-          <span class="chart-item-image">
-            <img src="../../assets/images/{{globals.theme}}-{{chartType.image}}"/>
-          </span>
-          <div class="chart-item-label">
-            <div class="label-align">
-              {{chartType.name}}
+        <ng-container *ngFor="let chartType of chartTypes">
+          <div [ngClass]="{ 'msf-dashboard-assistant-chart-item' : selectedChartType !== chartType, 'msf-dashboard-assistant-chart-item-selected' : selectedChartType === chartType }" (click)="selectChartType(chartType)">
+            <span class="chart-item-image">
+              <img src="../../assets/images/{{globals.theme}}-{{chartType.image}}"/>
+            </span>
+            <div class="chart-item-label">
+              <div class="label-align">
+                {{chartType.name}}
+              </div>
             </div>
           </div>
-        </div>
+        </ng-container>
       </div>
     </span>
   </div>

@@ -34,6 +34,7 @@ export class MsfDashboardAssistantComponent {
     { name: 'Donut', flags: ChartFlags.DONUTCHART, image: 'donut-chart.png' } //: this.createPieSeries },
   ];
 
+  selectedChartType: any = this.chartTypes[0];
   currentOption: any;
   currentOptionCategories: any[];
   tempOptionCategories: any[];
@@ -373,6 +374,11 @@ export class MsfDashboardAssistantComponent {
         }
       }
     }
+  }
+
+  selectChartType(chartType): void
+  {
+    this.selectedChartType = chartType;
   }
 
   isTitleOnly(argument: Arguments): boolean
