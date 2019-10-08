@@ -4841,7 +4841,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       panelClass: 'msf-dashboard-assistant-dialog',
       data: {
         currentOption: JSON.parse (JSON.stringify (this.values.currentOption)),
-        currentOptionCategories: JSON.parse (JSON.stringify (this.values.currentOptionCategories))
+        currentOptionCategories: JSON.parse (JSON.stringify (this.values.currentOptionCategories)),
+        chartColumnOptions: JSON.parse (JSON.stringify (this.values.chartColumnOptions))
       }
     });
   }

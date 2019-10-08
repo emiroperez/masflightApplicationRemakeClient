@@ -1,5 +1,7 @@
 import { Component, Inject, ViewChild, ChangeDetectorRef } from '@angular/core';
-import { MatDialogRef, MatStepper, MAT_DIALOG_DATA, MatTabGroup } from '@angular/material';
+import { MatDialogRef, MatStepper, MAT_DIALOG_DATA, MatTabGroup, MatDialog } from '@angular/material';
+import * as am4core from "@amcharts/amcharts4/core";
+import * as am4charts from "@amcharts/amcharts4/charts";
 
 import { ApplicationService } from '../services/application.service';
 import { CategoryArguments } from '../model/CategoryArguments';
@@ -10,6 +12,8 @@ import { Utils } from '../commons/utils';
 import { Globals } from '../globals/Globals';
 import { ComponentType } from '../commons/ComponentType';
 import { ChartFlags } from '../msf-dashboard-panel/msf-dashboard-chartflags';
+import { MsfChartPreviewComponent } from '../msf-chart-preview/msf-chart-preview.component';
+import { Themes } from '../globals/Themes';
 
 @Component({
   selector: 'app-msf-dashboard-assistant',
@@ -20,18 +24,18 @@ export class MsfDashboardAssistantComponent {
   isLoading: boolean;
 
   chartTypes: any[] = [
-    { name: 'Bars', flags: ChartFlags.XYCHART, image: 'vert-bar-chart.png' }, //: this.createVertColumnSeries },
-    { name: 'Horizontal Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED, image: 'horiz-bar-chart.png' }, //: this.createHorizColumnSeries },
-    { name: 'Simple Bars', flags: ChartFlags.NONE, image: 'simple-vert-bar-chart.png' }, //: this.createSimpleVertColumnSeries },
-    { name: 'Simple Horizontal Bars', flags: ChartFlags.ROTATED, image: 'simple-horiz-bar-chart.png' }, //: this.createSimpleHorizColumnSeries },
-    { name: 'Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.STACKED, image: 'stacked-vert-column-chart.png' }, //: this.createVertColumnSeries },
-    { name: 'Horizontal Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED | ChartFlags.STACKED, image: 'stacked-horiz-column-chart.png' }, //: this.createHorizColumnSeries },
-    { name: 'Funnel', flags: ChartFlags.FUNNELCHART, image: 'funnel-chart.png' }, //: this.createFunnelSeries },
-    { name: 'Lines', flags: ChartFlags.XYCHART | ChartFlags.LINECHART, image: 'line-chart.png' }, //: this.createLineSeries },                      
-    { name: 'Area', flags: ChartFlags.XYCHART | ChartFlags.AREACHART, image: 'area-chart.png' }, //: this.createLineSeries },
-    { name: 'Stacked Area', flags: ChartFlags.XYCHART | ChartFlags.STACKED | ChartFlags.AREACHART, image: 'stacked-area-chart.png' }, //: this.createLineSeries },
-    { name: 'Pie', flags: ChartFlags.PIECHART, image: 'pie-chart.png' }, //: this.createPieSeries },
-    { name: 'Donut', flags: ChartFlags.DONUTCHART, image: 'donut-chart.png' } //: this.createPieSeries },
+    { name: 'Bars', flags: ChartFlags.XYCHART, image: 'vert-bar-chart.png', createSeries: this.createVertColumnSeries },
+    { name: 'Horizontal Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED, image: 'horiz-bar-chart.png', createSeries: this.createHorizColumnSeries },
+    { name: 'Simple Bars', flags: ChartFlags.NONE, image: 'simple-vert-bar-chart.png', createSeries: this.createSimpleVertColumnSeries },
+    { name: 'Simple Horizontal Bars', flags: ChartFlags.ROTATED, image: 'simple-horiz-bar-chart.png', createSeries: this.createSimpleHorizColumnSeries },
+    { name: 'Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.STACKED, image: 'stacked-vert-column-chart.png', createSeries: this.createVertColumnSeries },
+    { name: 'Horizontal Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED | ChartFlags.STACKED, image: 'stacked-horiz-column-chart.png', createSeries: this.createHorizColumnSeries },
+    { name: 'Funnel', flags: ChartFlags.FUNNELCHART, image: 'funnel-chart.png', createSeries: this.createFunnelSeries },
+    { name: 'Lines', flags: ChartFlags.XYCHART | ChartFlags.LINECHART, image: 'line-chart.png', createSeries: this.createLineSeries },                      
+    { name: 'Area', flags: ChartFlags.XYCHART | ChartFlags.AREACHART, image: 'area-chart.png', createSeries: this.createLineSeries },
+    { name: 'Stacked Area', flags: ChartFlags.XYCHART | ChartFlags.STACKED | ChartFlags.AREACHART, image: 'stacked-area-chart.png', createSeries: this.createLineSeries },
+    { name: 'Pie', flags: ChartFlags.PIECHART, image: 'pie-chart.png', createSeries: this.createPieSeries },
+    { name: 'Donut', flags: ChartFlags.DONUTCHART, image: 'donut-chart.png', createSeries: this.createPieSeries },
   ];
 
   selectedChartType: any = this.chartTypes[0];
@@ -46,6 +50,7 @@ export class MsfDashboardAssistantComponent {
 
   currentOption: any;
   currentOptionCategories: any[];
+  chartColumnOptions: any[];
   tempOptionCategories: any[];
 
   actualPageNumber: number;
@@ -66,6 +71,7 @@ export class MsfDashboardAssistantComponent {
     private service: ApplicationService,
     private authService: AuthService,
     private changeDetectorRef: ChangeDetectorRef,
+    private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any)
   {
     this.utils = new Utils ();
@@ -73,6 +79,7 @@ export class MsfDashboardAssistantComponent {
     this.isLoading = true;
     this.currentOption = data.currentOption;
     this.currentOptionCategories = data.currentOptionCategories;
+    this.chartColumnOptions = data.chartColumnOptions;
 
     this.configureControlVariables ();
   }
@@ -388,6 +395,9 @@ export class MsfDashboardAssistantComponent {
   selectChartType(chartType): void
   {
     this.selectedChartType = chartType;
+    this.selectingXAxis = null;
+    this.selectingAnalysis = null;
+    this.selectingValue = null;
 
     // Remove X Axis selection if the chart type doesn't use it
     if (!this.haveXAxis ())
@@ -424,6 +434,12 @@ export class MsfDashboardAssistantComponent {
 
   selectAnalysis(): void
   {
+    if (this.selectingAnalysis)
+    {
+      this.lastColumn = null;
+      this.selectingAnalysis = false;
+    }
+
     this.selectingAnalysis = true;
     this.selectingXAxis = false;
     this.selectingValue = false;
@@ -433,6 +449,12 @@ export class MsfDashboardAssistantComponent {
 
   selectXAxis(): void
   {
+    if (this.selectingXAxis)
+    {
+      this.lastColumn = null;
+      this.selectingXAxis = false;
+    }
+
     this.selectingAnalysis = false;
     this.selectingXAxis = true;
     this.selectingValue = false;
@@ -442,6 +464,12 @@ export class MsfDashboardAssistantComponent {
 
   selectValue(): void
   {
+    if (this.selectingValue)
+    {
+      this.lastColumn = null;
+      this.selectingValue = false;
+    }
+
     this.selectingAnalysis = false;
     this.selectingXAxis = false;
     this.selectingValue = true;
@@ -478,11 +506,233 @@ export class MsfDashboardAssistantComponent {
     this.lastColumn = null;
   }
 
-  checkChartSelection(): boolean
+  isChartConfigured(): boolean
   {
-    if (this.haveXAxis ())
+    if (!this.haveXAxis ())
       return this.analysisSelected && this.valueSelected;
 
     return this.analysisSelected && this.xAxisSelected && this.valueSelected;
+  }
+
+  previewChart(): void
+  {
+    let i, variable, xaxis, valueColumn;
+
+    for (i = 0; i < this.currentOption.columnOptions.length; i++)
+    {
+      if (this.currentOption.columnOptions[i].id == this.analysisSelected.id)
+      {
+        variable = this.currentOption.columnOptions[i];
+        break;
+      }
+    }
+
+    if (this.selectedChartType.flags & ChartFlags.XYCHART)
+    {
+      for (i = 0; i < this.currentOption.columnOptions.length; i++)
+      {
+        if (this.currentOption.columnOptions[i].id == this.xAxisSelected.id)
+        {
+          xaxis = this.currentOption.columnOptions[i];
+          break;
+        }
+      }
+    }
+    else
+      xaxis = null;
+
+    for (i = 0; i < this.currentOption.columnOptions.length; i++)
+    {
+      if (this.currentOption.columnOptions[i].id == this.valueSelected.id)
+      {
+        valueColumn = this.currentOption.columnOptions[i];
+        break;
+      }
+    }
+
+    this.dialog.open (MsfChartPreviewComponent, {
+      panelClass: 'msf-dashboard-assistant-dialog',
+      autoFocus: false,
+      data: {
+        currentChartType: this.selectedChartType,
+        currentOption: this.currentOption,
+        currentOptionCategories: this.currentOptionCategories,
+        variable: variable,
+        xaxis: xaxis,
+        valueColumn: valueColumn
+      }
+    });
+  }
+
+  // Function to create horizontal column chart series
+  createHorizColumnSeries(values, stacked, chart, item, parseDate, theme): void
+  {
+    // Set up series
+    let series = chart.series.push (new am4charts.ColumnSeries ());
+    series.name = item.valueAxis;
+    series.dataFields.valueX = item.valueField;
+    series.sequencedInterpolation = true;
+
+    // Parse date if available
+    if (parseDate)
+    {
+      series.dataFields.dateY = values.xaxis.columnName;
+      series.dateFormatter.dateFormat = "MMM d, yyyy";
+      series.columns.template.tooltipText = "{dateY}: {valueX}";
+    }
+    else
+    {
+      series.dataFields.categoryY = values.xaxis.columnName;
+      series.columns.template.tooltipText = "{categoryY}: {valueX}";
+    }
+
+    // Configure columns
+    series.stacked = stacked;
+    series.columns.template.strokeWidth = 0;
+    series.columns.template.width = am4core.percent (60);
+
+    return series;
+  }
+
+  // Function to create vertical column chart series
+  createVertColumnSeries(values, stacked, chart, item, parseDate, theme): any
+  {
+    let series = chart.series.push (new am4charts.ColumnSeries ());
+    series.name = item.valueAxis;
+    series.dataFields.valueY = item.valueField;
+    series.sequencedInterpolation = true;
+
+    if (parseDate)
+    {
+      series.dataFields.dateX = values.xaxis.columnName;
+      series.dateFormatter.dateFormat = "MMM d, yyyy";
+      series.columns.template.tooltipText = "{dateX}: {valueY}";
+    }
+    else
+    {
+      series.dataFields.categoryX = values.xaxis.columnName;
+      series.columns.template.tooltipText = "{categoryX}: {valueY}";
+    }
+
+    series.stacked = stacked;
+    series.columns.template.strokeWidth = 0;
+    series.columns.template.width = am4core.percent (60);
+
+    return series;
+  }
+
+  // Function to create line chart series
+  createLineSeries(values, stacked, chart, item, parseDate, theme): any
+  {
+    // Set up series
+    let series = chart.series.push (new am4charts.LineSeries ());
+    series.name = item.valueAxis;
+    series.dataFields.valueY = item.valueField;
+    series.sequencedInterpolation = true;
+    series.strokeWidth = 2;
+    series.minBulletDistance = 10;
+    series.tooltip.pointerOrientation = "horizontal";
+    series.tooltip.background.cornerRadius = 20;
+    series.tooltip.background.fillOpacity = 0.5;
+    series.tooltip.label.padding (12, 12, 12, 12);
+    series.tensionX = 0.8;
+
+    if (parseDate)
+    {
+      series.dataFields.dateX = values.xaxis.columnName;
+      series.dateFormatter.dateFormat = "MMM d, yyyy";
+      series.tooltipText = "{dateX}: {valueY}";
+    }
+    else
+    {
+      series.dataFields.categoryX = values.xaxis.columnName;
+      series.tooltipText = "{categoryX}: {valueY}";
+    }
+
+    // Fill area below line for area chart types
+    if (values.currentChartType.flags & ChartFlags.AREAFILL)
+      series.fillOpacity = 0.3;
+
+    series.stacked = stacked;
+
+    return series;
+  }
+
+  // Function to create simple vertical column chart series
+  createSimpleVertColumnSeries(values, stacked, chart, item, parseDate, theme): any
+  {
+    let series = chart.series.push (new am4charts.ColumnSeries ());
+    series.dataFields.valueY = item.valueField;
+    series.dataFields.categoryX = item.titleField;
+    series.name = item.valueField;
+    series.columns.template.tooltipText = "{categoryX}: {valueY}";
+    series.columns.template.strokeWidth = 0;
+
+    series.stacked = stacked;
+
+    return series;
+  }
+
+  // Function to create simple horizontal column chart series
+  createSimpleHorizColumnSeries(values, stacked, chart, item, parseDate, theme): any
+  {
+    let series = chart.series.push (new am4charts.ColumnSeries ());
+    series.dataFields.valueX = item.valueField;
+    series.dataFields.categoryY = item.titleField;
+    series.name = item.valueField;
+    series.columns.template.tooltipText = "{categoryY}: {valueX}";
+    series.columns.template.strokeWidth = 0;
+
+    series.stacked = stacked;
+
+    return series;
+  }
+
+  // Function to create pie chart series
+  createPieSeries(values, stacked, chart, item, parseDate, theme): any
+  {
+    let series;
+
+    // Set inner radius for donut chart
+    if (values.currentChartType.flags & ChartFlags.PIEHOLE)
+      chart.innerRadius = am4core.percent (60);
+
+    // Configure Pie Chart
+    series = chart.series.push (new am4charts.PieSeries ());
+    series.dataFields.value = item.valueField;
+    series.dataFields.category = item.titleField;
+
+    // This creates initial animation
+    series.hiddenState.properties.opacity = 1;
+    series.hiddenState.properties.endAngle = -90;
+    series.hiddenState.properties.startAngle = -90;
+
+    // Set ticks color
+    series.labels.template.fill = Themes.AmCharts[theme].fontColor;
+    series.ticks.template.strokeOpacity = 1;
+    series.ticks.template.stroke = Themes.AmCharts[theme].ticks;
+    series.ticks.template.strokeWidth = 1;
+
+    return series;
+  }
+
+  // Function to create funnel chart series
+  createFunnelSeries(values, stacked, chart, item, parseDate, theme): any
+  {
+    let series;
+
+    series = chart.series.push (new am4charts.FunnelSeries ());
+    series.dataFields.value = item.valueField;
+    series.dataFields.category = item.titleField;
+
+    // Set chart apparence
+    series.sliceLinks.template.fillOpacity = 0;
+    series.labels.template.fill = Themes.AmCharts[theme].fontColor;
+    series.ticks.template.strokeOpacity = 1;
+    series.ticks.template.stroke = Themes.AmCharts[theme].ticks;
+    series.ticks.template.strokeWidth = 1;
+    series.alignLabels = true;
+
+    return series;
   }
 }
