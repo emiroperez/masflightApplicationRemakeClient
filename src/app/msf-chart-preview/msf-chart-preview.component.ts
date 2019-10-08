@@ -1,5 +1,5 @@
 import { Component, Inject, NgZone } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 
@@ -11,6 +11,7 @@ import { Utils } from '../commons/utils';
 import { CategoryArguments } from '../model/CategoryArguments';
 import { Arguments } from '../model/Arguments';
 import { Themes } from '../globals/Themes';
+import { MessageComponent } from '../message/message.component';
 
 @Component({
   selector: 'app-msf-chart-preview',
@@ -27,6 +28,7 @@ export class MsfChartPreviewComponent {
     private zone: NgZone,
     private service: ApplicationService,
     private authService: AuthService,
+    private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any)
   {
     this.utils = new Utils ();
@@ -102,18 +104,27 @@ export class MsfChartPreviewComponent {
     this.authService.post (this, url, null, handlerSuccess, handlerError);
   }
 
+  noDataFound(): void
+  {
+    this.isLoading = false;
+    this.dialog.open (MessageComponent, {
+      data: { title: "Information", message: "No results were found." }
+    });
+    this.dialogRef.close ();
+  }
+
   handlerChartSuccess(_this, data): void
   {
     if (_this.data.currentChartType.flags & ChartFlags.XYCHART && _this.utils.isJSONEmpty (data.data))
     {
-      // _this.noDataFound ();
+      _this.noDataFound ();
       return;
     }
 
     if ((!(_this.data.currentChartType.flags & ChartFlags.XYCHART) && data.dataProvider == null) ||
       (_this.data.currentChartType.flags & ChartFlags.XYCHART && !data.filter))
     {
-      // _this.noDataFound ();
+      _this.noDataFound ();
       return;
     }
 
@@ -121,11 +132,13 @@ export class MsfChartPreviewComponent {
     _this.isLoading = false;
   }
 
-  handlerDataError(_this, result): void
+  handlerDataError(_this): void
   {
-    // console.log (result);
     _this.isLoading = false;
-    // _this.errorMessage = "Failed to generate child panel information";
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Error", message: "Failed to generate results for the preview." }
+    });
+    _this.dialogRef.close ();
   }
 
   makeChart(chartInfo): void
