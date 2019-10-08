@@ -14,6 +14,7 @@ import { ComponentType } from '../commons/ComponentType';
 import { ChartFlags } from '../msf-dashboard-panel/msf-dashboard-chartflags';
 import { MsfChartPreviewComponent } from '../msf-chart-preview/msf-chart-preview.component';
 import { Themes } from '../globals/Themes';
+import { MessageComponent } from '../message/message.component';
 
 @Component({
   selector: 'app-msf-dashboard-assistant',
@@ -197,6 +198,19 @@ export class MsfDashboardAssistantComponent {
 
     if (error)
     {
+      this.dialog.open (MessageComponent, {
+        data: { title: "Error", message: "Failed to generate results." }
+      });
+
+      return;
+    }
+
+    if (!this.msfTableRef.tableOptions.dataSource && !this.msfTableRef.tableOptions.template)
+    {
+      this.dialog.open (MessageComponent, {
+        data: { title: "Information", message: "Results not available." }
+      });
+
       return;
     }
 

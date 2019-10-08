@@ -4839,6 +4839,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     let dialogRef = this.dialog.open (MsfDashboardAssistantComponent, {
       panelClass: 'msf-dashboard-assistant-dialog',
+      autoFocus: false,
       data: {
         currentOption: JSON.parse (JSON.stringify (this.values.currentOption)),
         currentOptionCategories: JSON.parse (JSON.stringify (this.values.currentOptionCategories)),
