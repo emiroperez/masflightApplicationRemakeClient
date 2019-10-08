@@ -4861,11 +4861,22 @@ export class MsfDashboardPanelComponent implements OnInit {
             }
           }
 
+          if (values.variable)
+            this.chartForm.get ('variableCtrl').setValue (values.variable);
+
+          if (values.xaxis)
+            this.chartForm.get ('xaxisCtrl').setValue (values.xaxis);
+
+          if (values.valueColumn)
+            this.chartForm.get ('columnCtrl').setValue (values.valueColumn);
+
           this.values.currentOptionCategories = values.currentOptionCategories;
           this.values.variable = values.variable;
           this.values.xaxis = values.xaxis;
           this.values.valueColumn = values.valueColumn;
           this.values.function = values.function;
+
+          this.checkChartType ();
         }
       }
     );
