@@ -738,4 +738,8 @@ export class MsfDashboardAssistantComponent {
 
     return series;
   }
+
+  done(): void
+  {
+  }
 }

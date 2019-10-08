@@ -19,7 +19,7 @@
       <button *ngIf="!tablePreview" class="msf-dashboard-assistant-step-button msf-dashboard-assistant-next-button flat-button" mat-button (click)="refreshTable()">
         REFRESH
       </button>
-      <button *ngIf="stepper.selectedIndex == 2" [disabled]="!isChartConfigured()" class="msf-dashboard-assistant-step-button msf-dashboard-assistant-next-button" [ngClass]="isChartConfigured() ? 'flat-button' : 'assistant-button-disabled'" mat-button>
+      <button *ngIf="stepper.selectedIndex == 2" [disabled]="!isChartConfigured()" class="msf-dashboard-assistant-step-button msf-dashboard-assistant-next-button" [ngClass]="isChartConfigured() ? 'flat-button' : 'assistant-button-disabled'" mat-button (click)="done()">
         FINISH
         <mat-icon>flag</mat-icon>
       </button>
@@ -264,18 +264,7 @@
       </div>
     </span>
     <span *ngIf="stepper.selectedIndex == 2">
-      <span class="msf-dashboard-assistant-chart-type-label">
-        <span>Select Distributon Chart</span>
-        <div class="assistant-function-combobox">
-          <mat-form-field>
-            <mat-select placeholder="Function" [(ngModel)]="function">
-              <mat-option *ngFor="let fun of data.functions" [value]="fun">
-                {{fun.name}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </span>
+      <span class="msf-dashboard-assistant-chart-type-label">Select Distributon Chart</span>
       <div class="msf-dashboard-assistant-chart-config-buttons">
         <div class="msf-dashboard-assistant-chart-config-button" [ngClass]="{ 'msf-dashboard-assistant-chart-config-analysis-button': !analysisSelected, 'msf-dashboard-assistant-chart-config-analysis-button-selected': (analysisSelected || (!analysisSelecetd && selectingAnalysis)) }" (click)="selectAnalysis()">
           Analysis by
@@ -285,6 +274,15 @@
         </div>
         <div class="msf-dashboard-assistant-chart-config-button" [ngClass]="{ 'msf-dashboard-assistant-chart-config-values-button': !valueSelected, 'msf-dashboard-assistant-chart-config-values-button-selected': (valueSelected || (!valueSelected && selectingValue)) }" (click)="selectValue()">
           Values
+        </div>
+        <div class="assistant-function-combobox">
+          <mat-form-field>
+            <mat-select placeholder="Function" [(ngModel)]="function">
+              <mat-option *ngFor="let fun of data.functions" [value]="fun">
+                {{fun.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
         <div class="msf-dashboard-assistant-chart-preview-button" *ngIf="isChartConfigured()" (mouseover)="chartPreviewHover = true" (mouseout)="chartPreviewHover = false" (click)="previewChart()">
           <img *ngIf="!chartPreviewHover" class="msf-dashboard-assistant-chart-preview-pic" src="../../assets/images/{{globals.theme}}-chart-preview.png"/>
