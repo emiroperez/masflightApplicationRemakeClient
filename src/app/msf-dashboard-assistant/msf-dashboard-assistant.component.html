@@ -275,7 +275,7 @@
         <div class="msf-dashboard-assistant-chart-config-button" [ngClass]="{ 'msf-dashboard-assistant-chart-config-values-button': !valueSelected, 'msf-dashboard-assistant-chart-config-values-button-selected': (valueSelected || (!valueSelected && selectingValue)) }" (click)="selectValue()">
           Values
         </div>
-        <div class="msf-dashboard-assistant-chart-preview-button" *ngIf="analysisSelected && xAxisSelected && valueSelected" (mouseover)="chartPreviewHover = true" (mouseout)="chartPreviewHover = false">
+        <div class="msf-dashboard-assistant-chart-preview-button" *ngIf="checkChartSelection()" (mouseover)="chartPreviewHover = true" (mouseout)="chartPreviewHover = false">
           <img *ngIf="!chartPreviewHover" class="msf-dashboard-assistant-chart-preview-pic" src="../../assets/images/{{globals.theme}}-chart-preview.png"/>
           <img *ngIf="chartPreviewHover" class="msf-dashboard-assistant-chart-preview-pic" src="../../assets/images/dark-theme-chart-preview.png"/>
           Chart Preview
@@ -283,10 +283,10 @@
       </div>
       <div class="msf-dashboard-select-distribution-chart-table-container msf-dashboard-child-panel-table mat-elevation-z8">
         <div class="results-container msf-dashboard-select-distribution-chart-table">
-          <table mat-table matSort [dataSource]="msfTableRef.dataSource" class="mat-elevation-z8 datasource results">
+          <table mat-table [dataSource]="msfTableRef.dataSource" class="mat-elevation-z8 datasource results">
             <ng-container [matColumnDef]="column.columnName" *ngFor="let column of msfTableRef.metadata; let i = index">
-              <th class="msf-show-table" [ngClass]="{ 'distribution-chart-column-analysis-header-hover' : ((lastColumn === column && selectingAnalysis) || analysisSelected === column), 'distribution-chart-column-axis-header-hover' : ((lastColumn === column && selectingXAxis) || xAxisSelected === column), 'distribution-chart-column-values-header-hover' : ((lastColumn === column && selectingValue) || valueSelected === column) }" mat-header-cell *matHeaderCellDef mat-sort-header (mouseover)="hoverTableColumn(column)" (click)="setChartValue()">{{column.columnLabel}}</th>
-              <td class="msf-show-table" [ngClass]="{ 'distribution-chart-column-analysis-row-hover' : ((lastColumn === column && selectingAnalysis) || analysisSelected === column), 'distribution-chart-column-axis-row-hover' : ((lastColumn === column && selectingXAxis) || xAxisSelected === column), 'distribution-chart-column-values-row-hover' : ((lastColumn === column && selectingValue) || valueSelected === column) }" mat-cell *matCellDef="let element; let rowNumber = dataIndex" (mouseover)="hoverTableColumn(column)" (click)="setChartValue()">
+              <th class="msf-show-table" [ngClass]="{ 'distribution-chart-column-analysis-header-hover' : (lastColumn === column && selectingAnalysis), 'distribution-chart-column-analysis-header-selected' : analysisSelected === column, 'distribution-chart-column-axis-header-hover' : (lastColumn === column && selectingXAxis), 'distribution-chart-column-axis-header-selected' :  xAxisSelected === column, 'distribution-chart-column-values-header-hover' : (lastColumn === column && selectingValue), 'distribution-chart-column-values-header-selected' : valueSelected === column }" mat-header-cell *matHeaderCellDef (mouseover)="hoverTableColumn(column)" (click)="setChartValue()">{{column.columnLabel}}</th>
+              <td class="msf-show-table" [ngClass]="{ 'distribution-chart-column-analysis-row-hover' : (lastColumn === column && selectingAnalysis), 'distribution-chart-column-analysis-row-selected' : analysisSelected === column, 'distribution-chart-column-axis-row-hover' : (lastColumn === column && selectingXAxis), 'distribution-chart-column-axis-row-selected' : xAxisSelected === column, 'distribution-chart-column-values-row-hover' : (lastColumn === column && selectingValue), 'distribution-chart-column-values-row-selected' :  valueSelected === column }" mat-cell *matCellDef="let element; let rowNumber = dataIndex" (mouseover)="hoverTableColumn(column)" (click)="setChartValue()">
                 <span *ngIf="!isArray(element['Flight'])">
                   <ng-container *ngIf="element[column.columnName] != null && element[column.columnName] != ''">
                     <ng-container *ngIf="column.columnFormat != null && column.columnFormat != ''">

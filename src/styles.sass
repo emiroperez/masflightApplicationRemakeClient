@@ -1234,37 +1234,37 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             border-color: $primary-color
             &:hover
                 background-color: $primary-color !important
-        .distribution-chart-column-analysis-header-hover
+        .distribution-chart-column-analysis-header-hover, .distribution-chart-column-analysis-header-selected
             background-color: $dashboard-assistant-analysis-color !important
             border-bottom-color: $dashboard-assistant-analysis-color !important
-        .distribution-chart-column-analysis-row-hover
+        .distribution-chart-column-analysis-row-hover, .distribution-chart-column-analysis-row-selected
             background-color: rgba($dashboard-assistant-analysis-color, 0.5) !important
             border-left: 3px solid $dashboard-assistant-analysis-color !important
             border-right: 3px solid $dashboard-assistant-analysis-color !important
             border-bottom-color: rgba($dashboard-assistant-analysis-color, 0.25) !important
-        .msf-dashboard-child-panel-table tr.mat-row.ng-star-inserted:last-child > td.distribution-chart-column-analysis-row-hover
+        .msf-dashboard-child-panel-table tr.mat-row.ng-star-inserted:last-child > td.distribution-chart-column-analysis-row-hover, .msf-dashboard-child-panel-table tr.mat-row.ng-star-inserted:last-child > td.distribution-chart-column-analysis-row-selected
             border-bottom: 3px solid $dashboard-assistant-analysis-color !important
-        .msf-dashboard-child-panel-table tr.mat-header-row.ng-star-inserted:last-child > th.distribution-chart-column-analysis-header-hover
+        .msf-dashboard-child-panel-table tr.mat-header-row.ng-star-inserted:last-child > th.distribution-chart-column-analysis-header-hover, .msf-dashboard-child-panel-table tr.mat-header-row.ng-star-inserted:last-child > th.distribution-chart-column-analysis-header-selected
             color: $dashboard-assistant-analysis-font-color !important
-        .distribution-chart-column-axis-header-hover
+        .distribution-chart-column-axis-header-hover, .distribution-chart-column-axis-header-selected
             background-color: $dashboard-assistant-axis-color !important
             border-bottom-color: $dashboard-assistant-axis-color !important
-        .distribution-chart-column-axis-row-hover
+        .distribution-chart-column-axis-row-hover, .distribution-chart-column-axis-row-selected
             background-color: rgba($dashboard-assistant-axis-color, 0.5) !important
             border-left: 3px solid $dashboard-assistant-axis-color !important
             border-right: 3px solid $dashboard-assistant-axis-color !important
             border-bottom-color: rgba($dashboard-assistant-axis-color, 0.25) !important
-        .msf-dashboard-child-panel-table tr.mat-row.ng-star-inserted:last-child > td.distribution-chart-column-axis-row-hover
+        .msf-dashboard-child-panel-table tr.mat-row.ng-star-inserted:last-child > td.distribution-chart-column-axis-row-hover, .msf-dashboard-child-panel-table tr.mat-row.ng-star-inserted:last-child > td.distribution-chart-column-axis-row-selected
             border-bottom: 3px solid $dashboard-assistant-axis-color !important
-        .distribution-chart-column-values-header-hover
+        .distribution-chart-column-values-header-hover, .distribution-chart-column-values-header-selected
             background-color: $dashboard-assistant-values-color !important
             border-bottom-color: $dashboard-assistant-values-color !important
-        .distribution-chart-column-values-row-hover
+        .distribution-chart-column-values-row-hover, .distribution-chart-column-values-row-selected
             background-color: rgba($dashboard-assistant-values-color, 0.5) !important
             border-left: 3px solid $dashboard-assistant-values-color !important
             border-right: 3px solid $dashboard-assistant-values-color !important
             border-bottom-color: rgba($dashboard-assistant-values-color, 0.25) !important
-        .msf-dashboard-child-panel-table tr.mat-row.ng-star-inserted:last-child > td.distribution-chart-column-values-row-hover
+        .msf-dashboard-child-panel-table tr.mat-row.ng-star-inserted:last-child > td.distribution-chart-column-values-row-hover, .msf-dashboard-child-panel-table tr.mat-row.ng-star-inserted:last-child > td.distribution-chart-column-values-row-selected
             border-bottom: 3px solid $dashboard-assistant-values-color !important
 
 @each $name, $font-color, $little-font-color, $disabled-color, $secondary-disabled-color, $tertiary-disabled-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $quaternary-background-color, $body-background-color, $dashboard-background-color, $dashboard-secondary-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $scrollbar-background-color, $dashboard-panel-background-color, $dashboard-panel-chart-background-color, $dashboard-border-color, $schedule-map-background-color, $schedule-map-info-border, $disabled-combo-box-color, $disabled-underline, $dashboard-info-background-color, $dashboard-info-secondary-background-color, $dashboard-info-font-color, $dashboard-drill-down-border-color, $dashboard-threshold-background-color, $dashboard-title-font-color, $map-panelinfo-background-color, $dashboard-info-border-color, $dashboard-form-font-color, $admin-menu-background, $admin-menu-input-underline, $admin-tree-active-color, $admin-button-color, $admin-secondary-background-color, $admin-table-background-color, $admin-table-hover-color, $admin-secondary-button-color, $login-font-color, $intro-logout-icon-color, $control-variables-border-color, $control-variable-hover-background-color, $control-variable-hover-icon-color, $control-variables-input-underline, $control-variables-dropdown-hover-font-color, $control-variables-dropdown-hover-background-hover-color, $control-variables-selected-background-selected-color, $dashboard-input-underline-color, $membership-primary-background-color, $membership-secondary-background-color, $customer-edit-header-color, $customer-table-header-background-color, $customer-table-row-background-color, $customer-table-row-border-color, $customer-table-row-hover-background-color, $customer-table-row-selected-background-color, $customer-table-row-border-selected-color, $customer-input-color, $customer-input-underline-color, $customer-disabled-underline, $dashboard-control-panel-background-color, $menu-open-background-color, $menu-open-active-background-color, $menu-first-line, $menu-second-line, $menu-background-color, $menu-child-background-color, $control-variable-disabled-color, $dashboard-assistant-analysis-color, $dashboard-assistant-axis-color, $dashboard-assistant-values-color, $dashboard-assistant-analysis-font-color in $color-scheme
@@ -6733,3 +6733,8 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     .msf-dashboard-select-distribution-chart-table
         height: 350px
         overflow: auto
+        th
+            text-align: center
+
+.distribution-chart-column-analysis-header-hover, .distribution-chart-column-analysis-row-hover, .distribution-chart-column-axis-header-hover, .distribution-chart-column-axis-row-hover, .distribution-chart-column-values-header-hover, .distribution-chart-column-values-row-hover
+    cursor: pointer

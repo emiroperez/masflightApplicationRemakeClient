@@ -388,6 +388,10 @@ export class MsfDashboardAssistantComponent {
   selectChartType(chartType): void
   {
     this.selectedChartType = chartType;
+
+    // Remove X Axis selection if the chart type doesn't use it
+    if (!this.haveXAxis ())
+      this.xAxisSelected = null;
   }
 
   isTitleOnly(argument: Arguments): boolean
@@ -472,5 +476,13 @@ export class MsfDashboardAssistantComponent {
     }
 
     this.lastColumn = null;
+  }
+
+  checkChartSelection(): boolean
+  {
+    if (this.haveXAxis ())
+      return this.analysisSelected && this.valueSelected;
+
+    return this.analysisSelected && this.xAxisSelected && this.valueSelected;
   }
 }
