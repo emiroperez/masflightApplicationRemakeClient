@@ -687,6 +687,11 @@ export class MsfDashboardAssistantComponent {
 
     series.stacked = stacked;
 
+    // Set colors
+    series.columns.template.adapter.add ("fill", (fill, target) => {
+      return am4core.color (Themes.AmCharts[theme].chartPreviewColors[0]);
+    });
+
     return series;
   }
 
@@ -702,13 +707,17 @@ export class MsfDashboardAssistantComponent {
 
     series.stacked = stacked;
 
+    series.columns.template.adapter.add ("fill", (fill, target) => {
+      return am4core.color (Themes.AmCharts[theme].chartPreviewColors[0]);
+    });
+
     return series;
   }
 
   // Function to create pie chart series
   createPieSeries(values, stacked, chart, item, parseDate, theme): any
   {
-    let series;
+    let series, colorSet;
 
     // Set inner radius for donut chart
     if (values.currentChartType.flags & ChartFlags.PIEHOLE)
@@ -730,13 +739,20 @@ export class MsfDashboardAssistantComponent {
     series.ticks.template.stroke = Themes.AmCharts[theme].ticks;
     series.ticks.template.strokeWidth = 1;
 
+    // Set the color for the chart to display
+    colorSet = new am4core.ColorSet ();
+    colorSet.list = Themes.AmCharts[theme].chartPreviewColors.map (function (color) {
+      return am4core.color (color);
+    });
+    series.colors = colorSet;
+
     return series;
   }
 
   // Function to create funnel chart series
   createFunnelSeries(values, stacked, chart, item, parseDate, theme): any
   {
-    let series;
+    let series, colorSet;
 
     series = chart.series.push (new am4charts.FunnelSeries ());
     series.dataFields.value = item.valueField;
@@ -749,6 +765,13 @@ export class MsfDashboardAssistantComponent {
     series.ticks.template.stroke = Themes.AmCharts[theme].ticks;
     series.ticks.template.strokeWidth = 1;
     series.alignLabels = true;
+
+    // Set the color for the chart to display
+    colorSet = new am4core.ColorSet ();
+    colorSet.list = Themes.AmCharts[theme].chartPreviewColors.map (function (color) {
+      return am4core.color (color);
+    });
+    series.colors = colorSet;
 
     return series;
   }
