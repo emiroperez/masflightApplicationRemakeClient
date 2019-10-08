@@ -49,21 +49,7 @@ export class Themes {
             stroke: darkBlue,
             fontColor: white,
             chartZoomScrollBar: blueJeans,
-            axisTooltipFontColor: white,
-            chartPreviewColors: [
-        	    "#01b0a1",
-	            "#9b5e8e",
-        	    "#fa5751",
-	            "#fd8b5a",
-        	    "#80cfea",
-        	    "#ff5900",
-	            "#005eff",
-        	    "#ffff00",
-	            "#fc636b",
-        	    "#ff7e00",
-	            "#3d67ce",
-                "#fffefe"
-            ]
+            axisTooltipFontColor: white
         },
         "light-theme": {
             mainTheme: am4themes_light,
@@ -78,21 +64,7 @@ export class Themes {
             stroke: lightGray.lighten (0.65),
             fontColor: darkGray2,
             chartZoomScrollBar: orange,
-            axisTooltipFontColor: black,
-            chartPreviewColors: [
-        	    "#74d393",
-	            "#f2bf00",
-                "#f17f2f",
-                "#c92c33",
-        	    "#2e79c4",
-                "#8e3174",
-                "#65387d",
-                "#447c69",
-	            "#9163b6",
-                "#447c69",
-                "#e9d78e",
-	            "#a98c88"
-            ]
+            axisTooltipFontColor: black
         }
     };
 }

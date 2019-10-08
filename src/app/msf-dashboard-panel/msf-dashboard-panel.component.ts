@@ -4844,6 +4844,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         currentOption: JSON.parse (JSON.stringify (this.values.currentOption)),
         currentOptionCategories: JSON.parse (JSON.stringify (this.values.currentOptionCategories)),
         chartColumnOptions: this.values.chartColumnOptions,
+        paletteColors: this.values.paletteColors,
         functions: this.functions
       }
     });

@@ -68,6 +68,8 @@ export class MsfDashboardAssistantComponent {
   @ViewChild("tabs")
   tabs: MatTabGroup;
 
+  configuredControlVariables: boolean = false;
+
   constructor(public dialogRef: MatDialogRef<MsfDashboardAssistantComponent>,
     public globals: Globals,
     private service: ApplicationService,
@@ -214,7 +216,11 @@ export class MsfDashboardAssistantComponent {
       return;
     }
 
+    this.configuredControlVariables = true;
     this.tablePreview = true;
+    this.analysisSelected = null;
+    this.xAxisSelected = null;
+    this.valueSelected = null;
   }
 
   setCategories(_this, data): void
@@ -576,7 +582,8 @@ export class MsfDashboardAssistantComponent {
         function: this.function,
         variable: variable,
         xaxis: xaxis,
-        valueColumn: valueColumn
+        valueColumn: valueColumn,
+        paletteColors: this.data.paletteColors
       }
     });
   }
@@ -689,7 +696,7 @@ export class MsfDashboardAssistantComponent {
 
     // Set colors
     series.columns.template.adapter.add ("fill", (fill, target) => {
-      return am4core.color (Themes.AmCharts[theme].chartPreviewColors[0]);
+      return am4core.color (values.paletteColors[0]);
     });
 
     return series;
@@ -708,7 +715,7 @@ export class MsfDashboardAssistantComponent {
     series.stacked = stacked;
 
     series.columns.template.adapter.add ("fill", (fill, target) => {
-      return am4core.color (Themes.AmCharts[theme].chartPreviewColors[0]);
+      return am4core.color (values.paletteColors[0]);
     });
 
     return series;
@@ -741,7 +748,7 @@ export class MsfDashboardAssistantComponent {
 
     // Set the color for the chart to display
     colorSet = new am4core.ColorSet ();
-    colorSet.list = Themes.AmCharts[theme].chartPreviewColors.map (function (color) {
+    colorSet.list = values.paletteColors.map (function (color) {
       return am4core.color (color);
     });
     series.colors = colorSet;
@@ -768,7 +775,7 @@ export class MsfDashboardAssistantComponent {
 
     // Set the color for the chart to display
     colorSet = new am4core.ColorSet ();
-    colorSet.list = Themes.AmCharts[theme].chartPreviewColors.map (function (color) {
+    colorSet.list = values.paletteColors.map (function (color) {
       return am4core.color (color);
     });
     series.colors = colorSet;

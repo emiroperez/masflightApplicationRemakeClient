@@ -377,7 +377,7 @@ export class MsfChartPreviewComponent {
           // Create the series and set colors
           chart.colors.list = [];
 
-          for (let color of Themes.AmCharts[theme].chartPreviewColors)
+          for (let color of this.data.paletteColors)
             chart.colors.list.push (am4core.color (color));
 
           for (let object of chartInfo.filter)

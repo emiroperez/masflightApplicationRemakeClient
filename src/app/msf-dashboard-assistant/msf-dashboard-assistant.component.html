@@ -13,7 +13,7 @@
         NEXT
         <mat-icon>arrow_forward_ios</mat-icon>
       </button>
-      <button *ngIf="!tablePreview" class="msf-dashboard-assistant-step-button msf-dashboard-assistant-next-button flat-button" mat-button (click)="cancelEdit()">
+      <button *ngIf="!tablePreview && configuredControlVariables" class="msf-dashboard-assistant-step-button msf-dashboard-assistant-next-button flat-button" mat-button (click)="cancelEdit()">
         CANCEL
       </button>
       <button *ngIf="!tablePreview" class="msf-dashboard-assistant-step-button msf-dashboard-assistant-next-button flat-button" mat-button (click)="refreshTable()">
