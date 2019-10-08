@@ -741,5 +741,48 @@ export class MsfDashboardAssistantComponent {
 
   done(): void
   {
+
+    let variable, xaxis, valueColumn;
+
+    for (let columnOption of this.data.chartColumnOptions)
+    {
+      if (columnOption.item.id == this.analysisSelected.id)
+      {
+        variable = columnOption;
+        break;
+      }
+    }
+
+    if (this.selectedChartType.flags & ChartFlags.XYCHART)
+    {
+      for (let columnOption of this.data.chartColumnOptions)
+      {
+        if (columnOption.item.id == this.xAxisSelected.id)
+        {
+          xaxis = columnOption;
+          break;
+        }
+      }
+    }
+    else
+      xaxis = null;
+
+    for (let columnOption of this.data.chartColumnOptions)
+    {
+      if (columnOption.item.id == this.valueSelected.id)
+      {
+        valueColumn = columnOption;
+        break;
+      }
+    }
+
+    this.dialogRef.close ({
+      currentChartTypeName: this.selectedChartType.name,
+      currentOptionCategories: this.currentOptionCategories,
+      function: this.function,
+      variable: variable,
+      xaxis: xaxis,
+      valueColumn: valueColumn
+    });
   }
 }

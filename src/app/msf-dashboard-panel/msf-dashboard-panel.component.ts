@@ -4837,14 +4837,36 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   openAssistant(): void
   {
-    this.dialog.open (MsfDashboardAssistantComponent, {
+    let dialogRef = this.dialog.open (MsfDashboardAssistantComponent, {
       panelClass: 'msf-dashboard-assistant-dialog',
       data: {
         currentOption: JSON.parse (JSON.stringify (this.values.currentOption)),
         currentOptionCategories: JSON.parse (JSON.stringify (this.values.currentOptionCategories)),
-        chartColumnOptions: JSON.parse (JSON.stringify (this.values.chartColumnOptions)),
+        chartColumnOptions: this.values.chartColumnOptions,
         functions: this.functions
       }
     });
+
+    dialogRef.afterClosed ().subscribe (
+      (values) => {
+        if (values)
+        {
+          for (let chartType of this.chartTypes)
+          {
+            if (chartType.name === values.currentChartTypeName)
+            {
+              this.values.currentChartType = chartType;
+              break;
+            }
+          }
+
+          this.values.currentOptionCategories = values.currentOptionCategories;
+          this.values.variable = values.variable;
+          this.values.xaxis = values.xaxis;
+          this.values.valueColumn = values.valueColumn;
+          this.values.function = values.function;
+        }
+      }
+    );
   }
 }
