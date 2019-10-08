@@ -264,7 +264,18 @@
       </div>
     </span>
     <span *ngIf="stepper.selectedIndex == 2">
-      <span class="msf-dashboard-assistant-chart-type-label">Select Distributon Chart</span>
+      <span class="msf-dashboard-assistant-chart-type-label">
+        <span>Select Distributon Chart</span>
+        <div class="assistant-function-combobox">
+          <mat-form-field>
+            <mat-select placeholder="Function" [(ngModel)]="function">
+              <mat-option *ngFor="let fun of data.functions" [value]="fun">
+                {{fun.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </span>
       <div class="msf-dashboard-assistant-chart-config-buttons">
         <div class="msf-dashboard-assistant-chart-config-button" [ngClass]="{ 'msf-dashboard-assistant-chart-config-analysis-button': !analysisSelected, 'msf-dashboard-assistant-chart-config-analysis-button-selected': (analysisSelected || (!analysisSelecetd && selectingAnalysis)) }" (click)="selectAnalysis()">
           Analysis by

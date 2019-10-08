@@ -46,6 +46,7 @@ export class MsfDashboardAssistantComponent {
   valueSelected: any = null;
   selectingValue: boolean = false;
   chartPreviewHover: boolean = false;
+  function: any;
   lastColumn: any;
 
   currentOption: any;
@@ -80,6 +81,7 @@ export class MsfDashboardAssistantComponent {
     this.currentOption = data.currentOption;
     this.currentOptionCategories = data.currentOptionCategories;
     this.chartColumnOptions = data.chartColumnOptions;
+    this.function = data.functions[0];
 
     this.configureControlVariables ();
   }
@@ -557,6 +559,7 @@ export class MsfDashboardAssistantComponent {
         currentChartType: this.selectedChartType,
         currentOption: this.currentOption,
         currentOptionCategories: this.currentOptionCategories,
+        function: this.function,
         variable: variable,
         xaxis: xaxis,
         valueColumn: valueColumn

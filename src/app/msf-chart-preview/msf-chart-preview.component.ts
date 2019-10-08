@@ -91,7 +91,7 @@ export class MsfChartPreviewComponent {
     console.log (urlBase);
     urlArg = encodeURIComponent (urlBase);
     url = this.service.host + "/secure/getChartData?url=" + urlArg + "&optionId=" + this.data.currentOption.id + "&ipAddress=" + this.authService.getIpAddress () +
-      "&variable=" + this.data.variable.columnName + "&valueColumn=" + this.data.valueColumn.columnName + "&function=avg";
+      "&variable=" + this.data.variable.columnName + "&valueColumn=" + this.data.valueColumn.columnName + "&function=" + this.data.function.id;
 
     // don't use the xaxis parameter if the chart type is pie, donut or radar
     if (!(this.data.currentChartType.flags & ChartFlags.XYCHART))
