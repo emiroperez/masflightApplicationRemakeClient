@@ -39,6 +39,7 @@ import { ChartFlags } from '../msf-dashboard-panel/msf-dashboard-chartflags';
 import { AuthService } from '../services/auth.service';
 import { MsfMapComponent } from '../msf-map/msf-map.component';
 import { MsfDashboardAssistantComponent } from '../msf-dashboard-assistant/msf-dashboard-assistant.component';
+import { MsfDynamicTableAliasComponent } from '../msf-dynamic-table-alias/msf-dynamic-table-alias.component';
 
 // AmCharts colors
 const black = am4core.color ("#000000");
@@ -2124,44 +2125,13 @@ export class MsfDashboardPanelComponent implements OnInit {
       return;
     }
 
-    // destroy current chart if it's already generated to avoid a blank chart later
-    _this.destroyChart ();
-
     _this.dynTableData = data;
+    _this.values.lastestResponse = {
+      variables: _this.values.dynTableVariables,
+      values: _this.values.dynTableValues
+    };
 
-    _this.values.isLoading = false;
-    _this.values.displayDynTable = true;
-    _this.values.chartGenerated = false;
-    _this.values.infoGenerated = false;
-    _this.values.formGenerated = false;
-    _this.values.picGenerated = false;
-    _this.values.tableGenerated = false;
-    _this.values.mapboxGenerated = false;
-    _this.values.dynTableGenerated = true;
-
-    _this.removeDeadVariablesAndCategories.emit ({
-      type: _this.chartTypes.indexOf (_this.oldChartType),
-      analysisName: _this.oldVariableName,
-      chartSeries: _this.values.chartSeries,
-      controlVariables: _this.oldOptionCategories
-    });
-
-    _this.values.chartSeries = [];
-
-    _this.addNewVariablesAndCategories.emit ({
-      type: _this.chartTypes.indexOf (_this.values.currentChartType),
-      analysisName: null,
-      controlVariables: _this.values.currentOptionCategories,
-      chartSeries: _this.values.chartSeries,
-      optionId: _this.values.currentOption.id
-    });
-
-    _this.oldChartType = null;
-    _this.oldVariableName = "";
-    _this.oldOptionCategories = JSON.parse (JSON.stringify (_this.values.currentOptionCategories));
-
-    _this.stopUpdateInterval ();
-    _this.startUpdateInterval ();
+    _this.service.saveLastestResponse (_this, _this.getPanelInfo (), _this.handlerDynTableLastestResponse, _this.handlerDynTableError);
   }
 
   handlerPicSuccess(_this, data): void
@@ -2326,6 +2296,47 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.tableGenerated = true;
     _this.values.mapboxGenerated = false;
     _this.values.dynTableGenerated = false;
+
+    _this.removeDeadVariablesAndCategories.emit ({
+      type: _this.chartTypes.indexOf (_this.oldChartType),
+      analysisName: _this.oldVariableName,
+      chartSeries: _this.values.chartSeries,
+      controlVariables: _this.oldOptionCategories
+    });
+
+    _this.values.chartSeries = [];
+
+    _this.addNewVariablesAndCategories.emit ({
+      type: _this.chartTypes.indexOf (_this.values.currentChartType),
+      analysisName: null,
+      controlVariables: _this.values.currentOptionCategories,
+      chartSeries: _this.values.chartSeries,
+      optionId: _this.values.currentOption.id
+    });
+
+    _this.oldChartType = null;
+    _this.oldVariableName = "";
+    _this.oldOptionCategories = JSON.parse (JSON.stringify (_this.values.currentOptionCategories));
+
+    _this.stopUpdateInterval ();
+    _this.startUpdateInterval ();
+  }
+
+  handlerDynTableLastestResponse(_this): void
+  {
+    _this.values.isLoading = false;
+
+    // destroy current chart if it's already generated to avoid a blank chart later
+    _this.destroyChart ();
+
+    _this.values.displayDynTable = true;
+    _this.values.chartGenerated = false;
+    _this.values.infoGenerated = false;
+    _this.values.formGenerated = false;
+    _this.values.picGenerated = false;
+    _this.values.tableGenerated = false;
+    _this.values.mapboxGenerated = false;
+    _this.values.dynTableGenerated = true;
 
     _this.removeDeadVariablesAndCategories.emit ({
       type: _this.chartTypes.indexOf (_this.oldChartType),
@@ -2546,6 +2557,8 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     this.values.chartColumnOptions = [];
     this.values.tableVariables = [];
+    this.values.dynTableValues = null;
+    this.values.dynTableVariables = [];
 
     for (let columnConfig of component.columnOptions)
     {
@@ -2928,6 +2941,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.temp.style = JSON.parse (JSON.stringify (this.values.style));
     this.temp.vertAxisName = this.values.vertAxisName;
     this.temp.horizAxisName = this.values.horizAxisName;
+    this.temp.dynTableValues = JSON.parse (JSON.stringify (this.values.dynTableValues));
+    this.temp.dynTableVariables = JSON.parse (JSON.stringify (this.values.dynTableVariables));
 
     this.temp.formVariables = [];
     this.temp.tableVariables = JSON.parse (JSON.stringify (this.values.tableVariables));
@@ -3069,6 +3084,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.style = JSON.parse (JSON.stringify (this.temp.style));
     this.values.vertAxisName = this.temp.vertAxisName;
     this.values.horizAxisName = this.temp.horizAxisName;
+    this.values.dynTableValues = JSON.parse (JSON.stringify (this.temp.dynTableValues));
+    this.values.dynTableVariables = JSON.parse (JSON.stringify (this.temp.dynTableVariables));
 
     for (i = 0; i < this.chartTypes.length; i++)
     {
@@ -3204,6 +3221,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       this.values.vertAxisName = null;
       this.values.horizAxisName = null;
+
+      this.values.dynTableValues = null;
+      this.values.dynTableVariables = [];
     }
     else
     {
@@ -3244,6 +3264,12 @@ export class MsfDashboardPanelComponent implements OnInit {
 
         this.values.vertAxisName = null;
         this.values.horizAxisName = null;
+
+        if (!(this.values.currentChartType.flags & ChartFlags.DYNTABLE))
+        {
+          this.values.dynTableValues = null;
+          this.values.dynTableVariables = [];
+        }
       }
       else if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
       {
@@ -3259,6 +3285,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
           this.vertAxisDisabled = true;
           this.horizAxisDisabled = true;
+
+          this.values.dynTableValues = null;
+          this.values.dynTableVariables = [];
         }
       }
       else
@@ -3267,6 +3296,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
         this.vertAxisDisabled = false;
         this.horizAxisDisabled = false;
+
+        this.values.dynTableValues = null;
+        this.values.dynTableVariables = [];
       }
 
       this.chartForm.get ('variableCtrl').enable ();
@@ -3326,9 +3358,16 @@ export class MsfDashboardPanelComponent implements OnInit {
         return true;
       }
     }
+    else if (this.values.currentChartType.flags & ChartFlags.DYNTABLE)
+    {
+      if (this.values.currentOption != null && this.isDynamicTableSet ())
+      {
+        this.generateBtnEnabled = true;
+        return true;
+      }
+    }
     else if (this.values.currentChartType.flags & ChartFlags.PICTURE
       || this.values.currentChartType.flags & ChartFlags.TABLE
-      || this.values.currentChartType.flags & ChartFlags.DYNTABLE
       || this.values.currentChartType.flags & ChartFlags.MAP)
     {
       if (this.values.currentOption != null)
@@ -3598,7 +3637,109 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     if (this.values.currentChartType.flags & ChartFlags.DYNTABLE)
     {
-      // TODO: Read values for the Dynamic Table
+      if (this.values.chartColumnOptions.length)
+        this.variableCtrlBtnEnabled = true;
+
+      if (this.values.lastestResponse)
+      {
+        this.values.dynTableVariables = [];
+
+        for (let variable of this.values.lastestResponse.variables)
+        {
+          for (let columnOption of this.values.chartColumnOptions)
+          {
+            if (columnOption.id === variable.id)
+            {
+              let tableVariable;
+
+              this.values.dynTableVariables.push (columnOption);
+
+              tableVariable = this.values.dynTableVariables[this.values.dynTableVariables.length - 1];
+              tableVariable.direction = variable.direction;
+              tableVariable.order = variable.order;
+              break;
+            }
+          }
+        }
+
+        this.values.dynTableValues = [];
+
+        for (let value of this.values.lastestResponse.values)
+        {
+          for (let columnOption of this.values.chartColumnOptions)
+          {
+            if (columnOption.id === value.id)
+            {
+              let tableValue;
+
+              this.values.dynTableValues.push (columnOption);
+
+              tableValue = this.values.dynTableValues[this.values.dynTableValues.length - 1];
+              tableValue.order = value.order;
+
+              if (value.summary)
+              {
+                tableValue.summary = value.summary;
+
+                if (value.sumAlias)
+                  tableValue.sumAlias = value.sumAlias;
+              }
+
+              if (value.average)
+              {
+                tableValue.average = value.average;
+
+                if (value.avgAlias)
+                  tableValue.avgAlias = value.avgAlias;
+              }
+
+              if (value.mean)
+              {
+                tableValue.mean = value.mean;
+
+                if (value.meanAlias)
+                  tableValue.meanAlias = value.meanAlias;
+              }
+
+              if (value.max)
+              {
+                tableValue.max = value.max;
+
+                if (value.maxAlias)
+                  tableValue.maxAlias = value.maxAlias;
+              }
+
+              if (value.min)
+              {
+                tableValue.min = value.min;
+
+                if (value.minAlias)
+                  tableValue.minAlias = value.minAlias;
+              }
+
+              if (value.stddeviation)
+              {
+                tableValue.stddeviation = value.stddeviation;
+
+                if (value.stdDevAlias)
+                  tableValue.stdDevAlias = value.stdDevAlias;
+              }
+
+              if (value.count)
+              {
+                tableValue.count = value.count;
+
+                if (value.cntAlias)
+                  tableValue.cntAlias = value.cntAlias;
+              }
+
+              break;
+            }
+          }
+        }
+      }
+
+      this.checkChartType ();
       return;
     }
 
@@ -3892,25 +4033,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       {
         let panel;
 
-        if (_this.values.currentChartType.flags & ChartFlags.DYNTABLE)
-        {
-          // TODO: Store only the columns and rows for the dynamic table
-          // let tableVariableIds = [];
-
-          panel = _this.getPanelInfo ();
-          panel.function = -1;
-
-          /*for (let tableVariable of _this.values.tableVariables)
-          {
-            tableVariableIds.push ({
-              id: tableVariable.itemId,
-              checked: tableVariable.checked
-            });
-          }*/
-  
-          // panel.lastestResponse = JSON.stringify (tableVariableIds);
-        }
-        else if (_this.values.currentChartType.flags & ChartFlags.TABLE)
+        if (_this.values.currentChartType.flags & ChartFlags.TABLE)
         {
           let tableVariableIds = [];
 
@@ -3950,7 +4073,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         else if (_this.values.currentChartType.flags & ChartFlags.INFO
           && !(_this.values.currentChartType.flags & ChartFlags.PICTURE)
           && !(_this.values.currentChartType.flags & ChartFlags.MAP)
-          && !(_this.values.currentChartType.flags & ChartFlags.HEATMAP))
+          && !(_this.values.currentChartType.flags & ChartFlags.HEATMAP)
+          && !(_this.values.currentChartType.flags & ChartFlags.DYNTABLE))
         {
           let variables;
 
@@ -5043,7 +5167,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       elementsOrdered = elements.sort ((a, b) => (a.order > b.order) ? 1 : ((b.order > a.order) ? -1 : 0));
       this.values.dynTableVariables = elementsOrdered;
-    }    
+    }
+
+    this.checkPanelConfiguration ();
   }
 
   orderValues(elements)
@@ -5063,6 +5189,156 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       elementsOrdered = elements.sort ((a, b) => (a.order > b.order) ? 1 : ((b.order > a.order) ? -1 : 0));
       this.values.dynTableValues = elementsOrdered;
-    }    
+    }
+
+    this.checkPanelConfiguration ();
+  }
+
+  deleteVariable(variable): void
+  {
+    variable.order = null;
+    this.values.dynTableVariables.splice (this.values.dynTableVariables.indexOf (variable), 1);
+    this.values.dynTableVariables = JSON.parse (JSON.stringify (this.values.dynTableVariables)); // force update on the variables combo box
+  }
+
+  changeVariableDirection(variable): void
+  {
+    if (variable.direction === "vertical")
+      variable.direction = "horizontal";
+    else
+      variable.direction = "vertical";
+  }
+
+  isDynamicTableSet(): boolean
+  {
+    if (!this.isDynamicTableVariablesSet () || !this.dynamicTableHasFunctions ())
+      return false;
+
+    return true;
+  }
+
+  // check if there are any horizontal and vertical variables
+  isDynamicTableVariablesSet(): boolean
+  {
+    let hasVerticalVariables: boolean;
+
+    if (!this.values.dynTableVariables || this.values.dynTableVariables.length < 1)
+      return false;
+
+    hasVerticalVariables = false;
+
+    for (let value of this.values.dynTableVariables)
+    {
+      if (value.direction === "vertical")
+      {
+        hasVerticalVariables = true;
+        break;
+      }
+    }
+
+    if (!hasVerticalVariables)
+      return false;
+
+    return true;
+  }
+
+  dynamicTableHasFunctions(): boolean
+  {
+    if (!this.values.dynTableValues || this.values.dynTableValues.length < 1)
+      return false;
+
+    for (let value of this.values.dynTableValues)
+    {
+      if (!value.average && !value.summary && !value.min && !value.max 
+        && !value.count && !value.mean && !value.stddeviation)
+        return false;
+    }
+
+    return true;
+  }
+
+  configureAlias(value, name): void
+  {
+    let dialogRef, alias;
+
+    switch (name)
+    {
+      case 'Summary':
+        alias = value.sumAlias;
+        break;
+
+      case 'Average':
+        alias = value.avgAlias;
+        break;
+
+      case 'Mean':
+        alias = value.meanAlias;
+        break;
+
+      case 'Max':
+        alias = value.maxAlias;
+        break;
+
+      case 'Min':
+        alias = value.minAlias;
+        break;
+
+      case 'Std Deviation':
+        alias = value.stdDevAlias;
+        break;
+
+      case 'Count':
+        alias = value.cntAlias;
+        break;
+    }
+
+    dialogRef = this.dialog.open (MsfDynamicTableAliasComponent, {
+      height: '180px',
+      width: '300px',
+      panelClass: 'msf-dashboard-control-variables-dialog',
+      autoFocus: false,
+      data: {
+        alias: alias,
+        valueName: value.name,
+        name: name
+      }
+    });
+
+    dialogRef.afterClosed ().subscribe ((result: any) =>
+    {
+      if (result)
+      {
+        switch (name)
+        {
+          case 'Summary':
+            value.sumAlias = result;
+            break;
+
+          case 'Average':
+            value.avgAlias = result;
+            break;
+
+          case 'Mean':
+            value.meanAlias = result;
+            break;
+
+          case 'Max':
+            value.maxAlias = result;
+            break;
+
+          case 'Min':
+            value.minAlias = result;
+            break;
+
+          case 'Std Deviation':
+            value.stdDevAlias = result;
+            break;
+
+          case 'Count':
+            value.cntAlias = result;
+            break;
+        }
+      }
+    });
   }
 }

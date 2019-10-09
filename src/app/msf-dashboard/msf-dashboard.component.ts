@@ -478,6 +478,7 @@ export class MsfDashboardComponent implements OnInit {
     _this.dashboardColumnsProperties.splice (_this.columnToUpdate, 1);
     _this.dashboardColumnsReAppendCharts.splice (_this.columnToUpdate, 1);
     _this.globals.isLoading = false;
+    _this.changeDetector.detectChanges ();
   }
 
   // update the dashboard container and hide the menu after

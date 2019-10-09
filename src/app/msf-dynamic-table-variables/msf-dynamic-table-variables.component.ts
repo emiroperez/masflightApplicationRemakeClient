@@ -201,7 +201,7 @@ export class MsfDynamicTableVariablesComponent {
   {
     let hasVerticalVariables: boolean;
 
-    if (!this.globals.variables || this.globals.values.variables < 1)
+    if (!this.globals.variables || this.globals.variables.length < 1)
       return false;
 
     hasVerticalVariables = false;
@@ -229,7 +229,7 @@ export class MsfDynamicTableVariablesComponent {
     for (let value of this.globals.values)
     {
       if (!value.average && !value.summary && !value.min && !value.max 
-        && !value.count && !value.mean && !value.mean)
+        && !value.count && !value.mean && !value.stddeviation)
         return false;
     }
 

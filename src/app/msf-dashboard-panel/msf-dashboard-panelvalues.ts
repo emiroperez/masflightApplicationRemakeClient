@@ -55,7 +55,7 @@ export class MsfDashboardPanelValues {
 
     // values used for the dynamic table panel
     dynTableVariables: any[] = [];
-    dynTableValues: any[] = [];
+    dynTableValues: any;
 
     // palette colors used on charts
     paletteColors: string[] = [

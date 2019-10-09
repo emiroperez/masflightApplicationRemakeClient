@@ -626,11 +626,10 @@
           <span class="msf-dashboard-addmenu-item-text dynamic-table-config-label">Configuration</span>
         </div>
       </div>
-      <!-- TODO: Make the comboboxes disables until an option is selected -->
       <div class="msf-dynamic-table-variable-content">
         <div class="msf-var-content">
           <mat-form-field class="msf-full-width">
-            <mat-select [multiple]="true" placeholder="Variables" #variableSelect [(ngModel)]="this.globals.variables" (ngModelChange)="orderVariable($event)" openedChange="show()">
+            <mat-select [multiple]="true" [disabled]="!values.currentOption" placeholder="Variables" #variableSelect [(ngModel)]="this.values.dynTableVariables" (ngModelChange)="orderVariable($event)" openedChange="show()">
               <ngx-mat-select-search [formControl]="variableFilterCtrl" placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>
               <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
                 {{variable.name}}
@@ -651,7 +650,7 @@
       <img src="../../assets/images/{{globals.theme}}-arrows.png" class="msf-var-img" alt="">
         <div class="msf-var-content">
           <mat-form-field class="msf-full-width">
-            <mat-select [multiple]="true" placeholder="Values" #valueSelect [(ngModel)]="this.globals.values" (ngModelChange)="orderValues($event)">
+            <mat-select [multiple]="true" [disabled]="!values.currentOption" placeholder="Values" #valueSelect [(ngModel)]="this.values.dynTableValues" (ngModelChange)="orderValues($event)">
               <ngx-mat-select-search [formControl]="variableFilterCtrl" placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>
               <mat-option *ngFor="let value of filteredVariables | async" [value]="value">
                 {{value.name}}
@@ -667,39 +666,39 @@
                   </mat-panel-title>
                 </mat-expansion-panel-header>   
                 <div class="msf-component-radio">
-                  <mat-radio-group [(ngModel)]="val.function">
+                  <mat-radio-group [(ngModel)]="val.function" (ngModelChange)="checkPanelConfiguration()">
                     <div class="alias-container">
-                      <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="val.summary">Summary</mat-checkbox>
+                      <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="val.summary" (ngModelChange)="checkPanelConfiguration()">Summary</mat-checkbox>
                       <i *ngIf="val.summary" class="material-icons alias-button" (click)="configureAlias(val, 'Summary')">more_horiz</i>
                       <i *ngIf="!val.summary" class="material-icons alias-button-disabled">more_horiz</i>
                     </div>
                     <div class="alias-container">
-                      <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="val.average">Average</mat-checkbox>
+                      <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="val.average" (ngModelChange)="checkPanelConfiguration()">Average</mat-checkbox>
                       <i *ngIf="val.average" class="material-icons alias-button" (click)="configureAlias(val, 'Average')">more_horiz</i>
                       <i *ngIf="!val.average" class="material-icons alias-button-disabled">more_horiz</i>
                     </div>
                     <div class="alias-container">
-                      <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="val.mean">Mean</mat-checkbox>
+                      <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="val.mean" (ngModelChange)="checkPanelConfiguration()">Mean</mat-checkbox>
                       <i *ngIf="val.mean" class="material-icons alias-button" (click)="configureAlias(val, 'Mean')">more_horiz</i>
                       <i *ngIf="!val.mean" class="material-icons alias-button-disabled">more_horiz</i>
                     </div>
                     <div class="alias-container">
-                      <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="val.max">Max</mat-checkbox>
+                      <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="val.max" (ngModelChange)="checkPanelConfiguration()">Max</mat-checkbox>
                       <i *ngIf="val.max" class="material-icons alias-button" (click)="configureAlias(val, 'Max')">more_horiz</i>
                       <i *ngIf="!val.max" class="material-icons alias-button-disabled">more_horiz</i>
                     </div>
                     <div class="alias-container">
-                      <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="val.min">Min</mat-checkbox>
+                      <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="val.min" (ngModelChange)="checkPanelConfiguration()">Min</mat-checkbox>
                       <i *ngIf="val.min" class="material-icons alias-button" (click)="configureAlias(val, 'Min')">more_horiz</i>
                       <i *ngIf="!val.min" class="material-icons alias-button-disabled">more_horiz</i>
                     </div>
                     <div class="alias-container">
-                      <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="val.stddeviation">Std Deviation</mat-checkbox>
+                      <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="val.stddeviation" (ngModelChange)="checkPanelConfiguration()">Std Deviation</mat-checkbox>
                       <i *ngIf="val.stddeviation" class="material-icons alias-button" (click)="configureAlias(val, 'Std Deviation')">more_horiz</i>
                       <i *ngIf="!val.stddeviation" class="material-icons alias-button-disabled">more_horiz</i>
                     </div>
                     <div class="alias-container">
-                      <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="val.count">Count</mat-checkbox>
+                      <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="val.count" (ngModelChange)="checkPanelConfiguration()">Count</mat-checkbox>
                       <i *ngIf="val.count" class="material-icons alias-button" (click)="configureAlias(val, 'Count')">more_horiz</i>
                       <i *ngIf="!val.count" class="material-icons alias-button-disabled">more_horiz</i>
                     </div>
@@ -894,8 +893,19 @@
   <div class="msf-dashboard-panel-container-chart" *ngIf="values.displayDynTable" [style.height.px]="panelHeightOffset">
     <div class="msf-dashboard-panel-title">{{values.chartName}}</div>
     <div class="msf-dashboard-panel-sub-container-column">
-      <div class="dynamic-table-scroll">
-        <table *ngIf="dynTableData" class="mat-elevation-z8 dynamic-table-container">
+      <div class="msf-dashboard-panel-config-button" *ngIf="!globals.readOnlyDashboard">
+        <button mat-mini-fab (click)="goToDynTableConfiguration()" color="primary" matTooltip="Edit Configuration">
+          <mat-icon aria-label="Edit Configuration">menu</mat-icon>
+        </button>
+        <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="sharePanel()" matTooltip="Share Panel">
+          <mat-icon aria-label="Share Panel">share</mat-icon>
+        </button>
+        <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="copyControlVariables()" matTooltip="Copy Control Variables">
+          <mat-icon aria-label="Copy Control Variables">file_copy</mat-icon>
+        </button>
+      </div>
+      <div class="dynamic-table-scroll" [style.height.px]="panelHeightOffset - 20">
+        <table *ngIf="dynTableData" class="mat-elevation-z8 dynamic-table-container" [style.margin-top.px]="15">
           <tr class="dynamic-table-header-container" *ngFor="let header of dynTableData.headers">
             <!-- Always insert a blank tab header first since it's a pivot table -->
             <th class="dyanmic-table-padding"></th>
