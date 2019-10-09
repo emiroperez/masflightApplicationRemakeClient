@@ -12,12 +12,14 @@ export class MsfDashboardPanelValues {
     displayPic: boolean;
     displayTable: boolean;
     displayMapbox: boolean;
+    displayDynTable: boolean;
     chartGenerated: boolean;
     infoGenerated: boolean;
     formGenerated: boolean;
     picGenerated: boolean;
     tableGenerated: boolean;
     mapboxGenerated: boolean;
+    dynTableGenerated: boolean;
 
     chartName: String;
     chartColumnOptions:any[] = []; 
@@ -50,6 +52,10 @@ export class MsfDashboardPanelValues {
 
     // values used for the table panel
     tableVariables: any[] = [];
+
+    // values used for the dynamic table panel
+    dynTableVariables: any[] = [];
+    dynTableValues: any[] = [];
 
     // palette colors used on charts
     paletteColors: string[] = [

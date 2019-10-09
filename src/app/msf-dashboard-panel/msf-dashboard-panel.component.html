@@ -1,5 +1,5 @@
 <div [style.height.px]="panelHeight">
-  <div class="msf-dashboard-panel-container" [style.height.px]="panelHeightOffset" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && globals.readOnlyDashboard">
+  <div class="msf-dashboard-panel-container" [style.height.px]="panelHeightOffset" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !values.displayDynTable && globals.readOnlyDashboard">
     <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-picture-container">
       <div class="msf-dashboard-panel-picture-label-container">
         <div class="msf-dashboard-panel-picture-label">
@@ -8,7 +8,7 @@
       </div>
     </div>
   </div>
-  <div class="msf-dashboard-panel-container" [style.height.px]="panelHeightOffset" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !globals.readOnlyDashboard">
+  <div class="msf-dashboard-panel-container" [style.height.px]="panelHeightOffset" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !values.displayDynTable && !globals.readOnlyDashboard">
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-panel-sub-container-row">
         <mat-form-field [formGroup]="chartForm" class="msf-width-80">
@@ -43,7 +43,7 @@
         </mat-form-field>
       </div>
     </div>
-    <ng-container *ngIf="!isInformationPanel() && !isSimpleFormPanel() && !isPicturePanel() && !isTablePanel() && !isMapPanel() && !isHeatMapPanel() && !isMapboxPanel()">
+    <ng-container *ngIf="!isInformationPanel() && !isSimpleFormPanel() && !isPicturePanel() && !isTablePanel() && !isMapPanel() && !isHeatMapPanel() && !isMapboxPanel() && !isDynTablePanel()">
       <div class="msf-dashboard-panel-sub-container-column">
         <div class="msf-dashboard-addmenu-icon-item">
           <mat-icon class="msf-dashboard-chart-icon" aria-label="Filter List">filter_list</mat-icon>
@@ -136,7 +136,7 @@
               </button>
             </div>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated" mat-mini-fab (click)="goToChart()" color="primary" matTooltip="Go To Chart">
+              <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated && !values.dynTableGenerated" mat-mini-fab (click)="goToChart()" color="primary" matTooltip="Go To Chart">
                 <mat-icon aria-label="Go To Chart">bar_chart</mat-icon>
               </button>
             </div>
@@ -249,7 +249,7 @@
               </button>
             </div>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated" mat-mini-fab (click)="goToChart()" color="primary" matTooltip="Go To Information">
+              <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated && !values.dynTableGenerated" mat-mini-fab (click)="goToChart()" color="primary" matTooltip="Go To Information">
                 <mat-icon aria-label="Go To Information">bar_chart</mat-icon>
               </button>
             </div>
@@ -380,7 +380,7 @@
               </button>
             </div>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated" mat-mini-fab (click)="goToChart()" color="primary" matTooltip="Go To Form">
+              <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated && !values.dynTableGenerated" mat-mini-fab (click)="goToChart()" color="primary" matTooltip="Go To Form">
                 <mat-icon aria-label="Go To Form">bar_chart</mat-icon>
               </button>
             </div>
@@ -411,7 +411,7 @@
               </button>
             </div>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated" mat-mini-fab (click)="goToChart()" color="primary" matTooltip="Go To Picture">
+              <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated && !values.dynTableGenerated" mat-mini-fab (click)="goToChart()" color="primary" matTooltip="Go To Picture">
                 <mat-icon aria-label="Go To Picture">bar_chart</mat-icon>
               </button>
             </div>
@@ -442,7 +442,7 @@
               </button>
             </div>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated" mat-mini-fab (click)="goToChart()" color="primary" matTooltip="Go To Map">
+              <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated && !values.dynTableGenerated" mat-mini-fab (click)="goToChart()" color="primary" matTooltip="Go To Map">
                 <mat-icon aria-label="Go To Map">bar_chart</mat-icon>
               </button>
             </div>
@@ -520,7 +520,7 @@
               </button>
             </div>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated" mat-mini-fab (click)="goToChart()" color="primary" matTooltip="Go To Map">
+              <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated && !values.dynTableGenerated" mat-mini-fab (click)="goToChart()" color="primary" matTooltip="Go To Map">
                 <mat-icon aria-label="Go To Map">bar_chart</mat-icon>
               </button>
             </div>
@@ -567,7 +567,7 @@
               </button>
             </div>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated" mat-mini-fab (click)="goToChart()" color="primary" matTooltip="Go To Map">
+              <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated && !values.dynTableGenerated" mat-mini-fab (click)="goToChart()" color="primary" matTooltip="Go To Map">
                 <mat-icon aria-label="Go To Map">bar_chart</mat-icon>
               </button>
             </div>
@@ -606,7 +606,121 @@
               </button>
             </div>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated" mat-mini-fab (click)="goToChart()" color="primary" matTooltip="Go To Table">
+              <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated && !values.dynTableGenerated" mat-mini-fab (click)="goToChart()" color="primary" matTooltip="Go To Table">
+                <mat-icon aria-label="Go To Table">bar_chart</mat-icon>
+              </button>
+            </div>
+            <div class="msf-dashboard-panel-control-variable-button">
+              <button mat-mini-fab (click)="savePanel()" color="primary" matTooltip="Save Changes">
+                <mat-icon aria-label="Save Changes">save</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="isDynTablePanel()">
+      <div class="msf-dashboard-panel-sub-container-column">
+        <div class="msf-dashboard-addmenu-icon-item">
+          <img src="../../assets/images/{{globals.theme}}-dynamicTable.png" [style.margin-left.px]="10" [style.margin-right.px]="10" [style.width.px]="20" [style.height.px]="20">
+          <span class="msf-dashboard-addmenu-item-text dynamic-table-config-label">Configuration</span>
+        </div>
+      </div>
+      <!-- TODO: Make the comboboxes disables until an option is selected -->
+      <div class="msf-dynamic-table-variable-content">
+        <div class="msf-var-content">
+          <mat-form-field class="msf-full-width">
+            <mat-select [multiple]="true" placeholder="Variables" #variableSelect [(ngModel)]="this.globals.variables" (ngModelChange)="orderVariable($event)" openedChange="show()">
+              <ngx-mat-select-search [formControl]="variableFilterCtrl" placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>
+              <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
+                {{variable.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        <ng-container *ngFor="let variable of this.values.dynTableVariables">
+          <mat-card class="msf-var-name-content">
+            {{variable.name}}
+            <div class="msf-var-buttons">
+              <i class="material-icons" *ngIf="variable.direction === 'vertical'" (click)="changeVariableDirection(variable)">arrow_downward</i>
+              <i class="material-icons" *ngIf="variable.direction === 'horizontal'" (click)="changeVariableDirection(variable)">arrow_forward</i>
+              <i class="material-icons" (click)="deleteVariable(variable)">close</i>
+            </div>
+          </mat-card>
+        </ng-container>
+      </div>
+      <img src="../../assets/images/{{globals.theme}}-arrows.png" class="msf-var-img" alt="">
+        <div class="msf-var-content">
+          <mat-form-field class="msf-full-width">
+            <mat-select [multiple]="true" placeholder="Values" #valueSelect [(ngModel)]="this.globals.values" (ngModelChange)="orderValues($event)">
+              <ngx-mat-select-search [formControl]="variableFilterCtrl" placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>
+              <mat-option *ngFor="let value of filteredVariables | async" [value]="value">
+                {{value.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-accordion>
+            <ng-container *ngFor="let val of this.values.dynTableValues"> 
+              <mat-expansion-panel class="msf-val-name-content">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    {{val.name}}
+                  </mat-panel-title>
+                </mat-expansion-panel-header>   
+                <div class="msf-component-radio">
+                  <mat-radio-group [(ngModel)]="val.function">
+                    <div class="alias-container">
+                      <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="val.summary">Summary</mat-checkbox>
+                      <i *ngIf="val.summary" class="material-icons alias-button" (click)="configureAlias(val, 'Summary')">more_horiz</i>
+                      <i *ngIf="!val.summary" class="material-icons alias-button-disabled">more_horiz</i>
+                    </div>
+                    <div class="alias-container">
+                      <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="val.average">Average</mat-checkbox>
+                      <i *ngIf="val.average" class="material-icons alias-button" (click)="configureAlias(val, 'Average')">more_horiz</i>
+                      <i *ngIf="!val.average" class="material-icons alias-button-disabled">more_horiz</i>
+                    </div>
+                    <div class="alias-container">
+                      <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="val.mean">Mean</mat-checkbox>
+                      <i *ngIf="val.mean" class="material-icons alias-button" (click)="configureAlias(val, 'Mean')">more_horiz</i>
+                      <i *ngIf="!val.mean" class="material-icons alias-button-disabled">more_horiz</i>
+                    </div>
+                    <div class="alias-container">
+                      <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="val.max">Max</mat-checkbox>
+                      <i *ngIf="val.max" class="material-icons alias-button" (click)="configureAlias(val, 'Max')">more_horiz</i>
+                      <i *ngIf="!val.max" class="material-icons alias-button-disabled">more_horiz</i>
+                    </div>
+                    <div class="alias-container">
+                      <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="val.min">Min</mat-checkbox>
+                      <i *ngIf="val.min" class="material-icons alias-button" (click)="configureAlias(val, 'Min')">more_horiz</i>
+                      <i *ngIf="!val.min" class="material-icons alias-button-disabled">more_horiz</i>
+                    </div>
+                    <div class="alias-container">
+                      <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="val.stddeviation">Std Deviation</mat-checkbox>
+                      <i *ngIf="val.stddeviation" class="material-icons alias-button" (click)="configureAlias(val, 'Std Deviation')">more_horiz</i>
+                      <i *ngIf="!val.stddeviation" class="material-icons alias-button-disabled">more_horiz</i>
+                    </div>
+                    <div class="alias-container">
+                      <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="val.count">Count</mat-checkbox>
+                      <i *ngIf="val.count" class="material-icons alias-button" (click)="configureAlias(val, 'Count')">more_horiz</i>
+                      <i *ngIf="!val.count" class="material-icons alias-button-disabled">more_horiz</i>
+                    </div>
+                  </mat-radio-group>
+                </div>
+              </mat-expansion-panel>
+            </ng-container>
+          </mat-accordion>
+        </div>
+      </div>
+      <div class="msf-dashboard-panel-sub-container-column">
+        <div class="msf-dashboard-chart-options-container">
+          <div class="msf-dashboard-panel-sub-container-column-reverse">
+            <button [disabled]="!generateBtnEnabled" mat-flat-button [ngClass]="generateBtnEnabled ? 'flat-button' : 'flat-button-disabled'" (click)="loadData()">Generate</button>
+            <div class="msf-dashboard-panel-control-variable-button">
+              <button [disabled]="!variableCtrlBtnEnabled" mat-mini-fab (click)="goToControlVariables()" color="primary" matTooltip="Control Variables">
+                <mat-icon aria-label="Control Variables">more_vert</mat-icon>
+              </button>
+            </div>
+            <div class="msf-dashboard-panel-control-variable-button">
+              <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated && !values.dynTableGenerated" mat-mini-fab (click)="goToChart()" color="primary" matTooltip="Go To Table">
                 <mat-icon aria-label="Go To Table">bar_chart</mat-icon>
               </button>
             </div>
@@ -774,6 +888,24 @@
       </div>
       <div [style.height.px]="calcPanelHeight()" style="width: calc(100% - 50px)">
         <app-msf-map #msfMapRef [isLoading]="values.isLoading" [useCancelButton]="false" [displayMapMenu]="2" [currentMapType]="values.style" [legendOffset]="55" (finishLoading)="finishMapboxLoading($event)"></app-msf-map>
+      </div>
+    </div>
+  </div>
+  <div class="msf-dashboard-panel-container-chart" *ngIf="values.displayDynTable" [style.height.px]="panelHeightOffset">
+    <div class="msf-dashboard-panel-title">{{values.chartName}}</div>
+    <div class="msf-dashboard-panel-sub-container-column">
+      <div class="dynamic-table-scroll">
+        <table *ngIf="dynTableData" class="mat-elevation-z8 dynamic-table-container">
+          <tr class="dynamic-table-header-container" *ngFor="let header of dynTableData.headers">
+            <!-- Always insert a blank tab header first since it's a pivot table -->
+            <th class="dyanmic-table-padding"></th>
+            <th class="dynamic-table-header" *ngFor="let value of header.values" [colSpan]="value.colSpan">{{value.value}}</th>
+          </tr>
+          <tr class="dynamic-table-body-container" *ngFor="let body of dynTableData.body">
+            <th class="dynamic-table-body-title">{{body[0].value}}</th>
+            <td class="dynamic-table-value" *ngFor="let value of body | slice: 1; let valueindex = index"><span *ngIf="body[valueindex + 1]">{{body[valueindex + 1]}}</span></td>
+          </tr>
+        </table>
       </div>
     </div>
   </div>

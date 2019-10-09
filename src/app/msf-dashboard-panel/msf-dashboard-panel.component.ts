@@ -84,7 +84,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     { name: 'Table', flags: ChartFlags.TABLE },
     { name: 'Map', flags: ChartFlags.MAP },
     { name: 'Heat Map', flags: ChartFlags.HEATMAP },
-    { name: 'Map Tracker', flags: ChartFlags.MAP | ChartFlags.MAPBOX }/*,
+    { name: 'Map Tracker', flags: ChartFlags.MAP | ChartFlags.MAPBOX },
+    { name: 'Dynamic Table', flags: ChartFlags.DYNTABLE }/*,
     { name: 'Simple Picture', flags: ChartFlags.INFO | ChartFlags.PICTURE }*/
   ];
 
@@ -168,6 +169,11 @@ export class MsfDashboardPanelComponent implements OnInit {
   shadowLineSeries: any;
   checkedCities: any[] = [];
   checkedRoutes: any[] = [];
+
+  // dynamic table variables
+  dynTableData: any;
+  dynTableOrder: number = 0;
+  dynTableOrderValue: number = 0;
 
   actualPageNumber: number;
   dataSource: boolean = false;
@@ -1336,7 +1342,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.msfTableRef.tableOptions = this;
 
     if ((this.values.currentChartType.flags & ChartFlags.TABLE)
-      || (this.values.currentChartType.flags & ChartFlags.MAPBOX))
+      || (this.values.currentChartType.flags & ChartFlags.MAPBOX)
+      || (this.values.currentChartType.flags & ChartFlags.DYNTABLE))
     {
       if (this.values.function != null && this.values.function != -1)
         this.values.function = -1;
@@ -1377,7 +1384,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.initPanelSettings ();
 
     if ((this.values.currentChartType.flags & ChartFlags.TABLE)
-      || (this.values.currentChartType.flags & ChartFlags.MAPBOX))
+      || (this.values.currentChartType.flags & ChartFlags.MAPBOX)
+      || (this.values.currentChartType.flags & ChartFlags.DYNTABLE))
     {
       if (this.values.function == 1)
       {
@@ -1485,7 +1493,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     if (argument.name1 != null && argument.name1.toLowerCase ().includes ("grouping"))
     {
-      if (this.values.currentChartType.flags & ChartFlags.TABLE)
+      if (this.values.currentChartType.flags & ChartFlags.TABLE || this.values.currentChartType.flags & ChartFlags.DYNTABLE)
         return true; // tables must not check this!
       else if (this.values.currentChartType.flags & ChartFlags.INFO)
       {
@@ -1631,6 +1639,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     else if (this.values.currentChartType.flags & ChartFlags.FORM
       || this.values.currentChartType.flags & ChartFlags.PICTURE
       || this.values.currentChartType.flags & ChartFlags.TABLE
+      || this.values.currentChartType.flags & ChartFlags.DYNTABLE
       || this.values.currentChartType.flags & ChartFlags.MAP)
     {
       return {
@@ -1854,6 +1863,22 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.authService.get (this.msfTableRef, url, handlerSuccess, handlerError);
   }
 
+  loadDynamicTableData(handlerSuccess, handlerError): void
+  {
+    let url, urlBase, urlArg, data;
+
+    this.values.isLoading = true;
+
+    urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
+    urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
+    console.log(urlBase);
+    urlArg = encodeURIComponent(urlBase);
+    data = { variables: this.values.dynTableVariables, values: this.values.dynTableValues };
+    url = this.service.host + "/secure/getHorizontalMatrix?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
+
+    this.authService.post (this, url, data, handlerSuccess, handlerError);
+  }
+
   loadData(): void
   {
     this.globals.startTimestamp = new Date ();
@@ -1874,6 +1899,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.loadMapData (this.handlerHeatMapSuccess, this.handlerHeatMapError);
     else if (this.values.currentChartType.flags & ChartFlags.MAP)
       this.loadMapData (this.handlerMapSuccess, this.handlerMapError);
+    else if (this.values.currentChartType.flags & ChartFlags.DYNTABLE)
+      this.loadDynamicTableData (this.handlerDynTableSuccess, this.handlerDynTableError);
     else if (this.values.currentChartType.flags & ChartFlags.TABLE)
       this.loadTableData (false, this.msfTableRef.handlerSuccess, this.msfTableRef.handlerError);
     else if (this.values.currentChartType.flags & ChartFlags.PICTURE)
@@ -1942,6 +1969,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.picGenerated = false;
     this.values.tableGenerated = false;
     this.values.mapboxGenerated = false;
+    this.values.dynTableGenerated = false;
     this.values.isLoading = false;
 
     if (this.values.currentChartType.flags & ChartFlags.MAP)
@@ -1949,6 +1977,12 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.dialog.open (MessageComponent, {
         data: { title: "Error", message: "No data available for the map." }
       });
+    }
+    else if (this.values.currentChartType.flags & ChartFlags.DYNTABLE)
+    {
+      this.dialog.open (MessageComponent, {
+        data: { title: "Error", message: "No data available for the dynamic table." }
+      });      
     }
     else if (this.values.currentChartType.flags & ChartFlags.TABLE)
     {
@@ -2082,6 +2116,54 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.service.saveLastestResponse (_this, _this.getPanelInfo (), _this.handlerMapLastestResponse, _this.handlerMapError);
   }
 
+  handlerDynTableSuccess(_this, data): void
+  {
+    if (data == null)
+    {
+      _this.noDataFound ();
+      return;
+    }
+
+    // destroy current chart if it's already generated to avoid a blank chart later
+    _this.destroyChart ();
+
+    _this.dynTableData = data;
+
+    _this.values.isLoading = false;
+    _this.values.displayDynTable = true;
+    _this.values.chartGenerated = false;
+    _this.values.infoGenerated = false;
+    _this.values.formGenerated = false;
+    _this.values.picGenerated = false;
+    _this.values.tableGenerated = false;
+    _this.values.mapboxGenerated = false;
+    _this.values.dynTableGenerated = true;
+
+    _this.removeDeadVariablesAndCategories.emit ({
+      type: _this.chartTypes.indexOf (_this.oldChartType),
+      analysisName: _this.oldVariableName,
+      chartSeries: _this.values.chartSeries,
+      controlVariables: _this.oldOptionCategories
+    });
+
+    _this.values.chartSeries = [];
+
+    _this.addNewVariablesAndCategories.emit ({
+      type: _this.chartTypes.indexOf (_this.values.currentChartType),
+      analysisName: null,
+      controlVariables: _this.values.currentOptionCategories,
+      chartSeries: _this.values.chartSeries,
+      optionId: _this.values.currentOption.id
+    });
+
+    _this.oldChartType = null;
+    _this.oldVariableName = "";
+    _this.oldOptionCategories = JSON.parse (JSON.stringify (_this.values.currentOptionCategories));
+
+    _this.stopUpdateInterval ();
+    _this.startUpdateInterval ();
+  }
+
   handlerPicSuccess(_this, data): void
   {
     if (data == null)
@@ -2101,6 +2183,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.picGenerated = true;
     _this.values.tableGenerated = false;
     _this.values.mapboxGenerated = false;
+    _this.values.dynTableGenerated = false;
 
     _this.removeDeadVariablesAndCategories.emit ({
       type: _this.chartTypes.indexOf (_this.oldChartType),
@@ -2201,6 +2284,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.picGenerated = false;
     _this.values.tableGenerated = false;
     _this.values.mapboxGenerated = false;
+    _this.values.dynTableGenerated = false;
 
     _this.removeDeadVariablesAndCategories.emit ({
       type: _this.chartTypes.indexOf (_this.oldChartType),
@@ -2241,6 +2325,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.picGenerated = false;
     _this.values.tableGenerated = true;
     _this.values.mapboxGenerated = false;
+    _this.values.dynTableGenerated = false;
 
     _this.removeDeadVariablesAndCategories.emit ({
       type: _this.chartTypes.indexOf (_this.oldChartType),
@@ -2279,6 +2364,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.picGenerated = false;
     _this.values.tableGenerated = false;
     _this.values.mapboxGenerated = true;
+    _this.values.dynTableGenerated = false;
 
     _this.removeDeadVariablesAndCategories.emit ({
       type: _this.chartTypes.indexOf (_this.oldChartType),
@@ -2330,6 +2416,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.picGenerated = false;
     _this.values.tableGenerated = false;
     _this.values.mapboxGenerated = false;
+    _this.values.dynTableGenerated = false;
 
     setTimeout (() =>
     {
@@ -2354,6 +2441,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.picGenerated = false;
     _this.values.tableGenerated = false;
     _this.values.mapboxGenerated = false;
+    _this.values.dynTableGenerated = false;
 
     setTimeout (() =>
     {
@@ -2386,6 +2474,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.picGenerated = false;
     _this.values.tableGenerated = false;
     _this.values.mapboxGenerated = false;
+    _this.values.dynTableGenerated = false;
     _this.values.isLoading = false;
 
     _this.removeDeadVariablesAndCategories.emit ({
@@ -2438,6 +2527,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.picGenerated = false;
     _this.values.tableGenerated = false;
     _this.values.mapboxGenerated = false;
+    _this.values.dynTableGenerated = false;
 
     setTimeout (() =>
     {
@@ -2534,6 +2624,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.picGenerated = false;
     this.values.tableGenerated = false;
     this.values.mapboxGenerated = false;
+    this.values.dynTableGenerated = false;
 
     this.removeDeadVariablesAndCategories.emit ({
       type: this.chartTypes.indexOf (this.oldChartType),
@@ -2596,6 +2687,14 @@ export class MsfDashboardPanelComponent implements OnInit {
   handlerMapError(_this, result): void
   {
     console.log (result);
+    _this.generateError ();
+  }
+
+  handlerDynTableError(_this, result): void
+  {
+    if (result != null)
+      console.log (result);
+
     _this.generateError ();
   }
 
@@ -2931,6 +3030,12 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.storeChartValues ();
   }
 
+  goToDynTableConfiguration(): void
+  {
+    this.values.displayDynTable = false;
+    this.storeChartValues ();
+  }
+
   goToChart(): void
   {
     let i, item;
@@ -2945,6 +3050,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.values.displayTable = true;
     else if (this.values.mapboxGenerated)
       this.values.displayMapbox = true;
+    else if (this.values.dynTableGenerated)
+      this.values.displayDynTable = true;
     else
       this.values.displayChart = true;
 
@@ -3107,7 +3214,8 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       if (this.values.currentChartType.flags & ChartFlags.TABLE
         || this.values.currentChartType.flags & ChartFlags.MAP
-        || this.values.currentChartType.flags & ChartFlags.HEATMAP)
+        || this.values.currentChartType.flags & ChartFlags.HEATMAP
+        || this.values.currentChartType.flags & ChartFlags.DYNTABLE)
       {
         if (this.values.currentChartType.flags & ChartFlags.MAP)
         {
@@ -3220,6 +3328,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
     else if (this.values.currentChartType.flags & ChartFlags.PICTURE
       || this.values.currentChartType.flags & ChartFlags.TABLE
+      || this.values.currentChartType.flags & ChartFlags.DYNTABLE
       || this.values.currentChartType.flags & ChartFlags.MAP)
     {
       if (this.values.currentOption != null)
@@ -3484,6 +3593,12 @@ export class MsfDashboardPanelComponent implements OnInit {
       }
 
       this.checkChartType ();
+      return;
+    }
+
+    if (this.values.currentChartType.flags & ChartFlags.DYNTABLE)
+    {
+      // TODO: Read values for the Dynamic Table
       return;
     }
 
@@ -3765,6 +3880,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.picGenerated = false;
     _this.values.tableGenerated = false;
     _this.values.mapboxGenerated = false;
+    _this.values.dynTableGenerated = false;
     _this.temp = null;
     _this.values.isLoading = false;
   }
@@ -3776,7 +3892,25 @@ export class MsfDashboardPanelComponent implements OnInit {
       {
         let panel;
 
-        if (_this.values.currentChartType.flags & ChartFlags.TABLE)
+        if (_this.values.currentChartType.flags & ChartFlags.DYNTABLE)
+        {
+          // TODO: Store only the columns and rows for the dynamic table
+          // let tableVariableIds = [];
+
+          panel = _this.getPanelInfo ();
+          panel.function = -1;
+
+          /*for (let tableVariable of _this.values.tableVariables)
+          {
+            tableVariableIds.push ({
+              id: tableVariable.itemId,
+              checked: tableVariable.checked
+            });
+          }*/
+  
+          // panel.lastestResponse = JSON.stringify (tableVariableIds);
+        }
+        else if (_this.values.currentChartType.flags & ChartFlags.TABLE)
         {
           let tableVariableIds = [];
 
@@ -3906,6 +4040,11 @@ export class MsfDashboardPanelComponent implements OnInit {
   isTablePanel(): boolean
   {
     return (this.values.currentChartType.flags & ChartFlags.TABLE) ? true : false;
+  }
+
+  isDynTablePanel(): boolean
+  {
+    return (this.values.currentChartType.flags & ChartFlags.DYNTABLE) ? true : false;
   }
 
   isMapPanel(): boolean
@@ -4361,6 +4500,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.values.picGenerated = false;
       this.values.tableGenerated = true;
       this.values.mapboxGenerated = false;
+      this.values.dynTableGenerated = false;
 
       // resume the update interval if activated
       if (this.values.updateIntervalSwitch)
@@ -4881,5 +5021,48 @@ export class MsfDashboardPanelComponent implements OnInit {
         }
       }
     );
+  }
+
+  orderVariable(elements)
+  {
+    if (elements)
+    {
+      let elementsOrdered;
+
+      for (let element of elements)
+      {
+        if (!element.direction)
+          element.direction = "vertical";
+
+        if(element.order == null)
+        {
+          element.order = this.dynTableOrder;  
+          this.dynTableOrder++;  
+        }      
+      }
+
+      elementsOrdered = elements.sort ((a, b) => (a.order > b.order) ? 1 : ((b.order > a.order) ? -1 : 0));
+      this.values.dynTableVariables = elementsOrdered;
+    }    
+  }
+
+  orderValues(elements)
+  {
+    if (elements)
+    {
+      let elementsOrdered;
+
+      for (let element of elements)
+      {
+        if (element.order == null)
+        {
+          element.order = this.dynTableOrderValue;  
+          this.dynTableOrderValue++;  
+        }      
+      }
+
+      elementsOrdered = elements.sort ((a, b) => (a.order > b.order) ? 1 : ((b.order > a.order) ? -1 : 0));
+      this.values.dynTableValues = elementsOrdered;
+    }    
   }
 }
