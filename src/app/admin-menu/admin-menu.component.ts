@@ -259,13 +259,16 @@ export class EditOutputOptionsMetaDialog {
     this.optionSelected = row;
   }
 
-  deleteOption() {
+  deleteOption(defaultMenu) {
     if (this.optionSelected) {
       this.optionSelected.delete = true;
       this.dataToDelete.push(this.optionSelected);
       const index: number = this.data.outputs.findIndex(d => d === this.optionSelected);
       this.data.outputs.splice(index, 1);
       this.dataSource = new MatTableDataSource(this.data.outputs);
+
+      if (defaultMenu == this.optionSelected.id)
+        defaultMenu = null;
     }
   }
 
@@ -755,7 +758,9 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     { type: "states", numArguments: 1 },
     { type: "flightSegments", numArguments: 1 },
     { type: "AAA_Group", numArguments: 1 }
-  ]
+  ];
+
+  defaultMenu: number;
 
   constructor(private http: ApiClient, public globals: Globals,
     private service: ApplicationService, public snackBar: MatSnackBar,
@@ -804,8 +809,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.innerHeight = window.innerHeight;
-    this.getMenuData();
-    this.getCategoryArguments();
+    this.getDefaultMenuId();
   }
 
   ngAfterViewInit(): void {
@@ -1171,7 +1175,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     } else {
       this.verifyOrder();
       console.log(this.dataSource.data);
-      this.service.saveMenu(this, this.dataSource.data, this.handlerSuccessSaveMenuData, this.handlerErrorSaveMenuData);
+      this.service.saveMenu(this, this.defaultMenu, this.dataSource.data, this.handlerSuccessSaveMenuData, this.handlerErrorSaveMenuData);
     }
   }
 
@@ -1277,7 +1281,18 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     _this.globals.isLoading = false;
   }
 
+  getDefaultMenuId(): void {
+    this.service.getDefaultMenuId (this, this.handlerDefaultMenuSuccess, this.handlerGetErrorMenuData);
+  }
 
+  handlerDefaultMenuSuccess(_this, data): void
+  {
+    _this.defaultMenu = data;
+
+    // TODO: Load the category arguments one by one?
+    _this.getMenuData();
+    _this.getCategoryArguments();
+  }
 
   getMenuData(): void {
     this.service.loadMenuOptions(this, this.handlerGetSuccessMenuData, this.handlerGetErrorMenuData);
@@ -1890,6 +1905,19 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     this.filteredCategories.next (
       this.categories.filter (a => a.label.toLowerCase ().indexOf (search) > -1)
     );
+  }
+
+  isDefaultMenuChecked(optionSelected): boolean
+  {
+    return this.defaultMenu === optionSelected.id;
+  }
+
+  checkDefaultMenu(optionSelected): void
+  {
+    if (this.defaultMenu == optionSelected.id)
+      this.defaultMenu = null;
+    else
+      this.defaultMenu = optionSelected.id;
   }
 }
 

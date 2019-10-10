@@ -34,7 +34,7 @@
                                     <button mat-icon-button (click)="addNewItem()">
                                         <mat-icon class="admin-mat-icon-button" aria-label="add">add_circle</mat-icon>
                                     </button>
-                                    <button mat-icon-button (click)="deleteOption()">
+                                    <button mat-icon-button (click)="deleteOption(defaultMenu)">
                                         <mat-icon class="admin-mat-icon-button" aria-label="delete">remove_circle</mat-icon>
                                     </button>
                                     <button mat-icon-button (click)="saveMenu()">
@@ -86,7 +86,12 @@
                             </div>
                             <div *ngIf="!optionSelected.isRoot && optionSelected.isActive">
                                 <div *ngIf="optionSelected.children.length == 0">
-                                    <h2 class="title-section">Menu Option Configuration</h2>
+                                    <div class="admin-menu-header-container">
+                                        <h2 class="title-section">Menu Option Configuration</h2>
+                                        <div class="admin-menu-option-checkbox">
+                                            <mat-checkbox class="admin-checkboxes" color="primary" [checked]="isDefaultMenuChecked(optionSelected)" (change)="checkDefaultMenu(optionSelected)">Default Option</mat-checkbox>
+                                        </div>
+                                    </div>
                                     <mat-form-field class="standard-text admin-input-base-url">
                                         <input matInput class="standard-input-text" placeholder="URL Base" [(ngModel)]="optionSelected.baseUrl" (ngModelChange)="setChangeURL(optionSelected)">
                                     </mat-form-field>
