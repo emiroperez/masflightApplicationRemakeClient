@@ -70,6 +70,15 @@
                             </div>
                         </div>
                         <div class="admin-menu-right-panel-container">
+                            <!--
+                            <div class="admin-menu-root-container" *ngIf="optionSelected.isRoot && optionSelected.isActive">
+                                <h2 class="title-section">Menu Configuration</h2>
+                                <span class="welcome-message">Welcome Message</span>
+                                <div class="admin-menu-html-editor">
+                                    <angular-editor [(ngModel)]="htmlContent" [config]="htmlEditorConfig"></angular-editor>
+                                </div>
+                            </div>
+                            -->
                             <div *ngIf="!optionSelected.isRoot && optionSelected.isActive">
                                 <div *ngIf="optionSelected.children.length != 0">
                                     <h2 class="title-section">Submenu Configuration</h2>

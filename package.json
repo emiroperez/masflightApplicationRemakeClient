@@ -26,6 +26,7 @@
     "@angular/platform-browser-dynamic": "^7.2.7",
     "@angular/router": "^7.2.7",
     "@auth0/angular-jwt": "^2.1.0",
+    "@kolkov/angular-editor": "^0.18.7",
     "@ng-select/ng-select": "^2.16.0",
     "@turf/turf": "^5.1.6",
     "@types/moment": "^2.13.0",

@@ -18,6 +18,7 @@ import { ComponentType } from '../commons/ComponentType';
 import { Arguments } from '../model/Arguments';
 import { Moment } from 'moment';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 //import  clonedeep from 'lodash.clonedeep';
 
 @Component({
@@ -757,7 +758,32 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     { type: "AAA_Group", numArguments: 1 }
   ];
 
+  htmlEditorConfig: AngularEditorConfig = {
+    editable: true,
+    spellcheck: true,
+    placeholder: '',
+    translate: 'no',
+    defaultFontName: 'Arial',
+    defaultFontSize: '2',
+    customClasses: [
+      {
+        name: 'quote',
+        class: 'quote',
+      },
+      {
+        name: 'redText',
+        class: 'redText'
+      },
+      {
+        name: 'titleText',
+        class: 'titleText',
+        tag: 'h1',
+      },
+    ]
+  };
+
   defaultMenu: number;
+  htmlContent: string;
 
   constructor(private http: ApiClient, public globals: Globals,
     private service: ApplicationService, public snackBar: MatSnackBar,
