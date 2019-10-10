@@ -809,7 +809,9 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.innerHeight = window.innerHeight;
-    this.getDefaultMenuId();
+    this.getDefaultMenuId ();
+    this.getMenuData ();
+    this.getCategoryArguments ();
   }
 
   ngAfterViewInit(): void {
@@ -1180,6 +1182,10 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   }
 
   handlerSuccessSaveMenuData(_this, data) {
+    // set default menu id after saving the menu
+    _this.globals.currentApplication.defaultMenu = _this.defaultMenu;
+    localStorage.setItem ("currentApplication", JSON.stringify (_this.globals.currentApplication));
+
     _this.getMenuData();
   }
 
@@ -1282,16 +1288,12 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   }
 
   getDefaultMenuId(): void {
-    this.service.getDefaultMenuId (this, this.handlerDefaultMenuSuccess, this.handlerGetErrorMenuData);
+    this.service.getMenuDefaultId(this, this.handlerDefaultMenuSuccess, this.handlerGetErrorMenuData);
   }
 
   handlerDefaultMenuSuccess(_this, data): void
   {
     _this.defaultMenu = data;
-
-    // TODO: Load the category arguments one by one?
-    _this.getMenuData();
-    _this.getCategoryArguments();
   }
 
   getMenuData(): void {

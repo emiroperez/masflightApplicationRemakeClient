@@ -188,8 +188,13 @@ export class ApplicationService {
   }
 
   saveMenu(_this, defaultMenuId, data, handlerSuccess, handlerError){
+    let url;
+
     _this.globals.isLoading = true;
-    let url = this.host + "/menu?applicationId=" + _this.globals.currentApplication.id + "&defaultMenuId=" + defaultMenuId;
+    url = this.host + "/menu?applicationId=" + _this.globals.currentApplication.id;
+    if (defaultMenuId)
+      url += "&defaultMenuId=" + defaultMenuId;
+
     this.http.post(_this, url, data, handlerSuccess, handlerError);
   }
 
@@ -550,9 +555,14 @@ export class ApplicationService {
     this.http.post (_this, url, shareInfo, handlerSuccess, handlerError);
   }
 
-  getDefaultMenuId(_this, handlerSuccess, handlerError)
+  getMenuDefaultId(_this, handlerSuccess, handlerError)
   {
-    let url = this.host + "/getDefaultMenuId?applicationId=" + _this.globals.currentApplication.id;
+    let url;
+
+    if (_this.globals.currentApplication == undefined)
+      _this.globals.currentApplication = JSON.parse (localStorage.getItem ("currentApplication"));
+
+    url = this.host + "/getMenuDefaultId?applicationId=" + _this.globals.currentApplication.id;
     this.http.get (_this, url, handlerSuccess, handlerError, null);
   }
 }
