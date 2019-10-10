@@ -259,16 +259,13 @@ export class EditOutputOptionsMetaDialog {
     this.optionSelected = row;
   }
 
-  deleteOption(defaultMenu) {
+  deleteOption() {
     if (this.optionSelected) {
       this.optionSelected.delete = true;
       this.dataToDelete.push(this.optionSelected);
       const index: number = this.data.outputs.findIndex(d => d === this.optionSelected);
       this.data.outputs.splice(index, 1);
       this.dataSource = new MatTableDataSource(this.data.outputs);
-
-      if (defaultMenu == this.optionSelected.id)
-        defaultMenu = null;
     }
   }
 
@@ -1096,6 +1093,9 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
         {
           console.log(result.confirm);
           if (result.confirm) {
+
+            if (this.defaultMenu == this.optionSelected.id)
+              this.defaultMenu = null;
 
             if (this.optionSelected.uid.includes("catnew") || this.optionSelected.uid.includes("optnew"))
               this.deleteNewItem();
