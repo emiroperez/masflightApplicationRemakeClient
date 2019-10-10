@@ -350,6 +350,10 @@ export class MsfTableComponent implements OnInit {
           {
             let column = _this.tableOptions.displayedColumns[i];
 
+            // use column format if no output format is set
+            if (!column.outputFormat || column.outputFormat === "")
+              column.outputFormat = column.columnFormat;
+
             if (column.columnType === "time")
             {
               for (let j = 0; j < _this.dataSource.data.length; j++)

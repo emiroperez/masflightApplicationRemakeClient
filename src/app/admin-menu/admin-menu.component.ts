@@ -159,7 +159,7 @@ export class EditOutputOptionsMetaDialog {
     this.arg = data.arguments;
   }
 
-  displayedColumns = ['columnLabel', 'columnName', 'columnType', 'columnFormat', 'prefix', 'suffix', 'grouping', 'unit', 'arguments'];
+  displayedColumns = ['columnLabel', 'columnName', 'columnType', 'columnFormat', 'outputFormat', 'prefix', 'suffix', 'grouping', 'unit', 'arguments'];
   dataSource = this.data.outputs;
 
   dropTable(event: CdkDragDrop<any[]>) {
@@ -181,6 +181,7 @@ export class EditOutputOptionsMetaDialog {
       columnName: '',
       columnType: 'string',
       columnFormat: null,
+      outputFormat: null,
       grouping: 0,
       unit: '',
       argumentsId: '',
@@ -214,6 +215,7 @@ export class EditOutputOptionsMetaDialog {
           columnName: result[i].name,
           columnType: 'string',
           columnFormat: null,
+          outputFormat: null,
           grouping: 0,
           unit: '',
           argumentsId: '',

@@ -576,16 +576,16 @@ toggle(){
     
               // Advance one day, since on Excel files will be one day behind
               date.setDate (date.getDate () + 1);
-    
+
               excelItem[column.columnLabel] = date.toISOString ();
             }
             else if (column.columnType === "time")
             {
               let time: Date = new Date (curitem);
-    
+
               // Advance one minute, since on time on Excel files will be one minute behind
               time.setMinutes (time.getMinutes () + 1);
-    
+
               excelItem[column.columnLabel] = time.toISOString ();
             }
             else
@@ -653,7 +653,7 @@ toggle(){
 
       tableColumnFormats.push ({
         type: column.columnType,
-        format: column.columnFormat,
+        format: column.outputFormat,
         prefix: column.prefix,
         suffix: column.suffix,
         pos: i,

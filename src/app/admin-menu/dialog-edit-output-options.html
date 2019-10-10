@@ -50,6 +50,14 @@
                     </div>
                 </td>
             </ng-container>
+            <ng-container matColumnDef="outputFormat" class="admin-dialog-box">
+                <th mat-header-cell *matHeaderCellDef>Output Format</th>
+                <td class="admin-column-format-cell" mat-cell *matCellDef="let element">
+                    <div class="admin-column-inner-container">
+                        <input matInput placeholder="format" [value]="element.outputFormat" [(ngModel)]="element.outputFormat">
+                    </div>
+                </td>
+            </ng-container>
             <ng-container matColumnDef="prefix" class="admin-dialog-box">
                 <th mat-header-cell *matHeaderCellDef>Column Prefix</th>
                 <td class="admin-column-prefix-cell" mat-cell *matCellDef="let element">
