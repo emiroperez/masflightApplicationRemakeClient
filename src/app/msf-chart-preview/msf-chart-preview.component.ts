@@ -214,11 +214,11 @@ export class MsfChartPreviewComponent {
           valueAxis = chart.xAxes.push (new am4charts.ValueAxis ());
 
           // Add scrollbar into the chart for zooming if there are multiple series
-          /*if (chart.data.length > 1)
+          if (chart.data.length > 1)
           {
             chart.scrollbarY = new am4core.Scrollbar ();
             chart.scrollbarY.background.fill = Themes.AmCharts[theme].chartZoomScrollBar;
-          }¨*/
+          }
         }
         else
         {
@@ -284,17 +284,17 @@ export class MsfChartPreviewComponent {
           // Set axis name into the chart
           if (!(this.data.currentChartType.flags & ChartFlags.ROTATED))
           {
-            categoryAxis.title.text = this.data.xaxis.columnName;    
-            valueAxis.title.text = this.data.valueColumn.columnName;
+            categoryAxis.title.text = this.data.xaxis.columnLabel;    
+            valueAxis.title.text = this.data.valueColumn.columnLabel;
           }
           else
           {
-            categoryAxis.title.text = this.data.xaxis.columnName;   
-            valueAxis.title.text = this.data.valueColumn.columnName;
+            categoryAxis.title.text = this.data.xaxis.columnLabel;   
+            valueAxis.title.text = this.data.valueColumn.columnLabel;
           }
 
           // The category will be the x axis if the chart type has it
-          categoryAxis.dataFields.category = this.data.xaxis.columnLabel;
+          categoryAxis.dataFields.category = this.data.xaxis.columnName;
 
           stacked = (this.data.currentChartType.flags & ChartFlags.STACKED) ? true : false;
           if (this.data.currentChartType.flags & ChartFlags.LINECHART && stacked)
@@ -395,13 +395,13 @@ export class MsfChartPreviewComponent {
         {
           if (!(this.data.currentChartType.flags & ChartFlags.ROTATED))
           {
-            categoryAxis.title.text = this.data.variable.columnName; 
-            valueAxis.title.text = this.data.valueColumn.columnName;
+            categoryAxis.title.text = this.data.variable.columnLabel; 
+            valueAxis.title.text = this.data.valueColumn.columnLabel;
           }
           else
           {
-            categoryAxis.title.text = this.data.variable.columnName; 
-            valueAxis.title.text = this.data.valueColumn.columnName;
+            categoryAxis.title.text = this.data.variable.columnLabel; 
+            valueAxis.title.text = this.data.valueColumn.columnLabel;
           }
 
           // The category will the values if the chart type lacks an x axis
