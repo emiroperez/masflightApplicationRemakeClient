@@ -6,6 +6,10 @@ import { DatePipe } from '@angular/common';
 import { Globals } from '../globals/Globals';
 import { MessageComponent } from '../message/message.component';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import * as _moment from 'moment';
+import { default as _rollupMoment, Moment } from 'moment';
+
+const moment = _rollupMoment || _moment;
 
 export const US_DATE_FORMAT = {
   parse: {
@@ -64,6 +68,7 @@ export class MsfDateRangeComponent implements OnInit {
       {
         if (dateRange.value === this.argument.value1)
         {
+          this.argument.value1 = null;
           this.argument.value3 = dateRange;
           this.autoSelect ();
           break;
@@ -101,78 +106,164 @@ export class MsfDateRangeComponent implements OnInit {
     }
     switch (option) {
       case 'TODAY':
-        this.calculateDate('Today', 0);
+        this.calculateDate ('Today', option);
         break;
+
       case 'YESTERDAY':
-      this.calculateDate('Yesterday',24*60*60*1000);
+        this.calculateDate ('Yesterday', option);
         break;
+
       case 'LASTWEEK':
-      this.calculateDate('Last Week',(24*60*60*1000)*7);
+        this.calculateDate ('Last Week', option);
         break;
+
       case 'LASTMONTH':
-      this.calculateDate('Last Month',(24*60*60*1000)*30);
+        this.calculateDate ('Last Month', option);
         break;
+
       case 'LASTYEAR':
-        this.calculateDate('Last Year',(24*60*60*1000)*365);
-        break;    
+        this.calculateDate ('Last Year', option);
+        break;
+
       case 'UNTILYESTERDAY':
-        this.calculateDate2('Until Yesterday',24*60*60*1000);
-          break;
+        this.calculateDate2 ('Until Yesterday', option);
+        break;
+
       case 'UNTILLASTWEEK':
-        this.calculateDate2('Until Last Week',(24*60*60*1000)*7);
-          break;
+        this.calculateDate2 ('Until Last Week', option);
+        break;
+
       case 'UNTILLASTMONTH':
-        this.calculateDate2('Until Last Month',(24*60*60*1000)*30);
-          break;
+        this.calculateDate2 ('Until Last Month', option);
+        break;
+
       case 'UNTILLASTYEAR':
-          this.calculateDate2('Until Last Year',(24*60*60*1000)*365);
-          break;    
+        this.calculateDate2 ('Until Last Year', option);
+        break;
+
       case 'UNTILTODAY':
-          this.calculateDate2('Until Today',0);
-          break;                      
-                     
+        this.calculateDate2 ('Until Today', option);
+        break;
     }
   }
-  calculateDate(type: string,milis: any) {
-    var today = new Date();
-    var maximunDateMessage = "the maximun date of the option is ";
-        if(this.argument.maxDate==null){
-          this.argument.value2 = today;
-          maximunDateMessage = "the option doesn't have maximun date";
-        }else{
-          this.argument.value2 = this.argument.maxDate;
-          maximunDateMessage += this.argument.maxDate.toLocaleString("en-US").split(",")[0];
-        }
-          this.argument.value1 = new Date(this.argument.value2.getTime() - milis);
 
-          this.openDialog("The date range changed to "+ type+", "+maximunDateMessage);
+  calculateDate(type: string, option: string): void
+  {
+    let today = new Date ();
+    let maximunDateMessage = "the maximun date of the option is ";
 
+    if (this.argument.maxDate == null || today < this.argument.maxDate)
+    {
+      this.argument.value2 = today;
+      maximunDateMessage = "the option doesn't have maximun date";
+    }
+    else
+    {
+      this.argument.value2 = this.argument.maxDate;
+      maximunDateMessage += this.argument.maxDate.toLocaleString ("en-US").split (",")[0];
+    }
+
+    switch (option)
+    {
+      case 'TODAY':
+        this.argument.value1 = new Date (this.argument.value2.getTime ());
+        break;
+
+      case 'YESTERDAY':
+        this.argument.value1 = new Date (this.argument.value2.getTime () - (24 * 60 * 60 * 1000));
+        break;
+
+      case 'LASTWEEK':
+        this.argument.value1 = moment ().day (1).subtract (2, "days").day (1).toDate ();
+        break;
+
+      case 'LASTMONTH':
+        this.argument.value1 = moment ().subtract (1, "months").startOf ("month").toDate ();
+        break;
+
+      case 'LASTYEAR':
+        this.argument.value1 = moment ().subtract (1, "years").startOf ("year").toDate ();
+        break;   
+    }
+
+    this.openDialog ("The date range changed to " + type + ", " + maximunDateMessage);
   }
 
-  calculateDate2(type: string,milis: any) {
-    var today = new Date();
-    var aux;
-    var maximunDateMessage = "the maximun date of the option is ";
-      if(this.argument.value1){
-        if(this.argument.maxDate==null){
-          aux = today
-          maximunDateMessage = "the option doesn't have maximun date"
-        }else{
-          aux = this.argument.maxDate;
-          maximunDateMessage += this.argument.maxDate.toLocaleString("en-US").split(",")[0];
-        }
-        var diff = aux.getTime() - milis;
-        if(this.argument.value1.getTime()<=diff){
-          this.argument.value2 = new Date(diff);
-        }else{
-          this.openDialog("The final date can't be less than the initial date, "+maximunDateMessage);
-          return;
-        }
-        this.openDialog("The date range changed to "+ type+", "+maximunDateMessage);
-      }else{
-        this.argument.value3 = null;
-        this.openDialog("Please select the initial date");
+  calculateDate2 (type: string, option: string): void
+  {
+    let maximunDateMessage = "";
+    let newDate;
+
+    switch (option)
+    {
+      case 'UNTILYESTERDAY':
+        newDate = new Date (new Date ().getTime () - (24 * 60 * 60 * 1000));
+        break;
+    
+      case 'UNTILLASTWEEK':
+        newDate = moment ().day (1).subtract (2, "days").day (7).toDate ();
+        break;
+
+      case 'UNTILLASTMONTH':
+        newDate = moment ().subtract (1, "months").endOf ("month").toDate ();
+        break;
+    
+      case 'UNTILLASTYEAR':
+        newDate = moment ().subtract (1, "years").endOf ("year").toDate ();
+        break;
+    
+      case 'UNTILTODAY':
+        newDate = new Date (new Date ().getTime ());
+        break;
+    }
+
+    if (this.argument.value1)
+    {
+      if (newDate >= new Date (this.argument.value1))
+      {
+        this.argument.value2 = newDate;
+
+        if (this.argument.maxDate && this.argument.value2 > this.argument.maxDate)
+          this.argument.value2 = this.argument.maxDate;
+
+        maximunDateMessage += ", the maximun date of the option is " + new Date (this.argument.value2).toLocaleString ("en-US").split (",")[0];
       }
+      else
+      {
+        this.argument.value3 = null;
+        this.openDialog ("The final date can't be less than the initial date");
+        return;
+      }
+    }
+    else
+    {
+      switch (option)
+      {
+        case 'UNTILTODAY':
+          this.argument.value1 = new Date ();
+          break;
+  
+        case 'UNTILYESTERDAY':
+          this.argument.value1 = new Date (new Date ().getTime () - (24 * 60 * 60 * 1000));
+          break;
+  
+        case 'UNTILLASTWEEK':
+          this.argument.value1 = moment ().day (1).subtract (2, "days").day (1).toDate ();
+          break;
+  
+        case 'UNTILLASTMONTH':
+          this.argument.value1 = moment ().subtract (1, "months").startOf ("month").toDate ();
+          break;
+  
+        case 'UNTILLASTYEAR':
+          this.argument.value1 = moment ().subtract (1, "years").startOf ("year").toDate ();
+          break;   
+      }
+
+      this.argument.value2 = newDate;
+    }
+
+    this.openDialog ("The date range changed to " + type + maximunDateMessage);
   }
   
   openDialog(text:string){

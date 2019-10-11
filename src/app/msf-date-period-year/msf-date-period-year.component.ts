@@ -74,13 +74,13 @@ export class MsfDatePeriodYearComponent implements OnInit {
 
         case "LASTYEAR":
           this.argument.value1 = this.date.value.year () - 1;
-          this.argument.value2 = this.date.value.year () - 1;
+          this.argument.value2 = this.date.value.year ();
           this.setCtrlValue ();
           break;
-  
+
         case "UNTILLASTYEAR":
           this.argument.value1 = this.date.value.year () - 1;
-          this.argument.value2 = this.date.value.year ();
+          this.argument.value2 = this.date.value.year () - 1;
           this.setCtrlValue ();
           break;
       }

@@ -41,31 +41,26 @@ export class MsfDatePickerComponent implements OnInit {
     {
       switch (this.argument.value1)
       {
-        case "TODAY":
-          this.calculateDate (0);
+        case 'TODAY':
+          this.argument.value1 = new Date (new Date ().getTime ());
           break;
-
-        case "YESTERDAY":
-          this.calculateDate (24 * 60 * 60 * 1000);
+  
+        case 'YESTERDAY':
+          this.argument.value1 = new Date (new Date ().getTime () - (24 * 60 * 60 * 1000));
           break;
-
-        case "LASTWEEK":
-          this.calculateDate ((24 * 60 * 60 * 1000) * 7);
+  
+        case 'LASTWEEK':
+          this.argument.value1 = moment ().day (1).subtract (2, "days").day (1).toDate ();
           break;
-
-        case "LASTMONTH":
-          this.calculateDate ((24 * 60 * 60 * 1000) * 30);
+  
+        case 'LASTMONTH':
+          this.argument.value1 = moment ().subtract (1, "months").startOf ("month").toDate ();
           break;
-
-        case "LASTYEAR":
-          this.calculateDate ((24 * 60 * 60 * 1000) * 365);
-          break;
+  
+        case 'LASTYEAR':
+          this.argument.value1 = moment ().subtract (1, "years").startOf ("year").toDate ();
+          break;   
       }
     }
-  }
-
-  calculateDate(milis: any)
-  {
-    this.argument.value1 = new Date (moment ().toDate ().getTime() - milis);
   }
 }
