@@ -1284,6 +1284,8 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                         .angular-editor-textarea
                             border: 1px solid $font-color
                             color: $font-color
+                        .angular-editor-textarea:focus
+                            outline: none !important
                         ::-webkit-scrollbar-track, ::-webkit-scrollbar-thumb
                             border-right: 1px solid $font-color
 
@@ -3899,7 +3901,6 @@ mat-tab-group
 
 ::-webkit-scrollbar-thumb
   border-radius: 10px
-  outline: 1px solid blue
 
 .mat-primary .mat-pseudo-checkbox-checked, .mat-primary .mat-pseudo-checkbox-indeterminate
     border-radius: 10px

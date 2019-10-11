@@ -768,7 +768,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     customClasses: [
       {
         name: 'quote',
-        class: 'quote',
+        class: 'quote'
       },
       {
         name: 'redText',
@@ -777,8 +777,8 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
       {
         name: 'titleText',
         class: 'titleText',
-        tag: 'h1',
-      },
+        tag: 'h1'
+      }
     ]
   };
 
