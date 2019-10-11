@@ -768,17 +768,13 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     defaultFontSize: '2',
     customClasses: [
       {
-        name: 'quote',
-        class: 'quote'
+        name: 'Primary Font Theme Color',
+        class: 'primary-font-color'
       },
       {
-        name: 'redText',
-        class: 'redText'
-      },
-      {
-        name: 'titleText',
-        class: 'titleText',
-        tag: 'h1'
+        name: 'Title Text',
+        class: 'title-text',
+        tag: 'h3'
       }
     ]
   };
