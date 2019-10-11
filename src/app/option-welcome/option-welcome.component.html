@@ -1,36 +1,6 @@
 <div class="msf-intro-body1" [style.width.%]="100" [style.height.%]="100">
-  <div class="msf-current-query-summary-container msf-option-welcome-container" [class.is-mobile]="mobileQuery.matches" [style.width.%]="100">
-    <div class="msf-summary-title msf-welcome-title">{{globals.currentMenuCategory.label}} Analysis Applications</div>
-    <div class="msf-summary-div-container">
-      <div class="msf-inline msf-welcome-inline">{{globals.currentMenuCategory.welcome.description}}</div>
-    </div>
-    <div class="msf-summary-title msf-welcome-title">Data Availability</div>
-    <div class="msf-summary-div-container" style="margin-bottom: 20px;">
-      <div class="msf-inline msf-welcome-inline">{{globals.currentMenuCategory.welcome.dataAvailability}}</div>
-    </div>  
-    <div class="msf-summary-title msf-welcome-title">What {{globals.currentMenuCategory.label}} Applications Do</div>
-    <div class="msf-summary-div-container">
-      <div class="msf-inline msf-welcome-inline">
-        <mat-list class="what-do-list" role="list">
-          <mat-list-item class="{{classItem(item)}}" *ngFor="let item of globals.items; let i = index" role="listitem">
-            {{formatItem(item)}}
-          </mat-list-item>
-        </mat-list>
-      </div>
-    </div>     
-    <div *ngIf="globals.currentMenuCategory.welcomeTable=='1'" class="msf-inline msf-welcome-inline" [style.width.%]="100">
-      <div class="msf-summary-title" style="color: white;">Overview of Applications</div>  
-      <table  mat-table matSort [dataSource]="globals.welcomeDataSource"  class="mat-elevation-z8 datasource welcome-table">
-        <ng-container  [matColumnDef]="column.columnName" *ngFor="let column of columns">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{column.columnLabel}}</th>
-          <td mat-cell *matCellDef="let element"> 
-            {{element[column.columnName]}}
-          </td>
-        </ng-container>
-        <tr mat-header-row *matHeaderRowDef="displayedColumns" ></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>
-    </div>                   
-  </div>        
+  <div class="msf-current-query-summary-container msf-option-welcome-container" [style.font-size.px]="13" [class.is-mobile]="mobileQuery.matches" [style.width.%]="100">
+    <div [innerHTML]="globals.welcomeMessage"></div>
+  </div>
 </div>
 

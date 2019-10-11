@@ -51,7 +51,7 @@ export class Globals {
   minDate:any;
   maxDate:any;
   welcome:any;
-  items:any;
+  welcomeMessage:any;
   welcomeDataSource:any;
   query : boolean= false;
   tab : boolean= false;
@@ -60,13 +60,10 @@ export class Globals {
   currentAirline: any;
   template : boolean = false;
   isFullscreen: boolean = false;
-  // baseUrl = "http://pulse.globaleagle.com:8887";
-  baseUrl = "http://pulse.globaleagle.com:8881";
+  baseUrl = "http://pulse.globaleagle.com:8887";
+  // baseUrl = "http://192.168.1.50:8887";
   // baseUrl = "";
-  // baseUrl2 = "http://pulse.globaleagle.com:8885";
-  // baseUrl2 = "http://localhost:8886";
   baseUrl2 = "https://pulse.globaleagle.com:8886/mapBoxServices";
-  // popupUrl = "http://localhost:8900";
   popupUrl = "https://pulse.globaleagle.com:8900";
   scheduledata:any;
   hideParametersPanels : boolean =false;
@@ -149,7 +146,7 @@ export class Globals {
     if(this.currentMenuCategory!= null){
     if(this.currentMenuCategory.welcome!= null){
       this.welcome = this.currentMenuCategory.welcome;
-      this.items = this.welcome.applicationsDo.split(";");
+      this.welcomeMessage = this.welcome.description;
       if(this.currentMenuCategory.welcomeTable!="0"){
         this.initTableDataSource();
       }

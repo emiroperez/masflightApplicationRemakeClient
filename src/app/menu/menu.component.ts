@@ -93,11 +93,11 @@ export class MenuComponent implements OnInit {
     if(this.globals.currentMenuCategory!=null){
       if(category.id!=this.globals.currentMenuCategory.id){
         this.globals.currentMenuCategory = category;
-        this.globals.items = this.globals.currentMenuCategory.welcome.applicationsDo.split(";");
+        this.globals.welcomeMessage = this.globals.currentMenuCategory.welcome.description;
       }
     }else{
       this.globals.currentMenuCategory = category;
-      this.globals.items = this.globals.currentMenuCategory.welcome.applicationsDo.split(";");
+      this.globals.welcomeMessage = this.globals.currentMenuCategory.welcome.description;
     }
   }
 

@@ -575,6 +575,7 @@ export class ExampleFlatNode {
   initialRol: string;
   finalRol: string;
   typeOption: string;
+  welcome: any;
 }
 
 @Component({
@@ -619,6 +620,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     flatNode.initialRol = node.initialRol;
     flatNode.finalRol = node.finalRol;
     flatNode.typeOption = node.typeOption;
+    flatNode.welcome = node.welcome;
     this.flatNodeMap.set(flatNode, node);
     this.nestedNodeMap.set(node, flatNode);
     return flatNode;
@@ -760,10 +762,9 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
   htmlEditorConfig: AngularEditorConfig = {
     editable: true,
-    spellcheck: true,
+    spellcheck: false,
     placeholder: '',
     translate: 'no',
-    defaultFontName: 'Arial',
     defaultFontSize: '2',
     customClasses: [
       {
@@ -783,7 +784,6 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   };
 
   defaultMenu: number;
-  htmlContent: string;
 
   constructor(private http: ApiClient, public globals: Globals,
     private service: ApplicationService, public snackBar: MatSnackBar,
