@@ -2,6 +2,7 @@ import { Component, Inject, NgZone } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
+import * as moment from 'moment';
 
 import { Globals } from '../globals/Globals';
 import { ApplicationService } from '../services/application.service';
@@ -22,6 +23,21 @@ export class MsfChartPreviewComponent {
 
   isLoading: boolean;
   chart: any;
+
+  predefinedColumnFormats: any = {
+    "short": "M/d/yy, h:mm a",
+    "medium": "MMM d, yyyy, h:mm:ss a",
+    "long": "MMMM d, yyyy, h:mm:ss a z",
+    "full": "EEEE, MMMM d, yyyy, h:mm:ss a zzzz",
+    "shortDate": "M/d/yy",
+    "mediumDate": "MMM, d, yyyy",
+    "longDate": "MMMM, d, yyyy",
+    "fullDate": "EEEE, MMMM, d, y",
+    "shortTime": "h:mm a",
+    "mediumTime": "h:mm:ss a",
+    "longTime": "h:mm:ss a z",
+    "fullTime": "h:mm:ss a zzzz"
+  };
 
   constructor(public dialogRef: MatDialogRef<MsfChartPreviewComponent>,
     public globals: Globals,
@@ -141,6 +157,33 @@ export class MsfChartPreviewComponent {
     _this.dialogRef.close ();
   }
 
+  parseDate(date: any, format: string): Date
+  {
+    let momentDate: moment.Moment;
+    let momentFormat: string;
+
+    if (date == null || date == "")
+      return null;
+
+    if (format == null || format == "")
+      momentFormat = "YYYYMMDD"; // fallback for date values with no column or pre-defined format set
+    else if (this.predefinedColumnFormats[format])
+      momentFormat = "DD/MM/YYYY";
+    else
+    {
+      // replace lower case letters with uppercase ones for the moment date format
+      momentFormat = format.replace (/m/g, "M");
+      momentFormat = momentFormat.replace (/y/g, "Y");
+      momentFormat = momentFormat.replace (/d/g, "D");
+    }
+
+    momentDate = moment (date, momentFormat);
+    if (!momentDate.isValid ())
+      return null; // invalid date value will be null
+
+    return momentDate.toDate ();
+  }
+
   makeChart(chartInfo): void
   {
     let theme = this.globals.theme;
@@ -164,7 +207,7 @@ export class MsfChartPreviewComponent {
         chart.fontSize = 10;
 
         // Create the series
-        this.data.currentChartType.createSeries (this.data, false, chart, chartInfo, null, theme);
+        this.data.currentChartType.createSeries (this.data, false, chart, chartInfo, null, theme, null);
 
         if (this.data.currentChartType.flags & ChartFlags.FUNNELCHART)
         {
@@ -178,7 +221,7 @@ export class MsfChartPreviewComponent {
       }
       else
       {
-        let categoryAxis, valueAxis, parseDate, stacked;
+        let categoryAxis, valueAxis, parseDate, outputFormat, stacked;
 
         chart = am4core.create ("msf-dashboard-child-panel-chart-display", am4charts.XYChart);
         chart.numberFormatter.numberFormat = "#,###.#";
@@ -186,13 +229,33 @@ export class MsfChartPreviewComponent {
         // Don't parse dates if the chart is a simple version
         if (this.data.currentChartType.flags & ChartFlags.XYCHART)
         {
-          chart.data = chartInfo.data;
-          parseDate = this.data.xaxis.columnName.includes ('date');
+          chart.data = JSON.parse (JSON.stringify (chartInfo.data));
+          parseDate = (this.data.xaxis.columnType === "date" && this.data.xaxis.columnName.includes ('date')) ? true : false;
         }
         else
         {
-          chart.data = chartInfo.dataProvider;
+          chart.data = JSON.parse (JSON.stringify (chartInfo.dataProvider));
           parseDate = false;
+        }
+
+        if (parseDate)
+        {
+          if (this.data.xaxis.columnFormat)
+          {
+            for (let data of chart.data)
+              data[this.data.xaxis.columnName] = this.parseDate (data[this.data.xaxis.columnName], this.data.xaxis.columnFormat);
+
+            if (this.data.xaxis.outputFormat)
+              outputFormat = this.data.xaxis.outputFormat;
+            else
+              outputFormat = this.data.xaxis.columnFormat;
+
+            // Set predefined format if used
+            if (this.predefinedColumnFormats[outputFormat])
+              outputFormat = this.predefinedColumnFormats[outputFormat];
+          }
+          else
+            parseDate = false;
         }
 
         // Set chart axes depeding on the rotation
@@ -201,7 +264,7 @@ export class MsfChartPreviewComponent {
           if (parseDate)
           {
             categoryAxis = chart.yAxes.push (new am4charts.DateAxis ());
-            categoryAxis.dateFormats.setKey ("day", "MMM d");
+            categoryAxis.dateFormats.setKey ("day", outputFormat);
             categoryAxis.periodChangeDateFormats.setKey ("day", "yyyy");
           }
           else
@@ -225,14 +288,17 @@ export class MsfChartPreviewComponent {
           if (parseDate)
           {
             categoryAxis = chart.xAxes.push (new am4charts.DateAxis ());
-            categoryAxis.dateFormats.setKey ("day", "MMM d");
+            categoryAxis.dateFormats.setKey ("day", outputFormat);
             categoryAxis.periodChangeDateFormats.setKey ("day", "yyyy");
           }
           else
           {
             categoryAxis = chart.xAxes.push (new am4charts.CategoryAxis ());
             categoryAxis.renderer.minGridDistance = 30;
+          }
 
+          if (!(this.data.currentChartType.flags & ChartFlags.LINECHART && parseDate))
+          {
             // Rotate labels if the chart is displayed vertically
             categoryAxis.renderer.labels.template.rotation = 330;
             categoryAxis.renderer.labels.template.maxWidth = 240;
@@ -381,7 +447,7 @@ export class MsfChartPreviewComponent {
             chart.colors.list.push (am4core.color (color));
 
           for (let object of chartInfo.filter)
-            this.data.currentChartType.createSeries (this.data, stacked, chart, object, parseDate, theme);
+            this.data.currentChartType.createSeries (this.data, stacked, chart, object, parseDate, theme, outputFormat);
 
           // Add cursor if the chart type is line, area or stacked area
           if (this.data.currentChartType.flags & ChartFlags.LINECHART)
@@ -415,7 +481,7 @@ export class MsfChartPreviewComponent {
           });
 
           // Create the series
-          this.data.currentChartType.createSeries (this.data, false, chart, chartInfo, parseDate, theme);
+          this.data.currentChartType.createSeries (this.data, false, chart, chartInfo, parseDate, theme, outputFormat);
         }
       }
 

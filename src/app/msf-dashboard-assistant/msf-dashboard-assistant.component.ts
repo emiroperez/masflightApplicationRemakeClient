@@ -589,7 +589,7 @@ export class MsfDashboardAssistantComponent {
   }
 
   // Function to create horizontal column chart series
-  createHorizColumnSeries(values, stacked, chart, item, parseDate, theme): void
+  createHorizColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat): void
   {
     // Set up series
     let series = chart.series.push (new am4charts.ColumnSeries ());
@@ -601,7 +601,7 @@ export class MsfDashboardAssistantComponent {
     if (parseDate)
     {
       series.dataFields.dateY = values.xaxis.columnName;
-      series.dateFormatter.dateFormat = "MMM d, yyyy";
+      series.dateFormatter.dateFormat = outputFormat;
       series.columns.template.tooltipText = "{dateY}: {valueX}";
     }
     else
@@ -619,7 +619,7 @@ export class MsfDashboardAssistantComponent {
   }
 
   // Function to create vertical column chart series
-  createVertColumnSeries(values, stacked, chart, item, parseDate, theme): any
+  createVertColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat): any
   {
     let series = chart.series.push (new am4charts.ColumnSeries ());
     series.name = item.valueAxis;
@@ -629,7 +629,7 @@ export class MsfDashboardAssistantComponent {
     if (parseDate)
     {
       series.dataFields.dateX = values.xaxis.columnName;
-      series.dateFormatter.dateFormat = "MMM d, yyyy";
+      series.dateFormatter.dateFormat = outputFormat;
       series.columns.template.tooltipText = "{dateX}: {valueY}";
     }
     else
@@ -646,7 +646,7 @@ export class MsfDashboardAssistantComponent {
   }
 
   // Function to create line chart series
-  createLineSeries(values, stacked, chart, item, parseDate, theme): any
+  createLineSeries(values, stacked, chart, item, parseDate, theme, outputFormat): any
   {
     // Set up series
     let series = chart.series.push (new am4charts.LineSeries ());
@@ -664,7 +664,7 @@ export class MsfDashboardAssistantComponent {
     if (parseDate)
     {
       series.dataFields.dateX = values.xaxis.columnName;
-      series.dateFormatter.dateFormat = "MMM d, yyyy";
+      series.dateFormatter.dateFormat = outputFormat;
       series.tooltipText = "{dateX}: {valueY}";
     }
     else
@@ -683,7 +683,7 @@ export class MsfDashboardAssistantComponent {
   }
 
   // Function to create simple vertical column chart series
-  createSimpleVertColumnSeries(values, stacked, chart, item, parseDate, theme): any
+  createSimpleVertColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat): any
   {
     let series = chart.series.push (new am4charts.ColumnSeries ());
     series.dataFields.valueY = item.valueField;
@@ -703,7 +703,7 @@ export class MsfDashboardAssistantComponent {
   }
 
   // Function to create simple horizontal column chart series
-  createSimpleHorizColumnSeries(values, stacked, chart, item, parseDate, theme): any
+  createSimpleHorizColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat): any
   {
     let series = chart.series.push (new am4charts.ColumnSeries ());
     series.dataFields.valueX = item.valueField;
@@ -722,7 +722,7 @@ export class MsfDashboardAssistantComponent {
   }
 
   // Function to create pie chart series
-  createPieSeries(values, stacked, chart, item, parseDate, theme): any
+  createPieSeries(values, stacked, chart, item, parseDate, theme, outputFormat): any
   {
     let series, colorSet;
 
@@ -757,7 +757,7 @@ export class MsfDashboardAssistantComponent {
   }
 
   // Function to create funnel chart series
-  createFunnelSeries(values, stacked, chart, item, parseDate, theme): any
+  createFunnelSeries(values, stacked, chart, item, parseDate, theme, outputFormat): any
   {
     let series, colorSet;
 

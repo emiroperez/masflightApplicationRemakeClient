@@ -66,6 +66,21 @@ export class MsfDashboardChildPanelComponent {
   totalRecord = 0;
   metadata;
 
+  predefinedColumnFormats: any = {
+    "short": "M/d/yy, h:mm a",
+    "medium": "MMM d, yyyy, h:mm:ss a",
+    "long": "MMMM d, yyyy, h:mm:ss a z",
+    "full": "EEEE, MMMM d, yyyy, h:mm:ss a zzzz",
+    "shortDate": "M/d/yy",
+    "mediumDate": "MMM, d, yyyy",
+    "longDate": "MMMM, d, yyyy",
+    "fullDate": "EEEE, MMMM, d, y",
+    "shortTime": "h:mm a",
+    "mediumTime": "h:mm:ss a",
+    "longTime": "h:mm:ss a z",
+    "fullTime": "h:mm:ss a zzzz"
+  };
+
   constructor(
     public dialogRef: MatDialogRef<MsfDashboardChildPanelComponent>,
     private zone: NgZone,
@@ -100,7 +115,7 @@ export class MsfDashboardChildPanelComponent {
   }
 
   // Function to create horizontal column chart series
-  createHorizColumnSeries(values, stacked, chart, item, parseDate, theme): void
+  createHorizColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat): void
   {
     // Set up series
     let series = chart.series.push (new am4charts.ColumnSeries ());
@@ -112,7 +127,7 @@ export class MsfDashboardChildPanelComponent {
     if (parseDate)
     {
       series.dataFields.dateY = values.xaxis.columnName;
-      series.dateFormatter.dateFormat = "MMM d, yyyy";
+      series.dateFormatter.dateFormat = outputFormat;
       series.columns.template.tooltipText = "{dateY}: {valueX}";
     }
     else
@@ -128,7 +143,7 @@ export class MsfDashboardChildPanelComponent {
   }
 
   // Function to create vertical column chart series
-  createVertColumnSeries(values, stacked, chart, item, parseDate, theme): void
+  createVertColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat): void
   {
     let series = chart.series.push (new am4charts.ColumnSeries ());
     series.name = item.valueAxis;
@@ -138,7 +153,7 @@ export class MsfDashboardChildPanelComponent {
     if (parseDate)
     {
       series.dataFields.dateX = values.xaxis.columnName;
-      series.dateFormatter.dateFormat = "MMM d, yyyy";
+      series.dateFormatter.dateFormat = outputFormat;
       series.columns.template.tooltipText = "{dateX}: {valueY}";
     }
     else
@@ -153,7 +168,7 @@ export class MsfDashboardChildPanelComponent {
   }
 
   // Function to create line chart series
-  createLineSeries(values, stacked, chart, item, parseDate, theme): void
+  createLineSeries(values, stacked, chart, item, parseDate, theme, outputFormat): void
   {
     // Set up series
     let series = chart.series.push (new am4charts.LineSeries ());
@@ -171,7 +186,7 @@ export class MsfDashboardChildPanelComponent {
     if (parseDate)
     {
       series.dataFields.dateX = values.xaxis.columnName;
-      series.dateFormatter.dateFormat = "MMM d, yyyy";
+      series.dateFormatter.dateFormat = outputFormat;
       series.tooltipText = "{dateX}: {valueY}";
     }
     else
@@ -188,7 +203,7 @@ export class MsfDashboardChildPanelComponent {
   }
 
   // Function to create simple vertical column chart series
-  createSimpleVertColumnSeries(values, stacked, chart, item, parseDate, theme): void
+  createSimpleVertColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat): void
   {
     let series = chart.series.push (new am4charts.ColumnSeries());
     series.dataFields.valueY = item.valueField;
@@ -206,7 +221,7 @@ export class MsfDashboardChildPanelComponent {
   }
 
   // Function to create simple horizontal column chart series
-  createSimpleHorizColumnSeries(values, stacked, chart, item, parseDate, theme): void
+  createSimpleHorizColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat): void
   {
     let series = chart.series.push (new am4charts.ColumnSeries());
     series.dataFields.valueX = item.valueField;
@@ -223,7 +238,7 @@ export class MsfDashboardChildPanelComponent {
   }
 
   // Function to create pie chart series
-  createPieSeries(values, stacked, chart, item, parseDate, theme): void
+  createPieSeries(values, stacked, chart, item, parseDate, theme, outputFormat): void
   {
     let series, colorSet;
 
@@ -256,7 +271,7 @@ export class MsfDashboardChildPanelComponent {
   }
 
   // Function to create funnel chart series
-  createFunnelSeries(values, stacked, chart, item, parseDate, theme): void
+  createFunnelSeries(values, stacked, chart, item, parseDate, theme, outputFormat): void
   {
     let series, colorSet;
 
@@ -278,6 +293,33 @@ export class MsfDashboardChildPanelComponent {
       return am4core.color (color);
     });
     series.colors = colorSet;
+  }
+
+  parseDate(date: any, format: string): Date
+  {
+    let momentDate: moment.Moment;
+    let momentFormat: string;
+
+    if (date == null || date == "")
+      return null;
+
+    if (format == null || format == "")
+      momentFormat = "YYYYMMDD"; // fallback for date values with no column or pre-defined format set
+    else if (this.predefinedColumnFormats[format])
+      momentFormat = "DD/MM/YYYY";
+    else
+    {
+      // replace lower case letters with uppercase ones for the moment date format
+      momentFormat = format.replace (/m/g, "M");
+      momentFormat = momentFormat.replace (/y/g, "Y");
+      momentFormat = momentFormat.replace (/d/g, "D");
+    }
+
+    momentDate = moment (date, momentFormat);
+    if (!momentDate.isValid ())
+      return null; // invalid date value will be null
+
+    return momentDate.toDate ();
   }
 
   makeChart(chartInfo): void
@@ -303,7 +345,7 @@ export class MsfDashboardChildPanelComponent {
         chart.fontSize = 10;
 
         // Create the series
-        this.values.currentChartType.createSeries (this.values, false, chart, chartInfo, null, theme);
+        this.values.currentChartType.createSeries (this.values, false, chart, chartInfo, null, theme, null);
 
         if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART)
         {
@@ -317,7 +359,7 @@ export class MsfDashboardChildPanelComponent {
       }
       else
       {
-        let categoryAxis, valueAxis, parseDate, stacked;
+        let categoryAxis, valueAxis, parseDate, outputFormat, stacked;
 
         chart = am4core.create ("msf-dashboard-child-panel-chart-display", am4charts.XYChart);
         chart.numberFormatter.numberFormat = "#,###.#";
@@ -325,13 +367,33 @@ export class MsfDashboardChildPanelComponent {
         // Don't parse dates if the chart is a simple version
         if (this.values.currentChartType.flags & ChartFlags.XYCHART)
         {
-          chart.data = chartInfo.data;
-          parseDate = this.values.xaxis.columnName.includes ('date');
+          chart.data =  JSON.parse (JSON.stringify (chartInfo.data));
+          parseDate = (this.values.xaxis.item.columnType === "date" && this.values.xaxis.id.includes ('date')) ? true : false;
         }
         else
         {
-          chart.data = chartInfo.dataProvider;
+          chart.data =  JSON.parse (JSON.stringify (chartInfo.dataProvider));
           parseDate = false;
+        }
+
+        if (parseDate)
+        {
+          if (this.values.xaxis.item.columnFormat)
+          {
+            for (let data of chart.data)
+              data[this.values.xaxis.id] = this.parseDate (data[this.values.xaxis.id], this.values.xaxis.item.columnFormat);
+
+            if (this.values.xaxis.item.outputFormat)
+              outputFormat = this.values.xaxis.item.outputFormat;
+            else
+              outputFormat = this.values.xaxis.item.columnFormat;
+
+            // Set predefined format if used
+            if (this.predefinedColumnFormats[outputFormat])
+              outputFormat = this.predefinedColumnFormats[outputFormat];
+          }
+          else
+            parseDate = false;
         }
 
         // Set chart axes depeding on the rotation
@@ -340,7 +402,7 @@ export class MsfDashboardChildPanelComponent {
           if (parseDate)
           {
             categoryAxis = chart.yAxes.push (new am4charts.DateAxis ());
-            categoryAxis.dateFormats.setKey ("day", "MMM d");
+            categoryAxis.dateFormats.setKey ("day", outputFormat);
             categoryAxis.periodChangeDateFormats.setKey ("day", "yyyy");
           }
           else
@@ -364,14 +426,17 @@ export class MsfDashboardChildPanelComponent {
           if (parseDate)
           {
             categoryAxis = chart.xAxes.push (new am4charts.DateAxis ());
-            categoryAxis.dateFormats.setKey ("day", "MMM d");
+            categoryAxis.dateFormats.setKey ("day", outputFormat);
             categoryAxis.periodChangeDateFormats.setKey ("day", "yyyy");
           }
           else
           {
             categoryAxis = chart.xAxes.push (new am4charts.CategoryAxis ());
             categoryAxis.renderer.minGridDistance = 30;
+          }
 
+          if (!(this.values.currentChartType.flags & ChartFlags.LINECHART && parseDate))
+          {
             // Rotate labels if the chart is displayed vertically
             categoryAxis.renderer.labels.template.rotation = 330;
             categoryAxis.renderer.labels.template.maxWidth = 240;
@@ -534,7 +599,7 @@ export class MsfDashboardChildPanelComponent {
             chart.colors.list.push (am4core.color (color));
 
           for (let object of chartInfo.filter)
-            this.values.currentChartType.createSeries (this.values, stacked, chart, object, parseDate, theme);
+            this.values.currentChartType.createSeries (this.values, stacked, chart, object, parseDate, theme, outputFormat);
 
           // Add cursor if the chart type is line, area or stacked area
           if (this.values.currentChartType.flags & ChartFlags.LINECHART)
@@ -582,7 +647,7 @@ export class MsfDashboardChildPanelComponent {
           });
 
           // Create the series
-          this.values.currentChartType.createSeries (this.values, false, chart, chartInfo, parseDate, theme);
+          this.values.currentChartType.createSeries (this.values, false, chart, chartInfo, parseDate, theme, outputFormat);
         }
       }
 
