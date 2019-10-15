@@ -765,7 +765,15 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     spellcheck: false,
     placeholder: '',
     translate: 'no',
+    defaultFontName: 'Roboto',
     defaultFontSize: '2',
+    fonts: [
+      { class: 'roboto', name: 'Roboto' },
+      { class: 'arial', name: 'Arial' },
+      { class: 'times-new-roman', name: 'Times New Roman' },
+      { class: 'calibri', name: 'Calibri' },
+      { class: 'comic-sans-ms', name: 'Comic Sans MS' }
+    ],
     customClasses: [
       {
         name: 'Primary Font Theme Color',
