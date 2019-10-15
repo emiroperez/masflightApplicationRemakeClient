@@ -197,6 +197,7 @@ export class MsfMapComponent implements OnInit {
         {
           feature.features[0].colorIndex = index++;
           feature.features[0].shown = _this.showAllRoutes;
+          feature.features[0].displayCounter = 0;
           if (index >= _this.paletteColors.length - 2)
             index = (_this.globals.theme === "light-theme" ? _this.paletteColors.length - 1 : _this.paletteColors.length - 2);
         }
@@ -224,6 +225,7 @@ export class MsfMapComponent implements OnInit {
 
       coordinates[0].features[0].colorIndex = 0;
       coordinates[0].features[0].shown = true;    // always display the coordinates
+      coordinates[0].features[0].displayCounter = 0;
     }
 
     if (this.data)
@@ -313,7 +315,18 @@ export class MsfMapComponent implements OnInit {
       return;
 
     for (let feature of this.data)
+    {
       feature.features[0].shown = this.showAllRoutes;
+
+      if (this.showAllRoutes)
+        feature.features[0].displayCounter++;
+    }
+  }
+
+  incrementDisplayCounter(feature): void
+  {
+    if (feature.shown)
+      feature.displayCounter++;
   }
 
   @HostListener('window:resize', ['$event'])

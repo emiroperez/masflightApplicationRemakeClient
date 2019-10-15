@@ -30,8 +30,8 @@
             {{feature.features[0].dest.iata}}
           </div>
         </mgl-marker>
-        <mgl-geojson-source *ngIf="feature" id="feature_{{i}}" [data]="feature"></mgl-geojson-source>
-        <mgl-layer *ngIf="feature" id="feature_{{i}}" type="circle" source="feature_{{i}}"
+        <mgl-geojson-source id="geosource_{{i}}" [data]="feature"></mgl-geojson-source>
+        <mgl-layer id="feature_{{i}}" type="circle" source="geosource_{{i}}"
           [paint]="{ 'circle-radius': 2, 'circle-color': paletteColors[feature.features[0].colorIndex] }"></mgl-layer>
       </ng-container>
     </ng-container>
@@ -50,14 +50,14 @@
             {{feature.features[0].dest.iata}}
           </div>
         </mgl-marker>
-        <mgl-layer *ngIf="feature" id="route_{{i}}" type="line" [source]="{ 'type': 'geojson', 'data': { 'type': 'Feature', 'properties': {}, 'geometry': { 'type': 'LineString', 'coordinates': coordinates[i] } } }" [layout]="{ 'line-join': 'round', 'line-cap': 'round' }" [paint]="{ 'line-color': paletteColors[i], 'line-width': 4 }"></mgl-layer>
+        <mgl-layer id="route_{{i + feature.features[0].displayCounter}}" type="line" [source]="{ 'type': 'geojson', 'data': { 'type': 'Feature', 'properties': {}, 'geometry': { 'type': 'LineString', 'coordinates': coordinates[i] } } }" [layout]="{ 'line-join': 'round', 'line-cap': 'round' }" [paint]="{ 'line-color': paletteColors[i], 'line-width': 4 }"></mgl-layer>
       </ng-container>
     </ng-container>
   </mgl-map>
   <div class="mapbox-panelinfo" [style.right.px]="legendOffset" *ngIf="data.length && globals.currentOption.metaData != 3">
     <ng-container *ngFor="let feature of data">
       <div class="mapbox-panelinfo-item">
-        <mat-checkbox class="mapbox-panelinfo-item-checkbox" [(ngModel)]="feature.features[0].shown"></mat-checkbox>
+        <mat-checkbox class="mapbox-panelinfo-item-checkbox" [(ngModel)]="feature.features[0].shown" (ngModelChange)="incrementDisplayCounter(feature.features[0])"></mat-checkbox>
         <div [ngStyle]="{ 'color': paletteColors[feature.features[0].colorIndex] }" style="align-self: center">{{getRouteInfo(feature)}}</div>
       </div>
     </ng-container>
