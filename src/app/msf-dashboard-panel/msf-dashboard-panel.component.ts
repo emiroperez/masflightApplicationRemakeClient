@@ -1103,7 +1103,11 @@ export class MsfDashboardPanelComponent implements OnInit {
           {
             categoryAxis = chart.yAxes.push (new am4charts.DateAxis ());
             categoryAxis.dateFormats.setKey ("day", outputFormat);
-            categoryAxis.periodChangeDateFormats.setKey ("day", "yyyy");
+
+            if (!outputFormat.includes ("y"))
+              categoryAxis.periodChangeDateFormats.setKey ("day", "yyyy");
+            else
+              categoryAxis.periodChangeDateFormats.setKey ("day", outputFormat);
           }
           else
           {
@@ -1127,7 +1131,11 @@ export class MsfDashboardPanelComponent implements OnInit {
           {
             categoryAxis = chart.xAxes.push (new am4charts.DateAxis ());
             categoryAxis.dateFormats.setKey ("day", outputFormat);
-            categoryAxis.periodChangeDateFormats.setKey ("day", "yyyy");
+
+            if (!outputFormat.includes ("y"))
+              categoryAxis.periodChangeDateFormats.setKey ("day", "yyyy");
+            else
+              categoryAxis.periodChangeDateFormats.setKey ("day", outputFormat);
           }
           else
           {
