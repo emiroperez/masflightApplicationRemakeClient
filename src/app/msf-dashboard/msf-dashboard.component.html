@@ -37,7 +37,7 @@
                 <mat-icon class="msf-dashboard-button-close-icon" aria-label="close" (click)="removePanel(column, row)">close</mat-icon>
                 <div class="msf-dashboard-button-move-icon" *ngIf="dashboardColumn.length != 1" cdkDragHandle (click)="disableContextMenu()"></div>
               </div>
-              <app-msf-dashboard-panel [values]="dashboardPanel" [reAppendChart]="dashboardColumnsReAppendCharts[column]" [panelHeight]="getHeight(column)" [controlPanelVariables]="controlPanelVariables" [currentHiddenCategories]="currentHiddenCategories" (removeDeadVariablesAndCategories)="removeDeadVariablesAndCategories($event)" (addNewVariablesAndCategories)="addNewVariablesAndCategories($event)"></app-msf-dashboard-panel>
+              <app-msf-dashboard-panel [values]="dashboardPanel" [reAppendChart]="dashboardColumnsReAppendCharts[column]" [panelHeight]="getHeight(column)" [panelWidth]="getPanelWidth(column, row)" [controlPanelVariables]="controlPanelVariables" [currentHiddenCategories]="currentHiddenCategories" (removeDeadVariablesAndCategories)="removeDeadVariablesAndCategories($event)" (addNewVariablesAndCategories)="addNewVariablesAndCategories($event)"></app-msf-dashboard-panel>
             </div>
           </div>
           <div class="msf-dashboard-panel-padding" *ngIf="globals.readOnlyDashboard"></div>

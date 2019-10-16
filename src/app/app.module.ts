@@ -195,6 +195,7 @@ import { AdminShareGroupsArgumentsComponent } from './admin-share-groups-argumen
 import { MsfDashboardAssistantComponent } from './msf-dashboard-assistant/msf-dashboard-assistant.component';
 import { MsfChartPreviewComponent } from './msf-chart-preview/msf-chart-preview.component';
 import { AngularEditorModule } from '@kolkov/angular-editor';
+import { MsfSelectDataFromComponent } from './msf-select-data-from/msf-select-data-from.component';
 
 @NgModule({
   declarations: [
@@ -365,7 +366,8 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
     AdminArgumentsGroupComponent,
     AdminShareGroupsArgumentsComponent,
     MsfDashboardAssistantComponent,
-    MsfChartPreviewComponent
+    MsfChartPreviewComponent,
+    MsfSelectDataFromComponent
   ],
   imports: [
     BrowserModule,
@@ -450,7 +452,8 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
     TwoFactorLoginDialogComponent,
     MsfDynamicTableAliasComponent,
     MsfDashboardAssistantComponent,
-    MsfChartPreviewComponent
+    MsfChartPreviewComponent,
+    MsfSelectDataFromComponent
   ]
 })
 export class AppModule { }

@@ -41,6 +41,7 @@ import { AuthService } from '../services/auth.service';
 import { MsfMapComponent } from '../msf-map/msf-map.component';
 import { MsfDashboardAssistantComponent } from '../msf-dashboard-assistant/msf-dashboard-assistant.component';
 import { MsfDynamicTableAliasComponent } from '../msf-dynamic-table-alias/msf-dynamic-table-alias.component';
+import { MsfSelectDataFromComponent } from '../msf-select-data-from/msf-select-data-from.component';
 
 // AmCharts colors
 const black = am4core.color ("#000000");
@@ -133,6 +134,10 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   @Input("panelHeight")
   panelHeight: number;
+
+  @Input("panelWidth")
+  panelWidth: number;
+  displayLabel: boolean = true;
 
   panelHeightOffset: number;
 
@@ -256,6 +261,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   ngOnInit()
   {
     this.panelHeightOffset = this.panelHeight - 18;
+    this.displayLabel = this.panelWidth >= 35 ? true : false;
 
     // prepare the data form combo box
     this.optionSearchChange (this.dataFormFilterCtrl);
@@ -323,6 +329,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
     else if (changes['panelHeight'])
       this.panelHeightOffset = this.panelHeight - 18;
+    else if (changes['panelWidth'])
+      this.displayLabel = this.panelWidth >= 35 ? true : false;
     else if (changes['currentHiddenCategories'])
     {
       for (let series of this.values.chartSeries)
@@ -5413,6 +5421,15 @@ export class MsfDashboardPanelComponent implements OnInit {
             break;
         }
       }
+    });
+  }
+
+  openDiscoveryDialog(): void
+  {
+    this.dialog.open (MsfSelectDataFromComponent, {
+      panelClass: 'msf-dashboard-assistant-dialog',
+      autoFocus: false,
+      data: { }
     });
   }
 }
