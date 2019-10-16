@@ -15,9 +15,9 @@
                 </div>
             </div>
         </div>
-        <mat-card id="category-card" class="card-container msf-center-container admin-arguments-category-container admin-arguments-category-container-group">
+        <mat-card id="category-card" class="card-container msf-center-container admin-arguments-category-container">
             <mat-card-content class="admin-arguments-category-outer-container">
-                <div class="admin-arguments-category-inner-container admin-arguments-category-inner-container-group">
+                <div class="admin-arguments-category-inner-container">
                     <div class="admin-arguments-category-left-panel">
                         <div class="admin-arguments-category-left-panel-header">
                             <h2 class="title-section">Arguments Groups</h2>
@@ -52,8 +52,8 @@
                         </div>
                     </div>
     
-                    <div class="admin-arguments-category-right-panel admin-arguments-category-right-panel-group admin-arguments-category-form-container-group" *ngIf="ArgumentGroup">
-                        <!-- <div class="admin-arguments-category-right-panel-header"> -->
+                    <div class="admin-arguments-category-right-panel" *ngIf="ArgumentGroup">
+                        <div class="admin-arguments-category-right-panel-header admin-arguments-category-right-panel-header-group">
                             <div class="admin-arguments-category-form-container">
                                 <mat-form-field >
                                     <input [disabled]="disable"  matInput (focus)="ArgumentGroup.focus" placeholder="Name Group" 
@@ -86,21 +86,21 @@
                                     </div>
                                 </div>
                             </div>
-                        <!-- </div> -->
+                        </div>
                             <div class="admin-arguments-group-select">
                                 <!--header-->
                             <div class="admin-arguments-group-det-header">
                                 <div class="admin-arguments-group-det-header-right">
                                     <h2 class="title-section">Arguments Group Detail</h2>
                                 </div>
-                                <div [class.msf-hide]="ArgumentGroup.group === ''" class="admin-arguments-group-det-header-left">
+                                <div [class.msf-hide]="ArgumentGroup.group === ''" class="admin-arguments-group-det-header-left admin-arguments-group-search-input">
                                     <div >Search</div>
                                     <mat-form-field class="search-input search-input-group">
                                         <input matInput [(ngModel)]="searchAirport" autocomplete=off (ngModelChange)="onSearch(ArgumentGroup.group)">
                                         <mat-icon class="iconSearch" aria-label="search" >search</mat-icon>
                                     </mat-form-field>  
                                 </div>
-                                <div [class.msf-hide]="ArgumentGroup.group === ''" class="msf-admin-show-selected">
+                                <div [class.msf-hide]="ArgumentGroup.group === ''" class="msf-admin-show-selected admin-arguments-group-checkbox">
                                     <mat-checkbox class="admin-checkboxes" color="primary" [(ngModel)]="showSelected">
                                         Only Selected</mat-checkbox>
                                 </div>

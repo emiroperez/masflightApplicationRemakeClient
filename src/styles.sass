@@ -5758,7 +5758,6 @@ mat-form-field.msf-table-input
 
 #category-card
     padding: 16px
-    height: 523px
 
 .arguments-categories-list-container
     flex: 1
@@ -5799,6 +5798,8 @@ mat-form-field.msf-table-input
             flex-direction: column
             margin-top: 40px
             height: 100%
+            .admin-arguments-category-right-panel-header-group
+                height: 140px !important
             .admin-arguments-category-right-panel-header
                 display: flex
                 flex-direction: column
@@ -6581,6 +6582,13 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 .admin-arguments-group-select
     height: calc(100% - 120px)
     max-height: calc(100% - 120px)
+    .admin-arguments-group-search-input
+        position: absolute
+        margin-left: 300px
+        margin-top: -5px
+    .admin-arguments-group-checkbox
+        position: absolute
+        right: 65px
     .search-input
         width: calc(70% - 10px)
         padding-left: 10px!important
@@ -6614,13 +6622,11 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
             border-radius: 0px !important
 
 .admin-arguments-group-det-body
-    height: 77%
-    // height: 80%
+    height: calc(100% - 96px)
     display: flex
     flex-direction: row
 
 .admin-arguments-group-det-header
-    height: 20%
     display: flex
     flex-direction: row
     align-items: center
