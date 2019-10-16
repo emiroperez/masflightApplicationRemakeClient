@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { MaterialIconPickerComponent } from '../material-icon-picker/material-icon-picker.component';
 import { Globals } from '../globals/Globals';
 import { ApplicationService } from '../services/application.service';
@@ -331,6 +331,22 @@ deleteCategory() {
       this.ArgumentGroup = { id: null, name: '', group: '',owner:'', type: 1,share: 0, aaa_GroupDet: [],iataList: [],delete: false, isSelected: false };
       this.disable = true;
     }
+  }
+
+  @HostListener('window:resize', ['$event'])
+  checkScreen(event): void {
+    this.innerHeight = event.target.innerHeight;
+
+    // if(!this.mobileQuery.matches)
+    // {
+    if (event.target.innerHeight == window.screen.height && event.target.innerWidth == window.screen.width)
+      this.globals.isFullscreen = true;
+    else
+      this.globals.isFullscreen = false;
+    // }
+    // else{
+    //   this.globals.isFullscreen = false;
+    // }
   }
 
     getInnerHeight(): number
