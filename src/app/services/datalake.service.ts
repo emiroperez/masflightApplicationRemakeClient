@@ -66,7 +66,7 @@ export class DatalakeService {
             Token: this.globals.token
             // Token: "rHgGv10eoP1PmScdpki!8buJYKmT93Mrvj!"
         };
-
+        console.log (url);
         this.http.post(_this, url, request, handlerSuccess, handlerError);
     }
 
@@ -85,16 +85,6 @@ export class DatalakeService {
         this.http.post(_this, url, request, handlerSuccess, handlerError);
     }
 
-    uploadDatalakeTableFile(_this, config, file, handlerSuccess, handlerError): void
-    {
-        let url = this.host + "/uploadDatalakeTableFile?separator=" + config.separator +
-            // "&token=rHgGv10eoP1PmScdpki!8buJYKmT93Mrvj!" + "&format=" + config.format + "&s3filepath=" +
-            "&token="+this.globals.token + "&format=" + config.format + "&s3filepath=" +
-            config.s3filepath;
-
-        this.http.post (_this, url, file, handlerSuccess, handlerError);
-    }
-
     createDatalakeTable(_this, request, handlerSuccess, handlerError): void
     {
         let url = this.host + "/createDatalakeTable";
@@ -108,18 +98,74 @@ export class DatalakeService {
     getDatalakeAlarms(_this, handlerSuccess, handlerError): void
     {
         let url = this.host + "/GetDatalakeAlarms?token="+this.globals.token;
-        // let url = this.host + "/GetDatalakeAlarms?token=rHgGv10eoP1PmScdpki!8buJYKmT93Mrvj!";
         this.http.get(_this, url, handlerSuccess, handlerError, null);
     }
 
-    
+
+
+    dataUploadDatalake(_this, request,file,handlerSuccess, handlerError): void
+    {
+
+        request.username = "karen1";
+        request.token = "umKr1bdxByCYs2d1AimShhqYqMO5Kem!Btd";
+
+        let url = this.host + "/dataUploadDatalake?bucket="+request.bucket
+        +"&format="+request.format+"&s3FilePath="+request.s3FilePath
+        +"&schemaName="+request.schemaName+"&separator="+request.separator
+        +"&tableName="+request.tableName+"&token="+request.token
+        +"&user="+request.username;
+        // request.token = this.globals.token;
+        this.http.post (_this, url,file, handlerSuccess, handlerError);
+    }
+
+    uploadDatalakeTableFile(_this, config, file, handlerSuccess, handlerError): void
+    {
+        let url = this.host + "/uploadDatalakeTableFile?separator=" + config.separator +
+            "&token="+this.globals.token + "&format=" + config.format + "&s3filepath=" +
+            config.s3filepath;
+
+        this.http.post (_this, url, file, handlerSuccess, handlerError);
+    }
+
     saveDatalakeAlarm(_this, request, handlerSuccess, handlerError): void
     {
         let url = this.host + "/saveDatalakeAlarm";
-
         request.username = "karen1";
         // request.token = "rHgGv10eoP1PmScdpki!8buJYKmT93Mrvj!";
         request.token = "CT?oHyyvgbssIhI5MNbJmXVQiI4?zYXIu8m";
         this.http.post (_this, url, request, handlerSuccess, handlerError);
+    }
+
+    getDatalakePartitions(_this, handlerSuccess, handlerError): void
+    {
+        let url = this.host + "/GetDatalakePartitions?token="+this.globals.token;
+        this.http.get(_this, url, handlerSuccess, handlerError, null);
+    }
+
+    saveDatalakePartition(_this, request, handlerSuccess, handlerError): void
+    {
+        let url = this.host + "/saveDatalakePartition";
+        request.token = this.globals.token;
+        this.http.put(_this, url, request, handlerSuccess, handlerError);
+    }
+
+    updateDatalakePartition(_this, request, handlerSuccess, handlerError): void
+    {
+        let url = this.host + "/updateDatalakePartition";
+        request.token = this.globals.token;
+        this.http.post(_this, url, request, handlerSuccess, handlerError);
+    }
+
+    deleteDatalakePartition(_this, request, handlerSuccess, handlerError): void
+    {
+        request.token = this.globals.token;        
+        let url = this.host + "/deleteDatalakePartition?request="+JSON.stringify(request);
+        this.http.delete(_this, url, handlerSuccess, handlerError, null);
+    }
+
+    getDatalakePartitionLogs(_this, handlerSuccess, handlerError): void
+    {
+        let url = this.host + "/getDatalakePartitionLogs?token="+this.globals.token;
+        this.http.get(_this, url, handlerSuccess, handlerError, null);
     }
 }

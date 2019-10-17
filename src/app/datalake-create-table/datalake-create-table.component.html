@@ -13,7 +13,7 @@
   <div class="datalake-create-table-body">
     <mat-tab-group #tabs>
       <mat-tab label="Create New Structure">
-        <app-datalake-create-new-structure [schemas]="schemas" [buckets]="buckets" (closeDialog)="onNoClick()"></app-datalake-create-new-structure>
+        <app-datalake-create-new-structure [schemas]="schemas" [buckets]="buckets" (closeDialog)="onNoClick($event)"></app-datalake-create-new-structure>
       </mat-tab>
       <mat-tab label="Data Upload">
         <app-datalake-data-upload [schemas]="schemas" [buckets]="buckets" (closeDialog)="onNoClick()"></app-datalake-data-upload>

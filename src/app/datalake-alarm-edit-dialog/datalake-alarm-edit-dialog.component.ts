@@ -26,6 +26,8 @@ export class DatalakeAlarmEditDialogComponent {
   tableFilterCtrl: FormControl = new FormControl ();
   filteredTables: ReplaySubject<any[]> = new ReplaySubject<any[]> (1);
   _onDestroy: Subject<void> = new Subject<void> ();
+  timeh: any;
+  timem: any;
   time: any;
   clock: any;
 
@@ -61,16 +63,22 @@ export class DatalakeAlarmEditDialogComponent {
 
     if ((cronExp[1].indexOf ("/") > -1) || (cronExp[0].indexOf ("/") > -1)){
       this.notifyMode = false;
-      if(hours != '*'){
+      this.time = new Date ();
+      this.timeh = this.time.getHours();
+      this.timem = this.time.getMinutes();
+      this.minutes = cron ;
+      /*if(hours != '*'){
         //convierto las horas y los minutos a minutos
         this.minutes = (parseInt(hours)*60) + parseInt(mins);
       }else {
         if(mins != '*'){
           this.minutes = m ;
         }
-      }
+      }*/
     }else{
       this.notifyMode = true;
+      this.timeh = h;
+      this.timem = m;
     }
     // if(hours === '*'){
     //   this.notifyMode = false;
@@ -78,7 +86,7 @@ export class DatalakeAlarmEditDialogComponent {
     // }else{
     //   this.notifyMode = true;
     // }
-    this.enableTimePicker(h, m);
+    this.enableTimePicker(this.timeh, this.timem);
 
 }
 
@@ -214,6 +222,7 @@ getTimeFormat(value){
   }
 
   enableTimePicker(pHour, pMin): void
+  // enableTimePicker(): void
   {
     // let clock;
 
@@ -226,6 +235,7 @@ getTimeFormat(value){
       element: document.getElementById ("time-picker-edit"),
       mode: 12,
       // time: new Date (),
+      // time: { hour: this.time, minute: this.time },
       time: { hour: pHour, minute: pMin },
       width: "100%"
     });
@@ -245,7 +255,7 @@ getTimeFormat(value){
     if (this.notifyMode){
       this.cron = this.transformCronExpression(""+this.clock.getTime().hour,""+this.clock.getTime().minute);
     }else{
-      //notificarme cada X minutos
+      /*//notificarme cada X minutos
       //trasformo los minutos a horas si pasan de 60
       if(this.minutes>=60){
         const calc = this.minutes / 60 ;
@@ -254,7 +264,8 @@ getTimeFormat(value){
         this.cron = this.transformCronExpression(""+h,""+m);
       }else{
         this.cron = this.transformCronExpression(null,""+this.minutes);
-      }
+      }*/
+      this.cron = this.minutes;
     }
 
     request = {

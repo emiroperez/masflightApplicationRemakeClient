@@ -1,9 +1,10 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, Output, EventEmitter } from '@angular/core';
 import { MatDialogRef, MatTabGroup } from '@angular/material';
 
 import { DatalakeService } from '../services/datalake.service';
 import { DatalakeQuerySchema } from '../datalake-query-engine/datalake-query-schema';
 import { DatalakeBucket } from '../datalake-create-table/datalake-bucket';
+import { any } from '@amcharts/amcharts4/.internal/core/utils/Array';
 
 @Component({
   selector: 'app-datalake-create-table',
@@ -16,7 +17,7 @@ export class DatalakeCreateTableComponent {
 
   @ViewChild("tabs")
   tabs: MatTabGroup;
-
+  
   constructor(public dialogRef: MatDialogRef<DatalakeCreateTableComponent>,
     private service: DatalakeService)
   {
@@ -62,9 +63,11 @@ export class DatalakeCreateTableComponent {
     _this.tabs.realignInkBar ();
   }
 
-  onNoClick(): void
+  onNoClick(request): void
   {
-    this.dialogRef.close ();
+    // this.requestTable.emit(request);
+    //aqui
+    this.dialogRef.close (request);
   }
 
   checkVisibility(): string

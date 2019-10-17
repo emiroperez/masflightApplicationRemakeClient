@@ -9,6 +9,7 @@ import { Globals } from '../globals/Globals';
 import { DatalakeService } from '../services/datalake.service';
 import { ApplicationService } from '../services/application.service';
 import { DatalakeAlarmEditDialogComponent } from '../datalake-alarm-edit-dialog/datalake-alarm-edit-dialog.component';
+import { MessageComponent } from '../message/message.component';
 
 @Component({
   selector: 'app-datalake-alarms',
@@ -22,6 +23,7 @@ export class DatalakeAlarmsComponent implements OnInit {
   tableName: any= "";
   cron: any= "";
   minutes: any= "";
+  // time: any;
 
   @ViewChild(MatPaginator)
   paginator: MatPaginator;
@@ -64,6 +66,7 @@ export class DatalakeAlarmsComponent implements OnInit {
 
   ngOnInit()
   {
+    // this.time = new Date ();
     this.innerHeight = window.innerHeight;
 
     this.globals.isLoading = true;
@@ -209,7 +212,8 @@ export class DatalakeAlarmsComponent implements OnInit {
     );
   }
 
-  enableTimePicker(pHour, pMin): void
+  // enableTimePicker(pHour, pMin): void
+  enableTimePicker(): void
   {
     // let clock;
 
@@ -221,8 +225,8 @@ export class DatalakeAlarmsComponent implements OnInit {
     this.clock = timePicker ({
       element: document.getElementById ("time-picker"),
       mode: 12,
-      // time: new Date (),
-      time: { hour: pHour, minute: pMin },
+      time: new Date (),
+      // time: { hour: pHour, minute: pMin },
       width: "100%"
     });
     this.clock.set12h ();
@@ -280,7 +284,7 @@ export class DatalakeAlarmsComponent implements OnInit {
     if (this.notifyMode){
       this.cron = this.transformCronExpression(""+this.clock.getTime().hour,""+this.clock.getTime().minute);
     }else{
-      //notificarme cada X minutos
+      /*//notificarme cada X minutos
       //trasformo los minutos a horas si pasan de 60
       if(this.minutes>=60){
         const calc = this.minutes / 60 ;
@@ -289,7 +293,8 @@ export class DatalakeAlarmsComponent implements OnInit {
         this.cron = this.transformCronExpression(""+h,""+m);
       }else{
         this.cron = this.transformCronExpression(null,""+this.minutes);
-      }
+      }*/
+      this.cron = this.minutes;
     }
 
     this.request = {
@@ -299,6 +304,7 @@ export class DatalakeAlarmsComponent implements OnInit {
       monitoringStatus: this.monitoringStatus
     }
 
+    this.globals.isLoading = true;
     this.service.saveDatalakeAlarm (this, this.request, this.saveAlarmHandler, this.saveAlarmError);
   }
 
@@ -364,7 +370,16 @@ saveAlarmHandler(_this, data) {
       monitoringStatus: ""
     }
     _this.alarmTable.data = _this.alarms;
-    _this.alarmTable._updateChangeSubscription ();
+    _this.alarmTable._updateChangeSubscription ();    
+    _this.alarmFormGroup.reset()
+    // _this.alarmFormGroup.get ("schema").setValue ("");
+    // _this.alarmFormGroup.get ("table").setValue ("");
+    _this.globals.isLoading = false;
+  }else{
+    _this.globals.isLoading = false;
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Error", message: data.Message }
+    });
   }
   
 }

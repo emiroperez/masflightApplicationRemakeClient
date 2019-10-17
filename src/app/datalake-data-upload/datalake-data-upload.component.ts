@@ -6,6 +6,9 @@ import { MessageComponent } from '../message/message.component';
 import { DatalakeQuerySchema } from '../datalake-query-engine/datalake-query-schema';
 import { DatalakeBucket } from '../datalake-create-table/datalake-bucket';
 import { DatalakeService } from '../services/datalake.service';
+import { Globals } from '../globals/Globals';
+import { takeUntil } from 'rxjs/operators';
+import { ReplaySubject, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-datalake-data-upload',
@@ -22,6 +25,10 @@ export class DatalakeDataUploadComponent {
   closeDialog = new EventEmitter ();
 
   currentBuckets: DatalakeBucket[] = [];
+  tables: string[] = [];
+  tableFilterCtrl: FormControl = new FormControl ();
+  filteredTables: ReplaySubject<any[]> = new ReplaySubject<any[]> (1);
+  _onDestroy: Subject<void> = new Subject<void> ();
 
   tableConfigurationFormGroup: FormGroup;
   partitionManagementFormGroup: FormGroup;
@@ -38,13 +45,15 @@ export class DatalakeDataUploadComponent {
 
   dataSource: any[];
   rawData: string[][];
+  fileInfo: FormData;
 
-  constructor(private dialog: MatDialog, private formBuilder: FormBuilder,
+  constructor(public globals: Globals, private dialog: MatDialog, private formBuilder: FormBuilder,
     private service: DatalakeService)
   {
     // initialize all form groups
     this.tableConfigurationFormGroup = this.formBuilder.group ({
       schema: ['', Validators.required],
+      table: new FormControl ({ value: '', disabled: true }, Validators.required),
       bucket: new FormControl ({ value: '', disabled: true }, Validators.required),
       customDelimiter: new FormControl ({ value: '', disabled: true }),
       tableLocation: ['', Validators.required],
@@ -57,6 +66,9 @@ export class DatalakeDataUploadComponent {
       runType: ['', Validators.required],
       status: ['', Validators.required]
     });
+
+    this.filteredTables.next (this.tables.slice ());
+    this.searchChange ();
   }
 
   goBack(stepper: MatStepper): void
@@ -72,13 +84,22 @@ export class DatalakeDataUploadComponent {
       return;
     }
 
+    if (stepper.selectedIndex == 1 &&  !this.tableConfigurationFormGroup.get ("fileName").value){
+      this.dialog.open (MessageComponent, {
+        data: { title: "Error", message: "The required information is incomplete, please complete them and try again." }
+      });
+  
+      return;
+    }
+
     // validate form before going forward
     Object.keys (formGroup.controls).forEach (field =>
     {
       formGroup.get (field).markAsTouched ({ onlySelf: true });
     });
   
-    if (formGroup.invalid || !this.tableConfigurationFormGroup.get ("fileName").value)
+    if (formGroup.invalid)
+    // if (formGroup.invalid || !this.tableConfigurationFormGroup.get ("fileName").value)
     {
       this.dialog.open (MessageComponent, {
         data: { title: "Error", message: "The required information is incomplete, please complete them and try again." }
@@ -108,6 +129,35 @@ export class DatalakeDataUploadComponent {
       if (bucket.schemaName === schema.schemaName)
         this.currentBuckets.push (bucket);
     }
+    this.globals.isLoading = true;
+    this.service.getDatalakeSchemaTables (this, schema.schemaName, this.setSchemaTables, this.setSchemaTablesError);
+  }
+
+  
+  setSchemaTables(_this, data): void
+  {
+    let tableSelector = _this.tableConfigurationFormGroup.get ("table");
+
+    if (!data.Tables.length)
+    {
+      _this.globals.isLoading = false;
+
+      tableSelector.setValue (null);
+      tableSelector.disable ();
+      tableSelector.markAsUntouched ();
+      return;
+    }
+
+    _this.tables = [];
+
+    for (let tableName of data.Tables)
+      _this.tables.push (tableName);
+
+    _this.filteredTables.next (_this.tables.slice ());
+    tableSelector.setValue (null);
+    tableSelector.enable ();
+    tableSelector.markAsUntouched ();
+    _this.globals.isLoading = false;
   }
 
   toggleCustomDelimiter(): void
@@ -190,12 +240,12 @@ export class DatalakeDataUploadComponent {
 
   uploadFile(event): void
   {
-    let fileInfo = new FormData ();
+    this.fileInfo = new FormData ();
     let tableFileConfig;
 
     this.delimiterCharacter = this.getDelimiterCharacter ();
     this.targetFile = event.target.files[0];
-    fileInfo.append ('file', this.targetFile, this.targetFile.name);
+    this.fileInfo.append ('file', this.targetFile, this.targetFile.name);
 
     tableFileConfig = {
       separator: this.delimiterCharacter,
@@ -204,7 +254,47 @@ export class DatalakeDataUploadComponent {
     };
 
     this.fileLoading = true;
-    this.service.uploadDatalakeTableFile (this, tableFileConfig, fileInfo, this.uploadSuccess, this.uploadFailed);
+    this.service.uploadDatalakeTableFile (this, tableFileConfig, this.fileInfo, this.uploadSuccess, this.uploadFailed);
+  
+    /*let fileReader: FileReader;
+
+    this.tableConfigurationFormGroup.get ("fileName").setValue (this.targetFile.name)
+    this.targetFileSize = this.calcFileSize (this.targetFile.size);
+    this.dataSource = [];
+
+    if (this.selectedFileType === "PARQUET")
+    {
+      this.rawData = [];
+      this.fileLoading = false;
+      return;
+    }
+
+    fileReader = new FileReader ();
+    fileReader.onload = (e) => {
+      let data: string = fileReader.result as string;
+      let columns: string[];
+
+      // split the columns first
+      columns = data.split ("\r\n");
+
+      this.rawData = [];
+
+      // then the rows by the selected delimiter
+      for (let i = 0; i < columns.length; i++)
+      {
+        if (i >= 15)
+          break;    // limit it to 25 for better performance
+
+        this.rawData.push (columns[i].split (this.delimiterCharacter));
+      }
+
+      this.fileLoading = false;
+    };
+
+    // read file as text for data preview
+    fileReader.readAsText (this.targetFile);*/
+
+    
   }
 
   uploadSuccess(_this, data): void
@@ -275,4 +365,100 @@ export class DatalakeDataUploadComponent {
     this.tableConfigurationFormGroup.get ("fileName").setValue (null);
     uploader.value = null;
   }
+
+  tableChanged(): void
+  {
+    // this.tableName = this.tableConfigurationFormGroup.get ("table").value;
+  }
+
+
+  setSchemaTablesError(_this, result): void
+  {
+    let tableSelector = _this.tableConfigurationFormGroup.get ("table");
+
+    // TODO: Show dialog
+    console.log (result);
+    _this.tables = [];
+    _this.filteredTables.next (_this.tables.slice ());
+    tableSelector.setValue (null);
+    tableSelector.disable ();
+    tableSelector.markAsUntouched ();
+    _this.globals.isLoading = false;
+  }
+  
+  searchChange(): void
+  {
+    // listen for search field value changes
+    this.tableFilterCtrl.valueChanges.pipe (takeUntil (this._onDestroy)).subscribe (() => {
+      this.filterSchema ();
+    });
+  }
+
+
+  filterSchema(): void
+  {
+    let search, filteredResults;
+
+    if (!this.tables.length)
+      return;
+
+    // get the search keyword
+    search = this.tableFilterCtrl.value;
+    if (!search)
+    {
+      this.filteredTables.next (this.tables.slice ());
+      return;
+    }
+
+    search = search.toLowerCase ();
+    filteredResults = this.tables.filter (a => (a.toLowerCase ().indexOf (search) > -1));
+
+    this.filteredTables.next (
+      filteredResults.filter (function (elem, index, self)
+      {
+        return index === self.indexOf(elem);
+      })
+    );
+  }
+  dataUpload(): void
+    {
+      let request;
+  
+      request = {
+        bucket: this.tableConfigurationFormGroup.get ("bucket").value.bucketName,
+        format: this.selectedFileType,
+        s3FilePath: this.tableConfigurationFormGroup.get ("tableLocation").value,
+        schemaName: this.tableConfigurationFormGroup.get ("schema").value.schemaName,
+        separator: this.delimiterCharacter,
+        tableName: this.tableConfigurationFormGroup.get ("table").value
+      };
+      this.globals.isLoading = true;
+      this.service.dataUploadDatalake (this, request,this.fileInfo, this.handlerDataUpload, this.dataUploadError);
+    }
+
+    handlerDataUpload(_this, data): void
+    {
+      _this.globals.isLoading = false;
+      if (data.message){
+        _this.dialog.open (MessageComponent, {
+          data: { title: "Error", message: data.message }
+        });
+      }else{
+        _this.dialog.open (MessageComponent, {
+          data: { title: "Success", message: "Upload data successfull" }
+        });      
+      _this.closeDialog.emit ();
+      }
+      console.log (data);    
+    }
+  
+    dataUploadError(_this, result): void
+    {
+      _this.globals.isLoading = false;
+      console.log (result);
+  
+      _this.dialog.open (MessageComponent, {
+        data: { title: "Error", message: "Failed to Upload data." }
+      });
+    }
 }

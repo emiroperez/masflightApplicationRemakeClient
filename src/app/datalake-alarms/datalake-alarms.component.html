@@ -75,7 +75,8 @@
             <mat-error *ngIf="alarmFormGroup.get('schema')?.invalid">You must select a schema</mat-error>
           </mat-form-field>
           <mat-form-field class="datalake-alarm-right-combobox" [formGroup]="alarmFormGroup">
-            <mat-select placeholder="Table Name" autocomplete="off" formControlName="table"  (selectionChange)="tableChanged()">
+            <mat-select placeholder="Table Name" autocomplete="off"
+             formControlName="table"  (selectionChange)="tableChanged()">
               <ngx-mat-select-search [formControl]="tableFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
               <mat-option *ngFor="let table of filteredTables | async" [value]="table">
                 {{table}}
@@ -84,14 +85,17 @@
             <mat-error *ngIf="alarmFormGroup.get('table')?.invalid">You must select a table</mat-error>
           </mat-form-field>
         </div>
-        <mat-radio-group class="datalake-alarm-radio-group" [(ngModel)]="notifyMode" (ngModelChange)="enableTimePicker(13,00)">
+        <mat-radio-group class="datalake-alarm-radio-group" [(ngModel)]="notifyMode" (ngModelChange)="enableTimePicker()">
           <mat-radio-button class="cancels-checkbox" [ngClass]="{'datalake-alarm-radio-button': notifyMode, 'datalake-alarm-radio-button-selected': !notifyMode }" [value]="false">Notify me every</mat-radio-button>
+          <!-- <mat-radio-button class="cancels-checkbox" [ngClass]="{'datalake-alarm-radio-button': notifyMode, 'datalake-alarm-radio-button-selected': !notifyMode }" [value]="false">Type Cron Expression</mat-radio-button> -->
           <mat-radio-button class="cancels-checkbox datalake-alarm-radio-button-right" [ngClass]="{'datalake-alarm-radio-button': !notifyMode, 'datalake-alarm-radio-button-selected': notifyMode }" [value]="true">Notify me at this specific time</mat-radio-button>
         </mat-radio-group>
         <div class="datalake-alarm-time-picker" *ngIf="!notifyMode">
           <div class="datalake-alarm-minute-input">
-            <input matInput [(ngModel)]="minutes" maxlength="4" type="numeric" autocomplete="off" class="datalake-alarm-minutes-input"/>
-            <span class="datalake-alarm-minutes-label">Minutes</span>
+            <!-- <input matInput [(ngModel)]="minutes" maxlength="4" type="numeric" autocomplete="off" class="datalake-alarm-minutes-input"/> -->
+            <span class="datalake-alarm-minutes-label">Cron Expression</span>
+            <input matInput [(ngModel)]="minutes"  type="string" autocomplete="off" 
+            class="datalake-alarm-minutes-input"/>
           </div>
         </div>
         <div class="datalake-alarm-time-picker" *ngIf="notifyMode">

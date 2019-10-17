@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, SimpleChanges, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, ViewChildren, QueryList, Output } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { ReplaySubject, Subject } from 'rxjs';
 
@@ -7,6 +7,7 @@ import { DatalakeService } from '../services/datalake.service';
 import { Globals } from '../globals/Globals';
 import { DatalakeCreateTableComponent } from '../datalake-create-table/datalake-create-table.component';
 import { DatalakeTableCardComponent } from '../datalake-table-card/datalake-table-card.component';
+import { any } from '@amcharts/amcharts4/.internal/core/utils/Array';
 
 @Component({
   selector: 'app-datalake-explorer',
@@ -15,7 +16,7 @@ import { DatalakeTableCardComponent } from '../datalake-table-card/datalake-tabl
 export class DatalakeExplorerComponent implements OnInit {
   @Input("currentOption")
   currentOption: number;
-
+  
   filter: string;
   filteredTableCards: ReplaySubject<any[]> = new ReplaySubject<any[]> (1);
   _onDestroy = new Subject<void> ();
@@ -112,9 +113,17 @@ export class DatalakeExplorerComponent implements OnInit {
 
   createTable(): void
   {
-    this.dialog.open (DatalakeCreateTableComponent, {
+   let dialogRef =  this.dialog.open (DatalakeCreateTableComponent, {
       panelClass: 'datalake-create-table-dialog',
       data: { }
+    });
+
+    dialogRef.afterClosed().subscribe((request: any) => {
+      if (request != undefined) {
+        this.tableCards.push(new DatalakeTableCardValues (request.tableName,
+          request.tableDesc, request.s3TableLocation, request.schemaName, request.longName));          
+        this.filterTableCards ();
+      }
     });
   }
 
@@ -145,4 +154,5 @@ export class DatalakeExplorerComponent implements OnInit {
         break;
     }
   }
+
 }

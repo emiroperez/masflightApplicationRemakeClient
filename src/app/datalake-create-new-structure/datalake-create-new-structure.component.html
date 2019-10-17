@@ -61,18 +61,21 @@
           </button>
         </div>
       </div>
-      <div class="datalake-create-table-input-body">
-        <mat-form-field [formGroup]="tableConfigurationFormGroup">
+      <div class="datalake-create-table-input-body align-items-center">
+        <mat-form-field class="datalake-create-table-input-body-left" 
+        [formGroup]="tableConfigurationFormGroup">
           <input matInput placeholder="Table Name" autocomplete="off" formControlName="tableName" required>
           <mat-error *ngIf="tableConfigurationFormGroup.get('tableName')?.invalid">You must specify table name</mat-error>
         </mat-form-field>
-        <mat-form-field [formGroup]="tableConfigurationFormGroup" class="datalake-create-table-input">
+        <mat-form-field [formGroup]="tableConfigurationFormGroup" 
+        class="datalake-create-table-input datalake-create-table-input-body-right">
           <input matInput placeholder="Table Long Name" autocomplete="off" formControlName="tableLongName" required>
           <mat-error *ngIf="tableConfigurationFormGroup.get('tableLongName')?.invalid">You must specify table long name</mat-error>
         </mat-form-field>
       </div>
       <div class="datalake-create-table-input-secondary-body">
-        <mat-form-field [formGroup]="tableConfigurationFormGroup">
+        <mat-form-field class="datalake-create-table-input-body-left" 
+        [formGroup]="tableConfigurationFormGroup">
           <mat-select placeholder="Schema" autocomplete="off" formControlName="schema"
             (selectionChange)="schemaChanged(tableConfigurationFormGroup)" required>
             <mat-option *ngFor="let schema of schemas" [value]="schema">
@@ -81,7 +84,8 @@
           </mat-select>
           <mat-error *ngIf="tableConfigurationFormGroup.get('schema')?.invalid">You must select a schema</mat-error>
         </mat-form-field>
-        <mat-form-field [formGroup]="tableConfigurationFormGroup" class="datalake-create-table-input">
+        <mat-form-field [formGroup]="tableConfigurationFormGroup" 
+        class="datalake-create-table-input datalake-create-table-input-body-right">
           <mat-select placeholder="Bucket" autocomplete="off" formControlName="bucket" required>
             <mat-option *ngFor="let bucket of currentBuckets" [value]="bucket">
               {{bucket.bucketName}}
@@ -91,27 +95,37 @@
         </mat-form-field>
       </div>
       <div class="datalake-create-table-input-secondary-body">
-        <mat-form-field [formGroup]="tableConfigurationFormGroup">
+        <mat-form-field class="datalake-create-table-input-body-left"  [formGroup]="tableConfigurationFormGroup">
           <input matInput placeholder="Table Description" autocomplete="off" formControlName="tableDescription">
         </mat-form-field>
-      </div>
-      <div class="datalake-create-table-input-body">
-        <span>
-          File Type *:
-        </span>
-        <mat-radio-group [(ngModel)]="selectedFileType" (ngModelChange)="ResetStepper(stepper, uploader)" class="datalake-file-type-picker">
-          <mat-radio-button class="cancels-checkbox datalake-file-type-radio" *ngFor="let fileType of fileTypes" [value]="fileType">{{fileType}}</mat-radio-button>
-        </mat-radio-group>
+        <div class="datalake-create-table-input-body-right">
         <mat-form-field class="datalake-table-location" [formGroup]="tableConfigurationFormGroup">
-          <input matInput placeholder="Table Location" autocomplete="off" formControlName="tableLocation" required>
+          <input matInput placeholder="File Path" autocomplete="off" formControlName="tableLocation" required>
           <mat-error *ngIf="tableConfigurationFormGroup.get('tableLocation')?.invalid">You must specify table location</mat-error>
         </mat-form-field>
+        <div class="datalake-checkbox">
+            <mat-checkbox class="admin-checkboxes" color="primary" 
+            [(ngModel)]="showSelected" (change)="addPartitionS3tabletLocation(tableConfigurationFormGroup.get('tableLocation').value)">
+            Partition</mat-checkbox>
+        </div>
       </div>
-      <div class="datalake-create-table-input-body datalake-delimiter-selector" *ngIf="selectedFileType === 'CSV'">
-        <span>
+
+      </div>
+      <div class="datalake-create-table-input-body align-items-center">
+        <span class="datalake-create-table-input-body-span">
+          File Type *:
+        </span>
+        <mat-radio-group [(ngModel)]="selectedFileType" (ngModelChange)="ResetStepper(stepper, uploader)" 
+        class="datalake-file-type-picker">
+          <mat-radio-button class="cancels-checkbox datalake-file-type-radio" *ngFor="let fileType of fileTypes" [value]="fileType">{{fileType}}</mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <div class="datalake-create-table-input-body datalake-delimiter-selector align-items-center" *ngIf="selectedFileType === 'CSV'">
+        <span class="datalake-create-table-input-body-span">
           Delimiter *:
         </span>
-        <mat-radio-group [(ngModel)]="selectedDelimiter" (ngModelChange)="toggleCustomDelimiter()" class="datalake-file-type-picker">
+        <mat-radio-group [(ngModel)]="selectedDelimiter" (ngModelChange)="toggleCustomDelimiter()" 
+        class="datalake-file-type-picker datalake-create-table-input-body-delimiter">
           <mat-radio-button class="cancels-checkbox datalake-file-type-radio" *ngFor="let delimiter of delimiters" [value]="delimiter">{{delimiter}}</mat-radio-button>
         </mat-radio-group>
         <mat-form-field class="datalake-custom-delimiter" [formGroup]="tableConfigurationFormGroup">
@@ -120,8 +134,8 @@
       </div>
       <div class="datalake-create-table-input-file-picker">
         <span class="datalake-file-picker-label">Filename *:</span>
-        <mat-form-field [formGroup]="tableConfigurationFormGroup">
-          <input matInput formControlName="fileName" required>
+        <mat-form-field class="datalake-file-picker-form" [formGroup]="tableConfigurationFormGroup">
+          <input class="datalake-file-picker-form-input" matInput formControlName="fileName" required>
         </mat-form-field>
         <input hidden type="file" accept="{{getAcceptedFileFormat()}}" #uploader (change)="uploadFile($event)">
         <button class="datalake-browse-file-button flat-button" mat-button (click)="browseFile(uploader)">
@@ -200,18 +214,19 @@
         <button class="add-partition-button flat-button" mat-button (click)="addPartition()">Add Partition</button>
       </div>
       <div class="datalake-partition-container">
-        <div class="datalake-partition" *ngFor="let partition of partitions">
-          <mat-form-field>
+        <div [ngClass]="{'datalake-partition': partition.isPartition==='YES', 'hidden': partition.isPartition==='NO' }"
+         class="datalake-partition" *ngFor="let partition of partitions">
+          <mat-form-field *ngIf="partition.isPartition==='YES'">
             <input matInput [(ngModel)]="partition.name" placeholder="Partition Name" autocomplete="off">
           </mat-form-field>
-          <mat-form-field class="datalake-partition-type">
+          <mat-form-field *ngIf="partition.isPartition==='YES'" class="datalake-partition-type">
             <mat-select [(ngModel)]="partition.dataType" placeholder="Type" autocomplete="off">
               <mat-option *ngFor="let partitionDataType of partitionDataTypes" [value]="partitionDataType">
                 {{partitionDataType}}
               </mat-option>
             </mat-select>
           </mat-form-field>
-          <button class="close-button" mat-icon-button>
+          <button *ngIf="partition.isPartition==='YES'" class="close-button" mat-icon-button>
             <mat-icon aria-label="add" (click)="removePartition(partition)">close</mat-icon>
           </button>
         </div>
@@ -234,7 +249,7 @@
           </button>
         </div>
       </div>
-      <div class="datalake-create-table-input-body">
+      <div class="datalake-create-table-input-body align-items-center">
         <mat-form-field class="datalake-discovery-result-search-input">
           <mat-icon class="search-icon" aria-label="search">search</mat-icon>
           <input matInput [(ngModel)]="dataColumnFilter" (ngModelChange)="filterDataColumns()" placeholder="Search" autocomplete="off">

@@ -203,6 +203,9 @@ import { DatalakeDataUploadComponent } from './datalake-data-upload/datalake-dat
 import { DatalakeMenuComponent } from './datalake-menu/datalake-menu.component';
 import { DatalakeAlarmsComponent } from './datalake-alarms/datalake-alarms.component';
 import { DatalakeAlarmEditDialogComponent } from './datalake-alarm-edit-dialog/datalake-alarm-edit-dialog.component';
+import { DatalakePartitionsComponent } from './datalake-partitions/datalake-partitions.component';
+import { DatalakeExecutionPartitionComponent } from './datalake-execution-partition/datalake-execution-partition.component';
+import { DatalakeExecutionPartitionViewDetailComponent } from './datalake-execution-partition-view-detail/datalake-execution-partition-view-detail.component';
 
 @NgModule({
   declarations: [
@@ -380,7 +383,10 @@ import { DatalakeAlarmEditDialogComponent } from './datalake-alarm-edit-dialog/d
     DatalakeDataUploadComponent,
     DatalakeMenuComponent,
     DatalakeAlarmsComponent,
-    DatalakeAlarmEditDialogComponent
+    DatalakeAlarmEditDialogComponent,
+    DatalakePartitionsComponent,
+    DatalakeExecutionPartitionComponent,
+    DatalakeExecutionPartitionViewDetailComponent
   ],
   imports: [
     BrowserModule,

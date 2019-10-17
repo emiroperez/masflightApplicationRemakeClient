@@ -39,6 +39,8 @@
 </div>
 <!-- Body -->
 <div [style.height.px]="bodyHeight" [class.is-mobile]="mobileQuery.matches">
-    <app-datalake-explorer *ngIf="currentOption == 2 || currentOption == 3" [currentOption]="currentOption"></app-datalake-explorer>
-    <app-datalake-alarms *ngIf="currentOption == 5"></app-datalake-alarms>
+    <app-datalake-explorer *ngIf="currentOption === 2 || currentOption === 3" [currentOption]="currentOption"></app-datalake-explorer>
+    <app-datalake-alarms *ngIf="currentOption === 5"></app-datalake-alarms>
+    <app-datalake-partitions *ngIf="currentOption === 6"></app-datalake-partitions>
+    <app-datalake-execution-partition *ngIf="currentOption === 7"></app-datalake-execution-partition>
 </div>

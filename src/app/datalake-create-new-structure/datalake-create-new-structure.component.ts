@@ -7,6 +7,7 @@ import { MessageComponent } from '../message/message.component';
 import { DatalakeQuerySchema } from '../datalake-query-engine/datalake-query-schema';
 import { DatalakeBucket } from '../datalake-create-table/datalake-bucket';
 import { DatalakeService } from '../services/datalake.service';
+import { Globals } from '../globals/Globals';
 
 @Component({
   selector: 'app-datalake-create-new-structure',
@@ -45,8 +46,14 @@ export class DatalakeCreateNewStructureComponent {
   dataColumns: any[];
   partitions: any[] = [];
   rawData: string[][];
+  showSelected: boolean = false;
+  request: {
+  columns: any[]; Partitions: any[]; format: string; tableName: any; schemaName: any; s3TableLocation: string; s3FilePath: any;
+    // s3FilePath: vS3FilePath,
+    tableDesc: any; separator: string; longName: any;
+  };
 
-  constructor(private dialog: MatDialog, private formBuilder: FormBuilder,
+  constructor(public globals: Globals,private dialog: MatDialog, private formBuilder: FormBuilder,
     private service: DatalakeService)
   {
     // initialize all form groups
@@ -90,10 +97,11 @@ export class DatalakeCreateNewStructureComponent {
         });
   
         return;
+      }else{
+        this.addPartitionS3tabletLocation(this.tableConfigurationFormGroup.get ("tableLocation").value);
       }
     }
-    else if ((stepper.selectedIndex == 2 && this.selectedFileType === 'CSV')
-      || (stepper.selectedIndex == 1 && this.selectedFileType === 'PARQUET'))
+    else if ((stepper.selectedIndex == 1 && this.selectedFileType === 'PARQUET'))
     {
       if (!this.partitions.length)
       {
@@ -103,7 +111,7 @@ export class DatalakeCreateNewStructureComponent {
   
         return;
       }
-    }
+  }
 
     stepper.next ();
   }
@@ -343,7 +351,8 @@ export class DatalakeCreateNewStructureComponent {
   {
     let columnList = [];
     let partitionList = [];
-    let request;
+    // let request;
+    let vS3FilePath = "";
 
     for (let column of this.dataColumns)
     {
@@ -358,12 +367,18 @@ export class DatalakeCreateNewStructureComponent {
     {
       partitionList.push ({
         Name: partition.name,
-        isPartition: "YES",
+        isPartition: partition.isPartition? partition.isPartition : "YES",
         DataType: partition.dataType
       });
+
+      // if (vS3FilePath===""){
+      //   vS3FilePath = partition.name;
+      // }else{
+      //   vS3FilePath = vS3FilePath+"/"+partition.name;
+      // }
     }
 
-    request = {
+    this.request = {
       columns: columnList,
       Partitions: partitionList,
       format: this.selectedFileType,
@@ -371,15 +386,18 @@ export class DatalakeCreateNewStructureComponent {
       schemaName: this.tableConfigurationFormGroup.get ("schema").value.schemaName,
       s3TableLocation: "s3://" + this.tableConfigurationFormGroup.get ("bucket").value.bucketName,
       s3FilePath: this.tableConfigurationFormGroup.get ("tableLocation").value,
+      // s3FilePath: vS3FilePath,
       tableDesc: this.tableConfigurationFormGroup.get ("tableDescription").value,
       separator: this.delimiterCharacter,
       longName: this.tableConfigurationFormGroup.get ("tableLongName").value
     };
-    this.service.createDatalakeTable (this, request, this.tableCreated, this.createTableError);
+    this.globals.isLoading = true;
+    this.service.createDatalakeTable (this, this.request, this.tableCreated, this.createTableError);
   }
 
   tableCreated(_this, data): void
   {
+    _this.globals.isLoading = false;
     if (data.message){
       _this.dialog.open (MessageComponent, {
         data: { title: "Error", message: data.message }
@@ -388,7 +406,7 @@ export class DatalakeCreateNewStructureComponent {
       _this.dialog.open (MessageComponent, {
         data: { title: "Success", message: "Table created successfull" }
       });      
-    _this.closeDialog.emit ();
+    _this.closeDialog.emit (_this.request);
     }
     console.log (data);    
   }
@@ -396,6 +414,7 @@ export class DatalakeCreateNewStructureComponent {
   createTableError(_this, result): void
   {
     console.log (result);
+    _this.globals.isLoading = false;
 
     _this.dialog.open (MessageComponent, {
       data: { title: "Error", message: "Failed to create new table." }
@@ -406,6 +425,7 @@ export class DatalakeCreateNewStructureComponent {
   {
     this.partitions.push ({
       name: "New Partition",
+      isPartition: "YES",
       dataType: "String"
     });
   }
@@ -413,5 +433,32 @@ export class DatalakeCreateNewStructureComponent {
   removePartition(partition): void
   {
     this.partitions.splice (this.partitions.indexOf (partition), 1);
+  }
+
+  addPartitionS3tabletLocation(namePart: any): void
+  {
+    if (this.showSelected){
+      let index: number = this.partitions.findIndex(d => d.name === namePart);
+      if(index!=-1){
+        this.partitions[index].isPartition="YES";
+      }else{
+        this.partitions.push ({
+          name: namePart,
+          isPartition: "YES",
+          dataType: "String"
+        });
+      }
+    }else{
+      let index: number = this.partitions.findIndex(d => d.name === namePart);
+      if(index!=-1){
+        this.partitions[index].isPartition="NO";
+      }else{
+        this.partitions.push ({
+          name: namePart,
+          isPartition: "NO",
+          dataType: "String"
+        });
+      }
+    }
   }
 }
