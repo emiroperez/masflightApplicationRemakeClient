@@ -6,12 +6,7 @@
       </mat-form-field>      
       <div class="datalake-explorer-header-title">Execution History</div>
       <div class="datalake-explorer-buttons datalake-partition-icons-header">
-          <!-- <button *ngIf="!currentScreen" mat-button 
-          [ngClass]="{'datalake-explorer-button': detailView, 'datalake-explorer-button-selected': !detailView }"
-          matTooltip="title 1 any"  (click)="changeView()">
-              <mat-icon class="datalake-explorer-button-info-icon" aria-label="apps">apps</mat-icon>  
-          </button> -->
-          <button *ngIf="!currentScreen" mat-button 
+          <button mat-button 
           [ngClass]="{'datalake-explorer-button': !detailView, 'datalake-explorer-button-selected': detailView }"
           matTooltip="title any"  (click)="changeView()">
               <mat-icon class="datalake-explorer-button-info-icon" aria-label="menu">menu</mat-icon>

@@ -5,7 +5,7 @@
       Data Ingestions
     </div>
     <div class="datalake-create-table-button">
-      <button mat-icon-button (click)="onNoClick()">
+      <button mat-icon-button (click)="onNoClick(null)">
         <mat-icon aria-label="Close">close</mat-icon>
       </button>
     </div>
@@ -16,7 +16,7 @@
         <app-datalake-create-new-structure [schemas]="schemas" [buckets]="buckets" (closeDialog)="onNoClick($event)"></app-datalake-create-new-structure>
       </mat-tab>
       <mat-tab label="Data Upload">
-        <app-datalake-data-upload [schemas]="schemas" [buckets]="buckets" (closeDialog)="onNoClick()"></app-datalake-data-upload>
+        <app-datalake-data-upload [schemas]="schemas" [buckets]="buckets" (closeDialog)="onNoClick(null)"></app-datalake-data-upload>
       </mat-tab>
     </mat-tab-group>
   </div>

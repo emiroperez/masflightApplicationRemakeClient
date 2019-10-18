@@ -119,7 +119,7 @@ export class DatalakeExplorerComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((request: any) => {
-      if (request != undefined) {
+      if (request) {
         this.tableCards.push(new DatalakeTableCardValues (request.tableName,
           request.tableDesc, request.s3TableLocation, request.schemaName, request.longName));          
         this.filterTableCards ();
