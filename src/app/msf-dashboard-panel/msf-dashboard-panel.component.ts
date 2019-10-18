@@ -203,8 +203,8 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   public columnFilterCtrl: FormControl = new FormControl ();
 
-  public filteredVariables: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
-  public filteredOptions: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
+  public filteredVariables: ReplaySubject<any[]> = new ReplaySubject<any[]> (1);
+  public filteredOptions: ReplaySubject<any[]> = new ReplaySubject<any[]> (1);
 
   @ViewChild('variableSelect') variableSelect: MatSelect;
   @ViewChild('xaxisSelect') xaxisSelect: MatSelect;
@@ -5426,10 +5426,32 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   openDiscoveryDialog(): void
   {
-    this.dialog.open (MsfSelectDataFromComponent, {
+    let dialogRef = this.dialog.open (MsfSelectDataFromComponent, {
       panelClass: 'msf-select-data-dialog',
       autoFocus: false,
       data: { }
+    });
+
+    dialogRef.afterClosed ().subscribe ((selectedItem) => {
+      let selectedOption = null;
+
+      if (!selectedItem)
+        return;
+
+      for (let option of this.values.options)
+      {
+        if (option.id == selectedItem.id)
+        {
+          selectedOption = option;
+          break;
+        }
+      }
+
+      if (!selectedOption)
+        return;
+
+      this.values.currentOption = selectedOption;
+      this.loadChartFilterValues (selectedOption);
     });
   }
 }
