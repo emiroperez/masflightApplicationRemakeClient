@@ -10,7 +10,7 @@
     <div class="select-data-menu-category" *ngFor="let menuCategory of menuCategories">
       <div class="menu-category-header">
         <span class="menu-category-title">{{menuCategory.label}}</span>
-        <img class="menu-category-image"  *ngIf="menuCategory.welcome.imageURL != null || menuCategory.welcome.imageURL != ''" src="{{globals.baseUrl}}/categoryImage/{{globals.theme}}-{{menuCategory.welcome.imageURL}}"/>
+        <img class="menu-category-image"  *ngIf="menuCategory.welcome.imageURL != null && menuCategory.welcome.imageURL != ''" src="{{globals.baseUrl}}/categoryImage/{{globals.theme}}-{{menuCategory.welcome.imageURL}}"/>
       </div>
       <div class="menu-category-description">
         <ng-container *ngIf="menuCategory.welcome.shortDescription">
