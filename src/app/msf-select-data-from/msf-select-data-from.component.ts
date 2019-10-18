@@ -34,6 +34,14 @@ export class MsfSelectDataFromComponent {
   {
     if (menuCategory.children && menuCategory.children.length)
     {
+      // the submenu must have the items with children first
+      menuCategory.children.sort (function(e1, e2) {
+        if (e1.children.length && e2.children.length)
+          return 0;
+
+        return e2.children.length - e1.children.length;
+      });
+
       for (let i = menuCategory.children.length - 1; i >= 0; i--)
       {
         let child = menuCategory.children[i];
@@ -109,6 +117,14 @@ export class MsfSelectDataFromComponent {
       // remove options that are exclusive to the main menu
       if (menuCategory.children && menuCategory.children.length)
       {
+        // the submenu must have the items with children first
+        menuCategory.children.sort (function(e1, e2) {
+          if (e1.children.length && e2.children.length)
+            return 0;
+
+          return e2.children.length - e1.children.length;
+        });
+
         for (let i = menuCategory.children.length - 1; i >= 0; i--)
         {
           let child = menuCategory.children[i];
@@ -173,7 +189,7 @@ export class MsfSelectDataFromComponent {
   {
     if (searchLabel != "" && searchLabel != null)
     {
-      if (option.label.toLowerCase ().indexOf (searchLabel) != -1)
+      if (option.label.toLowerCase ().indexOf (searchLabel.toLowerCase ()) != -1)
         option.show = true;
       else
         option.show = false;

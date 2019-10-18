@@ -10,6 +10,12 @@
   </div>
   <div class="msf-dashboard-panel-container" [style.height.px]="panelHeightOffset" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !values.displayDynTable && !globals.readOnlyDashboard">
     <div class="msf-dashboard-panel-sub-container-column">
+      <div class="msf-dashboard-panel-sub-container-row msf-dashboard-panel-discover-button">
+        <button class="flat-button discover-button" mat-button (click)="openDiscoveryDialog()">
+          <img class="search-icon" src="../../assets/images/search-icon.png"/>
+          <span *ngIf="displayLabel" class="search-label">Discover Our Data</span>
+        </button>
+      </div>
       <div class="msf-dashboard-panel-sub-container-row">
         <mat-form-field [formGroup]="chartForm" class="msf-width-80">
           <mat-select formControlName="dataFormCtrl" placeholder="Select Data From" [(value)]="values.currentOption" (selectionChange)="loadChartFilterValues($event.value)">
@@ -19,12 +25,6 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-      </div>
-      <div class="msf-dashboard-panel-sub-container-row msf-dashboard-panel-discover-button">
-        <button class="flat-button discover-button" mat-button (click)="openDiscoveryDialog()">
-          <img class="search-icon" src="../../assets/images/search-icon.png"/>
-          <span *ngIf="displayLabel" class="search-label">Discover Our Data</span>
-        </button>
       </div>
     </div>
     <div class="msf-dashboard-panel-sub-container-column">

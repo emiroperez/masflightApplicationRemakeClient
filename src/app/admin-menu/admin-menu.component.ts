@@ -871,7 +871,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
   setShowOption(option, _this) {
     if (_this.searchTextOption != "" && _this.searchTextOption != null) {
-      if (option.label.toLowerCase().indexOf(_this.searchTextOption) != -1) {
+      if (option.label.toLowerCase().indexOf(_this.searchTextOption.toLowerCase ()) != -1) {
         option.show = true;
         // if(option.menuParentId!=null){
         //   _this.findOnMenu(option.menuParentId)
