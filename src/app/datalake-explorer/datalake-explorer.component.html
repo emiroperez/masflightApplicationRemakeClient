@@ -1,5 +1,5 @@
 <div class="datalake-explorer-container">
-    <div class="datalake-explorer-header">
+    <div *ngIf="currentScreen != 2" class="datalake-explorer-header">
         <mat-form-field *ngIf="!currentScreen" class="datalake-explorer-search-input-container">
             <input matInput class="datalake-explorer-search-input" type="text" placeholder="Search" autocomplete="off" [(ngModel)]="filter" (ngModelChange)="filterTableCards()">
             <mat-icon class="search-icon" aria-label="search">search</mat-icon>
@@ -8,6 +8,9 @@
             Datalake Explorer
         </div>
         <div class="datalake-explorer-buttons">
+            <button *ngIf="!currentScreen" mat-button class="datalake-explorer-button"  matTooltip="Execution Partition">
+                <mat-icon class="datalake-explorer-button-add-icon" (click)="goToScreen(2)">history</mat-icon>
+            </button>
             <button *ngIf="!currentScreen" mat-button class="datalake-explorer-button" (click)="goToScreen(1)" matTooltip="Query Engine">
                 <img class="datalake-explorer-query-engine-button-image" src="../../assets/images/datalake-query.png"/>
             </button>
@@ -30,7 +33,10 @@
             <app-datalake-table-card [values]="tableCard"></app-datalake-table-card>
         </ng-container>
     </div>
-    <div *ngIf="currentScreen == 1" [style.height.%]="100">
+    <div *ngIf="currentScreen === 1" [style.height.%]="100">
         <app-datalake-query-engine></app-datalake-query-engine>
+    </div>
+    <div *ngIf="currentScreen === 2" [style.height.%]="100">
+        <app-datalake-execution-partition></app-datalake-execution-partition>
     </div>
 </div>

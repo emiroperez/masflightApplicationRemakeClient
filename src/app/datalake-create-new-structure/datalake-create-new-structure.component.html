@@ -64,7 +64,7 @@
       <div class="datalake-create-table-input-body align-items-center">
         <mat-form-field class="datalake-create-table-input-body-left" 
         [formGroup]="tableConfigurationFormGroup">
-          <input matInput placeholder="Table Name" autocomplete="off" formControlName="tableName" required>
+          <input matInput placeholder="Table Name" autocomplete="off" formControlName="tableName" (change)="tableNameChange()" required>
           <mat-error *ngIf="tableConfigurationFormGroup.get('tableName')?.invalid">You must specify table name</mat-error>
         </mat-form-field>
         <mat-form-field [formGroup]="tableConfigurationFormGroup" 

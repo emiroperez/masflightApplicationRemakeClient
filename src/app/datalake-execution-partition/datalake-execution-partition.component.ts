@@ -16,7 +16,7 @@ export class DatalakeExecutionPartitionComponent implements OnInit {
   //   tableName: "fradar24_r",
   //   type: "Manually",
   //   timestamp: "2019-04-30 09:15:21",
-  //   commands: 'Alter table'
+  //   cron: 'Alter table'
   // }
   // ];
   @ViewChild('partitionDetail')

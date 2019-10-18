@@ -106,15 +106,15 @@ export class DatalakeService {
     dataUploadDatalake(_this, request,file,handlerSuccess, handlerError): void
     {
 
-        request.username = "karen1";
-        request.token = "umKr1bdxByCYs2d1AimShhqYqMO5Kem!Btd";
+        // request.username = "karen1";
+        // request.token = "umKr1bdxByCYs2d1AimShhqYqMO5Kem!Btd";
 
         let url = this.host + "/dataUploadDatalake?bucket="+request.bucket
         +"&format="+request.format+"&s3FilePath="+request.s3FilePath
         +"&schemaName="+request.schemaName+"&separator="+request.separator
-        +"&tableName="+request.tableName+"&token="+request.token
-        +"&user="+request.username;
-        // request.token = this.globals.token;
+        +"&tableName="+request.tableName+"&token="+this.globals.token
+        // +"&user="+request.username
+        ;
         this.http.post (_this, url,file, handlerSuccess, handlerError);
     }
 
@@ -132,7 +132,8 @@ export class DatalakeService {
         let url = this.host + "/saveDatalakeAlarm";
         request.username = "karen1";
         // request.token = "rHgGv10eoP1PmScdpki!8buJYKmT93Mrvj!";
-        request.token = "CT?oHyyvgbssIhI5MNbJmXVQiI4?zYXIu8m";
+        // request.token = "CT?oHyyvgbssIhI5MNbJmXVQiI4?zYXIu8m";
+        request.token = this.globals.token ;
         this.http.post (_this, url, request, handlerSuccess, handlerError);
     }
 
@@ -166,6 +167,13 @@ export class DatalakeService {
     getDatalakePartitionLogs(_this, handlerSuccess, handlerError): void
     {
         let url = this.host + "/getDatalakePartitionLogs?token="+this.globals.token;
+        this.http.get(_this, url, handlerSuccess, handlerError, null);
+    }
+
+    getDatalakeLoadPartition(_this,request, handlerSuccess, handlerError): void
+    {
+        request.token = this.globals.token;
+        let url = this.host + "/getDatalakeLoadPartition?request="+request;
         this.http.get(_this, url, handlerSuccess, handlerError, null);
     }
 }

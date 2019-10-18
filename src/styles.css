@@ -2069,48 +2069,24 @@
 .dark-theme .datalake-partition-table-scroll td.mat-cell .status-icon2, .dark-theme .datalake-partition-table-scroll-right td.mat-cell .status-icon2 {
   color: #ffffff;
 }
+.dark-theme .datalake-partition-table-scroll .datalake-partition-table tr.mat-header-row th.mat-header-cell, .dark-theme .datalake-partition-table-scroll-right .datalake-partition-table tr.mat-header-row th.mat-header-cell {
+  background-color: #333333;
+}
+.dark-theme .datalake-partition-table-scroll .datalake-partition-table tr.mat-header-row th.mat-header-cell .mat-sort-header-arrow, .dark-theme .datalake-partition-table-scroll-right .datalake-partition-table tr.mat-header-row th.mat-header-cell .mat-sort-header-arrow {
+  color: inherit !important;
+}
 .dark-theme .datalake-partition-table-scroll .datalake-partition-table tr.mat-row, .dark-theme .datalake-partition-table-scroll-right .datalake-partition-table tr.mat-row {
   background-color: #1e1e1e;
+}
+.dark-theme .datalake-partition-table-scroll .datalake-partition-table tr.mat-row td.mat-cell, .dark-theme .datalake-partition-table-scroll-right .datalake-partition-table tr.mat-row td.mat-cell {
+  color: #ffffff;
+  border-color: #333333;
 }
 .dark-theme .datalake-partition-table-scroll .datalake-partition-table tr.mat-row:hover, .dark-theme .datalake-partition-table-scroll-right .datalake-partition-table tr.mat-row:hover {
   background-color: #282828;
 }
-.dark-theme .datalake-partition-table-scroll .datalake-partition-table td.mat-cell, .dark-theme .datalake-partition-table-scroll-right .datalake-partition-table td.mat-cell {
-  color: #ffffff;
-  border-color: #333333;
-  font-weight: lighter;
-  text-align: left !important;
-  padding: 10px 0px 10px 16px !important;
-}
-.dark-theme .datalake-partition-table-scroll .datalake-partition-table td.datalake-partition-btn-actions.mat-cell, .dark-theme .datalake-partition-table-scroll-right .datalake-partition-table td.datalake-partition-btn-actions.mat-cell {
-  width: calc(2% - 26px) !important;
-  padding: 10px 16px 10px 16px !important;
-}
 .dark-theme .datalake-partition-table-scroll .datalake-partition-table td.datalake-partition-btn-actions.mat-cell .mat-icon-button .mat-button-wrapper span, .dark-theme .datalake-partition-table-scroll-right .datalake-partition-table td.datalake-partition-btn-actions.mat-cell .mat-icon-button .mat-button-wrapper span {
   color: #01abec;
-}
-.dark-theme .datalake-partition-table-scroll .datalake-partition-table th.datalake-partition-column40.mat-header-cell, .dark-theme .datalake-partition-table-scroll-right .datalake-partition-table th.datalake-partition-column40.mat-header-cell {
-  width: calc(40% - 10px) !important;
-}
-.dark-theme .datalake-partition-table-scroll .datalake-partition-table th.datalake-partition-column18.mat-header-cell, .dark-theme .datalake-partition-table-scroll-right .datalake-partition-table th.datalake-partition-column18.mat-header-cell {
-  width: calc(18% - 10px) !important;
-}
-.dark-theme .datalake-partition-table-scroll .datalake-partition-table th.datalake-partition-column4.mat-header-cell, .dark-theme .datalake-partition-table-scroll-right .datalake-partition-table th.datalake-partition-column4.mat-header-cell {
-  width: calc(4% - 10px) !important;
-}
-.dark-theme .datalake-partition-table-scroll .datalake-partition-table th.datalake-partition-column2.mat-header-cell, .dark-theme .datalake-partition-table-scroll-right .datalake-partition-table th.datalake-partition-column2.mat-header-cell {
-  width: calc(2% - 10px) !important;
-}
-.dark-theme .datalake-partition-table-scroll .datalake-partition-table th.mat-header-cell, .dark-theme .datalake-partition-table-scroll-right .datalake-partition-table th.mat-header-cell {
-  background-color: #333333;
-  border: 0;
-  font-weight: lighter;
-}
-.dark-theme .datalake-partition-table-scroll .datalake-partition-table th.mat-header-cell .mat-sort-header-arrow, .dark-theme .datalake-partition-table-scroll-right .datalake-partition-table th.mat-header-cell .mat-sort-header-arrow {
-  color: inherit !important;
-}
-.dark-theme .datalake-partition-table-scroll .datalake-partition-table th.mat-header-cell .mat-sort-header-container .mat-sort-header-button, .dark-theme .datalake-partition-table-scroll-right .datalake-partition-table th.mat-header-cell .mat-sort-header-container .mat-sort-header-button {
-  margin: 0px !important;
 }
 .dark-theme .datalake-alarm-paginator .mat-paginator-outer-container .mat-paginator-container {
   color: #ffffff;
@@ -2127,7 +2103,7 @@
 .dark-theme .datalake-partition-paginator .mat-paginator-outer-container .mat-paginator-container .mat-icon-button[disabled] .mat-button-wrapper {
   color: #ffffff;
 }
-.dark-theme .datalake-edit-alarm-dialog mat-dialog-container {
+.dark-theme .datalake-edit-alarm-dialog mat-dialog-container, .dark-theme .datalake-partition-dialog mat-dialog-container {
   color: #ffffff;
 }
 .dark-theme .CodeMirror, .dark-theme .CodeMirror-gutters {
@@ -4200,48 +4176,24 @@
 .light-theme .datalake-partition-table-scroll td.mat-cell .status-icon2, .light-theme .datalake-partition-table-scroll-right td.mat-cell .status-icon2 {
   color: #4d4d4d;
 }
+.light-theme .datalake-partition-table-scroll .datalake-partition-table tr.mat-header-row th.mat-header-cell, .light-theme .datalake-partition-table-scroll-right .datalake-partition-table tr.mat-header-row th.mat-header-cell {
+  background-color: #ffffff;
+}
+.light-theme .datalake-partition-table-scroll .datalake-partition-table tr.mat-header-row th.mat-header-cell .mat-sort-header-arrow, .light-theme .datalake-partition-table-scroll-right .datalake-partition-table tr.mat-header-row th.mat-header-cell .mat-sort-header-arrow {
+  color: inherit !important;
+}
 .light-theme .datalake-partition-table-scroll .datalake-partition-table tr.mat-row, .light-theme .datalake-partition-table-scroll-right .datalake-partition-table tr.mat-row {
   background-color: #ffffff;
+}
+.light-theme .datalake-partition-table-scroll .datalake-partition-table tr.mat-row td.mat-cell, .light-theme .datalake-partition-table-scroll-right .datalake-partition-table tr.mat-row td.mat-cell {
+  color: #4d4d4d;
+  border-color: #ffffff;
 }
 .light-theme .datalake-partition-table-scroll .datalake-partition-table tr.mat-row:hover, .light-theme .datalake-partition-table-scroll-right .datalake-partition-table tr.mat-row:hover {
   background-color: #d0d0d0;
 }
-.light-theme .datalake-partition-table-scroll .datalake-partition-table td.mat-cell, .light-theme .datalake-partition-table-scroll-right .datalake-partition-table td.mat-cell {
-  color: #4d4d4d;
-  border-color: #ffffff;
-  font-weight: lighter;
-  text-align: left !important;
-  padding: 10px 0px 10px 16px !important;
-}
-.light-theme .datalake-partition-table-scroll .datalake-partition-table td.datalake-partition-btn-actions.mat-cell, .light-theme .datalake-partition-table-scroll-right .datalake-partition-table td.datalake-partition-btn-actions.mat-cell {
-  width: calc(2% - 26px) !important;
-  padding: 10px 16px 10px 16px !important;
-}
 .light-theme .datalake-partition-table-scroll .datalake-partition-table td.datalake-partition-btn-actions.mat-cell .mat-icon-button .mat-button-wrapper span, .light-theme .datalake-partition-table-scroll-right .datalake-partition-table td.datalake-partition-btn-actions.mat-cell .mat-icon-button .mat-button-wrapper span {
   color: #eb5c1b;
-}
-.light-theme .datalake-partition-table-scroll .datalake-partition-table th.datalake-partition-column40.mat-header-cell, .light-theme .datalake-partition-table-scroll-right .datalake-partition-table th.datalake-partition-column40.mat-header-cell {
-  width: calc(40% - 10px) !important;
-}
-.light-theme .datalake-partition-table-scroll .datalake-partition-table th.datalake-partition-column18.mat-header-cell, .light-theme .datalake-partition-table-scroll-right .datalake-partition-table th.datalake-partition-column18.mat-header-cell {
-  width: calc(18% - 10px) !important;
-}
-.light-theme .datalake-partition-table-scroll .datalake-partition-table th.datalake-partition-column4.mat-header-cell, .light-theme .datalake-partition-table-scroll-right .datalake-partition-table th.datalake-partition-column4.mat-header-cell {
-  width: calc(4% - 10px) !important;
-}
-.light-theme .datalake-partition-table-scroll .datalake-partition-table th.datalake-partition-column2.mat-header-cell, .light-theme .datalake-partition-table-scroll-right .datalake-partition-table th.datalake-partition-column2.mat-header-cell {
-  width: calc(2% - 10px) !important;
-}
-.light-theme .datalake-partition-table-scroll .datalake-partition-table th.mat-header-cell, .light-theme .datalake-partition-table-scroll-right .datalake-partition-table th.mat-header-cell {
-  background-color: #ffffff;
-  border: 0;
-  font-weight: lighter;
-}
-.light-theme .datalake-partition-table-scroll .datalake-partition-table th.mat-header-cell .mat-sort-header-arrow, .light-theme .datalake-partition-table-scroll-right .datalake-partition-table th.mat-header-cell .mat-sort-header-arrow {
-  color: inherit !important;
-}
-.light-theme .datalake-partition-table-scroll .datalake-partition-table th.mat-header-cell .mat-sort-header-container .mat-sort-header-button, .light-theme .datalake-partition-table-scroll-right .datalake-partition-table th.mat-header-cell .mat-sort-header-container .mat-sort-header-button {
-  margin: 0px !important;
 }
 .light-theme .datalake-alarm-paginator .mat-paginator-outer-container .mat-paginator-container {
   color: #4d4d4d;
@@ -4258,7 +4210,7 @@
 .light-theme .datalake-partition-paginator .mat-paginator-outer-container .mat-paginator-container .mat-icon-button[disabled] .mat-button-wrapper {
   color: #4d4d4d;
 }
-.light-theme .datalake-edit-alarm-dialog mat-dialog-container {
+.light-theme .datalake-edit-alarm-dialog mat-dialog-container, .light-theme .datalake-partition-dialog mat-dialog-container {
   color: #4d4d4d;
 }
 .light-theme .CodeMirror, .light-theme .CodeMirror-gutters {
@@ -11441,6 +11393,34 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
   padding-bottom: 10px;
 }
 
+.datalake-partition-dialog mat-dialog-container {
+  padding: 0 !important;
+}
+.datalake-partition-dialog .datalake-partition-dialog-header {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding: 0px 20px;
+  background-color: #1a1a1a;
+  justify-content: space-between;
+}
+.datalake-partition-dialog .datalake-partition-dialog-header .datalake-partition-dialog-title {
+  font-size: 16px;
+  font-weight: 550;
+}
+.datalake-partition-dialog .datalake-partition-dialog-container {
+  margin: 20px;
+  height: calc(100% - 100px);
+  max-height: 400px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.datalake-partition-dialog .datalake-partition-dialog-container .datalake-partition-dialog-container-text {
+  margin-bottom: 20px;
+}
+
 .datalake-edit-alarm-dialog mat-dialog-container {
   padding: 0 !important;
 }
@@ -11685,6 +11665,47 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
 .datalake-partition-icons-header {
   width: 13% !important;
   justify-content: space-between;
+}
+
+.datalake-partition-table-scroll .datalake-partition-table tr.mat-header-row th.mat-header-cell, .datalake-partition-table-scroll-right .datalake-partition-table tr.mat-header-row th.mat-header-cell {
+  border: 0;
+  font-weight: lighter;
+}
+.datalake-partition-table-scroll .datalake-partition-table tr.mat-header-row th.mat-header-cell .mat-sort-header-arrow, .datalake-partition-table-scroll-right .datalake-partition-table tr.mat-header-row th.mat-header-cell .mat-sort-header-arrow {
+  color: inherit !important;
+}
+.datalake-partition-table-scroll .datalake-partition-table tr.mat-header-row th.mat-header-cell .mat-sort-header-container .mat-sort-header-button, .datalake-partition-table-scroll-right .datalake-partition-table tr.mat-header-row th.mat-header-cell .mat-sort-header-container .mat-sort-header-button {
+  margin: 0px !important;
+}
+.datalake-partition-table-scroll .datalake-partition-table tr.mat-header-row th.datalake-partition-column15.mat-header-cell, .datalake-partition-table-scroll-right .datalake-partition-table tr.mat-header-row th.datalake-partition-column15.mat-header-cell {
+  width: 15% !important;
+  max-width: 15% !important;
+}
+.datalake-partition-table-scroll .datalake-partition-table tr.mat-header-row th.datalake-partition-column40.mat-header-cell, .datalake-partition-table-scroll-right .datalake-partition-table tr.mat-header-row th.datalake-partition-column40.mat-header-cell {
+  width: 40% !important;
+  max-width: 40% !important;
+}
+.datalake-partition-table-scroll .datalake-partition-table tr.mat-header-row th.datalake-partition-column8.mat-header-cell, .datalake-partition-table-scroll-right .datalake-partition-table tr.mat-header-row th.datalake-partition-column8.mat-header-cell {
+  width: 8% !important;
+  max-width: 8% !important;
+}
+.datalake-partition-table-scroll .datalake-partition-table tr.mat-header-row th.datalake-partition-column7.mat-header-cell, .datalake-partition-table-scroll-right .datalake-partition-table tr.mat-header-row th.datalake-partition-column7.mat-header-cell {
+  width: 7% !important;
+  max-width: 7% !important;
+}
+.datalake-partition-table-scroll .datalake-partition-table tr.mat-row td.mat-cell, .datalake-partition-table-scroll-right .datalake-partition-table tr.mat-row td.mat-cell {
+  font-weight: lighter;
+  text-align: left !important;
+  padding: 10px 0px 10px 16px !important;
+}
+.datalake-partition-table-scroll .datalake-partition-table tr.mat-row td.datalake-partition-column40.mat-cell .command, .datalake-partition-table-scroll-right .datalake-partition-table tr.mat-row td.datalake-partition-column40.mat-cell .command {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 500px;
+}
+.datalake-partition-table-scroll .datalake-partition-table tr.mat-row td.datalake-partition-btn-actions.mat-cell, .datalake-partition-table-scroll-right .datalake-partition-table tr.mat-row td.datalake-partition-btn-actions.mat-cell {
+  padding: 10px 16px 10px 16px !important;
 }
 
 /*# sourceMappingURL=styles.css.map */

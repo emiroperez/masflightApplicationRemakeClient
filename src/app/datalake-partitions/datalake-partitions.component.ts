@@ -339,4 +339,13 @@ export class DatalakePartitionsComponent implements OnInit {
   this.service.deleteDatalakePartition(this, this.request, this.savePartitionHandler, this.savePartitionError);
   }
 
+  executePartition(partition): void{
+    let request = {
+      schemaName: partition.schemaName,
+      tableName: partition.tableName
+    };
+  // this.globals.isLoading = true;
+  // this.service.getDatalakeLoadPartition(this, request, this.savePartitionHandler, this.savePartitionError);
+  }
+
 }

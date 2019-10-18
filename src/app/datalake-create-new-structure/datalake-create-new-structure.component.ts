@@ -461,4 +461,10 @@ export class DatalakeCreateNewStructureComponent {
       }
     }
   }
+
+  tableNameChange(){
+    if(this.tableConfigurationFormGroup.get ("tableLocation").value === ''){
+    this.tableConfigurationFormGroup.get ("tableLocation").setValue (this.tableConfigurationFormGroup.get ("tableName").value);
+    }
+  }
 }

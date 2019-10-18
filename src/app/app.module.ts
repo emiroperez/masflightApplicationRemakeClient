@@ -206,6 +206,7 @@ import { DatalakeAlarmEditDialogComponent } from './datalake-alarm-edit-dialog/d
 import { DatalakePartitionsComponent } from './datalake-partitions/datalake-partitions.component';
 import { DatalakeExecutionPartitionComponent } from './datalake-execution-partition/datalake-execution-partition.component';
 import { DatalakeExecutionPartitionViewDetailComponent } from './datalake-execution-partition-view-detail/datalake-execution-partition-view-detail.component';
+import { DatalakePartitionExecuteDialogComponent } from './datalake-partition-execute-dialog/datalake-partition-execute-dialog.component';
 
 @NgModule({
   declarations: [
@@ -383,10 +384,12 @@ import { DatalakeExecutionPartitionViewDetailComponent } from './datalake-execut
     DatalakeDataUploadComponent,
     DatalakeMenuComponent,
     DatalakeAlarmsComponent,
+    DatalakePartitionExecuteDialogComponent,
     DatalakeAlarmEditDialogComponent,
     DatalakePartitionsComponent,
     DatalakeExecutionPartitionComponent,
-    DatalakeExecutionPartitionViewDetailComponent
+    DatalakeExecutionPartitionViewDetailComponent,
+    DatalakePartitionExecuteDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -472,7 +475,8 @@ import { DatalakeExecutionPartitionViewDetailComponent } from './datalake-execut
     DatalakeTableShowColumnsComponent,
     DatalakeTablePreviewComponent,
     DatalakeCreateTableComponent,
-    DatalakeAlarmEditDialogComponent
+    DatalakeAlarmEditDialogComponent,
+    DatalakePartitionExecuteDialogComponent
   ]
 })
 export class AppModule { }

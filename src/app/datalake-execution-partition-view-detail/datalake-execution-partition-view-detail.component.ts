@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, Input, HostListener } from '@angular/core';
-import { MatTableDataSource, MatPaginator } from '@angular/material';
+import { MatTableDataSource, MatPaginator, MatDialog } from '@angular/material';
+import { DatalakePartitionExecuteDialogComponent } from '../datalake-partition-execute-dialog/datalake-partition-execute-dialog.component';
 
 @Component({
   selector: 'app-datalake-execution-partition-view-detail',
@@ -15,7 +16,7 @@ export class DatalakeExecutionPartitionViewDetailComponent implements OnInit {
   paginator: MatPaginator;
   partitionsColumns: string[] = ['schemaName', 'tableName', 'type', 'timestamp', 'cron','actions'];
 
-  constructor() { }
+  constructor(private dialog: MatDialog) { }
 
   ngOnInit() {
     this.innerHeight = window.innerHeight;
@@ -35,7 +36,14 @@ export class DatalakeExecutionPartitionViewDetailComponent implements OnInit {
     this.innerHeight = event.target.innerHeight;
   }
 
-  seeMore(partition): void{
-
+  seeMore(element): void
+  {
+    let dialogRef = this.dialog.open (DatalakePartitionExecuteDialogComponent, {
+      width: '700px',
+      panelClass: 'datalake-partition-dialog',
+      data: {
+        command: element.cron
+      }
+    });
   }
 }
