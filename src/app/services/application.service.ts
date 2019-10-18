@@ -98,7 +98,6 @@ export class ApplicationService {
   }
 
   loadMenuOptions(_this, handlerSuccess, handlerError) {
-    _this.globals.isLoading = true;
     if(_this.globals.currentApplication == undefined){
       _this.globals.currentApplication = JSON.parse(localStorage.getItem("currentApplication"));
     }
@@ -564,5 +563,10 @@ export class ApplicationService {
 
     url = this.host + "/getMenuDefaultId?applicationId=" + _this.globals.currentApplication.id;
     this.http.get (_this, url, handlerSuccess, handlerError, null);
+  }
+
+  getMenuCategoryWelcome(_this, handlerSuccess, handlerError) {
+    let url = this.host + "/secure/getMenuCategoryWelcome?application=" + _this.globals.currentApplication.id;
+    this.authService.get(_this, url, handlerSuccess, handlerError);
   }
 }

@@ -336,6 +336,7 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
   }
 
   getMenuData(): void {
+    this.globals.isLoading = true;
     this.service.loadMenuOptions(this, this.handlerGetSuccessMenuData, this.handlerError);
   }
   handlerGetSuccessMenuData(_this, data) {

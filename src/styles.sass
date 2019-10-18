@@ -1178,7 +1178,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                     .mat-radio-container 
                         .mat-radio-inner-circle
                             background-color: $font-color
-        .msf-dashboard-assistant-dialog
+        .msf-dashboard-assistant-dialog, .msf-select-data-dialog
             .mat-dialog-container
                 color: $font-color
         .msf-dashboard-assistant-stepper
@@ -1300,6 +1300,16 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             .close-button:hover
                 .mat-icon
                     color: $primary-color
+        .select-data-menu-category:not(:last-child)
+            border-right: 1px solid $background-color
+        .menu-category-body
+            .mat-tree
+                background-color: $dashboard-panel-chart-background-color !important
+            .mat-tree-node
+                color: $font-color !important
+        .select-data-footer
+            .flat-button-disabled
+                background-color: $dashboard-panel-chart-background-color !important
 
 @each $name, $font-color, $little-font-color, $disabled-color, $secondary-disabled-color, $tertiary-disabled-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $quaternary-background-color, $body-background-color, $dashboard-background-color, $dashboard-secondary-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $scrollbar-background-color, $dashboard-panel-background-color, $dashboard-panel-chart-background-color, $dashboard-border-color, $schedule-map-background-color, $schedule-map-info-border, $disabled-combo-box-color, $disabled-underline, $dashboard-info-background-color, $dashboard-info-secondary-background-color, $dashboard-info-font-color, $dashboard-drill-down-border-color, $dashboard-threshold-background-color, $dashboard-title-font-color, $map-panelinfo-background-color, $dashboard-info-border-color, $dashboard-form-font-color, $admin-menu-background, $admin-menu-input-underline, $admin-tree-active-color, $admin-button-color, $admin-secondary-background-color, $admin-table-background-color, $admin-table-hover-color, $admin-secondary-button-color, $login-font-color, $intro-logout-icon-color, $control-variables-border-color, $control-variable-hover-background-color, $control-variable-hover-icon-color, $control-variables-input-underline, $control-variables-dropdown-hover-font-color, $control-variables-dropdown-hover-background-hover-color, $control-variables-selected-background-selected-color, $dashboard-input-underline-color, $membership-primary-background-color, $membership-secondary-background-color, $customer-edit-header-color, $customer-table-header-background-color, $customer-table-row-background-color, $customer-table-row-border-color, $customer-table-row-hover-background-color, $customer-table-row-selected-background-color, $customer-table-row-border-selected-color, $customer-input-color, $customer-input-underline-color, $customer-disabled-underline, $dashboard-control-panel-background-color, $menu-open-background-color, $menu-open-active-background-color, $menu-first-line, $menu-second-line, $menu-background-color, $menu-child-background-color, $control-variable-disabled-color, $dashboard-assistant-analysis-color, $dashboard-assistant-axis-color, $dashboard-assistant-values-color, $dashboard-assistant-analysis-font-color, $dashboard-assistant-sub-background-color in $color-scheme
     @include theme($name, $font-color, $little-font-color, $disabled-color, $secondary-disabled-color, $tertiary-disabled-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $quaternary-background-color, $body-background-color, $dashboard-background-color, $dashboard-secondary-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $scrollbar-background-color, $dashboard-panel-background-color, $dashboard-panel-chart-background-color, $dashboard-border-color, $schedule-map-background-color, $schedule-map-info-border, $disabled-combo-box-color, $disabled-underline, $dashboard-info-background-color, $dashboard-info-secondary-background-color, $dashboard-info-font-color, $dashboard-drill-down-border-color, $dashboard-threshold-background-color, $dashboard-title-font-color, $map-panelinfo-background-color, $dashboard-info-border-color, $dashboard-form-font-color, $admin-menu-background, $admin-menu-input-underline, $admin-tree-active-color, $admin-button-color, $admin-secondary-background-color, $admin-table-background-color, $admin-table-hover-color, $admin-secondary-button-color, $login-font-color, $intro-logout-icon-color, $control-variables-border-color, $control-variable-hover-background-color, $control-variable-hover-icon-color, $control-variables-input-underline, $control-variables-dropdown-hover-font-color, $control-variables-dropdown-hover-background-hover-color, $control-variables-selected-background-selected-color, $dashboard-input-underline-color, $membership-primary-background-color, $membership-secondary-background-color, $customer-edit-header-color, $customer-table-header-background-color, $customer-table-row-background-color, $customer-table-row-border-color, $customer-table-row-hover-background-color, $customer-table-row-selected-background-color, $customer-table-row-border-selected-color, $customer-input-color, $customer-input-underline-color, $customer-disabled-underline, $dashboard-control-panel-background-color, $menu-open-background-color, $menu-open-active-background-color,$menu-first-line, $menu-second-line, $menu-background-color, $menu-child-background-color, $control-variable-disabled-color, $dashboard-assistant-analysis-color, $dashboard-assistant-axis-color, $dashboard-assistant-values-color, $dashboard-assistant-analysis-font-color, $dashboard-assistant-sub-background-color)
@@ -2973,10 +2983,11 @@ mat-tab-group
     align-items: flex-end
     position: absolute
     width: 100%
-    z-index: 2
     .msf-dashboard-button-close-icon
+        z-index: 2
         @include msf-dashboard-icon(2px)
     .msf-dashboard-button-move-icon
+        z-index: 2
         margin-right: -8px
         background-repeat: no-repeat
         width: 45px
@@ -6876,16 +6887,99 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     .search-label
         margin-left: 5px
 
-.select-data-header
-    font-size: 14px
-    font-weight: 550
-    padding: 15px
-    position: relative
-    .close-button
-        position: absolute
-        right: 10px
-        top: 11.5px
-        cursor: pointer
+.menu-category-input
+    font-size: 11px
 
-.select-data-body
-    height: 425px
+.msf-select-data-dialog, .msf-select-data-loading
+    min-width: 1250px !important
+    max-width: 1250px !important
+    width: 1250px !important
+    height: 525px !important
+    .mat-dialog-container
+        padding: 0
+        overflow: hidden
+    .select-data-header
+        font-size: 14px
+        font-weight: 550
+        padding: 15px
+        position: relative
+        .close-button
+            position: absolute
+            right: 10px
+            top: 11.5px
+            cursor: pointer
+    .select-data-body
+        height: 425px
+        display: flex
+        flex-direction: row
+        .select-data-menu-category
+            width: 100%
+            .menu-category-header
+                display: flex
+                .menu-category-title
+                    display: flex
+                    font-size: 20px
+                    height: 130px
+                    align-items: center
+                    margin-left: 30px
+                    margin-right: 30px
+                    width: 100%
+                    font-weight: 550
+                    justify-content: center
+                .menu-category-image
+                    width: 42%
+                    height: 42%
+                    margin-top: 10px
+                    margin-right: 10px
+            .menu-category-description
+                margin: 15px
+                margin-bottom: 0
+                text-align: justify
+                line-height: 15px
+                height: 60px
+            .menu-category-body
+                .menu-item-search-input
+                    width: 95%
+                    padding: 0 10px
+                    .search-icon
+                        font-size: 20px
+                        width: 20px !important
+                        height: 20px !important
+                        position: absolute
+                        right: 1px
+                        top: -1px
+                    .mat-input-element
+                        width: calc(100% - 24px)
+                .menu-items
+                    height: 157px
+                    overflow-y: auto
+                .mat-tree-node
+                    position: relative
+                    font-size: 12px !important
+                    min-height: 32px !important
+                    max-height: 32px !important
+                    .mat-button-ripple, .mat-radio-ripple
+                        display: none !important
+                    .cancels-checkbox
+                        display: flex
+                        position: absolute
+                        min-height: 32px
+                        max-height: 32px
+                        margin-top: 2px
+                        .mat-radio-label-content
+                            margin-left: 5px
+    .select-data-footer
+        display: flex
+        flex-direction: row-reverse
+        margin-top: 7px
+        margin-right: 10px
+        height: 40px
+
+.menu-item
+    margin: 8px 15px
+
+.menu-item-radio
+    display: flex
+    margin-top: 5px
+    .menu-item-radio-label
+        margin: 2px -10px

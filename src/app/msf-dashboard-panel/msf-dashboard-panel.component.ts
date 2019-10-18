@@ -5427,7 +5427,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   openDiscoveryDialog(): void
   {
     this.dialog.open (MsfSelectDataFromComponent, {
-      panelClass: 'msf-dashboard-assistant-dialog',
+      panelClass: 'msf-select-data-dialog',
       autoFocus: false,
       data: { }
     });

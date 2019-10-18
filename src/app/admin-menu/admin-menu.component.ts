@@ -1327,6 +1327,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   }
 
   getMenuData(): void {
+    this.globals.isLoading = true;
     this.service.loadMenuOptions(this, this.handlerGetSuccessMenuData, this.handlerGetErrorMenuData);
     this.optionSelected = {};
   }
