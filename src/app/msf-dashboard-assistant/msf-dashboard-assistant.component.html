@@ -2,18 +2,19 @@
 <div [ngStyle]="{ 'display': checkVisibility() }">
   <div class="msf-dashboard-assistant-header">
     <span class="msf-dashboard-assistant-title">
-      Chart Configuration Wizard
+      <span *ngIf="!selectDataPreview">Chart Configuration Wizard</span>
+      <span *ngIf="selectDataPreview">Preview Data Configuration</span>
     </span>
     <div class="msf-dashboard-assistant-buttons">
       <button *ngIf="stepper.selectedIndex" class="msf-dashboard-assistant-step-button flat-button" mat-button (click)="goBack(stepper)">
         <mat-icon>arrow_back_ios</mat-icon>
         BACK
       </button>
-      <button *ngIf="stepper.selectedIndex != 2 && tablePreview" class="msf-dashboard-assistant-step-button msf-dashboard-assistant-next-button flat-button" mat-button (click)="goForward(stepper)">
+      <button *ngIf="stepper.selectedIndex != 2 && tablePreview && !selectDataPreview" class="msf-dashboard-assistant-step-button msf-dashboard-assistant-next-button flat-button" mat-button (click)="goForward(stepper)">
         NEXT
         <mat-icon>arrow_forward_ios</mat-icon>
       </button>
-      <button *ngIf="!tablePreview && configuredControlVariables" class="msf-dashboard-assistant-step-button msf-dashboard-assistant-next-button flat-button" mat-button (click)="cancelEdit()">
+      <button *ngIf="!tablePreview && configuredControlVariables && !selectDataPreview" class="msf-dashboard-assistant-step-button msf-dashboard-assistant-next-button flat-button" mat-button (click)="cancelEdit()">
         CANCEL
       </button>
       <button *ngIf="!tablePreview" class="msf-dashboard-assistant-step-button msf-dashboard-assistant-next-button flat-button" mat-button (click)="refreshTable()">
@@ -29,7 +30,7 @@
     </div>
   </div>
   <div class="msf-dashboard-assistant-body">
-    <div class="msf-dashboard-assistant-stepper">
+    <div class="msf-dashboard-assistant-stepper" [ngStyle]="{ 'display': checkAssistantVisibility() }">
       <mat-vertical-stepper [linear]="true" (selectionChange)="indexChanged()" #stepper>
         <ng-template matStepperIcon="edit">
           <mat-icon>check</mat-icon>
@@ -66,9 +67,10 @@
         </mat-step>
       </mat-vertical-stepper>
     </div>
+    <div *ngIf="selectDataPreview" [style.margin-left.px]="17.5"></div>
     <span [ngStyle]="{ 'display': checkStep1Visibility(stepper) }">
       <span [ngStyle]="{ 'display': checkTablePreviewVisibility() }">
-        <div class="msf-dashboard-assistant-content">
+        <div class="msf-dashboard-assistant-content" [style.width.px]="getConfigWidth()">
           <div class="msf-dashboard-assistant-tab-group">
             <mat-tab-group #tabs>
               <mat-tab *ngFor="let controlVariable of currentOptionCategories">
@@ -192,7 +194,7 @@
         </div>
       </span>
       <span [ngStyle]="{ 'display': checkEditVisibility() }">
-        <div class="msf-dashboard-assistant-content">
+        <div class="msf-dashboard-assistant-content" [style.width.px]="getConfigWidth()">
           <div class="msf-dashboard-assistant-tab-group msf-dashboard-assistant-edit-tab-group">
             <mat-tab-group #editTabs>
               <mat-tab *ngFor="let controlVariable of currentOptionCategories">

@@ -61,6 +61,7 @@ export class MsfDashboardAssistantComponent {
   displayedColumns;
 
   tablePreview: boolean = true;
+  selectDataPreview: boolean = false;
 
   @ViewChild('msfTableRef')
   msfTableRef: MsfTableComponent;
@@ -85,6 +86,7 @@ export class MsfDashboardAssistantComponent {
     this.currentOptionCategories = data.currentOptionCategories;
     this.chartColumnOptions = data.chartColumnOptions;
     this.function = data.functions[0];
+    this.selectDataPreview = data.selectDataPreview;
 
     this.configureControlVariables ();
   }
@@ -120,6 +122,14 @@ export class MsfDashboardAssistantComponent {
       return "block";
 
     return "none";
+  }
+
+  checkAssistantVisibility(): string
+  {
+    if (this.selectDataPreview)
+      return "none";
+
+    return "block";
   }
 
   goBack(stepper: MatStepper): void
@@ -828,5 +838,13 @@ export class MsfDashboardAssistantComponent {
       xaxis: xaxis,
       valueColumn: valueColumn
     });
+  }
+
+  getConfigWidth(): number
+  {
+    if (this.selectDataPreview)
+      return 1015;
+
+    return 730;
   }
 }

@@ -5429,7 +5429,10 @@ export class MsfDashboardPanelComponent implements OnInit {
     let dialogRef = this.dialog.open (MsfSelectDataFromComponent, {
       panelClass: 'msf-select-data-dialog',
       autoFocus: false,
-      data: { }
+      data: {
+        options: this.values.options,
+        functions: this.functions
+      }
     });
 
     dialogRef.afterClosed ().subscribe ((selectedItem) => {

@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
-import { MatDialogRef, MatTreeFlattener, MatTreeFlatDataSource } from '@angular/material';
+import { Component, Inject } from '@angular/core';
+import { MatDialogRef, MatTreeFlattener, MatTreeFlatDataSource, MatDialog, MAT_DIALOG_DATA } from '@angular/material';
 import { FlatTreeControl } from '@angular/cdk/tree';
-import { BehaviorSubject } from 'rxjs';
 
 import { Globals } from '../globals/Globals';
 import { ApplicationService } from '../services/application.service';
 import { ExampleFlatNode } from '../admin-menu/admin-menu.component';
+import { MsfDashboardAssistantComponent } from '../msf-dashboard-assistant/msf-dashboard-assistant.component';
 
 @Component({
   selector: 'app-msf-select-data-from',
@@ -19,7 +19,9 @@ export class MsfSelectDataFromComponent {
 
   constructor(public dialogRef: MatDialogRef<MsfSelectDataFromComponent>,
     public globals: Globals,
-    private services: ApplicationService)
+    public dialog: MatDialog,
+    private services: ApplicationService,
+    @Inject(MAT_DIALOG_DATA) public data: any)
   {
     this.globals.popupLoading = true;
     this.services.loadMenuOptions (this, this.handlerSuccess, this.handlerError);
@@ -201,5 +203,31 @@ export class MsfSelectDataFromComponent {
   selectData(): void
   {
     this.dialogRef.close (this.selectedItem);
+  }
+
+  previewData(): void
+  {
+    let selectedOption;
+
+    selectedOption = null;
+
+    for (let option of this.data.options)
+    {
+      if (option.id == this.selectedItem.id)
+      {
+        selectedOption = option;
+        break;
+      }
+    }
+
+    this.dialog.open (MsfDashboardAssistantComponent, {
+      panelClass: 'msf-dashboard-assistant-dialog',
+      autoFocus: false,
+      data: {
+        currentOption: selectedOption,
+        functions: this.data.functions[0],
+        selectDataPreview: true
+      }
+    });
   }
 }

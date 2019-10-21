@@ -56,5 +56,8 @@
     <button mat-flat-button [ngClass]="selectedItem ? 'flat-button' : 'flat-button-disabled'" [disabled]="!selectedItem" (click)="selectData()">
       Select Data
     </button>
+    <button mat-flat-button [style.margin-right.px]="10" [ngClass]="selectedItem ? 'flat-button' : 'flat-button-disabled'" [disabled]="!selectedItem" (click)="previewData()">
+      Preview Data
+    </button>
   </div>
 </ng-container>
