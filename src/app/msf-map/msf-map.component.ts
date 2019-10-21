@@ -197,7 +197,18 @@ export class MsfMapComponent implements OnInit {
         {
           feature.features[0].colorIndex = index++;
           feature.features[0].shown = _this.showAllRoutes;
-          feature.features[0].lineWidth = _this.showAllRoutes ? 4 : 0;
+
+          if (_this.showAllRoutes)
+          {
+            feature.features[0].lineWidth = 4;
+            feature.features[0].circleRadius = 2;
+          }
+          else
+          {
+            feature.features[0].lineWidth = 0;
+            feature.features[0].circleRadius = 0;
+          }
+
           if (index >= _this.paletteColors.length - 2)
             index = (_this.globals.theme === "light-theme" ? _this.paletteColors.length - 1 : _this.paletteColors.length - 2);
         }
@@ -317,13 +328,32 @@ export class MsfMapComponent implements OnInit {
     for (let feature of this.data)
     {
       feature.features[0].shown = this.showAllRoutes;
-      feature.features[0].lineWidth = this.showAllRoutes ? 4 : 0;
+
+      if (this.showAllRoutes)
+      {
+        feature.features[0].lineWidth = 4;
+        feature.features[0].circleRadius = 2;
+      }
+      else
+      {
+        feature.features[0].lineWidth = 0;
+        feature.features[0].circleRadius = 0;
+      }
     }
   }
 
-  toggleLineRoute(feature): void
+  toggleRoute(feature): void
   {
-    feature.lineWidth = feature.shown ? 4 : 0;
+    if (feature.shown)
+    {
+      feature.lineWidth = 4;
+      feature.circleRadius = 2;
+    }
+    else
+    {
+      feature.lineWidth = 0;
+      feature.circleRadius = 0;
+    }
   }
 
   @HostListener('window:resize', ['$event'])
