@@ -39,25 +39,25 @@
   <mgl-map *ngIf="currentMapType.id == 'line' && !mapRefresh" [style]=currentMapStyle.id [zoom]="zoom" [center]="center"
     (load)="map2 = $event; map2.resize ()">
     <ng-container *ngFor="let feature of data; let i = index ">
-      <ng-container *ngIf="feature.features[0].shown">
+      <ng-container>
         <mgl-marker [lngLat]="[feature.features[0].origin.longitude, feature.features[0].origin.latitude]">
-          <div class="mapbox-text">
+          <div *ngIf="feature.features[0].shown" class="mapbox-text">
             {{feature.features[0].origin.iata}}
           </div>
         </mgl-marker>
         <mgl-marker [lngLat]="[feature.features[0].dest.longitude, feature.features[0].dest.latitude]">
-          <div class="mapbox-text">
+          <div *ngIf="feature.features[0].shown" class="mapbox-text">
             {{feature.features[0].dest.iata}}
           </div>
         </mgl-marker>
-        <mgl-layer id="route_{{i + feature.features[0].displayCounter}}" type="line" [source]="{ 'type': 'geojson', 'data': { 'type': 'Feature', 'properties': {}, 'geometry': { 'type': 'LineString', 'coordinates': coordinates[i] } } }" [layout]="{ 'line-join': 'round', 'line-cap': 'round' }" [paint]="{ 'line-color': paletteColors[i], 'line-width': 4 }"></mgl-layer>
+        <mgl-layer id="route_{{i}}" type="line" [source]="{ 'type': 'geojson', 'data': { 'type': 'Feature', 'properties': {}, 'geometry': { 'type': 'LineString', 'coordinates': coordinates[i] } } }" [layout]="{ 'line-join': 'round', 'line-cap': 'round' }" [paint]="{ 'line-color': paletteColors[i], 'line-width': feature.features[0].lineWidth }"></mgl-layer>
       </ng-container>
     </ng-container>
   </mgl-map>
   <div class="mapbox-panelinfo" [style.right.px]="legendOffset" *ngIf="data.length && globals.currentOption.metaData != 3">
     <ng-container *ngFor="let feature of data">
       <div class="mapbox-panelinfo-item">
-        <mat-checkbox class="mapbox-panelinfo-item-checkbox" [(ngModel)]="feature.features[0].shown" (ngModelChange)="incrementDisplayCounter(feature.features[0])"></mat-checkbox>
+        <mat-checkbox class="mapbox-panelinfo-item-checkbox" [(ngModel)]="feature.features[0].shown" (ngModelChange)="toggleLineRoute(feature.features[0])"></mat-checkbox>
         <div [ngStyle]="{ 'color': paletteColors[feature.features[0].colorIndex] }" style="align-self: center">{{getRouteInfo(feature)}}</div>
       </div>
     </ng-container>
