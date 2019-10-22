@@ -98,7 +98,7 @@
                 </div>
                 <div class="arguments-child" *ngIf="item.url!='' && item.url!=null" [style.margin-right.%]="20">
                     <mat-form-field [style.width.%]="100">
-                        <input matInput placeholder="Visible Attribute" [(ngModel)]="item.visibleAttribute">
+                        <input matInput placeholder="Visible Attribute" [(ngModel)]="item.visibleAttribute" (ngModelChange)="updateVisibleAttribute()">
                     </mat-form-field>
                 </div>
                 <div class="arguments-child" *ngIf="item.url!='' && item.url!=null">                 
@@ -235,7 +235,7 @@
                         </ng-select>
                     </div>
                     <div class="arguments-child">
-                        <div class="msf-component-airport-sub-title msf-component-airport-route-sub-title">To</div>  
+                        <div class="msf-component-airport-sub-title msf-component-airport-route-sub-title">To</div>
                         <ng-select
                             [items]="items | async"
                             [multiple]="true"
@@ -256,6 +256,34 @@
                         </ng-select>
                     </div>
                 </ng-container>
+                <div class="arguments-child" [style.margin-right.%]="20" *ngIf="item.url != '' && item.url != null && isAirline(item)">
+                    <div class="msf-component-airport-sub-title msf-component-airport-route-sub-title">Airlines</div>
+                    <ng-select
+                        [items]="items | async"
+                        [multiple]="true"
+                        [loading]="loading"
+                        loadingText="Loading..."
+                        [closeOnSelect]="true"
+                        [hideSelected]="false"
+                        bindLabel="{{item.visibleAttribute}}"
+                        (search)="onSearch(item,$event)" 
+                        [(ngModel)]="item.value1">
+                    </ng-select>
+                </div>
+                <div class="arguments-child" [style.margin-right.%]="20" *ngIf="item.url != '' && item.url != null && isSingleAirline(item)">
+                    <div class="msf-component-airport-sub-title msf-component-airport-route-sub-title">Airline</div>
+                    <ng-select
+                        [items]="items | async"
+                        [multiple]="false"
+                        [loading]="loading"
+                        loadingText="Loading..."
+                        [closeOnSelect]="true"
+                        [hideSelected]="false"
+                        bindLabel="{{item.visibleAttribute}}"
+                        (search)="onSearch(item,$event)" 
+                        [(ngModel)]="item.value1">
+                    </ng-select>
+                </div>
                 <div class="dialog-edit-argument-category-item-footer" *ngIf="item.url != '' && item.url != null">
                     <button mat-button class="flat-button admin-menu-content-cancel-button" (click)="showPreview(item)">Preview</button>
                 </div>

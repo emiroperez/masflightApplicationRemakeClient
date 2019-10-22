@@ -305,6 +305,7 @@ export const US_DATE_FORMAT = {
 
 export class EditCategoryArgumentDialog {
   items: Observable<any[]>;
+  itemsList: any[];
   itemSelected: any = {};
   loading: boolean;
 
@@ -429,17 +430,28 @@ export class EditCategoryArgumentDialog {
     return ComponentType.singleAirport == argument.type;
   }
 
+  isAirline(argument: Arguments) {
+    return ComponentType.airline == argument.type;
+  }
+
+  isSingleAirline(argument: Arguments) {
+    return ComponentType.singleairline == argument.type;
+  }
+
   isGroupAAA(argument: Arguments){
     return ComponentType.AAA_Group == argument.type;
   }
 
   updateItemList(item): void
   {
-    if ((this.isSelectBoxMultipleOption (item) && item.url)
-      || (this.isAirportRoute (item) && item.url)
-      || (this.isAirport (item) && item.url)
-      || (this.isSingleAirport (item) && item.url))
+    if (item.url)
       this.getItems (item, "", this.handlerSuccess);
+  }
+
+  updateVisibleAttribute(): void
+  {
+    if (this.itemsList && this.itemsList.length)
+      this.items = of (this.itemsList).pipe (delay (500));
   }
 
   onNoClick(): void {
@@ -568,7 +580,8 @@ export class EditCategoryArgumentDialog {
 
   handlerSuccess(_this,data, tab){   
     _this.loading = false;
-    _this.items = of(data).pipe(delay(500));
+    _this.itemsList = data;
+    _this.items = of (data).pipe (delay (500));
   }
 
   handlerError(_this,result){
