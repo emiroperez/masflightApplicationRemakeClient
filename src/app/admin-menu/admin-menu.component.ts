@@ -304,7 +304,7 @@ export const US_DATE_FORMAT = {
 })
 
 export class EditCategoryArgumentDialog {
-  groupingData: Observable<any[]>;
+  items: Observable<any[]>;
   itemSelected: any = {};
   loading: boolean;
 
@@ -361,11 +361,13 @@ export class EditCategoryArgumentDialog {
     @Inject(MAT_DIALOG_DATA) public data, public dialog: MatDialog) {
       for (let argument of data.categoryArgumentsId[0].arguments)
       {
-        if (this.isSelectBoxMultipleOption (argument) && argument.url)
-          this.getRecords (argument, "", this.handlerSuccess);
+        this.updateItemList (argument);
 
         if (argument.value1)
           argument.value1 = JSON.parse (argument.value1);
+
+        if (argument.value2)
+          argument.value2 = JSON.parse (argument.value2);
 
         if (argument.minDate)
           argument.minDate = new Date (argument.minDate);
@@ -415,8 +417,19 @@ export class EditCategoryArgumentDialog {
     return ComponentType.freeTextInput == argument.type;
   }
 
+  isAirportRoute(argument: Arguments) {
+    return ComponentType.airportRoute == argument.type;
+  }
+
   isGroupAAA(argument: Arguments){
     return ComponentType.AAA_Group == argument.type;
+  }
+
+  updateItemList(item): void
+  {
+    if ((this.isSelectBoxMultipleOption (item) && item.url)
+      || (this.isAirportRoute (item) && item.url))
+      this.getItems (item, "", this.handlerSuccess);
   }
 
   onNoClick(): void {
@@ -514,11 +527,18 @@ export class EditCategoryArgumentDialog {
   onSearch(item, $event: any){
     if($event.term.length>=2){
       this.loading = true;
-      this.getRecords(item, $event.term, this.handlerSuccess);
+      this.getItems(item, $event.term, this.handlerSuccess);
     }
   }
 
-  getRecords(item, search, handlerSuccess){
+  onAirportRouteSearch(item, $event: any) {
+    if($event.term.length>=3) {
+      this.loading = true;
+      this.getItems(item, $event.term, this.handlerSuccess);
+    }
+  }
+
+  getItems(item, search, handlerSuccess){
     let url;
 
     if (!item.url)
@@ -538,7 +558,7 @@ export class EditCategoryArgumentDialog {
 
   handlerSuccess(_this,data, tab){   
     _this.loading = false;
-    _this.groupingData = of(data).pipe(delay(500));
+    _this.items = of(data).pipe(delay(500));
   }
 
   handlerError(_this,result){
@@ -1705,7 +1725,10 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
         {
           if (argument.value1)
             argument.value1 = JSON.stringify (argument.value1);
-  
+ 
+          if (argument.value2)
+            argument.value2 = JSON.stringify (argument.value2);
+
           if (argument.minDate)
             argument.minDate = argument.minDate.toString ();
 
