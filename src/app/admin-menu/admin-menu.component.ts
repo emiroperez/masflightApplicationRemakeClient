@@ -1912,6 +1912,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     if (this.optionSelected.menuOptionArgumentsAdmin) {
       for (let categorySelected of this.optionSelected.menuOptionArgumentsAdmin) {
         if (checkbox.id === categorySelected.categoryArgumentsId[0].id && !categorySelected.toDelete) {
+          // convert empty position into a valid one
           if (!categorySelected.position)
             categorySelected.position = this.optionSelected.menuOptionArgumentsAdmin.indexOf (categorySelected) + 1;
 
