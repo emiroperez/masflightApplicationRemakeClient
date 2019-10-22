@@ -468,17 +468,17 @@ export class EditCategoryArgumentDialog {
 
   selectArgumentCategory(category) {
     if (this.itemSelected != category) {
-      category.isSelected = !category.isSelected;
-      this.itemSelected.isSelected = !this.itemSelected.isSelected;
+      category.selected = !category.selected;
+      this.itemSelected.selected = !this.itemSelected.selected;
       this.itemSelected = category;
     } else {
-      category.isSelected = !category.isSelected;
+      category.selected = !category.selected;
       this.itemSelected = {};
     }
   }
 
   setSelectedCategoryArguments(category) {
-    if (category.isSelected) {
+    if (category.selected) {
       this.selectedCategories.forEach(function (currentValue, index, array) {
         if (currentValue == category) {
           array.splice(index, 1);
@@ -487,7 +487,7 @@ export class EditCategoryArgumentDialog {
     } else {
       this.selectedCategories.push(category);
     }
-    category.isSelected = !category.isSelected;
+    category.selected = !category.selected;
   }
 
   addCategoryArgument() {
@@ -501,7 +501,7 @@ export class EditCategoryArgumentDialog {
   }
 
   deleteCategoryArgument() {
-    let filterSelected = this.data.filter(item => item.isSelected);
+    let filterSelected = this.data.filter(item => item.selected);
     for (var i = 0; i < filterSelected.length; i += 1) {
       this.selectedCategories.forEach(function (currentValue, index, array) {
         if (currentValue == filterSelected[i]) {
@@ -528,7 +528,7 @@ export class EditCategoryArgumentDialog {
 
   deleteArgument(item) {
     /*
-    let filterSelected = item.arguments.filter(node => node.isSelected);
+    let filterSelected = item.arguments.filter(node => node.selected);
     filterSelected.forEach(function (node, index, array) {
       node.toDelete = true;
     });
@@ -538,11 +538,11 @@ export class EditCategoryArgumentDialog {
 
   setSelectedAgument(item) {
     if (item == this.argumentSelected) {
-      this.argumentSelected.isSelected = false;
+      this.argumentSelected.selected = false;
       this.argumentSelected = {};
     } else {
       this.argumentSelected = item;
-      this.argumentSelected.isSelected = true;
+      this.argumentSelected.selected = true;
     }
   }
 
@@ -656,7 +656,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     flatNode.dataAvailability = node.dataAvailability;
     flatNode.metaData = node.metaData;
     flatNode.order = node.order,
-      flatNode.selected = node.selected;
+    flatNode.selected = node.selected;
     flatNode.applicationId = node.applicationId;
     flatNode.isRoot = node.isRoot;
     flatNode.children = node.children;
@@ -1103,12 +1103,11 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
             element.arguments[j].numArguments = numArguments;
           }
 
-          if (element.id == itemCategory.id) {
+          if (element.id == itemCategory.id && !itemOptionCategory.toDelete) {
             itemCategory.selected = true;
           }
         }
       })
-
     });
     this.globals.isLoading = false;
   }
@@ -1914,7 +1913,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
       for (let categorySelected of this.optionSelected.menuOptionArgumentsAdmin) {
         if (checkbox.id === categorySelected.categoryArgumentsId[0].id && !categorySelected.toDelete) {
           if (!categorySelected.position)
-            categorySelected.position = this.optionSelected.menuOptionArgumentsAdmin.indexOf(categorySelected) + 1;
+            categorySelected.position = this.optionSelected.menuOptionArgumentsAdmin.indexOf (categorySelected) + 1;
 
           index = categorySelected.position;
           break;
