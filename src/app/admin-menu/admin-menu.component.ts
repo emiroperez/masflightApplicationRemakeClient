@@ -1691,6 +1691,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     var duplicateObject = JSON.parse(JSON.stringify(cat));
     console.log(duplicateObject)
     const dialogRef = this.dialog.open(EditCategoryArgumentDialog, {
+      panelClass: "category-argument-dialog",
       width: '45%',
       data: duplicateObject
     });

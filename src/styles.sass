@@ -1011,6 +1011,8 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             color: $font-color
         .category-arguments-scrollbar::-webkit-scrollbar-thumb 
             background-color: $admin-secondary-background-color
+        .dialog-category-arguments::-webkit-scrollbar-thumb
+            background-color: $control-variables-input-underline
         .admin-menu-confirmation-dialog-title, .admin-menu-confirmation-dialog-body-label
             color: $font-color
         .dialog-edit-argument-category-item-title-label
@@ -5586,9 +5588,6 @@ mat-form-field.msf-table-input
     height: calc(100% - 125px)
     margin-top: 30px
 
-.dialog-category-arguments::-webkit-scrollbar
-    display: none
-
 .admin-menu-button-container
     display: flex
     flex-direction: row
@@ -6987,3 +6986,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     margin-top: 5px
     .menu-item-radio-label
         margin: 2px -10px
+
+.category-argument-dialog
+    .mat-dialog-container
+        padding: 0 24px !important
