@@ -170,6 +170,48 @@
                         <input matInput autocomplete="off" placeholder="Default Value" [(ngModel)]="item.value1">
                     </mat-form-field>
                 </div>
+                <div class="arguments-child" [style.margin-right.%]="20" *ngIf="item.url != '' && item.url != null && isAirport(item)">
+                    <div class="msf-component-airport-sub-title">Airports</div>
+                    <ng-select
+                        [items]="items | async"
+                        [multiple]="true"
+                        [loading]="loading"
+                        loadingText="Loading..."
+                        [closeOnSelect]="true"
+                        [hideSelected]="false"
+                        bindLabel="{{item.visibleAttribute}}"
+                        (search)="onAirportSearch(item, $event)"
+                        [(ngModel)]="item.value1">
+                        <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                            <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                            <span>{{item.iata}} - {{item.name}}</span>
+                        </ng-template>
+                        <ng-template ng-option-tmp let-item="item">
+                            <div>{{item.iata}} - {{item.name}}</div>
+                        </ng-template>
+                    </ng-select>
+                </div>
+                <div class="arguments-child" [style.margin-right.%]="20" *ngIf="item.url != '' && item.url != null && isSingleAirport(item)">
+                    <div class="msf-component-airport-sub-title">Airport</div>
+                    <ng-select
+                        [items]="items | async"
+                        [multiple]="false"
+                        [loading]="loading"
+                        loadingText="Loading..."
+                        [closeOnSelect]="true"
+                        [hideSelected]="false"
+                        bindLabel="{{item.visibleAttribute}}"
+                        (search)="onAirportSearch(item, $event)"
+                        [(ngModel)]="item.value1">
+                        <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                            <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                            <span>{{item.iata}} - {{item.name}}</span>
+                        </ng-template>
+                        <ng-template ng-option-tmp let-item="item">
+                            <div>{{item.iata}} - {{item.name}}</div>
+                        </ng-template>
+                    </ng-select>
+                </div>
                 <ng-container *ngIf="item.url != '' && item.url != null && isAirportRoute(item)">
                     <div class="arguments-child" [style.margin-right.%]="20">
                         <div class="msf-component-airport-sub-title">From</div>
@@ -181,7 +223,7 @@
                             [closeOnSelect]="true"
                             [hideSelected]="false"
                             bindLabel="{{item.visibleAttribute}}"
-                            (search)="onAirportRouteSearch(item, $event)" 
+                            (search)="onAirportSearch(item, $event)" 
                             [(ngModel)]="item.value1">
                             <ng-template ng-label-tmp let-item="item" let-clear="clear">
                                 <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
@@ -202,7 +244,7 @@
                             [closeOnSelect]="true"
                             [hideSelected]="false"
                             bindLabel="{{item.visibleAttribute}}"
-                            (search)="onAirportRouteSearch(item, $event)" 
+                            (search)="onAirportSearch(item, $event)" 
                             [(ngModel)]="item.value2">
                             <ng-template ng-label-tmp let-item="item" let-clear="clear">
                                 <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>

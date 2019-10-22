@@ -418,7 +418,15 @@ export class EditCategoryArgumentDialog {
   }
 
   isAirportRoute(argument: Arguments) {
-    return ComponentType.airportRoute == argument.type;
+    return (ComponentType.airportRoute == argument.type || ComponentType.airportsRoutes == argument.type);
+  }
+
+  isAirport(argument: Arguments) {
+    return ComponentType.airport == argument.type;
+  }
+
+  isSingleAirport(argument: Arguments) {
+    return ComponentType.singleAirport == argument.type;
   }
 
   isGroupAAA(argument: Arguments){
@@ -428,7 +436,9 @@ export class EditCategoryArgumentDialog {
   updateItemList(item): void
   {
     if ((this.isSelectBoxMultipleOption (item) && item.url)
-      || (this.isAirportRoute (item) && item.url))
+      || (this.isAirportRoute (item) && item.url)
+      || (this.isAirport (item) && item.url)
+      || (this.isSingleAirport (item) && item.url))
       this.getItems (item, "", this.handlerSuccess);
   }
 
@@ -531,7 +541,7 @@ export class EditCategoryArgumentDialog {
     }
   }
 
-  onAirportRouteSearch(item, $event: any) {
+  onAirportSearch(item, $event: any) {
     if($event.term.length>=3) {
       this.loading = true;
       this.getItems(item, $event.term, this.handlerSuccess);
