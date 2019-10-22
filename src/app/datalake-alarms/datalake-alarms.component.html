@@ -1,7 +1,7 @@
 <div class="datalake-explorer-container">
   <div class="datalake-explorer-header">
       <mat-form-field class="datalake-explorer-search-input-container">
-          <input matInput class="datalake-explorer-search-input" type="text" placeholder="Search" autocomplete="off">
+          <input matInput class="datalake-explorer-search-input" type="text" placeholder="Search" autocomplete="off" >
           <mat-icon class="search-icon" aria-label="search">search</mat-icon>
       </mat-form-field>
       <div class="datalake-explorer-header-title">
@@ -12,6 +12,7 @@
     <div class="datalake-alarms-item">
       <div class="datalake-alarm-table-scroll" [ngStyle]="{ 'height': getTableHeight() }">
         <table mat-table matSort [dataSource]="alarmTable" class="datasource welcome-table datalake-alarm-table">
+        <!-- <table mat-table matSort [dataSource]="filteredAlarms" class="datasource welcome-table datalake-alarm-table"> -->
           <ng-container matColumnDef="schemaName">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Schema Name</th>
             <td mat-cell *matCellDef="let element">{{ element.schemaName }}</td>

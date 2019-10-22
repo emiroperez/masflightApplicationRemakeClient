@@ -39,6 +39,8 @@ export class DatalakeTableCardComponent implements OnInit {
 
   ngOnInit()
   {
+    this.gaugeLastHourValue = parseInt(this.values.lastHDI);
+    this.gaugeLastDayValue= parseInt(this.values.lastDDI);
   }
 
   showColumns(): void

@@ -63,11 +63,11 @@ export class DatalakeCreateTableComponent {
     _this.tabs.realignInkBar ();
   }
 
-  onNoClick(request): void
+  // onNoClick(request): void
+  onNoClick(): void
   {
-    // this.requestTable.emit(request);
-    //aqui
-    this.dialogRef.close (request);
+    // this.dialogRef.close (request);
+    this.dialogRef.close ();
   }
 
   checkVisibility(): string

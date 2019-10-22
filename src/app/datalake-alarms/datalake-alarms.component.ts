@@ -51,6 +51,7 @@ export class DatalakeAlarmsComponent implements OnInit {
   innerHeight: number;
   clock: any;
   request: { schemaName: any; tableName: any; cron: any; monitoringStatus: string; };
+  search: any;
 
   constructor(public globals: Globals, private formBuilder: FormBuilder,
     private service: DatalakeService, private changeDetectorRef: ChangeDetectorRef,
@@ -392,4 +393,18 @@ tableChanged(): void
 saveAlarmError() {
 }
 
+// filterAlarms(){
+//   let searchText, filteredResults;
+
+//   if (!this.alarms.length){
+//     return;
+//   }
+
+//   searchText = this.search;
+//   if (!searchText)
+//   {
+//     this.filteredAlarms.next (this.tableCards.slice ());
+//     return;
+//   }
+// }
 }

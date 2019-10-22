@@ -397,7 +397,7 @@ export class DatalakeCreateNewStructureComponent {
 
   tableCreated(_this, data): void
   {
-    _this.globals.isLoading = false;
+    // _this.globals.isLoading = false;
     if (data.message){
       _this.dialog.open (MessageComponent, {
         data: { title: "Error", message: data.message }
@@ -406,7 +406,8 @@ export class DatalakeCreateNewStructureComponent {
       _this.dialog.open (MessageComponent, {
         data: { title: "Success", message: "Table created successfull" }
       });      
-    _this.closeDialog.emit (_this.request);
+    // _this.closeDialog.emit (_this.request);
+    _this.closeDialog.emit();
     }
     console.log (data);    
   }

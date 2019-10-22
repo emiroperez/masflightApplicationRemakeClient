@@ -344,8 +344,23 @@ export class DatalakePartitionsComponent implements OnInit {
       schemaName: partition.schemaName,
       tableName: partition.tableName
     };
-  // this.globals.isLoading = true;
-  // this.service.getDatalakeLoadPartition(this, request, this.savePartitionHandler, this.savePartitionError);
+  this.globals.isLoading = true;
+  this.service.getDatalakeLoadPartition(this, request, this.executionPartitionHandler, this.savePartitionError);
+  }
+
+  executionPartitionHandler(_this, data) {
+    if (data.execution === "OK"){
+      _this.globals.isLoading = false;
+      _this.dialog.open (MessageComponent, {
+        data: { title: "Result", message: data.result }
+      });
+    }else{
+      _this.globals.isLoading = false;
+      _this.dialog.open (MessageComponent, {
+        data: { title: "Error", message: data.Message }
+      });
+    }
+    
   }
 
 }

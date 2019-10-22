@@ -173,7 +173,7 @@ export class DatalakeService {
     getDatalakeLoadPartition(_this,request, handlerSuccess, handlerError): void
     {
         request.token = this.globals.token;
-        let url = this.host + "/getDatalakeLoadPartition?request="+request;
+        let url = this.host + "/getDatalakeLoadPartition?request="+JSON.stringify(request);
         this.http.get(_this, url, handlerSuccess, handlerError, null);
     }
 }

@@ -6,7 +6,7 @@
     </div>
     <div class="datalake-table-card-update-container">
       <span class="datalake-table-card-update-title">Last Update</span>
-      <span>2019-07-29 02:00:06</span>
+      <span>{{values.lastUpdate}}</span>
     </div>
   </div>
   <mat-tab-group [selectedIndex]="selectedTabIndex" headerPosition="below">
@@ -15,11 +15,13 @@
         <div class="datalake-table-card-info-header">
           <div class="datalake-table-card-info-title-left-container">
             <span class="datalake-table-card-info-title">Records</span>
-            <span>66,751,283,186</span>
+            <span *ngIf="values.nRows != 'N/A'">{{values.nRows | number:'.0-2':'en'}}</span>
+            <span *ngIf="values.nRows === 'N/A'">N/A</span>
           </div>
           <div class="datalake-table-card-info-title-right-container">
             <span class="datalake-table-card-info-title">Size</span>
-            <span>7,237,328 MB</span>
+            <span *ngIf="values.mb === 'N/A'" >N/A</span>
+            <span *ngIf="values.mb != 'N/A'">{{values.mb | number:'.0-2':'en'}} MB</span>
           </div>
         </div>
         <div class="datalake-table-card-info-header">
@@ -36,8 +38,19 @@
     </mat-tab>
     <mat-tab label="Table Stats">
       <div class="datalake-table-stats-container">
-        <ngx-gauge [size]="115" [thick]="10" [type]="gaugeType" [value]="gaugeLastHourValue" [label]="gaugeLastHourIngestionText" [append]="gaugeAppendText" [foregroundColor]="getForegroundColorFromValue(gaugeLastHourValue)" [backgroundColor]="gaugeBackgroundColor"></ngx-gauge>
-        <span class="datalake-table-stats-right-gauge"><ngx-gauge [size]="115" [thick]="10" [type]="gaugeType" [value]="gaugeLastDayValue" [label]="gaugeLastDayIngestionText" [append]="gaugeAppendText" [foregroundColor]="getForegroundColorFromValue(gaugeLastDayValue)" [backgroundColor]="gaugeBackgroundColor"></ngx-gauge></span>
+        <ngx-gauge [size]="115" [thick]="10" [type]="gaugeType" 
+        [value]="gaugeLastHourValue" 
+        [label]="gaugeLastHourIngestionText" 
+        [append]="gaugeAppendText" 
+        [foregroundColor]="getForegroundColorFromValue(gaugeLastHourValue)" 
+        [backgroundColor]="gaugeBackgroundColor"></ngx-gauge>
+        <span class="datalake-table-stats-right-gauge"><ngx-gauge [size]="115" [thick]="10" 
+          [type]="gaugeType" 
+          [value]="gaugeLastDayValue" 
+          [label]="gaugeLastDayIngestionText" 
+          [append]="gaugeAppendText" 
+          [foregroundColor]="getForegroundColorFromValue(gaugeLastDayValue)" 
+          [backgroundColor]="gaugeBackgroundColor"></ngx-gauge></span>
       </div>
     </mat-tab>
   </mat-tab-group>

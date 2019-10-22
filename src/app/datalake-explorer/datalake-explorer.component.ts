@@ -64,7 +64,8 @@ export class DatalakeExplorerComponent implements OnInit {
       for (let result of data.sources)
       {
         _this.tableCards.push (new DatalakeTableCardValues (result.tableName,
-          result.descr, result.bucketName, result.schemaName, result.longName));
+          result.descr, result.bucketName, result.schemaName, result.longName,
+          result.lastHDI, result.lastDDI,result.nRows, result.lastUpdate, result.mb));
       }
     }
 
@@ -118,12 +119,13 @@ export class DatalakeExplorerComponent implements OnInit {
       data: { }
     });
 
-    dialogRef.afterClosed().subscribe((request: any) => {
-      if (request) {
-        this.tableCards.push(new DatalakeTableCardValues (request.tableName,
-          request.tableDesc, request.s3TableLocation, request.schemaName, request.longName));          
-        this.filterTableCards ();
-      }
+    dialogRef.afterClosed().subscribe(() => {
+      // if (request) {
+        // this.tableCards.push(new DatalakeTableCardValues (request.tableName,
+        //   request.tableDesc, request.s3TableLocation, request.schemaName, request.longName,"0.0000","0.0000",null,null,null));          
+        // this.filterTableCards ();
+        this.service.getDatalakeTables (this, this.handlerSuccess, this.handlerError);
+      // }
     });
   }
 

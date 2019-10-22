@@ -100,7 +100,7 @@
       <!-- <mat-form-field class="datalake-upload-data-table-location"  -->
       <mat-form-field class="datalake-create-table-input datalake-create-table-input-body-right"
       [formGroup]="tableConfigurationFormGroup">
-        <input matInput placeholder="Table Location" autocomplete="off" formControlName="tableLocation" required>
+        <input matInput placeholder="File Location" autocomplete="off" formControlName="tableLocation" required>
         <mat-error *ngIf="tableConfigurationFormGroup.get('tableLocation')?.invalid">You must specify table location</mat-error>
       </mat-form-field>
     </div>
