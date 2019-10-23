@@ -362,6 +362,13 @@ export class EditCategoryArgumentDialog {
     { "id": 3, "name": "All Combined", "value": "Combined"}
   ];
 
+  seatClasses: any[] = [
+    { "id": 1, "name": "Business", "value": "Business" },
+    { "id": 2, "name": "Economy", "value": "Economy" },
+    { "id": 3, "name": "All", "value": "All" },
+    { "id": 3, "name": "All Combined", "value": "Combined"}
+  ];
+
   constructor(
     private globals: Globals,
     private http: ApiClient,
@@ -455,6 +462,10 @@ export class EditCategoryArgumentDialog {
 
   isContentType(argument: Arguments) {
     return ComponentType.contentType == argument.type;
+  }
+
+  isSeatClass(argument: Arguments) {
+    return ComponentType.seatClass == argument.type;
   }
 
   isGroupAAA(argument: Arguments){

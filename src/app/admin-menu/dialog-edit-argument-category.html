@@ -315,6 +315,14 @@
                         </mat-radio-button>
                     </mat-radio-group>
                 </div>
+                <div *ngIf="isSeatClass(item)" [style.margin-left.px]="-10">
+                    <div class="msf-component-airport-sub-title msf-component-airport-route-sub-title" [style.margin-bottom.px]="10">Default Value</div>
+                    <mat-radio-group class="checkbox-component" *ngFor="let radio of seatClasses" [(ngModel)]="item.value1">
+                        <mat-radio-button class="cancels-checkbox" [value]="radio.value">
+                            {{radio.name}}
+                        </mat-radio-button>
+                    </mat-radio-group>
+                </div>
                 <div class="dialog-edit-argument-category-item-footer" *ngIf="item.url != '' && item.url != null">
                     <button mat-button class="flat-button admin-menu-content-cancel-button" (click)="showPreview(item)">Preview</button>
                 </div>
