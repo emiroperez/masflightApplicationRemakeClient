@@ -355,6 +355,13 @@ export class EditCategoryArgumentDialog {
     {id: 3, name: 'Until Last Year',value:"UNTILLASTYEAR"}
   ];
 
+  contentTypes: any[] = [
+    { "id": 1, "name": "TV", "value": "TV" },
+    { "id": 2, "name": "Movie", "value": "Movie" },
+    { "id": 3, "name": "All", "value": "All"},
+    { "id": 3, "name": "All Combined", "value": "Combined"}
+  ];
+
   constructor(
     private globals: Globals,
     private http: ApiClient,
@@ -444,6 +451,10 @@ export class EditCategoryArgumentDialog {
 
   isTimeRange(argument: Arguments) {
     return ComponentType.timeRange == argument.type;
+  }
+
+  isContentType(argument: Arguments) {
+    return ComponentType.contentType == argument.type;
   }
 
   isGroupAAA(argument: Arguments){
