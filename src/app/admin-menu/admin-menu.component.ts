@@ -438,6 +438,14 @@ export class EditCategoryArgumentDialog {
     return ComponentType.singleairline == argument.type;
   }
 
+  isTimePicker(argument: Arguments) {
+    return ComponentType.timePicker == argument.type;
+  }
+
+  isTimeRange(argument: Arguments) {
+    return ComponentType.timeRange == argument.type;
+  }
+
   isGroupAAA(argument: Arguments){
     return ComponentType.AAA_Group == argument.type;
   }

@@ -284,6 +284,29 @@
                         [(ngModel)]="item.value1">
                     </ng-select>
                 </div>
+                <ng-container *ngIf="isTimePicker(item)">
+                    <div class="arguments-child">
+                        <mat-form-field [style.width.%]="100">
+                            <input matInput placeholder="Default Time" aria-label="12hr format" [ngxTimepicker]="defaultTime" readonly [(ngModel)]="item.value1">
+                            <ngx-material-timepicker #defaultTime></ngx-material-timepicker>
+                        </mat-form-field>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="isTimeRange(item)">
+                    <div class="arguments-child" [style.margin-right.%]="7">
+                        <mat-form-field [style.width.%]="100">
+                            <input matInput placeholder="From" aria-label="12hr format" [ngxTimepicker]="defaultFrom" readonly [(ngModel)]="item.value1">
+                            <ngx-material-timepicker #defaultFrom></ngx-material-timepicker>
+                        </mat-form-field>
+                    </div>
+                    <i class="material-icons msf-menu-arg-right-row" [style.margin-right.%]="8.8" [style.margin-top.px]="10">chevron_right</i>
+                    <div class="arguments-child">
+                        <mat-form-field [style.width.%]="100">
+                            <input matInput placeholder="To" aria-label="12hr format" [ngxTimepicker]="defaultTo" readonly [(ngModel)]="item.value2">
+                            <ngx-material-timepicker #defaultTo></ngx-material-timepicker>
+                        </mat-form-field>
+                    </div>
+                </ng-container>
                 <div class="dialog-edit-argument-category-item-footer" *ngIf="item.url != '' && item.url != null">
                     <button mat-button class="flat-button admin-menu-content-cancel-button" (click)="showPreview(item)">Preview</button>
                 </div>
