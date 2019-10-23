@@ -107,7 +107,7 @@
                     </mat-form-field>
                 </div>
                 <div [style.width.%]="100" *ngIf="item.url != '' && item.url != null && isSelectBoxMultipleOption(item)">
-                    <span>Default Value</span>
+                    <div [style.padding-bottom.px]="10">Default Value</div>
                     <ng-select
                         [items]="items | async"
                         [multiple]="true"
