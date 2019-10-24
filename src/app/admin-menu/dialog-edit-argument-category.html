@@ -117,7 +117,8 @@
                         [hideSelected]="false"
                         bindLabel="{{item.visibleAttribute}}"
                         (search)="onSearch(item,$event)" 
-                        [(ngModel)]="item.value1">
+                        [(ngModel)]="item.value1"
+                        dropdownPosition="bottom">
                     </ng-select>
                 </div>
                 <div class="arguments-child" [style.margin-right.%]="20" *ngIf="isDateRange(item)">
@@ -181,7 +182,8 @@
                         [hideSelected]="false"
                         bindLabel="{{item.visibleAttribute}}"
                         (search)="onAirportSearch(item, $event)"
-                        [(ngModel)]="item.value1">
+                        [(ngModel)]="item.value1"
+                        dropdownPosition="bottom">
                         <ng-template ng-label-tmp let-item="item" let-clear="clear">
                             <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
                             <span>{{item.iata}} - {{item.name}}</span>
@@ -202,7 +204,8 @@
                         [hideSelected]="false"
                         bindLabel="{{item.visibleAttribute}}"
                         (search)="onAirportSearch(item, $event)"
-                        [(ngModel)]="item.value1">
+                        [(ngModel)]="item.value1"
+                        dropdownPosition="bottom">
                         <ng-template ng-label-tmp let-item="item" let-clear="clear">
                             <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
                             <span>{{item.iata}} - {{item.name}}</span>
@@ -224,7 +227,8 @@
                             [hideSelected]="false"
                             bindLabel="{{item.visibleAttribute}}"
                             (search)="onAirportSearch(item, $event)" 
-                            [(ngModel)]="item.value1">
+                            [(ngModel)]="item.value1"
+                            dropdownPosition="bottom">
                             <ng-template ng-label-tmp let-item="item" let-clear="clear">
                                 <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
                                 <span>{{item.iata}} - {{item.name}}</span>
@@ -245,7 +249,8 @@
                             [hideSelected]="false"
                             bindLabel="{{item.visibleAttribute}}"
                             (search)="onAirportSearch(item, $event)" 
-                            [(ngModel)]="item.value2">
+                            [(ngModel)]="item.value2"
+                            dropdownPosition="bottom">
                             <ng-template ng-label-tmp let-item="item" let-clear="clear">
                                 <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
                                 <span>{{item.iata}} - {{item.name}}</span>
@@ -267,7 +272,8 @@
                         [hideSelected]="false"
                         bindLabel="{{item.visibleAttribute}}"
                         (search)="onSearch(item,$event)" 
-                        [(ngModel)]="item.value1">
+                        [(ngModel)]="item.value1"
+                        dropdownPosition="bottom">
                     </ng-select>
                 </div>
                 <div class="arguments-child" [style.margin-right.%]="20" *ngIf="item.url != '' && item.url != null && isSingleAirline(item)">
@@ -281,7 +287,8 @@
                         [hideSelected]="false"
                         bindLabel="{{item.visibleAttribute}}"
                         (search)="onSearch(item,$event)" 
-                        [(ngModel)]="item.value1">
+                        [(ngModel)]="item.value1"
+                        dropdownPosition="bottom">
                     </ng-select>
                 </div>
                 <ng-container *ngIf="isTimePicker(item)">
