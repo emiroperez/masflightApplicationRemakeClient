@@ -13,6 +13,7 @@
     bindLabel="{{argument.visibleAttribute}}"
     (search)="onSearch($event)" 
     [(ngModel)]="argument.value1"
-    (change)="onChange()">
+    (change)="onChange()"
+    appendTo=".msf-control-variables-overlay">
   </ng-select>
 </div>

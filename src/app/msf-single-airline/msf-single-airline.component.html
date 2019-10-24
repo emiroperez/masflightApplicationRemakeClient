@@ -17,7 +17,8 @@
                 (search)="onSearch($event)" 
                 (change)="airlineChange()"
                 (focus)="onFocus()"
-                [(ngModel)]="argument.value1">
+                [(ngModel)]="argument.value1"
+                appendTo=".msf-control-variables-overlay">
             </ng-select>
         </div>
     </div>

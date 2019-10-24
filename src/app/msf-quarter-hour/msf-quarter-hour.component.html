@@ -11,7 +11,8 @@
         [hideSelected]="false"
         bindLabel="name"
         bindName="id"
-        [(ngModel)]="argument.value1">
+        [(ngModel)]="argument.value1"
+        appendTo=".msf-control-variables-overlay">
     </ng-select>
 </div>
 <div class="msf-component-date-input-container">
@@ -24,6 +25,7 @@
         [hideSelected]="false"
         bindLabel="name"
         bindName="id"
-        [(ngModel)]="argument.value2">
+        [(ngModel)]="argument.value2"
+        appendTo=".msf-control-variables-overlay">
     </ng-select>
 </div>

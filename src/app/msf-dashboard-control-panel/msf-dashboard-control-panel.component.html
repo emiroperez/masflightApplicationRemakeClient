@@ -17,7 +17,7 @@
           <img *ngIf="controlVariable.icon && !controlVariable.isMatIcon" src="{{getImageIcon(controlVariable)}}" class="msf-dashboard-control-panel-tab-icon">
           {{controlVariable.label}}
         </ng-template>
-        <div class="msf-dashboard-control-panel-variable-tab-container">
+        <div class="msf-dashboard-control-panel-variable-tab-container msf-dashboard-control-panel-tab-container">
           <div class="msf-dashboard-control-panel-variable-buttons">
             <button mat-flat-button [disabled]="controlVariables.length == controlVariablesAvailable.length" (click)="addVariable()" [ngClass]="controlVariables.length != controlVariablesAvailable.length ? 'flat-button' : 'flat-button-disabled'" class="msf-dashboard-control-panel-variable-button" matTooltip="Add Variable">
               <mat-icon aria-label="Add Variable">add</mat-icon>

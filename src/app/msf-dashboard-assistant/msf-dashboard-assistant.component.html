@@ -204,7 +204,7 @@
                   {{controlVariable.label}}
                 </ng-template>
                 <div class="msf-dashboard-assistant-tab-container msf-dashboard-assistant-edit-tab-container">
-                  <div class="msf-dashboard-control-panel-variable-tab-container">
+                  <div class="msf-dashboard-control-panel-variable-tab-container msf-dashboard-assistant-edit-tab-container msf-control-variables-overlay">
                     <div class="msf-dashboard-control-panel-variable-arguments">
                       <div *ngFor="let argument of controlVariable.arguments" class="msf-dashboard-control-panel-variable-argument">
                         <ng-container *ngIf="!isSingleCheckbox(argument) && !isTaxiTimesCheckbox(argument)">

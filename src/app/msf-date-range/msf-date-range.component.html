@@ -20,7 +20,7 @@
     <div class="center">
         <div class="msf-component-airport-title">Auto select the date range:</div>
     </div>
-        <div class="msf-component-auto-select-date-range">         
+    <div class="msf-component-auto-select-date-range">         
         <ng-select style="width: 100%;"
             [items]="dates"
             [multiple]="false"
@@ -28,7 +28,8 @@
             [hideSelected]="false"
             bindLabel="name"
             (change)="autoSelect()"
-            [(ngModel)]="argument.value3">
+            [(ngModel)]="argument.value3"
+            appendTo=".msf-control-variables-overlay">
         </ng-select>
     </div>
 </div>

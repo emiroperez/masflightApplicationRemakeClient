@@ -14,7 +14,8 @@
         bindLabel="name"
         bindName="id"
         labelForId="id"
-        [(ngModel)]="argument.value1">
+        [(ngModel)]="argument.value1"
+        appendTo=".msf-control-variables-overlay">
     </ng-select>
     <i class="material-icons msf-menu-arg-right-row">chevron_right</i>
     <div class="msf-component-airport-sub-title msf-component-input-sub-title msf-component-airport-ceiling-sub-title">{{argument.label2}}</div>   
@@ -28,7 +29,8 @@
         bindLabel="name"
         bindName="id"
         labelForId="id"
-        [(ngModel)]="argument.value2">
+        [(ngModel)]="argument.value2"
+        appendTo=".msf-control-variables-overlay">
     </ng-select>
 </div>
 <div class="center msf-component-radio">

@@ -1,11 +1,14 @@
+
 <div class="msf-dashboard-control-variables-title">
   <div class="msf-dashboard-control-variables-close-button">
     <mat-icon class="msf-dashboard-close-icon" aria-label="close" (click)="closeDialog()">close</mat-icon>
   </div>
   {{data.title}}
 </div>
-<div class="msf-dashboard-control-variables" id="msf-dashboard-control-variables-font-size">
-  <app-msf-control-variables [currentOptionCategories]="data.currentOptionCategories" [currentOptionId]="data.currentOptionId"></app-msf-control-variables>
+<div class="msf-dashboard-control-variables-scroll">
+  <div class="msf-dashboard-control-variables msf-control-variables-overlay" id="msf-dashboard-control-variables-font-size">
+    <app-msf-control-variables [currentOptionCategories]="data.currentOptionCategories" [currentOptionId]="data.currentOptionId"></app-msf-control-variables>
+  </div>
 </div>
 <div class="msf-dashboard-control-variables-button">
   <button [disabled]="!this.globals.copiedPanelInfo" mat-flat-button [ngClass]="this.globals.copiedPanelInfo ? 'flat-button' : 'flat-control-variable-button-disabled'" (click)="pasteControlVariables()">Pass Copied Info</button>

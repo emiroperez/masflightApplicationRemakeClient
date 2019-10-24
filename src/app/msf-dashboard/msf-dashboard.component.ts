@@ -82,6 +82,8 @@ export class MsfDashboardComponent implements OnInit {
   leftPanel: any;
   rightPanel: any;
 
+  controlVariableDialogOpen: boolean = false;
+
   constructor(public globals: Globals, private service: ApplicationService,
     public dialog: MatDialog, private changeDetector: ChangeDetectorRef)
   {
@@ -1045,5 +1047,10 @@ export class MsfDashboardComponent implements OnInit {
     }
 
     this.changeDetector.detectChanges ();
+  }
+
+  toggleControlVariableDialogOpen(enable: boolean): void
+  {
+    this.controlVariableDialogOpen = enable;
   }
 }

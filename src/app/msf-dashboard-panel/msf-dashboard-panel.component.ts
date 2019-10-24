@@ -156,6 +156,9 @@ export class MsfDashboardPanelComponent implements OnInit {
   @Output("addNewVariablesAndCategories")
   addNewVariablesAndCategories = new EventEmitter ();
 
+  @Output("toggleControlVariableDialogOpen")
+  toggleControlVariableDialogOpen  = new EventEmitter ();
+
   childPanelValues: any[] = [];
   childPanelsConfigured: boolean[] = [];
 
@@ -2864,6 +2867,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   setCategories(_this, data): void
   {
     let optionCategories = [];
+    let dialogRef;
 
     data = data.sort ((a, b) => a["position"] > b["position"] ? 1 : a["position"] === b["position"] ? 0 : -1);
 
@@ -2926,8 +2930,9 @@ export class MsfDashboardPanelComponent implements OnInit {
       _this.globals.isLoading = false;
 
     // console.log (_this.values.currentOptionCategories);
+    _this.toggleControlVariableDialogOpen.emit (true);
 
-    _this.dialog.open (MsfDashboardControlVariablesComponent, {
+    dialogRef = _this.dialog.open (MsfDashboardControlVariablesComponent, {
       height: '605px',
       width: '400px',
       panelClass: 'msf-dashboard-control-variables-dialog',
@@ -2937,6 +2942,10 @@ export class MsfDashboardPanelComponent implements OnInit {
         title: _this.values.chartName
       }
     });
+
+    dialogRef.afterClosed ().subscribe (() => {
+      _this.toggleControlVariableDialogOpen.emit (false);
+    })
   }
 
   searchChange(filterCtrl): void
@@ -5186,7 +5195,11 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   openAssistant(): void
   {
-    let dialogRef = this.dialog.open (MsfDashboardAssistantComponent, {
+    let dialogRef;
+
+    this.toggleControlVariableDialogOpen.emit (true);
+
+    dialogRef = this.dialog.open (MsfDashboardAssistantComponent, {
       panelClass: 'msf-dashboard-assistant-dialog',
       autoFocus: false,
       data: {
@@ -5200,6 +5213,8 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     dialogRef.afterClosed ().subscribe (
       (values) => {
+        this.toggleControlVariableDialogOpen.emit (false);
+
         if (values)
         {
           for (let chartType of this.chartTypes)
