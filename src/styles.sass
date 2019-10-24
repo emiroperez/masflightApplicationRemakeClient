@@ -2129,9 +2129,18 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button
     /**register pending
         padding-left: 17px*/
 
+/*.ng-select
+    padding-bottom: 0
+    margin-bottom: 1.25em*/
+
+.ng-dropdown-panel.ng-select-top, .ng-dropdown-panel.ng-select-bottom
+    box-shadow: inherit !important
+
 .ng-dropdown-panel
-    background-color: $msf-primary-light-color!important
-    position: initial!important
+    background-color: $msf-primary-light-color !important
+    box-shadow: inherit !important
+    font-size: 10px
+    font-weight: 450
 
 // Menu
 .msf-menu-header
@@ -2371,7 +2380,6 @@ button[aria-expanded="true"]
     transition: 2s
     position: relative
     overflow: auto
-
 
 .msf-menu-tabs-content
     width: calc(100% - 20px)
@@ -3781,7 +3789,7 @@ mat-tab-group
                 .msf-menu-arg-airport-image, .msf-menu-arg-date-image, .msf-airline-image, .mat-form-field-appearance-legacy .mat-form-field-underline, .msf-menu-arg-right-row, .msf-menu-arg-wind-direction-image, .msf-menu-arg-ceiling-image, .msf-menu-arg-wind-speed-image, .msf-menu-arg-temperature-image, .msf-menu-arg-single-airport-image, .msf-tail-image, .msf-user-image
                     display: none
                 .ng-select
-                    padding-bottom: 1.3em !important
+                    padding-bottom: 14px !important
                     margin-top: 1px !important
                 .msf-component-airport-input-container
                     flex-direction: column
@@ -6905,6 +6913,8 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     min-width: 417px !important
     max-width: 1251px !important
     height: 525px !important
+
+.msf-select-data-dialog
     .mat-dialog-container
         padding: 0
         overflow: hidden
@@ -6922,6 +6932,8 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         height: 426px
         display: flex
         flex-direction: row
+        overflow-x: auto
+        overflow-y: hidden
         .select-data-menu-category
             width: 417px
             .menu-category-header
