@@ -15,7 +15,8 @@
             bindLabel="{{argument.visibleAttribute}}"
             (search)="onSearch($event)"
             [(ngModel)]="argument.value1"
-            appendTo=".msf-control-variables-overlay">
+            appendTo=".msf-control-variables-overlay"
+            dropdownPosition="bottom">
             <ng-template ng-label-tmp let-item="item" let-clear="clear">
                 <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
                 <span>{{item.iata}} - {{item.name}}</span>
