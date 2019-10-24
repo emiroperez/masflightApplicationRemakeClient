@@ -9,11 +9,15 @@ import { Utils } from '../commons/utils';
   styleUrls: ['./dialog-argument-preview.component.css']
 })
 export class DialogArgumentPreviewComponent implements OnInit {
+  item: any;
 
   constructor(public dialogRef: MatDialogRef<DialogArgumentPreviewComponent>,
     public globals: Globals,
     public utils: Utils,
-    @Inject(MAT_DIALOG_DATA) public data: any,) { }
+    @Inject(MAT_DIALOG_DATA) public data: any,)
+  {
+    this.item = JSON.parse (JSON.stringify (data));
+  }
 
   ngOnInit() {
   }

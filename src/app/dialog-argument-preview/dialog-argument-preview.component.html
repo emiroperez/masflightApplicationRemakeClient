@@ -1,23 +1,23 @@
-  <div class="msf-argument-preview-container">
-    <app-msf-argument [currentArgument]="data"></app-msf-argument>
+  <div class="msf-argument-preview-container msf-control-variables-overlay">
+    <app-msf-argument [currentArgument]="item"></app-msf-argument>
     <div class="msf-argument-preview-footer">
-        <ng-container *ngIf="data.name1">
+        <ng-container *ngIf="item.name1">
             <div class="msf-block">
-                    <div class="msf-inline msf-summary-arg-title">{{data.title}} </div>
-                    <div class="msf-inline msf-summary-arg-label">{{data.label1}} </div>
-                    <div class="msf-inline msf-summary-value msf-summary-arg-value"> {{utils.getValueFormat(data.type, data.value1,data)}}</div>
+                    <div class="msf-inline msf-summary-arg-title">{{item.title}} </div>
+                    <div class="msf-inline msf-summary-arg-label">{{item.label1}} </div>
+                    <div class="msf-inline msf-summary-value msf-summary-arg-value"> {{utils.getValueFormat(item.type, item.value1,data)}}</div>
             </div>                                        
         </ng-container> 
-        <ng-container *ngIf="data.name2">
+        <ng-container *ngIf="item.name2">
                 <div class="msf-block">
-                        <div class="msf-inline msf-summary-arg-label">{{data.label2}} </div>
-                        <div class="msf-inline msf-summary-value msf-summary-arg-value"> {{utils.getValueFormat(data.type, data.value2,data)}}</div>
+                        <div class="msf-inline msf-summary-arg-label">{{item.label2}} </div>
+                        <div class="msf-inline msf-summary-value msf-summary-arg-value"> {{utils.getValueFormat(item.type, item.value2,data)}}</div>
                 </div>                                        
         </ng-container> 
-        <ng-container *ngIf="data.name3">
+        <ng-container *ngIf="item.name3">
                 <div class="msf-block">
-                        <div class="msf-inline msf-summary-arg-label">{{data.label3}} </div>
-                        <div class="msf-inline msf-summary-value msf-summary-arg-value"> {{utils.getValueFormat(data.type, data.value3,data)}}</div>
+                        <div class="msf-inline msf-summary-arg-label">{{item.label3}} </div>
+                        <div class="msf-inline msf-summary-value msf-summary-arg-value"> {{utils.getValueFormat(item.type, item.value3,data)}}</div>
                 </div>                                        
         </ng-container>                                    
     </div>
