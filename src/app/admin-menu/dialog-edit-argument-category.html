@@ -107,7 +107,7 @@
                     </mat-form-field>
                 </div>
                 <div [style.width.%]="100" *ngIf="item.url != '' && item.url != null && isSelectBoxMultipleOption(item)">
-                    <div [style.padding-bottom.px]="10">Default Value</div>
+                    <div [style.padding-bottom.px]="10">Select Default Values</div>
                     <ng-select
                         [items]="items | async"
                         [multiple]="true"
@@ -122,7 +122,7 @@
                 </div>
                 <div class="arguments-child" [style.margin-right.%]="20" *ngIf="isDateRange(item)">
                     <mat-form-field [style.width.%]="100">
-                        <mat-select placeholder="Default Value" [(ngModel)]="item.value1">
+                        <mat-select placeholder="Select Default Value" [(ngModel)]="item.value1">
                             <mat-option *ngFor="let dateRange of dates" [value]="dateRange.value">
                                 {{dateRange.name}}
                             </mat-option>
@@ -131,7 +131,7 @@
                 </div>
                 <div class="arguments-child" [style.margin-right.%]="20" *ngIf="isDatePicker(item)">
                     <mat-form-field [style.width.%]="100">
-                        <mat-select placeholder="Default Value" [(ngModel)]="item.value1">
+                        <mat-select placeholder="Select Default Value" [(ngModel)]="item.value1">
                             <mat-option *ngFor="let dateRange of dates2" [value]="dateRange.value">
                                 {{dateRange.name}}
                             </mat-option>
@@ -140,7 +140,7 @@
                 </div>
                 <div class="arguments-child" [style.margin-right.%]="20" *ngIf="isDatePeriod(item)">
                     <mat-form-field [style.width.%]="100">
-                        <mat-select placeholder="Default Value" [(ngModel)]="item.value1">
+                        <mat-select placeholder="Select Default Value" [(ngModel)]="item.value1">
                             <mat-option *ngFor="let dateRange of dates3" [value]="dateRange.value">
                                 {{dateRange.name}}
                             </mat-option>
@@ -149,7 +149,7 @@
                 </div>
                 <div class="arguments-child" [style.margin-right.%]="20" *ngIf="isDatePeriodYearMonth(item)">
                     <mat-form-field [style.width.%]="100">
-                        <mat-select placeholder="Default Value" [(ngModel)]="item.value1">
+                        <mat-select placeholder="Select Default Value" [(ngModel)]="item.value1">
                             <mat-option *ngFor="let dateRange of dates4" [value]="dateRange.value">
                                 {{dateRange.name}}
                             </mat-option>
@@ -158,7 +158,7 @@
                 </div>
                 <div class="arguments-child" [style.margin-right.%]="20" *ngIf="isDatePeriodYear(item)">
                     <mat-form-field [style.width.%]="100">
-                        <mat-select placeholder="Default Value" [(ngModel)]="item.value1">
+                        <mat-select placeholder="Select Default Value" [(ngModel)]="item.value1">
                             <mat-option *ngFor="let dateRange of dates5" [value]="dateRange.value">
                                 {{dateRange.name}}
                             </mat-option>
@@ -167,11 +167,11 @@
                 </div>
                 <div class="arguments-child" [style.margin-right.%]="20" *ngIf="isMsFreeTextInput(item)">
                     <mat-form-field [style.width.%]="100">
-                        <input matInput autocomplete="off" placeholder="Default Value" [(ngModel)]="item.value1">
+                        <input matInput autocomplete="off" placeholder="Set Default Value" [(ngModel)]="item.value1">
                     </mat-form-field>
                 </div>
                 <div class="arguments-child" [style.margin-right.%]="20" *ngIf="item.url != '' && item.url != null && isAirport(item)">
-                    <div class="msf-component-airport-sub-title">Airports</div>
+                    <div class="msf-component-airport-sub-title">Select Default Values</div>
                     <ng-select
                         [items]="items | async"
                         [multiple]="true"
@@ -192,7 +192,7 @@
                     </ng-select>
                 </div>
                 <div class="arguments-child" [style.margin-right.%]="20" *ngIf="item.url != '' && item.url != null && isSingleAirport(item)">
-                    <div class="msf-component-airport-sub-title">Airport</div>
+                    <div class="msf-component-airport-sub-title">Select Default Value</div>
                     <ng-select
                         [items]="items | async"
                         [multiple]="false"
@@ -214,7 +214,7 @@
                 </div>
                 <ng-container *ngIf="item.url != '' && item.url != null && isAirportRoute(item)">
                     <div class="arguments-child" [style.margin-right.%]="20">
-                        <div class="msf-component-airport-sub-title">From</div>
+                        <div class="msf-component-airport-sub-title">Select Default Value(s) #1</div>
                         <ng-select
                             [items]="items | async"
                             [multiple]="true"
@@ -235,7 +235,7 @@
                         </ng-select>
                     </div>
                     <div class="arguments-child">
-                        <div class="msf-component-airport-sub-title msf-component-airport-route-sub-title">To</div>
+                        <div class="msf-component-airport-sub-title msf-component-airport-route-sub-title">Select Default Value(s) #2</div>
                         <ng-select
                             [items]="items | async"
                             [multiple]="true"
@@ -257,7 +257,7 @@
                     </div>
                 </ng-container>
                 <div class="arguments-child" [style.margin-right.%]="20" *ngIf="item.url != '' && item.url != null && isAirline(item)">
-                    <div class="msf-component-airport-sub-title msf-component-airport-route-sub-title">Airlines</div>
+                    <div class="msf-component-airport-sub-title msf-component-airport-route-sub-title">Select Default Values</div>
                     <ng-select
                         [items]="items | async"
                         [multiple]="true"
@@ -271,7 +271,7 @@
                     </ng-select>
                 </div>
                 <div class="arguments-child" [style.margin-right.%]="20" *ngIf="item.url != '' && item.url != null && isSingleAirline(item)">
-                    <div class="msf-component-airport-sub-title msf-component-airport-route-sub-title">Airline</div>
+                    <div class="msf-component-airport-sub-title msf-component-airport-route-sub-title">Select Default Value</div>
                     <ng-select
                         [items]="items | async"
                         [multiple]="false"
@@ -308,7 +308,7 @@
                     </div>
                 </ng-container>
                 <div *ngIf="isContentType(item)" [style.margin-left.px]="-10">
-                    <div class="msf-component-airport-sub-title msf-component-airport-route-sub-title" [style.margin-bottom.px]="10">Default Value</div>
+                    <div class="msf-component-airport-sub-title msf-component-airport-route-sub-title" [style.margin-bottom.px]="10">Set Default Value</div>
                     <mat-radio-group class="checkbox-component" *ngFor="let radio of contentTypes" [(ngModel)]="item.value1">
                         <mat-radio-button class="cancels-checkbox" [value]="radio.value">
                             {{radio.name}}
@@ -316,7 +316,7 @@
                     </mat-radio-group>
                 </div>
                 <div *ngIf="isSeatClass(item)" [style.margin-left.px]="-10">
-                    <div class="msf-component-airport-sub-title msf-component-airport-route-sub-title" [style.margin-bottom.px]="10">Default Value</div>
+                    <div class="msf-component-airport-sub-title msf-component-airport-route-sub-title" [style.margin-bottom.px]="10">Set Default Value</div>
                     <mat-radio-group class="checkbox-component" *ngFor="let radio of seatClasses" [(ngModel)]="item.value1">
                         <mat-radio-button class="cancels-checkbox" [value]="radio.value">
                             {{radio.name}}
