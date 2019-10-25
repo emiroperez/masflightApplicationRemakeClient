@@ -2134,11 +2134,11 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button
     margin-bottom: 1.25em
 
 .ng-dropdown-panel.ng-select-top, .ng-dropdown-panel.ng-select-bottom
-    box-shadow: inherit !important
+    box-shadow: 0 5px 5px -3px rgba(0,0,0,.1), 0 8px 10px 1px rgba(0,0,0,.07),0 3px 14px 2px rgba(0,0,0,.06) !important
 
 .ng-dropdown-panel
     background-color: $msf-primary-light-color !important
-    box-shadow: inherit !important
+    box-shadow: 0 5px 5px -3px rgba(0,0,0,.1), 0 8px 10px 1px rgba(0,0,0,.07),0 3px 14px 2px rgba(0,0,0,.06) !important
     font-size: 10px
     font-weight: 450
 
@@ -7026,3 +7026,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 
 .ng-dropdown-panel .ng-dropdown-panel-items
     max-height: 180px !important
+
+.schedule-panel-scrollbar
+    overflow: auto
+    height: calc(100% - 154px)
