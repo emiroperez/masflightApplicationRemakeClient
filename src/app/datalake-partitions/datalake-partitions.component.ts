@@ -33,6 +33,9 @@ export class DatalakePartitionsComponent implements OnInit {
   request: { tableName: any; schemaName: any; cron: any; type: any; status: any; };
   Status: string = 'A';
   edit: boolean;
+
+  
+  filter: string;
  
 
   constructor(public globals: Globals,private formBuilder: FormBuilder,
@@ -361,6 +364,30 @@ export class DatalakePartitionsComponent implements OnInit {
       });
     }
     
+  }
+
+  filterPartition(): void
+  {
+    let search, filteredResults;
+
+    if (!this.partitions.length)
+      return;
+
+    // get the search keyword
+    search = this.filter;
+    if (!search)
+    {
+      this.PartitionTable = new MatTableDataSource (this.partitions);
+      this.PartitionTable.paginator = this.paginator;
+      return;
+    }
+
+    search = search.toLowerCase ();
+    filteredResults = this.partitions.filter (a => (a.schemaName.toLowerCase ().indexOf (search) > -1
+      || a.tableName.toLowerCase ().indexOf (search) > -1));
+
+    this.PartitionTable = new MatTableDataSource (filteredResults);
+    this.PartitionTable.paginator = this.paginator;
   }
 
 }

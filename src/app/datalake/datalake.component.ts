@@ -8,6 +8,7 @@ import { UserService } from '../services/user.service';
 import { AuthService } from '../services/auth.service';
 import { AuthGuard } from '../guards/auth.guard';
 import { MenuService } from '../services/menu.service';
+import { DatalakeQueryTab } from '../datalake-query-engine/datalake-query-tab';
 
 @Component({
   selector: 'app-datalake',
@@ -47,7 +48,8 @@ export class DatalakeComponent implements OnInit {
 
   ngOnInit()
   {
-    this.globals.isLoading = true;
+    this.globals.isLoading = true;    
+    this.globals.queryTabs = [ new DatalakeQueryTab () ];
     this.menuService.getUserLoggedin (this, this.handleLogin, this.errorLogin);
   }
 

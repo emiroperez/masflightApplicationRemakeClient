@@ -3,6 +3,7 @@ import { MatTableDataSource, MatPaginator } from '@angular/material';
 import { Globals } from '../globals/Globals';
 import { DatalakeService } from '../services/datalake.service';
 import { DatalakeExecutionPartitionViewDetailComponent } from '../datalake-execution-partition-view-detail/datalake-execution-partition-view-detail.component';
+import { ReplaySubject } from 'rxjs';
 
 @Component({
   selector: 'app-datalake-execution-partition',
@@ -23,6 +24,8 @@ export class DatalakeExecutionPartitionComponent implements OnInit {
   partitionDetail : DatalakeExecutionPartitionViewDetailComponent;
 
   detailView: boolean = true;
+  filter: string;
+
   constructor(public globals: Globals, private service: DatalakeService) { }
 
   ngOnInit() {
@@ -60,4 +63,28 @@ export class DatalakeExecutionPartitionComponent implements OnInit {
     }
   }
 
+  filterPartition(): void
+  {
+    let search, filteredResults;
+
+    if (!this.partitions.length)
+      return;
+
+    // get the search keyword
+    search = this.filter;
+    if (!search)
+    {
+      this.partitionDetail.PartitionTable = new MatTableDataSource (this.partitions);
+      this.partitionDetail.PartitionTable.paginator = this.partitionDetail.paginator;
+      return;
+    }
+
+    search = search.toLowerCase ();
+    filteredResults = this.partitions.filter (a => (a.schemaName.toLowerCase ().indexOf (search) > -1
+      || a.tableName.toLowerCase ().indexOf (search) > -1));
+
+    this.partitionDetail.PartitionTable = new MatTableDataSource (filteredResults);
+    this.partitionDetail.PartitionTable.paginator = this.partitionDetail.paginator;
+  }
+  
 }

@@ -143,12 +143,15 @@ export class DatalakeCreateNewStructureComponent {
 
     if (this.selectedDelimiter === "CUSTOM")
     {
+      // this.tableConfigurationFormGroup.get ("fileName").setValue ("");
       customDelimiter.enable ();
       return;
     }
 
     customDelimiter.setValue ("");
     customDelimiter.disable ();
+    // this.tableConfigurationFormGroup.get ("fileName").setValue ("");
+
   }
 
   calcFileSize(size: number): string

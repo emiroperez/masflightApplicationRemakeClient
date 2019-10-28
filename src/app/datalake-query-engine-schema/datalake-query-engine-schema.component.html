@@ -17,7 +17,7 @@
   </div>
 </div>
 <div class="datalake-schema-body" *ngIf="querySchema.open && !isLoading">
-  <div class="datalake-schema-item" *ngFor="let tableName of querySchema.filteredTables | async">
+  <div class="datalake-schema-item" *ngFor="let tableName of querySchema.filteredTables | async"  (dblclick)=copyText(querySchema.schemaName,tableName)>
     {{tableName}}
   </div>
 </div>

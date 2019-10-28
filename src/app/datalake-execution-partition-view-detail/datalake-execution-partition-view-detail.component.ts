@@ -7,8 +7,8 @@ import { DatalakePartitionExecuteDialogComponent } from '../datalake-partition-e
   templateUrl: './datalake-execution-partition-view-detail.component.html'
 })
 export class DatalakeExecutionPartitionViewDetailComponent implements OnInit {
-  @Input("partitions")
-  partitions
+  // @Input("partitions")
+  // partitions
   
   innerHeight: number;
   PartitionTable: MatTableDataSource<any>;

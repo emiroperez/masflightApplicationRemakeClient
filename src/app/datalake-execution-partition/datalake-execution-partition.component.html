@@ -1,20 +1,25 @@
 <div class="datalake-explorer-container">
     <div class="datalake-explorer-header">
       <mat-form-field class="datalake-explorer-search-input-container">
-        <input matInput class="datalake-explorer-search-input" type="text" placeholder="Search" autocomplete="off">
+        <input matInput class="datalake-explorer-search-input" type="text" placeholder="Search"
+         autocomplete="off" [(ngModel)]="filter" (ngModelChange)="filterPartition()">
         <mat-icon class="search-icon" aria-label="search">search</mat-icon>
       </mat-form-field>      
       <div class="datalake-explorer-header-title">Execution History</div>
-      <div class="datalake-explorer-buttons datalake-partition-icons-header">
+      <!-- <div class="datalake-explorer-buttons datalake-partition-icons-header">
           <button mat-button 
           [ngClass]="{'datalake-explorer-button': !detailView, 'datalake-explorer-button-selected': detailView }"
           matTooltip="title any"  (click)="changeView()">
               <mat-icon class="datalake-explorer-button-info-icon" aria-label="menu">menu</mat-icon>
           </button>
-      </div>
+      </div> -->
     </div>
     <div class="datalake-partitions-body">
-        <app-datalake-execution-partition-view-detail #partitionDetail style="width: 100%;" *ngIf="detailView" [partitions]="partitions"></app-datalake-execution-partition-view-detail>     
+        <!-- <app-datalake-execution-partition-view-detail #partitionDetail style="width: 100%;" 
+        [ngClass]="{'hidden': !detailView, 'msf-show': detailView }"
+        [partitions]="partitions"></app-datalake-execution-partition-view-detail> mientras se hace la otra vista de sergio-->
+        <app-datalake-execution-partition-view-detail #partitionDetail style="width: 100%;" >
+        </app-datalake-execution-partition-view-detail>
     </div>
     <!--End Body-->      
   </div>

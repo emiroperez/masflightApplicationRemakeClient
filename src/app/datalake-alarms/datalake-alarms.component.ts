@@ -25,6 +25,8 @@ export class DatalakeAlarmsComponent implements OnInit {
   minutes: any= "";
   // time: any;
 
+  filter: string;
+
   @ViewChild(MatPaginator)
   paginator: MatPaginator;
 
@@ -393,18 +395,28 @@ tableChanged(): void
 saveAlarmError() {
 }
 
-// filterAlarms(){
-//   let searchText, filteredResults;
+filterAlarm(): void
+{
+  let search, filteredResults;
 
-//   if (!this.alarms.length){
-//     return;
-//   }
+  if (!this.alarms.length)
+    return;
 
-//   searchText = this.search;
-//   if (!searchText)
-//   {
-//     this.filteredAlarms.next (this.tableCards.slice ());
-//     return;
-//   }
-// }
+  // get the search keyword
+  search = this.filter;
+  if (!search)
+  {
+    this.alarmTable = new MatTableDataSource (this.alarms);
+    this.alarmTable.paginator = this.paginator;
+    return;
+  }
+
+  search = search.toLowerCase ();
+  filteredResults = this.alarms.filter (a => (a.schemaName.toLowerCase ().indexOf (search) > -1
+    || a.tableName.toLowerCase ().indexOf (search) > -1));
+
+  this.alarmTable = new MatTableDataSource (filteredResults);
+  this.alarmTable.paginator = this.paginator;
+}
+
 }

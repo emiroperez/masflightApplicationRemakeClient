@@ -29,4 +29,9 @@ export class DatalakePartitionExecuteDialogComponent implements OnInit {
       document.execCommand('copy');
       document.body.removeChild(selBox);
     }
+
+  onNoClick(): void
+  {
+    this.dialogRef.close ();
+  }
 }

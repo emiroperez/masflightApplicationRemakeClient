@@ -1323,7 +1323,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                             color: $primary-color !important
                         .datalake-create-table-step-subtitle
                             color: $font-color !important
-        .datalake-create-table-step-content, .datalake-alarm-comboboxes, .datalake-partition-comboboxes
+        .datalake-create-table-step-content, .datalake-alarm-comboboxes, .datalake-partition-comboboxes , .datalake-save-query-one-column, .datalake-save-query-two-column
             color: $font-color
             .mat-form-field-appearance-legacy.mat-form-field-disabled .mat-form-field-underline
                 background-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0, $dashboard-input-underline-color 50%, transparent 0)
@@ -1465,6 +1465,14 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                     .mat-icon-button[disabled]
                         .mat-button-wrapper
                             color: $font-color
+        .datalake-query-history-paginator
+            .mat-paginator-outer-container
+                .mat-paginator-container
+                    color: black
+                    background-color: #F2F2F2
+                    .mat-icon-button[disabled]
+                        .mat-button-wrapper
+                            color: black
         .datalake-edit-alarm-dialog, .datalake-partition-dialog
             mat-dialog-container
                 color: $font-color
@@ -1478,6 +1486,8 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             background-color: $progress-bar-buffer !important
         .mat-progress-bar-fill::after
             background-color: $progress-bar-fill !important
+        .datalake-history-query-dialog mat-dialog-container
+            background-color: $badge-color !important
 
 @each $name, $font-color, $little-font-color, $disabled-color, $secondary-disabled-color, $tertiary-disabled-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $quaternary-background-color, $body-background-color, $dashboard-background-color, $dashboard-secondary-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $scrollbar-background-color, $dashboard-panel-background-color, $dashboard-panel-chart-background-color, $dashboard-border-color, $schedule-map-background-color, $schedule-map-info-border, $disabled-combo-box-color, $disabled-underline, $dashboard-info-background-color, $dashboard-info-secondary-background-color, $dashboard-info-font-color, $dashboard-drill-down-border-color, $dashboard-threshold-background-color, $dashboard-title-font-color, $map-panelinfo-background-color, $dashboard-info-border-color, $dashboard-form-font-color, $admin-menu-background, $admin-menu-input-underline, $admin-tree-active-color, $admin-button-color, $admin-secondary-background-color, $admin-table-background-color, $admin-table-hover-color, $admin-secondary-button-color, $login-font-color, $intro-logout-icon-color, $control-variables-border-color, $control-variable-hover-background-color, $control-variable-hover-icon-color, $control-variables-input-underline, $control-variables-dropdown-hover-font-color, $control-variables-dropdown-hover-background-hover-color, $control-variables-selected-background-selected-color, $dashboard-input-underline-color, $membership-primary-background-color, $membership-secondary-background-color, $customer-edit-header-color, $customer-table-header-background-color, $customer-table-row-background-color, $customer-table-row-border-color, $customer-table-row-hover-background-color, $customer-table-row-selected-background-color, $customer-table-row-border-selected-color, $customer-input-color, $customer-input-underline-color, $customer-disabled-underline, $dashboard-control-panel-background-color, $menu-open-background-color, $menu-open-active-background-color, $menu-first-line, $menu-second-line, $menu-background-color, $menu-child-background-color, $datalake-search-input-border-color, $progress-bar-buffer, $progress-bar-fill in $color-scheme
     @include theme($name, $font-color, $little-font-color, $disabled-color, $secondary-disabled-color, $tertiary-disabled-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $quaternary-background-color, $body-background-color, $dashboard-background-color, $dashboard-secondary-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $scrollbar-background-color, $dashboard-panel-background-color, $dashboard-panel-chart-background-color, $dashboard-border-color, $schedule-map-background-color, $schedule-map-info-border, $disabled-combo-box-color, $disabled-underline, $dashboard-info-background-color, $dashboard-info-secondary-background-color, $dashboard-info-font-color, $dashboard-drill-down-border-color, $dashboard-threshold-background-color, $dashboard-title-font-color, $map-panelinfo-background-color, $dashboard-info-border-color, $dashboard-form-font-color, $admin-menu-background, $admin-menu-input-underline, $admin-tree-active-color, $admin-button-color, $admin-secondary-background-color, $admin-table-background-color, $admin-table-hover-color, $admin-secondary-button-color, $login-font-color, $intro-logout-icon-color, $control-variables-border-color, $control-variable-hover-background-color, $control-variable-hover-icon-color, $control-variables-input-underline, $control-variables-dropdown-hover-font-color, $control-variables-dropdown-hover-background-hover-color, $control-variables-selected-background-selected-color, $dashboard-input-underline-color, $membership-primary-background-color, $membership-secondary-background-color, $customer-edit-header-color, $customer-table-header-background-color, $customer-table-row-background-color, $customer-table-row-border-color, $customer-table-row-hover-background-color, $customer-table-row-selected-background-color, $customer-table-row-border-selected-color, $customer-input-color, $customer-input-underline-color, $customer-disabled-underline, $dashboard-control-panel-background-color, $menu-open-background-color, $menu-open-active-background-color,$menu-first-line, $menu-second-line, $menu-background-color, $menu-child-background-color, $datalake-search-input-border-color, $progress-bar-buffer, $progress-bar-fill)
@@ -6776,6 +6786,8 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     .datalake-table-body, .datalake-query-table-body
         background-color: #ffffff
         overflow: auto
+        tr.example-detail-row.mat-row
+            height: 0 !important          
         tr.mat-header-row, tr.mat-row
             height: 35px !important
         th.mat-header-cell
@@ -7767,23 +7779,145 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                 font-weight: lighter
                 text-align: left !important
                 padding: 10px 0px 10px 16px !important
-            // td.datalake-partition-column15.mat-cell
-            //     width: calc(15% - 10px) !important
-            //     max-width: calc(15% - 10px) !important
             td.datalake-partition-column40.mat-cell
-                // width: calc(40% - 10px) !important
-                // max-width: calc(40% - 10px) !important
                 .command
                     white-space: nowrap
                     overflow: hidden
                     text-overflow: ellipsis
                     max-width: 500px
-            // td.datalake-partition-column8.mat-cell
-            //     width: calc(8% - 10px) !important
-            //     max-width: calc(8% - 10px) !important
-            // td.datalake-partition-column7.mat-cell
-            //     width: calc(7% - 10px) !important
-            //     max-width: calc(7% - 10px) !important
             td.datalake-partition-btn-actions.mat-cell
-                // width: calc(2% - 26px) !important
                 padding: 10px 16px 10px 16px !important
+
+.datalake-history-query-dialog
+    max-height: 550px
+    mat-dialog-container
+        padding: 0 !important
+    .datalake-query-history-header
+        display: flex
+        padding: 10px 20px
+        background-color: #333
+        color: white
+        .datalake-query-history-title
+            font-size: 16px
+            font-weight: 550
+            width: 200px
+            display: flex
+            align-items: center
+            flex-direction: row
+            .datalake-query-history-icon
+                vertical-align: middle
+            .datalake-query-history-title-label
+                padding-left: 15px
+
+    .datalake-query-history-body
+        height: 100%
+        width: 100%
+
+
+.datalake-query-history-table
+    width: 840px
+    tr.mat-header-row
+        th.mat-header-cell
+            font-weight: 500
+            padding: 0px !important
+            padding-left: 20px !important
+            .mat-sort-header-arrow
+                color: inherit !important
+            .mat-sort-header-container
+                width: 100px
+                max-width: 100px
+                padding: 0px                
+                .mat-sort-header-button
+                    margin: 0px
+    tr.mat-row
+        td.mat-cell
+            padding: 0px !important
+            padding-left: 20px !important
+            text-align: left
+            .command
+                white-space: nowrap
+                overflow: hidden
+                text-overflow: ellipsis
+                width: 100px
+                max-width: 100px
+                text-align: left
+
+.example-element-detail
+    height: auto
+    min-height: 30px
+    padding: 5px 0
+    max-height: 200px
+    display: flex
+    align-items: center
+    overflow-y: auto
+
+.datalake-save-query-dialog
+    .mat-dialog-container
+        padding: 0px
+    .datalake-save-query
+        padding: 0px
+        background-color: #242424
+        overflow: hidden
+        .datalake-save-query-header
+            display: flex
+            height: 56px
+            flex-direction: row
+            align-items: center
+            justify-content: space-between
+            background-color: #333
+            padding-left: 20px
+            color: white
+            .datalake-save-query-title
+                font-weight: 550
+                font-size: 140%
+                align-items: center
+                display: flex
+        .datalake-save-query-body
+            display: flex
+            flex-direction: column
+            padding: 0px 20px
+            .datalake-save-query-one-column
+                width: 100%
+                flex-direction: row
+                display: flex
+                justify-content: space-between            
+            .datalake-partition-cron
+                textarea
+                    height: 200px
+                    background-color: #1a1a1a
+                    margin-top: 10px
+                .mat-form-field-wrapper
+                    .mat-form-field-underline
+                        display: none !important
+                .datalake-partition-input
+                    text-align: center
+                    border-radius: 5px
+                    width: calc(100% - 20px)
+                    font-size: 115%
+                    border: 0
+                    outline-width: 0
+                    margin-top: 10px
+                    padding: 10px
+            .datalake-save-query-two-column
+                width: 47%
+                flex-direction: row
+                display: flex                
+            .datalake-partition-cron
+                .mat-form-field-wrapper
+                    .mat-form-field-underline
+                        display: none !important
+        .datalake-save-query-btn 
+            button
+                width: 30%
+            margin: 20px
+            justify-content: space-between
+            display: flex
+
+.example-element-description
+    display: flex
+    max-height: 80px
+    width: 800px
+    white-space: pre-wrap
+    overflow-y: auto
+    text-align: left
+    padding: 0px 5px

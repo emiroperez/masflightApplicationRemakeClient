@@ -7,6 +7,7 @@ import { Cookie } from '../api/cookie';
 import * as am4core from "@amcharts/amcharts4/core";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import { Themes } from './Themes';
+import { DatalakeQueryTab } from '../datalake-query-engine/datalake-query-tab';
 
 am4core.useTheme(am4themes_animated);
 
@@ -60,8 +61,8 @@ export class Globals {
   currentAirline: any;
   template : boolean = false;
   isFullscreen: boolean = false;
-  // baseUrl = "http://pulse.globaleagle.com:8885";
-  baseUrl = "http://localhost:8885";
+  baseUrl = "http://pulse.globaleagle.com:8885";
+  // baseUrl = "http://localhost:8885";
   // baseUrl = "";
   // baseUrl2 = "http://pulse.globaleagle.com:8885";
   // baseUrl2 = "http://localhost:8886";
@@ -97,9 +98,12 @@ export class Globals {
   showCategoryArguments: boolean = false;
   showTabs: boolean = false;
   showDashboard: boolean = false;
+  queryTabs: DatalakeQueryTab[] = [ new DatalakeQueryTab () ];
   
   @HostBinding('class')
   theme: string = "light-theme";
+  // selectedSchema: DatalakeQueryTab[] = [ new DatalakeQueryTab () ];
+  selectedSchema: any;
 
   constructor (public overlayContainer: OverlayContainer, private cookie: Cookie)
   {

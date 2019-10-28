@@ -126,7 +126,8 @@
         </span>
         <mat-radio-group [(ngModel)]="selectedDelimiter" (ngModelChange)="toggleCustomDelimiter()" 
         class="datalake-file-type-picker datalake-create-table-input-body-delimiter">
-          <mat-radio-button class="cancels-checkbox datalake-file-type-radio" *ngFor="let delimiter of delimiters" [value]="delimiter">{{delimiter}}</mat-radio-button>
+          <mat-radio-button class="cancels-checkbox datalake-file-type-radio" 
+          *ngFor="let delimiter of delimiters" [value]="delimiter">{{delimiter}}</mat-radio-button>
         </mat-radio-group>
         <mat-form-field class="datalake-custom-delimiter" [formGroup]="tableConfigurationFormGroup">
           <input matInput placeholder="Custom Delimiter" autocomplete="off" formControlName="customDelimiter">

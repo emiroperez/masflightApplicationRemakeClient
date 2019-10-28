@@ -8,6 +8,8 @@ import { DatalakeService } from '../services/datalake.service';
 import { DatalakeQuerySchema } from '../datalake-query-engine/datalake-query-schema';
 import { DatalakeQueryTab } from './datalake-query-tab';
 import { MessageComponent } from '../message/message.component';
+import { DatalakeQueryEngineHistoryComponent } from '../datalake-query-engine-history/datalake-query-engine-history.component';
+import { DatalakeQueryEngineSaveComponent } from '../datalake-query-engine-save/datalake-query-engine-save.component';
 
 const minPanelWidth = 25;
 
@@ -21,7 +23,7 @@ export class DatalakeQueryEngineComponent implements OnInit {
   resizePanels: boolean = false;
   selectedIndex: number = 0;
 
-  queryTabs: DatalakeQueryTab[] = [ new DatalakeQueryTab () ];
+  // queryTabs: DatalakeQueryTab[] = [ new DatalakeQueryTab () ];
   querySchemas: DatalakeQuerySchema[] = [];
   queryLoading: boolean;
 
@@ -48,6 +50,7 @@ export class DatalakeQueryEngineComponent implements OnInit {
 
   ngOnInit()
   {
+    this.globals.selectedSchema = this.globals.queryTabs[0];
     this.globals.isLoading = true;
     this.service.getDatalakeSchemas (this, this.setSchemas, this.setSchemasError);
   }
@@ -102,17 +105,17 @@ export class DatalakeQueryEngineComponent implements OnInit {
 
   addQueryTab(): void
   {
-    this.queryTabs.push (new DatalakeQueryTab ());
-    this.selectedIndex = this.queryTabs.length - 1;
+    this.globals.queryTabs.push (new DatalakeQueryTab ());
+    this.selectedIndex = this.globals.queryTabs.length - 1;
     this.changeDetectorRef.detectChanges (); // detect changes, so we can refresh the query editor on the new tab
     this.queryEditors.last.codeMirror.refresh ();
   }
 
   closeQueryTab(event, index: number): void
   {
-    this.queryTabs.splice (index, 1);
+    this.globals.queryTabs.splice (index, 1);
 
-    if (this.selectedIndex == this.queryTabs.length)
+    if (this.selectedIndex == this.globals.queryTabs.length)
       this.selectedIndex--;
 
     event.preventDefault ();
@@ -122,6 +125,7 @@ export class DatalakeQueryEngineComponent implements OnInit {
   onIndexChange(event: any): void
   {
     this.selectedIndex = event;
+    this.globals.selectedSchema = this.globals.queryTabs[this.selectedIndex];
   }
 
   onDragClick(event): void
@@ -285,4 +289,79 @@ export class DatalakeQueryEngineComponent implements OnInit {
   {
     return document.getElementById ("query-engine-result-header").clientWidth;
   }
+ 
+  
+  saveQuery(query: DatalakeQueryTab): void
+  {
+    // let request = {
+    //   raw: query.input,
+    //   schema: query.schema,
+    //   queryName: "Query 1"
+    // }
+    // this.service.datalakeHistoryQuery (this,request, this.queryHistoryResults, this.queryHistoryError);
+    if (!query.schema)
+    {
+      this.dialog.open (MessageComponent, {
+        data: { title: "Error", message: "You must select a schema before save the query." }
+      });
+
+      return;
+    }else if (!query.input)
+    {
+      this.dialog.open (MessageComponent, {
+        data: { title: "Error", message: "You must type query before to save." }
+      });
+
+      return;
+    }else{
+    let dialogRef = this.dialog.open (DatalakeQueryEngineSaveComponent, {
+      width: '600px',
+      panelClass: 'datalake-save-query-dialog',
+      data: query
+    });
+  }
+
+  }
+
+
+  
+  queryHistory(): void
+  {
+    let request = {
+      Raw: "",
+      Schema: "",
+      QueryName: ""
+    }
+    this.service.datalakeHistoryQuery (this,request, this.queryHistoryResults, this.queryHistoryError);
+  }
+
+  queryHistoryResults(_this, result): void
+  {
+    if(result.OK){
+      _this.dialog.open (MessageComponent, {
+        data: { title: "Result: ", message: result.OK }
+      });   
+    }else{
+      let dialogRef = _this.dialog.open (DatalakeQueryEngineHistoryComponent, {
+        width: '840px',
+        panelClass: 'datalake-history-query-dialog',
+        data: result
+      });
+
+      dialogRef.afterClosed().subscribe((data: any) => {
+        if (data) {
+          _this.runQuery(_this.globals.selectedSchema)
+        }
+      });
+
+    }
+  }
+
+  queryHistoryError(_this, result): void
+  {
+    console.log (result);
+    _this.queryLoading = false;
+    _this.startQueryTime = null;
+  }
+
 }

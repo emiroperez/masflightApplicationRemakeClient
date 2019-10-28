@@ -1927,19 +1927,19 @@
 .dark-theme .datalake-create-table-dialog .datalake-create-table-tab .datalake-create-table-step .mat-step-header .mat-step-label.mat-step-label-active .datalake-create-table-step-subtitle, .dark-theme .datalake-create-table-dialog .datalake-create-table-tab .datalake-create-table-step .mat-step-label-selected .datalake-create-table-step-subtitle, .dark-theme .datalake-create-table-dialog .datalake-data-upload-tab .datalake-create-table-step .mat-step-header .mat-step-label.mat-step-label-active .datalake-create-table-step-subtitle, .dark-theme .datalake-create-table-dialog .datalake-data-upload-tab .datalake-create-table-step .mat-step-label-selected .datalake-create-table-step-subtitle {
   color: #ffffff !important;
 }
-.dark-theme .datalake-create-table-step-content, .dark-theme .datalake-alarm-comboboxes, .dark-theme .datalake-partition-comboboxes {
+.dark-theme .datalake-create-table-step-content, .dark-theme .datalake-alarm-comboboxes, .dark-theme .datalake-partition-comboboxes, .dark-theme .datalake-save-query-one-column, .dark-theme .datalake-save-query-two-column {
   color: #ffffff;
 }
-.dark-theme .datalake-create-table-step-content .mat-form-field-appearance-legacy.mat-form-field-disabled .mat-form-field-underline, .dark-theme .datalake-alarm-comboboxes .mat-form-field-appearance-legacy.mat-form-field-disabled .mat-form-field-underline, .dark-theme .datalake-partition-comboboxes .mat-form-field-appearance-legacy.mat-form-field-disabled .mat-form-field-underline {
+.dark-theme .datalake-create-table-step-content .mat-form-field-appearance-legacy.mat-form-field-disabled .mat-form-field-underline, .dark-theme .datalake-alarm-comboboxes .mat-form-field-appearance-legacy.mat-form-field-disabled .mat-form-field-underline, .dark-theme .datalake-partition-comboboxes .mat-form-field-appearance-legacy.mat-form-field-disabled .mat-form-field-underline, .dark-theme .datalake-save-query-one-column .mat-form-field-appearance-legacy.mat-form-field-disabled .mat-form-field-underline, .dark-theme .datalake-save-query-two-column .mat-form-field-appearance-legacy.mat-form-field-disabled .mat-form-field-underline {
   background-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0, #595959 50%, transparent 0);
 }
-.dark-theme .datalake-create-table-step-content .mat-select.mat-select-disabled .mat-select-arrow-wrapper .mat-select-arrow, .dark-theme .datalake-create-table-step-content .mat-form-field-disabled .mat-form-field-label, .dark-theme .datalake-alarm-comboboxes .mat-select.mat-select-disabled .mat-select-arrow-wrapper .mat-select-arrow, .dark-theme .datalake-alarm-comboboxes .mat-form-field-disabled .mat-form-field-label, .dark-theme .datalake-partition-comboboxes .mat-select.mat-select-disabled .mat-select-arrow-wrapper .mat-select-arrow, .dark-theme .datalake-partition-comboboxes .mat-form-field-disabled .mat-form-field-label {
+.dark-theme .datalake-create-table-step-content .mat-select.mat-select-disabled .mat-select-arrow-wrapper .mat-select-arrow, .dark-theme .datalake-create-table-step-content .mat-form-field-disabled .mat-form-field-label, .dark-theme .datalake-alarm-comboboxes .mat-select.mat-select-disabled .mat-select-arrow-wrapper .mat-select-arrow, .dark-theme .datalake-alarm-comboboxes .mat-form-field-disabled .mat-form-field-label, .dark-theme .datalake-partition-comboboxes .mat-select.mat-select-disabled .mat-select-arrow-wrapper .mat-select-arrow, .dark-theme .datalake-partition-comboboxes .mat-form-field-disabled .mat-form-field-label, .dark-theme .datalake-save-query-one-column .mat-select.mat-select-disabled .mat-select-arrow-wrapper .mat-select-arrow, .dark-theme .datalake-save-query-one-column .mat-form-field-disabled .mat-form-field-label, .dark-theme .datalake-save-query-two-column .mat-select.mat-select-disabled .mat-select-arrow-wrapper .mat-select-arrow, .dark-theme .datalake-save-query-two-column .mat-form-field-disabled .mat-form-field-label {
   color: #595959 !important;
 }
-.dark-theme .datalake-create-table-step-content .mat-error, .dark-theme .datalake-alarm-comboboxes .mat-error, .dark-theme .datalake-partition-comboboxes .mat-error {
+.dark-theme .datalake-create-table-step-content .mat-error, .dark-theme .datalake-alarm-comboboxes .mat-error, .dark-theme .datalake-partition-comboboxes .mat-error, .dark-theme .datalake-save-query-one-column .mat-error, .dark-theme .datalake-save-query-two-column .mat-error {
   margin-left: 0 !important;
 }
-.dark-theme .datalake-create-table-step-content .datalake-partition-input, .dark-theme .datalake-alarm-comboboxes .datalake-partition-input, .dark-theme .datalake-partition-comboboxes .datalake-partition-input {
+.dark-theme .datalake-create-table-step-content .datalake-partition-input, .dark-theme .datalake-alarm-comboboxes .datalake-partition-input, .dark-theme .datalake-partition-comboboxes .datalake-partition-input, .dark-theme .datalake-save-query-one-column .datalake-partition-input, .dark-theme .datalake-save-query-two-column .datalake-partition-input {
   background-color: #1a1a1a;
 }
 .dark-theme .ng-star-inserted .mat-step-icon {
@@ -2103,6 +2103,13 @@
 .dark-theme .datalake-partition-paginator .mat-paginator-outer-container .mat-paginator-container .mat-icon-button[disabled] .mat-button-wrapper {
   color: #ffffff;
 }
+.dark-theme .datalake-query-history-paginator .mat-paginator-outer-container .mat-paginator-container {
+  color: black;
+  background-color: #F2F2F2;
+}
+.dark-theme .datalake-query-history-paginator .mat-paginator-outer-container .mat-paginator-container .mat-icon-button[disabled] .mat-button-wrapper {
+  color: black;
+}
 .dark-theme .datalake-edit-alarm-dialog mat-dialog-container, .dark-theme .datalake-partition-dialog mat-dialog-container {
   color: #ffffff;
 }
@@ -2119,6 +2126,9 @@
 }
 .dark-theme .mat-progress-bar-fill::after {
   background-color: #01abec !important;
+}
+.dark-theme .datalake-history-query-dialog mat-dialog-container {
+  background-color: #ffffff !important;
 }
 
 .light-theme {
@@ -4034,19 +4044,19 @@
 .light-theme .datalake-create-table-dialog .datalake-create-table-tab .datalake-create-table-step .mat-step-header .mat-step-label.mat-step-label-active .datalake-create-table-step-subtitle, .light-theme .datalake-create-table-dialog .datalake-create-table-tab .datalake-create-table-step .mat-step-label-selected .datalake-create-table-step-subtitle, .light-theme .datalake-create-table-dialog .datalake-data-upload-tab .datalake-create-table-step .mat-step-header .mat-step-label.mat-step-label-active .datalake-create-table-step-subtitle, .light-theme .datalake-create-table-dialog .datalake-data-upload-tab .datalake-create-table-step .mat-step-label-selected .datalake-create-table-step-subtitle {
   color: #4d4d4d !important;
 }
-.light-theme .datalake-create-table-step-content, .light-theme .datalake-alarm-comboboxes, .light-theme .datalake-partition-comboboxes {
+.light-theme .datalake-create-table-step-content, .light-theme .datalake-alarm-comboboxes, .light-theme .datalake-partition-comboboxes, .light-theme .datalake-save-query-one-column, .light-theme .datalake-save-query-two-column {
   color: #4d4d4d;
 }
-.light-theme .datalake-create-table-step-content .mat-form-field-appearance-legacy.mat-form-field-disabled .mat-form-field-underline, .light-theme .datalake-alarm-comboboxes .mat-form-field-appearance-legacy.mat-form-field-disabled .mat-form-field-underline, .light-theme .datalake-partition-comboboxes .mat-form-field-appearance-legacy.mat-form-field-disabled .mat-form-field-underline {
+.light-theme .datalake-create-table-step-content .mat-form-field-appearance-legacy.mat-form-field-disabled .mat-form-field-underline, .light-theme .datalake-alarm-comboboxes .mat-form-field-appearance-legacy.mat-form-field-disabled .mat-form-field-underline, .light-theme .datalake-partition-comboboxes .mat-form-field-appearance-legacy.mat-form-field-disabled .mat-form-field-underline, .light-theme .datalake-save-query-one-column .mat-form-field-appearance-legacy.mat-form-field-disabled .mat-form-field-underline, .light-theme .datalake-save-query-two-column .mat-form-field-appearance-legacy.mat-form-field-disabled .mat-form-field-underline {
   background-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0, #9e9e9e 50%, transparent 0);
 }
-.light-theme .datalake-create-table-step-content .mat-select.mat-select-disabled .mat-select-arrow-wrapper .mat-select-arrow, .light-theme .datalake-create-table-step-content .mat-form-field-disabled .mat-form-field-label, .light-theme .datalake-alarm-comboboxes .mat-select.mat-select-disabled .mat-select-arrow-wrapper .mat-select-arrow, .light-theme .datalake-alarm-comboboxes .mat-form-field-disabled .mat-form-field-label, .light-theme .datalake-partition-comboboxes .mat-select.mat-select-disabled .mat-select-arrow-wrapper .mat-select-arrow, .light-theme .datalake-partition-comboboxes .mat-form-field-disabled .mat-form-field-label {
+.light-theme .datalake-create-table-step-content .mat-select.mat-select-disabled .mat-select-arrow-wrapper .mat-select-arrow, .light-theme .datalake-create-table-step-content .mat-form-field-disabled .mat-form-field-label, .light-theme .datalake-alarm-comboboxes .mat-select.mat-select-disabled .mat-select-arrow-wrapper .mat-select-arrow, .light-theme .datalake-alarm-comboboxes .mat-form-field-disabled .mat-form-field-label, .light-theme .datalake-partition-comboboxes .mat-select.mat-select-disabled .mat-select-arrow-wrapper .mat-select-arrow, .light-theme .datalake-partition-comboboxes .mat-form-field-disabled .mat-form-field-label, .light-theme .datalake-save-query-one-column .mat-select.mat-select-disabled .mat-select-arrow-wrapper .mat-select-arrow, .light-theme .datalake-save-query-one-column .mat-form-field-disabled .mat-form-field-label, .light-theme .datalake-save-query-two-column .mat-select.mat-select-disabled .mat-select-arrow-wrapper .mat-select-arrow, .light-theme .datalake-save-query-two-column .mat-form-field-disabled .mat-form-field-label {
   color: #9e9e9e !important;
 }
-.light-theme .datalake-create-table-step-content .mat-error, .light-theme .datalake-alarm-comboboxes .mat-error, .light-theme .datalake-partition-comboboxes .mat-error {
+.light-theme .datalake-create-table-step-content .mat-error, .light-theme .datalake-alarm-comboboxes .mat-error, .light-theme .datalake-partition-comboboxes .mat-error, .light-theme .datalake-save-query-one-column .mat-error, .light-theme .datalake-save-query-two-column .mat-error {
   margin-left: 0 !important;
 }
-.light-theme .datalake-create-table-step-content .datalake-partition-input, .light-theme .datalake-alarm-comboboxes .datalake-partition-input, .light-theme .datalake-partition-comboboxes .datalake-partition-input {
+.light-theme .datalake-create-table-step-content .datalake-partition-input, .light-theme .datalake-alarm-comboboxes .datalake-partition-input, .light-theme .datalake-partition-comboboxes .datalake-partition-input, .light-theme .datalake-save-query-one-column .datalake-partition-input, .light-theme .datalake-save-query-two-column .datalake-partition-input {
   background-color: #f0f0f0;
 }
 .light-theme .ng-star-inserted .mat-step-icon {
@@ -4210,6 +4220,13 @@
 .light-theme .datalake-partition-paginator .mat-paginator-outer-container .mat-paginator-container .mat-icon-button[disabled] .mat-button-wrapper {
   color: #4d4d4d;
 }
+.light-theme .datalake-query-history-paginator .mat-paginator-outer-container .mat-paginator-container {
+  color: black;
+  background-color: #F2F2F2;
+}
+.light-theme .datalake-query-history-paginator .mat-paginator-outer-container .mat-paginator-container .mat-icon-button[disabled] .mat-button-wrapper {
+  color: black;
+}
 .light-theme .datalake-edit-alarm-dialog mat-dialog-container, .light-theme .datalake-partition-dialog mat-dialog-container {
   color: #4d4d4d;
 }
@@ -4226,6 +4243,9 @@
 }
 .light-theme .mat-progress-bar-fill::after {
   background-color: #eb5c1b !important;
+}
+.light-theme .datalake-history-query-dialog mat-dialog-container {
+  background-color: #ededed !important;
 }
 
 body {
@@ -10462,6 +10482,9 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
   background-color: #ffffff;
   overflow: auto;
 }
+.datalake-table .datalake-table-body tr.example-detail-row.mat-row, .datalake-table .datalake-query-table-body tr.example-detail-row.mat-row {
+  height: 0 !important;
+}
 .datalake-table .datalake-table-body tr.mat-header-row, .datalake-table .datalake-table-body tr.mat-row, .datalake-table .datalake-query-table-body tr.mat-header-row, .datalake-table .datalake-query-table-body tr.mat-row {
   height: 35px !important;
 }
@@ -11706,6 +11729,160 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
 }
 .datalake-partition-table-scroll .datalake-partition-table tr.mat-row td.datalake-partition-btn-actions.mat-cell, .datalake-partition-table-scroll-right .datalake-partition-table tr.mat-row td.datalake-partition-btn-actions.mat-cell {
   padding: 10px 16px 10px 16px !important;
+}
+
+.datalake-history-query-dialog {
+  max-height: 550px;
+}
+.datalake-history-query-dialog mat-dialog-container {
+  padding: 0 !important;
+}
+.datalake-history-query-dialog .datalake-query-history-header {
+  display: flex;
+  padding: 10px 20px;
+  background-color: #333;
+  color: white;
+}
+.datalake-history-query-dialog .datalake-query-history-header .datalake-query-history-title {
+  font-size: 16px;
+  font-weight: 550;
+  width: 200px;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+.datalake-history-query-dialog .datalake-query-history-header .datalake-query-history-title .datalake-query-history-icon {
+  vertical-align: middle;
+}
+.datalake-history-query-dialog .datalake-query-history-header .datalake-query-history-title .datalake-query-history-title-label {
+  padding-left: 15px;
+}
+.datalake-history-query-dialog .datalake-query-history-body {
+  height: 100%;
+  width: 100%;
+}
+
+.datalake-query-history-table {
+  width: 840px;
+}
+.datalake-query-history-table tr.mat-header-row th.mat-header-cell {
+  font-weight: 500;
+  padding: 0px !important;
+  padding-left: 20px !important;
+}
+.datalake-query-history-table tr.mat-header-row th.mat-header-cell .mat-sort-header-arrow {
+  color: inherit !important;
+}
+.datalake-query-history-table tr.mat-header-row th.mat-header-cell .mat-sort-header-container {
+  width: 100px;
+  max-width: 100px;
+  padding: 0px;
+}
+.datalake-query-history-table tr.mat-header-row th.mat-header-cell .mat-sort-header-container .mat-sort-header-button {
+  margin: 0px;
+}
+.datalake-query-history-table tr.mat-row td.mat-cell {
+  padding: 0px !important;
+  padding-left: 20px !important;
+  text-align: left;
+}
+.datalake-query-history-table tr.mat-row td.mat-cell .command {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100px;
+  max-width: 100px;
+  text-align: left;
+}
+
+.example-element-detail {
+  height: auto;
+  min-height: 30px;
+  padding: 5px 0;
+  max-height: 200px;
+  display: flex;
+  align-items: center;
+  overflow-y: auto;
+}
+
+.datalake-save-query-dialog .mat-dialog-container {
+  padding: 0px;
+}
+.datalake-save-query-dialog .datalake-save-query {
+  padding: 0px;
+  background-color: #242424;
+  overflow: hidden;
+}
+.datalake-save-query-dialog .datalake-save-query .datalake-save-query-header {
+  display: flex;
+  height: 56px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #333;
+  padding-left: 20px;
+  color: white;
+}
+.datalake-save-query-dialog .datalake-save-query .datalake-save-query-header .datalake-save-query-title {
+  font-weight: 550;
+  font-size: 140%;
+  align-items: center;
+  display: flex;
+}
+.datalake-save-query-dialog .datalake-save-query .datalake-save-query-body {
+  display: flex;
+  flex-direction: column;
+  padding: 0px 20px;
+}
+.datalake-save-query-dialog .datalake-save-query .datalake-save-query-body .datalake-save-query-one-column {
+  width: 100%;
+  flex-direction: row;
+  display: flex;
+  justify-content: space-between;
+}
+.datalake-save-query-dialog .datalake-save-query .datalake-save-query-body .datalake-partition-cron textarea {
+  height: 200px;
+  background-color: #1a1a1a;
+  margin-top: 10px;
+}
+.datalake-save-query-dialog .datalake-save-query .datalake-save-query-body .datalake-partition-cron .mat-form-field-wrapper .mat-form-field-underline {
+  display: none !important;
+}
+.datalake-save-query-dialog .datalake-save-query .datalake-save-query-body .datalake-partition-cron .datalake-partition-input {
+  text-align: center;
+  border-radius: 5px;
+  width: calc(100% - 20px);
+  font-size: 115%;
+  border: 0;
+  outline-width: 0;
+  margin-top: 10px;
+  padding: 10px;
+}
+.datalake-save-query-dialog .datalake-save-query .datalake-save-query-body .datalake-save-query-two-column {
+  width: 47%;
+  flex-direction: row;
+  display: flex;
+}
+.datalake-save-query-dialog .datalake-save-query .datalake-save-query-body .datalake-partition-cron .mat-form-field-wrapper .mat-form-field-underline {
+  display: none !important;
+}
+.datalake-save-query-dialog .datalake-save-query .datalake-save-query-btn {
+  margin: 20px;
+  justify-content: space-between;
+  display: flex;
+}
+.datalake-save-query-dialog .datalake-save-query .datalake-save-query-btn button {
+  width: 30%;
+}
+
+.example-element-description {
+  display: flex;
+  max-height: 80px;
+  width: 800px;
+  white-space: pre-wrap;
+  overflow-y: auto;
+  text-align: left;
+  padding: 0px 5px;
 }
 
 /*# sourceMappingURL=styles.css.map */

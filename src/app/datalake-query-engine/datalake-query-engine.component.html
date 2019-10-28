@@ -10,10 +10,10 @@
   <div [style.width.%]="rightPanelWidth" class="datalake-query-engine-right-panel">
     <div class="datalake-query-container">
       <mat-tab-group [selectedIndex]="selectedIndex" (selectedIndexChange)="onIndexChange($event)">
-        <mat-tab *ngFor="let query of queryTabs; let i = index">
+        <mat-tab *ngFor="let query of globals.queryTabs; let i = index">
           <ng-template mat-tab-label>
             Query {{i + 1}}
-            <div *ngIf="queryTabs.length > 1" class="close-icon-container" (click)="closeQueryTab($event, i)">
+            <div *ngIf="globals.queryTabs.length > 1" class="close-icon-container" (click)="closeQueryTab($event, i)">
               <mat-icon class="close-icon">close</mat-icon> 
             </div>
           </ng-template>
@@ -21,10 +21,10 @@
             <div class="datalake-query-tab-header">
               <span class="datalake-query-editor-label">Query Editor</span>
               <div class="datalake-query-editor-buttons">
-                <button mat-button class="datalake-query-editor-button" matTooltip="Save Query">
+                <button mat-button class="datalake-query-editor-button" matTooltip="Save Query" (click)="saveQuery(query)">
                   <img class="datalake-save-query-image" src="../../assets/images/datalake-save-query.png"/>
                 </button>
-                <button mat-button class="datalake-query-editor-button" matTooltip="Query History">
+                <button mat-button class="datalake-query-editor-button" matTooltip="Query History" (click)="queryHistory()">
                   <img class="datalake-query-history-image" src="../../assets/images/datalake-query-history.png"/>
                 </button>
                 <button mat-button class="datalake-query-editor-button" matTooltip="Run Query" (click)="runQuery(query)">

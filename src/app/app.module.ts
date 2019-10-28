@@ -207,6 +207,8 @@ import { DatalakePartitionsComponent } from './datalake-partitions/datalake-part
 import { DatalakeExecutionPartitionComponent } from './datalake-execution-partition/datalake-execution-partition.component';
 import { DatalakeExecutionPartitionViewDetailComponent } from './datalake-execution-partition-view-detail/datalake-execution-partition-view-detail.component';
 import { DatalakePartitionExecuteDialogComponent } from './datalake-partition-execute-dialog/datalake-partition-execute-dialog.component';
+import { DatalakeQueryEngineHistoryComponent } from './datalake-query-engine-history/datalake-query-engine-history.component';
+import { DatalakeQueryEngineSaveComponent } from './datalake-query-engine-save/datalake-query-engine-save.component';
 
 @NgModule({
   declarations: [
@@ -389,7 +391,8 @@ import { DatalakePartitionExecuteDialogComponent } from './datalake-partition-ex
     DatalakePartitionsComponent,
     DatalakeExecutionPartitionComponent,
     DatalakeExecutionPartitionViewDetailComponent,
-    DatalakePartitionExecuteDialogComponent
+    DatalakeQueryEngineHistoryComponent,
+    DatalakeQueryEngineSaveComponent
   ],
   imports: [
     BrowserModule,
@@ -476,7 +479,9 @@ import { DatalakePartitionExecuteDialogComponent } from './datalake-partition-ex
     DatalakeTablePreviewComponent,
     DatalakeCreateTableComponent,
     DatalakeAlarmEditDialogComponent,
-    DatalakePartitionExecuteDialogComponent
+    DatalakePartitionExecuteDialogComponent,
+    DatalakeQueryEngineHistoryComponent,
+    DatalakeQueryEngineSaveComponent
   ]
 })
 export class AppModule { }

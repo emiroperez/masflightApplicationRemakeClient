@@ -1,7 +1,9 @@
 <div class="datalake-explorer-container">
     <div *ngIf="currentScreen != 2" class="datalake-explorer-header">
         <mat-form-field *ngIf="!currentScreen" class="datalake-explorer-search-input-container">
-            <input matInput class="datalake-explorer-search-input" type="text" placeholder="Search" autocomplete="off" [(ngModel)]="filter" (ngModelChange)="filterTableCards()">
+            <input matInput class="datalake-explorer-search-input" type="text" placeholder="Search" 
+            autocomplete="off" [(ngModel)]="filter" 
+            (ngModelChange)="filterTableCards()">
             <mat-icon class="search-icon" aria-label="search">search</mat-icon>
         </mat-form-field>
         <div class="datalake-explorer-header-title">

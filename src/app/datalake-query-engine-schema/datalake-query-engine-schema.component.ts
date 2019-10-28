@@ -84,4 +84,8 @@ export class DatalakeQueryEngineSchemaComponent {
     _this.isLoading = false;
     _this.querySchema.open = false;
   }
+
+  copyText(val1:string, val: string){
+      this.globals.selectedSchema.input += " " +val1+"."+val ;
+    }
 }

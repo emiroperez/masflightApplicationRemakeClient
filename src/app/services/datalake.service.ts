@@ -176,4 +176,18 @@ export class DatalakeService {
         let url = this.host + "/getDatalakeLoadPartition?request="+JSON.stringify(request);
         this.http.get(_this, url, handlerSuccess, handlerError, null);
     }
+    
+    datalakeHistoryQuery(_this, request, handlerSuccess, handlerError): void
+    {
+        let url = this.host + "/getDatalakeSavedQuerys";
+        request.Token = this.globals.token;
+        this.http.post(_this, url, request, handlerSuccess, handlerError);
+    }
+
+    datalakeSaveQuery(_this, request, handlerSuccess, handlerError): void
+    {
+        let url = this.host + "/DatalakeSaveQuery";
+        request.Token = this.globals.token;
+        this.http.post(_this, url, request, handlerSuccess, handlerError);
+    }
 }
