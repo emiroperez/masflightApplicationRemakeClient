@@ -5,6 +5,8 @@
             <app-admin-menu-memberships [menu]="option" [index]="i"></app-admin-menu-memberships>
         </div>
     </div>
-    <button mat-button class="flat-button membership-cancel-button" (click)="onNoClick()">Cancel</button>
-    <button mat-button class="flat-button" (click)="getItemsSelected(data.menuSelected)" [mat-dialog-close]="data.auxOptions">OK</button>
+    <div [style.margin-top.px]="10">
+        <button mat-button class="flat-button membership-cancel-button" (click)="onNoClick()">Cancel</button>
+        <button mat-button class="flat-button" (click)="getItemsSelected(data.menuSelected)" [mat-dialog-close]="data.auxOptions">OK</button>
+    </div>
 </div>
