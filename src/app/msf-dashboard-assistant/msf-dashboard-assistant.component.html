@@ -249,10 +249,22 @@
       </span>
     </span>
     <span *ngIf="stepper.selectedIndex == 1">
-      <span class="msf-dashboard-assistant-chart-type-label">Chart Type Selection</span>
+      <div class="msf-dashboard-assistant-chart-type-label msf-dashboard-assistant-chart-mode">
+        <span>Chart Type Selection</span>
+        <!--
+        <mat-radio-group [(ngModel)]="chartMode" (ngModelChange)="checkChartTypeSelection()">
+          <mat-radio-button class="cancels-checkbox msf-dashboard-assistant-mode" [value]="'basic'">
+            Basic
+          </mat-radio-button>
+          <mat-radio-button class="cancels-checkbox msf-dashboard-assistant-mode" [value]="'advanced'">
+            Advanced
+          </mat-radio-button>
+        </mat-radio-group>
+        -->
+      </div>
       <div class="msf-dashboard-assistant-chart-picker">
         <ng-container *ngFor="let chartType of chartTypes">
-          <div [ngClass]="{ 'msf-dashboard-assistant-chart-item' : selectedChartType !== chartType, 'msf-dashboard-assistant-chart-item-selected' : selectedChartType === chartType }" (click)="selectChartType(chartType)">
+          <div *ngIf="checkChartMode(chartType)" [ngClass]="{ 'msf-dashboard-assistant-chart-item' : selectedChartType !== chartType, 'msf-dashboard-assistant-chart-item-selected' : selectedChartType === chartType }" (click)="selectChartType(chartType)">
             <span class="chart-item-image">
               <img src="../../assets/images/{{globals.theme}}-{{chartType.image}}"/>
             </span>
