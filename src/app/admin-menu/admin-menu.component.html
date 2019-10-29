@@ -42,10 +42,10 @@
                                     </button>
                                 </div>
                             </div>
-                            <div #scrollContainer class="invisible-scrollbar admin-menu-tree-body">
+                            <div #scrollContainer class="menu-tree-scrollbar admin-menu-tree-body">
                                 <mat-tree class="admin-menu-tree" [dataSource]="dataSource" [treeControl]="treeControl" cdkDropList (cdkDropListDropped)="drop($event)">
                                     <mat-tree-node [ngClass]="{'msf-show' : node.show,'msf-show' : node.show==null,'msf-hide': node.show==false}" matTreeNodePadding *matTreeNodeDef="let node" cdkDrag cdkDragLockAxis="y" [cdkDragData]="node" (cdkDragStarted)="dragStart()"
-                                        (cdkDragReleased)="dragEnd()" (click)=" getOptionSelected(node)" cdkDragBoundary=".invisible-scrollbar" vsDragScroll [vsDragScrollContainer]="scrollContainer">
+                                        (cdkDragReleased)="dragEnd()" (click)=" getOptionSelected(node)" cdkDragBoundary=".menu-tree-scrollbar" vsDragScroll [vsDragScrollContainer]="scrollContainer">
                                         <div [ngClass]="{'is-active': node.isActive,'is-inactive': !node.isActive }" class="{{globals.theme}} menu-node">
                                             <button mat-icon-button disabled></button>
                                             <input type="text" name="optionname" autocomplete="off" matInput class="input-option-tree" [(ngModel)]="node.label" (ngModelChange)="setChange(node)">
@@ -54,7 +54,7 @@
                                         <mat-divider></mat-divider>
                                     </mat-tree-node>
                                     <mat-tree-node [ngClass]="{'msf-show' : node.show,'msf-show' : node.show==null,'msf-hide': node.show==false}" matTreeNodePadding *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding cdkDrag cdkDragLockAxis="y" [cdkDragData]="node"
-                                        (cdkDragStarted)="dragStart()" (click)=" getOptionSelected(node)" cdkDragBoundary=".invisible-scrollbar" vsDragScroll [vsDragScrollContainer]="scrollContainer">
+                                        (cdkDragStarted)="dragStart()" (click)=" getOptionSelected(node)" cdkDragBoundary=".menu-tree-scrollbar" vsDragScroll [vsDragScrollContainer]="scrollContainer">
                                         <div [ngClass]="{'is-active': node.isActive,'is-inactive': !node.isActive }" class="{{globals.theme}} menu-node">
                                             <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.label">
                                                 <mat-icon class="mat-icon-rtl-mirror">
