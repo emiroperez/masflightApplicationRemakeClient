@@ -52,7 +52,9 @@ export class MsfDashboardAssistantComponent {
   aggregationValueSelected: any = null;
   selectingAggregationValue: boolean = false;
   function: any;
+  intervalType: string = "ncile";
   ncile: number = 5;
+  intValue: number;
   lastColumn: any;
 
   currentOption: any;
@@ -913,5 +915,13 @@ export class MsfDashboardAssistantComponent {
       return false;
 
     return true;
+  }
+
+  calcMargin(): number
+  {
+    if (this.chartMode === "advanced")
+      return 143;
+
+    return 0;
   }
 }

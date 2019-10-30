@@ -278,7 +278,20 @@
       </div>
     </span>
     <span *ngIf="stepper.selectedIndex == 2">
-      <span class="msf-dashboard-assistant-chart-type-label">Select Distributon Chart</span>
+      <div style="display: flex">
+        <span class="msf-dashboard-assistant-chart-type-label">Select Distributon Chart</span>
+        <div class="msf-dashboard-assistant-interval-mode" *ngIf="chartMode === 'advanced'">
+          <span class="msf-dashboard-assistant-chart-type-label">Interval Type</span>
+          <mat-radio-group [(ngModel)]="intervalType">
+            <mat-radio-button class="cancels-checkbox" [value]="'ncile'">
+              By Ncile
+            </mat-radio-button>
+            <mat-radio-button class="cancels-checkbox" [value]="'value'">
+              By Value
+            </mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </div>
       <div class="msf-dashboard-assistant-chart-config-buttons">
         <div class="msf-dashboard-assistant-chart-config-button" [ngClass]="{ 'msf-dashboard-assistant-chart-config-analysis-button': !analysisSelected, 'msf-dashboard-assistant-chart-config-analysis-button-selected': (analysisSelected || (!analysisSelecetd && selectingAnalysis)) }" (click)="selectAnalysis()">
           Analysis by
@@ -304,24 +317,22 @@
           <div class="msf-dashboard-assistant-chart-config-button" [ngClass]="{ 'msf-dashboard-assistant-chart-config-aggregation-button': !aggregationValueSelected, 'msf-dashboard-assistant-chart-config-aggregation-button-selected': (aggregationValueSelected || (!aggregationValueSelected && selectingAggregationValue)) }" (click)="selectAggregationValue()">
             Aggregation Value
           </div>
-          <div class="assistant-function-combobox">
+          <div class="assistant-function-combobox" *ngIf="intervalType === 'ncile'">
             <mat-form-field>
-              <mat-select placeholder="By Ncile" [(ngModel)]="ncile">
+              <mat-select placeholder="Ncile" [(ngModel)]="ncile">
                 <mat-option *ngFor="let value of data.nciles" [value]="value">
                   {{value}}%
                 </mat-option>
               </mat-select>
             </mat-form-field>
           </div>
-          <!--
-          <div class="assistant-function-combobox">
+          <div class="assistant-function-combobox" *ngIf="intervalType === 'value'">
             <mat-form-field>
-              <input matInput placeholder="By Value" autocomplete="off">
+              <input matInput placeholder="Value" autocomplete="off" [(ngModel)]="intValue">
             </mat-form-field>
           </div>
-          -->
         </ng-container>
-        <div class="msf-dashboard-assistant-chart-preview-button" *ngIf="isChartConfigured()" (mouseover)="chartPreviewHover = true" (mouseout)="chartPreviewHover = false" (click)="previewChart()">
+        <div class="msf-dashboard-assistant-chart-preview-button" *ngIf="isChartConfigured()" (mouseover)="chartPreviewHover = true" (mouseout)="chartPreviewHover = false" (click)="previewChart()" [style.margin-left.px]="calcMargin()">
           <img *ngIf="!chartPreviewHover" class="msf-dashboard-assistant-chart-preview-pic" src="../../assets/images/{{globals.theme}}-chart-preview.png"/>
           <img *ngIf="chartPreviewHover" class="msf-dashboard-assistant-chart-preview-pic" src="../../assets/images/dark-theme-chart-preview.png"/>
           Chart Preview
