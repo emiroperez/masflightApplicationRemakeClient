@@ -1,0 +1,63 @@
+<!--Header-->
+<div *ngIf="(mobileQuery.matches || ResponsiveQuery.matches) ||(!globals.isFullscreen && !mobileQuery.matches || (globals.isFullscreen && globals.currentOption !== 'dashboard' && !mobileQuery.matches && !ResponsiveQuery.matches))"
+    class="msf-menu-header">
+    <div 
+    [ngClass]="mobileQuery.matches ? 'msf-menu-header-image-container is-mobile'
+                                     :(ResponsiveQuery.matches ? 'msf-menu-header-image-container is-MQueryresponsive':'msf-menu-header-image-container')">
+         <img (click)="goHome()" style="cursor:pointer;" src="../../assets/images/{{globals.theme}}-pulse_welc.png"
+            class="msf-menu-logo">
+        <img src="../../assets/images/{{globals.theme}}-adjust.png" class="msf-menu-ajustes-icon">
+    </div>
+    <div [style.display]="getMenuVisibility()" class="msf-menu-container">
+        <app-datalake-menu></app-datalake-menu>
+        <!-- <app-datalake-menu (setOption)="setOption($event)"></app-datalake-menu> -->
+    </div>
+    <div [ngClass]="mobileQuery.matches ? 'msf-header-icons is-mobile'
+                                     :(ResponsiveQuery.matches ? 'msf-header-icons is-MQueryresponsive':'msf-header-icons')">
+        <!-- <div class="msf-header-icons2"></div> -->
+        <img *ngIf="!mobileQuery.matches" src="../../assets/images/datalake-logo.png" class="msf-header-icons2 datalake-logo">
+
+        <div *ngIf="globals.currentUser" style="padding: 0px; margin: 0px;
+        border: 0px; margin-left: 5px;
+        padding-right: 10px;
+        /*width: calc(70% - 35px);*/
+        display: flex;
+        justify-content: center;">
+            <button mat-button style="height: 60px;     padding: 0px;
+            margin: 0px;
+            border: 0px; font-size: 12px;" [matMenuTriggerFor]="userMenu">
+                {{globals.currentUser}}
+                <mat-icon style="font-size: 20px; width: 20px;height: 20px;">person</mat-icon>
+            </button>
+        </div>
+        <mat-menu #userMenu="matMenu">
+            <button mat-menu-item (click)="logOut()">
+                <mat-icon class="mat-menu-item-icon">exit_to_app</mat-icon>
+                <span>Log out</span>
+            </button>
+        </mat-menu>
+
+        <button mat-icon-button [matMenuTriggerFor]="adminMenu" style="padding: 0px;
+            margin: 0px;
+            border: 0px;
+            width: 30px;">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+
+        <mat-menu #adminMenu="matMenu">
+            <button mat-menu-item routerLink="/admin-menu">
+                <mat-icon class="mat-menu-item-icon">settings</mat-icon>
+                <span>Admin Menu</span>
+            </button>
+        </mat-menu>
+    </div>
+</div>
+<!-- Body -->
+<div [style.height.px]="bodyHeight" [class.is-mobile]="mobileQuery.matches">
+    <!-- <app-datalake-explorer *ngIf="currentOption === 2 || currentOption === 3" [currentOption]="currentOption" (setCurrentOptionSelected)="setCcurrentOptionSelected($event)"></app-datalake-explorer> -->
+    <app-datalake-explorer *ngIf="globals.optionDatalakeSelected === 2 || globals.optionDatalakeSelected === 3" 
+    (setCurrentOptionSelected)="setCurrentOptionSelected($event)"></app-datalake-explorer>
+    <app-datalake-alarms *ngIf="globals.optionDatalakeSelected === 5" [currentOption]="currentOption"></app-datalake-alarms>
+    <app-datalake-partitions *ngIf="globals.optionDatalakeSelected === 6"></app-datalake-partitions>
+    <app-datalake-execution-partition *ngIf="globals.optionDatalakeSelected === 7" ></app-datalake-execution-partition>
+</div>

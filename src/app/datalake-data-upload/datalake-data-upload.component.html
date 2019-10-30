@@ -1,0 +1,215 @@
+<div class="datalake-data-upload-tab">
+  <div class="datalake-create-table-step">
+    <mat-vertical-stepper [linear]="true" #stepper>
+      <ng-template matStepperIcon="edit">
+        <mat-icon>check</mat-icon>
+      </ng-template>
+      <ng-template matStepperIcon="number" let-index="index" let-active="active">
+        <span *ngIf="active">
+          <mat-icon>edit</mat-icon>
+        </span>
+        <span *ngIf="!active">{{index + 1}}</span>
+      </ng-template>
+      <mat-step>
+        <ng-template matStepLabel>
+          <div class="datalake-create-table-step-container">
+            <span class="datalake-create-table-step-label">STEP 1</span>
+            <span class="datalake-create-table-step-subtitle">TABLE CONFIGURATION</span>
+          </div>
+        </ng-template>
+      </mat-step>
+      <mat-step *ngIf="selectedFileType === 'CSV'">
+        <ng-template matStepLabel>
+          <div class="datalake-create-table-step-container">
+            <span class="datalake-create-table-step-label">STEP 2</span>
+            <span class="datalake-create-table-step-subtitle">UPLOAD FILE</span>
+          </div>
+        </ng-template>
+      </mat-step>
+      <mat-step *ngIf="selectedFileType === 'CSV'">
+        <ng-template matStepLabel>
+          <div class="datalake-create-table-step-container">
+            <span class="datalake-create-table-step-label">STEP 3</span>
+            <span class="datalake-create-table-step-subtitle">DATA PREVIEW</span>
+          </div>
+        </ng-template>
+      </mat-step>
+      <!-- <mat-step [stepControl]="partitionManagementFormGroup">
+        <ng-template matStepLabel>
+          <div class="datalake-create-table-step-container">
+              <span class="datalake-create-table-step-label" *ngIf="selectedFileType === 'CSV'">STEP 3</span>
+              <span class="datalake-create-table-step-label" *ngIf="selectedFileType === 'PARQUET'">STEP 2</span>
+            <span class="datalake-create-table-step-subtitle">PARTITION MANAGEMENT</span>
+          </div>
+        </ng-template>
+      </mat-step> -->
+    </mat-vertical-stepper>
+  </div>
+  <div class="datalake-create-table-step-content">
+    <ng-container *ngIf="!stepper.selectedIndex">
+      <div class="datalake-create-table-content-header">
+        <div class="datalake-create-table-step-title">
+          <span class="datalake-create-table-step-title-label">STEP 1 - TABLE CONFIGURATION</span>
+          <span class="datalake-create-table-step-description">Select the schema and table to load the data and file type. You must specify the path in the bucket</span>
+        </div>
+        <div class="datalake-create-table-step-buttons">
+          <button class="datalake-create-table-step-button flat-button" mat-button
+            (click)="goForward(tableConfigurationFormGroup, stepper)">
+            NEXT
+            <mat-icon>arrow_forward_ios</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="datalake-create-table-input-body align-items-center">
+        <mat-form-field class="datalake-create-table-input-body-left" 
+        [formGroup]="tableConfigurationFormGroup">
+          <mat-select placeholder="Schema" autocomplete="off" formControlName="schema"
+            (selectionChange)="schemaChanged()" required [disabled]="Datavalue.schemaName">
+            <mat-option *ngFor="let schema of schemas" [value]="schema">
+              {{schema.schemaName}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="tableConfigurationFormGroup.get('schema')?.invalid">You must select a schema</mat-error>
+        </mat-form-field>
+
+        <mat-form-field [formGroup]="tableConfigurationFormGroup"
+         class="datalake-create-table-input datalake-create-table-input-body-right">
+          <mat-select placeholder="Bucket" autocomplete="off" formControlName="bucket" required>
+            <mat-option *ngFor="let bucket of currentBuckets" [value]="bucket">
+              {{bucket.bucketName}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="tableConfigurationFormGroup.get('bucket')?.invalid">You must select a bucket</mat-error>
+        </mat-form-field>
+      </div>
+      
+      <div class="datalake-create-table-input-body align-items-center">
+        <mat-form-field class="datalake-create-table-input-body-left"
+        [formGroup]="tableConfigurationFormGroup">
+          <mat-select placeholder="Table Name" autocomplete="off" 
+          formControlName="table"  required>
+          <ngx-mat-select-search [formControl]="tableFilterCtrl" placeholderLabel="Search" 
+          noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+            <mat-option *ngFor="let table of filteredTables | async" [value]="table">
+              {{table}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="tableConfigurationFormGroup.get('table')?.invalid">You must select a table</mat-error>
+        </mat-form-field>
+      
+      <!-- <mat-form-field class="datalake-upload-data-table-location"  -->
+      <mat-form-field class="datalake-create-table-input datalake-create-table-input-body-right"
+      [formGroup]="tableConfigurationFormGroup">
+        <input matInput placeholder="File Location" autocomplete="off" formControlName="tableLocation" required>
+        <mat-error *ngIf="tableConfigurationFormGroup.get('tableLocation')?.invalid">You must specify table location</mat-error>
+      </mat-form-field>
+    </div>
+
+      <div class="datalake-create-table-input-body align-items-center">
+          <span class="datalake-create-table-input-body-span">
+            File Type *:
+          </span>
+        <mat-radio-group [(ngModel)]="selectedFileType" (ngModelChange)="ResetStepper(stepper, uploader)" class="datalake-file-type-picker">
+          <mat-radio-button class="cancels-checkbox datalake-file-type-radio" 
+          *ngFor="let fileType of fileTypes" [value]="fileType">{{fileType}}</mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="stepper.selectedIndex == 1 && selectedFileType === 'CSV'">
+      <div class="datalake-create-table-content-header">
+        <div class="datalake-create-table-step-title">
+          <span class="datalake-create-table-step-title-label">STEP 2 - UPLOAD FILE</span>
+          <span class="datalake-create-table-step-description">Select filename</span>
+        </div>
+        <div class="datalake-create-table-step-buttons">
+          <button class="datalake-create-table-step-button flat-button" mat-button
+            (click)="goForward(tableConfigurationFormGroup, stepper)">
+            NEXT
+            <mat-icon>arrow_forward_ios</mat-icon>
+          </button>
+          <button class="datalake-create-table-step-button flat-button" mat-button (click)="goBack(stepper)">
+            <mat-icon>arrow_back_ios</mat-icon>
+            BACK
+          </button>
+        </div>
+      </div>
+      <div class="datalake-create-table-input-body align-items-center" *ngIf="selectedFileType === 'CSV'">
+        <span class="datalake-upload-table-input-body-left">
+          Delimiter *:
+        </span>
+        <div class="datalake-upload-table-input-body-right">
+        <mat-radio-group [(ngModel)]="selectedDelimiter" (ngModelChange)="toggleCustomDelimiter()" 
+        class="datalake-file-type-picker-upload">
+        <mat-radio-button class="cancels-checkbox datalake-file-type-radio" *ngFor="let delimiter of delimiters" [value]="delimiter">{{delimiter}}</mat-radio-button>
+        </mat-radio-group>
+        <mat-form-field class="datalake-custom-delimiter-upload datalake-upload-data-custom-delimiter" [formGroup]="tableConfigurationFormGroup">
+          <input matInput placeholder="Custom Delimiter" autocomplete="off" formControlName="customDelimiter">
+        </mat-form-field>
+      </div>
+      </div>
+      <div class="datalake-create-table-input-file-picker-upload">
+        <span class="datalake-file-picker-label datalake-upload-table-input-body-left">Filename *:</span>
+        <div class="datalake-upload-table-input-body-right">
+        <mat-form-field class="datalake-file-input" [formGroup]="tableConfigurationFormGroup">
+          <input matInput formControlName="fileName" required>
+        </mat-form-field>
+        <input hidden type="file" accept="{{getAcceptedFileFormat()}}" #uploader (change)="uploadFile($event)">
+        <!-- <input hidden type="file" accept="{{getAcceptedFileFormat()}}" #uploader> -->
+        <button class="datalake-browse-file-button flat-button" mat-button (click)="browseFile(uploader)">
+          Browse
+        </button>
+      </div>
+      </div>
+      <div class="datalake-max-filesize-label">
+        Maximum upload size: 100 MB<span *ngIf="targetFileSize">, Uploaded file size: {{targetFileSize}}</span>
+      </div>
+      <mat-progress-bar *ngIf="fileLoading" class="datalake-create-table-progress" mode="indeterminate"></mat-progress-bar>
+    </ng-container>
+
+    <ng-container *ngIf="(stepper.selectedIndex == 2 && selectedFileType === 'CSV')">
+      <div class="datalake-create-table-content-header">
+        <div class="datalake-create-table-step-title">
+          <span class="datalake-create-table-step-title-label">STEP 3 - DATA PREVIEW</span>
+          <span class="datalake-create-table-step-description">View data contained in the file.</span>
+        </div>
+        <div class="datalake-create-table-step-buttons">
+          <button (click)="dataUpload()" class="datalake-create-table-step-button flat-button" mat-button>
+            FINISH
+            <mat-icon>flag</mat-icon>
+          </button>
+          <button class="datalake-create-table-step-button flat-button" mat-button (click)="goBack(stepper)">
+            <mat-icon>arrow_back_ios</mat-icon>
+            BACK
+          </button>
+        </div>
+      </div>
+      <div class="datalake-create-table-input-body datalake-data-preview-body">
+        <div class="datalake-data-preview">
+          <div class="datalake-raw-data">
+            <span>Raw View</span>
+            <div class="datalake-raw-data-preview">
+              <div class="datalake-raw-data-item" *ngFor="let column of rawData">
+                <span *ngFor="let row of column; let rowIndex = index">
+                  {{row}}<span *ngIf="rowIndex != column.length - 1">{{delimiterCharacter}}</span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="datalake-table-data">
+            <span>Table View</span>
+            <div class="datalake-table-data-preview">
+              <div class="datalake-table-data-display">
+                <div class="datalake-table-data-item" *ngFor="let column of rawData">
+                  <div class="datalake-table-data-subitem" *ngFor="let row of column">
+                    {{row}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>

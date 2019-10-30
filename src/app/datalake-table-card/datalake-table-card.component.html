@@ -1,0 +1,76 @@
+<div class="datalake-table-card-container">
+  <div class="datalake-table-card-header">
+    <div class="datalake-table-card-title-container">
+      <span class="datalake-table-card-title">{{values.longName}}</span>
+      <span class="datalake-table-card-subtitle">({{values.tableName}})</span>
+    </div>
+    <div class="datalake-table-card-update-container">
+      <span class="datalake-table-card-update-title">Last Update</span>
+      <span>{{values.lastUpdate}}</span>
+    </div>
+  </div>
+  <mat-tab-group [selectedIndex]="selectedTabIndex" headerPosition="below">
+    <mat-tab label="Information">
+      <div class="datalake-table-card-info">
+        <div class="datalake-table-card-info-header">
+          <div class="datalake-table-card-info-title-left-container">
+            <span class="datalake-table-card-info-title">Records</span>
+            <span *ngIf="values.nRows != 'N/A'">{{values.nRows | number:'.0-2':'en'}}</span>
+            <span *ngIf="values.nRows === 'N/A'">N/A</span>
+          </div>
+          <div class="datalake-table-card-info-title-right-container">
+            <span class="datalake-table-card-info-title">Size</span>
+            <span *ngIf="values.mb === 'N/A'" >N/A</span>
+            <span *ngIf="values.mb != 'N/A'">{{values.mb | number:'.0-2':'en'}} MB</span>
+          </div>
+        </div>
+        <div class="datalake-table-card-info-header">
+          <div class="datalake-table-card-info-title-left-container">
+            <span class="datalake-table-card-info-title">Schema</span>
+            <span>{{values.schemaName}}</span>
+          </div>
+          <div class="datalake-table-card-info-title-right-container">
+            <span class="datalake-table-card-info-title">Table Description</span>
+            <span>{{values.descr}}</span>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label="Table Stats">
+      <div class="datalake-table-stats-container">
+        <ngx-gauge [size]="115" [thick]="10" [type]="gaugeType" 
+        [value]="gaugeLastHourValue" 
+        [label]="gaugeLastHourIngestionText" 
+        [append]="gaugeAppendText" 
+        [foregroundColor]="getForegroundColorFromValue(gaugeLastHourValue)" 
+        [backgroundColor]="gaugeBackgroundColor"></ngx-gauge>
+        <span class="datalake-table-stats-right-gauge"><ngx-gauge [size]="115" [thick]="10" 
+          [type]="gaugeType" 
+          [value]="gaugeLastDayValue" 
+          [label]="gaugeLastDayIngestionText" 
+          [append]="gaugeAppendText" 
+          [foregroundColor]="getForegroundColorFromValue(gaugeLastDayValue)" 
+          [backgroundColor]="gaugeBackgroundColor"></ngx-gauge></span>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+  <div class="datalake-table-card-buttons">
+    <button mat-button class="datalake-table-card-button" (click)="showColumns()" matTooltip="Show Columns">
+      <img class="datalake-table-card-button-image" src="../../assets/images/datalake-column.png"/>
+    </button>
+    <button mat-button class="datalake-table-card-button" (click)="previewTable()" matTooltip="Preview Table">
+      <img class="datalake-table-card-button-image" src="../../assets/images/datalake-table.png"/>
+    </button>
+    <!--
+    <button mat-button class="datalake-table-card-button" matTooltip="Query Engine">
+      <img class="datalake-table-card-button-image datalake-table-card-button-query-image" src="../../assets/images/datalake-query.png"/>
+    </button>
+    -->
+    <button mat-button class="datalake-table-card-button" (click)="UploadData()" matTooltip="Upload">
+      <img class="datalake-table-card-button-image datalake-table-card-button-query-complete-image" src="../../assets/images/datalake-query-complete.png"/>
+    </button>
+    <button mat-button class="datalake-table-card-button" matTooltip="Set Alarm">
+      <img class="datalake-table-card-button-image" (click)=setAlarm();  src="../../assets/images/datalake-alarm.png"/>
+    </button>
+  </div>
+</div>

@@ -196,6 +196,27 @@ import { MsfDashboardAssistantComponent } from './msf-dashboard-assistant/msf-da
 import { MsfChartPreviewComponent } from './msf-chart-preview/msf-chart-preview.component';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { MsfSelectDataFromComponent } from './msf-select-data-from/msf-select-data-from.component';
+import { DatalakeComponent } from './datalake/datalake.component';
+import { DatalakeExplorerComponent } from './datalake-explorer/datalake-explorer.component';
+import { DatalakeTableCardComponent } from './datalake-table-card/datalake-table-card.component';
+import { NgxGaugeModule } from 'ngx-gauge';
+import { DatalakeTableShowColumnsComponent } from './datalake-table-show-columns/datalake-table-show-columns.component';
+import { DatalakeTablePreviewComponent } from './datalake-table-preview/datalake-table-preview.component';
+import { DatalakeQueryEngineComponent } from './datalake-query-engine/datalake-query-engine.component';
+import { DatalakeQueryEngineSchemaComponent } from './datalake-query-engine-schema/datalake-query-engine-schema.component';
+import { CodemirrorModule } from '@ctrl/ngx-codemirror';
+import { DatalakeCreateTableComponent } from './datalake-create-table/datalake-create-table.component';
+import { DatalakeCreateNewStructureComponent } from './datalake-create-new-structure/datalake-create-new-structure.component';
+import { DatalakeDataUploadComponent } from './datalake-data-upload/datalake-data-upload.component';
+import { DatalakeMenuComponent } from './datalake-menu/datalake-menu.component';
+import { DatalakeAlarmsComponent } from './datalake-alarms/datalake-alarms.component';
+import { DatalakeAlarmEditDialogComponent } from './datalake-alarm-edit-dialog/datalake-alarm-edit-dialog.component';
+import { DatalakePartitionsComponent } from './datalake-partitions/datalake-partitions.component';
+import { DatalakeExecutionPartitionComponent } from './datalake-execution-partition/datalake-execution-partition.component';
+import { DatalakeExecutionPartitionViewDetailComponent } from './datalake-execution-partition-view-detail/datalake-execution-partition-view-detail.component';
+import { DatalakePartitionExecuteDialogComponent } from './datalake-partition-execute-dialog/datalake-partition-execute-dialog.component';
+import { DatalakeQueryEngineHistoryComponent } from './datalake-query-engine-history/datalake-query-engine-history.component';
+import { DatalakeQueryEngineSaveComponent } from './datalake-query-engine-save/datalake-query-engine-save.component';
 
 @NgModule({
   declarations: [
@@ -367,7 +388,26 @@ import { MsfSelectDataFromComponent } from './msf-select-data-from/msf-select-da
     AdminShareGroupsArgumentsComponent,
     MsfDashboardAssistantComponent,
     MsfChartPreviewComponent,
-    MsfSelectDataFromComponent
+    MsfSelectDataFromComponent,
+    DatalakeComponent,
+    DatalakeExplorerComponent,
+    DatalakeTableCardComponent,
+    DatalakeTableShowColumnsComponent,
+    DatalakeTablePreviewComponent,
+    DatalakeQueryEngineComponent,
+    DatalakeQueryEngineSchemaComponent,
+    DatalakeCreateTableComponent,
+    DatalakeCreateNewStructureComponent,
+    DatalakeDataUploadComponent,
+    DatalakeMenuComponent,
+    DatalakeAlarmsComponent,
+    DatalakePartitionExecuteDialogComponent,
+    DatalakeAlarmEditDialogComponent,
+    DatalakePartitionsComponent,
+    DatalakeExecutionPartitionComponent,
+    DatalakeExecutionPartitionViewDetailComponent,
+    DatalakeQueryEngineHistoryComponent,
+    DatalakeQueryEngineSaveComponent
   ],
   imports: [
     BrowserModule,
@@ -405,7 +445,9 @@ import { MsfSelectDataFromComponent } from './msf-select-data-from/msf-select-da
     DigitOnlyModule,
     MatTooltipModule,
     ExportAsModule,
-    AngularEditorModule
+    AngularEditorModule,
+    NgxGaugeModule,
+    CodemirrorModule
   ],
   providers: [
     AuthService,
@@ -416,7 +458,6 @@ import { MsfSelectDataFromComponent } from './msf-select-data-from/msf-select-da
     MsfComponentComponent,
     Globals,
     MsfAirportComponent,
-    MsfContainerComponent,
     MsfContainerComponent,
     DateFormatPipe,
     DateTimeFormatPipe,
@@ -453,7 +494,14 @@ import { MsfSelectDataFromComponent } from './msf-select-data-from/msf-select-da
     MsfDynamicTableAliasComponent,
     MsfDashboardAssistantComponent,
     MsfChartPreviewComponent,
-    MsfSelectDataFromComponent
+    MsfSelectDataFromComponent,
+    DatalakeTableShowColumnsComponent,
+    DatalakeTablePreviewComponent,
+    DatalakeCreateTableComponent,
+    DatalakeAlarmEditDialogComponent,
+    DatalakePartitionExecuteDialogComponent,
+    DatalakeQueryEngineHistoryComponent,
+    DatalakeQueryEngineSaveComponent
   ]
 })
 export class AppModule { }

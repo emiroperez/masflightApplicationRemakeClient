@@ -7,6 +7,7 @@ import { Cookie } from '../api/cookie';
 import * as am4core from "@amcharts/amcharts4/core";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import { Themes } from './Themes';
+import { DatalakeQueryTab } from '../datalake-query-engine/datalake-query-tab';
 
 am4core.useTheme(am4themes_animated);
 
@@ -87,6 +88,7 @@ export class Globals {
   appLoading: boolean;
 
   admin: boolean = false;
+  token = "Gtk5zI0GAeMbFBRgU191vZmJt8YLUGytwuf";
 
   //mobile
   showIntroWelcome : boolean = true;
@@ -94,9 +96,13 @@ export class Globals {
   showCategoryArguments: boolean = false;
   showTabs: boolean = false;
   showDashboard: boolean = false;
+  queryTabs: DatalakeQueryTab[] = [ new DatalakeQueryTab () ];
   
   @HostBinding('class')
   theme: string = "light-theme";
+  // selectedSchema: DatalakeQueryTab[] = [ new DatalakeQueryTab () ];
+  selectedSchema: any;
+  optionDatalakeSelected: number = 2;
 
   constructor (public overlayContainer: OverlayContainer, private cookie: Cookie)
   {

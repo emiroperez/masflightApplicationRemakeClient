@@ -1,0 +1,23 @@
+<div class="datalake-schema-header">
+  <span class="datalake-schema-title">{{querySchema.schemaName}}</span>
+  <div class="datalake-schema-filter-input-container">
+    <ng-container *ngIf="querySchema.open && !isLoading">
+      <mat-icon class="search-icon" aria-label="search">search</mat-icon>
+      <input matInput class="datalake-schema-filter-input" type="text" autocomplete="off" [(ngModel)]="querySchema.filter" (ngModelChange)="filterSchema()">
+    </ng-container>
+  </div>
+  <div class="datalake-schema-tree-expander" (click)="toggleSchema()">
+    <mat-icon *ngIf="!querySchema.open" aria-label="Expand Schema">keyboard_arrow_down</mat-icon>
+    <mat-icon *ngIf="querySchema.open" aria-label="Collapse Schema">keyboard_arrow_up</mat-icon>
+  </div>
+</div>
+<div class="datalake-schema-body" *ngIf="querySchema.open && isLoading">
+  <div class="datalake-schema-loading">
+    <mat-progress-bar class="datalake-query-engine-table-progress" mode="indeterminate"></mat-progress-bar>
+  </div>
+</div>
+<div class="datalake-schema-body" *ngIf="querySchema.open && !isLoading">
+  <div class="datalake-schema-item" *ngFor="let tableName of querySchema.filteredTables | async"  (dblclick)=copyText(querySchema.schemaName,tableName)>
+    {{tableName}}
+  </div>
+</div>

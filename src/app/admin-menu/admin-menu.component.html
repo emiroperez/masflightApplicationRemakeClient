@@ -1,6 +1,7 @@
 <div (click)="hideIconPicker()" class="admin-menu-background" [style.height.px]="getInnerHeight()">
     <div class="msf-register-header">
-        <button mat-icon-button routerLink="/application">
+        <!-- <button mat-icon-button routerLink="/application"> -->
+            <button mat-icon-button routerLink= {{globals.currentApplication.url}} >
             <mat-icon>arrow_back</mat-icon>
         </button>
         <img class="msf-medium-logo" src="../../assets/images/{{globals.theme}}-logo.png">

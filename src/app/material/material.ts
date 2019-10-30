@@ -10,7 +10,8 @@ import { MatToolbarModule,
    MatListModule,
    MatNativeDateModule,
    MatSortModule,
-   MatSlideToggleModule } from '@angular/material';
+   MatSlideToggleModule, 
+   MatProgressBarModule} from '@angular/material';
 import {MatDialogModule} from "@angular/material";
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatStepperModule} from '@angular/material/stepper';
@@ -48,7 +49,8 @@ import {MatBadgeModule} from '@angular/material';
     MatBadgeModule,
     MatProgressSpinnerModule,
     MatExpansionModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatProgressBarModule
   ],
   exports: [
     MatInputModule,
@@ -73,7 +75,8 @@ import {MatBadgeModule} from '@angular/material';
     MatBadgeModule,
     MatProgressSpinnerModule,
     MatExpansionModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatProgressBarModule
   ]
 
 })

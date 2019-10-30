@@ -1,0 +1,302 @@
+<div class="datalake-create-table-tab">
+  <div class="datalake-create-table-step">
+    <mat-vertical-stepper [linear]="true" #stepper>
+      <ng-template matStepperIcon="edit">
+        <mat-icon>check</mat-icon>
+      </ng-template>
+      <ng-template matStepperIcon="number" let-index="index" let-active="active">
+        <span *ngIf="active">
+          <mat-icon>edit</mat-icon>
+        </span>
+        <span *ngIf="!active">{{index + 1}}</span>
+      </ng-template>
+      <mat-step>
+        <ng-template matStepLabel>
+          <div class="datalake-create-table-step-container">
+            <span class="datalake-create-table-step-label">STEP 1</span>
+            <span class="datalake-create-table-step-subtitle">TABLE CONFIGURATION</span>
+          </div>
+        </ng-template>
+      </mat-step>
+      <mat-step *ngIf="selectedFileType === 'CSV'">
+        <ng-template matStepLabel>
+          <div class="datalake-create-table-step-container">
+            <span class="datalake-create-table-step-label">STEP 2</span>
+            <span class="datalake-create-table-step-subtitle">DATA PREVIEW</span>
+          </div>
+        </ng-template>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>
+          <div class="datalake-create-table-step-container">
+            <span class="datalake-create-table-step-label" *ngIf="selectedFileType === 'CSV'">STEP 3</span>
+            <span class="datalake-create-table-step-label" *ngIf="selectedFileType === 'PARQUET'">STEP 2</span>
+            <span class="datalake-create-table-step-subtitle">PARTITIONS</span>
+          </div>
+        </ng-template>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>
+          <div class="datalake-create-table-step-container">
+            <span class="datalake-create-table-step-label" *ngIf="selectedFileType === 'CSV'">STEP 4</span>
+            <span class="datalake-create-table-step-label" *ngIf="selectedFileType === 'PARQUET'">STEP 3</span>
+            <span class="datalake-create-table-step-subtitle">DISCOVERY RESULT</span>
+          </div>
+        </ng-template>
+      </mat-step>
+    </mat-vertical-stepper>
+  </div>
+  <div class="datalake-create-table-step-content">
+    <ng-container *ngIf="!stepper.selectedIndex">
+      <div class="datalake-create-table-content-header">
+        <div class="datalake-create-table-step-title">
+          <span class="datalake-create-table-step-title-label">STEP 1 - TABLE CONFIGURATION</span>
+          <span class="datalake-create-table-step-description">Basic information of the table</span>
+        </div>
+        <div class="datalake-create-table-step-buttons">
+          <button class="datalake-create-table-step-button flat-button" mat-button
+            (click)="goForward(stepper)">
+            NEXT
+            <mat-icon>arrow_forward_ios</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="datalake-create-table-input-body align-items-center">
+        <mat-form-field class="datalake-create-table-input-body-left" 
+        [formGroup]="tableConfigurationFormGroup">
+          <input matInput placeholder="Table Name" autocomplete="off" formControlName="tableName" (change)="tableNameChange()" required>
+          <mat-error *ngIf="tableConfigurationFormGroup.get('tableName')?.invalid">You must specify table name</mat-error>
+        </mat-form-field>
+        <mat-form-field [formGroup]="tableConfigurationFormGroup" 
+        class="datalake-create-table-input datalake-create-table-input-body-right">
+          <input matInput placeholder="Table Long Name" autocomplete="off" formControlName="tableLongName" required>
+          <mat-error *ngIf="tableConfigurationFormGroup.get('tableLongName')?.invalid">You must specify table long name</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="datalake-create-table-input-secondary-body">
+        <mat-form-field class="datalake-create-table-input-body-left" 
+        [formGroup]="tableConfigurationFormGroup">
+          <mat-select placeholder="Schema" autocomplete="off" formControlName="schema"
+            (selectionChange)="schemaChanged(tableConfigurationFormGroup)" required>
+            <mat-option *ngFor="let schema of schemas" [value]="schema">
+              {{schema.schemaName}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="tableConfigurationFormGroup.get('schema')?.invalid">You must select a schema</mat-error>
+        </mat-form-field>
+        <mat-form-field [formGroup]="tableConfigurationFormGroup" 
+        class="datalake-create-table-input datalake-create-table-input-body-right">
+          <mat-select placeholder="Bucket" autocomplete="off" formControlName="bucket" required>
+            <mat-option *ngFor="let bucket of currentBuckets" [value]="bucket">
+              {{bucket.bucketName}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="tableConfigurationFormGroup.get('bucket')?.invalid">You must select a bucket</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="datalake-create-table-input-secondary-body">
+        <mat-form-field class="datalake-create-table-input-body-left"  
+        [formGroup]="tableConfigurationFormGroup">
+          <input matInput placeholder="Table Description" autocomplete="off" 
+          formControlName="tableDescription">
+        </mat-form-field>
+        <div class="datalake-create-table-input-body-right">
+        <mat-form-field class="datalake-table-location"
+         [formGroup]="tableConfigurationFormGroup">
+          <input matInput placeholder="Table Path" autocomplete="off" 
+          formControlName="tableLocation">
+          <!-- <mat-error *ngIf="tableConfigurationFormGroup.get('tableLocation')?.invalid">You must specify table location</mat-error> -->
+        </mat-form-field>
+        <!-- <div class="datalake-checkbox">
+            <mat-checkbox class="admin-checkboxes" color="primary" 
+            [(ngModel)]="showSelected" (change)="addPartitionS3tabletLocation(tableConfigurationFormGroup.get('tableLocation').value)">
+            Partition</mat-checkbox>
+        </div> -->
+      </div>
+
+      </div>
+      <div class="datalake-create-table-input-body align-items-center">
+        <span class="datalake-create-table-input-body-span">
+          File Type *:
+        </span>
+        <mat-radio-group [(ngModel)]="selectedFileType" (ngModelChange)="ResetStepper(stepper, uploader)" 
+        class="datalake-file-type-picker">
+          <mat-radio-button class="cancels-checkbox datalake-file-type-radio" *ngFor="let fileType of fileTypes" [value]="fileType">{{fileType}}</mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <div class="datalake-create-table-input-body datalake-delimiter-selector align-items-center" *ngIf="selectedFileType === 'CSV'">
+        <span class="datalake-create-table-input-body-span">
+          Delimiter *:
+        </span>
+        <mat-radio-group [(ngModel)]="selectedDelimiter" (ngModelChange)="toggleCustomDelimiter()" 
+        class="datalake-file-type-picker datalake-create-table-input-body-delimiter">
+          <mat-radio-button class="cancels-checkbox datalake-file-type-radio" 
+          *ngFor="let delimiter of delimiters" [value]="delimiter">{{delimiter}}</mat-radio-button>
+        </mat-radio-group>
+        <mat-form-field class="datalake-custom-delimiter" [formGroup]="tableConfigurationFormGroup">
+          <input matInput placeholder="Custom Delimiter" autocomplete="off" formControlName="customDelimiter">
+        </mat-form-field>
+      </div>
+      <div class="datalake-create-table-input-file-picker">
+        <span class="datalake-file-picker-label">Filename *:</span>
+        <mat-form-field class="datalake-file-picker-form" [formGroup]="tableConfigurationFormGroup">
+          <input class="datalake-file-picker-form-input" matInput formControlName="fileName" required>
+        </mat-form-field>
+        <input hidden type="file" accept="{{getAcceptedFileFormat()}}" #uploader (change)="uploadFile($event)">
+        <button class="datalake-browse-file-button flat-button" mat-button (click)="browseFile(uploader)">
+          Browse
+        </button>
+      </div>
+      <div class="datalake-max-filesize-label">
+        Maximum upload size: 100 MB<span *ngIf="targetFileSize">, Uploaded file size: {{targetFileSize}}</span>
+      </div>
+      <mat-progress-bar *ngIf="fileLoading" class="datalake-create-table-progress" mode="indeterminate"></mat-progress-bar>
+    </ng-container>
+    <ng-container *ngIf="stepper.selectedIndex == 1 && selectedFileType === 'CSV'">
+      <div class="datalake-create-table-content-header">
+        <div class="datalake-create-table-step-title">
+          <span class="datalake-create-table-step-title-label">STEP 2 - DATA PREVIEW</span>
+          <span class="datalake-create-table-step-description">View data contained in the file.</span>
+        </div>
+        <div class="datalake-create-table-step-buttons">
+          <button class="datalake-create-table-step-button flat-button" mat-button
+            (click)="goForward(stepper)">
+            NEXT
+            <mat-icon>arrow_forward_ios</mat-icon>
+          </button>
+          <button class="datalake-create-table-step-button flat-button" mat-button (click)="goBack(stepper)">
+            <mat-icon>arrow_back_ios</mat-icon>
+            BACK
+          </button>
+        </div>
+      </div>
+      <div class="datalake-create-table-input-body datalake-data-preview-body">
+        <div class="datalake-data-preview">
+          <div class="datalake-raw-data">
+            <span>Raw View</span>
+            <div class="datalake-raw-data-preview">
+              <div class="datalake-raw-data-item" *ngFor="let column of rawData">
+                <span *ngFor="let row of column; let rowIndex = index">
+                  {{row}}<span *ngIf="rowIndex != column.length - 1">{{delimiterCharacter}}</span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="datalake-table-data">
+            <span>Table View</span>
+            <div class="datalake-table-data-preview">
+              <div class="datalake-table-data-display">
+                <div class="datalake-table-data-item" *ngFor="let column of rawData">
+                  <div class="datalake-table-data-subitem" *ngFor="let row of column">
+                    {{row}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="(stepper.selectedIndex == 2 && selectedFileType === 'CSV') || (stepper.selectedIndex == 1 && selectedFileType === 'PARQUET')">
+      <div class="datalake-create-table-content-header">
+        <div class="datalake-create-table-step-title">
+          <span class="datalake-create-table-step-title-label">STEP {{stepper.selectedIndex + 1}} - PARTITIONS</span>
+          <span class="datalake-create-table-step-description">Add Table Partitions.</span>
+        </div>
+        <div class="datalake-create-table-step-buttons">
+          <button class="datalake-create-table-step-button flat-button" mat-button
+            (click)="goForward(stepper)">
+            NEXT
+            <mat-icon>arrow_forward_ios</mat-icon>
+          </button>
+          <button class="datalake-create-table-step-button flat-button" mat-button (click)="goBack(stepper)">
+            <mat-icon>arrow_back_ios</mat-icon>
+            BACK
+          </button>
+        </div>
+      </div>
+      <div class="datalake-add-partition-button">
+        <button class="add-partition-button flat-button" mat-button (click)="addPartition()">Add Partition</button>
+      </div>
+      <div class="datalake-partition-container">
+        <div [ngClass]="{'datalake-partition': partition.isPartition==='YES', 'hidden': partition.isPartition==='NO' }"
+         class="datalake-partition" *ngFor="let partition of partitions">
+          <mat-form-field *ngIf="partition.isPartition==='YES'">
+            <input matInput [(ngModel)]="partition.name" placeholder="Partition Name" autocomplete="off">
+          </mat-form-field>
+          <mat-form-field *ngIf="partition.isPartition==='YES'" class="datalake-partition-type">
+            <mat-select [(ngModel)]="partition.dataType" placeholder="Type" autocomplete="off">
+              <mat-option *ngFor="let partitionDataType of partitionDataTypes" [value]="partitionDataType">
+                {{partitionDataType}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <button *ngIf="partition.isPartition==='YES'" class="close-button" mat-icon-button>
+            <mat-icon aria-label="add" (click)="removePartition(partition)">close</mat-icon>
+          </button>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="(stepper.selectedIndex == 3 && selectedFileType === 'CSV') || (stepper.selectedIndex == 2 && selectedFileType === 'PARQUET')">
+      <div class="datalake-create-table-content-header">
+        <div class="datalake-create-table-step-title">
+          <span class="datalake-create-table-step-title-label">STEP {{stepper.selectedIndex + 1}} - DISCOVERY RESULT</span>
+          <span class="datalake-create-table-step-description">Show the data in columns and allow to change the column header.</span>
+          <div class="datalake-checkbox">
+            <mat-checkbox class="admin-checkboxes" color="primary" 
+              [(ngModel)]="showSelected">
+              load data
+            </mat-checkbox>
+          </div>
+      </div>
+        <div class="datalake-create-table-step-buttons">
+          <button class="datalake-create-table-step-button flat-button" mat-button (click)="createTable()">
+            FINISH
+            <mat-icon>flag</mat-icon>
+          </button>
+          <button class="datalake-create-table-step-button flat-button" mat-button (click)="goBack(stepper)">
+            <mat-icon>arrow_back_ios</mat-icon>
+            BACK
+          </button>
+        </div>
+      </div>
+      <div class="datalake-create-table-input-body align-items-center">
+        <mat-form-field class="datalake-discovery-result-search-input">
+          <mat-icon class="search-icon" aria-label="search">search</mat-icon>
+          <input matInput [(ngModel)]="dataColumnFilter" (ngModelChange)="filterDataColumns()" placeholder="Search" autocomplete="off">
+        </mat-form-field>
+      </div>
+      <div class="datalake-discovery-result-container">
+        <div class="datalake-discovery-result-table">
+          <div class="datalake-discovery-result-header">
+            <span class="datalake-discovery-result-cell">#</span>
+            <span class="datalake-discovery-result-cell datalake-discovery-result-name">Name</span>
+            <span class="datalake-discovery-result-cell datalake-discovery-result-name">Map name to</span>
+            <span class="datalake-discovery-result-cell datalake-discovery-result-datatype">Datatype</span>
+            <span class="datalake-discovery-result-cell datalake-discovery-result-datatype">Map datatype to</span>
+          </div>
+          <div class="datalake-discovery-result-body" *ngFor="let column of filteredDataColumns | async">
+            <span class="datalake-discovery-result-cell">{{column.index}}</span>
+            <span class="datalake-discovery-result-cell">{{column.name}}</span>
+            <span class="datalake-discovery-result-cell">
+              <mat-form-field class="datalake-map-input">
+                <input matInput [(ngModel)]="column.mapName" autocomplete="off">
+                <mat-icon class="edit-icon" aria-label="search">edit</mat-icon>
+              </mat-form-field>
+            </span>
+            <span class="datalake-discovery-result-cell">{{column.dataType}}</span>
+            <span class="datalake-discovery-result-cell">
+              <mat-form-field class="datalake-map-input">
+                <mat-select [(ngModel)]="column.mapDataType" autocomplete="off">
+                  <mat-option *ngFor="let dataType of dataTypes" [value]="dataType">
+                    {{dataType}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </span>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
