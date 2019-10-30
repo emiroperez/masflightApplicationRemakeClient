@@ -54,7 +54,7 @@ export class MsfDashboardAssistantComponent {
   function: any;
   intervalType: string = "ncile";
   ncile: number = 5;
-  intValue: number;
+  intValue: string;
   lastColumn: any;
 
   currentOption: any;
@@ -536,7 +536,7 @@ export class MsfDashboardAssistantComponent {
     this.selectingValue = false;
     this.selectingAggregationValue = true;
     this.lastColumn = null;
-    this.valueSelected = null;
+    this.aggregationValueSelected = null;
   }
 
   hoverTableColumn(index): void
@@ -577,7 +577,12 @@ export class MsfDashboardAssistantComponent {
   isChartConfigured(): boolean
   {
     if (this.chartMode === "advanced")
+    {
+      if (this.intervalType === "value")
+        return this.analysisSelected && this.aggregationValueSelected && this.intValue != null && this.intValue != "";
+
       return this.analysisSelected && this.aggregationValueSelected;
+    }
 
     if (!this.haveXAxis ())
       return this.analysisSelected && this.valueSelected;
