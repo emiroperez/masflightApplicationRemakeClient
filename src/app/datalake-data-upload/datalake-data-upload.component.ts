@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, AfterViewInit, SimpleChanges } from '@angular/core';
 import { FormGroup, Validators, FormControl, FormBuilder, AbstractControl } from '@angular/forms';
 import { MatStepper, MatDialog } from '@angular/material';
 
@@ -14,12 +14,15 @@ import { ReplaySubject, Subject } from 'rxjs';
   selector: 'app-datalake-data-upload',
   templateUrl: './datalake-data-upload.component.html'
 })
-export class DatalakeDataUploadComponent {
+export class DatalakeDataUploadComponent{
   @Input("schemas")
   schemas: DatalakeQuerySchema[] = [];
 
   @Input("buckets")
   buckets: DatalakeBucket[] = [];
+
+  @Input("Datavalue")
+  Datavalue: any;
 
   @Output("closeDialog")
   closeDialog = new EventEmitter ();
@@ -157,6 +160,15 @@ export class DatalakeDataUploadComponent {
     tableSelector.setValue (null);
     tableSelector.enable ();
     tableSelector.markAsUntouched ();
+
+    if(_this.Datavalue.tableName){
+      var index = _this.tables.findIndex (aux => aux == _this.Datavalue.tableName);
+      if(index != -1){
+        _this.tableConfigurationFormGroup.get ("table").setValue (_this.tables[index]);
+        tableSelector.disable ();
+      }
+    }
+
     _this.globals.isLoading = false;
   }
 
@@ -366,11 +378,6 @@ export class DatalakeDataUploadComponent {
     uploader.value = null;
   }
 
-  tableChanged(): void
-  {
-    // this.tableName = this.tableConfigurationFormGroup.get ("table").value;
-  }
-
 
   setSchemaTablesError(_this, result): void
   {
@@ -445,7 +452,7 @@ export class DatalakeDataUploadComponent {
         });
       }else{
         _this.dialog.open (MessageComponent, {
-          data: { title: "Success", message: "Upload data successfull" }
+          data: { title: "Success", message: "Data Uploaded Successfully" }
         });      
       _this.closeDialog.emit ();
       }
@@ -461,4 +468,28 @@ export class DatalakeDataUploadComponent {
         data: { title: "Error", message: "Failed to Upload data." }
       });
     }
+
+      
+  setschema()
+  {
+    if(this.Datavalue.schemaName){
+      var index = this.schemas.findIndex (aux => aux.schemaName == this.Datavalue.schemaName);
+      if(index != -1){
+        this.tableConfigurationFormGroup.get ("schema").setValue (this.schemas[index]);
+        this.schemaChanged();
+      }
+    }
+    // if(this.Datavalue.tableName){
+    //   this.tableConfigurationFormGroup.get ("schema").setValue (this.Datavalue.schemaName);
+    // }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void
+  {
+    if (changes['Datavalue']){
+      // this.globals.isLoading = false;
+      this.setschema();
+    }
+  }
+  
 }

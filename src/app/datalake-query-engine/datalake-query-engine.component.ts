@@ -50,6 +50,7 @@ export class DatalakeQueryEngineComponent implements OnInit {
 
   ngOnInit()
   {
+    // this.globals.optionDatalakeSelected = 3;
     this.globals.selectedSchema = this.globals.queryTabs[0];
     this.globals.isLoading = true;
     this.service.getDatalakeSchemas (this, this.setSchemas, this.setSchemasError);

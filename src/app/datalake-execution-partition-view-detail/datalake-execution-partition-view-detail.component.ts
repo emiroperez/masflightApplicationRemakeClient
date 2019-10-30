@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, Input, HostListener } from '@angular/core';
 import { MatTableDataSource, MatPaginator, MatDialog } from '@angular/material';
 import { DatalakePartitionExecuteDialogComponent } from '../datalake-partition-execute-dialog/datalake-partition-execute-dialog.component';
+import { Globals } from '../globals/Globals';
 
 @Component({
   selector: 'app-datalake-execution-partition-view-detail',
@@ -16,9 +17,10 @@ export class DatalakeExecutionPartitionViewDetailComponent implements OnInit {
   paginator: MatPaginator;
   partitionsColumns: string[] = ['schemaName', 'tableName', 'type', 'timestamp', 'cron','actions'];
 
-  constructor(private dialog: MatDialog) { }
+  constructor(public globals: Globals,private dialog: MatDialog) { }
 
   ngOnInit() {
+    // this.globals.optionDatalakeSelected = 6;
     this.innerHeight = window.innerHeight;
     // this.PartitionTable = new MatTableDataSource (this.partitions);
     // this.PartitionTable.paginator = this.paginator;

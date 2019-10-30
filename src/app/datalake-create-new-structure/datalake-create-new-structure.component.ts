@@ -63,7 +63,7 @@ export class DatalakeCreateNewStructureComponent {
       schema: ['', Validators.required],
       bucket: new FormControl ({ value: '', disabled: true }, Validators.required),
       tableDescription: new FormControl ({ value: '', disabled: true }),
-      tableLocation: ['', Validators.required],
+      tableLocation: [''],
       customDelimiter: new FormControl ({ value: '', disabled: true }),
       fileName: new FormControl ({ value: '', disabled: true }, Validators.required)
     });
@@ -97,9 +97,10 @@ export class DatalakeCreateNewStructureComponent {
         });
   
         return;
-      }else{
-        this.addPartitionS3tabletLocation(this.tableConfigurationFormGroup.get ("tableLocation").value);
       }
+      // else{
+      //   this.addPartitionS3tabletLocation(this.tableConfigurationFormGroup.get ("tableLocation").value);
+      // }
     }
     else if ((stepper.selectedIndex == 1 && this.selectedFileType === 'PARQUET'))
     {
@@ -407,10 +408,16 @@ export class DatalakeCreateNewStructureComponent {
       });
     }else{
       _this.dialog.open (MessageComponent, {
-        data: { title: "Success", message: "Table created successfull" }
-      });      
-    // _this.closeDialog.emit (_this.request);
-    _this.closeDialog.emit();
+        data: { title: "Success", message: "Table created Successfully" }
+      });
+      let dataUpload = null;
+      if(_this.showSelected){
+        dataUpload = {index: 1,
+        schemaName: _this.tableConfigurationFormGroup.get ("schema").value.schemaName,
+        tableName: _this.tableConfigurationFormGroup.get ("tableName").value}
+      } 
+    _this.closeDialog.emit (dataUpload);
+    // _this.closeDialog.emit();
     }
     console.log (data);    
   }
@@ -439,32 +446,32 @@ export class DatalakeCreateNewStructureComponent {
     this.partitions.splice (this.partitions.indexOf (partition), 1);
   }
 
-  addPartitionS3tabletLocation(namePart: any): void
-  {
-    if (this.showSelected){
-      let index: number = this.partitions.findIndex(d => d.name === namePart);
-      if(index!=-1){
-        this.partitions[index].isPartition="YES";
-      }else{
-        this.partitions.push ({
-          name: namePart,
-          isPartition: "YES",
-          dataType: "String"
-        });
-      }
-    }else{
-      let index: number = this.partitions.findIndex(d => d.name === namePart);
-      if(index!=-1){
-        this.partitions[index].isPartition="NO";
-      }else{
-        this.partitions.push ({
-          name: namePart,
-          isPartition: "NO",
-          dataType: "String"
-        });
-      }
-    }
-  }
+  // addPartitionS3tabletLocation(namePart: any): void
+  // {
+  //   if (this.showSelected){
+  //     let index: number = this.partitions.findIndex(d => d.name === namePart);
+  //     if(index!=-1){
+  //       this.partitions[index].isPartition="YES";
+  //     }else{
+  //       this.partitions.push ({
+  //         name: namePart,
+  //         isPartition: "YES",
+  //         dataType: "String"
+  //       });
+  //     }
+  //   }else{
+  //     let index: number = this.partitions.findIndex(d => d.name === namePart);
+  //     if(index!=-1){
+  //       this.partitions[index].isPartition="NO";
+  //     }else{
+  //       this.partitions.push ({
+  //         name: namePart,
+  //         isPartition: "NO",
+  //         dataType: "String"
+  //       });
+  //     }
+  //   }
+  // }
 
   tableNameChange(){
     if(this.tableConfigurationFormGroup.get ("tableLocation").value === ''){

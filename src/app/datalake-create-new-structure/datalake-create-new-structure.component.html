@@ -95,19 +95,23 @@
         </mat-form-field>
       </div>
       <div class="datalake-create-table-input-secondary-body">
-        <mat-form-field class="datalake-create-table-input-body-left"  [formGroup]="tableConfigurationFormGroup">
-          <input matInput placeholder="Table Description" autocomplete="off" formControlName="tableDescription">
+        <mat-form-field class="datalake-create-table-input-body-left"  
+        [formGroup]="tableConfigurationFormGroup">
+          <input matInput placeholder="Table Description" autocomplete="off" 
+          formControlName="tableDescription">
         </mat-form-field>
         <div class="datalake-create-table-input-body-right">
-        <mat-form-field class="datalake-table-location" [formGroup]="tableConfigurationFormGroup">
-          <input matInput placeholder="File Path" autocomplete="off" formControlName="tableLocation" required>
-          <mat-error *ngIf="tableConfigurationFormGroup.get('tableLocation')?.invalid">You must specify table location</mat-error>
+        <mat-form-field class="datalake-table-location"
+         [formGroup]="tableConfigurationFormGroup">
+          <input matInput placeholder="Table Path" autocomplete="off" 
+          formControlName="tableLocation">
+          <!-- <mat-error *ngIf="tableConfigurationFormGroup.get('tableLocation')?.invalid">You must specify table location</mat-error> -->
         </mat-form-field>
-        <div class="datalake-checkbox">
+        <!-- <div class="datalake-checkbox">
             <mat-checkbox class="admin-checkboxes" color="primary" 
             [(ngModel)]="showSelected" (change)="addPartitionS3tabletLocation(tableConfigurationFormGroup.get('tableLocation').value)">
             Partition</mat-checkbox>
-        </div>
+        </div> -->
       </div>
 
       </div>
@@ -152,7 +156,7 @@
       <div class="datalake-create-table-content-header">
         <div class="datalake-create-table-step-title">
           <span class="datalake-create-table-step-title-label">STEP 2 - DATA PREVIEW</span>
-          <span class="datalake-create-table-step-description">View the data after importing a file containing the results</span>
+          <span class="datalake-create-table-step-description">View data contained in the file.</span>
         </div>
         <div class="datalake-create-table-step-buttons">
           <button class="datalake-create-table-step-button flat-button" mat-button
@@ -197,7 +201,7 @@
       <div class="datalake-create-table-content-header">
         <div class="datalake-create-table-step-title">
           <span class="datalake-create-table-step-title-label">STEP {{stepper.selectedIndex + 1}} - PARTITIONS</span>
-          <span class="datalake-create-table-step-description">Chose the table partitions. Keep first options checked if it is a partition</span>
+          <span class="datalake-create-table-step-description">Add Table Partitions.</span>
         </div>
         <div class="datalake-create-table-step-buttons">
           <button class="datalake-create-table-step-button flat-button" mat-button
@@ -237,8 +241,14 @@
       <div class="datalake-create-table-content-header">
         <div class="datalake-create-table-step-title">
           <span class="datalake-create-table-step-title-label">STEP {{stepper.selectedIndex + 1}} - DISCOVERY RESULT</span>
-          <span class="datalake-create-table-step-description">Show the data in columns and allow to change the column header</span>
-        </div>
+          <span class="datalake-create-table-step-description">Show the data in columns and allow to change the column header.</span>
+          <div class="datalake-checkbox">
+            <mat-checkbox class="admin-checkboxes" color="primary" 
+              [(ngModel)]="showSelected">
+              load data
+            </mat-checkbox>
+          </div>
+      </div>
         <div class="datalake-create-table-step-buttons">
           <button class="datalake-create-table-step-button flat-button" mat-button (click)="createTable()">
             FINISH

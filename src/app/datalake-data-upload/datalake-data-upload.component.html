@@ -64,7 +64,7 @@
         <mat-form-field class="datalake-create-table-input-body-left" 
         [formGroup]="tableConfigurationFormGroup">
           <mat-select placeholder="Schema" autocomplete="off" formControlName="schema"
-            (selectionChange)="schemaChanged()" required>
+            (selectionChange)="schemaChanged()" required [disabled]="Datavalue.schemaName">
             <mat-option *ngFor="let schema of schemas" [value]="schema">
               {{schema.schemaName}}
             </mat-option>
@@ -87,7 +87,7 @@
         <mat-form-field class="datalake-create-table-input-body-left"
         [formGroup]="tableConfigurationFormGroup">
           <mat-select placeholder="Table Name" autocomplete="off" 
-          formControlName="table" (selectionChange)="tableChanged()" required>
+          formControlName="table"  required>
           <ngx-mat-select-search [formControl]="tableFilterCtrl" placeholderLabel="Search" 
           noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
             <mat-option *ngFor="let table of filteredTables | async" [value]="table">
@@ -171,14 +171,9 @@
       <div class="datalake-create-table-content-header">
         <div class="datalake-create-table-step-title">
           <span class="datalake-create-table-step-title-label">STEP 3 - DATA PREVIEW</span>
-          <span class="datalake-create-table-step-description">View the data after importing a file containing the results</span>
+          <span class="datalake-create-table-step-description">View data contained in the file.</span>
         </div>
         <div class="datalake-create-table-step-buttons">
-          <!-- <button class="datalake-create-table-step-button flat-button" mat-button
-            (click)="goForward(null, stepper)">
-            NEXT
-            <mat-icon>arrow_forward_ios</mat-icon>
-          </button> -->
           <button (click)="dataUpload()" class="datalake-create-table-step-button flat-button" mat-button>
             FINISH
             <mat-icon>flag</mat-icon>
@@ -216,51 +211,5 @@
         </div>
       </div>
     </ng-container>
-    <!-- <ng-container *ngIf="(stepper.selectedIndex == 2 && selectedFileType === 'CSV') || (stepper.selectedIndex == 1 && selectedFileType === 'PARQUET')">
-      <div class="datalake-create-table-content-header">
-        <div class="datalake-create-table-step-title">
-          <span class="datalake-create-table-step-title-label">STEP {{stepper.selectedIndex + 1}} - PARTITION MANAGEMENT</span>
-          <span class="datalake-create-table-step-description">Create Partition Manager</span>
-        </div>
-        <div class="datalake-create-table-step-buttons">
-          <button class="datalake-create-table-step-button flat-button" mat-button>
-            FINISH
-            <mat-icon>flag</mat-icon>
-          </button>
-          <button class="datalake-create-table-step-button flat-button" mat-button (click)="goBack(stepper)">
-            <mat-icon>arrow_back_ios</mat-icon>
-            BACK
-          </button>
-        </div>
-      </div>
-      <div class="datalake-create-table-input-tertiary-body">
-        <mat-form-field [formGroup]="partitionManagementFormGroup">
-          <input matInput placeholder="Schema Name" autocomplete="off" formControlName="schemaName" required>
-          <mat-error *ngIf="partitionManagementFormGroup.get('schemaName')?.invalid">You enter a schema name</mat-error>
-        </mat-form-field>
-        <mat-form-field [formGroup]="partitionManagementFormGroup" class="datalake-create-table-input">
-          <input matInput placeholder="Table Name" autocomplete="off" formControlName="tableName" required>
-          <mat-error *ngIf="tableConfigurationFormGroup.get('tableName')?.invalid">You enter a table name</mat-error>
-        </mat-form-field>
-      </div>
-      <div class="datalake-create-table-input-tertiary-body">
-        <mat-form-field [formGroup]="partitionManagementFormGroup">
-          <mat-select placeholder="Run Type" autocomplete="off" formControlName="runType" required>
-            <mat-option *ngFor="let schema of [1, 2, 3]" [value]="schema">
-              {{schema}}
-            </mat-option>
-          </mat-select>
-          <mat-error *ngIf="partitionManagementFormGroup.get('runType')?.invalid">You must select a run type</mat-error>
-        </mat-form-field>
-        <mat-form-field [formGroup]="partitionManagementFormGroup" class="datalake-create-table-input">
-          <mat-select placeholder="Status" autocomplete="off" formControlName="status" required>
-            <mat-option *ngFor="let schema of [1, 2, 3]" [value]="schema">
-              {{schema}}
-            </mat-option>
-          </mat-select>
-          <mat-error *ngIf="partitionManagementFormGroup.get('status')?.invalid">You must select a status</mat-error>
-        </mat-form-field>
-      </div>
-    </ng-container> -->
   </div>
 </div>

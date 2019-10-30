@@ -66,11 +66,11 @@
       <img class="datalake-table-card-button-image datalake-table-card-button-query-image" src="../../assets/images/datalake-query.png"/>
     </button>
     -->
-    <button mat-button class="datalake-table-card-button" matTooltip="Upload">
+    <button mat-button class="datalake-table-card-button" (click)="UploadData()" matTooltip="Upload">
       <img class="datalake-table-card-button-image datalake-table-card-button-query-complete-image" src="../../assets/images/datalake-query-complete.png"/>
     </button>
     <button mat-button class="datalake-table-card-button" matTooltip="Set Alarm">
-      <img class="datalake-table-card-button-image" src="../../assets/images/datalake-alarm.png"/>
+      <img class="datalake-table-card-button-image" (click)=setAlarm();  src="../../assets/images/datalake-alarm.png"/>
     </button>
   </div>
 </div>

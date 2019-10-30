@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, SimpleChanges, ViewChildren, QueryList, Output } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, ViewChildren, QueryList, Output, EventEmitter } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { ReplaySubject, Subject } from 'rxjs';
 
@@ -14,8 +14,11 @@ import { any } from '@amcharts/amcharts4/.internal/core/utils/Array';
   templateUrl: './datalake-explorer.component.html'
 })
 export class DatalakeExplorerComponent implements OnInit {
-  @Input("currentOption")
-  currentOption: number;
+  // @Input("currentOption")
+  // currentOption: number;
+
+  @Output('setCurrentOptionSelected')
+  setCurrentOptionSelected = new EventEmitter ();
   
   filter: string;
   filteredTableCards: ReplaySubject<any[]> = new ReplaySubject<any[]> (1);
@@ -35,18 +38,33 @@ export class DatalakeExplorerComponent implements OnInit {
     this.setCurrentScreen ();
   }
 
-  ngOnChanges(changes: SimpleChanges): void
-  {
-    if (changes['currentOption'])
-      this.setCurrentScreen ();
-  }
+  // ngOnChanges(changes: SimpleChanges): void
+  // {
+  //   if (changes['currentOption'])
+  //     this.setCurrentScreen ();
+  // }
 
   setCurrentScreen(): void
   {
-    if (this.currentOption == 3)
+    // if (this.currentOption == 3)
+    if (this.globals.optionDatalakeSelected === 3)
       this.goToScreen (1);
     else
       this.goToScreen (0);
+  }
+
+  goToScreen(index: number): void
+  {
+    this.currentScreen = index;
+
+    switch (this.currentScreen)
+    {
+      case 0:
+        this.globals.isLoading = true;
+        this.service.getDatalakeTables (this, this.handlerSuccess, this.handlerError);
+        this.filter = "";
+        break;
+    }
   }
 
   handlerSuccess(_this, data): void
@@ -116,7 +134,7 @@ export class DatalakeExplorerComponent implements OnInit {
   {
    let dialogRef =  this.dialog.open (DatalakeCreateTableComponent, {
       panelClass: 'datalake-create-table-dialog',
-      data: { }
+      data: {index: 0}
     });
 
     dialogRef.afterClosed().subscribe(() => {
@@ -143,18 +161,18 @@ export class DatalakeExplorerComponent implements OnInit {
     });
   }
 
-  goToScreen(index: number): void
-  {
-    this.currentScreen = index;
-
-    switch (this.currentScreen)
-    {
-      case 0:
-        this.globals.isLoading = true;
-        this.service.getDatalakeTables (this, this.handlerSuccess, this.handlerError);
-        this.filter = "";
-        break;
-    }
+  setOption(option: any): void
+  {    
+    // this.globals.optionDatalakeSelected = option.option;
+    this.setCurrentOptionSelected.emit(option);
   }
 
+  goToQueryEngine(){
+    let value = {
+      option: 3
+    }
+    this.globals.optionDatalakeSelected = 3;
+    // this.setCurrentOptionSelected.emit(value) ;
+    this.setCurrentScreen();
+  }
 }

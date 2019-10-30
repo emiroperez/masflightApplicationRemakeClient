@@ -16,7 +16,7 @@ import { DatalakeQueryTab } from '../datalake-query-engine/datalake-query-tab';
 })
 export class DatalakeComponent implements OnInit {
 
-  currentOption: number = 0;
+  currentOption: any;
 
   TabletQuery: MediaQueryList;
   mobileQuery: MediaQueryList;
@@ -105,8 +105,9 @@ export class DatalakeComponent implements OnInit {
   handleLogin(_this, data): void
   {
     _this.globals.currentUser = data.name;
+    _this.globals.optionDatalakeSelected = 2;
     _this.globals.isLoading = false;
-    _this.currentOption = 2;
+    // _this.currentOption = 2;
   }
 
   errorLogin(_this, result): void
@@ -115,9 +116,13 @@ export class DatalakeComponent implements OnInit {
     _this.globals.isLoading = false;
   }
 
-  setOption(option: number): void
-  {
-    this.currentOption = option;
+  // setOption(option: number): void
+  // {
+  //   this.currentOption = option;
+  // }
+
+  setCurrentOptionSelected(event: any){
+    this.currentOption = event;
   }
 
   @HostListener('window:resize', ['$event'])

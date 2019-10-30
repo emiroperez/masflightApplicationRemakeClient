@@ -200,7 +200,9 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             background-color: $menu-header-color
         .msf-menu-op-3
             background-color: $menu-header-color
-        .msf-menu-op-1:disabled, .msf-menu-op-2:disabled, .msf-menu-op-3:disabled
+        .msf-menu-op-1-selected
+            background-color: $selected-menu-color
+        .msf-menu-op-1:disabled, .msf-menu-op-2:disabled, .msf-menu-op-3:disabled , .msf-menu-op-1-selected:disabled
             background-color: rgba($selected-menu-color, .3)
             &:hover
                 background-color: rgba($selected-menu-color, .3)
@@ -2366,7 +2368,7 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button
 button[aria-expanded="true"]
     background-color: $msf-primary-dark-color
 
-.msf-menu-op-1
+.msf-menu-op-1 , .msf-menu-op-1-selected
     @extend .msf-menu-option
     margin-right: 1px
     margin-left: 1px!important
@@ -7614,7 +7616,6 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 .datalake-checkbox 
     display: flex
     align-items: center
-    padding-left: 10px
 
 .datalake-create-table-input-body-right
     width: calc(50% - 15px) !important

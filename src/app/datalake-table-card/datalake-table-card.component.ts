@@ -1,16 +1,21 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MatDialog } from '@angular/material';
 
 import { Globals } from '../globals/Globals';
 import { DatalakeTableCardValues } from './datalake-table-card-values';
 import { DatalakeTableShowColumnsComponent } from '../datalake-table-show-columns/datalake-table-show-columns.component';
 import { DatalakeTablePreviewComponent } from '../datalake-table-preview/datalake-table-preview.component';
+import { DatalakeCreateTableComponent } from '../datalake-create-table/datalake-create-table.component';
+import { DatalakeService } from '../services/datalake.service';
 
 @Component({
   selector: 'app-datalake-table-card',
   templateUrl: './datalake-table-card.component.html'
 })
 export class DatalakeTableCardComponent implements OnInit {
+  @Output('setOption')
+  setOption = new EventEmitter ();
+  
   selectedTabIndex: number = 0;
 
   // Gauge templates
@@ -25,7 +30,7 @@ export class DatalakeTableCardComponent implements OnInit {
   @Input("values")
   values: DatalakeTableCardValues;
 
-  constructor(public globals: Globals, private dialog: MatDialog) { }
+  constructor(public globals: Globals, private dialog: MatDialog,private service: DatalakeService) { }
 
   getForegroundColorFromValue(value: number): string
   {
@@ -75,5 +80,26 @@ export class DatalakeTableCardComponent implements OnInit {
   viewTableStats(): void
   {
     this.selectedTabIndex = 1;
+  }
+
+  UploadData(): void
+  {
+   let dialogRef =  this.dialog.open (DatalakeCreateTableComponent, {
+      panelClass: 'datalake-create-table-dialog',
+      data: {index: 1,
+        schemaName: this.values.schemaName,
+        tableName: this.values.tableName
+      }
+    });
+  }
+
+  setAlarm(){
+    // this.globals.optionDatalakeSelected = 5;
+    let data = {
+      schemaName: this.values.schemaName,
+      tableName: this.values.tableName
+    }
+    this.globals.optionDatalakeSelected = 5;
+    this.setOption.emit(data);
   }
 }

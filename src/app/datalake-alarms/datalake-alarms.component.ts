@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, HostListener, ViewChild } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, HostListener, ViewChild, Input, SimpleChanges } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MatTableDataSource, MatPaginator, MatDialog } from '@angular/material';
 import { ReplaySubject, Subject } from 'rxjs';
@@ -16,6 +16,9 @@ import { MessageComponent } from '../message/message.component';
   templateUrl: './datalake-alarms.component.html'
 })
 export class DatalakeAlarmsComponent implements OnInit {
+  @Input("currentOption")
+  currentOption: any;
+
   schemas: string[] = [];
   tables: string[] = [];
   alarms: any[] = [];
@@ -132,6 +135,7 @@ export class DatalakeAlarmsComponent implements OnInit {
     for (let schema of data.Schemas)
       _this.schemas.push (schema);
 
+      _this.setschema();
     _this.globals.isLoading = false;
   }
 
@@ -164,7 +168,17 @@ export class DatalakeAlarmsComponent implements OnInit {
     tableSelector.setValue (null);
     tableSelector.enable ();
     tableSelector.markAsUntouched ();
+
+    if(_this.currentOption.tableName){
+      var index = _this.tables.findIndex (aux => aux == _this.currentOption.tableName);
+      if(index != -1){
+        tableSelector.setValue (_this.tables[index]);
+        tableSelector.disable ();
+      }
+    }
+    
     _this.globals.isLoading = false;
+
   }
 
   setSchemaTablesError(_this, result): void
@@ -418,5 +432,24 @@ filterAlarm(): void
   this.alarmTable = new MatTableDataSource (filteredResults);
   this.alarmTable.paginator = this.paginator;
 }
+
+setschema()
+{
+  if(this.currentOption.schemaName){
+    var index = this.schemas.findIndex (aux => aux == this.currentOption.schemaName);
+    if(index != -1){
+      this.alarmFormGroup.get ("schema").setValue (this.schemas[index]);
+      this.schemaChanged();
+    }
+  }
+}
+
+// ngOnChanges(changes: SimpleChanges): void
+// {
+//   if (changes['currentOption']){
+//     // this.globals.isLoading = false;
+//     this.setschema();
+//   }
+// }
 
 }
