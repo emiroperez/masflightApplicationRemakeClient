@@ -226,6 +226,7 @@ export class MsfSelectDataFromComponent {
       data: {
         currentOption: selectedOption,
         functions: this.data.functions[0],
+        nciles: this.data.nciles[0],
         selectDataPreview: true
       }
     });

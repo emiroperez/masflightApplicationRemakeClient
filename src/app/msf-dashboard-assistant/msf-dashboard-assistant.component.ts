@@ -49,7 +49,10 @@ export class MsfDashboardAssistantComponent {
   valueSelected: any = null;
   selectingValue: boolean = false;
   chartPreviewHover: boolean = false;
+  aggregationValueSelected: any = null;
+  selectingAggregationValue: boolean = false;
   function: any;
+  ncile: number = 5;
   lastColumn: any;
 
   currentOption: any;
@@ -435,6 +438,7 @@ export class MsfDashboardAssistantComponent {
     this.selectingXAxis = null;
     this.selectingAnalysis = null;
     this.selectingValue = null;
+    this.selectingAggregationValue = null;
 
     // Remove X Axis selection if the chart type doesn't use it
     if (!this.haveXAxis ())
@@ -480,6 +484,7 @@ export class MsfDashboardAssistantComponent {
     this.selectingAnalysis = true;
     this.selectingXAxis = false;
     this.selectingValue = false;
+    this.selectingAggregationValue = false;
     this.lastColumn = null;
     this.analysisSelected = null;
   }
@@ -495,6 +500,7 @@ export class MsfDashboardAssistantComponent {
     this.selectingAnalysis = false;
     this.selectingXAxis = true;
     this.selectingValue = false;
+    this.selectingAggregationValue = false;
     this.lastColumn = null;
     this.xAxisSelected = null;
   }
@@ -510,6 +516,23 @@ export class MsfDashboardAssistantComponent {
     this.selectingAnalysis = false;
     this.selectingXAxis = false;
     this.selectingValue = true;
+    this.selectingAggregationValue = false;
+    this.lastColumn = null;
+    this.valueSelected = null;
+  }
+
+  selectAggregationValue(): void
+  {
+    if (this.selectingAggregationValue)
+    {
+      this.lastColumn = false;
+      this.selectingAggregationValue = false;
+    }
+
+    this.selectingAnalysis = false;
+    this.selectingXAxis = false;
+    this.selectingValue = false;
+    this.selectingAggregationValue = true;
     this.lastColumn = null;
     this.valueSelected = null;
   }
@@ -540,11 +563,20 @@ export class MsfDashboardAssistantComponent {
       this.selectingValue = false;
     }
 
+    if (this.selectingAggregationValue)
+    {
+      this.aggregationValueSelected = this.lastColumn;
+      this.selectingAggregationValue = false;
+    }
+
     this.lastColumn = null;
   }
 
   isChartConfigured(): boolean
   {
+    if (this.chartMode === "advanced")
+      return this.analysisSelected && this.aggregationValueSelected;
+
     if (!this.haveXAxis ())
       return this.analysisSelected && this.valueSelected;
 
@@ -855,8 +887,24 @@ export class MsfDashboardAssistantComponent {
 
   checkChartTypeSelection(): void
   {
-    if (!this.selectedChartType.allowedInAdvancedMode && this.chartMode === "advanced")
-      this.selectedChartType = this.chartTypes[0];
+    this.selectingAnalysis = null;
+    this.analysisSelected = null;
+
+    if (this.chartMode === "advanced")
+    {
+      if (!this.selectedChartType.allowedInAdvancedMode)
+        this.selectedChartType = this.chartTypes[0];
+
+      this.selectingXAxis = null;
+      this.xAxisSelected = null;
+      this.selectingValue = null;
+      this.valueSelected = null;
+    }
+    else
+    {
+      this.selectingAggregationValue = null;
+      this.aggregationValueSelected = null;
+    }
   }
 
   checkChartMode(chartType): boolean

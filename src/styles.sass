@@ -1236,6 +1236,10 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             background-color: $dashboard-assistant-values-color !important
             border-color: $dashboard-assistant-values-color !important
             color: #ffffff !important
+        .msf-dashboard-assistant-chart-config-aggregation-button-selected, .msf-dashboard-assistant-chart-config-aggregation-button:hover
+            background-color: $dashboard-assistant-axis-color !important
+            border-color: $dashboard-assistant-axis-color !important
+            color: #ffffff !important
         .msf-dashboard-assistant-chart-preview-button
             border-color: $primary-color
             &:hover
@@ -1273,6 +1277,16 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             border-bottom-color: rgba($dashboard-assistant-values-color, 0.25) !important
         .msf-dashboard-child-panel-table tr.mat-row.ng-star-inserted:last-child > td.distribution-chart-column-values-row-hover, .msf-dashboard-child-panel-table tr.mat-row.ng-star-inserted:last-child > td.distribution-chart-column-values-row-selected
             border-bottom: 3px solid $dashboard-assistant-values-color !important
+        .distribution-chart-column-aggregation-header-hover, .distribution-chart-column-aggregation-header-selected
+            background-color: $dashboard-assistant-axis-color !important
+            border-color: $dashboard-assistant-axis-color !important
+        .distribution-chart-column-aggregation-row-hover, .distribution-chart-column-aggregation-row-selected
+            background-color: rgba($dashboard-assistant-axis-color, 0.5) !important
+            border-left: 3px solid $dashboard-assistant-axis-color !important
+            border-right: 3px solid $dashboard-assistant-axis-color !important
+            border-bottom-color: rgba($dashboard-assistant-axis-color, 0.25) !important
+        .msf-dashboard-child-panel-table tr.mat-row.ng-star-inserted:last-child > td.distribution-chart-column-aggregation-row-hover, .msf-dashboard-child-panel-table tr.mat-row.ng-star-inserted:last-child > td.distribution-chart-column-aggregation-row-selected
+            border-bottom: 3px solid $dashboard-assistant-axis-color !important
         .assistant-button-disabled
             background-color: rgba($secondary-disabled-color, 0.1) !important
         .chart-preview-background
@@ -6865,7 +6879,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
             min-width: 100px
             text-align: center
 
-.distribution-chart-column-analysis-header-hover, .distribution-chart-column-analysis-row-hover, .distribution-chart-column-axis-header-hover, .distribution-chart-column-axis-row-hover, .distribution-chart-column-values-header-hover, .distribution-chart-column-values-row-hover
+.distribution-chart-column-analysis-header-hover, .distribution-chart-column-analysis-row-hover, .distribution-chart-column-axis-header-hover, .distribution-chart-column-axis-row-hover, .distribution-chart-column-values-header-hover, .distribution-chart-column-values-row-hover,.distribution-chart-column-aggregation-header-hover, .distribution-chart-column-aggregation-row-hover
     cursor: pointer
 
 .admin-menu-header-container

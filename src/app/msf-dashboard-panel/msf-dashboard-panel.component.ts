@@ -100,6 +100,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     { id: 'count', name: 'Count' }
   ];
 
+  nciles: number[] = [1, 2, 5, 10, 20, 25];
+
   fontSizes: any[] = [
     { name: 'Small', value: 12 },
     { name: 'Medium', value: 18 },
@@ -5207,7 +5209,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         currentOptionCategories: JSON.parse (JSON.stringify (this.values.currentOptionCategories)),
         chartColumnOptions: this.values.chartColumnOptions,
         paletteColors: this.values.paletteColors,
-        functions: this.functions
+        functions: this.functions,
+        nciles: this.nciles
       }
     });
 
@@ -5449,7 +5452,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       autoFocus: false,
       data: {
         options: this.values.options,
-        functions: this.functions
+        functions: this.functions,
+        nciles: this.nciles
       }
     });
 
