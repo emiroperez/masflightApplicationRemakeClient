@@ -116,10 +116,10 @@ export class DatalakeComponent implements OnInit {
     _this.globals.isLoading = false;
   }
 
-  // setOption(option: number): void
-  // {
-  //   this.currentOption = option;
-  // }
+  setOption(event: any): void
+  {
+    this.currentOption = event;
+  }
 
   setCurrentOptionSelected(event: any){
     this.currentOption = event;

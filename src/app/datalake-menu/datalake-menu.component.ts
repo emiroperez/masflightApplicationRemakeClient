@@ -8,8 +8,8 @@ import { Globals } from '../globals/Globals';
   templateUrl: './datalake-menu.component.html'
 })
 export class DatalakeMenuComponent implements OnInit {
-  // @Output('setOption')
-  // setOption = new EventEmitter ();
+  @Output('setOption')
+  setOption = new EventEmitter ();
 
   constructor(public globals: Globals,private dialog: MatDialog) { }
 
@@ -31,6 +31,7 @@ export class DatalakeMenuComponent implements OnInit {
 
   setOptionSelect(opcion){
     this.globals.optionDatalakeSelected = opcion;
-    // this.setOption.emit(opcion);
+    let data = {schemaName: null, tableName: null}
+    this.setOption.emit(data);
   }
 }

@@ -72,7 +72,6 @@ export class DatalakeAlarmsComponent implements OnInit {
 
   ngOnInit()
   {
-    // this.time = new Date ();
     this.innerHeight = window.innerHeight;
 
     this.globals.isLoading = true;
@@ -169,14 +168,13 @@ export class DatalakeAlarmsComponent implements OnInit {
     tableSelector.enable ();
     tableSelector.markAsUntouched ();
 
-    if(_this.currentOption){
+
     if(_this.currentOption.tableName){
       var index = _this.tables.findIndex (aux => aux == _this.currentOption.tableName);
       if(index != -1){
         tableSelector.setValue (_this.tables[index]);
         tableSelector.disable ();
       }
-    }
   }
     
     _this.globals.isLoading = false;
@@ -391,8 +389,6 @@ saveAlarmHandler(_this, data) {
     _this.alarmTable.data = _this.alarms;
     _this.alarmTable._updateChangeSubscription ();    
     _this.alarmFormGroup.reset()
-    // _this.alarmFormGroup.get ("schema").setValue ("");
-    // _this.alarmFormGroup.get ("table").setValue ("");
     _this.globals.isLoading = false;
   }else{
     _this.globals.isLoading = false;
@@ -437,7 +433,6 @@ filterAlarm(): void
 
 setschema()
 {
-  if(this.currentOption){
   if(this.currentOption.schemaName){
     var index = this.schemas.findIndex (aux => aux == this.currentOption.schemaName);
     if(index != -1){
@@ -447,14 +442,5 @@ setschema()
     }
   }
 }
-}
-
-// ngOnChanges(changes: SimpleChanges): void
-// {
-//   if (changes['currentOption']){
-//     // this.globals.isLoading = false;
-//     this.setschema();
-//   }
-// }
 
 }

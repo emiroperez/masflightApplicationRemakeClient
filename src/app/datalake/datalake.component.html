@@ -9,8 +9,7 @@
         <img src="../../assets/images/{{globals.theme}}-adjust.png" class="msf-menu-ajustes-icon">
     </div>
     <div [style.display]="getMenuVisibility()" class="msf-menu-container">
-        <app-datalake-menu></app-datalake-menu>
-        <!-- <app-datalake-menu (setOption)="setOption($event)"></app-datalake-menu> -->
+        <app-datalake-menu (setOption)="setOption($event)"></app-datalake-menu>
     </div>
     <div [ngClass]="mobileQuery.matches ? 'msf-header-icons is-mobile'
                                      :(ResponsiveQuery.matches ? 'msf-header-icons is-MQueryresponsive':'msf-header-icons')">
