@@ -1481,20 +1481,19 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             @include msf-dashboard-dialog-loading(250px, $quaternary-background-color, url(assets/images/#{$name}-loading_pulse.gif))
         .datalake-create-table-dialog
             .datalake-create-table-header
-                background-color: $admin-menu-background
-                color: $font-color
-                .mat-button-wrapper
-                    color: $font-color !important
+                background-color: $control-variable-hover-background-color
             .datalake-create-table-body
-                .datalake-file-type-picker , .datalake-file-type-picker-upload
+                .mat-tab-labels
+                    background-color: $dashboard-background-color
+                .datalake-file-type-picker, .datalake-file-type-picker-upload
                     .mat-radio-checked
                         color: #ffffff !important
                         background-color: $primary-color
                         border-color: $primary-color !important
                         .mat-radio-outer-circle
-                            border-color: $font-color !important
+                            border-color: #ffffff !important
                         .mat-radio-inner-circle
-                            background-color: $font-color !important
+                            background-color: #ffffff !important
                     .datalake-file-type-radio
                         color: rgba($font-color, 0.5)
                         border-color: rgba($font-color, 0.5)
@@ -1507,18 +1506,18 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                             background-color: $primary-color
                             border-color: $primary-color !important
                             .mat-radio-outer-circle
-                                border-color: $font-color !important
+                                border-color: #ffffff !important
                             .mat-radio-inner-circle
-                                background-color: $font-color !important
+                                background-color: #ffffff !important
                 .datalake-create-table-input-file-picker, .datalake-create-table-input-file-picker-upload
                     .mat-input-element:disabled
                         color: $font-color !important
                     .mat-form-field-infix
-                        background-color: $admin-menu-background
+                        background-color: $body-background-color
             .datalake-create-table-tab, .datalake-data-upload-tab
                 background-color: $dashboard-secondary-background-color
                 .datalake-create-table-step
-                    background-color: $admin-menu-background
+                    background-color: $body-background-color
                     .mat-stepper-vertical-line::before
                         border-left-color: $tertiary-disabled-color
                     .mat-step-label
@@ -1531,6 +1530,8 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                             color: $primary-color !important
                         .datalake-create-table-step-subtitle
                             color: $font-color !important
+        .datalake-create-table-step-content
+            background-color: $background-color
         .datalake-create-table-step-content, .datalake-alarm-comboboxes, .datalake-partition-comboboxes , .datalake-save-query-one-column, .datalake-save-query-two-column
             color: $font-color
             .mat-form-field-appearance-legacy.mat-form-field-disabled .mat-form-field-underline
@@ -7940,6 +7941,9 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         .datalake-create-table-header
             display: flex
             height: 60px
+            color: #ffffff
+            .mat-button-wrapper
+                color: #ffffff !important
             .datalake-create-table-title
                 min-width: 300px
                 width: 100%
@@ -7952,6 +7956,8 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         .datalake-create-table-body
             .mat-tab-label
                 opacity: 1 !important
+            .mat-step-icon .mat-icon
+                color: #ffffff
             .datalake-create-table-step-content
                 padding: 30px
                 width: 100%
