@@ -106,7 +106,7 @@ export class DatalakeComponent implements OnInit {
   {
     _this.globals.currentUser = data.name;
     _this.globals.optionDatalakeSelected = 2;
-    _this.globals.isLoading = false;
+    // _this.globals.isLoading = false;
     // _this.currentOption = 2;
   }
 
