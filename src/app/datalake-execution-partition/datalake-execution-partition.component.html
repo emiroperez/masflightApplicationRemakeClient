@@ -1,6 +1,10 @@
 <div class="datalake-explorer-container">
-    <div class="datalake-explorer-header">
-      <mat-form-field class="datalake-explorer-search-input-container">
+    <div class="datalake-explorer-header datalake-executionPart-header">
+      <button class="mat-icon-menu" mat-icon-button
+          (click)=changeOption()  matTooltip="Back">
+          <mat-icon>arrow_back</mat-icon>
+      </button>
+      <mat-form-field class="datalake-executionPart-search-input-container">
         <input matInput class="datalake-explorer-search-input" type="text" placeholder="Search"
          autocomplete="off" [(ngModel)]="filter" (ngModelChange)="filterPartition()">
         <mat-icon class="search-icon" aria-label="search">search</mat-icon>

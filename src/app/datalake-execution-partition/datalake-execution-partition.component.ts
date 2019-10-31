@@ -87,4 +87,11 @@ export class DatalakeExecutionPartitionComponent implements OnInit {
     this.partitionDetail.PartitionTable.paginator = this.partitionDetail.paginator;
   }
   
+  changeOption(){
+    if(this.globals.optionDatalakeSelected === 7){
+      this.globals.optionDatalakeSelected = 6;
+    }else if(this.globals.optionDatalakeSelected === 8){
+      this.globals.optionDatalakeSelected = 2;
+    }
+  }
 }

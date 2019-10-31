@@ -6,6 +6,12 @@
       <mat-icon class="search-icon" aria-label="search">search</mat-icon>
     </mat-form-field>
     <div class="datalake-explorer-header-title">Partition Management</div>
+    <div class="datalake-explorer-buttons">
+        <!-- btn-logs-partition -->
+    <button mat-button class="datalake-explorer-button"  matTooltip="Execution Partition Logs">
+        <mat-icon class="datalake-explorer-button-add-icon" (click)="globals.optionDatalakeSelected = 7">history</mat-icon>
+    </button>
+  </div>
   </div>
   <div class="datalake-partitions-body">
     <div class="datalake-partitions-item">
