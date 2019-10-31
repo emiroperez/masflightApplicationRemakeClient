@@ -14,8 +14,6 @@ import { any } from '@amcharts/amcharts4/.internal/core/utils/Array';
   templateUrl: './datalake-explorer.component.html'
 })
 export class DatalakeExplorerComponent implements OnInit {
-  // @Input("currentOption")
-  // currentOption: number;
 
   @Output('setCurrentOptionSelected')
   setCurrentOptionSelected = new EventEmitter ();
@@ -38,15 +36,8 @@ export class DatalakeExplorerComponent implements OnInit {
     this.setCurrentScreen ();
   }
 
-  // ngOnChanges(changes: SimpleChanges): void
-  // {
-  //   if (changes['currentOption'])
-  //     this.setCurrentScreen ();
-  // }
-
   setCurrentScreen(): void
   {
-    // if (this.currentOption == 3)
     if (this.globals.optionDatalakeSelected === 3)
       this.goToScreen (1);
     else
@@ -138,12 +129,7 @@ export class DatalakeExplorerComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(() => {
-      // if (request) {
-        // this.tableCards.push(new DatalakeTableCardValues (request.tableName,
-        //   request.tableDesc, request.s3TableLocation, request.schemaName, request.longName,"0.0000","0.0000",null,null,null));          
-        // this.filterTableCards ();
         this.service.getDatalakeTables (this, this.handlerSuccess, this.handlerError);
-      // }
     });
   }
 
@@ -163,16 +149,11 @@ export class DatalakeExplorerComponent implements OnInit {
 
   setOption(option: any): void
   {    
-    // this.globals.optionDatalakeSelected = option.option;
     this.setCurrentOptionSelected.emit(option);
   }
 
-  goToQueryEngine(){
-    let value = {
-      option: 3
-    }
-    this.globals.optionDatalakeSelected = 3;
-    // this.setCurrentOptionSelected.emit(value) ;
+  changeOption(option){
+    this.globals.optionDatalakeSelected = option;
     this.setCurrentScreen();
   }
 }

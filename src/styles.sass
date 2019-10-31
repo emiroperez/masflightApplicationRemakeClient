@@ -7454,15 +7454,19 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     flex-direction: column
     width: 100%
     height: 100%
-    .datalake-explorer-header
+    .datalake-explorer-header, .datalake-executionPart-header
         display: flex
         height: 20px
         padding: 20px
+        .datalake-executionPart-search-input-container
+            padding-right: 50px
+            width: 45%
         .datalake-explorer-search-input-container
             padding-right: 50px
             margin-top: -18px
             margin-left: -5px
             width: 45%
+        .datalake-explorer-search-input-container , .datalake-executionPart-search-input-container
             .datalake-explorer-search-input
                 border-style: solid
                 border-width: 1px
@@ -8753,3 +8757,21 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     overflow-y: auto
     text-align: left
     padding: 0px 5px
+
+.btn-logs-partition
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: flex-end
+    padding: 0px !important
+
+.datalake-explorer-container
+    display: flex
+    flex-direction: column
+    width: 100%
+    height: 100%
+    .datalake-executionPart-header
+        align-items: center
+        .datalake-executionPart-search-input-container
+            padding-right: 50px
+            width: 45%
