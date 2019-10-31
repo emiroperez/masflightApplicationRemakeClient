@@ -14,7 +14,7 @@ import { ReplaySubject, Subject } from 'rxjs';
   selector: 'app-datalake-data-upload',
   templateUrl: './datalake-data-upload.component.html'
 })
-export class DatalakeDataUploadComponent{
+export class DatalakeDataUploadComponent {
   @Input("schemas")
   schemas: DatalakeQuerySchema[] = [];
 
@@ -40,7 +40,8 @@ export class DatalakeDataUploadComponent{
   _onDestroy: Subject<void> = new Subject<void> ();
 
   tableConfigurationFormGroup: FormGroup;
-  partitionManagementFormGroup: FormGroup;
+  uploadFileFormGroup: FormGroup;
+  // partitionManagementFormGroup: FormGroup;
 
   fileTypes: string[] = [ "CSV", "PARQUET" ];
   selectedFileType: string = "CSV";
@@ -64,17 +65,20 @@ export class DatalakeDataUploadComponent{
       schema: ['', Validators.required],
       table: new FormControl ({ value: '', disabled: true }, Validators.required),
       bucket: new FormControl ({ value: '', disabled: true }, Validators.required),
-      customDelimiter: new FormControl ({ value: '', disabled: true }),
-      tableLocation: ['', Validators.required],
-      fileName: new FormControl ({ value: '', disabled: true }, Validators.required)
+      tableLocation: ['', Validators.required]
     });
 
-    this.partitionManagementFormGroup = this.formBuilder.group ({
+    this.uploadFileFormGroup = this.formBuilder.group ({
+      fileName: new FormControl ('', Validators.required),
+      customDelimiter: new FormControl ({ value: '', disabled: true }, Validators.required)
+    });
+
+    /*this.partitionManagementFormGroup = this.formBuilder.group ({
       schemaName: ['', Validators.required],
       tableName: ['', Validators.required],
       runType: ['', Validators.required],
       status: ['', Validators.required]
-    });
+    });*/
 
     this.filteredTables.next (this.tables.slice ());
     this.searchChange ();
@@ -93,14 +97,6 @@ export class DatalakeDataUploadComponent{
       return;
     }
 
-    if (stepper.selectedIndex == 1 &&  !this.tableConfigurationFormGroup.get ("fileName").value){
-      this.dialog.open (MessageComponent, {
-        data: { title: "Error", message: "The required information is incomplete, please complete them and try again." }
-      });
-  
-      return;
-    }
-
     // validate form before going forward
     Object.keys (formGroup.controls).forEach (field =>
     {
@@ -108,7 +104,6 @@ export class DatalakeDataUploadComponent{
     });
   
     if (formGroup.invalid)
-    // if (formGroup.invalid || !this.tableConfigurationFormGroup.get ("fileName").value)
     {
       this.dialog.open (MessageComponent, {
         data: { title: "Error", message: "The required information is incomplete, please complete them and try again." }
@@ -180,7 +175,7 @@ export class DatalakeDataUploadComponent{
 
   toggleCustomDelimiter(): void
   {
-    let customDelimiter = this.tableConfigurationFormGroup.get ("customDelimiter");
+    let customDelimiter = this.uploadFileFormGroup.get ("customDelimiter");
 
     if (this.selectedDelimiter === "CUSTOM")
     {
@@ -225,7 +220,7 @@ export class DatalakeDataUploadComponent{
   {
     if (this.selectedFileType === "CSV" && this.selectedDelimiter === "CUSTOM")
     {
-      if (this.tableConfigurationFormGroup.get ("customDelimiter").value === "")
+      if (this.uploadFileFormGroup.get ("customDelimiter").value === "")
       {
         this.dialog.open (MessageComponent, {
           data: { title: "Error", message: "You must specify a delimiter before importing a file." }
@@ -252,7 +247,7 @@ export class DatalakeDataUploadComponent{
         return "\t";
 
       default:
-        return this.tableConfigurationFormGroup.get ("customDelimiter").value;
+        return this.uploadFileFormGroup.get ("customDelimiter").value;
     }
   }
 
@@ -276,7 +271,7 @@ export class DatalakeDataUploadComponent{
   
     /*let fileReader: FileReader;
 
-    this.tableConfigurationFormGroup.get ("fileName").setValue (this.targetFile.name)
+    this.uploadFileFormGroup.get ("fileName").setValue (this.targetFile.name)
     this.targetFileSize = this.calcFileSize (this.targetFile.size);
     this.dataSource = [];
 
@@ -319,7 +314,7 @@ export class DatalakeDataUploadComponent{
   {
     let fileReader: FileReader;
 
-    _this.tableConfigurationFormGroup.get ("fileName").setValue (_this.targetFile.name);
+    _this.uploadFileFormGroup.get ("fileName").setValue (_this.targetFile.name);
     _this.targetFileSize = _this.calcFileSize (_this.targetFile.size);
 
     _this.dataSource = [];
@@ -366,7 +361,7 @@ export class DatalakeDataUploadComponent{
     // remove filename from input if the upload failed
     _this.fileLoading = false;
     _this.targetFile = null;
-    _this.tableConfigurationFormGroup.get ("fileName").setValue (null);
+    _this.uploadFileFormGroup.get ("fileName").setValue ("");
 
     console.log (result);
   }
@@ -380,7 +375,7 @@ export class DatalakeDataUploadComponent{
 
     this.targetFileSize = null;
     this.targetFile = null;
-    this.tableConfigurationFormGroup.get ("fileName").setValue (null);
+    this.uploadFileFormGroup.get ("fileName").setValue ("");
     uploader.value = null;
   }
 
@@ -500,5 +495,10 @@ export class DatalakeDataUploadComponent{
       this.setschema();
     }
   }
-  
+
+  disableFileNameInput(event): void
+  {
+    event.preventDefault ();
+    event.stopPropagation ();
+  }
 }

@@ -10,7 +10,7 @@
         </span>
         <span *ngIf="!active">{{index + 1}}</span>
       </ng-template>
-      <mat-step>
+      <mat-step [stepControl]="tableConfigurationFormGroup">
         <ng-template matStepLabel>
           <div class="datalake-create-table-step-container">
             <span class="datalake-create-table-step-label">STEP 1</span>
@@ -18,7 +18,7 @@
           </div>
         </ng-template>
       </mat-step>
-      <mat-step *ngIf="selectedFileType === 'CSV'">
+      <mat-step [stepControl]="uploadFileFormGroup">
         <ng-template matStepLabel>
           <div class="datalake-create-table-step-container">
             <span class="datalake-create-table-step-label">STEP 2</span>
@@ -124,7 +124,7 @@
         </div>
         <div class="datalake-create-table-step-buttons">
           <button class="datalake-create-table-step-button flat-button" mat-button
-            (click)="goForward(tableConfigurationFormGroup, stepper)">
+            (click)="goForward(uploadFileFormGroup, stepper)">
             NEXT
             <mat-icon>arrow_forward_ios</mat-icon>
           </button>
@@ -143,7 +143,7 @@
         class="datalake-file-type-picker-upload">
         <mat-radio-button class="cancels-checkbox datalake-file-type-radio" *ngFor="let delimiter of delimiters" [value]="delimiter">{{delimiter}}</mat-radio-button>
         </mat-radio-group>
-        <mat-form-field class="datalake-custom-delimiter-upload datalake-upload-data-custom-delimiter" [formGroup]="tableConfigurationFormGroup">
+        <mat-form-field class="datalake-custom-delimiter-upload datalake-upload-data-custom-delimiter" [formGroup]="uploadFileFormGroup">
           <input matInput placeholder="Custom Delimiter" autocomplete="off" formControlName="customDelimiter">
         </mat-form-field>
       </div>
@@ -151,14 +151,15 @@
       <div class="datalake-create-table-input-file-picker-upload">
         <span class="datalake-file-picker-label datalake-upload-table-input-body-left">Filename *:</span>
         <div class="datalake-upload-table-input-body-right">
-        <mat-form-field class="datalake-file-input" [formGroup]="tableConfigurationFormGroup">
-          <input matInput formControlName="fileName" required>
-        </mat-form-field>
-        <input hidden type="file" accept="{{getAcceptedFileFormat()}}" #uploader (change)="uploadFile($event)">
-        <!-- <input hidden type="file" accept="{{getAcceptedFileFormat()}}" #uploader> -->
-        <button class="datalake-browse-file-button flat-button" mat-button (click)="browseFile(uploader)">
-          Browse
-        </button>
+          <mat-form-field class="datalake-file-input" [formGroup]="uploadFileFormGroup">
+            <input hidden matInput formControlName="fileName" required>
+            <span>{{uploadFileFormGroup.get('fileName').value}}</span>
+          </mat-form-field>
+          <input hidden type="file" accept="{{getAcceptedFileFormat()}}" #uploader (change)="uploadFile($event)">
+          <!-- <input hidden type="file" accept="{{getAcceptedFileFormat()}}" #uploader> -->
+          <button class="datalake-browse-file-button flat-button" mat-button (click)="browseFile(uploader)">
+            Browse
+          </button>
       </div>
       </div>
       <div class="datalake-max-filesize-label">

@@ -70,8 +70,8 @@ export class DatalakeCreateNewStructureComponent {
       bucket: new FormControl ({ value: '', disabled: true }, Validators.required),
       tableDescription: new FormControl ({ value: '', disabled: true }),
       tableLocation: [''],
-      customDelimiter: new FormControl ({ value: '', disabled: true }),
-      fileName: new FormControl ({ value: '', disabled: true }, Validators.required)
+      customDelimiter: new FormControl ({ value: '', disabled: true }, Validators.required),
+      fileName: new FormControl ('', Validators.required)
     });
   }
 
@@ -96,7 +96,7 @@ export class DatalakeCreateNewStructureComponent {
         this.tableConfigurationFormGroup.get (field).markAsTouched ({ onlySelf: true });
       });
 
-      if (this.tableConfigurationFormGroup.invalid || !this.tableConfigurationFormGroup.get ("fileName").value)
+      if (this.tableConfigurationFormGroup.invalid)
       {
         this.dialog.open (MessageComponent, {
           data: { title: "Error", message: "The required information is incomplete, please complete them and try again." }
@@ -108,7 +108,7 @@ export class DatalakeCreateNewStructureComponent {
       //   this.addPartitionS3tabletLocation(this.tableConfigurationFormGroup.get ("tableLocation").value);
       // }
     }
-    else if ((stepper.selectedIndex == 1 && this.selectedFileType === 'PARQUET'))
+    /*else if ((stepper.selectedIndex == 1 && this.selectedFileType === 'PARQUET'))
     {
       if (!this.partitions.length)
       {
@@ -118,7 +118,7 @@ export class DatalakeCreateNewStructureComponent {
   
         return;
       }
-  }
+    }*/
 
     stepper.next ();
   }

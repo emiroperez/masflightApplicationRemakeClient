@@ -1530,6 +1530,8 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                             color: $primary-color !important
                         .datalake-create-table-step-subtitle
                             color: $font-color !important
+                    .mat-step-optional
+                        color: rgba($font-color,.54)
         .datalake-create-table-step-content
             background-color: $background-color
         .datalake-create-table-step-content, .datalake-alarm-comboboxes, .datalake-partition-comboboxes , .datalake-save-query-one-column, .datalake-save-query-two-column
@@ -8118,6 +8120,8 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                     margin-bottom: 7.5px
                 .mat-form-field-infix
                     margin-top: 3px
+                    padding-left: 5px
+                    height: 12px
                 .mat-input-element:disabled
                     margin-bottom: 5px
                     padding: 0 10px
@@ -8136,6 +8140,10 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                     max-width: calc(75% - 84px)
                     min-width: calc(75% - 84px)
                     display: flex
+                    .mat-input-element
+                        cursor: default !important
+                    .mat-form-field-underline
+                        display: none
                     .mat-form-field-wrapper
                         display: flex
                         width: 100%
@@ -8147,6 +8155,8 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                     // margin-bottom: 7.5px
                 .mat-form-field-infix
                     margin-top: 3px
+                    padding-left: 5px
+                    height: 12px
                 .mat-input-element:disabled
                     margin-bottom: 5px
                     padding: 0 10px
@@ -8453,6 +8463,10 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 .datalake-file-input
     // margin-left: 10px !important
     width: calc(100% - 160px) !important
+    .mat-input-element
+        cursor: default !important
+    .mat-form-field-underline
+        display: none
 
 .datalake-checkbox 
     display: flex

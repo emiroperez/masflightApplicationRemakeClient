@@ -10,7 +10,7 @@
         </span>
         <span *ngIf="!active">{{index + 1}}</span>
       </ng-template>
-      <mat-step>
+      <mat-step [stepControl]="tableConfigurationFormGroup">
         <ng-template matStepLabel>
           <div class="datalake-create-table-step-container">
             <span class="datalake-create-table-step-label">STEP 1</span>
@@ -26,7 +26,7 @@
           </div>
         </ng-template>
       </mat-step>
-      <mat-step>
+      <mat-step optional>
         <ng-template matStepLabel>
           <div class="datalake-create-table-step-container">
             <span class="datalake-create-table-step-label" *ngIf="selectedFileType === 'CSV'">STEP 3</span>
@@ -140,7 +140,8 @@
       <div class="datalake-create-table-input-file-picker">
         <span class="datalake-file-picker-label">Filename *:</span>
         <mat-form-field class="datalake-file-picker-form" [formGroup]="tableConfigurationFormGroup">
-          <input class="datalake-file-picker-form-input" matInput formControlName="fileName" required>
+          <input hidden class="datalake-file-picker-form-input" matInput formControlName="fileName" required>
+          <span>{{tableConfigurationFormGroup.get('fileName').value}}</span>
         </mat-form-field>
         <input hidden type="file" accept="{{getAcceptedFileFormat()}}" #uploader (change)="uploadFile($event)">
         <button class="datalake-browse-file-button flat-button" mat-button (click)="browseFile(uploader)">
