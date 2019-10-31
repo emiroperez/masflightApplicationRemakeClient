@@ -151,10 +151,12 @@ export class DatalakeCreateNewStructureComponent {
     if (this.selectedDelimiter === "CUSTOM")
     {
       // this.tableConfigurationFormGroup.get ("fileName").setValue ("");
+      customDelimiter.markAsUntouched ();
       customDelimiter.enable ();
       return;
     }
 
+    customDelimiter.markAsUntouched ();
     customDelimiter.setValue ("");
     customDelimiter.disable ();
     // this.tableConfigurationFormGroup.get ("fileName").setValue ("");

@@ -135,6 +135,7 @@
         </mat-radio-group>
         <mat-form-field class="datalake-custom-delimiter" [formGroup]="tableConfigurationFormGroup">
           <input matInput placeholder="Custom Delimiter" autocomplete="off" formControlName="customDelimiter">
+          <mat-error *ngIf="tableConfigurationFormGroup.get('customDelimiter')?.invalid">You must specify a custom delimiter</mat-error>
         </mat-form-field>
       </div>
       <div class="datalake-create-table-input-file-picker">

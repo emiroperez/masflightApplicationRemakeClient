@@ -179,10 +179,12 @@ export class DatalakeDataUploadComponent {
 
     if (this.selectedDelimiter === "CUSTOM")
     {
+      customDelimiter.markAsUntouched ();
       customDelimiter.enable ();
       return;
     }
 
+    customDelimiter.markAsUntouched ();
     customDelimiter.setValue ("");
     customDelimiter.disable ();
   }

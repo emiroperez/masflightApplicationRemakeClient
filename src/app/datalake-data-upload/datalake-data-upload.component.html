@@ -145,6 +145,7 @@
         </mat-radio-group>
         <mat-form-field class="datalake-custom-delimiter-upload datalake-upload-data-custom-delimiter" [formGroup]="uploadFileFormGroup">
           <input matInput placeholder="Custom Delimiter" autocomplete="off" formControlName="customDelimiter">
+          <mat-error *ngIf="uploadFileFormGroup.get('customDelimiter')?.invalid">You must specify a custom delimiter</mat-error>
         </mat-form-field>
       </div>
       </div>
