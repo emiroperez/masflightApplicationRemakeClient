@@ -64,7 +64,7 @@
         <mat-form-field class="datalake-create-table-input-body-left" 
         [formGroup]="tableConfigurationFormGroup">
           <mat-select placeholder="Schema" autocomplete="off" formControlName="schema"
-            (selectionChange)="schemaChanged()" required [disabled]="Datavalue.schemaName">
+            (selectionChange)="schemaChanged()" required>
             <mat-option *ngFor="let schema of schemas" [value]="schema">
               {{schema.schemaName}}
             </mat-option>

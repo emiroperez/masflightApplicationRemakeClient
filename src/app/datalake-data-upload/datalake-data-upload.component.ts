@@ -27,6 +27,12 @@ export class DatalakeDataUploadComponent{
   @Output("closeDialog")
   closeDialog = new EventEmitter ();
 
+  @Output("startLoading")
+  startLoading = new EventEmitter ();
+
+  @Output("stopLoading")
+  stopLoading = new EventEmitter ();
+
   currentBuckets: DatalakeBucket[] = [];
   tables: string[] = [];
   tableFilterCtrl: FormControl = new FormControl ();
@@ -132,7 +138,7 @@ export class DatalakeDataUploadComponent{
       if (bucket.schemaName === schema.schemaName)
         this.currentBuckets.push (bucket);
     }
-    this.globals.isLoading = true;
+    this.startLoading.emit ();
     this.service.getDatalakeSchemaTables (this, schema.schemaName, this.setSchemaTables, this.setSchemaTablesError);
   }
 
@@ -143,7 +149,7 @@ export class DatalakeDataUploadComponent{
 
     if (!data.Tables.length)
     {
-      _this.globals.isLoading = false;
+      _this.stopLoading.emit ();
 
       tableSelector.setValue (null);
       tableSelector.disable ();
@@ -169,7 +175,7 @@ export class DatalakeDataUploadComponent{
       }
     }
 
-    _this.globals.isLoading = false;
+    _this.stopLoading.emit ();
   }
 
   toggleCustomDelimiter(): void
@@ -390,7 +396,7 @@ export class DatalakeDataUploadComponent{
     tableSelector.setValue (null);
     tableSelector.disable ();
     tableSelector.markAsUntouched ();
-    _this.globals.isLoading = false;
+    _this.stopLoading.emit ();
   }
   
   searchChange(): void
@@ -439,13 +445,13 @@ export class DatalakeDataUploadComponent{
         separator: this.delimiterCharacter,
         tableName: this.tableConfigurationFormGroup.get ("table").value
       };
-      this.globals.isLoading = true;
+      this.startLoading.emit ();
       this.service.dataUploadDatalake (this, request,this.fileInfo, this.handlerDataUpload, this.dataUploadError);
     }
 
     handlerDataUpload(_this, data): void
     {
-      _this.globals.isLoading = false;
+      _this.stopLoading.emit ();
       if (data.message){
         _this.dialog.open (MessageComponent, {
           data: { title: "Error", message: data.message }
@@ -461,7 +467,7 @@ export class DatalakeDataUploadComponent{
   
     dataUploadError(_this, result): void
     {
-      _this.globals.isLoading = false;
+      _this.stopLoading.emit ();
       console.log (result);
   
       _this.dialog.open (MessageComponent, {
@@ -476,9 +482,12 @@ export class DatalakeDataUploadComponent{
       var index = this.schemas.findIndex (aux => aux.schemaName == this.Datavalue.schemaName);
       if(index != -1){
         this.tableConfigurationFormGroup.get ("schema").setValue (this.schemas[index]);
+        this.tableConfigurationFormGroup.get ("schema").disable ();
         this.schemaChanged();
       }
     }
+    else
+      this.tableConfigurationFormGroup.get ("schema").enable ();
     // if(this.Datavalue.tableName){
     //   this.tableConfigurationFormGroup.get ("schema").setValue (this.Datavalue.schemaName);
     // }
@@ -487,7 +496,7 @@ export class DatalakeDataUploadComponent{
   ngOnChanges(changes: SimpleChanges): void
   {
     if (changes['Datavalue']){
-      // this.globals.isLoading = false;
+      // this.stopLoading.emit ();
       this.setschema();
     }
   }

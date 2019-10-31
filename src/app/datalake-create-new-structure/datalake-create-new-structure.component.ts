@@ -23,6 +23,12 @@ export class DatalakeCreateNewStructureComponent {
   @Output("closeDialog")
   closeDialog = new EventEmitter ();
 
+  @Output("startLoading")
+  startLoading = new EventEmitter ();
+
+  @Output("stopLoading")
+  stopLoading = new EventEmitter ();
+
   currentBuckets: DatalakeBucket[] = [];
 
   tableConfigurationFormGroup: FormGroup;
@@ -395,13 +401,13 @@ export class DatalakeCreateNewStructureComponent {
       separator: this.delimiterCharacter,
       longName: this.tableConfigurationFormGroup.get ("tableLongName").value
     };
-    this.globals.isLoading = true;
+    this.startLoading.emit ();
     this.service.createDatalakeTable (this, this.request, this.tableCreated, this.createTableError);
   }
 
   tableCreated(_this, data): void
   {
-    // _this.globals.isLoading = false;
+    // _this.stopLoading.emit ();
     if (data.message){
       _this.dialog.open (MessageComponent, {
         data: { title: "Error", message: data.message }
@@ -425,7 +431,7 @@ export class DatalakeCreateNewStructureComponent {
   createTableError(_this, result): void
   {
     console.log (result);
-    _this.globals.isLoading = false;
+    _this.stopLoading.emit ();
 
     _this.dialog.open (MessageComponent, {
       data: { title: "Error", message: "Failed to create new table." }

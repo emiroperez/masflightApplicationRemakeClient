@@ -102,4 +102,14 @@ export class DatalakeCreateTableComponent {
   tabIndexChange(event){
     this.data.index=event;
   }
+
+  startLoading(): void
+  {
+    this.isLoading = true;
+  }
+
+  stopLoading(): void
+  {
+    this.isLoading = false;
+  }
 }
