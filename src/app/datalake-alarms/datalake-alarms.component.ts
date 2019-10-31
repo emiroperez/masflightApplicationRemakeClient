@@ -169,6 +169,7 @@ export class DatalakeAlarmsComponent implements OnInit {
     tableSelector.enable ();
     tableSelector.markAsUntouched ();
 
+    if(_this.currentOption){
     if(_this.currentOption.tableName){
       var index = _this.tables.findIndex (aux => aux == _this.currentOption.tableName);
       if(index != -1){
@@ -176,6 +177,7 @@ export class DatalakeAlarmsComponent implements OnInit {
         tableSelector.disable ();
       }
     }
+  }
     
     _this.globals.isLoading = false;
 
@@ -435,13 +437,16 @@ filterAlarm(): void
 
 setschema()
 {
+  if(this.currentOption){
   if(this.currentOption.schemaName){
     var index = this.schemas.findIndex (aux => aux == this.currentOption.schemaName);
     if(index != -1){
       this.alarmFormGroup.get ("schema").setValue (this.schemas[index]);
+      this.alarmFormGroup.get ("schema").disable ();
       this.schemaChanged();
     }
   }
+}
 }
 
 // ngOnChanges(changes: SimpleChanges): void
