@@ -18,6 +18,7 @@ export class DatalakeCreateTableComponent {
   buckets: DatalakeBucket[] = [];
   Datavalue: any;
   isLoading: boolean = false;
+  redrawTab: boolean = false;
 
   @ViewChild("tabs")
   tabs: MatTabGroup;
@@ -64,8 +65,12 @@ export class DatalakeCreateTableComponent {
       _this.buckets.push (new DatalakeBucket (bucket.bucketName, bucket.schemaName));
 
     _this.isLoading = false;
-    _this.upload.setschema();
-    _this.tabs.realignInkBar ();
+    _this.upload.setschema ();
+
+    if (_this.data.schemaName)
+      _this.redrawTab = true;
+    else
+      _this.tabs.realignInkBar ();
   }
 
   handlerError(_this, result): void
@@ -95,12 +100,14 @@ export class DatalakeCreateTableComponent {
     return "block";
   }
 
-  getSelectedIndex(){
+  getSelectedIndex(): number
+  {
     return this.data.index;
   }
 
-  tabIndexChange(event){
-    this.data.index=event;
+  tabIndexChange(event): void
+  {
+    this.data.index = event;
   }
 
   startLoading(): void
@@ -111,5 +118,11 @@ export class DatalakeCreateTableComponent {
   stopLoading(): void
   {
     this.isLoading = false;
+
+    if (this.redrawTab)
+    {
+      this.tabs.realignInkBar (); // realing ink bar for the tab just in case
+      this.redrawTab = false;
+    }
   }
 }
