@@ -1,3 +1,5 @@
+import * as moment from 'moment';
+
 // Object used to mantain data values for a datalake table card
 export class DatalakeTableCardValues {
     tableName: string;
@@ -8,13 +10,13 @@ export class DatalakeTableCardValues {
     lastHDI: string;
     lastDDI: string;
     nRows: string;
-    lastUpdate: string;
+    lastUpdate: Date;
     mb: string;
 
     constructor(tableName: string, descr: string, bucketName: string,
         schemaName: string, longName: string,
         lastHDI: string, lastDDI: string,
-        nRows: string, lastUpdate: string,mb: string)
+        nRows: string, lastUpdate: string, mb: string)
     {
         this.tableName = tableName;
         this.descr = descr;
@@ -24,7 +26,19 @@ export class DatalakeTableCardValues {
         this.lastHDI = lastHDI;
         this.lastDDI = lastDDI;
         this.nRows = nRows;
-        this.lastUpdate = lastUpdate;
+
+        if (lastUpdate === "N/A")
+            this.lastUpdate = null;
+        else
+        {
+            let momentDate = moment (lastUpdate, "YYYYMMDDHHmmss");
+
+            if (momentDate.isValid ())
+                this.lastUpdate = momentDate.toDate ();
+            else
+                this.lastUpdate = null;
+        }
+
         this.mb = mb;
     }
 }

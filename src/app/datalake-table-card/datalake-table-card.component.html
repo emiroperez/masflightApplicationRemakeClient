@@ -6,7 +6,8 @@
     </div>
     <div class="datalake-table-card-update-container">
       <span class="datalake-table-card-update-title">Last Update</span>
-      <span>{{values.lastUpdate}}</span>
+      <span *ngIf="!values.lastUpdate">N/A</span>
+      <span *ngIf="values.lastUpdate">{{values.lastUpdate | date: 'MM/dd/yyyy h:mm:ss'}}</span>
     </div>
   </div>
   <mat-tab-group [selectedIndex]="selectedTabIndex" headerPosition="below">
