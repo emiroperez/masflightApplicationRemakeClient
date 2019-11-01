@@ -23,6 +23,10 @@ export class DatalakeQueryEngineComponent implements OnInit {
   resizePanels: boolean = false;
   selectedIndex: number = 0;
 
+  savequerymouseover: boolean = false;
+  queryhistorymouseover: boolean = false;
+  runquerymouseover: boolean = false;
+
   // queryTabs: DatalakeQueryTab[] = [ new DatalakeQueryTab () ];
   querySchemas: DatalakeQuerySchema[] = [];
   queryLoading: boolean;
@@ -365,4 +369,27 @@ export class DatalakeQueryEngineComponent implements OnInit {
     _this.startQueryTime = null;
   }
 
+  getSaveQueryImage(): string
+  {
+    if (this.savequerymouseover)
+      return "../../assets/images/dark-theme-datalake-save-query.png";
+
+    return "../../assets/images/" + this.globals.theme + "-datalake-save-query.png";
+  }
+
+  getQueryHistoryImage(): string
+  {
+    if (this.queryhistorymouseover)
+      return "../../assets/images/dark-theme-datalake-query-history.png";
+
+    return "../../assets/images/" + this.globals.theme + "-datalake-query-history.png";
+  }
+
+  getRunQueryImage(): string
+  {
+    if (this.runquerymouseover)
+      return "../../assets/images/dark-theme-datalake-run-query.png";
+
+    return "../../assets/images/" + this.globals.theme + "-datalake-run-query.png";
+  }
 }
