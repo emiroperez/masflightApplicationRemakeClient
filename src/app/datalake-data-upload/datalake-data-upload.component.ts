@@ -43,7 +43,6 @@ export class DatalakeDataUploadComponent {
   uploadFileFormGroup: FormGroup;
   // partitionManagementFormGroup: FormGroup;
 
-  fileTypes: string[] = [ "CSV", "PARQUET" ];
   selectedFileType: string = "CSV";
   fileLoading: boolean = false;
   targetFileSize: string;
@@ -368,7 +367,7 @@ export class DatalakeDataUploadComponent {
     console.log (result);
   }
 
-  ResetStepper(stepper: MatStepper, uploader): void
+  resetStepper(stepper: MatStepper): void
   {
     stepper.reset ();
 
@@ -378,7 +377,6 @@ export class DatalakeDataUploadComponent {
     this.targetFileSize = null;
     this.targetFile = null;
     this.uploadFileFormGroup.get ("fileName").setValue ("");
-    uploader.value = null;
   }
 
 
@@ -433,7 +431,9 @@ export class DatalakeDataUploadComponent {
   dataUpload(): void
     {
       let request;
-  
+
+      // TODO: Verify form data for Step 2 for parquet files
+
       request = {
         bucket: this.tableConfigurationFormGroup.get ("bucket").value.bucketName,
         format: this.selectedFileType,

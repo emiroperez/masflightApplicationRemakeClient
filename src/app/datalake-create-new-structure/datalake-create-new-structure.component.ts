@@ -33,7 +33,6 @@ export class DatalakeCreateNewStructureComponent {
 
   tableConfigurationFormGroup: FormGroup;
 
-  fileTypes: string[] = [ "CSV", "PARQUET" ];
   selectedFileType: string = "CSV";
   fileLoading: boolean = false;
   targetFileSize: string;
