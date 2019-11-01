@@ -517,23 +517,21 @@ export class DatalakeCreateNewStructureComponent {
   }
 
   splitRows(delimiter, row): any {
-    let aux = [];
-    let regExpr = '\\'+delimiter+'"'+delimiter+'"';
-    let split = row.split(new RegExp(regExpr));
-    for (let index = 0; index < split.length; index++) {
-      const element = split[index];
-      let x = element.split("|").length;
-      if(element!=""){
-      if(x==1 || x==2){
-        aux.push(element);
-      }else{
-        let x = element.split(delimiter)
-        x = x.filter(String);
-        aux= aux.concat(x)
-      }
+    var exp =/("(.*?)")/g ;
+    var newString = row.replace(exp, '$');
+    var array = newString.split(delimiter);
+    // console.log(array);
+    var array2 =row.match(exp);
+    // console.log(array2);
+    for (let index = 0; index < array.length; index++) {
+      if(array[index]=='$'){
+        array[index] = array2[0].replace(/"/g,'');
+         array2.shift();
       }
     }
-    console.log(aux)
-    return aux;
+    // console.log(array);
+    return array;
   }
+
+
 }

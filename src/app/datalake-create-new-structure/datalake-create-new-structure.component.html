@@ -247,8 +247,8 @@
           <span class="datalake-create-table-step-description">Show the data in columns and allow to change the column header.</span>
           <div class="datalake-checkbox">
             <mat-checkbox class="admin-checkboxes" color="primary" 
-              [(ngModel)]="showSelected">
-              load data
+              [(ngModel)]="showSelected">              
+              Go to Data Upload after finishing
             </mat-checkbox>
           </div>
       </div>
@@ -279,16 +279,16 @@
             <span class="datalake-discovery-result-cell datalake-discovery-result-datatype">Map datatype to</span>
           </div>
           <div class="datalake-discovery-result-body" *ngFor="let column of filteredDataColumns | async">
-            <span class="datalake-discovery-result-cell">{{column.index}}</span>
-            <span class="datalake-discovery-result-cell">{{column.name}}</span>
-            <span class="datalake-discovery-result-cell">
+            <span class="datalake-discovery-result-cell ">{{column.index}}</span>
+            <span class="datalake-discovery-result-cell datalake-discovery-result-name">{{column.name}}</span>
+            <span class="datalake-discovery-result-cell datalake-discovery-result-name">
               <mat-form-field class="datalake-map-input">
                 <input matInput [(ngModel)]="column.mapName" autocomplete="off">
                 <mat-icon class="edit-icon" aria-label="search">edit</mat-icon>
               </mat-form-field>
             </span>
-            <span class="datalake-discovery-result-cell">{{column.dataType}}</span>
-            <span class="datalake-discovery-result-cell">
+            <span class="datalake-discovery-result-cell  datalake-discovery-result-datatype">{{column.dataType}}</span>
+            <span class="datalake-discovery-result-cell  datalake-discovery-result-datatype">
               <mat-form-field class="datalake-map-input">
                 <mat-select [(ngModel)]="column.mapDataType" autocomplete="off">
                   <mat-option *ngFor="let dataType of dataTypes" [value]="dataType">

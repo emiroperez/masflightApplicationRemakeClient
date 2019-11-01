@@ -178,6 +178,12 @@ export class DatalakeDataUploadComponent {
 
     if (this.selectedDelimiter === "CUSTOM")
     {
+      this.delimiterCharacter = null;
+      this.uploadFileFormGroup.get ("fileName").setValue ("");
+      this.dataSource = [];
+      this.rawData = [];
+      this.targetFileSize = null;
+
       customDelimiter.markAsUntouched ();
       customDelimiter.enable ();
       return;
@@ -186,6 +192,12 @@ export class DatalakeDataUploadComponent {
     customDelimiter.markAsUntouched ();
     customDelimiter.setValue ("");
     customDelimiter.disable ();
+    
+    this.delimiterCharacter = null;
+    this.uploadFileFormGroup.get ("fileName").setValue ("");
+    this.dataSource = [];
+    this.rawData = [];
+    this.targetFileSize = null;
   }
 
   calcFileSize(size: number): string
@@ -259,56 +271,30 @@ export class DatalakeDataUploadComponent {
 
     this.delimiterCharacter = this.getDelimiterCharacter ();
     this.targetFile = event.target.files[0];
-    this.fileInfo.append ('file', this.targetFile, this.targetFile.name);
+    // if(this.targetFile.size <= 130){
+    if(this.targetFile.size <= 104857600){ //100MB
+      this.fileInfo.append ('file', this.targetFile, this.targetFile.name);
 
-    tableFileConfig = {
-      separator: this.delimiterCharacter,
-      format: this.selectedFileType,
-      s3filepath: this.tableConfigurationFormGroup.get ("tableLocation").value
-    };
+      tableFileConfig = {
+        separator: this.delimiterCharacter,
+        format: this.selectedFileType,
+        s3filepath: this.tableConfigurationFormGroup.get ("tableLocation").value
+      };
 
-    this.fileLoading = true;
-    this.service.uploadDatalakeTableFile (this, tableFileConfig, this.fileInfo, this.uploadSuccess, this.uploadFailed);
-  
-    /*let fileReader: FileReader;
-
-    this.uploadFileFormGroup.get ("fileName").setValue (this.targetFile.name)
-    this.targetFileSize = this.calcFileSize (this.targetFile.size);
-    this.dataSource = [];
-
-    if (this.selectedFileType === "PARQUET")
-    {
+      this.fileLoading = true;
+      this.service.uploadDatalakeTableFile (this, tableFileConfig, this.fileInfo, this.uploadSuccess, this.uploadFailed);
+    }else{
+      this.selectedDelimiter = null;
+      this.uploadFileFormGroup.get ("customDelimiter").setValue ("");
+      this.delimiterCharacter = null;
+      this.uploadFileFormGroup.get ("fileName").setValue ("");
+      this.dataSource = [];
       this.rawData = [];
-      this.fileLoading = false;
-      return;
+      this.targetFileSize = this.calcFileSize (this.targetFile.size);
+      this.dialog.open (MessageComponent, {
+        data: { title: "Error", message: "Maximum upload size allowed 100 MB. Uploaded file size: "+ this.targetFileSize}
+      });
     }
-
-    fileReader = new FileReader ();
-    fileReader.onload = (e) => {
-      let data: string = fileReader.result as string;
-      let columns: string[];
-
-      // split the columns first
-      columns = data.split ("\r\n");
-
-      this.rawData = [];
-
-      // then the rows by the selected delimiter
-      for (let i = 0; i < columns.length; i++)
-      {
-        if (i >= 15)
-          break;    // limit it to 25 for better performance
-
-        this.rawData.push (columns[i].split (this.delimiterCharacter));
-      }
-
-      this.fileLoading = false;
-    };
-
-    // read file as text for data preview
-    fileReader.readAsText (this.targetFile);*/
-
-    
   }
 
   uploadSuccess(_this, data): void
@@ -347,7 +333,10 @@ export class DatalakeDataUploadComponent {
         if (i >= 15)
           break;    // limit it to 25 for better performance
 
-        _this.rawData.push (columns[i].split (_this.delimiterCharacter));
+        // _this.rawData.push (columns[i].split (_this.delimiterCharacter));
+        if(columns[i].length != 0){
+        _this.rawData.push (_this.splitRows(_this.delimiterCharacter, columns[i]));
+        }
       }
 
       _this.fileLoading = false;
@@ -503,5 +492,22 @@ export class DatalakeDataUploadComponent {
   {
     event.preventDefault ();
     event.stopPropagation ();
+  }
+
+  splitRows(delimiter, row): any {
+    var exp =/("(.*?)")/g ;
+    var newString = row.replace(exp, '$');
+    var array = newString.split(delimiter);
+    // console.log(array);
+    var array2 =row.match(exp);
+    // console.log(array2);
+    for (let index = 0; index < array.length; index++) {
+      if(array[index]=='$'){
+        array[index] = array2[0].replace(/"/g,'');
+         array2.shift();
+      }
+    }
+    // console.log(array);
+    return array;
   }
 }
