@@ -21,14 +21,14 @@
             <div class="datalake-query-tab-header">
               <span class="datalake-query-editor-label">Query Editor</span>
               <div class="datalake-query-editor-buttons">
-                <button mat-button class="datalake-query-editor-button" matTooltip="Save Query" (click)="saveQuery(query)">
-                  <img class="datalake-save-query-image" src="../../assets/images/{{globals.theme}}-datalake-save-query.png"/>
+                <button mat-button class="datalake-query-editor-button" matTooltip="Save Query" (click)="saveQuery(query)" (mouseover)="savequerymouseover = true" (mouseleave)="savequerymouseover = false">
+                  <img class="datalake-save-query-image" src="{{getSaveQueryImage()}}"/>
                 </button>
-                <button mat-button class="datalake-query-editor-button" matTooltip="Query History" (click)="queryHistory()">
-                  <img class="datalake-query-history-image" src="../../assets/images/{{globals.theme}}-datalake-query-history.png"/>
+                <button mat-button class="datalake-query-editor-button" matTooltip="Query History" (click)="queryHistory()" (mouseover)="queryhistorymouseover = true" (mouseleave)="queryhistorymouseover = false">
+                  <img class="datalake-query-history-image" src="{{getQueryHistoryImage()}}"/>
                 </button>
-                <button mat-button class="datalake-query-editor-button" matTooltip="Run Query" (click)="runQuery(query)">
-                  <img class="datalake-run-query-image" src="../../assets/images/{{globals.theme}}-datalake-run-query.png"/>
+                <button mat-button class="datalake-query-editor-button" matTooltip="Run Query" (click)="runQuery(query)" (mouseover)="runquerymouseover = true" (mouseleave)="runquerymouseover = false">
+                  <img class="datalake-run-query-image" src="{{getRunQueryImage()}}"/>
                 </button>
                 <mat-form-field class="datalake-schema-select">
                   <mat-select placeholder="Schema" [(ngModel)]="query.schema">
