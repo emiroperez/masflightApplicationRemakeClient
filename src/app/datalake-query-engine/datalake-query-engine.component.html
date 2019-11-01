@@ -22,13 +22,13 @@
               <span class="datalake-query-editor-label">Query Editor</span>
               <div class="datalake-query-editor-buttons">
                 <button mat-button class="datalake-query-editor-button" matTooltip="Save Query" (click)="saveQuery(query)">
-                  <img class="datalake-save-query-image" src="../../assets/images/datalake-save-query.png"/>
+                  <img class="datalake-save-query-image" src="../../assets/images/{{globals.theme}}-datalake-save-query.png"/>
                 </button>
                 <button mat-button class="datalake-query-editor-button" matTooltip="Query History" (click)="queryHistory()">
-                  <img class="datalake-query-history-image" src="../../assets/images/datalake-query-history.png"/>
+                  <img class="datalake-query-history-image" src="../../assets/images/{{globals.theme}}-datalake-query-history.png"/>
                 </button>
                 <button mat-button class="datalake-query-editor-button" matTooltip="Run Query" (click)="runQuery(query)">
-                  <img class="datalake-run-query-image" src="../../assets/images/datalake-run-query.png"/>
+                  <img class="datalake-run-query-image" src="../../assets/images/{{globals.theme}}-datalake-run-query.png"/>
                 </button>
                 <mat-form-field class="datalake-schema-select">
                   <mat-select placeholder="Schema" [(ngModel)]="query.schema">
