@@ -149,7 +149,13 @@ export class DatalakeCreateNewStructureComponent {
 
     if (this.selectedDelimiter === "CUSTOM")
     {
-      // this.tableConfigurationFormGroup.get ("fileName").setValue ("");
+      this.delimiterCharacter = null;
+      this.tableConfigurationFormGroup.get ("fileName").setValue ("");
+      this.dataColumns = [];
+      this.rawData = [];
+      this.filteredDataColumns.next (this.dataColumns.slice ());
+      this.targetFileSize = null;
+
       customDelimiter.markAsUntouched ();
       customDelimiter.enable ();
       return;
@@ -158,7 +164,13 @@ export class DatalakeCreateNewStructureComponent {
     customDelimiter.markAsUntouched ();
     customDelimiter.setValue ("");
     customDelimiter.disable ();
-    // this.tableConfigurationFormGroup.get ("fileName").setValue ("");
+    
+    this.delimiterCharacter = null;
+    this.tableConfigurationFormGroup.get ("fileName").setValue ("");
+    this.dataColumns = [];
+    this.rawData = [];
+    this.filteredDataColumns.next (this.dataColumns.slice ());
+    this.targetFileSize = null;
 
   }
 
@@ -233,6 +245,8 @@ export class DatalakeCreateNewStructureComponent {
 
     this.delimiterCharacter = this.getDelimiterCharacter ();
     this.targetFile = event.target.files[0];
+    // if(this.targetFile.size <= 130){
+    if(this.targetFile.size <= 104857600){ //100MB
     fileInfo.append ('file', this.targetFile, this.targetFile.name);
 
     tableFileConfig = {
@@ -243,6 +257,19 @@ export class DatalakeCreateNewStructureComponent {
 
     this.fileLoading = true;
     this.service.uploadDatalakeTableFile (this, tableFileConfig, fileInfo, this.uploadSuccess, this.uploadFailed);
+  }else{
+    this.selectedDelimiter = null;
+    this.tableConfigurationFormGroup.get ("customDelimiter").setValue ("");
+    this.delimiterCharacter = null;
+    this.tableConfigurationFormGroup.get ("fileName").setValue ("");
+    this.dataColumns = [];
+    this.rawData = [];
+    this.filteredDataColumns.next (this.dataColumns.slice ());
+    this.targetFileSize = this.calcFileSize (this.targetFile.size);
+    this.dialog.open (MessageComponent, {
+      data: { title: "Error", message: "Maximum upload size allowed 100 MB. Uploaded file size: "+ this.targetFileSize}
+    });
+  }
   }
 
   uploadSuccess(_this, data): void
