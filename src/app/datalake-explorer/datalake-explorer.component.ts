@@ -27,6 +27,7 @@ export class DatalakeExplorerComponent implements OnInit {
 
   tableCards: DatalakeTableCardValues[] = [];
   currentScreen: number;
+  querymouseover: boolean = false;
 
   constructor(public globals: Globals, private dialog: MatDialog,
     private service: DatalakeService) { }
@@ -152,8 +153,17 @@ export class DatalakeExplorerComponent implements OnInit {
     this.setCurrentOptionSelected.emit(option);
   }
 
-  changeOption(option){
+  changeOption(option): void
+  {
     this.globals.optionDatalakeSelected = option;
-    this.setCurrentScreen();
+    this.setCurrentScreen ();
+  }
+
+  getQueryImage(): string
+  {
+    if (this.querymouseover)
+      return "../../assets/images/dark-theme-datalake-query.png";
+
+    return "../../assets/images/" + this.globals.theme + "-datalake-query.png";
   }
 }

@@ -25,12 +25,18 @@ export class DatalakeTableCardComponent implements OnInit {
   gaugeLastHourIngestionText: string = "Last Hour Data Ingestion";
   gaugeLastDayIngestionText: string = "Last Day Data Ingestion";
   gaugeAppendText: string = "%";
-  gaugeBackgroundColor: string = "#4D4D4D";
+  gaugeBackgroundColor: string;
 
   @Input("values")
   values: DatalakeTableCardValues;
 
-  constructor(public globals: Globals, private dialog: MatDialog,private service: DatalakeService) { }
+  constructor(public globals: Globals, private dialog: MatDialog, private service: DatalakeService)
+  {
+    if (globals.theme === "dark-theme")
+      this.gaugeBackgroundColor = "#4D4D4D";
+    else
+      this.gaugeBackgroundColor = "#CCCCCC";
+  }
 
   getForegroundColorFromValue(value: number): string
   {
