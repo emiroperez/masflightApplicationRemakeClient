@@ -320,8 +320,10 @@ export class DatalakeCreateNewStructureComponent {
       {
         if (i >= 15)
           break;    // limit it to 25 for better performance
-
-        _this.rawData.push (columns[i].split (_this.delimiterCharacter));
+          if(columns[i].length != 0){
+            // _this.rawData.push (columns[i].split (_this.delimiterCharacter));
+            _this.rawData.push (_this.splitRows(_this.delimiterCharacter, columns[i]));
+          }
       }
 
       _this.fileLoading = false;
@@ -512,5 +514,26 @@ export class DatalakeCreateNewStructureComponent {
     if(this.tableConfigurationFormGroup.get ("tableLocation").value === ''){
     this.tableConfigurationFormGroup.get ("tableLocation").setValue (this.tableConfigurationFormGroup.get ("tableName").value);
     }
+  }
+
+  splitRows(delimiter, row): any {
+    let aux = [];
+    let regExpr = '\\'+delimiter+'"'+delimiter+'"';
+    let split = row.split(new RegExp(regExpr));
+    for (let index = 0; index < split.length; index++) {
+      const element = split[index];
+      let x = element.split("|").length;
+      if(element!=""){
+      if(x==1 || x==2){
+        aux.push(element);
+      }else{
+        let x = element.split(delimiter)
+        x = x.filter(String);
+        aux= aux.concat(x)
+      }
+      }
+    }
+    console.log(aux)
+    return aux;
   }
 }
