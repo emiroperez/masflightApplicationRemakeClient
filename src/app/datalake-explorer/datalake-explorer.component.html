@@ -1,6 +1,6 @@
 <div class="datalake-explorer-container">
     <div class="datalake-explorer-header">
-        <mat-form-field *ngIf="!currentScreen" class="datalake-explorer-search-input-container">
+        <mat-form-field *ngIf="globals.optionDatalakeSelected === 2" class="datalake-explorer-search-input-container">
             <input matInput class="datalake-explorer-search-input" type="text" placeholder="Search" 
             autocomplete="off" [(ngModel)]="filter" 
             (ngModelChange)="filterTableCards()">
@@ -30,12 +30,12 @@
             </button>
         </div>
     </div>
-        <div *ngIf="globals.optionDatalakeSelected === 2" class="datalake-explorer-grid-layout">
+    <div *ngIf="globals.optionDatalakeSelected === 2" class="datalake-explorer-grid-layout">
         <ng-container *ngFor="let tableCard of filteredTableCards | async">
             <app-datalake-table-card [values]="tableCard" (setOption)="setOption($event)"></app-datalake-table-card>
         </ng-container>
     </div>
-        <div *ngIf="globals.optionDatalakeSelected === 3" [style.height.%]="100">
+    <div *ngIf="globals.optionDatalakeSelected === 3" [style.height.%]="100">
         <app-datalake-query-engine></app-datalake-query-engine>
     </div>
 </div>

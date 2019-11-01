@@ -26,7 +26,6 @@ export class DatalakeExplorerComponent implements OnInit {
   tableCardComponents: QueryList<DatalakeTableCardComponent>; 
 
   tableCards: DatalakeTableCardValues[] = [];
-  currentScreen: number;
   querymouseover: boolean = false;
 
   constructor(public globals: Globals, private dialog: MatDialog,
@@ -34,29 +33,17 @@ export class DatalakeExplorerComponent implements OnInit {
 
   ngOnInit()
   {
-    this.setCurrentScreen ();
+    this.getDatalakeTables ();
   }
 
-  setCurrentScreen(): void
+  getDatalakeTables(): void
   {
-    if (this.globals.optionDatalakeSelected === 3)
-      this.goToScreen (1);
-    else
-      this.goToScreen (0);
-  }
+    if (this.globals.optionDatalakeSelected !== 2)
+      return;
 
-  goToScreen(index: number): void
-  {
-    this.currentScreen = index;
-
-    switch (this.currentScreen)
-    {
-      case 0:
-        this.globals.isLoading = true;
-        this.service.getDatalakeTables (this, this.handlerSuccess, this.handlerError);
-        this.filter = "";
-        break;
-    }
+    this.globals.isLoading = true;
+    this.service.getDatalakeTables (this, this.handlerSuccess, this.handlerError);
+    this.filter = "";
   }
 
   handlerSuccess(_this, data): void
@@ -130,7 +117,7 @@ export class DatalakeExplorerComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(() => {
-        this.service.getDatalakeTables (this, this.handlerSuccess, this.handlerError);
+      this.service.getDatalakeTables (this, this.handlerSuccess, this.handlerError);
     });
   }
 
@@ -156,7 +143,7 @@ export class DatalakeExplorerComponent implements OnInit {
   changeOption(option): void
   {
     this.globals.optionDatalakeSelected = option;
-    this.setCurrentScreen ();
+    this.getDatalakeTables ();
   }
 
   getQueryImage(): string
