@@ -119,7 +119,7 @@
         <span class="datalake-create-table-input-body-span">
           File Type *:
         </span>
-        <mat-radio-group [(ngModel)]="selectedFileType" (ngModelChange)="ResetStepper(stepper, uploader)" 
+        <mat-radio-group [(ngModel)]="selectedFileType" (ngModelChange)="resetStepper(stepper, uploader)" 
         class="datalake-file-type-picker">
           <mat-radio-button class="cancels-checkbox datalake-file-type-radio" [value]="'CSV'">CSV</mat-radio-button>
           <mat-radio-button class="cancels-checkbox datalake-file-type-radio" [value]="'PARQUET'">PARQUET</mat-radio-button>

@@ -342,7 +342,7 @@ export class DatalakeCreateNewStructureComponent {
     );
   }
 
-  ResetStepper(stepper: MatStepper, uploader): void
+  resetStepper(stepper: MatStepper, uploader): void
   {
     stepper.reset ();
 
@@ -356,6 +356,7 @@ export class DatalakeCreateNewStructureComponent {
     uploader.value = null;
 
     this.filteredDataColumns.next (this.dataColumns.slice ());
+    this.fileLoading = false;
   }
 
   createTable(): void

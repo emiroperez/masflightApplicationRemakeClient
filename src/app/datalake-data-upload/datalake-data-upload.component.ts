@@ -377,6 +377,7 @@ export class DatalakeDataUploadComponent {
     this.targetFileSize = null;
     this.targetFile = null;
     this.uploadFileFormGroup.get ("fileName").setValue ("");
+    this.fileLoading = false;
   }
 
 
