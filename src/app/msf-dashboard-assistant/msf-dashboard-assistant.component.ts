@@ -929,4 +929,12 @@ export class MsfDashboardAssistantComponent {
 
     return 0;
   }
+
+  getAdvancedValueWidth(): string
+  {
+    if (this.isChartConfigured ())
+      return "calc(100% - 580px)";
+
+    return "calc(100% - 267px)";
+  }
 }

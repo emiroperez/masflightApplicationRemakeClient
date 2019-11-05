@@ -317,6 +317,14 @@
           <div class="msf-dashboard-assistant-chart-config-button" [ngClass]="{ 'msf-dashboard-assistant-chart-config-aggregation-button': !aggregationValueSelected, 'msf-dashboard-assistant-chart-config-aggregation-button-selected': (aggregationValueSelected || (!aggregationValueSelected && selectingAggregationValue)) }" (click)="selectAggregationValue()">
             Aggregation Value
           </div>
+        </ng-container>
+        <div class="msf-dashboard-assistant-chart-preview-button" *ngIf="isChartConfigured()" (mouseover)="chartPreviewHover = true" (mouseout)="chartPreviewHover = false" (click)="previewChart()" [style.margin-left.px]="calcMargin()">
+          <img *ngIf="!chartPreviewHover" class="msf-dashboard-assistant-chart-preview-pic" src="../../assets/images/{{globals.theme}}-chart-preview.png"/>
+          <img *ngIf="chartPreviewHover" class="msf-dashboard-assistant-chart-preview-pic" src="../../assets/images/dark-theme-chart-preview.png"/>
+          Chart Preview
+        </div>
+        <div class="msf-dashboard-assistant-space" *ngIf="chartMode === 'advanced' && !isChartConfigured()"></div>
+        <div class="msf-dashboard-assistant-advanced-chart-value" *ngIf="chartMode === 'advanced'">
           <div class="assistant-function-combobox" *ngIf="intervalType === 'ncile'">
             <mat-form-field>
               <mat-select placeholder="Ncile" [(ngModel)]="ncile">
@@ -331,11 +339,6 @@
               <input matInput placeholder="Value" autocomplete="off" [(ngModel)]="intValue">
             </mat-form-field>
           </div>
-        </ng-container>
-        <div class="msf-dashboard-assistant-chart-preview-button" *ngIf="isChartConfigured()" (mouseover)="chartPreviewHover = true" (mouseout)="chartPreviewHover = false" (click)="previewChart()" [style.margin-left.px]="calcMargin()">
-          <img *ngIf="!chartPreviewHover" class="msf-dashboard-assistant-chart-preview-pic" src="../../assets/images/{{globals.theme}}-chart-preview.png"/>
-          <img *ngIf="chartPreviewHover" class="msf-dashboard-assistant-chart-preview-pic" src="../../assets/images/dark-theme-chart-preview.png"/>
-          Chart Preview
         </div>
       </div>
       <div class="msf-dashboard-select-distribution-chart-table-container msf-dashboard-child-panel-table mat-elevation-z8">
