@@ -293,7 +293,7 @@
         </div>
       </div>
       <div class="msf-dashboard-assistant-chart-config-buttons">
-        <div class="msf-dashboard-assistant-chart-config-button" [ngClass]="{ 'msf-dashboard-assistant-chart-config-analysis-button': !analysisSelected, 'msf-dashboard-assistant-chart-config-analysis-button-selected': (analysisSelected || (!analysisSelecetd && selectingAnalysis)) }" (click)="selectAnalysis()">
+        <div *ngIf="hasAnalysisByValue()" class="msf-dashboard-assistant-chart-config-button" [ngClass]="{ 'msf-dashboard-assistant-chart-config-analysis-button': !analysisSelected, 'msf-dashboard-assistant-chart-config-analysis-button-selected': (analysisSelected || (!analysisSelecetd && selectingAnalysis)) }" (click)="selectAnalysis()">
           Analysis by
         </div>
         <ng-container *ngIf="chartMode === 'basic'">
@@ -317,6 +317,7 @@
           <div class="msf-dashboard-assistant-chart-config-button" [ngClass]="{ 'msf-dashboard-assistant-chart-config-aggregation-button': !aggregationValueSelected, 'msf-dashboard-assistant-chart-config-aggregation-button-selected': (aggregationValueSelected || (!aggregationValueSelected && selectingAggregationValue)) }" (click)="selectAggregationValue()">
             Aggregation Value
           </div>
+          <div *ngIf="!hasAnalysisByValue()" class="msf-dashboard-assistant-chart-config-space"></div>
         </ng-container>
         <div class="msf-dashboard-assistant-chart-preview-button" *ngIf="isChartConfigured()" (mouseover)="chartPreviewHover = true" (mouseout)="chartPreviewHover = false" (click)="previewChart()" [style.margin-left.px]="calcMargin()">
           <img *ngIf="!chartPreviewHover" class="msf-dashboard-assistant-chart-preview-pic" src="../../assets/images/{{globals.theme}}-chart-preview.png"/>

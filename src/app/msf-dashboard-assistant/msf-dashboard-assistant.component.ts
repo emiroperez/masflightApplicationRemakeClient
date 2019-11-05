@@ -579,7 +579,15 @@ export class MsfDashboardAssistantComponent {
     if (this.chartMode === "advanced")
     {
       if (this.intervalType === "value")
+      {
+        if (!(this.selectedChartType.flags & ChartFlags.XYCHART))
+          return this.aggregationValueSelected && this.intValue != null && this.intValue != "";
+
         return this.analysisSelected && this.aggregationValueSelected && this.intValue != null && this.intValue != "";
+      }
+
+      if (!(this.selectedChartType.flags & ChartFlags.XYCHART))
+        return this.aggregationValueSelected;
 
       return this.analysisSelected && this.aggregationValueSelected;
     }
@@ -936,5 +944,18 @@ export class MsfDashboardAssistantComponent {
       return "calc(100% - 580px)";
 
     return "calc(100% - 267px)";
+  }
+
+  hasAnalysisByValue(): boolean
+  {
+    if (this.chartMode === "advanced")
+    {
+      if (this.selectedChartType.flags & ChartFlags.XYCHART)
+        return true;
+
+      return false;
+    }
+
+    return true;
   }
 }
