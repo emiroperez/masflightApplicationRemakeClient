@@ -1659,7 +1659,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
         .datalake-partition-table-scroll::-webkit-scrollbar-track
             background-color: $background-color !important
         .datalake-partition-table-scroll
-            background-color: $customer-table-header-background-color
+            background-color: $admin-menu-background
             td.mat-cell
                 .status-icon
                     color: $primary-color
@@ -1669,15 +1669,17 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                 tr.mat-header-row
                     th.mat-header-cell
                         background-color: $background-color
+                        color: $font-color
+                        font-weight: 550
                         .mat-sort-header-arrow
                             color: inherit !important
                 tr.mat-row
-                    background-color: $admin-menu-background
+                    background-color: $datalake-table-row-background-color
                     td.mat-cell
                         color: $font-color
-                        border-color: $background-color
+                        border-color: $datalake-search-input-border-color
                 tr.mat-row:hover
-                    background-color: $customer-table-row-hover-background-color
+                    background-color: $datalake-table-row-hover-background-color
                 td.datalake-partition-btn-actions.mat-cell
                     .mat-icon-button
                         .mat-button-wrapper
@@ -1705,12 +1707,12 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                             color: $font-color
                     .mat-icon-button[disabled]
                         .mat-button-wrapper
-                            color: $font-color
+                            color: $disabled-color
         .datalake-query-history-paginator
             .mat-paginator-outer-container
                 .mat-paginator-container
                     color: black
-                    background-color: #f2f2f2
+                    background-color: #F2F2F2
                     .mat-icon-button
                         .mat-button-wrapper
                             color: black
@@ -1720,6 +1722,10 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
         .datalake-edit-alarm-dialog, .datalake-partition-dialog
             mat-dialog-container
                 color: $font-color
+            .datalake-partition-dialog-header
+                background-color: $map-panelinfo-background-color
+                .mat-icon
+                    color: $font-color !important
         .datalake-executionPart-header
             .mat-icon-menu
                 .mat-icon
@@ -8484,7 +8490,6 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         display: flex
         align-items: center
         padding: 0px 20px
-        background-color: #1a1a1a
         justify-content: space-between
         .datalake-partition-dialog-title
             font-size: 16px
@@ -8592,7 +8597,13 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         height: 100%
         padding-left: 20px
         width: calc(30% - 20px)
- 
+
+.datalake-partition-btn-actions
+    height: 30px
+
+.execution-history-button
+    margin-top: -10px !important
+
 .datalake-partition-table-scroll
     overflow-y: auto
     tr.mat-row
