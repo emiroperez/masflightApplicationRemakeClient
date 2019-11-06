@@ -251,7 +251,6 @@
     <span *ngIf="stepper.selectedIndex == 1">
       <div class="msf-dashboard-assistant-chart-type-label msf-dashboard-assistant-chart-mode">
         <span>Chart Type Selection</span>
-        <!--
         <mat-radio-group [(ngModel)]="chartMode" (ngModelChange)="checkChartTypeSelection()">
           <mat-radio-button class="cancels-checkbox msf-dashboard-assistant-mode" [value]="'basic'">
             Basic
@@ -260,7 +259,6 @@
             Advanced
           </mat-radio-button>
         </mat-radio-group>
-        -->
       </div>
       <div class="msf-dashboard-assistant-chart-picker">
         <ng-container *ngFor="let chartType of chartTypes">

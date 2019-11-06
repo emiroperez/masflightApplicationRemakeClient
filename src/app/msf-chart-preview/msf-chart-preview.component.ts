@@ -108,14 +108,31 @@ export class MsfChartPreviewComponent {
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
     console.log (urlBase);
     urlArg = encodeURIComponent (urlBase);
-    url = this.service.host + "/secure/getChartData?url=" + urlArg + "&optionId=" + this.data.currentOption.id + "&ipAddress=" + this.authService.getIpAddress () +
-      "&variable=" + this.data.variable.columnName + "&valueColumn=" + this.data.valueColumn.columnName + "&function=" + this.data.function.id;
 
-    // don't use the xaxis parameter if the chart type is pie, donut or radar
-    if (!(this.data.currentChartType.flags & ChartFlags.XYCHART))
-      url += "&chartType=pie";
+    url = this.service.host + "/secure/getChartData?url=" + urlArg + "&optionId=" + this.data.currentOption.id + "&ipAddress=" + this.authService.getIpAddress () +
+      "&valueColumn=" + this.data.valueColumn.columnName + "&function=";
+
+    if (this.data.chartMode === "advanced")
+    {
+      url += "advby" + this.data.intervalType;
+
+      if (this.data.currentChartType.flags & ChartFlags.XYCHART)
+        url += "&variable=" + this.data.variable.columnName;
+      else
+        url += "&chartType=pie";
+
+      url += "&intervalValue=" + this.data.intValue;
+    }
     else
-      url += "&xaxis=" + this.data.xaxis.columnName;
+    {
+      url += this.data.function.id + "&variable=" + this.data.variable.columnName;
+
+      // don't use the xaxis parameter if the chart type is pie, donut or radar
+      if (!(this.data.currentChartType.flags & ChartFlags.XYCHART))
+        url += "&chartType=pie";
+      else
+        url += "&xaxis=" + this.data.xaxis.columnName;
+    }
 
     this.authService.post (this, url, null, handlerSuccess, handlerError);
   }
@@ -230,7 +247,10 @@ export class MsfChartPreviewComponent {
         if (this.data.currentChartType.flags & ChartFlags.XYCHART)
         {
           chart.data = JSON.parse (JSON.stringify (chartInfo.data));
-          parseDate = (this.data.xaxis.columnType === "date" && this.data.xaxis.columnName.includes ('date')) ? true : false;
+          if (this.data.chartMode === "advanced")
+            parseDate = false;
+          else
+            parseDate = (this.data.xaxis.columnType === "date" && this.data.xaxis.columnName.includes ('date')) ? true : false;
         }
         else
         {
@@ -356,19 +376,38 @@ export class MsfChartPreviewComponent {
         if (this.data.currentChartType.flags & ChartFlags.XYCHART)
         {
           // Set axis name into the chart
-          if (!(this.data.currentChartType.flags & ChartFlags.ROTATED))
+          if (this.data.chartMode === "advanced")
           {
-            categoryAxis.title.text = this.data.xaxis.columnLabel;    
-            valueAxis.title.text = this.data.valueColumn.columnLabel;
+            if (!(this.data.currentChartType.flags & ChartFlags.ROTATED))
+            {
+              categoryAxis.title.text = "Intervals";    
+              valueAxis.title.text = this.data.valueColumn.columnLabel;
+            }
+            else
+            {
+              categoryAxis.title.text = "Intervals";   
+              valueAxis.title.text = this.data.valueColumn.columnLabel;
+            }
+
+            // The category will be the x axis if the chart type has it
+            categoryAxis.dataFields.category = "Interval";
           }
           else
           {
-            categoryAxis.title.text = this.data.xaxis.columnLabel;   
-            valueAxis.title.text = this.data.valueColumn.columnLabel;
+            if (!(this.data.currentChartType.flags & ChartFlags.ROTATED))
+            {
+              categoryAxis.title.text = this.data.xaxis.columnLabel;    
+              valueAxis.title.text = this.data.valueColumn.columnLabel;
+            }
+            else
+            {
+              categoryAxis.title.text = this.data.xaxis.columnLabel;   
+              valueAxis.title.text = this.data.valueColumn.columnLabel;
+            }
+  
+            // The category will be the x axis if the chart type has it
+            categoryAxis.dataFields.category = this.data.xaxis.columnName;
           }
-
-          // The category will be the x axis if the chart type has it
-          categoryAxis.dataFields.category = this.data.xaxis.columnName;
 
           stacked = (this.data.currentChartType.flags & ChartFlags.STACKED) ? true : false;
           if (this.data.currentChartType.flags & ChartFlags.LINECHART && stacked)
@@ -435,7 +474,7 @@ export class MsfChartPreviewComponent {
             if (parseDate && this.data.currentChartType.flags & ChartFlags.LINECHART)
             {
               let axisField = this.data.xaxis.columnName;
-  
+
               chart.events.on ("beforedatavalidated", function(event) {
                 chart.data.sort (function(e1, e2) {
                   return +(new Date(e1[axisField])) - +(new Date(e2[axisField]));
@@ -467,26 +506,45 @@ export class MsfChartPreviewComponent {
         }
         else
         {
-          if (!(this.data.currentChartType.flags & ChartFlags.ROTATED))
+          if (this.data.chartMode === "advanced")
           {
-            categoryAxis.title.text = this.data.variable.columnLabel; 
-            valueAxis.title.text = this.data.valueColumn.columnLabel;
+            if (!(this.data.currentChartType.flags & ChartFlags.ROTATED))
+            {
+              categoryAxis.title.text = "Intervals"; 
+              valueAxis.title.text = this.data.valueColumn.columnLabel;
+            }
+            else
+            {
+              categoryAxis.title.text = "Intervals"; 
+              valueAxis.title.text = this.data.valueColumn.columnLabel;
+            }
           }
           else
           {
-            categoryAxis.title.text = this.data.variable.columnLabel; 
-            valueAxis.title.text = this.data.valueColumn.columnLabel;
+            if (!(this.data.currentChartType.flags & ChartFlags.ROTATED))
+            {
+              categoryAxis.title.text = this.data.variable.columnLabel; 
+              valueAxis.title.text = this.data.valueColumn.columnLabel;
+            }
+            else
+            {
+              categoryAxis.title.text = this.data.variable.columnLabel; 
+              valueAxis.title.text = this.data.valueColumn.columnLabel;
+            }
           }
 
           // The category will the values if the chart type lacks an x axis
           categoryAxis.dataFields.category = chartInfo.titleField;
 
-          // Sort values from least to greatest
-          chart.events.on ("beforedatavalidated", function(event) {
-            chart.data.sort (function(e1, e2) {
-              return e1[chartInfo.valueField] - e2[chartInfo.valueField];
+          if (this.data.chartMode !== "advanced")
+          {
+            // Sort values from least to greatest
+            chart.events.on ("beforedatavalidated", function(event) {
+              chart.data.sort (function(e1, e2) {
+                return e1[chartInfo.valueField] - e2[chartInfo.valueField];
+              });
             });
-          });
+          }
 
           // Create the series
           this.data.currentChartType.createSeries (this.data, false, chart, chartInfo, parseDate, theme, outputFormat);

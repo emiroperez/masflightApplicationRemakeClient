@@ -602,16 +602,23 @@ export class MsfDashboardAssistantComponent {
   {
     let i, variable, xaxis, valueColumn;
 
-    for (i = 0; i < this.currentOption.columnOptions.length; i++)
+    if ((this.chartMode === "advanced" && this.selectedChartType.flags & ChartFlags.XYCHART
+      || this.chartMode === "basic")
+      && this.analysisSelected)
     {
-      if (this.currentOption.columnOptions[i].id == this.analysisSelected.id)
+      for (i = 0; i < this.currentOption.columnOptions.length; i++)
       {
-        variable = this.currentOption.columnOptions[i];
-        break;
+        if (this.currentOption.columnOptions[i].id == this.analysisSelected.id)
+        {
+          variable = this.currentOption.columnOptions[i];
+          break;
+        }
       }
     }
+    else
+      variable = null;
 
-    if (this.selectedChartType.flags & ChartFlags.XYCHART)
+    if (this.selectedChartType.flags & ChartFlags.XYCHART && this.xAxisSelected)
     {
       for (i = 0; i < this.currentOption.columnOptions.length; i++)
       {
@@ -625,12 +632,26 @@ export class MsfDashboardAssistantComponent {
     else
       xaxis = null;
 
-    for (i = 0; i < this.currentOption.columnOptions.length; i++)
+    if (this.chartMode === "advanced")
     {
-      if (this.currentOption.columnOptions[i].id == this.valueSelected.id)
+      for (i = 0; i < this.currentOption.columnOptions.length; i++)
       {
-        valueColumn = this.currentOption.columnOptions[i];
-        break;
+        if (this.currentOption.columnOptions[i].id == this.aggregationValueSelected.id)
+        {
+          valueColumn = this.currentOption.columnOptions[i];
+          break;
+        }
+      }
+    }
+    else
+    {
+      for (i = 0; i < this.currentOption.columnOptions.length; i++)
+      {
+        if (this.currentOption.columnOptions[i].id == this.valueSelected.id)
+        {
+          valueColumn = this.currentOption.columnOptions[i];
+          break;
+        }
       }
     }
 
@@ -645,7 +666,10 @@ export class MsfDashboardAssistantComponent {
         variable: variable,
         xaxis: xaxis,
         valueColumn: valueColumn,
-        paletteColors: this.data.paletteColors
+        paletteColors: this.data.paletteColors,
+        chartMode: this.chartMode,
+        intervalType: this.intervalType,
+        intValue: (this.intervalType === "ncile" ? this.ncile : this.intValue)
       }
     });
   }
@@ -668,7 +692,10 @@ export class MsfDashboardAssistantComponent {
     }
     else
     {
-      series.dataFields.categoryY = values.xaxis.columnName;
+      if (values.chartMode === "advanced")
+        series.dataFields.categoryY = "Interval";
+      else
+        series.dataFields.categoryY = values.xaxis.columnName;
       series.columns.template.tooltipText = "{categoryY}: {valueX}";
     }
 
@@ -696,7 +723,10 @@ export class MsfDashboardAssistantComponent {
     }
     else
     {
-      series.dataFields.categoryX = values.xaxis.columnName;
+      if (values.chartMode === "advanced")
+        series.dataFields.categoryX = "Interval";
+      else
+        series.dataFields.categoryX = values.xaxis.columnName;
       series.columns.template.tooltipText = "{categoryX}: {valueY}";
     }
 
@@ -731,7 +761,10 @@ export class MsfDashboardAssistantComponent {
     }
     else
     {
-      series.dataFields.categoryX = values.xaxis.columnName;
+      if (values.chartMode === "advanced")
+        series.dataFields.categoryX = "Interval";
+      else
+        series.dataFields.categoryX = values.xaxis.columnName;
       series.tooltipText = "{categoryX}: {valueY}";
     }
 
@@ -847,8 +880,17 @@ export class MsfDashboardAssistantComponent {
 
   done(): void
   {
-
     let variable, xaxis, valueColumn;
+
+    // TODO: Advanced chart is a work in progress...
+    if (this.chartMode === "advanced")
+    {
+      this.dialog.open (MessageComponent, {
+        data: { title: "Information", message: "Advanced chart are still a work in progress." }
+      });
+
+      return;
+    }
 
     for (let columnOption of this.data.chartColumnOptions)
     {
