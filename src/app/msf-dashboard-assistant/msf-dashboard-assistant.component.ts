@@ -445,6 +445,10 @@ export class MsfDashboardAssistantComponent {
     // Remove X Axis selection if the chart type doesn't use it
     if (!this.haveXAxis ())
       this.xAxisSelected = null;
+
+    // Remove analysis selection if the simple chart uses intervals
+    if (this.chartMode === "advanced" && !(this.selectedChartType.flags & ChartFlags.XYCHART))
+      this.analysisSelected = null;
   }
 
   isTitleOnly(argument: Arguments): boolean
@@ -882,26 +886,22 @@ export class MsfDashboardAssistantComponent {
   {
     let variable, xaxis, valueColumn;
 
-    // TODO: Advanced chart is a work in progress...
-    if (this.chartMode === "advanced")
+    if ((this.chartMode === "advanced" && this.selectedChartType.flags & ChartFlags.XYCHART)
+      || this.chartMode !== "advanced")
     {
-      this.dialog.open (MessageComponent, {
-        data: { title: "Information", message: "Advanced chart are still a work in progress." }
-      });
-
-      return;
-    }
-
-    for (let columnOption of this.data.chartColumnOptions)
-    {
-      if (columnOption.item.id == this.analysisSelected.id)
+      for (let columnOption of this.data.chartColumnOptions)
       {
-        variable = columnOption;
-        break;
+        if (columnOption.item.id == this.analysisSelected.id)
+        {
+          variable = columnOption;
+          break;
+        }
       }
     }
+    else
+      variable = null;
 
-    if (this.selectedChartType.flags & ChartFlags.XYCHART)
+    if (this.chartMode !== "advanced" && this.selectedChartType.flags & ChartFlags.XYCHART)
     {
       for (let columnOption of this.data.chartColumnOptions)
       {
@@ -915,12 +915,26 @@ export class MsfDashboardAssistantComponent {
     else
       xaxis = null;
 
-    for (let columnOption of this.data.chartColumnOptions)
+    if (this.chartMode === "advanced")
     {
-      if (columnOption.item.id == this.valueSelected.id)
+      for (let columnOption of this.data.chartColumnOptions)
       {
-        valueColumn = columnOption;
-        break;
+        if (columnOption.item.id == this.aggregationValueSelected.id)
+        {
+          valueColumn = columnOption;
+          break;
+        }
+      }
+    }
+    else
+    {
+      for (let columnOption of this.data.chartColumnOptions)
+      {
+        if (columnOption.item.id == this.valueSelected.id)
+        {
+          valueColumn = columnOption;
+          break;
+        }
       }
     }
 
@@ -930,7 +944,10 @@ export class MsfDashboardAssistantComponent {
       function: this.function,
       variable: variable,
       xaxis: xaxis,
-      valueColumn: valueColumn
+      valueColumn: valueColumn,
+      chartMode: this.chartMode,
+      intervalType: this.intervalType,
+      intValue: (this.intervalType === "ncile" ? this.ncile : this.intValue)
     });
   }
 

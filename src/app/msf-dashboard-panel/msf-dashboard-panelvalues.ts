@@ -93,9 +93,14 @@ export class MsfDashboardPanelValues {
     vertAxisName: string;
     horizAxisName: string;
 
+    // values used for advanced charts
+    intervalType: string;
+    intValue: any;
+
     constructor(options: any[], chartName: String, id: number, width: any, height: any, currentOption?: any, variable?: any,
         xaxis?: any, valueColumn?: any, func?: any, chartType?: any, currentOptionCategories?: any, lastestResponse?: string,
-        paletteColors?: any, updateTimeInterval?: number, row?: number, thresholds?: any, vertAxisName?: string, horizAxisName?: string)
+        paletteColors?: any, updateTimeInterval?: number, row?: number, thresholds?: any, vertAxisName?: string, horizAxisName?: string,
+        intValue?: any)
     {
         this.options = options;
         this.chartName = chartName;
@@ -146,5 +151,12 @@ export class MsfDashboardPanelValues {
 
         this.vertAxisName = vertAxisName;
         this.horizAxisName = horizAxisName;
+
+        this.intervalType = "ncile";
+
+        if (intValue)
+            this.intValue = intValue;
+        else
+            this.intValue = 5;
     }
 }

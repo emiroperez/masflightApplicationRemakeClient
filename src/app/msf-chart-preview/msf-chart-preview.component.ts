@@ -531,13 +531,7 @@ export class MsfChartPreviewComponent {
               categoryAxis.title.text = this.data.variable.columnLabel; 
               valueAxis.title.text = this.data.valueColumn.columnLabel;
             }
-          }
 
-          // The category will the values if the chart type lacks an x axis
-          categoryAxis.dataFields.category = chartInfo.titleField;
-
-          if (this.data.chartMode !== "advanced")
-          {
             // Sort values from least to greatest
             chart.events.on ("beforedatavalidated", function(event) {
               chart.data.sort (function(e1, e2) {
@@ -545,6 +539,9 @@ export class MsfChartPreviewComponent {
               });
             });
           }
+
+          // The category will the values if the chart type lacks an x axis
+          categoryAxis.dataFields.category = chartInfo.titleField;
 
           // Create the series
           this.data.currentChartType.createSeries (this.data, false, chart, chartInfo, parseDate, theme, outputFormat);
