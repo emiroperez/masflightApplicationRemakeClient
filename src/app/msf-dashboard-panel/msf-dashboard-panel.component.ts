@@ -245,6 +245,10 @@ export class MsfDashboardPanelComponent implements OnInit {
     "fullTime": "h:mm:ss a zzzz"
   };
 
+  addUpValuesSet: boolean = false;
+  sumValueAxis: any = null;
+  sumSeries: any = null;
+
   constructor(private zone: NgZone, public globals: Globals,
     private service: ApplicationService, private http: ApiClient, private authService: AuthService, public dialog: MatDialog,
     private formBuilder: FormBuilder)
@@ -816,6 +820,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     });
 
     this.values.chartSeries = [];
+    this.addUpValuesSet = false;
+    this.sumValueAxis = null;
+    this.sumSeries = null;
 
     this.zone.runOutsideAngular (() => {
       let chart, options;
@@ -5705,5 +5712,89 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.values.intValue = null;
     else
       this.values.intValue = 5;
+  }
+
+  addUpIntervals(): void
+  {
+    let theme = this.globals.theme;
+    let maxValue: number;
+    let sum: number = 0;
+    let colorSet;
+
+    this.zone.runOutsideAngular (() => {
+      // prepare sum of the intervals for a line chart, if not set
+      for (let item of this.chart.data)
+      {
+        Object.keys (item).forEach (function(key)
+        {
+          if (key === "Interval" || key === "sum")
+            return;
+
+          sum += item[key];
+        });
+
+        if (!this.addUpValuesSet)
+          item["sum"] = sum;
+      }
+
+      maxValue = sum;
+      this.addUpValuesSet = true;
+
+      // add a line chart on top of the existing chart that displays the sum
+      if (this.values.currentChartType.flags & ChartFlags.ROTATED)
+        this.sumValueAxis = this.chart.xAxes.push (new am4charts.ValueAxis ());
+      else
+        this.sumValueAxis = this.chart.yAxes.push (new am4charts.ValueAxis ());
+
+      this.sumValueAxis.renderer.opposite = true;
+      this.sumValueAxis.min = 0;
+      this.sumValueAxis.max = maxValue + 1;
+      this.sumValueAxis.strictMinMax = true;
+      this.sumValueAxis.renderer.grid.template.disabled = true;
+      this.sumValueAxis.cursorTooltipEnabled = true;
+      this.sumValueAxis.title.text = "Sum";
+
+      this.sumSeries = this.chart.series.push (new am4charts.LineSeries ());
+
+      if (this.values.currentChartType.flags & ChartFlags.ROTATED)
+      {
+        this.sumSeries.dataFields.valueX = "sum";
+        this.sumSeries.dataFields.categoryY = "Interval";
+        this.sumSeries.xAxis = this.sumValueAxis;
+      }
+      else
+      {
+        this.sumSeries.dataFields.valueY = "sum";
+        this.sumSeries.dataFields.categoryX = "Interval";
+        this.sumSeries.yAxis = this.sumValueAxis;
+      }
+
+      this.sumSeries.bullets.push (new am4charts.CircleBullet ());
+      this.sumSeries.strokeWidth = 2;
+      this.sumSeries.fill = Themes.AmCharts[theme].sumBullet;
+      this.sumSeries.stroke = Themes.AmCharts[theme].sumStroke;
+      this.sumSeries.strokeOpacity = 0.5;
+      this.sumSeries.name = "Sum";
+
+      // invalidate data in order to display the line chart
+      this.chart.invalidateData ();
+    });
+  }
+
+  removeSumOfIntervals(): void
+  {
+    this.zone.runOutsideAngular (() => {
+      this.chart.series.removeIndex (this.chart.series.indexOf (this.sumSeries));
+      this.sumSeries = null;
+
+      if (this.values.currentChartType.flags & ChartFlags.ROTATED)
+        this.chart.xAxes.removeIndex (this.chart.xAxes.indexOf (this.sumValueAxis));
+      else
+        this.chart.yAxes.removeIndex (this.chart.yAxes.indexOf (this.sumValueAxis));
+      this.sumValueAxis = null;
+
+      // invalidate data in order to remove the line chart
+      this.chart.invalidateData ();
+    });
   }
 }

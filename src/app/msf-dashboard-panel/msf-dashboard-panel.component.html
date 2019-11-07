@@ -883,15 +883,21 @@
           <tr><td>Total Time</td><td>{{checkedRoutes[0].TotalTime}}</td></tr>
         </table>
       </div>
-      <div class="msf-dashboard-panel-config-button" *ngIf="!globals.readOnlyDashboard">
-        <button mat-mini-fab (click)="goToChartConfiguration()" color="primary" matTooltip="Edit Configuration">
+      <div class="msf-dashboard-panel-config-button">
+        <button *ngIf="!globals.readOnlyDashboard" mat-mini-fab (click)="goToChartConfiguration()" color="primary" matTooltip="Edit Configuration">
           <mat-icon aria-label="Edit Configuration">menu</mat-icon>
         </button>
-        <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="sharePanel()" matTooltip="Share Panel">
+        <button *ngIf="!globals.readOnlyDashboard" mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="sharePanel()" matTooltip="Share Panel">
           <mat-icon aria-label="Share Panel">share</mat-icon>
         </button>
-        <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="copyControlVariables()" matTooltip="Copy Control Variables">
+        <button *ngIf="!globals.readOnlyDashboard" mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="copyControlVariables()" matTooltip="Copy Control Variables">
           <mat-icon aria-label="Copy Control Variables">file_copy</mat-icon>
+        </button>
+        <button *ngIf="isAdvChartPanel() && !sumSeries" mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="addUpIntervals()" matTooltip="Add Up Intervals">
+          <mat-icon aria-label="Add Up Intervals">add</mat-icon>
+        </button>
+        <button *ngIf="isAdvChartPanel() && sumSeries" mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="removeSumOfIntervals()" matTooltip="Remove Sum Of Intervals">
+          <mat-icon aria-label="Remove Sum Of Intervals">remove</mat-icon>
         </button>
       </div>
     </div>

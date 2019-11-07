@@ -13,6 +13,7 @@ const darkOrange = am4core.color ("#d54505");
 const darkGreen = am4core.color ("#00be11");
 const darkBlue = am4core.color ("#30303d");
 const blueJeans = am4core.color ("#67b7dc");
+const lightBlue = am4core.color ("#01abec");
 
 // Light theme
 
@@ -49,7 +50,9 @@ export class Themes {
             stroke: darkBlue,
             fontColor: white,
             chartZoomScrollBar: blueJeans,
-            axisTooltipFontColor: white
+            axisTooltipFontColor: white,
+            sumStroke: white,
+            sumBullet: lightBlue
         },
         "light-theme": {
             mainTheme: am4themes_light,
@@ -64,7 +67,9 @@ export class Themes {
             stroke: lightGray.lighten (0.65),
             fontColor: darkGray2,
             chartZoomScrollBar: orange,
-            axisTooltipFontColor: black
+            axisTooltipFontColor: black,
+            sumStroke: darkGray,
+            sumBullet: orange
         }
     };
 }
