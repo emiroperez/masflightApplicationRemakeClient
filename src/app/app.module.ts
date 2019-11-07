@@ -217,6 +217,7 @@ import { DatalakeExecutionPartitionViewDetailComponent } from './datalake-execut
 import { DatalakePartitionExecuteDialogComponent } from './datalake-partition-execute-dialog/datalake-partition-execute-dialog.component';
 import { DatalakeQueryEngineHistoryComponent } from './datalake-query-engine-history/datalake-query-engine-history.component';
 import { DatalakeQueryEngineSaveComponent } from './datalake-query-engine-save/datalake-query-engine-save.component';
+import { DatalakeAlarmAddEmailDialogComponent } from './datalake-alarm-add-email-dialog/datalake-alarm-add-email-dialog.component';
 
 @NgModule({
   declarations: [
@@ -407,7 +408,8 @@ import { DatalakeQueryEngineSaveComponent } from './datalake-query-engine-save/d
     DatalakeExecutionPartitionComponent,
     DatalakeExecutionPartitionViewDetailComponent,
     DatalakeQueryEngineHistoryComponent,
-    DatalakeQueryEngineSaveComponent
+    DatalakeQueryEngineSaveComponent,
+    DatalakeAlarmAddEmailDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -501,7 +503,8 @@ import { DatalakeQueryEngineSaveComponent } from './datalake-query-engine-save/d
     DatalakeAlarmEditDialogComponent,
     DatalakePartitionExecuteDialogComponent,
     DatalakeQueryEngineHistoryComponent,
-    DatalakeQueryEngineSaveComponent
+    DatalakeQueryEngineSaveComponent,
+    DatalakeAlarmAddEmailDialogComponent
   ]
 })
 export class AppModule { }

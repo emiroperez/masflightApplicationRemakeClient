@@ -137,12 +137,12 @@ this.mobileQuery.addListener(this._mobileQueryListener);
 
   handlerSuccess(_this,data){
     // Temporary hack for DataLake
-    data.push ({
-      datalakeToken: null,
-      id: 5,
-      name: "DataLake",
-      url: "/datalake"
-    });
+    // data.push ({
+    //   datalakeToken: null,
+    //   id: 5,
+    //   name: "DataLake",
+    //   url: "/datalake"
+    // });
 
     _this.options = data;
     _this.options2 = data.slice();

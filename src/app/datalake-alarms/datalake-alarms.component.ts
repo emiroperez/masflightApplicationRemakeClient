@@ -10,6 +10,7 @@ import { DatalakeService } from '../services/datalake.service';
 import { ApplicationService } from '../services/application.service';
 import { DatalakeAlarmEditDialogComponent } from '../datalake-alarm-edit-dialog/datalake-alarm-edit-dialog.component';
 import { MessageComponent } from '../message/message.component';
+import { DatalakeAlarmAddEmailDialogComponent } from '../datalake-alarm-add-email-dialog/datalake-alarm-add-email-dialog.component';
 
 @Component({
   selector: 'app-datalake-alarms',
@@ -21,7 +22,6 @@ export class DatalakeAlarmsComponent implements OnInit {
 
   schemas: string[] = [];
   tables: string[] = [];
-  alarms: any[] = [];
   schemaName: any = "";
   tableName: any= "";
   cron: any= "";
@@ -36,26 +36,44 @@ export class DatalakeAlarmsComponent implements OnInit {
   alarmFormGroup: FormGroup;
   notifyMode: boolean = false;
   monitoringStatus: string = 'A';
+  listEmail: any[] = [];
+  // listEmail: any[] = [{
+  //   email: "dfjhgkjdfhg",
+  //   remove: "F"}];
 
   tableFilterCtrl: FormControl = new FormControl ();
   filteredTables: ReplaySubject<any[]> = new ReplaySubject<any[]> (1);
   _onDestroy: Subject<void> = new Subject<void> ();
 
   alarmColumns: string[] = ['schemaName', 'tableName', 'cron', 'status', 'actions'];
-  alarmTable: MatTableDataSource<any>;
-  // alarms: any[] = [
-  // {
-  //   schemaName: "fr24p",
-  //   tableName: "fradar24_r",
-  //   cron: "**5**",
-  //   monitoringStatus: 'I',
-  //   notifyMode: 0
-  // }
-  // ];
+  alarmTable: MatTableDataSource<any>;  
+  alarms: any[] = [];
+//   alarms: any[] = [
+//   {
+//     "previousState": "OFF",
+//     "currentState": "OFF",
+//     "tableName": "fradar24_r",
+//     "schemaName": "fr24p",
+//     "cron": "*/5 * * * *",
+//     "monitoringStatus": "A",
+//     "emailList": [{"email":"karen.perez@aspsols.com" , "remove":"F"},
+//     {"email":"keiner.beleno@aspsols.com" , "remove":"F"}
+//   ]
+// },
+// {
+//     "previousState": "OFF",
+//     "currentState": "OFF",
+//     "tableName": "unified_tracking_detail_pq",
+//     "schemaName": "pruebaperformancepq",
+//     "cron": "*/5 * * * *",
+//     "monitoringStatus": "I",
+//     "emailList": null
+// },
+//   ];
 
   innerHeight: number;
   clock: any;
-  request: { schemaName: any; tableName: any; cron: any; monitoringStatus: string; };
+  request: { schemaName: any; tableName: any; cron: any; monitoringStatus: string; emailList: any[]};
   search: any;
 
   constructor(public globals: Globals, private formBuilder: FormBuilder,
@@ -76,6 +94,8 @@ export class DatalakeAlarmsComponent implements OnInit {
 
     this.globals.isLoading = true;
     this.service.getDatalakeAlarms (this, this.setAlarms, this.setAlarmsError);
+    // this.alarmTable = new MatTableDataSource (this.alarms);
+    // this.alarmTable.paginator = this.paginator;
     this.service.getDatalakeSchemas (this, this.setSchemas, this.setSchemasError);
   }
 
@@ -268,6 +288,7 @@ export class DatalakeAlarmsComponent implements OnInit {
         alarm.tableName = result.tableName;
         alarm.monitoringStatus = result.monitoringStatus;
         alarm.cron = result.cron;
+        alarm.listEmail = result.listEmail;
       }
 
     });
@@ -314,11 +335,18 @@ export class DatalakeAlarmsComponent implements OnInit {
       this.cron = this.minutes;
     }
 
+    this.listEmail.forEach(element => {
+      if(!element.remove){
+        element.remove = 'F';
+      }
+    });
+
     this.request = {
       schemaName: this.schemaName,
       tableName: this.tableName,
       cron: this.cron,
-      monitoringStatus: this.monitoringStatus
+      monitoringStatus: this.monitoringStatus,
+      emailList: this.listEmail
     }
 
     this.globals.isLoading = true;
@@ -389,6 +417,7 @@ saveAlarmHandler(_this, data) {
     _this.alarmTable.data = _this.alarms;
     _this.alarmTable._updateChangeSubscription ();    
     _this.alarmFormGroup.reset()
+    _this.listEmail = [];
     _this.globals.isLoading = false;
   }else{
     _this.globals.isLoading = false;
@@ -442,5 +471,42 @@ setschema()
     }
   }
 }
+
+AddEmail(): void
+  {
+    let dialogRef = this.dialog.open (DatalakeAlarmAddEmailDialogComponent, {
+      height: 'auto',
+      width: '400px',
+      panelClass: 'AddEmailSendAlarms',
+      // data: this.listEmail
+      data: {
+        emailList: this.listEmail,
+        OnlyRead: false        
+      }
+      
+    });
+
+    dialogRef.afterClosed ().subscribe ((result) => {
+      if (result)
+      {
+        this.listEmail = result;
+      }
+
+    });
+  }
+
+  viewEmail(element): void
+  {
+    let dialogRef = this.dialog.open (DatalakeAlarmAddEmailDialogComponent, {
+      height: 'auto',
+      width: '400px',
+      panelClass: 'AddEmailSendAlarms',
+      data: {
+        emailList: element,
+        OnlyRead: true        
+      }
+      
+    });
+  }
 
 }

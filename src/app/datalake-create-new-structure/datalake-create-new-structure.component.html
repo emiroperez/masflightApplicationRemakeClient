@@ -104,7 +104,7 @@
         <mat-form-field class="datalake-table-location"
          [formGroup]="tableConfigurationFormGroup">
           <input matInput placeholder="Table Path" autocomplete="off" 
-          formControlName="tableLocation">
+          formControlName="tableLocation" matTooltip="Example: ">
           <!-- <mat-error *ngIf="tableConfigurationFormGroup.get('tableLocation')?.invalid">You must specify table location</mat-error> -->
         </mat-form-field>
         <!-- <div class="datalake-checkbox">

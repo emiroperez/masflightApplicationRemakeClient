@@ -1,12 +1,13 @@
 import { Component, ChangeDetectorRef, Inject } from '@angular/core';
 import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { timePicker } from 'analogue-time-picker';
 
 import { Globals } from '../globals/Globals';
 import { DatalakeService } from '../services/datalake.service';
+import { DatalakeAlarmAddEmailDialogComponent } from '../datalake-alarm-add-email-dialog/datalake-alarm-add-email-dialog.component';
 
 @Component({
   selector: 'app-datalake-alarm-edit-dialog',
@@ -22,6 +23,7 @@ export class DatalakeAlarmEditDialogComponent {
   cron: string ;
   minutes: any;
   isLoading: boolean = false;
+  listEmail: any[] = [];
 
   tableFilterCtrl: FormControl = new FormControl ();
   filteredTables: ReplaySubject<any[]> = new ReplaySubject<any[]> (1);
@@ -34,10 +36,14 @@ export class DatalakeAlarmEditDialogComponent {
   constructor(public dialogRef: MatDialogRef<DatalakeAlarmEditDialogComponent>,
     public globals: Globals, private formBuilder: FormBuilder,
     private service: DatalakeService, private changeDetectorRef: ChangeDetectorRef,
+    private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: { alarm: any, schemas: string[] })
   {
     this.schemas = JSON.parse (JSON.stringify (this.data.schemas));
     this.monitoringStatus = this.data.alarm.monitoringStatus;
+    if(this.data.alarm.emailList){
+      this.listEmail = this.data.alarm.emailList;
+    }
 
     this.alarmFormGroup = this.formBuilder.group ({
       schema: [this.data.alarm.schemaName, Validators.required],
@@ -272,7 +278,8 @@ getTimeFormat(value){
       schemaName: this.alarmFormGroup.get ("schema").value,
       tableName: this.alarmFormGroup.get ("table").value,
       cron: this.cron,
-      monitoringStatus: this.monitoringStatus
+      monitoringStatus: this.monitoringStatus,
+      emailList: this.listEmail
     };
     this.service.saveDatalakeAlarm (this, request, this.saveAlarmHandler, this.saveAlarmError);
 
@@ -284,7 +291,8 @@ getTimeFormat(value){
         schemaName: _this.alarmFormGroup.get ("schema").value,
         tableName: _this.alarmFormGroup.get ("table").value,
         monitoringStatus: _this.monitoringStatus,
-        cron: _this.cron
+        cron: _this.cron,
+        listEmail: _this.listEmail
       });
     }
     
@@ -359,5 +367,27 @@ getTimePart(type,time){
       return "none";
 
     return "block";
+  }
+
+  AddEmail(): void
+  {
+    let dialogRef = this.dialog.open (DatalakeAlarmAddEmailDialogComponent, {
+      height: 'auto',
+      width: '400px',
+      panelClass: 'AddEmailSendAlarms',
+      // data: this.listEmail
+      data: {
+        emailList: this.listEmail,
+        OnlyRead: false        
+      }
+    });
+
+    dialogRef.afterClosed ().subscribe ((result) => {
+      if (result)
+      {
+        this.listEmail = result;
+      }
+
+    });
   }
 }
