@@ -248,6 +248,8 @@ export class MsfDashboardPanelComponent implements OnInit {
   addUpValuesSet: boolean = false;
   sumValueAxis: any = null;
   sumSeries: any = null;
+  advTableView: boolean = false;
+  intervalTableRows: any[] = [];
 
   constructor(private zone: NgZone, public globals: Globals,
     private service: ApplicationService, private http: ApiClient, private authService: AuthService, public dialog: MatDialog,
@@ -820,9 +822,13 @@ export class MsfDashboardPanelComponent implements OnInit {
     });
 
     this.values.chartSeries = [];
+
+    // reset advanced chart values
     this.addUpValuesSet = false;
     this.sumValueAxis = null;
     this.sumSeries = null;
+    this.advTableView = false;
+    this.intervalTableRows = [];
 
     this.zone.runOutsideAngular (() => {
       let chart, options;
@@ -1509,6 +1515,58 @@ export class MsfDashboardPanelComponent implements OnInit {
       });
 
       this.chart = chart;
+
+      // build interval table for advanced charts
+      if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
+      {
+        if (this.values.currentChartType.flags & ChartFlags.XYCHART)
+        {
+          let self = this;
+          let keys = [];
+
+          // add keys first
+          for (let item of this.chart.data)
+          {
+            Object.keys (item).forEach (function(key)
+            {
+              if (key === "Interval")
+                return;
+
+              if (keys.indexOf (key) == -1)
+                keys.push (key);
+            });
+          }
+
+          for (let key of keys)
+          {
+            let firstItem: boolean = true;
+
+            for (let item of self.chart.data)
+            {
+              self.intervalTableRows.push ({
+                key: firstItem ? key : " ",
+                Interval: item["Interval"],
+                value: item[key] ? item[key] : 0
+              });
+
+              firstItem = false;
+            }
+          };
+        }
+        else
+        {
+          for (let item of this.chart.data)
+          {
+            let label = item["Interval"];
+
+            this.intervalTableRows.push ({
+              key: null,
+              Interval: label,
+              value: item[this.values.valueColumn.name]
+            });
+          }
+        }
+      }
     });
   }
 
@@ -5719,7 +5777,12 @@ export class MsfDashboardPanelComponent implements OnInit {
     let theme = this.globals.theme;
     let maxValue: number;
     let sum: number = 0;
-    let colorSet;
+
+    if (this.sumSeries)
+    {
+      this.removeSumOfIntervals ();
+      return;
+    }
 
     this.zone.runOutsideAngular (() => {
       // prepare sum of the intervals for a line chart, if not set
@@ -5796,5 +5859,10 @@ export class MsfDashboardPanelComponent implements OnInit {
       // invalidate data in order to remove the line chart
       this.chart.invalidateData ();
     });
+  }
+
+  toggleIntervalTable(): void
+  {
+    this.advTableView = !this.advTableView;
   }
 }
