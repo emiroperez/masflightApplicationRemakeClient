@@ -5731,7 +5731,11 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   openDiscoveryDialog(): void
   {
-    let dialogRef = this.dialog.open (MsfSelectDataFromComponent, {
+    let dialogRef;
+
+    this.toggleControlVariableDialogOpen.emit (true);
+
+    dialogRef = this.dialog.open (MsfSelectDataFromComponent, {
       panelClass: 'msf-select-data-dialog',
       autoFocus: false,
       data: {
@@ -5743,6 +5747,8 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     dialogRef.afterClosed ().subscribe ((selectedItem) => {
       let selectedOption = null;
+
+      this.toggleControlVariableDialogOpen.emit (false);
 
       if (!selectedItem)
         return;
