@@ -1247,16 +1247,14 @@ export class MsfDashboardPanelComponent implements OnInit {
         valueAxis.renderer.grid.template.stroke = Themes.AmCharts[theme].stroke;
         valueAxis.renderer.grid.template.strokeWidth = 1;
 
-        if (this.values.currentChartType.flags & ChartFlags.LINECHART)
-        {
-          // Set axis tooltip background color depending of the theme
-          valueAxis.tooltip.label.fill = Themes.AmCharts[theme].axisTooltipFontColor;
-          valueAxis.tooltip.background.fill = Themes.AmCharts[theme].tooltipFill;
-          categoryAxis.tooltip.label.fill = Themes.AmCharts[theme].axisTooltipFontColor;
-          categoryAxis.tooltip.background.fill = Themes.AmCharts[theme].tooltipFill;
-        }
-        else
+        if (!(this.values.currentChartType.flags & ChartFlags.LINECHART))
           valueAxis.min = 0;
+
+        // Set axis tooltip background color depending of the theme
+        valueAxis.tooltip.label.fill = Themes.AmCharts[theme].axisTooltipFontColor;
+        valueAxis.tooltip.background.fill = Themes.AmCharts[theme].tooltipFill;
+        categoryAxis.tooltip.label.fill = Themes.AmCharts[theme].axisTooltipFontColor;
+        categoryAxis.tooltip.background.fill = Themes.AmCharts[theme].tooltipFill;
 
         if (this.values.currentChartType.flags & ChartFlags.XYCHART)
         {
@@ -5824,6 +5822,17 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.sumValueAxis.cursorTooltipEnabled = true;
       this.sumValueAxis.title.text = "Sum";
 
+      // Set value axis properties
+      this.sumValueAxis.renderer.labels.template.fontSize = 10;
+      this.sumValueAxis.renderer.labels.template.fill = Themes.AmCharts[theme].fontColor;
+      this.sumValueAxis.renderer.grid.template.strokeOpacity = 1;
+      this.sumValueAxis.renderer.grid.template.stroke = Themes.AmCharts[theme].stroke;
+      this.sumValueAxis.renderer.grid.template.strokeWidth = 1;
+
+      // Set axis tooltip background color depending of the theme
+      this.sumValueAxis.tooltip.label.fill = Themes.AmCharts[theme].axisTooltipFontColor;
+      this.sumValueAxis.tooltip.background.fill = Themes.AmCharts[theme].tooltipFill;
+
       this.sumSeries = this.chart.series.push (new am4charts.LineSeries ());
 
       if (this.values.currentChartType.flags & ChartFlags.ROTATED)
@@ -5867,6 +5876,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
           xaxis.renderer.grid.template.disabled = true;
           xaxis.renderer.labels.template.disabled = true;
+          xaxis.renderer.tooltip.disabled = true;
           xaxis.hide ();
         }
       }
@@ -5881,13 +5891,14 @@ export class MsfDashboardPanelComponent implements OnInit {
 
           yaxis.renderer.grid.template.disabled = true;
           yaxis.renderer.labels.template.disabled = true;
+          yaxis.renderer.tooltip.disabled = true;
           yaxis.hide ();
         }
       }
 
       // hide every chart series except the sum ones
       this.chart.events.once ("dataitemsvalidated", function (event) {
-        for (let i = 0; i < self.chart.series.values.length; i++)
+        for (let i = 0; i < self.chart.series.length; i++)
         {
           let series = self.chart.series.getIndex (i);
 
@@ -5929,6 +5940,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           xaxis.show ();
           xaxis.renderer.grid.template.disabled = false;
           xaxis.renderer.labels.template.disabled = false;
+          xaxis.renderer.tooltip.disabled = false;
         }
       }
       else
@@ -5940,6 +5952,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           yaxis.show ();
           yaxis.renderer.grid.template.disabled = false;
           yaxis.renderer.labels.template.disabled = false;
+          yaxis.renderer.tooltip.disabled = false;
         }
       }
 
