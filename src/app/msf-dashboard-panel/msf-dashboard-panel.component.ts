@@ -68,7 +68,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   valueAxis: any;
   chartForm: FormGroup;
+
   chart: any;
+  chartInfo: any;
 
   chartTypes: any[] = [
     { name: 'Bars', flags: ChartFlags.XYCHART, createSeries: this.createVertColumnSeries },
@@ -248,7 +250,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   addUpValuesSet: boolean = false;
   sumValueAxis: any = null;
-  sumSeries: any = null;
+  sumSeriesList: any[] = [];
   advTableView: boolean = false;
   intervalTableRows: any[] = [];
 
@@ -420,7 +422,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       return fill;
     });
 
-    if (values.currentChartType.flags & ChartFlags.ADVANCED)
+    if (!(values.currentChartType.flags & ChartFlags.ADVANCED))
     {
       // Display a special context menu when a chart column is right clicked
       series.columns.template.events.on ("rightclick", function (event) {
@@ -555,7 +557,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       return stroke;
     });
 
-    if (values.currentChartType.flags & ChartFlags.ADVANCED)
+    if (!(values.currentChartType.flags & ChartFlags.ADVANCED))
     {
       // Display a special context menu when a chart line segment is right clicked
       series.segments.template.interactionsEnabled = true;
@@ -827,9 +829,10 @@ export class MsfDashboardPanelComponent implements OnInit {
     // reset advanced chart values
     this.addUpValuesSet = false;
     this.sumValueAxis = null;
-    this.sumSeries = null;
+    this.sumSeriesList = [];
     this.advTableView = false;
     this.intervalTableRows = [];
+    this.chartInfo = chartInfo;
 
     this.zone.runOutsideAngular (() => {
       let chart, options;
@@ -5781,10 +5784,9 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     let theme = this.globals.theme;
     let maxValue: number;
-    let sum: number = 0;
     let self = this;
 
-    if (this.sumSeries)
+    if (this.sumSeriesList.length)
     {
       this.removeSumOfIntervals ();
       return;
@@ -5792,21 +5794,65 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     this.zone.runOutsideAngular (() => {
       // prepare sum of the intervals for a line chart, if not set
-      for (let item of this.chart.data)
+      if (this.values.currentChartType.flags & ChartFlags.XYCHART)
       {
-        Object.keys (item).forEach (function(key)
+        let keys = [];
+
+        maxValue = null;
+
+        // add keys first
+        for (let item of this.chart.data)
         {
-          if (key === "Interval" || key === "sum")
-            return;
+          Object.keys (item).forEach (function(key)
+          {
+            if (key === "Interval" || key.startsWith ("sum"))
+              return;
 
-          sum += item[key];
-        });
+            if (keys.indexOf (key) == -1)
+              keys.push (key);
+          });
+        }
 
-        if (!this.addUpValuesSet)
-          item["sum"] = sum;
+        for (let key of keys)
+        {
+          let sum = 0;
+
+          for (let item of this.chart.data)
+          {
+            let value = 0;
+
+            if (item[key])
+              value = item[key];
+
+            sum += value;
+            item["sum" + key] = sum;
+          }
+
+          if (maxValue == null || sum > maxValue)
+            maxValue = sum;
+        };
+      }
+      else
+      {
+        let sum: number = 0;
+
+        for (let item of this.chart.data)
+        {
+          Object.keys (item).forEach (function(key)
+          {
+            if (key === "Interval" || key === "sum")
+              return;
+
+            sum += item[key];
+          });
+
+          if (!this.addUpValuesSet)
+            item["sum"] = sum;
+        }
+
+        maxValue = sum;
       }
 
-      maxValue = sum;
       this.addUpValuesSet = true;
 
       // add a line chart on top of the existing chart that displays the sum
@@ -5832,34 +5878,86 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.sumValueAxis.tooltip.label.fill = Themes.AmCharts[theme].axisTooltipFontColor;
       this.sumValueAxis.tooltip.background.fill = Themes.AmCharts[theme].tooltipFill;
 
-      this.sumSeries = this.chart.series.push (new am4charts.LineSeries ());
-
-      if (this.values.currentChartType.flags & ChartFlags.ROTATED)
+      if (this.values.currentChartType.flags & ChartFlags.XYCHART)
       {
-        this.sumSeries.dataFields.valueX = "sum";
-        this.sumSeries.dataFields.categoryY = "Interval";
-        this.sumSeries.xAxis = this.sumValueAxis;
+        let index = 0;
+
+        for (let object of this.chartInfo.filter)
+        {
+          let sumSeries = this.chart.series.push (new am4charts.LineSeries ());
+
+          if (this.values.currentChartType.flags & ChartFlags.ROTATED)
+          {
+            sumSeries.dataFields.valueX = "sum" + object.valueField;
+            sumSeries.dataFields.categoryY = "Interval";
+            sumSeries.xAxis = this.sumValueAxis;
+          }
+          else
+          {
+            sumSeries.dataFields.valueY = "sum" + object.valueField;
+            sumSeries.dataFields.categoryX = "Interval";
+            sumSeries.yAxis = this.sumValueAxis;
+          }
+  
+          sumSeries.bullets.push (new am4charts.CircleBullet ());
+  
+          sumSeries.strokeWidth = 2;
+          sumSeries.fill = am4core.color (this.values.paletteColors[index]);
+          sumSeries.stroke = Themes.AmCharts[theme].sumStroke;
+          sumSeries.strokeOpacity = 0.5;
+          sumSeries.name = object.valueAxis;
+
+          if (this.values.currentChartType.flags & ChartFlags.ROTATED)
+            sumSeries.tooltipText = object.valueAxis + ": {valueX}";
+          else
+            sumSeries.tooltipText = object.valueAxis + ": {valueY}";
+  
+          sumSeries.tooltip.pointerOrientation = "horizontal";
+          sumSeries.tooltip.background.cornerRadius = 20;
+          sumSeries.tooltip.background.fillOpacity = 0.5;
+          sumSeries.tooltip.label.padding (12, 12, 12, 12);
+
+          this.sumSeriesList.push (sumSeries);
+          index++;
+        }
       }
       else
       {
-        this.sumSeries.dataFields.valueY = "sum";
-        this.sumSeries.dataFields.categoryX = "Interval";
-        this.sumSeries.yAxis = this.sumValueAxis;
+        let sumSeries = this.chart.series.push (new am4charts.LineSeries ());
+
+        if (this.values.currentChartType.flags & ChartFlags.ROTATED)
+        {
+          sumSeries.dataFields.valueX = "sum";
+          sumSeries.dataFields.categoryY = "Interval";
+          sumSeries.xAxis = this.sumValueAxis;
+        }
+        else
+        {
+          sumSeries.dataFields.valueY = "sum";
+          sumSeries.dataFields.categoryX = "Interval";
+          sumSeries.yAxis = this.sumValueAxis;
+        }
+
+        sumSeries.bullets.push (new am4charts.CircleBullet ());
+
+        sumSeries.strokeWidth = 2;
+        sumSeries.fill = am4core.color (this.values.paletteColors[0]);
+        sumSeries.stroke = Themes.AmCharts[theme].sumStroke;
+        sumSeries.strokeOpacity = 0.5;
+        sumSeries.name = "Sum";
+
+        if (this.values.currentChartType.flags & ChartFlags.ROTATED)
+          sumSeries.tooltipText = "{valueX}";
+        else
+          sumSeries.tooltipText = "{valueY}";
+
+        sumSeries.tooltip.pointerOrientation = "horizontal";
+        sumSeries.tooltip.background.cornerRadius = 20;
+        sumSeries.tooltip.background.fillOpacity = 0.5;
+        sumSeries.tooltip.label.padding (12, 12, 12, 12);
+
+        this.sumSeriesList.push (sumSeries);
       }
-
-      this.sumSeries.bullets.push (new am4charts.CircleBullet ());
-
-      this.sumSeries.strokeWidth = 2;
-      this.sumSeries.fill = Themes.AmCharts[theme].sumBullet;
-      this.sumSeries.stroke = Themes.AmCharts[theme].sumStroke;
-      this.sumSeries.strokeOpacity = 0.5;
-      this.sumSeries.name = "Sum";
-      this.sumSeries.tooltipText = "Sum: {valueY}";
-
-      this.sumSeries.tooltip.pointerOrientation = "horizontal";
-      this.sumSeries.tooltip.background.cornerRadius = 20;
-      this.sumSeries.tooltip.background.fillOpacity = 0.5;
-      this.sumSeries.tooltip.label.padding (12, 12, 12, 12);
 
       this.chart.cursor = new am4charts.XYCursor ();
 
@@ -5900,8 +5998,18 @@ export class MsfDashboardPanelComponent implements OnInit {
         for (let i = 0; i < self.chart.series.length; i++)
         {
           let series = self.chart.series.getIndex (i);
+          let skipSeries: boolean = false;
 
-          if (series == self.sumSeries)
+          for (let sumSeries of self.sumSeriesList)
+          {
+            if (series == sumSeries)
+            {
+              skipSeries = true;
+              break;
+            }
+          }
+
+          if (skipSeries)
             continue;
 
           series.hide ();
@@ -5919,8 +6027,10 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.zone.runOutsideAngular (() => {
       let self = this;
 
-      this.chart.series.removeIndex (this.chart.series.indexOf (this.sumSeries));
-      this.sumSeries = null;
+      for (let sumSeries of this.sumSeriesList)
+        this.chart.series.removeIndex (this.chart.series.indexOf (sumSeries));
+
+      this.sumSeriesList = [];
 
       if (this.values.currentChartType.flags & ChartFlags.ROTATED)
         this.chart.xAxes.removeIndex (this.chart.xAxes.indexOf (this.sumValueAxis));

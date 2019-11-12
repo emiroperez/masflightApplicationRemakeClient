@@ -51,8 +51,7 @@ export class Themes {
             fontColor: white,
             chartZoomScrollBar: blueJeans,
             axisTooltipFontColor: white,
-            sumStroke: white,
-            sumBullet: lightBlue
+            sumStroke: white
         },
         "light-theme": {
             mainTheme: am4themes_light,
@@ -68,8 +67,7 @@ export class Themes {
             fontColor: darkGray2,
             chartZoomScrollBar: orange,
             axisTooltipFontColor: black,
-            sumStroke: darkGray,
-            sumBullet: orange
+            sumStroke: darkGray
         }
     };
 }
