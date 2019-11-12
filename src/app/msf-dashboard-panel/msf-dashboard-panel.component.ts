@@ -66,6 +66,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   variableCtrlBtnEnabled: boolean = false;
   generateBtnEnabled: boolean = false;
 
+  valueAxis: any;
   chartForm: FormGroup;
   chart: any;
 
@@ -1004,6 +1005,9 @@ export class MsfDashboardPanelComponent implements OnInit {
         options = chart.exporting.getFormatOptions ("pdf");
         options.addURL = false;
         chart.exporting.setFormatOptions ("pdf", options);
+
+        // Set value axis to null
+        this.valueAxis = null;
       }
       else if (this.values.currentChartType.flags & ChartFlags.MAP)
       {
@@ -1066,6 +1070,9 @@ export class MsfDashboardPanelComponent implements OnInit {
         this.oldChartType = null;
         this.oldVariableName = "";
         this.oldOptionCategories = JSON.parse (JSON.stringify (this.values.currentOptionCategories));
+
+        // Set value axis to null
+        this.valueAxis = null;
       }
       else if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART
         || this.values.currentChartType.flags & ChartFlags.PIECHART)
@@ -1110,6 +1117,9 @@ export class MsfDashboardPanelComponent implements OnInit {
         options = chart.exporting.getFormatOptions ("pdf");
         options.addURL = false;
         chart.exporting.setFormatOptions ("pdf", options);
+
+        // Set value axis to null
+        this.valueAxis = null;
       }
       else
       {
@@ -1400,11 +1410,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
           // Add cursor if the chart type is line, area or stacked area
           if (this.values.currentChartType.flags & ChartFlags.LINECHART)
-          {
             chart.cursor = new am4charts.XYCursor ();
-            chart.cursor.xAxis = valueAxis;
-            chart.cursor.snapToSeries = chart.series;
-          }
         }
         else
         {
@@ -1493,6 +1499,9 @@ export class MsfDashboardPanelComponent implements OnInit {
         options = chart.exporting.getFormatOptions ("pdf");
         options.addURL = false;
         chart.exporting.setFormatOptions ("pdf", options);
+
+        // Save value axis
+        this.valueAxis = valueAxis;
       }
 
       if (this.values.currentChartType.flags & ChartFlags.XYCHART)
@@ -5812,7 +5821,6 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.sumValueAxis.min = 0;
       this.sumValueAxis.max = maxValue + 1;
       this.sumValueAxis.strictMinMax = true;
-      this.sumValueAxis.renderer.grid.template.disabled = true;
       this.sumValueAxis.cursorTooltipEnabled = true;
       this.sumValueAxis.title.text = "Sum";
 
@@ -5832,22 +5840,20 @@ export class MsfDashboardPanelComponent implements OnInit {
       }
 
       bullet = this.sumSeries.bullets.push (new am4charts.CircleBullet ());
-      bullet.tooltipText = "Sum: {valueY}";
 
       this.sumSeries.strokeWidth = 2;
       this.sumSeries.fill = Themes.AmCharts[theme].sumBullet;
       this.sumSeries.stroke = Themes.AmCharts[theme].sumStroke;
       this.sumSeries.strokeOpacity = 0.5;
       this.sumSeries.name = "Sum";
+      this.sumSeries.tooltipText = "Sum: {valueY}";
 
-      // make the tooltip visualization more consistent with the chart types
-      if (this.values.currentChartType.flags & ChartFlags.LINECHART)
-      {
-        this.sumSeries.tooltip.pointerOrientation = "horizontal";
-        this.sumSeries.tooltip.background.cornerRadius = 20;
-        this.sumSeries.tooltip.background.fillOpacity = 0.5;
-        this.sumSeries.tooltip.label.padding (12, 12, 12, 12);
-      }
+      this.sumSeries.tooltip.pointerOrientation = "horizontal";
+      this.sumSeries.tooltip.background.cornerRadius = 20;
+      this.sumSeries.tooltip.background.fillOpacity = 0.5;
+      this.sumSeries.tooltip.label.padding (12, 12, 12, 12);
+
+      this.chart.cursor = new am4charts.XYCursor ();
 
       // also hide the normal category axis value labels
       if (this.values.currentChartType.flags & ChartFlags.ROTATED)
@@ -5859,7 +5865,9 @@ export class MsfDashboardPanelComponent implements OnInit {
           if (xaxis == this.sumValueAxis)
             continue;
 
+          xaxis.renderer.grid.template.disabled = true;
           xaxis.renderer.labels.template.disabled = true;
+          xaxis.hide ();
         }
       }
       else
@@ -5871,7 +5879,9 @@ export class MsfDashboardPanelComponent implements OnInit {
           if (yaxis == this.sumValueAxis)
             continue;
 
+          yaxis.renderer.grid.template.disabled = true;
           yaxis.renderer.labels.template.disabled = true;
+          yaxis.hide ();
         }
       }
 
@@ -5906,6 +5916,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         this.chart.xAxes.removeIndex (this.chart.xAxes.indexOf (this.sumValueAxis));
       else
         this.chart.yAxes.removeIndex (this.chart.yAxes.indexOf (this.sumValueAxis));
+
       this.sumValueAxis = null;
 
       // display the normal category axis value labels
@@ -5915,6 +5926,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         {
           let xaxis = this.chart.xAxes.getIndex (i);
 
+          xaxis.show ();
+          xaxis.renderer.grid.template.disabled = false;
           xaxis.renderer.labels.template.disabled = false;
         }
       }
@@ -5924,6 +5937,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         {
           let yaxis = this.chart.yAxes.getIndex (i);
 
+          yaxis.show ();
+          yaxis.renderer.grid.template.disabled = false;
           yaxis.renderer.labels.template.disabled = false;
         }
       }
@@ -5938,6 +5953,11 @@ export class MsfDashboardPanelComponent implements OnInit {
           series.hiddenInLegend = false;
         }
       });
+
+      if (this.values.currentChartType.flags & ChartFlags.LINECHART)
+        this.chart.cursor = new am4charts.XYCursor ();
+      else
+        this.chart.cursor = null;
 
       // invalidate data in order to remove the line chart
       this.chart.invalidateData ();

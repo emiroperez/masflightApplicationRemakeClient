@@ -497,11 +497,7 @@ export class MsfChartPreviewComponent {
 
           // Add cursor if the chart type is line, area or stacked area
           if (this.data.currentChartType.flags & ChartFlags.LINECHART)
-          {
             chart.cursor = new am4charts.XYCursor ();
-            chart.cursor.xAxis = valueAxis;
-            chart.cursor.snapToSeries = chart.series;
-          }
         }
         else
         {
