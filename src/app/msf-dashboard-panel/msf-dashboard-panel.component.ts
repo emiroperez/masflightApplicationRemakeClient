@@ -5760,6 +5760,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     let theme = this.globals.theme;
     let maxValue: number;
     let sum: number = 0;
+    let bullet;
 
     if (this.sumSeries)
     {
@@ -5815,12 +5816,23 @@ export class MsfDashboardPanelComponent implements OnInit {
         this.sumSeries.yAxis = this.sumValueAxis;
       }
 
-      this.sumSeries.bullets.push (new am4charts.CircleBullet ());
+      bullet = this.sumSeries.bullets.push (new am4charts.CircleBullet ());
+      bullet.tooltipText = "Sum: {valueY}";
+
       this.sumSeries.strokeWidth = 2;
       this.sumSeries.fill = Themes.AmCharts[theme].sumBullet;
       this.sumSeries.stroke = Themes.AmCharts[theme].sumStroke;
       this.sumSeries.strokeOpacity = 0.5;
       this.sumSeries.name = "Sum";
+
+      // make the tooltip visualization more consistent with the chart types
+      if (this.values.currentChartType.flags & ChartFlags.LINECHART)
+      {
+        this.sumSeries.tooltip.pointerOrientation = "horizontal";
+        this.sumSeries.tooltip.background.cornerRadius = 20;
+        this.sumSeries.tooltip.background.fillOpacity = 0.5;
+        this.sumSeries.tooltip.label.padding (12, 12, 12, 12);
+      }
 
       // invalidate data in order to display the line chart
       this.chart.invalidateData ();
