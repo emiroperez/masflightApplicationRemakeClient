@@ -1519,6 +1519,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       // build interval table for advanced charts
       if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
       {
+        let sum = 0;
+
         if (this.values.currentChartType.flags & ChartFlags.XYCHART)
         {
           let self = this;
@@ -1543,14 +1545,29 @@ export class MsfDashboardPanelComponent implements OnInit {
 
             for (let item of self.chart.data)
             {
+              let value;
+
+              if (item[key])
+                value = item[key];
+              else
+                value = 0;
+
               self.intervalTableRows.push ({
                 key: firstItem ? key : " ",
                 Interval: item["Interval"],
-                value: item[key] ? item[key] : 0
+                value: value
               });
 
+              sum += value;
               firstItem = false;
             }
+
+            // add the sum of the values
+            self.intervalTableRows.push ({
+              key: "Sum",
+              Interval: "Total",
+              value: sum
+            });
           };
         }
         else
@@ -1564,7 +1581,15 @@ export class MsfDashboardPanelComponent implements OnInit {
               Interval: label,
               value: item[this.values.valueColumn.name]
             });
+
+            sum += item[this.values.valueColumn.name];
           }
+
+          this.intervalTableRows.push ({
+            key: null,
+            Interval: "Total",
+            value: sum
+          });
         }
       }
     });
