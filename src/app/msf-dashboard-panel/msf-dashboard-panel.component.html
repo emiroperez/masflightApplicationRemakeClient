@@ -893,7 +893,7 @@
         <button *ngIf="!globals.readOnlyDashboard" mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="copyControlVariables()" matTooltip="Copy Control Variables">
           <mat-icon aria-label="Copy Control Variables">file_copy</mat-icon>
         </button>
-        <button *ngIf="isAdvChartPanel()" mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="addUpIntervals()" matTooltip="{{sumSeries ? 'Remove Sum Of Intervals' : 'Add Up Intervals'}}">
+        <button *ngIf="isAdvChartPanel()" mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="addUpIntervals()" matTooltip="{{sumSeriesList && sumSeriesList.length ? 'Remove Sum Of Intervals' : 'Add Up Intervals'}}">
           <mat-icon aria-label="Add Up Intervals">functions</mat-icon>
         </button>
         <button *ngIf="isAdvChartPanel()" mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="toggleIntervalTable()" matTooltip="Table View">
