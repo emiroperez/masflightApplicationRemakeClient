@@ -708,10 +708,15 @@ export class MsfDashboardAssistantComponent {
     else
     {
       if (values.chartMode === "advanced")
+      {
         series.dataFields.categoryY = "Interval";
+        series.columns.template.tooltipText = item.valueAxis + ": {valueX}";
+      }
       else
+      {
         series.dataFields.categoryY = values.xaxis.columnName;
-      series.columns.template.tooltipText = "{categoryY}: {valueX}";
+        series.columns.template.tooltipText = "{categoryY}: {valueX}";
+      }
     }
 
     // Configure columns
@@ -739,10 +744,15 @@ export class MsfDashboardAssistantComponent {
     else
     {
       if (values.chartMode === "advanced")
+      {
         series.dataFields.categoryX = "Interval";
+        series.columns.template.tooltipText = item.valueAxis + ": {valueY}";
+      }
       else
+      {
         series.dataFields.categoryX = values.xaxis.columnName;
-      series.columns.template.tooltipText = "{categoryX}: {valueY}";
+        series.columns.template.tooltipText = "{categoryX}: {valueY}";
+      }
     }
 
     series.stacked = stacked;
@@ -777,10 +787,15 @@ export class MsfDashboardAssistantComponent {
     else
     {
       if (values.chartMode === "advanced")
+      {
         series.dataFields.categoryX = "Interval";
+        series.tooltipText = item.valueAxis + ": {valueY}";
+      }
       else
+      {
         series.dataFields.categoryX = values.xaxis.columnName;
-      series.tooltipText = "{categoryX}: {valueY}";
+        series.tooltipText = "{categoryX}: {valueY}";
+      }
     }
 
     // Fill area below line for area chart types
@@ -799,7 +814,12 @@ export class MsfDashboardAssistantComponent {
     series.dataFields.valueY = item.valueField;
     series.dataFields.categoryX = item.titleField;
     series.name = item.valueField;
-    series.columns.template.tooltipText = "{categoryX}: {valueY}";
+
+    if (values.chartMode === "advanced")
+      series.columns.template.tooltipText = "{valueY}";
+    else
+      series.columns.template.tooltipText = "{categoryX}: {valueY}";
+
     series.columns.template.strokeWidth = 0;
 
     series.stacked = stacked;
@@ -819,7 +839,12 @@ export class MsfDashboardAssistantComponent {
     series.dataFields.valueX = item.valueField;
     series.dataFields.categoryY = item.titleField;
     series.name = item.valueField;
-    series.columns.template.tooltipText = "{categoryY}: {valueX}";
+
+    if (values.chartMode === "advanced")
+      series.columns.template.tooltipText = "{valueX}";
+    else
+      series.columns.template.tooltipText = "{categoryY}: {valueX}";
+
     series.columns.template.strokeWidth = 0;
 
     series.stacked = stacked;
