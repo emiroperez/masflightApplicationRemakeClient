@@ -3407,35 +3407,17 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.chartName = this.temp.chartName;
 
     if (this.temp.variable)
-    {
-      for (let option of this.values.chartColumnOptions)
-      {
-        if (this.temp.variable == option.item.id)
-          this.values.variable = option;
-      }
-    }
+      this.values.variable = this.temp.variable;
     else
       this.values.variable = null;
 
     if (this.temp.xaxis)
-    {
-      for (let option of this.values.chartColumnOptions)
-      {
-        if (this.temp.xaxis == option.item.id)
-          this.values.xaxis = option;
-      }
-    }
+      this.values.xaxis = this.temp.xaxis;
     else
       this.values.xaxis = null;
 
     if (this.temp.valueColumn)
-    {
-      for (let option of this.values.chartColumnOptions)
-      {
-        if (this.temp.valueColumn == option.item.id)
-          this.values.valueColumn = option;
-      }
-    }
+      this.values.valueColumn = this.temp.valueColumn;
     else
       this.values.valueColumn = null;
 
