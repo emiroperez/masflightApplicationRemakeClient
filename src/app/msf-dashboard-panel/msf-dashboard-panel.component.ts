@@ -2180,6 +2180,19 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   loadData(): void
   {
+    // on advanced charts, check if the value selected is a number type
+    if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
+    {
+      if (this.values.valueColumn.item.columnType !== "number")
+      {
+        this.dialog.open (MessageComponent, {
+          data: { title: "Error", message: "Only numeric value types are allowed for aggregation value." }
+        });
+
+        return;
+      }
+    }
+
     this.globals.startTimestamp = new Date ();
 
     // check if any variable that requires grouping are in configure properly

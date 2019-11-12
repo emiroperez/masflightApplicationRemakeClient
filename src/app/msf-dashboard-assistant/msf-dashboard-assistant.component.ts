@@ -605,6 +605,18 @@ export class MsfDashboardAssistantComponent {
   {
     let i, variable, xaxis, valueColumn;
 
+    if (this.chartMode === "advanced")
+    {
+      if (this.aggregationValueSelected.columnType !== "number")
+      {
+        this.dialog.open (MessageComponent, {
+          data: { title: "Error", message: "Only numeric value types are allowed for aggregation value." }
+        });
+
+        return;
+      }
+    }
+
     if ((this.chartMode === "advanced" && this.selectedChartType.flags & ChartFlags.XYCHART
       || this.chartMode === "basic")
       && this.analysisSelected)
