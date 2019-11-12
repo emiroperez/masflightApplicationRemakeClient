@@ -5783,7 +5783,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     let maxValue: number;
     let sum: number = 0;
     let self = this;
-    let bullet;
 
     if (this.sumSeries)
     {
@@ -5848,7 +5847,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         this.sumSeries.yAxis = this.sumValueAxis;
       }
 
-      bullet = this.sumSeries.bullets.push (new am4charts.CircleBullet ());
+      this.sumSeries.bullets.push (new am4charts.CircleBullet ());
 
       this.sumSeries.strokeWidth = 2;
       this.sumSeries.fill = Themes.AmCharts[theme].sumBullet;
