@@ -66,7 +66,6 @@ export class DatalakeService {
             Token: this.globals.token
             // Token: "rHgGv10eoP1PmScdpki!8buJYKmT93Mrvj!"
         };
-        console.log (url);
         this.http.post(_this, url, request, handlerSuccess, handlerError);
     }
 

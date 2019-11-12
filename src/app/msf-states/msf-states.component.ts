@@ -50,7 +50,6 @@ export class MsfStatesComponent implements OnInit {
 
   handlerError(_this,result){
     _this.loading = false;
-    console.log(result);
   }
 
   onSearch($event: any){

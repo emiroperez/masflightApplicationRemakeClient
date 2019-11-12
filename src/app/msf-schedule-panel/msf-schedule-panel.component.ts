@@ -366,7 +366,6 @@ export class MsfSchedulePanelComponent implements OnInit {
         sumZ += Math.sin (tempLat);
       }
 
-      console.log(sumX+"-"+sumY+"-"+sumZ);
       var avgX = sumX / newCities.length;
       var avgY = sumY / newCities.length;
       var avgZ = sumZ / newCities.length;

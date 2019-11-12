@@ -57,7 +57,6 @@ saveResults(_this, result): void
 
 saveError(_this, result): void
 {
-  console.log (result);
 }
 
   Clean(){

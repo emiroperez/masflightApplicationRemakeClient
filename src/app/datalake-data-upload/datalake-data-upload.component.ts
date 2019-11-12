@@ -352,8 +352,6 @@ export class DatalakeDataUploadComponent {
     _this.fileLoading = false;
     _this.targetFile = null;
     _this.uploadFileFormGroup.get ("fileName").setValue ("");
-
-    console.log (result);
   }
 
   resetStepper(stepper: MatStepper): void
@@ -375,7 +373,6 @@ export class DatalakeDataUploadComponent {
     let tableSelector = _this.tableConfigurationFormGroup.get ("table");
 
     // TODO: Show dialog
-    console.log (result);
     _this.tables = [];
     _this.filteredTables.next (_this.tables.slice ());
     tableSelector.setValue (null);
@@ -448,14 +445,12 @@ export class DatalakeDataUploadComponent {
           data: { title: "Success", message: "Data Uploaded Successfully" }
         });      
       _this.closeDialog.emit ();
-      }
-      console.log (data);    
+      }   
     }
   
     dataUploadError(_this, result): void
     {
       _this.stopLoading.emit ();
-      console.log (result);
   
       _this.dialog.open (MessageComponent, {
         data: { title: "Error", message: "Failed to Upload data." }
@@ -498,16 +493,14 @@ export class DatalakeDataUploadComponent {
     var exp =/("(.*?)")/g ;
     var newString = row.replace(exp, '$');
     var array = newString.split(delimiter);
-    // console.log(array);
     var array2 =row.match(exp);
-    // console.log(array2);
     for (let index = 0; index < array.length; index++) {
       if(array[index]=='$'){
         array[index] = array2[0].replace(/"/g,'');
          array2.shift();
       }
     }
-    // console.log(array);
+
     return array;
   }
 }

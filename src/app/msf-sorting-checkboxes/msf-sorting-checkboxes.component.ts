@@ -75,12 +75,10 @@ export class MsfSortingCheckboxesComponent implements OnInit {
   handlerError(_this,result){
     if (!_this.globals.appLoading)
       _this.globals.isLoading = false;
-    console.log(result);
   }
 
   //   formatData(){
   //   this.data = this.data.concat(this.response);
-  //   console.log(this.data)
   //   this.globals.isLoading = false;
   // }
 

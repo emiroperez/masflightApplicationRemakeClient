@@ -75,7 +75,6 @@ export class DatalakeCreateTableComponent {
 
   handlerError(_this, result): void
   {
-    console.log (result);
     _this.isLoading = false;
     _this.tabs.realignInkBar ();
   }

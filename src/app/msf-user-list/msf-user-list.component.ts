@@ -76,7 +76,6 @@ export class MsfUserListComponent implements OnInit {
    handlerError(_this,result){
     if (!_this.globals.appLoading)
       _this.globals.isLoading = false;
-     console.log(result);
    }
  
    ngAfterViewInit() {

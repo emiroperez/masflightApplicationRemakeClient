@@ -124,7 +124,6 @@ this.mobileQuery.addListener(this._mobileQueryListener);
   }
 
   errorLogin(_this,result){
-    console.log(result);
     _this.getApplications();
   }
 
@@ -157,7 +156,7 @@ this.mobileQuery.addListener(this._mobileQueryListener);
   }
 
   handlerError(_this,result){
-    console.log(result);
+
     _this.globals.isLoading = false;
   }
 
@@ -238,7 +237,6 @@ this.mobileQuery.addListener(this._mobileQueryListener);
 
   logoutError(_this, error): void
   {
-    console.log (error);
     _this.authGuard.disableSessionInterval ();
     _this.authService.removeToken ();
     _this.router.navigate (['']);

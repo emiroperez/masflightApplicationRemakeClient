@@ -77,7 +77,6 @@ export class DatalakePartitionsComponent implements OnInit {
 
   setPartitionsError(_this, result): void
   {
-    console.log (result);
     _this.service.getDatalakeSchemas (this, this.setSchemas, this.setSchemasError);
     // _this.globals.isLoading = false;
   }
@@ -98,7 +97,6 @@ export class DatalakePartitionsComponent implements OnInit {
 
   setSchemasError(_this, result): void
   {
-    console.log (result);
     _this.globals.isLoading = false;
   }
 
@@ -163,7 +161,6 @@ export class DatalakePartitionsComponent implements OnInit {
     let tableSelector = _this.partitionFormGroup.get ("table");
 
     // TODO: Show dialog
-    console.log (result);
     _this.tables = [];
     _this.filteredTables.next (_this.tables.slice ());
     tableSelector.setValue (null);
@@ -283,7 +280,6 @@ export class DatalakePartitionsComponent implements OnInit {
 
   refreshPartitionsError(_this, result): void
   {
-    console.log (result);
     _this.globals.isLoading = false;
   }
 

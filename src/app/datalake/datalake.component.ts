@@ -91,7 +91,6 @@ export class DatalakeComponent implements OnInit {
 
   logoutError(_this, error): void
   {
-    console.log (error);
     _this.authGuard.disableSessionInterval ();
     _this.authService.removeToken ();
     _this.router.navigate (['']);
@@ -112,7 +111,6 @@ export class DatalakeComponent implements OnInit {
 
   errorLogin(_this, result): void
   {
-    console.log(result);
     _this.globals.isLoading = false;
   }
 

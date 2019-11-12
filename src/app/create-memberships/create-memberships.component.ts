@@ -300,7 +300,6 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
 
   handlerError(_this, result) {
     _this.globals.isLoading = false;
-    console.log(result);
   }
 
 
@@ -366,7 +365,6 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
 
   isPlanDelete(index): boolean {
     this.items = this.plansForms.get('items') as FormArray;
-    //console.log(this.items.at(index).get('deleted').value);
     return !(this.items.at(index).get('deleted').value);
 
   }
@@ -423,7 +421,6 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
   isFeatureDelete(indexPlan, indexFeature): boolean {
     this.items = this.plansForms.get('items') as FormArray;
     this.features = this.items.controls[indexPlan]['controls']['features'];
-    //console.log(this.features.at(indexFeature).get('deleted').value);
     return !(this.features.at(indexFeature).get('deleted').value);
   }
 
@@ -439,7 +436,6 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
   getPlansJson() {
     let plansJsons: Array<Plan> = new Array();
     this.items = this.plansForms.get('items') as FormArray;
-    console.log(this.items);
     for (let i = 0; i < this.items.length; i++) {
       let plan: Plan = new Plan();
 
@@ -451,15 +447,12 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
         plan.delete = false;
       }
       plan.name = this.items.at(i).get("name").value.toUpperCase();
-      console.log(plan.name);
       plan.options = this.getOptionsPlanJson(i);
       plan.features = this.getFeaturesJson(i);
       plan.fares = this.getPricesJson(i);
       plan.advanceFeatures = this.getAdvanceFeaturesJson(i);
       plansJsons.push(plan);
     }
-    console.log("ENVIO");
-    console.log(plansJsons);
     return plansJsons;
   }
 
@@ -566,7 +559,6 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
   isFareDelete(indexPlan, indexFare): boolean {
     this.items = this.plansForms.get('items') as FormArray;
     this.features = this.items.controls[indexPlan]['controls']['fares'];
-    //console.log(this.features.at(indexFare).get('deleted').value);
     return !(this.features.at(indexFare).get('deleted').value);
 
   }
@@ -644,8 +636,6 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
   }
 
   savePlansResponse(this_, data) {
-    console.log(data);
-
     this_.deleteRemoveItems(this_);
     this_.items = this_.plansForms.get('items') as FormArray;
     for (let i = 0; i < this_.items.length; i++) {
@@ -664,7 +654,6 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
       }
 
     }
-    console.log(this_.items);
     this_.globals.isLoading = false;
   }
 
@@ -703,7 +692,7 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
         this.recursiveOptionData(menuData[i], opData);
       }
     }
-    console.log(menuData);
+
     return menuData;
 
   }
@@ -762,12 +751,9 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
-      console.log("result");
-      console.log(result);
       if (result) {
         this.planJson[index]['options'] = [];
         this.planJson[index]['options'] = result;
-        console.log(this.planJson);
       }
     });
 

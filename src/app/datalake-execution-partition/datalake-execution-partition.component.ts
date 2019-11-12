@@ -51,7 +51,6 @@ export class DatalakeExecutionPartitionComponent implements OnInit {
 
   setPartitionsError(_this, result): void
   {
-    console.log (result);
     _this.globals.isLoading = false;
   }
 

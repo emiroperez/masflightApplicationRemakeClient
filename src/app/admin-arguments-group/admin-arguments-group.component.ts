@@ -80,17 +80,14 @@ export class AdminArgumentsGroupComponent implements OnInit {
       
   AirportHandlerError(_this,result){
     _this.loading = false; 
-    console.log (result);
   }   
 
   AirlineHandlerError(_this,result){
     _this.loading = false; 
-    console.log (result);
   }    
   
   AircraftHandlerError(_this,result){
     _this.loading = false; 
-    console.log (result);
   }
 
   AirportHandlerSuccess(_this,data){   
@@ -132,8 +129,7 @@ export class AdminArgumentsGroupComponent implements OnInit {
       }
     }else{
       _this.filteredAircraft = data;       
-    }         
-    console.log(_this.filteredAircraft);
+    }
   }
 
   ngOnInit() {
@@ -148,12 +144,10 @@ export class AdminArgumentsGroupComponent implements OnInit {
 
   handlerSuccessGroupsArguments(_this, result) {
     _this.ArgumentsGroups = result;
-    console.log(result);
     _this.globals.isLoading = false;
   }
 
   handlerErrorGroupsArguments(_this, result){
-    console.log(result);
     _this.globals.isLoading = false;
   }
 
@@ -173,7 +167,6 @@ export class AdminArgumentsGroupComponent implements OnInit {
       this.disable = true;
       // this.shareAct= false;
     }
-    console.log(this.ArgumentGroup);
 }
   
 checkArgGroupDet(ArgGroup: any){
@@ -377,7 +370,6 @@ handlerSuccessSend(_this, result){
 }
 
 handlerErrorSend(_this,result){
-  console.log(result);
   _this.globals.isLoading = false;
   _this.dialog.open(MessageComponent, {
     data: { title:"Error", message: "It was an error, try again."}
@@ -438,7 +430,6 @@ isSelected(Airport,iataList,group){
 }
 
 sendData() {
-  console.log(this.ArgumentsGroups);
   // this.addIataToGroupDet(this.ArgumentsGroups);
   this.dataToSend = this.ArgumentsGroups.concat(this.ArgumentGroupDelete);
   this.service.saveNewGroupArguments(this, this.dataToSend, this.handlerSuccessSend, this.handlerErrorSend);

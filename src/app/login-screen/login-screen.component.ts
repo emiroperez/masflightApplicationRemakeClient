@@ -10,7 +10,8 @@ import { Globals } from '../globals/Globals';
 import { HttpClient } from '@angular/common/http';
 import { TwoFactorLoginDialogComponent } from '../two-factor-login-dialog/two-factor-login-dialog.component';
 import { MatDialog } from '@angular/material';
-import { MediaMatcher } from '@angular/cdk/layout';  
+import { MediaMatcher } from '@angular/cdk/layout';
+import { isDevMode } from '@angular/core';
 
 @Component({
   selector: 'app-login-screen',
@@ -125,7 +126,8 @@ export class LoginScreenComponent implements OnInit {
       _this.goToWelcomeScreen ();
     else
     {
-      console.log (result >>> 8); // print the code
+      if (isDevMode ())
+        console.log (result >>> 8); // print the code
       result = result & 255; // remove the code from the result
 
       let dialogRef = _this.dialog.open (TwoFactorLoginDialogComponent,
@@ -162,7 +164,6 @@ export class LoginScreenComponent implements OnInit {
 
   errorAutentication(_this, error)
   {
-    console.log (error);
     _this.globals.isLoading = false;
     _this.securityToken = null;
     _this.username = null;
@@ -172,7 +173,6 @@ export class LoginScreenComponent implements OnInit {
 
   errorLogin(_this, error)
   {
-    console.log (error);
     _this.globals.isLoading = false;
   }
 

@@ -27,14 +27,12 @@ export class MsfDynamicTableComponent implements OnInit {
   handlerSuccess(_this,data)
   {
     _this.dataAdapter = data;
-    console.log (_this.dataAdapter);
     _this.globals.isLoading = false;
     _this.globals.showBigLoading = true;
   }
 
   handlerError(_this,result)
   {
-    console.log (result);
     _this.globals.isLoading = false;
     _this.globals.showBigLoading = true;
   }

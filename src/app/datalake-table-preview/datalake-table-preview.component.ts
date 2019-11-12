@@ -64,6 +64,5 @@ export class DatalakeTablePreviewComponent {
   handlerError(_this, result): void
   {
     _this.globals.popupLoading = false;
-    console.log (result);
   }
 }

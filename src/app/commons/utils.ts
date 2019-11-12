@@ -43,7 +43,6 @@ export class Utils{
     }
 
     getUrlParameters(option: any, urlBase:boolean){
-        console.log(option);
         let params;    
         let paramsGroup = [];     
         if(option.menuOptionArguments){            

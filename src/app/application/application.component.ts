@@ -218,7 +218,6 @@ export class ApplicationComponent implements OnInit {
 
   errorLogin(_this, result)
   {
-    console.log(result);
     _this.globals.appLoading = false;
     _this.globals.isLoading = false;
   }
@@ -239,7 +238,6 @@ export class ApplicationComponent implements OnInit {
   }
 
   errorHandler(_this,result){
-    console.log(result);
     _this.globals.appLoading = false;
     _this.globals.isLoading = false;
   }
@@ -285,7 +283,6 @@ export class ApplicationComponent implements OnInit {
     _this.dynamicTablePlan = false;
     _this.exportExcelPlan = false;
 
-    console.log(result);
     _this.validateAdmin ();
   }
 
@@ -303,7 +300,6 @@ export class ApplicationComponent implements OnInit {
   }
 
   handlerError(_this,result){
-    console.log(result);
     _this.getAdvanceFeatures();
   }
 
@@ -685,7 +681,6 @@ toggle(){
 
   logoutError(_this, error): void
   {
-    console.log (error);
     _this.authGuard.disableSessionInterval ();
     _this.authService.removeToken ();
     _this.router.navigate (['']);

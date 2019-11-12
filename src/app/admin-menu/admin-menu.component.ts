@@ -167,7 +167,6 @@ export class EditOutputOptionsMetaDialog {
     const prevIndex = this.dataSource.findIndex((d) => d === event.item.data);
     moveItemInArray(this.dataSource, prevIndex, event.currentIndex);
     this.table.renderRows();
-    console.log(this.dataSource)
   }
 
 
@@ -235,7 +234,6 @@ export class EditOutputOptionsMetaDialog {
 
 
   handlerErrorMetaColumn(_this, result) {
-    console.log(result);
     _this.globals.isLoading = false;
   }
 
@@ -252,7 +250,6 @@ export class EditOutputOptionsMetaDialog {
   saveOrder() {
     for (let i = 0; i < this.data.outputs.length; i++) {
       this.data.outputs[i].columnOrder = i;
-      console.log(this.data.outputs[i]);
     }
   }
 
@@ -616,7 +613,6 @@ export class EditCategoryArgumentDialog {
 
   handlerError(_this,result){
     _this.loading = false;
-    console.log(result);
   }
 
   isSelectBoxMultipleOption(item){
@@ -1014,7 +1010,6 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   }
 
   handlerErrorCategoryArguments(_this, result) {
-    console.log(result);
   }
 
   getMeta() {
@@ -1063,7 +1058,6 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
   }
   handlerErrorMeta(_this, result) {
-    console.log(result);
     _this.globals.isLoading = false;
   }
   getOptionSelected(option) {
@@ -1193,7 +1187,6 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
       dialogRef.afterClosed().subscribe((result: any) => {
         if (result)
         {
-          console.log(result.confirm);
           if (result.confirm) {
 
             if (this.defaultMenu == this.optionSelected.id)
@@ -1239,21 +1232,16 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    console.log("entra");
     _this.optionSelected.toDelete = true;
     _this.optionSelected.label += "....";
     const nestedNode = _this.flatNodeMap.get(_this.optionSelected);
     nestedNode.toDelete = true;
     _this.dataChange.next(_this.data);
-    console.log(_this.optionSelected)
-    console.log(_this.flatNodeMap)
-    console.log(_this.dataSource.data)
     _this.saveMenu();
   }
 
   checkError(_this, error) {
     _this.globals.isLoading = false;
-    console.log(error);
   }
 
   saveNewArgumentsCategory(category) {
@@ -1278,7 +1266,6 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
       });
     } else {
       this.verifyOrder();
-      console.log(this.dataSource.data);
       this.service.saveMenu(this, this.defaultMenu, this.dataSource.data, this.handlerSuccessSaveMenuData, this.handlerErrorSaveMenuData);
     }
   }
@@ -1377,7 +1364,6 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   }
 
   handlerErrorSaveMeta(_this, data) {
-    console.log(data);
     _this.globals.isLoading = false;
   }
 
@@ -1411,7 +1397,6 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     _this.dataSource.data = data;
     _this.getUniqueIdDrop(_this.dataSource.data);
     _this.globals.isLoading = false;
-    console.log(_this.dataSource.data);
     _this.dataChange.next(data);
   }
 
@@ -1445,7 +1430,6 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
 
   handlerGetErrorMenuData(_this, result) {
-    console.log(result);
     _this.globals.isLoading = false;
   }
 
@@ -1575,15 +1559,12 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   }
 
   print(node) {
-    console.log(node);
   }
 
   printAll() {
-    console.log(this.dataSource.data)
   }
 
   setSelectedCategoryArguments(category) {
-    console.log(category)
     // var index = this.optionSelected.menuOptionArgumentsAdmin.findIndex(el => el.categoryArgumentsId.id == category.id);
     var index = -1;
     this.optionSelected.menuOptionArgumentsAdmin.forEach(function (element, i) {
@@ -1687,7 +1668,6 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     for (let i = 0; i < this.optionSelected.menuOptionArgumentsAdmin.length; i++) {
       arrayMenuOptionArg.push(this.optionSelected.menuOptionArgumentsAdmin[i]);
     }
-    console.log(this.dataSource.data);
     this.service.saveOptionsArgumentsCategory(this, arrayMenuOptionArg, this.optionSelected.id, this.handlerSuccessSaveCategoryArgument, this.handlerErrorSaveCategoryArgument);
   }
 
@@ -1712,9 +1692,6 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   }
 
   handleSuccessString(_this, data) {
-    console.log(data);
-    console.log(_this.optionSelected);
-    console.log(_this.drillDown);
     let menuString = data;
 
     // prepare drill down for option selection
@@ -1749,7 +1726,6 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   }
 
   handlerSuccessDrillDown(_this, data) {
-    console.log(data);
     _this.drillDown = data;
     _this.getMenuOptionsString(_this);
   }
@@ -1761,7 +1737,6 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   editCategoryArguments(cat) {
 
     var duplicateObject = JSON.parse(JSON.stringify(cat));
-    console.log(duplicateObject)
     const dialogRef = this.dialog.open(EditCategoryArgumentDialog, {
       panelClass: "category-argument-dialog",
       width: '45%',
@@ -1770,7 +1745,6 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result != undefined) {
-        console.log(result)
         duplicateObject = result;
 
         for (let argument of duplicateObject.categoryArgumentsId[0].arguments)
@@ -1914,7 +1888,6 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   public filter(filterText: string) {
     let filteredTreeData;
     if (filterText) {
-      console.log(this.dataSource.data);
       Object.assign([], filteredTreeData).forEach(ftd => {
         let str = String(ftd.id);
         while (str.lastIndexOf('.') > -1) {

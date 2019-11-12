@@ -1961,7 +1961,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.isLoading = true;
     urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
-    console.log (urlBase);
     urlArg = encodeURIComponent (urlBase);
 
     // Prepare list of variables
@@ -2022,7 +2021,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.isLoading = true;
     urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
-    console.log (urlBase);
     urlArg = encodeURIComponent (urlBase);
     url = this.service.host + "/secure/getChartData?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress () +
       "&valueColumn=" + this.values.valueColumn.id + "&function=";
@@ -2059,7 +2057,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.isLoading = true;
     urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
-    console.log (urlBase);
     urlArg = encodeURIComponent (urlBase);
     url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
 
@@ -2077,7 +2074,6 @@ export class MsfDashboardPanelComponent implements OnInit {
  
     params = this.getParameters ();
     url = this.globals.baseUrl2 + "/getMapBoxTracking?" + params;
-    console.log (url);
     urlArg = encodeURIComponent (url);
     url = this.globals.baseUrl + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress () + "&noXml=true";
     this.authService.get (this.msfMapRef, url, handlerSuccess, handlerError);
@@ -2090,7 +2086,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.isLoading = true;
     urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=1&page_number=0";
-    console.log (urlBase);
     urlArg = encodeURIComponent (urlBase);
     url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
 
@@ -2131,7 +2126,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.isLoading = true;
     urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=100&page_number=" + this.actualPageNumber;
-    console.log (urlBase);
     urlArg = encodeURIComponent (urlBase);
     url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
 
@@ -2152,7 +2146,6 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
-    console.log(urlBase);
     urlArg = encodeURIComponent(urlBase);
     data = { variables: this.values.dynTableVariables, values: this.values.dynTableValues };
     url = this.service.host + "/secure/getHorizontalMatrix?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
@@ -2935,65 +2928,51 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   handlerChartError(_this, result): void
   {
-    console.log (result);
     _this.generateError ();
   }
 
   handlerTextError(_this, result): void
   {
-    console.log (result);
     _this.generateError ();
   }
 
   handlerFormError(_this, result): void
   {
-    console.log (result);
     _this.generateError ();
   }
 
   handlerPicError(_this, result): void
   {
-    console.log (result);
     _this.generateError ();
   }
 
   handlerTableError(_this, result): void
   {
-    if (result != null)
-      console.log (result);
-
     _this.generateError ();
   }
 
   handlerMapboxError(_this, result): void
   {
-    console.log (result);
     _this.generateError ();
   }
 
   handlerHeatMapError(_this, result): void
   {
-    console.log (result);
     _this.generateError ();
   }
 
   handlerMapError(_this, result): void
   {
-    console.log (result);
     _this.generateError ();
   }
 
   handlerDynTableError(_this, result): void
   {
-    if (result != null)
-      console.log (result);
-
     _this.generateError ();
   }
 
   handlerError(_this, result): void
   {
-    console.log (result);
     _this.values.isLoading = false;  
   }
 
@@ -3124,7 +3103,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (!_this.haveSortingCheckboxes ())
       _this.globals.isLoading = false;
 
-    // console.log (_this.values.currentOptionCategories);
     _this.toggleControlVariableDialogOpen.emit (true);
 
     dialogRef = _this.dialog.open (MsfDashboardControlVariablesComponent, {
@@ -4863,7 +4841,6 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   drillDownSettingsError(_this, results): void
   {
-    console.log (results);
     _this.values.isLoading = false;
   }
 

@@ -80,7 +80,6 @@ export class DatalakeQueryEngineSchemaComponent {
   handlerError(_this, result): void
   {
     // TODO: Show dialog
-    console.log (result);
     _this.isLoading = false;
     _this.querySchema.open = false;
   }

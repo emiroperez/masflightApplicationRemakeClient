@@ -124,7 +124,6 @@ getTimeFormat(value){
 
   setSchemasError(_this, result): void
   {
-    console.log (result);
     _this.isLoading = false;
   }
 
@@ -184,7 +183,6 @@ getTimeFormat(value){
     let tableSelector = _this.alarmFormGroup.get ("table");
 
     // TODO: Show dialog
-    console.log (result);
     _this.tables = [];
     _this.filteredTables.next (_this.tables.slice ());
     tableSelector.setValue (null);
@@ -337,7 +335,7 @@ getTimeFormat(value){
     cronExpression = cronExpression.replace('days', days);
     cronExpression = cronExpression.replace('month', month);
     cronExpression = cronExpression.replace('weekDay', weekDays);
-    console.log(cronExpression);
+
     return cronExpression;
 }
 

@@ -331,7 +331,6 @@ export class MsfTableComponent implements OnInit {
             _this.tableOptions.displayedColumns  = _this.deleteEmptyColumns(dataResult,_this.tableOptions.displayedColumns);
           _this.metadata = _this.tableOptions.displayedColumns;
           _this.tableOptions.metadata = data.metadata;
-          console.log( _this.tableOptions.displayedColumns);
           
           _this.setColumnsDisplayed(_this);
           
@@ -581,8 +580,6 @@ export class MsfTableComponent implements OnInit {
 
         if (_this.currentOption.tabType !== "map")
           _this.tableOptions.selectedIndex = 2;
-
-        console.log(_this.dataSource);
       }else{
         _this.tableOptions.dataSource = false;
       }
@@ -622,7 +619,6 @@ export class MsfTableComponent implements OnInit {
     }
     _this.tableOptions.dataSource = false;
     _this.tableOptions.template = false;
-    console.log(result);
 
     _this.resultsAvailable = "msf-no-visible";
   }
@@ -756,7 +752,6 @@ export class MsfTableComponent implements OnInit {
 
   popupInfoError(_this,data) {
     _this.globals.popupLoading2 = false;
-    console.log("ERROR")
   }
 
   getPopupInfo(_this,data){
@@ -776,7 +771,6 @@ export class MsfTableComponent implements OnInit {
     }
  
     _this.globals.subDisplayedColumns = data.metadata;
-    console.log( _this.globals.subDisplayedColumns);
     if( _this.globals.subTotalRecord > 1){
       let mainElement = _this.getMainKey(keys,response);
     if(!(mainElement instanceof Array)){
@@ -793,8 +787,6 @@ export class MsfTableComponent implements OnInit {
       }
       _this.globals.popupResponse = response;
       _this.globals.popupMainElement = mainElement;
-      console.log(_this.globals.popupResponse)
-      console.log(_this.globals.popupMainElement)
     }else{
       if( _this.globals.subMoreResults){
         _this.globals.moreResultsBtn = false;

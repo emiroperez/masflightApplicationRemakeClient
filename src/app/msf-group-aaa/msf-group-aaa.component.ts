@@ -51,7 +51,6 @@ export class MsfGroupAaaComponent implements OnInit {
 
   handlerError(_this,result){
     _this.loading = false;
-    console.log(result);
   }
 
   onSearch($event: any){
@@ -62,7 +61,6 @@ export class MsfGroupAaaComponent implements OnInit {
   }
   
   onChange(){
-    console.log(this.argument.value1)
   }
 
 }

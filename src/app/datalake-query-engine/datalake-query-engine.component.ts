@@ -205,7 +205,6 @@ export class DatalakeQueryEngineComponent implements OnInit {
 
   setSchemasError(_this, result): void
   {
-    console.log (result);
     _this.globals.isLoading = false;
   }
 
@@ -246,7 +245,6 @@ export class DatalakeQueryEngineComponent implements OnInit {
 
   queryError(_this, result): void
   {
-    console.log (result);
     _this.queryLoading = false;
     _this.startQueryTime = null;
   }
@@ -364,7 +362,6 @@ export class DatalakeQueryEngineComponent implements OnInit {
 
   queryHistoryError(_this, result): void
   {
-    console.log (result);
     _this.queryLoading = false;
     _this.startQueryTime = null;
   }

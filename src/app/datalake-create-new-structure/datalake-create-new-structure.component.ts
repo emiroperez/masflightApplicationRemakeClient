@@ -339,8 +339,6 @@ export class DatalakeCreateNewStructureComponent {
     _this.fileLoading = false;
     _this.targetFile = null;
     _this.tableConfigurationFormGroup.get ("fileName").setValue ("");
-
-    console.log (result);
   }
 
   filterDataColumns(): void
@@ -455,13 +453,11 @@ export class DatalakeCreateNewStructureComponent {
       } 
     _this.closeDialog.emit (dataUpload);
     // _this.closeDialog.emit();
-    }
-    console.log (data);    
+    }  
   }
 
   createTableError(_this, result): void
   {
-    console.log (result);
     _this.stopLoading.emit ();
 
     _this.dialog.open (MessageComponent, {
@@ -520,16 +516,14 @@ export class DatalakeCreateNewStructureComponent {
     var exp =/("(.*?)")/g ;
     var newString = row.replace(exp, '$');
     var array = newString.split(delimiter);
-    // console.log(array);
     var array2 =row.match(exp);
-    // console.log(array2);
     for (let index = 0; index < array.length; index++) {
       if(array[index]=='$'){
         array[index] = array2[0].replace(/"/g,'');
          array2.shift();
       }
     }
-    // console.log(array);
+
     return array;
   }
 
