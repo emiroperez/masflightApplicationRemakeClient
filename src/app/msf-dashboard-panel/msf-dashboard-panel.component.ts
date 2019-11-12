@@ -5775,6 +5775,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     let theme = this.globals.theme;
     let maxValue: number;
     let sum: number = 0;
+    let self = this;
     let bullet;
 
     if (this.sumSeries)
@@ -5808,7 +5809,6 @@ export class MsfDashboardPanelComponent implements OnInit {
       else
         this.sumValueAxis = this.chart.yAxes.push (new am4charts.ValueAxis ());
 
-      this.sumValueAxis.renderer.opposite = true;
       this.sumValueAxis.min = 0;
       this.sumValueAxis.max = maxValue + 1;
       this.sumValueAxis.strictMinMax = true;
@@ -5849,6 +5849,46 @@ export class MsfDashboardPanelComponent implements OnInit {
         this.sumSeries.tooltip.label.padding (12, 12, 12, 12);
       }
 
+      // also hide the normal category axis value labels
+      if (this.values.currentChartType.flags & ChartFlags.ROTATED)
+      {
+        for (let i = 0; i < this.chart.xAxes.length; i++)
+        {
+          let xaxis = this.chart.xAxes.getIndex (i);
+
+          if (xaxis == this.sumValueAxis)
+            continue;
+
+          xaxis.renderer.labels.template.disabled = true;
+        }
+      }
+      else
+      {
+        for (let i = 0; i < this.chart.yAxes.length; i++)
+        {
+          let yaxis = this.chart.yAxes.getIndex (i);
+
+          if (yaxis == this.sumValueAxis)
+            continue;
+
+          yaxis.renderer.labels.template.disabled = true;
+        }
+      }
+
+      // hide every chart series except the sum ones
+      this.chart.events.once ("dataitemsvalidated", function (event) {
+        for (let i = 0; i < self.chart.series.values.length; i++)
+        {
+          let series = self.chart.series.getIndex (i);
+
+          if (series == self.sumSeries)
+            continue;
+
+          series.hide ();
+          series.hiddenInLegend = true;
+        }
+      });
+
       // invalidate data in order to display the line chart
       this.chart.invalidateData ();
     });
@@ -5857,6 +5897,8 @@ export class MsfDashboardPanelComponent implements OnInit {
   removeSumOfIntervals(): void
   {
     this.zone.runOutsideAngular (() => {
+      let self = this;
+
       this.chart.series.removeIndex (this.chart.series.indexOf (this.sumSeries));
       this.sumSeries = null;
 
@@ -5865,6 +5907,37 @@ export class MsfDashboardPanelComponent implements OnInit {
       else
         this.chart.yAxes.removeIndex (this.chart.yAxes.indexOf (this.sumValueAxis));
       this.sumValueAxis = null;
+
+      // display the normal category axis value labels
+      if (this.values.currentChartType.flags & ChartFlags.ROTATED)
+      {
+        for (let i = 0; i < this.chart.xAxes.length; i++)
+        {
+          let xaxis = this.chart.xAxes.getIndex (i);
+
+          xaxis.renderer.labels.template.disabled = false;
+        }
+      }
+      else
+      {
+        for (let i = 0; i < this.chart.yAxes.length; i++)
+        {
+          let yaxis = this.chart.yAxes.getIndex (i);
+
+          yaxis.renderer.labels.template.disabled = false;
+        }
+      }
+
+      // display every chart series except the sum ones
+      this.chart.events.once ("dataitemsvalidated", function (event) {
+        for (let i = 0; i < self.chart.series.values.length; i++)
+        {
+          let series = self.chart.series.getIndex (i);
+
+          series.show ();
+          series.hiddenInLegend = false;
+        }
+      });
 
       // invalidate data in order to remove the line chart
       this.chart.invalidateData ();
