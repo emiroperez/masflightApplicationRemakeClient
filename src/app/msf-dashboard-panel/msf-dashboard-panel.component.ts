@@ -1552,22 +1552,17 @@ export class MsfDashboardPanelComponent implements OnInit {
               else
                 value = 0;
 
+              sum += value;
+
               self.intervalTableRows.push ({
                 key: firstItem ? key : " ",
                 Interval: item["Interval"],
-                value: value
+                value: value,
+                sum: sum
               });
 
-              sum += value;
               firstItem = false;
             }
-
-            // add the sum of the values
-            self.intervalTableRows.push ({
-              key: "Sum",
-              Interval: "Total",
-              value: sum
-            });
           };
         }
         else
@@ -1576,20 +1571,15 @@ export class MsfDashboardPanelComponent implements OnInit {
           {
             let label = item["Interval"];
 
+            sum += item[this.values.valueColumn.name];
+
             this.intervalTableRows.push ({
               key: null,
               Interval: label,
-              value: item[this.values.valueColumn.name]
+              value: item[this.values.valueColumn.name],
+              sum: sum
             });
-
-            sum += item[this.values.valueColumn.name];
           }
-
-          this.intervalTableRows.push ({
-            key: null,
-            Interval: "Total",
-            value: sum
-          });
         }
       }
     });

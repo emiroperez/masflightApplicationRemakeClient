@@ -1072,14 +1072,16 @@
         <div class="results-container">
           <table class="mat-elevation-z8 datasource results" style="border-collapse: collapse">
             <tr class="mat-header-row">
-              <th [style.width.%]="35" class="msf-show-table mat-header-cell" *ngIf="values.variable">{{values.variable.name}}</th>
+              <th [style.width.%]="25" class="msf-show-table mat-header-cell" *ngIf="values.variable">{{values.variable.name}}</th>
               <th [style.width.%]="40" class="msf-show-table mat-header-cell">Intervals</th>
-              <th [style.width.%]="35" class="msf-show-table mat-header-cell">{{values.valueColumn.name}}</th>
+              <th [style.width.%]="25" class="msf-show-table mat-header-cell">{{values.valueColumn.name}}</th>
+              <th [style.width.%]="10" class="msf-show-table mat-header-cell">Sum</th>
             </tr>
             <tr class="mat-row" *ngFor="let row of intervalTableRows">
-              <td [style.width.%]="35" class="msf-show-table mat-cell" *ngIf="row.key">{{row.key}}</td>
+              <td [style.width.%]="25" class="msf-show-table mat-cell" *ngIf="row.key">{{row.key}}</td>
               <td [style.width.%]="40" class="msf-show-table mat-cell">{{row.Interval}}</td>
-              <td [style.width.%]="35" class="msf-show-table mat-cell">{{row.value}}</td>
+              <td [style.width.%]="25" class="msf-show-table mat-cell">{{row.value}}</td>
+              <td [style.width.%]="10" class="msf-show-table mat-cell">{{row.sum}}</td>
             </tr>
           </table>
         </div>
