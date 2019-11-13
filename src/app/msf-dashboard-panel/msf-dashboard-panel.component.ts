@@ -1606,12 +1606,12 @@ export class MsfDashboardPanelComponent implements OnInit {
           {
             let label = item["Interval"];
 
-            sum += item[this.values.valueColumn.name];
+            sum += item[this.values.valueColumn.id];
 
             this.intervalTableRows.push ({
               key: null,
               Interval: label,
-              value: item[this.values.valueColumn.name],
+              value: item[this.values.valueColumn.id],
               sum: sum
             });
           }
