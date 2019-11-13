@@ -1,4 +1,4 @@
-import { Component, Inject, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, Inject, ViewChild, ChangeDetectorRef, isDevMode } from '@angular/core';
 import { MatDialogRef, MatStepper, MAT_DIALOG_DATA, MatTabGroup, MatDialog } from '@angular/material';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
@@ -205,6 +205,9 @@ export class MsfDashboardAssistantComponent {
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&&pageSize=100&page_number=" + this.actualPageNumber;
     urlArg = encodeURIComponent (urlBase);
     url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
+
+    if (isDevMode ())
+      console.log (url);
 
     this.authService.get (this.msfTableRef, url, handlerSuccess, handlerError);
   }

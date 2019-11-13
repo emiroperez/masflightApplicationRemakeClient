@@ -1,4 +1,4 @@
-import { Component, Inject, NgZone, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, Inject, NgZone, ViewChild, ChangeDetectorRef, isDevMode } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
@@ -1108,6 +1108,9 @@ export class MsfDashboardChildPanelComponent {
         url += "&metaDataIds=" + tableVariable.itemId;
     }
 
+    if (isDevMode ())
+      console.log (url);
+
     this.authService.get (this.msfTableRef, url, handlerSuccess, handlerError);
   }
 
@@ -1126,6 +1129,9 @@ export class MsfDashboardChildPanelComponent {
       url += "&chartType=pie";
     else
       url += "&xaxis=" + this.values.xaxis.columnName;
+
+    if (isDevMode ())
+      console.log (url);
 
     this.authService.post (this, url, null, handlerSuccess, handlerError);
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input, NgZone, SimpleChanges, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, NgZone, SimpleChanges, Output, EventEmitter, isDevMode } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
@@ -2059,6 +2059,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     url = this.service.host + "/secure/getTextSummaryResponse?url=" + urlArg + "&ipAddress=" + this.authService.getIpAddress ();
 
+    if (isDevMode ())
+      console.log (url);
+
     this.authService.post (this, url, panel, handlerSuccess, handlerError);
   }
 
@@ -2097,6 +2100,9 @@ export class MsfDashboardPanelComponent implements OnInit {
         url += "&xaxis=" + this.values.xaxis.id;
     }
 
+    if (isDevMode ())
+      console.log (url);
+
     this.authService.post (this, url, panel, handlerSuccess, handlerError);
   }
 
@@ -2109,6 +2115,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
     urlArg = encodeURIComponent (urlBase);
     url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
+
+    if (isDevMode ())
+      console.log (url);
 
     this.authService.get (this, url, handlerSuccess, handlerError);
   }
@@ -2126,6 +2135,10 @@ export class MsfDashboardPanelComponent implements OnInit {
     url = this.globals.baseUrl2 + "/getMapBoxTracking?" + params;
     urlArg = encodeURIComponent (url);
     url = this.globals.baseUrl + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress () + "&noXml=true";
+
+    if (isDevMode ())
+      console.log (url);
+
     this.authService.get (this.msfMapRef, url, handlerSuccess, handlerError);
   }
 
@@ -2138,6 +2151,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=1&page_number=0";
     urlArg = encodeURIComponent (urlBase);
     url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
+
+    if (isDevMode ())
+      console.log (url);
 
     this.authService.get (this, url, handlerSuccess, handlerError);
   }
@@ -2152,6 +2168,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=1&page_number=0";
     urlArg = encodeURIComponent (urlBase);
     url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
+
+    if (isDevMode ())
+      console.log (url);
 
     this.authService.get (this, url, handlerSuccess, handlerError);
   }
@@ -2185,6 +2204,9 @@ export class MsfDashboardPanelComponent implements OnInit {
         url += "&metaDataIds=" + tableVariable.itemId;
     }
 
+    if (isDevMode ())
+      console.log (url);
+
     this.authService.get (this.msfTableRef, url, handlerSuccess, handlerError);
   }
 
@@ -2199,6 +2221,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     urlArg = encodeURIComponent(urlBase);
     data = { variables: this.values.dynTableVariables, values: this.values.dynTableValues };
     url = this.service.host + "/secure/getHorizontalMatrix?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
+
+    if (isDevMode ())
+      console.log (url);
 
     this.authService.post (this, url, data, handlerSuccess, handlerError);
   }

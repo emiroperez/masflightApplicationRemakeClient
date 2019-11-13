@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, NgZone, HostListener } from '@angular/core';
+import { Component, OnInit, Inject, NgZone, HostListener, isDevMode } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { Globals } from '../globals/Globals';
 import { ApiClient } from '../api/api-client';
@@ -142,7 +142,11 @@ export class MsfMoreInfoPopupComponent{
       + "&optionId=" + this.globals.currentOption.id
       + "&ipAddress=" + this.authService.getIpAddress ()
       + "&variable=" + this.variable + "&xaxis=" + this.xaxis 
-      + "&valueColumn=" + this.valueColumn + "&function=" + this.functions[1].id
+      + "&valueColumn=" + this.valueColumn + "&function=" + this.functions[1].id;
+
+      if (isDevMode ())
+        console.log (url);
+
       this.authService.post(this, url, null, handlerSuccess, handlerError);
     }
 

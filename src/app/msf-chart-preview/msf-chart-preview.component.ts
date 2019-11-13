@@ -1,4 +1,4 @@
-import { Component, Inject, NgZone } from '@angular/core';
+import { Component, Inject, NgZone, isDevMode } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
@@ -139,6 +139,9 @@ export class MsfChartPreviewComponent {
       else
         url += "&xaxis=" + this.data.xaxis.columnName;
     }
+
+    if (isDevMode ())
+      console.log (url);
 
     this.authService.post (this, url, null, handlerSuccess, handlerError);
   }

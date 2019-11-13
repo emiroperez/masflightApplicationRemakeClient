@@ -83,6 +83,10 @@ export class ApplicationService {
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
     let urlArg = encodeURIComponent(urlBase);
     let url = this.host + "/secure/getChartData?url=" + urlArg + "&optionId=" + _this.globals.currentOption.id + "&ipAddress=" + this.authService.getIpAddress () + "&variable=" + _this.variable.id + "&xaxis=" + _this.xaxis.id + "&valueColumn=" + _this.valueColumn.id + "&function=" + _this.function.id;
+
+    if (isDevMode ())
+      console.log (url);
+
     this.authService.post(_this, url, null, handlerSuccess, handlerError);
   }
 
@@ -97,6 +101,10 @@ export class ApplicationService {
     let urlArg = encodeURIComponent(urlBase);
     let data = { variables: _this.globals.variables, values: _this.globals.values };
     let url = this.host + "/secure/getHorizontalMatrix?url=" + urlArg + "&optionId=" + _this.globals.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
+
+    if (isDevMode ())
+      console.log (url);
+
     this.authService.post (_this, url, data, handlerSuccess, handlerError);
   }
 
@@ -271,6 +279,10 @@ export class ApplicationService {
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=100";
     let urlArg = encodeURIComponent(urlBase);
     urlBase += "&optionId=" + _this.globals.currentOption.id;
+
+    if (isDevMode ())
+      console.log (urlBase);
+
     this.http.get(_this, urlBase, handlerSuccess, handlerError, null);
   }
 
