@@ -2929,7 +2929,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.formVariables = [];
     this.variableCtrlBtnEnabled = true;
 
-    if (this.values.currentChartType.flags & (ChartFlags.XYCHART | ChartFlags.ADVANCED))
+    if (!(this.values.currentChartType.flags & (ChartFlags.XYCHART | ChartFlags.ADVANCED)))
       this.chartForm.get ('variableCtrl').enable ();
 
     this.chartForm.get ('infoNumVarCtrl').enable ();
