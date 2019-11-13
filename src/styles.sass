@@ -1308,6 +1308,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             border-bottom: 3px solid $dashboard-assistant-axis-color !important
         .chart-preview-background
             background-color: $dashboard-panel-chart-background-color !important
+            position: relative
         .ng-star-inserted .mat-step-icon
             background-color: $primary-color
         .admin-menu-header-container
@@ -3548,16 +3549,18 @@ mat-tab-group
     .msf-dashboard-panel-sub-container-column
         @include msf-dashboard-panel-sub-container(row, 5px)
         position: relative
-        .msf-dashboard-panel-config-button
-            opacity: 0.05
-            transition: opacity 0.5s ease-out
-            @include msf-dashboard-panel-config-button
-            .msf-dashboard-panel-margin-button
-                margin-bottom: 7px
-        .msf-dashboard-panel-config-button:hover
-            opacity: 1
-            transition: opacity 0.5s ease-in
-            @include msf-dashboard-panel-config-button
+
+.msf-dashboard-panel-config-button
+    opacity: 0.05
+    transition: opacity 0.5s ease-out
+    @include msf-dashboard-panel-config-button
+    .msf-dashboard-panel-margin-button
+        margin-bottom: 7px
+
+.msf-dashboard-panel-config-button:hover
+    opacity: 1
+    transition: opacity 0.5s ease-in
+    @include msf-dashboard-panel-config-button
 
 .msf-dashboard-child-panel-container
     width: 98%
@@ -8958,3 +8961,8 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
             .mat-icon-button[disabled]
                 .mat-button-wrapper
                     color: #c6c6c6
+
+.chart-preview-buttons
+    bottom: 10px !important
+    right: 10px !important
+    left: 0 !important

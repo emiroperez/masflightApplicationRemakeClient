@@ -23,6 +23,13 @@ export class MsfChartPreviewComponent {
 
   isLoading: boolean;
   chart: any;
+  chartInfo: any;
+
+  addUpValuesSet: boolean = false;
+  sumValueAxis: any = null;
+  sumSeriesList: any[] = [];
+  advTableView: boolean = false;
+  intervalTableRows: any[] = [];
 
   predefinedColumnFormats: any = {
     "short": "M/d/yy, h:mm a",
@@ -203,6 +210,14 @@ export class MsfChartPreviewComponent {
   makeChart(chartInfo): void
   {
     let theme = this.globals.theme;
+
+    // reset advanced chart values
+    this.addUpValuesSet = false;
+    this.sumValueAxis = null;
+    this.sumSeriesList = [];
+    this.advTableView = false;
+    this.intervalTableRows = [];
+    this.chartInfo = chartInfo;
 
     this.zone.runOutsideAngular (() => {
       let chart, options;
@@ -567,6 +582,389 @@ export class MsfChartPreviewComponent {
       }
 
       this.chart = chart;
+
+      // build interval table for advanced charts
+      if (this.data.chartMode === "advanced")
+      {
+        let sum = 0;
+
+        if (this.data.currentChartType.flags & ChartFlags.XYCHART)
+        {
+          let self = this;
+          let keys = [];
+
+          // add keys first
+          for (let item of this.chart.data)
+          {
+            Object.keys (item).forEach (function(key)
+            {
+              if (key === "Interval")
+                return;
+
+              if (keys.indexOf (key) == -1)
+                keys.push (key);
+            });
+          }
+
+          for (let key of keys)
+          {
+            let firstItem: boolean = true;
+
+            for (let item of self.chart.data)
+            {
+              let value;
+
+              if (item[key])
+                value = item[key];
+              else
+                value = 0;
+
+              sum += value;
+
+              self.intervalTableRows.push ({
+                key: firstItem ? key : " ",
+                Interval: item["Interval"],
+                value: value,
+                sum: sum
+              });
+
+              firstItem = false;
+            }
+          };
+        }
+        else
+        {
+          for (let item of this.chart.data)
+          {
+            let label = item["Interval"];
+
+            sum += item[this.data.valueColumn.columnName];
+
+            this.intervalTableRows.push ({
+              key: null,
+              Interval: label,
+              value: item[this.data.valueColumn.columnName],
+              sum: sum
+            });
+          }
+        }
+      }
     });
+  }
+
+  isAdvChartPanel(): boolean
+  {
+    return this.data.chartMode === "advanced";
+  }
+
+  addUpIntervals(): void
+  {
+    let theme = this.globals.theme;
+    let maxValue: number;
+    let self = this;
+
+    if (this.sumSeriesList.length)
+    {
+      this.removeSumOfIntervals ();
+      return;
+    }
+
+    this.zone.runOutsideAngular (() => {
+      // prepare sum of the intervals for a line chart, if not set
+      if (this.data.currentChartType.flags & ChartFlags.XYCHART)
+      {
+        let keys = [];
+
+        maxValue = null;
+
+        // add keys first
+        for (let item of this.chart.data)
+        {
+          Object.keys (item).forEach (function(key)
+          {
+            if (key === "Interval" || key.startsWith ("sum"))
+              return;
+
+            if (keys.indexOf (key) == -1)
+              keys.push (key);
+          });
+        }
+
+        for (let key of keys)
+        {
+          let sum = 0;
+
+          for (let item of this.chart.data)
+          {
+            let value = 0;
+
+            if (item[key])
+              value = item[key];
+
+            sum += value;
+            item["sum" + key] = sum;
+          }
+
+          if (maxValue == null || sum > maxValue)
+            maxValue = sum;
+        };
+      }
+      else
+      {
+        let sum: number = 0;
+
+        for (let item of this.chart.data)
+        {
+          Object.keys (item).forEach (function(key)
+          {
+            if (key === "Interval" || key === "sum")
+              return;
+
+            sum += item[key];
+          });
+
+          if (!this.addUpValuesSet)
+            item["sum"] = sum;
+        }
+
+        maxValue = sum;
+      }
+
+      this.addUpValuesSet = true;
+
+      // add a line chart on top of the existing chart that displays the sum
+      if (this.data.currentChartType.flags & ChartFlags.ROTATED)
+        this.sumValueAxis = this.chart.xAxes.push (new am4charts.ValueAxis ());
+      else
+        this.sumValueAxis = this.chart.yAxes.push (new am4charts.ValueAxis ());
+
+      this.sumValueAxis.min = 0;
+      this.sumValueAxis.max = maxValue + 1;
+      this.sumValueAxis.strictMinMax = true;
+      this.sumValueAxis.cursorTooltipEnabled = true;
+      this.sumValueAxis.title.text = "Sum";
+
+      // Set value axis properties
+      this.sumValueAxis.renderer.labels.template.fontSize = 10;
+      this.sumValueAxis.renderer.labels.template.fill = Themes.AmCharts[theme].fontColor;
+      this.sumValueAxis.renderer.grid.template.strokeOpacity = 1;
+      this.sumValueAxis.renderer.grid.template.stroke = Themes.AmCharts[theme].stroke;
+      this.sumValueAxis.renderer.grid.template.strokeWidth = 1;
+
+      // Set axis tooltip background color depending of the theme
+      this.sumValueAxis.tooltip.label.fill = Themes.AmCharts[theme].axisTooltipFontColor;
+      this.sumValueAxis.tooltip.background.fill = Themes.AmCharts[theme].tooltipFill;
+
+      if (this.data.currentChartType.flags & ChartFlags.XYCHART)
+      {
+        let index = 0;
+
+        for (let object of this.chartInfo.filter)
+        {
+          let sumSeries = this.chart.series.push (new am4charts.LineSeries ());
+
+          if (this.data.currentChartType.flags & ChartFlags.ROTATED)
+          {
+            sumSeries.dataFields.valueX = "sum" + object.valueField;
+            sumSeries.dataFields.categoryY = "Interval";
+            sumSeries.xAxis = this.sumValueAxis;
+          }
+          else
+          {
+            sumSeries.dataFields.valueY = "sum" + object.valueField;
+            sumSeries.dataFields.categoryX = "Interval";
+            sumSeries.yAxis = this.sumValueAxis;
+          }
+  
+          sumSeries.bullets.push (new am4charts.CircleBullet ());
+  
+          sumSeries.strokeWidth = 2;
+          sumSeries.fill = am4core.color (this.data.paletteColors[index]);
+          sumSeries.stroke = Themes.AmCharts[theme].sumStroke;
+          sumSeries.strokeOpacity = 0.5;
+          sumSeries.name = object.valueAxis;
+
+          if (this.data.currentChartType.flags & ChartFlags.ROTATED)
+            sumSeries.tooltipText = object.valueAxis + ": {valueX}";
+          else
+            sumSeries.tooltipText = object.valueAxis + ": {valueY}";
+  
+          sumSeries.tooltip.pointerOrientation = "horizontal";
+          sumSeries.tooltip.background.cornerRadius = 20;
+          sumSeries.tooltip.background.fillOpacity = 0.5;
+          sumSeries.tooltip.label.padding (12, 12, 12, 12);
+
+          this.sumSeriesList.push (sumSeries);
+          index++;
+        }
+      }
+      else
+      {
+        let sumSeries = this.chart.series.push (new am4charts.LineSeries ());
+
+        if (this.data.currentChartType.flags & ChartFlags.ROTATED)
+        {
+          sumSeries.dataFields.valueX = "sum";
+          sumSeries.dataFields.categoryY = "Interval";
+          sumSeries.xAxis = this.sumValueAxis;
+        }
+        else
+        {
+          sumSeries.dataFields.valueY = "sum";
+          sumSeries.dataFields.categoryX = "Interval";
+          sumSeries.yAxis = this.sumValueAxis;
+        }
+
+        sumSeries.bullets.push (new am4charts.CircleBullet ());
+
+        sumSeries.strokeWidth = 2;
+        sumSeries.fill = am4core.color (this.data.paletteColors[0]);
+        sumSeries.stroke = Themes.AmCharts[theme].sumStroke;
+        sumSeries.strokeOpacity = 0.5;
+        sumSeries.name = "Sum";
+
+        if (this.data.currentChartType.flags & ChartFlags.ROTATED)
+          sumSeries.tooltipText = "{valueX}";
+        else
+          sumSeries.tooltipText = "{valueY}";
+
+        sumSeries.tooltip.pointerOrientation = "horizontal";
+        sumSeries.tooltip.background.cornerRadius = 20;
+        sumSeries.tooltip.background.fillOpacity = 0.5;
+        sumSeries.tooltip.label.padding (12, 12, 12, 12);
+
+        this.sumSeriesList.push (sumSeries);
+      }
+
+      this.chart.cursor = new am4charts.XYCursor ();
+
+      // also hide the normal category axis value labels
+      if (this.data.currentChartType.flags & ChartFlags.ROTATED)
+      {
+        for (let i = 0; i < this.chart.xAxes.length; i++)
+        {
+          let xaxis = this.chart.xAxes.getIndex (i);
+
+          if (xaxis == this.sumValueAxis)
+            continue;
+
+          xaxis.renderer.grid.template.disabled = true;
+          xaxis.renderer.labels.template.disabled = true;
+          xaxis.renderer.tooltip.disabled = true;
+          xaxis.hide ();
+        }
+      }
+      else
+      {
+        for (let i = 0; i < this.chart.yAxes.length; i++)
+        {
+          let yaxis = this.chart.yAxes.getIndex (i);
+
+          if (yaxis == this.sumValueAxis)
+            continue;
+
+          yaxis.renderer.grid.template.disabled = true;
+          yaxis.renderer.labels.template.disabled = true;
+          yaxis.renderer.tooltip.disabled = true;
+          yaxis.hide ();
+        }
+      }
+
+      // hide every chart series except the sum ones
+      this.chart.events.once ("dataitemsvalidated", function (event) {
+        for (let i = 0; i < self.chart.series.length; i++)
+        {
+          let series = self.chart.series.getIndex (i);
+          let skipSeries: boolean = false;
+
+          for (let sumSeries of self.sumSeriesList)
+          {
+            if (series == sumSeries)
+            {
+              skipSeries = true;
+              break;
+            }
+          }
+
+          if (skipSeries)
+            continue;
+
+          series.hide ();
+          series.hiddenInLegend = true;
+        }
+      });
+
+      // invalidate data in order to display the line chart
+      this.chart.invalidateData ();
+    });
+  }
+
+  removeSumOfIntervals(): void
+  {
+    this.zone.runOutsideAngular (() => {
+      let self = this;
+
+      for (let sumSeries of this.sumSeriesList)
+        this.chart.series.removeIndex (this.chart.series.indexOf (sumSeries));
+
+      this.sumSeriesList = [];
+
+      if (this.data.currentChartType.flags & ChartFlags.ROTATED)
+        this.chart.xAxes.removeIndex (this.chart.xAxes.indexOf (this.sumValueAxis));
+      else
+        this.chart.yAxes.removeIndex (this.chart.yAxes.indexOf (this.sumValueAxis));
+
+      this.sumValueAxis = null;
+
+      // display the normal category axis value labels
+      if (this.data.currentChartType.flags & ChartFlags.ROTATED)
+      {
+        for (let i = 0; i < this.chart.xAxes.length; i++)
+        {
+          let xaxis = this.chart.xAxes.getIndex (i);
+
+          xaxis.show ();
+          xaxis.renderer.grid.template.disabled = false;
+          xaxis.renderer.labels.template.disabled = false;
+          xaxis.renderer.tooltip.disabled = false;
+        }
+      }
+      else
+      {
+        for (let i = 0; i < this.chart.yAxes.length; i++)
+        {
+          let yaxis = this.chart.yAxes.getIndex (i);
+
+          yaxis.show ();
+          yaxis.renderer.grid.template.disabled = false;
+          yaxis.renderer.labels.template.disabled = false;
+          yaxis.renderer.tooltip.disabled = false;
+        }
+      }
+
+      // display every chart series except the sum ones
+      this.chart.events.once ("dataitemsvalidated", function (event) {
+        for (let i = 0; i < self.chart.series.values.length; i++)
+        {
+          let series = self.chart.series.getIndex (i);
+
+          series.show ();
+          series.hiddenInLegend = false;
+        }
+      });
+
+      if (this.data.currentChartType.flags & ChartFlags.LINECHART)
+        this.chart.cursor = new am4charts.XYCursor ();
+      else
+        this.chart.cursor = null;
+
+      // invalidate data in order to remove the line chart
+      this.chart.invalidateData ();
+    });
+  }
+
+  toggleIntervalTable(): void
+  {
+    this.advTableView = !this.advTableView;
   }
 }
