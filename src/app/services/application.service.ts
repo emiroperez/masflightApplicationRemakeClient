@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, isDevMode } from '@angular/core';
 import { ApiClient } from '../api/api-client';
 import { Utils } from '../commons/utils';
 import { Observable, of } from 'rxjs';
@@ -41,7 +41,11 @@ export class ApplicationService {
     let params = this.utils.getUrlParameters(_this.globals.currentOption,false);
     let url = this.host1 + "/getMapBoxTracking?" + params.url;
     let urlArg = encodeURIComponent (url);
+
     url = this.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.globals.currentOption.id + "&ipAddress=" + this.authService.getIpAddress () + "&noXml=true";
+    if (isDevMode ())
+      console.log (url);
+
     this.authService.get (_this, url, successHandler, errorHandler);
   }
 
@@ -65,6 +69,10 @@ export class ApplicationService {
     }
     let urlArg = encodeURIComponent(urlBase);
     let url = this.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + _this.globals.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
+
+    if (isDevMode ())
+      console.log (url);
+
     this.authService.get(_this, url, handlerSuccess, handlerError);
   }
 
@@ -372,7 +380,11 @@ export class ApplicationService {
     // let param = this.utils.getUrlParameters(_this.globals.currentOption);
     let urlBase = option.baseUrl + parameters;
     let urlArg = encodeURIComponent(urlBase);
+
     let url = this.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + option.id + "&ipAddress=" + this.authService.getIpAddress ();
+    if (isDevMode ())
+      console.log (url);
+
     this.authService.get(_this, url, handlerSuccess, handlerError);
   }
 
