@@ -50,7 +50,7 @@ export class MsfDatePeriodRevenueComponent implements OnInit {
     {id: 1, name: '1st Quarter',value:"1"},
     {id: 2, name: '2nd Quarter',value:"2"},
     {id: 3, name: '3rd Quarter',value:"3"},
-    {id: 4, name: '4st Quarter',value:"4"}
+    {id: 4, name: '4th Quarter',value:"4"}
   ];
 
   @Input("argument") public argument: Arguments;
