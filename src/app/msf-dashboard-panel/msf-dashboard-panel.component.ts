@@ -2134,10 +2134,11 @@ export class MsfDashboardPanelComponent implements OnInit {
     params = this.getParameters ();
     url = this.globals.baseUrl2 + "/getMapBoxTracking?" + params;
     urlArg = encodeURIComponent (url);
-    url = this.globals.baseUrl + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress () + "&noXml=true";
 
     if (isDevMode ())
       console.log (url);
+
+    url = this.globals.baseUrl + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress () + "&noXml=true";
 
     this.authService.get (this.msfMapRef, url, handlerSuccess, handlerError);
   }
@@ -2150,10 +2151,11 @@ export class MsfDashboardPanelComponent implements OnInit {
     urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=1&page_number=0";
     urlArg = encodeURIComponent (urlBase);
-    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
 
     if (isDevMode ())
-      console.log (url);
+      console.log (urlBase);
+
+    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
 
     this.authService.get (this, url, handlerSuccess, handlerError);
   }
@@ -2167,10 +2169,11 @@ export class MsfDashboardPanelComponent implements OnInit {
     urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=1&page_number=0";
     urlArg = encodeURIComponent (urlBase);
-    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
 
     if (isDevMode ())
-      console.log (url);
+      console.log (urlBase);
+
+    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
 
     this.authService.get (this, url, handlerSuccess, handlerError);
   }
@@ -2196,6 +2199,10 @@ export class MsfDashboardPanelComponent implements OnInit {
     urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=100&page_number=" + this.actualPageNumber;
     urlArg = encodeURIComponent (urlBase);
+
+    if (isDevMode ())
+      console.log (urlBase);
+
     url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
 
     for (let tableVariable of this.values.tableVariables)
@@ -2203,9 +2210,6 @@ export class MsfDashboardPanelComponent implements OnInit {
       if (tableVariable.checked)
         url += "&metaDataIds=" + tableVariable.itemId;
     }
-
-    if (isDevMode ())
-      console.log (url);
 
     this.authService.get (this.msfTableRef, url, handlerSuccess, handlerError);
   }
@@ -2218,12 +2222,13 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
-    urlArg = encodeURIComponent(urlBase);
-    data = { variables: this.values.dynTableVariables, values: this.values.dynTableValues };
-    url = this.service.host + "/secure/getHorizontalMatrix?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
+    urlArg = encodeURIComponent (urlBase);
 
     if (isDevMode ())
-      console.log (url);
+      console.log (urlBase);
+
+    data = { variables: this.values.dynTableVariables, values: this.values.dynTableValues };
+    url = this.service.host + "/secure/getHorizontalMatrix?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
 
     this.authService.post (this, url, data, handlerSuccess, handlerError);
   }

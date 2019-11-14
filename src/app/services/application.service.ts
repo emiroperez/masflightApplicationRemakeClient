@@ -42,9 +42,10 @@ export class ApplicationService {
     let url = this.host1 + "/getMapBoxTracking?" + params.url;
     let urlArg = encodeURIComponent (url);
 
-    url = this.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.globals.currentOption.id + "&ipAddress=" + this.authService.getIpAddress () + "&noXml=true";
     if (isDevMode ())
       console.log (url);
+
+    url = this.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.globals.currentOption.id + "&ipAddress=" + this.authService.getIpAddress () + "&noXml=true";
 
     this.authService.get (_this, url, successHandler, errorHandler);
   }
@@ -67,11 +68,12 @@ export class ApplicationService {
     if(pageNumber=="0"){
       _this.dataSource = null;
     }
-    let urlArg = encodeURIComponent(urlBase);
-    let url = this.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + _this.globals.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
+    let urlArg = encodeURIComponent (urlBase);
 
     if (isDevMode ())
-      console.log (url);
+      console.log (urlBase);
+
+    let url = this.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + _this.globals.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
 
     this.authService.get(_this, url, handlerSuccess, handlerError);
   }
@@ -81,11 +83,12 @@ export class ApplicationService {
     let param = this.utils.getUrlParameters(_this.globals.currentOption,true);
     let urlBase = param.url;
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
-    let urlArg = encodeURIComponent(urlBase);
-    let url = this.host + "/secure/getChartData?url=" + urlArg + "&optionId=" + _this.globals.currentOption.id + "&ipAddress=" + this.authService.getIpAddress () + "&variable=" + _this.variable.id + "&xaxis=" + _this.xaxis.id + "&valueColumn=" + _this.valueColumn.id + "&function=" + _this.function.id;
+    let urlArg = encodeURIComponent (urlBase);
 
     if (isDevMode ())
-      console.log (url);
+      console.log (urlBase);
+
+    let url = this.host + "/secure/getChartData?url=" + urlArg + "&optionId=" + _this.globals.currentOption.id + "&ipAddress=" + this.authService.getIpAddress () + "&variable=" + _this.variable.id + "&xaxis=" + _this.xaxis.id + "&valueColumn=" + _this.valueColumn.id + "&function=" + _this.function.id;
 
     this.authService.post(_this, url, null, handlerSuccess, handlerError);
   }
@@ -98,12 +101,13 @@ export class ApplicationService {
     let param = this.utils.getUrlParameters(_this.globals.currentOption,true);
     let urlBase = param.url;
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
-    let urlArg = encodeURIComponent(urlBase);
-    let data = { variables: _this.globals.variables, values: _this.globals.values };
-    let url = this.host + "/secure/getHorizontalMatrix?url=" + urlArg + "&optionId=" + _this.globals.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
+    let urlArg = encodeURIComponent (urlBase);
 
     if (isDevMode ())
-      console.log (url);
+      console.log (urlBase);
+
+    let data = { variables: _this.globals.variables, values: _this.globals.values };
+    let url = this.host + "/secure/getHorizontalMatrix?url=" + urlArg + "&optionId=" + _this.globals.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
 
     this.authService.post (_this, url, data, handlerSuccess, handlerError);
   }
@@ -277,7 +281,7 @@ export class ApplicationService {
     let param = this.utils.getUrlParameters(_this.globals.currentOption,true);
     let urlBase = param.url;
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=100";
-    let urlArg = encodeURIComponent(urlBase);
+    // let urlArg = encodeURIComponent(urlBase);
     urlBase += "&optionId=" + _this.globals.currentOption.id;
 
     if (isDevMode ())
@@ -393,9 +397,10 @@ export class ApplicationService {
     let urlBase = option.baseUrl + parameters;
     let urlArg = encodeURIComponent(urlBase);
 
-    let url = this.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + option.id + "&ipAddress=" + this.authService.getIpAddress ();
     if (isDevMode ())
-      console.log (url);
+      console.log (urlBase);
+
+    let url = this.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + option.id + "&ipAddress=" + this.authService.getIpAddress ();
 
     this.authService.get(_this, url, handlerSuccess, handlerError);
   }

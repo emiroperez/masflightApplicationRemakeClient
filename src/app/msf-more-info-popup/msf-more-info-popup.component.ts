@@ -137,15 +137,16 @@ export class MsfMoreInfoPopupComponent{
       this.chart = null;
       let urlBase = this.globals.popupUrl + "/CategoryInfoPax";
       // urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
-      let urlArg = encodeURIComponent(urlBase);
+      let urlArg = encodeURIComponent (urlBase);
+
+      if (isDevMode ())
+        console.log (urlBase);
+
       let url = this.globals.baseUrl + "/secure/getChartData?url=" + urlArg 
       + "&optionId=" + this.globals.currentOption.id
       + "&ipAddress=" + this.authService.getIpAddress ()
       + "&variable=" + this.variable + "&xaxis=" + this.xaxis 
       + "&valueColumn=" + this.valueColumn + "&function=" + this.functions[1].id;
-
-      if (isDevMode ())
-        console.log (url);
 
       this.authService.post(this, url, null, handlerSuccess, handlerError);
     }
