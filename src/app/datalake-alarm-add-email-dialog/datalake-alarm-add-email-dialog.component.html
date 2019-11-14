@@ -43,7 +43,7 @@ id="msf-dashboard-drill-down-container">
       </mat-radio-group>
       <div *ngIf="data.OnlyRead" style="flex-direction: column; display: flex">
         <div style="margin: 0px; margin-bottom: 10px;" class="cancels-checkbox" *ngFor="let user of users">
-          {{user.email}}
+          {{user}}
         </div>
       </div>
     </div>

@@ -36,8 +36,8 @@
           <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
             <td mat-cell *matCellDef="let element">
-              <button (click)="viewEmail(element.emailList)" mat-icon-button matTooltip="View Emails List">
-                <mat-icon class="edit-icon" *ngIf="element.emailList && element.emailList.length != 0">person_add</mat-icon>
+              <button (click)="viewEmail(element.emails)" mat-icon-button matTooltip="View Emails List">
+                <mat-icon class="edit-icon" *ngIf="element.emails && element.emails.length != 0">person_add</mat-icon>
               </button> 
               <button (click)="editAlarm(element)" mat-icon-button matTooltip="Edit Alarm">
                 <mat-icon class="edit-icon">edit</mat-icon>
