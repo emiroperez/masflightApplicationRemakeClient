@@ -129,7 +129,7 @@ export class DatalakeService {
     saveDatalakeAlarm(_this, request, handlerSuccess, handlerError): void
     {
         let url = this.host + "/saveDatalakeAlarm";
-        request.username = "karen1";
+        // request.username = "karen1";
         // request.token = "rHgGv10eoP1PmScdpki!8buJYKmT93Mrvj!";
         // request.token = "CT?oHyyvgbssIhI5MNbJmXVQiI4?zYXIu8m";
         request.token = this.globals.token ;
