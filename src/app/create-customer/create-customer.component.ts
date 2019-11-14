@@ -244,7 +244,7 @@ export class CreateCustomerComponent implements OnInit {
 
   getEditorHeight(): string
   {
-    return "calc(" + this.innerHeight + "px - 19.55em)";
+    return "calc(" + this.innerHeight + "px - 19.3em)";
   }
 
   getPlanName(licenseType): string
