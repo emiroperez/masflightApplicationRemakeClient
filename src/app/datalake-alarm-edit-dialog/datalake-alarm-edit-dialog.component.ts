@@ -272,6 +272,12 @@ getTimeFormat(value){
       this.cron = this.minutes;
     }
 
+    this.listEmail.forEach(element => {
+      if(!element.remove){
+        element.remove = 'F';
+      }
+    });
+
     request = {
       schemaName: this.alarmFormGroup.get ("schema").value,
       tableName: this.alarmFormGroup.get ("table").value,

@@ -287,6 +287,9 @@ export class DatalakeAlarmsComponent implements OnInit {
         alarm.cron = result.cron;
         alarm.listEmail = result.listEmail;
       }
+      this.alarms = [];
+      this.globals.isLoading = true;
+      this.service.getDatalakeAlarms (this, this.setAlarms, this.setAlarmsError);
 
     });
   }
@@ -404,21 +407,23 @@ getTimePart(type,time){
 saveAlarmHandler(_this, data) {
   if (data.Message === "OK"){
 
-    _this.alarms.push(_this.request);
-    _this.request = {
-      schemaName: "",
-      tableName: "",
-      cron: "",
-      monitoringStatus: ""
-    }
-    _this.alarmTable.data = _this.alarms;
+    // _this.alarms.push(_this.request);
+    // _this.request = {
+    //   schemaName: "",
+    //   tableName: "",
+    //   cron: "",
+    //   monitoringStatus: ""
+    // }
+    // _this.alarmTable.data = _this.alarms;
     _this.alarmTable._updateChangeSubscription ();    
     _this.alarmFormGroup.reset()
     _this.listEmail = [];
     _this.minutes = "";
      let date = new Date ();
     _this.clock.setTime(date.getHours(), date.getMinutes());
-    _this.globals.isLoading = false;
+    _this.alarms = [];
+    _this.service.getDatalakeAlarms (_this, _this.setAlarms, _this.setAlarmsError);
+    // _this.globals.isLoading = false;
   }else{
     _this.globals.isLoading = false;
     _this.dialog.open (MessageComponent, {
