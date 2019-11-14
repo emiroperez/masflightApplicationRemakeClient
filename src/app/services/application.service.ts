@@ -40,6 +40,7 @@ export class ApplicationService {
   getMapBoxTracking(_this, successHandler, errorHandler) {
     let params = this.utils.getUrlParameters(_this.globals.currentOption,false);
     let url = this.host1 + "/getMapBoxTracking?" + params.url;
+					  
     let urlArg = encodeURIComponent (url);
 
     if (isDevMode ())
@@ -68,6 +69,7 @@ export class ApplicationService {
     if(pageNumber=="0"){
       _this.dataSource = null;
     }
+						 
     let urlArg = encodeURIComponent (urlBase);
 
     if (isDevMode ())
@@ -76,6 +78,7 @@ export class ApplicationService {
     let url = this.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + _this.globals.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
 
     this.authService.get(_this, url, handlerSuccess, handlerError);
+					 
   }
 
   loadChartData(_this, handlerSuccess, handlerError) {
@@ -83,6 +86,7 @@ export class ApplicationService {
     let param = this.utils.getUrlParameters(_this.globals.currentOption,true);
     let urlBase = param.url;
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
+						 
     let urlArg = encodeURIComponent (urlBase);
 
     if (isDevMode ())
@@ -101,6 +105,7 @@ export class ApplicationService {
     let param = this.utils.getUrlParameters(_this.globals.currentOption,true);
     let urlBase = param.url;
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
+						 
     let urlArg = encodeURIComponent (urlBase);
 
     if (isDevMode ())
@@ -281,6 +286,7 @@ export class ApplicationService {
     let param = this.utils.getUrlParameters(_this.globals.currentOption,true);
     let urlBase = param.url;
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=100";
+						 
     // let urlArg = encodeURIComponent(urlBase);
     urlBase += "&optionId=" + _this.globals.currentOption.id;
 
@@ -395,6 +401,7 @@ export class ApplicationService {
     // _this.globals.isLoading = true;
     // let param = this.utils.getUrlParameters(_this.globals.currentOption);
     let urlBase = option.baseUrl + parameters;
+						 
     let urlArg = encodeURIComponent(urlBase);
 
     if (isDevMode ())
@@ -403,6 +410,7 @@ export class ApplicationService {
     let url = this.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + option.id + "&ipAddress=" + this.authService.getIpAddress ();
 
     this.authService.get(_this, url, handlerSuccess, handlerError);
+					 
   }
 
   getDrillDownAdmin(_this, optionId, handlerSuccess, handlerError)
@@ -589,4 +597,14 @@ export class ApplicationService {
     let url = this.host + "/secure/getMenuCategoryWelcome?application=" + _this.globals.currentApplication.id;
     this.authService.get(_this, url, handlerSuccess, handlerError);
   }
+
+																		 
+  getDatalakeRoles(_this, schemaName, handlerSuccess, handlerError): void
+  {
+      let url = this.host + "/getDatalakeRoles?search="+schemaName;
+      this.http.get(_this, url, handlerSuccess, handlerError, null);
+  }
+																   
+																	
+   
 }
