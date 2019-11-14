@@ -1671,9 +1671,9 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             background-color: $font-color
             border-radius: 0px
         .datalake-partition-table-scroll::-webkit-scrollbar-track
-            background-color: $background-color !important
+            background-color: $datalake-table-row-background-color !important
         .datalake-partition-table-scroll
-            background-color: $admin-menu-background
+            background-color: $datalake-table-row-background-color
             td.mat-cell
                 .status-icon
                     color: $primary-color
@@ -1699,23 +1699,12 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                         .mat-button-wrapper
                             span
                                 color: $primary-color
-        .datalake-alarm-paginator
+        .datalake-alarm-paginator, .datalake-partition-paginator
             .mat-paginator-outer-container
                 .mat-paginator-container
                     color: $font-color
                     background-color: $datalake-table-row-background-color
                     border-top: $datalake-search-input-border-color 1px solid
-                    .mat-icon-button
-                        .mat-button-wrapper
-                            color: $font-color
-                    .mat-icon-button[disabled]
-                        .mat-button-wrapper
-                            color: $disabled-color
-        .datalake-partition-paginator
-            .mat-paginator-outer-container
-                .mat-paginator-container
-                    color: $font-color
-                    background-color: $background-color
                     .mat-icon-button
                         .mat-button-wrapper
                             color: $font-color
