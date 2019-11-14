@@ -404,7 +404,7 @@ getTimePart(type,time){
 saveAlarmHandler(_this, data) {
   if (data.Message === "OK"){
 
-    _this.alarms.unshift(_this.request);
+    _this.alarms.push(_this.request);
     _this.request = {
       schemaName: "",
       tableName: "",
@@ -415,6 +415,9 @@ saveAlarmHandler(_this, data) {
     _this.alarmTable._updateChangeSubscription ();    
     _this.alarmFormGroup.reset()
     _this.listEmail = [];
+    _this.minutes = "";
+     let date = new Date ();
+    _this.clock.setTime(date.getHours(), date.getMinutes());
     _this.globals.isLoading = false;
   }else{
     _this.globals.isLoading = false;
