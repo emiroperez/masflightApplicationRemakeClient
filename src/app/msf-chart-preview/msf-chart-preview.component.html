@@ -27,19 +27,23 @@
     </div>
     <div class="msf-dashboard-child-panel-table msf-dashboard-panel-table" [style.height.px]="panelHeightOffset - 20" [style.width.%]="100" [style.margin-top.px]="5">
       <div class="results-container">
-        <table class="mat-elevation-z8 datasource results" style="border-collapse: collapse">
-          <tr class="mat-header-row">
-            <th [style.width.%]="25" class="msf-show-table mat-header-cell" *ngIf="data.variable">{{data.variable.columnName}}</th>
-            <th [style.width.%]="40" class="msf-show-table mat-header-cell">Intervals</th>
-            <th [style.width.%]="25" class="msf-show-table mat-header-cell">{{data.valueColumn.columnName}}</th>
-            <th [style.width.%]="10" class="msf-show-table mat-header-cell">Sum</th>
-          </tr>
-          <tr class="mat-row" *ngFor="let row of intervalTableRows">
-            <td [style.width.%]="25" class="msf-show-table mat-cell" *ngIf="row.key">{{row.key}}</td>
-            <td [style.width.%]="40" class="msf-show-table mat-cell">{{row.Interval}}</td>
-            <td [style.width.%]="25" class="msf-show-table mat-cell">{{row.value | number:'.0-2':'en'}}</td>
-            <td [style.width.%]="10" class="msf-show-table mat-cell">{{row.sum | number:'.0-2':'en'}}</td>
-          </tr>
+        <table class="mat-elevation-z8 datasource results" style="border-collapse: separate; border-spacing: 0">
+          <thead>
+            <tr class="mat-header-row">
+              <th [style.width.%]="25" class="msf-show-table mat-header-cell" *ngIf="data.variable">{{data.variable.columnName}}</th>
+              <th style="width: 40%; border-left: 0" class="msf-show-table mat-header-cell">Intervals</th>
+              <th style="width: 25%; border-left: 0" class="msf-show-table mat-header-cell">{{data.valueColumn.columnName}}</th>
+              <th style="width: 10%; border-left: 0" class="msf-show-table mat-header-cell">Sum</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="mat-row" *ngFor="let row of intervalTableRows">
+              <td [style.width.%]="25" class="msf-show-table mat-cell" *ngIf="row.key">{{row.key}}</td>
+              <td [style.width.%]="40" class="msf-show-table mat-cell">{{row.Interval}}</td>
+              <td [style.width.%]="25" class="msf-show-table mat-cell">{{row.value | number:'.0-2':'en'}}</td>
+              <td [style.width.%]="10" class="msf-show-table mat-cell">{{row.sum | number:'.0-2':'en'}}</td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </div>
