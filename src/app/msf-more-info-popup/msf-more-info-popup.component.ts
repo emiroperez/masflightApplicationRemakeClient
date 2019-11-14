@@ -158,146 +158,148 @@ export class MsfMoreInfoPopupComponent{
     }
 
     createHorizColumnSeries(values, chart, item, parseDate): void
-  {
-    // Set up series
-    let series = chart.series.push (new am4charts.ColumnSeries ());
-    series.name = item.valueAxis;
-    series.dataFields.valueX = item.valueField;
-    series.sequencedInterpolation = true;
-
-    // Parse date if available
-    if (parseDate)
     {
-      series.dataFields.dateY = values;
-      series.dateFormatter.dateFormat = "MMM d, yyyy";
-      series.columns.template.tooltipText = "{dateY}: {valueX}";
-    }
-    else
-    {
-      series.dataFields.categoryY = values;
-      series.columns.template.tooltipText = "{categoryY}: {valueX}";
-    }
+      // Set up series
+      let series = chart.series.push (new am4charts.ColumnSeries ());
+      series.name = item.valueAxis;
+      series.dataFields.valueX = item.valueField;
+      series.sequencedInterpolation = true;
 
-    // Configure columns
-    series.stacked = true;
-    series.columns.template.strokeWidth = 0;
-    series.columns.template.width = am4core.percent (60);
-  }
-
-  makeChart(chartInfo): void
-  {
-    let theme;
-
-    theme = this.globals.theme;
-
-    this.zone.runOutsideAngular (() => {
-      let chart;
-
-      let categoryAxis, valueAxis, parseDate, stacked;
-      chart = am4core.create ("msf-dashboard-chart-display", am4charts.XYChart);
-
-      // Don't parse dates if the chart is a simple version
-      chart.data = chartInfo.data;
-      parseDate = this.xaxis.includes ('date');
-
-      // Set chart axes depeding on the rotation
+      // Parse date if available
       if (parseDate)
       {
-        categoryAxis = chart.yAxes.push (new am4charts.DateAxis ());
-        categoryAxis.dateFormats.setKey ("day", "MMM d");
-        categoryAxis.periodChangeDateFormats.setKey ("day", "yyyy");
+        series.dataFields.dateY = values;
+        series.dateFormatter.dateFormat = "MMM d, yyyy";
+        series.columns.template.tooltipText = "{dateY}: {valueX}";
       }
       else
       {
-        categoryAxis = chart.yAxes.push (new am4charts.CategoryAxis ());
-        categoryAxis.renderer.minGridDistance = 15;
-        categoryAxis.renderer.labels.template.maxWidth = 160;
+        series.dataFields.categoryY = values;
+        series.columns.template.tooltipText = "{categoryY}: {valueX}";
       }
 
-      valueAxis = chart.xAxes.push (new am4charts.ValueAxis ());
+      // Configure columns
+      series.stacked = true;
+      series.columns.template.strokeWidth = 0;
+      series.columns.template.width = am4core.percent (60);
+    }
 
-      // Add scrollbar into the chart for zooming if there are multiple series
-      if (chart.data.length > 1)
-      {
-        chart.scrollbarY = new am4core.Scrollbar ();
-        chart.scrollbarY.background.fill = Themes.AmCharts[theme].chartZoomScrollBar;
-      }
+    makeChart(chartInfo): void
+    {
+      let theme;
 
-      // Set category axis properties
-      categoryAxis.renderer.labels.template.fontSize = 10;
-      categoryAxis.renderer.labels.template.wrap = true;
-      categoryAxis.renderer.labels.template.horizontalCenter  = "right";
-      categoryAxis.renderer.labels.template.textAlign  = "end";
-      categoryAxis.renderer.labels.template.fill = Themes.AmCharts[theme].fontColor;
-      categoryAxis.renderer.grid.template.location = 0;
-      categoryAxis.renderer.grid.template.strokeOpacity = 1;
-      categoryAxis.renderer.line.strokeOpacity = 1;
-      categoryAxis.renderer.grid.template.stroke = Themes.AmCharts[theme].stroke;
-      categoryAxis.renderer.line.stroke = Themes.AmCharts[theme].stroke;
-      categoryAxis.renderer.grid.template.strokeWidth = 1;
-      categoryAxis.renderer.line.strokeWidth = 1;
+      theme = this.globals.theme;
 
-      // Set value axis properties
-      valueAxis.renderer.labels.template.fontSize = 10;
-      valueAxis.renderer.labels.template.fill = Themes.AmCharts[theme].fontColor;
-      valueAxis.renderer.grid.template.strokeOpacity = 1;
-      valueAxis.renderer.grid.template.stroke = Themes.AmCharts[theme].stroke;
-      valueAxis.renderer.grid.template.strokeWidth = 1;
+      this.zone.runOutsideAngular (() => {
+        let chart;
 
-      // The category will be the x axis if the chart type has it
-      categoryAxis.dataFields.category = this.xaxis;
+        let categoryAxis, valueAxis, parseDate;
+        chart = am4core.create ("msf-dashboard-chart-display", am4charts.XYChart);
 
-      // Sort chart series from least to greatest by calculating the
-      // total value of each key item to compensate for the lack of
-      // proper sorting by values
-      for (let item of chart.data)
-      {
-        let total = 0;
+        // Don't parse dates if the chart is a simple version
+        chart.data = chartInfo.data;
+        chart.numberFormatter.numberFormat = "#,###.#";
+        parseDate = this.xaxis.includes ('date');
 
-        for (let object of chartInfo.filter)
+        // Set chart axes depeding on the rotation
+        if (parseDate)
         {
-          let value = item[object.valueField];
-
-          if (value != null)
-            total += value;
+          categoryAxis = chart.yAxes.push (new am4charts.DateAxis ());
+          categoryAxis.dateFormats.setKey ("day", "MMM d");
+          categoryAxis.periodChangeDateFormats.setKey ("day", "yyyy");
+        }
+        else
+        {
+          categoryAxis = chart.yAxes.push (new am4charts.CategoryAxis ());
+          categoryAxis.renderer.minGridDistance = 15;
+          categoryAxis.renderer.labels.template.maxWidth = 160;
         }
 
-        item["sum"] = total;
-      }
+        valueAxis = chart.xAxes.push (new am4charts.ValueAxis ());
 
-      chart.events.on ("beforedatavalidated", function(event) {
-        chart.data.sort (function(e1, e2) {
-          return e1.sum - e2.sum;
+        // Add scrollbar into the chart for zooming if there are multiple series
+        if (chart.data.length > 1)
+        {
+          chart.scrollbarY = new am4core.Scrollbar ();
+          chart.scrollbarY.background.fill = Themes.AmCharts[theme].chartZoomScrollBar;
+        }
+
+        // Set category axis properties
+        categoryAxis.renderer.labels.template.fontSize = 10;
+        categoryAxis.renderer.labels.template.wrap = true;
+        categoryAxis.renderer.labels.template.horizontalCenter  = "right";
+        categoryAxis.renderer.labels.template.textAlign  = "end";
+        categoryAxis.renderer.labels.template.fill = Themes.AmCharts[theme].fontColor;
+        categoryAxis.renderer.grid.template.location = 0;
+        categoryAxis.renderer.grid.template.strokeOpacity = 1;
+        categoryAxis.renderer.line.strokeOpacity = 1;
+        categoryAxis.renderer.grid.template.stroke = Themes.AmCharts[theme].stroke;
+        categoryAxis.renderer.line.stroke = Themes.AmCharts[theme].stroke;
+        categoryAxis.renderer.grid.template.strokeWidth = 1;
+        categoryAxis.renderer.line.strokeWidth = 1;
+
+        // Set value axis properties
+        valueAxis.renderer.labels.template.fontSize = 10;
+        valueAxis.renderer.labels.template.fill = Themes.AmCharts[theme].fontColor;
+        valueAxis.renderer.grid.template.strokeOpacity = 1;
+        valueAxis.renderer.grid.template.stroke = Themes.AmCharts[theme].stroke;
+        valueAxis.renderer.grid.template.strokeWidth = 1;
+
+        // The category will be the x axis if the chart type has it
+        categoryAxis.dataFields.category = this.xaxis;
+
+        // Sort chart series from least to greatest by calculating the
+        // total value of each key item to compensate for the lack of
+        // proper sorting by values
+        for (let item of chart.data)
+        {
+          let total = 0;
+
+          for (let object of chartInfo.filter)
+          {
+            let value = item[object.valueField];
+
+            if (value != null)
+              total += value;
+          }
+
+          item["sum"] = total;
+        }
+
+        chart.events.on ("beforedatavalidated", function(event) {
+          chart.data.sort (function(e1, e2) {
+            return e1.sum - e2.sum;
+          });
         });
+
+        // Create the series and set colors
+        chart.colors.list = [];
+
+        for (let color of this.paletteColors)
+          chart.colors.list.push (am4core.color (color));
+
+        for (let object of chartInfo.filter)
+        	this.createHorizColumnSeries (this.xaxis, chart, object, parseDate);
+
+        // Display Legend
+        chart.legend = new am4charts.Legend ();
+        chart.legend.markers.template.width = 15;
+        chart.legend.markers.template.height = 15;
+        chart.legend.labels.template.fontSize = 10;
+        chart.legend.labels.template.fill = Themes.AmCharts[theme].fontColor;
+
+        this.chart = chart;
+        this.globals.popupLoading2 = false;
       });
+    }
 
-      // Create the series and set colors
-      chart.colors.list = [];
-
-      for (let color of this.paletteColors)
-        chart.colors.list.push (am4core.color (color));
-
-      for (let object of chartInfo.filter)
-      	this.createHorizColumnSeries (this.xaxis, chart, object, parseDate);
-
-      // Display Legend
-      chart.legend = new am4charts.Legend ();
-      chart.legend.markers.template.width = 15;
-      chart.legend.markers.template.height = 15;
-      chart.legend.labels.template.fontSize = 10;
-      chart.legend.labels.template.fill = Themes.AmCharts[theme].fontColor;
-
-      this.chart = chart;
+    handlerChartError(_this, result): void
+    {
       this.globals.popupLoading2 = false;
-    });
-  }
-  handlerChartError(_this, result): void
-  {
-    this.globals.popupLoading2 = false;
-    _this.dialog.open (MessageComponent, {
-      data: { title: "Error", message: "Failed to generate chart." }
-    });
-  }
+      _this.dialog.open (MessageComponent, {
+        data: { title: "Error", message: "Failed to generate chart." }
+      });
+    }
 
     // ngOnDestroy()
     // {

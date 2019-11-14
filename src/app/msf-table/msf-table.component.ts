@@ -685,7 +685,7 @@ export class MsfTableComponent implements OnInit {
         momentFormat = momentFormat.replace (/S/g, "s");
       }
 
-      momentDate = moment (date, momentFormat);
+      momentDate = moment (time, momentFormat);
       if (!momentDate.isValid ())
         return null; // invalid time value will be null
 
