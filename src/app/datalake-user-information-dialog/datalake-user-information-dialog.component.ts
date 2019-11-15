@@ -12,30 +12,20 @@ export class DatalakeUserInformationDialogComponent implements OnInit {
   datalakeUserInfoFormGroup: FormGroup;
   roleName: any;
   roles: string[] = [];
+  userRoles: any;
+  tempDatalakeRoles: any= [];
 
   constructor(public globals: Globals,public dialogRef: MatDialogRef<DatalakeUserInformationDialogComponent>,
     private formBuilder: FormBuilder,private service: ApplicationService,
     @Inject(MAT_DIALOG_DATA) public data) {
-      if(this.data.userInfoDatalake){        
-        this.datalakeUserInfoFormGroup = this.formBuilder.group ({
-          username: [this.data.userInfoDatalake.username,Validators.required],
-          aws_access_key_id: [this.data.userInfoDatalake.aws_access_key_id,Validators.required],
-          aws_secret_access_key: [this.data.userInfoDatalake.aws_secret_access_key,Validators.required],
-          s3_query_location: [this.data.userInfoDatalake.s3_query_location,Validators.required],
-          s3_region: [this.data.userInfoDatalake.s3_region,Validators.required],
-          role: [this.data.datalakeRoles,Validators.required]
-          // role: [this.data.userInfoDatalake.datalakeRole.name,Validators.required]
-        }); 
-      } else{
       this.datalakeUserInfoFormGroup = this.formBuilder.group ({
         username: ['',Validators.required],
         aws_access_key_id: ['',Validators.required],
         aws_secret_access_key: ['',Validators.required],
         s3_query_location: ['',Validators.required],
         s3_region: ['',Validators.required],
-        role: ['',Validators.required],
+        datalakeRoles: ['',Validators.required],
       });
-    }
    }
 
   ngOnInit() {
@@ -65,6 +55,7 @@ export class DatalakeUserInformationDialogComponent implements OnInit {
           userInfoDatalake: this.datalakeUserInfoFormGroup.value,
           userDatalake: 1
         }
+        element.userInfoDatalake.datalakeRoles = this.tempDatalakeRoles;
         if(this.data.userInfoDatalake){
           if(this.data.userInfoDatalake.id){
           element.userInfoDatalake.id = this.data.userInfoDatalake.id;
@@ -95,12 +86,29 @@ export class DatalakeUserInformationDialogComponent implements OnInit {
     // }
   }
 
-  RoleChanged(): void
-  {
-    this.roleName = this.datalakeUserInfoFormGroup.get ("role").value;
+  compareTo(st1: any, st2: any) {
+    return st1 && st2 ? st1.id === st2.id : st1 === st2;
+  }
 
-    this.globals.isLoading = true;
-    this.service.getDatalakeRoles (this, this.roleName, this.setRoles, this.setRolesError);
+  RoleChanged(event): void
+  {
+    let aux = event.source.value;
+    if(!event.source.selected){
+      let index= this.tempDatalakeRoles.findIndex(dR => dR.idRol.id === aux.id);
+      if(index!=-1){
+        this.tempDatalakeRoles[index].state = 0
+      }
+    }else{
+      let index= this.tempDatalakeRoles.findIndex(dR => dR.idRol.id === aux.id);
+      if(index!=-1){
+        this.tempDatalakeRoles[index].state = 1
+      }else{
+        this.tempDatalakeRoles.push({idRol:aux});
+      }
+    }
+
+    // this.globals.isLoading = true;
+    // this.service.getDatalakeRoles (this, this.roleName, this.setRoles, this.setRolesError);
   }
 
   setRoles(_this, data): void
@@ -114,8 +122,26 @@ export class DatalakeUserInformationDialogComponent implements OnInit {
     for (let role of data)
       _this.roles.push (role);
 
+      if(_this.data.userInfoDatalake){
+        _this.datalakeUserInfoFormGroup.get ("username").setValue (_this.data.userInfoDatalake.username);
+        _this.datalakeUserInfoFormGroup.get ("aws_access_key_id").setValue (_this.data.userInfoDatalake.aws_access_key_id);
+        _this.datalakeUserInfoFormGroup.get ("aws_secret_access_key").setValue (_this.data.userInfoDatalake.aws_secret_access_key);
+        _this.datalakeUserInfoFormGroup.get ("s3_query_location").setValue (_this.data.userInfoDatalake.s3_query_location);
+        _this.datalakeUserInfoFormGroup.get ("s3_region").setValue (_this.data.userInfoDatalake.s3_region);
+        _this.setUserRoles();
+        
+      }
       // _this.setschema();
     _this.globals.isLoading = false;
+  }
+  setUserRoles() {
+    this.tempDatalakeRoles = JSON.parse (JSON.stringify (this.data.userInfoDatalake.datalakeRoles))
+    let aux = [];
+    let datalakeRoles = this.data.userInfoDatalake.datalakeRoles;
+    datalakeRoles.forEach(element => {
+      aux.push(element.idRol)
+    });
+    this.datalakeUserInfoFormGroup.get ("datalakeRoles").setValue(aux);
   }
 
 //   setschema()

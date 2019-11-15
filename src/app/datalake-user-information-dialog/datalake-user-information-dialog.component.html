@@ -37,9 +37,9 @@
   </mat-form-field>
   <mat-form-field class="datalake-alarm-left-combobox" 
   [formGroup]="datalakeUserInfoFormGroup">
-    <mat-select multiple placeholder="Role" autocomplete="off" formControlName="role"
-     (selectionChange)="RoleChanged()">
-      <mat-option *ngFor="let role of roles" [value]="role.id" >
+    <mat-select multiple placeholder="Role" autocomplete="off" formControlName="datalakeRoles"
+     [compareWith]="compareTo">
+      <mat-option *ngFor="let role of roles" [value]="role" (onSelectionChange)="RoleChanged($event)">
         {{role.name}}
       </mat-option>
     </mat-select>

@@ -285,19 +285,21 @@ getTimeFormat(value){
       monitoringStatus: this.monitoringStatus,
       emailList: this.listEmail
     };
+    this.globals.isLoading = true;
     this.service.saveDatalakeAlarm (this, request, this.saveAlarmHandler, this.saveAlarmError);
 
   }
 
   saveAlarmHandler(_this, data) {
     if (data.Message === "OK"){
-      _this.dialogRef.close ({
-        schemaName: _this.alarmFormGroup.get ("schema").value,
-        tableName: _this.alarmFormGroup.get ("table").value,
-        monitoringStatus: _this.monitoringStatus,
-        cron: _this.cron,
-        listEmail: _this.listEmail
-      });
+      // _this.dialogRef.close ({
+      //   schemaName: _this.alarmFormGroup.get ("schema").value,
+      //   tableName: _this.alarmFormGroup.get ("table").value,
+      //   monitoringStatus: _this.monitoringStatus,
+      //   cron: _this.cron,
+      //   listEmail: _this.listEmail
+      // });
+      _this.dialogRef.close();
     }
     
   }

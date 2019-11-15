@@ -11,7 +11,8 @@ import { Globals } from '../globals/Globals';
 import { ApiClient } from '../api/api-client';
 import { ApplicationService } from '../services/application.service';
 import { UserService } from '../services/user.service';
-import { MatTableDataSource, MatPaginator } from '@angular/material';
+import { MatTableDataSource, MatPaginator, MatDialog } from '@angular/material';
+import { DatalakeUserInformationDialogComponent } from '../datalake-user-information-dialog/datalake-user-information-dialog.component';
 
 
 @Component({
@@ -28,11 +29,12 @@ export class UserActivationComponent implements OnInit {
   dataSource;
 
   constructor(private http: ApiClient, public globals: Globals,
-    private service: ApplicationService, private userService: UserService) { }
+    private service: ApplicationService, private userService: UserService,
+    private dialog: MatDialog) { }
 
 
     displayedColumns = ['columnName', 'columnLastName', 'columnEmail', 'columnAddress', 'columnPostalCode',
-    'columnCountry', 'columnCountryState', 'columnPhone', 'columnState', 'columnCustomer'];
+    'columnCountry', 'columnCountryState', 'columnPhone', 'columnState', 'columnCustomer', 'columnDatalake'];
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -65,6 +67,7 @@ export class UserActivationComponent implements OnInit {
 
   handlerError(_this, result) {
     _this.globals.isLoading = false;
+    console.log(result);
   }
 
   getUsers(){
@@ -73,12 +76,14 @@ export class UserActivationComponent implements OnInit {
 
   handlerSuccessUsers(_this, data){
     _this.users = data;
+     console.log(_this.users);
     _this.dataSource = new MatTableDataSource(_this.users);
     _this.dataSource.paginator = _this.paginator;
     _this.service.getCustomers (_this, _this.handlerSuccessInit, _this.handlerError);
   }
 
   handlerErrorUsers(_this, result){
+    console.log(result);
     _this.globals.isLoading = false;
   }
 
@@ -92,17 +97,31 @@ export class UserActivationComponent implements OnInit {
   }
 
   handlerSuccessSave(_this, data){
-    _this.globals.isLoading = false;
+    _this.users = []
+    _this.service.loadAllUsers(_this, _this.handlerSuccessUsers, _this.handlerErrorUsers);
+    // _this.globals.isLoading = false;
   }
 
   handlerErrorSave(_this, result){
+    console.log(result);
     _this.globals.isLoading = false;
   }
 
   addToJson(element){
     this.userSelected = element;
     this.userSelected.state ? this.userSelected.state = 1 : this.userSelected.state = 0;
-    this.usersToAdd.push(this.userSelected);
+    //add KP
+    if(this.usersToAdd.length!=0){
+      let index: number = this.usersToAdd.findIndex(d => d.id === this.userSelected.id);
+      if(index != -1){
+        this.usersToAdd[index].state = this.userSelected.state;
+      }else{
+        this.usersToAdd.push(this.userSelected);
+      }
+    }else{
+      this.usersToAdd.push(this.userSelected);
+    }
+    console.log(this.usersToAdd);
   }
 
   @HostListener('window:resize', ['$event'])
@@ -132,6 +151,76 @@ export class UserActivationComponent implements OnInit {
   {
     return this.innerWidth;
   }
+
+  addDatalakeInformationToJson(element,edit){
+    this.userSelected = element;
+    this.userSelected.datalakeUser ? this.userSelected.datalakeUser = 1 : this.userSelected.datalakeUser = 0;
+    if(this.userSelected.datalakeUser){
+      let dialogRef = this.dialog.open (DatalakeUserInformationDialogComponent, {
+        height: 'auto',
+        width: '400px',
+        panelClass: 'AddEmailSendAlarms',
+        data: {
+          userInfoDatalake: this.userSelected.userInfoDatalake
+        }
+        
+      });
+      
+      dialogRef.afterClosed ().subscribe ((result) => {
+        if (result)
+        {
+          this.userSelected.datalakeUser = result.userDatalake ;
+          if(result.userInfoDatalake){
+            this.userSelected.userInfoDatalake = result.userInfoDatalake;
+            //agrego el estado del usuario datalake
+            this.userSelected.userInfoDatalake.state = result.userDatalake;
+          }
+        if(this.usersToAdd.length!=0){
+          let index: number = this.usersToAdd.findIndex(d => d.id === this.userSelected.id);
+          if(index != -1){
+              this.usersToAdd[index].userInfoDatalake = this.userSelected.userInfoDatalake;
+          }else{
+            this.usersToAdd.push(this.userSelected);
+          }
+        }else{
+          this.usersToAdd.push(this.userSelected);
+        }
+      }else{
+        if(!edit){
+          //si no estoy editando y cancelo o cierro el dialogo, cambio el estado a no seleccionado
+          this.userSelected.datalakeUser ? this.userSelected.datalakeUser = 0 : this.userSelected.datalakeUser = 1;       }
+         }
+  
+      });
+    }//sino esta marcado
+    else{
+      if(this.userSelected.userInfoDatalake){
+        if(!this.userSelected.userInfoDatalake.id){
+          this.userSelected.userInfoDatalake = null;
+        }
+      }
+      if(this.usersToAdd.length!=0){
+        let index: number = this.usersToAdd.findIndex(d => d.id === this.userSelected.id);
+        if(index != -1){
+          this.usersToAdd[index].datalakeUser = this.userSelected.datalakeUser;
+          if(this.usersToAdd[index].userInfoDatalake){
+            if(!this.usersToAdd[index].userInfoDatalake.id){
+              this.usersToAdd[index].userInfoDatalake = null;
+            }
+          }
+        }else{
+          this.usersToAdd.push(this.userSelected);
+        }
+      }else{
+        this.usersToAdd.push(this.userSelected);
+      }
+    }
+    console.log(this.usersToAdd);
+  }
+
+  editInformationDatalake(element){
+  }
+  
   }
 
 
