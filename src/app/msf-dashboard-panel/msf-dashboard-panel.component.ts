@@ -2427,6 +2427,9 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     let response, result;
 
+    if (!_this.values.isLoading)
+      return;
+
     if (_this.utils.isJSONEmpty (data) || _this.utils.isJSONEmpty (data.Response))
     {
       _this.noDataFound ();
@@ -2455,6 +2458,9 @@ export class MsfDashboardPanelComponent implements OnInit {
   handlerMapSuccess(_this, data): void
   {
     let response, result;
+
+    if (!_this.values.isLoading)
+      return;
 
     if (_this.utils.isJSONEmpty (data) || _this.utils.isJSONEmpty (data.Response))
     {
@@ -2485,6 +2491,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   handlerDynTableSuccess(_this, data): void
   {
+    if (!_this.values.isLoading)
+      return;
+
     if (data == null)
     {
       _this.noDataFound ();
@@ -2502,6 +2511,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   handlerPicSuccess(_this, data): void
   {
+    if (!_this.values.isLoading)
+      return;
+
     if (data == null)
     {
       _this.noDataFound ();
@@ -2550,6 +2562,9 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     let formResults, response, result;
 
+    if (!_this.values.isLoading)
+      return;
+
     formResults = [];
 
     if (_this.utils.isJSONEmpty (data) || _this.utils.isJSONEmpty (data.Response))
@@ -2595,6 +2610,9 @@ export class MsfDashboardPanelComponent implements OnInit {
   handlerFormLastestResponse(_this): void
   {
     let data = JSON.parse (JSON.stringify (_this.values.lastestResponse));
+
+    if (!_this.values.isLoading)
+      return;
 
     _this.values.lastestResponse = [];
 
@@ -2649,6 +2667,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   handlerTableLastestResponse(_this): void
   {
+    if (!_this.values.isLoading)
+      return;
+
     _this.values.isLoading = false;
 
     // destroy current chart if it's already generated to avoid a blank chart later
@@ -2690,6 +2711,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   handlerDynTableLastestResponse(_this): void
   {
+    if (!_this.values.isLoading)
+      return;
+
     _this.values.isLoading = false;
 
     // destroy current chart if it's already generated to avoid a blank chart later
@@ -2731,6 +2755,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   handlerMapboxLastestResponse(_this): void
   {
+    if (!_this.values.isLoading)
+      return;
+
     _this.values.isLoading = false;
 
     _this.destroyChart ();
@@ -2784,6 +2811,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   handlerHeatMapLastestResponse(_this): void
   {
+    if (!_this.values.isLoading)
+      return;
+
     _this.destroyChart ();
 
     _this.values.displayChart = true;
@@ -2808,6 +2838,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   handlerMapLastestResponse(_this): void
   {
+    if (!_this.values.isLoading)
+      return;
+
     // destroy current chart if it's already generated to avoid a blank chart
     _this.destroyChart ();
 
@@ -2833,6 +2866,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   handlerTextSuccess(_this, data): void
   {
+    if (!_this.values.isLoading)
+      return;
+
     if (!_this.haveDataInfo (data))
     {
       _this.noDataFound ();
@@ -2881,6 +2917,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   handlerChartSuccess(_this, data): void
   {
+    if (!_this.values.isLoading)
+      return;
+
     if (_this.values.currentChartType.flags & ChartFlags.XYCHART && _this.utils.isJSONEmpty (data.data))
     {
       _this.noDataFound ();
@@ -4440,6 +4479,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   handlerUpdateSuccess(_this): void
   {
+    if (!_this.values.isLoading)
+      return;
+
     // set lastestResponse to null and remove temporary values since the panel has been updated
     _this.values.lastestResponse = null;
     _this.values.chartGenerated = false;
