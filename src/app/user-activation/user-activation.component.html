@@ -55,7 +55,7 @@
                     <ng-container matColumnDef="columnState">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>Activation Status</th>
                         <td mat-cell *matCellDef="let element" class="user-activation-data-centered">
-                            <mat-checkbox class="activation-form" ng-true-value=1 ng-false-value=0 [(ngModel)]="element.state" (change)="addToJson(element)"></mat-checkbox>
+                            <mat-checkbox class="activation-form activation-form-checkbox" ng-true-value=1 ng-false-value=0 [(ngModel)]="element.state" (change)="addToJson(element)"></mat-checkbox>
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="columnCustomer">
