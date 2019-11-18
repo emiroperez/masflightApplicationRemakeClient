@@ -873,7 +873,7 @@ export class MsfTableComponent implements OnInit {
   }
 
   cancelLoading(){
-    this.isLoading = false;
+    this.finishLoading.emit (false);
     this.globals.showBigLoading = true;
   }
 
