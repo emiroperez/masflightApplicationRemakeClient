@@ -2418,6 +2418,9 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.handlerMapboxError (this, "Failed to generate the results for the map tracker.");
     else
     {
+      if (!this.values.isLoading)
+        return;
+
       this.values.lastestResponse = 1;
       this.service.saveLastestResponse (this, this.getPanelInfo (), this.handlerMapboxLastestResponse, this.handlerMapboxError);
     }
