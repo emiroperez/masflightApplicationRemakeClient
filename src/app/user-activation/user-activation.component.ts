@@ -67,7 +67,6 @@ export class UserActivationComponent implements OnInit {
 
   handlerError(_this, result) {
     _this.globals.isLoading = false;
-    console.log(result);
   }
 
   getUsers(){
@@ -76,14 +75,12 @@ export class UserActivationComponent implements OnInit {
 
   handlerSuccessUsers(_this, data){
     _this.users = data;
-     console.log(_this.users);
     _this.dataSource = new MatTableDataSource(_this.users);
     _this.dataSource.paginator = _this.paginator;
     _this.service.getCustomers (_this, _this.handlerSuccessInit, _this.handlerError);
   }
 
   handlerErrorUsers(_this, result){
-    console.log(result);
     _this.globals.isLoading = false;
   }
 
@@ -103,7 +100,6 @@ export class UserActivationComponent implements OnInit {
   }
 
   handlerErrorSave(_this, result){
-    console.log(result);
     _this.globals.isLoading = false;
   }
 
@@ -121,7 +117,6 @@ export class UserActivationComponent implements OnInit {
     }else{
       this.usersToAdd.push(this.userSelected);
     }
-    console.log(this.usersToAdd);
   }
 
   @HostListener('window:resize', ['$event'])
@@ -215,7 +210,6 @@ export class UserActivationComponent implements OnInit {
         this.usersToAdd.push(this.userSelected);
       }
     }
-    console.log(this.usersToAdd);
   }
 
   editInformationDatalake(element){

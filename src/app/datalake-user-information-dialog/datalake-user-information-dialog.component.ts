@@ -158,7 +158,6 @@ export class DatalakeUserInformationDialogComponent implements OnInit {
 
   setRolesError(_this, result): void
   {
-    console.log (result);
     _this.globals.isLoading = false;
   }
 
