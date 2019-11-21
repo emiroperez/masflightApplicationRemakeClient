@@ -1,19 +1,20 @@
 <div class="center">
     <div class="msf-component-airport-title">Tail Number</div>        
-</div> 
+</div>
 <div class="msf-airline-container">
-    <div class="msf-full-width" style="text-align: center;">   
-            <img src="../../assets/images/components/arguments/aircraftDate/tailnumber.png" class="msf-tail-image">   
-            <div class="msf-component-airport-sub-title">Tail Numbers</div>         
-            <ng-select
+    <div class="msf-full-width" style="text-align: center;">
+        <img src="../../assets/images/components/arguments/aircraftDate/{{globals.theme}}-tailnumber.png" class="msf-tail-image">   
+        <div class="msf-component-airport-sub-title">Tail Numbers</div>
+        <ng-select
             [items]="tailNumbers"
             [multiple]="false"
             [closeOnSelect]="true"
             [hideSelected]="false"
             bindLabel="name"
             bindName="id"
-            [(ngModel)]="argument.value1">
-        </ng-select>    
-    </div>      
-      
+            [(ngModel)]="argument.value1"
+            appendTo=".msf-control-variables-overlay"
+            dropdownPosition="bottom">
+        </ng-select>
+    </div>
 </div>

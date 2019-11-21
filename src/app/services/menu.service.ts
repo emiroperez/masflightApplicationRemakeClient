@@ -25,10 +25,10 @@ export class MenuService {
     this.authService.get (_this, _this.globals.baseUrl + "/secure" + url, successHandler, errorHandler);
   }
 
-  getUserLoggedin(_this,successHandler, errorHandler){
-    let url = _this.globals.baseUrl+ "/secure/getUserloggedin";
+  getUserLoggedin(_this, successHandler, errorHandler){
+    let url = _this.globals.baseUrl + "/secure/getUserloggedin";
     //let url = "http://localhost:8887/secure/getUserloggedin"
-    this.authService.get(_this, url, successHandler, errorHandler);
+    this.authService.get (_this, url, successHandler, errorHandler);
   }
 
   getDashboardsByUser(_this, successHandler, errorHandler){
@@ -94,4 +94,5 @@ export class MenuService {
     let url = _this.globals.baseUrl + "/secure/addSharedContent";
     this.authService.post (_this, url, sharedContent, handlerSuccess, handlerError);
   }
+
 }

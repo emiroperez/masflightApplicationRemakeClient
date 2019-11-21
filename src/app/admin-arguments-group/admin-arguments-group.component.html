@@ -1,0 +1,146 @@
+<div class="admin-menu-background" (click)="hideIconPicker()" [style.height.px]="getInnerHeight() + 5">
+        <div class="msf-register-header">
+            <button mat-icon-button routerLink="/application">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+            <img class="msf-medium-logo" src="../../assets/images/{{globals.theme}}-logo.png"/>
+            <div class="msf-register-header-content msf-arguments-category-header">
+                <div class="msf-register-header-title">
+                    <div class="msf-register-header-title-content msf-arguments-category-header-title-content">
+                        ARGUMENTS GROUP ADMINISTRATION<br>
+                    </div>
+                </div>
+                <div class="msf-register-header-image-content">
+                    <img class="medium-user-image" src="../../assets/images/{{globals.theme}}-icon-user.png"/>
+                </div>
+            </div>
+        </div>
+        <mat-card id="category-card" class="card-container msf-center-container admin-arguments-category-container">
+            <mat-card-content class="admin-arguments-category-outer-container">
+                <div class="admin-arguments-category-inner-container">
+                    <div class="admin-arguments-category-left-panel">
+                        <div class="admin-arguments-category-left-panel-header">
+                            <h2 class="title-section">Arguments Groups</h2>
+                            <div class="admin-arguments-category-buttons">
+                                <button mat-icon-button (click)="addCategory()">
+                                    <mat-icon class="admin-mat-icon-button" aria-label="add">add_circle</mat-icon>
+                                </button>
+                                <button mat-icon-button (click)="deleteCategory()">
+                                    <mat-icon class="admin-mat-icon-button" aria-label="delete">remove_circle</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                        <mat-form-field>
+                            <input matInput [(ngModel)]="searchText">
+                            <mat-icon class="admin-arguments-search-icon" matSuffix>search</mat-icon>
+                        </mat-form-field>
+                        <div class="admin-arguments-category-left-panel-body">
+                            <div class="admin-arguments-categories-container">
+                                <div class="category-arguments-scrollbar arguments-categories-list-container">
+                                    <div class="arguments-categories-list-item" *ngFor="let item of ArgumentsGroups | filter : searchText">
+                                        <div class="arguments-categories-list-item-label" [ngClass]="{ 'is-active': item.isSelected, 'is-inactive': !item.isSelected }">
+                                            <div 
+                                            class="arguments-categories-list-item-label-container" (click)="getSelectedOption(item)">
+                                                <input class="arguments-categories-list-item-label-color" disabled="true" 
+                                                type="text" name="optionname" autocomplete="off"
+                                                 matInput [(ngModel)]="item.name"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="admin-arguments-category-right-panel" *ngIf="ArgumentGroup">
+                        <div class="admin-arguments-category-right-panel-header admin-arguments-category-right-panel-header-group">
+                            <div class="admin-arguments-category-form-container">
+                                <mat-form-field >
+                                    <input [disabled]="disable"  matInput (focus)="ArgumentGroup.focus" placeholder="Name Group" 
+                                    [(ngModel)]="ArgumentGroup.name"/>
+                                </mat-form-field>
+                                <div class="admin-arguments-group">
+                                    <mat-form-field  class="admin-arguments-group-type">
+                                        <mat-select class="white" placeholder="Group" [(ngModel)]="ArgumentGroup.group" >
+                                            <mat-option [disabled]="disable" *ngFor="let group of argGroupTypes " [value]="group.value">
+                                                {{group.name}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field  *ngIf="globals.admin" class="admin-arguments-group-type">
+                                        <mat-select class="white" placeholder="Type" [(ngModel)]="ArgumentGroup.type" >
+                                            <mat-option [disabled]="disable" *ngFor="let types of argTypes " [value]="types.value">
+                                                {{types.name}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <button  
+                                        (click)="share(ArgumentGroup)" class="msf-menu-icon" [disabled]="ArgumentGroup.id === null || ArgumentGroup.type != Private">
+                                        <img src="../../assets/images/{{globals.theme}}-share.png" >
+                                    </button>
+                                    <div class="admin-arguments-group-save">
+                                            <!-- [disabled]="ArgumentGroup.name === '' && ArgumentGroup.group === ''" -->
+                                        <button mat-button class="flat-button" (click)="sendData()">
+                                            Save all
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                            <div class="admin-arguments-group-select">
+                                <!--header-->
+                            <div class="admin-arguments-group-det-header">
+                                <div class="admin-arguments-group-det-header-right">
+                                    <h2 class="title-section">Arguments Group Detail</h2>
+                                </div>
+                                <div [class.msf-hide]="ArgumentGroup.group === ''" class="admin-arguments-group-det-header-left admin-arguments-group-search-input">
+                                    <div >Search</div>
+                                    <mat-form-field class="search-input search-input-group">
+                                        <input matInput [(ngModel)]="searchAirport" autocomplete=off (ngModelChange)="onSearch(ArgumentGroup.group)">
+                                        <mat-icon class="iconSearch" aria-label="search" >search</mat-icon>
+                                    </mat-form-field>  
+                                </div>
+                                <div [class.msf-hide]="ArgumentGroup.group === ''" class="msf-admin-show-selected admin-arguments-group-checkbox">
+                                    <mat-checkbox class="admin-checkboxes" color="primary" [(ngModel)]="showSelected">
+                                        Only Selected</mat-checkbox>
+                                </div>
+                            </div>
+                                <!--body-->
+                            <div class="admin-arguments-group-det-body">
+                                <div class="admin-arguments-group-det-body-left">
+                                <mat-selection-list *ngIf="ArgumentGroup.group === 'Airport'" [class.msf-hide]="ArgumentGroup.group === ''" class="items-rows" (selectionChange)="addGroupDet($event, ArgumentGroup.group)"
+                                     [compareWith]="compareElement" [(ngModel)]="ArgumentGroup.iataList" multiple>
+                                        <mat-list-option  
+                                        [class.msf-hide]="isSelected(Airport,ArgumentGroup.iataList,ArgumentGroup.group) || !Airport.visible || ArgumentGroup.group!='Airport'"
+                                        checkboxPosition="before" [value]="Airport" *ngFor="let Airport of filteredAirport;" >
+                                            {{Airport.iata}}  -  {{Airport.name}}
+                                        </mat-list-option>
+                                </mat-selection-list>
+                                <mat-selection-list *ngIf="ArgumentGroup.group === 'Airline'"  [class.msf-hide]="ArgumentGroup.group === ''" class="items-rows" (selectionChange)="addGroupDet($event, ArgumentGroup.group)"
+                                     [compareWith]="compareElement" [(ngModel)]="ArgumentGroup.iataList" multiple>
+                                    <mat-list-option  
+                                        [class.msf-hide]="isSelected(Airline,ArgumentGroup.iataList,ArgumentGroup.group) || !Airline.visible || ArgumentGroup.group!='Airline'"
+                                        checkboxPosition="before" [value]="Airline" *ngFor="let Airline of filteredAirline;">
+                                        {{Airline.name}}
+                                    </mat-list-option>
+                                </mat-selection-list>
+                                <mat-selection-list *ngIf="ArgumentGroup.group === 'AircraftType'" [class.msf-hide]="ArgumentGroup.group === ''" class="items-rows" (selectionChange)="addGroupDet($event, ArgumentGroup.group)"
+                                 [compareWith]="compareElementAircraft" [(ngModel)]="ArgumentGroup.iataList" multiple>
+                                    <mat-list-option  
+                                        [class.msf-hide]="isSelected(Aircraft,ArgumentGroup.iataList,ArgumentGroup.group) || !Aircraft.visible || ArgumentGroup.group!='AircraftType'"
+                                        checkboxPosition="before" [value]="Aircraft" *ngFor="let Aircraft of filteredAircraft;">
+                                        <!-- {{Aircraft.name}} -  Iata: {{Aircraft.airlineIata}} -->
+                                        {{Aircraft.name}}
+                                    </mat-list-option>
+                                </mat-selection-list>
+                                </div>
+                            </div>                               
+                        </div>
+                    </div>
+                    
+                </div> 
+            </mat-card-content>
+        </mat-card>
+    </div>
+    
+    

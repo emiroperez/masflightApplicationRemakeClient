@@ -17,10 +17,10 @@ import { Customer } from '../model/Customer';
 
 export const US_DATE_FORMAT = {
   parse: {
-    dateInput: 'MM-DD-YYYY',
+    dateInput: 'MM/DD/YYYY',
   },
   display: {
-    dateInput: 'MM-DD-YYYY',
+    dateInput: 'MM/DD/YYYY',
     monthYearLabel: 'MMM YYYY',
     dateA11yLabel: 'LL',
     monthYearA11yLabel: 'MMMM YYYY',
@@ -215,13 +215,13 @@ export class CreateCustomerComponent implements OnInit {
     this.customerForm.get ('startDateValidator').valueChanges.subscribe (value =>
     {
       if (this.selectedCustomer)
-        this.selectedCustomer.startDate = value;
+        this.selectedCustomer.startDate = value.toString ();
     });
 
     this.customerForm.get ('endDateValidator').valueChanges.subscribe (value =>
     {
       if (this.selectedCustomer)
-        this.selectedCustomer.endDate = value;
+        this.selectedCustomer.endDate = value.toString ();
     });
 
     this.customerForm.get ('paymentTypeValidator').valueChanges.subscribe (value =>
@@ -244,7 +244,7 @@ export class CreateCustomerComponent implements OnInit {
 
   getEditorHeight(): string
   {
-    return "calc(" + this.innerHeight + "px - 19.55em)";
+    return "calc(" + this.innerHeight + "px - 19.3em)";
   }
 
   getPlanName(licenseType): string
@@ -288,7 +288,7 @@ export class CreateCustomerComponent implements OnInit {
     if (day < 10)
       day = "0" + day;
 
-    return month + "-" + day + "-" + d.getFullYear ();
+    return month + "/" + day + "/" + d.getFullYear ();
   }
 
   applyFilter(filterValue: string)
@@ -470,8 +470,6 @@ export class CreateCustomerComponent implements OnInit {
 
   saveError(_this, error)
   {
-    console.log (error);
-
     _this.dialog.open (MessageComponent, {
       data: { title: "Error", message: "Unable to save the customers." }
     });

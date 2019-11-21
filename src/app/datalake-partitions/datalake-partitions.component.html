@@ -1,0 +1,136 @@
+<div class="datalake-explorer-container">
+  <div class="datalake-explorer-header">
+    <mat-form-field class="datalake-explorer-search-input-container">
+      <input matInput class="datalake-explorer-search-input" type="text" placeholder="Search" 
+      [(ngModel)]="filter" (ngModelChange)="filterPartition()" autocomplete="off">
+      <mat-icon class="search-icon" aria-label="search">search</mat-icon>
+    </mat-form-field>
+    <div class="datalake-explorer-header-title">Partition Management</div>
+    <div class="datalake-explorer-buttons">
+        <!-- btn-logs-partition -->
+    <button mat-button class="datalake-explorer-button"  matTooltip="Execution Partition Logs">
+        <mat-icon class="datalake-explorer-button-add-icon" (click)="globals.optionDatalakeSelected = 7">history</mat-icon>
+    </button>
+  </div>
+  </div>
+  <div class="datalake-partitions-body">
+    <div class="datalake-partitions-item">
+      <div class="datalake-partition-table-scroll" [ngStyle]="{ 'height': getTableHeight() }">
+        <table mat-table matSort [dataSource]="PartitionTable" class="datasource welcome-table datalake-partition-table">
+          <ng-container matColumnDef="schemaName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Schema Name</th>
+            <td mat-cell *matCellDef="let element">{{ element.schemaName }}</td>
+          </ng-container>
+          <ng-container matColumnDef="tableName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Table Name</th>
+            <td mat-cell *matCellDef="let element">{{ element.tableName }}</td>
+          </ng-container>
+          <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Run Type</th>
+            <td mat-cell *matCellDef="let element">{{ element.type }}</td>
+          </ng-container>
+          <ng-container matColumnDef="cron">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Cron Expresion</th>
+            <td mat-cell *matCellDef="let element">{{ element.cron }}</td>
+          </ng-container>
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+            <td mat-cell *matCellDef="let element">
+              <mat-icon class="status-icon" *ngIf="element.status === 'A'" >check</mat-icon>
+              <mat-icon class="status-icon2" *ngIf="element.status === 'I'">priority_high</mat-icon>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
+            <td mat-cell *matCellDef="let element" class="btn-actions-partition">
+                <button (click)="executePartition(element)" mat-icon-button matTooltip="Execute Partition">
+                  <mat-icon class="edit-icon">play_arrow</mat-icon>
+                </button>
+              <button (click)="editPartition(element)" mat-icon-button matTooltip="Edit Partition">
+                <mat-icon class="edit-icon">edit</mat-icon>
+              </button>
+              <button (click)="removePartition(element)" mat-icon-button matTooltip="Delete Partition">
+                <mat-icon class="delete-icon">delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+            <tr mat-header-row *matHeaderRowDef="partitionsColumns"></tr>
+            <tr mat-row [ngClass]="{ 'mat-row-highlighted': row.highlight }" *matRowDef="let row; columns: partitionsColumns;"></tr>
+        </table>
+      </div>
+      <mat-paginator class="datalake-partition-paginator" [pageSizeOptions]="[15, 30, 50, 100]" showFirstLastButtons></mat-paginator>
+    </div>
+
+    
+    <div class="datalake-partitions-item-right">
+      <div class="datalake-partitions-header">
+        <div class="datalake-new-partition-title">
+          <span *ngIf="!edit" class="datalake-new-partition-title-label">Create Partition Manager</span>
+          <span *ngIf="edit" class="datalake-new-partition-title-label">Edit Partition</span>
+        </div>
+        <div class="datalake-new-alarm-buttons">
+          Status
+          <button mat-icon-button (click)="setPartitionStatus('A')" [ngClass]="{'datalake-new-alarm-button': Status === 'I', 'datalake-new-alarm-button-selected': Status === 'A' }" matTooltip="Active">
+            <mat-icon>check</mat-icon>
+          </button>
+          <button mat-icon-button (click)="setPartitionStatus('I')" [ngClass]="{'datalake-new-alarm-button': Status === 'A', 'datalake-new-alarm-button-selected': Status === 'I' }" matTooltip="Inactive">
+            <mat-icon>priority_high</mat-icon>
+          </button>
+        </div>
+      </div>
+      <!--body Right--> 
+      <div class="datalake-partition-table-scroll-right "
+       [ngStyle]="{ 'height': getTableHeightRight() }">
+        <div class="datalake-partition-comboboxes">
+          <mat-form-field [formGroup]="partitionFormGroup">
+            <mat-select placeholder="Schema Name" autocomplete="off" 
+            formControlName="schema" (selectionChange)="schemaChanged()">
+              <mat-option *ngFor="let schema of schemas" [value]="schema" >
+                {{schema}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="partitionFormGroup.get('schema')?.invalid">You must select a schema</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="datalake-partition-comboboxes">
+            <mat-form-field  [formGroup]="partitionFormGroup">
+              <mat-select placeholder="Table Name" autocomplete="off"
+               formControlName="table">
+                <ngx-mat-select-search [formControl]="tableFilterCtrl" 
+                placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+                <mat-option *ngFor="let table of filteredTables | async" [value]="table">
+                  {{table}}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="partitionFormGroup.get('table')?.invalid">You must select a table</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="datalake-partition-comboboxes">
+            <mat-form-field  [formGroup]="partitionFormGroup">
+              <mat-select placeholder="Run Type" autocomplete="off"
+               formControlName="runType" (selectionChange)="runTypeChanged()">
+                <mat-option *ngFor="let runType of filteredRunTypes | async" [value]="runType.value">
+                  {{runType.viewValue}}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="partitionFormGroup.get('runType')?.invalid">You must select a table</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="datalake-partition-comboboxes">
+            <mat-form-field  [formGroup]="partitionFormGroup"  class="datalake-partition-cron">
+                <span class="datalake-alarm-minutes-label">Check if is Needed to Add a New Partition Every</span>
+                <input matInput formControlName="cron"
+                 type="string" autocomplete="off" class="datalake-partition-input"/>
+             <mat-error *ngIf="partitionFormGroup.get('cron')?.invalid">You must type a cron expresion</mat-error>
+           </mat-form-field>
+        </div>
+      </div> <!--end body-->
+      <div class="datalake-partition-btn">
+          <button mat-button class="flat-button" (click)="addPartition()">Save</button>
+          <button mat-button class="flat-button" (click)="Clean()">Cancel</button>
+      </div>
+    </div>
+    
+  </div><!--End Body-->
+    
+</div>

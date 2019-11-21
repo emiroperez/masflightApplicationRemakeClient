@@ -1,11 +1,11 @@
 <div>
-    <div mat-dialog-title style="flex: 1; color: white">Confirmation required</div>
-    <div mat-dialog-content style="flex: 1">
-        <div style="color: white; font-size: 14px">
+    <div mat-dialog-title class="admin-menu-confirmation-dialog-title">{{ data.title }}</div>
+    <div mat-dialog-content class="admin-menu-confirmation-dialog-body">
+        <div class="admin-menu-confirmation-dialog-body-label">
             <p>{{ data.message }}</p>
         </div>
     </div>
-    <mat-dialog-actions style='text-align: right;'>
+    <mat-dialog-actions class="admin-menu-confirmation-dialog-footer">
         <button mat-button class="flat-button" (click)="confirm()" [mat-dialog-close]="data" cdkFocusInitial>Yes</button>
         <button mat-button class="flat-button" (click)="close()" [mat-dialog-close]="data">No</button>
     </mat-dialog-actions>

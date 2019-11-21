@@ -2,14 +2,16 @@
 import { NgModule } from '@angular/core';
 import {MatInputModule} from '@angular/material/input';
 import {MatCardModule} from '@angular/material/card';
-import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import { MatToolbarModule,
    MatSidenavModule,
    MatListModule,
    MatNativeDateModule,
-   MatSortModule } from '@angular/material';
+   MatSortModule,
+   MatSlideToggleModule, 
+   MatProgressBarModule} from '@angular/material';
 import {MatDialogModule} from "@angular/material";
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatStepperModule} from '@angular/material/stepper';
@@ -46,7 +48,9 @@ import {MatBadgeModule} from '@angular/material';
     MatTableModule,
     MatBadgeModule,
     MatProgressSpinnerModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatSlideToggleModule,
+    MatProgressBarModule
   ],
   exports: [
     MatInputModule,
@@ -70,7 +74,9 @@ import {MatBadgeModule} from '@angular/material';
     MatSortModule,
     MatBadgeModule,
     MatProgressSpinnerModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatSlideToggleModule,
+    MatProgressBarModule
   ]
 
 })

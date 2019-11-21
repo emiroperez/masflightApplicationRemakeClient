@@ -16,8 +16,12 @@ import { ApplicationService } from '../services/application.service';
 })
 export class MsfDashboardDrillDownComponent {
 
+  vertAxisDisabled: boolean = true;
+  horizAxisDisabled: boolean = true;
+
   chartForm: FormGroup;
-  currentValue: MsfDashboardPanelValues;
+  nullValue: MsfDashboardPanelValues = new MsfDashboardPanelValues (null, "", 0, 0, null);
+  currentValue: MsfDashboardPanelValues = this.nullValue;
   lastValue: MsfDashboardPanelValues;
   currentIndex: number = -1;
 
@@ -35,7 +39,8 @@ export class MsfDashboardDrillDownComponent {
   public xaxisFilterCtrl: FormControl = new FormControl ();
   public valueFilterCtrl: FormControl = new FormControl ();
 
-  private convertValues: any[] = [];
+  private convertValues: boolean[] = [];
+  private newPanel: boolean[] = [];
 
   chartTypes:any[] = [
     { name: 'Bars', flags: ChartFlags.XYCHART },
@@ -61,6 +66,7 @@ export class MsfDashboardDrillDownComponent {
     private service: ApplicationService,
     @Inject(MAT_DIALOG_DATA) public data: any)
   {
+    this.nullValue.currentChartType = this.chartTypes[0];
     this.data.childChart.types = this.chartTypes;
 
     // prepare the drill down form combo box
@@ -237,18 +243,37 @@ export class MsfDashboardDrillDownComponent {
     // convert values if loaded from the database
     if (this.convertValues[this.currentIndex])
     {
+      let variableIndex = -1, xAxisIndex = -1, valueColumnIndex = -1;
+
       this.convertValues[this.currentIndex] = false;
 
+      for (let i = 0; i < this.currentValue.chartColumnOptions.length; i++)
+      {
+        let chartColumnOption = this.currentValue.chartColumnOptions[i];
+
+        if (this.lastValue.variable === chartColumnOption.item.id && variableIndex == -1)
+          variableIndex = i;
+
+        if (this.lastValue.xaxis === chartColumnOption.item.id && xAxisIndex == -1)
+          xAxisIndex = i;
+
+        if (this.lastValue.valueColumn === chartColumnOption.item.id && valueColumnIndex == -1)
+          valueColumnIndex = i;
+
+        if (variableIndex != -1 && xAxisIndex != -1 && valueColumnIndex != -1)
+          break;
+      }
+
       this.lastValue.currentChartType = this.chartTypes[this.lastValue.currentChartType];
-      this.lastValue.variable = this.currentValue.chartColumnOptions[this.lastValue.variable];
-      this.lastValue.xaxis = this.currentValue.chartColumnOptions[this.lastValue.xaxis];
-      this.lastValue.valueColumn = this.currentValue.chartColumnOptions[this.lastValue.valueColumn];
+      this.lastValue.variable = (variableIndex != -1 ? this.currentValue.chartColumnOptions[variableIndex] : null);
+      this.lastValue.xaxis = (xAxisIndex != -1 ? this.currentValue.chartColumnOptions[xAxisIndex] : null);
+      this.lastValue.valueColumn = (valueColumnIndex != -1 ? this.currentValue.chartColumnOptions[valueColumnIndex] : null);
       this.lastValue.function = this.data.functions[this.lastValue.function];
 
       this.currentValue.currentChartType = this.chartTypes[this.currentValue.currentChartType];
-      this.currentValue.variable = this.currentValue.chartColumnOptions[this.currentValue.variable];
-      this.currentValue.xaxis = this.currentValue.chartColumnOptions[this.currentValue.xaxis];
-      this.currentValue.valueColumn = this.currentValue.chartColumnOptions[this.currentValue.valueColumn];
+      this.currentValue.variable = (variableIndex != -1 ? this.currentValue.chartColumnOptions[variableIndex] : null);
+      this.currentValue.xaxis = (xAxisIndex != -1 ? this.currentValue.chartColumnOptions[xAxisIndex] : null);
+      this.currentValue.valueColumn = (valueColumnIndex != -1 ? this.currentValue.chartColumnOptions[valueColumnIndex] : null);
       this.currentValue.function = this.data.functions[this.currentValue.function];
 
       if (this.currentValue.currentChartType.flags & ChartFlags.TABLE)
@@ -395,6 +420,7 @@ export class MsfDashboardDrillDownComponent {
               panel.chartType, null, panel.lastestResponse, panel.paletteColors));
 
             _this.convertValues.push (true);
+            _this.newPanel.push (false);
             break;
           }
           else if (j == data.length - 1)
@@ -404,6 +430,7 @@ export class MsfDashboardDrillDownComponent {
 
             _this.data.childPanelValues[i].currentChartType = _this.chartTypes[0];
             _this.convertValues.push (false);
+            _this.newPanel.push (true);
           }
         }
       }
@@ -419,6 +446,7 @@ export class MsfDashboardDrillDownComponent {
 
         _this.data.childPanelValues[i].currentChartType = _this.chartTypes[0];
         _this.convertValues.push (false);
+        _this.newPanel.push (true);
       }
     }
 
@@ -427,7 +455,6 @@ export class MsfDashboardDrillDownComponent {
 
   handlerError(_this, result): void
   {
-    console.log (result);
     _this.globals.popupLoading = false;  
   }
 
@@ -443,27 +470,6 @@ export class MsfDashboardDrillDownComponent {
       {
         different = true;
         break;
-      }
-    }
-
-    return different;
-  }
-
-  checkTableVariables(): boolean
-  {
-    let different: boolean;
-
-    different = false;
-
-    if (this.lastValue.tableVariables != null)
-    {
-      for (let i = 0; i < this.currentValue.tableVariables.length; i++)
-      {
-        if (this.currentValue.tableVariables[i].checked != this.lastValue.tableVariables[i].checked)
-        {
-          different = true;
-          break;
-        }
       }
     }
 
@@ -501,10 +507,6 @@ export class MsfDashboardDrillDownComponent {
       && !this.checkPaletteColors ())
       return;
 
-    if (this.currentValue.currentChartType.flags & ChartFlags.TABLE
-      && !this.checkTableVariables ())
-      return;
-
     this.data.childPanelsConfigured[this.currentIndex] = true;
   }
 
@@ -528,15 +530,33 @@ export class MsfDashboardDrillDownComponent {
 
       this.currentValue.variable = null;
       this.chartForm.get ('variableCtrl').reset ();
+
+      this.currentValue.vertAxisName = null;
+      this.currentValue.horizAxisName = null;
     }
     else if (!(this.currentValue.currentChartType.flags & ChartFlags.XYCHART))
     {
       this.currentValue.xaxis = null;
       this.chartForm.get ('xaxisCtrl').reset ();
       this.chartForm.get ('xaxisCtrl').disable ();
+
+      if (this.currentValue.currentChartType.flags & ChartFlags.FUNNELCHART
+        || this.currentValue.currentChartType.flags & ChartFlags.PIECHART)
+      {
+        this.currentValue.vertAxisName = null;
+        this.currentValue.horizAxisName = null;
+
+        this.vertAxisDisabled = true;
+        this.horizAxisDisabled = true;
+      }
     }
     else
+    {
       this.chartForm.get ('xaxisCtrl').enable ();
+
+      this.vertAxisDisabled = false;
+      this.horizAxisDisabled = false;
+    }
 
     this.chartForm.get ('variableCtrl').enable ();
     this.chartForm.get ('valueCtrl').enable ();
@@ -577,5 +597,15 @@ export class MsfDashboardDrillDownComponent {
   deleteColumnFromTable(index): void
   {
     this.currentValue.tableVariables.splice (index, 1);
+  }
+
+  deletePanel(index: number): void
+  {
+    this.service.confirmationDialog (this, "Are you sure you want to delete this panel?",
+      function (_this)
+      {
+        _this.dialogRef.close (_this.currentValue.id);
+      }
+    );
   }
 }

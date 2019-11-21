@@ -1,0 +1,125 @@
+<div class="datalake-explorer-container">
+  <div class="datalake-explorer-header">
+      <mat-form-field class="datalake-explorer-search-input-container">
+          <input matInput class="datalake-explorer-search-input" type="text" placeholder="Search"
+          [(ngModel)]="filter" (ngModelChange)="filterAlarm()" autocomplete="off" >
+          <mat-icon class="search-icon" aria-label="search">search</mat-icon>
+      </mat-form-field>
+      <div class="datalake-explorer-header-title">
+        Alarms
+      </div>
+  </div>
+  <div class="datalake-alarms-body">
+    <div class="datalake-alarms-item">
+      <div class="datalake-alarm-table-scroll" [ngStyle]="{ 'height': getTableHeight() }">
+        <table mat-table matSort [dataSource]="alarmTable" class="datasource welcome-table datalake-alarm-table">
+        <!-- <table mat-table matSort [dataSource]="filteredAlarms" class="datasource welcome-table datalake-alarm-table"> -->
+          <ng-container matColumnDef="schemaName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Schema Name</th>
+            <td mat-cell *matCellDef="let element">{{ element.schemaName }}</td>
+          </ng-container>
+          <ng-container matColumnDef="tableName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Table Name</th>
+            <td mat-cell *matCellDef="let element">{{ element.tableName }}</td>
+          </ng-container>
+          <ng-container matColumnDef="cron">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Cron</th>
+            <td mat-cell *matCellDef="let element">{{ element.cron }}</td>
+          </ng-container>
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+            <td mat-cell *matCellDef="let element">
+              <mat-icon class="status-icon" *ngIf="element.monitoringStatus === 'A'" >check</mat-icon>
+              <mat-icon class="status-icon" *ngIf="element.monitoringStatus === 'I'">priority_high</mat-icon>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
+            <td mat-cell *matCellDef="let element">
+              <button (click)="viewEmail(element.emailList)" mat-icon-button matTooltip="View Emails List">
+                <mat-icon class="edit-icon" *ngIf="element.emailList && element.emailList.length != 0">person_add</mat-icon>
+              </button> 
+              <button (click)="editAlarm(element)" mat-icon-button matTooltip="Edit Alarm">
+                <mat-icon class="edit-icon">edit</mat-icon>
+              </button>
+              <button (click)="removeAlarm(element)" mat-icon-button matTooltip="Delete Alarm">
+                <mat-icon class="delete-icon">delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="alarmColumns"></tr>
+          <tr mat-row [ngClass]="{ 'mat-row-highlighted': row.highlight }" *matRowDef="let row; columns: alarmColumns;"></tr>
+        </table>
+      </div>
+      <mat-paginator class="datalake-alarm-paginator" [pageSizeOptions]="[15, 30, 50, 100]" showFirstLastButtons></mat-paginator>
+    </div>
+    <div class="datalake-alarms-item">
+      <div class="datalake-alarms-header">
+        <div class="datalake-new-alarm-title">
+          <mat-icon class="datalake-new-alarm-icon">alarm_add</mat-icon>
+          <span class="datalake-new-alarm-title-label">New alarm</span>
+        </div>
+        <div class="datalake-new-alarm-buttons">
+          <div Style="display: flex">Status</div>
+          <button mat-icon-button (click)="setAlarmStatus('A')" [ngClass]="{'datalake-new-alarm-button': monitoringStatus === 'I', 'datalake-new-alarm-button-selected': monitoringStatus === 'A' }" matTooltip="Active">
+            <mat-icon>check</mat-icon>
+          </button>
+          <button mat-icon-button (click)="setAlarmStatus('I')" [ngClass]="{'datalake-new-alarm-button': monitoringStatus === 'A', 'datalake-new-alarm-button-selected': monitoringStatus === 'I' }" matTooltip="Important">
+            <mat-icon>priority_high</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="datalake-new-alarm-container">
+        <div class="datalake-alarm-comboboxes">
+          <mat-form-field class="datalake-alarm-left-combobox" [formGroup]="alarmFormGroup">
+            <mat-select placeholder="Schema Name" autocomplete="off" formControlName="schema"
+             (selectionChange)="schemaChanged()">
+              <mat-option *ngFor="let schema of schemas" [value]="schema" >
+                {{schema}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="alarmFormGroup.get('schema')?.invalid">You must select a schema</mat-error>
+          </mat-form-field>
+          <mat-form-field class="datalake-alarm-right-combobox" [formGroup]="alarmFormGroup">
+            <mat-select placeholder="Table Name" autocomplete="off"
+             formControlName="table"  (selectionChange)="tableChanged()">
+              <ngx-mat-select-search [formControl]="tableFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+              <mat-option *ngFor="let table of filteredTables | async" [value]="table">
+                {{table}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="alarmFormGroup.get('table')?.invalid">You must select a table</mat-error>
+          </mat-form-field>
+        </div>
+        <mat-radio-group class="datalake-alarm-radio-group" [(ngModel)]="notifyMode" (ngModelChange)="enableTimePicker()">
+          <mat-radio-button class="cancels-checkbox" [ngClass]="{'datalake-alarm-radio-button': notifyMode, 'datalake-alarm-radio-button-selected': !notifyMode }" [value]="false">Notify me every</mat-radio-button>
+          <!-- <mat-radio-button class="cancels-checkbox" [ngClass]="{'datalake-alarm-radio-button': notifyMode, 'datalake-alarm-radio-button-selected': !notifyMode }" [value]="false">Type Cron Expression</mat-radio-button> -->
+          <mat-radio-button class="cancels-checkbox datalake-alarm-radio-button-right" [ngClass]="{'datalake-alarm-radio-button': !notifyMode, 'datalake-alarm-radio-button-selected': notifyMode }" [value]="true">Notify me at this specific time</mat-radio-button>
+        </mat-radio-group>
+        <div class="datalake-alarm-radio-group datalake-alarm-emails" (click)="AddEmail()">
+          <mat-icon class="datalake-new-alarm-icon">person_add</mat-icon>
+          <span class="datalake-new-alarm-title-label">Add Emails</span>
+        </div>
+        <div class="datalake-alarm-time-picker" *ngIf="!notifyMode">
+          <div class="datalake-alarm-minute-input">
+            <!-- <input matInput [(ngModel)]="minutes" maxlength="4" type="numeric" autocomplete="off" class="datalake-alarm-minutes-input"/> -->
+            <span class="datalake-alarm-minutes-label">Cron Expression</span>
+            <input matInput [(ngModel)]="minutes"  type="string" autocomplete="off" 
+            class="datalake-alarm-minutes-input"/>
+          </div>
+        </div>
+        <div class="datalake-alarm-time-picker" *ngIf="notifyMode">
+          <div id="time-picker"></div>
+          <div class="datalake-alarm-time-labels">
+            <span class="datalake-alarm-hours-label">Hours</span>
+            <span class="datalake-alarm-minutes-label">Minutes</span>
+          </div>
+        </div>
+        <div class="datalake-alarm-buttons">
+          <button mat-button class="flat-button" (click)="addAlarm()">Save</button>
+          <button mat-button class="flat-button datalake-alarm-cancel-button">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

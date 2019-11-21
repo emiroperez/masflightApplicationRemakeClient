@@ -41,7 +41,6 @@ export class MsfCheckBoxComponent implements OnInit {
   }
   
   handlerError(_this,result){
-    console.log (result);
   }
 
   checkBoxChange(checkBox){

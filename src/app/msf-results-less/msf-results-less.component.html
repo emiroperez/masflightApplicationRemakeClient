@@ -1,10 +1,9 @@
-<div>
-    <div class="center">
-        <div class="msf-component-airport-title">{{argument.title}}</div>        
-    </div>    
-    <div class="msf-airline-container">
-        <div class="msf-full-width">   
-        <div class="msf-component-airport-sub-title">{{argument.label1}}</div>         
+<div class="center">
+    <div class="msf-component-airport-title">{{argument.title}}</div>
+</div>
+<div class="msf-airline-container">
+    <div class="msf-full-width">
+        <div class="msf-component-airport-sub-title">{{argument.label1}}</div>
         <ng-select
             [items]="data"
             [multiple]="false"
@@ -13,8 +12,9 @@
             [hideSelected]="false"
             bindLabel="name"
             bindName="id"
-            [(ngModel)]="argument.value1">
-        </ng-select>          
-        </div>
+            [(ngModel)]="argument.value1"
+            appendTo=".msf-control-variables-overlay"
+            dropdownPosition="bottom">
+        </ng-select>
     </div>
-</div>  
+</div>

@@ -1,0 +1,63 @@
+<div class="msf-select-data-loading" *ngIf="globals.popupLoading"></div>
+<ng-container *ngIf="!globals.popupLoading">
+  <div class="select-data-header">
+    <div class="close-button" (click)="closeDialog()">
+      <mat-icon>close</mat-icon>
+    </div>
+    <span>SELECT DATA FROM</span>
+  </div>
+  <div class="select-data-body">
+    <div class="select-data-menu-category" *ngFor="let menuCategory of menuCategories">
+      <div class="menu-category-header">
+        <span class="menu-category-title">{{menuCategory.label}}</span>
+        <img class="menu-category-image"  *ngIf="menuCategory.welcome.imageURL != null && menuCategory.welcome.imageURL != ''" src="{{globals.baseUrl}}/categoryImage/{{globals.theme}}-{{menuCategory.welcome.imageURL}}"/>
+      </div>
+      <div class="menu-category-description">
+        <ng-container *ngIf="menuCategory.welcome.shortDescription">
+          {{menuCategory.welcome.shortDescription}}
+        </ng-container>
+      </div>
+      <div class="menu-category-body">
+        <mat-form-field class="menu-item-search-input">
+          <input matInput autocomplete="off" [(ngModel)]="menuCategory.searchLabel" (ngModelChange)="filterMenuOptions(menuCategory)">
+          <mat-icon class="search-icon" aria-label="search">search</mat-icon>
+        </mat-form-field>
+        <div class="menu-items">
+          <ng-container *ngIf="menuCategory.tree">
+            <mat-tree [dataSource]="menuCategory.tree" [treeControl]="menuCategory.treeControl">
+              <mat-tree-node [ngClass]="{
+                'msf-show' : node.show,
+                'msf-show' : node.show == null,
+                'msf-hide': node.show == false }"
+                *matTreeNodeDef="let node" matTreeNodePadding>
+                <mat-radio-button class="cancels-checkbox" (checked)="selectedItem == node" (click)="selectItem(node)">
+                  {{node.label}}
+                </mat-radio-button>
+              </mat-tree-node>
+              <mat-tree-node [ngClass]="{
+                'msf-show' : node.show,
+                'msf-show' : node.show == null,
+                'msf-hide': node.show == false }"
+                *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+                <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.label">
+                  <mat-icon class="mat-icon-rtl-mirror">
+                    {{menuCategory.treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                  </mat-icon>
+                </button>
+                {{node.label}}
+              </mat-tree-node>
+            </mat-tree>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="select-data-footer">
+    <button mat-flat-button [ngClass]="selectedItem ? 'flat-button' : 'flat-button-disabled'" [disabled]="!selectedItem" (click)="selectData()">
+      Select Data
+    </button>
+    <button mat-flat-button [style.margin-right.px]="10" [ngClass]="selectedItem ? 'flat-button' : 'flat-button-disabled'" [disabled]="!selectedItem" (click)="previewData()">
+      Preview Data
+    </button>
+  </div>
+</ng-container>

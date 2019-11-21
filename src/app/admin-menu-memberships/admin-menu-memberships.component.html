@@ -1,16 +1,14 @@
 <div *ngIf="option && !option.toDelete" class="admin-menu-checkbox-container">
-    <mat-checkbox style="height: 35px" (change)="cascadeState(option)" [disabled]="false" color="primary" [checked]="descendantsAllSelected(option)" [indeterminate]="descendantsPartiallySelected(option)" [(ngModel)]="option.selected" [ngModelOptions]="{standalone: true}">{{ option.label }}</mat-checkbox>
-    <button mat-icon-button (click)="toggle(option)" *ngIf="option.children && option.children.length > 0" style="vertical-align: super;">
-        <mat-icon *ngIf="!option.isOpened" style="color: white" aria-label="Toggle">keyboard_arrow_down</mat-icon>
-        <mat-icon *ngIf="option.isOpened" style="color: white" aria-label="Toggle">keyboard_arrow_up</mat-icon>
-      </button>
-    <div [@animationOption2]="option.isOpened ? 'open': 'close'" *ngIf="option.children && option.children.length > 0 && option.isOpened" style="padding-left: 4%">
+    <div [style.height.px]="42">
+        <mat-checkbox [style.height.px]="35" (change)="cascadeState(option)" [disabled]="false" color="primary" [checked]="descendantsAllSelected(option)" [indeterminate]="descendantsPartiallySelected(option)" [(ngModel)]="option.selected" [ngModelOptions]="{standalone: true}">{{ option.label }}</mat-checkbox>
+        <button class="membership-button" mat-icon-button (click)="toggle(option)" *ngIf="option.children && option.children.length > 0">
+            <mat-icon class="membership-button-icon" *ngIf="!option.isOpened" aria-label="Toggle">keyboard_arrow_down</mat-icon>
+            <mat-icon class="membership-button-icon" *ngIf="option.isOpened" aria-label="Toggle">keyboard_arrow_up</mat-icon>
+        </button>
+    </div>
+    <div [@animationOption2]="option.isOpened ? 'open': 'close'" *ngIf="option.children && option.children.length > 0 && option.isOpened" [style.padding-left.%]="4">
         <div *ngFor="let optionChild of option.children; let i = index">
             <app-admin-menu-memberships [menu]="optionChild" [index]="index + '-' + i"></app-admin-menu-memberships>
         </div>
     </div>
-
-
 </div>
-
-<!--  [checked]="descendantsAllSelected(option)" [indeterminate]="descendantsPartiallySelected(option)" -->

@@ -24,7 +24,6 @@ import { Customer } from '../model/Customer';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.css'],
   encapsulation: ViewEncapsulation.None
 })
 export class RegisterComponent implements OnInit {
@@ -68,7 +67,7 @@ export class RegisterComponent implements OnInit {
     private registerServices:RegisterService,
     private appServices: ApplicationService,
     public dialog: MatDialog,
-    private globals: Globals,private router: Router,
+    public globals: Globals,private router: Router,
     private config: NgSelectConfig) {
 
     this.config.notFoundText = 'There is no options';
@@ -132,7 +131,6 @@ export class RegisterComponent implements OnInit {
   }
 
   errorCountries(_this,error){
-    //console.log(error);
     _this.appServices.getCustomers (_this, _this.setCustomers, _this.errorCustomers);
   }
 
@@ -145,7 +143,6 @@ export class RegisterComponent implements OnInit {
 
   errorCustomers(_this, error)
   {
-    console.log (error);
     _this.globals.isLoading = false;
   }
 
@@ -312,7 +309,6 @@ export class RegisterComponent implements OnInit {
   }
 
   successHandleResponse(_this,data){
-		//console.log(data);
 	}
 
   errorHandleResponsen(){

@@ -1,15 +1,12 @@
 import { Component, OnInit, NgZone, ChangeDetectorRef } from '@angular/core';
 import { Globals } from '../globals/Globals';
+import { Themes } from '../globals/Themes';
 import { Utils } from '../commons/utils';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4maps from "@amcharts/amcharts4/maps";
 import { MediaMatcher } from '@angular/cdk/layout';
 
 // AmChart colors
-const black = am4core.color ("#000000");
-const white = am4core.color ("#ffffff");
-const cyan = am4core.color ("#00a3e1");
-const darkGreen = am4core.color ("#00be11");
 const comet = am4core.color ("#585869");
 
 // SVG used for maps
@@ -30,15 +27,23 @@ export class MsfSchedulePanelComponent implements OnInit {
   private maproutes : any[];
 
   
-  mobileQuery: MediaQueryList;
-  private _mobileQueryListener: () => void;
+  // mobileQuery: MediaQueryList;
+  // private _mobileQueryListener: () => void;
+
+  TabletQuery: MediaQueryList;
+  private _TabletQueryListener: () => void;
 
   constructor(private zone: NgZone, public globals: Globals, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
     this.utils = new Utils ();
 
-    this.mobileQuery = media.matchMedia('(max-width: 1024px)');
-    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
-    this.mobileQuery.addListener(this._mobileQueryListener);
+    // this.mobileQuery = media.matchMedia('(max-width: 1024px)');
+    // this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+    // this.mobileQuery.addListener(this._mobileQueryListener);
+
+    
+    this.TabletQuery = media.matchMedia('(max-width: 1024px)');
+    this._TabletQueryListener = () => changeDetectorRef.detectChanges();
+    this.TabletQuery.addListener(this._TabletQueryListener);
 
   }
 
@@ -56,10 +61,36 @@ export class MsfSchedulePanelComponent implements OnInit {
 
  ngOnDestroy(): void {
   this.globals.schedulepanelinfo=false;
+  this.TabletQuery.removeListener(this._TabletQueryListener);
  }
 
+ printRouteName(item): string
+ {
+   let label = "";
+
+   if (this.checkarray (item.Flight))
+    return item.TouchedAirports;
+
+   if (item.Flight.Marketing_Airline)
+    label += item.Flight.Marketing_Airline.value;
+
+   label += " ";
+
+   if (item.Flight.Airline)
+    label += item.Flight.Airline.value;
+
+   label += " - F# ";
+
+   if (item.Flight.FlightNo)
+    label += item.Flight.FlightNo.value;
+
+   label += " " + item.TouchedAirports;
+   return label;
+ }
+
+
   expandFlight(index,$event){
-    let imageSeriesTemplate, circle, hoverState, label, zoomLevel;
+    let theme, imageSeriesTemplate, circle, hoverState, label, zoomLevel;
     var route = this.aux[index];
     let newCities = [];
     let self = this;
@@ -185,7 +216,9 @@ export class MsfSchedulePanelComponent implements OnInit {
       );
     }
 
-     this.zone.runOutsideAngular (() => {
+    theme = this.globals.theme;
+
+    this.zone.runOutsideAngular (() => {
       // Remove any existing image and lines series from the map
       if (this.globals.scheduleImageSeries != null)
       {
@@ -217,9 +250,9 @@ export class MsfSchedulePanelComponent implements OnInit {
       imageSeriesTemplate.width = 8;
       imageSeriesTemplate.height = 8;
       imageSeriesTemplate.scale = 1;
-      imageSeriesTemplate.fill = black;
+      imageSeriesTemplate.fill = Themes.AmCharts[theme].tooltipFill;
       imageSeriesTemplate.background.fillOpacity = 0;
-      imageSeriesTemplate.background.fill = white;
+      imageSeriesTemplate.background.fill = Themes.AmCharts[theme].mapCityColor;
       imageSeriesTemplate.setStateOnChildren = true;
 
       // Configure circle and city labels
@@ -227,7 +260,7 @@ export class MsfSchedulePanelComponent implements OnInit {
       circle.defaultState.properties.fillOpacity = 1;
       circle.path = targetSVG;
       circle.scale = 0.75;
-      circle.fill = white;
+      circle.fill = Themes.AmCharts[theme].mapCityColor;
       circle.dx -= 2.5;
       circle.dy -= 2.5;
       hoverState = circle.states.create ("hover");
@@ -240,8 +273,9 @@ export class MsfSchedulePanelComponent implements OnInit {
       label.verticalCenter = "middle";
       label.dx += 17.5;
       label.dy += 5.5;
+      label.fill = Themes.AmCharts[theme].mapCityColor;
       hoverState = label.states.create ("hover");
-      hoverState.properties.fill = darkGreen;
+      hoverState.properties.fill = Themes.AmCharts[theme].mapCityLabelHoverColor;
       hoverState.properties.fillOpacity = 1;
 
       imageSeriesTemplate.events.on ("over", function (event) {
@@ -332,7 +366,6 @@ export class MsfSchedulePanelComponent implements OnInit {
         sumZ += Math.sin (tempLat);
       }
 
-      console.log(sumX+"-"+sumY+"-"+sumZ);
       var avgX = sumX / newCities.length;
       var avgY = sumY / newCities.length;
       var avgZ = sumZ / newCities.length;
@@ -382,7 +415,7 @@ export class MsfSchedulePanelComponent implements OnInit {
           mapLine = this.globals.scheduleLineSeries.mapLines.create ();
           mapLine.imagesToConnect = [city1, city2];
           mapLine.line.strokeOpacity = 0.3;
-          mapLine.line.stroke = cyan;
+          mapLine.line.stroke = Themes.AmCharts[theme].mapLineColor;
           mapLine.line.horizontalCenter = "middle";
           mapLine.line.verticalCenter = "middle";
 
@@ -405,7 +438,7 @@ export class MsfSchedulePanelComponent implements OnInit {
 
         plane = planeContainer.createChild (am4core.Sprite);
         plane.path = planeSVG;
-        plane.fill = cyan;
+        plane.fill = Themes.AmCharts[theme].mapPlaneColor;
         plane.scale = 0.75;
         plane.horizontalCenter = "middle";
         plane.verticalCenter = "middle";

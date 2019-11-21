@@ -1,11 +1,12 @@
-import { Component, Inject, NgZone, ViewChild } from '@angular/core';
+import { Component, Inject, NgZone, ViewChild, ChangeDetectorRef, isDevMode } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
-import am4themes_animated from "@amcharts/amcharts4/themes/animated";
-import am4themes_dark from "@amcharts/amcharts4/themes/dark";
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import * as moment from 'moment';
 
 import { Globals } from '../globals/Globals';
+import { Themes } from '../globals/Themes';
 import { ApplicationService } from '../services/application.service';
 import { ApiClient } from '../api/api-client';
 import { MsfTableComponent } from '../msf-table/msf-table.component';
@@ -15,14 +16,6 @@ import { CategoryArguments } from '../model/CategoryArguments';
 import { Arguments } from '../model/Arguments';
 import { Utils } from '../commons/utils';
 import { AuthService } from '../services/auth.service';
-
-am4core.useTheme(am4themes_animated);
-am4core.useTheme(am4themes_dark);
-
-// Grid, scrollbar and legend label colors
-const white = am4core.color ("#ffffff");
-const darkBlue = am4core.color ("#30303d");
-const blueJeans = am4core.color ("#67b7dc");
 
 @Component({
   selector: 'app-msf-dashboard-child-panel',
@@ -73,11 +66,26 @@ export class MsfDashboardChildPanelComponent {
   totalRecord = 0;
   metadata;
 
+  predefinedColumnFormats: any = {
+    "short": "M/d/yy, h:mm a",
+    "medium": "MMM d, yyyy, h:mm:ss a",
+    "long": "MMMM d, yyyy, h:mm:ss a z",
+    "full": "EEEE, MMMM d, yyyy, h:mm:ss a zzzz",
+    "shortDate": "M/d/yy",
+    "mediumDate": "MMM, d, yyyy",
+    "longDate": "MMMM, d, yyyy",
+    "fullDate": "EEEE, MMMM, d, y",
+    "shortTime": "h:mm a",
+    "mediumTime": "h:mm:ss a",
+    "longTime": "h:mm:ss a z",
+    "fullTime": "h:mm:ss a zzzz"
+  };
+
   constructor(
     public dialogRef: MatDialogRef<MsfDashboardChildPanelComponent>,
     private zone: NgZone,
     public globals: Globals,
-    private http: ApiClient,
+    public changeDetectorRef: ChangeDetectorRef,
     private authService: AuthService,
     private service: ApplicationService,
     @Inject(MAT_DIALOG_DATA) public data: any)
@@ -89,12 +97,6 @@ export class MsfDashboardChildPanelComponent {
     // generate drill down chart
     this.globals.popupLoading = true;
     this.service.getChildPanel (this, data.parentPanelId, this.data.drillDownId, this.configureChildPanel, this.handlerChildPanelError);
-  }
-
-  ngAfterViewInit(): void
-  {
-    if (this.isTablePanel ())
-      this.msfTableRef.tableOptions = this;
   }
 
   ngOnDestroy()
@@ -113,7 +115,7 @@ export class MsfDashboardChildPanelComponent {
   }
 
   // Function to create horizontal column chart series
-  createHorizColumnSeries(values, stacked, chart, item, parseDate): void
+  createHorizColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat): void
   {
     // Set up series
     let series = chart.series.push (new am4charts.ColumnSeries ());
@@ -125,7 +127,7 @@ export class MsfDashboardChildPanelComponent {
     if (parseDate)
     {
       series.dataFields.dateY = values.xaxis.columnName;
-      series.dateFormatter.dateFormat = "MMM d, yyyy";
+      series.dateFormatter.dateFormat = outputFormat;
       series.columns.template.tooltipText = "{dateY}: {valueX}";
     }
     else
@@ -141,7 +143,7 @@ export class MsfDashboardChildPanelComponent {
   }
 
   // Function to create vertical column chart series
-  createVertColumnSeries(values, stacked, chart, item, parseDate): void
+  createVertColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat): void
   {
     let series = chart.series.push (new am4charts.ColumnSeries ());
     series.name = item.valueAxis;
@@ -151,7 +153,7 @@ export class MsfDashboardChildPanelComponent {
     if (parseDate)
     {
       series.dataFields.dateX = values.xaxis.columnName;
-      series.dateFormatter.dateFormat = "MMM d, yyyy";
+      series.dateFormatter.dateFormat = outputFormat;
       series.columns.template.tooltipText = "{dateX}: {valueY}";
     }
     else
@@ -166,7 +168,7 @@ export class MsfDashboardChildPanelComponent {
   }
 
   // Function to create line chart series
-  createLineSeries(values, stacked, chart, item, parseDate): void
+  createLineSeries(values, stacked, chart, item, parseDate, theme, outputFormat): void
   {
     // Set up series
     let series = chart.series.push (new am4charts.LineSeries ());
@@ -184,7 +186,7 @@ export class MsfDashboardChildPanelComponent {
     if (parseDate)
     {
       series.dataFields.dateX = values.xaxis.columnName;
-      series.dateFormatter.dateFormat = "MMM d, yyyy";
+      series.dateFormatter.dateFormat = outputFormat;
       series.tooltipText = "{dateX}: {valueY}";
     }
     else
@@ -201,7 +203,7 @@ export class MsfDashboardChildPanelComponent {
   }
 
   // Function to create simple vertical column chart series
-  createSimpleVertColumnSeries(values, stacked, chart, item, parseDate): void
+  createSimpleVertColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat): void
   {
     let series = chart.series.push (new am4charts.ColumnSeries());
     series.dataFields.valueY = item.valueField;
@@ -219,7 +221,7 @@ export class MsfDashboardChildPanelComponent {
   }
 
   // Function to create simple horizontal column chart series
-  createSimpleHorizColumnSeries(values, stacked, chart, item, parseDate): void
+  createSimpleHorizColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat): void
   {
     let series = chart.series.push (new am4charts.ColumnSeries());
     series.dataFields.valueX = item.valueField;
@@ -236,7 +238,7 @@ export class MsfDashboardChildPanelComponent {
   }
 
   // Function to create pie chart series
-  createPieSeries(values, stacked, chart, item, parseDate): void
+  createPieSeries(values, stacked, chart, item, parseDate, theme, outputFormat): void
   {
     let series, colorSet;
 
@@ -255,8 +257,9 @@ export class MsfDashboardChildPanelComponent {
     series.hiddenState.properties.startAngle = -90;
 
     // Set ticks color
+    series.labels.template.fill = Themes.AmCharts[theme].fontColor;
     series.ticks.template.strokeOpacity = 1;
-    series.ticks.template.stroke = darkBlue;
+    series.ticks.template.stroke = Themes.AmCharts[theme].ticks;
     series.ticks.template.strokeWidth = 1;
 
     // Set the color for the chart to display
@@ -268,7 +271,7 @@ export class MsfDashboardChildPanelComponent {
   }
 
   // Function to create funnel chart series
-  createFunnelSeries(values, stacked, chart, item, parseDate): void
+  createFunnelSeries(values, stacked, chart, item, parseDate, theme, outputFormat): void
   {
     let series, colorSet;
 
@@ -278,8 +281,9 @@ export class MsfDashboardChildPanelComponent {
 
     // Set chart apparence
     series.sliceLinks.template.fillOpacity = 0;
+    series.labels.template.fill = Themes.AmCharts[theme].fontColor;
     series.ticks.template.strokeOpacity = 1;
-    series.ticks.template.stroke = darkBlue;
+    series.ticks.template.stroke = Themes.AmCharts[theme].ticks;
     series.ticks.template.strokeWidth = 1;
     series.alignLabels = true;
 
@@ -291,10 +295,39 @@ export class MsfDashboardChildPanelComponent {
     series.colors = colorSet;
   }
 
+  parseDate(date: any, format: string): Date
+  {
+    let momentDate: moment.Moment;
+    let momentFormat: string;
+
+    if (date == null || date == "")
+      return null;
+
+    if (format == null || format == "")
+      momentFormat = "YYYYMMDD"; // fallback for date values with no column or pre-defined format set
+    else if (this.predefinedColumnFormats[format])
+      momentFormat = "DD/MM/YYYY";
+    else
+    {
+      // replace lower case letters with uppercase ones for the moment date format
+      momentFormat = format.replace (/m/g, "M");
+      momentFormat = momentFormat.replace (/y/g, "Y");
+      momentFormat = momentFormat.replace (/d/g, "D");
+    }
+
+    momentDate = moment (date, momentFormat);
+    if (!momentDate.isValid ())
+      return null; // invalid date value will be null
+
+    return momentDate.toDate ();
+  }
+
   makeChart(chartInfo): void
   {
+    let theme = this.globals.theme;
+
     this.zone.runOutsideAngular (() => {
-      let chart;
+      let chart, options;
 
       // Check chart type before generating it
       if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART
@@ -312,7 +345,7 @@ export class MsfDashboardChildPanelComponent {
         chart.fontSize = 10;
 
         // Create the series
-        this.values.currentChartType.createSeries (this.values, false, chart, chartInfo, null);
+        this.values.currentChartType.createSeries (this.values, false, chart, chartInfo, null, theme, null);
 
         if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART)
         {
@@ -326,7 +359,7 @@ export class MsfDashboardChildPanelComponent {
       }
       else
       {
-        let categoryAxis, valueAxis, parseDate, stacked;
+        let categoryAxis, valueAxis, parseDate, outputFormat, stacked;
 
         chart = am4core.create ("msf-dashboard-child-panel-chart-display", am4charts.XYChart);
         chart.numberFormatter.numberFormat = "#,###.#";
@@ -334,13 +367,33 @@ export class MsfDashboardChildPanelComponent {
         // Don't parse dates if the chart is a simple version
         if (this.values.currentChartType.flags & ChartFlags.XYCHART)
         {
-          chart.data = chartInfo.data;
-          parseDate = this.values.xaxis.columnName.includes ('date');
+          chart.data =  JSON.parse (JSON.stringify (chartInfo.data));
+          parseDate = (this.values.xaxis.item.columnType === "date" && this.values.xaxis.id.includes ('date')) ? true : false;
         }
         else
         {
-          chart.data = chartInfo.dataProvider;
+          chart.data =  JSON.parse (JSON.stringify (chartInfo.dataProvider));
           parseDate = false;
+        }
+
+        if (parseDate)
+        {
+          if (this.values.xaxis.item.columnFormat)
+          {
+            for (let data of chart.data)
+              data[this.values.xaxis.id] = this.parseDate (data[this.values.xaxis.id], this.values.xaxis.item.columnFormat);
+
+            if (this.values.xaxis.item.outputFormat)
+              outputFormat = this.values.xaxis.item.outputFormat;
+            else
+              outputFormat = this.values.xaxis.item.columnFormat;
+
+            // Set predefined format if used
+            if (this.predefinedColumnFormats[outputFormat])
+              outputFormat = this.predefinedColumnFormats[outputFormat];
+          }
+          else
+            parseDate = false;
         }
 
         // Set chart axes depeding on the rotation
@@ -349,8 +402,12 @@ export class MsfDashboardChildPanelComponent {
           if (parseDate)
           {
             categoryAxis = chart.yAxes.push (new am4charts.DateAxis ());
-            categoryAxis.dateFormats.setKey ("day", "MMM d");
-            categoryAxis.periodChangeDateFormats.setKey ("day", "yyyy");
+            categoryAxis.dateFormats.setKey ("day", outputFormat);
+
+            if (!outputFormat.includes ("y"))
+              categoryAxis.periodChangeDateFormats.setKey ("day", "yyyy");
+            else
+              categoryAxis.periodChangeDateFormats.setKey ("day", outputFormat);
           }
           else
           {
@@ -365,7 +422,7 @@ export class MsfDashboardChildPanelComponent {
           if (chart.data.length > 1)
           {
             chart.scrollbarY = new am4core.Scrollbar ();
-            chart.scrollbarY.background.fill = blueJeans;
+            chart.scrollbarY.background.fill = Themes.AmCharts[theme].chartZoomScrollBar;
           }
         }
         else
@@ -373,14 +430,21 @@ export class MsfDashboardChildPanelComponent {
           if (parseDate)
           {
             categoryAxis = chart.xAxes.push (new am4charts.DateAxis ());
-            categoryAxis.dateFormats.setKey ("day", "MMM d");
-            categoryAxis.periodChangeDateFormats.setKey ("day", "yyyy");
+            categoryAxis.dateFormats.setKey ("day", outputFormat);
+
+            if (!outputFormat.includes ("y"))
+              categoryAxis.periodChangeDateFormats.setKey ("day", "yyyy");
+            else
+              categoryAxis.periodChangeDateFormats.setKey ("day", outputFormat);
           }
           else
           {
             categoryAxis = chart.xAxes.push (new am4charts.CategoryAxis ());
             categoryAxis.renderer.minGridDistance = 30;
+          }
 
+          if (!(this.values.currentChartType.flags & ChartFlags.LINECHART && parseDate))
+          {
             // Rotate labels if the chart is displayed vertically
             categoryAxis.renderer.labels.template.rotation = 330;
             categoryAxis.renderer.labels.template.maxWidth = 240;
@@ -391,7 +455,7 @@ export class MsfDashboardChildPanelComponent {
           if (chart.data.length > 1)
           {
             chart.scrollbarX = new am4core.Scrollbar ();
-            chart.scrollbarX.background.fill = blueJeans;
+            chart.scrollbarX.background.fill = Themes.AmCharts[theme].chartZoomScrollBar;
           }
         }
 
@@ -400,22 +464,61 @@ export class MsfDashboardChildPanelComponent {
         categoryAxis.renderer.labels.template.wrap = true;
         categoryAxis.renderer.labels.template.horizontalCenter  = "right";
         categoryAxis.renderer.labels.template.textAlign  = "end";
+        categoryAxis.renderer.labels.template.fill = Themes.AmCharts[theme].fontColor;
         categoryAxis.renderer.grid.template.location = 0;
         categoryAxis.renderer.grid.template.strokeOpacity = 1;
         categoryAxis.renderer.line.strokeOpacity = 1;
-        categoryAxis.renderer.grid.template.stroke = darkBlue;
-        categoryAxis.renderer.line.stroke = darkBlue;
+        categoryAxis.renderer.grid.template.stroke = Themes.AmCharts[theme].stroke;
+        categoryAxis.renderer.line.stroke = Themes.AmCharts[theme].stroke;
         categoryAxis.renderer.grid.template.strokeWidth = 1;
         categoryAxis.renderer.line.strokeWidth = 1;
 
         // Set value axis properties
         valueAxis.renderer.labels.template.fontSize = 10;
+        valueAxis.renderer.labels.template.fill = Themes.AmCharts[theme].fontColor;
         valueAxis.renderer.grid.template.strokeOpacity = 1;
-        valueAxis.renderer.grid.template.stroke = darkBlue;
+        valueAxis.renderer.grid.template.stroke = Themes.AmCharts[theme].stroke;
         valueAxis.renderer.grid.template.strokeWidth = 1;
+
+        if (this.values.currentChartType.flags & ChartFlags.LINECHART)
+        {
+          // Set axis tooltip background color depending of the theme
+          valueAxis.tooltip.label.fill = Themes.AmCharts[theme].axisTooltipFontColor;
+          valueAxis.tooltip.background.fill = Themes.AmCharts[theme].tooltipFill;
+          categoryAxis.tooltip.label.fill = Themes.AmCharts[theme].axisTooltipFontColor;
+          categoryAxis.tooltip.background.fill = Themes.AmCharts[theme].tooltipFill;
+        }
+        else
+          valueAxis.min = 0;
 
         if (this.values.currentChartType.flags & ChartFlags.XYCHART)
         {
+          // Set axis name into the chart
+          if (!(this.values.currentChartType.flags & ChartFlags.ROTATED))
+          {
+            if (this.values.horizAxisName && this.values.horizAxisName != "")
+              categoryAxis.title.text = this.values.horizAxisName;
+            else
+              categoryAxis.title.text = this.values.xaxis.columnLabel;
+    
+            if (this.values.vertAxisName && this.values.vertAxisName != "")
+              valueAxis.title.text = this.values.vertAxisName;
+            else
+              valueAxis.title.text = this.values.valueColumn.columnLabel;
+          }
+          else
+          {
+            if (this.values.vertAxisName && this.values.vertAxisName != "")
+              categoryAxis.title.text = this.values.vertAxisName;
+            else
+              categoryAxis.title.text = this.values.xaxis.columnLabel;
+    
+            if (this.values.horizAxisName && this.values.horizAxisName != "")
+              valueAxis.title.text = this.values.horizAxisName;
+            else
+              valueAxis.title.text = this.values.valueColumn.columnLabel;
+          }
+
           // The category will be the x axis if the chart type has it
           categoryAxis.dataFields.category = this.values.xaxis.columnName;
 
@@ -504,18 +607,39 @@ export class MsfDashboardChildPanelComponent {
             chart.colors.list.push (am4core.color (color));
 
           for (let object of chartInfo.filter)
-            this.values.currentChartType.createSeries (this.values, stacked, chart, object, parseDate);
+            this.values.currentChartType.createSeries (this.values, stacked, chart, object, parseDate, theme, outputFormat);
 
           // Add cursor if the chart type is line, area or stacked area
           if (this.values.currentChartType.flags & ChartFlags.LINECHART)
-          {
             chart.cursor = new am4charts.XYCursor ();
-            chart.cursor.xAxis = valueAxis;
-            chart.cursor.snapToSeries = chart.series;
-          }
         }
         else
         {
+          if (!(this.values.currentChartType.flags & ChartFlags.ROTATED))
+          {
+            if (this.values.horizAxisName && this.values.horizAxisName != "")
+              categoryAxis.title.text = this.values.horizAxisName;
+            else
+              categoryAxis.title.text = this.values.variable.columnLabel;
+  
+            if (this.values.vertAxisName && this.values.vertAxisName != "")
+              valueAxis.title.text = this.values.vertAxisName;
+            else
+              valueAxis.title.text = this.values.valueColumn.columnLabel;
+          }
+          else
+          {
+            if (this.values.vertAxisName && this.values.vertAxisName != "")
+              categoryAxis.title.text = this.values.vertAxisName;
+            else
+              categoryAxis.title.text = this.values.variable.columnLabel;
+  
+            if (this.values.horizAxisName && this.values.horizAxisName != "")
+              valueAxis.title.text = this.values.horizAxisName;
+            else
+              valueAxis.title.text = this.values.valueColumn.columnLabel;
+          }
+
           // The category will the values if the chart type lacks an x axis
           categoryAxis.dataFields.category = chartInfo.titleField;
 
@@ -527,9 +651,22 @@ export class MsfDashboardChildPanelComponent {
           });
 
           // Create the series
-          this.values.currentChartType.createSeries (this.values, false, chart, chartInfo, parseDate);
+          this.values.currentChartType.createSeries (this.values, false, chart, chartInfo, parseDate, theme, outputFormat);
         }
       }
+
+      // Add export menu
+      chart.exporting.menu = new am4core.ExportMenu ();
+      chart.exporting.menu.align = "left";
+      chart.exporting.menu.verticalAlign = "bottom";
+      chart.exporting.title = this.values.chartName;
+      chart.exporting.filePrefix = this.values.chartName;
+      chart.exporting.useWebFonts = false;
+
+      // Remove "Saved from..." message on PDF files
+      options = chart.exporting.getFormatOptions ("pdf");
+      options.addURL = false;
+      chart.exporting.setFormatOptions ("pdf", options);
 
       if (this.values.currentChartType.flags & ChartFlags.XYCHART)
       {
@@ -538,12 +675,8 @@ export class MsfDashboardChildPanelComponent {
         chart.legend.markers.template.width = 15;
         chart.legend.markers.template.height = 15;
         chart.legend.labels.template.fontSize = 10;
+        chart.legend.labels.template.fill = Themes.AmCharts[theme].fontColor;
       }
-
-      // Add export button
-      chart.exporting.menu = new am4core.ExportMenu ();
-      chart.exporting.menu.verticalAlign = "top";
-      chart.exporting.menu.align = "left";
 
       this.chart = chart;
     });
@@ -656,6 +789,12 @@ export class MsfDashboardChildPanelComponent {
 
             if (parentArgument != null && argument.id == parentArgument.argumentId.id)
             {
+              if (parentCategoryId.toLowerCase () === "yyyymmdd")
+              {
+                filterValue = moment (filterValue, "YYYYMMDD").toDate ().toString ();
+                filterValue = new DatePipe ('en-US').transform (filterValue, 'yyyy/MM/dd');
+              }
+
               if (params)
                 params += "&" + this.utils.getArguments2 (argument, parentCategoryId, filterValue);
               else
@@ -663,6 +802,12 @@ export class MsfDashboardChildPanelComponent {
             }
             else if (secondaryParentArgument != null && argument.id == secondaryParentArgument.argumentId.id)
             {
+              if (secondaryParentCategoryId.toLowerCase () === "yyyymmdd")
+              {
+                secondaryFilterValue = moment (secondaryFilterValue, "YYYYMMDD").toDate ().toString ();
+                secondaryFilterValue = new DatePipe ('en-US').transform (secondaryFilterValue, 'yyyy/MM/dd');
+              }
+
               if (params)
                 params += "&" + this.utils.getArguments2 (argument, secondaryParentCategoryId, secondaryFilterValue);
               else
@@ -670,6 +815,9 @@ export class MsfDashboardChildPanelComponent {
             }
             else
             {
+              if (!argument.value1)
+                continue;
+
               if (params)
               {
                 if (argument.type != "singleCheckbox" && argument.type != "serviceClasses" && argument.type != "fareLower" && argument.type != "airportsRoutes" && argument.name1 != "intermediateCitiesList")
@@ -748,7 +896,7 @@ export class MsfDashboardChildPanelComponent {
       {
         for (i = 0; i < _this.values.currentOption.columnOptions.length; i++)
         {
-          if (i == _this.values.xaxis)
+          if (_this.values.currentOption.columnOptions[i].id == _this.values.xaxis)
           {
             _this.values.xaxis = _this.values.currentOption.columnOptions[i];
             break;
@@ -789,7 +937,7 @@ export class MsfDashboardChildPanelComponent {
       {
         for (i = 0; i < _this.values.currentOption.columnOptions.length; i++)
         {
-          if (i == _this.values.variable)
+          if (_this.values.currentOption.columnOptions[i].id == _this.values.variable)
           {
             _this.values.variable = _this.values.currentOption.columnOptions[i];
             break;
@@ -806,7 +954,7 @@ export class MsfDashboardChildPanelComponent {
       {
         for (i = 0; i < _this.values.currentOption.columnOptions.length; i++)
         {
-          if (i == _this.values.valueColumn)
+          if (_this.values.currentOption.columnOptions[i].id == _this.values.valueColumn)
           {
             _this.values.valueColumn = _this.values.currentOption.columnOptions[i];
             break;
@@ -843,18 +991,24 @@ export class MsfDashboardChildPanelComponent {
       return;
     }
 
+    if (_this.isTablePanel ())
+    {
+      _this.changeDetectorRef.detectChanges ();
+      _this.msfTableRef.tableOptions = _this;
+    }
+
     _this.service.loadOptionCategoryArguments (_this, _this.values.currentOption, _this.setCategories, _this.handlerCategoryError);
   }
 
   setCategories(_this, data)
   {
     // check if any variable that requires grouping are in configure properly
-    if (!_this.checkPanelVariables ())
+    /*if (!_this.checkPanelVariables ())
     {
       _this.globals.popupLoading = false;
       _this.errorMessage = "Some variables used to get the results must be added in the grouping inside the parent control variables";
       return;
-    }
+    }*/
 
     // add category arguments not available on the parent to the child panel, so the service will work properly
     for (let optionCategory of data)
@@ -945,8 +1099,7 @@ export class MsfDashboardChildPanelComponent {
 
     urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&&pageSize=100&page_number=" + this.actualPageNumber;
-    console.log (urlBase);
-    urlArg = encodeURIComponent(urlBase);
+    urlArg = encodeURIComponent (urlBase);
     url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
 
     for (let tableVariable of this.values.tableVariables)
@@ -954,6 +1107,9 @@ export class MsfDashboardChildPanelComponent {
       if (tableVariable.checked)
         url += "&metaDataIds=" + tableVariable.itemId;
     }
+
+    if (isDevMode ())
+      console.log (url);
 
     this.authService.get (this.msfTableRef, url, handlerSuccess, handlerError);
   }
@@ -964,7 +1120,6 @@ export class MsfDashboardChildPanelComponent {
 
     urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
-    console.log (urlBase);
     urlArg = encodeURIComponent (urlBase);
     url = this.service.host + "/secure/getChartData?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress () +
       "&variable=" + this.values.variable.columnName + "&valueColumn=" + this.values.valueColumn.columnName + "&function=" + this.values.function.id;
@@ -974,6 +1129,9 @@ export class MsfDashboardChildPanelComponent {
       url += "&chartType=pie";
     else
       url += "&xaxis=" + this.values.xaxis.columnName;
+
+    if (isDevMode ())
+      console.log (url);
 
     this.authService.post (this, url, null, handlerSuccess, handlerError);
   }
@@ -999,7 +1157,6 @@ export class MsfDashboardChildPanelComponent {
 
   handlerDataError(_this, result): void
   {
-    console.log (result);
     _this.globals.popupLoading = false;
     _this.errorMessage = "Failed to generate child panel information";
   }

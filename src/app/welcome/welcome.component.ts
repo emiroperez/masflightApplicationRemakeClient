@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, ElementRef, HostListener, ChangeDetectorRef } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { Globals } from '../globals/Globals';
 import { WelcomeService } from '../services/welcome.service';
@@ -7,6 +7,9 @@ import { trigger, transition, style, animate, state } from '@angular/animations'
 import { MenuService } from '../services/menu.service';
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
+import { AuthGuard } from '../guards/auth.guard';
+import { MediaMatcher } from '@angular/cdk/layout';
+import { ApplicationService } from '../services/application.service';	 
 
 @Component({
   selector: 'app-welcome',
@@ -23,9 +26,27 @@ export class WelcomeComponent implements OnInit {
 
   lastTime: Date;
 
-  constructor(public globals: Globals, private menuService: MenuService, private service: WelcomeService, private authService: AuthService, private userService: UserService, private router: Router) {
+  mobileQuery: MediaQueryList;
+  private _mobileQueryListener: () => void;				
+
+  constructor(public globals: Globals, private menuService: MenuService, 
+    private service: WelcomeService, private authService: AuthService, 
+    private authGuard: AuthGuard, private userService: UserService,
+     private router: Router, media: MediaMatcher, 
+     changeDetectorRef: ChangeDetectorRef,private appService: ApplicationService) {
+        
+//media querys
+this.mobileQuery = media.matchMedia('(max-width: 480px)');
+this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+this.mobileQuery.addListener(this._mobileQueryListener);
+
   }
 
+    
+  ngOnDestroy(): void {
+    this.mobileQuery.removeListener(this._mobileQueryListener);
+  }
+	
   parseTimeStamp(timeStamp): string
   {
     let hours: number;
@@ -103,7 +124,6 @@ export class WelcomeComponent implements OnInit {
   }
 
   errorLogin(_this,result){
-    console.log(result);
     _this.getApplications();
   }
 
@@ -115,19 +135,28 @@ export class WelcomeComponent implements OnInit {
   }
 
   handlerSuccess(_this,data){
+    // Temporary hack for DataLake
+    // data.push ({
+    //   datalakeToken: null,
+    //   id: 5,
+    //   name: "DataLake",
+    //   url: "/datalake"
+    // });
+
     _this.options = data;
     _this.options2 = data.slice();
 
     _this.activeElement = _this.options[0];
-    //Cambio temporal------------------------------------------------------
+    /*
+    Temporal change
     const indexColumn = _this.options2.findIndex(column => column.id === 2);
     _this.options2.splice(indexColumn,1);
-    //---------------------------------------------------------------------
+    */
     _this.globals.isLoading = false;
   }
 
   handlerError(_this,result){
-    console.log(result);
+
     _this.globals.isLoading = false;
   }
 
@@ -147,22 +176,28 @@ export class WelcomeComponent implements OnInit {
 
   }
 
-  getBackground(option : any){
+  getBackground(option : any): string
+  {
     var aux = option.name;
-    aux = aux.replace(" ","");
-    if(option.hover){
-      return "../../assets/images/w_"+aux+"2.png"
-    }else{
-      return "../../assets/images/w_"+aux+"1.png"
-    }
 
+    aux = aux.replace (" ","");
+
+    if (option.hover)
+      return "../../assets/images/w_" + aux + "2.png"
+    else
+      return "../../assets/images/" + this.globals.theme + "-w_" + aux + "1.png"
   }
 
 
-  getBackground2(option : any){
+  getBackground2(option : any): string
+  {
     var aux = option.name;
     aux = aux.replace(" ","");
-    return "../../assets/images/w_"+aux+".png"
+
+    if (option.hover)
+      return "../../assets/images/dark-theme-w_" + aux + ".png"
+    else
+      return "../../assets/images/" + this.globals.theme + "-w_" + aux + ".png"
   }
 
   @HostListener('window:resize', ['$event'])
@@ -178,5 +213,32 @@ export class WelcomeComponent implements OnInit {
     // else{
     //   this.globals.isFullscreen = false;
     // }
+  }
+
+  // logOut(): void
+  // {
+  //   this.userService.setUserLastLoginTime (this, this.logoutSuccess, this.logoutError);
+  // }
+
+  logOut(){
+    this.appService.confirmationDialog (this, "Are you sure you want to Log Out?",
+      function (_this)
+      {
+        _this.userService.setUserLastLoginTime (_this, _this.logoutSuccess, _this.logoutError);
+      });
+  }
+
+  logoutSuccess(_this): void
+  {
+    _this.authGuard.disableSessionInterval ();
+    _this.authService.removeToken ();
+    _this.router.navigate (['']);
+  }
+
+  logoutError(_this, error): void
+  {
+    _this.authGuard.disableSessionInterval ();
+    _this.authService.removeToken ();
+    _this.router.navigate (['']);
   }
 }

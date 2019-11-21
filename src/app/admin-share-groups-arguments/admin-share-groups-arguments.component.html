@@ -1,0 +1,56 @@
+<div [ngClass]="globals.popupLoading? 'tab-show' : 'tab-hide'" class="msf-dashboard-drill-down-loading">
+  <div class="msf-dashboard-control-variables-close-button">
+    <mat-icon class="msf-dashboard-close-icon" aria-label="close" (click)="closeDialog()">close</mat-icon>
+  </div>
+</div>
+<div class="msf-dashboard-control-variables-title">
+  <div class="msf-dashboard-control-variables-close-button">
+    <mat-icon class="msf-dashboard-close-icon" aria-label="close" (click)="closeDialog()">close</mat-icon>
+  </div>
+  Share {{dataArgGroup.name}} group
+</div>
+<div class="msf-dashboard-panel-container msf-dashboard-share-content-container" id="msf-dashboard-drill-down-container" *ngIf="!globals.popupLoading">
+  <div class="msf-dashboard-panel-sub-container-column">
+    <mat-form-field class="msf-full-width" id="msf-dashboard-drill-down-container-column">
+      <mat-select placeholder="User Names" [(ngModel)]="selectedUserNames" multiple>
+        <mat-select-trigger>
+          <span *ngFor="let selectedUserName of selectedUserNames; let userIndex = index">{{selectedUserName.name}}<span *ngIf="userIndex != selectedUserNames.length - 1">, </span></span>
+        </mat-select-trigger>
+        <ngx-mat-select-search [formControl]="userNameFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+        <mat-option *ngFor="let userNameList of filteredUserNames | async" [value]="userNameList">
+          {{userNameList.email}} ({{userNameList.name}})
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button [disabled]="!selectedUserNames.length" mat-icon-button [ngClass]="!selectedUserNames.length ? 'func-button-disabled' : 'func-button'" (click)="addUser()">
+      <mat-icon class="msf-dashboard-chart-icon" aria-label="Add User" style="margin-left: 6px">add</mat-icon>
+    </button>
+  </div>
+</div>
+<div class="msf-dashboard-panel-containerr msf-dashboard-share-content-container" id="msf-dashboard-drill-down-container" *ngIf="!globals.popupLoading">
+  <div class="msf-dashboard-panel-sub-container-column" id="msf-share-dashboard-sub-container-column">
+    <mat-icon class="msf-share-dashboard-icon" aria-label="Users List">person</mat-icon>
+    <span class="msf-dashboard-addmenu-item-text">Users List</span>
+  </div>
+</div>
+<div class="msf-dashboard-panel-containerr msf-dashboard-share-content-container" id="msf-dashboard-drill-down-container" *ngIf="!globals.popupLoading">
+  <div class="msf-dashboard-panel-sub-container-column">
+    <div class="msf-dashboard-panel-sub-container-column" id="msf-share-dashboard-container" *ngIf="users.length">
+      <mat-radio-group [(ngModel)]="selectedUser" style="flex-direction: column; display: flex">
+        <mat-radio-button style="margin: 10px;" class="cancels-checkbox" *ngFor="let user of users" [value]="user">
+          {{user.email}} ({{user.name}})
+        </mat-radio-button>
+      </mat-radio-group>
+    </div>
+    <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-form-container-column-empty" *ngIf="!users.length" style="height: 200px">
+      <div class="msf-no-results">
+        You have not shared this {{dataArgGroup.name.toLowerCase()}} group with anyone
+      </div>
+    </div>
+  </div>
+</div>
+<div class="msf-dashboard-control-variables-buttonr msf-dashboard-share-content-container" id="msf-dashboard-drill-down-container" *ngIf="!globals.popupLoading">
+  <button [disabled]="!selectedUser" mat-flat-button [ngClass]="selectedUser ? 'flat-button' : 'flat-button-disabled'" (click)="removeUser()">Remove User</button>
+  <span class="button-separator"></span>
+  <button mat-flat-button class="flat-button" (click)="closeDialog()">OK</button>
+</div>

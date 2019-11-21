@@ -1,91 +1,88 @@
-<div style="overflow: auto" [style.height.px]="getInnerHeight()" [style.width.px]="getInnerWidth()">
-<div class="msf-register-header">
-
-    <img class="msf-medium-logo" src="../../assets/images/logo.png">
-    <div class="msf-register-header-content">
-        <div class="msf-register-header-title">
-            <div class="msf-register-header-title-content"> USER ACTIVATION</div>
+<div class="admin-menu-background" [style.height.px]="getInnerHeight()" [style.width.px]="getInnerWidth()">
+    <div class="msf-register-header">
+        <img class="msf-medium-logo" src="../../assets/images/{{globals.theme}}-logo.png">
+        <div class="msf-register-header-content">
+            <div class="msf-register-header-title">
+                <div class="msf-register-header-title-content"> USER ACTIVATION</div>
+            </div>
         </div>
     </div>
-</div>
-
-<mat-card class="msf-register-card msf-center-container">
-    <button style="float: left !important;margin-top: 30px;" mat-icon-button routerLink="/application">
-    <mat-icon style="color: white">arrow_back</mat-icon>
-  </button>
-    <button style="float: right !important;" mat-icon-button (click)="saveUsers()">
-        <mat-icon style="color: white" aria-label="save">save</mat-icon>
-      </button>
-
-    <div class="form-field-container">
-        <mat-form-field style="width:50%; float: right;">
-            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
-        </mat-form-field>
-        <div class="mat-elevation-z8" style="display: flex; flex-direction: column; overflow: hidden; width: 100%; height: 100%; align-items: center; margin-left: -17px">
-        <table mat-table matSort style="overflow: auto;" [dataSource]="dataSource" class="datasource welcome-table">
-
-            <ng-container matColumnDef="columnName">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-                <td mat-cell class="mat-cell-centered" *matCellDef="let element"> {{ element.name }}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="columnLastName">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Lastname</th>
-                <td mat-cell class="mat-cell-centered" *matCellDef="let element"> {{ element.lastname }}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="columnEmail">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
-                <td mat-cell class="mat-cell-centered" *matCellDef="let element"> {{ element.email }}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="columnCountry">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Country</th>
-                <td mat-cell class="mat-cell-centered" *matCellDef="let element"> {{ element.country.name }}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="columnCountryState">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>State</th>
-                <td mat-cell class="mat-cell-centered" *matCellDef="let element"> {{ element.CState == null ? '' : element.CState.name }}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="columnAddress">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Address</th>
-                <td mat-cell class="mat-cell-centered" *matCellDef="let element"> {{ element.address }}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="columnPostalCode">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Postal Code</th>
-                <td mat-cell class="mat-cell-centered" *matCellDef="let element"> {{ element.postalCode }}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="columnPhone">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Phone Number</th>
-                <td mat-cell class="mat-cell-centered" *matCellDef="let element"> {{ element.phoneNumber }}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="columnState">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Activation Status</th>
-                <td mat-cell *matCellDef="let element" style="text-align: center">
-                    <mat-checkbox class="activation-form" ng-true-value=1 ng-false-value=0 [(ngModel)]="element.state" (change)="addToJson(element)"></mat-checkbox>
-                </td>
-            </ng-container>
-
-            <ng-container matColumnDef="columnCustomer">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Customer</th>
-                <td mat-cell *matCellDef="let element" style="text-align: center">
-                    <mat-select class="activation-form" [(ngModel)]="element.customer" (selectionChange)="addToJson(element)">
-                        <mat-option *ngFor="let customer of customers" [value]="customer">{{ customer.shortName }}</mat-option>
-                    </mat-select>
-                </td>
-            </ng-container>
-
-
-            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-        </table>
-        <mat-paginator style="width: 100%; max-width: 2000px" class="activation-form" [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons></mat-paginator>
+    <mat-card class="msf-user-activation-card msf-register-card msf-center-container">
+        <button class="arrow-back-button" mat-icon-button routerLink="/application">
+            <mat-icon aria-label="back">arrow_back</mat-icon>
+        </button>
+        <button class="save-button" mat-icon-button (click)="saveUsers()">
+            <mat-icon aria-label="save">save</mat-icon>
+        </button>
+        <div class="form-field-container">
+            <mat-form-field class="user-activation-search-input">
+                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+            </mat-form-field>
+            <div class="mat-elevation-z8 user-activation-table">
+                <table mat-table matSort [dataSource]="dataSource" class="datasource welcome-table">
+                    <ng-container matColumnDef="columnName">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+                        <td mat-cell class="mat-cell-centered" *matCellDef="let element"> {{ element.name }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="columnLastName">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Lastname</th>
+                        <td mat-cell class="mat-cell-centered" *matCellDef="let element"> {{ element.lastname }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="columnEmail">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+                        <td mat-cell class="mat-cell-centered" *matCellDef="let element"> {{ element.email }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="columnCountry">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Country</th>
+                        <td mat-cell class="mat-cell-centered" *matCellDef="let element"> {{ element.country.name }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="columnCountryState">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>State</th>
+                        <td mat-cell class="mat-cell-centered" *matCellDef="let element"> {{ element.CState == null ? '' : element.CState.name }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="columnAddress">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Address</th>
+                        <td mat-cell class="mat-cell-centered" *matCellDef="let element"> {{ element.address }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="columnPostalCode">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Postal Code</th>
+                        <td mat-cell class="mat-cell-centered" *matCellDef="let element"> {{ element.postalCode }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="columnPhone">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Phone Number</th>
+                        <td mat-cell class="mat-cell-centered" *matCellDef="let element"> {{ element.phoneNumber }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="columnState">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Activation Status</th>
+                        <td mat-cell *matCellDef="let element" class="user-activation-data-centered">
+                            <mat-checkbox class="activation-form activation-form-checkbox" ng-true-value=1 ng-false-value=0 [(ngModel)]="element.state" (change)="addToJson(element)"></mat-checkbox>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="columnCustomer">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Customer</th>
+                        <td mat-cell *matCellDef="let element" class="user-activation-data-centered">
+                            <mat-select class="activation-form" [(ngModel)]="element.customer" (selectionChange)="addToJson(element)">
+                                <mat-option *ngFor="let customer of customers" [value]="customer">{{ customer.shortName }}</mat-option>
+                            </mat-select>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="columnDatalake">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Datalake User</th>
+                        <td mat-cell *matCellDef="let element" class="user-activation-data-centered datalake-userActivation-btn">
+                            <mat-checkbox class="activation-form" ng-true-value=1 ng-false-value=0 
+                                [(ngModel)]="element.datalakeUser" (change)="addDatalakeInformationToJson(element,0)">
+                            </mat-checkbox>
+                            <button class="datalake-activation" [disabled]="element.datalakeUser === 0" 
+                            (click)="addDatalakeInformationToJson(element,1)" mat-icon-button matTooltip="Edit User Information Datalake">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                </table>
+                <mat-paginator class="activation-form user-activation-paginator" [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons></mat-paginator>
+            </div>
         </div>
-    </div>
-</mat-card>
+    </mat-card>
 </div>

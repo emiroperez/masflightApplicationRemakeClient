@@ -21,22 +21,31 @@ export class AuthGuard implements CanActivate {
     }
   }
 
-  redirectToLogIn()
+  logout()
   {
     if (this.authService.getToken ())
     {
+      this.authService.setUserLastLoginTime (this, this.authService.getUserIdFromToken (), this.logoutSuccess, this.redirectToLogin);
       this.authService.removeToken ();
-    
-      const dialogRef = this.dialog.open (MessageComponent, {
-        data: { title: "Session Expired", message: "Your session has expired. If you want to continue, please log in again." }
-      });
-    
-      dialogRef.afterClosed ().subscribe (
-        () => this.router.navigate ([''])
-      );
     }
     else
-      this.router.navigate (['']);
+      this.redirectToLogin (this);
+  }
+
+  logoutSuccess(_this)
+  {
+    const dialogRef = _this.dialog.open (MessageComponent, {
+      data: { title: "Session Expired", message: "Your session has expired. If you want to continue, please log in again." }
+    });
+  
+    dialogRef.afterClosed ().subscribe (
+      () => _this.redirectToLogin (_this)
+    );
+  }
+
+  redirectToLogin(_this)
+  {
+    _this.router.navigate (['']);
   }
 
   canActivate()
@@ -50,7 +59,7 @@ export class AuthGuard implements CanActivate {
           if (!this.authService.isTokenExpired ())
             return;
 
-          this.redirectToLogIn ();
+          this.logout ();
 
           clearInterval (this.sessionInterval);
           this.sessionInterval = null;
@@ -60,7 +69,7 @@ export class AuthGuard implements CanActivate {
       return true;
     }
 
-    this.redirectToLogIn ();
+    this.logout ();
     return false;
   }
 }

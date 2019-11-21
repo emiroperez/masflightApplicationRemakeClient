@@ -3,6 +3,9 @@ import { Globals } from '../globals/Globals';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
+declare let ClientJS: any;
+import 'clientjs';
+
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
@@ -14,6 +17,7 @@ const TOKEN_STORAGE_KEY = "token";
 export class AuthService {
   jwtHelper: JwtHelperService = new JwtHelperService ();
   ipAddress: string;
+  clientjs: any = new ClientJS ();
 
   constructor(public http: HttpClient, private globals: Globals)
   {
@@ -39,6 +43,12 @@ export class AuthService {
   {
     let url = this.globals.baseUrl + '/verify2FACode?code=' + code;
     this.post (_this, url, session, successHandler, errorHandler);
+  }
+
+  setUserLastLoginTime(_this, userId, handlerSuccess, handlerError): void
+  {
+    let url = this.globals.baseUrl + "/users/setLastTime";
+    this.post (_this, url, userId, handlerSuccess, handlerError);
   }
 
   getToken(): string
@@ -79,9 +89,45 @@ export class AuthService {
     return this.jwtHelper.isTokenExpired (token);
   }
 
+  getUserIdFromToken(token?): number
+  {
+    let tokenItem;
+
+    if (!token)
+      token = this.getToken ();
+
+    tokenItem = this.jwtHelper.decodeToken (token);
+    return parseInt (tokenItem["sub"]);
+  }
+
   getIpAddress(): string
   {
     return this.ipAddress;
+  }
+
+  getFingerprint(): any
+  {
+    let fingerprint = this.clientjs.getCustomFingerprint (
+      this.clientjs.getBrowser (),
+      this.clientjs.getEngine (),
+      this.clientjs.getFonts (),
+      this.clientjs.getOS (),
+      this.clientjs.isMobile (),
+      this.clientjs.getTimeZone (),
+      this.clientjs.getLanguage (),
+      this.clientjs.getSystemLanguage (),
+      this.clientjs.getColorDepth (),
+      this.clientjs.getCurrentResolution (),
+      this.clientjs.getAvailableResolution (),
+      this.clientjs.getDeviceXDPI (),
+      this.clientjs.getDeviceYDPI (),
+      this.clientjs.getDevice (),
+      this.clientjs.getDeviceType (),
+      this.clientjs.getDeviceVendor (),
+      this.clientjs.getCPU ()
+    );
+
+    return fingerprint;
   }
 
   get = function (_this, url, successHandler, errorHandler)

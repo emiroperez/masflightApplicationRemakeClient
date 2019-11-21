@@ -1,0 +1,20 @@
+<div class="center">
+  <div class="msf-component-airport-title">{{argument.title}}</div>
+</div>
+<div class="msf-component-no-argument-title-input-container">
+  <div class="msf-component-airport-sub-title">{{argument.label1}}</div>
+  <ng-select
+    [items]="data | async"
+    [multiple]="true"
+    [loading]="loading"
+    loadingText="Loading..."
+    [closeOnSelect]="true"
+    [hideSelected]="false"
+    bindLabel="{{argument.visibleAttribute}}"
+    (search)="onSearch($event)" 
+    [(ngModel)]="argument.value1"
+    (change)="onChange()"
+    appendTo=".msf-control-variables-overlay"
+    dropdownPosition="bottom">
+  </ng-select>
+</div>

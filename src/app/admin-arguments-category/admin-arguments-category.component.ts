@@ -11,8 +11,7 @@ import { MaterialIconPickerComponent } from '../material-icon-picker/material-ic
 
 @Component({
   selector: 'app-admin-arguments-category, FilterPipeArg',
-  templateUrl: './admin-arguments-category.component.html',
-  styleUrls: ['./admin-arguments-category.component.css']
+  templateUrl: './admin-arguments-category.component.html'
 })
 export class AdminArgumentsCategoryComponent implements OnInit {
 
@@ -114,10 +113,12 @@ export class AdminArgumentsCategoryComponent implements OnInit {
     { value: "groupingOpSum", name: "Grouping Sum Operation" },
     { value: "groupingOpSum2", name: "Grouping Sum Operation 2" },
     { value: "states", name: "States" },
-    { value: "flightSegments", name: "Flight Segments" }
+    { value: "flightSegments", name: "Flight Segments" },
+    { value: "AAA_Group", name: "AAA Group" }
   ];
 
-  constructor(private http: ApiClient,  public dialog: MatDialog, public globals: Globals, private service: ApplicationService)
+  constructor(private http: ApiClient,  
+    public dialog: MatDialog, public globals: Globals, private service: ApplicationService)
   {
     this.filteredTypes.next (this.argTypes.slice ());
     this.searchChange ();
@@ -172,24 +173,31 @@ export class AdminArgumentsCategoryComponent implements OnInit {
   }
 
   handlerErrorCategoryArguments(_this, result) {
-    console.log(result);
     _this.globals.isLoading = false;
   }
+  
 sendData() {
   this.dataToSend = this.categories.concat(this.categoryDelete);
-  console.log(this.dataToSend);
   this.service.saveNewCategoryArguments(this, this.dataToSend, this.handlerSuccess, this.handlerError);
 }
 
 handlerSuccess(_this, result){
+
+  if (_this.categories.length != result.length)
+  {
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Information", message: "Some arguments category/ies were not deleted because some options are using it."}
+    });
+  }
+
+  _this.category = { label: '', icon: '', description: '', isSelected: false };
   _this.categories = result;
   _this.globals.isLoading = false;
 }
 
 handlerError(_this,result){
-  console.log(result);
   _this.globals.isLoading = false;
-  const dialogRef = _this.dialog.open(MessageComponent, {
+  _this.dialog.open(MessageComponent, {
     data: { title:"Error", message: "It was an error, try again."}
   });
 }
@@ -205,8 +213,6 @@ handlerError(_this,result){
       option.focus = false;
       this.category = {};
     }
-
-    console.log(this.category);
 }
 
 addCategory() {
@@ -225,7 +231,7 @@ deleteCategory() {
   this.categoryDelete.push(this.category);
   const index: number = this.categories.findIndex(d => d === this.category);
   this.categories.splice(index, 1);
-  this.category = null;
+  this.category = { label: '', icon: '', description: '', isSelected: false };
 }
 
 addArgument() {
@@ -276,5 +282,22 @@ deleteArgument(argument) {
   isMatIcon(icon): boolean
   {
     return !icon.endsWith (".png");
+  }
+
+  getImageIcon(url): string
+  {
+    let newurl, filename: string;
+    let path: string[];
+
+    path = url.split ('/');
+    filename = path.pop ().split ('?')[0];
+    newurl = "";
+
+    // recreate the url with the theme selected
+    for (let dir of path)
+      newurl += dir + "/";
+
+    newurl += this.globals.theme + "-" + filename;
+    return newurl;
   }
 }

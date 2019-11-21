@@ -1,4 +1,5 @@
 import { ChartFlags } from '../msf-dashboard-panel/msf-dashboard-chartflags';
+import { CategoryArguments } from '../model/CategoryArguments';
 
 // Object used to mantain data values for each dashboard panel
 export class MsfDashboardPanelValues {
@@ -11,18 +12,20 @@ export class MsfDashboardPanelValues {
     displayPic: boolean;
     displayTable: boolean;
     displayMapbox: boolean;
+    displayDynTable: boolean;
     chartGenerated: boolean;
     infoGenerated: boolean;
     formGenerated: boolean;
     picGenerated: boolean;
     tableGenerated: boolean;
     mapboxGenerated: boolean;
+    dynTableGenerated: boolean;
 
     chartName: String;
     chartColumnOptions:any[] = []; 
     currentChartType;
     currentOption: any;
-    currentOptionCategories: any;
+    currentOptionCategories: CategoryArguments[];
 
     width: number;
     height: any;
@@ -34,7 +37,6 @@ export class MsfDashboardPanelValues {
     valueColumn: any;
     function: any;
     geodata: any;
-    theme: any;
     style: any;
 
     infoVar1: any;
@@ -50,6 +52,10 @@ export class MsfDashboardPanelValues {
 
     // values used for the table panel
     tableVariables: any[] = [];
+
+    // values used for the dynamic table panel
+    dynTableVariables: any[] = [];
+    dynTableValues: any;
 
     // palette colors used on charts
     paletteColors: string[] = [
@@ -81,9 +87,20 @@ export class MsfDashboardPanelValues {
     childPanels: any[] = [];
     flightRoutes: any[] = [];
 
+    calculatedHeight: number;
+    chartSeries: any[] = [];
+
+    vertAxisName: string;
+    horizAxisName: string;
+
+    // values used for advanced charts
+    intervalType: string;
+    intValue: any;
+
     constructor(options: any[], chartName: String, id: number, width: any, height: any, currentOption?: any, variable?: any,
         xaxis?: any, valueColumn?: any, func?: any, chartType?: any, currentOptionCategories?: any, lastestResponse?: string,
-        paletteColors?: any, updateTimeInterval?: number, row?: number, thresholds?: any)
+        paletteColors?: any, updateTimeInterval?: number, row?: number, thresholds?: any, vertAxisName?: string, horizAxisName?: string,
+        intValue?: any)
     {
         this.options = options;
         this.chartName = chartName;
@@ -96,6 +113,9 @@ export class MsfDashboardPanelValues {
         this.currentChartType = chartType;
         this.width = width;
         this.height = height;
+
+        if (height != null)
+            this.calculatedHeight = 323 + ((height.value - 1) * 15);
 
         if (thresholds)
             this.thresholds = JSON.parse (thresholds);
@@ -128,5 +148,15 @@ export class MsfDashboardPanelValues {
         }
 
         this.row = row;
+
+        this.vertAxisName = vertAxisName;
+        this.horizAxisName = horizAxisName;
+
+        this.intervalType = "ncile";
+
+        if (intValue)
+            this.intValue = intValue;
+        else
+            this.intValue = 5;
     }
 }

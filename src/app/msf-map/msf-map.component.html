@@ -1,71 +1,71 @@
-  <mat-form-field class="msf-width-20 padding-5" *ngIf="displayMapMenu == 1">
-      <mat-select placeholder="" [(ngModel)]="currentMapType" (selectionChange)="mapTypeChange($event.value)">
-          <mat-option *ngFor="let mapType of mapTypes" [value]="mapType">
-          {{mapType.name}}
-          </mat-option>
-      </mat-select>
-  </mat-form-field>
-
-  <mat-form-field class="msf-width-20 padding-5" *ngIf="displayMapMenu">
-    <mat-select placeholder="" [(ngModel)]="currentMapStyle" (selectionChange)="mapStyleChange($event.value)">
-        <mat-option *ngFor="let mapStyle of mapStyles" [value]="mapStyle">
-        {{mapStyle.name}}
-        </mat-option>
-    </mat-select>
+<mat-form-field class="msf-width-20 padding-5" *ngIf="displayMapMenu == 1">
+  <mat-select placeholder="" [(ngModel)]="currentMapType" (selectionChange)="mapTypeChange($event.value)">
+    <mat-option *ngFor="let mapType of mapTypes" [value]="mapType">
+      {{mapType.name}}
+    </mat-option>
+  </mat-select>
 </mat-form-field>
-
-  <!-- <mgl-map *ngIf="currentMapType.id == 'point'" [style]="'mapbox://styles/mapbox/dark-v9'" [zoom]="zoom" [center]="center" (load)="map = $event; map.resize ()">       -->
-    <!-- <mgl-map *ngIf="currentMapType.id == 'point'" [style]="'mapbox://styles/mapbox/light-v10'" [zoom]="zoom" [center]="center" (load)="map = $event; map.resize ()">       -->
-      <div [style.width.%]="100" [ngStyle]="{ 'height': getHeight() }">
-      <mgl-map *ngIf="currentMapType.id == 'point' && !mapRefresh" [style]=currentMapStyle.id [zoom]="zoom" [center]="center" (load)="map = $event; map.resize ()">      
-      <ng-container *ngFor="let feature of data; let i = index ">
-        <mgl-marker  [lngLat]="[feature.features[0].origin.longitude, feature.features[0].origin.latitude]">
-            <div style="justify-content: center; color: #01abec">            
-              {{feature.features[0].origin.iata}}
-            </div>
-        </mgl-marker> 
-        <mgl-marker  [lngLat]="[feature.features[0].dest.longitude, feature.features[0].dest.latitude]">
-            <div style="justify-content: center; color: #01abec">            
-              {{feature.features[0].dest.iata}}
-            </div>
-        </mgl-marker>            
-        <mgl-geojson-source *ngIf="feature" id="feature_{{i}}" [data]="feature"></mgl-geojson-source>
-        <mgl-layer *ngIf="feature"  id="feature_{{i}}" type="circle" source="feature_{{i}}" [paint]="paint"></mgl-layer>          
+<mat-form-field class="msf-width-20 padding-5" *ngIf="displayMapMenu">
+  <mat-select placeholder="" [(ngModel)]="currentLegendType">
+    <mat-option *ngFor="let legendType of legendTypes" [value]="legendType">
+      {{legendType.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<div class="msf-width-20 padding-5 msf-mapbox-checkbox" *ngIf="displayMapMenu">
+  <mat-checkbox [(ngModel)]="showAllRoutes" (ngModelChange)="toggleRoutes()">Show All Routes</mat-checkbox>
+</div>
+<div [style.width.%]="100" [ngStyle]="{ 'height': getHeight() }">
+  <mgl-map *ngIf="currentMapType.id == 'point' && !mapRefresh" [style]=currentMapStyle.id [zoom]="zoom"
+    [center]="center" (load)="map = $event; map.resize ()">
+    <ng-container *ngFor="let feature of data; let i = index ">
+      <ng-container>
+        <mgl-marker [lngLat]="[feature.features[0].origin.longitude, feature.features[0].origin.latitude]">
+          <div *ngIf="feature.features[0].shown" class="mapbox-text">
+            {{feature.features[0].origin.iata}}
+          </div>
+        </mgl-marker>
+        <mgl-marker [lngLat]="[feature.features[0].dest.longitude, feature.features[0].dest.latitude]">
+          <div *ngIf="feature.features[0].shown" class="mapbox-text">
+            {{feature.features[0].dest.iata}}
+          </div>
+        </mgl-marker>
+        <mgl-geojson-source id="geosource_{{i}}" [data]="feature"></mgl-geojson-source>
+        <mgl-layer id="feature_{{i}}" type="circle" source="geosource_{{i}}" [layout]="{ 'visibility': checkVisibility(feature.features[0]) }"
+          [paint]="{ 'circle-radius': 2, 'circle-color': paletteColors[feature.features[0].colorIndex] }"></mgl-layer>
+      </ng-container>
     </ng-container>
   </mgl-map>
-
-  <!-- <mgl-map *ngIf="currentMapType.id == 'line'" [style]="'mapbox://styles/mapbox/dark-v9'" [zoom]="zoom" [center]="center" (load)="map2 = $event; map2.resize ()"> -->
-    <!-- <mgl-map *ngIf="currentMapType.id == 'line'" [style]="'mapbox://styles/mapbox/light-v10'" [zoom]="zoom" [center]="center" (load)="map2 = $event; map2.resize ()"> -->
-      <mgl-map *ngIf="currentMapType.id == 'line' && !mapRefresh" [style]=currentMapStyle.id [zoom]="zoom" [center]="center" (load)="map2 = $event; map2.resize ()">
-        <mgl-layer
-      id="route"
-      type="line"
-      [source]="{
-        'type': 'geojson',
-        'data': {
-            'type': 'Feature',
-            'properties': {},
-            'geometry': {
-                'type': 'LineString',
-                'coordinates': coordinates
-            }
-        }
-      }"
-      [layout]="{
-        'line-join': 'round',
-        'line-cap': 'round'
-      }"
-      [paint]="{
-        'line-color': '#B42222',
-        'line-width': 4
-      }"
-    >
-    </mgl-layer>
+  <mgl-map *ngIf="currentMapType.id == 'line' && !mapRefresh" [style]=currentMapStyle.id [zoom]="zoom" [center]="center"
+    (load)="map2 = $event; map2.resize ()">
+    <ng-container *ngFor="let feature of data; let i = index ">
+      <ng-container>
+        <mgl-marker [lngLat]="[feature.features[0].origin.longitude, feature.features[0].origin.latitude]">
+          <div *ngIf="feature.features[0].shown" class="mapbox-text">
+            {{feature.features[0].origin.iata}}
+          </div>
+        </mgl-marker>
+        <mgl-marker [lngLat]="[feature.features[0].dest.longitude, feature.features[0].dest.latitude]">
+          <div *ngIf="feature.features[0].shown" class="mapbox-text">
+            {{feature.features[0].dest.iata}}
+          </div>
+        </mgl-marker>
+        <mgl-layer id="route_{{i}}" type="line" [source]="{ 'type': 'geojson', 'data': { 'type': 'Feature', 'properties': {}, 'geometry': { 'type': 'LineString', 'coordinates': coordinates[i] } } }" [layout]="{ 'line-join': 'round', 'line-cap': 'round', 'visibility': checkVisibility(feature.features[0]) }" [paint]="{ 'line-color': paletteColors[i], 'line-width': 4 }"></mgl-layer>
+      </ng-container>
+    </ng-container>
   </mgl-map>
+  <div class="mapbox-panelinfo" [style.right.px]="legendOffset" *ngIf="data.length && globals.currentOption.metaData != 3">
+    <ng-container *ngFor="let feature of data">
+      <div class="mapbox-panelinfo-item">
+        <mat-checkbox class="mapbox-panelinfo-item-checkbox" [(ngModel)]="feature.features[0].shown"></mat-checkbox>
+        <div [ngStyle]="{ 'color': paletteColors[feature.features[0].colorIndex] }" style="align-self: center">{{getRouteInfo(feature)}}</div>
+      </div>
+    </ng-container>
   </div>
-  <div class="loading-panel table-loading" *ngIf="isLoading && useCancelButton">
-    <button mat-button class="cancel-button" (click)="cancelLoading()">
-      Cancel
-    <mat-icon  class="close-icon">close</mat-icon> 
-    </button>
-  </div>
+</div>
+<div class="loading-panel table-loading" *ngIf="isLoading && useCancelButton">
+  <button mat-button class="cancel-button" (click)="cancelLoading()">
+    Cancel
+    <mat-icon class="close-icon">close</mat-icon>
+  </button>
+</div>

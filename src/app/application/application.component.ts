@@ -23,6 +23,9 @@ import { AuthService } from '../services/auth.service';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { AuthGuard } from '../guards/auth.guard';
 import { UserService } from '../services/user.service';
+import { MessageComponent } from '../message/message.component';
+import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-application',
@@ -36,6 +39,7 @@ export class ApplicationComponent implements OnInit {
   dynamicTablePlan: boolean;
   exportExcelPlan: boolean;
   dashboardPlan: boolean;
+  defaultDashboardId: number;
   menu: Menu;
   dashboards: Array<DashboardMenu>;
   sharedDashboards: Array<DashboardMenu>;
@@ -44,37 +48,60 @@ export class ApplicationComponent implements OnInit {
   user: any[];
   userName : any;
 
-  admin: boolean = false;
+  // admin: boolean = false;
   ELEMENT_DATA: any[];
   coordinates: any;
   //displayedColumns: string[] = [];
   variables;
+  currentOptionBackUp: any;
+
+  exportConfig: ExportAsConfig = {
+    type: 'png',
+    elementId: 'msf-dashboard-element',
+    options: {}
+  };
 
   @ViewChild('msfContainerRef')
   msfContainerRef: MsfContainerComponent;
 
+  TabletQuery: MediaQueryList;
   mobileQuery: MediaQueryList;
+  ResponsiveQuery: MediaQueryList;
+  private _TabletQueryListener: () => void;
   private _mobileQueryListener: () => void;
+  private _ResponsiveQueryListener: () => void; 
 
   constructor(public dialog: MatDialog, public globals: Globals, private menuService: MenuService,private router: Router,private excelService:ExcelService,
-    private appService: ApplicationService, private authService: AuthService, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private authGuard: AuthGuard,
-    private userService: UserService)
+    private appService: ApplicationService, private authService: AuthService, private changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private authGuard: AuthGuard,
+    private userService: UserService, private exportAsService: ExportAsService)
   {
     this.status = false;
+    //media querys
 
-    this.mobileQuery = media.matchMedia('(max-width: 768px)');
+    this.TabletQuery = media.matchMedia('(max-width: 768px)');
+    this._TabletQueryListener = () => changeDetectorRef.detectChanges();
+    this.TabletQuery.addListener(this._TabletQueryListener);
+    
+    this.mobileQuery = media.matchMedia('(max-width: 480px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
+
+    this.ResponsiveQuery = media.matchMedia('(max-width: 759px)');
+    this._ResponsiveQueryListener = () => changeDetectorRef.detectChanges();
+    this.ResponsiveQuery.addListener(this._ResponsiveQueryListener);
   }
 
   ngOnInit() {
     this.globals.lastTime = null;
     this.globals.clearVariables();
+    this.globals.clearVariablesMenu();
     this.getMenu();
   }
 
   ngOnDestroy(): void {
-    this.mobileQuery.removeListener(this._mobileQueryListener);
+    this.TabletQuery.removeListener(this._TabletQueryListener);
+	this.mobileQuery.removeListener(this._mobileQueryListener);
+	  this.ResponsiveQuery.removeListener(this._ResponsiveQueryListener);
   }
 
   parseTimeStamp(timeStamp): string
@@ -132,19 +159,67 @@ export class ApplicationComponent implements OnInit {
     _this.user = data;
     _this.globals.currentUser = data.name;
     _this.userName = data.name;
-    _this.admin = data.admin;
+    _this.globals.admin = data.admin;
     _this.userService.getUserLastLoginTime (_this, _this.lastTimeSuccess, _this.errorLogin);
   }
 
   lastTimeSuccess(_this, data)
   {
     _this.globals.lastTime = _this.parseTimeStamp (data);
-    _this.globals.isLoading = false;
+    _this.appService.getDefaultDashboard (_this, _this.handlerDefaultDashboard, _this.errorLogin);
   }
 
-  errorLogin(_this,result){
-    console.log(result);
-     _this.globals.isLoading = false;
+  handlerDefaultDashboard(_this, data): void
+  {
+    // if the user has a default dashboard selected, go to it
+    if (data)
+    {
+      _this.defaultDashboardId = data.id;
+      _this.globals.currentDashboardMenu = null;
+
+      for (let dashboard of _this.dashboards)
+      {
+        if (dashboard.id == data.id)
+        {
+          _this.globals.currentDashboardMenu = data;
+          _this.globals.currentOption = 'dashboard';
+          _this.globals.readOnlyDashboard = false;
+          break;
+        }
+      }
+    
+      if (!_this.globals.currentDashboardMenu)
+      {
+        for (let dashboard of _this.sharedDashboards)
+        {
+          if (dashboard.id == data.id)
+          {
+            _this.globals.currentDashboardMenu = data;
+            _this.globals.currentOption = 'dashboard';
+            _this.globals.readOnlyDashboard = true;
+            break;
+          }
+        }
+      }
+
+      if (!_this.globals.currentDashboardMenu)
+      {
+        _this.globals.appLoading = false;
+        _this.globals.isLoading = false;
+      }
+    }
+    else
+    {
+      _this.defaultDashboardId = null;
+      _this.globals.appLoading = false;
+      _this.globals.isLoading = false;
+    }
+  }
+
+  errorLogin(_this, result)
+  {
+    _this.globals.appLoading = false;
+    _this.globals.isLoading = false;
   }
 
   getDashboardsUser(){
@@ -156,13 +231,14 @@ export class ApplicationComponent implements OnInit {
     _this.menuService.getSharedDashboardsByUser(_this, _this.handlerSharedDashboard, _this.errorHandler);
   }
 
-  handlerSharedDashboard(_this, data){
+  handlerSharedDashboard(_this, data)
+  {
     _this.sharedDashboards = data;
     _this.getAdvanceFeatures();
   }
 
   errorHandler(_this,result){
-    console.log(result);
+    _this.globals.appLoading = false;
     _this.globals.isLoading = false;
   }
   getAdvanceFeatures(){
@@ -207,12 +283,12 @@ export class ApplicationComponent implements OnInit {
     _this.dynamicTablePlan = false;
     _this.exportExcelPlan = false;
 
-    console.log(result);
     _this.validateAdmin ();
   }
 
 
   getMenu(){
+    this.globals.appLoading = true;
     this.globals.isLoading = true;
     this.menuService.getMenu(this,this.handlerSuccess,this.handlerError);
   }
@@ -220,10 +296,10 @@ export class ApplicationComponent implements OnInit {
   handlerSuccess(_this,data){
     _this.menu = data;
     _this.temporalSelectOption(_this);
+    _this.currentOptionBackUp = _this.globals.currentOption; 
   }
 
   handlerError(_this,result){
-    console.log(result);
     _this.getAdvanceFeatures();
   }
 
@@ -235,10 +311,10 @@ export class ApplicationComponent implements OnInit {
           _this.recursiveSearch (option.children,_this,category);
         else
         {
-          if ((option.id==166 && _this.globals.currentApplication.id == 3) ||
-            (option.id==64 && _this.globals.currentApplication.id == 4))
+          if (option.id == _this.globals.currentApplication.defaultMenu)
           {
             _this.globals.clearVariables();
+            _this.globals.isLoading = true;
             _this.globals.currentMenuCategory = category;
             _this.globals.currentOption = option;
             _this.globals.initDataSource();
@@ -248,6 +324,7 @@ export class ApplicationComponent implements OnInit {
         }
       });
     });
+
     _this.getDashboardsUser();
   }
 
@@ -257,10 +334,10 @@ export class ApplicationComponent implements OnInit {
         _this.recursiveSearch (option.children,_this,category);
       else
       {
-        if ((option.id == 166 && _this.globals.currentApplication.id == 3) ||
-          (option.id == 64 && _this.globals.currentApplication.id == 4))
+        if (option.id == _this.globals.currentApplication.defaultMenu)
         {
           _this.globals.clearVariables();
+          _this.globals.isLoading = true;
           _this.globals.currentMenuCategory = category;
           _this.globals.currentOption = option;
           _this.globals.initDataSource();
@@ -290,6 +367,12 @@ toggle(){
   }
 
   search() {
+    if(!this.globals.showMenu && this.globals.showCategoryArguments){
+		//para mobile
+      this.globals.showCategoryArguments=false;
+      this.globals.showIntroWelcome=false;
+      this.globals.showTabs=true;
+    }
     if (this.globals.currentOption.metaData == 3)
     {
       this.configureCoordinates ();
@@ -298,24 +381,18 @@ toggle(){
 
     this.globals.moreResults = false;
     this.globals.query = true;
-    if(this.globals.currentOption.metaData==2){
-      this.globals.mapsc=true;
-
-    }else{
-      this.globals.mapsc=false;
-    }
+    this.globals.mapsc=false;
     this.globals.tab = true;
 
     this.globals.isLoading = true;
     if(this.globals.currentOption.tabType === 'map'){
       this.globals.map = true;
       this.globals.showBigLoading = false;
+      this.globals.selectedIndex = 3;
       this.msfContainerRef.msfMapRef.getTrackingDataSource();
     }else if(this.globals.currentOption.tabType === 'usageStatistics'){
       this.msfContainerRef.msfTableRef.getDataUsageStatistics();
-    }else if(this.globals.currentOption.tabType === 'scmap'){
-
-    }else{
+    }else {
       this.globals.showBigLoading = false;
       this.globals.selectedIndex = 2;
     }
@@ -345,24 +422,18 @@ toggle(){
     if(this.globals.moreResultsBtn){
       this.globals.moreResults = false;
       this.globals.query = true;
-      if(this.globals.currentOption.metaData==2){
-        this.globals.mapsc=true;
-
-      }else{
-        this.globals.mapsc=false;
-      }
+      this.globals.mapsc=false;
       this.globals.tab = true;
 
       this.globals.isLoading = true;
       if(this.globals.currentOption.tabType === 'map'){
         this.globals.map = true;
         this.globals.showBigLoading = false;
+        this.globals.selectedIndex = 3;
         this.msfContainerRef.msfMapRef.getTrackingDataSource();
       }else if(this.globals.currentOption.tabType === 'usageStatistics'){
         this.msfContainerRef.msfTableRef.getDataUsageStatistics();
-      }else if(this.globals.currentOption.tabType === 'scmap'){
-  
-      }else{
+      }else {
         this.globals.showBigLoading = false;
         this.globals.selectedIndex = 2;
       }
@@ -405,7 +476,7 @@ toggle(){
                   for (let j = 0; j < category.arguments.length; j++) {
                     let argument: Arguments = category.arguments[j];
                     if (argument.required == 1) {
-                      if ((argument.value1 == null || argument.value1 == "") || (argument.name2 && (argument.value2 == null || argument.value2 == ""))) {
+                      if ((argument.value1 == null || argument.value1.toString () == "") || (argument.name2 && (argument.value2 == null || argument.value2.toString () == ""))) {
                         return true;
                       }
                     }
@@ -450,17 +521,157 @@ toggle(){
   }
 
   exportToExcel():void {
-    this.excelService.exportAsExcelFile(this.msfContainerRef.msfTableRef.table, this.globals.currentOption.label);
+    let tableColumnFormats: any[] = [];
+    let columnMaxWidth: any[] = [];
+    let excelData: any[] = [];
+
+    // prepare the column max width values
+    for (let column of this.msfContainerRef.msfTableRef.tableOptions.displayedColumns)
+    {
+      if (column.columnFormat && column.columnFormat.length > column.columnLabel.length
+        && (column.columnType === "date" || column.columnType === "time"))
+      {
+        columnMaxWidth.push (column.columnFormat.length);
+        continue;
+      }
+
+      columnMaxWidth.push (column.columnLabel.length);
+    }
+
+    // create a new JSON for the XLSX creation
+    for (let item of this.msfContainerRef.msfTableRef.dataSource.data)
+    {
+      let excelItem: any = {};
+
+      // if there are any flight connections, check the sub elements instead
+      if (this.globals.currentOption.tabType === "scmap" && this.msfContainerRef.msfTableRef.isArray (item.Flight))
+      {
+        for (let subItem of item.Flight)
+        {
+          excelItem = {};
+
+          for (let i = 0; i < this.msfContainerRef.msfTableRef.tableOptions.displayedColumns.length; i++)
+          {
+            let column = this.msfContainerRef.msfTableRef.tableOptions.displayedColumns[i];
+            let curitem = subItem[column.columnName].parsedValue;
+
+            if (curitem == undefined)
+            {
+              excelItem[column.columnLabel] = "";
+              continue;
+            }
+    
+            if (column.columnType === "date")
+            {
+              let date: Date = new Date (curitem);
+    
+              // Advance one day, since on Excel files will be one day behind
+              date.setDate (date.getDate () + 1);
+
+              excelItem[column.columnLabel] = date.toISOString ();
+            }
+            else if (column.columnType === "time")
+            {
+              let time: Date = new Date (curitem);
+
+              // Advance one minute, since on time on Excel files will be one minute behind
+              time.setMinutes (time.getMinutes () + 1);
+
+              excelItem[column.columnLabel] = time.toISOString ();
+            }
+            else
+            {
+              excelItem[column.columnLabel] = curitem;
+    
+              // Get the maximun width for visible results for each column
+              if (curitem.toString ().length > columnMaxWidth[i])
+                columnMaxWidth[i] = curitem.toString ().length;
+            }
+          }
+
+          excelData.push (excelItem);
+        }
+
+        continue;
+      }
+  
+      for (let i = 0; i < this.msfContainerRef.msfTableRef.tableOptions.displayedColumns.length; i++)
+      {
+        let column = this.msfContainerRef.msfTableRef.tableOptions.displayedColumns[i];
+        let curitem = item[column.columnName];
+
+        if (curitem == undefined)
+        {
+          excelItem[column.columnLabel] = "";
+          continue;
+        }
+
+        if (column.columnType === "date")
+        {
+          let date: Date = new Date (curitem);
+
+          // Advance one day, since on Excel files will be one day behind
+          date.setDate (date.getDate () + 1);
+
+          excelItem[column.columnLabel] = date.toISOString ();
+        }
+        else if (column.columnType === "time")
+        {
+          let time: Date = new Date (curitem);
+
+          // Advance one minute, since on time on Excel files will be one minute behind
+          time.setMinutes (time.getMinutes () + 1);
+
+          excelItem[column.columnLabel] = time.toISOString ();
+        }
+        else
+        {
+          excelItem[column.columnLabel] = curitem;
+
+          // Get the maximun width for visible results for each column
+          if (curitem.toString ().length > columnMaxWidth[i])
+            columnMaxWidth[i] = curitem.toString ().length;
+        }
+      }
+
+      excelData.push (excelItem);
+    }
+
+    // prepare Excel column formats
+    for (let i = 0; i < this.msfContainerRef.msfTableRef.tableOptions.displayedColumns.length; i++)
+    {
+      let column = this.msfContainerRef.msfTableRef.tableOptions.displayedColumns[i];
+
+      tableColumnFormats.push ({
+        type: column.columnType,
+        format: column.outputFormat,
+        prefix: column.prefix,
+        suffix: column.suffix,
+        pos: i,
+        width: columnMaxWidth[i] + 1
+      });
+    }
+
+    this.excelService.exportAsExcelFile(excelData, this.globals.currentOption.label, tableColumnFormats);
   }
 
   isSimpleContent(): boolean {
     return (this.globals.currentOption === "dashboard" || !this.globals.currentOption);
   }
 
-  logOut(){
-    this.userService.setUserLastLoginTime (this, this.logoutSuccess, this.logoutError);
-  }
 
+  // logOut(){
+  //   this.userService.setUserLastLoginTime (this, this.logoutSuccess, this.logoutError);
+  // }
+
+  logOut(){
+    this.appService.confirmationDialog (this, "Are you sure you want to Log Out?",
+      function (_this)
+      {
+        _this.userService.setUserLastLoginTime (_this, _this.logoutSuccess, _this.logoutError);
+      });
+  }
+  
   logoutSuccess(_this): void
   {
     _this.authGuard.disableSessionInterval ();
@@ -470,7 +681,6 @@ toggle(){
 
   logoutError(_this, error): void
   {
-    console.log (error);
     _this.authGuard.disableSessionInterval ();
     _this.authService.removeToken ();
     _this.router.navigate (['']);
@@ -577,6 +787,8 @@ toggle(){
   {
     if (this.msfContainerRef && this.msfContainerRef.msfTableRef)
       this.msfContainerRef.msfTableRef = null;
+
+    this.changeDetectorRef.detectChanges ();
   }
 
   parseCoordinates(): void
@@ -637,5 +849,150 @@ toggle(){
   {
     this.parseCoordinates ();
     this.msfContainerRef.msfMapRef.generateCoordinates (this.coordinates);
+  }
+
+  setDefaultDashboard(): void
+  {
+    this.appService.confirmationDialog (this, "Do you want to set this dashboard as the default?",
+      function (_this)
+      {
+        _this.globals.isLoading = true;
+
+        if (_this.isDefaultDashboard ())
+          _this.appService.unsetDefaultDashboard (_this, _this.unsetDashboardDefaultSuccess, _this.setDashboardDefaultError);
+        else
+          _this.appService.setDefaultDashboard (_this, _this.globals.currentDashboardMenu, _this.setDashboardDefaultSuccess, _this.setDashboardDefaultError);
+      }
+    );
+  }
+
+  unsetDashboardDefaultSuccess(_this): void
+  {
+    _this.globals.isLoading = false;
+    _this.defaultDashboardId = null;
+
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Information", message: "This dashboard is no longer the default." }
+    });
+  }
+
+  setDashboardDefaultSuccess(_this): void
+  {
+    _this.globals.isLoading = false;
+    _this.defaultDashboardId = _this.globals.currentDashboardMenu.id;
+
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Information", message: "This dashboard has been set to default successfully." }
+    });
+  }
+
+  setDashboardDefaultError(_this): void
+  {
+    _this.globals.isLoading = false;
+
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Error", message: "Unable to set default dashboard." }
+    });
+  }
+
+  isDefaultDashboard(): boolean
+  {
+    if (!this.globals.currentDashboardMenu || !this.defaultDashboardId)
+      return false;
+
+    return this.defaultDashboardId == this.globals.currentDashboardMenu.id;
+  }
+  
+  showMenu(){
+    if (this.mobileQuery.matches){
+      if(!this.globals.showMenu){
+        this.globals.showCategoryArguments= false;
+        this.globals.showIntroWelcome = false;
+        this.globals.showTabs=false;
+        this.globals.showDashboard=false;
+        this.globals.showMenu = true;
+      }else if(this.globals.showMenu && !this.globals.showIntroWelcome){
+        // this.globals.clearVariables ();
+        // this.globals.currentOption = this.currentOptionBackUp;
+        this.globals.showMenu = false;
+        this.globals.showCategoryArguments= false;
+        this.globals.showTabs=false;
+        this.globals.showDashboard=false;
+        this.globals.showIntroWelcome = true;
+        this.globals.selectedIndex = 0;
+      }
+    }else if (this.ResponsiveQuery.matches){
+      if(!this.globals.showMenu){
+        this.globals.showCategoryArguments= false;
+        this.globals.showIntroWelcome = false;
+        this.globals.showTabs=false;
+        this.globals.showDashboard=false;
+        this.globals.showMenu = true;
+      }else{
+        this.globals.showCategoryArguments= false;
+        this.globals.showIntroWelcome = true;
+        this.globals.showTabs=false;
+        this.globals.showDashboard=false;
+        this.globals.showMenu = false;
+      }
+    }    
+
+    this.changeDetectorRef.detectChanges ();
+  }
+
+  backMenu(){
+    if (this.mobileQuery.matches){
+    if(!this.globals.showMenu && (this.globals.showCategoryArguments || this.globals.showDashboard)){
+      this.globals.showIntroWelcome = false;
+      this.globals.showCategoryArguments = false;
+      this.globals.showTabs=false;
+      this.globals.showDashboard=false;
+      this.globals.showMenu = true;
+    }else if(!this.globals.showMenu && this.globals.showTabs){
+      this.globals.showMenu = false;
+      this.globals.showIntroWelcome = false;
+      this.globals.showTabs=false;
+      this.globals.showDashboard=false;
+      this.globals.showCategoryArguments = true;
+    }
+  }
+    /*else if(!this.globals.showMenu && this.globals.showTabs && this.ResponsiveQuery.matches){
+      this.globals.showIntroWelcome = false;
+      this.globals.showCategoryArguments = false;
+      this.globals.showTabs=false;
+      this.globals.showDashboard=false;
+      this.globals.showMenu = true;
+    }*/
+
+    this.changeDetectorRef.detectChanges ();
+  }
+
+  getMenuVisibility(): string
+  {
+    if (!this.mobileQuery.matches && !this.ResponsiveQuery.matches)
+      return "block";
+
+    return "none";
+  }
+
+
+  exportDashboardAsPNG(): void
+  {
+    let dashboardElement: any = document.getElementById ("msf-dashboard-element");
+
+    let contentHeight: number = dashboardElement.scrollHeight;
+    let contentWidth: number = dashboardElement.scrollWidth;
+
+    // Set PNG width and height for the dashboard content
+    this.globals.isLoading = true;
+    this.exportConfig.options.width = contentWidth;
+    this.exportConfig.options.windowWidth = contentWidth;
+    this.exportConfig.options.height = contentHeight;
+    this.exportConfig.options.windowHeight = contentHeight;
+
+    this.exportAsService.save (this.exportConfig, this.globals.currentDashboardMenu.title).subscribe (() => 
+    {
+      this.globals.isLoading = false;
+    });
   }
 }

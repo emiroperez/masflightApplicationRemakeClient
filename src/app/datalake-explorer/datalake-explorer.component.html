@@ -1,0 +1,41 @@
+<div class="datalake-explorer-container">
+    <div class="datalake-explorer-header">
+        <mat-form-field *ngIf="globals.optionDatalakeSelected === 2" class="datalake-explorer-search-input-container">
+            <input matInput class="datalake-explorer-search-input" type="text" placeholder="Search" 
+            autocomplete="off" [(ngModel)]="filter" 
+            (ngModelChange)="filterTableCards()">
+            <mat-icon class="search-icon" aria-label="search">search</mat-icon>
+        </mat-form-field>
+        <div class="datalake-explorer-header-title">
+            Datalake Explorer
+        </div>
+        <div class="datalake-explorer-buttons">
+            <button *ngIf="globals.optionDatalakeSelected === 2" mat-button class="datalake-explorer-button"  matTooltip="Execution Partition">
+                <mat-icon class="datalake-explorer-button-add-icon" (click)="globals.optionDatalakeSelected = 8">history</mat-icon>
+            </button>
+            <button *ngIf="globals.optionDatalakeSelected === 2" mat-button class="datalake-explorer-button" (click)="changeOption(3)" (mouseover)="querymouseover = true" (mouseleave)="querymouseover = false" matTooltip="Query Engine">
+                <img class="datalake-explorer-query-engine-button-image" src="{{getQueryImage()}}"/>
+            </button>
+            <button *ngIf="globals.optionDatalakeSelected === 2" mat-button class="datalake-explorer-button" (click)="viewTableStats()" matTooltip="View Table Stats">
+                <mat-icon class="datalake-explorer-button-info-icon">pie_chart</mat-icon>
+            </button>
+            <button *ngIf="globals.optionDatalakeSelected === 2" mat-button class="datalake-explorer-button" (click)="viewTableInformation()" matTooltip="View Table Information">
+                <mat-icon class="datalake-explorer-button-info-icon">info</mat-icon>
+            </button>
+            <button *ngIf="globals.optionDatalakeSelected === 2" mat-button class="datalake-explorer-button" (click)="createTable()" matTooltip="Create Table">
+                <mat-icon class="datalake-explorer-button-add-icon">add</mat-icon>
+            </button>
+            <button *ngIf="globals.optionDatalakeSelected === 3" mat-button class="datalake-explorer-button" (click)="changeOption(2)" matTooltip="Table Cards">
+                <mat-icon class="datalake-explorer-button-table-card-icon">apps</mat-icon>
+            </button>
+        </div>
+    </div>
+    <div *ngIf="globals.optionDatalakeSelected === 2" class="datalake-explorer-grid-layout">
+        <ng-container *ngFor="let tableCard of filteredTableCards | async">
+            <app-datalake-table-card [values]="tableCard" (setOption)="setOption($event)"></app-datalake-table-card>
+        </ng-container>
+    </div>
+    <div *ngIf="globals.optionDatalakeSelected === 3" [style.height.%]="100">
+        <app-datalake-query-engine></app-datalake-query-engine>
+    </div>
+</div>

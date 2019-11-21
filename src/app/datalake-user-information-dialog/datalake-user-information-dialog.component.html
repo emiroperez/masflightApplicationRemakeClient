@@ -1,0 +1,52 @@
+<div class="msf-dashboard-control-variables-title">
+  <div class="msf-dashboard-control-variables-close-button">
+    <mat-icon class="msf-dashboard-close-icon" aria-label="close" (click)="closeDialog()">close</mat-icon>
+  </div>
+  <span >Datalake Information</span>
+</div>
+<div Style="width: 100%!important;display: flex;flex-direction: column;">
+  <mat-form-field class="datalake-userInfo-input"
+  [formGroup]="datalakeUserInfoFormGroup">
+    <input matInput placeholder="Username" autocomplete="off" 
+    formControlName="username">
+    <mat-error *ngIf="datalakeUserInfoFormGroup.get('username')?.invalid">You must specify Username</mat-error>
+  </mat-form-field>
+  <mat-form-field class="datalake-userInfo-input"
+  [formGroup]="datalakeUserInfoFormGroup">
+    <input   matInput placeholder="Aws Access Key Id" autocomplete="off" 
+    formControlName="aws_access_key_id">
+    <mat-error *ngIf="datalakeUserInfoFormGroup.get('aws_access_key_id')?.invalid">You must specify Aws Access Key Id</mat-error>
+  </mat-form-field>
+  <mat-form-field class="datalake-userInfo-input"
+  [formGroup]="datalakeUserInfoFormGroup">
+    <input   matInput placeholder="Aws Secret Access Key" autocomplete="off" 
+    formControlName="aws_secret_access_key">
+    <mat-error *ngIf="datalakeUserInfoFormGroup.get('aws_secret_access_key')?.invalid">You must specify Aws Secret Access Key</mat-error>
+  </mat-form-field>
+  <mat-form-field class="datalake-userInfo-input"
+  [formGroup]="datalakeUserInfoFormGroup">
+    <input   matInput placeholder="S3 Query Location" autocomplete="off" 
+    formControlName="s3_query_location">
+    <mat-error *ngIf="datalakeUserInfoFormGroup.get('s3_query_location')?.invalid">You must specify S3 Query Location</mat-error>
+  </mat-form-field>
+  <mat-form-field class="datalake-userInfo-input"
+  [formGroup]="datalakeUserInfoFormGroup">
+    <input matInput placeholder="S3 Region" autocomplete="off" 
+    formControlName="s3_region">
+    <mat-error *ngIf="datalakeUserInfoFormGroup.get('s3_region')?.invalid">You must specify S3 Region</mat-error>
+  </mat-form-field>
+  <mat-form-field class="datalake-alarm-left-combobox" 
+  [formGroup]="datalakeUserInfoFormGroup">
+    <mat-select multiple placeholder="Role" autocomplete="off" formControlName="datalakeRoles"
+     [compareWith]="compareTo">
+      <mat-option *ngFor="let role of roles" [value]="role" (onSelectionChange)="RoleChanged($event)">
+        {{role.name}}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="datalakeUserInfoFormGroup.get('role')?.invalid">You must select a Role</mat-error>
+  </mat-form-field>
+</div>
+<div class="datalake-userInfo-btn">
+  <button cdkFocusInitial mat-button class="flat-button" (click)="saveInformation()">Save</button>
+  <button mat-button class="flat-button datalake-alarm-cancel-button" (click)="Clean()">Cancel</button>
+</div>

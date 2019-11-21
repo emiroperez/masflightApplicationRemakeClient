@@ -20,8 +20,8 @@ export class Customer
     "zipCode": number;
     "billingType": string;
     "licenseType": Plan;
-    "startDate": Date;
-    "endDate": Date;
+    "startDate": string;
+    "endDate": string;
     "paymentType": number;
     "numberOfLicenses": number;
     "terms": string;

@@ -1,0 +1,94 @@
+<div class="datalake-query-engine-container" [ngStyle]="{ 'cursor': getHoverCursor() }">
+  <div [style.width.%]="leftPanelWidth" class="datalake-query-engine-left-panel">
+    <div class="datalake-schema-container" *ngFor="let querySchema of querySchemas">
+      <app-datalake-query-engine-schema [querySchema]="querySchema"></app-datalake-query-engine-schema>
+    </div>
+  </div>
+  <div class="datalake-query-engine-line-resize">
+    <mat-icon class="datalake-query-engine-drag-handler" aria-label="Drag Handler" (mousedown)="onDragClick($event)" (mouseup)="onDragRelease($event)">more_vert</mat-icon>
+  </div>
+  <div [style.width.%]="rightPanelWidth" class="datalake-query-engine-right-panel">
+    <div class="datalake-query-container">
+      <mat-tab-group [selectedIndex]="selectedIndex" (selectedIndexChange)="onIndexChange($event)">
+        <mat-tab *ngFor="let query of globals.queryTabs; let i = index">
+          <ng-template mat-tab-label>
+            Query {{i + 1}}
+            <div *ngIf="globals.queryTabs.length > 1" class="close-icon-container" (click)="closeQueryTab($event, i)">
+              <mat-icon class="close-icon">close</mat-icon> 
+            </div>
+          </ng-template>
+          <div class="datalake-query-tab">
+            <div class="datalake-query-tab-header">
+              <span class="datalake-query-editor-label">Query Editor</span>
+              <div class="datalake-query-editor-buttons">
+                <button mat-button class="datalake-query-editor-button" matTooltip="Save Query" (click)="saveQuery(query)" (mouseover)="savequerymouseover = true" (mouseleave)="savequerymouseover = false">
+                  <img class="datalake-save-query-image" src="{{getSaveQueryImage()}}"/>
+                </button>
+                <button mat-button class="datalake-query-editor-button" matTooltip="Query History" (click)="queryHistory()" (mouseover)="queryhistorymouseover = true" (mouseleave)="queryhistorymouseover = false">
+                  <img class="datalake-query-history-image" src="{{getQueryHistoryImage()}}"/>
+                </button>
+                <button mat-button class="datalake-query-editor-button" matTooltip="Run Query" (click)="runQuery(query)" (mouseover)="runquerymouseover = true" (mouseleave)="runquerymouseover = false">
+                  <img class="datalake-run-query-image" src="{{getRunQueryImage()}}"/>
+                </button>
+                <mat-form-field class="datalake-schema-select">
+                  <mat-select placeholder="Schema" [(ngModel)]="query.schema">
+                    <mat-option *ngFor="let querySchema of querySchemas" [value]="querySchema.schemaName">
+                      {{querySchema.schemaName}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="datalake-query-editor-input">
+              <ngx-codemirror [(ngModel)]="query.input" [options]="queryEditorOptions"></ngx-codemirror>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab disabled>
+          <ng-template mat-tab-label>
+            <div class="add-icon-container" (click)="addQueryTab()">
+              <mat-icon class="add-icon">add</mat-icon> 
+            </div>
+          </ng-template>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+    <div class="datalake-query-execution-result-container">
+      <div class="datalake-query-execution-result-header" id="query-engine-result-header">
+        <div class="datalake-query-execution-time-title">Query Execution Time</div>
+        <div class="datalake-query-execution-time-sub-title" *ngIf="!startQueryTime && !endQueryTime">Not run</div>
+        <div class="datalake-query-execution-time-sub-title" *ngIf="startQueryTime && !endQueryTime">Running...</div>
+        <div class="datalake-query-execution-time-sub-title" *ngIf="startQueryTime && endQueryTime">{{calcExecutionTime()}}</div>
+        <button *ngIf="queryLoading" mat-button class="datalake-query-cancel-button" (click)="cancelQueryLoading()">
+          <mat-icon class="close-icon">close</mat-icon> 
+        </button>
+      </div>
+      <div class="datalake-query-execution-result-body" [style.width.px]="calcTableWidth()">
+        <ng-container *ngIf="queryLoading">
+          <div class="datalake-query-loading"></div>
+        </ng-container>
+        <ng-container *ngIf="!queryLoading">
+          <div class="datalake-no-execution" *ngIf="!displayedColumns.length">
+            <div class="datalake-no-execution-label">
+              Run Query to view results
+            </div>
+          </div>
+          <div class="datalake-query-result datalake-table" *ngIf="displayedColumns.length">
+            <div class="datalake-query-table-body">
+              <table mat-table matSort [dataSource]="dataSource" class="datasource">
+                <ng-container *ngFor="let column of displayedColumns; let j = index" [matColumnDef]="column">
+                  <th mat-header-cell *matHeaderCellDef>{{column}}</th>
+                  <td mat-cell *matCellDef="let element">
+                    {{element[column]}}
+                  </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+              </table>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

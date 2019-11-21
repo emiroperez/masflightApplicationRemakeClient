@@ -7,7 +7,8 @@ import { Utils } from '../commons/utils';
 import { MessageComponent } from '../message/message.component';
 import { parseIntAutoRadix } from '@angular/common/src/i18n/format_number';
 import { MsfMoreInfoPopupComponent } from '../msf-more-info-popup/msf-more-info-popup.component';
-
+import { DomSanitizer } from '@angular/platform-browser';
+import * as moment from 'moment';
 
 
 
@@ -19,6 +20,7 @@ import { MsfMoreInfoPopupComponent } from '../msf-more-info-popup/msf-more-info-
 export class MsfTableComponent implements OnInit {
 
   utils: Utils;
+  resultsAvailable: string = "msf-no-visible";
   
   color = 'primary';
 
@@ -66,12 +68,24 @@ export class MsfTableComponent implements OnInit {
 
   tableOptions: any;
 
-  specialCharacters = [ '[',']','/','!','"','#','$','%','&',"'",'(',')','*','+',';','<','=','>' 
-                          ,'?','@','\\','^','`','{','|','}','~','°','-',':',','];
+  predefinedColumnFormats: any = {
+    "short": true,
+    "medium": true,
+    "long": true,
+    "full": true,
+    "shortDate": true,
+    "mediumDate": true,
+    "longDate": true,
+    "fullDate": true,
+    "shortTime": true,
+    "mediumTime": true,
+    "longTime": true,
+    "fullTime": true
+  };
 
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(public globals: Globals, private service: ApplicationService,public dialog: MatDialog) { }
+  constructor(public globals: Globals, private service: ApplicationService,public dialog: MatDialog, private sanitizer: DomSanitizer) { }
 
   ngOnInit() {      
     this.tableOptions = this.globals;
@@ -150,7 +164,7 @@ export class MsfTableComponent implements OnInit {
           const element = array2[index];
           const indexColumn = displayedColumns.findIndex(column => column.columnName === element.columnName);
           if(indexColumn==-1){
-            displayedColumns.unshift({ columnType:"string",
+            displayedColumns.unshift({ columnType: "string",
             columnName:element.columnName,
             columnLabel:element.columnLabel,
             drillDowns: [],
@@ -164,17 +178,21 @@ export class MsfTableComponent implements OnInit {
           const element = array[index];
           const indexColumn = displayedColumns.findIndex(column => column.columnName.toLowerCase() === element.columnName.toLowerCase());
           if(indexColumn==-1){
-            displayedColumns.unshift({ columnType:"string",
+            displayedColumns.unshift({ columnType: "string",
             columnName:element.columnName,
             columnLabel:element.columnLabel,
             drillDowns: [],
             show:true
           });
           }else{
+            let columnType = displayedColumns[indexColumn].columnType;
+            let columnFormat = displayedColumns[indexColumn].columnFormat;
+  
               displayedColumns.splice(indexColumn,1);
-              displayedColumns.unshift({ columnType:"string",
+              displayedColumns.unshift({ columnType:columnType,
               columnName:element.columnName,
               columnLabel:element.columnLabel,
+              columnFormat:columnFormat,
               drillDowns: [],
               show:true});
           }
@@ -182,16 +200,20 @@ export class MsfTableComponent implements OnInit {
       }else{
         const indexColumn = displayedColumns.findIndex(column => column.columnName === array.columnName);
         if(indexColumn==-1){
-          displayedColumns.unshift({ columnType:"string",
+          displayedColumns.unshift({ columnType: "string",
           columnName:array.columnName,
           columnLabel:array.columnLabel,
           drillDowns: [],
           show:true});
         }else{
+          let columnType = displayedColumns[indexColumn].columnType;
+          let columnFormat = displayedColumns[indexColumn].columnFormat;
+
             displayedColumns.splice(indexColumn,1);
-            displayedColumns.unshift({ columnType:"string",
+            displayedColumns.unshift({ columnType: columnType,
             columnName:array.columnName,
             columnLabel:array.columnLabel,
+            columnFormat:columnFormat,
             drillDowns: [],
             show:true});
         }
@@ -218,10 +240,6 @@ export class MsfTableComponent implements OnInit {
       }
     }
     return aux;
-  }
-
-  setMsfChartRef(msfChartRef){
-    msfChartRef.setColumns(this.displayedColumns);
   }
 
   replaceAll(text: string){
@@ -313,7 +331,6 @@ export class MsfTableComponent implements OnInit {
             _this.tableOptions.displayedColumns  = _this.deleteEmptyColumns(dataResult,_this.tableOptions.displayedColumns);
           _this.metadata = _this.tableOptions.displayedColumns;
           _this.tableOptions.metadata = data.metadata;
-          console.log( _this.tableOptions.displayedColumns);
           
           _this.setColumnsDisplayed(_this);
           
@@ -327,25 +344,187 @@ export class MsfTableComponent implements OnInit {
             _this.dataSource = dataResult;
           }
 
-          // special cases for date and time formats, so ngx-mask can display those values properly
+          // parse table values
           for (let i = 0; i < _this.tableOptions.displayedColumns.length; i++)
           {
             let column = _this.tableOptions.displayedColumns[i];
 
-            if (column.columnType == 'time')
+            // use column format if no output format is set
+            if (!column.outputFormat || column.outputFormat === "")
+              column.outputFormat = column.columnFormat;
+
+            if (column.columnType === "time")
             {
               for (let j = 0; j < _this.dataSource.data.length; j++)
-                _this.dataSource.data[j][column.columnName] = _this.parseTime (_this.dataSource.data[j][column.columnName]);
+              {
+                if (_this.currentOption.tabType === "scmap" && _this.dataSource.data[j].Flight)
+                {
+                  if (_this.isArray (_this.dataSource.data[j].Flight))
+                  {
+                    for (let element of _this.dataSource.data[j].Flight)
+                    {
+                      let value;
+
+                      if (element[column.columnName] == undefined)
+                        value = _this.dataSource.data[j][column.columnName];
+                      else
+                        value = element[column.columnName];
+
+                      element[column.columnName] = {
+                        value: value,
+                        parsedValue: _this.parseTime (value, column.columnFormat),
+                      }
+                    }
+
+                    continue;
+                  }
+                  else if (_this.dataSource.data[j][column.columnName] == undefined)
+                  {
+                    let value = _this.dataSource.data[j].Flight[column.columnName];
+
+                    _this.dataSource.data[j].Flight[column.columnName] = {
+                      value: value,
+                      parsedValue: _this.parseTime (value, column.columnFormat),
+                    };
+
+                    _this.dataSource.data[j][column.columnName] = _this.dataSource.data[j].Flight[column.columnName].parsedValue;
+                    continue;
+                  }
+                }
+
+                _this.dataSource.data[j][column.columnName] = _this.parseTime (_this.dataSource.data[j][column.columnName], column.columnFormat);
+              }
             }
-            else if (column.columnType == 'date')
+            else if (column.columnType === "date")
             {
               for (let j = 0; j < _this.dataSource.data.length; j++)
-                _this.dataSource.data[j][column.columnName] = _this.parseDate (_this.dataSource.data[j][column.columnName]);
+              {
+                if (_this.currentOption.tabType === "scmap" && _this.dataSource.data[j].Flight)
+                {
+                  if (_this.isArray (_this.dataSource.data[j].Flight))
+                  {
+                    for (let element of _this.dataSource.data[j].Flight)
+                    {
+                      let value;
+
+                      if (element[column.columnName] == undefined)
+                        value = _this.dataSource.data[j][column.columnName];
+                      else
+                        value = element[column.columnName];
+
+                      element[column.columnName] = {
+                        value: value,
+                        parsedValue: _this.parseDate (value, column.columnFormat),
+                      }
+                    }
+
+                    continue;
+                  }
+                  else if (_this.dataSource.data[j][column.columnName] == undefined)
+                  {
+                    let value = _this.dataSource.data[j].Flight[column.columnName];
+
+                    _this.dataSource.data[j].Flight[column.columnName] = {
+                      value: value,
+                      parsedValue: _this.parseDate (value, column.columnFormat),
+                    };
+
+                    _this.dataSource.data[j][column.columnName] = _this.dataSource.data[j].Flight[column.columnName].parsedValue;
+                    continue;
+                  }
+                }
+
+                _this.dataSource.data[j][column.columnName] = _this.parseDate (_this.dataSource.data[j][column.columnName], column.columnFormat);
+              }
+            }
+            else if (column.columnType === "number")
+            {
+              for (let j = 0; j < _this.dataSource.data.length; j++)
+              {
+                if (_this.currentOption.tabType === "scmap" && _this.dataSource.data[j].Flight)
+                {
+                  if (_this.isArray (_this.dataSource.data[j].Flight))
+                  {
+                    for (let element of _this.dataSource.data[j].Flight)
+                    {
+                      let value;
+
+                      if (element[column.columnName] == undefined)
+                        value = _this.dataSource.data[j][column.columnName];
+                      else
+                        value = element[column.columnName];
+
+                      element[column.columnName] = {
+                        value: value,
+                        parsedValue: _this.parseNumber (value),
+                      }
+                    }
+
+                    continue;
+                  }
+                  else if (_this.dataSource.data[j][column.columnName] == undefined)
+                  {
+                    let value = _this.dataSource.data[j].Flight[column.columnName];
+
+                    _this.dataSource.data[j].Flight[column.columnName] = {
+                      value: value,
+                      parsedValue: _this.parseNumber (value, column),
+                    };
+
+                    _this.dataSource.data[j][column.columnName] = _this.dataSource.data[j].Flight[column.columnName].parsedValue;
+                    continue;
+                  }
+                }
+
+                _this.dataSource.data[j][column.columnName] = _this.parseNumber (_this.dataSource.data[j][column.columnName]);
+              }
+            }
+            else // string
+            {
+              for (let j = 0; j < _this.dataSource.data.length; j++)
+              {
+                if (_this.currentOption.tabType === "scmap" && _this.dataSource.data[j].Flight)
+                {
+                  if (_this.isArray (_this.dataSource.data[j].Flight))
+                  {
+                    for (let element of _this.dataSource.data[j].Flight)
+                    {
+                      let value;
+
+                      if (element[column.columnName] == undefined)
+                        value = _this.dataSource.data[j][column.columnName];
+                      else
+                        value = element[column.columnName];
+
+                      element[column.columnName] = {
+                        value: value,
+                        parsedValue: _this.parseString (value),
+                      }
+                    }
+
+                    continue;
+                  }
+                  else if (_this.dataSource.data[j][column.columnName] == undefined)
+                  {
+                    let value = _this.dataSource.data[j].Flight[column.columnName];
+
+                    _this.dataSource.data[j].Flight[column.columnName] = {
+                      value: value,
+                      parsedValue: _this.parseString (value, column.columnFormat),
+                    };
+
+                    _this.dataSource.data[j][column.columnName] = _this.dataSource.data[j].Flight[column.columnName].parsedValue;
+                    continue;
+                  }
+                }
+
+                _this.dataSource.data[j][column.columnName] = _this.parseString (_this.dataSource.data[j][column.columnName]);
+              }
             }
           }
 
           if(_this.currentOption.tabType === "legacy" || _this.currentOption.tabType === "scmap"){
-            if( _this.tableOptions.totalRecord<100 ||  _this.tableOptions.totalRecord>100){
+            if( _this.tableOptions.totalRecord < 50 || _this.tableOptions.totalRecord > 50){
               _this.tableOptions.moreResultsBtn = false;
               _this.tableOptions.moreResults = false;
             }else{
@@ -355,8 +534,8 @@ export class MsfTableComponent implements OnInit {
             if(_this.tableOptions.actualPageNumber==undefined)
               _this.tableOptions.actualPageNumber = _this.actualPageNumber;
             
-            var aux = (_this.tableOptions.actualPageNumber+1)*100;
-            aux = aux!=0 ? aux : 100;
+            var aux = (_this.tableOptions.actualPageNumber+1)*50;
+            aux = aux!=0 ? aux : 50;
             if( _this.tableOptions.totalRecord<aux){
               _this.tableOptions.moreResultsBtn = false;
               _this.tableOptions.moreResults = false;
@@ -398,8 +577,9 @@ export class MsfTableComponent implements OnInit {
           _this.dataSource.sort =_this.sort;
         }
         _this.tableOptions.dataSource = true;
-        _this.tableOptions.selectedIndex = 2;
-        console.log(_this.dataSource);
+
+        if (_this.currentOption.tabType !== "map")
+          _this.tableOptions.selectedIndex = 2;
       }else{
         _this.tableOptions.dataSource = false;
       }
@@ -410,11 +590,19 @@ export class MsfTableComponent implements OnInit {
       }else{
         _this.tableOptions.template = false;
       }
-      _this.tableOptions.selectedIndex = 2;
+
+      if (_this.currentOption.tabType !== "map")
+        _this.tableOptions.selectedIndex = 2;
+
       _this.finishLoading.emit (false);
       if(!_this.globals.isLoading){
         _this.globals.showBigLoading = true;
       }
+
+      if (_this.tableOptions.dataSource && !_this.tableOptions.template && ((_this.currentOption.metaData==1) || (_this.currentOption.metaData==3) || (_this.currentOption.tabType=='scmap')))
+        _this.resultsAvailable = "msf-visible";
+      else
+        _this.resultsAvailable = "msf-no-visible";
     }
   }
 
@@ -431,7 +619,8 @@ export class MsfTableComponent implements OnInit {
     }
     _this.tableOptions.dataSource = false;
     _this.tableOptions.template = false;
-    console.log(result);
+
+    _this.resultsAvailable = "msf-no-visible";
   }
 
   getCurrentClass(tableItem:any){
@@ -445,92 +634,95 @@ export class MsfTableComponent implements OnInit {
     return aux;
   }
 
-  parseDate(date): string
+  parseDate(date: any, format: string): Date
   {
-    let day, month;
-    let d: Date;
+    let momentDate: moment.Moment;
+    let momentFormat: string;
 
-    if (date == null)
-      return "";
+    if (date == null || date == "")
+      return null;
 
-    d = new Date (date);
-    if (Object.prototype.toString.call (d) === "[object Date]")
-    {
-      if (isNaN (d.getTime ()))
-        return "";
-    }
+    if (format == null || format == "")
+      momentFormat = "YYYYMMDD"; // fallback for date values with no column or pre-defined format set
+    else if (this.predefinedColumnFormats[format])
+      momentFormat = "DD/MM/YYYY";
     else
-      return "";
+    {
+      // replace lower case letters with uppercase ones for the moment date format
+      momentFormat = format.replace (/m/g, "M");
+      momentFormat = momentFormat.replace (/y/g, "Y");
+      momentFormat = momentFormat.replace (/d/g, "D");
+    }
 
-    month = (d.getMonth () + 1);
-    if (month < 10)
-      month = "0" + month;
+    momentDate = moment (date, momentFormat);
+    if (!momentDate.isValid ())
+      return null; // invalid date value will be null
 
-    day = d.getDate ();
-    if (day < 10)
-      day = "0" + day;
-
-    return day + "-" + month + "-" + d.getFullYear ();
+    return momentDate.toDate ();
   }
 
-  parseTime(date): string
+  parseTime(time: any, format: string): Date
   {
-    let hour, minute, second;
-    let d: Date;
+    let momentFormat: string;
+    let date: Date;
 
-    if (date == null)
-      return "";
+    if (time == null || time == "")
+      return null;
 
-    d = new Date (date);
-    if (Object.prototype.toString.call (d) === "[object Date]")
+    date = new Date (time);
+
+    if (isNaN (date.getTime ()))
     {
-      if (isNaN (d.getTime ()))
-        return "";
+      let momentDate: moment.Moment;
+
+      if (format == null || format == "" || this.predefinedColumnFormats[format])
+        momentFormat = "HH:mm:ss";          // fallback for time values with no column or pre-defined format set
+      else
+      {
+        // replace some cases in order for moment date format compatibility
+        momentFormat = format.replace (/h/g, "H");
+        momentFormat = momentFormat.replace (/M/g, "m");
+        momentFormat = momentFormat.replace (/S/g, "s");
+      }
+
+      momentDate = moment (time, momentFormat);
+      if (!momentDate.isValid ())
+        return null; // invalid time value will be null
+
+      return momentDate.toDate ();
     }
-    else
-      return "";
 
-    hour = d.getHours ();
-    if (hour < 10)
-      hour = "0" + hour;
-
-    minute = d.getMinutes ();
-    if (minute < 10)
-      minute = "0" + minute;
-
-    second = d.getSeconds ();
-    if (second < 10)
-      second = "0" + second;
-
-    return hour + ":" + minute + ":" + second + "." + d.getMilliseconds ();
+    // use full date format if the time value is a valid date
+    return moment (date.toISOString (), "YYYY-MM-DDTHH:mm:ss.sssZ").toDate ();
   }
 
-  getFormatCell(value:any,element:any,column:any,flightArray:any[]){
-    var aux: any = String(value);
-    if(value==undefined){
-      if(this.currentOption.tabType=='scmap'&& this.currentOption.metaData==2){
-        var flight  = element['Flight'];
-          if(flight!=undefined){
-            aux =""+ flight[column.columnName]!=undefined ? String(flight[column.columnName]) : "";
-          }else{
-            if(flightArray){
-              aux =""+ flightArray[column.columnName]!=undefined ? String(flightArray[column.columnName]) : "";
-            }
-          }
-        }else{
-          if(column.columnType=='number'){
-            aux = "0";
-          }else{
-            aux = "";
-          }
-        }
+  parseNumber(value: any): string
+  {
+    if (isNaN (value))
+    {
+      let aux: string = String (value);
+
+      // remove any non-numeric characters except dot if the value is not a number
+      value = aux.replace (/[^0-9.]/g, "");
     }
 
-    aux = aux.replace("%","");
-    aux = aux.replace("$","");
-    aux = aux.replace("ï¿½","0");
+    if (value.toString () == "0")
+      value = "0";
 
-    element[column.columnName] = aux;
+    return value;
+  }
+
+  parseString(value: any): string
+  {
+    let aux: string;
+
+    if (value == null)
+      return null;
+
+    aux = String (value);
+
+    // remove any newline charaters
+    return aux.replace (/\n/g, "");
   }
 
   isArray( element:any){
@@ -541,7 +733,7 @@ export class MsfTableComponent implements OnInit {
     if(j > 0 && j < array.length){
       return 'msf-sub-cell msf-border-top';
     }else{
-      return 'msf-sub-cell'
+      return 'msf-sub-cell';
     }
   }
 
@@ -549,9 +741,10 @@ export class MsfTableComponent implements OnInit {
     this.globals.popupMainElement = null;
     this.globals.popupResponse = null;
     this.globals.subDataSource = null;
+    this.globals.subPdfViewer = null;
     this.goToPopup(drillDown);
     this.globals.currentDrillDown = drillDown;
-    var rowNumber = this.dataSource.filteredData.indexOf(element)
+    var rowNumber = this.dataSource.filteredData.indexOf(element);
     this.globals.popupLoading2 = true;
     var parameters = this.getSubOptionParameters(drillDown.drillDownParameter,rowNumber);
     this.service.getSubDataTableSource(this,drillDown.childrenOptionId,parameters,this.getPopupInfo,this.popupInfoError)
@@ -559,7 +752,6 @@ export class MsfTableComponent implements OnInit {
 
   popupInfoError(_this,data) {
     _this.globals.popupLoading2 = false;
-    console.log("ERROR")
   }
 
   getPopupInfo(_this,data){
@@ -567,8 +759,18 @@ export class MsfTableComponent implements OnInit {
     _this.globals.subTotalRecord = response.total;
     let keys = Object.keys(response);
     let dataResult;
+
+    if (response.url && response.url != "")
+    {
+      // sanitize this html code in order to be able to use the pdf viewer for the drill down
+      _this.globals.subPdfViewer = _this.sanitizer.bypassSecurityTrustHtml (
+        "<object data='" + response.url + "' type='application/pdf' width='100%' height='100%'>" + 
+          "<embed src='" + response.url + "' type='application/pdf' width='100%' height='100%'/>" +
+        "</object>"
+      );
+    }
+ 
     _this.globals.subDisplayedColumns = data.metadata;
-    console.log( _this.globals.subDisplayedColumns);
     if( _this.globals.subTotalRecord > 1){
       let mainElement = _this.getMainKey(keys,response);
     if(!(mainElement instanceof Array)){
@@ -585,8 +787,6 @@ export class MsfTableComponent implements OnInit {
       }
       _this.globals.popupResponse = response;
       _this.globals.popupMainElement = mainElement;
-      console.log(_this.globals.popupResponse)
-      console.log(_this.globals.popupMainElement)
     }else{
       if( _this.globals.subMoreResults){
         _this.globals.moreResultsBtn = false;
@@ -605,23 +805,28 @@ export class MsfTableComponent implements OnInit {
 }
 
 
-  goToPopup(drillDown:any){
+  goToPopup(drillDown:any)
+  {
     var width = drillDown.width;
-    var height =drillDown.height;
-    if(width=="" || width==null){
-      width = "1200px";
-    }else{
-      width +="px";
-    }
-    if(height=="" || height==null){
+    var height = drillDown.height;
+
+    if (!width || width == "")
+      width = "auto";
+    else
+      width += " !important";
+
+    if (!height || height == "")
       height = "500px";
-    }else{
-      height +="px";
-    }
+    else
+      height += " !important";
+
     this.dialog.open (MsfMoreInfoPopupComponent, {
       height: height,
       width: width,
-      panelClass: 'msf-more-info-popup'
+      panelClass: 'msf-more-info-popup',
+      data: {
+        tableWidth: (drillDown.width && drillDown.width != "" && drillDown.width != "auto" ? (Number (drillDown.width) - 116) : 1084)
+      }
     });
   }
 
@@ -667,20 +872,8 @@ export class MsfTableComponent implements OnInit {
     return aux;
   }
 
-  resultsAvailable()
-  {
-    if (this.currentOption == null)
-      return 'msf-no-visible';
-
-    if (this.tableOptions.dataSource && !this.tableOptions.template && ((this.currentOption.metaData==1) || (this.currentOption.metaData==3) || (this.currentOption.tabType=='scmap'))) {
-        return 'msf-visible'
-    } else {
-      return 'msf-no-visible'
-    }
-  }
-
   cancelLoading(){
-    this.isLoading = false;
+    this.finishLoading.emit (false);
     this.globals.showBigLoading = true;
   }
 

@@ -19,7 +19,7 @@ export class MsfSingleAirlineComponent implements OnInit {
   @Input("argument") public argument: Arguments;
 
   loading = false;
-   constructor(private http: ApiClient, private globals: Globals) { }
+   constructor(private http: ApiClient, public globals: Globals) { }
  
    ngOnInit() { 
     this.getRecords(null, this.handlerSuccess);
@@ -51,7 +51,6 @@ export class MsfSingleAirlineComponent implements OnInit {
 
   handlerError(_this,result){
     _this.loading = false;
-    console.log(result);
   }
 
   onSearch($event: any){

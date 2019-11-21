@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Globals } from '../globals/Globals';
 import { forEach } from '@angular/router/src/utils/collection';
+import { MediaMatcher } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-option-welcome',
@@ -8,9 +9,21 @@ import { forEach } from '@angular/router/src/utils/collection';
   styleUrls: ['./option-welcome.component.css']
 })
 export class OptionWelcomeComponent implements OnInit {
+    
+  mobileQuery: MediaQueryList;
+  private _mobileQueryListener: () => void;
+  
+  constructor(public globals : Globals, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
 
-  constructor(public globals : Globals) { }
+    this.mobileQuery = media.matchMedia('(max-width: 480px)');
+    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+    this.mobileQuery.addListener(this._mobileQueryListener);
+   }
 
+  ngOnDestroy(): void {
+    this.mobileQuery.removeListener(this._mobileQueryListener);
+  }
+  
   welcome :any;
   items :any = [];
   dataSource :any = [];

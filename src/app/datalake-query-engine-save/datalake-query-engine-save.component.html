@@ -1,0 +1,43 @@
+<div class="datalake-save-query">
+  <div class="datalake-save-query-header">
+    <div class="datalake-save-query-title">
+      <span>Save Query</span>
+    </div>
+  </div>
+  <!--body Right--> 
+  <div class="datalake-save-query-body">
+    <div class="datalake-save-query-one-column">
+      <div class="datalake-save-query-two-column">
+          <mat-form-field  [formGroup]="saveQueryFormGroup"  class="datalake-partition-cron">
+              <span class="datalake-alarm-minutes-label">Name</span>
+              <input matInput formControlName="QueryName"
+              type="string" autocomplete="off" class="datalake-partition-input"/>
+          <mat-error *ngIf="saveQueryFormGroup.get('QueryName')?.invalid">You must type a name to query</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="datalake-save-query-two-column">
+        <mat-form-field  [formGroup]="saveQueryFormGroup"  class="datalake-partition-cron">
+            <span class="datalake-alarm-minutes-label">Schema</span>
+            <input matInput formControlName="Schema"
+            type="string" autocomplete="off" class="datalake-partition-input"/>
+        <mat-error *ngIf="saveQueryFormGroup.get('Schema')?.invalid">You must type a name to query</mat-error>
+      </mat-form-field>
+    </div>
+  </div> 
+    <div class="datalake-save-query-one-column">
+      <mat-form-field  [formGroup]="saveQueryFormGroup"  class="datalake-partition-cron">
+          <span class="datalake-alarm-minutes-label">Query</span>
+          <textarea matInput formControlName="raw"></textarea>
+          <!--
+          <input matInput formControlName="raw"
+          type="string" autocomplete="off" class="datalake-partition-input"/> -->
+        <mat-error *ngIf="saveQueryFormGroup.get('raw')?.invalid">You must type a name to query</mat-error>
+      </mat-form-field>
+    </div>
+  </div> 
+  <!--end body-->
+  <div class="datalake-save-query-btn">
+      <button mat-button class="flat-button" (click)="save()">Save</button>
+      <button mat-button class="flat-button" (click)="Clean()">Cancel</button>
+  </div>
+</div>

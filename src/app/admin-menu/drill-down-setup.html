@@ -1,40 +1,35 @@
-<div style="color: white !important">
-    <div mat-dialog-title style="flex: 1">
+<div class="admin-menu-dialog-container">
+    <div mat-dialog-title class="admin-menu-drill-down-dialog-container">
         <button mat-icon-button (click)="addDrillDown()">
-  <mat-icon style="color: white" aria-label="add">add_circle</mat-icon>
-</button>
+            <mat-icon class="admin-mat-icon-button" aria-label="add">add_circle</mat-icon>
+        </button>
         <button mat-icon-button (click)="deleteDrillDown()">
-    <mat-icon style="color: white" aria-label="delete">remove_circle</mat-icon>
-  </button>
+            <mat-icon class="admin-mat-icon-button" aria-label="delete">remove_circle</mat-icon>
+        </button>
     </div>
-    <div mat-dialog-content style="flex: 1">
-        <table mat-table matSort [dataSource]="dataSource" class="datasource welcome-table">
-
-            <ng-container matColumnDef="title" class="example-box">
+    <div mat-dialog-content class="admin-menu-drill-down-dialog-container">
+        <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8 datasource welcome-table">
+            <ng-container matColumnDef="title" class="admin-dialog-box">
                 <th mat-header-cell *matHeaderCellDef>Title</th>
-                <td mat-cell *matCellDef="let element">
+                <td mat-cell class="drill-down-cell" *matCellDef="let element">
                     <input matInput placeholder="Title" [value]="element.title" [(ngModel)]="element.title">
                 </td>
             </ng-container>
-
-            <ng-container matColumnDef="childrenOptionId" class="example-box">
+            <ng-container matColumnDef="childrenOptionId" class="admin-dialog-box">
                 <th mat-header-cell *matHeaderCellDef>Options</th>
-                <td mat-cell *matCellDef="let element">
+                <td mat-cell class="drill-down-cell" *matCellDef="let element">
                     <mat-select class="activation-form" placeholder="Children" [(ngModel)]="element.childrenOptionId" #singleSelect>
                         <ngx-mat-select-search [formControl]="optFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
-                        <mat-option *ngFor="let item of filteredOpts  | async" [value]="item.id">{{item.string}}</mat-option>
+                        <mat-option *ngFor="let item of filteredOpts | async" [value]="item.id">{{item.string}}</mat-option>
                     </mat-select>
                 </td>
             </ng-container>
-
-
-            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="selectRow(row)" [ngClass]="{ 'selected': row === drillDownSelected }"></tr>
         </table>
-
     </div>
-    <div style="margin-top: 10px">
-        <button mat-button class="flat-button" style="margin-right: 5px" (click)="onNoClick()">Cancel</button>
+    <div class="admin-menu-content-dialog-buttons">
+        <button mat-button class="flat-button admin-menu-content-cancel-button" (click)="onNoClick()">Cancel</button>
         <button mat-button class="flat-button" (click)="sendData()">Save</button>
     </div>
 </div>

@@ -1,0 +1,39 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Serve App",
+            "type": "shell",
+            "command": "ng",
+            "args": [
+                "serve"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Compile App",
+            "type": "shell",
+            "command": "ng",
+            "args": [
+                "build",
+                "--aot",
+                "--output-hashing=all",
+                "--prod"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Watch styles.sass For Changes",
+            "type": "shell",
+            "command": "sass",
+            "args": [
+                "--watch",
+                "./src/styles.sass",
+                "./src/styles.css",
+                "--style",
+                "compressed"
+            ],
+            "problemMatcher": []
+        }
+    ]
+}

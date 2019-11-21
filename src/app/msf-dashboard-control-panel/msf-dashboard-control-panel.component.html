@@ -1,0 +1,123 @@
+<ng-container *ngIf="controlPanelOpen">
+  <div *ngIf="!addVariableMenu && !setCategoriesValues && !controlVariables.length" class="msf-dashboard-control-panel-container">
+    <button mat-flat-button [disabled]="!controlVariablesAvailable.length" (click)="addVariable()" [ngClass]="controlVariablesAvailable.length ? 'flat-button' : 'flat-button-disabled'" class="msf-dashboard-control-panel-button">
+      <mat-icon aria-label="Add Variable">add</mat-icon>
+      Add Variable
+    </button>
+    <button mat-flat-button [disabled]="!controlPanelCategories.length" (click)="setCategories()" [ngClass]="controlPanelCategories.length ? 'flat-button' : 'flat-button-disabled'" class="msf-dashboard-control-panel-button">
+      <mat-icon aria-label="Set Categories">category</mat-icon>
+      Set Categories
+    </button>
+  </div>
+  <div *ngIf="!addVariableMenu && !setCategoriesValues && controlVariables.length" class="msf-dashboard-control-panel-tabs-container">
+    <mat-tab-group [selectedIndex]="selectedIndex" (selectedIndexChange)="onLinkClick($event)">
+      <mat-tab *ngFor="let controlVariable of controlVariables" [style.height.%]="100">
+        <ng-template mat-tab-label>
+          <mat-icon *ngIf="controlVariable.icon && controlVariable.isMatIcon" class="msf-dashboard-control-panel-tab-icon">{{controlVariable.icon}}</mat-icon>
+          <img *ngIf="controlVariable.icon && !controlVariable.isMatIcon" src="{{getImageIcon(controlVariable)}}" class="msf-dashboard-control-panel-tab-icon">
+          {{controlVariable.label}}
+        </ng-template>
+        <div class="msf-dashboard-control-panel-variable-tab-container msf-dashboard-control-panel-tab-container">
+          <div class="msf-dashboard-control-panel-variable-buttons">
+            <button mat-flat-button [disabled]="controlVariables.length == controlVariablesAvailable.length" (click)="addVariable()" [ngClass]="controlVariables.length != controlVariablesAvailable.length ? 'flat-button' : 'flat-button-disabled'" class="msf-dashboard-control-panel-variable-button" matTooltip="Add Variable">
+              <mat-icon aria-label="Add Variable">add</mat-icon>
+            </button>
+            <button mat-flat-button (click)="removeVariable()" class="flat-button msf-dashboard-control-panel-variable-button" matTooltip="Remove">
+              <mat-icon aria-label="Remove">close</mat-icon>
+            </button>
+            <button mat-flat-button (click)="updateDashboard()" class="flat-button msf-dashboard-control-panel-variable-button" matTooltip="Refresh">
+              <mat-icon aria-label="Update">refresh</mat-icon>
+            </button>
+            <button mat-flat-button [disabled]="!controlPanelCategories.length" (click)="setCategories()" [ngClass]="controlPanelCategories.length ? 'flat-button' : 'flat-button-disabled'" class="msf-dashboard-control-panel-variable-button" matTooltip="Set Categories">
+              <mat-icon aria-label="Set Categories">category</mat-icon>
+            </button>
+          </div>
+          <div class="msf-dashboard-control-panel-variable-arguments">
+            <div *ngFor="let argument of controlVariable.arguments" class="msf-dashboard-control-panel-variable-argument">
+              <ng-container *ngIf="!isSingleCheckbox(argument) && !isTaxiTimesCheckbox(argument)">
+                <div class="msf-component-outer-container">
+                  <div *ngIf="!isDateRange(argument)" class="msf-component-argument-container">
+                    <app-msf-argument [currentArgument]="argument" [currentGlobalOptionId]="controlVariable.optionId"></app-msf-argument>
+                    <!-- Special treatment for single checkbox arguments -->
+                    <ng-container *ngIf="argument.checkboxes">
+                      <ng-container *ngFor="let checkbox of argument.checkboxes">
+                        <div class="msf-single-checkbox-outer-container">
+                          <div class="msf-component-argument-container">
+                            <app-msf-single-checkbox [argument]="checkbox"></app-msf-single-checkbox>
+                          </div>
+                        </div>
+                      </ng-container>
+                    </ng-container>
+                  </div>
+                  <!-- Another special treatment for the date range argument -->
+                  <ng-container *ngIf="isDateRange(argument)">
+                    <app-msf-date-range class="msf-component-date-range-container" [argument]="argument"></app-msf-date-range>
+                  </ng-container>
+                </div>
+              </ng-container>
+            </div>
+            <!-- The taxi times single checkbox will be always the last one of the arguments -->
+            <ng-container *ngIf="controlVariable.taxiTimesCheckbox">
+              <div class="msf-dashboard-control-panel-variable-argument">
+                <div class="msf-component-outer-container">
+                  <div class="msf-component-taxi-times-single-checkbox">
+                    <app-msf-taxi-times-checkbox [argument]="controlVariable.taxiTimesCheckbox"></app-msf-taxi-times-checkbox>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+  <div *ngIf="addVariableMenu && !setCategoriesValues" class="msf-dashboard-control-panel-container">
+    <div class="msf-dashboard-control-panel-variable-container">
+      <ng-container *ngFor="let controlVariable of controlVariablesAvailable">
+        <ng-container *ngIf="!controlVariable.added">
+          <div *ngIf="!controlVariable.selected" class="msf-dashboard-control-panel-variable" (mouseover)="controlVariable.hover = true" (mouseleave)="controlVariable.hover = false" (click)="checkControlVariable(controlVariable)">
+            <mat-icon *ngIf="controlVariable.icon && controlVariable.isMatIcon" class="msf-menu-image-border msf-vertical-middle msf-menu-mat-icon msf-dashboard-control-panel-variable-icon">{{controlVariable.icon}}</mat-icon>
+            <div *ngIf="controlVariable.icon && !controlVariable.isMatIcon" [style.background-image]="'url(' + getImageIcon(controlVariable) + ')'" class="msf-menu-image-border msf-vertical-middle msf-dashboard-control-panel-variable-icon"></div>
+            <div *ngIf="!controlVariable.icon" class="msf-menu-image-border msf-vertical-middle msf-dashboard-control-panel-variable-icon-empty"></div>
+            <span class="msf-menu-component-text msf-control-variables-text msf-dashboard-control-panel-variable-label">{{controlVariable.label}}</span>
+          </div>
+          <div *ngIf="controlVariable.selected" class="msf-dashboard-control-panel-variable-selected" (click)="uncheckControlVariable(controlVariable)">
+            <mat-icon class="msf-menu-image-border msf-vertical-middle msf-menu-mat-icon msf-dashboard-control-panel-variable-icon">check</mat-icon>
+            <span class="msf-menu-component-text msf-control-variables-text msf-dashboard-control-panel-variable-label">{{controlVariable.label}}</span>
+          </div>
+        </ng-container>
+      </ng-container>
+    </div>
+    <button [disabled]="!numControlVariablesSelected" mat-flat-button (click)="addControlVariables()" [ngClass]="numControlVariablesSelected ? 'flat-button' : 'flat-button-disabled'" class="msf-dashboard-control-panel-button">
+      OK
+    </button>
+    <button mat-flat-button (click)="cancelAddVariable()" class="flat-button msf-dashboard-control-panel-button">
+      Cancel
+    </button>
+  </div>
+  <div *ngIf="setCategoriesValues" class="msf-dashboard-control-panel-category-tabs-container">
+    <mat-tab-group [selectedIndex]="selectedCategoryIndex" (selectedIndexChange)="onLinkClick($event)">
+      <mat-tab *ngFor="let controlPanelCategory of controlPanelCategories" [style.height.%]="100">
+        <ng-template mat-tab-label>
+          {{controlPanelCategory.name}}
+        </ng-template>
+        <div class="msf-dashboard-control-panel-variable-tab-container">
+          <div class="msf-dashboard-control-panel-variable-buttons">
+            <button mat-flat-button (click)="returnToVariables()" class="flat-button msf-dashboard-control-panel-variable-button">
+              Set Variables
+            </button>
+          </div>
+          <div class="msf-dashboard-control-panel-category-checkboxes">
+            <div *ngFor="let category of controlPanelCategory.values" [ngClass]="{'msf-dashboard-control-panel-category-checkbox-border': !category.checked, 'msf-dashboard-control-panel-category-checkbox-checked-border': category.checked }">
+              <div [ngClass]="{'msf-dashboard-control-panel-category-checkbox-container': !category.checked, 'msf-dashboard-control-panel-category-checkbox-checked-container': category.checked }" (click)="toggleCategory(category, controlPanelCategory)">
+                <mat-checkbox [ngClass]="{'msf-dashboard-control-panel-category-checkbox': !category.checked, 'msf-dashboard-control-panel-category-checkbox-checked': category.checked }" class="category-checkbox" [(ngModel)]="category.checked" (click)="$event.stopPropagation()" (ngModelChange)="this.hideCategoryFromCharts.emit({ name: category.name, variable: controlPanelCategory.name })">
+                  {{category.name}}
+                </mat-checkbox>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</ng-container>

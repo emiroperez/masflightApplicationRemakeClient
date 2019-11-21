@@ -14,6 +14,7 @@ export class MsfLoadingComponent implements OnInit {
   }
 
   cancelLoading(){
+    this.globals.appLoading = false;
     this.globals.isLoading = false;
   }
 

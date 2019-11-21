@@ -1,0 +1,18 @@
+<div class="datalake-partition-dialog-header" >
+    <div class="datalake-partition-dialog-title">
+      <span>Commands</span>
+    </div>
+    <div Style="width: 30%; display: flex; flex-direction: row; justify-content: space-between;">
+    <button mat-button class="flat-button" (click)="copyText(data.command)" >Copy to clipboard</button>
+    <div class="datalake-create-table-button">
+      <button mat-icon-button (click)="onNoClick()">
+        <mat-icon aria-label="Close">close</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>
+<div class="datalake-partition-dialog-container">
+  <div class="datalake-partition-dialog-container-text">
+    <span>{{data.command}}</span>
+  </div>
+</div>

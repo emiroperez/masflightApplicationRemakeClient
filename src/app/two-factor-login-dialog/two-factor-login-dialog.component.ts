@@ -39,6 +39,5 @@ export class TwoFactorLoginDialogComponent {
 
   handleError(_this, error)
   {
-    console.log (error);
   }
 }

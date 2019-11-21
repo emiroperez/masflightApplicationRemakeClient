@@ -17,7 +17,10 @@ export class Arguments{
     label3:string;
     visibleAttribute:string;
     selectedAttribute:string;
-    
+    aaaGroup : string; //kp20190827
+    targetGroup : string; //kp20190827
+    minDate: Date;
+    maxDate: Date;
 
     constructor(requiredIn: number,typeIn: string, name1In: string,name2In: string,
         name3In: String, urlIn: string , visibleAttributeIn:string, selectedAttributeIn:string){

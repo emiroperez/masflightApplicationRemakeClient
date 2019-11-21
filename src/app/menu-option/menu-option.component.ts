@@ -27,7 +27,6 @@ export class MenuOptionComponent implements OnInit {
 
   optionClickHandler(option)
   {
-    this.optionChanged.emit ();
     this.globals.clearVariables ();
     this.globals.currentOption = option;
     this.globals.initDataSource ();
@@ -41,7 +40,7 @@ export class MenuOptionComponent implements OnInit {
     }
     else if (this.globals.currentOption.tabType === 'scmap')
     {
-      this.globals.mapsc = true;
+      this.globals.mapsc = false;
       this.globals.moreResultsBtn = false;
       this.globals.selectedIndex = 1;
     }
@@ -51,12 +50,13 @@ export class MenuOptionComponent implements OnInit {
     if (this.globals.currentOption.metaData == 3)
     {
       this.globals.coordinates = "";
-      this.globals.displayMapMenu = 2;
+      this.globals.displayMapMenu = 0;
     }
     else
       this.globals.displayMapMenu = 1;
 
     this.globals.status = true;
+    this.optionChanged.emit ();
   }
 
   closeMenu() {

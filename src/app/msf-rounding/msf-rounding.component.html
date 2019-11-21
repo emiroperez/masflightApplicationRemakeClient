@@ -1,11 +1,10 @@
-<div>
-    <div class="center">
-        <div class="msf-component-airport-title">Format</div>        
-    </div>    
-    <div class="msf-airline-container">
-        <div class="msf-full-width">   
-            <div class="msf-component-airport-sub-title">Rounding (Decimals)</div>         
-            <ng-select
+<div class="center">
+    <div class="msf-component-airport-title">Format</div>        
+</div>    
+<div class="msf-airline-container">
+    <div class="msf-full-width msf-grouping-input-container">   
+        <div class="msf-component-airport-sub-title">Rounding (Decimals)</div>
+        <ng-select
             [items]="roundingList"
             [multiple]="false"
             [loading]="loading"
@@ -14,8 +13,9 @@
             [hideSelected]="false"
             bindLabel="name"
             bindName="id"
-            [(ngModel)]="argument.value1">
-        </ng-select>          
-        </div>
-    </div>    
-</div>  
+            [(ngModel)]="argument.value1"
+            appendTo=".msf-control-variables-overlay"
+            dropdownPosition="bottom">
+        </ng-select>
+    </div>
+</div>

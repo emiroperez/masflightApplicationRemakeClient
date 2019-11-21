@@ -1,7 +1,16 @@
-import { Injectable } from '@angular/core';
-import {Option} from '../model/Option';
+import { Injectable, HostBinding } from '@angular/core';
+import { Option } from '../model/Option';
 import { MatSort, MatTab } from '@angular/material';
 import { Observable } from 'rxjs';
+import { OverlayContainer } from '@angular/cdk/overlay';
+import { Cookie } from '../api/cookie';
+import * as am4core from "@amcharts/amcharts4/core";
+import am4themes_animated from "@amcharts/amcharts4/themes/animated";
+import { Themes } from './Themes';
+import { DatalakeQueryTab } from '../datalake-query-engine/datalake-query-tab';
+
+am4core.useTheme(am4themes_animated);
+
 @Injectable()
 export class Globals {
   currentOption: any;
@@ -23,6 +32,7 @@ export class Globals {
   selectedIndex = 0;
   displayedColumns;
   subDisplayedColumns;
+  subPdfViewer: string;
   metadata;
   subDataSource : any
   totalRecord = 0;
@@ -42,7 +52,7 @@ export class Globals {
   minDate:any;
   maxDate:any;
   welcome:any;
-  items:any;
+  welcomeMessage:any;
   welcomeDataSource:any;
   query : boolean= false;
   tab : boolean= false;
@@ -51,13 +61,11 @@ export class Globals {
   currentAirline: any;
   template : boolean = false;
   isFullscreen: boolean = false;
-  // baseUrl = "http://staging.pulse.aspsols.com:8887";
+  // baseUrl = "http://pulse.globaleagle.com:8887";
   // baseUrl = "http://192.168.1.50:8887";
   baseUrl = "";
-  // baseUrl2 = "http://localhost:8886";
-  baseUrl2 = "http://69.64.45.220:8886";
-  // popupUrl = "http://localhost:8900";
-  popupUrl = "http://testing.pulse.aspsols.com:8900";
+  baseUrl2 = "https://pulse.globaleagle.com:8886/mapBoxServices";
+  popupUrl = "https://pulse.globaleagle.com:8900";
   scheduledata:any;
   hideParametersPanels : boolean =false;
   Airportdataorigin:any;
@@ -77,11 +85,74 @@ export class Globals {
   subDisplayedColumnNames: string[] = []; 
   copiedPanelInfo: any;
   lastTime: string;
+  appLoading: boolean;
+
+  admin: boolean = false;
+  token = "Gtk5zI0GAeMbFBRgU191vZmJt8YLUGytwuf";
+
+  //mobile
+  showIntroWelcome : boolean = true;
+  showMenu : boolean = false;
+  showCategoryArguments: boolean = false;
+  showTabs: boolean = false;
+  showDashboard: boolean = false;
+  queryTabs: DatalakeQueryTab[] = [ new DatalakeQueryTab () ];
+  
+  @HostBinding('class')
+  theme: string = "light-theme";
+  // selectedSchema: DatalakeQueryTab[] = [ new DatalakeQueryTab () ];
+  selectedSchema: any;
+  optionDatalakeSelected: number = 2;
+
+  constructor (public overlayContainer: OverlayContainer, private cookie: Cookie)
+  {
+    let pulseTheme, useLightTheme;
+
+    // get theme setting from cookies
+    pulseTheme = cookie.get ("pulseTheme");
+    if (!pulseTheme)
+      useLightTheme = true;
+    else
+    {
+      if (pulseTheme === "light-theme")
+        useLightTheme = true;
+      else
+        useLightTheme = false;
+    }
+
+    this.setOverlayTheme ({ checked : useLightTheme });
+  }
+
+  setOverlayTheme(themeSwitch): void
+  {
+    let containerElement = this.overlayContainer.getContainerElement ();
+    let themeName;
+
+    if (themeSwitch.checked)
+      themeName = "light-theme";
+    else
+      themeName = "dark-theme";
+
+    // remove previous theme class form the overlay container
+    if (this.theme && containerElement.classList.contains (this.theme))
+    {
+      containerElement.classList.remove (this.theme);
+      am4core.unuseTheme (Themes.AmCharts[themeName].mainTheme);
+    }
+
+    am4core.useTheme (Themes.AmCharts[themeName].mainTheme);
+    containerElement.classList.add (themeName);
+    this.theme = themeName;
+
+    // save current theme into the cookies
+    this.cookie.set ("pulseTheme", themeName);
+  }
+
    initDataSource(){
     if(this.currentMenuCategory!= null){
     if(this.currentMenuCategory.welcome!= null){
       this.welcome = this.currentMenuCategory.welcome;
-      this.items = this.welcome.applicationsDo.split(";");
+      this.welcomeMessage = this.welcome.description;
       if(this.currentMenuCategory.welcomeTable!="0"){
         this.initTableDataSource();
       }
@@ -100,7 +171,6 @@ export class Globals {
         this.welcomeDataSource.push(this.currentMenuCategory.options[index]);
       }
     }
-    console.log (this.welcomeDataSource);
   }
 
   recursiveOption(option:any){
@@ -182,6 +252,15 @@ export class Globals {
   option.outputs = option.outputs.replace(" :","");
 }
 
+
+clearVariablesMenu(){
+  this.showIntroWelcome = true;
+  this.showMenu = false;
+  this.showCategoryArguments = false;
+  this.showTabs  = false;
+  this.showDashboard = false;
+}
+
   clearVariables(){
     this.currentOption=null;
     this.currentArgs=null;
@@ -217,15 +296,6 @@ export class Globals {
       return this.bytesLoaded;
     }
     return 0;
-  }
-
-  getSelectedIndex(){
-    if(this.currentOption.tabType==="map"){
-      return 1;
-    }else{
-      return this.selectedIndex;
-    }
-
   }
 
   dataAvailabilityInit(){

@@ -43,8 +43,8 @@ export class Utils{
     }
 
     getUrlParameters(option: any, urlBase:boolean){
-        console.log(option);
-        let params;        
+        let params;    
+        let paramsGroup = [];     
         if(option.menuOptionArguments){            
             for( let menuOptionArguments of option.menuOptionArguments){
                 if(menuOptionArguments.categoryArguments){            
@@ -53,6 +53,7 @@ export class Utils{
                         if(category && category.arguments){
                             for( let j = 0; j < category.arguments.length;j++){
                                 let argument: Arguments = category.arguments[j];
+                                if(argument.type!="AAA_Group"){
                                 if(params){
                                     if(argument.type!="singleCheckbox"&& argument.type!="serviceClasses" && argument.type!="fareLower"&& argument.type!="airportsRoutes"&&argument.name1!="intermediateCitiesList"){
                                         params += "&" + this.getArguments(argument);
@@ -66,17 +67,77 @@ export class Utils{
                                 }else{
                                     params = this.getArguments(argument);
                                 }
+                            }//kp 20190902
+                            else{
+                                paramsGroup.push({target: argument.targetGroup , val: this.getValueFormat (argument.type, argument.value1,argument)})
+                            }//kp 20190902
                             }
                         }        
                     }
                 }
             }
         }
-        
+        let newParam = this.setTarget(paramsGroup,params);
         if(option.baseUrl && urlBase){
-            return {tab:option.tab,url:option.baseUrl + "?" + params};
+            // return {tab:option.tab,url:option.baseUrl + "?" + params};
+            return {tab:option.tab,url:option.baseUrl + "?" + newParam};
         }
-        return {tab:option.tab,url: params};
+        // return {tab:option.tab,url: params};
+        return {tab:option.tab,url: newParam};
+    }
+
+    setTarget(paramsGroup: any,params: any){
+        let paramsUrl = params ;
+        let index;
+        let indexIni;
+        let indexEnd;
+        let longParam;
+        let longVal;
+        let valParamOld: String ="";
+        let newParameter: String="";
+        let oldParameter: String="";
+            
+        for (let i = 0; i < paramsGroup.length; i++) {
+        if (paramsGroup[i].val != ""){
+            index = -1;
+            indexIni = -1;
+            indexEnd= -1;
+            longParam = 0 ;
+            longVal = 0;
+            valParamOld ="";
+            newParameter ="";
+            oldParameter ="";
+            index = paramsUrl.indexOf(paramsGroup[i].target);
+            if(index!=-1){
+                indexIni = paramsUrl.indexOf("=",index);
+                indexEnd = paramsUrl.indexOf("&",index);  
+                if(indexEnd==-1){
+                    //significa que el el parametro final no termina en &
+                    indexEnd=paramsUrl.length;
+                    longParam= indexEnd-index;
+                    longVal= indexEnd - indexIni-1;
+                }else{                    
+                    longParam=indexEnd-index;
+                    longVal=indexEnd-indexIni-1;
+                }
+                //busco los valores que tenia el parametro de la url, para agregarlos al nuevo parametro que se armara con el grupo
+                if(indexIni+1!=indexEnd){
+                valParamOld = paramsUrl.substr(indexIni+1,longVal);
+                }   
+                //armo un nuevo parametro con lo que tenia y lo parametros del grupo
+                if (valParamOld=="" || valParamOld==null){
+                    newParameter=paramsGroup[i].target+"="+paramsGroup[i].val;
+                }else{
+                    newParameter = paramsGroup[i].target+"="+paramsGroup[i].val+","+valParamOld;
+                }
+                //busco el parametro que voy a remplazar
+                oldParameter = paramsUrl.substr(index,longParam);
+                //remplazo el parametro que tenia por el nuevo que tiene todos los valores 
+                paramsUrl = paramsUrl.replace(oldParameter, newParameter);
+            }
+        }
+        }   
+        return paramsUrl;
     }
 
     getParameters(option: any){
@@ -110,6 +171,17 @@ export class Utils{
         }
         
         return params;
+    }
+
+    
+    getTarget(argument: Arguments)
+    {
+        let args = '';
+
+        if (argument.targetGroup){
+            args = argument.targetGroup + "=" + this.getValueFormat (argument.type, argument.value1,argument);
+        }
+        return args;
     }
 
     getArguments(argument: Arguments)
@@ -149,9 +221,9 @@ export class Utils{
             numSlashes = -1;
 
             // check number of slashes if the value to filter is a date format
-            if (parentCategoryId.includes ("date"))
+            if (parentCategoryId.includes ("date") || parentCategoryId.includes ("yyyymmdd"))
             {
-              let numSlashes = 0;
+              numSlashes = 0;
         
               for (let i = 0; i < categoryFilter.length; i++)
               {
@@ -241,10 +313,80 @@ export class Utils{
         return args;
     }
 
+    getNameGroup(value:any,group: string){
+        var names="";
+        var i = 0;
+        for(var val of value){
+            if(group == "Airline"){
+                if(val.airline.iata != null){
+                    if(i == 0){
+                        names = val.airline.iata;
+                    }else{
+                        names += ","+ val.airline.iata;
+                    }
+                }
+            }else if(group == "Airport"){
+                if(val.airport.iata != null){
+                    if(i == 0){
+                        names = val.airport.iata;
+                    }else{
+                        names += ","+ val.airport.iata;
+                    }
+                }
+            }else if(group == "AircraftType"){
+                if(val.aircraftType.name != null){
+                    if(i == 0){
+                        names = val.aircraftType.name;
+                    }else{
+                        names += ","+ val.aircraftType.name;
+                    }
+                }
+            }
+            // if(group == "Aircraft"){
+            //     if(i == 0){
+            //         names = val.Aircraft.name;
+            //     }else{
+            //         names += ","+ val.Aircraft.name;
+            //     }
+            // }else{
+            //     if(i == 0){
+            //         names = val.iata;
+            //     }else{
+            //         names += ","+ val.iata;
+            //     }
+            // }
+            i++;
+        }
+        return names
+    }
+
     getValueFormat(type: string, value:any,argument:any){
-        if( typeof value === 'undefined'){
+        if( typeof value === 'undefined' || value == null){
             return '';
         }
+        
+        if(type == ComponentType.AAA_Group){
+            var valueAux="";
+            var i = 0;
+            if(value!=null){
+                // if(Array.isArray(value)){
+                    for(var val of value){
+                        if(i == 0){
+                            valueAux = this.getNameGroup(val.aaa_GroupDet,val.group);
+                        }else{
+                            valueAux += ","+ this.getNameGroup(val.aaa_GroupDet,val.group);
+                        }                
+                        i++;
+                    }
+                // }else{
+                //     return value[argument.selectedAttribute];
+                // }
+            }else{
+                return '';
+            }
+            return valueAux;            
+        }
+
         if(argument.url!=null && argument.url!='' && type != ComponentType.sortingCheckboxes){
             var valueAux="";
             var i = 0;

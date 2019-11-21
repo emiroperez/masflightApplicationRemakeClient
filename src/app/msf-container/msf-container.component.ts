@@ -1,11 +1,11 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Globals } from '../globals/Globals';
 import { MatTab, MatTabGroup, MatTabChangeEvent } from '@angular/material';
 import { MsfTableComponent } from '../msf-table/msf-table.component';
-import { MsfChartOnTimeDelayComponent } from '../msf-chart-on-time-delay/msf-chart-on-time-delay.component';
 import { MsfDynamicTableComponent } from '../msf-dynamic-table/msf-dynamic-table.component';
 import { MsfMapComponent } from '../msf-map/msf-map.component';
 import { MsfDashboardComponent } from '../msf-dashboard/msf-dashboard.component';
+import { MediaMatcher } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-msf-container',
@@ -17,9 +17,6 @@ export class MsfContainerComponent implements OnInit {
 
   @ViewChild('msfTableRef')
   msfTableRef: MsfTableComponent;
-
-  @ViewChild('msfChartRef')
-  msfChartRef: MsfChartOnTimeDelayComponent;
 
   @ViewChild('msfMapRef')
   msfMapRef: MsfMapComponent;
@@ -38,11 +35,20 @@ export class MsfContainerComponent implements OnInit {
 
   @ViewChild(MatTabGroup) tabGroup: MatTabGroup;
 
-  constructor(public globals: Globals) { }
-
+  mobileQuery: MediaQueryList;
+  private _mobileQueryListener: () => void;							   
+  constructor(public globals: Globals, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) { 
+    
+    this.mobileQuery = media.matchMedia('(max-width: 480px)');
+    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+    this.mobileQuery.addListener(this._mobileQueryListener);}
+	
   ngOnInit() {
   }
 
+  ngOnDestroy(): void {
+    this.mobileQuery.removeListener(this._mobileQueryListener);
+  }
   ngAfterViewInit(){
   }
 
@@ -99,8 +105,11 @@ export class MsfContainerComponent implements OnInit {
     }
   }
 
-  onLinkClick(event: any) {
-    this.globals.selectedIndex = event;
-  
+  onLinkClick(event: MatTabChangeEvent) {
+    this.globals.selectedIndex = event.index;
+
+    // refresh mapbox if tab changed when it is not loading the coordinates
+    if (event.tab.textLabel === "Map" && !this.msfMapRef.isLoading)
+      this.msfMapRef.resizeMap ();
   }
 }

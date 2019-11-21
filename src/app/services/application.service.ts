@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, isDevMode } from '@angular/core';
 import { ApiClient } from '../api/api-client';
 import { Utils } from '../commons/utils';
 import { Observable, of } from 'rxjs';
@@ -18,7 +18,7 @@ export class ApplicationService {
 
   utils: Utils;
 
-  // host = "http://localhost:8887";
+  // host = "http://192.168.1.5:8887";
   host = "";
 
   //host1 = "http://localhost:8886";
@@ -40,8 +40,15 @@ export class ApplicationService {
   getMapBoxTracking(_this, successHandler, errorHandler) {
     let params = this.utils.getUrlParameters(_this.globals.currentOption,false);
     let url = this.host1 + "/getMapBoxTracking?" + params.url;
-    console.log(url)
-    this.http.get(_this, url, successHandler, errorHandler, null);
+					  
+    let urlArg = encodeURIComponent (url);
+
+    if (isDevMode ())
+      console.log (url);
+
+    url = this.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.globals.currentOption.id + "&ipAddress=" + this.authService.getIpAddress () + "&noXml=true";
+
+    this.authService.get (_this, url, successHandler, errorHandler);
   }
 
   getDataTableSource(_this, handlerSuccess, handlerError,pageNumber: String) {
@@ -58,15 +65,20 @@ export class ApplicationService {
     if(!urlBase.includes("minuteunit")){
       urlBase += "&minuteunit=m";
     }
-    urlBase += "&pageSize=100&page_number="+pageNumber;
+    urlBase += "&pageSize=50&page_number="+pageNumber;
     if(pageNumber=="0"){
       _this.dataSource = null;
     }
-    console.log(urlBase);
-    let urlArg = encodeURIComponent(urlBase);
+						 
+    let urlArg = encodeURIComponent (urlBase);
+
+    if (isDevMode ())
+      console.log (urlBase);
+
     let url = this.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + _this.globals.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
+
     this.authService.get(_this, url, handlerSuccess, handlerError);
-    console.log(url);
+					 
   }
 
   loadChartData(_this, handlerSuccess, handlerError) {
@@ -74,9 +86,14 @@ export class ApplicationService {
     let param = this.utils.getUrlParameters(_this.globals.currentOption,true);
     let urlBase = param.url;
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
-    console.log(urlBase);
-    let urlArg = encodeURIComponent(urlBase);
+						 
+    let urlArg = encodeURIComponent (urlBase);
+
+    if (isDevMode ())
+      console.log (urlBase);
+
     let url = this.host + "/secure/getChartData?url=" + urlArg + "&optionId=" + _this.globals.currentOption.id + "&ipAddress=" + this.authService.getIpAddress () + "&variable=" + _this.variable.id + "&xaxis=" + _this.xaxis.id + "&valueColumn=" + _this.valueColumn.id + "&function=" + _this.function.id;
+
     this.authService.post(_this, url, null, handlerSuccess, handlerError);
   }
 
@@ -88,15 +105,19 @@ export class ApplicationService {
     let param = this.utils.getUrlParameters(_this.globals.currentOption,true);
     let urlBase = param.url;
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
-    console.log(urlBase);
-    let urlArg = encodeURIComponent(urlBase);
+						 
+    let urlArg = encodeURIComponent (urlBase);
+
+    if (isDevMode ())
+      console.log (urlBase);
+
     let data = { variables: _this.globals.variables, values: _this.globals.values };
     let url = this.host + "/secure/getHorizontalMatrix?url=" + urlArg + "&optionId=" + _this.globals.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
+
     this.authService.post (_this, url, data, handlerSuccess, handlerError);
   }
 
   loadMenuOptions(_this, handlerSuccess, handlerError) {
-    _this.globals.isLoading = true;
     if(_this.globals.currentApplication == undefined){
       _this.globals.currentApplication = JSON.parse(localStorage.getItem("currentApplication"));
     }
@@ -185,9 +206,14 @@ export class ApplicationService {
     this.http.get(_this, url, handlerSuccess, handlerError, null);
   }
 
-  saveMenu(_this, data, handlerSuccess, handlerError){
+  saveMenu(_this, defaultMenuId, data, handlerSuccess, handlerError){
+    let url;
+
     _this.globals.isLoading = true;
-    let url = this.host + "/menu";
+    url = this.host + "/menu?applicationId=" + _this.globals.currentApplication.id;
+    if (defaultMenuId)
+      url += "&defaultMenuId=" + defaultMenuId;
+
     this.http.post(_this, url, data, handlerSuccess, handlerError);
   }
 
@@ -260,9 +286,13 @@ export class ApplicationService {
     let param = this.utils.getUrlParameters(_this.globals.currentOption,true);
     let urlBase = param.url;
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=100";
-    console.log(urlBase);
-    let urlArg = encodeURIComponent(urlBase);
+						 
+    // let urlArg = encodeURIComponent(urlBase);
     urlBase += "&optionId=" + _this.globals.currentOption.id;
+
+    if (isDevMode ())
+      console.log (urlBase);
+
     this.http.get(_this, urlBase, handlerSuccess, handlerError, null);
   }
 
@@ -371,12 +401,16 @@ export class ApplicationService {
     // _this.globals.isLoading = true;
     // let param = this.utils.getUrlParameters(_this.globals.currentOption);
     let urlBase = option.baseUrl + parameters;
-    console.log(urlBase);
+						 
     let urlArg = encodeURIComponent(urlBase);
-    console.log(urlArg);
+
+    if (isDevMode ())
+      console.log (urlBase);
+
     let url = this.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + option.id + "&ipAddress=" + this.authService.getIpAddress ();
+
     this.authService.get(_this, url, handlerSuccess, handlerError);
-    console.log(url);
+					 
   }
 
   getDrillDownAdmin(_this, optionId, handlerSuccess, handlerError)
@@ -485,4 +519,92 @@ export class ApplicationService {
     let url = this.host + "/checkMenuOption?id=" + menuOptionId;
     this.http.get (_this, url, handlerSuccess, handlerError, null);
   }
+
+  removeDashboardPanelByOptionId(_this, optionId, handlerSuccess, handlerError): void
+  {
+    let url = this.host + "/removeDashboardPanelByOptionId";
+    this.http.post (_this, url, optionId, handlerSuccess, handlerError);
+  }
+
+  getDefaultDashboard(_this, handlerSuccess, handlerError): void
+  {
+    let url = this.host + "/secure/getDefaultDashboard?applicationId=" + this.globals.currentApplication.id;
+    this.authService.get (_this, url, handlerSuccess, handlerError);
+  }
+
+  setDefaultDashboard(_this, dashboard, handlerSuccess, handlerError): void
+  {
+    let url = this.host + "/secure/setDefaultDashboard?applicationId=" + this.globals.currentApplication.id;
+    this.authService.post (_this, url, dashboard, handlerSuccess, handlerError);
+  }
+
+  unsetDefaultDashboard(_this, handlerSuccess, handlerError): void
+  {
+    let url = this.host + "/secure/setDefaultDashboard?applicationId=" + this.globals.currentApplication.id;
+    this.authService.post (_this, url, null, handlerSuccess, handlerError);
+  }
+
+  deleteChildPanel(_this, childPanelId, handlerSuccess, handlerError): void
+  {
+    let url = this.host + "/deleteChildPanel";
+    this.authService.post (_this, url, childPanelId, handlerSuccess, handlerError);
+  }
+
+  loadGroupArguments(_this, handlerSuccess, handlerError) {
+    _this.globals.isLoading = true;
+    let url = this.host + "/secure/Names_Group?Group=";
+    // let url = this.host + "/Names_Group?Group=";
+    this.authService.get(_this, url, handlerSuccess, handlerError);
+  }
+
+  
+  saveNewGroupArguments(_this, data, handlerSuccess, handlerError){
+    _this.globals.isLoading = true;
+    let url = this.host + "/secure/saveNewGroupArguments";
+    this.authService.post(_this, url, data, handlerSuccess, handlerError);
+  }
+
+  getSharedGroupsArg(_this, groupId, handlerSuccess, handlerError)
+  {
+    let url = this.host + "/getUserGroupShared?search=" + groupId;
+    this.http.get (_this, url, handlerSuccess, handlerError, null);
+  }
+
+  addSharedGroupArgs(_this, sharedContent, handlerSuccess, handlerError)
+  {
+    let url = _this.globals.baseUrl + "/addSharedGroupArgs";
+    this.http.post (_this, url, sharedContent, handlerSuccess, handlerError);
+  }
+
+  deleteSharedGroupArgs(_this, shareInfo, handlerSuccess, handlerError)
+  {
+    let url = this.host + "/deleteSharedGroupArgs";
+    this.http.post (_this, url, shareInfo, handlerSuccess, handlerError);
+  }
+
+  getMenuDefaultId(_this, handlerSuccess, handlerError)
+  {
+    let url;
+
+    if (_this.globals.currentApplication == undefined)
+      _this.globals.currentApplication = JSON.parse (localStorage.getItem ("currentApplication"));
+
+    url = this.host + "/getMenuDefaultId?applicationId=" + _this.globals.currentApplication.id;
+    this.http.get (_this, url, handlerSuccess, handlerError, null);
+  }
+
+  getMenuCategoryWelcome(_this, handlerSuccess, handlerError) {
+    let url = this.host + "/secure/getMenuCategoryWelcome?application=" + _this.globals.currentApplication.id;
+    this.authService.get(_this, url, handlerSuccess, handlerError);
+  }
+
+																		 
+  getDatalakeRoles(_this, schemaName, handlerSuccess, handlerError): void
+  {
+      let url = this.host + "/getDatalakeRoles?search="+schemaName;
+      this.http.get(_this, url, handlerSuccess, handlerError, null);
+  }
+																   
+																	
+   
 }

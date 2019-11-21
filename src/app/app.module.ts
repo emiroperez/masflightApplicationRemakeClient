@@ -1,28 +1,27 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule} from '@angular/core';
+import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { LoginScreenComponent } from './login-screen/login-screen.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { AppRoutingModule } from './routing/app.routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from '@angular/cdk/layout';
-import {MaterialModule} from './material/material';
+import { MaterialModule } from './material/material';
 import { MessageComponent } from './message/message.component';
-import { FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {AuthService} from './services/auth.service';
-import {HttpClientModule} from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AuthService } from './services/auth.service';
+import { HttpClientModule } from '@angular/common/http';
 import { NotificationComponent } from './notification/notification.component';
 import { ApiClient } from './api/api-client';
 import { RegisterComponent } from './register/register.component';
-import {NgxMaskModule} from 'ngx-mask'
 import { NgSelectModule } from '@ng-select/ng-select';
 import { MenuComponent } from './menu/menu.component';
 import { MenuOptionComponent } from './menu-option/menu-option.component';
 import { ApplicationComponent } from './application/application.component';
 import { MsfComponentComponent } from './msf-component/msf-component.component';
-import {Globals} from './globals/Globals';
+import { Globals } from './globals/Globals';
 import { MsfAirportComponent } from './msf-airport/msf-airport.component';
-import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { MatFormFieldModule, MatSelectModule } from '@angular/material';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MsfContainerComponent } from './msf-container/msf-container.component';
@@ -40,7 +39,6 @@ import { MsfTabSelectorComponent } from './msf-tab-selector/msf-tab-selector.com
 import { DateFormatPipe } from './commons/DateFormatPipe ';
 import { DateTimeFormatPipe } from './commons/DateTimeFormatPipe';
 import { MsfAirlineComponent } from './msf-airline/msf-airline.component';
-import { MsfChartOnTimeDelayComponent } from './msf-chart-on-time-delay/msf-chart-on-time-delay.component';
 import { MsfDynamicTableVariablesComponent } from './msf-dynamic-table-variables/msf-dynamic-table-variables.component';
 import { MsfDynamicTableComponent } from './msf-dynamic-table/msf-dynamic-table.component';
 import { MsfTailNumberComponent } from './msf-tail-number/msf-tail-number.component';
@@ -61,22 +59,18 @@ import { MsfRoundingComponent } from './msf-rounding/msf-rounding.component';
 import { MsfDateComponent } from './msf-date/msf-date.component';
 import { MapBoxComponent } from './map-box/map-box.component';
 import { AdminMenuComponent } from './admin-menu/admin-menu.component';
-import { CreateMempershipsComponent } from './create-memperships/create-memperships.component';
-import {MatSnackBarModule} from '@angular/material';
-import { CategoryArgumentsComponent } from './category-arguments/category-arguments.component';
+import { CreateMembershipsComponent } from './create-memberships/create-memberships.component';
+import { MatSnackBarModule } from '@angular/material';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material';
-import { AdminMenuRecursiveComponent } from './admin-menu-recursive/admin-menu-recursive.component';
 import { AdminMenuMembershipsComponent } from './admin-menu-memberships/admin-menu-memberships.component';
-import { AgGridModule } from 'ag-grid-angular';
 import { Utils } from './commons/utils';
 import { MsfUserListComponent } from './msf-user-list/msf-user-list.component';
 import { MsfOptionListComponent } from './msf-option-list/msf-option-list.component';
 import { ConfirmDeleteDialog } from './admin-menu/admin-menu.component';
 import { EditOutputOptionsMetaDialog } from './admin-menu/admin-menu.component';
 import { EditCategoryArgumentDialog } from './admin-menu/admin-menu.component';
-import { EditOptionsDialog } from './create-memperships/create-memperships.component';
-import { MsfTestComponent } from './msf-test/msf-test.component';
+import { EditOptionsDialog } from './create-memberships/create-memberships.component';
 import { MsfFreeTextInputComponent } from './msf-free-text-input/msf-free-text-input.component';
 import { MsfSelectBoxSingleOptionComponent } from './msf-select-box-single-option/msf-select-box-single-option.component';
 import { MsfSelectBoxMultipleOptionComponent } from './msf-select-box-multiple-option/msf-select-box-multiple-option.component';
@@ -174,7 +168,6 @@ import { MsfAddSharedDashboardPanelComponent } from './msf-add-shared-dashboard-
 import { DrillDownDialog } from './admin-menu/admin-menu.component';
 import { FilterPipe } from './admin-menu/pipe-filter';
 import { FilterPipeArg } from './admin-arguments-category/pipe-filter';
-import { NewCategoryDialog } from './admin-menu/admin-menu.component'
 import { MsfAddSharedDashboardComponent } from './msf-add-shared-dashboard/msf-add-shared-dashboard.component';
 import { AdminArgumentsCategoryComponent } from './admin-arguments-category/admin-arguments-category.component';
 import { DragScrollModule } from 'cdk-drag-scroll';
@@ -189,6 +182,43 @@ import { DigitOnlyModule } from '@uiowa/digit-only';
 import { MaterialIconPickerComponent } from './material-icon-picker/material-icon-picker.component';
 import { CreateCustomerComponent } from './create-customer/create-customer.component';
 import { MsfMapCoordinatesComponent } from './msf-map-coordinates/msf-map-coordinates.component';
+import { MsfDynamicTableAliasComponent } from './msf-dynamic-table-alias/msf-dynamic-table-alias.component';
+import { Cookie } from './api/cookie';
+import { MsfDashboardControlPanelComponent } from './msf-dashboard-control-panel/msf-dashboard-control-panel.component';
+import { MenuNavComponent } from './menu-nav/menu-nav.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { ExportAsModule } from 'ngx-export-as';
+import { MsfGroupAaaComponent } from './msf-group-aaa/msf-group-aaa.component';
+import { AdminArgumentsGroupComponent } from './admin-arguments-group/admin-arguments-group.component';
+import { FilterPipeGroupArg } from './admin-arguments-group/pipe-filter-group';
+import { AdminShareGroupsArgumentsComponent } from './admin-share-groups-arguments/admin-share-groups-arguments.component';
+import { MsfDashboardAssistantComponent } from './msf-dashboard-assistant/msf-dashboard-assistant.component';
+import { MsfChartPreviewComponent } from './msf-chart-preview/msf-chart-preview.component';
+import { AngularEditorModule } from '@kolkov/angular-editor';
+import { MsfSelectDataFromComponent } from './msf-select-data-from/msf-select-data-from.component';
+import { DatalakeComponent } from './datalake/datalake.component';
+import { DatalakeExplorerComponent } from './datalake-explorer/datalake-explorer.component';
+import { DatalakeTableCardComponent } from './datalake-table-card/datalake-table-card.component';
+import { NgxGaugeModule } from 'ngx-gauge';
+import { DatalakeTableShowColumnsComponent } from './datalake-table-show-columns/datalake-table-show-columns.component';
+import { DatalakeTablePreviewComponent } from './datalake-table-preview/datalake-table-preview.component';
+import { DatalakeQueryEngineComponent } from './datalake-query-engine/datalake-query-engine.component';
+import { DatalakeQueryEngineSchemaComponent } from './datalake-query-engine-schema/datalake-query-engine-schema.component';
+import { CodemirrorModule } from '@ctrl/ngx-codemirror';
+import { DatalakeCreateTableComponent } from './datalake-create-table/datalake-create-table.component';
+import { DatalakeCreateNewStructureComponent } from './datalake-create-new-structure/datalake-create-new-structure.component';
+import { DatalakeDataUploadComponent } from './datalake-data-upload/datalake-data-upload.component';
+import { DatalakeMenuComponent } from './datalake-menu/datalake-menu.component';
+import { DatalakeAlarmsComponent } from './datalake-alarms/datalake-alarms.component';
+import { DatalakeAlarmEditDialogComponent } from './datalake-alarm-edit-dialog/datalake-alarm-edit-dialog.component';
+import { DatalakePartitionsComponent } from './datalake-partitions/datalake-partitions.component';
+import { DatalakeExecutionPartitionComponent } from './datalake-execution-partition/datalake-execution-partition.component';
+import { DatalakeExecutionPartitionViewDetailComponent } from './datalake-execution-partition-view-detail/datalake-execution-partition-view-detail.component';
+import { DatalakePartitionExecuteDialogComponent } from './datalake-partition-execute-dialog/datalake-partition-execute-dialog.component';
+import { DatalakeQueryEngineHistoryComponent } from './datalake-query-engine-history/datalake-query-engine-history.component';
+import { DatalakeQueryEngineSaveComponent } from './datalake-query-engine-save/datalake-query-engine-save.component';
+import { DatalakeAlarmAddEmailDialogComponent } from './datalake-alarm-add-email-dialog/datalake-alarm-add-email-dialog.component';
+import { DatalakeUserInformationDialogComponent } from './datalake-user-information-dialog/datalake-user-information-dialog.component';
 
 @NgModule({
   declarations: [
@@ -220,7 +250,6 @@ import { MsfMapCoordinatesComponent } from './msf-map-coordinates/msf-map-coordi
     DateFormatPipe,
     DateTimeFormatPipe,
     MsfAirlineComponent,
-    MsfChartOnTimeDelayComponent,
     MsfDynamicTableVariablesComponent,
     MsfDynamicTableComponent,
     MsfTailNumberComponent,
@@ -236,22 +265,18 @@ import { MsfMapCoordinatesComponent } from './msf-map-coordinates/msf-map-coordi
     MsfRoundingComponent,
     MsfDateComponent,
     AdminMenuComponent,
-    CreateMempershipsComponent,
+    CreateMembershipsComponent,
     MapBoxComponent,
     AdminMenuComponent,
     AdminMenuComponent,
-    CategoryArgumentsComponent,
-    AdminMenuRecursiveComponent,
     AdminMenuMembershipsComponent,
     MsfUserListComponent,
     MsfOptionListComponent,
     ConfirmDeleteDialog,
-    NewCategoryDialog,
     EditOutputOptionsMetaDialog,
     EditCategoryArgumentDialog,
     EditOptionsDialog,
     DrillDownDialog,
-    MsfTestComponent,
     MsfFreeTextInputComponent,
     MsfSelectBoxSingleOptionComponent,
     MsfSelectBoxMultipleOptionComponent,
@@ -345,6 +370,7 @@ import { MsfMapCoordinatesComponent } from './msf-map-coordinates/msf-map-coordi
     MsfAddSharedDashboardPanelComponent,
     FilterPipe,
     FilterPipeArg,
+    FilterPipeGroupArg,
     MsfAddSharedDashboardComponent,
     AdminArgumentsCategoryComponent,
     MsfAddSharedDashboardComponent,
@@ -355,7 +381,37 @@ import { MsfMapCoordinatesComponent } from './msf-map-coordinates/msf-map-coordi
     TwoFactorLoginDialogComponent,
     MaterialIconPickerComponent,
     CreateCustomerComponent,
-    MsfMapCoordinatesComponent
+    MsfMapCoordinatesComponent,
+    MsfDynamicTableAliasComponent,
+    MsfDashboardControlPanelComponent,
+    MenuNavComponent,
+    MsfGroupAaaComponent,
+    AdminArgumentsGroupComponent,
+    AdminShareGroupsArgumentsComponent,
+    MsfDashboardAssistantComponent,
+    MsfChartPreviewComponent,
+    MsfSelectDataFromComponent,
+    DatalakeComponent,
+    DatalakeExplorerComponent,
+    DatalakeTableCardComponent,
+    DatalakeTableShowColumnsComponent,
+    DatalakeTablePreviewComponent,
+    DatalakeQueryEngineComponent,
+    DatalakeQueryEngineSchemaComponent,
+    DatalakeCreateTableComponent,
+    DatalakeCreateNewStructureComponent,
+    DatalakeDataUploadComponent,
+    DatalakeMenuComponent,
+    DatalakeAlarmsComponent,
+    DatalakePartitionExecuteDialogComponent,
+    DatalakeAlarmEditDialogComponent,
+    DatalakePartitionsComponent,
+    DatalakeExecutionPartitionComponent,
+    DatalakeExecutionPartitionViewDetailComponent,
+    DatalakeQueryEngineHistoryComponent,
+    DatalakeQueryEngineSaveComponent,
+    DatalakeAlarmAddEmailDialogComponent,
+    DatalakeUserInformationDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -367,10 +423,8 @@ import { MsfMapCoordinatesComponent } from './msf-map-coordinates/msf-map-coordi
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
-    NgxMaskModule.forRoot(),
     NgSelectModule,
     NgxMaterialTimepickerModule.forRoot(),
-    ReactiveFormsModule,
     BrowserAnimationsModule,
     MatSelectModule,
     MatFormFieldModule,
@@ -388,12 +442,16 @@ import { MsfMapCoordinatesComponent } from './msf-map-coordinates/msf-map-coordi
     MatSnackBarModule,
     MatTableModule,
     MatPaginatorModule,
-    AgGridModule.withComponents(null),
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     ColorPickerModule,
     DragScrollModule,
-    DigitOnlyModule
+    DigitOnlyModule,
+    MatTooltipModule,
+    ExportAsModule,
+    AngularEditorModule,
+    NgxGaugeModule,
+    CodemirrorModule
   ],
   providers: [
     AuthService,
@@ -405,11 +463,11 @@ import { MsfMapCoordinatesComponent } from './msf-map-coordinates/msf-map-coordi
     Globals,
     MsfAirportComponent,
     MsfContainerComponent,
-    MsfContainerComponent,
     DateFormatPipe,
     DateTimeFormatPipe,
     Utils,
-    AuthGuard
+    AuthGuard,
+    Cookie
   ],
   bootstrap: [AppComponent],
   entryComponents: [
@@ -420,7 +478,6 @@ import { MsfMapCoordinatesComponent } from './msf-map-coordinates/msf-map-coordi
     EditCategoryArgumentDialog,
     EditOptionsDialog,
     DrillDownDialog,
-    NewCategoryDialog,
     MsfDashboardControlVariablesComponent,
     MsfConfirmationDialogComponent,
     MsfDashboardInfoFunctionsComponent,
@@ -433,10 +490,24 @@ import { MsfMapCoordinatesComponent } from './msf-map-coordinates/msf-map-coordi
     DialogArgumentPreviewComponent,
     MsfColumnSelectorComponent,
     MsfShareDashboardComponent,
+    AdminShareGroupsArgumentsComponent,
     MsfSharedDashboardItemsComponent,
     MsfAddSharedDashboardPanelComponent,
     MsfAddSharedDashboardComponent,
-    TwoFactorLoginDialogComponent
+    TwoFactorLoginDialogComponent,
+    MsfDynamicTableAliasComponent,
+    MsfDashboardAssistantComponent,
+    MsfChartPreviewComponent,
+    MsfSelectDataFromComponent,
+    DatalakeTableShowColumnsComponent,
+    DatalakeTablePreviewComponent,
+    DatalakeCreateTableComponent,
+    DatalakeAlarmEditDialogComponent,
+    DatalakePartitionExecuteDialogComponent,
+    DatalakeQueryEngineHistoryComponent,
+    DatalakeQueryEngineSaveComponent,
+    DatalakeAlarmAddEmailDialogComponent,
+    DatalakeUserInformationDialogComponent
   ]
 })
 export class AppModule { }

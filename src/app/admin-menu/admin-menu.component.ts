@@ -2,18 +2,23 @@ import { OnInit, Component, Inject, AfterViewInit, ChangeDetectorRef, Renderer2,
 import { ApiClient } from '../api/api-client';
 import { Globals } from '../globals/Globals';
 import { ApplicationService } from '../services/application.service';
-import { MatSnackBar, MatTableDataSource, MatTable, MatSelect, MatTreeFlattener, MatTreeFlatDataSource } from '@angular/material';
+import { MatSnackBar, MatTableDataSource, MatTable, MatSelect, MatTreeFlattener, MatTreeFlatDataSource, MatDatepicker, DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { MessageComponent } from '../message/message.component';
 import { CdkDragDrop, moveItemInArray, CdkDropList, transferArrayItem } from '@angular/cdk/drag-drop';
 import { FormControl, FormBuilder, FormGroup } from '@angular/forms';
 import { DrillDown } from '../model/DrillDown';
-import { ReplaySubject, Subject, BehaviorSubject } from 'rxjs';
-import { takeUntil, take } from 'rxjs/operators';
+import { ReplaySubject, Subject, BehaviorSubject, of, Observable } from 'rxjs';
+import { takeUntil, take, delay } from 'rxjs/operators';
 import { CategoryArguments } from '../model/CategoryArguments';
 import { DialogArgumentPreviewComponent } from '../dialog-argument-preview/dialog-argument-preview.component';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MaterialIconPickerComponent } from '../material-icon-picker/material-icon-picker.component';
+import { ComponentType } from '../commons/ComponentType';
+import { Arguments } from '../model/Arguments';
+import { Moment } from 'moment';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 //import  clonedeep from 'lodash.clonedeep';
 
 @Component({
@@ -23,7 +28,7 @@ import { MaterialIconPickerComponent } from '../material-icon-picker/material-ic
 
 export class ConfirmDeleteDialog {
 
-  constructor(public dialogRef: MatDialogRef<ConfirmDeleteDialog>, private dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: { message: string, confirm: boolean }) {
+  constructor(public dialogRef: MatDialogRef<ConfirmDeleteDialog>, private dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: { message: string, title: string, confirm: boolean }) {
   }
 
   close() {
@@ -35,89 +40,6 @@ export class ConfirmDeleteDialog {
     this.data.confirm = true;
   }
 }
-
-
-
-@Component({
-  selector: 'new-category-dialog-app',
-  templateUrl: 'new-category-dialog.html',
-  styleUrls: ['./admin-menu.component.css']
-})
-
-export class NewCategoryDialog {
-  category: any = { label: '', icon: '', description: '', isSelected: false };
-  categories: any[] = [];
-  optionSelected: any;
-  idDomOptionSelected: any;
-  categoryDelete: any[] = [];
-  argumentDelete: any[] = [];
-  dataToSend: any[] = [];
-
-  constructor(
-    public dialogRef: MatDialogRef<NewCategoryDialog>, private service: ApplicationService, private globals: Globals,
-    @Inject(MAT_DIALOG_DATA) public data) {
-    this.categories = data;
-  }
-
-  onNoClick() {
-    this.dialogRef.close();
-  }
-
-
-
-  sendData() {
-    this.dataToSend = this.categories.concat(this.categoryDelete);
-    this.dialogRef.close(this.dataToSend);
-  }
-
-  getSelectedOption(option) {
-    if (this.category != option) {
-      option.isSelected = !option.isSelected;
-      this.category.isSelected = !this.category.isSelected;
-      this.category = option;
-    } else {
-      option.isSelected = !option.isSelected;
-      this.category = {};
-    }
-
-    console.log(this.category)
-  }
-
-  addCategory() {
-    let cat = {
-      label: '',
-      icon: '',
-      description: '',
-      arguments: []
-    }
-    this.categories.unshift(cat);
-    this.getSelectedOption(this.categories[0]);
-  }
-
-  deleteCategory() {
-    this.category.delete = true;
-    this.categoryDelete.push(this.category);
-    const index: number = this.categories.findIndex(d => d === this.category);
-    this.categories.splice(index, 1);
-  }
-
-  addArgument() {
-    let arg = {
-      description: '',
-      type: ''
-    }
-    this.category.arguments.push(arg);
-  }
-
-  deleteArgument(argument) {
-    argument.delete = true;
-    this.argumentDelete.push(argument);
-    const index: number = this.category.arguments.findIndex(d => d === argument);
-    this.category.arguments.spice(index, 1);
-  }
-
-}
-
 
 @Component({
   selector: 'drill-down-app',
@@ -187,7 +109,7 @@ export class DrillDownDialog {
       id: null,
       title: '',
       childrenOptionId: 0,
-      parentOptionId: this.data.option,
+      parentOptionId: this.data.option.id,
       delete: false
     });
     this.dataSource = new MatTableDataSource(this.data.drillDown);
@@ -238,14 +160,13 @@ export class EditOutputOptionsMetaDialog {
     this.arg = data.arguments;
   }
 
-  displayedColumns = ['columnLabel', 'columnName', 'columnType', 'columnFormat', 'prefix', 'suffix', 'grouping', 'unit', 'arguments'];
+  displayedColumns = ['columnLabel', 'columnName', 'columnType', 'columnFormat', 'outputFormat', 'prefix', 'suffix', 'grouping', 'unit', 'arguments'];
   dataSource = this.data.outputs;
 
   dropTable(event: CdkDragDrop<any[]>) {
     const prevIndex = this.dataSource.findIndex((d) => d === event.item.data);
     moveItemInArray(this.dataSource, prevIndex, event.currentIndex);
     this.table.renderRows();
-    console.log(this.dataSource)
   }
 
 
@@ -260,6 +181,7 @@ export class EditOutputOptionsMetaDialog {
       columnName: '',
       columnType: 'string',
       columnFormat: null,
+      outputFormat: null,
       grouping: 0,
       unit: '',
       argumentsId: '',
@@ -293,6 +215,7 @@ export class EditOutputOptionsMetaDialog {
           columnName: result[i].name,
           columnType: 'string',
           columnFormat: null,
+          outputFormat: null,
           grouping: 0,
           unit: '',
           argumentsId: '',
@@ -311,7 +234,6 @@ export class EditOutputOptionsMetaDialog {
 
 
   handlerErrorMetaColumn(_this, result) {
-    console.log(result);
     _this.globals.isLoading = false;
   }
 
@@ -328,7 +250,6 @@ export class EditOutputOptionsMetaDialog {
   saveOrder() {
     for (let i = 0; i < this.data.outputs.length; i++) {
       this.data.outputs[i].columnOrder = i;
-      console.log(this.data.outputs[i]);
     }
   }
 
@@ -346,17 +267,44 @@ export class EditOutputOptionsMetaDialog {
     }
   }
 
+  enableDrag(element): void
+  {
+    element.enabled = true;
+  }
+
+  disableDrag(element): void
+  {
+    element.enabled = null;
+  }
 }
+
+export const US_DATE_FORMAT = {
+  parse: {
+    dateInput: 'MM/DD/YYYY',
+  },
+  display: {
+    dateInput: 'MM/DD/YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
 
 @Component({
   selector: 'dialog-overview-example-dialog',
   templateUrl: 'dialog-edit-argument-category.html',
-  styleUrls: ['./admin-menu.component.css']
+  styleUrls: ['./admin-menu.component.css'],
+  providers: [
+    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
+    { provide: MAT_DATE_FORMATS, useValue: US_DATE_FORMAT },
+  ]
 })
 
 export class EditCategoryArgumentDialog {
-
+  items: Observable<any[]>;
+  itemsList: any[];
   itemSelected: any = {};
+  loading: boolean;
 
   argumentSelected: any = {};
 
@@ -366,18 +314,177 @@ export class EditCategoryArgumentDialog {
 
   displayedColumns: string[] = ['label1', 'label2', 'name1', 'name2'];
 
+  dates: any[] = [
+    {id: 1, name: 'Today',value:"TODAY"},
+    {id: 2, name: 'Yesterday',value:"YESTERDAY"},
+    {id: 3, name: 'Last Week',value:"LASTWEEK"},
+    {id: 4, name: 'Last Month',value:"LASTMONTH"},
+    {id: 5, name: 'Last Year',value:"LASTYEAR"},
+    {id: 6, name: 'Until Yesterday',value:"UNTILYESTERDAY"},
+    {id: 7, name: 'Until Last Week',value:"UNTILLASTWEEK"},
+    {id: 8, name: 'Until Last Month',value:"UNTILLASTMONTH"},
+    {id: 9, name: 'Until Last Year',value:"UNTILLASTYEAR"},
+    {id: 10, name: 'Until Today',value:"UNTILTODAY"}
+  ];
+
+  dates2: any[] = [
+    {id: 1, name: 'Today',value:"TODAY"},
+    {id: 2, name: 'Yesterday',value:"YESTERDAY"},
+    {id: 3, name: 'Last Week',value:"LASTWEEK"},
+    {id: 4, name: 'Last Month',value:"LASTMONTH"},
+    {id: 5, name: 'Last Year',value:"LASTYEAR"}
+  ];
+
+  dates3: any[] = [
+    {id: 1, name: 'Current Year',value:"CURRENTYEAR"},
+    {id: 2, name: 'Last Year',value:"LASTYEAR"}
+  ];
+
+  dates4: any[] = [
+    {id: 1, name: 'Current Year',value:"CURRENTYEAR"},
+    {id: 2, name: 'Last Month',value:"LASTMONTH"},
+    {id: 3, name: 'Last Year',value:"LASTYEAR"}
+  ];
+
+  dates5: any[] = [
+    {id: 1, name: 'Current Year',value:"CURRENTYEAR"},
+    {id: 2, name: 'Last Year',value:"LASTYEAR"},
+    {id: 3, name: 'Until Last Year',value:"UNTILLASTYEAR"}
+  ];
+
+  contentTypes: any[] = [
+    { "id": 1, "name": "TV", "value": "TV" },
+    { "id": 2, "name": "Movie", "value": "Movie" },
+    { "id": 3, "name": "All", "value": "All"},
+    { "id": 3, "name": "All Combined", "value": "Combined"}
+  ];
+
+  seatClasses: any[] = [
+    { "id": 1, "name": "Business", "value": "Business" },
+    { "id": 2, "name": "Economy", "value": "Economy" },
+    { "id": 3, "name": "All", "value": "All" },
+    { "id": 3, "name": "All Combined", "value": "Combined"}
+  ];
+
   constructor(
+    private globals: Globals,
+    private http: ApiClient,
     public dialogRef: MatDialogRef<EditCategoryArgumentDialog>,
     @Inject(MAT_DIALOG_DATA) public data, public dialog: MatDialog) {
+      for (let argument of data.categoryArgumentsId[0].arguments)
+      {
+        this.updateItemList (argument);
 
+        if (argument.value1)
+          argument.value1 = JSON.parse (argument.value1);
+
+        if (argument.value2)
+          argument.value2 = JSON.parse (argument.value2);
+
+        if (argument.minDate)
+          argument.minDate = new Date (argument.minDate);
+
+        if (argument.maxDate)
+          argument.maxDate = new Date (argument.maxDate);
+      }
   }
 
+  isDateArgument(argument: Arguments){
+    if (ComponentType.dateRange == argument.type || ComponentType.date == argument.type
+      || ComponentType.datePicker == argument.type || ComponentType.dateTimePicker == argument.type
+      || ComponentType.datePeriod == argument.type || ComponentType.datePeriodYear == argument.type
+      || ComponentType.datePeriodYearMonth == argument.type || ComponentType.datePeriodRevenue == argument.type)
+      return true;
 
+    return false;
+  }
+
+  isDatePicker(argument: Arguments) {
+    if (ComponentType.date == argument.type || ComponentType.datePicker == argument.type)
+      return true;
+
+    return false;
+  }
+
+  isDatePeriodYearMonth(argument: Arguments) {
+    return ComponentType.datePeriodYearMonth == argument.type;
+  }
+
+  isDatePeriodYear(argument: Arguments) {
+    return ComponentType.datePeriodYear == argument.type;
+  }
+
+  isDatePeriod(argument: Arguments) {
+    if (ComponentType.datePeriod == argument.type || ComponentType.datePeriodRevenue == argument.type)
+      return true;
+
+    return false;
+  }
+
+  isDateRange(argument: Arguments) {
+    return ComponentType.dateRange == argument.type;
+  }
+
+  isMsFreeTextInput(argument: Arguments){
+    return ComponentType.freeTextInput == argument.type;
+  }
+
+  isAirportRoute(argument: Arguments) {
+    return (ComponentType.airportRoute == argument.type || ComponentType.airportsRoutes == argument.type);
+  }
+
+  isAirport(argument: Arguments) {
+    return ComponentType.airport == argument.type;
+  }
+
+  isSingleAirport(argument: Arguments) {
+    return ComponentType.singleAirport == argument.type;
+  }
+
+  isAirline(argument: Arguments) {
+    return ComponentType.airline == argument.type;
+  }
+
+  isSingleAirline(argument: Arguments) {
+    return ComponentType.singleairline == argument.type;
+  }
+
+  isTimePicker(argument: Arguments) {
+    return ComponentType.timePicker == argument.type;
+  }
+
+  isTimeRange(argument: Arguments) {
+    return ComponentType.timeRange == argument.type;
+  }
+
+  isContentType(argument: Arguments) {
+    return ComponentType.contentType == argument.type;
+  }
+
+  isSeatClass(argument: Arguments) {
+    return ComponentType.seatClass == argument.type;
+  }
+
+  isGroupAAA(argument: Arguments){
+    return ComponentType.AAA_Group == argument.type;
+  }
+
+  updateItemList(item): void
+  {
+    if (item.url)
+      this.getItems (item, "", this.handlerSuccess);
+  }
+
+  updateVisibleAttribute(): void
+  {
+    if (this.itemsList && this.itemsList.length)
+      this.items = of (this.itemsList).pipe (delay (500));
+  }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
-  showPreview(argument) {
+  showPreview(argument,group) {
     this.dialog.open(DialogArgumentPreviewComponent, {
       height: "560px",
       width: "500px",
@@ -388,17 +495,17 @@ export class EditCategoryArgumentDialog {
 
   selectArgumentCategory(category) {
     if (this.itemSelected != category) {
-      category.isSelected = !category.isSelected;
-      this.itemSelected.isSelected = !this.itemSelected.isSelected;
+      category.selected = !category.selected;
+      this.itemSelected.selected = !this.itemSelected.selected;
       this.itemSelected = category;
     } else {
-      category.isSelected = !category.isSelected;
+      category.selected = !category.selected;
       this.itemSelected = {};
     }
   }
 
   setSelectedCategoryArguments(category) {
-    if (category.isSelected) {
+    if (category.selected) {
       this.selectedCategories.forEach(function (currentValue, index, array) {
         if (currentValue == category) {
           array.splice(index, 1);
@@ -407,7 +514,7 @@ export class EditCategoryArgumentDialog {
     } else {
       this.selectedCategories.push(category);
     }
-    category.isSelected = !category.isSelected;
+    category.selected = !category.selected;
   }
 
   addCategoryArgument() {
@@ -421,7 +528,7 @@ export class EditCategoryArgumentDialog {
   }
 
   deleteCategoryArgument() {
-    let filterSelected = this.data.filter(item => item.isSelected);
+    let filterSelected = this.data.filter(item => item.selected);
     for (var i = 0; i < filterSelected.length; i += 1) {
       this.selectedCategories.forEach(function (currentValue, index, array) {
         if (currentValue == filterSelected[i]) {
@@ -448,7 +555,7 @@ export class EditCategoryArgumentDialog {
 
   deleteArgument(item) {
     /*
-    let filterSelected = item.arguments.filter(node => node.isSelected);
+    let filterSelected = item.arguments.filter(node => node.selected);
     filterSelected.forEach(function (node, index, array) {
       node.toDelete = true;
     });
@@ -458,12 +565,58 @@ export class EditCategoryArgumentDialog {
 
   setSelectedAgument(item) {
     if (item == this.argumentSelected) {
-      this.argumentSelected.isSelected = false;
+      this.argumentSelected.selected = false;
       this.argumentSelected = {};
     } else {
       this.argumentSelected = item;
-      this.argumentSelected.isSelected = true;
+      this.argumentSelected.selected = true;
     }
+  }
+
+  onSearch(item, $event: any){
+    if($event.term.length>=2){
+      this.loading = true;
+      this.getItems(item, $event.term, this.handlerSuccess);
+    }
+  }
+
+  onAirportSearch(item, $event: any) {
+    if($event.term.length>=3) {
+      this.loading = true;
+      this.getItems(item, $event.term, this.handlerSuccess);
+    }
+  }
+
+  getItems(item, search, handlerSuccess){
+    let url;
+
+    if (!item.url)
+    {
+      this.loading = false;
+      return;
+    }
+
+    if(item.url.substring(0,1)=="/"){
+      url = this.globals.baseUrl + item.url + "?search="+ (search != null?search:'');
+    }else{
+     url = item.url + "/?search=" + (search != null?search:'');
+    }
+
+    this.http.get(this,url,handlerSuccess, this.handlerError, null);  
+  }
+
+  handlerSuccess(_this,data, tab){   
+    _this.loading = false;
+    _this.itemsList = data;
+    _this.items = of (data).pipe (delay (500));
+  }
+
+  handlerError(_this,result){
+    _this.loading = false;
+  }
+
+  isSelectBoxMultipleOption(item){
+    return ComponentType.selectBoxMultipleOption == item.type;
   }
 }
 
@@ -491,6 +644,7 @@ export class ExampleFlatNode {
   initialRol: string;
   finalRol: string;
   typeOption: string;
+  welcome: any;
 }
 
 @Component({
@@ -528,13 +682,14 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     flatNode.dataAvailability = node.dataAvailability;
     flatNode.metaData = node.metaData;
     flatNode.order = node.order,
-      flatNode.selected = node.selected;
+    flatNode.selected = node.selected;
     flatNode.applicationId = node.applicationId;
     flatNode.isRoot = node.isRoot;
     flatNode.children = node.children;
     flatNode.initialRol = node.initialRol;
     flatNode.finalRol = node.finalRol;
     flatNode.typeOption = node.typeOption;
+    flatNode.welcome = node.welcome;
     this.flatNodeMap.set(flatNode, node);
     this.nestedNodeMap.set(node, flatNode);
     return flatNode;
@@ -573,6 +728,8 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   @ViewChildren('tooltip') tooltips;
   optionForm: FormGroup;
   recursiveDeleteDone: boolean;
+
+  filteredCategories: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
 
   @ViewChild("materialIconPicker")
   materialIconPicker: MaterialIconPickerComponent;
@@ -668,8 +825,38 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     { type: "groupingOpSum", numArguments: 1 },
     { type: "groupingOpSum2", numArguments: 1 },
     { type: "states", numArguments: 1 },
-    { type: "flightSegments", numArguments: 1 }
-  ]
+    { type: "flightSegments", numArguments: 1 },
+    { type: "AAA_Group", numArguments: 1 }
+  ];
+
+  htmlEditorConfig: AngularEditorConfig = {
+    editable: true,
+    spellcheck: false,
+    placeholder: '',
+    translate: 'no',
+    defaultFontName: 'Roboto',
+    defaultFontSize: '2',
+    fonts: [
+      { class: 'roboto', name: 'Roboto' },
+      { class: 'arial', name: 'Arial' },
+      { class: 'times-new-roman', name: 'Times New Roman' },
+      { class: 'calibri', name: 'Calibri' },
+      { class: 'comic-sans-ms', name: 'Comic Sans MS' }
+    ],
+    customClasses: [
+      {
+        name: 'Primary Font Theme Color',
+        class: 'primary-font-color'
+      },
+      {
+        name: 'Title Text',
+        class: 'title-text',
+        tag: 'h3'
+      }
+    ]
+  };
+
+  defaultMenu: number;
 
   constructor(private http: ApiClient, public globals: Globals,
     private service: ApplicationService, public snackBar: MatSnackBar,
@@ -718,8 +905,9 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.innerHeight = window.innerHeight;
-    this.getMenuData();
-    this.getCategoryArguments();
+    this.getDefaultMenuId ();
+    this.getMenuData ();
+    this.getCategoryArguments ();
   }
 
   ngAfterViewInit(): void {
@@ -752,7 +940,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
   setShowOption(option, _this) {
     if (_this.searchTextOption != "" && _this.searchTextOption != null) {
-      if (option.label.toLowerCase().indexOf(_this.searchTextOption) != -1) {
+      if (option.label.toLowerCase().indexOf(_this.searchTextOption.toLowerCase ()) != -1) {
         option.show = true;
         // if(option.menuParentId!=null){
         //   _this.findOnMenu(option.menuParentId)
@@ -815,13 +1003,13 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
   handlerSuccessCategoryArguments(_this, result) {
     _this.categories = result;
+    _this.filteredCategories.next (_this.categories.slice ());
     if (_this.optionSelected.id) {
       _this.getOptionCategoryArguments(_this.optionSelected);
     }
   }
 
   handlerErrorCategoryArguments(_this, result) {
-    console.log(result);
   }
 
   getMeta() {
@@ -851,7 +1039,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   handlerSuccessArgumentsMeta(___this, result) {
     ___this.argumentsDrillDown = result;
     const dialogRef = ___this.dialog.open(EditOutputOptionsMetaDialog, {
-      width: '90%',
+      width: '1090px',
       data: { outputs: ___this.outputs, option: ___this.optionSelected, arguments: ___this.argumentsDrillDown }
     });
 
@@ -870,7 +1058,6 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
   }
   handlerErrorMeta(_this, result) {
-    console.log(result);
     _this.globals.isLoading = false;
   }
   getOptionSelected(option) {
@@ -940,12 +1127,11 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
             element.arguments[j].numArguments = numArguments;
           }
 
-          if (element.id == itemCategory.id) {
+          if (element.id == itemCategory.id && !itemOptionCategory.toDelete) {
             itemCategory.selected = true;
           }
         }
       })
-
     });
     this.globals.isLoading = false;
   }
@@ -991,19 +1177,28 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     const confirm: boolean = false;
     if (this.optionSelected) {
       const dialogRef = this.dialog.open(ConfirmDeleteDialog, {
-        width: '40%',
-        data: { message: message, confirm: confirm }
+        width: '550px',
+        data: {
+          message: message,
+          title: "Confirmation required",
+          confirm: confirm
+        }
       });
       dialogRef.afterClosed().subscribe((result: any) => {
-        console.log(result.confirm);
-        if (result.confirm) {
+        if (result)
+        {
+          if (result.confirm) {
 
-          if (this.optionSelected.uid.includes("catnew") || this.optionSelected.uid.includes("optnew"))
-            this.deleteNewItem();
-          else {
-            // check if any dashboard panel is using the selected option
-            this.globals.isLoading = true;
-            this.service.checkMenuOption(this, this.optionSelected.id, this.checkSuccess, this.checkError);
+            if (this.defaultMenu == this.optionSelected.id)
+              this.defaultMenu = null;
+
+            if (this.optionSelected.uid.includes("catnew") || this.optionSelected.uid.includes("optnew"))
+              this.deleteNewItem();
+            else {
+              // check if any dashboard panel is using the selected option
+              this.globals.isLoading = true;
+              this.service.checkMenuOption(this, this.optionSelected.id, this.checkSuccess, this.checkError);
+            }
           }
         }
       });
@@ -1012,29 +1207,41 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
   checkSuccess(_this, result) {
     if (!result) {
+      const confirm: boolean = false;
+      let dialogRef;
+
       _this.globals.isLoading = false;
-      _this.dialog.open(MessageComponent, {
-        data: { title: "Error", message: "Unable to delete menu option, it or its children is being used on dashboard panels." }
+
+      dialogRef = _this.dialog.open(ConfirmDeleteDialog, {
+        width: '360px',
+        data: {
+          message: "Several dashboard panels are using this option. Do you want to continue?",
+          title: "Warning",
+          confirm: confirm
+        }
+      });
+
+      dialogRef.afterClosed().subscribe((result: any) => {
+        if (result && result.confirm)
+        {
+          _this.globals.isLoading = true;
+          _this.service.removeDashboardPanelByOptionId (_this, _this.optionSelected.id, _this.checkSuccess, _this.checkError);
+        }
       });
 
       return;
     }
 
-    console.log("entra");
     _this.optionSelected.toDelete = true;
     _this.optionSelected.label += "....";
     const nestedNode = _this.flatNodeMap.get(_this.optionSelected);
     nestedNode.toDelete = true;
     _this.dataChange.next(_this.data);
-    console.log(_this.optionSelected)
-    console.log(_this.flatNodeMap)
-    console.log(_this.dataSource.data)
     _this.saveMenu();
   }
 
   checkError(_this, error) {
     _this.globals.isLoading = false;
-    console.log(error);
   }
 
   saveNewArgumentsCategory(category) {
@@ -1050,20 +1257,6 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
   }
 
-  addCategoryArguments() {
-    const dialogRef = this.dialog.open(NewCategoryDialog, {
-      width: '70%',
-      data: this.categories
-    });
-    dialogRef.afterClosed().subscribe((result: any) => {
-      if (result) {
-        this.categories = result;
-        this.saveNewArgumentsCategory(result);
-      }
-    });
-  }
-
-
   saveMenu() {
     this.emptyError = 0;
     let verify = this.verifyMenu();
@@ -1073,12 +1266,15 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
       });
     } else {
       this.verifyOrder();
-      console.log(this.dataSource.data);
-      this.service.saveMenu(this, this.dataSource.data, this.handlerSuccessSaveMenuData, this.handlerErrorSaveMenuData);
+      this.service.saveMenu(this, this.defaultMenu, this.dataSource.data, this.handlerSuccessSaveMenuData, this.handlerErrorSaveMenuData);
     }
   }
 
   handlerSuccessSaveMenuData(_this, data) {
+    // set default menu id after saving the menu
+    _this.globals.currentApplication.defaultMenu = _this.defaultMenu;
+    localStorage.setItem ("currentApplication", JSON.stringify (_this.globals.currentApplication));
+
     _this.getMenuData();
   }
 
@@ -1168,27 +1364,28 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   }
 
   handlerErrorSaveMeta(_this, data) {
-    console.log(data);
     _this.globals.isLoading = false;
   }
 
   saveDrillDown() {
-    this.prepareDrillDowns();
     this.service.saveDrillDown(this, this.drillDown, this.handlerSuccessdrillDown, this.handlerErrorSaveMeta);
-  }
-  prepareDrillDowns() {
-    for(let dD of this.drillDown){
-      dD.parentOptionId = dD.parentOptionId.id;
-    }
   }
 
   handlerSuccessdrillDown(_this, data) {
     _this.globals.isLoading = false;
   }
 
+  getDefaultMenuId(): void {
+    this.service.getMenuDefaultId(this, this.handlerDefaultMenuSuccess, this.handlerGetErrorMenuData);
+  }
 
+  handlerDefaultMenuSuccess(_this, data): void
+  {
+    _this.defaultMenu = data;
+  }
 
   getMenuData(): void {
+    this.globals.isLoading = true;
     this.service.loadMenuOptions(this, this.handlerGetSuccessMenuData, this.handlerGetErrorMenuData);
     this.optionSelected = {};
   }
@@ -1200,7 +1397,6 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     _this.dataSource.data = data;
     _this.getUniqueIdDrop(_this.dataSource.data);
     _this.globals.isLoading = false;
-    console.log(_this.dataSource.data);
     _this.dataChange.next(data);
   }
 
@@ -1234,7 +1430,6 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
 
   handlerGetErrorMenuData(_this, result) {
-    console.log(result);
     _this.globals.isLoading = false;
   }
 
@@ -1364,15 +1559,12 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   }
 
   print(node) {
-    console.log(node);
   }
 
   printAll() {
-    console.log(this.dataSource.data)
   }
 
   setSelectedCategoryArguments(category) {
-    console.log(category)
     // var index = this.optionSelected.menuOptionArgumentsAdmin.findIndex(el => el.categoryArgumentsId.id == category.id);
     var index = -1;
     this.optionSelected.menuOptionArgumentsAdmin.forEach(function (element, i) {
@@ -1476,7 +1668,6 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     for (let i = 0; i < this.optionSelected.menuOptionArgumentsAdmin.length; i++) {
       arrayMenuOptionArg.push(this.optionSelected.menuOptionArgumentsAdmin[i]);
     }
-    console.log(this.dataSource.data);
     this.service.saveOptionsArgumentsCategory(this, arrayMenuOptionArg, this.optionSelected.id, this.handlerSuccessSaveCategoryArgument, this.handlerErrorSaveCategoryArgument);
   }
 
@@ -1501,10 +1692,21 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   }
 
   handleSuccessString(_this, data) {
-    console.log(data);
-    console.log(_this.optionSelected);
-    console.log(_this.drillDown);
     let menuString = data;
+
+    // prepare drill down for option selection
+    for(let dD of _this.drillDown)
+    {
+      for (let data of menuString)
+      {
+        if (dD.childrenOptionId == data.id)
+        {
+          dD.childrenOptionId = data.id;
+          break;
+        }
+      }
+    }
+
     const dialogRef = _this.dialog.open(DrillDownDialog, {
       width: '90%',
       data: { optionString: menuString, option: _this.optionSelected, drillDown: _this.drillDown }
@@ -1524,7 +1726,6 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   }
 
   handlerSuccessDrillDown(_this, data) {
-    console.log(data);
     _this.drillDown = data;
     _this.getMenuOptionsString(_this);
   }
@@ -1536,16 +1737,31 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   editCategoryArguments(cat) {
 
     var duplicateObject = JSON.parse(JSON.stringify(cat));
-    console.log(duplicateObject)
     const dialogRef = this.dialog.open(EditCategoryArgumentDialog, {
+      panelClass: "category-argument-dialog",
       width: '45%',
       data: duplicateObject
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result != undefined) {
-        console.log(result)
         duplicateObject = result;
+
+        for (let argument of duplicateObject.categoryArgumentsId[0].arguments)
+        {
+          if (argument.value1)
+            argument.value1 = JSON.stringify (argument.value1);
+ 
+          if (argument.value2)
+            argument.value2 = JSON.stringify (argument.value2);
+
+          if (argument.minDate)
+            argument.minDate = argument.minDate.toString ();
+
+          if (argument.maxDate)
+            argument.maxDate = argument.maxDate.toString ();
+        }
+
         this.saveMenuArguments(duplicateObject);
       }
     });
@@ -1573,6 +1789,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
       this.optionSelected.menuOptionArgumentsAdmin.push(catId);
 
     }
+
     this.saveCategoryArgument();
   }
 
@@ -1671,7 +1888,6 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   public filter(filterText: string) {
     let filteredTreeData;
     if (filterText) {
-      console.log(this.dataSource.data);
       Object.assign([], filteredTreeData).forEach(ftd => {
         let str = String(ftd.id);
         while (str.lastIndexOf('.') > -1) {
@@ -1699,8 +1915,9 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     if (this.optionSelected.menuOptionArgumentsAdmin) {
       for (let categorySelected of this.optionSelected.menuOptionArgumentsAdmin) {
         if (checkbox.id === categorySelected.categoryArgumentsId[0].id && !categorySelected.toDelete) {
+          // convert empty position into a valid one
           if (!categorySelected.position)
-            categorySelected.position = this.optionSelected.menuOptionArgumentsAdmin.indexOf(categorySelected) + 1;
+            categorySelected.position = this.optionSelected.menuOptionArgumentsAdmin.indexOf (categorySelected) + 1;
 
           index = categorySelected.position;
           break;
@@ -1738,6 +1955,52 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
   isMatIcon(icon): boolean {
     return !icon.endsWith(".png");
+  }
+
+  getImageIcon(url): string
+  {
+    let newurl, filename: string;
+    let path: string[];
+
+    path = url.split ('/');
+    filename = path.pop ().split ('?')[0];
+    newurl = "";
+
+    // recreate the url with the theme selected
+    for (let dir of path)
+      newurl += dir + "/";
+
+    newurl += this.globals.theme + "-" + filename;
+    return newurl;
+  }
+
+  filterCategories(): void
+  {
+    // get the search keyword
+    let search = this.searchText;
+    if (!search)
+    {
+      this.filteredCategories.next (this.categories.slice ());
+      return;
+    }
+
+    search = search.toLowerCase ();
+    this.filteredCategories.next (
+      this.categories.filter (a => a.label.toLowerCase ().indexOf (search) > -1)
+    );
+  }
+
+  isDefaultMenuChecked(optionSelected): boolean
+  {
+    return this.defaultMenu === optionSelected.id;
+  }
+
+  checkDefaultMenu(optionSelected): void
+  {
+    if (this.defaultMenu == optionSelected.id)
+      this.defaultMenu = null;
+    else
+      this.defaultMenu = optionSelected.id;
   }
 }
 

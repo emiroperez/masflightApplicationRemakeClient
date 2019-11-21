@@ -1,0 +1,63 @@
+<div class="msf-dashboard-control-variables-title">
+  <div class="msf-dashboard-control-variables-close-button">
+    <mat-icon class="msf-dashboard-close-icon" aria-label="close" (click)="closeDialog()">close</mat-icon>
+  </div>
+  <span *ngIf="!data.OnlyRead">Add Emails</span>
+  <span *ngIf="data.OnlyRead">Emails List</span>
+</div>
+<div *ngIf="!data.OnlyRead" class="msf-dashboard-panel-container msf-dashboard-share-content-container" 
+id="msf-dashboard-drill-down-container" >
+  <div class="msf-dashboard-panel-sub-container-column">
+      <mat-form-field class="datalake-table-location" [formGroup]="EmailAlarmForm">
+          <input matInput autocomplete="off" type="text" placeholder="Type Email"
+              formControlName="emailValidator" />
+          <mat-error *ngIf="isEmailInvalid()">{{getErrorEmailMessage()}}</mat-error>
+      </mat-form-field>
+      <!-- <input matInput placeholder="type Email" 
+        ="email" autocomplete="off" [(ngModel)]="UserEmail"> -->
+    <button [disabled]="isEmailInvalid() && !UserEmail" mat-icon-button class="func-button" (click)="addUserEmail()">
+      <mat-icon class="msf-dashboard-chart-icon" aria-label="Add Email" style="margin-left: 6px">add</mat-icon>
+    </button>
+  </div>
+</div>
+<div class="msf-dashboard-panel-containerr msf-dashboard-share-content-container" 
+id="msf-dashboard-drill-down-container" >
+  <div *ngIf="!data.OnlyRead" class="msf-dashboard-panel-sub-container-column" id="msf-share-dashboard-sub-container-column">
+    <mat-icon class="msf-share-dashboard-icon" aria-label="Users List">person</mat-icon>
+    <span class="msf-dashboard-addmenu-item-text">Emails List</span>
+  </div>
+</div>
+<div class="msf-dashboard-panel-containerr msf-dashboard-share-content-container datalake-emailList" 
+id="msf-dashboard-drill-down-container">
+  <div class="msf-dashboard-panel-sub-container-column">
+    <div class="msf-dashboard-panel-sub-container-column"
+     id="msf-share-dashboard-container" *ngIf="users.length">
+      <mat-radio-group *ngIf="!data.OnlyRead" [(ngModel)]="selectedUser"
+       style="flex-direction: column; display: flex">
+        <ng-container *ngFor="let user of users">
+          <mat-radio-button style="margin: 10px;" class="cancels-checkbox" *ngIf="user.remove != 'T'" 
+          [value]="user">
+            {{user.email}}
+          </mat-radio-button>
+        </ng-container>
+      </mat-radio-group>
+      <div *ngIf="data.OnlyRead" style="flex-direction: column; display: flex">
+        <div style="margin: 0px; margin-bottom: 10px;" class="cancels-checkbox" *ngFor="let user of users">
+          {{user.email}}
+        </div>
+      </div>
+    </div>
+    <div class="msf-dashboard-panel-sub-container-column" 
+    id="msf-dashboard-panel-form-container-column-empty" *ngIf="!users.length" style="height: 200px">
+      <div class="msf-no-results">
+        You have not emails added
+      </div>
+    </div>
+  </div>
+</div>
+<div class="msf-dashboard-control-variables-buttonr msf-dashboard-share-content-container" 
+id="msf-dashboard-drill-down-container" >
+  <button *ngIf="!data.OnlyRead" mat-flat-button [disabled]="!selectedUser" mat-flat-button [ngClass]="selectedUser ? 'flat-button' : 'flat-button-disabled flat-AlarmEmail-button-disabled'" (click)="removeUser()">Remove User</button>
+  <span *ngIf="!data.OnlyRead" class="button-separator"></span>
+  <button mat-flat-button class="flat-button" (click)="closeDialog()">Close</button>
+</div>

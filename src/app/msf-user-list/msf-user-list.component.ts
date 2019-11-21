@@ -6,6 +6,7 @@ import { MatSelect } from '@angular/material';
 import { takeUntil, take } from 'rxjs/operators';
 import { SimpleUser } from '../model/SimpleUser';
 import { ApiClient } from '../api/api-client';
+import { Globals } from '../globals/Globals';
 
 @Component({
   selector: 'app-msf-user-list',
@@ -36,7 +37,7 @@ export class MsfUserListComponent implements OnInit {
    /** Subject that emits when the component has been destroyed. */
    private _onDestroy = new Subject<void>();
  
-   constructor(private http: ApiClient) { }
+   constructor(public globals: Globals, private http: ApiClient) { }
  
  
    ngOnInit() {
@@ -73,8 +74,8 @@ export class MsfUserListComponent implements OnInit {
    }
  
    handlerError(_this,result){
-     _this.globals.isLoading = false; 
-     console.log(result);
+    if (!_this.globals.appLoading)
+      _this.globals.isLoading = false;
    }
  
    ngAfterViewInit() {

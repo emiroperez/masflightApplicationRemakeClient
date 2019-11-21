@@ -1,41 +1,43 @@
-<mat-toolbar  class="panel-toolbar"> 
-      <mat-toolbar-row>
-          <span></span>
-          <span class="example-spacer"></span>
-          <mat-icon class="example-icon" *ngIf="globals.status" (click)="returnSearch()">chevron_left</mat-icon>
-            <mat-icon *ngIf="globals.mapsc && globals.status"  (click)="showTable(false)" class="example-icon">view_list</mat-icon>
-            <mat-icon *ngIf="!globals.mapsc && globals.status"  (click)="showTable(true)" class="example-icon">flight</mat-icon>
-            <span></span>
-        </mat-toolbar-row>
+<mat-toolbar class="panel-toolbar">
+  <mat-toolbar-row>
+    <span></span>
+    <span class="example-spacer"></span>
+    <mat-icon class="example-icon" *ngIf="globals.status" (click)="returnSearch()">chevron_left</mat-icon>
+    <mat-icon *ngIf="globals.mapsc && globals.status"  (click)="showTable(false)" class="example-icon">view_list</mat-icon>
+    <mat-icon *ngIf="!globals.mapsc && globals.status"  (click)="showTable(true)" class="example-icon">flight</mat-icon>
+    <span></span>
+  </mat-toolbar-row>
 </mat-toolbar>
-<mat-accordion>
-  <mat-expansion-panel  [disabled]="!globals.mapsc || !globals.status" class="msf-schedule-panel" *ngFor="let item of aux; let indexopen = index" >
-    <mat-expansion-panel-header  class="msf-schedule-mat-expansion-panel-header" > 
-      <mat-panel-title class="msf-schedule-panel-header">
-       {{item.Flight.Marketing_Airline}} {{item.Flight.Airline}} - F# {{item.Flight.FlightNo}} {{item.TouchedAirports}}
-      </mat-panel-title>
-      <mat-panel-description><mat-checkbox  [disabled]="!globals.mapsc" (change)="expandFlight(indexopen,$event)" (click)="$event.stopPropagation();"></mat-checkbox></mat-panel-description>
+<div class="schedule-panel-scrollbar">
+  <mat-accordion>
+    <mat-expansion-panel  [disabled]="!globals.mapsc || !globals.status" class="msf-schedule-panel" *ngFor="let item of aux; let indexopen = index" >
+      <mat-expansion-panel-header  class="msf-schedule-mat-expansion-panel-header" > 
+        <mat-panel-title class="msf-schedule-panel-header">
+          {{printRouteName(item)}}
+        </mat-panel-title>
+        <mat-panel-description><mat-checkbox  [disabled]="!globals.mapsc" (change)="expandFlight(indexopen,$event)" (click)="$event.stopPropagation();"></mat-checkbox>
+      </mat-panel-description>
     </mat-expansion-panel-header>
     <table class="msf-schedule-panel-table">
       <tr><td>Touched Airports</td><td>{{item.TouchedAirports}}</td></tr>
       <tr><td>Total Distance</td><td>{{item.TotalDistance}}</td></tr>
       <tr><td>Total Time</td><td>{{item.TotalTime}}</td></tr>
     </table>
-     <div *ngIf="!checkarray(item.Flight)">
+    <div *ngIf="!checkarray(item.Flight)">
       <h3 class="msf-schedule-panel-subs">{{item.Flight.content}}</h3>  
-    <table class="msf-schedule-panel-table" >
-        <tr *ngFor="let entry  of item.Flight | keyvalue"  ><td *ngIf="globals.metadata.get(entry.key)" >{{globals.metadata.get(entry.key)}}</td><td *ngIf="globals.metadata.get(entry.key)">{{entry.value}}</td></tr>
-    </table>
-  </div>
-  <div *ngIf="checkarray(item.Flight)">
-    <div *ngFor="let fly of item.Flight" >
+      <table class="msf-schedule-panel-table" >
+        <tr *ngFor="let entry  of item.Flight | keyvalue"  ><td *ngIf="globals.metadata.get(entry.key)" >{{globals.metadata.get(entry.key)}}</td><td *ngIf="globals.metadata.get(entry.key)">{{entry.value.value}}</td></tr>
+      </table>
+    </div>
+    <div *ngIf="checkarray(item.Flight)">
+      <div *ngFor="let fly of item.Flight" >
         <h3 class="msf-schedule-panel-subs">{{fly.content}}</h3>  
-    <table class="msf-schedule-panel-table"  >
-        <tr *ngFor="let entry  of fly | keyvalue"  ><td *ngIf="globals.metadata.get(entry.key)" >{{globals.metadata.get(entry.key)}}</td><td *ngIf="globals.metadata.get(entry.key)">{{entry.value}}</td></tr>
-    </table>
-  </div>
-  </div>
-  </mat-expansion-panel>
-
-</mat-accordion>
-<mat-toolbar *ngIf="!mobileQuery.matches"  class="panel-toolbar2" ></mat-toolbar>
+        <table class="msf-schedule-panel-table">
+          <tr *ngFor="let entry  of fly | keyvalue"  ><td *ngIf="globals.metadata.get(entry.key)" >{{globals.metadata.get(entry.key)}}</td><td *ngIf="globals.metadata.get(entry.key)">{{entry.value.value}}</td></tr>
+          </table>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+  <mat-toolbar *ngIf="!TabletQuery.matches" class="panel-toolbar2"></mat-toolbar>
+</div>

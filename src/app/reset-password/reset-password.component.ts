@@ -12,14 +12,15 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
   selector: "app-reset-password",
-  templateUrl: "./reset-password.component.html",
-  styleUrls: ["./reset-password.component.css"]
+  templateUrl: "./reset-password.component.html"
 })
 export class ResetPasswordComponent implements OnInit {
   user: User;
   userSave: User;
   utils: Utils;
   tokenEmail: string;
+  innerHeight: number;
+
   personalInformationForm = new FormGroup({
     emailValidator: new FormControl("email", [Validators.required, Validators.email]),
     passwordValidator: new FormControl("password", [Validators.required]),
@@ -31,7 +32,7 @@ export class ResetPasswordComponent implements OnInit {
 
 
   constructor(private authService: AuthService, private notification: NotificationComponent,
-    private registerServices:UserService, private globals: Globals,
+    private registerServices:UserService, public globals: Globals,
     private activatedRoute: ActivatedRoute, public dialog: MatDialog,
     private router: Router) {
     this.user = new User(null);
@@ -41,12 +42,12 @@ export class ResetPasswordComponent implements OnInit {
   ngOnInit() {
     let self = this;
 
+    this.innerHeight = window.innerHeight;
     this.activatedRoute.queryParams.subscribe(params => {
       self.tokenEmail = params['token'];
 
       if (self.tokenEmail)
       {
-        console.log (self.tokenEmail);
         self.user.email = self.tokenEmail.split(":")[0];
         self.personalInformationForm.get ('emailValidator').setValue (self.user.email);
         self.verifyToken();
@@ -62,7 +63,6 @@ export class ResetPasswordComponent implements OnInit {
   }
   successHandler(_this,data){
     _this.globals.isLoading = false;
-    console.log(data);
     if(data==null){
       const dialogRef = _this.dialog.open(MessageComponent, {
         data: { title:"Error", message:"Token has expired" }
@@ -77,7 +77,6 @@ export class ResetPasswordComponent implements OnInit {
 
   errorHandler(_this, result){
     _this.globals.isLoading = false;
-    console.log(result);
   }
 
 
@@ -144,6 +143,8 @@ resetHandler(_this,data) {
   @HostListener('window:resize', ['$event'])
   checkScreen(event): void
   {
+    this.innerHeight = event.target.innerHeight;
+
     // if(!this.mobileQuery.matches)
     // {
     if (event.target.innerHeight == window.screen.height && event.target.innerWidth == window.screen.width)
@@ -154,5 +155,9 @@ resetHandler(_this,data) {
     // else{
     //   this.globals.isFullscreen = false;
     // }
+  }
+
+  getInnerHeight(): number {
+    return this.innerHeight;
   }
 }
