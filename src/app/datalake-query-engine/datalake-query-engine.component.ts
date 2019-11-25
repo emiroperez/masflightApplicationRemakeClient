@@ -112,8 +112,6 @@ export class DatalakeQueryEngineComponent implements OnInit {
   {
     this.globals.queryTabs.push (new DatalakeQueryTab ());
     this.selectedIndex = this.globals.queryTabs.length - 1;
-    this.changeDetectorRef.detectChanges (); // detect changes, so we can refresh the query editor on the new tab
-    this.queryEditors.last.codeMirror.refresh ();
   }
 
   closeQueryTab(event, index: number): void
@@ -129,8 +127,16 @@ export class DatalakeQueryEngineComponent implements OnInit {
 
   onIndexChange(event: any): void
   {
+    let queryEditor = this.queryEditors.filter ((element, index) => index === event);
+
     this.selectedIndex = event;
     this.globals.selectedSchema = this.globals.queryTabs[this.selectedIndex];
+
+    setTimeout (() =>
+    {
+      this.changeDetectorRef.detectChanges (); // detect changes, so we can refresh the query editor on the current tab
+      queryEditor[0].codeMirror.refresh ();
+    }, 10);
   }
 
   onDragClick(event): void
