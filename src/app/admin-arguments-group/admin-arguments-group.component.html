@@ -96,7 +96,8 @@
                                 <div [class.msf-hide]="ArgumentGroup.group === ''" class="admin-arguments-group-det-header-left admin-arguments-group-search-input">
                                     <div >Search</div>
                                     <mat-form-field class="search-input search-input-group">
-                                        <input matInput [(ngModel)]="searchAirport" autocomplete=off (ngModelChange)="onSearch(ArgumentGroup.group)">
+                                        <input matInput [(ngModel)]="searchAirport" autocomplete=off 
+                                        (ngModelChange)="onSearch(ArgumentGroup.group)">
                                         <mat-icon class="iconSearch" aria-label="search" >search</mat-icon>
                                     </mat-form-field>  
                                 </div>
@@ -108,7 +109,9 @@
                                 <!--body-->
                             <div class="admin-arguments-group-det-body">
                                 <div class="admin-arguments-group-det-body-left">
-                                <mat-selection-list *ngIf="ArgumentGroup.group === 'Airport'" [class.msf-hide]="ArgumentGroup.group === ''" class="items-rows" (selectionChange)="addGroupDet($event, ArgumentGroup.group)"
+                                <mat-selection-list *ngIf="ArgumentGroup.group === 'Airport'"
+                                 [class.msf-hide]="ArgumentGroup.group === ''" class="items-rows"
+                                  (selectionChange)="addGroupDet($event, ArgumentGroup.group)"
                                      [compareWith]="compareElement" [(ngModel)]="ArgumentGroup.iataList" multiple>
                                         <mat-list-option  
                                         [class.msf-hide]="isSelected(Airport,ArgumentGroup.iataList,ArgumentGroup.group) || !Airport.visible || ArgumentGroup.group!='Airport'"

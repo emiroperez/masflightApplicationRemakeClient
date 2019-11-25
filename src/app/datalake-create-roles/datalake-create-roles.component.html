@@ -1,0 +1,109 @@
+<div class="admin-menu-background" [style.height.px]="getInnerHeight()">
+  <div class="msf-register-header">
+    <button mat-icon-button routerLink="/datalake">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <img class="msf-medium-logo" src="../../assets/images/{{globals.theme}}-logo.png" />
+    <div class="msf-register-header-content msf-arguments-category-header">
+      <div class="msf-register-header-title">
+        <div class="msf-register-header-title-content msf-arguments-category-header-title-content">
+          DATALAKE ROLES ADMINISTRATION<br>
+        </div>
+      </div>
+      <div class="msf-register-header-image-content">
+        <img class="medium-user-image" src="../../assets/images/{{globals.theme}}-icon-user.png" />
+      </div>
+    </div>
+  </div>
+  <mat-card id="category-card" class="card-container msf-center-container admin-arguments-category-container">
+    <mat-card-content class="admin-arguments-category-outer-container">
+      <div class="admin-arguments-category-inner-container">
+        <div class="admin-arguments-category-left-panel">
+          <div class="admin-arguments-category-left-panel-header">
+            <h2 class="title-section">Datalake Roles</h2>
+            <div class="admin-arguments-category-buttons">
+              <button mat-icon-button (click)="addRole()">
+                <mat-icon class="admin-mat-icon-button" aria-label="add">add_circle</mat-icon>
+              </button>
+              <!-- <button mat-icon-button (click)="deleteRole()">
+                <mat-icon class="admin-mat-icon-button" aria-label="delete">remove_circle</mat-icon>
+              </button> -->
+            </div>
+          </div>
+          <mat-form-field>
+            <input matInput [(ngModel)]="searchText">
+            <mat-icon class="admin-arguments-search-icon" matSuffix>search</mat-icon>
+          </mat-form-field>
+          <div class="admin-arguments-category-left-panel-body">
+            <div class="admin-arguments-categories-container">
+              <div class="category-arguments-scrollbar arguments-categories-list-container">
+                <div class="arguments-categories-list-item" *ngFor="let item of Roles | filter : searchText">
+                  <div class="arguments-categories-list-item-label"
+                    [ngClass]="{ 'is-active': item.isSelected, 'is-inactive': !item.isSelected }">
+                    <div class="arguments-categories-list-item-label-container" (click)="getSelectedOption(item)">
+                      <input class="arguments-categories-list-item-label-color" disabled="true" type="text"
+                        name="optionname" autocomplete="off" matInput [(ngModel)]="item.name" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="admin-arguments-category-right-panel" *ngIf="Role">
+          <div class="admin-arguments-category-right-panel-header admin-arguments-category-right-panel-header-datalakeRole">
+            <!-- <div class="admin-arguments-category-form-container"> -->
+              <mat-form-field>
+                <input [disabled]="disable" matInput (focus)="Role.focus" placeholder="Name Role"
+                  [(ngModel)]="Role.name" />
+              </mat-form-field>
+              <mat-checkbox class="admin-checkboxes" color="primary" [(ngModel)]="Role.state">
+                Active</mat-checkbox>
+              <div class="admin-arguments-group-save">
+                <button mat-button class="flat-button" (click)="sendData()">
+                  Save all
+                </button>
+              </div>
+            <!-- </div> -->
+          </div>
+          <div class="admin-arguments-group-select">
+              <!--header-->
+          <div class="admin-arguments-group-det-header">
+              <div class="admin-arguments-group-det-header-right">
+                  <h2 class="title-section">Datalake Actions</h2>
+              </div>
+              <div class="admin-arguments-group-det-header-left admin-arguments-group-search-input">
+                  <div >Search</div>
+                  <mat-form-field class="search-input search-input-group">
+                      <input matInput [(ngModel)]="searchOption" autocomplete=off 
+                      (ngModelChange)="filteredOption()">
+                      <mat-icon class="iconSearch" aria-label="search" >search</mat-icon>
+                  </mat-form-field>  
+              </div>
+              <div class="msf-admin-show-selected admin-arguments-group-checkbox">
+                  <mat-checkbox class="admin-checkboxes" color="primary" [(ngModel)]="showSelected">
+                      Only Selected</mat-checkbox>
+              </div>
+          </div>
+              <!--body-->
+          <div class="admin-arguments-group-det-body">
+              <div class="admin-arguments-group-det-body-left">
+              <mat-selection-list class="items-rows" 
+               [compareWith]="compareElement" (selectionChange)="RoleChanged($event,Role)" [(ngModel)]="Role.datalakeOption" multiple>
+               <!-- [class.msf-hide]="isSelected(Option,Role.datalakeOption)" -->
+                  <mat-list-option 
+                  checkboxPosition="before" [value]="Option" *ngFor="let Option of filteredOptions  | async">
+                      {{Option.name}}
+                  </mat-list-option>
+              </mat-selection-list>
+              </div>
+          </div>                               
+      </div>
+        </div>
+
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+
+</div>

@@ -9,19 +9,25 @@ import { Globals } from '../globals/Globals';
 })
 export class DatalakeMenuComponent implements OnInit {
   @Output('setOption')
-  setOption = new EventEmitter ();
+  setOption = new EventEmitter();
 
-  constructor(public globals: Globals,private dialog: MatDialog) { }
+  constructor(public globals: Globals, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.globals.optionDatalakeSelected = 2;
   }
 
-  createTable(): void
-  {
-   let dialogRef =  this.dialog.open (DatalakeCreateTableComponent, {
+  createTable(): void {
+    let indexp = 1;
+    let index = this.globals.optionsDatalake.findIndex(od => od.option.option === "Create New Table");
+    if (index != -1) {
+      indexp = 0;
+    }else{
+      indexp = 1;
+    }
+    let dialogRef = this.dialog.open(DatalakeCreateTableComponent, {
       panelClass: 'datalake-create-table-dialog',
-      data: {index: 0}
+      data: { index: indexp }
     });
 
     dialogRef.afterClosed().subscribe(() => {
@@ -29,9 +35,18 @@ export class DatalakeMenuComponent implements OnInit {
     });
   }
 
-  setOptionSelect(opcion){
+  setOptionSelect(opcion) {
     this.globals.optionDatalakeSelected = opcion;
-    let data = {schemaName: null, tableName: null}
+    let data = { schemaName: null, tableName: null }
     this.setOption.emit(data);
+  }
+
+  OptionDisable(option: any) {
+      let index = this.globals.optionsDatalake.findIndex(od => od.option.option === option);
+      if (index != -1) {
+        return false;
+      } else {
+        return true;
+      }
   }
 }

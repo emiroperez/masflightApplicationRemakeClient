@@ -219,6 +219,7 @@ import { DatalakeQueryEngineHistoryComponent } from './datalake-query-engine-his
 import { DatalakeQueryEngineSaveComponent } from './datalake-query-engine-save/datalake-query-engine-save.component';
 import { DatalakeAlarmAddEmailDialogComponent } from './datalake-alarm-add-email-dialog/datalake-alarm-add-email-dialog.component';
 import { DatalakeUserInformationDialogComponent } from './datalake-user-information-dialog/datalake-user-information-dialog.component';
+import { DatalakeCreateRolesComponent } from './datalake-create-roles/datalake-create-roles.component';
 
 @NgModule({
   declarations: [
@@ -411,7 +412,8 @@ import { DatalakeUserInformationDialogComponent } from './datalake-user-informat
     DatalakeQueryEngineHistoryComponent,
     DatalakeQueryEngineSaveComponent,
     DatalakeAlarmAddEmailDialogComponent,
-    DatalakeUserInformationDialogComponent
+    DatalakeUserInformationDialogComponent,
+    DatalakeCreateRolesComponent
   ],
   imports: [
     BrowserModule,

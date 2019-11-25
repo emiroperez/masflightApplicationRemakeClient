@@ -61,7 +61,8 @@ export class Globals {
   currentAirline: any;
   template : boolean = false;
   isFullscreen: boolean = false;
-  // baseUrl = "http://pulse.globaleagle.com:8887";
+  // baseUrl = "http://localhost:8885";
+  // baseUrl = "http://pulse.globaleagle.com:8885";
   // baseUrl = "http://192.168.1.50:8887";
   baseUrl = "";
   baseUrl2 = "https://pulse.globaleagle.com:8886/mapBoxServices";
@@ -103,6 +104,9 @@ export class Globals {
   // selectedSchema: DatalakeQueryTab[] = [ new DatalakeQueryTab () ];
   selectedSchema: any;
   optionDatalakeSelected: number = 2;
+  optionsDatalake: any = [];
+  // userName: string = "eric.haag.t@aspsols.com";
+  userName: string = "";
 
   constructor (public overlayContainer: OverlayContainer, private cookie: Cookie)
   {

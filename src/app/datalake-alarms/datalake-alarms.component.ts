@@ -420,7 +420,9 @@ saveAlarmHandler(_this, data) {
     _this.listEmail = [];
     _this.minutes = "";
      let date = new Date ();
-    _this.clock.setTime(date.getHours(), date.getMinutes());
+     if(_this.clock){
+        _this.clock.setTime(date.getHours(), date.getMinutes());
+     }
     _this.alarms = [];
     _this.service.getDatalakeAlarms (_this, _this.setAlarms, _this.setAlarmsError);
     // _this.globals.isLoading = false;
@@ -512,6 +514,15 @@ AddEmail(): void
       }
       
     });
+  }
+  
+  actionDisable(option: any) {
+    let index = this.globals.optionsDatalake.findIndex(od => od.option.name === option);
+    if (index != -1) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
 }

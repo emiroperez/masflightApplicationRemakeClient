@@ -37,7 +37,8 @@ export class DatalakeQueryEngineHistoryComponent implements OnInit {
   {"ExecutionId":"25","Query":"select * from  fr24p.fradar24_r limit 3","ExecutionStatus":"","Schema":"pruebaperformancepq","Timestamp":"2019-10-25 19:54:20","Name":"testSave"}]
   ngOnInit() {
     this.innerHeight = window.innerHeight;
-    this.historyTable = new MatTableDataSource (this.data2);
+    // this.historyTable = new MatTableDataSource (this.data2);
+    this.historyTable = new MatTableDataSource (this.data);
     this.historyTable.paginator = this.paginator;
   }
 

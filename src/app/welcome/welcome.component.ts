@@ -114,6 +114,7 @@ this.mobileQuery.addListener(this._mobileQueryListener);
   handleLogin(_this,data){
     _this.globals.currentUser = data.name;
     _this.userName = _this.globals.currentUser;
+    _this.globals.userName = data.email;
     _this.userService.getUserLastLoginTime (_this, _this.lastTimeSuccess, _this.errorLogin);
   }
 

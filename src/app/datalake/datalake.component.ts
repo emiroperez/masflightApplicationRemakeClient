@@ -104,7 +104,18 @@ export class DatalakeComponent implements OnInit {
   handleLogin(_this, data): void
   {
     _this.globals.currentUser = data.name;
+    _this.globals.admin = data.admin;
+    _this.globals.userName = data.email;
     _this.globals.optionDatalakeSelected = 2;
+    if(data.userInfoDatalake){
+      data.userInfoDatalake.datalakeRoles.forEach(datalakeRole => {
+        datalakeRole.role.datalakeOption.forEach(datalakeOption => {
+          if(datalakeOption){
+            _this.globals.optionsDatalake.push(datalakeOption)
+          }
+        });
+      });
+    }
     // _this.globals.isLoading = false;
     // _this.currentOption = 2;
   }
@@ -138,5 +149,14 @@ export class DatalakeComponent implements OnInit {
     // else{
     //   this.globals.isFullscreen = false;
     // }
+  }
+
+  showDataExplorer(){
+    let index = this.globals.optionsDatalake.findIndex(od => od.option.option === "Datalake Explorer");
+    if((this.globals.optionDatalakeSelected === 2 || this.globals.optionDatalakeSelected === 3)  && index != -1){
+      return true;
+    }else{
+      return false;
+    }
   }
 }

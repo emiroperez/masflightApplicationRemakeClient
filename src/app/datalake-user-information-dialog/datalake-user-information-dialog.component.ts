@@ -19,7 +19,7 @@ export class DatalakeUserInformationDialogComponent implements OnInit {
     private formBuilder: FormBuilder,private service: ApplicationService,
     @Inject(MAT_DIALOG_DATA) public data) {
       this.datalakeUserInfoFormGroup = this.formBuilder.group ({
-        username: ['',Validators.required],
+        // username: ['',Validators.required],
         aws_access_key_id: ['',Validators.required],
         aws_secret_access_key: ['',Validators.required],
         s3_query_location: ['',Validators.required],
@@ -94,16 +94,16 @@ export class DatalakeUserInformationDialogComponent implements OnInit {
   {
     let aux = event.source.value;
     if(!event.source.selected){
-      let index= this.tempDatalakeRoles.findIndex(dR => dR.idRol.id === aux.id);
+      let index= this.tempDatalakeRoles.findIndex(dR => dR.role.id === aux.id);
       if(index!=-1){
         this.tempDatalakeRoles[index].state = 0
       }
     }else{
-      let index= this.tempDatalakeRoles.findIndex(dR => dR.idRol.id === aux.id);
+      let index= this.tempDatalakeRoles.findIndex(dR => dR.role.id === aux.id);
       if(index!=-1){
         this.tempDatalakeRoles[index].state = 1
       }else{
-        this.tempDatalakeRoles.push({idRol:aux});
+        this.tempDatalakeRoles.push({role:aux});
       }
     }
 
@@ -123,7 +123,7 @@ export class DatalakeUserInformationDialogComponent implements OnInit {
       _this.roles.push (role);
 
       if(_this.data.userInfoDatalake){
-        _this.datalakeUserInfoFormGroup.get ("username").setValue (_this.data.userInfoDatalake.username);
+        // _this.datalakeUserInfoFormGroup.get ("username").setValue (_this.data.userInfoDatalake.username);
         _this.datalakeUserInfoFormGroup.get ("aws_access_key_id").setValue (_this.data.userInfoDatalake.aws_access_key_id);
         _this.datalakeUserInfoFormGroup.get ("aws_secret_access_key").setValue (_this.data.userInfoDatalake.aws_secret_access_key);
         _this.datalakeUserInfoFormGroup.get ("s3_query_location").setValue (_this.data.userInfoDatalake.s3_query_location);
@@ -139,7 +139,7 @@ export class DatalakeUserInformationDialogComponent implements OnInit {
     let aux = [];
     let datalakeRoles = this.data.userInfoDatalake.datalakeRoles;
     datalakeRoles.forEach(element => {
-      aux.push(element.idRol)
+      aux.push(element.role)
     });
     this.datalakeUserInfoFormGroup.get ("datalakeRoles").setValue(aux);
   }

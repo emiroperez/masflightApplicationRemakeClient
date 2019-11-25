@@ -274,6 +274,11 @@ export class DatalakeCreateNewStructureComponent {
 
   uploadSuccess(_this, data): void
   {
+    if(!data){
+      _this.fileLoading = false;
+      return;
+    }
+
     let fileReader: FileReader;
     let i: number = 1;
 

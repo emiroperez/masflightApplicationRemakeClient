@@ -605,6 +605,15 @@ export class ApplicationService {
       this.http.get(_this, url, handlerSuccess, handlerError, null);
   }
 																   
-																	
-   
+  getDatalakeOptions(_this, schemaName, handlerSuccess, handlerError): void
+  {
+      let url = this.host + "/getDatalakeOptions?search="+schemaName;
+      this.http.get(_this, url, handlerSuccess, handlerError, null);
+  }
+  saveNewDatalakeRole(_this, data, handlerSuccess, handlerError){
+    _this.globals.isLoading = true;
+    let url = this.host + "/secure/saveNewDatalakeRole";
+    this.authService.post(_this, url, data, handlerSuccess, handlerError);
+  }
+
 }

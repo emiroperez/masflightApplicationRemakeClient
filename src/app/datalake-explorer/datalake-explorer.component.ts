@@ -153,4 +153,25 @@ export class DatalakeExplorerComponent implements OnInit {
 
     return "../../assets/images/" + this.globals.theme + "-datalake-query.png";
   }
+
+  
+  OptionDisable(option: any) {
+    let index = this.globals.optionsDatalake.findIndex(od => od.option.option === option);
+    if (index != -1) {
+      return false;
+    } else {
+      return true;
+    }
+}
+
+actionDisable(option: any) {
+  let index = this.globals.optionsDatalake.findIndex(od => od.option.name === option);
+  if (index != -1) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
+
 }

@@ -15,6 +15,7 @@ import { AuthGuard } from '../guards/auth.guard';
 import { CreateCustomerComponent } from '../create-customer/create-customer.component';
 import { AdminArgumentsGroupComponent } from '../admin-arguments-group/admin-arguments-group.component';
 import { DatalakeComponent } from '../datalake/datalake.component';
+import { DatalakeCreateRolesComponent } from '../datalake-create-roles/datalake-create-roles.component';
 
 export const routes: Routes = [
   { path: '', component: LoginScreenComponent },
@@ -29,7 +30,8 @@ export const routes: Routes = [
   { path: 'arguments-category', component: AdminArgumentsCategoryComponent, canActivate: [AuthGuard] },
   { path: 'arguments-groups', component: AdminArgumentsGroupComponent, canActivate: [AuthGuard] },
   { path: 'create-customer', component: CreateCustomerComponent, canActivate: [AuthGuard] },
-  { path: 'datalake', component: DatalakeComponent, canActivate: [AuthGuard] }
+  { path: 'datalake', component: DatalakeComponent, canActivate: [AuthGuard] },
+  { path: 'datalake-roles', component: DatalakeCreateRolesComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({

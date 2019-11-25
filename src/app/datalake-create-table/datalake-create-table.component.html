@@ -12,11 +12,11 @@
   </div>
   <div class="datalake-create-table-body">
     <mat-tab-group #tabs [selectedIndex]="getSelectedIndex()" (selectedIndexChange)="tabIndexChange($event)">
-      <mat-tab label="Create New Table">
+      <mat-tab [disabled]="actionDisable('Create New Table')" label="Create New Table">
         <app-datalake-create-new-structure [schemas]="schemas" [buckets]="buckets" (closeDialog)="onNoClick($event)" (startLoading)="startLoading()" (stopLoading)="stopLoading()"></app-datalake-create-new-structure>
         <!-- <app-datalake-create-new-structure [schemas]="schemas" [buckets]="buckets" (closeDialog)="onNoClick($event)"></app-datalake-create-new-structure> -->
       </mat-tab>
-      <mat-tab label="Data Upload">
+      <mat-tab [disabled]="actionDisable('Data Upload')" label="Data Upload">
         <app-datalake-data-upload #upload [schemas]="schemas" [buckets]="buckets" [Datavalue]="data" (closeDialog)="onNoClick(null)" (startLoading)="startLoading()" (stopLoading)="stopLoading()"></app-datalake-data-upload>
         <!-- <app-datalake-data-upload [schemas]="schemas" [buckets]="buckets" (closeDialog)="onNoClick(null)"></app-datalake-data-upload> -->
       </mat-tab>

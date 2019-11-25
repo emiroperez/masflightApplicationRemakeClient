@@ -48,6 +48,10 @@
                 <mat-icon class="mat-menu-item-icon">settings</mat-icon>
                 <span>Menu Administration</span>
             </button>
+            <button *ngIf="globals.admin" mat-menu-item routerLink="/datalake-roles">
+                <mat-icon class="mat-menu-item-icon">category</mat-icon>
+                <span>Datalake Roles Administration</span>
+            </button>
         </mat-menu>
     </div>
 </div>
@@ -56,6 +60,7 @@
     <!-- <app-datalake-explorer *ngIf="currentOption === 2 || currentOption === 3" [currentOption]="currentOption" (setCurrentOptionSelected)="setCcurrentOptionSelected($event)"></app-datalake-explorer> -->
     <app-datalake-explorer *ngIf="globals.optionDatalakeSelected === 2 || globals.optionDatalakeSelected === 3" 
     (setCurrentOptionSelected)="setCurrentOptionSelected($event)"></app-datalake-explorer>
+    <app-datalake-explorer *ngIf=showDataExplorer() (setCurrentOptionSelected)="setCurrentOptionSelected($event)"></app-datalake-explorer>
     <app-datalake-alarms *ngIf="globals.optionDatalakeSelected === 5" [currentOption]="currentOption"></app-datalake-alarms>
     <app-datalake-partitions *ngIf="globals.optionDatalakeSelected === 6"></app-datalake-partitions>
     <app-datalake-execution-partition *ngIf="globals.optionDatalakeSelected === 7 || globals.optionDatalakeSelected === 8" ></app-datalake-execution-partition>

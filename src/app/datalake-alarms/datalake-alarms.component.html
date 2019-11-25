@@ -39,10 +39,12 @@
               <button (click)="viewEmail(element.emailList)" mat-icon-button matTooltip="View Emails List">
                 <mat-icon class="edit-icon" *ngIf="element.emailList && element.emailList.length != 0">person_add</mat-icon>
               </button> 
-              <button (click)="editAlarm(element)" mat-icon-button matTooltip="Edit Alarm">
+              <button [disabled]="actionDisable('Edit Alarm')"
+              (click)="editAlarm(element)" mat-icon-button matTooltip="Edit Alarm">
                 <mat-icon class="edit-icon">edit</mat-icon>
               </button>
-              <button (click)="removeAlarm(element)" mat-icon-button matTooltip="Delete Alarm">
+              <button [disabled]="actionDisable('Delete Alarm')"
+              (click)="removeAlarm(element)" mat-icon-button matTooltip="Delete Alarm">
                 <mat-icon class="delete-icon">delete</mat-icon>
               </button>
             </td>
@@ -116,7 +118,7 @@
           </div>
         </div>
         <div class="datalake-alarm-buttons">
-          <button mat-button class="flat-button" (click)="addAlarm()">Save</button>
+          <button mat-button class="flat-button" [disabled]="actionDisable('Create Alarm')" (click)="addAlarm()">Save</button>
           <button mat-button class="flat-button datalake-alarm-cancel-button">Cancel</button>
         </div>
       </div>

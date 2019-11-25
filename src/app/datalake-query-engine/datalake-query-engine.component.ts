@@ -22,6 +22,7 @@ export class DatalakeQueryEngineComponent implements OnInit {
   rightPanelWidth: number = 75;
   resizePanels: boolean = false;
   selectedIndex: number = 0;
+  error: String = "Run Query to view results";
 
   savequerymouseover: boolean = false;
   queryhistorymouseover: boolean = false;
@@ -79,6 +80,7 @@ export class DatalakeQueryEngineComponent implements OnInit {
 
   runQuery(query: DatalakeQueryTab): void
   {
+    this.error="Run Query to view results";
     if (!query.schema)
     {
       this.dialog.open (MessageComponent, {
@@ -219,6 +221,7 @@ export class DatalakeQueryEngineComponent implements OnInit {
 
     if (!data.Columns || (data.Columns && !data.Columns.length))
     {
+      _this.error = data.error;
       _this.queryLoading = false;
       return;
     }
@@ -340,9 +343,9 @@ export class DatalakeQueryEngineComponent implements OnInit {
 
   queryHistoryResults(_this, result): void
   {
-    if(result.OK){
+    if(result[0].Ok){
       _this.dialog.open (MessageComponent, {
-        data: { title: "Result: ", message: result.OK }
+        data: { title: "Result: ", message: result[0].Ok }
       });   
     }else{
       let dialogRef = _this.dialog.open (DatalakeQueryEngineHistoryComponent, {
@@ -389,4 +392,14 @@ export class DatalakeQueryEngineComponent implements OnInit {
 
     return "../../assets/images/" + this.globals.theme + "-datalake-run-query.png";
   }
+
+  actionDisable(option: any) {
+    let index = this.globals.optionsDatalake.findIndex(od => od.option.name === option);
+    if (index != -1) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
 }

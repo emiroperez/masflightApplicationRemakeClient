@@ -108,4 +108,13 @@ export class DatalakeTableCardComponent implements OnInit {
     this.globals.optionDatalakeSelected = 5;
     this.setOption.emit(data);
   }
+
+  actionDisable(option: any) {
+    let index = this.globals.optionsDatalake.findIndex(od => od.option.name === option);
+    if (index != -1) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 }

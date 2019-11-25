@@ -5,12 +5,12 @@
   <span >Datalake Information</span>
 </div>
 <div Style="width: 100%!important;display: flex;flex-direction: column;">
-  <mat-form-field class="datalake-userInfo-input"
+  <!-- <mat-form-field class="datalake-userInfo-input"
   [formGroup]="datalakeUserInfoFormGroup">
     <input matInput placeholder="Username" autocomplete="off" 
     formControlName="username">
     <mat-error *ngIf="datalakeUserInfoFormGroup.get('username')?.invalid">You must specify Username</mat-error>
-  </mat-form-field>
+  </mat-form-field> -->
   <mat-form-field class="datalake-userInfo-input"
   [formGroup]="datalakeUserInfoFormGroup">
     <input   matInput placeholder="Aws Access Key Id" autocomplete="off" 
@@ -35,7 +35,7 @@
     formControlName="s3_region">
     <mat-error *ngIf="datalakeUserInfoFormGroup.get('s3_region')?.invalid">You must specify S3 Region</mat-error>
   </mat-form-field>
-  <mat-form-field class="datalake-alarm-left-combobox" 
+  <mat-form-field class="datalake-userInfo-input"
   [formGroup]="datalakeUserInfoFormGroup">
     <mat-select multiple placeholder="Role" autocomplete="off" formControlName="datalakeRoles"
      [compareWith]="compareTo">
