@@ -219,6 +219,7 @@ export class DatalakeQueryEngineComponent implements OnInit {
 
     if (!data.Columns || (data.Columns && !data.Columns.length))
     {
+      _this.endQueryTime = Date.now ();
       _this.queryLoading = false;
       return;
     }
@@ -245,8 +246,13 @@ export class DatalakeQueryEngineComponent implements OnInit {
 
   queryError(_this, result): void
   {
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Error", message: "Failed to run query." }
+    });
+
     _this.queryLoading = false;
     _this.startQueryTime = null;
+    _this.endQueryTime = null;
   }
 
   calcExecutionTime(): string

@@ -69,8 +69,11 @@
         </ng-container>
         <ng-container *ngIf="!queryLoading">
           <div class="datalake-no-execution" *ngIf="!displayedColumns.length">
-            <div class="datalake-no-execution-label">
+            <div class="type-no-execution-label" *ngIf="!endQueryTime">
               Run Query to view results
+            </div>
+            <div class="type-no-execution-label" *ngIf="endQueryTime">
+              No resuls were found
             </div>
           </div>
           <div class="datalake-query-result datalake-table" *ngIf="displayedColumns.length">
