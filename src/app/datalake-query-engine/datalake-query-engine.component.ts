@@ -80,7 +80,7 @@ export class DatalakeQueryEngineComponent implements OnInit {
 
   runQuery(query: DatalakeQueryTab): void
   {
-    this.error="Run Query to view results";
+    this.error= null;
     if (!query.schema)
     {
       this.dialog.open (MessageComponent, {
@@ -107,15 +107,13 @@ export class DatalakeQueryEngineComponent implements OnInit {
     this.displayedColumns = [];
     this.dataSource = [];
 
-    this.service.datalakeExecuteQuery (this, query.schema, query.input, this.showQueryResults, this.queryError);
+    this.service.datalakeExecuteQuery (this, query.schema, encodeURIComponent (query.input), this.showQueryResults, this.queryError);
   }
 
   addQueryTab(): void
   {
     this.globals.queryTabs.push (new DatalakeQueryTab ());
     this.selectedIndex = this.globals.queryTabs.length - 1;
-    this.changeDetectorRef.detectChanges (); // detect changes, so we can refresh the query editor on the new tab
-    this.queryEditors.last.codeMirror.refresh ();
   }
 
   closeQueryTab(event, index: number): void
@@ -131,8 +129,16 @@ export class DatalakeQueryEngineComponent implements OnInit {
 
   onIndexChange(event: any): void
   {
+    let queryEditor = this.queryEditors.filter ((element, index) => index === event);
+
     this.selectedIndex = event;
     this.globals.selectedSchema = this.globals.queryTabs[this.selectedIndex];
+
+    setTimeout (() =>
+    {
+      this.changeDetectorRef.detectChanges (); // detect changes, so we can refresh the query editor on the current tab
+      queryEditor[0].codeMirror.refresh ();
+    }, 10);
   }
 
   onDragClick(event): void
@@ -222,6 +228,7 @@ export class DatalakeQueryEngineComponent implements OnInit {
     if (!data.Columns || (data.Columns && !data.Columns.length))
     {
       _this.error = data.error;
+      _this.endQueryTime = Date.now ();
       _this.queryLoading = false;
       return;
     }
@@ -248,8 +255,13 @@ export class DatalakeQueryEngineComponent implements OnInit {
 
   queryError(_this, result): void
   {
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Error", message: "Failed to run query." }
+    });
+
     _this.queryLoading = false;
     _this.startQueryTime = null;
+    _this.endQueryTime = null;
   }
 
   calcExecutionTime(): string

@@ -47,3 +47,6 @@ src/app/services/auth.service.ts
 /.vs/slnx.sqlite
 /.vs/ProjectSettings.json
 /.vs/masflightApplicationRemakeClient/v15
+/bin
+/obj
+/.vs
