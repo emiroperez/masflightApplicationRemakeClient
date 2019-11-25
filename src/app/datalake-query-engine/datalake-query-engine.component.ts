@@ -105,7 +105,7 @@ export class DatalakeQueryEngineComponent implements OnInit {
     this.displayedColumns = [];
     this.dataSource = [];
 
-    this.service.datalakeExecuteQuery (this, query.schema, query.input, this.showQueryResults, this.queryError);
+    this.service.datalakeExecuteQuery (this, query.schema, encodeURIComponent (query.input), this.showQueryResults, this.queryError);
   }
 
   addQueryTab(): void
