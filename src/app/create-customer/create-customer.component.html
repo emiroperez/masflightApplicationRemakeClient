@@ -19,7 +19,7 @@
     <div class="msf-customer-container">
       <div class="msf-customer-input-field">
         <mat-form-field class="msf-customer-filter-text-field">
-          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+          <input matInput (input)="applyFilter($event.target.value)" placeholder="Filter">
           <mat-icon class="msf-customer-search-icon" aria-label="search">search</mat-icon>
         </mat-form-field>
         <button class="msf-customer-button" mat-icon-button (click)="createCustomer()">
