@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input, NgZone, SimpleChanges, Output, EventEmitter, isDevMode } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, NgZone, SimpleChanges, Output, EventEmitter, isDevMode, ChangeDetectorRef } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
@@ -71,6 +71,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   chart: any;
   chartInfo: any;
+  redisplayChart: boolean = false;
 
   chartTypes: any[] = [
     { name: 'Bars', flags: ChartFlags.XYCHART, createSeries: this.createVertColumnSeries },
@@ -257,7 +258,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   constructor(private zone: NgZone, public globals: Globals,
     private service: ApplicationService, private http: ApiClient, private authService: AuthService, public dialog: MatDialog,
-    private formBuilder: FormBuilder)
+    private changeDetectorRef: ChangeDetectorRef, private formBuilder: FormBuilder)
   {
     this.utils = new Utils ();
 
@@ -302,8 +303,13 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       if (this.values.chartGenerated)
       {
-        let chartElement = document.getElementById ("msf-dashboard-chart-display-" + this.values.id);
-        document.getElementById ("msf-dashboard.chart-display-container-" + this.values.id).appendChild (chartElement);
+        if (this.values.displayChart)
+        {
+          let chartElement = document.getElementById ("msf-dashboard-chart-display-" + this.values.id);
+          document.getElementById ("msf-dashboard.chart-display-container-" + this.values.id).appendChild (chartElement);
+        }
+        else
+          this.redisplayChart = true;
       }
     }
     else if (changes['controlPanelVariables'] && this.controlPanelVariables)
@@ -3782,6 +3788,15 @@ export class MsfDashboardPanelComponent implements OnInit {
           this.lastWidth = this.values.width;
         }
       }, 500);
+    }
+
+    this.changeDetectorRef.detectChanges ();
+
+    if (this.redisplayChart)
+    {
+      let chartElement = document.getElementById ("msf-dashboard-chart-display-" + this.values.id);
+      document.getElementById ("msf-dashboard.chart-display-container-" + this.values.id).appendChild (chartElement);
+      this.redisplayChart = false;
     }
   }
 
