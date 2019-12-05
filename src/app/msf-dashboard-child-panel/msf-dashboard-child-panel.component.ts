@@ -470,7 +470,7 @@ export class MsfDashboardChildPanelComponent {
           else
             parseDate = (this.values.xaxis.item.columnType === "date" && this.values.xaxis.id.includes ('date')) ? true : false;
         }
-        else if (!(this.values.currentChartType.flags & ChartFlags.ADVANCED) && !(this.values.currentChartType.flags & ChartFlags.PIECHART))
+        else if (!(this.values.currentChartType.flags & ChartFlags.ADVANCED) && !(this.values.currentChartType.flags & ChartFlags.PIECHART) && !(this.values.currentChartType.flags & ChartFlags.FUNNELCHART))
         {
           chart.data = JSON.parse (JSON.stringify (chartInfo.dataProvider));
           if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
@@ -500,7 +500,7 @@ export class MsfDashboardChildPanelComponent {
             else
               parseDate = false;
           }
-          else if (!(this.values.currentChartType.flags & ChartFlags.ADVANCED) && !(this.values.currentChartType.flags & ChartFlags.PIECHART))
+          else if (!(this.values.currentChartType.flags & ChartFlags.ADVANCED) && !(this.values.currentChartType.flags & ChartFlags.PIECHART) && !(this.values.currentChartType.flags & ChartFlags.FUNNELCHART))
           {
             if (this.values.variable.item.columnFormat)
             {

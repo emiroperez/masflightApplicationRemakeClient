@@ -273,7 +273,7 @@ export class MsfChartPreviewComponent {
           else
             parseDate = (this.data.xaxis.columnType === "date" && this.data.xaxis.columnName.includes ('date')) ? true : false;
         }
-        else if (this.data.chartMode !== "advanced" && !(this.data.currentChartType.flags & ChartFlags.PIECHART))
+        else if (this.data.chartMode !== "advanced" && !(this.data.currentChartType.flags & ChartFlags.PIECHART) && !(this.data.currentChartType.flags & ChartFlags.FUNNELCHART))
         {
           chart.data = JSON.parse (JSON.stringify (chartInfo.dataProvider));
           if (this.data.chartMode === "advanced")
@@ -303,7 +303,7 @@ export class MsfChartPreviewComponent {
             else
               parseDate = false;
           }
-          else if (this.data.chartMode !== "advanced" && !(this.data.currentChartType.flags & ChartFlags.PIECHART))
+          else if (this.data.chartMode !== "advanced" && !(this.data.currentChartType.flags & ChartFlags.PIECHART) && !(this.data.currentChartType.flags & ChartFlags.FUNNELCHART))
           {
             if (this.data.variable.columnFormat)
             {

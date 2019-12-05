@@ -1282,7 +1282,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           else
             parseDate = (this.values.xaxis.item.columnType === "date" && this.values.xaxis.id.includes ('date')) ? true : false;
         }
-        else if (!(this.values.currentChartType.flags & ChartFlags.ADVANCED) && !(this.values.currentChartType.flags & ChartFlags.PIECHART))
+        else if (!(this.values.currentChartType.flags & ChartFlags.ADVANCED) && !(this.values.currentChartType.flags & ChartFlags.PIECHART) && !(this.values.currentChartType.flags & ChartFlags.FUNNELCHART))
         {
           chart.data = JSON.parse (JSON.stringify (chartInfo.dataProvider));
           if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
@@ -1312,7 +1312,7 @@ export class MsfDashboardPanelComponent implements OnInit {
             else
               parseDate = false;
           }
-          else if (!(this.values.currentChartType.flags & ChartFlags.ADVANCED) && !(this.values.currentChartType.flags & ChartFlags.PIECHART))
+          else if (!(this.values.currentChartType.flags & ChartFlags.ADVANCED) && !(this.values.currentChartType.flags & ChartFlags.PIECHART) && !(this.values.currentChartType.flags & ChartFlags.FUNNELCHART))
           {
             if (this.values.variable.item.columnFormat)
             {
@@ -1357,6 +1357,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
           valueAxis = chart.xAxes.push (new am4charts.ValueAxis ());
 
+          if (this.values.startAtZero)
+            valueAxis.min = 0;
+
           // Add scrollbar into the chart for zooming if there are multiple series
           if (chart.data.length > 1)
           {
@@ -1390,6 +1393,9 @@ export class MsfDashboardPanelComponent implements OnInit {
           }
 
           valueAxis = chart.yAxes.push (new am4charts.ValueAxis ());
+
+          if (this.values.startAtZero)
+            valueAxis.min = 0;
 
           if (chart.data.length > 1)
           {
@@ -2076,7 +2082,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         values: this.values.chartColumnOptions ? (this.values.valueColumn ? this.values.valueColumn.item.id : null) : null,
         paletteColors: JSON.stringify (this.values.paletteColors),
         lastestResponse: JSON.stringify (this.values.lastestResponse),
-        thresholds: JSON.stringify (this.values.thresholds)
+        thresholds: JSON.stringify (this.values.thresholds),
+        startAtZero: null
       };
     }
     else if (this.values.currentChartType.flags & ChartFlags.MAPBOX)
@@ -2090,7 +2097,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0),
         function: 1,
         lastestResponse: JSON.stringify (this.values.lastestResponse),
-        analysis: this.msfMapRef.mapTypes.indexOf (this.values.style)
+        analysis: this.msfMapRef.mapTypes.indexOf (this.values.style),
+        startAtZero: null
       };
     }
     else if (this.values.currentChartType.flags & ChartFlags.FORM
@@ -2107,7 +2115,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         categoryOptions: this.values.currentOptionCategories ? JSON.stringify (this.values.currentOptionCategories) : null,
         updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0),
         function: 1,
-        lastestResponse: JSON.stringify (this.values.lastestResponse)
+        lastestResponse: JSON.stringify (this.values.lastestResponse),
+        startAtZero: null
       };
     }
     else if (this.values.currentChartType.flags & ChartFlags.INFO)
@@ -2122,7 +2131,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         function: 1,
         chartType: this.chartTypes.indexOf (this.values.currentChartType),
         categoryOptions: this.values.currentOptionCategories ? JSON.stringify (this.values.currentOptionCategories) : null,
-        updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0)
+        updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0),
+        startAtZero: null
       };
     }
     else if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
@@ -2141,7 +2151,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         thresholds: JSON.stringify (this.values.thresholds),
         vertAxisName: this.values.vertAxisName,
         horizAxisName: this.values.horizAxisName,
-        advIntervalValue: this.values.intValue
+        advIntervalValue: this.values.intValue,
+        startAtZero: null
       };
     }
     else
@@ -2160,7 +2171,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0),
         thresholds: JSON.stringify (this.values.thresholds),
         vertAxisName: this.values.vertAxisName,
-        horizAxisName: this.values.horizAxisName
+        horizAxisName: this.values.horizAxisName,
+        startAtZero: this.values.startAtZero
       };
     }
   }
@@ -3595,6 +3607,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
 
     this.temp.updateIntervalSwitch = this.values.updateIntervalSwitch;
+    this.temp.startAtZero = this.values.startAtZero;
     this.temp.updateTimeLeft = this.values.updateTimeLeft;
 
     this.stopUpdateInterval ();
@@ -3776,6 +3789,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.tableVariables = JSON.parse (JSON.stringify (this.temp.tableVariables));
 
     this.values.updateIntervalSwitch = this.temp.updateIntervalSwitch;
+    this.values.startAtZero = this.temp.startAtZero;
     this.values.updateTimeLeft = this.temp.updateTimeLeft;
 
     // re-initialize panel settings
@@ -6386,5 +6400,13 @@ export class MsfDashboardPanelComponent implements OnInit {
   toggleIntervalTable(): void
   {
     this.advTableView = !this.advTableView;
+  }
+
+  isLineOrBarChart(): boolean
+  {
+    if (!(this.values.currentChartType.flags & ChartFlags.PIECHART) && !(this.values.currentChartType.flags & ChartFlags.FUNNELCHART))
+      return true;
+
+    return false;
   }
 }
