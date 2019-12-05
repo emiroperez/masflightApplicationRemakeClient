@@ -569,14 +569,14 @@ export class Utils{
                 if(Array.isArray(value)){
                     for(var val of value){
                         if(i == 0){
-                            valueAux = val[argument.selectedAttribute];
+                            valueAux = val[argument.visibleAttribute];
                         }else{
-                            valueAux += ","+ val[argument.selectedAttribute];
+                            valueAux += ","+ val[argument.visibleAttribute];
                         }                
                         i++;
                     }
                 }else{
-                    return value[argument.selectedAttribute];
+                    return value[argument.visibleAttribute];
                 }
     
                 return valueAux;

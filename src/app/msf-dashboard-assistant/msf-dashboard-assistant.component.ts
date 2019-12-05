@@ -201,7 +201,11 @@ export class MsfDashboardAssistantComponent {
       this.msfTableRef.dataSource = null;
 
     this.isLoading = true;
+    if(this.globals.currentApplication.name === "DataLake"){
+      urlBase = this.currentOption.baseUrl + "?uName="+this.globals.userName+"&"+ this.getParameters ();
+    }else{
     urlBase = this.currentOption.baseUrl + "?" + this.getParameters ();
+    }
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&&pageSize=100&page_number=" + this.actualPageNumber;
     urlArg = encodeURIComponent (urlBase);
     url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
@@ -357,15 +361,28 @@ export class MsfDashboardAssistantComponent {
     this.tablePreview = false;
   }
 
-  isArray(value): boolean
+  getArgumentLabel(value: string)
   {
-    return Array.isArray (value);
+    if (!value.includes (':'))
+      return value + ":"
+
+    return value;
   }
 
-  isDate(value): boolean
+  valueIsEmpty(value)
   {
-    let date: Date = new Date (Date.parse (value));
-    return !isNaN (date.getTime ());
+    if (value)
+    {
+      if (Array.isArray (value) || value === typeof String)
+      {
+        if (value.length)
+          return false;
+      }
+      else
+        return false;
+    }
+
+    return true;
   }
 
   parseDate(date): string
