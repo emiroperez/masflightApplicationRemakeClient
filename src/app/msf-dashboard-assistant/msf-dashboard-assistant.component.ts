@@ -832,13 +832,24 @@ export class MsfDashboardAssistantComponent {
   {
     let series = chart.series.push (new am4charts.ColumnSeries ());
     series.dataFields.valueY = item.valueField;
-    series.dataFields.categoryX = item.titleField;
     series.name = item.valueField;
 
     if (values.chartMode === "advanced")
       series.columns.template.tooltipText = "{valueY}";
     else
-      series.columns.template.tooltipText = "{categoryX}: {valueY}";
+    {
+      if (parseDate)
+      {
+        series.dataFields.dateX = item.titleField;
+        series.dateFormatter.dateFormat = outputFormat;
+        series.columns.template.tooltipText = "{dateX}: {valueY}";
+      }
+      else
+      {
+        series.dataFields.categoryX = item.titleField;
+        series.columns.template.tooltipText = "{categoryX}: {valueY}";
+      }
+    }
 
     series.columns.template.strokeWidth = 0;
 
@@ -857,13 +868,26 @@ export class MsfDashboardAssistantComponent {
   {
     let series = chart.series.push (new am4charts.ColumnSeries ());
     series.dataFields.valueX = item.valueField;
-    series.dataFields.categoryY = item.titleField;
     series.name = item.valueField;
 
     if (values.chartMode === "advanced")
       series.columns.template.tooltipText = "{valueX}";
     else
-      series.columns.template.tooltipText = "{categoryY}: {valueX}";
+    {
+      {
+        if (parseDate)
+        {
+          series.dataFields.dateY = item.titleField;
+          series.dateFormatter.dateFormat = outputFormat;
+          series.columns.template.tooltipText = "{dateY}: {valueX}";
+        }
+        else
+        {
+          series.dataFields.categoryY = item.titleField;
+          series.columns.template.tooltipText = "{categoryY}: {valueX}";
+        }
+      }
+    }
 
     series.columns.template.strokeWidth = 0;
 

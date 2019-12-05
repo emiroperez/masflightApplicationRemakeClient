@@ -98,7 +98,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     { name: 'Advanced Simple Horizontal Bars', flags: ChartFlags.ROTATED | ChartFlags.ADVANCED, createSeries: this.createSimpleHorizColumnSeries },
     { name: 'Advanced Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.STACKED | ChartFlags.ADVANCED, createSeries: this.createVertColumnSeries },
     { name: 'Advanced Horizontal Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED | ChartFlags.STACKED | ChartFlags.ADVANCED, createSeries: this.createHorizColumnSeries },
-    { name: 'Advanced Lines', flags: ChartFlags.XYCHART | ChartFlags.LINECHART | ChartFlags.ADVANCED, createSeries: this.createLineSeries }/*,
+    { name: 'Advanced Lines', flags: ChartFlags.XYCHART | ChartFlags.LINECHART | ChartFlags.ADVANCED, createSeries: this.createLineSeries },
+    { name: 'Simple Lines', flags: ChartFlags.LINECHART, createSeries: this.createSimpleLineSeries }/*,
     { name: 'Simple Picture', flags: ChartFlags.INFO | ChartFlags.PICTURE },*/
   ];
 
@@ -582,6 +583,88 @@ export class MsfDashboardPanelComponent implements OnInit {
 
         values.chartClicked = true;
         values.chartObjectSelected = event.target.dataItem.component.tooltipDataItem.dataContext[values.xaxis.id];
+        values.chartSecondaryObjectSelected = series.dataFields.valueY;
+      });
+    }
+
+    return series;
+  }
+
+  // Function to create simple line chart series
+  createSimpleLineSeries(values, stacked, chart, item, parseDate, theme, outputFormat): any
+  {
+    // Set up series
+    let series = chart.series.push (new am4charts.LineSeries ());
+    series.name = item.valueAxis;
+    series.dataFields.valueY = item.valueField;
+    series.sequencedInterpolation = true;
+    series.strokeWidth = 2;
+    series.minBulletDistance = 10;
+    series.tooltip.pointerOrientation = "horizontal";
+    series.tooltip.background.cornerRadius = 20;
+    series.tooltip.background.fillOpacity = 0.5;
+    series.tooltip.label.padding (12, 12, 12, 12);
+    series.tensionX = 0.8;
+
+    if (parseDate)
+    {
+      series.dataFields.dateX = item.titleField;
+      series.dateFormatter.dateFormat = outputFormat;
+      series.tooltipText = "{dateX}: {valueY}";
+    }
+    else
+    {
+      if (values.currentChartType.flags & ChartFlags.ADVANCED)
+      {
+        series.dataFields.categoryX = "Interval";
+        series.tooltipText = item.valueAxis + ": {valueY}";
+      }
+      else
+      {
+        series.dataFields.categoryX = item.titleField;
+        series.tooltipText = "{categoryX}: {valueY}";
+      }
+    }
+
+    series.stacked = stacked;
+
+    // Set thresholds
+    series.segments.template.adapter.add ("fill", (fill, target) => {
+      if (target.dataItem)
+      {
+        for (let threshold of values.thresholds)
+        {
+          if (target.dataItem.values.valueY.average >= threshold.min && target.dataItem.values.valueY.average <= threshold.max)
+            return am4core.color (threshold.color);
+        }
+      }
+
+      return am4core.color (values.paletteColors[0]);
+    });
+
+    series.adapter.add ("stroke", (stroke, target) => {
+      if (target.dataItem)
+      {
+        for (let threshold of values.thresholds)
+        {
+          if (target.dataItem.values.valueY.average >= threshold.min && target.dataItem.values.valueY.average <= threshold.max)
+            return am4core.color (threshold.color);
+        }
+      }
+
+      return am4core.color (values.paletteColors[0]);
+    });
+
+    if (!(values.currentChartType.flags & ChartFlags.ADVANCED))
+    {
+      // Display a special context menu when a chart line segment is right clicked
+      series.segments.template.interactionsEnabled = true;
+      series.segments.template.events.on ("rightclick", function (event) {
+        if (!values.currentOption.drillDownOptions.length)
+          return;
+
+        values.chartClicked = true;
+        values.chartObjectSelected = event.target.dataItem.component.tooltipDataItem.dataContext[values.variable.id];
         values.chartSecondaryObjectSelected = series.dataFields.valueY;
       });
     }
@@ -1187,7 +1270,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           else
             parseDate = (this.values.xaxis.item.columnType === "date" && this.values.xaxis.id.includes ('date')) ? true : false;
         }
-        else
+        else if (!(this.values.currentChartType.flags & ChartFlags.ADVANCED) && !(this.values.currentChartType.flags & ChartFlags.PIECHART))
         {
           chart.data = JSON.parse (JSON.stringify (chartInfo.dataProvider));
           if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
@@ -1217,7 +1300,7 @@ export class MsfDashboardPanelComponent implements OnInit {
             else
               parseDate = false;
           }
-          else if (!(this.values.currentChartType.flags & ChartFlags.ADVANCED))
+          else if (!(this.values.currentChartType.flags & ChartFlags.ADVANCED) && !(this.values.currentChartType.flags & ChartFlags.PIECHART))
           {
             if (this.values.variable.item.columnFormat)
             {
@@ -1482,10 +1565,6 @@ export class MsfDashboardPanelComponent implements OnInit {
 
           for (let object of chartInfo.filter)
             this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, stacked, chart, object, parseDate, theme, outputFormat));
-
-          // Add cursor if the chart type is line, area or stacked area
-          if (this.values.currentChartType.flags & ChartFlags.LINECHART)
-            chart.cursor = new am4charts.XYCursor ();
         }
         else
         {
@@ -1543,12 +1622,25 @@ export class MsfDashboardPanelComponent implements OnInit {
                 valueAxis.title.text = this.values.valueColumn.name;
             }
 
-            // Sort values from least to greatest
-            chart.events.on ("beforedatavalidated", function(event) {
-              chart.data.sort (function(e1, e2) {
-                return e1[chartInfo.valueField] - e2[chartInfo.valueField];
+            if (parseDate && this.values.currentChartType.flags & ChartFlags.LINECHART)
+            {
+              let axisField = this.values.variable.id;
+  
+              chart.events.on ("beforedatavalidated", function (event) {
+                chart.data.sort (function (e1, e2) {
+                  return +(new Date(e1[axisField])) - +(new Date(e2[axisField]));
+                });
               });
-            });
+            }
+            else
+            {
+              // Sort values from least to greatest
+              chart.events.on ("beforedatavalidated", function(event) {
+                chart.data.sort (function(e1, e2) {
+                  return e1[chartInfo.valueField] - e2[chartInfo.valueField];
+                });
+              });
+            }
           }
 
           // The category will the values if the chart type lacks an x axis
@@ -1557,6 +1649,10 @@ export class MsfDashboardPanelComponent implements OnInit {
           // Create the series
           this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, false, chart, chartInfo, parseDate, theme, outputFormat));
         }
+
+        // Add cursor if the chart type is line, area or stacked area
+        if (this.values.currentChartType.flags & ChartFlags.LINECHART)
+          chart.cursor = new am4charts.XYCursor ();
 
         this.oldChartType = this.values.currentChartType;
         this.oldVariableName = !this.values.variable ? "" : this.values.variable.name;

@@ -269,27 +269,54 @@ export class MsfChartPreviewComponent {
           else
             parseDate = (this.data.xaxis.columnType === "date" && this.data.xaxis.columnName.includes ('date')) ? true : false;
         }
-        else
+        else if (this.data.chartMode !== "advanced" && !(this.data.currentChartType.flags & ChartFlags.PIECHART))
         {
           chart.data = JSON.parse (JSON.stringify (chartInfo.dataProvider));
-          parseDate = false;
+          if (this.data.chartMode === "advanced")
+            parseDate = false;
+          else
+            parseDate = (this.data.variable.columnType === "date" && this.data.variable.columnName.includes ('date')) ? true : false;
         }
 
         if (parseDate)
         {
-          if (this.data.xaxis.columnFormat)
+          if (this.data.currentChartType.flags & ChartFlags.XYCHART)
           {
-            for (let data of chart.data)
-              data[this.data.xaxis.columnName] = this.parseDate (data[this.data.xaxis.columnName], this.data.xaxis.columnFormat);
+            if (this.data.xaxis.columnFormat)
+            {
+              for (let data of chart.data)
+                data[this.data.xaxis.columnName] = this.parseDate (data[this.data.xaxis.columnName], this.data.xaxis.columnFormat);
 
-            if (this.data.xaxis.outputFormat)
-              outputFormat = this.data.xaxis.outputFormat;
+              if (this.data.xaxis.outputFormat)
+                outputFormat = this.data.xaxis.outputFormat;
+              else
+                outputFormat = this.data.xaxis.columnFormat;
+
+              // Set predefined format if used
+              if (this.predefinedColumnFormats[outputFormat])
+                outputFormat = this.predefinedColumnFormats[outputFormat];
+            }
             else
-              outputFormat = this.data.xaxis.columnFormat;
+              parseDate = false;
+          }
+          else if (this.data.chartMode !== "advanced" && !(this.data.currentChartType.flags & ChartFlags.PIECHART))
+          {
+            if (this.data.variable.columnFormat)
+            {
+              for (let data of chart.data)
+                data[this.data.variable.columnName] = this.parseDate (data[this.data.variable.columnName], this.data.variable.columnFormat);
 
-            // Set predefined format if used
-            if (this.predefinedColumnFormats[outputFormat])
-              outputFormat = this.predefinedColumnFormats[outputFormat];
+              if (this.data.variable.outputFormat)
+                outputFormat = this.data.variable.outputFormat;
+              else
+                outputFormat = this.data.variable.columnFormat;
+
+              // Set predefined format if used
+              if (this.predefinedColumnFormats[outputFormat])
+                outputFormat = this.predefinedColumnFormats[outputFormat];
+            }
+            else
+              parseDate = false;
           }
           else
             parseDate = false;
