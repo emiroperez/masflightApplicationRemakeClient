@@ -102,40 +102,40 @@
                       <span class="msf-dashboard-assistant-argument-container"
                         *ngFor="let argument of controlVariable.arguments">
                         <div class="msf-block" *ngIf="argument.name1">
-                          <div class="msf-inline msf-summary-arg-label" *ngIf="argument.title!=controlVariable.label">
+                          <div class="msf-inline" *ngIf="argument.title!=controlVariable.label">
                             {{ getArgumentLabel(argument.title)}}
                           </div>
-                          <div class="msf-inline msf-summary-value msf-summary-arg-value"
+                          <div class="msf-inline msf-dashboard-assistant-argument-value"
                             *ngIf="!valueIsEmpty(argument.value1) && argument">
                             {{utils.getValueFormatView(argument.type, argument.value1,argument)}}
                           </div>
-                          <div class="msf-inline msf-summary-value msf-summary-arg-value"
+                          <div class="msf-inline msf-dashboard-assistant-argument-value"
                             *ngIf="valueIsEmpty(argument.value1) && argument">
                             all
                           </div>
                         </div>
                         <div class="msf-block" *ngIf="argument.name2">
-                          <div class="msf-inline msf-summary-arg-label" *ngIf="argument.label2!=controlVariable.label">
+                          <div class="msf-inline" *ngIf="argument.label2!=controlVariable.label">
                             {{ getArgumentLabel(argument.label2)}}
                           </div>
-                          <div class="msf-inline msf-summary-value msf-summary-arg-value"
+                          <div class="msf-inline msf-dashboard-assistant-argument-value"
                             *ngIf="!valueIsEmpty(argument.value2) && argument">
                             {{utils.getValueFormatView(argument.type, argument.value2,argument)}}
                           </div>
-                          <div class="msf-inline msf-summary-value msf-summary-arg-value"
+                          <div class="msf-inline msf-dashboard-assistant-argument-value"
                             *ngIf="valueIsEmpty(argument.value2) && argument">
                             all
                           </div>
                         </div>
                         <div class="msf-block" *ngIf="argument.name3">
-                          <div class="msf-inline msf-summary-arg-label" *ngIf="argument.label3!=controlVariable.label">
+                          <div class="msf-inline" *ngIf="argument.label3!=controlVariable.label">
                             {{ getArgumentLabel(argument.title)}}
                           </div>
-                          <div class="msf-inline msf-summary-value msf-summary-arg-value"
+                          <div class="msf-inline msf-dashboard-assistant-argument-value"
                             *ngIf="!valueIsEmpty(argument.value3) && argument">
                             {{utils.getValueFormatView(argument.type, argument.value3,argument)}}
                           </div>
-                          <div class="msf-inline msf-summary-value msf-summary-arg-value"
+                          <div class="msf-inline msf-dashboard-assistant-argument-value"
                             *ngIf="valueIsEmpty(argument.value3) && argument">
                             all
                           </div>

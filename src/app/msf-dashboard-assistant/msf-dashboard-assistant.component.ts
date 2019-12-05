@@ -363,8 +363,8 @@ export class MsfDashboardAssistantComponent {
 
   getArgumentLabel(value: string)
   {
-    if (!value.includes (':'))
-      return value + ":"
+    if (!value.endsWith (':'))
+      return value + ":";
 
     return value;
   }
