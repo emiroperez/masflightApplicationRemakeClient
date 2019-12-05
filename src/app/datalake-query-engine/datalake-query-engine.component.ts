@@ -22,11 +22,13 @@ export class DatalakeQueryEngineComponent implements OnInit {
   rightPanelWidth: number = 75;
   resizePanels: boolean = false;
   selectedIndex: number = 0;
-  error: String = "Run Query to view results";
+  error: String = null ;
 
   savequerymouseover: boolean = false;
   queryhistorymouseover: boolean = false;
   runquerymouseover: boolean = false;
+  
+  QueryreadOnly: boolean = true;
 
   // queryTabs: DatalakeQueryTab[] = [ new DatalakeQueryTab () ];
   querySchemas: DatalakeQuerySchema[] = [];
@@ -35,23 +37,29 @@ export class DatalakeQueryEngineComponent implements OnInit {
   // ngx-codemirror variables
   @ViewChildren(CodemirrorComponent)
   queryEditors: QueryList<CodemirrorComponent>; 
-
-  queryEditorOptions: any = {
-    lineNumbers: true,
-    theme: 'material',
-    mode: {
-      name: 'text/x-mariadb'
-    }
-  };
-
+  
   // Query execution table result
   startQueryTime: number;
   endQueryTime: number;
   displayedColumns: string[] = [];
   dataSource: any[] = [];
+  queryEditorOptions : any;
 
   constructor(public globals: Globals, private changeDetectorRef: ChangeDetectorRef,
-    private dialog: MatDialog, private service: DatalakeService) { }
+    private dialog: MatDialog, private service: DatalakeService) { 
+      this.QueryreadOnly = this.actionDisable("Type Query");  
+      if(this.QueryreadOnly){
+        this.QueryreadOnly = this.actionDisable("Run Query"); 
+      }
+      this.queryEditorOptions = {
+        lineNumbers: true,
+        readOnly: this.QueryreadOnly,
+        theme: 'material',
+        mode: {
+          name: 'text/x-mariadb'
+        }
+      };
+    }
 
   ngOnInit()
   {
@@ -107,7 +115,8 @@ export class DatalakeQueryEngineComponent implements OnInit {
     this.displayedColumns = [];
     this.dataSource = [];
 
-    this.service.datalakeExecuteQuery (this, query.schema, encodeURIComponent (query.input), this.showQueryResults, this.queryError);
+    // this.service.datalakeExecuteQuery (this, query.schema, encodeURIComponent (query.input), this.showQueryResults, this.queryError);
+    this.service.datalakeExecuteQuery (this, query.schema, query.input, this.showQueryResults, this.queryError);
   }
 
   addQueryTab(): void
@@ -406,7 +415,7 @@ export class DatalakeQueryEngineComponent implements OnInit {
   }
 
   actionDisable(option: any) {
-    let index = this.globals.optionsDatalake.findIndex(od => od.option.name === option);
+    let index = this.globals.optionsDatalake.findIndex(od => od.action.name === option);
     if (index != -1) {
       return false;
     } else {

@@ -194,4 +194,22 @@ export class DatalakeService {
         request.userName = this.globals.userName;
         this.http.post(_this, url, request, handlerSuccess, handlerError);
     }
+
+    deleteDatalakeAlarm(_this, request, handlerSuccess, handlerError): void
+    {
+        // request.token = this.globals.token;        
+        request.userName = this.globals.userName;
+        let url = this.host + "/deleteDatalakeAlarm?request="+JSON.stringify(request);
+        this.http.delete(_this, url, handlerSuccess, handlerError, null);
+    }
+
+    getDatalakeSchemasUnwrapped(search,handlerSuccess, handlerError){
+        let url = this.globals.baseUrl + "/DatalakeWebservicesEngine/GetSchemas?userName="+this.globals.userName;
+        this.http.get(this,url,handlerSuccess,handlerError, null); 
+    }
+
+    getDatalakeTablesUnwrapped(search,handlerSuccess, handlerError){
+        let url = this.globals.baseUrl + "/DatalakeWebservicesEngine/GetDatalakeTables?userName="+this.globals.userName;
+        this.http.get(this,url,handlerSuccess,handlerError, null); 
+    }
 }

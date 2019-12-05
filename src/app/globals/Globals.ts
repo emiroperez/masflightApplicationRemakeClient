@@ -61,10 +61,10 @@ export class Globals {
   currentAirline: any;
   template : boolean = false;
   isFullscreen: boolean = false;
-  // baseUrl = "http://localhost:8885";
+  baseUrl = "http://localhost:8885";
   // baseUrl = "http://pulse.globaleagle.com:8885";
   // baseUrl = "http://192.168.1.50:8887";
-  baseUrl = "";
+  // baseUrl = "";
   baseUrl2 = "https://pulse.globaleagle.com:8886/mapBoxServices";
   popupUrl = "https://pulse.globaleagle.com:8900";
   scheduledata:any;

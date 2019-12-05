@@ -92,8 +92,8 @@
                [compareWith]="compareElement" (selectionChange)="RoleChanged($event,Role)" [(ngModel)]="Role.datalakeOption" multiple>
                <!-- [class.msf-hide]="isSelected(Option,Role.datalakeOption)" -->
                   <mat-list-option 
-                  checkboxPosition="before" [value]="Option" *ngFor="let Option of filteredOptions  | async">
-                      {{Option.name}}
+                  checkboxPosition="before" [value]="action" *ngFor="let action of filteredOptions  | async">
+                      {{action.name}}
                   </mat-list-option>
               </mat-selection-list>
               </div>

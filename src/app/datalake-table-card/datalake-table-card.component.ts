@@ -32,10 +32,18 @@ export class DatalakeTableCardComponent implements OnInit {
 
   constructor(public globals: Globals, private dialog: MatDialog, private service: DatalakeService)
   {
-    if (globals.theme === "dark-theme")
+    if (globals.theme === "dark-theme"){
       this.gaugeBackgroundColor = "#4D4D4D";
-    else
+    }else{
       this.gaugeBackgroundColor = "#CCCCCC";
+    }
+    if (!this.actionDisable("View table information")) {
+      this.selectedTabIndex = 0
+    }else if (!this.actionDisable("View table status")) {
+        this.selectedTabIndex = 1
+      }else if(!this.actionDisable("Show column") || !this.actionDisable("Preview table")){
+        this.selectedTabIndex = 0
+      }
   }
 
   getForegroundColorFromValue(value: number): string
@@ -52,6 +60,7 @@ export class DatalakeTableCardComponent implements OnInit {
   {
     this.gaugeLastHourValue = parseInt(this.values.lastHDI);
     this.gaugeLastDayValue= parseInt(this.values.lastDDI);
+
   }
 
   showColumns(): void
@@ -110,11 +119,17 @@ export class DatalakeTableCardComponent implements OnInit {
   }
 
   actionDisable(option: any) {
-    let index = this.globals.optionsDatalake.findIndex(od => od.option.name === option);
+    let index = this.globals.optionsDatalake.findIndex(od => od.action.name === option);
     if (index != -1) {
       return false;
     } else {
       return true;
     }
   }
+
+  tabIndexChange(event): void
+  {
+    this.selectedTabIndex = event;
+  }
+
 }

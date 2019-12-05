@@ -299,10 +299,17 @@ export class DatalakeAlarmsComponent implements OnInit {
     this.appService.confirmationDialog (this, "Do you want to delete this alarm?",
       function (_this)
       {
-        _this.alarms.splice (_this.alarms.indexOf (alarm), 1);
+        // _this.alarms.splice (_this.alarms.indexOf (alarm), 1);
+        // _this.alarmTable.data = _this.alarms;
+        // _this.alarmTable._updateChangeSubscription ();
 
-        _this.alarmTable.data = _this.alarms;
-        _this.alarmTable._updateChangeSubscription ();
+        let request = {
+          schemaName: alarm.schemaName,
+          tableName: alarm.tableName
+        };
+        
+        _this.globals.isLoading = true;
+        _this.service.deleteDatalakeAlarm(_this, request, _this.saveAlarmHandler, _this.saveAlarmError);
       }
     );
   }
@@ -517,7 +524,7 @@ AddEmail(): void
   }
   
   actionDisable(option: any) {
-    let index = this.globals.optionsDatalake.findIndex(od => od.option.name === option);
+    let index = this.globals.optionsDatalake.findIndex(od => od.action.name === option);
     if (index != -1) {
       return false;
     } else {

@@ -1,18 +1,20 @@
-<div class="datalake-table-card-container">
+<div [ngClass]="!actionDisable('View table information') || !actionDisable('View table status') ? 'datalake-table-card-container' : 'datalake-table-card-container datalake-table-card-container-height'">
   <div class="datalake-table-card-header">
     <div class="datalake-table-card-title-container">
       <span class="datalake-table-card-title">{{values.longName}}</span>
       <span class="datalake-table-card-subtitle">({{values.tableName}})</span>
     </div>
-    <div class="datalake-table-card-update-container">
+    <div *ngIf="!actionDisable('View table information')" class="datalake-table-card-update-container">
       <span class="datalake-table-card-update-title">Last Update</span>
       <span *ngIf="!values.lastUpdate">N/A</span>
       <span *ngIf="values.lastUpdate">{{values.lastUpdate | date: 'MM/dd/yyyy hh:mm:ss'}}</span>
     </div>
   </div>
-  <mat-tab-group [selectedIndex]="selectedTabIndex" headerPosition="below">
-    <mat-tab label="Information">
-      <div class="datalake-table-card-info">
+  <!-- <mat-tab-group  *ngIf="!actionDisable('View table information') || !actionDisable('View table status')" -->
+  <mat-tab-group 
+  [selectedIndex]="selectedTabIndex" (selectedIndexChange)="tabIndexChange($event)" headerPosition="below">
+    <mat-tab [disabled]="actionDisable('View table information')" label="Information">
+      <div *ngIf="!actionDisable('View table information')" class="datalake-table-card-info">
         <div class="datalake-table-card-info-header">
           <div class="datalake-table-card-info-title-left-container">
             <span class="datalake-table-card-info-title">Records</span>
@@ -37,8 +39,8 @@
         </div>
       </div>
     </mat-tab>
-    <mat-tab label="Table Stats">
-      <div class="datalake-table-stats-container">
+    <mat-tab [disabled]="actionDisable('View table status')" label="Table Stats">
+      <div *ngIf="!actionDisable('View table status')"  class="datalake-table-stats-container">
         <ngx-gauge [size]="115" [thick]="10" [type]="gaugeType" 
         [value]="gaugeLastHourValue" 
         [label]="gaugeLastHourIngestionText" 
@@ -74,9 +76,9 @@
     (click)="UploadData()" matTooltip="Upload">
       <img class="datalake-table-card-button-image datalake-table-card-button-query-complete-image" src="../../assets/images/datalake-query-complete.png"/>
     </button>
-    <button  [disabled]="actionDisable('Create Alarm')"
+    <button  [disabled]="actionDisable('Create Alarm')" (click)="setAlarm()"
     mat-button class="datalake-table-card-button" matTooltip="Set Alarm">
-      <img class="datalake-table-card-button-image" (click)="setAlarm()" src="../../assets/images/datalake-alarm.png"/>
+      <img class="datalake-table-card-button-image" src="../../assets/images/datalake-alarm.png"/>
     </button>
   </div>
 </div>

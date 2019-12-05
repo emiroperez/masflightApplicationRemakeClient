@@ -74,21 +74,6 @@ export class DatalakeCreateRolesComponent implements OnInit {
     this.getSelectedOption(this.Roles[0]);
     this.disable = false;
   }
-  
-  getSelectedOption(option) {
-    if (this.Role !== option) {
-      option.isSelected = !option.isSelected;
-      this.Role.isSelected = !this.Role.isSelected;
-      option.focus = true;
-      this.Role = option;
-      this.disable = false;
-    } else {
-      option.isSelected = !option.isSelected;
-      option.focus = false;
-      this.Role = {};
-      this.disable = true;
-    }
-}
 
 sendData() {
   // this.dataToSend = this.ArgumentsGroups.concat(this.ArgumentGroupDelete);
@@ -100,10 +85,14 @@ sendData() {
 
 
 handlerSuccessSend(_this, result){
+  _this.Roles = [];
+  _this.tempDatalakeOptionRol = [];
   _this.Role = { id: null, name: '', state: 0,isSelected: false };
-  _this.Roles = result;
-  _this.globals.isLoading = false;
+  // _this.Roles = result;
+  // _this.tempDatalakeOptionRoles = JSON.parse (JSON.stringify (_this.Roles));
+  // _this.globals.isLoading = false;
   _this.disable = true;
+  _this.service.getDatalakeRoles(_this,"", _this.handlerSuccessRoles, _this.handlerErrorRoles);
 }
 
 handlerErrorSend(_this,result){
@@ -124,12 +113,12 @@ handlerErrorSend(_this,result){
   //   }
 
     compareElement(st1: any, st2: any){
-      return st1 && st2 ? st1.id === st2.option.id : st1 === st2.option;
+      return st1 && st2.action ? st1.id === st2.action.id : st1 === st2;
     }
 
-    isSelected(option, optionList){
+    isSelected(action, optionList){
       if(optionList){
-        return optionList.findIndex(a => a.option.id === option.id) == -1 && this.showSelected;
+        return optionList.findIndex(a => a.action.id === action.id) == -1 && this.showSelected;
       }else{
         return false;
       }
@@ -150,9 +139,25 @@ handlerErrorSend(_this,result){
         this.listOptions.filter (a => a.name.toLowerCase ().indexOf (search) > -1)
       );
     }
-
+  
+  getSelectedOption(option) {
+      if (this.Role !== option) {
+        option.isSelected = !option.isSelected;
+        this.Role.isSelected = !this.Role.isSelected;
+        option.focus = true;
+        this.Role = option;
+        this.disable = false;
+      } else {
+        option.isSelected = !option.isSelected;
+        option.focus = false;
+        this.Role = {};
+        this.disable = true;
+      }
+  }
+  
     RoleChanged(event,role): void
   {
+    // this.RoleChangedView(event,role);
     let aux = event.option.value;
     if(!event.option.selected){
       //desmarcando la opcion
@@ -167,11 +172,11 @@ handlerErrorSend(_this,result){
 
       if(indexRol != -1){
         //si encuentra el rol busco la opcion
-        let index= this.tempDatalakeOptionRoles[indexRol].datalakeOption.findIndex(doR => doR.option.id === aux.id);
+        let index= this.tempDatalakeOptionRoles[indexRol].datalakeOption.findIndex(doR => doR.action.id === aux.id);
         if(index!=-1){
           if(this.tempDatalakeOptionRoles[indexRol].datalakeOption[index].id){
             //si encuentra la opcion y tiene id, le cambio el estado para borrarla por BD
-          this.tempDatalakeOptionRoles.datalakeOption[index].state = 0
+          this.tempDatalakeOptionRoles[indexRol].datalakeOption[index].state = 0
           }else{
             //si encuentra la opcion y NO tiene id, la borro de la lista
             this.tempDatalakeOptionRoles[indexRol].datalakeOption.splice(index,1)
@@ -194,26 +199,27 @@ handlerErrorSend(_this,result){
       }
       if(indexRol != -1){
         //si el rol existe busco la accion
-        let index= this.tempDatalakeOptionRoles[indexRol].datalakeOption.findIndex(dR => dR.option.id === aux.id);
+        let index= this.tempDatalakeOptionRoles[indexRol].datalakeOption.findIndex(dR => dR.action.id === aux.id);
         if(index!=-1){
           this.tempDatalakeOptionRoles[indexRol].datalakeOption[index].state = 1
         }else{
           //si la accion no existe la agrego
-          this.tempDatalakeOptionRoles[indexRol].datalakeOption.push({id: null, option: aux});
+          this.tempDatalakeOptionRoles[indexRol].datalakeOption.push({id: null, action: aux, state: 1});
         }
       }else{
         //si el rol no existe lo agrego
        let rolTemp = JSON.parse (JSON.stringify (role));
        rolTemp.datalakeOption = [{
           id: null,
-          option: aux
+          action: aux,
+          state: 1
         }]
 
 
         this.tempDatalakeOptionRoles.push(rolTemp);
       }
-      
-      
     }
   }
+
+
   }

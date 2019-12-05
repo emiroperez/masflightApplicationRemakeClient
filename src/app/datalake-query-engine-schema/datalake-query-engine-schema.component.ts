@@ -85,6 +85,17 @@ export class DatalakeQueryEngineSchemaComponent {
   }
 
   copyText(val1:string, val: string){
+    if(!this.actionDisable("Type Query") || !this.actionDisable("Run Query") ){
       this.globals.selectedSchema.input += " " +val1+"."+val ;
+    }
+  }
+
+    actionDisable(option: any) {
+      let index = this.globals.optionsDatalake.findIndex(od => od.action.name === option);
+      if (index != -1) {
+        return false;
+      } else {
+        return true;
+      }
     }
 }

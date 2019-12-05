@@ -34,8 +34,8 @@
                 mat-button class="datalake-query-editor-button" matTooltip="Run Query" (click)="runQuery(query)" (mouseover)="runquerymouseover = true" (mouseleave)="runquerymouseover = false">
                   <img class="datalake-run-query-image" src="{{getRunQueryImage()}}"/>
                 </button>
-                <mat-form-field class="datalake-schema-select">
-                  <mat-select placeholder="Schema" [(ngModel)]="query.schema">
+                <mat-form-field  class="datalake-schema-select">
+                  <mat-select [disabled]="actionDisable('Run Query')" placeholder="Schema" [(ngModel)]="query.schema">
                     <mat-option *ngFor="let querySchema of querySchemas" [value]="querySchema.schemaName">
                       {{querySchema.schemaName}}
                     </mat-option>
@@ -50,9 +50,10 @@
         </mat-tab>
         <mat-tab disabled>
           <ng-template mat-tab-label>
-            <div class="add-icon-container" (click)="addQueryTab()">
+            <button [disabled]="actionDisable('Type Query')" 
+            class="add-icon-container" (click)="addQueryTab()">
               <mat-icon class="add-icon">add</mat-icon> 
-            </div>
+            </button>
           </ng-template>
         </mat-tab>
       </mat-tab-group>

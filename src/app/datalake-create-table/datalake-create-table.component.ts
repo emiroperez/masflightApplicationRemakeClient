@@ -126,7 +126,7 @@ export class DatalakeCreateTableComponent {
   }
   
   actionDisable(option: any) {
-    let index = this.globals.optionsDatalake.findIndex(od => od.option.name === option);
+    let index = this.globals.optionsDatalake.findIndex(od => od.action.name === option);
     if (index != -1) {
       return false;
     } else {

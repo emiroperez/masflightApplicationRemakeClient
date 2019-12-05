@@ -35,6 +35,10 @@ export class MsfAddDashboardComponent {
       {
         let dashboard = new DashboardMenu();
         dashboard.title = this.title;
+        let currentApplication = localStorage.getItem ("currentApplication");
+        if(!this.globals.currentApplication){
+          this.globals.currentApplication = currentApplication;
+        }
         dashboard.applicationId = this.globals.currentApplication.id;
         this.globals.isLoading = true;
         this.service.addDashboard(this, dashboard, this.successHandler, this.errorHandler);

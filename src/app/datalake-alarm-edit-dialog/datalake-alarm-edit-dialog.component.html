@@ -38,10 +38,11 @@
     <mat-radio-button class="cancels-checkbox" [ngClass]="{'datalake-alarm-radio-button': notifyMode, 'datalake-alarm-radio-button-selected': !notifyMode }" [value]="false">Notify me every</mat-radio-button>
     <mat-radio-button class="cancels-checkbox datalake-alarm-radio-button-right" [ngClass]="{'datalake-alarm-radio-button': !notifyMode, 'datalake-alarm-radio-button-selected': notifyMode }" [value]="true">Notify me at this specific time</mat-radio-button>
   </mat-radio-group>
-  <div class="datalake-alarm-radio-group datalake-alarm-emails" (click)="AddEmail()">
+  <!-- <div class="datalake-alarm-radio-group datalake-alarm-emails" (click)="AddEmail()"> -->
+  <button mat-button class="flat-button datalake-alarm-emails" (click)="AddEmail()">
     <mat-icon class="datalake-new-alarm-icon">person_add</mat-icon>
     <span class="datalake-new-alarm-title-label">Add Emails</span>
-  </div>
+  </button>
   <div class="datalake-alarm-time-picker datalake-edit-alamr-time-picker" *ngIf="!notifyMode">
     <div class="datalake-alarm-minute-input">
       <span class="datalake-alarm-minutes-label">Cron Expression</span>

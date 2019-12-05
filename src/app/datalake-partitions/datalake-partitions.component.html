@@ -8,13 +8,20 @@
     <div class="datalake-explorer-header-title">Partition Management</div>
     <div class="datalake-explorer-buttons">
         <!-- btn-logs-partition -->
-    <button mat-button class="datalake-explorer-button"  matTooltip="Execution Partition Logs">
+    <button [disabled]="actionDisable('List Logs partitions')" mat-button class="datalake-explorer-button"  
+    matTooltip="Execution Partition Logs">
         <mat-icon class="datalake-explorer-button-add-icon" (click)="globals.optionDatalakeSelected = 7">history</mat-icon>
     </button>
   </div>
   </div>
-  <div class="datalake-partitions-body">
-    <div class="datalake-partitions-item">
+  <div *ngIf="ShowPartition" class="datalake-partitions-body">
+    <!-- <div *ngIf="!actionDisable('List Partitions') || !actionDisable('Create Partition') || !actionDisable('Edit Partition') 
+    || !actionDisable('Delete Partition') || !actionDisable('Run Partition')" -->
+    <div
+    [ngClass]="((actionDisable('Create Partition') || actionDisable('Edit Partition')) && 
+    (!actionDisable('Run Partition') || !actionDisable('Delete Partition') || !actionDisable('List Partitions'))) 
+    ? 'datalake-partitions-item datalake-alarms-itemOne' : 'datalake-partitions-item'">
+    <!-- class="datalake-partitions-item"> -->
       <div class="datalake-partition-table-scroll" [ngStyle]="{ 'height': getTableHeight() }">
         <table mat-table matSort [dataSource]="PartitionTable" class="datasource welcome-table datalake-partition-table">
           <ng-container matColumnDef="schemaName">
@@ -43,37 +50,41 @@
           <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
             <td mat-cell *matCellDef="let element" class="btn-actions-partition">
-                <button (click)="executePartition(element)" mat-icon-button matTooltip="Execute Partition">
-                  <mat-icon class="edit-icon">play_arrow</mat-icon>
+                <button [disabled]="actionDisable('Run Partition')" (click)="executePartition(element)" mat-icon-button matTooltip="Execute Partition">
+                  <mat-icon class="run-icon">play_arrow</mat-icon>
                 </button>
-              <button (click)="editPartition(element)" mat-icon-button matTooltip="Edit Partition">
+              <button [disabled]="actionDisable('Edit Partition')" (click)="editPartition(element)" mat-icon-button matTooltip="Edit Partition">
                 <mat-icon class="edit-icon">edit</mat-icon>
               </button>
-              <button (click)="removePartition(element)" mat-icon-button matTooltip="Delete Partition">
+              <button [disabled]="actionDisable('Delete Partition')" (click)="removePartition(element)" mat-icon-button matTooltip="Delete Partition">
                 <mat-icon class="delete-icon">delete</mat-icon>
               </button>
             </td>
           </ng-container>
             <tr mat-header-row *matHeaderRowDef="partitionsColumns"></tr>
-            <tr mat-row [ngClass]="{ 'mat-row-highlighted': row.highlight }" *matRowDef="let row; columns: partitionsColumns;"></tr>
+            <tr mat-row *matRowDef="let row; columns: partitionsColumns;"
+            [ngClass]="{'mat-row-hovered': row.hovered, 'mat-row-highlighted': row === optionSelected}"
+            (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"
+            ></tr>
         </table>
       </div>
       <mat-paginator class="datalake-partition-paginator" [pageSizeOptions]="[15, 30, 50, 100]" showFirstLastButtons></mat-paginator>
     </div>
 
     
-    <div class="datalake-partitions-item-right">
+    <div  *ngIf="!actionDisable('Create Partition') || !actionDisable('Edit Partition')" class="datalake-partitions-item-right">
       <div class="datalake-partitions-header">
         <div class="datalake-new-partition-title">
-          <span *ngIf="!edit" class="datalake-new-partition-title-label">Create Partition Manager</span>
+          <span *ngIf="!edit && !actionDisable('Create Partition') " class="datalake-new-partition-title-label">Create Partition Manager</span>
           <span *ngIf="edit" class="datalake-new-partition-title-label">Edit Partition</span>
         </div>
         <div class="datalake-new-alarm-buttons">
           Status
-          <button mat-icon-button (click)="setPartitionStatus('A')" [ngClass]="{'datalake-new-alarm-button': Status === 'I', 'datalake-new-alarm-button-selected': Status === 'A' }" matTooltip="Active">
+          <button [disabled]=actionDisableBtn()
+          mat-icon-button (click)="setPartitionStatus('A')" [ngClass]="{'datalake-new-alarm-button': Status === 'I', 'datalake-new-alarm-button-selected': Status === 'A' }" matTooltip="Active">
             <mat-icon>check</mat-icon>
           </button>
-          <button mat-icon-button (click)="setPartitionStatus('I')" [ngClass]="{'datalake-new-alarm-button': Status === 'A', 'datalake-new-alarm-button-selected': Status === 'I' }" matTooltip="Inactive">
+          <button [disabled]=actionDisableBtn() mat-icon-button (click)="setPartitionStatus('I')" [ngClass]="{'datalake-new-alarm-button': Status === 'A', 'datalake-new-alarm-button-selected': Status === 'I' }" matTooltip="Inactive">
             <mat-icon>priority_high</mat-icon>
           </button>
         </div>
@@ -116,7 +127,7 @@
               <mat-error *ngIf="partitionFormGroup.get('runType')?.invalid">You must select a table</mat-error>
             </mat-form-field>
         </div>
-        <div class="datalake-partition-comboboxes">
+        <div [ngClass]="edit || createAction ? 'datalake-partition-comboboxes' : 'datalake-partition-comboboxes datalake-partition-comboboxes-disabled'">
             <mat-form-field  [formGroup]="partitionFormGroup"  class="datalake-partition-cron">
                 <span class="datalake-alarm-minutes-label">Check if is Needed to Add a New Partition Every</span>
                 <input matInput formControlName="cron"
@@ -126,11 +137,22 @@
         </div>
       </div> <!--end body-->
       <div class="datalake-partition-btn">
-          <button mat-button class="flat-button" (click)="addPartition()">Save</button>
+          <button [disabled]="actionDisableBtn()" mat-button class="flat-button" (click)="addPartition()">Save</button>
           <button mat-button class="flat-button" (click)="Clean()">Cancel</button>
       </div>
     </div>
     
   </div><!--End Body-->
-    
+  
+  <div *ngIf="!ShowPartition" class="datalake-AccesImage">
+      <div class="datalake-requestAccess">
+          <img class="datalake-explorer-query-engine-button-image" src="{{getQueryImageAcces()}}" />
+          <div class="datalake-messageAccess">
+              <h1>Request Access</h1>
+              <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                  sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</span>
+          </div>
+      </div>
+  </div>
+
 </div>

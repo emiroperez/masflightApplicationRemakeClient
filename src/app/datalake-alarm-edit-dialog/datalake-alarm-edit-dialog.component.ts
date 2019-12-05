@@ -8,6 +8,7 @@ import { timePicker } from 'analogue-time-picker';
 import { Globals } from '../globals/Globals';
 import { DatalakeService } from '../services/datalake.service';
 import { DatalakeAlarmAddEmailDialogComponent } from '../datalake-alarm-add-email-dialog/datalake-alarm-add-email-dialog.component';
+import { MessageComponent } from '../message/message.component';
 
 @Component({
   selector: 'app-datalake-alarm-edit-dialog',
@@ -300,6 +301,12 @@ getTimeFormat(value){
       //   listEmail: _this.listEmail
       // });
       _this.dialogRef.close();
+    }else{
+      _this.globals.isLoading = false;
+      _this.dialog.open (MessageComponent, {
+      data: { title: "Error", message: data.Message ? data.Message : "Errors not available" }
+      });
+
     }
     
   }

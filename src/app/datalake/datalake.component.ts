@@ -9,6 +9,7 @@ import { AuthService } from '../services/auth.service';
 import { AuthGuard } from '../guards/auth.guard';
 import { MenuService } from '../services/menu.service';
 import { DatalakeQueryTab } from '../datalake-query-engine/datalake-query-tab';
+import { DashboardMenu } from '../model/DashboardMenu';
 
 @Component({
   selector: 'app-datalake',
@@ -25,11 +26,19 @@ export class DatalakeComponent implements OnInit {
   private _mobileQueryListener: () => void;
   private _ResponsiveQueryListener: () => void;
 
+  defaultDashboardId: number;
+  sharedDashboards: Array<DashboardMenu>;
+  dashboards: Array<DashboardMenu>;
+
   bodyHeight: number;
 
-  constructor(public globals: Globals, private appService: ApplicationService, private changeDetectorRef: ChangeDetectorRef,
-    media: MediaMatcher, private router: Router, public authGuard: AuthGuard, public authService: AuthService,
-    public userService: UserService, private menuService: MenuService)
+  constructor(public globals: Globals, private appService: ApplicationService, 
+    private changeDetectorRef: ChangeDetectorRef,
+    media: MediaMatcher, private router: Router, 
+    public authGuard: AuthGuard, 
+    public authService: AuthService,
+    public userService: UserService, 
+    private menuService: MenuService)
   {
     this.TabletQuery = media.matchMedia('(max-width: 768px)');
     this._TabletQueryListener = () => changeDetectorRef.detectChanges ();
@@ -48,6 +57,7 @@ export class DatalakeComponent implements OnInit {
 
   ngOnInit()
   {
+    this.globals.optionsDatalake = [];
     this.globals.isLoading = true;    
     this.globals.queryTabs = [ new DatalakeQueryTab () ];
     this.menuService.getUserLoggedin (this, this.handleLogin, this.errorLogin);
@@ -116,8 +126,76 @@ export class DatalakeComponent implements OnInit {
         });
       });
     }
+    _this.getDashboardsUser();
     // _this.globals.isLoading = false;
     // _this.currentOption = 2;
+  }
+
+  
+  getDashboardsUser(){
+    this.menuService.getDashboardsByUser(this, this.handlerDashboard, this.errorHandler);
+  }
+
+  handlerDashboard(_this, data){
+    _this.dashboards = data;
+    _this.menuService.getSharedDashboardsByUser(_this, _this.handlerSharedDashboard, _this.errorHandler);
+  }
+
+  handlerSharedDashboard(_this, data)
+  {
+    _this.sharedDashboards = data;
+    _this.appService.getDefaultDashboard (_this, _this.handlerDefaultDashboard, _this.errorLogin);
+  }
+
+  errorHandler(_this,result){
+    _this.globals.isLoading = false;
+  }
+
+  handlerDefaultDashboard(_this, data): void
+  {
+    // if the user has a default dashboard selected, go to it
+    if (data)
+    {
+      _this.defaultDashboardId = data.id;
+      _this.globals.currentDashboardMenu = null;
+
+      for (let dashboard of _this.dashboards)
+      {
+        if (dashboard.id == data.id)
+        {
+          _this.globals.currentDashboardMenu = data;
+          _this.globals.currentOption = 'dashboard';
+          _this.globals.readOnlyDashboard = false;
+          break;
+        }
+      }
+    
+      if (!_this.globals.currentDashboardMenu)
+      {
+        for (let dashboard of _this.sharedDashboards)
+        {
+          if (dashboard.id == data.id)
+          {
+            _this.globals.currentDashboardMenu = data;
+            _this.globals.currentOption = 'dashboard';
+            _this.globals.readOnlyDashboard = true;
+            break;
+          }
+        }
+      }
+
+      if (!_this.globals.currentDashboardMenu)
+      {
+        _this.globals.appLoading = false;
+        _this.globals.isLoading = false;
+      }
+    }
+    else
+    {
+      _this.defaultDashboardId = null;
+      _this.globals.appLoading = false;
+      _this.globals.isLoading = false;
+    }
   }
 
   errorLogin(_this, result): void
@@ -152,8 +230,8 @@ export class DatalakeComponent implements OnInit {
   }
 
   showDataExplorer(){
-    let index = this.globals.optionsDatalake.findIndex(od => od.option.option === "Datalake Explorer");
-    if((this.globals.optionDatalakeSelected === 2 || this.globals.optionDatalakeSelected === 3)  && index != -1){
+    let index = this.globals.optionsDatalake.findIndex(od => od.action.option === "Datalake Explorer");
+    if((this.globals.optionDatalakeSelected === 2 || this.globals.optionDatalakeSelected === 3)  && index != -1 && this.globals.userName){
       return true;
     }else{
       return false;

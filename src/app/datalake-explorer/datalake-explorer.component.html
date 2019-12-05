@@ -1,56 +1,63 @@
 <div class="datalake-explorer-container">
     <div class="datalake-explorer-header">
         <mat-form-field *ngIf="globals.optionDatalakeSelected === 2" class="datalake-explorer-search-input-container">
-            <input matInput class="datalake-explorer-search-input" type="text" placeholder="Search" 
-            autocomplete="off" [(ngModel)]="filter" 
-            (ngModelChange)="filterTableCards()">
+            <input matInput class="datalake-explorer-search-input" type="text" placeholder="Search" autocomplete="off"
+                [(ngModel)]="filter" (ngModelChange)="filterTableCards()">
             <mat-icon class="search-icon" aria-label="search">search</mat-icon>
         </mat-form-field>
         <div class="datalake-explorer-header-title">
             Datalake Explorer
         </div>
         <div class="datalake-explorer-buttons">
-            <button [disabled]="actionDisable('List Logs partitions')"
-            *ngIf="globals.optionDatalakeSelected === 2" mat-button 
-            class="datalake-explorer-button"  matTooltip="Execution Partition">
-                <mat-icon class="datalake-explorer-button-add-icon" 
-                (click)="globals.optionDatalakeSelected = 8">history</mat-icon>
+            <button [disabled]="actionDisable('List Logs partitions')" *ngIf="globals.optionDatalakeSelected === 2"
+                mat-button class="datalake-explorer-button" matTooltip="Execution Partition">
+                <mat-icon class="datalake-explorer-button-add-icon" (click)="globals.optionDatalakeSelected = 8">history
+                </mat-icon>
             </button>
-            <button  [disabled]="OptionDisable('Query Engine')"
-            *ngIf="globals.optionDatalakeSelected === 2" mat-button class="datalake-explorer-button" 
-            (click)="changeOption(3)" (mouseover)="querymouseover = true" 
-            (mouseleave)="querymouseover = false" matTooltip="Query Engine">
-                <img class="datalake-explorer-query-engine-button-image" src="{{getQueryImage()}}"/>
+            <button [disabled]="OptionDisable('Query Engine')" *ngIf="globals.optionDatalakeSelected === 2" mat-button
+                class="datalake-explorer-button" (click)="changeOption(3)" (mouseover)="querymouseover = true"
+                (mouseleave)="querymouseover = false" matTooltip="Query Engine">
+                <img class="datalake-explorer-query-engine-button-image" src="{{getQueryImage()}}" />
             </button>
-            <button [disabled]="actionDisable('View table status')"
-            *ngIf="globals.optionDatalakeSelected === 2" 
-            mat-button class="datalake-explorer-button" (click)="viewTableStats()" matTooltip="View Table Stats">
+            <button [disabled]="actionDisable('View table status')" *ngIf="globals.optionDatalakeSelected === 2"
+                mat-button class="datalake-explorer-button" (click)="viewTableStats()" matTooltip="View Table Stats">
                 <mat-icon class="datalake-explorer-button-info-icon">pie_chart</mat-icon>
             </button>
-            <button [disabled]="actionDisable('View table information')"
-            *ngIf="globals.optionDatalakeSelected === 2" 
-            mat-button class="datalake-explorer-button" (click)="viewTableInformation()" 
-            matTooltip="View Table Information">
+            <button [disabled]="actionDisable('View table information')" *ngIf="globals.optionDatalakeSelected === 2"
+                mat-button class="datalake-explorer-button" (click)="viewTableInformation()"
+                matTooltip="View Table Information">
                 <mat-icon class="datalake-explorer-button-info-icon">info</mat-icon>
             </button>
-            <button  [disabled]="actionDisable('Create New Table')"
-            *ngIf="globals.optionDatalakeSelected === 2" 
-            mat-button class="datalake-explorer-button" (click)="createTable()" matTooltip="Create Table">
+            <button [disabled]="actionDisable('Create New Table')" *ngIf="globals.optionDatalakeSelected === 2"
+                mat-button class="datalake-explorer-button" (click)="createTable()" matTooltip="Create Table">
                 <mat-icon class="datalake-explorer-button-add-icon">add</mat-icon>
             </button>
-            <button [disabled]="OptionDisable('Datalake Explorer')"
-            *ngIf="globals.optionDatalakeSelected === 3"
-             mat-button class="datalake-explorer-button" (click)="changeOption(2)" matTooltip="Table Cards">
+            <button *ngIf="globals.optionDatalakeSelected === 3" mat-button class="datalake-explorer-button"
+                (click)="changeOption(2)" matTooltip="Table Cards">
                 <mat-icon class="datalake-explorer-button-table-card-icon">apps</mat-icon>
             </button>
         </div>
     </div>
-    <div *ngIf="globals.optionDatalakeSelected === 2" class="datalake-explorer-grid-layout">
+    <!-- <div *ngIf="globals.optionDatalakeSelected === 2 && (!actionDisable('View table status') || !actionDisable('View table information'))" -->
+    <div *ngIf="globals.optionDatalakeSelected === 2 && !OptionDisable('Datalake Explorer')"
+    [ngClass]="!actionDisable('View table information') || !actionDisable('View table status') ? 'datalake-explorer-grid-layout':'datalake-explorer-grid-layout datalake-explorer-grid-layout-height'">
+        <!-- class="datalake-explorer-grid-layout"> -->
         <ng-container *ngFor="let tableCard of filteredTableCards | async">
             <app-datalake-table-card [values]="tableCard" (setOption)="setOption($event)"></app-datalake-table-card>
         </ng-container>
     </div>
     <div *ngIf="globals.optionDatalakeSelected === 3" [style.height.%]="100">
         <app-datalake-query-engine></app-datalake-query-engine>
+    </div>
+    <!-- <div *ngIf="globals.optionDatalakeSelected === 2 && actionDisable('View table status') && actionDisable('View table information')" class="datalake-AccesImage"> -->
+    <div *ngIf="globals.optionDatalakeSelected === 2 && OptionDisable('Datalake Explorer')" class="datalake-AccesImage">
+        <div class="datalake-requestAccess">
+            <img class="datalake-explorer-query-engine-button-image" src="{{getQueryImageAcces()}}" />
+            <div class="datalake-messageAccess">
+                <h1>Request Access</h1>
+                <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</span>
+            </div>
+        </div>
     </div>
 </div>

@@ -39,6 +39,13 @@ export class MsfSelectBoxSingleOptionComponent implements OnInit {
     }else{
      url = this.argument.url+ (search != null?search:'');
     }
+    if(this.globals.currentApplication.name === "DataLake"){
+      if(url.indexOf("?") == -1){
+        url = url + "?uName="+this.globals.userName;
+      }else{
+        url = url + "&uName="+this.globals.userName;
+      }
+    }
     this.http.get(this,url,handlerSuccess,this.handlerError, null);  
   }
 

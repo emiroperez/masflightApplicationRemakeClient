@@ -5,7 +5,8 @@
         </button>
         <app-menu-option #menu [options]="category.options" [trigger]="trigger" (optionChanged)="optionChangedFromChildren()"></app-menu-option>
     </ng-container>
-    <button mat-button class='msf-menu-op-3' [matMenuTriggerFor]="dashboardMenu" style="padding: 0px 7px !important;">Dashboards</button>
+    <button mat-button class='msf-menu-op-3' 
+    [matMenuTriggerFor]="dashboardMenu" style="padding: 0px 7px !important;">Dashboards</button>
     <mat-menu #dashboardMenu="matMenu">
         <ng-container *ngIf="!globals.readOnlyDashboardPlan">
             <button mat-menu-item *ngFor="let dashboard of dashboards" (click)="goToDashboard(dashboard, false)">

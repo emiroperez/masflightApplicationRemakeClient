@@ -115,6 +115,15 @@ this.mobileQuery.addListener(this._mobileQueryListener);
     _this.globals.currentUser = data.name;
     _this.userName = _this.globals.currentUser;
     _this.globals.userName = data.email;
+    if(data.userInfoDatalake){
+      data.userInfoDatalake.datalakeRoles.forEach(datalakeRole => {
+        datalakeRole.role.datalakeOption.forEach(datalakeOption => {
+          if(datalakeOption){
+            _this.globals.optionsDatalake.push(datalakeOption)
+          }
+        });
+      });
+    }
     _this.userService.getUserLastLoginTime (_this, _this.lastTimeSuccess, _this.errorLogin);
   }
 

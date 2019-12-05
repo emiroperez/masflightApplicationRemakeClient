@@ -155,8 +155,13 @@ export class DatalakeExplorerComponent implements OnInit {
   }
 
   
+  getQueryImageAcces(): string
+  {
+    return "../../assets/images/" + this.globals.theme + "-requestAccess.png";
+  }
+  
   OptionDisable(option: any) {
-    let index = this.globals.optionsDatalake.findIndex(od => od.option.option === option);
+    let index = this.globals.optionsDatalake.findIndex(od => od.action.option === option);
     if (index != -1) {
       return false;
     } else {
@@ -165,7 +170,7 @@ export class DatalakeExplorerComponent implements OnInit {
 }
 
 actionDisable(option: any) {
-  let index = this.globals.optionsDatalake.findIndex(od => od.option.name === option);
+  let index = this.globals.optionsDatalake.findIndex(od => od.action.name === option);
   if (index != -1) {
     return false;
   } else {

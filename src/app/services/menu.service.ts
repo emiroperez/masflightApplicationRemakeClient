@@ -32,6 +32,9 @@ export class MenuService {
   }
 
   getDashboardsByUser(_this, successHandler, errorHandler){
+    if(_this.globals.currentApplication==undefined){
+      _this.globals.currentApplication = JSON.parse(localStorage.getItem("currentApplication"));
+    }
     let url = "/getDashboards?application=" + _this.globals.currentApplication.id;
     this.authService.get (_this, _this.globals.baseUrl + "/secure" + url, successHandler, errorHandler);
   }
