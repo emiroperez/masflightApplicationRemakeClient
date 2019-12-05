@@ -766,9 +766,13 @@ export class MsfDashboardChildPanelComponent {
           // The category will the values if the chart type lacks an x axis
           categoryAxis.dataFields.category = chartInfo.titleField;
 
-          if (parseDate && this.values.currentChartType.flags & ChartFlags.LINECHART)
+          if (parseDate)
           {
             let axisField = this.values.variable.id;
+
+            // reverse order for rotated charts
+            if (this.values.currentChartType.flags & ChartFlags.ROTATED)
+              categoryAxis.renderer.inversed = true;
 
             chart.events.on ("beforedatavalidated", function (event) {
               chart.data.sort (function (e1, e2) {

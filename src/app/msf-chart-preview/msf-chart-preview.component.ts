@@ -572,10 +572,14 @@ export class MsfChartPreviewComponent {
               valueAxis.title.text = this.data.valueColumn.columnLabel;
             }
 
-            if (parseDate && this.data.currentChartType.flags & ChartFlags.LINECHART)
+            if (parseDate)
             {
               let axisField = this.data.variable.columnName;
   
+              // reverse order for rotated charts
+              if (this.data.currentChartType.flags & ChartFlags.ROTATED)
+                categoryAxis.renderer.inversed = true;
+
               chart.events.on ("beforedatavalidated", function (event) {
                 chart.data.sort (function (e1, e2) {
                   return +(new Date(e1[axisField])) - +(new Date(e2[axisField]));
