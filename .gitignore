@@ -50,3 +50,4 @@ src/app/services/auth.service.ts
 /bin
 /obj
 /.vs
+angular.json
