@@ -594,13 +594,24 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     let series = chart.series.push (new am4charts.ColumnSeries ());
     series.dataFields.valueY = item.valueField;
-    series.dataFields.categoryX = item.titleField;
     series.name = item.valueField;
 
     if (values.currentChartType.flags & ChartFlags.ADVANCED)
       series.columns.template.tooltipText = "{valueY}";
     else
-      series.columns.template.tooltipText = "{categoryX}: {valueY}";
+    {
+      if (parseDate)
+      {
+        series.dataFields.dateX = item.titleField;
+        series.dateFormatter.dateFormat = outputFormat;
+        series.columns.template.tooltipText = "{dateX}: {valueY}";
+      }
+      else
+      {
+        series.dataFields.categoryX = item.titleField;
+        series.columns.template.tooltipText = "{categoryX}: {valueY}";
+      }
+    }
 
     series.columns.template.strokeWidth = 0;
 
@@ -638,13 +649,24 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     let series = chart.series.push (new am4charts.ColumnSeries ());
     series.dataFields.valueX = item.valueField;
-    series.dataFields.categoryY = item.titleField;
     series.name = item.valueField;
 
     if (values.currentChartType.flags & ChartFlags.ADVANCED)
       series.columns.template.tooltipText = "{valueX}";
     else
-      series.columns.template.tooltipText = "{categoryY}: {valueX}";
+    {
+      if (parseDate)
+      {
+        series.dataFields.dateY = item.titleField;
+        series.dateFormatter.dateFormat = outputFormat;
+        series.columns.template.tooltipText = "{dateY}: {valueX}";
+      }
+      else
+      {
+        series.dataFields.categoryY = item.titleField;
+        series.columns.template.tooltipText = "{categoryY}: {valueX}";
+      }
+    }
 
     series.columns.template.strokeWidth = 0;
 
@@ -1168,24 +1190,51 @@ export class MsfDashboardPanelComponent implements OnInit {
         else
         {
           chart.data = JSON.parse (JSON.stringify (chartInfo.dataProvider));
-          parseDate = false;
+          if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
+            parseDate = false;
+          else
+            parseDate = (this.values.variable.item.columnType === "date" && this.values.variable.id.includes ('date')) ? true : false;
         }
 
         if (parseDate)
         {
-          if (this.values.xaxis.item.columnFormat)
+          if (this.values.currentChartType.flags & ChartFlags.XYCHART)
           {
-            for (let data of chart.data)
-              data[this.values.xaxis.id] = this.parseDate (data[this.values.xaxis.id], this.values.xaxis.item.columnFormat);
+            if (this.values.xaxis.item.columnFormat)
+            {
+              for (let data of chart.data)
+                data[this.values.xaxis.id] = this.parseDate (data[this.values.xaxis.id], this.values.xaxis.item.columnFormat);
 
-            if (this.values.xaxis.item.outputFormat)
-              outputFormat = this.values.xaxis.item.outputFormat;
+              if (this.values.xaxis.item.outputFormat)
+                outputFormat = this.values.xaxis.item.outputFormat;
+              else
+                outputFormat = this.values.xaxis.item.columnFormat;
+
+              // Set predefined format if used
+              if (this.predefinedColumnFormats[outputFormat])
+                outputFormat = this.predefinedColumnFormats[outputFormat];
+            }
             else
-              outputFormat = this.values.xaxis.item.columnFormat;
+              parseDate = false;
+          }
+          else if (!(this.values.currentChartType.flags & ChartFlags.ADVANCED))
+          {
+            if (this.values.variable.item.columnFormat)
+            {
+              for (let data of chart.data)
+                data[this.values.variable.id] = this.parseDate (data[this.values.variable.id], this.values.variable.item.columnFormat);
 
-            // Set predefined format if used
-            if (this.predefinedColumnFormats[outputFormat])
-              outputFormat = this.predefinedColumnFormats[outputFormat];
+              if (this.values.variable.item.outputFormat)
+                outputFormat = this.values.variable.item.outputFormat;
+              else
+                outputFormat = this.values.variable.item.columnFormat;
+
+              // Set predefined format if used
+              if (this.predefinedColumnFormats[outputFormat])
+                outputFormat = this.predefinedColumnFormats[outputFormat];
+            }
+            else
+              parseDate = false;
           }
           else
             parseDate = false;
