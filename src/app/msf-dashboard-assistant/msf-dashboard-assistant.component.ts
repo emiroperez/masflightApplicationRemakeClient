@@ -33,6 +33,7 @@ export class MsfDashboardAssistantComponent {
     { name: 'Horizontal Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED | ChartFlags.STACKED, image: 'stacked-horiz-column-chart.png', createSeries: this.createHorizColumnSeries, allowedInAdvancedMode: true },
     { name: 'Funnel', flags: ChartFlags.FUNNELCHART, image: 'funnel-chart.png', createSeries: this.createFunnelSeries, allowedInAdvancedMode: false },
     { name: 'Lines', flags: ChartFlags.XYCHART | ChartFlags.LINECHART, image: 'line-chart.png', createSeries: this.createLineSeries, allowedInAdvancedMode: true },
+    { name: 'Simple Lines', flags: ChartFlags.LINECHART, image: 'line-chart.png', createSeries: this.createSimpleLineSeries, allowedInAdvancedMode: true },
     { name: 'Area', flags: ChartFlags.XYCHART | ChartFlags.AREACHART, image: 'area-chart.png', createSeries: this.createLineSeries, allowedInAdvancedMode: false },
     { name: 'Stacked Area', flags: ChartFlags.XYCHART | ChartFlags.STACKED | ChartFlags.AREACHART, image: 'stacked-area-chart.png', createSeries: this.createLineSeries, allowedInAdvancedMode: false },
     { name: 'Pie', flags: ChartFlags.PIECHART, image: 'pie-chart.png', createSeries: this.createPieSeries, allowedInAdvancedMode: false },
@@ -147,6 +148,11 @@ export class MsfDashboardAssistantComponent {
   goForward(stepper: MatStepper): void
   {
     stepper.next ();
+  }
+
+  isArray(item): boolean
+  {
+    return Array.isArray (item);
   }
 
   getParameters()
@@ -778,6 +784,56 @@ export class MsfDashboardAssistantComponent {
     series.stacked = stacked;
     series.columns.template.strokeWidth = 0;
     series.columns.template.width = am4core.percent (60);
+
+    return series;
+  }
+
+  // Function to create simple line chart series
+  createSimpleLineSeries(values, stacked, chart, item, parseDate, theme, outputFormat): any
+  {
+    // Set up series
+    let series = chart.series.push (new am4charts.LineSeries ());
+    series.name = item.valueAxis;
+    series.dataFields.valueY = item.valueField;
+    series.sequencedInterpolation = true;
+    series.strokeWidth = 2;
+    series.minBulletDistance = 10;
+    series.tooltip.pointerOrientation = "horizontal";
+    series.tooltip.background.cornerRadius = 20;
+    series.tooltip.background.fillOpacity = 0.5;
+    series.tooltip.label.padding (12, 12, 12, 12);
+    series.tensionX = 0.8;
+
+    if (parseDate)
+    {
+      series.dataFields.dateX = item.titleField;
+      series.dateFormatter.dateFormat = outputFormat;
+      series.tooltipText = "{dateX}: {valueY}";
+    }
+    else
+    {
+      if (values.chartMode === "advanced")
+      {
+        series.dataFields.categoryX = "Interval";
+        series.tooltipText = item.valueAxis + ": {valueY}";
+      }
+      else
+      {
+        series.dataFields.categoryX = item.titleField;
+        series.tooltipText = "{categoryX}: {valueY}";
+      }
+    }
+
+    series.stacked = stacked;
+
+    // Set color
+    series.segments.template.adapter.add ("fill", (fill, target) => {
+      return am4core.color (values.paletteColors[0]);
+    });
+
+    series.adapter.add ("stroke", (stroke, target) => {
+      return am4core.color (values.paletteColors[0]);
+    });
 
     return series;
   }

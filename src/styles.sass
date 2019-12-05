@@ -7393,6 +7393,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     display: grid
     grid-template: repeat(2, 1fr) / repeat(6, 1fr)
     grid-row-gap: 20px
+    grid-column-gap: 1px
     width: 730px
     height: 100%
     .msf-dashboard-assistant-chart-item, .msf-dashboard-assistant-chart-item-selected
@@ -7613,6 +7614,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 
 .msf-dashboard-assistant-chart-mode
     display: flex
+    padding-bottom: 10px
     .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle
         border-color: #ffffff !important
     .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-inner-circle
@@ -9160,5 +9162,8 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
             background-color: transparent !important
 
 .datalake-explorer-grid-layout-height
-        grid-template-rows: repeat(auto-fill, 140px) !important
+    grid-template-rows: repeat(auto-fill, 140px) !important
 
+.msf-dashboard-assistant-chart-picker-scroll
+    height: calc(100% - 92px)
+    overflow-y: auto

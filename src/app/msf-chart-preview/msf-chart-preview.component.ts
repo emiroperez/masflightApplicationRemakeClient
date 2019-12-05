@@ -111,7 +111,11 @@ export class MsfChartPreviewComponent {
   {
     let url, urlBase, urlArg;
 
-    urlBase = this.data.currentOption.baseUrl + "?" + this.getParameters ();
+    if (this.globals.currentApplication.name === "DataLake")
+      urlBase = this.data.currentOption.baseUrl + "?uName=" + this.globals.userName + "&" + this.getParameters ();
+    else
+      urlBase = this.data.currentOption.baseUrl + "?" + this.getParameters ();
+
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
     urlArg = encodeURIComponent (urlBase);
 
@@ -572,12 +576,25 @@ export class MsfChartPreviewComponent {
               valueAxis.title.text = this.data.valueColumn.columnLabel;
             }
 
-            // Sort values from least to greatest
-            chart.events.on ("beforedatavalidated", function(event) {
-              chart.data.sort (function(e1, e2) {
-                return e1[chartInfo.valueField] - e2[chartInfo.valueField];
+            if (parseDate && this.data.currentChartType.flags & ChartFlags.LINECHART)
+            {
+              let axisField = this.data.variable.columnName;
+  
+              chart.events.on ("beforedatavalidated", function (event) {
+                chart.data.sort (function (e1, e2) {
+                  return +(new Date(e1[axisField])) - +(new Date(e2[axisField]));
+                });
               });
-            });
+            }
+            else
+            {
+              // Sort values from least to greatest
+              chart.events.on ("beforedatavalidated", function(event) {
+                chart.data.sort (function(e1, e2) {
+                  return e1[chartInfo.valueField] - e2[chartInfo.valueField];
+                });
+              });
+            }
           }
 
           // The category will the values if the chart type lacks an x axis

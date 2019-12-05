@@ -228,21 +228,23 @@
           </mat-radio-button>
         </mat-radio-group>
       </div>
-      <div class="msf-dashboard-assistant-chart-picker">
-        <ng-container *ngFor="let chartType of chartTypes">
-          <div *ngIf="checkChartMode(chartType)"
-            [ngClass]="{ 'msf-dashboard-assistant-chart-item' : selectedChartType !== chartType, 'msf-dashboard-assistant-chart-item-selected' : selectedChartType === chartType }"
-            (click)="selectChartType(chartType)">
-            <span class="chart-item-image">
-              <img src="../../assets/images/{{globals.theme}}-{{chartType.image}}" />
-            </span>
-            <div class="chart-item-label">
-              <div class="label-align">
-                {{chartType.name}}
+      <div class="msf-dashboard-assistant-chart-picker-scroll">
+        <div class="msf-dashboard-assistant-chart-picker">
+          <ng-container *ngFor="let chartType of chartTypes">
+            <div *ngIf="checkChartMode(chartType)"
+              [ngClass]="{ 'msf-dashboard-assistant-chart-item' : selectedChartType !== chartType, 'msf-dashboard-assistant-chart-item-selected' : selectedChartType === chartType }"
+              (click)="selectChartType(chartType)">
+              <span class="chart-item-image">
+                <img src="../../assets/images/{{globals.theme}}-{{chartType.image}}" />
+              </span>
+              <div class="chart-item-label">
+                <div class="label-align">
+                  {{chartType.name}}
+                </div>
               </div>
             </div>
-          </div>
-        </ng-container>
+          </ng-container>
+        </div>
       </div>
     </span>
     <span *ngIf="stepper.selectedIndex == 2">

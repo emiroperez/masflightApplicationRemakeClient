@@ -41,7 +41,8 @@ export class MsfDashboardChildPanelComponent {
     { name: 'Stacked Area', flags: ChartFlags.XYCHART | ChartFlags.STACKED | ChartFlags.AREACHART, createSeries: this.createLineSeries },
     { name: 'Pie', flags: ChartFlags.PIECHART, createSeries: this.createPieSeries },
     { name: 'Donut', flags: ChartFlags.DONUTCHART, createSeries: this.createPieSeries },
-    { name: 'Table', flags: ChartFlags.TABLE }
+    { name: 'Table', flags: ChartFlags.TABLE },
+    { name: 'Simple Lines', flags: ChartFlags.LINECHART, createSeries: this.createSimpleLineSeries },
   ];
 
   functions:any[] = [
@@ -200,6 +201,80 @@ export class MsfDashboardChildPanelComponent {
       series.fillOpacity = 0.3;
 
     series.stacked = stacked;
+  }
+
+  // Function to create simple line chart series
+  createSimpleLineSeries(values, stacked, chart, item, parseDate, theme, outputFormat): any
+  {
+    // Set up series
+    let series = chart.series.push (new am4charts.LineSeries ());
+    series.name = item.valueAxis;
+    series.dataFields.valueY = item.valueField;
+    series.sequencedInterpolation = true;
+    series.strokeWidth = 2;
+    series.minBulletDistance = 10;
+    series.tooltip.pointerOrientation = "horizontal";
+    series.tooltip.background.cornerRadius = 20;
+    series.tooltip.background.fillOpacity = 0.5;
+    series.tooltip.label.padding (12, 12, 12, 12);
+    series.tensionX = 0.8;
+
+    if (parseDate)
+    {
+      series.dataFields.dateX = item.titleField;
+      series.dateFormatter.dateFormat = outputFormat;
+      series.tooltipText = "{dateX}: {valueY}";
+    }
+    else
+    {
+      series.dataFields.categoryX = item.titleField;
+      series.tooltipText = "{categoryX}: {valueY}";
+    }
+
+    series.stacked = stacked;
+
+    // Set thresholds
+    series.segments.template.adapter.add ("fill", (fill, target) => {
+      if (target.dataItem)
+      {
+        for (let threshold of values.thresholds)
+        {
+          if (target.dataItem.values.valueY.average >= threshold.min && target.dataItem.values.valueY.average <= threshold.max)
+            return am4core.color (threshold.color);
+        }
+      }
+
+      return am4core.color (values.paletteColors[0]);
+    });
+
+    series.adapter.add ("stroke", (stroke, target) => {
+      if (target.dataItem)
+      {
+        for (let threshold of values.thresholds)
+        {
+          if (target.dataItem.values.valueY.average >= threshold.min && target.dataItem.values.valueY.average <= threshold.max)
+            return am4core.color (threshold.color);
+        }
+      }
+
+      return am4core.color (values.paletteColors[0]);
+    });
+
+    if (!(values.currentChartType.flags & ChartFlags.ADVANCED))
+    {
+      // Display a special context menu when a chart line segment is right clicked
+      series.segments.template.interactionsEnabled = true;
+      series.segments.template.events.on ("rightclick", function (event) {
+        if (!values.currentOption.drillDownOptions.length)
+          return;
+
+        values.chartClicked = true;
+        values.chartObjectSelected = event.target.dataItem.component.tooltipDataItem.dataContext[values.variable.id];
+        values.chartSecondaryObjectSelected = series.dataFields.valueY;
+      });
+    }
+
+    return series;
   }
 
   // Function to create simple vertical column chart series
@@ -695,12 +770,25 @@ export class MsfDashboardChildPanelComponent {
           // The category will the values if the chart type lacks an x axis
           categoryAxis.dataFields.category = chartInfo.titleField;
 
-          // Sort values from least to greatest
-          chart.events.on ("beforedatavalidated", function(event) {
-            chart.data.sort (function(e1, e2) {
-              return e1[chartInfo.valueField] - e2[chartInfo.valueField];
+          if (parseDate && this.values.currentChartType.flags & ChartFlags.LINECHART)
+          {
+            let axisField = this.values.variable.id;
+
+            chart.events.on ("beforedatavalidated", function (event) {
+              chart.data.sort (function (e1, e2) {
+                return +(new Date(e1[axisField])) - +(new Date(e2[axisField]));
+              });
             });
-          });
+          }
+          else
+          {
+            // Sort values from least to greatest
+            chart.events.on ("beforedatavalidated", function(event) {
+              chart.data.sort (function(e1, e2) {
+                return e1[chartInfo.valueField] - e2[chartInfo.valueField];
+              });
+            });
+          }
 
           // Create the series
           this.values.currentChartType.createSeries (this.values, false, chart, chartInfo, parseDate, theme, outputFormat);
@@ -1170,7 +1258,11 @@ export class MsfDashboardChildPanelComponent {
   {
     let url, urlBase, urlArg;
 
-    urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
+    if (this.globals.currentApplication.name === "DataLake")
+      urlBase = this.values.currentOption.baseUrl + "?uName=" + this.globals.userName + "&" + this.getParameters ();
+    else
+      urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
+
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
     urlArg = encodeURIComponent (urlBase);
     url = this.service.host + "/secure/getChartData?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress () +
