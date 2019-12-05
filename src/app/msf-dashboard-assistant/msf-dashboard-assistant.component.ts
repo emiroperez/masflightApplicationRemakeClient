@@ -814,7 +814,7 @@ export class MsfDashboardAssistantComponent {
     {
       if (values.chartMode === "advanced")
       {
-        series.dataFields.categoryX = "Interval";
+        series.dataFields.categoryX = item.titleField;
         series.tooltipText = item.valueAxis + ": {valueY}";
       }
       else
@@ -891,7 +891,10 @@ export class MsfDashboardAssistantComponent {
     series.name = item.valueField;
 
     if (values.chartMode === "advanced")
+    {
+      series.dataFields.categoryX = item.titleField;
       series.columns.template.tooltipText = "{valueY}";
+    }
     else
     {
       if (parseDate)
@@ -927,21 +930,22 @@ export class MsfDashboardAssistantComponent {
     series.name = item.valueField;
 
     if (values.chartMode === "advanced")
+    {
+      series.dataFields.categoryY = item.titleField;
       series.columns.template.tooltipText = "{valueX}";
+    }
     else
     {
+      if (parseDate)
       {
-        if (parseDate)
-        {
-          series.dataFields.dateY = item.titleField;
-          series.dateFormatter.dateFormat = outputFormat;
-          series.columns.template.tooltipText = "{dateY}: {valueX}";
-        }
-        else
-        {
-          series.dataFields.categoryY = item.titleField;
-          series.columns.template.tooltipText = "{categoryY}: {valueX}";
-        }
+        series.dataFields.dateY = item.titleField;
+        series.dateFormatter.dateFormat = outputFormat;
+        series.columns.template.tooltipText = "{dateY}: {valueX}";
+      }
+      else
+      {
+        series.dataFields.categoryY = item.titleField;
+        series.columns.template.tooltipText = "{categoryY}: {valueX}";
       }
     }
 
