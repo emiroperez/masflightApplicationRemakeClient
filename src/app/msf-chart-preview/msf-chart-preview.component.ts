@@ -335,9 +335,9 @@ export class MsfChartPreviewComponent {
             categoryAxis.dateFormats.setKey ("day", outputFormat);
 
             if (!outputFormat.includes ("y"))
-              categoryAxis.periodChangeDateFormats.setKey ("day", "yyyy");
+              categoryAxis.periodChangeDateFormats.setKey ("month", "yyyy");
             else
-              categoryAxis.periodChangeDateFormats.setKey ("day", outputFormat);
+              categoryAxis.periodChangeDateFormats.setKey ("month", outputFormat);
           }
           else
           {
@@ -363,9 +363,9 @@ export class MsfChartPreviewComponent {
             categoryAxis.dateFormats.setKey ("day", outputFormat);
 
             if (!outputFormat.includes ("y"))
-              categoryAxis.periodChangeDateFormats.setKey ("day", "yyyy");
+              categoryAxis.periodChangeDateFormats.setKey ("month", "yyyy");
             else
-              categoryAxis.periodChangeDateFormats.setKey ("day", outputFormat);
+              categoryAxis.periodChangeDateFormats.setKey ("month", outputFormat);
           }
           else
           {
@@ -543,10 +543,6 @@ export class MsfChartPreviewComponent {
 
           for (let object of chartInfo.filter)
             this.data.currentChartType.createSeries (this.data, stacked, chart, object, parseDate, theme, outputFormat);
-
-          // Add cursor if the chart type is line, area or stacked area
-          if (this.data.currentChartType.flags & ChartFlags.LINECHART)
-            chart.cursor = new am4charts.XYCursor ();
         }
         else
         {
@@ -603,6 +599,10 @@ export class MsfChartPreviewComponent {
           // Create the series
           this.data.currentChartType.createSeries (this.data, false, chart, chartInfo, parseDate, theme, outputFormat);
         }
+
+        // Add cursor if the chart type is line, area or stacked area
+        if (this.data.currentChartType.flags & ChartFlags.LINECHART)
+          chart.cursor = new am4charts.XYCursor ();
       }
 
       // Add export menu

@@ -206,7 +206,7 @@ export class MsfMoreInfoPopupComponent{
         {
           categoryAxis = chart.yAxes.push (new am4charts.DateAxis ());
           categoryAxis.dateFormats.setKey ("day", "MMM d");
-          categoryAxis.periodChangeDateFormats.setKey ("day", "yyyy");
+          categoryAxis.periodChangeDateFormats.setKey ("month", "yyyy");
         }
         else
         {

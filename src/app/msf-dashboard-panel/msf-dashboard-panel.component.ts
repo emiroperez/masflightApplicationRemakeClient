@@ -1332,9 +1332,9 @@ export class MsfDashboardPanelComponent implements OnInit {
             categoryAxis.dateFormats.setKey ("day", outputFormat);
 
             if (!outputFormat.includes ("y"))
-              categoryAxis.periodChangeDateFormats.setKey ("day", "yyyy");
+              categoryAxis.periodChangeDateFormats.setKey ("month", "yyyy");
             else
-              categoryAxis.periodChangeDateFormats.setKey ("day", outputFormat);
+              categoryAxis.periodChangeDateFormats.setKey ("month", outputFormat);
           }
           else
           {
@@ -1360,9 +1360,9 @@ export class MsfDashboardPanelComponent implements OnInit {
             categoryAxis.dateFormats.setKey ("day", outputFormat);
 
             if (!outputFormat.includes ("y"))
-              categoryAxis.periodChangeDateFormats.setKey ("day", "yyyy");
+              categoryAxis.periodChangeDateFormats.setKey ("month", "yyyy");
             else
-              categoryAxis.periodChangeDateFormats.setKey ("day", outputFormat);
+              categoryAxis.periodChangeDateFormats.setKey ("month", outputFormat);
           }
           else
           {

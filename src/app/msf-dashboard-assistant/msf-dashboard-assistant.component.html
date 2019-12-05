@@ -253,10 +253,10 @@
         <div class="msf-dashboard-assistant-interval-mode" *ngIf="chartMode === 'advanced'">
           <span class="msf-dashboard-assistant-chart-type-label">Interval Type</span>
           <mat-radio-group [(ngModel)]="intervalType">
-            <mat-radio-button class="cancels-checkbox" [value]="'ncile'">
+            <mat-radio-button class="cancels-checkbox interval-checkbox" [value]="'ncile'">
               By Ncile
             </mat-radio-button>
-            <mat-radio-button class="cancels-checkbox" [value]="'value'">
+            <mat-radio-button class="cancels-checkbox interval-checkbox" [value]="'value'">
               By Value
             </mat-radio-button>
           </mat-radio-group>
