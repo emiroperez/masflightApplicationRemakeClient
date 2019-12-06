@@ -754,7 +754,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       if (parseDate)
       {
         series.dataFields.dateY = item.titleField;
-        // series.dateFormatter.dateFormat = outputFormat;
+        series.dateFormatter.dateFormat = outputFormat;
         series.columns.template.tooltipText = "{dateY}: {valueX}";
       }
       else
