@@ -15,6 +15,20 @@ import { Themes } from '../globals/Themes';
 import { MessageComponent } from '../message/message.component';
 import { DatePipe } from '@angular/common';
 
+// date intervals
+const dateIntervals = [
+  { timeUnit: "day", count: 1 },
+  { timeUnit: "day", count: 2 },
+  { timeUnit: "day", count: 3 },
+  { timeUnit: "day", count: 4 },
+  { timeUnit: "day", count: 5 },
+  { timeUnit: "day", count: 6 },
+  { timeUnit: "day", count: 7 },
+  { timeUnit: "day", count: 8 },
+  { timeUnit: "day", count: 9 },
+  { timeUnit: "day", count: 10 }
+];
+
 @Component({
   selector: 'app-msf-chart-preview',
   templateUrl: './msf-chart-preview.component.html'
@@ -333,6 +347,7 @@ export class MsfChartPreviewComponent {
           if (parseDate)
           {
             categoryAxis = chart.yAxes.push (new am4charts.DateAxis ());
+            categoryAxis.gridIntervals.setAll (dateIntervals);
             categoryAxis.dateFormats.setKey ("day", outputFormat);
 
             if (!outputFormat.includes ("y") && !outputFormat.includes ("Y"))
@@ -366,6 +381,7 @@ export class MsfChartPreviewComponent {
           if (parseDate)
           {
             categoryAxis = chart.xAxes.push (new am4charts.DateAxis ());
+            categoryAxis.gridIntervals.setAll (dateIntervals);
             categoryAxis.dateFormats.setKey ("day", outputFormat);
 
             if (!outputFormat.includes ("y") && !outputFormat.includes ("Y"))
