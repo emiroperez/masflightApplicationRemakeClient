@@ -531,10 +531,12 @@ export class MsfDashboardChildPanelComponent {
             categoryAxis = chart.yAxes.push (new am4charts.DateAxis ());
             categoryAxis.dateFormats.setKey ("day", outputFormat);
 
-            if (!outputFormat.includes ("y") || !outputFormat.includes ("Y"))
+            if (!outputFormat.includes ("y") && !outputFormat.includes ("Y"))
               categoryAxis.periodChangeDateFormats.setKey ("month", "yyyy");
             else
               categoryAxis.periodChangeDateFormats.setKey ("month", outputFormat);
+
+            categoryAxis.periodChangeDateFormats.setKey ("day", outputFormat);
           }
           else
           {
@@ -559,10 +561,12 @@ export class MsfDashboardChildPanelComponent {
             categoryAxis = chart.xAxes.push (new am4charts.DateAxis ());
             categoryAxis.dateFormats.setKey ("day", outputFormat);
 
-            if (!outputFormat.includes ("y") || !outputFormat.includes ("Y"))
+            if (!outputFormat.includes ("y") && !outputFormat.includes ("Y"))
               categoryAxis.periodChangeDateFormats.setKey ("month", "yyyy");
             else
               categoryAxis.periodChangeDateFormats.setKey ("month", outputFormat);
+
+            categoryAxis.periodChangeDateFormats.setKey ("day", outputFormat);
           }
           else
           {
