@@ -78,6 +78,7 @@ export class MsfDashboardAssistantComponent {
   tabs: MatTabGroup;
 
   configuredControlVariables: boolean = false;
+  startAtZero: boolean = false;
 
   constructor(public dialogRef: MatDialogRef<MsfDashboardAssistantComponent>,
     public globals: Globals,
@@ -710,7 +711,8 @@ export class MsfDashboardAssistantComponent {
         paletteColors: this.data.paletteColors,
         chartMode: this.chartMode,
         intervalType: this.intervalType,
-        intValue: (this.intervalType === "ncile" ? this.ncile : this.intValue)
+        intValue: (this.intervalType === "ncile" ? this.ncile : this.intValue),
+        startAtZero: this.startAtZero
       }
     });
   }
@@ -1087,7 +1089,8 @@ export class MsfDashboardAssistantComponent {
       valueColumn: valueColumn,
       chartMode: this.chartMode,
       intervalType: this.intervalType,
-      intValue: (this.intervalType === "ncile" ? this.ncile : this.intValue)
+      intValue: (this.intervalType === "ncile" ? this.ncile : this.intValue),
+      startAtZero: this.startAtZero
     });
   }
 
@@ -1113,11 +1116,15 @@ export class MsfDashboardAssistantComponent {
       this.xAxisSelected = null;
       this.selectingValue = null;
       this.valueSelected = null;
+      this.startAtZero = false;
     }
     else
     {
       this.selectingAggregationValue = null;
       this.aggregationValueSelected = null;
+
+      if (!this.isLineOrBarChart ())
+        this.startAtZero = false;
     }
   }
 
@@ -1156,5 +1163,13 @@ export class MsfDashboardAssistantComponent {
     }
 
     return true;
+  }
+
+  isLineOrBarChart(): boolean
+  {
+    if (!(this.selectedChartType.flags & ChartFlags.PIECHART) && !(this.selectedChartType.flags & ChartFlags.FUNNELCHART))
+      return true;
+
+    return false;
   }
 }

@@ -250,6 +250,9 @@
     <span *ngIf="stepper.selectedIndex == 2">
       <div style="display: flex">
         <span class="msf-dashboard-assistant-chart-type-label">Select Distributon Chart</span>
+        <div class="msf-dashboard-assistant-min-value-at-zero" *ngIf="chartMode !== 'advanced' && isLineOrBarChart()">
+          <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="startAtZero">Min Value At 0</mat-checkbox>
+        </div>
         <div class="msf-dashboard-assistant-interval-mode" *ngIf="chartMode === 'advanced'">
           <span class="msf-dashboard-assistant-chart-type-label">Interval Type</span>
           <mat-radio-group [(ngModel)]="intervalType">

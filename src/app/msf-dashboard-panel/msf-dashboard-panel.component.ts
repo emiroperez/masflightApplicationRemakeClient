@@ -5845,6 +5845,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           this.values.function = values.function;
           this.values.intervalType = values.intervalType;
           this.values.intValue = values.intValue;
+          this.values.startAtZero =  values.startAtZero;
 
           this.checkChartType ();
         }

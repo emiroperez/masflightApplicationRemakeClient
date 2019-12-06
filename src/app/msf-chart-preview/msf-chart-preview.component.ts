@@ -350,6 +350,9 @@ export class MsfChartPreviewComponent {
 
           valueAxis = chart.xAxes.push (new am4charts.ValueAxis ());
 
+          if (this.data.startAtZero)
+            valueAxis.min = 0;
+
           // Add scrollbar into the chart for zooming if there are multiple series
           if (chart.data.length > 1)
           {
@@ -385,6 +388,9 @@ export class MsfChartPreviewComponent {
           }
 
           valueAxis = chart.yAxes.push (new am4charts.ValueAxis ());
+
+          if (this.data.startAtZero)
+            valueAxis.min = 0;
 
           if (chart.data.length > 1)
           {
