@@ -122,8 +122,8 @@
     font-size: 35px
     cursor: pointer
 
-@mixin msf-dashboard-dialog-loading($background-size, $background-color, $background-image)
-    z-index: 99998
+@mixin msf-dashboard-dialog-loading($background-size, $background-color, $background-image, $z-index: 99998)
+    z-index: $z-index
     width: 100%
     height: 100%
     background-color: $background-color
@@ -372,7 +372,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
         .msf-dashboard-drill-down-loading
             @include msf-dashboard-dialog-loading(50%, $quaternary-background-color, url(assets/images/#{$name}-loading_pulse.gif))
         .msf-dashboard-panel-loading
-            @include msf-dashboard-dialog-loading(250px, $quaternary-background-color, url(assets/images/#{$name}-loading_pulse.gif))
+            @include msf-dashboard-dialog-loading(250px, $quaternary-background-color, url(assets/images/#{$name}-loading_pulse.gif), 1000)
         .msf-dashboard-assistant-loading
             @include msf-dashboard-dialog-loading(250px, $quaternary-background-color, url(assets/images/#{$name}-loading_pulse.gif))
         .msf-dashboard-info-display
