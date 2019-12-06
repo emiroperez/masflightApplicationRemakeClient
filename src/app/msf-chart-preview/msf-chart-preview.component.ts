@@ -271,7 +271,7 @@ export class MsfChartPreviewComponent {
           if (this.data.chartMode === "advanced")
             parseDate = false;
           else
-            parseDate = (this.data.xaxis.columnType === "date" && this.data.xaxis.columnName.includes ('date')) ? true : false;
+            parseDate = (this.data.xaxis.columnType === "date") ? true : false;
         }
         else if (this.data.chartMode !== "advanced" && !(this.data.currentChartType.flags & ChartFlags.PIECHART) && !(this.data.currentChartType.flags & ChartFlags.FUNNELCHART))
         {
@@ -279,7 +279,7 @@ export class MsfChartPreviewComponent {
           if (this.data.chartMode === "advanced")
             parseDate = false;
           else
-            parseDate = (this.data.variable.columnType === "date" && this.data.variable.columnName.includes ('date')) ? true : false;
+            parseDate = (this.data.variable.columnType === "date") ? true : false;
         }
 
         if (parseDate)

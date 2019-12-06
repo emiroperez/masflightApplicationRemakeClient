@@ -1280,7 +1280,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
             parseDate = false;
           else
-            parseDate = (this.values.xaxis.item.columnType === "date" && this.values.xaxis.id.includes ('date')) ? true : false;
+            parseDate = (this.values.xaxis.item.columnType === "date") ? true : false;
         }
         else if (!(this.values.currentChartType.flags & ChartFlags.ADVANCED) && !(this.values.currentChartType.flags & ChartFlags.PIECHART) && !(this.values.currentChartType.flags & ChartFlags.FUNNELCHART))
         {
@@ -1288,7 +1288,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
             parseDate = false;
           else
-            parseDate = (this.values.variable.item.columnType === "date" && this.values.variable.id.includes ('date')) ? true : false;
+            parseDate = (this.values.variable.item.columnType === "date") ? true : false;
         }
 
         if (parseDate)
