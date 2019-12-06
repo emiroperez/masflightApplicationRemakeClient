@@ -738,7 +738,26 @@ export class MsfDashboardChildPanelComponent {
             chart.colors.list.push (am4core.color (color));
 
           for (let object of chartInfo.filter)
+          {
+            if (this.values.variable.item.columnType === "date")
+            {
+              let date = this.parseDate (object.valueAxis, this.values.variable.item.columnFormat);
+              let legendOutputFormat;
+
+              if (this.values.variable.item.outputFormat)
+                legendOutputFormat = this.values.variable.item.outputFormat;
+              else
+                legendOutputFormat = this.values.variable.item.columnFormat;
+
+              // Set predefined format if used
+              if (this.predefinedColumnFormats[legendOutputFormat])
+                legendOutputFormat = this.predefinedColumnFormats[legendOutputFormat];
+
+              object.valueAxis = new DatePipe ('en-US').transform (date.toString (), legendOutputFormat);
+            }
+
             this.values.currentChartType.createSeries (this.values, stacked, chart, object, parseDate, theme, outputFormat);
+          }
         }
         else
         {

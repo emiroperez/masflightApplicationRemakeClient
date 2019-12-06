@@ -13,6 +13,7 @@ import { CategoryArguments } from '../model/CategoryArguments';
 import { Arguments } from '../model/Arguments';
 import { Themes } from '../globals/Themes';
 import { MessageComponent } from '../message/message.component';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-msf-chart-preview',
@@ -552,7 +553,26 @@ export class MsfChartPreviewComponent {
             chart.colors.list.push (am4core.color (color));
 
           for (let object of chartInfo.filter)
+          {
+            if (this.data.variable.columnType === "date")
+            {
+              let date = this.parseDate (object.valueAxis, this.data.variable.columnFormat);
+              let legendOutputFormat;
+
+              if (this.data.variable.outputFormat)
+                legendOutputFormat = this.data.variable.outputFormat;
+              else
+                legendOutputFormat = this.data.variable.columnFormat;
+
+              // Set predefined format if used
+              if (this.predefinedColumnFormats[legendOutputFormat])
+                legendOutputFormat = this.predefinedColumnFormats[legendOutputFormat];
+
+              object.valueAxis = new DatePipe ('en-US').transform (date.toString (), legendOutputFormat);
+            }
+
             this.data.currentChartType.createSeries (this.data, stacked, chart, object, parseDate, theme, outputFormat);
+          }
         }
         else
         {
