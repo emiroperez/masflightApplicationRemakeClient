@@ -208,7 +208,7 @@ export class MsfDashboardChildPanelComponent {
   {
     // Set up series
     let series = chart.series.push (new am4charts.LineSeries ());
-    series.name = item.valueAxis;
+    series.name = item.valueField;
     series.dataFields.valueY = item.valueField;
     series.sequencedInterpolation = true;
     series.strokeWidth = 2;
@@ -531,7 +531,7 @@ export class MsfDashboardChildPanelComponent {
             categoryAxis = chart.yAxes.push (new am4charts.DateAxis ());
             categoryAxis.dateFormats.setKey ("day", outputFormat);
 
-            if (!outputFormat.includes ("y"))
+            if (!outputFormat.includes ("y") || !outputFormat.includes ("Y"))
               categoryAxis.periodChangeDateFormats.setKey ("month", "yyyy");
             else
               categoryAxis.periodChangeDateFormats.setKey ("month", outputFormat);
@@ -559,7 +559,7 @@ export class MsfDashboardChildPanelComponent {
             categoryAxis = chart.xAxes.push (new am4charts.DateAxis ());
             categoryAxis.dateFormats.setKey ("day", outputFormat);
 
-            if (!outputFormat.includes ("y"))
+            if (!outputFormat.includes ("y") || !outputFormat.includes ("Y"))
               categoryAxis.periodChangeDateFormats.setKey ("month", "yyyy");
             else
               categoryAxis.periodChangeDateFormats.setKey ("month", outputFormat);

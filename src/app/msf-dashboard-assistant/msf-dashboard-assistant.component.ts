@@ -793,7 +793,7 @@ export class MsfDashboardAssistantComponent {
   {
     // Set up series
     let series = chart.series.push (new am4charts.LineSeries ());
-    series.name = item.valueAxis;
+    series.name = item.valueField;
     series.dataFields.valueY = item.valueField;
     series.sequencedInterpolation = true;
     series.strokeWidth = 2;
@@ -815,7 +815,7 @@ export class MsfDashboardAssistantComponent {
       if (values.chartMode === "advanced")
       {
         series.dataFields.categoryX = item.titleField;
-        series.tooltipText = item.valueAxis + ": {valueY}";
+        series.tooltipText = item.valueField + ": {valueY}";
       }
       else
       {

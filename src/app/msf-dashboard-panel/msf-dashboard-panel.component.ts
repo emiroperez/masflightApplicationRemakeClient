@@ -100,7 +100,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     { name: 'Advanced Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.STACKED | ChartFlags.ADVANCED, createSeries: this.createVertColumnSeries },
     { name: 'Advanced Horizontal Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED | ChartFlags.STACKED | ChartFlags.ADVANCED, createSeries: this.createHorizColumnSeries },
     { name: 'Advanced Lines', flags: ChartFlags.XYCHART | ChartFlags.LINECHART | ChartFlags.ADVANCED, createSeries: this.createLineSeries },
-    { name: 'Simple Lines', flags: ChartFlags.LINECHART, createSeries: this.createSimpleLineSeries }/*,
+    { name: 'Simple Lines', flags: ChartFlags.LINECHART, createSeries: this.createSimpleLineSeries },
+    { name: 'Advanced Simple Lines', flags: ChartFlags.LINECHART | ChartFlags.ADVANCED, createSeries: this.createSimpleLineSeries }/*,
     { name: 'Simple Picture', flags: ChartFlags.INFO | ChartFlags.PICTURE },*/
   ];
 
@@ -601,7 +602,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     // Set up series
     let series = chart.series.push (new am4charts.LineSeries ());
-    series.name = item.valueAxis;
+    series.name = item.valueField;
     series.dataFields.valueY = item.valueField;
     series.sequencedInterpolation = true;
     series.strokeWidth = 2;
@@ -623,7 +624,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       if (values.currentChartType.flags & ChartFlags.ADVANCED)
       {
         series.dataFields.categoryX = item.titleField;
-        series.tooltipText = item.valueAxis + ": {valueY}";
+        series.tooltipText = item.valueField + ": {valueY}";
       }
       else
       {
@@ -1282,7 +1283,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           else
             parseDate = (this.values.xaxis.item.columnType === "date") ? true : false;
         }
-        else if (!(this.values.currentChartType.flags & ChartFlags.ADVANCED) && !(this.values.currentChartType.flags & ChartFlags.PIECHART) && !(this.values.currentChartType.flags & ChartFlags.FUNNELCHART))
+        else if (!(this.values.currentChartType.flags & ChartFlags.PIECHART) && !(this.values.currentChartType.flags & ChartFlags.FUNNELCHART))
         {
           chart.data = JSON.parse (JSON.stringify (chartInfo.dataProvider));
           if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
@@ -1312,7 +1313,7 @@ export class MsfDashboardPanelComponent implements OnInit {
             else
               parseDate = false;
           }
-          else if (!(this.values.currentChartType.flags & ChartFlags.ADVANCED) && !(this.values.currentChartType.flags & ChartFlags.PIECHART) && !(this.values.currentChartType.flags & ChartFlags.FUNNELCHART))
+          else if (!(this.values.currentChartType.flags & ChartFlags.PIECHART) && !(this.values.currentChartType.flags & ChartFlags.FUNNELCHART))
           {
             if (this.values.variable.item.columnFormat)
             {
@@ -1343,7 +1344,7 @@ export class MsfDashboardPanelComponent implements OnInit {
             categoryAxis = chart.yAxes.push (new am4charts.DateAxis ());
             categoryAxis.dateFormats.setKey ("day", outputFormat);
 
-            if (!outputFormat.includes ("y"))
+            if (!outputFormat.includes ("y") || !outputFormat.includes ("Y"))
               categoryAxis.periodChangeDateFormats.setKey ("month", "yyyy");
             else
               categoryAxis.periodChangeDateFormats.setKey ("month", outputFormat);
@@ -1374,7 +1375,7 @@ export class MsfDashboardPanelComponent implements OnInit {
             categoryAxis = chart.xAxes.push (new am4charts.DateAxis ());
             categoryAxis.dateFormats.setKey ("day", outputFormat);
 
-            if (!outputFormat.includes ("y"))
+            if (!outputFormat.includes ("y") || !outputFormat.includes ("Y"))
               categoryAxis.periodChangeDateFormats.setKey ("month", "yyyy");
             else
               categoryAxis.periodChangeDateFormats.setKey ("month", outputFormat);

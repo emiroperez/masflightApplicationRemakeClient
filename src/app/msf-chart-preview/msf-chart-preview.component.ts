@@ -273,7 +273,7 @@ export class MsfChartPreviewComponent {
           else
             parseDate = (this.data.xaxis.columnType === "date") ? true : false;
         }
-        else if (this.data.chartMode !== "advanced" && !(this.data.currentChartType.flags & ChartFlags.PIECHART) && !(this.data.currentChartType.flags & ChartFlags.FUNNELCHART))
+        else if (!(this.data.currentChartType.flags & ChartFlags.PIECHART) && !(this.data.currentChartType.flags & ChartFlags.FUNNELCHART))
         {
           chart.data = JSON.parse (JSON.stringify (chartInfo.dataProvider));
           if (this.data.chartMode === "advanced")
@@ -303,7 +303,7 @@ export class MsfChartPreviewComponent {
             else
               parseDate = false;
           }
-          else if (this.data.chartMode !== "advanced" && !(this.data.currentChartType.flags & ChartFlags.PIECHART) && !(this.data.currentChartType.flags & ChartFlags.FUNNELCHART))
+          else if (!(this.data.currentChartType.flags & ChartFlags.PIECHART) && !(this.data.currentChartType.flags & ChartFlags.FUNNELCHART))
           {
             if (this.data.variable.columnFormat)
             {
@@ -334,7 +334,7 @@ export class MsfChartPreviewComponent {
             categoryAxis = chart.yAxes.push (new am4charts.DateAxis ());
             categoryAxis.dateFormats.setKey ("day", outputFormat);
 
-            if (!outputFormat.includes ("y"))
+            if (!outputFormat.includes ("y") || !outputFormat.includes ("Y"))
               categoryAxis.periodChangeDateFormats.setKey ("month", "yyyy");
             else
               categoryAxis.periodChangeDateFormats.setKey ("month", outputFormat);
@@ -362,7 +362,7 @@ export class MsfChartPreviewComponent {
             categoryAxis = chart.xAxes.push (new am4charts.DateAxis ());
             categoryAxis.dateFormats.setKey ("day", outputFormat);
 
-            if (!outputFormat.includes ("y"))
+            if (!outputFormat.includes ("y") || !outputFormat.includes ("Y"))
               categoryAxis.periodChangeDateFormats.setKey ("month", "yyyy");
             else
               categoryAxis.periodChangeDateFormats.setKey ("month", outputFormat);
