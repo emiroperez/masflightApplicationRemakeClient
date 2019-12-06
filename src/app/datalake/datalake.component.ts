@@ -116,7 +116,7 @@ export class DatalakeComponent implements OnInit {
     _this.globals.currentUser = data.name;
     _this.globals.admin = data.admin;
     _this.globals.userName = data.email;
-    _this.globals.optionDatalakeSelected = 2;
+
     if(data.userInfoDatalake){
       data.userInfoDatalake.datalakeRoles.forEach(datalakeRole => {
         datalakeRole.role.datalakeOption.forEach(datalakeOption => {
@@ -186,12 +186,14 @@ export class DatalakeComponent implements OnInit {
 
       if (!_this.globals.currentDashboardMenu)
       {
+        _this.globals.optionDatalakeSelected = 2;
         _this.globals.appLoading = false;
         _this.globals.isLoading = false;
       }
     }
     else
     {
+      _this.globals.optionDatalakeSelected = 2;
       _this.defaultDashboardId = null;
       _this.globals.appLoading = false;
       _this.globals.isLoading = false;
