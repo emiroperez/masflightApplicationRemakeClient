@@ -57,6 +57,8 @@ export class DatalakeComponent implements OnInit {
 
   ngOnInit()
   {
+    this.changeDetectorRef.detectChanges ();
+
     this.globals.optionsDatalake = [];
     this.globals.isLoading = true;    
     this.globals.queryTabs = [ new DatalakeQueryTab () ];
