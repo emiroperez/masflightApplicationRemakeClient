@@ -2373,7 +2373,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   loadFormData(handlerSuccess, handlerError): void
   {
-    let url, urlBase, urlArg;
+    let url, urlBase, urlArg, formConfig;
 
     this.values.isLoading = true;
     if(this.globals.currentApplication.name === "DataLake"){
@@ -2387,9 +2387,20 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (isDevMode ())
       console.log (urlBase);
 
-    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
+    url = this.service.host + "/secure/getFormResponse?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
 
-    this.authService.get (this, url, handlerSuccess, handlerError);
+    // Prepare the form configuration
+    formConfig = [];
+
+    for (let formVariable of this.values.formVariables)
+    {
+      formConfig.push ({
+        function : formVariable.function.id,
+        column : formVariable.column.id
+      });
+    }
+
+    this.authService.post (this, url, formConfig, handlerSuccess, handlerError);
   }
 
   loadPicData(handlerSuccess, handlerError): void
@@ -2806,43 +2817,23 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   handlerFormSuccess(_this, data): void
   {
-    let formResults, response, result;
+    let formResults, result;
 
     if (!_this.values.isLoading)
       return;
 
     formResults = [];
 
-    if (_this.utils.isJSONEmpty (data) || _this.utils.isJSONEmpty (data.Response))
+    if (!_this.haveDataInfo (data))
     {
       _this.noDataFound ();
       return;
     }
 
-    // only use the first result and filter out the values
-    response = data.Response;
-    for (let key in response)
+    for (let i = 0; i < data.length; i++)
     {
-      let array = response[key];
-      if (array != null)
-      {
-        if (Array.isArray (array))
-        {
-          result = array[0];
-          break;
-        }
-      }
-    }
-
-    if (!result)
-    {
-      _this.noDataFound ();
-      return;
-    }
-
-    for (let formVariable of _this.values.formVariables)
-    {
-      let value = result[formVariable.column.id];
+      let formVariable = _this.values.formVariables[i];
+      let value = data[i].value;
 
       formResults.push ({
         value: (isNaN (value) ? value : _this.getResultValue (value)),
