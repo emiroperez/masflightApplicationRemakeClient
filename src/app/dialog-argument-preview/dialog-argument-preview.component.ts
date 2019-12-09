@@ -5,18 +5,17 @@ import { Utils } from '../commons/utils';
 
 @Component({
   selector: 'app-dialog-argument-preview',
-  templateUrl: './dialog-argument-preview.component.html',
-  styleUrls: ['./dialog-argument-preview.component.css']
+  templateUrl: './dialog-argument-preview.component.html'
 })
 export class DialogArgumentPreviewComponent implements OnInit {
-  item: any;
+  argList: any[];
 
   constructor(public dialogRef: MatDialogRef<DialogArgumentPreviewComponent>,
     public globals: Globals,
     public utils: Utils,
-    @Inject(MAT_DIALOG_DATA) public data: any,)
+    @Inject(MAT_DIALOG_DATA) public data: any)
   {
-    this.item = JSON.parse (JSON.stringify (data));
+    this.argList = JSON.parse (JSON.stringify (data.arguments));
   }
 
   ngOnInit() {

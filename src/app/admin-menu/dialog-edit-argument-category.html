@@ -1,6 +1,7 @@
 <div mat-dialog-title class="admin-menu-content-dialog-container admin-menu-content-dialog-container-title">
-        <h4>Category Arguments Settings</h4>
-        <div class="admin-menu-content-buttons-header">
+    <h4>{{data.categoryArgumentsId[0].label}}</h4>
+    <div class="admin-menu-content-buttons-header">
+        <button mat-button matTooltip="Preview" class="flat-button preview-button admin-menu-content-cancel-button" (click)="showPreview(data.categoryArgumentsId[0])"><mat-icon>remove_red_eye</mat-icon></button>
         <button mat-button class="flat-button admin-menu-content-cancel-button" (click)="onNoClick()">Cancel</button>
         <button mat-button class="flat-button" [mat-dialog-close]="data" cdkFocusInitial>Save</button>
     </div>
@@ -8,6 +9,16 @@
 <div class="dialog-category-arguments dialog-edit-argument-category-container" mat-dialog-content>
     <div *ngFor="let item of data.categoryArgumentsId[0].arguments">
         <div>
+            <div class="dialog-edit-airline-selection-type" *ngIf="isAirline(item)">
+                <mat-radio-group [(ngModel)]="item.value3" (ngModelChange)="clearValue1(item)" class="airline-selection-radio-group">
+                    <mat-radio-button [ngClass]="{ 'airline-selection-type-radio': item.value3 != 0, 'airline-selection-type-radio-checked':  item.value3 == 0 }" [value]="0">
+                        Single Airline
+                    </mat-radio-button>
+                    <mat-radio-button class="airline-selection-type-radio-right" [ngClass]="{ 'airline-selection-type-radio': item.value3 != 1, 'airline-selection-type-radio-checked':  item.value3 == 1 }" [value]="1">
+                        Multiple Airlines
+                    </mat-radio-button>
+                </mat-radio-group>
+            </div>
             <div class="dialog-edit-argument-category-item-title">
                 <mat-form-field class="dialog-edit-argument-category-item-title-container">
                     <input matInput [(ngModel)]="item.title">
@@ -15,12 +26,6 @@
                 </mat-form-field>
             </div>
             <div class="dialog-edit-argument-category-item-body">
-                <div [style.width.%]="100">
-                    <mat-form-field [style.width.%]="100">
-                        <input matInput placeholder="Type" [(ngModel)]="item.type">
-                    </mat-form-field>
-                </div>
-
                 <ng-container *ngIf="isGroupAAA(item)">
                     <mat-radio-group class="GroupAAA-Container" aria-label="Select an option" [(ngModel)]="item.aaaGroup">
                         <mat-radio-button class="GroupAAA-item" value="Airline">Airline Group</mat-radio-button>
@@ -96,12 +101,12 @@
                         <input matInput placeholder="Url" [(ngModel)]="item.url" (ngModelChange)="updateItemList(item)">
                     </mat-form-field>
                 </div>
-                <div class="arguments-child" *ngIf="item.url!='' && item.url!=null" [style.margin-right.%]="20">
+                <div class="arguments-child" [style.margin-right.%]="20">
                     <mat-form-field [style.width.%]="100">
                         <input matInput placeholder="Visible Attribute" [(ngModel)]="item.visibleAttribute" (ngModelChange)="updateVisibleAttribute()">
                     </mat-form-field>
                 </div>
-                <div class="arguments-child" *ngIf="item.url!='' && item.url!=null">                 
+                <div class="arguments-child">                 
                     <mat-form-field [style.width.%]="100">
                         <input matInput placeholder="Selected Attribute" [(ngModel)]="item.selectedAttribute">
                     </mat-form-field>
@@ -256,11 +261,12 @@
                         </ng-select>
                     </div>
                 </ng-container>
-                <div class="arguments-child" [style.margin-right.%]="20" *ngIf="item.url != '' && item.url != null && isAirline(item)">
-                    <div class="msf-component-airport-sub-title msf-component-airport-route-sub-title">Select Default Values</div>
+                <div class="airline-argument" *ngIf="isAirline(item)">
+                    <div class="msf-component-airport-sub-title msf-component-airport-route-sub-title">Select Airline<span *ngIf="item.value3 == 1">s</span></div>
                     <ng-select
+                        dropdownPosition="top"
                         [items]="items | async"
-                        [multiple]="true"
+                        [multiple]="item.value3 == 1 ? true : false"
                         [loading]="loading"
                         loadingText="Loading..."
                         [closeOnSelect]="true"
@@ -270,9 +276,10 @@
                         [(ngModel)]="item.value1">
                     </ng-select>
                 </div>
-                <div class="arguments-child" [style.margin-right.%]="20" *ngIf="item.url != '' && item.url != null && isSingleAirline(item)">
-                    <div class="msf-component-airport-sub-title msf-component-airport-route-sub-title">Select Default Value</div>
+                <div class="airline-argument" *ngIf="isSingleAirline(item)">
+                    <div class="msf-component-airport-sub-title msf-component-airport-route-sub-title">Select Airline</div>
                     <ng-select
+                        dropdownPosition="top"
                         [items]="items | async"
                         [multiple]="false"
                         [loading]="loading"
@@ -322,9 +329,6 @@
                             {{radio.name}}
                         </mat-radio-button>
                     </mat-radio-group>
-                </div>
-                <div class="dialog-edit-argument-category-item-footer" *ngIf="item.url != '' && item.url != null">
-                    <button mat-button class="flat-button admin-menu-content-cancel-button" (click)="showPreview(item)">Preview</button>
                 </div>
             </div>
         </div>
