@@ -314,6 +314,13 @@ export class EditCategoryArgumentDialog {
 
   displayedColumns: string[] = ['label1', 'label2', 'name1', 'name2'];
 
+  valueTypes: any[] = [
+    { id: 1, name: 'Full Date' },
+    { id: 2, name: 'Quarter' },
+    { id: 3, name: 'Month' },
+    { id: 4, name: 'Year' }
+  ];
+
   dates: any[] = [
     {id: 1, name: 'Today',value:"TODAY"},
     {id: 2, name: 'Yesterday',value:"YESTERDAY"},
@@ -443,16 +450,16 @@ export class EditCategoryArgumentDialog {
 
   getTitleWidth(item): number
   {
-    if (this.isAirport (item))
-      return 40;
+    if (this.isAirport (item) || this.isDateRange (item))
+      return 47.5;
 
     return 100;
   }
 
   getTitleMargin(item): number
   {
-    if (this.isAirport (item))
-      return 20;
+    if (this.isAirport (item) || this.isDateRange (item))
+      return 5;
 
     return 0;
   }

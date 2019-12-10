@@ -50,6 +50,15 @@
                 <div *ngIf="isAirport(item)" class="dialog-edit-argument-category-multiple-selection">
                     <mat-checkbox [(ngModel)]="item.multipleSelection" (ngModelChange)="clearValues(item)">Multiple Selection</mat-checkbox>
                 </div>
+                <div *ngIf="isDateRange(item)" class="dialog-edit-argument-category-multiple-selection">
+                    <mat-form-field [style.width.%]="100">
+                        <mat-select placeholder="Value Type" [(ngModel)]="item.value3">
+                            <mat-option *ngFor="let valueType of valueTypes" [value]="valueType.id">
+                                {{valueType.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
             </div>
             <div class="dialog-edit-argument-category-item-body">
                 <ng-container *ngIf="isGroupAAA(item)">
@@ -60,7 +69,7 @@
                     </mat-radio-group>
                 </ng-container>
                 <ng-container *ngIf="isDateArgument(item)">
-                    <div class="arguments-child" [style.margin-right.%]="20">
+                    <div class="arguments-child" [style.margin-right.%]="5">
                         <mat-form-field [style.width.%]="100">
                             <input matInput placeholder="Start Date Availability" [(ngModel)]="item.minDate" [matDatepicker]="startDatePicker">
                             <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
@@ -77,7 +86,7 @@
                 </ng-container>
                 <ng-container *ngIf="!isAirport(item) && !isDateRange(item)">
                     <ng-container *ngIf="item.numArguments >= 1">
-                        <div class="arguments-child" [style.margin-right.%]="20">
+                        <div class="arguments-child" [style.margin-right.%]="5">
                             <mat-form-field [style.width.%]="100">
                                 <input matInput placeholder="Label 1" [(ngModel)]="item.label1">
                             </mat-form-field>
@@ -90,7 +99,7 @@
                         </div>
                     </ng-container>
                     <ng-container *ngIf="item.numArguments >= 2">
-                        <div class="arguments-child" [style.margin-right.%]="20">
+                        <div class="arguments-child" [style.margin-right.%]="5">
                             <mat-form-field [style.width.%]="100">
                                 <input matInput placeholder="Label 2" [(ngModel)]="item.label2">
                             </mat-form-field>
@@ -102,7 +111,7 @@
                         </div>
                     </ng-container>
                     <ng-container *ngIf="item.numArguments == 3">
-                        <div class="arguments-child" [style.margin-right.%]="20">
+                        <div class="arguments-child" [style.margin-right.%]="5">
                             <mat-form-field [style.width.%]="100">
                                 <input matInput placeholder="Label 3" [(ngModel)]="item.label3">
                             </mat-form-field>
@@ -114,21 +123,41 @@
                         </div>
                     </ng-container>
                 </ng-container>
-                <div class="arguments-child"  [style.margin-right.%]="20">
-                    <mat-form-field [style.width.%]="100">
-                        <mat-select [(value)]="item.required" placeholder="Required" [(ngModel)]="item.required">
-                            <mat-option [value]=1>Yes</mat-option>
-                            <mat-option [value]=0>No</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
+                <ng-container *ngIf="!isAirline(item) && !isAirport(item) && !isSelectBoxMultipleOption(item) && !isDateRange(item)">
+                    <div class="airline-argument">
+                        <mat-form-field [style.width.%]="100">
+                            <mat-select [(value)]="item.required" placeholder="Required" [(ngModel)]="item.required">
+                                <mat-option [value]=1>Yes</mat-option>
+                                <mat-option [value]=0>No</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="isDateRange(item)">
+                    <div class="arguments-child"  [style.margin-right.%]="5">
+                        <mat-form-field [style.width.%]="100">
+                            <mat-select [(value)]="item.required" placeholder="Required" [(ngModel)]="item.required">
+                                <mat-option [value]=1>Yes</mat-option>
+                                <mat-option [value]=0>No</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </ng-container>
                 <ng-container *ngIf="isAirline(item) || isAirport(item) || isSelectBoxMultipleOption(item)">
+                    <div class="arguments-child"  [style.margin-right.%]="5">
+                        <mat-form-field [style.width.%]="100">
+                            <mat-select [(value)]="item.required" placeholder="Required" [(ngModel)]="item.required">
+                                <mat-option [value]=1>Yes</mat-option>
+                                <mat-option [value]=0>No</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
                     <div class="arguments-child">
                         <mat-form-field >
                             <input matInput placeholder="Url" [(ngModel)]="item.url" (ngModelChange)="updateItemList(item)">
                         </mat-form-field>
                     </div>
-                    <div class="arguments-child" [style.margin-right.%]="20">
+                    <div class="arguments-child" [style.margin-right.%]="5">
                         <mat-form-field [style.width.%]="100">
                             <input matInput placeholder="Visible Attribute" [(ngModel)]="item.visibleAttribute" (ngModelChange)="updateVisibleAttribute()">
                         </mat-form-field>
@@ -149,7 +178,7 @@
                             </mat-select>
                         </mat-form-field>
                     </div>
-                    <div class="arguments-child" [style.margin-right.%]="20">
+                    <div class="arguments-child" [style.margin-right.%]="5">
                         <mat-form-field [style.width.%]="100">
                             <input matInput placeholder="Start Date Availability" [(ngModel)]="item.minDate" [matDatepicker]="startDatePicker">
                             <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
@@ -166,7 +195,7 @@
                     <div class="multiple-airport-argument-body">
                         <ng-container *ngIf="!item.selectionMode">
                             <div class="single-airport-argument-container">
-                                <div class="arguments-child" [style.margin-right.%]="20">
+                                <div class="arguments-child" [style.margin-right.%]="5">
                                     <mat-form-field [style.width.%]="100">
                                         <input matInput placeholder="Label 1" [(ngModel)]="item.label1">
                                     </mat-form-field>
@@ -220,7 +249,7 @@
                         [(ngModel)]="item.value1">
                     </ng-select>
                 </div>
-                <div class="arguments-child" [style.margin-right.%]="20" *ngIf="isDatePicker(item)">
+                <div class="arguments-child" [style.margin-right.%]="5" *ngIf="isDatePicker(item)">
                     <mat-form-field [style.width.%]="100">
                         <mat-select placeholder="Select Default Value" [(ngModel)]="item.value1">
                             <mat-option *ngFor="let dateRange of dates2" [value]="dateRange.value">
@@ -229,7 +258,7 @@
                         </mat-select>
                     </mat-form-field>
                 </div>
-                <div class="arguments-child" [style.margin-right.%]="20" *ngIf="isDatePeriod(item)">
+                <div class="arguments-child" [style.margin-right.%]="5" *ngIf="isDatePeriod(item)">
                     <mat-form-field [style.width.%]="100">
                         <mat-select placeholder="Select Default Value" [(ngModel)]="item.value1">
                             <mat-option *ngFor="let dateRange of dates3" [value]="dateRange.value">
@@ -238,7 +267,7 @@
                         </mat-select>
                     </mat-form-field>
                 </div>
-                <div class="arguments-child" [style.margin-right.%]="20" *ngIf="isDatePeriodYearMonth(item)">
+                <div class="arguments-child" [style.margin-right.%]="5" *ngIf="isDatePeriodYearMonth(item)">
                     <mat-form-field [style.width.%]="100">
                         <mat-select placeholder="Select Default Value" [(ngModel)]="item.value1">
                             <mat-option *ngFor="let dateRange of dates4" [value]="dateRange.value">
@@ -247,7 +276,7 @@
                         </mat-select>
                     </mat-form-field>
                 </div>
-                <div class="arguments-child" [style.margin-right.%]="20" *ngIf="isDatePeriodYear(item)">
+                <div class="arguments-child" [style.margin-right.%]="5" *ngIf="isDatePeriodYear(item)">
                     <mat-form-field [style.width.%]="100">
                         <mat-select placeholder="Select Default Value" [(ngModel)]="item.value1">
                             <mat-option *ngFor="let dateRange of dates5" [value]="dateRange.value">
@@ -256,12 +285,12 @@
                         </mat-select>
                     </mat-form-field>
                 </div>
-                <div class="arguments-child" [style.margin-right.%]="20" *ngIf="isMsFreeTextInput(item)">
+                <div class="arguments-child" [style.margin-right.%]="5" *ngIf="isMsFreeTextInput(item)">
                     <mat-form-field [style.width.%]="100">
                         <input matInput autocomplete="off" placeholder="Set Default Value" [(ngModel)]="item.value1">
                     </mat-form-field>
                 </div>
-                <div class="arguments-child" [style.margin-right.%]="20" *ngIf="item.url != '' && item.url != null && isSingleAirport(item)">
+                <div class="arguments-child" [style.margin-right.%]="5" *ngIf="isSingleAirport(item)">
                     <div class="msf-component-airport-sub-title">Select Default Value</div>
                     <ng-select
                         [items]="items | async"
@@ -283,7 +312,7 @@
                     </ng-select>
                 </div>
                 <ng-container *ngIf="item.url != '' && item.url != null && isAirportRoute(item)">
-                    <div class="arguments-child" [style.margin-right.%]="20">
+                    <div class="arguments-child" [style.margin-right.%]="5">
                         <div class="msf-component-airport-sub-title">Select Default Value(s) #1</div>
                         <ng-select
                             [items]="items | async"
@@ -349,7 +378,7 @@
                                 <img src="../../assets/images/{{globals.theme}}-AirportDate&Time.png">
                                 <div class="argument-title-label">Origin</div>
                             </div>
-                            <div class="arguments-child" [style.margin-right.%]="20">
+                            <div class="arguments-child" [style.margin-right.%]="5">
                                 <mat-form-field [style.width.%]="100">
                                     <input matInput placeholder="Label 1" [(ngModel)]="item.label1">
                                 </mat-form-field>
@@ -529,13 +558,13 @@
                     </div>
                 </ng-container>
                 <ng-container *ngIf="isTimeRange(item)">
-                    <div class="arguments-child" [style.margin-right.%]="7">
+                    <div class="arguments-child" [style.margin-right.%]="0.1">
                         <mat-form-field [style.width.%]="100">
                             <input matInput placeholder="From" aria-label="12hr format" [ngxTimepicker]="defaultFrom" readonly [(ngModel)]="item.value1">
                             <ngx-material-timepicker #defaultFrom></ngx-material-timepicker>
                         </mat-form-field>
                     </div>
-                    <i class="material-icons msf-menu-arg-right-row" [style.margin-right.%]="8.8" [style.margin-top.px]="10">chevron_right</i>
+                    <i class="material-icons msf-menu-arg-right-row" [style.margin-right.%]="0.8" [style.margin-top.px]="10">chevron_right</i>
                     <div class="arguments-child">
                         <mat-form-field [style.width.%]="100">
                             <input matInput placeholder="To" aria-label="12hr format" [ngxTimepicker]="defaultTo" readonly [(ngModel)]="item.value2">
