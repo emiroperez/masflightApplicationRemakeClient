@@ -431,6 +431,16 @@ export class EditCategoryArgumentDialog {
     }
   }
 
+  clearDateArgument(item): void
+  {
+    if (!item.selectionMode)
+    {
+      item.label2 = null;
+      item.name2 = null;
+      item.value2 = null;
+    }
+  }
+
   getTitleWidth(item): number
   {
     if (this.isAirport (item))
@@ -471,8 +481,24 @@ export class EditCategoryArgumentDialog {
     return 0;
   }
 
+  getDateArgumentWidth(item): number
+  {
+    if (item.selectionMode == 1)
+      return 45;
+
+    return 100;
+  }
+
+  getDateArgumentMargin(item): number
+  {
+    if (item.selectionMode == 1)
+      return 5;
+
+    return 0;
+  }
+
   isDateArgument(argument: Arguments){
-    if (ComponentType.dateRange == argument.type || ComponentType.date == argument.type
+    if (ComponentType.date == argument.type
       || ComponentType.datePicker == argument.type || ComponentType.dateTimePicker == argument.type
       || ComponentType.datePeriod == argument.type || ComponentType.datePeriodYear == argument.type
       || ComponentType.datePeriodYearMonth == argument.type || ComponentType.datePeriodRevenue == argument.type)
