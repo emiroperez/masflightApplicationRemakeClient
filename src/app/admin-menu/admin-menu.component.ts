@@ -383,11 +383,15 @@ export class EditCategoryArgumentDialog {
 
         if (argument.value3)
           argument.value3 = JSON.parse (argument.value3);
-        else
+
+        // initialize if not set
+        if (!argument.selectionMode)
+          argument.selectionMode = 0;
+        else if (argument.selectionMode > 4)
         {
-          // initialize value3 for airlines if not set
-          if (this.isAirline (argument))
-            argument.value3 = 0;
+          // this is for airport multiple selection
+          argument.selectionMode &= ~8;
+          argument.multipleSelection = true;
         }
 
         if (argument.minDate)
@@ -401,6 +405,70 @@ export class EditCategoryArgumentDialog {
   clearValue1(item): void
   {
     item.value1 = null;
+  }
+
+  clearValues(item): void
+  {
+    item.value1 = null;
+    item.value2 = null;
+    item.value3 = null;
+  }
+
+  clearAirportArgument(item): void
+  {
+    if (item.selectionMode <= 1)
+    {
+      item.label3 = null;
+      item.name3 = null;
+      item.value3 = null;
+
+      if (!item.selectionMode)
+      {
+        item.label2 = null;
+        item.name2 = null;
+        item.value2 = null;
+      }
+    }
+  }
+
+  getTitleWidth(item): number
+  {
+    if (this.isAirport (item))
+      return 40;
+
+    return 100;
+  }
+
+  getTitleMargin(item): number
+  {
+    if (this.isAirport (item))
+      return 20;
+
+    return 0;
+  }
+
+  getAirportArgumentWidth(item): number
+  {
+    if (item.selectionMode == 2)
+      return 30;
+
+    return 45;
+  }
+
+  get1stAirportArgumentMargin(item): number
+  {
+    if (item.selectionMode == 2)
+      return 1;
+
+    return 5;
+  }
+
+  get2ndAirportArgumentMargin(item): number
+  {
+    if (item.selectionMode == 2)
+      return 1;
+
+    return 0;
   }
 
   isDateArgument(argument: Arguments){
@@ -1771,6 +1839,10 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
           if (argument.value3)
             argument.value3 = JSON.stringify (argument.value3);
+
+          // Use a special flag value for airport selection in order for multiple selection
+          if (argument.multipleSelection)
+            argument.selectionMode |= 8;
 
           if (argument.minDate)
             argument.minDate = argument.minDate.toString ();

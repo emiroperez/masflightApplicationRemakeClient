@@ -24,7 +24,7 @@ export class MsfAirlineComponent implements OnInit {
   constructor(private http: ApiClient, public globals: Globals) { }
 
   ngOnInit() {
-    if (this.argument.value3)
+    if (this.argument.selectionMode)
       this.multiAirlines = true;
 
     this.getRecords(null, this.handlerSuccess);
