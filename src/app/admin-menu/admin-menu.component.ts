@@ -381,26 +381,12 @@ export class EditCategoryArgumentDialog {
         if (argument.value2)
           argument.value2 = JSON.parse (argument.value2);
 
-        if (argument.value3)
-          argument.value3 = JSON.parse (argument.value3);
-        else
-        {
-          // initialize value3 for airlines if not set
-          if (this.isAirline (argument))
-            argument.value3 = 0;
-        }
-
         if (argument.minDate)
           argument.minDate = new Date (argument.minDate);
 
         if (argument.maxDate)
           argument.maxDate = new Date (argument.maxDate);
       }
-  }
-
-  clearValue1(item): void
-  {
-    item.value1 = null;
   }
 
   isDateArgument(argument: Arguments){
@@ -1768,9 +1754,6 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
  
           if (argument.value2)
             argument.value2 = JSON.stringify (argument.value2);
-
-          if (argument.value3)
-            argument.value3 = JSON.stringify (argument.value3);
 
           if (argument.minDate)
             argument.minDate = argument.minDate.toString ();

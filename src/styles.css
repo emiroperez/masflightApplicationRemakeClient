@@ -2614,20 +2614,6 @@
 .dark-theme .interval-checkbox .mat-radio-outer-circle, .dark-theme .select-data-from-radio .mat-radio-outer-circle {
   border-color: #ffffff;
 }
-.dark-theme .airline-selection-type-radio .mat-radio-label {
-  border-color: #ffffff;
-}
-.dark-theme .airline-selection-type-radio .mat-radio-label:hover {
-  background-color: #01abec;
-  border-color: #01abec !important;
-}
-.dark-theme .airline-selection-type-radio .mat-radio-outer-circle {
-  border-color: #ffffff;
-}
-.dark-theme .airline-selection-type-radio-checked .mat-radio-label {
-  background-color: #01abec;
-  border-color: #01abec !important;
-}
 
 .light-theme {
   color: #4d4d4d;
@@ -5228,20 +5214,6 @@
 }
 .light-theme .interval-checkbox .mat-radio-outer-circle, .light-theme .select-data-from-radio .mat-radio-outer-circle {
   border-color: #4d4d4d;
-}
-.light-theme .airline-selection-type-radio .mat-radio-label {
-  border-color: #4d4d4d;
-}
-.light-theme .airline-selection-type-radio .mat-radio-label:hover {
-  background-color: #eb5c1b;
-  border-color: #eb5c1b !important;
-}
-.light-theme .airline-selection-type-radio .mat-radio-outer-circle {
-  border-color: #4d4d4d;
-}
-.light-theme .airline-selection-type-radio-checked .mat-radio-label {
-  background-color: #eb5c1b;
-  border-color: #eb5c1b !important;
 }
 
 .dark-theme .assistant-button-disabled {
@@ -10754,18 +10726,6 @@ mat-form-field.msf-table-input {
   width: 40%;
 }
 
-.airline-argument {
-  width: 100%;
-}
-
-.preview-button {
-  min-width: inherit !important;
-}
-
-.mat-dialog-title.admin-menu-content-dialog-container {
-  margin: 0 !important;
-}
-
 .dialog-edit-argument-category-container {
   min-height: 70%;
 }
@@ -10779,56 +10739,16 @@ mat-form-field.msf-table-input {
   width: 100%;
   margin: auto;
   font-size: 15px;
-  padding-top: 15px;
 }
 .dialog-edit-argument-category-container .dialog-edit-argument-category-item-title .dialog-edit-argument-category-item-title-container {
   width: 100%;
   margin-bottom: 10px;
 }
-.dialog-edit-argument-category-container .dialog-edit-airline-selection-type {
-  margin: 0;
-}
-.dialog-edit-argument-category-container .dialog-edit-airline-selection-type .airline-selection-radio-group {
-  display: flex;
-  flex-direction: row;
-  margin: 0;
-}
-.dialog-edit-argument-category-container .dialog-edit-airline-selection-type .airline-selection-radio-group .airline-selection-type-radio .mat-radio-label {
-  width: 250px;
-  border: solid 1px;
-  border-radius: 5px;
-  padding: 10px;
-}
-.dialog-edit-argument-category-container .dialog-edit-airline-selection-type .airline-selection-radio-group .airline-selection-type-radio .mat-radio-label:hover {
-  color: #ffffff !important;
-}
-.dialog-edit-argument-category-container .dialog-edit-airline-selection-type .airline-selection-radio-group .airline-selection-type-radio .mat-radio-label:hover .mat-radio-outer-circle {
-  border-color: #ffffff !important;
-}
-.dialog-edit-argument-category-container .dialog-edit-airline-selection-type .airline-selection-radio-group .airline-selection-type-radio .mat-radio-label:hover .mat-radio-inner-circle {
-  background-color: #ffffff !important;
-}
-.dialog-edit-argument-category-container .dialog-edit-airline-selection-type .airline-selection-radio-group .airline-selection-type-radio-checked .mat-radio-label {
-  width: 250px;
-  border: solid 1px;
-  border-radius: 5px;
-  padding: 10px;
-  color: #ffffff !important;
-}
-.dialog-edit-argument-category-container .dialog-edit-airline-selection-type .airline-selection-radio-group .airline-selection-type-radio-checked .mat-radio-outer-circle {
-  border-color: #ffffff !important;
-}
-.dialog-edit-argument-category-container .dialog-edit-airline-selection-type .airline-selection-radio-group .airline-selection-type-radio-checked .mat-radio-inner-circle {
-  background-color: #ffffff !important;
-}
-.dialog-edit-argument-category-container .dialog-edit-airline-selection-type .airline-selection-radio-group .airline-selection-type-radio-right {
-  margin-left: 30px;
-}
 .dialog-edit-argument-category-container .dialog-edit-argument-category-item-body {
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start;
-  margin-bottom: 15px;
+  margin-bottom: 50px;
 }
 .dialog-edit-argument-category-container .dialog-edit-argument-category-item-footer {
   width: 100%;

@@ -7,7 +7,7 @@
     <div class="msf-component-airport-sub-title">{{argument.label1}}</div>
     <ng-select
       [items]="data | async"
-      [multiple]="multiAirlines"
+      [multiple]="true"
       [loading]="loading"
       loadingText="Loading..."
       [closeOnSelect]="true"
