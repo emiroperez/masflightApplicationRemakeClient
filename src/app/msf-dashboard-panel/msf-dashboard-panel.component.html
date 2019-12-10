@@ -51,9 +51,12 @@
     </div>
     <ng-container *ngIf="!isInformationPanel() && !isSimpleFormPanel() && !isPicturePanel() && !isTablePanel() && !isMapPanel() && !isHeatMapPanel() && !isMapboxPanel() && !isDynTablePanel() && !isAdvChartPanel()">
       <div class="msf-dashboard-panel-sub-container-column">
-        <div class="msf-dashboard-addmenu-icon-item">
+        <div class="msf-dashboard-addmenu-icon-item msf-chart-config-label-container">
           <mat-icon class="msf-dashboard-chart-icon" aria-label="Filter List">filter_list</mat-icon>
           <span class="msf-dashboard-addmenu-item-text">Chart Configuration</span>
+          <div *ngIf="isLineOrBarChart()" class="msf-dashboard-panel-sub-container-row msf-dashboard-panel-sub-container-checkbox msf-dashboard-panel-interval-time">
+            <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="values.startAtZero">Min Value At 0</mat-checkbox>
+          </div>
         </div>
       </div>
       <div class="msf-dashboard-panel-sub-container-column">
@@ -312,6 +315,15 @@
                 </mat-select>
               </mat-form-field>
             </div>
+            <div class="msf-dashboard-chart-op-container">
+              <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+                <mat-select formControlName="functionCtrl" placeholder="Function">
+                  <mat-option *ngFor="let fun of functions" [value]="fun">
+                    {{fun.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
             <div class="msf-dashboard-chart-add-button" id="msf-dashboard-form-button">
               <button [disabled]="!isFormColumnValid()" mat-icon-button (click)="addColumnIntoForm()" [ngClass]="isFormColumnValid() ? 'func-button' : 'func-button-disabled'">
                 <mat-icon class="msf-dashboard-chart-icon" aria-label="Add Column">add</mat-icon>
@@ -355,6 +367,15 @@
               <mat-select [(value)]="formVariable.valueOrientation" placeholder="Value Orientation">
                 <mat-option *ngFor="let orientation of orientations" [value]="orientation">
                   {{orientation.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="msf-dashboard-chart-op-container" id="msf-dashboard-panel-form-op-container">
+            <mat-form-field class="msf-full-width">
+              <mat-select [(value)]="formVariable.function" placeholder="Function">
+                <mat-option *ngFor="let fun of functions" [value]="fun">
+                  {{fun.name}}
                 </mat-option>
               </mat-select>
             </mat-form-field>

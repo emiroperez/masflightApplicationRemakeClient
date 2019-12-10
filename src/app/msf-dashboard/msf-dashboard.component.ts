@@ -317,7 +317,8 @@ export class MsfDashboardComponent implements OnInit {
         dashboardPanel.categoryOptions, dashboardPanel.lastestResponse,
         dashboardPanel.paletteColors, dashboardPanel.updateTimeInterval,
         dashboardPanel.row, dashboardPanel.thresholds, dashboardPanel.vertAxisName,
-        dashboardPanel.horizAxisName, dashboardPanel.advIntervalValue));
+        dashboardPanel.horizAxisName, dashboardPanel.advIntervalValue,
+        dashboardPanel.startAtZero));
     }
 
     // add the last dashboard column

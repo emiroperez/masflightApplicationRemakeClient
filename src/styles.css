@@ -504,7 +504,7 @@
   background-size: 50%;
 }
 .dark-theme .msf-dashboard-panel-loading {
-  z-index: 99998;
+  z-index: 1000;
   width: 100%;
   height: 100%;
   background-color: #1f1f1f;
@@ -2611,6 +2611,23 @@
   font-weight: normal;
   color: #01abec;
 }
+.dark-theme .interval-checkbox .mat-radio-outer-circle, .dark-theme .select-data-from-radio .mat-radio-outer-circle {
+  border-color: #ffffff;
+}
+.dark-theme .airline-selection-type-radio .mat-radio-label {
+  border-color: #ffffff;
+}
+.dark-theme .airline-selection-type-radio .mat-radio-label:hover {
+  background-color: #01abec;
+  border-color: #01abec !important;
+}
+.dark-theme .airline-selection-type-radio .mat-radio-outer-circle {
+  border-color: #ffffff;
+}
+.dark-theme .airline-selection-type-radio-checked .mat-radio-label {
+  background-color: #01abec;
+  border-color: #01abec !important;
+}
 
 .light-theme {
   color: #4d4d4d;
@@ -3102,7 +3119,7 @@
   background-size: 50%;
 }
 .light-theme .msf-dashboard-panel-loading {
-  z-index: 99998;
+  z-index: 1000;
   width: 100%;
   height: 100%;
   background-color: #ffffff;
@@ -5208,6 +5225,23 @@
 .light-theme .datalake-requestAccess .datalake-messageAccess h1 {
   font-weight: normal;
   color: #eb5c1b;
+}
+.light-theme .interval-checkbox .mat-radio-outer-circle, .light-theme .select-data-from-radio .mat-radio-outer-circle {
+  border-color: #4d4d4d;
+}
+.light-theme .airline-selection-type-radio .mat-radio-label {
+  border-color: #4d4d4d;
+}
+.light-theme .airline-selection-type-radio .mat-radio-label:hover {
+  background-color: #eb5c1b;
+  border-color: #eb5c1b !important;
+}
+.light-theme .airline-selection-type-radio .mat-radio-outer-circle {
+  border-color: #4d4d4d;
+}
+.light-theme .airline-selection-type-radio-checked .mat-radio-label {
+  background-color: #eb5c1b;
+  border-color: #eb5c1b !important;
 }
 
 .dark-theme .assistant-button-disabled {
@@ -10720,6 +10754,18 @@ mat-form-field.msf-table-input {
   width: 40%;
 }
 
+.airline-argument {
+  width: 100%;
+}
+
+.preview-button {
+  min-width: inherit !important;
+}
+
+.mat-dialog-title.admin-menu-content-dialog-container {
+  margin: 0 !important;
+}
+
 .dialog-edit-argument-category-container {
   min-height: 70%;
 }
@@ -10733,16 +10779,56 @@ mat-form-field.msf-table-input {
   width: 100%;
   margin: auto;
   font-size: 15px;
+  padding-top: 15px;
 }
 .dialog-edit-argument-category-container .dialog-edit-argument-category-item-title .dialog-edit-argument-category-item-title-container {
   width: 100%;
   margin-bottom: 10px;
 }
+.dialog-edit-argument-category-container .dialog-edit-airline-selection-type {
+  margin: 0;
+}
+.dialog-edit-argument-category-container .dialog-edit-airline-selection-type .airline-selection-radio-group {
+  display: flex;
+  flex-direction: row;
+  margin: 0;
+}
+.dialog-edit-argument-category-container .dialog-edit-airline-selection-type .airline-selection-radio-group .airline-selection-type-radio .mat-radio-label {
+  width: 250px;
+  border: solid 1px;
+  border-radius: 5px;
+  padding: 10px;
+}
+.dialog-edit-argument-category-container .dialog-edit-airline-selection-type .airline-selection-radio-group .airline-selection-type-radio .mat-radio-label:hover {
+  color: #ffffff !important;
+}
+.dialog-edit-argument-category-container .dialog-edit-airline-selection-type .airline-selection-radio-group .airline-selection-type-radio .mat-radio-label:hover .mat-radio-outer-circle {
+  border-color: #ffffff !important;
+}
+.dialog-edit-argument-category-container .dialog-edit-airline-selection-type .airline-selection-radio-group .airline-selection-type-radio .mat-radio-label:hover .mat-radio-inner-circle {
+  background-color: #ffffff !important;
+}
+.dialog-edit-argument-category-container .dialog-edit-airline-selection-type .airline-selection-radio-group .airline-selection-type-radio-checked .mat-radio-label {
+  width: 250px;
+  border: solid 1px;
+  border-radius: 5px;
+  padding: 10px;
+  color: #ffffff !important;
+}
+.dialog-edit-argument-category-container .dialog-edit-airline-selection-type .airline-selection-radio-group .airline-selection-type-radio-checked .mat-radio-outer-circle {
+  border-color: #ffffff !important;
+}
+.dialog-edit-argument-category-container .dialog-edit-airline-selection-type .airline-selection-radio-group .airline-selection-type-radio-checked .mat-radio-inner-circle {
+  background-color: #ffffff !important;
+}
+.dialog-edit-argument-category-container .dialog-edit-airline-selection-type .airline-selection-radio-group .airline-selection-type-radio-right {
+  margin-left: 30px;
+}
 .dialog-edit-argument-category-container .dialog-edit-argument-category-item-body {
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start;
-  margin-bottom: 50px;
+  margin-bottom: 15px;
 }
 .dialog-edit-argument-category-container .dialog-edit-argument-category-item-footer {
   width: 100%;
@@ -11658,6 +11744,12 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
   margin-left: 10px;
 }
 
+.msf-dashboard-assistant-min-value-at-zero {
+  margin-left: 455px;
+  margin-top: -1px;
+  height: 18px;
+}
+
 .msf-dashboard-assistant-interval-mode {
   margin-left: 295px;
   margin-top: -1px;
@@ -11730,6 +11822,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
   display: grid;
   grid-template: repeat(2, 1fr)/repeat(6, 1fr);
   grid-row-gap: 20px;
+  grid-column-gap: 1px;
   width: 730px;
   height: 100%;
 }
@@ -12004,6 +12097,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
 
 .msf-dashboard-assistant-chart-mode {
   display: flex;
+  padding-bottom: 10px;
 }
 .msf-dashboard-assistant-chart-mode .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
   border-color: #ffffff !important;
@@ -13878,6 +13972,22 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
 
 .datalake-explorer-grid-layout-height {
   grid-template-rows: repeat(auto-fill, 140px) !important;
+}
+
+.msf-dashboard-assistant-chart-picker-scroll {
+  height: calc(100% - 92px);
+  overflow-y: auto;
+}
+
+.msf-chart-config-label-container {
+  position: relative;
+  display: flex;
+  width: 100%;
+}
+.msf-chart-config-label-container .msf-dashboard-panel-interval-time {
+  position: absolute;
+  right: 10px;
+  width: 105px !important;
 }
 
 /*# sourceMappingURL=styles.css.map */

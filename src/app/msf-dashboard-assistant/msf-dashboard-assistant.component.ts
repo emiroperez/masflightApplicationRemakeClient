@@ -32,7 +32,8 @@ export class MsfDashboardAssistantComponent {
     { name: 'Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.STACKED, image: 'stacked-vert-column-chart.png', createSeries: this.createVertColumnSeries, allowedInAdvancedMode: true },
     { name: 'Horizontal Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED | ChartFlags.STACKED, image: 'stacked-horiz-column-chart.png', createSeries: this.createHorizColumnSeries, allowedInAdvancedMode: true },
     { name: 'Funnel', flags: ChartFlags.FUNNELCHART, image: 'funnel-chart.png', createSeries: this.createFunnelSeries, allowedInAdvancedMode: false },
-    { name: 'Lines', flags: ChartFlags.XYCHART | ChartFlags.LINECHART, image: 'line-chart.png', createSeries: this.createLineSeries, allowedInAdvancedMode: true },
+    { name: 'Lines', flags: ChartFlags.XYCHART | ChartFlags.LINECHART, image: 'normal-line-chart.png', createSeries: this.createLineSeries, allowedInAdvancedMode: true },
+    { name: 'Simple Lines', flags: ChartFlags.LINECHART, image: 'line-chart.png', createSeries: this.createSimpleLineSeries, allowedInAdvancedMode: true },
     { name: 'Area', flags: ChartFlags.XYCHART | ChartFlags.AREACHART, image: 'area-chart.png', createSeries: this.createLineSeries, allowedInAdvancedMode: false },
     { name: 'Stacked Area', flags: ChartFlags.XYCHART | ChartFlags.STACKED | ChartFlags.AREACHART, image: 'stacked-area-chart.png', createSeries: this.createLineSeries, allowedInAdvancedMode: false },
     { name: 'Pie', flags: ChartFlags.PIECHART, image: 'pie-chart.png', createSeries: this.createPieSeries, allowedInAdvancedMode: false },
@@ -77,6 +78,7 @@ export class MsfDashboardAssistantComponent {
   tabs: MatTabGroup;
 
   configuredControlVariables: boolean = false;
+  startAtZero: boolean = false;
 
   constructor(public dialogRef: MatDialogRef<MsfDashboardAssistantComponent>,
     public globals: Globals,
@@ -147,6 +149,11 @@ export class MsfDashboardAssistantComponent {
   goForward(stepper: MatStepper): void
   {
     stepper.next ();
+  }
+
+  isArray(item): boolean
+  {
+    return Array.isArray (item);
   }
 
   getParameters()
@@ -266,6 +273,9 @@ export class MsfDashboardAssistantComponent {
 
           if (argument.value2)
             argument.value2 = JSON.parse (argument.value2);
+
+          if (argument.value3)
+            argument.value3 = JSON.parse (argument.value3);
 
           if (argument.minDate)
             argument.minDate = new Date (argument.minDate);
@@ -704,7 +714,8 @@ export class MsfDashboardAssistantComponent {
         paletteColors: this.data.paletteColors,
         chartMode: this.chartMode,
         intervalType: this.intervalType,
-        intValue: (this.intervalType === "ncile" ? this.ncile : this.intValue)
+        intValue: (this.intervalType === "ncile" ? this.ncile : this.intValue),
+        startAtZero: this.startAtZero
       }
     });
   }
@@ -782,6 +793,56 @@ export class MsfDashboardAssistantComponent {
     return series;
   }
 
+  // Function to create simple line chart series
+  createSimpleLineSeries(values, stacked, chart, item, parseDate, theme, outputFormat): any
+  {
+    // Set up series
+    let series = chart.series.push (new am4charts.LineSeries ());
+    series.name = item.valueField;
+    series.dataFields.valueY = item.valueField;
+    series.sequencedInterpolation = true;
+    series.strokeWidth = 2;
+    series.minBulletDistance = 10;
+    series.tooltip.pointerOrientation = "horizontal";
+    series.tooltip.background.cornerRadius = 20;
+    series.tooltip.background.fillOpacity = 0.5;
+    series.tooltip.label.padding (12, 12, 12, 12);
+    series.tensionX = 0.8;
+
+    if (parseDate)
+    {
+      series.dataFields.dateX = item.titleField;
+      series.dateFormatter.dateFormat = outputFormat;
+      series.tooltipText = "{dateX}: {valueY}";
+    }
+    else
+    {
+      if (values.chartMode === "advanced")
+      {
+        series.dataFields.categoryX = item.titleField;
+        series.tooltipText = item.valueField + ": {valueY}";
+      }
+      else
+      {
+        series.dataFields.categoryX = item.titleField;
+        series.tooltipText = "{categoryX}: {valueY}";
+      }
+    }
+
+    series.stacked = stacked;
+
+    // Set color
+    series.segments.template.adapter.add ("fill", (fill, target) => {
+      return am4core.color (values.paletteColors[0]);
+    });
+
+    series.adapter.add ("stroke", (stroke, target) => {
+      return am4core.color (values.paletteColors[0]);
+    });
+
+    return series;
+  }
+
   // Function to create line chart series
   createLineSeries(values, stacked, chart, item, parseDate, theme, outputFormat): any
   {
@@ -835,7 +896,10 @@ export class MsfDashboardAssistantComponent {
     series.name = item.valueField;
 
     if (values.chartMode === "advanced")
+    {
+      series.dataFields.categoryX = item.titleField;
       series.columns.template.tooltipText = "{valueY}";
+    }
     else
     {
       if (parseDate)
@@ -871,21 +935,22 @@ export class MsfDashboardAssistantComponent {
     series.name = item.valueField;
 
     if (values.chartMode === "advanced")
+    {
+      series.dataFields.categoryY = item.titleField;
       series.columns.template.tooltipText = "{valueX}";
+    }
     else
     {
+      if (parseDate)
       {
-        if (parseDate)
-        {
-          series.dataFields.dateY = item.titleField;
-          series.dateFormatter.dateFormat = outputFormat;
-          series.columns.template.tooltipText = "{dateY}: {valueX}";
-        }
-        else
-        {
-          series.dataFields.categoryY = item.titleField;
-          series.columns.template.tooltipText = "{categoryY}: {valueX}";
-        }
+        series.dataFields.dateY = item.titleField;
+        series.dateFormatter.dateFormat = outputFormat;
+        series.columns.template.tooltipText = "{dateY}: {valueX}";
+      }
+      else
+      {
+        series.dataFields.categoryY = item.titleField;
+        series.columns.template.tooltipText = "{categoryY}: {valueX}";
       }
     }
 
@@ -1027,7 +1092,8 @@ export class MsfDashboardAssistantComponent {
       valueColumn: valueColumn,
       chartMode: this.chartMode,
       intervalType: this.intervalType,
-      intValue: (this.intervalType === "ncile" ? this.ncile : this.intValue)
+      intValue: (this.intervalType === "ncile" ? this.ncile : this.intValue),
+      startAtZero: this.startAtZero
     });
   }
 
@@ -1053,11 +1119,15 @@ export class MsfDashboardAssistantComponent {
       this.xAxisSelected = null;
       this.selectingValue = null;
       this.valueSelected = null;
+      this.startAtZero = false;
     }
     else
     {
       this.selectingAggregationValue = null;
       this.aggregationValueSelected = null;
+
+      if (!this.isLineOrBarChart ())
+        this.startAtZero = false;
     }
   }
 
@@ -1096,5 +1166,13 @@ export class MsfDashboardAssistantComponent {
     }
 
     return true;
+  }
+
+  isLineOrBarChart(): boolean
+  {
+    if (!(this.selectedChartType.flags & ChartFlags.PIECHART) && !(this.selectedChartType.flags & ChartFlags.FUNNELCHART))
+      return true;
+
+    return false;
   }
 }

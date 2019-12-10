@@ -13,6 +13,21 @@ import { CategoryArguments } from '../model/CategoryArguments';
 import { Arguments } from '../model/Arguments';
 import { Themes } from '../globals/Themes';
 import { MessageComponent } from '../message/message.component';
+import { DatePipe } from '@angular/common';
+
+// date intervals
+const dateIntervals = [
+  { timeUnit: "day", count: 1 },
+  { timeUnit: "day", count: 2 },
+  { timeUnit: "day", count: 3 },
+  { timeUnit: "day", count: 4 },
+  { timeUnit: "day", count: 5 },
+  { timeUnit: "day", count: 6 },
+  { timeUnit: "day", count: 7 },
+  { timeUnit: "day", count: 8 },
+  { timeUnit: "day", count: 9 },
+  { timeUnit: "day", count: 10 }
+];
 
 @Component({
   selector: 'app-msf-chart-preview',
@@ -111,7 +126,11 @@ export class MsfChartPreviewComponent {
   {
     let url, urlBase, urlArg;
 
-    urlBase = this.data.currentOption.baseUrl + "?" + this.getParameters ();
+    if (this.globals.currentApplication.name === "DataLake")
+      urlBase = this.data.currentOption.baseUrl + "?uName=" + this.globals.userName + "&" + this.getParameters ();
+    else
+      urlBase = this.data.currentOption.baseUrl + "?" + this.getParameters ();
+
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
     urlArg = encodeURIComponent (urlBase);
 
@@ -267,15 +286,15 @@ export class MsfChartPreviewComponent {
           if (this.data.chartMode === "advanced")
             parseDate = false;
           else
-            parseDate = (this.data.xaxis.columnType === "date" && this.data.xaxis.columnName.includes ('date')) ? true : false;
+            parseDate = (this.data.xaxis.columnType === "date") ? true : false;
         }
-        else if (this.data.chartMode !== "advanced" && !(this.data.currentChartType.flags & ChartFlags.PIECHART))
+        else if (!(this.data.currentChartType.flags & ChartFlags.PIECHART) && !(this.data.currentChartType.flags & ChartFlags.FUNNELCHART))
         {
           chart.data = JSON.parse (JSON.stringify (chartInfo.dataProvider));
           if (this.data.chartMode === "advanced")
             parseDate = false;
           else
-            parseDate = (this.data.variable.columnType === "date" && this.data.variable.columnName.includes ('date')) ? true : false;
+            parseDate = (this.data.variable.columnType === "date") ? true : false;
         }
 
         if (parseDate)
@@ -299,7 +318,7 @@ export class MsfChartPreviewComponent {
             else
               parseDate = false;
           }
-          else if (this.data.chartMode !== "advanced" && !(this.data.currentChartType.flags & ChartFlags.PIECHART))
+          else if (!(this.data.currentChartType.flags & ChartFlags.PIECHART) && !(this.data.currentChartType.flags & ChartFlags.FUNNELCHART))
           {
             if (this.data.variable.columnFormat)
             {
@@ -328,12 +347,15 @@ export class MsfChartPreviewComponent {
           if (parseDate)
           {
             categoryAxis = chart.yAxes.push (new am4charts.DateAxis ());
+            categoryAxis.gridIntervals.setAll (dateIntervals);
             categoryAxis.dateFormats.setKey ("day", outputFormat);
 
-            if (!outputFormat.includes ("y"))
-              categoryAxis.periodChangeDateFormats.setKey ("day", "yyyy");
+            if (!outputFormat.includes ("y") && !outputFormat.includes ("Y"))
+              categoryAxis.periodChangeDateFormats.setKey ("month", "yyyy");
             else
-              categoryAxis.periodChangeDateFormats.setKey ("day", outputFormat);
+              categoryAxis.periodChangeDateFormats.setKey ("month", outputFormat);
+
+            categoryAxis.periodChangeDateFormats.setKey ("day", outputFormat);
           }
           else
           {
@@ -343,6 +365,9 @@ export class MsfChartPreviewComponent {
           }
 
           valueAxis = chart.xAxes.push (new am4charts.ValueAxis ());
+
+          if (this.data.startAtZero)
+            valueAxis.min = 0;
 
           // Add scrollbar into the chart for zooming if there are multiple series
           if (chart.data.length > 1)
@@ -356,12 +381,15 @@ export class MsfChartPreviewComponent {
           if (parseDate)
           {
             categoryAxis = chart.xAxes.push (new am4charts.DateAxis ());
+            categoryAxis.gridIntervals.setAll (dateIntervals);
             categoryAxis.dateFormats.setKey ("day", outputFormat);
 
-            if (!outputFormat.includes ("y"))
-              categoryAxis.periodChangeDateFormats.setKey ("day", "yyyy");
+            if (!outputFormat.includes ("y") && !outputFormat.includes ("Y"))
+              categoryAxis.periodChangeDateFormats.setKey ("month", "yyyy");
             else
-              categoryAxis.periodChangeDateFormats.setKey ("day", outputFormat);
+              categoryAxis.periodChangeDateFormats.setKey ("month", outputFormat);
+
+            categoryAxis.periodChangeDateFormats.setKey ("day", outputFormat);
           }
           else
           {
@@ -377,6 +405,9 @@ export class MsfChartPreviewComponent {
           }
 
           valueAxis = chart.yAxes.push (new am4charts.ValueAxis ());
+
+          if (this.data.startAtZero)
+            valueAxis.min = 0;
 
           if (chart.data.length > 1)
           {
@@ -538,11 +569,26 @@ export class MsfChartPreviewComponent {
             chart.colors.list.push (am4core.color (color));
 
           for (let object of chartInfo.filter)
-            this.data.currentChartType.createSeries (this.data, stacked, chart, object, parseDate, theme, outputFormat);
+          {
+            if (this.data.variable.columnType === "date")
+            {
+              let date = this.parseDate (object.valueAxis, this.data.variable.columnFormat);
+              let legendOutputFormat;
 
-          // Add cursor if the chart type is line, area or stacked area
-          if (this.data.currentChartType.flags & ChartFlags.LINECHART)
-            chart.cursor = new am4charts.XYCursor ();
+              if (this.data.variable.outputFormat)
+                legendOutputFormat = this.data.variable.outputFormat;
+              else
+                legendOutputFormat = this.data.variable.columnFormat;
+
+              // Set predefined format if used
+              if (this.predefinedColumnFormats[legendOutputFormat])
+                legendOutputFormat = this.predefinedColumnFormats[legendOutputFormat];
+
+              object.valueAxis = new DatePipe ('en-US').transform (date.toString (), legendOutputFormat);
+            }
+
+            this.data.currentChartType.createSeries (this.data, stacked, chart, object, parseDate, theme, outputFormat);
+          }
         }
         else
         {
@@ -572,12 +618,29 @@ export class MsfChartPreviewComponent {
               valueAxis.title.text = this.data.valueColumn.columnLabel;
             }
 
-            // Sort values from least to greatest
-            chart.events.on ("beforedatavalidated", function(event) {
-              chart.data.sort (function(e1, e2) {
-                return e1[chartInfo.valueField] - e2[chartInfo.valueField];
+            if (parseDate)
+            {
+              let axisField = this.data.variable.columnName;
+  
+              // reverse order for rotated charts
+              if (this.data.currentChartType.flags & ChartFlags.ROTATED)
+                categoryAxis.renderer.inversed = true;
+
+              chart.events.on ("beforedatavalidated", function (event) {
+                chart.data.sort (function (e1, e2) {
+                  return +(new Date(e1[axisField])) - +(new Date(e2[axisField]));
+                });
               });
-            });
+            }
+            else
+            {
+              // Sort values from least to greatest
+              chart.events.on ("beforedatavalidated", function(event) {
+                chart.data.sort (function(e1, e2) {
+                  return e1[chartInfo.valueField] - e2[chartInfo.valueField];
+                });
+              });
+            }
           }
 
           // The category will the values if the chart type lacks an x axis
@@ -586,6 +649,10 @@ export class MsfChartPreviewComponent {
           // Create the series
           this.data.currentChartType.createSeries (this.data, false, chart, chartInfo, parseDate, theme, outputFormat);
         }
+
+        // Add cursor if the chart type is line, area or stacked area
+        if (this.data.currentChartType.flags & ChartFlags.LINECHART)
+          chart.cursor = new am4charts.XYCursor ();
       }
 
       // Add export menu

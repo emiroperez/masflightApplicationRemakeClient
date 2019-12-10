@@ -18,12 +18,15 @@ export class MsfAirlineComponent implements OnInit {
   @Input("argument") public argument: Arguments;
   
   data: Observable<any[]>;
-
+  multiAirlines: boolean = false;
 
   loading = false;
   constructor(private http: ApiClient, public globals: Globals) { }
 
-  ngOnInit() { 
+  ngOnInit() {
+    if (this.argument.value3)
+      this.multiAirlines = true;
+
     this.getRecords(null, this.handlerSuccess);
   }
 

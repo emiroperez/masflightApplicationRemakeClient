@@ -81,23 +81,6 @@ export class ApplicationService {
 					 
   }
 
-  loadChartData(_this, handlerSuccess, handlerError) {
-    _this.globals.isLoading = true;
-    let param = this.utils.getUrlParameters(_this.globals.currentOption,true);
-    let urlBase = param.url;
-    urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
-						 
-    let urlArg = encodeURIComponent (urlBase);
-
-    if (isDevMode ())
-      console.log (urlBase);
-
-    let url = this.host + "/secure/getChartData?url=" + urlArg + "&optionId=" + _this.globals.currentOption.id + "&ipAddress=" + this.authService.getIpAddress () + "&variable=" + _this.variable.id + "&xaxis=" + _this.xaxis.id + "&valueColumn=" + _this.valueColumn.id + "&function=" + _this.function.id;
-
-    this.authService.post(_this, url, null, handlerSuccess, handlerError);
-  }
-
-
   loadDynamicTableData(_this, handlerSuccess, handlerError) {
     _this.globals.isLoading = true;
     _this.columns = [];

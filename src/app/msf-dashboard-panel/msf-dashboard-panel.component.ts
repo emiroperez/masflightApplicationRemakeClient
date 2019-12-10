@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input, NgZone, SimpleChanges, Output, EventEmitter, isDevMode } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, NgZone, SimpleChanges, Output, EventEmitter, isDevMode, ChangeDetectorRef } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
@@ -42,6 +42,7 @@ import { MsfMapComponent } from '../msf-map/msf-map.component';
 import { MsfDashboardAssistantComponent } from '../msf-dashboard-assistant/msf-dashboard-assistant.component';
 import { MsfDynamicTableAliasComponent } from '../msf-dynamic-table-alias/msf-dynamic-table-alias.component';
 import { MsfSelectDataFromComponent } from '../msf-select-data-from/msf-select-data-from.component';
+import { DatePipe } from '@angular/common';
 
 // AmCharts colors
 const black = am4core.color ("#000000");
@@ -51,6 +52,20 @@ const comet = am4core.color ("#585869");
 const homeSVG = "M16,8 L14,8 L14,16 L10,16 L10,10 L6,10 L6,16 L2,16 L2,8 L0,8 L8,0 L16,8 Z M16,8";
 const planeSVG = "m2,106h28l24,30h72l-44,-133h35l80,132h98c21,0 21,34 0,34l-98,0 -80,134h-35l43,-133h-71l-24,30h-28l15,-47";
 const targetSVG = "M9,0C4.029,0,0,4.029,0,9s4.029,9,9,9s9-4.029,9-9S13.971,0,9,0z M9,15.93 c-3.83,0-6.93-3.1-6.93-6.93S5.17,2.07,9,2.07s6.93,3.1,6.93,6.93S12.83,15.93,9,15.93 M12.5,9c0,1.933-1.567,3.5-3.5,3.5S5.5,10.933,5.5,9S7.067,5.5,9,5.5 S12.5,7.067,12.5,9z";
+
+// date intervals
+const dateIntervals = [
+  { timeUnit: "day", count: 1 },
+  { timeUnit: "day", count: 2 },
+  { timeUnit: "day", count: 3 },
+  { timeUnit: "day", count: 4 },
+  { timeUnit: "day", count: 5 },
+  { timeUnit: "day", count: 6 },
+  { timeUnit: "day", count: 7 },
+  { timeUnit: "day", count: 8 },
+  { timeUnit: "day", count: 9 },
+  { timeUnit: "day", count: 10 }
+];
 
 @Component({
   selector: 'app-msf-dashboard-panel',
@@ -71,6 +86,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   chart: any;
   chartInfo: any;
+  redisplayChart: boolean = false;
 
   chartTypes: any[] = [
     { name: 'Bars', flags: ChartFlags.XYCHART, createSeries: this.createVertColumnSeries },
@@ -99,7 +115,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     { name: 'Advanced Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.STACKED | ChartFlags.ADVANCED, createSeries: this.createVertColumnSeries },
     { name: 'Advanced Horizontal Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED | ChartFlags.STACKED | ChartFlags.ADVANCED, createSeries: this.createHorizColumnSeries },
     { name: 'Advanced Lines', flags: ChartFlags.XYCHART | ChartFlags.LINECHART | ChartFlags.ADVANCED, createSeries: this.createLineSeries },
-    { name: 'Simple Lines', flags: ChartFlags.LINECHART, createSeries: this.createSimpleLineSeries }/*,
+    { name: 'Simple Lines', flags: ChartFlags.LINECHART, createSeries: this.createSimpleLineSeries },
+    { name: 'Advanced Simple Lines', flags: ChartFlags.LINECHART | ChartFlags.ADVANCED, createSeries: this.createSimpleLineSeries }/*,
     { name: 'Simple Picture', flags: ChartFlags.INFO | ChartFlags.PICTURE },*/
   ];
 
@@ -257,7 +274,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   constructor(private zone: NgZone, public globals: Globals,
     private service: ApplicationService, private http: ApiClient, private authService: AuthService, public dialog: MatDialog,
-    private formBuilder: FormBuilder)
+    private changeDetectorRef: ChangeDetectorRef, private formBuilder: FormBuilder)
   {
     this.utils = new Utils ();
 
@@ -274,6 +291,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       fontSizeCtrl: new FormControl ({ value: this.fontSizes[1], disabled: true }),
       valueFontSizeCtrl: new FormControl ({ value: this.fontSizes[1], disabled: true }),
       valueOrientationCtrl: new FormControl ({ value: this.orientations[0], disabled: true }),
+      functionCtrl: new FormControl ({ value: this.functions[0], disabled: true }),
       intervalCtrl: new FormControl ({ value: 5, disabled: true }),
       geodataValueCtrl: new FormControl ({ value: '', disabled: true }),
       geodataKeyCtrl: new FormControl ({ value: '', disabled: true })
@@ -302,8 +320,13 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       if (this.values.chartGenerated)
       {
-        let chartElement = document.getElementById ("msf-dashboard-chart-display-" + this.values.id);
-        document.getElementById ("msf-dashboard.chart-display-container-" + this.values.id).appendChild (chartElement);
+        if (this.values.displayChart)
+        {
+          let chartElement = document.getElementById ("msf-dashboard-chart-display-" + this.values.id);
+          document.getElementById ("msf-dashboard.chart-display-container-" + this.values.id).appendChild (chartElement);
+        }
+        else
+          this.redisplayChart = true;
       }
     }
     else if (changes['controlPanelVariables'] && this.controlPanelVariables)
@@ -595,7 +618,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     // Set up series
     let series = chart.series.push (new am4charts.LineSeries ());
-    series.name = item.valueAxis;
+    series.name = item.valueField;
     series.dataFields.valueY = item.valueField;
     series.sequencedInterpolation = true;
     series.strokeWidth = 2;
@@ -616,8 +639,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       if (values.currentChartType.flags & ChartFlags.ADVANCED)
       {
-        series.dataFields.categoryX = "Interval";
-        series.tooltipText = item.valueAxis + ": {valueY}";
+        series.dataFields.categoryX = item.titleField;
+        series.tooltipText = item.valueField + ": {valueY}";
       }
       else
       {
@@ -680,7 +703,10 @@ export class MsfDashboardPanelComponent implements OnInit {
     series.name = item.valueField;
 
     if (values.currentChartType.flags & ChartFlags.ADVANCED)
+    {
+      series.dataFields.categoryX = item.titleField;
       series.columns.template.tooltipText = "{valueY}";
+    }
     else
     {
       if (parseDate)
@@ -735,7 +761,10 @@ export class MsfDashboardPanelComponent implements OnInit {
     series.name = item.valueField;
 
     if (values.currentChartType.flags & ChartFlags.ADVANCED)
+    {
+      series.dataFields.categoryY = item.titleField;
       series.columns.template.tooltipText = "{valueX}";
+    }
     else
     {
       if (parseDate)
@@ -1268,15 +1297,15 @@ export class MsfDashboardPanelComponent implements OnInit {
           if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
             parseDate = false;
           else
-            parseDate = (this.values.xaxis.item.columnType === "date" && this.values.xaxis.id.includes ('date')) ? true : false;
+            parseDate = (this.values.xaxis.item.columnType === "date") ? true : false;
         }
-        else if (!(this.values.currentChartType.flags & ChartFlags.ADVANCED) && !(this.values.currentChartType.flags & ChartFlags.PIECHART))
+        else if (!(this.values.currentChartType.flags & ChartFlags.PIECHART) && !(this.values.currentChartType.flags & ChartFlags.FUNNELCHART))
         {
           chart.data = JSON.parse (JSON.stringify (chartInfo.dataProvider));
           if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
             parseDate = false;
           else
-            parseDate = (this.values.variable.item.columnType === "date" && this.values.variable.id.includes ('date')) ? true : false;
+            parseDate = (this.values.variable.item.columnType === "date") ? true : false;
         }
 
         if (parseDate)
@@ -1300,7 +1329,7 @@ export class MsfDashboardPanelComponent implements OnInit {
             else
               parseDate = false;
           }
-          else if (!(this.values.currentChartType.flags & ChartFlags.ADVANCED) && !(this.values.currentChartType.flags & ChartFlags.PIECHART))
+          else if (!(this.values.currentChartType.flags & ChartFlags.PIECHART) && !(this.values.currentChartType.flags & ChartFlags.FUNNELCHART))
           {
             if (this.values.variable.item.columnFormat)
             {
@@ -1329,12 +1358,15 @@ export class MsfDashboardPanelComponent implements OnInit {
           if (parseDate)
           {
             categoryAxis = chart.yAxes.push (new am4charts.DateAxis ());
+            categoryAxis.gridIntervals.setAll (dateIntervals);
             categoryAxis.dateFormats.setKey ("day", outputFormat);
 
-            if (!outputFormat.includes ("y"))
-              categoryAxis.periodChangeDateFormats.setKey ("day", "yyyy");
+            if (!outputFormat.includes ("y") && !outputFormat.includes ("Y"))
+              categoryAxis.periodChangeDateFormats.setKey ("month", "yyyy");
             else
-              categoryAxis.periodChangeDateFormats.setKey ("day", outputFormat);
+              categoryAxis.periodChangeDateFormats.setKey ("month", outputFormat);
+
+            categoryAxis.periodChangeDateFormats.setKey ("day", outputFormat);
           }
           else
           {
@@ -1344,6 +1376,9 @@ export class MsfDashboardPanelComponent implements OnInit {
           }
 
           valueAxis = chart.xAxes.push (new am4charts.ValueAxis ());
+
+          if (this.values.startAtZero)
+            valueAxis.min = 0;
 
           // Add scrollbar into the chart for zooming if there are multiple series
           if (chart.data.length > 1)
@@ -1357,12 +1392,15 @@ export class MsfDashboardPanelComponent implements OnInit {
           if (parseDate)
           {
             categoryAxis = chart.xAxes.push (new am4charts.DateAxis ());
+            categoryAxis.gridIntervals.setAll (dateIntervals);
             categoryAxis.dateFormats.setKey ("day", outputFormat);
 
-            if (!outputFormat.includes ("y"))
-              categoryAxis.periodChangeDateFormats.setKey ("day", "yyyy");
+            if (!outputFormat.includes ("y") && !outputFormat.includes ("Y"))
+              categoryAxis.periodChangeDateFormats.setKey ("month", "yyyy");
             else
-              categoryAxis.periodChangeDateFormats.setKey ("day", outputFormat);
+              categoryAxis.periodChangeDateFormats.setKey ("month", outputFormat);
+
+            categoryAxis.periodChangeDateFormats.setKey ("day", outputFormat);
           }
           else
           {
@@ -1378,6 +1416,9 @@ export class MsfDashboardPanelComponent implements OnInit {
           }
 
           valueAxis = chart.yAxes.push (new am4charts.ValueAxis ());
+
+          if (this.values.startAtZero)
+            valueAxis.min = 0;
 
           if (chart.data.length > 1)
           {
@@ -1564,7 +1605,26 @@ export class MsfDashboardPanelComponent implements OnInit {
             chart.colors.list.push (am4core.color (color));
 
           for (let object of chartInfo.filter)
+          {
+            if (this.values.variable.item.columnType === "date")
+            {
+              let date = this.parseDate (object.valueAxis, this.values.variable.item.columnFormat);
+              let legendOutputFormat;
+
+              if (this.values.variable.item.outputFormat)
+                legendOutputFormat = this.values.variable.item.outputFormat;
+              else
+                legendOutputFormat = this.values.variable.item.columnFormat;
+
+              // Set predefined format if used
+              if (this.predefinedColumnFormats[legendOutputFormat])
+                legendOutputFormat = this.predefinedColumnFormats[legendOutputFormat];
+
+              object.valueAxis = new DatePipe ('en-US').transform (date.toString (), legendOutputFormat);
+            }
+
             this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, stacked, chart, object, parseDate, theme, outputFormat));
+          }
         }
         else
         {
@@ -1622,10 +1682,14 @@ export class MsfDashboardPanelComponent implements OnInit {
                 valueAxis.title.text = this.values.valueColumn.name;
             }
 
-            if (parseDate && this.values.currentChartType.flags & ChartFlags.LINECHART)
+            if (parseDate)
             {
               let axisField = this.values.variable.id;
-  
+
+              // reverse order for rotated charts
+              if (this.values.currentChartType.flags & ChartFlags.ROTATED)
+                categoryAxis.renderer.inversed = true;
+
               chart.events.on ("beforedatavalidated", function (event) {
                 chart.data.sort (function (e1, e2) {
                   return +(new Date(e1[axisField])) - +(new Date(e2[axisField]));
@@ -2060,7 +2124,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         values: this.values.chartColumnOptions ? (this.values.valueColumn ? this.values.valueColumn.item.id : null) : null,
         paletteColors: JSON.stringify (this.values.paletteColors),
         lastestResponse: JSON.stringify (this.values.lastestResponse),
-        thresholds: JSON.stringify (this.values.thresholds)
+        thresholds: JSON.stringify (this.values.thresholds),
+        startAtZero: null
       };
     }
     else if (this.values.currentChartType.flags & ChartFlags.MAPBOX)
@@ -2074,7 +2139,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0),
         function: 1,
         lastestResponse: JSON.stringify (this.values.lastestResponse),
-        analysis: this.msfMapRef.mapTypes.indexOf (this.values.style)
+        analysis: this.msfMapRef.mapTypes.indexOf (this.values.style),
+        startAtZero: null
       };
     }
     else if (this.values.currentChartType.flags & ChartFlags.FORM
@@ -2091,7 +2157,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         categoryOptions: this.values.currentOptionCategories ? JSON.stringify (this.values.currentOptionCategories) : null,
         updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0),
         function: 1,
-        lastestResponse: JSON.stringify (this.values.lastestResponse)
+        lastestResponse: JSON.stringify (this.values.lastestResponse),
+        startAtZero: null
       };
     }
     else if (this.values.currentChartType.flags & ChartFlags.INFO)
@@ -2106,7 +2173,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         function: 1,
         chartType: this.chartTypes.indexOf (this.values.currentChartType),
         categoryOptions: this.values.currentOptionCategories ? JSON.stringify (this.values.currentOptionCategories) : null,
-        updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0)
+        updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0),
+        startAtZero: null
       };
     }
     else if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
@@ -2125,7 +2193,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         thresholds: JSON.stringify (this.values.thresholds),
         vertAxisName: this.values.vertAxisName,
         horizAxisName: this.values.horizAxisName,
-        advIntervalValue: this.values.intValue
+        advIntervalValue: this.values.intValue,
+        startAtZero: null
       };
     }
     else
@@ -2144,7 +2213,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0),
         thresholds: JSON.stringify (this.values.thresholds),
         vertAxisName: this.values.vertAxisName,
-        horizAxisName: this.values.horizAxisName
+        horizAxisName: this.values.horizAxisName,
+        startAtZero: this.values.startAtZero
       };
     }
   }
@@ -2221,11 +2291,12 @@ export class MsfDashboardPanelComponent implements OnInit {
     // set panel info for the HTTP message body
     panel = this.getPanelInfo ();
     this.values.isLoading = true;
-    if(this.globals.currentApplication.name === "DataLake"){
-      urlBase = this.values.currentOption.baseUrl + "?uName="+this.globals.userName+"&"+ this.getParameters ();
-    }else{
-    urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
-    }
+
+    if (this.globals.currentApplication.name === "DataLake")
+      urlBase = this.values.currentOption.baseUrl + "?uName=" + this.globals.userName + "&" + this.getParameters ();
+    else
+      urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
+
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
     urlArg = encodeURIComponent (urlBase);
     url = this.service.host + "/secure/getChartData?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress () +
@@ -2302,7 +2373,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   loadFormData(handlerSuccess, handlerError): void
   {
-    let url, urlBase, urlArg;
+    let url, urlBase, urlArg, formConfig;
 
     this.values.isLoading = true;
     if(this.globals.currentApplication.name === "DataLake"){
@@ -2316,9 +2387,20 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (isDevMode ())
       console.log (urlBase);
 
-    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
+    url = this.service.host + "/secure/getFormResponse?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
 
-    this.authService.get (this, url, handlerSuccess, handlerError);
+    // Prepare the form configuration
+    formConfig = [];
+
+    for (let formVariable of this.values.formVariables)
+    {
+      formConfig.push ({
+        function : formVariable.function.id,
+        column : formVariable.column.id
+      });
+    }
+
+    this.authService.post (this, url, formConfig, handlerSuccess, handlerError);
   }
 
   loadPicData(handlerSuccess, handlerError): void
@@ -2735,44 +2817,31 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   handlerFormSuccess(_this, data): void
   {
-    let formResults, response, result;
+    let formResults, result;
 
     if (!_this.values.isLoading)
       return;
 
     formResults = [];
 
-    if (_this.utils.isJSONEmpty (data) || _this.utils.isJSONEmpty (data.Response))
+    if (!_this.haveDataInfo (data))
     {
       _this.noDataFound ();
       return;
     }
 
-    // only use the first result and filter out the values
-    response = data.Response;
-    for (let key in response)
+    for (let i = 0; i < data.length; i++)
     {
-      let array = response[key];
-      if (array != null)
-      {
-        if (Array.isArray (array))
-        {
-          result = array[0];
-          break;
-        }
-      }
-    }
-
-    for (let formVariable of _this.values.formVariables)
-    {
-      let value = result[formVariable.column.id];
+      let formVariable = _this.values.formVariables[i];
+      let value = data[i].value;
 
       formResults.push ({
         value: (isNaN (value) ? value : _this.getResultValue (value)),
         column: formVariable.column.item.id,
         fontSize: _this.fontSizes.indexOf (formVariable.fontSize),
         valueFontSize: _this.fontSizes.indexOf (formVariable.valueFontSize),
-        valueOrientation: _this.orientations.indexOf (formVariable.valueOrientation)
+        valueOrientation: _this.orientations.indexOf (formVariable.valueOrientation),
+        function: _this.functions.indexOf (formVariable.function)
       });
     }
 
@@ -2793,12 +2862,24 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     for (let formVariable of data)
     {
+      let columnIndex = 0;
+
+      for (let i = 0; i < _this.values.chartColumnOptions.length; i++)
+      {
+        if (_this.values.chartColumnOptions[i].item.id === formVariable.column.id)
+        {
+          columnIndex = i;
+          break;
+        }
+      }
+
       _this.values.lastestResponse.push ({
         value: formVariable.value,
-        column: _this.values.chartColumnOptions[formVariable.column].item,
+        column: _this.values.chartColumnOptions[columnIndex].item,
         fontSize: _this.fontSizes[formVariable.fontSize],
         valueFontSize: _this.fontSizes[formVariable.valueFontSize],
-        valueOrientation: _this.orientations[formVariable.valueOrientation]
+        valueOrientation: _this.orientations[formVariable.valueOrientation],
+        function: _this.functions[formVariable.function]
       });
     }
 
@@ -3169,6 +3250,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.chartForm.get ('fontSizeCtrl').setValue (this.fontSizes[1]);
     this.chartForm.get ('valueFontSizeCtrl').setValue (this.fontSizes[1]);
     this.chartForm.get ('valueOrientationCtrl').setValue (this.orientations[0]);
+    this.chartForm.get ('functionCtrl').setValue (this.functions[0]);
 
     this.values.formVariables = [];
     this.variableCtrlBtnEnabled = true;
@@ -3190,6 +3272,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.chartForm.get ('valueOrientationCtrl').enable ();
     this.chartForm.get ('geodataValueCtrl').enable ();
     this.chartForm.get ('geodataKeyCtrl').enable ();
+    this.chartForm.get ('functionCtrl').enable ();
 
     this.values.xaxis = null;
     this.values.variable = null;
@@ -3326,6 +3409,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.chartForm.get ('fontSizeCtrl').setValue (_this.fontSizes[1]);
     _this.chartForm.get ('valueFontSizeCtrl').setValue (_this.fontSizes[1]);
     _this.chartForm.get ('valueOrientationCtrl').setValue (_this.orientations[0]);
+    _this.chartForm.get ('functionCtrl').setValue (_this.functions[0]);
     _this.checkPanelConfiguration ();
 
     _this.values.formVariables = [];
@@ -3344,6 +3428,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.chartForm.get ('valueOrientationCtrl').enable ();
     _this.chartForm.get ('geodataValueCtrl').enable ();
     _this.chartForm.get ('geodataKeyCtrl').enable ();
+    _this.chartForm.get ('functionCtrl').enable ();
 
     _this.values.isLoading = false;
     _this.values.currentOptionCategories = null;
@@ -3367,6 +3452,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
           if (argument.value2)
             argument.value2 = JSON.parse (argument.value2);
+
+          if (argument.value3)
+            argument.value3 = JSON.parse (argument.value3);
 
           if (argument.minDate)
             argument.minDate = new Date (argument.minDate);
@@ -3536,26 +3624,15 @@ export class MsfDashboardPanelComponent implements OnInit {
       for (let i = 0; i < this.values.formVariables.length; i++)
       {
         let formVariable = this.values.formVariables[i];
-        let columnIndex = 0;
-
-        for (let j = 0; j < this.values.chartColumnOptions.length; j++)
-        {
-          if (this.values.chartColumnOptions[j].item.id === formVariable.column.id)
-          {
-            columnIndex = j;
-            break;
-          }
-        }
 
         this.temp.formVariables.push ({
           value: this.values.lastestResponse[i].value,
-          column: formVariable.column,
+          column: formVariable.column.item.id,
           fontSize: this.fontSizes.indexOf (formVariable.fontSize),
           valueFontSize: this.fontSizes.indexOf (formVariable.valueFontSize),
-          valueOrientation: this.orientations.indexOf (formVariable.valueOrientation)
+          valueOrientation: this.orientations.indexOf (formVariable.valueOrientation),
+          function: this.functions.indexOf (formVariable.function)
         });
-
-        formVariable.column = this.values.chartColumnOptions[columnIndex];
       }
     }
     else if (this.values.currentChartType.flags & ChartFlags.INFO
@@ -3578,6 +3655,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
 
     this.temp.updateIntervalSwitch = this.values.updateIntervalSwitch;
+    this.temp.startAtZero = this.values.startAtZero;
     this.temp.updateTimeLeft = this.values.updateTimeLeft;
 
     this.stopUpdateInterval ();
@@ -3749,16 +3827,18 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       this.values.formVariables.push ({
         value: this.values.lastestResponse[i].value,
-        column: formVariable.column.id,
-        fontSize: formVariable.fontSize,
-        valueFontSize: formVariable.valueFontSize,
-        valueOrientation: formVariable.valueOrientation
+        column: formVariable.column,
+        fontSize: this.fontSizes[formVariable.fontSize],
+        valueFontSize: this.fontSizes[formVariable.valueFontSize],
+        valueOrientation: this.orientations[formVariable.valueOrientation],
+        function: this.functions[formVariable.function]
       });
     }
 
     this.values.tableVariables = JSON.parse (JSON.stringify (this.temp.tableVariables));
 
     this.values.updateIntervalSwitch = this.temp.updateIntervalSwitch;
+    this.values.startAtZero = this.temp.startAtZero;
     this.values.updateTimeLeft = this.temp.updateTimeLeft;
 
     // re-initialize panel settings
@@ -3781,6 +3861,15 @@ export class MsfDashboardPanelComponent implements OnInit {
           this.lastWidth = this.values.width;
         }
       }, 500);
+    }
+
+    this.changeDetectorRef.detectChanges ();
+
+    if (this.redisplayChart)
+    {
+      let chartElement = document.getElementById ("msf-dashboard-chart-display-" + this.values.id);
+      document.getElementById ("msf-dashboard.chart-display-container-" + this.values.id).appendChild (chartElement);
+      this.redisplayChart = false;
     }
   }
 
@@ -3810,6 +3899,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         this.chartForm.get ('fontSizeCtrl').setValue (this.fontSizes[1]);
         this.chartForm.get ('valueFontSizeCtrl').setValue (this.fontSizes[1]);
         this.chartForm.get ('valueOrientationCtrl').setValue (this.orientations[0]);
+        this.chartForm.get ('functionCtrl').setValue (this.functions[0]);
 
         this.values.formVariables = [];
       }
@@ -3938,6 +4028,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.chartForm.get ('fontSizeCtrl').setValue (this.fontSizes[1]);
       this.chartForm.get ('valueFontSizeCtrl').setValue (this.fontSizes[1]);
       this.chartForm.get ('valueOrientationCtrl').setValue (this.orientations[0]);
+      this.chartForm.get ('functionCtrl').setValue (this.functions[0]);
 
       this.values.formVariables = [];
     }
@@ -4150,6 +4241,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           this.chartForm.get ('fontSizeCtrl').enable ();
           this.chartForm.get ('valueFontSizeCtrl').enable ();
           this.chartForm.get ('valueOrientationCtrl').enable ();
+          this.chartForm.get ('functionCtrl').enable ();
 
           // only enable x axis if the chart type is not pie, donut or radar
           if (this.values.currentChartType.flags & ChartFlags.XYCHART)
@@ -4410,21 +4502,56 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.chartForm.get ('fontSizeCtrl').setValue (this.fontSizes[1]);
       this.chartForm.get ('valueFontSizeCtrl').setValue (this.fontSizes[1]);
       this.chartForm.get ('valueOrientationCtrl').setValue (this.orientations[0]);
+      this.chartForm.get ('functionCtrl').setValue (this.functions[0]);
 
       // set form variable settings if loaded from database
       if (this.values.function != null && this.values.function != -1)
       {
         this.values.formVariables = [];
-  
+
         for (let formVariable of this.values.lastestResponse)
         {
+          let columnIndex = 0;
+
+          for (let i = 0; i < this.values.chartColumnOptions.length; i++)
+          {
+            if (this.values.chartColumnOptions[i].item.id == formVariable.column)
+            {
+              columnIndex = i;
+              break;
+            }
+          }
+
           this.values.formVariables.push ({
             value: formVariable.value,
-            column: formVariable.column,
-            fontSize: formVariable.fontSize,
-            valueFontSize: formVariable.valueFontSize,
-            valueOrientation: formVariable.valueOrientation
+            column: this.values.chartColumnOptions[columnIndex],
+            fontSize: this.fontSizes[formVariable.fontSize],
+            valueFontSize: this.fontSizes[formVariable.valueFontSize],
+            valueOrientation: this.orientations[formVariable.valueOrientation],
+            function: this.functions[formVariable.function]
           });
+        }
+      }
+      else
+      {
+        // set the column for each value
+        if (this.values.formVariables.length)
+        {
+          for (let formVariable of this.values.formVariables)
+          {
+            let columnIndex = 0;
+
+            for (let i = 0; i < this.values.chartColumnOptions.length; i++)
+            {
+              if (this.values.chartColumnOptions[i].item.id == formVariable.column)
+              {
+                columnIndex = i;
+                break;
+              }
+            }
+
+            formVariable.column = this.values.chartColumnOptions[columnIndex];
+          }
         }
       }
 
@@ -4432,27 +4559,15 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       for (let formVariable of this.values.formVariables)
       {
-        let columnIndex = 0;
-
-        for (let i = 0; i < this.values.chartColumnOptions.length; i++)
-        {
-          if (this.values.chartColumnOptions[i].item.id == formVariable.column)
-          {
-            columnIndex = i;
-            break;
-          }
-        }
-
         this.values.lastestResponse.push ({
           value: formVariable.value,
-          column: this.values.chartColumnOptions[columnIndex].item,
-          fontSize: this.fontSizes[formVariable.fontSize],
-          valueFontSize: this.fontSizes[formVariable.valueFontSize],
-          valueOrientation: this.orientations[formVariable.valueOrientation]
+          column: formVariable.column.item,
+          fontSize: formVariable.fontSize,
+          valueFontSize: formVariable.valueFontSize,
+          valueOrientation: formVariable.valueOrientation,
+          function: formVariable.function
         });
       }
-
-      this.values.formVariables = this.values.lastestResponse;
     }
     else if (this.values.currentChartType.flags & ChartFlags.INFO)
     {
@@ -4708,7 +4823,8 @@ export class MsfDashboardPanelComponent implements OnInit {
               column: formVariable.column.item.id,
               fontSize: _this.fontSizes.indexOf (formVariable.fontSize),
               valueFontSize: _this.fontSizes.indexOf (formVariable.valueFontSize),
-              valueOrientation: _this.orientations.indexOf (formVariable.valueOrientation)
+              valueOrientation: _this.orientations.indexOf (formVariable.valueOrientation),
+              function: _this.functions.indexOf (formVariable.function)
             });
           }
 
@@ -5143,7 +5259,8 @@ export class MsfDashboardPanelComponent implements OnInit {
   isFormColumnValid(): boolean
   {
     return (this.chartForm.get ('columnCtrl').value && this.chartForm.get ('fontSizeCtrl').value
-      && this.chartForm.get ('valueFontSizeCtrl').value && this.chartForm.get ('valueOrientationCtrl').value);
+      && this.chartForm.get ('valueFontSizeCtrl').value && this.chartForm.get ('valueOrientationCtrl').value
+      && this.chartForm.get ('functionCtrl').value);
   }
 
   addColumnIntoForm(): void
@@ -5152,7 +5269,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       column: this.chartForm.get ('columnCtrl').value,
       fontSize:  this.chartForm.get ('fontSizeCtrl').value,
       valueFontSize: this.chartForm.get ('valueFontSizeCtrl').value,
-      valueOrientation: this.chartForm.get ('valueOrientationCtrl').value
+      valueOrientation: this.chartForm.get ('valueOrientationCtrl').value,
+      function: this.chartForm.get ('functionCtrl').value
     });
 
     // reset main column and font size values
@@ -5160,6 +5278,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.chartForm.get ('fontSizeCtrl').setValue (this.fontSizes[1]);
     this.chartForm.get ('valueFontSizeCtrl').setValue (this.fontSizes[1]);
     this.chartForm.get ('valueOrientationCtrl').setValue (this.orientations[0]);
+    this.chartForm.get ('functionCtrl').setValue (this.functions[0]);
     this.checkPanelConfiguration ();
   }
 
@@ -5800,6 +5919,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           this.values.function = values.function;
           this.values.intervalType = values.intervalType;
           this.values.intValue = values.intValue;
+          this.values.startAtZero =  values.startAtZero;
 
           this.checkChartType ();
         }
@@ -6360,5 +6480,13 @@ export class MsfDashboardPanelComponent implements OnInit {
   toggleIntervalTable(): void
   {
     this.advTableView = !this.advTableView;
+  }
+
+  isLineOrBarChart(): boolean
+  {
+    if (!(this.values.currentChartType.flags & ChartFlags.PIECHART) && !(this.values.currentChartType.flags & ChartFlags.FUNNELCHART))
+      return true;
+
+    return false;
   }
 }
