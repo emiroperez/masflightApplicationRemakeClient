@@ -2,7 +2,7 @@
   Home
 </button>
 <!-- <button mat-button [disabled]="true" class="msf-menu-op-1" style="padding: 0px  7px !important;">System Status</button> -->
-<button mat-button class="msf-menu-op-1"
+<button [disabled]="OptionDisable('System Status')" mat-button class="msf-menu-op-1"
     [matMenuTriggerFor]="dashboardMenu" style="padding: 0px 7px !important;">System Status</button>
     <mat-menu #dashboardMenu="matMenu">
       <ng-container *ngIf="!globals.readOnlyDashboardPlan">
@@ -10,7 +10,8 @@
               {{dashboard.title}}
           </button>
       </ng-container>
-      <button mat-menu-item *ngFor="let dashboard of sharedDashboards" (click)="goToDashboard(dashboard, true)">
+      <button mat-menu-item [disabled]="actionDisable('Create Dashboard')"
+      *ngFor="let dashboard of sharedDashboards" (click)="goToDashboard(dashboard, true)">
           {{dashboard.title}} (Read only)
       </button>
       <button mat-menu-item *ngIf="!globals.readOnlyDashboardPlan" (click)="addDashboard()" >Add dashboard</button>

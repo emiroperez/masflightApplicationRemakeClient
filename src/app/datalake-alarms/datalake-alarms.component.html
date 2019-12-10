@@ -1,9 +1,15 @@
 <div class="datalake-explorer-container">
   <div class="datalake-explorer-header">
-      <mat-form-field class="datalake-explorer-search-input-container">
+      <!-- <mat-form-field class="datalake-explorer-search-input-container">
           <input matInput class="datalake-explorer-search-input" type="text" placeholder="Search"
           [(ngModel)]="filter" (ngModelChange)="filterAlarm()" autocomplete="off" >
           <mat-icon class="search-icon" aria-label="search">search</mat-icon>
+      </mat-form-field> -->
+      <mat-form-field appearance="outline">
+          <mat-label>Search</mat-label>
+          <input matInput type="text"
+          [(ngModel)]="filter" (ngModelChange)="filterAlarm()" autocomplete="off" >
+          <mat-icon matPrefix aria-label="search">search</mat-icon>
       </mat-form-field>
       <div class="datalake-explorer-header-title">
         Alarms

@@ -8,10 +8,12 @@ import { Globals } from '../globals/Globals';
 import { DatalakeCreateTableComponent } from '../datalake-create-table/datalake-create-table.component';
 import { DatalakeTableCardComponent } from '../datalake-table-card/datalake-table-card.component';
 import { any } from '@amcharts/amcharts4/.internal/core/utils/Array';
+import {FormBuilder, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-datalake-explorer',
-  templateUrl: './datalake-explorer.component.html'
+  templateUrl: './datalake-explorer.component.html',
+  styleUrls: ['./datalake-explorer.css']
 })
 export class DatalakeExplorerComponent implements OnInit {
 
@@ -28,8 +30,7 @@ export class DatalakeExplorerComponent implements OnInit {
   tableCards: DatalakeTableCardValues[] = [];
   querymouseover: boolean = false;
 
-  constructor(public globals: Globals, private dialog: MatDialog,
-    private service: DatalakeService) { }
+  constructor(public globals: Globals, private dialog: MatDialog, private service: DatalakeService) { }
 
   ngOnInit()
   {

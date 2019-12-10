@@ -1,9 +1,14 @@
 <div class="datalake-explorer-container">
     <div class="datalake-explorer-header">
-        <mat-form-field *ngIf="globals.optionDatalakeSelected === 2" class="datalake-explorer-search-input-container">
-            <input matInput class="datalake-explorer-search-input" type="text" placeholder="Search" autocomplete="off"
+        <mat-form-field appearance="outline"
+        *ngIf="globals.optionDatalakeSelected === 2" >
+        <!-- class="datalake-explorer-search-input-container" -->
+        <mat-label>Search</mat-label>
+        <!--input class="datalake-explorer-search-input"  -->
+            <input [disabled]="OptionDisable('Datalake Explorer')" matInput type="text" autocomplete="off"
                 [(ngModel)]="filter" (ngModelChange)="filterTableCards()">
-            <mat-icon class="search-icon" aria-label="search">search</mat-icon>
+                <!--mat-icon class="search-icon"  -->
+            <mat-icon matPrefix aria-label="search">search</mat-icon>
         </mat-form-field>
         <div class="datalake-explorer-header-title">
             Datalake Explorer

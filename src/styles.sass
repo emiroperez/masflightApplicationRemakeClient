@@ -1394,7 +1394,17 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             background-color: $background-color
             .datalake-explorer-header
                 background-color: $datalake-explorer-background-color
-                .datalake-explorer-search-input
+                .mat-form-field-appearance-outline .mat-form-field-outline
+                    color: $datalake-search-input-border-color
+                .mat-form-field-appearance-outline .mat-form-field-outline-thick
+                    color: $primary-color !important
+                .mat-form-field-label
+                    color: $font-color
+                .mat-input-element[disabled] .mat-form-field-label
+                    color: $datalake-search-input-border-color !important
+                .mat-form-field.mat-focused .mat-form-field-label
+                    color: $primary-color !important
+                .datalake-explorer-search-input 
                     border-color: $datalake-search-input-border-color
                     caret-color: $font-color
                 .datalake-explorer-header-title
@@ -7650,7 +7660,9 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     height: 100%
     .datalake-explorer-header, .datalake-executionPart-header
         display: flex
-        height: 20px
+        // height: 20px
+        height: 40px
+        // align-items: center
         padding: 20px
         .datalake-executionPart-search-input-container
             padding-right: 50px
@@ -7684,9 +7696,10 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
             font-size: 1.5em
             font-weight: 500
             width: 100%
+            margin-left: 20px
         .datalake-explorer-buttons
             flex-direction: row-reverse
-            margin-top: -10px
+            // margin-top: -10px
             display: flex
             width: 50%
             .datalake-explorer-button , .datalake-explorer-button-selected
