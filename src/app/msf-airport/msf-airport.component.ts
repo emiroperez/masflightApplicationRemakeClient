@@ -33,28 +33,39 @@ export class MsfAirportComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
 
-data: Observable<any[]>;
-loading = false;
-constructor(private http: ApiClient, public globals: Globals) { }
+  data: Observable<any[]>;
+  loading = false;
+
+  selectionMode: number;
+  multiAirport: boolean;
+
+  constructor(private http: ApiClient, public globals: Globals) { }
 
 
-ngOnInit() { 
-  this.getRecords(null, this.handlerSuccess);
-}
+  ngOnInit()
+  {
+    if (this.argument.selectionMode & 7)
+      this.multiAirport = true;
 
-getBindLabel(){
-  if(this.getBindLabel()==null){
-    return "name";
+    this.selectionMode = this.argument.selectionMode & ~8;
+
+    this.getRecords(null, this.handlerSuccess);
   }
-  return this.getBindLabel();
-}
 
-getBindName(){
-  if(this.argument.selectedAttribute==null){
-    return "name";
+  getBindLabel(){
+    if(this.getBindLabel()==null)
+      return "name";
+
+    return this.getBindLabel();
   }
-  return this.argument.selectedAttribute;
-}
+
+  getBindName()
+  {
+    if(this.argument.selectedAttribute==null)
+      return "name";
+
+    return this.argument.selectedAttribute;
+  }
 
  getRecords(search, handlerSuccess){
   let url;

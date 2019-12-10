@@ -18,7 +18,8 @@ export class DialogArgumentPreviewComponent implements OnInit {
     this.argList = JSON.parse (JSON.stringify (data.arguments));
   }
 
-  ngOnInit() {
+  ngOnInit()
+  {
   }
 
   onNoClick(): void

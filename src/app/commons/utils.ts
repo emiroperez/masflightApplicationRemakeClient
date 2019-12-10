@@ -411,7 +411,18 @@ export class Utils{
         if(type == ComponentType.timeRange){
             return new DateTimeFormatPipe('en-US').transform(new Date("2000-01-01 " + value).getTime());
         }else if(type == ComponentType.dateRange || 
-            type == ComponentType.date){
+            type == ComponentType.date)
+        {
+            // make sure it is a date
+            let date = new Date (value);
+            if (Object.prototype.toString.call (date) === "[object Date]")
+            {
+              if (isNaN (date.getTime()))
+                return value;
+            }
+            else
+              return value;
+
             return new DateFormatPipe('en-US').transform(value);
         }else if(type == ComponentType.ceiling ||
              type == ComponentType.rounding || type ==  ComponentType.resultsLess || type ==  ComponentType.geography 

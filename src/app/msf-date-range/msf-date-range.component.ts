@@ -61,21 +61,23 @@ export class MsfDateRangeComponent implements OnInit {
   ngOnInit() {
     if (this.argument.value1)
     {
-      this.loadingDefaults = true;
+      setTimeout (() => {
+        this.loadingDefaults = true;
 
-      // auto select date range after loading the default value
-      for (let dateRange of this.dates)
-      {
-        if (dateRange.value === this.argument.value1)
+        // auto select date range after loading the default value
+        for (let dateRange of this.dates)
         {
-          this.argument.value1 = null;
-          this.argument.value3 = dateRange;
-          this.autoSelect ();
-          break;
+          if (dateRange.value === this.argument.value1)
+          {
+            this.argument.value1 = null;
+            this.argument.value3 = dateRange;
+            this.autoSelect ();
+            break;
+          }
         }
-      }
-
-      this.loadingDefaults = false;
+  
+        this.loadingDefaults = false;
+      }, 1);
     }
 
     this.minDate = this.argument.minDate;
