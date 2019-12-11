@@ -2,7 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { AdminArgumentsGroupComponent } from './admin-arguments-group.component';
 
 @Pipe({
-  name: 'filter'
+  name: 'groupFilter'
 })
 export class FilterPipeGroupArg implements PipeTransform {
   

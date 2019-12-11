@@ -31,13 +31,13 @@
                             </div>
                         </div>
                         <mat-form-field>
-                            <input matInput [(ngModel)]="searchText">
+                            <input autocomplete="off" matInput [(ngModel)]="searchText">
                             <mat-icon class="admin-arguments-search-icon" matSuffix>search</mat-icon>
                         </mat-form-field>
                         <div class="admin-arguments-category-left-panel-body">
                             <div class="admin-arguments-categories-container">
                                 <div class="category-arguments-scrollbar arguments-categories-list-container">
-                                    <div class="arguments-categories-list-item" *ngFor="let item of ArgumentsGroups | filter : searchText">
+                                    <div class="arguments-categories-list-item" *ngFor="let item of ArgumentsGroups | groupFilter: searchText">
                                         <div class="arguments-categories-list-item-label" [ngClass]="{ 'is-active': item.isSelected, 'is-inactive': !item.isSelected }">
                                             <div 
                                             class="arguments-categories-list-item-label-container" (click)="getSelectedOption(item)">
