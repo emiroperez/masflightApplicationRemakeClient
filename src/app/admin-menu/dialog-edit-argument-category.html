@@ -171,8 +171,8 @@
                 <ng-container *ngIf="isDateRange(item)">
                     <div class="arguments-child">                 
                         <mat-form-field [style.width.%]="100">
-                            <mat-select placeholder="Select Default Value" [(ngModel)]="item.value1">
-                                <mat-option *ngFor="let dateRange of dates" [value]="dateRange.value">
+                            <mat-select placeholder="Date Range" [(ngModel)]="item.value1">
+                                <mat-option *ngFor="let dateRange of item.currentDateRange" [value]="dateRange.value">
                                     {{dateRange.name}}
                                 </mat-option>
                             </mat-select>

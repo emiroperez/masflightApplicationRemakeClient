@@ -315,11 +315,60 @@ export class EditCategoryArgumentDialog {
   displayedColumns: string[] = ['label1', 'label2', 'name1', 'name2'];
 
   valueTypes: any[] = [
-    { id: 1, name: 'Full Date' },
-    { id: 2, name: 'Quarter' },
-    { id: 3, name: 'Month' },
-    { id: 4, name: 'Year' }
+    { id: 0, name: 'Full Date' },
+    { id: 1, name: 'Month' },
+    { id: 2, name: 'Year' }
   ];
+
+  //
+
+  dateValueByFullDate: any[] = [
+    {id: 0, name: 'Today',value:"TODAY"},
+    {id: 1, name: 'Yesterday',value:"YESTERDAY"},
+    {id: 2, name: 'Last Week',value:"LASTWEEK"},
+    {id: 3, name: 'Last Month',value:"LASTMONTH"},
+    {id: 4, name: 'Last Year',value:"LASTYEAR"}
+  ];
+
+  dateRangeByFullDate: any[] = [
+    {id: 0, name: 'Today',value:"TODAY"},
+    {id: 1, name: 'Yesterday',value:"YESTERDAY"},
+    {id: 2, name: 'Last Week',value:"LASTWEEK"},
+    {id: 3, name: 'Last Month',value:"LASTMONTH"},
+    {id: 4, name: 'Last Year',value:"LASTYEAR"},
+    {id: 5, name: 'Until Yesterday',value:"UNTILYESTERDAY"},
+    {id: 6, name: 'Until Last Week',value:"UNTILLASTWEEK"},
+    {id: 7, name: 'Until Last Month',value:"UNTILLASTMONTH"},
+    {id: 8, name: 'Until Last Year',value:"UNTILLASTYEAR"},
+    {id: 9, name: 'Until Today',value:"UNTILTODAY"}
+  ];
+
+  dateValueByMonth: any[] = [
+    {id: 0, name: 'Current Year',value:"CURRENTYEAR"},
+    {id: 1, name: 'Last Month',value:"LASTMONTH"},
+    {id: 2, name: 'Last Year',value:"LASTYEAR"}
+  ];
+
+  dateRangeByMonth: any[] = [
+    {id: 0, name: 'Current Year',value:"CURRENTYEAR"},
+    {id: 1, name: 'Last Month',value:"LASTMONTH"},
+    {id: 2, name: 'Last Year',value:"LASTYEAR"},
+    {id: 3, name: 'Until Last Month',value:"UNTILLASTMONTH"},
+    {id: 4, name: 'Until Last Year',value:"UNTILLASTYEAR"},
+  ];
+
+  dateValueByYear: any[] = [
+    {id: 0, name: 'Current Year',value:"CURRENTYEAR"},
+    {id: 1, name: 'Last Year',value:"LASTYEAR"}
+  ];
+
+  dateRangeByYear: any[] = [
+    {id: 0, name: 'Current Year',value:"CURRENTYEAR"},
+    {id: 1, name: 'Last Year',value:"LASTYEAR"},
+    {id: 2, name: 'Until Last Year',value:"UNTILLASTYEAR"}
+  ];
+
+  //
 
   dates: any[] = [
     {id: 1, name: 'Today',value:"TODAY"},
@@ -390,6 +439,16 @@ export class EditCategoryArgumentDialog {
 
         if (argument.value3)
           argument.value3 = JSON.parse (argument.value3);
+        else if (this.isDateRange (argument))
+        {
+          argument.value1 = "TODAY";
+          argument.value3 = 0;
+  
+          if (argument.selectionMode == 1)
+            argument.currentDateRange = this.dateRangeByFullDate;
+          else
+            argument.currentDateRange = this.dateValueByFullDate;
+        }
 
         // initialize if not set
         if (!argument.selectionMode)
