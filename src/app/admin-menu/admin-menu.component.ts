@@ -344,17 +344,19 @@ export class EditCategoryArgumentDialog {
   ];
 
   dateValueByMonth: any[] = [
-    {id: 0, name: 'Current Year',value:"CURRENTYEAR"},
-    {id: 1, name: 'Last Month',value:"LASTMONTH"},
-    {id: 2, name: 'Last Year',value:"LASTYEAR"}
+    {id: 0, name: 'Current Month',value:"CURRENTMONTH"},
+    {id: 1, name: 'Current Year',value:"CURRENTYEAR"},
+    {id: 2, name: 'Last Month',value:"LASTMONTH"},
+    {id: 3, name: 'Last Year',value:"LASTYEAR"}
   ];
 
   dateRangeByMonth: any[] = [
-    {id: 0, name: 'Current Year',value:"CURRENTYEAR"},
-    {id: 1, name: 'Last Month',value:"LASTMONTH"},
-    {id: 2, name: 'Last Year',value:"LASTYEAR"},
-    {id: 3, name: 'Until Last Month',value:"UNTILLASTMONTH"},
-    {id: 4, name: 'Until Last Year',value:"UNTILLASTYEAR"},
+    {id: 0, name: 'Current Month',value:"CURRENTMONTH"},
+    {id: 1, name: 'Current Year',value:"CURRENTYEAR"},
+    {id: 2, name: 'Last Month',value:"LASTMONTH"},
+    {id: 3, name: 'Last Year',value:"LASTYEAR"},
+    {id: 4, name: 'Until Last Month',value:"UNTILLASTMONTH"},
+    {id: 5, name: 'Until Last Year',value:"UNTILLASTYEAR"},
   ];
 
   dateValueByYear: any[] = [
@@ -505,6 +507,43 @@ export class EditCategoryArgumentDialog {
       item.name2 = null;
       item.value2 = null;
     }
+
+    switch (item.value3)
+    {
+      case 2:
+        if (item.selectionMode == 1)
+          item.currentDateRange = this.dateRangeByYear;
+        else
+          item.currentDateRange = this.dateValueByYear;
+
+        item.value1 = "CURRENTYEAR";
+        break;
+
+      case 1:
+        if (item.selectionMode == 1)
+          item.currentDateRange = this.dateRangeByMonth;
+        else
+          item.currentDateRange = this.dateValueByMonth;
+
+        item.value1 = "CURRENTMONTH";
+        break;
+
+      default:
+        if (item.selectionMode == 1)
+          item.currentDateRange = this.dateRangeByFullDate;
+        else
+          item.currentDateRange = this.dateValueByFullDate;
+
+        item.value1 = "TODAY";
+    }
+  }
+
+  getDateValueLabel(item): string
+  {
+    if (item.selectionMode == 1)
+      return "Date Range";
+
+    return "Date Value";
   }
 
   getTitleWidth(item): number
@@ -561,6 +600,38 @@ export class EditCategoryArgumentDialog {
       return 5;
 
     return 0;
+  }
+
+  valueTypeChanged(item): void
+  {
+    switch (item.value3)
+    {
+      case 2:
+        if (item.selectionMode == 1)
+          item.currentDateRange = this.dateRangeByYear;
+        else
+          item.currentDateRange = this.dateValueByYear;
+
+        item.value1 = "CURRENTYEAR";
+        break;
+
+      case 1:
+        if (item.selectionMode == 1)
+          item.currentDateRange = this.dateRangeByMonth;
+        else
+          item.currentDateRange = this.dateValueByMonth;
+
+        item.value1 = "CURRENTMONTH";
+        break;
+
+      default:
+        if (item.selectionMode == 1)
+          item.currentDateRange = this.dateRangeByFullDate;
+        else
+          item.currentDateRange = this.dateValueByFullDate;
+
+        item.value1 = "TODAY";
+    }
   }
 
   isDateArgument(argument: Arguments){

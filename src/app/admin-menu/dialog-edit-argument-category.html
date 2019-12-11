@@ -52,7 +52,7 @@
                 </div>
                 <div *ngIf="isDateRange(item)" class="dialog-edit-argument-category-multiple-selection">
                     <mat-form-field [style.width.%]="100">
-                        <mat-select placeholder="Value Type" [(ngModel)]="item.value3">
+                        <mat-select placeholder="Value Type" [(ngModel)]="item.value3" (ngModelChange)="valueTypeChanged(item)">
                             <mat-option *ngFor="let valueType of valueTypes" [value]="valueType.id">
                                 {{valueType.name}}
                             </mat-option>
@@ -171,7 +171,7 @@
                 <ng-container *ngIf="isDateRange(item)">
                     <div class="arguments-child">                 
                         <mat-form-field [style.width.%]="100">
-                            <mat-select placeholder="Date Range" [(ngModel)]="item.value1">
+                            <mat-select placeholder="{{getDateValueLabel(item)}}" [(ngModel)]="item.value1">
                                 <mat-option *ngFor="let dateRange of item.currentDateRange" [value]="dateRange.value">
                                     {{dateRange.name}}
                                 </mat-option>
