@@ -147,73 +147,104 @@ export class MsfDateRangeComponent implements OnInit {
     this.minDate = this.argument.minDate;
   }
 
-  dateChange(event){      
-      if(!this.argument.value2){
-        this.argument.value2 = this.argument.value1;
-      }
+  dateChange(event): void
+  {
+    if (!this.argument.value2 && this.argument.selectionMode == 1)
+      this.argument.value2 = this.argument.value1;
 
-      this.minDate = this.argument.value1;
+    this.minDate = this.argument.value1;
   }
 
-  hasDate(){
-
+  hasDate(): void
+  {
   }
 
-  validateDate(){
-      if(this.argument.value1){
-        this.argument.value1 = new DatePipe('en-US').transform(this.argument.value1, 'MM/dd/yyyy');
-      }    
+  validateDate(): void
+  {
+    if (this.argument.value1)
+      this.argument.value1 = new DatePipe ('en-US').transform (this.argument.value1, 'MM/dd/yyyy');   
   }
 
-  autoSelect(){
+  autoSelect(): void
+  {
     var option = this.argument.value3;
-    if(option!=null){
+
+    if (option != null)
       option = option.value;
+
+    if (this.argument.selectionMode == 1)
+    {
+      switch (option)
+      {
+        case 'TODAY':
+          this.calculateDateRange ('Today', option);
+          break;
+
+        case 'YESTERDAY':
+          this.calculateDateRange ('Yesterday', option);
+          break;
+
+        case 'LASTWEEK':
+          this.calculateDateRange ('Last Week', option);
+          break;
+
+        case 'LASTMONTH':
+          this.calculateDateRange ('Last Month', option);
+          break;
+
+        case 'LASTYEAR':
+          this.calculateDateRange ('Last Year', option);
+          break;
+
+        case 'UNTILYESTERDAY':
+          this.calculateDateRange2 ('Until Yesterday', option);
+          break;
+
+        case 'UNTILLASTWEEK':
+          this.calculateDateRange2 ('Until Last Week', option);
+          break;
+
+        case 'UNTILLASTMONTH':
+          this.calculateDateRange2 ('Until Last Month', option);
+          break;
+
+        case 'UNTILLASTYEAR':
+          this.calculateDateRange2 ('Until Last Year', option);
+          break;
+
+        case 'UNTILTODAY':
+          this.calculateDateRange2 ('Until Today', option);
+          break;
+      }
     }
-    switch (option) {
-      case 'TODAY':
-        this.calculateDate ('Today', option);
-        break;
-
-      case 'YESTERDAY':
-        this.calculateDate ('Yesterday', option);
-        break;
-
-      case 'LASTWEEK':
-        this.calculateDate ('Last Week', option);
-        break;
-
-      case 'LASTMONTH':
-        this.calculateDate ('Last Month', option);
-        break;
-
-      case 'LASTYEAR':
-        this.calculateDate ('Last Year', option);
-        break;
-
-      case 'UNTILYESTERDAY':
-        this.calculateDate2 ('Until Yesterday', option);
-        break;
-
-      case 'UNTILLASTWEEK':
-        this.calculateDate2 ('Until Last Week', option);
-        break;
-
-      case 'UNTILLASTMONTH':
-        this.calculateDate2 ('Until Last Month', option);
-        break;
-
-      case 'UNTILLASTYEAR':
-        this.calculateDate2 ('Until Last Year', option);
-        break;
-
-      case 'UNTILTODAY':
-        this.calculateDate2 ('Until Today', option);
-        break;
+    else
+    {
+      switch (option)
+      {
+        case 'TODAY':
+          this.argument.value1 = new Date (new Date ().getTime ());
+          break;
+  
+        case 'YESTERDAY':
+          this.argument.value1 = new Date (new Date ().getTime () - (24 * 60 * 60 * 1000));
+          break;
+  
+        case 'LASTWEEK':
+          this.argument.value1 = moment ().day (1).subtract (2, "days").day (1).toDate ();
+          break;
+  
+        case 'LASTMONTH':
+          this.argument.value1 = moment ().subtract (1, "months").startOf ("month").toDate ();
+          break;
+  
+        case 'LASTYEAR':
+          this.argument.value1 = moment ().subtract (1, "years").startOf ("year").toDate ();
+          break;   
+      }
     }
   }
 
-  calculateDate(type: string, option: string): void
+  calculateDateRange(type: string, option: string): void
   {
     let today = new Date ();
     let maximunDateMessage = "the maximun date of the option is ";
@@ -255,7 +286,7 @@ export class MsfDateRangeComponent implements OnInit {
     this.openDialog ("The date range changed to " + type + ", " + maximunDateMessage);
   }
 
-  calculateDate2 (type: string, option: string): void
+  calculateDateRange2(type: string, option: string): void
   {
     let maximunDateMessage = "";
     let newDate;
