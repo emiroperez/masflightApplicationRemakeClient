@@ -19,6 +19,7 @@ import { Arguments } from '../model/Arguments';
 import { Moment } from 'moment';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { AirportSelection } from '../commons/AirportSelection';
 //import  clonedeep from 'lodash.clonedeep';
 
 @Component({
@@ -455,10 +456,10 @@ export class EditCategoryArgumentDialog {
         // initialize if not set
         if (!argument.selectionMode)
           argument.selectionMode = 0;
-        else if (argument.selectionMode > 4)
+        else if (this.isAirport (argument) && argument.selectionMode & AirportSelection.MULTIPLESELECTION)
         {
           // this is for airport multiple selection
-          argument.selectionMode &= ~8;
+          argument.selectionMode &= ~AirportSelection.MULTIPLESELECTION;
           argument.multipleSelection = true;
         }
 
@@ -484,13 +485,13 @@ export class EditCategoryArgumentDialog {
 
   clearAirportArgument(item): void
   {
-    if (item.selectionMode <= 1)
+    if (item.selectionMode < AirportSelection.ROUTEWITHCONNECTION)
     {
       item.label3 = null;
       item.name3 = null;
       item.value3 = null;
 
-      if (!item.selectionMode)
+      if (item.selectionMode == AirportSelection.SINGLE)
       {
         item.label2 = null;
         item.name2 = null;
@@ -564,7 +565,7 @@ export class EditCategoryArgumentDialog {
 
   getAirportArgumentWidth(item): number
   {
-    if (item.selectionMode == 2)
+    if (item.selectionMode == AirportSelection.ROUTEWITHCONNECTION)
       return 30;
 
     return 45;
@@ -572,7 +573,7 @@ export class EditCategoryArgumentDialog {
 
   get1stAirportArgumentMargin(item): number
   {
-    if (item.selectionMode == 2)
+    if (item.selectionMode == AirportSelection.ROUTEWITHCONNECTION)
       return 1;
 
     return 5;
@@ -580,7 +581,7 @@ export class EditCategoryArgumentDialog {
 
   get2ndAirportArgumentMargin(item): number
   {
-    if (item.selectionMode == 2)
+    if (item.selectionMode == AirportSelection.ROUTEWITHCONNECTION)
       return 1;
 
     return 0;
@@ -2005,7 +2006,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
           // Use a special flag value for airport selection in order for multiple selection
           if (argument.multipleSelection)
-            argument.selectionMode |= 8;
+            argument.selectionMode |= AirportSelection.MULTIPLESELECTION;
 
           if (argument.minDate)
             argument.minDate = argument.minDate.toString ();

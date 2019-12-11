@@ -27,7 +27,7 @@
         </ng-select>
     </div>
 </div>
-<ng-container *ngIf="selectionMode >= 1">
+<ng-container *ngIf="isRoute()">
     <div class="msf-airline-container">
         <div class="msf-full-width msf-grouping-input-container">
             <div class="msf-component-airport-sub-title">{{argument.label2}}</div>
@@ -54,7 +54,7 @@
         </div>
     </div>
 </ng-container>
-<ng-container *ngIf="selectionMode == 2">
+<ng-container *ngIf="isRouteWithConnection()">
     <div class="msf-airline-container">
         <div class="msf-full-width msf-grouping-input-container">
             <div class="msf-component-airport-sub-title">{{argument.label3}}</div>

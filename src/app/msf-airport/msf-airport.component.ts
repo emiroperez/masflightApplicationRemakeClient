@@ -10,6 +10,7 @@ import { MatSelect, VERSION } from '@angular/material';
 import { take, takeUntil, delay } from 'rxjs/operators';
 import { ApiClient } from '../api/api-client';
 import { Globals } from '../globals/Globals';
+import { AirportSelection } from '../commons/AirportSelection';
 
 interface Bank {
   id: string;
@@ -44,10 +45,10 @@ export class MsfAirportComponent implements OnInit {
 
   ngOnInit()
   {
-    if (this.argument.selectionMode & 7)
+    if (this.argument.selectionMode & AirportSelection.MULTIPLESELECTION)
       this.multiAirport = true;
 
-    this.selectionMode = this.argument.selectionMode & ~8;
+    this.selectionMode = this.argument.selectionMode & ~AirportSelection.MULTIPLESELECTION;
 
     this.getRecords(null, this.handlerSuccess);
   }
@@ -99,5 +100,15 @@ onSearch($event: any){
     this.getRecords($event.term, this.handlerSuccess);
   }
 }
+
+  isRoute()
+  {
+    return this.selectionMode >= AirportSelection.ROUTE;
+  }
+
+  isRouteWithConnection()
+  {
+    return this.selectionMode >= AirportSelection.ROUTEWITHCONNECTION;
+  }
 
 }

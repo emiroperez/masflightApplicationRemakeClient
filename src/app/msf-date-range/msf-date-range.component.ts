@@ -44,6 +44,7 @@ export class MsfDateRangeComponent implements OnInit {
   minDate: Date;
 
   currentDateRange: any[] = [];
+  currentValueType: number = 0;
 
   dateValueByFullDate: any[] = [
     {id: 0, name: 'Today',value:"TODAY"},
@@ -99,7 +100,9 @@ export class MsfDateRangeComponent implements OnInit {
 
   ngOnInit()
   {
-    switch (this.argument.value3)
+    this.currentValueType = this.argument.value3;
+
+    switch (this.currentValueType)
     {
       case 2:
         if (this.argument.selectionMode == 1)
