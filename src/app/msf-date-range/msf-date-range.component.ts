@@ -42,30 +42,94 @@ export class MsfDateRangeComponent implements OnInit {
 
   loadingDefaults: boolean = false;
   minDate: Date;
-  autoSelectDate;
-  dates: any[] = [
-    {id: 1, name: 'Today',value:"TODAY"},
-    {id: 2, name: 'Yesterday',value:"YESTERDAY"},
-    {id: 3, name: 'Last Week',value:"LASTWEEK"},
-    {id: 4, name: 'Last Month',value:"LASTMONTH"},
-    {id: 5, name: 'Last Year',value:"LASTYEAR"},
-    {id: 6, name: 'Until Yesterday',value:"UNTILYESTERDAY"},
-    {id: 7, name: 'Until Last Week',value:"UNTILLASTWEEK"},
-    {id: 8, name: 'Until Last Month',value:"UNTILLASTMONTH"},
-    {id: 9, name: 'Until Last Year',value:"UNTILLASTYEAR"},
-    {id: 10, name: 'Until Today',value:"UNTILTODAY"}
+
+  currentDateRange: any[] = [];
+
+  dateValueByFullDate: any[] = [
+    {id: 0, name: 'Today',value:"TODAY"},
+    {id: 1, name: 'Yesterday',value:"YESTERDAY"},
+    {id: 2, name: 'Last Week',value:"LASTWEEK"},
+    {id: 3, name: 'Last Month',value:"LASTMONTH"},
+    {id: 4, name: 'Last Year',value:"LASTYEAR"}
   ];
+
+  dateRangeByFullDate: any[] = [
+    {id: 0, name: 'Today',value:"TODAY"},
+    {id: 1, name: 'Yesterday',value:"YESTERDAY"},
+    {id: 2, name: 'Last Week',value:"LASTWEEK"},
+    {id: 3, name: 'Last Month',value:"LASTMONTH"},
+    {id: 4, name: 'Last Year',value:"LASTYEAR"},
+    {id: 5, name: 'Until Yesterday',value:"UNTILYESTERDAY"},
+    {id: 6, name: 'Until Last Week',value:"UNTILLASTWEEK"},
+    {id: 7, name: 'Until Last Month',value:"UNTILLASTMONTH"},
+    {id: 8, name: 'Until Last Year',value:"UNTILLASTYEAR"},
+    {id: 9, name: 'Until Today',value:"UNTILTODAY"}
+  ];
+
+  dateValueByMonth: any[] = [
+    {id: 0, name: 'Current Month',value:"CURRENTMONTH"},
+    {id: 1, name: 'Current Year',value:"CURRENTYEAR"},
+    {id: 2, name: 'Last Month',value:"LASTMONTH"},
+    {id: 3, name: 'Last Year',value:"LASTYEAR"}
+  ];
+
+  dateRangeByMonth: any[] = [
+    {id: 0, name: 'Current Month',value:"CURRENTMONTH"},
+    {id: 1, name: 'Current Year',value:"CURRENTYEAR"},
+    {id: 2, name: 'Last Month',value:"LASTMONTH"},
+    {id: 3, name: 'Last Year',value:"LASTYEAR"},
+    {id: 4, name: 'Until Last Month',value:"UNTILLASTMONTH"},
+    {id: 5, name: 'Until Last Year',value:"UNTILLASTYEAR"},
+  ];
+
+  dateValueByYear: any[] = [
+    {id: 0, name: 'Current Year',value:"CURRENTYEAR"},
+    {id: 1, name: 'Last Year',value:"LASTYEAR"}
+  ];
+
+  dateRangeByYear: any[] = [
+    {id: 0, name: 'Current Year',value:"CURRENTYEAR"},
+    {id: 1, name: 'Last Year',value:"LASTYEAR"},
+    {id: 2, name: 'Until Last Year',value:"UNTILLASTYEAR"}
+  ];
+
+  autoSelectDate;
 
   constructor(public globals: Globals,public dialog: MatDialog) { }
 
-  ngOnInit() {
+  ngOnInit()
+  {
+    switch (this.argument.value3)
+    {
+      case 2:
+        if (this.argument.selectionMode == 1)
+          this.currentDateRange = this.dateRangeByYear;
+        else
+          this.currentDateRange = this.dateValueByYear;
+        break;
+
+      case 1:
+        if (this.argument.selectionMode == 1)
+          this.currentDateRange = this.dateRangeByMonth;
+        else
+          this.currentDateRange = this.dateValueByMonth;
+        break;
+
+      default:
+        if (this.argument.selectionMode == 1)
+          this.currentDateRange = this.dateRangeByFullDate;
+        else
+          this.currentDateRange = this.dateValueByFullDate;
+        break;
+    }
+
     if (this.argument.value1)
     {
       setTimeout (() => {
         this.loadingDefaults = true;
 
         // auto select date range after loading the default value
-        for (let dateRange of this.dates)
+        for (let dateRange of this.currentDateRange)
         {
           if (dateRange.value === this.argument.value1)
           {
