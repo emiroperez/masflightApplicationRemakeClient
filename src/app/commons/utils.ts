@@ -8,6 +8,7 @@ import { Constants } from "./Constants ";
 import { DatePipe } from "@angular/common";
 import { componentNeedsResolution } from "@angular/core/src/metadata/resource_loading";
 import { ComponentFactory } from '@angular/core/src/render3';
+import * as moment from 'moment';
 
 export class Utils{
 
@@ -431,7 +432,14 @@ export class Utils{
                 return value;
             }
             else
-              return value;
+            {
+              let momentValue = moment (value, "YYYY-MM-DDTHH:mm:ssZ");
+
+              if (!momentValue.isValid ())
+                return value;
+
+              return new DateFormatPipe ('en-US').transform (momentValue.toDate ());
+            }
 
             return new DateFormatPipe ('en-US').transform (value);
         }else if(type == ComponentType.ceiling ||
