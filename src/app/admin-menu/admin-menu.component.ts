@@ -522,6 +522,7 @@ export class EditCategoryArgumentDialog {
       item.label2 = null;
       item.name2 = null;
       item.value2 = null;
+      item.name4 = null;
     }
 
     switch (item.value3)
@@ -638,6 +639,8 @@ export class EditCategoryArgumentDialog {
           item.currentDateRange = this.dateValueByYear;
 
         item.value1 = "CURRENTYEAR";
+        item.name3 = null;
+        item.name4 = null;
         break;
 
       case 2:
@@ -665,6 +668,8 @@ export class EditCategoryArgumentDialog {
           item.currentDateRange = this.dateValueByFullDate;
 
         item.value1 = "TODAY";
+        item.name3 = null;
+        item.name4 = null;
     }
   }
 
