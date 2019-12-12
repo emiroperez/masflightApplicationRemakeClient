@@ -1,13 +1,16 @@
-import { Component, OnInit, Input, Injectable, ChangeDetectorRef } from '@angular/core';
-import { Arguments } from '../model/Arguments';
-import { DateAdapter, MAT_DATE_FORMATS, MatDialog, MAT_DATE_LOCALE } from '@angular/material';
-import { AppDateAdapter, APP_DATE_FORMATS } from '../commons/date.adapters';
+import { Component, OnInit, Input, ChangeDetectionStrategy, OnDestroy, Inject, ChangeDetectorRef } from '@angular/core';
+import { DateAdapter, MAT_DATE_FORMATS, MatDialog, MAT_DATE_LOCALE, MatDatepicker, MatCalendar } from '@angular/material';
 import { DatePipe } from '@angular/common';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
+
+import { Arguments } from '../model/Arguments';
 import { Globals } from '../globals/Globals';
 import { MessageComponent } from '../message/message.component';
-import { MomentDateAdapter } from '@angular/material-moment-adapter';
+
 import * as _moment from 'moment';
 import { default as _rollupMoment, Moment } from 'moment';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 const moment = _rollupMoment || _moment;
 
@@ -24,9 +27,85 @@ export const US_DATE_FORMAT = {
 };
 
 @Component({
+  selector: 'month-header',
+  templateUrl: './custom-date-header.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class MonthHeader<D> implements OnDestroy {
+  private _destroyed = new Subject<void> ();
+
+  constructor(
+      private _calendar: MatCalendar<D>, private _dateAdapter: DateAdapter<D>,
+      public changeDetectorRef: ChangeDetectorRef)
+  {
+    _calendar.stateChanges.pipe (takeUntil (this._destroyed)).subscribe (() =>
+      changeDetectorRef.markForCheck ());
+  }
+
+  ngOnDestroy()
+  {
+    this._destroyed.next ();
+    this._destroyed.complete ();
+  }
+
+  get periodLabel()
+  {
+    return this._dateAdapter.getYearName (this._calendar.activeDate);
+  }
+
+  previousClicked()
+  {
+    this._calendar.activeDate = this._dateAdapter.addCalendarYears (this._calendar.activeDate, -1);
+  }
+
+  nextClicked(): void
+  {
+    this._calendar.activeDate = this._dateAdapter.addCalendarYears (this._calendar.activeDate, 1);
+  }
+}
+
+@Component({
+  selector: 'year-header',
+  templateUrl: './custom-date-header.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class YearHeader<D> implements OnDestroy {
+  private _destroyed = new Subject<void> ();
+
+  constructor(
+      private _calendar: MatCalendar<D>, private _dateAdapter: DateAdapter<D>,
+      public changeDetectorRef: ChangeDetectorRef)
+  {
+    _calendar.stateChanges.pipe (takeUntil (this._destroyed)).subscribe (() =>
+      changeDetectorRef.markForCheck ());
+  }
+
+  ngOnDestroy()
+  {
+    this._destroyed.next ();
+    this._destroyed.complete ();
+  }
+
+  get periodLabel()
+  {
+    let activeYear = Math.trunc (parseInt (this._dateAdapter.getYearName (this._calendar.activeDate)) / 24) * 24;
+    return activeYear + " - " + (activeYear + 23);
+  }
+
+  previousClicked()
+  {
+    this._calendar.activeDate = this._dateAdapter.addCalendarYears (this._calendar.activeDate, -23);
+  }
+
+  nextClicked(): void
+  {
+    this._calendar.activeDate = this._dateAdapter.addCalendarYears (this._calendar.activeDate, 23);
+  }
+}
+
+@Component({
   selector: 'app-msf-date-range',
   templateUrl: './msf-date-range.component.html',
-  styleUrls: ['./msf-date-range.component.css'],
   providers: [
     {
         provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]
@@ -43,58 +122,93 @@ export class MsfDateRangeComponent implements OnInit {
   loadingDefaults: boolean = false;
   minDate: Date;
 
+  calendarHeader: any = MonthHeader;
   currentDateRange: any[] = [];
   currentValueType: number = 0;
 
   dateValueByFullDate: any[] = [
-    {id: 0, name: 'Today',value:"TODAY"},
-    {id: 1, name: 'Yesterday',value:"YESTERDAY"},
-    {id: 2, name: 'Last Week',value:"LASTWEEK"},
-    {id: 3, name: 'Last Month',value:"LASTMONTH"},
-    {id: 4, name: 'Last Year',value:"LASTYEAR"}
+    {id: 0, name: 'Today', value: "TODAY"},
+    {id: 1, name: 'Yesterday', value: "YESTERDAY"},
+    {id: 2, name: 'Last Week', value: "LASTWEEK"},
+    {id: 3, name: 'Last Month', value: "LASTMONTH"},
+    {id: 4, name: 'Last Year', value: "LASTYEAR"}
   ];
 
   dateRangeByFullDate: any[] = [
-    {id: 0, name: 'Today',value:"TODAY"},
-    {id: 1, name: 'Yesterday',value:"YESTERDAY"},
-    {id: 2, name: 'Last Week',value:"LASTWEEK"},
-    {id: 3, name: 'Last Month',value:"LASTMONTH"},
-    {id: 4, name: 'Last Year',value:"LASTYEAR"},
-    {id: 5, name: 'Until Yesterday',value:"UNTILYESTERDAY"},
-    {id: 6, name: 'Until Last Week',value:"UNTILLASTWEEK"},
-    {id: 7, name: 'Until Last Month',value:"UNTILLASTMONTH"},
-    {id: 8, name: 'Until Last Year',value:"UNTILLASTYEAR"},
-    {id: 9, name: 'Until Today',value:"UNTILTODAY"}
+    {id: 0, name: 'Today', value: "TODAY"},
+    {id: 1, name: 'Yesterday', value: "YESTERDAY"},
+    {id: 2, name: 'Last Week', value: "LASTWEEK"},
+    {id: 3, name: 'Last Month', value: "LASTMONTH"},
+    {id: 4, name: 'Last Year', value: "LASTYEAR"},
+    {id: 5, name: 'Until Yesterday', value: "UNTILYESTERDAY"},
+    {id: 6, name: 'Until Last Week', value: "UNTILLASTWEEK"},
+    {id: 7, name: 'Until Last Month', value: "UNTILLASTMONTH"},
+    {id: 8, name: 'Until Last Year', value: "UNTILLASTYEAR"},
+    {id: 9, name: 'Until Today', value: "UNTILTODAY"}
   ];
 
   dateValueByMonth: any[] = [
-    {id: 0, name: 'Current Month',value:"CURRENTMONTH"},
-    {id: 1, name: 'Current Year',value:"CURRENTYEAR"},
-    {id: 2, name: 'Last Month',value:"LASTMONTH"},
-    {id: 3, name: 'Last Year',value:"LASTYEAR"}
+    {id: 0, name: 'Current Month', value: "CURRENTMONTH"},
+    {id: 1, name: 'Current Year', value: "CURRENTYEAR"},
+    {id: 2, name: 'Last Month', value: "LASTMONTH"},
+    {id: 3, name: 'Last Year', value: "LASTYEAR"}
   ];
 
   dateRangeByMonth: any[] = [
-    {id: 0, name: 'Current Month',value:"CURRENTMONTH"},
-    {id: 1, name: 'Current Year',value:"CURRENTYEAR"},
-    {id: 2, name: 'Last Month',value:"LASTMONTH"},
-    {id: 3, name: 'Last Year',value:"LASTYEAR"},
-    {id: 4, name: 'Until Last Month',value:"UNTILLASTMONTH"},
-    {id: 5, name: 'Until Last Year',value:"UNTILLASTYEAR"},
+    {id: 0, name: 'Current Month', value: "CURRENTMONTH"},
+    {id: 1, name: 'Current Year', value :"CURRENTYEAR"},
+    {id: 2, name: 'Last Month', value: "LASTMONTH"},
+    {id: 3, name: 'Last Year', value: "LASTYEAR"},
+    {id: 4, name: 'Until Last Month', value: "UNTILLASTMONTH"},
+    {id: 5, name: 'Until Last Year', value: "UNTILLASTYEAR"},
+  ];
+
+  dateValueByQuarter: any[] = [
+    {id: 0, name: 'Current Quarter', value: "CURRENTQUARTER"},
+    {id: 1, name: 'Current Year', value: "CURRENTYEAR"},
+    {id: 2, name: 'Last Quarter', value: "LASTQUARTER"},
+    {id: 3, name: 'Last Year', value: "LASTYEAR"}
+  ];
+
+  dateRangeByQuarter: any[] = [
+    {id: 0, name: 'Current Quarter', value: "CURRENTQUARTER"},
+    {id: 1, name: 'Current Year', value :"CURRENTYEAR"},
+    {id: 2, name: 'Last Quarter', value: "LASTQUARTER"},
+    {id: 3, name: 'Last Year', value: "LASTYEAR"},
+    {id: 4, name: 'Until Last Quarter', value: "UNTILLASTQUARTER"},
+    {id: 5, name: 'Until Last Year', value: "UNTILLASTYEAR"},
   ];
 
   dateValueByYear: any[] = [
-    {id: 0, name: 'Current Year',value:"CURRENTYEAR"},
-    {id: 1, name: 'Last Year',value:"LASTYEAR"}
+    {id: 0, name: 'Current Year', value: "CURRENTYEAR"},
+    {id: 1, name: 'Last Year', value: "LASTYEAR"}
   ];
 
   dateRangeByYear: any[] = [
-    {id: 0, name: 'Current Year',value:"CURRENTYEAR"},
-    {id: 1, name: 'Last Year',value:"LASTYEAR"},
-    {id: 2, name: 'Until Last Year',value:"UNTILLASTYEAR"}
+    {id: 0, name: 'Current Year', value: "CURRENTYEAR"},
+    {id: 1, name: 'Last Year', value: "LASTYEAR"},
+    {id: 2, name: 'Until Last Year', value: "UNTILLASTYEAR"}
   ];
 
+  quarters: any[] = [
+    {id: 1, name: '1st Quarter', value: "1"},
+    {id: 2, name: '2nd Quarter', value: "2"},
+    {id: 3, name: '3rd Quarter', value: "3"},
+    {id: 4, name: '4th Quarter', value: "4"}
+  ];
+
+  monthNames: string[] =
+  [
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+  ];
+
+  dateRange: any = null;
+  dateStartView: string = "month";
+  valueType: string = "fullDate";
   autoSelectDate;
+
+  value1Display: any;
+  value2Display: any;
 
   constructor(public globals: Globals,public dialog: MatDialog) { }
 
@@ -104,14 +218,32 @@ export class MsfDateRangeComponent implements OnInit {
 
     switch (this.currentValueType)
     {
-      case 2:
+      case 3:
+        this.calendarHeader = YearHeader;
+        this.dateStartView = "multi-year";
+        this.valueType = "year";
+
         if (this.argument.selectionMode == 1)
           this.currentDateRange = this.dateRangeByYear;
         else
           this.currentDateRange = this.dateValueByYear;
         break;
 
+      case 2:
+        this.calendarHeader = YearHeader;
+        this.dateStartView = "multi-year";
+        this.valueType = "quarter";
+
+        if (this.argument.selectionMode == 1)
+          this.currentDateRange = this.dateRangeByQuarter;
+        else
+          this.currentDateRange = this.dateValueByQuarter;
+        break;
+
       case 1:
+        this.dateStartView = "year";
+        this.valueType = "month";
+
         if (this.argument.selectionMode == 1)
           this.currentDateRange = this.dateRangeByMonth;
         else
@@ -137,13 +269,30 @@ export class MsfDateRangeComponent implements OnInit {
           if (dateRange.value === this.argument.value1)
           {
             this.argument.value1 = null;
-            this.argument.value3 = dateRange;
+            this.dateRange = dateRange;
             this.autoSelect ();
+
+            if (this.currentValueType == 2)
+            {
+              // TODO: Set proper quarter depending of date range
+              this.argument.value3 = this.quarters[0];
+              this.argument.value4 = this.quarters[3];
+            }
             break;
           }
         }
   
         this.loadingDefaults = false;
+      }, 1);
+    }
+    else
+    {
+      setTimeout (() => {
+        if (this.currentValueType == 2)
+        {
+          this.argument.value3 = this.quarters[0];
+          this.argument.value4 = this.quarters[3];
+        }
       }, 1);
     }
 
@@ -158,10 +307,6 @@ export class MsfDateRangeComponent implements OnInit {
     this.minDate = this.argument.value1;
   }
 
-  hasDate(): void
-  {
-  }
-
   validateDate(): void
   {
     if (this.argument.value1)
@@ -170,7 +315,7 @@ export class MsfDateRangeComponent implements OnInit {
 
   autoSelect(): void
   {
-    var option = this.argument.value3;
+    var option = this.dateRange;
 
     if (option != null)
       option = option.value;
@@ -330,7 +475,7 @@ export class MsfDateRangeComponent implements OnInit {
       }
       else
       {
-        this.argument.value3 = null;
+        this.dateRange = null;
         this.openDialog ("The final date can't be less than the initial date");
         return;
       }
@@ -376,4 +521,45 @@ export class MsfDateRangeComponent implements OnInit {
     }
   }
 
+  chosenYearHandler1(normalizedYear: Moment, datepicker: MatDatepicker<Moment>)
+  {
+    if (this.valueType !== "year")
+      return;
+
+    this.argument.value1 = normalizedYear.year ();
+    this.value1Display = normalizedYear.year ();
+    datepicker.close ();
+  }
+
+  chosenYearHandler2(normalizedYear: Moment, datepicker: MatDatepicker<Moment>)
+  {
+    if (this.valueType !== "year")
+      return;
+
+    this.argument.value2 = normalizedYear.year ();
+    this.value2Display = normalizedYear.year ();
+    datepicker.close ();
+  }
+
+  chosenMonthHandler1(normalizedYear: Moment, datepicker: MatDatepicker<Moment>)
+  {
+    if (this.valueType === "fullDate")
+      return;
+
+    this.argument.value1 = normalizedYear.year ();
+    this.argument.value3 = normalizedYear.month ();
+    this.value1Display = this.monthNames[normalizedYear.month ()] + "/" + normalizedYear.year ();
+    datepicker.close();
+  }
+
+  chosenMonthHandler2(normalizedYear: Moment, datepicker: MatDatepicker<Moment>)
+  {
+    if (this.valueType === "fullDate")
+      return;
+
+    this.argument.value2 = normalizedYear.year ();
+    this.argument.value4 = normalizedYear.month ();
+    this.value2Display = this.monthNames[normalizedYear.month ()] + "/" + normalizedYear.year ();
+    datepicker.close();
+  }
 }

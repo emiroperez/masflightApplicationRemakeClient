@@ -318,57 +318,74 @@ export class EditCategoryArgumentDialog {
   valueTypes: any[] = [
     { id: 0, name: 'Full Date' },
     { id: 1, name: 'Month' },
-    { id: 2, name: 'Year' }
+    { id: 2, name: 'Quarter' },
+    { id: 3, name: 'Year' }
   ];
 
   //
 
   dateValueByFullDate: any[] = [
-    {id: 0, name: 'Today',value:"TODAY"},
-    {id: 1, name: 'Yesterday',value:"YESTERDAY"},
-    {id: 2, name: 'Last Week',value:"LASTWEEK"},
-    {id: 3, name: 'Last Month',value:"LASTMONTH"},
-    {id: 4, name: 'Last Year',value:"LASTYEAR"}
+    {id: 0, name: 'Today', value: "TODAY"},
+    {id: 1, name: 'Yesterday', value: "YESTERDAY"},
+    {id: 2, name: 'Last Week', value: "LASTWEEK"},
+    {id: 3, name: 'Last Month', value: "LASTMONTH"},
+    {id: 4, name: 'Last Year', value: "LASTYEAR"}
   ];
 
   dateRangeByFullDate: any[] = [
-    {id: 0, name: 'Today',value:"TODAY"},
-    {id: 1, name: 'Yesterday',value:"YESTERDAY"},
-    {id: 2, name: 'Last Week',value:"LASTWEEK"},
-    {id: 3, name: 'Last Month',value:"LASTMONTH"},
-    {id: 4, name: 'Last Year',value:"LASTYEAR"},
-    {id: 5, name: 'Until Yesterday',value:"UNTILYESTERDAY"},
-    {id: 6, name: 'Until Last Week',value:"UNTILLASTWEEK"},
-    {id: 7, name: 'Until Last Month',value:"UNTILLASTMONTH"},
-    {id: 8, name: 'Until Last Year',value:"UNTILLASTYEAR"},
-    {id: 9, name: 'Until Today',value:"UNTILTODAY"}
+    {id: 0, name: 'Today', value: "TODAY"},
+    {id: 1, name: 'Yesterday', value: "YESTERDAY"},
+    {id: 2, name: 'Last Week', value: "LASTWEEK"},
+    {id: 3, name: 'Last Month', value: "LASTMONTH"},
+    {id: 4, name: 'Last Year', value: "LASTYEAR"},
+    {id: 5, name: 'Until Yesterday', value: "UNTILYESTERDAY"},
+    {id: 6, name: 'Until Last Week', value: "UNTILLASTWEEK"},
+    {id: 7, name: 'Until Last Month', value: "UNTILLASTMONTH"},
+    {id: 8, name: 'Until Last Year', value: "UNTILLASTYEAR"},
+    {id: 9, name: 'Until Today', value: "UNTILTODAY"}
   ];
 
   dateValueByMonth: any[] = [
-    {id: 0, name: 'Current Month',value:"CURRENTMONTH"},
-    {id: 1, name: 'Current Year',value:"CURRENTYEAR"},
-    {id: 2, name: 'Last Month',value:"LASTMONTH"},
-    {id: 3, name: 'Last Year',value:"LASTYEAR"}
+    {id: 0, name: 'Current Month', value: "CURRENTMONTH"},
+    {id: 1, name: 'Current Year', value: "CURRENTYEAR"},
+    {id: 2, name: 'Last Month', value: "LASTMONTH"},
+    {id: 3, name: 'Last Year', value: "LASTYEAR"}
   ];
 
   dateRangeByMonth: any[] = [
-    {id: 0, name: 'Current Month',value:"CURRENTMONTH"},
-    {id: 1, name: 'Current Year',value:"CURRENTYEAR"},
-    {id: 2, name: 'Last Month',value:"LASTMONTH"},
-    {id: 3, name: 'Last Year',value:"LASTYEAR"},
-    {id: 4, name: 'Until Last Month',value:"UNTILLASTMONTH"},
-    {id: 5, name: 'Until Last Year',value:"UNTILLASTYEAR"},
+    {id: 0, name: 'Current Month', value: "CURRENTMONTH"},
+    {id: 1, name: 'Current Year', value :"CURRENTYEAR"},
+    {id: 2, name: 'Last Month', value: "LASTMONTH"},
+    {id: 3, name: 'Last Year', value: "LASTYEAR"},
+    {id: 4, name: 'Until Last Month', value: "UNTILLASTMONTH"},
+    {id: 5, name: 'Until Last Year', value: "UNTILLASTYEAR"},
+  ];
+
+  dateValueByQuarter: any[] = [
+    {id: 0, name: 'Current Quarter', value: "CURRENTQUARTER"},
+    {id: 1, name: 'Current Year', value: "CURRENTYEAR"},
+    {id: 2, name: 'Last Quarter', value: "LASTQUARTER"},
+    {id: 3, name: 'Last Year', value: "LASTYEAR"}
+  ];
+
+  dateRangeByQuarter: any[] = [
+    {id: 0, name: 'Current Quarter', value: "CURRENTQUARTER"},
+    {id: 1, name: 'Current Year', value :"CURRENTYEAR"},
+    {id: 2, name: 'Last Quarter', value: "LASTQUARTER"},
+    {id: 3, name: 'Last Year', value: "LASTYEAR"},
+    {id: 4, name: 'Until Last Quarter', value: "UNTILLASTQUARTER"},
+    {id: 5, name: 'Until Last Year', value: "UNTILLASTYEAR"},
   ];
 
   dateValueByYear: any[] = [
-    {id: 0, name: 'Current Year',value:"CURRENTYEAR"},
-    {id: 1, name: 'Last Year',value:"LASTYEAR"}
+    {id: 0, name: 'Current Year', value: "CURRENTYEAR"},
+    {id: 1, name: 'Last Year', value: "LASTYEAR"}
   ];
 
   dateRangeByYear: any[] = [
-    {id: 0, name: 'Current Year',value:"CURRENTYEAR"},
-    {id: 1, name: 'Last Year',value:"LASTYEAR"},
-    {id: 2, name: 'Until Last Year',value:"UNTILLASTYEAR"}
+    {id: 0, name: 'Current Year', value: "CURRENTYEAR"},
+    {id: 1, name: 'Last Year', value: "LASTYEAR"},
+    {id: 2, name: 'Until Last Year', value: "UNTILLASTYEAR"}
   ];
 
   //
@@ -511,13 +528,22 @@ export class EditCategoryArgumentDialog {
 
     switch (item.value3)
     {
-      case 2:
+      case 3:
         if (item.selectionMode == 1)
           item.currentDateRange = this.dateRangeByYear;
         else
           item.currentDateRange = this.dateValueByYear;
 
         item.value1 = "CURRENTYEAR";
+        break;
+
+      case 2:
+        if (item.selectionMode == 1)
+          item.currentDateRange = this.dateRangeByQuarter;
+        else
+          item.currentDateRange = this.dateValueByQuarter;
+
+        item.value1 = "CURRENTQUARTER";
         break;
 
       case 1:
@@ -607,13 +633,22 @@ export class EditCategoryArgumentDialog {
   {
     switch (item.value3)
     {
-      case 2:
+      case 3:
         if (item.selectionMode == 1)
           item.currentDateRange = this.dateRangeByYear;
         else
           item.currentDateRange = this.dateValueByYear;
 
         item.value1 = "CURRENTYEAR";
+        break;
+
+      case 2:
+        if (item.selectionMode == 1)
+          item.currentDateRange = this.dateRangeByQuarter;
+        else
+          item.currentDateRange = this.dateValueByQuarter;
+
+        item.value1 = "CURRENTQUARTER";
         break;
 
       case 1:

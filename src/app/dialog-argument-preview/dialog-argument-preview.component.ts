@@ -1,7 +1,10 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { Globals } from '../globals/Globals';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+
 import { Utils } from '../commons/utils';
+import { Arguments } from '../model/Arguments';
+import { ComponentType } from '../commons/ComponentType';
+import { Globals } from '../globals/Globals';
 
 @Component({
   selector: 'app-dialog-argument-preview',
@@ -32,4 +35,19 @@ export class DialogArgumentPreviewComponent implements OnInit {
     this.dialogRef.close ();
   }
 
+  isDateRange(argument: Arguments)
+  {
+    return ComponentType.dateRange == argument.type;
+  }
+
+  getDateValue(value: any): any
+  {
+    if (value != null)
+    {
+      if (value.id != null)
+        return value.id;
+    }
+
+    return value;
+  }
 }

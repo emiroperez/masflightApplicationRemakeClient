@@ -413,17 +413,16 @@ export class Utils{
         }else if(type == ComponentType.dateRange || 
             type == ComponentType.date)
         {
-            // make sure it is a date
-            let date = new Date (value);
-            if (Object.prototype.toString.call (date) === "[object Date]")
+            // it is a date?
+            if (Object.prototype.toString.call (value) === "[object Date]")
             {
-              if (isNaN (date.getTime()))
+              if (isNaN (value.getTime()))
                 return value;
             }
             else
               return value;
 
-            return new DateFormatPipe('en-US').transform(value);
+            return new DateFormatPipe ('en-US').transform (value);
         }else if(type == ComponentType.ceiling ||
              type == ComponentType.rounding || type ==  ComponentType.resultsLess || type ==  ComponentType.geography 
              || type == ComponentType.filterAirlineType || type == ComponentType.fareIncrements || type == ComponentType.fareIncrementMiddle
@@ -752,10 +751,19 @@ export class Utils{
     }
 
     getDateFormat(value, format){
-        if(value != null){
-            if(format == null){
-                format = 'MM/dd/yyyy';
+        if(value != null)
+        {
+            if (Object.prototype.toString.call (value) === "[object Date]")
+            {
+              if (isNaN (value.getTime()))
+                return value;
             }
+            else
+              return value;
+
+            if (format == null)
+                format = 'MM/dd/yyyy';
+
             var datePipe = new DatePipe('en-US');
             return datePipe.transform(value, format);            
         }

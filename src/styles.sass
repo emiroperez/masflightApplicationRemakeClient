@@ -3311,6 +3311,21 @@ mat-tab-group
 .mat-calendar-controls button .mat-button-wrapper
     color: $msf-surface-color
 
+.date-picker-header
+    display: flex
+    align-items: center
+    padding: 0.5em
+    .date-picker-label
+        color: $msf-surface-color
+        text-align: center
+        font-weight: 500
+        font-size: 14px
+        flex: 1
+        height: 1em
+    .date-picker-icon
+        margin: -22%
+        color: $msf-surface-color !important
+
 .msf-component-airport-input-container, .msf-airline-container
     .mat-select
         background-color: $msf-primary-dark-color
@@ -5503,7 +5518,8 @@ table.results
 
 img.msf-calendar-image
     width: 20px
-    margin-left: 13px
+    margin-left: auto
+    margin-right: auto
     margin-bottom: 10px
 .financial-content
     width: auto

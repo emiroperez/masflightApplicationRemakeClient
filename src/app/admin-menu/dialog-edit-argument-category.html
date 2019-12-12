@@ -219,6 +219,16 @@
                                         <input matInput placeholder="Service Arg. 1" [(ngModel)]="item.name1">
                                     </mat-form-field>
                                 </div>
+                                <div class="multiple-airport-argument" *ngIf="item.value3 == 1">
+                                    <mat-form-field [style.width.%]="100">
+                                        <input matInput placeholder="Month Arg. 1" [(ngModel)]="item.name3">
+                                    </mat-form-field>
+                                </div>
+                                <div class="multiple-airport-argument" *ngIf="item.value3 == 2">
+                                    <mat-form-field [style.width.%]="100">
+                                        <input matInput placeholder="Quarter Arg. 1" [(ngModel)]="item.name3">
+                                    </mat-form-field>
+                                </div>
                             </div>
                             <div class="multiple-airport-argument-container" [style.width.%]="getDateArgumentWidth(item)">
                                 <div class="multiple-airport-argument">
@@ -229,6 +239,16 @@
                                 <div class="multiple-airport-argument">
                                     <mat-form-field [style.width.%]="100">
                                         <input matInput placeholder="Service Arg. 2" [(ngModel)]="item.name2">
+                                    </mat-form-field>
+                                </div>
+                                <div class="multiple-airport-argument" *ngIf="item.value3 == 1">
+                                    <mat-form-field [style.width.%]="100">
+                                        <input matInput placeholder="Month Arg. 2" [(ngModel)]="item.name4">
+                                    </mat-form-field>
+                                </div>
+                                <div class="multiple-airport-argument" *ngIf="item.value3 == 2">
+                                    <mat-form-field [style.width.%]="100">
+                                        <input matInput placeholder="Quarter Arg. 2" [(ngModel)]="item.name4">
                                     </mat-form-field>
                                 </div>
                             </div>

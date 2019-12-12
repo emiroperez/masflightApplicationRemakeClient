@@ -30,7 +30,7 @@ import { IntroComponent } from './intro/intro.component';
 import { CurrentQuerySummaryComponent } from './current-query-summary/current-query-summary.component';
 import { MsfAirportRouteComponent } from './msf-airport-route/msf-airport-route.component';
 import { MsfTimeRangeComponent } from './msf-time-range/msf-time-range.component';
-import { MsfDateRangeComponent } from './msf-date-range/msf-date-range.component';
+import { MsfDateRangeComponent, MonthHeader, YearHeader } from './msf-date-range/msf-date-range.component';
 import { MsfCeilingComponent } from './msf-ceiling/msf-ceiling.component';
 import { MsfWindComponent } from './msf-wind/msf-wind.component';
 import { MsfWindDirectionComponent } from './msf-wind-direction/msf-wind-direction.component';
@@ -413,7 +413,9 @@ import { DatalakeCreateRolesComponent } from './datalake-create-roles/datalake-c
     DatalakeQueryEngineSaveComponent,
     DatalakeAlarmAddEmailDialogComponent,
     DatalakeUserInformationDialogComponent,
-    DatalakeCreateRolesComponent
+    DatalakeCreateRolesComponent,
+    MonthHeader,
+    YearHeader
   ],
   imports: [
     BrowserModule,
@@ -509,7 +511,9 @@ import { DatalakeCreateRolesComponent } from './datalake-create-roles/datalake-c
     DatalakeQueryEngineHistoryComponent,
     DatalakeQueryEngineSaveComponent,
     DatalakeAlarmAddEmailDialogComponent,
-    DatalakeUserInformationDialogComponent
+    DatalakeUserInformationDialogComponent,
+    MonthHeader,
+    YearHeader
   ]
 })
 export class AppModule { }
