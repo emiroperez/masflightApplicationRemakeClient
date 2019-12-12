@@ -207,6 +207,14 @@ export class Utils{
             args += argument.name3 + "=" + this.getValueFormat (argument.type, argument.value3,argument);
         }
 
+        if (argument.name4)
+        {
+            if (args !== '')
+                args += "&";
+
+            args += argument.name4 + "=" + this.getValueFormat (argument.type, argument.value4,argument);
+        }
+
         return args;
     }
 
@@ -308,6 +316,9 @@ export class Utils{
 
             if (argument.name3)
                 args += "&" + argument.name3 + "=" + categoryFilter;
+
+            if (argument.name4)
+                args += "&" + argument.name4 + "=" + categoryFilter;
         }
 
         return args;
