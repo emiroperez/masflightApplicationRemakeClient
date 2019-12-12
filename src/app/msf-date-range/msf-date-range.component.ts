@@ -209,6 +209,8 @@ export class MsfDateRangeComponent implements OnInit {
 
   value1Display: any;
   value2Display: any;
+  value1Date: Moment;
+  value2Date: Moment;
 
   constructor(public globals: Globals,public dialog: MatDialog) { }
 
@@ -521,45 +523,49 @@ export class MsfDateRangeComponent implements OnInit {
     }
   }
 
-  chosenYearHandler1(normalizedYear: Moment, datepicker: MatDatepicker<Moment>)
+  chosenYearHandler1(normalizedDate: Moment, datepicker: MatDatepicker<Moment>)
   {
     if (this.valueType !== "year")
       return;
 
-    this.argument.value1 = normalizedYear.year ();
-    this.value1Display = normalizedYear.year ();
+    this.argument.value1 = normalizedDate.year ();
+    this.value1Display = normalizedDate.year ();
+    this.value1Date = normalizedDate;
     datepicker.close ();
   }
 
-  chosenYearHandler2(normalizedYear: Moment, datepicker: MatDatepicker<Moment>)
+  chosenYearHandler2(normalizedDate: Moment, datepicker: MatDatepicker<Moment>)
   {
     if (this.valueType !== "year")
       return;
 
-    this.argument.value2 = normalizedYear.year ();
-    this.value2Display = normalizedYear.year ();
+    this.argument.value2 = normalizedDate.year ();
+    this.value2Display = normalizedDate.year ();
+    this.value2Date = normalizedDate;
     datepicker.close ();
   }
 
-  chosenMonthHandler1(normalizedYear: Moment, datepicker: MatDatepicker<Moment>)
+  chosenMonthHandler1(normalizedDate: Moment, datepicker: MatDatepicker<Moment>)
   {
     if (this.valueType === "fullDate")
       return;
 
-    this.argument.value1 = normalizedYear.year ();
-    this.argument.value3 = normalizedYear.month ();
-    this.value1Display = this.monthNames[normalizedYear.month ()] + "/" + normalizedYear.year ();
+    this.argument.value1 = normalizedDate.year ();
+    this.argument.value3 = normalizedDate.month ();
+    this.value1Display = this.monthNames[normalizedDate.month ()] + "/" + normalizedDate.year ();
+    this.value1Date = normalizedDate;
     datepicker.close();
   }
 
-  chosenMonthHandler2(normalizedYear: Moment, datepicker: MatDatepicker<Moment>)
+  chosenMonthHandler2(normalizedDate: Moment, datepicker: MatDatepicker<Moment>)
   {
     if (this.valueType === "fullDate")
       return;
 
-    this.argument.value2 = normalizedYear.year ();
-    this.argument.value4 = normalizedYear.month ();
-    this.value2Display = this.monthNames[normalizedYear.month ()] + "/" + normalizedYear.year ();
+    this.argument.value2 = normalizedDate.year ();
+    this.argument.value4 = normalizedDate.month ();
+    this.value2Display = this.monthNames[normalizedDate.month ()] + "/" + normalizedDate.year ();
+    this.value2Date = normalizedDate;
     datepicker.close();
   }
 }
