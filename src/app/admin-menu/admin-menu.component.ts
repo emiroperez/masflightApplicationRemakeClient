@@ -1358,9 +1358,8 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
       }
     }
 
-    if (!option.isRoot && option.id) {
-      this.getOptionCategoryArguments();
-    }
+    if (!option.isRoot)
+      this.getOptionCategoryArguments ();
   }
 
   getSelectIdDom(idDomOption) {
@@ -2144,6 +2143,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
         isRoot: false,
         typeOption: "0",
         applicationId: this.globals.currentApplication.id,
+        menuOptionArgumentsAdmin: [],
         metaData: 1,
       } as any);
       this.dataChange.next(this.data);
