@@ -3456,6 +3456,9 @@ export class MsfDashboardPanelComponent implements OnInit {
           if (argument.value3)
             argument.value3 = JSON.parse (argument.value3);
 
+          if (argument.value4)
+            argument.value4 = JSON.parse (argument.value4);
+
           if (argument.minDate)
             argument.minDate = new Date (argument.minDate);
     
