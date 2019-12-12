@@ -347,9 +347,8 @@ export class EditCategoryArgumentDialog {
 
   dateValueByMonth: any[] = [
     {id: 0, name: 'Current Month', value: "CURRENTMONTH"},
-    {id: 1, name: 'Current Year', value: "CURRENTYEAR"},
-    {id: 2, name: 'Last Month', value: "LASTMONTH"},
-    {id: 3, name: 'Last Year', value: "LASTYEAR"}
+    {id: 1, name: 'Last Month', value: "LASTMONTH"},
+    {id: 2, name: 'Last Year', value: "LASTYEAR"}
   ];
 
   dateRangeByMonth: any[] = [
@@ -363,9 +362,8 @@ export class EditCategoryArgumentDialog {
 
   dateValueByQuarter: any[] = [
     {id: 0, name: 'Current Quarter', value: "CURRENTQUARTER"},
-    {id: 1, name: 'Current Year', value: "CURRENTYEAR"},
-    {id: 2, name: 'Last Quarter', value: "LASTQUARTER"},
-    {id: 3, name: 'Last Year', value: "LASTYEAR"}
+    {id: 1, name: 'Last Quarter', value: "LASTQUARTER"},
+    {id: 2, name: 'Last Year', value: "LASTYEAR"}
   ];
 
   dateRangeByQuarter: any[] = [

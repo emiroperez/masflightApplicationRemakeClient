@@ -149,9 +149,8 @@ export class MsfDateRangeComponent implements OnInit {
 
   dateValueByMonth: any[] = [
     {id: 0, name: 'Current Month', value: "CURRENTMONTH"},
-    {id: 1, name: 'Current Year', value: "CURRENTYEAR"},
-    {id: 2, name: 'Last Month', value: "LASTMONTH"},
-    {id: 3, name: 'Last Year', value: "LASTYEAR"}
+    {id: 1, name: 'Last Month', value: "LASTMONTH"},
+    {id: 2, name: 'Last Year', value: "LASTYEAR"}
   ];
 
   dateRangeByMonth: any[] = [
@@ -165,9 +164,8 @@ export class MsfDateRangeComponent implements OnInit {
 
   dateValueByQuarter: any[] = [
     {id: 0, name: 'Current Quarter', value: "CURRENTQUARTER"},
-    {id: 1, name: 'Current Year', value: "CURRENTYEAR"},
-    {id: 2, name: 'Last Quarter', value: "LASTQUARTER"},
-    {id: 3, name: 'Last Year', value: "LASTYEAR"}
+    {id: 1, name: 'Last Quarter', value: "LASTQUARTER"},
+    {id: 2, name: 'Last Year', value: "LASTYEAR"}
   ];
 
   dateRangeByQuarter: any[] = [
@@ -273,13 +271,6 @@ export class MsfDateRangeComponent implements OnInit {
             this.argument.value1 = null;
             this.dateRange = dateRange;
             this.autoSelect ();
-
-            if (this.currentValueType == 2)
-            {
-              // TODO: Set proper quarter depending of date range
-              this.argument.value3 = this.quarters[0];
-              this.argument.value4 = this.quarters[3];
-            }
             break;
           }
         }
@@ -294,6 +285,11 @@ export class MsfDateRangeComponent implements OnInit {
         {
           this.argument.value3 = this.quarters[0];
           this.argument.value4 = this.quarters[3];
+        }
+        else if (this.currentValueType == 1)
+        {
+          this.argument.value3 = null;
+          this.argument.value4 = null;
         }
       }, 1);
     }
@@ -330,6 +326,18 @@ export class MsfDateRangeComponent implements OnInit {
           this.calculateDateRange ('Today', option);
           break;
 
+        case 'CURRENTMONTH':
+          this.calculateDateRange ('Current Month', option);
+          break;
+
+        case 'CURRENTQUARTER':
+          this.calculateDateRange ('Current Quarter', option);
+          break;
+
+        case 'CURRENTYEAR':
+          this.calculateDateRange ('Current Year', option);
+          break;
+
         case 'YESTERDAY':
           this.calculateDateRange ('Yesterday', option);
           break;
@@ -340,6 +348,10 @@ export class MsfDateRangeComponent implements OnInit {
 
         case 'LASTMONTH':
           this.calculateDateRange ('Last Month', option);
+          break;
+
+        case 'LASTQUARTER':
+          this.calculateDateRange ('Last Quarter', option);
           break;
 
         case 'LASTYEAR':
@@ -358,12 +370,34 @@ export class MsfDateRangeComponent implements OnInit {
           this.calculateDateRange2 ('Until Last Month', option);
           break;
 
+        case 'UNTILLASTQUARTER':
+          this.calculateDateRange2 ('Until Last Quarter', option);
+          break;
+
         case 'UNTILLASTYEAR':
           this.calculateDateRange2 ('Until Last Year', option);
           break;
 
         case 'UNTILTODAY':
           this.calculateDateRange2 ('Until Today', option);
+          break;
+      }
+
+      switch (this.currentValueType)
+      {
+        case 1:
+          this.setMonthValue1 (moment (this.argument.value1));
+          this.setMonthValue2 (moment (this.argument.value2));
+          break;
+
+        case 2:
+          this.setQuarterValue1 ();
+          this.setQuarterValue2 ();
+          break;
+
+        case 3:
+          this.setYearValue1 (moment (this.argument.value1));
+          this.setYearValue2 (moment (this.argument.value2));
           break;
       }
     }
@@ -373,6 +407,18 @@ export class MsfDateRangeComponent implements OnInit {
       {
         case 'TODAY':
           this.argument.value1 = new Date (new Date ().getTime ());
+          break;
+
+        case 'CURRENTMONTH':
+          this.argument.value1 = moment ().startOf ("month").toDate ();
+          break;
+
+        case 'CURRENTQUARTER':
+          this.argument.value1 = moment ().startOf ("month").toDate ();
+          break;
+
+        case 'CURRENTYEAR':
+          this.argument.value1 = moment ().startOf ("year").toDate ();
           break;
   
         case 'YESTERDAY':
@@ -386,10 +432,29 @@ export class MsfDateRangeComponent implements OnInit {
         case 'LASTMONTH':
           this.argument.value1 = moment ().subtract (1, "months").startOf ("month").toDate ();
           break;
+
+        case 'LASTQUARTER':
+          this.argument.value1 = moment ().subtract (3, "months").startOf ("month").toDate ();
+          break;
   
         case 'LASTYEAR':
           this.argument.value1 = moment ().subtract (1, "years").startOf ("year").toDate ();
           break;   
+      }
+
+      switch (this.currentValueType)
+      {
+        case 1:
+          this.setMonthValue1 (moment (this.argument.value1));
+          break;
+
+        case 2:
+          this.setQuarterValue1 ();
+          break;
+
+        case 3:
+          this.setYearValue1 (moment (this.argument.value1));
+          break;
       }
     }
   }
@@ -416,6 +481,18 @@ export class MsfDateRangeComponent implements OnInit {
         this.argument.value1 = new Date (this.argument.value2.getTime ());
         break;
 
+      case 'CURRENTMONTH':
+        this.argument.value1 = moment ().startOf ("month").toDate ();
+        break;
+
+      case 'CURRENTQUARTER':
+        this.argument.value1 = moment ().startOf ("month").toDate ();
+        break;
+
+      case 'CURRENTYEAR':
+        this.argument.value1 = moment ().startOf ("year").toDate ();
+        break;
+
       case 'YESTERDAY':
         this.argument.value1 = new Date (this.argument.value2.getTime () - (24 * 60 * 60 * 1000));
         break;
@@ -426,6 +503,10 @@ export class MsfDateRangeComponent implements OnInit {
 
       case 'LASTMONTH':
         this.argument.value1 = moment ().subtract (1, "months").startOf ("month").toDate ();
+        break;
+
+      case 'LASTQUARTER':
+        this.argument.value1 = moment ().subtract (3, "months").startOf ("month").toDate ();
         break;
 
       case 'LASTYEAR':
@@ -453,6 +534,10 @@ export class MsfDateRangeComponent implements OnInit {
 
       case 'UNTILLASTMONTH':
         newDate = moment ().subtract (1, "months").endOf ("month").toDate ();
+        break;
+
+      case 'UNTILLASTQUARTER':
+        newDate = moment ().subtract (3, "months").endOf ("month").toDate ();
         break;
     
       case 'UNTILLASTYEAR':
@@ -501,6 +586,10 @@ export class MsfDateRangeComponent implements OnInit {
         case 'UNTILLASTMONTH':
           this.argument.value1 = moment ().subtract (1, "months").startOf ("month").toDate ();
           break;
+
+        case 'UNTILLASTQUARTER':
+          this.argument.value1 = moment ().subtract (3, "months").startOf ("month").toDate ();
+          break;
   
         case 'UNTILLASTYEAR':
           this.argument.value1 = moment ().subtract (1, "years").startOf ("year").toDate ();
@@ -513,59 +602,114 @@ export class MsfDateRangeComponent implements OnInit {
     this.openDialog ("The date range changed to " + type + maximunDateMessage);
   }
   
-  openDialog(text:string){
+  openDialog(text: string): void
+  {
     if (!this.loadingDefaults)
     {
-      this.dialog.open (MessageComponent, {
-        data: { title: "Message", 
-        message: text}
+      this.dialog.open (MessageComponent,
+      {
+        data: { title: "Message", message: text }
       });
     }
   }
 
-  chosenYearHandler1(normalizedDate: Moment, datepicker: MatDatepicker<Moment>)
+  chosenYearHandler1(normalizedDate: Moment, datepicker: MatDatepicker<Moment>): void
   {
-    if (this.valueType !== "year")
+    if (this.valueType !== "year" && this.valueType !== "quarter")
       return;
 
-    this.argument.value1 = normalizedDate.year ();
-    this.value1Display = normalizedDate.year ();
-    this.value1Date = normalizedDate;
+    this.setYearValue1 (normalizedDate);
     datepicker.close ();
   }
 
-  chosenYearHandler2(normalizedDate: Moment, datepicker: MatDatepicker<Moment>)
+  chosenYearHandler2(normalizedDate: Moment, datepicker: MatDatepicker<Moment>): void
   {
-    if (this.valueType !== "year")
+    if (this.valueType !== "year" && this.valueType !== "quarter")
       return;
 
-    this.argument.value2 = normalizedDate.year ();
-    this.value2Display = normalizedDate.year ();
-    this.value2Date = normalizedDate;
+    this.setYearValue2 (normalizedDate);
     datepicker.close ();
   }
 
-  chosenMonthHandler1(normalizedDate: Moment, datepicker: MatDatepicker<Moment>)
+  chosenMonthHandler1(normalizedDate: Moment, datepicker: MatDatepicker<Moment>): void
   {
     if (this.valueType === "fullDate")
       return;
 
+    this.setMonthValue1 (normalizedDate);
+    datepicker.close ();
+  }
+
+  chosenMonthHandler2(normalizedDate: Moment, datepicker: MatDatepicker<Moment>): void
+  {
+    if (this.valueType === "fullDate")
+      return;
+
+    this.setMonthValue2 (normalizedDate);
+    datepicker.close ();
+  }
+
+  setYearValue1(normalizedDate: Moment): void
+  {
+    this.argument.value1 = normalizedDate.year ();
+    this.value1Display = normalizedDate.year ();
+    this.value1Date = normalizedDate;
+  }
+
+  setYearValue2(normalizedDate: Moment): void
+  {
+    this.argument.value2 = normalizedDate.year ();
+    this.value2Display = normalizedDate.year ();
+    this.value2Date = normalizedDate;
+  }
+
+  setMonthValue1(normalizedDate: Moment): void
+  {
     this.argument.value1 = normalizedDate.year ();
     this.argument.value3 = normalizedDate.month ();
     this.value1Display = this.monthNames[normalizedDate.month ()] + "/" + normalizedDate.year ();
     this.value1Date = normalizedDate;
-    datepicker.close();
   }
 
-  chosenMonthHandler2(normalizedDate: Moment, datepicker: MatDatepicker<Moment>)
+  setMonthValue2(normalizedDate: Moment): void
   {
-    if (this.valueType === "fullDate")
-      return;
-
     this.argument.value2 = normalizedDate.year ();
     this.argument.value4 = normalizedDate.month ();
     this.value2Display = this.monthNames[normalizedDate.month ()] + "/" + normalizedDate.year ();
     this.value2Date = normalizedDate;
-    datepicker.close();
+  }
+
+  setQuarterValue1(): void
+  {
+    let normalizedDate = moment (this.argument.value1);
+    let quarterValue = Math.trunc (normalizedDate.month () / 3) + 1;
+
+    for (let quarter of this.quarters)
+    {
+      if (quarter.id === quarterValue)
+      {
+        this.argument.value3 = quarter;
+        break;
+      }
+    }
+
+    this.setYearValue1 (normalizedDate);
+  }
+
+  setQuarterValue2(): void
+  {
+    let normalizedDate = moment (this.argument.value2);
+    let quarterValue = Math.trunc (normalizedDate.month () / 3) + 1;
+
+    for (let quarter of this.quarters)
+    {
+      if (quarter.id === quarterValue)
+      {
+        this.argument.value4 = quarter;
+        break;
+      }
+    }
+
+    this.setYearValue2 (normalizedDate);
   }
 }
