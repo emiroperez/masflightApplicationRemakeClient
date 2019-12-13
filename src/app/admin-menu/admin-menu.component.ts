@@ -1383,6 +1383,9 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   getOptionCategoryArguments() {
     let self = this;
 
+    if (!this.categories.length)
+      return;
+
     this.clearSelectedCategoryArguments();
     var categories = this.categories;
     this.optionSelected.menuOptionArgumentsAdmin.forEach(function (itemOptionCategory, indexOptionCategory, arrayOptionCategory) {
@@ -1553,7 +1556,8 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     }
   }
 
-  handlerSuccessSaveMenuData(_this, data) {
+  handlerSuccessSaveMenuData(_this)
+  {
     // set default menu id after saving the menu
     _this.globals.currentApplication.defaultMenu = _this.defaultMenu;
     localStorage.setItem ("currentApplication", JSON.stringify (_this.globals.currentApplication));
@@ -1561,7 +1565,8 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     _this.getMenuData();
   }
 
-  handlerErrorSaveMenuData(_this, data) {
+  handlerErrorSaveMenuData(_this)
+  {
     _this.getMenuData();
   }
 
@@ -1948,9 +1953,13 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
   saveCategoryArgument() {
     let arrayMenuOptionArg = [];
-    for (let i = 0; i < this.optionSelected.menuOptionArgumentsAdmin.length; i++) {
+
+    if (!this.optionSelected.id)
+      return;
+
+    for (let i = 0; i < this.optionSelected.menuOptionArgumentsAdmin.length; i++)
       arrayMenuOptionArg.push(this.optionSelected.menuOptionArgumentsAdmin[i]);
-    }
+
     this.service.saveOptionsArgumentsCategory(this, arrayMenuOptionArg, this.optionSelected.id, this.handlerSuccessSaveCategoryArgument, this.handlerErrorSaveCategoryArgument);
   }
 
