@@ -18,7 +18,7 @@ export class DialogArgumentPreviewComponent implements OnInit {
     public utils: Utils,
     @Inject(MAT_DIALOG_DATA) public data: any)
   {
-    this.argList = JSON.parse (JSON.stringify (data.arguments));
+    this.argList = data.arguments;
   }
 
   ngOnInit()

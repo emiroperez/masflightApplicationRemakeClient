@@ -782,12 +782,22 @@ export class EditCategoryArgumentDialog {
   onNoClick(): void {
     this.dialogRef.close();
   }
-  showPreview(argument,group) {
+
+  showPreview(argument)
+  {
+    let argList = JSON.parse (JSON.stringify (argument));
+
+    for (let item of argument)
+    {
+      if (item.multipleSelection)
+        item.selectionMode |= AirportSelection.MULTIPLESELECTION;
+    }
+
     this.dialog.open(DialogArgumentPreviewComponent, {
       height: "560px",
       width: "500px",
       panelClass: 'msf-argument-preview-popup',
-      data: argument
+      data: argList
     });
   }
 
