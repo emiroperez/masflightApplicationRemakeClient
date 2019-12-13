@@ -431,7 +431,7 @@ export class Utils{
               if (isNaN (value.getTime()))
                 return value;
             }
-            else
+            else if (value.toString ().length === 24)
             {
               let momentValue = moment (value, "YYYY-MM-DDTHH:mm:ssZ");
 
@@ -440,6 +440,8 @@ export class Utils{
 
               return new DateFormatPipe ('en-US').transform (momentValue.toDate ());
             }
+            else
+              return value;
 
             return new DateFormatPipe ('en-US').transform (value);
         }else if(type == ComponentType.ceiling ||

@@ -457,15 +457,16 @@ export class EditCategoryArgumentDialog {
 
         if (argument.value3)
           argument.value3 = JSON.parse (argument.value3);
-        else if (this.isDateRange (argument))
+
+        if (this.isDateRange (argument))
         {
-          argument.value1 = "TODAY";
-          argument.value3 = 0;
-  
-          if (argument.selectionMode == 1)
-            argument.currentDateRange = this.dateRangeByFullDate;
-          else
-            argument.currentDateRange = this.dateValueByFullDate;
+          if (!argument.value3)
+          {
+            argument.value1 = "TODAY";
+            argument.value3 = 0;
+          }
+
+          this.setDateRange (argument);
         }
 
         // initialize if not set
@@ -515,6 +516,39 @@ export class EditCategoryArgumentDialog {
     }
   }
 
+  setDateRange(item): void
+  {
+    switch (item.value3)
+    {
+      case 3:
+        if (item.selectionMode == 1)
+          item.currentDateRange = this.dateRangeByYear;
+        else
+          item.currentDateRange = this.dateValueByYear;
+        break;
+
+      case 2:
+        if (item.selectionMode == 1)
+          item.currentDateRange = this.dateRangeByQuarter;
+        else
+          item.currentDateRange = this.dateValueByQuarter;
+        break;
+
+      case 1:
+        if (item.selectionMode == 1)
+          item.currentDateRange = this.dateRangeByMonth;
+        else
+          item.currentDateRange = this.dateValueByMonth;
+        break;
+
+      default:
+        if (item.selectionMode == 1)
+          item.currentDateRange = this.dateRangeByFullDate;
+        else
+          item.currentDateRange = this.dateValueByFullDate;
+    }
+  }
+
   clearDateArgument(item): void
   {
     if (!item.selectionMode)
@@ -528,38 +562,18 @@ export class EditCategoryArgumentDialog {
     switch (item.value3)
     {
       case 3:
-        if (item.selectionMode == 1)
-          item.currentDateRange = this.dateRangeByYear;
-        else
-          item.currentDateRange = this.dateValueByYear;
-
         item.value1 = "CURRENTYEAR";
         break;
 
       case 2:
-        if (item.selectionMode == 1)
-          item.currentDateRange = this.dateRangeByQuarter;
-        else
-          item.currentDateRange = this.dateValueByQuarter;
-
         item.value1 = "CURRENTQUARTER";
         break;
 
       case 1:
-        if (item.selectionMode == 1)
-          item.currentDateRange = this.dateRangeByMonth;
-        else
-          item.currentDateRange = this.dateValueByMonth;
-
         item.value1 = "CURRENTMONTH";
         break;
 
       default:
-        if (item.selectionMode == 1)
-          item.currentDateRange = this.dateRangeByFullDate;
-        else
-          item.currentDateRange = this.dateValueByFullDate;
-
         item.value1 = "TODAY";
     }
   }
@@ -929,6 +943,8 @@ export class ExampleFlatNode {
   finalRol: string;
   typeOption: string;
   welcome: any;
+  createdMetas: any[];
+  createdDrillDowns: any[];
 }
 
 @Component({
@@ -974,6 +990,8 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     flatNode.finalRol = node.finalRol;
     flatNode.typeOption = node.typeOption;
     flatNode.welcome = node.welcome;
+    flatNode.createdMetas = node.createdMetas;
+    flatNode.createdDrillDowns = node.createdDrillDowns;
     this.flatNodeMap.set(flatNode, node);
     this.nestedNodeMap.set(node, flatNode);
     return flatNode;
@@ -1297,7 +1315,39 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   }
 
   getMeta() {
-    this.service.loadWebservicMetaAdmin(this, this.optionSelected, this.handlerSuccessMeta, this.handlerErrorMeta);
+    if (!this.optionSelected.id)
+    {
+      let argList = [];
+
+      this.outputs = JSON.parse (JSON.stringify (this.optionSelected.createdMetas));
+
+      for (let optionArguments of this.optionSelected.menuOptionArgumentsAdmin)
+      {
+        for (let categoryArgument of optionArguments.categoryArgumentsId)
+        {
+          for (let argument of categoryArgument.arguments)
+            argList.push (argument);
+        }
+      }
+
+      this.argumentsDrillDown = argList;
+
+      const dialogRef = this.dialog.open(EditOutputOptionsMetaDialog, {
+        width: '1090px',
+        data: { outputs: this.outputs, option: this.optionSelected, arguments: this.argumentsDrillDown }
+      });
+
+      dialogRef.afterClosed ().subscribe ((result: any) => {
+        if (result != undefined) {
+          this.optionSelected.createdMetas = result;
+          const nestedNode = this.flatNodeMap.get (this.optionSelected);
+          nestedNode.createdMetas = result;
+          this.dataChange.next (this.data);
+        }
+      });
+    }
+    else
+      this.service.loadWebservicMetaAdmin(this, this.optionSelected, this.handlerSuccessMeta, this.handlerErrorMeta);
   }
 
   getArgumentsByOption() {
@@ -1983,6 +2033,38 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     _this.service.getMenuString(_this, _this.globals.currentApplication.id, _this.handleSuccessString, _this.handlerErrorMeta);
   }
 
+  handleNewOptionSuccessString(_this, data) {
+    let menuString = data;
+
+    // prepare drill down for option selection
+    for(let dD of _this.drillDown)
+    {
+      for (let data of menuString)
+      {
+        if (dD.childrenOptionId == data.id)
+        {
+          dD.childrenOptionId = data.id;
+          break;
+        }
+      }
+    }
+
+    const dialogRef = _this.dialog.open (DrillDownDialog, {
+      width: '90%',
+      data: { optionString: menuString, option: _this.optionSelected, drillDown: _this.drillDown }
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result != undefined)
+      {
+        _this.optionSelected.createdDrillDowns = result;
+        const nestedNode = _this.flatNodeMap.get (_this.optionSelected);
+        nestedNode.createdDrillDowns = result;
+        _this.dataChange.next (_this.data);
+      }
+    });
+  }
+
   handleSuccessString(_this, data) {
     let menuString = data;
 
@@ -2014,7 +2096,13 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   }
 
   getDrillDowns() {
-    this.service.getDrillDownAdmin(this, this.optionSelected.id, this.handlerSuccessDrillDown, this.handlerErrorMeta);
+    if (!this.optionSelected.id)
+    {
+      this.drillDown = JSON.parse (JSON.stringify (this.optionSelected.createdDrillDowns));
+      this.service.getMenuString(this, this.globals.currentApplication.id, this.handleNewOptionSuccessString, this.handlerErrorMeta);
+    }
+    else
+      this.service.getDrillDownAdmin(this, this.optionSelected.id, this.handlerSuccessDrillDown, this.handlerErrorMeta);
   }
 
   handlerSuccessDrillDown(_this, data) {
@@ -2154,6 +2242,8 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
         applicationId: this.globals.currentApplication.id,
         menuOptionArgumentsAdmin: [],
         metaData: 1,
+        createdMetas: [],
+        createdDrillDowns: []
       } as any);
       this.dataChange.next(this.data);
     } else {
