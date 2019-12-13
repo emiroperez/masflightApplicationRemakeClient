@@ -1916,7 +1916,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     if (index != -1) {
       if (this.optionSelected.menuOptionArgumentsAdmin[index].id == undefined) {
         for (let i = 0; i < this.optionSelected.menuOptionArgumentsAdmin.length; i++) {
-          if (this.optionSelected.menuOptionArgumentsAdmin[i].position && this.optionSelected.menuOptionArgumentsAdmin[i].position > this.optionSelected.menuOptionArgumentsAdmin[index].position)
+          if (this.optionSelected.menuOptionArgumentsAdmin[i].position != -1 && this.optionSelected.menuOptionArgumentsAdmin[i].position > this.optionSelected.menuOptionArgumentsAdmin[index].position)
             this.optionSelected.menuOptionArgumentsAdmin[i].position--;
         }
 
@@ -1937,7 +1937,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
         }
         else {
           for (let i = 0; i < this.optionSelected.menuOptionArgumentsAdmin.length; i++) {
-            if (this.optionSelected.menuOptionArgumentsAdmin[i].position && this.optionSelected.menuOptionArgumentsAdmin[i].position > this.optionSelected.menuOptionArgumentsAdmin[index].position)
+            if (this.optionSelected.menuOptionArgumentsAdmin[i].position != -1 && this.optionSelected.menuOptionArgumentsAdmin[i].position > this.optionSelected.menuOptionArgumentsAdmin[index].position)
               this.optionSelected.menuOptionArgumentsAdmin[i].position--;
           }
 
@@ -1950,9 +1950,10 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
       let newPos = 0;
 
       // set new position for the argument
-      for (let categorySelected of this.optionSelected.menuOptionArgumentsAdmin) {
-        if (categorySelected.position > newPos)
-          newPos = categorySelected.position;
+      for (let categorySelected of this.optionSelected.menuOptionArgumentsAdmin)
+      {
+        if (categorySelected.position != -1)
+          newPos++;
       }
 
       newPos++;
@@ -1961,7 +1962,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
         "categoryArgumentsId": [category],
         "selected": true,
         "toDelete": false,
-        "order": newPos
+        "position": newPos
       };
 
       for (let j = 0; j < category.arguments.length; j++)
