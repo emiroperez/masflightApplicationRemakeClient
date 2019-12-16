@@ -39,7 +39,6 @@ export class MsfSortingCheckboxesComponent implements OnInit {
 
   ngOnInit()
   { 
-    this.globals.isLoading = true;
     this.getRecords (null, this.handlerSuccess);
 
     if(this.argument.value1 != null)
@@ -65,6 +64,7 @@ export class MsfSortingCheckboxesComponent implements OnInit {
     if (this.currentOptionId == null)
       return;
 
+    this.globals.isLoading = true;
     url = this.globals.baseUrl + this.argument.url + "?optionId="+ this.currentOptionId;
     this.http.get(this,url,handlerSuccess,this.handlerError, null);  
   }
