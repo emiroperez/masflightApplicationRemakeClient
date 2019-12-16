@@ -45,6 +45,8 @@ export class MsfDashboardControlVariablesComponent {
                 argument.value2 = curCategoryArgument.value2;
                 argument.value3 = curCategoryArgument.value3;
                 argument.value4 = curCategoryArgument.value4;
+                argument.dateLoaded = curCategoryArgument.dateLoaded;
+                argument.currentDateRangeValue = curCategoryArgument.currentDateRangeValue;
                 break;
               }
             }

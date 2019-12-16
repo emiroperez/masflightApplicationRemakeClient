@@ -215,10 +215,11 @@ export class MsfDateRangeComponent implements OnInit {
 
   ngOnInit()
   {
-    let currentDateRangeValue;
-
     this.currentValueType = (this.argument.selectionMode >> 1) & 3;
-    currentDateRangeValue = this.argument.selectionMode >> 3;
+
+    if (!this.argument.currentDateRangeValue)
+      this.argument.currentDateRangeValue = this.argument.selectionMode >> 3;
+
     this.isDateRange = (this.argument.selectionMode & 1) ? true : false;
 
     switch (this.currentValueType)
@@ -270,7 +271,7 @@ export class MsfDateRangeComponent implements OnInit {
       // auto select date range after loading the default value
       for (let dateRange of this.currentDateRange)
       {
-        if (dateRange.id === currentDateRangeValue)
+        if (dateRange.id === this.argument.currentDateRangeValue)
         {
           this.dateRange = dateRange;
           this.autoSelect ();
@@ -285,7 +286,7 @@ export class MsfDateRangeComponent implements OnInit {
     {
       for (let dateRange of this.currentDateRange)
       {
-        if (dateRange.id === currentDateRangeValue)
+        if (dateRange.id === this.argument.currentDateRangeValue)
         {
           this.dateRange = dateRange;
           break;
@@ -766,5 +767,10 @@ export class MsfDateRangeComponent implements OnInit {
     }
 
     this.setYearValue2 (normalizedDate);
+  }
+
+  setCurrentDateRangeValue(): void
+  {
+    this.argument.currentDateRangeValue = this.dateRange.id;
   }
 }

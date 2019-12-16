@@ -81,6 +81,7 @@
             bindLabel="name"
             (change)="autoSelect()"
             [(ngModel)]="dateRange"
+            (ngModelChange)="setCurrentDateRangeValue()"
             appendTo=".msf-control-variables-overlay"
             dropdownPosition="bottom">
         </ng-select>

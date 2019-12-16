@@ -140,6 +140,19 @@
                             all
                           </div>
                         </div>
+                        <div class="msf-block" *ngIf="argument.name4">
+                          <div class="msf-inline">
+                            {{ getArgumentLabel(argument.title)}}
+                          </div>
+                          <div class="msf-inline msf-dashboard-assistant-argument-value"
+                            *ngIf="!valueIsEmpty(argument.value4) && argument">
+                            {{utils.getValueFormatView(argument.type, argument.value4,argument)}}
+                          </div>
+                          <div class="msf-inline msf-dashboard-assistant-argument-value"
+                            *ngIf="valueIsEmpty(argument.value4) && argument">
+                            all
+                          </div>
+                        </div>
                       </span>
                     </div>
                   </div>

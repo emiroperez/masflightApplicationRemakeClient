@@ -280,6 +280,12 @@ export class MsfDashboardAssistantComponent {
           if (argument.value4)
             argument.value4 = JSON.parse (argument.value4);
 
+          if (argument.dateLoaded)
+            argument.dateLoaded = JSON.parse (argument.dateLoaded);
+
+          if (argument.currentDateRangeValue)
+            argument.currentDateRangeValue = JSON.parse (argument.currentDateRangeValue);
+
           if (argument.minDate)
             argument.minDate = new Date (argument.minDate);
     
