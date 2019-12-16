@@ -325,65 +325,65 @@ export class EditCategoryArgumentDialog {
   //
 
   dateValueByFullDate: any[] = [
-    {id: 0, name: 'Today', value: "TODAY"},
-    {id: 1, name: 'Yesterday', value: "YESTERDAY"},
-    {id: 2, name: 'Last Week', value: "LASTWEEK"},
-    {id: 3, name: 'Last Month', value: "LASTMONTH"},
-    {id: 4, name: 'Last Year', value: "LASTYEAR"}
+    { id: 0, name: 'Today' },
+    { id: 1, name: 'Yesterday' },
+    { id: 2, name: 'Last Week' },
+    { id: 3, name: 'Last Month' },
+    { id: 4, name: 'Last Year' }
   ];
 
   dateRangeByFullDate: any[] = [
-    {id: 0, name: 'Today', value: "TODAY"},
-    {id: 1, name: 'Yesterday', value: "YESTERDAY"},
-    {id: 2, name: 'Last Week', value: "LASTWEEK"},
-    {id: 3, name: 'Last Month', value: "LASTMONTH"},
-    {id: 4, name: 'Last Year', value: "LASTYEAR"},
-    {id: 5, name: 'Until Yesterday', value: "UNTILYESTERDAY"},
-    {id: 6, name: 'Until Last Week', value: "UNTILLASTWEEK"},
-    {id: 7, name: 'Until Last Month', value: "UNTILLASTMONTH"},
-    {id: 8, name: 'Until Last Year', value: "UNTILLASTYEAR"},
-    {id: 9, name: 'Until Today', value: "UNTILTODAY"}
+    { id: 0, name: 'Today' },
+    { id: 1, name: 'Yesterday' },
+    { id: 2, name: 'Last Week' },
+    { id: 3, name: 'Last Month' },
+    { id: 4, name: 'Last Year' },
+    { id: 5, name: 'Until Yesterday' },
+    { id: 6, name: 'Until Last Week' },
+    { id: 7, name: 'Until Last Month' },
+    { id: 8, name: 'Until Last Year' },
+    { id: 9, name: 'Until Today' }
   ];
 
   dateValueByMonth: any[] = [
-    {id: 0, name: 'Current Month', value: "CURRENTMONTH"},
-    {id: 1, name: 'Last Month', value: "LASTMONTH"},
-    {id: 2, name: 'Last Year', value: "LASTYEAR"}
+    { id: 0, name: 'Current Month' },
+    { id: 1, name: 'Last Month' },
+    { id: 2, name: 'Last Year' }
   ];
 
   dateRangeByMonth: any[] = [
-    {id: 0, name: 'Current Month', value: "CURRENTMONTH"},
-    {id: 1, name: 'Current Year', value :"CURRENTYEAR"},
-    {id: 2, name: 'Last Month', value: "LASTMONTH"},
-    {id: 3, name: 'Last Year', value: "LASTYEAR"},
-    {id: 4, name: 'Until Last Month', value: "UNTILLASTMONTH"},
-    {id: 5, name: 'Until Last Year', value: "UNTILLASTYEAR"},
+    { id: 0, name: 'Current Month' },
+    { id: 1, name: 'Current Year' },
+    { id: 2, name: 'Last Month' },
+    { id: 3, name: 'Last Year' },
+    { id: 4, name: 'Until Last Month' },
+    { id: 5, name: 'Until Last Year' },
   ];
 
   dateValueByQuarter: any[] = [
-    {id: 0, name: 'Current Quarter', value: "CURRENTQUARTER"},
-    {id: 1, name: 'Last Quarter', value: "LASTQUARTER"},
-    {id: 2, name: 'Last Year', value: "LASTYEAR"}
+    { id: 0, name: 'Current Quarter' },
+    { id: 1, name: 'Last Quarter' },
+    { id: 2, name: 'Last Year' }
   ];
 
   dateRangeByQuarter: any[] = [
-    {id: 0, name: 'Current Quarter', value: "CURRENTQUARTER"},
-    {id: 1, name: 'Current Year', value :"CURRENTYEAR"},
-    {id: 2, name: 'Last Quarter', value: "LASTQUARTER"},
-    {id: 3, name: 'Last Year', value: "LASTYEAR"},
-    {id: 4, name: 'Until Last Quarter', value: "UNTILLASTQUARTER"},
-    {id: 5, name: 'Until Last Year', value: "UNTILLASTYEAR"},
+    { id: 0, name: 'Current Quarter' },
+    { id: 1, name: 'Current Year' },
+    { id: 2, name: 'Last Quarter' },
+    { id: 3, name: 'Last Year' },
+    { id: 4, name: 'Until Last Quarter' },
+    { id: 5, name: 'Until Last Year' },
   ];
 
   dateValueByYear: any[] = [
-    {id: 0, name: 'Current Year', value: "CURRENTYEAR"},
-    {id: 1, name: 'Last Year', value: "LASTYEAR"}
+    { id: 0, name: 'Current Year' },
+    { id: 1, name: 'Last Year' }
   ];
 
   dateRangeByYear: any[] = [
-    {id: 0, name: 'Current Year', value: "CURRENTYEAR"},
-    {id: 1, name: 'Last Year', value: "LASTYEAR"},
-    {id: 2, name: 'Until Last Year', value: "UNTILLASTYEAR"}
+    { id: 0, name: 'Current Year' },
+    { id: 1, name: 'Last Year' },
+    { id: 2, name: 'Until Last Year' }
   ];
 
   //
@@ -458,17 +458,6 @@ export class EditCategoryArgumentDialog {
         if (argument.value3)
           argument.value3 = JSON.parse (argument.value3);
 
-        if (this.isDateRange (argument))
-        {
-          if (!argument.value3)
-          {
-            argument.value1 = "TODAY";
-            argument.value3 = 0;
-          }
-
-          this.setDateRange (argument);
-        }
-
         // initialize if not set
         if (!argument.selectionMode)
           argument.selectionMode = 0;
@@ -477,6 +466,19 @@ export class EditCategoryArgumentDialog {
           // this is for airport multiple selection
           argument.selectionMode &= ~AirportSelection.MULTIPLESELECTION;
           argument.multipleSelection = true;
+        }
+        else if (this.isDateRange (argument))
+        {
+          if (!argument.selectionMode)
+            argument.dateRange = 0;
+          else
+          {
+            argument.dateRange = (argument.selectionMode >> 1) & 3;
+            argument.dateValue = argument.selectionMode >> 3;
+            argument.selectionMode &= 1;
+          }
+
+          this.setDateRange (argument);
         }
 
         if (argument.minDate)
@@ -518,7 +520,7 @@ export class EditCategoryArgumentDialog {
 
   setDateRange(item): void
   {
-    switch (item.value3)
+    switch (item.dateRange)
     {
       case 3:
         if (item.selectionMode == 1)
@@ -555,27 +557,10 @@ export class EditCategoryArgumentDialog {
     {
       item.label2 = null;
       item.name2 = null;
-      item.value2 = null;
       item.name4 = null;
     }
 
-    switch (item.value3)
-    {
-      case 3:
-        item.value1 = "CURRENTYEAR";
-        break;
-
-      case 2:
-        item.value1 = "CURRENTQUARTER";
-        break;
-
-      case 1:
-        item.value1 = "CURRENTMONTH";
-        break;
-
-      default:
-        item.value1 = "TODAY";
-    }
+    item.dateValue = 0;
   }
 
   getDateValueLabel(item): string
@@ -644,7 +629,9 @@ export class EditCategoryArgumentDialog {
 
   valueTypeChanged(item): void
   {
-    switch (item.value3)
+    item.dateValue = 0;
+
+    switch (item.dateRange)
     {
       case 3:
         if (item.selectionMode == 1)
@@ -652,7 +639,6 @@ export class EditCategoryArgumentDialog {
         else
           item.currentDateRange = this.dateValueByYear;
 
-        item.value1 = "CURRENTYEAR";
         item.name3 = null;
         item.name4 = null;
         break;
@@ -662,8 +648,6 @@ export class EditCategoryArgumentDialog {
           item.currentDateRange = this.dateRangeByQuarter;
         else
           item.currentDateRange = this.dateValueByQuarter;
-
-        item.value1 = "CURRENTQUARTER";
         break;
 
       case 1:
@@ -671,8 +655,6 @@ export class EditCategoryArgumentDialog {
           item.currentDateRange = this.dateRangeByMonth;
         else
           item.currentDateRange = this.dateValueByMonth;
-
-        item.value1 = "CURRENTMONTH";
         break;
 
       default:
@@ -681,7 +663,6 @@ export class EditCategoryArgumentDialog {
         else
           item.currentDateRange = this.dateValueByFullDate;
 
-        item.value1 = "TODAY";
         item.name3 = null;
         item.name4 = null;
     }
@@ -787,10 +768,16 @@ export class EditCategoryArgumentDialog {
   {
     let argList = JSON.parse (JSON.stringify (argument));
 
-    for (let item of argument)
+    for (let item of argList.arguments)
     {
       if (item.multipleSelection)
         item.selectionMode |= AirportSelection.MULTIPLESELECTION;
+
+      if (item.dateRange)
+        item.selectionMode |= item.dateRange << 1;
+
+      if (item.dateValue)
+        item.selectionMode |= item.dateValue << 3;
     }
 
     this.dialog.open(DialogArgumentPreviewComponent, {
@@ -2152,6 +2139,12 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
           // Use a special flag value for airport selection in order for multiple selection
           if (argument.multipleSelection)
             argument.selectionMode |= AirportSelection.MULTIPLESELECTION;
+
+          if (argument.dateRange)
+            argument.selectionMode |= argument.dateRange << 1;
+
+          if (argument.dateValue)
+            argument.selectionMode |= argument.dateValue << 3;
 
           if (argument.minDate)
             argument.minDate = argument.minDate.toString ();

@@ -10,7 +10,7 @@
                 <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                 <mat-datepicker #picker1 startView="{{dateStartView}}"></mat-datepicker>
             </mat-form-field>
-            <mat-form-field *ngIf="argument.selectionMode == 1" class="msf-full-width msf-single-date">
+            <mat-form-field *ngIf="isDateRange" class="msf-full-width msf-single-date">
                 <input matInput [min]="minDate" [max]="argument.maxDate" class="msf-component-airport-container mat-input-element" matInput [matDatepicker]="picker2" placeholder="{{argument.label2}}" autocomplete="off" class="msf-full-width msf-menu-arg-select" [(ngModel)]="argument.value2" (click)="picker2.open()" [readonly]="true">
                 <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                 <mat-datepicker #picker2 startView="{{dateStartView}}"></mat-datepicker>
@@ -40,7 +40,7 @@
                 </ng-select> 
                 <img src="../../assets/images/{{globals.theme}}-calendarTime.png" class="msf-calendar-image">
             </div>
-            <ng-container *ngIf="argument.selectionMode == 1">
+            <ng-container *ngIf="isDateRange">
                 <mat-form-field class="msf-full-width msf-single-date">
                     <input hidden [min]="argument.minDate" [max]="argument.maxDate" [matDatepicker]="picker4" [(ngModel)]="value2Date" [readonly]="true">
                     <input matInput [ngModel]="value2Display" [ngModelOptions]="{ standalone: true }" placeholder="{{argument.label2}}" autocomplete="off" class="msf-full-width msf-menu-arg-select" (click)="picker4.open()" [readonly]="true">
@@ -68,11 +68,11 @@
         </ng-container>
     </div>
 </div>
-<div class="msf-component-argument-container" *ngIf="argument.selectionMode == 1 && valueType === 'fullDate'">
+<div class="msf-component-argument-container" *ngIf="isDateRange && valueType === 'fullDate'">
     <div class="center">
         <div class="msf-component-airport-title">Auto select the date range:</div>
     </div>
-    <div class="msf-component-auto-select-date-range">         
+    <div class="msf-component-auto-select-date-range">
         <ng-select style="width: 100%;"
             [items]="currentDateRange"
             [multiple]="false"

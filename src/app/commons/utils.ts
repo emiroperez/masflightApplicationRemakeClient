@@ -441,7 +441,15 @@ export class Utils{
               return new DateFormatPipe ('en-US').transform (momentValue.toDate ());
             }
             else
+            {
+              if (value != null)
+              {
+                if (value.id != null)
+                  return value.id;
+              }
+
               return value;
+            }
 
             return new DateFormatPipe ('en-US').transform (value);
         }else if(type == ComponentType.ceiling ||

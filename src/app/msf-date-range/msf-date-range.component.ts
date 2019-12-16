@@ -203,6 +203,7 @@ export class MsfDateRangeComponent implements OnInit {
   dateRange: any = null;
   dateStartView: string = "month";
   valueType: string = "fullDate";
+  isDateRange: boolean = false;
   autoSelectDate;
 
   value1Display: any;
@@ -214,7 +215,11 @@ export class MsfDateRangeComponent implements OnInit {
 
   ngOnInit()
   {
-    this.currentValueType = this.argument.value3;
+    let currentDateRangeValue;
+
+    this.currentValueType = (this.argument.selectionMode >> 1) & 3;
+    currentDateRangeValue = this.argument.selectionMode >> 3;
+    this.isDateRange = (this.argument.selectionMode & 1) ? true : false;
 
     switch (this.currentValueType)
     {
@@ -223,7 +228,7 @@ export class MsfDateRangeComponent implements OnInit {
         this.dateStartView = "multi-year";
         this.valueType = "year";
 
-        if (this.argument.selectionMode == 1)
+        if (this.isDateRange)
           this.currentDateRange = this.dateRangeByYear;
         else
           this.currentDateRange = this.dateValueByYear;
@@ -234,7 +239,7 @@ export class MsfDateRangeComponent implements OnInit {
         this.dateStartView = "multi-year";
         this.valueType = "quarter";
 
-        if (this.argument.selectionMode == 1)
+        if (this.isDateRange)
           this.currentDateRange = this.dateRangeByQuarter;
         else
           this.currentDateRange = this.dateValueByQuarter;
@@ -244,54 +249,72 @@ export class MsfDateRangeComponent implements OnInit {
         this.dateStartView = "year";
         this.valueType = "month";
 
-        if (this.argument.selectionMode == 1)
+        if (this.isDateRange)
           this.currentDateRange = this.dateRangeByMonth;
         else
           this.currentDateRange = this.dateValueByMonth;
         break;
 
       default:
-        if (this.argument.selectionMode == 1)
+        if (this.isDateRange)
           this.currentDateRange = this.dateRangeByFullDate;
         else
           this.currentDateRange = this.dateValueByFullDate;
         break;
     }
 
-    if (this.argument.value1)
+    if (!this.argument.dateLoaded)
     {
-      setTimeout (() => {
-        this.loadingDefaults = true;
+      this.loadingDefaults = true;
 
-        // auto select date range after loading the default value
-        for (let dateRange of this.currentDateRange)
+      // auto select date range after loading the default value
+      for (let dateRange of this.currentDateRange)
+      {
+        if (dateRange.id === currentDateRangeValue)
         {
-          if (dateRange.value === this.argument.value1)
-          {
-            this.argument.value1 = null;
-            this.dateRange = dateRange;
-            this.autoSelect ();
-            break;
-          }
+          this.dateRange = dateRange;
+          this.autoSelect ();
+          break;
         }
+      }
   
-        this.loadingDefaults = false;
-      }, 1);
+      this.loadingDefaults = false;
+      this.argument.dateLoaded = true;
     }
     else
     {
-      setTimeout (() => {
-        if (this.currentValueType == 2)
+      for (let dateRange of this.currentDateRange)
+      {
+        if (dateRange.id === currentDateRangeValue)
         {
-          this.argument.value3 = this.quarters[0];
-          this.argument.value4 = this.quarters[3];
+          this.dateRange = dateRange;
+          break;
         }
-        else if (this.currentValueType == 1)
-        {
-          this.argument.value3 = null;
-          this.argument.value4 = null;
-        }
-      }, 1);
+      }
+
+      // set display and date values
+      switch (this.currentValueType)
+      {
+        case 3:
+          this.setYearValue1 (moment (this.argument.value1, "YYYY"));
+
+          if (this.isDateRange)
+            this.setYearValue2 (moment (this.argument.value2, "YYYY"));
+          break;
+
+        case 2:
+          this.setQuarterValue1FromArgument ();
+
+          if (this.isDateRange)
+            this.setQuarterValue2FromArgument ();
+          break;
+
+        case 1:
+          this.setMonthValue1 (moment (this.argument.value1, "MMM/YYYY"));
+
+          if (this.isDateRange)
+            this.setMonthValue2 (moment (this.argument.value1, "MMM/YYYY"));
+      }
     }
 
     this.minDate = this.argument.minDate;
@@ -299,7 +322,7 @@ export class MsfDateRangeComponent implements OnInit {
 
   dateChange(event): void
   {
-    if (!this.argument.value2 && this.argument.selectionMode == 1)
+    if (!this.argument.value2 && this.isDateRange)
       this.argument.value2 = this.argument.value1;
 
     this.minDate = this.argument.value1;
@@ -318,7 +341,7 @@ export class MsfDateRangeComponent implements OnInit {
     if (option != null)
       option = option.value;
 
-    if (this.argument.selectionMode == 1)
+    if (this.isDateRange)
     {
       switch (option)
       {
@@ -704,6 +727,38 @@ export class MsfDateRangeComponent implements OnInit {
     for (let quarter of this.quarters)
     {
       if (quarter.id === quarterValue)
+      {
+        this.argument.value4 = quarter;
+        break;
+      }
+    }
+
+    this.setYearValue2 (normalizedDate);
+  }
+
+  setQuarterValue1FromArgument(): void
+  {
+    let normalizedDate = moment (this.argument.value1, "YYYY");
+
+    for (let quarter of this.quarters)
+    {
+      if (quarter.id === this.argument.value3.id)
+      {
+        this.argument.value3 = quarter;
+        break;
+      }
+    }
+
+    this.setYearValue1 (normalizedDate);
+  }
+
+  setQuarterValue2FromArgument(): void
+  {
+    let normalizedDate = moment (this.argument.value2, "YYYY");
+
+    for (let quarter of this.quarters)
+    {
+      if (quarter.id === this.argument.value4.id)
       {
         this.argument.value4 = quarter;
         break;
