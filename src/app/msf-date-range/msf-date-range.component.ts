@@ -127,72 +127,72 @@ export class MsfDateRangeComponent implements OnInit {
   currentValueType: number = 0;
 
   dateValueByFullDate: any[] = [
-    {id: 0, name: 'Today', value: "TODAY"},
-    {id: 1, name: 'Yesterday', value: "YESTERDAY"},
-    {id: 2, name: 'Last Week', value: "LASTWEEK"},
-    {id: 3, name: 'Last Month', value: "LASTMONTH"},
-    {id: 4, name: 'Last Year', value: "LASTYEAR"}
+    { id: 0, name: 'Today', value: "TODAY" },
+    { id: 1, name: 'Yesterday', value: "YESTERDAY" },
+    { id: 2, name: 'Last Week', value: "LASTWEEK" },
+    { id: 3, name: 'Last Month', value: "LASTMONTH" },
+    { id: 4, name: 'Last Year', value: "LASTYEAR" }
   ];
 
   dateRangeByFullDate: any[] = [
-    {id: 0, name: 'Today', value: "TODAY"},
-    {id: 1, name: 'Yesterday', value: "YESTERDAY"},
-    {id: 2, name: 'Last Week', value: "LASTWEEK"},
-    {id: 3, name: 'Last Month', value: "LASTMONTH"},
-    {id: 4, name: 'Last Year', value: "LASTYEAR"},
-    {id: 5, name: 'Until Yesterday', value: "UNTILYESTERDAY"},
-    {id: 6, name: 'Until Last Week', value: "UNTILLASTWEEK"},
-    {id: 7, name: 'Until Last Month', value: "UNTILLASTMONTH"},
-    {id: 8, name: 'Until Last Year', value: "UNTILLASTYEAR"},
-    {id: 9, name: 'Until Today', value: "UNTILTODAY"}
+    { id: 0, name: 'Today', value: "TODAY" },
+    { id: 1, name: 'Yesterday', value: "YESTERDAY" },
+    { id: 2, name: 'Last Week', value: "LASTWEEK" },
+    { id: 3, name: 'Last Month', value: "LASTMONTH" },
+    { id: 4, name: 'Last Year', value: "LASTYEAR" },
+    { id: 5, name: 'Until Yesterday', value: "UNTILYESTERDAY" },
+    { id: 6, name: 'Until Last Week', value: "UNTILLASTWEEK" },
+    { id: 7, name: 'Until Last Month', value: "UNTILLASTMONTH" },
+    { id: 8, name: 'Until Last Year', value: "UNTILLASTYEAR" },
+    { id: 9, name: 'Until Today', value: "UNTILTODAY" }
   ];
 
   dateValueByMonth: any[] = [
-    {id: 0, name: 'Current Month', value: "CURRENTMONTH"},
-    {id: 1, name: 'Last Month', value: "LASTMONTH"},
-    {id: 2, name: 'Last Year', value: "LASTYEAR"}
+    { id: 0, name: 'Current Month', value: "CURRENTMONTH" },
+    { id: 1, name: 'Last Month', value: "LASTMONTH" },
+    { id: 2, name: 'Last Year', value: "LASTYEAR" }
   ];
 
   dateRangeByMonth: any[] = [
-    {id: 0, name: 'Current Month', value: "CURRENTMONTH"},
-    {id: 1, name: 'Current Year', value :"CURRENTYEAR"},
-    {id: 2, name: 'Last Month', value: "LASTMONTH"},
-    {id: 3, name: 'Last Year', value: "LASTYEAR"},
-    {id: 4, name: 'Until Last Month', value: "UNTILLASTMONTH"},
-    {id: 5, name: 'Until Last Year', value: "UNTILLASTYEAR"},
+    { id: 0, name: 'Current Month', value: "CURRENTMONTH" },
+    { id: 1, name: 'Current Year', value :"CURRENTYEAR" },
+    { id: 2, name: 'Last Month', value: "LASTMONTH" },
+    { id: 3, name: 'Last Year', value: "LASTYEAR" },
+    { id: 4, name: 'Until Last Month', value: "UNTILLASTMONTH" },
+    { id: 5, name: 'Until Last Year', value: "UNTILLASTYEAR" },
   ];
 
   dateValueByQuarter: any[] = [
-    {id: 0, name: 'Current Quarter', value: "CURRENTQUARTER"},
-    {id: 1, name: 'Last Quarter', value: "LASTQUARTER"},
-    {id: 2, name: 'Last Year', value: "LASTYEAR"}
+    { id: 0, name: 'Current Quarter', value: "CURRENTQUARTER" },
+    { id: 1, name: 'Last Quarter', value: "LASTQUARTER" },
+    { id: 2, name: 'Last Year', value: "LASTYEAR" }
   ];
 
   dateRangeByQuarter: any[] = [
-    {id: 0, name: 'Current Quarter', value: "CURRENTQUARTER"},
-    {id: 1, name: 'Current Year', value :"CURRENTYEAR"},
-    {id: 2, name: 'Last Quarter', value: "LASTQUARTER"},
-    {id: 3, name: 'Last Year', value: "LASTYEAR"},
-    {id: 4, name: 'Until Last Quarter', value: "UNTILLASTQUARTER"},
-    {id: 5, name: 'Until Last Year', value: "UNTILLASTYEAR"},
+    { id: 0, name: 'Current Quarter', value: "CURRENTQUARTER" },
+    { id: 1, name: 'Current Year', value :"CURRENTYEAR" },
+    { id: 2, name: 'Last Quarter', value: "LASTQUARTER" },
+    { id: 3, name: 'Last Year', value: "LASTYEAR" },
+    { id: 4, name: 'Until Last Quarter', value: "UNTILLASTQUARTER" },
+    { id: 5, name: 'Until Last Year', value: "UNTILLASTYEAR" },
   ];
 
   dateValueByYear: any[] = [
-    {id: 0, name: 'Current Year', value: "CURRENTYEAR"},
-    {id: 1, name: 'Last Year', value: "LASTYEAR"}
+    { id: 0, name: 'Current Year', value: "CURRENTYEAR" },
+    { id: 1, name: 'Last Year', value: "LASTYEAR" }
   ];
 
   dateRangeByYear: any[] = [
-    {id: 0, name: 'Current Year', value: "CURRENTYEAR"},
-    {id: 1, name: 'Last Year', value: "LASTYEAR"},
-    {id: 2, name: 'Until Last Year', value: "UNTILLASTYEAR"}
+    { id: 0, name: 'Current Year', value: "CURRENTYEAR" },
+    { id: 1, name: 'Last Year', value: "LASTYEAR" },
+    { id: 2, name: 'Until Last Year', value: "UNTILLASTYEAR" }
   ];
 
   quarters: any[] = [
-    {id: 1, name: '1st Quarter', value: "1"},
-    {id: 2, name: '2nd Quarter', value: "2"},
-    {id: 3, name: '3rd Quarter', value: "3"},
-    {id: 4, name: '4th Quarter', value: "4"}
+    { id: 1, name: '1st Quarter', value: "1" },
+    { id: 2, name: '2nd Quarter', value: "2" },
+    { id: 3, name: '3rd Quarter', value: "3" },
+    { id: 4, name: '4th Quarter', value: "4" }
   ];
 
   monthNames: string[] =
