@@ -60,7 +60,12 @@ export class MsfSortingCheckboxesComponent implements OnInit {
   
   getRecords(search, handlerSuccess)
   {
-    let url = this.globals.baseUrl + this.argument.url + "?optionId="+ this.currentOptionId;
+    let url;
+
+    if (this.currentOptionId == null)
+      return;
+
+    url = this.globals.baseUrl + this.argument.url + "?optionId="+ this.currentOptionId;
     this.http.get(this,url,handlerSuccess,this.handlerError, null);  
   }
   

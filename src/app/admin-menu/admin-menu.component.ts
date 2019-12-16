@@ -1319,7 +1319,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   handlerSuccessCategoryArguments(_this, result) {
     _this.categories = result;
     _this.filteredCategories.next (_this.categories.slice ());
-    if (_this.optionSelected.id) {
+    if (_this.optionSelected.id != null) {
       _this.getOptionCategoryArguments(_this.optionSelected);
     }
   }
@@ -1328,7 +1328,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   }
 
   getMeta() {
-    if (!this.optionSelected.id)
+    if (this.optionSelected.id == null)
     {
       let argList = [];
 
@@ -2018,7 +2018,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   saveCategoryArgument() {
     let arrayMenuOptionArg = [];
 
-    if (!this.optionSelected.id)
+    if (this.optionSelected.id == null)
       return;
 
     for (let i = 0; i < this.optionSelected.menuOptionArgumentsAdmin.length; i++)
@@ -2110,7 +2110,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   }
 
   getDrillDowns() {
-    if (!this.optionSelected.id)
+    if (this.optionSelected.id == null)
     {
       this.drillDown = JSON.parse (JSON.stringify (this.optionSelected.createdDrillDowns));
       this.service.getMenuString(this, this.globals.currentApplication.id, this.handleNewOptionSuccessString, this.handlerErrorMeta);
