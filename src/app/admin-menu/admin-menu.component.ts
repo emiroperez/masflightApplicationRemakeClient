@@ -716,6 +716,10 @@ export class EditCategoryArgumentDialog {
     return ComponentType.airport == argument.type;
   }
 
+  isAircraftType(argument: Arguments) {
+    return ComponentType.aircraftType == argument.type;
+  }
+
   isSingleAirport(argument: Arguments) {
     return ComponentType.singleAirport == argument.type;
   }
