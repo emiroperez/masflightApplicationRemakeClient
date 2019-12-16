@@ -917,6 +917,10 @@ export class EditCategoryArgumentDialog {
   isSelectBoxMultipleOption(item){
     return ComponentType.selectBoxMultipleOption == item.type;
   }
+
+  isSelectBoxSingleOption(item) {
+    return ComponentType.selectBoxSingleOption == item.type;
+  }
 }
 
 export class ExampleFlatNode {
