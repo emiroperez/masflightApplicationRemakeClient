@@ -605,7 +605,7 @@
                 <div *ngIf="isContentType(item)" [style.margin-left.px]="-10">
                     <div class="msf-component-airport-sub-title msf-component-airport-route-sub-title" [style.margin-bottom.px]="10">Set Default Value</div>
                     <mat-radio-group class="checkbox-component" *ngFor="let radio of contentTypes" [(ngModel)]="item.value1">
-                        <mat-radio-button class="cancels-checkbox" [value]="radio.value">
+                        <mat-radio-button class="cancels-checkbox edit-category-radio-button" [value]="radio.value">
                             {{radio.name}}
                         </mat-radio-button>
                     </mat-radio-group>
@@ -613,7 +613,7 @@
                 <div *ngIf="isSeatClass(item)" [style.margin-left.px]="-10">
                     <div class="msf-component-airport-sub-title msf-component-airport-route-sub-title" [style.margin-bottom.px]="10">Set Default Value</div>
                     <mat-radio-group class="checkbox-component" *ngFor="let radio of seatClasses" [(ngModel)]="item.value1">
-                        <mat-radio-button class="cancels-checkbox" [value]="radio.value">
+                        <mat-radio-button class="cancels-checkbox edit-category-radio-button" [value]="radio.value">
                             {{radio.name}}
                         </mat-radio-button>
                     </mat-radio-group>
