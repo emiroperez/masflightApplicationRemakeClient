@@ -12,6 +12,7 @@
     </mat-form-field>
 </div>
 <div class="center msf-component-radio">
+    <span [style.margin-right.px]="10" *ngIf="argument.label3">{{argument.label3}}</span>
     <mat-radio-group [(ngModel)]="argument.value3">
         <mat-radio-button value="kts">Kts</mat-radio-button>
         <mat-radio-button class="msf-radio" value="mph">Mph</mat-radio-button>

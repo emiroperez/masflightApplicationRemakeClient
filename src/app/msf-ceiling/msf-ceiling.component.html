@@ -36,6 +36,7 @@
     </ng-select>
 </div>
 <div class="center msf-component-radio">
+    <span [style.margin-right.px]="10" *ngIf="argument.label3">{{argument.label3}}</span>
     <mat-radio-group [(ngModel)]="argument.value3">
         <mat-radio-button value="m">Meter</mat-radio-button>
         <mat-radio-button class="msf-radio" value="ft">Feet</mat-radio-button>
