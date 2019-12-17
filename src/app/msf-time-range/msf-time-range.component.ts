@@ -13,8 +13,11 @@ export class MsfTimeRangeComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.argument.value1 = '12:00 am';
-    this.argument.value2 = '11:59 pm';
+    if (!this.argument.value1)
+      this.argument.value1 = '12:00 am';
+
+    if (!this.argument.value2)
+      this.argument.value2 = '11:59 pm';
   }
 
 }
