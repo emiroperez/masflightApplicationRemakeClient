@@ -1063,7 +1063,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     { type: "airline", numArguments: 1 },
     { type: "airport", numArguments: 1 },
     { type: "airportRoute", numArguments: 2 },
-    { type: "ceiling", numArguments: 2 },
+    { type: "ceiling", numArguments: 3 },
     { type: "timeRange", numArguments: 2 },
     { type: "dateRange", numArguments: 2 },
     { type: "tailnumber", numArguments: 2 },
