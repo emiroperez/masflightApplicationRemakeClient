@@ -459,17 +459,9 @@ export class EditCategoryArgumentDialog {
           argument.value3 = JSON.parse (argument.value3);
 
         // initialize if not set
-        if (!argument.selectionMode)
-          argument.selectionMode = 0;
-        else if (this.isAirport (argument) && argument.selectionMode & AirportSelection.MULTIPLESELECTION)
+        if (this.isDateRange (argument))
         {
-          // this is for airport multiple selection
-          argument.selectionMode &= ~AirportSelection.MULTIPLESELECTION;
-          argument.multipleSelection = true;
-        }
-        else if (this.isDateRange (argument))
-        {
-          if (!argument.selectionMode)
+          if (argument.selectionMode == null)
             argument.dateRange = 0;
           else
           {
@@ -480,6 +472,14 @@ export class EditCategoryArgumentDialog {
 
           this.setDateRange (argument);
         }
+        else if (this.isAirport (argument) && argument.selectionMode & AirportSelection.MULTIPLESELECTION)
+        {
+          // this is for airport multiple selection
+          argument.selectionMode &= ~AirportSelection.MULTIPLESELECTION;
+          argument.multipleSelection = true;
+        }
+        else if (argument.selectionMode == null)
+          argument.selectionMode = 0;
 
         if (argument.minDate)
           argument.minDate = new Date (argument.minDate);
