@@ -325,51 +325,63 @@ export class Utils{
         return args;
     }
 
-    getNameGroup(value:any,group: string){
-        var names="";
+    getNameGroup(value: any, group: string)
+    {
+        var names = "";
         var i = 0;
-        for(var val of value){
-            if(group == "Airline"){
-                if(val.airline.iata != null){
-                    if(i == 0){
+
+        for (var val of value)
+        {
+            if (group == "Airline")
+            {
+                if (val.airline.iata != null)
+                {
+                    if (i == 0)
                         names = val.airline.iata;
-                    }else{
-                        names += ","+ val.airline.iata;
-                    }
-                }
-            }else if(group == "Airport"){
-                if(val.airport.iata != null){
-                    if(i == 0){
-                        names = val.airport.iata;
-                    }else{
-                        names += ","+ val.airport.iata;
-                    }
-                }
-            }else if(group == "AircraftType"){
-                if(val.aircraftType.name != null){
-                    if(i == 0){
-                        names = val.aircraftType.name;
-                    }else{
-                        names += ","+ val.aircraftType.name;
-                    }
+                    else
+                        names += "," + val.airline.iata;
                 }
             }
-            // if(group == "Aircraft"){
-            //     if(i == 0){
-            //         names = val.Aircraft.name;
-            //     }else{
-            //         names += ","+ val.Aircraft.name;
-            //     }
-            // }else{
-            //     if(i == 0){
-            //         names = val.iata;
-            //     }else{
-            //         names += ","+ val.iata;
-            //     }
-            // }
+            else if (group == "Airport")
+            {
+                if (val.airport.iata != null)
+                {
+                    if (i == 0)
+                        names = val.airport.iata;
+                    else
+                        names += "," + val.airport.iata;
+                }
+            }
+            else if (group == "AircraftType")
+            {
+                if (val.aircraftType.name != null)
+                {
+                    if (i == 0)
+                        names = val.aircraftType.name;
+                    else
+                        names += "," + val.aircraftType.name;
+                }
+            }
+
+            //if(group == "Aircraft")
+            //{
+            //    if (i == 0)
+            //        names = val.Aircraft.name;
+            //    else
+            //        names += "," + val.Aircraft.name;
+            //}
+            //else
+            //{
+            //    if (i == 0)
+            //        names = val.iata;
+            //    else
+            //        names += "," + val.iata;
+            //}
+
             i++;
         }
-        return names
+
+        return names;
     }
 
     getValueFormat(type: string, value: any, argument: any)
@@ -502,7 +514,7 @@ export class Utils{
             if (typeof value[argument.selectedAttribute] === 'undefined')
                 return '';
 
-            return value.name;
+            return value[argument.selectedAttribute];
         }
         else if (type == ComponentType.airline || type == ComponentType.airportRoute
             || type == ComponentType.airport || type == ComponentType.airportsRoutes)
@@ -664,195 +676,280 @@ export class Utils{
         return value;
     }
 
-    getValueFormatView(type: string, value:any,argument:any){
-        if(value!=null){
-            if( typeof value === 'undefined'){
+    getValueFormatView(type: string, value: any, argument: any)
+    {
+        if (value != null)
+        {
+            if (typeof value === 'undefined')
                 return '';
-            }
-            if(argument.url!=null && argument.url!='' && type != ComponentType.sortingCheckboxes){
-                var valueAux="";
+
+            if (argument.url != null && argument.url != '' && type != ComponentType.sortingCheckboxes)
+            {
+                var valueAux = "";
                 var i = 0;
-                if(Array.isArray(value)){
-                    for(var val of value){
-                        if(i == 0){
+
+                if (Array.isArray (value))
+                {
+                    for (var val of value)
+                    {
+                        if (i == 0)
                             valueAux = val[argument.visibleAttribute];
-                        }else{
-                            valueAux += ","+ val[argument.visibleAttribute];
-                        }                
+                        else
+                            valueAux += "," + val[argument.visibleAttribute];
+
                         i++;
                     }
-                }else{
-                    return value[argument.visibleAttribute];
                 }
+                else
+                    return value[argument.visibleAttribute];
     
                 return valueAux;
             }
-            if(type == ComponentType.dateRange || 
-                type == ComponentType.date){
-                return this.getDateFormat(value, null);
-            }else if(type == ComponentType.airport){
-                if(typeof value === "string"){
+
+            if (type == ComponentType.dateRange || type == ComponentType.date)
+                return this.getDateFormat (value, null);
+            else if (type == ComponentType.airport)
+            {
+                if (typeof value === "string")
                     return value;
-                }
-                return value.iata;
-            }else if(type == ComponentType.ceiling ||
-                 type == ComponentType.rounding ||  type ==  ComponentType.resultsLess || type ==  ComponentType.geography 
-                 || type == ComponentType.filterAirlineType || type == ComponentType.fareIncrements || type == ComponentType.fareIncrementMiddle
-                 || type == ComponentType.fareIncrementMax || type == ComponentType.percentIncrement || type == ComponentType.quarterHour
-                 || type == ComponentType.stops || type == ComponentType.circuityType || type == ComponentType.circuity
-                 || type == ComponentType.groupingHubSummaries || type == ComponentType.groupingDailyStatics || type == ComponentType.groupingOperationsSummary|| type == ComponentType.groupingOpSum
-                 || type == ComponentType.groupingOpSum2 || type == ComponentType.fareIncrementsMarketHistograms|| type == ComponentType.sortingNostop || type == ComponentType.sortingConnectionBuilder){
-                if(typeof value === "string"){
+
+                return value[argument.selectedAttribute];
+            }
+            else if (type == ComponentType.ceiling || type == ComponentType.rounding
+                || type ==  ComponentType.resultsLess || type ==  ComponentType.geography
+                || type == ComponentType.filterAirlineType || type == ComponentType.fareIncrements
+                || type == ComponentType.fareIncrementMiddle || type == ComponentType.fareIncrementMax
+                || type == ComponentType.percentIncrement || type == ComponentType.quarterHour
+                || type == ComponentType.stops || type == ComponentType.circuityType
+                || type == ComponentType.circuity || type == ComponentType.groupingHubSummaries
+                || type == ComponentType.groupingDailyStatics || type == ComponentType.groupingOperationsSummary
+                || type == ComponentType.groupingOpSum || type == ComponentType.groupingOpSum2
+                || type == ComponentType.fareIncrementsMarketHistograms || type == ComponentType.sortingNostop
+                || type == ComponentType.sortingConnectionBuilder)
+            {
+                if (typeof value === "string")
                     return value;
-                }
+
                 return value.id;
-            }else if(type == ComponentType.singleairline || type == ComponentType.singleAirport){
-                    if(typeof value === "string"){
-                        return value;
-                    }
-                    if( typeof value.iata === 'undefined'){
-                         return '';
-                     }
-                     return value.iata;
-            }else if(type == ComponentType.selectBoxSingleOption){
-                if(typeof value === "string"){
+            }
+            else if (type == ComponentType.singleairline || type == ComponentType.singleAirport)
+            {
+                if (typeof value === "string")
                     return value;
-                }
-                if( typeof value.name === 'undefined'){
-                     return '';
-                 }
-                return value.name;
-            }else if(type == ComponentType.airline ||
-                 type == ComponentType.airportRoute || type == ComponentType.airportsRoutes){
-                    var valueAux="";
-                    var i = 0;
-                    for(var val of value){
-                        if(i == 0){
-                            valueAux = val.iata;
-                        }else{
-                            valueAux += ","+ val.iata;
-                        }                
-                        i++;
-                    }
-                    return valueAux;
-           }else if(type == ComponentType.aircraftType){
-            var valueAux="";
-            var i = 0;
-            for(var val of value){
-                if(i == 0){
-                    valueAux = val.name;
-                }else{
-                    valueAux += ","+ val.name;
-                }                
-                i++;
+
+                if (typeof value[argument.selectedAttribute] === 'undefined')
+                    return '';
+
+                return value[argument.selectedAttribute];
             }
-            return valueAux;
-           }else if (type == ComponentType.sortingCheckboxes){
-            var valueAux="";
-            var i = 0;
-            for(var val of value){
-                if(i == 0){
-                    valueAux = val.columnName + "-" +val.order;
-                }else{
-                    valueAux += ","+ val.columnName+ "-" +val.order;
-                }                
-                i++;
+            else if (type == ComponentType.selectBoxSingleOption)
+            {
+                if (typeof value === "string")
+                    return value;
+
+                if (typeof value[argument.selectedAttribute] === 'undefined')
+                    return '';
+
+                return value[argument.selectedAttribute];
             }
-            return valueAux;
-          }else if (type == ComponentType.groupingAthena|| type == ComponentType.groupingMariaDB || type == ComponentType.groupingMariaDB || type == ComponentType.groupingCompGenre || type == ComponentType.groupingCompTotal){
-            var valueAux="";
-            var i = 0;
-            for(var val of value){
-                if(i == 0){
-                    valueAux = val.columnName;
-                }else{
-                    valueAux += ","+ val.columnName;
-                }                
-                i++;
-            }
-            return valueAux;
-          }else if (type == ComponentType.grouping || type == ComponentType.summary 
-            || type == ComponentType.fareTypes || type == ComponentType.causesFlightDelaysCheckbox 
-            || type == ComponentType.taxiTimesCheckboxes || type == ComponentType.cancelsCheckBox || type== ComponentType.diversionsCheckbox
-            || type  == ComponentType.aircraftTypeCheckboxes
-            || type == ComponentType.summaryRevenueBuilds){
-            var valueAux="";
-            var i = 0;
-            for(var val of value){
-                if(i == 0){
-                    valueAux = val.id;
-                }else{
-                    valueAux += ","+ val.id;
-                }                
-                i++;
-            }
-            return valueAux;
-        }else if (type == ComponentType.selectBoxMultipleOption || type == ComponentType.totalType){
-                var valueAux="";
+            else if (type == ComponentType.airline || type == ComponentType.airportRoute
+                || type == ComponentType.airportsRoutes)
+            {
+                var valueAux = "";
                 var i = 0;
-                for(var val of value){
-                    if(i == 0){
-                        valueAux = val.name;
-                    }else{
-                        valueAux += ","+ val.name;
-                    }                
+
+                for (var val of value)
+                {
+                    if (i == 0)
+                        valueAux = val[argument.selectedAttribute];
+                    else
+                        valueAux += "," + val[argument.selectedAttribute];
+            
                     i++;
                 }
+
                 return valueAux;
-        }else if (type == ComponentType.datePeriod || type == ComponentType.datePeriodRevenue){
-            if(value!=null){
-              if(value.id!=null){
-                  return value.id;
-              }else{
-                  return value;
-              }
-            }else{
-                return "";
             }
-        }else if(type == ComponentType.selectBoxSingleOption || type == ComponentType.functions){
-            if(typeof value === "string"){
-                return value;
+            else if (type == ComponentType.aircraftType)
+            {
+                var valueAux = "";
+                var i = 0;
+
+                for (var val of value)
+                {
+                    if (i == 0)
+                        valueAux = val[argument.selectedAttribute];
+                    else
+                        valueAux += "," + val[argument.selectedAttribute];
+
+                    i++;
+                }
+
+                return valueAux;
             }
-            if( typeof value.name === 'undefined'){
-                 return '';
-             }
-            return value.name;
-        }else if ( type == ComponentType.totalType || type == ComponentType.flightSegments || type == ComponentType.states){
-            var valueAux="";
-            var i = 0;
-            for(var val of value){
-                if(i == 0){
-                    valueAux = val.name;
-                }else{
-                    valueAux += ","+ val.name;
-                }                
-                i++;
+            else if (type == ComponentType.sortingCheckboxes)
+            {
+                var valueAux = "";
+                var i = 0;
+
+                for (var val of value)
+                {
+                    if (i == 0)
+                        valueAux = val.columnName + "-" + val.order;
+                    else
+                        valueAux += "," + val.columnName+ "-" + val.order;
+
+                    i++;
+                }
+
+                return valueAux;
             }
-            return valueAux;
-        }else if (type == ComponentType.region || type == ComponentType.flightDelaysCheckbox){
-            var valueAux="";
-            var i = 0;
-            for(var val of value){
-                if(i == 0){
-                    valueAux = val.value;
-                }else{
-                    valueAux += ","+ val.value;
-                }                
-                i++;
+            else if (type == ComponentType.groupingAthena || type == ComponentType.groupingMariaDB
+                || type == ComponentType.groupingMariaDB || type == ComponentType.groupingCompGenre
+                || type == ComponentType.groupingCompTotal)
+            {
+                var valueAux = "";
+                var i = 0;
+
+                for (var val of value)
+                {
+                    if (i == 0)
+                        valueAux = val.columnName;
+                    else
+                        valueAux += "," + val.columnName;
+
+                    i++;
+                }
+
+                return valueAux;
             }
-            return valueAux;
-    } 
+            else if (type == ComponentType.grouping || type == ComponentType.summary 
+                || type == ComponentType.fareTypes || type == ComponentType.causesFlightDelaysCheckbox 
+                || type == ComponentType.taxiTimesCheckboxes || type == ComponentType.cancelsCheckBox
+                || type == ComponentType.diversionsCheckbox || type  == ComponentType.aircraftTypeCheckboxes
+                || type == ComponentType.summaryRevenueBuilds)
+            {
+                var valueAux = "";
+                var i = 0;
+
+                for (var val of value)
+                {
+                    if (i == 0)
+                        valueAux = val.id;
+                    else
+                        valueAux += "," + val.id;
+
+                    i++;
+                }
+
+                return valueAux;
+            }
+            else if (type == ComponentType.selectBoxMultipleOption || type == ComponentType.totalType)
+            {
+                var valueAux = "";
+                var i = 0;
+
+                for (var val of value)
+                {
+                    if (i == 0)
+                        valueAux = val.name;
+                    else
+                        valueAux += "," + val.name;
+
+                    i++;
+                }
+
+                return valueAux;
+            }
+            else if (type == ComponentType.datePeriod || type == ComponentType.datePeriodRevenue)
+            {
+                if (value != null)
+                {
+                    if (value.id != null)
+                        return value.id;
+                    else
+                        return value;
+                }
+                else
+                    return "";
+            }
+            else if (type == ComponentType.selectBoxSingleOption)
+            {
+                if (typeof value === "string")
+                    return value;
+
+                if (typeof value[argument.selectedAttribute] === 'undefined')
+                    return '';
+
+                return value[argument.selectedAttribute];
+            }
+            else if (type == ComponentType.functions)
+            {
+                if (typeof value === "string")
+                    return value;
+
+                if(typeof value.name === 'undefined')
+                    return '';
+
+                return value.name;
+            }
+            else if (type == ComponentType.totalType || type == ComponentType.flightSegments
+                || type == ComponentType.states)
+            {
+                var valueAux = "";
+                var i = 0;
+
+                for (var val of value)
+                {
+                    if (i == 0)
+                        valueAux = val.name;
+                    else
+                        valueAux += "," + val.name;
+
+                    i++;
+                }
+
+                return valueAux;
+            }
+            else if (type == ComponentType.region || type == ComponentType.flightDelaysCheckbox)
+            {
+                var valueAux = "";
+                var i = 0;
+
+                for (var val of value)
+                {
+                    if (i == 0)
+                        valueAux = val.value;
+                    else
+                        valueAux += "," + val.value;
+
+                    i++;
+                }
+
+                return valueAux;
+            }
+
             return value;
         }
     }
 
-    getDateFormat(value, format){
-        if(value != null)
+    getDateFormat(value, format)
+    {
+        if (value != null)
         {
+            let datePipe;
+
             if (Object.prototype.toString.call (value) === "[object Date]")
             {
-              if (isNaN (value.getTime()))
+              if (isNaN (value.getTime ()))
                 return value;
+            }
+            else if (moment.isMoment (value))
+            {
+              if (format == null)
+                format = 'MM/dd/yyyy';
+
+              return new DateFormatPipe ('en-US').transform (value.toDate (), format);
             }
             else
               return value;
@@ -860,9 +957,10 @@ export class Utils{
             if (format == null)
                 format = 'MM/dd/yyyy';
 
-            var datePipe = new DatePipe('en-US');
-            return datePipe.transform(value, format);            
+            datePipe = new DatePipe ('en-US');
+            return datePipe.transform (value, format);            
         }
+
         return value;
     }
 
