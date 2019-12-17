@@ -462,7 +462,11 @@ export class EditCategoryArgumentDialog {
         if (this.isDateRange (argument))
         {
           if (argument.selectionMode == null)
+          {
             argument.dateRange = 0;
+            argument.dateValue = 0;
+            argument.selectionMode = 0;
+          }
           else
           {
             argument.dateRange = (argument.selectionMode >> 1) & 3;
