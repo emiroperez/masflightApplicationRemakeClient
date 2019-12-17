@@ -11,10 +11,10 @@
         <div>
             <div class="dialog-edit-airline-selection-type" *ngIf="isAirline(item)">
                 <mat-radio-group [(ngModel)]="item.selectionMode" (ngModelChange)="clearValue1(item)" class="airline-selection-radio-group">
-                    <mat-radio-button [ngClass]="{ 'airline-selection-type-radio': item.selectionMode != 0, 'airline-selection-type-radio-checked':  item.selectionMode == 0 }" [value]="0">
+                    <mat-radio-button [ngClass]="{ 'airline-selection-type-radio': item.selectionMode != 0, 'airline-selection-type-radio-checked': item.selectionMode == 0 }" [value]="0">
                         Single Airline
                     </mat-radio-button>
-                    <mat-radio-button class="airline-selection-type-radio-right" [ngClass]="{ 'airline-selection-type-radio': item.selectionMode != 1, 'airline-selection-type-radio-checked':  item.selectionMode == 1 }" [value]="1">
+                    <mat-radio-button class="airline-selection-type-radio-right" [ngClass]="{ 'airline-selection-type-radio': item.selectionMode != 1, 'airline-selection-type-radio-checked': item.selectionMode == 1 }" [value]="1">
                         Multiple Airlines
                     </mat-radio-button>
                 </mat-radio-group>
@@ -24,20 +24,30 @@
                     <mat-radio-button [ngClass]="{ 'airport-selection-type-radio': item.selectionMode != 0, 'airport-selection-type-radio-checked':  item.selectionMode == 0 }" [value]="0">
                         Airport Origin Only
                     </mat-radio-button>
-                    <mat-radio-button class="airport-selection-type-radio-right" [ngClass]="{ 'airport-selection-type-radio': item.selectionMode != 1, 'airport-selection-type-radio-checked':  item.selectionMode == 1 }" [value]="1">
+                    <mat-radio-button class="airport-selection-type-radio-right" [ngClass]="{ 'airport-selection-type-radio': item.selectionMode != 1, 'airport-selection-type-radio-checked': item.selectionMode == 1 }" [value]="1">
                         Route
                     </mat-radio-button>
-                    <mat-radio-button class="airport-selection-type-radio-right" [ngClass]="{ 'airport-selection-type-radio': item.selectionMode != 2, 'airport-selection-type-radio-checked':  item.selectionMode == 2 }" [value]="2">
+                    <mat-radio-button class="airport-selection-type-radio-right" [ngClass]="{ 'airport-selection-type-radio': item.selectionMode != 2, 'airport-selection-type-radio-checked': item.selectionMode == 2 }" [value]="2">
                         Route With Connection
+                    </mat-radio-button>
+                </mat-radio-group>
+            </div>
+            <div class="dialog-edit-airline-selection-type" *ngIf="isAircraftType(item)">
+                <mat-radio-group [(ngModel)]="item.selectionMode" (ngModelChange)="clearValue1(item)" class="airline-selection-radio-group">
+                    <mat-radio-button [ngClass]="{ 'airline-selection-type-radio': item.selectionMode != 0, 'airline-selection-type-radio-checked': item.selectionMode == 0 }" [value]="0">
+                        Single Aircraft
+                    </mat-radio-button>
+                    <mat-radio-button class="airline-selection-type-radio-right" [ngClass]="{ 'airline-selection-type-radio': item.selectionMode != 1, 'airline-selection-type-radio-checked': item.selectionMode == 1 }" [value]="1">
+                        Multiple Aircrafts
                     </mat-radio-button>
                 </mat-radio-group>
             </div>
             <div class="dialog-edit-airline-selection-type" *ngIf="isDateRange(item)">
                 <mat-radio-group [(ngModel)]="item.selectionMode" (ngModelChange)="clearDateArgument(item)" class="airline-selection-radio-group">
-                    <mat-radio-button [ngClass]="{ 'airline-selection-type-radio': item.selectionMode != 0, 'airline-selection-type-radio-checked':  item.selectionMode == 0 }" [value]="0">
+                    <mat-radio-button [ngClass]="{ 'airline-selection-type-radio': item.selectionMode != 0, 'airline-selection-type-radio-checked': item.selectionMode == 0 }" [value]="0">
                         Single
                     </mat-radio-button>
-                    <mat-radio-button class="airline-selection-type-radio-right" [ngClass]="{ 'airline-selection-type-radio': item.selectionMode != 1, 'airline-selection-type-radio-checked':  item.selectionMode == 1 }" [value]="1">
+                    <mat-radio-button class="airline-selection-type-radio-right" [ngClass]="{ 'airline-selection-type-radio': item.selectionMode != 1, 'airline-selection-type-radio-checked': item.selectionMode == 1 }" [value]="1">
                         Date Range
                     </mat-radio-button>
                 </mat-radio-group>
@@ -417,11 +427,11 @@
                     </ng-select>
                 </div>
                 <div class="airline-argument" *ngIf="isAircraftType(item)">
-                    <div class="msf-component-airport-sub-title msf-component-airport-route-sub-title">Select Aircraft Types</div>
+                    <div class="msf-component-airport-sub-title msf-component-airport-route-sub-title">Select Aircraft<span *ngIf="item.selectionMode == 1">s</span></div>
                     <ng-select
                         dropdownPosition="top"
                         [items]="items | async"
-                        [multiple]="true"
+                        [multiple]="item.selectionMode == 1 ? true : false"
                         [loading]="loading"
                         loadingText="Loading..."
                         [closeOnSelect]="true"
