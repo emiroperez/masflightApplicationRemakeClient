@@ -431,6 +431,8 @@ export class Utils{
               if (isNaN (value.getTime()))
                 return value;
             }
+            else if (moment.isMoment (value))
+                return new DateFormatPipe ('en-US').transform (value.toDate ());
             else if (value.toString ().length === 24)
             {
               let momentValue = moment (value, "YYYY-MM-DDTHH:mm:ssZ");

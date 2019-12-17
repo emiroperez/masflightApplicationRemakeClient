@@ -42,7 +42,7 @@
             </div>
             <ng-container *ngIf="isDateRange">
                 <mat-form-field class="msf-full-width msf-single-date">
-                    <input hidden [min]="argument.minDate" [max]="argument.maxDate" [matDatepicker]="picker4" [(ngModel)]="value2Date" [readonly]="true">
+                    <input hidden [min]="minDate" [max]="argument.maxDate" [matDatepicker]="picker4" [(ngModel)]="value2Date" [readonly]="true">
                     <input matInput [ngModel]="value2Display" [ngModelOptions]="{ standalone: true }" placeholder="{{argument.label2}}" autocomplete="off" class="msf-full-width msf-menu-arg-select" (click)="picker4.open()" [readonly]="true">
                     <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
                     <mat-datepicker #picker4 startView="{{dateStartView}}" [calendarHeaderComponent]="calendarHeader" (yearSelected)="chosenYearHandler2($event,picker4)" (monthSelected)="chosenMonthHandler2($event,picker4)"></mat-datepicker>
