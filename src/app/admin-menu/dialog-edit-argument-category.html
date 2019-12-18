@@ -22,13 +22,13 @@
             <div class="dialog-edit-airline-selection-type" *ngIf="isAirport(item)">
                 <mat-radio-group [(ngModel)]="item.selectionMode" (ngModelChange)="clearAirportArgument(item)" class="airline-selection-radio-group">
                     <mat-radio-button [ngClass]="{ 'airport-selection-type-radio': item.selectionMode != 0, 'airport-selection-type-radio-checked':  item.selectionMode == 0 }" [value]="0">
-                        Airport Origin Only
+                        Single Airport(s)
                     </mat-radio-button>
                     <mat-radio-button class="airport-selection-type-radio-right" [ngClass]="{ 'airport-selection-type-radio': item.selectionMode != 1, 'airport-selection-type-radio-checked': item.selectionMode == 1 }" [value]="1">
-                        Route
+                        Origin and Destination
                     </mat-radio-button>
                     <mat-radio-button class="airport-selection-type-radio-right" [ngClass]="{ 'airport-selection-type-radio': item.selectionMode != 2, 'airport-selection-type-radio-checked': item.selectionMode == 2 }" [value]="2">
-                        Route With Connection
+                        O and D with Connections
                     </mat-radio-button>
                 </mat-radio-group>
             </div>
