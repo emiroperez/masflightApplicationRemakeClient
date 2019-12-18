@@ -893,8 +893,8 @@ export class EditCategoryArgumentDialog {
   getItems(item, search, handlerSuccess){
     let url;
 
-    // don't run service for sorting checkboxes
-    if (this.isSortingCheckboxes(item))
+    // don't run service for sorting checkboxes and states
+    if (this.isSortingCheckboxes (item) || this.isStates (item))
       return;
 
     if (!item.url)
@@ -932,6 +932,10 @@ export class EditCategoryArgumentDialog {
 
   isSortingCheckboxes(item) {
     return ComponentType.sortingCheckboxes == item.type;
+  }
+
+  isStates(item) {
+    return ComponentType.states == item.type;
   }
 }
 

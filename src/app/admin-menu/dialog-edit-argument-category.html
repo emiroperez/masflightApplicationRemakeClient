@@ -133,7 +133,7 @@
                         </div>
                     </ng-container>
                 </ng-container>
-                <ng-container *ngIf="!isAirline(item) && !isAircraftType(item) && !isAirport(item) && !isSelectBoxSingleOption(item) && !isSelectBoxMultipleOption(item) && !isDateRange(item) && !isSortingCheckboxes(item)">
+                <ng-container *ngIf="!isAirline(item) && !isAircraftType(item) && !isAirport(item) && !isSelectBoxSingleOption(item) && !isSelectBoxMultipleOption(item) && !isDateRange(item) && !isSortingCheckboxes(item) && !isStates(item)">
                     <div class="airline-argument">
                         <mat-form-field [style.width.%]="100">
                             <mat-select [(value)]="item.required" placeholder="Required" [(ngModel)]="item.required">
@@ -153,7 +153,7 @@
                         </mat-form-field>
                     </div>
                 </ng-container>
-                <ng-container *ngIf="isAirline(item) || isAircraftType(item) || isAirport(item) || isSelectBoxSingleOption(item) || isSelectBoxMultipleOption(item) || isSortingCheckboxes(item)">
+                <ng-container *ngIf="isAirline(item) || isAircraftType(item) || isAirport(item) || isSelectBoxSingleOption(item) || isSelectBoxMultipleOption(item) || isSortingCheckboxes(item) || isStates(item)">
                     <div class="arguments-child"  [style.margin-right.%]="5">
                         <mat-form-field [style.width.%]="100">
                             <mat-select [(value)]="item.required" placeholder="Required" [(ngModel)]="item.required">
