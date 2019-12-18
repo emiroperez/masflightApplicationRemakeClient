@@ -713,7 +713,7 @@ export class EditCategoryArgumentDialog {
   }
 
   isAirportRoute(argument: Arguments) {
-    return (ComponentType.airportRoute == argument.type || ComponentType.airportsRoutes == argument.type);
+    return ComponentType.airportsRoutes == argument.type;
   }
 
   isAirport(argument: Arguments) {
@@ -752,8 +752,12 @@ export class EditCategoryArgumentDialog {
     return ComponentType.seatClass == argument.type;
   }
 
-  isGroupAAA(argument: Arguments){
+  isGroupAAA(argument: Arguments) {
     return ComponentType.AAA_Group == argument.type;
+  }
+
+  isTitle(argument: Arguments) {
+    return ComponentType.title == argument.type;
   }
 
   updateItemList(item): void
