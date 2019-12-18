@@ -489,7 +489,7 @@ export class Utils{
             || type == ComponentType.groupingDailyStatics || type == ComponentType.groupingOperationsSummary
             || type == ComponentType.groupingOpSum || type == ComponentType.groupingOpSum2
             || type == ComponentType.fareIncrementsMarketHistograms || type == ComponentType.sortingNostop
-            || type == ComponentType.sortingConnectionBuilder)
+            || type == ComponentType.sortingConnectionBuilder || type == ComponentType.fareLower)
         {
             if (typeof value === "string")
                 return value;
@@ -725,7 +725,7 @@ export class Utils{
                 || type == ComponentType.groupingDailyStatics || type == ComponentType.groupingOperationsSummary
                 || type == ComponentType.groupingOpSum || type == ComponentType.groupingOpSum2
                 || type == ComponentType.fareIncrementsMarketHistograms || type == ComponentType.sortingNostop
-                || type == ComponentType.sortingConnectionBuilder)
+                || type == ComponentType.sortingConnectionBuilder || type == ComponentType.fareLower)
             {
                 if (typeof value === "string")
                     return value;
