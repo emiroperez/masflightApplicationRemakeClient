@@ -4,7 +4,7 @@
     <mat-icon class="datalake-new-alarm-icon">alarm</mat-icon>
     <span class="datalake-new-alarm-title-label">Edit alarm</span>
   </div>
-  <div class="datalake-new-alarm-buttons">
+  <!-- <div class="datalake-new-alarm-buttons">
     Status
     <button mat-icon-button (click)="setAlarmStatus('A')" [ngClass]="{'datalake-new-alarm-button': monitoringStatus === 'I', 'datalake-new-alarm-button-selected': monitoringStatus === 'A' }" matTooltip="Active">
       <mat-icon>check</mat-icon>
@@ -12,7 +12,7 @@
     <button mat-icon-button (click)="setAlarmStatus('I')" [ngClass]="{'datalake-new-alarm-button': monitoringStatus === 'A', 'datalake-new-alarm-button-selected': monitoringStatus === 'I' }" matTooltip="Important">
       <mat-icon>priority_high</mat-icon>
     </button>
-  </div>
+  </div> -->
 </div>
 <div class="datalake-new-alarm-container" [ngStyle]="{ 'display': getFormDisplayStatus() }">
   <div class="datalake-alarm-comboboxes">
@@ -28,36 +28,66 @@
       <mat-select placeholder="Table Name" autocomplete="off" formControlName="table">
         <ngx-mat-select-search [formControl]="tableFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
         <mat-option *ngFor="let table of filteredTables | async" [value]="table">
-          {{table}}
+          {{table.TableName}}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="alarmFormGroup.get('table')?.invalid">You must select a table</mat-error>
     </mat-form-field>
   </div>
+  <div>
+  <div class="datalake-create-alarm-hint datalake-create-alarm-hint2">How often do you want to verify data ingestion?.</div>
+  <div class="datalake-create-alarm-time">
   <mat-radio-group class="datalake-alarm-radio-group" [(ngModel)]="notifyMode" (ngModelChange)="enableTimePicker(timeh,timem)">
-    <mat-radio-button class="cancels-checkbox" [ngClass]="{'datalake-alarm-radio-button': notifyMode, 'datalake-alarm-radio-button-selected': !notifyMode }" [value]="false">Notify me every</mat-radio-button>
-    <mat-radio-button class="cancels-checkbox datalake-alarm-radio-button-right" [ngClass]="{'datalake-alarm-radio-button': !notifyMode, 'datalake-alarm-radio-button-selected': notifyMode }" [value]="true">Notify me at this specific time</mat-radio-button>
+    <mat-radio-button class="cancels-checkbox" [ngClass]="{'datalake-alarm-radio-button': notifyMode, 'datalake-alarm-radio-button-selected': !notifyMode }" [value]="false">Verify with a cron expression...</mat-radio-button>
+    <mat-radio-button class="cancels-checkbox datalake-alarm-radio-button-right" [ngClass]="{'datalake-alarm-radio-button': !notifyMode, 'datalake-alarm-radio-button-selected': notifyMode }" [value]="true">Verify me at this specific time...</mat-radio-button>
   </mat-radio-group>
-  <!-- <div class="datalake-alarm-radio-group datalake-alarm-emails" (click)="AddEmail()"> -->
-  <button mat-button class="flat-button datalake-alarm-emails" (click)="AddEmail()">
-    <mat-icon class="datalake-new-alarm-icon">person_add</mat-icon>
-    <span class="datalake-new-alarm-title-label">Add Emails</span>
-  </button>
-  <div class="datalake-alarm-time-picker datalake-edit-alamr-time-picker" *ngIf="!notifyMode">
+  <div class="datalake-alarm-time-picker" *ngIf="!notifyMode">
     <div class="datalake-alarm-minute-input">
       <span class="datalake-alarm-minutes-label">Cron Expression</span>
       <input matInput [(ngModel)]="minutes"  type="string" autocomplete="off" class="datalake-alarm-minutes-input"/>
     </div>
   </div>
-  <div class="datalake-alarm-time-picker datalake-edit-alamr-time-picker" *ngIf="notifyMode">
+  <div class="datalake-alarm-time-picker " *ngIf="notifyMode">
     <div id="time-picker-edit"></div>
     <div class="datalake-alarm-time-labels">
       <span class="datalake-alarm-hours-label">Hours</span>
       <span class="datalake-alarm-minutes-label">Minutes</span>
     </div>
   </div>
-  <div class="datalake-alarm-buttons datalake-edit-alarm-buttons">
-    <button cdkFocusInitial mat-button class="flat-button" (click)="saveAlarm()">Save</button>
-    <button mat-button class="flat-button datalake-alarm-cancel-button" (click)="onNoClick()">Cancel</button>
+</div>
+</div>
+<div class="datalake-alarm-add-emails">
+    <button mat-button class="flat-button datalake-alarm-emails" (click)="AddEmail()">
+        <img src="../../assets/images/arroba.png" class="datalake-alarm-email-icon">
+        <span class="datalake-new-alarm-title-label">Add Emails</span>
+      </button>
+      
+      <div class="datalake-alarm-emails-hint">
+          <mat-icon class="edit-icon">arrow_left</mat-icon>
+          <span>If the application detects something is 
+        wrong with the data ingestion specify whho needs to get notified</span>
+    </div>
+</div>
+<div class="datalake-alarm-buttons">
+        <div class="datalake-new-alarm-status">
+          <div Style="display: flex">Activate Alarm</div>
+          <button mat-button (click)="setAlarmStatus('A')" 
+          (mouseover)="hoveract=true" (mouseleave)="hoveract=false"
+          [ngClass]="{'datalake-new-alarm-btn-act datalake-new-alarm-button': monitoringStatus === 'I',
+           'datalake-new-alarm-button-selected datalake-new-alarm-btn-active': monitoringStatus === 'A' }" matTooltip="Active">
+              <img  class="status-icon" src="{{getAlarmEnableImage()}}" />
+          </button>
+          <button mat-button (click)="setAlarmStatus('I')" 
+          (mouseover)="hoverdis=true" (mouseleave)="hoverdis=false"
+          [ngClass]="{'datalake-new-alarm-btn-ina datalake-new-alarm-button': monitoringStatus === 'A', 
+          'datalake-new-alarm-button-selected datalake-new-alarm-btn-inactive': monitoringStatus === 'I' }" 
+          matTooltip="Inactive">
+              <img  class="status-icon" src="{{getAlarmDisabledImage()}}" />
+          </button>
+        </div>
+      <div class="datalake-alarm-btns">
+          <button cdkFocusInitial mat-button class="flat-button datalake-alarm-btn" (click)="saveAlarm()">Save</button>
+          <button mat-button class="flat-button datalake-alarm-btn" (click)="onNoClick()">Cancel</button>
+  </div>
   </div>
 </div>

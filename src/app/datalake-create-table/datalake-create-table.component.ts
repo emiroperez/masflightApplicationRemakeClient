@@ -28,7 +28,7 @@ export class DatalakeCreateTableComponent {
 
   constructor(public globals: Globals,public dialogRef: MatDialogRef<DatalakeCreateTableComponent>,
     private service: DatalakeService,
-    @Inject(MAT_DIALOG_DATA) public data: {index: any , schemaName: any , tableName: any})
+    @Inject(MAT_DIALOG_DATA) public data: {index: any , schemaName: any , tableName: any, createdTable: any})
   {
     this.isLoading = true;
     // if(this.data){
@@ -81,8 +81,14 @@ export class DatalakeCreateTableComponent {
 
   onNoClick(event): void
   {
-    if(event){      
-      this.data=event;
+    if(event){    
+      if(event==="Error"){
+        this.stopLoading();
+      }else{
+        this.data=event;
+        this.redrawTab = true;
+      }
+      // this.tabs.realignInkBar ();
       // this.Datavalue = event;
       // this.upload.setschema();
       // this.globals.isLoading = false;

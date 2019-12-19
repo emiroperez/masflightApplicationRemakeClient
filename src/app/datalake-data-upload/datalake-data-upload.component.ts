@@ -18,8 +18,8 @@ export class DatalakeDataUploadComponent {
   @Input("schemas")
   schemas: DatalakeQuerySchema[] = [];
 
-  @Input("buckets")
-  buckets: DatalakeBucket[] = [];
+  // @Input("buckets") kp 16/12/2019
+  // buckets: DatalakeBucket[] = [];
 
   @Input("Datavalue")
   Datavalue: any;
@@ -34,7 +34,7 @@ export class DatalakeDataUploadComponent {
   stopLoading = new EventEmitter ();
 
   currentBuckets: DatalakeBucket[] = [];
-  tables: string[] = [];
+  tables: any[] = [];
   tableFilterCtrl: FormControl = new FormControl ();
   filteredTables: ReplaySubject<any[]> = new ReplaySubject<any[]> (1);
   _onDestroy: Subject<void> = new Subject<void> ();
@@ -43,18 +43,20 @@ export class DatalakeDataUploadComponent {
   uploadFileFormGroup: FormGroup;
   // partitionManagementFormGroup: FormGroup;
 
-  selectedFileType: string = "CSV";
+  bucket: string = "";
+  selectedFileType: string = "";
   fileLoading: boolean = false;
   targetFileSize: string;
   targetFile: any;
 
   delimiters: string[] = [ "COMMA", "SEMICOLON", "TABULAR", "CUSTOM" ];
-  selectedDelimiter: string = "COMMA";
-  delimiterCharacter: string = ",";
+  selectedDelimiter: string = "";
+  delimiterCharacter: string = "";
 
   dataSource: any[];
   rawData: string[][];
   fileInfo: FormData;
+  Partitions: any[] = [];
 
   constructor(public globals: Globals, private dialog: MatDialog, private formBuilder: FormBuilder,
     private service: DatalakeService)
@@ -88,9 +90,9 @@ export class DatalakeDataUploadComponent {
     stepper.previous ();
   }
 
-  goForward(formGroup: FormGroup, stepper: MatStepper): void
+  goForward(formGroup: FormGroup,formGroup2: FormGroup, stepper: MatStepper): void
   {
-    if (!formGroup)
+    if (!formGroup && !formGroup2)
     {
       stepper.next ();
       return;
@@ -110,6 +112,21 @@ export class DatalakeDataUploadComponent {
   
       return;
     }
+
+    // validate form before going forward
+    Object.keys (formGroup2.controls).forEach (field =>
+      {
+        formGroup2.get (field).markAsTouched ({ onlySelf: true });
+      });
+    
+      if (formGroup2.invalid)
+      {
+        this.dialog.open (MessageComponent, {
+          data: { title: "Error", message: "The required information is incomplete, please complete them and try again." }
+        });
+    
+        return;
+      }
   
     stepper.next ();
   }
@@ -125,13 +142,13 @@ export class DatalakeDataUploadComponent {
     schema = this.tableConfigurationFormGroup.get ("schema").value;
     bucketValue.setValue (null);
     bucketValue.markAsUntouched ();
-    this.currentBuckets = [];
+    // this.currentBuckets = []; kp 16/12/2019
 
-    for (let bucket of this.buckets)
-    {
-      if (bucket.schemaName === schema.schemaName)
-        this.currentBuckets.push (bucket);
-    }
+    // for (let bucket of this.buckets)
+    // {
+    //   if (bucket.schemaName === schema.schemaName)
+    //     this.currentBuckets.push (bucket);
+    // }
     this.startLoading.emit ();
     this.service.getDatalakeSchemaTables (this, schema.schemaName, this.setSchemaTables, this.setSchemaTablesError);
   }
@@ -162,11 +179,18 @@ export class DatalakeDataUploadComponent {
     tableSelector.markAsUntouched ();
 
     if(_this.Datavalue.tableName){
-      var index = _this.tables.findIndex (aux => aux == _this.Datavalue.tableName);
+      var index = _this.tables.findIndex (aux => aux.TableName == _this.Datavalue.tableName);
       if(index != -1){
-        _this.tableConfigurationFormGroup.get ("table").setValue (_this.tables[index]);
+        // _this.tableConfigurationFormGroup.get ("table").setValue (_this.tables[index]);
+        tableSelector.setValue (_this.tables[index]);
         tableSelector.disable ();
+        _this.tableChanged();
       }
+    }
+
+    if(_this.Datavalue.targetFile){
+      this.targetFile = _this.Datavalue.targetFile;
+      this.uploadFile("any",0);
     }
 
     _this.stopLoading.emit ();
@@ -223,14 +247,24 @@ export class DatalakeDataUploadComponent {
 
   getAcceptedFileFormat(): string
   {
-    if (this.selectedFileType === "CSV")
+    if (this.selectedFileType === "CSV" || this.selectedFileType === ""){
       return ".csv";
+    }else{
+      return ".parquet";
+    }
 
-    return ".parquet";
   }
 
   browseFile(uploader): void
   {
+    if (this.selectedFileType === ""){
+      this.dialog.open (MessageComponent, {
+        data: { title: "Error", message: "You must specify a File Type before importing a file." }
+      });
+
+      return;
+    }
+
     if (this.selectedFileType === "CSV" && this.selectedDelimiter === "CUSTOM")
     {
       if (this.uploadFileFormGroup.get ("customDelimiter").value === "")
@@ -264,13 +298,15 @@ export class DatalakeDataUploadComponent {
     }
   }
 
-  uploadFile(event): void
+  uploadFile(event,op): void
   {
     this.fileInfo = new FormData ();
     let tableFileConfig;
 
     this.delimiterCharacter = this.getDelimiterCharacter ();
+    if(op===1){
     this.targetFile = event.target.files[0];
+    }
     // if(this.targetFile.size <= 130){
     if(this.targetFile.size <= 104857600){ //100MB
       this.fileInfo.append ('file', this.targetFile, this.targetFile.name);
@@ -406,7 +442,7 @@ export class DatalakeDataUploadComponent {
     }
 
     search = search.toLowerCase ();
-    filteredResults = this.tables.filter (a => (a.toLowerCase ().indexOf (search) > -1));
+    filteredResults = this.tables.filter (a => (a.TableName.toLowerCase ().indexOf (search) > -1));
 
     this.filteredTables.next (
       filteredResults.filter (function (elem, index, self)
@@ -417,6 +453,12 @@ export class DatalakeDataUploadComponent {
   }
   dataUpload(): void
     {
+      let valid = true;
+      if(this.selectedFileType === "PARQUET"){
+        valid = this.validateForm(this.tableConfigurationFormGroup,this.uploadFileFormGroup);
+      }
+
+      if(valid){
       let request;
 
       // TODO: Verify form data for Step 2 for parquet files
@@ -427,10 +469,11 @@ export class DatalakeDataUploadComponent {
         s3FilePath: this.tableConfigurationFormGroup.get ("tableLocation").value,
         schemaName: this.tableConfigurationFormGroup.get ("schema").value.schemaName,
         separator: this.delimiterCharacter,
-        tableName: this.tableConfigurationFormGroup.get ("table").value
+        tableName: this.tableConfigurationFormGroup.get ("table").value.TableName
       };
       this.startLoading.emit ();
       this.service.dataUploadDatalake (this, request,this.fileInfo, this.handlerDataUpload, this.dataUploadError);
+      }
     }
 
     handlerDataUpload(_this, data): void
@@ -440,6 +483,7 @@ export class DatalakeDataUploadComponent {
         _this.dialog.open (MessageComponent, {
           data: { title: "Error", message: data.message }
         });
+        _this.closeDialog.emit ("Error");
       }else{
         _this.dialog.open (MessageComponent, {
           data: { title: "Success", message: "Data Uploaded Successfully" }
@@ -502,5 +546,94 @@ export class DatalakeDataUploadComponent {
     }
 
     return array;
+  }
+
+  tableChanged(){
+    this.bucket = this.tableConfigurationFormGroup.get ("table").value.S3TableLocation;
+    this.tableConfigurationFormGroup.get ("bucket").setValue (this.bucket);
+    // this.selectedFileType = "CSV"
+    // this.selectedFileType = "PARQUET"
+    if(this.tableConfigurationFormGroup.get ("table").value.Format != ""){
+      this.selectedFileType = this.tableConfigurationFormGroup.get ("table").value.Format == "P" ? "PARQUET" : this.tableConfigurationFormGroup.get ("table").value.Format == "C" ? "CSV" : "";
+    }else{
+      this.selectedFileType = "";
+    }
+    
+    // this.delimiterCharacter = "|"
+    this.delimiterCharacter = this.tableConfigurationFormGroup.get ("table").value.Separator;
+    this.selectedDelimiter = this.getDelimiter();
+    if(this.tableConfigurationFormGroup.get ("table").value.Partitions != null && this.tableConfigurationFormGroup.get ("table").value.Partitions.length != 0){
+      this.Partitions = this.tableConfigurationFormGroup.get ("table").value.Partitions;
+    }else{
+      this.Partitions = [];
+    }
+    
+  }
+
+  validateForm(formGroup: FormGroup,formGroup2: FormGroup): boolean
+  {
+    if (!formGroup && !formGroup2)
+    {
+      return false;
+    }
+
+    // validate form before going forward
+    Object.keys (formGroup.controls).forEach (field =>
+    {
+      formGroup.get (field).markAsTouched ({ onlySelf: true });
+    });
+  
+    if (formGroup.invalid)
+    {
+      this.dialog.open (MessageComponent, {
+        data: { title: "Error", message: "The required information is incomplete, please complete them and try again." }
+      });
+  
+      return false;
+    }
+
+    // validate form before going forward
+    Object.keys (formGroup2.controls).forEach (field =>
+      {
+        formGroup2.get (field).markAsTouched ({ onlySelf: true });
+      });
+    
+      if (formGroup2.invalid)
+      {
+        this.dialog.open (MessageComponent, {
+          data: { title: "Error", message: "The required information is incomplete, please complete them and try again." }
+        });
+    
+        return false;
+      }
+
+      return true;
+    }
+
+    selectedDelimiterAndSimbol(){
+      if(this.delimiterCharacter!=""){
+        return this.selectedDelimiter+" ("+this.delimiterCharacter+")";
+      }else{
+        return "";
+      }
+    }
+
+    getDelimiter(): string
+  {
+    switch (this.delimiterCharacter)
+    {
+      case ",":
+        return "COMMA";
+
+      case ";":
+        return "SEMICOLON";
+
+      case "\t":
+        return "TABULAR";
+
+      default:
+        this.uploadFileFormGroup.get ("customDelimiter").setValue(this.delimiterCharacter);
+        return "CUSTOM";
+    }
   }
 }

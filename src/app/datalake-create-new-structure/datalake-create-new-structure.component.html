@@ -64,7 +64,9 @@
       <div class="datalake-create-table-input-body align-items-center">
         <mat-form-field class="datalake-create-table-input-body-left" 
         [formGroup]="tableConfigurationFormGroup">
-          <input matInput placeholder="Table Name" autocomplete="off" formControlName="tableName" (change)="tableNameChange()" required>
+          <input  style = "text-transform: lowercase;"
+          matInput placeholder="Table Name" autocomplete="off" 
+          formControlName="tableName" (change)="tableNameChange()" (ngOnChanges)="toStrim()" required>
           <mat-error *ngIf="tableConfigurationFormGroup.get('tableName')?.invalid">You must specify table name</mat-error>
         </mat-form-field>
         <mat-form-field [formGroup]="tableConfigurationFormGroup" 
@@ -76,7 +78,7 @@
       <div class="datalake-create-table-input-secondary-body">
         <mat-form-field class="datalake-create-table-input-body-left" 
         [formGroup]="tableConfigurationFormGroup">
-          <mat-select placeholder="Schema" autocomplete="off" formControlName="schema"
+          <mat-select placeholder="Schema Name" autocomplete="off" formControlName="schema"
             (selectionChange)="schemaChanged(tableConfigurationFormGroup)" required>
             <mat-option *ngFor="let schema of schemas" [value]="schema">
               {{schema.schemaName}}
@@ -104,8 +106,9 @@
         <mat-form-field class="datalake-table-location"
          [formGroup]="tableConfigurationFormGroup">
           <input matInput placeholder="Table Path" autocomplete="off" 
-          formControlName="tableLocation" matTooltip="Example: ">
+          formControlName="tableLocation">          
           <!-- <mat-error *ngIf="tableConfigurationFormGroup.get('tableLocation')?.invalid">You must specify table location</mat-error> -->
+          <mat-hint>Sample Tablet Path: /location/mytable</mat-hint>
         </mat-form-field>
         <!-- <div class="datalake-checkbox">
             <mat-checkbox class="admin-checkboxes" color="primary" 
@@ -117,9 +120,9 @@
       </div>
       <div class="datalake-create-table-input-body align-items-center">
         <span class="datalake-create-table-input-body-span">
-          File Type *:
+          Source File Type *:
         </span>
-        <mat-radio-group [(ngModel)]="selectedFileType" (ngModelChange)="resetStepper(stepper, uploader)" 
+        <mat-radio-group [(ngModel)]="selectedFileType" (ngModelChange)="resetStepperFileType(uploader)" 
         class="datalake-file-type-picker">
           <mat-radio-button class="cancels-checkbox datalake-file-type-radio" [value]="'CSV'">CSV</mat-radio-button>
           <mat-radio-button class="cancels-checkbox datalake-file-type-radio" [value]="'PARQUET'">PARQUET</mat-radio-button>
@@ -129,12 +132,12 @@
         <span class="datalake-create-table-input-body-span">
           Delimiter *:
         </span>
-        <mat-radio-group [(ngModel)]="selectedDelimiter" (ngModelChange)="toggleCustomDelimiter()" 
+        <mat-radio-group [(ngModel)]="selectedDelimiter" (ngModelChange)="toggleCustomDelimiter(uploader)" 
         class="datalake-file-type-picker datalake-create-table-input-body-delimiter">
           <mat-radio-button class="cancels-checkbox datalake-file-type-radio" 
           *ngFor="let delimiter of delimiters" [value]="delimiter">{{delimiter}}</mat-radio-button>
         </mat-radio-group>
-        <mat-form-field class="datalake-custom-delimiter" [formGroup]="tableConfigurationFormGroup">
+        <mat-form-field class="datalake-custom-delimiter" (change)="uploadFile('any',0,uploader)" [formGroup]="tableConfigurationFormGroup">
           <input matInput placeholder="Custom Delimiter" autocomplete="off" formControlName="customDelimiter">
           <mat-error *ngIf="tableConfigurationFormGroup.get('customDelimiter')?.invalid">You must specify a custom delimiter</mat-error>
         </mat-form-field>
@@ -145,7 +148,7 @@
           <input hidden class="datalake-file-picker-form-input" matInput formControlName="fileName" required>
           <span>{{tableConfigurationFormGroup.get('fileName').value}}</span>
         </mat-form-field>
-        <input hidden type="file" accept="{{getAcceptedFileFormat()}}" #uploader (change)="uploadFile($event)">
+        <input hidden type="file" accept="{{getAcceptedFileFormat()}}" #uploader (change)="uploadFile($event,1,uploader)">
         <button class="datalake-browse-file-button flat-button" mat-button (click)="browseFile(uploader)">
           Browse
         </button>
@@ -186,7 +189,7 @@
             </div>
           </div>
           <div class="datalake-table-data">
-            <span>Table View</span>
+            <span>Formate View</span>
             <div class="datalake-table-data-preview">
               <div class="datalake-table-data-display">
                 <div class="datalake-table-data-item" *ngFor="let column of rawData">
@@ -203,8 +206,8 @@
     <ng-container *ngIf="(stepper.selectedIndex == 2 && selectedFileType === 'CSV') || (stepper.selectedIndex == 1 && selectedFileType === 'PARQUET')">
       <div class="datalake-create-table-content-header">
         <div class="datalake-create-table-step-title">
-          <span class="datalake-create-table-step-title-label">STEP {{stepper.selectedIndex + 1}} - PARTITIONS</span>
-          <span class="datalake-create-table-step-description">Add Table Partitions.</span>
+          <span class="datalake-create-table-step-title-label">STEP {{stepper.selectedIndex + 1}} - PARTITIONS OPTIONAL</span>
+          <span class="datalake-create-table-step-description">Create partition(s). If you want to make the data more efficient consider adding a partition</span>
         </div>
         <div class="datalake-create-table-step-buttons">
           <button class="datalake-create-table-step-button flat-button" mat-button
@@ -225,7 +228,8 @@
         <div [ngClass]="{'datalake-partition': partition.isPartition==='YES', 'hidden': partition.isPartition==='NO' }"
          class="datalake-partition" *ngFor="let partition of partitions">
           <mat-form-field *ngIf="partition.isPartition==='YES'">
-            <input matInput [(ngModel)]="partition.name" placeholder="Partition Name" autocomplete="off">
+            <input matInput [(ngModel)]="partition.name" (ngModelChange)="toLower(partition)" 
+            placeholder="Partition Name" autocomplete="off">
           </mat-form-field>
           <mat-form-field *ngIf="partition.isPartition==='YES'" class="datalake-partition-type">
             <mat-select [(ngModel)]="partition.dataType" placeholder="Type" autocomplete="off">
@@ -243,12 +247,12 @@
     <ng-container *ngIf="(stepper.selectedIndex == 3 && selectedFileType === 'CSV') || (stepper.selectedIndex == 2 && selectedFileType === 'PARQUET')">
       <div class="datalake-create-table-content-header">
         <div class="datalake-create-table-step-title">
-          <span class="datalake-create-table-step-title-label">STEP {{stepper.selectedIndex + 1}} - DISCOVERY RESULT</span>
-          <span class="datalake-create-table-step-description">Show the data in columns and allow to change the column header.</span>
+          <span class="datalake-create-table-step-title-label">STEP {{stepper.selectedIndex + 1}} - DISCOVERED RESULTS</span>
+          <span class="datalake-create-table-step-description">The following table shows the detected columns from the uploaded file. Please change the column names and types when needed.</span>
           <div class="datalake-checkbox">
             <mat-checkbox class="admin-checkboxes" color="primary" 
               [(ngModel)]="showSelected">              
-              Go to Data Upload after finishing
+              Move to Data Upload after table creation is completed
             </mat-checkbox>
           </div>
       </div>

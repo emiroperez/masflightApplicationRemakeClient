@@ -7,7 +7,7 @@ export class DatalakeQuerySchema
     filter: string;
     filteredTables: ReplaySubject<any[]>;
     _onDestroy: Subject<void>;
-    tables: string[];
+    tables: any[];
 
     constructor (schemaName: string)
     {

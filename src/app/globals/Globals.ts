@@ -61,8 +61,8 @@ export class Globals {
   currentAirline: any;
   template : boolean = false;
   isFullscreen: boolean = false;
-  baseUrl = "http://localhost:8885";
-  // baseUrl = "http://pulse.globaleagle.com:8885";
+  // baseUrl = "http://localhost:8887";
+  baseUrl = "http://pulse.globaleagle.com:8887";
   // baseUrl = "http://192.168.1.50:8887";
   // baseUrl = "";
   baseUrl2 = "https://pulse.globaleagle.com:8886/mapBoxServices";
@@ -111,6 +111,8 @@ export class Globals {
   constructor (public overlayContainer: OverlayContainer, private cookie: Cookie)
   {
     let pulseTheme, useLightTheme;
+
+    am4core.options.commercialLicense = true;
 
     // get theme setting from cookies
     pulseTheme = cookie.get ("pulseTheme");

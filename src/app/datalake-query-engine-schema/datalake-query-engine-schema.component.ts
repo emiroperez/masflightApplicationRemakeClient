@@ -51,7 +51,7 @@ export class DatalakeQueryEngineSchemaComponent {
     }
 
     search = search.toLowerCase ();
-    filteredResults = this.querySchema.tables.filter (a => (a.toLowerCase ().indexOf (search) > -1));
+    filteredResults = this.querySchema.tables.filter (a => (a.TableName.toLowerCase ().indexOf (search) > -1));
 
     this.querySchema.filteredTables.next (
       filteredResults.filter (function (elem, index, self)

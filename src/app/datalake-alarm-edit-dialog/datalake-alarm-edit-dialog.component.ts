@@ -16,7 +16,9 @@ import { MessageComponent } from '../message/message.component';
 })
 export class DatalakeAlarmEditDialogComponent {
   schemas: string[] = [];
-  tables: string[] = [];
+  tables: any[] = [];
+  hoverdis: boolean;
+  hoveract: boolean;
 
   alarmFormGroup: FormGroup;
   notifyMode: boolean = false;
@@ -175,6 +177,13 @@ getTimeFormat(value){
 
     _this.filteredTables.next (_this.tables.slice ());
 
+    if(_this.data.alarm.tableName){
+      let index = _this.tables.findIndex (aux => aux.TableName == _this.data.alarm.tableName);
+      if(index != -1){
+        tableSelector.setValue (_this.tables[index]);
+      }
+    }
+
     _this.isLoading = false;
     _this.transformManualExpression(_this.cron);
   }
@@ -216,7 +225,7 @@ getTimeFormat(value){
     }
 
     search = search.toLowerCase ();
-    filteredResults = this.tables.filter (a => (a.toLowerCase ().indexOf (search) > -1));
+    filteredResults = this.tables.filter (a => (a.TableName.toLowerCase ().indexOf (search) > -1));
 
     this.filteredTables.next (
       filteredResults.filter (function (elem, index, self)
@@ -281,7 +290,7 @@ getTimeFormat(value){
 
     request = {
       schemaName: this.alarmFormGroup.get ("schema").value,
-      tableName: this.alarmFormGroup.get ("table").value,
+      tableName: this.alarmFormGroup.get ("table").value.TableName,
       cron: this.cron,
       monitoringStatus: this.monitoringStatus,
       emailList: this.listEmail
@@ -402,5 +411,22 @@ getTimePart(type,time){
       }
 
     });
+  }
+  getAlarmEnableImage(): string
+  {
+    if (this.monitoringStatus === 'A' || this.hoveract){
+      return "../../assets/images/enableAlarmWhite.png";
+    }else{
+      return "../../assets/images/enableAlarm.png";
+    }
+  }
+
+  getAlarmDisabledImage(): string
+    {
+     if (this.monitoringStatus === 'I' || this.hoverdis){
+        return "../../assets/images/disabledAlarmWhite.png";
+      }else{
+        return "../../assets/images/disabledAlarm.png";
+      }
   }
 }

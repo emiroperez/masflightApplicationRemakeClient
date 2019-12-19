@@ -22,6 +22,9 @@ export class DatalakeMenuComponent implements OnInit {
   @Output('optionChanged')
   optionChanged = new EventEmitter ();
 
+  @Output('refreshDataExplorer')
+  refreshDataExplorer = new EventEmitter();
+
   constructor(public globals: Globals, private dialog: MatDialog) { }
 
   ngOnInit() {
@@ -30,21 +33,25 @@ export class DatalakeMenuComponent implements OnInit {
 
   createTable(): void {
     let indexp = 1;
-    let index = this.globals.optionsDatalake.findIndex(od => od.action.name === "Create New Table");
+    let index = this.globals.optionsDatalake.findIndex(od => od.action.name === "Data Upload");
     if (index != -1) {
-      indexp = 0;
-    }else{
       indexp = 1;
+    }else{
+      indexp = 0;
     }
     let dialogRef = this.dialog.open(DatalakeCreateTableComponent, {
       panelClass: 'datalake-create-table-dialog',
-      data: { index: indexp }
+      data: { index: indexp,createdTable: true }
     });
 
-    dialogRef.afterClosed().subscribe(() => {
-      this.globals.isLoading = false;
+    dialogRef.afterClosed().subscribe(
+      () => {
+        this.globals.isLoading = false;
+        this.refreshDataExplorer.emit(this.globals.optionDatalakeSelected);
     });
   }
+
+
 
   setOptionSelect(opcion) {
     this.globals.optionDatalakeSelected = opcion;
@@ -72,7 +79,7 @@ export class DatalakeMenuComponent implements OnInit {
         return true;
       }
   }
-  
+
   goToDashboard(dashboard, readOnly): void
   {
     this.globals.minDate=null;

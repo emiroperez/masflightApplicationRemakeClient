@@ -11,8 +11,8 @@
 <div class="datalake-table" *ngIf="displayedColumns.length">
   <div class="datalake-table-show-table-header">
     <div class="datalake-table-show-table-title">
-      <div class="datalake-table-show-table-longname">{{data.values.longName}} - Table</div>
-      <div class="datalake-table-show-table-tablename">{{data.values.schemaName}}</div>
+      <div class="datalake-table-show-table-longname">{{data.values.longName}} - Table Data</div>
+      <div class="datalake-table-show-table-tablename">Schema: {{data.values.schemaName}}</div>
     </div>
     <div class="datalake-table-show-table-close-button">
       <button mat-icon-button (click)="onNoClick()">

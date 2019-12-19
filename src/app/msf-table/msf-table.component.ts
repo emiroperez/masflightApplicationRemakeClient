@@ -329,6 +329,7 @@ export class MsfTableComponent implements OnInit {
           let dataResult = new MatTableDataSource(mainElement);     
             _this.tableOptions.displayedColumns  = _this.addGroupingColumns(_this.tableOptions.displayedColumns);
             _this.tableOptions.displayedColumns  = _this.deleteEmptyColumns(dataResult,_this.tableOptions.displayedColumns);
+            // _this.tableOptions.displayedColumns  = _this.renameDuplicateColumns(_this.tableOptions.displayedColumns);
           _this.metadata = _this.tableOptions.displayedColumns;
           _this.tableOptions.metadata = data.metadata;
           
@@ -606,9 +607,27 @@ export class MsfTableComponent implements OnInit {
     }
   }
 
+  renameDuplicateColumns(displayedColumns: any): any {
+    let cont = 0;
+    displayedColumns.forEach(element => {
+      cont = 0;
+      for (let index = 0; index < displayedColumns.length; index++) {
+        if(element.columnName === displayedColumns[index].columnName){
+          cont++;
+          if(cont>1){
+            displayedColumns[index].columnName = displayedColumns[index].columnName+(cont-1)
+          }
+        }
+        
+      }
+    });
+    return displayedColumns;
+  }
+
   setColumnsDisplayed(_this){
       for(let column of this.metadata){
         _this.displayedColumns.push(column.columnName);
+        // _this.displayedColumns.push(column.columnLabel);
       }
   }
 
@@ -885,5 +904,7 @@ export class MsfTableComponent implements OnInit {
     }
     return "msf-hide";
   }
+
+  renameCo
 
 }

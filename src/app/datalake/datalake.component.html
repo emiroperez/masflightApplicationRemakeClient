@@ -9,7 +9,7 @@
         <img src="../../assets/images/{{globals.theme}}-adjust.png" class="msf-menu-ajustes-icon">
     </div>
     <div [style.display]="getMenuVisibility()" class="msf-menu-container">
-        <app-datalake-menu (setOption)="setOption($event)" [dashboards]="dashboards" [sharedDashboards]="sharedDashboards"></app-datalake-menu>
+        <app-datalake-menu (refreshDataExplorer)="refreshDataExplorer($event)" (setOption)="setOption($event)" [dashboards]="dashboards" [sharedDashboards]="sharedDashboards"></app-datalake-menu>
     </div>
     <div [ngClass]="mobileQuery.matches ? 'msf-header-icons is-mobile'
                                      :(ResponsiveQuery.matches ? 'msf-header-icons is-MQueryresponsive':'msf-header-icons')">
@@ -60,7 +60,7 @@
     <!-- <app-datalake-explorer *ngIf="currentOption === 2 || currentOption === 3" [currentOption]="currentOption" (setCurrentOptionSelected)="setCcurrentOptionSelected($event)"></app-datalake-explorer> -->
     <app-datalake-explorer *ngIf="globals.userName && (globals.optionDatalakeSelected === 2 || globals.optionDatalakeSelected === 3)" 
     (setCurrentOptionSelected)="globals.userName && setCurrentOptionSelected($event)"></app-datalake-explorer>
-    <app-datalake-explorer *ngIf=showDataExplorer() (setCurrentOptionSelected)="setCurrentOptionSelected($event)"></app-datalake-explorer>
+    <app-datalake-explorer #dataExplorer *ngIf=showDataExplorer() (setCurrentOptionSelected)="setCurrentOptionSelected($event)"></app-datalake-explorer>
     <app-datalake-alarms *ngIf="globals.userName && globals.optionDatalakeSelected === 5" [currentOption]="currentOption"></app-datalake-alarms>
     <app-datalake-partitions *ngIf="globals.userName && globals.optionDatalakeSelected === 6"></app-datalake-partitions>
     <app-datalake-execution-partition *ngIf="globals.userName &&  (globals.optionDatalakeSelected === 7 || globals.optionDatalakeSelected === 8)" ></app-datalake-execution-partition>

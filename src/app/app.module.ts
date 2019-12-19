@@ -22,7 +22,7 @@ import { MsfComponentComponent } from './msf-component/msf-component.component';
 import { Globals } from './globals/Globals';
 import { MsfAirportComponent } from './msf-airport/msf-airport.component';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
-import { MatFormFieldModule, MatSelectModule } from '@angular/material';
+import { MatFormFieldModule, MatSelectModule ,MatChipsModule} from '@angular/material';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MsfContainerComponent } from './msf-container/msf-container.component';
 import { MsfTableComponent } from './msf-table/msf-table.component';
@@ -420,13 +420,14 @@ import { DatalakeCreateRolesComponent } from './datalake-create-roles/datalake-c
     DragDropModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    MatChipsModule,
     LayoutModule,
     MaterialModule,
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
     NgSelectModule,
-    NgxMaterialTimepickerModule.forRoot(),
+    NgxMaterialTimepickerModule,
     BrowserAnimationsModule,
     MatSelectModule,
     MatFormFieldModule,

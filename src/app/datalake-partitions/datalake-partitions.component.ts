@@ -24,7 +24,7 @@ export class DatalakePartitionsComponent implements OnInit {
   partitionFormGroup: FormGroup;
   schemas: string[] = [];
   schemaName: any = "";
-  tables: string[] = [];
+  tables: any[] = [];
   tableName: any = null;
   filteredTables: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
   filteredRunTypes: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
@@ -56,7 +56,7 @@ export class DatalakePartitionsComponent implements OnInit {
     this.partitionFormGroup = this.formBuilder.group({
       schema: ['', Validators.required],
       table: new FormControl({ value: '', disabled: true }, Validators.required),
-      runType: ['', Validators.required],
+      runType: ['A', Validators.required],
       cron: new FormControl({ value: '', disabled: true }, Validators.required)
     });
 
@@ -118,11 +118,11 @@ export class DatalakePartitionsComponent implements OnInit {
 
 
   getTableHeight(): string {
-    return "calc(" + this.innerHeight + "px - 18.5em)";
+    return "calc(" + this.innerHeight + "px - 18.5em - 20px)";
   }
 
   getTableHeightRight(): string {
-    return "calc(" + this.innerHeight + "px - 18.5em - 96px)";
+    return "calc(" + this.innerHeight + "px - 18.5em - 116px)";
   }
 
 
@@ -157,7 +157,12 @@ export class DatalakePartitionsComponent implements OnInit {
 
     _this.filteredTables.next(_this.tables.slice());
     if (_this.tableName) {
-      tableSelector.setValue(_this.tableName);
+      let index = _this.tables.findIndex(a => a.TableName === _this.tableName);
+      if(index!=-1){
+        tableSelector.setValue(_this.tables[index]);
+      }else{
+        tableSelector.setValue(null);
+      }
     } else {
       tableSelector.setValue(null);
     }
@@ -210,7 +215,7 @@ export class DatalakePartitionsComponent implements OnInit {
     }
 
     search = search.toLowerCase();
-    filteredResults = this.tables.filter(a => (a.toLowerCase().indexOf(search) > -1));
+    filteredResults = this.tables.filter(a => (a.TableName.toLowerCase().indexOf(search) > -1));
 
     this.filteredTables.next(
       filteredResults.filter(function (elem, index, self) {
@@ -226,7 +231,7 @@ export class DatalakePartitionsComponent implements OnInit {
 
   addPartition() {
     this.request = {
-      tableName: this.partitionFormGroup.get("table").value,
+      tableName: this.partitionFormGroup.get("table").value.TableName,
       schemaName: this.partitionFormGroup.get("schema").value,
       cron: this.partitionFormGroup.get("cron").value,
       type: this.partitionFormGroup.get("runType").value,

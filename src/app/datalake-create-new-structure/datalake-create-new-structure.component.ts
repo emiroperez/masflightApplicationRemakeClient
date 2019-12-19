@@ -51,12 +51,15 @@ export class DatalakeCreateNewStructureComponent {
   dataColumns: any[];
   partitions: any[] = [];
   rawData: string[][];
-  showSelected: boolean = false;
+  showSelected: boolean = true;
   request: {
   columns: any[]; Partitions: any[]; format: string; tableName: any; schemaName: any; s3TableLocation: string; s3FilePath: any;
     // s3FilePath: vS3FilePath,
     tableDesc: any; separator: string; longName: any;
   };
+
+  
+  // fileInfo = new FormData ();
 
   constructor(public globals: Globals,private dialog: MatDialog, private formBuilder: FormBuilder,
     private service: DatalakeService)
@@ -143,18 +146,19 @@ export class DatalakeCreateNewStructureComponent {
     }
   }
 
-  toggleCustomDelimiter(): void
+  toggleCustomDelimiter(uploader): void
   {
+    this.resetBrowser(uploader);
     let customDelimiter = this.tableConfigurationFormGroup.get ("customDelimiter");
 
     if (this.selectedDelimiter === "CUSTOM")
     {
-      this.delimiterCharacter = null;
-      this.tableConfigurationFormGroup.get ("fileName").setValue ("");
-      this.dataColumns = [];
-      this.rawData = [];
-      this.filteredDataColumns.next (this.dataColumns.slice ());
-      this.targetFileSize = null;
+      // this.delimiterCharacter = null;
+      // this.tableConfigurationFormGroup.get ("fileName").setValue ("");
+      // this.dataColumns = [];
+      // this.rawData = [];
+      // this.filteredDataColumns.next (this.dataColumns.slice ());
+      // this.targetFileSize = null;
 
       customDelimiter.markAsUntouched ();
       customDelimiter.enable ();
@@ -164,13 +168,24 @@ export class DatalakeCreateNewStructureComponent {
     customDelimiter.markAsUntouched ();
     customDelimiter.setValue ("");
     customDelimiter.disable ();
-    
-    this.delimiterCharacter = null;
-    this.tableConfigurationFormGroup.get ("fileName").setValue ("");
-    this.dataColumns = [];
-    this.rawData = [];
-    this.filteredDataColumns.next (this.dataColumns.slice ());
-    this.targetFileSize = null;
+
+    // this.fileLoading = true;
+    // this.delimiterCharacter = this.getDelimiterCharacter ();
+    // let tableFileConfig = {
+    //   separator: this.delimiterCharacter,
+    //   format: this.selectedFileType,
+    //   s3filepath: this.tableConfigurationFormGroup.get ("tableLocation").value
+    // };
+    // this.service.uploadDatalakeTableFile (this, tableFileConfig, this.fileInfo, 
+    //   this.uploadSuccess, this.uploadFailed);
+    this.uploadFile("any",0,uploader)
+
+    // this.delimiterCharacter = null;
+    // this.tableConfigurationFormGroup.get ("fileName").setValue ("");
+    // this.dataColumns = [];
+    // this.rawData = [];
+    // this.filteredDataColumns.next (this.dataColumns.slice ());
+    // this.targetFileSize = null;
 
   }
 
@@ -238,14 +253,18 @@ export class DatalakeCreateNewStructureComponent {
     }
   }
 
-  uploadFile(event): void
+  uploadFile(event, op,uploader): void
   {
+    //1 primera vez que cargo el archivo - 0 El archivo ya fue cargado y cambio el delimitador
+    if((op===0 && this.targetFile) || op===1){
     let fileInfo = new FormData ();
     let tableFileConfig;
 
     this.delimiterCharacter = this.getDelimiterCharacter ();
+    if(op===1){
     this.targetFile = event.target.files[0];
-    // if(this.targetFile.size <= 130){
+    }
+    // if(this.targetFile.size <= 135){
     if(this.targetFile.size <= 104857600){ //100MB
     fileInfo.append ('file', this.targetFile, this.targetFile.name);
 
@@ -258,18 +277,21 @@ export class DatalakeCreateNewStructureComponent {
     this.fileLoading = true;
     this.service.uploadDatalakeTableFile (this, tableFileConfig, fileInfo, this.uploadSuccess, this.uploadFailed);
   }else{
-    this.selectedDelimiter = null;
-    this.tableConfigurationFormGroup.get ("customDelimiter").setValue ("");
-    this.delimiterCharacter = null;
+    // this.selectedDelimiter = null;
+    // this.tableConfigurationFormGroup.get ("customDelimiter").setValue ("");
+    // this.delimiterCharacter = null;
+    uploader.value = null;
     this.tableConfigurationFormGroup.get ("fileName").setValue ("");
     this.dataColumns = [];
     this.rawData = [];
     this.filteredDataColumns.next (this.dataColumns.slice ());
     this.targetFileSize = this.calcFileSize (this.targetFile.size);
+    this.targetFile = null;
     this.dialog.open (MessageComponent, {
       data: { title: "Error", message: "Maximum upload size allowed 100 MB. Uploaded file size: "+ this.targetFileSize}
     });
   }
+}
   }
 
   uploadSuccess(_this, data): void
@@ -391,6 +413,21 @@ export class DatalakeCreateNewStructureComponent {
     this.fileLoading = false;
   }
 
+  resetStepperFileType(uploader): void
+  {
+    // clear other related variables after changing the file type
+    this.dataColumns = [];
+    this.rawData = [];
+
+    this.targetFileSize = null;
+    this.targetFile = null;
+    this.tableConfigurationFormGroup.get ("fileName").setValue ("");
+    uploader.value = null;
+
+    this.filteredDataColumns.next (this.dataColumns.slice ());
+    this.fileLoading = false;
+  }
+
   createTable(): void
   {
     let columnList = [];
@@ -446,6 +483,7 @@ export class DatalakeCreateNewStructureComponent {
       _this.dialog.open (MessageComponent, {
         data: { title: "Error", message: data.message }
       });
+      _this.closeDialog.emit("Error");
     }else{
       _this.dialog.open (MessageComponent, {
         data: { title: "Success", message: "Table created Successfully" }
@@ -454,7 +492,9 @@ export class DatalakeCreateNewStructureComponent {
       if(_this.showSelected){
         dataUpload = {index: 1,
         schemaName: _this.tableConfigurationFormGroup.get ("schema").value.schemaName,
-        tableName: _this.tableConfigurationFormGroup.get ("tableName").value}
+        tableName: _this.tableConfigurationFormGroup.get ("tableName").value,
+        targetFile: this.targetFile,
+        createdTable: true}
       } 
     _this.closeDialog.emit (dataUpload);
     // _this.closeDialog.emit();
@@ -473,7 +513,7 @@ export class DatalakeCreateNewStructureComponent {
   addPartition(): void
   {
     this.partitions.push ({
-      name: "New Partition",
+      name: "newpartition",
       isPartition: "YES",
       dataType: "String"
     });
@@ -512,8 +552,22 @@ export class DatalakeCreateNewStructureComponent {
   // }
 
   tableNameChange(){
+    this.lowerCase("tableName");
     if(this.tableConfigurationFormGroup.get ("tableLocation").value === ''){
     this.tableConfigurationFormGroup.get ("tableLocation").setValue (this.tableConfigurationFormGroup.get ("tableName").value);
+    }
+  }
+
+  lowerCase(formControlName){
+    let value = this.tableConfigurationFormGroup.get (formControlName).value;
+    if(value){
+      this.tableConfigurationFormGroup.get (formControlName).setValue(value.toLowerCase().replace(/ /g, ""));
+    }
+  }
+
+  toLower(partition){
+    if (partition.name){
+      partition.name = partition.name.toLowerCase().replace(/ /g, "");
     }
   }
 
@@ -532,5 +586,16 @@ export class DatalakeCreateNewStructureComponent {
     return array;
   }
 
+  resetBrowser(uploader): void
+  {
+    this.dataColumns = [];
+    this.rawData = [];
+    this.targetFileSize = null;
+    // this.targetFile = null;
+    uploader.value = null;
+    this.filteredDataColumns.next (this.dataColumns.slice ());
+    this.fileLoading = false;
+    // this.fileInfo = new FormData ();
+  }
 
 }

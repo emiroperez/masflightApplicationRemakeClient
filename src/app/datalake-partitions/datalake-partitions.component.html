@@ -5,14 +5,14 @@
       [(ngModel)]="filter" (ngModelChange)="filterPartition()" autocomplete="off">
       <mat-icon class="search-icon" aria-label="search">search</mat-icon>
     </mat-form-field> -->
-    <mat-form-field appearance="outline">
-        <mat-label>Search</mat-label>
-      <input matInput  type="text"  
-      [(ngModel)]="filter" (ngModelChange)="filterPartition()" autocomplete="off">
-      <mat-icon matPrefix aria-label="search">search</mat-icon>
-    </mat-form-field>
-    <div class="datalake-explorer-header-title">Partition Management</div>
+    <div class="datalake-explorer-header-title">Partition Management Job</div>
     <div class="datalake-explorer-buttons">
+      <mat-form-field [style.width.%]="50"  appearance="outline">
+          <mat-label>Search</mat-label>
+        <input matInput  type="text"  
+        [(ngModel)]="filter" (ngModelChange)="filterPartition()" autocomplete="off">
+        <mat-icon matPrefix aria-label="search">search</mat-icon>
+      </mat-form-field>
         <!-- btn-logs-partition -->
     <button [disabled]="actionDisable('List Logs partitions')" mat-button class="datalake-explorer-button"  
     matTooltip="Execution Partition Logs">
@@ -29,7 +29,8 @@
     ? 'datalake-partitions-item datalake-alarms-itemOne' : 'datalake-partitions-item'">
     <!-- class="datalake-partitions-item"> -->
       <div class="datalake-partition-table-scroll" [ngStyle]="{ 'height': getTableHeight() }">
-        <table mat-table matSort [dataSource]="PartitionTable" class="datasource welcome-table datalake-partition-table">
+        <table mat-table matSort [dataSource]="PartitionTable" 
+        class="datasource welcome-table datalake-partition-table">
           <ng-container matColumnDef="schemaName">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Schema Name</th>
             <td mat-cell *matCellDef="let element">{{ element.schemaName }}</td>
@@ -50,7 +51,7 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
             <td mat-cell *matCellDef="let element">
               <mat-icon class="status-icon" *ngIf="element.status === 'A'" >check</mat-icon>
-              <mat-icon class="status-icon2" *ngIf="element.status === 'I'">priority_high</mat-icon>
+              <mat-icon class="status-icon2" *ngIf="element.status === 'I'">close</mat-icon>
             </td>
           </ng-container>
           <ng-container matColumnDef="actions">
@@ -78,20 +79,22 @@
     </div>
 
     
-    <div  *ngIf="!actionDisable('Create Partition') || !actionDisable('Edit Partition')" class="datalake-partitions-item-right">
+    <div  *ngIf="!actionDisable('Create Partition') || !actionDisable('Edit Partition')" 
+    class="datalake-partitions-item-right">
       <div class="datalake-partitions-header">
         <div class="datalake-new-partition-title">
-          <span *ngIf="!edit && !actionDisable('Create Partition') " class="datalake-new-partition-title-label">Create Partition Manager</span>
+          <span *ngIf="!edit && !actionDisable('Create Partition') " 
+          class="datalake-new-partition-title-label">Create Partition Job</span>
           <span *ngIf="edit" class="datalake-new-partition-title-label">Edit Partition</span>
         </div>
         <div class="datalake-new-alarm-buttons">
           Status
           <button [disabled]=actionDisableBtn()
-          mat-icon-button (click)="setPartitionStatus('A')" [ngClass]="{'datalake-new-alarm-button': Status === 'I', 'datalake-new-alarm-button-selected': Status === 'A' }" matTooltip="Active">
+          mat-icon-button (click)="setPartitionStatus('A')" [ngClass]="{'datalake-new-alarm-button datalake-new-alarm-button-a': Status === 'I', 'datalake-new-alarm-button-selected datalake-new-alarm-button-selected-a': Status === 'A' }" matTooltip="Active">
             <mat-icon>check</mat-icon>
           </button>
-          <button [disabled]=actionDisableBtn() mat-icon-button (click)="setPartitionStatus('I')" [ngClass]="{'datalake-new-alarm-button': Status === 'A', 'datalake-new-alarm-button-selected': Status === 'I' }" matTooltip="Inactive">
-            <mat-icon>priority_high</mat-icon>
+          <button [disabled]=actionDisableBtn() mat-icon-button (click)="setPartitionStatus('I')" [ngClass]="{'datalake-new-alarm-button datalake-new-alarm-button-i': Status === 'A', 'datalake-new-alarm-button-selected datalake-new-alarm-button-selected-i': Status === 'I' }" matTooltip="Inactive">
+            <mat-icon>close</mat-icon>
           </button>
         </div>
       </div>
@@ -116,7 +119,7 @@
                 <ngx-mat-select-search [formControl]="tableFilterCtrl" 
                 placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
                 <mat-option *ngFor="let table of filteredTables | async" [value]="table">
-                  {{table}}
+                  {{table.TableName}}
                 </mat-option>
               </mat-select>
               <mat-error *ngIf="partitionFormGroup.get('table')?.invalid">You must select a table</mat-error>
@@ -124,7 +127,7 @@
         </div>
         <div class="datalake-partition-comboboxes">
             <mat-form-field  [formGroup]="partitionFormGroup">
-              <mat-select placeholder="Run Type" autocomplete="off"
+              <mat-select placeholder="How Do you want this job to be Executed ?" autocomplete="off"
                formControlName="runType" (selectionChange)="runTypeChanged()">
                 <mat-option *ngFor="let runType of filteredRunTypes | async" [value]="runType.value">
                   {{runType.viewValue}}

@@ -103,7 +103,8 @@ export class DatalakeTableCardComponent implements OnInit {
       panelClass: 'datalake-create-table-dialog',
       data: {index: 1,
         schemaName: this.values.schemaName,
-        tableName: this.values.tableName
+        tableName: this.values.tableName,
+        createdTable: true
       }
     });
   }

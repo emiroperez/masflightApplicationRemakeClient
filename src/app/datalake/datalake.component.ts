@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, HostListener } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, HostListener, ViewChild } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { Router } from '@angular/router';
 
@@ -10,12 +10,16 @@ import { AuthGuard } from '../guards/auth.guard';
 import { MenuService } from '../services/menu.service';
 import { DatalakeQueryTab } from '../datalake-query-engine/datalake-query-tab';
 import { DashboardMenu } from '../model/DashboardMenu';
+import { DatalakeExplorerComponent } from '../datalake-explorer/datalake-explorer.component';
 
 @Component({
   selector: 'app-datalake',
   templateUrl: './datalake.component.html'
 })
 export class DatalakeComponent implements OnInit {
+
+  @ViewChild("dataExplorer")
+  dataExplorer: DatalakeExplorerComponent;
 
   currentOption: any;
 
@@ -239,6 +243,12 @@ export class DatalakeComponent implements OnInit {
       return true;
     }else{
       return false;
+    }
+  }
+  refreshDataExplorer(event: any): void
+  {
+    if(event===2 && this.showDataExplorer()){
+      this.dataExplorer.getDatalakeTables();
     }
   }
 }

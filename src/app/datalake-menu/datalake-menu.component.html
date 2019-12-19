@@ -30,8 +30,9 @@
   style="padding: 0px  7px !important;">
   Query Engine
 </button>
+<!-- [disabled]="OptionDisable('Data Ingestion')" -->
 <button mat-button 
-[disabled]="OptionDisable('Data Ingestion')"
+[disabled]="actionDisable('Data Upload')"
   (click)="createTable()" class="msf-menu-op-1" style="padding: 0px  7px !important;">
   Data Ingestion
 </button>

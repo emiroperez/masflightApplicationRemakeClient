@@ -21,6 +21,7 @@ export class AuthService {
 
   constructor(public http: HttpClient, private globals: Globals)
   {
+    // this.http.get ("http://api.ipify.org?format=json").subscribe (data => {
     this.http.get ("https://api.ipify.org?format=json").subscribe (data => {
       this.ipAddress = data["ip"];
     });

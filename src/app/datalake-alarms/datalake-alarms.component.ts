@@ -21,7 +21,7 @@ export class DatalakeAlarmsComponent implements OnInit {
   currentOption: any;
 
   schemas: string[] = [];
-  tables: string[] = [];
+  tables: any[] = [];
   schemaName: any = "";
   tableName: any= "";
   cron: any= "";
@@ -75,6 +75,9 @@ export class DatalakeAlarmsComponent implements OnInit {
   clock: any;
   request: { schemaName: any; tableName: any; cron: any; monitoringStatus: string; emailList: any[]};
   search: any;
+  hover: boolean;
+  hoverdis: boolean;
+  hoveract: boolean;
 
   constructor(public globals: Globals, private formBuilder: FormBuilder,
     private service: DatalakeService, private changeDetectorRef: ChangeDetectorRef,
@@ -188,7 +191,7 @@ export class DatalakeAlarmsComponent implements OnInit {
 
 
     if(_this.currentOption.tableName){
-      var index = _this.tables.findIndex (aux => aux == _this.currentOption.tableName);
+      var index = _this.tables.findIndex (aux => aux.TableName == _this.currentOption.tableName);
       if(index != -1){
         tableSelector.setValue (_this.tables[index]);
         tableSelector.disable ();
@@ -236,7 +239,7 @@ export class DatalakeAlarmsComponent implements OnInit {
     }
 
     search = search.toLowerCase ();
-    filteredResults = this.tables.filter (a => (a.toLowerCase ().indexOf (search) > -1));
+    filteredResults = this.tables.filter (a => (a.TableName.toLowerCase ().indexOf (search) > -1));
 
     this.filteredTables.next (
       filteredResults.filter (function (elem, index, self)
@@ -444,7 +447,7 @@ saveAlarmHandler(_this, data) {
 
 tableChanged(): void
 {
-  this.tableName = this.alarmFormGroup.get ("table").value;
+  this.tableName = this.alarmFormGroup.get ("table").value.TableName;
 }
 
 saveAlarmError() {
@@ -532,4 +535,41 @@ AddEmail(): void
     }
   }
 
+  getAlarmStatusImage(element): string
+  {
+    if (element.monitoringStatus === 'A')
+      return "../../assets/images/enabled_green.png";
+
+    return "../../assets/images/disabled_red.png";
+  }
+
+  getAlarmEnableImage(): string
+  {
+    if (this.monitoringStatus === 'A' || this.hoveract){
+      return "../../assets/images/enableAlarmWhite.png";
+    }else{
+      return "../../assets/images/enableAlarm.png";
+    }
+  }
+
+  getAlarmDisabledImage(): string
+    {
+     if (this.monitoringStatus === 'I' || this.hoverdis){
+        return "../../assets/images/disabledAlarmWhite.png";
+      }else{
+        return "../../assets/images/disabledAlarm.png";
+      }
+  }
+
+  getEmailListImage(){
+    return "../../assets/images/emailList.png";
+  }
+
+  clean(){
+    this.tables = [];
+    this.filteredTables.next (this.tables.slice ());
+    this.alarmFormGroup.reset();
+    this.alarmFormGroup.get ("schema").enable ();
+
+  }
 }
