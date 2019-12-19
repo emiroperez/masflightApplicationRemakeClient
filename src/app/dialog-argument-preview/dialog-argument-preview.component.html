@@ -1,40 +1,43 @@
-<div class="msf-argument-preview-container msf-control-variables-overlay">
-  <ng-container *ngFor="let item of argList">
-    <app-msf-argument [currentArgument]="item" [currentGlobalOptionId]="data.optionId"></app-msf-argument>
-    <div class="msf-argument-preview-footer">
-      <ng-container *ngIf="item.name1">
-        <div class="msf-block">
-          <div class="msf-inline msf-summary-arg-title">{{item.title}}</div>
-          <div class="msf-inline msf-summary-arg-label">{{item.name1}}</div>
-          <div class="msf-inline msf-summary-value msf-summary-arg-value">{{utils.getValueFormat(item.type, item.value1, item)}}</div>
-        </div>
-      </ng-container>
-      <ng-container *ngIf="item.name2">
-        <div class="msf-block">
-          <div class="msf-inline msf-summary-arg-label">{{item.name2}}</div>
-          <div class="msf-inline msf-summary-value msf-summary-arg-value">{{utils.getValueFormat(item.type, item.value2, item)}}</div>
-        </div>
-      </ng-container>
-      <ng-container *ngIf="item.name3">
-        <ng-container *ngIf="isDateRange(item)">
+<div class="msf-control-variables-overlay">
+  <div *ngIf="isLoading" class="msf-argument-preview-loading"></div>
+  <div class="msf-argument-preview-container" [ngStyle]="{ 'display': checkVisibility() }">
+    <ng-container *ngFor="let item of argList">
+      <app-msf-argument [currentArgument]="item" [currentGlobalOptionId]="data.optionId" (setLoading)="setLoading($event)"></app-msf-argument>
+      <div class="msf-argument-preview-footer">
+        <ng-container *ngIf="item.name1">
           <div class="msf-block">
-            <div class="msf-inline msf-summary-arg-label">{{item.name3}}</div>
-            <div class="msf-inline msf-summary-value msf-summary-arg-value">{{getDateValue(item.value3)}}</div>
+            <div class="msf-inline msf-summary-arg-title">{{item.title}}</div>
+            <div class="msf-inline msf-summary-arg-label">{{item.name1}}</div>
+            <div class="msf-inline msf-summary-value msf-summary-arg-value">{{utils.getValueFormat(item.type, item.value1, item)}}</div>
           </div>
         </ng-container>
-        <ng-container *ngIf="!isDateRange(item)">
+        <ng-container *ngIf="item.name2">
           <div class="msf-block">
-            <div class="msf-inline msf-summary-arg-label">{{item.name3}}</div>
-            <div class="msf-inline msf-summary-value msf-summary-arg-value">{{utils.getValueFormat(item.type, item.value3, item)}}</div>
+            <div class="msf-inline msf-summary-arg-label">{{item.name2}}</div>
+            <div class="msf-inline msf-summary-value msf-summary-arg-value">{{utils.getValueFormat(item.type, item.value2, item)}}</div>
           </div>
         </ng-container>
-      </ng-container>
-      <ng-container *ngIf="item.name4">
-        <div class="msf-block">
-          <div class="msf-inline msf-summary-arg-label">{{item.name4}}</div>
-          <div class="msf-inline msf-summary-value msf-summary-arg-value">{{getDateValue(item.value4)}}</div>
-        </div>
-      </ng-container>
-    </div>
-  </ng-container>
+        <ng-container *ngIf="item.name3">
+          <ng-container *ngIf="isDateRange(item)">
+            <div class="msf-block">
+              <div class="msf-inline msf-summary-arg-label">{{item.name3}}</div>
+              <div class="msf-inline msf-summary-value msf-summary-arg-value">{{getDateValue(item.value3)}}</div>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="!isDateRange(item)">
+            <div class="msf-block">
+              <div class="msf-inline msf-summary-arg-label">{{item.name3}}</div>
+              <div class="msf-inline msf-summary-value msf-summary-arg-value">{{utils.getValueFormat(item.type, item.value3, item)}}</div>
+            </div>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngIf="item.name4">
+          <div class="msf-block">
+            <div class="msf-inline msf-summary-arg-label">{{item.name4}}</div>
+            <div class="msf-inline msf-summary-value msf-summary-arg-value">{{getDateValue(item.value4)}}</div>
+          </div>
+        </ng-container>
+      </div>
+    </ng-container>
+  </div>
 </div>

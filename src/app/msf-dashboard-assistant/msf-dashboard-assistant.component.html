@@ -189,7 +189,7 @@
                           <div class="msf-component-outer-container">
                             <div *ngIf="!isDateRange(argument)" class="msf-component-argument-container">
                               <app-msf-argument [currentArgument]="argument"
-                                [currentGlobalOptionId]="controlVariable.optionId"></app-msf-argument>
+                                [currentGlobalOptionId]="currentOption.id" (setLoading)="setLoading($event)"></app-msf-argument>
                               <!-- Special treatment for single checkbox arguments -->
                               <ng-container *ngIf="argument.checkboxes">
                                 <ng-container *ngFor="let checkbox of argument.checkboxes">

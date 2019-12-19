@@ -76,4 +76,9 @@ export class MsfControlVariablesComponent implements OnInit {
     this.globals.iconBefore = icon;
     this.argsBefore = argsContainer;
   }
+
+  setLoading(value: boolean): void
+  {
+    this.globals.isLoading = value;
+  }
 }

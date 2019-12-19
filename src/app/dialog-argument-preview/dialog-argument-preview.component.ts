@@ -12,6 +12,7 @@ import { Globals } from '../globals/Globals';
 })
 export class DialogArgumentPreviewComponent implements OnInit {
   argList: any[];
+  isLoading: boolean = false;
 
   constructor(public dialogRef: MatDialogRef<DialogArgumentPreviewComponent>,
     public globals: Globals,
@@ -55,5 +56,18 @@ export class DialogArgumentPreviewComponent implements OnInit {
     }
 
     return value;
+  }
+
+  checkVisibility(): string
+  {
+    if (this.isLoading)
+      return "none";
+
+    return "block";
+  }
+
+  setLoading(value: boolean): void
+  {
+    this.isLoading = value;
   }
 }

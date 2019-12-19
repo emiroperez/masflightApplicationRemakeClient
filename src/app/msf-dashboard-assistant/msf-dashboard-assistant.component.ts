@@ -1184,4 +1184,9 @@ export class MsfDashboardAssistantComponent {
 
     return false;
   }
+
+  setLoading(value: boolean): void
+  {
+    this.isLoading = value;
+  }
 }
