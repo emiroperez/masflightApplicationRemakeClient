@@ -76,13 +76,15 @@
                                 <mat-form-field class="standard-text menu-category-input">
                                     <input matInput class="standard-input-text" placeholder="Short Description" [(ngModel)]="optionSelected.welcome.shortDescription">
                                 </mat-form-field>
-                                <mat-form-field class="standard-text menu-category-input">
-                                    <input matInput class="standard-input-text" placeholder="Image URL Name" [(ngModel)]="optionSelected.welcome.imageURL">
-                                </mat-form-field>
-                                <span class="welcome-message">Welcome Message</span>
-                                <div class="admin-menu-html-editor">
-                                    <angular-editor [(ngModel)]="optionSelected.welcome.description" [config]="htmlEditorConfig"></angular-editor>
-                                </div>
+                                <ng-container *ngIf="globals.currentApplication.id != 5">
+                                    <mat-form-field class="standard-text menu-category-input">
+                                        <input matInput class="standard-input-text" placeholder="Image URL Name" [(ngModel)]="optionSelected.welcome.imageURL">
+                                    </mat-form-field>
+                                    <span class="welcome-message">Welcome Message</span>
+                                    <div class="admin-menu-html-editor">
+                                        <angular-editor [(ngModel)]="optionSelected.welcome.description" [config]="htmlEditorConfig"></angular-editor>
+                                    </div>
+                                </ng-container>
                             </div>
                             <div *ngIf="!optionSelected.isRoot && optionSelected.isActive">
                                 <div *ngIf="optionSelected.children.length != 0">
