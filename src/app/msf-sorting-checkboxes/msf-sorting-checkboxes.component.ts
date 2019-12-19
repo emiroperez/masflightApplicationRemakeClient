@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Globals } from '../globals/Globals';
 import { Arguments } from '../model/Arguments';
 import { iif, of, Observable } from 'rxjs';
@@ -15,6 +15,10 @@ export class MsfSortingCheckboxesComponent implements OnInit {
 
   @Input("currentOptionId")
   currentOptionId: number;
+
+  @Output("setLoading")
+  setLoading = new EventEmitter ();
+
   selected: any[] = [];
   all = {"checked":false};
 
@@ -39,7 +43,6 @@ export class MsfSortingCheckboxesComponent implements OnInit {
 
   ngOnInit()
   { 
-    this.globals.isLoading = true;
     this.getRecords (null, this.handlerSuccess);
 
     if(this.argument.value1 != null)
@@ -60,7 +63,13 @@ export class MsfSortingCheckboxesComponent implements OnInit {
   
   getRecords(search, handlerSuccess)
   {
-    let url = this.globals.baseUrl + this.argument.url + "?optionId="+ this.currentOptionId;
+    let url;
+
+    if (this.currentOptionId == null)
+      return;
+
+    this.setLoading.emit (true);
+    url = this.globals.baseUrl + this.argument.url + "?optionId="+ this.currentOptionId;
     this.http.get(this,url,handlerSuccess,this.handlerError, null);  
   }
   
@@ -68,18 +77,19 @@ export class MsfSortingCheckboxesComponent implements OnInit {
     _this.data = data;
     _this.refreshData();
     if (!_this.globals.appLoading)
-      _this.globals.isLoading = false;
-    // _this.formatData();    
+      _this.setLoading.emit (false);
+
+    // _this.formatData();
   }
   
   handlerError(_this,result){
     if (!_this.globals.appLoading)
-      _this.globals.isLoading = false;
+      _this.setLoading.emit (false);
   }
 
   //   formatData(){
   //   this.data = this.data.concat(this.response);
-  //   this.globals.isLoading = false;
+  //   this.setLoading.emit (false);
   // }
 
   checkBoxChange(checkBox){

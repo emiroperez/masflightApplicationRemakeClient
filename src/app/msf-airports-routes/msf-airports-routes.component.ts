@@ -20,7 +20,8 @@ export class MsfAirportsRoutesComponent implements OnInit {
 
   ngOnInit() { 
     // this.globals.isLoading = true;
-    // this.getAirports(null, this.handlerSuccess);
+    if (!this.globals.airports)
+      this.getAirports (null, this.handlerSuccess);
   }
 
 

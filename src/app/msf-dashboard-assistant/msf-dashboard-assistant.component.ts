@@ -274,6 +274,18 @@ export class MsfDashboardAssistantComponent {
           if (argument.value2)
             argument.value2 = JSON.parse (argument.value2);
 
+          if (argument.value3)
+            argument.value3 = JSON.parse (argument.value3);
+
+          if (argument.value4)
+            argument.value4 = JSON.parse (argument.value4);
+
+          if (argument.dateLoaded)
+            argument.dateLoaded = JSON.parse (argument.dateLoaded);
+
+          if (argument.currentDateRangeValue)
+            argument.currentDateRangeValue = JSON.parse (argument.currentDateRangeValue);
+
           if (argument.minDate)
             argument.minDate = new Date (argument.minDate);
     
@@ -368,10 +380,74 @@ export class MsfDashboardAssistantComponent {
     this.tablePreview = false;
   }
 
-  getArgumentLabel(value: string)
+  getArgumentLabel1(argument: Arguments)
   {
+    let value: String;
+
+    value = argument.label1;
+    if (!value)
+      value = argument.title;
+    if (!value)
+      value = argument.name1;
+
     if (!value.endsWith (':'))
-      return value + ":";
+      return value + ": ";
+
+    if (!value.endsWith (" "))
+      return value + " ";
+
+    return value;
+  }
+
+  getArgumentLabel2(argument: Arguments)
+  {
+    let value: String;
+
+    value = argument.label2;
+    if (!value)
+      value = argument.title;
+    if (!value)
+      value = argument.name2;
+
+    if (!value.endsWith (':'))
+      return value + ": ";
+
+    if (!value.endsWith (" "))
+      return value + " ";
+
+    return value;
+  }
+
+  getArgumentLabel3(argument: Arguments)
+  {
+    let value: String;
+
+    value = argument.label3;
+    if (!value)
+      value = argument.title;
+    if (!value)
+      value = argument.name3;
+
+    if (!value.endsWith (':'))
+      return value + ": ";
+
+    if (!value.endsWith (" "))
+      return value + " ";
+
+    return value;
+  }
+
+  getArgumentLabel4(argument: Arguments)
+  {
+    let value: String;
+
+    value = argument.name4;
+
+    if (!value.endsWith (':'))
+      return value + ": ";
+
+    if (!value.endsWith (" "))
+      return value + " ";
 
     return value;
   }
@@ -1171,5 +1247,10 @@ export class MsfDashboardAssistantComponent {
       return true;
 
     return false;
+  }
+
+  setLoading(value: boolean): void
+  {
+    this.isLoading = value;
   }
 }

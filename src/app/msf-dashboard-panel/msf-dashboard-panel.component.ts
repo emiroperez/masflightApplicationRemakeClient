@@ -356,6 +356,15 @@ export class MsfDashboardPanelComponent implements OnInit {
                 if (controlVariableArgument.value3)
                   categoryOptionArgument.value3 = controlVariableArgument.value3;
 
+                if (controlVariableArgument.value4)
+                  categoryOptionArgument.value4 = controlVariableArgument.value4;
+
+                if (controlVariableArgument.dateLoaded)
+                  categoryOptionArgument.dateLoaded = controlVariableArgument.dateLoaded;
+
+                if (controlVariableArgument.currentDateRangeValue)
+                  controlVariableArgument.currentDateRangeValue = controlVariableArgument.currentDateRangeValue;
+
                 found = true;
                 break;
               }
@@ -3453,6 +3462,18 @@ export class MsfDashboardPanelComponent implements OnInit {
           if (argument.value2)
             argument.value2 = JSON.parse (argument.value2);
 
+          if (argument.value3)
+            argument.value3 = JSON.parse (argument.value3);
+
+          if (argument.value4)
+            argument.value4 = JSON.parse (argument.value4);
+
+          if (argument.dateLoaded)
+            argument.dateLoaded = JSON.parse (argument.dateLoaded);
+
+          if (argument.currentDateRangeValue)
+            argument.currentDateRangeValue = JSON.parse (argument.currentDateRangeValue);
+
           if (argument.minDate)
             argument.minDate = new Date (argument.minDate);
     
@@ -3482,6 +3503,9 @@ export class MsfDashboardPanelComponent implements OnInit {
                   argument.value1 = curCategoryArgument.value1;
                   argument.value2 = curCategoryArgument.value2;
                   argument.value3 = curCategoryArgument.value3;
+                  argument.value4 = curCategoryArgument.value4;
+                  argument.dateLoaded = curCategoryArgument.dateLoaded;
+                  argument.currentDateRangeValue = curCategoryArgument.currentDateRangeValue;
                   break;
                 }
               }

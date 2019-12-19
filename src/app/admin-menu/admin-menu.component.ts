@@ -19,6 +19,7 @@ import { Arguments } from '../model/Arguments';
 import { Moment } from 'moment';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { AirportSelection } from '../commons/AirportSelection';
 //import  clonedeep from 'lodash.clonedeep';
 
 @Component({
@@ -314,6 +315,79 @@ export class EditCategoryArgumentDialog {
 
   displayedColumns: string[] = ['label1', 'label2', 'name1', 'name2'];
 
+  valueTypes: any[] = [
+    { id: 0, name: 'Full Date' },
+    { id: 1, name: 'Month' },
+    { id: 2, name: 'Quarter' },
+    { id: 3, name: 'Year' }
+  ];
+
+  //
+
+  dateValueByFullDate: any[] = [
+    { id: 0, name: 'Today' },
+    { id: 1, name: 'Yesterday' },
+    { id: 2, name: 'Last Week' },
+    { id: 3, name: 'Last Month' },
+    { id: 4, name: 'Last Year' }
+  ];
+
+  dateRangeByFullDate: any[] = [
+    { id: 0, name: 'Today' },
+    { id: 1, name: 'Yesterday' },
+    { id: 2, name: 'Last Week' },
+    { id: 3, name: 'Last Month' },
+    { id: 4, name: 'Last Year' },
+    { id: 5, name: 'Until Yesterday' },
+    { id: 6, name: 'Until Last Week' },
+    { id: 7, name: 'Until Last Month' },
+    { id: 8, name: 'Until Last Year' },
+    { id: 9, name: 'Until Today' }
+  ];
+
+  dateValueByMonth: any[] = [
+    { id: 0, name: 'Current Month' },
+    { id: 1, name: 'Last Month' },
+    { id: 2, name: 'Last Year' }
+  ];
+
+  dateRangeByMonth: any[] = [
+    { id: 0, name: 'Current Month' },
+    { id: 1, name: 'Current Year' },
+    { id: 2, name: 'Last Month' },
+    { id: 3, name: 'Last Year' },
+    { id: 4, name: 'Until Last Month' },
+    { id: 5, name: 'Until Last Year' },
+  ];
+
+  dateValueByQuarter: any[] = [
+    { id: 0, name: 'Current Quarter' },
+    { id: 1, name: 'Last Quarter' },
+    { id: 2, name: 'Last Year' }
+  ];
+
+  dateRangeByQuarter: any[] = [
+    { id: 0, name: 'Current Quarter' },
+    { id: 1, name: 'Current Year' },
+    { id: 2, name: 'Last Quarter' },
+    { id: 3, name: 'Last Year' },
+    { id: 4, name: 'Until Last Quarter' },
+    { id: 5, name: 'Until Last Year' },
+  ];
+
+  dateValueByYear: any[] = [
+    { id: 0, name: 'Current Year' },
+    { id: 1, name: 'Last Year' }
+  ];
+
+  dateRangeByYear: any[] = [
+    { id: 0, name: 'Current Year' },
+    { id: 1, name: 'Last Year' },
+    { id: 2, name: 'Until Last Year' }
+  ];
+
+  //
+
   dates: any[] = [
     {id: 1, name: 'Today',value:"TODAY"},
     {id: 2, name: 'Yesterday',value:"YESTERDAY"},
@@ -366,12 +440,16 @@ export class EditCategoryArgumentDialog {
     { "id": 3, "name": "All Combined", "value": "Combined"}
   ];
 
+  optionId: number;
+
   constructor(
     private globals: Globals,
     private http: ApiClient,
     public dialogRef: MatDialogRef<EditCategoryArgumentDialog>,
     @Inject(MAT_DIALOG_DATA) public data, public dialog: MatDialog) {
-      for (let argument of data.categoryArgumentsId[0].arguments)
+      this.optionId = data.optionId;
+
+      for (let argument of data.cat.categoryArgumentsId[0].arguments)
       {
         this.updateItemList (argument);
 
@@ -381,6 +459,36 @@ export class EditCategoryArgumentDialog {
         if (argument.value2)
           argument.value2 = JSON.parse (argument.value2);
 
+        if (argument.value3)
+          argument.value3 = JSON.parse (argument.value3);
+
+        // initialize if not set
+        if (this.isDateRange (argument))
+        {
+          if (argument.selectionMode == null)
+          {
+            argument.dateRange = 0;
+            argument.dateValue = 0;
+            argument.selectionMode = 0;
+          }
+          else
+          {
+            argument.dateRange = (argument.selectionMode >> 1) & 3;
+            argument.dateValue = argument.selectionMode >> 3;
+            argument.selectionMode &= 1;
+          }
+
+          this.setDateRange (argument);
+        }
+        else if (this.isAirport (argument) && argument.selectionMode & AirportSelection.MULTIPLESELECTION)
+        {
+          // this is for airport multiple selection
+          argument.selectionMode &= ~AirportSelection.MULTIPLESELECTION;
+          argument.multipleSelection = true;
+        }
+        else if (argument.selectionMode == null)
+          argument.selectionMode = 0;
+
         if (argument.minDate)
           argument.minDate = new Date (argument.minDate);
 
@@ -389,8 +497,187 @@ export class EditCategoryArgumentDialog {
       }
   }
 
+  clearValue1(item): void
+  {
+    item.value1 = null;
+  }
+
+  clearValues(item): void
+  {
+    item.value1 = null;
+    item.value2 = null;
+    item.value3 = null;
+  }
+
+  clearAirportArgument(item): void
+  {
+    if (item.selectionMode < AirportSelection.ROUTEWITHCONNECTION)
+    {
+      item.label3 = null;
+      item.name3 = null;
+      item.value3 = null;
+
+      if (item.selectionMode == AirportSelection.SINGLE)
+      {
+        item.label2 = null;
+        item.name2 = null;
+        item.value2 = null;
+      }
+    }
+  }
+
+  setDateRange(item): void
+  {
+    switch (item.dateRange)
+    {
+      case 3:
+        if (item.selectionMode == 1)
+          item.currentDateRange = this.dateRangeByYear;
+        else
+          item.currentDateRange = this.dateValueByYear;
+        break;
+
+      case 2:
+        if (item.selectionMode == 1)
+          item.currentDateRange = this.dateRangeByQuarter;
+        else
+          item.currentDateRange = this.dateValueByQuarter;
+        break;
+
+      case 1:
+        if (item.selectionMode == 1)
+          item.currentDateRange = this.dateRangeByMonth;
+        else
+          item.currentDateRange = this.dateValueByMonth;
+        break;
+
+      default:
+        if (item.selectionMode == 1)
+          item.currentDateRange = this.dateRangeByFullDate;
+        else
+          item.currentDateRange = this.dateValueByFullDate;
+    }
+  }
+
+  clearDateArgument(item): void
+  {
+    if (!item.selectionMode)
+    {
+      item.label2 = null;
+      item.name2 = null;
+      item.name4 = null;
+    }
+
+    item.dateValue = 0;
+  }
+
+  getDateValueLabel(item): string
+  {
+    if (item.selectionMode == 1)
+      return "Date Range";
+
+    return "Date Value";
+  }
+
+  getTitleWidth(item): number
+  {
+    if (this.isAirport (item) || this.isDateRange (item))
+      return 47.5;
+
+    return 100;
+  }
+
+  getTitleMargin(item): number
+  {
+    if (this.isAirport (item) || this.isDateRange (item))
+      return 5;
+
+    return 0;
+  }
+
+  getAirportArgumentWidth(item): number
+  {
+    if (item.selectionMode == AirportSelection.ROUTEWITHCONNECTION)
+      return 30;
+
+    return 45;
+  }
+
+  get1stAirportArgumentMargin(item): number
+  {
+    if (item.selectionMode == AirportSelection.ROUTEWITHCONNECTION)
+      return 1;
+
+    return 5;
+  }
+
+  get2ndAirportArgumentMargin(item): number
+  {
+    if (item.selectionMode == AirportSelection.ROUTEWITHCONNECTION)
+      return 1;
+
+    return 0;
+  }
+
+  getDateArgumentWidth(item): number
+  {
+    if (item.selectionMode == 1)
+      return 45;
+
+    return 100;
+  }
+
+  getDateArgumentMargin(item): number
+  {
+    if (item.selectionMode == 1)
+      return 5;
+
+    return 0;
+  }
+
+  valueTypeChanged(item): void
+  {
+    item.dateValue = 0;
+
+    switch (item.dateRange)
+    {
+      case 3:
+        if (item.selectionMode == 1)
+          item.currentDateRange = this.dateRangeByYear;
+        else
+          item.currentDateRange = this.dateValueByYear;
+
+        item.name3 = null;
+        item.name4 = null;
+        break;
+
+      case 2:
+        if (item.selectionMode == 1)
+          item.currentDateRange = this.dateRangeByQuarter;
+        else
+          item.currentDateRange = this.dateValueByQuarter;
+        break;
+
+      case 1:
+        if (item.selectionMode == 1)
+          item.currentDateRange = this.dateRangeByMonth;
+        else
+          item.currentDateRange = this.dateValueByMonth;
+        break;
+
+      default:
+        if (item.selectionMode == 1)
+          item.currentDateRange = this.dateRangeByFullDate;
+        else
+          item.currentDateRange = this.dateValueByFullDate;
+
+        item.name3 = null;
+        item.name4 = null;
+    }
+  }
+
   isDateArgument(argument: Arguments){
-    if (ComponentType.dateRange == argument.type || ComponentType.date == argument.type
+    if (ComponentType.date == argument.type
       || ComponentType.datePicker == argument.type || ComponentType.dateTimePicker == argument.type
       || ComponentType.datePeriod == argument.type || ComponentType.datePeriodYear == argument.type
       || ComponentType.datePeriodYearMonth == argument.type || ComponentType.datePeriodRevenue == argument.type)
@@ -430,11 +717,15 @@ export class EditCategoryArgumentDialog {
   }
 
   isAirportRoute(argument: Arguments) {
-    return (ComponentType.airportRoute == argument.type || ComponentType.airportsRoutes == argument.type);
+    return ComponentType.airportsRoutes == argument.type;
   }
 
   isAirport(argument: Arguments) {
     return ComponentType.airport == argument.type;
+  }
+
+  isAircraftType(argument: Arguments) {
+    return ComponentType.aircraftType == argument.type;
   }
 
   isSingleAirport(argument: Arguments) {
@@ -465,8 +756,12 @@ export class EditCategoryArgumentDialog {
     return ComponentType.seatClass == argument.type;
   }
 
-  isGroupAAA(argument: Arguments){
+  isGroupAAA(argument: Arguments) {
     return ComponentType.AAA_Group == argument.type;
+  }
+
+  isTitle(argument: Arguments) {
+    return ComponentType.title == argument.type;
   }
 
   updateItemList(item): void
@@ -484,12 +779,31 @@ export class EditCategoryArgumentDialog {
   onNoClick(): void {
     this.dialogRef.close();
   }
-  showPreview(argument,group) {
+
+  showPreview(argument)
+  {
+    let argList = JSON.parse (JSON.stringify (argument));
+
+    for (let item of argList.arguments)
+    {
+      if (item.multipleSelection)
+        item.selectionMode |= AirportSelection.MULTIPLESELECTION;
+
+      if (item.dateRange)
+        item.selectionMode |= item.dateRange << 1;
+
+      if (item.dateValue)
+        item.selectionMode |= item.dateValue << 3;
+    }
+
     this.dialog.open(DialogArgumentPreviewComponent, {
       height: "560px",
       width: "500px",
       panelClass: 'msf-argument-preview-popup',
-      data: argument
+      data: {
+        optionId: this.optionId,
+        argList: argList
+      }
     });
   }
 
@@ -515,30 +829,6 @@ export class EditCategoryArgumentDialog {
       this.selectedCategories.push(category);
     }
     category.selected = !category.selected;
-  }
-
-  addCategoryArgument() {
-    let node = {
-      "selected": true,
-      "label": null,
-      "icon:": null,
-      "arguments": []
-    };
-    this.data.push(node);
-  }
-
-  deleteCategoryArgument() {
-    let filterSelected = this.data.filter(item => item.selected);
-    for (var i = 0; i < filterSelected.length; i += 1) {
-      this.selectedCategories.forEach(function (currentValue, index, array) {
-        if (currentValue == filterSelected[i]) {
-          array.splice(index, 1);
-        }
-      });
-    }
-    filterSelected.forEach(function (item, index, array) {
-      item.toDelete = true;
-    });
   }
 
   toggleGroup(item) {
@@ -590,6 +880,10 @@ export class EditCategoryArgumentDialog {
   getItems(item, search, handlerSuccess){
     let url;
 
+    // don't run service for sorting checkboxes and states
+    if (this.isSortingCheckboxes (item) || this.isStates (item))
+      return;
+
     if (!item.url)
     {
       this.loading = false;
@@ -618,6 +912,18 @@ export class EditCategoryArgumentDialog {
   isSelectBoxMultipleOption(item){
     return ComponentType.selectBoxMultipleOption == item.type;
   }
+
+  isSelectBoxSingleOption(item) {
+    return ComponentType.selectBoxSingleOption == item.type;
+  }
+
+  isSortingCheckboxes(item) {
+    return ComponentType.sortingCheckboxes == item.type;
+  }
+
+  isStates(item) {
+    return ComponentType.states == item.type;
+  }
 }
 
 export class ExampleFlatNode {
@@ -645,6 +951,8 @@ export class ExampleFlatNode {
   finalRol: string;
   typeOption: string;
   welcome: any;
+  createdMetas: any[];
+  createdDrillDowns: any[];
 }
 
 @Component({
@@ -690,6 +998,8 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     flatNode.finalRol = node.finalRol;
     flatNode.typeOption = node.typeOption;
     flatNode.welcome = node.welcome;
+    flatNode.createdMetas = node.createdMetas;
+    flatNode.createdDrillDowns = node.createdDrillDowns;
     this.flatNodeMap.set(flatNode, node);
     this.nestedNodeMap.set(node, flatNode);
     return flatNode;
@@ -744,7 +1054,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     { type: "airline", numArguments: 1 },
     { type: "airport", numArguments: 1 },
     { type: "airportRoute", numArguments: 2 },
-    { type: "ceiling", numArguments: 2 },
+    { type: "ceiling", numArguments: 3 },
     { type: "timeRange", numArguments: 2 },
     { type: "dateRange", numArguments: 2 },
     { type: "tailnumber", numArguments: 2 },
@@ -1004,7 +1314,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   handlerSuccessCategoryArguments(_this, result) {
     _this.categories = result;
     _this.filteredCategories.next (_this.categories.slice ());
-    if (_this.optionSelected.id) {
+    if (_this.optionSelected.id != null) {
       _this.getOptionCategoryArguments(_this.optionSelected);
     }
   }
@@ -1013,7 +1323,39 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   }
 
   getMeta() {
-    this.service.loadWebservicMetaAdmin(this, this.optionSelected, this.handlerSuccessMeta, this.handlerErrorMeta);
+    if (this.optionSelected.id == null)
+    {
+      let argList = [];
+
+      this.outputs = JSON.parse (JSON.stringify (this.optionSelected.createdMetas));
+
+      for (let optionArguments of this.optionSelected.menuOptionArgumentsAdmin)
+      {
+        for (let categoryArgument of optionArguments.categoryArgumentsId)
+        {
+          for (let argument of categoryArgument.arguments)
+            argList.push (argument);
+        }
+      }
+
+      this.argumentsDrillDown = argList;
+
+      const dialogRef = this.dialog.open(EditOutputOptionsMetaDialog, {
+        width: '1090px',
+        data: { outputs: this.outputs, option: this.optionSelected, arguments: this.argumentsDrillDown }
+      });
+
+      dialogRef.afterClosed ().subscribe ((result: any) => {
+        if (result != undefined) {
+          this.optionSelected.createdMetas = result;
+          const nestedNode = this.flatNodeMap.get (this.optionSelected);
+          nestedNode.createdMetas = result;
+          this.dataChange.next (this.data);
+        }
+      });
+    }
+    else
+      this.service.loadWebservicMetaAdmin(this, this.optionSelected, this.handlerSuccessMeta, this.handlerErrorMeta);
   }
 
   getArgumentsByOption() {
@@ -1074,9 +1416,8 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
       }
     }
 
-    if (!option.isRoot && option.id) {
-      this.getOptionCategoryArguments();
-    }
+    if (!option.isRoot)
+      this.getOptionCategoryArguments ();
   }
 
   getSelectIdDom(idDomOption) {
@@ -1099,6 +1440,9 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
   getOptionCategoryArguments() {
     let self = this;
+
+    if (!this.categories.length)
+      return;
 
     this.clearSelectedCategoryArguments();
     var categories = this.categories;
@@ -1270,7 +1614,8 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     }
   }
 
-  handlerSuccessSaveMenuData(_this, data) {
+  handlerSuccessSaveMenuData(_this)
+  {
     // set default menu id after saving the menu
     _this.globals.currentApplication.defaultMenu = _this.defaultMenu;
     localStorage.setItem ("currentApplication", JSON.stringify (_this.globals.currentApplication));
@@ -1278,7 +1623,8 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     _this.getMenuData();
   }
 
-  handlerErrorSaveMenuData(_this, data) {
+  handlerErrorSaveMenuData(_this)
+  {
     _this.getMenuData();
   }
 
@@ -1578,7 +1924,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     if (index != -1) {
       if (this.optionSelected.menuOptionArgumentsAdmin[index].id == undefined) {
         for (let i = 0; i < this.optionSelected.menuOptionArgumentsAdmin.length; i++) {
-          if (this.optionSelected.menuOptionArgumentsAdmin[i].position && this.optionSelected.menuOptionArgumentsAdmin[i].position > this.optionSelected.menuOptionArgumentsAdmin[index].position)
+          if (this.optionSelected.menuOptionArgumentsAdmin[i].position != -1 && this.optionSelected.menuOptionArgumentsAdmin[i].position > this.optionSelected.menuOptionArgumentsAdmin[index].position)
             this.optionSelected.menuOptionArgumentsAdmin[i].position--;
         }
 
@@ -1599,7 +1945,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
         }
         else {
           for (let i = 0; i < this.optionSelected.menuOptionArgumentsAdmin.length; i++) {
-            if (this.optionSelected.menuOptionArgumentsAdmin[i].position && this.optionSelected.menuOptionArgumentsAdmin[i].position > this.optionSelected.menuOptionArgumentsAdmin[index].position)
+            if (this.optionSelected.menuOptionArgumentsAdmin[i].position != -1 && this.optionSelected.menuOptionArgumentsAdmin[i].position > this.optionSelected.menuOptionArgumentsAdmin[index].position)
               this.optionSelected.menuOptionArgumentsAdmin[i].position--;
           }
 
@@ -1612,9 +1958,10 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
       let newPos = 0;
 
       // set new position for the argument
-      for (let categorySelected of this.optionSelected.menuOptionArgumentsAdmin) {
-        if (categorySelected.position > newPos)
-          newPos = categorySelected.position;
+      for (let categorySelected of this.optionSelected.menuOptionArgumentsAdmin)
+      {
+        if (categorySelected.position != -1)
+          newPos++;
       }
 
       newPos++;
@@ -1623,7 +1970,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
         "categoryArgumentsId": [category],
         "selected": true,
         "toDelete": false,
-        "order": newPos
+        "position": newPos
       };
 
       for (let j = 0; j < category.arguments.length; j++)
@@ -1654,20 +2001,15 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     this.dataChange.next(this.data);
   }
 
-  addCategoryArgument() {
-    let node = {
-      "label": null,
-      "icon:": null,
-      "arguments": []
-    };
-    this.categories.push(node);
-  }
-
   saveCategoryArgument() {
     let arrayMenuOptionArg = [];
-    for (let i = 0; i < this.optionSelected.menuOptionArgumentsAdmin.length; i++) {
+
+    if (this.optionSelected.id == null)
+      return;
+
+    for (let i = 0; i < this.optionSelected.menuOptionArgumentsAdmin.length; i++)
       arrayMenuOptionArg.push(this.optionSelected.menuOptionArgumentsAdmin[i]);
-    }
+
     this.service.saveOptionsArgumentsCategory(this, arrayMenuOptionArg, this.optionSelected.id, this.handlerSuccessSaveCategoryArgument, this.handlerErrorSaveCategoryArgument);
   }
 
@@ -1689,6 +2031,38 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
   getMenuOptionsString(_this) {
     _this.service.getMenuString(_this, _this.globals.currentApplication.id, _this.handleSuccessString, _this.handlerErrorMeta);
+  }
+
+  handleNewOptionSuccessString(_this, data) {
+    let menuString = data;
+
+    // prepare drill down for option selection
+    for(let dD of _this.drillDown)
+    {
+      for (let data of menuString)
+      {
+        if (dD.childrenOptionId == data.id)
+        {
+          dD.childrenOptionId = data.id;
+          break;
+        }
+      }
+    }
+
+    const dialogRef = _this.dialog.open (DrillDownDialog, {
+      width: '90%',
+      data: { optionString: menuString, option: _this.optionSelected, drillDown: _this.drillDown }
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result != undefined)
+      {
+        _this.optionSelected.createdDrillDowns = result;
+        const nestedNode = _this.flatNodeMap.get (_this.optionSelected);
+        nestedNode.createdDrillDowns = result;
+        _this.dataChange.next (_this.data);
+      }
+    });
   }
 
   handleSuccessString(_this, data) {
@@ -1722,7 +2096,13 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   }
 
   getDrillDowns() {
-    this.service.getDrillDownAdmin(this, this.optionSelected.id, this.handlerSuccessDrillDown, this.handlerErrorMeta);
+    if (this.optionSelected.id == null)
+    {
+      this.drillDown = JSON.parse (JSON.stringify (this.optionSelected.createdDrillDowns));
+      this.service.getMenuString(this, this.globals.currentApplication.id, this.handleNewOptionSuccessString, this.handlerErrorMeta);
+    }
+    else
+      this.service.getDrillDownAdmin(this, this.optionSelected.id, this.handlerSuccessDrillDown, this.handlerErrorMeta);
   }
 
   handlerSuccessDrillDown(_this, data) {
@@ -1737,10 +2117,14 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   editCategoryArguments(cat) {
 
     var duplicateObject = JSON.parse(JSON.stringify(cat));
+
     const dialogRef = this.dialog.open(EditCategoryArgumentDialog, {
       panelClass: "category-argument-dialog",
       width: '45%',
-      data: duplicateObject
+      data: {
+        optionId: this.optionSelected.id,
+        cat: duplicateObject
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -1754,6 +2138,19 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
  
           if (argument.value2)
             argument.value2 = JSON.stringify (argument.value2);
+
+          if (argument.value3)
+            argument.value3 = JSON.stringify (argument.value3);
+
+          // Use a special flag value for airport selection in order for multiple selection
+          if (argument.multipleSelection)
+            argument.selectionMode |= AirportSelection.MULTIPLESELECTION;
+
+          if (argument.dateRange)
+            argument.selectionMode |= argument.dateRange << 1;
+
+          if (argument.dateValue)
+            argument.selectionMode |= argument.dateValue << 3;
 
           if (argument.minDate)
             argument.minDate = argument.minDate.toString ();
@@ -1853,7 +2250,10 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
         isRoot: false,
         typeOption: "0",
         applicationId: this.globals.currentApplication.id,
+        menuOptionArgumentsAdmin: [],
         metaData: 1,
+        createdMetas: [],
+        createdDrillDowns: []
       } as any);
       this.dataChange.next(this.data);
     } else {

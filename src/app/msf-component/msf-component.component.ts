@@ -33,6 +33,18 @@ export class MsfComponentComponent implements OnInit {
               if (argument.value2)
                 argument.value2 = JSON.parse (argument.value2);
 
+              if (argument.value3)
+                argument.value3 = JSON.parse (argument.value3);
+
+              if (argument.value4)
+                argument.value4 = JSON.parse (argument.value4);
+
+              if (argument.dateLoaded)
+                argument.dateLoaded = JSON.parse (argument.dateLoaded);
+
+              if (argument.currentDateRangeValue)
+                argument.currentDateRangeValue = JSON.parse (argument.currentDateRangeValue);
+
               if (argument.minDate)
                 argument.minDate = new Date (argument.minDate);
 

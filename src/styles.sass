@@ -347,6 +347,8 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             @include msf-dashboard-dialog-title(20px, 10px, $font-color)
         .msf-dashboard-panel-loading
             @include msf-dashboard-dialog-title(20px, 10px, $font-color)
+        .msf-argument-preview-loading
+            @include msf-dashboard-dialog-loading(50%, $quaternary-background-color, url(assets/images/#{$name}-loading_pulse.gif))
         .msf-dashboard-dialog
             .msf-dashboard-control-variables-close-button
                 .msf-dashboard-close-icon
@@ -1920,6 +1922,39 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                 border-color: $font-color
         .datalake-create-alarm-hint, .datalake-alarm-emails-hint
             color: $dashboard-border-color !important
+        .airline-selection-type-radio, .airport-selection-type-radio
+            .mat-radio-label
+                border-color: $font-color
+                &:hover
+                    background-color: $primary-color
+                    border-color: $primary-color !important
+            .mat-radio-outer-circle
+                border-color: $font-color
+        .airline-selection-type-radio-checked, .airport-selection-type-radio-checked
+            .mat-radio-label
+                background-color: $primary-color
+                border-color: $primary-color !important
+        .single-airport-argument-container, .multiple-airport-argument-container, .single-date-argument-container
+            background-color: $dashboard-secondary-background-color
+        .region-checkbox
+            color: $font-color
+            .mat-radio-outer-circle
+                border-color: $font-color
+        .msf-argument-preview-container
+            color: $font-color
+            .mat-radio-outer-circle
+                border-color: $font-color
+            .mat-radio-inner-circle
+                background-color: $font-color
+        .edit-category-radio-button
+            .mat-radio-outer-circle
+                border-color: $font-color
+            .mat-radio-inner-circle
+                background-color: $font-color
+        .argument-category-type-label
+            color: $primary-color
+        .argument-category-type-value
+            color: $font-color
 
 @each $name, $font-color, $little-font-color, $disabled-color, $secondary-disabled-color, $tertiary-disabled-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $quaternary-background-color, $body-background-color, $dashboard-background-color, $dashboard-secondary-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $scrollbar-background-color, $dashboard-panel-background-color, $dashboard-panel-chart-background-color, $dashboard-border-color, $schedule-map-background-color, $schedule-map-info-border, $disabled-combo-box-color, $disabled-underline, $dashboard-info-background-color, $dashboard-info-secondary-background-color, $dashboard-info-font-color, $dashboard-drill-down-border-color, $dashboard-threshold-background-color, $dashboard-title-font-color, $map-panelinfo-background-color, $dashboard-info-border-color, $dashboard-form-font-color, $admin-menu-background, $admin-menu-input-underline, $admin-tree-active-color, $admin-button-color, $admin-secondary-background-color, $admin-table-background-color, $admin-table-hover-color, $admin-secondary-button-color, $login-font-color, $intro-logout-icon-color, $control-variables-border-color, $control-variable-hover-background-color, $control-variable-hover-icon-color, $control-variables-input-underline, $control-variables-dropdown-hover-font-color, $control-variables-dropdown-hover-background-hover-color, $control-variables-selected-background-color, $dashboard-input-underline-color, $membership-primary-background-color, $membership-secondary-background-color, $customer-edit-header-color, $customer-table-header-background-color, $customer-table-row-background-color, $customer-table-row-border-color, $customer-table-row-hover-background-color, $customer-table-row-selected-background-color, $customer-table-row-border-selected-color, $customer-input-color, $customer-input-underline-color, $customer-disabled-underline, $dashboard-control-panel-background-color, $menu-open-background-color, $menu-open-active-background-color, $menu-first-line, $menu-second-line, $menu-background-color, $menu-child-background-color, $control-variable-disabled-color, $dashboard-assistant-analysis-color, $dashboard-assistant-axis-color, $dashboard-assistant-values-color, $dashboard-assistant-analysis-font-color, $dashboard-assistant-sub-background-color, $admin-menu-tree-scrollbar-track-color, $dialog-category-arguments-scrollbar-color, $admin-menu-category-scrollbar-track-color, $datalake-search-input-border-color, $progress-bar-fill, $progress-bar-buffer, $datalake-data-ingestion-background-color, $datalake-explorer-background-color, $datalake-table-stats-background-color, $datalake-table-button-color, $query-engine-background-color, $query-engine-result-header-color, $codemirror-selected-color, $codemirror-focused-selected-color, $codemirror-keyword-color, $codemirror-number-color, $codemirror-string-color, $codemirror-variable-color, $codemirror-variable2-color, $codemirror-comment-color, $codemirror-builtin-color, $codemirror-attribute-color, $codemirror-property-color, $datalake-query-left-panel-scrollbar-color, $datalake-query-left-panel-scrollbar-track-color, $datalake-table-row-background-color, $datalake-table-row-hover-background-color,$datalake-disabled-buttonAlarmEmail in $color-scheme
     @include theme($name, $font-color, $little-font-color, $disabled-color, $secondary-disabled-color, $tertiary-disabled-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $quaternary-background-color, $body-background-color, $dashboard-background-color, $dashboard-secondary-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $scrollbar-background-color, $dashboard-panel-background-color, $dashboard-panel-chart-background-color, $dashboard-border-color, $schedule-map-background-color, $schedule-map-info-border, $disabled-combo-box-color, $disabled-underline, $dashboard-info-background-color, $dashboard-info-secondary-background-color, $dashboard-info-font-color, $dashboard-drill-down-border-color, $dashboard-threshold-background-color, $dashboard-title-font-color, $map-panelinfo-background-color, $dashboard-info-border-color, $dashboard-form-font-color, $admin-menu-background, $admin-menu-input-underline, $admin-tree-active-color, $admin-button-color, $admin-secondary-background-color, $admin-table-background-color, $admin-table-hover-color, $admin-secondary-button-color, $login-font-color, $intro-logout-icon-color, $control-variables-border-color, $control-variable-hover-background-color, $control-variable-hover-icon-color, $control-variables-input-underline, $control-variables-dropdown-hover-font-color, $control-variables-dropdown-hover-background-hover-color, $control-variables-selected-background-color, $dashboard-input-underline-color, $membership-primary-background-color, $membership-secondary-background-color, $customer-edit-header-color, $customer-table-header-background-color, $customer-table-row-background-color, $customer-table-row-border-color, $customer-table-row-hover-background-color, $customer-table-row-selected-background-color, $customer-table-row-border-selected-color, $customer-input-color, $customer-input-underline-color, $customer-disabled-underline, $dashboard-control-panel-background-color, $menu-open-background-color, $menu-open-active-background-color,$menu-first-line, $menu-second-line, $menu-background-color, $menu-child-background-color, $control-variable-disabled-color, $dashboard-assistant-analysis-color, $dashboard-assistant-axis-color, $dashboard-assistant-values-color, $dashboard-assistant-analysis-font-color, $dashboard-assistant-sub-background-color, $admin-menu-tree-scrollbar-track-color, $dialog-category-arguments-scrollbar-color, $admin-menu-category-scrollbar-track-color, $datalake-search-input-border-color, $progress-bar-fill, $progress-bar-buffer, $datalake-data-ingestion-background-color, $datalake-explorer-background-color, $datalake-table-stats-background-color, $datalake-table-button-color, $query-engine-background-color, $query-engine-result-header-color, $codemirror-selected-color, $codemirror-focused-selected-color, $codemirror-keyword-color, $codemirror-number-color, $codemirror-string-color, $codemirror-variable-color, $codemirror-variable2-color, $codemirror-comment-color, $codemirror-builtin-color, $codemirror-attribute-color, $codemirror-property-color, $datalake-query-left-panel-scrollbar-color, $datalake-query-left-panel-scrollbar-track-color, $datalake-table-row-background-color, $datalake-table-row-hover-background-color, $datalake-disabled-buttonAlarmEmail)
@@ -3365,6 +3400,21 @@ mat-tab-group
 .mat-calendar-controls button .mat-button-wrapper
     color: $msf-surface-color
 
+.date-picker-header
+    display: flex
+    align-items: center
+    padding: 0.5em
+    .date-picker-label
+        color: $msf-surface-color
+        text-align: center
+        font-weight: 500
+        font-size: 14px
+        flex: 1
+        height: 1em
+    .date-picker-icon
+        margin: -22%
+        color: $msf-surface-color !important
+
 .msf-component-airport-input-container, .msf-airline-container
     .mat-select
         background-color: $msf-primary-dark-color
@@ -4054,6 +4104,10 @@ mat-tab-group
     @extend .msf-dashboard-dialog
 
 .msf-dashboard-drill-down-loading
+    @extend .msf-dashboard-dialog
+
+.msf-argument-preview-loading
+    height: 560px !important
     @extend .msf-dashboard-dialog
 
 .msf-dashboard-panel-loading
@@ -5557,7 +5611,8 @@ table.results
 
 img.msf-calendar-image
     width: 20px
-    margin-left: 13px
+    margin-left: auto
+    margin-right: auto
     margin-bottom: 10px
 .financial-content
     width: auto
@@ -5628,6 +5683,8 @@ img.msf-calendar-image
 .msf-more-info-popup .mat-dialog-container
     padding: 0
 
+.msf-argument-preview-popup .mat-dialog-container
+    padding: 0 !important
 
 .msf-more-info-popup-image
     background-size: cover
@@ -5784,7 +5841,7 @@ th.msf-show-table, td.msf-show-table
     display: inline-block
 
 .msf-argument-preview-container
-    padding: 0 40px
+    padding: 30px 75px
 
 .msf-admin-show-selected 
     display: inline-block
@@ -6456,12 +6513,13 @@ mat-form-field.msf-table-input
                 flex-direction: row !important
                 align-items: center
                 justify-content: space-between
+                height: 350px !important
                 .mat-form-field
                     width: 80%
             .admin-arguments-category-right-panel-header
                 display: flex
                 flex-direction: column
-                height: 350px
+                height: 160px
                 .admin-arguments-category-form-container
                     display: flex
                     flex-direction: column
@@ -6579,7 +6637,7 @@ mat-form-field.msf-table-input
     text-align: right
 
 .arguments-child
-    width: 40%
+    width: 47.5%
 
 .dialog-edit-argument-category-container
     min-height: 70%
@@ -6592,9 +6650,51 @@ mat-form-field.msf-table-input
         width: 100%
         margin: auto
         font-size: 15px
+        padding-top: 15px
+        display: flex
         .dialog-edit-argument-category-item-title-container
             width: 100%
             margin-bottom: 10px
+    .dialog-edit-argument-category-multiple-selection
+        align-self: center
+        font-size: 13px
+        width: 47.5%
+    .dialog-edit-airline-selection-type
+        margin: 0
+        .airline-selection-radio-group
+            display: flex
+            flex-direction: row
+            margin: 0
+            .airline-selection-type-radio, .airport-selection-type-radio
+                .mat-radio-label
+                    width: 250px
+                    border: solid 1px
+                    border-radius: 5px
+                    padding: 10px
+                    &:hover
+                        color: #ffffff !important
+                        .mat-radio-outer-circle
+                            border-color: #ffffff !important
+                        .mat-radio-inner-circle
+                            background-color: #ffffff !important
+            .airline-selection-type-radio-checked, .airport-selection-type-radio-checked
+                .mat-radio-label
+                    width: 250px
+                    border: solid 1px
+                    border-radius: 5px
+                    padding: 10px
+                    color: #ffffff !important
+                .mat-radio-outer-circle
+                    border-color: #ffffff !important
+                .mat-radio-inner-circle
+                    background-color: #ffffff !important
+            .airline-selection-type-radio-right
+                margin-left: 30px
+            .airport-selection-type-radio, .airport-selection-type-radio-checked
+                .mat-radio-label
+                    width: 160px !important
+            .airport-selection-type-radio-right
+                margin-left: 12.5px
     .dialog-edit-argument-category-item-body
         display: flex
         flex-wrap: wrap
@@ -7679,7 +7779,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     .mat-dialog-container
         padding: 0 24px !important
     .mat-dialog-content
-        max-height: 68vh !important
+        max-height: 76vh !important
 
 .ng-dropdown-panel .ng-dropdown-panel-items
     max-height: 180px !important
@@ -9390,3 +9490,41 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         margin-bottom: 5px !important
     .atp-time .atp-hour, .atp-time .atp-minute
         text-align: center !important
+.single-airport-argument-container, .multiple-airport-argument-container, .single-date-argument-container
+    display: flex
+    flex-wrap: inherit
+    width: 100%
+    border-radius: 5px
+    padding: 15px
+    .single-airport-argument
+        width: 100%
+
+.single-date-argument-container
+    flex-wrap: wrap !important
+
+.multiple-airport-argument-body
+    display: flex
+    flex-direction: row
+    width: 100%
+    .multiple-airport-argument-container
+        flex-direction: column
+        .airline-image
+            width: 27px
+            height: 27px
+        .multiple-airport-argument
+            width: 100% !important
+
+.argument-title
+    width: 100%
+    display: flex
+    .argument-title-label
+        align-self: center
+        margin-left: 5px
+
+.unit-label
+    margin-right: 10px
+
+.argument-category-type-container
+    margin-top: -15px
+    margin-bottom: 10px
+    width: 100%

@@ -1,7 +1,10 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { Globals } from '../globals/Globals';
+import { Component, OnInit, Inject, ChangeDetectorRef } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+
 import { Utils } from '../commons/utils';
+import { Arguments } from '../model/Arguments';
+import { ComponentType } from '../commons/ComponentType';
+import { Globals } from '../globals/Globals';
 
 @Component({
   selector: 'app-dialog-argument-preview',
@@ -9,17 +12,25 @@ import { Utils } from '../commons/utils';
   styleUrls: ['./dialog-argument-preview.component.css']
 })
 export class DialogArgumentPreviewComponent implements OnInit {
-  item: any;
+  argList: any[];
+  isLoading: boolean = false;
 
   constructor(public dialogRef: MatDialogRef<DialogArgumentPreviewComponent>,
     public globals: Globals,
     public utils: Utils,
-    @Inject(MAT_DIALOG_DATA) public data: any,)
+    private changeDetectorRef: ChangeDetectorRef,
+    @Inject(MAT_DIALOG_DATA) public data: any)
   {
-    this.item = JSON.parse (JSON.stringify (data));
+    this.argList = data.argList.arguments;
   }
 
-  ngOnInit() {
+  ngOnInit()
+  {
+  }
+
+  ngAfterViewInit()
+  {
+    this.changeDetectorRef.detectChanges ();
   }
 
   onNoClick(): void
@@ -32,4 +43,32 @@ export class DialogArgumentPreviewComponent implements OnInit {
     this.dialogRef.close ();
   }
 
+  isDateRange(argument: Arguments)
+  {
+    return ComponentType.dateRange == argument.type;
+  }
+
+  getDateValue(value: any): any
+  {
+    if (value != null)
+    {
+      if (value.id != null)
+        return value.id;
+    }
+
+    return value;
+  }
+
+  checkVisibility(): string
+  {
+    if (this.isLoading)
+      return "none";
+
+    return "block";
+  }
+
+  setLoading(value: boolean): void
+  {
+    this.isLoading = value;
+  }
 }

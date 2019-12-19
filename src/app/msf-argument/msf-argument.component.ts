@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Arguments } from '../model/Arguments';
 import { Globals } from '../globals/Globals';
 import { ComponentType } from '../commons/ComponentType';
@@ -16,6 +16,9 @@ export class MsfArgumentComponent implements OnInit {
 
   @Input()
   currentGlobalOptionId: number;
+
+  @Output("setLoading")
+  setLoading = new EventEmitter ();
   
   constructor(public globals: Globals) { }
 

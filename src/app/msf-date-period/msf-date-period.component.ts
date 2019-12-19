@@ -65,7 +65,7 @@ export class MsfDatePeriodComponent implements OnInit {
 
     if(!this.argument.value1&&!this.argument.value2){
       this.argument.value1 = this.date.value.year();
-      this.argument.value2 = {id: 4, name: '4st Quarter',value:"4"};
+      this.argument.value2 = {id: 4, name: '4th Quarter',value:"4"};
     }
     else if (this.argument.value1)
     {
@@ -93,7 +93,7 @@ export class MsfDatePeriodComponent implements OnInit {
     ctrlValue = this.date.value;
     ctrlValue.year (this.argument.value1);
     this.date.setValue (ctrlValue);
-    this.argument.value2 = {id: 4, name: '4st Quarter',value:"4"};
+    this.argument.value2 = {id: 4, name: '4th Quarter',value:"4"};
   }
 
   onChanges(): void

@@ -107,13 +107,13 @@
                                         </div>
                                     </div>
                                     <mat-form-field class="standard-text admin-input-base-url">
-                                        <input matInput class="standard-input-text" placeholder="URL Base" [(ngModel)]="optionSelected.baseUrl" (ngModelChange)="setChangeURL(optionSelected)">
+                                        <input matInput class="standard-input-text" autocomplete="off" placeholder="URL Base" [(ngModel)]="optionSelected.baseUrl" (ngModelChange)="setChangeURL(optionSelected)">
                                     </mat-form-field>
                                     <div class="standard-text admin-input-icon">
                                         <app-material-icon-picker #materialIconPicker [value]="optionSelected.icon" (iconChanged)="setChangeIcon($event, optionSelected)"></app-material-icon-picker>
                                     </div>
                                     <mat-form-field class="standard-text admin-input-tab">
-                                        <input matInput class="standard-input-text" placeholder="Tab" [(ngModel)]="optionSelected.tab" (ngModelChange)="setChangeTab(optionSelected)">
+                                        <input matInput class="standard-input-text" autocomplete="off" placeholder="Tab" [(ngModel)]="optionSelected.tab" (ngModelChange)="setChangeTab(optionSelected)">
                                     </mat-form-field>
                                 </div>
                             </div>

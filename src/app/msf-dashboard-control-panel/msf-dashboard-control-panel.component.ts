@@ -198,4 +198,9 @@ export class MsfDashboardControlPanelComponent implements OnInit {
   {
     return ComponentType.dateRange == argument.type;
   }
+
+  setLoading(value: boolean): void
+  {
+    this.globals.isLoading = value;
+  }
 }

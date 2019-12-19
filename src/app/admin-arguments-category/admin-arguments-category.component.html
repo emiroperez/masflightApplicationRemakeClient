@@ -53,10 +53,10 @@
                     <div class="admin-arguments-category-right-panel-header">
                         <div class="admin-arguments-category-form-container">
                             <mat-form-field>
-                                <input matInput (focus)="category.focus" placeholder="Name Category" [(ngModel)]="category.label"/>
+                                <input matInput (focus)="category.focus" placeholder="Name Category" autocomplete="off" [(ngModel)]="category.label"/>
                             </mat-form-field>
                             <mat-form-field>
-                                <input matInput placeholder="Description" [(ngModel)]="category.description"/>
+                                <input matInput placeholder="Description" autocomplete="off" [(ngModel)]="category.description"/>
                             </mat-form-field>
                             <div class="admin-arguments-category-form-icon-container">
                                 <div class="img-item-category-argument-container">

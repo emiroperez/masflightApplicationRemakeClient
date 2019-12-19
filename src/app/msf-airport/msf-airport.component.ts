@@ -10,6 +10,7 @@ import { MatSelect, VERSION } from '@angular/material';
 import { take, takeUntil, delay } from 'rxjs/operators';
 import { ApiClient } from '../api/api-client';
 import { Globals } from '../globals/Globals';
+import { AirportSelection } from '../commons/AirportSelection';
 
 interface Bank {
   id: string;
@@ -33,28 +34,39 @@ export class MsfAirportComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
 
-data: Observable<any[]>;
-loading = false;
-constructor(private http: ApiClient, public globals: Globals) { }
+  data: Observable<any[]>;
+  loading = false;
+
+  selectionMode: number;
+  multiAirport: boolean;
+
+  constructor(private http: ApiClient, public globals: Globals) { }
 
 
-ngOnInit() { 
-  this.getRecords(null, this.handlerSuccess);
-}
+  ngOnInit()
+  {
+    if (this.argument.selectionMode & AirportSelection.MULTIPLESELECTION)
+      this.multiAirport = true;
 
-getBindLabel(){
-  if(this.getBindLabel()==null){
-    return "name";
+    this.selectionMode = this.argument.selectionMode & ~AirportSelection.MULTIPLESELECTION;
+
+    this.getRecords(null, this.handlerSuccess);
   }
-  return this.getBindLabel();
-}
 
-getBindName(){
-  if(this.argument.selectedAttribute==null){
-    return "name";
+  getBindLabel(){
+    if(this.getBindLabel()==null)
+      return "name";
+
+    return this.getBindLabel();
   }
-  return this.argument.selectedAttribute;
-}
+
+  getBindName()
+  {
+    if(this.argument.selectedAttribute==null)
+      return "name";
+
+    return this.argument.selectedAttribute;
+  }
 
  getRecords(search, handlerSuccess){
   let url;
@@ -88,5 +100,15 @@ onSearch($event: any){
     this.getRecords($event.term, this.handlerSuccess);
   }
 }
+
+  isRoute()
+  {
+    return this.selectionMode >= AirportSelection.ROUTE;
+  }
+
+  isRouteWithConnection()
+  {
+    return this.selectionMode >= AirportSelection.ROUTEWITHCONNECTION;
+  }
 
 }

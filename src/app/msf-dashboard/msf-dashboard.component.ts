@@ -1005,6 +1005,15 @@ export class MsfDashboardComponent implements OnInit {
 
               if (!controlVariable.arguments[i].value3)
                 controlVariable.arguments[i].value3 = categoryOption.arguments[i].value3;
+
+              if (!controlVariable.arguments[i].value4)
+                controlVariable.arguments[i].value4 = categoryOption.arguments[i].value4;
+
+              if (!controlVariable.arguments[i].dateLoaded)
+                controlVariable.arguments[i].dateLoaded = categoryOption.arguments[i].dateLoaded;
+
+              if (!controlVariable.arguments[i].currentDateRangeValue)
+                controlVariable.arguments[i].currentDateRangeValue = categoryOption.arguments[i].currentDateRangeValue;
             }
 
             break;

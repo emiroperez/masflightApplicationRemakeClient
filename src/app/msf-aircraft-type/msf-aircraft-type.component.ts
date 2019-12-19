@@ -22,7 +22,7 @@ export class MsfAircraftTypeComponent implements OnInit {
   /** control for the MatSelect filter keyword */
   public airlineFilterCtrl: FormControl = new FormControl();
  
-  
+  multiAircraft: boolean = false;
  
   //   data: any[] = [
   //    {name: 'ALL ', id: ''},
@@ -36,6 +36,8 @@ export class MsfAircraftTypeComponent implements OnInit {
    constructor(private http: ApiClient, public globals: Globals) { }
 
    ngOnInit() { 
+    if (this.argument.selectionMode)
+      this.multiAircraft = true;
     // this.getRecords(null, this.handlerSuccess);
   }
 

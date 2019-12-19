@@ -6,7 +6,7 @@
         <button mat-icon-button (click)="deleteOption()">
             <mat-icon class="admin-mat-icon-button" aria-label="delete">remove_circle</mat-icon>
         </button>        
-        <button mat-icon-button (click)="UploadColumn()">
+        <button mat-icon-button *ngIf="data.option.id" (click)="UploadColumn()">
             <mat-icon class="admin-mat-icon-button" aria-label="cloud_upload">cloud_upload</mat-icon>
         </button>
     </div>

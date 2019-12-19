@@ -26,6 +26,8 @@ import { UserService } from '../services/user.service';
 import { MessageComponent } from '../message/message.component';
 import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
 import * as moment from 'moment';
+import { ComponentType } from '../commons/ComponentType';
+import { AirportSelection } from '../commons/AirportSelection';
 
 @Component({
   selector: 'app-application',
@@ -476,8 +478,32 @@ toggle(){
                   for (let j = 0; j < category.arguments.length; j++) {
                     let argument: Arguments = category.arguments[j];
                     if (argument.required == 1) {
-                      if ((argument.value1 == null || argument.value1.toString () == "") || (argument.name2 && (argument.value2 == null || argument.value2.toString () == ""))) {
-                        return true;
+                        if (argument.type == ComponentType.airport)
+                        {
+                          if (argument.value1 == null || argument.value1.toString () == "")
+                            return true;
+
+                          if (argument.selectionMode)
+                          {
+                            let selectionMode = argument.selectionMode & ~AirportSelection.MULTIPLESELECTION;
+
+                            if (selectionMode == AirportSelection.ROUTE)
+                            {
+                              if (argument.value2 == null || argument.value2.toString () == "")
+                                return true;
+                            }
+                            else if (selectionMode == AirportSelection.ROUTEWITHCONNECTION)
+                            {
+                              if (argument.value3 == null || argument.value3.toString () == "")
+                                return true;
+                            }
+                          }
+                        }
+                        else
+                        {
+                          if ((argument.value1 == null || argument.value1.toString () == "") || (argument.name2 && (argument.value2 == null || argument.value2.toString () == ""))) {
+                            return true;
+                        }
                       }
                     }
                   }
