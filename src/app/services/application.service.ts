@@ -128,8 +128,8 @@ export class ApplicationService {
   }
   */
 
-  loadOptionCategoryArguments(_this, data, handlerSuccess, handlerError) {
-    let url = this.host + "/getOptionArgumentsCategories?optionId=" + data.id;
+  loadOptionCategoryArguments(_this, optionId, handlerSuccess, handlerError) {
+    let url = this.host + "/getOptionArgumentsCategories?optionId=" + optionId;
     this.http.get(_this, url, handlerSuccess, handlerError, null);
   }
 

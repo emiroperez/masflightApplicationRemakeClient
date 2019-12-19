@@ -105,7 +105,7 @@ export class MsfDashboardAssistantComponent {
     this.msfTableRef.tableOptions = this;
 
     if (!this.currentOptionCategories)
-      this.service.loadOptionCategoryArguments (this, this.currentOption, this.setCategories, this.handlerError);
+      this.service.loadOptionCategoryArguments (this, this.currentOption.id, this.setCategories, this.handlerError);
     else
       this.loadTableData (false, this.msfTableRef.handlerSuccess, this.msfTableRef.handlerError);
 

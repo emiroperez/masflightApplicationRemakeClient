@@ -349,6 +349,8 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             @include msf-dashboard-dialog-title(20px, 10px, $font-color)
         .msf-argument-preview-loading
             @include msf-dashboard-dialog-loading(50%, $quaternary-background-color, url(assets/images/#{$name}-loading_pulse.gif))
+        .msf-dashboard-control-variables-loading
+            @include msf-dashboard-dialog-loading(50%, $quaternary-background-color, url(assets/images/#{$name}-loading_pulse.gif))
         .msf-dashboard-dialog
             .msf-dashboard-control-variables-close-button
                 .msf-dashboard-close-icon
@@ -3767,6 +3769,10 @@ mat-tab-group
 
 .msf-dashboard-control-variables-dialog .mat-dialog-container
     padding: 12px
+    overflow: hidden
+
+.msf-dashboard-arguments-dialog .mat-dialog-container
+    padding: 0px
     overflow: hidden
 
 .msf-dashboard-child-panel-dialog .mat-dialog-container
@@ -9542,3 +9548,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         width: 100% !important
     .datalake-alarm-search-input
         width: 25% !important
+
+.msf-dashboard-arguments-container
+    height: calc(100% - 25px)
+    padding: 12px

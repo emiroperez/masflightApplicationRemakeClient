@@ -1180,7 +1180,7 @@ export class MsfDashboardChildPanelComponent {
       _this.msfTableRef.tableOptions = _this;
     }
 
-    _this.service.loadOptionCategoryArguments (_this, _this.values.currentOption, _this.setCategories, _this.handlerCategoryError);
+    _this.service.loadOptionCategoryArguments (_this, _this.values.currentOption.id, _this.setCategories, _this.handlerCategoryError);
   }
 
   setCategories(_this, data)

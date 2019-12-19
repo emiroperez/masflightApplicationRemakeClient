@@ -3443,104 +3443,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.currentOptionCategories = null;
   }
 
-  setCategories(_this, data): void
-  {
-    let optionCategories = [];
-    let dialogRef;
-
-    data = data.sort ((a, b) => a["position"] > b["position"] ? 1 : a["position"] === b["position"] ? 0 : -1);
-
-    for (let optionCategory of data)
-    {
-      for (let category of optionCategory.categoryArgumentsId)
-      {
-        for (let argument of category.arguments)
-        {
-          if (argument.value1)
-            argument.value1 = JSON.parse (argument.value1);
-
-          if (argument.value2)
-            argument.value2 = JSON.parse (argument.value2);
-
-          if (argument.value3)
-            argument.value3 = JSON.parse (argument.value3);
-
-          if (argument.value4)
-            argument.value4 = JSON.parse (argument.value4);
-
-          if (argument.dateLoaded)
-            argument.dateLoaded = JSON.parse (argument.dateLoaded);
-
-          if (argument.currentDateRangeValue)
-            argument.currentDateRangeValue = JSON.parse (argument.currentDateRangeValue);
-
-          if (argument.minDate)
-            argument.minDate = new Date (argument.minDate);
-    
-          if (argument.maxDate)
-            argument.maxDate = new Date (argument.maxDate);
-        }
-
-        optionCategories.push (category);
-      }
-    }
-
-    // if the category is not empty, add the categories that are missing
-    if (_this.values.currentOptionCategories != null)
-    {
-      for (let optionCategory of optionCategories)
-      {
-        for (let curOptionCategory of _this.values.currentOptionCategories)
-        {
-          if (curOptionCategory.id == optionCategory.id)
-          {
-            for (let curCategoryArgument of curOptionCategory.arguments)
-            {
-              for (let argument of optionCategory.arguments)
-              {
-                if (curCategoryArgument.id == argument.id)
-                {
-                  argument.value1 = curCategoryArgument.value1;
-                  argument.value2 = curCategoryArgument.value2;
-                  argument.value3 = curCategoryArgument.value3;
-                  argument.value4 = curCategoryArgument.value4;
-                  argument.dateLoaded = curCategoryArgument.dateLoaded;
-                  argument.currentDateRangeValue = curCategoryArgument.currentDateRangeValue;
-                  break;
-                }
-              }
-            }
-
-            break;
-          }
-        }
-      }
-    }
-
-    _this.values.currentOptionCategories = optionCategories;
-
-    // workaround to prevent errors on certain data forms
-    if (!_this.haveSortingCheckboxes ())
-      _this.globals.isLoading = false;
-
-    _this.toggleControlVariableDialogOpen.emit (true);
-
-    dialogRef = _this.dialog.open (MsfDashboardControlVariablesComponent, {
-      height: '605px',
-      width: '400px',
-      panelClass: 'msf-dashboard-control-variables-dialog',
-      data: {
-        currentOptionCategories: _this.values.currentOptionCategories,
-        currentOptionId: _this.values.currentOption.id,
-        title: _this.values.chartName
-      }
-    });
-
-    dialogRef.afterClosed ().subscribe (() => {
-      _this.toggleControlVariableDialogOpen.emit (false);
-    })
-  }
-
   searchChange(filterCtrl): void
   {
     // listen for search field value changes
@@ -3563,45 +3465,38 @@ export class MsfDashboardPanelComponent implements OnInit {
       });
   }
 
-  haveSortingCheckboxes(): boolean
-  {
-    let currentOptionCategories = this.values.currentOptionCategories;
-    let result = false;
-
-    if (currentOptionCategories)
-    {            
-      for (let i = 0; i < currentOptionCategories.length; i++)
-      {
-        let category: CategoryArguments = currentOptionCategories[i];
-
-        if (category && category.arguments)
-        {
-          for (let j = 0; j < category.arguments.length; j++)
-          {
-            let argument: Arguments = category.arguments[j];
-            if (ComponentType.sortingCheckboxes == argument.type)
-            {
-              result = true;
-              break;
-            }
-          }
-        }
-
-        if (result)
-          break;
-      }
-    }
-
-    return result;
-  }
-
   goToControlVariables(): void
   {
-    this.globals.isLoading = true;
+    let dialogRef;
 
-    // load the category arguments before opening the dialog
-    this.service.loadOptionCategoryArguments (this, this.values.currentOption,
-      this.setCategories, this.handlerError);
+    this.toggleControlVariableDialogOpen.emit (true);
+
+    dialogRef = this.dialog.open (MsfDashboardControlVariablesComponent, {
+      height: '605px',
+      width: '400px',
+      panelClass: 'msf-dashboard-arguments-dialog',
+      data: {
+        currentOptionCategories: this.values.currentOptionCategories,
+        currentOptionId: this.values.currentOption.id,
+        title: this.values.chartName
+      }
+    });
+
+    dialogRef.afterClosed ().subscribe ((result) => {
+      this.toggleControlVariableDialogOpen.emit (false);
+
+      if (result)
+      {
+        if (result.error)
+        {
+          this.dialog.open (MessageComponent, {
+            data: { title: "Error", message: "Failed to load control variables." }
+          });
+        }
+        else
+          this.values.currentOptionCategories = result.currentOptionCategories;
+      }
+    });
   }
 
   // save chart data into a temporary value

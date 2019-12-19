@@ -1,17 +1,21 @@
-
-<div class="msf-dashboard-control-variables-title">
-  <div class="msf-dashboard-control-variables-close-button">
-    <mat-icon class="msf-dashboard-close-icon" aria-label="close" (click)="closeDialog()">close</mat-icon>
+<div class="msf-dashboard-control-variables-loading" *ngIf="isLoading"></div>
+<div class="msf-dashboard-arguments-container" *ngIf="!isLoading">
+  <div class="msf-dashboard-control-variables-title">
+    <div class="msf-dashboard-control-variables-close-button">
+      <mat-icon class="msf-dashboard-close-icon" aria-label="close" (click)="onNoClick()">close</mat-icon>
+    </div>
+    {{data.title}}
   </div>
-  {{data.title}}
-</div>
-<div class="msf-dashboard-control-variables-scroll">
-  <div class="msf-dashboard-control-variables msf-control-variables-overlay" id="msf-dashboard-control-variables-font-size">
-    <app-msf-control-variables [currentOptionCategories]="data.currentOptionCategories" [currentOptionId]="data.currentOptionId"></app-msf-control-variables>
+  <div class="msf-dashboard-control-variables-scroll">
+    <div class="msf-dashboard-control-variables msf-control-variables-overlay" id="msf-dashboard-control-variables-font-size">
+      <app-msf-control-variables [currentOptionCategories]="data.currentOptionCategories" [currentOptionId]="data.currentOptionId" (setLoading)="setLoading($event)"></app-msf-control-variables>
+    </div>
   </div>
-</div>
-<div class="msf-dashboard-control-variables-button">
-  <button [disabled]="!this.globals.copiedPanelInfo" mat-flat-button [ngClass]="this.globals.copiedPanelInfo ? 'flat-button' : 'flat-control-variable-button-disabled'" (click)="pasteControlVariables()">Pass Copied Info</button>
-  <span class="button-separator"></span>
-  <button mat-flat-button class="flat-button" (click)="closeDialog()">OK</button>
+  <div class="msf-dashboard-control-variables-button">
+    <button [disabled]="!this.globals.copiedPanelInfo" mat-flat-button [ngClass]="this.globals.copiedPanelInfo ? 'flat-button' : 'flat-control-variable-button-disabled'" (click)="pasteControlVariables()">Pass Copied Info</button>
+    <span class="button-separator"></span>
+    <button mat-flat-button class="flat-button" (click)="saveChanges()">OK</button>
+    <span class="button-separator"></span>
+    <button mat-flat-button class="flat-button" (click)="onNoClick()">Cancel</button>
+  </div>
 </div>

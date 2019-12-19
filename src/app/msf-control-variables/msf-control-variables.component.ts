@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Globals } from '../globals/Globals';
 import { ComponentType } from '../commons/ComponentType';
 import { Arguments } from '../model/Arguments';
@@ -16,6 +16,9 @@ export class MsfControlVariablesComponent implements OnInit {
 
   @Input()
   currentOptionId: number;
+
+  @Output("setLoading")
+  setLoading = new EventEmitter ();
 
   argsBefore: any;
   iconBefore: any;
@@ -75,10 +78,5 @@ export class MsfControlVariablesComponent implements OnInit {
     this.globals.currentArgs = argsContainer;
     this.globals.iconBefore = icon;
     this.argsBefore = argsContainer;
-  }
-
-  setLoading(value: boolean): void
-  {
-    this.globals.isLoading = value;
   }
 }

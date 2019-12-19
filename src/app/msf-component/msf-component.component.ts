@@ -63,4 +63,9 @@ export class MsfComponentComponent implements OnInit {
   {
     return this.globals.currentOption.menuOptionArguments.sort ((a, b) => a[prop] > b[prop] ? 1 : a[prop] === b[prop] ? 0 : -1);
   }
+
+  setLoading(value: boolean): void
+  {
+    this.globals.isLoading = value;
+  }
 }
