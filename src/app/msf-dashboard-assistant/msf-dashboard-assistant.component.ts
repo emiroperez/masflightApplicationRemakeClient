@@ -380,10 +380,74 @@ export class MsfDashboardAssistantComponent {
     this.tablePreview = false;
   }
 
-  getArgumentLabel(value: string)
+  getArgumentLabel1(argument: Arguments)
   {
+    let value: String;
+
+    value = argument.label1;
+    if (!value)
+      value = argument.title;
+    if (!value)
+      value = argument.name1;
+
     if (!value.endsWith (':'))
-      return value + ":";
+      return value + ": ";
+
+    if (!value.endsWith (" "))
+      return value + " ";
+
+    return value;
+  }
+
+  getArgumentLabel2(argument: Arguments)
+  {
+    let value: String;
+
+    value = argument.label2;
+    if (!value)
+      value = argument.title;
+    if (!value)
+      value = argument.name2;
+
+    if (!value.endsWith (':'))
+      return value + ": ";
+
+    if (!value.endsWith (" "))
+      return value + " ";
+
+    return value;
+  }
+
+  getArgumentLabel3(argument: Arguments)
+  {
+    let value: String;
+
+    value = argument.label3;
+    if (!value)
+      value = argument.title;
+    if (!value)
+      value = argument.name3;
+
+    if (!value.endsWith (':'))
+      return value + ": ";
+
+    if (!value.endsWith (" "))
+      return value + " ";
+
+    return value;
+  }
+
+  getArgumentLabel4(argument: Arguments)
+  {
+    let value: String;
+
+    value = argument.name4;
+
+    if (!value.endsWith (':'))
+      return value + ": ";
+
+    if (!value.endsWith (" "))
+      return value + " ";
 
     return value;
   }

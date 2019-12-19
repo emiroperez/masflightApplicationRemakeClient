@@ -102,8 +102,8 @@
                       <span class="msf-dashboard-assistant-argument-container"
                         *ngFor="let argument of controlVariable.arguments">
                         <div class="msf-block" *ngIf="argument.name1">
-                          <div class="msf-inline" *ngIf="argument.title!=controlVariable.label">
-                            {{ getArgumentLabel(argument.title)}}
+                          <div class="msf-inline">
+                            {{ getArgumentLabel1(argument)}}
                           </div>
                           <div class="msf-inline msf-dashboard-assistant-argument-value"
                             *ngIf="!valueIsEmpty(argument.value1) && argument">
@@ -115,8 +115,8 @@
                           </div>
                         </div>
                         <div class="msf-block" *ngIf="argument.name2">
-                          <div class="msf-inline" *ngIf="argument.label2!=controlVariable.label">
-                            {{ getArgumentLabel(argument.label2)}}
+                          <div class="msf-inline">
+                            {{ getArgumentLabel2(argument)}}
                           </div>
                           <div class="msf-inline msf-dashboard-assistant-argument-value"
                             *ngIf="!valueIsEmpty(argument.value2) && argument">
@@ -128,8 +128,8 @@
                           </div>
                         </div>
                         <div class="msf-block" *ngIf="argument.name3">
-                          <div class="msf-inline" *ngIf="argument.label3!=controlVariable.label">
-                            {{ getArgumentLabel(argument.title)}}
+                          <div class="msf-inline">
+                            {{ getArgumentLabel3(argument)}}
                           </div>
                           <div class="msf-inline msf-dashboard-assistant-argument-value"
                             *ngIf="!valueIsEmpty(argument.value3) && argument">
@@ -142,7 +142,7 @@
                         </div>
                         <div class="msf-block" *ngIf="argument.name4">
                           <div class="msf-inline">
-                            {{ getArgumentLabel(argument.title)}}
+                            {{ getArgumentLabel4(argument)}}
                           </div>
                           <div class="msf-inline msf-dashboard-assistant-argument-value"
                             *ngIf="!valueIsEmpty(argument.value4) && argument">
