@@ -429,7 +429,7 @@ import { DatalakeCreateRolesComponent } from './datalake-create-roles/datalake-c
     HttpClientModule,
     ReactiveFormsModule,
     NgSelectModule,
-    NgxMaterialTimepickerModule,
+    NgxMaterialTimepickerModule.forRoot (),
     BrowserAnimationsModule,
     MatSelectModule,
     MatFormFieldModule,
