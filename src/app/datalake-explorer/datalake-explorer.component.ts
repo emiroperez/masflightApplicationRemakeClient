@@ -12,8 +12,7 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-datalake-explorer',
-  templateUrl: './datalake-explorer.component.html',
-  styleUrls: ['./datalake-explorer.css']
+  templateUrl: './datalake-explorer.component.html'
 })
 export class DatalakeExplorerComponent implements OnInit {
 

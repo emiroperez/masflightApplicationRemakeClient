@@ -3,10 +3,9 @@
         <div class="datalake-explorer-header-title">
             Datalake Explorer
         </div>
-        <div class="datalake-explorer-buttons">
-            <mat-form-field appearance="outline"
-            *ngIf="globals.optionDatalakeSelected === 2" [style.width.%]="50">
-            <mat-label>Search</mat-label>
+        <div class="datalake-explorer-buttons datalake-search-input">
+            <mat-form-field appearance="outline" *ngIf="globals.optionDatalakeSelected === 2" class="datalake-search-formfield">
+                <mat-label>Search</mat-label>
                 <input [disabled]="OptionDisable('Datalake Explorer')" matInput type="text" autocomplete="off"
                     [(ngModel)]="filter" (ngModelChange)="filterTableCards()">
                 <mat-icon matPrefix aria-label="search">search</mat-icon>

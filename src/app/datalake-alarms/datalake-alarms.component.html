@@ -10,12 +10,13 @@
           <span class="datalake-explorer-header-hint">This option allows you to set up alarms to check if 
             data ingestion is healthy at any given time(s).</span>
         </div>
-        <mat-form-field [style.width.%]="25" appearance="outline">
-            <mat-label>Search</mat-label>
-            <input matInput type="text"
-            [(ngModel)]="filter" (ngModelChange)="filterAlarm()" autocomplete="off" >
-            <mat-icon matPrefix aria-label="search">search</mat-icon>
-        </mat-form-field>
+        <div class="datalake-search-input datalake-alarm-search-input">
+          <mat-form-field class="datalake-search-formfield" appearance="outline">
+              <mat-label>Search</mat-label>
+              <input matInput type="text" [(ngModel)]="filter" (ngModelChange)="filterAlarm()" autocomplete="off">
+              <mat-icon matPrefix aria-label="search">search</mat-icon>
+          </mat-form-field>
+        </div>
     </div>
     <div class="datalake-alarms-body">
       <div *ngIf="!actionDisable('List Alarms') || !actionDisable('Create Alarm') || !actionDisable('Edit Alarm') || !actionDisable('Delete Alarm')" 

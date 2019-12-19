@@ -6,9 +6,9 @@
       <mat-icon class="search-icon" aria-label="search">search</mat-icon>
     </mat-form-field> -->
     <div class="datalake-explorer-header-title">Partition Management Job</div>
-    <div class="datalake-explorer-buttons">
-      <mat-form-field [style.width.%]="50"  appearance="outline">
-          <mat-label>Search</mat-label>
+    <div class="datalake-explorer-buttons datalake-search-input datalake-partition-buttons">
+      <mat-form-field class="datalake-search-formfield" appearance="outline">
+        <mat-label>Search</mat-label>
         <input matInput  type="text"  
         [(ngModel)]="filter" (ngModelChange)="filterPartition()" autocomplete="off">
         <mat-icon matPrefix aria-label="search">search</mat-icon>

@@ -1864,10 +1864,6 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                 background-color: $map-panelinfo-background-color
                 .mat-icon
                     color: $font-color !important
-        .datalake-executionPart-header
-            .mat-icon-menu
-                .mat-icon
-                    color: $font-color
         .CodeMirror, .CodeMirror-gutters
             background-color: $query-engine-background-color !important
             color: $font-color !important
@@ -7826,16 +7822,13 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     flex-direction: column
     width: 100%
     height: 100%
-    .datalake-explorer-header, .datalake-executionPart-header
+    .datalake-explorer-header
         display: flex
         // height: 20px
         height: 40px
         // align-items: center
-        padding: 20px
+        padding: 10px 20px
         justify-content: space-between
-        .datalake-executionPart-search-input-container
-            padding-right: 50px
-            width: 45%
         .datalake-explorer-search-input-container
             padding-right: 50px
             margin-top: -18px
@@ -7864,7 +7857,6 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
             align-self: center
             font-size: 1.5em
             font-weight: 500
-            width: 100%
             // margin-left: 20px
             width: 50%            
             display: flex
@@ -9321,12 +9313,6 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     flex-direction: column
     width: 100%
     height: 100%
-    .datalake-executionPart-header
-        align-items: center
-        .datalake-executionPart-search-input-container
-            margin-top: 6px
-            padding-right: 50px
-            width: 45%
 
 .CodeMirror-vscrollbar
     overflow: auto !important
@@ -9528,3 +9514,31 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     margin-top: -15px
     margin-bottom: 10px
     width: 100%
+
+.datalake-search-input
+    .mat-form-field-label-wrapper
+        top: -1.4em
+    .mat-form-field-appearance-outline .mat-form-field-infix
+        padding: 0.4em 0px !important
+    .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label
+        transform: translateY(-1.1em) scale(.75)
+        width: 133.33333%
+
+.datalake-search-formfield
+    width: 100%
+    margin-left: 10px
+    margin-top: 2px
+
+.datalake-partition-buttons
+    width: 25% !important
+
+.datalake-alarm-search-input
+    margin-right: 10px
+    width: 20%
+
+.datalake-executionPart-header
+    justify-content: inherit !important
+    .datalake-explorer-header-title
+        width: 100% !important
+    .datalake-alarm-search-input
+        width: 25% !important
