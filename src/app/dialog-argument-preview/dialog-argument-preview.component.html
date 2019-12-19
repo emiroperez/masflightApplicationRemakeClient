@@ -1,6 +1,6 @@
 <div class="msf-argument-preview-container msf-control-variables-overlay">
   <ng-container *ngFor="let item of argList">
-    <app-msf-argument [currentArgument]="item"></app-msf-argument>
+    <app-msf-argument [currentArgument]="item" [currentGlobalOptionId]="data.optionId"></app-msf-argument>
     <div class="msf-argument-preview-footer">
       <ng-container *ngIf="item.name1">
         <div class="msf-block">

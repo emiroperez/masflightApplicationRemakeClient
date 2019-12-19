@@ -440,12 +440,16 @@ export class EditCategoryArgumentDialog {
     { "id": 3, "name": "All Combined", "value": "Combined"}
   ];
 
+  optionId: number;
+
   constructor(
     private globals: Globals,
     private http: ApiClient,
     public dialogRef: MatDialogRef<EditCategoryArgumentDialog>,
     @Inject(MAT_DIALOG_DATA) public data, public dialog: MatDialog) {
-      for (let argument of data.categoryArgumentsId[0].arguments)
+      this.optionId = data.optionId;
+
+      for (let argument of data.cat.categoryArgumentsId[0].arguments)
       {
         this.updateItemList (argument);
 
@@ -796,7 +800,10 @@ export class EditCategoryArgumentDialog {
       height: "560px",
       width: "500px",
       panelClass: 'msf-argument-preview-popup',
-      data: argList
+      data: {
+        optionId: this.optionId,
+        argList: argList
+      }
     });
   }
 
@@ -822,30 +829,6 @@ export class EditCategoryArgumentDialog {
       this.selectedCategories.push(category);
     }
     category.selected = !category.selected;
-  }
-
-  addCategoryArgument() {
-    let node = {
-      "selected": true,
-      "label": null,
-      "icon:": null,
-      "arguments": []
-    };
-    this.data.push(node);
-  }
-
-  deleteCategoryArgument() {
-    let filterSelected = this.data.filter(item => item.selected);
-    for (var i = 0; i < filterSelected.length; i += 1) {
-      this.selectedCategories.forEach(function (currentValue, index, array) {
-        if (currentValue == filterSelected[i]) {
-          array.splice(index, 1);
-        }
-      });
-    }
-    filterSelected.forEach(function (item, index, array) {
-      item.toDelete = true;
-    });
   }
 
   toggleGroup(item) {
@@ -2018,15 +2001,6 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     this.dataChange.next(this.data);
   }
 
-  addCategoryArgument() {
-    let node = {
-      "label": null,
-      "icon:": null,
-      "arguments": []
-    };
-    this.categories.push(node);
-  }
-
   saveCategoryArgument() {
     let arrayMenuOptionArg = [];
 
@@ -2143,10 +2117,14 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   editCategoryArguments(cat) {
 
     var duplicateObject = JSON.parse(JSON.stringify(cat));
+
     const dialogRef = this.dialog.open(EditCategoryArgumentDialog, {
       panelClass: "category-argument-dialog",
       width: '45%',
-      data: duplicateObject
+      data: {
+        optionId: this.optionSelected.id,
+        cat: duplicateObject
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {

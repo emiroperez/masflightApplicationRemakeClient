@@ -19,7 +19,7 @@ export class DialogArgumentPreviewComponent implements OnInit {
     private changeDetectorRef: ChangeDetectorRef,
     @Inject(MAT_DIALOG_DATA) public data: any)
   {
-    this.argList = data.arguments;
+    this.argList = data.argList.arguments;
   }
 
   ngOnInit()

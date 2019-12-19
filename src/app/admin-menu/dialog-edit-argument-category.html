@@ -1,13 +1,13 @@
 <div mat-dialog-title class="admin-menu-content-dialog-container admin-menu-content-dialog-container-title">
-    <h4>{{data.categoryArgumentsId[0].label}}</h4>
+    <h4>{{data.cat.categoryArgumentsId[0].label}}</h4>
     <div class="admin-menu-content-buttons-header">
-        <button mat-button matTooltip="Preview" class="flat-button preview-button admin-menu-content-cancel-button" (click)="showPreview(data.categoryArgumentsId[0])"><mat-icon>remove_red_eye</mat-icon></button>
+        <button mat-button matTooltip="Preview" class="flat-button preview-button admin-menu-content-cancel-button" (click)="showPreview(data.cat.categoryArgumentsId[0])"><mat-icon>remove_red_eye</mat-icon></button>
         <button mat-button class="flat-button admin-menu-content-cancel-button" (click)="onNoClick()">Cancel</button>
-        <button mat-button class="flat-button" [mat-dialog-close]="data" cdkFocusInitial>Save</button>
+        <button mat-button class="flat-button" [mat-dialog-close]="data.cat" cdkFocusInitial>Save</button>
     </div>
 </div>
 <div class="dialog-category-arguments dialog-edit-argument-category-container" mat-dialog-content>
-    <div *ngFor="let item of data.categoryArgumentsId[0].arguments">
+    <div *ngFor="let item of data.cat.categoryArgumentsId[0].arguments">
         <div>
             <div class="dialog-edit-airline-selection-type" *ngIf="isAirline(item)">
                 <mat-radio-group [(ngModel)]="item.selectionMode" (ngModelChange)="clearValue1(item)" class="airline-selection-radio-group">
