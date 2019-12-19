@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ChangeDetectorRef } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Utils } from '../commons/utils';
@@ -16,6 +16,7 @@ export class DialogArgumentPreviewComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<DialogArgumentPreviewComponent>,
     public globals: Globals,
     public utils: Utils,
+    private changeDetectorRef: ChangeDetectorRef,
     @Inject(MAT_DIALOG_DATA) public data: any)
   {
     this.argList = data.arguments;
@@ -23,6 +24,11 @@ export class DialogArgumentPreviewComponent implements OnInit {
 
   ngOnInit()
   {
+  }
+
+  ngAfterViewInit()
+  {
+    this.changeDetectorRef.detectChanges ();
   }
 
   onNoClick(): void
