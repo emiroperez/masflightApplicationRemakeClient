@@ -17,6 +17,9 @@ export class MsfArgumentComponent implements OnInit {
   @Input()
   currentGlobalOptionId: number;
 
+  @Input("createdMetas")
+  createdMetas: any = null;
+
   @Output("setLoading")
   setLoading = new EventEmitter ();
   
