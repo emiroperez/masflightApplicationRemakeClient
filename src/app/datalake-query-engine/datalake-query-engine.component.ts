@@ -10,6 +10,7 @@ import { DatalakeQueryTab } from './datalake-query-tab';
 import { MessageComponent } from '../message/message.component';
 import { DatalakeQueryEngineHistoryComponent } from '../datalake-query-engine-history/datalake-query-engine-history.component';
 import { DatalakeQueryEngineSaveComponent } from '../datalake-query-engine-save/datalake-query-engine-save.component';
+import { number } from '@amcharts/amcharts4/core';
 
 const minPanelWidth = 25;
 
@@ -55,6 +56,7 @@ export class DatalakeQueryEngineComponent implements OnInit {
         lineNumbers: true,
         readOnly: this.QueryreadOnly,
         theme: 'material',
+        autofocus: true,
         mode: {
           name: 'text/x-mariadb'
         }
@@ -102,6 +104,15 @@ export class DatalakeQueryEngineComponent implements OnInit {
     {
       this.dialog.open (MessageComponent, {
         data: { title: "Error", message: "A query is already running, you must cancel it before running a new query." }
+      });
+
+      return;
+    }
+
+    if (query.input === "" || query.input === null)
+    {
+      this.dialog.open (MessageComponent, {
+        data: { title: "Error", message: "You must type a query." }
       });
 
       return;

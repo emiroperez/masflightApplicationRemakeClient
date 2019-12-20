@@ -180,19 +180,13 @@ export class DatalakeDataUploadComponent {
 
     if(_this.Datavalue.tableName){
       var index = _this.tables.findIndex (aux => aux.TableName == _this.Datavalue.tableName);
+      // var index = _this.tables.findIndex (aux => aux.TableName == "testkupload");
       if(index != -1){
-        // _this.tableConfigurationFormGroup.get ("table").setValue (_this.tables[index]);
         tableSelector.setValue (_this.tables[index]);
         tableSelector.disable ();
         _this.tableChanged();
       }
     }
-
-    if(_this.Datavalue.targetFile){
-      this.targetFile = _this.Datavalue.targetFile;
-      this.uploadFile("any",0);
-    }
-
     _this.stopLoading.emit ();
   }
 
@@ -464,7 +458,8 @@ export class DatalakeDataUploadComponent {
       // TODO: Verify form data for Step 2 for parquet files
 
       request = {
-        bucket: this.tableConfigurationFormGroup.get ("bucket").value.bucketName,
+        // bucket: this.tableConfigurationFormGroup.get ("bucket").value.bucketName,
+        bucket: this.tableConfigurationFormGroup.get ("bucket").value,
         format: this.selectedFileType,
         s3FilePath: this.tableConfigurationFormGroup.get ("tableLocation").value,
         schemaName: this.tableConfigurationFormGroup.get ("schema").value.schemaName,
@@ -551,15 +546,12 @@ export class DatalakeDataUploadComponent {
   tableChanged(){
     this.bucket = this.tableConfigurationFormGroup.get ("table").value.S3TableLocation;
     this.tableConfigurationFormGroup.get ("bucket").setValue (this.bucket);
-    // this.selectedFileType = "CSV"
-    // this.selectedFileType = "PARQUET"
     if(this.tableConfigurationFormGroup.get ("table").value.Format != ""){
       this.selectedFileType = this.tableConfigurationFormGroup.get ("table").value.Format == "P" ? "PARQUET" : this.tableConfigurationFormGroup.get ("table").value.Format == "C" ? "CSV" : "";
     }else{
       this.selectedFileType = "";
     }
     
-    // this.delimiterCharacter = "|"
     this.delimiterCharacter = this.tableConfigurationFormGroup.get ("table").value.Separator;
     this.selectedDelimiter = this.getDelimiter();
     if(this.tableConfigurationFormGroup.get ("table").value.Partitions != null && this.tableConfigurationFormGroup.get ("table").value.Partitions.length != 0){
@@ -567,7 +559,13 @@ export class DatalakeDataUploadComponent {
     }else{
       this.Partitions = [];
     }
-    
+
+    if(this.Datavalue.targetFile){
+      this.targetFile = this.Datavalue.targetFile;
+      if(this.selectedDelimiter){
+        this.uploadFile("any",0);
+      }      
+    }
   }
 
   validateForm(formGroup: FormGroup,formGroup2: FormGroup): boolean

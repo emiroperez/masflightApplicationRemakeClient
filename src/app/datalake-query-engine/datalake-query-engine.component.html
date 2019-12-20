@@ -44,7 +44,7 @@
               </div>
             </div>
             <div class="datalake-query-editor-input">
-              <ngx-codemirror [(ngModel)]="query.input" [options]="queryEditorOptions"></ngx-codemirror>
+              <ngx-codemirror [(ngModel)]="query.input" [options]="queryEditorOptions" (cursorActivity)="cursorMovedWhere()"></ngx-codemirror>
             </div>
           </div>
         </mat-tab>

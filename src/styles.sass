@@ -1643,6 +1643,9 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                         color: rgba($font-color,.54)
         .datalake-create-table-step-content
             background-color: $datalake-data-ingestion-background-color
+            .datalake-checkbox
+                .mat-checkbox-disabled .mat-checkbox-label
+                    color: $tertiary-disabled-color !important
         .datalake-create-table-step-content, .datalake-alarm-comboboxes, .datalake-partition-comboboxes , .datalake-save-query-one-column, .datalake-save-query-two-column
             color: $font-color
             .mat-form-field-appearance-legacy .mat-hint
@@ -7872,7 +7875,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
             // margin-top: -10px
             display: flex
             width: 40%
-            justify-content: flex-end
+            justify-content: flex-start
             // margin-right: 15px
             .datalake-explorer-button , .datalake-explorer-button-selected
                 min-width: 40px !important

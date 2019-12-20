@@ -51,6 +51,7 @@ export class DatalakeCreateNewStructureComponent {
   dataColumns: any[];
   partitions: any[] = [];
   rawData: string[][];
+  tables: any[] = [];
   showSelected: boolean = true;
   request: {
   columns: any[]; Partitions: any[]; format: string; tableName: any; schemaName: any; s3TableLocation: string; s3FilePath: any;
@@ -64,6 +65,8 @@ export class DatalakeCreateNewStructureComponent {
   constructor(public globals: Globals,private dialog: MatDialog, private formBuilder: FormBuilder,
     private service: DatalakeService)
   {
+    
+      this.showSelected = !this.actionDisable('Data Upload');
     // initialize all form groups
     this.tableConfigurationFormGroup = this.formBuilder.group ({
       tableName: ['', Validators.required],
@@ -144,6 +147,42 @@ export class DatalakeCreateNewStructureComponent {
       if (bucket.schemaName === schema.schemaName)
         this.currentBuckets.push (bucket);
     }
+    this.startLoading.emit ();
+    this.service.getDatalakeSchemaTables (this, schema.schemaName, this.setSchemaTables, this.setSchemaTablesError);
+
+  }
+
+  setSchemaTables(_this, data): void
+  {
+    if (!data.Tables.length)
+    {
+      _this.stopLoading.emit ();
+      return;
+    }
+    _this.tables = [];
+
+    for (let tableName of data.Tables)
+      _this.tables.push (tableName);
+
+    let index = _this.tables.findIndex (aux => aux.TableName == _this.tableConfigurationFormGroup.get ("tableName").value);
+    if(index != -1){
+      _this.stopLoading.emit ();
+      _this.dialog.open (MessageComponent, {
+        data: { title: "Error", message: "Table "+ _this.tableConfigurationFormGroup.get ("tableName").value +" already exists, type another name." }
+      });
+      _this.tableConfigurationFormGroup.get ("tableName").setValue("");
+      _this.tableConfigurationFormGroup.get ("tableLocation").setValue("");
+      return;
+    }
+    _this.stopLoading.emit ();
+
+  }
+
+  setSchemaTablesError(_this, result): void
+  {
+    // TODO: Show dialog
+    _this.tables = [];
+    _this.stopLoading.emit ();
   }
 
   toggleCustomDelimiter(uploader): void
@@ -493,7 +532,7 @@ export class DatalakeCreateNewStructureComponent {
         dataUpload = {index: 1,
         schemaName: _this.tableConfigurationFormGroup.get ("schema").value.schemaName,
         tableName: _this.tableConfigurationFormGroup.get ("tableName").value,
-        targetFile: this.targetFile,
+        targetFile: _this.targetFile,
         createdTable: true}
       } 
     _this.closeDialog.emit (dataUpload);
@@ -552,10 +591,21 @@ export class DatalakeCreateNewStructureComponent {
   // }
 
   tableNameChange(){
-    this.lowerCase("tableName");
+    this.lowerCase("tableName"); // para poner en minusculas lo que se escribio
+    if(this.tableConfigurationFormGroup.get ("schema").value!=""){
+      let index = this.tables.findIndex (aux => aux.TableName == this.tableConfigurationFormGroup.get ("tableName").value);
+      if(index != -1){
+        this.dialog.open (MessageComponent, {
+          data: { title: "Error", message: "Table "+ this.tableConfigurationFormGroup.get ("tableName").value +" already exists, type another name." }
+        });
+        this.tableConfigurationFormGroup.get ("tableName").setValue("");
+        return;
+      }
+    }
     if(this.tableConfigurationFormGroup.get ("tableLocation").value === ''){
     this.tableConfigurationFormGroup.get ("tableLocation").setValue (this.tableConfigurationFormGroup.get ("tableName").value);
     }
+
   }
 
   lowerCase(formControlName){
@@ -596,6 +646,15 @@ export class DatalakeCreateNewStructureComponent {
     this.filteredDataColumns.next (this.dataColumns.slice ());
     this.fileLoading = false;
     // this.fileInfo = new FormData ();
+  }
+    
+  actionDisable(option: any) {
+    let index = this.globals.optionsDatalake.findIndex(od => od.action.name === option);
+    if (index != -1) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
 }

@@ -250,7 +250,7 @@
           <span class="datalake-create-table-step-title-label">STEP {{stepper.selectedIndex + 1}} - DISCOVERED RESULTS</span>
           <span class="datalake-create-table-step-description">The following table shows the detected columns from the uploaded file. Please change the column names and types when needed.</span>
           <div class="datalake-checkbox">
-            <mat-checkbox class="admin-checkboxes" color="primary" 
+            <mat-checkbox class="admin-checkboxes" color="primary" [disabled]="actionDisable('Data Upload')"
               [(ngModel)]="showSelected">              
               Move to Data Upload after table creation is completed
             </mat-checkbox>
