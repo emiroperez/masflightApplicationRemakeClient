@@ -796,12 +796,13 @@ export class EditCategoryArgumentDialog {
         item.selectionMode |= item.dateValue << 3;
     }
 
-    this.dialog.open(DialogArgumentPreviewComponent, {
+    this.dialog.open (DialogArgumentPreviewComponent, {
       height: "560px",
       width: "500px",
       panelClass: 'msf-argument-preview-popup',
       data: {
         optionId: this.optionId,
+        createdMetas: this.data.createdMetas,
         argList: argList
       }
     });
@@ -2123,6 +2124,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
       width: '45%',
       data: {
         optionId: this.optionSelected.id,
+        createdMetas: this.optionSelected.createdMetas,
         cat: duplicateObject
       }
     });

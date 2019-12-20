@@ -11,10 +11,14 @@ import { delay } from 'rxjs/operators';
   styleUrls: ['./msf-sorting-checkboxes.component.css']
 })
 export class MsfSortingCheckboxesComponent implements OnInit {
-  @Input("argument") public argument: Arguments;
+  @Input("argument")
+  public argument: Arguments;
 
   @Input("currentOptionId")
   currentOptionId: number;
+
+  @Input("createdMetas")
+  createdMetas: any;
 
   @Output("setLoading")
   setLoading = new EventEmitter ();
@@ -66,7 +70,15 @@ export class MsfSortingCheckboxesComponent implements OnInit {
     let url;
 
     if (this.currentOptionId == null)
+    {
+      if (this.createdMetas != null)
+      {
+        this.data = this.createdMetas;
+        this.refreshData ();
+      }
+  
       return;
+    }
 
     this.setLoading.emit (true);
     url = this.globals.baseUrl + this.argument.url + "?optionId="+ this.currentOptionId;

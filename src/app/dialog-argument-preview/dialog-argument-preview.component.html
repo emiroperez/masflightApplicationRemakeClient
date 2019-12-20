@@ -2,7 +2,7 @@
   <div *ngIf="isLoading" class="msf-argument-preview-loading"></div>
   <div class="msf-argument-preview-container" [ngStyle]="{ 'display': checkVisibility() }">
     <ng-container *ngFor="let item of argList">
-      <app-msf-argument [currentArgument]="item" [currentGlobalOptionId]="data.optionId" (setLoading)="setLoading($event)"></app-msf-argument>
+      <app-msf-argument [currentArgument]="item" [currentGlobalOptionId]="data.optionId" [createdMetas]="data.createdMetas" (setLoading)="setLoading($event)"></app-msf-argument>
       <div class="msf-argument-preview-footer">
         <ng-container *ngIf="item.name1">
           <div class="msf-block">
