@@ -152,6 +152,12 @@ this.mobileQuery.addListener(this._mobileQueryListener);
     //   name: "DataLake",
     //   url: "/datalake"
     // });
+    if (data && data.length == 1)
+    {
+      // Skip welcome screen if there is only one application
+      _this.goTo (data[0]);
+      return;
+    }
 
     _this.options = data;
     _this.options2 = data.slice();
