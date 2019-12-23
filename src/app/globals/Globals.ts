@@ -62,9 +62,9 @@ export class Globals {
   template : boolean = false;
   isFullscreen: boolean = false;
   // baseUrl = "http://localhost:8887";
-  baseUrl = "https://pulse.globaleagle.com:8887";
+  // baseUrl = "https://pulse.globaleagle.com:8887";
   // baseUrl = "http://192.168.1.50:8887";
-  // baseUrl = "";
+  baseUrl = "";
   baseUrl2 = "https://pulse.globaleagle.com:8886/mapBoxServices";
   popupUrl = "https://pulse.globaleagle.com:8900";
   scheduledata:any;
@@ -111,8 +111,6 @@ export class Globals {
   constructor (public overlayContainer: OverlayContainer, private cookie: Cookie)
   {
     let pulseTheme, useLightTheme;
-
-    am4core.options.commercialLicense = true;
 
     // get theme setting from cookies
     pulseTheme = cookie.get ("pulseTheme");
