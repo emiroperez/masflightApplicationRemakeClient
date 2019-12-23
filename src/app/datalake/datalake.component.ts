@@ -328,7 +328,7 @@ export class DatalakeComponent implements OnInit {
     this.exportConfig.options.width = contentWidth;
     this.exportConfig.options.windowWidth = contentWidth;
     this.exportConfig.options.height = contentHeight;
-    this.exportConfig.options.windowHeight = contentHeight;
+    this.exportConfig.options.windowHeight = contentHeight + 90;
 
     this.exportAsService.save (this.exportConfig, this.globals.currentDashboardMenu.title).subscribe (() => 
     {
