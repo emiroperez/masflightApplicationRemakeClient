@@ -690,7 +690,11 @@ export class MsfDateRangeComponent implements OnInit {
   setMonthValue1(normalizedDate: Moment): void
   {
     this.argument.value1 = normalizedDate.year ();
-    this.argument.value3 = normalizedDate.month ();
+
+    this.argument.value3 = normalizedDate.month () + 1;
+    if (this.argument.value3 < 10)
+      this.argument.value3 = '0' + this.argument.value3;
+
     this.value1Display = this.monthNames[normalizedDate.month ()] + "/" + normalizedDate.year ();
     this.value1Date = normalizedDate;
   }
@@ -698,7 +702,11 @@ export class MsfDateRangeComponent implements OnInit {
   setMonthValue2(normalizedDate: Moment): void
   {
     this.argument.value2 = normalizedDate.year ();
-    this.argument.value4 = normalizedDate.month ();
+
+    this.argument.value4 = normalizedDate.month () + 1;
+    if (this.argument.value4 < 10)
+      this.argument.value4 = '0' + this.argument.value4;
+
     this.value2Display = this.monthNames[normalizedDate.month ()] + "/" + normalizedDate.year ();
     this.value2Date = normalizedDate;
   }
