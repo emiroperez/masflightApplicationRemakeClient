@@ -65,8 +65,7 @@ export class DatalakeMenuComponent implements OnInit {
       width: '400px',
       panelClass: 'msf-dashboard-control-variables-dialog',
       data: {
-        // dashboards: this.dashboards
-        dashboards: null
+        dashboards: this.dashboards
       }
     });
   }

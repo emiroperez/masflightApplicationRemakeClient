@@ -65,6 +65,70 @@
     <app-datalake-partitions *ngIf="globals.userName && globals.optionDatalakeSelected === 6"></app-datalake-partitions>
     <app-datalake-execution-partition *ngIf="globals.userName &&  (globals.optionDatalakeSelected === 7 || globals.optionDatalakeSelected === 8)" ></app-datalake-execution-partition>
 </div>
+
 <div *ngIf="globals.optionDatalakeSelected === 1" [style.height.px]="bodyHeight" [class.is-mobile]="mobileQuery.matches">
-<app-msf-dashboard [currentDashboardMenu]="globals.currentDashboardMenu" *ngIf="globals.currentOption === 'dashboard'"></app-msf-dashboard>
+        <div *ngIf="(!globals.isFullscreen && !mobileQuery.matches 
+        || (globals.isFullscreen && globals.currentOption !== 'dashboard' ) &&  !mobileQuery.matches )  
+        || (mobileQuery.matches && !globals.showMenu) " 
+        class="msf-menu-icons-container">
+<div *ngIf="!mobileQuery.matches || (mobileQuery.matches && !globals.showMenu && (globals.showTabs || globals.showDashboard)) "
+    [ngClass]="mobileQuery.matches ? (globals.showTabs ? 'msf-menu-icons-right':'msf-menu-icons-right-mobile') :'msf-menu-icons-right'">
+    <button *ngIf="globals.currentOption === 'dashboard'" class="msf-menu-icon" (click)="setDefaultDashboard()">
+        <img src="../../assets/images/{{globals.theme}}-thumbtack.png" class="msf-menu-image msf-vertical-middle">
+        <span class="msf-vertical-middle" *ngIf="!TabletQuery.matches && !isDefaultDashboard()">Set As Default
+            Dashboard</span>
+        <span class="msf-vertical-middle" *ngIf="!TabletQuery.matches && isDefaultDashboard()">Unset Default
+            Dashboard</span>
+    </button>
+    <button *ngIf="globals.currentOption === 'dashboard' && !globals.readOnlyDashboardPlan" class="msf-menu-icon"
+        (click)="exportDashboardAsPNG()">
+        <img src="../../assets/images/{{globals.theme}}-SaveOptions.png" class="msf-menu-image msf-vertical-middle">
+        <span class="msf-vertical-middle" *ngIf="!TabletQuery.matches">Export Dashboard As PNG</span>
+    </button>
+    <button *ngIf="globals.currentOption === 'dashboard' && !globals.readOnlyDashboardPlan" class="msf-menu-icon"
+        (click)="changeDashboardName()">
+        <img src="../../assets/images/{{globals.theme}}-Chart.png" class="msf-menu-image msf-vertical-middle">
+        <span class="msf-vertical-middle" *ngIf="!TabletQuery.matches">Edit Dashboard Title</span>
+    </button>
+    <button *ngIf="globals.currentOption === 'dashboard' && !globals.readOnlyDashboardPlan" class="msf-menu-icon"
+        (click)="shareDashboard()">
+        <img src="../../assets/images/{{globals.theme}}-share.png" class="msf-menu-image msf-vertical-middle">
+        <span class="msf-vertical-middle" *ngIf="!TabletQuery.matches"> Share Dashboard</span>
+    </button>
+    <button *ngIf="globals.currentOption === 'dashboard'" class="msf-menu-icon" (click)="deleteDashboard()">
+        <img src="../../assets/images/{{globals.theme}}-trash-small.png" class="msf-menu-image msf-vertical-middle">
+        <span class="msf-vertical-middle" *ngIf="!TabletQuery.matches">Delete Dashboard</span>
+    </button>
+    <button class="msf-menu-icon" *ngIf="!globals.isFullscreen" (click)="goToFullscreen()">
+        <img src="../../assets/images/{{globals.theme}}-fullscreen.png" class="msf-menu-image msf-vertical-middle">
+        <span class="msf-vertical-middle" *ngIf="!TabletQuery.matches">Full Screen</span>
+    </button>
+</div>
+</div>
+
+
+<div *ngIf="globals.optionDatalakeSelected === 1"  class="msf-menu-body" [class.is-mobile]="mobileQuery.matches">
+        <!--container-->
+        <div
+            [ngClass]="(isSimpleContent() && !mobileQuery.matches) 
+            || (mobileQuery.matches && isSimpleContent() && globals.showDashboard)  ? 'msf-menu-simple-content' 
+                                           : (mobileQuery.matches ? (globals.showCategoryArguments || globals.showMenu ? 'msf-menu-show-full-nav-component-hide' 
+                                                                                                     :'msf-menu-show-full-nav-component-wide is-mobile')                                 
+                                                                                                                                : (globals.status ? 'msf-menu-show-full-nav-component' : 'msf-menu-show-full-nav-component-wide'))">
+            <div
+                [ngClass]="(isSimpleContent() && !mobileQuery.matches) 
+                || (mobileQuery.matches && isSimpleContent() && globals.showDashboard)   ? 'msf-menu-simple-content' 
+                                                : (mobileQuery.matches ? 'msf-menu-content msf-menu-tabs-content-mobile'
+                                                                            : 'msf-menu-content msf-menu-tabs-content')">
+                <div
+                    [ngClass]="(isSimpleContent() && !mobileQuery.matches) 
+                    || (mobileQuery.matches && isSimpleContent() && globals.showDashboard)  ? 'msf-menu-internal-simple-content' 
+                                                   : (mobileQuery.matches ? (globals.showMenu ? 'msf-menu-internal-content-all-mobile'
+                                                                            : (globals.showTabs ? 'msf-menu-internal-content-tabs':'msf-menu-internal-content-mobile'))
+                                                                            :'msf-menu-internal-content') "  [class.is-MQueryresponsive]="ResponsiveQuery.matches">
+                    <app-msf-container #msfContainerRef></app-msf-container>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

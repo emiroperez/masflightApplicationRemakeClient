@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, ViewChildren, QueryList, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChildren, QueryList, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { CodemirrorComponent } from '@ctrl/ngx-codemirror';
 import "codemirror/mode/sql/sql";
@@ -19,6 +19,7 @@ const minPanelWidth = 25;
   templateUrl: './datalake-query-engine.component.html'
 })
 export class DatalakeQueryEngineComponent implements OnInit {
+  @ViewChild("codeEditor") codeEditor: CodemirrorComponent;
   leftPanelWidth: number = 25;
   rightPanelWidth: number = 75;
   resizePanels: boolean = false;
@@ -61,6 +62,7 @@ export class DatalakeQueryEngineComponent implements OnInit {
           name: 'text/x-mariadb'
         }
       };
+
     }
 
   ngOnInit()
@@ -93,6 +95,7 @@ export class DatalakeQueryEngineComponent implements OnInit {
     this.error= null;
     if (!query.schema)
     {
+      this.cursorMovedWhere();
       this.dialog.open (MessageComponent, {
         data: { title: "Error", message: "You must select a schema before running the query." }
       });
@@ -102,6 +105,7 @@ export class DatalakeQueryEngineComponent implements OnInit {
 
     if (this.queryLoading)
     {
+      this.cursorMovedWhere();
       this.dialog.open (MessageComponent, {
         data: { title: "Error", message: "A query is already running, you must cancel it before running a new query." }
       });
@@ -111,6 +115,7 @@ export class DatalakeQueryEngineComponent implements OnInit {
 
     if (query.input === "" || query.input === null)
     {
+      this.cursorMovedWhere();
       this.dialog.open (MessageComponent, {
         data: { title: "Error", message: "You must type a query." }
       });
@@ -432,6 +437,11 @@ export class DatalakeQueryEngineComponent implements OnInit {
     } else {
       return true;
     }
+  }
+  
+  cursorPosWhere: { line: number; ch: number } = { line: 0, ch: 0 };
+  cursorMovedWhere() {
+    this.cursorPosWhere = (this.codeEditor.codeMirror as any).getCursor();
   }
 
 }

@@ -91,7 +91,7 @@ export class MsfDashboardComponent implements OnInit {
       this.screenHeight = "100%";
     else
     if(this.globals.currentApplication.name === "DataLake"){
-      this.screenHeight = "100%";
+      this.screenHeight = "calc(100% - 30px)";
     }else{
       this.screenHeight = "calc(100% - 90px)";
     }
@@ -677,7 +677,7 @@ export class MsfDashboardComponent implements OnInit {
       this.screenHeight = "100%";
     }else{
       if(this.globals.currentApplication.name === "DataLake"){
-        this.screenHeight = "100%";
+        this.screenHeight = "calc(100% - 30px)";;
       }else{
         this.screenHeight = "calc(100% - 90px)";
     }

@@ -11,6 +11,11 @@ import { MenuService } from '../services/menu.service';
 import { DatalakeQueryTab } from '../datalake-query-engine/datalake-query-tab';
 import { DashboardMenu } from '../model/DashboardMenu';
 import { DatalakeExplorerComponent } from '../datalake-explorer/datalake-explorer.component';
+import { MessageComponent } from '../message/message.component';
+import { ExportAsConfig, ExportAsService } from 'ngx-export-as';
+import { MsfEditDashboardComponent } from '../msf-edit-dashboard/msf-edit-dashboard.component';
+import { MatDialog } from '@angular/material';
+import { MsfShareDashboardComponent } from '../msf-share-dashboard/msf-share-dashboard.component';
 
 @Component({
   selector: 'app-datalake',
@@ -22,6 +27,12 @@ export class DatalakeComponent implements OnInit {
   dataExplorer: DatalakeExplorerComponent;
 
   currentOption: any;
+  defaultDashboardId: number;
+  exportConfig: ExportAsConfig = {
+    type: 'png',
+    elementId: 'msf-dashboard-element',
+    options: {}
+  };
 
   TabletQuery: MediaQueryList;
   mobileQuery: MediaQueryList;
@@ -30,7 +41,6 @@ export class DatalakeComponent implements OnInit {
   private _mobileQueryListener: () => void;
   private _ResponsiveQueryListener: () => void;
 
-  defaultDashboardId: number;
   sharedDashboards: Array<DashboardMenu>;
   dashboards: Array<DashboardMenu>;
 
@@ -42,7 +52,9 @@ export class DatalakeComponent implements OnInit {
     public authGuard: AuthGuard, 
     public authService: AuthService,
     public userService: UserService, 
-    private menuService: MenuService)
+    private menuService: MenuService,
+    private exportAsService: ExportAsService,
+    public dialog: MatDialog)
   {
     this.TabletQuery = media.matchMedia('(max-width: 768px)');
     this._TabletQueryListener = () => changeDetectorRef.detectChanges ();
@@ -250,5 +262,155 @@ export class DatalakeComponent implements OnInit {
     if(event===2 && this.showDataExplorer()){
       this.dataExplorer.getDatalakeTables();
     }
+  }
+
+  isDefaultDashboard(): boolean
+  {
+    if (!this.globals.currentDashboardMenu || !this.defaultDashboardId)
+      return false;
+
+    return this.defaultDashboardId == this.globals.currentDashboardMenu.id;
+  }
+
+  setDefaultDashboard(): void
+  {
+    this.appService.confirmationDialog (this, "Do you want to set this dashboard as the default?",
+      function (_this)
+      {
+        _this.globals.isLoading = true;
+
+        if (_this.isDefaultDashboard ())
+          _this.appService.unsetDefaultDashboard (_this, _this.unsetDashboardDefaultSuccess, _this.setDashboardDefaultError);
+        else
+          _this.appService.setDefaultDashboard (_this, _this.globals.currentDashboardMenu, _this.setDashboardDefaultSuccess, _this.setDashboardDefaultError);
+      }
+    );
+  }
+
+  unsetDashboardDefaultSuccess(_this): void
+  {
+    _this.globals.isLoading = false;
+    _this.defaultDashboardId = null;
+
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Information", message: "This dashboard is no longer the default." }
+    });
+  }
+
+  setDashboardDefaultSuccess(_this): void
+  {
+    _this.globals.isLoading = false;
+    _this.defaultDashboardId = _this.globals.currentDashboardMenu.id;
+
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Information", message: "This dashboard has been set to default successfully." }
+    });
+  }
+
+  setDashboardDefaultError(_this): void
+  {
+    _this.globals.isLoading = false;
+
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Error", message: "Unable to set default dashboard." }
+    });
+  }
+
+  exportDashboardAsPNG(): void
+  {
+    let dashboardElement: any = document.getElementById ("msf-dashboard-element");
+
+    let contentHeight: number = dashboardElement.scrollHeight;
+    let contentWidth: number = dashboardElement.scrollWidth;
+
+    // Set PNG width and height for the dashboard content
+    this.globals.isLoading = true;
+    this.exportConfig.options.width = contentWidth;
+    this.exportConfig.options.windowWidth = contentWidth;
+    this.exportConfig.options.height = contentHeight;
+    this.exportConfig.options.windowHeight = contentHeight;
+
+    this.exportAsService.save (this.exportConfig, this.globals.currentDashboardMenu.title).subscribe (() => 
+    {
+      this.globals.isLoading = false;
+    });
+  }
+
+  changeDashboardName(): void
+  {
+    this.dialog.open (MsfEditDashboardComponent, {
+      height: '160px',
+      width: '400px',
+      panelClass: 'msf-dashboard-control-variables-dialog',
+      data: {
+        currentDashboardMenu: this.globals.currentDashboardMenu
+      }
+    });
+  }
+
+  shareDashboard(): void
+  {
+    this.dialog.open (MsfShareDashboardComponent, {
+      height: '430px',
+      width: '400px',
+      panelClass: 'msf-dashboard-child-panel-dialog',
+      data: {
+        isPanel: false,
+        dashboardContentId: this.globals.currentDashboardMenu.id,
+        dashboardContentTitle: this.globals.currentDashboardMenu.title
+      }
+    });
+  }
+  
+  deleteDashboard(): void
+  {
+    this.appService.confirmationDialog (this, "Are you sure you want to delete this dashboard?",
+      function (_this)
+      {
+        _this.globals.isLoading = true;
+
+        if (_this.globals.readOnlyDashboard)
+        {
+          _this.menuService.deleteSharedDashboard (_this, _this.globals.currentDashboardMenu.id,
+            _this.deleteSuccess, _this.deleteError);
+        }
+        else
+        {
+          _this.menuService.deleteDashboard (_this, _this.globals.currentDashboardMenu.id,
+            _this.deleteSuccess, _this.deleteError);
+        }
+      }
+    );
+  }
+
+  deleteError(_this): void
+  {
+    _this.globals.isLoading = false;
+  }
+
+  deleteSuccess(_this): void
+  {
+    _this.temporalSelectOption (_this);
+  }
+
+  temporalSelectOption(_this){
+    _this.getDashboardsUser();
+  }
+
+  goToFullscreen(): void
+  {
+    let element: any = document.documentElement;
+
+    if (element.requestFullscreen)
+      element.requestFullscreen ();
+    else if (element.mozRequestFullScreen)
+      element.mozRequestFullScreen ();
+    else if (element.webkitRequestFullscreen)
+      element.webkitRequestFullscreen ();
+    else if (element.msRequestFullscreen)
+      element.msRequestFullscreen ();
+  }
+  isSimpleContent(): boolean {
+    return (this.globals.currentOption === "dashboard" || !this.globals.currentOption);
   }
 }
