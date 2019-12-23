@@ -249,19 +249,20 @@ export class DatalakeComponent implements OnInit {
     // }
   }
 
-  showDataExplorer(){
-    let index = this.globals.optionsDatalake.findIndex(od => od.action.option === "Datalake Explorer");
-    if((this.globals.optionDatalakeSelected === 2 || this.globals.optionDatalakeSelected === 3)  && index != -1 && this.globals.userName){
+  showDataExplorer()
+  {
+    let index = this.globals.optionsDatalake.findIndex (od => od.action.option === "Datalake Explorer");
+
+    if ((this.globals.optionDatalakeSelected === 2 || this.globals.optionDatalakeSelected === 3)  && index != -1 && this.globals.userName)
       return true;
-    }else{
+    else
       return false;
-    }
   }
+
   refreshDataExplorer(event: any): void
   {
-    if(event===2 && this.showDataExplorer()){
+    if (event===2 && this.showDataExplorer ())
       this.dataExplorer.getDatalakeTables();
-    }
   }
 
   isDefaultDashboard(): boolean
@@ -410,7 +411,9 @@ export class DatalakeComponent implements OnInit {
     else if (element.msRequestFullscreen)
       element.msRequestFullscreen ();
   }
-  isSimpleContent(): boolean {
+
+  isSimpleContent(): boolean
+  {
     return (this.globals.currentOption === "dashboard" || !this.globals.currentOption);
   }
 }
