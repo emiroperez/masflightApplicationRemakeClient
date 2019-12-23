@@ -104,7 +104,7 @@
                                 <div *ngIf="optionSelected.children.length == 0">
                                     <div class="admin-menu-header-container">
                                         <h2 class="title-section">Menu Option Configuration</h2>
-                                        <div class="admin-menu-option-checkbox">
+                                        <div class="admin-menu-option-checkbox" *ngIf="globals.currentApplication.id != 5">
                                             <mat-checkbox class="admin-checkboxes" color="primary" [checked]="isDefaultMenuChecked(optionSelected)" (change)="checkDefaultMenu(optionSelected)">Default Option</mat-checkbox>
                                         </div>
                                     </div>
