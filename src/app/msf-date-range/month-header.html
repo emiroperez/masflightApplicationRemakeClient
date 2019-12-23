@@ -1,0 +1,15 @@
+<div class="date-picker-header">
+    <button mat-icon-button (click)="rewindClicked()">
+        <mat-icon class="date-picker-icon forward-rewind-icon">keyboard_arrow_left<mat-icon class="second-icon">keyboard_arrow_left</mat-icon></mat-icon>
+    </button>
+    <button mat-icon-button (click)="previousClicked()">
+        <mat-icon class="date-picker-icon">keyboard_arrow_left</mat-icon>
+    </button>
+    <span class="date-picker-label">{{periodLabel}}</span>
+    <button mat-icon-button (click)="nextClicked()">
+        <mat-icon class="date-picker-icon">keyboard_arrow_right</mat-icon>
+    </button>
+    <button mat-icon-button (click)="forwardClicked()">
+        <mat-icon class="date-picker-icon forward-rewind-icon">keyboard_arrow_right<mat-icon class="second-icon">keyboard_arrow_right</mat-icon></mat-icon>
+    </button>
+</div>
