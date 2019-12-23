@@ -1,5 +1,7 @@
-<div id="msf-dashboard-element" #scrollContainer (click)="disableContextMenu()" (contextmenu)="disableContextMenu()" (scroll)="disableContextMenu()" 
-class="msf-dashboard-container" [style.height]="screenHeight" [ngStyle]="{ 'cursor': getHoverCursor() }">
+<div id="msf-dashboard-element" #scrollContainer (click)="disableContextMenu()" 
+(contextmenu)="disableContextMenu()" (scroll)="disableContextMenu()" 
+class="msf-dashboard-container" [style.height]="screenHeight" 
+[ngStyle]="{ 'cursor': getHoverCursor() }">
   <!-- ngClass must be used for the control variable overlay it can override the overlays used on some dialogs such as the wizard -->
   <div [ngClass]="{ 'msf-control-variables-overlay': !controlVariableDialogOpen }">
     <div class="msf-dashboard-header" *ngIf="currentDashboardMenu">
