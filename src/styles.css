@@ -2755,6 +2755,13 @@
 .dark-theme .argument-category-type-value {
   color: #ffffff;
 }
+.dark-theme .msf-two-factor-auth-close-button .msf-dashboard-close-icon:hover {
+  font-size: 16px;
+  margin-top: -10px;
+  margin-right: -9px;
+  color: #01abec;
+  cursor: pointer;
+}
 
 .light-theme {
   color: #4d4d4d;
@@ -5497,6 +5504,13 @@
 .light-theme .argument-category-type-value {
   color: #4d4d4d;
 }
+.light-theme .msf-two-factor-auth-close-button .msf-dashboard-close-icon:hover {
+  font-size: 16px;
+  margin-top: -10px;
+  margin-right: -9px;
+  color: #eb5c1b;
+  cursor: pointer;
+}
 
 .dark-theme .assistant-button-disabled {
   background-color: rgba(176, 176, 176, 0.1) !important;
@@ -7667,13 +7681,6 @@ mat-tab-group {
   margin-right: -9px;
   color: inherit;
   cursor: inherit;
-}
-.msf-two-factor-auth-close-button .msf-dashboard-close-icon:hover {
-  font-size: 16px;
-  margin-top: -10px;
-  margin-right: -9px;
-  color: #ed5c27;
-  cursor: pointer;
 }
 
 .msf-dashboard-panel-sub-container-space {
