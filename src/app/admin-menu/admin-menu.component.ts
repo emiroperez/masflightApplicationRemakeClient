@@ -1472,9 +1472,8 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
             element.arguments[j].numArguments = numArguments;
           }
 
-          if (element.id == itemCategory.id && !itemOptionCategory.toDelete) {
+          if (element.id == itemCategory.id && !itemOptionCategory.toDelete && itemOptionCategory.position != -1)
             itemCategory.selected = true;
-          }
         }
       })
     });
