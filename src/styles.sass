@@ -2154,7 +2154,7 @@ body
     display: block!important
 
 .msf-hide
-    display: none!important
+    display: none !important
 
 .msf-show-panel
     display: flex
@@ -6263,14 +6263,13 @@ mat-form-field.msf-table-input
     height: 17px
     width: 17px
     margin-right: 8px
-    margin-top: 6px
     font-size: 17px
     object-fit: contain
 
 .dialog-item
     padding: 12px 5px
     display: flex
-    height: 25px
+    height: 18px
     justify-content: left
     flex-direction: row
     margin: 3px
@@ -6280,9 +6279,12 @@ mat-form-field.msf-table-input
     white-space: nowrap
     overflow: hidden
     text-overflow: ellipsis
+    align-items: center
+    .mat-badge-content
+        margin-top: 4px
 
 .dialog-category-arguments-body
-    max-height: calc(100% - 30px)
+    height: calc(100% - 30px)
     width: calc(100% + 1px)
     overflow-y: auto
     -webkit-overflow-scrolling: touch
@@ -6290,9 +6292,7 @@ mat-form-field.msf-table-input
 .dialog-category-arguments-container
     overflow-y: hidden
     -webkit-overflow-scrolling: touch
-    min-height: 190px
     width: calc(100% - 25px)
-    min-height: calc(100% - 140px)
     height: calc(100% - 110px)
     margin-top: 15px
     overflow-x: hidden

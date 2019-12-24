@@ -168,20 +168,18 @@
                                                 <div class="dialog-category-arguments-header-right">Description</div>
                                             </div>
                                             <div class="dialog-category-arguments-body">
-                                                <div *ngFor="let item of filteredCategories | async">
-                                                    <div class="dialog-item" [ngClass]="{ 'msf-hide': showSelected && !item.selected }">
-                                                        <mat-checkbox (change)="setSelectedCategoryArguments(item)" class="admin-checkboxes" [(ngModel)]="item.selected"></mat-checkbox>
-                                                        <mat-icon *ngIf="item.icon && isMatIcon(item.icon)" class="img-item-category-argument">{{item.icon}}</mat-icon>
-                                                        <img *ngIf="item.icon && !isMatIcon(item.icon)" class="img-item-category-argument img-item-picture" src="{{getImageIcon(item.icon)}}">
-                                                        <div *ngIf="!item.icon" class="img-item-category-argument img-item-empty"></div>
-                                                        <input [disabled]="true" type="text" matInput [(ngModel)]="item.id" class="text-item-category-argument text-item-category-argument-id">
-                                                        <input [disabled]="true" type="text" matInput [(ngModel)]="item.label" class="text-item-category-argument text-item-category-argument-label">
-                                                        <input [disabled]="true" type="text" matInput [(ngModel)]="item.description" class="text-item-category-argument text-item-category-argument-description">
-                                                        <div class="category-argument-config-button">
-                                                            <button class="category-argument-config-button-background" matBadge="{{getIndex(item)}}" [matBadgeHidden]="!item.selected" [ngClass]="item.selected? 'config-background' : 'config-background-empty'" mat-icon-button (click)="editVariables(item)">
-                                                                <mat-icon class="config-button-icon" *ngIf="item.selected" aria-label="delete">settings</mat-icon>
-                                                            </button>
-                                                        </div>
+                                                <div *ngFor="let item of filteredCategories | async" class="dialog-item" [ngClass]="{ 'msf-hide': showSelected && !item.selected }">
+                                                    <mat-checkbox (change)="setSelectedCategoryArguments(item)" class="admin-checkboxes" [(ngModel)]="item.selected"></mat-checkbox>
+                                                    <mat-icon *ngIf="item.icon && isMatIcon(item.icon)" class="img-item-category-argument">{{item.icon}}</mat-icon>
+                                                    <img *ngIf="item.icon && !isMatIcon(item.icon)" class="img-item-category-argument img-item-picture" src="{{getImageIcon(item.icon)}}">
+                                                    <div *ngIf="!item.icon" class="img-item-category-argument img-item-empty"></div>
+                                                    <input [disabled]="true" type="text" matInput [(ngModel)]="item.id" class="text-item-category-argument text-item-category-argument-id">
+                                                    <input [disabled]="true" type="text" matInput [(ngModel)]="item.label" class="text-item-category-argument text-item-category-argument-label">
+                                                    <input [disabled]="true" type="text" matInput [(ngModel)]="item.description" class="text-item-category-argument text-item-category-argument-description">
+                                                    <div class="category-argument-config-button">
+                                                        <button class="category-argument-config-button-background" matBadge="{{getIndex(item)}}" [matBadgeHidden]="!item.selected" [ngClass]="item.selected? 'config-background' : 'config-background-empty'" mat-icon-button (click)="editVariables(item)">
+                                                            <mat-icon class="config-button-icon" *ngIf="item.selected" aria-label="delete">settings</mat-icon>
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
