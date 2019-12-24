@@ -322,8 +322,6 @@ export class EditCategoryArgumentDialog {
     { id: 3, name: 'Year' }
   ];
 
-  //
-
   dateValueByFullDate: any[] = [
     { id: 0, name: 'Today' },
     { id: 1, name: 'Yesterday' },
@@ -384,46 +382,6 @@ export class EditCategoryArgumentDialog {
     { id: 0, name: 'Current Year' },
     { id: 1, name: 'Last Year' },
     { id: 2, name: 'Until Last Year' }
-  ];
-
-  //
-
-  dates: any[] = [
-    {id: 1, name: 'Today',value:"TODAY"},
-    {id: 2, name: 'Yesterday',value:"YESTERDAY"},
-    {id: 3, name: 'Last Week',value:"LASTWEEK"},
-    {id: 4, name: 'Last Month',value:"LASTMONTH"},
-    {id: 5, name: 'Last Year',value:"LASTYEAR"},
-    {id: 6, name: 'Until Yesterday',value:"UNTILYESTERDAY"},
-    {id: 7, name: 'Until Last Week',value:"UNTILLASTWEEK"},
-    {id: 8, name: 'Until Last Month',value:"UNTILLASTMONTH"},
-    {id: 9, name: 'Until Last Year',value:"UNTILLASTYEAR"},
-    {id: 10, name: 'Until Today',value:"UNTILTODAY"}
-  ];
-
-  dates2: any[] = [
-    {id: 1, name: 'Today',value:"TODAY"},
-    {id: 2, name: 'Yesterday',value:"YESTERDAY"},
-    {id: 3, name: 'Last Week',value:"LASTWEEK"},
-    {id: 4, name: 'Last Month',value:"LASTMONTH"},
-    {id: 5, name: 'Last Year',value:"LASTYEAR"}
-  ];
-
-  dates3: any[] = [
-    {id: 1, name: 'Current Year',value:"CURRENTYEAR"},
-    {id: 2, name: 'Last Year',value:"LASTYEAR"}
-  ];
-
-  dates4: any[] = [
-    {id: 1, name: 'Current Year',value:"CURRENTYEAR"},
-    {id: 2, name: 'Last Month',value:"LASTMONTH"},
-    {id: 3, name: 'Last Year',value:"LASTYEAR"}
-  ];
-
-  dates5: any[] = [
-    {id: 1, name: 'Current Year',value:"CURRENTYEAR"},
-    {id: 2, name: 'Last Year',value:"LASTYEAR"},
-    {id: 3, name: 'Until Last Year',value:"UNTILLASTYEAR"}
   ];
 
   contentTypes: any[] = [
@@ -676,48 +634,12 @@ export class EditCategoryArgumentDialog {
     }
   }
 
-  isDateArgument(argument: Arguments){
-    if (ComponentType.date == argument.type
-      || ComponentType.datePicker == argument.type || ComponentType.dateTimePicker == argument.type
-      || ComponentType.datePeriod == argument.type || ComponentType.datePeriodYear == argument.type
-      || ComponentType.datePeriodYearMonth == argument.type || ComponentType.datePeriodRevenue == argument.type)
-      return true;
-
-    return false;
-  }
-
-  isDatePicker(argument: Arguments) {
-    if (ComponentType.date == argument.type || ComponentType.datePicker == argument.type)
-      return true;
-
-    return false;
-  }
-
-  isDatePeriodYearMonth(argument: Arguments) {
-    return ComponentType.datePeriodYearMonth == argument.type;
-  }
-
-  isDatePeriodYear(argument: Arguments) {
-    return ComponentType.datePeriodYear == argument.type;
-  }
-
-  isDatePeriod(argument: Arguments) {
-    if (ComponentType.datePeriod == argument.type || ComponentType.datePeriodRevenue == argument.type)
-      return true;
-
-    return false;
-  }
-
   isDateRange(argument: Arguments) {
     return ComponentType.dateRange == argument.type;
   }
 
   isMsFreeTextInput(argument: Arguments){
     return ComponentType.freeTextInput == argument.type;
-  }
-
-  isAirportRoute(argument: Arguments) {
-    return ComponentType.airportsRoutes == argument.type;
   }
 
   isAirport(argument: Arguments) {
@@ -728,20 +650,8 @@ export class EditCategoryArgumentDialog {
     return ComponentType.aircraftType == argument.type;
   }
 
-  isSingleAirport(argument: Arguments) {
-    return ComponentType.singleAirport == argument.type;
-  }
-
   isAirline(argument: Arguments) {
     return ComponentType.airline == argument.type;
-  }
-
-  isSingleAirline(argument: Arguments) {
-    return ComponentType.singleairline == argument.type;
-  }
-
-  isTimePicker(argument: Arguments) {
-    return ComponentType.timePicker == argument.type;
   }
 
   isTimeRange(argument: Arguments) {
@@ -1054,12 +964,10 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   numArgumentsPerType: any[] = [
     { type: "airline", numArguments: 1 },
     { type: "airport", numArguments: 1 },
-    { type: "airportRoute", numArguments: 2 },
     { type: "ceiling", numArguments: 3 },
     { type: "timeRange", numArguments: 2 },
     { type: "dateRange", numArguments: 2 },
     { type: "tailnumber", numArguments: 2 },
-    { type: "singleairline", numArguments: 1 },
     { type: "flightNumber", numArguments: 1 },
     { type: "windSpeed", numArguments: 3 },
     { type: "windDirection", numArguments: 2 },
@@ -1067,15 +975,11 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     { type: "aircraftType", numArguments: 1 },
     { type: "grouping", numArguments: 1 },
     { type: "rounding", numArguments: 1 },
-    { type: "date", numArguments: 1 },
     { type: "userList", numArguments: 1 },
     { type: "optionList", numArguments: 1 },
     { type: "freeTextInput", numArguments: 1 },
     { type: "selectBoxSingleOption", numArguments: 1 },
     { type: "selectBoxMultipleOption", numArguments: 1 },
-    { type: "datePicker", numArguments: 1 },
-    { type: "timePicker", numArguments: 1 },
-    { type: "dateTimePicker", numArguments: 2 },
     { type: "checkBox", numArguments: 1 },
     { type: "cancelsCheckBox", numArguments: 1 },
     { type: "diversionsCheckbox", numArguments: 1 },
@@ -1084,10 +988,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     { type: "taxiTimes", numArguments: 2 },
     { type: "taxiTimesCheckbox", numArguments: 1 },
     { type: "taxiTimesCheckboxes", numArguments: 1 },
-    { type: "datePeriod", numArguments: 2 },
     { type: "region", numArguments: 1 },
-    { type: "datePeriodYear", numArguments: 2 },
-    { type: "datePeriodYearMonth", numArguments: 2 },
     { type: "sorting", numArguments: 1 },
     { type: "sortingCheckboxes", numArguments: 1 },
     { type: "groupingAthena", numArguments: 1 },
@@ -1122,9 +1023,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     { type: "connectionTime", numArguments: 2 },
     { type: "circuityType", numArguments: 1 },
     { type: "circuity", numArguments: 1 },
-    { type: "singleAirport", numArguments: 1 },
     { type: "summaryRevenueBuilds", numArguments: 1 },
-    { type: "datePeriodRevenue", numArguments: 2 },
     { type: "fareIncrementsMarketHistograms", numArguments: 1 },
     { type: "topNumber", numArguments: 1 },
     { type: "seatClass", numArguments: 1 },

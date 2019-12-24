@@ -27,10 +27,6 @@ export class MsfArgumentComponent implements OnInit {
 
   ngOnInit() {
   }
-  
-  isAirportRoute(argument: Arguments){
-    return ComponentType.airportRoute == argument.type;
-  }
 
   isAirport(argument: Arguments){
     return ComponentType.airport == argument.type;
@@ -64,10 +60,6 @@ export class MsfArgumentComponent implements OnInit {
     return ComponentType.airline == argument.type;
   }
 
-  isSingleAirline(argument: Arguments){
-    return ComponentType.singleairline == argument.type;
-  }
-
   isTailNumber(argument: Arguments){
     return ComponentType.tailnumber == argument.type;
   }
@@ -86,10 +78,6 @@ export class MsfArgumentComponent implements OnInit {
 
   isRounding(argument: Arguments){
     return ComponentType.rounding == argument.type;
-  }
-
-  isDate(argument: Arguments){
-    return ComponentType.date == argument.type;
   }
 
   isUserList(argument: Arguments){
@@ -111,15 +99,7 @@ export class MsfArgumentComponent implements OnInit {
   isSelectBoxMultipleOption(argument: Arguments){
     return ComponentType.selectBoxMultipleOption == argument.type;
   }
-  isDatePicker(argument: Arguments){
-    return ComponentType.datePicker == argument.type;
-  }
-  isTimePicker(argument: Arguments){
-    return ComponentType.timePicker == argument.type;
-  }
-  isDateTimePicker(argument: Arguments){
-    return ComponentType.dateTimePicker == argument.type;
-  }
+
   isCheckBox(argument: Arguments){
     return ComponentType.checkBox == argument.type;
   }
@@ -144,18 +124,11 @@ export class MsfArgumentComponent implements OnInit {
   isTaxiTimesCheckboxes(argument: Arguments){
     return ComponentType.taxiTimesCheckboxes == argument.type;
   }
-  isDatePeriod(argument: Arguments){
-    return ComponentType.datePeriod == argument.type;
-  }
+
   isRegion(argument: Arguments){
     return ComponentType.region == argument.type;
   }
-  isDatePeriodYear(argument: Arguments){
-    return ComponentType.datePeriodYear == argument.type;
-  }
-  isDatePeriodYearMonth(argument: Arguments){
-    return ComponentType.datePeriodYearMonth == argument.type;
-  }
+
   isSortingCheckboxes(argument: Arguments){
     return ComponentType.sortingCheckboxes == argument.type;
   }
@@ -255,15 +228,11 @@ export class MsfArgumentComponent implements OnInit {
   isCircuity(argument: Arguments){
     return ComponentType.circuity == argument.type;
   }
-  isSingleAirport(argument: Arguments){
-    return ComponentType.singleAirport == argument.type;
-  }
+
   isSummaryRevenueBuilds(argument: Arguments){
     return ComponentType.summaryRevenueBuilds == argument.type;
   }
-  isDatePeriodRevenue(argument: Arguments){
-    return ComponentType.datePeriodRevenue == argument.type;
-  }
+
   isFareIncrementsMarketHistograms(argument: Arguments){
     return ComponentType.fareIncrementsMarketHistograms == argument.type;
   }

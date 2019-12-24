@@ -28,7 +28,6 @@ import { MsfContainerComponent } from './msf-container/msf-container.component';
 import { MsfTableComponent } from './msf-table/msf-table.component';
 import { IntroComponent } from './intro/intro.component';
 import { CurrentQuerySummaryComponent } from './current-query-summary/current-query-summary.component';
-import { MsfAirportRouteComponent } from './msf-airport-route/msf-airport-route.component';
 import { MsfTimeRangeComponent } from './msf-time-range/msf-time-range.component';
 import { MsfDateRangeComponent, MonthHeader, YearHeader } from './msf-date-range/msf-date-range.component';
 import { MsfCeilingComponent } from './msf-ceiling/msf-ceiling.component';
@@ -51,12 +50,10 @@ import { MsfMapComponent } from './msf-map/msf-map.component';
 //import { AgmCoreModule } from '@agm/core';
 //import { AgmDirectionModule } from 'agm-direction'
 //import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
-import { MsfSingleAirlineComponent } from './msf-single-airline/msf-single-airline.component';
 import { MsfFlightNumberComponent } from './msf-flight-number/msf-flight-number.component';
 import { MsfLoadingComponent } from './msf-loading/msf-loading.component';
 import { MsfGroupingComponent } from './msf-grouping/msf-grouping.component';
 import { MsfRoundingComponent } from './msf-rounding/msf-rounding.component';
-import { MsfDateComponent } from './msf-date/msf-date.component';
 import { MapBoxComponent } from './map-box/map-box.component';
 import { AdminMenuComponent } from './admin-menu/admin-menu.component';
 import { CreateMembershipsComponent } from './create-memberships/create-memberships.component';
@@ -74,9 +71,6 @@ import { EditOptionsDialog } from './create-memberships/create-memberships.compo
 import { MsfFreeTextInputComponent } from './msf-free-text-input/msf-free-text-input.component';
 import { MsfSelectBoxSingleOptionComponent } from './msf-select-box-single-option/msf-select-box-single-option.component';
 import { MsfSelectBoxMultipleOptionComponent } from './msf-select-box-multiple-option/msf-select-box-multiple-option.component';
-import { MsfDatePickerComponent } from './msf-date-picker/msf-date-picker.component';
-import { MsfTimePickerComponent } from './msf-time-picker/msf-time-picker.component';
-import { MsfDateTimePickerComponent } from './msf-date-time-picker/msf-date-time-picker.component';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { MsfCheckBoxComponent } from './msf-check-box/msf-check-box.component';
 import { MsfCancelsCheckboxComponent } from './msf-cancels-checkbox/msf-cancels-checkbox.component';
@@ -86,10 +80,7 @@ import { MsfCausesFlightDelaysCheckboxesComponent } from './msf-causes-flight-de
 import { MsfTaxiTimesComponent } from './msf-taxi-times/msf-taxi-times.component';
 import { MsfTaxiTimesCheckboxComponent } from './msf-taxi-times-checkbox/msf-taxi-times-checkbox.component';
 import { MsfTaxiTimesCheckboxesComponent } from './msf-taxi-times-checkboxes/msf-taxi-times-checkboxes.component';
-import { MsfDatePeriodComponent } from './msf-date-period/msf-date-period.component';
 import { MsfRegionComponent } from './msf-region/msf-region.component';
-import { MsfDatePeriodYearComponent } from './msf-date-period-year/msf-date-period-year.component';
-import { MsfDatePeriodYearMonthComponent } from './msf-date-period-year-month/msf-date-period-year-month.component';
 import { OptionWelcomeComponent } from './option-welcome/option-welcome.component';
 import { MsfSortingComponent } from './msf-sorting/msf-sorting.component';
 import { MsfSortingCheckboxesComponent } from './msf-sorting-checkboxes/msf-sorting-checkboxes.component';
@@ -128,10 +119,8 @@ import { MsfConnectonTimeComponent } from './msf-connecton-time/msf-connecton-ti
 import { MsfStopsComponent } from './msf-stops/msf-stops.component';
 import { MsfCircuityTypeComponent } from './msf-circuity-type/msf-circuity-type.component';
 import { MsfCircuityComponent } from './msf-circuity/msf-circuity.component';
-import { MsfSingleAirportComponent } from './msf-single-airport/msf-single-airport.component';
 import { MsfDashboardControlVariablesComponent } from './msf-dashboard-control-variables/msf-dashboard-control-variables.component';
 import { MsfSummaryRevenueBuildsComponent } from './msf-summary-revenue-builds/msf-summary-revenue-builds.component';
-import { MsfDatePeriodRevenueComponent } from './msf-date-period-revenue/msf-date-period-revenue.component';
 import { UserActivationComponent } from './user-activation/user-activation.component';
 import { MsfFareIncrementsMarketHistogramsComponent } from './msf-fare-increments-market-histograms/msf-fare-increments-market-histograms.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
@@ -240,7 +229,6 @@ import { DatalakeCreateRolesComponent } from './datalake-create-roles/datalake-c
     MsfTableComponent,
     IntroComponent,
     CurrentQuerySummaryComponent,
-    MsfAirportRouteComponent,
     MsfTimeRangeComponent,
     MsfDateRangeComponent,
     MsfCeilingComponent,
@@ -259,12 +247,10 @@ import { DatalakeCreateRolesComponent } from './datalake-create-roles/datalake-c
     jqxGridComponent,
     jqxTreeGridComponent,
     MsfMapComponent,
-    MsfSingleAirlineComponent,
     MsfFlightNumberComponent,
     MsfLoadingComponent,
     MsfGroupingComponent,
     MsfRoundingComponent,
-    MsfDateComponent,
     AdminMenuComponent,
     CreateMembershipsComponent,
     MapBoxComponent,
@@ -281,9 +267,6 @@ import { DatalakeCreateRolesComponent } from './datalake-create-roles/datalake-c
     MsfFreeTextInputComponent,
     MsfSelectBoxSingleOptionComponent,
     MsfSelectBoxMultipleOptionComponent,
-    MsfDatePickerComponent,
-    MsfTimePickerComponent,
-    MsfDateTimePickerComponent,
     MsfCheckBoxComponent,
     MsfCancelsCheckboxComponent,
     MsfDiversionsCheckboxComponent,
@@ -292,10 +275,7 @@ import { DatalakeCreateRolesComponent } from './datalake-create-roles/datalake-c
     MsfTaxiTimesComponent,
     MsfTaxiTimesCheckboxComponent,
     MsfTaxiTimesCheckboxesComponent,
-    MsfDatePeriodComponent,
     MsfRegionComponent,
-    MsfDatePeriodYearComponent,
-    MsfDatePeriodYearMonthComponent,
     OptionWelcomeComponent,
     MsfSortingComponent,
     MsfSortingCheckboxesComponent,
@@ -334,10 +314,8 @@ import { DatalakeCreateRolesComponent } from './datalake-create-roles/datalake-c
     MsfStopsComponent,
     MsfCircuityTypeComponent,
     MsfCircuityComponent,
-    MsfSingleAirportComponent,
     MsfDashboardControlVariablesComponent,
     MsfSummaryRevenueBuildsComponent,
-    MsfDatePeriodRevenueComponent,
     UserActivationComponent,
     MsfFareIncrementsMarketHistogramsComponent,
     ForgotPasswordComponent,
