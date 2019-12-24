@@ -56,6 +56,7 @@ export class AdminArgumentsCategoryComponent implements OnInit {
     { value: "taxiTimesCheckbox", name: "Taxi times checkbox" },
     { value: "taxiTimesCheckboxes", name: "Taxi times checkboxes" },
     { value: "region", name: "Region" },
+    { value: "sortingConnectionBuilder", name: "Sorting connection builder" },
     { value: "sortingCheckboxes", name: "Sorting checkboxes" },
     { value: "groupingAthena", name: "New Grouping" },
     { value: "flightDistance", name: "Flight Distance" },

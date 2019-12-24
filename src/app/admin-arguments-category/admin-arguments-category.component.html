@@ -41,6 +41,7 @@
                                 <div class="arguments-categories-list-item" *ngFor="let item of categories | categoryFilter: searchText">
                                     <div class="arguments-categories-list-item-label" [ngClass]="{ 'is-active': item.isSelected, 'is-inactive': !item.isSelected }">
                                         <div class="arguments-categories-list-item-label-container" (click)="getSelectedOption(item)">
+                                            <span>({{item.id}})</span>
                                             <input class="arguments-categories-list-item-label-color" disabled="true" type="text" name="optionname" autocomplete="off" matInput [(ngModel)]="item.label"/>
                                         </div>
                                     </div>
