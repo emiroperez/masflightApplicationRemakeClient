@@ -967,8 +967,6 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     { type: "ceiling", numArguments: 3 },
     { type: "timeRange", numArguments: 2 },
     { type: "dateRange", numArguments: 2 },
-    { type: "tailnumber", numArguments: 2 },
-    { type: "flightNumber", numArguments: 1 },
     { type: "windSpeed", numArguments: 3 },
     { type: "windDirection", numArguments: 2 },
     { type: "temperature", numArguments: 3 },

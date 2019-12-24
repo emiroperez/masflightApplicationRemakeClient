@@ -60,16 +60,8 @@ export class MsfArgumentComponent implements OnInit {
     return ComponentType.airline == argument.type;
   }
 
-  isTailNumber(argument: Arguments){
-    return ComponentType.tailnumber == argument.type;
-  }
-
   isAircraftType(argument: Arguments){
     return ComponentType.aircraftType == argument.type;
-  }
-
-  isFlightNumberType(argument: Arguments){
-    return ComponentType.flightNumber == argument.type;
   }
 
   isGrouping(argument: Arguments){

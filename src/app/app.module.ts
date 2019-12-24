@@ -40,7 +40,6 @@ import { DateTimeFormatPipe } from './commons/DateTimeFormatPipe';
 import { MsfAirlineComponent } from './msf-airline/msf-airline.component';
 import { MsfDynamicTableVariablesComponent } from './msf-dynamic-table-variables/msf-dynamic-table-variables.component';
 import { MsfDynamicTableComponent } from './msf-dynamic-table/msf-dynamic-table.component';
-import { MsfTailNumberComponent } from './msf-tail-number/msf-tail-number.component';
 import { MsfAircraftTypeComponent } from './msf-aircraft-type/msf-aircraft-type.component';
 import { jqxGridComponent } from 'jqwidgets-scripts/jqwidgets-ts/angular_jqxgrid';
 import { jqxTreeGridComponent } from 'jqwidgets-scripts/jqwidgets-ts/angular_jqxtreegrid';
@@ -50,7 +49,6 @@ import { MsfMapComponent } from './msf-map/msf-map.component';
 //import { AgmCoreModule } from '@agm/core';
 //import { AgmDirectionModule } from 'agm-direction'
 //import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
-import { MsfFlightNumberComponent } from './msf-flight-number/msf-flight-number.component';
 import { MsfLoadingComponent } from './msf-loading/msf-loading.component';
 import { MsfGroupingComponent } from './msf-grouping/msf-grouping.component';
 import { MsfRoundingComponent } from './msf-rounding/msf-rounding.component';
@@ -241,13 +239,11 @@ import { DatalakeCreateRolesComponent } from './datalake-create-roles/datalake-c
     MsfAirlineComponent,
     MsfDynamicTableVariablesComponent,
     MsfDynamicTableComponent,
-    MsfTailNumberComponent,
     MsfAircraftTypeComponent,
     jqxBarGaugeComponent,
     jqxGridComponent,
     jqxTreeGridComponent,
     MsfMapComponent,
-    MsfFlightNumberComponent,
     MsfLoadingComponent,
     MsfGroupingComponent,
     MsfRoundingComponent,
