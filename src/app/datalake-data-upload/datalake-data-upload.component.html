@@ -33,7 +33,7 @@
       <div class="datalake-create-table-content-header">
         <div class="datalake-create-table-step-title">
           <span class="datalake-create-table-step-title-label">STEP 1 - DATA UPLOAD</span>
-          <span class="datalake-create-table-step-description">To Upload a file into a table please specify the schema
+          <span class="datalake-create-table-step-description">To upload a file into a table please specify the schema
             and table</span>
         </div>
         <div class="datalake-create-table-step-buttons">
@@ -74,27 +74,35 @@
         </mat-form-field>
       </div>
       <div class="datalake-upload-table-input-body ">
-        <div [style.margin-bottom.px]="3"><span>Bucket: </span><span class="datalake-upload-span">{{bucket}}</span></div>
-        <div [style.margin-bottom.px]="3"><span>File Type: </span><span class="datalake-upload-span">{{selectedFileType}}</span></div>
+        <div [style.margin-bottom.px]="3"><span  class="datalake-upload-span" >Bucket: </span><span>{{bucket}}</span></div>
+        <div [style.margin-bottom.px]="3"><span class="datalake-upload-span">File Type: </span><span >{{selectedFileType}}</span></div>
         <div [style.margin-bottom.px]="3"*ngIf="selectedFileType != 'PARQUET'" >
-          <span>Delimiter: </span><span class="datalake-upload-span">{{selectedDelimiterAndSimbol()}}</span></div>
-      </div>
+          <span class="datalake-upload-span">Delimiter: </span><span >{{selectedDelimiterAndSimbol()}}</span></div>
+        <div [style.margin-bottom.px]="3">
+          <span class="datalake-upload-span">Partition(s):</span>
+          <span *ngFor="let Partition of Partitions; let last = last;">
+          {{Partition.PartitionName}} <span *ngIf="Partitions.length > 1 && !last">,&nbsp; </span>
+          </span>
+        </div>
+        </div>
+      <!-- <div class="datalake-upload-table-partitions">
+        <span class="datalake-upload-span" [style.margin-right.px]="15">Partition(s): </span>
+        <mat-chip-list *ngFor="let Partition of Partitions">
+            <mat-chip class="datalake-upload-table-chips" >{{Partition.PartitionName}}</mat-chip>
+        </mat-chip-list>
+      </div> -->
       <div class="datalake-upload-table-input-body">
         <mat-form-field class="datalake-create-table-input"
           [formGroup]="tableConfigurationFormGroup">
-          <input matInput placeholder="File Location - Where do you want to store your file? " autocomplete="off"
+          <input matInput #fileLocation placeholder="File Location - Where do you want to store your file? " autocomplete="off"
             formControlName="tableLocation" required>
           <mat-error *ngIf="tableConfigurationFormGroup.get('tableLocation')?.invalid">You must specify table location
           </mat-error>
         </mat-form-field>
-          <div class="datalake-upload-table-partitions">
-            <span [style.margin-right.px]="15">Partition(s): </span>
-            <mat-chip-list *ngFor="let Partition of Partitions">
-                <mat-chip class="datalake-upload-table-chips" >{{Partition.PartitionName}}</mat-chip>
-            </mat-chip-list>
-          </div>
-          <span class="datalake-upload-table-partitions-hint">Example of File Locations <br> If the table have: "year", "month", "day" a valid file location
-          would be 2019/12/01. Paritions: "airport","airline" a valid File Location would be AA/JFK</span>        
+        <ul class="datalake-upload-table-partitions-hint">
+            <li type= square>Example I <br>If the table contains "year", "month" and "day" as partitions, a valid file location would be 2019/12/01.
+            <li type= square>Example II <br>If the table contains "state" and "city" as partitions, a valid file location would be CA/LAX.
+        </ul>
       </div>
       <div class="datalake-create-table-input-file-picker-upload">
         <span class="datalake-file-picker-label datalake-upload-table-input-body-left">Filename *:</span>

@@ -71,12 +71,12 @@
         <div class="datalake-alarms-header">
           <div class="datalake-new-alarm-title">
             <mat-icon class="datalake-new-alarm-icon">alarm_add</mat-icon>
-            <span class="datalake-new-alarm-title-label">New alarm</span>
+            <span class="datalake-new-alarm-title-label">New Alarm</span>
           </div>
         </div>
         <div class="datalake-new-alarm-container">
           <div>
-          <div class="datalake-create-alarm-hint">To create an alarm, please select the schema and table.</div>
+          <div class="datalake-create-alarm-hint">To create an alarm, please select the schema and table to be monitor.</div>
           <div class="datalake-alarm-comboboxes">
             <mat-form-field class="datalake-alarm-left-combobox" [formGroup]="alarmFormGroup">
               <mat-select placeholder="Schema Name" autocomplete="off" formControlName="schema"
@@ -100,11 +100,11 @@
           </div>
         </div>
           <div >
-              <div class="datalake-create-alarm-hint datalake-create-alarm-hint2">How often do you want to verify data ingestion?.</div>    
+              <div class="datalake-create-alarm-hint datalake-create-alarm-hint2">How often do you want to verify data ingestion?</div>    
               <div class="datalake-create-alarm-time">
               <mat-radio-group class="datalake-alarm-radio-group" [(ngModel)]="notifyMode" (ngModelChange)="enableTimePicker()">
                 <mat-radio-button class="cancels-checkbox" [ngClass]="{'datalake-alarm-radio-button': notifyMode, 'datalake-alarm-radio-button-selected': !notifyMode }" [value]="false">Verify with a cron expression...</mat-radio-button>
-                <mat-radio-button class="cancels-checkbox" [ngClass]="{'datalake-alarm-radio-button': !notifyMode, 'datalake-alarm-radio-button-selected': notifyMode }" [value]="true">Verify me at this specific time...</mat-radio-button>
+                <mat-radio-button class="cancels-checkbox" [ngClass]="{'datalake-alarm-radio-button': !notifyMode, 'datalake-alarm-radio-button-selected': notifyMode }" [value]="true">Verify at this specific time...</mat-radio-button>
               </mat-radio-group>
   
               <div class="datalake-alarm-time-picker" *ngIf="!notifyMode">
@@ -130,13 +130,13 @@
   <div class="datalake-alarm-add-emails">
       <button mat-button class="flat-button datalake-alarm-emails" (click)="AddEmail()">
           <img src="../../assets/images/arroba.png" class="datalake-alarm-email-icon">
-          <span class="datalake-new-alarm-title-label">Add Emails</span>
+          <span class="datalake-new-alarm-title-label">Emails address</span>
         </button>
         
         <div class="datalake-alarm-emails-hint">
             <mat-icon class="edit-icon">arrow_left</mat-icon>
             <span>If the application detects something is 
-          wrong with the data ingestion specify whho needs to get notified</span>
+          wrong with the data ingestion specify who needs to be notified</span>
       </div>
   </div>
   <div class="datalake-alarm-buttons">

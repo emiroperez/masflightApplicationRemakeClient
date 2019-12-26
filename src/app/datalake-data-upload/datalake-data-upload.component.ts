@@ -1,6 +1,6 @@
-import { Component, Input, Output, EventEmitter, OnInit, AfterViewInit, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, SimpleChanges, ViewChild} from '@angular/core';
 import { FormGroup, Validators, FormControl, FormBuilder, AbstractControl } from '@angular/forms';
-import { MatStepper, MatDialog } from '@angular/material';
+import { MatStepper, MatDialog, MatInput } from '@angular/material';
 
 import { MessageComponent } from '../message/message.component';
 import { DatalakeQuerySchema } from '../datalake-query-engine/datalake-query-schema';
@@ -14,9 +14,13 @@ import { ReplaySubject, Subject } from 'rxjs';
   selector: 'app-datalake-data-upload',
   templateUrl: './datalake-data-upload.component.html'
 })
-export class DatalakeDataUploadComponent {
+export class DatalakeDataUploadComponent{
+
   @Input("schemas")
   schemas: DatalakeQuerySchema[] = [];
+
+  @ViewChild("fileLocation")
+  fileLocation: MatInput ;
 
   // @Input("buckets") kp 16/12/2019
   // buckets: DatalakeBucket[] = [];
@@ -558,8 +562,10 @@ export class DatalakeDataUploadComponent {
       this.Partitions = this.tableConfigurationFormGroup.get ("table").value.Partitions;
     }else{
       this.Partitions = [];
+      this.tableConfigurationFormGroup.get ("tableLocation").setValue(this.tableConfigurationFormGroup.get ("table").value.TableName);
     }
 
+    // this.fileLocation.focus();
     if(this.Datavalue.targetFile){
       this.targetFile = this.Datavalue.targetFile;
       if(this.selectedDelimiter){

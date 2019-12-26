@@ -127,6 +127,7 @@ export class DatalakeCreateTableComponent {
     if (this.redrawTab)
     {
       this.tabs.realignInkBar (); // realing ink bar for the tab just in case
+      // this.upload.fileLocation.elefocused = true;
       this.redrawTab = false;
     }
   }

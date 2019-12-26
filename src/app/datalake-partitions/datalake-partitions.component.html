@@ -127,7 +127,7 @@
         </div>
         <div class="datalake-partition-comboboxes">
             <mat-form-field  [formGroup]="partitionFormGroup">
-              <mat-select placeholder="How Do you want this job to be Executed ?" autocomplete="off"
+              <mat-select placeholder="How do you want this job to be Executed?" autocomplete="off"
                formControlName="runType" (selectionChange)="runTypeChanged()">
                 <mat-option *ngFor="let runType of filteredRunTypes | async" [value]="runType.value">
                   {{runType.viewValue}}
@@ -138,7 +138,8 @@
         </div>
         <div [ngClass]="edit || createAction ? 'datalake-partition-comboboxes' : 'datalake-partition-comboboxes datalake-partition-comboboxes-disabled'">
             <mat-form-field  [formGroup]="partitionFormGroup"  class="datalake-partition-cron">
-                <span class="datalake-alarm-minutes-label">Check if is Needed to Add a New Partition Every</span>
+                <!-- <span class="datalake-alarm-minutes-label">Check if is Needed to Add a New Partition Every</span> -->
+                <span class="datalake-alarm-minutes-label">Verify partition with a cron expression...</span>
                 <input matInput formControlName="cron"
                  type="string" autocomplete="off" class="datalake-partition-input"/>
              <mat-error *ngIf="partitionFormGroup.get('cron')?.invalid">You must type a cron expresion</mat-error>
