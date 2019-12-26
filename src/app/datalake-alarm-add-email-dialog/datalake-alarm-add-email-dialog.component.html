@@ -9,7 +9,7 @@
 id="msf-dashboard-drill-down-container" >
   <div class="msf-dashboard-panel-sub-container-column">
       <mat-form-field class="datalake-table-location" [formGroup]="EmailAlarmForm">
-          <input matInput autocomplete="off" type="text" placeholder="Type Email"
+          <input matInput autocomplete="off" type="text" placeholder="Please enter an email address."
               formControlName="emailValidator" />
           <mat-error *ngIf="isEmailInvalid()">{{getErrorEmailMessage()}}</mat-error>
       </mat-form-field>
@@ -49,15 +49,17 @@ id="msf-dashboard-drill-down-container">
     </div>
     <div class="msf-dashboard-panel-sub-container-column" 
     id="msf-dashboard-panel-form-container-column-empty" *ngIf="!users.length" style="height: 200px">
-      <div class="msf-no-results">
-        You have not emails added
+      <div class="msf-no-results-email">
+        Empty List
       </div>
     </div>
   </div>
 </div>
 <div class="msf-dashboard-control-variables-buttonr msf-dashboard-share-content-container" 
 id="msf-dashboard-drill-down-container" >
-  <button *ngIf="!data.OnlyRead" mat-flat-button [disabled]="!selectedUser" mat-flat-button [ngClass]="selectedUser ? 'flat-button' : 'flat-button-disabled flat-AlarmEmail-button-disabled'" (click)="removeUser()">Remove User</button>
+  <button *ngIf="!data.OnlyRead" mat-flat-button [disabled]="!selectedUser" mat-flat-button
+   [ngClass]="selectedUser ? 'flat-button' : 'flat-button-disabled flat-AlarmEmail-button-disabled'" 
+  (click)="removeUser()">Remove Email</button>
   <span *ngIf="!data.OnlyRead" class="button-separator"></span>
   <button mat-flat-button class="flat-button" (click)="closeDialog()">Close</button>
 </div>

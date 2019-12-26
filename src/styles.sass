@@ -690,6 +690,8 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             color: $primary-color
         input[role=combobox]
             color: $font-color
+        .msf-no-results-email
+            color: $primary-color !important
         .msf-no-results
             background: $primary-color
         .msf-summary-title
@@ -1786,8 +1788,11 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                 background-color: $datalake-explorer-background-color
                 color: $font-color
             .atp-time .atp-am, .atp-time .atp-pm
-                color: $font-color
+                color: $dashboard-border-color
+                background-color: $schedule-map-background-color
+            .atp-hour.atp-focus, .atp-minute.atp-focus, .atp-am[aria-pressed], .atp-pm[aria-pressed]
                 background-color: $datalake-explorer-background-color
+                color: $font-color
             .atp-color--primary
                 background-color: $dashboard-secondary-background-color
         .datalake-alarm-table-scroll
@@ -3824,7 +3829,7 @@ mat-tab-group
     .msf-dashboard-child-panel-table-more-button
         width: 100%
         height: 5%
-    .msf-no-results
+    .msf-no-results, msf-no-results-email
         margin-top: 80px
 
 .msf-dashboard-dialog
@@ -4193,7 +4198,7 @@ mat-tab-group
 
 #msf-dashboard-panel-form-container-column-empty
     justify-content: center
-    .msf-no-results
+    .msf-no-results, .msf-no-results-email
         color: #ffffff
         margin: 0 100px
         text-align: center
@@ -4202,6 +4207,7 @@ mat-tab-group
         justify-content: center
         padding: 15px
         font-size: 12px
+
 
 #msf-dashboard-panel-table-container-column
     flex-direction: column
@@ -8329,11 +8335,16 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     .datalake-query-engine-line-resize
         display: flex
         height: 100%
-        width: 20px
-        align-items: center
+        width: 25px
         justify-content: center
+        position: relative
         @include disable-text-selection
+        .datalake-query-engine-hide-left-panel
+            position: absolute
+            &:hover
+                cursor: pointer
         .datalake-query-engine-drag-handler
+            align-self: center
             &:hover
                 cursor: col-resize
 
@@ -8404,6 +8415,8 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                 align-self: center
                 padding-right: 5px
         .datalake-create-table-body
+            .mat-form-field-subscript-wrapper
+                font-size: 90% !important
             .mat-tab-label
                 opacity: 1 !important
             .mat-step-icon .mat-icon
@@ -8433,7 +8446,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                         flex-direction: row-reverse
                         padding-right: 30px
                         position: absolute
-                        right: 0
+                        right: 0 
                         .datalake-create-table-step-button
                             margin-left: 5px
                             width: 90px
@@ -8453,11 +8466,9 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
             .datalake-create-table-input-body, .datalake-create-table-input-secondary-body, .datalake-create-table-input-tertiary-body
                 display: flex
                 flex-direction: row
-                padding-top: 20px
+                padding-top: 20px 
                 .datalake-create-table-input
                     // padding-left: 30px
-                    .mat-form-field-subscript-wrapper
-                        font-size: 90% !important
                 .datalake-delimiter-label
                     padding-left: 10px
                 .datalake-create-table-input-body-right
@@ -8776,7 +8787,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     justify-content: space-between
     .datalake-alarm-emails-hint
         display: flex
-        width: 78%
+        width: 75%
         flex-direction: row
     .datalake-alarm-emails
         // width: 15%
@@ -8785,7 +8796,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         max-height: 45px
         cursor: pointer
         // margin-left: 30px
-        width: 20%
+        width: 25%
         .mat-button-wrapper
             display: flex
             width: 100%
@@ -9496,6 +9507,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 
 .datalake-alarm-email-icon
     height: 20px
+    margin-right: 5px
 
 .datalake-new-alarm-status
     display: flex

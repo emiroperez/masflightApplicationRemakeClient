@@ -90,6 +90,7 @@ export class DatalakeAlarmAddEmailDialogComponent implements OnInit {
             this.users.splice(indexUser,1);
           }
       }
+      this.selectedUser = null;
     }
   }
 

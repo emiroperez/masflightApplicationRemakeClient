@@ -29,6 +29,7 @@ export class DatalakeQueryEngineComponent implements OnInit {
   savequerymouseover: boolean = false;
   queryhistorymouseover: boolean = false;
   runquerymouseover: boolean = false;
+  leftPanelHidden: boolean = false;
   
   QueryreadOnly: boolean = true;
 
@@ -444,4 +445,40 @@ export class DatalakeQueryEngineComponent implements OnInit {
     this.cursorPosWhere = (this.codeEditor.codeMirror as any).getCursor();
   }
 
+  toggleLeftPanel(): void
+  {
+    this.leftPanelHidden = !this.leftPanelHidden;
+  }
+
+  getLeftPanelWidth(): number
+  {
+    if (this.leftPanelHidden)
+      return 0;
+
+    return this.leftPanelWidth;
+  }
+
+  getMinLeftPanelWidth(): number
+  {
+    if (this.leftPanelHidden)
+      return 0;
+
+    return 30;
+  }
+  
+  getRightPanelWidth(): number
+  {
+    if (this.leftPanelHidden)
+      return 100;
+
+    return this.rightPanelWidth;
+  }
+
+  getMaxRightPanelWidth(): number
+  {
+    if (this.leftPanelHidden)
+      return 100;
+
+    return 70;
+  }
 }
