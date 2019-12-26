@@ -27,8 +27,8 @@ export class DatalakeMenuComponent implements OnInit {
 
   constructor(public globals: Globals, private dialog: MatDialog) { }
 
-  ngOnInit() {
-    this.globals.optionDatalakeSelected = 2;
+  ngOnInit()
+  {
   }
 
   createTable(): void {

@@ -1960,6 +1960,14 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
         .msf-two-factor-auth-close-button
             .msf-dashboard-close-icon:hover
                 @include msf-dashboard-control-variables-close-icon($primary-color, pointer)
+        .msf-category-argument-arrow-icon
+            color: $font-color
+        .msf-component-radio
+            .mat-radio-outer-circle
+                border-color: $font-color
+        .argument-radio-group
+            .mat-radio.outer-circle
+                border-color: $font-color
 
 @each $name, $font-color, $little-font-color, $disabled-color, $secondary-disabled-color, $tertiary-disabled-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $quaternary-background-color, $body-background-color, $dashboard-background-color, $dashboard-secondary-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $scrollbar-background-color, $dashboard-panel-background-color, $dashboard-panel-chart-background-color, $dashboard-border-color, $schedule-map-background-color, $schedule-map-info-border, $disabled-combo-box-color, $disabled-underline, $dashboard-info-background-color, $dashboard-info-secondary-background-color, $dashboard-info-font-color, $dashboard-drill-down-border-color, $dashboard-threshold-background-color, $dashboard-title-font-color, $map-panelinfo-background-color, $dashboard-info-border-color, $dashboard-form-font-color, $admin-menu-background, $admin-menu-input-underline, $admin-tree-active-color, $admin-button-color, $admin-secondary-background-color, $admin-table-background-color, $admin-table-hover-color, $admin-secondary-button-color, $login-font-color, $intro-logout-icon-color, $control-variables-border-color, $control-variable-hover-background-color, $control-variable-hover-icon-color, $control-variables-input-underline, $control-variables-dropdown-hover-font-color, $control-variables-dropdown-hover-background-hover-color, $control-variables-selected-background-color, $dashboard-input-underline-color, $membership-primary-background-color, $membership-secondary-background-color, $customer-edit-header-color, $customer-table-header-background-color, $customer-table-row-background-color, $customer-table-row-border-color, $customer-table-row-hover-background-color, $customer-table-row-selected-background-color, $customer-table-row-border-selected-color, $customer-input-color, $customer-input-underline-color, $customer-disabled-underline, $dashboard-control-panel-background-color, $menu-open-background-color, $menu-open-active-background-color, $menu-first-line, $menu-second-line, $menu-background-color, $menu-child-background-color, $control-variable-disabled-color, $dashboard-assistant-analysis-color, $dashboard-assistant-axis-color, $dashboard-assistant-values-color, $dashboard-assistant-analysis-font-color, $dashboard-assistant-sub-background-color, $admin-menu-tree-scrollbar-track-color, $dialog-category-arguments-scrollbar-color, $admin-menu-category-scrollbar-track-color, $datalake-search-input-border-color, $progress-bar-fill, $progress-bar-buffer, $datalake-data-ingestion-background-color, $datalake-explorer-background-color, $datalake-table-stats-background-color, $datalake-table-button-color, $query-engine-background-color, $query-engine-result-header-color, $codemirror-selected-color, $codemirror-focused-selected-color, $codemirror-keyword-color, $codemirror-number-color, $codemirror-string-color, $codemirror-variable-color, $codemirror-variable2-color, $codemirror-comment-color, $codemirror-builtin-color, $codemirror-attribute-color, $codemirror-property-color, $datalake-query-left-panel-scrollbar-color, $datalake-query-left-panel-scrollbar-track-color, $datalake-table-row-background-color, $datalake-table-row-hover-background-color,$datalake-disabled-buttonAlarmEmail in $color-scheme
     @include theme($name, $font-color, $little-font-color, $disabled-color, $secondary-disabled-color, $tertiary-disabled-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $quaternary-background-color, $body-background-color, $dashboard-background-color, $dashboard-secondary-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $scrollbar-background-color, $dashboard-panel-background-color, $dashboard-panel-chart-background-color, $dashboard-border-color, $schedule-map-background-color, $schedule-map-info-border, $disabled-combo-box-color, $disabled-underline, $dashboard-info-background-color, $dashboard-info-secondary-background-color, $dashboard-info-font-color, $dashboard-drill-down-border-color, $dashboard-threshold-background-color, $dashboard-title-font-color, $map-panelinfo-background-color, $dashboard-info-border-color, $dashboard-form-font-color, $admin-menu-background, $admin-menu-input-underline, $admin-tree-active-color, $admin-button-color, $admin-secondary-background-color, $admin-table-background-color, $admin-table-hover-color, $admin-secondary-button-color, $login-font-color, $intro-logout-icon-color, $control-variables-border-color, $control-variable-hover-background-color, $control-variable-hover-icon-color, $control-variables-input-underline, $control-variables-dropdown-hover-font-color, $control-variables-dropdown-hover-background-hover-color, $control-variables-selected-background-color, $dashboard-input-underline-color, $membership-primary-background-color, $membership-secondary-background-color, $customer-edit-header-color, $customer-table-header-background-color, $customer-table-row-background-color, $customer-table-row-border-color, $customer-table-row-hover-background-color, $customer-table-row-selected-background-color, $customer-table-row-border-selected-color, $customer-input-color, $customer-input-underline-color, $customer-disabled-underline, $dashboard-control-panel-background-color, $menu-open-background-color, $menu-open-active-background-color,$menu-first-line, $menu-second-line, $menu-background-color, $menu-child-background-color, $control-variable-disabled-color, $dashboard-assistant-analysis-color, $dashboard-assistant-axis-color, $dashboard-assistant-values-color, $dashboard-assistant-analysis-font-color, $dashboard-assistant-sub-background-color, $admin-menu-tree-scrollbar-track-color, $dialog-category-arguments-scrollbar-color, $admin-menu-category-scrollbar-track-color, $datalake-search-input-border-color, $progress-bar-fill, $progress-bar-buffer, $datalake-data-ingestion-background-color, $datalake-explorer-background-color, $datalake-table-stats-background-color, $datalake-table-button-color, $query-engine-background-color, $query-engine-result-header-color, $codemirror-selected-color, $codemirror-focused-selected-color, $codemirror-keyword-color, $codemirror-number-color, $codemirror-string-color, $codemirror-variable-color, $codemirror-variable2-color, $codemirror-comment-color, $codemirror-builtin-color, $codemirror-attribute-color, $codemirror-property-color, $datalake-query-left-panel-scrollbar-color, $datalake-query-left-panel-scrollbar-track-color, $datalake-table-row-background-color, $datalake-table-row-hover-background-color, $datalake-disabled-buttonAlarmEmail)
@@ -2155,7 +2163,7 @@ body
     display: block!important
 
 .msf-hide
-    display: none!important
+    display: none !important
 
 .msf-show-panel
     display: flex
@@ -2720,6 +2728,9 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button
 .msf-component-radio .msf-radio
     padding-left: 10px
 
+.msf-component-radio .mat-radio-label
+    align-items: inherit
+
 .msf-component-radio .mat-radio-checked .mat-radio-inner-circle
     transform: scale(.6)
 
@@ -2731,6 +2742,17 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button
 .msf-component-radio .mat-radio-outer-circle
     height: 15px
     width: 15px
+
+.msf-component-radio .mat-radio-button .mat-radio-ripple
+    left: calc(50% - 15px)
+    top: calc(50% - 15px)
+    border-radius: 15px
+    height: 25px
+    width: 25px
+
+.msf-component-airport-ceiling-container
+    .ng-select
+        margin-bottom: 0 !important
 
 .msf-img-payment
     height: 25px
@@ -3420,6 +3442,10 @@ mat-tab-group
     .date-picker-icon
         margin: -22%
         color: $msf-surface-color !important
+    .forward-rewind-icon
+        margin-left: -15px
+        .second-icon
+            margin-left: -18px
 
 .msf-component-airport-input-container, .msf-airline-container
     .mat-select
@@ -6260,14 +6286,13 @@ mat-form-field.msf-table-input
     height: 17px
     width: 17px
     margin-right: 8px
-    margin-top: 6px
     font-size: 17px
     object-fit: contain
 
 .dialog-item
     padding: 12px 5px
     display: flex
-    height: 25px
+    height: 18px
     justify-content: left
     flex-direction: row
     margin: 3px
@@ -6277,9 +6302,12 @@ mat-form-field.msf-table-input
     white-space: nowrap
     overflow: hidden
     text-overflow: ellipsis
+    align-items: center
+    .mat-badge-content
+        margin-top: 4px
 
 .dialog-category-arguments-body
-    max-height: calc(100% - 30px)
+    height: calc(100% - 30px)
     width: calc(100% + 1px)
     overflow-y: auto
     -webkit-overflow-scrolling: touch
@@ -6287,9 +6315,7 @@ mat-form-field.msf-table-input
 .dialog-category-arguments-container
     overflow-y: hidden
     -webkit-overflow-scrolling: touch
-    min-height: 190px
     width: calc(100% - 25px)
-    min-height: calc(100% - 140px)
     height: calc(100% - 110px)
     margin-top: 15px
     overflow-x: hidden
@@ -9569,3 +9595,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 .msf-dashboard-arguments-container
     height: calc(100% - 25px)
     padding: 12px
+
+.arrow-theme-button
+    .msf-category-argument-arrow-icon
+        color: #ffffff

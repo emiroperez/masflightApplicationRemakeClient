@@ -28,7 +28,7 @@ export const US_DATE_FORMAT = {
 
 @Component({
   selector: 'month-header',
-  templateUrl: './custom-date-header.html',
+  templateUrl: './month-header.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MonthHeader<D> implements OnDestroy {
@@ -62,11 +62,21 @@ export class MonthHeader<D> implements OnDestroy {
   {
     this._calendar.activeDate = this._dateAdapter.addCalendarYears (this._calendar.activeDate, 1);
   }
+
+  rewindClicked()
+  {
+    this._calendar.activeDate = this._dateAdapter.addCalendarYears (this._calendar.activeDate, -10);
+  }
+
+  forwardClicked(): void
+  {
+    this._calendar.activeDate = this._dateAdapter.addCalendarYears (this._calendar.activeDate, 10);
+  }
 }
 
 @Component({
   selector: 'year-header',
-  templateUrl: './custom-date-header.html',
+  templateUrl: './year-header.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class YearHeader<D> implements OnDestroy {
@@ -407,6 +417,25 @@ export class MsfDateRangeComponent implements OnInit {
           break;
       }
 
+      // check date range
+      if (this.argument.maxDate)
+      {
+        if (this.argument.value1 > this.argument.maxDate)
+          this.argument.value1 = this.argument.maxDate;
+
+        if (this.argument.value2 > this.argument.maxDate)
+          this.argument.value2 = this.argument.maxDate;
+      }
+
+      if (this.argument.minDate)
+      {
+        if (this.argument.value1 < this.argument.minDate)
+          this.argument.value1 = this.argument.minDate;
+
+        if (this.argument.value2 < this.argument.minDate)
+          this.argument.value2 = this.argument.minDate;
+      }
+
       switch (this.currentValueType)
       {
         case 1:
@@ -465,6 +494,12 @@ export class MsfDateRangeComponent implements OnInit {
           this.argument.value1 = moment ().subtract (1, "years").startOf ("year").toDate ();
           break;   
       }
+
+      // check date range
+      if (this.argument.maxDate && this.argument.value1 > this.argument.maxDate)
+        this.argument.value1 = this.argument.maxDate;
+      else if (this.argument.minDate && this.argument.value1 < this.argument.minDate)
+        this.argument.value1 = this.argument.minDate;
 
       switch (this.currentValueType)
       {
@@ -690,7 +725,11 @@ export class MsfDateRangeComponent implements OnInit {
   setMonthValue1(normalizedDate: Moment): void
   {
     this.argument.value1 = normalizedDate.year ();
-    this.argument.value3 = normalizedDate.month ();
+
+    this.argument.value3 = normalizedDate.month () + 1;
+    if (this.argument.value3 < 10)
+      this.argument.value3 = '0' + this.argument.value3;
+
     this.value1Display = this.monthNames[normalizedDate.month ()] + "/" + normalizedDate.year ();
     this.value1Date = normalizedDate;
   }
@@ -698,7 +737,11 @@ export class MsfDateRangeComponent implements OnInit {
   setMonthValue2(normalizedDate: Moment): void
   {
     this.argument.value2 = normalizedDate.year ();
-    this.argument.value4 = normalizedDate.month ();
+
+    this.argument.value4 = normalizedDate.month () + 1;
+    if (this.argument.value4 < 10)
+      this.argument.value4 = '0' + this.argument.value4;
+
     this.value2Display = this.monthNames[normalizedDate.month ()] + "/" + normalizedDate.year ();
     this.value2Date = normalizedDate;
   }

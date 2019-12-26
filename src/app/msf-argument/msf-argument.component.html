@@ -1,6 +1,5 @@
     
     
-    <app-msf-airport-route *ngIf="isAirportRoute(currentArgument)" [argument]="currentArgument"></app-msf-airport-route>
     <app-msf-airport *ngIf="isAirport(currentArgument)" [argument]="currentArgument"></app-msf-airport>
     <app-msf-time-range *ngIf="isTimeRange(currentArgument)" [argument]="currentArgument" ></app-msf-time-range>
     <app-msf-date-range *ngIf="isDateRange(currentArgument)" [argument]="currentArgument"></app-msf-date-range>
@@ -9,21 +8,14 @@
     <app-msf-temperature *ngIf="isTemperature(currentArgument)" [argument]="currentArgument"></app-msf-temperature>
     <app-msf-wind-direction *ngIf="isWindDirection(currentArgument)" [argument]="currentArgument"></app-msf-wind-direction>
     <app-msf-airline *ngIf="isAirline(currentArgument)" [argument]="currentArgument"></app-msf-airline>
-    <app-msf-single-airline *ngIf="isSingleAirline(currentArgument)" [argument]="currentArgument"></app-msf-single-airline>
-    <app-msf-tail-number *ngIf="isTailNumber(currentArgument)" [argument]="currentArgument"></app-msf-tail-number>
     <app-msf-aircraft-type *ngIf="isAircraftType(currentArgument)" [argument]="currentArgument"></app-msf-aircraft-type>
-    <app-msf-flight-number *ngIf="isFlightNumberType(currentArgument)" [argument]="currentArgument"></app-msf-flight-number>
     <app-msf-grouping *ngIf="isGrouping(currentArgument)" [argument]="currentArgument"></app-msf-grouping>
     <app-msf-rounding *ngIf="isRounding(currentArgument)" [argument]="currentArgument"></app-msf-rounding>
-    <app-msf-date *ngIf="isDate(currentArgument)" [argument]="currentArgument"></app-msf-date>
     <app-msf-user-list *ngIf="isUserList(currentArgument)" [argument]="currentArgument"></app-msf-user-list>
     <app-msf-option-list *ngIf="isOptionList(currentArgument)" [argument]="currentArgument"></app-msf-option-list>
     <app-msf-free-text-input *ngIf="isMsFreeTextInput(currentArgument)" [argument]="currentArgument"></app-msf-free-text-input>
     <app-msf-select-box-single-option *ngIf="isSelectBoxSingleOption(currentArgument)" [argument]="currentArgument"></app-msf-select-box-single-option>
     <app-msf-select-box-multiple-option *ngIf="isSelectBoxMultipleOption(currentArgument)" [argument]="currentArgument"></app-msf-select-box-multiple-option>
-    <app-msf-date-picker *ngIf="isDatePicker(currentArgument)" [argument]="currentArgument"></app-msf-date-picker>
-    <app-msf-time-picker *ngIf="isTimePicker(currentArgument)" [argument]="currentArgument"></app-msf-time-picker>
-    <app-msf-date-time-picker *ngIf="isDateTimePicker(currentArgument)" [argument]="currentArgument"></app-msf-date-time-picker>
     <app-msf-check-box *ngIf="isCheckBox(currentArgument)" [argument]="currentArgument"></app-msf-check-box>
     <app-msf-cancels-checkbox *ngIf="isCancelsCheckBox(currentArgument)" [argument]="currentArgument"></app-msf-cancels-checkbox>
     <app-msf-diversions-checkbox *ngIf="isDiversionsCheckBox(currentArgument)" [argument]="currentArgument"></app-msf-diversions-checkbox>
@@ -32,10 +24,7 @@
     <app-msf-taxi-times *ngIf="isTaxiTimes(currentArgument)" [argument]="currentArgument"></app-msf-taxi-times>
     <app-msf-taxi-times-checkbox *ngIf="isTaxiTimesCheckbox(currentArgument)" [argument]="currentArgument"></app-msf-taxi-times-checkbox>
     <app-msf-taxi-times-checkboxes *ngIf="isTaxiTimesCheckboxes(currentArgument)" [argument]="currentArgument"></app-msf-taxi-times-checkboxes>
-    <app-msf-date-period *ngIf="isDatePeriod(currentArgument)" [argument]="currentArgument"></app-msf-date-period>
     <app-msf-region *ngIf="isRegion(currentArgument)" [argument]="currentArgument"></app-msf-region>
-    <app-msf-date-period-year *ngIf="isDatePeriodYear(currentArgument)" [argument]="currentArgument"></app-msf-date-period-year>
-    <app-msf-date-period-year-month *ngIf="isDatePeriodYearMonth(currentArgument)" [argument]="currentArgument"></app-msf-date-period-year-month>
     <app-msf-sorting-checkboxes *ngIf="isSortingCheckboxes(currentArgument)" [argument]="currentArgument" [currentOptionId]="currentGlobalOptionId" [createdMetas]="createdMetas" (setLoading)="setLoading.emit($event)"></app-msf-sorting-checkboxes>
     <app-msf-grouping-athena *ngIf="isGroupingAthena(currentArgument)" [argument]="currentArgument"></app-msf-grouping-athena>
 
@@ -70,9 +59,7 @@
     <app-msf-stops *ngIf="isStops(currentArgument)" [argument]="currentArgument"></app-msf-stops>
     <app-msf-circuity-type *ngIf="isCircuityType(currentArgument)" [argument]="currentArgument"></app-msf-circuity-type>
     <app-msf-circuity *ngIf="isCircuity(currentArgument)" [argument]="currentArgument"></app-msf-circuity>
-    <app-msf-single-airport *ngIf="isSingleAirport(currentArgument)" [argument]="currentArgument"></app-msf-single-airport>
     <app-msf-summary-revenue-builds *ngIf="isSummaryRevenueBuilds(currentArgument)" [argument]="currentArgument"></app-msf-summary-revenue-builds>
-    <app-msf-date-period-revenue *ngIf="isDatePeriodRevenue(currentArgument)" [argument]="currentArgument"></app-msf-date-period-revenue>
     <app-msf-fare-increments-market-histograms *ngIf="isFareIncrementsMarketHistograms(currentArgument)" [argument]="currentArgument"></app-msf-fare-increments-market-histograms>
     <app-msf-top-number *ngIf="isTopNumber(currentArgument)" [argument]="currentArgument"></app-msf-top-number>
     <app-msf-seat-class *ngIf="isSeatClass(currentArgument)" [argument]="currentArgument"></app-msf-seat-class>

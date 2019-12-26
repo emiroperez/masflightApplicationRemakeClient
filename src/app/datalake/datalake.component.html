@@ -58,9 +58,7 @@
 <!-- Body -->
 <div *ngIf="globals.optionDatalakeSelected != 1" [style.height.px]="bodyHeight" [class.is-mobile]="mobileQuery.matches">
     <!-- <app-datalake-explorer *ngIf="currentOption === 2 || currentOption === 3" [currentOption]="currentOption" (setCurrentOptionSelected)="setCcurrentOptionSelected($event)"></app-datalake-explorer> -->
-    <app-datalake-explorer *ngIf="globals.userName && (globals.optionDatalakeSelected === 2 || globals.optionDatalakeSelected === 3)" 
-    (setCurrentOptionSelected)="globals.userName && setCurrentOptionSelected($event)"></app-datalake-explorer>
-    <app-datalake-explorer #dataExplorer *ngIf=showDataExplorer() (setCurrentOptionSelected)="setCurrentOptionSelected($event)"></app-datalake-explorer>
+    <app-datalake-explorer #dataExplorer *ngIf="showDataExplorer()" (setCurrentOptionSelected)="setCurrentOptionSelected($event)"></app-datalake-explorer>
     <app-datalake-alarms *ngIf="globals.userName && globals.optionDatalakeSelected === 5" [currentOption]="currentOption"></app-datalake-alarms>
     <app-datalake-partitions *ngIf="globals.userName && globals.optionDatalakeSelected === 6"></app-datalake-partitions>
     <app-datalake-execution-partition *ngIf="globals.userName &&  (globals.optionDatalakeSelected === 7 || globals.optionDatalakeSelected === 8)" ></app-datalake-execution-partition>
@@ -73,13 +71,6 @@
         class="msf-menu-icons-container">
 <div *ngIf="!mobileQuery.matches || (mobileQuery.matches && !globals.showMenu && (globals.showTabs || globals.showDashboard)) "
     [ngClass]="mobileQuery.matches ? (globals.showTabs ? 'msf-menu-icons-right':'msf-menu-icons-right-mobile') :'msf-menu-icons-right'">
-    <button *ngIf="globals.currentOption === 'dashboard'" class="msf-menu-icon" (click)="setDefaultDashboard()">
-        <img src="../../assets/images/{{globals.theme}}-thumbtack.png" class="msf-menu-image msf-vertical-middle">
-        <span class="msf-vertical-middle" *ngIf="!TabletQuery.matches && !isDefaultDashboard()">Set As Default
-            Dashboard</span>
-        <span class="msf-vertical-middle" *ngIf="!TabletQuery.matches && isDefaultDashboard()">Unset Default
-            Dashboard</span>
-    </button>
     <button *ngIf="globals.currentOption === 'dashboard' && !globals.readOnlyDashboardPlan" class="msf-menu-icon"
         (click)="exportDashboardAsPNG()">
         <img src="../../assets/images/{{globals.theme}}-SaveOptions.png" class="msf-menu-image msf-vertical-middle">
