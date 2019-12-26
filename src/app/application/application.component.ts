@@ -1,33 +1,28 @@
 import { Component, OnInit, ViewChild, HostListener, ChangeDetectorRef, NgZone } from '@angular/core';
 import { Menu } from '../model/Menu';
-import { Option } from '../model/Option';
 import { CategoryArguments } from '../model/CategoryArguments';
 import { Globals } from '../globals/Globals';
 import { Arguments } from '../model/Arguments';
-import { MatDialog} from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { MsfDynamicTableVariablesComponent } from '../msf-dynamic-table-variables/msf-dynamic-table-variables.component';
 import { MsfContainerComponent } from '../msf-container/msf-container.component';
 import { MenuService } from '../services/menu.service';
 import { Router } from '@angular/router';
 import { ExcelService } from '../services/excel.service';
-import { MsfTableComponent } from '../msf-table/msf-table.component';
-import { PlanAdvanceFeatures } from '../model/PlanAdvanceFeatures';
-import { User } from '../model/User';
 import { DashboardMenu } from '../model/DashboardMenu';
 import { MsfEditDashboardComponent } from '../msf-edit-dashboard/msf-edit-dashboard.component';
 import { ApplicationService } from '../services/application.service';
 import { MsfColumnSelectorComponent } from '../msf-column-selector/msf-column-selector.component';
 import { MsfShareDashboardComponent } from '../msf-share-dashboard/msf-share-dashboard.component';
-import { length } from '@amcharts/amcharts4/.internal/core/utils/Iterator';
 import { AuthService } from '../services/auth.service';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { AuthGuard } from '../guards/auth.guard';
 import { UserService } from '../services/user.service';
 import { MessageComponent } from '../message/message.component';
 import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
-import * as moment from 'moment';
 import { ComponentType } from '../commons/ComponentType';
 import { AirportSelection } from '../commons/AirportSelection';
+import { DecimalPipe, DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-application',
@@ -679,6 +674,144 @@ toggle(){
     }
 
     this.excelService.exportAsExcelFile(excelData, this.globals.currentOption.label, tableColumnFormats);
+  }
+
+  exportToCSV(): void
+  {
+    let displayedColumns = this.msfContainerRef.msfTableRef.tableOptions.displayedColumns;
+    let data = this.msfContainerRef.msfTableRef.dataSource.data;
+    let blob, link, url;
+    let CSVdata = "";
+    let i, j;
+
+    // Add columns first
+    for (i = 0; i < displayedColumns.length; i++)
+    {
+      let column = displayedColumns[i];
+
+      CSVdata += column.columnLabel;
+
+      if (i != displayedColumns.length - 1)
+        CSVdata += ",";
+    }
+
+    CSVdata += "\n";
+
+    // Then the values
+    for (i = 0; i < data.length; i++)
+    {
+      let item = data[i];
+
+      // if there are any flight connections, check the sub elements instead
+      if (this.globals.currentOption.tabType === "scmap" && this.msfContainerRef.msfTableRef.isArray (item.Flight))
+      {
+        for (j = 0; j < item.Flight.length; j++)
+        {
+          let subItem = item.Flight[j];
+
+          for (let k = 0; k < displayedColumns.length; k++)
+          {
+            let column = displayedColumns[k];
+            let curitem = subItem[column.columnName].parsedValue;
+
+            if (curitem == undefined)
+            {
+              if (k != displayedColumns.length - 1)
+                CSVdata += ",";
+
+              continue;
+            }
+    
+            if (column.columnType === "date" || column.columnType === "time")
+            {
+              let date: Date = new Date (curitem);
+
+              CSVdata += new DatePipe ('en-US').transform (date, column.outputFormat);
+            }
+            else if (column.columnType === "number")
+            {
+              if (column.prefix)
+                CSVdata += column.prefix;
+
+              if (column.outputFormat)
+                CSVdata += new DecimalPipe ('en-US').transform (curitem, column.outputFormat);
+              else
+                CSVdata += new DecimalPipe ('en-US').transform (curitem, '.0-2');
+
+              if (column.suffix)
+                CSVdata += column.suffix;
+            }
+            else
+              CSVdata += curitem;
+
+            if (k != displayedColumns.length - 1)
+              CSVdata += ",";
+          }
+
+          if (j != item.Flight.length - 1)
+            CSVdata += "\n";
+        }
+
+        continue;
+      }
+  
+      for (j = 0; j < displayedColumns.length; j++)
+      {
+        let column = displayedColumns[j];
+        let curitem = item[column.columnName];
+
+        if (curitem == undefined)
+        {
+          if (j != displayedColumns.length - 1)
+            CSVdata += ",";
+
+          continue;
+        }
+
+        if (column.columnType === "date" || column.columnType === "time")
+        {
+          let date: Date = new Date (curitem);
+
+          CSVdata += new DatePipe ('en-US').transform (date, column.outputFormat);
+        }
+        else if (column.columnType === "number")
+        {
+          if (column.prefix)
+            CSVdata += column.prefix;
+
+          if (column.outputFormat)
+            CSVdata += new DecimalPipe ('en-US').transform (curitem, column.outputFormat);
+          else
+            CSVdata += new DecimalPipe ('en-US').transform (curitem, '.0-2');
+
+          if (column.suffix)
+            CSVdata += column.suffix;
+        }
+        else
+          CSVdata += curitem;
+
+        if (j != displayedColumns.length - 1)
+          CSVdata += ",";
+      }
+
+      if (i != data.length - 1)
+        CSVdata += "\n";
+    }
+
+    blob = new Blob(['\ufeff' + CSVdata], { type: 'text/csv;charset=utf-8;' });
+    link = document.createElement ("a");
+    url = URL.createObjectURL (blob);
+
+    // if the web browser is Apple Safari, then open in new window to export file
+    if (navigator.userAgent.indexOf ('Safari') != -1 && navigator.userAgent.indexOf ('Chrome') == -1)
+      link.setAttribute ("target", "_blank");
+
+    link.setAttribute ("href", url);
+    link.setAttribute ("download", this.globals.currentOption.label + ".csv");
+    link.style.visibility = "hidden";
+    document.body.appendChild (link);
+    link.click ();
+    document.body.removeChild (link);
   }
 
   isSimpleContent(): boolean {

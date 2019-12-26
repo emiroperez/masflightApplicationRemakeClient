@@ -112,6 +112,13 @@
         </button>
         <button *ngIf="globals.currentOption !== 'dashboard'"
             [disabled]="(!msfContainerRef.msfTableRef || !msfContainerRef.msfTableRef.dataSource || msfContainerRef.msfTableRef.dataSource.length < 0 || globals.mapsc) || !exportExcelPlan"
+            class="msf-menu-icon" (click)="exportToCSV()">
+            <img src="../../assets/images/{{globals.theme}}-ExporttoExcel.png"
+                class="msf-menu-image msf-vertical-middle">
+            <span class="msf-vertical-middle" *ngIf="!TabletQuery.matches">Export CSV</span>
+        </button>
+        <button *ngIf="globals.currentOption !== 'dashboard'"
+            [disabled]="(!msfContainerRef.msfTableRef || !msfContainerRef.msfTableRef.dataSource || msfContainerRef.msfTableRef.dataSource.length < 0 || globals.mapsc) || !exportExcelPlan"
             class="msf-menu-icon" (click)="columnSelector()">
             <img src="../../assets/images/{{globals.theme}}-ColumnSelector.png"
                 class="msf-menu-image msf-vertical-middle">
