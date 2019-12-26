@@ -431,8 +431,8 @@ export class EditCategoryArgumentDialog {
           }
           else
           {
-            argument.dateRange = (argument.selectionMode >> 1) & 3;
-            argument.dateValue = argument.selectionMode >> 3;
+            argument.dateValue = (argument.selectionMode >> 1) & 3;
+            argument.dateRange = argument.selectionMode >> 3;
             argument.selectionMode &= 1;
           }
 
@@ -486,7 +486,7 @@ export class EditCategoryArgumentDialog {
 
   setDateRange(item): void
   {
-    switch (item.dateRange)
+    switch (item.dateValue)
     {
       case 3:
         if (item.selectionMode == 1)
@@ -526,7 +526,7 @@ export class EditCategoryArgumentDialog {
       item.name4 = null;
     }
 
-    item.dateValue = 0;
+    item.dateRange = 0;
   }
 
   getDateValueLabel(item): string
@@ -595,9 +595,9 @@ export class EditCategoryArgumentDialog {
 
   valueTypeChanged(item): void
   {
-    item.dateValue = 0;
+    item.dateRange = 0;
 
-    switch (item.dateRange)
+    switch (item.dateValue)
     {
       case 3:
         if (item.selectionMode == 1)
@@ -699,11 +699,11 @@ export class EditCategoryArgumentDialog {
       if (item.multipleSelection)
         item.selectionMode |= AirportSelection.MULTIPLESELECTION;
 
-      if (item.dateRange)
-        item.selectionMode |= item.dateRange << 1;
-
       if (item.dateValue)
-        item.selectionMode |= item.dateValue << 3;
+        item.selectionMode |= item.dateValue << 1;
+
+      if (item.dateRange)
+        item.selectionMode |= item.dateRange << 3;
     }
 
     this.dialog.open (DialogArgumentPreviewComponent, {

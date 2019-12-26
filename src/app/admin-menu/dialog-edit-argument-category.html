@@ -62,7 +62,7 @@
                 </div>
                 <div *ngIf="isDateRange(item)" class="dialog-edit-argument-category-multiple-selection">
                     <mat-form-field [style.width.%]="100">
-                        <mat-select placeholder="Value Type" [(ngModel)]="item.dateRange" (ngModelChange)="valueTypeChanged(item)">
+                        <mat-select placeholder="Value Type" [(ngModel)]="item.dateValue" (ngModelChange)="valueTypeChanged(item)">
                             <mat-option *ngFor="let valueType of valueTypes" [value]="valueType.id">
                                 {{valueType.name}}
                             </mat-option>
@@ -170,7 +170,7 @@
                 <ng-container *ngIf="isDateRange(item)">
                     <div class="arguments-child">                 
                         <mat-form-field [style.width.%]="100">
-                            <mat-select placeholder="{{getDateValueLabel(item)}}" [(ngModel)]="item.dateValue">
+                            <mat-select placeholder="{{getDateValueLabel(item)}}" [(ngModel)]="item.dateRange">
                                 <mat-option *ngFor="let dateRange of item.currentDateRange" [value]="dateRange.id">
                                     {{dateRange.name}}
                                 </mat-option>
@@ -204,12 +204,12 @@
                                         <input matInput placeholder="Service Arg. 1" [(ngModel)]="item.name1">
                                     </mat-form-field>
                                 </div>
-                                <div class="single-airport-argument" *ngIf="item.dateRange == 1">
+                                <div class="single-airport-argument" *ngIf="item.dateValue == 1">
                                     <mat-form-field [style.width.%]="100">
                                         <input matInput placeholder="Month Arg. 1" [(ngModel)]="item.name3">
                                     </mat-form-field>
                                 </div>
-                                <div class="single-airport-argument" *ngIf="item.dateRange == 2">
+                                <div class="single-airport-argument" *ngIf="item.dateValue == 2">
                                     <mat-form-field [style.width.%]="100">
                                         <input matInput placeholder="Quarter Arg. 1" [(ngModel)]="item.name3">
                                     </mat-form-field>
@@ -228,12 +228,12 @@
                                         <input matInput placeholder="Service Arg. 1" [(ngModel)]="item.name1">
                                     </mat-form-field>
                                 </div>
-                                <div class="multiple-airport-argument" *ngIf="item.dateRange == 1">
+                                <div class="multiple-airport-argument" *ngIf="item.dateValue == 1">
                                     <mat-form-field [style.width.%]="100">
                                         <input matInput placeholder="Month Arg. 1" [(ngModel)]="item.name3">
                                     </mat-form-field>
                                 </div>
-                                <div class="multiple-airport-argument" *ngIf="item.dateRange == 2">
+                                <div class="multiple-airport-argument" *ngIf="item.dateValue == 2">
                                     <mat-form-field [style.width.%]="100">
                                         <input matInput placeholder="Quarter Arg. 1" [(ngModel)]="item.name3">
                                     </mat-form-field>
@@ -250,12 +250,12 @@
                                         <input matInput placeholder="Service Arg. 2" [(ngModel)]="item.name2">
                                     </mat-form-field>
                                 </div>
-                                <div class="multiple-airport-argument" *ngIf="item.dateRange == 1">
+                                <div class="multiple-airport-argument" *ngIf="item.dateValue == 1">
                                     <mat-form-field [style.width.%]="100">
                                         <input matInput placeholder="Month Arg. 2" [(ngModel)]="item.name4">
                                     </mat-form-field>
                                 </div>
-                                <div class="multiple-airport-argument" *ngIf="item.dateRange == 2">
+                                <div class="multiple-airport-argument" *ngIf="item.dateValue == 2">
                                     <mat-form-field [style.width.%]="100">
                                         <input matInput placeholder="Quarter Arg. 2" [(ngModel)]="item.name4">
                                     </mat-form-field>
