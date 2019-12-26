@@ -191,6 +191,24 @@
                             <mat-datepicker #endDatePicker></mat-datepicker>
                         </mat-form-field>
                     </div>
+                    <ng-container *ngIf="item.dateValue == 1">
+                        <div class="arguments-child month-checkbox" [style.margin-right.%]="5">
+                            <mat-checkbox [(ngModel)]="item.monthDateFormat" (ngModelChange)="clearSecondaryArgs(item)">Use Date Format</mat-checkbox>
+                        </div>
+                        <div class="arguments-child month-checkbox" *ngIf="!item.monthDateFormat">
+                            <mat-checkbox [(ngModel)]="item.leadingZero">Add Leading Zero To Month</mat-checkbox>
+                        </div>
+                        <div class="arguments-child" *ngIf="item.monthDateFormat">
+                            <mat-form-field [style.width.%]="100">
+                                <input matInput placeholder="Date Format" [(ngModel)]="item.dateFormat">
+                            </mat-form-field>
+                        </div>
+                    </ng-container>
+                    <div class="airline-argument" *ngIf="!item.dateValue">
+                        <mat-form-field [style.width.%]="100">
+                            <input matInput placeholder="Date Format" [(ngModel)]="item.dateFormat">
+                        </mat-form-field>
+                    </div>
                     <div class="multiple-airport-argument-body">
                         <ng-container *ngIf="!item.selectionMode">
                             <div class="single-date-argument-container">
@@ -204,7 +222,7 @@
                                         <input matInput placeholder="Service Arg. 1" [(ngModel)]="item.name1">
                                     </mat-form-field>
                                 </div>
-                                <div class="single-airport-argument" *ngIf="item.dateValue == 1">
+                                <div class="single-airport-argument" *ngIf="item.dateValue == 1 && !item.monthDateFormat">
                                     <mat-form-field [style.width.%]="100">
                                         <input matInput placeholder="Month Arg. 1" [(ngModel)]="item.name3">
                                     </mat-form-field>
@@ -228,7 +246,7 @@
                                         <input matInput placeholder="Service Arg. 1" [(ngModel)]="item.name1">
                                     </mat-form-field>
                                 </div>
-                                <div class="multiple-airport-argument" *ngIf="item.dateValue == 1">
+                                <div class="multiple-airport-argument" *ngIf="item.dateValue == 1 && !item.monthDateFormat">
                                     <mat-form-field [style.width.%]="100">
                                         <input matInput placeholder="Month Arg. 1" [(ngModel)]="item.name3">
                                     </mat-form-field>
@@ -250,7 +268,7 @@
                                         <input matInput placeholder="Service Arg. 2" [(ngModel)]="item.name2">
                                     </mat-form-field>
                                 </div>
-                                <div class="multiple-airport-argument" *ngIf="item.dateValue == 1">
+                                <div class="multiple-airport-argument" *ngIf="item.dateValue == 1 && !item.monthDateFormat">
                                     <mat-form-field [style.width.%]="100">
                                         <input matInput placeholder="Month Arg. 2" [(ngModel)]="item.name4">
                                     </mat-form-field>
