@@ -708,6 +708,8 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             color: $font-color
         .msf-summary-arg-label
             color: $little-font-color
+        .msf-summary-value
+            color: $little-font-color
         .msf-summary-icon
             color: $font-color
         .msf-border-passenger
@@ -5056,11 +5058,8 @@ li.msf-select:before
     font-size: 161%
     font-weight: bold
 
-.msf-summary-subtitle
-
 .msf-summary-value
     margin-left: 5px
-    color: $msf-little-font-color
     max-width: 200px
     word-wrap: break-word
 
@@ -6648,7 +6647,6 @@ mat-form-field.msf-table-input
     display: flex !important
     flex-direction: row
     justify-content: space-between
-    color: #fff
     align-items: center
     margin-bottom: 10px
 
