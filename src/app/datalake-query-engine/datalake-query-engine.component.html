@@ -10,8 +10,9 @@
       <mat-icon class="datalake-query-engine-drag-handler" *ngIf="!leftPanelHidden" aria-label="Drag Handler" 
       (mousedown)="onDragClick($event)" (mouseup)="onDragRelease($event)">more_vert</mat-icon>
   </div>
-  <div [style.width.%]="getRightPanelWidth()" [style.max-width.%]="getMaxRightPanelWidth()" class="datalake-query-engine-right-panel">
-    <div class="datalake-query-container">
+  <div [style.width.%]="getRightPanelWidth()" [style.max-width.%]="getMaxRightPanelWidth()" 
+  class="datalake-query-engine-right-panel">
+    <div class="datalake-query-container" [style.height.%]="topQueryHeight">
       <mat-tab-group [selectedIndex]="selectedIndex" (selectedIndexChange)="onIndexChange($event)">
         <mat-tab *ngFor="let query of globals.queryTabs; let i = index">
           <ng-template mat-tab-label>
@@ -65,7 +66,7 @@
       </mat-tab-group>
     </div>
     <div class="type-query-execution-line-resize" (mousedown)="onQueryDragClick($event)" (mouseup)="onDragRelease($event)"></div>
-    <div class="datalake-query-execution-result-container">
+    <div class="datalake-query-execution-result-container" [style.height.%]="bottomQueryHeight">
       <div class="datalake-query-execution-result-header" id="query-engine-result-header">
         <div class="datalake-query-execution-time-title">Query Execution Time</div>
         <div class="datalake-query-execution-time-sub-title" *ngIf="!startQueryTime && !endQueryTime">Not run</div>

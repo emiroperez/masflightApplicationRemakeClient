@@ -12,7 +12,9 @@ import { DatalakeQueryEngineHistoryComponent } from '../datalake-query-engine-hi
 import { DatalakeQueryEngineSaveComponent } from '../datalake-query-engine-save/datalake-query-engine-save.component';
 import { number } from '@amcharts/amcharts4/core';
 
-const minPanelWidth = 25;
+
+const minPanelWidth = 30;
+const minQueryPanelHeight = 30;
 
 @Component({
   selector: 'app-datalake-query-engine',
@@ -20,8 +22,8 @@ const minPanelWidth = 25;
 })
 export class DatalakeQueryEngineComponent implements OnInit {
   @ViewChild("codeEditor") codeEditor: CodemirrorComponent;
-  leftPanelWidth: number = 25;
-  rightPanelWidth: number = 75;
+  leftPanelWidth: number = 30;
+  rightPanelWidth: number = 70;
   resizePanels: boolean = false;
   selectedIndex: number = 0;
   error: String = null ;
@@ -30,6 +32,9 @@ export class DatalakeQueryEngineComponent implements OnInit {
   queryhistorymouseover: boolean = false;
   runquerymouseover: boolean = false;
   leftPanelHidden: boolean = false;
+  resizeQueryPanels: boolean = false;
+  topQueryHeight: number = 50;
+  bottomQueryHeight: number = 50;
   
   QueryreadOnly: boolean = true;
 
@@ -178,31 +183,56 @@ export class DatalakeQueryEngineComponent implements OnInit {
   @HostListener('document:mousemove', ['$event'])
   onDragMove(event: MouseEvent)
   {
-    let offsetX, totalWidth;
-
-    if (!this.resizePanels)
-        return;
-
-    // convert horizontal offset into percentage for proper resizing
-    offsetX = event.movementX * 100 / window.innerWidth;
-    totalWidth = this.leftPanelWidth + this.rightPanelWidth;
-
-    // begin resizing the panels
-    if (offsetX > 0 && this.rightPanelWidth - offsetX < minPanelWidth)
+    if (this.resizePanels)
     {
-      this.rightPanelWidth = minPanelWidth;
-      this.leftPanelWidth = totalWidth - minPanelWidth;
-      return;
-    }
-    else if (offsetX < 0 && this.leftPanelWidth + offsetX < minPanelWidth)
-    {    
-      this.leftPanelWidth = minPanelWidth;
-      this.rightPanelWidth = totalWidth - minPanelWidth;
-      return;
-    }
+      let offsetX, totalWidth;
 
-    this.leftPanelWidth += offsetX;
-    this.rightPanelWidth -= offsetX;
+      // convert horizontal offset into percentage for proper resizing
+      offsetX = event.movementX * 100 / window.innerWidth;
+      totalWidth = this.leftPanelWidth + this.rightPanelWidth;
+
+      // begin resizing the panels
+      if (offsetX > 0 && this.rightPanelWidth - offsetX < minPanelWidth)
+      {
+        this.rightPanelWidth = minPanelWidth;
+        this.leftPanelWidth = totalWidth - minPanelWidth;
+        return;
+      }
+      else if (offsetX < 0 && this.leftPanelWidth + offsetX < minPanelWidth)
+      {
+        this.leftPanelWidth = minPanelWidth;
+        this.rightPanelWidth = totalWidth - minPanelWidth;
+        return;
+      }
+
+      this.leftPanelWidth += offsetX;
+      this.rightPanelWidth -= offsetX;
+    }
+    else if (this.resizeQueryPanels)
+    {
+      let offsetY, totalHeight;
+
+      // convert vertical offset into percentage for proper resizing
+      offsetY = event.movementY * 100 / window.innerHeight;
+      totalHeight = this.topQueryHeight + this.bottomQueryHeight;
+
+      // begin resizing the query panels
+      if (offsetY > 0 && this.bottomQueryHeight - offsetY < minQueryPanelHeight)
+      {
+        this.bottomQueryHeight = minQueryPanelHeight;
+        this.topQueryHeight = totalHeight - minQueryPanelHeight;
+        return;
+      }
+      else if (offsetY < 0 && this.topQueryHeight + offsetY < minQueryPanelHeight)
+      {
+        this.topQueryHeight = minQueryPanelHeight;
+        this.bottomQueryHeight = totalHeight - minQueryPanelHeight;
+        return;
+      }
+
+      this.topQueryHeight += offsetY;
+      this.bottomQueryHeight -= offsetY;
+    }
   }
 
   @HostListener('document:mouseup', ['$event'])
@@ -465,7 +495,7 @@ export class DatalakeQueryEngineComponent implements OnInit {
 
     return 30;
   }
-  
+
   getRightPanelWidth(): number
   {
     if (this.leftPanelHidden)
@@ -480,5 +510,16 @@ export class DatalakeQueryEngineComponent implements OnInit {
       return 100;
 
     return 70;
+  }
+
+  onQueryDragClick(event): void
+  {
+    if (this.resizePanels)
+      return;
+
+    this.resizeQueryPanels = true;
+
+    event.preventDefault ();
+    event.stopPropagation ();
   }
 }
