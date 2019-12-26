@@ -2044,11 +2044,11 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
           if (argument.multipleSelection)
             argument.selectionMode |= AirportSelection.MULTIPLESELECTION;
 
-          if (argument.dateRange)
-            argument.selectionMode |= argument.dateRange << 1;
-
           if (argument.dateValue)
-            argument.selectionMode |= argument.dateValue << 3;
+            argument.selectionMode |= argument.dateValue << 1;
+
+          if (argument.dateRange)
+            argument.selectionMode |= argument.dateRange << 3;
 
           if (argument.minDate)
             argument.minDate = argument.minDate.toString ();
