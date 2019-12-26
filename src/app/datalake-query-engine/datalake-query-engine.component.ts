@@ -238,10 +238,10 @@ export class DatalakeQueryEngineComponent implements OnInit {
   @HostListener('document:mouseup', ['$event'])
   onDragRelease(event: MouseEvent)
   {
-    if (!this.resizePanels)
-      return;
-
-    this.resizePanels = false;
+    if (this.resizePanels)
+      this.resizePanels = false;
+    else if (this.resizeQueryPanels)
+      this.resizeQueryPanels = false;
   }
 
   getHoverCursor(): string
