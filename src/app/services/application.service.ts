@@ -78,7 +78,32 @@ export class ApplicationService {
     let url = this.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + _this.globals.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
 
     this.authService.get(_this, url, handlerSuccess, handlerError);
-					 
+  }
+
+  getDataTableSourceForCSV(_this, handlerSuccess, handlerError)
+  {
+    let param = this.utils.getUrlParameters (_this.globals.currentOption, true);
+    let urlBase = param.url;
+
+    if (!urlBase.includes("MIN_VALUE"))
+      urlBase += "&MIN_VALUE=0";
+
+    if (!urlBase.includes("MAX_VALUE"))
+      urlBase += "&MAX_VALUE=999";
+
+    if (!urlBase.includes("minuteunit"))
+      urlBase += "&minuteunit=m";
+
+    urlBase += "&pageSize=999999&page_number=0";
+
+    let urlArg = encodeURIComponent (urlBase);
+
+    if (isDevMode ())
+      console.log (urlBase);
+
+    let url = this.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + _this.globals.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
+
+    this.authService.get(_this, url, handlerSuccess, handlerError);
   }
 
   loadDynamicTableData(_this, handlerSuccess, handlerError) {

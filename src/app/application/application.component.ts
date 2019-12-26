@@ -3,7 +3,7 @@ import { Menu } from '../model/Menu';
 import { CategoryArguments } from '../model/CategoryArguments';
 import { Globals } from '../globals/Globals';
 import { Arguments } from '../model/Arguments';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatTableDataSource } from '@angular/material';
 import { MsfDynamicTableVariablesComponent } from '../msf-dynamic-table-variables/msf-dynamic-table-variables.component';
 import { MsfContainerComponent } from '../msf-container/msf-container.component';
 import { MenuService } from '../services/menu.service';
@@ -678,11 +678,250 @@ toggle(){
 
   exportToCSV(): void
   {
-    let displayedColumns = this.msfContainerRef.msfTableRef.tableOptions.displayedColumns;
-    let data = this.msfContainerRef.msfTableRef.dataSource.data;
+    this.globals.isLoading = true;
+    this.appService.getDataTableSourceForCSV (this, this.prepareDataForCSV, this.CSVFail);
+  }
+
+  prepareDataForCSV(_this, result): void
+  {
+    let displayedColumns = _this.msfContainerRef.msfTableRef.tableOptions.displayedColumns;
+    let keys, data, response, totalRecord;
     let blob, link, url;
     let CSVdata = "";
     let i, j;
+
+    response = result.Response;
+    if (response != null)
+    {
+      if (response.total != null)
+        totalRecord = response.total;
+      else
+      {
+        for (let key in response)
+        {
+          let array = response[key];
+
+          if (array != null)
+          {
+            if (Array.isArray(array))
+            {
+              totalRecord = array.length;
+              break;
+            }
+            else
+            {
+              for (let key in array)
+              {
+                let obj = array[key];
+
+                if (obj != null)
+                {
+                  let keys = Object.keys (response);
+                  let mainElement = _this.msfContainerRef.msfTableRef.getMainKey (keys, response);
+
+                  if (mainElement != null)
+                    totalRecord = 1;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    keys = Object.keys (response);
+    data = _this.msfContainerRef.msfTableRef.getMainKey (keys, response);
+    if (!(data instanceof Array))
+      data = [data];
+
+    if (totalRecord > 0)
+/*    {
+      // parse values
+      for (let i = 0; i < displayedColumns.length; i++)
+      {
+        let column = displayedColumns[i];
+
+        if (column.columnType === "time")
+        {
+          for (let j = 0; j < data.length; j++)
+          {
+            if (_this.globals.currentOption.tabType === "scmap" && data[j].Flight)
+            {
+              if (_this.msfContainerRef.msfTableRef.isArray (data[j].Flight))
+              {
+                for (let element of data[j].Flight)
+                {
+                  let value;
+
+                  if (element[column.columnName] == undefined)
+                    value = data[j][column.columnName];
+                  else
+                    value = element[column.columnName];
+
+                  element[column.columnName] = {
+                    value: value,
+                    parsedValue: _this.msfContainerRef.msfTableRef.parseTime (value, column.columnFormat),
+                  }
+                }
+
+                continue;
+              }
+              else if (data[j][column.columnName] == undefined)
+              {
+                let value = data[j].Flight[column.columnName];
+
+                data[j].Flight[column.columnName] = {
+                  value: value,
+                  parsedValue: _this.msfContainerRef.msfTableRef.parseTime (value, column.columnFormat),
+                };
+
+                data[j][column.columnName] = data[j].Flight[column.columnName].parsedValue;
+                continue;
+              }
+            }
+
+            data[j][column.columnName] = _this.msfContainerRef.msfTableRef.parseTime (data[j][column.columnName], column.columnFormat);
+          }
+        }
+        else if (column.columnType === "date")
+        {
+          for (let j = 0; j < data.length; j++)
+          {
+            if (_this.globals.currentOption.tabType === "scmap" && data[j].Flight)
+            {
+              if (_this.msfContainerRef.msfTableRef.isArray (data[j].Flight))
+              {
+                for (let element of data[j].Flight)
+                {
+                  let value;
+
+                  if (element[column.columnName] == undefined)
+                    value = data[j][column.columnName];
+                  else
+                    value = element[column.columnName];
+
+                  element[column.columnName] = {
+                    value: value,
+                    parsedValue: _this.msfContainerRef.msfTableRef.parseDate (value, column.columnFormat),
+                  }
+                }
+
+                continue;
+              }
+              else if (data[j][column.columnName] == undefined)
+              {
+                let value = data[j].Flight[column.columnName];
+
+                data[j].Flight[column.columnName] = {
+                  value: value,
+                  parsedValue: _this.msfContainerRef.msfTableRef.parseDate (value, column.columnFormat),
+                };
+
+                data[j][column.columnName] = data[j].Flight[column.columnName].parsedValue;
+                continue;
+              }
+            }
+
+            data[j][column.columnName] = _this.msfContainerRef.msfTableRef.parseDate (data[j][column.columnName], column.columnFormat);
+          }
+        }
+        else if (column.columnType === "number")
+        {
+          for (let j = 0; j < data.length; j++)
+          {
+            if (_this.globals.currentOption.tabType === "scmap" && data[j].Flight)
+            {
+              if (_this.msfContainerRef.msfTableRef.isArray (data[j].Flight))
+              {
+                for (let element of data[j].Flight)
+                {
+                  let value;
+
+                  if (element[column.columnName] == undefined)
+                    value = data[j][column.columnName];
+                  else
+                    value = element[column.columnName];
+
+                  element[column.columnName] = {
+                    value: value,
+                    parsedValue: _this.msfContainerRef.msfTableRef.parseNumber (value),
+                  }
+                }
+
+                continue;
+              }
+              else if (data[j][column.columnName] == undefined)
+              {
+                let value = data[j].Flight[column.columnName];
+
+                data[j].Flight[column.columnName] = {
+                  value: value,
+                  parsedValue: _this.msfContainerRef.msfTableRef.parseNumber (value, column),
+                };
+
+                data[j][column.columnName] = data[j].Flight[column.columnName].parsedValue;
+                continue;
+              }
+            }
+
+            data[j][column.columnName] = _this.msfContainerRef.msfTableRef.parseNumber (data[j][column.columnName]);
+          }
+        }
+        else // string
+        {
+          for (let j = 0; j < data.length; j++)
+          {
+            if (_this.globals.currentOption.tabType === "scmap" && data[j].Flight)
+            {
+              if (_this.msfContainerRef.msfTableRef.isArray (data[j].Flight))
+              {
+                for (let element of data[j].Flight)
+                {
+                  let value;
+
+                  if (element[column.columnName] == undefined)
+                    value = data[j][column.columnName];
+                  else
+                    value = element[column.columnName];
+
+                  element[column.columnName] = {
+                    value: value,
+                    parsedValue: _this.msfContainerRef.msfTableRef.parseString (value),
+                  }
+                }
+
+                continue;
+              }
+              else if (data[j][column.columnName] == undefined)
+              {
+                let value = data[j].Flight[column.columnName];
+
+                data[j].Flight[column.columnName] = {
+                  value: value,
+                  parsedValue: _this.msfContainerRef.msfTableRef.parseString (value, column.columnFormat),
+                };
+
+                data[j][column.columnName] = data[j].Flight[column.columnName].parsedValue;
+                continue;
+              }
+            }
+
+            data[j][column.columnName] = _this.msfContainerRef.msfTableRef.parseString (data[j][column.columnName]);
+          }
+        }
+      }
+    }*/
+      data = _this.msfContainerRef.msfTableRef.parseResults (data, displayedColumns, _this.globals.currentOption);
+    else
+    {
+      _this.globals.isLoading = false;
+
+      _this.dialog.open (MessageComponent, {
+        data: { title: "Information", message: "No results were found." }
+      });
+
+      return;
+    }
 
     // Add columns first
     for (i = 0; i < displayedColumns.length; i++)
@@ -692,7 +931,7 @@ toggle(){
       CSVdata += column.columnLabel;
 
       if (i != displayedColumns.length - 1)
-        CSVdata += ",";
+        CSVdata += ";";
     }
 
     CSVdata += "\n";
@@ -703,7 +942,7 @@ toggle(){
       let item = data[i];
 
       // if there are any flight connections, check the sub elements instead
-      if (this.globals.currentOption.tabType === "scmap" && this.msfContainerRef.msfTableRef.isArray (item.Flight))
+      if (_this.globals.currentOption.tabType === "scmap" && _this.msfContainerRef.msfTableRef.isArray (item.Flight))
       {
         for (j = 0; j < item.Flight.length; j++)
         {
@@ -714,10 +953,10 @@ toggle(){
             let column = displayedColumns[k];
             let curitem = subItem[column.columnName].parsedValue;
 
-            if (curitem == undefined)
+            if (curitem == null || curitem == "")
             {
               if (k != displayedColumns.length - 1)
-                CSVdata += ",";
+                CSVdata += ";";
 
               continue;
             }
@@ -745,7 +984,7 @@ toggle(){
               CSVdata += curitem;
 
             if (k != displayedColumns.length - 1)
-              CSVdata += ",";
+              CSVdata += ";";
           }
 
           if (j != item.Flight.length - 1)
@@ -760,10 +999,10 @@ toggle(){
         let column = displayedColumns[j];
         let curitem = item[column.columnName];
 
-        if (curitem == undefined)
+        if (curitem == null || curitem == "")
         {
           if (j != displayedColumns.length - 1)
-            CSVdata += ",";
+            CSVdata += ";";
 
           continue;
         }
@@ -791,7 +1030,7 @@ toggle(){
           CSVdata += curitem;
 
         if (j != displayedColumns.length - 1)
-          CSVdata += ",";
+          CSVdata += ";";
       }
 
       if (i != data.length - 1)
@@ -807,11 +1046,18 @@ toggle(){
       link.setAttribute ("target", "_blank");
 
     link.setAttribute ("href", url);
-    link.setAttribute ("download", this.globals.currentOption.label + ".csv");
+    link.setAttribute ("download", _this.globals.currentOption.label + ".csv");
     link.style.visibility = "hidden";
     document.body.appendChild (link);
     link.click ();
     document.body.removeChild (link);
+
+    _this.globals.isLoading = false;
+  }
+
+  CSVFail(_this): void
+  {
+    
   }
 
   isSimpleContent(): boolean {
