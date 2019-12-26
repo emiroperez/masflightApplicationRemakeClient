@@ -427,12 +427,17 @@ export class EditCategoryArgumentDialog {
           {
             argument.dateRange = 0;
             argument.dateValue = 0;
+            argument.dateFormat = null;
+            argument.leadingZero = false;
+            argument.monthDateFormat = false;
             argument.selectionMode = 0;
           }
           else
           {
-            argument.dateRange = (argument.selectionMode >> 1) & 3;
-            argument.dateValue = argument.selectionMode >> 3;
+            argument.leadingZero = (argument.selectionMode >> 11) & 1;
+            argument.monthDateFormat = (argument.selectionMode >> 12) & 1;
+            argument.dateValue = (argument.selectionMode >> 1) & 3;
+            argument.dateRange = (argument.selectionMode >> 3) & 7;
             argument.selectionMode &= 1;
           }
 
@@ -467,6 +472,15 @@ export class EditCategoryArgumentDialog {
     item.value3 = null;
   }
 
+  clearSecondaryArgs(item): void
+  {
+    if (!item.monthDateFormat)
+      return;
+
+    item.name3 = null;
+    item.name4 = null;
+  }
+
   clearAirportArgument(item): void
   {
     if (item.selectionMode < AirportSelection.ROUTEWITHCONNECTION)
@@ -486,7 +500,7 @@ export class EditCategoryArgumentDialog {
 
   setDateRange(item): void
   {
-    switch (item.dateRange)
+    switch (item.dateValue)
     {
       case 3:
         if (item.selectionMode == 1)
@@ -526,7 +540,7 @@ export class EditCategoryArgumentDialog {
       item.name4 = null;
     }
 
-    item.dateValue = 0;
+    item.dateRange = 0;
   }
 
   getDateValueLabel(item): string
@@ -595,9 +609,12 @@ export class EditCategoryArgumentDialog {
 
   valueTypeChanged(item): void
   {
-    item.dateValue = 0;
+    item.dateRange = 0;
+    item.dateFormat = null;
+    item.leadingZero = false;
+    item.monthDateFormat = false;
 
-    switch (item.dateRange)
+    switch (item.dateValue)
     {
       case 3:
         if (item.selectionMode == 1)
@@ -699,11 +716,17 @@ export class EditCategoryArgumentDialog {
       if (item.multipleSelection)
         item.selectionMode |= AirportSelection.MULTIPLESELECTION;
 
-      if (item.dateRange)
-        item.selectionMode |= item.dateRange << 1;
-
       if (item.dateValue)
-        item.selectionMode |= item.dateValue << 3;
+        item.selectionMode |= item.dateValue << 1;
+
+      if (item.dateRange)
+        item.selectionMode |= item.dateRange << 3;
+
+      if (item.leadingZero)
+        item.selectionMode |= item.leadingZero << 11;
+
+      if (item.monthDateFormat)
+        item.selectionMode |= item.monthDateFormat << 12;
     }
 
     this.dialog.open (DialogArgumentPreviewComponent, {
@@ -2044,11 +2067,17 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
           if (argument.multipleSelection)
             argument.selectionMode |= AirportSelection.MULTIPLESELECTION;
 
-          if (argument.dateRange)
-            argument.selectionMode |= argument.dateRange << 1;
-
           if (argument.dateValue)
-            argument.selectionMode |= argument.dateValue << 3;
+            argument.selectionMode |= argument.dateValue << 1;
+
+          if (argument.dateRange)
+            argument.selectionMode |= argument.dateRange << 3;
+
+          if (argument.leadingZero)
+            argument.selectionMode |= argument.leadingZero << 11;
+
+          if (argument.monthDateFormat)
+            argument.selectionMode |= argument.selectionMode << 12;
 
           if (argument.minDate)
             argument.minDate = argument.minDate.toString ();

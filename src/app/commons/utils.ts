@@ -3,11 +3,7 @@ import { CategoryArguments } from "../model/CategoryArguments";
 import { Arguments } from "../model/Arguments";
 import { ComponentType } from "./ComponentType";
 import { DateTimeFormatPipe } from "./DateTimeFormatPipe";
-import { DateFormatPipe } from "./DateFormatPipe ";
-import { Constants } from "./Constants ";
 import { DatePipe } from "@angular/common";
-import { componentNeedsResolution } from "@angular/core/src/metadata/resource_loading";
-import { ComponentFactory } from '@angular/core/src/render3';
 import * as moment from 'moment';
 
 export class Utils{
@@ -180,7 +176,7 @@ export class Utils{
         let args = '';
 
         if (argument.targetGroup){
-            args = argument.targetGroup + "=" + this.getValueFormat (argument.type, argument.value1,argument);
+            args = argument.targetGroup + "=" + this.getValueFormat (argument.type, argument.value1, argument);
         }
         return args;
     }
@@ -190,14 +186,14 @@ export class Utils{
         let args = '';
 
         if (argument.name1)
-            args = argument.name1 + "=" + this.getValueFormat (argument.type, argument.value1,argument);
+            args = argument.name1 + "=" + this.getValueFormat (argument.type, argument.value1, argument);
 
         if (argument.name2)
         {
             if (args !== '')
                 args += "&";
 
-            args += argument.name2 + "=" + this.getValueFormat (argument.type, argument.value2,argument);          
+            args += argument.name2 + "=" + this.getValueFormat (argument.type, argument.value2, argument);          
         }
 
         if (argument.name3)
@@ -205,7 +201,7 @@ export class Utils{
             if (args !== '')
                 args += "&";
 
-            args += argument.name3 + "=" + this.getValueFormat (argument.type, argument.value3,argument);
+            args += argument.name3 + "=" + this.getValueFormat (argument.type, argument.value3, argument);
         }
 
         if (argument.name4)
@@ -213,7 +209,7 @@ export class Utils{
             if (args !== '')
                 args += "&";
 
-            args += argument.name4 + "=" + this.getValueFormat (argument.type, argument.value4,argument);
+            args += argument.name4 + "=" + this.getValueFormat (argument.type, argument.value4, argument);
         }
 
         return args;
@@ -456,7 +452,7 @@ export class Utils{
                     return value;
             }
             else if (moment.isMoment (value))
-                return new DateFormatPipe ('en-US').transform (value.toDate ());
+                return new DatePipe ('en-US').transform (value.toDate (), this.getDateFormatFromArg (argument.dateFormat));
             else if (value.toString ().length === 24)
             {
                 let momentValue = moment (value, "YYYY-MM-DDTHH:mm:ssZ");
@@ -464,7 +460,7 @@ export class Utils{
                 if (!momentValue.isValid ())
                     return value;
 
-                return new DateFormatPipe ('en-US').transform (momentValue.toDate ());
+                return new DatePipe ('en-US').transform (momentValue.toDate (), this.getDateFormatFromArg (argument.dateFormat));
             }
             else
             {
@@ -477,7 +473,7 @@ export class Utils{
                 return value;
             }
 
-            return new DateFormatPipe ('en-US').transform (value);
+            return new DatePipe ('en-US').transform (value, this.getDateFormatFromArg (argument.dateFormat));
         }
         else if (type == ComponentType.ceiling || type == ComponentType.rounding
             || type ==  ComponentType.resultsLess || type ==  ComponentType.geography 
@@ -683,7 +679,7 @@ export class Utils{
             }
 
             if (type == ComponentType.dateRange)
-                return this.getDateFormat (value, null);
+                return this.getDateFormat (value, argument.dateFormat);
             else if (type == ComponentType.airport)
             {
                 if (typeof value === "string")
@@ -900,20 +896,35 @@ export class Utils{
             else if (moment.isMoment (value))
             {
               if (format == null)
-                format = 'MM/dd/yyyy';
+                format = 'MMddyyyy';
 
-              return new DateFormatPipe ('en-US').transform (value.toDate (), format);
+              datePipe = new DatePipe ('en-US');
+              return datePipe.transform (value.toDate (), format);
             }
             else
               return value;
 
             if (format == null)
-                format = 'MM/dd/yyyy';
+                format = 'MMddyyyy';
 
             datePipe = new DatePipe ('en-US');
             return datePipe.transform (value, format);            
         }
 
+        return value;
+    }
+
+    getDateFormatFromArg(format)
+    {
+        let value = format;
+
+        if (!value)
+          return "yyyyMMdd"; // default date format if not set
+
+        value = value.replace (/D/g, "d");
+        value = value.replace (/m/g, "M");
+        value = value.replace (/Y/g, "y");
+    
         return value;
     }
 

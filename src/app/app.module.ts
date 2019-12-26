@@ -35,7 +35,6 @@ import { MsfWindComponent } from './msf-wind/msf-wind.component';
 import { MsfWindDirectionComponent } from './msf-wind-direction/msf-wind-direction.component';
 import { MsfTemperatureComponent } from './msf-temperature/msf-temperature.component';
 import { MsfTabSelectorComponent } from './msf-tab-selector/msf-tab-selector.component';
-import { DateFormatPipe } from './commons/DateFormatPipe ';
 import { DateTimeFormatPipe } from './commons/DateTimeFormatPipe';
 import { MsfAirlineComponent } from './msf-airline/msf-airline.component';
 import { MsfDynamicTableVariablesComponent } from './msf-dynamic-table-variables/msf-dynamic-table-variables.component';
@@ -234,7 +233,6 @@ import { DatalakeCreateRolesComponent } from './datalake-create-roles/datalake-c
     MsfWindDirectionComponent,
     MsfTemperatureComponent,
     MsfTabSelectorComponent,
-    DateFormatPipe,
     DateTimeFormatPipe,
     MsfAirlineComponent,
     MsfDynamicTableVariablesComponent,
@@ -442,7 +440,6 @@ import { DatalakeCreateRolesComponent } from './datalake-create-roles/datalake-c
     Globals,
     MsfAirportComponent,
     MsfContainerComponent,
-    DateFormatPipe,
     DateTimeFormatPipe,
     Utils,
     AuthGuard,

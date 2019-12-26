@@ -221,6 +221,9 @@ export class MsfDateRangeComponent implements OnInit {
   value1Date: Moment;
   value2Date: Moment;
 
+  leadingZero: number;
+  monthDateFormat: number;
+
   constructor(public globals: Globals,public dialog: MatDialog) { }
 
   ngOnInit()
@@ -228,7 +231,10 @@ export class MsfDateRangeComponent implements OnInit {
     this.currentValueType = (this.argument.selectionMode >> 1) & 3;
 
     if (!this.argument.currentDateRangeValue)
-      this.argument.currentDateRangeValue = this.argument.selectionMode >> 3;
+      this.argument.currentDateRangeValue = (this.argument.selectionMode >> 3) & 7;
+
+    this.leadingZero = (this.argument.selectionMode >> 11) & 1;
+    this.monthDateFormat = (this.argument.selectionMode >> 12) & 1;
 
     this.isDateRange = (this.argument.selectionMode & 1) ? true : false;
 
@@ -672,6 +678,19 @@ export class MsfDateRangeComponent implements OnInit {
     }
   }
 
+  getMonthDateFormat(): string
+  {
+    let format = this.argument.dateFormat;
+
+    if (!format)
+      return "MMyyyy"; // default date format if not set
+
+    format = format.replace (/m/g, "M");
+    format = format.replace (/Y/g, "y");
+
+    return format;
+  }
+
   chosenYearHandler1(normalizedDate: Moment, datepicker: MatDatepicker<Moment>): void
   {
     if (this.valueType !== "year" && this.valueType !== "quarter")
@@ -724,11 +743,16 @@ export class MsfDateRangeComponent implements OnInit {
 
   setMonthValue1(normalizedDate: Moment): void
   {
-    this.argument.value1 = normalizedDate.year ();
+    if (this.monthDateFormat)
+      this.argument.value1 = new DatePipe ('en-US').transform (normalizedDate.toDate (), this.getMonthDateFormat ());
+    else
+    {
+      this.argument.value1 = normalizedDate.year ();
 
-    this.argument.value3 = normalizedDate.month () + 1;
-    if (this.argument.value3 < 10)
-      this.argument.value3 = '0' + this.argument.value3;
+      this.argument.value3 = normalizedDate.month () + 1;
+      if (this.leadingZero && this.argument.value3 < 10)
+        this.argument.value3 = '0' + this.argument.value3;
+    }
 
     this.value1Display = this.monthNames[normalizedDate.month ()] + "/" + normalizedDate.year ();
     this.value1Date = normalizedDate;
@@ -736,11 +760,16 @@ export class MsfDateRangeComponent implements OnInit {
 
   setMonthValue2(normalizedDate: Moment): void
   {
-    this.argument.value2 = normalizedDate.year ();
+    if (this.monthDateFormat)
+      this.argument.value2 = new DatePipe ('en-US').transform (normalizedDate.toDate (), this.getMonthDateFormat ());
+    else
+    {
+      this.argument.value2 = normalizedDate.year ();
 
-    this.argument.value4 = normalizedDate.month () + 1;
-    if (this.argument.value4 < 10)
-      this.argument.value4 = '0' + this.argument.value4;
+      this.argument.value4 = normalizedDate.month () + 1;
+      if (this.leadingZero && this.argument.value4 < 10)
+        this.argument.value4 = '0' + this.argument.value4;
+    }
 
     this.value2Display = this.monthNames[normalizedDate.month ()] + "/" + normalizedDate.year ();
     this.value2Date = normalizedDate;
