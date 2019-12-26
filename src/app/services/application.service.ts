@@ -578,25 +578,26 @@ export class ApplicationService {
 
   getMenuCategoryWelcome(_this, handlerSuccess, handlerError) {
     let url = this.host + "/secure/getMenuCategoryWelcome?application=" + _this.globals.currentApplication.id;
-    this.authService.get(_this, url, handlerSuccess, handlerError);
+    this.authService.get (_this, url, handlerSuccess, handlerError);
   }
-
-																		 
+																 
   getDatalakeRoles(_this, schemaName, handlerSuccess, handlerError): void
   {
-      let url = this.host + "/getDatalakeRoles?search="+schemaName;
-      this.http.get(_this, url, handlerSuccess, handlerError, null);
+    let url = this.host + "/getDatalakeRoles?search=" + schemaName;
+    this.http.get (_this, url, handlerSuccess, handlerError, null);
   }
 																   
   getDatalakeOptions(_this, schemaName, handlerSuccess, handlerError): void
   {
-      let url = this.host + "/getDatalakeOptions?search="+schemaName;
-      this.http.get(_this, url, handlerSuccess, handlerError, null);
-  }
-  saveNewDatalakeRole(_this, data, handlerSuccess, handlerError){
-    _this.globals.isLoading = true;
-    let url = this.host + "/secure/saveNewDatalakeRole";
-    this.authService.post(_this, url, data, handlerSuccess, handlerError);
+    let url = this.host + "/getDatalakeOptions?search=" + schemaName;
+    this.http.get (_this, url, handlerSuccess, handlerError, null);
   }
 
+  saveNewDatalakeRole(_this, data, handlerSuccess, handlerError): void
+  {
+    let url = this.host + "/secure/saveNewDatalakeRole";
+
+    _this.globals.isLoading = true;
+    this.authService.post (_this, url, data, handlerSuccess, handlerError);
+  }
 }

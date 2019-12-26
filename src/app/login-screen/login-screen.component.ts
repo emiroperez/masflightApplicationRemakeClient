@@ -23,7 +23,6 @@ export class LoginScreenComponent implements OnInit {
   OK_STATUS = 'ok';
   INVALID_USERNAME = 'invaliduser';
   credentials = {};
-  authenticated = false;
 
   user: User;
   utils: Utils;
@@ -32,7 +31,6 @@ export class LoginScreenComponent implements OnInit {
   session: any;
 
   loginForm: FormGroup;
-  loggedIn = false;
   _this = this;
 
   mobileQuery: MediaQueryList;
@@ -112,7 +110,6 @@ export class LoginScreenComponent implements OnInit {
   {
     this.storeSecurityToken (this.securityToken);
     this.securityToken = null;
-    this.authenticated = true;
     this.router.navigate(['/welcome']);
   }
 
@@ -162,6 +159,34 @@ export class LoginScreenComponent implements OnInit {
     }
   }
 
+  verifyUserLoggedIn(_this, result)
+  {
+    if (!result)
+    {
+      _this.service.updateToken (_this, _this.verifyUserSuccess, _this.errorAutentication);
+      return;
+    }
+
+    _this.globals.isLoading = false;
+    _this.authService.removeToken ();
+  }
+
+  verifyUserSuccess(_this, data)
+  {
+    let response = data;
+
+    if (response.status == _this.OK_STATUS)
+    {
+      _this.securityToken = response.token;
+      _this.goToWelcomeScreen ();
+    }
+    else
+    {
+      _this.globals.isLoading = false;
+      _this.utils.showAlert ('warning', data.errorMessage);
+    }
+  }
+
   errorAutentication(_this, error)
   {
     _this.globals.isLoading = false;
@@ -208,18 +233,22 @@ export class LoginScreenComponent implements OnInit {
 
   getUserLoggedIn()
   {
-    if (this.authService.getToken ())
-    {
-      this.globals.isLoading = true;
-      this.service.getUserLoggedin (this, this.handleLogin, this.errorLogin);
-    }
+    if (!this.authService.getToken ())
+      return;
+
+    this.globals.isLoading = true;
+    this.service.getUserLoggedin (this, this.handleLogin, this.errorLogin);
   }
 
-  handleLogin(_this)
+  handleLogin(_this, data)
   {
-    _this.globals.isLoading = false;
-    _this.loggedIn = true;
-    _this.router.navigate (["/welcome"]);
+    _this.session = {
+      userId: data.id,
+      ipAddress: _this.authService.getIpAddress (),
+      hash: _this.authService.getFingerprint ()
+    };
+
+    _this.authService.validateLogin (_this, _this.session, _this.verifyUserLoggedIn, _this.errorAutentication);
   }
 
   @HostListener('window:resize', ['$event'])

@@ -98,4 +98,9 @@ export class MenuService {
     this.authService.post (_this, url, sharedContent, handlerSuccess, handlerError);
   }
 
+  updateToken(_this, handlerSuccess, handlerError)
+  {
+    let url = _this.globals.baseUrl + "/secure/updateToken";
+    this.authService.get (_this, url, handlerSuccess, handlerError);
+  }
 }
