@@ -119,7 +119,7 @@ export class UserActivationComponent implements OnInit {
     }
 
     // remove customer info since it's no longer necessary
-    element.customerInfo = "";
+    element.customerInfo = null;
   }
 
   @HostListener('window:resize', ['$event'])
