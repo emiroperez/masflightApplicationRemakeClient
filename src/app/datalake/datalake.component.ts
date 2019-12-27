@@ -416,4 +416,9 @@ export class DatalakeComponent implements OnInit {
   {
     return (this.globals.currentOption === "dashboard" || !this.globals.currentOption);
   }
+
+  stopPlanTest(): void
+  {
+    this.globals.testingPlan = -1;
+  }
 }

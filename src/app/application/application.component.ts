@@ -290,7 +290,16 @@ export class ApplicationComponent implements OnInit {
     this.menuService.getMenu(this,this.handlerSuccess,this.handlerError);
   }
 
-  handlerSuccess(_this,data){
+  handlerSuccess(_this,data)
+  {
+    if (!data.categories.length && (!_this.globals.admin ||
+      (_this.globals.admin && _this.globals.testingPlan != -1)))
+    {
+      // send user back to welcome screen if no category menu is found
+      _this.router.navigate (["/welcome"]);
+      return;
+    }
+
     _this.menu = data;
     _this.temporalSelectOption(_this);
     _this.currentOptionBackUp = _this.globals.currentOption; 
@@ -537,8 +546,9 @@ toggle(){
     });
   }
 
-  goHome(){
-    this.router.navigate(["/welcome"]);
+  goHome()
+  {
+    this.router.navigate (["/welcome"]);
   }
 
   exportToExcel():void {
@@ -881,7 +891,11 @@ toggle(){
 
   CSVFail(_this): void
   {
-    
+    _this.globals.isLoading = false;
+
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Error", message: "Failed to export CSV." }
+    });
   }
 
   isSimpleContent(): boolean {
@@ -1223,5 +1237,16 @@ toggle(){
     {
       this.globals.isLoading = false;
     });
+  }
+
+  stopPlanTest(): void
+  {
+    this.globals.testingPlan = -1;
+
+    // reload menu
+    this.globals.lastTime = null;
+    this.globals.clearVariables ();
+    this.globals.clearVariablesMenu ();
+    this.getMenu ();
   }
 }

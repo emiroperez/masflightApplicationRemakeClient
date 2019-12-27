@@ -19,6 +19,7 @@ import { Menu } from '../model/Menu';
 import { MatSnackBar, MatTableDataSource } from '@angular/material';
 import { PlanAdvanceFeatures } from '../model/PlanAdvanceFeatures';
 import { MessageComponent } from '../message/message.component';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -156,7 +157,7 @@ export class CreateMembershipsComponent implements OnInit {
 
   constructor(private http: ApiClient, private config: NgSelectConfig,
     private planServices: PlanService, private service: ApplicationService, public globals: Globals, private formBuilder: FormBuilder,
-    public dialog: MatDialog, private ref: ChangeDetectorRef) {
+    public dialog: MatDialog, private ref: ChangeDetectorRef, private router: Router) {
     this.utils = new Utils();
     this.config.notFoundText = 'There is no options';
   }
@@ -319,6 +320,7 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
     const newPlan: Plan = new Plan();
     newPlan.id = '';
     newPlan.options = new Array();
+    newPlan.isNew = true;
     this.items = this.plansForms.get('items') as FormArray;
     this.items.push(this.createPlan());
 
@@ -759,6 +761,22 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
 
   }
 
+  testPlan(plan): void
+  {
+    this.items = this.plansForms.get('items') as FormArray;
+
+    if (!(this.plansForms.valid && this.items.length > 0))
+    {
+      this.dialog.open (MessageComponent, {
+        data: { title:'Error', message: 'You must complete all the information about memberships plans'}
+      });
+    }
+
+    this.globals.isLoading = true;
+    this.globals.testingPlan = plan.value.id;
+    this.router.navigate (["/application"]);
+  }
+
   @HostListener('window:resize', ['$event'])
   checkScreen(event): void
   {
@@ -786,5 +804,4 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
   {
     return this.innerWidth;
   }
-
 }

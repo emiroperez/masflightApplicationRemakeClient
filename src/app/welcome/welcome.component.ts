@@ -13,8 +13,7 @@ import { ApplicationService } from '../services/application.service';
 
 @Component({
   selector: 'app-welcome',
-  templateUrl: './welcome.component.html',
-  styleUrls: ['./welcome.component.css']
+  templateUrl: './welcome.component.html'
 })
 export class WelcomeComponent implements OnInit {
 
@@ -115,6 +114,8 @@ this.mobileQuery.addListener(this._mobileQueryListener);
     _this.globals.currentUser = data.name;
     _this.userName = _this.globals.currentUser;
     _this.globals.userName = data.email;
+    _this.globals.admin = data.admin;
+
     if(data.userInfoDatalake){
       data.userInfoDatalake.datalakeRoles.forEach(datalakeRole => {
         datalakeRole.role.datalakeOption.forEach(datalakeOption => {

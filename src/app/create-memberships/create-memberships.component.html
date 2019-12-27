@@ -33,6 +33,11 @@
                                 <mat-form-field class="msf-card-content-item msf-medium-title-centered" [floatLabel]="'never'">
                                     <input matInput class="msf-card-content-title" autocomplete="off" type="text" formControlName="name" placeholder="Name" />
                                 </mat-form-field>
+                                <div class="test-membership-button-container" *ngIf="!plan.isNew">
+                                    <button mat-button class="flat-button" type="button" (click)="testPlan(plan)">
+                                        Test Membership
+                                    </button>
+                                </div>
                                 <div class="feature-options-container">
                                     <h3 class="feature-title">Options</h3>
                                     <div class="msf-mem-button msf-fab-button-container msf-fab-button msf-center-container msf-fab-button-features">

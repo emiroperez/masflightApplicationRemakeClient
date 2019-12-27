@@ -63,7 +63,6 @@ export class Globals {
   isFullscreen: boolean = false;
   // baseUrl = "http://localhost:8887";
   // baseUrl = "https://pulse.globaleagle.com:8887";
-  // baseUrl = "http://192.168.1.50:8887";
   baseUrl = "";
   baseUrl2 = "https://pulse.globaleagle.com:8886/mapBoxServices";
   popupUrl = "https://pulse.globaleagle.com:8900";
@@ -89,6 +88,7 @@ export class Globals {
   appLoading: boolean;
 
   admin: boolean = false;
+  testingPlan: number = -1;
   token = "Gtk5zI0GAeMbFBRgU191vZmJt8YLUGytwuf";
 
   //mobile

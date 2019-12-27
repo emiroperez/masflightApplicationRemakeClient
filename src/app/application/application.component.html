@@ -82,6 +82,10 @@
                 <mat-icon class="mat-menu-item-icon">business</mat-icon>
                 <span>Customers</span>
             </button>
+            <button *ngIf="globals.admin && globals.testingPlan != -1" mat-menu-item (click)="stopPlanTest()">
+                <mat-icon class="mat-menu-item-icon">card_membership</mat-icon>
+                <span>Stop Testing Membership</span>
+            </button>
         </mat-menu>
         <!-- </div> -->
     </div>

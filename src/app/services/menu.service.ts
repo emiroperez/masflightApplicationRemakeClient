@@ -9,12 +9,16 @@ export class MenuService {
   constructor(private authService: AuthService) {
   }
 
-  getMenu(_this,successHandler, errorHandler){
-    let url = "/getMenu?"
-    if(_this.globals.currentApplication==undefined){
+  getMenu(_this,successHandler, errorHandler)
+  {
+    let url = "/getMenu?";
+
+    if (_this.globals.currentApplication == undefined)
       _this.globals.currentApplication = JSON.parse(localStorage.getItem("currentApplication"));
-    }
+
     url = url + "application="+_this.globals.currentApplication.id;
+    if (_this.globals.testingPlan != -1)
+      url += "&testPlanId=" + _this.globals.testingPlan;
 
     _this.globals.isLoading = true;
     this.authService.get (_this, _this.globals.baseUrl + "/secure" + url, successHandler, errorHandler);
@@ -22,6 +26,10 @@ export class MenuService {
 
   getAdvanceFeatures(_this, successHandler, errorHandler){
     let url = "/getPlanAdvanceFeatures";
+
+    if (_this.globals.testingPlan != -1)
+      url += "?testPlanId=" + _this.globals.testingPlan;
+
     this.authService.get (_this, _this.globals.baseUrl + "/secure" + url, successHandler, errorHandler);
   }
 

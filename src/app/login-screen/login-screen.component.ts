@@ -39,8 +39,8 @@ export class LoginScreenComponent implements OnInit {
   constructor(private router: Router,  public globals: Globals, private service: MenuService,
     private authService: AuthService, private notification: NotificationComponent,
     private formBuilder: FormBuilder, public http: HttpClient, public dialog: MatDialog, media: MediaMatcher, changeDetectorRef: ChangeDetectorRef) {
-    
-//media querys
+    this.globals.testingPlan = -1;    // don't test any plan
+
     this.mobileQuery = media.matchMedia('(max-width: 480px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
