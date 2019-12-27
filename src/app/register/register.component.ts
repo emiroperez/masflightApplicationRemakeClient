@@ -4,8 +4,6 @@ import { FormControl, Validators,ValidatorFn, ValidationErrors, AbstractControl,
 import { User} from '../model/User';
 import { State } from '../model/State';
 import { Country } from '../model/Country';
-import { Plan } from '../model/Plan';
-import { UserPlan } from '../model/UserPlan';
 import { Utils } from '../commons/utils';
 import { UserService } from '../services/user.service';
 import { RegisterService } from '../services/register.service';
@@ -28,18 +26,16 @@ import { Customer } from '../model/Customer';
 })
 export class RegisterComponent implements OnInit {
   innerHeight: number;
-  users: User;
+  user: User;
   utils: Utils;
-  userPlan : UserPlan;
   countries: Country[];
   states : State[];
   selectedCountries: Country[];
   selectedStates: State[];
-  customers: Customer[];
   isLinear = true;
   title: string = 'Personal Information';
 
-  personalInformationForm = new FormGroup({
+  personalInformationForm = new FormGroup ({
     nameValidator:new FormControl('name', [Validators.required]),
     lastNameValidator : new FormControl('lastName', [Validators.required]),
     passwordValidator : new FormControl('password', [Validators.required]),
@@ -59,7 +55,6 @@ export class RegisterComponent implements OnInit {
 
   public filteredCountries: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
   public filteredStates: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
-  public filteredCustomers: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
 
   private _onDestroy = new Subject<void> ();
 
@@ -72,11 +67,10 @@ export class RegisterComponent implements OnInit {
 
     this.config.notFoundText = 'There is no options';
 
-    this.users = new User( new Payment());
-    this.userPlan=new UserPlan();
-    this.utils = new Utils();
-    this.countries = new Array();
-    this.states = new Array();
+    this.user = new User (new Payment ());
+    this.utils = new Utils ();
+    this.countries = new Array ();
+    this.states = new Array ();
     this.globals.isLoading = true;
     this.registerServices.getCountries(this,this.renderCountries,this.errorCountries);
 
@@ -127,54 +121,11 @@ export class RegisterComponent implements OnInit {
     _this.countries = data;
     _this.selectedCountries = _this.countries;
     _this.countriesSearchChange ();
-    _this.appServices.getCustomers (_this, _this.setCustomers, _this.errorCustomers);
+    _this.globals.isLoading = false;
   }
 
   errorCountries(_this,error){
-    _this.appServices.getCustomers (_this, _this.setCustomers, _this.errorCustomers);
-  }
-
-  setCustomers(_this, data): void
-  {
-    _this.customers = data;
-    _this.customerSearchChange ();
     _this.globals.isLoading = false;
-  }
-
-  errorCustomers(_this, error)
-  {
-    _this.globals.isLoading = false;
-  }
-
-  filterCustomers(): void
-  {
-    if (!this.customers)
-      return;
-
-    // get the search keyword
-    let search = this.customerFilterCtrl.value;
-    if (!search)
-    {
-      this.filteredCustomers.next (this.customers.slice ());
-      return;
-    }
-
-    search = search.toLowerCase ();
-    this.filteredCustomers.next (
-      this.customers.filter (a => a.name.toLowerCase ().indexOf (search) > -1)
-    );
-  }
-
-  customerSearchChange(): void
-  {
-    // load the initial option list
-    this.filteredCustomers.next (this.customers.slice ());
-    // listen for search field value changes
-    this.customerFilterCtrl.valueChanges
-      .pipe (takeUntil (this._onDestroy))
-      .subscribe (() => {
-        this.filterCustomers ();
-      });
   }
 
   filterStates(): void
@@ -208,38 +159,31 @@ export class RegisterComponent implements OnInit {
       });
   }
 
-  CountryChangeEvent(event){
-    this.users.CState=null;
-    if (event != undefined){
+  CountryChangeEvent(event)
+  {
+    this.user.CState = null;
+
+    if (event != undefined)
+    {
       this.states = event.value.states;
       this.selectedStates = this.states;
       this.stateSearchChange ();
-    }else{
-      this.states=[];
+    }
+    else
+    {
+      this.states = [];
       this.filteredStates.next ([]);
     }
   }
 
-  setPlan(plan){
-    this.userPlan.IdPlan=plan;
-
-  }
-  getMonthlyValue(price,type){
-    if (type=="month"){
-      return price;
-    }else{
-      return price/12;
-    }
-  }
-
-
-  static passwordMatchValidator(comp: RegisterComponent): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors => {
-      if(comp.users!=undefined){
+  static passwordMatchValidator(comp: RegisterComponent): ValidatorFn
+  {
+    return (control: AbstractControl): ValidationErrors =>
+    {
+      if (comp.user != undefined)
         return comp.personalInformationForm.get ('passwordValidator').value !== control.value ? { mismatch: true } : null;
-      }else{
+      else
         return null;
-      }
     };
   }
 
@@ -304,10 +248,6 @@ export class RegisterComponent implements OnInit {
     return this.personalInformationForm.get('phoneNumberValidator').hasError('required') ? 'You must enter a phone number' :'';
   }
 
-  getErrorCustomerMessage() {
-    return this.personalInformationForm.get('customerValidator').hasError('required') ? 'You must select the customer' :'';
-  }
-
   successHandleResponse(_this,data){
 	}
 
@@ -317,20 +257,13 @@ export class RegisterComponent implements OnInit {
 
 
   insertUser(){
-		if(this.personalInformationForm.valid){
-      let paymentType;
-
+    if (this.personalInformationForm.valid)
+    {
       this.setUserValues ();
-      paymentType = this.users.customer.paymentType + 1;
-      this.userPlan.IdUser=this.users;
-      this.userPlan.IdPlan=this.users.customer.licenseType;
-      this.userPlan.IdFare=this.users.customer.licenseType.fares[0];
-      this.userPlan.planPayment = this.users.payment;
-      this.userPlan.planPayment.paymentType = paymentType.toString ();
-      this.userServices.saveUser(this,this.userPlan, this.saveUserHandleResponse,this.errorHandleResponsen);
-    }else{
-      this.utils.showAlert('info','No valid form, you must complete all fields');
+      this.userServices.saveUser (this, this.user, this.saveUserHandleResponse,this.errorHandleResponsen);
     }
+    else
+      this.utils.showAlert ('info','No valid form, you must complete all fields');
   }
 
   saveUserHandleResponse(this_,data){
@@ -399,16 +332,17 @@ export class RegisterComponent implements OnInit {
 
   setUserValues()
   {
-    this.users.name = this.personalInformationForm.get ('nameValidator').value;
-    this.users.lastname = this.personalInformationForm.get ('lastNameValidator').value;
-    this.users.password = this.personalInformationForm.get ('passwordValidator').value;
-    this.users.repeatPassword = this.personalInformationForm.get ('repeatPasswordValidator').value;
-    this.users.email = this.personalInformationForm.get ('emailValidator').value;
-    this.users.address = this.personalInformationForm.get ('addressValidator').value;
-    this.users.country = this.personalInformationForm.get ('countryValidator').value;
-    this.users.postalCode = this.personalInformationForm.get ('postalCodeValidator').value;
-    this.users.phoneNumber = this.personalInformationForm.get ('phoneNumberValidator').value;
-    this.users.customer = this.personalInformationForm.get ('customerValidator').value;
+    this.user.name = this.personalInformationForm.get ('nameValidator').value;
+    this.user.lastname = this.personalInformationForm.get ('lastNameValidator').value;
+    this.user.password = this.personalInformationForm.get ('passwordValidator').value;
+    this.user.repeatPassword = this.personalInformationForm.get ('repeatPasswordValidator').value;
+    this.user.email = this.personalInformationForm.get ('emailValidator').value;
+    this.user.address = this.personalInformationForm.get ('addressValidator').value;
+    this.user.country = this.personalInformationForm.get ('countryValidator').value;
+    this.user.postalCode = this.personalInformationForm.get ('postalCodeValidator').value;
+    this.user.phoneNumber = this.personalInformationForm.get ('phoneNumberValidator').value;
+    this.user.customerInfo = this.personalInformationForm.get ('customerValidator').value;
+    this.user.customer = null;
   }
 
   @HostListener('window:resize', ['$event'])

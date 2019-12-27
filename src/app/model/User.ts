@@ -22,6 +22,7 @@ export class User{
     userPlan: UserPlan;
     admin: boolean;
     customer: Customer;
+    customerInfo: string;
 
     constructor(private paymentIn: Payment){
         this.payment = paymentIn;
@@ -33,6 +34,7 @@ export class User{
         this.address = "";
         this.postalCode = "";
         this.phoneNumber = "";
+        this.customerInfo = "";
     }
 
 }

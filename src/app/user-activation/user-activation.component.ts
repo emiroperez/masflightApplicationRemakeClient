@@ -34,7 +34,7 @@ export class UserActivationComponent implements OnInit {
 
 
     displayedColumns = ['columnName', 'columnLastName', 'columnEmail', 'columnAddress', 'columnPostalCode',
-    'columnCountry', 'columnCountryState', 'columnPhone', 'columnState', 'columnCustomer', 'columnDatalake'];
+    'columnCountry', 'columnCountryState', 'columnPhone', 'columnState', 'columnProposedCustomer', 'columnCustomer', 'columnDatalake'];
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -117,6 +117,9 @@ export class UserActivationComponent implements OnInit {
     }else{
       this.usersToAdd.push(this.userSelected);
     }
+
+    // remove customer info since it's no longer necessary
+    element.customerInfo = "";
   }
 
   @HostListener('window:resize', ['$event'])

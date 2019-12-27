@@ -3,7 +3,7 @@
         <img class="msf-medium-logo" src="../../assets/images/{{globals.theme}}-logo.png">
         <div class="msf-register-header-content">
             <div class="msf-register-header-title">
-                <div class="msf-register-header-title-content"> USER REGISTRATION</div>
+                <div class="msf-register-header-title-content">USER REGISTRATION</div>
                 <div class="msf-register-header-little-title">{{title}}</div>
             </div>
             <div class="msf-register-header-image-content">
@@ -22,31 +22,31 @@
                     <ul class="msf-register-list-aux">
                         <li>
                             <mat-form-field [formGroup]="personalInformationForm" class="msf-item">
-                                <input matInput autocomplete="off" type="text" placeholder="Name" class="input-register" formControlName="nameValidator" name="name" [(value)]="users.name" />
+                                <input matInput autocomplete="off" type="text" placeholder="Name" class="input-register" formControlName="nameValidator" name="name" [(value)]="user.name" />
                                 <mat-error *ngIf="personalInformationForm.get('nameValidator')?.invalid">{{getErrorNameMessage()}}</mat-error>
                             </mat-form-field>
                         </li>
                         <li>
                             <mat-form-field [formGroup]="personalInformationForm" class="msf-item">
-                                <input matInput autocomplete="off" type="text" placeholder="Last Name" class="input-register" formControlName="lastNameValidator" name="lastName" [(value)]="users.lastname" />
+                                <input matInput autocomplete="off" type="text" placeholder="Last Name" class="input-register" formControlName="lastNameValidator" name="lastName" [(value)]="user.lastname" />
                                 <mat-error *ngIf="personalInformationForm.get('lastNameValidator')?.invalid">{{getErrorLastNameMessage()}}</mat-error>
                             </mat-form-field>
                         </li>
                         <li>
                             <mat-form-field [formGroup]="personalInformationForm" class="msf-item">
-                                <input matInput autocomplete="off" type="password" placeholder="Password" class="input-register" formControlName="passwordValidator" name="password" [(value)]="users.password" />
+                                <input matInput autocomplete="off" type="password" placeholder="Password" class="input-register" formControlName="passwordValidator" name="password" [(value)]="user.password" />
                                 <mat-error *ngIf="personalInformationForm.get('passwordValidator')?.invalid">{{getErrorPasswordMessage()}}</mat-error>
                             </mat-form-field>
                         </li>
                         <li>
                             <mat-form-field [formGroup]="personalInformationForm" class="msf-item">
-                                <input matInput autocomplete="off" type="password" placeholder="Repeat Password" class="input-register" formControlName="repeatPasswordValidator" name="repeatPassword" [(value)]="users.repeatPassword" />
+                                <input matInput autocomplete="off" type="password" placeholder="Repeat Password" class="input-register" formControlName="repeatPasswordValidator" name="repeatPassword" [(value)]="user.repeatPassword" />
                                 <mat-error *ngIf="personalInformationForm.get('repeatPasswordValidator')?.invalid">{{getErrorRepeatPasswordMessage()}}</mat-error>
                             </mat-form-field>
                         </li>
                         <li>
                             <mat-form-field [formGroup]="personalInformationForm" class="msf-item">
-                                <input (change)="checkEmailValidator($event.target.value)" matInput autocomplete="off" type="email" placeholder="E-mail" class="input-register" formControlName="emailValidator" name="email" [(value)]="users.email" />
+                                <input (change)="checkEmailValidator($event.target.value)" matInput autocomplete="off" type="email" placeholder="E-mail" class="input-register" formControlName="emailValidator" name="email" [(value)]="user.email" />
                                 <mat-error *ngIf="personalInformationForm.get('emailValidator')?.hasError('email') && !personalInformationForm.get('emailValidator')?.hasError('required')">
                                     {{getErrorFormatEmailMessage()}}
                                 </mat-error>
@@ -60,26 +60,20 @@
                         </li>
                         <li>
                             <mat-form-field [formGroup]="personalInformationForm" class="msf-item">
-                                <mat-select placeholder="Customer" autocomplete="off" class="input-register" formControlName="customerValidator" [(value)]="users.customer" name="customer" required>
-                                    <ngx-mat-select-search [formControl]="customerFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
-                                    <mat-option *ngFor="let customer of filteredCustomers | async" [value]="customer">
-                                        {{customer.name}}
-                                    </mat-option>
-                                </mat-select>
-                                <mat-error *ngIf="personalInformationForm.get('customerFilterCtrl')?.invalid">{{getErrorCustomerMessage()}}</mat-error>
+                                <input matInput autocomplete="off" type="text" placeholder="Customer" class="input-register" formControlName="customerValidator" name="name" [(value)]="user.customerInfo" required/>
                             </mat-form-field>
                         </li>
                     </ul>
                     <ul class="msf-register-list">
                         <li>
                             <mat-form-field [formGroup]="personalInformationForm" class="msf-item">
-                                <input matInput autocomplete="off" type="text" placeholder="Address" class="input-register" formControlName="addressValidator" name="Address" [(value)]="users.address" />
+                                <input matInput autocomplete="off" type="text" placeholder="Address" class="input-register" formControlName="addressValidator" name="Address" [(value)]="user.address" />
                                 <mat-error *ngIf="personalInformationForm.get('addressValidator')?.invalid">{{getErrorAddressMessage()}}</mat-error>
                             </mat-form-field>
                         </li>
                         <li>
                             <mat-form-field [formGroup]="personalInformationForm" class="msf-item">
-                                <mat-select placeholder="Country" autocomplete="off" class="input-register" formControlName="countryValidator" [(value)]="users.country" (selectionChange)="CountryChangeEvent($event)" name="country" required>
+                                <mat-select placeholder="Country" autocomplete="off" class="input-register" formControlName="countryValidator" [(value)]="user.country" (selectionChange)="CountryChangeEvent($event)" name="country" required>
                                     <ngx-mat-select-search [formControl]="countryFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
                                     <mat-option *ngFor="let country of filteredCountries | async" [value]="country">
                                         {{country.fullName}}
@@ -90,7 +84,7 @@
                         </li>
                         <li>
                             <mat-form-field class="msf-item">
-                                <mat-select placeholder="State" autocomplete="off" class="input-register" [(ngModel)]="users.CState" name="state">
+                                <mat-select placeholder="State" autocomplete="off" class="input-register" [(ngModel)]="user.CState" name="state">
                                     <ngx-mat-select-search [formControl]="stateFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
                                     <mat-option *ngFor="let state of filteredStates | async" [value]="state">
                                         {{state.fullName}}
@@ -100,13 +94,13 @@
                         </li>
                         <li>
                             <mat-form-field [formGroup]="personalInformationForm" class="msf-item">
-                                <input matInput autocomplete="off" type="text" placeholder="Postal Code" class="input-register" formControlName="postalCodeValidator" name="postalCode" [(value)]="users.postalCode" />
+                                <input matInput autocomplete="off" type="text" placeholder="Postal Code" class="input-register" formControlName="postalCodeValidator" name="postalCode" [(value)]="user.postalCode" />
                                 <mat-error *ngIf="personalInformationForm.get('postalCodeValidator')?.invalid">{{getErrorPostalCodeMessage()}}</mat-error>
                             </mat-form-field>
                         </li>
                         <li>
                             <mat-form-field [formGroup]="personalInformationForm" class="msf-item">
-                                <input matInput autocomplete="off" type="text" mask="(000) 000-0000" placeholder="Phone Number" class="input-register" formControlName="phoneNumberValidator" name="phoneNumber" [(value)]="users.phoneNumber" />
+                                <input matInput autocomplete="off" type="text" mask="(000) 000-0000" placeholder="Phone Number" class="input-register" formControlName="phoneNumberValidator" name="phoneNumber" [(value)]="user.phoneNumber" />
                                 <mat-error *ngIf="personalInformationForm.get('phoneNumberValidator')?.invalid">{{getErrorPhoneNumberMessage()}}</mat-error>
                             </mat-form-field>
                         </li>
