@@ -156,7 +156,7 @@ export class DatalakeAlarmsComponent implements OnInit {
     for (let schema of data.Schemas)
       _this.schemas.push (schema);
 
-      _this.setschema();
+    _this.setschema();
     _this.globals.isLoading = false;
   }
 
@@ -479,7 +479,8 @@ filterAlarm(): void
 
 setschema()
 {
-  if(this.currentOption.schemaName){
+  if (this.currentOption && this.currentOption.schemaName)
+  {
     var index = this.schemas.findIndex (aux => aux == this.currentOption.schemaName);
     if(index != -1){
       this.alarmFormGroup.get ("schema").setValue (this.schemas[index]);
