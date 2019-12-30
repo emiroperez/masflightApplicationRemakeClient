@@ -561,8 +561,12 @@ AddEmail(): void
       }
   }
 
-  getEmailListImage(){
-    return "../../assets/images/emailList.png";
+  getEmailListImage()
+  {
+    if (this.globals.theme === "light-theme")
+      return "../../assets/images/emailListLight.png";
+
+    return "../../assets/images/emailListDark.png";
   }
 
   clean(){
