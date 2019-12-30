@@ -16,6 +16,9 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 })
 export class DatalakeExplorerComponent implements OnInit {
 
+  @Input('optionDatalakeSelected')
+  optionDatalakeSelected: number;
+
   @Output('setCurrentOptionSelected')
   setCurrentOptionSelected = new EventEmitter ();
   
@@ -34,6 +37,12 @@ export class DatalakeExplorerComponent implements OnInit {
   ngOnInit()
   {
     this.getDatalakeTables ();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void
+  {
+    if (changes['optionDatalakeSelected'])
+      this.getDatalakeTables ();
   }
 
   getDatalakeTables(): void

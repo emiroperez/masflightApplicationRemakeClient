@@ -76,7 +76,7 @@ export class DatalakeComponent implements OnInit {
     this.changeDetectorRef.detectChanges ();
 
     this.globals.optionsDatalake = [];
-    this.globals.isLoading = true;    
+    this.globals.isLoading = true;
     this.globals.queryTabs = [ new DatalakeQueryTab () ];
     this.menuService.getUserLoggedin (this, this.handleLogin, this.errorLogin);
   }
@@ -139,7 +139,7 @@ export class DatalakeComponent implements OnInit {
       data.userInfoDatalake.datalakeRoles.forEach(datalakeRole => {
         datalakeRole.role.datalakeOption.forEach(datalakeOption => {
           if(datalakeOption){
-            _this.globals.optionsDatalake.push(datalakeOption)
+            _this.globals.optionsDatalake.push(datalakeOption);
           }
         });
       });
@@ -206,7 +206,6 @@ export class DatalakeComponent implements OnInit {
       {
         _this.globals.optionDatalakeSelected = 2;
         _this.globals.appLoading = false;
-        _this.globals.isLoading = false;
       }
     }
     else
@@ -214,7 +213,6 @@ export class DatalakeComponent implements OnInit {
       _this.globals.optionDatalakeSelected = 2;
       _this.defaultDashboardId = null;
       _this.globals.appLoading = false;
-      _this.globals.isLoading = false;
     }
   }
 
@@ -251,9 +249,11 @@ export class DatalakeComponent implements OnInit {
 
   showDataExplorer()
   {
-    let index = this.globals.optionsDatalake.findIndex (od => od.action.option === "Datalake Explorer");
+    let index;
 
-    if ((this.globals.optionDatalakeSelected === 2 || this.globals.optionDatalakeSelected === 3)  && index != -1 && this.globals.userName)
+    index = this.globals.optionsDatalake.findIndex (od => od.action.option === "Datalake Explorer");
+
+    if ((this.globals.optionDatalakeSelected === 2 || this.globals.optionDatalakeSelected === 3) && index != -1 && this.globals.userName)
       return true;
     else
       return false;

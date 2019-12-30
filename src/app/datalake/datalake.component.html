@@ -62,7 +62,7 @@
 <!-- Body -->
 <div *ngIf="globals.optionDatalakeSelected != 1" [style.height.px]="bodyHeight" [class.is-mobile]="mobileQuery.matches">
     <!-- <app-datalake-explorer *ngIf="currentOption === 2 || currentOption === 3" [currentOption]="currentOption" (setCurrentOptionSelected)="setCcurrentOptionSelected($event)"></app-datalake-explorer> -->
-    <app-datalake-explorer #dataExplorer *ngIf="showDataExplorer()" (setCurrentOptionSelected)="setCurrentOptionSelected($event)"></app-datalake-explorer>
+    <app-datalake-explorer #dataExplorer *ngIf="showDataExplorer()" [optionDatalakeSelected]="globals.optionDatalakeSelected" (setCurrentOptionSelected)="setCurrentOptionSelected($event)"></app-datalake-explorer>
     <app-datalake-alarms *ngIf="globals.userName && globals.optionDatalakeSelected === 5" [currentOption]="currentOption"></app-datalake-alarms>
     <app-datalake-partitions *ngIf="globals.userName && globals.optionDatalakeSelected === 6"></app-datalake-partitions>
     <app-datalake-execution-partition *ngIf="globals.userName &&  (globals.optionDatalakeSelected === 7 || globals.optionDatalakeSelected === 8)" ></app-datalake-execution-partition>
