@@ -48,7 +48,7 @@
               <th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
               <td mat-cell *matCellDef="let element" class="btn-actions-alarms">
                 <button (click)="viewEmail(element.emailList)" mat-icon-button matTooltip="View Emails List">
-                    <img  *ngIf="element.emailList && element.emailList.length != 0" class="listEmail" src="{{getEmailListImage()}}" />
+                    <img  *ngIf="element.emailList && element.emailList.length != 0" class="listEmail" (mouseover)="element.hover = true" (mouseout)="element.hover = false" src="{{getEmailListImage(element)}}"/>
                 </button> 
                 <button [disabled]="actionDisable('Edit Alarm')"
                 (click)="editAlarm(element)" mat-icon-button matTooltip="Edit Alarm">

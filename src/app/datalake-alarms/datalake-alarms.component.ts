@@ -561,10 +561,18 @@ AddEmail(): void
       }
   }
 
-  getEmailListImage()
+  getEmailListImage(element)
   {
     if (this.globals.theme === "light-theme")
+    {
+      if (element.hover)
+        return "../../assets/images/emailListOrange.png";
+      
       return "../../assets/images/emailListLight.png";
+    }
+
+    if (element.hover)
+      return "../../assets/images/emailListBlue.png";
 
     return "../../assets/images/emailListDark.png";
   }
