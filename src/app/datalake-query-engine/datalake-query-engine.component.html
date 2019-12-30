@@ -5,10 +5,8 @@
     </div>
   </div>
   <div class="datalake-query-engine-line-resize">
-      <mat-icon class="datalake-query-engine-hide-left-panel" (click)="toggleLeftPanel()" *ngIf="!leftPanelHidden">arrow_left</mat-icon>
-      <mat-icon class="datalake-query-engine-hide-left-panel" (click)="toggleLeftPanel()" *ngIf="leftPanelHidden">arrow_right</mat-icon>
-      <mat-icon class="datalake-query-engine-drag-handler" *ngIf="!leftPanelHidden" aria-label="Drag Handler" 
-      (mousedown)="onDragClick($event)" (mouseup)="onDragRelease($event)">more_vert</mat-icon>
+      <mat-icon class="datalake-query-engine-hide-left-panel" (click)="toggleLeftPanel()" *ngIf="!leftPanelHidden">keyboard_arrow_left</mat-icon>
+      <mat-icon class="datalake-query-engine-hide-left-panel" (click)="toggleLeftPanel()" *ngIf="leftPanelHidden">keyboard_arrow_right</mat-icon>
   </div>
   <div [style.width.%]="getRightPanelWidth()" [style.max-width.%]="getMaxRightPanelWidth()" 
   class="datalake-query-engine-right-panel">
@@ -76,7 +74,7 @@
           <mat-icon class="close-icon">close</mat-icon> 
         </button>
       </div>
-      <div class="datalake-query-execution-result-body" [style.width.px]="calcTableWidth()">
+      <div class="datalake-query-execution-result-body">
         <ng-container *ngIf="queryLoading">
           <div class="datalake-query-loading"></div>
         </ng-container>

@@ -24,9 +24,8 @@ export class DatalakeQueryEngineComponent implements OnInit {
   @ViewChild("codeEditor") codeEditor: CodemirrorComponent;
   leftPanelWidth: number = 30;
   rightPanelWidth: number = 70;
-  resizePanels: boolean = false;
   selectedIndex: number = 0;
-  error: String = null ;
+  error: String = null;
 
   savequerymouseover: boolean = false;
   queryhistorymouseover: boolean = false;
@@ -172,43 +171,10 @@ export class DatalakeQueryEngineComponent implements OnInit {
     }, 10);
   }
 
-  onDragClick(event): void
-  {
-    this.resizePanels = true;
-
-    event.preventDefault ();
-    event.stopPropagation ();
-  }
-
   @HostListener('document:mousemove', ['$event'])
   onDragMove(event: MouseEvent)
   {
-    if (this.resizePanels)
-    {
-      let offsetX, totalWidth;
-
-      // convert horizontal offset into percentage for proper resizing
-      offsetX = event.movementX * 100 / window.innerWidth;
-      totalWidth = this.leftPanelWidth + this.rightPanelWidth;
-
-      // begin resizing the panels
-      if (offsetX > 0 && this.rightPanelWidth - offsetX < minPanelWidth)
-      {
-        this.rightPanelWidth = minPanelWidth;
-        this.leftPanelWidth = totalWidth - minPanelWidth;
-        return;
-      }
-      else if (offsetX < 0 && this.leftPanelWidth + offsetX < minPanelWidth)
-      {
-        this.leftPanelWidth = minPanelWidth;
-        this.rightPanelWidth = totalWidth - minPanelWidth;
-        return;
-      }
-
-      this.leftPanelWidth += offsetX;
-      this.rightPanelWidth -= offsetX;
-    }
-    else if (this.resizeQueryPanels)
+    if (this.resizeQueryPanels)
     {
       let offsetY, totalHeight;
 
@@ -238,17 +204,15 @@ export class DatalakeQueryEngineComponent implements OnInit {
   @HostListener('document:mouseup', ['$event'])
   onDragRelease(event: MouseEvent)
   {
-    if (this.resizePanels)
-      this.resizePanels = false;
-    else if (this.resizeQueryPanels)
+    if (this.resizeQueryPanels)
       this.resizeQueryPanels = false;
   }
 
   getHoverCursor(): string
   {
     // Use column resize while dragging the panels
-    if (this.resizePanels)
-      return "col-resize";
+    if (this.resizeQueryPanels)
+      return "row-resize";
 
     return "inherit";
   }
@@ -359,12 +323,6 @@ export class DatalakeQueryEngineComponent implements OnInit {
     this.startQueryTime = null;
   }
 
-  calcTableWidth(): number
-  {
-    return document.getElementById ("query-engine-result-header").clientWidth;
-  }
- 
-  
   saveQuery(query: DatalakeQueryTab): void
   {
     // let request = {
@@ -514,9 +472,6 @@ export class DatalakeQueryEngineComponent implements OnInit {
 
   onQueryDragClick(event): void
   {
-    if (this.resizePanels)
-      return;
-
     this.resizeQueryPanels = true;
 
     event.preventDefault ();
