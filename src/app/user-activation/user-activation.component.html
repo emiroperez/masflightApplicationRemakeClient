@@ -14,6 +14,9 @@
         <button class="save-button" mat-icon-button matTooltip="Save Users" (click)="saveUsers()">
             <mat-icon aria-label="save">save</mat-icon>
         </button>
+        <button class="save-button" mat-icon-button matTooltip="Create User" (click)="createUser()">
+            <mat-icon aria-label="add">add</mat-icon>
+        </button>
         <div class="form-field-container">
             <mat-form-field class="user-activation-search-input">
                 <input matInput (input)="applyFilter($event.target.value)" placeholder="Filter">

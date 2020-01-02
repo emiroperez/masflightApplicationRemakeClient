@@ -206,6 +206,7 @@ import { DatalakeQueryEngineSaveComponent } from './datalake-query-engine-save/d
 import { DatalakeAlarmAddEmailDialogComponent } from './datalake-alarm-add-email-dialog/datalake-alarm-add-email-dialog.component';
 import { DatalakeUserInformationDialogComponent } from './datalake-user-information-dialog/datalake-user-information-dialog.component';
 import { DatalakeCreateRolesComponent } from './datalake-create-roles/datalake-create-roles.component';
+import { CreateUserDialogComponent } from './create-user-dialog/create-user-dialog.component';
 
 @NgModule({
   declarations: [
@@ -387,7 +388,8 @@ import { DatalakeCreateRolesComponent } from './datalake-create-roles/datalake-c
     DatalakeUserInformationDialogComponent,
     DatalakeCreateRolesComponent,
     MonthHeader,
-    YearHeader
+    YearHeader,
+    CreateUserDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -485,7 +487,8 @@ import { DatalakeCreateRolesComponent } from './datalake-create-roles/datalake-c
     DatalakeAlarmAddEmailDialogComponent,
     DatalakeUserInformationDialogComponent,
     MonthHeader,
-    YearHeader
+    YearHeader,
+    CreateUserDialogComponent
   ]
 })
 export class AppModule { }

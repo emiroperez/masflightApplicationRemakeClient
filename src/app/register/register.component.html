@@ -22,7 +22,7 @@
                     <ul class="msf-register-list-aux">
                         <li>
                             <mat-form-field [formGroup]="personalInformationForm" class="msf-item">
-                                <input matInput autocomplete="off" type="text" placeholder="Name" class="input-register" formControlName="nameValidator" name="name" [(value)]="user.name" />
+                                <input matInput autocomplete="off" type="text" placeholder="Name" class="input-register" formControlName="nameValidator" name="name" [(value)]="user.name" required/>
                                 <mat-error *ngIf="personalInformationForm.get('nameValidator')?.invalid">{{getErrorNameMessage()}}</mat-error>
                             </mat-form-field>
                         </li>
@@ -61,6 +61,7 @@
                         <li>
                             <mat-form-field [formGroup]="personalInformationForm" class="msf-item">
                                 <input matInput autocomplete="off" type="text" placeholder="Customer" class="input-register" formControlName="customerValidator" name="name" [(value)]="user.customerInfo" required/>
+                                <mat-error *ngIf="personalInformationForm.get('customerValidator')?.invalid">{{getErrorCustomerMessage()}}</mat-error>
                             </mat-form-field>
                         </li>
                     </ul>
@@ -83,13 +84,14 @@
                             </mat-form-field>
                         </li>
                         <li>
-                            <mat-form-field class="msf-item">
-                                <mat-select placeholder="State" autocomplete="off" class="input-register" [(ngModel)]="user.CState" name="state">
+                            <mat-form-field [formGroup]="personalInformationForm" class="msf-item">
+                                <mat-select placeholder="State" autocomplete="off" class="input-register" formControlName="StateValidator" name="state">
                                     <ngx-mat-select-search [formControl]="stateFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
                                     <mat-option *ngFor="let state of filteredStates | async" [value]="state">
                                         {{state.fullName}}
                                     </mat-option>
                                 </mat-select>
+                                <mat-error *ngIf="personalInformationForm.get('stateValidator')?.invalid">{{getErrorStateMessage()}}</mat-error>
                             </mat-form-field>
                         </li>
                         <li>

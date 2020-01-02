@@ -36,22 +36,21 @@ export class RegisterComponent implements OnInit {
   title: string = 'Personal Information';
 
   personalInformationForm = new FormGroup ({
-    nameValidator:new FormControl('name', [Validators.required]),
-    lastNameValidator : new FormControl('lastName', [Validators.required]),
-    passwordValidator : new FormControl('password', [Validators.required]),
-    repeatPasswordValidator : new FormControl('repeatPassword', [Validators.required, RegisterComponent.passwordMatchValidator(this)]),
-    emailValidator : new FormControl('email', [Validators.required,Validators.email]),
-    addressValidator : new FormControl('address', [Validators.required]),
-    countryValidator : new FormControl('country', [Validators.required]),
-    stateValidator : new FormControl('state', [Validators.required]),
-    postalCodeValidator : new FormControl('postalCode', [Validators.required]),
-    phoneNumberValidator : new FormControl('phoneNumber', [Validators.required]),
-    customerValidator : new FormControl('customer', [Validators.required])
+    nameValidator:new FormControl('', [Validators.required]),
+    lastNameValidator : new FormControl(''),
+    passwordValidator : new FormControl('', [Validators.required]),
+    repeatPasswordValidator : new FormControl('', [Validators.required, RegisterComponent.passwordMatchValidator(this)]),
+    emailValidator : new FormControl('', [Validators.required, Validators.email]),
+    addressValidator : new FormControl(''),
+    countryValidator : new FormControl('', [Validators.required]),
+    stateValidator : new FormControl(null, [RegisterComponent.stateValidator (this)]),
+    postalCodeValidator : new FormControl(''),
+    phoneNumberValidator : new FormControl(''),
+    customerValidator : new FormControl('', [Validators.required])
   });
 
   public countryFilterCtrl: FormControl = new FormControl();
   public stateFilterCtrl: FormControl = new FormControl();
-  public customerFilterCtrl: FormControl = new FormControl();
 
   public filteredCountries: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
   public filteredStates: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
@@ -73,8 +72,6 @@ export class RegisterComponent implements OnInit {
     this.states = new Array ();
     this.globals.isLoading = true;
     this.registerServices.getCountries(this,this.renderCountries,this.errorCountries);
-
-
   }
 
   ngOnInit() {
@@ -161,7 +158,10 @@ export class RegisterComponent implements OnInit {
 
   CountryChangeEvent(event)
   {
-    this.user.CState = null;
+    let stateValidatorForm = this.personalInformationForm.get ('stateValidator');
+
+    stateValidatorForm.setValue (null);
+    stateValidatorForm.markAsUntouched ();
 
     if (event != undefined)
     {
@@ -174,6 +174,17 @@ export class RegisterComponent implements OnInit {
       this.states = [];
       this.filteredStates.next ([]);
     }
+  }
+
+  static stateValidator(comp: RegisterComponent): ValidatorFn
+  {
+    return (control: AbstractControl): ValidationErrors =>
+    {
+      if (comp.user != undefined && comp.personalInformationForm.get ('countryValidator').value.states)
+        return comp.personalInformationForm.get ('countryValidator').value.states.length && !control.value ? { required: true } : null;
+      else
+        return null;
+    };
   }
 
   static passwordMatchValidator(comp: RegisterComponent): ValidatorFn
@@ -248,6 +259,10 @@ export class RegisterComponent implements OnInit {
     return this.personalInformationForm.get('phoneNumberValidator').hasError('required') ? 'You must enter a phone number' :'';
   }
 
+  getErrorCustomerMessage() {
+    return this.personalInformationForm.get('customerValidator').hasError('required') ? 'You must enter the customer' :'';
+  }
+
   successHandleResponse(_this,data){
 	}
 
@@ -260,7 +275,7 @@ export class RegisterComponent implements OnInit {
     if (this.personalInformationForm.valid)
     {
       this.setUserValues ();
-      this.userServices.saveUser (this, this.user, this.saveUserHandleResponse,this.errorHandleResponsen);
+      this.userServices.saveUser (this, this.user, this.saveUserHandleResponse, this.saveUserError);
     }
     else
       this.utils.showAlert ('info','No valid form, you must complete all fields');
@@ -272,6 +287,13 @@ export class RegisterComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result: any) => {
       this_.router.navigate(['']);
+    });
+  }
+
+  saveUserError(_this)
+  {
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Error", message: "Failed to create user!" }
     });
   }
 
@@ -339,6 +361,7 @@ export class RegisterComponent implements OnInit {
     this.user.email = this.personalInformationForm.get ('emailValidator').value;
     this.user.address = this.personalInformationForm.get ('addressValidator').value;
     this.user.country = this.personalInformationForm.get ('countryValidator').value;
+    this.user.CState = this.personalInformationForm.get ('stateValidator').value;
     this.user.postalCode = this.personalInformationForm.get ('postalCodeValidator').value;
     this.user.phoneNumber = this.personalInformationForm.get ('phoneNumberValidator').value;
     this.user.customerInfo = this.personalInformationForm.get ('customerValidator').value;

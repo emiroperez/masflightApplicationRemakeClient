@@ -13,6 +13,9 @@ import { ApplicationService } from '../services/application.service';
 import { UserService } from '../services/user.service';
 import { MatTableDataSource, MatPaginator, MatDialog } from '@angular/material';
 import { DatalakeUserInformationDialogComponent } from '../datalake-user-information-dialog/datalake-user-information-dialog.component';
+import { CreateUserDialogComponent } from '../create-user-dialog/create-user-dialog.component';
+import { MessageComponent } from '../message/message.component';
+import { Customer } from '../model/Customer';
 
 
 @Component({
@@ -21,10 +24,12 @@ import { DatalakeUserInformationDialogComponent } from '../datalake-user-informa
 })
 export class UserActivationComponent implements OnInit {
 
+  userCreated: boolean = false;
   innerHeight: number;
   innerWidth: number;
   users: any[] = [];
   usersToAdd: any[] = [];
+  customers: Customer[];
   userSelected: any;
   dataSource;
 
@@ -63,6 +68,15 @@ export class UserActivationComponent implements OnInit {
     }
 
     _this.globals.isLoading = false;
+
+    if (_this.userCreated)
+    {
+      _this.dialog.open (MessageComponent, {
+        data: { title: "Information", message: "User has been created succesfully!" }
+      });
+
+      _this.userCreated = false;
+    }
   }
 
   handlerError(_this, result) {
@@ -216,10 +230,39 @@ export class UserActivationComponent implements OnInit {
     }
   }
 
-  editInformationDatalake(element){
+  editInformationDatalake(element): void
+  {
   }
-  
+
+  createUser(): void
+  {
+    let self = this;
+    let dialogRef = this.dialog.open (CreateUserDialogComponent,
+    {
+      height: '565px',
+      width: '700px',
+      panelClass: 'create-user-container',
+      data: { customers: this.customers }
+    });
+
+    dialogRef.afterClosed ().subscribe ((result) => {
+      if (!result)
+        return;
+
+      if (result.error)
+      {
+        self.dialog.open (MessageComponent, {
+          data: { title: "Error", message: result.error }
+        });
+
+        return;
+      }
+      else
+      {
+        // save existing user list
+        this.userCreated = true;
+        this.saveUsers ();
+      }
+    });
   }
-
-
-
+}
