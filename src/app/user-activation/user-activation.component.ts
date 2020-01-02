@@ -94,7 +94,8 @@ export class UserActivationComponent implements OnInit {
   }
 
   handlerSuccessSave(_this, data){
-    _this.users = []
+    _this.users = [];
+    _this.usersToAdd = [];
     _this.service.loadAllUsers(_this, _this.handlerSuccessUsers, _this.handlerErrorUsers);
     // _this.globals.isLoading = false;
   }

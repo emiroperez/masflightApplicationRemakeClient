@@ -365,7 +365,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             padding: 10px
             background-color: $quaternary-background-color
             color: $font-color
-        .func-button, .arrow-back-button, .save-button
+        .func-button, .arrow-back-button, .user-activation-arrow-back-button, .save-button
             .mat-button-wrapper
                 color: $font-color !important
         .func-button-disabled
@@ -6801,8 +6801,13 @@ mat-form-field.msf-table-input
     float: left !important
     margin-top: 30px !important
 
+.user-activation-arrow-back-button
+    float: left !important
+    margin-top: 15px !important
+
 .save-button
     float: right !important
+    margin-top: 15px !important
 
 .msf-plan-card-footer
     .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label
@@ -6934,6 +6939,8 @@ mat-form-field.msf-table-input
 .user-activation-search-input
     width: 50%
     float: right
+    margin-right: 15px
+    margin-top: -5px
 
 .user-activation-table
     display: flex
@@ -6955,6 +6962,7 @@ mat-form-field.msf-table-input
     min-height: calc(100% - 202px) !important
     width: calc(100% - 100px) !important
     border-radius: 0 !important
+    padding-top: 0 !important
 
 .msf-user-activation-card .mat-checkbox-frame
     border-color: #2d3436 !important
