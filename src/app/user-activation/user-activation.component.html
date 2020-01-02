@@ -19,7 +19,7 @@
         </button>
         <div class="form-field-container">
             <mat-form-field class="user-activation-search-input">
-                <input matInput (input)="applyFilter($event.target.value)" placeholder="Filter">
+                <input class="filter-input" matInput (input)="applyFilter($event.target.value)" placeholder="Filter">
             </mat-form-field>
             <div class="mat-elevation-z8 user-activation-table">
                 <table mat-table matSort [dataSource]="dataSource" class="datasource welcome-table">
