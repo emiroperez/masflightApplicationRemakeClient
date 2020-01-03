@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Globals } from '../globals/Globals';
 import { ApplicationService } from '../services/application.service';
 import { MessageComponent } from '../message/message.component';
@@ -57,6 +57,22 @@ export class DatalakeCreateRolesComponent implements OnInit {
     _this.globals.isLoading = false;
   }
 
+  @HostListener('window:resize', ['$event'])
+  checkScreen(event): void
+  {
+    this.innerHeight = event.target.innerHeight;
+
+    // if(!this.mobileQuery.matches)
+    // {
+    if (event.target.innerHeight == window.screen.height && event.target.innerWidth == window.screen.width)
+      this.globals.isFullscreen = true;
+    else
+      this.globals.isFullscreen = false;
+    // }
+    // else{
+    //   this.globals.isFullscreen = false;
+    // }
+  }
   
   getInnerHeight(): number
   {
