@@ -129,7 +129,7 @@ export class MsfDateRangeComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
 
-  loadingDefaults: boolean = false;
+  prepateAutoDateRange: boolean = false;
   minDate: Date;
 
   calendarHeader: any = MonthHeader;
@@ -299,7 +299,7 @@ export class MsfDateRangeComponent implements OnInit {
 
     if (!this.argument.dateLoaded)
     {
-      this.loadingDefaults = true;
+      this.prepateAutoDateRange = true;
 
       // auto select date range after loading the default value
       for (let dateRange of this.currentDateRange)
@@ -312,7 +312,7 @@ export class MsfDateRangeComponent implements OnInit {
         }
       }
   
-      this.loadingDefaults = false;
+      this.prepateAutoDateRange = false;
       this.argument.dateLoaded = true;
     }
     else
@@ -780,7 +780,7 @@ export class MsfDateRangeComponent implements OnInit {
   
   openDialog(text: string): void
   {
-    if (!this.loadingDefaults)
+    if (!this.prepateAutoDateRange)
     {
       this.dialog.open (MessageComponent,
       {
@@ -958,5 +958,15 @@ export class MsfDateRangeComponent implements OnInit {
       this.argument.currentDateRangeValue = this.dateRange.id;
     else
       this.argument.currentDateRangeValue = null;
+  }
+
+  setDateRange(): void
+  {
+    if (this.selectionMode === "auto")
+    {
+      this.prepateAutoDateRange = true;
+      this.autoSelect ();
+      this.prepateAutoDateRange = false;
+    }
   }
 }

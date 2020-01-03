@@ -3,7 +3,7 @@
     <div class="center">
         <div class="msf-component-airport-title">Date Range Selection</div>
     </div>
-    <mat-radio-group [(ngModel)]="selectionMode" name="Selection Mode">
+    <mat-radio-group [(ngModel)]="selectionMode" (ngModelChange)="setDateRange()" name="Selection Mode">
         <mat-radio-button value="manual">Manual Selection</mat-radio-button>
         <mat-radio-button class="msf-radio" value="auto">Auto Range</mat-radio-button>
     </mat-radio-group>
@@ -90,6 +90,7 @@
             bindLabel="name"
             (change)="autoSelect()"
             [(ngModel)]="dateRange"
+            [clearable]="false"
             (ngModelChange)="setCurrentDateRangeValue()"
             appendTo=".msf-control-variables-overlay"
             dropdownPosition="bottom">
