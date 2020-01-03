@@ -327,35 +327,35 @@ export class EditCategoryArgumentDialog {
     { id: 1, name: 'Yesterday' },
     { id: 2, name: 'Last Week' },
     { id: 3, name: 'Last Month' },
-    { id: 4, name: 'Last Year' }
+    { id: 4, name: 'Last Quarter' },
+    { id: 5, name: 'Last Year' }
   ];
 
   dateRangeByFullDate: any[] = [
     { id: 0, name: 'Today' },
     { id: 1, name: 'Yesterday' },
-    { id: 2, name: 'Last Week' },
-    { id: 3, name: 'Last Month' },
-    { id: 4, name: 'Last Year' },
-    { id: 5, name: 'Until Yesterday' },
-    { id: 6, name: 'Until Last Week' },
-    { id: 7, name: 'Until Last Month' },
-    { id: 8, name: 'Until Last Year' },
-    { id: 9, name: 'Until Today' }
+    { id: 2, name: 'Current Week' },
+    { id: 3, name: 'Current Quarter' },
+    { id: 4, name: 'Last Week' },
+    { id: 5, name: 'Last Month' },
+    { id: 6, name: 'Last Quarter' },
+    { id: 7, name: 'Last Year' }
   ];
 
   dateValueByMonth: any[] = [
     { id: 0, name: 'Current Month' },
     { id: 1, name: 'Last Month' },
-    { id: 2, name: 'Last Year' }
+    { id: 2, name: 'Last Quarter' },
+    { id: 3, name: 'Last Year' }
   ];
 
   dateRangeByMonth: any[] = [
     { id: 0, name: 'Current Month' },
-    { id: 1, name: 'Current Year' },
-    { id: 2, name: 'Last Month' },
-    { id: 3, name: 'Last Year' },
-    { id: 4, name: 'Until Last Month' },
-    { id: 5, name: 'Until Last Year' },
+    { id: 1, name: 'Current Quarter' },
+    { id: 2, name: 'Current Year' },
+    { id: 3, name: 'Last Month' },
+    { id: 4, name: 'Last Quarter' },
+    { id: 5, name: 'Last Year' }
   ];
 
   dateValueByQuarter: any[] = [
@@ -368,9 +368,7 @@ export class EditCategoryArgumentDialog {
     { id: 0, name: 'Current Quarter' },
     { id: 1, name: 'Current Year' },
     { id: 2, name: 'Last Quarter' },
-    { id: 3, name: 'Last Year' },
-    { id: 4, name: 'Until Last Quarter' },
-    { id: 5, name: 'Until Last Year' },
+    { id: 3, name: 'Last Year' }
   ];
 
   dateValueByYear: any[] = [
@@ -380,8 +378,7 @@ export class EditCategoryArgumentDialog {
 
   dateRangeByYear: any[] = [
     { id: 0, name: 'Current Year' },
-    { id: 1, name: 'Last Year' },
-    { id: 2, name: 'Until Last Year' }
+    { id: 1, name: 'Last Year' }
   ];
 
   contentTypes: any[] = [

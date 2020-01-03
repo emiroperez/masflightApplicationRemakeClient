@@ -142,38 +142,44 @@ export class MsfDateRangeComponent implements OnInit {
     { id: 1, name: 'Yesterday', value: "YESTERDAY" },
     { id: 2, name: 'Last Week', value: "LASTWEEK" },
     { id: 3, name: 'Last Month', value: "LASTMONTH" },
-    { id: 4, name: 'Last Year', value: "LASTYEAR" }
+    { id: 4, name: 'Last Quarter', value: "LASTQUARTER" },
+    { id: 5, name: 'Last Year', value: "LASTYEAR" }
   ];
 
   dateRangeByFullDate: any[] = [
     { id: 0, name: 'Today', value: "TODAY" },
     { id: 1, name: 'Yesterday', value: "YESTERDAY" },
-    { id: 2, name: 'Last Week', value: "LASTWEEK" },
-    { id: 3, name: 'Last Month', value: "LASTMONTH" },
-    { id: 4, name: 'Last Year', value: "LASTYEAR" },
-    { id: 5, name: 'Until Yesterday', value: "UNTILYESTERDAY" },
-    { id: 6, name: 'Until Last Week', value: "UNTILLASTWEEK" },
-    { id: 7, name: 'Until Last Month', value: "UNTILLASTMONTH" },
-    { id: 8, name: 'Until Last Year', value: "UNTILLASTYEAR" },
-    { id: 9, name: 'Until Today', value: "UNTILTODAY" },
-    { id: 0, name: 'Current Quarter', value: "CURRENTQUARTER" },
-    { id: 2, name: 'Last Quarter', value: "LASTQUARTER" },
-    { id: 4, name: 'Until Last Quarter', value: "UNTILLASTQUARTER" }
+    { id: 2, name: 'Current Week', value: "CURRENTWEEK" },
+    { id: 3, name: 'Current Quarter', value: "CURRENTQUARTER" },
+    { id: 4, name: 'Last Week', value: "LASTWEEK" },
+    { id: 5, name: 'Last Month', value: "LASTMONTH" },
+    { id: 6, name: 'Last Quarter', value: "LASTQUARTER" },
+    { id: 7, name: 'Last Year', value: "LASTYEAR" },
+    { id: 8, name: 'Until Today', value: "UNTILTODAY" },
+    { id: 9, name: 'Until Yesterday', value: "UNTILYESTERDAY" },
+    { id: 10, name: 'Until Last Week', value: "UNTILLASTWEEK" },
+    { id: 12, name: 'Until Last Month', value: "UNTILLASTMONTH" },
+    { id: 13, name: 'Until Last Quarter', value: "UNTILLASTQUARTER" },
+    { id: 14, name: 'Until Last Year', value: "UNTILLASTYEAR" },
   ];
 
   dateValueByMonth: any[] = [
     { id: 0, name: 'Current Month', value: "CURRENTMONTH" },
     { id: 1, name: 'Last Month', value: "LASTMONTH" },
-    { id: 2, name: 'Last Year', value: "LASTYEAR" }
+    { id: 2, name: 'Last Quarter', value: "LASTQUARTER" },
+    { id: 3, name: 'Last Year', value: "LASTYEAR" }
   ];
 
   dateRangeByMonth: any[] = [
     { id: 0, name: 'Current Month', value: "CURRENTMONTH" },
-    { id: 1, name: 'Current Year', value :"CURRENTYEAR" },
-    { id: 2, name: 'Last Month', value: "LASTMONTH" },
-    { id: 3, name: 'Last Year', value: "LASTYEAR" },
-    { id: 4, name: 'Until Last Month', value: "UNTILLASTMONTH" },
-    { id: 5, name: 'Until Last Year', value: "UNTILLASTYEAR" },
+    { id: 1, name: 'Current Quarter', value: "CURRENTQUARTER" },
+    { id: 2, name: 'Current Year', value :"CURRENTYEAR" },
+    { id: 3, name: 'Last Month', value: "LASTMONTH" },
+    { id: 4, name: 'Last Quarter', value: "LASTQUARTER" },
+    { id: 5, name: 'Last Year', value: "LASTYEAR" },
+    { id: 6, name: 'Until Last Month', value: "UNTILLASTMONTH" },
+    { id: 7, name: 'Until Last Quarter', value: "UNTILLASTQUARTER" },
+    { id: 8, name: 'Until Last Year', value: "UNTILLASTYEAR" }
   ];
 
   dateValueByQuarter: any[] = [
@@ -188,7 +194,7 @@ export class MsfDateRangeComponent implements OnInit {
     { id: 2, name: 'Last Quarter', value: "LASTQUARTER" },
     { id: 3, name: 'Last Year', value: "LASTYEAR" },
     { id: 4, name: 'Until Last Quarter', value: "UNTILLASTQUARTER" },
-    { id: 5, name: 'Until Last Year', value: "UNTILLASTYEAR" },
+    { id: 5, name: 'Until Last Year', value: "UNTILLASTYEAR" }
   ];
 
   dateValueByYear: any[] = [
@@ -378,6 +384,10 @@ export class MsfDateRangeComponent implements OnInit {
           this.calculateDateRange ('Today', option);
           break;
 
+        case 'CURRENTWEEK':
+          this.calculateDateRange ('Current Week', option);
+          break;
+
         case 'CURRENTMONTH':
           this.calculateDateRange ('Current Month', option);
           break;
@@ -477,7 +487,11 @@ export class MsfDateRangeComponent implements OnInit {
       switch (option)
       {
         case 'TODAY':
-          this.argument.value1 = new Date (new Date ().getTime ());
+          this.argument.value1 = moment ().toDate ();
+          break;
+
+        case 'CURRENTWEEK':
+          this.argument.value1 = moment ().day (1).toDate ();
           break;
 
         case 'CURRENTMONTH':
@@ -485,15 +499,29 @@ export class MsfDateRangeComponent implements OnInit {
           break;
 
         case 'CURRENTQUARTER':
-          this.argument.value1 = moment ().startOf ("month").toDate ();
+        {
+          let date = moment ().startOf ("month");
+          let quarter = date.quarter ();
+    
+          for (let quarterIndex of this.quarterRange)
+          {
+            if (quarterIndex.id == quarter)
+            {
+              date.set ("month", quarterIndex.start);
+              this.argument.value1 = date.toDate ();
+              break;
+            }
+          }
+    
           break;
+        }
 
         case 'CURRENTYEAR':
           this.argument.value1 = moment ().startOf ("year").toDate ();
           break;
   
         case 'YESTERDAY':
-          this.argument.value1 = new Date (new Date ().getTime () - (24 * 60 * 60 * 1000));
+          this.argument.value1 = moment ().subtract (1, "days").toDate ();
           break;
   
         case 'LASTWEEK':
@@ -505,8 +533,22 @@ export class MsfDateRangeComponent implements OnInit {
           break;
 
         case 'LASTQUARTER':
-          this.argument.value1 = moment ().subtract (3, "months").startOf ("month").toDate ();
+        {
+          let date = moment ().subtract (3, "months").startOf ("month");
+          let quarter = date.quarter ();
+    
+          for (let quarterIndex of this.quarterRange)
+          {
+            if (quarterIndex.id == quarter)
+            {
+              date.set ("month", quarterIndex.end);
+              this.argument.value1 = date.endOf ("month").toDate ();
+              break;
+            }
+          }
+    
           break;
+        }
   
         case 'LASTYEAR':
           this.argument.value1 = moment ().subtract (1, "years").startOf ("year").toDate ();
@@ -545,6 +587,11 @@ export class MsfDateRangeComponent implements OnInit {
     {
       case 'TODAY':
         this.argument.value1 = this.argument.value2 = moment ().toDate ();
+        break;
+
+      case 'CURRENTWEEK':
+        this.argument.value1 = moment ().day (1).toDate ();
+        this.argument.value2 = moment ().day (7).toDate ();
         break;
 
       case 'CURRENTMONTH':
@@ -843,7 +890,7 @@ export class MsfDateRangeComponent implements OnInit {
   setQuarterValue1(): void
   {
     let normalizedDate = moment (this.argument.value1);
-    let quarterValue = Math.trunc (normalizedDate.month () / 3) + 1;
+    let quarterValue = normalizedDate.quarter ();
 
     for (let quarter of this.quarters)
     {
@@ -860,7 +907,7 @@ export class MsfDateRangeComponent implements OnInit {
   setQuarterValue2(): void
   {
     let normalizedDate = moment (this.argument.value2);
-    let quarterValue = Math.trunc (normalizedDate.month () / 3) + 1;
+    let quarterValue = normalizedDate.quarter ();
 
     for (let quarter of this.quarters)
     {
@@ -908,7 +955,7 @@ export class MsfDateRangeComponent implements OnInit {
 
   setCurrentDateRangeValue(): void
   {
-    if (this.dateRange.id)
+    if (this.dateRange)
       this.argument.currentDateRangeValue = this.dateRange.id;
     else
       this.argument.currentDateRangeValue = null;
