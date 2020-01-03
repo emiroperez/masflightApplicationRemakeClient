@@ -170,7 +170,7 @@
                                             <div class="dialog-category-arguments-body">
                                                 <div *ngFor="let item of filteredCategories | async" class="dialog-item" [ngClass]="{ 'msf-hide': showSelected && !item.selected }">
                                                     <mat-checkbox (change)="setSelectedCategoryArguments(item)" class="admin-checkboxes" [(ngModel)]="item.selected"></mat-checkbox>
-                                                    <mat-icon *ngIf="item.icon && isMatIcon(item.icon)" class="img-item-category-argument">{{item.icon}}</mat-icon>
+                                                    <mat-icon *ngIf="item.icon && isMatIcon(item.icon)" class="img-item-category-argument icon-item-picture">{{item.icon}}</mat-icon>
                                                     <img *ngIf="item.icon && !isMatIcon(item.icon)" class="img-item-category-argument img-item-picture" src="{{getImageIcon(item.icon)}}">
                                                     <div *ngIf="!item.icon" class="img-item-category-argument img-item-empty"></div>
                                                     <input [disabled]="true" type="text" matInput [(ngModel)]="item.id" class="text-item-category-argument text-item-category-argument-id">
