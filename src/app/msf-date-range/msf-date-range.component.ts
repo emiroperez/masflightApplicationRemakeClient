@@ -135,7 +135,7 @@ export class MsfDateRangeComponent implements OnInit {
   calendarHeader: any = MonthHeader;
   currentDateRange: any[] = [];
   currentValueType: number = 0;
-  selectionMode: number = 0;
+  selectionMode: string = "manual";
 
   dateValueByFullDate: any[] = [
     { id: 0, name: 'Today', value: "TODAY" },
@@ -154,13 +154,13 @@ export class MsfDateRangeComponent implements OnInit {
     { id: 4, name: 'Last Week', value: "LASTWEEK" },
     { id: 5, name: 'Last Month', value: "LASTMONTH" },
     { id: 6, name: 'Last Quarter', value: "LASTQUARTER" },
-    { id: 7, name: 'Last Year', value: "LASTYEAR" },
+    { id: 7, name: 'Last Year', value: "LASTYEAR" }/*,
     { id: 8, name: 'Until Today', value: "UNTILTODAY" },
     { id: 9, name: 'Until Yesterday', value: "UNTILYESTERDAY" },
     { id: 10, name: 'Until Last Week', value: "UNTILLASTWEEK" },
     { id: 12, name: 'Until Last Month', value: "UNTILLASTMONTH" },
     { id: 13, name: 'Until Last Quarter', value: "UNTILLASTQUARTER" },
-    { id: 14, name: 'Until Last Year', value: "UNTILLASTYEAR" },
+    { id: 14, name: 'Until Last Year', value: "UNTILLASTYEAR" }*/
   ];
 
   dateValueByMonth: any[] = [
@@ -176,10 +176,10 @@ export class MsfDateRangeComponent implements OnInit {
     { id: 2, name: 'Current Year', value :"CURRENTYEAR" },
     { id: 3, name: 'Last Month', value: "LASTMONTH" },
     { id: 4, name: 'Last Quarter', value: "LASTQUARTER" },
-    { id: 5, name: 'Last Year', value: "LASTYEAR" },
+    { id: 5, name: 'Last Year', value: "LASTYEAR" }/*,
     { id: 6, name: 'Until Last Month', value: "UNTILLASTMONTH" },
     { id: 7, name: 'Until Last Quarter', value: "UNTILLASTQUARTER" },
-    { id: 8, name: 'Until Last Year', value: "UNTILLASTYEAR" }
+    { id: 8, name: 'Until Last Year', value: "UNTILLASTYEAR" }*/
   ];
 
   dateValueByQuarter: any[] = [
@@ -192,9 +192,9 @@ export class MsfDateRangeComponent implements OnInit {
     { id: 0, name: 'Current Quarter', value: "CURRENTQUARTER" },
     { id: 1, name: 'Current Year', value :"CURRENTYEAR" },
     { id: 2, name: 'Last Quarter', value: "LASTQUARTER" },
-    { id: 3, name: 'Last Year', value: "LASTYEAR" },
+    { id: 3, name: 'Last Year', value: "LASTYEAR" }/*,
     { id: 4, name: 'Until Last Quarter', value: "UNTILLASTQUARTER" },
-    { id: 5, name: 'Until Last Year', value: "UNTILLASTYEAR" }
+    { id: 5, name: 'Until Last Year', value: "UNTILLASTYEAR" }*/
   ];
 
   dateValueByYear: any[] = [
@@ -204,8 +204,8 @@ export class MsfDateRangeComponent implements OnInit {
 
   dateRangeByYear: any[] = [
     { id: 0, name: 'Current Year', value: "CURRENTYEAR" },
-    { id: 1, name: 'Last Year', value: "LASTYEAR" },
-    { id: 2, name: 'Until Last Year', value: "UNTILLASTYEAR" }
+    { id: 1, name: 'Last Year', value: "LASTYEAR" }/*,
+    { id: 2, name: 'Until Last Year', value: "UNTILLASTYEAR" }*/
   ];
 
   quarters: any[] = [
@@ -252,7 +252,6 @@ export class MsfDateRangeComponent implements OnInit {
 
     this.leadingZero = (this.argument.selectionMode >> 11) & 1;
     this.monthDateFormat = (this.argument.selectionMode >> 12) & 1;
-    this.selectionMode = 0; // TODO: Set this properly
 
     this.isDateRange = (this.argument.selectionMode & 1) ? true : false;
 

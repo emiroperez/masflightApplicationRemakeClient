@@ -1,5 +1,14 @@
 <!-- Treat the two sub-arguments as if they were two separate arguments for the dashboard control panel -->
-<div *ngIf="selectionMode == 0" class="msf-component-argument-container">
+<div class="center msf-component-radio" *ngIf="isDateRange">
+    <div class="center">
+        <div class="msf-component-airport-title">Date Range Selection</div>
+    </div>
+    <mat-radio-group [(ngModel)]="selectionMode" name="Selection Mode">
+        <mat-radio-button value="manual">Manual Selection</mat-radio-button>
+        <mat-radio-button class="msf-radio" value="auto">Auto Range</mat-radio-button>
+    </mat-radio-group>
+</div>
+<div class="msf-component-argument-container" *ngIf="selectionMode == 'manual'">
     <div class="center">
         <div class="msf-component-airport-title">{{argument.title}}</div>
     </div>
@@ -68,9 +77,9 @@
         </ng-container>
     </div>
 </div>
-<div class="msf-component-argument-container" *ngIf="isDateRange && valueType === 'fullDate' && selectionMode == 0">
+<div class="msf-component-argument-container" *ngIf="selectionMode == 'auto'">
     <div class="center">
-        <div class="msf-component-airport-title">Auto select the date range:</div>
+        <div class="msf-component-airport-title">Auto Select The Date Range</div>
     </div>
     <div class="msf-component-auto-select-date-range">
         <ng-select style="width: 100%;"
