@@ -324,11 +324,7 @@ export class EditCategoryArgumentDialog {
 
   dateValueByFullDate: any[] = [
     { id: 0, name: 'Today' },
-    { id: 1, name: 'Yesterday' },
-    { id: 2, name: 'Last Week' },
-    { id: 3, name: 'Last Month' },
-    { id: 4, name: 'Last Quarter' },
-    { id: 5, name: 'Last Year' }
+    { id: 1, name: 'Yesterday' }
   ];
 
   dateRangeByFullDate: any[] = [
@@ -336,17 +332,23 @@ export class EditCategoryArgumentDialog {
     { id: 1, name: 'Yesterday' },
     { id: 2, name: 'Current Week' },
     { id: 3, name: 'Current Quarter' },
-    { id: 4, name: 'Last Week' },
-    { id: 5, name: 'Last Month' },
-    { id: 6, name: 'Last Quarter' },
-    { id: 7, name: 'Last Year' }
+    { id: 4, name: 'Current Month' },
+    { id: 5, name: 'Current Year' },
+    { id: 6, name: 'Last Week' },
+    { id: 7, name: 'Last Month' },
+    { id: 8, name: 'Last Quarter' },
+    { id: 9, name: 'Last Year' },
+    { id: 10, name: 'Until Today' },
+    { id: 11, name: 'Until Yesterday' },
+    { id: 12, name: 'Until Last Week' },
+    { id: 13, name: 'Until Last Month' },
+    { id: 14, name: 'Until Last Quarter' },
+    { id: 15, name: 'Until Last Year' }
   ];
 
   dateValueByMonth: any[] = [
     { id: 0, name: 'Current Month' },
-    { id: 1, name: 'Last Month' },
-    { id: 2, name: 'Last Quarter' },
-    { id: 3, name: 'Last Year' }
+    { id: 1, name: 'Last Month' }
   ];
 
   dateRangeByMonth: any[] = [
@@ -355,20 +357,24 @@ export class EditCategoryArgumentDialog {
     { id: 2, name: 'Current Year' },
     { id: 3, name: 'Last Month' },
     { id: 4, name: 'Last Quarter' },
-    { id: 5, name: 'Last Year' }
+    { id: 5, name: 'Last Year' },
+    { id: 6, name: 'Until Last Month' },
+    { id: 7, name: 'Until Last Quarter' },
+    { id: 8, name: 'Until Last Year' }
   ];
 
   dateValueByQuarter: any[] = [
     { id: 0, name: 'Current Quarter' },
-    { id: 1, name: 'Last Quarter' },
-    { id: 2, name: 'Last Year' }
+    { id: 1, name: 'Last Quarter' }
   ];
 
   dateRangeByQuarter: any[] = [
     { id: 0, name: 'Current Quarter' },
     { id: 1, name: 'Current Year' },
     { id: 2, name: 'Last Quarter' },
-    { id: 3, name: 'Last Year' }
+    { id: 3, name: 'Last Year' },
+    { id: 4, name: 'Until Last Quarter' },
+    { id: 5, name: 'Until Last Year' }
   ];
 
   dateValueByYear: any[] = [
@@ -378,21 +384,22 @@ export class EditCategoryArgumentDialog {
 
   dateRangeByYear: any[] = [
     { id: 0, name: 'Current Year' },
-    { id: 1, name: 'Last Year' }
+    { id: 1, name: 'Last Year' },
+    { id: 2, name: 'Until Last Year' }
   ];
 
   contentTypes: any[] = [
     { "id": 1, "name": "TV", "value": "TV" },
     { "id": 2, "name": "Movie", "value": "Movie" },
-    { "id": 3, "name": "All", "value": "All"},
-    { "id": 3, "name": "All Combined", "value": "Combined"}
+    { "id": 3, "name": "All", "value": "All" },
+    { "id": 3, "name": "All Combined", "value": "Combined" }
   ];
 
   seatClasses: any[] = [
     { "id": 1, "name": "Business", "value": "Business" },
     { "id": 2, "name": "Economy", "value": "Economy" },
     { "id": 3, "name": "All", "value": "All" },
-    { "id": 3, "name": "All Combined", "value": "Combined"}
+    { "id": 3, "name": "All Combined", "value": "Combined" }
   ];
 
   optionId: number;
@@ -434,7 +441,7 @@ export class EditCategoryArgumentDialog {
             argument.leadingZero = (argument.selectionMode >> 11) & 1;
             argument.monthDateFormat = (argument.selectionMode >> 12) & 1;
             argument.dateValue = (argument.selectionMode >> 1) & 3;
-            argument.dateRange = (argument.selectionMode >> 3) & 7;
+            argument.dateRange = (argument.selectionMode >> 3) & 15;
             argument.selectionMode &= 1;
           }
 

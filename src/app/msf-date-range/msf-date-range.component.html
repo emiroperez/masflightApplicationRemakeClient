@@ -78,6 +78,45 @@
     </div>
 </div>
 <div class="msf-component-argument-container" *ngIf="selectionMode == 'auto'">
+    <div *ngIf="dateRange && dateRange.value.startsWith ('UNTIL')">
+        <div class="center">
+            <div class="msf-component-airport-title">Select Initial Date</div>
+        </div>
+        <div class="msf-component-date-input-container msf-single-date">
+            <ng-container *ngIf="dateStartView === 'month'">
+                <mat-form-field class="msf-full-width">
+                    <input matInput [min]="argument.minDate" [max]="argument.maxDate" [matDatepicker]="picker1" placeholder="Initial Date" [(ngModel)]="argument.value1" (ngModelChange)="dateChange($event)" (click)="picker1.open()" [readonly]="true">
+                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1 startView="{{dateStartView}}"></mat-datepicker>
+                </mat-form-field>
+            </ng-container>
+            <ng-container *ngIf="dateStartView !== 'month'">
+                <mat-form-field class="msf-full-width">
+                    <input hidden [min]="argument.minDate" [max]="argument.maxDate" [matDatepicker]="picker3" [(ngModel)]="value1Date" (ngModelChange)="dateChange($event)" [readonly]="true">
+                    <input matInput [ngModel]="value1Display" [ngModelOptions]="{ standalone: true }" placeholder="Initial Date" autocomplete="off" class="msf-full-width msf-menu-arg-select" (click)="picker3.open()" [readonly]="true">
+                    <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                    <mat-datepicker #picker3 startView="{{dateStartView}}" [calendarHeaderComponent]="calendarHeader" (yearSelected)="chosenYearHandler1($event,picker3)" (monthSelected)="chosenMonthHandler1($event,picker3)"></mat-datepicker>
+                </mat-form-field>
+                <div *ngIf="valueType === 'quarter'" class="msf-component-date-input-container" style="display: flex; align-items: center;">         
+                    <ng-select style="width: 85%;"
+                        [items]="quarters"
+                        [multiple]="false"
+                        [loading]="loading"
+                        loadingText="Loading..."
+                        [closeOnSelect]="true"
+                        [hideSelected]="false"
+                        bindLabel="name"
+                        bindName="value"
+                        [(ngModel)]="argument.value3"
+                        appendTo=".msf-control-variables-overlay"
+                        [clearable]="false"
+                        dropdownPosition="bottom">
+                    </ng-select> 
+                    <img src="../../assets/images/{{globals.theme}}-calendarTime.png" class="msf-calendar-image">
+                </div>
+            </ng-container>
+        </div>
+    </div>
     <div class="center">
         <div class="msf-component-airport-title">Auto Select The Date Range</div>
     </div>

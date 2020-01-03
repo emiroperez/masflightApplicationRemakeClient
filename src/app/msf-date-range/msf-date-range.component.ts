@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy, OnDestroy, Inject, ChangeDetectorRef } from '@angular/core';
-import { DateAdapter, MAT_DATE_FORMATS, MatDialog, MAT_DATE_LOCALE, MatDatepicker, MatCalendar } from '@angular/material';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatDatepicker, MatCalendar } from '@angular/material';
 import { DatePipe } from '@angular/common';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 
@@ -129,7 +129,7 @@ export class MsfDateRangeComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
 
-  prepateAutoDateRange: boolean = false;
+  prepareAutoDateRange: boolean = false;
   minDate: Date;
 
   calendarHeader: any = MonthHeader;
@@ -139,11 +139,7 @@ export class MsfDateRangeComponent implements OnInit {
 
   dateValueByFullDate: any[] = [
     { id: 0, name: 'Today', value: "TODAY" },
-    { id: 1, name: 'Yesterday', value: "YESTERDAY" },
-    { id: 2, name: 'Last Week', value: "LASTWEEK" },
-    { id: 3, name: 'Last Month', value: "LASTMONTH" },
-    { id: 4, name: 'Last Quarter', value: "LASTQUARTER" },
-    { id: 5, name: 'Last Year', value: "LASTYEAR" }
+    { id: 1, name: 'Yesterday', value: "YESTERDAY" }
   ];
 
   dateRangeByFullDate: any[] = [
@@ -151,23 +147,23 @@ export class MsfDateRangeComponent implements OnInit {
     { id: 1, name: 'Yesterday', value: "YESTERDAY" },
     { id: 2, name: 'Current Week', value: "CURRENTWEEK" },
     { id: 3, name: 'Current Quarter', value: "CURRENTQUARTER" },
-    { id: 4, name: 'Last Week', value: "LASTWEEK" },
-    { id: 5, name: 'Last Month', value: "LASTMONTH" },
-    { id: 6, name: 'Last Quarter', value: "LASTQUARTER" },
-    { id: 7, name: 'Last Year', value: "LASTYEAR" }/*,
-    { id: 8, name: 'Until Today', value: "UNTILTODAY" },
-    { id: 9, name: 'Until Yesterday', value: "UNTILYESTERDAY" },
-    { id: 10, name: 'Until Last Week', value: "UNTILLASTWEEK" },
-    { id: 12, name: 'Until Last Month', value: "UNTILLASTMONTH" },
-    { id: 13, name: 'Until Last Quarter', value: "UNTILLASTQUARTER" },
-    { id: 14, name: 'Until Last Year', value: "UNTILLASTYEAR" }*/
+    { id: 4, name: 'Current Month', value: "CURRENTMONTH" },
+    { id: 5, name: 'Current Year', value: "CURRENTYEAR" },
+    { id: 6, name: 'Last Week', value: "LASTWEEK" },
+    { id: 7, name: 'Last Month', value: "LASTMONTH" },
+    { id: 8, name: 'Last Quarter', value: "LASTQUARTER" },
+    { id: 9, name: 'Last Year', value: "LASTYEAR" },
+    { id: 10, name: 'Until Today', value: "UNTILTODAY" },
+    { id: 11, name: 'Until Yesterday', value: "UNTILYESTERDAY" },
+    { id: 12, name: 'Until Last Week', value: "UNTILLASTWEEK" },
+    { id: 13, name: 'Until Last Month', value: "UNTILLASTMONTH" },
+    { id: 14, name: 'Until Last Quarter', value: "UNTILLASTQUARTER" },
+    { id: 15, name: 'Until Last Year', value: "UNTILLASTYEAR" }
   ];
 
   dateValueByMonth: any[] = [
     { id: 0, name: 'Current Month', value: "CURRENTMONTH" },
-    { id: 1, name: 'Last Month', value: "LASTMONTH" },
-    { id: 2, name: 'Last Quarter', value: "LASTQUARTER" },
-    { id: 3, name: 'Last Year', value: "LASTYEAR" }
+    { id: 1, name: 'Last Month', value: "LASTMONTH" }
   ];
 
   dateRangeByMonth: any[] = [
@@ -176,25 +172,24 @@ export class MsfDateRangeComponent implements OnInit {
     { id: 2, name: 'Current Year', value :"CURRENTYEAR" },
     { id: 3, name: 'Last Month', value: "LASTMONTH" },
     { id: 4, name: 'Last Quarter', value: "LASTQUARTER" },
-    { id: 5, name: 'Last Year', value: "LASTYEAR" }/*,
+    { id: 5, name: 'Last Year', value: "LASTYEAR" },
     { id: 6, name: 'Until Last Month', value: "UNTILLASTMONTH" },
     { id: 7, name: 'Until Last Quarter', value: "UNTILLASTQUARTER" },
-    { id: 8, name: 'Until Last Year', value: "UNTILLASTYEAR" }*/
+    { id: 8, name: 'Until Last Year', value: "UNTILLASTYEAR" }
   ];
 
   dateValueByQuarter: any[] = [
     { id: 0, name: 'Current Quarter', value: "CURRENTQUARTER" },
-    { id: 1, name: 'Last Quarter', value: "LASTQUARTER" },
-    { id: 2, name: 'Last Year', value: "LASTYEAR" }
+    { id: 1, name: 'Last Quarter', value: "LASTQUARTER" }
   ];
 
   dateRangeByQuarter: any[] = [
     { id: 0, name: 'Current Quarter', value: "CURRENTQUARTER" },
     { id: 1, name: 'Current Year', value :"CURRENTYEAR" },
     { id: 2, name: 'Last Quarter', value: "LASTQUARTER" },
-    { id: 3, name: 'Last Year', value: "LASTYEAR" }/*,
+    { id: 3, name: 'Last Year', value: "LASTYEAR" },
     { id: 4, name: 'Until Last Quarter', value: "UNTILLASTQUARTER" },
-    { id: 5, name: 'Until Last Year', value: "UNTILLASTYEAR" }*/
+    { id: 5, name: 'Until Last Year', value: "UNTILLASTYEAR" }
   ];
 
   dateValueByYear: any[] = [
@@ -204,8 +199,8 @@ export class MsfDateRangeComponent implements OnInit {
 
   dateRangeByYear: any[] = [
     { id: 0, name: 'Current Year', value: "CURRENTYEAR" },
-    { id: 1, name: 'Last Year', value: "LASTYEAR" }/*,
-    { id: 2, name: 'Until Last Year', value: "UNTILLASTYEAR" }*/
+    { id: 1, name: 'Last Year', value: "LASTYEAR" },
+    { id: 2, name: 'Until Last Year', value: "UNTILLASTYEAR" }
   ];
 
   quarters: any[] = [
@@ -241,14 +236,14 @@ export class MsfDateRangeComponent implements OnInit {
   leadingZero: number;
   monthDateFormat: number;
 
-  constructor(public globals: Globals,public dialog: MatDialog) { }
+  constructor(public globals: Globals) { }
 
   ngOnInit()
   {
     this.currentValueType = (this.argument.selectionMode >> 1) & 3;
 
     if (!this.argument.currentDateRangeValue)
-      this.argument.currentDateRangeValue = (this.argument.selectionMode >> 3) & 7;
+      this.argument.currentDateRangeValue = (this.argument.selectionMode >> 3) & 15;
 
     this.leadingZero = (this.argument.selectionMode >> 11) & 1;
     this.monthDateFormat = (this.argument.selectionMode >> 12) & 1;
@@ -299,7 +294,7 @@ export class MsfDateRangeComponent implements OnInit {
 
     if (!this.argument.dateLoaded)
     {
-      this.prepateAutoDateRange = true;
+      this.prepareAutoDateRange = true;
 
       // auto select date range after loading the default value
       for (let dateRange of this.currentDateRange)
@@ -312,7 +307,7 @@ export class MsfDateRangeComponent implements OnInit {
         }
       }
   
-      this.prepateAutoDateRange = false;
+      this.prepareAutoDateRange = false;
       this.argument.dateLoaded = true;
     }
     else
@@ -447,36 +442,42 @@ export class MsfDateRangeComponent implements OnInit {
       // check date range
       if (this.argument.maxDate)
       {
-        if (this.argument.value1 > this.argument.maxDate)
+        if (this.argument.value1 && this.argument.value1 > this.argument.maxDate)
           this.argument.value1 = this.argument.maxDate;
 
-        if (this.argument.value2 > this.argument.maxDate)
+        if (this.argument.value2 && this.argument.value2 > this.argument.maxDate)
           this.argument.value2 = this.argument.maxDate;
       }
 
       if (this.argument.minDate)
       {
-        if (this.argument.value1 < this.argument.minDate)
+        if (this.argument.value1 && this.argument.value1 < this.argument.minDate)
           this.argument.value1 = this.argument.minDate;
 
-        if (this.argument.value2 < this.argument.minDate)
+        if (this.argument.value2 && this.argument.value2 < this.argument.minDate)
           this.argument.value2 = this.argument.minDate;
       }
 
       switch (this.currentValueType)
       {
         case 1:
-          this.setMonthValue1 (moment (this.argument.value1));
+          if (this.argument.value1)
+            this.setMonthValue1 (moment (this.argument.value1));
+
           this.setMonthValue2 (moment (this.argument.value2));
           break;
 
         case 2:
-          this.setQuarterValue1 ();
+          if (this.argument.value1)
+            this.setQuarterValue1 ();
+
           this.setQuarterValue2 ();
           break;
 
         case 3:
-          this.setYearValue1 (moment (this.argument.value1));
+          if (this.argument.value1)
+            this.setYearValue1 (moment (this.argument.value1));
+
           this.setYearValue2 (moment (this.argument.value2));
           break;
       }
@@ -579,7 +580,6 @@ export class MsfDateRangeComponent implements OnInit {
 
   calculateDateRange(type: string, option: string): void
   {
-    let maximunDateMessage = "the maximun date of the option is ";
     let today = moment ().toDate ();
 
     switch (option)
@@ -667,27 +667,19 @@ export class MsfDateRangeComponent implements OnInit {
     {
       if (this.argument.value2 > today)
         this.argument.value2 = today;
-
-      maximunDateMessage = "the option doesn't have maximun date";
     }
     else
-    {
       this.argument.value2 = this.argument.maxDate;
-      maximunDateMessage += this.argument.maxDate.toLocaleString ("en-US").split (",")[0];
-    }
-
-    this.openDialog ("The date range changed to " + type + ", " + maximunDateMessage);
   }
 
   calculateDateRange2(type: string, option: string): void
   {
-    let maximunDateMessage = "";
     let newDate;
 
     switch (option)
     {
       case 'UNTILYESTERDAY':
-        newDate = new Date (new Date ().getTime () - (24 * 60 * 60 * 1000));
+        newDate = moment ().subtract (1, "days").toDate ();
         break;
     
       case 'UNTILLASTWEEK':
@@ -721,72 +713,17 @@ export class MsfDateRangeComponent implements OnInit {
         break;
     
       case 'UNTILTODAY':
-        newDate = new Date (new Date ().getTime ());
+        newDate = moment ().toDate ();
         break;
     }
 
-    if (this.argument.value1)
-    {
-      if (newDate >= new Date (this.argument.value1))
-      {
-        this.argument.value2 = newDate;
+    if (!this.prepareAutoDateRange)
+      this.argument.value1 = null;
 
-        if (this.argument.maxDate && this.argument.value2 > this.argument.maxDate)
-          this.argument.value2 = this.argument.maxDate;
+    this.argument.value2 = newDate;
 
-        maximunDateMessage += ", the maximun date of the option is " + new Date (this.argument.value2).toLocaleString ("en-US").split (",")[0];
-      }
-      else
-      {
-        this.dateRange = null;
-        this.openDialog ("The final date can't be less than the initial date");
-        return;
-      }
-    }
-    else
-    {
-      switch (option)
-      {
-        case 'UNTILTODAY':
-          this.argument.value1 = new Date ();
-          break;
-  
-        case 'UNTILYESTERDAY':
-          this.argument.value1 = new Date (new Date ().getTime () - (24 * 60 * 60 * 1000));
-          break;
-  
-        case 'UNTILLASTWEEK':
-          this.argument.value1 = moment ().day (1).subtract (2, "days").day (1).toDate ();
-          break;
-  
-        case 'UNTILLASTMONTH':
-          this.argument.value1 = moment ().subtract (1, "months").startOf ("month").toDate ();
-          break;
-
-        case 'UNTILLASTQUARTER':
-          this.argument.value1 = moment ().subtract (3, "months").startOf ("month").toDate ();
-          break;
-  
-        case 'UNTILLASTYEAR':
-          this.argument.value1 = moment ().subtract (1, "years").startOf ("year").toDate ();
-          break;   
-      }
-
-      this.argument.value2 = newDate;
-    }
-
-    this.openDialog ("The date range changed to " + type + maximunDateMessage);
-  }
-  
-  openDialog(text: string): void
-  {
-    if (!this.prepateAutoDateRange)
-    {
-      this.dialog.open (MessageComponent,
-      {
-        data: { title: "Message", message: text }
-      });
-    }
+    if (this.argument.maxDate && this.argument.value2 > this.argument.maxDate)
+      this.argument.value2 = this.argument.maxDate;
   }
 
   getMonthDateFormat(): string
@@ -964,9 +901,9 @@ export class MsfDateRangeComponent implements OnInit {
   {
     if (this.selectionMode === "auto")
     {
-      this.prepateAutoDateRange = true;
+      this.prepareAutoDateRange = true;
       this.autoSelect ();
-      this.prepateAutoDateRange = false;
+      this.prepareAutoDateRange = false;
     }
   }
 }
