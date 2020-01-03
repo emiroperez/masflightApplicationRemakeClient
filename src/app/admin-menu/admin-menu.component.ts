@@ -334,16 +334,20 @@ export class EditCategoryArgumentDialog {
     { id: 3, name: 'Current Quarter' },
     { id: 4, name: 'Current Month' },
     { id: 5, name: 'Current Year' },
-    { id: 6, name: 'Last Week' },
-    { id: 7, name: 'Last Month' },
-    { id: 8, name: 'Last Quarter' },
-    { id: 9, name: 'Last Year' },
-    { id: 10, name: 'Until Today' },
-    { id: 11, name: 'Until Yesterday' },
-    { id: 12, name: 'Until Last Week' },
-    { id: 13, name: 'Until Last Month' },
-    { id: 14, name: 'Until Last Quarter' },
-    { id: 15, name: 'Until Last Year' }
+    { id: 6, name: 'Last 7 Days' },
+    { id: 7, name: 'Last 30 Days' },
+    { id: 8, name: 'Last Week' },
+    { id: 9, name: 'Last Month' },
+    { id: 10, name: 'Last Quarter' },
+    { id: 11, name: 'Last Year' },
+    { id: 12, name: 'Until Today' },
+    { id: 13, name: 'Until Yesterday' },
+    { id: 14, name: 'Until Last 7 Days' },
+    { id: 15, name: 'Until Last 30 Days' },
+    { id: 16, name: 'Until Last Week' },
+    { id: 17, name: 'Until Last Month' },
+    { id: 18, name: 'Until Last Quarter' },
+    { id: 19, name: 'Until Last Year' }
   ];
 
   dateValueByMonth: any[] = [
@@ -441,7 +445,7 @@ export class EditCategoryArgumentDialog {
             argument.leadingZero = (argument.selectionMode >> 11) & 1;
             argument.monthDateFormat = (argument.selectionMode >> 12) & 1;
             argument.dateValue = (argument.selectionMode >> 1) & 3;
-            argument.dateRange = (argument.selectionMode >> 3) & 15;
+            argument.dateRange = (argument.selectionMode >> 3) & 31;
             argument.selectionMode &= 1;
           }
 

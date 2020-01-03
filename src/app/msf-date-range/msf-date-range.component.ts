@@ -149,16 +149,20 @@ export class MsfDateRangeComponent implements OnInit {
     { id: 3, name: 'Current Quarter', value: "CURRENTQUARTER" },
     { id: 4, name: 'Current Month', value: "CURRENTMONTH" },
     { id: 5, name: 'Current Year', value: "CURRENTYEAR" },
-    { id: 6, name: 'Last Week', value: "LASTWEEK" },
-    { id: 7, name: 'Last Month', value: "LASTMONTH" },
-    { id: 8, name: 'Last Quarter', value: "LASTQUARTER" },
-    { id: 9, name: 'Last Year', value: "LASTYEAR" },
-    { id: 10, name: 'Until Today', value: "UNTILTODAY" },
-    { id: 11, name: 'Until Yesterday', value: "UNTILYESTERDAY" },
-    { id: 12, name: 'Until Last Week', value: "UNTILLASTWEEK" },
-    { id: 13, name: 'Until Last Month', value: "UNTILLASTMONTH" },
-    { id: 14, name: 'Until Last Quarter', value: "UNTILLASTQUARTER" },
-    { id: 15, name: 'Until Last Year', value: "UNTILLASTYEAR" }
+    { id: 6, name: 'Last 7 Days', value: "LAST7DAYS" },
+    { id: 7, name: 'Last 30 Days', value: "LAST30DAYS" },
+    { id: 8, name: 'Last Week', value: "LASTWEEK" },
+    { id: 9, name: 'Last Month', value: "LASTMONTH" },
+    { id: 10, name: 'Last Quarter', value: "LASTQUARTER" },
+    { id: 11, name: 'Last Year', value: "LASTYEAR" },
+    { id: 12, name: 'Until Today', value: "UNTILTODAY" },
+    { id: 13, name: 'Until Yesterday', value: "UNTILYESTERDAY" },
+    { id: 14, name: 'Until Last 7 Days', value: "UNTILLAST7DAYS" },
+    { id: 15, name: 'Until Last 30 Days', value: "UNTILLAST30DAYS" },
+    { id: 16, name: 'Until Last Week', value: "UNTILLASTWEEK" },
+    { id: 17, name: 'Until Last Month', value: "UNTILLASTMONTH" },
+    { id: 18, name: 'Until Last Quarter', value: "UNTILLASTQUARTER" },
+    { id: 19, name: 'Until Last Year', value: "UNTILLASTYEAR" }
   ];
 
   dateValueByMonth: any[] = [
@@ -243,7 +247,7 @@ export class MsfDateRangeComponent implements OnInit {
     this.currentValueType = (this.argument.selectionMode >> 1) & 3;
 
     if (!this.argument.currentDateRangeValue)
-      this.argument.currentDateRangeValue = (this.argument.selectionMode >> 3) & 15;
+      this.argument.currentDateRangeValue = (this.argument.selectionMode >> 3) & 31;
 
     this.leadingZero = (this.argument.selectionMode >> 11) & 1;
     this.monthDateFormat = (this.argument.selectionMode >> 12) & 1;
@@ -372,72 +376,10 @@ export class MsfDateRangeComponent implements OnInit {
 
     if (this.isDateRange)
     {
-      switch (option)
-      {
-        case 'TODAY':
-          this.calculateDateRange ('Today', option);
-          break;
-
-        case 'CURRENTWEEK':
-          this.calculateDateRange ('Current Week', option);
-          break;
-
-        case 'CURRENTMONTH':
-          this.calculateDateRange ('Current Month', option);
-          break;
-
-        case 'CURRENTQUARTER':
-          this.calculateDateRange ('Current Quarter', option);
-          break;
-
-        case 'CURRENTYEAR':
-          this.calculateDateRange ('Current Year', option);
-          break;
-
-        case 'YESTERDAY':
-          this.calculateDateRange ('Yesterday', option);
-          break;
-
-        case 'LASTWEEK':
-          this.calculateDateRange ('Last Week', option);
-          break;
-
-        case 'LASTMONTH':
-          this.calculateDateRange ('Last Month', option);
-          break;
-
-        case 'LASTQUARTER':
-          this.calculateDateRange ('Last Quarter', option);
-          break;
-
-        case 'LASTYEAR':
-          this.calculateDateRange ('Last Year', option);
-          break;
-
-        case 'UNTILYESTERDAY':
-          this.calculateDateRange2 ('Until Yesterday', option);
-          break;
-
-        case 'UNTILLASTWEEK':
-          this.calculateDateRange2 ('Until Last Week', option);
-          break;
-
-        case 'UNTILLASTMONTH':
-          this.calculateDateRange2 ('Until Last Month', option);
-          break;
-
-        case 'UNTILLASTQUARTER':
-          this.calculateDateRange2 ('Until Last Quarter', option);
-          break;
-
-        case 'UNTILLASTYEAR':
-          this.calculateDateRange2 ('Until Last Year', option);
-          break;
-
-        case 'UNTILTODAY':
-          this.calculateDateRange2 ('Until Today', option);
-          break;
-      }
+      if (option.startsWith ("UNTIL"))
+        this.calculateDateRange2 (option);
+      else
+        this.calculateDateRange (option);
 
       // check date range
       if (this.argument.maxDate)
@@ -523,7 +465,15 @@ export class MsfDateRangeComponent implements OnInit {
         case 'YESTERDAY':
           this.argument.value1 = moment ().subtract (1, "days").toDate ();
           break;
-  
+
+        case 'LAST7DAYS':
+          this.argument.value1 = moment ().subtract (7, "days").toDate ();
+          break;
+
+        case 'LAST30DAYS':
+          this.argument.value1 = moment ().subtract (30, "days").toDate ();
+          break;
+
         case 'LASTWEEK':
           this.argument.value1 = moment ().day (1).subtract (2, "days").day (1).toDate ();
           break;
@@ -578,7 +528,7 @@ export class MsfDateRangeComponent implements OnInit {
     }
   }
 
-  calculateDateRange(type: string, option: string): void
+  calculateDateRange(option: string): void
   {
     let today = moment ().toDate ();
 
@@ -627,6 +577,16 @@ export class MsfDateRangeComponent implements OnInit {
         this.argument.value1 = this.argument.value2 = moment ().subtract (1, "days").toDate ();
         break;
 
+      case 'LAST7DAYS':
+        this.argument.value1 = moment ().subtract (7, "days").toDate ();
+        this.argument.value2 = moment ().toDate ();
+        break;
+
+      case 'LAST30DAYS':
+        this.argument.value1 = moment ().subtract (30, "days").toDate ();
+        this.argument.value2 = moment ().toDate ();
+        break;
+
       case 'LASTWEEK':
         this.argument.value1 = moment ().day (1).subtract (2, "days").day (1).toDate ();
         this.argument.value2 = moment ().day (1).subtract (2, "days").day (7).toDate ();
@@ -672,7 +632,7 @@ export class MsfDateRangeComponent implements OnInit {
       this.argument.value2 = this.argument.maxDate;
   }
 
-  calculateDateRange2(type: string, option: string): void
+  calculateDateRange2(option: string): void
   {
     let newDate;
 
@@ -681,7 +641,15 @@ export class MsfDateRangeComponent implements OnInit {
       case 'UNTILYESTERDAY':
         newDate = moment ().subtract (1, "days").toDate ();
         break;
-    
+
+      case 'UNTILLAST7DAYS':
+        newDate = moment ().subtract (7, "days").toDate ();
+        break;
+
+      case 'UNTILLAST30DAYS':
+        newDate = moment ().subtract (30, "days").toDate ();
+        break;
+
       case 'UNTILLASTWEEK':
         newDate = moment ().day (1).subtract (2, "days").day (7).toDate ();
         break;
