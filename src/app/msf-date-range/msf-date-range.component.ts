@@ -135,6 +135,7 @@ export class MsfDateRangeComponent implements OnInit {
   calendarHeader: any = MonthHeader;
   currentDateRange: any[] = [];
   currentValueType: number = 0;
+  selectionMode: number = 0;
 
   dateValueByFullDate: any[] = [
     { id: 0, name: 'Today', value: "TODAY" },
@@ -154,7 +155,10 @@ export class MsfDateRangeComponent implements OnInit {
     { id: 6, name: 'Until Last Week', value: "UNTILLASTWEEK" },
     { id: 7, name: 'Until Last Month', value: "UNTILLASTMONTH" },
     { id: 8, name: 'Until Last Year', value: "UNTILLASTYEAR" },
-    { id: 9, name: 'Until Today', value: "UNTILTODAY" }
+    { id: 9, name: 'Until Today', value: "UNTILTODAY" },
+    { id: 0, name: 'Current Quarter', value: "CURRENTQUARTER" },
+    { id: 2, name: 'Last Quarter', value: "LASTQUARTER" },
+    { id: 4, name: 'Until Last Quarter', value: "UNTILLASTQUARTER" }
   ];
 
   dateValueByMonth: any[] = [
@@ -205,6 +209,13 @@ export class MsfDateRangeComponent implements OnInit {
     { id: 4, name: '4th Quarter', value: "4" }
   ];
 
+  quarterRange: any[] = [
+    { id: 1, start: 0, end: 2 },
+    { id: 2, start: 3, end: 5 },
+    { id: 3, start: 6, end: 8 },
+    { id: 4, start: 9, end: 11 }
+  ];
+
   monthNames: string[] =
   [
     "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
@@ -235,6 +246,7 @@ export class MsfDateRangeComponent implements OnInit {
 
     this.leadingZero = (this.argument.selectionMode >> 11) & 1;
     this.monthDateFormat = (this.argument.selectionMode >> 12) & 1;
+    this.selectionMode = 0; // TODO: Set this properly
 
     this.isDateRange = (this.argument.selectionMode & 1) ? true : false;
 
@@ -526,57 +538,96 @@ export class MsfDateRangeComponent implements OnInit {
 
   calculateDateRange(type: string, option: string): void
   {
-    let today = new Date ();
     let maximunDateMessage = "the maximun date of the option is ";
+    let today = moment ().toDate ();
+
+    switch (option)
+    {
+      case 'TODAY':
+        this.argument.value1 = this.argument.value2 = moment ().toDate ();
+        break;
+
+      case 'CURRENTMONTH':
+        this.argument.value1 = moment ().startOf ("month").toDate ();
+        this.argument.value2 = moment ().endOf ("month").toDate ();
+        break;
+
+      case 'CURRENTQUARTER':
+      {
+        let date = moment ().startOf ("month");
+        let quarter = date.quarter ();
+
+        for (let quarterIndex of this.quarterRange)
+        {
+          if (quarterIndex.id == quarter)
+          {
+            date.set ("month", quarterIndex.start);
+            this.argument.value1 = date.toDate ();
+            date.set ("month", quarterIndex.end);
+            this.argument.value2 = date.endOf ("month").toDate ();
+            break;
+          }
+        }
+
+        break;
+      }
+
+      case 'CURRENTYEAR':
+        this.argument.value1 = moment ().startOf ("year").toDate ();
+        this.argument.value2 = moment ().endOf ("year").toDate ();
+        break;
+
+      case 'YESTERDAY':
+        this.argument.value1 = this.argument.value2 = moment ().subtract (1, "days").toDate ();
+        break;
+
+      case 'LASTWEEK':
+        this.argument.value1 = moment ().day (1).subtract (2, "days").day (1).toDate ();
+        this.argument.value2 = moment ().day (1).subtract (2, "days").day (7).toDate ();
+        break;
+
+      case 'LASTMONTH':
+        this.argument.value1 = moment ().subtract (1, "months").startOf ("month").toDate ();
+        this.argument.value2 = moment ().subtract (1, "months").endOf ("month").toDate ();
+        break;
+
+      case 'LASTQUARTER':
+      {
+        let date = moment ().subtract (3, "months").startOf ("month");
+        let quarter = date.quarter ();
+  
+        for (let quarterIndex of this.quarterRange)
+        {
+          if (quarterIndex.id == quarter)
+          {
+            date.set ("month", quarterIndex.start);
+            this.argument.value1 = date.toDate ();
+            date.set ("month", quarterIndex.end);
+            this.argument.value2 = date.endOf ("month").toDate ();
+            break;
+          }
+        }
+  
+        break;
+      }
+
+      case 'LASTYEAR':
+        this.argument.value1 = moment ().subtract (1, "years").startOf ("year").toDate ();
+        this.argument.value2 = moment ().subtract (1, "years").endOf ("year").toDate ();
+        break;   
+    }
 
     if (this.argument.maxDate == null || today < this.argument.maxDate)
     {
-      this.argument.value2 = today;
+      if (this.argument.value2 > today)
+        this.argument.value2 = today;
+
       maximunDateMessage = "the option doesn't have maximun date";
     }
     else
     {
       this.argument.value2 = this.argument.maxDate;
       maximunDateMessage += this.argument.maxDate.toLocaleString ("en-US").split (",")[0];
-    }
-
-    switch (option)
-    {
-      case 'TODAY':
-        this.argument.value1 = new Date (this.argument.value2.getTime ());
-        break;
-
-      case 'CURRENTMONTH':
-        this.argument.value1 = moment ().startOf ("month").toDate ();
-        break;
-
-      case 'CURRENTQUARTER':
-        this.argument.value1 = moment ().startOf ("month").toDate ();
-        break;
-
-      case 'CURRENTYEAR':
-        this.argument.value1 = moment ().startOf ("year").toDate ();
-        break;
-
-      case 'YESTERDAY':
-        this.argument.value1 = new Date (this.argument.value2.getTime () - (24 * 60 * 60 * 1000));
-        break;
-
-      case 'LASTWEEK':
-        this.argument.value1 = moment ().day (1).subtract (2, "days").day (1).toDate ();
-        break;
-
-      case 'LASTMONTH':
-        this.argument.value1 = moment ().subtract (1, "months").startOf ("month").toDate ();
-        break;
-
-      case 'LASTQUARTER':
-        this.argument.value1 = moment ().subtract (3, "months").startOf ("month").toDate ();
-        break;
-
-      case 'LASTYEAR':
-        this.argument.value1 = moment ().subtract (1, "years").startOf ("year").toDate ();
-        break;   
     }
 
     this.openDialog ("The date range changed to " + type + ", " + maximunDateMessage);
@@ -602,8 +653,22 @@ export class MsfDateRangeComponent implements OnInit {
         break;
 
       case 'UNTILLASTQUARTER':
-        newDate = moment ().subtract (3, "months").endOf ("month").toDate ();
+      {
+        let date = moment ().subtract (3, "months").startOf ("month");
+        let quarter = date.quarter ();
+  
+        for (let quarterIndex of this.quarterRange)
+        {
+          if (quarterIndex.id == quarter)
+          {
+            date.set ("month", quarterIndex.end);
+            newDate = date.endOf ("month").toDate ();
+            break;
+          }
+        }
+  
         break;
+      }
     
       case 'UNTILLASTYEAR':
         newDate = moment ().subtract (1, "years").endOf ("year").toDate ();
@@ -843,6 +908,9 @@ export class MsfDateRangeComponent implements OnInit {
 
   setCurrentDateRangeValue(): void
   {
-    this.argument.currentDateRangeValue = this.dateRange.id;
+    if (this.dateRange.id)
+      this.argument.currentDateRangeValue = this.dateRange.id;
+    else
+      this.argument.currentDateRangeValue = null;
   }
 }

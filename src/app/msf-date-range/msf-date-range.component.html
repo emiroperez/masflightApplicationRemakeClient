@@ -1,5 +1,5 @@
 <!-- Treat the two sub-arguments as if they were two separate arguments for the dashboard control panel -->
-<div class="msf-component-argument-container">
+<div *ngIf="selectionMode == 0" class="msf-component-argument-container">
     <div class="center">
         <div class="msf-component-airport-title">{{argument.title}}</div>
     </div>
@@ -68,7 +68,7 @@
         </ng-container>
     </div>
 </div>
-<div class="msf-component-argument-container" *ngIf="isDateRange && valueType === 'fullDate'">
+<div class="msf-component-argument-container" *ngIf="isDateRange && valueType === 'fullDate' && selectionMode == 0">
     <div class="center">
         <div class="msf-component-airport-title">Auto select the date range:</div>
     </div>
