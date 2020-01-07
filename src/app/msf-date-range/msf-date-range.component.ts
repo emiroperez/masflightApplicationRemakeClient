@@ -129,7 +129,6 @@ export class MsfDateRangeComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
 
-  prepareAutoDateRange: boolean = false;
   maxDate: Date;
   minDate: Date;
 
@@ -302,8 +301,6 @@ export class MsfDateRangeComponent implements OnInit {
 
     if (!this.argument.dateLoaded)
     {
-      this.prepareAutoDateRange = true;
-
       // auto select date range after loading the default value
       for (let dateRange of this.currentDateRange)
       {
@@ -314,8 +311,7 @@ export class MsfDateRangeComponent implements OnInit {
           break;
         }
       }
-  
-      this.prepareAutoDateRange = false;
+
       this.argument.dateLoaded = true;
     }
     else
@@ -752,9 +748,9 @@ export class MsfDateRangeComponent implements OnInit {
         break;
     }
 
-    if (!this.prepareAutoDateRange)
-      this.argument.value1 = null;
-
+    this.value1Date = null;
+    this.value1Display = null;
+    this.argument.value1 = null; // reset initial date
     this.argument.value2 = newDate;
 
     if (this.argument.maxDate && this.argument.value2 > this.argument.maxDate)
@@ -943,11 +939,6 @@ export class MsfDateRangeComponent implements OnInit {
     if (this.selectionMode !== "auto")
       return;
 
-    if (this.dateRange.value.startsWith ("UNTIL"))
-      this.argument.value1 = null; // reset initial date
-
-    this.prepareAutoDateRange = true;
     this.autoSelect ();
-    this.prepareAutoDateRange = false;
   }
 }
