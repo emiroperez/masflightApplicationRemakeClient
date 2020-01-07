@@ -463,6 +463,11 @@ export class MsfDateRangeComponent implements OnInit {
         case 1:
           if (this.argument.value1)
             this.setMonthValue1 (moment (this.argument.value1));
+          else
+          {
+            if (!this.monthDateFormat)
+              this.argument.value3 = null;
+          }
 
           this.setMonthValue2 (moment (this.argument.value2));
           break;
@@ -470,6 +475,8 @@ export class MsfDateRangeComponent implements OnInit {
         case 2:
           if (this.argument.value1)
             this.setQuarterValue1 ();
+          else
+            this.argument.value3 = null;
 
           this.setQuarterValue2 ();
           break;
