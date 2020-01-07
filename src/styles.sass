@@ -1764,7 +1764,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             .datalake-alarm-radio-group
                 background-color: $datalake-alarm-secondary-background-color
             .datalake-create-alarm-hint2
-                background-color: $schedule-map-background-color
+                background-color: $datalake-alarm-secondary-background-color
         .datalake-alarm-radio-button
             background-color: $datalake-explorer-background-color
             color: $font-color
@@ -8122,6 +8122,10 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     .datalake-table-body, .datalake-query-table-body
         background-color: #ffffff
         overflow: auto
+        tr:nth-child(even)
+            background-color:#f2f2f2
+        tr:nth-child(odd)
+            background-color:#fbfbfb
         tr.example-detail-row.mat-row
             height: 0 !important          
         tr.mat-header-row, tr.mat-row
@@ -9727,4 +9731,4 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         margin-left: 10px !important
     .register-step-header .mat-select-trigger
         padding-top: 17px !important
-        padding-left: 0 !important
+        padding-left: 0 !important 
