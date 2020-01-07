@@ -1,13 +1,13 @@
 import { Injectable, HostBinding } from '@angular/core';
-import { Option } from '../model/Option';
-import { MatSort, MatTab } from '@angular/material';
+import { MatSort } from '@angular/material';
 import { Observable } from 'rxjs';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Cookie } from '../api/cookie';
+import { Themes } from './Themes';
+import { AmChartConfig } from './AmChartConfig';
+import { DatalakeQueryTab } from '../datalake-query-engine/datalake-query-tab';
 import * as am4core from "@amcharts/amcharts4/core";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
-import { Themes } from './Themes';
-import { DatalakeQueryTab } from '../datalake-query-engine/datalake-query-tab';
 
 am4core.useTheme(am4themes_animated);
 
@@ -111,6 +111,8 @@ export class Globals {
   constructor (public overlayContainer: OverlayContainer, private cookie: Cookie)
   {
     let pulseTheme, useLightTheme;
+
+    AmChartConfig.Init ();
 
     // get theme setting from cookies
     pulseTheme = cookie.get ("pulseTheme");

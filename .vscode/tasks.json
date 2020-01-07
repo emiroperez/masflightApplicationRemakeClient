@@ -18,7 +18,8 @@
                 "build",
                 "--aot",
                 "--output-hashing=all",
-                "--prod"
+                "--prod",
+                "--build-optimizer=false"
             ],
             "problemMatcher": []
         },

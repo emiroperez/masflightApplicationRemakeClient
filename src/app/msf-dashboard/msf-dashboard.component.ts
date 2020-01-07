@@ -1,6 +1,7 @@
 import { Component, HostListener, OnInit, Input, SimpleChanges, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MatDialog } from '@angular/material';
+import * as am4core from "@amcharts/amcharts4/core";
 
 import { Globals } from '../globals/Globals';
 import { MsfDashboardPanelValues } from '../msf-dashboard-panel/msf-dashboard-panelvalues';
@@ -95,6 +96,12 @@ export class MsfDashboardComponent implements OnInit {
 
   ngOnInit()
   {
+    am4core.options.viewportTarget = document.getElementById ("msf-dashboard-element");
+  }
+
+  ngOnDestroy(): void
+  {
+    am4core.options.viewportTarget = null;
   }
 
   ngAfterViewInit()
@@ -789,7 +796,11 @@ export class MsfDashboardComponent implements OnInit {
 
   displayChildPanel(contextDrillDownId): void
   {
-    this.dialog.open (MsfDashboardChildPanelComponent, {
+    let dialogRef;
+
+    am4core.options.viewportTarget = null;
+
+    dialogRef = this.dialog.open (MsfDashboardChildPanelComponent, {
       height: '600px',
       width: '800px',
       panelClass: 'msf-dashboard-child-panel-dialog',
@@ -804,6 +815,11 @@ export class MsfDashboardComponent implements OnInit {
         categoryFilter: this.contextParentPanel.chartObjectSelected,
         secondaryCategoryFilter: this.contextParentPanel.chartSecondaryObjectSelected
       }
+    });
+
+    dialogRef.afterClosed ().subscribe (() => {
+      // reset AmChart viewport
+      am4core.options.viewportTarget = document.getElementById ("msf-dashboard-element");
     });
   }
 
