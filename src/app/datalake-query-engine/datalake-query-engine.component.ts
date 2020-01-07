@@ -10,7 +10,6 @@ import { DatalakeQueryTab } from './datalake-query-tab';
 import { MessageComponent } from '../message/message.component';
 import { DatalakeQueryEngineHistoryComponent } from '../datalake-query-engine-history/datalake-query-engine-history.component';
 import { DatalakeQueryEngineSaveComponent } from '../datalake-query-engine-save/datalake-query-engine-save.component';
-import { number } from '@amcharts/amcharts4/core';
 
 
 const minPanelWidth = 30;
