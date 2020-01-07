@@ -16,6 +16,11 @@ export class DatalakeQueryEngineSchemaComponent {
   @Input("querySchema")
   querySchema: DatalakeQuerySchema;
 
+  @Input("selectedIndex")
+  selectedIndex: any;
+
+  
+
   constructor(public globals: Globals, private service: DatalakeService) { }
 
   toggleSchema(): void
@@ -84,10 +89,14 @@ export class DatalakeQueryEngineSchemaComponent {
     _this.querySchema.open = false;
   }
 
-  copyText(val1:string, val: string){
+  copyText(val1:string, val: string, index){
     if(!this.actionDisable("Type Query") || !this.actionDisable("Run Query") ){
       this.globals.selectedSchema.input += " " +val1+"."+val ;
+      if(this.globals.queryTabs[this.selectedIndex].schema === ""){
+        this.globals.queryTabs[this.selectedIndex].schema = val1 ;
+      }
     }
+
   }
 
     actionDisable(option: any) {

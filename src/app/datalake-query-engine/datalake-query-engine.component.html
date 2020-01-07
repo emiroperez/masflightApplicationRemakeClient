@@ -1,7 +1,7 @@
 <div class="datalake-query-engine-container" [ngStyle]="{ 'cursor': getHoverCursor() }">
   <div [style.width.%]="getLeftPanelWidth()" [style.min-width.%]="getMinLeftPanelWidth()" class="datalake-query-engine-left-panel">
     <div class="datalake-schema-container" *ngFor="let querySchema of querySchemas">
-      <app-datalake-query-engine-schema [querySchema]="querySchema"></app-datalake-query-engine-schema>
+      <app-datalake-query-engine-schema [querySchema]="querySchema" [selectedIndex]="selectedIndex"></app-datalake-query-engine-schema>
     </div>
   </div>
   <div class="datalake-query-engine-line-resize">
