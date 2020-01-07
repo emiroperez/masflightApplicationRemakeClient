@@ -11,7 +11,7 @@ import am4geodata_asiaLow from "@amcharts/amcharts4-geodata/region/world/asiaLow
 import am4geodata_africaLow from "@amcharts/amcharts4-geodata/region/world/africaLow";
 import am4geodata_europeLow from "@amcharts/amcharts4-geodata/region/world/europeLow";
 import am4geodata_oceaniaLow from "@amcharts/amcharts4-geodata/region/world/oceaniaLow";
-import am4geodata_usaAlbersLow from "@amcharts/amcharts4-geodata/usaAlbersLow";
+import am4geodata_usaLow from "@amcharts/amcharts4-geodata/usaLow";
 import am4geodata_colombiaLow from "@amcharts/amcharts4-geodata/colombiaLow";
 import am4geodata_colombiaMuniLow from "@amcharts/amcharts4-geodata/colombiaMuniLow";
 import { CategoryArguments } from '../model/CategoryArguments';
@@ -34,7 +34,6 @@ import { MsfDashboardDrillDownComponent } from  '../msf-dashboard-drill-down/msf
 import { MsfShareDashboardComponent } from '../msf-share-dashboard/msf-share-dashboard.component';
 import { MsfTableComponent } from '../msf-table/msf-table.component';
 import { MsfDashboardPanelValues } from '../msf-dashboard-panel/msf-dashboard-panelvalues';
-import { ComponentType } from '../commons/ComponentType';
 import { MessageComponent } from '../message/message.component';
 import { ChartFlags } from '../msf-dashboard-panel/msf-dashboard-chartflags';
 import { AuthService } from '../services/auth.service';
@@ -141,11 +140,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     { name: 'Vertical', value: true }
   ];
 
-  // NOTE: am4maps.projections.AlbersUsa is not available
-  // on AmCharts v4 4.2.0 and using anything higher than 4.2.0
-  // causes the map chart polygons not to be visible :(
   geodatas: any[] = [
-    { name: 'U.S. States', value: am4geodata_usaAlbersLow },
+    { name: 'U.S. States', value: am4geodata_usaLow },
     { name: 'North America', value: am4geodata_northAmericaLow },
     { name: 'Central America', value: am4geodata_centralAmericaLow },
     { name: 'South America', value: am4geodata_southAmericaLow },
@@ -1017,7 +1013,10 @@ export class MsfDashboardPanelComponent implements OnInit {
 
         // Create map instance displaying the chosen geography data
         chart.geodata = this.values.geodata.value;
-        chart.projection = new am4maps.projections.Miller ();
+        if (this.values.geodata.value == am4geodata_usaLow)
+          chart.projection = new am4maps.projections.AlbersUsa ();
+        else
+          chart.projection = new am4maps.projections.Miller ();
 
         // Add map polygons
         polygonSeries = chart.series.push (new am4maps.MapPolygonSeries ());
@@ -5788,6 +5787,8 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     this.toggleControlVariableDialogOpen.emit (true);
 
+    am4core.options.viewportTarget = null;
+
     dialogRef = this.dialog.open (MsfDashboardAssistantComponent, {
       panelClass: 'msf-dashboard-assistant-dialog',
       autoFocus: false,
@@ -5803,6 +5804,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     dialogRef.afterClosed ().subscribe (
       (values) => {
+        // reset AmChart viewport
+        am4core.options.viewportTarget = document.getElementById ("msf-dashboard-element");
+
         this.toggleControlVariableDialogOpen.emit (false);
 
         if (values)
