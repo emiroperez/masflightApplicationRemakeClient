@@ -130,6 +130,7 @@ export class MsfDateRangeComponent implements OnInit {
   @Input("argument") public argument: Arguments;
 
   prepareAutoDateRange: boolean = false;
+  maxDate: Date;
   minDate: Date;
 
   calendarHeader: any = MonthHeader;
@@ -254,6 +255,9 @@ export class MsfDateRangeComponent implements OnInit {
 
     this.isDateRange = (this.argument.selectionMode & 1) ? true : false;
 
+    this.minDate = this.argument.minDate;
+    this.maxDate = this.argument.maxDate;
+
     switch (this.currentValueType)
     {
       case 3:
@@ -325,6 +329,10 @@ export class MsfDateRangeComponent implements OnInit {
         }
       }
 
+      this.minDate = this.argument.value1;
+      if (this.isDateRange)
+        this.maxDate = this.argument.value2;
+
       // set display and date values
       switch (this.currentValueType)
       {
@@ -349,16 +357,67 @@ export class MsfDateRangeComponent implements OnInit {
             this.setMonthValue2 (moment (this.argument.value1, "MMM/YYYY"));
       }
     }
-
-    this.minDate = this.argument.minDate;
   }
 
-  dateChange(event): void
+  dateChange(normalizedDate: Moment): void
   {
-    if (!this.argument.value2 && this.isDateRange)
-      this.argument.value2 = this.argument.value1;
+    this.minDate = normalizedDate.toDate ();
 
-    this.minDate = this.argument.value1;
+    if (!this.isDateRange)
+      return;
+
+    if (this.dateStartView !== "month")
+      this.argument.value2 = this.value2Date;
+
+    if (!this.argument.value2 || this.argument.value2 < this.minDate)
+      this.argument.value2 = this.minDate;
+
+    switch (this.currentValueType)
+    {
+      case 1:
+        this.setMonthValue2 (moment (this.argument.value2));
+        break;
+
+      case 2:
+        this.setQuarterValue2 ();
+        break;
+
+      case 3:
+        this.setYearValue2 (moment (this.argument.value2));
+        break;
+    }
+  }
+
+  dateChange2(normalizedDate: Moment): void
+  {
+    this.maxDate = normalizedDate.toDate ();
+
+    if (!this.isDateRange)
+      return;
+
+    if (this.dateStartView !== "month")
+      this.argument.value1 = this.value1Date;
+
+    if (!this.argument.value1)
+      return;
+
+    if (this.argument.value1 > this.maxDate)
+      this.argument.value1 = this.maxDate;
+
+    switch (this.currentValueType)
+    {
+      case 1:
+        this.setMonthValue1 (moment (this.argument.value1));
+        break;
+
+      case 2:
+        this.setQuarterValue1 ();
+        break;
+
+      case 3:
+        this.setYearValue1 (moment (this.argument.value1));
+        break;
+    }
   }
 
   validateDate(): void
@@ -399,6 +458,9 @@ export class MsfDateRangeComponent implements OnInit {
         if (this.argument.value2 && this.argument.value2 < this.argument.minDate)
           this.argument.value2 = this.argument.minDate;
       }
+
+      this.minDate = this.argument.value1;
+      this.maxDate = this.argument.value2;
 
       switch (this.currentValueType)
       {
@@ -510,6 +572,8 @@ export class MsfDateRangeComponent implements OnInit {
         this.argument.value1 = this.argument.maxDate;
       else if (this.argument.minDate && this.argument.value1 < this.argument.minDate)
         this.argument.value1 = this.argument.minDate;
+
+      this.minDate = this.argument.value1;
 
       switch (this.currentValueType)
       {
@@ -630,6 +694,9 @@ export class MsfDateRangeComponent implements OnInit {
     }
     else
       this.argument.value2 = this.argument.maxDate;
+
+    this.minDate = this.argument.value1;
+    this.maxDate = this.argument.value2;
   }
 
   calculateDateRange2(option: string): void
@@ -692,6 +759,8 @@ export class MsfDateRangeComponent implements OnInit {
 
     if (this.argument.maxDate && this.argument.value2 > this.argument.maxDate)
       this.argument.value2 = this.argument.maxDate;
+
+    this.maxDate = this.argument.value2;
   }
 
   getMonthDateFormat(): string
@@ -712,6 +781,7 @@ export class MsfDateRangeComponent implements OnInit {
     if (this.valueType !== "year" && this.valueType !== "quarter")
       return;
 
+    this.dateChange (normalizedDate);
     this.setYearValue1 (normalizedDate);
     datepicker.close ();
   }
@@ -721,6 +791,7 @@ export class MsfDateRangeComponent implements OnInit {
     if (this.valueType !== "year" && this.valueType !== "quarter")
       return;
 
+    this.dateChange2 (normalizedDate);
     this.setYearValue2 (normalizedDate);
     datepicker.close ();
   }
@@ -730,6 +801,7 @@ export class MsfDateRangeComponent implements OnInit {
     if (this.valueType === "fullDate")
       return;
 
+    this.dateChange (normalizedDate);
     this.setMonthValue1 (normalizedDate);
     datepicker.close ();
   }
@@ -739,6 +811,7 @@ export class MsfDateRangeComponent implements OnInit {
     if (this.valueType === "fullDate")
       return;
 
+    this.dateChange2 (normalizedDate);
     this.setMonthValue2 (normalizedDate);
     datepicker.close ();
   }
@@ -867,11 +940,14 @@ export class MsfDateRangeComponent implements OnInit {
 
   setDateRange(): void
   {
-    if (this.selectionMode === "auto")
-    {
-      this.prepareAutoDateRange = true;
-      this.autoSelect ();
-      this.prepareAutoDateRange = false;
-    }
+    if (this.selectionMode !== "auto")
+      return;
+
+    if (this.dateRange.value.startsWith ("UNTIL"))
+      this.argument.value1 = null; // reset initial date
+
+    this.prepareAutoDateRange = true;
+    this.autoSelect ();
+    this.prepareAutoDateRange = false;
   }
 }
