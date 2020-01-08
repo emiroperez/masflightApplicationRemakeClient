@@ -170,6 +170,9 @@
       <span [ngStyle]="{ 'display': checkEditVisibility() }">
         <div class="msf-dashboard-assistant-content" [style.width.px]="getConfigWidth()">
           <div class="msf-dashboard-assistant-tab-group msf-dashboard-assistant-edit-tab-group">
+            <div *ngIf="!currentOptionCategories">
+              No Control Variables For This Option
+            </div>
             <mat-tab-group #editTabs>
               <mat-tab *ngFor="let controlVariable of currentOptionCategories">
                 <ng-template mat-tab-label>

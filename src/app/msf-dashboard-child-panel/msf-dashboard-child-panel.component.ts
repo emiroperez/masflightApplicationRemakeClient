@@ -651,7 +651,12 @@ export class MsfDashboardChildPanelComponent {
             if (this.values.vertAxisName && this.values.vertAxisName != "")
               valueAxis.title.text = this.values.vertAxisName;
             else
-              valueAxis.title.text = this.values.valueColumn.columnLabel;
+            {
+              if (this.values.valueColumn)
+                valueAxis.title.text = this.values.valueColumn.columnLabel;
+              else
+                valueAxis.title.text = "Count";
+            }
           }
           else
           {
@@ -663,7 +668,12 @@ export class MsfDashboardChildPanelComponent {
             if (this.values.horizAxisName && this.values.horizAxisName != "")
               valueAxis.title.text = this.values.horizAxisName;
             else
-              valueAxis.title.text = this.values.valueColumn.columnLabel;
+            {
+              if (this.values.valueColumn)
+                valueAxis.title.text = this.values.valueColumn.columnLabel;
+              else
+                valueAxis.title.text = "Count";
+            }
           }
 
           // The category will be the x axis if the chart type has it
@@ -787,7 +797,12 @@ export class MsfDashboardChildPanelComponent {
             if (this.values.vertAxisName && this.values.vertAxisName != "")
               valueAxis.title.text = this.values.vertAxisName;
             else
-              valueAxis.title.text = this.values.valueColumn.columnLabel;
+            {
+              if (this.values.valueColumn)
+                valueAxis.title.text = this.values.valueColumn.columnLabel;
+              else
+                valueAxis.title.text = "Count";
+            }
           }
           else
           {
@@ -799,7 +814,12 @@ export class MsfDashboardChildPanelComponent {
             if (this.values.horizAxisName && this.values.horizAxisName != "")
               valueAxis.title.text = this.values.horizAxisName;
             else
-              valueAxis.title.text = this.values.valueColumn.columnLabel;
+            {
+              if (this.values.valueColumn)
+                valueAxis.title.text = this.values.valueColumn.columnLabel;
+              else
+                valueAxis.title.text = "Count";
+            }
           }
 
           // The category will the values if the chart type lacks an x axis
@@ -1314,7 +1334,12 @@ export class MsfDashboardChildPanelComponent {
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
     urlArg = encodeURIComponent (urlBase);
     url = this.service.host + "/secure/getChartData?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress () +
-      "&variable=" + this.values.variable.columnName + "&valueColumn=" + this.values.valueColumn.columnName + "&function=" + this.values.function.id;
+      "&variable=" + this.values.variable.columnName;
+
+    if (this.values.valueColumn)
+      url += "&valueColumn=" + this.values.valueColumn.columnName;
+
+    url += "&function=" + this.values.function.id;
 
     // don't use the xaxis parameter if the chart type is pie, donut or radar
     if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))

@@ -142,8 +142,12 @@ export class MsfChartPreviewComponent {
     if (isDevMode ())
       console.log (urlBase);
 
-    url = this.service.host + "/secure/getChartData?url=" + urlArg + "&optionId=" + this.data.currentOption.id + "&ipAddress=" + this.authService.getIpAddress () +
-      "&valueColumn=" + this.data.valueColumn.columnName + "&function=";
+    url = this.service.host + "/secure/getChartData?url=" + urlArg + "&optionId=" + this.data.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
+
+    if (this.data.valueColumn)
+      url += "&valueColumn=" + this.data.valueColumn.columnName;
+
+    url += "&function=";
 
     if (this.data.chartMode === "advanced")
     {
@@ -458,32 +462,20 @@ export class MsfChartPreviewComponent {
           // Set axis name into the chart
           if (this.data.chartMode === "advanced")
           {
-            if (!(this.data.currentChartType.flags & ChartFlags.ROTATED))
-            {
-              categoryAxis.title.text = "Intervals";    
-              valueAxis.title.text = this.data.valueColumn.columnLabel;
-            }
-            else
-            {
-              categoryAxis.title.text = "Intervals";   
-              valueAxis.title.text = this.data.valueColumn.columnLabel;
-            }
+            categoryAxis.title.text = "Intervals";   
+            valueAxis.title.text = this.data.valueColumn.columnLabel;
 
             // The category will be the x axis if the chart type has it
             categoryAxis.dataFields.category = "Interval";
           }
           else
           {
-            if (!(this.data.currentChartType.flags & ChartFlags.ROTATED))
-            {
-              categoryAxis.title.text = this.data.xaxis.columnLabel;    
-              valueAxis.title.text = this.data.valueColumn.columnLabel;
-            }
+            categoryAxis.title.text = this.data.xaxis.columnLabel;    
+
+            if (!this.data.valueColumn)
+              valueAxis.title.text = "Count";
             else
-            {
-              categoryAxis.title.text = this.data.xaxis.columnLabel;   
               valueAxis.title.text = this.data.valueColumn.columnLabel;
-            }
   
             // The category will be the x axis if the chart type has it
             categoryAxis.dataFields.category = this.data.xaxis.columnName;
@@ -599,29 +591,17 @@ export class MsfChartPreviewComponent {
         {
           if (this.data.chartMode === "advanced")
           {
-            if (!(this.data.currentChartType.flags & ChartFlags.ROTATED))
-            {
-              categoryAxis.title.text = "Intervals"; 
-              valueAxis.title.text = this.data.valueColumn.columnLabel;
-            }
-            else
-            {
-              categoryAxis.title.text = "Intervals"; 
-              valueAxis.title.text = this.data.valueColumn.columnLabel;
-            }
+            categoryAxis.title.text = "Intervals"; 
+            valueAxis.title.text = this.data.valueColumn.columnLabel;
           }
           else
           {
-            if (!(this.data.currentChartType.flags & ChartFlags.ROTATED))
-            {
-              categoryAxis.title.text = this.data.variable.columnLabel; 
-              valueAxis.title.text = this.data.valueColumn.columnLabel;
-            }
+            categoryAxis.title.text = this.data.variable.columnLabel; 
+
+            if (!this.data.valueColumn)
+              valueAxis.title.text = "Count";
             else
-            {
-              categoryAxis.title.text = this.data.variable.columnLabel; 
               valueAxis.title.text = this.data.valueColumn.columnLabel;
-            }
 
             if (parseDate)
             {

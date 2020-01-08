@@ -262,6 +262,13 @@ export class MsfDashboardAssistantComponent {
   {
     let optionCategories = [];
 
+    if (!data.length)
+    {
+      // load table when there are no control variables
+      _this.loadTableData (false, _this.msfTableRef.handlerSuccess, _this.msfTableRef.handlerError);
+      return;
+    }
+
     _this.tabs.realignInkBar ();
     _this.tablePreview = false;
 
@@ -704,7 +711,15 @@ export class MsfDashboardAssistantComponent {
     }
 
     if (!this.haveXAxis ())
+    {
+      if (this.function.id === "count")
+        return this.analysisSelected;
+
       return this.analysisSelected && this.valueSelected;
+    }
+
+    if (this.function.id === "count")
+      return this.analysisSelected && this.xAxisSelected;
 
     return this.analysisSelected && this.xAxisSelected && this.valueSelected;
   }
@@ -766,7 +781,7 @@ export class MsfDashboardAssistantComponent {
         }
       }
     }
-    else
+    else if (this.valueSelected)
     {
       for (i = 0; i < this.currentOption.columnOptions.length; i++)
       {
