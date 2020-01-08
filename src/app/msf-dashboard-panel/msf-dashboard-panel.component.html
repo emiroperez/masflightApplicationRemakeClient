@@ -127,7 +127,7 @@
                 </div>
                 <div class="msf-dashboard-field-function">
                   <mat-form-field>
-                    <mat-select placeholder="Function" [(ngModel)]="values.function">
+                    <mat-select placeholder="Function" [(ngModel)]="values.function" (ngModelChange)="checkPanelConfiguration()">
                       <mat-option *ngFor="let fun of functions" [value]="fun">
                         {{fun.name}}
                       </mat-option>
