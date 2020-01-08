@@ -2233,7 +2233,11 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     this.values.isLoading = true;
     if(this.globals.currentApplication.name === "DataLake"){
+      if(this.getParameters ()){
       urlBase = this.values.currentOption.baseUrl + "?uName="+this.globals.userName+"&"+ this.getParameters ();
+      }else{
+        urlBase = this.values.currentOption.baseUrl + "?uName="+this.globals.userName;
+      }
     }else{
       urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
     }
@@ -2301,7 +2305,11 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.isLoading = true;
 
     if (this.globals.currentApplication.name === "DataLake")
+    if(this.getParameters ()){
       urlBase = this.values.currentOption.baseUrl + "?uName=" + this.globals.userName + "&" + this.getParameters ();
+    }else{
+      urlBase = this.values.currentOption.baseUrl + "?uName=" + this.globals.userName;
+    }
     else
       urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
 
@@ -2344,7 +2352,11 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     this.values.isLoading = true;
     if(this.globals.currentApplication.name === "DataLake"){
+      if(this.getParameters ()){
       urlBase = this.values.currentOption.baseUrl + "?uName="+this.globals.userName+"&"+ this.getParameters ();
+      }else{
+        urlBase = this.values.currentOption.baseUrl + "?uName="+this.globals.userName;
+      }
     }else{
     urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
     }
@@ -2385,7 +2397,11 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     this.values.isLoading = true;
     if(this.globals.currentApplication.name === "DataLake"){
-      urlBase = this.values.currentOption.baseUrl + "?uName="+this.globals.userName+"&"+ this.getParameters ();
+      if(this.getParameters ()){
+        urlBase = this.values.currentOption.baseUrl + "?uName="+this.globals.userName+"&"+ this.getParameters ();
+      }else{
+        urlBase = this.values.currentOption.baseUrl + "?uName="+this.globals.userName;
+      }
     }else{
     urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
     }
@@ -2418,7 +2434,11 @@ export class MsfDashboardPanelComponent implements OnInit {
     // TODO: Use a service that gets a url which contains a picture
     this.values.isLoading = true;
     if(this.globals.currentApplication.name === "DataLake"){
-      urlBase = this.values.currentOption.baseUrl + "?uName="+this.globals.userName+"&"+ this.getParameters ();
+      if(this.getParameters ()){
+        urlBase = this.values.currentOption.baseUrl + "?uName="+this.globals.userName+"&"+ this.getParameters ();
+      }else{
+        urlBase = this.values.currentOption.baseUrl + "?uName="+this.globals.userName;
+      }
     }else{
     urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
     }
@@ -2452,7 +2472,11 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     this.values.isLoading = true;
     if(this.globals.currentApplication.name === "DataLake"){
-      urlBase = this.values.currentOption.baseUrl + "?uName="+this.globals.userName+"&"+ this.getParameters ();
+      if(this.getParameters ()){
+        urlBase = this.values.currentOption.baseUrl + "?uName="+this.globals.userName+"&"+ this.getParameters ();
+      }else{
+        urlBase = this.values.currentOption.baseUrl + "?uName="+this.globals.userName
+      }
     }else{
     urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
     }
@@ -2479,7 +2503,11 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     this.values.isLoading = true;
     if(this.globals.currentApplication.name === "DataLake"){
+      if(this.getParameters ()){
       urlBase = this.values.currentOption.baseUrl + "?uName="+this.globals.userName+"&"+ this.getParameters ();
+      }else{
+        urlBase = this.values.currentOption.baseUrl + "?uName="+this.globals.userName;
+      }
     }else{
     urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
     }
