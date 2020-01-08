@@ -1001,6 +1001,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.zone.runOutsideAngular (() => {
       let chart, options;
 
+      am4core.options.viewportTarget = document.getElementById ("msf-dashboard-element");
+
       // Check chart type before generating it
       if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
       {
@@ -1767,6 +1769,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       });
 
       this.chart = chart;
+
+      am4core.options.viewportTarget = null;
 
       // build interval table for advanced charts
       if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
@@ -5787,8 +5791,6 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     this.toggleControlVariableDialogOpen.emit (true);
 
-    am4core.options.viewportTarget = null;
-
     dialogRef = this.dialog.open (MsfDashboardAssistantComponent, {
       panelClass: 'msf-dashboard-assistant-dialog',
       autoFocus: false,
@@ -5804,9 +5806,6 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     dialogRef.afterClosed ().subscribe (
       (values) => {
-        // reset AmChart viewport
-        am4core.options.viewportTarget = document.getElementById ("msf-dashboard-element");
-
         this.toggleControlVariableDialogOpen.emit (false);
 
         if (values)
