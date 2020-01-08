@@ -208,11 +208,16 @@ export class MsfDashboardAssistantComponent {
       this.msfTableRef.dataSource = null;
 
     this.isLoading = true;
-    if(this.globals.currentApplication.name === "DataLake"){
-      urlBase = this.currentOption.baseUrl + "?uName="+this.globals.userName+"&"+ this.getParameters ();
-    }else{
-    urlBase = this.currentOption.baseUrl + "?" + this.getParameters ();
+    if (this.globals.currentApplication.name === "DataLake")
+    {
+      if (this.getParameters ())
+        urlBase = this.currentOption.baseUrl + "?uName=" + this.globals.userName + "&" + this.getParameters ();
+      else
+        urlBase = this.currentOption.baseUrl + "?uName=" + this.globals.userName;
     }
+    else
+      urlBase = this.currentOption.baseUrl + "?" + this.getParameters ();
+
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&&pageSize=100&page_number=" + this.actualPageNumber;
     urlArg = encodeURIComponent (urlBase);
     url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
