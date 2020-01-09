@@ -187,5 +187,8 @@ actionDisable(option: any) {
   }
 }
 
+getTableHeight(): string {
+  return "calc(100% - 60px)";
+}
 
 }

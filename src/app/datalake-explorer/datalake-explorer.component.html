@@ -49,7 +49,7 @@
             <app-datalake-table-card [values]="tableCard" (setOption)="setOption($event)"></app-datalake-table-card>
         </ng-container>
     </div>
-    <div *ngIf="globals.optionDatalakeSelected === 3" [style.height.%]="100">
+    <div *ngIf="globals.optionDatalakeSelected === 3" [ngStyle]="{ 'height': getTableHeight() }">
         <app-datalake-query-engine></app-datalake-query-engine>
     </div>
     <!-- <div *ngIf="globals.optionDatalakeSelected === 2 && actionDisable('View table status') && actionDisable('View table information')" class="datalake-AccesImage"> -->

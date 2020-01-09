@@ -8112,8 +8112,8 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
             display: flex
             height: 60px
             .datalake-table-show-table-title
-                min-width: 300px
-                width: 100%
+                // min-width: 300px
+                width: 80%
                 padding: 15px
                 .datalake-table-show-table-longname
                     font-weight: 550
@@ -8123,6 +8123,10 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
             .datalake-table-show-table-close-button
                 align-self: center
                 padding-right: 5px
+                display: flex
+                flex-direction: row
+                width: 20%
+                justify-content: flex-end
 
 .datalake-table-body
     max-height: 536px
@@ -8371,30 +8375,38 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
             height: 60%
             .datalake-query-execution-result-header
                 display: flex
-                flex-direction: column
+                flex-direction: row
                 padding: 15px
                 height: 35px
                 position: relative
-                .datalake-query-execution-time-title
-                    font-weight: 550
-                    font-size: 13px
-                .datalake-query-execution-time-sub-title
-                    font-size: 11px
-                    padding-top: 5px
-                .datalake-query-cancel-button
-                    position: absolute
-                    align-items: center
-                    min-width: 0px !important
-                    width: 21px !important
-                    height: 34px !important
-                    right: 15px
-                    top: 14px
-                    border-style: solid
-                    border-width: 1px
-                    .mat-button-wrapper
-                        margin-left: -21.75px !important
-                        .close-icon
-                            margin-top: -3.25px !important
+                .datalake-query-execution-time-titles
+                    width: 80%
+                    padding-right: 20px
+                    .datalake-query-execution-time-title
+                        font-weight: 550
+                        font-size: 13px
+                    .datalake-query-execution-time-sub-title
+                        font-size: 11px
+                        padding-top: 5px
+                .datalake-query-execution-btns
+                    width: 20%
+                    display: flex
+                    justify-content: flex-end
+                    align-self: center
+                    .datalake-query-cancel-button
+                        position: absolute
+                        align-items: center
+                        min-width: 0px !important
+                        width: 21px !important
+                        height: 34px !important
+                        right: 15px
+                        top: 14px
+                        border-style: solid
+                        border-width: 1px
+                        .mat-button-wrapper
+                            margin-left: -21.75px !important
+                            .close-icon
+                                margin-top: -3.25px !important
             .datalake-query-execution-result-body
                 height: calc(100% - 75px)
                 transition: 0.5s

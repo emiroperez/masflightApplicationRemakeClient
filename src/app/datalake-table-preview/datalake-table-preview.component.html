@@ -15,6 +15,14 @@
       <div class="datalake-table-show-table-tablename">Schema: {{data.values.schemaName}}</div>
     </div>
     <div class="datalake-table-show-table-close-button">
+      <button 
+        [disabled]="!displayedColumns.length"
+        class="msf-menu-icon" (click)="exportToExcel()">
+        <img src="../../assets/images/{{globals.theme}}-ExporttoExcel.png"
+            class="msf-menu-image msf-vertical-middle">
+        <span class="msf-vertical-middle">Export Excel</span>
+      </button>
+
       <button mat-icon-button (click)="onNoClick()">
         <mat-icon aria-label="Close">close</mat-icon>
       </button>
