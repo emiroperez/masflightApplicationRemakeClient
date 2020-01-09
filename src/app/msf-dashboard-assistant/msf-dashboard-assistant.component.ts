@@ -230,7 +230,9 @@ export class MsfDashboardAssistantComponent {
 
   finishLoadingTable(error): void
   {
-    this.tabs.realignInkBar ();
+    if (this.currentOptionCategories)
+      this.tabs.realignInkBar ();
+
     this.isLoading = false;
 
     if (error)

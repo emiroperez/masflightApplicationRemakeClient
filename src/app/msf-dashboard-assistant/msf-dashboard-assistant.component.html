@@ -81,84 +81,89 @@
       <span [ngStyle]="{ 'display': checkTablePreviewVisibility() }">
         <div class="msf-dashboard-assistant-content" [style.width.px]="getConfigWidth()">
           <div class="msf-dashboard-assistant-tab-group">
-            <mat-tab-group #tabs>
-              <mat-tab *ngFor="let controlVariable of currentOptionCategories">
-                <ng-template mat-tab-label>
-                  <mat-icon *ngIf="controlVariable.icon && isMatIcon(controlVariable.icon)"
-                    class="msf-dashboard-control-panel-tab-icon">{{controlVariable.icon}}</mat-icon>
-                  <img *ngIf="controlVariable.icon && !isMatIcon(controlVariable.icon)"
-                    src="{{getImageIcon(controlVariable)}}" class="msf-dashboard-control-panel-tab-icon">
-                  {{controlVariable.label}}
-                </ng-template>
-                <div class="msf-dashboard-assistant-tab-container">
-                  <div class="msf-dashboard-assistant-tab-info">
-                    <div class="msf-dashboard-assistant-edit-button">
-                      <button mat-button (click)="goToEditor()">
-                        <mat-icon>create</mat-icon>
-                        Edit
-                      </button>
-                    </div>
-                    <div class="msf-dashboard-assistant-argument">
-                      <span class="msf-dashboard-assistant-argument-container"
-                        *ngFor="let argument of controlVariable.arguments">
-                        <div class="msf-block" *ngIf="argument.name1">
-                          <div class="msf-inline">
-                            {{ getArgumentLabel1(argument)}}
+            <div class="no-control-variables-container" *ngIf="!currentOptionCategories">
+              No Control Variables For This Option
+            </div>
+            <ng-container *ngIf="currentOptionCategories">
+              <mat-tab-group #tabs>
+                <mat-tab *ngFor="let controlVariable of currentOptionCategories">
+                  <ng-template mat-tab-label>
+                    <mat-icon *ngIf="controlVariable.icon && isMatIcon(controlVariable.icon)"
+                      class="msf-dashboard-control-panel-tab-icon">{{controlVariable.icon}}</mat-icon>
+                    <img *ngIf="controlVariable.icon && !isMatIcon(controlVariable.icon)"
+                      src="{{getImageIcon(controlVariable)}}" class="msf-dashboard-control-panel-tab-icon">
+                    {{controlVariable.label}}
+                  </ng-template>
+                  <div class="msf-dashboard-assistant-tab-container">
+                    <div class="msf-dashboard-assistant-tab-info">
+                      <div class="msf-dashboard-assistant-edit-button">
+                        <button mat-button (click)="goToEditor()">
+                          <mat-icon>create</mat-icon>
+                          Edit
+                        </button>
+                      </div>
+                      <div class="msf-dashboard-assistant-argument">
+                        <span class="msf-dashboard-assistant-argument-container"
+                          *ngFor="let argument of controlVariable.arguments">
+                          <div class="msf-block" *ngIf="argument.name1">
+                            <div class="msf-inline">
+                              {{ getArgumentLabel1(argument)}}
+                            </div>
+                            <div class="msf-inline msf-dashboard-assistant-argument-value"
+                              *ngIf="!valueIsEmpty(argument.value1) && argument">
+                              {{utils.getValueFormatView(argument.type, argument.value1,argument)}}
+                            </div>
+                            <div class="msf-inline msf-dashboard-assistant-argument-value"
+                              *ngIf="valueIsEmpty(argument.value1) && argument">
+                              all
+                            </div>
                           </div>
-                          <div class="msf-inline msf-dashboard-assistant-argument-value"
-                            *ngIf="!valueIsEmpty(argument.value1) && argument">
-                            {{utils.getValueFormatView(argument.type, argument.value1,argument)}}
+                          <div class="msf-block" *ngIf="argument.name2">
+                            <div class="msf-inline">
+                              {{ getArgumentLabel2(argument)}}
+                            </div>
+                            <div class="msf-inline msf-dashboard-assistant-argument-value"
+                              *ngIf="!valueIsEmpty(argument.value2) && argument">
+                              {{utils.getValueFormatView(argument.type, argument.value2,argument)}}
+                            </div>
+                            <div class="msf-inline msf-dashboard-assistant-argument-value"
+                              *ngIf="valueIsEmpty(argument.value2) && argument">
+                              all
+                            </div>
                           </div>
-                          <div class="msf-inline msf-dashboard-assistant-argument-value"
-                            *ngIf="valueIsEmpty(argument.value1) && argument">
-                            all
+                          <div class="msf-block" *ngIf="argument.name3">
+                            <div class="msf-inline">
+                              {{ getArgumentLabel3(argument)}}
+                            </div>
+                            <div class="msf-inline msf-dashboard-assistant-argument-value"
+                              *ngIf="!valueIsEmpty(argument.value3) && argument">
+                              {{utils.getValueFormatView(argument.type, argument.value3,argument)}}
+                            </div>
+                            <div class="msf-inline msf-dashboard-assistant-argument-value"
+                              *ngIf="valueIsEmpty(argument.value3) && argument">
+                              all
+                            </div>
                           </div>
-                        </div>
-                        <div class="msf-block" *ngIf="argument.name2">
-                          <div class="msf-inline">
-                            {{ getArgumentLabel2(argument)}}
+                          <div class="msf-block" *ngIf="argument.name4">
+                            <div class="msf-inline">
+                              {{ getArgumentLabel4(argument)}}
+                            </div>
+                            <div class="msf-inline msf-dashboard-assistant-argument-value"
+                              *ngIf="!valueIsEmpty(argument.value4) && argument">
+                              {{utils.getValueFormatView(argument.type, argument.value4,argument)}}
+                            </div>
+                            <div class="msf-inline msf-dashboard-assistant-argument-value"
+                              *ngIf="valueIsEmpty(argument.value4) && argument">
+                              all
+                            </div>
                           </div>
-                          <div class="msf-inline msf-dashboard-assistant-argument-value"
-                            *ngIf="!valueIsEmpty(argument.value2) && argument">
-                            {{utils.getValueFormatView(argument.type, argument.value2,argument)}}
-                          </div>
-                          <div class="msf-inline msf-dashboard-assistant-argument-value"
-                            *ngIf="valueIsEmpty(argument.value2) && argument">
-                            all
-                          </div>
-                        </div>
-                        <div class="msf-block" *ngIf="argument.name3">
-                          <div class="msf-inline">
-                            {{ getArgumentLabel3(argument)}}
-                          </div>
-                          <div class="msf-inline msf-dashboard-assistant-argument-value"
-                            *ngIf="!valueIsEmpty(argument.value3) && argument">
-                            {{utils.getValueFormatView(argument.type, argument.value3,argument)}}
-                          </div>
-                          <div class="msf-inline msf-dashboard-assistant-argument-value"
-                            *ngIf="valueIsEmpty(argument.value3) && argument">
-                            all
-                          </div>
-                        </div>
-                        <div class="msf-block" *ngIf="argument.name4">
-                          <div class="msf-inline">
-                            {{ getArgumentLabel4(argument)}}
-                          </div>
-                          <div class="msf-inline msf-dashboard-assistant-argument-value"
-                            *ngIf="!valueIsEmpty(argument.value4) && argument">
-                            {{utils.getValueFormatView(argument.type, argument.value4,argument)}}
-                          </div>
-                          <div class="msf-inline msf-dashboard-assistant-argument-value"
-                            *ngIf="valueIsEmpty(argument.value4) && argument">
-                            all
-                          </div>
-                        </div>
-                      </span>
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </mat-tab>
-            </mat-tab-group>
+                </mat-tab>
+              </mat-tab-group>
+            </ng-container>
           </div>
           <div class="msf-dashboard-assistant-table msf-dashboard-child-panel-table mat-elevation-z8">
             <app-msf-table #msfTableRef [isLoading]="isLoading" (finishLoading)="finishLoadingTable($event)"
@@ -170,9 +175,6 @@
       <span [ngStyle]="{ 'display': checkEditVisibility() }">
         <div class="msf-dashboard-assistant-content" [style.width.px]="getConfigWidth()">
           <div class="msf-dashboard-assistant-tab-group msf-dashboard-assistant-edit-tab-group">
-            <div *ngIf="!currentOptionCategories">
-              No Control Variables For This Option
-            </div>
             <mat-tab-group #editTabs>
               <mat-tab *ngFor="let controlVariable of currentOptionCategories">
                 <ng-template mat-tab-label>
