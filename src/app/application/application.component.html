@@ -117,7 +117,7 @@
         <button *ngIf="globals.currentOption !== 'dashboard'"
             [disabled]="(!msfContainerRef.msfTableRef || !msfContainerRef.msfTableRef.dataSource || msfContainerRef.msfTableRef.dataSource.length < 0 || globals.mapsc) || !exportExcelPlan"
             class="msf-menu-icon" (click)="exportToCSV()">
-            <img src="../../assets/images/{{globals.theme}}-ExporttoExcel.png"
+            <img src="../../assets/images/{{globals.theme}}-csv.png"
                 class="msf-menu-image msf-vertical-middle">
             <span class="msf-vertical-middle" *ngIf="!TabletQuery.matches">Export CSV</span>
         </button>
