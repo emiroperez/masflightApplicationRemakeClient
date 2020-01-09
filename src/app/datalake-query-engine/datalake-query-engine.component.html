@@ -73,11 +73,10 @@
             <div class="datalake-query-execution-time-sub-title" *ngIf="startQueryTime && endQueryTime">{{calcExecutionTime()}}</div>
         </div>
         <div class="datalake-query-execution-btns">
-            <button *ngIf="!queryLoading"
+            <button *ngIf="!queryLoading" mat-button class="datalake-table-export-excel"
               [disabled]="!displayedColumns.length"
-              class="msf-menu-icon" (click)="exportToExcel()">
-              <img src="../../assets/images/{{globals.theme}}-ExporttoExcel.png"
-                  class="msf-menu-image msf-vertical-middle">
+              (click)="exportToExcel()">
+              <img class="datalake-table-export-excel-img" src="../../assets/images/{{globals.theme}}-excel_white.png">
             </button>
 
             <button *ngIf="queryLoading" mat-button class="datalake-query-cancel-button" (click)="cancelQueryLoading()">

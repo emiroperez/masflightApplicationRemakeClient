@@ -15,11 +15,12 @@
       <div class="datalake-table-show-table-tablename">Schema: {{data.values.schemaName}}</div>
     </div>
     <div class="datalake-table-show-table-close-button">
-      <button 
+      <button mat-button class="datalake-table-export-excel"
         [disabled]="!displayedColumns.length"
-        class="msf-menu-icon" (click)="exportToExcel()">
-        <img src="../../assets/images/{{globals.theme}}-ExporttoExcel.png"
-            class="msf-menu-image msf-vertical-middle">
+        (click)="exportToExcel()">
+        <img class="datalake-table-export-excel-img" src="../../assets/images/{{globals.theme}}-excel_white.png">
+            <!-- <img src="../../assets/images/{{globals.theme}}-ExporttoExcel.png"
+                class="msf-menu-image msf-vertical-middle"> -->
       </button>
 
       <button mat-icon-button (click)="onNoClick()">
