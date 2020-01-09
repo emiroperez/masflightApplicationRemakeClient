@@ -134,7 +134,7 @@ import { MsfDashboardInfoFunctionsComponent } from './msf-dashboard-info-functio
 import { MsfGroupingMariadbComponent } from './msf-grouping-mariadb/msf-grouping-mariadb.component';
 import { MsfContentTypeComponent } from './msf-content-type/msf-content-type.component';
 import { ColorPickerModule } from 'ngx-color-picker';
-import { MsfDashboardColorPickerComponent } from './msf-dashboard-color-picker/msf-dashboard-color-picker.component';
+import { MsfDashboardAdditionalSettingsComponent } from './msf-dashboard-additional-settings/msf-dashboard-additional-settings.component';
 import { MsfEditDashboardComponent } from './msf-edit-dashboard/msf-edit-dashboard.component';
 import { MsfAddDashboardComponent } from './msf-add-dashboard/msf-add-dashboard.component';
 import { MsfDashboardDrillDownComponent } from './msf-dashboard-drill-down/msf-dashboard-drill-down.component';
@@ -325,7 +325,7 @@ import { CreateUserDialogComponent } from './create-user-dialog/create-user-dial
     MsfDashboardInfoFunctionsComponent,
     MsfGroupingMariadbComponent,
     MsfContentTypeComponent,
-    MsfDashboardColorPickerComponent,
+    MsfDashboardAdditionalSettingsComponent,
     MsfEditDashboardComponent,
     MsfAddDashboardComponent,
     MsfDashboardDrillDownComponent,
@@ -459,7 +459,7 @@ import { CreateUserDialogComponent } from './create-user-dialog/create-user-dial
     MsfDashboardControlVariablesComponent,
     MsfConfirmationDialogComponent,
     MsfDashboardInfoFunctionsComponent,
-    MsfDashboardColorPickerComponent,
+    MsfDashboardAdditionalSettingsComponent,
     MsfEditDashboardComponent,
     MsfAddDashboardComponent,
     MsfDashboardDrillDownComponent,

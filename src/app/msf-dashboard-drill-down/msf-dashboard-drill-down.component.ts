@@ -6,7 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { Globals } from '../globals/Globals';
 import { MsfDashboardPanelValues } from '../msf-dashboard-panel/msf-dashboard-panelvalues';
-import { MsfDashboardColorPickerComponent } from '../msf-dashboard-color-picker/msf-dashboard-color-picker.component';
+import { MsfDashboardAdditionalSettingsComponent } from '../msf-dashboard-additional-settings/msf-dashboard-additional-settings.component';
 import { ChartFlags } from '../msf-dashboard-panel/msf-dashboard-chartflags';
 import { ApplicationService } from '../services/application.service';
 
@@ -163,32 +163,50 @@ export class MsfDashboardDrillDownComponent {
       });
   }
 
-  goToColorPicker(): void
+  goToAdditionalSettings(): void
   {
-    let dialogRef, dialogHeight, numColors;
+    let dialogRef, limitConfig, numColors;
 
     if (this.currentValue.currentChartType.flags & ChartFlags.XYCHART
       || this.currentValue.currentChartType.flags & ChartFlags.PIECHART
       || this.currentValue.currentChartType.flags & ChartFlags.FUNNELCHART)
     {
-      dialogHeight = '340px';
+      if (this.currentValue.currentChartType.flags & ChartFlags.XYCHART)
+        limitConfig = false;
+      else
+        limitConfig = true;
       numColors = 12;
+    }
+    else if (this.currentValue.currentChartType.flags & ChartFlags.HEATMAP)
+    {
+      limitConfig = false;
+      numColors = 1;
+    }
+    else if (this.currentValue.currentChartType.flags & ChartFlags.FORM)
+    {
+      limitConfig = false;
+      numColors = 0;
     }
     else
     {
-      dialogHeight = '178px';
+      limitConfig = true;
       numColors = 1;
     }
 
-    dialogRef = this.dialog.open (MsfDashboardColorPickerComponent, {
-      height: dialogHeight,
+    // don't allow the option to limit results on advanced charts
+    if (this.currentValue.currentChartType.flags & ChartFlags.ADVANCED)
+      limitConfig = false;
+
+    dialogRef = this.dialog.open (MsfDashboardAdditionalSettingsComponent, {
       width: '400px',
+      height: 'auto',
       panelClass: 'msf-dashboard-control-variables-dialog',
       autoFocus: false,
       data: {
-        title: this.currentValue.chartName,
-        colors: this.currentValue.paletteColors,
-        numColors: numColors
+        values: this.currentValue,
+        thresholds: null,
+        numColors: numColors,
+        limitConfig: limitConfig
       }
     });
 
@@ -476,6 +494,15 @@ export class MsfDashboardDrillDownComponent {
     return different;
   }
 
+  checkLimitConfig(): boolean
+  {
+    if (this.currentValue.limitMode == this.lastValue.limitMode ||
+      this.currentValue.limitAmount == this.lastValue.limitAmount)
+      return false;
+
+    return true;
+  }
+
   checkIfPanelIsConfigured(): void
   {
     // make sure that every value is not null
@@ -504,7 +531,8 @@ export class MsfDashboardDrillDownComponent {
       && this.currentValue.chartName == this.lastValue.chartName
       && (this.currentValue.currentChartType.flags & ChartFlags.XYCHART
         && this.currentValue.xaxis == this.lastValue.xaxis)
-      && !this.checkPaletteColors ())
+      && !this.checkPaletteColors ()
+      && !this.checkLimitConfig ())
       return;
 
     this.data.childPanelsConfigured[this.currentIndex] = true;

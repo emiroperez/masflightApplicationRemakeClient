@@ -14893,4 +14893,12 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
   filter: opacity(0.6);
 }
 
+.msf-dashboard-additional-settings-title {
+  margin-top: 10px;
+}
+
+.msf-dashboard-limit-amount-input {
+  width: 95%;
+}
+
 /*# sourceMappingURL=styles.css.map */

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, isDevMode } from '@angular/core';
 import { Globals } from '../globals/Globals';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
@@ -21,8 +21,7 @@ export class AuthService {
 
   constructor(public http: HttpClient, private globals: Globals)
   {
-    // this.http.get ("http://api.ipify.org?format=json").subscribe (data => {
-    this.http.get ("https://api.ipify.org?format=json").subscribe (data => {
+    this.http.get (((isDevMode ()) ? "http" : "https") + "://api.ipify.org?format=json").subscribe (data => {
       this.ipAddress = data["ip"];
     });
   }
