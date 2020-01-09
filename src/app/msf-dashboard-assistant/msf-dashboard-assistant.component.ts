@@ -208,11 +208,16 @@ export class MsfDashboardAssistantComponent {
       this.msfTableRef.dataSource = null;
 
     this.isLoading = true;
-    if(this.globals.currentApplication.name === "DataLake"){
-      urlBase = this.currentOption.baseUrl + "?uName="+this.globals.userName+"&"+ this.getParameters ();
-    }else{
-    urlBase = this.currentOption.baseUrl + "?" + this.getParameters ();
+    if (this.globals.currentApplication.name === "DataLake")
+    {
+      if (this.getParameters ())
+        urlBase = this.currentOption.baseUrl + "?uName=" + this.globals.userName + "&" + this.getParameters ();
+      else
+        urlBase = this.currentOption.baseUrl + "?uName=" + this.globals.userName;
     }
+    else
+      urlBase = this.currentOption.baseUrl + "?" + this.getParameters ();
+
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&&pageSize=100&page_number=" + this.actualPageNumber;
     urlArg = encodeURIComponent (urlBase);
     url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
@@ -225,7 +230,9 @@ export class MsfDashboardAssistantComponent {
 
   finishLoadingTable(error): void
   {
-    this.tabs.realignInkBar ();
+    if (this.currentOptionCategories)
+      this.tabs.realignInkBar ();
+
     this.isLoading = false;
 
     if (error)
@@ -256,6 +263,13 @@ export class MsfDashboardAssistantComponent {
   setCategories(_this, data): void
   {
     let optionCategories = [];
+
+    if (!data.length)
+    {
+      // load table when there are no control variables
+      _this.loadTableData (false, _this.msfTableRef.handlerSuccess, _this.msfTableRef.handlerError);
+      return;
+    }
 
     _this.tabs.realignInkBar ();
     _this.tablePreview = false;
@@ -699,7 +713,15 @@ export class MsfDashboardAssistantComponent {
     }
 
     if (!this.haveXAxis ())
+    {
+      if (this.function.id === "count")
+        return this.analysisSelected;
+
       return this.analysisSelected && this.valueSelected;
+    }
+
+    if (this.function.id === "count")
+      return this.analysisSelected && this.xAxisSelected;
 
     return this.analysisSelected && this.xAxisSelected && this.valueSelected;
   }
@@ -761,7 +783,7 @@ export class MsfDashboardAssistantComponent {
         }
       }
     }
-    else
+    else if (this.valueSelected)
     {
       for (i = 0; i < this.currentOption.columnOptions.length; i++)
       {

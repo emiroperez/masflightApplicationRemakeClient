@@ -1784,6 +1784,9 @@
 .dark-theme .msf-dashboard-assistant-stepper .mat-step-icon .mat-icon {
   color: #ffffff !important;
 }
+.dark-theme .msf-dashboard-assistant-stepper .mat-step-icon-selected {
+  background-color: #01abec !important;
+}
 .dark-theme .msf-dashboard-assistant-stepper .mat-stepper-vertical-line::before {
   border-left-color: #727277;
 }
@@ -2815,6 +2818,9 @@
 }
 .dark-theme .admin-menu-content-dialog-container-title {
   color: #ffffff !important;
+}
+.dark-theme .no-control-variables-container {
+  background-color: #01abec;
 }
 
 .light-theme {
@@ -4587,6 +4593,9 @@
 .light-theme .msf-dashboard-assistant-stepper .mat-step-icon .mat-icon {
   color: #ffffff !important;
 }
+.light-theme .msf-dashboard-assistant-stepper .mat-step-icon-selected {
+  background-color: #eb5c1b !important;
+}
 .light-theme .msf-dashboard-assistant-stepper .mat-stepper-vertical-line::before {
   border-left-color: #b2b2b2;
 }
@@ -5618,6 +5627,9 @@
 }
 .light-theme .admin-menu-content-dialog-container-title {
   color: #4d4d4d !important;
+}
+.light-theme .no-control-variables-container {
+  background-color: #eb5c1b;
 }
 
 .dark-theme .assistant-button-disabled {
@@ -14787,6 +14799,16 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
 .create-user-container .register-step-header .mat-select-trigger {
   padding-top: 17px !important;
   padding-left: 0 !important;
+}
+
+.no-control-variables-container {
+  margin-top: 45px;
+  text-align: center;
+  width: 240px;
+  padding: 20px;
+  font-weight: 550;
+  font-size: 14px;
+  margin-left: 230px;
 }
 
 /*# sourceMappingURL=styles.css.map */

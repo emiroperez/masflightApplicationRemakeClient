@@ -1481,7 +1481,12 @@ export class MsfDashboardPanelComponent implements OnInit {
               if (this.values.vertAxisName && this.values.vertAxisName != "")
                 valueAxis.title.text = this.values.vertAxisName;
               else
-                valueAxis.title.text = this.values.valueColumn.name;
+              {
+                if (this.values.valueColumn)
+                  valueAxis.title.text = this.values.valueColumn.name;
+                else
+                  valueAxis.title.text = "Count";
+              }
             }
             else
             {
@@ -1493,7 +1498,12 @@ export class MsfDashboardPanelComponent implements OnInit {
               if (this.values.horizAxisName && this.values.horizAxisName != "")
                 valueAxis.title.text = this.values.horizAxisName;
               else
-                valueAxis.title.text = this.values.valueColumn.name;
+              {
+                if (this.values.valueColumn)
+                  valueAxis.title.text = this.values.valueColumn.name;
+                else
+                  valueAxis.title.text = "Count";
+              }
             }
 
             categoryAxis.dataFields.category = "Interval";
@@ -1511,7 +1521,12 @@ export class MsfDashboardPanelComponent implements OnInit {
               if (this.values.vertAxisName && this.values.vertAxisName != "")
                 valueAxis.title.text = this.values.vertAxisName;
               else
-                valueAxis.title.text = this.values.valueColumn.name;
+              {
+                if (this.values.valueColumn)
+                  valueAxis.title.text = this.values.valueColumn.name;
+                else
+                  valueAxis.title.text = "Count";
+              }
             }
             else
             {
@@ -1523,7 +1538,12 @@ export class MsfDashboardPanelComponent implements OnInit {
               if (this.values.horizAxisName && this.values.horizAxisName != "")
                 valueAxis.title.text = this.values.horizAxisName;
               else
-                valueAxis.title.text = this.values.valueColumn.name;
+              {
+                if (this.values.valueColumn)
+                  valueAxis.title.text = this.values.valueColumn.name;
+                else
+                  valueAxis.title.text = "Count";
+              }
             }
 
             // The category will be the x axis if the chart type has it
@@ -1650,7 +1670,12 @@ export class MsfDashboardPanelComponent implements OnInit {
               if (this.values.vertAxisName && this.values.vertAxisName != "")
                 valueAxis.title.text = this.values.vertAxisName;
               else
-                valueAxis.title.text = this.values.valueColumn.name;
+              {
+                if (this.values.valueColumn)
+                  valueAxis.title.text = this.values.valueColumn.name;
+                else
+                  valueAxis.title.text = "Count";
+              }
             }
             else
             {
@@ -1662,7 +1687,12 @@ export class MsfDashboardPanelComponent implements OnInit {
               if (this.values.horizAxisName && this.values.horizAxisName != "")
                 valueAxis.title.text = this.values.horizAxisName;
               else
-                valueAxis.title.text = this.values.valueColumn.name;
+              {
+                if (this.values.valueColumn)
+                  valueAxis.title.text = this.values.valueColumn.name;
+                else
+                  valueAxis.title.text = "Count";
+              }
             }
           }
           else
@@ -1677,7 +1707,12 @@ export class MsfDashboardPanelComponent implements OnInit {
               if (this.values.vertAxisName && this.values.vertAxisName != "")
                 valueAxis.title.text = this.values.vertAxisName;
               else
-                valueAxis.title.text = this.values.valueColumn.name;
+              {
+                if (this.values.valueColumn)
+                  valueAxis.title.text = this.values.valueColumn.name;
+                else
+                  valueAxis.title.text = "Count";
+              }
             }
             else
             {
@@ -1689,7 +1724,12 @@ export class MsfDashboardPanelComponent implements OnInit {
               if (this.values.horizAxisName && this.values.horizAxisName != "")
                 valueAxis.title.text = this.values.horizAxisName;
               else
-                valueAxis.title.text = this.values.valueColumn.name;
+              {
+                if (this.values.valueColumn)
+                  valueAxis.title.text = this.values.valueColumn.name;
+                else
+                  valueAxis.title.text = "Count";
+              }
             }
 
             if (parseDate)
@@ -2236,15 +2276,16 @@ export class MsfDashboardPanelComponent implements OnInit {
     let url, urlBase, urlArg, panel, variables;
 
     this.values.isLoading = true;
-    if(this.globals.currentApplication.name === "DataLake"){
-      if(this.getParameters ()){
-      urlBase = this.values.currentOption.baseUrl + "?uName="+this.globals.userName+"&"+ this.getParameters ();
-      }else{
-        urlBase = this.values.currentOption.baseUrl + "?uName="+this.globals.userName;
-      }
-    }else{
-      urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
+    if (this.globals.currentApplication.name === "DataLake")
+    {
+      if (this.getParameters ())
+        urlBase = this.values.currentOption.baseUrl + "?uName=" + this.globals.userName + "&" + this.getParameters ();
+      else
+        urlBase = this.values.currentOption.baseUrl + "?uName=" + this.globals.userName;
     }
+    else
+      urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
+
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
     urlArg = encodeURIComponent (urlBase);
 
@@ -2309,18 +2350,23 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.isLoading = true;
 
     if (this.globals.currentApplication.name === "DataLake")
-    if(this.getParameters ()){
-      urlBase = this.values.currentOption.baseUrl + "?uName=" + this.globals.userName + "&" + this.getParameters ();
-    }else{
-      urlBase = this.values.currentOption.baseUrl + "?uName=" + this.globals.userName;
+    {
+      if (this.getParameters ())
+        urlBase = this.values.currentOption.baseUrl + "?uName=" + this.globals.userName + "&" + this.getParameters ();
+      else
+        urlBase = this.values.currentOption.baseUrl + "?uName=" + this.globals.userName;
     }
     else
       urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
 
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
     urlArg = encodeURIComponent (urlBase);
-    url = this.service.host + "/secure/getChartData?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress () +
-      "&valueColumn=" + this.values.valueColumn.id + "&function=";
+    url = this.service.host + "/secure/getChartData?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
+
+    if (this.values.valueColumn)
+      url += "&valueColumn=" + this.values.valueColumn.id;
+
+    url += "&function=";
 
     if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
     {
@@ -2355,15 +2401,16 @@ export class MsfDashboardPanelComponent implements OnInit {
     let url, urlBase, urlArg;
 
     this.values.isLoading = true;
-    if(this.globals.currentApplication.name === "DataLake"){
-      if(this.getParameters ()){
-      urlBase = this.values.currentOption.baseUrl + "?uName="+this.globals.userName+"&"+ this.getParameters ();
-      }else{
-        urlBase = this.values.currentOption.baseUrl + "?uName="+this.globals.userName;
-      }
-    }else{
-    urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
+    if (this.globals.currentApplication.name === "DataLake")
+    {
+      if (this.getParameters ())
+        urlBase = this.values.currentOption.baseUrl + "?uName=" + this.globals.userName + "&" + this.getParameters ();
+      else
+        urlBase = this.values.currentOption.baseUrl + "?uName=" + this.globals.userName;
     }
+    else
+      urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
+
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
     urlArg = encodeURIComponent (urlBase);
     url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
@@ -2400,15 +2447,16 @@ export class MsfDashboardPanelComponent implements OnInit {
     let url, urlBase, urlArg, formConfig;
 
     this.values.isLoading = true;
-    if(this.globals.currentApplication.name === "DataLake"){
-      if(this.getParameters ()){
-        urlBase = this.values.currentOption.baseUrl + "?uName="+this.globals.userName+"&"+ this.getParameters ();
-      }else{
-        urlBase = this.values.currentOption.baseUrl + "?uName="+this.globals.userName;
-      }
-    }else{
-    urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
+    if (this.globals.currentApplication.name === "DataLake")
+    {
+      if (this.getParameters ())
+        urlBase = this.values.currentOption.baseUrl + "?uName=" + this.globals.userName + "&" + this.getParameters ();
+      else
+        urlBase = this.values.currentOption.baseUrl + "?uName=" + this.globals.userName;
     }
+    else
+      urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
+
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=1&page_number=0";
     urlArg = encodeURIComponent (urlBase);
 
@@ -2437,15 +2485,16 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     // TODO: Use a service that gets a url which contains a picture
     this.values.isLoading = true;
-    if(this.globals.currentApplication.name === "DataLake"){
-      if(this.getParameters ()){
-        urlBase = this.values.currentOption.baseUrl + "?uName="+this.globals.userName+"&"+ this.getParameters ();
-      }else{
-        urlBase = this.values.currentOption.baseUrl + "?uName="+this.globals.userName;
-      }
-    }else{
-    urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
+    if (this.globals.currentApplication.name === "DataLake")
+    {
+      if (this.getParameters ())
+        urlBase = this.values.currentOption.baseUrl + "?uName=" + this.globals.userName + "&" + this.getParameters ();
+      else
+        urlBase = this.values.currentOption.baseUrl + "?uName=" + this.globals.userName;
     }
+    else
+      urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
+
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=1&page_number=0";
     urlArg = encodeURIComponent (urlBase);
 
@@ -2475,15 +2524,16 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.msfTableRef.dataSource = null;
 
     this.values.isLoading = true;
-    if(this.globals.currentApplication.name === "DataLake"){
-      if(this.getParameters ()){
-        urlBase = this.values.currentOption.baseUrl + "?uName="+this.globals.userName+"&"+ this.getParameters ();
-      }else{
-        urlBase = this.values.currentOption.baseUrl + "?uName="+this.globals.userName
-      }
-    }else{
-    urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
+    if (this.globals.currentApplication.name === "DataLake")
+    {
+      if (this.getParameters ())
+        urlBase = this.values.currentOption.baseUrl + "?uName=" + this.globals.userName + "&" + this.getParameters ();
+      else
+        urlBase = this.values.currentOption.baseUrl + "?uName=" + this.globals.userName;
     }
+    else
+      urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
+
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=100&page_number=" + this.actualPageNumber;
     urlArg = encodeURIComponent (urlBase);
 
@@ -2506,15 +2556,16 @@ export class MsfDashboardPanelComponent implements OnInit {
     let url, urlBase, urlArg, data;
 
     this.values.isLoading = true;
-    if(this.globals.currentApplication.name === "DataLake"){
-      if(this.getParameters ()){
-      urlBase = this.values.currentOption.baseUrl + "?uName="+this.globals.userName+"&"+ this.getParameters ();
-      }else{
-        urlBase = this.values.currentOption.baseUrl + "?uName="+this.globals.userName;
-      }
-    }else{
-    urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
+    if (this.globals.currentApplication.name === "DataLake")
+    {
+      if (this.getParameters ())
+        urlBase = this.values.currentOption.baseUrl + "?uName=" + this.globals.userName + "&" + this.getParameters ();
+      else
+        urlBase = this.values.currentOption.baseUrl + "?uName=" + this.globals.userName;
     }
+    else
+      urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
+
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
     urlArg = encodeURIComponent (urlBase);
 
@@ -4095,10 +4146,21 @@ export class MsfDashboardPanelComponent implements OnInit {
         }
         else
         {
-          if (this.values.variable != null && this.values.valueColumn != null)
+          if (this.values.function.id === "count")
           {
-            this.generateBtnEnabled = true;
-            return true;
+            if (this.values.variable != null)
+            {
+              this.generateBtnEnabled = true;
+              return true;
+            }
+          }
+          else
+          {
+            if (this.values.variable != null && this.values.valueColumn != null)
+            {
+              this.generateBtnEnabled = true;
+              return true;
+            }
           }
         }
       }
@@ -4114,10 +4176,21 @@ export class MsfDashboardPanelComponent implements OnInit {
         }
         else
         {
-          if (this.values.variable != null && this.values.xaxis != null && this.values.valueColumn != null)
+          if (this.values.function.id === "count")
           {
-            this.generateBtnEnabled = true;
-            return true;
+            if (this.values.variable != null && this.values.xaxis != null)
+            {
+              this.generateBtnEnabled = true;
+              return true;
+            }
+          }
+          else
+          {
+            if (this.values.variable != null && this.values.xaxis != null && this.values.valueColumn != null)
+            {
+              this.generateBtnEnabled = true;
+              return true;
+            }
           }
         }
       }
