@@ -1998,6 +1998,8 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             color: $font-color !important
         .no-control-variables-container
             background-color: $primary-color
+        .membership-header, .msf-large-container
+            color: $font-color
         .datalake-table-export-excel
             border: 1px solid $admin-button-color
             .mat-button-wrapper
@@ -4949,11 +4951,13 @@ td.mat-cell.admin-column-arguments-cell
   align-items: center
   border-radius: 10px !important
   margin: 4px
-  width : 19%
+  width: 19%
 
 
 .msf-large-container
-  width : 100%
+//    display: flex
+//    flex-direction: column
+    width: 100%
 
 .msf-plan-card-content
   padding-top: 2%
@@ -5322,6 +5326,8 @@ table.results
     z-index: 999
     /* z-index: auto; */
 
+.msf-membership-card2
+    height: calc(100% - 152px) !important
 
 .msf-membership-card
     width: 90%
@@ -9815,3 +9821,27 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 
 .msf-dashboard-limit-amount-input
     width: 95%
+
+.membership-header
+    display: flex
+    padding-top: 30px
+    width: 100%
+    font-weight: 550
+    font-size: 14px
+    .membership-header-plan-label
+        width: 20%
+    .membership-header-adv-features-label
+        width: 15%
+    .membership-header-features-label
+        width: 30%
+    .membership-header-price-header
+        display: flex
+        width: 30%
+        .periodicity-label
+            width: 50%
+        .fare-label
+            text-align: end
+            width: 50%
+
+.membership-plan-container
+    margin: 20px
