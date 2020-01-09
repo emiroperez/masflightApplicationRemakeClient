@@ -29,7 +29,7 @@ import { Utils } from '../commons/utils';
 import { ApplicationService } from '../services/application.service';
 import { MsfDashboardControlVariablesComponent } from '../msf-dashboard-control-variables/msf-dashboard-control-variables.component';
 import { MsfDashboardInfoFunctionsComponent } from '../msf-dashboard-info-functions/msf-dashboard-info-functions.component';
-import { MsfDashboardColorPickerComponent } from  '../msf-dashboard-color-picker/msf-dashboard-color-picker.component';
+import { MsfDashboardAdditionalSettingsComponent } from '../msf-dashboard-additional-settings/msf-dashboard-additional-settings.component';
 import { MsfDashboardDrillDownComponent } from  '../msf-dashboard-drill-down/msf-dashboard-drill-down.component';
 import { MsfShareDashboardComponent } from '../msf-share-dashboard/msf-share-dashboard.component';
 import { MsfTableComponent } from '../msf-table/msf-table.component';
@@ -2177,7 +2177,9 @@ export class MsfDashboardPanelComponent implements OnInit {
         paletteColors: JSON.stringify (this.values.paletteColors),
         lastestResponse: JSON.stringify (this.values.lastestResponse),
         thresholds: JSON.stringify (this.values.thresholds),
-        startAtZero: null
+        startAtZero: null,
+        limitMode: null,
+        limitAmount: null
       };
     }
     else if (this.values.currentChartType.flags & ChartFlags.MAPBOX)
@@ -2192,7 +2194,9 @@ export class MsfDashboardPanelComponent implements OnInit {
         function: 1,
         lastestResponse: JSON.stringify (this.values.lastestResponse),
         analysis: this.msfMapRef.mapTypes.indexOf (this.values.style),
-        startAtZero: null
+        startAtZero: null,
+        limitMode: null,
+        limitAmount: null
       };
     }
     else if (this.values.currentChartType.flags & ChartFlags.FORM
@@ -2210,7 +2214,9 @@ export class MsfDashboardPanelComponent implements OnInit {
         updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0),
         function: 1,
         lastestResponse: JSON.stringify (this.values.lastestResponse),
-        startAtZero: null
+        startAtZero: null,
+        limitMode: null,
+        limitAmount: null
       };
     }
     else if (this.values.currentChartType.flags & ChartFlags.INFO)
@@ -2226,7 +2232,9 @@ export class MsfDashboardPanelComponent implements OnInit {
         chartType: this.chartTypes.indexOf (this.values.currentChartType),
         categoryOptions: this.values.currentOptionCategories ? JSON.stringify (this.values.currentOptionCategories) : null,
         updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0),
-        startAtZero: null
+        startAtZero: null,
+        limitMode: null,
+        limitAmount: null
       };
     }
     else if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
@@ -2246,7 +2254,9 @@ export class MsfDashboardPanelComponent implements OnInit {
         vertAxisName: this.values.vertAxisName,
         horizAxisName: this.values.horizAxisName,
         advIntervalValue: this.values.intValue,
-        startAtZero: null
+        startAtZero: null,
+        limitMode: null,
+        limitAmount: null
       };
     }
     else
@@ -2266,7 +2276,9 @@ export class MsfDashboardPanelComponent implements OnInit {
         thresholds: JSON.stringify (this.values.thresholds),
         vertAxisName: this.values.vertAxisName,
         horizAxisName: this.values.horizAxisName,
-        startAtZero: this.values.startAtZero
+        startAtZero: this.values.startAtZero,
+        limitMode: this.values.limitMode,
+        limitAmount: this.values.limitAmount
       };
     }
   }
@@ -2365,6 +2377,14 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     if (this.values.valueColumn)
       url += "&valueColumn=" + this.values.valueColumn.id;
+
+    if (this.values.limitMode && !(this.values.currentChartType.flags & ChartFlags.ADVANCED))
+    {
+      url += "&limitMode=" + this.values.limitMode;
+
+      if (this.values.limitAmount)
+        url += "&limitAmount=" + this.values.limitAmount;
+    }
 
     url += "&function=";
 
@@ -3655,6 +3675,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.temp.updateIntervalSwitch = this.values.updateIntervalSwitch;
     this.temp.startAtZero = this.values.startAtZero;
     this.temp.updateTimeLeft = this.values.updateTimeLeft;
+    this.temp.limitMode = this.values.limitMode;
+    this.temp.limitAmount = this.values.limitAmount;
 
     this.stopUpdateInterval ();
 
@@ -3838,6 +3860,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.updateIntervalSwitch = this.temp.updateIntervalSwitch;
     this.values.startAtZero = this.temp.startAtZero;
     this.values.updateTimeLeft = this.temp.updateTimeLeft;
+    this.values.limitMode = this.temp.limitMode;
+    this.values.limitAmount = this.temp.limitAmount;
 
     // re-initialize panel settings
     this.values.currentChartType = this.chartTypes.indexOf (this.values.currentChartType);
@@ -5053,43 +5077,50 @@ export class MsfDashboardPanelComponent implements OnInit {
     return new Intl.NumberFormat ('en-us', { maximumFractionDigits: 1 }).format (result);
   }
 
-  goToColorPicker(): void
+  goToAdditionalSettings(): void
   {
-    let dialogHeight, numColors;
+    let limitConfig, numColors, dialogRef;
 
     if (this.values.currentChartType.flags & ChartFlags.XYCHART
       || this.values.currentChartType.flags & ChartFlags.PIECHART
       || this.values.currentChartType.flags & ChartFlags.FUNNELCHART)
     {
-      dialogHeight = '500px';
+      if (this.values.currentChartType.flags & ChartFlags.XYCHART)
+        limitConfig = false;
+      else
+        limitConfig = true;
       numColors = 12;
     }
     else if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
     {
-      dialogHeight = '178px';
+      limitConfig = false;
       numColors = 1;
     }
     else if (this.values.currentChartType.flags & ChartFlags.FORM)
     {
-      dialogHeight = '278px';
+      limitConfig = false;
       numColors = 0;
     }
     else
     {
-      dialogHeight = '338px';
+      limitConfig = true;
       numColors = 1;
     }
 
-    this.dialog.open (MsfDashboardColorPickerComponent, {
-      height: dialogHeight,
+    // don't allow the option to limit results on advanced charts
+    if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
+      limitConfig = false;
+
+    dialogRef = this.dialog.open (MsfDashboardAdditionalSettingsComponent, {
       width: '400px',
+      height: 'auto',
       panelClass: 'msf-dashboard-control-variables-dialog',
       autoFocus: false,
       data: {
-        title: this.values.chartName,
-        colors: this.values.paletteColors,
+        values: this.values,
         thresholds: (this.values.currentChartType.flags & ChartFlags.HEATMAP) ? null : this.values.thresholds,
-        numColors: numColors
+        numColors: numColors,
+        limitConfig: limitConfig
       }
     });
   }
