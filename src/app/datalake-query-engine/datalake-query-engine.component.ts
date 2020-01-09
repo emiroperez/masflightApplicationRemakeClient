@@ -10,6 +10,7 @@ import { DatalakeQueryTab } from './datalake-query-tab';
 import { MessageComponent } from '../message/message.component';
 import { DatalakeQueryEngineHistoryComponent } from '../datalake-query-engine-history/datalake-query-engine-history.component';
 import { DatalakeQueryEngineSaveComponent } from '../datalake-query-engine-save/datalake-query-engine-save.component';
+import { ExcelService } from '../services/excel.service';
 
 
 const minPanelWidth = 30;
@@ -52,7 +53,7 @@ export class DatalakeQueryEngineComponent implements OnInit {
   queryEditorOptions : any;
 
   constructor(public globals: Globals, private changeDetectorRef: ChangeDetectorRef,
-    private dialog: MatDialog, private service: DatalakeService) { 
+    private dialog: MatDialog, private service: DatalakeService,private excelService:ExcelService) { 
       this.QueryreadOnly = this.actionDisable("Type Query");  
       if(this.QueryreadOnly){
         this.QueryreadOnly = this.actionDisable("Run Query"); 
@@ -475,5 +476,60 @@ export class DatalakeQueryEngineComponent implements OnInit {
 
     event.preventDefault ();
     event.stopPropagation ();
+  }
+
+  exportToExcel():void {
+    let tableColumnFormats: any[] = [];
+    let columnMaxWidth: any[] = [];
+    let excelData: any[] = [];
+
+    // prepare the column max width values
+    for (let column of this.displayedColumns)
+    {
+      columnMaxWidth.push (column.length);
+    }
+
+    // create a new JSON for the XLSX creation
+    for (let item of this.dataSource)
+    {
+      let excelItem: any = {};
+  
+      for (let i = 0; i < this.displayedColumns.length; i++)
+      {
+        let column = this.displayedColumns[i];
+        let curitem = item[column];
+
+        if (curitem == undefined)
+        {
+          excelItem[column] = "";
+          continue;
+        }
+          excelItem[column] = curitem;
+
+          // Get the maximun width for visible results for each column
+          if (curitem.toString ().length > columnMaxWidth[i])
+            columnMaxWidth[i] = curitem.toString ().length;
+        // }
+      }
+
+      excelData.push (excelItem);
+    }
+
+    // prepare Excel column formats
+    for (let i = 0; i < this.displayedColumns.length; i++)
+    {
+      let column = this.displayedColumns[i];
+
+      tableColumnFormats.push ({
+        type: 'string',
+        format: null,
+        prefix: null,
+        suffix: null,
+        pos: i,
+        width: columnMaxWidth[i] + 1
+      });
+    }
+    let index = this.selectedIndex+1;
+    this.excelService.exportAsExcelFile(excelData, "Query Result", tableColumnFormats);
   }
 }
