@@ -81,5 +81,9 @@
     mat-button class="datalake-table-card-button" matTooltip="Set Alarm">
       <img class="datalake-table-card-button-image" src="../../assets/images/datalake-alarm.png"/>
     </button>
+    <button  [disabled]="actionDisable('Preview table')" (click)="exportCSV()"
+    mat-button class="datalake-table-card-button" matTooltip="Export to CSV">
+      <img class="datalake-table-card-button-csv" src="../../assets/images/CSV_white.png"/>
+    </button>
   </div>
 </div>

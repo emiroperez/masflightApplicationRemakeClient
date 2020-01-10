@@ -8116,20 +8116,32 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
             margin-left: 12.5%
     .datalake-table-card-buttons
         padding: 5px 10px
+        display: flex
         .datalake-table-card-button
             margin-right: 5px
             min-width: 20px
             width: 30px
             height: 30px
-            .datalake-table-card-button-image
-                margin-left: -12px
-                margin-top: -5px
-                width: 25px
-                height: 25px
-            .datalake-table-card-button-query-image
-                margin-top: -3px !important
-            .datalake-table-card-button-query-complete-image
-                margin-left: -13px !important
+            display: flex
+            padding: 0px
+            .mat-button-wrapper
+                height: 28px
+                width: 28px
+                display: flex
+                align-items: center
+                justify-content: center
+                .datalake-table-card-button-image
+                    // margin-left: -12px
+                    // margin-top: -5px
+                    width: 25px
+                    height: 25px
+                .datalake-table-card-button-csv
+                    width: 22px
+                    height: 22px
+                .datalake-table-card-button-query-image
+                    // margin-top: -3px !important
+                .datalake-table-card-button-query-complete-image
+                        // margin-left: -13px !important
             
 .datalake-table-card-container-height
     height: auto
