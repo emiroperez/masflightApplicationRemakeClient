@@ -51,6 +51,7 @@ export class MsfAddDashboardComponent {
       _this.data.dashboards.push (data);
       _this.globals.currentDashboardMenu = _this.data.dashboards[_this.data.dashboards.length - 1];
       _this.globals.currentOption = 'dashboard';
+        _this.globals.optionDatalakeSelected = 1;
     }
 
     errorHandler(_this,result)
