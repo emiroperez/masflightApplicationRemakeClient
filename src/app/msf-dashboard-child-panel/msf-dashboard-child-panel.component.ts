@@ -198,6 +198,23 @@ export class MsfDashboardChildPanelComponent {
     series.tooltip.label.padding (12, 12, 12, 12);
     series.tensionX = 0.8;
 
+    if (values.currentChartType.flags & ChartFlags.BULLET)
+    {
+      let bullet, circle;
+
+      series.strokeOpacity = 0;
+
+      // add circle bullet for scatter chart
+      bullet = series.bullets.push (new am4charts.Bullet ());
+
+      circle = bullet.createChild (am4core.Circle);
+      circle.horizontalCenter = "middle";
+      circle.verticalCenter = "middle";
+      circle.strokeWidth = 0;
+      circle.width = 12;
+      circle.height = 12;
+    }
+
     if (parseDate)
     {
       series.dataFields.dateX = values.xaxis.columnName;
@@ -232,6 +249,23 @@ export class MsfDashboardChildPanelComponent {
     series.tooltip.background.fillOpacity = 0.5;
     series.tooltip.label.padding (12, 12, 12, 12);
     series.tensionX = 0.8;
+
+    if (values.currentChartType.flags & ChartFlags.BULLET)
+    {
+      let bullet, circle;
+
+      series.strokeOpacity = 0;
+
+      // add circle bullet for scatter chart
+      bullet = series.bullets.push (new am4charts.Bullet ());
+
+      circle = bullet.createChild (am4core.Circle);
+      circle.horizontalCenter = "middle";
+      circle.verticalCenter = "middle";
+      circle.strokeWidth = 0;
+      circle.width = 12;
+      circle.height = 12;
+    }
 
     if (parseDate)
     {

@@ -34,6 +34,8 @@ export class MsfDashboardAssistantComponent {
     { name: 'Funnel', flags: ChartFlags.FUNNELCHART, image: 'funnel-chart.png', createSeries: this.createFunnelSeries, allowedInAdvancedMode: false },
     { name: 'Lines', flags: ChartFlags.XYCHART | ChartFlags.LINECHART, image: 'normal-line-chart.png', createSeries: this.createLineSeries, allowedInAdvancedMode: true },
     { name: 'Simple Lines', flags: ChartFlags.LINECHART, image: 'line-chart.png', createSeries: this.createSimpleLineSeries, allowedInAdvancedMode: true },
+    { name: 'Scatter', flags: ChartFlags.XYCHART | ChartFlags.LINECHART | ChartFlags.BULLET, image: 'scatter-chart.png', createSeries: this.createLineSeries, allowedInAdvancedMode: true },
+    { name: 'Simple Scatter', flags: ChartFlags.LINECHART | ChartFlags.BULLET, image: 'simple-scatter-chart.png', createSeries: this.createLineSeries, allowedInAdvancedMode: true },
     { name: 'Area', flags: ChartFlags.XYCHART | ChartFlags.AREACHART, image: 'area-chart.png', createSeries: this.createLineSeries, allowedInAdvancedMode: false },
     { name: 'Stacked Area', flags: ChartFlags.XYCHART | ChartFlags.STACKED | ChartFlags.AREACHART, image: 'stacked-area-chart.png', createSeries: this.createLineSeries, allowedInAdvancedMode: false },
     { name: 'Pie', flags: ChartFlags.PIECHART, image: 'pie-chart.png', createSeries: this.createPieSeries, allowedInAdvancedMode: false },
@@ -904,6 +906,23 @@ export class MsfDashboardAssistantComponent {
     series.tooltip.label.padding (12, 12, 12, 12);
     series.tensionX = 0.8;
 
+    if (values.currentChartType.flags & ChartFlags.BULLET)
+    {
+      let bullet, circle;
+
+      series.strokeOpacity = 0;
+
+      // add circle bullet for scatter chart
+      bullet = series.bullets.push (new am4charts.Bullet ());
+
+      circle = bullet.createChild (am4core.Circle);
+      circle.horizontalCenter = "middle";
+      circle.verticalCenter = "middle";
+      circle.strokeWidth = 0;
+      circle.width = 12;
+      circle.height = 12;
+    }
+
     if (parseDate)
     {
       series.dataFields.dateX = item.titleField;
@@ -953,6 +972,23 @@ export class MsfDashboardAssistantComponent {
     series.tooltip.background.fillOpacity = 0.5;
     series.tooltip.label.padding (12, 12, 12, 12);
     series.tensionX = 0.8;
+
+    if (values.currentChartType.flags & ChartFlags.BULLET)
+    {
+      let bullet, circle;
+
+      series.strokeOpacity = 0;
+
+      // add circle bullet for scatter chart
+      bullet = series.bullets.push (new am4charts.Bullet ());
+
+      circle = bullet.createChild (am4core.Circle);
+      circle.horizontalCenter = "middle";
+      circle.verticalCenter = "middle";
+      circle.strokeWidth = 0;
+      circle.width = 12;
+      circle.height = 12;
+    }
 
     if (parseDate)
     {
