@@ -56,6 +56,10 @@
                 <mat-icon class="mat-menu-item-icon">card_membership</mat-icon>
                 <span>Stop Testing Membership</span>
             </button>
+            <button *ngIf="globals.admin" mat-menu-item routerLink="/arguments-category">
+                <mat-icon class="mat-menu-item-icon">category</mat-icon>
+                <span>Arguments Category Administration</span>
+            </button>
         </mat-menu>
     </div>
 </div>

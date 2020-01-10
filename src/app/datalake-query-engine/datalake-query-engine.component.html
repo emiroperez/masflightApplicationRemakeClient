@@ -75,7 +75,7 @@
         <div class="datalake-query-execution-btns">
             <button *ngIf="!queryLoading" mat-button class="datalake-table-export-excel"
               [disabled]="!displayedColumns.length"
-              (click)="exportToExcel()">
+              (click)="exportToExcel()" matTooltip="Export to Excel">
               <img class="datalake-table-export-excel-img" src="../../assets/images/{{globals.theme}}-excel_white.png">
             </button>
 

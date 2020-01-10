@@ -59,7 +59,7 @@ export class DatalakeMenuComponent implements OnInit {
     this.setOption.emit(data);
   }
 
-  addDashboard(){
+  addDashboard(){    
     this.dialog.open (MsfAddDashboardComponent, {
       height: '160px',
       width: '400px',

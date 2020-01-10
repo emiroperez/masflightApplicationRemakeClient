@@ -133,4 +133,7 @@ export class DatalakeTableCardComponent implements OnInit {
     this.selectedTabIndex = event;
   }
 
+  exportCSV(){
+    // this.values
+  }
 }

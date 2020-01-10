@@ -17,7 +17,7 @@
     <div class="datalake-table-show-table-close-button">
       <button mat-button class="datalake-table-export-excel"
         [disabled]="!displayedColumns.length"
-        (click)="exportToExcel()">
+        (click)="exportToExcel()" matTooltip="Export to Excel">
         <img class="datalake-table-export-excel-img" src="../../assets/images/{{globals.theme}}-excel_white.png">
             <!-- <img src="../../assets/images/{{globals.theme}}-ExporttoExcel.png"
                 class="msf-menu-image msf-vertical-middle"> -->

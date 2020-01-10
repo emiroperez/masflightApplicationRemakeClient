@@ -198,6 +198,8 @@ export class UserActivationComponent implements OnInit {
         }else{
           this.usersToAdd.push(this.userSelected);
         }
+        //guardo en la BD        
+        this.saveUsers ();
       }else{
         if(!edit){
           //si no estoy editando y cancelo o cierro el dialogo, cambio el estado a no seleccionado
