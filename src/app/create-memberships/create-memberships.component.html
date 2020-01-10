@@ -144,10 +144,20 @@
                                 </ng-container>
                             </div>
                             <div class="msf-features">
+                                <div [style.width.%]="100" formArrayName="features" *ngIf="getPlanFeatures(i).length">
+                                    <div class="msf-feature-container" [formGroupName]="0" *ngIf="isFeatureDelete(i,0)">
+                                        <mat-form-field class="msf-card-content-item msf-card-feature-item msf-feature-input" [floatLabel]="'never'">
+                                            <input matInput class="msf-feature-name" autocomplete="off" type="text" formControlName="name" placeholder="Feature" />
+                                        </mat-form-field>
+                                        <div class="msf-feature-delete-button">
+                                            <button class="button-delete" mat-icon-button color="basic" (click)="deleteFeature(i,0)"></button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="msf-periodicity-fare">
                                 <div [style.width.%]="100" formArrayName="fares" *ngIf="getPlanPrices(i).length">
-                                    <div [formGroupName]="0">
+                                    <div [formGroupName]="0" *ngIf="isFareDelete(i,0)">
                                         <div class="price-container">
                                             <mat-form-field class="msf-periodicity-selector">
                                                 <mat-select formControlName="periodicity">
@@ -157,7 +167,7 @@
                                                 </mat-select>
                                             </mat-form-field>
                                             <mat-form-field class="msf-fare-input">
-                                                <input matInput autocomplete="off" type="numeric" formControlName="fare"/>
+                                                <input matInput autocomplete="off" type="text" mask="comma_separator" prefix="$" formControlName="fare"/>
                                             </mat-form-field>
                                         </div>
                                     </div>

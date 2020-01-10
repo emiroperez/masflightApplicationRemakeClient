@@ -207,6 +207,9 @@ import { DatalakeAlarmAddEmailDialogComponent } from './datalake-alarm-add-email
 import { DatalakeUserInformationDialogComponent } from './datalake-user-information-dialog/datalake-user-information-dialog.component';
 import { DatalakeCreateRolesComponent } from './datalake-create-roles/datalake-create-roles.component';
 import { CreateUserDialogComponent } from './create-user-dialog/create-user-dialog.component';
+import { NgxMaskModule, IConfig } from 'ngx-mask';
+
+export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
 @NgModule({
   declarations: [
@@ -430,7 +433,8 @@ import { CreateUserDialogComponent } from './create-user-dialog/create-user-dial
     ExportAsModule,
     AngularEditorModule,
     NgxGaugeModule,
-    CodemirrorModule
+    CodemirrorModule,
+    NgxMaskModule.forRoot(options)
   ],
   providers: [
     AuthService,
