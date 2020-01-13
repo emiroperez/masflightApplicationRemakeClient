@@ -55,7 +55,10 @@ export class MsfDashboardDrillDownComponent {
     { name: 'Stacked Area', flags: ChartFlags.XYCHART | ChartFlags.STACKED | ChartFlags.AREACHART },
     { name: 'Pie', flags: ChartFlags.PIECHART },
     { name: 'Donut', flags: ChartFlags.DONUTCHART },
-    { name: 'Table', flags: ChartFlags.TABLE }
+    { name: 'Table', flags: ChartFlags.TABLE },
+    { name: 'Simple Lines', flags: ChartFlags.LINECHART },
+    { name: 'Scatter', flags: ChartFlags.XYCHART | ChartFlags.LINECHART | ChartFlags.BULLET },
+    { name: 'Simple Scatter', flags: ChartFlags.LINECHART | ChartFlags.BULLET }
   ];
 
   constructor(

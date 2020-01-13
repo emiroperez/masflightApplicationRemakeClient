@@ -115,7 +115,11 @@ export class MsfDashboardPanelComponent implements OnInit {
     { name: 'Advanced Horizontal Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED | ChartFlags.STACKED | ChartFlags.ADVANCED, createSeries: this.createHorizColumnSeries },
     { name: 'Advanced Lines', flags: ChartFlags.XYCHART | ChartFlags.LINECHART | ChartFlags.ADVANCED, createSeries: this.createLineSeries },
     { name: 'Simple Lines', flags: ChartFlags.LINECHART, createSeries: this.createSimpleLineSeries },
-    { name: 'Advanced Simple Lines', flags: ChartFlags.LINECHART | ChartFlags.ADVANCED, createSeries: this.createSimpleLineSeries }/*,
+    { name: 'Advanced Simple Lines', flags: ChartFlags.LINECHART | ChartFlags.ADVANCED, createSeries: this.createSimpleLineSeries },
+    { name: 'Scatter', flags: ChartFlags.XYCHART | ChartFlags.LINECHART | ChartFlags.BULLET, createSeries: this.createLineSeries },
+    { name: 'Advanced Scatter', flags: ChartFlags.XYCHART | ChartFlags.LINECHART | ChartFlags.BULLET | ChartFlags.ADVANCED, createSeries: this.createLineSeries },
+    { name: 'Simple Scatter', flags: ChartFlags.LINECHART | ChartFlags.BULLET, createSeries: this.createSimpleLineSeries },
+    { name: 'Advanced Simple Scatter', flags: ChartFlags.LINECHART | ChartFlags.BULLET | ChartFlags.ADVANCED, createSeries: this.createSimpleLineSeries }/*,
     { name: 'Simple Picture', flags: ChartFlags.INFO | ChartFlags.PICTURE },*/
   ];
 
@@ -548,6 +552,23 @@ export class MsfDashboardPanelComponent implements OnInit {
     series.tooltip.label.padding (12, 12, 12, 12);
     series.tensionX = 0.8;
 
+    if (values.currentChartType.flags & ChartFlags.BULLET)
+    {
+      let bullet, circle;
+
+      series.strokeOpacity = 0;
+
+      // add circle bullet for scatter chart
+      bullet = series.bullets.push (new am4charts.Bullet ());
+
+      circle = bullet.createChild (am4core.Circle);
+      circle.horizontalCenter = "middle";
+      circle.verticalCenter = "middle";
+      circle.strokeWidth = 0;
+      circle.width = 12;
+      circle.height = 12;
+    }
+
     if (parseDate)
     {
       series.dataFields.dateX = values.xaxis.id;
@@ -633,6 +654,23 @@ export class MsfDashboardPanelComponent implements OnInit {
     series.tooltip.background.fillOpacity = 0.5;
     series.tooltip.label.padding (12, 12, 12, 12);
     series.tensionX = 0.8;
+
+    if (values.currentChartType.flags & ChartFlags.BULLET)
+    {
+      let bullet, circle;
+
+      series.strokeOpacity = 0;
+
+      // add circle bullet for scatter chart
+      bullet = series.bullets.push (new am4charts.Bullet ());
+
+      circle = bullet.createChild (am4core.Circle);
+      circle.horizontalCenter = "middle";
+      circle.verticalCenter = "middle";
+      circle.strokeWidth = 0;
+      circle.width = 12;
+      circle.height = 12;
+    }
 
     if (parseDate)
     {
