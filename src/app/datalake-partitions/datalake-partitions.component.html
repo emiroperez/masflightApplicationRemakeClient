@@ -24,8 +24,7 @@
     <!-- <div *ngIf="!actionDisable('List Partitions') || !actionDisable('Create Partition') || !actionDisable('Edit Partition') 
     || !actionDisable('Delete Partition') || !actionDisable('Run Partition')" -->
     <div
-    [ngClass]="((actionDisable('Create Partition') && actionDisable('Edit Partition')) && 
-    (!actionDisable('Run Partition') || !actionDisable('Delete Partition') || !actionDisable('List Partitions'))) 
+    [ngClass]="((actionDisable('Create Partition') && actionDisable('Edit Partition'))) 
     ? 'datalake-partitions-item datalake-alarms-itemOne' : 'datalake-partitions-item'">
     <!-- class="datalake-partitions-item"> -->
       <div class="datalake-partition-table-scroll" [ngStyle]="{ 'height': getTableHeight() }">

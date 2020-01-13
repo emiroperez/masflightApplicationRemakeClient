@@ -57,7 +57,7 @@ export class DatalakePartitionsComponent implements OnInit {
     this.partitionFormGroup = this.formBuilder.group({
       schema: ['', Validators.required],
       table: new FormControl({ value: '', disabled: true }, Validators.required),
-      runType: ['A', Validators.required],
+      runType: ['', Validators.required],
       cron: new FormControl({ value: '', disabled: true }, Validators.required)
     });
 
@@ -79,9 +79,10 @@ export class DatalakePartitionsComponent implements OnInit {
     this.service.getDatalakePartitions(this, this.setPartitions, this.setPartitionsError);    
   }
   setPartitions(_this, data): void {
-    // data.partitions = [{"schemaName":"hfghfg","tableName":"fgfdg","type":"M","cron":"*/5 * * * *","status":"A"}];
+    // data.partitions = [{"schemaName":"internal_gts_information","tableName":"contracts_application","type":"A","cron":"*/5 * * * *","status":"A"}];
     if (!data.partitions.length) {
-      _this.globals.isLoading = false;
+      // _this.globals.isLoading = false;
+      _this.service.getDatalakeSchemas(_this, _this.setSchemas, _this.setSchemasError);
       return;
     }
     
@@ -124,7 +125,8 @@ export class DatalakePartitionsComponent implements OnInit {
   }
 
   getTableHeightRight(): string {
-    return "calc(" + this.innerHeight + "px - 18.5em - 116px)";
+    return "calc(" + this.innerHeight + "px - 18.5em - 86px)";
+    // return "calc(" + this.innerHeight + "px - 18.5em - 116px)";
   }
 
 
@@ -232,6 +234,21 @@ export class DatalakePartitionsComponent implements OnInit {
   }
 
   addPartition() {
+    // validate form before going forward
+    Object.keys (this.partitionFormGroup.controls).forEach (field =>
+      {
+        this.partitionFormGroup.get (field).markAsTouched ({ onlySelf: true });
+      });
+
+      if (this.partitionFormGroup.invalid)
+      {
+        this.dialog.open (MessageComponent, {
+          data: { title: "Error", message: "The required information is incomplete, please complete them and try again." }
+        });
+  
+        return;
+      }
+      
     this.request = {
       tableName: this.partitionFormGroup.get("table").value.TableName,
       schemaName: this.partitionFormGroup.get("schema").value,
@@ -239,6 +256,7 @@ export class DatalakePartitionsComponent implements OnInit {
       type: this.partitionFormGroup.get("runType").value,
       status: this.Status
     };
+
     this.globals.isLoading = true;
     if (this.edit) {
       this.service.updateDatalakePartition(this, this.request, this.savePartitionHandler, this.savePartitionError);
@@ -330,9 +348,13 @@ export class DatalakePartitionsComponent implements OnInit {
       runType: partition.type,
       cron: partition.cron
     });
+    this.runTypeChanged();
     this.partitionFormGroup.get("schema").disable();
     this.Status = partition.status;
     this.tableName = partition.tableName;
+    if(partition.cron){
+      this.partitionFormGroup.get("cron").setValue(partition.cron);
+    }
     this.service.getDatalakeSchemaTables(this, partition.schemaName, this.setSchemaTables, this.setSchemaTablesError);
   }
   }
