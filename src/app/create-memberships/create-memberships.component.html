@@ -16,10 +16,19 @@
             <div class="membership-header-adv-features-label">Advance Features</div>
             <div class="membership-header-features-label">
                 Features
+                <button *ngIf="lastPlan" class="add-feature-button" mat-mini-fab matTooltip="Add Feature">
+                    <mat-icon (click)="addNewFeature()">add</mat-icon>
+                </button>
             </div>
             <div class="membership-header-price-header">
                 <div class="periodicity-label">Periodicity</div>
-                <div class="fare-label">Fare</div>
+                <div *ngIf="!lastPlan" class="fare-label">Fare</div>
+                <div *ngIf="lastPlan" class="fare-label fare-label-open">
+                    Fare
+                    <button class="add-price-button" mat-mini-fab matTooltip="Add Price">
+                        <mat-icon (click)="addNewPrice()">add</mat-icon>
+                    </button>
+                </div>
             </div>
             <div class="membership-toggle-header"></div>
         </mat-card-header>
@@ -32,7 +41,7 @@
                                 <div class="msf-plan-name">
                                     <div class="msf-plan-container">
                                         <mat-form-field [floatLabel]="'never'">
-                                            <input matInput class="msf-card-content-title" autocomplete="off" type="text" formControlName="name" placeholder="Name" />
+                                            <input matInput class="msf-card-content-title" autocomplete="off" type="text" formControlName="name"/>
                                         </mat-form-field>
                                         <button class="button-delete button-option button-delete-pos" mat-icon-button color="basic" (click)="editOptionsMembership(i)" matTooltip="Edit Options">
                                             <mat-icon></mat-icon>
@@ -49,7 +58,7 @@
                                     <div [style.width.%]="100" formArrayName="features" *ngIf="getPlanFeatures(i).length">
                                         <div class="msf-feature-container" [formGroupName]="0" *ngIf="isFeatureDelete(i,0)">
                                             <mat-form-field class="msf-card-content-item msf-card-feature-item msf-feature-input" [floatLabel]="'never'">
-                                                <input matInput class="msf-feature-name" autocomplete="off" type="text" formControlName="name" placeholder="Feature" />
+                                                <input matInput class="msf-feature-name" autocomplete="off" type="text" formControlName="name"/>
                                             </mat-form-field>
                                             <div class="msf-feature-delete-button">
                                                 <button class="button-delete" mat-icon-button color="basic" (click)="deleteFeature(i,0)" matTooltip="Delete Feature"></button>
@@ -90,7 +99,7 @@
                                 <div class="msf-plan-name msf-plan-name-open">
                                     <div class="msf-plan-container">
                                         <mat-form-field [floatLabel]="'never'">
-                                            <input matInput class="msf-card-content-title" autocomplete="off" type="text" formControlName="name" placeholder="Name" />
+                                            <input matInput class="msf-card-content-title" autocomplete="off" type="text" formControlName="name"/>
                                         </mat-form-field>
                                         <button class="button-delete button-option button-delete-pos" mat-icon-button color="basic" (click)="editOptionsMembership(i)" matTooltip="Edit Options">
                                             <mat-icon></mat-icon>
@@ -112,7 +121,7 @@
                                     <div [style.width.%]="100" formArrayName="features" *ngFor="let feature of getPlanFeatures(i); let k = index">
                                         <div class="msf-feature-container" [formGroupName]="k" *ngIf="isFeatureDelete(i,k)">
                                             <mat-form-field class="msf-card-content-item msf-card-feature-item msf-feature-input" [floatLabel]="'never'">
-                                                <input matInput class="msf-feature-name" autocomplete="off" type="text" formControlName="name" placeholder="Feature" />
+                                                <input matInput class="msf-feature-name" autocomplete="off" type="text" formControlName="name"/>
                                             </mat-form-field>
                                             <div class="msf-feature-delete-button">
                                                 <button class="button-delete" mat-icon-button color="basic" (click)="deleteFeature(i,k)" matTooltip="Delete Feature"></button>

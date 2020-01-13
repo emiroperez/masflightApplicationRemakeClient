@@ -389,19 +389,21 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
       deleted: false
     })
   }
-  addNewFeature(index): void {
-    this.items = this.plansForms.get('items') as FormArray;
-    this.features = this.items.controls[index]['controls']['features'];
-    this.features.push(this.createFeature());
 
+  addNewFeature(): void
+  {
+    this.features = this.lastPlan['controls']['features'];
+    this.features.push (this.createFeature());
   }
-  addNewOptionFeature(index, index2): void {
+
+  addNewOptionFeature(index, index2): void
+  {
     this.items = this.plansForms.get('items') as FormArray;
     this.features = this.items.controls[index]['controls']['features']['controls'];
     this.options = this.features[index2]['controls']['options'];
     this.options.push(this.createOptions());
-
   }
+
   createOptions(): FormGroup {
     return this.formBuilder.group({
       id: '',
@@ -543,10 +545,10 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
     });
   }
 
-  addNewPrice(index): void {
-    this.items = this.plansForms.get('items') as FormArray;
-    this.prices = this.items.controls[index]['controls']['fares'];
-    this.prices.push(this.createPrice());
+  addNewPrice(): void
+  {
+    this.prices = this.lastPlan['controls']['fares'];
+    this.prices.push (this.createPrice());
   }
 
   deletePrice(indexPlan, indexFare) {
