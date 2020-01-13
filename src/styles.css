@@ -14361,6 +14361,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
   padding: 10px 20px;
   background-color: #333;
   color: white;
+  justify-content: space-between;
 }
 .datalake-history-query-dialog .datalake-query-history-header .datalake-query-history-title {
   font-size: 16px;
@@ -14439,7 +14440,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
   align-items: center;
   justify-content: space-between;
   background-color: #333;
-  padding-left: 20px;
+  padding: 0px 20px;
   color: white;
 }
 .datalake-save-query-dialog .datalake-save-query .datalake-save-query-header .datalake-save-query-title {
@@ -14978,6 +14979,17 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
 
 .datalake-Acces {
   height: calc(100% - 60px);
+}
+
+.saveQueryPadding {
+  padding: 15px !important;
+  width: calc(100% - 30px) !important;
+}
+
+.inputSchemaSaveQuery {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /*# sourceMappingURL=styles.css.map */

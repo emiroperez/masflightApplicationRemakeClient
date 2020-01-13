@@ -74,4 +74,10 @@ export class DatalakeQueryEngineHistoryComponent implements OnInit {
       document.execCommand('copy');
       document.body.removeChild(selBox);
     }
+
+    
+  onNoClick(): void
+  {
+      this.dialogRef.close ();
+  }
 }

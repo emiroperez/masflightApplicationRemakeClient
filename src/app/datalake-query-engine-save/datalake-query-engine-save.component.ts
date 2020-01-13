@@ -59,7 +59,8 @@ saveError(_this, result): void
 {
 }
 
-  Clean(){
-
+  onNoClick(): void
+  {
+      this.dialogRef.close ();
   }
 }
