@@ -3,7 +3,6 @@ import { FormControl, Validators, FormGroup, FormArray, FormBuilder } from '@ang
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Globals } from '../globals/Globals';
 import { Utils } from '../commons/utils';
-import { AdvanceFeature } from '../model/AdvanceFeature';
 import { Plan } from '../model/Plan';
 import { PlanFeature } from '../model/PlanFeature';
 import { ApplicationService } from '../services/application.service';
@@ -15,11 +14,10 @@ import { Arguments } from '../model/Arguments';
 import { ApiClient } from '../api/api-client';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { PlanOption } from '../model/PlanOption';
-import { Menu } from '../model/Menu';
-import { MatSnackBar, MatTableDataSource } from '@angular/material';
 import { PlanAdvanceFeatures } from '../model/PlanAdvanceFeatures';
 import { MessageComponent } from '../message/message.component';
 import { Router } from '@angular/router';
+import { ReplaySubject } from 'rxjs';
 
 
 @Component({
@@ -156,6 +154,9 @@ export class CreateMembershipsComponent implements OnInit {
     { label: 'Year', code: 'Y' }];
   optionSelected: {};
 
+  searchTextPlan: string;
+
+  filteredPlans: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
 
   constructor(private http: ApiClient, private config: NgSelectConfig,
     private planServices: PlanService, private service: ApplicationService, public globals: Globals, private formBuilder: FormBuilder,
@@ -193,11 +194,13 @@ export class CreateMembershipsComponent implements OnInit {
     _this.globals.isLoading = false;
     _this.plans = data;
     _this.planJson = data;
+
     _this.plans.forEach(plan => {
       _this.items = _this.plansForms.get('items') as FormArray;
       _this.items.push(_this.createPlanFromJson(plan));
     });
 
+    _this.filterPlans ();
   }
 
   createPlanFromJson(plan): FormGroup {
@@ -830,5 +833,20 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
   {
     this.lastPlan = null;
     plan.open = false;
+  }
+
+  filterPlans(): void
+  {
+    let search = this.searchTextPlan;
+    if (!search)
+    {
+      this.filteredPlans.next (this.getPlans ().slice ());
+      return;
+    }
+
+    search = search.toLowerCase ();
+    this.filteredPlans.next (
+      this.getPlans ().filter (a => a.get ('name').value.toLowerCase ().indexOf (search) > -1)
+    );
   }
 }

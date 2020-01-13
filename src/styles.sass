@@ -5498,13 +5498,35 @@ table.results
 
 .msf-membership-card
     padding: 50px !important
-    min-height: calc(100% - 152px) !important
+    min-height: calc(100% - 132px) !important
     width: calc(100% - 100px) !important
     border-radius: 0 !important
     padding-top: 0 !important
     margin: 0px
     .membership-header-options
-        margin-bottom: 15px
+        .membership-search-input
+            margin-right: 20px
+            margin-bottom: -5px
+            width: 300px
+        .mat-form-field-appearance-legacy .mat-form-field-wrapper
+            padding: 0 !important
+        .admin-mat-search-icon
+            margin-top: -55px
+            margin-bottom: 15px
+            width: 20px
+            height: 20px
+            font-size: 20px
+        .search-input
+            position: absolute
+            margin-left: 30px
+            margin-top: -7px
+            width: calc(100% - 30px)
+        .membership-option-button
+            width: 30px
+            height: 30px
+            .mat-icon
+                margin-top: -7px
+                font-size: 20px
     .membership-header-container
         display: flex
         flex-direction: column
@@ -9976,7 +9998,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 
 .membership-header
     display: flex
-    padding-top: 20px
+    padding-top: 10px
     padding-bottom: 10px
     width: calc(100% + 20px)
     font-weight: 550
