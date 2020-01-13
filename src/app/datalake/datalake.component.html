@@ -70,6 +70,7 @@
     <app-datalake-alarms *ngIf="globals.userName && globals.optionDatalakeSelected === 5" [currentOption]="currentOption"></app-datalake-alarms>
     <app-datalake-partitions *ngIf="globals.userName && globals.optionDatalakeSelected === 6"></app-datalake-partitions>
     <app-datalake-execution-partition *ngIf="globals.userName &&  (globals.optionDatalakeSelected === 7 || globals.optionDatalakeSelected === 8)" ></app-datalake-execution-partition>
+    <app-datalake-home *ngIf="globals.optionDatalakeSelected === 0"></app-datalake-home>
 </div>
 
 <div *ngIf="globals.optionDatalakeSelected === 1" [style.height.px]="bodyHeight" [class.is-mobile]="mobileQuery.matches">

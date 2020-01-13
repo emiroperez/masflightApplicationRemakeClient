@@ -75,6 +75,14 @@ export class DatalakeMenuComponent implements OnInit {
       if (index != -1) {
         return false;
       } else {
+        if(option === "Datalake Explorer"){
+          if(this.OptionDisable("Query Engine")){
+            return this.actionDisable("Create New Table");
+          }else{
+            return false;
+          }
+        }
+        //no encontro el dato
         return true;
       }
   }
@@ -96,6 +104,7 @@ export class DatalakeMenuComponent implements OnInit {
     if (index != -1) {
       return false;
     } else {
+      //no encontro el dato
       return true;
     }
   }

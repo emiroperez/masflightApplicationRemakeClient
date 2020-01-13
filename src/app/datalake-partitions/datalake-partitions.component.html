@@ -7,7 +7,7 @@
     </mat-form-field> -->
     <div class="datalake-explorer-header-title">Partition Management Job</div>
     <div class="datalake-explorer-buttons datalake-search-input datalake-partition-buttons">
-      <mat-form-field class="datalake-search-formfield" appearance="outline">
+      <mat-form-field *ngIf="ShowPartition" class="datalake-search-formfield" appearance="outline">
         <mat-label>Search</mat-label>
         <input matInput  type="text"  
         [(ngModel)]="filter" (ngModelChange)="filterPartition()" autocomplete="off">
@@ -154,7 +154,7 @@
     
   </div><!--End Body-->
   
-  <div *ngIf="!ShowPartition" class="datalake-AccesImage">
+  <!-- <div *ngIf="!ShowPartition" class="datalake-AccesImage">
       <div class="datalake-requestAccess">
           <img class="datalake-explorer-query-engine-button-image" src="{{getQueryImageAcces()}}" />
           <div class="datalake-messageAccess">
@@ -163,6 +163,9 @@
                   sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</span>
           </div>
       </div>
-  </div>
+  </div> -->
+<div *ngIf="!ShowPartition" class="datalake-Acces">
+  <app-datalake-home></app-datalake-home>
+</div>
 
 </div>

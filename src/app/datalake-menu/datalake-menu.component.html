@@ -1,4 +1,6 @@
-<button mat-button [disabled]="true" class="msf-menu-op-2" style="padding: 0px  7px !important;">
+<button mat-button class="msf-menu-op-2" (click)="setOptionSelect(0)" 
+[ngClass]="globals.optionDatalakeSelected === 0 ? 'msf-menu-op-1-selected': 'msf-menu-op-1'"
+style="padding: 0px  7px !important;">
   Home
 </button>
 <!-- <button mat-button [disabled]="true" class="msf-menu-op-1" style="padding: 0px  7px !important;">System Status</button> -->
@@ -43,12 +45,13 @@
 [ngClass]="globals.optionDatalakeSelected === 5 ? 'msf-menu-op-1-selected': 'msf-menu-op-1'" style="padding: 0px  7px !important;">
   Alarms
 </button>
-<button mat-button 
+<button mat-button class="msf-menu-op-3"
 [disabled]="OptionDisable('Partitions')"
 (click)="setOptionSelect(6)"
-[ngClass]="globals.optionDatalakeSelected === 6 ? 'msf-menu-op-1-selected': 'msf-menu-op-1'"  style="padding: 0px  7px !important;">
+[ngClass]="globals.optionDatalakeSelected === 6 ? 'msf-menu-op-1-selected': 'msf-menu-op-1'"  
+style="padding: 0px  7px !important;">
   Partition Manager
 </button>
-<button mat-button [disabled]="true" class="msf-menu-op-3" style="padding: 0px  7px !important;">
+<!-- <button mat-button [disabled]="true" class="msf-menu-op-3" style="padding: 0px  7px !important;">
   Management
-</button>
+</button> -->

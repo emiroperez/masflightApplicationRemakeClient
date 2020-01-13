@@ -53,14 +53,16 @@
         <app-datalake-query-engine></app-datalake-query-engine>
     </div>
     <!-- <div *ngIf="globals.optionDatalakeSelected === 2 && actionDisable('View table status') && actionDisable('View table information')" class="datalake-AccesImage"> -->
-    <div *ngIf="globals.optionDatalakeSelected === 2 && OptionDisable('Datalake Explorer')" class="datalake-AccesImage">
-        <div class="datalake-requestAccess">
+    <div *ngIf="globals.optionDatalakeSelected === 2 && OptionDisable('Datalake Explorer')" 
+    class="datalake-Acces">
+        <!-- <div class="datalake-requestAccess">
             <img class="datalake-explorer-query-engine-button-image" src="{{getQueryImageAcces()}}" />
             <div class="datalake-messageAccess">
                 <h1>Request Access</h1>
                 <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit,
                     sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</span>
             </div>
-        </div>
+        </div> -->
+        <app-datalake-home></app-datalake-home>
     </div>
 </div>

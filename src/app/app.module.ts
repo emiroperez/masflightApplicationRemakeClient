@@ -207,6 +207,7 @@ import { DatalakeAlarmAddEmailDialogComponent } from './datalake-alarm-add-email
 import { DatalakeUserInformationDialogComponent } from './datalake-user-information-dialog/datalake-user-information-dialog.component';
 import { DatalakeCreateRolesComponent } from './datalake-create-roles/datalake-create-roles.component';
 import { CreateUserDialogComponent } from './create-user-dialog/create-user-dialog.component';
+import { DatalakeHomeComponent } from './datalake-home/datalake-home.component';
 
 @NgModule({
   declarations: [
@@ -389,7 +390,8 @@ import { CreateUserDialogComponent } from './create-user-dialog/create-user-dial
     DatalakeCreateRolesComponent,
     MonthHeader,
     YearHeader,
-    CreateUserDialogComponent
+    CreateUserDialogComponent,
+    DatalakeHomeComponent
   ],
   imports: [
     BrowserModule,
