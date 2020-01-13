@@ -145,7 +145,6 @@ export class CreateMembershipsComponent implements OnInit {
   optionsToAdd: any[] = [];
   adFeaturesByPlan: any[] = [];
 
-  private plans: any[];
   plan: any;
   lastPlan: any;
 
@@ -156,7 +155,7 @@ export class CreateMembershipsComponent implements OnInit {
 
   searchTextPlan: string;
 
-  filteredPlans: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
+  // filteredPlans: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
 
   constructor(private http: ApiClient, private config: NgSelectConfig,
     private planServices: PlanService, private service: ApplicationService, public globals: Globals, private formBuilder: FormBuilder,
@@ -200,7 +199,7 @@ export class CreateMembershipsComponent implements OnInit {
       _this.items.push(_this.createPlanFromJson(plan));
     });
 
-    _this.filterPlans ();
+    // _this.filteredPlans.next (_this.getPlans ().slice ());
   }
 
   createPlanFromJson(plan): FormGroup {
@@ -835,7 +834,7 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
     plan.open = false;
   }
 
-  filterPlans(): void
+  /*filterPlans(): void
   {
     let search = this.searchTextPlan;
     if (!search)
@@ -848,5 +847,5 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
     this.filteredPlans.next (
       this.getPlans ().filter (a => a.get ('name').value.toLowerCase ().indexOf (search) > -1)
     );
-  }
+  }*/
 }

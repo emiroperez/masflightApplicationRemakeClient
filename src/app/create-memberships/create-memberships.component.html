@@ -17,10 +17,12 @@
         <mat-card-header class="membership-header">
             <div class="membership-header-container">
                 <div class="membership-header-options">
+                    <!--
                     <mat-form-field class="membership-search-input">
                         <input class="search-input" matInput [(ngModel)]="searchTextPlan" autocomplete="off" (ngModelChange)="filterPlans()">
                         <mat-icon class="admin-mat-search-icon" aria-label="search">search</mat-icon>
                     </mat-form-field>
+                    -->
                     <button class="membership-option-button" mat-mini-fab color="primary" (click)="addNewPlan()" [style.margin-right.px]="10" matTooltip="Add New Membership Plan">
                         <mat-icon aria-label="add">add</mat-icon>
                     </button>
@@ -53,7 +55,7 @@
         </mat-card-header>
         <mat-card-content>
             <form [formGroup]="plansForms" class="msf-inline msf-large-container msf-card-container">
-                <div class="membership-plan-container" formArrayName="items" *ngFor="let plan of filteredPlans | async; let i = index;">
+                <div class="membership-plan-container" formArrayName="items" *ngFor="let plan of getPlans(); let i = index">
                     <div [formGroupName]="i">
                         <ng-container *ngIf="!plan.open">
                             <mat-card-content class="msf-plan-card-content">
