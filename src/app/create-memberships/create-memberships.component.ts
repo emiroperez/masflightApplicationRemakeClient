@@ -148,6 +148,8 @@ export class CreateMembershipsComponent implements OnInit {
   adFeaturesByPlan: any[] = [];
 
   private plans: any[];
+  plan: any;
+  lastPlan: any;
 
   periodicities = [
     { label: 'Month', code: 'M' },
@@ -803,5 +805,20 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
   getInnerWidth(): number
   {
     return this.innerWidth;
+  }
+
+  openPlan(plan): void
+  {
+    if (this.lastPlan)
+      this.lastPlan.open = false;
+
+    plan.open = true;
+    this.lastPlan = plan;
+  }
+
+  closePlan(plan): void
+  {
+    this.lastPlan = null;
+    plan.open = false;
   }
 }

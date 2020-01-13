@@ -10,7 +10,7 @@
             </div>
         </div>
     </div>
-    <mat-card class="msf-membership-card2 msf-center-container">
+    <mat-card class="msf-membership-card msf-center-container">
         <mat-card-header class="membership-header">
             <div class="membership-header-plan-label">Membership Plan Name</div>
             <div class="membership-header-adv-features-label">Advance Features</div>
@@ -27,72 +27,127 @@
             <form [formGroup]="plansForms" class="msf-inline msf-large-container msf-card-container">
                 <div class="membership-plan-container" formArrayName="items" *ngFor="let plan of getPlans(); let i = index;">
                     <div [formGroupName]="i">
-                        <mat-card-content class="msf-plan-card-content">
-                            <div class="msf-plan-name">
-                                <mat-form-field [floatLabel]="'never'">
-                                    <input matInput class="msf-card-content-title" autocomplete="off" type="text" formControlName="name" placeholder="Name" />
-                                </mat-form-field>
-                                <button class="button-delete button-option button-delete-pos" mat-icon-button color="basic" (click)="deletePlan(i)" matTooltip="Options">
-                                    <mat-icon></mat-icon>
-                                </button>
-                                <button class="button-delete button-delete-pos" mat-icon-button color="basic" (click)="deletePlan(i)" matTooltip="Delete Membership Plan"></button>
-                            </div>
-                            <div class="msf-advanced-features">
-                                <ng-container formArrayName="advanceFeatures" *ngFor="let adfeature of getPlanAdvanceFeatures(i); let j = index">
-                                    <span *ngIf="adfeature.controls.selected.value">{{adfeature.controls.label.value}}</span>
-                                </ng-container>
-                            </div>
-                            <div class="msf-features">
-                                <div [style.width.%]="100" formArrayName="features" *ngIf="getPlanFeatures(i).length">
-                                    <div class="msf-feature-container" [formGroupName]="0" *ngIf="isFeatureDelete(i,0)">
-                                        <mat-form-field class="msf-card-content-item msf-card-feature-item msf-feature-input" [floatLabel]="'never'">
-                                            <input matInput class="msf-feature-name" autocomplete="off" type="text" formControlName="name" placeholder="Feature" />
+                        <ng-container *ngIf="!plan.open">
+                            <mat-card-content class="msf-plan-card-content">
+                                <div class="msf-plan-name">
+                                    <div class="msf-plan-container">
+                                        <mat-form-field [floatLabel]="'never'">
+                                            <input matInput class="msf-card-content-title" autocomplete="off" type="text" formControlName="name" placeholder="Name" />
                                         </mat-form-field>
-                                        <div class="msf-feature-delete-button">
-                                            <button class="button-delete" mat-icon-button color="basic" (click)="deleteFeature(i,0)"></button>
-                                        </div>
+                                        <button class="button-delete button-option button-delete-pos" mat-icon-button color="basic" (click)="editOptionsMembership(i)" matTooltip="Edit Options">
+                                            <mat-icon></mat-icon>
+                                        </button>
+                                        <button class="button-delete button-delete-pos" mat-icon-button color="basic" (click)="deletePlan(i)" matTooltip="Delete Membership Plan"></button>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="msf-periodicity-fare">
-                                <div [style.width.%]="100" formArrayName="fares" *ngIf="getPlanPrices(i).length">
-                                    <div [formGroupName]="0" *ngIf="isFareDelete(i,0)">
-                                        <div class="price-container">
-                                            <mat-form-field class="msf-periodicity-selector">
-                                                <mat-select formControlName="periodicity">
-                                                    <mat-option *ngFor="let periodicity of periodicities" [value]="periodicity.code">
-                                                        {{periodicity.label}}
-                                                    </mat-option>
-                                                </mat-select>
+                                <div class="msf-advanced-features">
+                                    <ng-container formArrayName="advanceFeatures" *ngFor="let adfeature of getPlanAdvanceFeatures(i)">
+                                        <span *ngIf="adfeature.controls.selected.value">{{adfeature.controls.label.value}}</span>
+                                    </ng-container>
+                                </div>
+                                <div class="msf-features">
+                                    <div [style.width.%]="100" formArrayName="features" *ngIf="getPlanFeatures(i).length">
+                                        <div class="msf-feature-container" [formGroupName]="0" *ngIf="isFeatureDelete(i,0)">
+                                            <mat-form-field class="msf-card-content-item msf-card-feature-item msf-feature-input" [floatLabel]="'never'">
+                                                <input matInput class="msf-feature-name" autocomplete="off" type="text" formControlName="name" placeholder="Feature" />
                                             </mat-form-field>
-                                            <mat-form-field class="msf-fare-input">
-                                                <input matInput autocomplete="off" type="text" mask="comma_separator" prefix="$" formControlName="fare"/>
-                                            </mat-form-field>
-                                            <div class="msf-fare-delete-button">
-                                                <button class="button-delete" mat-icon-button color="basic" (click)="deletePrice(i,0)"></button>
+                                            <div class="msf-feature-delete-button">
+                                                <button class="button-delete" mat-icon-button color="basic" (click)="deleteFeature(i,0)" matTooltip="Delete Feature"></button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <!--
-                                <div formArrayName="fares" *ngFor="let price of getPlanPrices(i); let k = index;">
-                                    <div [formGroupName]="k" class="msf-prices-membership-container" *ngIf="isFareDelete(i,k)">
-                                        <div id="ng-fare-select" class="price-container">
-                                            <mat-form-field class=" msf-card-footer-item">
-                                                <input matInput class="msf-price-fare" autocomplete="off" type="text" formControlName="fare" placeholder="Fare" />
-                                            </mat-form-field>
-                                            <ng-select [items]="periodicities" bindLabel="label" dropdownPosition="bottom" placeholder="Periodicity" matInput autocomplete="off" bindValue="code" class=" msf-imput msf-periodicity-select padding-periodicity-select" formControlName="periodicity" required></ng-select>
+                                <div class="msf-periodicity-fare">
+                                    <div class="msf-periodicity-fare-container" formArrayName="fares" *ngIf="getPlanPrices(i).length">
+                                        <div [formGroupName]="0" *ngIf="isFareDelete(i,0)">
+                                            <div class="price-container">
+                                                <mat-form-field class="msf-periodicity-selector">
+                                                    <mat-select formControlName="periodicity">
+                                                        <mat-option *ngFor="let periodicity of periodicities" [value]="periodicity.code">
+                                                            {{periodicity.label}}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                                <mat-form-field class="msf-fare-input">
+                                                    <input matInput autocomplete="off" type="text" mask="comma_separator" prefix="$" formControlName="fare"/>
+                                                </mat-form-field>
+                                                <div class="msf-fare-delete-button">
+                                                    <button class="button-delete" mat-icon-button color="basic" (click)="deletePrice(i,0)" matTooltip="Delete Price"></button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                -->
-                            </div>
-                            <div class="msf-toggle-button">
-                                <button mat-icon-button>
-                                    <mat-icon>keyboard_arrow_down</mat-icon>
-                                </button>
-                            </div>
-                        </mat-card-content>
+                                <div class="msf-toggle-button">
+                                    <button mat-icon-button (click)="openPlan(plan)">
+                                        <mat-icon>keyboard_arrow_down</mat-icon>
+                                    </button>
+                                </div>
+                            </mat-card-content>
+                        </ng-container>
+                        <ng-container *ngIf="plan.open">
+                            <mat-card-content class="msf-plan-card-content">
+                                <div class="msf-plan-name msf-plan-name-open">
+                                    <div class="msf-plan-container">
+                                        <mat-form-field [floatLabel]="'never'">
+                                            <input matInput class="msf-card-content-title" autocomplete="off" type="text" formControlName="name" placeholder="Name" />
+                                        </mat-form-field>
+                                        <button class="button-delete button-option button-delete-pos" mat-icon-button color="basic" (click)="editOptionsMembership(i)" matTooltip="Edit Options">
+                                            <mat-icon></mat-icon>
+                                        </button>
+                                        <button class="button-delete button-delete-pos" mat-icon-button color="basic" (click)="deletePlan(i)" matTooltip="Delete Membership Plan"></button>
+                                    </div>
+                                    <div class="msf-plan-test-button">
+                                        <button mat-button class="flat-button" type="button" (click)="testPlan(plan)">
+                                            Test Membership
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="msf-advanced-features msf-advanced-features-open">
+                                    <div class="feature-checkbox" formArrayName="advanceFeatures" *ngFor="let adfeature of getPlanAdvanceFeatures(i)">
+                                        <mat-checkbox [style.padding-left.px]="8" [disabled]="false" color="primary" [(ngModel)]="adfeature.controls.selected.value" [ngModelOptions]="{standalone: true}">{{adfeature.controls.label.value}}</mat-checkbox>
+                                    </div>
+                                </div>
+                                <div class="msf-features msf-features-open">
+                                    <div [style.width.%]="100" formArrayName="features" *ngFor="let feature of getPlanFeatures(i); let k = index">
+                                        <div class="msf-feature-container" [formGroupName]="k" *ngIf="isFeatureDelete(i,k)">
+                                            <mat-form-field class="msf-card-content-item msf-card-feature-item msf-feature-input" [floatLabel]="'never'">
+                                                <input matInput class="msf-feature-name" autocomplete="off" type="text" formControlName="name" placeholder="Feature" />
+                                            </mat-form-field>
+                                            <div class="msf-feature-delete-button">
+                                                <button class="button-delete" mat-icon-button color="basic" (click)="deleteFeature(i,k)" matTooltip="Delete Feature"></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="msf-periodicity-fare msf-periodicity-fare-open">
+                                    <div class="msf-periodicity-fare-container" formArrayName="fares" *ngFor="let price of getPlanPrices(i); let k = index">
+                                        <div [formGroupName]="k" *ngIf="isFareDelete(i,k)">
+                                            <div class="price-container">
+                                                <mat-form-field class="msf-periodicity-selector">
+                                                    <mat-select formControlName="periodicity">
+                                                        <mat-option *ngFor="let periodicity of periodicities" [value]="periodicity.code">
+                                                            {{periodicity.label}}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                                <mat-form-field class="msf-fare-input">
+                                                    <input matInput autocomplete="off" type="text" mask="comma_separator" prefix="$" formControlName="fare"/>
+                                                </mat-form-field>
+                                                <div class="msf-fare-delete-button">
+                                                    <button class="button-delete" mat-icon-button color="basic" (click)="deletePrice(i,k)" matTooltip="Delete Price"></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="msf-toggle-button msf-toggle-button-open">
+                                    <button mat-icon-button (click)="closePlan(plan)">
+                                        <mat-icon>keyboard_arrow_up</mat-icon>
+                                    </button>
+                                </div>
+                            </mat-card-content>
+                        </ng-container>
                     </div>
                 </div>
             </form>
