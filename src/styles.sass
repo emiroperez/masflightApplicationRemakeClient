@@ -1408,7 +1408,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
         .datalake-history-query-dialog mat-dialog-container
             background-color: $badge-color !important
         .datalake-partitions-item-right
-            .datalake-partition-table-scroll-right
+            .datalake-partition-table-scroll-right, .datalake-partition-btn
                 background-color: $datalake-table-row-background-color !important
             .datalake-partition-input
                 background-color: $schedule-map-background-color !important
@@ -2028,7 +2028,9 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             &:hover
                 color: $primary-color !important
         .btns-save-partitions[disabled]
-            background-color: $menu-disabled-font-color !important
+            background-color: $datalake-explorer-background-color !important
+            .mat-button-wrapper
+                color: $menu-disabled-font-color !important
         .datalake-new-partition-inactive
             color: $menu-disabled-font-color !important
 
@@ -8959,7 +8961,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         padding: 20px 30px
         // padding-bottom: 20px
         justify-content: space-between
-        max-height: 50px
+        max-height: 30px
         .datalake-alarm-right-combobox
             padding-left: 20px
     .datalake-alarm-radio-group
@@ -9289,7 +9291,8 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
             padding-left: 5px
 
 .datalake-partition-btn
-    margin: 10px 0px
+    padding: 10px 20px
+    padding-top: 5px
     justify-content: space-between
     display: flex
     .flat-button
@@ -9297,7 +9300,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 
 .datalake-partition-table-scroll-right
     @extend .datalake-partition-table-scroll
-    padding: 20px
+    padding: 10px 20px
     display: flex
     flex-direction: column
     justify-content: space-around

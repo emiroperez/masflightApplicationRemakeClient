@@ -1993,7 +1993,7 @@
 .dark-theme .datalake-history-query-dialog mat-dialog-container {
   background-color: #ffffff !important;
 }
-.dark-theme .datalake-partitions-item-right .datalake-partition-table-scroll-right {
+.dark-theme .datalake-partitions-item-right .datalake-partition-table-scroll-right, .dark-theme .datalake-partitions-item-right .datalake-partition-btn {
   background-color: #1e1e1e !important;
 }
 .dark-theme .datalake-partitions-item-right .datalake-partition-input {
@@ -2863,7 +2863,10 @@
   color: #01abec !important;
 }
 .dark-theme .btns-save-partitions[disabled] {
-  background-color: #9e9e9e !important;
+  background-color: #242424 !important;
+}
+.dark-theme .btns-save-partitions[disabled] .mat-button-wrapper {
+  color: #9e9e9e !important;
 }
 .dark-theme .datalake-new-partition-inactive {
   color: #9e9e9e !important;
@@ -4848,7 +4851,7 @@
 .light-theme .datalake-history-query-dialog mat-dialog-container {
   background-color: #ededed !important;
 }
-.light-theme .datalake-partitions-item-right .datalake-partition-table-scroll-right {
+.light-theme .datalake-partitions-item-right .datalake-partition-table-scroll-right, .light-theme .datalake-partitions-item-right .datalake-partition-btn {
   background-color: #f0f0f0 !important;
 }
 .light-theme .datalake-partitions-item-right .datalake-partition-input {
@@ -5718,7 +5721,10 @@
   color: #eb5c1b !important;
 }
 .light-theme .btns-save-partitions[disabled] {
-  background-color: #2d2d2d !important;
+  background-color: #f2f2f2 !important;
+}
+.light-theme .btns-save-partitions[disabled] .mat-button-wrapper {
+  color: #2d2d2d !important;
 }
 .light-theme .datalake-new-partition-inactive {
   color: #2d2d2d !important;
@@ -13908,7 +13914,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
   display: flex;
   padding: 20px 30px;
   justify-content: space-between;
-  max-height: 50px;
+  max-height: 30px;
 }
 .datalake-new-alarm-container .datalake-alarm-comboboxes .datalake-alarm-right-combobox, .datalake-new-alarm-container .datalake-create-alarm-hint .datalake-alarm-right-combobox {
   padding-left: 20px;
@@ -14283,7 +14289,8 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
 }
 
 .datalake-partition-btn {
-  margin: 10px 0px;
+  padding: 10px 20px;
+  padding-top: 5px;
   justify-content: space-between;
   display: flex;
 }
@@ -14292,7 +14299,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
 }
 
 .datalake-partition-table-scroll-right {
-  padding: 20px;
+  padding: 10px 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
