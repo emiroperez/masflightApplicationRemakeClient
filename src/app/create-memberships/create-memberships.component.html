@@ -1,7 +1,10 @@
 <div class="admin-menu-background" [style.height.px]="getInnerHeight()" [style.width.px]="getInnerWidth()">
-    <div class="msf-register-header">
-        <img class="msf-medium-logo" src="../../assets/images/{{globals.theme}}-logo.png">
-        <div class="msf-register-header-content msf-arguments-category-header">
+    <div class="msf-register-header msf-create-membership-header">
+        <button class="arrow-back-button membership-arrow-back-button" mat-icon-button routerLink="/application">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+        <img class="msf-small-logo" src="../../assets/images/{{globals.theme}}-logo.png">
+        <div class="msf-register-header-content msf-arguments-category-header msf-membership-header-content">
             <div class="msf-register-header-title">
                 <div class="msf-register-header-title-content msf-create-memberships-header-title-content">CREATE MEMBERSHIPS PLANS</div>
             </div>
@@ -10,89 +13,173 @@
             </div>
         </div>
     </div>
-    <div class="msf-fab-button-container msf-fab-button msf-center-container">
-        <button class="arrow-back-button" mat-icon-button routerLink="/application">
-            <mat-icon>arrow_back</mat-icon>
-        </button>
-        <button mat-mini-fab color="primary" (click)="addNewPlan()" [style.margin-right.px]="20">+</button>
-        <button mat-mini-fab color="primary" (click)="savePlans()">
-            <mat-icon aria-label="save">save</mat-icon>
-        </button>
-    </div>
     <mat-card class="msf-membership-card msf-center-container">
-        <mat-card-header></mat-card-header>
+        <mat-card-header class="membership-header">
+            <div class="membership-header-container">
+                <div class="membership-header-options">
+                    <!--
+                    <mat-form-field class="membership-search-input">
+                        <input class="search-input" matInput [(ngModel)]="searchTextPlan" autocomplete="off" (ngModelChange)="filterPlans()">
+                        <mat-icon class="admin-mat-search-icon" aria-label="search">search</mat-icon>
+                    </mat-form-field>
+                    -->
+                    <button class="membership-option-button" mat-mini-fab color="primary" (click)="addNewPlan()" [style.margin-right.px]="10" matTooltip="Add New Membership Plan">
+                        <mat-icon aria-label="add">add</mat-icon>
+                    </button>
+                    <button class="membership-option-button" mat-mini-fab color="primary" (click)="savePlans()" matTooltip="Save Membership Plans">
+                        <mat-icon aria-label="save">save</mat-icon>
+                    </button>
+                </div>
+                <div class="membership-header-titles">
+                    <div class="membership-header-plan-label">Membership Plan Name</div>
+                    <div class="membership-header-adv-features-label">Advance Features</div>
+                    <div class="membership-header-features-label">
+                        Features
+                        <button *ngIf="lastPlan" class="add-feature-button" mat-mini-fab matTooltip="Add Feature">
+                            <mat-icon (click)="addNewFeature()">add</mat-icon>
+                        </button>
+                    </div>
+                    <div class="membership-header-price-header">
+                        <div class="periodicity-label">Periodicity</div>
+                        <div *ngIf="!lastPlan" class="fare-label">Fare</div>
+                        <div *ngIf="lastPlan" class="fare-label fare-label-open">
+                            Fare
+                            <button class="add-price-button" mat-mini-fab matTooltip="Add Price">
+                                <mat-icon (click)="addNewPrice()">add</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="membership-toggle-header"></div>
+                </div>
+            </div>
+        </mat-card-header>
         <mat-card-content>
             <form [formGroup]="plansForms" class="msf-inline msf-large-container msf-card-container">
-                <ng-container formArrayName="items" *ngFor="let plan of getPlans(); let i = index;">
-                    <mat-card class="msf-plan-card" *ngIf="isPlanDelete(i)">
-                        <div [formGroupName]="i">
+                <div class="membership-plan-container" formArrayName="items" *ngFor="let plan of getPlans(); let i = index">
+                    <div [formGroupName]="i">
+                        <ng-container *ngIf="!plan.open">
                             <mat-card-content class="msf-plan-card-content">
-                                <div class="msf-fab-button-container msf-fab-button msf-center-container msf-fab-button-features">
-                                    <button class="button-delete button-delete-pos" mat-mini-fab color="basic" (click)="deletePlan(i)"></button>
+                                <div class="msf-plan-name">
+                                    <div class="msf-plan-container">
+                                        <mat-form-field [floatLabel]="'never'">
+                                            <input matInput class="msf-card-content-title" autocomplete="off" type="text" formControlName="name"/>
+                                        </mat-form-field>
+                                        <button class="button-delete button-option button-delete-pos" mat-icon-button color="basic" (click)="editOptionsMembership(i)" matTooltip="Edit Options">
+                                            <mat-icon></mat-icon>
+                                        </button>
+                                        <button class="button-delete button-delete-pos" mat-icon-button color="basic" (click)="deletePlan(i)" matTooltip="Delete Membership Plan"></button>
+                                    </div>
                                 </div>
-                                <mat-form-field class="msf-card-content-item msf-medium-title-centered" [floatLabel]="'never'">
-                                    <input matInput class="msf-card-content-title" autocomplete="off" type="text" formControlName="name" placeholder="Name" />
-                                </mat-form-field>
-                                <div class="test-membership-button-container" *ngIf="!plan.isNew">
-                                    <button mat-button class="flat-button" type="button" (click)="testPlan(plan)">
-                                        Test Membership
+                                <div class="msf-advanced-features">
+                                    <ng-container formArrayName="advanceFeatures" *ngFor="let adfeature of getPlanAdvanceFeatures(i)">
+                                        <span *ngIf="adfeature.controls.selected.value">{{adfeature.controls.label.value}}</span>
+                                    </ng-container>
+                                </div>
+                                <div class="msf-features">
+                                    <div [style.width.%]="100" formArrayName="features" *ngIf="getPlanFeatures(i).length">
+                                        <div class="msf-feature-container" [formGroupName]="0" *ngIf="isFeatureDelete(i,0)">
+                                            <mat-form-field class="msf-card-content-item msf-card-feature-item msf-feature-input" [floatLabel]="'never'">
+                                                <input matInput class="msf-feature-name" autocomplete="off" type="text" formControlName="name"/>
+                                            </mat-form-field>
+                                            <div class="msf-feature-delete-button">
+                                                <button class="button-delete" mat-icon-button color="basic" (click)="deleteFeature(i,0)" matTooltip="Delete Feature"></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="msf-periodicity-fare">
+                                    <div class="msf-periodicity-fare-container" formArrayName="fares" *ngIf="getPlanPrices(i).length">
+                                        <div [formGroupName]="0" *ngIf="isFareDelete(i,0)">
+                                            <div class="price-container">
+                                                <mat-form-field class="msf-periodicity-selector">
+                                                    <mat-select formControlName="periodicity">
+                                                        <mat-option *ngFor="let periodicity of periodicities" [value]="periodicity.code">
+                                                            {{periodicity.label}}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                                <mat-form-field class="msf-fare-input">
+                                                    <input matInput autocomplete="off" type="text" mask="comma_separator" prefix="$" formControlName="fare"/>
+                                                </mat-form-field>
+                                                <div class="msf-fare-delete-button">
+                                                    <button class="button-delete" mat-icon-button color="basic" (click)="deletePrice(i,0)" matTooltip="Delete Price"></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="msf-toggle-button">
+                                    <button mat-icon-button (click)="openPlan(plan)">
+                                        <mat-icon>keyboard_arrow_down</mat-icon>
                                     </button>
                                 </div>
-                                <div class="feature-options-container">
-                                    <h3 class="feature-title">Options</h3>
-                                    <div class="msf-mem-button msf-fab-button-container msf-fab-button msf-center-container msf-fab-button-features">
-                                        <button mat-mini-fab color="basic" (click)="editOptionsMembership(i)">+</button>
+                            </mat-card-content>
+                        </ng-container>
+                        <ng-container *ngIf="plan.open">
+                            <mat-card-content class="msf-plan-card-content">
+                                <div class="msf-plan-name msf-plan-name-open">
+                                    <div class="msf-plan-container">
+                                        <mat-form-field [floatLabel]="'never'">
+                                            <input matInput class="msf-card-content-title" autocomplete="off" type="text" formControlName="name"/>
+                                        </mat-form-field>
+                                        <button class="button-delete button-option button-delete-pos" mat-icon-button color="basic" (click)="editOptionsMembership(i)" matTooltip="Edit Options">
+                                            <mat-icon></mat-icon>
+                                        </button>
+                                        <button class="button-delete button-delete-pos" mat-icon-button color="basic" (click)="deletePlan(i)" matTooltip="Delete Membership Plan"></button>
+                                    </div>
+                                    <div class="msf-plan-test-button">
+                                        <button mat-button class="flat-button" type="button" (click)="testPlan(plan)">
+                                            Test Membership
+                                        </button>
                                     </div>
                                 </div>
-                                <div class="feature-options-container">
-                                    <h3 class="feature-title">Advance Features</h3>
-                                </div>
-                                <div class="feature-checkbox" formArrayName="advanceFeatures" *ngFor="let adfeature of getPlanAdvanceFeatures(i); let j=index;">
-                                    <mat-checkbox [style.padding-left.px]="8" [disabled]="false" color="primary" [(ngModel)]="adfeature.controls.selected.value" [ngModelOptions]="{standalone: true}"> {{adfeature.controls.label.value}}</mat-checkbox>
-                                </div>
-                                <div class="feature-title-container">
-                                    <h3 class="feature-title">Features</h3>
-                                    <div class="msf-mem-button msf-fab-button-container msf-fab-button msf-center-container msf-fab-button-features">
-                                        <button mat-mini-fab color="basic" (click)="addNewFeature(i)">+</button>
+                                <div class="msf-advanced-features msf-advanced-features-open">
+                                    <div class="feature-checkbox" formArrayName="advanceFeatures" *ngFor="let adfeature of getPlanAdvanceFeatures(i)">
+                                        <mat-checkbox [style.padding-left.px]="8" [disabled]="false" color="primary" [(ngModel)]="adfeature.controls.selected.value" [ngModelOptions]="{standalone: true}">{{adfeature.controls.label.value}}</mat-checkbox>
                                     </div>
                                 </div>
-                                <div class="msf-features-container msf-features-membership-container">
-                                    <div [style.width.%]="15"></div>
-                                    <ul>
-                                        <div class="features-container" formArrayName="features" *ngFor="let feature of getPlanFeatures(i); let j=index;">
-                                            <li *ngIf='isFeatureDelete(i,j)'>
-                                                <div [formGroupName]="j">
-                                                    <div class="msf-fab-button-container msf-fab-button msf-center-container msf-fab-button-features">
-                                                        <button class="button-delete" mat-mini-fab color="basic" (click)="deleteFeature(i,j)"></button>
-                                                    </div>
-                                                    <mat-form-field class="msf-card-content-item msf-card-feature-item" [floatLabel]="'never'">
-                                                        <input matInput class="msf-feature-name" autocomplete="off" type="text" formControlName="name" placeholder="Feature" />
-                                                    </mat-form-field>
-                                                </div>
-                                            </li>
+                                <div class="msf-features msf-features-open">
+                                    <div [style.width.%]="100" formArrayName="features" *ngFor="let feature of getPlanFeatures(i); let k = index">
+                                        <div class="msf-feature-container" [formGroupName]="k" *ngIf="isFeatureDelete(i,k)">
+                                            <mat-form-field class="msf-card-content-item msf-card-feature-item msf-feature-input" [floatLabel]="'never'">
+                                                <input matInput class="msf-feature-name" autocomplete="off" type="text" formControlName="name"/>
+                                            </mat-form-field>
+                                            <div class="msf-feature-delete-button">
+                                                <button class="button-delete" mat-icon-button color="basic" (click)="deleteFeature(i,k)" matTooltip="Delete Feature"></button>
+                                            </div>
                                         </div>
-                                    </ul>
-                                    <div [style.width.%]="5"></div>
+                                    </div>
+                                </div>
+                                <div class="msf-periodicity-fare msf-periodicity-fare-open">
+                                    <div class="msf-periodicity-fare-container" formArrayName="fares" *ngFor="let price of getPlanPrices(i); let k = index">
+                                        <div [formGroupName]="k" *ngIf="isFareDelete(i,k)">
+                                            <div class="price-container">
+                                                <mat-form-field class="msf-periodicity-selector">
+                                                    <mat-select formControlName="periodicity">
+                                                        <mat-option *ngFor="let periodicity of periodicities" [value]="periodicity.code">
+                                                            {{periodicity.label}}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                                <mat-form-field class="msf-fare-input">
+                                                    <input matInput autocomplete="off" type="text" mask="comma_separator" prefix="$" formControlName="fare"/>
+                                                </mat-form-field>
+                                                <div class="msf-fare-delete-button">
+                                                    <button class="button-delete" mat-icon-button color="basic" (click)="deletePrice(i,k)" matTooltip="Delete Price"></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="msf-toggle-button msf-toggle-button-open">
+                                    <button mat-icon-button (click)="closePlan(plan)">
+                                        <mat-icon>keyboard_arrow_up</mat-icon>
+                                    </button>
                                 </div>
                             </mat-card-content>
-                            <mat-card-footer class="msf-plan-card-footer">
-                                <div class="msf-fare-button msf-fab-button-container msf-fab-button msf-center-container">
-                                    <button mat-mini-fab color="primary" (click)="addNewPrice(i)">+</button>
-                                </div>
-                                <div formArrayName="fares" *ngFor="let price of getPlanPrices(i); let k=index;">
-                                    <div [formGroupName]="k" class="msf-prices-membership-container" *ngIf="isFareDelete(i,k)">
-                                        <div id="ng-fare-select" class="price-container">
-                                            <mat-form-field class=" msf-card-footer-item">
-                                                <input matInput class="msf-price-fare" autocomplete="off" type="text" formControlName="fare" placeholder="Fare" />
-                                            </mat-form-field>
-                                            <ng-select [items]="periodicities" bindLabel="label" dropdownPosition="bottom" placeholder="Periodicity" matInput autocomplete="off" bindValue="code" class=" msf-imput msf-periodicity-select padding-periodicity-select" formControlName="periodicity" required></ng-select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </mat-card-footer>
-                        </div>
-                    </mat-card>
-                </ng-container>
+                        </ng-container>
+                    </div>
+                </div>
             </form>
         </mat-card-content>
     </mat-card>

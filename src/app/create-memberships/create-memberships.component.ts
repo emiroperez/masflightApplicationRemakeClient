@@ -3,7 +3,6 @@ import { FormControl, Validators, FormGroup, FormArray, FormBuilder } from '@ang
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Globals } from '../globals/Globals';
 import { Utils } from '../commons/utils';
-import { AdvanceFeature } from '../model/AdvanceFeature';
 import { Plan } from '../model/Plan';
 import { PlanFeature } from '../model/PlanFeature';
 import { ApplicationService } from '../services/application.service';
@@ -15,11 +14,10 @@ import { Arguments } from '../model/Arguments';
 import { ApiClient } from '../api/api-client';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { PlanOption } from '../model/PlanOption';
-import { Menu } from '../model/Menu';
-import { MatSnackBar, MatTableDataSource } from '@angular/material';
 import { PlanAdvanceFeatures } from '../model/PlanAdvanceFeatures';
 import { MessageComponent } from '../message/message.component';
 import { Router } from '@angular/router';
+import { ReplaySubject } from 'rxjs';
 
 
 @Component({
@@ -147,13 +145,17 @@ export class CreateMembershipsComponent implements OnInit {
   optionsToAdd: any[] = [];
   adFeaturesByPlan: any[] = [];
 
-  private plans: any[];
+  plan: any;
+  lastPlan: any;
 
   periodicities = [
     { label: 'Month', code: 'M' },
     { label: 'Year', code: 'Y' }];
   optionSelected: {};
 
+  searchTextPlan: string;
+
+  // filteredPlans: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
 
   constructor(private http: ApiClient, private config: NgSelectConfig,
     private planServices: PlanService, private service: ApplicationService, public globals: Globals, private formBuilder: FormBuilder,
@@ -191,11 +193,13 @@ export class CreateMembershipsComponent implements OnInit {
     _this.globals.isLoading = false;
     _this.plans = data;
     _this.planJson = data;
+
     _this.plans.forEach(plan => {
       _this.items = _this.plansForms.get('items') as FormArray;
       _this.items.push(_this.createPlanFromJson(plan));
     });
 
+    // _this.filteredPlans.next (_this.getPlans ().slice ());
   }
 
   createPlanFromJson(plan): FormGroup {
@@ -317,14 +321,22 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
   }
 
   addNewPlan(): void {
+    if (this.lastPlan)
+      this.lastPlan.open = false; // close plan and add a new one
+
     const newPlan: Plan = new Plan();
     newPlan.id = '';
     newPlan.options = new Array();
     newPlan.isNew = true;
+
     this.items = this.plansForms.get('items') as FormArray;
     this.items.push(this.createPlan());
 
     this.planJson.push(newPlan);
+
+    // open new plan
+    this.items.controls[this.items.length - 1]['open'] = true;
+    this.lastPlan = this.items.controls[this.items.length - 1];
   }
 
   deletePlan(index) {
@@ -387,19 +399,21 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
       deleted: false
     })
   }
-  addNewFeature(index): void {
-    this.items = this.plansForms.get('items') as FormArray;
-    this.features = this.items.controls[index]['controls']['features'];
-    this.features.push(this.createFeature());
 
+  addNewFeature(): void
+  {
+    this.features = this.lastPlan['controls']['features'];
+    this.features.push (this.createFeature());
   }
-  addNewOptionFeature(index, index2): void {
+
+  addNewOptionFeature(index, index2): void
+  {
     this.items = this.plansForms.get('items') as FormArray;
     this.features = this.items.controls[index]['controls']['features']['controls'];
     this.options = this.features[index2]['controls']['options'];
     this.options.push(this.createOptions());
-
   }
+
   createOptions(): FormGroup {
     return this.formBuilder.group({
       id: '',
@@ -541,10 +555,10 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
     });
   }
 
-  addNewPrice(index): void {
-    this.items = this.plansForms.get('items') as FormArray;
-    this.prices = this.items.controls[index]['controls']['fares'];
-    this.prices.push(this.createPrice());
+  addNewPrice(): void
+  {
+    this.prices = this.lastPlan['controls']['fares'];
+    this.prices.push (this.createPrice());
   }
 
   deletePrice(indexPlan, indexFare) {
@@ -804,4 +818,34 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
   {
     return this.innerWidth;
   }
+
+  openPlan(plan): void
+  {
+    if (this.lastPlan)
+      this.lastPlan.open = false;
+
+    plan.open = true;
+    this.lastPlan = plan;
+  }
+
+  closePlan(plan): void
+  {
+    this.lastPlan = null;
+    plan.open = false;
+  }
+
+  /*filterPlans(): void
+  {
+    let search = this.searchTextPlan;
+    if (!search)
+    {
+      this.filteredPlans.next (this.getPlans ().slice ());
+      return;
+    }
+
+    search = search.toLowerCase ();
+    this.filteredPlans.next (
+      this.getPlans ().filter (a => a.get ('name').value.toLowerCase ().indexOf (search) > -1)
+    );
+  }*/
 }
