@@ -75,14 +75,12 @@
                                         <span *ngIf="adfeature.controls.selected.value">{{adfeature.controls.label.value}}</span>
                                     </ng-container>
                                 </div>
-                                <div class="msf-features">
-                                    <div [style.width.%]="100" formArrayName="features" *ngIf="getPlanFeatures(i).length">
-                                        <div class="msf-feature-container" [formGroupName]="0" *ngIf="isFeatureDelete(i,0)">
-                                            <mat-form-field class="msf-card-content-item msf-card-feature-item msf-feature-input" [floatLabel]="'never'">
-                                                <input matInput class="msf-feature-name" autocomplete="off" type="text" formControlName="name"/>
-                                            </mat-form-field>
-                                            <div class="msf-feature-delete-button">
-                                                <button class="button-delete" mat-icon-button color="basic" (click)="deleteFeature(i,0)" matTooltip="Delete Feature"></button>
+                                <div class="msf-features msf-features-closed">
+                                    <div class="msf-feature-label-container">
+                                        <div class="msf-feature-list" formArrayName="features" *ngFor="let feature of getPlanFeatures(i); let k = index">
+                                            <div class="msf-feature-label" [formGroupName]="k" *ngIf="isFeatureDelete(i,k)">
+                                                {{feature.get ('name').value}}
+                                                <span class="msf-feature-label-comma" *ngIf="k != features.length - 1">, </span>
                                             </div>
                                         </div>
                                     </div>

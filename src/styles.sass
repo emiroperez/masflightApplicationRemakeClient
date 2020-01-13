@@ -5081,6 +5081,15 @@ td.mat-cell.admin-column-arguments-cell
             color: #4d4d4d !important
     .msf-features
         width: calc(25% - 1px)
+        .msf-feature-label-container
+            align-self: center
+            font-size: 12px
+            .msf-feature-list
+                display: inline
+                .msf-feature-label
+                    display: inline-flex !important
+                    .msf-feature-label-comma
+                        white-space: pre
         .msf-feature-container
             display: flex
             flex-direction: row
@@ -5094,6 +5103,11 @@ td.mat-cell.admin-column-arguments-cell
         .msf-feature-delete-button
             margin-top: 12px
             margin-right: -10px
+    .msf-features-closed
+        display: flex
+        align-items: center
+        width: calc(25% - 21px)
+        padding: 10px
     .msf-features-open, .msf-periodicity-fare-open, .msf-toggle-button-open
         background-color: #f2f2f2
         border-color: #dfdfdf
