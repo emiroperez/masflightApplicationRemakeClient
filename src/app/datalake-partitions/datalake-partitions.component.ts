@@ -79,7 +79,7 @@ export class DatalakePartitionsComponent implements OnInit {
     this.service.getDatalakePartitions(this, this.setPartitions, this.setPartitionsError);    
   }
   setPartitions(_this, data): void {
-    data.partitions = [{"schemaName":"internal_gts_information","tableName":"contracts_application","type":"A","cron":"*/5 * * * *","status":"A"}];
+    // data.partitions = [{"schemaName":"internal_gts_information","tableName":"contracts_application","type":"A","cron":"*/5 * * * *","status":"A"}];
     if (!data.partitions.length) {
       _this.globals.isLoading = false;
       return;
