@@ -24,7 +24,7 @@
     <!-- <div *ngIf="!actionDisable('List Partitions') || !actionDisable('Create Partition') || !actionDisable('Edit Partition') 
     || !actionDisable('Delete Partition') || !actionDisable('Run Partition')" -->
     <div
-    [ngClass]="((actionDisable('Create Partition') || actionDisable('Edit Partition')) && 
+    [ngClass]="((actionDisable('Create Partition') && actionDisable('Edit Partition')) && 
     (!actionDisable('Run Partition') || !actionDisable('Delete Partition') || !actionDisable('List Partitions'))) 
     ? 'datalake-partitions-item datalake-alarms-itemOne' : 'datalake-partitions-item'">
     <!-- class="datalake-partitions-item"> -->
