@@ -20,6 +20,7 @@ export class DatalakePartitionsComponent implements OnInit {
   PartitionTable: MatTableDataSource<any>;
   partitionsColumns: string[] = ['schemaName', 'tableName', 'type', 'cron', 'status', 'actions'];
 
+
   partitions: any[] = [];
   partitionFormGroup: FormGroup;
   schemas: string[] = [];
@@ -75,14 +76,15 @@ export class DatalakePartitionsComponent implements OnInit {
   ngOnInit() {
     this.innerHeight = window.innerHeight;
     this.globals.isLoading = true;
-    this.service.getDatalakePartitions(this, this.setPartitions, this.setPartitionsError);
+    this.service.getDatalakePartitions(this, this.setPartitions, this.setPartitionsError);    
   }
   setPartitions(_this, data): void {
+    // data.partitions = [{"schemaName":"hfghfg","tableName":"fgfdg","type":"M","cron":"*/5 * * * *","status":"A"}];
     if (!data.partitions.length) {
       _this.globals.isLoading = false;
       return;
     }
-
+    
     for (let partition of data.partitions) {
       // partition.highlighted = false;
       // partition.hovered = false;

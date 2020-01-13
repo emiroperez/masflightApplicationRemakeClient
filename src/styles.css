@@ -2516,14 +2516,14 @@
   background-color: #29bf7c !important;
 }
 .dark-theme .datalake-new-alarm-button[disabled] .mat-icon, .dark-theme .datalake-new-alarm-button-selected[disabled] .mat-icon {
-  background-color: #242424;
-  background-color: #333333;
-  color: #9e9e9e;
+  background-color: #242424 !important;
+  background-color: #333333 !important;
+  color: #9e9e9e !important;
 }
 .dark-theme .datalake-new-alarm-button[disabled] .mat-icon:hover, .dark-theme .datalake-new-alarm-button-selected[disabled] .mat-icon:hover {
-  background-color: #242424;
-  background-color: #333333;
-  color: #9e9e9e;
+  background-color: #242424 !important;
+  background-color: #333333 !important;
+  color: #9e9e9e !important;
 }
 .dark-theme .datalake-new-alarm-container {
   background-color: #242424;
@@ -2855,6 +2855,18 @@
 }
 .dark-theme .home-Datalake {
   background-image: url(assets/images/dark-theme-banner_datalake.png);
+}
+.dark-theme .icon-HistoryQuery-selected {
+  color: #01abec !important;
+}
+.dark-theme .icon-HistoryQuery:hover {
+  color: #01abec !important;
+}
+.dark-theme .btns-save-partitions[disabled] {
+  background-color: #9e9e9e !important;
+}
+.dark-theme .datalake-new-partition-inactive {
+  color: #9e9e9e !important;
 }
 
 .light-theme {
@@ -5359,14 +5371,14 @@
   background-color: #29bf7c !important;
 }
 .light-theme .datalake-new-alarm-button[disabled] .mat-icon, .light-theme .datalake-new-alarm-button-selected[disabled] .mat-icon {
-  background-color: #cdcdcd;
-  background-color: #c6c6c6;
-  color: #2d2d2d;
+  background-color: #cdcdcd !important;
+  background-color: #c6c6c6 !important;
+  color: #2d2d2d !important;
 }
 .light-theme .datalake-new-alarm-button[disabled] .mat-icon:hover, .light-theme .datalake-new-alarm-button-selected[disabled] .mat-icon:hover {
-  background-color: #cdcdcd;
-  background-color: #c6c6c6;
-  color: #2d2d2d;
+  background-color: #cdcdcd !important;
+  background-color: #c6c6c6 !important;
+  color: #2d2d2d !important;
 }
 .light-theme .datalake-new-alarm-container {
   background-color: #f2f2f2;
@@ -5698,6 +5710,18 @@
 }
 .light-theme .home-Datalake {
   background-image: url(assets/images/light-theme-banner_datalake.png);
+}
+.light-theme .icon-HistoryQuery-selected {
+  color: #eb5c1b !important;
+}
+.light-theme .icon-HistoryQuery:hover {
+  color: #eb5c1b !important;
+}
+.light-theme .btns-save-partitions[disabled] {
+  background-color: #2d2d2d !important;
+}
+.light-theme .datalake-new-partition-inactive {
+  color: #2d2d2d !important;
 }
 
 .dark-theme .assistant-button-disabled {

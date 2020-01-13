@@ -39,10 +39,12 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
         <td mat-cell *matCellDef="let element" class="command">
-          <mat-icon *ngIf="element == expandedElement"class="add-icon" Style="margin-right: 10px;" matTooltip="Copy Query" (click)="copyQuery(element.Query)">file_copy</mat-icon> 
-          <mat-icon class="add-icon" Style="margin-right: 10px;" matTooltip="View Query" 
+          <mat-icon *ngIf="element == expandedElement" class="icon-HistoryQuery" Style="margin-right: 10px;" 
+          matTooltip="Copy Query" (click)="copyQuery(element.Query)">file_copy</mat-icon> 
+          <mat-icon [ngClass]="element == expandedElement ? 'icon-HistoryQuery-selected' : 'icon-HistoryQuery'"
+           Style="margin-right: 10px;" matTooltip="View Query" 
           (click)="expandedElement = expandedElement === element ? null : element">remove_red_eye</mat-icon> 
-          <mat-icon class="add-icon" matTooltip="Run Query" (click)="runQuery(element)">play_arrow</mat-icon> 
+          <mat-icon class="icon-HistoryQuery" matTooltip="Run Query" (click)="runQuery(element)">play_arrow</mat-icon> 
         </td>
       </ng-container>
 

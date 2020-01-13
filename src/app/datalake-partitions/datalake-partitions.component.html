@@ -83,11 +83,14 @@
     class="datalake-partitions-item-right">
       <div class="datalake-partitions-header">
         <div class="datalake-new-partition-title">
-          <span *ngIf="!edit && !actionDisable('Create Partition') " 
-          class="datalake-new-partition-title-label">Create Partition Job</span>
+          <span *ngIf="!edit " 
+          [ngClass]="actionDisable('Create Partition') ? 
+          'datalake-new-partition-title-label datalake-new-partition-inactive' : 'datalake-new-partition-title-label'">
+          Create Partition Job</span>
           <span *ngIf="edit" class="datalake-new-partition-title-label">Edit Partition</span>
         </div>
-        <div class="datalake-new-alarm-buttons">
+        <div [ngClass]="actionDisableBtn() ? 
+        'datalake-new-alarm-buttons datalake-new-partition-inactive' : 'datalake-new-alarm-buttons'">
           Status
           <button [disabled]=actionDisableBtn()
           mat-icon-button (click)="setPartitionStatus('A')" [ngClass]="{'datalake-new-alarm-button datalake-new-alarm-button-a': Status === 'I', 'datalake-new-alarm-button-selected datalake-new-alarm-button-selected-a': Status === 'A' }" matTooltip="Active">
@@ -147,8 +150,8 @@
         </div>
       </div> <!--end body-->
       <div class="datalake-partition-btn">
-          <button [disabled]="actionDisableBtn()" mat-button class="flat-button" (click)="addPartition()">Save</button>
-          <button mat-button class="flat-button" (click)="Clean()">Cancel</button>
+          <button [disabled]="actionDisableBtn()" mat-button class="flat-button btns-save-partitions" (click)="addPartition()">Save</button>
+          <button [disabled]="actionDisableBtn()" mat-button class="flat-button btns-save-partitions" (click)="Clean()">Cancel</button>
       </div>
     </div>
     
