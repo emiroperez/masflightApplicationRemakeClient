@@ -2423,6 +2423,9 @@
 .dark-theme .datalake-partition-comboboxes .mat-form-field-disabled .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix .mat-form-field-label-wrapper .mat-form-field-label {
   color: #9e9e9e !important;
 }
+.dark-theme .datalake-partition-comboboxes .mat-form-field-disabled span {
+  color: #9e9e9e !important;
+}
 .dark-theme .datalake-partition-comboboxes-disabled {
   color: #9e9e9e !important;
 }
@@ -5337,6 +5340,9 @@
   padding-inline-start: 20px !important;
 }
 .light-theme .datalake-partition-comboboxes .mat-form-field-disabled .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix .mat-form-field-label-wrapper .mat-form-field-label {
+  color: #2d2d2d !important;
+}
+.light-theme .datalake-partition-comboboxes .mat-form-field-disabled span {
   color: #2d2d2d !important;
 }
 .light-theme .datalake-partition-comboboxes-disabled {
