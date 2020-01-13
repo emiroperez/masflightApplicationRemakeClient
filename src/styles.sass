@@ -5083,7 +5083,7 @@ td.mat-cell.admin-column-arguments-cell
         width: calc(25% - 1px)
         .msf-feature-label-container
             align-self: center
-            font-size: 12px
+            font-size: 13px
             .msf-feature-list
                 display: inline
                 .msf-feature-label
@@ -5108,6 +5108,11 @@ td.mat-cell.admin-column-arguments-cell
         align-items: center
         width: calc(25% - 21px)
         padding: 10px
+    .msf-periodicity-fare-closed
+        display: inline-grid !important
+        align-items: center
+        width: calc(30% - 21px) !important
+        padding: 10px
     .msf-features-open, .msf-periodicity-fare-open, .msf-toggle-button-open
         background-color: #f2f2f2
         border-color: #dfdfdf
@@ -5126,6 +5131,16 @@ td.mat-cell.admin-column-arguments-cell
         display: flex
         flex-direction: column
         width: calc(30% - 1px)
+        .msf-periodicity-fare-label-container
+            text-align: center
+            font-size: 16px
+            width: 100%
+            .msf-periodicity-fare-list
+                display: inline
+                .msf-periodicity-fare-label
+                    display: flex !important
+                    .msf-periodicity-fare-label-comma
+                        white-space: pre
         .msf-periodicity-fare-container
             width: 100%
             .msf-periodicity-selector

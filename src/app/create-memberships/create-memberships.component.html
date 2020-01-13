@@ -85,23 +85,12 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="msf-periodicity-fare">
-                                    <div class="msf-periodicity-fare-container" formArrayName="fares" *ngIf="getPlanPrices(i).length">
-                                        <div [formGroupName]="0" *ngIf="isFareDelete(i,0)">
-                                            <div class="price-container">
-                                                <mat-form-field class="msf-periodicity-selector">
-                                                    <mat-select formControlName="periodicity">
-                                                        <mat-option *ngFor="let periodicity of periodicities" [value]="periodicity.code">
-                                                            {{periodicity.label}}
-                                                        </mat-option>
-                                                    </mat-select>
-                                                </mat-form-field>
-                                                <mat-form-field class="msf-fare-input">
-                                                    <input matInput autocomplete="off" type="text" mask="comma_separator" prefix="$" formControlName="fare"/>
-                                                </mat-form-field>
-                                                <div class="msf-fare-delete-button">
-                                                    <button class="button-delete" mat-icon-button color="basic" (click)="deletePrice(i,0)" matTooltip="Delete Price"></button>
-                                                </div>
+                                <div class="msf-periodicity-fare msf-periodicity-fare-closed">
+                                    <div class="msf-periodicity-fare-label-container">
+                                        <div class="msf-periodicity-fare-list" formArrayName="fares" *ngFor="let price of getPlanPrices(i); let k = index">
+                                            <div class="msf-periodicity-fare-label" [formGroupName]="k" *ngIf="isFareDelete(i,k)">
+                                                <span [style.width.%]="50">{{periodicityLabel[price.get ('periodicity').value]}}</span>
+                                                <span [style.width.%]="50">${{price.get ('fare').value | number: '1.0-0'}}</span>
                                             </div>
                                         </div>
                                     </div>

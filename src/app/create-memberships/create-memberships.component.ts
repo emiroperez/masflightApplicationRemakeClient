@@ -150,7 +150,14 @@ export class CreateMembershipsComponent implements OnInit {
 
   periodicities = [
     { label: 'Month', code: 'M' },
-    { label: 'Year', code: 'Y' }];
+    { label: 'Year', code: 'Y' }
+  ];
+
+  periodicityLabel = {
+    M: 'Month',
+    Y: 'Year'
+  };
+
   optionSelected: {};
 
   searchTextPlan: string;
