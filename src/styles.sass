@@ -2003,7 +2003,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             color: $font-color !important
         .no-control-variables-container
             background-color: $primary-color
-        .membership-header, .msf-large-container
+        .msf-large-container
             color: $font-color
         .datalake-table-export-excel
             border: 1px solid $admin-button-color
@@ -2058,6 +2058,11 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                 background-color: $membership-header-primary-color
                 .mat-button-wrapper
                     color: $membership-header-secondary-color
+        .membership-header
+            background-color: $map-panelinfo-background-color
+            color: $font-color
+        .msf-membership-card
+            background-color: $map-panelinfo-background-color
 
 @each $name, $font-color, $little-font-color, $disabled-color, $secondary-disabled-color, $tertiary-disabled-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $quaternary-background-color, $body-background-color, $dashboard-background-color, $dashboard-secondary-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $scrollbar-background-color, $dashboard-panel-background-color, $dashboard-panel-chart-background-color, $dashboard-border-color, $schedule-map-background-color, $schedule-map-info-border, $disabled-combo-box-color, $disabled-underline, $dashboard-info-background-color, $dashboard-info-secondary-background-color, $dashboard-info-font-color, $dashboard-drill-down-border-color, $dashboard-threshold-background-color, $dashboard-title-font-color, $map-panelinfo-background-color, $dashboard-info-border-color, $dashboard-form-font-color, $admin-menu-background, $admin-menu-input-underline, $admin-tree-active-color, $admin-button-color, $admin-secondary-background-color, $admin-table-background-color, $admin-table-hover-color, $admin-secondary-button-color, $login-font-color, $intro-logout-icon-color, $control-variables-border-color, $control-variable-hover-background-color, $control-variable-hover-icon-color, $control-variables-input-underline, $control-variables-dropdown-hover-font-color, $control-variables-dropdown-hover-background-hover-color, $control-variables-selected-background-color, $dashboard-input-underline-color, $membership-primary-background-color, $membership-secondary-background-color, $customer-edit-header-color, $customer-table-header-background-color, $customer-table-row-background-color, $customer-table-row-border-color, $customer-table-row-hover-background-color, $customer-table-row-selected-background-color, $customer-table-row-border-selected-color, $customer-input-color, $customer-input-underline-color, $customer-disabled-underline, $dashboard-control-panel-background-color, $menu-open-background-color, $menu-open-active-background-color, $menu-first-line, $menu-second-line, $menu-background-color, $menu-child-background-color, $control-variable-disabled-color, $dashboard-assistant-analysis-color, $dashboard-assistant-axis-color, $dashboard-assistant-values-color, $dashboard-assistant-analysis-font-color, $dashboard-assistant-sub-background-color, $admin-menu-tree-scrollbar-track-color, $dialog-category-arguments-scrollbar-color, $admin-menu-category-scrollbar-track-color, $datalake-search-input-border-color, $progress-bar-fill, $progress-bar-buffer, $datalake-data-ingestion-background-color, $datalake-explorer-background-color, $datalake-table-stats-background-color, $datalake-table-button-color, $query-engine-background-color, $query-engine-result-header-color, $codemirror-selected-color, $codemirror-focused-selected-color, $codemirror-keyword-color, $codemirror-number-color, $codemirror-string-color, $codemirror-variable-color, $codemirror-variable2-color, $codemirror-comment-color, $codemirror-builtin-color, $codemirror-attribute-color, $codemirror-property-color, $datalake-query-left-panel-scrollbar-color, $datalake-query-left-panel-scrollbar-track-color, $datalake-table-row-background-color, $datalake-table-row-hover-background-color,$datalake-disabled-buttonAlarmEmail, $datalake-alarm-secondary-background-color, $membership-tertiary-background-color, $membership-header-primary-color, $membership-header-secondary-color in $color-scheme
     @include theme($name, $font-color, $little-font-color, $disabled-color, $secondary-disabled-color, $tertiary-disabled-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $quaternary-background-color, $body-background-color, $dashboard-background-color, $dashboard-secondary-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $scrollbar-background-color, $dashboard-panel-background-color, $dashboard-panel-chart-background-color, $dashboard-border-color, $schedule-map-background-color, $schedule-map-info-border, $disabled-combo-box-color, $disabled-underline, $dashboard-info-background-color, $dashboard-info-secondary-background-color, $dashboard-info-font-color, $dashboard-drill-down-border-color, $dashboard-threshold-background-color, $dashboard-title-font-color, $map-panelinfo-background-color, $dashboard-info-border-color, $dashboard-form-font-color, $admin-menu-background, $admin-menu-input-underline, $admin-tree-active-color, $admin-button-color, $admin-secondary-background-color, $admin-table-background-color, $admin-table-hover-color, $admin-secondary-button-color, $login-font-color, $intro-logout-icon-color, $control-variables-border-color, $control-variable-hover-background-color, $control-variable-hover-icon-color, $control-variables-input-underline, $control-variables-dropdown-hover-font-color, $control-variables-dropdown-hover-background-hover-color, $control-variables-selected-background-color, $dashboard-input-underline-color, $membership-primary-background-color, $membership-secondary-background-color, $customer-edit-header-color, $customer-table-header-background-color, $customer-table-row-background-color, $customer-table-row-border-color, $customer-table-row-hover-background-color, $customer-table-row-selected-background-color, $customer-table-row-border-selected-color, $customer-input-color, $customer-input-underline-color, $customer-disabled-underline, $dashboard-control-panel-background-color, $menu-open-background-color, $menu-open-active-background-color,$menu-first-line, $menu-second-line, $menu-background-color, $menu-child-background-color, $control-variable-disabled-color, $dashboard-assistant-analysis-color, $dashboard-assistant-axis-color, $dashboard-assistant-values-color, $dashboard-assistant-analysis-font-color, $dashboard-assistant-sub-background-color, $admin-menu-tree-scrollbar-track-color, $dialog-category-arguments-scrollbar-color, $admin-menu-category-scrollbar-track-color, $datalake-search-input-border-color, $progress-bar-fill, $progress-bar-buffer, $datalake-data-ingestion-background-color, $datalake-explorer-background-color, $datalake-table-stats-background-color, $datalake-table-button-color, $query-engine-background-color, $query-engine-result-header-color, $codemirror-selected-color, $codemirror-focused-selected-color, $codemirror-keyword-color, $codemirror-number-color, $codemirror-string-color, $codemirror-variable-color, $codemirror-variable2-color, $codemirror-comment-color, $codemirror-builtin-color, $codemirror-attribute-color, $codemirror-property-color, $datalake-query-left-panel-scrollbar-color, $datalake-query-left-panel-scrollbar-track-color, $datalake-table-row-background-color, $datalake-table-row-hover-background-color, $datalake-disabled-buttonAlarmEmail, $datalake-alarm-secondary-background-color, $membership-tertiary-background-color, $membership-header-primary-color, $membership-header-secondary-color)
@@ -2517,6 +2522,9 @@ p
     display: flex
     height: 42px
 
+.msf-create-membership-header
+    margin: 20px auto !important
+
 .msf-field-2-column
     width: 48%
 
@@ -2625,7 +2633,13 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button
 
 .msf-medium-logo
     width: 285px
-    @extend  .msf-inline
+    @extend .msf-inline
+
+.msf-small-logo
+    margin-top: 6px
+    width: 213px
+    height: 75%
+    @extend .msf-inline
 
 .msf-register-header-content
     @extend  .msf-inline
@@ -2658,9 +2672,11 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button
     width: 290px
 
 .msf-create-memberships-header-title-content
-    margin-top: -4px !important
+    margin-top: 6px !important
     margin-left: -61px !important
+    font-size: 150% !important
     width: 290px
+    height: 40px
 
 .msf-admin-menu-header-little-title
     font-weight: normal
@@ -5478,7 +5494,6 @@ table.results
     /* z-index: auto; */
 
 .msf-membership-card
-    background: rgba($msf-primary-dark-color,.5)
     padding: 50px !important
     min-height: calc(100% - 152px) !important
     width: calc(100% - 100px) !important
@@ -9946,11 +9961,14 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 
 .membership-header
     display: flex
-    padding-top: 30px
-    width: 100%
+    padding-top: 20px
+    padding-bottom: 10px
+    width: calc(100% + 20px)
     font-weight: 550
     font-size: 14px
-    margin-bottom: 15px
+    position: sticky
+    top: 0
+    z-index: 1
     .membership-header-plan-label
         width: 25%
     .membership-header-adv-features-label
@@ -9962,7 +9980,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
             @include membership-header-button
     .membership-header-price-header
         display: flex
-        width: calc(30% - 35px)
+        width: calc(30% - 70px)
         border-radius: 5px
         border-width: 1px
         border-style: solid
@@ -9979,7 +9997,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         .fare-label-open
             margin-left: -25px
     .membership-toggle-header
-        width: 50px
+        width: 70px
 
 .membership-plan-container
     margin: 10px 20px
