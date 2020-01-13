@@ -2686,6 +2686,9 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button
     @extend  .msf-inline
     vertical-align: middle
 
+.msf-membership-header-content
+    margin-left: calc(100% - 600px) !important
+
 .medium-user-image
     @extend .msf-inline
     width: 23px
@@ -5500,6 +5503,15 @@ table.results
     border-radius: 0 !important
     padding-top: 0 !important
     margin: 0px
+    .membership-header-options
+        margin-bottom: 15px
+    .membership-header-container
+        display: flex
+        flex-direction: column
+        width: 100%
+        .membership-header-titles
+            display: flex
+            width: calc(100% + 30px)
 
 .msf-features-membership-container .mat-form-field-appearance-legacy .mat-form-field-label
     line-height: 2
@@ -7007,6 +7019,9 @@ mat-form-field.msf-table-input
 .arrow-back-button
     float: left !important
     margin-top: 30px !important
+
+.membership-arrow-back-button
+    margin-top: 0px !important
 
 .user-activation-arrow-back-button
     float: left !important

@@ -319,14 +319,22 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
   }
 
   addNewPlan(): void {
+    if (this.lastPlan)
+      this.lastPlan.open = false; // close plan and add a new one
+
     const newPlan: Plan = new Plan();
     newPlan.id = '';
     newPlan.options = new Array();
     newPlan.isNew = true;
+
     this.items = this.plansForms.get('items') as FormArray;
     this.items.push(this.createPlan());
 
     this.planJson.push(newPlan);
+
+    // open new plan
+    this.items.controls[this.items.length - 1]['open'] = true;
+    this.lastPlan = this.items.controls[this.items.length - 1];
   }
 
   deletePlan(index) {

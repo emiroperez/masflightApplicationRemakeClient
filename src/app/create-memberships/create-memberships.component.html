@@ -1,7 +1,10 @@
 <div class="admin-menu-background" [style.height.px]="getInnerHeight()" [style.width.px]="getInnerWidth()">
     <div class="msf-register-header msf-create-membership-header">
+        <button class="arrow-back-button membership-arrow-back-button" mat-icon-button routerLink="/application">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
         <img class="msf-small-logo" src="../../assets/images/{{globals.theme}}-logo.png">
-        <div class="msf-register-header-content msf-arguments-category-header">
+        <div class="msf-register-header-content msf-arguments-category-header msf-membership-header-content">
             <div class="msf-register-header-title">
                 <div class="msf-register-header-title-content msf-create-memberships-header-title-content">CREATE MEMBERSHIPS PLANS</div>
             </div>
@@ -12,25 +15,35 @@
     </div>
     <mat-card class="msf-membership-card msf-center-container">
         <mat-card-header class="membership-header">
-            <div class="membership-header-plan-label">Membership Plan Name</div>
-            <div class="membership-header-adv-features-label">Advance Features</div>
-            <div class="membership-header-features-label">
-                Features
-                <button *ngIf="lastPlan" class="add-feature-button" mat-mini-fab matTooltip="Add Feature">
-                    <mat-icon (click)="addNewFeature()">add</mat-icon>
-                </button>
-            </div>
-            <div class="membership-header-price-header">
-                <div class="periodicity-label">Periodicity</div>
-                <div *ngIf="!lastPlan" class="fare-label">Fare</div>
-                <div *ngIf="lastPlan" class="fare-label fare-label-open">
-                    Fare
-                    <button class="add-price-button" mat-mini-fab matTooltip="Add Price">
-                        <mat-icon (click)="addNewPrice()">add</mat-icon>
+            <div class="membership-header-container">
+                <div class="membership-header-options">
+                    <button mat-mini-fab color="primary" (click)="addNewPlan()" [style.margin-right.px]="10" matTooltip="Add New Membership Plan">+</button>
+                    <button mat-mini-fab color="primary" (click)="savePlans()" matTooltip="Save Membership Plans">
+                        <mat-icon aria-label="save">save</mat-icon>
                     </button>
                 </div>
+                <div class="membership-header-titles">
+                    <div class="membership-header-plan-label">Membership Plan Name</div>
+                    <div class="membership-header-adv-features-label">Advance Features</div>
+                    <div class="membership-header-features-label">
+                        Features
+                        <button *ngIf="lastPlan" class="add-feature-button" mat-mini-fab matTooltip="Add Feature">
+                            <mat-icon (click)="addNewFeature()">add</mat-icon>
+                        </button>
+                    </div>
+                    <div class="membership-header-price-header">
+                        <div class="periodicity-label">Periodicity</div>
+                        <div *ngIf="!lastPlan" class="fare-label">Fare</div>
+                        <div *ngIf="lastPlan" class="fare-label fare-label-open">
+                            Fare
+                            <button class="add-price-button" mat-mini-fab matTooltip="Add Price">
+                                <mat-icon (click)="addNewPrice()">add</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="membership-toggle-header"></div>
+                </div>
             </div>
-            <div class="membership-toggle-header"></div>
         </mat-card-header>
         <mat-card-content>
             <form [formGroup]="plansForms" class="msf-inline msf-large-container msf-card-container">
