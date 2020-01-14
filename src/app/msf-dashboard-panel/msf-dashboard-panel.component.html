@@ -1011,7 +1011,7 @@
         </button>
       </div>
       <div class="msf-dashboard-table-container">
-        <div class="msf-dashboard-child-panel-table msf-dashboard-panel-table" [style.height.px]="calcPanelHeight() - 39">
+        <div class="msf-dashboard-child-panel-table msf-dashboard-panel-table" [style.height.px]="calcPanelHeight() - 24">
           <app-msf-table #msfTableRef [isLoading]="values.isLoading" (finishLoading)="finishLoadingTable($event)" [categoryArguments]="values.currentOptionCategories" [currentOption]="values.currentOption" [isPanel]="true"></app-msf-table>
         </div>
         <div [ngClass]="moreResultsBtn ? 'msf-menu-more-button' : 'msf-menu-more-button disabled-more-button'"

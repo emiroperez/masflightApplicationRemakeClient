@@ -4109,7 +4109,11 @@ mat-tab-group
 .msf-dashboard-table-container
     display: flex
     flex-direction: column
-    width: 100%
+    width: calc(100% + 10px)
+    margin-top: -10px
+    margin-left: -10px
+    .msf-dashboard-child-panel-table
+        width: calc(100% + 10px)
 
 .msf-dashboard-menu-component
     @include disable-text-selection
