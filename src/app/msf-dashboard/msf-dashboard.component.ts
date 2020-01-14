@@ -357,7 +357,7 @@ export class MsfDashboardComponent implements OnInit {
 
         for (let k = 0; k < drillDownInfo.length; k++)
         {
-          if (panel.id == drillDownInfo[k].dashboardPanelId && panel.currentOption.id == drillDownInfo[k].childPanelId)
+          if (panel.id == drillDownInfo[k].dashboardPanelId)
           {
             panel.childPanels.push ({
               id: drillDownInfo[k].drillDownId,
