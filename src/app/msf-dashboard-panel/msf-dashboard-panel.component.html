@@ -1037,8 +1037,8 @@
           <mat-icon aria-label="Copy Control Variables">file_copy</mat-icon>
         </button>
       </div>
-      <div [style.height.px]="calcPanelHeight()" style="width: calc(100% - 50px)">
-        <app-msf-map #msfMapRef [isLoading]="values.isLoading" [useCancelButton]="false" [displayMapMenu]="2" [currentMapType]="values.style" [legendOffset]="55" (finishLoading)="finishMapboxLoading($event)"></app-msf-map>
+      <div [style.height.px]="calcPanelHeight() - 7" class="msf-dashboard-panel-mapbox">
+        <app-msf-map #msfMapRef [isLoading]="values.isLoading" [useCancelButton]="false" [displayMapMenu]="2" [currentMapType]="values.style" [legendOffset]="5" (finishLoading)="finishMapboxLoading($event)"></app-msf-map>
       </div>
     </div>
   </div>
@@ -1089,7 +1089,7 @@
           <mat-icon aria-label="Chart View">bar_chart</mat-icon>
         </button>
       </div>
-      <div class="msf-dashboard-child-panel-table msf-dashboard-panel-table" [style.height.px]="panelHeightOffset - 20" [style.width.%]="100" [style.margin-top.px]="5">
+      <div class="msf-dashboard-child-panel-table msf-dashboard-panel-table msf-adv-chart-table" [style.height.px]="panelHeightOffset - 20" [style.width.%]="100" [style.margin-top.px]="5">
         <div class="results-container">
           <table class="mat-elevation-z8 datasource results" style="border-collapse: separate; border-spacing: 0">
             <thead>

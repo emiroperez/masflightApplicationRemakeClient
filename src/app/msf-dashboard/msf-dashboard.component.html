@@ -27,7 +27,7 @@
                 <div [ngClass]="dashboardPanel.isLoading? 'tab-show loading-panel' : 'tab-hide'" id="msf-dashboard-panel-loading" class="msf-dashboard-panel-loading" [style.height.px]="getHeight(column)">
                   <div class="msf-dashboard-panel-button">
                     <mat-icon class="msf-dashboard-button-close-icon" aria-label="close" (click)="removePanel(column, row)">close</mat-icon>
-                    <div class="msf-dashboard-button-move-icon" *ngIf="dashboardColumn.length != 1" cdkDragHandle (click)="disableContextMenu()"></div>
+                    <div class="msf-dashboard-button-move-icon" *ngIf="dashboardColumn.length != 1 && !globals.readOnlyDashboard" cdkDragHandle (click)="disableContextMenu()"></div>
                   </div>
                   <button *ngIf="dashboardPanel.isLoading" mat-button class="cancel-button" (click)="cancelLoading(dashboardPanel)">
                     Cancel

@@ -6584,9 +6584,37 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   getConfigButtonOffset(): string
   {
+    if (this.isAdvChartPanel ())
+    {
+      if (this.advTableView)
+      {
+        if (this.globals.readOnlyDashboard)
+          return "calc(100% - 43px)";
+        else
+        {
+          if (this.numPanelsInColumn <= 1)
+            return "calc(100% - 217px)";
+  
+          return "calc(100% - 268px)";
+        }
+      }
+      else
+      {
+        if (this.globals.readOnlyDashboard)
+          return "calc(100% - 90px)";
+        else
+        {
+          if (this.numPanelsInColumn <= 1)
+            return "calc(100% - 264px)";
+  
+          return "calc(100% - 315px)";
+        }
+      }
+    }
+
     if (this.numPanelsInColumn <= 1)
       return "calc(100% - 170px)";
-  
-    return "calc(100% - 220px)";
+
+    return "calc(100% - 219px)";
   }
 }
