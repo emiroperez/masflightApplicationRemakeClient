@@ -378,6 +378,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
         .msf-dashboard-drill-down-loading
             @include msf-dashboard-dialog-loading(50%, $quaternary-background-color, url(assets/images/#{$name}-loading_pulse.gif))
         .msf-dashboard-panel-loading
+            border: 1px solid $quaternary-background-color
             @include msf-dashboard-dialog-loading(250px, $quaternary-background-color, url(assets/images/#{$name}-loading_pulse.gif), 1000)
         .msf-dashboard-assistant-loading
             @include msf-dashboard-dialog-loading(250px, $quaternary-background-color, url(assets/images/#{$name}-loading_pulse.gif))
@@ -3850,6 +3851,7 @@ mat-tab-group
     display: flex
     justify-content: space-between
     flex-direction: column
+    border-radius: 10px
     .msf-dashboard-panel-variable-buttons
         @include msf-dashboard-panel-sub-container(row, 5px, 10px)
     .msf-dashboard-panel-sub-container-column
@@ -3902,6 +3904,7 @@ mat-tab-group
     padding: 10px
     overflow-y: visible
     -webkit-overflow-scrolling: touch
+    border-radius: 10px
     .msf-dashboard-panel-title
         font-size: 16px
         text-align: left
@@ -4278,8 +4281,8 @@ mat-tab-group
     position: absolute !important
     padding-top: 0 !important
     padding-bottom: 0 !important
-    margin-left: 1px
-    margin-top: 1px
+    border-radius: 10px
+    width: calc(100% - 2px) !important
     @extend .msf-dashboard-dialog
     .cancel-button
         margin-top: 10px !important
