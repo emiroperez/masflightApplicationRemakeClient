@@ -1367,6 +1367,10 @@ export class MsfDashboardChildPanelComponent {
 
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
     urlArg = encodeURIComponent (urlBase);
+
+    if (isDevMode ())
+      console.log (urlBase);
+
     url = this.service.host + "/secure/getChartData?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress () +
       "&variable=" + this.values.variable.columnName;
 
@@ -1380,9 +1384,6 @@ export class MsfDashboardChildPanelComponent {
       url += "&chartType=pie";
     else
       url += "&xaxis=" + this.values.xaxis.columnName;
-
-    if (isDevMode ())
-      console.log (url);
 
     this.authService.post (this, url, null, handlerSuccess, handlerError);
   }
