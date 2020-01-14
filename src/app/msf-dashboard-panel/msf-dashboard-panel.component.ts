@@ -3018,7 +3018,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       for (let i = 0; i < _this.values.chartColumnOptions.length; i++)
       {
-        if (_this.values.chartColumnOptions[i].item.id === formVariable.column.id)
+        if (_this.values.chartColumnOptions[i].item.id === formVariable.column)
         {
           columnIndex = i;
           break;
