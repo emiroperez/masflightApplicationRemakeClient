@@ -116,7 +116,7 @@
           <button mat-flat-button class="flat-button" (click)="closeDialog()">OK</button>
           <div class="msf-dashboard-panel-control-variable-button msf-child-panel-control-variable-button">
             <button [disabled]="!currentValue" [style.margin-left.px]="7" mat-mini-fab (click)="goToAdditionalSettings()" color="primary" matTooltip="Additional Settings">
-              <mat-icon aria-label="Additional Settings">adjust</mat-icon>
+              <img [style.width.px]="24" [style.height.px]="24" src="../../assets/images/additional-options.png"/>
             </button>
             <button [disabled]="!currentValue || (currentIndex != -1 && newPanel[currentIndex])" mat-mini-fab (click)="deletePanel(currentIndex)" color="primary" matTooltip="Delete Panel">
               <mat-icon aria-label="Delete Panel">delete</mat-icon>
