@@ -287,6 +287,8 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                         background-color: $primary-color
                         .mat-icon
                             color: #ffffff
+                        .msf-dashboard-control-panel-icon
+                            background-image: url(assets/images/dark-theme-control-panel-icon.png) !important
                 .msf-dashboard-control-panel-button-open
                     display: flex
                     color: #ffffff
@@ -294,6 +296,8 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                     background-color: $primary-color
                     .mat-icon
                         color: #ffffff
+                    .msf-dashboard-control-panel-icon
+                        background-image: url(assets/images/dark-theme-control-panel-icon.png) !important
             .msf-dashboard-addmenu
                 .msf-dashboard-addmenu-item:hover
                     @include msf-dashboard-addmenu-item($primary-color, #ffffff, pointer)
@@ -2113,8 +2117,6 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             color: #ffffff !important
         .msf-dashboard-control-panel-icon
             background-image: url(assets/images/#{$name}-control-panel-icon.png)
-            &:hover
-                background-image: url(assets/images/dark-theme-control-panel-icon.png) !important
         .msf-dashboard-child-panel-table th 
             border: none
             border-bottom: 1px solid $table-header-border-color
