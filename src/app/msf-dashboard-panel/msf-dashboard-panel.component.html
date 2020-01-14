@@ -967,9 +967,9 @@
           <mat-icon aria-label="Copy Control Variables">file_copy</mat-icon>
         </button>
       </div>
-      <div style="width: 100%; display: table" [style.height.px]="calcPanelHeight()">
+      <div class="msf-dashboard-form-container" [style.height.px]="calcPanelHeight()">
         <div class="msf-media-title-container" id="msf-dashboard-form-display">
-          <div [ngClass]="values.formVariables[column].valueOrientation.value ? 'msf-dashboard-form-display-result-vertical' : 'msf-dashboard-form-display-result-horizontal'" *ngFor="let formResult of values.lastestResponse; let column = index">
+          <div class="msf-dashboard-form-display-child" [ngClass]="values.formVariables[column].valueOrientation.value ? 'msf-dashboard-form-display-result-vertical' : 'msf-dashboard-form-display-result-horizontal'" *ngFor="let formResult of values.lastestResponse; let column = index">
             <span class="msf-media-title-value" id="msf-dashboard-form-display-title" [style.font-size.px]="getFormFontSize(column)">{{formResult.column.columnLabel}}: </span>
             <span class="msf-media-title-value" id="msf-dashboard-form-display-value" [style.font-size.px]="getValueFormFontSize(column)">{{formResult.value}}</span>
           </div>
