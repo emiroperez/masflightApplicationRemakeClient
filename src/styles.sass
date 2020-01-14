@@ -6181,14 +6181,17 @@ th.msf-show-table, td.msf-show-table
 .dark-theme .msf-dashboard-child-panel-table th 
     border: none
     border-bottom-color: rgba(0,0,0,.12)
-    background: #1F1F1F
+    background: #141414
 
-.dark-theme .msf-dashboard-child-panel-table .mat-row 
-    background: #171717
+.dark-theme .msf-dashboard-child-panel-table .mat-row:nth-child(odd)
+    background: #272727
+
+.dark-theme .msf-dashboard-child-panel-table .mat-row:nth-child(even)
+    background: #1f1f1f
 
 .dark-theme .msf-dashboard-child-panel-table td.mat-cell 
     color: #ffffff
-    border-color: #1F1F1F
+    border-color: #212121
 
 .msf-dashboard-panel-table
     overflow: auto
