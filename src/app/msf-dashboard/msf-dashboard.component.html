@@ -10,6 +10,7 @@
           </span>
         </span>
         <div [ngClass]="{ 'msf-dashboard-control-panel-button' : !controlPanelOpen, 'msf-dashboard-control-panel-button-open' : controlPanelOpen }" (click)="toggleControlPanel()" *ngIf="!globals.readOnlyDashboard">
+          <div class="msf-dashboard-control-panel-icon"></div>
           Control Panel
           <mat-icon *ngIf="!controlPanelOpen" class="msf-dashboard-control-panel-button-arrow" aria-label="open">arrow_drop_down</mat-icon>
           <mat-icon *ngIf="controlPanelOpen" class="msf-dashboard-control-panel-button-arrow" aria-label="open">arrow_drop_up</mat-icon>
