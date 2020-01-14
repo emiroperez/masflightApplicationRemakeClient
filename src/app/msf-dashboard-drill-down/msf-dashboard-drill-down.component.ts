@@ -534,6 +534,10 @@ export class MsfDashboardDrillDownComponent {
       && this.currentValue.chartName == this.lastValue.chartName
       && (this.currentValue.currentChartType.flags & ChartFlags.XYCHART
         && this.currentValue.xaxis == this.lastValue.xaxis)
+      && (!(this.currentValue.currentChartType.flags & ChartFlags.TABLE)
+        && this.currentValue.vertAxisName == this.lastValue.vertAxisName)
+      && (!(this.currentValue.currentChartType.flags & ChartFlags.TABLE)
+        && this.currentValue.horizAxisName == this.lastValue.horizAxisName)
       && !this.checkPaletteColors ()
       && !this.checkLimitConfig ())
       return;
