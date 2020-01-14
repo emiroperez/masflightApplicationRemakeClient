@@ -2932,6 +2932,12 @@
 .dark-theme .msf-membership-card {
   background-color: #1a1a1a;
 }
+.dark-theme .datalake-create-table-input-body .mat-form-field-disabled .mat-select-value {
+  color: #9e9e9e !important;
+}
+.dark-theme .datalake-create-table-input-body .mat-form-field-disabled .mat-form-field-label-wrapper .mat-form-field-label {
+  color: #9e9e9e !important;
+}
 
 .light-theme {
   color: #4d4d4d;
@@ -5850,6 +5856,12 @@
 }
 .light-theme .msf-membership-card {
   background-color: #f7f7f7;
+}
+.light-theme .datalake-create-table-input-body .mat-form-field-disabled .mat-select-value {
+  color: #2d2d2d !important;
+}
+.light-theme .datalake-create-table-input-body .mat-form-field-disabled .mat-form-field-label-wrapper .mat-form-field-label {
+  color: #2d2d2d !important;
 }
 
 .dark-theme .assistant-button-disabled {
