@@ -43,7 +43,7 @@
     cursor: $cursor
     font-size: 16px
     padding-right: $padding-right
-    padding-top: 5px
+    padding-top: 10px
 
 @mixin msf-dashboard-column-properties ($height, $primary-color, $font-color, $name)
     position: relative
@@ -79,14 +79,14 @@
         align-items: center
         padding-left: 10px
         .msf-dashboard-button-move-icon
-            @include msf-dashboard-icon(2px)
+            @include msf-dashboard-icon(5px)
             background-image: url(assets/images/#{$name}-vert-move.png)
             background-repeat: no-repeat
             width: 20px
             height: 30px
             background-size: 95%
         .msf-dashboard-button-move-icon:hover
-            @include msf-dashboard-icon(2px, $primary-color, move)
+            @include msf-dashboard-icon(5px, $primary-color, move)
             background-image: url(assets/images/#{$name}-vert-move-hover.png)
 
 @mixin msf-dashboard-control-variables-close-icon ($color: inherit, $cursor: inherit)
@@ -262,6 +262,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             color: $font-color
         .msf-dashboard-panel-title
             color: $dashboard-title-font-color
+            border-bottom: 1px solid $dashboard-panel-background-color
             font-weight: 550
         .msf-dashboard-container
             color: $font-color
@@ -270,7 +271,6 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                 .msf-dashboard-title
                     .msf-dashboard-title-label
                         color: $dashboard-title-font-color
-                        background-color: $dashboard-panel-chart-background-color
                         font-weight: 550
                 .msf-dashboard-control-panel-button
                     background-color: rgba($primary-color, 0.8)
@@ -291,7 +291,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             color: $control-variable-icon-color
         .msf-dashboard-button
             .msf-dashboard-button-close-icon:hover
-                @include msf-dashboard-icon(2px, $primary-color, pointer)
+                @include msf-dashboard-icon(5px, $primary-color, pointer)
             .msf-dashboard-button-icon
                 color: $font-color
             .msf-dashboard-button-icon:hover
@@ -308,12 +308,12 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             .msf-dashboard-button-close-icon
                 color: $font-color
             .msf-dashboard-button-close-icon:hover
-                @include msf-dashboard-icon(2px, $primary-color, pointer)
+                @include msf-dashboard-icon(5px, $primary-color, pointer)
             .msf-dashboard-button-move-icon
                 background-image: url(assets/images/#{$name}-horiz-move.png)       // Replace this image
             .msf-dashboard-button-move-icon:hover
                 background-image: url(assets/images/#{$name}-horiz-move-hover.png) // Replace this image
-                @include msf-dashboard-icon(2px, $primary-color, move)
+                @include msf-dashboard-icon(5px, $primary-color, move)
         .msf-dashboard-column-properties-form-field
             .mat-select-value-text
                 color: $font-color
@@ -2078,6 +2078,9 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             color: $font-color
         .msf-membership-card
             background-color: $query-engine-result-header-color
+        .msf-dashboard-panel-margin-button:hover
+            .mat-icon
+                color: $primary-color !important
 
 @each $name, $font-color, $little-font-color, $disabled-color, $secondary-disabled-color, $tertiary-disabled-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $quaternary-background-color, $body-background-color, $dashboard-background-color, $dashboard-secondary-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $scrollbar-background-color, $dashboard-panel-background-color, $dashboard-panel-chart-background-color, $dashboard-border-color, $schedule-map-background-color, $schedule-map-info-border, $disabled-combo-box-color, $disabled-underline, $dashboard-info-background-color, $dashboard-info-secondary-background-color, $dashboard-info-font-color, $dashboard-drill-down-border-color, $dashboard-threshold-background-color, $dashboard-title-font-color, $map-panelinfo-background-color, $dashboard-info-border-color, $dashboard-form-font-color, $admin-menu-background, $admin-menu-input-underline, $admin-tree-active-color, $admin-button-color, $admin-secondary-background-color, $admin-table-background-color, $admin-table-hover-color, $admin-secondary-button-color, $login-font-color, $intro-logout-icon-color, $control-variables-border-color, $control-variable-hover-background-color, $control-variable-hover-icon-color, $control-variables-input-underline, $control-variables-dropdown-hover-font-color, $control-variables-dropdown-hover-background-hover-color, $control-variables-selected-background-color, $dashboard-input-underline-color, $membership-primary-background-color, $membership-secondary-background-color, $customer-edit-header-color, $customer-table-header-background-color, $customer-table-row-background-color, $customer-table-row-border-color, $customer-table-row-hover-background-color, $customer-table-row-selected-background-color, $customer-table-row-border-selected-color, $customer-input-color, $customer-input-underline-color, $customer-disabled-underline, $dashboard-control-panel-background-color, $menu-open-background-color, $menu-open-active-background-color, $menu-first-line, $menu-second-line, $menu-background-color, $menu-child-background-color, $control-variable-disabled-color, $dashboard-assistant-analysis-color, $dashboard-assistant-axis-color, $dashboard-assistant-values-color, $dashboard-assistant-analysis-font-color, $dashboard-assistant-sub-background-color, $admin-menu-tree-scrollbar-track-color, $dialog-category-arguments-scrollbar-color, $admin-menu-category-scrollbar-track-color, $datalake-search-input-border-color, $progress-bar-fill, $progress-bar-buffer, $datalake-data-ingestion-background-color, $datalake-explorer-background-color, $datalake-table-stats-background-color, $datalake-table-button-color, $query-engine-background-color, $query-engine-result-header-color, $codemirror-selected-color, $codemirror-focused-selected-color, $codemirror-keyword-color, $codemirror-number-color, $codemirror-string-color, $codemirror-variable-color, $codemirror-variable2-color, $codemirror-comment-color, $codemirror-builtin-color, $codemirror-attribute-color, $codemirror-property-color, $datalake-query-left-panel-scrollbar-color, $datalake-query-left-panel-scrollbar-track-color, $datalake-table-row-background-color, $datalake-table-row-hover-background-color,$datalake-disabled-buttonAlarmEmail, $datalake-alarm-secondary-background-color, $membership-tertiary-background-color, $membership-header-primary-color, $membership-header-secondary-color, $membership-border-color in $color-scheme
     @include theme($name, $font-color, $little-font-color, $disabled-color, $secondary-disabled-color, $tertiary-disabled-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $quaternary-background-color, $body-background-color, $dashboard-background-color, $dashboard-secondary-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $scrollbar-background-color, $dashboard-panel-background-color, $dashboard-panel-chart-background-color, $dashboard-border-color, $schedule-map-background-color, $schedule-map-info-border, $disabled-combo-box-color, $disabled-underline, $dashboard-info-background-color, $dashboard-info-secondary-background-color, $dashboard-info-font-color, $dashboard-drill-down-border-color, $dashboard-threshold-background-color, $dashboard-title-font-color, $map-panelinfo-background-color, $dashboard-info-border-color, $dashboard-form-font-color, $admin-menu-background, $admin-menu-input-underline, $admin-tree-active-color, $admin-button-color, $admin-secondary-background-color, $admin-table-background-color, $admin-table-hover-color, $admin-secondary-button-color, $login-font-color, $intro-logout-icon-color, $control-variables-border-color, $control-variable-hover-background-color, $control-variable-hover-icon-color, $control-variables-input-underline, $control-variables-dropdown-hover-font-color, $control-variables-dropdown-hover-background-hover-color, $control-variables-selected-background-color, $dashboard-input-underline-color, $membership-primary-background-color, $membership-secondary-background-color, $customer-edit-header-color, $customer-table-header-background-color, $customer-table-row-background-color, $customer-table-row-border-color, $customer-table-row-hover-background-color, $customer-table-row-selected-background-color, $customer-table-row-border-selected-color, $customer-input-color, $customer-input-underline-color, $customer-disabled-underline, $dashboard-control-panel-background-color, $menu-open-background-color, $menu-open-active-background-color,$menu-first-line, $menu-second-line, $menu-background-color, $menu-child-background-color, $control-variable-disabled-color, $dashboard-assistant-analysis-color, $dashboard-assistant-axis-color, $dashboard-assistant-values-color, $dashboard-assistant-analysis-font-color, $dashboard-assistant-sub-background-color, $admin-menu-tree-scrollbar-track-color, $dialog-category-arguments-scrollbar-color, $admin-menu-category-scrollbar-track-color, $datalake-search-input-border-color, $progress-bar-fill, $progress-bar-buffer, $datalake-data-ingestion-background-color, $datalake-explorer-background-color, $datalake-table-stats-background-color, $datalake-table-button-color, $query-engine-background-color, $query-engine-result-header-color, $codemirror-selected-color, $codemirror-focused-selected-color, $codemirror-keyword-color, $codemirror-number-color, $codemirror-string-color, $codemirror-variable-color, $codemirror-variable2-color, $codemirror-comment-color, $codemirror-builtin-color, $codemirror-attribute-color, $codemirror-property-color, $datalake-query-left-panel-scrollbar-color, $datalake-query-left-panel-scrollbar-track-color, $datalake-table-row-background-color, $datalake-table-row-hover-background-color, $datalake-disabled-buttonAlarmEmail, $datalake-alarm-secondary-background-color, $membership-tertiary-background-color, $membership-header-primary-color, $membership-header-secondary-color, $membership-border-color)
@@ -3752,8 +3755,10 @@ mat-tab-group
             padding-top: 20px
             padding-bottom: 10px
             font-size: 16px
+            text-align: left
+            margin-left: 16px
             .msf-dashboard-title-label
-                padding: 14px
+                padding: 14px 0
         .msf-dashboard-control-panel-button
             @include msf-dashboard-control-panel-button
         .msf-dashboard-control-panel-button:hover, .msf-dashboard-control-panel-button-open
@@ -3798,7 +3803,7 @@ mat-tab-group
     position: absolute
     width: 100%
     .msf-dashboard-button-close-icon
-        @include msf-dashboard-icon(2px)
+        @include msf-dashboard-icon(5px)
     .msf-dashboard-button-icon
         @include msf-dashboard-icon(5px)
 
@@ -3810,7 +3815,7 @@ mat-tab-group
     width: 100%
     .msf-dashboard-button-close-icon
         z-index: 2
-        @include msf-dashboard-icon(2px)
+        @include msf-dashboard-icon(5px)
     .msf-dashboard-button-move-icon
         z-index: 2
         margin-right: -8px
@@ -3818,9 +3823,9 @@ mat-tab-group
         width: 45px
         height: 20px
         background-size: 85%
-        @include msf-dashboard-icon(2px)
-    .msf-dashboard-button-move-icon:hover
-        margin-right: -8px
+        padding-top: 5px !important
+        margin-right: 3px
+        @include msf-dashboard-icon(5px)
 
 .msf-dashboard-chart-icon
     vertical-align: middle
@@ -3888,10 +3893,9 @@ mat-tab-group
 @mixin msf-dashboard-panel-config-button
     position: absolute
     display: flex
-    left: calc(100% - 45px)
-    bottom: 0
+    top: -50px
     align-items: flex-end
-    flex-direction: column-reverse
+    flex-direction: row-reverse
     z-index: 1
 
 .msf-dashboard-panel-container-chart
@@ -3901,22 +3905,21 @@ mat-tab-group
     .msf-dashboard-panel-title
         font-size: 16px
         text-align: left
-        margin-left: 5px
+        margin-left: -10px
+        padding-left: 15px
+        padding-bottom: 10px
+        margin-bottom: 10px
+        width: calc(100% + 5px)
     .msf-dashboard-panel-sub-container-column
         @include msf-dashboard-panel-sub-container(row, 5px)
         position: relative
 
 .msf-dashboard-panel-config-button
-    opacity: 0.05
-    transition: opacity 0.5s ease-out
     @include msf-dashboard-panel-config-button
     .msf-dashboard-panel-margin-button
-        margin-bottom: 7px
-
-.msf-dashboard-panel-config-button:hover
-    opacity: 1
-    transition: opacity 0.5s ease-in
-    @include msf-dashboard-panel-config-button
+        margin-right: 7px
+    .mat-icon
+        font-size: 20px
 
 .msf-dashboard-child-panel-container
     width: 98%
@@ -8041,6 +8044,9 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 
 .msf-dashboard-panel-data-select
     flex-direction: row
+
+.msf-dashboard-panel-header
+    margin-top: 5px
 
 .discover-button
     .search-icon

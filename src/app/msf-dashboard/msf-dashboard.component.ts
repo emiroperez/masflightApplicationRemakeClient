@@ -57,7 +57,7 @@ export class MsfDashboardComponent implements OnInit {
     false     // Map Tracker
   ];
 
-  heightValues:any[] = [
+  heightValues: any[] = [
     { value: 1, name: 'Small' },
     { value: 3, name: 'Medium' },
     { value: 6, name: 'Large' },

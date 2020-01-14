@@ -180,6 +180,9 @@ export class MsfDashboardPanelComponent implements OnInit {
   @Input("currentHiddenCategories")
   currentHiddenCategories: any;
 
+  @Input("numPanelsInColumn")
+  numPanelsInColumn: number;
+
   @Output("removeDeadVariablesAndCategories")
   removeDeadVariablesAndCategories = new EventEmitter ();
 
@@ -323,7 +326,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         if (this.values.displayChart)
         {
           let chartElement = document.getElementById ("msf-dashboard-chart-display-" + this.values.id);
-          document.getElementById ("msf-dashboard.chart-display-container-" + this.values.id).appendChild (chartElement);
+          document.getElementById ("msf-dashboard-chart-display-container-" + this.values.id).appendChild (chartElement);
         }
         else
           this.redisplayChart = true;
@@ -4978,12 +4981,12 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   calcPanelHeight(): number
   {
-    return this.panelHeight - 39;
+    return this.panelHeight - 50;
   }
 
   calcRouteListHeight(): number
   {
-    return this.panelHeight - 60;
+    return this.panelHeight - 71;
   }
 
   isInformationPanel(): boolean
@@ -6577,5 +6580,13 @@ export class MsfDashboardPanelComponent implements OnInit {
       return true;
 
     return false;
+  }
+
+  getConfigButtonOffset(): string
+  {
+    if (this.numPanelsInColumn <= 1)
+      return "calc(100% - 170px)";
+  
+    return "calc(100% - 220px)";
   }
 }

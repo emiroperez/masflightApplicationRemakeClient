@@ -42,7 +42,8 @@
                 <app-msf-dashboard-panel [values]="dashboardPanel" [reAppendChart]="dashboardColumnsReAppendCharts[column]"
                   [panelHeight]="getHeight(column)" [panelWidth]="getPanelWidth(column, row)" [controlPanelVariables]="controlPanelVariables"
                   [currentHiddenCategories]="currentHiddenCategories" (removeDeadVariablesAndCategories)="removeDeadVariablesAndCategories($event)"
-                  (addNewVariablesAndCategories)="addNewVariablesAndCategories($event)" (toggleControlVariableDialogOpen)="toggleControlVariableDialogOpen($event)">
+                  (addNewVariablesAndCategories)="addNewVariablesAndCategories($event)" (toggleControlVariableDialogOpen)="toggleControlVariableDialogOpen($event)"
+                  [numPanelsInColumn]="dashboardColumn.length">
                 </app-msf-dashboard-panel>
               </div>
             </div>
