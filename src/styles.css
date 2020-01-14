@@ -9466,7 +9466,6 @@ td.mat-cell.admin-column-arguments-cell {
   width: calc(30% - 1px);
 }
 .msf-plan-card-content .msf-periodicity-fare .msf-periodicity-fare-label-container {
-  text-align: center;
   font-size: 16px;
   width: 100%;
 }
@@ -9476,8 +9475,14 @@ td.mat-cell.admin-column-arguments-cell {
 .msf-plan-card-content .msf-periodicity-fare .msf-periodicity-fare-label-container .msf-periodicity-fare-list .msf-periodicity-fare-label {
   display: flex !important;
 }
-.msf-plan-card-content .msf-periodicity-fare .msf-periodicity-fare-label-container .msf-periodicity-fare-list .msf-periodicity-fare-label .msf-periodicity-fare-label-comma {
-  white-space: pre;
+.msf-plan-card-content .msf-periodicity-fare .msf-periodicity-fare-label-container .msf-periodicity-fare-list .msf-periodicity-fare-label .msf-periodicity-label {
+  width: calc(50% - 40px);
+  text-align: left;
+  margin-left: 20px;
+}
+.msf-plan-card-content .msf-periodicity-fare .msf-periodicity-fare-label-container .msf-periodicity-fare-list .msf-periodicity-fare-label .msf-fare-label {
+  width: 50%;
+  text-align: right;
 }
 .msf-plan-card-content .msf-periodicity-fare .msf-periodicity-fare-container {
   width: 100%;
