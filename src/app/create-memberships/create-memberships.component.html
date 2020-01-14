@@ -89,8 +89,8 @@
                                     <div class="msf-periodicity-fare-label-container">
                                         <div class="msf-periodicity-fare-list" formArrayName="fares" *ngFor="let price of getPlanPrices(i); let k = index">
                                             <div class="msf-periodicity-fare-label" [formGroupName]="k" *ngIf="isFareDelete(i,k)">
-                                                <span [style.width.%]="50">{{periodicityLabel[price.get ('periodicity').value]}}</span>
-                                                <span [style.width.%]="50">${{price.get ('fare').value | number: '1.0-0'}}</span>
+                                                <span class="msf-periodicity-label">{{periodicityLabel[price.get ('periodicity').value]}}</span>
+                                                <span class="msf-fare-label">${{price.get ('fare').value | number: '1.0-0'}}</span>
                                             </div>
                                         </div>
                                     </div>

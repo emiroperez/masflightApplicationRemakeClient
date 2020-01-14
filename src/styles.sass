@@ -5136,15 +5136,19 @@ td.mat-cell.admin-column-arguments-cell
         flex-direction: column
         width: calc(30% - 1px)
         .msf-periodicity-fare-label-container
-            text-align: center
             font-size: 16px
             width: 100%
             .msf-periodicity-fare-list
                 display: inline
                 .msf-periodicity-fare-label
                     display: flex !important
-                    .msf-periodicity-fare-label-comma
-                        white-space: pre
+                    .msf-periodicity-label
+                        width: calc(50% - 40px)
+                        text-align: left
+                        margin-left: 20px
+                    .msf-fare-label
+                        width: 50%
+                        text-align: right
         .msf-periodicity-fare-container
             width: 100%
             .msf-periodicity-selector
