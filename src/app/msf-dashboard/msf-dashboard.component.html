@@ -50,7 +50,7 @@
             <div class="msf-dashboard-panel-padding" *ngIf="globals.readOnlyDashboard"></div>
             <div [ngClass]="globals.readOnlyDashboard ? 'msf-dashboard-panel-size-properties-invisible' : (dashboardColumnsProperties[column] ? 'msf-dashboard-panel-size-properties-open' : 'msf-dashboard-panel-size-properties-closed')">
               <div *ngIf="!dashboardColumnsProperties[column]" (click)="toggleColumnProperties(column)" class="msf-dashboard-button msf-dashboard-column-dropdown-button">
-                <mat-icon class="msf-dashboard-button-icon msf-dashboard-column-dropdown-icon" aria-label="fold">keyboard_arrow_down</mat-icon>
+                <mat-icon class="msf-dashboard-button-icon msf-dashboard-column-dropdown-icon" aria-label="fold">arrow_drop_down</mat-icon>
               </div>
               <ng-container *ngIf="dashboardColumnsProperties[column]">
                 <div class="msf-dashboard-column-properties-align">
@@ -81,7 +81,7 @@
                   </div>
                 </div>
                 <div (click)="toggleColumnProperties(column)" class="msf-dashboard-button msf-dashboard-column-dropdown-button">
-                  <mat-icon class="msf-dashboard-button-icon msf-dashboard-column-dropdown-icon" aria-label="fold">keyboard_arrow_up</mat-icon>
+                  <mat-icon class="msf-dashboard-button-icon msf-dashboard-column-dropdown-icon" aria-label="fold">arrow_drop_up</mat-icon>
                 </div>
               </ng-container>
             </div>
