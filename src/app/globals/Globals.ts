@@ -62,7 +62,7 @@ export class Globals {
   template : boolean = false;
   isFullscreen: boolean = false;
   // baseUrl = "http://localhost:8887";
-  // baseUrl = "https://pulse.globaleagle.com:8887";
+  // baseUrl = "http://pulse.globaleagle.com:8887";
   baseUrl = "";
   baseUrl2 = "https://pulse.globaleagle.com:8886/mapBoxServices";
   popupUrl = "https://pulse.globaleagle.com:8900";
