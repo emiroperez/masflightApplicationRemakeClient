@@ -1,12 +1,9 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Arguments } from '../model/Arguments';
-import { FormControl } from '@angular/forms';
-import { ReplaySubject, Subject, Observable, of } from 'rxjs';
-import { MatSelect } from '@angular/material';
-import { takeUntil, take, delay } from 'rxjs/operators';
-import { Airline } from '../model/Airline';
-import { ApiClient } from '../api/api-client';
+import { Observable, of } from 'rxjs';
+import { delay } from 'rxjs/operators';
 import { Globals } from '../globals/Globals';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-msf-airline',
@@ -21,7 +18,7 @@ export class MsfAirlineComponent implements OnInit {
   multiAirlines: boolean = false;
 
   loading = false;
-  constructor(private http: ApiClient, public globals: Globals) { }
+  constructor(private authService: AuthService, public globals: Globals) { }
 
   ngOnInit() {
     if (this.argument.selectionMode)
@@ -46,7 +43,8 @@ export class MsfAirlineComponent implements OnInit {
     }else{
      url = this.argument.url+ (search != null?search:'');
     }
-    this.http.get(this,url,handlerSuccess,this.handlerError, null);  
+  
+    this.authService.get (this, url, handlerSuccess, this.handlerError);
   }
 
   handlerSuccess(_this,data, tab){   

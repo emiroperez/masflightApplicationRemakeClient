@@ -14,6 +14,7 @@ import { State } from '../model/State';
 import { Country } from '../model/Country';
 import { Plan } from '../model/Plan';
 import { Customer } from '../model/Customer';
+import { AirlineRestrictionsDialogComponent } from '../airline-restrictions-dialog/airline-restrictions-dialog.component';
 
 export const US_DATE_FORMAT = {
   parse: {
@@ -749,5 +750,15 @@ export class CreateCustomerComponent implements OnInit {
   getInnerWidth(): number
   {
     return this.innerWidth;
+  }
+
+  openAirlineRestrictions(): void
+  {
+    this.dialog.open (AirlineRestrictionsDialogComponent, {
+      panelClass: 'airline-restriction-dialog',
+      data: {
+        selectedCustomer: this.selectedCustomer
+      }
+    });
   }
 }

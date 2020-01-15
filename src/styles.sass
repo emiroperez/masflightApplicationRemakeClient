@@ -4627,6 +4627,8 @@ mat-tab-group
             flex-direction: row
             padding: 0 13px
             .msf-dashboard-control-panel-variable-argument
+                .msf-component-date-range-selector
+                    margin-top: 10px !important
                 .msf-component-outer-container
                     display: flex
                     flex-direction: row
@@ -6339,9 +6341,16 @@ th.msf-show-table, td.msf-show-table
         margin-top: -77px
         .mat-elevation-z8
             .msf-customer-right-header
+                position: relative
                 margin-bottom: 0px
                 padding: 15px
                 color: #ffffff
+                .msf-customer-right-buttons
+                    position: absolute
+                    top: 10px
+                    right: 5px
+                    .mat-icon-button[disabled]
+                        opacity: 0.5
             .msf-customer-right-editor
                 padding: 15px
                 display: flex
@@ -10236,3 +10245,11 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     width: 100%
     display: table
     margin-top: -10px
+
+.airline-restriction-dialog
+    .mat-dialog-container
+        padding: 0
+        overflow: hidden
+
+.airline-restrictions-container
+    padding: 20px

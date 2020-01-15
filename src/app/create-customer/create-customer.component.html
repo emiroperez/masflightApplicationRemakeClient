@@ -69,6 +69,13 @@
           <div class="mat-elevation-z8">
             <h1 class="msf-customer-right-header">
               Edit Customer
+              <!--
+              <div class="msf-customer-right-buttons">
+                <button [disabled]="!selectedCustomer" mat-icon-button matTooltip="Airline Restrictions" (click)="openAirlineRestrictions()">
+                  <mat-icon>local_airport</mat-icon>
+                </button>
+              </div>
+              -->
             </h1>
             <div class="msf-customer-right-editor" [ngStyle]="{ 'height': getEditorHeight() }">
               <div class="msf-customer-edit-panel">
