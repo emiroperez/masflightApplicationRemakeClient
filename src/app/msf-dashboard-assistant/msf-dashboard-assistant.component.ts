@@ -225,7 +225,7 @@ export class MsfDashboardAssistantComponent {
     url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
 
     if (isDevMode ())
-      console.log (url);
+      console.log (urlBase);
 
     this.authService.get (this.msfTableRef, url, handlerSuccess, handlerError);
   }

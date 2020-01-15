@@ -1069,7 +1069,7 @@ export class MsfDashboardChildPanelComponent {
         }        
       }
     }
-  
+
     return params;
   }
 
@@ -1346,7 +1346,7 @@ export class MsfDashboardChildPanelComponent {
     }
 
     if (isDevMode ())
-      console.log (url);
+      console.log (urlBase);
 
     this.authService.get (this.msfTableRef, url, handlerSuccess, handlerError);
   }

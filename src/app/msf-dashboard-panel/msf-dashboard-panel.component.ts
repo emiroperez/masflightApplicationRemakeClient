@@ -2386,10 +2386,10 @@ export class MsfDashboardPanelComponent implements OnInit {
     panel = this.getPanelInfo ();
     panel.paletteColors = JSON.stringify (variables); // store the variables into the paletteColors for temporary use
 
-    url = this.service.host + "/secure/getTextSummaryResponse?url=" + urlArg + "&ipAddress=" + this.authService.getIpAddress ();
-
     if (isDevMode ())
-      console.log (url);
+      console.log (urlArg);
+
+    url = this.service.host + "/secure/getTextSummaryResponse?url=" + urlArg + "&ipAddress=" + this.authService.getIpAddress ();
 
     this.authService.post (this, url, panel, handlerSuccess, handlerError);
   }
@@ -2414,6 +2414,10 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
     urlArg = encodeURIComponent (urlBase);
+
+    if (isDevMode ())
+      console.log (urlBase);
+
     url = this.service.host + "/secure/getChartData?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
 
     if (this.values.valueColumn)
@@ -2451,9 +2455,6 @@ export class MsfDashboardPanelComponent implements OnInit {
         url += "&xaxis=" + this.values.xaxis.id;
     }
 
-    if (isDevMode ())
-      console.log (url);
-
     this.authService.post (this, url, panel, handlerSuccess, handlerError);
   }
 
@@ -2474,10 +2475,11 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
     urlArg = encodeURIComponent (urlBase);
-    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
 
     if (isDevMode ())
-      console.log (url);
+      console.log (urlBase);
+
+    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
 
     this.authService.get (this, url, handlerSuccess, handlerError);
   }
@@ -5318,6 +5320,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         {
           childPanel.title = data.childPanels[i].title;
           childPanel.id = data.childPanels[i].id;
+          childPanel.childPanelId = data.childPanels[i].childPanelId;
           newChildPanel = false;
           break;
         }
