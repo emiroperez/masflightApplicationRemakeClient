@@ -755,6 +755,7 @@ export class CreateCustomerComponent implements OnInit {
   openAirlineRestrictions(): void
   {
     this.dialog.open (AirlineRestrictionsDialogComponent, {
+      width: '400px',
       panelClass: 'airline-restriction-dialog',
       data: {
         selectedCustomer: this.selectedCustomer

@@ -1,4 +1,60 @@
 <div class="airline-restrictions-loading" *ngIf="isLoading"></div>
-<div class="airline-restrictions-container" *ngIf="!isLoading">
+<div class="airline-restrictions-container msf-control-variables-overlay" *ngIf="!isLoading">
+  <div class="airline-restrictions-container-close-button">
+    <mat-icon aria-label="close" (click)="closeDialog()">close</mat-icon>
+  </div>
   <div class="airline-restrictions-title">Airline Restrictions</div>
+  <div class="airline-restrictions-label">Airline(s):</div>
+  <div class="airline-restrictions-combobox">
+    <ng-select
+      [items]="airlines | async"
+      [multiple]="true"
+      [loading]="airlineListLoading"
+      loadingText="Loading..."
+      [closeOnSelect]="true"
+      [hideSelected]="false"
+      bindLabel="iata"
+      (search)="onSearch($event)" 
+      [(ngModel)]="selectedAirlines"
+      appendTo=".msf-control-variables-overlay"
+      dropdownPosition="bottom">
+      <ng-template ng-option-tmp let-item="item">
+        <div>{{item.name}}</div>
+      </ng-template>
+    </ng-select>
+    <button mat-icon-button class="airline-restrictions-add-button">
+      <mat-icon>add</mat-icon>
+    </button>
+    <!--
+    <button [disabled]="!selectedUserNames.length" mat-icon-button [ngClass]="!selectedUserNames.length ? 'func-button-disabled' : 'func-button'" (click)="addUser()">
+      <mat-icon class="msf-dashboard-chart-icon" aria-label="Add User" style="margin-left: 6px">add</mat-icon>
+    </button>
+    -->
+  </div>
+  <div class="airline-restrictions-content-container">
+    <div class="msf-dashboard-panel-sub-container-column">
+      <!--
+      <div class="msf-dashboard-panel-sub-container-column" id="msf-share-dashboard-container" *ngIf="users.length">
+        <mat-radio-group [(ngModel)]="selectedUser" style="flex-direction: column; display: flex">
+          <mat-radio-button style="margin: 10px;" class="cancels-checkbox" *ngFor="let user of users" [value]="user">
+            {{user.email}} ({{user.name}})
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+      -->
+      <div class="msf-dashboard-panel-sub-container-column airline-restrictions-column" id="msf-dashboard-panel-form-container-column-empty">
+        <div class="msf-no-results">
+          No Airline Restrictions
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="airline-restrictions-option-buttons">
+    <!--
+    <button [disabled]="!selectedUser" mat-flat-button [ngClass]="selectedUser ? 'flat-button' : 'flat-button-disabled'" (click)="removeUser()">Remove User</button>
+    -->
+    <button [disabled]="true" mat-flat-button class="flat-button-disabled">Remove Airline</button>
+    <span class="button-separator"></span>
+    <button mat-flat-button class="flat-button" (click)="closeDialog()">OK</button>
+  </div>
 </div>
