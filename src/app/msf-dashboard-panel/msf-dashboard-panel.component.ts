@@ -5303,43 +5303,27 @@ export class MsfDashboardPanelComponent implements OnInit {
   // update child panel list after success or failure
   drillDownSettingsClear(_this, data): void
   {
-    let drillDownIds: number[] = [];
+    let drillDownInfo: any[] = [];
+    let childPanelNames: any[] = [];
 
-    drillDownIds = data.drillDownIds;
+    _this.values.childPanels = [];
 
-    for (let i = 0; i < drillDownIds.length; i++)
+    drillDownInfo = data.drillDownInfo;
+    childPanelNames = data.childPanelNames;
+
+    if (!drillDownInfo.length)
     {
-      let newChildPanel: boolean = true;
-      let drillDownId = drillDownIds[i];
-
-      for (let j = 0; j < _this.values.childPanels.length; j++)
-      {
-        let childPanel = _this.values.childPanels[j];
-
-        if (drillDownId == childPanel.id)
-        {
-          childPanel.title = data.childPanels[i].title;
-          childPanel.id = data.childPanels[i].id;
-          childPanel.childPanelId = data.childPanels[i].childPanelId;
-          newChildPanel = false;
-          break;
-        }
-      }
-
-      if (newChildPanel)
-      {
-        _this.values.childPanels.push ({
-          id: drillDownId,
-          title: data.childPanels[i].title,
-          childPanelId: data.childPanels[i].id
-        });
-      }
+      // we're done if there are no child panels
+      _this.values.isLoading = false;
+      return;
     }
 
-    if (_this.values.childPanels.length > 1)
+    for (let i = 0; i < drillDownInfo.length; i++)
     {
-      _this.values.childPanels.sort (function (e1, e2) {
-        return e1.id - e2.id;
+      _this.values.childPanels.push ({
+        id: drillDownInfo[i].drillDownId,
+        title: childPanelNames[i],
+        childPanelId: drillDownInfo[i].childPanelId
       });
     }
 

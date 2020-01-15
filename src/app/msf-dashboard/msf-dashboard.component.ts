@@ -335,11 +335,10 @@ export class MsfDashboardComponent implements OnInit {
   {
     let drillDownInfo: any[] = [];
     let childPanelNames: any[] = [];
-    let drillDownOptionIds: any[] = [];
 
     drillDownInfo = data.drillDownInfo;
     childPanelNames = data.childPanelNames;
-    drillDownOptionIds = data.drillDownOptionIds;
+
     if (!drillDownInfo.length)
     {
       // we're done if there are no child panels
