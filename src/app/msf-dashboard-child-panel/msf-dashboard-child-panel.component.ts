@@ -516,7 +516,7 @@ export class MsfDashboardChildPanelComponent {
           if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
             parseDate = false;
           else
-            parseDate = (this.values.xaxis.item.columnType === "date") ? true : false;
+            parseDate = (this.values.xaxis.columnType === "date") ? true : false;
         }
         else if (!(this.values.currentChartType.flags & ChartFlags.ADVANCED) && !(this.values.currentChartType.flags & ChartFlags.PIECHART) && !(this.values.currentChartType.flags & ChartFlags.FUNNELCHART))
         {
@@ -524,22 +524,19 @@ export class MsfDashboardChildPanelComponent {
           if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
             parseDate = false;
           else
-            parseDate = (this.values.variable.item.columnType === "date") ? true : false;
+            parseDate = (this.values.variable.columnType === "date") ? true : false;
         }
 
         if (parseDate)
         {
           if (this.values.currentChartType.flags & ChartFlags.XYCHART)
           {
-            if (this.values.xaxis.item.columnFormat)
+            if (this.values.xaxis.columnFormat)
             {
               for (let data of chart.data)
-                data[this.values.xaxis.id] = this.parseDate (data[this.values.xaxis.id], this.values.xaxis.item.columnFormat);
+                data[this.values.xaxis.id] = this.parseDate (data[this.values.xaxis.id], this.values.xaxis.columnFormat);
 
-              if (this.values.xaxis.item.outputFormat)
-                outputFormat = this.values.xaxis.item.outputFormat;
-              else
-                outputFormat = this.values.xaxis.item.columnFormat;
+              outputFormat = this.values.xaxis.columnFormat;
 
               // Set predefined format if used
               if (this.predefinedColumnFormats[outputFormat])
@@ -550,15 +547,12 @@ export class MsfDashboardChildPanelComponent {
           }
           else if (!(this.values.currentChartType.flags & ChartFlags.ADVANCED) && !(this.values.currentChartType.flags & ChartFlags.PIECHART) && !(this.values.currentChartType.flags & ChartFlags.FUNNELCHART))
           {
-            if (this.values.variable.item.columnFormat)
+            if (this.values.variable.columnFormat)
             {
               for (let data of chart.data)
-                data[this.values.variable.id] = this.parseDate (data[this.values.variable.id], this.values.variable.item.columnFormat);
+                data[this.values.variable.id] = this.parseDate (data[this.values.variable.id], this.values.variable.columnFormat);
 
-              if (this.values.variable.item.outputFormat)
-                outputFormat = this.values.variable.item.outputFormat;
-              else
-                outputFormat = this.values.variable.item.columnFormat;
+              outputFormat = this.values.variable.columnFormat;
 
               // Set predefined format if used
               if (this.predefinedColumnFormats[outputFormat])
@@ -799,15 +793,10 @@ export class MsfDashboardChildPanelComponent {
 
           for (let object of chartInfo.filter)
           {
-            if (this.values.variable.item.columnType === "date")
+            if (this.values.variable.columnType === "date")
             {
-              let date = this.parseDate (object.valueAxis, this.values.variable.item.columnFormat);
-              let legendOutputFormat;
-
-              if (this.values.variable.item.outputFormat)
-                legendOutputFormat = this.values.variable.item.outputFormat;
-              else
-                legendOutputFormat = this.values.variable.item.columnFormat;
+              let date = this.parseDate (object.valueAxis, this.values.variable.columnFormat);
+              let legendOutputFormat = this.values.variable.columnFormat;
 
               // Set predefined format if used
               if (this.predefinedColumnFormats[legendOutputFormat])
@@ -1052,9 +1041,6 @@ export class MsfDashboardChildPanelComponent {
             }
             else
             {
-              if (!argument.value1)
-                continue;
-
               if (params)
               {
                 if (argument.type != "singleCheckbox" && argument.type != "serviceClasses" && argument.type != "fareLower" && argument.type != "airportsRoutes" && argument.name1 != "intermediateCitiesList")
@@ -1253,6 +1239,7 @@ export class MsfDashboardChildPanelComponent {
       for (let category of optionCategory.categoryArgumentsId)
       {
         let avail = false;
+
         for (let curCategory of _this.values.currentOptionCategories)
         {
           if (curCategory.id == category.id)
