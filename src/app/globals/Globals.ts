@@ -98,6 +98,7 @@ export class Globals {
   showTabs: boolean = false;
   showDashboard: boolean = false;
   queryTabs: DatalakeQueryTab[] = [ new DatalakeQueryTab () ];
+  restrictedAirlines: boolean = false;
   
   @HostBinding('class')
   theme: string = "light-theme";

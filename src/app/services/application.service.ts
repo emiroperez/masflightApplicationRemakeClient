@@ -625,4 +625,10 @@ export class ApplicationService {
     _this.globals.isLoading = true;
     this.authService.post (_this, url, data, handlerSuccess, handlerError);
   }
+
+  getNumAirlinesRestriction(_this, handlerSuccess, handlerError)
+  {
+    let url = this.host + "/secure/getNumAirlinesRestriction";
+    this.authService.get (_this, url, handlerSuccess, handlerError);
+  }
 }
