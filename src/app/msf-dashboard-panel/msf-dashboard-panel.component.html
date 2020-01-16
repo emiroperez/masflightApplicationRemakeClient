@@ -1056,8 +1056,8 @@
           <mat-icon aria-label="Copy Control Variables">file_copy</mat-icon>
         </button>
       </div>
-      <div class="dynamic-table-scroll" [style.height.px]="panelHeightOffset - 20">
-        <table *ngIf="dynTableData" class="mat-elevation-z8 dynamic-table-container" [style.margin-top.px]="15">
+      <div class="dynamic-table-scroll dashboard-panel-dynamic-table-scroll" [style.height.px]="panelHeightOffset - 20">
+        <table *ngIf="dynTableData" class="mat-elevation-z8 dynamic-table-container">
           <tr class="dynamic-table-header-container" *ngFor="let header of dynTableData.headers">
             <!-- Always insert a blank tab header first since it's a pivot table -->
             <th class="dyanmic-table-padding"></th>
