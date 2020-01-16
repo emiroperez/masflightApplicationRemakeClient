@@ -2,7 +2,7 @@
     
     <app-msf-airport *ngIf="isAirport(currentArgument)" [argument]="currentArgument"></app-msf-airport>
     <app-msf-time-range *ngIf="isTimeRange(currentArgument)" [argument]="currentArgument" ></app-msf-time-range>
-    <app-msf-date-range *ngIf="isDateRange(currentArgument)" [argument]="currentArgument"></app-msf-date-range>
+    <app-msf-date-range *ngIf="isDateRange(currentArgument)" [argument]="currentArgument" [refreshDate]="currentArgument.refreshDate"></app-msf-date-range>
     <app-msf-ceiling *ngIf="isCeiling(currentArgument)" [argument]="currentArgument"></app-msf-ceiling>
     <app-msf-wind *ngIf="isWindSpeed(currentArgument)" [argument]="currentArgument"></app-msf-wind>
     <app-msf-temperature *ngIf="isTemperature(currentArgument)" [argument]="currentArgument"></app-msf-temperature>

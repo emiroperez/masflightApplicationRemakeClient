@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy, OnDestroy, Inject, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy, OnDestroy, Inject, ChangeDetectorRef, SimpleChanges } from '@angular/core';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatDatepicker, MatCalendar } from '@angular/material';
 import { DatePipe } from '@angular/common';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
@@ -127,7 +127,11 @@ export class YearHeader<D> implements OnDestroy {
 })
 export class MsfDateRangeComponent implements OnInit {
 
-  @Input("argument") public argument: Arguments;
+  @Input("argument")
+  public argument: Arguments;
+
+  @Input("refreshDate")
+  public refreshDate: boolean;
 
   maxDate: Date;
   minDate: Date;
@@ -352,6 +356,124 @@ export class MsfDateRangeComponent implements OnInit {
           if (this.isDateRange)
             this.setMonthValue2 (moment (this.argument.value1, "MMM/YYYY"));
       }
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void
+  {
+    //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
+    //Add '${implements OnChanges}' to the class.
+    if (changes['refreshDate'] && this.refreshDate)
+    {
+      switch (this.currentValueType)
+      {
+        case 3:
+          this.argument.value1 = moment (this.argument.value1, "YYYY");
+
+          if (this.isDateRange)
+            this.argument.value2 = moment (this.argument.value2, "YYYY");
+          break;
+
+        case 2:
+          this.argument.value1 = moment (this.argument.value1, "YYYY");
+
+          for (let quarterIndex of this.quarterRange)
+          {
+            if (quarterIndex.id == this.argument.value3.id)
+            {
+              this.argument.value1.set ("month", quarterIndex.start);
+              break;
+            }
+          }
+
+          if (this.isDateRange)
+          {
+            this.argument.value2 = moment (this.argument.value2, "YYYY");
+
+            for (let quarterIndex of this.quarterRange)
+            {
+              if (quarterIndex.id == this.argument.value4.id)
+              {
+                this.argument.value2.set ("month", quarterIndex.start);
+                break;
+              }
+            }
+          }
+          break;
+
+        case 1:
+          if (this.monthDateFormat)
+          {
+            this.argument.value1 = moment (this.argument.value1, this.getMonthDateFormat ());
+
+            if (this.isDateRange)
+              this.argument.value2 = moment (this.argument.value2, this.getMonthDateFormat ());
+          }
+          else
+          {
+            this.argument.value1 = moment ((this.argument.value3 - 1) + "/" + this.argument.value1, "MM/YYYY");
+
+            if (this.isDateRange)
+              this.argument.value2 = moment ((this.argument.value4 - 1) + "/" + this.argument.value2, "MM/YYYY");
+          }
+      }
+
+      // check date range
+      if (this.argument.maxDate)
+      {
+        if (this.argument.value1 && this.argument.value1 > this.argument.maxDate)
+          this.argument.value1 = this.argument.maxDate;
+
+        if (this.argument.value2 && this.argument.value2 > this.argument.maxDate)
+          this.argument.value2 = this.argument.maxDate;
+      }
+
+      if (this.argument.minDate)
+      {
+        if (this.argument.value1 && this.argument.value1 < this.argument.minDate)
+          this.argument.value1 = this.argument.minDate;
+
+        if (this.argument.value2 && this.argument.value2 < this.argument.minDate)
+          this.argument.value2 = this.argument.minDate;
+      }
+
+      this.minDate = this.argument.value1;
+      this.maxDate = this.argument.value2;
+
+      switch (this.currentValueType)
+      {
+        case 1:
+          if (this.argument.value1)
+            this.setMonthValue1 (moment (this.argument.value1));
+          else
+          {
+            if (!this.monthDateFormat)
+              this.argument.value3 = null;
+          }
+
+          this.setMonthValue2 (moment (this.argument.value2));
+          break;
+
+        case 2:
+          if (this.argument.value1)
+            this.setQuarterValue1 ();
+          else
+            this.argument.value3 = null;
+
+          this.setQuarterValue2 ();
+          break;
+
+        case 3:
+          if (this.argument.value1)
+            this.setYearValue1 (moment (this.argument.value1));
+
+          this.setYearValue2 (moment (this.argument.value2));
+          break;
+      }
+
+      setTimeout (() => {
+        this.argument.refreshDate = false;
+      }, 10);
     }
   }
 
