@@ -215,13 +215,13 @@ export class CreateCustomerComponent implements OnInit {
 
     this.customerForm.get ('startDateValidator').valueChanges.subscribe (value =>
     {
-      if (this.selectedCustomer)
+      if (this.selectedCustomer && value)
         this.selectedCustomer.startDate = value.toString ();
     });
 
     this.customerForm.get ('endDateValidator').valueChanges.subscribe (value =>
     {
-      if (this.selectedCustomer)
+      if (this.selectedCustomer && value)
         this.selectedCustomer.endDate = value.toString ();
     });
 

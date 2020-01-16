@@ -35,27 +35,27 @@
             <div class="msf-customer-table-scroll" [ngStyle]="{ 'height': getTableHeight() }">
               <table mat-table matSort [dataSource]="customerTable" class="datasource welcome-table msf-customer-table">
                 <ng-container matColumnDef="name">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+                  <th mat-header-cell *matHeaderCellDef>Name</th>
                   <td mat-cell *matCellDef="let element">{{ element.name }}</td>
                 </ng-container>
                 <ng-container matColumnDef="shortName">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Short Name</th>
+                  <th mat-header-cell *matHeaderCellDef>Short Name</th>
                   <td mat-cell *matCellDef="let element">{{ element.shortName }}</td>
                 </ng-container>
                 <ng-container matColumnDef="licenseType">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header>License Type</th>
+                  <th mat-header-cell *matHeaderCellDef>License Type</th>
                   <td mat-cell *matCellDef="let element">{{ getPlanName(element.licenseType) }}</td>
                 </ng-container>
                 <ng-container matColumnDef="status">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+                  <th mat-header-cell *matHeaderCellDef>Status</th>
                   <td mat-cell *matCellDef="let element">{{ getStatusName(element.status) }}</td>
                 </ng-container>
                 <ng-container matColumnDef="endDate">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header>End Date</th>
+                  <th mat-header-cell *matHeaderCellDef>End Date</th>
                   <td mat-cell *matCellDef="let element">{{ parseDate(element.endDate) }}</td>
                 </ng-container>
                 <ng-container matColumnDef="numberOfLicenses">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Number Of Licenses</th>
+                  <th mat-header-cell *matHeaderCellDef>Number Of Licenses</th>
                   <td mat-cell *matCellDef="let element">{{ element.numberOfLicenses }}</td>
                 </ng-container>
                 <tr mat-header-row *matHeaderRowDef="customerColumns"></tr>
@@ -70,7 +70,7 @@
             <h1 class="msf-customer-right-header">
               Edit Customer
               <div class="msf-customer-right-buttons">
-                <button [disabled]="!selectedCustomer" mat-icon-button matTooltip="Airline Restrictions" (click)="openAirlineRestrictions()">
+                <button [disabled]="!selectedCustomer || selectedCustomer.id == null" mat-icon-button matTooltip="Airline Restrictions" (click)="openAirlineRestrictions()">
                   <mat-icon>local_airport</mat-icon>
                 </button>
               </div>
