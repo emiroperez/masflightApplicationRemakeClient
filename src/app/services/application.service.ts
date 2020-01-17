@@ -312,7 +312,11 @@ export class ApplicationService {
 
   getMenuForDashboardString(_this, applicationId, handlerSuccess, handlerError): void
   {
-    let url = this.host + "/getMenuForDashboardString?appId=" + applicationId;
+    let url = this.host + "/secure/getMenuForDashboardString?appId=" + applicationId;
+
+    if (this.globals.testingPlan != -1)
+      url += "&testPlanId=" + this.globals.testingPlan;
+
     this.http.get (_this, url, handlerSuccess, handlerError, null);
   }
 
