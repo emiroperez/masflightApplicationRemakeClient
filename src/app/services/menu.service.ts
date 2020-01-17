@@ -100,6 +100,12 @@ export class MenuService {
     this.authService.get (_this, url, handlerSuccess, handlerError);
   }
 
+  getUsersByCustomerId(_this, handlerSuccess, handlerError)
+  {
+    let url = _this.globals.baseUrl + "/secure/getUsersByCustomerId";
+    this.authService.get (_this, url, handlerSuccess, handlerError);
+  }
+
   addSharedContent(_this, sharedContent, handlerSuccess, handlerError)
   {
     let url = _this.globals.baseUrl + "/secure/addSharedContent";
