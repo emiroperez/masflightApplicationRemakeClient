@@ -44,6 +44,9 @@ export class MsfAirlineComponent implements OnInit {
     }else{
      url = this.argument.url+ (search != null?search:'');
     }
+
+    if (this.globals.testingPlan != -1)
+      url += "&testPlanId=" + this.globals.testingPlan;
   
     this.authService.get (this, url, handlerSuccess, this.handlerError);
   }
