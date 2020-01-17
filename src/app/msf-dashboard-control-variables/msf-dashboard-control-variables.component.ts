@@ -171,7 +171,7 @@ export class MsfDashboardControlVariablesComponent {
           {
             for (let argument of optionCategory.arguments)
             {
-              if (curCategoryArgument.id == argument.id)
+              if (curCategoryArgument.id == argument.id && curCategoryArgument.selectionMode == argument.selectionMode)
               {
                 argument.value1 = curCategoryArgument.value1;
                 argument.value2 = curCategoryArgument.value2;
