@@ -317,7 +317,7 @@ export class ApplicationService {
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;
 
-    this.http.get (_this, url, handlerSuccess, handlerError, null);
+    this.authService.get (_this, url, handlerSuccess, handlerError);
   }
 
   getChartFilterValues(_this, id, handlerSuccess, handlerError): void
