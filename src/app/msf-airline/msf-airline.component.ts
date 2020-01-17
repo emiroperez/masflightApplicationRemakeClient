@@ -55,7 +55,7 @@ export class MsfAirlineComponent implements OnInit {
     _this.loading = false;
     _this.data = of(data).pipe(delay(500));
 
-    if (_this.globals.restrictedAirlines)
+    if (_this.globals.restrictedAirlines && _this.argument.value1)
     {
       if (_this.multiAirlines)
       {
