@@ -273,7 +273,8 @@ export class MsfDashboardAssistantComponent {
       return;
     }
 
-    _this.tabs.realignInkBar ();
+    if (_this.tabs)
+      _this.tabs.realignInkBar ();
     _this.tablePreview = false;
 
     data = data.sort ((a, b) => a["position"] > b["position"] ? 1 : a["position"] === b["position"] ? 0 : -1);
