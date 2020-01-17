@@ -2140,10 +2140,16 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             .mat-button.mat-primary, .mat-icon-button.mat-primary, .mat-stroked-button.mat-primary
                 color: $primary-color
         .airline-restrictions-container
-            background-color: $dashboard-secondary-background-color
+            background-color: $datalake-data-ingestion-background-color
             color: $font-color
             .airline-restrictions-column
-                background-color: $dashboard-secondary-background-color !important
+                background-color: $datalake-data-ingestion-background-color !important
+            .airline-restrictions-add-button:disabled
+                .mat-icon
+                    color: $disabled-color
+            .airline-restrictions-add-button
+                .mat-icon
+                    color: $font-color
             .airline-restrictions-container-close-button:hover
                 .mat-icon
                     color: $primary-color
