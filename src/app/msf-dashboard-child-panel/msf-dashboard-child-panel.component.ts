@@ -1332,6 +1332,9 @@ export class MsfDashboardChildPanelComponent {
         url += "&metaDataIds=" + tableVariable.itemId;
     }
 
+    if (this.globals.testingPlan != -1)
+      url += "&testPlanId=" + this.globals.testingPlan;
+
     if (isDevMode ())
       console.log (urlBase);
 
@@ -1371,6 +1374,9 @@ export class MsfDashboardChildPanelComponent {
       url += "&chartType=pie";
     else
       url += "&xaxis=" + this.values.xaxis.columnName;
+
+    if (this.globals.testingPlan != -1)
+      url += "&testPlanId=" + this.globals.testingPlan;
 
     this.authService.post (this, url, null, handlerSuccess, handlerError);
   }

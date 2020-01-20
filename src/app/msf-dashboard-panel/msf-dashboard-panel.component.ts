@@ -2389,8 +2389,11 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (isDevMode ())
       console.log (urlArg);
 
-    url = this.service.host + "/secure/getTextSummaryResponse?url=" + urlArg + "&ipAddress=" + this.authService.getIpAddress ();
+    url = this.service.host + "/secure/getTextSummaryResponse?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
 
+    if (this.globals.testingPlan != -1)
+      url += "&testPlanId=" + this.globals.testingPlan;
+  
     this.authService.post (this, url, panel, handlerSuccess, handlerError);
   }
 
@@ -2455,6 +2458,12 @@ export class MsfDashboardPanelComponent implements OnInit {
         url += "&xaxis=" + this.values.xaxis.id;
     }
 
+    if (this.globals.testingPlan != -1)
+      url += "&testPlanId=" + this.globals.testingPlan;
+
+    if (this.globals.testingPlan != -1)
+      url += "&testPlanId=" + this.globals.testingPlan;
+
     this.authService.post (this, url, panel, handlerSuccess, handlerError);
   }
 
@@ -2481,6 +2490,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
 
+    if (this.globals.testingPlan != -1)
+      url += "&testPlanId=" + this.globals.testingPlan;
+
     this.authService.get (this, url, handlerSuccess, handlerError);
   }
 
@@ -2500,7 +2512,10 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (isDevMode ())
       console.log (url);
 
-    url = this.globals.baseUrl + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress () + "&noXml=true";
+    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress () + "&noXml=true";
+
+    if (this.globals.testingPlan != -1)
+      url += "&testPlanId=" + this.globals.testingPlan;
 
     this.authService.get (this.msfMapRef, url, handlerSuccess, handlerError);
   }
@@ -2539,6 +2554,9 @@ export class MsfDashboardPanelComponent implements OnInit {
       });
     }
 
+    if (this.globals.testingPlan != -1)
+      url += "&testPlanId=" + this.globals.testingPlan;
+
     this.authService.post (this, url, formConfig, handlerSuccess, handlerError);
   }
 
@@ -2565,6 +2583,9 @@ export class MsfDashboardPanelComponent implements OnInit {
       console.log (urlBase);
 
     url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
+
+    if (this.globals.testingPlan != -1)
+      url += "&testPlanId=" + this.globals.testingPlan;
 
     this.authService.get (this, url, handlerSuccess, handlerError);
   }
@@ -2611,6 +2632,9 @@ export class MsfDashboardPanelComponent implements OnInit {
         url += "&metaDataIds=" + tableVariable.itemId;
     }
 
+    if (this.globals.testingPlan != -1)
+      url += "&testPlanId=" + this.globals.testingPlan;
+
     this.authService.get (this.msfTableRef, url, handlerSuccess, handlerError);
   }
 
@@ -2637,6 +2661,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     data = { variables: this.values.dynTableVariables, values: this.values.dynTableValues };
     url = this.service.host + "/secure/getHorizontalMatrix?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
+
+    if (this.globals.testingPlan != -1)
+      url += "&testPlanId=" + this.globals.testingPlan;
 
     this.authService.post (this, url, data, handlerSuccess, handlerError);
   }
@@ -5989,7 +6016,7 @@ export class MsfDashboardPanelComponent implements OnInit {
             this.chartForm.get ('xaxisCtrl').setValue (values.xaxis);
 
           if (values.valueColumn)
-            this.chartForm.get ('columnCtrl').setValue (values.valueColumn);
+            this.chartForm.get ('valueCtrl').setValue (values.valueColumn);
 
           this.values.currentOptionCategories = values.currentOptionCategories;
           this.values.variable = values.variable;

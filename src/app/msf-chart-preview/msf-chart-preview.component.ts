@@ -147,6 +147,9 @@ export class MsfChartPreviewComponent {
     if (this.data.valueColumn)
       url += "&valueColumn=" + this.data.valueColumn.columnName;
 
+    if (this.globals.testingPlan != -1)
+      url += "&testPlanId=" + this.globals.testingPlan;
+
     url += "&function=";
 
     if (this.data.chartMode === "advanced")
