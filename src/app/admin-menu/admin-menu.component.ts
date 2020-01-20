@@ -1376,6 +1376,13 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
     this.clearSelectedCategoryArguments();
     var categories = this.categories;
+
+    if (!this.optionSelected.menuOptionArgumentsAdmin)
+    {
+      this.globals.isLoading = false;
+      return;
+    }
+
     this.optionSelected.menuOptionArgumentsAdmin.forEach(function (itemOptionCategory, indexOptionCategory, arrayOptionCategory) {
       categories.forEach(function (itemCategory, indexCategory, arrayCategory) {
         for (let index = 0; index < itemOptionCategory.categoryArgumentsId.length; index++) {
