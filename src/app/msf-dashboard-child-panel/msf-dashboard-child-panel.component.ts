@@ -590,6 +590,9 @@ export class MsfDashboardChildPanelComponent {
 
           valueAxis = chart.xAxes.push (new am4charts.ValueAxis ());
 
+          if (this.values.startAtZero)
+            valueAxis.min = 0;
+
           // Add scrollbar into the chart for zooming if there are multiple series
           if (chart.data.length > 1)
           {
@@ -626,6 +629,9 @@ export class MsfDashboardChildPanelComponent {
           }
 
           valueAxis = chart.yAxes.push (new am4charts.ValueAxis ());
+
+          if (this.values.startAtZero)
+            valueAxis.min = 0;
 
           if (chart.data.length > 1)
           {
@@ -724,65 +730,68 @@ export class MsfDashboardChildPanelComponent {
             }
           }
 
-          // Sort chart series from least to greatest by calculating the
-          // average (normal) or total (stacked) value of each key item to
-          // compensate for the lack of proper sorting by values
-          if (stacked && !(this.values.currentChartType.flags & ChartFlags.LINECHART))
+          if (this.values.ordered)
           {
-            for (let item of chart.data)
+            // Sort chart series from least to greatest by calculating the
+            // average (normal) or total (stacked) value of each key item to
+            // compensate for the lack of proper sorting by values
+            if (stacked && !(this.values.currentChartType.flags & ChartFlags.LINECHART))
             {
-              let total = 0;
-
-              for (let object of chartInfo.filter)
+              for (let item of chart.data)
               {
-                let value = item[object.valueField];
+                let total = 0;
 
-                if (value != null)
-                  total += value;
+                for (let object of chartInfo.filter)
+                {
+                  let value = item[object.valueField];
+
+                  if (value != null)
+                    total += value;
+                }
+
+                item["sum"] = total;
               }
 
-              item["sum"] = total;
-            }
-
-            chart.events.on ("beforedatavalidated", function(event) {
-              chart.data.sort (function(e1, e2) {
-                return e1.sum - e2.sum;
-              });
-            });
-          }
-          else
-          {
-            for (let object of chartInfo.filter)
-            {
-              let average = 0;
-
-              for (let data of chartInfo.data)
-              {
-                let value = data[object.valueField];
-
-                if (value != null)
-                  average += value;
-              }
-
-              object["avg"] = average / chartInfo.data.length;
-            }
-
-            // Also sort the data by date the to get the correct order on the line chart
-            // if the category axis is a date type
-            if (parseDate && this.values.currentChartType.flags & ChartFlags.LINECHART)
-            {
-              let axisField = this.values.xaxis.columnName;
-  
               chart.events.on ("beforedatavalidated", function(event) {
                 chart.data.sort (function(e1, e2) {
-                  return +(new Date(e1[axisField])) - +(new Date(e2[axisField]));
+                  return e1.sum - e2.sum;
                 });
               });
             }
+            else
+            {
+              for (let object of chartInfo.filter)
+              {
+                let average = 0;
 
-            chartInfo.filter.sort (function(e1, e2) {
-              return e1.avg - e2.avg;
-            });
+                for (let data of chartInfo.data)
+                {
+                  let value = data[object.valueField];
+
+                  if (value != null)
+                    average += value;
+                }
+
+                object["avg"] = average / chartInfo.data.length;
+              }
+
+              // Also sort the data by date the to get the correct order on the line chart
+              // if the category axis is a date type
+              if (parseDate && this.values.currentChartType.flags & ChartFlags.LINECHART)
+              {
+                let axisField = this.values.xaxis.columnName;
+  
+                chart.events.on ("beforedatavalidated", function(event) {
+                  chart.data.sort (function(e1, e2) {
+                    return +(new Date(e1[axisField])) - +(new Date(e2[axisField]));
+                  });
+                });
+              }
+
+              chartInfo.filter.sort (function(e1, e2) {
+                return e1.avg - e2.avg;
+              });
+            }
           }
 
           // Create the series and set colors
@@ -848,28 +857,31 @@ export class MsfDashboardChildPanelComponent {
           // The category will the values if the chart type lacks an x axis
           categoryAxis.dataFields.category = chartInfo.titleField;
 
-          if (parseDate)
+          if (this.values.ordered)
           {
-            let axisField = this.values.variable.id;
+            if (parseDate)
+            {
+              let axisField = this.values.variable.id;
 
-            // reverse order for rotated charts
-            if (this.values.currentChartType.flags & ChartFlags.ROTATED)
-              categoryAxis.renderer.inversed = true;
+              // reverse order for rotated charts
+              if (this.values.currentChartType.flags & ChartFlags.ROTATED)
+                categoryAxis.renderer.inversed = true;
 
-            chart.events.on ("beforedatavalidated", function (event) {
-              chart.data.sort (function (e1, e2) {
-                return +(new Date(e1[axisField])) - +(new Date(e2[axisField]));
+              chart.events.on ("beforedatavalidated", function (event) {
+                chart.data.sort (function (e1, e2) {
+                  return +(new Date(e1[axisField])) - +(new Date(e2[axisField]));
+                });
               });
-            });
-          }
-          else
-          {
-            // Sort values from least to greatest
-            chart.events.on ("beforedatavalidated", function(event) {
-              chart.data.sort (function(e1, e2) {
-                return e1[chartInfo.valueField] - e2[chartInfo.valueField];
+            }
+            else
+            {
+              // Sort values from least to greatest
+              chart.events.on ("beforedatavalidated", function(event) {
+                chart.data.sort (function(e1, e2) {
+                  return e1[chartInfo.valueField] - e2[chartInfo.valueField];
+                });
               });
-            });
+            }
           }
 
           // Create the series
@@ -1089,6 +1101,11 @@ export class MsfDashboardChildPanelComponent {
       data.id, null, null, _this.getOption (data.option), data.analysis, data.xaxis,
       data.values, data.function, data.chartType, JSON.stringify (_this.data.currentOptionCategories),
       data.lastestResponse, data.paletteColors);
+
+    _this.values.limitAmount = data.limitAmount;
+    _this.values.limitMode = data.limitMode;
+    _this.values.startAtZero = data.startAtZero;
+    _this.values.ordered = data.ordered;
 
     _this.values.tableVariables = [];
 

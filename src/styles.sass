@@ -3933,6 +3933,12 @@ mat-tab-group
         .msf-dashboard-addmenu-item-text
             border: none
             font-size: 12px
+        .msf-dashboard-chart-configuration-label
+            width: 50%
+            max-width: 130px
+            white-space: nowrap
+            overflow: hidden
+            text-overflow: ellipsis
         .msf-full-width
             @extend .msf-dashboard-form-field
         .msf-dashboard-addmenu-icon-item
@@ -7969,7 +7975,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     margin-left: 10px
 
 .msf-dashboard-assistant-min-value-at-zero
-    margin-left: 455px
+    margin-left: 365px
     margin-top: -1px
     height: 18px
 
@@ -9921,9 +9927,9 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     display: flex
     width: 100%
     .msf-dashboard-panel-interval-time
-        position: absolute
-        right: 10px
-        width: 105px !important
+        justify-content: flex-end
+        width: 100% !important
+        height: 15px !important
 
 .datalake-upload-table-chips
     border-radius: 5px !important
@@ -10311,3 +10317,8 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
             height: 200px !important
     .airline-restrictions-option-buttons
         text-align: center
+
+.drill-down-label-container
+    height: 10px
+    .msf-dashboard-addmenu-item-text
+        width: 160px

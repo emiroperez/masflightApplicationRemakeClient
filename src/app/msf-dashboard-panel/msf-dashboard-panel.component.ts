@@ -1608,65 +1608,68 @@ export class MsfDashboardPanelComponent implements OnInit {
             }
           }
 
-          // Sort chart series from least to greatest by calculating the
-          // average (normal) or total (stacked) value of each key item to
-          // compensate for the lack of proper sorting by values
-          if (stacked && !(this.values.currentChartType.flags & ChartFlags.LINECHART))
+          if (this.values.ordered)
           {
-            for (let item of chart.data)
+            // Sort chart series from least to greatest by calculating the
+            // average (normal) or total (stacked) value of each key item to
+            // compensate for the lack of proper sorting by values
+            if (stacked && !(this.values.currentChartType.flags & ChartFlags.LINECHART))
             {
-              let total = 0;
-
-              for (let object of chartInfo.filter)
+              for (let item of chart.data)
               {
-                let value = item[object.valueField];
+                let total = 0;
 
-                if (value != null)
-                  total += value;
+                for (let object of chartInfo.filter)
+                {
+                  let value = item[object.valueField];
+
+                  if (value != null)
+                    total += value;
+                }
+
+                item["sum"] = total;
               }
 
-              item["sum"] = total;
-            }
-
-            chart.events.on ("beforedatavalidated", function (event) {
-              chart.data.sort (function (e1, e2) {
-                return e1.sum - e2.sum;
-              });
-            });
-          }
-          else
-          {
-            for (let object of chartInfo.filter)
-            {
-              let average = 0;
-
-              for (let data of chartInfo.data)
-              {
-                let value = data[object.valueField];
-
-                if (value != null)
-                  average += value;
-              }
-
-              object["avg"] = average / chartInfo.data.length;
-            }
-
-            // Also sort the data by date the to get the correct order on the line chart
-            // if the category axis is a date type
-            if (parseDate && this.values.currentChartType.flags & ChartFlags.LINECHART)
-            {
-              let axisField = this.values.xaxis.id;
-  
               chart.events.on ("beforedatavalidated", function (event) {
                 chart.data.sort (function (e1, e2) {
-                  return +(new Date(e1[axisField])) - +(new Date(e2[axisField]));
+                  return e1.sum - e2.sum;
                 });
               });
             }
+            else
+            {
+              for (let object of chartInfo.filter)
+              {
+                let average = 0;
 
-            chartInfo.filter.sort (function (e1, e2) {
-              return e1.avg - e2.avg;
-            });
+                for (let data of chartInfo.data)
+                {
+                  let value = data[object.valueField];
+
+                  if (value != null)
+                    average += value;
+                }
+
+                object["avg"] = average / chartInfo.data.length;
+              }
+
+              // Also sort the data by date the to get the correct order on the line chart
+              // if the category axis is a date type
+              if (parseDate && this.values.currentChartType.flags & ChartFlags.LINECHART)
+              {
+                let axisField = this.values.xaxis.id;
+  
+                chart.events.on ("beforedatavalidated", function (event) {
+                  chart.data.sort (function (e1, e2) {
+                    return +(new Date(e1[axisField])) - +(new Date(e2[axisField]));
+                  });
+                });
+              }
+
+              chartInfo.filter.sort (function (e1, e2) {
+                return e1.avg - e2.avg;
+              });
+            }
           }
 
           // Create the series and set colors
@@ -1773,28 +1776,31 @@ export class MsfDashboardPanelComponent implements OnInit {
               }
             }
 
-            if (parseDate)
+            if (this.values.ordered)
             {
-              let axisField = this.values.variable.id;
+              if (parseDate)
+              {
+                let axisField = this.values.variable.id;
 
-              // reverse order for rotated charts
-              if (this.values.currentChartType.flags & ChartFlags.ROTATED)
-                categoryAxis.renderer.inversed = true;
+                // reverse order for rotated charts
+                if (this.values.currentChartType.flags & ChartFlags.ROTATED)
+                  categoryAxis.renderer.inversed = true;
 
-              chart.events.on ("beforedatavalidated", function (event) {
-                chart.data.sort (function (e1, e2) {
-                  return +(new Date(e1[axisField])) - +(new Date(e2[axisField]));
+                chart.events.on ("beforedatavalidated", function (event) {
+                  chart.data.sort (function (e1, e2) {
+                    return +(new Date(e1[axisField])) - +(new Date(e2[axisField]));
+                  });
                 });
-              });
-            }
-            else
-            {
-              // Sort values from least to greatest
-              chart.events.on ("beforedatavalidated", function(event) {
-                chart.data.sort (function(e1, e2) {
-                  return e1[chartInfo.valueField] - e2[chartInfo.valueField];
+              }
+              else
+              {
+                // Sort values from least to greatest
+                chart.events.on ("beforedatavalidated", function(event) {
+                  chart.data.sort (function(e1, e2) {
+                    return e1[chartInfo.valueField] - e2[chartInfo.valueField];
+                  });
                 });
-              });
+              }
             }
           }
 
@@ -2220,7 +2226,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         thresholds: JSON.stringify (this.values.thresholds),
         startAtZero: null,
         limitMode: null,
-        limitAmount: null
+        limitAmount: null,
+        ordered: null
       };
     }
     else if (this.values.currentChartType.flags & ChartFlags.MAPBOX)
@@ -2237,7 +2244,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         analysis: this.msfMapRef.mapTypes.indexOf (this.values.style),
         startAtZero: null,
         limitMode: null,
-        limitAmount: null
+        limitAmount: null,
+        ordered: null
       };
     }
     else if (this.values.currentChartType.flags & ChartFlags.FORM
@@ -2257,7 +2265,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         lastestResponse: JSON.stringify (this.values.lastestResponse),
         startAtZero: null,
         limitMode: null,
-        limitAmount: null
+        limitAmount: null,
+        ordered: null
       };
     }
     else if (this.values.currentChartType.flags & ChartFlags.INFO)
@@ -2275,7 +2284,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0),
         startAtZero: null,
         limitMode: null,
-        limitAmount: null
+        limitAmount: null,
+        ordered: null
       };
     }
     else if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
@@ -2297,7 +2307,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         advIntervalValue: this.values.intValue,
         startAtZero: null,
         limitMode: null,
-        limitAmount: null
+        limitAmount: null,
+        ordered: null
       };
     }
     else
@@ -2319,7 +2330,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         horizAxisName: this.values.horizAxisName,
         startAtZero: this.values.startAtZero,
         limitMode: this.values.limitMode,
-        limitAmount: this.values.limitAmount
+        limitAmount: this.values.limitAmount,
+        ordered: this.values.ordered
       };
     }
   }
@@ -3747,6 +3759,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.temp.updateTimeLeft = this.values.updateTimeLeft;
     this.temp.limitMode = this.values.limitMode;
     this.temp.limitAmount = this.values.limitAmount;
+    this.temp.ordered = this.values.ordered;
 
     this.stopUpdateInterval ();
 
@@ -3932,6 +3945,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.updateTimeLeft = this.temp.updateTimeLeft;
     this.values.limitMode = this.temp.limitMode;
     this.values.limitAmount = this.temp.limitAmount;
+    this.values.ordered = this.temp.ordered;
 
     // re-initialize panel settings
     this.values.currentChartType = this.chartTypes.indexOf (this.values.currentChartType);
@@ -5266,7 +5280,9 @@ export class MsfDashboardPanelComponent implements OnInit {
           title: value.chartName,
           chartColumnOptions: JSON.stringify (value.chartColumnOptions),
           chartType: childChartTypes.indexOf (value.currentChartType),
-          lastestResponse: JSON.stringify (tableVariableIds)
+          lastestResponse: JSON.stringify (tableVariableIds),
+          ordered: null,
+          startAtZero: null
         });
       }
       else
@@ -5283,7 +5299,9 @@ export class MsfDashboardPanelComponent implements OnInit {
           chartType: childChartTypes.indexOf (value.currentChartType),
           paletteColors: JSON.stringify (value.paletteColors),
           vertAxisName: value.vertAxisName,
-          horizAxisName: value.horizAxisName
+          horizAxisName: value.horizAxisName,
+          startAtZero: value.startAtZero,
+          ordered: value.ordered
         });
       }
 
@@ -6026,6 +6044,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           this.values.intervalType = values.intervalType;
           this.values.intValue = values.intValue;
           this.values.startAtZero =  values.startAtZero;
+          this.values.ordered = values.ordered;
 
           this.checkChartType ();
         }

@@ -36,9 +36,13 @@
   </div>
   <div *ngIf="!isTablePanel()">
     <div class="msf-dashboard-panel-sub-container-column">
-      <div class="msf-dashboard-addmenu-icon-item">
+      <div class="msf-dashboard-addmenu-icon-item msf-chart-config-label-container drill-down-label-container">
         <mat-icon class="msf-dashboard-chart-icon" aria-label="Filter List">filter_list</mat-icon>
         <span class="msf-dashboard-addmenu-item-text">Chart Configuration</span>
+        <div *ngIf="isLineOrBarChart()" class="msf-dashboard-panel-sub-container-row msf-dashboard-panel-sub-container-checkbox msf-dashboard-panel-interval-time">
+          <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="currentValue.ordered">Ordered</mat-checkbox>
+          <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="currentValue.startAtZero">Min Value At 0</mat-checkbox>
+        </div>
       </div>
     </div>
     <div class="msf-dashboard-panel-sub-container-column">

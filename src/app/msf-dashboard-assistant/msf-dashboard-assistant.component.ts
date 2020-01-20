@@ -81,6 +81,7 @@ export class MsfDashboardAssistantComponent {
 
   configuredControlVariables: boolean = false;
   startAtZero: boolean = false;
+  ordered: boolean = true;
 
   constructor(public dialogRef: MatDialogRef<MsfDashboardAssistantComponent>,
     public globals: Globals,
@@ -816,7 +817,8 @@ export class MsfDashboardAssistantComponent {
         chartMode: this.chartMode,
         intervalType: this.intervalType,
         intValue: (this.intervalType === "ncile" ? this.ncile : this.intValue),
-        startAtZero: this.startAtZero
+        startAtZero: this.startAtZero,
+        ordered: this.ordered
       }
     });
   }
@@ -1228,7 +1230,8 @@ export class MsfDashboardAssistantComponent {
       chartMode: this.chartMode,
       intervalType: this.intervalType,
       intValue: (this.intervalType === "ncile" ? this.ncile : this.intValue),
-      startAtZero: this.startAtZero
+      startAtZero: this.startAtZero,
+      ordered: this.ordered
     });
   }
 
