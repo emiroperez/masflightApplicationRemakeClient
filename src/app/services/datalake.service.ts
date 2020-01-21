@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpHeaders } from '@angular/common/http';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
 
 import { ApiClient } from '../api/api-client';
 import { Globals } from '../globals/Globals';
@@ -211,5 +211,12 @@ export class DatalakeService {
     getDatalakeTablesUnwrapped(search,handlerSuccess, handlerError){
         let url = this.globals.baseUrl + "/DatalakeWebservicesEngine/GetDatalakeTables?userName="+this.globals.userName;
         this.http.get(this,url,handlerSuccess,handlerError, null); 
+    }
+
+    getDatalakeTableDataCVS(_this, ruta, handlerSuccess, handlerError): void
+    {        
+        let url = "http://54.227.194.7:3000/download-user-file/"+ruta
+        window.open(url,'_blank');
+
     }
 }
