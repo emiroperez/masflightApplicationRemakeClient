@@ -171,7 +171,7 @@ export class MsfDashboardControlVariablesComponent {
           {
             for (let argument of optionCategory.arguments)
             {
-              if (curCategoryArgument.id == argument.id)
+              if (curCategoryArgument.id == argument.id && curCategoryArgument.selectionMode == argument.selectionMode)
               {
                 argument.value1 = curCategoryArgument.value1;
                 argument.value2 = curCategoryArgument.value2;
@@ -179,6 +179,10 @@ export class MsfDashboardControlVariablesComponent {
                 argument.value4 = curCategoryArgument.value4;
                 argument.dateLoaded = curCategoryArgument.dateLoaded;
                 argument.currentDateRangeValue = curCategoryArgument.currentDateRangeValue;
+
+                if (argument.type == ComponentType.dateRange)
+                  argument.refreshDate = true;
+
                 break;
               }
             }

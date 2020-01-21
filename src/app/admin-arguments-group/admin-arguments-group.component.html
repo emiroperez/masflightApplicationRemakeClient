@@ -53,9 +53,9 @@
                     </div>
     
                     <div class="admin-arguments-category-right-panel" *ngIf="ArgumentGroup">
-                        <div class="admin-arguments-category-right-panel-header admin-arguments-category-right-panel-header-group">
+                        <div class="admin-arguments-category-right-panel-header admin-arguments-category-right-panel-header-group admin-arguments-group-right-panel-header">
                             <div class="admin-arguments-category-form-container">
-                                <mat-form-field >
+                                <mat-form-field>
                                     <input [disabled]="disable"  matInput (focus)="ArgumentGroup.focus" placeholder="Name Group" 
                                     [(ngModel)]="ArgumentGroup.name"/>
                                 </mat-form-field>

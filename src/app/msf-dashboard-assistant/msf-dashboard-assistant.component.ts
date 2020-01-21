@@ -81,6 +81,7 @@ export class MsfDashboardAssistantComponent {
 
   configuredControlVariables: boolean = false;
   startAtZero: boolean = false;
+  ordered: boolean = true;
 
   constructor(public dialogRef: MatDialogRef<MsfDashboardAssistantComponent>,
     public globals: Globals,
@@ -224,8 +225,11 @@ export class MsfDashboardAssistantComponent {
     urlArg = encodeURIComponent (urlBase);
     url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
 
+    if (this.globals.testingPlan != -1)
+      url += "&testPlanId=" + this.globals.testingPlan;
+
     if (isDevMode ())
-      console.log (url);
+      console.log (urlBase);
 
     this.authService.get (this.msfTableRef, url, handlerSuccess, handlerError);
   }
@@ -273,7 +277,8 @@ export class MsfDashboardAssistantComponent {
       return;
     }
 
-    _this.tabs.realignInkBar ();
+    if (_this.tabs)
+      _this.tabs.realignInkBar ();
     _this.tablePreview = false;
 
     data = data.sort ((a, b) => a["position"] > b["position"] ? 1 : a["position"] === b["position"] ? 0 : -1);
@@ -812,7 +817,8 @@ export class MsfDashboardAssistantComponent {
         chartMode: this.chartMode,
         intervalType: this.intervalType,
         intValue: (this.intervalType === "ncile" ? this.ncile : this.intValue),
-        startAtZero: this.startAtZero
+        startAtZero: this.startAtZero,
+        ordered: this.ordered
       }
     });
   }
@@ -1224,7 +1230,8 @@ export class MsfDashboardAssistantComponent {
       chartMode: this.chartMode,
       intervalType: this.intervalType,
       intValue: (this.intervalType === "ncile" ? this.ncile : this.intValue),
-      startAtZero: this.startAtZero
+      startAtZero: this.startAtZero,
+      ordered: this.ordered
     });
   }
 

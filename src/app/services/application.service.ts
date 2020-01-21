@@ -48,6 +48,9 @@ export class ApplicationService {
 
     url = this.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.globals.currentOption.id + "&ipAddress=" + this.authService.getIpAddress () + "&noXml=true";
 
+    if (this.globals.testingPlan != -1)
+      url += "&testPlanId=" + this.globals.testingPlan;
+
     this.authService.get (_this, url, successHandler, errorHandler);
   }
 
@@ -77,6 +80,9 @@ export class ApplicationService {
 
     let url = this.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + _this.globals.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
 
+    if (this.globals.testingPlan != -1)
+      url += "&testPlanId=" + this.globals.testingPlan;
+
     this.authService.get(_this, url, handlerSuccess, handlerError);
   }
 
@@ -103,6 +109,9 @@ export class ApplicationService {
 
     let url = this.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + _this.globals.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
 
+    if (this.globals.testingPlan != -1)
+      url += "&testPlanId=" + this.globals.testingPlan;
+
     this.authService.get(_this, url, handlerSuccess, handlerError);
   }
 
@@ -121,6 +130,9 @@ export class ApplicationService {
 
     let data = { variables: _this.globals.variables, values: _this.globals.values };
     let url = this.host + "/secure/getHorizontalMatrix?url=" + urlArg + "&optionId=" + _this.globals.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
+
+    if (this.globals.testingPlan != -1)
+      url += "&testPlanId=" + this.globals.testingPlan;
 
     this.authService.post (_this, url, data, handlerSuccess, handlerError);
   }
@@ -312,8 +324,12 @@ export class ApplicationService {
 
   getMenuForDashboardString(_this, applicationId, handlerSuccess, handlerError): void
   {
-    let url = this.host + "/getMenuForDashboardString?appId=" + applicationId;
-    this.http.get (_this, url, handlerSuccess, handlerError, null);
+    let url = this.host + "/secure/getMenuForDashboardString?appId=" + applicationId;
+
+    if (this.globals.testingPlan != -1)
+      url += "&testPlanId=" + this.globals.testingPlan;
+
+    this.authService.get (_this, url, handlerSuccess, handlerError);
   }
 
   getChartFilterValues(_this, id, handlerSuccess, handlerError): void
@@ -416,6 +432,9 @@ export class ApplicationService {
       console.log (urlBase);
 
     let url = this.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + option.id + "&ipAddress=" + this.authService.getIpAddress ();
+
+    if (this.globals.testingPlan != -1)
+      url += "&testPlanId=" + this.globals.testingPlan;
 
     this.authService.get(_this, url, handlerSuccess, handlerError);
 					 
@@ -624,5 +643,11 @@ export class ApplicationService {
 
     _this.globals.isLoading = true;
     this.authService.post (_this, url, data, handlerSuccess, handlerError);
+  }
+
+  getNumAirlinesRestriction(_this, handlerSuccess, handlerError)
+  {
+    let url = this.host + "/secure/getNumAirlinesRestriction";
+    this.authService.get (_this, url, handlerSuccess, handlerError);
   }
 }

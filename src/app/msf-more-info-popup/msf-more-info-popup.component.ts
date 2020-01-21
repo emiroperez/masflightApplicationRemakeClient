@@ -162,6 +162,9 @@ export class MsfMoreInfoPopupComponent{
       + "&variable=" + this.variable + "&xaxis=" + this.xaxis 
       + "&valueColumn=" + this.valueColumn + "&function=" + this.functions[1].id;
 
+      if (this.globals.testingPlan != -1)
+        url += "&testPlanId=" + this.globals.testingPlan;
+
       this.authService.post(this, url, null, handlerSuccess, handlerError);
     }
 

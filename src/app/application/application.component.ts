@@ -92,7 +92,10 @@ export class ApplicationComponent implements OnInit {
     this.globals.lastTime = null;
     this.globals.clearVariables();
     this.globals.clearVariablesMenu();
-    this.getMenu();
+
+    this.globals.appLoading = true;
+    this.globals.isLoading = true;
+    this.appService.getNumAirlinesRestriction (this, this.restrictSuccess, this.restrictError);
   }
 
   ngOnDestroy(): void {
@@ -164,6 +167,22 @@ export class ApplicationComponent implements OnInit {
   {
     _this.globals.lastTime = _this.parseTimeStamp (data);
     _this.appService.getDefaultDashboard (_this, _this.handlerDefaultDashboard, _this.errorLogin);
+  }
+
+  restrictSuccess(_this, data)
+  {
+    if (data)
+      _this.globals.restrictedAirlines = true;
+    else
+      _this.globals.restrictedAirlines = false;
+
+    _this.getMenu();
+  }
+
+  restrictError(_this)
+  {
+    _this.globals.restrictedAirlines = true;
+    _this.getMenu();
   }
 
   handlerDefaultDashboard(_this, data): void
@@ -285,8 +304,6 @@ export class ApplicationComponent implements OnInit {
 
 
   getMenu(){
-    this.globals.appLoading = true;
-    this.globals.isLoading = true;
     this.menuService.getMenu(this,this.handlerSuccess,this.handlerError);
   }
 

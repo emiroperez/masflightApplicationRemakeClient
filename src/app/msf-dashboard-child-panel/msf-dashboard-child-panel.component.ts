@@ -516,7 +516,7 @@ export class MsfDashboardChildPanelComponent {
           if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
             parseDate = false;
           else
-            parseDate = (this.values.xaxis.item.columnType === "date") ? true : false;
+            parseDate = (this.values.xaxis.columnType === "date") ? true : false;
         }
         else if (!(this.values.currentChartType.flags & ChartFlags.ADVANCED) && !(this.values.currentChartType.flags & ChartFlags.PIECHART) && !(this.values.currentChartType.flags & ChartFlags.FUNNELCHART))
         {
@@ -524,22 +524,19 @@ export class MsfDashboardChildPanelComponent {
           if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
             parseDate = false;
           else
-            parseDate = (this.values.variable.item.columnType === "date") ? true : false;
+            parseDate = (this.values.variable.columnType === "date") ? true : false;
         }
 
         if (parseDate)
         {
           if (this.values.currentChartType.flags & ChartFlags.XYCHART)
           {
-            if (this.values.xaxis.item.columnFormat)
+            if (this.values.xaxis.columnFormat)
             {
               for (let data of chart.data)
-                data[this.values.xaxis.id] = this.parseDate (data[this.values.xaxis.id], this.values.xaxis.item.columnFormat);
+                data[this.values.xaxis.id] = this.parseDate (data[this.values.xaxis.id], this.values.xaxis.columnFormat);
 
-              if (this.values.xaxis.item.outputFormat)
-                outputFormat = this.values.xaxis.item.outputFormat;
-              else
-                outputFormat = this.values.xaxis.item.columnFormat;
+              outputFormat = this.values.xaxis.columnFormat;
 
               // Set predefined format if used
               if (this.predefinedColumnFormats[outputFormat])
@@ -550,15 +547,12 @@ export class MsfDashboardChildPanelComponent {
           }
           else if (!(this.values.currentChartType.flags & ChartFlags.ADVANCED) && !(this.values.currentChartType.flags & ChartFlags.PIECHART) && !(this.values.currentChartType.flags & ChartFlags.FUNNELCHART))
           {
-            if (this.values.variable.item.columnFormat)
+            if (this.values.variable.columnFormat)
             {
               for (let data of chart.data)
-                data[this.values.variable.id] = this.parseDate (data[this.values.variable.id], this.values.variable.item.columnFormat);
+                data[this.values.variable.id] = this.parseDate (data[this.values.variable.id], this.values.variable.columnFormat);
 
-              if (this.values.variable.item.outputFormat)
-                outputFormat = this.values.variable.item.outputFormat;
-              else
-                outputFormat = this.values.variable.item.columnFormat;
+              outputFormat = this.values.variable.columnFormat;
 
               // Set predefined format if used
               if (this.predefinedColumnFormats[outputFormat])
@@ -596,6 +590,9 @@ export class MsfDashboardChildPanelComponent {
 
           valueAxis = chart.xAxes.push (new am4charts.ValueAxis ());
 
+          if (this.values.startAtZero)
+            valueAxis.min = 0;
+
           // Add scrollbar into the chart for zooming if there are multiple series
           if (chart.data.length > 1)
           {
@@ -632,6 +629,9 @@ export class MsfDashboardChildPanelComponent {
           }
 
           valueAxis = chart.yAxes.push (new am4charts.ValueAxis ());
+
+          if (this.values.startAtZero)
+            valueAxis.min = 0;
 
           if (chart.data.length > 1)
           {
@@ -730,65 +730,68 @@ export class MsfDashboardChildPanelComponent {
             }
           }
 
-          // Sort chart series from least to greatest by calculating the
-          // average (normal) or total (stacked) value of each key item to
-          // compensate for the lack of proper sorting by values
-          if (stacked && !(this.values.currentChartType.flags & ChartFlags.LINECHART))
+          if (this.values.ordered)
           {
-            for (let item of chart.data)
+            // Sort chart series from least to greatest by calculating the
+            // average (normal) or total (stacked) value of each key item to
+            // compensate for the lack of proper sorting by values
+            if (stacked && !(this.values.currentChartType.flags & ChartFlags.LINECHART))
             {
-              let total = 0;
-
-              for (let object of chartInfo.filter)
+              for (let item of chart.data)
               {
-                let value = item[object.valueField];
+                let total = 0;
 
-                if (value != null)
-                  total += value;
+                for (let object of chartInfo.filter)
+                {
+                  let value = item[object.valueField];
+
+                  if (value != null)
+                    total += value;
+                }
+
+                item["sum"] = total;
               }
 
-              item["sum"] = total;
-            }
-
-            chart.events.on ("beforedatavalidated", function(event) {
-              chart.data.sort (function(e1, e2) {
-                return e1.sum - e2.sum;
-              });
-            });
-          }
-          else
-          {
-            for (let object of chartInfo.filter)
-            {
-              let average = 0;
-
-              for (let data of chartInfo.data)
-              {
-                let value = data[object.valueField];
-
-                if (value != null)
-                  average += value;
-              }
-
-              object["avg"] = average / chartInfo.data.length;
-            }
-
-            // Also sort the data by date the to get the correct order on the line chart
-            // if the category axis is a date type
-            if (parseDate && this.values.currentChartType.flags & ChartFlags.LINECHART)
-            {
-              let axisField = this.values.xaxis.columnName;
-  
               chart.events.on ("beforedatavalidated", function(event) {
                 chart.data.sort (function(e1, e2) {
-                  return +(new Date(e1[axisField])) - +(new Date(e2[axisField]));
+                  return e1.sum - e2.sum;
                 });
               });
             }
+            else
+            {
+              for (let object of chartInfo.filter)
+              {
+                let average = 0;
 
-            chartInfo.filter.sort (function(e1, e2) {
-              return e1.avg - e2.avg;
-            });
+                for (let data of chartInfo.data)
+                {
+                  let value = data[object.valueField];
+
+                  if (value != null)
+                    average += value;
+                }
+
+                object["avg"] = average / chartInfo.data.length;
+              }
+
+              // Also sort the data by date the to get the correct order on the line chart
+              // if the category axis is a date type
+              if (parseDate && this.values.currentChartType.flags & ChartFlags.LINECHART)
+              {
+                let axisField = this.values.xaxis.columnName;
+  
+                chart.events.on ("beforedatavalidated", function(event) {
+                  chart.data.sort (function(e1, e2) {
+                    return +(new Date(e1[axisField])) - +(new Date(e2[axisField]));
+                  });
+                });
+              }
+
+              chartInfo.filter.sort (function(e1, e2) {
+                return e1.avg - e2.avg;
+              });
+            }
           }
 
           // Create the series and set colors
@@ -799,15 +802,10 @@ export class MsfDashboardChildPanelComponent {
 
           for (let object of chartInfo.filter)
           {
-            if (this.values.variable.item.columnType === "date")
+            if (this.values.variable.columnType === "date")
             {
-              let date = this.parseDate (object.valueAxis, this.values.variable.item.columnFormat);
-              let legendOutputFormat;
-
-              if (this.values.variable.item.outputFormat)
-                legendOutputFormat = this.values.variable.item.outputFormat;
-              else
-                legendOutputFormat = this.values.variable.item.columnFormat;
+              let date = this.parseDate (object.valueAxis, this.values.variable.columnFormat);
+              let legendOutputFormat = this.values.variable.columnFormat;
 
               // Set predefined format if used
               if (this.predefinedColumnFormats[legendOutputFormat])
@@ -859,28 +857,31 @@ export class MsfDashboardChildPanelComponent {
           // The category will the values if the chart type lacks an x axis
           categoryAxis.dataFields.category = chartInfo.titleField;
 
-          if (parseDate)
+          if (this.values.ordered)
           {
-            let axisField = this.values.variable.id;
+            if (parseDate)
+            {
+              let axisField = this.values.variable.id;
 
-            // reverse order for rotated charts
-            if (this.values.currentChartType.flags & ChartFlags.ROTATED)
-              categoryAxis.renderer.inversed = true;
+              // reverse order for rotated charts
+              if (this.values.currentChartType.flags & ChartFlags.ROTATED)
+                categoryAxis.renderer.inversed = true;
 
-            chart.events.on ("beforedatavalidated", function (event) {
-              chart.data.sort (function (e1, e2) {
-                return +(new Date(e1[axisField])) - +(new Date(e2[axisField]));
+              chart.events.on ("beforedatavalidated", function (event) {
+                chart.data.sort (function (e1, e2) {
+                  return +(new Date(e1[axisField])) - +(new Date(e2[axisField]));
+                });
               });
-            });
-          }
-          else
-          {
-            // Sort values from least to greatest
-            chart.events.on ("beforedatavalidated", function(event) {
-              chart.data.sort (function(e1, e2) {
-                return e1[chartInfo.valueField] - e2[chartInfo.valueField];
+            }
+            else
+            {
+              // Sort values from least to greatest
+              chart.events.on ("beforedatavalidated", function(event) {
+                chart.data.sort (function(e1, e2) {
+                  return e1[chartInfo.valueField] - e2[chartInfo.valueField];
+                });
               });
-            });
+            }
           }
 
           // Create the series
@@ -1052,9 +1053,6 @@ export class MsfDashboardChildPanelComponent {
             }
             else
             {
-              if (!argument.value1)
-                continue;
-
               if (params)
               {
                 if (argument.type != "singleCheckbox" && argument.type != "serviceClasses" && argument.type != "fareLower" && argument.type != "airportsRoutes" && argument.name1 != "intermediateCitiesList")
@@ -1069,7 +1067,7 @@ export class MsfDashboardChildPanelComponent {
         }        
       }
     }
-  
+
     return params;
   }
 
@@ -1103,6 +1101,11 @@ export class MsfDashboardChildPanelComponent {
       data.id, null, null, _this.getOption (data.option), data.analysis, data.xaxis,
       data.values, data.function, data.chartType, JSON.stringify (_this.data.currentOptionCategories),
       data.lastestResponse, data.paletteColors);
+
+    _this.values.limitAmount = data.limitAmount;
+    _this.values.limitMode = data.limitMode;
+    _this.values.startAtZero = data.startAtZero;
+    _this.values.ordered = data.ordered;
 
     _this.values.tableVariables = [];
 
@@ -1253,6 +1256,7 @@ export class MsfDashboardChildPanelComponent {
       for (let category of optionCategory.categoryArgumentsId)
       {
         let avail = false;
+
         for (let curCategory of _this.values.currentOptionCategories)
         {
           if (curCategory.id == category.id)
@@ -1345,8 +1349,11 @@ export class MsfDashboardChildPanelComponent {
         url += "&metaDataIds=" + tableVariable.itemId;
     }
 
+    if (this.globals.testingPlan != -1)
+      url += "&testPlanId=" + this.globals.testingPlan;
+
     if (isDevMode ())
-      console.log (url);
+      console.log (urlBase);
 
     this.authService.get (this.msfTableRef, url, handlerSuccess, handlerError);
   }
@@ -1367,6 +1374,10 @@ export class MsfDashboardChildPanelComponent {
 
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
     urlArg = encodeURIComponent (urlBase);
+
+    if (isDevMode ())
+      console.log (urlBase);
+
     url = this.service.host + "/secure/getChartData?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress () +
       "&variable=" + this.values.variable.columnName;
 
@@ -1381,8 +1392,8 @@ export class MsfDashboardChildPanelComponent {
     else
       url += "&xaxis=" + this.values.xaxis.columnName;
 
-    if (isDevMode ())
-      console.log (url);
+    if (this.globals.testingPlan != -1)
+      url += "&testPlanId=" + this.globals.testingPlan;
 
     this.authService.post (this, url, null, handlerSuccess, handlerError);
   }

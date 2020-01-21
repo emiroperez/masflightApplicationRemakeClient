@@ -9,7 +9,7 @@
     </div>
   </div>
   <div class="msf-dashboard-panel-container" [style.height.px]="panelHeightOffset" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !values.displayDynTable && !globals.readOnlyDashboard">
-    <div class="msf-dashboard-panel-sub-container-column">
+    <div class="msf-dashboard-panel-sub-container-column msf-dashboard-panel-header">
       <div class="msf-dashboard-panel-sub-container-row msf-dashboard-panel-discover-button">
         <button class="flat-button discover-button" mat-button (click)="openDiscoveryDialog()">
           <img class="search-icon" src="../../assets/images/search-icon.png"/>
@@ -53,8 +53,9 @@
       <div class="msf-dashboard-panel-sub-container-column">
         <div class="msf-dashboard-addmenu-icon-item msf-chart-config-label-container">
           <mat-icon class="msf-dashboard-chart-icon" aria-label="Filter List">filter_list</mat-icon>
-          <span class="msf-dashboard-addmenu-item-text">Chart Configuration</span>
+          <span class="msf-dashboard-addmenu-item-text msf-dashboard-chart-configuration-label">Chart Configuration</span>
           <div *ngIf="isLineOrBarChart()" class="msf-dashboard-panel-sub-container-row msf-dashboard-panel-sub-container-checkbox msf-dashboard-panel-interval-time">
+            <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="values.ordered">Ordered</mat-checkbox>
             <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="values.startAtZero">Min Value At 0</mat-checkbox>
           </div>
         </div>
@@ -882,7 +883,7 @@
   <!-- ngIf doesn't work with AmCharts -->
   <div class="{{values.displayChart && !advTableView ? 'msf-dashboard-panel-container-chart' : 'msf-dashboard-panel-container-invisible'}}" [style.height.px]="panelHeightOffset">
     <div class="msf-dashboard-panel-title" *ngIf="values.displayChart">{{values.chartName}}</div>
-    <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard.chart-display-container-{{values.id}}">
+    <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-chart-display-container-{{values.id}}">
       <div class="msf-dashboard-map-routelist" *ngIf="isMapPanel() && values.flightRoutes != null">
         <div class="msf-dashboard-map-routelist-container" [style.height.px]="calcRouteListHeight()">
           <div class="msf-dashboard-map-routelist-item" *ngFor="let item of values.flightRoutes">
@@ -896,7 +897,7 @@
           </div>
         </div>
       </div>
-      <div id="msf-dashboard-chart-display-{{values.id}}" [ngStyle]="{'width': (globals.readOnlyDashboard || isMapPanel()) ? '100%' : 'calc(100% - 35px)'}" [style.height.px]="calcPanelHeight()"></div>
+      <div id="msf-dashboard-chart-display-{{values.id}}" [style.width.%]="100" [style.height.px]="calcPanelHeight()"></div>
       <div class="msf-dashboard-map-panelinfo" *ngIf="isMapPanel() && checkedRoutes.length == 1">
         <table class="msf-dashboard-map-panelinfo-container">
           <tr><td>Touched Airports</td><td>{{checkedRoutes[0].TouchedAirports}}</td></tr>
@@ -904,20 +905,20 @@
           <tr><td>Total Time</td><td>{{checkedRoutes[0].TotalTime}}</td></tr>
         </table>
       </div>
-      <div class="msf-dashboard-panel-config-button">
-        <button *ngIf="!globals.readOnlyDashboard" mat-mini-fab (click)="goToChartConfiguration()" color="primary" matTooltip="Edit Configuration">
+      <div class="msf-dashboard-panel-config-button" [ngStyle]="{ 'left': getConfigButtonOffset() }">
+        <button *ngIf="!globals.readOnlyDashboard" mat-icon-button (click)="goToChartConfiguration()" color="primary" class="msf-dashboard-panel-margin-button" matTooltip="Edit Configuration">
           <mat-icon aria-label="Edit Configuration">menu</mat-icon>
         </button>
-        <button *ngIf="!globals.readOnlyDashboard" mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="sharePanel()" matTooltip="Share Panel">
+        <button *ngIf="!globals.readOnlyDashboard" mat-icon-button color="primary" class="msf-dashboard-panel-margin-button" (click)="sharePanel()" matTooltip="Share Panel">
           <mat-icon aria-label="Share Panel">share</mat-icon>
         </button>
-        <button *ngIf="!globals.readOnlyDashboard" mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="copyControlVariables()" matTooltip="Copy Control Variables">
+        <button *ngIf="!globals.readOnlyDashboard" mat-icon-button color="primary" class="msf-dashboard-panel-margin-button" (click)="copyControlVariables()" matTooltip="Copy Control Variables">
           <mat-icon aria-label="Copy Control Variables">file_copy</mat-icon>
         </button>
-        <button *ngIf="isAdvChartPanel()" mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="addUpIntervals()" matTooltip="{{sumSeriesList && sumSeriesList.length ? 'Remove Sum Of Intervals' : 'Add Up Intervals'}}">
+        <button *ngIf="isAdvChartPanel()" mat-icon-button color="primary" class="msf-dashboard-panel-margin-button" (click)="addUpIntervals()" matTooltip="{{sumSeriesList && sumSeriesList.length ? 'Remove Sum Of Intervals' : 'Add Up Intervals'}}">
           <mat-icon aria-label="Add Up Intervals">functions</mat-icon>
         </button>
-        <button *ngIf="isAdvChartPanel()" mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="toggleIntervalTable()" matTooltip="Table View">
+        <button *ngIf="isAdvChartPanel()" mat-icon-button color="primary" class="msf-dashboard-panel-margin-button" (click)="toggleIntervalTable()" matTooltip="Table View">
           <mat-icon aria-label="Table View">table_chart</mat-icon>
         </button>
       </div>
@@ -926,14 +927,14 @@
   <div class="msf-dashboard-panel-container-chart" *ngIf="values.displayInfo" [style.height.px]="panelHeightOffset">
     <div class="msf-dashboard-panel-title">{{values.chartName}}</div>
     <div class="msf-dashboard-panel-sub-container-column">
-      <div class="msf-dashboard-panel-config-button" *ngIf="!globals.readOnlyDashboard">
-        <button mat-mini-fab (click)="goToInfoConfiguration()" color="primary" matTooltip="Edit Configuration">
+      <div class="msf-dashboard-panel-config-button" [ngStyle]="{ 'left': getConfigButtonOffset() }" *ngIf="!globals.readOnlyDashboard">
+        <button mat-icon-button (click)="goToInfoConfiguration()" color="primary" class="msf-dashboard-panel-margin-button" matTooltip="Edit Configuration">
           <mat-icon aria-label="Edit Configuration">menu</mat-icon>
         </button>
-        <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="sharePanel()" matTooltip="Share Panel">
+        <button mat-icon-button color="primary" class="msf-dashboard-panel-margin-button" (click)="sharePanel()" matTooltip="Share Panel">
           <mat-icon aria-label="Share Panel">share</mat-icon>
         </button>
-        <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="copyControlVariables()" matTooltip="Copy Control Variables">
+        <button mat-icon-button color="primary" class="msf-dashboard-panel-margin-button" (click)="copyControlVariables()" matTooltip="Copy Control Variables">
           <mat-icon aria-label="Copy Control Variables">file_copy</mat-icon>
         </button>
       </div>
@@ -956,20 +957,20 @@
   <div class="msf-dashboard-panel-container-chart" *ngIf="values.displayForm" [style.height.px]="panelHeightOffset">
     <div class="msf-dashboard-panel-title">{{values.chartName}}</div>
     <div class="msf-dashboard-panel-sub-container-column">
-      <div class="msf-dashboard-panel-config-button" *ngIf="!globals.readOnlyDashboard">
-        <button mat-mini-fab (click)="goToFormConfiguration()" color="primary" matTooltip="Edit Configuration">
+      <div class="msf-dashboard-panel-config-button" [ngStyle]="{ 'left': getConfigButtonOffset() }" *ngIf="!globals.readOnlyDashboard">
+        <button mat-icon-button (click)="goToFormConfiguration()" color="primary" class="msf-dashboard-panel-margin-button" matTooltip="Edit Configuration">
           <mat-icon aria-label="Edit Configuration">menu</mat-icon>
         </button>
-        <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="sharePanel()" matTooltip="Share Panel">
+        <button mat-icon-button color="primary" class="msf-dashboard-panel-margin-button" (click)="sharePanel()" matTooltip="Share Panel">
           <mat-icon aria-label="Share Panel">share</mat-icon>
         </button>
-        <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="copyControlVariables()" matTooltip="Copy Control Variables">
+        <button mat-icon-button color="primary" class="msf-dashboard-panel-margin-button" (click)="copyControlVariables()" matTooltip="Copy Control Variables">
           <mat-icon aria-label="Copy Control Variables">file_copy</mat-icon>
         </button>
       </div>
-      <div style="width: 100%; display: table" [style.height.px]="calcPanelHeight()">
+      <div class="msf-dashboard-form-container" [style.height.px]="calcPanelHeight()">
         <div class="msf-media-title-container" id="msf-dashboard-form-display">
-          <div [ngClass]="values.formVariables[column].valueOrientation.value ? 'msf-dashboard-form-display-result-vertical' : 'msf-dashboard-form-display-result-horizontal'" *ngFor="let formResult of values.lastestResponse; let column = index">
+          <div class="msf-dashboard-form-display-child" [ngClass]="values.formVariables[column].valueOrientation.value ? 'msf-dashboard-form-display-result-vertical' : 'msf-dashboard-form-display-result-horizontal'" *ngFor="let formResult of values.lastestResponse; let column = index">
             <span class="msf-media-title-value" id="msf-dashboard-form-display-title" [style.font-size.px]="getFormFontSize(column)">{{formResult.column.columnLabel}}: </span>
             <span class="msf-media-title-value" id="msf-dashboard-form-display-value" [style.font-size.px]="getValueFormFontSize(column)">{{formResult.value}}</span>
           </div>
@@ -980,14 +981,14 @@
   <div class="msf-dashboard-panel-container-chart" *ngIf="values.displayPic" [style.height.px]="panelHeightOffset">
     <div class="msf-dashboard-panel-title"><br></div>
     <div class="msf-dashboard-panel-sub-container-column">
-      <div class="msf-dashboard-panel-config-button" *ngIf="!globals.readOnlyDashboard">
-        <button mat-mini-fab (click)="goToFormConfiguration()" color="primary" matTooltip="Edit Configuration">
+      <div class="msf-dashboard-panel-config-button" [ngStyle]="{ 'left': getConfigButtonOffset() }" *ngIf="!globals.readOnlyDashboard">
+        <button mat-icon-button (click)="goToFormConfiguration()" color="primary" class="msf-dashboard-panel-margin-button" matTooltip="Edit Configuration">
           <mat-icon aria-label="Edit Configuration">menu</mat-icon>
         </button>
-        <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="sharePanel()" matTooltip="Share Panel">
+        <button mat-icon-button color="primary" class="msf-dashboard-panel-margin-button" (click)="sharePanel()" matTooltip="Share Panel">
           <mat-icon aria-label="Share Panel">share</mat-icon>
         </button>
-        <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="copyControlVariables()" matTooltip="Copy Control Variables">
+        <button mat-icon-button color="primary" class="msf-dashboard-panel-margin-button" (click)="copyControlVariables()" matTooltip="Copy Control Variables">
           <mat-icon aria-label="Copy Control Variables">file_copy</mat-icon>
         </button>
       </div>
@@ -999,19 +1000,19 @@
   <div class="msf-dashboard-panel-container-chart" [style.display]="values.displayTable ? 'block' : 'none'" [style.height.px]="panelHeightOffset">
     <div class="msf-dashboard-panel-title" [style.padding-bottom.px]="5">{{values.chartName}}</div>
     <div class="msf-dashboard-panel-sub-container-column">
-      <div class="msf-dashboard-panel-config-button" *ngIf="!globals.readOnlyDashboard">
-        <button mat-mini-fab (click)="goToTableConfiguration()" color="primary" matTooltip="Edit Configuration">
+      <div class="msf-dashboard-panel-config-button" [ngStyle]="{ 'left': getConfigButtonOffset() }" *ngIf="!globals.readOnlyDashboard">
+        <button mat-icon-button (click)="goToTableConfiguration()" color="primary" class="msf-dashboard-panel-margin-button" matTooltip="Edit Configuration">
           <mat-icon aria-label="Edit Configuration">menu</mat-icon>
         </button>
-        <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="sharePanel()" matTooltip="Share Panel">
+        <button mat-icon-button color="primary" class="msf-dashboard-panel-margin-button" (click)="sharePanel()" matTooltip="Share Panel">
           <mat-icon aria-label="Share Panel">share</mat-icon>
         </button>
-        <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="copyControlVariables()" matTooltip="Copy Control Variables">
+        <button mat-icon-button color="primary" class="msf-dashboard-panel-margin-button" (click)="copyControlVariables()" matTooltip="Copy Control Variables">
           <mat-icon aria-label="Copy Control Variables">file_copy</mat-icon>
         </button>
       </div>
       <div class="msf-dashboard-table-container">
-        <div class="msf-dashboard-child-panel-table msf-dashboard-panel-table" [style.height.px]="calcPanelHeight() - 39">
+        <div class="msf-dashboard-child-panel-table msf-dashboard-panel-table" [style.height.px]="calcPanelHeight() - 24">
           <app-msf-table #msfTableRef [isLoading]="values.isLoading" (finishLoading)="finishLoadingTable($event)" [categoryArguments]="values.currentOptionCategories" [currentOption]="values.currentOption" [isPanel]="true"></app-msf-table>
         </div>
         <div [ngClass]="moreResultsBtn ? 'msf-menu-more-button' : 'msf-menu-more-button disabled-more-button'"
@@ -1026,38 +1027,38 @@
   <div class="msf-dashboard-panel-container-chart" [style.display]="values.displayMapbox ? 'block' : 'none'" [style.height.px]="panelHeightOffset">
     <div class="msf-dashboard-panel-title">{{values.chartName}}</div>
     <div class="msf-dashboard-panel-sub-container-column">
-      <div class="msf-dashboard-panel-config-button" *ngIf="!globals.readOnlyDashboard">
-        <button mat-mini-fab (click)="goToMapboxConfiguration()" color="primary" matTooltip="Edit Configuration">
+      <div class="msf-dashboard-panel-config-button" [ngStyle]="{ 'left': getConfigButtonOffset() }" *ngIf="!globals.readOnlyDashboard">
+        <button mat-icon-button (click)="goToMapboxConfiguration()" color="primary" class="msf-dashboard-panel-margin-button" matTooltip="Edit Configuration">
           <mat-icon aria-label="Edit Configuration">menu</mat-icon>
         </button>
-        <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="sharePanel()" matTooltip="Share Panel">
+        <button mat-icon-button color="primary" class="msf-dashboard-panel-margin-button" (click)="sharePanel()" matTooltip="Share Panel">
           <mat-icon aria-label="Share Panel">share</mat-icon>
         </button>
-        <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="copyControlVariables()" matTooltip="Copy Control Variables">
+        <button mat-icon-button color="primary" class="msf-dashboard-panel-margin-button" (click)="copyControlVariables()" matTooltip="Copy Control Variables">
           <mat-icon aria-label="Copy Control Variables">file_copy</mat-icon>
         </button>
       </div>
-      <div [style.height.px]="calcPanelHeight()" style="width: calc(100% - 50px)">
-        <app-msf-map #msfMapRef [isLoading]="values.isLoading" [useCancelButton]="false" [displayMapMenu]="2" [currentMapType]="values.style" [legendOffset]="55" (finishLoading)="finishMapboxLoading($event)"></app-msf-map>
+      <div [style.height.px]="calcPanelHeight() - 7" class="msf-dashboard-panel-mapbox">
+        <app-msf-map #msfMapRef [isLoading]="values.isLoading" [useCancelButton]="false" [displayMapMenu]="2" [currentMapType]="values.style" [legendOffset]="5" (finishLoading)="finishMapboxLoading($event)"></app-msf-map>
       </div>
     </div>
   </div>
   <div class="msf-dashboard-panel-container-chart" *ngIf="values.displayDynTable" [style.height.px]="panelHeightOffset">
     <div class="msf-dashboard-panel-title">{{values.chartName}}</div>
     <div class="msf-dashboard-panel-sub-container-column">
-      <div class="msf-dashboard-panel-config-button" *ngIf="!globals.readOnlyDashboard">
-        <button mat-mini-fab (click)="goToDynTableConfiguration()" color="primary" matTooltip="Edit Configuration">
+      <div class="msf-dashboard-panel-config-button" [ngStyle]="{ 'left': getConfigButtonOffset() }" *ngIf="!globals.readOnlyDashboard">
+        <button mat-icon-button (click)="goToDynTableConfiguration()" color="primary" class="msf-dashboard-panel-margin-button" matTooltip="Edit Configuration">
           <mat-icon aria-label="Edit Configuration">menu</mat-icon>
         </button>
-        <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="sharePanel()" matTooltip="Share Panel">
+        <button mat-icon-button color="primary" class="msf-dashboard-panel-margin-button" (click)="sharePanel()" matTooltip="Share Panel">
           <mat-icon aria-label="Share Panel">share</mat-icon>
         </button>
-        <button mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="copyControlVariables()" matTooltip="Copy Control Variables">
+        <button mat-icon-button color="primary" class="msf-dashboard-panel-margin-button" (click)="copyControlVariables()" matTooltip="Copy Control Variables">
           <mat-icon aria-label="Copy Control Variables">file_copy</mat-icon>
         </button>
       </div>
-      <div class="dynamic-table-scroll" [style.height.px]="panelHeightOffset - 20">
-        <table *ngIf="dynTableData" class="mat-elevation-z8 dynamic-table-container" [style.margin-top.px]="15">
+      <div class="dynamic-table-scroll dashboard-panel-dynamic-table-scroll" [style.height.px]="panelHeightOffset - 20">
+        <table *ngIf="dynTableData" class="mat-elevation-z8 dynamic-table-container">
           <tr class="dynamic-table-header-container" *ngFor="let header of dynTableData.headers">
             <!-- Always insert a blank tab header first since it's a pivot table -->
             <th class="dyanmic-table-padding"></th>
@@ -1075,21 +1076,21 @@
   <div *ngIf="values.displayChart && advTableView" class="msf-dashboard-panel-container-chart" [style.height.px]="panelHeightOffset">
     <div class="msf-dashboard-panel-title" *ngIf="values.displayChart">{{values.chartName}}</div>
     <div class="msf-dashboard-panel-sub-container-column">
-      <div class="msf-dashboard-panel-config-button">
-        <button *ngIf="!globals.readOnlyDashboard" mat-mini-fab (click)="goToChartConfiguration()" color="primary" matTooltip="Edit Configuration">
+      <div class="msf-dashboard-panel-config-button" [ngStyle]="{ 'left': getConfigButtonOffset() }">
+        <button *ngIf="!globals.readOnlyDashboard" mat-icon-button (click)="goToChartConfiguration()" color="primary" class="msf-dashboard-panel-margin-button" matTooltip="Edit Configuration">
           <mat-icon aria-label="Edit Configuration">menu</mat-icon>
         </button>
-        <button *ngIf="!globals.readOnlyDashboard" mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="sharePanel()" matTooltip="Share Panel">
+        <button *ngIf="!globals.readOnlyDashboard" mat-icon-button color="primary" class="msf-dashboard-panel-margin-button" (click)="sharePanel()" matTooltip="Share Panel">
           <mat-icon aria-label="Share Panel">share</mat-icon>
         </button>
-        <button *ngIf="!globals.readOnlyDashboard" mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="copyControlVariables()" matTooltip="Copy Control Variables">
+        <button *ngIf="!globals.readOnlyDashboard" mat-icon-button color="primary" class="msf-dashboard-panel-margin-button" (click)="copyControlVariables()" matTooltip="Copy Control Variables">
           <mat-icon aria-label="Copy Control Variables">file_copy</mat-icon>
         </button>
-        <button *ngIf="isAdvChartPanel()" mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="toggleIntervalTable()" matTooltip="Chart View">
+        <button *ngIf="isAdvChartPanel()" mat-icon-button color="primary" class="msf-dashboard-panel-margin-button" (click)="toggleIntervalTable()" matTooltip="Chart View">
           <mat-icon aria-label="Chart View">bar_chart</mat-icon>
         </button>
       </div>
-      <div class="msf-dashboard-child-panel-table msf-dashboard-panel-table" [style.height.px]="panelHeightOffset - 20" [style.width.%]="100" [style.margin-top.px]="5">
+      <div class="msf-dashboard-child-panel-table msf-dashboard-panel-table msf-adv-chart-table" [style.height.px]="panelHeightOffset - 20" [style.width.%]="100" [style.margin-top.px]="5">
         <div class="results-container">
           <table class="mat-elevation-z8 datasource results" style="border-collapse: separate; border-spacing: 0">
             <thead>

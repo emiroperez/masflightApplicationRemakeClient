@@ -94,6 +94,7 @@ export class MsfDashboardPanelValues {
     horizAxisName: string;
 
     startAtZero: boolean;
+    ordered: boolean;
 
     // values used for advanced charts
     intervalType: string;
@@ -105,7 +106,7 @@ export class MsfDashboardPanelValues {
     constructor(options: any[], chartName: String, id: number, width: any, height: any, currentOption?: any, variable?: any,
         xaxis?: any, valueColumn?: any, func?: any, chartType?: any, currentOptionCategories?: any, lastestResponse?: string,
         paletteColors?: any, updateTimeInterval?: number, row?: number, thresholds?: any, vertAxisName?: string, horizAxisName?: string,
-        intValue?: any, startAtZero?: boolean, limitMode?: number, limitAmount?: number)
+        intValue?: any, startAtZero?: boolean, limitMode?: number, limitAmount?: number, ordered?: boolean)
     {
         this.options = options;
         this.chartName = chartName;
@@ -168,6 +169,11 @@ export class MsfDashboardPanelValues {
             this.startAtZero = startAtZero;
         else
             this.startAtZero = false;
+
+        if (ordered)
+            this.ordered = ordered;
+        else
+            this.ordered = true;
 
         this.limitMode = limitMode;
         this.limitAmount = limitAmount;

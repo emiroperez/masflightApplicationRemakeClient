@@ -1,12 +1,9 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Arguments } from '../model/Arguments';
-import { FormControl } from '@angular/forms';
-import { ReplaySubject, Subject, Observable, of } from 'rxjs';
-import { MatSelect } from '@angular/material';
-import { takeUntil, take, delay } from 'rxjs/operators';
-import { Airline } from '../model/Airline';
-import { ApiClient } from '../api/api-client';
+import { Observable, of } from 'rxjs';
+import { delay } from 'rxjs/operators';
 import { Globals } from '../globals/Globals';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-msf-airline',
@@ -21,9 +18,10 @@ export class MsfAirlineComponent implements OnInit {
   multiAirlines: boolean = false;
 
   loading = false;
-  constructor(private http: ApiClient, public globals: Globals) { }
+  constructor(private authService: AuthService, public globals: Globals) { }
 
-  ngOnInit() {
+  ngOnInit()
+  {
     if (this.argument.selectionMode)
       this.multiAirlines = true;
 
@@ -46,12 +44,60 @@ export class MsfAirlineComponent implements OnInit {
     }else{
      url = this.argument.url+ (search != null?search:'');
     }
-    this.http.get(this,url,handlerSuccess,this.handlerError, null);  
+
+    if (this.globals.testingPlan != -1)
+      url += "&testPlanId=" + this.globals.testingPlan;
+  
+    this.authService.get (this, url, handlerSuccess, this.handlerError);
   }
 
-  handlerSuccess(_this,data, tab){   
+  handlerSuccess(_this,data, tab)
+  {
+    let exist;
+
     _this.loading = false;
-    _this.data = of(data).pipe(delay(500));;        
+    _this.data = of(data).pipe(delay(500));
+
+    if (_this.globals.restrictedAirlines && _this.argument.value1)
+    {
+      if (_this.multiAirlines)
+      {
+        for (let i = _this.argument.value1.length - 1; i >= 0; i--)
+        {
+          let value = _this.argument.value1[i];
+
+          exist = false;
+
+          for (let curairline of data)
+          {
+            if (value.iata === curairline.iata)
+            {
+              exist = true;
+              break;
+            }
+          }
+
+          if (!exist)
+            _this.argument.value1.splice (i, 1);
+        }
+      }
+      else
+      {
+        exist = false;
+
+        for (let curairline of data)
+        {
+          if (_this.argument.value1.iata === curairline.iata)
+          {
+            exist = true;
+            break;
+          }
+        }
+
+        if (!exist)
+          _this.argument.value1 = null;
+      }
+    }
   }
 
   handlerError(_this,result){
@@ -61,9 +107,13 @@ export class MsfAirlineComponent implements OnInit {
   onSearch($event: any){
     if($event.term.length>=2){
       this.loading = true;
-      this.getRecords($event.term, this.handlerSuccess);
+      this.getRecords($event.term, this.searchSuccess);
     }
   }
-  
 
+  searchSuccess(_this,data, tab)
+  {
+    _this.loading = false;
+    _this.data = of(data).pipe(delay(500));
+  }
 }

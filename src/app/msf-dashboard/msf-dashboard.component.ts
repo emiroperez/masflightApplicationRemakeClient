@@ -57,7 +57,7 @@ export class MsfDashboardComponent implements OnInit {
     false     // Map Tracker
   ];
 
-  heightValues:any[] = [
+  heightValues: any[] = [
     { value: 1, name: 'Small' },
     { value: 3, name: 'Medium' },
     { value: 6, name: 'Large' },
@@ -316,7 +316,7 @@ export class MsfDashboardComponent implements OnInit {
         dashboardPanel.row, dashboardPanel.thresholds, dashboardPanel.vertAxisName,
         dashboardPanel.horizAxisName, dashboardPanel.advIntervalValue,
         dashboardPanel.startAtZero, dashboardPanel.limitMode,
-        dashboardPanel.limitAmount));
+        dashboardPanel.limitAmount, dashboardPanel.ordered));
     }
 
     // add the last dashboard column
@@ -335,11 +335,10 @@ export class MsfDashboardComponent implements OnInit {
   {
     let drillDownInfo: any[] = [];
     let childPanelNames: any[] = [];
-    let drillDownOptionIds: any[] = [];
 
     drillDownInfo = data.drillDownInfo;
     childPanelNames = data.childPanelNames;
-    drillDownOptionIds = data.drillDownOptionIds;
+
     if (!drillDownInfo.length)
     {
       // we're done if there are no child panels
@@ -357,7 +356,7 @@ export class MsfDashboardComponent implements OnInit {
 
         for (let k = 0; k < drillDownInfo.length; k++)
         {
-          if (panel.id == drillDownInfo[k].dashboardPanelId && panel.currentOption.id == drillDownInfo[k].childPanelId)
+          if (panel.id == drillDownInfo[k].dashboardPanelId)
           {
             panel.childPanels.push ({
               id: drillDownInfo[k].drillDownId,

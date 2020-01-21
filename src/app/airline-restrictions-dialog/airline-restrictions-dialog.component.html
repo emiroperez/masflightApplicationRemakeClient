@@ -1,0 +1,50 @@
+<div class="airline-restrictions-loading" *ngIf="isLoading"></div>
+<div class="airline-restrictions-container msf-control-variables-overlay" *ngIf="!isLoading">
+  <div class="airline-restrictions-container-close-button">
+    <mat-icon aria-label="close" (click)="closeDialog()">close</mat-icon>
+  </div>
+  <div class="airline-restrictions-title">Airline Restrictions</div>
+  <div class="airline-restrictions-label">Airline(s):</div>
+  <div class="airline-restrictions-combobox">
+    <ng-select
+      [items]="airlines | async"
+      [multiple]="true"
+      [loading]="airlineListLoading"
+      loadingText="Loading..."
+      [closeOnSelect]="true"
+      [hideSelected]="false"
+      bindLabel="iata"
+      (search)="onSearch($event)" 
+      [(ngModel)]="selectedAirlines"
+      appendTo=".msf-control-variables-overlay"
+      dropdownPosition="bottom">
+      <ng-template ng-option-tmp let-item="item">
+        <div>{{item.name}}</div>
+      </ng-template>
+    </ng-select>
+    <button [disabled]="!selectedAirlines.length" mat-icon-button [ngClass]="!selectedAirlines.length ? 'airline-restrictions-add-button func-button-disabled' : 'airline-restrictions-add-button'" (click)="addAirlines()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+  <div class="airline-restrictions-content-container">
+    <div class="msf-dashboard-panel-sub-container-column">
+      <div class="msf-dashboard-panel-sub-container-column  airline-restrictions-column" id="msf-share-dashboard-container" *ngIf="restrictList.length">
+        <mat-radio-group [(ngModel)]="selectedRestrictedAirline" style="flex-direction: column; display: flex">
+          <mat-radio-button style="margin: 10px;" class="cancels-checkbox" *ngFor="let item of restrictList" [value]="item">
+            {{item.airlineName}}
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <div class="msf-dashboard-panel-sub-container-column airline-restrictions-column" id="msf-dashboard-panel-form-container-column-empty" *ngIf="!restrictList.length">
+        <div class="msf-no-results">
+          No Airline Restrictions
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="airline-restrictions-option-buttons">
+    <button [disabled]="!selectedRestrictedAirline" mat-flat-button [ngClass]="selectedRestrictedAirline ? 'flat-button' : 'flat-button-disabled'" (click)="removeAirline()">Remove Airline</button>
+    <span class="button-separator"></span>
+    <button mat-flat-button class="flat-button" (click)="closeDialog()">OK</button>
+  </div>
+</div>

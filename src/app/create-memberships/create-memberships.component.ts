@@ -162,8 +162,6 @@ export class CreateMembershipsComponent implements OnInit {
 
   searchTextPlan: string;
 
-  // filteredPlans: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
-
   constructor(private http: ApiClient, private config: NgSelectConfig,
     private planServices: PlanService, private service: ApplicationService, public globals: Globals, private formBuilder: FormBuilder,
     public dialog: MatDialog, private ref: ChangeDetectorRef, private router: Router) {
@@ -205,8 +203,6 @@ export class CreateMembershipsComponent implements OnInit {
       _this.items = _this.plansForms.get('items') as FormArray;
       _this.items.push(_this.createPlanFromJson(plan));
     });
-
-    // _this.filteredPlans.next (_this.getPlans ().slice ());
   }
 
   createPlanFromJson(plan): FormGroup {
@@ -344,6 +340,10 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
     // open new plan
     this.items.controls[this.items.length - 1]['open'] = true;
     this.lastPlan = this.items.controls[this.items.length - 1];
+
+    // clear search filter
+    this.searchTextPlan = "";
+    this.filterPlans ();
   }
 
   deletePlan(index) {
@@ -677,6 +677,10 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
       }
 
     }
+
+    // clear search filter
+    this_.searchTextPlan = "";
+
     this_.globals.isLoading = false;
   }
 
@@ -841,18 +845,29 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
     plan.open = false;
   }
 
-  /*filterPlans(): void
+  filterPlans(): void
   {
     let search = this.searchTextPlan;
+
     if (!search)
     {
-      this.filteredPlans.next (this.getPlans ().slice ());
+      for (let item of this.items.controls)
+      {
+        item['invisible'] = false;
+        item['open'] = false;
+      }
+
       return;
     }
 
-    search = search.toLowerCase ();
-    this.filteredPlans.next (
-      this.getPlans ().filter (a => a.get ('name').value.toLowerCase ().indexOf (search) > -1)
-    );
-  }*/
+    for (let item of this.items.controls)
+    {
+      if (item.value.name.toLowerCase ().indexOf (search) > -1)
+        item['invisible'] = false;
+      else
+        item['invisible'] = true;
+
+      item['open'] = false;
+    }
+  }
 }

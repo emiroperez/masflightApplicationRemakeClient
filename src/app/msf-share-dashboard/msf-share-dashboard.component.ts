@@ -95,7 +95,7 @@ export class MsfShareDashboardComponent implements OnInit {
       });
     }
 
-    _this.menuService.getUsers (_this, _this.userSuccess, _this.errorHandler);
+    _this.menuService.getUsersByCustomerId (_this, _this.userSuccess, _this.errorHandler);
   }
 
   userSuccess(_this, data)

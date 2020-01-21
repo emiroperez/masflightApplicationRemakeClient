@@ -440,6 +440,11 @@ export class MsfDashboardDrillDownComponent {
               panel.analysis, panel.xaxis, panel.values, panel.function,
               panel.chartType, null, panel.lastestResponse, panel.paletteColors));
 
+            _this.values.limitAmount = panel.limitAmount;
+            _this.values.limitMode = panel.limitMode;
+            _this.values.startAtZero = panel.startAtZero;
+            _this.values.ordered = panel.ordered;
+
             _this.convertValues.push (true);
             _this.newPanel.push (false);
             break;
@@ -534,6 +539,14 @@ export class MsfDashboardDrillDownComponent {
       && this.currentValue.chartName == this.lastValue.chartName
       && (this.currentValue.currentChartType.flags & ChartFlags.XYCHART
         && this.currentValue.xaxis == this.lastValue.xaxis)
+      && (!(this.currentValue.currentChartType.flags & ChartFlags.TABLE)
+        && this.currentValue.vertAxisName == this.lastValue.vertAxisName)
+      && (!(this.currentValue.currentChartType.flags & ChartFlags.TABLE)
+        && this.currentValue.horizAxisName == this.lastValue.horizAxisName)
+      && (!(this.currentValue.currentChartType.flags & ChartFlags.TABLE)
+        && this.currentValue.startAtZero == this.lastValue.startAtZero)
+      && (!(this.currentValue.currentChartType.flags & ChartFlags.TABLE)
+        && this.currentValue.ordered == this.lastValue.ordered)
       && !this.checkPaletteColors ()
       && !this.checkLimitConfig ())
       return;
@@ -638,5 +651,13 @@ export class MsfDashboardDrillDownComponent {
         _this.dialogRef.close (_this.currentValue.id);
       }
     );
+  }
+
+  isLineOrBarChart(): boolean
+  {
+    if (!(this.currentValue.currentChartType.flags & ChartFlags.PIECHART) && !(this.currentValue.currentChartType.flags & ChartFlags.FUNNELCHART))
+      return true;
+
+    return false;
   }
 }

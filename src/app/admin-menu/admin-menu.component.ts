@@ -20,6 +20,7 @@ import { Moment } from 'moment';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { AirportSelection } from '../commons/AirportSelection';
+import { AuthService } from '../services/auth.service';
 //import  clonedeep from 'lodash.clonedeep';
 
 @Component({
@@ -410,7 +411,7 @@ export class EditCategoryArgumentDialog {
 
   constructor(
     private globals: Globals,
-    private http: ApiClient,
+    private authService: AuthService,
     public dialogRef: MatDialogRef<EditCategoryArgumentDialog>,
     @Inject(MAT_DIALOG_DATA) public data, public dialog: MatDialog) {
       this.optionId = data.optionId;
@@ -838,7 +839,7 @@ export class EditCategoryArgumentDialog {
      url = item.url + "/?search=" + (search != null?search:'');
     }
 
-    this.http.get(this,url,handlerSuccess, this.handlerError, null);  
+    this.authService.get (this, url, handlerSuccess, this.handlerError);  
   }
 
   handlerSuccess(_this,data, tab){   
@@ -1375,6 +1376,13 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
     this.clearSelectedCategoryArguments();
     var categories = this.categories;
+
+    if (!this.optionSelected.menuOptionArgumentsAdmin)
+    {
+      this.globals.isLoading = false;
+      return;
+    }
+
     this.optionSelected.menuOptionArgumentsAdmin.forEach(function (itemOptionCategory, indexOptionCategory, arrayOptionCategory) {
       categories.forEach(function (itemCategory, indexCategory, arrayCategory) {
         for (let index = 0; index < itemOptionCategory.categoryArgumentsId.length; index++) {

@@ -133,11 +133,21 @@ export class DatalakeComponent implements OnInit {
         });
       });
     }
-    _this.getDashboardsUser();
+
+    _this.appService.getNumAirlinesRestriction (_this, _this.restrictSuccess, _this.errorHandler);
     // _this.globals.isLoading = false;
     // _this.currentOption = 2;
   }
 
+  restrictSuccess(_this, data)
+  {
+    if (data)
+      _this.globals.restrictedAirlines = true;
+    else
+      _this.globals.restrictedAirlines = false;
+
+    _this.getDashboardsUser();
+  }
 
   getDashboardsUser() {
     this.menuService.getDashboardsByUser(this, this.handlerDashboard, this.errorHandler);
