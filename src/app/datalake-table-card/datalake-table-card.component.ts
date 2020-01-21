@@ -134,6 +134,40 @@ export class DatalakeTableCardComponent implements OnInit {
   }
 
   exportCSV(){
-    // this.values
+    this.service.getDatalakeTableData (this, this.values.schemaName, this.values.tableName, -1, this.handlerSuccess, this.handlerError);
   }
+
+  handlerSuccess(_this, data): void
+  {
+    if (!data)
+    {
+      _this.globals.popupLoading = false;
+      return;
+    }
+
+    if (!data.Columns || (data.Columns && !data.Columns.length))
+    {
+      _this.globals.popupLoading = false;
+      return;
+    }
+
+    if (data.Values)
+    {
+      if (data.CSVPath){
+        //llamo al servicio que me tra el csv
+        _this.service.getDatalakeTableDataCVS (_this, data.CSVPath, _this.handlerSuccessCSV, _this.handlerError);
+      }
+    }    
+  }
+
+  handlerSuccessCSV(_this, data): void
+  {
+    _this.globals.popupLoading = false;
+  }
+
+  handlerError(_this, result): void
+  {
+    _this.globals.popupLoading = false;
+  }  
+
 }
