@@ -1057,4 +1057,9 @@ export class MsfDashboardComponent implements OnInit {
   {
     this.controlVariableDialogOpen = enable;
   }
+
+  displayResults(values): boolean
+  {
+    return !(!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !values.displayDynTable);
+  }
 }

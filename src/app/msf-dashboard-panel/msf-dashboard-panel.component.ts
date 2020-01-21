@@ -192,6 +192,9 @@ export class MsfDashboardPanelComponent implements OnInit {
   @Output("toggleControlVariableDialogOpen")
   toggleControlVariableDialogOpen  = new EventEmitter ();
 
+  @Output("removePanel")
+  removePanel = new EventEmitter ();
+
   childPanelValues: any[] = [];
   childPanelsConfigured: boolean[] = [];
 
@@ -227,6 +230,9 @@ export class MsfDashboardPanelComponent implements OnInit {
   selectedIndex = 0;
   totalRecord = 0;
   metadata;
+
+  titleTextWidth: number;
+  lastChartName: String;
 
   public dataFormFilterCtrl: FormControl = new FormControl ();
   public variableFilterCtrl: FormControl = new FormControl ();
@@ -316,7 +322,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     this.values.style = this.msfMapRef.mapTypes[1];
   }
-
+  panelButtons: boolean = false;
   ngOnChanges(changes: SimpleChanges): void
   {
     if (changes['reAppendChart'] && this.reAppendChart)
@@ -3773,6 +3779,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   goToChartConfiguration(): void
   {
     this.values.displayChart = false;
+    this.panelButtons = false;
     this.storeChartValues ();
   }
 
@@ -6604,7 +6611,13 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   toggleIntervalTable(): void
   {
+    let chartElement;
+
     this.advTableView = !this.advTableView;
+
+    // redraw chart
+    chartElement = document.getElementById ("msf-dashboard-chart-display-" + this.values.id);
+    document.getElementById ("msf-dashboard-chart-display-container-" + this.values.id).appendChild (chartElement);
   }
 
   isLineOrBarChart(): boolean
@@ -6649,5 +6662,71 @@ export class MsfDashboardPanelComponent implements OnInit {
       return "calc(100% - 170px)";
 
     return "calc(100% - 219px)";
+  }
+
+  getConfigMoreButtonOffset(): string
+  {
+    if (this.isAdvChartPanel ())
+    {
+      if (this.advTableView)
+        return "calc(100% + 183px)";
+      else
+        return "calc(100% + 230px)";
+    }
+  
+    return "calc(100% + 136px)";
+  }
+
+  getConfigHoverButtonOffset(): string
+  {
+    if (this.isAdvChartPanel ())
+      return "calc(100% + 38px)";
+
+    return "calc(100% + 36px)";
+  }
+
+  calcTitleTextWidth(): number
+  {
+    let text = document.createElement ("span");
+    let width;
+
+    document.body.appendChild (text); 
+
+    text.style.font = "times new roman"; 
+    text.style.fontSize = "16px"; 
+    text.style.marginLeft = "-10px";
+    text.style.paddingLeft = "15px";
+    text.style.height = 'auto'; 
+    text.style.width = 'auto'; 
+    text.style.position = 'absolute'; 
+    text.style.whiteSpace = 'no-wrap';
+    text.innerHTML =  "" + this.values.chartName;
+
+    width = text.clientWidth;
+
+    document.body.removeChild (text);
+
+    return width;
+  }
+
+  displayPanelButtons(item: string): boolean
+  {
+    const buttonsElement = document.getElementById ("msf-dashboard-panel-" + item + "-buttons-" + this.values.id);
+
+    if (buttonsElement)
+    {
+      if (this.values.chartName != this.lastChartName)
+      {
+        this.titleTextWidth = this.calcTitleTextWidth ();
+        this.lastChartName = this.values.chartName;
+      }
+
+      if (buttonsElement.offsetLeft)
+        this.values.displayButtons = buttonsElement.offsetLeft > this.titleTextWidth;
+
+      return this.values.displayButtons;
+    }
+
+    return false;
   }
 }

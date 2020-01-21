@@ -103,6 +103,8 @@ export class MsfDashboardPanelValues {
     limitMode: number;
     limitAmount: number;
 
+    displayButtons: boolean;
+
     constructor(options: any[], chartName: String, id: number, width: any, height: any, currentOption?: any, variable?: any,
         xaxis?: any, valueColumn?: any, func?: any, chartType?: any, currentOptionCategories?: any, lastestResponse?: string,
         paletteColors?: any, updateTimeInterval?: number, row?: number, thresholds?: any, vertAxisName?: string, horizAxisName?: string,
