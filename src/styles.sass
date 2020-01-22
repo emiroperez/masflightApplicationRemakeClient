@@ -58,22 +58,22 @@
     transition: 0.5s
     font-size: 14px
     .msf-dashboard-column-properties-align
-        margin-top: 15px
+        margin-top: 18px
         display: flex
         flex-direction: row
         align-items: center
         width: 20%
+        .msf-dashboard-column-properties-height-label
+            color: $font-color
+            margin-right: 10px
     .msf-dashboard-column-button
-        margin-top: 7px
+        margin-top: 15px
         display: flex
         flex-direction: row
         align-items: center
         padding-left: 10px
         .msf-dashboard-column-properties-button
             padding-left: 10px
-        .msf-dashboard-column-properties-height-label
-            color: $font-color
-            width: 60%
         .msf-dashboard-column-properties-form-field
             @extend .msf-dashboard-column-properties-form-field
     .msf-dashboard-columns-move-button
@@ -84,6 +84,7 @@
         padding-left: 10px
         .msf-dashboard-button-move-icon
             @include msf-dashboard-icon(5px)
+            margin-top: 12px
             background-image: url(assets/images/#{$name}-vert-move.png)
             background-repeat: no-repeat
             width: 20px
