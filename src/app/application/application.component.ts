@@ -95,7 +95,7 @@ export class ApplicationComponent implements OnInit {
 
     this.globals.appLoading = true;
     this.globals.isLoading = true;
-    this.appService.getNumAirlinesRestriction (this, this.restrictSuccess, this.restrictError);
+    this.appService.getNumAirlinesRestriction (this, this.restrictAirlineSuccess, this.errorLogin);
   }
 
   ngOnDestroy(): void {
@@ -169,19 +169,27 @@ export class ApplicationComponent implements OnInit {
     _this.appService.getDefaultDashboard (_this, _this.handlerDefaultDashboard, _this.errorLogin);
   }
 
-  restrictSuccess(_this, data)
+  restrictAirlineSuccess(_this, data)
   {
     if (data)
       _this.globals.restrictedAirlines = true;
     else
       _this.globals.restrictedAirlines = false;
 
-    _this.getMenu();
+    _this.appService.getDateRestriction (_this, _this.restrictDateSuccess, _this.errorLogin);
   }
 
-  restrictError(_this)
+  restrictDateSuccess(_this, data)
   {
-    _this.globals.restrictedAirlines = true;
+    if (data)
+    {
+      _this.globals.dateRestrictionInfo = data;
+      _this.globals.dateRestrictionInfo.startDate = _this.globals.dateRestrictionInfo.startDate ? new Date (_this.globals.dateRestrictionInfo.startDate) : null;
+      _this.globals.dateRestrictionInfo.endDate = _this.globals.dateRestrictionInfo.endDate ? new Date (_this.globals.dateRestrictionInfo.endDate) : null;
+    }
+    else
+      _this.globals.dateRestrictionInfo = null;
+
     _this.getMenu();
   }
 

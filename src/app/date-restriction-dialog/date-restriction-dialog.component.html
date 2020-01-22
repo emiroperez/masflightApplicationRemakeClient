@@ -1,0 +1,30 @@
+<div class="date-restriction-loading" *ngIf="isLoading"></div>
+<div class="airline-restrictions-container date-restriction-container msf-control-variables-overlay" *ngIf="!isLoading">
+  <div class="airline-restrictions-container-close-button">
+    <mat-icon aria-label="close" (click)="closeDialog()">close</mat-icon>
+  </div>
+  <div class="airline-restrictions-title">Date Restriction</div>
+  <div class="center msf-component-radio date-restriction-radio-group">
+    <mat-radio-group [(ngModel)]="restricted" (ngModelChange)="clearDateRange()">
+      <mat-radio-button [value]="false">No Restriction</mat-radio-button>
+      <mat-radio-button class="msf-radio" [value]="true">Limited Date Range</mat-radio-button>
+    </mat-radio-group>
+  </div>
+  <div class="msf-component-date-input-container msf-single-date date-restriction-input-container" *ngIf="restricted">
+    <mat-form-field class="msf-full-width date-restriction-min-date-input">
+      <input matInput [matDatepicker]="picker1" placeholder="Min Date" [(ngModel)]="minDate" (click)="picker1.open()" [readonly]="true">
+      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+      <mat-datepicker #picker1></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field class="msf-full-width msf-single-date">
+      <input matInput class="msf-component-airport-container mat-input-element" [(ngModel)]="maxDate" matInput [matDatepicker]="picker2" placeholder="Max Date" autocomplete="off" class="msf-full-width msf-menu-arg-select" (click)="picker2.open()" [readonly]="true">
+      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+      <mat-datepicker #picker2></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <div class="airline-restrictions-option-buttons">
+    <button mat-flat-button class="flat-button" (click)="closeDialogAndSave()">OK</button>
+    <span class="button-separator"></span>
+    <button mat-flat-button class="flat-button" (click)="closeDialog()">Cancel</button>
+  </div>
+</div>

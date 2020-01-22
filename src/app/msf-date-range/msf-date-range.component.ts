@@ -248,6 +248,8 @@ export class MsfDateRangeComponent implements OnInit {
 
   ngOnInit()
   {
+    let argMinDate = this.argument.minDate;
+
     this.currentValueType = (this.argument.selectionMode >> 1) & 3;
 
     if (!this.argument.currentDateRangeValue)
@@ -257,6 +259,45 @@ export class MsfDateRangeComponent implements OnInit {
     this.monthDateFormat = (this.argument.selectionMode >> 12) & 1;
 
     this.isDateRange = (this.argument.selectionMode & 1) ? true : false;
+
+    // set allowed date range depending of the option and restrictions by customer
+    if (this.argument.minDate)
+    {
+      if (this.argument.maxDate && this.globals.dateRestrictionInfo.endDate && this.globals.dateRestrictionInfo.startDate
+        && this.globals.dateRestrictionInfo.startDate > this.argument.maxDate
+        && this.globals.dateRestrictionInfo.endDate > this.argument.maxDate)
+        this.argument.minDate = this.argument.maxDate;
+      else if (!(this.globals.dateRestrictionInfo.endDate && this.globals.dateRestrictionInfo.startDate
+        && this.globals.dateRestrictionInfo.startDate < argMinDate
+        && this.globals.dateRestrictionInfo.endDate < argMinDate))
+      {
+        if (this.globals.dateRestrictionInfo.startDate && this.argument.minDate < this.globals.dateRestrictionInfo.startDate)
+          this.argument.minDate = this.globals.dateRestrictionInfo.startDate;
+        else if (this.globals.dateRestrictionInfo.endDate && this.argument.minDate > this.globals.dateRestrictionInfo.endDate)
+          this.argument.minDate = this.globals.dateRestrictionInfo.endDate;
+      }
+    }
+    else if (this.globals.dateRestrictionInfo.startDate)
+      this.argument.minDate = this.globals.dateRestrictionInfo.startDate;
+
+    if (this.argument.maxDate)
+    {
+      if (argMinDate && this.globals.dateRestrictionInfo.endDate && this.globals.dateRestrictionInfo.startDate
+        && this.globals.dateRestrictionInfo.startDate < argMinDate
+        && this.globals.dateRestrictionInfo.endDate < argMinDate)
+        this.argument.maxDate = argMinDate;
+      else if (!(this.globals.dateRestrictionInfo.endDate && this.globals.dateRestrictionInfo.startDate
+        && this.globals.dateRestrictionInfo.startDate > this.argument.maxDate
+        && this.globals.dateRestrictionInfo.endDate > this.argument.maxDate))
+      {
+        if (this.globals.dateRestrictionInfo.startDate && this.argument.maxDate < this.globals.dateRestrictionInfo.startDate)
+          this.argument.maxDate = this.globals.dateRestrictionInfo.startDate;
+        else if (this.globals.dateRestrictionInfo.endDate && this.argument.maxDate > this.globals.dateRestrictionInfo.endDate)
+          this.argument.maxDate = this.globals.dateRestrictionInfo.endDate;
+      }
+    }
+    else if (this.globals.dateRestrictionInfo.endDate)
+      this.argument.maxDate = this.globals.dateRestrictionInfo.endDate;
 
     this.minDate = this.argument.minDate;
     this.maxDate = this.argument.maxDate;
@@ -361,8 +402,6 @@ export class MsfDateRangeComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void
   {
-    //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
-    //Add '${implements OnChanges}' to the class.
     if (changes['refreshDate'] && this.refreshDate)
     {
       switch (this.currentValueType)
