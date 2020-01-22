@@ -1025,7 +1025,7 @@
             <button (click)="removePanel.emit()" mat-icon-button color="primary" class="msf-dashboard-panel-margin-button">
               <mat-icon>close</mat-icon>
             </button>
-            <button mat-icon-button (click)="goToInfoConfiguration()" color="primary" class="msf-dashboard-panel-margin-button" matTooltip="Edit Configuration">
+            <button mat-icon-button (click)="goToFormConfiguration()" color="primary" class="msf-dashboard-panel-margin-button" matTooltip="Edit Configuration">
               <mat-icon aria-label="Edit Configuration">menu</mat-icon>
             </button>
             <button mat-icon-button color="primary" class="msf-dashboard-panel-margin-button" (click)="sharePanel()" matTooltip="Share Panel">
@@ -1052,7 +1052,7 @@
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-panel-config-button" id="msf-dashboard-panel-pic-buttons-{{values.id}}" [ngStyle]="{ 'left': getConfigButtonOffset() }" *ngIf="!globals.readOnlyDashboard">
         <ng-container *ngIf="displayPanelButtons('pic')">
-          <button mat-icon-button (click)="goToFormConfiguration()" color="primary" class="msf-dashboard-panel-margin-button" matTooltip="Edit Configuration">
+          <button mat-icon-button (click)="goToPicConfiguration()" color="primary" class="msf-dashboard-panel-margin-button" matTooltip="Edit Configuration">
             <mat-icon aria-label="Edit Configuration">menu</mat-icon>
           </button>
           <button mat-icon-button color="primary" class="msf-dashboard-panel-margin-button" (click)="sharePanel()" matTooltip="Share Panel">
@@ -1070,7 +1070,7 @@
             <button (click)="removePanel.emit()" mat-icon-button color="primary" class="msf-dashboard-panel-margin-button">
               <mat-icon>close</mat-icon>
             </button>
-            <button mat-icon-button (click)="goToInfoConfiguration()" color="primary" class="msf-dashboard-panel-margin-button" matTooltip="Edit Configuration">
+            <button mat-icon-button (click)="goToPicConfiguration()" color="primary" class="msf-dashboard-panel-margin-button" matTooltip="Edit Configuration">
               <mat-icon aria-label="Edit Configuration">menu</mat-icon>
             </button>
             <button mat-icon-button color="primary" class="msf-dashboard-panel-margin-button" (click)="sharePanel()" matTooltip="Share Panel">
@@ -1110,7 +1110,7 @@
             <button (click)="removePanel.emit()" mat-icon-button color="primary" class="msf-dashboard-panel-margin-button">
               <mat-icon>close</mat-icon>
             </button>
-            <button mat-icon-button (click)="goToInfoConfiguration()" color="primary" class="msf-dashboard-panel-margin-button" matTooltip="Edit Configuration">
+            <button mat-icon-button (click)="goToTableConfiguration()" color="primary" class="msf-dashboard-panel-margin-button" matTooltip="Edit Configuration">
               <mat-icon aria-label="Edit Configuration">menu</mat-icon>
             </button>
             <button mat-icon-button color="primary" class="msf-dashboard-panel-margin-button" (click)="sharePanel()" matTooltip="Share Panel">
@@ -1158,7 +1158,7 @@
             <button (click)="removePanel.emit()" mat-icon-button color="primary" class="msf-dashboard-panel-margin-button">
               <mat-icon>close</mat-icon>
             </button>
-            <button mat-icon-button (click)="goToInfoConfiguration()" color="primary" class="msf-dashboard-panel-margin-button" matTooltip="Edit Configuration">
+            <button mat-icon-button (click)="goToMapboxConfiguration()" color="primary" class="msf-dashboard-panel-margin-button" matTooltip="Edit Configuration">
               <mat-icon aria-label="Edit Configuration">menu</mat-icon>
             </button>
             <button mat-icon-button color="primary" class="msf-dashboard-panel-margin-button" (click)="sharePanel()" matTooltip="Share Panel">
@@ -1198,7 +1198,7 @@
             <button (click)="removePanel.emit()" mat-icon-button color="primary" class="msf-dashboard-panel-margin-button">
               <mat-icon>close</mat-icon>
             </button>
-            <button mat-icon-button (click)="goToInfoConfiguration()" color="primary" class="msf-dashboard-panel-margin-button" matTooltip="Edit Configuration">
+            <button mat-icon-button (click)="goToDynTableConfiguration()" color="primary" class="msf-dashboard-panel-margin-button" matTooltip="Edit Configuration">
               <mat-icon aria-label="Edit Configuration">menu</mat-icon>
             </button>
             <button mat-icon-button color="primary" class="msf-dashboard-panel-margin-button" (click)="sharePanel()" matTooltip="Share Panel">
