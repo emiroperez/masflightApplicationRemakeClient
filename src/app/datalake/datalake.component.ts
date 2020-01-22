@@ -158,7 +158,12 @@ export class DatalakeComponent implements OnInit {
       _this.globals.dateRestrictionInfo.endDate = _this.globals.dateRestrictionInfo.endDate ? new Date (_this.globals.dateRestrictionInfo.endDate) : null;
     }
     else
-      _this.globals.dateRestrictionInfo = null;
+    {
+      _this.globals.dateRestrictionInfo = {
+        startDate: null,
+        endDate: null
+      };
+    }
 
     _this.getDashboardsUser();
   }
