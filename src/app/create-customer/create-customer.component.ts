@@ -15,6 +15,7 @@ import { Country } from '../model/Country';
 import { Plan } from '../model/Plan';
 import { Customer } from '../model/Customer';
 import { AirlineRestrictionsDialogComponent } from '../airline-restrictions-dialog/airline-restrictions-dialog.component';
+import { DateRestrictionDialogComponent } from '../date-restriction-dialog/date-restriction-dialog.component';
 
 export const US_DATE_FORMAT = {
   parse: {
@@ -760,6 +761,52 @@ export class CreateCustomerComponent implements OnInit {
       data: {
         selectedCustomer: this.selectedCustomer
       }
+    });
+  }
+
+  openDateRestriction(): void
+  {
+    const dialogRef = this.dialog.open (DateRestrictionDialogComponent, {
+      width: '400px',
+      panelClass: 'airline-restriction-dialog',
+      data: {
+        selectedCustomer: this.selectedCustomer
+      }
+    });
+
+    dialogRef.afterClosed ().subscribe ((data) => {
+      if (!data)
+        return;
+
+      this.globals.isLoading = true;
+
+      if (!data.restricted)
+        this.appServices.removeDateRestriction (this, this.selectedCustomer.id, this.dateSuccess, this.removeDateError);
+      else
+        this.appServices.saveDateRestriction (this, data, this.dateSuccess, this.addDateError);
+    });
+  }
+
+  dateSuccess(_this): void
+  {
+    _this.globals.isLoading = false;
+  }
+
+  addDateError(_this): void
+  {
+    _this.globals.isLoading = false;
+
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Error", message: "Failed to save date restriction." }
+    });
+  }
+
+  removeDateError(_this): void
+  {
+    _this.globals.isLoading = false;
+
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Error", message: "Failed to remove date restriction." }
     });
   }
 }

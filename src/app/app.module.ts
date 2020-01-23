@@ -211,6 +211,7 @@ import { DatalakeHomeComponent } from './datalake-home/datalake-home.component';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { AirlineRestrictionsDialogComponent } from './airline-restrictions-dialog/airline-restrictions-dialog.component';
 import { ImageLinkComponent } from './image-link/image-link.component';
+import { DateRestrictionDialogComponent } from './date-restriction-dialog/date-restriction-dialog.component';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -399,6 +400,7 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     DatalakeHomeComponent,
     AirlineRestrictionsDialogComponent,
     ImageLinkComponent
+    DateRestrictionDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -499,7 +501,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     MonthHeader,
     YearHeader,
     CreateUserDialogComponent,
-    AirlineRestrictionsDialogComponent
+    AirlineRestrictionsDialogComponent,
+    DateRestrictionDialogComponent
   ]
 })
 export class AppModule { }

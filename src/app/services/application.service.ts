@@ -648,6 +648,38 @@ export class ApplicationService {
   getNumAirlinesRestriction(_this, handlerSuccess, handlerError)
   {
     let url = this.host + "/secure/getNumAirlinesRestriction";
+
+    if (this.globals.testingPlan != -1)
+      url += "&testPlanId=" + this.globals.testingPlan;
+  
     this.authService.get (_this, url, handlerSuccess, handlerError);
+  }
+
+  saveDateRestriction(_this, dataRestriction, handlerSuccess, handlerError)
+  {
+    let url = this.host + "/saveDateRestriction";
+    this.http.post (_this, url, dataRestriction, handlerSuccess, handlerError);
+  }
+
+  removeDateRestriction(_this, customerId, handlerSuccess, handlerError)
+  {
+    let url = this.host + "/removeDateRestriction?customerId=" + customerId;
+    this.http.get (_this, url, handlerSuccess, handlerError, null);
+  }
+
+  getDateRestriction(_this, handlerSuccess, handlerError)
+  {
+    let url = this.host + "/secure/getDateRestriction";
+
+    if (this.globals.testingPlan != -1)
+      url += "&testPlanId=" + this.globals.testingPlan;
+
+    this.authService.get (_this, url, handlerSuccess, handlerError);
+  }
+
+  getDateRestriction2(_this, customerId, handlerSuccess, handlerError)
+  {
+    let url = this.host + "/getDateRestriction?customerId=" + customerId;
+    this.http.get (_this, url, handlerSuccess, handlerError, null);
   }
 }

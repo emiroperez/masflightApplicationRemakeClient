@@ -134,17 +134,36 @@ export class DatalakeComponent implements OnInit {
       });
     }
 
-    _this.appService.getNumAirlinesRestriction (_this, _this.restrictSuccess, _this.errorHandler);
+    _this.appService.getNumAirlinesRestriction (_this, _this.restrictAirlineSuccess, _this.errorHandler);
     // _this.globals.isLoading = false;
     // _this.currentOption = 2;
   }
 
-  restrictSuccess(_this, data)
+  restrictAirlineSuccess(_this, data)
   {
     if (data)
       _this.globals.restrictedAirlines = true;
     else
       _this.globals.restrictedAirlines = false;
+
+    _this.appService.getDateRestriction (_this, _this.restrictDateSuccess, _this.errorHandler);
+  }
+
+  restrictDateSuccess(_this, data)
+  {
+    if (data)
+    {
+      _this.globals.dateRestrictionInfo = data;
+      _this.globals.dateRestrictionInfo.startDate = _this.globals.dateRestrictionInfo.startDate ? new Date (_this.globals.dateRestrictionInfo.startDate) : null;
+      _this.globals.dateRestrictionInfo.endDate = _this.globals.dateRestrictionInfo.endDate ? new Date (_this.globals.dateRestrictionInfo.endDate) : null;
+    }
+    else
+    {
+      _this.globals.dateRestrictionInfo = {
+        startDate: null,
+        endDate: null
+      };
+    }
 
     _this.getDashboardsUser();
   }

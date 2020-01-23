@@ -70,6 +70,9 @@
             <h1 class="msf-customer-right-header">
               Edit Customer
               <div class="msf-customer-right-buttons">
+                <button [disabled]="!selectedCustomer || selectedCustomer.id == null" mat-icon-button matTooltip="Date Restriction" (click)="openDateRestriction()">
+                  <mat-icon>date_range</mat-icon>
+                </button>
                 <button [disabled]="!selectedCustomer || selectedCustomer.id == null" mat-icon-button matTooltip="Airline Restrictions" (click)="openAirlineRestrictions()">
                   <mat-icon>local_airport</mat-icon>
                 </button>

@@ -377,6 +377,10 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
         .airline-restrictions-loading
             min-height: 368px
             @include msf-dashboard-dialog-loading(55%, $quaternary-background-color, url(assets/images/#{$name}-loading_pulse.gif))
+        .date-restriction-loading
+            min-height: 142px
+            max-height: 142px
+            @include msf-dashboard-dialog-loading(35%, $quaternary-background-color, url(assets/images/#{$name}-loading_pulse.gif))
         .msf-dashboard-dialog
             .msf-dashboard-control-variables-close-button
                 .msf-dashboard-close-icon
@@ -10166,6 +10170,14 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 .msf-dashboard-additional-settings-title
     margin-top: 10px
 
+.date-restriction-radio-group
+    margin-top: 15px
+
+.date-restriction-input-container
+    display: flex
+    .date-restriction-min-date-input
+        margin-right: 10px
+
 .msf-dashboard-limit-amount-input
     width: 95%
 
@@ -10289,6 +10301,10 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     .mat-dialog-container
         padding: 0
         overflow: hidden
+
+.date-restriction-container
+    min-height: 100px !important
+    max-height: 165px !important
 
 .airline-restrictions-container
     position: relative
