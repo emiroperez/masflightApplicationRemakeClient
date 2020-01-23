@@ -26,6 +26,7 @@ export class MsfDashboardPanelValues {
     currentChartType;
     currentOption: any;
     currentOptionCategories: CategoryArguments[];
+    urlImg: String;
 
     width: number;
     height: any;
@@ -136,10 +137,18 @@ export class MsfDashboardPanelValues {
 
         if (lastestResponse)
         {
-            this.lastestResponse = JSON.parse (lastestResponse);
+            if (this.currentChartType != 32)
+            {
+                this.lastestResponse = JSON.parse (lastestResponse);
 
-            if (this.currentChartType == 15)
-                this.flightRoutes = JSON.parse (lastestResponse);
+                if (this.currentChartType == 15)
+                    this.flightRoutes = JSON.parse (lastestResponse);
+            }
+            else
+            {
+                this.urlImg = lastestResponse;
+                this.lastestResponse = lastestResponse;
+            }
         }
         else
             this.lastestResponse = null;
