@@ -399,7 +399,7 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     CreateUserDialogComponent,
     DatalakeHomeComponent,
     AirlineRestrictionsDialogComponent,
-    ImageLinkComponent
+    ImageLinkComponent,
     DateRestrictionDialogComponent
   ],
   imports: [
