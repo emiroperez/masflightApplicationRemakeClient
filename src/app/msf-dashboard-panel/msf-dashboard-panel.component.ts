@@ -2110,7 +2110,7 @@ export class MsfDashboardPanelComponent implements OnInit {
               analysisName: null,
               controlVariables: this.values.currentOptionCategories,
               chartSeries: this.values.chartSeries,
-              optionId: this.values.currentOption.id
+              optionId: this.values.currentOption ? this.values.currentOption.id : null
             });
 
             this.oldChartType = null;
@@ -2840,6 +2840,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       }
       else if (this.values.currentChartType.flags & ChartFlags.PICTURE)
       {
+        if (!this.values.urlImg || (this.values.urlImg && !this.values.urlImg.length))
+          return false;
       }
       else
       {
@@ -2893,7 +2895,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     else if (this.values.currentChartType.flags & ChartFlags.PICTURE)
     {
       this.dialog.open (MessageComponent, {
-        data: { title: "Error", message: "No picture available." }
+        data: { title: "Error", message: "No image available." }
       });
     }
     else if (this.values.currentChartType.flags & ChartFlags.FORM)
@@ -4083,10 +4085,19 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     
     if (this.values.currentChartType.flags & ChartFlags.PICTURE)
-      this.generateBtnEnabled=true; //kp2020Ene23
+    {
+      if (this.values.urlImg && this.values.urlImg != "")
+        this.generateBtnEnabled = true; //kp2020Ene23
+      else
+        this.generateBtnEnabled = false;
+
+      return;
+    }
     else
+    {
       if (this.values.currentOption == null)
         return;
+    }
 
     if (this.values.currentChartType.flags & ChartFlags.INFO)
     {
@@ -4281,8 +4292,11 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
     else if (this.values.currentChartType.flags & ChartFlags.PICTURE)
     {
+      if (this.values.urlImg && this.values.urlImg != "")
+      {
         this.generateBtnEnabled = true;
         return true;
+      }
     }
     else if (this.values.currentChartType.flags & ChartFlags.FORM)
     {
@@ -4548,8 +4562,9 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.values.geodata = this.geodatas[0];
 
     // picture and map panels doesn't need any data
-    if ((this.values.currentChartType.flags & ChartFlags.PICTURE)
-      || (this.values.currentChartType.flags & ChartFlags.MAP))
+    if (this.values.currentChartType.flags & ChartFlags.PICTURE)
+      this.variableCtrlBtnEnabled = false;
+    else if (this.values.currentChartType.flags & ChartFlags.MAP)
     {
       if (this.values.chartColumnOptions.length)
         this.variableCtrlBtnEnabled = true;
@@ -5157,10 +5172,11 @@ export class MsfDashboardPanelComponent implements OnInit {
 
           panel.lastestResponse = JSON.stringify (variables);
         }
-        else if (_this.values.currentChartType.flags & ChartFlags.PICTURE){
+        else if (_this.values.currentChartType.flags & ChartFlags.PICTURE)
+        {
           panel = _this.getPanelInfo ();
           panel.lastestResponse = _this.values.urlImg;
-          }
+        }
         else
         {
           panel = _this.getPanelInfo ();
