@@ -120,8 +120,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     { name: 'Scatter', flags: ChartFlags.XYCHART | ChartFlags.LINECHART | ChartFlags.BULLET, createSeries: this.createLineSeries },
     { name: 'Advanced Scatter', flags: ChartFlags.XYCHART | ChartFlags.LINECHART | ChartFlags.BULLET | ChartFlags.ADVANCED, createSeries: this.createLineSeries },
     { name: 'Simple Scatter', flags: ChartFlags.LINECHART | ChartFlags.BULLET, createSeries: this.createSimpleLineSeries },
-    { name: 'Advanced Simple Scatter', flags: ChartFlags.LINECHART | ChartFlags.BULLET | ChartFlags.ADVANCED, createSeries: this.createSimpleLineSeries }/*,
-    { name: 'Simple Picture', flags: ChartFlags.INFO | ChartFlags.PICTURE },*/
+    { name: 'Advanced Simple Scatter', flags: ChartFlags.LINECHART | ChartFlags.BULLET | ChartFlags.ADVANCED, createSeries: this.createSimpleLineSeries },
+    { name: 'Link Image', flags: ChartFlags.INFO | ChartFlags.PICTURE }
   ];
 
   functions: any[] = [
@@ -2688,36 +2688,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.authService.post (this, url, formConfig, handlerSuccess, handlerError);
   }
 
-  loadPicData(handlerSuccess, handlerError): void
-  {
-    let url, urlBase, urlArg;
-
-    // TODO: Use a service that gets a url which contains a picture
-    this.values.isLoading = true;
-    if (this.globals.currentApplication.name === "DataLake")
-    {
-      if (this.getParameters ())
-        urlBase = this.values.currentOption.baseUrl + "?uName=" + this.globals.userName + "&" + this.getParameters ();
-      else
-        urlBase = this.values.currentOption.baseUrl + "?uName=" + this.globals.userName;
-    }
-    else
-      urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
-
-    urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=1&page_number=0";
-    urlArg = encodeURIComponent (urlBase);
-
-    if (isDevMode ())
-      console.log (urlBase);
-
-    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
-
-    if (this.globals.testingPlan != -1)
-      url += "&testPlanId=" + this.globals.testingPlan;
-
-    this.authService.get (this, url, handlerSuccess, handlerError);
-  }
-
   loadTableData(moreResults, handlerSuccess, handlerError): void
   {
     let url, urlBase, urlArg;
@@ -2834,7 +2804,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     else if (this.values.currentChartType.flags & ChartFlags.TABLE)
       this.loadTableData (false, this.msfTableRef.handlerSuccess, this.msfTableRef.handlerError);
     else if (this.values.currentChartType.flags & ChartFlags.PICTURE)
-      this.loadPicData (this.handlerPicSuccess, this.handlerPicError);
+      this.loadPicData ();
     else if (this.values.currentChartType.flags & ChartFlags.FORM)
       this.loadFormData (this.handlerFormSuccess, this.handlerFormError);
     else if (this.values.currentChartType.flags & ChartFlags.INFO)
@@ -3075,21 +3045,30 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.service.saveLastestResponse (_this, _this.getPanelInfo (), _this.handlerDynTableLastestResponse, _this.handlerDynTableError);
   }
 
-  handlerPicSuccess(_this, data): void
+  loadPicData(): void
+  {
+
+
+    // if (data == null)
+    // {      
+    //   _this.noDataFound ();
+    //   return;
+    // }
+
+    // destroy current chart if it's already generated to avoid a blank chart later
+    this.values.lastestResponse = this.values.urlImg;
+    this.values.isLoading = true;
+    this.service.saveLastestResponse (this, this.getPanelInfo (), this.handlerPicSuccess, this.handlerPicError);
+  }
+
+  handlerPicSuccess(_this): void
   {
     if (!_this.values.isLoading)
       return;
 
-    if (data == null)
-    {
-      _this.noDataFound ();
-      return;
-    }
-
-    // destroy current chart if it's already generated to avoid a blank chart later
+      _this.values.isLoading = false;
     _this.destroyChart ();
 
-    _this.values.isLoading = false;
     _this.values.displayPic = true;
     _this.values.chartGenerated = false;
     _this.values.infoGenerated = false;
@@ -3102,7 +3081,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.removeDeadVariablesAndCategories.emit ({
       type: _this.chartTypes.indexOf (_this.oldChartType),
       analysisName: _this.oldVariableName,
-      chartSeries: _this.values.chartSeries,
+      chartSeries: this.values.chartSeries,
       controlVariables: _this.oldOptionCategories
     });
 
@@ -3809,6 +3788,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
     else
       this.temp.chartName = this.values.chartName;
+      this.temp.urlImg = this.values.urlImg;
 
     this.temp.currentOption = JSON.parse (JSON.stringify (this.values.currentOption));
     this.temp.variable = this.values.variable ? this.values.variable.item.id : null;
@@ -4101,8 +4081,12 @@ export class MsfDashboardPanelComponent implements OnInit {
   // check if the x axis should be enabled or not depending of the chart type
   checkChartType(): void
   {
-    if (this.values.currentOption == null)
-      return;
+    
+    if (this.values.currentChartType.flags & ChartFlags.PICTURE)
+      this.generateBtnEnabled=true; //kp2020Ene23
+    else
+      if (this.values.currentOption == null)
+        return;
 
     if (this.values.currentChartType.flags & ChartFlags.INFO)
     {
@@ -4286,8 +4270,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         return true;
       }
     }
-    else if (this.values.currentChartType.flags & ChartFlags.PICTURE
-      || this.values.currentChartType.flags & ChartFlags.TABLE
+    else if (this.values.currentChartType.flags & ChartFlags.TABLE
       || this.values.currentChartType.flags & ChartFlags.MAP)
     {
       if (this.values.currentOption != null)
@@ -4295,6 +4278,11 @@ export class MsfDashboardPanelComponent implements OnInit {
         this.generateBtnEnabled = true;
         return true;
       }
+    }
+    else if (this.values.currentChartType.flags & ChartFlags.PICTURE)
+    {
+        this.generateBtnEnabled = true;
+        return true;
     }
     else if (this.values.currentChartType.flags & ChartFlags.FORM)
     {
@@ -5169,6 +5157,10 @@ export class MsfDashboardPanelComponent implements OnInit {
 
           panel.lastestResponse = JSON.stringify (variables);
         }
+        else if (_this.values.currentChartType.flags & ChartFlags.PICTURE){
+          panel = _this.getPanelInfo ();
+          panel.lastestResponse = _this.values.urlImg;
+          }
         else
         {
           panel = _this.getPanelInfo ();

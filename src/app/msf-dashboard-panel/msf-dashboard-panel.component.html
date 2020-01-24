@@ -17,7 +17,7 @@
         </button>
       </div>
       <div class="msf-dashboard-panel-sub-container-row msf-dashboard-panel-data-select">
-        <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+        <mat-form-field *ngIf="values.currentChartType.name !='Link Image'" [formGroup]="chartForm" class="msf-full-width">
           <mat-select formControlName="dataFormCtrl" placeholder="Select Data From" [(value)]="values.currentOption" (selectionChange)="loadChartFilterValues($event.value)">
             <ngx-mat-select-search [formControl]="dataFormFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
             <mat-option *ngFor="let option of filteredOptions | async | panelOptionFilter:values.currentChartType" [value]="option">
@@ -25,6 +25,10 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
+        <!--input url Img-->
+        <mat-form-field  *ngIf="values.currentChartType.name==='Link Image'" class="msf-full-width">
+            <input matInput autocomplete="off" type="text" placeholder="Type Image Url" [(ngModel)]="values.urlImg"/>
+          </mat-form-field>
       </div>
     </div>
     <div class="msf-dashboard-panel-sub-container-column">
@@ -145,7 +149,7 @@
             </div>
           </div>
           <div class="msf-dashboard-panel-sub-container-column-reverse">
-            <button [disabled]="!generateBtnEnabled" mat-flat-button [ngClass]="generateBtnEnabled ? 'flat-button' : 'flat-button-disabled'" (click)="loadData()">Generate</button>
+            <button mat-flat-button [ngClass]="generateBtnEnabled ? 'flat-button' : 'flat-button-disabled'" (click)="loadData()">Generate</button>
             <div class="msf-dashboard-panel-control-variable-button">
               <button [disabled]="!variableCtrlBtnEnabled" mat-mini-fab (click)="goToControlVariables()" color="primary" matTooltip="Control Variables">
                 <mat-icon aria-label="Control Variables">more_vert</mat-icon>
@@ -430,8 +434,11 @@
     <ng-container *ngIf="isPicturePanel()">
       <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-picture-container">
         <div class="msf-dashboard-panel-picture-label-container">
-          <div class="msf-dashboard-panel-picture-label">
+          <div *ngIf="values.currentChartType.name !='Link Image'" class="msf-dashboard-panel-picture-label">
             Set the control variables before generating the picture!
+          </div>
+          <div *ngIf="values.currentChartType.name ==='Link Image'" class="msf-dashboard-panel-picture-label">
+            Set URL Image before generating the picture!
           </div>
         </div>
       </div>
@@ -1088,8 +1095,9 @@
           </div>
         </ng-container>
       </div>
-      <div [style.height.px]="calcPanelHeight()">
+      <div [style.height.px]="calcPanelHeight()" class="content-panel-img">
         <!-- TODO: Picture goes here -->
+        <app-image-link [url]="values.urlImg"></app-image-link>
       </div>
     </div>
   </div>
