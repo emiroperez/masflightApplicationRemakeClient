@@ -3674,7 +3674,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (!this.temp)
     {
       this.temp = new MsfDashboardPanelValues (this.values.options, this.values.chartName,
-        this.values.id, this.values.width, this.values.height);
+        this.values.id, this.values.width, this.values.height,"");
     }
     else
       this.temp.chartName = this.values.chartName;
