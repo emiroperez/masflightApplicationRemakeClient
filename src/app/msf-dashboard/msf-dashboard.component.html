@@ -70,14 +70,14 @@
                       <button mat-flat-button class="flat-button" (click)="addPanelInColumn(column, 1)">Add 1 panel</button>
                     </div>
                   </ng-container>
+                  <ng-container *ngIf="dashboardColumn.length <= 2">
+                    <div class="msf-dashboard-column-properties-button">
+                      <button mat-flat-button class="flat-button" (click)="addPanelInColumn(column, 3)">Add 2 panels</button>
+                    </div>
+                  </ng-container>
                   <ng-container *ngIf="dashboardColumn.length == 1">
                     <div class="msf-dashboard-column-properties-button">
                       <button mat-flat-button class="flat-button" (click)="addPanelInColumn(column, 2)">Add 3 panels</button>
-                    </div>
-                  </ng-container>
-                  <ng-container *ngIf="dashboardColumn.length == 2">
-                    <div class="msf-dashboard-column-properties-button">
-                      <button mat-flat-button class="flat-button" (click)="addPanelInColumn(column, 3)">Add 2 panels</button>
                     </div>
                   </ng-container>
                 </div>
@@ -114,6 +114,9 @@
       </div>
       <div class="msf-dashboard-addmenu-item" *ngIf="displayAddPanel">
         <div class="msf-dashboard-addmenu-item-text" (click)="addPanel(3)">3 Panels</div>
+      </div>
+      <div class="msf-dashboard-addmenu-item" *ngIf="displayAddPanel">
+        <div class="msf-dashboard-addmenu-item-text" (click)="addPanel(4)">4 Panels</div>
       </div>
     </div>
     <div *ngIf="displayContextMenu">
