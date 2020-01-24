@@ -1813,38 +1813,26 @@ export class MsfDashboardPanelComponent implements OnInit {
             {
               if (this.values.valueList && this.values.valueList.length > 1)
               {
-                /*for (let object of chartInfo.valueFields)
+                for (let data of chart.data)
                 {
                   let average = 0;
-  
-                  for (let data of chartInfo.dataProvider)
+
+                  for (let object of chartInfo.valueFields)
                   {
                     let value = data[object];
   
                     if (value != null)
-                      data[""] += value;
+                      average += value;
                   }
-  
-                  avg[object] = average / chartInfo.dataProvider.length;
-                  object["avg"] = average / chartInfo.dataProvider.length;
+
+                  data["avg"] = average / chartInfo.valueFields.length;
                 }
   
-                // Also sort the data by date the to get the correct order on the line chart
-                // if the category axis is a date type
-                if (parseDate && this.values.currentChartType.flags & ChartFlags.LINECHART)
-                {
-                  let axisField = this.values.variable.id;
-    
-                  chart.events.on ("beforedatavalidated", function (event) {
-                    chart.data.sort (function (e1, e2) {
-                      return +(new Date(e1[axisField])) - +(new Date(e2[axisField]));
-                    });
+                chart.events.on ("beforedatavalidated", function(event) {
+                  chart.data.sort (function(e1, e2) {
+                    return e1["avg"] - e2["avg"];
                   });
-                }
-  
-                chartInfo.valueFields.sort (function (e1, e2) {
-                  return e1.avg - e2.avg;
-                });*/
+                });
               }
               else
               {
