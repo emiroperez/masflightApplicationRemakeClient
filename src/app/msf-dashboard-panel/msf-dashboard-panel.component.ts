@@ -1828,11 +1828,28 @@ export class MsfDashboardPanelComponent implements OnInit {
                   data["avg"] = average / chartInfo.valueFields.length;
                 }
   
-                chart.events.on ("beforedatavalidated", function(event) {
-                  chart.data.sort (function(e1, e2) {
-                    return e1["avg"] - e2["avg"];
+                if (parseDate)
+                {
+                  let axisField = this.values.variable.id;
+
+                  // reverse order for rotated charts
+                  if (this.values.currentChartType.flags & ChartFlags.ROTATED)
+                    categoryAxis.renderer.inversed = true;
+
+                  chart.events.on ("beforedatavalidated", function (event) {
+                    chart.data.sort (function (e1, e2) {
+                      return +(new Date(e1[axisField])) - +(new Date(e2[axisField]));
+                    });
                   });
-                });
+                }
+                else
+                {
+                  chart.events.on ("beforedatavalidated", function(event) {
+                    chart.data.sort (function(e1, e2) {
+                      return e1["avg"] - e2["avg"];
+                    });
+                  });
+                }
               }
               else
               {
