@@ -434,11 +434,8 @@
     <ng-container *ngIf="isPicturePanel()">
       <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-picture-container">
         <div class="msf-dashboard-panel-picture-label-container">
-          <div *ngIf="values.currentChartType.name !='Link Image'" class="msf-dashboard-panel-picture-label">
-            Set the control variables before generating the picture!
-          </div>
-          <div *ngIf="values.currentChartType.name ==='Link Image'" class="msf-dashboard-panel-picture-label">
-            Set URL Image before generating the picture!
+          <div class="msf-dashboard-panel-picture-label">
+            Set URL Image before generating the image!
           </div>
         </div>
       </div>
@@ -446,11 +443,6 @@
         <div class="msf-dashboard-chart-options-container">
           <div class="msf-dashboard-panel-sub-container-column-reverse">
             <button [disabled]="!generateBtnEnabled" mat-flat-button [ngClass]="generateBtnEnabled ? 'flat-button' : 'flat-button-disabled'" (click)="loadData()">Generate</button>
-            <div class="msf-dashboard-panel-control-variable-button">
-              <button [disabled]="!variableCtrlBtnEnabled" mat-mini-fab (click)="goToControlVariables()" color="primary" matTooltip="Control Variables">
-                <mat-icon aria-label="Control Variables">more_vert</mat-icon>
-              </button>
-            </div>
             <div class="msf-dashboard-panel-control-variable-button">
               <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated && !values.dynTableGenerated" mat-mini-fab (click)="goToChart()" color="primary" matTooltip="Go To Picture">
                 <mat-icon aria-label="Go To Picture">bar_chart</mat-icon>
