@@ -86,6 +86,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   chart: any;
   chartInfo: any;
   redisplayChart: boolean = false;
+  panelButtons: boolean = false;
 
   chartTypes: any[] = [
     { name: 'Bars', flags: ChartFlags.XYCHART, createSeries: this.createVertColumnSeries },
@@ -322,7 +323,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     this.values.style = this.msfMapRef.mapTypes[1];
   }
-  panelButtons: boolean = false;
+
   ngOnChanges(changes: SimpleChanges): void
   {
     if (changes['reAppendChart'] && this.reAppendChart)
@@ -649,12 +650,22 @@ export class MsfDashboardPanelComponent implements OnInit {
   }
 
   // Function to create simple line chart series
-  createSimpleLineSeries(values, stacked, chart, item, parseDate, theme, outputFormat): any
+  createSimpleLineSeries(values, value, chart, item, parseDate, index, outputFormat): any
   {
     // Set up series
     let series = chart.series.push (new am4charts.LineSeries ());
-    series.name = item.valueField;
-    series.dataFields.valueY = item.valueField;
+
+    if (value)
+    {
+      series.name = value.name;
+      series.dataFields.valueY = value.id;
+    }
+    else
+    {
+      series.name = item.valueField;
+      series.dataFields.valueY = item.valueField;
+    }
+
     series.sequencedInterpolation = true;
     series.strokeWidth = 2;
     series.minBulletDistance = 10;
@@ -701,8 +712,6 @@ export class MsfDashboardPanelComponent implements OnInit {
       }
     }
 
-    series.stacked = stacked;
-
     // Set thresholds
     series.segments.template.adapter.add ("fill", (fill, target) => {
       if (target.dataItem)
@@ -714,7 +723,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         }
       }
 
-      return am4core.color (values.paletteColors[0]);
+      return am4core.color (values.paletteColors[index]);
     });
 
     series.adapter.add ("stroke", (stroke, target) => {
@@ -727,7 +736,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         }
       }
 
-      return am4core.color (values.paletteColors[0]);
+      return am4core.color (values.paletteColors[index]);
     });
 
     if (!(values.currentChartType.flags & ChartFlags.ADVANCED))
@@ -748,11 +757,20 @@ export class MsfDashboardPanelComponent implements OnInit {
   }
 
   // Function to create simple vertical column chart series
-  createSimpleVertColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat): any
+  createSimpleVertColumnSeries(values, value, chart, item, parseDate, index, outputFormat): any
   {
     let series = chart.series.push (new am4charts.ColumnSeries ());
-    series.dataFields.valueY = item.valueField;
-    series.name = item.valueField;
+
+    if (value)
+    {
+      series.dataFields.valueY = value.id;
+      series.name = value.name;
+    }
+    else
+    {
+      series.dataFields.valueY = item.valueField;
+      series.name = item.valueField;
+    }
 
     if (values.currentChartType.flags & ChartFlags.ADVANCED)
     {
@@ -776,8 +794,6 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     series.columns.template.strokeWidth = 0;
 
-    series.stacked = stacked;
-
     // Set colors
     series.columns.template.adapter.add ("fill", (fill, target) => {
       if (target.dataItem)
@@ -789,7 +805,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         }
       }
 
-      return am4core.color (values.paletteColors[0]);
+      return am4core.color (values.paletteColors[index]);
     });
 
     // Display a special context menu when a chart column is right clicked
@@ -806,11 +822,20 @@ export class MsfDashboardPanelComponent implements OnInit {
   }
 
   // Function to create simple horizontal column chart series
-  createSimpleHorizColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat): any
+  createSimpleHorizColumnSeries(values, value, chart, item, parseDate, index, outputFormat): any
   {
     let series = chart.series.push (new am4charts.ColumnSeries ());
-    series.dataFields.valueX = item.valueField;
-    series.name = item.valueField;
+
+    if (value)
+    {
+      series.dataFields.valueX = value.id;
+      series.name = value.name;
+    }
+    else
+    {
+      series.dataFields.valueX = item.valueField;
+      series.name = item.valueField;
+    }
 
     if (values.currentChartType.flags & ChartFlags.ADVANCED)
     {
@@ -834,8 +859,6 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     series.columns.template.strokeWidth = 0;
 
-    series.stacked = stacked;
-
     series.columns.template.adapter.add ("fill", (fill, target) => {
       if (target.dataItem)
       {
@@ -846,7 +869,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         }
       }
 
-      return am4core.color (values.paletteColors[0]);
+      return am4core.color (values.paletteColors[index]);
     });
 
     series.columns.template.events.on ("rightclick", function (event) {
@@ -1758,10 +1781,12 @@ export class MsfDashboardPanelComponent implements OnInit {
                 valueAxis.title.text = this.values.vertAxisName;
               else
               {
-                if (this.values.valueColumn)
+                if (this.values.valueList && this.values.valueList.length == 1)
+                  valueAxis.title.text = this.values.valueList[0].name;
+                else if (this.values.valueColumn && !this.values.valueList)
                   valueAxis.title.text = this.values.valueColumn.name;
                 else
-                  valueAxis.title.text = "Count";
+                  valueAxis.title.text = this.values.function.name;
               }
             }
             else
@@ -1775,37 +1800,77 @@ export class MsfDashboardPanelComponent implements OnInit {
                 valueAxis.title.text = this.values.horizAxisName;
               else
               {
-                if (this.values.valueColumn)
+                if (this.values.valueList && this.values.valueList.length == 1)
+                  valueAxis.title.text = this.values.valueList[0].name;
+                else if (this.values.valueColumn && !this.values.valueList)
                   valueAxis.title.text = this.values.valueColumn.name;
                 else
-                  valueAxis.title.text = "Count";
+                  valueAxis.title.text = this.values.function.name;
               }
             }
 
             if (this.values.ordered)
             {
-              if (parseDate)
+              if (this.values.valueList && this.values.valueList.length > 1)
               {
-                let axisField = this.values.variable.id;
-
-                // reverse order for rotated charts
-                if (this.values.currentChartType.flags & ChartFlags.ROTATED)
-                  categoryAxis.renderer.inversed = true;
-
-                chart.events.on ("beforedatavalidated", function (event) {
-                  chart.data.sort (function (e1, e2) {
-                    return +(new Date(e1[axisField])) - +(new Date(e2[axisField]));
+                /*for (let object of chartInfo.valueFields)
+                {
+                  let average = 0;
+  
+                  for (let data of chartInfo.dataProvider)
+                  {
+                    let value = data[object];
+  
+                    if (value != null)
+                      data[""] += value;
+                  }
+  
+                  avg[object] = average / chartInfo.dataProvider.length;
+                  object["avg"] = average / chartInfo.dataProvider.length;
+                }
+  
+                // Also sort the data by date the to get the correct order on the line chart
+                // if the category axis is a date type
+                if (parseDate && this.values.currentChartType.flags & ChartFlags.LINECHART)
+                {
+                  let axisField = this.values.variable.id;
+    
+                  chart.events.on ("beforedatavalidated", function (event) {
+                    chart.data.sort (function (e1, e2) {
+                      return +(new Date(e1[axisField])) - +(new Date(e2[axisField]));
+                    });
                   });
-                });
+                }
+  
+                chartInfo.valueFields.sort (function (e1, e2) {
+                  return e1.avg - e2.avg;
+                });*/
               }
               else
               {
-                // Sort values from least to greatest
-                chart.events.on ("beforedatavalidated", function(event) {
-                  chart.data.sort (function(e1, e2) {
-                    return e1[chartInfo.valueField] - e2[chartInfo.valueField];
+                if (parseDate)
+                {
+                  let axisField = this.values.variable.id;
+
+                  // reverse order for rotated charts
+                  if (this.values.currentChartType.flags & ChartFlags.ROTATED)
+                    categoryAxis.renderer.inversed = true;
+
+                  chart.events.on ("beforedatavalidated", function (event) {
+                    chart.data.sort (function (e1, e2) {
+                      return +(new Date(e1[axisField])) - +(new Date(e2[axisField]));
+                    });
                   });
-                });
+                }
+                else
+                {
+                  // Sort values from least to greatest
+                  chart.events.on ("beforedatavalidated", function(event) {
+                    chart.data.sort (function(e1, e2) {
+                      return e1[chartInfo.valueField] - e2[chartInfo.valueField];
+                    });
+                  });
+                }
               }
             }
           }
@@ -1814,7 +1879,27 @@ export class MsfDashboardPanelComponent implements OnInit {
           categoryAxis.dataFields.category = chartInfo.titleField;
 
           // Create the series
-          this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, false, chart, chartInfo, parseDate, theme, outputFormat));
+          if (this.values.valueList && this.values.valueList.length > 1)
+          {
+            for (let i = 0; i < chartInfo.valueFields.length; i++)
+            {
+              let valueName = chartInfo.valueFields[i];
+
+              // Get value name for the legend
+              for (let item of this.values.chartColumnOptions)
+              {
+                if (item.id === chartInfo.valueFields[i])
+                {
+                  valueName = item.name;
+                  break;
+                }
+              }
+
+              this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, { id: chartInfo.valueFields[i], name: valueName }, chart, chartInfo, parseDate, i, outputFormat));
+            }
+          }
+          else
+            this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, null, chart, chartInfo, parseDate, 0, outputFormat));
         }
 
         // Add cursor if the chart type is line, area or stacked area
@@ -1842,7 +1927,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         this.valueAxis = valueAxis;
       }
 
-      if (this.values.currentChartType.flags & ChartFlags.XYCHART)
+      if (this.values.currentChartType.flags & ChartFlags.XYCHART
+        || (this.isSimpleChart () && this.values.valueList && this.values.valueList.length > 1))
       {
         // Display Legend
         chart.legend = new am4charts.Legend ();
@@ -2138,8 +2224,24 @@ export class MsfDashboardPanelComponent implements OnInit {
             return false;
         }
 
-        if (this.values.valueColumn.item.grouping && !this.checkGroupingValue (this.values.valueColumn.item.columnName, argument.value1))
-          return false;
+        if (this.isSimpleChart ())
+        {
+          let valuesWithNoGroup = 0;
+
+          for (let value of this.values.valueList)
+          {
+            if (value.item.grouping && !this.checkGroupingValue (value.item.columnName, argument.value1))
+              valuesWithNoGroup++;
+          }
+
+          if (valuesWithNoGroup == this.values.valueList.length)
+            return false;
+        }
+        else
+        {
+          if (this.values.valueColumn.item.grouping && !this.checkGroupingValue (this.values.valueColumn.item.columnName, argument.value1))
+            return false;
+        }
       }
     }
 
@@ -2337,7 +2439,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         startAtZero: this.values.startAtZero,
         limitMode: this.values.limitMode,
         limitAmount: this.values.limitAmount,
-        ordered: this.values.ordered
+        ordered: this.values.ordered,
+        valueList: this.generateValueList ()
       };
     }
   }
@@ -2441,7 +2544,12 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     url = this.service.host + "/secure/getChartData?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
 
-    if (this.values.valueColumn)
+    if (this.values.valueList && this.values.valueList.length)
+    {
+      for (let variable of this.values.valueList)
+        url += "&valueList=" + variable.id;
+    }
+    else if (this.values.valueColumn)
       url += "&valueColumn=" + this.values.valueColumn.id;
 
     if (this.values.limitMode && !(this.values.currentChartType.flags & ChartFlags.ADVANCED))
@@ -2459,19 +2567,21 @@ export class MsfDashboardPanelComponent implements OnInit {
       url += "advby" + this.values.intervalType;
 
       if (this.values.currentChartType.flags & ChartFlags.XYCHART)
-        url += "&variable=" + this.values.variable.id;
+        url += "&variable=" + this.values.variable.id + "&chartType=advancedbar";
       else
-        url += "&chartType=pie";
+        url += "&chartType=advancedsimplebar";
 
       url += "&intervalValue=" + this.values.intValue;
     }
     else
     {
       url += this.values.function.id + "&variable=" + this.values.variable.id;
-
+ 
       // don't use the xaxis parameter if the chart type is pie, donut or radar
-      if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
+      if (this.values.currentChartType.flags & ChartFlags.PIECHART || this.values.currentChartType.flags & ChartFlags.FUNNELCHART)
         url += "&chartType=pie";
+      else if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
+        url += "&chartType=simplebar";
       else
         url += "&xaxis=" + this.values.xaxis.id;
     }
@@ -3717,6 +3827,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.temp.dynTableVariables = JSON.parse (JSON.stringify (this.values.dynTableVariables));
     this.temp.intervalType = this.values.intervalType;
     this.temp.intValue = this.values.intValue;
+    this.temp.valueList = (this.values.valueList && this.values.valueList.length ? this.generateValueList () : null);
 
     this.temp.formVariables = [];
     this.temp.tableVariables = JSON.parse (JSON.stringify (this.values.tableVariables));
@@ -3869,6 +3980,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.dynTableVariables = JSON.parse (JSON.stringify (this.temp.dynTableVariables));
     this.values.intervalType = this.temp.intervalType;
     this.values.intValue = this.temp.intValue;
+    this.values.valueList = this.temp.valueList;
 
     for (i = 0; i < this.chartTypes.length; i++)
     {
@@ -4271,7 +4383,9 @@ export class MsfDashboardPanelComponent implements OnInit {
           }
           else
           {
-            if (this.values.variable != null && this.values.valueColumn != null)
+            if ((this.isSimpleChart () && this.values.valueList != null && this.values.valueList.length)
+             || (!this.isSimpleChart () && this.values.variable != null)
+              && this.values.valueColumn != null)
             {
               this.generateBtnEnabled = true;
               return true;
@@ -4876,7 +4990,44 @@ export class MsfDashboardPanelComponent implements OnInit {
           }
         }
 
-        if (this.values.valueColumn != null && this.values.valueColumn != -1)
+        if (this.isSimpleChart ())
+        {
+          if (this.values.valueColumn != null && this.values.valueColumn != -1)
+          {
+            this.values.valueList = [];
+
+            // Convert older simple charts
+            for (i = 0; i < this.values.chartColumnOptions.length; i++)
+            {
+              if (this.values.valueColumn == this.values.chartColumnOptions[i].item.id)
+              {
+                this.values.valueList.push (this.values.chartColumnOptions[i]);
+                break;
+              }
+            }
+
+            this.values.valueColumn = null;
+          }
+          else if (this.values.valueList != null)
+          {
+            this.values.valueList = this.values.valueList.split (",");
+
+            for (i = 0; i < this.values.valueList.length; i++)
+            {
+              for (let j = 0; j < this.values.chartColumnOptions.length; j++)
+              {
+                if (this.values.valueList[i] == this.values.chartColumnOptions[j].item.id)
+                {
+                  this.values.valueList[i] = this.values.chartColumnOptions[j];
+                  break;
+                }
+              }
+            }
+          }
+
+          this.chartForm.get ('valueCtrl').setValue (this.values.valueList);
+        }
+        else if (this.values.valueColumn != null && this.values.valueColumn != -1)
         {
           for (i = 0; i < this.values.chartColumnOptions.length; i++)
           {
@@ -5044,6 +5195,12 @@ export class MsfDashboardPanelComponent implements OnInit {
     return (this.values.currentChartType.flags & ChartFlags.INFO
       && !(this.values.currentChartType.flags & ChartFlags.FORM)
       && !(this.values.currentChartType.flags & ChartFlags.PICTURE)) ? true : false;
+  }
+
+  isSimpleChart(): boolean
+  {
+    return !(this.values.currentChartType.flags & ChartFlags.XYCHART)
+      && !(this.values.currentChartType.flags & ChartFlags.ADVANCED);
   }
 
   isSimpleFormPanel(): boolean
@@ -6041,7 +6198,15 @@ export class MsfDashboardPanelComponent implements OnInit {
             this.chartForm.get ('xaxisCtrl').setValue (values.xaxis);
 
           if (values.valueColumn)
-            this.chartForm.get ('valueCtrl').setValue (values.valueColumn);
+          {
+            if (this.isSimpleChart ())
+            {
+              this.values.valueList = [ values.valueColumn ];
+              this.chartForm.get ('valueCtrl').setValue (this.values.valueList);
+            }
+            else
+              this.chartForm.get ('valueCtrl').setValue (values.valueColumn);
+          }
 
           this.values.currentOptionCategories = values.currentOptionCategories;
           this.values.variable = values.variable;
@@ -6728,5 +6893,23 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
 
     return false;
+  }
+
+  generateValueList(): string
+  {
+    let list = "";
+
+    if (!this.values.valueList || (this.values.valueList && !this.values.valueList.length))
+      return null;
+
+    for (let i = 0; i < this.values.valueList.length; i++)
+    {
+      list += this.values.valueList[i].item.id;
+
+      if (i != this.values.valueList.length - 1)
+        list += ",";
+    }
+
+    return list;
   }
 }

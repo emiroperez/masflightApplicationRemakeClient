@@ -1,7 +1,6 @@
 import { Component, HostListener, OnInit, Input, SimpleChanges, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MatDialog } from '@angular/material';
-import * as am4core from "@amcharts/amcharts4/core";
 
 import { Globals } from '../globals/Globals';
 import { MsfDashboardPanelValues } from '../msf-dashboard-panel/msf-dashboard-panelvalues';
@@ -316,7 +315,8 @@ export class MsfDashboardComponent implements OnInit {
         dashboardPanel.row, dashboardPanel.thresholds, dashboardPanel.vertAxisName,
         dashboardPanel.horizAxisName, dashboardPanel.advIntervalValue,
         dashboardPanel.startAtZero, dashboardPanel.limitMode,
-        dashboardPanel.limitAmount, dashboardPanel.ordered));
+        dashboardPanel.limitAmount, dashboardPanel.ordered,
+        dashboardPanel.valueList));
     }
 
     // add the last dashboard column

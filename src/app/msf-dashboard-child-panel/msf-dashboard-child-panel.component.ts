@@ -1382,13 +1382,20 @@ export class MsfDashboardChildPanelComponent {
       "&variable=" + this.values.variable.columnName;
 
     if (this.values.valueColumn)
-      url += "&valueColumn=" + this.values.valueColumn.columnName;
+    {
+      if (this.isSimpleChart ())
+        url += "&valueList=" + this.values.valueColumn.columnName;
+      else
+        url += "&valueColumn=" + this.values.valueColumn.columnName;
+    }
 
     url += "&function=" + this.values.function.id;
 
     // don't use the xaxis parameter if the chart type is pie, donut or radar
-    if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
+    if (this.values.currentChartType.flags & ChartFlags.PIECHART || this.values.currentChartType.flags & ChartFlags.FUNNELCHART)
       url += "&chartType=pie";
+    else if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
+      url += "&chartType=simplebar";
     else
       url += "&xaxis=" + this.values.xaxis.columnName;
 
@@ -1445,5 +1452,11 @@ export class MsfDashboardChildPanelComponent {
         this.loadDataTable (true, this.msfTableRef.handlerSuccess, this.msfTableRef.handlerError);
       }, 3000);
     }
+  }
+
+  isSimpleChart(): boolean
+  {
+    return !(this.values.currentChartType.flags & ChartFlags.XYCHART)
+      && !(this.values.currentChartType.flags & ChartFlags.ADVANCED);
   }
 }

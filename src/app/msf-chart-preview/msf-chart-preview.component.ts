@@ -145,7 +145,12 @@ export class MsfChartPreviewComponent {
     url = this.service.host + "/secure/getChartData?url=" + urlArg + "&optionId=" + this.data.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
 
     if (this.data.valueColumn)
-      url += "&valueColumn=" + this.data.valueColumn.columnName;
+    {
+      if (this.isSimpleChart ())
+        url += "&valueList=" + this.data.valueColumn.columnName;
+      else
+        url += "&valueColumn=" + this.data.valueColumn.columnName;
+    }
 
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;
@@ -157,9 +162,9 @@ export class MsfChartPreviewComponent {
       url += "advby" + this.data.intervalType;
 
       if (this.data.currentChartType.flags & ChartFlags.XYCHART)
-        url += "&variable=" + this.data.variable.columnName;
+        url += "&variable=" + this.data.variable.columnName + "&chartType=advancedbar";
       else
-        url += "&chartType=pie";
+        url += "&chartType=simpleadvancedbar";
 
       url += "&intervalValue=" + this.data.intValue;
     }
@@ -168,8 +173,10 @@ export class MsfChartPreviewComponent {
       url += this.data.function.id + "&variable=" + this.data.variable.columnName;
 
       // don't use the xaxis parameter if the chart type is pie, donut or radar
-      if (!(this.data.currentChartType.flags & ChartFlags.XYCHART))
+      if (this.data.currentChartType.flags & ChartFlags.PIECHART || this.data.currentChartType.flags & ChartFlags.FUNNELCHART)
         url += "&chartType=pie";
+      else if (!(this.data.currentChartType.flags & ChartFlags.XYCHART))
+        url += "&chartType=simplebar";
       else
         url += "&xaxis=" + this.data.xaxis.columnName;
     }
@@ -1057,5 +1064,11 @@ export class MsfChartPreviewComponent {
   toggleIntervalTable(): void
   {
     this.advTableView = !this.advTableView;
+  }
+
+  isSimpleChart(): boolean
+  {
+    return !(this.data.currentChartType.flags & ChartFlags.XYCHART)
+      && !(this.data.currentChartType.flags & ChartFlags.ADVANCED);
   }
 }
