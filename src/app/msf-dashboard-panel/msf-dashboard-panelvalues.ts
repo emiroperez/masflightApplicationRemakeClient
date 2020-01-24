@@ -146,6 +146,7 @@ export class MsfDashboardPanelValues {
             }
             else
             {
+                // this.urlImg = lastestResponse.replace(/['"]+/g, '');
                 this.urlImg = lastestResponse;
                 this.lastestResponse = lastestResponse;
             }
