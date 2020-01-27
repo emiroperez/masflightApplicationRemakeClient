@@ -2340,7 +2340,10 @@ export class MsfDashboardPanelComponent implements OnInit {
         startAtZero: null,
         limitMode: null,
         limitAmount: null,
-        ordered: null
+        ordered: null,
+        valueList: null,
+        minValueRange: null,
+        maxValueRange: null
       };
     }
     else if (this.values.currentChartType.flags & ChartFlags.MAPBOX)
@@ -2358,7 +2361,10 @@ export class MsfDashboardPanelComponent implements OnInit {
         startAtZero: null,
         limitMode: null,
         limitAmount: null,
-        ordered: null
+        ordered: null,
+        valueList: null,
+        minValueRange: null,
+        maxValueRange: null
       };
     }
     else if (this.values.currentChartType.flags & ChartFlags.FORM
@@ -2379,7 +2385,10 @@ export class MsfDashboardPanelComponent implements OnInit {
         startAtZero: null,
         limitMode: null,
         limitAmount: null,
-        ordered: null
+        ordered: null,
+        valueList: null,
+        minValueRange: null,
+        maxValueRange: null
       };
     }
     else if (this.values.currentChartType.flags & ChartFlags.INFO)
@@ -2398,7 +2407,10 @@ export class MsfDashboardPanelComponent implements OnInit {
         startAtZero: null,
         limitMode: null,
         limitAmount: null,
-        ordered: null
+        ordered: null,
+        valueList: null,
+        minValueRange: null,
+        maxValueRange: null
       };
     }
     else if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
@@ -2421,7 +2433,10 @@ export class MsfDashboardPanelComponent implements OnInit {
         startAtZero: null,
         limitMode: null,
         limitAmount: null,
-        ordered: null
+        ordered: null,
+        valueList: null,
+        minValueRange: this.values.minValueRange,
+        maxValueRange: this.values.maxValueRange
       };
     }
     else
@@ -2445,7 +2460,9 @@ export class MsfDashboardPanelComponent implements OnInit {
         limitMode: this.values.limitMode,
         limitAmount: this.values.limitAmount,
         ordered: this.values.ordered,
-        valueList: this.generateValueList ()
+        valueList: this.generateValueList (),
+        minValueRange: null,
+        maxValueRange: null
       };
     }
   }
@@ -2520,7 +2537,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;
   
-    this.authService.post (this, url, panel, handlerSuccess, handlerError, true);
+    this.authService.post (this, url, panel, handlerSuccess, handlerError);
   }
 
   loadChartData(handlerSuccess, handlerError): void
@@ -2597,7 +2614,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;
 
-    this.authService.post (this, url, panel, handlerSuccess, handlerError, true);
+    this.authService.post (this, url, panel, handlerSuccess, handlerError);
   }
 
   loadMapData(handlerSuccess, handlerError): void
@@ -2626,7 +2643,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;
 
-    this.authService.get (this, url, handlerSuccess, handlerError, true);
+    this.authService.get (this, url, handlerSuccess, handlerError);
   }
 
   loadMapboxData(handlerSuccess, handlerError): void
@@ -2650,7 +2667,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;
 
-    this.authService.get (this.msfMapRef, url, handlerSuccess, handlerError, true);
+    this.authService.get (this.msfMapRef, url, handlerSuccess, handlerError);
   }
 
   loadFormData(handlerSuccess, handlerError): void
@@ -2690,7 +2707,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;
 
-    this.authService.post (this, url, formConfig, handlerSuccess, handlerError, true);
+    this.authService.post (this, url, formConfig, handlerSuccess, handlerError);
   }
 
   loadTableData(moreResults, handlerSuccess, handlerError): void
@@ -2738,7 +2755,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;
 
-    this.authService.get (this.msfTableRef, url, handlerSuccess, handlerError, true);
+    this.authService.get (this.msfTableRef, url, handlerSuccess, handlerError);
   }
 
   loadDynamicTableData(handlerSuccess, handlerError): void
@@ -2768,7 +2785,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;
 
-    this.authService.post (this, url, data, handlerSuccess, handlerError, true);
+    this.authService.post (this, url, data, handlerSuccess, handlerError);
   }
 
   loadData(): void
@@ -5340,7 +5357,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   goToAdditionalSettings(): void
   {
-    let limitConfig, numColors, dialogRef;
+    let limitConfig, numColors, limitAggregatorValue;
 
     if (this.values.currentChartType.flags & ChartFlags.XYCHART
       || this.values.currentChartType.flags & ChartFlags.PIECHART
@@ -5350,6 +5367,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         limitConfig = false;
       else
         limitConfig = true;
+
       numColors = 12;
     }
     else if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
@@ -5370,9 +5388,15 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     // don't allow the option to limit results on advanced charts
     if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
+    {
       limitConfig = false;
+      // limitAggregatorValue = true;
+      limitAggregatorValue = false;
+    }
+    else
+      limitAggregatorValue = false;
 
-    dialogRef = this.dialog.open (MsfDashboardAdditionalSettingsComponent, {
+    this.dialog.open (MsfDashboardAdditionalSettingsComponent, {
       width: '400px',
       height: 'auto',
       panelClass: 'msf-dashboard-control-variables-dialog',
@@ -5381,7 +5405,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         values: this.values,
         thresholds: (this.values.currentChartType.flags & ChartFlags.HEATMAP) ? null : this.values.thresholds,
         numColors: numColors,
-        limitConfig: limitConfig
+        limitConfig: limitConfig,
+        limitAggregatorValue: limitAggregatorValue
       }
     });
   }

@@ -181,7 +181,7 @@ export class MsfChartPreviewComponent {
         url += "&xaxis=" + this.data.xaxis.columnName;
     }
 
-    this.authService.post (this, url, null, handlerSuccess, handlerError, true);
+    this.authService.post (this, url, null, handlerSuccess, handlerError);
   }
 
   noDataFound(): void

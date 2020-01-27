@@ -164,7 +164,7 @@ export class MsfMoreInfoPopupComponent{
       if (this.globals.testingPlan != -1)
         url += "&testPlanId=" + this.globals.testingPlan;
 
-      this.authService.post(this, url, null, handlerSuccess, handlerError, true);
+      this.authService.post(this, url, null, handlerSuccess, handlerError);
     }
 
     handlerChartSuccess(_this, data): void

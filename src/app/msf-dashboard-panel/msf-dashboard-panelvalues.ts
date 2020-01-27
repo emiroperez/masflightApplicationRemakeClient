@@ -107,11 +107,14 @@ export class MsfDashboardPanelValues {
 
     displayButtons: boolean;
 
+    minValueRange: number;
+    maxValueRange: number;
+
     constructor(options: any[], chartName: String, id: number, width: any, height: any, currentOption?: any, variable?: any,
         xaxis?: any, valueColumn?: any, func?: any, chartType?: any, currentOptionCategories?: any, lastestResponse?: string,
         paletteColors?: any, updateTimeInterval?: number, row?: number, thresholds?: any, vertAxisName?: string, horizAxisName?: string,
         intValue?: any, startAtZero?: boolean, limitMode?: number, limitAmount?: number, ordered?: boolean,
-        valueList?: any)
+        valueList?: any, minValueRange?: number, maxValueRange?: number)
     {
         this.options = options;
         this.chartName = chartName;
@@ -192,5 +195,8 @@ export class MsfDashboardPanelValues {
         this.limitAmount = limitAmount;
 
         this.valueList = valueList;
+
+        this.minValueRange = minValueRange;
+        this.maxValueRange = maxValueRange;
     }
 }

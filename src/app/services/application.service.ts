@@ -51,7 +51,7 @@ export class ApplicationService {
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;
 
-    this.authService.get (_this, url, successHandler, errorHandler, true);
+    this.authService.get (_this, url, successHandler, errorHandler);
   }
 
   getDataTableSource(_this, handlerSuccess, handlerError,pageNumber: String) {
@@ -83,7 +83,7 @@ export class ApplicationService {
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;
 
-    this.authService.get(_this, url, handlerSuccess, handlerError, true);
+    this.authService.get(_this, url, handlerSuccess, handlerError);
   }
 
   getDataTableSourceForCSV(_this, handlerSuccess, handlerError)
@@ -112,7 +112,7 @@ export class ApplicationService {
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;
 
-    this.authService.get(_this, url, handlerSuccess, handlerError, true);
+    this.authService.get(_this, url, handlerSuccess, handlerError);
   }
 
   loadDynamicTableData(_this, handlerSuccess, handlerError) {
@@ -134,7 +134,7 @@ export class ApplicationService {
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;
 
-    this.authService.post (_this, url, data, handlerSuccess, handlerError, true);
+    this.authService.post (_this, url, data, handlerSuccess, handlerError);
   }
 
   loadMenuOptions(_this, handlerSuccess, handlerError) {
@@ -436,7 +436,7 @@ export class ApplicationService {
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;
 
-    this.authService.get(_this, url, handlerSuccess, handlerError, true);
+    this.authService.get(_this, url, handlerSuccess, handlerError);
   }
 
   getDrillDownAdmin(_this, optionId, handlerSuccess, handlerError)

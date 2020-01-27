@@ -86,21 +86,19 @@ export class LoginScreenComponent implements OnInit {
     var response = data;
     if (response.status == _this.OK_STATUS){
       _this.userId = response.userId;
-      if (response.token!= null){
+      if (response.token!= null)
+      {
         _this.securityToken = response.token;
         _this.username = response.username;
 
         _this.globals.isLoading = true;
 
-        _this.authService.getIpAddress ().subscribe (data => {
-          _this.session = {
-            userId: _this.userId,
-            ipAddress: data["ip"],
-            hash: _this.authService.getFingerprint ()
-          };
+        _this.session = {
+          userId: _this.userId,
+          hash: _this.authService.getFingerprint ()
+        };
   
-          _this.authService.validateLogin (_this, _this.session, _this.verifyLogin, _this.errorAutentication);
-        });
+        _this.authService.validateLogin (_this, _this.session, _this.verifyLogin, _this.errorAutentication);
       }
     } else {
       _this.utils.showAlert ('warning', data.errorMessage);
@@ -244,15 +242,12 @@ export class LoginScreenComponent implements OnInit {
 
   handleLogin(_this, data)
   {
-    _this.authService.getIpAddress ().subscribe (result => {
-      _this.session = {
-        userId: data.id,
-        ipAddress: result["ip"],
-        hash: _this.authService.getFingerprint ()
-      };
+    _this.session = {
+      userId: data.id,
+      hash: _this.authService.getFingerprint ()
+    };
 
-      _this.authService.validateLogin (_this, _this.session, _this.verifyUserLoggedIn, _this.errorAutentication);
-    });
+    _this.authService.validateLogin (_this, _this.session, _this.verifyUserLoggedIn, _this.errorAutentication);
   }
 
   @HostListener('window:resize', ['$event'])

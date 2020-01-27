@@ -231,7 +231,7 @@ export class MsfDashboardAssistantComponent {
     if (isDevMode ())
       console.log (urlBase);
 
-    this.authService.get (this.msfTableRef, url, handlerSuccess, handlerError, true);
+    this.authService.get (this.msfTableRef, url, handlerSuccess, handlerError);
   }
 
   finishLoadingTable(error): void

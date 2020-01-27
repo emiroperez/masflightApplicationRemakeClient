@@ -97,11 +97,6 @@ export class AuthService {
     return parseInt (tokenItem["sub"]);
   }
 
-  getIpAddress(): Observable<any>
-  {
-    return this.http.get (((isDevMode ()) ? "http" : "https") + "://api.ipify.org?format=json");
-  }
-
   getFingerprint(): any
   {
     let fingerprint = this.clientjs.getCustomFingerprint (
@@ -127,62 +122,23 @@ export class AuthService {
     return fingerprint;
   }
 
-  get = function (_this, url, successHandler, errorHandler, ipAddress?)
+  get = function (_this, url, successHandler, errorHandler)
   {
     this.createAuthorizationHeader ();
 
-    if (ipAddress)
-    {
-      this.getIpAddress ().subscribe (json => {
-        let urlInterface = new URL (url);
-        let params = new URLSearchParams (urlInterface.search);
-        let postURL;
-
-        params.append ("ipAddress", json["ip"]);
-        postURL = urlInterface.origin + urlInterface.pathname + "?" + params.toString ();
-        console.log (postURL);
-
-        this.http.get (postURL, httpOptions).subscribe (result => {
-            successHandler (_this, result);
-          }, error => errorHandler (_this, error)
-        );
-      });
-    }
-    else
-    {
-      this.http.get (url, httpOptions).subscribe (result => {
-          successHandler (_this, result);
-        }, error => errorHandler (_this, error)
-      );
-    }
+    this.http.get (url, httpOptions).subscribe (result => {
+        successHandler (_this, result);
+      }, error => errorHandler (_this, error)
+    );
   }
 
-  post = function (_this, url, data, successHandler, errorHandler, ipAddress?)
+  post = function (_this, url, data, successHandler, errorHandler)
   {
     this.createAuthorizationHeader ();
 
-    if (ipAddress)
-    {
-      this.getIpAddress ().subscribe (json => {
-        let urlInterface = new URL (url);
-        let params = new URLSearchParams (urlInterface.search);
-        let postURL;
-
-        params.append ("ipAddress", json["ip"]);
-        postURL = urlInterface.origin + urlInterface.pathname + "?" + params.toString ();
-
-        this.http.post (postURL, data, httpOptions).subscribe (result => {
-            successHandler (_this, result);
-          }, error => errorHandler (_this, error)
-        );
-      });
-    }
-    else
-    {
-      this.http.post (url, data, httpOptions).subscribe (result => {
-          successHandler (_this, result);
-        }, error => errorHandler (_this, error)
-      );
-    }
+    this.http.post (url, data, httpOptions).subscribe (result => {
+        successHandler (_this, result);
+      }, error => errorHandler (_this, error)
+    );
   }
 }

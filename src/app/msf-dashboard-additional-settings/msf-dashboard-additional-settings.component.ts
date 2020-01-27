@@ -14,7 +14,7 @@ export class MsfDashboardAdditionalSettingsComponent {
     public globals: Globals,
     @Inject(MAT_DIALOG_DATA) public data: any)
   {
-    if (!data.limitConfig)
+    if (!data.limitConfig && !data.limitAggregatorValue)
       this.advSettingsOpen = 2; // open color picker by default if there is no limit configuration for now
 
     if (data.values.limitMode == null)
@@ -54,7 +54,7 @@ export class MsfDashboardAdditionalSettingsComponent {
     this.dialogRef.close ();
   }
 
-  componentClickHandler(index: number)
+  componentClickHandler(index: number): void
   {
     if (this.advSettingsOpen == index)
       this.advSettingsOpen = 0; // close if open
