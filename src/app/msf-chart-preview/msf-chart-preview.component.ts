@@ -874,7 +874,7 @@ export class MsfChartPreviewComponent {
             sumSeries.yAxis = this.sumValueAxis;
           }
   
-          sumSeries.bullets.push (new am4core.Circle ());
+          sumSeries.bullets.push (new am4charts.CircleBullet ());
   
           sumSeries.strokeWidth = 2;
           sumSeries.fill = am4core.color (this.data.paletteColors[index]);
@@ -913,7 +913,7 @@ export class MsfChartPreviewComponent {
           sumSeries.yAxis = this.sumValueAxis;
         }
 
-        sumSeries.bullets.push (new am4core.Circle ());
+        sumSeries.bullets.push (new am4charts.CircleBullet ());
 
         sumSeries.strokeWidth = 2;
         sumSeries.fill = am4core.color (this.data.paletteColors[0]);

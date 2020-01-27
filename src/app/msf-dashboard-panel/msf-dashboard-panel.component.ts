@@ -6600,7 +6600,7 @@ export class MsfDashboardPanelComponent implements OnInit {
             sumSeries.yAxis = this.sumValueAxis;
           }
   
-          sumSeries.bullets.push (new am4core.Circle ());
+          sumSeries.bullets.push (new am4charts.CircleBullet ());
   
           sumSeries.strokeWidth = 2;
           sumSeries.fill = am4core.color (this.values.paletteColors[index]);
@@ -6639,7 +6639,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           sumSeries.yAxis = this.sumValueAxis;
         }
 
-        sumSeries.bullets.push (new am4core.Circle ());
+        sumSeries.bullets.push (new am4charts.CircleBullet ());
 
         sumSeries.strokeWidth = 2;
         sumSeries.fill = am4core.color (this.values.paletteColors[0]);
