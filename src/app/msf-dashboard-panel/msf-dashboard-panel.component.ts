@@ -910,15 +910,16 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     let series, colorSet;
 
-    if (panelLoading)
-      series.showOnInit = false;
-
     // Set inner radius for donut chart
     if (values.currentChartType.flags & ChartFlags.PIEHOLE)
       chart.innerRadius = am4core.percent (60);
 
     // Configure Pie Chart
     series = chart.series.push (new am4charts.PieSeries ());
+
+    if (panelLoading)
+      series.showOnInit = false;
+
     series.dataFields.value = item.valueField;
     series.dataFields.category = item.titleField;
 
@@ -985,10 +986,11 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     let series, colorSet;
 
+    series = chart.series.push (new am4charts.FunnelSeries ());
+
     if (panelLoading)
       series.showOnInit = false;
 
-    series = chart.series.push (new am4charts.FunnelSeries ());
     series.dataFields.value = item.valueField;
     series.dataFields.category = item.titleField;
 
