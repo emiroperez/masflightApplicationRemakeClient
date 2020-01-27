@@ -133,12 +133,12 @@ export class AuthService {
 
     if (ipAddress)
     {
-      this.getIpAddress ().subscribe (data => {
+      this.getIpAddress ().subscribe (json => {
         let urlInterface = new URL (url);
         let params = new URLSearchParams (urlInterface.search);
         let postURL;
 
-        params.append ("ipAddress", data["ip"]);
+        params.append ("ipAddress", json["ip"]);
         postURL = urlInterface.origin + urlInterface.pathname + "?" + params.toString ();
         console.log (postURL);
 
@@ -163,12 +163,12 @@ export class AuthService {
 
     if (ipAddress)
     {
-      this.getIpAddress ().subscribe (data => {
+      this.getIpAddress ().subscribe (json => {
         let urlInterface = new URL (url);
         let params = new URLSearchParams (urlInterface.search);
         let postURL;
 
-        params.append ("ipAddress", data["ip"]);
+        params.append ("ipAddress", json["ip"]);
         postURL = urlInterface.origin + urlInterface.pathname + "?" + params.toString ();
 
         this.http.post (postURL, data, httpOptions).subscribe (result => {
