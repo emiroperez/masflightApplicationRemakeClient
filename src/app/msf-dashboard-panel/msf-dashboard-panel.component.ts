@@ -2515,12 +2515,12 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (isDevMode ())
       console.log (urlArg);
 
-    url = this.service.host + "/secure/getTextSummaryResponse?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
+    url = this.service.host + "/secure/getTextSummaryResponse?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
 
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;
   
-    this.authService.post (this, url, panel, handlerSuccess, handlerError);
+    this.authService.post (this, url, panel, handlerSuccess, handlerError, true);
   }
 
   loadChartData(handlerSuccess, handlerError): void
@@ -2547,7 +2547,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (isDevMode ())
       console.log (urlBase);
 
-    url = this.service.host + "/secure/getChartData?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
+    url = this.service.host + "/secure/getChartData?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
 
     if (this.values.valueList && this.values.valueList.length)
     {
@@ -2597,7 +2597,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;
 
-    this.authService.post (this, url, panel, handlerSuccess, handlerError);
+    this.authService.post (this, url, panel, handlerSuccess, handlerError, true);
   }
 
   loadMapData(handlerSuccess, handlerError): void
@@ -2621,12 +2621,12 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (isDevMode ())
       console.log (urlBase);
 
-    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
+    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
 
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;
 
-    this.authService.get (this, url, handlerSuccess, handlerError);
+    this.authService.get (this, url, handlerSuccess, handlerError, true);
   }
 
   loadMapboxData(handlerSuccess, handlerError): void
@@ -2645,12 +2645,12 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (isDevMode ())
       console.log (url);
 
-    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress () + "&noXml=true";
+    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&noXml=true";
 
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;
 
-    this.authService.get (this.msfMapRef, url, handlerSuccess, handlerError);
+    this.authService.get (this.msfMapRef, url, handlerSuccess, handlerError, true);
   }
 
   loadFormData(handlerSuccess, handlerError): void
@@ -2674,7 +2674,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (isDevMode ())
       console.log (urlBase);
 
-    url = this.service.host + "/secure/getFormResponse?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
+    url = this.service.host + "/secure/getFormResponse?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
 
     // Prepare the form configuration
     formConfig = [];
@@ -2690,7 +2690,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;
 
-    this.authService.post (this, url, formConfig, handlerSuccess, handlerError);
+    this.authService.post (this, url, formConfig, handlerSuccess, handlerError, true);
   }
 
   loadTableData(moreResults, handlerSuccess, handlerError): void
@@ -2727,7 +2727,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (isDevMode ())
       console.log (urlBase);
 
-    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
+    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
 
     for (let tableVariable of this.values.tableVariables)
     {
@@ -2738,7 +2738,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;
 
-    this.authService.get (this.msfTableRef, url, handlerSuccess, handlerError);
+    this.authService.get (this.msfTableRef, url, handlerSuccess, handlerError, true);
   }
 
   loadDynamicTableData(handlerSuccess, handlerError): void
@@ -2763,12 +2763,12 @@ export class MsfDashboardPanelComponent implements OnInit {
       console.log (urlBase);
 
     data = { variables: this.values.dynTableVariables, values: this.values.dynTableValues };
-    url = this.service.host + "/secure/getHorizontalMatrix?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
+    url = this.service.host + "/secure/getHorizontalMatrix?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
 
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;
 
-    this.authService.post (this, url, data, handlerSuccess, handlerError);
+    this.authService.post (this, url, data, handlerSuccess, handlerError, true);
   }
 
   loadData(): void

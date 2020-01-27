@@ -223,7 +223,7 @@ export class MsfDashboardAssistantComponent {
 
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&&pageSize=100&page_number=" + this.actualPageNumber;
     urlArg = encodeURIComponent (urlBase);
-    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
+    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.currentOption.id;
 
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;
@@ -231,7 +231,7 @@ export class MsfDashboardAssistantComponent {
     if (isDevMode ())
       console.log (urlBase);
 
-    this.authService.get (this.msfTableRef, url, handlerSuccess, handlerError);
+    this.authService.get (this.msfTableRef, url, handlerSuccess, handlerError, true);
   }
 
   finishLoadingTable(error): void

@@ -142,7 +142,7 @@ export class MsfChartPreviewComponent {
     if (isDevMode ())
       console.log (urlBase);
 
-    url = this.service.host + "/secure/getChartData?url=" + urlArg + "&optionId=" + this.data.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
+    url = this.service.host + "/secure/getChartData?url=" + urlArg + "&optionId=" + this.data.currentOption.id;
 
     if (this.data.valueColumn)
     {
@@ -181,7 +181,7 @@ export class MsfChartPreviewComponent {
         url += "&xaxis=" + this.data.xaxis.columnName;
     }
 
-    this.authService.post (this, url, null, handlerSuccess, handlerError);
+    this.authService.post (this, url, null, handlerSuccess, handlerError, true);
   }
 
   noDataFound(): void

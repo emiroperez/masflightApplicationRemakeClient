@@ -2,6 +2,7 @@ import { Injectable, isDevMode } from '@angular/core';
 import { Globals } from '../globals/Globals';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { Observable } from 'rxjs';
 
 declare let ClientJS: any;
 import 'clientjs';
@@ -16,14 +17,10 @@ const TOKEN_STORAGE_KEY = "token";
 @Injectable()
 export class AuthService {
   jwtHelper: JwtHelperService = new JwtHelperService ();
-  ipAddress: string;
   clientjs: any = new ClientJS ();
 
   constructor(public http: HttpClient, private globals: Globals)
   {
-    this.http.get (((isDevMode ()) ? "http" : "https") + "://api.ipify.org?format=json").subscribe (data => {
-      this.ipAddress = data["ip"];
-    });
   }
 
   login(_this, credentials, successHandler, errorHandler)
@@ -100,9 +97,9 @@ export class AuthService {
     return parseInt (tokenItem["sub"]);
   }
 
-  getIpAddress(): string
+  getIpAddress(): Observable<any>
   {
-    return this.ipAddress;
+    return this.http.get (((isDevMode ()) ? "http" : "https") + "://api.ipify.org?format=json");
   }
 
   getFingerprint(): any
@@ -130,21 +127,62 @@ export class AuthService {
     return fingerprint;
   }
 
-  get = function (_this, url, successHandler, errorHandler)
+  get = function (_this, url, successHandler, errorHandler, ipAddress?)
   {
     this.createAuthorizationHeader ();
-    this.http.get (url, httpOptions).subscribe (result => {
-        successHandler (_this, result);
-      }, error => errorHandler (_this, error)
-    );
+
+    if (ipAddress)
+    {
+      this.getIpAddress ().subscribe (data => {
+        let urlInterface = new URL (url);
+        let params = new URLSearchParams (urlInterface.search);
+        let postURL;
+
+        params.append ("ipAddress", data["ip"]);
+        postURL = urlInterface.origin + urlInterface.pathname + "?" + params.toString ();
+        console.log (postURL);
+
+        this.http.get (postURL, httpOptions).subscribe (result => {
+            successHandler (_this, result);
+          }, error => errorHandler (_this, error)
+        );
+      });
+    }
+    else
+    {
+      this.http.get (url, httpOptions).subscribe (result => {
+          successHandler (_this, result);
+        }, error => errorHandler (_this, error)
+      );
+    }
   }
 
-  post = function (_this, url, data, successHandler, errorHandler)
+  post = function (_this, url, data, successHandler, errorHandler, ipAddress?)
   {
     this.createAuthorizationHeader ();
-    this.http.post (url, data, httpOptions).subscribe (result => {
-        successHandler (_this, result);
-      }, error => errorHandler (_this, error)
-    );
+
+    if (ipAddress)
+    {
+      this.getIpAddress ().subscribe (data => {
+        let urlInterface = new URL (url);
+        let params = new URLSearchParams (urlInterface.search);
+        let postURL;
+
+        params.append ("ipAddress", data["ip"]);
+        postURL = urlInterface.origin + urlInterface.pathname + "?" + params.toString ();
+
+        this.http.post (postURL, data, httpOptions).subscribe (result => {
+            successHandler (_this, result);
+          }, error => errorHandler (_this, error)
+        );
+      });
+    }
+    else
+    {
+      this.http.post (url, data, httpOptions).subscribe (result => {
+          successHandler (_this, result);
+        }, error => errorHandler (_this, error)
+      );
+    }
   }
 }

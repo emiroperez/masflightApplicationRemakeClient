@@ -1341,7 +1341,7 @@ export class MsfDashboardChildPanelComponent {
     urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&&pageSize=100&page_number=" + this.actualPageNumber;
     urlArg = encodeURIComponent (urlBase);
-    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
+    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.argumentsId;
 
     for (let tableVariable of this.values.tableVariables)
     {
@@ -1355,7 +1355,7 @@ export class MsfDashboardChildPanelComponent {
     if (isDevMode ())
       console.log (urlBase);
 
-    this.authService.get (this.msfTableRef, url, handlerSuccess, handlerError);
+    this.authService.get (this.msfTableRef, url, handlerSuccess, handlerError, true);
   }
 
   loadChartData(handlerSuccess, handlerError): void
@@ -1378,7 +1378,7 @@ export class MsfDashboardChildPanelComponent {
     if (isDevMode ())
       console.log (urlBase);
 
-    url = this.service.host + "/secure/getChartData?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&ipAddress=" + this.authService.getIpAddress () +
+    url = this.service.host + "/secure/getChartData?url=" + urlArg + "&optionId=" + this.values.currentOption.id +
       "&variable=" + this.values.variable.columnName;
 
     if (this.values.valueColumn)
@@ -1402,7 +1402,7 @@ export class MsfDashboardChildPanelComponent {
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;
 
-    this.authService.post (this, url, null, handlerSuccess, handlerError);
+    this.authService.post (this, url, null, handlerSuccess, handlerError, true);
   }
 
   handlerChartSuccess(_this, data): void

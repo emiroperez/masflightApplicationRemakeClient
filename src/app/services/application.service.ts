@@ -46,12 +46,12 @@ export class ApplicationService {
     if (isDevMode ())
       console.log (url);
 
-    url = this.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.globals.currentOption.id + "&ipAddress=" + this.authService.getIpAddress () + "&noXml=true";
+    url = this.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.globals.currentOption.id + "&noXml=true";
 
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;
 
-    this.authService.get (_this, url, successHandler, errorHandler);
+    this.authService.get (_this, url, successHandler, errorHandler, true);
   }
 
   getDataTableSource(_this, handlerSuccess, handlerError,pageNumber: String) {
@@ -78,12 +78,12 @@ export class ApplicationService {
     if (isDevMode ())
       console.log (urlBase);
 
-    let url = this.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + _this.globals.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
+    let url = this.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + _this.globals.currentOption.id;
 
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;
 
-    this.authService.get(_this, url, handlerSuccess, handlerError);
+    this.authService.get(_this, url, handlerSuccess, handlerError, true);
   }
 
   getDataTableSourceForCSV(_this, handlerSuccess, handlerError)
@@ -107,12 +107,12 @@ export class ApplicationService {
     if (isDevMode ())
       console.log (urlBase);
 
-    let url = this.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + _this.globals.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
+    let url = this.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + _this.globals.currentOption.id;
 
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;
 
-    this.authService.get(_this, url, handlerSuccess, handlerError);
+    this.authService.get(_this, url, handlerSuccess, handlerError, true);
   }
 
   loadDynamicTableData(_this, handlerSuccess, handlerError) {
@@ -129,12 +129,12 @@ export class ApplicationService {
       console.log (urlBase);
 
     let data = { variables: _this.globals.variables, values: _this.globals.values };
-    let url = this.host + "/secure/getHorizontalMatrix?url=" + urlArg + "&optionId=" + _this.globals.currentOption.id + "&ipAddress=" + this.authService.getIpAddress ();
+    let url = this.host + "/secure/getHorizontalMatrix?url=" + urlArg + "&optionId=" + _this.globals.currentOption.idOption;
 
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;
 
-    this.authService.post (_this, url, data, handlerSuccess, handlerError);
+    this.authService.post (_this, url, data, handlerSuccess, handlerError, true);
   }
 
   loadMenuOptions(_this, handlerSuccess, handlerError) {
@@ -431,13 +431,12 @@ export class ApplicationService {
     if (isDevMode ())
       console.log (urlBase);
 
-    let url = this.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + option.id + "&ipAddress=" + this.authService.getIpAddress ();
+    let url = this.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + option.id;
 
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;
 
-    this.authService.get(_this, url, handlerSuccess, handlerError);
-					 
+    this.authService.get(_this, url, handlerSuccess, handlerError, true);
   }
 
   getDrillDownAdmin(_this, optionId, handlerSuccess, handlerError)

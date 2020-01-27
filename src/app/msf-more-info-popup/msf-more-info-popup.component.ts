@@ -157,15 +157,14 @@ export class MsfMoreInfoPopupComponent{
         console.log (urlBase);
 
       let url = this.globals.baseUrl + "/secure/getChartData?url=" + urlArg 
-      + "&optionId=" + this.globals.currentOption.id
-      + "&ipAddress=" + this.authService.getIpAddress ()
+      + "&optionId=" + this.globals.currentOption.idy
       + "&variable=" + this.variable + "&xaxis=" + this.xaxis 
       + "&valueColumn=" + this.valueColumn + "&function=" + this.functions[1].id;
 
       if (this.globals.testingPlan != -1)
         url += "&testPlanId=" + this.globals.testingPlan;
 
-      this.authService.post(this, url, null, handlerSuccess, handlerError);
+      this.authService.post(this, url, null, handlerSuccess, handlerError, true);
     }
 
     handlerChartSuccess(_this, data): void
