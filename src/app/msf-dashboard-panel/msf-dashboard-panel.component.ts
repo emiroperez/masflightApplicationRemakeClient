@@ -422,10 +422,14 @@ export class MsfDashboardPanelComponent implements OnInit {
   }
 
   // Function to create horizontal column chart series
-  createHorizColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat): void
+  createHorizColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat, panelLoading): void
   {
     // Set up series
     let series = chart.series.push (new am4charts.ColumnSeries ());
+
+    if (panelLoading)
+      series.showOnInit = false;
+
     series.name = item.valueAxis;
     series.dataFields.valueX = item.valueField;
     series.sequencedInterpolation = true;
@@ -487,9 +491,13 @@ export class MsfDashboardPanelComponent implements OnInit {
   }
 
   // Function to create vertical column chart series
-  createVertColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat): any
+  createVertColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat, panelLoading): any
   {
     let series = chart.series.push (new am4charts.ColumnSeries ());
+
+    if (panelLoading)
+      series.showOnInit = false;
+
     series.name = item.valueAxis;
     series.dataFields.valueY = item.valueField;
     series.sequencedInterpolation = true;
@@ -547,10 +555,14 @@ export class MsfDashboardPanelComponent implements OnInit {
   }
 
   // Function to create line chart series
-  createLineSeries(values, stacked, chart, item, parseDate, theme, outputFormat): any
+  createLineSeries(values, stacked, chart, item, parseDate, theme, outputFormat, panelLoading): any
   {
     // Set up series
     let series = chart.series.push (new am4charts.LineSeries ());
+
+    if (panelLoading)
+      series.showOnInit = false;
+
     series.name = item.valueAxis;
     series.dataFields.valueY = item.valueField;
     series.sequencedInterpolation = true;
@@ -650,10 +662,13 @@ export class MsfDashboardPanelComponent implements OnInit {
   }
 
   // Function to create simple line chart series
-  createSimpleLineSeries(values, value, chart, item, parseDate, index, outputFormat): any
+  createSimpleLineSeries(values, value, chart, item, parseDate, index, outputFormat, panelLoading): any
   {
     // Set up series
     let series = chart.series.push (new am4charts.LineSeries ());
+
+    if (panelLoading)
+      series.showOnInit = false;
 
     if (value)
     {
@@ -757,9 +772,12 @@ export class MsfDashboardPanelComponent implements OnInit {
   }
 
   // Function to create simple vertical column chart series
-  createSimpleVertColumnSeries(values, value, chart, item, parseDate, index, outputFormat): any
+  createSimpleVertColumnSeries(values, value, chart, item, parseDate, index, outputFormat, panelLoading): any
   {
     let series = chart.series.push (new am4charts.ColumnSeries ());
+
+    if (panelLoading)
+      series.showOnInit = false;
 
     if (value)
     {
@@ -822,9 +840,12 @@ export class MsfDashboardPanelComponent implements OnInit {
   }
 
   // Function to create simple horizontal column chart series
-  createSimpleHorizColumnSeries(values, value, chart, item, parseDate, index, outputFormat): any
+  createSimpleHorizColumnSeries(values, value, chart, item, parseDate, index, outputFormat, panelLoading): any
   {
     let series = chart.series.push (new am4charts.ColumnSeries ());
+
+    if (panelLoading)
+      series.showOnInit = false;
 
     if (value)
     {
@@ -885,9 +906,12 @@ export class MsfDashboardPanelComponent implements OnInit {
   }
 
   // Function to create pie chart series
-  createPieSeries(values, stacked, chart, item, parseDate, theme, outputFormat): any
+  createPieSeries(values, stacked, chart, item, parseDate, theme, outputFormat, panelLoading): any
   {
     let series, colorSet;
+
+    if (panelLoading)
+      series.showOnInit = false;
 
     // Set inner radius for donut chart
     if (values.currentChartType.flags & ChartFlags.PIEHOLE)
@@ -957,9 +981,12 @@ export class MsfDashboardPanelComponent implements OnInit {
   }
 
   // Function to create funnel chart series
-  createFunnelSeries(values, stacked, chart, item, parseDate, theme, outputFormat): any
+  createFunnelSeries(values, stacked, chart, item, parseDate, theme, outputFormat, panelLoading): any
   {
     let series, colorSet;
+
+    if (panelLoading)
+      series.showOnInit = false;
 
     series = chart.series.push (new am4charts.FunnelSeries ());
     series.dataFields.value = item.valueField;
@@ -1047,7 +1074,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     return momentDate.toDate ();
   }
 
-  makeChart(chartInfo): void
+  makeChart(chartInfo, panelLoading): void
   {
     let theme = this.globals.theme;
 
@@ -1331,7 +1358,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         chart.fontSize = 10;
 
         // Create the series
-        this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, false, chart, chartInfo, null, theme, null));
+        this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, false, chart, chartInfo, null, theme, null, panelLoading));
 
         if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART)
         {
@@ -1726,7 +1753,7 @@ export class MsfDashboardPanelComponent implements OnInit {
               object.valueAxis = new DatePipe ('en-US').transform (date.toString (), legendOutputFormat);
             }
 
-            this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, stacked, chart, object, parseDate, theme, outputFormat));
+            this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, stacked, chart, object, parseDate, theme, outputFormat, panelLoading));
           }
         }
         else
@@ -1900,11 +1927,11 @@ export class MsfDashboardPanelComponent implements OnInit {
                 }
               }
 
-              this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, { id: chartInfo.valueFields[i], name: valueName }, chart, chartInfo, parseDate, i, outputFormat));
+              this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, { id: chartInfo.valueFields[i], name: valueName }, chart, chartInfo, parseDate, i, outputFormat, panelLoading));
             }
           }
           else
-            this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, null, chart, chartInfo, parseDate, 0, outputFormat));
+            this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, null, chart, chartInfo, parseDate, 0, outputFormat, panelLoading));
         }
 
         // Add cursor if the chart type is line, area or stacked area
@@ -2074,7 +2101,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       else
       {
         this.values.chartGenerated = true;
-        this.makeChart (this.values.lastestResponse);
+        this.makeChart (this.values.lastestResponse, true);
       }
     }
   }
@@ -3397,7 +3424,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       _this.values.isLoading = false;
 
-      _this.makeChart (_this.values.lastestResponse);
+      _this.makeChart (_this.values.lastestResponse, false);
   
       _this.stopUpdateInterval ();
       _this.startUpdateInterval ();
@@ -3425,7 +3452,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       _this.values.isLoading = false;
 
-      _this.makeChart (_this.values.lastestResponse);
+      _this.makeChart (_this.values.lastestResponse, false);
   
       _this.stopUpdateInterval ();
       _this.startUpdateInterval ();
@@ -3517,7 +3544,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       _this.values.isLoading = false;
 
-      _this.makeChart (data);
+      _this.makeChart (data, false);
   
       _this.stopUpdateInterval ();
       _this.startUpdateInterval ();
