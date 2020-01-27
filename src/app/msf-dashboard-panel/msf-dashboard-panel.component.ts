@@ -5417,8 +5417,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
     {
       limitConfig = false;
-      // limitAggregatorValue = true;
-      limitAggregatorValue = false;
+      limitAggregatorValue = true;
     }
     else
       limitAggregatorValue = false;
