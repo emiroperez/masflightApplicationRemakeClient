@@ -36,7 +36,7 @@
                 </div>
                 <div *ngIf="row && !globals.readOnlyDashboard" (mousedown)='onLineClick($event, column, row - 1, row)' (mouseup)='onLineRelease()' id='msf-dashboard-panel-left-resize' class='msf-dashboard-panel-line-resize'></div>
                 <div *ngIf="row != dashboardColumn.length - 1 && !globals.readOnlyDashboard" (mousedown)='onLineClick($event, column, row, row + 1)' id='msf-dashboard-panel-right-resize' class='msf-dashboard-panel-line-resize'></div>
-                <div class="msf-dashboard-panel-button" *ngIf="((dashboardPanel.displayButtons && displayResults(dashboardPanel)) || !displayResults(dashboardPanel)) && !globals.readOnlyDashboard">
+                <div class="msf-dashboard-panel-button" *ngIf="isPanelButtonsEnabled(column, row) && !globals.readOnlyDashboard">
                   <mat-icon class="msf-dashboard-button-close-icon" aria-label="close" (click)="removePanel(column, row)">close</mat-icon>
                   <div class="msf-dashboard-button-move-icon" *ngIf="dashboardColumn.length != 1" cdkDragHandle (click)="disableContextMenu()"></div>
                 </div>
@@ -44,7 +44,7 @@
                   [panelHeight]="getHeight(column)" [panelWidth]="getPanelWidth(column, row)" [controlPanelVariables]="controlPanelVariables"
                   [currentHiddenCategories]="currentHiddenCategories" (removeDeadVariablesAndCategories)="removeDeadVariablesAndCategories($event)"
                   (addNewVariablesAndCategories)="addNewVariablesAndCategories($event)" (toggleControlVariableDialogOpen)="toggleControlVariableDialogOpen($event)"
-                  [numPanelsInColumn]="dashboardColumn.length" (removePanel)="removePanel(column, row)">
+                  [numPanelsInColumn]="dashboardColumn.length" (removePanel)="removePanel(column, row)" (togglePanelButtons)="togglePanelButtons(column, row, $event)">
                 </app-msf-dashboard-panel>
               </div>
             </div>

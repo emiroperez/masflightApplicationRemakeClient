@@ -911,7 +911,7 @@
         </table>
       </div>
       <div class="msf-dashboard-panel-config-button" id="msf-dashboard-panel-chart-buttons-{{values.id}}" [ngStyle]="{ 'left': getConfigButtonOffset() }">
-        <ng-container *ngIf="displayPanelButtons('chart')">
+        <ng-container *ngIf="values.displayButtons">
           <button *ngIf="!globals.readOnlyDashboard" mat-icon-button (click)="goToChartConfiguration()" color="primary" class="msf-dashboard-panel-margin-button" matTooltip="Edit Configuration">
             <mat-icon aria-label="Edit Configuration">menu</mat-icon>
           </button>
@@ -960,7 +960,7 @@
     <div class="msf-dashboard-panel-title">{{values.chartName}}</div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-panel-config-button" id="msf-dashboard-panel-info-buttons-{{values.id}}" [ngStyle]="{ 'left': getConfigButtonOffset() }" *ngIf="!globals.readOnlyDashboard">
-        <ng-container *ngIf="displayPanelButtons('info')">
+        <ng-container *ngIf="values.displayButtons">
           <button mat-icon-button (click)="goToInfoConfiguration()" color="primary" class="msf-dashboard-panel-margin-button" matTooltip="Edit Configuration">
             <mat-icon aria-label="Edit Configuration">menu</mat-icon>
           </button>
@@ -1011,7 +1011,7 @@
     <div class="msf-dashboard-panel-title">{{values.chartName}}</div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-panel-config-button" id="msf-dashboard-panel-form-buttons-{{values.id}}" [ngStyle]="{ 'left': getConfigButtonOffset() }" *ngIf="!globals.readOnlyDashboard">
-        <ng-container *ngIf="displayPanelButtons('form')">
+        <ng-container *ngIf="values.displayButtons">
           <button mat-icon-button (click)="goToFormConfiguration()" color="primary" class="msf-dashboard-panel-margin-button" matTooltip="Edit Configuration">
             <mat-icon aria-label="Edit Configuration">menu</mat-icon>
           </button>
@@ -1056,7 +1056,7 @@
     <div class="msf-dashboard-panel-title">{{values.chartName}}</div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-panel-config-button" id="msf-dashboard-panel-pic-buttons-{{values.id}}" [ngStyle]="{ 'left': getConfigButtonOffset() }" *ngIf="!globals.readOnlyDashboard">
-        <ng-container *ngIf="displayPanelButtons('pic')">
+        <ng-container *ngIf="values.displayButtons">
           <button mat-icon-button (click)="goToPicConfiguration()" color="primary" class="msf-dashboard-panel-margin-button" matTooltip="Edit Configuration">
             <mat-icon aria-label="Edit Configuration">menu</mat-icon>
           </button>
@@ -1097,7 +1097,7 @@
     <div class="msf-dashboard-panel-title" [style.padding-bottom.px]="5">{{values.chartName}}</div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-panel-config-button" id="msf-dashboard-panel-table-buttons-{{values.id}}" [ngStyle]="{ 'left': getConfigButtonOffset() }" *ngIf="!globals.readOnlyDashboard">
-        <ng-container *ngIf="displayPanelButtons('table')">
+        <ng-container *ngIf="values.displayButtons">
           <button mat-icon-button (click)="goToTableConfiguration()" color="primary" class="msf-dashboard-panel-margin-button" matTooltip="Edit Configuration">
             <mat-icon aria-label="Edit Configuration">menu</mat-icon>
           </button>
@@ -1145,7 +1145,7 @@
     <div class="msf-dashboard-panel-title">{{values.chartName}}</div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-panel-config-button" id="msf-dashboard-panel-mapbox-buttons-{{values.id}}" [ngStyle]="{ 'left': getConfigButtonOffset() }" *ngIf="!globals.readOnlyDashboard">
-        <ng-container *ngIf="displayPanelButtons('mapbox')">
+        <ng-container *ngIf="values.displayButtons">
           <button mat-icon-button (click)="goToMapboxConfiguration()" color="primary" class="msf-dashboard-panel-margin-button" matTooltip="Edit Configuration">
             <mat-icon aria-label="Edit Configuration">menu</mat-icon>
           </button>
@@ -1185,7 +1185,7 @@
     <div class="msf-dashboard-panel-title">{{values.chartName}}</div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-panel-config-button" id="msf-dashboard-panel-dyn-table-buttons-{{values.id}}" [ngStyle]="{ 'left': getConfigButtonOffset() }" *ngIf="!globals.readOnlyDashboard">
-        <ng-container *ngIf="displayPanelButtons('dyn-table')">
+        <ng-container *ngIf="values.displayButtons">
           <button mat-icon-button (click)="goToDynTableConfiguration()" color="primary" class="msf-dashboard-panel-margin-button" matTooltip="Edit Configuration">
             <mat-icon aria-label="Edit Configuration">menu</mat-icon>
           </button>
@@ -1236,7 +1236,7 @@
     <div class="msf-dashboard-panel-title" *ngIf="values.displayChart">{{values.chartName}}</div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-panel-config-button" id="msf-dashboard-panel-adv-table-buttons-{{values.id}}" [ngStyle]="{ 'left': getConfigButtonOffset() }">
-        <ng-container *ngIf="displayPanelButtons('adv-table')">
+        <ng-container *ngIf="values.displayButtons">
           <button *ngIf="!globals.readOnlyDashboard" mat-icon-button (click)="goToChartConfiguration()" color="primary" class="msf-dashboard-panel-margin-button" matTooltip="Edit Configuration">
             <mat-icon aria-label="Edit Configuration">menu</mat-icon>
           </button>
