@@ -39,6 +39,10 @@ export class MsfContainerComponent implements OnInit {
   @Input("paginator")
   paginator: MatPaginator;
 
+  
+  @Output('lengthpaginator')
+  lengthpaginator = new EventEmitter ();
+
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;							   
   constructor(public globals: Globals, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) { 
@@ -125,6 +129,10 @@ export class MsfContainerComponent implements OnInit {
       this.globals.showPaginator = false;
     }
 
+  }
+
+  paginatorlength(event: any) {
+    this.lengthpaginator.emit(event);
   }
 
 }
