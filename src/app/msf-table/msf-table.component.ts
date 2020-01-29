@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Input ,ChangeDetectorRef, ElementRef, EventEmitter, Output} from '@angular/core';
-import {MatSort, MatTableDataSource, MatTab, Sort, MatDialog} from '@angular/material';
+import {MatSort, MatTableDataSource, MatTab, Sort, MatDialog, MatPaginator, PageEvent} from '@angular/material';
 import { Globals } from '../globals/Globals';
 import { ApplicationService } from '../services/application.service';
 import { MsfGroupingComponent } from '../msf-grouping/msf-grouping.component';
@@ -67,6 +67,10 @@ export class MsfTableComponent implements OnInit {
   template;
 
   tableOptions: any;
+
+
+  @Input("paginator")
+  paginator: MatPaginator;
 
   predefinedColumnFormats: any = {
     "short": true,
@@ -509,7 +513,8 @@ export class MsfTableComponent implements OnInit {
       if( _this.tableOptions.totalRecord > 0){
         if(_this.currentOption.metaData==1 || _this.currentOption.metaData==3 || _this.currentOption.tabType=='scmap'){  
           _this.tableOptions.displayedColumns = data.metadata;
-          let dataResult = new MatTableDataSource(mainElement);     
+          let dataResult = new MatTableDataSource(mainElement);
+          dataResult.paginator = _this.paginator;
             _this.tableOptions.displayedColumns  = _this.addGroupingColumns(_this.tableOptions.displayedColumns);
             _this.tableOptions.displayedColumns  = _this.deleteEmptyColumns(dataResult,_this.tableOptions.displayedColumns);
             // _this.tableOptions.displayedColumns  = _this.renameDuplicateColumns(_this.tableOptions.displayedColumns);

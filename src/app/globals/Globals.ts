@@ -109,6 +109,7 @@ export class Globals {
   optionsDatalake: any = [];
   // userName: string = "eric.haag.t@aspsols.com";
   userName: string = "";
+  showPaginator: boolean = false;
 
   constructor (public overlayContainer: OverlayContainer, private cookie: Cookie)
   {
