@@ -72,6 +72,9 @@ export class MsfTableComponent implements OnInit {
   @Input("paginator")
   paginator: MatPaginator;
 
+  @Output('paginatorlength')
+  paginatorlength = new EventEmitter ();
+
   predefinedColumnFormats: any = {
     "short": true,
     "medium": true,
@@ -515,6 +518,7 @@ export class MsfTableComponent implements OnInit {
           _this.tableOptions.displayedColumns = data.metadata;
           let dataResult = new MatTableDataSource(mainElement);
           dataResult.paginator = _this.paginator;
+          _this.paginatorlength.emit(data.Response.Rows);
             _this.tableOptions.displayedColumns  = _this.addGroupingColumns(_this.tableOptions.displayedColumns);
             _this.tableOptions.displayedColumns  = _this.deleteEmptyColumns(dataResult,_this.tableOptions.displayedColumns);
             // _this.tableOptions.displayedColumns  = _this.renameDuplicateColumns(_this.tableOptions.displayedColumns);
