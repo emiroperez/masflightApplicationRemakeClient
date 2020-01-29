@@ -423,6 +423,11 @@
               </button>
             </div>
             <div class="msf-dashboard-panel-control-variable-button">
+              <button mat-mini-fab (click)="goToAdditionalSettings()" color="primary" matTooltip="Additional Settings">
+                <img [style.width.px]="24" [style.height.px]="24" src="../../assets/images/additional-options.png"/>
+              </button>
+            </div>
+            <div class="msf-dashboard-panel-control-variable-button">
               <button mat-mini-fab (click)="savePanel()" color="primary" matTooltip="Save Changes">
                 <mat-icon aria-label="Save Changes">save</mat-icon>
               </button>
@@ -1046,7 +1051,7 @@
         <div class="msf-media-title-container" id="msf-dashboard-form-display">
           <div class="msf-dashboard-form-display-child" [ngClass]="values.formVariables[column].valueOrientation.value ? 'msf-dashboard-form-display-result-vertical' : 'msf-dashboard-form-display-result-horizontal'" *ngFor="let formResult of values.lastestResponse; let column = index">
             <span class="msf-media-title-value" id="msf-dashboard-form-display-title" [style.font-size.px]="getFormFontSize(column)">{{formResult.column.columnLabel}}: </span>
-            <span class="msf-media-title-value" id="msf-dashboard-form-display-value" [style.font-size.px]="getValueFormFontSize(column)">{{formResult.value}}</span>
+            <span class="msf-media-title-value" id="msf-dashboard-form-display-value" [style.font-size.px]="getValueFormFontSize(column)"><span [ngStyle]="{ 'color' : getFontColor(formResult) }">{{formResult.value}}</span></span>
           </div>
         </div>
       </div>

@@ -2423,6 +2423,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         chartType: this.chartTypes.indexOf (this.values.currentChartType),
         categoryOptions: this.values.currentOptionCategories ? JSON.stringify (this.values.currentOptionCategories) : null,
         updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0),
+        thresholds: (this.values.thresholds && this.values.currentChartType.flags & ChartFlags.FORM) ? JSON.stringify (this.values.thresholds) : null,
         function: 1,
         lastestResponse: JSON.stringify (this.values.lastestResponse),
         startAtZero: null,
@@ -5406,9 +5407,16 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   goToAdditionalSettings(): void
   {
-    let limitConfig, numColors, limitAggregatorValue;
+    let limitConfig, numColors, limitAggregatorValue, thresholdForm;
 
-    if (this.values.currentChartType.flags & ChartFlags.XYCHART
+    thresholdForm = false;
+
+    if (this.values.currentChartType.flags & ChartFlags.FORM)
+    {
+      limitConfig = false;
+      thresholdForm = true;
+    }
+    else if (this.values.currentChartType.flags & ChartFlags.XYCHART
       || this.values.currentChartType.flags & ChartFlags.PIECHART
       || this.values.currentChartType.flags & ChartFlags.FUNNELCHART
       || this.isSimpleChart ())
@@ -5455,7 +5463,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         thresholds: (this.values.currentChartType.flags & ChartFlags.HEATMAP) ? null : this.values.thresholds,
         numColors: numColors,
         limitConfig: limitConfig,
-        limitAggregatorValue: limitAggregatorValue
+        limitAggregatorValue: limitAggregatorValue,
+        thresholdForm: thresholdForm
       }
     });
   }
@@ -7038,5 +7047,18 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.displayPanelButtons ('mapbox');
     else if (this.values.displayDynTable)
       this.displayPanelButtons ('dyn-table');
+  }
+
+  getFontColor(formResult): string
+  {
+    for (let threshold of this.values.thresholds)
+    {
+      let value = parseFloat (formResult.value);
+
+      if (threshold.column == formResult.column.id && value >= threshold.min && value <= threshold.max)
+        return threshold.color;
+    }
+
+    return "inherit";
   }
 }

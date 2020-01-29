@@ -90,7 +90,7 @@
       <mat-icon aria-label="delete">remove_circle</mat-icon>
     </button>
   </div>
-  <div class="msf-dashboard-color-picker-threshold-conatiner" *ngIf="data.thresholds">
+  <div class="msf-dashboard-color-picker-threshold-container" *ngIf="data.thresholds">
     <div class="msf-dashboard-color-picker-threshold-item" *ngFor="let threshold of data.thresholds; trackBy: trackColor">
       <mat-form-field class="msf-width-30-min">
         <input matInput autocomplete="off" type="number" placeholder="Min" [(ngModel)]="threshold.min"/>
@@ -99,6 +99,44 @@
         <input matInput autocomplete="off" type="number" placeholder="Max" [(ngModel)]="threshold.max"/>
       </mat-form-field>
       <div class="msf-dashboard-color-picker-selector-container">
+        <span class="msf-dashboard-color-picker-selector-label">Color:</span>
+        <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="threshold.color" [style.background]="threshold.color" [(cpOutputFormat)]="hex"/>
+        <span class="msf-dashboard-color-picker-color-label">{{threshold.color}}</span>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="msf-dashboard-color-picker-container" *ngIf="advSettingsOpen == 4">
+  <div class="msf-dashboard-addmenu-icon-item msf-dashboard-additional-settings-title">
+    <mat-icon class="msf-dashboard-chart-icon" aria-label="Thresholds">assessment</mat-icon>
+    <span class="msf-dashboard-addmenu-item-text">Thresholds</span>
+  </div>
+  <div class="msf-dashboard-color-picker-threshold-input" *ngIf="data.thresholds">
+    {{data.thresholds.length}}
+    <button mat-icon-button (click)="addThreshold()">
+      <mat-icon aria-label="add">add_circle</mat-icon>
+    </button>
+    <button mat-icon-button (click)="removeThreshold()">
+      <mat-icon aria-label="delete">remove_circle</mat-icon>
+    </button>
+  </div>
+  <div class="msf-dashboard-color-picker-threshold-container msf-dashboard-color-picker-new-threshold-container" *ngIf="data.thresholds">
+    <div class="msf-dashboard-color-picker-threshold-item" *ngFor="let threshold of data.thresholds; trackBy: trackColor">
+      <mat-form-field class="msf-width-30-column">
+        <mat-select placeholder="Select Column" [(ngModel)]="threshold.column">
+          <ngx-mat-select-search [formControl]="columnFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+          <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable.item.id">
+            {{variable.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="msf-width-15-min">
+        <input matInput autocomplete="off" type="number" placeholder="Min" [(ngModel)]="threshold.min"/>
+      </mat-form-field>
+      <mat-form-field class="msf-width-15-max">
+        <input matInput autocomplete="off" type="number" placeholder="Max" [(ngModel)]="threshold.max"/>
+      </mat-form-field>
+      <div class="msf-dashboard-color-picker-selector-container msf-dashboard-color-picker-selector-new-container">
         <span class="msf-dashboard-color-picker-selector-label">Color:</span>
         <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="threshold.color" [style.background]="threshold.color" [(cpOutputFormat)]="hex"/>
         <span class="msf-dashboard-color-picker-color-label">{{threshold.color}}</span>

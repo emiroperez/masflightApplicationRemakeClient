@@ -437,7 +437,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             background-color: $quaternary-background-color !important
         #msf-dashboard-drill-down-container
             color: $font-color
-        .msf-dashboard-color-picker-threshold-conatiner
+        .msf-dashboard-color-picker-threshold-container
             background-color: $dashboard-threshold-background-color
             border-color: $dashboard-border-color
         .msf-dashboard-color-picker-container
@@ -4329,7 +4329,10 @@ mat-tab-group
 .msf-dashboard-color-picker-threshold-input
     padding-top: 5px
 
-.msf-dashboard-color-picker-threshold-conatiner
+.msf-dashboard-color-picker-new-threshold-container
+    height: 300px !important
+
+.msf-dashboard-color-picker-threshold-container
     overflow-y: auto
     height: 101px
     padding-top: 5px
@@ -4349,6 +4352,16 @@ mat-tab-group
             padding-right: 10px
         .msf-width-30-max
             width: 30%
+        .msf-width-30-column
+            width: 30%
+            padding-right: 10px
+        .msf-width-15-min
+            width: 15%
+            padding-right: 10px
+        .msf-width-15-max
+            width: 15%
+        .msf-dashboard-color-picker-selector-new-container
+            width: 40%
         .msf-dashboard-color-picker-selector-container
             padding-top: 0px
             .msf-dashboard-color-picker-selector-label
