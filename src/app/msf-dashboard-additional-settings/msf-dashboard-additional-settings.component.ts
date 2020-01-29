@@ -17,15 +17,24 @@ export class MsfDashboardAdditionalSettingsComponent {
 
   advSettingsOpen: number = 0;
 
+  onlyColorPicker: boolean = false;
+  onlyThresholds: boolean = false;
+
   constructor(
     public dialogRef: MatDialogRef<MsfDashboardAdditionalSettingsComponent>,
     public globals: Globals,
     @Inject(MAT_DIALOG_DATA) public data: any)
   {
-    if (!data.limitConfig && !data.limitAggregatorValue && data.thresholdForm)
+    if (!data.limitConfig && !data.limitAggregatorValue && !data.numColors && data.thresholdValues)
+    {
+      this.onlyThresholds = true;
       this.advSettingsOpen = 4; // "open" the form threshold menu
-    else if (!data.limitConfig && !data.limitAggregatorValue && !data.thresholdForm)
+    }
+    else if (!data.limitConfig && !data.limitAggregatorValue && !data.thresholdValues && data.numColors)
+    {
+      this.onlyColorPicker = true;
       this.advSettingsOpen = 2; // open color picker by default if there is no limit configuration for now
+    }
 
     if (data.values.limitMode == null)
       data.values.limitMode = 0;
