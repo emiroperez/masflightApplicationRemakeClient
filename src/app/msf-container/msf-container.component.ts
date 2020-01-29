@@ -1,6 +1,6 @@
-import { Component, OnInit, Input, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
 import { Globals } from '../globals/Globals';
-import { MatTab, MatTabGroup, MatTabChangeEvent } from '@angular/material';
+import { MatTab, MatTabGroup, MatTabChangeEvent, MatPaginator } from '@angular/material';
 import { MsfTableComponent } from '../msf-table/msf-table.component';
 import { MsfDynamicTableComponent } from '../msf-dynamic-table/msf-dynamic-table.component';
 import { MsfMapComponent } from '../msf-map/msf-map.component';
@@ -34,6 +34,10 @@ export class MsfContainerComponent implements OnInit {
   msfWelcomeTab: MatTab;
 
   @ViewChild(MatTabGroup) tabGroup: MatTabGroup;
+
+
+  @Input("paginator")
+  paginator: MatPaginator;
 
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;							   
@@ -111,5 +115,16 @@ export class MsfContainerComponent implements OnInit {
     // refresh mapbox if tab changed when it is not loading the coordinates
     if (event.tab.textLabel === "Map" && !this.msfMapRef.isLoading)
       this.msfMapRef.resizeMap ();
+
+    if(event.tab.textLabel != "Welcome" && event.tab.textLabel != "Current Query General Summary" 
+    && event.tab.textLabel != "Dynamic Table" && event.tab.textLabel != "Chart" && event.tab.textLabel != "Map"){
+      if(this.globals.moreResultsBtn){
+        this.globals.showPaginator = true;
+      }
+    }else{
+      this.globals.showPaginator = false;
+    }
+
   }
+
 }

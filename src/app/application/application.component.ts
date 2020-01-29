@@ -3,7 +3,7 @@ import { Menu } from '../model/Menu';
 import { CategoryArguments } from '../model/CategoryArguments';
 import { Globals } from '../globals/Globals';
 import { Arguments } from '../model/Arguments';
-import { MatDialog, MatTableDataSource } from '@angular/material';
+import { MatDialog, MatTableDataSource, MatPaginator } from '@angular/material';
 import { MsfDynamicTableVariablesComponent } from '../msf-dynamic-table-variables/msf-dynamic-table-variables.component';
 import { MsfContainerComponent } from '../msf-container/msf-container.component';
 import { MenuService } from '../services/menu.service';
@@ -60,6 +60,9 @@ export class ApplicationComponent implements OnInit {
 
   @ViewChild('msfContainerRef')
   msfContainerRef: MsfContainerComponent;
+
+  @ViewChild('paginator')
+  paginator: MatPaginator;
 
   TabletQuery: MediaQueryList;
   mobileQuery: MediaQueryList;
@@ -1279,4 +1282,6 @@ toggle(){
     this.globals.clearVariablesMenu ();
     this.getMenu ();
   }
+
+
 }
