@@ -21,6 +21,7 @@ export class MsfDashboardComponent implements OnInit {
   dashboardColumns: MsfDashboardPanelValues[][] = [];
   dashboardColumnsProperties: boolean[] = [];
   dashboardColumnsReAppendCharts: boolean[] = [];
+  dashboardPanelDisplayButtons: boolean[][] = [];
   options: any[] = [];
 
   columnToUpdate: number;
@@ -112,6 +113,7 @@ export class MsfDashboardComponent implements OnInit {
       // replace dashboard panels if the menu has changed and we're still on the dashboard
       this.controlPanelVariables = null;
       this.dashboardColumns.splice (0, this.dashboardColumns.length);
+      this.dashboardPanelDisplayButtons.splice (0, this.dashboardPanelDisplayButtons.length);
       this.dashboardColumnsProperties.splice (0, this.dashboardColumnsProperties.length);
       this.dashboardColumnsReAppendCharts.splice (0, this.dashboardColumnsReAppendCharts.length);
 
@@ -276,6 +278,7 @@ export class MsfDashboardComponent implements OnInit {
     let dashboardPanelIds: number[] = [];
     let dashboardPanels: any[] = [];
     let dashboardRows = [];
+    let dashboardRowsDisplayButtons = [];
 
     dashboardPanels = data;
     if (!dashboardPanels.length)
@@ -300,9 +303,11 @@ export class MsfDashboardComponent implements OnInit {
         });
 
         _this.dashboardColumns.push (dashboardRows);
+        _this.dashboardPanelDisplayButtons.push (dashboardRowsDisplayButtons);
         _this.dashboardColumnsProperties.push (false);
         _this.dashboardColumnsReAppendCharts.push (false);
         dashboardRows = [];
+        dashboardRowsDisplayButtons = [];
       }
 
       dashboardPanelIds.push (dashboardPanel.id);
@@ -317,6 +322,7 @@ export class MsfDashboardComponent implements OnInit {
         dashboardPanel.startAtZero, dashboardPanel.limitMode,
         dashboardPanel.limitAmount, dashboardPanel.ordered,
         dashboardPanel.valueList));
+      dashboardRowsDisplayButtons.push (true);
     }
 
     // add the last dashboard column
@@ -325,6 +331,7 @@ export class MsfDashboardComponent implements OnInit {
     });
 
     _this.dashboardColumns.push (dashboardRows);
+    _this.dashboardPanelDisplayButtons.push (dashboardRowsDisplayButtons);
     _this.dashboardColumnsProperties.push (false);
     _this.dashboardColumnsReAppendCharts.push (false);
 
@@ -411,6 +418,7 @@ export class MsfDashboardComponent implements OnInit {
   {
     let dashboardPanels;
     let dashboardRows = [];
+    let dashboardRowsDisplayButtons = [];
 
     dashboardPanels = data;
 
@@ -418,22 +426,27 @@ export class MsfDashboardComponent implements OnInit {
     for (let i = 0; i < dashboardPanels.length; i++)
     {
       let dashboardPanel = dashboardPanels[i];
+
       dashboardRows.push (new MsfDashboardPanelValues (_this.options, dashboardPanel.title, dashboardPanel.id,
         dashboardPanels[0].width, _this.heightValues[dashboardPanels[0].height]));
+
+      dashboardRowsDisplayButtons.push (true);
     }
 
     _this.dashboardColumns.push (dashboardRows);
+    _this.dashboardPanelDisplayButtons.push (dashboardRowsDisplayButtons);
     _this.displayAddPanel = false;
     _this.globals.isLoading = false;
   }
 
   insertPanelsInColumn(_this, data): void
   {
-    let i, dashboardColumn, dashboardPanels, dashboardPanel, column;
+    let i, dashboardColumn, dashboardPanelButtons, dashboardPanels, dashboardPanel, column;
 
     dashboardPanels = data;
     column = dashboardPanels[0].column;
     dashboardColumn = _this.dashboardColumns[column];
+    dashboardPanelButtons = _this.dashboardPanelDisplayButtons[column];
 
     // change width values of existing panels in the same column
     for (i = 0; i < dashboardColumn.length; i++)
@@ -448,6 +461,7 @@ export class MsfDashboardComponent implements OnInit {
       dashboardPanel = dashboardPanels[i];
       dashboardColumn.push (new MsfDashboardPanelValues (_this.options, dashboardPanel.title, dashboardPanel.id,
         dashboardPanel.width, _this.heightValues[dashboardPanel.height]));
+      dashboardPanelButtons.push (true);
     }
 
     _this.globals.isLoading = false;
@@ -477,6 +491,7 @@ export class MsfDashboardComponent implements OnInit {
   deleteColumn (_this): void
   {
     _this.dashboardColumns.splice (_this.columnToUpdate, 1);
+    _this.dashboardPanelDisplayButtons.splice (_this.columnToUpdate, 1);
     _this.dashboardColumnsProperties.splice (_this.columnToUpdate, 1);
     _this.dashboardColumnsReAppendCharts.splice (_this.columnToUpdate, 1);
     _this.globals.isLoading = false;
@@ -835,6 +850,7 @@ export class MsfDashboardComponent implements OnInit {
 
     // move items
     moveItemInArray (this.dashboardColumns, event.previousIndex, event.currentIndex);
+    moveItemInArray (this.dashboardPanelDisplayButtons, event.previousIndex, event.currentIndex);
     moveItemInArray (this.dashboardColumnsProperties, event.previousIndex, event.currentIndex);
     moveItemInArray (this.dashboardColumnsReAppendCharts, event.previousIndex, event.currentIndex);
 
@@ -1058,8 +1074,16 @@ export class MsfDashboardComponent implements OnInit {
     this.controlVariableDialogOpen = enable;
   }
 
-  displayResults(values): boolean
+  togglePanelButtons(column, row, value): void
   {
-    return !(!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !values.displayDynTable);
+    // delay a little to avoid ExpressionChangedAfterItHasBeenCheckedError
+    setTimeout (() => {
+      this.dashboardPanelDisplayButtons[column][row] = value;
+    }, 10);
+  }
+
+  isPanelButtonsEnabled(column, row): boolean
+  {
+    return this.dashboardPanelDisplayButtons[column][row];
   }
 }

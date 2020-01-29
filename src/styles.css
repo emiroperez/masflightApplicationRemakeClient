@@ -7973,6 +7973,7 @@ mat-tab-group {
   flex-direction: column;
   width: 100%;
   overflow-y: auto;
+  overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
   transition: 0.5s;
 }

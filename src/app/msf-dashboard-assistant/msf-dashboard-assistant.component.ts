@@ -837,7 +837,7 @@ export class MsfDashboardAssistantComponent {
     {
       series.dataFields.dateY = values.xaxis.columnName;
       series.dateFormatter.dateFormat = outputFormat;
-      series.columns.template.tooltipText = "{dateY}: {valueX}";
+      series.columns.template.tooltipText = "{dateY}: " + (values.valueColumn.item.prefix ? values.valueColumn.prefix : "") + "{valueX}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
     }
     else
     {
@@ -849,7 +849,7 @@ export class MsfDashboardAssistantComponent {
       else
       {
         series.dataFields.categoryY = values.xaxis.columnName;
-        series.columns.template.tooltipText = "{categoryY}: {valueX}";
+        series.columns.template.tooltipText = "{categoryY}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueX}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
       }
     }
 
@@ -873,7 +873,7 @@ export class MsfDashboardAssistantComponent {
     {
       series.dataFields.dateX = values.xaxis.columnName;
       series.dateFormatter.dateFormat = outputFormat;
-      series.columns.template.tooltipText = "{dateX}: {valueY}";
+      series.columns.template.tooltipText = "{dateX}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueY}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
     }
     else
     {
@@ -885,80 +885,13 @@ export class MsfDashboardAssistantComponent {
       else
       {
         series.dataFields.categoryX = values.xaxis.columnName;
-        series.columns.template.tooltipText = "{categoryX}: {valueY}";
+        series.columns.template.tooltipText = "{categoryX}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueY}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
       }
     }
 
     series.stacked = stacked;
     series.columns.template.strokeWidth = 0;
     series.columns.template.width = am4core.percent (60);
-
-    return series;
-  }
-
-  // Function to create simple line chart series
-  createSimpleLineSeries(values, stacked, chart, item, parseDate, theme, outputFormat): any
-  {
-    // Set up series
-    let series = chart.series.push (new am4charts.LineSeries ());
-    series.name = item.valueField;
-    series.dataFields.valueY = item.valueField;
-    series.sequencedInterpolation = true;
-    series.strokeWidth = 2;
-    series.minBulletDistance = 10;
-    series.tooltip.pointerOrientation = "horizontal";
-    series.tooltip.background.cornerRadius = 20;
-    series.tooltip.background.fillOpacity = 0.5;
-    series.tooltip.label.padding (12, 12, 12, 12);
-    series.tensionX = 0.8;
-
-    if (values.currentChartType.flags & ChartFlags.BULLET)
-    {
-      let bullet, circle;
-
-      series.strokeOpacity = 0;
-
-      // add circle bullet for scatter chart
-      bullet = series.bullets.push (new am4charts.Bullet ());
-
-      circle = bullet.createChild (am4core.Circle);
-      circle.horizontalCenter = "middle";
-      circle.verticalCenter = "middle";
-      circle.strokeWidth = 0;
-      circle.width = 12;
-      circle.height = 12;
-    }
-
-    if (parseDate)
-    {
-      series.dataFields.dateX = item.titleField;
-      series.dateFormatter.dateFormat = outputFormat;
-      series.tooltipText = "{dateX}: {valueY}";
-    }
-    else
-    {
-      if (values.chartMode === "advanced")
-      {
-        series.dataFields.categoryX = item.titleField;
-        series.tooltipText = item.valueField + ": {valueY}";
-      }
-      else
-      {
-        series.dataFields.categoryX = item.titleField;
-        series.tooltipText = "{categoryX}: {valueY}";
-      }
-    }
-
-    series.stacked = stacked;
-
-    // Set color
-    series.segments.template.adapter.add ("fill", (fill, target) => {
-      return am4core.color (values.paletteColors[0]);
-    });
-
-    series.adapter.add ("stroke", (stroke, target) => {
-      return am4core.color (values.paletteColors[0]);
-    });
 
     return series;
   }
@@ -1000,7 +933,7 @@ export class MsfDashboardAssistantComponent {
     {
       series.dataFields.dateX = values.xaxis.columnName;
       series.dateFormatter.dateFormat = outputFormat;
-      series.tooltipText = "{dateX}: {valueY}";
+      series.tooltipText = "{dateX}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueY}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
     }
     else
     {
@@ -1012,7 +945,7 @@ export class MsfDashboardAssistantComponent {
       else
       {
         series.dataFields.categoryX = values.xaxis.columnName;
-        series.tooltipText = "{categoryX}: {valueY}";
+        series.tooltipText = "{categoryX}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueY}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
       }
     }
 
@@ -1021,6 +954,81 @@ export class MsfDashboardAssistantComponent {
       series.fillOpacity = 0.3;
 
     series.stacked = stacked;
+
+    return series;
+  }
+
+  // Function to create simple line chart series
+  createSimpleLineSeries(values, stacked, chart, item, parseDate, theme, outputFormat): any
+  {
+    // Set up series
+    let series = chart.series.push (new am4charts.LineSeries ());
+    series.name = item.valueField;
+    series.dataFields.valueY = item.valueField;
+    series.sequencedInterpolation = true;
+    series.strokeWidth = 2;
+    series.minBulletDistance = 10;
+    series.tooltip.pointerOrientation = "horizontal";
+    series.tooltip.background.cornerRadius = 20;
+    series.tooltip.background.fillOpacity = 0.5;
+    series.tooltip.label.padding (12, 12, 12, 12);
+    series.tensionX = 0.8;
+
+    if (values.currentChartType.flags & ChartFlags.BULLET)
+    {
+      let bullet, circle;
+
+      series.strokeOpacity = 0;
+
+      // add circle bullet for scatter chart
+      bullet = series.bullets.push (new am4charts.Bullet ());
+
+      circle = bullet.createChild (am4core.Circle);
+      circle.horizontalCenter = "middle";
+      circle.verticalCenter = "middle";
+      circle.strokeWidth = 0;
+      circle.width = 12;
+      circle.height = 12;
+    }
+
+    if (parseDate)
+    {
+      series.dataFields.dateX = item.titleField;
+      series.dateFormatter.dateFormat = outputFormat;
+
+      if (values.valueColumn)
+        series.tooltipText = "{dateX}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueY}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
+      else
+        series.tooltipText = "{dateX}: {valueY}";
+    }
+    else
+    {
+      if (values.chartMode === "advanced")
+      {
+        series.dataFields.categoryX = item.titleField;
+        series.tooltipText = item.valueField + ": {valueY}";
+      }
+      else
+      {
+        series.dataFields.categoryX = item.titleField;
+
+        if (values.valueColumn)
+          series.tooltipText = "{categoryX}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueY}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
+        else
+          series.tooltipText = "{categoryX}: {valueY}";
+      }
+    }
+
+    series.stacked = stacked;
+
+    // Set color
+    series.segments.template.adapter.add ("fill", (fill, target) => {
+      return am4core.color (values.paletteColors[0]);
+    });
+
+    series.adapter.add ("stroke", (stroke, target) => {
+      return am4core.color (values.paletteColors[0]);
+    });
 
     return series;
   }
@@ -1043,12 +1051,20 @@ export class MsfDashboardAssistantComponent {
       {
         series.dataFields.dateX = item.titleField;
         series.dateFormatter.dateFormat = outputFormat;
-        series.columns.template.tooltipText = "{dateX}: {valueY}";
+
+        if (values.valueColumn)
+          series.columns.template.tooltipText = "{dateX}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueY}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
+        else
+          series.columns.template.tooltipText = "{dateX}: {valueY}";
       }
       else
       {
         series.dataFields.categoryX = item.titleField;
-        series.columns.template.tooltipText = "{categoryX}: {valueY}";
+
+        if (values.valueColumn)
+          series.columns.template.tooltipText = "{categoryX}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueY}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
+        else
+          series.columns.template.tooltipText = "{categoryX}: {valueY}";
       }
     }
 
@@ -1082,12 +1098,20 @@ export class MsfDashboardAssistantComponent {
       {
         series.dataFields.dateY = item.titleField;
         series.dateFormatter.dateFormat = outputFormat;
-        series.columns.template.tooltipText = "{dateY}: {valueX}";
+
+        if (values.valueColumn)
+          series.columns.template.tooltipText = "{dateY}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueX}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
+        else
+          series.columns.template.tooltipText = "{dateY}: {valueX}";
       }
       else
       {
         series.dataFields.categoryY = item.titleField;
-        series.columns.template.tooltipText = "{categoryY}: {valueX}";
+
+        if (values.valueColumn)
+          series.columns.template.tooltipText = "{categoryY}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueX}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
+        else
+          series.columns.template.tooltipText = "{categoryY}: {valueX}";
       }
     }
 
@@ -1115,6 +1139,7 @@ export class MsfDashboardAssistantComponent {
     series = chart.series.push (new am4charts.PieSeries ());
     series.dataFields.value = item.valueField;
     series.dataFields.category = item.titleField;
+    series.slices.template.tooltipText = "{category}: " + (values.valueColumn.item.prefix ? values.valueColumn.item.prefix : "") + "{value.value}" + (values.valueColumn.item.suffix ? values.valueColumn.item.suffix : "");
 
     // This creates initial animation
     series.hiddenState.properties.opacity = 1;
@@ -1145,6 +1170,7 @@ export class MsfDashboardAssistantComponent {
     series = chart.series.push (new am4charts.FunnelSeries ());
     series.dataFields.value = item.valueField;
     series.dataFields.category = item.titleField;
+    series.slices.template.tooltipText = "{category}: " + (values.valueColumn.item.prefix ? values.valueColumn.item.prefix : "") + "{value.value}" + (values.valueColumn.item.suffix ? values.valueColumn.item.suffix : "");
 
     // Set chart apparence
     series.sliceLinks.template.fillOpacity = 0;

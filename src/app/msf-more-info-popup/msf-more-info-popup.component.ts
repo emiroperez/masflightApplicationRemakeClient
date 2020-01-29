@@ -146,25 +146,34 @@ export class MsfMoreInfoPopupComponent{
         return "";
     }
 
-    loadChartData(handlerSuccess, handlerError) {
+    loadChartData(handlerSuccess, handlerError)
+    {
+      let panelInfo, urlBase, urlArg;
+
       this.globals.popupLoading2 = true;
       this.chart = null;
-      let urlBase = this.globals.popupUrl + "/CategoryInfoPax";
+
+      urlBase = this.globals.popupUrl + "/CategoryInfoPax";
       // urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
-      let urlArg = encodeURIComponent (urlBase);
+      urlArg = encodeURIComponent (urlBase);
 
       if (isDevMode ())
         console.log (urlBase);
 
-      let url = this.globals.baseUrl + "/secure/getChartData?url=" + urlArg 
-      + "&optionId=" + this.globals.currentOption.idy
-      + "&variable=" + this.variable + "&xaxis=" + this.xaxis 
-      + "&valueColumn=" + this.valueColumn + "&function=" + this.functions[1].id;
+      let url = this.globals.baseUrl + "/secure/getChartData?url=" + urlArg;
 
       if (this.globals.testingPlan != -1)
         url += "&testPlanId=" + this.globals.testingPlan;
+  
+      panelInfo = {
+        option: this.globals.currentOption,
+        variableName: this.variable,
+        xaxisName: this.xaxis,
+        valueName: this.valueColumn,
+        functionName: this.functions[1].id
+      };
 
-      this.authService.post(this, url, null, handlerSuccess, handlerError);
+      this.authService.post (this, url, panelInfo, handlerSuccess, handlerError);
     }
 
     handlerChartSuccess(_this, data): void
@@ -318,15 +327,16 @@ export class MsfMoreInfoPopupComponent{
       });
     }
 
-    // ngOnDestroy()
-    // {
-    //   this._onDestroy.next ();
-    //   this._onDestroy.complete ();
-  
-    //   clearInterval (this.timer);
-  
-    //   this.destroyChart ();
-    // }
+    ngOnDestroy()
+    {
+      if (this.chart)
+      {
+        this.zone.runOutsideAngular (() => {
+          if (this.chart)
+            this.chart.dispose ();
+        });
+      }
+    }
 
     ngAfterViewInit(): void {
       if(this.globals.currentDrillDown.title=="More Info Passenger"){

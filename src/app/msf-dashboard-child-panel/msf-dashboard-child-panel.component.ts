@@ -143,12 +143,12 @@ export class MsfDashboardChildPanelComponent {
     {
       series.dataFields.dateY = values.xaxis.columnName;
       series.dateFormatter.dateFormat = outputFormat;
-      series.columns.template.tooltipText = "{dateY}: {valueX}";
+      series.columns.template.tooltipText = "{dateY}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueX}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
     }
     else
     {
       series.dataFields.categoryY = values.xaxis.columnName;
-      series.columns.template.tooltipText = "{categoryY}: {valueX}";
+      series.columns.template.tooltipText = "{categoryY}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueX}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
     }
 
     // Configure columns
@@ -169,12 +169,12 @@ export class MsfDashboardChildPanelComponent {
     {
       series.dataFields.dateX = values.xaxis.columnName;
       series.dateFormatter.dateFormat = outputFormat;
-      series.columns.template.tooltipText = "{dateX}: {valueY}";
+      series.columns.template.tooltipText = "{dateX}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueY}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
     }
     else
     {
       series.dataFields.categoryX = values.xaxis.columnName;
-      series.columns.template.tooltipText = "{categoryX}: {valueY}";
+      series.columns.template.tooltipText = "{categoryX}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueY}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
     }
 
     series.stacked = stacked;
@@ -219,12 +219,12 @@ export class MsfDashboardChildPanelComponent {
     {
       series.dataFields.dateX = values.xaxis.columnName;
       series.dateFormatter.dateFormat = outputFormat;
-      series.tooltipText = "{dateX}: {valueY}";
+      series.tooltipText = "{dateX}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueY}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
     }
     else
     {
       series.dataFields.categoryX = values.xaxis.columnName;
-      series.tooltipText = "{categoryX}: {valueY}";
+      series.tooltipText = "{categoryX}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueY}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
     }
 
     // Fill area below line for area chart types
@@ -271,12 +271,20 @@ export class MsfDashboardChildPanelComponent {
     {
       series.dataFields.dateX = item.titleField;
       series.dateFormatter.dateFormat = outputFormat;
-      series.tooltipText = "{dateX}: {valueY}";
+
+      if (values.valueColumn)
+        series.tooltipText = "{dateX}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueY}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
+      else
+        series.tooltipText = "{dateX}: {valueY}";
     }
     else
     {
       series.dataFields.categoryX = item.titleField;
-      series.tooltipText = "{categoryX}: {valueY}";
+
+      if (values.valueColumn)
+        series.tooltipText = "{categoryX}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueY}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
+      else
+        series.tooltipText = "{categoryX}: {valueY}";
     }
 
     series.stacked = stacked;
@@ -336,12 +344,20 @@ export class MsfDashboardChildPanelComponent {
     {
       series.dataFields.dateX = item.titleField;
       series.dateFormatter.dateFormat = outputFormat;
-      series.columns.template.tooltipText = "{dateX}: {valueY}";
+
+      if (values.valueColumn)
+        series.columns.template.tooltipText = "{dateX}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueY}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
+      else
+        series.columns.template.tooltipText = "{dateX}: {valueY}";
     }
     else
     {
       series.dataFields.categoryX = item.titleField;
-      series.columns.template.tooltipText = "{categoryX}: {valueY}";
+
+      if (values.valueColumn)
+        series.columns.template.tooltipText = "{categoryX}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueY}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
+      else
+        series.columns.template.tooltipText = "{categoryX}: {valueY}";
     }
 
     series.columns.template.strokeWidth = 0;
@@ -365,12 +381,20 @@ export class MsfDashboardChildPanelComponent {
     {
       series.dataFields.dateY = item.titleField;
       series.dateFormatter.dateFormat = outputFormat;
-      series.columns.template.tooltipText = "{dateY}: {valueX}";
+
+      if (values.valueColumn)
+        series.columns.template.tooltipText = "{dateY}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueX}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
+      else
+        series.columns.template.tooltipText = "{dateY}: {valueX}";
     }
     else
     {
       series.dataFields.categoryY = item.titleField;
-      series.columns.template.tooltipText = "{categoryY}: {valueX}";
+
+      if (values.valueColumn)
+        series.columns.template.tooltipText = "{categoryY}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueX}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
+      else
+        series.columns.template.tooltipText = "{categoryY}: {valueX}";
     }
 
     series.columns.template.strokeWidth = 0;
@@ -395,6 +419,7 @@ export class MsfDashboardChildPanelComponent {
     series = chart.series.push (new am4charts.PieSeries ());
     series.dataFields.value = item.valueField;
     series.dataFields.category = item.titleField;
+    series.slices.template.tooltipText = "{category}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{value.value}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
 
     // This creates initial animation
     series.hiddenState.properties.opacity = 1;
@@ -423,6 +448,7 @@ export class MsfDashboardChildPanelComponent {
     series = chart.series.push (new am4charts.FunnelSeries ());
     series.dataFields.value = item.valueField;
     series.dataFields.category = item.titleField;
+    series.slices.template.tooltipText = "{category}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{value.value}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
 
     // Set chart apparence
     series.sliceLinks.template.fillOpacity = 0;
@@ -733,9 +759,21 @@ export class MsfDashboardChildPanelComponent {
           if (this.values.ordered)
           {
             // Sort chart series from least to greatest by calculating the
-            // average (normal) or total (stacked) value of each key item to
-            // compensate for the lack of proper sorting by values
-            if (stacked && !(this.values.currentChartType.flags & ChartFlags.LINECHART))
+            // total value of each key item to compensate for the lack of proper
+            // sorting by values
+            if (parseDate && this.values.currentChartType.flags & ChartFlags.LINECHART)
+            {
+              // Sort by date the to get the correct order on the line chart
+              // if the category axis is a date type
+              let axisField = this.values.xaxis.id;
+  
+              chart.events.on ("beforedatavalidated", function (event) {
+                chart.data.sort (function (e1, e2) {
+                  return +(new Date(e1[axisField])) - +(new Date(e2[axisField]));
+                });
+              });
+            }
+            else
             {
               for (let item of chart.data)
               {
@@ -752,44 +790,10 @@ export class MsfDashboardChildPanelComponent {
                 item["sum"] = total;
               }
 
-              chart.events.on ("beforedatavalidated", function(event) {
-                chart.data.sort (function(e1, e2) {
+              chart.events.on ("beforedatavalidated", function (event) {
+                chart.data.sort (function (e1, e2) {
                   return e1.sum - e2.sum;
                 });
-              });
-            }
-            else
-            {
-              for (let object of chartInfo.filter)
-              {
-                let average = 0;
-
-                for (let data of chartInfo.data)
-                {
-                  let value = data[object.valueField];
-
-                  if (value != null)
-                    average += value;
-                }
-
-                object["avg"] = average / chartInfo.data.length;
-              }
-
-              // Also sort the data by date the to get the correct order on the line chart
-              // if the category axis is a date type
-              if (parseDate && this.values.currentChartType.flags & ChartFlags.LINECHART)
-              {
-                let axisField = this.values.xaxis.columnName;
-  
-                chart.events.on ("beforedatavalidated", function(event) {
-                  chart.data.sort (function(e1, e2) {
-                    return +(new Date(e1[axisField])) - +(new Date(e2[axisField]));
-                  });
-                });
-              }
-
-              chartInfo.filter.sort (function(e1, e2) {
-                return e1.avg - e2.avg;
               });
             }
           }
@@ -1360,7 +1364,9 @@ export class MsfDashboardChildPanelComponent {
 
   loadChartData(handlerSuccess, handlerError): void
   {
-    let url, urlBase, urlArg;
+    let url, urlBase, urlArg, haveXaxis, panelInfo;
+
+    haveXaxis = false;
 
     if (this.globals.currentApplication.name === "DataLake")
     {
@@ -1378,18 +1384,7 @@ export class MsfDashboardChildPanelComponent {
     if (isDevMode ())
       console.log (urlBase);
 
-    url = this.service.host + "/secure/getChartData?url=" + urlArg + "&optionId=" + this.values.currentOption.id +
-      "&variable=" + this.values.variable.columnName;
-
-    if (this.values.valueColumn)
-    {
-      if (this.isSimpleChart ())
-        url += "&valueList=" + this.values.valueColumn.columnName;
-      else
-        url += "&valueColumn=" + this.values.valueColumn.columnName;
-    }
-
-    url += "&function=" + this.values.function.id;
+    url = this.service.host + "/secure/getChartData?url=" + urlArg;
 
     // don't use the xaxis parameter if the chart type is pie, donut or radar
     if (this.values.currentChartType.flags & ChartFlags.PIECHART || this.values.currentChartType.flags & ChartFlags.FUNNELCHART)
@@ -1397,12 +1392,21 @@ export class MsfDashboardChildPanelComponent {
     else if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
       url += "&chartType=simplebar";
     else
-      url += "&xaxis=" + this.values.xaxis.columnName;
+      haveXaxis = true;
 
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;
 
-    this.authService.post (this, url, null, handlerSuccess, handlerError);
+    panelInfo = {
+      option: this.values.currentOption,
+      variableName: this.values.variable.columnName,
+      xaxisName: haveXaxis ? this.values.xaxis.columnName : null,
+      valueName: (this.values.valueColumn && !this.isSimpleChart ()) ? this.values.valueColumn.columnName : null,
+      valueList: (this.values.valueColumn && this.isSimpleChart ()) ? this.values.valueColumn.columnName : null,
+      functionName: this.values.function.id
+    };
+
+    this.authService.post (this, url, panelInfo, handlerSuccess, handlerError);
   }
 
   handlerChartSuccess(_this, data): void
@@ -1457,6 +1461,8 @@ export class MsfDashboardChildPanelComponent {
   isSimpleChart(): boolean
   {
     return !(this.values.currentChartType.flags & ChartFlags.XYCHART)
-      && !(this.values.currentChartType.flags & ChartFlags.ADVANCED);
+      && !(this.values.currentChartType.flags & ChartFlags.ADVANCED)
+      && !(this.values.currentChartType.flags & ChartFlags.PIECHART)
+      && !(this.values.currentChartType.flags & ChartFlags.FUNNELCHART);
   }
 }

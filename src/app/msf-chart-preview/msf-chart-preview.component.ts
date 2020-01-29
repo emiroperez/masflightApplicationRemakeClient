@@ -75,6 +75,17 @@ export class MsfChartPreviewComponent {
     this.loadChartData (this.handlerChartSuccess, this.handlerDataError);
   }
 
+  ngOnDestroy(): void
+  {
+    if (this.chart)
+    {
+      this.zone.runOutsideAngular (() => {
+        if (this.chart)
+          this.chart.dispose ();
+      });
+    }
+  }
+
   checkVisibility(): string
   {
     if (this.isLoading)
@@ -124,7 +135,10 @@ export class MsfChartPreviewComponent {
 
   loadChartData(handlerSuccess, handlerError): void
   {
-    let url, urlBase, urlArg;
+    let url, urlBase, urlArg, haveVariable, haveXaxis, isAdvChart, panelInfo;
+
+    haveVariable = false;
+    haveXaxis = false;
 
     if (this.globals.currentApplication.name === "DataLake")
     {
@@ -142,35 +156,27 @@ export class MsfChartPreviewComponent {
     if (isDevMode ())
       console.log (urlBase);
 
-    url = this.service.host + "/secure/getChartData?url=" + urlArg + "&optionId=" + this.data.currentOption.id;
-
-    if (this.data.valueColumn)
-    {
-      if (this.isSimpleChart ())
-        url += "&valueList=" + this.data.valueColumn.columnName;
-      else
-        url += "&valueColumn=" + this.data.valueColumn.columnName;
-    }
+    url = this.service.host + "/secure/getChartData?url=" + urlArg;
 
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;
 
-    url += "&function=";
-
     if (this.data.chartMode === "advanced")
     {
-      url += "advby" + this.data.intervalType;
+      isAdvChart = true;
 
       if (this.data.currentChartType.flags & ChartFlags.XYCHART)
-        url += "&variable=" + this.data.variable.columnName + "&chartType=advancedbar";
+      {
+        url += "&chartType=advancedbar";
+        haveVariable = true;
+      }
       else
         url += "&chartType=simpleadvancedbar";
-
-      url += "&intervalValue=" + this.data.intValue;
     }
     else
     {
-      url += this.data.function.id + "&variable=" + this.data.variable.columnName;
+      isAdvChart = false;
+      haveVariable = true;
 
       // don't use the xaxis parameter if the chart type is pie, donut or radar
       if (this.data.currentChartType.flags & ChartFlags.PIECHART || this.data.currentChartType.flags & ChartFlags.FUNNELCHART)
@@ -178,10 +184,20 @@ export class MsfChartPreviewComponent {
       else if (!(this.data.currentChartType.flags & ChartFlags.XYCHART))
         url += "&chartType=simplebar";
       else
-        url += "&xaxis=" + this.data.xaxis.columnName;
+        haveXaxis = true;
     }
+  
+    panelInfo = {
+      option: this.data.currentOption,
+      variableName: haveVariable ? this.data.variable.columnName : null,
+      xaxisName: haveXaxis ? this.data.xaxis.columnName : null,
+      valueName: (this.data.valueColumn && !this.isSimpleChart ()) ? this.data.valueColumn.columnName : null,
+      valueList: (this.data.valueColumn && this.isSimpleChart ()) ? this.data.valueColumn.columnName : null,
+      functionName: isAdvChart ? ("advby" + this.data.intervalType) : this.data.function.id,
+      advIntervalValue: isAdvChart ? this.data.intValue : null
+    };
 
-    this.authService.post (this, url, null, handlerSuccess, handlerError);
+    this.authService.post (this, url, panelInfo, handlerSuccess, handlerError);
   }
 
   noDataFound(): void
@@ -511,9 +527,21 @@ export class MsfChartPreviewComponent {
           if (this.data.ordered)
           {
             // Sort chart series from least to greatest by calculating the
-            // average (normal) or total (stacked) value of each key item to
-            // compensate for the lack of proper sorting by values
-            if (stacked && !(this.data.currentChartType.flags & ChartFlags.LINECHART))
+            // total value of each key item to compensate for the lack of proper
+            // sorting by values
+            if (parseDate && this.data.currentChartType.flags & ChartFlags.LINECHART)
+            {
+              // Sort by date the to get the correct order on the line chart
+              // if the category axis is a date type
+              let axisField = this.data.xaxis.columnName;
+  
+              chart.events.on ("beforedatavalidated", function (event) {
+                chart.data.sort (function (e1, e2) {
+                  return +(new Date(e1[axisField])) - +(new Date(e2[axisField]));
+                });
+              });
+            }
+            else
             {
               for (let item of chart.data)
               {
@@ -530,44 +558,10 @@ export class MsfChartPreviewComponent {
                 item["sum"] = total;
               }
 
-              chart.events.on ("beforedatavalidated", function(event) {
-                chart.data.sort (function(e1, e2) {
+              chart.events.on ("beforedatavalidated", function (event) {
+                chart.data.sort (function (e1, e2) {
                   return e1.sum - e2.sum;
                 });
-              });
-            }
-            else
-            {
-              for (let object of chartInfo.filter)
-              {
-                let average = 0;
-
-                for (let data of chartInfo.data)
-                {
-                  let value = data[object.valueField];
-
-                  if (value != null)
-                    average += value;
-                }
-
-                object["avg"] = average / chartInfo.data.length;
-              }
-
-              // Also sort the data by date the to get the correct order on the line chart
-              // if the category axis is a date type
-              if (parseDate && this.data.currentChartType.flags & ChartFlags.LINECHART)
-              {
-                let axisField = this.data.xaxis.columnName;
-
-                chart.events.on ("beforedatavalidated", function(event) {
-                  chart.data.sort (function(e1, e2) {
-                    return +(new Date(e1[axisField])) - +(new Date(e2[axisField]));
-                  });
-                });
-              }
-
-              chartInfo.filter.sort (function(e1, e2) {
-                return e1.avg - e2.avg;
               });
             }
           }
@@ -1069,6 +1063,8 @@ export class MsfChartPreviewComponent {
   isSimpleChart(): boolean
   {
     return !(this.data.currentChartType.flags & ChartFlags.XYCHART)
-      && !(this.data.currentChartType.flags & ChartFlags.ADVANCED);
+      && !(this.data.currentChartType.flags & ChartFlags.ADVANCED)
+      && !(this.data.currentChartType.flags & ChartFlags.PIECHART)
+      && !(this.data.currentChartType.flags & ChartFlags.FUNNELCHART);
   }
 }
