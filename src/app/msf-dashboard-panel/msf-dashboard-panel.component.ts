@@ -2583,7 +2583,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (isDevMode ())
       console.log (urlArg);
 
-    url = this.service.host + "/secure/getTextSummaryResponse?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
+    url = this.service.host + "/secure/getTextSummaryResponse?url=" + urlArg;
 
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;
