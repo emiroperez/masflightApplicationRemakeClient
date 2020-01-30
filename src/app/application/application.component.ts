@@ -3,7 +3,7 @@ import { Menu } from '../model/Menu';
 import { CategoryArguments } from '../model/CategoryArguments';
 import { Globals } from '../globals/Globals';
 import { Arguments } from '../model/Arguments';
-import { MatDialog, MatTableDataSource, MatPaginator, PageEvent } from '@angular/material';
+import { MatDialog, MatTableDataSource, MatPaginator } from '@angular/material';
 import { MsfDynamicTableVariablesComponent } from '../msf-dynamic-table-variables/msf-dynamic-table-variables.component';
 import { MsfContainerComponent } from '../msf-container/msf-container.component';
 import { MenuService } from '../services/menu.service';
@@ -64,15 +64,12 @@ export class ApplicationComponent implements OnInit {
   @ViewChild('paginator')
   paginator: MatPaginator;
 
-  pageEvent: PageEvent;
-
   TabletQuery: MediaQueryList;
   mobileQuery: MediaQueryList;
   ResponsiveQuery: MediaQueryList;
   private _TabletQueryListener: () => void;
   private _mobileQueryListener: () => void;
   private _ResponsiveQueryListener: () => void; 
-  lengthpag: any;
 
   constructor(public dialog: MatDialog, public globals: Globals, private menuService: MenuService,private router: Router,private excelService:ExcelService,
     private appService: ApplicationService, private authService: AuthService, private changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private authGuard: AuthGuard,
@@ -1286,12 +1283,5 @@ toggle(){
     this.getMenu ();
   }
 
-  public getServerData(event?:PageEvent){
-    this.moreResults();
-    return event;
-  }
 
-  lengthpaginator(event: any) {
-    this.lengthpag = event;
-  }
 }
