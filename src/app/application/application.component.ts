@@ -64,6 +64,8 @@ export class ApplicationComponent implements OnInit {
   @ViewChild('paginator')
   paginator: MatPaginator;
 
+  pageIndex: any;
+
   pageEvent: PageEvent;
 
   TabletQuery: MediaQueryList;
@@ -73,6 +75,10 @@ export class ApplicationComponent implements OnInit {
   private _mobileQueryListener: () => void;
   private _ResponsiveQueryListener: () => void; 
   lengthpag: any;
+  pageI: any;
+  pageSize: any;
+
+  
 
   constructor(public dialog: MatDialog, public globals: Globals, private menuService: MenuService,private router: Router,private excelService:ExcelService,
     private appService: ApplicationService, private authService: AuthService, private changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private authGuard: AuthGuard,
@@ -1287,11 +1293,15 @@ toggle(){
   }
 
   public getServerData(event?:PageEvent){
+    this.pageIndex = event;
+    // this.pageIndex = event.pageIndex;
     this.moreResults();
     return event;
   }
 
   lengthpaginator(event: any) {
-    this.lengthpag = event;
+    this.lengthpag = event.length;
+    this.pageI = event.pageIndex;
+    this.pageSize = event.pageSize;
   }
 }

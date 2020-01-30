@@ -227,12 +227,12 @@
                                                : (mobileQuery.matches ? (globals.showMenu ? 'msf-menu-internal-content-all-mobile'
                                                                         : (globals.showTabs ? 'msf-menu-internal-content-tabs':'msf-menu-internal-content-mobile'))
                                                                         :'msf-menu-internal-content') "  [class.is-MQueryresponsive]="ResponsiveQuery.matches">
-                <app-msf-container #msfContainerRef [paginator]="paginator" (lengthpaginator)=lengthpaginator($event)></app-msf-container>
+                <app-msf-container #msfContainerRef [paginator]="paginator"   [pageIndex]="pageIndex" (lengthpaginator)=lengthpaginator($event)></app-msf-container>
                 <!-- <app-menu-nav *ngIf="(ResponsiveQuery.matches || mobileQuery.matches) && globals.showMenu " [menu]="menu" [dashboards]="dashboards"
                     [sharedDashboards]="sharedDashboards"></app-menu-nav> -->
             </div>            
-            <mat-paginator #paginator [pageSize]="50" [length]="lengthpag" hidePageSize
-            (page)="pageEvent = getServerData($event)"
+            <mat-paginator #paginator [pageIndex]="pageI" [pageSize]="pageSize" [length]="lengthpag" hidePageSize
+            (page)="pageEvent = getServerData($event)" showFirstLastButtons
             [ngClass]="(globals.showPaginator && !globals.isLoading)  || (mobileQuery.matches && globals.showCategoryArguments) ? 'msf-paginator-table':'msf-hide'"></mat-paginator>
             <!-- <div [ngClass]="globals.moreResultsBtn && !globals.isLoading? 'msf-menu-more-button' : 'msf-menu-more-button disabled-more-button'"
                 (click)="moreResults()"

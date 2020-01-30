@@ -40,6 +40,9 @@ export class MsfContainerComponent implements OnInit {
   paginator: MatPaginator;
 
   
+  @Input("pageIndex")
+  pageIndex: any;
+  
   @Output('lengthpaginator')
   lengthpaginator = new EventEmitter ();
 

@@ -24,7 +24,7 @@
             <div class="msf-viewport-container">
                 <app-msf-table #msfTableRef [tabRef]="tabRef" [isLoading]="globals.isLoading" 
                 (finishLoading)="finishLoadingTable($event)" [categoryArguments]="getCategoryArguments()" 
-                [currentOption]="globals.currentOption" [isPanel]="false" [paginator]="paginator"
+                [currentOption]="globals.currentOption" [isPanel]="false" [paginator]="paginator" [pageIndex]="pageIndex" 
                 (paginatorlength)=paginatorlength($event)></app-msf-table>
             </div>    
         </mat-tab>        

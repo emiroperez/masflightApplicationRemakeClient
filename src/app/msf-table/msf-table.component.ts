@@ -71,6 +71,9 @@ export class MsfTableComponent implements OnInit {
 
   @Input("paginator")
   paginator: MatPaginator;
+  
+  @Input("pageIndex")
+  pageIndex: any;
 
   @Output('paginatorlength')
   paginatorlength = new EventEmitter ();
@@ -259,7 +262,11 @@ export class MsfTableComponent implements OnInit {
       this.globals.startTimestamp = new Date();
 
         if(moreResults){
+          if(this.pageIndex>= this.actualPageNumber)
           this.actualPageNumber++;
+          else
+          if(this.pageIndex< this.actualPageNumber)
+          this.actualPageNumber--;
           this.tableOptions.moreResults = true;
         }else{
           this.actualPageNumber=0;
@@ -517,8 +524,19 @@ export class MsfTableComponent implements OnInit {
         if(_this.currentOption.metaData==1 || _this.currentOption.metaData==3 || _this.currentOption.tabType=='scmap'){  
           _this.tableOptions.displayedColumns = data.metadata;
           let dataResult = new MatTableDataSource(mainElement);
+          if(_this.pageIndex){
+            _this.paginatorlength.emit(_this.pageIndex);
+            _this.paginator.length = data.Response.Rows;
+            _this.paginator.pageIndex = _this.pageIndex.pageIndex;
+            _this.paginator.pageSize = _this.pageIndex.pageSize;
+            _this.paginator.previousPageIndex = _this.pageIndex.previousPageIndex;
+          }else{
+            _this.paginatorlength.emit(data.Response.Rows);
+          }
           dataResult.paginator = _this.paginator;
-          _this.paginatorlength.emit(data.Response.Rows);
+          dataResult.paginator.length = data.Response.Rows;
+          dataResult.paginator.pageSize=50;
+          dataResult.paginator.pageIndex=_this.pageIndex;
             _this.tableOptions.displayedColumns  = _this.addGroupingColumns(_this.tableOptions.displayedColumns);
             _this.tableOptions.displayedColumns  = _this.deleteEmptyColumns(dataResult,_this.tableOptions.displayedColumns);
             // _this.tableOptions.displayedColumns  = _this.renameDuplicateColumns(_this.tableOptions.displayedColumns);
