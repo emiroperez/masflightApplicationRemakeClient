@@ -433,9 +433,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     // Set up series
     let series = chart.series.push (new am4charts.ColumnSeries ());
 
-    if (panelLoading)
-      series.showOnInit = false;
-
     series.name = item.valueAxis;
     series.dataFields.valueX = item.valueField;
     series.sequencedInterpolation = true;
@@ -466,20 +463,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     series.columns.template.strokeWidth = 0;
     series.columns.template.width = am4core.percent (60);
 
-    // Set thresholds
-    series.columns.template.adapter.add ("fill", (fill, target) => {
-      if (target.dataItem)
-      {
-        for (let threshold of values.thresholds)
-        {
-          if (target.dataItem.valueX >= threshold.min && target.dataItem.valueX <= threshold.max)
-            return am4core.color (threshold.color);
-        }
-      }
-
-      return fill;
-    });
-
     if (!(values.currentChartType.flags & ChartFlags.ADVANCED))
     {
       // Display a special context menu when a chart column is right clicked
@@ -493,6 +476,9 @@ export class MsfDashboardPanelComponent implements OnInit {
       });
     }
 
+    if (panelLoading)
+      series.showOnInit = false;
+
     return series;
   }
 
@@ -500,9 +486,6 @@ export class MsfDashboardPanelComponent implements OnInit {
   createVertColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat, panelLoading): any
   {
     let series = chart.series.push (new am4charts.ColumnSeries ());
-
-    if (panelLoading)
-      series.showOnInit = false;
 
     series.name = item.valueAxis;
     series.dataFields.valueY = item.valueField;
@@ -532,19 +515,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     series.columns.template.strokeWidth = 0;
     series.columns.template.width = am4core.percent (60);
 
-    series.columns.template.adapter.add ("fill", (fill, target) => {
-      if (target.dataItem)
-      {
-        for (let threshold of values.thresholds)
-        {
-          if (target.dataItem.valueY >= threshold.min && target.dataItem.valueY <= threshold.max)
-            return am4core.color (threshold.color);
-        }
-      }
-
-      return fill;
-    });
-
     if (values.currentChartType.flags & ChartFlags.ADVANCED)
     {
       series.columns.template.events.on ("rightclick", function (event) {
@@ -557,6 +527,9 @@ export class MsfDashboardPanelComponent implements OnInit {
       });
     }
 
+    if (panelLoading)
+      series.showOnInit = false;
+
     return series;
   }
 
@@ -565,9 +538,6 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     // Set up series
     let series = chart.series.push (new am4charts.LineSeries ());
-
-    if (panelLoading)
-      series.showOnInit = false;
 
     series.name = item.valueAxis;
     series.dataFields.valueY = item.valueField;
@@ -623,20 +593,6 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     series.stacked = stacked;
 
-    // Set thresholds
-    series.segments.template.adapter.add ("fill", (fill, target) => {
-      if (target.dataItem)
-      {
-        for (let threshold of values.thresholds)
-        {
-          if (target.dataItem.values.valueY.average >= threshold.min && target.dataItem.values.valueY.average <= threshold.max)
-            return am4core.color (threshold.color);
-        }
-      }
-
-      return fill;
-    });
-
     series.adapter.add ("stroke", (stroke, target) => {
       if (target.dataItem)
       {
@@ -664,22 +620,22 @@ export class MsfDashboardPanelComponent implements OnInit {
       });
     }
 
+    if (panelLoading)
+      series.showOnInit = false;
+
     return series;
   }
 
   // Function to create simple line chart series
-  createSimpleLineSeries(values, value, chart, item, parseDate, index, outputFormat, panelLoading): any
+  createSimpleLineSeries(values, simpleValue, chart, item, parseDate, index, outputFormat, panelLoading): any
   {
     // Set up series
     let series = chart.series.push (new am4charts.LineSeries ());
 
-    if (panelLoading)
-      series.showOnInit = false;
-
-    if (value)
+    if (simpleValue)
     {
-      series.name = value.name;
-      series.dataFields.valueY = value.id;
+      series.name = simpleValue.name;
+      series.dataFields.valueY = simpleValue.id;
     }
     else
     {
@@ -758,10 +714,21 @@ export class MsfDashboardPanelComponent implements OnInit {
     series.adapter.add ("stroke", (stroke, target) => {
       if (target.dataItem)
       {
-        for (let threshold of values.thresholds)
+        if (simpleValue)
         {
-          if (target.dataItem.values.valueY.average >= threshold.min && target.dataItem.values.valueY.average <= threshold.max)
-            return am4core.color (threshold.color);
+          for (let threshold of values.thresholds)
+          {
+            if (simpleValue.idNumber == threshold.column && target.dataItem.values.valueY.average >= threshold.min && target.dataItem.values.valueY.average <= threshold.max)
+              return am4core.color (threshold.color);
+          }
+        }
+        else
+        {
+          for (let threshold of values.thresholds)
+          {
+            if (values.valueColumn.item.id == threshold.column && target.dataItem.values.valueY.average >= threshold.min && target.dataItem.values.valueY.average <= threshold.max)
+              return am4core.color (threshold.color);
+          }
         }
       }
 
@@ -782,21 +749,21 @@ export class MsfDashboardPanelComponent implements OnInit {
       });
     }
 
+    if (panelLoading)
+      series.showOnInit = false;
+
     return series;
   }
 
   // Function to create simple vertical column chart series
-  createSimpleVertColumnSeries(values, value, chart, item, parseDate, index, outputFormat, panelLoading): any
+  createSimpleVertColumnSeries(values, simpleValue, chart, item, parseDate, index, outputFormat, panelLoading): any
   {
     let series = chart.series.push (new am4charts.ColumnSeries ());
 
-    if (panelLoading)
-      series.showOnInit = false;
-
-    if (value)
+    if (simpleValue)
     {
-      series.dataFields.valueY = value.id;
-      series.name = value.name;
+      series.dataFields.valueY = simpleValue.id;
+      series.name = simpleValue.name;
     }
     else
     {
@@ -838,10 +805,21 @@ export class MsfDashboardPanelComponent implements OnInit {
     series.columns.template.adapter.add ("fill", (fill, target) => {
       if (target.dataItem)
       {
-        for (let threshold of values.thresholds)
+        if (simpleValue)
         {
-          if (target.dataItem.valueY >= threshold.min && target.dataItem.valueY <= threshold.max)
-            return am4core.color (threshold.color);
+          for (let threshold of values.thresholds)
+          {
+            if (simpleValue.idNumber == threshold.column && target.dataItem.valueY >= threshold.min && target.dataItem.valueY <= threshold.max)
+              return am4core.color (threshold.color);
+          }
+        }
+        else
+        {
+          for (let threshold of values.thresholds)
+          {
+            if (values.valueColumn.item.id == threshold.column && target.dataItem.valueY >= threshold.min && target.dataItem.valueY <= threshold.max)
+              return am4core.color (threshold.color);
+          }
         }
       }
 
@@ -858,21 +836,21 @@ export class MsfDashboardPanelComponent implements OnInit {
       values.chartSecondaryObjectSelected = null;
     });
 
+    if (panelLoading)
+      series.showOnInit = false;
+
     return series;
   }
 
   // Function to create simple horizontal column chart series
-  createSimpleHorizColumnSeries(values, value, chart, item, parseDate, index, outputFormat, panelLoading): any
+  createSimpleHorizColumnSeries(values, simpleValue, chart, item, parseDate, index, outputFormat, panelLoading): any
   {
     let series = chart.series.push (new am4charts.ColumnSeries ());
 
-    if (panelLoading)
-      series.showOnInit = false;
-
-    if (value)
+    if (simpleValue)
     {
-      series.dataFields.valueX = value.id;
-      series.name = value.name;
+      series.dataFields.valueX = simpleValue.id;
+      series.name = simpleValue.name;
     }
     else
     {
@@ -913,10 +891,21 @@ export class MsfDashboardPanelComponent implements OnInit {
     series.columns.template.adapter.add ("fill", (fill, target) => {
       if (target.dataItem)
       {
-        for (let threshold of values.thresholds)
+        if (simpleValue)
         {
-          if (target.dataItem.valueX >= threshold.min && target.dataItem.valueX <= threshold.max)
-            return am4core.color (threshold.color);
+          for (let threshold of values.thresholds)
+          {
+            if (simpleValue.idNumber == threshold.column && target.dataItem.valueY >= threshold.min && target.dataItem.valueY <= threshold.max)
+              return am4core.color (threshold.color);
+          }
+        }
+        else
+        {
+          for (let threshold of values.thresholds)
+          {
+            if (values.valueColumn.item.id == threshold.column && target.dataItem.valueY >= threshold.min && target.dataItem.valueY <= threshold.max)
+              return am4core.color (threshold.color);
+          }
         }
       }
 
@@ -932,6 +921,9 @@ export class MsfDashboardPanelComponent implements OnInit {
       values.chartSecondaryObjectSelected = null;
     });
 
+    if (panelLoading)
+      series.showOnInit = false;
+
     return series;
   }
 
@@ -946,9 +938,6 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     // Configure Pie Chart
     series = chart.series.push (new am4charts.PieSeries ());
-
-    if (panelLoading)
-      series.showOnInit = false;
 
     series.dataFields.value = item.valueField;
     series.dataFields.category = item.titleField;
@@ -972,33 +961,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     });
     series.colors = colorSet;
 
-    // Set thresholds
-    series.slices.template.adapter.add ("fill", (fill, target) => {
-      if (target.dataItem)
-      {
-        for (let threshold of values.thresholds)
-        {
-          if (target.dataItem.value >= threshold.min && target.dataItem.value <= threshold.max)
-            return am4core.color (threshold.color);
-        }
-      }
-
-      return fill;
-    });
-
-    series.slices.template.adapter.add ("stroke", (stroke, target) => {
-      if (target.dataItem)
-      {
-        for (let threshold of values.thresholds)
-        {
-          if (target.dataItem.value >= threshold.min && target.dataItem.value <= threshold.max)
-            return am4core.color (threshold.color);
-        }
-      }
-
-      return stroke;
-    });
-
     // Display a special context menu when a pie slice is right clicked
     series.slices.template.events.on ("rightclick", function (event) {
       if (!values.currentOption.drillDownOptions.length)
@@ -1009,6 +971,9 @@ export class MsfDashboardPanelComponent implements OnInit {
       values.chartSecondaryObjectSelected = null;
     });
 
+    if (panelLoading)
+      series.showOnInit = false;
+
     return series;
   }
 
@@ -1018,9 +983,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     let series, colorSet;
 
     series = chart.series.push (new am4charts.FunnelSeries ());
-
-    if (panelLoading)
-      series.showOnInit = false;
 
     series.dataFields.value = item.valueField;
     series.dataFields.category = item.titleField;
@@ -1041,33 +1003,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     });
     series.colors = colorSet;
 
-    // Set thresholds
-    series.slices.template.adapter.add ("fill", (fill, target) => {
-      if (target.dataItem)
-      {
-        for (let threshold of values.thresholds)
-        {
-          if (target.dataItem.value >= threshold.min && target.dataItem.value <= threshold.max)
-            return am4core.color (threshold.color);
-        }
-      }
-
-      return fill;
-    });
-
-    series.slices.template.adapter.add ("stroke", (stroke, target) => {
-      if (target.dataItem)
-      {
-        for (let threshold of values.thresholds)
-        {
-          if (target.dataItem.value >= threshold.min && target.dataItem.value <= threshold.max)
-            return am4core.color (threshold.color);
-        }
-      }
-
-      return stroke;
-    });
-
     // Display a special context menu when a funnel slice is right clicked
     series.slices.template.events.on ("rightclick", function (event) {
       if (!values.currentOption.drillDownOptions.length)
@@ -1077,6 +1012,9 @@ export class MsfDashboardPanelComponent implements OnInit {
       values.chartObjectSelected = event.target.dataItem.dataContext[item.titleField];
       values.chartSecondaryObjectSelected = null;
     });
+
+    if (panelLoading)
+      series.showOnInit = false;
 
     return series;
   }
@@ -1927,19 +1865,19 @@ export class MsfDashboardPanelComponent implements OnInit {
           {
             for (let i = 0; i < chartInfo.valueFields.length; i++)
             {
-              let valueName = chartInfo.valueFields[i];
+              let curValue = chartInfo.valueFields[i];
 
               // Get value name for the legend
               for (let item of this.values.chartColumnOptions)
               {
                 if (item.id === chartInfo.valueFields[i])
                 {
-                  valueName = item.name;
+                  curValue = item;
                   break;
                 }
               }
 
-              this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, { id: chartInfo.valueFields[i], name: valueName }, chart, chartInfo, parseDate, i, outputFormat, panelLoading));
+              this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, { id: chartInfo.valueFields[i], name: curValue.name, idNumber: curValue.item.id }, chart, chartInfo, parseDate, i, outputFormat, panelLoading));
             }
           }
           else
@@ -2470,7 +2408,6 @@ export class MsfDashboardPanelComponent implements OnInit {
         categoryOptions: this.values.currentOptionCategories ? JSON.stringify (this.values.currentOptionCategories) : null,
         paletteColors: JSON.stringify (this.values.paletteColors),
         updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0),
-        thresholds: JSON.stringify (this.values.thresholds),
         vertAxisName: this.values.vertAxisName,
         horizAxisName: this.values.horizAxisName,
         advIntervalValue: this.values.intValue,
@@ -2500,7 +2437,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         categoryOptions: this.values.currentOptionCategories ? JSON.stringify (this.values.currentOptionCategories) : null,
         paletteColors: JSON.stringify (this.values.paletteColors),
         updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0),
-        thresholds: JSON.stringify (this.values.thresholds),
+        thresholds: (this.isSimpleChart () ? JSON.stringify (this.values.thresholds) : null),
         vertAxisName: this.values.vertAxisName,
         horizAxisName: this.values.horizAxisName,
         startAtZero: this.values.startAtZero,
@@ -5407,14 +5344,13 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   goToAdditionalSettings(): void
   {
-    let limitConfig, numColors, limitAggregatorValue, thresholdForm;
-
-    thresholdForm = false;
+    let limitConfig, numColors, limitAggregatorValue, thresholdValues;
 
     if (this.values.currentChartType.flags & ChartFlags.FORM)
     {
       limitConfig = false;
-      thresholdForm = true;
+      thresholdValues = true;
+      numColors = 0;
     }
     else if (this.values.currentChartType.flags & ChartFlags.XYCHART
       || this.values.currentChartType.flags & ChartFlags.PIECHART
@@ -5426,20 +5362,20 @@ export class MsfDashboardPanelComponent implements OnInit {
       else
         limitConfig = true;
 
+      if (this.isSimpleChart ())
+        thresholdValues = true;
+
       numColors = 12;
     }
     else if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
     {
+      thresholdValues = false;
       limitConfig = false;
       numColors = 1;
     }
-    else if (this.values.currentChartType.flags & ChartFlags.FORM)
-    {
-      limitConfig = false;
-      numColors = 0;
-    }
     else
     {
+      thresholdValues = false;
       limitConfig = true;
       numColors = 1;
     }
@@ -5460,11 +5396,10 @@ export class MsfDashboardPanelComponent implements OnInit {
       autoFocus: false,
       data: {
         values: this.values,
-        thresholds: (this.values.currentChartType.flags & ChartFlags.HEATMAP) ? null : this.values.thresholds,
+        thresholdValues: thresholdValues,
         numColors: numColors,
         limitConfig: limitConfig,
-        limitAggregatorValue: limitAggregatorValue,
-        thresholdForm: thresholdForm
+        limitAggregatorValue: limitAggregatorValue
       }
     });
   }

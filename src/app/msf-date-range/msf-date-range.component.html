@@ -9,7 +9,7 @@
     </mat-radio-group>
 </div>
 <div class="msf-component-argument-container" *ngIf="selectionMode == 'manual'">
-    <div class="center">
+    <div class="center" *ngIf="argument.title">
         <div class="msf-component-airport-title">{{argument.title}}</div>
     </div>
     <div class="msf-component-date-input-container msf-single-date">

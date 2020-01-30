@@ -52,7 +52,7 @@
     </mat-form-field>
   </div>
 </ng-container>
-<div *ngIf="data.limitConfig || data.limitAggregatorValue" [ngClass]="advSettingsOpen == 2 ? 'msf-dashboard-menu-component-active' : 'msf-dashboard-menu-component'" (click)="componentClickHandler(2)">
+<div *ngIf="data.numColors && !onlyColorPicker" [ngClass]="advSettingsOpen == 2 ? 'msf-dashboard-menu-component-active' : 'msf-dashboard-menu-component'" (click)="componentClickHandler(2)">
   <span class="msf-menu-component-text msf-control-variables-text">Color Picker</span>
   <i *ngIf="advSettingsOpen != 2" class="material-icons msf-menu-cmpte-row">expand_more</i>
   <i *ngIf="advSettingsOpen == 2" class="material-icons msf-menu-cmpte-row">expand_less</i>
@@ -77,42 +77,19 @@
       <span class="msf-dashboard-color-picker-color-label">{{data.values.paletteColors[i]}}</span>
     </div>
   </div>
-  <div class="msf-dashboard-addmenu-icon-item" *ngIf="data.thresholds">
-    <mat-icon class="msf-dashboard-chart-icon" aria-label="Thresholds">assessment</mat-icon>
-    <span class="msf-dashboard-addmenu-item-text">Thresholds</span>
-  </div>
-  <div class="msf-dashboard-color-picker-threshold-input" *ngIf="data.thresholds">
-    {{data.thresholds.length}}
-    <button mat-icon-button (click)="addThreshold()">
-      <mat-icon aria-label="add">add_circle</mat-icon>
-    </button>
-    <button mat-icon-button (click)="removeThreshold()">
-      <mat-icon aria-label="delete">remove_circle</mat-icon>
-    </button>
-  </div>
-  <div class="msf-dashboard-color-picker-threshold-container" *ngIf="data.thresholds">
-    <div class="msf-dashboard-color-picker-threshold-item" *ngFor="let threshold of data.thresholds; trackBy: trackColor">
-      <mat-form-field class="msf-width-30-min">
-        <input matInput autocomplete="off" type="number" placeholder="Min" [(ngModel)]="threshold.min"/>
-      </mat-form-field>
-      <mat-form-field class="msf-width-30-max">
-        <input matInput autocomplete="off" type="number" placeholder="Max" [(ngModel)]="threshold.max"/>
-      </mat-form-field>
-      <div class="msf-dashboard-color-picker-selector-container">
-        <span class="msf-dashboard-color-picker-selector-label">Color:</span>
-        <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="threshold.color" [style.background]="threshold.color" [(cpOutputFormat)]="hex"/>
-        <span class="msf-dashboard-color-picker-color-label">{{threshold.color}}</span>
-      </div>
-    </div>
-  </div>
+</div>
+<div *ngIf="data.thresholdValues && !onlyThresholds" [ngClass]="advSettingsOpen == 4 ? 'msf-dashboard-menu-component-active' : 'msf-dashboard-menu-component'" (click)="componentClickHandler(4)">
+  <span class="msf-menu-component-text msf-control-variables-text">Threshold Values</span>
+  <i *ngIf="advSettingsOpen != 4" class="material-icons msf-menu-cmpte-row">expand_more</i>
+  <i *ngIf="advSettingsOpen == 4" class="material-icons msf-menu-cmpte-row">expand_less</i>
 </div>
 <div class="msf-dashboard-color-picker-container" *ngIf="advSettingsOpen == 4">
   <div class="msf-dashboard-addmenu-icon-item msf-dashboard-additional-settings-title">
     <mat-icon class="msf-dashboard-chart-icon" aria-label="Thresholds">assessment</mat-icon>
     <span class="msf-dashboard-addmenu-item-text">Thresholds</span>
   </div>
-  <div class="msf-dashboard-color-picker-threshold-input" *ngIf="data.thresholds">
-    {{data.thresholds.length}}
+  <div class="msf-dashboard-color-picker-threshold-input" *ngIf="data.values.thresholds">
+    {{data.values.thresholds.length}}
     <button mat-icon-button (click)="addThreshold()">
       <mat-icon aria-label="add">add_circle</mat-icon>
     </button>
@@ -120,8 +97,8 @@
       <mat-icon aria-label="delete">remove_circle</mat-icon>
     </button>
   </div>
-  <div class="msf-dashboard-color-picker-threshold-container msf-dashboard-color-picker-new-threshold-container" *ngIf="data.thresholds">
-    <div class="msf-dashboard-color-picker-threshold-item" *ngFor="let threshold of data.thresholds; trackBy: trackColor">
+  <div class="msf-dashboard-color-picker-threshold-container msf-dashboard-color-picker-new-threshold-container" *ngIf="data.values.thresholds">
+    <div class="msf-dashboard-color-picker-threshold-item" *ngFor="let threshold of data.values.thresholds; trackBy: trackColor">
       <mat-form-field class="msf-width-30-column">
         <mat-select placeholder="Select Column" [(ngModel)]="threshold.column">
           <ngx-mat-select-search [formControl]="columnFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
