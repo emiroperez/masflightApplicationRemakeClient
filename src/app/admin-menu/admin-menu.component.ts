@@ -1285,7 +1285,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
       });
     }
     else
-      this.service.loadWebservicMetaAdmin(this, this.optionSelected, this.handlerSuccessMeta, this.handlerErrorMeta);
+      this.service.loadWebserviceMetaAdmin(this, this.optionSelected, this.handlerSuccessMeta, this.handlerErrorMeta);
   }
 
   getArgumentsByOption() {

@@ -170,12 +170,12 @@ export class ApplicationService {
     this.http.get(_this, url, handlerSuccess, handlerError, null);
   }
 
-  loadWebservicMeta(_this,data,handlerSuccess, handlerError) {
+  loadWebserviceMeta(_this,data,handlerSuccess, handlerError) {
     let url = this.host+"/getMetaByOptionId?optionId=" + data.id;
     this.http.get(_this, url, handlerSuccess, handlerError, null);
   }
 
-  loadWebservicMetaAdmin(_this,data,handlerSuccess, handlerError) {
+  loadWebserviceMetaAdmin(_this,data,handlerSuccess, handlerError) {
     let url = this.host+"/getMetaAdminByOptionId?optionId=" + data.id;
     this.http.get(_this, url, handlerSuccess, handlerError, null);
   }
