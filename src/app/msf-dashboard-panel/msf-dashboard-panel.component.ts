@@ -3512,6 +3512,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.tableVariables = [];
     this.values.dynTableValues = null;
     this.values.dynTableVariables = [];
+    this.values.thresholds = [];
 
     for (let columnConfig of component.columnOptions)
     {
