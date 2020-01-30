@@ -56,6 +56,7 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;" [style.height.px]="40"></tr>
     </table>
     </div>
+
     <div class="{{noResults()}}">
         <div class="msf-no-results">
           <span *ngIf="!isPanel">Results not available, please select your Filters and click on Search button</span><span *ngIf="isPanel">Results not available, make sure that the control variables are working</span>

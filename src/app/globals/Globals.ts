@@ -62,8 +62,8 @@ export class Globals {
   template : boolean = false;
   isFullscreen: boolean = false;
   // baseUrl = "http://localhost:8887";
-  // baseUrl = "http://pulse.globaleagle.com:8887";
-  baseUrl = "";
+  baseUrl = "http://pulse.globaleagle.com:8887";
+  // baseUrl = "";
   baseUrl2 = "https://pulse.globaleagle.com:8886/mapBoxServices";
   popupUrl = "https://pulse.globaleagle.com:8900";
   scheduledata:any;
@@ -109,7 +109,6 @@ export class Globals {
   optionsDatalake: any = [];
   // userName: string = "eric.haag.t@aspsols.com";
   userName: string = "";
-  showPaginator: boolean = false;
 
   constructor (public overlayContainer: OverlayContainer, private cookie: Cookie)
   {
