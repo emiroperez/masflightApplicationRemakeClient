@@ -207,7 +207,7 @@ export class MsfDashboardDrillDownComponent {
       autoFocus: false,
       data: {
         values: this.currentValue,
-        thresholds: null,
+        thresholdValues: null,
         numColors: numColors,
         limitConfig: limitConfig
       }

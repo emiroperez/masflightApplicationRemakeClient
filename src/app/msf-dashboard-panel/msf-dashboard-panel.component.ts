@@ -593,16 +593,12 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     series.stacked = stacked;
 
-    series.adapter.add ("stroke", (stroke, target) => {
-      if (target.dataItem)
-      {
-        for (let threshold of values.thresholds)
-        {
-          if (target.dataItem.values.valueY.average >= threshold.min && target.dataItem.values.valueY.average <= threshold.max)
-            return am4core.color (threshold.color);
-        }
-      }
+    // Set line color for legend
+    series.adapter.add ("fill", (fill, target) => {
+      return fill;
+    });
 
+    series.adapter.add ("stroke", (stroke, target) => {
       return stroke;
     });
 
@@ -697,43 +693,18 @@ export class MsfDashboardPanelComponent implements OnInit {
       }
     }
 
-    // Set thresholds
+    // Set line color for legend
     series.segments.template.adapter.add ("fill", (fill, target) => {
-      if (target.dataItem)
-      {
-        for (let threshold of values.thresholds)
-        {
-          if (target.dataItem.values.valueY.average >= threshold.min && target.dataItem.values.valueY.average <= threshold.max)
-            return am4core.color (threshold.color);
-        }
-      }
-
       return am4core.color (values.paletteColors[index]);
     });
 
     series.adapter.add ("stroke", (stroke, target) => {
-      if (target.dataItem)
-      {
-        if (simpleValue)
-        {
-          for (let threshold of values.thresholds)
-          {
-            if (simpleValue.idNumber == threshold.column && target.dataItem.values.valueY.average >= threshold.min && target.dataItem.values.valueY.average <= threshold.max)
-              return am4core.color (threshold.color);
-          }
-        }
-        else
-        {
-          for (let threshold of values.thresholds)
-          {
-            if (values.valueColumn.item.id == threshold.column && target.dataItem.values.valueY.average >= threshold.min && target.dataItem.values.valueY.average <= threshold.max)
-              return am4core.color (threshold.color);
-          }
-        }
-      }
-
       return am4core.color (values.paletteColors[index]);
     });
+
+    // Set thresholds
+    series.propertyFields.stroke = "lineColor" + series.dataFields.valueY;
+    series.propertyFields.fill = "lineColor" + series.dataFields.valueY;
 
     if (!(values.currentChartType.flags & ChartFlags.ADVANCED))
     {
@@ -1877,11 +1848,66 @@ export class MsfDashboardPanelComponent implements OnInit {
                 }
               }
 
+              if (this.isSimpleChart () && this.values.currentChartType.flags & ChartFlags.LINECHART)
+              {
+                // set line color depending of the threshold
+                for (let data of chart.data)
+                {
+                  let lineColor = am4core.color (this.values.paletteColors[i]);
+                  let value = data[chartInfo.valueFields[i]];
+
+                  for (let threshold of this.values.thresholds)
+                  {
+                    if (curValue.item.id == threshold.column && value >= threshold.min && value <= threshold.max)
+                    {
+                      lineColor = am4core.color (threshold.color);
+                      break;
+                    }
+                  }
+
+                  data["lineColor" + chartInfo.valueFields[i]] = lineColor;
+                }
+              }
+
               this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, { id: chartInfo.valueFields[i], name: curValue.name, idNumber: curValue.item.id }, chart, chartInfo, parseDate, i, outputFormat, panelLoading));
             }
           }
           else
+          {
+            if (this.isSimpleChart () && this.values.currentChartType.flags & ChartFlags.LINECHART)
+            {
+              let curValue;
+
+              // set line color depending of the threshold
+              for (let item of this.values.chartColumnOptions)
+              {
+                if (item.id === chartInfo.valueField)
+                {
+                  curValue = item;
+                  break;
+                }
+              }
+
+              for (let data of chart.data)
+              {
+                let lineColor = am4core.color (this.values.paletteColors[0]);
+                let value = data[chartInfo.valueField];
+
+                for (let threshold of this.values.thresholds)
+                {
+                  if (curValue && curValue.item.id == threshold.column && value >= threshold.min && value <= threshold.max)
+                  {
+                    lineColor = am4core.color (threshold.color);
+                    break;
+                  }
+                }
+
+                data["lineColor" + chartInfo.valueField] = lineColor;
+              }
+            }
+
             this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, null, chart, chartInfo, parseDate, 0, outputFormat, panelLoading));
+          }
         }
 
         // Add cursor if the chart type is line, area or stacked area
