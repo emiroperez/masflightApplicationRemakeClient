@@ -652,8 +652,16 @@ export class MsfDashboardPanelComponent implements OnInit {
     // Set up series
     let series = chart.series.push (new am4charts.LineSeries ());
 
-    series.name = simpleValue.name;
-    series.dataFields.valueY = simpleValue.id;
+    if (simpleValue)
+    {
+      series.name = simpleValue.name;
+      series.dataFields.valueY = simpleValue.id;
+    }
+    else
+    {
+      series.name = item.valueField;
+      series.dataFields.valueY = item.valueField;
+    }
 
     series.sequencedInterpolation = true;
     series.strokeWidth = 2;
@@ -750,8 +758,16 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     let series = chart.series.push (new am4charts.ColumnSeries ());
 
-    series.dataFields.valueY = simpleValue.id;
-    series.name = simpleValue.name;
+    if (simpleValue)
+    {
+      series.name = simpleValue.name;
+      series.dataFields.valueY = simpleValue.id;
+    }
+    else
+    {
+      series.name = item.valueField;
+      series.dataFields.valueY = item.valueField;
+    }
 
     if (values.currentChartType.flags & ChartFlags.ADVANCED)
     {
@@ -821,8 +837,16 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     let series = chart.series.push (new am4charts.ColumnSeries ());
 
-    series.dataFields.valueX = simpleValue.id;
-    series.name = simpleValue.name;
+    if (simpleValue)
+    {
+      series.name = simpleValue.name;
+      series.dataFields.valueX = simpleValue.id;
+    }
+    else
+    {
+      series.name = item.valueField;
+      series.dataFields.valueX = item.valueField;
+    }
 
     if (values.currentChartType.flags & ChartFlags.ADVANCED)
     {
@@ -1869,7 +1893,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           }
           else
           {
-            let curValue = this.values.variable;
+            let curValue = null;
 
             for (let item of this.values.chartColumnOptions)
             {
