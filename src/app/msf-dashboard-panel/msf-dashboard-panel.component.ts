@@ -3801,7 +3801,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.toggleControlVariableDialogOpen.emit (true);
 
     dialogRef = this.dialog.open (MsfDashboardControlVariablesComponent, {
-      height: '605px',
       width: '400px',
       panelClass: 'msf-dashboard-arguments-dialog',
       data: {
