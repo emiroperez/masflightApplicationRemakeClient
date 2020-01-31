@@ -6993,6 +6993,8 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   setPanelButtons(): void
   {
+    this.changeDetectorRef.detectChanges ();
+
     if (this.values.displayChart && this.advTableView)
       this.displayPanelButtons ('adv-table');
     else if (this.values.displayChart)
