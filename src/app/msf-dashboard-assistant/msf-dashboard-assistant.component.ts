@@ -837,7 +837,11 @@ export class MsfDashboardAssistantComponent {
     {
       series.dataFields.dateY = values.xaxis.columnName;
       series.dateFormatter.dateFormat = outputFormat;
-      series.columns.template.tooltipText = "{dateY}: " + (values.valueColumn.item.prefix ? values.valueColumn.prefix : "") + "{valueX}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
+
+      if (values.valueColumn.columnType === "number")
+        series.columns.template.tooltipText = "{dateY}: " + (values.valueColumn.item.prefix ? values.valueColumn.prefix : "") + "{valueX}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
+      else
+        series.columns.template.tooltipText = "{dateY}: {valueX}";
     }
     else
     {
@@ -849,7 +853,11 @@ export class MsfDashboardAssistantComponent {
       else
       {
         series.dataFields.categoryY = values.xaxis.columnName;
-        series.columns.template.tooltipText = "{categoryY}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueX}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
+
+        if (values.valueColumn.columnType === "number")
+          series.columns.template.tooltipText = "{categoryY}: " + (values.valueColumn.item.prefix ? values.valueColumn.prefix : "") + "{valueX}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
+        else
+          series.columns.template.tooltipText = "{categoryY}: {valueX}";
       }
     }
 
@@ -873,7 +881,11 @@ export class MsfDashboardAssistantComponent {
     {
       series.dataFields.dateX = values.xaxis.columnName;
       series.dateFormatter.dateFormat = outputFormat;
-      series.columns.template.tooltipText = "{dateX}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueY}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
+
+      if (values.valueColumn.columnType === "number")
+        series.columns.template.tooltipText = "{dateX}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueY}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
+      else
+        series.columns.template.tooltipText = "{dateX}: {valueY}";
     }
     else
     {
@@ -885,7 +897,11 @@ export class MsfDashboardAssistantComponent {
       else
       {
         series.dataFields.categoryX = values.xaxis.columnName;
-        series.columns.template.tooltipText = "{categoryX}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueY}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
+
+        if (values.valueColumn.columnType === "number")
+          series.columns.template.tooltipText = "{categoryX}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueY}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
+        else
+          series.columns.template.tooltipText = "{categoryX}: {valueY}";
       }
     }
 
@@ -933,7 +949,11 @@ export class MsfDashboardAssistantComponent {
     {
       series.dataFields.dateX = values.xaxis.columnName;
       series.dateFormatter.dateFormat = outputFormat;
-      series.tooltipText = "{dateX}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueY}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
+
+      if (values.valueColumn.columnType === "number")
+        series.tooltipText = "{dateX}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueY}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
+      else
+        series.tooltipText = "{dateX}: {valueY}";
     }
     else
     {
@@ -945,7 +965,11 @@ export class MsfDashboardAssistantComponent {
       else
       {
         series.dataFields.categoryX = values.xaxis.columnName;
-        series.tooltipText = "{categoryX}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueY}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
+
+        if (values.valueColumn.columnType === "number")
+          series.tooltipText = "{categoryX}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueY}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
+        else
+          series.tooltipText = "{categoryX}: {valueY}";
       }
     }
 
@@ -996,7 +1020,7 @@ export class MsfDashboardAssistantComponent {
       series.dataFields.dateX = item.titleField;
       series.dateFormatter.dateFormat = outputFormat;
 
-      if (values.valueColumn)
+      if (values.valueColumn && values.valueColumn.columnType === "number")
         series.tooltipText = "{dateX}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueY}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
       else
         series.tooltipText = "{dateX}: {valueY}";
@@ -1012,7 +1036,7 @@ export class MsfDashboardAssistantComponent {
       {
         series.dataFields.categoryX = item.titleField;
 
-        if (values.valueColumn)
+        if (values.valueColumn && values.valueColumn.columnType === "number")
           series.tooltipText = "{categoryX}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueY}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
         else
           series.tooltipText = "{categoryX}: {valueY}";
@@ -1052,7 +1076,7 @@ export class MsfDashboardAssistantComponent {
         series.dataFields.dateX = item.titleField;
         series.dateFormatter.dateFormat = outputFormat;
 
-        if (values.valueColumn)
+        if (values.valueColumn && values.valueColumn.columnType === "number")
           series.columns.template.tooltipText = "{dateX}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueY}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
         else
           series.columns.template.tooltipText = "{dateX}: {valueY}";
@@ -1061,7 +1085,7 @@ export class MsfDashboardAssistantComponent {
       {
         series.dataFields.categoryX = item.titleField;
 
-        if (values.valueColumn)
+        if (values.valueColumn && values.valueColumn.columnType === "number")
           series.columns.template.tooltipText = "{categoryX}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueY}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
         else
           series.columns.template.tooltipText = "{categoryX}: {valueY}";
@@ -1099,7 +1123,7 @@ export class MsfDashboardAssistantComponent {
         series.dataFields.dateY = item.titleField;
         series.dateFormatter.dateFormat = outputFormat;
 
-        if (values.valueColumn)
+        if (values.valueColumn && values.valueColumn.columnType === "number")
           series.columns.template.tooltipText = "{dateY}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueX}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
         else
           series.columns.template.tooltipText = "{dateY}: {valueX}";
@@ -1108,7 +1132,7 @@ export class MsfDashboardAssistantComponent {
       {
         series.dataFields.categoryY = item.titleField;
 
-        if (values.valueColumn)
+        if (values.valueColumn && values.valueColumn.columnType === "number")
           series.columns.template.tooltipText = "{categoryY}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueX}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
         else
           series.columns.template.tooltipText = "{categoryY}: {valueX}";
@@ -1139,7 +1163,11 @@ export class MsfDashboardAssistantComponent {
     series = chart.series.push (new am4charts.PieSeries ());
     series.dataFields.value = item.valueField;
     series.dataFields.category = item.titleField;
-    series.slices.template.tooltipText = "{category}: " + (values.valueColumn.item.prefix ? values.valueColumn.item.prefix : "") + "{value.value}" + (values.valueColumn.item.suffix ? values.valueColumn.item.suffix : "");
+
+    if (values.valueColumn.columnType === "number")
+      series.slices.template.tooltipText = "{category}: " + (values.valueColumn.item.prefix ? values.valueColumn.item.prefix : "") + "{value.value}" + (values.valueColumn.item.suffix ? values.valueColumn.item.suffix : "");
+    else
+      series.slices.template.tooltipText = "{category}: {value.value}";
 
     // This creates initial animation
     series.hiddenState.properties.opacity = 1;
@@ -1170,7 +1198,11 @@ export class MsfDashboardAssistantComponent {
     series = chart.series.push (new am4charts.FunnelSeries ());
     series.dataFields.value = item.valueField;
     series.dataFields.category = item.titleField;
-    series.slices.template.tooltipText = "{category}: " + (values.valueColumn.item.prefix ? values.valueColumn.item.prefix : "") + "{value.value}" + (values.valueColumn.item.suffix ? values.valueColumn.item.suffix : "");
+
+    if (values.valueColumn.columnType === "number")
+      series.slices.template.tooltipText = "{category}: " + (values.valueColumn.item.prefix ? values.valueColumn.item.prefix : "") + "{value.value}" + (values.valueColumn.item.suffix ? values.valueColumn.item.suffix : "");
+    else
+      series.slices.template.tooltipText = "{category}: {value.value}";
 
     // Set chart apparence
     series.sliceLinks.template.fillOpacity = 0;

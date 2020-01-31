@@ -693,7 +693,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         series.dataFields.dateX = item.titleField;
         series.dateFormatter.dateFormat = outputFormat;
 
-        if (simpleValue.item.columnType === "number")
+        if (simpleValue && simpleValue.item.columnType === "number")
           series.tooltipText = "{dateX}: " + (simpleValue.item.prefix ? simpleValue.item.prefix : "") + "{valueY}" + (simpleValue.item.suffix ? simpleValue.item.suffix : "");
         else
           series.tooltipText = "{dateX}: {valueY}";
@@ -702,7 +702,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       {
         series.dataFields.categoryX = item.titleField;
 
-        if (simpleValue.item.columnType === "number")
+        if (simpleValue && simpleValue.item.columnType === "number")
           series.tooltipText = "{categoryX}: " + (simpleValue.item.prefix ? simpleValue.item.prefix : "") + "{valueY}" + (simpleValue.item.suffix ? simpleValue.item.suffix : "");
         else
           series.tooltipText = "{categoryX}: {valueY}";
@@ -719,7 +719,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     });
 
     // Set thresholds
-    if (simpleValue.item.columnType === "number")
+    if (simpleValue && simpleValue.item.columnType === "number")
     {
       series.propertyFields.stroke = "lineColor" + series.dataFields.valueY;
       series.propertyFields.fill = "lineColor" + series.dataFields.valueY;
@@ -765,7 +765,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         series.dataFields.dateX = item.titleField;
         series.dateFormatter.dateFormat = outputFormat;
 
-        if (simpleValue.item.columnType === "number")
+        if (simpleValue && simpleValue.item.columnType === "number")
           series.columns.template.tooltipText = "{dateX}: " + (simpleValue.item.prefix ? simpleValue.item.prefix : "") + "{valueY}" + (simpleValue.item.suffix ? simpleValue.item.suffix : "");
         else
           series.columns.template.tooltipText = "{dateX}: {valueY}";
@@ -774,7 +774,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       {
         series.dataFields.categoryX = item.titleField;
 
-        if (simpleValue.item.columnType === "number")
+        if (simpleValue && simpleValue.item.columnType === "number")
           series.columns.template.tooltipText = "{categoryX}: " + (simpleValue.item.prefix ? simpleValue.item.prefix : "") + "{valueY}" + (simpleValue.item.suffix ? simpleValue.item.suffix : "");
         else
           series.columns.template.tooltipText = "{categoryX}: {valueY}";
@@ -784,7 +784,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     series.columns.template.strokeWidth = 0;
 
     // Set colors
-    if (simpleValue.item.columnType === "number")
+    if (simpleValue && simpleValue.item.columnType === "number")
     {
       series.columns.template.adapter.add ("fill", (fill, target) => {
         if (target.dataItem)
@@ -836,7 +836,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         series.dataFields.dateY = item.titleField;
         series.dateFormatter.dateFormat = outputFormat;
 
-        if (simpleValue.item.columnType === "number")
+        if (simpleValue && simpleValue.item.columnType === "number")
           series.columns.template.tooltipText = "{dateY}: " + (simpleValue.item.prefix ? simpleValue.item.prefix : "") + "{valueX}" + (simpleValue.item.suffix ? simpleValue.item.suffix : "");
         else
           series.columns.template.tooltipText = "{dateY}: {valueX}";
@@ -845,7 +845,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       {
         series.dataFields.categoryY = item.titleField;
 
-        if (simpleValue.item.columnType === "number")
+        if (simpleValue && simpleValue.item.columnType === "number")
           series.columns.template.tooltipText = "{categoryY}: " + (simpleValue.item.prefix ? simpleValue.item.prefix : "") + "{valueX}" + (simpleValue.item.suffix ? simpleValue.item.suffix : "");
         else
           series.columns.template.tooltipText = "{categoryY}: {valueX}";
@@ -854,7 +854,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     series.columns.template.strokeWidth = 0;
 
-    if (simpleValue.item.columnType === "number")
+    if (simpleValue && simpleValue.item.columnType === "number")
     {
       series.columns.template.adapter.add ("fill", (fill, target) => {
         if (target.dataItem)
