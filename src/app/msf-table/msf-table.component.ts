@@ -50,6 +50,9 @@ export class MsfTableComponent implements OnInit {
   @Input('isPanel')
   isPanel: boolean;
 
+  @Input('thresholds')
+  thresholds: any;
+
   metadata;
 
   dataSource : any;
@@ -912,6 +915,20 @@ export class MsfTableComponent implements OnInit {
     return "msf-hide";
   }
 
-  renameCo
+  getFontColor(column, value): string
+  {
+    if (this.thresholds)
+    {
+      for (let threshold of this.thresholds)
+      {
+        value = parseFloat (value);
+
+        if (threshold.column == column.id && value >= threshold.min && value <= threshold.max)
+          return threshold.color;
+      }
+    }
+
+    return "inherit";
+  }
 
 }

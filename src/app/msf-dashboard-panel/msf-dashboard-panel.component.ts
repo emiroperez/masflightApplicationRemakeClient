@@ -628,16 +628,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     // Set up series
     let series = chart.series.push (new am4charts.LineSeries ());
 
-    if (simpleValue)
-    {
-      series.name = simpleValue.name;
-      series.dataFields.valueY = simpleValue.id;
-    }
-    else
-    {
-      series.name = item.valueField;
-      series.dataFields.valueY = item.valueField;
-    }
+    series.name = simpleValue.name;
+    series.dataFields.valueY = simpleValue.id;
 
     series.sequencedInterpolation = true;
     series.strokeWidth = 2;
@@ -677,8 +669,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         series.dataFields.dateX = item.titleField;
         series.dateFormatter.dateFormat = outputFormat;
 
-        if (values.valueColumn)
-          series.tooltipText = "{dateX}: " + (values.valueColumn.item.prefix ? values.valueColumn.item.prefix : "") + "{valueY}" + (values.valueColumn.item.suffix ? values.valueColumn.item.suffix : "");
+        if (simpleValue.item.columnType === "number")
+          series.tooltipText = "{dateX}: " + (simpleValue.item.prefix ? simpleValue.item.prefix : "") + "{valueY}" + (simpleValue.item.suffix ? simpleValue.item.suffix : "");
         else
           series.tooltipText = "{dateX}: {valueY}";
       }
@@ -686,8 +678,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       {
         series.dataFields.categoryX = item.titleField;
 
-        if (values.valueColumn)
-          series.tooltipText = "{categoryX}: " + (values.valueColumn.item.prefix ? values.valueColumn.item.prefix : "") + "{valueY}" + (values.valueColumn.item.suffix ? values.valueColumn.item.suffix : "");
+        if (simpleValue.item.columnType === "number")
+          series.tooltipText = "{categoryX}: " + (simpleValue.item.prefix ? simpleValue.item.prefix : "") + "{valueY}" + (simpleValue.item.suffix ? simpleValue.item.suffix : "");
         else
           series.tooltipText = "{categoryX}: {valueY}";
       }
@@ -703,8 +695,11 @@ export class MsfDashboardPanelComponent implements OnInit {
     });
 
     // Set thresholds
-    series.propertyFields.stroke = "lineColor" + series.dataFields.valueY;
-    series.propertyFields.fill = "lineColor" + series.dataFields.valueY;
+    if (simpleValue.item.columnType === "number")
+    {
+      series.propertyFields.stroke = "lineColor" + series.dataFields.valueY;
+      series.propertyFields.fill = "lineColor" + series.dataFields.valueY;
+    }
 
     if (!(values.currentChartType.flags & ChartFlags.ADVANCED))
     {
@@ -731,16 +726,8 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     let series = chart.series.push (new am4charts.ColumnSeries ());
 
-    if (simpleValue)
-    {
-      series.dataFields.valueY = simpleValue.id;
-      series.name = simpleValue.name;
-    }
-    else
-    {
-      series.dataFields.valueY = item.valueField;
-      series.name = item.valueField;
-    }
+    series.dataFields.valueY = simpleValue.id;
+    series.name = simpleValue.name;
 
     if (values.currentChartType.flags & ChartFlags.ADVANCED)
     {
@@ -754,8 +741,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         series.dataFields.dateX = item.titleField;
         series.dateFormatter.dateFormat = outputFormat;
 
-        if (values.valueColumn)
-          series.columns.template.tooltipText = "{dateX}: " + (values.valueColumn.item.prefix ? values.valueColumn.item.prefix : "") + "{valueY}" + (values.valueColumn.item.suffix ? values.valueColumn.item.suffix : "");
+        if (simpleValue.item.columnType === "number")
+          series.columns.template.tooltipText = "{dateX}: " + (simpleValue.item.prefix ? simpleValue.item.prefix : "") + "{valueY}" + (simpleValue.item.suffix ? simpleValue.item.suffix : "");
         else
           series.columns.template.tooltipText = "{dateX}: {valueY}";
       }
@@ -763,8 +750,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       {
         series.dataFields.categoryX = item.titleField;
 
-        if (values.valueColumn)
-          series.columns.template.tooltipText = "{categoryX}: " + (values.valueColumn.item.prefix ? values.valueColumn.item.prefix : "") + "{valueY}" + (values.valueColumn.item.suffix ? values.valueColumn.item.suffix : "");
+        if (simpleValue.item.columnType === "number")
+          series.columns.template.tooltipText = "{categoryX}: " + (simpleValue.item.prefix ? simpleValue.item.prefix : "") + "{valueY}" + (simpleValue.item.suffix ? simpleValue.item.suffix : "");
         else
           series.columns.template.tooltipText = "{categoryX}: {valueY}";
       }
@@ -773,29 +760,21 @@ export class MsfDashboardPanelComponent implements OnInit {
     series.columns.template.strokeWidth = 0;
 
     // Set colors
-    series.columns.template.adapter.add ("fill", (fill, target) => {
-      if (target.dataItem)
-      {
-        if (simpleValue)
+    if (simpleValue.item.columnType === "number")
+    {
+      series.columns.template.adapter.add ("fill", (fill, target) => {
+        if (target.dataItem)
         {
           for (let threshold of values.thresholds)
           {
-            if (simpleValue.idNumber == threshold.column && target.dataItem.valueY >= threshold.min && target.dataItem.valueY <= threshold.max)
+            if (simpleValue.item.id == threshold.column && target.dataItem.valueY >= threshold.min && target.dataItem.valueY <= threshold.max)
               return am4core.color (threshold.color);
           }
         }
-        else
-        {
-          for (let threshold of values.thresholds)
-          {
-            if (values.valueColumn.item.id == threshold.column && target.dataItem.valueY >= threshold.min && target.dataItem.valueY <= threshold.max)
-              return am4core.color (threshold.color);
-          }
-        }
-      }
 
-      return am4core.color (values.paletteColors[index]);
-    });
+        return am4core.color (values.paletteColors[index]);
+      });
+    }
 
     // Display a special context menu when a chart column is right clicked
     series.columns.template.events.on ("rightclick", function (event) {
@@ -818,16 +797,8 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     let series = chart.series.push (new am4charts.ColumnSeries ());
 
-    if (simpleValue)
-    {
-      series.dataFields.valueX = simpleValue.id;
-      series.name = simpleValue.name;
-    }
-    else
-    {
-      series.dataFields.valueX = item.valueField;
-      series.name = item.valueField;
-    }
+    series.dataFields.valueX = simpleValue.id;
+    series.name = simpleValue.name;
 
     if (values.currentChartType.flags & ChartFlags.ADVANCED)
     {
@@ -841,8 +812,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         series.dataFields.dateY = item.titleField;
         series.dateFormatter.dateFormat = outputFormat;
 
-        if (values.valueColumn)
-          series.columns.template.tooltipText = "{dateY}: " + (values.valueColumn.item.prefix ? values.valueColumn.item.prefix : "") + "{valueX}" + (values.valueColumn.item.suffix ? values.valueColumn.item.suffix : "");
+        if (simpleValue.item.columnType === "number")
+          series.columns.template.tooltipText = "{dateY}: " + (simpleValue.item.prefix ? simpleValue.item.prefix : "") + "{valueX}" + (simpleValue.item.suffix ? simpleValue.item.suffix : "");
         else
           series.columns.template.tooltipText = "{dateY}: {valueX}";
       }
@@ -850,8 +821,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       {
         series.dataFields.categoryY = item.titleField;
 
-        if (values.valueColumn)
-          series.columns.template.tooltipText = "{categoryY}: " + (values.valueColumn.item.prefix ? values.valueColumn.item.prefix : "") + "{valueX}" + (values.valueColumn.item.suffix ? values.valueColumn.item.suffix : "");
+        if (simpleValue.item.columnType === "number")
+          series.columns.template.tooltipText = "{categoryY}: " + (simpleValue.item.prefix ? simpleValue.item.prefix : "") + "{valueX}" + (simpleValue.item.suffix ? simpleValue.item.suffix : "");
         else
           series.columns.template.tooltipText = "{categoryY}: {valueX}";
       }
@@ -859,29 +830,21 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     series.columns.template.strokeWidth = 0;
 
-    series.columns.template.adapter.add ("fill", (fill, target) => {
-      if (target.dataItem)
-      {
-        if (simpleValue)
+    if (simpleValue.item.columnType === "number")
+    {
+      series.columns.template.adapter.add ("fill", (fill, target) => {
+        if (target.dataItem)
         {
           for (let threshold of values.thresholds)
           {
-            if (simpleValue.idNumber == threshold.column && target.dataItem.valueY >= threshold.min && target.dataItem.valueY <= threshold.max)
+            if (simpleValue.item.id == threshold.column && target.dataItem.valueX >= threshold.min && target.dataItem.valueX <= threshold.max)
               return am4core.color (threshold.color);
           }
         }
-        else
-        {
-          for (let threshold of values.thresholds)
-          {
-            if (values.valueColumn.item.id == threshold.column && target.dataItem.valueY >= threshold.min && target.dataItem.valueY <= threshold.max)
-              return am4core.color (threshold.color);
-          }
-        }
-      }
 
-      return am4core.color (values.paletteColors[index]);
-    });
+        return am4core.color (values.paletteColors[index]);
+      });
+    }
 
     series.columns.template.events.on ("rightclick", function (event) {
       if (!values.currentOption.drillDownOptions.length)
@@ -1869,25 +1832,25 @@ export class MsfDashboardPanelComponent implements OnInit {
                 }
               }
 
-              this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, { id: chartInfo.valueFields[i], name: curValue.name, idNumber: curValue.item.id }, chart, chartInfo, parseDate, i, outputFormat, panelLoading));
+              this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, curValue, chart, chartInfo, parseDate, i, outputFormat, panelLoading));
             }
           }
           else
           {
+            let curValue = this.values.variable;
+
+            for (let item of this.values.chartColumnOptions)
+            {
+              if (item.id === chartInfo.valueField)
+              {
+                curValue = item;
+                break;
+              }
+            }
+
             if (this.isSimpleChart () && this.values.currentChartType.flags & ChartFlags.LINECHART)
             {
-              let curValue;
-
               // set line color depending of the threshold
-              for (let item of this.values.chartColumnOptions)
-              {
-                if (item.id === chartInfo.valueField)
-                {
-                  curValue = item;
-                  break;
-                }
-              }
-
               for (let data of chart.data)
               {
                 let lineColor = am4core.color (this.values.paletteColors[0]);
@@ -1906,7 +1869,7 @@ export class MsfDashboardPanelComponent implements OnInit {
               }
             }
 
-            this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, null, chart, chartInfo, parseDate, 0, outputFormat, panelLoading));
+            this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, curValue, chart, chartInfo, parseDate, 0, outputFormat, panelLoading));
           }
         }
 
@@ -2387,7 +2350,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         chartType: this.chartTypes.indexOf (this.values.currentChartType),
         categoryOptions: this.values.currentOptionCategories ? JSON.stringify (this.values.currentOptionCategories) : null,
         updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0),
-        thresholds: (this.values.thresholds && this.values.currentChartType.flags & ChartFlags.FORM) ? JSON.stringify (this.values.thresholds) : null,
+        thresholds: (this.values.currentChartType.flags & ChartFlags.FORM || this.values.currentChartType.flags & ChartFlags.TABLE) ? JSON.stringify (this.values.thresholds) : null,
         function: 1,
         lastestResponse: JSON.stringify (this.values.lastestResponse),
         startAtZero: null,
@@ -5373,7 +5336,8 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     let limitConfig, numColors, limitAggregatorValue, thresholdValues;
 
-    if (this.values.currentChartType.flags & ChartFlags.FORM)
+    if (this.values.currentChartType.flags & ChartFlags.FORM ||
+      this.values.currentChartType.flags & ChartFlags.TABLE)
     {
       limitConfig = false;
       thresholdValues = true;
@@ -7015,12 +6979,16 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   getFontColor(formResult): string
   {
-    for (let threshold of this.values.thresholds)
+    // Restrict the threshold value to columns with number types
+    if (formResult.column.columnType === "number")
     {
-      let value = parseFloat (formResult.value);
+      for (let threshold of this.values.thresholds)
+      {
+        let value = parseFloat (formResult.value);
 
-      if (threshold.column == formResult.column.id && value >= threshold.min && value <= threshold.max)
-        return threshold.color;
+        if (threshold.column == formResult.column.id && value >= threshold.min && value <= threshold.max)
+          return threshold.color;
+      }
     }
 
     return "inherit";
