@@ -6977,18 +6977,14 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.displayPanelButtons ('dyn-table');
   }
 
-  getFontColor(formResult): string
+  getValueFormFontColor(formResult): string
   {
-    // Restrict the threshold value to columns with number types
-    if (formResult.column.columnType === "number")
+    for (let threshold of this.values.thresholds)
     {
-      for (let threshold of this.values.thresholds)
-      {
-        let value = parseFloat (formResult.value);
+      let value = parseFloat (formResult.value);
 
-        if (threshold.column == formResult.column.id && value >= threshold.min && value <= threshold.max)
-          return threshold.color;
-      }
+      if (threshold.column == formResult.column.id && value >= threshold.min && value <= threshold.max)
+        return threshold.color;
     }
 
     return "inherit";
