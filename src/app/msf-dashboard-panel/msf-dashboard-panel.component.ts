@@ -442,7 +442,11 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       series.dataFields.dateY = values.xaxis.id;
       series.dateFormatter.dateFormat = outputFormat;
-      series.columns.template.tooltipText = "{dateY}: " + (values.valueColumn.item.prefix ? values.valueColumn.item.prefix : "") + "{valueX}" + (values.valueColumn.item.suffix ? values.valueColumn.item.suffix : "");
+
+      if (values.valueColumn.item.columnType === "number")
+        series.columns.template.tooltipText = "{dateY}: " + (values.valueColumn.item.prefix ? values.valueColumn.item.prefix : "") + "{valueX}" + (values.valueColumn.item.suffix ? values.valueColumn.item.suffix : "");
+      else
+        series.columns.template.tooltipText = "{dateY}: {valueX}";
     }
     else
     {
@@ -454,7 +458,11 @@ export class MsfDashboardPanelComponent implements OnInit {
       else
       {
         series.dataFields.categoryY = values.xaxis.id;
-        series.columns.template.tooltipText = "{categoryY}: " + (values.valueColumn.item.prefix ? values.valueColumn.item.prefix : "") + "{valueX}" + (values.valueColumn.item.suffix ? values.valueColumn.item.suffix : "");
+
+        if (values.valueColumn.item.columnType === "number")
+          series.columns.template.tooltipText = "{categoryY}: " + (values.valueColumn.item.prefix ? values.valueColumn.item.prefix : "") + "{valueX}" + (values.valueColumn.item.suffix ? values.valueColumn.item.suffix : "");
+        else
+          series.columns.template.tooltipText = "{categoryY}: {valueX}";
       }
     }
 
@@ -495,7 +503,11 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       series.dataFields.dateX = values.xaxis.id;
       series.dateFormatter.dateFormat = outputFormat;
-      series.columns.template.tooltipText = "{dateX}: " + (values.valueColumn.item.prefix ? values.valueColumn.item.prefix : "") + "{valueY}" + (values.valueColumn.item.suffix ? values.valueColumn.item.suffix : "");
+
+      if (values.valueColumn.item.columnType === "number")
+        series.columns.template.tooltipText = "{dateX}: " + (values.valueColumn.item.prefix ? values.valueColumn.item.prefix : "") + "{valueY}" + (values.valueColumn.item.suffix ? values.valueColumn.item.suffix : "");
+      else
+        series.columns.template.tooltipText = "{dateX}: {valueY}";
     }
     else
     {
@@ -507,7 +519,11 @@ export class MsfDashboardPanelComponent implements OnInit {
       else
       {
         series.dataFields.categoryX = values.xaxis.id;
-        series.columns.template.tooltipText = "{categoryX}: " + (values.valueColumn.item.prefix ? values.valueColumn.item.prefix : "") + "{valueY}" + (values.valueColumn.item.suffix ? values.valueColumn.item.suffix : "");
+
+        if (values.valueColumn.item.columnType === "number")
+          series.columns.template.tooltipText = "{categoryX}: " + (values.valueColumn.item.prefix ? values.valueColumn.item.prefix : "") + "{valueY}" + (values.valueColumn.item.suffix ? values.valueColumn.item.suffix : "");
+        else
+          series.columns.template.tooltipText = "{categoryX}: {valueY}";
       }
     }
 
@@ -571,7 +587,11 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       series.dataFields.dateX = values.xaxis.id;
       series.dateFormatter.dateFormat = outputFormat;
-      series.tooltipText = "{dateX}: " + (values.valueColumn.item.prefix ? values.valueColumn.item.prefix : "") + "{valueY}" + (values.valueColumn.item.suffix ? values.valueColumn.item.suffix : "");
+
+      if (values.valueColumn.item.columnType === "number")
+        series.tooltipText = "{dateX}: " + (values.valueColumn.item.prefix ? values.valueColumn.item.prefix : "") + "{valueY}" + (values.valueColumn.item.suffix ? values.valueColumn.item.suffix : "");
+      else
+        series.tooltipText = "{dateX}: {valueY}";
     }
     else
     {
@@ -583,7 +603,11 @@ export class MsfDashboardPanelComponent implements OnInit {
       else
       {
         series.dataFields.categoryX = values.xaxis.id;
-        series.tooltipText = "{categoryX}: " + (values.valueColumn.item.prefix ? values.valueColumn.item.prefix : "") + "{valueY}" + (values.valueColumn.item.suffix ? values.valueColumn.item.suffix : "");
+
+        if (values.valueColumn.item.columnType === "number")
+          series.tooltipText = "{categoryX}: " + (values.valueColumn.item.prefix ? values.valueColumn.item.prefix : "") + "{valueY}" + (values.valueColumn.item.suffix ? values.valueColumn.item.suffix : "");
+        else
+          series.tooltipText = "{categoryX}: {valueY}";
       }
     }
 
@@ -875,7 +899,11 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     series.dataFields.value = item.valueField;
     series.dataFields.category = item.titleField;
-    series.slices.template.tooltipText = "{category}: " + (values.valueColumn.item.prefix ? values.valueColumn.item.prefix : "") + "{value.value}" + (values.valueColumn.item.suffix ? values.valueColumn.item.suffix : "");
+
+    if (values.valueColumn.item.columnType === "number")
+      series.slices.template.tooltipText = "{category}: " + (values.valueColumn.item.prefix ? values.valueColumn.item.prefix : "") + "{value.value}" + (values.valueColumn.item.suffix ? values.valueColumn.item.suffix : "");
+    else
+      series.slices.template.tooltipText = "{category}: {value.value}";
 
     // This creates initial animation
     series.hiddenState.properties.opacity = 1;
@@ -920,7 +948,11 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     series.dataFields.value = item.valueField;
     series.dataFields.category = item.titleField;
-    series.slices.template.tooltipText = "{category}: " + (values.valueColumn.item.prefix ? values.valueColumn.item.prefix : "") + "{value.value}" + (values.valueColumn.item.suffix ? values.valueColumn.item.suffix : "");
+
+    if (values.valueColumn.item.columnType === "number")
+      series.slices.template.tooltipText = "{category}: " + (values.valueColumn.item.prefix ? values.valueColumn.item.prefix : "") + "{value.value}" + (values.valueColumn.item.suffix ? values.valueColumn.item.suffix : "");
+    else
+      series.slices.template.tooltipText = "{category}: {value.value}";
 
     // Set chart apparence
     series.sliceLinks.template.fillOpacity = 0;
