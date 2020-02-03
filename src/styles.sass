@@ -612,6 +612,15 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
         .msf-component-airport-title
             background: $tertiary-background-color
             color: $font-color
+            .msf-anchor-button
+                border-color: $font-color
+                .anchor-icon
+                    background-image: url(assets/images/#{$name}-anchor-icon.png)
+                &:hover
+                    border-color: $primary-color
+                    background-color: $primary-color
+                    .anchor-icon
+                        background-image: url(assets/images/dark-theme-anchor-icon.png)
         .msf-component-airport-sub-title
             color: $font-color
         .mat-radio-button.mat-accent .mat-radio-inner-circle
@@ -3391,7 +3400,23 @@ button[aria-expanded="true"]
 .msf-component-airport-title
     width: 100%
     padding: 5px 0 5px 0
-    margin-bottom: 10px
+    margin-bottom: 14px
+    position: relative
+    .msf-anchor-button
+        position: absolute
+        border-style: solid
+        border-width: 1px
+        border-radius: 2px
+        width: 20px
+        height: 20px
+        right: 0
+        top: 1px
+        .anchor-icon
+            background-repeat: no-repeat
+            background-size: 100%
+            margin-left: 2.35px
+            width: 14px
+            height: 14px
 
 .msf-component-airport-sub-title
     margin-bottom: 5px

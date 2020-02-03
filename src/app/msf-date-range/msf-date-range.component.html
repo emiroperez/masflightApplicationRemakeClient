@@ -10,7 +10,12 @@
 </div>
 <div class="msf-component-argument-container" *ngIf="selectionMode == 'manual'">
     <div class="center" *ngIf="argument.title">
-        <div class="msf-component-airport-title">{{argument.title}}</div>
+        <div class="msf-component-airport-title">
+            {{argument.title}}
+            <button mat-icon-button class="msf-anchor-button" matTooltip="Anchor Argument Into Panel">
+                <div class="anchor-icon"></div>
+            </button>
+        </div>
     </div>
     <div class="msf-component-date-input-container msf-single-date">
         <ng-container *ngIf="dateStartView === 'month'">
