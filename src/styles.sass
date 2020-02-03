@@ -616,11 +616,11 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                 border-color: $admin-button-color
                 .anchor-icon
                     background-image: url(assets/images/#{$name}-anchor-icon.png)
-                &:hover
-                    border-color: $primary-color
-                    background-color: $primary-color
-                    .anchor-icon
-                        background-image: url(assets/images/dark-theme-anchor-icon.png)
+            .msf-anchor-button-pressed, .msf-anchor-button:hover
+                border-color: $primary-color
+                background-color: $primary-color
+                .anchor-icon
+                    background-image: url(assets/images/dark-theme-anchor-icon.png)
         .msf-component-airport-sub-title
             color: $font-color
         .mat-radio-button.mat-accent .mat-radio-inner-circle
@@ -3402,7 +3402,7 @@ button[aria-expanded="true"]
     padding: 5px 0 5px 0
     margin-bottom: 14px
     position: relative
-    .msf-anchor-button
+    .msf-anchor-button-pressed, .msf-anchor-button
         position: absolute
         border-style: solid
         border-width: 1px
@@ -10405,3 +10405,6 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         object-fit: contain
         width: 100%
         height: 100%
+
+.initial-date-title
+    margin-bottom: 4px !important
