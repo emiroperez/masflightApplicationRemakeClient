@@ -20,6 +20,9 @@ export class MsfControlVariablesComponent implements OnInit {
   @Output("setLoading")
   setLoading = new EventEmitter ();
 
+  @Input("isDashboardPanel")
+  isDashboardPanel: boolean = false;
+
   argsBefore: any;
   iconBefore: any;
 

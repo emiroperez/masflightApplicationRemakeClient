@@ -22,6 +22,9 @@ export class MsfArgumentComponent implements OnInit {
 
   @Output("setLoading")
   setLoading = new EventEmitter ();
+
+  @Input("isDashboardPanel")
+  isDashboardPanel: boolean = false;
   
   constructor(public globals: Globals) { }
 

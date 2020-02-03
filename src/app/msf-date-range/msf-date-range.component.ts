@@ -133,8 +133,8 @@ export class MsfDateRangeComponent implements OnInit {
   @Input("refreshDate")
   public refreshDate: boolean;
 
-  @Input("isPanelArgument")
-  isPanelArgument: boolean = false;
+  @Input("isDashboardPanel")
+  isDashboardPanel: boolean = false;
 
   maxDate: Date;
   minDate: Date;

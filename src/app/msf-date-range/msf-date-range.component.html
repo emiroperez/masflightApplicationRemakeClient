@@ -9,10 +9,10 @@
     </mat-radio-group>
 </div>
 <div class="msf-component-argument-container" *ngIf="argument.dateSelectionMode == 'manual'">
-    <div class="center" *ngIf="argument.title || isPanelArgument">
+    <div class="center" *ngIf="argument.title || isDashboardPanel">
         <div class="msf-component-airport-title">
             {{argument.title}}
-            <button mat-icon-button *ngIf="isPanelArgument" [ngClass]="{ 'msf-anchor-button': !argument.anchored, 'msf-anchor-button-pressed': argument.anchored }"
+            <button mat-icon-button *ngIf="isDashboardPanel" [ngClass]="{ 'msf-anchor-button': !argument.anchored, 'msf-anchor-button-pressed': argument.anchored }"
                 matTooltip="Anchor Argument Into Panel" (click)="argument.anchored = !argument.anchored">
                 <div class="anchor-icon"></div>
             </button>
@@ -88,7 +88,7 @@
         <div class="center">
             <div class="msf-component-airport-title initial-date-title">
                 Select Initial Date
-                <button mat-icon-button *ngIf="isPanelArgument" [ngClass]="{ 'msf-anchor-button': !argument.anchored, 'msf-anchor-button-pressed': argument.anchored }"
+                <button mat-icon-button *ngIf="isDashboardPanel" [ngClass]="{ 'msf-anchor-button': !argument.anchored, 'msf-anchor-button-pressed': argument.anchored }"
                     matTooltip="Anchor Argument Into Panel" (click)="argument.anchored = !argument.anchored">
                     <div class="anchor-icon"></div>
                 </button>
@@ -132,7 +132,7 @@
     <div class="center">
         <div class="msf-component-airport-title">
             Auto Select The Date Range
-            <button mat-icon-button *ngIf="isPanelArgument && ((dateRange && !dateRange.value.startsWith ('UNTIL')) || !dateRange)" [ngClass]="{ 'msf-anchor-button': !argument.anchored, 'msf-anchor-button-pressed': argument.anchored }"
+            <button mat-icon-button *ngIf="isDashboardPanel && ((dateRange && !dateRange.value.startsWith ('UNTIL')) || !dateRange)" [ngClass]="{ 'msf-anchor-button': !argument.anchored, 'msf-anchor-button-pressed': argument.anchored }"
                 matTooltip="Anchor Argument Into Panel" (click)="argument.anchored = !argument.anchored">
                 <div class="anchor-icon"></div>
             </button>

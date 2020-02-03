@@ -12,11 +12,6 @@ import { ApiClient } from '../api/api-client';
 import { Globals } from '../globals/Globals';
 import { AirportSelection } from '../commons/AirportSelection';
 
-interface Bank {
-  id: string;
-  name: string;
-}
-
 @Component({
   selector: 'app-msf-airport',
   templateUrl: './msf-airport.component.html',
@@ -33,6 +28,9 @@ interface Bank {
 export class MsfAirportComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
+
+  @Input("isDashboardPanel")
+  isDashboardPanel: boolean = false;
 
   data: Observable<any[]>;
   loading = false;

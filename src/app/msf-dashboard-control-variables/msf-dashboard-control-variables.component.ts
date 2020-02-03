@@ -86,6 +86,8 @@ export class MsfDashboardControlVariablesComponent {
                   argument.value4 = curCategoryArgument.value4;
                   argument.dateLoaded = curCategoryArgument.dateLoaded;
                   argument.currentDateRangeValue = curCategoryArgument.currentDateRangeValue;
+                  argument.dateSelectionMode = curCategoryArgument.dateSelectionMode;
+                  argument.anchored = curCategoryArgument.anchored;
                   break;
                 }
               }
@@ -179,6 +181,7 @@ export class MsfDashboardControlVariablesComponent {
                 argument.value4 = curCategoryArgument.value4;
                 argument.dateLoaded = curCategoryArgument.dateLoaded;
                 argument.currentDateRangeValue = curCategoryArgument.currentDateRangeValue;
+                argument.anchored = false;
 
                 if (argument.type == ComponentType.dateRange)
                   argument.refreshDate = true;

@@ -9,7 +9,7 @@
     <ng-container *ngIf="category.arguments && category.arguments.length > 0">
       <div class="msf-component-airport-container">
         <ng-container *ngFor="let argument of category.arguments">     
-          <app-msf-argument [currentArgument]="argument" [currentGlobalOptionId]="currentOptionId" (setLoading)="setLoading.emit($event)"></app-msf-argument>
+          <app-msf-argument [currentArgument]="argument" [currentGlobalOptionId]="currentOptionId" [isDashboardPanel]="isDashboardPanel" (setLoading)="setLoading.emit($event)"></app-msf-argument>
         </ng-container>
       </div>
     </ng-container>      

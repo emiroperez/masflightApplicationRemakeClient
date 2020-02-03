@@ -1,13 +1,13 @@
     
     
-    <app-msf-airport *ngIf="isAirport(currentArgument)" [argument]="currentArgument"></app-msf-airport>
+    <app-msf-airport *ngIf="isAirport(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-airport>
     <app-msf-time-range *ngIf="isTimeRange(currentArgument)" [argument]="currentArgument" ></app-msf-time-range>
-    <app-msf-date-range *ngIf="isDateRange(currentArgument)" [argument]="currentArgument" [refreshDate]="currentArgument.refreshDate"></app-msf-date-range>
+    <app-msf-date-range *ngIf="isDateRange(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel" [refreshDate]="currentArgument.refreshDate"></app-msf-date-range>
     <app-msf-ceiling *ngIf="isCeiling(currentArgument)" [argument]="currentArgument"></app-msf-ceiling>
     <app-msf-wind *ngIf="isWindSpeed(currentArgument)" [argument]="currentArgument"></app-msf-wind>
     <app-msf-temperature *ngIf="isTemperature(currentArgument)" [argument]="currentArgument"></app-msf-temperature>
     <app-msf-wind-direction *ngIf="isWindDirection(currentArgument)" [argument]="currentArgument"></app-msf-wind-direction>
-    <app-msf-airline *ngIf="isAirline(currentArgument)" [argument]="currentArgument"></app-msf-airline>
+    <app-msf-airline *ngIf="isAirline(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-airline>
     <app-msf-aircraft-type *ngIf="isAircraftType(currentArgument)" [argument]="currentArgument"></app-msf-aircraft-type>
     <app-msf-grouping *ngIf="isGrouping(currentArgument)" [argument]="currentArgument"></app-msf-grouping>
     <app-msf-rounding *ngIf="isRounding(currentArgument)" [argument]="currentArgument"></app-msf-rounding>
