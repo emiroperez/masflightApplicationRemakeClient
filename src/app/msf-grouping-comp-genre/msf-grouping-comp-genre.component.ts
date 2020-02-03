@@ -9,7 +9,10 @@ import { Arguments } from '../model/Arguments';
 export class MsfGroupingCompGenreComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
-  
+
+  @Input("isDashboardPanel")
+  isDashboardPanel: boolean = false;
+
   groupingList: any[] = [
     {id: 'world_region', columnLabel: 'World Region', columnName:'world_region'},
     {id: 'month', columnLabel: 'Month', columnName:'month'},

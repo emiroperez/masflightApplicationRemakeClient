@@ -15,7 +15,8 @@ export class MsfRoundingComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
  
-
+  @Input("isDashboardPanel")
+  isDashboardPanel: boolean = false;
   // public roundingCtrl: FormControl = new FormControl();
 
   // public roundingFilterCtrl: FormControl = new FormControl();

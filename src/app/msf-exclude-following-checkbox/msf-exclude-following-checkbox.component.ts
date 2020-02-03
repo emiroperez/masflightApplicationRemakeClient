@@ -10,6 +10,9 @@ import { Globals } from '../globals/Globals';
 export class MsfExcludeFollowingCheckboxComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
+
+  @Input("isDashboardPanel")
+  isDashboardPanel: boolean = false;
   
   selected: any[] = [];
   all = {"checked":false};

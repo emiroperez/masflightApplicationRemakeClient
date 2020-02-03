@@ -1,5 +1,9 @@
-<div class="msf-component-date-input-container" style="margin: 0;margin-bottom: 15px;">
+<div class="msf-component-date-input-container msf-component-taxi-checkbox-container" style="margin: 0;margin-bottom: 15px;">
     <mat-checkbox class="cancels-checkbox" [value]="checkbox.value" [(ngModel)]="argument.value1" >
         {{checkbox.name}}
     </mat-checkbox>
+    <button mat-icon-button *ngIf="isDashboardPanel" [ngClass]="{ 'msf-anchor-button': !argument.anchored, 'msf-anchor-button-pressed': argument.anchored }"
+        matTooltip="Anchor Argument Into Panel" (click)="argument.anchored = !argument.anchored">
+        <div class="anchor-icon"></div>
+    </button>
 </div>

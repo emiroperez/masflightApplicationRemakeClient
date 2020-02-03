@@ -9,6 +9,9 @@ import { Arguments } from '../model/Arguments';
 export class MsfTotalTypeComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
+
+  @Input("isDashboardPanel")
+  isDashboardPanel: boolean = false;
   
   types: any[] = [
     {name: 'Total Movies'},

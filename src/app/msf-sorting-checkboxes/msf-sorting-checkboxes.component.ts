@@ -20,6 +20,9 @@ export class MsfSortingCheckboxesComponent implements OnInit {
   @Input("createdMetas")
   createdMetas: any;
 
+  @Input("isDashboardPanel")
+  isDashboardPanel: boolean = false;
+
   @Output("setLoading")
   setLoading = new EventEmitter ();
 

@@ -10,6 +10,9 @@ import { Globals } from '../globals/Globals';
 export class MsfFareIncrementsComponent implements OnInit {
   
   @Input("argument") public argument: Arguments;
+
+  @Input("isDashboardPanel")
+  isDashboardPanel: boolean = false;
  
   increments: any[] = [
                 {id: '0.01', name: '$0.01'},

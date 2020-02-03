@@ -9,6 +9,9 @@ import { Arguments } from '../model/Arguments';
 export class MsfGroupingCompTotalComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
+
+  @Input("isDashboardPanel")
+  isDashboardPanel: boolean = false;
   
   groupingList: any[] = [
     {id: 'world_region', columnLabel: 'World Region', columnName:'world_region'},

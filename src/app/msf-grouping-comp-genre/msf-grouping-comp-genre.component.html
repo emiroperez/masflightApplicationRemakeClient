@@ -1,5 +1,11 @@
 <div class="center">
-    <div class="msf-component-airport-title">Grouping</div>        
+    <div class="msf-component-airport-title">
+        Grouping
+        <button mat-icon-button *ngIf="isDashboardPanel" [ngClass]="{ 'msf-anchor-button': !argument.anchored, 'msf-anchor-button-pressed': argument.anchored }"
+            matTooltip="Anchor Argument Into Panel" (click)="argument.anchored = !argument.anchored">
+            <div class="anchor-icon"></div>
+        </button>
+    </div>
 </div>    
 <div class="msf-airline-container">
     <div class="msf-full-width msf-grouping-input-container">   

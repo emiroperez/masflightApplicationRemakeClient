@@ -11,6 +11,9 @@ import { ApiClient } from '../api/api-client';
 export class MsfSummaryRevenueBuildsComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
+
+  @Input("isDashboardPanel")
+  isDashboardPanel: boolean = false;
  
   summaryList: any[] = [
     {id: 'YEAR', columnLabel: 'Year', columnName:'Year'},

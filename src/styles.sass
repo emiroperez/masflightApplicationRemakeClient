@@ -612,15 +612,15 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
         .msf-component-airport-title
             background: $tertiary-background-color
             color: $font-color
-            .msf-anchor-button
-                border-color: $admin-button-color
-                .anchor-icon
-                    background-image: url(assets/images/#{$name}-anchor-icon.png)
-            .msf-anchor-button-pressed, .msf-anchor-button:hover
-                border-color: $primary-color
-                background-color: $primary-color
-                .anchor-icon
-                    background-image: url(assets/images/dark-theme-anchor-icon.png)
+        .msf-anchor-button
+            border-color: $admin-button-color
+            .anchor-icon
+                background-image: url(assets/images/#{$name}-anchor-icon.png)
+        .msf-anchor-button-pressed, .msf-anchor-button:hover
+            border-color: $primary-color
+            background-color: $primary-color
+            .anchor-icon
+                background-image: url(assets/images/dark-theme-anchor-icon.png)
         .msf-component-airport-sub-title
             color: $font-color
         .mat-radio-button.mat-accent .mat-radio-inner-circle
@@ -3401,6 +3401,8 @@ button[aria-expanded="true"]
     width: 100%
     padding: 5px 0 5px 0
     margin-bottom: 14px
+
+.msf-component-airport-title, .msf-component-taxi-checkbox-container
     position: relative
     .msf-anchor-button-pressed, .msf-anchor-button
         position: absolute
@@ -3417,6 +3419,14 @@ button[aria-expanded="true"]
             margin-left: 2px
             width: 14px
             height: 14px
+
+.msf-component-taxi-checkbox-container
+    .msf-anchor-button-pressed, .msf-anchor-button
+        margin-top: 1px
+
+.msf-component-taxi-checkboxes-container
+    .msf-anchor-button-pressed, .msf-anchor-button
+        margin-top: 6px
 
 .msf-component-airport-sub-title
     margin-bottom: 5px

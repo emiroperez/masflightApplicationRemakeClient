@@ -9,6 +9,9 @@ import { Arguments } from '../model/Arguments';
 export class MsfGroupingAthenaComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
+
+  @Input("isDashboardPanel")
+  isDashboardPanel: boolean = false;
   
   groupingList: any[] = [
     {columnName: 'Year', columnLabel: 'Year',"checked":false, "order":"desc"},

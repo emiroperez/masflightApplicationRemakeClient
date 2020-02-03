@@ -10,6 +10,10 @@ export class MsfTopNumberComponent implements OnInit {
 
 
   @Input("argument") public argument: Arguments;
+
+  @Input("isDashboardPanel")
+  isDashboardPanel: boolean = false;
+
   constructor() { }
 
   ngOnInit() {

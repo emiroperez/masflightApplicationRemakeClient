@@ -9,7 +9,10 @@ import { Arguments } from '../model/Arguments';
 export class MsfWindComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
-  
+
+  @Input("isDashboardPanel")
+  isDashboardPanel: boolean = false;
+
   constructor() { }
 
   ngOnInit() {
