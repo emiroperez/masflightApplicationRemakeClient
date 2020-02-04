@@ -54,7 +54,7 @@ export class ApplicationService {
     this.authService.get (_this, url, successHandler, errorHandler);
   }
 
-  getDataTableSource(_this, handlerSuccess, handlerError,pageNumber: String) {
+  getDataTableSource(_this, handlerSuccess, handlerError,pageNumber: String,tokenResultable: String) {
     // _this.globals.isLoading = true;
     _this.displayedColumns = [];
     let param = this.utils.getUrlParameters(_this.globals.currentOption,true);
@@ -68,7 +68,7 @@ export class ApplicationService {
     if(!urlBase.includes("minuteunit")){
       urlBase += "&minuteunit=m";
     }
-    urlBase += "&pageSize=50&page_number="+pageNumber;
+    urlBase += "&pageSize=50&page_number="+pageNumber+"&token="+tokenResultable;
     if(pageNumber=="0"){
       _this.dataSource = null;
     }

@@ -35,6 +35,17 @@ export class MsfContainerComponent implements OnInit {
 
   @ViewChild(MatTabGroup) tabGroup: MatTabGroup;
 
+
+  @Input("paginator")
+  paginator: MatPaginator;
+
+  
+  @Input("pageIndex")
+  pageIndex: any;
+  
+  @Output('lengthpaginator')
+  lengthpaginator = new EventEmitter ();
+
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;							   
   constructor(public globals: Globals, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) { 
