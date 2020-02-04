@@ -3056,6 +3056,10 @@
 .dark-theme .msf-dashboard-panel-hover-buttons {
   background-color: rgba(17, 17, 17, 0.8);
 }
+.dark-theme .msf-paginator-table {
+  background-color: #333333;
+  color: #ffffff !important;
+}
 
 .light-theme {
   color: #4d4d4d;
@@ -6099,6 +6103,10 @@
 .light-theme .msf-dashboard-panel-hover-buttons {
   background-color: rgba(191, 191, 191, 0.8);
 }
+.light-theme .msf-paginator-table {
+  background-color: #ffffff;
+  color: #4d4d4d !important;
+}
 
 .dark-theme .assistant-button-disabled {
   background-color: rgba(176, 176, 176, 0.1) !important;
@@ -7251,7 +7259,7 @@ button[aria-expanded=true] {
 }
 
 .msf-menu-internal-content {
-  height: calc(100% - 120px);
+  height: calc(100% - 145px);
   background-color: #ffffff;
   vertical-align: middle;
 }
