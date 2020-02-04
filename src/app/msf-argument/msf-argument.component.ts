@@ -25,6 +25,9 @@ export class MsfArgumentComponent implements OnInit {
 
   @Input("isDashboardPanel")
   isDashboardPanel: boolean = false;
+
+  @Input("anchoredArgument")
+  anchoredArgument: boolean = false;
   
   constructor(public globals: Globals) { }
 

@@ -1,8 +1,8 @@
     
     
-    <app-msf-airport *ngIf="isAirport(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-airport>
+    <app-msf-airport *ngIf="isAirport(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel" [anchoredArgument]="anchoredArgument"></app-msf-airport>
     <app-msf-time-range *ngIf="isTimeRange(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-time-range>
-    <app-msf-date-range *ngIf="isDateRange(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel" [refreshDate]="currentArgument.refreshDate"></app-msf-date-range>
+    <app-msf-date-range *ngIf="isDateRange(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel" [anchoredArgument]="anchoredArgument" [refreshDate]="currentArgument.refreshDate"></app-msf-date-range>
     <app-msf-ceiling *ngIf="isCeiling(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-ceiling>
     <app-msf-wind *ngIf="isWindSpeed(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-wind>
     <app-msf-temperature *ngIf="isTemperature(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-temperature>

@@ -1,4 +1,4 @@
-<div [style.height.px]="panelHeight">
+<div [style.height.px]="panelHeight + calcAnchorHeight()">
   <div class="msf-dashboard-panel-container" [style.height.px]="panelHeightOffset" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !values.displayDynTable && globals.readOnlyDashboard">
     <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-picture-container">
       <div class="msf-dashboard-panel-picture-label-container">
@@ -896,10 +896,10 @@
     </ng-container>
   </div>
   <!-- ngIf doesn't work with AmCharts -->
-  <div class="{{values.displayChart && !advTableView ? 'msf-dashboard-panel-container-chart' : 'msf-dashboard-panel-container-invisible'}}" [style.height.px]="panelHeightOffset">
+  <div class="{{values.displayChart && !advTableView ? 'msf-dashboard-panel-container-chart' : 'msf-dashboard-panel-container-invisible'}}" [style.height.px]="panelHeightOffset + calcAnchorHeight()">
     <div class="msf-dashboard-panel-title" *ngIf="values.displayChart">{{values.chartName}}</div>
-    <div class="msf-dashboard-panel-anchored-variables" *ngFor="let anchoredArgument of anchoredArguments">
-      Anchored control variables
+    <div class="msf-dashboard-panel-anchored-variables" *ngFor="let anchoredArgument of anchoredArguments; let first = first" [ngClass]="{ 'anchored-variables-first-item': first }">
+      <app-msf-argument [currentArgument]="anchoredArgument" [currentGlobalOptionId]="values.currentOption.id" [anchoredArgument]="true" (setLoading)="setArgumentLoading(anchoredArgument, $event)"></app-msf-argument>
     </div>
     <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-chart-display-container-{{values.id}}">
       <div class="msf-dashboard-map-routelist" *ngIf="isMapPanel() && values.flightRoutes != null">
@@ -923,7 +923,7 @@
           <tr><td>Total Time</td><td>{{checkedRoutes[0].TotalTime}}</td></tr>
         </table>
       </div>
-      <div class="msf-dashboard-panel-config-button" id="msf-dashboard-panel-chart-buttons-{{values.id}}" [ngStyle]="{ 'left': getConfigButtonOffset() }">
+      <div class="msf-dashboard-panel-config-button" id="msf-dashboard-panel-chart-buttons-{{values.id}}" [ngStyle]="{ 'left': getConfigButtonOffset() }" [style.margin-top.px]="-calcAnchorHeight()">
         <ng-container *ngIf="values.displayButtons">
           <button *ngIf="!globals.readOnlyDashboard" mat-icon-button (click)="goToChartConfiguration()" color="primary" class="msf-dashboard-panel-margin-button" matTooltip="Edit Configuration">
             <mat-icon aria-label="Edit Configuration">menu</mat-icon>

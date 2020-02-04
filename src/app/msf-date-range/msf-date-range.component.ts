@@ -136,6 +136,9 @@ export class MsfDateRangeComponent implements OnInit {
   @Input("isDashboardPanel")
   isDashboardPanel: boolean = false;
 
+  @Input("anchoredArgument")
+  anchoredArgument: boolean = false;
+
   maxDate: Date;
   minDate: Date;
 

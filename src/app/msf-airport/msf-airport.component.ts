@@ -32,6 +32,9 @@ export class MsfAirportComponent implements OnInit {
   @Input("isDashboardPanel")
   isDashboardPanel: boolean = false;
 
+  @Input("anchoredArgument")
+  anchoredArgument: boolean = false;
+
   data: Observable<any[]>;
   loading = false;
 

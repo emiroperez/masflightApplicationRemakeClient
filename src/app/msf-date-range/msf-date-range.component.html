@@ -1,93 +1,18 @@
-<!-- Treat the two sub-arguments as if they were two separate arguments for the dashboard control panel -->
-<div class="center msf-component-radio msf-component-date-range-selector" *ngIf="isDateRange">
-    <div class="center">
-        <div class="msf-component-airport-title">Date Range Selection</div>
-    </div>
-    <mat-radio-group [(ngModel)]="argument.dateSelectionMode" (ngModelChange)="setDateRange()" name="Selection Mode">
-        <mat-radio-button value="manual">Manual Selection</mat-radio-button>
-        <mat-radio-button class="msf-radio" value="auto">Auto Range</mat-radio-button>
-    </mat-radio-group>
-</div>
-<div class="msf-component-argument-container" *ngIf="argument.dateSelectionMode == 'manual'">
-    <div class="center" *ngIf="argument.title || isDashboardPanel">
-        <div class="msf-component-airport-title">
-            {{argument.title}}
-            <button mat-icon-button *ngIf="isDashboardPanel" [ngClass]="{ 'msf-anchor-button': !argument.anchored, 'msf-anchor-button-pressed': argument.anchored }"
-                matTooltip="Anchor Argument Into Panel" (click)="argument.anchored = !argument.anchored">
-                <div class="anchor-icon"></div>
-            </button>
-        </div>
-    </div>
-    <div class="msf-component-date-input-container msf-single-date">
-        <ng-container *ngIf="dateStartView === 'month'">
-            <mat-form-field class="msf-full-width">
-                <input matInput [min]="argument.minDate" [max]="maxDate" [matDatepicker]="picker1" placeholder="{{argument.label1}}" [(ngModel)]="argument.value1" (ngModelChange)="dateChange($event)" (click)="picker1.open()" [readonly]="true">
-                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                <mat-datepicker #picker1 startView="{{dateStartView}}"></mat-datepicker>
-            </mat-form-field>
-            <mat-form-field *ngIf="isDateRange" class="msf-full-width msf-single-date">
-                <input matInput [min]="minDate" [max]="argument.maxDate" class="msf-component-airport-container mat-input-element" matInput [matDatepicker]="picker2" placeholder="{{argument.label2}}" autocomplete="off" class="msf-full-width msf-menu-arg-select" [(ngModel)]="argument.value2" (ngModelChange)="dateChange2($event)" (click)="picker2.open()" [readonly]="true">
-                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                <mat-datepicker #picker2 startView="{{dateStartView}}"></mat-datepicker>
-            </mat-form-field>
-        </ng-container>
-        <ng-container *ngIf="dateStartView !== 'month'">
-            <mat-form-field class="msf-full-width">
-                <input hidden [min]="argument.minDate" [max]="maxDate" [matDatepicker]="picker3" [(ngModel)]="value1Date" [readonly]="true">
-                <input matInput [ngModel]="value1Display" (ngModelChange)="dateChange($event)" [ngModelOptions]="{ standalone: true }" placeholder="{{argument.label1}}" autocomplete="off" class="msf-full-width msf-menu-arg-select" (click)="picker3.open()" [readonly]="true">
-                <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
-                <mat-datepicker #picker3 startView="{{dateStartView}}" [calendarHeaderComponent]="calendarHeader" (yearSelected)="chosenYearHandler1($event,picker3)" (monthSelected)="chosenMonthHandler1($event,picker3)"></mat-datepicker>
-            </mat-form-field>
-            <div *ngIf="valueType === 'quarter'" class="msf-component-date-input-container" style="display: flex; align-items: center;">         
-                <ng-select style="width: 85%;"
-                    [items]="quarters"
-                    [multiple]="false"
-                    [loading]="loading"
-                    loadingText="Loading..."
-                    [closeOnSelect]="true"
-                    [hideSelected]="false"
-                    bindLabel="name"
-                    bindName="value"
-                    [(ngModel)]="argument.value3"
-                    appendTo=".msf-control-variables-overlay"
-                    [clearable]="false"
-                    dropdownPosition="bottom">
-                </ng-select> 
-                <img src="../../assets/images/{{globals.theme}}-calendarTime.png" class="msf-calendar-image">
-            </div>
-            <ng-container *ngIf="isDateRange">
-                <mat-form-field class="msf-full-width msf-single-date">
-                    <input hidden [min]="minDate" [max]="argument.maxDate" [matDatepicker]="picker4" [(ngModel)]="value2Date" [readonly]="true">
-                    <input matInput [ngModel]="value2Display" (ngModelChange)="dateChange2($event)" [ngModelOptions]="{ standalone: true }" placeholder="{{argument.label2}}" autocomplete="off" class="msf-full-width msf-menu-arg-select" (click)="picker4.open()" [readonly]="true">
-                    <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
-                    <mat-datepicker #picker4 startView="{{dateStartView}}" [calendarHeaderComponent]="calendarHeader" (yearSelected)="chosenYearHandler2($event,picker4)" (monthSelected)="chosenMonthHandler2($event,picker4)"></mat-datepicker>
-                </mat-form-field>
-                <div *ngIf="valueType === 'quarter'" class="msf-component-date-input-container" style="display: flex; align-items: center;">         
-                    <ng-select style="width: 85%;"
-                        [items]="quarters"
-                        [multiple]="false"
-                        [loading]="loading"
-                        loadingText="Loading..."
-                        [closeOnSelect]="true"
-                        [hideSelected]="false"
-                        bindLabel="name"
-                        bindName="value"
-                        [(ngModel)]="argument.value4"
-                        appendTo=".msf-control-variables-overlay"
-                        [clearable]="false"
-                        dropdownPosition="bottom">
-                    </ng-select> 
-                    <img src="../../assets/images/{{globals.theme}}-calendarTime.png" class="msf-calendar-image">
-                </div>
-            </ng-container>
-        </ng-container>
-    </div>
-</div>
-<div class="msf-component-argument-container" *ngIf="argument.dateSelectionMode == 'auto'">
-    <div *ngIf="dateRange && dateRange.value.startsWith ('UNTIL')">
+<ng-container *ngIf="!anchoredArgument">
+    <!-- Treat the two sub-arguments as if they were two separate arguments for the dashboard control panel -->
+    <div class="center msf-component-radio msf-component-date-range-selector" *ngIf="isDateRange">
         <div class="center">
-            <div class="msf-component-airport-title initial-date-title">
-                Select Initial Date
+            <div class="msf-component-airport-title">Date Range Selection</div>
+        </div>
+        <mat-radio-group [(ngModel)]="argument.dateSelectionMode" (ngModelChange)="setDateRange()" name="Selection Mode">
+            <mat-radio-button value="manual">Manual Selection</mat-radio-button>
+            <mat-radio-button class="msf-radio" value="auto">Auto Range</mat-radio-button>
+        </mat-radio-group>
+    </div>
+    <div class="msf-component-argument-container" *ngIf="argument.dateSelectionMode == 'manual'">
+        <div class="center" *ngIf="argument.title || isDashboardPanel">
+            <div class="msf-component-airport-title">
+                {{argument.title}}
                 <button mat-icon-button *ngIf="isDashboardPanel" [ngClass]="{ 'msf-anchor-button': !argument.anchored, 'msf-anchor-button-pressed': argument.anchored }"
                     matTooltip="Anchor Argument Into Panel" (click)="argument.anchored = !argument.anchored">
                     <div class="anchor-icon"></div>
@@ -97,15 +22,20 @@
         <div class="msf-component-date-input-container msf-single-date">
             <ng-container *ngIf="dateStartView === 'month'">
                 <mat-form-field class="msf-full-width">
-                    <input matInput [min]="argument.minDate" [max]="maxDate" [matDatepicker]="picker1" placeholder="Initial Date" [(ngModel)]="argument.value1" (ngModelChange)="dateChange($event)" (click)="picker1.open()" [readonly]="true">
+                    <input matInput [min]="argument.minDate" [max]="maxDate" [matDatepicker]="picker1" placeholder="{{argument.label1}}" [(ngModel)]="argument.value1" (ngModelChange)="dateChange($event)" (click)="picker1.open()" [readonly]="true">
                     <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                     <mat-datepicker #picker1 startView="{{dateStartView}}"></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field *ngIf="isDateRange" class="msf-full-width msf-single-date">
+                    <input matInput [min]="minDate" [max]="argument.maxDate" class="msf-component-airport-container mat-input-element" matInput [matDatepicker]="picker2" placeholder="{{argument.label2}}" autocomplete="off" class="msf-full-width msf-menu-arg-select" [(ngModel)]="argument.value2" (ngModelChange)="dateChange2($event)" (click)="picker2.open()" [readonly]="true">
+                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2 startView="{{dateStartView}}"></mat-datepicker>
                 </mat-form-field>
             </ng-container>
             <ng-container *ngIf="dateStartView !== 'month'">
                 <mat-form-field class="msf-full-width">
                     <input hidden [min]="argument.minDate" [max]="maxDate" [matDatepicker]="picker3" [(ngModel)]="value1Date" [readonly]="true">
-                    <input matInput [ngModel]="value1Display" (ngModelChange)="dateChange($event)" [ngModelOptions]="{ standalone: true }" placeholder="Initial Date" autocomplete="off" class="msf-full-width msf-menu-arg-select" (click)="picker3.open()" [readonly]="true">
+                    <input matInput [ngModel]="value1Display" (ngModelChange)="dateChange($event)" [ngModelOptions]="{ standalone: true }" placeholder="{{argument.label1}}" autocomplete="off" class="msf-full-width msf-menu-arg-select" (click)="picker3.open()" [readonly]="true">
                     <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
                     <mat-datepicker #picker3 startView="{{dateStartView}}" [calendarHeaderComponent]="calendarHeader" (yearSelected)="chosenYearHandler1($event,picker3)" (monthSelected)="chosenMonthHandler1($event,picker3)"></mat-datepicker>
                 </mat-form-field>
@@ -126,31 +56,175 @@
                     </ng-select> 
                     <img src="../../assets/images/{{globals.theme}}-calendarTime.png" class="msf-calendar-image">
                 </div>
+                <ng-container *ngIf="isDateRange">
+                    <mat-form-field class="msf-full-width msf-single-date">
+                        <input hidden [min]="minDate" [max]="argument.maxDate" [matDatepicker]="picker4" [(ngModel)]="value2Date" [readonly]="true">
+                        <input matInput [ngModel]="value2Display" (ngModelChange)="dateChange2($event)" [ngModelOptions]="{ standalone: true }" placeholder="{{argument.label2}}" autocomplete="off" class="msf-full-width msf-menu-arg-select" (click)="picker4.open()" [readonly]="true">
+                        <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                        <mat-datepicker #picker4 startView="{{dateStartView}}" [calendarHeaderComponent]="calendarHeader" (yearSelected)="chosenYearHandler2($event,picker4)" (monthSelected)="chosenMonthHandler2($event,picker4)"></mat-datepicker>
+                    </mat-form-field>
+                    <div *ngIf="valueType === 'quarter'" class="msf-component-date-input-container" style="display: flex; align-items: center;">         
+                        <ng-select style="width: 85%;"
+                            [items]="quarters"
+                            [multiple]="false"
+                            [loading]="loading"
+                            loadingText="Loading..."
+                            [closeOnSelect]="true"
+                            [hideSelected]="false"
+                            bindLabel="name"
+                            bindName="value"
+                            [(ngModel)]="argument.value4"
+                            appendTo=".msf-control-variables-overlay"
+                            [clearable]="false"
+                            dropdownPosition="bottom">
+                        </ng-select> 
+                        <img src="../../assets/images/{{globals.theme}}-calendarTime.png" class="msf-calendar-image">
+                    </div>
+                </ng-container>
             </ng-container>
         </div>
     </div>
-    <div class="center">
-        <div class="msf-component-airport-title">
-            Auto Select The Date Range
-            <button mat-icon-button *ngIf="isDashboardPanel && ((dateRange && !dateRange.value.startsWith ('UNTIL')) || !dateRange)" [ngClass]="{ 'msf-anchor-button': !argument.anchored, 'msf-anchor-button-pressed': argument.anchored }"
-                matTooltip="Anchor Argument Into Panel" (click)="argument.anchored = !argument.anchored">
-                <div class="anchor-icon"></div>
-            </button>
+    <div class="msf-component-argument-container" *ngIf="argument.dateSelectionMode == 'auto'">
+        <div *ngIf="dateRange && dateRange.value.startsWith ('UNTIL')">
+            <div class="center">
+                <div class="msf-component-airport-title initial-date-title">
+                    Select Initial Date
+                    <button mat-icon-button *ngIf="isDashboardPanel" [ngClass]="{ 'msf-anchor-button': !argument.anchored, 'msf-anchor-button-pressed': argument.anchored }"
+                        matTooltip="Anchor Argument Into Panel" (click)="argument.anchored = !argument.anchored">
+                        <div class="anchor-icon"></div>
+                    </button>
+                </div>
+            </div>
+            <div class="msf-component-date-input-container msf-single-date">
+                <ng-container *ngIf="dateStartView === 'month'">
+                    <mat-form-field class="msf-full-width">
+                        <input matInput [min]="argument.minDate" [max]="maxDate" [matDatepicker]="picker1" placeholder="Initial Date" [(ngModel)]="argument.value1" (ngModelChange)="dateChange($event)" (click)="picker1.open()" [readonly]="true">
+                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                        <mat-datepicker #picker1 startView="{{dateStartView}}"></mat-datepicker>
+                    </mat-form-field>
+                </ng-container>
+                <ng-container *ngIf="dateStartView !== 'month'">
+                    <mat-form-field class="msf-full-width">
+                        <input hidden [min]="argument.minDate" [max]="maxDate" [matDatepicker]="picker3" [(ngModel)]="value1Date" [readonly]="true">
+                        <input matInput [ngModel]="value1Display" (ngModelChange)="dateChange($event)" [ngModelOptions]="{ standalone: true }" placeholder="Initial Date" autocomplete="off" class="msf-full-width msf-menu-arg-select" (click)="picker3.open()" [readonly]="true">
+                        <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                        <mat-datepicker #picker3 startView="{{dateStartView}}" [calendarHeaderComponent]="calendarHeader" (yearSelected)="chosenYearHandler1($event,picker3)" (monthSelected)="chosenMonthHandler1($event,picker3)"></mat-datepicker>
+                    </mat-form-field>
+                    <div *ngIf="valueType === 'quarter'" class="msf-component-date-input-container" style="display: flex; align-items: center;">         
+                        <ng-select style="width: 85%;"
+                            [items]="quarters"
+                            [multiple]="false"
+                            [loading]="loading"
+                            loadingText="Loading..."
+                            [closeOnSelect]="true"
+                            [hideSelected]="false"
+                            bindLabel="name"
+                            bindName="value"
+                            [(ngModel)]="argument.value3"
+                            appendTo=".msf-control-variables-overlay"
+                            [clearable]="false"
+                            dropdownPosition="bottom">
+                        </ng-select> 
+                        <img src="../../assets/images/{{globals.theme}}-calendarTime.png" class="msf-calendar-image">
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+        <div class="center">
+            <div class="msf-component-airport-title">
+                Auto Select The Date Range
+                <button mat-icon-button *ngIf="isDashboardPanel && ((dateRange && !dateRange.value.startsWith ('UNTIL')) || !dateRange)" [ngClass]="{ 'msf-anchor-button': !argument.anchored, 'msf-anchor-button-pressed': argument.anchored }"
+                    matTooltip="Anchor Argument Into Panel" (click)="argument.anchored = !argument.anchored">
+                    <div class="anchor-icon"></div>
+                </button>
+            </div>
+        </div>
+        <div class="msf-component-auto-select-date-range">
+            <ng-select style="width: 100%;"
+                [items]="currentDateRange"
+                [multiple]="false"
+                [closeOnSelect]="true"
+                [hideSelected]="false"
+                bindLabel="name"
+                (change)="autoSelect()"
+                [(ngModel)]="dateRange"
+                [clearable]="false"
+                (ngModelChange)="setCurrentDateRangeValue()"
+                appendTo=".msf-control-variables-overlay"
+                dropdownPosition="bottom">
+            </ng-select>
         </div>
     </div>
-    <div class="msf-component-auto-select-date-range">
-        <ng-select style="width: 100%;"
-            [items]="currentDateRange"
-            [multiple]="false"
-            [closeOnSelect]="true"
-            [hideSelected]="false"
-            bindLabel="name"
-            (change)="autoSelect()"
-            [(ngModel)]="dateRange"
-            [clearable]="false"
-            (ngModelChange)="setCurrentDateRangeValue()"
-            appendTo=".msf-control-variables-overlay"
-            dropdownPosition="bottom">
-        </ng-select>
+</ng-container>
+<ng-container *ngIf="anchoredArgument">
+    <div class="anchor-argument-container" *ngIf="argument.dateSelectionMode == 'manual'">
+        <div class="msf-component-date-input-container msf-single-date">
+            <ng-container *ngIf="dateStartView === 'month'">
+                <span *ngIf="argument.label1">{{argument.label1}}</span>
+                <mat-form-field class="msf-full-width">
+                    <input matInput [min]="argument.minDate" [max]="maxDate" [matDatepicker]="picker1" [(ngModel)]="argument.value1" (ngModelChange)="dateChange($event)" (click)="picker1.open()" [readonly]="true">
+                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1 startView="{{dateStartView}}"></mat-datepicker>
+                </mat-form-field>
+                <span *ngIf="argument.label2">{{argument.label2}}</span>
+                <mat-form-field *ngIf="isDateRange" class="msf-full-width msf-single-date">
+                    <input matInput [min]="minDate" [max]="argument.maxDate" class="msf-component-airport-container mat-input-element" matInput [matDatepicker]="picker2" autocomplete="off" class="msf-full-width msf-menu-arg-select" [(ngModel)]="argument.value2" (ngModelChange)="dateChange2($event)" (click)="picker2.open()" [readonly]="true">
+                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2 startView="{{dateStartView}}"></mat-datepicker>
+                </mat-form-field>
+            </ng-container>
+            <ng-container *ngIf="dateStartView !== 'month'">
+                <mat-form-field class="msf-full-width">
+                    <span *ngIf="argument.label1">{{argument.label1}}</span>
+                    <input hidden [min]="argument.minDate" [max]="maxDate" [matDatepicker]="picker3" [(ngModel)]="value1Date" [readonly]="true">
+                    <input matInput [ngModel]="value1Display" (ngModelChange)="dateChange($event)" [ngModelOptions]="{ standalone: true }" autocomplete="off" class="msf-full-width msf-menu-arg-select" (click)="picker3.open()" [readonly]="true">
+                    <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                    <mat-datepicker #picker3 startView="{{dateStartView}}" [calendarHeaderComponent]="calendarHeader" (yearSelected)="chosenYearHandler1($event,picker3)" (monthSelected)="chosenMonthHandler1($event,picker3)"></mat-datepicker>
+                </mat-form-field>
+                <div *ngIf="valueType === 'quarter'" class="msf-component-date-input-container" style="display: flex; align-items: center;">         
+                    <ng-select style="width: 85%;"
+                        [items]="quarters"
+                        [multiple]="false"
+                        [loading]="loading"
+                        loadingText="Loading..."
+                        [closeOnSelect]="true"
+                        [hideSelected]="false"
+                        bindLabel="name"
+                        bindName="value"
+                        [(ngModel)]="argument.value3"
+                        appendTo=".msf-control-variables-overlay"
+                        [clearable]="false"
+                        dropdownPosition="bottom">
+                    </ng-select> 
+                    <img src="../../assets/images/{{globals.theme}}-calendarTime.png" class="msf-calendar-image">
+                </div>
+                <ng-container *ngIf="isDateRange">
+                    <span *ngIf="argument.label2">{{argument.label2}}</span>
+                    <mat-form-field class="msf-full-width msf-single-date">
+                        <input hidden [min]="minDate" [max]="argument.maxDate" [matDatepicker]="picker4" [(ngModel)]="value2Date" [readonly]="true">
+                        <input matInput [ngModel]="value2Display" (ngModelChange)="dateChange2($event)" [ngModelOptions]="{ standalone: true }" autocomplete="off" class="msf-full-width msf-menu-arg-select" (click)="picker4.open()" [readonly]="true">
+                        <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                        <mat-datepicker #picker4 startView="{{dateStartView}}" [calendarHeaderComponent]="calendarHeader" (yearSelected)="chosenYearHandler2($event,picker4)" (monthSelected)="chosenMonthHandler2($event,picker4)"></mat-datepicker>
+                    </mat-form-field>
+                    <div *ngIf="valueType === 'quarter'" class="msf-component-date-input-container" style="display: flex; align-items: center;">         
+                        <ng-select style="width: 85%;"
+                            [items]="quarters"
+                            [multiple]="false"
+                            [loading]="loading"
+                            loadingText="Loading..."
+                            [closeOnSelect]="true"
+                            [hideSelected]="false"
+                            bindLabel="name"
+                            bindName="value"
+                            [(ngModel)]="argument.value4"
+                            appendTo=".msf-control-variables-overlay"
+                            [clearable]="false"
+                            dropdownPosition="bottom">
+                        </ng-select> 
+                        <img src="../../assets/images/{{globals.theme}}-calendarTime.png" class="msf-calendar-image">
+                    </div>
+                </ng-container>
+            </ng-container>
+        </div>
     </div>
-</div>
+</ng-container>
