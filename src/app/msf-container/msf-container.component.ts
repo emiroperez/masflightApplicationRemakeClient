@@ -122,5 +122,19 @@ export class MsfContainerComponent implements OnInit {
     // refresh mapbox if tab changed when it is not loading the coordinates
     if (event.tab.textLabel === "Map" && !this.msfMapRef.isLoading)
       this.msfMapRef.resizeMap ();
+
+    if(event.tab.textLabel != "Welcome" && event.tab.textLabel != "Current Query General Summary" 
+    && event.tab.textLabel != "Dynamic Table" && event.tab.textLabel != "Chart" && event.tab.textLabel != "Map"){
+      if(this.globals.moreResultsBtn){
+        this.globals.showPaginator = true;
+      }
+    }else{
+      this.globals.showPaginator = false;
+    }
+
+  }
+
+  paginatorlength(event: any) {
+    this.lengthpaginator.emit(event);
   }
 }
