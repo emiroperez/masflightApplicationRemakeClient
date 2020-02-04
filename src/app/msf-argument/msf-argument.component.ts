@@ -163,12 +163,6 @@ export class MsfArgumentComponent implements OnInit {
   isFareIncrements(argument: Arguments){
     return ComponentType.fareIncrements == argument.type;
   }
-  isFareIncrementMiddle(argument: Arguments){
-    return ComponentType.fareIncrementMiddle == argument.type;
-  }
-  isFareIncrementMax(argument: Arguments){
-    return ComponentType.fareIncrementMax == argument.type;
-  }
   isArgumentTitle(argument: Arguments){
     return ComponentType.title == argument.type;
   }

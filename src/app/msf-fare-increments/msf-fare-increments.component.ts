@@ -25,10 +25,15 @@ export class MsfFareIncrementsComponent implements OnInit {
   constructor(private globals: Globals) { }
 
 
-  ngOnInit() { 
-    if(!this.argument.value1){
-    this.argument.value1 = {id: '0.05', name: '$0.05'};
-  }
-}
+  ngOnInit()
+  {
+    if (!this.argument.value1)
+      this.argument.value1 = { id: '0.05', name: '$0.05' };
 
+    if (!this.argument.value2)
+      this.argument.value2 =  {id: '0.10', name: '$0.10' };
+
+    if (!this.argument.value3)
+      this.argument.value3 = { id: '0.25', name: '$0.25' };
+  }
 }

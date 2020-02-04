@@ -39,8 +39,6 @@ export enum ComponentType {
   excludeItineraries = "excludeItineraries",
   filterAirlineType = "filterAirlineType",
   fareIncrements = "fareIncrements",
-  fareIncrementMiddle = "fareIncrementMiddle",
-  fareIncrementMax = "fareIncrementMax",
   title = "title",
   airportsRoutes = "airportsRoutes",
   fareLower = "fareLower",

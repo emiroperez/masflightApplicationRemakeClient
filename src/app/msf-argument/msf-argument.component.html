@@ -39,8 +39,6 @@
     <app-msf-exclude-itineraries-checkbox *ngIf="isExcludeItineraries(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-exclude-itineraries-checkbox>
     <app-msf-filter-airline-type *ngIf="isFilterAirlineType(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-filter-airline-type>
     <app-msf-fare-increments *ngIf="isFareIncrements(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-fare-increments>
-    <app-msf-fare-increment-middle *ngIf="isFareIncrementMiddle(currentArgument)" [argument]="currentArgument"></app-msf-fare-increment-middle>
-    <app-msf-fare-increment-max *ngIf="isFareIncrementMax(currentArgument)" [argument]="currentArgument"></app-msf-fare-increment-max>
     <app-msf-argument-title *ngIf="isArgumentTitle(currentArgument)" [argument]="currentArgument"></app-msf-argument-title>
     <app-msf-airports-routes *ngIf="isAirportsRoutes(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-airports-routes>
     <app-msf-exclude-fares-lower *ngIf="isFaresLower(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-exclude-fares-lower>
@@ -50,7 +48,7 @@
     <app-msf-functions *ngIf="isFunctions(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-functions>
     <app-msf-grouping-operations-summary *ngIf="isGroupingOperationsSummary(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-grouping-operations-summary>
     <app-msf-grouping-hub-summaries *ngIf="isGroupingHubSummaries(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-grouping-hub-summaries>
-    <app-msf-region-schedule *ngIf="isRegionSchedule(currentArgument)" [argument]="currentArgument"></app-msf-region-schedule>
+    <app-msf-region-schedule *ngIf="isRegionSchedule(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-region-schedule>
     <app-msf-aircraft-type-checkboxes *ngIf="isAircraftTypeCheckboxes(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-aircraft-type-checkboxes>
     <app-msf-seats *ngIf="isSeats(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-seats>
     <app-msf-sorting-nonstop-capacity *ngIf="isSortingNonstop(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-sorting-nonstop-capacity>
