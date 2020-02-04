@@ -285,6 +285,8 @@ export class MsfDashboardPanelComponent implements OnInit {
   advTableView: boolean = false;
   intervalTableRows: any[] = [];
 
+  anchoredArguments: any[] = [];
+
   constructor(private zone: NgZone, public globals: Globals,
     private service: ApplicationService, private http: ApiClient, private authService: AuthService, public dialog: MatDialog,
     private changeDetectorRef: ChangeDetectorRef, private formBuilder: FormBuilder)
@@ -2100,6 +2102,9 @@ export class MsfDashboardPanelComponent implements OnInit {
       }
     }
 
+    // set anchored control variables
+    this.configureAnchoredControlVariables ();
+
     setTimeout (() => {
       this.setPanelButtons ();
     }, 50);
@@ -3132,6 +3137,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.oldVariableName = "";
     _this.oldOptionCategories = JSON.parse (JSON.stringify (_this.values.currentOptionCategories));
 
+    _this.anchoredArguments = []; // images has no control variables
+
     _this.stopUpdateInterval ();
     _this.startUpdateInterval ();
   }
@@ -3240,6 +3247,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.oldVariableName = "";
     _this.oldOptionCategories = JSON.parse (JSON.stringify (_this.values.currentOptionCategories));
 
+    _this.configureAnchoredControlVariables ();
+
     _this.stopUpdateInterval ();
     _this.startUpdateInterval ();
   }
@@ -3285,6 +3294,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.oldChartType = null;
     _this.oldVariableName = "";
     _this.oldOptionCategories = JSON.parse (JSON.stringify (_this.values.currentOptionCategories));
+
+    _this.configureAnchoredControlVariables ();
 
     _this.stopUpdateInterval ();
     _this.startUpdateInterval ();
@@ -3332,6 +3343,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.oldVariableName = "";
     _this.oldOptionCategories = JSON.parse (JSON.stringify (_this.values.currentOptionCategories));
 
+    _this.configureAnchoredControlVariables ();
+
     _this.stopUpdateInterval ();
     _this.startUpdateInterval ();
   }
@@ -3376,6 +3389,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.oldVariableName = "";
     _this.oldOptionCategories = JSON.parse (JSON.stringify (_this.values.currentOptionCategories));
 
+    _this.configureAnchoredControlVariables ();
+
     setTimeout (() => {
       _this.values.isLoading = false;
       _this.msfMapRef.resizeMap ();
@@ -3417,6 +3432,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       _this.values.isLoading = false;
 
       _this.makeChart (_this.values.lastestResponse, false);
+      _this.configureAnchoredControlVariables ();
   
       _this.stopUpdateInterval ();
       _this.startUpdateInterval ();
@@ -3447,6 +3463,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       _this.values.isLoading = false;
 
       _this.makeChart (_this.values.lastestResponse, false);
+      _this.configureAnchoredControlVariables ();
   
       _this.stopUpdateInterval ();
       _this.startUpdateInterval ();
@@ -3502,6 +3519,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.oldVariableName = "";
     _this.oldOptionCategories = JSON.parse (JSON.stringify (_this.values.currentOptionCategories));
 
+    _this.configureAnchoredControlVariables ();
+
     _this.stopUpdateInterval ();
     _this.startUpdateInterval ();
   }
@@ -3543,6 +3562,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       _this.values.isLoading = false;
 
       _this.makeChart (data, false);
+      _this.configureAnchoredControlVariables ();
   
       _this.stopUpdateInterval ();
       _this.startUpdateInterval ();
@@ -7044,5 +7064,22 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
 
     return "inherit";
+  }
+
+  configureAnchoredControlVariables(): void
+  {
+    this.anchoredArguments = [];
+
+    if (!this.values.currentOptionCategories)
+      return;
+
+    for (let categoryArgument of this.values.currentOptionCategories)
+    {
+      for (let argument of categoryArgument.arguments)
+      {
+        if (argument.anchored)
+          this.anchoredArguments.push (argument);
+      }
+    }
   }
 }
