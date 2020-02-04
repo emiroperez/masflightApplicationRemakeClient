@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Input ,ChangeDetectorRef, ElementRef, EventEmitter, Output} from '@angular/core';
-import {MatSort, MatTableDataSource, MatTab, Sort, MatDialog} from '@angular/material';
+import {MatSort, MatTableDataSource, MatTab, Sort, MatDialog, MatPaginator} from '@angular/material';
 import { Globals } from '../globals/Globals';
 import { ApplicationService } from '../services/application.service';
 import { MsfGroupingComponent } from '../msf-grouping/msf-grouping.component';

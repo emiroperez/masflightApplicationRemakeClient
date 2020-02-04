@@ -1,6 +1,6 @@
-import { Component, OnInit, Input, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ChangeDetectorRef, EventEmitter, Output } from '@angular/core';
 import { Globals } from '../globals/Globals';
-import { MatTab, MatTabGroup, MatTabChangeEvent } from '@angular/material';
+import { MatTab, MatTabGroup, MatTabChangeEvent, MatPaginator } from '@angular/material';
 import { MsfTableComponent } from '../msf-table/msf-table.component';
 import { MsfDynamicTableComponent } from '../msf-dynamic-table/msf-dynamic-table.component';
 import { MsfMapComponent } from '../msf-map/msf-map.component';
