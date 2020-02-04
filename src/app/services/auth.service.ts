@@ -141,4 +141,20 @@ export class AuthService {
       }, error => errorHandler (_this, error)
     );
   }
+
+  getTokenResultTable(): string
+  {
+    return localStorage.getItem ("tokenResultTable");
+  }
+
+  setTokenResultTable(token)
+  {
+    localStorage.setItem ("tokenResultTable", token);
+  }
+
+  removeTokenResultTable()
+  {
+    localStorage.removeItem ("tokenResultTable");
+  }
+
 }

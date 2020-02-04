@@ -9,6 +9,7 @@ import { parseIntAutoRadix } from '@angular/common/src/i18n/format_number';
 import { MsfMoreInfoPopupComponent } from '../msf-more-info-popup/msf-more-info-popup.component';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as moment from 'moment';
+import { AuthService } from '../services/auth.service';
 
 
 
@@ -95,7 +96,11 @@ export class MsfTableComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(public globals: Globals, private service: ApplicationService,public dialog: MatDialog, private sanitizer: DomSanitizer) { }
+  securityTokenResultTable: string;
+
+  constructor(public globals: Globals, private service: ApplicationService,
+    public dialog: MatDialog, private sanitizer: DomSanitizer,
+    private authService: AuthService) { }
 
   ngOnInit() {      
     this.tableOptions = this.globals;
@@ -257,22 +262,25 @@ export class MsfTableComponent implements OnInit {
      return text.replace(re, ' ');
   }
 
-  getData(moreResults: boolean){
+  getData(moreResults: boolean) {
     // if(this.tableOptions.moreResultsBtn){
-      this.globals.startTimestamp = new Date();
+    this.globals.startTimestamp = new Date();
 
-        if(moreResults){
-          if(this.pageIndex>= this.actualPageNumber)
-          this.actualPageNumber++;
-          else
-          if(this.pageIndex< this.actualPageNumber)
-          this.actualPageNumber--;
-          this.tableOptions.moreResults = true;
-        }else{
-          this.actualPageNumber=0;
-        }
-      this.service.getDataTableSource(this, this.handlerSuccess, this.handlerError,""+this.actualPageNumber);
-    // }
+    if (moreResults) {
+      // if (this.pageIndex.pageIndex >= this.actualPageNumber) {
+      //   this.actualPageNumber++;
+      // } else if (this.pageIndex.pageIndex < this.actualPageNumber) {
+      //   this.actualPageNumber--;
+      // }
+      this.actualPageNumber = this.pageIndex.pageIndex;
+      this.tableOptions.moreResults = true;
+    } else {
+      this.actualPageNumber = 0;
+      this.authService.removeTokenResultTable();
+    }
+    let tokenResultTable = this.authService.getTokenResultTable() ? this.authService.getTokenResultTable() : "";
+    this.service.getDataTableSource(this, this.handlerSuccess, this.handlerError, "" + this.actualPageNumber,tokenResultTable);
+    // }}
   }
 
   getDataUsageStatistics(){
@@ -492,6 +500,11 @@ export class MsfTableComponent implements OnInit {
       if(response!=null){
         if(response.total!=null){
           _this.tableOptions.totalRecord = response.total;
+          //add paginator si es la primera pagina al buscar guardo el token en el localstored
+          if (response.tokenResultTable != null && _this.actualPageNumber===0){
+              _this.authService.setTokenResultTable (response.tokenResultTable);
+          }
+          //
         }else{
           for (var key in response) {
             var array = response[key];
@@ -524,22 +537,19 @@ export class MsfTableComponent implements OnInit {
         if(_this.currentOption.metaData==1 || _this.currentOption.metaData==3 || _this.currentOption.tabType=='scmap'){  
           _this.tableOptions.displayedColumns = data.metadata;
           let dataResult = new MatTableDataSource(mainElement);
-          if(_this.pageIndex){
-            _this.paginatorlength.emit(_this.pageIndex);
-            _this.paginator.length = data.Response.Rows;
-            _this.paginator.pageIndex = _this.pageIndex.pageIndex;
-            _this.paginator.pageSize = _this.pageIndex.pageSize;
-            _this.paginator.previousPageIndex = _this.pageIndex.previousPageIndex;
-          }else{
-            _this.paginatorlength.emit(data.Response.Rows);
+          if(_this.actualPageNumber===0){
+            let paginatorlength = {
+              length: data.Response.Rows ,
+              pageIndex: 0,
+              pageSize: 50
+            }
+            _this.paginatorlength.emit(paginatorlength);
+            _this.paginator.firstPage();
           }
-          dataResult.paginator = _this.paginator;
-          dataResult.paginator.length = data.Response.Rows;
-          dataResult.paginator.pageSize=50;
-          dataResult.paginator.pageIndex=_this.pageIndex;
+          
+
             _this.tableOptions.displayedColumns  = _this.addGroupingColumns(_this.tableOptions.displayedColumns);
             _this.tableOptions.displayedColumns  = _this.deleteEmptyColumns(dataResult,_this.tableOptions.displayedColumns);
-            // _this.tableOptions.displayedColumns  = _this.renameDuplicateColumns(_this.tableOptions.displayedColumns);
           _this.metadata = _this.tableOptions.displayedColumns;
           _this.tableOptions.metadata = data.metadata;
           

@@ -1293,10 +1293,14 @@ toggle(){
   }
 
   public getServerData(event?:PageEvent){
-    this.pageIndex = event;
-    // this.pageIndex = event.pageIndex;
-    this.moreResults();
-    return event;
+    if(!this.globals.isLoading){
+      this.pageIndex = event;
+      this.globals.moreResultsBtn = true;
+      // this.pageIndex = event.pageIndex;
+      this.moreResults();
+      return event;
+    }
+
   }
 
   lengthpaginator(event: any) {
