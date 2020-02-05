@@ -7102,4 +7102,10 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     argument.isLoading = value;
   }
+
+  removedAnchoredArgument(anchoredArgument): void
+  {
+    anchoredArgument.anchored = false;
+    this.anchoredArguments.splice (this.anchoredArguments.indexOf (anchoredArgument), 1);
+  }
 }

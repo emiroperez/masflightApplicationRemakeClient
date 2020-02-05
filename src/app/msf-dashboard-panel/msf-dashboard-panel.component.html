@@ -897,33 +897,9 @@
   </div>
   <!-- ngIf doesn't work with AmCharts -->
   <div class="{{values.displayChart && !advTableView ? 'msf-dashboard-panel-container-chart' : 'msf-dashboard-panel-container-invisible'}}" [style.height.px]="panelHeightOffset + calcAnchorHeight()">
-    <div class="msf-dashboard-panel-title" *ngIf="values.displayChart">{{values.chartName}}</div>
-    <div class="msf-dashboard-panel-anchored-variables" *ngFor="let anchoredArgument of anchoredArguments; let first = first" [ngClass]="{ 'anchored-variables-first-item': first }">
-      <app-msf-argument [currentArgument]="anchoredArgument" [currentGlobalOptionId]="values.currentOption.id" [anchoredArgument]="true" (setLoading)="setArgumentLoading(anchoredArgument, $event)"></app-msf-argument>
-    </div>
-    <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-chart-display-container-{{values.id}}">
-      <div class="msf-dashboard-map-routelist" *ngIf="isMapPanel() && values.flightRoutes != null">
-        <div class="msf-dashboard-map-routelist-container" [style.height.px]="calcRouteListHeight()">
-          <div class="msf-dashboard-map-routelist-item" *ngFor="let item of values.flightRoutes">
-            <div class="msf-dashboard-map-item-flight">
-              <span *ngIf="isArray(item.Flight)">{{item.TouchedAirports}}</span>
-              <span *ngIf="!isArray(item.Flight)">{{item.Flight.Marketing_Airline}} {{item.Flight.Airline}} - F# {{item.Flight.FlightNo}} {{item.TouchedAirports}}</span>
-            </div>
-            <div class="msf-dashboard-map-item-checkbox">
-              <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="item.checked" (ngModelChange)="toggleMapRoute(item)"></mat-checkbox>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div id="msf-dashboard-chart-display-{{values.id}}" [style.width.%]="100" [style.height.px]="calcPanelHeight()"></div>
-      <div class="msf-dashboard-map-panelinfo" *ngIf="isMapPanel() && checkedRoutes.length == 1">
-        <table class="msf-dashboard-map-panelinfo-container">
-          <tr><td>Touched Airports</td><td>{{checkedRoutes[0].TouchedAirports}}</td></tr>
-          <tr><td>Total Distance</td><td>{{checkedRoutes[0].TotalDistance}}</td></tr>
-          <tr><td>Total Time</td><td>{{checkedRoutes[0].TotalTime}}</td></tr>
-        </table>
-      </div>
-      <div class="msf-dashboard-panel-config-button" id="msf-dashboard-panel-chart-buttons-{{values.id}}" [ngStyle]="{ 'left': getConfigButtonOffset() }" [style.margin-top.px]="-calcAnchorHeight()">
+    <div class="msf-dashboard-panel-title" *ngIf="values.displayChart">
+      {{values.chartName}}
+      <div class="msf-dashboard-panel-config-button" id="msf-dashboard-panel-chart-buttons-{{values.id}}" [ngStyle]="{ 'left': getConfigButtonOffset() }">
         <ng-container *ngIf="values.displayButtons">
           <button *ngIf="!globals.readOnlyDashboard" mat-icon-button (click)="goToChartConfiguration()" color="primary" class="msf-dashboard-panel-margin-button" matTooltip="Edit Configuration">
             <mat-icon aria-label="Edit Configuration">menu</mat-icon>
@@ -968,10 +944,44 @@
         </ng-container>
       </div>
     </div>
+    <div class="msf-dashboard-panel-anchored-argument" *ngFor="let anchoredArgument of anchoredArguments; let first = first" [ngClass]="{ 'anchored-variables-first-item': first }">
+      <div class="anchored-argument-left-side">
+        <app-msf-argument [currentArgument]="anchoredArgument" [currentGlobalOptionId]="values.currentOption.id" [anchoredArgument]="true" (setLoading)="setArgumentLoading(anchoredArgument, $event)"></app-msf-argument>
+      </div>
+      <div class="anchored-argument-button">
+        <button mat-icon-button class="msf-anchor-button-pressed" matTooltip="Removed Anchored Argument"
+          (click)="removedAnchoredArgument(anchoredArgument)">
+          <div class="anchor-icon"></div>
+        </button>
+      </div>
+    </div>
+    <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-chart-display-container-{{values.id}}">
+      <div class="msf-dashboard-map-routelist" *ngIf="isMapPanel() && values.flightRoutes != null">
+        <div class="msf-dashboard-map-routelist-container" [style.height.px]="calcRouteListHeight()">
+          <div class="msf-dashboard-map-routelist-item" *ngFor="let item of values.flightRoutes">
+            <div class="msf-dashboard-map-item-flight">
+              <span *ngIf="isArray(item.Flight)">{{item.TouchedAirports}}</span>
+              <span *ngIf="!isArray(item.Flight)">{{item.Flight.Marketing_Airline}} {{item.Flight.Airline}} - F# {{item.Flight.FlightNo}} {{item.TouchedAirports}}</span>
+            </div>
+            <div class="msf-dashboard-map-item-checkbox">
+              <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="item.checked" (ngModelChange)="toggleMapRoute(item)"></mat-checkbox>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="msf-dashboard-chart-display-{{values.id}}" [style.width.%]="100" [style.height.px]="calcPanelHeight()"></div>
+      <div class="msf-dashboard-map-panelinfo" *ngIf="isMapPanel() && checkedRoutes.length == 1">
+        <table class="msf-dashboard-map-panelinfo-container">
+          <tr><td>Touched Airports</td><td>{{checkedRoutes[0].TouchedAirports}}</td></tr>
+          <tr><td>Total Distance</td><td>{{checkedRoutes[0].TotalDistance}}</td></tr>
+          <tr><td>Total Time</td><td>{{checkedRoutes[0].TotalTime}}</td></tr>
+        </table>
+      </div>
+    </div>
   </div>
   <div class="msf-dashboard-panel-container-chart" *ngIf="values.displayInfo" [style.height.px]="panelHeightOffset">
-    <div class="msf-dashboard-panel-title">{{values.chartName}}</div>
-    <div class="msf-dashboard-panel-sub-container-column">
+    <div class="msf-dashboard-panel-title">
+      {{values.chartName}}
       <div class="msf-dashboard-panel-config-button" id="msf-dashboard-panel-info-buttons-{{values.id}}" [ngStyle]="{ 'left': getConfigButtonOffset() }" *ngIf="!globals.readOnlyDashboard">
         <ng-container *ngIf="values.displayButtons">
           <button mat-icon-button (click)="goToInfoConfiguration()" color="primary" class="msf-dashboard-panel-margin-button" matTooltip="Edit Configuration">
@@ -1004,6 +1014,8 @@
           </div>
         </ng-container>
       </div>
+    </div>
+    <div class="msf-dashboard-panel-sub-container-column">
       <div style="width: 100%" [style.height.px]="calcPanelHeight()">
         <div class="msf-dashboard-info-display">
           <div class="msf-dashboard-info-container" *ngIf="values.infoVar1">
@@ -1021,8 +1033,8 @@
     </div>
   </div>
   <div class="msf-dashboard-panel-container-chart" *ngIf="values.displayForm" [style.height.px]="panelHeightOffset">
-    <div class="msf-dashboard-panel-title">{{values.chartName}}</div>
-    <div class="msf-dashboard-panel-sub-container-column">
+    <div class="msf-dashboard-panel-title">
+      {{values.chartName}}
       <div class="msf-dashboard-panel-config-button" id="msf-dashboard-panel-form-buttons-{{values.id}}" [ngStyle]="{ 'left': getConfigButtonOffset() }" *ngIf="!globals.readOnlyDashboard">
         <ng-container *ngIf="values.displayButtons">
           <button mat-icon-button (click)="goToFormConfiguration()" color="primary" class="msf-dashboard-panel-margin-button" matTooltip="Edit Configuration">
@@ -1055,6 +1067,8 @@
           </div>
         </ng-container>
       </div>
+    </div>
+    <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-form-container" [style.height.px]="calcPanelHeight()">
         <div class="msf-media-title-container" id="msf-dashboard-form-display">
           <div class="msf-dashboard-form-display-child" [ngClass]="values.formVariables[column].valueOrientation.value ? 'msf-dashboard-form-display-result-vertical' : 'msf-dashboard-form-display-result-horizontal'" *ngFor="let formResult of values.lastestResponse; let column = index">
@@ -1071,8 +1085,8 @@
     </div>
   </div>
   <div class="msf-dashboard-panel-container-chart" *ngIf="values.displayPic" [style.height.px]="panelHeightOffset">
-    <div class="msf-dashboard-panel-title">{{values.chartName}}</div>
-    <div class="msf-dashboard-panel-sub-container-column">
+    <div class="msf-dashboard-panel-title">
+      {{values.chartName}}
       <div class="msf-dashboard-panel-config-button" id="msf-dashboard-panel-pic-buttons-{{values.id}}" [ngStyle]="{ 'left': getConfigButtonOffset() }" *ngIf="!globals.readOnlyDashboard">
         <ng-container *ngIf="values.displayButtons">
           <button mat-icon-button (click)="goToPicConfiguration()" color="primary" class="msf-dashboard-panel-margin-button" matTooltip="Edit Configuration">
@@ -1105,6 +1119,8 @@
           </div>
         </ng-container>
       </div>
+    </div>
+    <div class="msf-dashboard-panel-sub-container-column">
       <div [style.height.px]="calcPanelHeight()" class="content-panel-img">
         <!-- TODO: Picture goes here -->
         <app-image-link [url]="values.urlImg"></app-image-link>
@@ -1112,8 +1128,8 @@
     </div>
   </div>
   <div class="msf-dashboard-panel-container-chart" [style.display]="values.displayTable ? 'block' : 'none'" [style.height.px]="panelHeightOffset">
-    <div class="msf-dashboard-panel-title" [style.padding-bottom.px]="5">{{values.chartName}}</div>
-    <div class="msf-dashboard-panel-sub-container-column">
+    <div class="msf-dashboard-panel-title" [style.padding-bottom.px]="5">
+      {{values.chartName}}
       <div class="msf-dashboard-panel-config-button" id="msf-dashboard-panel-table-buttons-{{values.id}}" [ngStyle]="{ 'left': getConfigButtonOffset() }" *ngIf="!globals.readOnlyDashboard">
         <ng-container *ngIf="values.displayButtons">
           <button mat-icon-button (click)="goToTableConfiguration()" color="primary" class="msf-dashboard-panel-margin-button" matTooltip="Edit Configuration">
@@ -1146,6 +1162,8 @@
           </div>
         </ng-container>
       </div>
+    </div>
+    <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-table-container">
         <div class="msf-dashboard-child-panel-table msf-dashboard-panel-table" [style.height.px]="calcPanelHeight() - 24">
           <app-msf-table #msfTableRef [isLoading]="values.isLoading" (finishLoading)="finishLoadingTable($event)" [categoryArguments]="values.currentOptionCategories" [currentOption]="values.currentOption" [isPanel]="true" [thresholds]="values.thresholds"></app-msf-table>
@@ -1160,8 +1178,8 @@
     </div>
   </div>
   <div class="msf-dashboard-panel-container-chart" [style.display]="values.displayMapbox ? 'block' : 'none'" [style.height.px]="panelHeightOffset">
-    <div class="msf-dashboard-panel-title">{{values.chartName}}</div>
-    <div class="msf-dashboard-panel-sub-container-column">
+    <div class="msf-dashboard-panel-title">
+      {{values.chartName}}
       <div class="msf-dashboard-panel-config-button" id="msf-dashboard-panel-mapbox-buttons-{{values.id}}" [ngStyle]="{ 'left': getConfigButtonOffset() }" *ngIf="!globals.readOnlyDashboard">
         <ng-container *ngIf="values.displayButtons">
           <button mat-icon-button (click)="goToMapboxConfiguration()" color="primary" class="msf-dashboard-panel-margin-button" matTooltip="Edit Configuration">
@@ -1194,14 +1212,16 @@
           </div>
         </ng-container>
       </div>
+    </div>
+    <div class="msf-dashboard-panel-sub-container-column">
       <div [style.height.px]="calcPanelHeight() - 7" class="msf-dashboard-panel-mapbox">
         <app-msf-map #msfMapRef [isLoading]="values.isLoading" [useCancelButton]="false" [displayMapMenu]="2" [currentMapType]="values.style" [legendOffset]="5" (finishLoading)="finishMapboxLoading($event)"></app-msf-map>
       </div>
     </div>
   </div>
   <div class="msf-dashboard-panel-container-chart" *ngIf="values.displayDynTable" [style.height.px]="panelHeightOffset">
-    <div class="msf-dashboard-panel-title">{{values.chartName}}</div>
-    <div class="msf-dashboard-panel-sub-container-column">
+    <div class="msf-dashboard-panel-title">
+      {{values.chartName}}
       <div class="msf-dashboard-panel-config-button" id="msf-dashboard-panel-dyn-table-buttons-{{values.id}}" [ngStyle]="{ 'left': getConfigButtonOffset() }" *ngIf="!globals.readOnlyDashboard">
         <ng-container *ngIf="values.displayButtons">
           <button mat-icon-button (click)="goToDynTableConfiguration()" color="primary" class="msf-dashboard-panel-margin-button" matTooltip="Edit Configuration">
@@ -1234,6 +1254,8 @@
           </div>
         </ng-container>
       </div>
+    </div>
+    <div class="msf-dashboard-panel-sub-container-column">
       <div class="dynamic-table-scroll dashboard-panel-dynamic-table-scroll" [style.height.px]="panelHeightOffset - 20">
         <table *ngIf="dynTableData" class="mat-elevation-z8 dynamic-table-container">
           <tr class="dynamic-table-header-container" *ngFor="let header of dynTableData.headers">
@@ -1251,8 +1273,8 @@
   </div>
   <!-- Table view for advanced charts -->
   <div *ngIf="values.displayChart && advTableView" class="msf-dashboard-panel-container-chart" [style.height.px]="panelHeightOffset">
-    <div class="msf-dashboard-panel-title" *ngIf="values.displayChart">{{values.chartName}}</div>
-    <div class="msf-dashboard-panel-sub-container-column">
+    <div class="msf-dashboard-panel-title" *ngIf="values.displayChart">
+      {{values.chartName}}
       <div class="msf-dashboard-panel-config-button" id="msf-dashboard-panel-adv-table-buttons-{{values.id}}" [ngStyle]="{ 'left': getConfigButtonOffset() }">
         <ng-container *ngIf="values.displayButtons">
           <button *ngIf="!globals.readOnlyDashboard" mat-icon-button (click)="goToChartConfiguration()" color="primary" class="msf-dashboard-panel-margin-button" matTooltip="Edit Configuration">
@@ -1291,6 +1313,8 @@
           </div>
         </ng-container>
       </div>
+    </div>
+    <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-child-panel-table msf-dashboard-panel-table msf-adv-chart-table" [style.height.px]="panelHeightOffset - 20" [style.width.%]="100" [style.margin-top.px]="5">
         <div class="results-container">
           <table class="mat-elevation-z8 datasource results" style="border-collapse: separate; border-spacing: 0">
