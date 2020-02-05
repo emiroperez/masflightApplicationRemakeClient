@@ -7085,19 +7085,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.changeDetectorRef.detectChanges ();
   }
 
-  calcAnchorHeight(): number
-  {
-    if (!this.values.displayChart && !this.values.displayDynTable && !this.values.displayInfo
-      && !this.values.displayMapbox && !this.values.displayPic && !this.values.displayTable
-      && !this.values.displayForm)
-      return 0;
-
-    if (this.anchoredArguments.length)
-      return (this.anchoredArguments.length * 40) - 10;
-
-    return 0;
-  }
-
   setArgumentLoading(argument, value): void
   {
     argument.isLoading = value;

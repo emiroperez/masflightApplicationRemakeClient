@@ -1,4 +1,4 @@
-<div [style.height.px]="panelHeight + calcAnchorHeight()">
+<div [style.min-height.px]="panelHeight">
   <div class="msf-dashboard-panel-container" [style.height.px]="panelHeightOffset" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !values.displayDynTable && globals.readOnlyDashboard">
     <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-picture-container">
       <div class="msf-dashboard-panel-picture-label-container">
@@ -896,7 +896,7 @@
     </ng-container>
   </div>
   <!-- ngIf doesn't work with AmCharts -->
-  <div class="{{values.displayChart && !advTableView ? 'msf-dashboard-panel-container-chart' : 'msf-dashboard-panel-container-invisible'}}" [style.height.px]="panelHeightOffset + calcAnchorHeight()">
+  <div class="{{values.displayChart && !advTableView ? 'msf-dashboard-panel-container-chart' : 'msf-dashboard-panel-container-invisible'}}" [style.min-height.px]="panelHeightOffset">
     <div class="msf-dashboard-panel-title" *ngIf="values.displayChart">
       {{values.chartName}}
       <div class="msf-dashboard-panel-config-button" id="msf-dashboard-panel-chart-buttons-{{values.id}}" [ngStyle]="{ 'left': getConfigButtonOffset() }">
