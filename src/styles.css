@@ -3060,6 +3060,16 @@
   background-color: #333333;
   color: #ffffff !important;
 }
+.dark-theme .msf-paginator-table .mat-paginator-icon {
+  color: #ffffff !important;
+}
+.dark-theme .msf-paginator-tableDashboard {
+  background-color: #222222;
+  color: #ffffff !important;
+}
+.dark-theme .msf-paginator-tableDashboard .mat-paginator-icon {
+  color: #ffffff !important;
+}
 
 .light-theme {
   color: #4d4d4d;
@@ -6105,6 +6115,16 @@
 }
 .light-theme .msf-paginator-table {
   background-color: #ffffff;
+  color: #4d4d4d !important;
+}
+.light-theme .msf-paginator-table .mat-paginator-icon {
+  color: #4d4d4d !important;
+}
+.light-theme .msf-paginator-tableDashboard {
+  background-color: #ffffff;
+  color: #4d4d4d !important;
+}
+.light-theme .msf-paginator-tableDashboard .mat-paginator-icon {
   color: #4d4d4d !important;
 }
 
@@ -15853,6 +15873,14 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
   object-fit: contain;
   width: 100%;
   height: 100%;
+}
+
+.msf-paginator-tableDashboard {
+  height: 35px;
+  border-radius: 10px;
+}
+.msf-paginator-tableDashboard .mat-paginator-container {
+  min-height: 20px !important;
 }
 
 /*# sourceMappingURL=styles.css.map */

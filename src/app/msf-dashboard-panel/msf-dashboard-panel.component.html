@@ -1145,13 +1145,20 @@
       </div>
       <div class="msf-dashboard-table-container">
         <div class="msf-dashboard-child-panel-table msf-dashboard-panel-table" [style.height.px]="calcPanelHeight() - 24">
-          <app-msf-table #msfTableRef [isLoading]="values.isLoading" (finishLoading)="finishLoadingTable($event)" [categoryArguments]="values.currentOptionCategories" [currentOption]="values.currentOption" [isPanel]="true" [thresholds]="values.thresholds"></app-msf-table>
+          <app-msf-table #msfTableRef [isLoading]="values.isLoading" 
+          (finishLoading)="finishLoadingTable($event)" [categoryArguments]="values.currentOptionCategories"
+           [currentOption]="values.currentOption" [isPanel]="true" [thresholds]="values.thresholds"
+           [paginator]="paginator" [pageIndex]="pageIndex" 
+           (paginatorlength)=paginatorlength($event)></app-msf-table>
         </div>
-        <div [ngClass]="moreResultsBtn ? 'msf-menu-more-button' : 'msf-menu-more-button disabled-more-button'"
+        <mat-paginator #paginator [pageIndex]="pageI" [pageSize]="pageSize" [length]="lengthpag" hidePageSize
+            (page)="pageEvent = getServerData($event)" showFirstLastButtons
+            [ngClass]=" globals.showPaginator && !values.isLoading ? 'msf-paginator-tableDashboard' : 'msf-hide'"></mat-paginator>
+        <!-- <div [ngClass]="moreResultsBtn ? 'msf-menu-more-button' : 'msf-menu-more-button disabled-more-button'"
             (click)="moreTableResults()" *ngIf="msfTableRef && msfTableRef.dataSource">
           <img style="width: 16px; height: 16px;" src="../../assets/images/{{globals.theme}}-more.png" class="msf-menu-image msf-vertical-middle msf-line">
           <div class="msf-vertical-middle msf-line" style="font-size: 13px">More Result</div>
-        </div>
+        </div> -->
         <div *ngIf="!haveTableDataSource()" [style.height.px]="35"></div>
       </div>
     </div>

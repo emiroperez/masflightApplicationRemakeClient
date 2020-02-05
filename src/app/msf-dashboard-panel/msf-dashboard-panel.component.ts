@@ -19,7 +19,7 @@ import { Globals } from '../globals/Globals';
 import { Themes } from '../globals/Themes';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { ReplaySubject, Subject } from 'rxjs';
-import { MatSelect, MatDialog } from '@angular/material';
+import { MatSelect, MatDialog, PageEvent, MatPaginator } from '@angular/material';
 import { takeUntil } from 'rxjs/operators';
 import * as moment from 'moment';
 
@@ -284,6 +284,18 @@ export class MsfDashboardPanelComponent implements OnInit {
   sumSeriesList: any[] = [];
   advTableView: boolean = false;
   intervalTableRows: any[] = [];
+  
+  //paginator
+  @ViewChild('paginator')
+  paginator: MatPaginator;
+
+  pageIndex: any;
+
+  pageEvent: PageEvent;
+
+  lengthpag: any;
+  pageI: any;
+  pageSize: any;
 
   constructor(private zone: NgZone, public globals: Globals,
     private service: ApplicationService, private http: ApiClient, private authService: AuthService, public dialog: MatDialog,
@@ -2725,16 +2737,22 @@ export class MsfDashboardPanelComponent implements OnInit {
   
     if (moreResults)
     {
-      this.actualPageNumber++;
+      // this.actualPageNumber++;
+      this.actualPageNumber = this.pageIndex.pageIndex;
       this.moreResults = true;
     }
-    else
+    else{
       this.actualPageNumber = 0;
+      this.authService.removeTokenResultTable();
+    }
 
     if (!this.actualPageNumber)
       this.msfTableRef.dataSource = null;
 
     this.values.isLoading = true;
+    this.msfTableRef.actualPageNumber = this.actualPageNumber;
+    let tokenResultTable = this.authService.getTokenResultTable() ? this.authService.getTokenResultTable() : "";
+    
     if (this.globals.currentApplication.name === "DataLake")
     {
       if (this.getParameters ())
@@ -2745,7 +2763,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     else
       urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
 
-    urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=100&page_number=" + this.actualPageNumber;
+    urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=50&page_number=" + this.actualPageNumber+"&token="+tokenResultTable;
     urlArg = encodeURIComponent (urlBase);
 
     if (isDevMode ())
@@ -7044,5 +7062,21 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
 
     return "inherit";
+  }
+
+  public getServerData(event?:PageEvent){
+    if(!this.globals.isLoading){
+      this.pageIndex = event;
+      this.moreResultsBtn = true;
+      // this.pageIndex = event.pageIndex;
+      this.moreTableResults();
+      return event;
+    }
+  }
+
+  paginatorlength(event: any) {
+    this.lengthpag = event.length;
+    this.pageI = event.pageIndex;
+    this.pageSize = event.pageSize;
   }
 }

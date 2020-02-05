@@ -503,8 +503,7 @@ export class MsfTableComponent implements OnInit {
       if(response!=null){
         if(response.total!=null){
           _this.tableOptions.totalRecord = response.total;
-          //add paginator si es la primera pagina al buscar guardo el token en el localstored
-          if (response.tokenResultTable != null && _this.actualPageNumber===0){
+          if (response.tokenResultTable != null){
               _this.authService.setTokenResultTable (response.tokenResultTable);
           }
           //
@@ -946,9 +945,11 @@ export class MsfTableComponent implements OnInit {
   noResults(){
     if(this.tableOptions){
       if(!this.tableOptions.dataSource && !this.tableOptions.template){
+        this.globals.showPaginator = false;
         return "msf-show";
       }
     }
+    this.globals.showPaginator = true;
     return "msf-hide";
   }
 
