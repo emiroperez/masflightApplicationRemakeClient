@@ -127,8 +127,6 @@ export class MsfContainerComponent implements OnInit {
     && event.tab.textLabel != "Dynamic Table" && event.tab.textLabel != "Chart" && event.tab.textLabel != "Map"){
       if(this.globals.moreResultsBtn){
         this.globals.showPaginator = true;
-      }else{
-        this.globals.showPaginator = false;
       }
     }else{
       this.globals.showPaginator = false;

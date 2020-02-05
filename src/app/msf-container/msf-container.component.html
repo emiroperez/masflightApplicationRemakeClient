@@ -9,8 +9,8 @@
         <mat-tab *ngIf="globals.showWelcome" label="Welcome" style="height: 100%;">
             <app-option-welcome></app-option-welcome> 
         </mat-tab>        
-        <mat-tab *ngIf="globals.query" label="Current Query General Summary" >
-            <ng-template mat-tab-label >
+        <mat-tab *ngIf="globals.query">
+            <ng-template mat-tab-label>
                 Current Query General Summary
                 <mat-icon (click)="closeTab(1)" class="close-icon">close</mat-icon> 
             </ng-template>
@@ -28,7 +28,7 @@
                 (paginatorlength)=paginatorlength($event)></app-msf-table>
             </div>    
         </mat-tab>        
-        <mat-tab *ngIf="globals.generateDynamicTable" label="Dynamic Table" #msfDynamicTableTabRef>
+        <mat-tab *ngIf="globals.generateDynamicTable" #msfDynamicTableTabRef>
             <ng-template mat-tab-label>
                 Dynamic Table
                 <mat-icon (click)="closeTab(3)" class="close-icon">close</mat-icon> 

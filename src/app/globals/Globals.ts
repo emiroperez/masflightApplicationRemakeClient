@@ -291,7 +291,6 @@ clearVariablesMenu(){
     this.query = false;
     this.tab = false;
     this.hideParametersPanels = false;
-    this.showPaginator = false;
   }
 
   getTime(){
