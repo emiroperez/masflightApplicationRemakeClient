@@ -536,6 +536,7 @@ export class MsfTableComponent implements OnInit {
         mainElement = [mainElement];
       }
       if( _this.tableOptions.totalRecord > 0){
+        _this.globals.showPaginator = true;
         if(_this.currentOption.metaData==1 || _this.currentOption.metaData==3 || _this.currentOption.tabType=='scmap'){  
           _this.tableOptions.displayedColumns = data.metadata;
           let dataResult = new MatTableDataSource(mainElement);
@@ -543,7 +544,7 @@ export class MsfTableComponent implements OnInit {
             let paginatorlength = {
               length: data.Response.Rows ,
               pageIndex: 0,
-              pageSize: 50
+              pageSize: 100
             }
             _this.paginatorlength.emit(paginatorlength);
             _this.paginator.firstPage();
@@ -571,7 +572,7 @@ export class MsfTableComponent implements OnInit {
           _this.dataSource.data = _this.parseResults (_this.dataSource.data, _this.tableOptions.displayedColumns, _this.currentOption);
 
           if(_this.currentOption.tabType === "legacy" || _this.currentOption.tabType === "scmap"){
-            if( _this.tableOptions.totalRecord < 50 || _this.tableOptions.totalRecord > 50){
+            if( _this.tableOptions.totalRecord < 100 || _this.tableOptions.totalRecord > 100){
               _this.tableOptions.moreResultsBtn = false;
               _this.tableOptions.moreResults = false;
             }else{
@@ -581,8 +582,8 @@ export class MsfTableComponent implements OnInit {
             if(_this.tableOptions.actualPageNumber==undefined)
               _this.tableOptions.actualPageNumber = _this.actualPageNumber;
             
-            var aux = (_this.tableOptions.actualPageNumber+1)*50;
-            aux = aux!=0 ? aux : 50;
+            var aux = (_this.tableOptions.actualPageNumber+1)*100;
+            aux = aux!=0 ? aux : 100;
             if( _this.tableOptions.totalRecord<aux){
               _this.tableOptions.moreResultsBtn = false;
               _this.tableOptions.moreResults = false;
@@ -614,9 +615,13 @@ export class MsfTableComponent implements OnInit {
         // _this.globals.tab =false;
       }
       }else{
+        _this.globals.showPaginator = false;
         if( _this.tableOptions.moreResults){
           _this.tableOptions.moreResultsBtn = false;
             _this.tableOptions.moreResults = false;
+        }
+        if(_this.globals.moreResultsBtn){
+          _this.globals.moreResultsBtn = false;
         }
       }  
       if(_this.dataSource){
@@ -945,11 +950,9 @@ export class MsfTableComponent implements OnInit {
   noResults(){
     if(this.tableOptions){
       if(!this.tableOptions.dataSource && !this.tableOptions.template){
-        this.globals.showPaginator = false;
         return "msf-show";
       }
     }
-    this.globals.showPaginator = true;
     return "msf-hide";
   }
 
