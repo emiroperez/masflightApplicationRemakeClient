@@ -1638,7 +1638,7 @@ export class MsfDashboardPanelComponent implements OnInit {
             }
           }
 
-          if (this.values.ordered)
+          if (this.values.ordered && !(this.values.currentChartType.flags & ChartFlags.ADVANCED))
           {
             // Sort chart series from least to greatest by calculating the
             // total value of each key item to compensate for the lack of proper
@@ -1788,7 +1788,7 @@ export class MsfDashboardPanelComponent implements OnInit {
               }
             }
 
-            if (this.values.ordered)
+            if (this.values.ordered && !(this.values.currentChartType.flags & ChartFlags.ADVANCED))
             {
               if (this.values.valueList && this.values.valueList.length > 1)
               {

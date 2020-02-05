@@ -524,7 +524,7 @@ export class MsfChartPreviewComponent {
             }
           }
 
-          if (this.data.ordered)
+          if (this.data.ordered && this.data.chartMode !== "advanced")
           {
             // Sort chart series from least to greatest by calculating the
             // total value of each key item to compensate for the lack of proper
@@ -610,7 +610,7 @@ export class MsfChartPreviewComponent {
             else
               valueAxis.title.text = this.data.valueColumn.columnLabel;
 
-            if (this.data.ordered)
+            if (this.data.ordered && this.data.chartMode !== "advanced")
             {
               if (parseDate)
               {
