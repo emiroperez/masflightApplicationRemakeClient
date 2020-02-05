@@ -2124,6 +2124,8 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
         .msf-membership-card
             background-color: $query-engine-result-header-color
         .msf-dashboard-panel-margin-button
+            .anchor-icon
+                background-image: url(assets/images/#{$name}-anchor-icon.png)
             .mat-icon
                 color: $font-color !important
         .msf-dashboard-panel-margin-button:hover
@@ -4112,6 +4114,12 @@ mat-tab-group
     @include msf-dashboard-panel-config-button
     .msf-dashboard-panel-margin-button
         margin-right: 7px
+    .anchor-icon
+        background-repeat: no-repeat
+        background-size: 100%
+        margin-left: 10px
+        width: 20px
+        height: 20px
     .mat-icon
         font-size: 20px
 

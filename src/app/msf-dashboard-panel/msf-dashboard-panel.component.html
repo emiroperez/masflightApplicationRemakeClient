@@ -916,6 +916,9 @@
           <button *ngIf="isAdvChartPanel()" mat-icon-button color="primary" class="msf-dashboard-panel-margin-button" (click)="toggleIntervalTable()" matTooltip="Table View">
             <mat-icon aria-label="Table View">table_chart</mat-icon>
           </button>
+          <button *ngIf="!globals.readOnlyDashboard && this.anchoredArguments.length" mat-icon-button color="primary" class="msf-dashboard-panel-margin-button" (click)="toggleAnchoredArguments()" matTooltip="Toggle Anchored Arguments">
+            <div class="anchor-icon"></div>
+          </button>
         </ng-container>
         <ng-container *ngIf="!values.displayButtons">
           <button *ngIf="!panelButtons" (click)="removePanel.emit()" mat-icon-button color="primary" class="msf-dashboard-panel-margin-button msf-dashboard-panel-more-buttons" (mouseenter)="panelButtons = true" [ngStyle]="{ 'left': getConfigMoreButtonOffset() }">
@@ -944,17 +947,19 @@
         </ng-container>
       </div>
     </div>
-    <div class="msf-dashboard-panel-anchored-argument" *ngFor="let anchoredArgument of anchoredArguments; let first = first" [ngClass]="{ 'anchored-variables-first-item': first }">
-      <div class="anchored-argument-left-side">
-        <app-msf-argument [currentArgument]="anchoredArgument" [currentGlobalOptionId]="values.currentOption.id" [anchoredArgument]="true" (setLoading)="setArgumentLoading(anchoredArgument, $event)"></app-msf-argument>
+    <ng-container *ngIf="displayAnchoredArguments">
+      <div class="msf-dashboard-panel-anchored-argument" *ngFor="let anchoredArgument of anchoredArguments; let first = first" [ngClass]="{ 'anchored-variables-first-item': first }">
+        <div class="anchored-argument-left-side">
+          <app-msf-argument [currentArgument]="anchoredArgument" [currentGlobalOptionId]="values.currentOption.id" [anchoredArgument]="true" (setLoading)="setArgumentLoading(anchoredArgument, $event)"></app-msf-argument>
+        </div>
+        <div class="anchored-argument-button">
+          <button mat-icon-button class="msf-anchor-button-pressed" matTooltip="Removed Anchored Argument"
+            (click)="removedAnchoredArgument(anchoredArgument)">
+            <div class="anchor-icon"></div>
+          </button>
+        </div>
       </div>
-      <div class="anchored-argument-button">
-        <button mat-icon-button class="msf-anchor-button-pressed" matTooltip="Removed Anchored Argument"
-          (click)="removedAnchoredArgument(anchoredArgument)">
-          <div class="anchor-icon"></div>
-        </button>
-      </div>
-    </div>
+    </ng-container>
     <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-chart-display-container-{{values.id}}">
       <div class="msf-dashboard-map-routelist" *ngIf="isMapPanel() && values.flightRoutes != null">
         <div class="msf-dashboard-map-routelist-container" [style.height.px]="calcRouteListHeight()">

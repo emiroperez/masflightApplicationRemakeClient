@@ -286,6 +286,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   intervalTableRows: any[] = [];
 
   anchoredArguments: any[] = [];
+  displayAnchoredArguments: boolean = false;
 
   constructor(private zone: NgZone, public globals: Globals,
     private service: ApplicationService, private http: ApiClient, private authService: AuthService, public dialog: MatDialog,
@@ -6924,7 +6925,12 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
 
     if (this.numPanelsInColumn <= 1)
+    {
+      if (this.anchoredArguments.length)
+        return "calc(100% - 217px)";
+
       return "calc(100% - 170px)";
+    }
 
     return "calc(100% - 219px)";
   }
@@ -7094,5 +7100,10 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     anchoredArgument.anchored = false;
     this.anchoredArguments.splice (this.anchoredArguments.indexOf (anchoredArgument), 1);
+  }
+
+  toggleAnchoredArguments(): void
+  {
+    this.displayAnchoredArguments = !this.displayAnchoredArguments;
   }
 }
