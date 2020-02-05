@@ -536,6 +536,7 @@ export class MsfTableComponent implements OnInit {
         mainElement = [mainElement];
       }
       if( _this.tableOptions.totalRecord > 0){
+        _this.globals.showPaginator = true;
         if(_this.currentOption.metaData==1 || _this.currentOption.metaData==3 || _this.currentOption.tabType=='scmap'){  
           _this.tableOptions.displayedColumns = data.metadata;
           let dataResult = new MatTableDataSource(mainElement);
@@ -614,9 +615,13 @@ export class MsfTableComponent implements OnInit {
         // _this.globals.tab =false;
       }
       }else{
+        _this.globals.showPaginator = false;
         if( _this.tableOptions.moreResults){
           _this.tableOptions.moreResultsBtn = false;
             _this.tableOptions.moreResults = false;
+        }
+        if(_this.globals.moreResultsBtn){
+          _this.globals.moreResultsBtn = false;
         }
       }  
       if(_this.dataSource){
@@ -945,11 +950,9 @@ export class MsfTableComponent implements OnInit {
   noResults(){
     if(this.tableOptions){
       if(!this.tableOptions.dataSource && !this.tableOptions.template){
-        this.globals.showPaginator = false;
         return "msf-show";
       }
     }
-    this.globals.showPaginator = true;
     return "msf-hide";
   }
 
