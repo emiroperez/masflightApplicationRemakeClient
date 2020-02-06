@@ -16,6 +16,9 @@ export class MsfSelectBoxMultipleOptionComponent implements OnInit {
   data: Observable<any[]>;
   @Input("argument") public argument: Arguments;
 
+  @Input("isDashboardPanel")
+  isDashboardPanel: boolean = false;
+
   loading = false;
   constructor(private http: ApiClient, public globals: Globals) { }
 

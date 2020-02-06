@@ -11,6 +11,9 @@ import { Globals } from '../globals/Globals';
 export class MsfFilterAirlineTypeComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
+
+  @Input("isDashboardPanel")
+  isDashboardPanel: boolean = false;
  
   data: any[] = [
                 {id: 'RpCarrier', name: 'Reporting Carrier'},

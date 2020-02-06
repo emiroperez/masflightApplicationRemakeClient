@@ -7,10 +7,12 @@ import { Arguments } from '../model/Arguments';
   styleUrls: ['./msf-fare-increments-market-histograms.component.css']
 })
 export class MsfFareIncrementsMarketHistogramsComponent implements OnInit {
-
  
   @Input("argument") public argument: Arguments;
- 
+
+  @Input("isDashboardPanel")
+  isDashboardPanel: boolean = false;
+
   increments: any[] = [
                 {id: '1', name: '$1'},
                 {id: '5', name: '$5'},

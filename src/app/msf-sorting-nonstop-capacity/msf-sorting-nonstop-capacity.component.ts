@@ -9,6 +9,9 @@ import { Arguments } from '../model/Arguments';
 export class MsfSortingNonstopCapacityComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
+
+  @Input("isDashboardPanel")
+  isDashboardPanel: boolean = false;
  
   data: any[] = [
                 {id: 'DEPARTURETIME', name: 'Departure Time', column:'Departure Time'},

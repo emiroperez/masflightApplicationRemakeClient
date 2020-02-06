@@ -9,6 +9,9 @@ import { Arguments } from '../model/Arguments';
 export class MsfGroupingOpComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
+
+  @Input("isDashboardPanel")
+  isDashboardPanel: boolean = false;
  
   groupingList: any[] = [
                       {id: 'YEAR', columnLabel: 'Year', columnName:'year'},

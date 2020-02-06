@@ -1,5 +1,11 @@
-<div class="center" *ngIf="argument.title">
-    <div class="msf-component-airport-title">{{argument.title}}</div>
+<div class="center" *ngIf="argument.title || isDashboardPanel">
+    <div class="msf-component-airport-title">
+        {{argument.title}}
+        <button mat-icon-button *ngIf="isDashboardPanel" [ngClass]="{ 'msf-anchor-button': !argument.anchored, 'msf-anchor-button-pressed': argument.anchored }"
+            matTooltip="Anchor Argument Into Panel" (click)="argument.anchored = !argument.anchored">
+            <div class="anchor-icon"></div>
+        </button>
+    </div>
 </div>
 <div class="msf-airline-container">
     <div class="msf-full-width">
@@ -13,6 +19,40 @@
             bindLabel="name"
             bindName="id"
             [(ngModel)]="argument.value1"
+            appendTo=".msf-control-variables-overlay"
+            dropdownPosition="bottom">
+        </ng-select>
+    </div>
+</div>
+<div class="msf-airline-container">
+    <div class="msf-full-width">   
+    <div class="msf-component-airport-sub-title">{{argument.label2}}</div>         
+    <ng-select
+        [items]="increments"
+        [multiple]="false"
+        loadingText="Loading..."
+        [closeOnSelect]="true"
+        [hideSelected]="false"
+        bindLabel="name"
+        bindName="id"
+        [(ngModel)]="argument.value2"
+        appendTo=".msf-control-variables-overlay"
+        dropdownPosition="bottom">
+    </ng-select>          
+    </div>
+</div>
+<div class="msf-airline-container">
+    <div class="msf-full-width">
+        <div class="msf-component-airport-sub-title">{{argument.label3}}</div>
+        <ng-select
+            [items]="increments"
+            [multiple]="false"
+            loadingText="Loading..."
+            [closeOnSelect]="true"
+            [hideSelected]="false"
+            bindLabel="name"
+            bindName="id"
+            [(ngModel)]="argument.value3"
             appendTo=".msf-control-variables-overlay"
             dropdownPosition="bottom">
         </ng-select>

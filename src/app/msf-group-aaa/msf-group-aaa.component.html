@@ -1,5 +1,11 @@
-<div class="center" *ngIf="argument.title">
-  <div class="msf-component-airport-title">{{argument.title}}</div>
+<div class="center" *ngIf="argument.title || isDashboardPanel">
+  <div class="msf-component-airport-title">
+    {{argument.title}}
+    <button mat-icon-button *ngIf="isDashboardPanel" [ngClass]="{ 'msf-anchor-button': !argument.anchored, 'msf-anchor-button-pressed': argument.anchored }"
+      matTooltip="Anchor Argument Into Panel" (click)="argument.anchored = !argument.anchored">
+      <div class="anchor-icon"></div>
+    </button>
+  </div>
 </div>
 <div class="msf-component-no-argument-title-input-container">
   <div class="msf-component-airport-sub-title">{{argument.label1}}</div>

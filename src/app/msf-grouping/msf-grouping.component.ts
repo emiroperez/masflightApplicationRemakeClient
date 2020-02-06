@@ -15,6 +15,9 @@ import { Globals } from '../globals/Globals';
 export class MsfGroupingComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
+
+  @Input("isDashboardPanel")
+  isDashboardPanel: boolean = false;
  
   groupingList: any[] = [
                 {id: 'YEAR', columnLabel: 'Year', columnName:'Year'},

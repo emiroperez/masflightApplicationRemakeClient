@@ -9,6 +9,9 @@ import { Arguments } from '../model/Arguments';
 export class MsfGroupingMariadbComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
+
+  @Input("isDashboardPanel")
+  isDashboardPanel: boolean = false;
   
   groupingList: any[] = [
     {id: 'seat', columnLabel: 'Seat Number', columnName:'seat'},

@@ -10,7 +10,10 @@ export class MsfContentTypeComponent implements OnInit {
 
 
   @Input("argument") public argument: Arguments;
-  
+
+  @Input("isDashboardPanel")
+  isDashboardPanel: boolean = false;
+
   data =  [
     {"id":1,
     "name":"TV",

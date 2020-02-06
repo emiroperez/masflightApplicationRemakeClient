@@ -13,6 +13,12 @@ import { AuthService } from '../services/auth.service';
 export class MsfAirlineComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
+
+  @Input("isDashboardPanel")
+  isDashboardPanel: boolean = false;
+
+  @Input("anchoredArgument")
+  anchoredArgument: boolean = false;
   
   data: Observable<any[]>;
   multiAirlines: boolean = false;

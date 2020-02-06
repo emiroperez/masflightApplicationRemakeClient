@@ -17,6 +17,9 @@ export class MsfGroupAaaComponent implements OnInit {
   data: Observable<any[]>;
   @Input("argument") public argument: Arguments;
 
+  @Input("isDashboardPanel")
+  isDashboardPanel: boolean = false;
+
   loading = false;
   constructor(private authService: AuthService, public globals: Globals) { }
 

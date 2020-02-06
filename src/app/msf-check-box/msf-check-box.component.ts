@@ -13,7 +13,10 @@ import { delay } from 'rxjs/operators';
 export class MsfCheckBoxComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
-  
+
+  @Input("isDashboardPanel")
+  isDashboardPanel: boolean = false;
+
   data: Observable<any[]>;
 
   selected: any[] = [];

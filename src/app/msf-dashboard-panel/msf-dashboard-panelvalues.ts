@@ -105,8 +105,6 @@ export class MsfDashboardPanelValues {
     limitMode: number;
     limitAmount: number;
 
-    displayButtons: boolean;
-
     minValueRange: number;
     maxValueRange: number;
 

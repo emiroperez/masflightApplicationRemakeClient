@@ -1,8 +1,12 @@
 <div class="center">
-    <div class="msf-component-airport-title msf-component-checkbox-title">
+    <div class="msf-component-airport-title msf-component-checkbox-title msf-component-taxi-checkboxes-container">
         <mat-checkbox class="msf-component-airport-title" [value]="all" [(ngModel)]="all.checked" (change)="checkBoxAllChange()" >
             Select/De-Select All
         </mat-checkbox>
+        <button mat-icon-button *ngIf="isDashboardPanel" [ngClass]="{ 'msf-anchor-button': !argument.anchored, 'msf-anchor-button-pressed': argument.anchored }"
+            matTooltip="Anchor Argument Into Panel" (click)="argument.anchored = !argument.anchored">
+            <div class="anchor-icon"></div>
+        </button>
     </div>
 </div>
 <div class="msf-component-airport-input-container checkbox-container">

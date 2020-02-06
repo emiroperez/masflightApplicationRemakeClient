@@ -13,6 +13,9 @@ import { delay } from 'rxjs/operators';
 export class MsfAirportsRoutesComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
+
+  @Input("isDashboardPanel")
+  isDashboardPanel: boolean = false;
   
   loading = false;
   name:any;

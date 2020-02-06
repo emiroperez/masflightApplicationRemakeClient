@@ -16,6 +16,9 @@ import { Globals } from '../globals/Globals';
 export class MsfOptionListComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
+
+  @Input("isDashboardPanel")
+  isDashboardPanel: boolean = false;
   
   /** control for the selected option */
   public optionsCtrl: FormControl = new FormControl();

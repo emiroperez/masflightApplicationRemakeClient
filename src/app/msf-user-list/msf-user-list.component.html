@@ -1,6 +1,12 @@
 <div>
   <div class="center">
-      <div class="msf-component-airport-title">Select an User</div>        
+      <div class="msf-component-airport-title">
+          Select an User
+          <button mat-icon-button *ngIf="isDashboardPanel" [ngClass]="{ 'msf-anchor-button': !argument.anchored, 'msf-anchor-button-pressed': argument.anchored }"
+              matTooltip="Anchor Argument Into Panel" (click)="argument.anchored = !argument.anchored">
+              <div class="anchor-icon"></div>
+          </button>
+      </div>
   </div> 
   <div class="msf-airline-container">
       <img src="../../assets/images/components/arguments/usageStatistics/{{globals.theme}}-searchuser.png" class="msf-user-image">

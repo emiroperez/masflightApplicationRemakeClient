@@ -1,5 +1,11 @@
 <div class="center">
-    <div class="msf-component-airport-title">Time Range</div>
+    <div class="msf-component-airport-title">
+        Time Range
+        <button mat-icon-button *ngIf="isDashboardPanel" [ngClass]="{ 'msf-anchor-button': !argument.anchored, 'msf-anchor-button-pressed': argument.anchored }"
+            matTooltip="Anchor Argument Into Panel" (click)="argument.anchored = !argument.anchored">
+            <div class="anchor-icon"></div>
+        </button>
+    </div>
     <div class="msf-menu-arg-date-image"></div>
 </div>
 <div class="msf-component-airport-input-container">

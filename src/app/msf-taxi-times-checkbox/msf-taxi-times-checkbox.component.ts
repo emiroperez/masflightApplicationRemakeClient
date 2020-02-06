@@ -9,7 +9,10 @@ import { Arguments } from '../model/Arguments';
 export class MsfTaxiTimesCheckboxComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
-  
+
+  @Input("isDashboardPanel")
+  isDashboardPanel: boolean = false;
+
   checkbox ={
     name:"Multiple Gate Departures",
     value:"Multiple Gate Departures",
