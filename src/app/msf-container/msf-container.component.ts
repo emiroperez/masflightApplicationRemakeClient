@@ -52,6 +52,7 @@ export class MsfContainerComponent implements OnInit {
 
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;							   
+  showMoreResult: boolean;
   constructor(public globals: Globals, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) { 
     
     this.mobileQuery = media.matchMedia('(max-width: 480px)');
@@ -109,7 +110,7 @@ export class MsfContainerComponent implements OnInit {
       }else{
         this.globals.isLoading = false;
       }
-      this.moreResult.emit(this.globals.showMoreResult);
+      this.moreResult.emit(this.showMoreResult);
     }
   }
 
@@ -133,7 +134,7 @@ export class MsfContainerComponent implements OnInit {
       if(this.globals.moreResultsBtn){
         if(this.globals.currentOption.tabType != "legacy"){
           //si es de los nuevos
-          if(this.globals.showMoreResult){
+          if(this.showMoreResult){
             //si tiene total rows muestro el paginador
             this.globals.showPaginator = false;
             this.moreResult.emit(true);
@@ -146,17 +147,19 @@ export class MsfContainerComponent implements OnInit {
           this.moreResult.emit(true);
         }
       }else{
-        // si no tiene dato
-        this.globals.showPaginator = false;
-        if(this.globals.currentOption.tabType != "legacy"){
-          //si es de los viejos dejo que se muestre la palabra more result desactivada
-          if(this.globals.showMoreResult ){
+        // si no trae mas dato verifico que tenga algo en la tabla
+        if(this.msfTableRef && this.msfTableRef.dataSource && this.msfTableRef.dataSource.data.length > 0){
+          //si es de los nuevos
+          if(this.showMoreResult){
             this.moreResult.emit(true);
+            this.globals.showPaginator = false;
           }else{
             this.moreResult.emit(false);
+            this.globals.showPaginator = true;
           }
         }else{
-          this.moreResult.emit(true);
+          this.globals.showPaginator = false;
+          this.moreResult.emit(false);
         }
       }
     }else{
@@ -168,6 +171,10 @@ export class MsfContainerComponent implements OnInit {
 
   paginatorlength(event: any) {
     this.lengthpaginator.emit(event);
+  }
+
+  shmoreResult(event: any){
+    this.showMoreResult = event;
   }
   
 }
