@@ -2753,10 +2753,10 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.msfTableRef.dataSource = null;
 
     this.values.isLoading = true;
-    if(this.values.currentOption.tabType === "legacy"){
-      this.values.showPaginator = false;
-    }else{
+    if(this.values.currentOption.tabType != "legacy"){
       this.values.showPaginator = true;
+    }else{
+      this.values.showPaginator = false;
     }
 
     this.msfTableRef.actualPageNumber = this.actualPageNumber;

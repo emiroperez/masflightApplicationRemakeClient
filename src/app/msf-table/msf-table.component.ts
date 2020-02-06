@@ -626,7 +626,11 @@ export class MsfTableComponent implements OnInit {
       }
       }else{
         _this.globals.showPaginator = false;
-        _this.globals.showMoreResult = false;
+        if(response.Rows){
+          _this.globals.showMoreResult = false;
+        }else{
+          _this.globals.showMoreResult = true;
+        }
         if( _this.tableOptions.moreResults){
           _this.tableOptions.moreResultsBtn = false;
             _this.tableOptions.moreResults = false;

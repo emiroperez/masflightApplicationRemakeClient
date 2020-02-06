@@ -46,6 +46,10 @@ export class MsfContainerComponent implements OnInit {
   @Output('lengthpaginator')
   lengthpaginator = new EventEmitter ();
 
+  @Output('moreResult')
+  moreResult = new EventEmitter ();
+
+
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;							   
   constructor(public globals: Globals, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) { 
@@ -105,6 +109,7 @@ export class MsfContainerComponent implements OnInit {
       }else{
         this.globals.isLoading = false;
       }
+      this.moreResult.emit(this.globals.showMoreResult);
     }
   }
 
@@ -126,24 +131,37 @@ export class MsfContainerComponent implements OnInit {
     if(event.tab.textLabel != "Welcome" && event.tab.textLabel != "Current Query General Summary" 
     && event.tab.textLabel != "Dynamic Table" && event.tab.textLabel != "Chart" && event.tab.textLabel != "Map"){
       if(this.globals.moreResultsBtn){
-        if(this.globals.currentOption.tabType === "legacy"){
-          this.globals.showPaginator = false;
-          this.globals.showMoreResult = true;
+        if(this.globals.currentOption.tabType != "legacy"){
+          //si es de los nuevos
+          if(this.globals.showMoreResult){
+            //si tiene total rows muestro el paginador
+            this.globals.showPaginator = false;
+            this.moreResult.emit(true);
+          }else{
+            this.globals.showPaginator = true;
+            this.moreResult.emit(false);
+          }
         }else{
-          this.globals.showPaginator = true;
-          this.globals.showMoreResult = false;
+          this.globals.showPaginator = false;
+          this.moreResult.emit(true);
         }
       }else{
+        // si no tiene dato
         this.globals.showPaginator = false;
-        if(this.globals.currentOption.tabType === "legacy"){
-        this.globals.showMoreResult = true;
+        if(this.globals.currentOption.tabType != "legacy"){
+          //si es de los viejos dejo que se muestre la palabra more result desactivada
+          if(this.globals.showMoreResult ){
+            this.moreResult.emit(true);
+          }else{
+            this.moreResult.emit(false);
+          }
         }else{
-          this.globals.showMoreResult = false;
+          this.moreResult.emit(true);
         }
       }
     }else{
       this.globals.showPaginator = false;
-      this.globals.showMoreResult = false;
+      this.moreResult.emit(false);
     }
 
   }

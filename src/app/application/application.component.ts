@@ -77,8 +77,7 @@ export class ApplicationComponent implements OnInit {
   lengthpag: any;
   pageI: any;
   pageSize: any;
-
-  
+  showMoreResult: boolean;  
 
   constructor(public dialog: MatDialog, public globals: Globals, private menuService: MenuService,private router: Router,private excelService:ExcelService,
     private appService: ApplicationService, private authService: AuthService, private changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private authGuard: AuthGuard,
@@ -1307,5 +1306,9 @@ toggle(){
     this.lengthpag = event.length;
     this.pageI = event.pageIndex;
     this.pageSize = event.pageSize;
+  }
+
+  moreResult(event: any){
+    this.showMoreResult = event;
   }
 }
