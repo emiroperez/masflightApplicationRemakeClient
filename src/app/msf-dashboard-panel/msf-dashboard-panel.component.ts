@@ -2736,10 +2736,13 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.msfTableRef.displayedColumns = [];
   
     if (moreResults)
-    {
-      // this.actualPageNumber++;
-      this.actualPageNumber = this.pageIndex.pageIndex;
-      this.moreResults = true;
+    {      
+      if(this.pageIndex){
+        this.actualPageNumber = this.pageIndex.pageIndex;
+        this.moreResults = true;
+      }else{
+        this.actualPageNumber++;
+      }
     }
     else{
       this.actualPageNumber = 0;
@@ -2750,6 +2753,12 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.msfTableRef.dataSource = null;
 
     this.values.isLoading = true;
+    if(this.values.currentOption.tabType === "legacy"){
+      this.values.showPaginator = false;
+    }else{
+      this.values.showPaginator = true;
+    }
+
     this.msfTableRef.actualPageNumber = this.actualPageNumber;
     let tokenResultTable = this.authService.getTokenResultTable() ? this.authService.getTokenResultTable() : "";
     

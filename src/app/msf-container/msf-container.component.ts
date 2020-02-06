@@ -126,12 +126,24 @@ export class MsfContainerComponent implements OnInit {
     if(event.tab.textLabel != "Welcome" && event.tab.textLabel != "Current Query General Summary" 
     && event.tab.textLabel != "Dynamic Table" && event.tab.textLabel != "Chart" && event.tab.textLabel != "Map"){
       if(this.globals.moreResultsBtn){
-        this.globals.showPaginator = true;
+        if(this.globals.currentOption.tabType === "legacy"){
+          this.globals.showPaginator = false;
+          this.globals.showMoreResult = true;
+        }else{
+          this.globals.showPaginator = true;
+          this.globals.showMoreResult = false;
+        }
       }else{
         this.globals.showPaginator = false;
+        if(this.globals.currentOption.tabType === "legacy"){
+        this.globals.showMoreResult = true;
+        }else{
+          this.globals.showMoreResult = false;
+        }
       }
     }else{
       this.globals.showPaginator = false;
+      this.globals.showMoreResult = false;
     }
 
   }

@@ -275,8 +275,12 @@ export class MsfTableComponent implements OnInit {
       // } else if (this.pageIndex.pageIndex < this.actualPageNumber) {
       //   this.actualPageNumber--;
       // }
-      this.actualPageNumber = this.pageIndex.pageIndex;
-      this.tableOptions.moreResults = true;
+      if(this.pageIndex){
+        this.actualPageNumber = this.pageIndex.pageIndex;
+        this.tableOptions.moreResults = true;
+      }else{
+        this.actualPageNumber++;
+      }
     } else {
       this.actualPageNumber = 0;
       this.authService.removeTokenResultTable();
@@ -536,21 +540,27 @@ export class MsfTableComponent implements OnInit {
         mainElement = [mainElement];
       }
       if( _this.tableOptions.totalRecord > 0){
-        _this.globals.showPaginator = true;
         if(_this.currentOption.metaData==1 || _this.currentOption.metaData==3 || _this.currentOption.tabType=='scmap'){  
           _this.tableOptions.displayedColumns = data.metadata;
           let dataResult = new MatTableDataSource(mainElement);
-          if(_this.actualPageNumber===0){
-            let paginatorlength = {
-              length: data.Response.Rows ,
-              pageIndex: 0,
-              pageSize: 50
-            }
-            _this.paginatorlength.emit(paginatorlength);
-            _this.paginator.firstPage();
-          }
-          
+                  
+        if(response.Rows){
+          _this.globals.showPaginator = true;
+          _this.globals.showMoreResult = false;
+        }else{
+          _this.globals.showPaginator = false;
+          _this.globals.showMoreResult = true;
+        }
 
+        if(_this.actualPageNumber===0){
+          let paginatorlength = {
+            length: data.Response.Rows ,
+            pageIndex: 0,
+            pageSize: 50
+          }
+          _this.paginatorlength.emit(paginatorlength);
+          _this.paginator.firstPage();
+        }
             _this.tableOptions.displayedColumns  = _this.addGroupingColumns(_this.tableOptions.displayedColumns);
             _this.tableOptions.displayedColumns  = _this.deleteEmptyColumns(dataResult,_this.tableOptions.displayedColumns);
           _this.metadata = _this.tableOptions.displayedColumns;
@@ -616,6 +626,7 @@ export class MsfTableComponent implements OnInit {
       }
       }else{
         _this.globals.showPaginator = false;
+        _this.globals.showMoreResult = false;
         if( _this.tableOptions.moreResults){
           _this.tableOptions.moreResultsBtn = false;
             _this.tableOptions.moreResults = false;

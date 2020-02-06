@@ -110,6 +110,7 @@ export class Globals {
   // userName: string = "eric.haag.t@aspsols.com";
   userName: string = "";
   showPaginator = false;
+  showMoreResult: boolean;
 
   constructor (public overlayContainer: OverlayContainer, private cookie: Cookie)
   {

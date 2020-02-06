@@ -234,13 +234,13 @@
             <mat-paginator #paginator [pageIndex]="pageI" [pageSize]="pageSize" [length]="lengthpag" hidePageSize
             (page)="pageEvent = getServerData($event)" showFirstLastButtons
             [ngClass]="(globals.showPaginator && !globals.isLoading)  || (mobileQuery.matches && globals.showCategoryArguments) ? 'msf-paginator-table':'msf-hide'"></mat-paginator>
-             <!-- <div [ngClass]="globals.moreResultsBtn && !globals.isLoading? 'msf-menu-more-button' : 'msf-menu-more-button disabled-more-button'"
+             <div [ngClass]="globals.moreResultsBtn && !globals.isLoading ? 'msf-menu-more-button' : 'msf-menu-more-button disabled-more-button'"
                 (click)="moreResults()"
-                *ngIf="(globals.dataSource && !globals.mapsc && !mobileQuery.matches) || (mobileQuery.matches && globals.showCategoryArguments)">
+                *ngIf="(globals.dataSource && !globals.mapsc && !mobileQuery.matches && globals.showMoreResult) || (mobileQuery.matches && globals.showCategoryArguments)">
                 <img style="width: 16px;height: 16px;" src="../../assets/images/{{globals.theme}}-more.png"
                     class="msf-menu-image msf-vertical-middle msf-line">
                 <div class="msf-vertical-middle msf-line" style="font-size: 13px">More Result</div>
-            </div> -->
+            </div>
         </div>
     </div>
 </div>
