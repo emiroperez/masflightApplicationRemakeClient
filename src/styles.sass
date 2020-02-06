@@ -2128,17 +2128,6 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                 background-image: url(assets/images/dark-theme-anchor-icon.png)
             .mat-icon
                 color: $font-color !important
-        .msf-dashboard-panel-anchor-margin-button
-            border-color: $font-color !important
-        .msf-dashboard-panel-anchor-margin-button:hover
-            border-color: $primary-color !important
-            background-color: $primary-color
-            .mat-icon
-                color: $font-color !important
-        .msf-dashboard-panel-anchor-margin-check-button
-            border-color: $primary-color !important
-            .mat-icon
-                color: $primary-color !important
         .datalake-create-table-input-body .mat-form-field-disabled .mat-select-value
             color: $menu-disabled-font-color !important
         .datalake-create-table-input-body .mat-form-field-disabled .mat-form-field-label-wrapper .mat-form-field-label
@@ -4054,8 +4043,8 @@ mat-tab-group
             align-items: center
             .ng-select
                 margin-bottom: 0 !important
-                margin-left: 5px
-                margin-right: 5px
+                margin-left: 10px
+                margin-right: 10px
         .msf-component-date-input-container
             display: flex
             margin-top: 0 !important
@@ -4076,6 +4065,8 @@ mat-tab-group
             .anchor-date-label
                 display: flex
                 align-items: center
+                margin-right: 10px
+            .msf-full-width
                 margin-right: 5px
             .msf-component-airport-title
                 background-color: inherit !important
@@ -4126,17 +4117,12 @@ mat-tab-group
     .msf-dashboard-panel-margin-button
         margin-bottom: 7px
     .msf-dashboard-panel-anchor-margin-button
-        border: 1px solid
-        border-radius: 5px
         margin-bottom: 5px
-        margin-left: 5px
-        margin-right: 12px
+        margin-right: 5px
         width: 30px
         height: 30px
         .mat-icon
             margin-top: -12px
-    .msf-dashboard-panel-anchor-margin-button-popup
-        margin-top: 5px
     .anchor-icon
         background-repeat: no-repeat
         background-size: 100%

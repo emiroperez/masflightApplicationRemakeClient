@@ -903,7 +903,7 @@
     <ng-container *ngIf="displayAnchoredArguments">
       <div class="msf-dashboard-panel-anchored-argument" *ngFor="let anchoredArgument of anchoredArguments; let first = first" [ngClass]="{ 'anchored-variables-first-item': first }">
         <div class="anchored-argument-left-side">
-          <app-msf-argument [currentArgument]="anchoredArgument" [currentGlobalOptionId]="values.currentOption.id" [anchoredArgument]="true" (setLoading)="setArgumentLoading(anchoredArgument, $event)"></app-msf-argument>
+          <app-msf-argument [currentArgument]="anchoredArgument.argument" [currentGlobalOptionId]="values.currentOption.id" [anchoredArgument]="true" (setLoading)="setArgumentLoading(anchoredArgument, $event)"></app-msf-argument>
         </div>
         <div class="anchored-argument-button">
           <button mat-icon-button class="msf-anchor-button-pressed" matTooltip="Removed Anchored Argument"
@@ -954,10 +954,10 @@
         <button *ngIf="!globals.readOnlyDashboard && anchoredArguments.length" mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button" (click)="toggleAnchoredArguments()" matTooltip="Toggle Anchored Arguments">
           <div class="anchor-icon"></div>
         </button>
-        <button *ngIf="!globals.readOnlyDashboard && displayAnchoredArguments" mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button msf-dashboard-panel-anchor-margin-button" (click)="toggleIntervalTable()" matTooltip="Revert Changes">
+        <button *ngIf="!globals.readOnlyDashboard && displayAnchoredArguments" mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button msf-dashboard-panel-anchor-margin-button" (click)="revertAnchoredChanges()" matTooltip="Revert Changes">
           <mat-icon aria-label="Revert Changes">close</mat-icon>
         </button>
-        <button *ngIf="!globals.readOnlyDashboard && displayAnchoredArguments" mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button msf-dashboard-panel-anchor-margin-button msf-dashboard-panel-anchor-margin-check-button" (click)="toggleIntervalTable()" matTooltip="Apply Changes">
+        <button *ngIf="!globals.readOnlyDashboard && displayAnchoredArguments" mat-mini-fab color="primary" class="msf-dashboard-panel-margin-button msf-dashboard-panel-anchor-margin-button" (click)="saveAnchoredChanges()" matTooltip="Apply Changes">
           <mat-icon aria-label="Apply Changes">check</mat-icon>
         </button>
       </div>

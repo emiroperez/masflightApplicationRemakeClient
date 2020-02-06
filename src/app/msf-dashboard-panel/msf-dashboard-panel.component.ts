@@ -282,6 +282,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   intervalTableRows: any[] = [];
 
   anchoredArguments: any[] = [];
+  savedAnchoredArguments: any[] = [];
   displayAnchoredArguments: boolean = false;
 
   constructor(private zone: NgZone, public globals: Globals,
@@ -6918,10 +6919,16 @@ export class MsfDashboardPanelComponent implements OnInit {
       for (let argument of categoryArgument.arguments)
       {
         if (argument.anchored)
-          this.anchoredArguments.push (argument);
+        {
+          this.anchoredArguments.push ({
+            isLoading: false,
+            argument: JSON.parse (JSON.stringify (argument))
+          });
+        }
       }
     }
 
+    this.savedAnchoredArguments = JSON.parse (JSON.stringify (this.anchoredArguments));
     this.changeDetectorRef.detectChanges ();
   }
 
@@ -6947,5 +6954,50 @@ export class MsfDashboardPanelComponent implements OnInit {
       return "inherit";
 
     return "0";
+  }
+
+  saveAnchoredChanges(): void
+  {
+    // don't display results when loading new changes
+    this.values.displayChart = false;
+    this.values.displayInfo = false;
+    this.values.displayForm = false;
+    this.values.displayMapbox = false;
+    this.values.displayPic = false;
+    this.values.displayTable = false;
+    this.values.displayDynTable = false;
+
+    // set new argument values
+    for (let categoryArgument of this.values.currentOptionCategories)
+    {
+      for (let argument of categoryArgument.arguments)
+      {
+        let argumentSet = false;
+
+        for (let anchoredArgument of this.anchoredArguments)
+        {
+          if (argument.name1 === anchoredArgument.argument.name1)
+          {
+            argument.value1 = anchoredArgument.argument.value1;
+            argument.value2 = anchoredArgument.argument.value2;
+            argument.value3 = anchoredArgument.argument.value3;
+            argument.value4 = anchoredArgument.argument.value4;
+            argumentSet = true;
+            break;
+          }
+        }
+
+        if (argumentSet)
+          break;
+      }
+    }
+
+    // run service to set changes
+    this.loadData ();
+  }
+
+  revertAnchoredChanges(): void
+  {
+    this.anchoredArguments = JSON.parse (JSON.stringify (this.savedAnchoredArguments));
   }
 }
