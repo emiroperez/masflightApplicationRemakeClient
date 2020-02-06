@@ -7,7 +7,7 @@
     <app-msf-wind *ngIf="isWindSpeed(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-wind>
     <app-msf-temperature *ngIf="isTemperature(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-temperature>
     <app-msf-wind-direction *ngIf="isWindDirection(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-wind-direction>
-    <app-msf-airline *ngIf="isAirline(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-airline>
+    <app-msf-airline *ngIf="isAirline(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel" [anchoredArgument]="anchoredArgument"></app-msf-airline>
     <app-msf-aircraft-type *ngIf="isAircraftType(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-aircraft-type>
     <app-msf-grouping *ngIf="isGrouping(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-grouping>
     <app-msf-rounding *ngIf="isRounding(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-rounding>

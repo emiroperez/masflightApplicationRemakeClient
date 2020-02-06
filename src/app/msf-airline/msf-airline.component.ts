@@ -16,6 +16,9 @@ export class MsfAirlineComponent implements OnInit {
 
   @Input("isDashboardPanel")
   isDashboardPanel: boolean = false;
+
+  @Input("anchoredArgument")
+  anchoredArgument: boolean = false;
   
   data: Observable<any[]>;
   multiAirlines: boolean = false;
