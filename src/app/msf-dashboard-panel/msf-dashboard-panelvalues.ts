@@ -177,17 +177,17 @@ export class MsfDashboardPanelValues {
 
         this.intervalType = "ncile";
 
-        if (intValue)
+        if (intValue != null)
             this.intValue = intValue;
         else
             this.intValue = 5;
 
-        if (startAtZero)
+        if (startAtZero != null)
             this.startAtZero = startAtZero;
         else
             this.startAtZero = false;
 
-        if (ordered)
+        if (ordered != null)
             this.ordered = ordered;
         else
             this.ordered = true;
