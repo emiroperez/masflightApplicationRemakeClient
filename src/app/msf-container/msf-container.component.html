@@ -25,7 +25,8 @@
                 <app-msf-table #msfTableRef [tabRef]="tabRef" [isLoading]="globals.isLoading" 
                 (finishLoading)="finishLoadingTable($event)" [categoryArguments]="getCategoryArguments()" 
                 [currentOption]="globals.currentOption" [isPanel]="false" [paginator]="paginator" [pageIndex]="pageIndex" 
-                (paginatorlength)=paginatorlength($event)></app-msf-table>
+                (paginatorlength)=paginatorlength($event)
+                (shmoreResult)=shmoreResult($event)></app-msf-table>
             </div>    
         </mat-tab>        
         <mat-tab *ngIf="globals.generateDynamicTable" label="Dynamic Table" #msfDynamicTableTabRef>

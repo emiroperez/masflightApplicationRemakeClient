@@ -2749,11 +2749,6 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.msfTableRef.dataSource = null;
 
     this.values.isLoading = true;
-    if(this.values.currentOption.tabType != "legacy"){
-      this.values.showPaginator = true;
-    }else{
-      this.values.showPaginator = false;
-    }
 
     this.msfTableRef.actualPageNumber = this.actualPageNumber;
     let tokenResultTable = this.authService.getTokenResultTable() ? this.authService.getTokenResultTable() : "";
@@ -5750,6 +5745,16 @@ export class MsfDashboardPanelComponent implements OnInit {
       return;
     }
 
+    if(this.values.currentOption.tabType != "legacy"){
+      if(this.values.showMoreResult){
+        this.values.showPaginator = false;
+      }else{
+        this.values.showPaginator = true;
+      }
+    }else{
+      this.values.showPaginator = false;
+    }
+    
     // only save the lastest response if the page number of the table is the first one
     if (!this.actualPageNumber)
     {
@@ -6953,6 +6958,10 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.pageSize = event.pageSize;
   }
 
+  shmoreResult(event: any){
+    this.values.showMoreResult = event;
+  }
+  
   configureAnchoredControlVariables(): void
   {
     this.anchoredArguments = [];

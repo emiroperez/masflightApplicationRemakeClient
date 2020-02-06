@@ -109,6 +109,7 @@ export class MsfDashboardPanelValues {
     maxValueRange: number;
 
     showPaginator: boolean;
+    showMoreResult: boolean;
 
     constructor(options: any[], chartName: String, id: number, width: any, height: any, currentOption?: any, variable?: any,
         xaxis?: any, valueColumn?: any, func?: any, chartType?: any, currentOptionCategories?: any, lastestResponse?: string,

@@ -81,6 +81,9 @@ export class MsfTableComponent implements OnInit {
 
   @Output('paginatorlength')
   paginatorlength = new EventEmitter ();
+  
+  @Output('shmoreResult')
+  shmoreResult = new EventEmitter ();
 
   predefinedColumnFormats: any = {
     "short": true,
@@ -546,10 +549,12 @@ export class MsfTableComponent implements OnInit {
                   
         if(response.Rows){
           _this.globals.showPaginator = true;
-          _this.globals.showMoreResult = false;
+          _this.shmoreResult.emit(false);
+          // _this.globals.showMoreResult = false;
         }else{
           _this.globals.showPaginator = false;
-          _this.globals.showMoreResult = true;
+          _this.shmoreResult.emit(true);
+          // _this.globals.showMoreResult = true;
         }
 
         if(_this.actualPageNumber===0){
@@ -627,9 +632,11 @@ export class MsfTableComponent implements OnInit {
       }else{
         _this.globals.showPaginator = false;
         if(response.Rows){
-          _this.globals.showMoreResult = false;
+          // _this.globals.showMoreResult = false;
+          _this.shmoreResult.emit(false);
         }else{
-          _this.globals.showMoreResult = true;
+          // _this.globals.showMoreResult = true;
+          _this.shmoreResult.emit(true);
         }
         if( _this.tableOptions.moreResults){
           _this.tableOptions.moreResultsBtn = false;
