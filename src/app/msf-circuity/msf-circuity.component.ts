@@ -9,6 +9,9 @@ import { Arguments } from '../model/Arguments';
 export class MsfCircuityComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
+
+  @Input("isDashboardPanel")
+  isDashboardPanel: boolean = false;
   
   data: any[] = [
     {id: "0.0" ,name:"Shortest Route"},

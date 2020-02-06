@@ -9,6 +9,9 @@ import { Arguments } from '../model/Arguments';
 export class MsfStopsComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
+
+  @Input("isDashboardPanel")
+  isDashboardPanel: boolean = false;
   
   data: any[] = [
     {id: "" ,name:"Nonstops"},

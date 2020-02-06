@@ -10,7 +10,10 @@ import { Arguments } from '../model/Arguments';
 export class MsfResultsLessComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
- 
+
+  @Input("isDashboardPanel")
+  isDashboardPanel: boolean = false;
+
   data: any[] = [
                 {id: '1', name: '1%'},
                 {id: '2', name: '2%'},

@@ -9,6 +9,9 @@ import { Arguments } from '../model/Arguments';
 export class MsfPercentIncrementComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
+
+  @Input("isDashboardPanel")
+  isDashboardPanel: boolean = false;
  
   data: any[] = [
                 {id: '1', name: '1%'},

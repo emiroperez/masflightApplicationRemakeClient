@@ -72,26 +72,23 @@ export class MsfDashboardControlVariablesComponent {
       {
         for (let curOptionCategory of _this.data.currentOptionCategories)
         {
-          if (curOptionCategory.id == optionCategory.id)
+          for (let curCategoryArgument of curOptionCategory.arguments)
           {
-            for (let curCategoryArgument of curOptionCategory.arguments)
+            for (let argument of optionCategory.arguments)
             {
-              for (let argument of optionCategory.arguments)
+              if (curCategoryArgument.name1 == argument.name1)
               {
-                if (curCategoryArgument.id == argument.id)
-                {
-                  argument.value1 = curCategoryArgument.value1;
-                  argument.value2 = curCategoryArgument.value2;
-                  argument.value3 = curCategoryArgument.value3;
-                  argument.value4 = curCategoryArgument.value4;
-                  argument.dateLoaded = curCategoryArgument.dateLoaded;
-                  argument.currentDateRangeValue = curCategoryArgument.currentDateRangeValue;
-                  break;
-                }
+                argument.value1 = curCategoryArgument.value1;
+                argument.value2 = curCategoryArgument.value2;
+                argument.value3 = curCategoryArgument.value3;
+                argument.value4 = curCategoryArgument.value4;
+                argument.dateLoaded = curCategoryArgument.dateLoaded;
+                argument.currentDateRangeValue = curCategoryArgument.currentDateRangeValue;
+                argument.dateSelectionMode = curCategoryArgument.dateSelectionMode;
+                argument.anchored = curCategoryArgument.anchored;
+                break;
               }
             }
-
-            break;
           }
         }
       }
@@ -179,6 +176,7 @@ export class MsfDashboardControlVariablesComponent {
                 argument.value4 = curCategoryArgument.value4;
                 argument.dateLoaded = curCategoryArgument.dateLoaded;
                 argument.currentDateRangeValue = curCategoryArgument.currentDateRangeValue;
+                argument.anchored = false;
 
                 if (argument.type == ComponentType.dateRange)
                   argument.refreshDate = true;

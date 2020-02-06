@@ -70,8 +70,6 @@ export class AdminArgumentsCategoryComponent implements OnInit {
     { value: "singleCheckbox", name: "Single checkbox" },
     { value: "filterAirlineType", name: "Filter Airline Type" },
     { value: "fareIncrements", name: "Fare Increments" },
-    { value: "fareIncrementMiddle", name: "Fare Increments Middle" },
-    { value: "fareIncrementMax", name: "Fare Increments Max" },
     { value: "title", name: "Title" },
     { value: "airportsRoutes", name: "Airports Routes" },
     { value: "fareLower", name: "Exclude Fares lower than" },

@@ -11,6 +11,9 @@ import { Arguments } from '../model/Arguments';
 export class MsfFlightDurationSegmentsComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
+
+  @Input("isDashboardPanel")
+  isDashboardPanel: boolean = false;
  
   data: any[] = [
                 {id: '2-5', name: '2-5 hours'},

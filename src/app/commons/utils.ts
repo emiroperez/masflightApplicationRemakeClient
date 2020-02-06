@@ -478,7 +478,6 @@ export class Utils{
         else if (type == ComponentType.ceiling || type == ComponentType.rounding
             || type ==  ComponentType.resultsLess || type ==  ComponentType.geography 
             || type == ComponentType.filterAirlineType || type == ComponentType.fareIncrements
-            || type == ComponentType.fareIncrementMiddle || type == ComponentType.fareIncrementMax
             || type == ComponentType.percentIncrement || type == ComponentType.quarterHour 
             || type == ComponentType.stops || type == ComponentType.circuityType
             || type == ComponentType.circuity || type == ComponentType.groupingHubSummaries
@@ -690,7 +689,6 @@ export class Utils{
             else if (type == ComponentType.ceiling || type == ComponentType.rounding
                 || type ==  ComponentType.resultsLess || type ==  ComponentType.geography
                 || type == ComponentType.filterAirlineType || type == ComponentType.fareIncrements
-                || type == ComponentType.fareIncrementMiddle || type == ComponentType.fareIncrementMax
                 || type == ComponentType.percentIncrement || type == ComponentType.quarterHour
                 || type == ComponentType.stops || type == ComponentType.circuityType
                 || type == ComponentType.circuity || type == ComponentType.groupingHubSummaries

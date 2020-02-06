@@ -16,6 +16,9 @@ import { Globals } from '../globals/Globals';
 export class MsfUserListComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
+
+  @Input("isDashboardPanel")
+  isDashboardPanel: boolean = false;
   
   /** control for the selected user */
   public userCtrl: FormControl = new FormControl();

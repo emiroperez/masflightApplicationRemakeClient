@@ -14,6 +14,9 @@ export class MsfSortingComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
 
+  @Input("isDashboardPanel")
+  isDashboardPanel: boolean = false;
+
   sortingList: any[] = [
     {id: 'YEAR', name: 'Year', column:'Year'},
     {id: 'MONTH', name: 'Month', column:'Month'},

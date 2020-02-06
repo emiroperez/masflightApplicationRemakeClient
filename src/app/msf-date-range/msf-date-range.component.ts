@@ -133,13 +133,18 @@ export class MsfDateRangeComponent implements OnInit {
   @Input("refreshDate")
   public refreshDate: boolean;
 
+  @Input("isDashboardPanel")
+  isDashboardPanel: boolean = false;
+
+  @Input("anchoredArgument")
+  anchoredArgument: boolean = false;
+
   maxDate: Date;
   minDate: Date;
 
   calendarHeader: any = MonthHeader;
   currentDateRange: any[] = [];
   currentValueType: number = 0;
-  selectionMode: string = "manual";
 
   dateValueByFullDate: any[] = [
     { id: 0, name: 'Today', value: "TODAY" },
@@ -259,6 +264,9 @@ export class MsfDateRangeComponent implements OnInit {
     this.monthDateFormat = (this.argument.selectionMode >> 12) & 1;
 
     this.isDateRange = (this.argument.selectionMode & 1) ? true : false;
+
+    if (!this.argument.dateSelectionMode)
+      this.argument.dateSelectionMode = "manual";
 
     // set allowed date range depending of the option and restrictions by customer
     if (this.argument.minDate)
@@ -1104,7 +1112,7 @@ export class MsfDateRangeComponent implements OnInit {
 
   setDateRange(): void
   {
-    if (this.selectionMode !== "auto")
+    if (this.argument.dateSelectionMode !== "auto")
       return;
 
     this.autoSelect ();

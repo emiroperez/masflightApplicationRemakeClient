@@ -15,22 +15,12 @@ import { ApiClient } from '../api/api-client';
 export class MsfAircraftTypeComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
+
+  @Input("isDashboardPanel")
+  isDashboardPanel: boolean = false;
   
-  /** control for the selected airline */
-  public airlineCtrl: FormControl = new FormControl();
- 
-  /** control for the MatSelect filter keyword */
-  public airlineFilterCtrl: FormControl = new FormControl();
- 
   multiAircraft: boolean = false;
- 
-  //   data: any[] = [
-  //    {name: 'ALL ', id: ''},
-  //    {name: 'A300-600', id: 'A300-600'},
-  //    {name: 'B-727-2', id: 'B-727-2'},
-  //    {name: 'B-757-2', id: 'B-757-2'},
-  //    {name: 'B-767-3', id: 'B-767-3'}   
-  //  ];
+
   data: Observable<any[]>;
    loading = false;
    constructor(private http: ApiClient, public globals: Globals) { }

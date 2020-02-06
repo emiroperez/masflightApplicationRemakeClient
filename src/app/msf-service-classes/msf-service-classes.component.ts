@@ -9,6 +9,9 @@ import { Arguments } from '../model/Arguments';
 export class MsfServiceClassesComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
+
+  @Input("isDashboardPanel")
+  isDashboardPanel: boolean = false;
   
   data =  [
     {"id":1,

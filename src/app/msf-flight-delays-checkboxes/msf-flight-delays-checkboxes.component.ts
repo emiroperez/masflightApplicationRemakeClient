@@ -11,6 +11,9 @@ export class MsfFlightDelaysCheckboxesComponent implements OnInit {
 
   
   @Input("argument") public argument: Arguments;
+
+  @Input("isDashboardPanel")
+  isDashboardPanel: boolean = false;
   
   selected: any[] = [];
   all = {"checked":false};

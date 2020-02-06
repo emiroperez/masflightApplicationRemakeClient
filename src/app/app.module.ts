@@ -95,8 +95,6 @@ import { MsfSingleCheckboxComponent } from './msf-single-checkbox/msf-single-che
 import { MsfExcludeItinerariesCheckboxComponent } from './msf-exclude-itineraries-checkbox/msf-exclude-itineraries-checkbox.component';
 import { MsfFilterAirlineTypeComponent } from './msf-filter-airline-type/msf-filter-airline-type.component';
 import { MsfFareIncrementsComponent } from './msf-fare-increments/msf-fare-increments.component';
-import { MsfFareIncrementMiddleComponent } from './msf-fare-increment-middle/msf-fare-increment-middle.component';
-import { MsfFareIncrementMaxComponent } from './msf-fare-increment-max/msf-fare-increment-max.component';
 import { MsfArgumentTitleComponent } from './msf-argument-title/msf-argument-title.component';
 import { MsfAirportsRoutesComponent } from './msf-airports-routes/msf-airports-routes.component';
 import { MsfPercentIncrementComponent } from './msf-percent-increment/msf-percent-increment.component';
@@ -295,8 +293,6 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     MsfExcludeItinerariesCheckboxComponent,
     MsfFilterAirlineTypeComponent,
     MsfFareIncrementsComponent,
-    MsfFareIncrementMiddleComponent,
-    MsfFareIncrementMaxComponent,
     MsfArgumentTitleComponent,
     MsfAirportsRoutesComponent,
     MsfPercentIncrementComponent,

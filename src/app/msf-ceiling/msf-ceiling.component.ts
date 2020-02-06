@@ -14,6 +14,10 @@ import { takeUntil, take } from 'rxjs/operators';
 export class MsfCeilingComponent implements OnInit {
 
   @Input("argument") public argument: Arguments;
+
+  @Input("isDashboardPanel")
+  isDashboardPanel: boolean = false;
+
   loading = false;
   /** control for the selected airport */
 //  public originAirportCtrl: FormControl = new FormControl();
