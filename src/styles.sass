@@ -4026,16 +4026,25 @@ mat-tab-group
             width: 50px
             flex-direction: column
 
+.msf-dashboard-panel-anchor-container
+    display: flex
+    flex-wrap: wrap
+    align-content: stretch
+    width: calc(100% + 20px)
+
 .msf-dashboard-panel-anchored-argument
     display: flex
     align-items: center
     min-height: 40px
     border-bottom: 1px solid
-    margin-left: -10px
+    border-right: 1px solid
+    border-left: 1px solid
+    margin-left: -11px
     padding-left: 10px
     font-size: 10px
-    width: calc(100% + 10px)
+    margin-right: 10px
     position: relative
+    flex-grow: 1
     .anchored-argument-left-side
         width: calc(100% - 40px)
     .anchored-argument-button
@@ -4062,7 +4071,7 @@ mat-tab-group
                 margin-bottom: 0 !important
                 margin-left: 10px
                 margin-right: 10px
-                min-width: 250px !important
+                min-width: 40% !important
             .ng-value-icon
                 font-size: 13px
             .ng-value

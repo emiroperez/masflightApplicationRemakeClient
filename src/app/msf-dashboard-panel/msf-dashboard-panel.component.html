@@ -900,7 +900,7 @@
     <div class="msf-dashboard-panel-title" *ngIf="values.displayChart">
       {{values.chartName}}
     </div>
-    <ng-container *ngIf="displayAnchoredArguments">
+    <div class="msf-dashboard-panel-anchor-container" *ngIf="displayAnchoredArguments">
       <div class="msf-dashboard-panel-anchored-argument" *ngFor="let anchoredArgument of anchoredArguments; let first = first" [ngClass]="{ 'anchored-variables-first-item': first }">
         <div class="anchored-argument-left-side">
           <app-msf-argument [currentArgument]="anchoredArgument.argument" [currentGlobalOptionId]="values.currentOption.id" [anchoredArgument]="true" (setLoading)="setArgumentLoading(anchoredArgument, $event)"></app-msf-argument>
@@ -912,7 +912,7 @@
           </button>
         </div>
       </div>
-    </ng-container>
+    </div>
     <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-chart-display-container-{{values.id}}">
       <div class="msf-dashboard-map-routelist" *ngIf="isMapPanel() && values.flightRoutes != null">
         <div class="msf-dashboard-map-routelist-container" [style.height.px]="calcRouteListHeight()">
