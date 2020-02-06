@@ -9,7 +9,7 @@
             <mat-radio-button class="msf-radio" value="auto">Auto Range</mat-radio-button>
         </mat-radio-group>
     </div>
-    <div class="msf-component-argument-container" *ngIf="argument.dateSelectionMode == 'manual'">
+    <div class="msf-component-argument-container" *ngIf="argument.dateSelectionMode === 'manual'">
         <div class="center" *ngIf="argument.title || isDashboardPanel">
             <div class="msf-component-airport-title">
                 {{argument.title}}
@@ -84,7 +84,7 @@
             </ng-container>
         </div>
     </div>
-    <div class="msf-component-argument-container" *ngIf="argument.dateSelectionMode == 'auto'">
+    <div class="msf-component-argument-container" *ngIf="argument.dateSelectionMode === 'auto'">
         <div *ngIf="dateRange && dateRange.value.startsWith ('UNTIL')">
             <div class="center">
                 <div class="msf-component-airport-title initial-date-title">
@@ -157,7 +157,7 @@
     </div>
 </ng-container>
 <ng-container *ngIf="anchoredArgument">
-    <div class="anchor-argument-container" *ngIf="argument.dateSelectionMode == 'manual'">
+    <div class="anchor-argument-container" *ngIf="argument.dateSelectionMode === 'manual'">
         <div class="msf-component-date-input-container msf-single-date">
             <ng-container *ngIf="dateStartView === 'month'">
                 <span class="anchor-date-label" *ngIf="argument.label1">{{argument.label1}}</span>
@@ -174,8 +174,8 @@
                 </mat-form-field>
             </ng-container>
             <ng-container *ngIf="dateStartView !== 'month'">
+                <span class="anchor-date-label" *ngIf="argument.label1">{{argument.label1}}</span>
                 <mat-form-field class="msf-full-width">
-                    <span class="anchor-date-label" *ngIf="argument.label1">{{argument.label1}}</span>
                     <input hidden [min]="argument.minDate" [max]="maxDate" [matDatepicker]="picker3" [(ngModel)]="value1Date" [readonly]="true">
                     <input matInput [ngModel]="value1Display" (ngModelChange)="dateChange($event)" [ngModelOptions]="{ standalone: true }" autocomplete="off" class="msf-full-width msf-menu-arg-select" (click)="picker3.open()" [readonly]="true">
                     <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
@@ -225,6 +225,60 @@
                     </div>
                 </ng-container>
             </ng-container>
+        </div>
+    </div>
+    <div class="anchor-argument-container" *ngIf="argument.dateSelectionMode === 'auto'">
+        <div class="msf-component-date-input-container msf-single-date" *ngIf="dateRange && dateRange.value.startsWith ('UNTIL')">
+            <ng-container *ngIf="dateStartView === 'month'">
+                <span class="anchor-date-label initial-date-label">Select Initial Date</span>
+                <mat-form-field class="msf-full-width">
+                    <input matInput [min]="argument.minDate" [max]="maxDate" [matDatepicker]="picker1" [(ngModel)]="argument.value1" (ngModelChange)="dateChange($event)" (click)="picker1.open()" [readonly]="true">
+                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1 startView="{{dateStartView}}"></mat-datepicker>
+                </mat-form-field>
+            </ng-container>
+            <ng-container *ngIf="dateStartView !== 'month'">
+                <span class="anchor-date-label initial-date-quarter-label">Select Initial Date</span>
+                <mat-form-field class="msf-full-width">
+                    <input hidden [min]="argument.minDate" [max]="maxDate" [matDatepicker]="picker3" [(ngModel)]="value1Date" [readonly]="true">
+                    <input matInput [ngModel]="value1Display" (ngModelChange)="dateChange($event)" [ngModelOptions]="{ standalone: true }" autocomplete="off" class="msf-full-width msf-menu-arg-select" (click)="picker3.open()" [readonly]="true">
+                    <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                    <mat-datepicker #picker3 startView="{{dateStartView}}" [calendarHeaderComponent]="calendarHeader" (yearSelected)="chosenYearHandler1($event,picker3)" (monthSelected)="chosenMonthHandler1($event,picker3)"></mat-datepicker>
+                </mat-form-field>
+                <div *ngIf="valueType === 'quarter'" class="msf-component-date-input-container" style="display: flex; align-items: center;">
+                    <ng-select style="width: 85%;"
+                        [items]="quarters"
+                        [multiple]="false"
+                        [loading]="loading"
+                        loadingText="Loading..."
+                        [closeOnSelect]="true"
+                        [hideSelected]="false"
+                        bindLabel="name"
+                        bindName="value"
+                        [(ngModel)]="argument.value3"
+                        appendTo=".msf-control-variables-overlay"
+                        [clearable]="false"
+                        dropdownPosition="bottom">
+                    </ng-select> 
+                    <img src="../../assets/images/{{globals.theme}}-calendarTime.png" class="msf-calendar-image">
+                </div>
+            </ng-container>
+        </div>
+        <div class="msf-component-date-input-container msf-single-date msf-anchor-date-range">
+            <span class="anchor-date-label date-range-label">Date Range</span>
+            <ng-select style="width: 100%;"
+                [items]="currentDateRange"
+                [multiple]="false"
+                [closeOnSelect]="true"
+                [hideSelected]="false"
+                bindLabel="name"
+                (change)="autoSelect()"
+                [(ngModel)]="dateRange"
+                [clearable]="false"
+                (ngModelChange)="setCurrentDateRangeValue()"
+                appendTo=".msf-control-variables-overlay"
+                dropdownPosition="bottom">
+            </ng-select>
         </div>
     </div>
 </ng-container>

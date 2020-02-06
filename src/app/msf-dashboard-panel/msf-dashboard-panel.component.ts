@@ -6982,6 +6982,9 @@ export class MsfDashboardPanelComponent implements OnInit {
             argument.value2 = anchoredArgument.argument.value2;
             argument.value3 = anchoredArgument.argument.value3;
             argument.value4 = anchoredArgument.argument.value4;
+            argument.dateLoaded = anchoredArgument.argument.dateLoaded;
+            argument.currentDateRangeValue = anchoredArgument.argument.currentDateRangeValue;
+
             argumentSet = true;
             break;
           }
