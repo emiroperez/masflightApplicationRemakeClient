@@ -86,7 +86,6 @@ export class MsfDashboardPanelComponent implements OnInit {
   chart: any;
   chartInfo: any;
   redisplayChart: boolean = false;
-  panelButtons: boolean = false;
 
   chartTypes: any[] = [
     { name: 'Bars', flags: ChartFlags.XYCHART, createSeries: this.createVertColumnSeries },
@@ -195,9 +194,6 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   @Output("removePanel")
   removePanel = new EventEmitter ();
-
-  @Output("togglePanelButtons")
-  togglePanelButtons = new EventEmitter ();
 
   childPanelValues: any[] = [];
   childPanelsConfigured: boolean[] = [];
@@ -400,10 +396,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     else if (changes['panelHeight'])
       this.panelHeightOffset = this.panelHeight - 18;
     else if (changes['panelWidth'])
-    {
       this.displayLabel = this.panelWidth >= 35 ? true : false;
-      this.setPanelButtons ();
-    }
     else if (changes['currentHiddenCategories'])
     {
       for (let series of this.values.chartSeries)
@@ -2105,10 +2098,6 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     // set anchored control variables
     this.configureAnchoredControlVariables ();
-
-    setTimeout (() => {
-      this.setPanelButtons ();
-    }, 50);
   }
 
   ngAfterContentInit(): void
@@ -3115,8 +3104,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.mapboxGenerated = false;
     _this.values.dynTableGenerated = false;
 
-    _this.setPanelButtons ();
-
     _this.removeDeadVariablesAndCategories.emit ({
       type: _this.chartTypes.indexOf (_this.oldChartType),
       analysisName: _this.oldVariableName,
@@ -3225,8 +3212,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.mapboxGenerated = false;
     _this.values.dynTableGenerated = false;
 
-    _this.setPanelButtons ();
-
     _this.removeDeadVariablesAndCategories.emit ({
       type: _this.chartTypes.indexOf (_this.oldChartType),
       analysisName: _this.oldVariableName,
@@ -3272,8 +3257,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.tableGenerated = true;
     _this.values.mapboxGenerated = false;
     _this.values.dynTableGenerated = false;
-
-    _this.setPanelButtons ();
 
     _this.removeDeadVariablesAndCategories.emit ({
       type: _this.chartTypes.indexOf (_this.oldChartType),
@@ -3321,8 +3304,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.mapboxGenerated = false;
     _this.values.dynTableGenerated = true;
 
-    _this.setPanelButtons ();
-
     _this.removeDeadVariablesAndCategories.emit ({
       type: _this.chartTypes.indexOf (_this.oldChartType),
       analysisName: _this.oldVariableName,
@@ -3366,8 +3347,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.tableGenerated = false;
     _this.values.mapboxGenerated = true;
     _this.values.dynTableGenerated = false;
-
-    _this.setPanelButtons ();
 
     _this.removeDeadVariablesAndCategories.emit ({
       type: _this.chartTypes.indexOf (_this.oldChartType),
@@ -3426,8 +3405,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.mapboxGenerated = false;
     _this.values.dynTableGenerated = false;
 
-    _this.setPanelButtons ();
-
     setTimeout (() =>
     {
       _this.values.isLoading = false;
@@ -3456,8 +3433,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.tableGenerated = false;
     _this.values.mapboxGenerated = false;
     _this.values.dynTableGenerated = false;
-
-    _this.setPanelButtons ();
 
     setTimeout (() =>
     {
@@ -3496,8 +3471,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.mapboxGenerated = false;
     _this.values.dynTableGenerated = false;
     _this.values.isLoading = false;
-
-    _this.setPanelButtons ();
 
     _this.removeDeadVariablesAndCategories.emit ({
       type: _this.chartTypes.indexOf (_this.oldChartType),
@@ -3555,8 +3528,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.tableGenerated = false;
     _this.values.mapboxGenerated = false;
     _this.values.dynTableGenerated = false;
-
-    _this.setPanelButtons ();
 
     setTimeout (() =>
     {
@@ -3852,8 +3823,6 @@ export class MsfDashboardPanelComponent implements OnInit {
   // save chart data into a temporary value
   storeChartValues(): void
   {
-    this.togglePanelButtons.emit (true);
-
     if (!this.temp)
     {
       this.temp = new MsfDashboardPanelValues (this.values.options, this.values.chartName,
@@ -3943,7 +3912,6 @@ export class MsfDashboardPanelComponent implements OnInit {
   goToChartConfiguration(): void
   {
     this.values.displayChart = false;
-    this.panelButtons = false;
     this.storeChartValues ();
   }
 
@@ -4142,9 +4110,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
 
     this.changeDetectorRef.detectChanges ();
-
-    this.setPanelButtons ();
-    this.panelButtons = false;
 
     if (this.redisplayChart)
     {
@@ -6879,8 +6844,6 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     this.advTableView = !this.advTableView;
 
-    this.setPanelButtons ();
-
     // redraw chart
     chartElement = document.getElementById ("msf-dashboard-chart-display-" + this.values.id);
     document.getElementById ("msf-dashboard-chart-display-container-" + this.values.id).appendChild (chartElement);
@@ -6892,113 +6855,6 @@ export class MsfDashboardPanelComponent implements OnInit {
       return true;
 
     return false;
-  }
-
-  getConfigButtonOffset(): string
-  {
-    if (this.isAdvChartPanel ())
-    {
-      if (this.advTableView)
-      {
-        if (this.globals.readOnlyDashboard)
-          return "calc(100% - 43px)";
-        else
-        {
-          if (this.numPanelsInColumn <= 1)
-            return "calc(100% - 217px)";
-  
-          return "calc(100% - 268px)";
-        }
-      }
-      else
-      {
-        if (this.globals.readOnlyDashboard)
-          return "calc(100% - 90px)";
-        else
-        {
-          if (this.numPanelsInColumn <= 1)
-            return "calc(100% - 264px)";
-  
-          return "calc(100% - 315px)";
-        }
-      }
-    }
-
-    if (this.numPanelsInColumn <= 1)
-    {
-      if (this.anchoredArguments.length)
-        return "calc(100% - 217px)";
-
-      return "calc(100% - 170px)";
-    }
-
-    return "calc(100% - 219px)";
-  }
-
-  getConfigMoreButtonOffset(): string
-  {
-    if (this.isAdvChartPanel ())
-    {
-      if (this.advTableView)
-        return "calc(100% + 183px)";
-      else
-        return "calc(100% + 230px)";
-    }
-  
-    return "calc(100% + 136px)";
-  }
-
-  getConfigHoverButtonOffset(): string
-  {
-    if (this.isAdvChartPanel ())
-      return "calc(100% + 38px)";
-
-    return "calc(100% + 36px)";
-  }
-
-  calcTitleTextWidth(): number
-  {
-    let text = document.createElement ("span");
-    let width;
-
-    document.body.appendChild (text); 
-
-    text.style.font = "times new roman"; 
-    text.style.fontSize = "16px"; 
-    text.style.marginLeft = "-10px";
-    text.style.paddingLeft = "15px";
-    text.style.height = 'auto'; 
-    text.style.width = 'auto'; 
-    text.style.position = 'absolute'; 
-    text.style.whiteSpace = 'no-wrap';
-    text.innerHTML =  "" + this.values.chartName;
-
-    width = text.clientWidth;
-
-    document.body.removeChild (text);
-
-    return width;
-  }
-
-  displayPanelButtons(item: string): void
-  {
-    const buttonsElement = document.getElementById ("msf-dashboard-panel-" + item + "-buttons-" + this.values.id);
-
-    if (buttonsElement)
-    {
-      if (this.values.chartName != this.lastChartName)
-      {
-        this.titleTextWidth = this.calcTitleTextWidth ();
-        this.lastChartName = this.values.chartName;
-      }
-
-      if (buttonsElement.offsetLeft)
-        this.values.displayButtons = buttonsElement.offsetLeft > this.titleTextWidth;
-    }
-    else
-      this.values.displayButtons = false;
-
-    this.togglePanelButtons.emit (this.values.displayButtons);
   }
 
   generateValueList(): string
@@ -7035,28 +6891,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
 
     return list;
-  }
-
-  setPanelButtons(): void
-  {
-    this.changeDetectorRef.detectChanges ();
-
-    if (this.values.displayChart && this.advTableView)
-      this.displayPanelButtons ('adv-table');
-    else if (this.values.displayChart)
-      this.displayPanelButtons ('chart');
-    else if (this.values.displayInfo)
-      this.displayPanelButtons ('info')
-    else if (this.values.displayForm)
-      this.displayPanelButtons ('form');
-    else if (this.values.displayPic)
-      this.displayPanelButtons ('pic');
-    else if (this.values.displayTable)
-      this.displayPanelButtons ('table');
-    else if (this.values.displayMapbox)
-      this.displayPanelButtons ('mapbox');
-    else if (this.values.displayDynTable)
-      this.displayPanelButtons ('dyn-table');
   }
 
   getValueFormFontColor(formResult): string
@@ -7105,5 +6939,13 @@ export class MsfDashboardPanelComponent implements OnInit {
   toggleAnchoredArguments(): void
   {
     this.displayAnchoredArguments = !this.displayAnchoredArguments;
+  }
+
+  getPanelHeightOffset(): string
+  {
+    if (this.displayAnchoredArguments)
+      return "inherit";
+
+    return "0";
   }
 }

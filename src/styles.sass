@@ -2125,10 +2125,18 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             background-color: $query-engine-result-header-color
         .msf-dashboard-panel-margin-button
             .anchor-icon
-                background-image: url(assets/images/#{$name}-anchor-icon.png)
+                background-image: url(assets/images/dark-theme-anchor-icon.png)
             .mat-icon
                 color: $font-color !important
-        .msf-dashboard-panel-margin-button:hover
+        .msf-dashboard-panel-anchor-margin-button
+            border-color: $font-color !important
+        .msf-dashboard-panel-anchor-margin-button:hover
+            border-color: $primary-color !important
+            background-color: $primary-color
+            .mat-icon
+                color: $font-color !important
+        .msf-dashboard-panel-anchor-margin-check-button
+            border-color: $primary-color !important
             .mat-icon
                 color: $primary-color !important
         .datalake-create-table-input-body .mat-form-field-disabled .mat-select-value
@@ -4088,9 +4096,10 @@ mat-tab-group
 @mixin msf-dashboard-panel-config-button
     position: absolute
     display: flex
-    top: 0
+    left: calc(100% - 45px)
+    bottom: 0
     align-items: flex-end
-    flex-direction: row-reverse
+    flex-direction: column-reverse
     z-index: 1
 
 .msf-dashboard-panel-container-chart
@@ -4111,17 +4120,33 @@ mat-tab-group
         position: relative
 
 .msf-dashboard-panel-config-button
+    opacity: 0.05
+    transition: opacity 0.5s ease-out
     @include msf-dashboard-panel-config-button
     .msf-dashboard-panel-margin-button
-        margin-right: 7px
+        margin-bottom: 7px
+    .msf-dashboard-panel-anchor-margin-button
+        border: 1px solid
+        border-radius: 5px
+        margin-bottom: 5px
+        margin-left: 5px
+        margin-right: 12px
+        width: 30px
+        height: 30px
+        .mat-icon
+            margin-top: -12px
+    .msf-dashboard-panel-anchor-margin-button-popup
+        margin-top: 5px
     .anchor-icon
         background-repeat: no-repeat
         background-size: 100%
-        margin-left: 10px
-        width: 20px
-        height: 20px
-    .mat-icon
-        font-size: 20px
+        width: 24px
+        height: 24px
+
+.msf-dashboard-panel-config-button:hover
+    opacity: 1
+    transition: opacity 0.5s ease-in
+    @include msf-dashboard-panel-config-button
 
 .msf-dashboard-child-panel-container
     width: 98%
