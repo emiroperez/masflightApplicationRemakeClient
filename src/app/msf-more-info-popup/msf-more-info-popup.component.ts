@@ -112,11 +112,9 @@ export class MsfMoreInfoPopupComponent{
 
       if (title)
       {
-        title = title.replace (/ /g, '_');
-
         if (!this.backgroundImage.src)
         {
-          this.backgroundImage.src = "../../assets/images/Top_Ten_Movie_Posters/" + title + ".png";
+          this.backgroundImage.src = this.globals.baseUrl + "/moviePosters/" + title;
           this.backgroundImage.onload = function ()
           {
             let aspect = self.backgroundImage.width / self.backgroundImage.height;
@@ -124,7 +122,7 @@ export class MsfMoreInfoPopupComponent{
           }
         }
 
-       return this.backgroundImage.src;    
+        return this.backgroundImage.src;    
       }
       else if (passenger)
       {
