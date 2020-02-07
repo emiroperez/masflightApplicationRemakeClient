@@ -273,17 +273,12 @@ export class MsfTableComponent implements OnInit {
     this.globals.startTimestamp = new Date();
 
     if (moreResults) {
-      // if (this.pageIndex.pageIndex >= this.actualPageNumber) {
-      //   this.actualPageNumber++;
-      // } else if (this.pageIndex.pageIndex < this.actualPageNumber) {
-      //   this.actualPageNumber--;
-      // }
-      if(this.pageIndex){
+      if(this.pageIndex && this.globals.showPaginator){
         this.actualPageNumber = this.pageIndex.pageIndex;
-        this.tableOptions.moreResults = true;
       }else{
         this.actualPageNumber++;
       }
+      this.tableOptions.moreResults = true;
     } else {
       this.actualPageNumber = 0;
       this.authService.removeTokenResultTable();
