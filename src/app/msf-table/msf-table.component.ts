@@ -549,12 +549,18 @@ export class MsfTableComponent implements OnInit {
                   
         if(response.Rows){
           _this.globals.showPaginator = true;
-          _this.shmoreResult.emit(false);
-          // _this.globals.showMoreResult = false;
+          let tokenResult = {
+            showMoreResult: false,
+            tokenResultTable: response.tokenResultTable
+          }
+          _this.shmoreResult.emit(tokenResult);
         }else{
           _this.globals.showPaginator = false;
-          _this.shmoreResult.emit(true);
-          // _this.globals.showMoreResult = true;
+          let tokenResult = {
+            showMoreResult: true,
+            tokenResultTable: ""
+          }
+          _this.shmoreResult.emit(tokenResult);
         }
 
         if(_this.actualPageNumber===0){

@@ -2743,6 +2743,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     else{
       this.actualPageNumber = 0;
       // this.authService.removeTokenResultTable();
+      this.values.tokenResultTable = "";
     }
 
     if (!this.actualPageNumber)
@@ -2751,8 +2752,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.isLoading = true;
 
     this.msfTableRef.actualPageNumber = this.actualPageNumber;
-    this.authService.removeTokenResultTable(); // para que cada vez que ejecute un dashboard trabaje con un token nuevo
-    let tokenResultTable = this.authService.getTokenResultTable() ? this.authService.getTokenResultTable() : "";
+    // this.authService.removeTokenResultTable(); // para que cada vez que ejecute un dashboard trabaje con un token nuevo
+    let tokenResultTable = this.values.tokenResultTable;
     
     if (this.globals.currentApplication.name === "DataLake")
     {
@@ -6960,7 +6961,8 @@ export class MsfDashboardPanelComponent implements OnInit {
   }
 
   shmoreResult(event: any){
-    this.values.showMoreResult = event;
+    this.values.tokenResultTable = event.tokenResultTable;
+    this.values.showMoreResult = event.showMoreResult;
   }
 
   configureAnchoredControlVariables(): void

@@ -174,7 +174,7 @@ export class MsfContainerComponent implements OnInit {
   }
 
   shmoreResult(event: any){
-    this.showMoreResult = event;
+    this.showMoreResult = event.showMoreResult;
   }
   
 }
