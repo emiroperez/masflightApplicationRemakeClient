@@ -901,7 +901,7 @@
       {{values.chartName}}
     </div>
     <div class="msf-dashboard-panel-anchor-container" *ngIf="displayAnchoredArguments">
-      <div class="msf-dashboard-panel-anchored-argument" *ngFor="let anchoredArgument of anchoredArguments; let first = first" [ngClass]="{ 'anchored-variables-first-item': first }">
+      <div class="msf-dashboard-panel-anchored-argument" *ngFor="let anchoredArgument of anchoredArguments">
         <div class="anchored-argument-left-side">
           <app-msf-argument [currentArgument]="anchoredArgument.argument" [currentGlobalOptionId]="values.currentOption.id" [anchoredArgument]="true" (setLoading)="setArgumentLoading(anchoredArgument, $event)"></app-msf-argument>
         </div>

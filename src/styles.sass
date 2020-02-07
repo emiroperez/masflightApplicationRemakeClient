@@ -4031,6 +4031,7 @@ mat-tab-group
     flex-wrap: wrap
     align-content: stretch
     width: calc(100% + 20px)
+    margin-top: -10px
 
 .msf-dashboard-panel-anchored-argument
     display: flex
@@ -4041,12 +4042,16 @@ mat-tab-group
     border-left: 1px solid
     margin-left: -11px
     padding-left: 10px
-    font-size: 10px
+    font-size: 12px
     margin-right: 10px
     position: relative
     flex-grow: 1
+    app-msf-airport
+        font-size: inherit
     .anchored-argument-left-side
         width: calc(100% - 40px)
+    .msf-component-airport-sub-title
+        margin-bottom: inherit !important
     .anchored-argument-button
         position: absolute
         right: 7px
@@ -4064,6 +4069,8 @@ mat-tab-group
                 height: 17px
     .anchor-argument-container
         display: flex
+        .msf-airline-container
+            width: 100%
         .msf-grouping-input-container
             display: flex
             align-items: center
@@ -4094,7 +4101,7 @@ mat-tab-group
                 margin-right: 5px
                 padding-bottom: 0 !important
                 .mat-form-field-flex
-                    margin-top: -8px
+                    margin-top: -11px
                     .mat-form-field-infix
                         padding-left: 5px
             .msf-calendar-image
@@ -4108,19 +4115,17 @@ mat-tab-group
                 display: flex
                 align-items: center
                 margin-right: 10px
+                white-space: nowrap
             .initial-date-label
-                width: 113px
+                white-space: nowrap
             .initial-date-quarter-label
-                width: 150px
+                white-space: nowrap
             .date-range-label
-                width: 78px
+                white-space: nowrap
             .msf-full-width
                 margin-right: 5px
             .msf-component-airport-title
                 background-color: inherit !important
-
-.anchored-variables-first-item
-    margin-top: -10px
 
 .msf-child-panel-control-variable-button
     flex-direction: row-reverse !important
