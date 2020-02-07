@@ -254,8 +254,7 @@
                         bindLabel="name"
                         bindName="value"
                         [(ngModel)]="argument.value3"
-                        [clearable]="false"
-                        dropdownPosition="bottom">
+                        [clearable]="false">
                     </ng-select> 
                     <img src="../../assets/images/{{globals.theme}}-calendarTime.png" class="msf-calendar-image">
                 </div>
@@ -272,8 +271,7 @@
                 (change)="autoSelect()"
                 [(ngModel)]="dateRange"
                 [clearable]="false"
-                (ngModelChange)="setCurrentDateRangeValue()"
-                dropdownPosition="bottom">
+                (ngModelChange)="setCurrentDateRangeValue()">
             </ng-select>
         </div>
     </div>
