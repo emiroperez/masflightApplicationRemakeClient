@@ -17,20 +17,6 @@ import { Arguments } from '../model/Arguments';
 import { Utils } from '../commons/utils';
 import { AuthService } from '../services/auth.service';
 
-// date intervals
-const dateIntervals = [
-  { timeUnit: "day", count: 1 },
-  { timeUnit: "day", count: 2 },
-  { timeUnit: "day", count: 3 },
-  { timeUnit: "day", count: 4 },
-  { timeUnit: "day", count: 5 },
-  { timeUnit: "day", count: 6 },
-  { timeUnit: "day", count: 7 },
-  { timeUnit: "day", count: 8 },
-  { timeUnit: "day", count: 9 },
-  { timeUnit: "day", count: 10 }
-];
-
 @Component({
   selector: 'app-msf-dashboard-child-panel',
   templateUrl: './msf-dashboard-child-panel.component.html'
@@ -629,8 +615,29 @@ export class MsfDashboardChildPanelComponent {
           if (parseDate)
           {
             categoryAxis = chart.yAxes.push (new am4charts.DateAxis ());
-            categoryAxis.gridIntervals.setAll (dateIntervals);
             categoryAxis.dateFormats.setKey ("day", outputFormat);
+            categoryAxis.dateFormats.setKey ("week", outputFormat);
+            categoryAxis.dateFormats.setKey ("month", outputFormat);
+            categoryAxis.dateFormats.setKey ("year", outputFormat);
+
+            if (!outputFormat.includes ("d") && !outputFormat.includes ("D"))
+            {
+              if (!outputFormat.includes ("m") && !outputFormat.includes ("M"))
+              {
+                categoryAxis.baseInterval.timeunit = "year";
+                categoryAxis.baseInterval.count = 1;
+              }
+              else
+              {
+                categoryAxis.baseInterval.timeunit = "month";
+                categoryAxis.baseInterval.count = 1;
+              }
+            }
+            else
+            {
+              categoryAxis.baseInterval.timeunit = "day";
+              categoryAxis.baseInterval.count = 1;
+            }
 
             if (!outputFormat.includes ("y") && !outputFormat.includes ("Y"))
               categoryAxis.periodChangeDateFormats.setKey ("month", "yyyy");
@@ -638,6 +645,8 @@ export class MsfDashboardChildPanelComponent {
               categoryAxis.periodChangeDateFormats.setKey ("month", outputFormat);
 
             categoryAxis.periodChangeDateFormats.setKey ("day", outputFormat);
+            categoryAxis.periodChangeDateFormats.setKey ("week", outputFormat);
+            categoryAxis.periodChangeDateFormats.setKey ("year", outputFormat);
           }
           else
           {
@@ -663,8 +672,29 @@ export class MsfDashboardChildPanelComponent {
           if (parseDate)
           {
             categoryAxis = chart.xAxes.push (new am4charts.DateAxis ());
-            categoryAxis.gridIntervals.setAll (dateIntervals);
             categoryAxis.dateFormats.setKey ("day", outputFormat);
+            categoryAxis.dateFormats.setKey ("week", outputFormat);
+            categoryAxis.dateFormats.setKey ("month", outputFormat);
+            categoryAxis.dateFormats.setKey ("year", outputFormat);
+
+            if (!outputFormat.includes ("d") && !outputFormat.includes ("D"))
+            {
+              if (!outputFormat.includes ("m") && !outputFormat.includes ("M"))
+              {
+                categoryAxis.baseInterval.timeunit = "year";
+                categoryAxis.baseInterval.count = 1;
+              }
+              else
+              {
+                categoryAxis.baseInterval.timeunit = "month";
+                categoryAxis.baseInterval.count = 1;
+              }
+            }
+            else
+            {
+              categoryAxis.baseInterval.timeunit = "day";
+              categoryAxis.baseInterval.count = 1;
+            }
 
             if (!outputFormat.includes ("y") && !outputFormat.includes ("Y"))
               categoryAxis.periodChangeDateFormats.setKey ("month", "yyyy");
@@ -672,6 +702,8 @@ export class MsfDashboardChildPanelComponent {
               categoryAxis.periodChangeDateFormats.setKey ("month", outputFormat);
 
             categoryAxis.periodChangeDateFormats.setKey ("day", outputFormat);
+            categoryAxis.periodChangeDateFormats.setKey ("week", outputFormat);
+            categoryAxis.periodChangeDateFormats.setKey ("year", outputFormat);
           }
           else
           {

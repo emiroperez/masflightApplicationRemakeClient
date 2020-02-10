@@ -9,20 +9,6 @@ import { MessageComponent } from '../message/message.component';
 import { AuthService } from '../services/auth.service';
 import { Themes } from '../globals/Themes';
 
-// date intervals
-const dateIntervals = [
-  { timeUnit: "day", count: 1 },
-  { timeUnit: "day", count: 2 },
-  { timeUnit: "day", count: 3 },
-  { timeUnit: "day", count: 4 },
-  { timeUnit: "day", count: 5 },
-  { timeUnit: "day", count: 6 },
-  { timeUnit: "day", count: 7 },
-  { timeUnit: "day", count: 8 },
-  { timeUnit: "day", count: 9 },
-  { timeUnit: "day", count: 10 }
-];
-
 @Component({
   selector: 'app-msf-more-info-popup',
   templateUrl: './msf-more-info-popup.component.html',
@@ -228,9 +214,16 @@ export class MsfMoreInfoPopupComponent{
         if (parseDate)
         {
           categoryAxis = chart.yAxes.push (new am4charts.DateAxis ());
-          categoryAxis.gridIntervals.setAll (dateIntervals);
+
           categoryAxis.dateFormats.setKey ("day", "MMM d");
-          categoryAxis.periodChangeDateFormats.setKey ("month", "yyyy");
+          categoryAxis.dateFormats.setKey ("week", "MMM d");
+          categoryAxis.dateFormats.setKey ("month", "MMM d");
+          categoryAxis.dateFormats.setKey ("year", "MMM d");
+
+          categoryAxis.periodChangeDateFormats.setKey ("day", "MMM d");
+          categoryAxis.periodChangeDateFormats.setKey ("week", "MMM d");
+          categoryAxis.periodChangeDateFormats.setKey ("month", "MMM d");
+          categoryAxis.periodChangeDateFormats.setKey ("year", "yyyy");
         }
         else
         {

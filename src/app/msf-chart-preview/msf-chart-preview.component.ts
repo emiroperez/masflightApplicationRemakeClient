@@ -382,8 +382,29 @@ export class MsfChartPreviewComponent {
           if (parseDate)
           {
             categoryAxis = chart.yAxes.push (new am4charts.DateAxis ());
-            categoryAxis.gridIntervals.setAll (dateIntervals);
             categoryAxis.dateFormats.setKey ("day", outputFormat);
+            categoryAxis.dateFormats.setKey ("week", outputFormat);
+            categoryAxis.dateFormats.setKey ("month", outputFormat);
+            categoryAxis.dateFormats.setKey ("year", outputFormat);
+
+            if (!outputFormat.includes ("d") && !outputFormat.includes ("D"))
+            {
+              if (!outputFormat.includes ("m") && !outputFormat.includes ("M"))
+              {
+                categoryAxis.baseInterval.timeunit = "year";
+                categoryAxis.baseInterval.count = 1;
+              }
+              else
+              {
+                categoryAxis.baseInterval.timeunit = "month";
+                categoryAxis.baseInterval.count = 1;
+              }
+            }
+            else
+            {
+              categoryAxis.baseInterval.timeunit = "day";
+              categoryAxis.baseInterval.count = 1;
+            }
 
             if (!outputFormat.includes ("y") && !outputFormat.includes ("Y"))
               categoryAxis.periodChangeDateFormats.setKey ("month", "yyyy");
@@ -391,6 +412,8 @@ export class MsfChartPreviewComponent {
               categoryAxis.periodChangeDateFormats.setKey ("month", outputFormat);
 
             categoryAxis.periodChangeDateFormats.setKey ("day", outputFormat);
+            categoryAxis.periodChangeDateFormats.setKey ("week", outputFormat);
+            categoryAxis.periodChangeDateFormats.setKey ("year", outputFormat);
           }
           else
           {
@@ -416,8 +439,29 @@ export class MsfChartPreviewComponent {
           if (parseDate)
           {
             categoryAxis = chart.xAxes.push (new am4charts.DateAxis ());
-            categoryAxis.gridIntervals.setAll (dateIntervals);
             categoryAxis.dateFormats.setKey ("day", outputFormat);
+            categoryAxis.dateFormats.setKey ("week", outputFormat);
+            categoryAxis.dateFormats.setKey ("month", outputFormat);
+            categoryAxis.dateFormats.setKey ("year", outputFormat);
+
+            if (!outputFormat.includes ("d") && !outputFormat.includes ("D"))
+            {
+              if (!outputFormat.includes ("m") && !outputFormat.includes ("M"))
+              {
+                categoryAxis.baseInterval.timeunit = "year";
+                categoryAxis.baseInterval.count = 1;
+              }
+              else
+              {
+                categoryAxis.baseInterval.timeunit = "month";
+                categoryAxis.baseInterval.count = 1;
+              }
+            }
+            else
+            {
+              categoryAxis.baseInterval.timeunit = "day";
+              categoryAxis.baseInterval.count = 1;
+            }
 
             if (!outputFormat.includes ("y") && !outputFormat.includes ("Y"))
               categoryAxis.periodChangeDateFormats.setKey ("month", "yyyy");
@@ -425,6 +469,8 @@ export class MsfChartPreviewComponent {
               categoryAxis.periodChangeDateFormats.setKey ("month", outputFormat);
 
             categoryAxis.periodChangeDateFormats.setKey ("day", outputFormat);
+            categoryAxis.periodChangeDateFormats.setKey ("week", outputFormat);
+            categoryAxis.periodChangeDateFormats.setKey ("year", outputFormat);
           }
           else
           {
