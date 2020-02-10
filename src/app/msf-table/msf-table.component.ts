@@ -857,8 +857,8 @@ export class MsfTableComponent implements OnInit {
     {
       // sanitize this html code in order to be able to use the pdf viewer for the drill down
       _this.globals.subPdfViewer = _this.sanitizer.bypassSecurityTrustHtml (
-        "<object data='" + response.url + "' type='application/pdf' width='100%' height='100%'>" + 
-          "<embed src='" + response.url + "' type='application/pdf' width='100%' height='100%'/>" +
+        "<object data='" + _this.globals.baseUrl + response.url + "' type='application/pdf' width='100%' height='100%'>" + 
+          "<embed src='" + _this.globals.baseUrl + response.url + "' type='application/pdf' width='100%' height='100%'/>" +
         "</object>"
       );
     }
