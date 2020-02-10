@@ -76,6 +76,7 @@ export class MsfDashboardPanelValues {
     ];
 
     thresholds: any[];
+    goals: any[];
 
     chartClicked: boolean;
     chartObjectSelected: any;
@@ -116,7 +117,7 @@ export class MsfDashboardPanelValues {
         xaxis?: any, valueColumn?: any, func?: any, chartType?: any, currentOptionCategories?: any, lastestResponse?: string,
         paletteColors?: any, updateTimeInterval?: number, row?: number, thresholds?: any, vertAxisName?: string, horizAxisName?: string,
         intValue?: any, startAtZero?: boolean, limitMode?: number, limitAmount?: number, ordered?: boolean,
-        valueList?: any, minValueRange?: number, maxValueRange?: number)
+        valueList?: any, minValueRange?: number, maxValueRange?: number, goals?: any)
     {
         this.options = options;
         this.chartName = chartName;
@@ -137,6 +138,11 @@ export class MsfDashboardPanelValues {
             this.thresholds = JSON.parse (thresholds);
         else
             this.thresholds = [];
+
+        if (goals)
+            this.goals = JSON.parse (goals);
+        else
+            this.goals = [];
 
         // load palette colors if there is any
         if (paletteColors)

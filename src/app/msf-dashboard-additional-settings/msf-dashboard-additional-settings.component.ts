@@ -88,6 +88,20 @@ export class MsfDashboardAdditionalSettingsComponent {
       this.data.values.thresholds.pop ();
   }
 
+  addGoal(): void
+  {
+    this.data.values.goals.push ({
+      value: 0,
+      color: "#000000"
+    });
+  }
+
+  removeGoal(): void
+  {
+    if (this.data.values.goals.length)
+      this.data.values.goals.pop ();
+  }
+
   onNoClick(): void
   {
     this.dialogRef.close ();

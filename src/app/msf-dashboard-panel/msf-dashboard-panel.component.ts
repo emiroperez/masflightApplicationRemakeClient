@@ -3851,7 +3851,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.toggleControlVariableDialogOpen.emit (true);
 
     dialogRef = this.dialog.open (MsfDashboardControlVariablesComponent, {
-      height: '605px',
       width: '400px',
       panelClass: 'msf-dashboard-arguments-dialog',
       data: {
@@ -5446,10 +5445,16 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       configFlags = ConfigFlags.CHARTCOLORS;
 
+      if (!(this.values.currentChartType.flags & ChartFlags.LINECHART))
+        configFlags |= ConfigFlags.GOALS;
+
       if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
+      {
         configFlags |= ConfigFlags.LIMITVALUES;
-      else
-        configFlags |= ConfigFlags.THRESHOLDS;
+
+        if (this.isSimpleChart ())
+          configFlags |= ConfigFlags.THRESHOLDS;
+      }
     }
     else if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
       configFlags = ConfigFlags.HEATMAPCOLOR | ConfigFlags.CHARTCOLORS;

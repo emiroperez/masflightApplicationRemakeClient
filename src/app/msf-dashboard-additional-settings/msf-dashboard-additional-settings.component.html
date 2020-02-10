@@ -117,7 +117,6 @@
     </div>
   </div>
 </div>
-<!--
 <div *ngIf="haveConfig(6) && !oneSettingActive" [ngClass]="advSettingsOpen == 6 ? 'msf-dashboard-menu-component-active' : 'msf-dashboard-menu-component'" (click)="componentClickHandler(6)">
   <span class="msf-menu-component-text msf-control-variables-text">Goals</span>
   <i *ngIf="advSettingsOpen != 6" class="material-icons msf-menu-cmpte-row">expand_more</i>
@@ -125,23 +124,31 @@
 </div>
 <div class="msf-dashboard-color-picker-container" *ngIf="advSettingsOpen == 6">
   <div class="msf-dashboard-addmenu-icon-item msf-dashboard-additional-settings-title">
-    <mat-icon class="msf-dashboard-chart-icon" aria-label="Value Range Limit">show_chart</mat-icon>
-    <span class="msf-dashboard-addmenu-item-text">Value Range Limit</span>
+    <mat-icon class="msf-dashboard-chart-icon" aria-label="Thresholds">done</mat-icon>
+    <span class="msf-dashboard-addmenu-item-text">Goals</span>
   </div>
-  <div class="center msf-component-radio msf-dashboard-additional-settings-title">
-    <mat-radio-group [(ngModel)]="data.values.limitMode" name="Limit Mode">
-      <mat-radio-button [value]="0">No Limit</mat-radio-button>
-      <mat-radio-button class="msf-radio" [value]="1">Range Limit</mat-radio-button>
-    </mat-radio-group>
+  <div class="msf-dashboard-color-picker-threshold-input" *ngIf="data.values.thresholds">
+    {{data.values.goals.length}}
+    <button mat-icon-button (click)="addGoal()">
+      <mat-icon aria-label="add">add_circle</mat-icon>
+    </button>
+    <button mat-icon-button (click)="removeGoal()">
+      <mat-icon aria-label="delete">remove_circle</mat-icon>
+    </button>
   </div>
-  <mat-form-field class="msf-dashboard-limit-amount-input" *ngIf="data.values.limitMode">
-    <input matInput autocomplete="off" placeholder="Min Value" maxlength="6" type="numeric" pattern="[0-9]*" [(ngModel)]="data.values.minValueRange">
-  </mat-form-field>
-  <mat-form-field class="msf-dashboard-limit-amount-input" *ngIf="data.values.limitMode">
-    <input matInput autocomplete="off" placeholder="Max Value" maxlength="6" type="numeric" pattern="[0-9]*" [(ngModel)]="data.values.maxValueRange">
-  </mat-form-field>
+  <div class="msf-dashboard-color-picker-threshold-container msf-dashboard-color-picker-new-threshold-container" *ngIf="data.values.goals">
+    <div class="msf-dashboard-color-picker-threshold-item" *ngFor="let goal of data.values.goals; trackBy: trackColor">
+      <mat-form-field class="msf-width-75">
+        <input matInput autocomplete="off" type="number" placeholder="Value" [(ngModel)]="goal.value"/>
+      </mat-form-field>
+      <div class="msf-dashboard-color-picker-selector-container msf-dashboard-color-picker-selector-new-container">
+        <span class="msf-dashboard-color-picker-selector-label">Color:</span>
+        <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="goal.color" [style.background]="goal.color" [(cpOutputFormat)]="hex"/>
+        <span class="msf-dashboard-color-picker-color-label">{{goal.color}}</span>
+      </div>
+    </div>
+  </div>
 </div>
--->
 <div class="msf-dashboard-control-variables-button">
   <button mat-flat-button class="flat-button" (click)="closeDialog()">OK</button>
 </div>
