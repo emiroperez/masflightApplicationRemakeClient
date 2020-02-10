@@ -9,6 +9,7 @@ import { MsfDashboardPanelValues } from '../msf-dashboard-panel/msf-dashboard-pa
 import { MsfDashboardAdditionalSettingsComponent } from '../msf-dashboard-additional-settings/msf-dashboard-additional-settings.component';
 import { ChartFlags } from '../msf-dashboard-panel/msf-dashboard-chartflags';
 import { ApplicationService } from '../services/application.service';
+import { ConfigFlags } from '../msf-dashboard-panel/msf-dashboard-configflags';
 
 @Component({
   selector: 'app-msf-dashboard-drill-down',
@@ -168,37 +169,26 @@ export class MsfDashboardDrillDownComponent {
 
   goToAdditionalSettings(): void
   {
-    let dialogRef, limitConfig, numColors;
+    let dialogRef, configFlags;
 
-    if (this.currentValue.currentChartType.flags & ChartFlags.XYCHART
-      || this.currentValue.currentChartType.flags & ChartFlags.PIECHART
+    configFlags = ConfigFlags.NONE;
+
+    if (this.currentValue.currentChartType.flags & ChartFlags.PIECHART
       || this.currentValue.currentChartType.flags & ChartFlags.FUNNELCHART)
+      configFlags = ConfigFlags.LIMITVALUES | ConfigFlags.CHARTCOLORS;
+    else if (this.currentValue.currentChartType.flags & ChartFlags.XYCHART || this.isSimpleChart ())
     {
-      if (this.currentValue.currentChartType.flags & ChartFlags.XYCHART)
-        limitConfig = false;
-      else
-        limitConfig = true;
-      numColors = 12;
+      configFlags = ConfigFlags.CHARTCOLORS;
+
+      if (!(this.currentValue.currentChartType.flags & ChartFlags.XYCHART))
+        configFlags |= ConfigFlags.LIMITVALUES;
     }
     else if (this.currentValue.currentChartType.flags & ChartFlags.HEATMAP)
-    {
-      limitConfig = false;
-      numColors = 1;
-    }
-    else if (this.currentValue.currentChartType.flags & ChartFlags.FORM)
-    {
-      limitConfig = false;
-      numColors = 0;
-    }
-    else
-    {
-      limitConfig = true;
-      numColors = 1;
-    }
+      configFlags = ConfigFlags.HEATMAPCOLOR | ConfigFlags.CHARTCOLORS;
 
     // don't allow the option to limit results on advanced charts
     if (this.currentValue.currentChartType.flags & ChartFlags.ADVANCED)
-      limitConfig = false;
+      configFlags &= ~ConfigFlags.LIMITVALUES;
 
     dialogRef = this.dialog.open (MsfDashboardAdditionalSettingsComponent, {
       width: '400px',
@@ -207,9 +197,7 @@ export class MsfDashboardDrillDownComponent {
       autoFocus: false,
       data: {
         values: this.currentValue,
-        thresholdValues: null,
-        numColors: numColors,
-        limitConfig: limitConfig
+        configFlags: configFlags
       }
     });
 
@@ -659,5 +647,13 @@ export class MsfDashboardDrillDownComponent {
       return true;
 
     return false;
+  }
+
+  isSimpleChart(): boolean
+  {
+    return !(this.currentValue.currentChartType.flags & ChartFlags.XYCHART)
+      && !(this.currentValue.currentChartType.flags & ChartFlags.ADVANCED)
+      && !(this.currentValue.currentChartType.flags & ChartFlags.PIECHART)
+      && !(this.currentValue.currentChartType.flags & ChartFlags.FUNNELCHART);
   }
 }
