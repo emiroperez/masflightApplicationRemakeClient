@@ -3608,6 +3608,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.dynTableValues = null;
     this.values.dynTableVariables = [];
     this.values.thresholds = [];
+    this.values.goals = [];
 
     for (let columnConfig of component.columnOptions)
     {
@@ -3899,6 +3900,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.temp.chartColumnOptions = JSON.parse (JSON.stringify (this.values.chartColumnOptions));
     this.temp.currentOptionCategories = JSON.parse (JSON.stringify (this.values.currentOptionCategories));
     this.temp.thresholds = JSON.parse (JSON.stringify (this.values.thresholds));
+    this.temp.goals = JSON.parse (JSON.stringify (this.values.goals));
     this.temp.style = JSON.parse (JSON.stringify (this.values.style));
     this.temp.vertAxisName = this.values.vertAxisName;
     this.temp.horizAxisName = this.values.horizAxisName;
@@ -4051,6 +4053,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.chartColumnOptions = JSON.parse (JSON.stringify (this.temp.chartColumnOptions));
     this.values.currentOptionCategories = JSON.parse (JSON.stringify (this.temp.currentOptionCategories));
     this.values.thresholds = JSON.parse (JSON.stringify (this.temp.thresholds));
+    this.values.goals = JSON.parse (JSON.stringify (this.temp.goals));
     this.values.style = JSON.parse (JSON.stringify (this.temp.style));
     this.values.vertAxisName = this.temp.vertAxisName;
     this.values.horizAxisName = this.temp.horizAxisName;

@@ -137,7 +137,7 @@
     </button>
   </div>
   <div class="msf-dashboard-color-picker-threshold-container msf-dashboard-color-picker-new-threshold-container" *ngIf="data.values.goals">
-    <div class="msf-dashboard-color-picker-threshold-item" *ngFor="let goal of data.values.goals; trackBy: trackColor">
+    <div class="msf-dashboard-color-picker-goal-item" *ngFor="let goal of data.values.goals; trackBy: trackColor">
       <mat-form-field class="msf-width-75">
         <input matInput autocomplete="off" type="number" placeholder="Value" [(ngModel)]="goal.value"/>
       </mat-form-field>
