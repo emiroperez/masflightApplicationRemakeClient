@@ -22,6 +22,7 @@ import { ReplaySubject, Subject } from 'rxjs';
 import { MatSelect, MatDialog, PageEvent, MatPaginator } from '@angular/material';
 import { takeUntil } from 'rxjs/operators';
 import * as moment from 'moment';
+import { DatePipe } from '@angular/common';
 
 import { ApiClient } from '../api/api-client';
 import { Arguments } from '../model/Arguments';
@@ -41,7 +42,7 @@ import { MsfMapComponent } from '../msf-map/msf-map.component';
 import { MsfDashboardAssistantComponent } from '../msf-dashboard-assistant/msf-dashboard-assistant.component';
 import { MsfDynamicTableAliasComponent } from '../msf-dynamic-table-alias/msf-dynamic-table-alias.component';
 import { MsfSelectDataFromComponent } from '../msf-select-data-from/msf-select-data-from.component';
-import { DatePipe } from '@angular/common';
+import { ConfigFlags } from './msf-dashboard-configflags';
 
 // AmCharts colors
 const black = am4core.color ("#000000");
@@ -5433,51 +5434,32 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   goToAdditionalSettings(): void
   {
-    let limitConfig, numColors, limitAggregatorValue, thresholdValues;
+    let configFlags = ConfigFlags.NONE;
 
     if (this.values.currentChartType.flags & ChartFlags.FORM ||
       this.values.currentChartType.flags & ChartFlags.TABLE)
+      configFlags = ConfigFlags.THRESHOLDS;
+    else if (this.values.currentChartType.flags & ChartFlags.PIECHART
+      || this.values.currentChartType.flags & ChartFlags.FUNNELCHART)
+      configFlags = ConfigFlags.LIMITVALUES | ConfigFlags.CHARTCOLORS;
+    else if (this.values.currentChartType.flags & ChartFlags.XYCHART || this.isSimpleChart ())
     {
-      limitConfig = false;
-      thresholdValues = true;
-      numColors = 0;
-    }
-    else if (this.values.currentChartType.flags & ChartFlags.XYCHART
-      || this.values.currentChartType.flags & ChartFlags.PIECHART
-      || this.values.currentChartType.flags & ChartFlags.FUNNELCHART
-      || this.isSimpleChart ())
-    {
-      if (this.values.currentChartType.flags & ChartFlags.XYCHART)
-        limitConfig = false;
+      configFlags = ConfigFlags.CHARTCOLORS;
+
+      if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
+        configFlags |= ConfigFlags.LIMITVALUES;
       else
-        limitConfig = true;
-
-      if (this.isSimpleChart ())
-        thresholdValues = true;
-
-      numColors = 12;
+        configFlags |= ConfigFlags.THRESHOLDS;
     }
     else if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
-    {
-      thresholdValues = false;
-      limitConfig = false;
-      numColors = 1;
-    }
-    else
-    {
-      thresholdValues = false;
-      limitConfig = true;
-      numColors = 1;
-    }
+      configFlags = ConfigFlags.HEATMAPCOLOR | ConfigFlags.CHARTCOLORS;
 
     // don't allow the option to limit results on advanced charts
     if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
     {
-      limitConfig = false;
-      limitAggregatorValue = true;
+      configFlags &= ~ConfigFlags.LIMITVALUES;
+      configFlags |= ConfigFlags.LIMITAGGREGATOR;
     }
-    else
-      limitAggregatorValue = false;
 
     this.dialog.open (MsfDashboardAdditionalSettingsComponent, {
       width: '400px',
@@ -5486,10 +5468,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       autoFocus: false,
       data: {
         values: this.values,
-        thresholdValues: thresholdValues,
-        numColors: numColors,
-        limitConfig: limitConfig,
-        limitAggregatorValue: limitAggregatorValue
+        configFlags: configFlags
       }
     });
   }

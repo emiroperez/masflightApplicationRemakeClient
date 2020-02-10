@@ -5,6 +5,7 @@ import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { Globals } from '../globals/Globals';
+import { ConfigFlags } from '../msf-dashboard-panel/msf-dashboard-configflags';
 
 @Component({
   selector: 'app-msf-dashboard-additional-settings',
@@ -15,25 +16,40 @@ export class MsfDashboardAdditionalSettingsComponent {
   columnFilterCtrl: FormControl = new FormControl ();
   _onDestroy = new Subject<void> ();
 
+  configList: any[] = [
+    ConfigFlags.CHARTCOLORS,
+    ConfigFlags.THRESHOLDS,
+    ConfigFlags.LIMITVALUES,
+    ConfigFlags.LIMITAGGREGATOR,
+    ConfigFlags.GOALS,
+    ConfigFlags.HEATMAPCOLOR
+  ];
+
   advSettingsOpen: number = 0;
 
-  onlyColorPicker: boolean = false;
-  onlyThresholds: boolean = false;
+  oneSettingActive: boolean = false;
 
   constructor(
     public dialogRef: MatDialogRef<MsfDashboardAdditionalSettingsComponent>,
     public globals: Globals,
     @Inject(MAT_DIALOG_DATA) public data: any)
   {
-    if (!data.limitConfig && !data.limitAggregatorValue && !data.numColors && data.thresholdValues)
+    let numConfigAvail = 0;
+    let currentConfig;
+
+    for (let i = 0; i < this.configList.length; i++)
     {
-      this.onlyThresholds = true;
-      this.advSettingsOpen = 4; // "open" the form threshold menu
+      if (data.configFlags & this.configList[i])
+      {
+        currentConfig = this.configList[i];
+        numConfigAvail++;
+      }
     }
-    else if (!data.limitConfig && !data.limitAggregatorValue && !data.thresholdValues && data.numColors)
+
+    if (numConfigAvail == 1)
     {
-      this.onlyColorPicker = true;
-      this.advSettingsOpen = 2; // open color picker by default if there is no limit configuration for now
+      this.componentClickHandler (this.configList.indexOf (currentConfig) + 1);
+      this.oneSettingActive = true;
     }
 
     if (data.values.limitMode == null)
@@ -82,12 +98,12 @@ export class MsfDashboardAdditionalSettingsComponent {
     this.dialogRef.close ();
   }
 
-  componentClickHandler(index: number): void
+  componentClickHandler(value: number): void
   {
-    if (this.advSettingsOpen == index)
+    if (this.advSettingsOpen == value)
       this.advSettingsOpen = 0; // close if open
     else
-      this.advSettingsOpen = index;
+      this.advSettingsOpen = value;
   }
 
   searchChange(filterCtrl): void
@@ -117,5 +133,39 @@ export class MsfDashboardAdditionalSettingsComponent {
     this.filteredVariables.next (
       this.data.values.chartColumnOptions.filter (a => a.name.toLowerCase ().indexOf (search) > -1)
     );
+  }
+
+  haveConfig(configNumber: number): boolean
+  {
+    let configFlag;
+
+    switch (configNumber)
+    {
+      case 1:
+        configFlag = ConfigFlags.LIMITVALUES;
+        break;
+
+      case 2:
+        configFlag = ConfigFlags.LIMITAGGREGATOR;
+        break;
+
+      case 3:
+        configFlag = ConfigFlags.CHARTCOLORS;
+        break;
+
+      case 4:
+        configFlag = ConfigFlags.HEATMAPCOLOR;
+        break;
+
+      case 5:
+        configFlag = ConfigFlags.THRESHOLDS;
+        break;
+
+      case 6:
+        configFlag = ConfigFlags.GOALS;
+        break;
+    }
+
+    return (this.data.configFlags & configFlag) ? true : false;
   }
 }

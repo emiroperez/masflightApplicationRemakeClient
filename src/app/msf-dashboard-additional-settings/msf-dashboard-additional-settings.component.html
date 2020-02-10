@@ -4,73 +4,69 @@
   </div>
   {{data.values.chartName}}
 </div>
-<ng-container *ngIf="data.limitConfig">
-  <div [ngClass]="advSettingsOpen == 1 ? 'msf-dashboard-menu-component-active' : 'msf-dashboard-menu-component'" (click)="componentClickHandler(1)">
-    <span class="msf-menu-component-text msf-control-variables-text">Limit Results</span>
-    <i *ngIf="advSettingsOpen != 1" class="material-icons msf-menu-cmpte-row">expand_more</i>
-    <i *ngIf="advSettingsOpen == 1" class="material-icons msf-menu-cmpte-row">expand_less</i>
+<div *ngIf="haveConfig(1) && !oneSettingActive" [ngClass]="advSettingsOpen == 1 ? 'msf-dashboard-menu-component-active' : 'msf-dashboard-menu-component'" (click)="componentClickHandler(1)">
+  <span class="msf-menu-component-text msf-control-variables-text">Limit Results</span>
+  <i *ngIf="advSettingsOpen != 1" class="material-icons msf-menu-cmpte-row">expand_more</i>
+  <i *ngIf="advSettingsOpen == 1" class="material-icons msf-menu-cmpte-row">expand_less</i>
+</div>
+<div class="msf-dashboard-color-picker-container" *ngIf="advSettingsOpen == 1">
+  <div class="msf-dashboard-addmenu-icon-item msf-dashboard-additional-settings-title">
+    <mat-icon class="msf-dashboard-chart-icon" aria-label="Limit Results">show_chart</mat-icon>
+    <span class="msf-dashboard-addmenu-item-text">Set Limit Results</span>
   </div>
-  <div class="msf-dashboard-color-picker-container" *ngIf="advSettingsOpen == 1">
-    <div class="msf-dashboard-addmenu-icon-item msf-dashboard-additional-settings-title">
-      <mat-icon class="msf-dashboard-chart-icon" aria-label="Limit Results">show_chart</mat-icon>
-      <span class="msf-dashboard-addmenu-item-text">Set Limit Results</span>
-    </div>
-    <div class="center msf-component-radio msf-dashboard-additional-settings-title">
-      <mat-radio-group [(ngModel)]="data.values.limitMode" name="Limit Mode">
-        <mat-radio-button [value]="0">No Limit</mat-radio-button>
-        <mat-radio-button class="msf-radio" [value]="1">Top Values</mat-radio-button>
-        <mat-radio-button class="msf-radio" [value]="2">Bottom Values</mat-radio-button>
-      </mat-radio-group>
-    </div>
-    <mat-form-field class="msf-dashboard-limit-amount-input" *ngIf="data.values.limitMode">
-      <input matInput autocomplete="off" placeholder="Amount of results to limit" maxlength="6" type="numeric" pattern="[0-9]*" [(ngModel)]="data.values.limitAmount">
-    </mat-form-field>
+  <div class="center msf-component-radio msf-dashboard-additional-settings-title">
+    <mat-radio-group [(ngModel)]="data.values.limitMode" name="Limit Mode">
+      <mat-radio-button [value]="0">No Limit</mat-radio-button>
+      <mat-radio-button class="msf-radio" [value]="1">Top Values</mat-radio-button>
+      <mat-radio-button class="msf-radio" [value]="2">Bottom Values</mat-radio-button>
+    </mat-radio-group>
   </div>
-</ng-container>
-<ng-container *ngIf="data.limitAggregatorValue">
-  <div [ngClass]="advSettingsOpen == 3 ? 'msf-dashboard-menu-component-active' : 'msf-dashboard-menu-component'" (click)="componentClickHandler(3)">
-    <span class="msf-menu-component-text msf-control-variables-text">Limit Value Range</span>
-    <i *ngIf="advSettingsOpen != 3" class="material-icons msf-menu-cmpte-row">expand_more</i>
-    <i *ngIf="advSettingsOpen == 3" class="material-icons msf-menu-cmpte-row">expand_less</i>
-  </div>
-  <div class="msf-dashboard-color-picker-container" *ngIf="advSettingsOpen == 3">
-    <div class="msf-dashboard-addmenu-icon-item msf-dashboard-additional-settings-title">
-      <mat-icon class="msf-dashboard-chart-icon" aria-label="Value Range Limit">show_chart</mat-icon>
-      <span class="msf-dashboard-addmenu-item-text">Value Range Limit</span>
-    </div>
-    <div class="center msf-component-radio msf-dashboard-additional-settings-title">
-      <mat-radio-group [(ngModel)]="data.values.limitMode" name="Limit Mode">
-        <mat-radio-button [value]="0">No Limit</mat-radio-button>
-        <mat-radio-button class="msf-radio" [value]="1">Range Limit</mat-radio-button>
-      </mat-radio-group>
-    </div>
-    <mat-form-field class="msf-dashboard-limit-amount-input" *ngIf="data.values.limitMode">
-      <input matInput autocomplete="off" placeholder="Min Value" maxlength="6" type="numeric" pattern="[0-9]*" [(ngModel)]="data.values.minValueRange">
-    </mat-form-field>
-    <mat-form-field class="msf-dashboard-limit-amount-input" *ngIf="data.values.limitMode">
-      <input matInput autocomplete="off" placeholder="Max Value" maxlength="6" type="numeric" pattern="[0-9]*" [(ngModel)]="data.values.maxValueRange">
-    </mat-form-field>
-  </div>
-</ng-container>
-<div *ngIf="data.numColors && !onlyColorPicker" [ngClass]="advSettingsOpen == 2 ? 'msf-dashboard-menu-component-active' : 'msf-dashboard-menu-component'" (click)="componentClickHandler(2)">
-  <span class="msf-menu-component-text msf-control-variables-text">Color Picker</span>
+  <mat-form-field class="msf-dashboard-limit-amount-input" *ngIf="data.values.limitMode">
+    <input matInput autocomplete="off" placeholder="Amount of results to limit" maxlength="6" type="numeric" pattern="[0-9]*" [(ngModel)]="data.values.limitAmount">
+  </mat-form-field>
+</div>
+<div *ngIf="haveConfig(2) && !oneSettingActive" [ngClass]="advSettingsOpen == 2 ? 'msf-dashboard-menu-component-active' : 'msf-dashboard-menu-component'" (click)="componentClickHandler(2)">
+  <span class="msf-menu-component-text msf-control-variables-text">Limit Value Range</span>
   <i *ngIf="advSettingsOpen != 2" class="material-icons msf-menu-cmpte-row">expand_more</i>
   <i *ngIf="advSettingsOpen == 2" class="material-icons msf-menu-cmpte-row">expand_less</i>
 </div>
 <div class="msf-dashboard-color-picker-container" *ngIf="advSettingsOpen == 2">
-  <div class="msf-dashboard-addmenu-icon-item msf-dashboard-additional-settings-title" *ngIf="data.numColors">
-    <mat-icon class="msf-dashboard-chart-icon" aria-label="Palette Colors">palette</mat-icon>
-    <span class="msf-dashboard-addmenu-item-text" *ngIf="data.numColors == 1">Select Palette Color</span>
-    <span class="msf-dashboard-addmenu-item-text" *ngIf="data.numColors != 1">Select Palette Colors</span>
+  <div class="msf-dashboard-addmenu-icon-item msf-dashboard-additional-settings-title">
+    <mat-icon class="msf-dashboard-chart-icon" aria-label="Value Range Limit">show_chart</mat-icon>
+    <span class="msf-dashboard-addmenu-item-text">Value Range Limit</span>
   </div>
-  <div class="msf-dashboard-color-picker-layout" *ngIf="data.numColors == 1">
+  <div class="center msf-component-radio msf-dashboard-additional-settings-title">
+    <mat-radio-group [(ngModel)]="data.values.limitMode" name="Limit Mode">
+      <mat-radio-button [value]="0">No Limit</mat-radio-button>
+      <mat-radio-button class="msf-radio" [value]="1">Range Limit</mat-radio-button>
+    </mat-radio-group>
+  </div>
+  <mat-form-field class="msf-dashboard-limit-amount-input" *ngIf="data.values.limitMode">
+    <input matInput autocomplete="off" placeholder="Min Value" maxlength="6" type="numeric" pattern="[0-9]*" [(ngModel)]="data.values.minValueRange">
+  </mat-form-field>
+  <mat-form-field class="msf-dashboard-limit-amount-input" *ngIf="data.values.limitMode">
+    <input matInput autocomplete="off" placeholder="Max Value" maxlength="6" type="numeric" pattern="[0-9]*" [(ngModel)]="data.values.maxValueRange">
+  </mat-form-field>
+</div>
+<div *ngIf="haveConfig(3) && !oneSettingActive" [ngClass]="advSettingsOpen == 3 ? 'msf-dashboard-menu-component-active' : 'msf-dashboard-menu-component'" (click)="componentClickHandler(3)">
+  <span class="msf-menu-component-text msf-control-variables-text">Color Picker</span>
+  <i *ngIf="advSettingsOpen != 3" class="material-icons msf-menu-cmpte-row">expand_more</i>
+  <i *ngIf="advSettingsOpen == 3" class="material-icons msf-menu-cmpte-row">expand_less</i>
+</div>
+<div class="msf-dashboard-color-picker-container" *ngIf="advSettingsOpen == 3">
+  <div class="msf-dashboard-addmenu-icon-item msf-dashboard-additional-settings-title">
+    <mat-icon class="msf-dashboard-chart-icon" aria-label="Palette Colors">palette</mat-icon>
+    <span class="msf-dashboard-addmenu-item-text" *ngIf="haveConfig(4)">Select Palette Color</span>
+    <span class="msf-dashboard-addmenu-item-text" *ngIf="!haveConfig(4)">Select Palette Colors</span>
+  </div>
+  <div class="msf-dashboard-color-picker-layout" *ngIf="haveConfig(4)">
     <div class="msf-dashboard-color-picker-selector-container">
       <span class="msf-dashboard-color-picker-selector-label">Color:</span>
       <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="data.values.paletteColors[0]" [style.background]="data.values.paletteColors[0]" [(cpOutputFormat)]="hex"/>
       <span class="msf-dashboard-color-picker-color-label">{{data.values.paletteColors[0]}}</span>
     </div>
   </div>
-  <div class="msf-dashboard-color-picker-grid-layout" *ngIf="data.numColors > 1">
+  <div class="msf-dashboard-color-picker-grid-layout" *ngIf="!haveConfig(4)">
     <div *ngFor="let color of data.values.paletteColors; let i = index; trackBy: trackColor" class="msf-dashboard-color-picker-selector-container">
       <span class="msf-dashboard-color-picker-selector-label">Color #{{i + 1}}:</span>
       <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="data.values.paletteColors[i]" [style.background]="data.values.paletteColors[i]" [(cpOutputFormat)]="hex"/>
@@ -78,12 +74,12 @@
     </div>
   </div>
 </div>
-<div *ngIf="data.thresholdValues && !onlyThresholds" [ngClass]="advSettingsOpen == 4 ? 'msf-dashboard-menu-component-active' : 'msf-dashboard-menu-component'" (click)="componentClickHandler(4)">
+<div *ngIf="haveConfig(5) && !oneSettingActive" [ngClass]="advSettingsOpen == 5 ? 'msf-dashboard-menu-component-active' : 'msf-dashboard-menu-component'" (click)="componentClickHandler(5)">
   <span class="msf-menu-component-text msf-control-variables-text">Threshold Values</span>
-  <i *ngIf="advSettingsOpen != 4" class="material-icons msf-menu-cmpte-row">expand_more</i>
-  <i *ngIf="advSettingsOpen == 4" class="material-icons msf-menu-cmpte-row">expand_less</i>
+  <i *ngIf="advSettingsOpen != 5" class="material-icons msf-menu-cmpte-row">expand_more</i>
+  <i *ngIf="advSettingsOpen == 5" class="material-icons msf-menu-cmpte-row">expand_less</i>
 </div>
-<div class="msf-dashboard-color-picker-container" *ngIf="advSettingsOpen == 4">
+<div class="msf-dashboard-color-picker-container" *ngIf="advSettingsOpen == 5">
   <div class="msf-dashboard-addmenu-icon-item msf-dashboard-additional-settings-title">
     <mat-icon class="msf-dashboard-chart-icon" aria-label="Thresholds">assessment</mat-icon>
     <span class="msf-dashboard-addmenu-item-text">Thresholds</span>
@@ -121,6 +117,31 @@
     </div>
   </div>
 </div>
+<!--
+<div *ngIf="haveConfig(6) && !oneSettingActive" [ngClass]="advSettingsOpen == 6 ? 'msf-dashboard-menu-component-active' : 'msf-dashboard-menu-component'" (click)="componentClickHandler(6)">
+  <span class="msf-menu-component-text msf-control-variables-text">Goals</span>
+  <i *ngIf="advSettingsOpen != 6" class="material-icons msf-menu-cmpte-row">expand_more</i>
+  <i *ngIf="advSettingsOpen == 6" class="material-icons msf-menu-cmpte-row">expand_less</i>
+</div>
+<div class="msf-dashboard-color-picker-container" *ngIf="advSettingsOpen == 6">
+  <div class="msf-dashboard-addmenu-icon-item msf-dashboard-additional-settings-title">
+    <mat-icon class="msf-dashboard-chart-icon" aria-label="Value Range Limit">show_chart</mat-icon>
+    <span class="msf-dashboard-addmenu-item-text">Value Range Limit</span>
+  </div>
+  <div class="center msf-component-radio msf-dashboard-additional-settings-title">
+    <mat-radio-group [(ngModel)]="data.values.limitMode" name="Limit Mode">
+      <mat-radio-button [value]="0">No Limit</mat-radio-button>
+      <mat-radio-button class="msf-radio" [value]="1">Range Limit</mat-radio-button>
+    </mat-radio-group>
+  </div>
+  <mat-form-field class="msf-dashboard-limit-amount-input" *ngIf="data.values.limitMode">
+    <input matInput autocomplete="off" placeholder="Min Value" maxlength="6" type="numeric" pattern="[0-9]*" [(ngModel)]="data.values.minValueRange">
+  </mat-form-field>
+  <mat-form-field class="msf-dashboard-limit-amount-input" *ngIf="data.values.limitMode">
+    <input matInput autocomplete="off" placeholder="Max Value" maxlength="6" type="numeric" pattern="[0-9]*" [(ngModel)]="data.values.maxValueRange">
+  </mat-form-field>
+</div>
+-->
 <div class="msf-dashboard-control-variables-button">
   <button mat-flat-button class="flat-button" (click)="closeDialog()">OK</button>
 </div>
