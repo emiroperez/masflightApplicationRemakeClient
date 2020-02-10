@@ -111,7 +111,8 @@ export class MsfDashboardPanelValues {
 
     showPaginator: boolean;
     showMoreResult: boolean;
-  tokenResultTable: any;
+
+    tokenResultTable: any;
 
     constructor(options: any[], chartName: String, id: number, width: any, height: any, currentOption?: any, variable?: any,
         xaxis?: any, valueColumn?: any, func?: any, chartType?: any, currentOptionCategories?: any, lastestResponse?: string,
