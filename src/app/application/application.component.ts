@@ -420,6 +420,7 @@ toggle(){
       this.globals.showIntroWelcome=false;
       this.globals.showTabs=true;
     }
+
     if (this.globals.currentOption.metaData == 3)
     {
       this.configureCoordinates ();
@@ -454,7 +455,10 @@ toggle(){
   }
 
   search2(){
-    if(this.globals.currentOption.tabType === 'map'&& this.globals.currentOption.url!=null){
+    if (this.globals.currentOption.tabType === 'scmap2' && this.globals.currentOption.metaData == 4)
+      this.getRoutes ();
+    else if(this.globals.currentOption.tabType === 'map'&& this.globals.currentOption.url!=null)
+    {
       this.globals.map = true;
       this.msfContainerRef.msfMapRef.getTrackingDataSource();
       this.msfContainerRef.msfTableRef.getData(false);
@@ -463,6 +467,37 @@ toggle(){
     }else{
       this.msfContainerRef.msfTableRef.getData(false);
     }
+  }
+
+  getRoutes(): void
+  {
+    this.globals.startTimestamp = new Date();
+
+    this.authService.removeTokenResultTable();
+    let tokenResultTable = this.authService.getTokenResultTable() ? this.authService.getTokenResultTable() : "";
+
+    this.globals.isLoading = true;
+    this.appService.getDataSource(this, this.handlerRouteSuccess, this.handlerRouteError, tokenResultTable);
+  }
+
+  handlerRouteSuccess(_this, data): void
+  {
+    // prepare coordinates and lines
+    if (!data.Response || (data.Response.records && !data.Response.records.length))
+    {
+      return;
+    }
+
+    _this.globals.mapsc = true;
+    _this.globals.isLoading = false;
+    _this.globals.showPaginator = false;
+
+    _this.msfContainerRef.msfScMapRef.setRoutesToScMap (data.Response.records);
+  }
+
+  handlerRouteError(_this): void
+  {
+    _this.globals.isLoading = false;
   }
 
   moreResults(){

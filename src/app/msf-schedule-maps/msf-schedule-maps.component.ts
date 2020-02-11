@@ -4,8 +4,13 @@ import { Themes } from '../globals/Themes';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4maps from "@amcharts/amcharts4/maps";
 import am4geodata_worldLow from "@amcharts/amcharts4-geodata/worldLow";
+import { Utils } from '../commons/utils';
 
-// Home button SVG
+// AmChart colors
+const comet = am4core.color ("#585869");
+
+// SVG used for the map chart
+const targetSVG = "M9,0C4.029,0,0,4.029,0,9s4.029,9,9,9s9-4.029,9-9S13.971,0,9,0z M9,15.93 c-3.83,0-6.93-3.1-6.93-6.93S5.17,2.07,9,2.07s6.93,3.1,6.93,6.93S12.83,15.93,9,15.93 M12.5,9c0,1.933-1.567,3.5-3.5,3.5S5.5,10.933,5.5,9S7.067,5.5,9,5.5 S12.5,7.067,12.5,9z";
 const homeSVG = "M16,8 L14,8 L14,16 L10,16 L10,10 L6,10 L6,16 L2,16 L2,8 L0,8 L8,0 L16,8 Z M16,8";
 
 @Component({
@@ -18,7 +23,12 @@ export class MsfScheduleMapsComponent implements OnInit {
   @Input("currentOption")
   currentOption: any;
 
-  constructor(private zone: NgZone, public globals: Globals) { }
+  utils: Utils;
+
+  constructor(private zone: NgZone, public globals: Globals)
+  {
+    this.utils = new Utils ();
+  }
 
   ngOnInit() {
     this.globals.scheduleChart = null;
@@ -144,6 +154,188 @@ export class MsfScheduleMapsComponent implements OnInit {
       });
 
       this.globals.scheduleChart = chart;
+    });
+  }
+
+  setRoutesToScMap(records): void
+  {
+    let theme, imageSeriesTemplate, circle, hoverState, label, zoomLevel;
+    let newCity, newCityInfo;
+    let newCities = [];
+
+    theme = this.globals.theme;
+
+    this.zone.runOutsideAngular (() => {
+      // Remove any existing image and lines series from the map
+      if (this.globals.scheduleImageSeries != null)
+      {
+        this.globals.scheduleChart.series.removeIndex (this.globals.scheduleChart.series.indexOf (this.globals.scheduleImageSeries));
+        this.globals.scheduleImageSeries = null;
+      }
+
+      if (this.globals.scheduleLineSeries != null)
+      {
+        this.globals.scheduleChart.series.removeIndex (this.globals.scheduleChart.series.indexOf (this.globals.scheduleLineSeries));
+        this.globals.scheduleLineSeries = null;
+      }
+
+      if (this.globals.scheduleShadowLineSeries != null)
+      {
+        this.globals.scheduleChart.series.removeIndex (this.globals.scheduleChart.series.indexOf (this.globals.scheduleShadowLineSeries));
+        this.globals.scheduleShadowLineSeries = null;
+      }
+
+      // Create image container for the circles and city labels
+      this.globals.scheduleImageSeries = this.globals.scheduleChart.series.push (new am4maps.MapImageSeries ());
+      imageSeriesTemplate = this.globals.scheduleImageSeries.mapImages.template;
+
+      // Set property fields for the cities
+      imageSeriesTemplate.propertyFields.latitude = "latitude";
+      imageSeriesTemplate.propertyFields.longitude = "longitude";
+      imageSeriesTemplate.horizontalCenter = "middle";
+      imageSeriesTemplate.verticalCenter = "middle";
+      imageSeriesTemplate.width = 8;
+      imageSeriesTemplate.height = 8;
+      imageSeriesTemplate.scale = 1;
+      imageSeriesTemplate.fill = Themes.AmCharts[theme].tooltipFill;
+      imageSeriesTemplate.background.fillOpacity = 0;
+      imageSeriesTemplate.background.fill = Themes.AmCharts[theme].mapCityColor;
+      imageSeriesTemplate.setStateOnChildren = true;
+
+      // Configure circle and city labels
+      circle = imageSeriesTemplate.createChild (am4core.Sprite);
+      circle.defaultState.properties.fillOpacity = 1;
+      circle.path = targetSVG;
+      circle.scale = 0.75;
+      circle.fill = Themes.AmCharts[theme].mapCityColor;
+      circle.dx -= 2.5;
+      circle.dy -= 2.5;
+      hoverState = circle.states.create ("hover");
+      hoverState.properties.fill = comet;
+
+      label = imageSeriesTemplate.createChild (am4core.Label);
+      label.text = "{tooltipText}";
+      label.scale = 1;
+      label.horizontalCenter = "left";
+      label.verticalCenter = "middle";
+      label.dx += 17.5;
+      label.dy += 5.5;
+      label.fill = Themes.AmCharts[theme].mapCityColor;
+      hoverState = label.states.create ("hover");
+      hoverState.properties.fill = Themes.AmCharts[theme].mapCityLabelHoverColor;
+      hoverState.properties.fillOpacity = 1;
+
+      imageSeriesTemplate.events.on ("over", function (event) {
+        event.target.setState ("hover");
+      });
+
+      imageSeriesTemplate.events.on ("out", function (event) {
+        event.target.setState ("default");
+      });
+
+      let tempLatCos, tempLat, tempLng;
+      var sumX = 0;
+      var sumY = 0;
+      var sumZ = 0;
+
+      // Add origin city
+      let originCity = this.globals.scheduleImageSeries.mapImages.create ();
+      newCityInfo = records[0];
+      originCity.latitude = parseFloat (newCityInfo.latOrigin);
+      originCity.longitude = parseFloat (newCityInfo.lonOrigin);
+      originCity.nonScaling = true;
+      originCity.tooltipText = newCityInfo.origin;
+
+      newCities.push (originCity);
+
+      tempLat = this.utils.degr2rad (originCity.latitude);
+      tempLng = this.utils.degr2rad (originCity.longitude);
+      tempLatCos = Math.cos (tempLat);
+      sumX += tempLatCos * Math.cos (tempLng);
+      sumY += tempLatCos * Math.sin (tempLng);
+      sumZ += Math.sin (tempLat);
+
+      // Add destination cities
+      for (let record of records)
+      {
+        newCity = this.globals.scheduleImageSeries.mapImages.create ();
+        newCityInfo = record;
+        newCity.latitude = parseFloat (newCityInfo.latDest);
+        newCity.longitude = parseFloat (newCityInfo.lonDest);
+        newCity.nonScaling = true;
+        newCity.tooltipText = newCityInfo.dest;
+
+        newCities.push (newCity);
+
+        tempLat = this.utils.degr2rad (newCity.latitude);
+        tempLng = this.utils.degr2rad (newCity.longitude);
+        tempLatCos = Math.cos (tempLat);
+        sumX += tempLatCos * Math.cos (tempLng);
+        sumY += tempLatCos * Math.sin (tempLng);
+        sumZ += Math.sin (tempLat);
+      }
+
+      var avgX = sumX / newCities.length;
+      var avgY = sumY / newCities.length;
+      var avgZ = sumZ / newCities.length;
+
+      // convert average x, y, z coordinate to latitude and longtitude
+      var lng = Math.atan2(avgY, avgX);
+      var hyp = Math.sqrt(avgX * avgX + avgY * avgY);
+      var lat = Math.atan2(avgZ, hyp);
+      var zoomlat =  this.utils.rad2degr(lat);
+      var zoomlong =this.utils.rad2degr(lng);
+
+      // Create map line series and connect to the cities
+      this.globals.scheduleLineSeries = this.globals.scheduleChart.series.push (new am4maps.MapLineSeries ());
+      this.globals.scheduleLineSeries.zIndex = 10;
+
+      // Add the selected routes into the map
+      for (let record of records)
+      {
+        let mapLine = this.globals.scheduleLineSeries.mapLines.create ();
+        let destCity = null;
+
+        for (let city of newCities)
+        {
+          if (city.tooltipText === record.dest)
+          {
+            destCity = city;
+            break;
+          }
+        }
+
+        if (destCity == null)
+          continue;
+
+        mapLine.imagesToConnect = [originCity, destCity];
+        mapLine.line.strokeOpacity = 0.3;
+        mapLine.line.stroke = Themes.AmCharts[theme].mapLineColor;
+        mapLine.line.horizontalCenter = "middle";
+        mapLine.line.verticalCenter = "middle";
+      }
+
+      if (!newCities.length)
+      {
+        zoomLevel = 1;
+        zoomlat = 24.8567;
+        zoomlong = 2.3510;
+      }
+      else
+        zoomLevel = 4;
+
+      this.globals.scheduleChart.deltaLongitude = 360 - Number (zoomlong);
+      this.globals.scheduleChart.homeGeoPoint.longitude = Number (zoomlong);
+      this.globals.scheduleChart.homeGeoPoint.latitude = Number (zoomlat);
+      this.globals.scheduleChart.homeZoomLevel = zoomLevel - 0.1;
+      this.globals.scheduleChart.goHome ();
+
+      // Workaround to avoid double lines
+      setTimeout (() =>
+      {
+        this.globals.scheduleChart.homeZoomLevel = zoomLevel;
+        this.globals.scheduleChart.goHome ();
+      }, 50);
     });
   }
 }

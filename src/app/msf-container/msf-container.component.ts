@@ -6,6 +6,7 @@ import { MsfDynamicTableComponent } from '../msf-dynamic-table/msf-dynamic-table
 import { MsfMapComponent } from '../msf-map/msf-map.component';
 import { MsfDashboardComponent } from '../msf-dashboard/msf-dashboard.component';
 import { MediaMatcher } from '@angular/cdk/layout';
+import { MsfScheduleMapsComponent } from '../msf-schedule-maps/msf-schedule-maps.component';
 
 @Component({
   selector: 'app-msf-container',
@@ -28,7 +29,7 @@ export class MsfContainerComponent implements OnInit {
   msfDynamicTableTabRef: MatTab;
 
   @ViewChild('msfScMapRef')
-  msfScMapRef: MatTab;
+  msfScMapRef: MsfScheduleMapsComponent;
   
   @ViewChild('msfWelcomeTab')
   msfWelcomeTab: MatTab;
