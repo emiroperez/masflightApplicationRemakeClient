@@ -235,10 +235,6 @@ export class MsfDashboardPanelComponent implements OnInit {
   public filteredVariables: ReplaySubject<any[]> = new ReplaySubject<any[]> (1);
   public filteredOptions: ReplaySubject<any[]> = new ReplaySubject<any[]> (1);
 
-  @ViewChild('variableSelect') variableSelect: MatSelect;
-  @ViewChild('xaxisSelect') xaxisSelect: MatSelect;
-  @ViewChild('valueSelect') valueSelect: MatSelect;
-
   private _onDestroy = new Subject<void> ();
 
   // mapbox variables
@@ -295,6 +291,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       variableCtrl: new FormControl ({ value: '', disabled: true }),
       xaxisCtrl: new FormControl ({ value: '', disabled: true }),
       valueCtrl: new FormControl ({ value: '', disabled: true }),
+      valueListCtrl: new FormControl ({ value: '', disabled: true }),
       infoNumVarCtrl: new FormControl ({ value: '', disabled: true }),
       infoVar1Ctrl: new FormControl ({ value: '', disabled: true }),
       infoVar2Ctrl: new FormControl ({ value: '', disabled: true }),
@@ -2024,16 +2021,17 @@ export class MsfDashboardPanelComponent implements OnInit {
         else if (!stacked)
         {
           let curValue = null;
+          let curGoal;
 
           // Set goal lines
           if (this.isSimpleChart ())
           {
-            let curGoal = null;
-
             if (this.values.valueList && this.values.valueList.length > 1)
             {
               for (let i = 0; i < chartInfo.valueFields.length; i++)
               {
+                curGoal = null;
+
                 for (let j = 0; j < this.values.goals.length; j++)
                 {
                   for (let item of this.values.chartColumnOptions)
@@ -2064,10 +2062,12 @@ export class MsfDashboardPanelComponent implements OnInit {
                 this.values.chartSeries.push (this.createStepLineSeries (this.values, chart, chartInfo.titleField, curValue.id, curGoal, chartInfo.valueFields.length, i, parseDate, outputFormat, panelLoading));
               }
             }
-            else
+            else if (this.values.valueList.length)
             {
               for (let i = 0; i < this.values.goals.length; i++)
               {
+                curGoal = null;
+
                 for (let item of this.values.chartColumnOptions)
                 {
                   if (item.id === chartInfo.valueField && item.item.id == this.values.goals[i].column)
@@ -2095,6 +2095,37 @@ export class MsfDashboardPanelComponent implements OnInit {
           }
           else
           {
+            for (let i = 0; i < this.chartInfo.filter.length; i++)
+            {
+              let valueField = this.chartInfo.filter[i].valueField;
+
+              curGoal = null;
+
+              for (let j = 0; j < this.values.goals.length; j++)
+              {
+                if (this.values.valueColumn.item.id == this.values.goals[j].column)
+                {
+                  curGoal = this.values.goals[j];
+                  break;
+                }
+
+                if (curGoal != null)
+                  break;
+              }
+
+              if (curGoal == null)
+                continue;
+
+              for (let data of chart.data)
+              {
+                let value = data[valueField];
+
+                if (value >= curGoal.value)
+                  data["goal" + valueField + i] = curGoal.value;
+              }
+
+              this.values.chartSeries.push (this.createStepLineSeries (this.values, chart, this.values.xaxis.id, valueField, curGoal, chartInfo.filter.length, i, parseDate, outputFormat, panelLoading));
+            }
           }
         }
 
@@ -2661,7 +2692,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         maxValueRange: null,
         variableName: this.values.chartColumnOptions ? (this.values.variable ? this.values.variable.id : null) : null,
         xaxisName: this.values.chartColumnOptions ? (this.values.xaxis ? this.values.xaxis.id : null) : null,
-        valueName: this.values.chartColumnOptions ? ((this.values.valueColumn && !(this.values.valueList && this.values.valueList.length)) ? this.values.valueColumn.id : null) : null,
+        valueName: this.values.chartColumnOptions ? ((this.values.valueColumn && !this.isSimpleChart ()) ? this.values.valueColumn.id : null) : null,
         functionName: this.values.function.id,
         valueNameList: this.generateValueNameList ()
       };
@@ -3759,6 +3790,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.chartForm.get ('variableCtrl').reset ();
     this.chartForm.get ('xaxisCtrl').reset ();
     this.chartForm.get ('valueCtrl').reset ();
+    this.chartForm.get ('valueListCtrl').reset ();
     this.chartForm.get ('columnCtrl').reset ();
     this.chartForm.get ('geodataValueCtrl').reset ();
     this.chartForm.get ('geodataKeyCtrl').reset ();
@@ -3781,6 +3813,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.chartForm.get ('xaxisCtrl').enable ();
 
     this.chartForm.get ('valueCtrl').enable ();
+    this.chartForm.get ('valueListCtrl').enable ();
     this.chartForm.get ('columnCtrl').enable ();
     this.chartForm.get ('fontSizeCtrl').enable ();
     this.chartForm.get ('valueFontSizeCtrl').enable ();
@@ -3918,6 +3951,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.chartForm.get ('variableCtrl').reset ();
     _this.chartForm.get ('xaxisCtrl').reset ();
     _this.chartForm.get ('valueCtrl').reset ();
+    _this.chartForm.get ('valueListCtrl').reset ();
     _this.chartForm.get ('columnCtrl').reset ();
     _this.chartForm.get ('geodataValueCtrl').reset ();
     _this.chartForm.get ('geodataKeyCtrl').reset ();
@@ -3937,6 +3971,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       _this.chartForm.get ('xaxisCtrl').enable ();
 
     _this.chartForm.get ('valueCtrl').enable ();
+    _this.chartForm.get ('valueListCtrl').enable ();
     _this.chartForm.get ('columnCtrl').enable ();
     _this.chartForm.get ('fontSizeCtrl').enable ();
     _this.chartForm.get ('valueFontSizeCtrl').enable ();
@@ -4334,7 +4369,9 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.chartForm.get ('xaxisCtrl').reset ();
 
       this.values.valueColumn = null;
+      this.values.valueList = [];
       this.chartForm.get ('valueCtrl').reset ();
+      this.chartForm.get ('valueListCtrl').reset ();
       this.chartForm.get ('geodataKeyCtrl').reset ();
 
       if (!(this.values.currentChartType.flags & ChartFlags.FORM))
@@ -4379,6 +4416,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         this.chartForm.get ('xaxisCtrl').reset ();
     
         this.chartForm.get ('valueCtrl').reset ();
+        this.chartForm.get ('valueListCtrl').reset ();
 
         if (!(this.values.currentChartType.flags & ChartFlags.HEATMAP))
         {
@@ -4441,6 +4479,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       }
 
       this.chartForm.get ('valueCtrl').enable ();
+      this.chartForm.get ('valueListCtrl').enable ();
       this.chartForm.get ('geodataValueCtrl').enable ();
       this.chartForm.get ('geodataKeyCtrl').enable ();
 
@@ -4723,6 +4762,7 @@ export class MsfDashboardPanelComponent implements OnInit {
             this.chartForm.get ('xaxisCtrl').enable ();
 
           this.chartForm.get ('valueCtrl').enable ();
+          this.chartForm.get ('valueListCtrl').enable ();
           this.chartForm.get ('geodataValueCtrl').enable ();
           this.chartForm.get ('geodataKeyCtrl').enable ();
           this.values.currentOption = option;
@@ -5252,7 +5292,7 @@ export class MsfDashboardPanelComponent implements OnInit {
             }
           }
 
-          this.chartForm.get ('valueCtrl').setValue (this.values.valueList);
+          this.chartForm.get ('valueListCtrl').setValue (this.values.valueList);
         }
         else if (this.values.valueColumn != null && this.values.valueColumn != -1)
         {
@@ -6446,7 +6486,7 @@ export class MsfDashboardPanelComponent implements OnInit {
             if (this.isSimpleChart ())
             {
               this.values.valueList = [ values.valueColumn ];
-              this.chartForm.get ('valueCtrl').setValue (this.values.valueList);
+              this.chartForm.get ('valueListCtrl').setValue (this.values.valueList);
             }
             else
               this.chartForm.get ('valueCtrl').setValue (values.valueColumn);

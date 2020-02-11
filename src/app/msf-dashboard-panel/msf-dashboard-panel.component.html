@@ -74,7 +74,7 @@
               <div class="msf-dashboard-chart-op-container-row">
                 <div class="msf-dashboard-field-valuectrl">
                   <mat-form-field [formGroup]="chartForm" class="msf-full-width">
-                    <mat-select formControlName="variableCtrl" placeholder="Analysis by" #variableSelect [(value)]="values.variable" (selectionChange)="checkPanelConfiguration()">
+                    <mat-select formControlName="variableCtrl" placeholder="Analysis by" [(value)]="values.variable" (selectionChange)="checkPanelConfiguration()">
                       <ngx-mat-select-search [formControl]="variableFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
                       <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
                         {{variable.name}}
@@ -98,7 +98,7 @@
               <div class="msf-dashboard-chart-op-container-row">
                 <div class="msf-dashboard-field-valuectrl">
                   <mat-form-field [formGroup]="chartForm" class="msf-full-width">
-                    <mat-select formControlName="xaxisCtrl" placeholder="x - Axis" #xaxisSelect [(value)]="values.xaxis" (selectionChange)="checkPanelConfiguration()">
+                    <mat-select formControlName="xaxisCtrl" placeholder="x - Axis" [(value)]="values.xaxis" (selectionChange)="checkPanelConfiguration()">
                       <ngx-mat-select-search [formControl]="xaxisFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
                       <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
                         {{variable.name}}
@@ -122,13 +122,13 @@
               <div class="msf-dashboard-chart-op-container-row">
                 <div class="msf-dashboard-field-valuectrl">
                   <mat-form-field [formGroup]="chartForm">
-                    <mat-select *ngIf="!isSimpleChart()" formControlName="valueCtrl" placeholder="Values" #valueSelect [(value)]="values.valueColumn" (selectionChange)="checkPanelConfiguration()">
+                    <mat-select *ngIf="!isSimpleChart()" formControlName="valueCtrl" placeholder="Values" [(value)]="values.valueColumn" (selectionChange)="checkPanelConfiguration()">
                       <ngx-mat-select-search [formControl]="valueFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
                       <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
                         {{variable.name}}
                       </mat-option>
                     </mat-select>
-                    <mat-select *ngIf="isSimpleChart()" formControlName="valueCtrl" placeholder="Values" #valueSelect [(value)]="values.valueList" (selectionChange)="checkPanelConfiguration()" multiple>
+                    <mat-select *ngIf="isSimpleChart()" formControlName="valueListCtrl" placeholder="Values" [(value)]="values.valueList" (selectionChange)="checkPanelConfiguration()" multiple>
                       <ngx-mat-select-search [formControl]="valueFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
                       <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
                         {{variable.name}}
@@ -522,7 +522,7 @@
             </div>
             <div class="msf-dashboard-chart-op-container">
               <mat-form-field [formGroup]="chartForm" class="msf-full-width">
-                <mat-select formControlName="geodataKeyCtrl" placeholder="Geography Data Key" #valueSelect [(value)]="values.valueColumn" (selectionChange)="checkPanelConfiguration()">
+                <mat-select formControlName="geodataKeyCtrl" placeholder="Geography Data Key" [(value)]="values.valueColumn" (selectionChange)="checkPanelConfiguration()">
                   <ngx-mat-select-search [formControl]="valueFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
                   <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
                     {{variable.name}}
@@ -537,7 +537,7 @@
             </div>
             <div class="msf-dashboard-chart-op-container">
               <mat-form-field [formGroup]="chartForm" class="msf-full-width">
-                <mat-select formControlName="geodataValueCtrl" placeholder="Value To Display" #variableSelect [(value)]="values.variable" (selectionChange)="checkPanelConfiguration()">
+                <mat-select formControlName="geodataValueCtrl" placeholder="Value To Display" [(value)]="values.variable" (selectionChange)="checkPanelConfiguration()">
                   <ngx-mat-select-search [formControl]="variableFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
                   <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
                     {{variable.name}}
@@ -672,7 +672,7 @@
       <div class="msf-dynamic-table-variable-content">
         <div class="msf-var-content">
           <mat-form-field class="msf-full-width">
-            <mat-select [multiple]="true" [disabled]="!values.currentOption" placeholder="Variables" #variableSelect [(ngModel)]="this.values.dynTableVariables" (ngModelChange)="orderVariable($event)" openedChange="show()">
+            <mat-select [multiple]="true" [disabled]="!values.currentOption" placeholder="Variables" [(ngModel)]="this.values.dynTableVariables" (ngModelChange)="orderVariable($event)" openedChange="show()">
               <ngx-mat-select-search [formControl]="variableFilterCtrl" placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>
               <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
                 {{variable.name}}
@@ -693,7 +693,7 @@
       <img src="../../assets/images/{{globals.theme}}-arrows.png" class="msf-var-img" alt="">
         <div class="msf-var-content">
           <mat-form-field class="msf-full-width">
-            <mat-select [multiple]="true" [disabled]="!values.currentOption" placeholder="Values" #valueSelect [(ngModel)]="this.values.dynTableValues" (ngModelChange)="orderValues($event)">
+            <mat-select [multiple]="true" [disabled]="!values.currentOption" placeholder="Values" [(ngModel)]="this.values.dynTableValues" (ngModelChange)="orderValues($event)">
               <ngx-mat-select-search [formControl]="variableFilterCtrl" placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>
               <mat-option *ngFor="let value of filteredVariables | async" [value]="value">
                 {{value.name}}
@@ -792,7 +792,7 @@
               <div class="msf-dashboard-chart-op-container-row">
                 <div class="msf-dashboard-field-valuectrl">
                   <mat-form-field [formGroup]="chartForm" class="msf-full-width">
-                    <mat-select formControlName="variableCtrl" placeholder="Analysis by" #variableSelect [(value)]="values.variable" (selectionChange)="checkPanelConfiguration()">
+                    <mat-select formControlName="variableCtrl" placeholder="Analysis by" [(value)]="values.variable" (selectionChange)="checkPanelConfiguration()">
                       <ngx-mat-select-search [formControl]="variableFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
                       <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
                         {{variable.name}}
@@ -816,7 +816,7 @@
               <div class="msf-dashboard-chart-op-container-row">
                 <div class="msf-dashboard-field-valuectrl">
                   <mat-form-field [formGroup]="chartForm">
-                    <mat-select formControlName="valueCtrl" placeholder="Aggregation Value" #valueSelect [(value)]="values.valueColumn" (selectionChange)="checkPanelConfiguration()">
+                    <mat-select formControlName="valueCtrl" placeholder="Aggregation Value" [(value)]="values.valueColumn" (selectionChange)="checkPanelConfiguration()">
                       <ngx-mat-select-search [formControl]="valueFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
                       <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
                         {{variable.name}}
