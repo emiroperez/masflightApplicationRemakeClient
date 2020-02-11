@@ -138,7 +138,15 @@
   </div>
   <div class="msf-dashboard-color-picker-threshold-container msf-dashboard-color-picker-new-threshold-container" *ngIf="data.values.goals">
     <div class="msf-dashboard-color-picker-goal-item" *ngFor="let goal of data.values.goals; trackBy: trackColor">
-      <mat-form-field class="msf-width-75">
+      <mat-form-field class="msf-width-30-column">
+        <mat-select placeholder="Select Column" [(ngModel)]="goal.column">
+          <ngx-mat-select-search [formControl]="columnFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+          <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable.item.id">
+            {{variable.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="msf-width-30-column">
         <input matInput autocomplete="off" type="number" placeholder="Value" [(ngModel)]="goal.value"/>
       </mat-form-field>
       <div class="msf-dashboard-color-picker-selector-container msf-dashboard-color-picker-selector-new-container">

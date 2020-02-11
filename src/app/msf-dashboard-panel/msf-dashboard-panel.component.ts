@@ -1005,6 +1005,53 @@ export class MsfDashboardPanelComponent implements OnInit {
     return series;
   }
 
+  // Function to create step line series, this is only used for goals
+  createStepLineSeries(values, chart, titleField, valueField, goal, fieldLength, index, parseDate, outputFormat, panelLoading): any
+  {
+    let series = chart.series.push (new am4charts.StepLineSeries ());
+    let offset = 1 / fieldLength;
+
+    if (values.currentChartType.flags & ChartFlags.ROTATED)
+    {
+      series.dataFields.valueX = "goal" + valueField + index;
+
+      if (parseDate)
+      {
+        series.dataFields.dateY = titleField;
+        series.dateFormatter.dateFormat = outputFormat;
+      }
+      else
+        series.dataFields.categoryY = titleField;
+    }
+    else
+    {
+      series.dataFields.valueY = "goal" + valueField + index;
+
+      if (parseDate)
+      {
+        series.dataFields.dateX = titleField;
+        series.dateFormatter.dateFormat = outputFormat;
+      }
+      else
+        series.dataFields.categoryX = titleField;
+    }
+
+    series.strokeWidth = 3;
+    series.strokeDasharray = "3,3";
+    series.noRisers = true;
+    series.startLocation = index * offset;
+    series.endLocation = series.startLocation + offset;
+    series.stroke = am4core.color (goal.color);
+
+    if (panelLoading)
+      series.showOnInit = false;
+
+    // don't display step lines in the legend
+    series.hiddenInLegend = true;
+
+    return series;
+  }
+
   parseDate(date: any, format: string): Date
   {
     let momentDate: moment.Moment;
@@ -1974,6 +2021,82 @@ export class MsfDashboardPanelComponent implements OnInit {
         // Add cursor if the chart type is line, area or stacked area
         if (this.values.currentChartType.flags & ChartFlags.LINECHART)
           chart.cursor = new am4charts.XYCursor ();
+        else if (!stacked)
+        {
+          let curValue = null;
+
+          // Set goal lines
+          if (this.isSimpleChart ())
+          {
+            let curGoal = null;
+
+            if (this.values.valueList && this.values.valueList.length > 1)
+            {
+              for (let i = 0; i < chartInfo.valueFields.length; i++)
+              {
+                for (let j = 0; j < this.values.goals.length; j++)
+                {
+                  for (let item of this.values.chartColumnOptions)
+                  {
+                    if (item.id === chartInfo.valueFields[i] && item.item.id == this.values.goals[j].column)
+                    {
+                      curValue = item;
+                      curGoal = this.values.goals[j];
+                      break;
+                    }
+                  }
+
+                  if (curGoal != null)
+                    break;
+                }
+
+                if (curGoal == null)
+                  continue;
+
+                for (let data of chart.data)
+                {
+                  let value = data[curValue.id];
+  
+                  if (value >= curGoal.value)
+                    data["goal" + curValue.id + i] = curGoal.value;
+                }
+
+                this.values.chartSeries.push (this.createStepLineSeries (this.values, chart, chartInfo.titleField, curValue.id, curGoal, chartInfo.valueFields.length, i, parseDate, outputFormat, panelLoading));
+              }
+            }
+            else
+            {
+              for (let i = 0; i < this.values.goals.length; i++)
+              {
+                for (let item of this.values.chartColumnOptions)
+                {
+                  if (item.id === chartInfo.valueField && item.item.id == this.values.goals[i].column)
+                  {
+                    curValue = item;
+                    curGoal = this.values.goals[i];
+                    break;
+                  }
+                }
+
+                if (curGoal == null)
+                  continue;
+
+                for (let data of chart.data)
+                {
+                  let value = data[chartInfo.valueField];
+  
+                  if (value >= curGoal.value)
+                    data["goal" + chartInfo.valueField + i] = curGoal.value;
+                }
+  
+                this.values.chartSeries.push (this.createStepLineSeries (this.values, chart, chartInfo.titleField, chartInfo.valueField, this.values.goals[i], 1, i, parseDate, outputFormat, panelLoading));
+              }
+            }
+          }
+          else
+          {
+          }
+        }
 
         this.oldChartType = this.values.currentChartType;
         this.oldVariableName = !this.values.variable ? "" : this.values.variable.name;
@@ -4185,7 +4308,6 @@ export class MsfDashboardPanelComponent implements OnInit {
   // check if the x axis should be enabled or not depending of the chart type
   checkChartType(): void
   {
-    
     if (this.values.currentChartType.flags & ChartFlags.PICTURE)
     {
       if (this.values.urlImg && this.values.urlImg != "")
@@ -5451,7 +5573,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       configFlags = ConfigFlags.CHARTCOLORS;
 
-      if (!(this.values.currentChartType.flags & ChartFlags.LINECHART))
+      if (!(this.values.currentChartType.flags & ChartFlags.LINECHART)
+        && !(this.values.currentChartType.flags & ChartFlags.STACKED))
         configFlags |= ConfigFlags.GOALS;
 
       if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
