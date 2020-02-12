@@ -57,6 +57,8 @@ export class AdminArgumentsGroupComponent implements OnInit {
     private service: ApplicationService,
     public dialog: MatDialog) {     
     //add airports and airlines 
+    this.globals.showBigLoading = true;
+
     this.getAirports(null,this.AirportHandlerSuccess,this.AirportHandlerError);
     this.getAirlines(null,this.AirlineHandlerSuccess,this.AirlineHandlerError);
     this.getAircraft(null,this.AircraftHandlerSuccess,this.AircraftHandlerError);

@@ -35,13 +35,15 @@ export class UserActivationComponent implements OnInit {
 
   constructor(private http: ApiClient, public globals: Globals,
     private service: ApplicationService, private userService: UserService,
-    private dialog: MatDialog) { }
+    private dialog: MatDialog)
+  {
+    this.globals.showBigLoading = true;
+  }
 
-
-    displayedColumns = ['columnName', 'columnLastName', 'columnEmail', 'columnAddress', 'columnPostalCode',
+  displayedColumns = ['columnName', 'columnLastName', 'columnEmail', 'columnAddress', 'columnPostalCode',
     'columnCountry', 'columnCountryState', 'columnPhone', 'columnState', 'columnProposedCustomer', 'columnCustomer', 'columnDatalake'];
 
-    @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit() {
     this.innerHeight = window.innerHeight;

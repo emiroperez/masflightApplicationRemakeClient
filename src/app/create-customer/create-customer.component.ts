@@ -73,6 +73,8 @@ export class CreateCustomerComponent implements OnInit {
   constructor(public globals: Globals, private registerServices: RegisterService,
     private dialog: MatDialog, private appServices: ApplicationService)
   {
+    this.globals.showBigLoading = true;
+
     this.customerForm = new FormGroup ({
       nameValidator: new FormControl ('', [Validators.required]),
       shortNameValidator: new FormControl ('', [Validators.required]),

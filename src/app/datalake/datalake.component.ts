@@ -93,12 +93,14 @@ export class DatalakeComponent implements OnInit {
   }
 
   goHome(): void {
+    this.globals.showBigLoading = true;
     this.router.navigate(["/welcome"]);
   }
 
   logOut(): void {
     this.appService.confirmationDialog(this, "Are you sure you want to Log Out?",
       function (_this) {
+        _this.globals.showBigLoading = true;
         _this.userService.setUserLastLoginTime(_this, _this.logoutSuccess, _this.logoutError);
       });
   }

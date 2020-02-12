@@ -633,6 +633,7 @@ toggle(){
 
   goHome()
   {
+    this.globals.showBigLoading = true;
     this.router.navigate (["/welcome"]);
   }
 
@@ -996,6 +997,7 @@ toggle(){
     this.appService.confirmationDialog (this, "Are you sure you want to Log Out?",
       function (_this)
       {
+        _this.globals.showBigLoading = true;
         _this.userService.setUserLastLoginTime (_this, _this.logoutSuccess, _this.logoutError);
       });
   }
@@ -1326,6 +1328,7 @@ toggle(){
 
   stopPlanTest(): void
   {
+    this.globals.showBigLoading = true;
     this.globals.testingPlan = -1;
 
     // reload menu

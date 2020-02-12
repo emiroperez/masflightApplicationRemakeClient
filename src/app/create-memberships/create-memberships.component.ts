@@ -68,7 +68,8 @@ export class EditOptionsDialog {
 
   constructor(
     public dialogRef: MatDialogRef<EditOptionsDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: { menuSelected: any, auxOptions: any }) { }
+    @Inject(MAT_DIALOG_DATA) public data: { menuSelected: any, auxOptions: any })
+    { }
 
 
   getItemsSelected(menu) {
@@ -167,6 +168,7 @@ export class CreateMembershipsComponent implements OnInit {
     public dialog: MatDialog, private ref: ChangeDetectorRef, private router: Router) {
     this.utils = new Utils();
     this.config.notFoundText = 'There is no options';
+    this.globals.showBigLoading = true;
   }
 
 

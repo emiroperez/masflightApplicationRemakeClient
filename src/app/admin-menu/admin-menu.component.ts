@@ -1107,6 +1107,8 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     this.dataChange.subscribe(data => {
       this.dataSource.data = data;
     });
+
+    this.globals.showBigLoading = true;
   }
 
   setChange(node) {

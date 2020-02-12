@@ -24,7 +24,10 @@ export class DatalakeCreateRolesComponent implements OnInit {
 
   constructor(public globals: Globals, 
     private service: ApplicationService,
-    public dialog: MatDialog) { }
+    public dialog: MatDialog)
+  {
+    this.globals.showBigLoading = true;
+  }
 
   ngOnInit() {
     this.innerHeight = window.innerHeight;

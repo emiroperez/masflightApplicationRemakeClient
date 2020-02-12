@@ -106,6 +106,7 @@ export class AdminArgumentsCategoryComponent implements OnInit {
   constructor(private http: ApiClient,  
     public dialog: MatDialog, public globals: Globals, private service: ApplicationService)
   {
+    this.globals.showBigLoading = true;
     this.filteredTypes.next (this.argTypes.slice ());
     this.searchChange ();
   }
