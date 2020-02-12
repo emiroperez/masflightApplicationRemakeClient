@@ -162,6 +162,7 @@ export class MsfScheduleMapsComponent implements OnInit {
     let theme, imageSeriesTemplate, circle, hoverState, label, zoomLevel;
     let newCity, newCityInfo;
     let newCities = [];
+    let routes = [];
 
     theme = this.globals.theme;
 
@@ -273,6 +274,12 @@ export class MsfScheduleMapsComponent implements OnInit {
         sumX += tempLatCos * Math.cos (tempLng);
         sumY += tempLatCos * Math.sin (tempLng);
         sumZ += Math.sin (tempLat);
+
+        // Add route
+        routes.push ([
+          { "latitude": record.latOrigin, "longitude": record.lonOrigin },
+          { "latitude": record.latDest, "longitude": record.lonDest }
+        ])
       }
 
       var avgX = sumX / newCities.length;
@@ -286,34 +293,19 @@ export class MsfScheduleMapsComponent implements OnInit {
       var zoomlat =  this.utils.rad2degr(lat);
       var zoomlong =this.utils.rad2degr(lng);
 
-      // Create map line series and connect to the cities
+      // Create map line series and connect the origin city to the desination cities
       this.globals.scheduleLineSeries = this.globals.scheduleChart.series.push (new am4maps.MapLineSeries ());
       this.globals.scheduleLineSeries.zIndex = 10;
+      this.globals.scheduleLineSeries.data = [{
+        "multiGeoLine": routes
+      }];
 
-      // Add the selected routes into the map
-      for (let record of records)
-      {
-        let mapLine = this.globals.scheduleLineSeries.mapLines.create ();
-        let destCity = null;
-
-        for (let city of newCities)
-        {
-          if (city.tooltipText === record.dest)
-          {
-            destCity = city;
-            break;
-          }
-        }
-
-        if (destCity == null)
-          continue;
-
-        mapLine.imagesToConnect = [originCity, destCity];
-        mapLine.line.strokeOpacity = 0.3;
-        mapLine.line.stroke = Themes.AmCharts[theme].mapLineColor;
-        mapLine.line.horizontalCenter = "middle";
-        mapLine.line.verticalCenter = "middle";
-      }
+      // Set map line template
+      let mapLinesTemplate = this.globals.scheduleLineSeries.mapLines.template;
+      mapLinesTemplate.opacity = 0.3;
+      mapLinesTemplate.stroke = Themes.AmCharts[theme].mapLineColor;
+      mapLinesTemplate.horizontalCenter = "middle";
+      mapLinesTemplate.verticalCenter = "middle";
 
       if (!newCities.length)
       {
