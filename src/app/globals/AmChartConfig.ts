@@ -7,6 +7,5 @@ export class AmChartConfig
         // set some optimizations to avoid slowdowns
         // am4core.options.queue = true;
         // am4core.options.onlyShowOnViewport = true;
-        am4core.options.minPolylineStep = 5;
     }
 }
