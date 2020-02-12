@@ -338,4 +338,10 @@ export class MsfScheduleMapsComponent implements OnInit {
       }, 50);
     });
   }
+
+  cancelLoading(): void
+  {
+    this.globals.isLoading = false;
+    this.globals.showBigLoading = true;
+  }
 }

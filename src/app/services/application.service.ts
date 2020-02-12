@@ -128,7 +128,7 @@ export class ApplicationService {
     if(!urlBase.includes("minuteunit")){
       urlBase += "&minuteunit=m";
     }
-    urlBase += "&pageSize=999999&page_number=0&token=" + tokenResultable;
+    urlBase += "&pageSize=10&page_number=0&token=" + tokenResultable;
 
     let urlArg = encodeURIComponent (urlBase);
 

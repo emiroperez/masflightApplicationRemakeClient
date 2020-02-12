@@ -433,7 +433,12 @@ toggle(){
     this.globals.tab = true;
 
     this.globals.isLoading = true;
-    if(this.globals.currentOption.tabType === 'map'){
+    if (this.globals.currentOption.tabType === 'scmap2')
+    {
+      this.globals.showBigLoading = false;
+      this.globals.mapsc = true;
+    }
+    else if(this.globals.currentOption.tabType === 'map'){
       this.globals.map = true;
       this.globals.showBigLoading = false;
       this.globals.selectedIndex = 3;
@@ -482,22 +487,26 @@ toggle(){
 
   handlerRouteSuccess(_this, data): void
   {
-    // prepare coordinates and lines
+    _this.globals.isLoading = false;
+    _this.globals.showBigLoading = false;
+
     if (!data.Response || (data.Response.records && !data.Response.records.length))
     {
+      _this.dialog.open (MessageComponent, {
+        data: { title: "Information", message: "No results were found." }
+      });
+
       return;
     }
 
-    _this.globals.mapsc = true;
-    _this.globals.isLoading = false;
-    _this.globals.showPaginator = false;
-
+    // set cities and routes
     _this.msfContainerRef.msfScMapRef.setRoutesToScMap (data.Response.records);
   }
 
   handlerRouteError(_this): void
   {
     _this.globals.isLoading = false;
+    _this.globals.showBigLoading = true;
   }
 
   moreResults(){

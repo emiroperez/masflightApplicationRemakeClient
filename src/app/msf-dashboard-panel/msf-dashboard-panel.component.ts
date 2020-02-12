@@ -5615,9 +5615,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       configFlags = ConfigFlags.CHARTCOLORS;
 
-      if (!(this.values.currentChartType.flags & ChartFlags.LINECHART)
+      /*if (!(this.values.currentChartType.flags & ChartFlags.LINECHART)
         && !(this.values.currentChartType.flags & ChartFlags.STACKED))
-        configFlags |= ConfigFlags.GOALS;
+        configFlags |= ConfigFlags.GOALS;*/
 
       if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
       {
