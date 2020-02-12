@@ -219,8 +219,14 @@ export class MsfMapComponent implements OnInit {
     this.setCoordinates(coordinates);
 
     if (coordinates.length > 0) {
-      let size = Math.round(coordinates[0].features.length / 2);
-      this.center = coordinates[0].features[size].geometry.coordinates;
+      if (coordinates.length == 1)
+        this.center = coordinates[0].features[0].geometry.coordinates;
+      else
+      {
+        let size = Math.round(coordinates[0].features.length / 2);
+        this.center = coordinates[0].features[size].geometry.coordinates;
+      }
+
       this.zoom = [4];
 
       coordinates[0].features[0].colorIndex = 0;
