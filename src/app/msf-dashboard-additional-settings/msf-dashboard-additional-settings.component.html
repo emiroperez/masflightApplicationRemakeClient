@@ -104,10 +104,10 @@
         </mat-select>
       </mat-form-field>
       <mat-form-field class="msf-width-15-min">
-        <input matInput autocomplete="off" type="number" placeholder="Min" [(ngModel)]="threshold.min"/>
+        <input matInput autocomplete="off" type="numeric" pattern="[0-9]*" placeholder="Min" [(ngModel)]="threshold.min"/>
       </mat-form-field>
       <mat-form-field class="msf-width-15-max">
-        <input matInput autocomplete="off" type="number" placeholder="Max" [(ngModel)]="threshold.max"/>
+        <input matInput autocomplete="off" type="numeric" pattern="[0-9]*" placeholder="Max" [(ngModel)]="threshold.max"/>
       </mat-form-field>
       <div class="msf-dashboard-color-picker-selector-container msf-dashboard-color-picker-selector-new-container">
         <span class="msf-dashboard-color-picker-selector-label">Color:</span>
@@ -138,16 +138,11 @@
   </div>
   <div class="msf-dashboard-color-picker-threshold-container msf-dashboard-color-picker-new-threshold-container" *ngIf="data.values.goals">
     <div class="msf-dashboard-color-picker-goal-item" *ngFor="let goal of data.values.goals; trackBy: trackColor">
-      <mat-form-field class="msf-width-30-column">
-        <mat-select placeholder="Select Column" [(ngModel)]="goal.column">
-          <ngx-mat-select-search [formControl]="columnFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
-          <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable.item.id">
-            {{variable.name}}
-          </mat-option>
-        </mat-select>
+      <mat-form-field class="msf-width-45">
+        <input matInput autocomplete="off" placeholder="Name" [(ngModel)]="goal.name"/>
       </mat-form-field>
-      <mat-form-field class="msf-width-30-column">
-        <input matInput autocomplete="off" type="number" placeholder="Value" [(ngModel)]="goal.value"/>
+      <mat-form-field class="msf-width-15-max">
+        <input matInput autocomplete="off" type="numeric" pattern="[0-9]*" placeholder="Value" [(ngModel)]="goal.value"/>
       </mat-form-field>
       <div class="msf-dashboard-color-picker-selector-container msf-dashboard-color-picker-selector-new-container">
         <span class="msf-dashboard-color-picker-selector-label">Color:</span>

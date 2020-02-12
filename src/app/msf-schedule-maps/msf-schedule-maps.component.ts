@@ -45,7 +45,7 @@ export class MsfScheduleMapsComponent implements OnInit {
     // the schedule maps
     if (changes['currentOption'] && this.globals.scheduleChart && this.globals.mapsc)
     {
-      this.zone.runOutsideAngular (() => {
+      /*this.zone.runOutsideAngular (() => {
         if (this.globals.scheduleImageSeries)
         {
           this.globals.scheduleChart.series.removeIndex (this.globals.scheduleChart.series.indexOf (this.globals.scheduleImageSeries));
@@ -73,7 +73,12 @@ export class MsfScheduleMapsComponent implements OnInit {
         this.globals.scheduleChart.homeZoomLevel = 1;
         this.globals.scheduleChart.deltaLongitude = 0;
         this.globals.scheduleChart.goHome ();
-      });
+      });*/
+      this.destroyScheduleChart ();
+
+      setTimeout (() => {
+        this.makeScheduleChart ();
+      }, 20);
     }
   }
 
@@ -161,7 +166,7 @@ export class MsfScheduleMapsComponent implements OnInit {
   {
     let theme, imageSeriesTemplate, circle, hoverState, label, zoomLevel;
     let newCity, newCityInfo;
-    let newCities = [];
+    let numCities = 0;
     let routes = [];
 
     theme = this.globals.theme;
@@ -247,7 +252,7 @@ export class MsfScheduleMapsComponent implements OnInit {
       originCity.nonScaling = true;
       originCity.tooltipText = newCityInfo.origin;
 
-      newCities.push (originCity);
+      numCities++;
 
       tempLat = this.utils.degr2rad (originCity.latitude);
       tempLng = this.utils.degr2rad (originCity.longitude);
@@ -266,7 +271,7 @@ export class MsfScheduleMapsComponent implements OnInit {
         newCity.nonScaling = true;
         newCity.tooltipText = newCityInfo.dest;
 
-        newCities.push (newCity);
+        numCities++;
 
         tempLat = this.utils.degr2rad (newCity.latitude);
         tempLng = this.utils.degr2rad (newCity.longitude);
@@ -277,14 +282,14 @@ export class MsfScheduleMapsComponent implements OnInit {
 
         // Add route
         routes.push ([
-          { "latitude": record.latOrigin, "longitude": record.lonOrigin },
-          { "latitude": record.latDest, "longitude": record.lonDest }
+          { "latitude": parseFloat (record.latOrigin), "longitude": parseFloat (record.lonOrigin) },
+          { "latitude": parseFloat (record.latDest), "longitude": parseFloat (record.lonDest) }
         ])
       }
 
-      var avgX = sumX / newCities.length;
-      var avgY = sumY / newCities.length;
-      var avgZ = sumZ / newCities.length;
+      var avgX = sumX / numCities;
+      var avgY = sumY / numCities;
+      var avgZ = sumZ / numCities;
 
       // convert average x, y, z coordinate to latitude and longtitude
       var lng = Math.atan2(avgY, avgX);
@@ -307,7 +312,7 @@ export class MsfScheduleMapsComponent implements OnInit {
       mapLinesTemplate.horizontalCenter = "middle";
       mapLinesTemplate.verticalCenter = "middle";
 
-      if (!newCities.length)
+      if (!numCities)
       {
         zoomLevel = 1;
         zoomlat = 24.8567;

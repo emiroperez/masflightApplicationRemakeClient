@@ -1035,8 +1035,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         series.dataFields.categoryX = titleField;
     }
 
-    series.strokeWidth = 3;
-    series.strokeDasharray = "3,3";
+    series.strokeWidth = 2;
     series.noRisers = true;
     series.startLocation = index * offset;
     series.endLocation = series.startLocation + offset;
@@ -2020,7 +2019,26 @@ export class MsfDashboardPanelComponent implements OnInit {
         // Add cursor if the chart type is line, area or stacked area
         if (this.values.currentChartType.flags & ChartFlags.LINECHART)
           chart.cursor = new am4charts.XYCursor ();
-        else if (!stacked)
+
+        // Create axis ranges if available
+        if (this.values.goals && this.values.goals.length)
+        {
+          for (let goal of this.values.goals)
+          {
+            let range = valueAxis.axisRanges.create ();
+
+            range.value = goal.value;
+            range.grid.stroke = am4core.color(goal.color);
+            range.grid.strokeWidth = 2;
+            range.grid.strokeOpacity = 1;
+            // range.grid.above = true;
+            range.label.inside = true;
+            range.label.text = goal.name;
+            range.label.fill = range.grid.stroke;
+            range.label.verticalCenter = "bottom";
+          }
+        }
+        /*else if (!stacked)
         {
           let curValue = null;
           let curGoal;
@@ -2129,7 +2147,7 @@ export class MsfDashboardPanelComponent implements OnInit {
               this.values.chartSeries.push (this.createStepLineSeries (this.values, chart, this.values.xaxis.id, valueField, curGoal, chartInfo.filter.length, i, parseDate, outputFormat, panelLoading));
             }
           }
-        }
+        }*/
 
         this.oldChartType = this.values.currentChartType;
         this.oldVariableName = !this.values.variable ? "" : this.values.variable.name;
@@ -5613,11 +5631,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       configFlags = ConfigFlags.LIMITVALUES | ConfigFlags.CHARTCOLORS;
     else if (this.values.currentChartType.flags & ChartFlags.XYCHART || this.isSimpleChart ())
     {
-      configFlags = ConfigFlags.CHARTCOLORS;
-
-      if (!(this.values.currentChartType.flags & ChartFlags.LINECHART)
-        && !(this.values.currentChartType.flags & ChartFlags.STACKED))
-        configFlags |= ConfigFlags.GOALS;
+      configFlags = ConfigFlags.CHARTCOLORS | ConfigFlags.GOALS;
 
       if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
       {
