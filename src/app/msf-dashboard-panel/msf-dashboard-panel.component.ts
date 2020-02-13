@@ -1004,52 +1004,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     return series;
   }
 
-  // Function to create step line series, this is only used for goals
-  createStepLineSeries(values, chart, titleField, valueField, goal, fieldLength, index, parseDate, outputFormat, panelLoading): any
-  {
-    let series = chart.series.push (new am4charts.StepLineSeries ());
-    let offset = 1 / fieldLength;
-
-    if (values.currentChartType.flags & ChartFlags.ROTATED)
-    {
-      series.dataFields.valueX = "goal" + valueField + index;
-
-      if (parseDate)
-      {
-        series.dataFields.dateY = titleField;
-        series.dateFormatter.dateFormat = outputFormat;
-      }
-      else
-        series.dataFields.categoryY = titleField;
-    }
-    else
-    {
-      series.dataFields.valueY = "goal" + valueField + index;
-
-      if (parseDate)
-      {
-        series.dataFields.dateX = titleField;
-        series.dateFormatter.dateFormat = outputFormat;
-      }
-      else
-        series.dataFields.categoryX = titleField;
-    }
-
-    series.strokeWidth = 2;
-    series.noRisers = true;
-    series.startLocation = index * offset;
-    series.endLocation = series.startLocation + offset;
-    series.stroke = am4core.color (goal.color);
-
-    if (panelLoading)
-      series.showOnInit = false;
-
-    // don't display step lines in the legend
-    series.hiddenInLegend = true;
-
-    return series;
-  }
-
   parseDate(date: any, format: string): Date
   {
     let momentDate: moment.Moment;
@@ -2037,117 +1991,10 @@ export class MsfDashboardPanelComponent implements OnInit {
             range.label.fill = range.grid.stroke;
             range.label.verticalCenter = "bottom";
           }
+
+          // Put the chart results behind the grid
+          chart.seriesContainer.zIndex = -1;
         }
-        /*else if (!stacked)
-        {
-          let curValue = null;
-          let curGoal;
-
-          // Set goal lines
-          if (this.isSimpleChart ())
-          {
-            if (this.values.valueList && this.values.valueList.length > 1)
-            {
-              for (let i = 0; i < chartInfo.valueFields.length; i++)
-              {
-                curGoal = null;
-
-                for (let j = 0; j < this.values.goals.length; j++)
-                {
-                  for (let item of this.values.chartColumnOptions)
-                  {
-                    if (item.id === chartInfo.valueFields[i] && item.item.id == this.values.goals[j].column)
-                    {
-                      curValue = item;
-                      curGoal = this.values.goals[j];
-                      break;
-                    }
-                  }
-
-                  if (curGoal != null)
-                    break;
-                }
-
-                if (curGoal == null)
-                  continue;
-
-                for (let data of chart.data)
-                {
-                  let value = data[curValue.id];
-  
-                  if (value >= curGoal.value)
-                    data["goal" + curValue.id + i] = curGoal.value;
-                }
-
-                this.values.chartSeries.push (this.createStepLineSeries (this.values, chart, chartInfo.titleField, curValue.id, curGoal, chartInfo.valueFields.length, i, parseDate, outputFormat, panelLoading));
-              }
-            }
-            else if (this.values.valueList.length)
-            {
-              for (let i = 0; i < this.values.goals.length; i++)
-              {
-                curGoal = null;
-
-                for (let item of this.values.chartColumnOptions)
-                {
-                  if (item.id === chartInfo.valueField && item.item.id == this.values.goals[i].column)
-                  {
-                    curValue = item;
-                    curGoal = this.values.goals[i];
-                    break;
-                  }
-                }
-
-                if (curGoal == null)
-                  continue;
-
-                for (let data of chart.data)
-                {
-                  let value = data[chartInfo.valueField];
-  
-                  if (value >= curGoal.value)
-                    data["goal" + chartInfo.valueField + i] = curGoal.value;
-                }
-  
-                this.values.chartSeries.push (this.createStepLineSeries (this.values, chart, chartInfo.titleField, chartInfo.valueField, this.values.goals[i], 1, i, parseDate, outputFormat, panelLoading));
-              }
-            }
-          }
-          else
-          {
-            for (let i = 0; i < this.chartInfo.filter.length; i++)
-            {
-              let valueField = this.chartInfo.filter[i].valueField;
-
-              curGoal = null;
-
-              for (let j = 0; j < this.values.goals.length; j++)
-              {
-                if (this.values.valueColumn.item.id == this.values.goals[j].column)
-                {
-                  curGoal = this.values.goals[j];
-                  break;
-                }
-
-                if (curGoal != null)
-                  break;
-              }
-
-              if (curGoal == null)
-                continue;
-
-              for (let data of chart.data)
-              {
-                let value = data[valueField];
-
-                if (value >= curGoal.value)
-                  data["goal" + valueField + i] = curGoal.value;
-              }
-
-              this.values.chartSeries.push (this.createStepLineSeries (this.values, chart, this.values.xaxis.id, valueField, curGoal, chartInfo.filter.length, i, parseDate, outputFormat, panelLoading));
-            }
-          }
-        }*/
 
         this.oldChartType = this.values.currentChartType;
         this.oldVariableName = !this.values.variable ? "" : this.values.variable.name;
