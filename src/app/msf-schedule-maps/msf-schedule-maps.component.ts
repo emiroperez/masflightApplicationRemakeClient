@@ -307,7 +307,7 @@ export class MsfScheduleMapsComponent implements OnInit {
 
       // Set map line template
       let mapLinesTemplate = this.globals.scheduleLineSeries.mapLines.template;
-      mapLinesTemplate.opacity = 0.3;
+      mapLinesTemplate.opacity = 0.6;
       mapLinesTemplate.stroke = Themes.AmCharts[theme].mapLineColor;
       mapLinesTemplate.horizontalCenter = "middle";
       mapLinesTemplate.verticalCenter = "middle";

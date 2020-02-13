@@ -6217,7 +6217,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
             mapLine = this.lineSeries.mapLines.create ();
             mapLine.imagesToConnect = [city1, city2];
-            mapLine.line.strokeOpacity = 0.3;
+            mapLine.line.strokeOpacity = 0.6;
             mapLine.line.stroke = Themes.AmCharts[theme].mapLineColor;
             mapLine.line.horizontalCenter = "middle";
             mapLine.line.verticalCenter = "middle";
