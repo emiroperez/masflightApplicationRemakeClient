@@ -168,7 +168,6 @@ export class MsfScheduleMapsComponent implements OnInit {
   {
     let theme, imageSeriesTemplate, circle, hoverState, label, zoomLevel;
     let newCity, newCityInfo, originCity, latOrigin, lonOrigin;
-    let invalidCoords = [];
     let numCities = 0;
     let routes = [];
 
@@ -255,12 +254,7 @@ export class MsfScheduleMapsComponent implements OnInit {
       lonOrigin = parseFloat (newCityInfo.lonOrigin);
 
       if (latOrigin < -90 || latOrigin > 90 || lonOrigin < -180 || lonOrigin > 180)
-      {
-        if (isDevMode ())
-          console.log ("Warning: " + newCityInfo.origin + " have invalid coordinates! (lat: " + latOrigin + ", lon: " + lonOrigin + ")");
-
-        invalidCoords.push (newCityInfo.origin);
-      }
+        console.warn ("Warning: " + newCityInfo.origin + " have invalid coordinates! (lat: " + latOrigin + ", lon: " + lonOrigin + ")");
 
       originCity.latitude = latOrigin;
       originCity.longitude = lonOrigin;
@@ -285,12 +279,7 @@ export class MsfScheduleMapsComponent implements OnInit {
         lonDest = parseFloat (record.lonDest);
 
         if (latDest < -90 || latDest > 90 || lonDest < -180 || latDest > 180)
-        {
-          if (isDevMode ())
-            console.log ("Warning: " + record.dest + " have invalid coordinates! (lat: " + latDest + ", lon: " + lonDest + ")");
-
-          invalidCoords.push (record.dest);
-        }
+          console.warn ("Warning: " + record.dest + " have invalid coordinates! (lat: " + latDest + ", lon: " + lonDest + ")");
 
         newCity = this.globals.scheduleImageSeries.mapImages.create ();
         newCityInfo = record;
@@ -361,30 +350,6 @@ export class MsfScheduleMapsComponent implements OnInit {
         this.globals.scheduleChart.homeZoomLevel = zoomLevel;
         this.globals.scheduleChart.goHome ();
       }, 50);
-
-      if (invalidCoords.length)
-      {
-        let message = "The following ";
-
-        if (invalidCoords.length == 1)
-          message += "airport";
-        else
-          message += "airports";
-
-        message += " have invalid coordinates: ";
-
-        for (let i = 0; i < invalidCoords.length; i++)
-        {
-          message += invalidCoords[i];
-
-          if (i != invalidCoords.length - 1)
-            message += ", ";
-        }
-
-        this.dialog.open (MessageComponent, {
-          data: { title: "Warning", message:  message }
-        });
-      }
     });
   }
 
