@@ -254,7 +254,7 @@ export class MsfScheduleMapsComponent implements OnInit {
       lonOrigin = parseFloat (newCityInfo.lonOrigin);
 
       if (latOrigin < -90 || latOrigin > 90 || lonOrigin < -180 || lonOrigin > 180)
-        console.warn ("Warning: " + newCityInfo.origin + " have invalid coordinates! (lat: " + latOrigin + ", lon: " + lonOrigin + ")");
+        console.warn (newCityInfo.origin + " have invalid coordinates! (lat: " + latOrigin + ", lon: " + lonOrigin + ")");
 
       originCity.latitude = latOrigin;
       originCity.longitude = lonOrigin;
@@ -279,7 +279,7 @@ export class MsfScheduleMapsComponent implements OnInit {
         lonDest = parseFloat (record.lonDest);
 
         if (latDest < -90 || latDest > 90 || lonDest < -180 || latDest > 180)
-          console.warn ("Warning: " + record.dest + " have invalid coordinates! (lat: " + latDest + ", lon: " + lonDest + ")");
+          console.warn (record.dest + " have invalid coordinates! (lat: " + latDest + ", lon: " + lonDest + ")");
 
         newCity = this.globals.scheduleImageSeries.mapImages.create ();
         newCityInfo = record;
