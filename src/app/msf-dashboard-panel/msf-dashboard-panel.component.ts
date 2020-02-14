@@ -12,7 +12,6 @@ import am4geodata_africaLow from "@amcharts/amcharts4-geodata/region/world/afric
 import am4geodata_europeLow from "@amcharts/amcharts4-geodata/region/world/europeLow";
 import am4geodata_oceaniaLow from "@amcharts/amcharts4-geodata/region/world/oceaniaLow";
 import am4geodata_usaLow from "@amcharts/amcharts4-geodata/usaLow";
-import am4geodata_usaAlbersLow from "@amcharts/amcharts4-geodata/usaAlbersLow";
 import am4geodata_colombiaLow from "@amcharts/amcharts4-geodata/colombiaLow";
 import am4geodata_colombiaMuniLow from "@amcharts/amcharts4-geodata/colombiaMuniLow";
 import { CategoryArguments } from '../model/CategoryArguments';
@@ -133,8 +132,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   ];
 
   geodatas: any[] = [
-    { name: 'U.S. States', value: am4geodata_usaAlbersLow },
-    // { name: 'U.S. States', value: am4geodata_usaLow },
+    { name: 'U.S. States', value: am4geodata_usaLow },
     { name: 'North America', value: am4geodata_northAmericaLow },
     { name: 'Central America', value: am4geodata_centralAmericaLow },
     { name: 'South America', value: am4geodata_southAmericaLow },
@@ -1069,9 +1067,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
         // Create map instance displaying the chosen geography data
         chart.geodata = this.values.geodata.value;
-        // if (this.values.geodata.value == am4geodata_usaLow)
-          // chart.projection = new am4maps.projections.AlbersUsa ();
-        // else
+        if (this.values.geodata.value == am4geodata_usaLow)
+          chart.projection = new am4maps.projections.AlbersUsa ();
+        else
           chart.projection = new am4maps.projections.Miller ();
 
         // Add map polygons
@@ -1985,15 +1983,12 @@ export class MsfDashboardPanelComponent implements OnInit {
             range.grid.stroke = am4core.color(goal.color);
             range.grid.strokeWidth = 2;
             range.grid.strokeOpacity = 1;
-            // range.grid.above = true;
+            range.grid.above = true;
             range.label.inside = true;
             range.label.text = goal.name;
             range.label.fill = range.grid.stroke;
             range.label.verticalCenter = "bottom";
           }
-
-          // Put the chart results behind the grid
-          // chart.seriesContainer.zIndex = -1;
         }
 
         this.oldChartType = this.values.currentChartType;
