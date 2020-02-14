@@ -62,10 +62,12 @@ export class Globals {
   template : boolean = false;
   isFullscreen: boolean = false;
   // baseUrl = "http://localhost:8887";
-  baseUrl = "http://pulse.globaleagle.com:8887";
-  // baseUrl = "";
+  // baseUrl = "http://pulse.globaleagle.com:8887";
+  baseUrl = "";
   baseUrl2 = "https://pulse.globaleagle.com:8886/mapBoxServices";
   popupUrl = "https://pulse.globaleagle.com:8900";
+  // baseUrl2 = "http://pulse.globaleagle.com:8884/mapBoxServices";
+  // popupUrl = "http://pulse.globaleagle.com:8881";
   scheduledata:any;
   hideParametersPanels : boolean =false;
   Airportdataorigin:any;
@@ -86,6 +88,7 @@ export class Globals {
   copiedPanelInfo: any;
   lastTime: string;
   appLoading: boolean;
+  buildScheduleMapChart: boolean = false;
 
   admin: boolean = false;
   testingPlan: number = -1;
