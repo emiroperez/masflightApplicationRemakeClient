@@ -3221,8 +3221,12 @@ button[aria-expanded="true"]
     vertical-align: middle
 
 .msf-menu-internal-content
-    height: calc(100% - 145px)
-    //height: calc(100% - 120px)
+    height: calc(100% - 115px)
+    background-color: #ffffff
+    vertical-align: middle
+
+.msf-menu-internal-content-with-paginator
+    height: calc(100% - 175px)
     background-color: #ffffff
     vertical-align: middle
 
@@ -3747,6 +3751,9 @@ mat-tab-group
 .msf-category-container
     overflow: auto
     height: calc(100% - 150px)
+
+.msf-category-container.is-mobile
+    height: calc(100% - 150px) !important
 
 .msf-control-variables-overlay
     position: relative
@@ -7749,8 +7756,8 @@ mat-form-field.msf-table-input
     justify-content: flex-end
     
 .msf-menu-body.is-mobile
-    height: calc(100% - 90px) !important
-    min-height: calc(100% - 90px) !important
+    height: 100% !important
+    min-height: 100% !important
 
 .menu-nav-container::-webkit-scrollbar-thumb    
     background-color: transparent !important
@@ -7814,11 +7821,15 @@ button.mat-icon-button-menu
     width: 100%
     transition: 0.25s
 
+.msf-menu-tabs-content-mobile-with-paginator
+    height: calc(100% - 40px)
+    width: 100%
+    transition: 0.25s
+
 .msf-menu-internal-content-mobile 
     height: calc(100% - 20px)
     background-color: #ffffff
     vertical-align: middle
-    margin-bottom: 20px
 
 .msf-menu-internal-content-all-mobile
     height: 100%
@@ -7844,15 +7855,15 @@ button.mat-icon-button-menu
     transition: 0.25s
 
 .msf-menu-show-full-nav-mobile
-    min-width: 100% 
+    min-width: 100%
 
 .msf-menu-show-nav-mobile
     width: 100%
     transition: 0.5s
     
 .msf-category-container.is-mobile
-    height: calc(100% - 60px)
-    max-height: calc(100% - 60px)
+    height: 100%
+    max-height: 100%
     transition: height 1s
 
 .msf-category-container-mobile-component-active
@@ -7903,6 +7914,7 @@ button.mat-icon-button-menu
 
 .msf-menu-show-full-nav-component-wide.is-mobile
     width: 100% !important
+    height: calc(100% - 90px)
 
 .mat-tab-body-content
     .msf-viewport-container

@@ -91,6 +91,8 @@ export class MsfDashboardComponent implements OnInit {
       this.screenHeight = "100%";
     else
       this.screenHeight = "calc(100% - 90px)";
+
+    this.globals.showPaginator = false; // hide paginator
   }
 
   ngOnInit()

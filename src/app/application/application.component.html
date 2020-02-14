@@ -219,14 +219,14 @@
         <div
             [ngClass]="(isSimpleContent() && !mobileQuery.matches) 
             || (mobileQuery.matches && isSimpleContent() && globals.showDashboard)   ? 'msf-menu-simple-content' 
-                                            : (mobileQuery.matches ? 'msf-menu-content msf-menu-tabs-content-mobile'
+                                            : (mobileQuery.matches ? ((globals.showPaginator && !globals.isLoading) ? 'msf-menu-content msf-menu-tabs-content-mobile-with-paginator' : 'msf-menu-content msf-menu-tabs-content-mobile')
                                                                         : 'msf-menu-content msf-menu-tabs-content')">
             <div
                 [ngClass]="(isSimpleContent() && !mobileQuery.matches) 
                 || (mobileQuery.matches && isSimpleContent() && globals.showDashboard)  ? 'msf-menu-internal-simple-content' 
                                                : (mobileQuery.matches ? (globals.showMenu ? 'msf-menu-internal-content-all-mobile'
-                                                                        : (globals.showTabs ? 'msf-menu-internal-content-tabs':'msf-menu-internal-content-mobile'))
-                                                                        :'msf-menu-internal-content') "  [class.is-MQueryresponsive]="ResponsiveQuery.matches">
+                                                                        : (globals.showTabs ? 'msf-menu-internal-content-tabs': 'msf-menu-internal-content-mobile'))
+                                                                        : ((globals.showPaginator && !globals.isLoading) ? 'msf-menu-internal-content-with-paginator' : 'msf-menu-internal-content')) "  [class.is-MQueryresponsive]="ResponsiveQuery.matches">
                 <app-msf-container #msfContainerRef [paginator]="paginator"   [pageIndex]="pageIndex" (lengthpaginator)=lengthpaginator($event) (moreResult)=moreResult($event)></app-msf-container>
                 <!-- <app-menu-nav *ngIf="(ResponsiveQuery.matches || mobileQuery.matches) && globals.showMenu " [menu]="menu" [dashboards]="dashboards"
                     [sharedDashboards]="sharedDashboards"></app-menu-nav> -->

@@ -1287,7 +1287,17 @@ toggle(){
 
   backMenu(){
     if (this.mobileQuery.matches){
-    if(!this.globals.showMenu && (this.globals.showCategoryArguments || this.globals.showDashboard)){
+    if (this.globals.showDashboard)
+    {
+      // return to default menu
+      this.globals.currentOption = this.globals.currentApplication.defaultMenu;
+      this.globals.showDashboard = false;
+      this.globals.showPaginator = false;
+      this.globals.showIntroWelcome = true;
+      return;
+    }
+
+    if(!this.globals.showMenu && this.globals.showCategoryArguments){
       this.globals.showIntroWelcome = false;
       this.globals.showCategoryArguments = false;
       this.globals.showTabs=false;
