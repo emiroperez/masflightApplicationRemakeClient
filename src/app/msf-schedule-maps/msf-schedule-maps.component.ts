@@ -1,10 +1,12 @@
-import { Component, OnInit, NgZone, SimpleChanges, Input } from '@angular/core';
+import { Component, OnInit, NgZone, SimpleChanges, Input, isDevMode } from '@angular/core';
 import { Globals } from '../globals/Globals';
 import { Themes } from '../globals/Themes';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4maps from "@amcharts/amcharts4/maps";
 import am4geodata_worldLow from "@amcharts/amcharts4-geodata/worldLow";
+import { MatDialog } from '@angular/material';
 import { Utils } from '../commons/utils';
+import { MessageComponent } from '../message/message.component';
 
 // AmChart colors
 const comet = am4core.color ("#585869");
@@ -25,7 +27,7 @@ export class MsfScheduleMapsComponent implements OnInit {
 
   utils: Utils;
 
-  constructor(private zone: NgZone, public globals: Globals)
+  constructor(private zone: NgZone, public globals: Globals, private dialog: MatDialog)
   {
     this.utils = new Utils ();
   }
@@ -165,7 +167,8 @@ export class MsfScheduleMapsComponent implements OnInit {
   setRoutesToScMap(records): void
   {
     let theme, imageSeriesTemplate, circle, hoverState, label, zoomLevel;
-    let newCity, newCityInfo;
+    let newCity, newCityInfo, originCity, latOrigin, lonOrigin;
+    let invalidCoords = [];
     let numCities = 0;
     let routes = [];
 
@@ -245,10 +248,22 @@ export class MsfScheduleMapsComponent implements OnInit {
       var sumZ = 0;
 
       // Add origin city
-      let originCity = this.globals.scheduleImageSeries.mapImages.create ();
+      originCity = this.globals.scheduleImageSeries.mapImages.create ();
       newCityInfo = records[0];
-      originCity.latitude = parseFloat (newCityInfo.latOrigin);
-      originCity.longitude = parseFloat (newCityInfo.lonOrigin);
+
+      latOrigin = parseFloat (newCityInfo.latOrigin);
+      lonOrigin = parseFloat (newCityInfo.lonOrigin);
+
+      if (latOrigin < -90 || latOrigin > 90 || lonOrigin < -180 || lonOrigin > 180)
+      {
+        if (isDevMode ())
+          console.log ("Warning: " + newCityInfo.origin + " have invalid coordinates! (lat: " + latOrigin + ", lon: " + lonOrigin + ")");
+
+        invalidCoords.push (newCityInfo.origin);
+      }
+
+      originCity.latitude = latOrigin;
+      originCity.longitude = lonOrigin;
       originCity.nonScaling = true;
       originCity.tooltipText = newCityInfo.origin;
 
@@ -264,10 +279,23 @@ export class MsfScheduleMapsComponent implements OnInit {
       // Add destination cities
       for (let record of records)
       {
+        let latDest, lonDest;
+
+        latDest = parseFloat (record.latDest);
+        lonDest = parseFloat (record.lonDest);
+
+        if (latDest < -90 || latDest > 90 || lonDest < -180 || latDest > 180)
+        {
+          if (isDevMode ())
+            console.log ("Warning: " + record.dest + " have invalid coordinates! (lat: " + latDest + ", lon: " + lonDest + ")");
+
+          invalidCoords.push (record.dest);
+        }
+
         newCity = this.globals.scheduleImageSeries.mapImages.create ();
         newCityInfo = record;
-        newCity.latitude = parseFloat (newCityInfo.latDest);
-        newCity.longitude = parseFloat (newCityInfo.lonDest);
+        newCity.latitude = latDest;
+        newCity.longitude = lonDest;
         newCity.nonScaling = true;
         newCity.tooltipText = newCityInfo.dest;
 
@@ -282,8 +310,8 @@ export class MsfScheduleMapsComponent implements OnInit {
 
         // Add route
         routes.push ([
-          { "latitude": parseFloat (record.latOrigin), "longitude": parseFloat (record.lonOrigin) },
-          { "latitude": parseFloat (record.latDest), "longitude": parseFloat (record.lonDest) }
+          { "latitude": latOrigin, "longitude": lonOrigin },
+          { "latitude": latDest, "longitude": lonDest }
         ])
       }
 
@@ -333,6 +361,30 @@ export class MsfScheduleMapsComponent implements OnInit {
         this.globals.scheduleChart.homeZoomLevel = zoomLevel;
         this.globals.scheduleChart.goHome ();
       }, 50);
+
+      if (invalidCoords.length)
+      {
+        let message = "The following ";
+
+        if (invalidCoords.length == 1)
+          message += "airport";
+        else
+          message += "airports";
+
+        message += " have invalid coordinates: ";
+
+        for (let i = 0; i < invalidCoords.length; i++)
+        {
+          message += invalidCoords[i];
+
+          if (i != invalidCoords.length - 1)
+            message += ", ";
+        }
+
+        this.dialog.open (MessageComponent, {
+          data: { title: "Warning", message:  message }
+        });
+      }
     });
   }
 

@@ -1993,7 +1993,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           }
 
           // Put the chart results behind the grid
-          chart.seriesContainer.zIndex = -1;
+          // chart.seriesContainer.zIndex = -1;
         }
 
         this.oldChartType = this.values.currentChartType;

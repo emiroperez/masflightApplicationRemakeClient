@@ -487,13 +487,17 @@ toggle(){
 
   handlerRouteSuccess(_this, data): void
   {
-    _this.globals.isLoading = false;
-    _this.globals.showBigLoading = false;
-
     if (!data.Response || (data.Response.records && !data.Response.records.length))
     {
+      _this.globals.isLoading = false;
+      _this.globals.showBigLoading = false;
+
+      _this.globals.mapsc = false;
+      _this.globals.query = false;
+      _this.globals.tab = false;
+
       _this.dialog.open (MessageComponent, {
-        data: { title: "Information", message: "No results were found." }
+        data: { title: "Information", message: "Results not available, please select your Filters and click on Search button." }
       });
 
       return;
@@ -501,12 +505,23 @@ toggle(){
 
     // set cities and routes
     _this.msfContainerRef.msfScMapRef.setRoutesToScMap (data.Response.records);
+
+    _this.globals.isLoading = false;
+    _this.globals.showBigLoading = false;
   }
 
   handlerRouteError(_this): void
   {
     _this.globals.isLoading = false;
     _this.globals.showBigLoading = true;
+
+    _this.globals.mapsc = false;
+    _this.globals.query = false;
+    _this.globals.tab = false;
+
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Error", message: "Failed to find results!" }
+    });
   }
 
   moreResults(){
