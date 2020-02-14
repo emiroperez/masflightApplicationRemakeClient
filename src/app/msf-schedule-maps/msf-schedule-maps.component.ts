@@ -32,56 +32,16 @@ export class MsfScheduleMapsComponent implements OnInit {
     this.utils = new Utils ();
   }
 
-  ngOnInit() {
-    this.globals.scheduleChart = null;
-  }
-
-  ngAfterViewInit()
+  ngOnInit()
   {
-    this.makeScheduleChart ();
+    this.globals.scheduleChart = null;
   }
 
   ngOnChanges(changes: SimpleChanges)
   {
-    // Remove cities and routes if the option has changed but still related to
-    // the schedule maps
-    if (changes['currentOption'] && this.globals.scheduleChart && this.globals.mapsc)
-    {
-      /*this.zone.runOutsideAngular (() => {
-        if (this.globals.scheduleImageSeries)
-        {
-          this.globals.scheduleChart.series.removeIndex (this.globals.scheduleChart.series.indexOf (this.globals.scheduleImageSeries));
-          this.globals.scheduleImageSeries = null;
-        }
-
-        if (this.globals.scheduleLineSeries)
-        {
-          this.globals.scheduleChart.series.removeIndex (this.globals.scheduleChart.series.indexOf (this.globals.scheduleLineSeries));
-          this.globals.scheduleLineSeries = null;
-        }
-
-        if (this.globals.scheduleShadowLineSeries)
-        {
-          this.globals.scheduleChart.series.removeIndex (this.globals.scheduleChart.series.indexOf (this.globals.scheduleShadowLineSeries));
-          this.globals.scheduleShadowLineSeries = null;
-        }
-
-        // Set it back to the default location and zoom level
-        this.globals.scheduleChart.homeGeoPoint = {
-          latitude: 24.8567,
-          longitude: 2.3510
-        };
-
-        this.globals.scheduleChart.homeZoomLevel = 1;
-        this.globals.scheduleChart.deltaLongitude = 0;
-        this.globals.scheduleChart.goHome ();
-      });*/
+    // Remove cities and routes if the option has changed
+    if (changes['currentOption'])
       this.destroyScheduleChart ();
-
-      setTimeout (() => {
-        this.makeScheduleChart ();
-      }, 20);
-    }
   }
 
   ngOnDestroy()
@@ -171,28 +131,10 @@ export class MsfScheduleMapsComponent implements OnInit {
     let numCities = 0;
     let routes = [];
 
+    this.makeScheduleChart ();
     theme = this.globals.theme;
 
     this.zone.runOutsideAngular (() => {
-      // Remove any existing image and lines series from the map
-      if (this.globals.scheduleImageSeries != null)
-      {
-        this.globals.scheduleChart.series.removeIndex (this.globals.scheduleChart.series.indexOf (this.globals.scheduleImageSeries));
-        this.globals.scheduleImageSeries = null;
-      }
-
-      if (this.globals.scheduleLineSeries != null)
-      {
-        this.globals.scheduleChart.series.removeIndex (this.globals.scheduleChart.series.indexOf (this.globals.scheduleLineSeries));
-        this.globals.scheduleLineSeries = null;
-      }
-
-      if (this.globals.scheduleShadowLineSeries != null)
-      {
-        this.globals.scheduleChart.series.removeIndex (this.globals.scheduleChart.series.indexOf (this.globals.scheduleShadowLineSeries));
-        this.globals.scheduleShadowLineSeries = null;
-      }
-
       // Create image container for the circles and city labels
       this.globals.scheduleImageSeries = this.globals.scheduleChart.series.push (new am4maps.MapImageSeries ());
       imageSeriesTemplate = this.globals.scheduleImageSeries.mapImages.template;
@@ -309,11 +251,11 @@ export class MsfScheduleMapsComponent implements OnInit {
       var avgZ = sumZ / numCities;
 
       // convert average x, y, z coordinate to latitude and longtitude
-      var lng = Math.atan2(avgY, avgX);
-      var hyp = Math.sqrt(avgX * avgX + avgY * avgY);
-      var lat = Math.atan2(avgZ, hyp);
-      var zoomlat =  this.utils.rad2degr(lat);
-      var zoomlong =this.utils.rad2degr(lng);
+      var lng = Math.atan2 (avgY, avgX);
+      var hyp = Math.sqrt (avgX * avgX + avgY * avgY);
+      var lat = Math.atan2 (avgZ, hyp);
+      var zoomlat =  this.utils.rad2degr (lat);
+      var zoomlong = this.utils.rad2degr (lng);
 
       // Create map line series and connect the origin city to the desination cities
       this.globals.scheduleLineSeries = this.globals.scheduleChart.series.push (new am4maps.MapLineSeries ());
@@ -341,15 +283,8 @@ export class MsfScheduleMapsComponent implements OnInit {
       this.globals.scheduleChart.deltaLongitude = 360 - Number (zoomlong);
       this.globals.scheduleChart.homeGeoPoint.longitude = Number (zoomlong);
       this.globals.scheduleChart.homeGeoPoint.latitude = Number (zoomlat);
-      this.globals.scheduleChart.homeZoomLevel = zoomLevel - 0.1;
+      this.globals.scheduleChart.homeZoomLevel = zoomLevel;
       this.globals.scheduleChart.goHome ();
-
-      // Workaround to avoid double lines
-      setTimeout (() =>
-      {
-        this.globals.scheduleChart.homeZoomLevel = zoomLevel;
-        this.globals.scheduleChart.goHome ();
-      }, 50);
     });
   }
 
