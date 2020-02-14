@@ -371,11 +371,11 @@ export class MsfSchedulePanelComponent implements OnInit {
       var avgZ = sumZ / newCities.length;
   
       // convert average x, y, z coordinate to latitude and longtitude
-      var lng = Math.atan2(avgY, avgX);
-      var hyp = Math.sqrt(avgX * avgX + avgY * avgY);
-      var lat = Math.atan2(avgZ, hyp);
-      var zoomlat =  this.utils.rad2degr(lat);
-      var zoomlong =this.utils.rad2degr(lng);
+      var lng = Math.atan2 (avgY, avgX);
+      var hyp = Math.sqrt (avgX * avgX + avgY * avgY);
+      var lat = Math.atan2 (avgZ, hyp);
+      var zoomlat = this.utils.rad2degr (lat);
+      var zoomlong = this.utils.rad2degr (lng);
 
       // Create map line series and connect to the cities
       this.globals.scheduleLineSeries = this.globals.scheduleChart.series.push (new am4maps.MapLineSeries ());
@@ -490,46 +490,13 @@ export class MsfSchedulePanelComponent implements OnInit {
       this.globals.scheduleChart.deltaLongitude = 360 - Number (zoomlong);
       this.globals.scheduleChart.homeGeoPoint.longitude = Number (zoomlong);
       this.globals.scheduleChart.homeGeoPoint.latitude = Number (zoomlat);
-      this.globals.scheduleChart.homeZoomLevel = zoomLevel - 0.1;
+      this.globals.scheduleChart.homeZoomLevel = zoomLevel;
       this.globals.scheduleChart.goHome ();
-
-      // Workaround to avoid double lines
-      setTimeout (() =>
-      {
-        this.globals.scheduleChart.homeZoomLevel = zoomLevel;
-        this.globals.scheduleChart.goHome ();
-      }, 50);
     });
    }
    returnSearch(){
     this.globals.hideParametersPanels=false;
     this.globals.schedulepanelinfo =false;
-
-    this.zone.runOutsideAngular (() => {
-      if (this.globals.scheduleImageSeries != null)
-      {
-        this.globals.scheduleChart.series.removeIndex (this.globals.scheduleChart.series.indexOf (this.globals.scheduleImageSeries));
-        this.globals.scheduleImageSeries = null;
-      }
-
-      if (this.globals.scheduleLineSeries != null)
-      {
-        this.globals.scheduleChart.series.removeIndex (this.globals.scheduleChart.series.indexOf (this.globals.scheduleLineSeries));
-        this.globals.scheduleLineSeries = null;
-      }
-
-      if (this.globals.scheduleShadowLineSeries != null)
-      {
-        this.globals.scheduleChart.series.removeIndex (this.globals.scheduleChart.series.indexOf (this.globals.scheduleShadowLineSeries));
-        this.globals.scheduleShadowLineSeries = null;
-      }
-
-      this.globals.scheduleChart.homeZoomLevel = 1;
-      this.globals.scheduleChart.homeGeoPoint.longitude = 2.3510;
-      this.globals.scheduleChart.homeGeoPoint.latitude = 24.8567;
-      this.globals.scheduleChart.deltaLongitude = 0;
-      this.globals.scheduleChart.goHome ();
-    });
   }
    
   ngOnInit() {
@@ -537,15 +504,20 @@ export class MsfSchedulePanelComponent implements OnInit {
     this.maproutes = [];
     }
 
-    showTable(state:boolean){
+    showTable(state:boolean)
+    {
       this.globals.mapsc = state;
-      if(state==false){
-        setTimeout(() => {
+
+      if (state == false)
+      {
+        setTimeout (() => {
           this.globals.selectedIndex = 2;
-      }, 2000);
+        }, 2000);
+      }
+      else
+      {
+        if (!this.globals.scheduleChart)
+          this.globals.buildScheduleMapChart = true;
       }
     }
-
-  
-  
 }

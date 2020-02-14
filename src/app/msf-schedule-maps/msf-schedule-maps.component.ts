@@ -25,6 +25,9 @@ export class MsfScheduleMapsComponent implements OnInit {
   @Input("currentOption")
   currentOption: any;
 
+  @Input("buildScheduleMapChart")
+  buildScheduleMapChart: boolean;
+
   utils: Utils;
 
   constructor(private zone: NgZone, public globals: Globals, private dialog: MatDialog)
@@ -39,9 +42,17 @@ export class MsfScheduleMapsComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges)
   {
-    // Remove cities and routes if the option has changed
     if (changes['currentOption'])
       this.destroyScheduleChart ();
+    else if (changes['buildScheduleMapChart'] && this.globals.buildScheduleMapChart)
+    {
+      this.destroyScheduleChart ();
+
+      setTimeout (() => {
+        this.makeScheduleChart ();
+        this.globals.buildScheduleMapChart = false;
+      }, 50);
+    }
   }
 
   ngOnDestroy()
