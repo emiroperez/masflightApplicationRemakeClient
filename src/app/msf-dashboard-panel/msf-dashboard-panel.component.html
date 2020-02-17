@@ -914,7 +914,7 @@
       </div>
     </div>
     <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-chart-display-container-{{values.id}}">
-      <div class="msf-dashboard-map-routelist" *ngIf="isMapPanel() && values.flightRoutes != null">
+      <div class="msf-dashboard-map-routelist" *ngIf="isMapPanel() && values.flightRoutes.length">
         <div class="msf-dashboard-map-routelist-container" [style.height.px]="calcRouteListHeight()">
           <div class="msf-dashboard-map-routelist-item" *ngFor="let item of values.flightRoutes">
             <div class="msf-dashboard-map-item-flight">
@@ -927,7 +927,7 @@
           </div>
         </div>
       </div>
-      <div id="msf-dashboard-chart-display-{{values.id}}" [ngStyle]="{'width': (globals.readOnlyDashboard || isMapPanel()) ? '100%' : 'calc(100% - 35px)'}" [style.height.px]="calcPanelHeight()"></div>
+      <div id="msf-dashboard-chart-display-{{values.id}}" [ngStyle]="{'width': (globals.readOnlyDashboard || (isMapPanel() || !values.flightRoutes.length)) ? '100%' : 'calc(100% - 35px)'}" [style.height.px]="calcPanelHeight()"></div>
       <div class="msf-dashboard-map-panelinfo" *ngIf="isMapPanel() && checkedRoutes.length == 1">
         <table class="msf-dashboard-map-panelinfo-container">
           <tr><td>Touched Airports</td><td>{{checkedRoutes[0].TouchedAirports}}</td></tr>

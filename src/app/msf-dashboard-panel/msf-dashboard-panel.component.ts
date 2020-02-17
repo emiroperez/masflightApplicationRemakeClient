@@ -1297,6 +1297,10 @@ export class MsfDashboardPanelComponent implements OnInit {
 
         // Set value axis to null
         this.valueAxis = null;
+
+        // If the option meta data is 4 (Route Networks), add the origin cities and its destinations
+        // if (this.values.currentOption.metaData == 4)
+          // console.log ("Route Networks");
       }
       else if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART
         || this.values.currentChartType.flags & ChartFlags.PIECHART)
@@ -3123,7 +3127,11 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
 
     _this.values.lastestResponse = result;
-    _this.values.flightRoutes = JSON.parse (JSON.stringify (_this.values.lastestResponse));
+
+    if (_this.values.currentOption.metaData == 4)
+      _this.values.flightRoutes = [];
+    else
+      _this.values.flightRoutes = JSON.parse (JSON.stringify (_this.values.lastestResponse));
 
     _this.service.saveLastestResponse (_this, _this.getPanelInfo (), _this.handlerMapLastestResponse, _this.handlerMapError);
   }
@@ -4272,6 +4280,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           {
             this.values.currentOption = null;
             this.chartForm.get ('dataFormCtrl').reset ();
+            this.variableCtrlBtnEnabled = false;
           }
         }
 

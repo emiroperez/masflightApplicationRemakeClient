@@ -155,7 +155,7 @@ export class MsfDashboardPanelValues {
             {
                 this.lastestResponse = JSON.parse (lastestResponse);
 
-                if (this.currentChartType == 15)
+                if (this.currentChartType == 15 && this.currentOption.metaData == 2)
                     this.flightRoutes = JSON.parse (lastestResponse);
             }
             else
