@@ -4267,7 +4267,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       {
         if (this.values.currentChartType.flags & ChartFlags.MAP)
         {
-          if (this.values.currentOption == null)
+          if (this.values.currentOption == null || ((this.values.currentOption.metaData != 2 && this.values.currentOption.metaData != 4)
+            && !(this.values.currentChartType.flags & ChartFlags.MAPBOX)) || (this.values.currentOption.tabType !== 'map' && this.values.currentChartType.flags & ChartFlags.MAPBOX))
           {
             this.values.currentOption = null;
             this.chartForm.get ('dataFormCtrl').reset ();
