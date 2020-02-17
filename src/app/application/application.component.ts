@@ -504,10 +504,14 @@ toggle(){
     }
 
     // set cities and routes
-    _this.msfContainerRef.msfScMapRef.setRoutesToScMap (data.Response.records);
+    _this.msfContainerRef.msfScMapRef.destroyScheduleChart ();
 
-    _this.globals.isLoading = false;
-    _this.globals.showBigLoading = false;
+    setTimeout (() => {
+      _this.msfContainerRef.msfScMapRef.setRoutesToScMap (data.Response.records);
+
+      _this.globals.isLoading = false;
+      _this.globals.showBigLoading = false;
+    }, 50);
   }
 
   handlerRouteError(_this): void

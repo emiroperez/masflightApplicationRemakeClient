@@ -137,13 +137,15 @@ export class MsfScheduleMapsComponent implements OnInit {
 
   setRoutesToScMap(records): void
   {
-    let theme, imageSeriesTemplate, circle, hoverState, label, zoomLevel;
-    let newCity, newCityInfo, originCity, latOrigin, lonOrigin;
-    let numCities = 0;
+    let theme, imageSeriesTemplate, circle, hoverState, label, zoomLevel, lastOrigin;
+    let cities = [];
     let routes = [];
 
     this.makeScheduleChart ();
     theme = this.globals.theme;
+
+    if (!records)
+      return; // Don't set routes if there are no records
 
     this.zone.runOutsideAngular (() => {
       // Create image container for the circles and city labels
@@ -199,67 +201,85 @@ export class MsfScheduleMapsComponent implements OnInit {
       var sumY = 0;
       var sumZ = 0;
 
-      // Add origin city
-      originCity = this.globals.scheduleImageSeries.mapImages.create ();
-      newCityInfo = records[0];
-
-      latOrigin = parseFloat (newCityInfo.latOrigin);
-      lonOrigin = parseFloat (newCityInfo.lonOrigin);
-
-      if (latOrigin < -90 || latOrigin > 90 || lonOrigin < -180 || lonOrigin > 180)
-        console.warn (newCityInfo.origin + " have invalid coordinates! (lat: " + latOrigin + ", lon: " + lonOrigin + ")");
-
-      originCity.latitude = latOrigin;
-      originCity.longitude = lonOrigin;
-      originCity.nonScaling = true;
-      originCity.tooltipText = newCityInfo.origin;
-
-      numCities++;
-
-      tempLat = this.utils.degr2rad (originCity.latitude);
-      tempLng = this.utils.degr2rad (originCity.longitude);
-      tempLatCos = Math.cos (tempLat);
-      sumX += tempLatCos * Math.cos (tempLng);
-      sumY += tempLatCos * Math.sin (tempLng);
-      sumZ += Math.sin (tempLat);
-
-      // Add destination cities
+      // Add cities first
       for (let record of records)
       {
-        let latDest, lonDest;
+        let city, latitude, longitude;
 
+        if (cities.indexOf (record.origin) == -1)
+        {
+          // Add origin city
+          city = this.globals.scheduleImageSeries.mapImages.create ();
+
+          latitude = parseFloat (record.latOrigin);
+          longitude = parseFloat (record.lonOrigin);
+    
+          if (latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180)
+            console.warn (record.origin + " have invalid coordinates! (lat: " + latitude + ", lon: " + longitude + ")");
+    
+          city.latitude = latitude;
+          city.longitude = longitude;
+          city.nonScaling = true;
+          city.tooltipText = record.origin;
+
+          cities.push (record.origin);
+
+          tempLat = this.utils.degr2rad (city.latitude);
+          tempLng = this.utils.degr2rad (city.longitude);
+          tempLatCos = Math.cos (tempLat);
+          sumX += tempLatCos * Math.cos (tempLng);
+          sumY += tempLatCos * Math.sin (tempLng);
+          sumZ += Math.sin (tempLat);
+        }
+
+        // Add destination city
+        if (cities.indexOf (record.dest) == -1)
+        {
+          city = this.globals.scheduleImageSeries.mapImages.create ();
+
+          latitude = parseFloat (record.latDest);
+          longitude = parseFloat (record.lonDest);
+    
+          if (latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180)
+            console.warn (record.dest + " have invalid coordinates! (lat: " + latitude + ", lon: " + longitude + ")");
+    
+          city.latitude = latitude;
+          city.longitude = longitude;
+          city.nonScaling = true;
+          city.tooltipText = record.dest;
+
+          cities.push (record.dest);
+
+          tempLat = this.utils.degr2rad (city.latitude);
+          tempLng = this.utils.degr2rad (city.longitude);
+          tempLatCos = Math.cos (tempLat);
+          sumX += tempLatCos * Math.cos (tempLng);
+          sumY += tempLatCos * Math.sin (tempLng);
+          sumZ += Math.sin (tempLat);
+        }
+      }
+
+      // Add routes
+      lastOrigin = records[0].origin;
+
+      for (let record of records)
+      {
+        let latOrigin, lonOrigin, latDest, lonDest;
+
+        latOrigin = parseFloat (record.latOrigin);
+        lonOrigin = parseFloat (record.lonOrigin);
         latDest = parseFloat (record.latDest);
         lonDest = parseFloat (record.lonDest);
 
-        if (latDest < -90 || latDest > 90 || lonDest < -180 || latDest > 180)
-          console.warn (record.dest + " have invalid coordinates! (lat: " + latDest + ", lon: " + lonDest + ")");
-
-        newCity = this.globals.scheduleImageSeries.mapImages.create ();
-        newCityInfo = record;
-        newCity.latitude = latDest;
-        newCity.longitude = lonDest;
-        newCity.nonScaling = true;
-        newCity.tooltipText = newCityInfo.dest;
-
-        numCities++;
-
-        tempLat = this.utils.degr2rad (newCity.latitude);
-        tempLng = this.utils.degr2rad (newCity.longitude);
-        tempLatCos = Math.cos (tempLat);
-        sumX += tempLatCos * Math.cos (tempLng);
-        sumY += tempLatCos * Math.sin (tempLng);
-        sumZ += Math.sin (tempLat);
-
-        // Add route
         routes.push ([
           { "latitude": latOrigin, "longitude": lonOrigin },
           { "latitude": latDest, "longitude": lonDest }
         ])
       }
 
-      var avgX = sumX / numCities;
-      var avgY = sumY / numCities;
-      var avgZ = sumZ / numCities;
+      var avgX = sumX / cities.length;
+      var avgY = sumY / cities.length;
+      var avgZ = sumZ / cities.length;
 
       // convert average x, y, z coordinate to latitude and longtitude
       var lng = Math.atan2 (avgY, avgX);
@@ -282,7 +302,7 @@ export class MsfScheduleMapsComponent implements OnInit {
       mapLinesTemplate.horizontalCenter = "middle";
       mapLinesTemplate.verticalCenter = "middle";
 
-      if (!numCities)
+      if (!cities.length)
       {
         zoomLevel = 1;
         zoomlat = 24.8567;
