@@ -1298,9 +1298,9 @@ export class MsfDashboardPanelComponent implements OnInit {
         // Set value axis to null
         this.valueAxis = null;
 
-        // If the option meta data is 4 (Route Networks), add the origin cities and its destinations
-        // if (this.values.currentOption.metaData == 4)
-          // console.log ("Route Networks");
+        // If the option meta data is 4 (Route Networks), add origin cities and its destinations
+        if (this.values.currentOption.metaData == 4)
+          this.setRouteNetworks (chart, theme);
       }
       else if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART
         || this.values.currentChartType.flags & ChartFlags.PIECHART)
@@ -6280,15 +6280,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         }
       }
 
-      this.chart.homeZoomLevel = zoomLevel - 0.1;
+      this.chart.homeZoomLevel = zoomLevel;
       this.chart.goHome ();
-
-      // Workaround to avoid double lines
-      setTimeout (() =>
-      {
-        this.chart.homeZoomLevel = zoomLevel;
-        this.chart.goHome ();
-      }, 50);
     });
   }
 
@@ -7113,5 +7106,167 @@ export class MsfDashboardPanelComponent implements OnInit {
   revertAnchoredChanges(): void
   {
     this.anchoredArguments = JSON.parse (JSON.stringify (this.savedAnchoredArguments));
+  }
+
+  setRouteNetworks(chart, theme): void
+  {
+    let scheduleImageSeries, imageSeriesTemplate, circle, hoverState, label, zoomLevel;
+    let scheduleLineSeries, newCity, newCityInfo, originCity, latOrigin, lonOrigin;
+    let numCities = 0;
+    let routes = [];
+
+    if (!this.values.lastestResponse.length)
+      return;
+
+    // Create image container for the circles and city labels
+    scheduleImageSeries = chart.series.push (new am4maps.MapImageSeries ());
+    imageSeriesTemplate = scheduleImageSeries.mapImages.template;
+
+    // Set property fields for the cities
+    imageSeriesTemplate.propertyFields.latitude = "latitude";
+    imageSeriesTemplate.propertyFields.longitude = "longitude";
+    imageSeriesTemplate.horizontalCenter = "middle";
+    imageSeriesTemplate.verticalCenter = "middle";
+    imageSeriesTemplate.width = 8;
+    imageSeriesTemplate.height = 8;
+    imageSeriesTemplate.scale = 1;
+    imageSeriesTemplate.fill = Themes.AmCharts[theme].tooltipFill;
+    imageSeriesTemplate.background.fillOpacity = 0;
+    imageSeriesTemplate.background.fill = Themes.AmCharts[theme].mapCityColor;
+    imageSeriesTemplate.setStateOnChildren = true;
+
+    // Configure circle and city labels
+    circle = imageSeriesTemplate.createChild (am4core.Sprite);
+    circle.defaultState.properties.fillOpacity = 1;
+    circle.path = targetSVG;
+    circle.scale = 0.75;
+    circle.fill = Themes.AmCharts[theme].mapCityColor;
+    circle.dx -= 2.5;
+    circle.dy -= 2.5;
+    hoverState = circle.states.create ("hover");
+    hoverState.properties.fill = comet;
+
+    label = imageSeriesTemplate.createChild (am4core.Label);
+    label.text = "{tooltipText}";
+    label.scale = 1;
+    label.horizontalCenter = "left";
+    label.verticalCenter = "middle";
+    label.dx += 17.5;
+    label.dy += 5.5;
+    label.fill = Themes.AmCharts[theme].mapCityColor;
+    hoverState = label.states.create ("hover");
+    hoverState.properties.fill = Themes.AmCharts[theme].mapCityLabelHoverColor;
+    hoverState.properties.fillOpacity = 1;
+
+    imageSeriesTemplate.events.on ("over", function (event) {
+      event.target.setState ("hover");
+    });
+
+    imageSeriesTemplate.events.on ("out", function (event) {
+      event.target.setState ("default");
+    });
+
+    let tempLatCos, tempLat, tempLng;
+    var sumX = 0;
+    var sumY = 0;
+    var sumZ = 0;
+
+    // Add origin city
+    originCity = scheduleImageSeries.mapImages.create ();
+    newCityInfo = this.values.lastestResponse[0];
+
+    latOrigin = parseFloat (newCityInfo.latOrigin);
+    lonOrigin = parseFloat (newCityInfo.lonOrigin);
+
+    if (latOrigin < -90 || latOrigin > 90 || lonOrigin < -180 || lonOrigin > 180)
+      console.warn (newCityInfo.origin + " have invalid coordinates! (lat: " + latOrigin + ", lon: " + lonOrigin + ")");
+
+    originCity.latitude = latOrigin;
+    originCity.longitude = lonOrigin;
+    originCity.nonScaling = true;
+    originCity.tooltipText = newCityInfo.origin;
+
+    numCities++;
+
+    tempLat = this.utils.degr2rad (originCity.latitude);
+    tempLng = this.utils.degr2rad (originCity.longitude);
+    tempLatCos = Math.cos (tempLat);
+    sumX += tempLatCos * Math.cos (tempLng);
+    sumY += tempLatCos * Math.sin (tempLng);
+    sumZ += Math.sin (tempLat);
+
+    // Add destination cities
+    for (let record of this.values.lastestResponse)
+    {
+      let latDest, lonDest;
+
+      latDest = parseFloat (record.latDest);
+      lonDest = parseFloat (record.lonDest);
+
+      if (latDest < -90 || latDest > 90 || lonDest < -180 || latDest > 180)
+        console.warn (record.dest + " have invalid coordinates! (lat: " + latDest + ", lon: " + lonDest + ")");
+
+      newCity = scheduleImageSeries.mapImages.create ();
+      newCityInfo = record;
+      newCity.latitude = latDest;
+      newCity.longitude = lonDest;
+      newCity.nonScaling = true;
+      newCity.tooltipText = newCityInfo.dest;
+
+      numCities++;
+
+      tempLat = this.utils.degr2rad (newCity.latitude);
+      tempLng = this.utils.degr2rad (newCity.longitude);
+      tempLatCos = Math.cos (tempLat);
+      sumX += tempLatCos * Math.cos (tempLng);
+      sumY += tempLatCos * Math.sin (tempLng);
+      sumZ += Math.sin (tempLat);
+
+      // Add route
+      routes.push ([
+        { "latitude": latOrigin, "longitude": lonOrigin },
+        { "latitude": latDest, "longitude": lonDest }
+      ])
+    }
+
+    var avgX = sumX / numCities;
+    var avgY = sumY / numCities;
+    var avgZ = sumZ / numCities;
+
+    // convert average x, y, z coordinate to latitude and longtitude
+    var lng = Math.atan2 (avgY, avgX);
+    var hyp = Math.sqrt (avgX * avgX + avgY * avgY);
+    var lat = Math.atan2 (avgZ, hyp);
+    var zoomlat =  this.utils.rad2degr (lat);
+    var zoomlong = this.utils.rad2degr (lng);
+
+    // Create map line series and connect the origin city to the desination cities
+    scheduleLineSeries = chart.series.push (new am4maps.MapLineSeries ());
+    scheduleLineSeries.zIndex = 10;
+    scheduleLineSeries.data = [{
+      "multiGeoLine": routes
+    }];
+
+    // Set map line template
+    let mapLinesTemplate = scheduleLineSeries.mapLines.template;
+    mapLinesTemplate.opacity = 0.6;
+    mapLinesTemplate.stroke = Themes.AmCharts[theme].mapLineColor;
+    mapLinesTemplate.horizontalCenter = "middle";
+    mapLinesTemplate.verticalCenter = "middle";
+
+    if (!numCities)
+    {
+      zoomLevel = 1;
+      zoomlat = 24.8567;
+      zoomlong = 2.3510;
+    }
+    else
+      zoomLevel = 4;
+
+    chart.deltaLongitude = 360 - Number (zoomlong);
+    chart.homeGeoPoint.longitude = Number (zoomlong);
+    chart.homeGeoPoint.latitude = Number (zoomlat);
+    chart.homeZoomLevel = zoomLevel;
+    chart.goHome ();
   }
 }
