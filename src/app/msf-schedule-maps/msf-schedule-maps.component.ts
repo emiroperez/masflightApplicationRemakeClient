@@ -137,7 +137,7 @@ export class MsfScheduleMapsComponent implements OnInit {
 
   setRoutesToScMap(records): void
   {
-    let theme, imageSeriesTemplate, circle, hoverState, label, zoomLevel, lastOrigin;
+    let theme, imageSeriesTemplate, circle, hoverState, label, zoomLevel;
     let cities = [];
     let routes = [];
 
@@ -201,24 +201,26 @@ export class MsfScheduleMapsComponent implements OnInit {
       var sumY = 0;
       var sumZ = 0;
 
-      // Add cities first
+      // Add cities and routes
       for (let record of records)
       {
-        let city, latitude, longitude;
+        let city, latOrigin, lonOrigin, latDest, lonDest;
+
+        latOrigin = parseFloat (record.latOrigin);
+        lonOrigin = parseFloat (record.lonOrigin);
+        latDest = parseFloat (record.latDest);
+        lonDest = parseFloat (record.lonDest);
 
         if (cities.indexOf (record.origin) == -1)
         {
           // Add origin city
           city = this.globals.scheduleImageSeries.mapImages.create ();
-
-          latitude = parseFloat (record.latOrigin);
-          longitude = parseFloat (record.lonOrigin);
     
-          if (latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180)
-            console.warn (record.origin + " have invalid coordinates! (lat: " + latitude + ", lon: " + longitude + ")");
+          if (latOrigin < -90 || latOrigin > 90 || lonOrigin < -180 || lonOrigin > 180)
+            console.warn (record.origin + " have invalid coordinates! (lat: " + latOrigin + ", lon: " + lonOrigin + ")");
     
-          city.latitude = latitude;
-          city.longitude = longitude;
+          city.latitude = latOrigin;
+          city.longitude = lonOrigin;
           city.nonScaling = true;
           city.tooltipText = record.origin;
 
@@ -236,15 +238,12 @@ export class MsfScheduleMapsComponent implements OnInit {
         if (cities.indexOf (record.dest) == -1)
         {
           city = this.globals.scheduleImageSeries.mapImages.create ();
-
-          latitude = parseFloat (record.latDest);
-          longitude = parseFloat (record.lonDest);
     
-          if (latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180)
-            console.warn (record.dest + " have invalid coordinates! (lat: " + latitude + ", lon: " + longitude + ")");
+          if (latDest < -90 || latDest > 90 || lonDest < -180 || lonDest > 180)
+            console.warn (record.dest + " have invalid coordinates! (lat: " + latDest + ", lon: " + lonDest + ")");
     
-          city.latitude = latitude;
-          city.longitude = longitude;
+          city.latitude = latDest;
+          city.longitude = lonDest;
           city.nonScaling = true;
           city.tooltipText = record.dest;
 
@@ -257,24 +256,12 @@ export class MsfScheduleMapsComponent implements OnInit {
           sumY += tempLatCos * Math.sin (tempLng);
           sumZ += Math.sin (tempLat);
         }
-      }
 
-      // Add routes
-      lastOrigin = records[0].origin;
-
-      for (let record of records)
-      {
-        let latOrigin, lonOrigin, latDest, lonDest;
-
-        latOrigin = parseFloat (record.latOrigin);
-        lonOrigin = parseFloat (record.lonOrigin);
-        latDest = parseFloat (record.latDest);
-        lonDest = parseFloat (record.lonDest);
-
+        // Add route
         routes.push ([
           { "latitude": latOrigin, "longitude": lonOrigin },
           { "latitude": latDest, "longitude": lonDest }
-        ])
+        ]);
       }
 
       var avgX = sumX / cities.length;

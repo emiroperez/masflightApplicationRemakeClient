@@ -7110,9 +7110,8 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   setRouteNetworks(chart, theme): void
   {
-    let scheduleImageSeries, imageSeriesTemplate, circle, hoverState, label, zoomLevel;
-    let scheduleLineSeries, newCity, newCityInfo, originCity, latOrigin, lonOrigin;
-    let numCities = 0;
+    let scheduleImageSeries, scheduleLineSeries, imageSeriesTemplate, circle, hoverState, label, zoomLevel;
+    let cities = [];
     let routes = [];
 
     if (!this.values.lastestResponse.length)
@@ -7171,67 +7170,72 @@ export class MsfDashboardPanelComponent implements OnInit {
     var sumY = 0;
     var sumZ = 0;
 
-    // Add origin city
-    originCity = scheduleImageSeries.mapImages.create ();
-    newCityInfo = this.values.lastestResponse[0];
-
-    latOrigin = parseFloat (newCityInfo.latOrigin);
-    lonOrigin = parseFloat (newCityInfo.lonOrigin);
-
-    if (latOrigin < -90 || latOrigin > 90 || lonOrigin < -180 || lonOrigin > 180)
-      console.warn (newCityInfo.origin + " have invalid coordinates! (lat: " + latOrigin + ", lon: " + lonOrigin + ")");
-
-    originCity.latitude = latOrigin;
-    originCity.longitude = lonOrigin;
-    originCity.nonScaling = true;
-    originCity.tooltipText = newCityInfo.origin;
-
-    numCities++;
-
-    tempLat = this.utils.degr2rad (originCity.latitude);
-    tempLng = this.utils.degr2rad (originCity.longitude);
-    tempLatCos = Math.cos (tempLat);
-    sumX += tempLatCos * Math.cos (tempLng);
-    sumY += tempLatCos * Math.sin (tempLng);
-    sumZ += Math.sin (tempLat);
-
-    // Add destination cities
+    // Add cities and routes
     for (let record of this.values.lastestResponse)
     {
-      let latDest, lonDest;
+      let city, latOrigin, lonOrigin, latDest, lonDest;
 
+      latOrigin = parseFloat (record.latOrigin);
+      lonOrigin = parseFloat (record.lonOrigin);
       latDest = parseFloat (record.latDest);
       lonDest = parseFloat (record.lonDest);
 
-      if (latDest < -90 || latDest > 90 || lonDest < -180 || latDest > 180)
-        console.warn (record.dest + " have invalid coordinates! (lat: " + latDest + ", lon: " + lonDest + ")");
+      if (cities.indexOf (record.origin) == -1)
+      {
+        // Add origin city
+        city = scheduleImageSeries.mapImages.create ();
+    
+        if (latOrigin < -90 || latOrigin > 90 || lonOrigin < -180 || lonOrigin > 180)
+          console.warn (record.origin + " have invalid coordinates! (lat: " + latOrigin + ", lon: " + lonOrigin + ")");
+    
+        city.latitude = latOrigin;
+        city.longitude = lonOrigin;
+        city.nonScaling = true;
+        city.tooltipText = record.origin;
 
-      newCity = scheduleImageSeries.mapImages.create ();
-      newCityInfo = record;
-      newCity.latitude = latDest;
-      newCity.longitude = lonDest;
-      newCity.nonScaling = true;
-      newCity.tooltipText = newCityInfo.dest;
+        cities.push (record.origin);
 
-      numCities++;
+        tempLat = this.utils.degr2rad (city.latitude);
+        tempLng = this.utils.degr2rad (city.longitude);
+        tempLatCos = Math.cos (tempLat);
+        sumX += tempLatCos * Math.cos (tempLng);
+        sumY += tempLatCos * Math.sin (tempLng);
+        sumZ += Math.sin (tempLat);
+      }
 
-      tempLat = this.utils.degr2rad (newCity.latitude);
-      tempLng = this.utils.degr2rad (newCity.longitude);
-      tempLatCos = Math.cos (tempLat);
-      sumX += tempLatCos * Math.cos (tempLng);
-      sumY += tempLatCos * Math.sin (tempLng);
-      sumZ += Math.sin (tempLat);
+      // Add destination city
+      if (cities.indexOf (record.dest) == -1)
+      {
+        city = scheduleImageSeries.mapImages.create ();
+  
+        if (latDest < -90 || latDest > 90 || lonDest < -180 || lonDest > 180)
+          console.warn (record.dest + " have invalid coordinates! (lat: " + latDest + ", lon: " + lonDest + ")");
+    
+        city.latitude = latDest;
+        city.longitude = lonDest;
+        city.nonScaling = true;
+        city.tooltipText = record.dest;
+
+        cities.push (record.dest);
+
+        tempLat = this.utils.degr2rad (city.latitude);
+        tempLng = this.utils.degr2rad (city.longitude);
+        tempLatCos = Math.cos (tempLat);
+        sumX += tempLatCos * Math.cos (tempLng);
+        sumY += tempLatCos * Math.sin (tempLng);
+        sumZ += Math.sin (tempLat);
+      }
 
       // Add route
       routes.push ([
         { "latitude": latOrigin, "longitude": lonOrigin },
         { "latitude": latDest, "longitude": lonDest }
-      ])
+      ]);
     }
 
-    var avgX = sumX / numCities;
-    var avgY = sumY / numCities;
-    var avgZ = sumZ / numCities;
+    var avgX = sumX / cities.length;
+    var avgY = sumY / cities.length;
+    var avgZ = sumZ / cities.length;
 
     // convert average x, y, z coordinate to latitude and longtitude
     var lng = Math.atan2 (avgY, avgX);
@@ -7254,7 +7258,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     mapLinesTemplate.horizontalCenter = "middle";
     mapLinesTemplate.verticalCenter = "middle";
 
-    if (!numCities)
+    if (!cities.length)
     {
       zoomLevel = 1;
       zoomlat = 24.8567;
