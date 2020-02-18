@@ -484,18 +484,6 @@ export class EditCategoryArgumentDialog {
 
                 this.prepareVariableList (argument.filters[i], true);
 
-                /*if (filter.variable)
-                {
-                  for (let variable of filter.variableList)
-                  {
-                    if (filter.variable === variable)
-                    {
-                      argument.filters[i].variable = variable;
-                      break;
-                    }
-                  }
-                }*/
-
                 argExists = true;
                 break;
               }
