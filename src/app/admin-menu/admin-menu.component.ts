@@ -855,10 +855,26 @@ export class EditCategoryArgumentDialog {
     });
   }
 
-  prepareVariableList(item, index): void
+  prepareVariableList(filter): void
   {
-    console.log (this.data.arguments);
-    // item.filters[index]
+    // reset variables
+    filter.variableList = [];
+    filter.variable = null;
+
+    for (let argument of filter.argument.arguments)
+    {
+      if (argument.name1)
+        filter.variableList.push (argument.name1);
+
+      if (argument.name2)
+        filter.variableList.push (argument.name2);
+
+      if (argument.name3)
+        filter.variableList.push (argument.name3);
+
+      if (argument.name4)
+        filter.variableList.push (argument.name4);
+    }
   }
 
   handlerSuccess(_this,data, tab){   

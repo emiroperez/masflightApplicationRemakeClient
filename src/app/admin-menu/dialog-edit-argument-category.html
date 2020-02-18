@@ -162,23 +162,20 @@
                             </button>
                         </div>
                         <div class="filter-configuration-list">
-                            <div class="filter-configuration-item" *ngFor="let filter of item.filters; let filterIndex = index">
+                            <div class="filter-configuration-item" *ngFor="let filter of item.filters">
                                 <mat-form-field class="filter-configuration-combo-box">
-                                    <mat-select placeholder="Argument" [(ngModel)]="filter.argument" (ngModelChange)="prepareVariableList(item, filterIndex)">
-                                        <mat-option *ngFor="let argument of data.arguments" [value]="argument.label">
+                                    <mat-select placeholder="Argument" [(ngModel)]="filter.argument" (ngModelChange)="prepareVariableList(filter)">
+                                        <mat-option *ngFor="let argument of data.arguments" [value]="argument">
                                             {{argument.label}}
                                         </mat-option>
                                     </mat-select>
                                 </mat-form-field>
                                 <mat-form-field class="filter-configuration-combo-box">
-                                    <!--
-                                    <mat-select placeholder="Variable" [(ngModel)]="filter.variable">
-                                        <mat-option *ngFor="let argument of data.arguments" [value]="argument.label">
-                                            {{argument.label}}
+                                    <mat-select placeholder="Variable" [(ngModel)]="filter.variable" [disabled]="!filter.variableList.length">
+                                        <mat-option *ngFor="let variable of filter.variableList" [value]="variable">
+                                            {{variable}}
                                         </mat-option>
                                     </mat-select>
-                                    -->
-                                    <input matInput placeholder="Variable" [(ngModel)]="filter.variable">
                                 </mat-form-field>
                                 <mat-form-field>
                                     <input matInput placeholder="Argument Name" [(ngModel)]="filter.name">
