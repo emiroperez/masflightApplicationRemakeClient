@@ -4,6 +4,7 @@ import { DatalakeCreateTableComponent } from '../datalake-create-table/datalake-
 import { Globals } from '../globals/Globals';
 import { MsfAddDashboardComponent } from '../msf-add-dashboard/msf-add-dashboard.component';
 import { DashboardMenu } from '../model/DashboardMenu';
+import { MsfSharedDashboardItemsComponent } from '../msf-shared-dashboard-items/msf-shared-dashboard-items.component';
 
 @Component({
   selector: 'app-datalake-menu',
@@ -85,6 +86,18 @@ export class DatalakeMenuComponent implements OnInit {
         //no encontro el dato
         return true;
       }
+  }
+
+  checkSharedItems() {
+    this.dialog.open (MsfSharedDashboardItemsComponent, {
+      height: '340px',
+      width: '400px',
+      panelClass: 'msf-dashboard-child-panel-dialog',
+      data: {
+        dashboards: this.dashboards,
+        sharedDashboards: this.sharedDashboards
+      }
+    });
   }
 
   goToDashboard(dashboard, readOnly): void
