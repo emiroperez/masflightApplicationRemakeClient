@@ -467,7 +467,7 @@ export class EditCategoryArgumentDialog {
         if (argument.maxDate)
           argument.maxDate = new Date (argument.maxDate);
 
-        if (argument.filters || argument.filters.length)
+        if (argument.filters)
         {
           argument.filters = JSON.parse (argument.filters);
 

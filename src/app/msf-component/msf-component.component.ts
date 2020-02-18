@@ -50,6 +50,36 @@ export class MsfComponentComponent implements OnInit {
 
               if (argument.maxDate)
                 argument.maxDate = new Date (argument.maxDate);
+
+              if (argument.filters)
+              {
+                argument.filters = JSON.parse (argument.filters);
+
+                for (let i = argument.filters.length - 1; i >= 0; i--)
+                {
+                  let filter = argument.filters[i];
+                  let argExists = false;
+        
+                  for (let option of this.globals.currentOption.menuOptionArguments)
+                  {
+                    for (let item of option.categoryArguments)
+                    {
+                      if (filter.argument == item.id)
+                      {
+                        argument.filters[i].argument = item;        
+                        argExists = true;
+                        break;
+                      }
+                    }
+
+                    if (argExists)
+                      break;
+                  }
+
+                  if (!argExists)
+                    argument.filters.splice (i, 1);
+                }
+              }
             }
 
             argument.valueLoaded = true;
