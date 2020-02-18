@@ -120,7 +120,7 @@
                         </div>
                     </ng-container>
                 </ng-container>
-                <ng-container *ngIf="!isAirline(item) && !isAircraftType(item) && !isAirport(item) && !isSelectBoxSingleOption(item) && !isSelectBoxMultipleOption(item) && !isDateRange(item) && !isSortingCheckboxes(item) && !isStates(item) && !isTitle(item)">
+                <ng-container *ngIf="!isAirline(item) && !isAircraftType(item) && !isAirport(item) && !isSelectBoxSingleOption(item) && !isSelectBoxMultipleOption(item) && !isDateRange(item) && !isStates(item) && !isTitle(item)">
                     <div class="airline-argument">
                         <mat-form-field [style.width.%]="100">
                             <mat-select [(value)]="item.required" placeholder="Required" [(ngModel)]="item.required">
@@ -140,7 +140,7 @@
                         </mat-form-field>
                     </div>
                 </ng-container>
-                <ng-container *ngIf="isAirline(item) || isAircraftType(item) || isAirport(item) || isSelectBoxSingleOption(item) || isSelectBoxMultipleOption(item) || isSortingCheckboxes(item) || isStates(item)">
+                <ng-container *ngIf="isAirline(item) || isAircraftType(item) || isAirport(item) || isSelectBoxSingleOption(item) || isSelectBoxMultipleOption(item) || isStates(item)">
                     <div class="arguments-child"  [style.margin-right.%]="5">
                         <mat-form-field [style.width.%]="100">
                             <mat-select [(value)]="item.required" placeholder="Required" [(ngModel)]="item.required">
@@ -154,18 +154,27 @@
                             <input matInput placeholder="Url" [(ngModel)]="item.url" (ngModelChange)="updateItemList(item)">
                         </mat-form-field>
                     </div>
-                    <ng-container *ngIf="!isSortingCheckboxes(item)">
-                        <div class="arguments-child" [style.margin-right.%]="5">
-                            <mat-form-field [style.width.%]="100">
-                                <input matInput placeholder="Visible Attribute" [(ngModel)]="item.visibleAttribute" (ngModelChange)="updateVisibleAttribute()">
-                            </mat-form-field>
+                    <div class="arguments-child filter-configuration-container">
+                        <div class="filter-configuration-header">
+                            Filter Configuration
+                            <button mat-mini-fab class="filter-configuration-button" color="primary" matTooltip="Add URL Filter">
+                                <mat-icon aria-label="Add URL Filter">add</mat-icon>
+                            </button>
                         </div>
-                        <div class="arguments-child">                 
-                            <mat-form-field [style.width.%]="100">
-                                <input matInput placeholder="Selected Attribute" [(ngModel)]="item.selectedAttribute">
-                            </mat-form-field>
+                        <div class="filter-configuration-list">
+
                         </div>
-                    </ng-container>
+                    </div>
+                    <div class="arguments-child" [style.margin-right.%]="5">
+                        <mat-form-field [style.width.%]="100">
+                            <input matInput placeholder="Visible Attribute" [(ngModel)]="item.visibleAttribute" (ngModelChange)="updateVisibleAttribute()">
+                        </mat-form-field>
+                    </div>
+                    <div class="arguments-child">                 
+                        <mat-form-field [style.width.%]="100">
+                            <input matInput placeholder="Selected Attribute" [(ngModel)]="item.selectedAttribute">
+                        </mat-form-field>
+                    </div>
                 </ng-container>
                 <ng-container *ngIf="isDateRange(item)">
                     <div class="arguments-child">                 

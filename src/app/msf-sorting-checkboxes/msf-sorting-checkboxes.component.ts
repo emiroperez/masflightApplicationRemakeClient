@@ -84,7 +84,7 @@ export class MsfSortingCheckboxesComponent implements OnInit {
     }
 
     this.setLoading.emit (true);
-    url = this.globals.baseUrl + this.argument.url + "?optionId="+ this.currentOptionId;
+    url = this.globals.baseUrl + "/getMetaByOptionId?optionId="+ this.currentOptionId;
     this.http.get(this,url,handlerSuccess,this.handlerError, null);  
   }
   
