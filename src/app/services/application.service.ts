@@ -157,7 +157,7 @@ export class ApplicationService {
       console.log (urlBase);
 
     let data = { variables: _this.globals.variables, values: _this.globals.values };
-    let url = this.host + "/secure/getHorizontalMatrix?url=" + urlArg + "&optionId=" + _this.globals.currentOption.idOption;
+    let url = this.host + "/secure/getHorizontalMatrix?url=" + urlArg + "&optionId=" + _this.globals.currentOption.id;
 
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;
