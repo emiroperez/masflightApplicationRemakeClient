@@ -842,6 +842,25 @@ export class EditCategoryArgumentDialog {
     this.authService.get (this, url, handlerSuccess, this.handlerError);  
   }
 
+  addURLFilter(item): void
+  {
+    if (!item.filters)
+      item.filters = [];
+
+    item.filters.push ({
+      argument: null,
+      variable: null,
+      variableList: [],
+      name: ""
+    });
+  }
+
+  prepareVariableList(item, index): void
+  {
+    console.log (this.data.arguments);
+    // item.filters[index]
+  }
+
   handlerSuccess(_this,data, tab){   
     _this.loading = false;
     _this.itemsList = data;
@@ -2053,14 +2072,26 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   editCategoryArguments(cat) {
 
     var duplicateObject = JSON.parse(JSON.stringify(cat));
+    let args = [];
+
+    // build argument list
+    for (let menuOptionArgument of this.optionSelected.menuOptionArgumentsAdmin)
+    {
+      if (menuOptionArgument.id == duplicateObject.id)
+        continue; // don't add the argument that is going to be edited
+
+      for (let argument of menuOptionArgument.categoryArgumentsId)
+        args.push (argument);
+    }
 
     const dialogRef = this.dialog.open(EditCategoryArgumentDialog, {
       panelClass: "category-argument-dialog",
-      width: '45%',
+      width: '614px',
       data: {
         optionId: this.optionSelected.id,
         createdMetas: this.optionSelected.createdMetas,
-        cat: duplicateObject
+        cat: duplicateObject,
+        arguments: args
       }
     });
 

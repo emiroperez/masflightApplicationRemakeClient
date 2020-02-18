@@ -30,6 +30,7 @@ export class Arguments{
     refreshDate: boolean = false;
     dateSelectionMode: string;
     anchored: boolean = false;
+    filters: any[];
 
     constructor(requiredIn: number,typeIn: string, name1In: string,name2In: string,
         name3In: String, urlIn: string , visibleAttributeIn:string, selectedAttributeIn:string,
