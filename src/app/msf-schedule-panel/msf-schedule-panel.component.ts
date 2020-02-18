@@ -499,25 +499,54 @@ export class MsfSchedulePanelComponent implements OnInit {
     this.globals.schedulepanelinfo =false;
   }
    
-  ngOnInit() {
+  ngOnInit()
+  {
+    this.removeMapRoutes ();
     this.mapairports = [];
     this.maproutes = [];
-    }
+  }
 
-    showTable(state:boolean)
+  removeMapRoutes()
+  {
+    if (!this.globals.scheduleChart)
+      return;
+
+    this.zone.runOutsideAngular (() => {
+      // Remove any existing image and lines series from the map
+      if (this.globals.scheduleImageSeries != null)
+      {
+        this.globals.scheduleChart.series.removeIndex (this.globals.scheduleChart.series.indexOf (this.globals.scheduleImageSeries));
+        this.globals.scheduleImageSeries = null;
+      }
+
+      if (this.globals.scheduleLineSeries != null)
+      {
+        this.globals.scheduleChart.series.removeIndex (this.globals.scheduleChart.series.indexOf (this.globals.scheduleLineSeries));
+        this.globals.scheduleLineSeries = null;
+      }
+
+      if (this.globals.scheduleShadowLineSeries != null)
+      {
+        this.globals.scheduleChart.series.removeIndex (this.globals.scheduleChart.series.indexOf (this.globals.scheduleShadowLineSeries));
+        this.globals.scheduleShadowLineSeries = null;
+      }
+    });
+  }
+
+  showTable(state:boolean)
+  {
+    this.globals.mapsc = state;
+
+    if (!state)
     {
-      this.globals.mapsc = state;
-
-      if (state == false)
-      {
-        setTimeout (() => {
-          this.globals.selectedIndex = 2;
-        }, 2000);
-      }
-      else
-      {
-        if (!this.globals.scheduleChart)
-          this.globals.buildScheduleMapChart = true;
-      }
+      setTimeout (() => {
+        this.globals.selectedIndex = 2;
+      }, 2000);
     }
+    else
+    {
+      if (!this.globals.scheduleChart)
+        this.globals.buildScheduleMapChart = true;
+    }
+  }
 }
