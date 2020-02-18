@@ -466,6 +466,45 @@ export class EditCategoryArgumentDialog {
 
         if (argument.maxDate)
           argument.maxDate = new Date (argument.maxDate);
+
+        if (argument.filters || argument.filters.length)
+        {
+          argument.filters = JSON.parse (argument.filters);
+
+          for (let i = argument.filters.length - 1; i >= 0; i--)
+          {
+            let filter = argument.filters[i];
+            let argExists = false;
+
+            for (let item of this.data.arguments)
+            {
+              if (filter.argument == item.id)
+              {
+                argument.filters[i].argument = item;
+
+                this.prepareVariableList (argument.filters[i], true);
+
+                /*if (filter.variable)
+                {
+                  for (let variable of filter.variableList)
+                  {
+                    if (filter.variable === variable)
+                    {
+                      argument.filters[i].variable = variable;
+                      break;
+                    }
+                  }
+                }*/
+
+                argExists = true;
+                break;
+              }
+
+              if (!argExists)
+                argument.filters.splice (i, 1);
+            }
+          }
+        }
       }
   }
 
@@ -855,11 +894,13 @@ export class EditCategoryArgumentDialog {
     });
   }
 
-  prepareVariableList(filter): void
+  prepareVariableList(filter, loading): void
   {
     // reset variables
     filter.variableList = [];
-    filter.variable = null;
+
+    if (!loading)
+      filter.variable = null;
 
     for (let argument of filter.argument.arguments)
     {
@@ -2147,6 +2188,17 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
           if (argument.maxDate)
             argument.maxDate = argument.maxDate.toString ();
+
+          if (argument.filters || argument.filters.length)
+          {
+            for (let filter of argument.filters)
+            {
+              filter.argument = filter.argument.id;
+              filter.variableList = undefined;
+            }
+
+            argument.filters = JSON.stringify (argument.filters);
+          }
         }
 
         this.saveMenuArguments(duplicateObject);

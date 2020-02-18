@@ -164,7 +164,7 @@
                         <div class="filter-configuration-list">
                             <div class="filter-configuration-item" *ngFor="let filter of item.filters">
                                 <mat-form-field class="filter-configuration-combo-box">
-                                    <mat-select placeholder="Argument" [(ngModel)]="filter.argument" (ngModelChange)="prepareVariableList(filter)">
+                                    <mat-select placeholder="Argument" [(ngModel)]="filter.argument" (ngModelChange)="prepareVariableList(filter,false)">
                                         <mat-option *ngFor="let argument of data.arguments" [value]="argument">
                                             {{argument.label}}
                                         </mat-option>
