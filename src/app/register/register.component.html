@@ -85,7 +85,7 @@
                         </li>
                         <li>
                             <mat-form-field [formGroup]="personalInformationForm" class="msf-item">
-                                <mat-select placeholder="State" autocomplete="off" class="input-register" formControlName="StateValidator" name="state">
+                                <mat-select placeholder="State" autocomplete="off" class="input-register" formControlName="stateValidator" name="state">
                                     <ngx-mat-select-search [formControl]="stateFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
                                     <mat-option *ngFor="let state of filteredStates | async" [value]="state">
                                         {{state.fullName}}
