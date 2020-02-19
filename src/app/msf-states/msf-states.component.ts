@@ -38,17 +38,27 @@ export class MsfStatesComponent implements OnInit {
       return;
     }
 
-    if(this.argument.url.substring(0,1)=="/"){
-      url = this.globals.baseUrl + this.argument.url + "?search="+ (search != null?search:'');
-    }else{
-     url = this.argument.url+ (search != null?search:'');
+    if (this.argument.url.includes ("?"))
+    {
+      if (this.argument.url.substring (0, 1) == "/")
+        url = this.globals.baseUrl + this.argument.url + "&search=" + (search != null ? search : '');
+      else
+        url = this.argument.url + "&search=" + (search != null ? search : '');
     }
+    else
+    {
+      if (this.argument.url.substring (0, 1) == "/")
+        url = this.globals.baseUrl + this.argument.url + "?search=" + (search != null ? search : '');
+      else
+        url = this.argument.url + "?search=" + (search != null ? search : '');
+    }
+
     this.http.get(this,url,handlerSuccess,this.handlerError, null);  
   }
 
   handlerSuccess(_this,data, tab){   
     _this.loading = false;
-    _this.data = of(data).pipe(delay(500));;        
+    _this.data = of(data).pipe(delay(500));
   }
 
   handlerError(_this,result){

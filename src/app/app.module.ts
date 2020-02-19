@@ -59,8 +59,6 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material';
 import { AdminMenuMembershipsComponent } from './admin-menu-memberships/admin-menu-memberships.component';
 import { Utils } from './commons/utils';
-import { MsfUserListComponent } from './msf-user-list/msf-user-list.component';
-import { MsfOptionListComponent } from './msf-option-list/msf-option-list.component';
 import { ConfirmDeleteDialog } from './admin-menu/admin-menu.component';
 import { EditOutputOptionsMetaDialog } from './admin-menu/admin-menu.component';
 import { EditCategoryArgumentDialog } from './admin-menu/admin-menu.component';
@@ -257,8 +255,6 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     AdminMenuComponent,
     AdminMenuComponent,
     AdminMenuMembershipsComponent,
-    MsfUserListComponent,
-    MsfOptionListComponent,
     ConfirmDeleteDialog,
     EditOutputOptionsMetaDialog,
     EditCategoryArgumentDialog,

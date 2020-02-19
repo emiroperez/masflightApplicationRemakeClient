@@ -11,8 +11,6 @@ export enum ComponentType {
   grouping = "grouping",
   rounding = "rounding",
   cancelled = 'cancelled',
-  userList = 'userList',
-  optionList = 'optionList',
   freeTextInput = "freeTextInput",
   selectBoxSingleOption = "selectBoxSingleOption",
   selectBoxMultipleOption = "selectBoxMultipleOption",

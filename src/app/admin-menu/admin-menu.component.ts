@@ -860,11 +860,25 @@ export class EditCategoryArgumentDialog {
       return;
     }
 
-    if(item.url.substring(0,1)=="/"){
-      url = this.globals.baseUrl + item.url + "?search="+ (search != null?search:'');
-    }else{
-     url = item.url + "/?search=" + (search != null?search:'');
+    if (item.url.includes ("?"))
+    {
+      if (item.url.substring (0, 1) == "/")
+        url = this.globals.baseUrl + item.url + "&search=" + (search != null ? search : '');
+      else
+        url = item.url + "&search=" + (search != null ? search : '');
     }
+    else
+    {
+      if (item.url.substring (0, 1) == "/")
+        url = this.globals.baseUrl + item.url + "?search=" + (search != null ? search : '');
+      else
+        url = item.url + "?search=" + (search != null ? search : '');
+    }
+
+    url += "&appId=" + this.globals.currentApplication.id;
+
+    if (this.globals.testingPlan != -1)
+      url += "&testPlanId=" + this.globals.testingPlan;
 
     this.authService.get (this, url, handlerSuccess, this.handlerError);  
   }
@@ -1069,8 +1083,6 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     { type: "aircraftType", numArguments: 1 },
     { type: "grouping", numArguments: 1 },
     { type: "rounding", numArguments: 1 },
-    { type: "userList", numArguments: 1 },
-    { type: "optionList", numArguments: 1 },
     { type: "freeTextInput", numArguments: 1 },
     { type: "selectBoxSingleOption", numArguments: 1 },
     { type: "selectBoxMultipleOption", numArguments: 1 },
@@ -2177,7 +2189,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
           if (argument.maxDate)
             argument.maxDate = argument.maxDate.toString ();
 
-          if (argument.filters || argument.filters.length)
+          if (argument.filters)
           {
             for (let filter of argument.filters)
             {

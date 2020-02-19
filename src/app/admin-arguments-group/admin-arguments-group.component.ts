@@ -135,6 +135,9 @@ export class AdminArgumentsGroupComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (this.globals.currentApplication == undefined)
+      this.globals.currentApplication = JSON.parse (localStorage.getItem ("currentApplication"));
+
     this.innerHeight = window.innerHeight;
     this.getGroupsArguments();
   }

@@ -39,11 +39,21 @@ export class MsfGroupAaaComponent implements OnInit {
       return;
     }
 
-    if(this.argument.url.substring(0,1)=="/"){
-      url = this.globals.baseUrl + this.argument.url + "?search="+ (search != null?search:'');
-    }else{
-     url = this.argument.url+ (search != null?search:'');
+    if (this.argument.url.includes ("?"))
+    {
+      if (this.argument.url.substring (0, 1) == "/")
+        url = this.globals.baseUrl + this.argument.url + "&search=" + (search != null ? search : '');
+      else
+        url = this.argument.url + "&search=" + (search != null ? search : '');
     }
+    else
+    {
+      if (this.argument.url.substring (0, 1) == "/")
+        url = this.globals.baseUrl + this.argument.url + "?search=" + (search != null ? search : '');
+      else
+        url = this.argument.url + "?search=" + (search != null ? search : '');
+    }
+
     this.authService.get(this,url,handlerSuccess,this.handlerError);  
   }
 
