@@ -14,7 +14,6 @@ export enum ComponentType {
   freeTextInput = "freeTextInput",
   selectBoxSingleOption = "selectBoxSingleOption",
   selectBoxMultipleOption = "selectBoxMultipleOption",
-  checkBox = "checkBox",
   cancelsCheckBox = "cancelsCheckBox",
   diversionsCheckbox = "diversionsCheckbox",
   flightDelaysCheckbox = "flightDelaysCheckbox",

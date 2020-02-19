@@ -90,9 +90,6 @@ export class MsfArgumentComponent implements OnInit {
     return ComponentType.selectBoxMultipleOption == argument.type;
   }
 
-  isCheckBox(argument: Arguments){
-    return ComponentType.checkBox == argument.type;
-  }
   isCancelsCheckBox(argument: Arguments){
     return ComponentType.cancelsCheckBox == argument.type;
   }

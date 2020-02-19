@@ -47,7 +47,6 @@ export class AdminArgumentsCategoryComponent implements OnInit {
     { value: "freeTextInput", name: "Free text input" },
     { value: "selectBoxSingleOption", name: "Select box single option" },
     { value: "selectBoxMultipleOption", name: "Select box multiple option" },
-    { value: "checkBox", name: "Check box" },
     { value: "cancelsCheckBox", name: "Cancels check boxes" },
     { value: "diversionsCheckbox", name: "Diversions check boxes" },
     { value: "flightDelaysCheckbox", name: "Flight Delays check box" },

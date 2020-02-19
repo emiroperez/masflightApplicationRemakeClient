@@ -1086,7 +1086,6 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     { type: "freeTextInput", numArguments: 1 },
     { type: "selectBoxSingleOption", numArguments: 1 },
     { type: "selectBoxMultipleOption", numArguments: 1 },
-    { type: "checkBox", numArguments: 1 },
     { type: "cancelsCheckBox", numArguments: 1 },
     { type: "diversionsCheckbox", numArguments: 1 },
     { type: "flightDelaysCheckbox", numArguments: 1 },
