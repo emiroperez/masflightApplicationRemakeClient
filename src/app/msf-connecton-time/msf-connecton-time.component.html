@@ -9,7 +9,7 @@
 </div> 
 <div class="msf-component-airport-input-container msf-component-connection-input-container">  
   <mat-form-field class="msf-full-width msf-seats-input">
-    <input matInput autocomplete="off" placeholder="{{argument.label1}}" autocomplete="off" class=" msf-full-width msf-menu-arg-select" [(ngModel)]="argument.value1" (ngModelUpdate)="startUpdateURL.emit()">
+    <input matInput autocomplete="off" placeholder="{{argument.label1}}" autocomplete="off" class=" msf-full-width msf-menu-arg-select" [(ngModel)]="argument.value1" (ngModelUpdate)="startURLUpdate.emit()">
   </mat-form-field>
   <mat-form-field class="msf-full-width msf-seats-input">
     <input matInput placeholder="{{argument.label2}}" autocomplete="off" class=" msf-full-width msf-menu-arg-select" [(ngModel)]="argument.value2" (ngModelUpdate)="startURLUpdate.emit()">
