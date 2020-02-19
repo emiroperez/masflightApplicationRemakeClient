@@ -5,6 +5,7 @@ import { Globals } from '../globals/Globals';
 import { ApiClient } from '../api/api-client';
 import { delay } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
+import { Utils } from '../commons/utils';
 
 @Component({
   selector: 'app-msf-group-aaa',
@@ -21,7 +22,12 @@ export class MsfGroupAaaComponent implements OnInit {
   isDashboardPanel: boolean = false;
 
   loading = false;
-  constructor(private authService: AuthService, public globals: Globals) { }
+  utils: Utils;
+
+  constructor(private authService: AuthService, public globals: Globals)
+  {
+    this.utils = new Utils ();
+  }
 
 
   ngOnInit() { 
@@ -53,6 +59,14 @@ export class MsfGroupAaaComponent implements OnInit {
       else
         url = this.argument.url + "?search=" + (search != null ? search : '');
     }
+
+    url += "&appId=" + this.globals.currentApplication.id;
+
+    if (this.globals.testingPlan != -1)
+      url += "&testPlanId=" + this.globals.testingPlan;
+
+    // set URL filters if available
+    url += this.utils.setURLfilters (this.argument.filters);
 
     this.authService.get(this,url,handlerSuccess,this.handlerError);  
   }

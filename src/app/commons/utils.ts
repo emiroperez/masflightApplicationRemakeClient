@@ -935,4 +935,56 @@ export class Utils{
     {
         return degr * Math.PI / 180;
     }
+
+    setURLfilters(filters): string
+    {
+        let urlFilters = "";
+
+        if (filters && filters.length)
+        {
+            for (let filter of filters)
+            {
+                let valueArg = undefined;
+                let value = undefined;
+
+                // get value from variable
+                for (let arg of filter.argument.arguments)
+                {
+                    valueArg = arg;
+  
+                    if (filter.variable === arg.name1)
+                    {
+                        value = arg.value1;
+                        break;
+                    }
+  
+                    if (filter.variable === arg.name2)
+                    {
+                        value = arg.value2;
+                        break;
+                    }
+  
+                    if (filter.variable === arg.name3)
+                    {
+                        value = arg.value3;
+                        break;
+                    }
+  
+                    if (filter.variable === arg.name4)
+                    {
+                        value = arg.value4;
+                        break;
+                    }
+                }
+  
+                if (value == undefined)
+                    valueArg = undefined;
+  
+                if (valueArg != undefined)
+                    urlFilters += "&" + filter.name + "=" + this.getValueFormat (valueArg.type, value, valueArg);
+            }
+        }
+
+        return urlFilters;
+    }
 }
