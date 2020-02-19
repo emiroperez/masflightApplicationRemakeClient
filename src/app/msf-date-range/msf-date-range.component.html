@@ -195,7 +195,7 @@
                         bindLabel="name"
                         bindName="value"
                         [(ngModel)]="argument.value3"
-                        (ngModelUpdate)="startURLUpdate.emit()"
+                        (ngModelChange)="startURLUpdate.emit()"
                         [clearable]="false"
                         dropdownPosition="bottom">
                     </ng-select> 

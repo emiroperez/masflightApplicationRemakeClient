@@ -10,7 +10,7 @@
 <div class="msf-component-airport-input-container checkbox-container single-checkbox">
     <div class="msf-full-width">
         <div class="checkbox-component" *ngFor="let checkbox of data" style="width: 100%">
-            <mat-checkbox class="cancels-checkbox" [value]="argument.value1" [(ngModel)]="argument.value1" (ngModelUpdate)="startURLUpdate.emit()">
+            <mat-checkbox class="cancels-checkbox" [value]="argument.value1" [(ngModel)]="argument.value1" (ngModelChange)="startURLUpdate.emit()">
                 {{checkbox.name}}
             </mat-checkbox>
         </div>

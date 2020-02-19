@@ -19,7 +19,7 @@
             bindLabel="name"
             bindName="id"
             [(ngModel)]="argument.value1"
-            (ngModelUpdate)="startURLUpdate.emit()"
+            (ngModelChange)="startURLUpdate.emit()"
             appendTo=".msf-control-variables-overlay"
             dropdownPosition="bottom">
         </ng-select>
@@ -37,7 +37,7 @@
         bindLabel="name"
         bindName="id"
         [(ngModel)]="argument.value2"
-        (ngModelUpdate)="startURLUpdate.emit()"
+        (ngModelChange)="startURLUpdate.emit()"
         appendTo=".msf-control-variables-overlay"
         dropdownPosition="bottom">
     </ng-select>          
@@ -55,7 +55,7 @@
             bindLabel="name"
             bindName="id"
             [(ngModel)]="argument.value3"
-            (ngModelUpdate)="startURLUpdate.emit()"
+            (ngModelChange)="startURLUpdate.emit()"
             appendTo=".msf-control-variables-overlay"
             dropdownPosition="bottom">
         </ng-select>
