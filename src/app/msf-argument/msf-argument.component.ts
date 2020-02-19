@@ -78,14 +78,6 @@ export class MsfArgumentComponent implements OnInit {
     return ComponentType.rounding == argument.type;
   }
 
-  isUserList(argument: Arguments){
-    return ComponentType.userList == argument.type;
-  }
-
-  isOptionList(argument: Arguments){
-    return ComponentType.optionList == argument.type;
-  }
-
   isMsFreeTextInput(argument: Arguments){
     return ComponentType.freeTextInput == argument.type;
   }
@@ -98,9 +90,6 @@ export class MsfArgumentComponent implements OnInit {
     return ComponentType.selectBoxMultipleOption == argument.type;
   }
 
-  isCheckBox(argument: Arguments){
-    return ComponentType.checkBox == argument.type;
-  }
   isCancelsCheckBox(argument: Arguments){
     return ComponentType.cancelsCheckBox == argument.type;
   }

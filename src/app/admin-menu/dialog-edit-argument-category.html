@@ -120,7 +120,7 @@
                         </div>
                     </ng-container>
                 </ng-container>
-                <ng-container *ngIf="!isAirline(item) && !isAircraftType(item) && !isAirport(item) && !isSelectBoxSingleOption(item) && !isSelectBoxMultipleOption(item) && !isDateRange(item) && !isSortingCheckboxes(item) && !isStates(item) && !isTitle(item)">
+                <ng-container *ngIf="!isAirline(item) && !isAircraftType(item) && !isAirport(item) && !isSelectBoxSingleOption(item) && !isSelectBoxMultipleOption(item) && !isDateRange(item) && !isStates(item) && !isTitle(item)">
                     <div class="airline-argument">
                         <mat-form-field [style.width.%]="100">
                             <mat-select [(value)]="item.required" placeholder="Required" [(ngModel)]="item.required">
@@ -140,7 +140,7 @@
                         </mat-form-field>
                     </div>
                 </ng-container>
-                <ng-container *ngIf="isAirline(item) || isAircraftType(item) || isAirport(item) || isSelectBoxSingleOption(item) || isSelectBoxMultipleOption(item) || isSortingCheckboxes(item) || isStates(item)">
+                <ng-container *ngIf="isAirline(item) || isAircraftType(item) || isAirport(item) || isSelectBoxSingleOption(item) || isSelectBoxMultipleOption(item) || isStates(item)">
                     <div class="arguments-child"  [style.margin-right.%]="5">
                         <mat-form-field [style.width.%]="100">
                             <mat-select [(value)]="item.required" placeholder="Required" [(ngModel)]="item.required">
@@ -150,22 +150,49 @@
                         </mat-form-field>
                     </div>
                     <div class="arguments-child">
-                        <mat-form-field >
+                        <mat-form-field>
                             <input matInput placeholder="Url" [(ngModel)]="item.url" (ngModelChange)="updateItemList(item)">
                         </mat-form-field>
                     </div>
-                    <ng-container *ngIf="!isSortingCheckboxes(item)">
-                        <div class="arguments-child" [style.margin-right.%]="5">
-                            <mat-form-field [style.width.%]="100">
-                                <input matInput placeholder="Visible Attribute" [(ngModel)]="item.visibleAttribute" (ngModelChange)="updateVisibleAttribute()">
-                            </mat-form-field>
+                    <div class="arguments-child filter-configuration-container">
+                        <div class="filter-configuration-header">
+                            Filter Configuration
+                            <button mat-mini-fab (click)="addURLFilter(item)" class="filter-configuration-button" color="primary" matTooltip="Add URL Filter">
+                                <mat-icon aria-label="Add URL Filter">add</mat-icon>
+                            </button>
                         </div>
-                        <div class="arguments-child">                 
-                            <mat-form-field [style.width.%]="100">
-                                <input matInput placeholder="Selected Attribute" [(ngModel)]="item.selectedAttribute">
-                            </mat-form-field>
+                        <div class="filter-configuration-list">
+                            <div class="filter-configuration-item" *ngFor="let filter of item.filters">
+                                <mat-form-field class="filter-configuration-combo-box">
+                                    <mat-select placeholder="Argument" [(ngModel)]="filter.argument" (ngModelChange)="prepareVariableList(filter,false)">
+                                        <mat-option *ngFor="let argument of data.arguments" [value]="argument">
+                                            {{argument.label}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field class="filter-configuration-combo-box">
+                                    <mat-select placeholder="Variable" [(ngModel)]="filter.variable" [disabled]="!filter.variableList.length">
+                                        <mat-option *ngFor="let variable of filter.variableList" [value]="variable">
+                                            {{variable}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field>
+                                    <input matInput placeholder="Argument Name" [(ngModel)]="filter.name">
+                                </mat-form-field>
+                            </div>
                         </div>
-                    </ng-container>
+                    </div>
+                    <div class="arguments-child" [style.margin-right.%]="5">
+                        <mat-form-field [style.width.%]="100">
+                            <input matInput placeholder="Visible Attribute" [(ngModel)]="item.visibleAttribute" (ngModelChange)="updateVisibleAttribute()">
+                        </mat-form-field>
+                    </div>
+                    <div class="arguments-child">                 
+                        <mat-form-field [style.width.%]="100">
+                            <input matInput placeholder="Selected Attribute" [(ngModel)]="item.selectedAttribute">
+                        </mat-form-field>
+                    </div>
                 </ng-container>
                 <ng-container *ngIf="isDateRange(item)">
                     <div class="arguments-child">                 

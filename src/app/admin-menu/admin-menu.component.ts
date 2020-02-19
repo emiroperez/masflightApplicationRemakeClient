@@ -466,6 +466,33 @@ export class EditCategoryArgumentDialog {
 
         if (argument.maxDate)
           argument.maxDate = new Date (argument.maxDate);
+
+        if (argument.filters)
+        {
+          argument.filters = JSON.parse (argument.filters);
+
+          for (let i = argument.filters.length - 1; i >= 0; i--)
+          {
+            let filter = argument.filters[i];
+            let argExists = false;
+
+            for (let item of this.data.arguments)
+            {
+              if (filter.argument == item.id)
+              {
+                argument.filters[i].argument = item;
+
+                this.prepareVariableList (argument.filters[i], true);
+
+                argExists = true;
+                break;
+              }
+
+              if (!argExists)
+                argument.filters.splice (i, 1);
+            }
+          }
+        }
       }
   }
 
@@ -833,13 +860,64 @@ export class EditCategoryArgumentDialog {
       return;
     }
 
-    if(item.url.substring(0,1)=="/"){
-      url = this.globals.baseUrl + item.url + "?search="+ (search != null?search:'');
-    }else{
-     url = item.url + "/?search=" + (search != null?search:'');
+    if (item.url.includes ("?"))
+    {
+      if (item.url.substring (0, 1) == "/")
+        url = this.globals.baseUrl + item.url + "&search=" + (search != null ? search : '');
+      else
+        url = item.url + "&search=" + (search != null ? search : '');
+    }
+    else
+    {
+      if (item.url.substring (0, 1) == "/")
+        url = this.globals.baseUrl + item.url + "?search=" + (search != null ? search : '');
+      else
+        url = item.url + "?search=" + (search != null ? search : '');
     }
 
+    url += "&appId=" + this.globals.currentApplication.id;
+
+    if (this.globals.testingPlan != -1)
+      url += "&testPlanId=" + this.globals.testingPlan;
+
     this.authService.get (this, url, handlerSuccess, this.handlerError);  
+  }
+
+  addURLFilter(item): void
+  {
+    if (!item.filters)
+      item.filters = [];
+
+    item.filters.push ({
+      argument: null,
+      variable: null,
+      variableList: [],
+      name: ""
+    });
+  }
+
+  prepareVariableList(filter, loading): void
+  {
+    // reset variables
+    filter.variableList = [];
+
+    if (!loading)
+      filter.variable = null;
+
+    for (let argument of filter.argument.arguments)
+    {
+      if (argument.name1)
+        filter.variableList.push (argument.name1);
+
+      if (argument.name2)
+        filter.variableList.push (argument.name2);
+
+      if (argument.name3)
+        filter.variableList.push (argument.name3);
+
+      if (argument.name4)
+        filter.variableList.push (argument.name4);
+    }
   }
 
   handlerSuccess(_this,data, tab){   
@@ -1005,12 +1083,9 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     { type: "aircraftType", numArguments: 1 },
     { type: "grouping", numArguments: 1 },
     { type: "rounding", numArguments: 1 },
-    { type: "userList", numArguments: 1 },
-    { type: "optionList", numArguments: 1 },
     { type: "freeTextInput", numArguments: 1 },
     { type: "selectBoxSingleOption", numArguments: 1 },
     { type: "selectBoxMultipleOption", numArguments: 1 },
-    { type: "checkBox", numArguments: 1 },
     { type: "cancelsCheckBox", numArguments: 1 },
     { type: "diversionsCheckbox", numArguments: 1 },
     { type: "flightDelaysCheckbox", numArguments: 1 },
@@ -2053,14 +2128,26 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   editCategoryArguments(cat) {
 
     var duplicateObject = JSON.parse(JSON.stringify(cat));
+    let args = [];
+
+    // build argument list
+    for (let menuOptionArgument of this.optionSelected.menuOptionArgumentsAdmin)
+    {
+      if (menuOptionArgument.id == duplicateObject.id)
+        continue; // don't add the argument that is going to be edited
+
+      for (let argument of menuOptionArgument.categoryArgumentsId)
+        args.push (argument);
+    }
 
     const dialogRef = this.dialog.open(EditCategoryArgumentDialog, {
       panelClass: "category-argument-dialog",
-      width: '45%',
+      width: '614px',
       data: {
         optionId: this.optionSelected.id,
         createdMetas: this.optionSelected.createdMetas,
-        cat: duplicateObject
+        cat: duplicateObject,
+        arguments: args
       }
     });
 
@@ -2100,6 +2187,17 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
           if (argument.maxDate)
             argument.maxDate = argument.maxDate.toString ();
+
+          if (argument.filters)
+          {
+            for (let filter of argument.filters)
+            {
+              filter.argument = filter.argument.id;
+              filter.variableList = undefined;
+            }
+
+            argument.filters = JSON.stringify (argument.filters);
+          }
         }
 
         this.saveMenuArguments(duplicateObject);

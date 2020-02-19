@@ -1,10 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Arguments } from '../model/Arguments';
-import { ApiClient } from '../api/api-client';
 import { Globals } from '../globals/Globals';
 import { delay } from 'rxjs/operators';
 import { forEach } from '@angular/router/src/utils/collection';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-msf-select-box-multiple-option',
@@ -20,7 +20,7 @@ export class MsfSelectBoxMultipleOptionComponent implements OnInit {
   isDashboardPanel: boolean = false;
 
   loading = false;
-  constructor(private http: ApiClient, public globals: Globals) { }
+  constructor(public globals: Globals, private authService: AuthService) { }
 
 
   ngOnInit() { 
@@ -38,11 +38,21 @@ export class MsfSelectBoxMultipleOptionComponent implements OnInit {
       return;
     }
 
-    if(this.argument.url.substring(0,1)=="/"){
-      url = this.globals.baseUrl + this.argument.url + "?search="+ (search != null?search:'');
-    }else{
-     url = this.argument.url+ (search != null?search:'');
+    if (this.argument.url.includes ("?"))
+    {
+      if (this.argument.url.substring (0, 1) == "/")
+        url = this.globals.baseUrl + this.argument.url + "&search=" + (search != null ? search : '');
+      else
+        url = this.argument.url + "&search=" + (search != null ? search : '');
     }
+    else
+    {
+      if (this.argument.url.substring (0, 1) == "/")
+        url = this.globals.baseUrl + this.argument.url + "?search=" + (search != null ? search : '');
+      else
+        url = this.argument.url + "?search=" + (search != null ? search : '');
+    }
+
     if(this.globals.currentApplication.name === "DataLake"){
       if(url.indexOf("?")==-1){
         url = url + "?uName="+this.globals.userName;
@@ -50,7 +60,13 @@ export class MsfSelectBoxMultipleOptionComponent implements OnInit {
         url = url + "&uName="+this.globals.userName;
       }
     }
-    this.http.get(this,url,handlerSuccess,this.handlerError, null);  
+
+    url += "&appId=" + this.globals.currentApplication.id;
+
+    if (this.globals.testingPlan != -1)
+      url += "&testPlanId=" + this.globals.testingPlan;
+
+    this.authService.get (this,url,handlerSuccess,this.handlerError);
   }
 
   handlerSuccess(_this,data, tab){   

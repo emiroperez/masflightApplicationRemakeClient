@@ -45,7 +45,8 @@ export class UserActivationComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  ngOnInit() {
+  ngOnInit()
+  {
     this.innerHeight = window.innerHeight;
     this.innerWidth = window.innerWidth;
     this.getUsers();

@@ -40,16 +40,24 @@ export class MsfAircraftTypeComponent implements OnInit {
       return;
     }
 
-    if(this.argument.url.substring(0,1)=="/"){
-      url = this.globals.baseUrl + this.argument.url + "?search="+ (search != null?search:'');
-    }else{
-     url = this.argument.url+ (search != null?search:'');
+    if (this.argument.url.includes ("?"))
+    {
+      if (this.argument.url.substring (0, 1) == "/")
+        url = this.globals.baseUrl + this.argument.url + "&search=" + (search != null ? search : '');
+      else
+        url = this.argument.url + "&search=" + (search != null ? search : '');
     }
-    if(this.globals.currentAirline!=null&&this.argument.url.substring(0,1)=="/"){
-      // url = "http://localhost:8887/getAircraftTypes";
-      url = this.globals.baseUrl+ "/getAircraftTypes";
-      url += "?search="+ (search != null?search:'') + "&airlineIata=" + this.globals.currentAirline.iata;
+    else
+    {
+      if (this.argument.url.substring (0, 1) == "/")
+        url = this.globals.baseUrl + this.argument.url + "?search=" + (search != null ? search : '');
+      else
+        url = this.argument.url + "?search=" + (search != null ? search : '');
     }
+
+    if (this.globals.currentAirline != null && this.argument.url.includes ("getAircraftTypes"))
+      url += "&airlineIata" + this.globals.currentAirline.iata;
+
     this.http.get(this,url,handlerSuccess,this.handlerError, null);  
   }
 

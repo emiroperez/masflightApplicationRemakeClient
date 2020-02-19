@@ -59,8 +59,6 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material';
 import { AdminMenuMembershipsComponent } from './admin-menu-memberships/admin-menu-memberships.component';
 import { Utils } from './commons/utils';
-import { MsfUserListComponent } from './msf-user-list/msf-user-list.component';
-import { MsfOptionListComponent } from './msf-option-list/msf-option-list.component';
 import { ConfirmDeleteDialog } from './admin-menu/admin-menu.component';
 import { EditOutputOptionsMetaDialog } from './admin-menu/admin-menu.component';
 import { EditCategoryArgumentDialog } from './admin-menu/admin-menu.component';
@@ -69,7 +67,6 @@ import { MsfFreeTextInputComponent } from './msf-free-text-input/msf-free-text-i
 import { MsfSelectBoxSingleOptionComponent } from './msf-select-box-single-option/msf-select-box-single-option.component';
 import { MsfSelectBoxMultipleOptionComponent } from './msf-select-box-multiple-option/msf-select-box-multiple-option.component';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
-import { MsfCheckBoxComponent } from './msf-check-box/msf-check-box.component';
 import { MsfCancelsCheckboxComponent } from './msf-cancels-checkbox/msf-cancels-checkbox.component';
 import { MsfDiversionsCheckboxComponent } from './msf-diversions-checkbox/msf-diversions-checkbox.component';
 import { MsfFlightDelaysCheckboxesComponent } from './msf-flight-delays-checkboxes/msf-flight-delays-checkboxes.component';
@@ -257,8 +254,6 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     AdminMenuComponent,
     AdminMenuComponent,
     AdminMenuMembershipsComponent,
-    MsfUserListComponent,
-    MsfOptionListComponent,
     ConfirmDeleteDialog,
     EditOutputOptionsMetaDialog,
     EditCategoryArgumentDialog,
@@ -267,7 +262,6 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     MsfFreeTextInputComponent,
     MsfSelectBoxSingleOptionComponent,
     MsfSelectBoxMultipleOptionComponent,
-    MsfCheckBoxComponent,
     MsfCancelsCheckboxComponent,
     MsfDiversionsCheckboxComponent,
     MsfFlightDelaysCheckboxesComponent,

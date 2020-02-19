@@ -30,9 +30,26 @@ export class MsfAirportsRoutesComponent implements OnInit {
 
   
 
-  getAirports(search, handlerSuccess){
-      let url = this.globals.baseUrl + this.argument.url + "?search="+ (search != null?search:'');
-      this.http.get(this,url,handlerSuccess,this.handlerError, null);  
+  getAirports(search, handlerSuccess)
+  {
+    let url;
+
+    if (this.argument.url.includes ("?"))
+    {
+      if (this.argument.url.substring (0, 1) == "/")
+        url = this.globals.baseUrl + this.argument.url + "&search=" + (search != null ? search : '');
+      else
+        url = this.argument.url + "&search=" + (search != null ? search : '');
+    }
+    else
+    {
+      if (this.argument.url.substring (0, 1) == "/")
+        url = this.globals.baseUrl + this.argument.url + "?search=" + (search != null ? search : '');
+      else
+        url = this.argument.url + "?search=" + (search != null ? search : '');
+    }
+
+    this.http.get(this,url,handlerSuccess,this.handlerError, null);  
   }
 
 
