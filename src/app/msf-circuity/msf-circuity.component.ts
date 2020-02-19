@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Arguments } from '../model/Arguments';
 
 @Component({
@@ -12,6 +12,9 @@ export class MsfCircuityComponent implements OnInit {
 
   @Input("isDashboardPanel")
   isDashboardPanel: boolean = false;
+
+  @Output("startURLUpdate")
+  startURLUpdate = new EventEmitter ();
   
   data: any[] = [
     {id: "0.0" ,name:"Shortest Route"},

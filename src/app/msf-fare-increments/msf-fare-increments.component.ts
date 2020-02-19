@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Arguments } from '../model/Arguments';
 import { Globals } from '../globals/Globals';
 
@@ -13,6 +13,9 @@ export class MsfFareIncrementsComponent implements OnInit {
 
   @Input("isDashboardPanel")
   isDashboardPanel: boolean = false;
+
+  @Output("startURLUpdate")
+  startURLUpdate = new EventEmitter ();
  
   increments: any[] = [
                 {id: '0.01', name: '$0.01'},

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Arguments } from '../model/Arguments';
 
 @Component({
@@ -12,7 +12,10 @@ export class MsfGroupingDailyStaticsComponent implements OnInit {
 
   @Input("isDashboardPanel")
   isDashboardPanel: boolean = false;
- 
+
+  @Output("startURLUpdate")
+  startURLUpdate = new EventEmitter ();
+
   groupingList: any[] = [
                 // {id: 'HOUR', columnLabel: 'Hour', columnName: 'Hour'},
                 {id: 'QUARTER', columnLabel: 'Quarter Hour',columnName:'quarter'}

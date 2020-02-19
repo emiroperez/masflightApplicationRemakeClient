@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Globals } from '../globals/Globals';
 import { Arguments } from '../model/Arguments';
 
@@ -13,6 +13,9 @@ export class MsfTaxiTimesCheckboxesComponent implements OnInit {
 
   @Input("isDashboardPanel")
   isDashboardPanel: boolean = false;
+
+  @Output("startURLUpdate")
+  startURLUpdate = new EventEmitter ();
   
   selected: any[] = [];
 
@@ -64,6 +67,8 @@ export class MsfTaxiTimesCheckboxesComponent implements OnInit {
     }else{
       this.all.checked=false;
     }
+
+    this.startURLUpdate.emit ();
   }
 
   inList(list, attr, value){
@@ -87,6 +92,7 @@ export class MsfTaxiTimesCheckboxesComponent implements OnInit {
       this.selected = [];
     }
     this.argument.value1 = this.selected;
+    this.startURLUpdate.emit ();
   }
 
   checkBoxAllChange(){

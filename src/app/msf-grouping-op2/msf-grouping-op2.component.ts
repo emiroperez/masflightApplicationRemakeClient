@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Arguments } from '../model/Arguments';
 
 @Component({
@@ -12,7 +12,10 @@ export class MsfGroupingOp2Component implements OnInit {
 
   @Input("isDashboardPanel")
   isDashboardPanel: boolean = false;
- 
+
+  @Output("startURLUpdate")
+  startURLUpdate = new EventEmitter ();
+
   groupingList: any[] = [
                       {id: 'YEAR', columnLabel: 'Year', columnName:'year'},
                       {id: 'MONTH', columnLabel: 'Month', columnName:'month'},

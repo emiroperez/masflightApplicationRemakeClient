@@ -19,6 +19,7 @@
             bindLabel="columnLabel"
             bindName="columnName"
             [(ngModel)]="argument.value1"
+            (ngModelChange)="startURLUpdate.emit()"
             appendTo=".msf-control-variables-overlay"
             dropdownPosition="bottom">
         </ng-select>          

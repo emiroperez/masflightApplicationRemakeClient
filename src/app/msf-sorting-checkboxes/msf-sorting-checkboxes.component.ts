@@ -26,6 +26,9 @@ export class MsfSortingCheckboxesComponent implements OnInit {
   @Output("setLoading")
   setLoading = new EventEmitter ();
 
+  @Output("startURLUpdate")
+  startURLUpdate = new EventEmitter ();
+
   selected: any[] = [];
   all = {"checked":false};
 
@@ -125,6 +128,8 @@ export class MsfSortingCheckboxesComponent implements OnInit {
     }else{
       this.all.checked=false;
     }
+
+    this.startURLUpdate.emit ();
   }
 
   getIndex(checkbox: any){
@@ -152,6 +157,7 @@ export class MsfSortingCheckboxesComponent implements OnInit {
       this.selected = [];
     }
     this.argument.value1 = this.selected;
+    this.startURLUpdate.emit ();
   }
 
   checkBoxAllChange(){

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Globals } from '../globals/Globals';
 import { Arguments } from '../model/Arguments';
 
@@ -13,7 +13,10 @@ export class MsfExcludeFaresLowerComponent implements OnInit {
 
   @Input("isDashboardPanel")
   isDashboardPanel: boolean = false;
-  
+
+  @Output("startURLUpdate")
+  startURLUpdate = new EventEmitter ();
+
   data: any[] = [
     {id: 0},
     {id: 20},

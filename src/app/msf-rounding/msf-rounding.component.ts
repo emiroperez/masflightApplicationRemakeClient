@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
 import { Arguments } from '../model/Arguments';
 import { FormControl } from '@angular/forms';
 import { ReplaySubject ,  Subject } from 'rxjs';
@@ -17,6 +17,10 @@ export class MsfRoundingComponent implements OnInit {
  
   @Input("isDashboardPanel")
   isDashboardPanel: boolean = false;
+
+  @Output("startURLUpdate")
+  startURLUpdate = new EventEmitter ();
+
   // public roundingCtrl: FormControl = new FormControl();
 
   // public roundingFilterCtrl: FormControl = new FormControl();

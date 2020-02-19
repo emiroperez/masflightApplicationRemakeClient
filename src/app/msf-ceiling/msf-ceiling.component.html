@@ -20,6 +20,7 @@
         bindLabel="name"
         bindName="id"
         [(ngModel)]="argument.value1"
+        (ngModelChange)="startURLUpdate.emit()"
         appendTo=".msf-control-variables-overlay"
         dropdownPosition="bottom">
     </ng-select>
@@ -35,13 +36,14 @@
         bindLabel="name"
         bindName="id"
         [(ngModel)]="argument.value2"
+        (ngModelChange)="startURLUpdate.emit()"
         appendTo=".msf-control-variables-overlay"
         dropdownPosition="bottom">
     </ng-select>
 </div>
 <div class="center msf-component-radio">
     <span class="unit-label" *ngIf="argument.label3">{{argument.label3}}</span>
-    <mat-radio-group [(ngModel)]="argument.value3">
+    <mat-radio-group [(ngModel)]="argument.value3" (ngModelChange)="startURLUpdate.emit()">
         <mat-radio-button value="m">Meter</mat-radio-button>
         <mat-radio-button class="msf-radio" value="ft">Feet</mat-radio-button>
     </mat-radio-group>

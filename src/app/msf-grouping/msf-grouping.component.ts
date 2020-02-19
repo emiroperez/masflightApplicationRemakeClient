@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
 import { Arguments } from '../model/Arguments';
 import { FormControl } from '@angular/forms';
 import { ReplaySubject, Observable, of ,  Subject } from 'rxjs';
@@ -18,7 +18,10 @@ export class MsfGroupingComponent implements OnInit {
 
   @Input("isDashboardPanel")
   isDashboardPanel: boolean = false;
- 
+
+  @Output("startURLUpdate")
+  startURLUpdate = new EventEmitter ();
+
   groupingList: any[] = [
                 {id: 'YEAR', columnLabel: 'Year', columnName:'Year'},
                 {id: 'MONTH', columnLabel: 'Month', columnName:'Month'},

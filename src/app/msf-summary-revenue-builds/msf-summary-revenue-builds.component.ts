@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Arguments } from '../model/Arguments';
 import { Globals } from '../globals/Globals';
 import { ApiClient } from '../api/api-client';
@@ -14,7 +14,10 @@ export class MsfSummaryRevenueBuildsComponent implements OnInit {
 
   @Input("isDashboardPanel")
   isDashboardPanel: boolean = false;
- 
+
+  @Output("startURLUpdate")
+  startURLUpdate = new EventEmitter ();
+
   summaryList: any[] = [
     {id: 'YEAR', columnLabel: 'Year', columnName:'Year'},
     {id: 'MONTH', columnLabel: 'Month', columnName:'Month'},

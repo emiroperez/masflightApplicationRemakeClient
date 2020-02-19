@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ApiClient } from '../api/api-client';
 import { Globals } from '../globals/Globals';
 import { Arguments } from '../model/Arguments';
@@ -14,6 +14,9 @@ export class MsfFlightDurationSegmentsComponent implements OnInit {
 
   @Input("isDashboardPanel")
   isDashboardPanel: boolean = false;
+
+  @Output("startURLUpdate")
+  startURLUpdate = new EventEmitter ();
  
   data: any[] = [
                 {id: '2-5', name: '2-5 hours'},

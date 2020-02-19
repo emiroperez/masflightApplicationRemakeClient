@@ -9,6 +9,6 @@
 </div>
 <div class="msf-component-date-input-container">
     <mat-form-field class="msf-full-width msf-flight-number">
-        <input matInput placeholder="{{argument.label1}}" autocomplete="off" class="msf-full-width msf-menu-arg-select" [(ngModel)]="argument.value1">
+        <input matInput placeholder="{{argument.label1}}" autocomplete="off" class="msf-full-width msf-menu-arg-select" [(ngModel)]="argument.value1" (ngModelChange)="startURLUpdate.emit()">
     </mat-form-field> 
 </div>

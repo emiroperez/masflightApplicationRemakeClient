@@ -9,7 +9,7 @@
 </div>
 <div class="msf-component-airport-input-container checkbox-container" style="padding: 0;">
     <div class="msf-full-width msf-content-type-radio-group-container">
-        <mat-radio-group class="checkbox-component argument-radio-group" *ngFor="let radio of data" [(ngModel)]="argument.value1">
+        <mat-radio-group class="checkbox-component argument-radio-group" *ngFor="let radio of data" [(ngModel)]="argument.value1" (ngModelUpdate)="startURLUpdate.emit()">
             <mat-radio-button style="margin: 10px;" class="cancels-checkbox region-checkbox" [value]="radio.value">
                 {{radio.name}}
             </mat-radio-button>

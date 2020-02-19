@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Arguments } from '../model/Arguments';
 import { ApiClient } from '../api/api-client';
 import { Globals } from '../globals/Globals';
@@ -14,6 +14,9 @@ export class MsfFilterAirlineTypeComponent implements OnInit {
 
   @Input("isDashboardPanel")
   isDashboardPanel: boolean = false;
+
+  @Output("startURLUpdate")
+  startURLUpdate = new EventEmitter ();
  
   data: any[] = [
                 {id: 'RpCarrier', name: 'Reporting Carrier'},

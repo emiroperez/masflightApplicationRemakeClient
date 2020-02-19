@@ -10,16 +10,16 @@
 </div>
 <div class="msf-component-airport-input-container">
     <mat-form-field>
-        <input class="input-margin" matInput type="number" placeholder="From" autocomplete="off" [(ngModel)]="argument.value1">
+        <input class="input-margin" matInput type="number" placeholder="From" autocomplete="off" [(ngModel)]="argument.value1" (ngModelChange)="startURLUpdate.emit()">
     </mat-form-field>
     <i class="material-icons msf-menu-arg-right-row">chevron_right</i>
     <mat-form-field>
-        <input class="input-margin" matInput type="number" placeholder="To" autocomplete="off"  [(ngModel)]="argument.value2">            
+        <input class="input-margin" matInput type="number" placeholder="To" autocomplete="off"  [(ngModel)]="argument.value2" (ngModelChange)="startURLUpdate.emit()">
     </mat-form-field>
 </div>
 <div class="center msf-component-radio">
     <span class="unit-label" *ngIf="argument.label3">{{argument.label3}}</span>
-    <mat-radio-group [(ngModel)]="argument.value3">
+    <mat-radio-group [(ngModel)]="argument.value3" (ngModelChange)="startURLUpdate.emit()">
         <mat-radio-button value="kts">Kts</mat-radio-button>
         <mat-radio-button class="msf-radio" value="mph">Mph</mat-radio-button>
     </mat-radio-group>

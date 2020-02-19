@@ -50,6 +50,7 @@
                         bindLabel="name"
                         bindName="value"
                         [(ngModel)]="argument.value3"
+                        (ngModelChange)="startURLUpdate.emit()"
                         appendTo=".msf-control-variables-overlay"
                         [clearable]="false"
                         dropdownPosition="bottom">
@@ -74,6 +75,7 @@
                             bindLabel="name"
                             bindName="value"
                             [(ngModel)]="argument.value4"
+                            (ngModelChange)="startURLUpdate.emit()"
                             appendTo=".msf-control-variables-overlay"
                             [clearable]="false"
                             dropdownPosition="bottom">
@@ -121,6 +123,7 @@
                             bindLabel="name"
                             bindName="value"
                             [(ngModel)]="argument.value3"
+                            (ngModelChange)="startURLUpdate.emit()"
                             appendTo=".msf-control-variables-overlay"
                             [clearable]="false"
                             dropdownPosition="bottom">
@@ -192,6 +195,7 @@
                         bindLabel="name"
                         bindName="value"
                         [(ngModel)]="argument.value3"
+                        (ngModelUpdate)="startURLUpdate.emit()"
                         [clearable]="false"
                         dropdownPosition="bottom">
                     </ng-select> 
@@ -216,6 +220,7 @@
                             bindLabel="name"
                             bindName="value"
                             [(ngModel)]="argument.value4"
+                            (ngModelChange)="startURLUpdate.emit()"
                             [clearable]="false"
                             dropdownPosition="bottom">
                         </ng-select> 
@@ -254,6 +259,7 @@
                         bindLabel="name"
                         bindName="value"
                         [(ngModel)]="argument.value3"
+                        (ngModelChange)="startUpdateURL.emit()"
                         [clearable]="false">
                     </ng-select> 
                     <img src="../../assets/images/{{globals.theme}}-calendarTime.png" class="msf-calendar-image">

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy, OnDestroy, Inject, ChangeDetectorRef, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy, OnDestroy, Inject, ChangeDetectorRef, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatDatepicker, MatCalendar } from '@angular/material';
 import { DatePipe } from '@angular/common';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
@@ -138,6 +138,9 @@ export class MsfDateRangeComponent implements OnInit {
 
   @Input("anchoredArgument")
   anchoredArgument: boolean = false;
+
+  @Output("startURLUpdate")
+  startUpdateURL = new EventEmitter ();
 
   maxDate: Date;
   minDate: Date;
@@ -551,6 +554,8 @@ export class MsfDateRangeComponent implements OnInit {
         this.setYearValue2 (moment (this.argument.value2));
         break;
     }
+
+    this.startUpdateURL.emit ();
   }
 
   dateChange2(normalizedDate: Moment): void
@@ -583,6 +588,8 @@ export class MsfDateRangeComponent implements OnInit {
         this.setYearValue1 (moment (this.argument.value1));
         break;
     }
+
+    this.startUpdateURL.emit ();
   }
 
   validateDate(): void
@@ -1108,6 +1115,8 @@ export class MsfDateRangeComponent implements OnInit {
       this.argument.currentDateRangeValue = this.dateRange.id;
     else
       this.argument.currentDateRangeValue = null;
+
+    this.startUpdateURL.emit ();
   }
 
   setDateRange(): void
@@ -1116,5 +1125,6 @@ export class MsfDateRangeComponent implements OnInit {
       return;
 
     this.autoSelect ();
+    this.startUpdateURL.emit ();
   }
 }

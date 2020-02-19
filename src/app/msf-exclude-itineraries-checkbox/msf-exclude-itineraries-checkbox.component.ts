@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Arguments } from '../model/Arguments';
 import { Globals } from '../globals/Globals';
 
@@ -13,7 +13,10 @@ export class MsfExcludeItinerariesCheckboxComponent implements OnInit {
 
   @Input("isDashboardPanel")
   isDashboardPanel: boolean = false;
-  
+
+  @Output("startURLUpdate")
+  startURLUpdate = new EventEmitter ();
+
   selected: any[] = [];
   all = {"checked":false};
   

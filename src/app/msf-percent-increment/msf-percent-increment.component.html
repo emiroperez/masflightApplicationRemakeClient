@@ -20,6 +20,7 @@
             bindLabel="name"
             bindName="id"
             [(ngModel)]="argument.value1"
+            (ngModelUpdate)="startURLUpdate.emit()"
             appendTo=".msf-control-variables-overlay"
             dropdownPosition="bottom">
         </ng-select>          
