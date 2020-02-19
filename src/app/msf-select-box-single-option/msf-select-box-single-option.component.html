@@ -19,6 +19,7 @@
     bindLabel="{{argument.visibleAttribute}}"
     (search)="onSearch($event)" 
     [(ngModel)]="argument.value1"
+    (ngModelChange)="startURLUpdate.emit()"
     appendTo=".msf-control-variables-overlay"
     dropdownPosition="bottom">
   </ng-select>

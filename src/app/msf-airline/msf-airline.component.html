@@ -22,6 +22,7 @@
         bindLabel="{{argument.visibleAttribute}}"
         (search)="onSearch($event)" 
         [(ngModel)]="argument.value1"
+        (ngModelChange)="startURLUpdate.emit()"
         appendTo=".msf-control-variables-overlay"
         dropdownPosition="bottom">
       </ng-select>
@@ -42,7 +43,8 @@
           [hideSelected]="false"
           bindLabel="{{argument.visibleAttribute}}"
           (search)="onSearch($event)" 
-          [(ngModel)]="argument.value1">
+          [(ngModel)]="argument.value1"
+          (ngModelChange)="startURLUpdate.emit()">
         </ng-select>
       </div>
     </div>

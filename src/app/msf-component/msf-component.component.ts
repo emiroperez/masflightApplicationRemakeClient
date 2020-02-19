@@ -10,6 +10,8 @@ export class MsfComponentComponent implements OnInit {
   @Input()
   currentOption: any;
 
+  updateURLResults: boolean = false;
+
   constructor(public globals: Globals) { }
 
   ngOnInit() {
@@ -97,5 +99,14 @@ export class MsfComponentComponent implements OnInit {
   setLoading(value: boolean): void
   {
     this.globals.isLoading = value;
+  }
+
+  startURLUpdate(): void
+  {
+    this.updateURLResults = true;
+
+    setTimeout (() => {
+      this.updateURLResults = false;
+    }, 100);
   }
 }

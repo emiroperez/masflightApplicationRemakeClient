@@ -903,7 +903,7 @@
     <div class="msf-dashboard-panel-anchor-container" *ngIf="displayAnchoredArguments">
       <div class="msf-dashboard-panel-anchored-argument" *ngFor="let anchoredArgument of anchoredArguments">
         <div class="anchored-argument-left-side">
-          <app-msf-argument [currentArgument]="anchoredArgument.argument" [currentGlobalOptionId]="values.currentOption.id" [anchoredArgument]="true" (setLoading)="setArgumentLoading(anchoredArgument, $event)"></app-msf-argument>
+          <app-msf-argument [currentArgument]="anchoredArgument.argument" [currentGlobalOptionId]="values.currentOption.id" [anchoredArgument]="true" [updateURLResults]="updateURLResults" (setLoading)="setArgumentLoading(anchoredArgument, $event)" (startURLUpdate)="startURLUpdate()"></app-msf-argument>
         </div>
         <div class="anchored-argument-button">
           <button mat-icon-button class="msf-anchor-button-pressed" matTooltip="Removed Anchored Argument"

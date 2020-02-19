@@ -13,6 +13,7 @@ import { ComponentType } from '../commons/ComponentType';
 })
 export class MsfDashboardControlVariablesComponent {
   isLoading: boolean = true;
+  updateURLResults: boolean = false;
 
   constructor(
     public dialogRef: MatDialogRef<MsfDashboardControlVariablesComponent>,
@@ -225,5 +226,14 @@ export class MsfDashboardControlVariablesComponent {
   setLoading(value: boolean): void
   {
     this.isLoading = value;
+  }
+
+  startURLUpdate(): void
+  {
+    this.updateURLResults = true;
+
+    setTimeout (() => {
+      this.updateURLResults = false;
+    }, 100);
   }
 }

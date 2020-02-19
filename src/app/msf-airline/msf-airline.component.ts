@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { Arguments } from '../model/Arguments';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
@@ -20,9 +20,16 @@ export class MsfAirlineComponent implements OnInit {
 
   @Input("anchoredArgument")
   anchoredArgument: boolean = false;
+
+  @Input("updateURLResults")
+  updateURLResults: boolean;
+
+  @Output("startURLUpdate")
+  startURLUpdate = new EventEmitter ();
   
   data: Observable<any[]>;
   multiAirlines: boolean = false;
+  searchString: string = null;
 
   utils: Utils;
   loading = false;
@@ -40,10 +47,16 @@ export class MsfAirlineComponent implements OnInit {
     this.getRecords(null, this.handlerSuccess);
   }
 
-
+  ngOnChanges(changes: SimpleChanges): void
+  {
+    if (changes["updateURLResults"] && this.updateURLResults)
+      this.getRecords (this.searchString, this.handlerSuccess);
+  }
 
   getRecords(search, handlerSuccess){
     let url;
+
+    this.searchString = search;
 
     if (!this.argument.url)
     {

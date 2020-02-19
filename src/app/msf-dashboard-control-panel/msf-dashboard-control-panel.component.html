@@ -37,7 +37,7 @@
               <ng-container *ngIf="!isSingleCheckbox(argument) && !isTaxiTimesCheckbox(argument)">
                 <div class="msf-component-outer-container">
                   <div *ngIf="!isDateRange(argument)" class="msf-component-argument-container">
-                    <app-msf-argument [currentArgument]="argument" [currentGlobalOptionId]="controlVariable.optionId" (setLoading)="setLoading($event)"></app-msf-argument>
+                    <app-msf-argument [currentArgument]="argument" [currentGlobalOptionId]="controlVariable.optionId" [updateURLResults]="updateURLResults" (setLoading)="setLoading($event)" (startURLUpdate)="startURLUpdate"></app-msf-argument>
                     <!-- Special treatment for single checkbox arguments -->
                     <ng-container *ngIf="argument.checkboxes">
                       <ng-container *ngFor="let checkbox of argument.checkboxes">

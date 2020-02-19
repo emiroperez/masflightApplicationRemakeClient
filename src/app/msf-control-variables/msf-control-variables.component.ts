@@ -23,6 +23,12 @@ export class MsfControlVariablesComponent implements OnInit {
   @Input("isDashboardPanel")
   isDashboardPanel: boolean = false;
 
+  @Output("startURLUpdate")
+  startURLUpdate = new EventEmitter ();
+
+  @Input("updateURLResults")
+  updateURLResults: boolean;
+
   argsBefore: any;
   iconBefore: any;
 

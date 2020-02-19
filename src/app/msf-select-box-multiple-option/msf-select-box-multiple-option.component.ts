@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Arguments } from '../model/Arguments';
 import { Globals } from '../globals/Globals';
@@ -19,18 +19,31 @@ export class MsfSelectBoxMultipleOptionComponent implements OnInit {
   @Input("isDashboardPanel")
   isDashboardPanel: boolean = false;
 
-  loading = false;
-  constructor(public globals: Globals, private authService: AuthService) { }
+  @Input("updateURLResults")
+  updateURLResults: boolean;
 
+  @Output("startURLUpdate")
+  startURLUpdate = new EventEmitter ();
+
+  loading = false;
+  searchString: string = null;
+
+  constructor(public globals: Globals, private authService: AuthService) { }
 
   ngOnInit() { 
     this.getRecords(null, this.handlerSuccess);
   }
 
-
+  ngOnChanges(changes: SimpleChanges): void
+  {
+    if (changes["updateURLResults"] && this.updateURLResults)
+      this.getRecords (this.searchString, this.handlerSuccess);
+  }
   
   getRecords(search, handlerSuccess){
     let url;
+
+    this.searchString = search;
 
     if (!this.argument.url)
     {

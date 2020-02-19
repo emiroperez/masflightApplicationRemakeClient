@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { take, takeUntil, delay } from 'rxjs/operators';
 import { Subject, ReplaySubject, of, Observable } from 'rxjs';
 import { MatSelect } from '@angular/material';
@@ -20,11 +20,18 @@ export class MsfAircraftTypeComponent implements OnInit {
    @Input("isDashboardPanel")
    isDashboardPanel: boolean = false;
 
+   @Input("updateURLResults")
+   updateURLResults: boolean;
+
+   @Output("startURLUpdate")
+   startURLUpdate = new EventEmitter ();
+
    multiAircraft: boolean = false;
    utils: Utils;
 
    data: Observable<any[]>;
    loading = false;
+   searchString: string = null;
 
    constructor(private http: ApiClient, public globals: Globals)
    {
@@ -37,8 +44,16 @@ export class MsfAircraftTypeComponent implements OnInit {
     // this.getRecords(null, this.handlerSuccess);
   }
 
+  ngOnChanges(changes: SimpleChanges): void
+  {
+    if (changes["updateURLResults"] && this.updateURLResults)
+      this.getRecords (this.searchString, this.handlerSuccess);
+  }
+
   getRecords(search, handlerSuccess){
     let url;
+
+    this.searchString = search;
 
     if (!this.argument.url)
     {

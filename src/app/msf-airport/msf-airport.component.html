@@ -22,6 +22,7 @@
                 bindLabel="{{argument.visibleAttribute}}"
                 (search)="onSearch($event)"
                 [(ngModel)]="argument.value1"
+                (ngModelChange)="startURLUpdate.emit()"
                 appendTo=".msf-control-variables-overlay"
                 dropdownPosition="bottom">
                 <ng-template ng-label-tmp let-item="item" let-clear="clear">
@@ -48,6 +49,7 @@
                     bindLabel="{{argument.visibleAttribute}}"
                     (search)="onSearch($event)"
                     [(ngModel)]="argument.value2"
+                    (ngModelChange)="startURLUpdate.emit()"
                     appendTo=".msf-control-variables-overlay"
                     dropdownPosition="bottom">
                     <ng-template ng-label-tmp let-item="item" let-clear="clear">
@@ -75,6 +77,7 @@
                     bindLabel="{{argument.visibleAttribute}}"
                     (search)="onSearch($event)"
                     [(ngModel)]="argument.value3"
+                    (ngModelChange)="startURLUpdate.emit()"
                     appendTo=".msf-control-variables-overlay"
                     dropdownPosition="bottom">
                     <ng-template ng-label-tmp let-item="item" let-clear="clear">
@@ -103,7 +106,8 @@
                     [hideSelected]="false"
                     bindLabel="{{argument.visibleAttribute}}"
                     (search)="onSearch($event)"
-                    [(ngModel)]="argument.value1">
+                    [(ngModel)]="argument.value1"
+                    (ngModelChange)="startURLUpdate.emit()">
                     <ng-template ng-label-tmp let-item="item" let-clear="clear">
                         <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
                         <span>{{item.iata}} - {{item.name}}</span>
@@ -127,7 +131,8 @@
                         [hideSelected]="false"
                         bindLabel="{{argument.visibleAttribute}}"
                         (search)="onSearch($event)"
-                        [(ngModel)]="argument.value2">
+                        [(ngModel)]="argument.value2"
+                        (ngModelChange)="startURLUpdate.emit()">
                         <ng-template ng-label-tmp let-item="item" let-clear="clear">
                             <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
                             <span>{{item.iata}} - {{item.name}}</span>
@@ -152,7 +157,8 @@
                         [hideSelected]="false"
                         bindLabel="{{argument.visibleAttribute}}"
                         (search)="onSearch($event)"
-                        [(ngModel)]="argument.value3">
+                        [(ngModel)]="argument.value3"
+                        (ngModelChange)="startURLUpdate.emit()">
                         <ng-template ng-label-tmp let-item="item" let-clear="clear">
                             <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
                             <span>{{item.iata}} - {{item.name}}</span>

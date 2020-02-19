@@ -28,6 +28,12 @@ export class MsfArgumentComponent implements OnInit {
 
   @Input("anchoredArgument")
   anchoredArgument: boolean = false;
+
+  @Input("updateURLResults")
+  updateURLResults: boolean;
+
+  @Output("startURLUpdate")
+  startURLUpdate = new EventEmitter ();
   
   constructor(public globals: Globals) { }
 

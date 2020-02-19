@@ -696,7 +696,7 @@ export class EditCategoryArgumentDialog {
   }
 
   isAirport(argument: Arguments) {
-    return ComponentType.airport == argument.type;
+    return ComponentType.airport == argument.type || ComponentType.airportsRoutes == argument.type;
   }
 
   isAircraftType(argument: Arguments) {

@@ -279,6 +279,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   anchoredArguments: any[] = [];
   savedAnchoredArguments: any[] = [];
   displayAnchoredArguments: boolean = false;
+  updateURLResults: boolean = false;
 
   constructor(private zone: NgZone, public globals: Globals,
     private service: ApplicationService, private http: ApiClient, private authService: AuthService, public dialog: MatDialog,
@@ -7272,5 +7273,14 @@ export class MsfDashboardPanelComponent implements OnInit {
     chart.homeGeoPoint.latitude = Number (zoomlat);
     chart.homeZoomLevel = zoomLevel;
     chart.goHome ();
+  }
+
+  startURLUpdate(): void
+  {
+    this.updateURLResults = true;
+
+    setTimeout (() => {
+      this.updateURLResults = false;
+    }, 100);
   }
 }

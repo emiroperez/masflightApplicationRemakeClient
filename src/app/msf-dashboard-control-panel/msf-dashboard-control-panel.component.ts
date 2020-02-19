@@ -32,6 +32,7 @@ export class MsfDashboardControlPanelComponent implements OnInit {
   hideCategoryFromCharts = new EventEmitter ();
 
   numControlVariablesSelected: number;
+  updateURLResults: boolean = false;
 
   constructor(public globals: Globals)
   {
@@ -202,5 +203,14 @@ export class MsfDashboardControlPanelComponent implements OnInit {
   setLoading(value: boolean): void
   {
     this.globals.isLoading = value;
+  }
+
+  startURLUpdate(): void
+  {
+    this.updateURLResults = true;
+
+    setTimeout (() => {
+      this.updateURLResults = false;
+    }, 100);
   }
 }

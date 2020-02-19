@@ -8,7 +8,7 @@
   </div>
   <div class="msf-dashboard-control-variables-scroll">
     <div class="msf-dashboard-control-variables msf-control-variables-overlay" id="msf-dashboard-control-variables-font-size">
-      <app-msf-control-variables [currentOptionCategories]="data.currentOptionCategories" [currentOptionId]="data.currentOptionId" [isDashboardPanel]="true" (setLoading)="setLoading($event)"></app-msf-control-variables>
+      <app-msf-control-variables [currentOptionCategories]="data.currentOptionCategories" [currentOptionId]="data.currentOptionId" [isDashboardPanel]="true" (setLoading)="setLoading($event)" [updateURLResults]="updateURLResults" (startURLUpdate)="startURLUpdate()"></app-msf-control-variables>
     </div>
   </div>
   <div class="msf-dashboard-control-variables-button">

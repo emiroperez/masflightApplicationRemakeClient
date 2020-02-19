@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { Arguments } from '../model/Arguments';
 import { ApiClient } from '../api/api-client';
 import { Globals } from '../globals/Globals';
@@ -17,10 +17,17 @@ export class MsfAirportsRoutesComponent implements OnInit {
 
   @Input("isDashboardPanel")
   isDashboardPanel: boolean = false;
-  
+
+  @Input("updateURLResults")
+  updateURLResults: boolean;
+
+  @Output("startURLUpdate")
+  startURLUpdate = new EventEmitter ();
+
   loading = false;
   name: any;
   utils: Utils;
+  searchString: string = null;
 
   constructor(private http: ApiClient, public globals: Globals)
   {
@@ -33,12 +40,17 @@ export class MsfAirportsRoutesComponent implements OnInit {
       this.getAirports (null, this.handlerSuccess);
   }
 
-
-  
+  ngOnChanges(changes: SimpleChanges): void
+  {
+    if (changes["updateURLResults"] && this.updateURLResults)
+      this.getAirports (this.searchString, this.handlerSuccess);
+  }
 
   getAirports(search, handlerSuccess)
   {
     let url;
+
+    this.searchString = search;
 
     if (this.argument.url.includes ("?"))
     {

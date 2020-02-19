@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, EventEmitter, Output, SimpleChanges } from '@angular/core';
 import { Arguments } from '../model/Arguments';
 import { Airport } from '../model/Airport';
 import * as moment from 'moment';
@@ -36,12 +36,19 @@ export class MsfAirportComponent implements OnInit {
   @Input("anchoredArgument")
   anchoredArgument: boolean = false;
 
+  @Input("updateURLResults")
+  updateURLResults: string;
+
+  @Output("startURLUpdate")
+  startURLUpdate = new EventEmitter ();
+
   data: Observable<any[]>;
   loading = false;
 
   selectionMode: number;
   multiAirport: boolean;
   utils: Utils;
+  searchString: string = null;
 
   constructor(private http: ApiClient, public globals: Globals)
   {
@@ -56,6 +63,12 @@ export class MsfAirportComponent implements OnInit {
     this.selectionMode = this.argument.selectionMode & ~AirportSelection.MULTIPLESELECTION;
 
     this.getRecords(null, this.handlerSuccess);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void
+  {
+    if (changes["updateURLResults"] && this.updateURLResults)
+      this.getRecords (this.searchString, this.handlerSuccess);
   }
 
   getBindLabel(){
@@ -75,6 +88,8 @@ export class MsfAirportComponent implements OnInit {
 
  getRecords(search, handlerSuccess){
   let url;
+
+  this.searchString = search;
 
   if (!this.argument.url)
   {

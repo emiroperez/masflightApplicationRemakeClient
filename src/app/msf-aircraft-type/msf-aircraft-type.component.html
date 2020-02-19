@@ -22,6 +22,7 @@
                 (search)="onSearch($event)" 
                 (focus)="onFocus()" 
                 [(ngModel)]="argument.value1"
+                (ngModelChange)="startURLUpdate.emit()"
                 appendTo=".msf-control-variables-overlay"
                 dropdownPosition="bottom">
             </ng-select>          

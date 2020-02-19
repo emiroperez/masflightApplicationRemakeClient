@@ -1,7 +1,7 @@
 
 <div class="msf-control-variables-overlay">
     <ng-container *ngFor="let menuOptionArguments of orderOptionArgumentsBy('position')">
-        <app-msf-control-variables [currentOptionCategories]="menuOptionArguments.categoryArguments" [currentOptionId]="globals.currentOption.id" (setLoading)="setLoading($event)"></app-msf-control-variables>
+        <app-msf-control-variables [currentOptionCategories]="menuOptionArguments.categoryArguments" [currentOptionId]="globals.currentOption.id" (setLoading)="setLoading($event)" [updateURLResults]="updateURLResults" (startURLUpdate)="startURLUpdate()"></app-msf-control-variables>
     </ng-container>
 </div>
 

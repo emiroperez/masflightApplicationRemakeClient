@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Arguments } from '../model/Arguments';
 import { ApiClient } from '../api/api-client';
@@ -19,8 +19,15 @@ export class MsfStatesComponent implements OnInit {
   @Input("isDashboardPanel")
   isDashboardPanel: boolean = false;
 
+  @Input("updateURLResults")
+  updateURLResults: boolean;
+
+  @Output("startURLUpdate")
+  startURLUpdate = new EventEmitter ();
+
   loading = false;
   utils: Utils;
+  searchString: string = null;
 
   constructor(private http: ApiClient, public globals: Globals)
   {
@@ -31,10 +38,18 @@ export class MsfStatesComponent implements OnInit {
   {
     this.getRecords(null, this.handlerSuccess);
   }
+
+  ngOnChanges(changes: SimpleChanges): void
+  {
+    if (changes["updateURLResults"] && this.updateURLResults)
+      this.getRecords (this.searchString, this.handlerSuccess);
+  }
   
   getRecords(search, handlerSuccess)
   {
     let url;
+
+    this.searchString = search;
 
     if (!this.argument.url)
     {

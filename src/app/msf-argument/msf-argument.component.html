@@ -1,19 +1,19 @@
     
     
-    <app-msf-airport *ngIf="isAirport(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel" [anchoredArgument]="anchoredArgument"></app-msf-airport>
+    <app-msf-airport *ngIf="isAirport(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel" [anchoredArgument]="anchoredArgument" [updateURLResults]="updateURLResults" (startURLUpdate)="startURLUpdate.emit()"></app-msf-airport>
     <app-msf-time-range *ngIf="isTimeRange(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-time-range>
     <app-msf-date-range *ngIf="isDateRange(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel" [anchoredArgument]="anchoredArgument" [refreshDate]="currentArgument.refreshDate"></app-msf-date-range>
     <app-msf-ceiling *ngIf="isCeiling(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-ceiling>
     <app-msf-wind *ngIf="isWindSpeed(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-wind>
     <app-msf-temperature *ngIf="isTemperature(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-temperature>
     <app-msf-wind-direction *ngIf="isWindDirection(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-wind-direction>
-    <app-msf-airline *ngIf="isAirline(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel" [anchoredArgument]="anchoredArgument"></app-msf-airline>
-    <app-msf-aircraft-type *ngIf="isAircraftType(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-aircraft-type>
+    <app-msf-airline *ngIf="isAirline(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel" [anchoredArgument]="anchoredArgument" [updateURLResults]="updateURLResults" (startURLUpdate)="startURLUpdate.emit()"></app-msf-airline>
+    <app-msf-aircraft-type *ngIf="isAircraftType(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel" [updateURLResults]="updateURLResults" (startURLUpdate)="startURLUpdate.emit()"></app-msf-aircraft-type>
     <app-msf-grouping *ngIf="isGrouping(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-grouping>
     <app-msf-rounding *ngIf="isRounding(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-rounding>
     <app-msf-free-text-input *ngIf="isMsFreeTextInput(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-free-text-input>
-    <app-msf-select-box-single-option *ngIf="isSelectBoxSingleOption(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-select-box-single-option>
-    <app-msf-select-box-multiple-option *ngIf="isSelectBoxMultipleOption(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-select-box-multiple-option>
+    <app-msf-select-box-single-option *ngIf="isSelectBoxSingleOption(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel" [updateURLResults]="updateURLResults" (startURLUpdate)="startURLUpdate.emit()"></app-msf-select-box-single-option>
+    <app-msf-select-box-multiple-option *ngIf="isSelectBoxMultipleOption(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel" [updateURLResults]="updateURLResults" (startURLUpdate)="startURLUpdate.emit()"></app-msf-select-box-multiple-option>
     <app-msf-cancels-checkbox *ngIf="isCancelsCheckBox(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-cancels-checkbox>
     <app-msf-diversions-checkbox *ngIf="isDiversionsCheckBox(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-diversions-checkbox>
     <app-msf-flight-delays-checkboxes *ngIf="isFlightDelaysCheckBox(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-flight-delays-checkboxes>
@@ -37,7 +37,7 @@
     <app-msf-filter-airline-type *ngIf="isFilterAirlineType(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-filter-airline-type>
     <app-msf-fare-increments *ngIf="isFareIncrements(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-fare-increments>
     <app-msf-argument-title *ngIf="isArgumentTitle(currentArgument)" [argument]="currentArgument"></app-msf-argument-title>
-    <app-msf-airports-routes *ngIf="isAirportsRoutes(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-airports-routes>
+    <app-msf-airports-routes *ngIf="isAirportsRoutes(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel" [updateURLResults]="updateURLResults" (startURLUpdate)="startURLUpdate.emit()"></app-msf-airports-routes>
     <app-msf-exclude-fares-lower *ngIf="isFaresLower(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-exclude-fares-lower>
     <app-msf-percent-increment *ngIf="isPercentIncrement(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-percent-increment>
     <app-msf-grouping-daily-statics  *ngIf="isGroupingDailyStatics(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-grouping-daily-statics>
@@ -65,6 +65,6 @@
     <app-msf-grouping-comp-total *ngIf="isGroupingTotal(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-grouping-comp-total>
     <app-msf-grouping-op2 *ngIf="isGroupingOp2(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-grouping-op2>
     <app-msf-grouping-op *ngIf="isGroupingOp(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-grouping-op>
-    <app-msf-states *ngIf="isStates(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-states>
+    <app-msf-states *ngIf="isStates(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel" [updateURLResults]="updateURLResults" (startURLUpdate)="startURLUpdate.emit()"></app-msf-states>
     <app-msf-flight-duration-segments *ngIf="isFlightSegments(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-flight-duration-segments>
     <app-msf-group-aaa *ngIf="isGroupAAA(currentArgument)" [argument]="currentArgument" [isDashboardPanel]="isDashboardPanel"></app-msf-group-aaa>
