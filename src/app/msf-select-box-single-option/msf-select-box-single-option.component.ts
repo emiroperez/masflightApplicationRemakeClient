@@ -4,6 +4,7 @@ import { Arguments } from '../model/Arguments';
 import { Globals } from '../globals/Globals';
 import { delay } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
+import { Utils } from '../commons/utils';
 
 @Component({
   selector: 'app-msf-select-box-single-option',
@@ -19,8 +20,12 @@ export class MsfSelectBoxSingleOptionComponent implements OnInit {
   isDashboardPanel: boolean = false;
 
   loading = false;
-  constructor(public globals: Globals, private authService: AuthService) { }
+  utils: Utils;
 
+  constructor(public globals: Globals, private authService: AuthService)
+  {
+    this.utils = new Utils ();
+  }
 
   ngOnInit() { 
     this.getRecords(null, this.handlerSuccess);
@@ -64,6 +69,9 @@ export class MsfSelectBoxSingleOptionComponent implements OnInit {
 
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;
+
+    // set URL filters if available
+    url += this.utils.setURLfilters (this.argument.filters);
 
     this.authService.get (this,url,handlerSuccess,this.handlerError);  
   }

@@ -6,6 +6,7 @@ import { FormControl } from '@angular/forms';
 import { Arguments } from '../model/Arguments';
 import { Globals } from '../globals/Globals';
 import { ApiClient } from '../api/api-client';
+import { Utils } from '../commons/utils';
 
 @Component({
   selector: 'app-msf-aircraft-type',
@@ -14,16 +15,21 @@ import { ApiClient } from '../api/api-client';
 })
 export class MsfAircraftTypeComponent implements OnInit {
 
-  @Input("argument") public argument: Arguments;
+   @Input("argument") public argument: Arguments;
 
-  @Input("isDashboardPanel")
-  isDashboardPanel: boolean = false;
-  
-  multiAircraft: boolean = false;
+   @Input("isDashboardPanel")
+   isDashboardPanel: boolean = false;
 
-  data: Observable<any[]>;
+   multiAircraft: boolean = false;
+   utils: Utils;
+
+   data: Observable<any[]>;
    loading = false;
-   constructor(private http: ApiClient, public globals: Globals) { }
+
+   constructor(private http: ApiClient, public globals: Globals)
+   {
+     this.utils = new Utils ();
+   }
 
    ngOnInit() { 
     if (this.argument.selectionMode)
@@ -57,6 +63,14 @@ export class MsfAircraftTypeComponent implements OnInit {
 
     if (this.globals.currentAirline != null && this.argument.url.includes ("getAircraftTypes"))
       url += "&airlineIata" + this.globals.currentAirline.iata;
+
+    url += "&appId=" + this.globals.currentApplication.id;
+
+    if (this.globals.testingPlan != -1)
+      url += "&testPlanId=" + this.globals.testingPlan;
+  
+    // set URL filters if available
+    url += this.utils.setURLfilters (this.argument.filters);
 
     this.http.get(this,url,handlerSuccess,this.handlerError, null);  
   }

@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { Globals } from '../globals/Globals';
 import { AuthService } from '../services/auth.service';
+import { Utils } from '../commons/utils';
 
 @Component({
   selector: 'app-msf-airline',
@@ -23,8 +24,13 @@ export class MsfAirlineComponent implements OnInit {
   data: Observable<any[]>;
   multiAirlines: boolean = false;
 
+  utils: Utils;
   loading = false;
-  constructor(private authService: AuthService, public globals: Globals) { }
+
+  constructor(private authService: AuthService, public globals: Globals)
+  {
+    this.utils = new Utils ();
+  }
 
   ngOnInit()
   {
@@ -60,8 +66,13 @@ export class MsfAirlineComponent implements OnInit {
         url = this.argument.url + "?search=" + (search != null ? search : '');
     }
 
+    url += "&appId=" + this.globals.currentApplication.id;
+
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;
+
+    // set URL filters if available
+    url += this.utils.setURLfilters (this.argument.filters);
   
     this.authService.get (this, url, handlerSuccess, this.handlerError);
   }

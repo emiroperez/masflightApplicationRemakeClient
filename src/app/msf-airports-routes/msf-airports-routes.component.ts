@@ -4,6 +4,7 @@ import { ApiClient } from '../api/api-client';
 import { Globals } from '../globals/Globals';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
+import { Utils } from '../commons/utils';
 
 @Component({
   selector: 'app-msf-airports-routes',
@@ -18,8 +19,13 @@ export class MsfAirportsRoutesComponent implements OnInit {
   isDashboardPanel: boolean = false;
   
   loading = false;
-  name:any;
-  constructor(private http: ApiClient, public globals: Globals) { }
+  name: any;
+  utils: Utils;
+
+  constructor(private http: ApiClient, public globals: Globals)
+  {
+    this.utils = new Utils ();
+  }
 
   ngOnInit() { 
     // this.globals.isLoading = true;
@@ -48,6 +54,14 @@ export class MsfAirportsRoutesComponent implements OnInit {
       else
         url = this.argument.url + "?search=" + (search != null ? search : '');
     }
+
+    url += "&appId=" + this.globals.currentApplication.id;
+
+    if (this.globals.testingPlan != -1)
+      url += "&testPlanId=" + this.globals.testingPlan;
+
+    // set URL filters if available
+    url += this.utils.setURLfilters (this.argument.filters);
 
     this.http.get(this,url,handlerSuccess,this.handlerError, null);  
   }
