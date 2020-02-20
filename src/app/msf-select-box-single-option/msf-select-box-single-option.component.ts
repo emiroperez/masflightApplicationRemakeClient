@@ -28,6 +28,8 @@ export class MsfSelectBoxSingleOptionComponent implements OnInit {
   loading = false;
   utils: Utils;
   searchString: string = null;
+  currentURLFilter: string = "";
+  lastURLFilter: string = "";
 
   constructor(public globals: Globals, private authService: AuthService)
   {
@@ -84,14 +86,32 @@ export class MsfSelectBoxSingleOptionComponent implements OnInit {
       url += "&testPlanId=" + this.globals.testingPlan;
 
     // set URL filters if available
-    url += this.utils.setURLfilters (this.argument.filters);
+    this.currentURLFilter = this.utils.setURLfilters (this.argument.filters);
+    url += this.currentURLFilter;
 
     this.authService.get (this,url,handlerSuccess,this.handlerError);  
   }
 
   handlerSuccess(_this,data, tab){   
     _this.loading = false;
-    _this.data = of(data).pipe(delay(500));;        
+    _this.data = of(data).pipe(delay(500));
+
+    if (_this.currentURLFilter !== _this.lastURLFilter)
+    {
+      _this.lastURLFilter = _this.currentURLFilter;
+
+      if (_this.argument.value1)
+      {
+        for (let item of data)
+        {
+          if (_this.argument.value1[_this.argument.visibleAttribute] === item[_this.argument.visibleAttribute])
+          {
+            _this.argument.value1 = null;
+            break;
+          }
+        }
+      }
+    }
   }
 
   handlerError(_this,result){

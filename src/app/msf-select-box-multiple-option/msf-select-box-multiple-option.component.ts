@@ -28,6 +28,8 @@ export class MsfSelectBoxMultipleOptionComponent implements OnInit {
 
   loading = false;
   searchString: string = null;
+  currentURLFilter: string = "";
+  lastURLFilter: string = "";
   utils: Utils;
 
   constructor(public globals: Globals, private authService: AuthService)
@@ -85,7 +87,8 @@ export class MsfSelectBoxMultipleOptionComponent implements OnInit {
       url += "&testPlanId=" + this.globals.testingPlan;
 
     // set URL filters if available
-    url += this.utils.setURLfilters (this.argument.filters);
+    this.currentURLFilter = this.utils.setURLfilters (this.argument.filters);
+    url += this.currentURLFilter;
 
     this.authService.get (this,url,handlerSuccess,this.handlerError);
   }
@@ -93,6 +96,32 @@ export class MsfSelectBoxMultipleOptionComponent implements OnInit {
   handlerSuccess(_this,data, tab){   
     _this.loading = false;
     _this.data = of(data).pipe(delay(500));
+
+    if (_this.currentURLFilter !== _this.lastURLFilter)
+    {
+      _this.lastURLFilter = _this.currentURLFilter;
+
+      if (_this.argument.value1)
+      {
+        for (let i = _this.argument.value1.length - 1; i >= 0; i--)
+        {
+          let itemFound = false;
+
+          for (let item of data)
+          {
+            if (_this.argument.value1[i][_this.argument.visibleAttribute] === item[_this.argument.visibleAttribute])
+            {
+              itemFound = true;
+              _this.argument.value1.splice (i, 1);
+              break;
+            }
+
+            if (itemFound)
+              continue;
+          }
+        }
+      }
+    }
   }
 
   handlerError(_this,result){

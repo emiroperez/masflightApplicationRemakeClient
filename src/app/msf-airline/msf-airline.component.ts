@@ -30,6 +30,8 @@ export class MsfAirlineComponent implements OnInit {
   data: Observable<any[]>;
   multiAirlines: boolean = false;
   searchString: string = null;
+  currentURLFilter: string = "";
+  lastURLFilter: string = "";
 
   utils: Utils;
   loading = false;
@@ -85,7 +87,8 @@ export class MsfAirlineComponent implements OnInit {
       url += "&testPlanId=" + this.globals.testingPlan;
 
     // set URL filters if available
-    url += this.utils.setURLfilters (this.argument.filters);
+    this.currentURLFilter = this.utils.setURLfilters (this.argument.filters);
+    url += this.currentURLFilter;
   
     this.authService.get (this, url, handlerSuccess, this.handlerError);
   }
@@ -109,7 +112,7 @@ export class MsfAirlineComponent implements OnInit {
 
           for (let curairline of data)
           {
-            if (value.iata === curairline.iata)
+            if (value[_this.argument.visibleAttribute] === curairline[_this.argument.visibleAttribute])
             {
               exist = true;
               break;
@@ -126,7 +129,7 @@ export class MsfAirlineComponent implements OnInit {
 
         for (let curairline of data)
         {
-          if (_this.argument.value1.iata === curairline.iata)
+          if (_this.argument.value1[_this.argument.visibleAttribute] === curairline[_this.argument.visibleAttribute])
           {
             exist = true;
             break;
@@ -135,6 +138,49 @@ export class MsfAirlineComponent implements OnInit {
 
         if (!exist)
           _this.argument.value1 = null;
+      }
+    }
+
+    if (_this.currentURLFilter !== _this.lastURLFilter)
+    {
+      _this.lastURLFilter = _this.currentURLFilter;
+  
+      if (_this.multiAirlines)
+      {
+        if (_this.argument.value1)
+        {
+          for (let i = _this.argument.value1.length - 1; i >= 0; i--)
+          {
+            let itemFound = false;
+  
+            for (let item of data)
+            {
+              if (_this.argument.value1[i][_this.argument.visibleAttribute] === item[_this.argument.visibleAttribute])
+              {
+                itemFound = true;
+                _this.argument.value1.splice (i, 1);
+                break;
+              }
+  
+              if (itemFound)
+                continue;
+            }
+          }
+        }
+      }
+      else
+      {
+        if (_this.argument.value1)
+        {
+          for (let item of data)
+          {
+            if (_this.argument.value1[_this.argument.visibleAttribute] === item[_this.argument.visibleAttribute])
+            {
+              _this.argument.value1 = null;
+              break;
+            }
+          }
+        }
       }
     }
   }

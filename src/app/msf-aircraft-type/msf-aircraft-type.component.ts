@@ -32,6 +32,8 @@ export class MsfAircraftTypeComponent implements OnInit {
    data: Observable<any[]>;
    loading = false;
    searchString: string = null;
+   currentURLFilter: string = "";
+   lastURLFilter: string = "";
 
    constructor(private http: ApiClient, public globals: Globals)
    {
@@ -85,14 +87,58 @@ export class MsfAircraftTypeComponent implements OnInit {
       url += "&testPlanId=" + this.globals.testingPlan;
   
     // set URL filters if available
-    url += this.utils.setURLfilters (this.argument.filters);
+    this.currentURLFilter = this.utils.setURLfilters (this.argument.filters);
+    url += this.currentURLFilter;
 
-    this.http.get(this,url,handlerSuccess,this.handlerError, null);  
+    this.http.get(this,url,handlerSuccess,this.handlerError, null);
   }
 
   handlerSuccess(_this,data, tab){   
     _this.loading = false;
-    _this.data = of(data).pipe(delay(500));;        
+    _this.data = of(data).pipe(delay(500));
+
+    if (_this.currentURLFilter !== _this.lastURLFilter)
+    {
+      _this.lastURLFilter = _this.currentURLFilter;
+  
+      if (_this.multiAircraft)
+      {
+        if (_this.argument.value1)
+        {
+          for (let i = _this.argument.value1.length - 1; i >= 0; i--)
+          {
+            let itemFound = false;
+  
+            for (let item of data)
+            {
+              if (_this.argument.value1[i][_this.argument.visibleAttribute] === item[_this.argument.visibleAttribute])
+              {
+                itemFound = true;
+                _this.argument.value1.splice (i, 1);
+                break;
+              }
+  
+              if (itemFound)
+                continue;
+            }
+          }
+        }
+      }
+      else
+      {
+        if (_this.argument.value1)
+        {
+          for (let item of data)
+          {
+            if (_this.argument.value1[_this.argument.visibleAttribute] === item[_this.argument.visibleAttribute])
+            {
+              _this.argument.value1 = null;
+              break;
+            }
+          }
+        }
+      }
+    }
   }
 
   handlerError(_this,result){
