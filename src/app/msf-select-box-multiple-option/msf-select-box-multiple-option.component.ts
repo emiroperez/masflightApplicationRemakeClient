@@ -5,6 +5,7 @@ import { Globals } from '../globals/Globals';
 import { delay } from 'rxjs/operators';
 import { forEach } from '@angular/router/src/utils/collection';
 import { AuthService } from '../services/auth.service';
+import { Utils } from '../commons/utils';
 
 @Component({
   selector: 'app-msf-select-box-multiple-option',
@@ -27,8 +28,12 @@ export class MsfSelectBoxMultipleOptionComponent implements OnInit {
 
   loading = false;
   searchString: string = null;
+  utils: Utils;
 
-  constructor(public globals: Globals, private authService: AuthService) { }
+  constructor(public globals: Globals, private authService: AuthService)
+  {
+    this.utils = new Utils ();
+  }
 
   ngOnInit() { 
     this.getRecords(null, this.handlerSuccess);
@@ -79,12 +84,15 @@ export class MsfSelectBoxMultipleOptionComponent implements OnInit {
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;
 
+    // set URL filters if available
+    url += this.utils.setURLfilters (this.argument.filters);
+
     this.authService.get (this,url,handlerSuccess,this.handlerError);
   }
 
   handlerSuccess(_this,data, tab){   
     _this.loading = false;
-    _this.data = of(data).pipe(delay(500));;        
+    _this.data = of(data).pipe(delay(500));
   }
 
   handlerError(_this,result){
