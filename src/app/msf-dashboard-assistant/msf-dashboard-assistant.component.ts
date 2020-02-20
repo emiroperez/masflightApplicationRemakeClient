@@ -855,7 +855,7 @@ export class MsfDashboardAssistantComponent {
   }
 
   // Function to create horizontal column chart series
-  createHorizColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat): void
+  createHorizColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat, paletteColors): void
   {
     // Set up series
     let series = chart.series.push (new am4charts.ColumnSeries ());
@@ -901,7 +901,7 @@ export class MsfDashboardAssistantComponent {
   }
 
   // Function to create vertical column chart series
-  createVertColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat): any
+  createVertColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat, paletteColors): any
   {
     let series = chart.series.push (new am4charts.ColumnSeries ());
     series.name = item.valueAxis;
@@ -944,7 +944,7 @@ export class MsfDashboardAssistantComponent {
   }
 
   // Function to create line chart series
-  createLineSeries(values, stacked, chart, item, parseDate, theme, outputFormat): any
+  createLineSeries(values, stacked, chart, item, parseDate, theme, outputFormat, paletteColors): any
   {
     // Set up series
     let series = chart.series.push (new am4charts.LineSeries ());
@@ -1014,7 +1014,7 @@ export class MsfDashboardAssistantComponent {
   }
 
   // Function to create simple line chart series
-  createSimpleLineSeries(values, stacked, chart, item, parseDate, theme, outputFormat): any
+  createSimpleLineSeries(values, stacked, chart, item, parseDate, theme, outputFormat, paletteColors): any
   {
     // Set up series
     let series = chart.series.push (new am4charts.LineSeries ());
@@ -1078,18 +1078,18 @@ export class MsfDashboardAssistantComponent {
 
     // Set color
     series.segments.template.adapter.add ("fill", (fill, target) => {
-      return am4core.color (values.paletteColors[0]);
+      return am4core.color (paletteColors[0]);
     });
 
     series.adapter.add ("stroke", (stroke, target) => {
-      return am4core.color (values.paletteColors[0]);
+      return am4core.color (paletteColors[0]);
     });
 
     return series;
   }
 
   // Function to create simple vertical column chart series
-  createSimpleVertColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat): any
+  createSimpleVertColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat, paletteColors): any
   {
     let series = chart.series.push (new am4charts.ColumnSeries ());
     series.dataFields.valueY = item.valueField;
@@ -1129,14 +1129,14 @@ export class MsfDashboardAssistantComponent {
 
     // Set colors
     series.columns.template.adapter.add ("fill", (fill, target) => {
-      return am4core.color (values.paletteColors[0]);
+      return am4core.color (paletteColors[0]);
     });
 
     return series;
   }
 
   // Function to create simple horizontal column chart series
-  createSimpleHorizColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat): any
+  createSimpleHorizColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat, paletteColors): any
   {
     let series = chart.series.push (new am4charts.ColumnSeries ());
     series.dataFields.valueX = item.valueField;
@@ -1175,14 +1175,14 @@ export class MsfDashboardAssistantComponent {
     series.stacked = stacked;
 
     series.columns.template.adapter.add ("fill", (fill, target) => {
-      return am4core.color (values.paletteColors[0]);
+      return am4core.color (paletteColors[0]);
     });
 
     return series;
   }
 
   // Function to create pie chart series
-  createPieSeries(values, stacked, chart, item, parseDate, theme, outputFormat): any
+  createPieSeries(values, stacked, chart, item, parseDate, theme, outputFormat, paletteColors): any
   {
     let series, colorSet;
 
@@ -1213,7 +1213,7 @@ export class MsfDashboardAssistantComponent {
 
     // Set the color for the chart to display
     colorSet = new am4core.ColorSet ();
-    colorSet.list = values.paletteColors.map (function (color) {
+    colorSet.list = paletteColors.map (function (color) {
       return am4core.color (color);
     });
     series.colors = colorSet;
@@ -1222,7 +1222,7 @@ export class MsfDashboardAssistantComponent {
   }
 
   // Function to create funnel chart series
-  createFunnelSeries(values, stacked, chart, item, parseDate, theme, outputFormat): any
+  createFunnelSeries(values, stacked, chart, item, parseDate, theme, outputFormat, paletteColors): any
   {
     let series, colorSet;
 
@@ -1245,7 +1245,7 @@ export class MsfDashboardAssistantComponent {
 
     // Set the color for the chart to display
     colorSet = new am4core.ColorSet ();
-    colorSet.list = values.paletteColors.map (function (color) {
+    colorSet.list = paletteColors.map (function (color) {
       return am4core.color (color);
     });
     series.colors = colorSet;

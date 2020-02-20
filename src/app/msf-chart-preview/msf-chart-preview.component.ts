@@ -267,6 +267,7 @@ export class MsfChartPreviewComponent {
   makeChart(chartInfo): void
   {
     let theme = this.globals.theme;
+    let paletteColors = Themes.AmCharts[theme].resultColors;
 
     // reset advanced chart values
     this.addUpValuesSet = false;
@@ -295,7 +296,7 @@ export class MsfChartPreviewComponent {
         chart.fontSize = 10;
 
         // Create the series
-        this.data.currentChartType.createSeries (this.data, false, chart, chartInfo, null, theme, null);
+        this.data.currentChartType.createSeries (this.data, false, chart, chartInfo, null, theme, null, paletteColors);
 
         if (this.data.currentChartType.flags & ChartFlags.FUNNELCHART)
         {
@@ -637,7 +638,7 @@ export class MsfChartPreviewComponent {
               object.valueAxis = new DatePipe ('en-US').transform (date.toString (), legendOutputFormat);
             }
 
-            this.data.currentChartType.createSeries (this.data, stacked, chart, object, parseDate, theme, outputFormat);
+            this.data.currentChartType.createSeries (this.data, stacked, chart, object, parseDate, theme, outputFormat, paletteColors);
           }
         }
         else
@@ -688,7 +689,7 @@ export class MsfChartPreviewComponent {
           categoryAxis.dataFields.category = chartInfo.titleField;
 
           // Create the series
-          this.data.currentChartType.createSeries (this.data, false, chart, chartInfo, parseDate, theme, outputFormat);
+          this.data.currentChartType.createSeries (this.data, false, chart, chartInfo, parseDate, theme, outputFormat, paletteColors);
         }
 
         // Add cursor if the chart type is line, area or stacked area

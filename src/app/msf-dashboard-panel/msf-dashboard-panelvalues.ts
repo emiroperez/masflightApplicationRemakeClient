@@ -60,20 +60,7 @@ export class MsfDashboardPanelValues {
     dynTableValues: any;
 
     // palette colors used on charts
-    paletteColors: string[] = [
-	    "#01b0a1",
-	    "#9b5e8e",
-	    "#fa5751",
-	    "#fd8b5a",
-	    "#80cfea",
-	    "#ff5900",
-	    "#005eff",
-	    "#ffff00",
-	    "#fc636b",
-	    "#ff7e00",
-	    "#3d67ce",
-        "#fffefe"
-    ];
+    paletteColors: string[] = [];
 
     thresholds: any[];
     goals: any[];

@@ -33,20 +33,6 @@ export class MsfMoreInfoPopupComponent{
     { id: 'max', name: 'Max' },
     { id: 'min', name: 'Min' },
     { id: 'count', name: 'Count' }
-  ]; 
-  paletteColors: string[] = [
-    "#01b0a1",
-    "#9b5e8e",
-    "#fa5751",
-    "#fd8b5a",
-    "#80cfea",
-    "#ff5900",
-    "#005eff",
-    "#ffff00",
-    "#fc636b",
-    "#ff7e00",
-    "#3d67ce",
-      "#fffefe"
   ];
 
   pdfViewerHeight: number;
@@ -195,9 +181,10 @@ export class MsfMoreInfoPopupComponent{
 
     makeChart(chartInfo): void
     {
-      let theme;
+      let theme, paletteColors;
 
       theme = this.globals.theme;
+      paletteColors = Themes.AmCharts[theme].resultColors;
 
       this.zone.runOutsideAngular (() => {
         let chart;
@@ -292,7 +279,7 @@ export class MsfMoreInfoPopupComponent{
         // Create the series and set colors
         chart.colors.list = [];
 
-        for (let color of this.paletteColors)
+        for (let color of paletteColors)
           chart.colors.list.push (am4core.color (color));
 
         for (let object of chartInfo.filter)

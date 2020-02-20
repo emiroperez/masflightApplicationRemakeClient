@@ -8,7 +8,6 @@ import * as moment from 'moment';
 import { Globals } from '../globals/Globals';
 import { Themes } from '../globals/Themes';
 import { ApplicationService } from '../services/application.service';
-import { ApiClient } from '../api/api-client';
 import { MsfTableComponent } from '../msf-table/msf-table.component';
 import { MsfDashboardPanelValues } from '../msf-dashboard-panel/msf-dashboard-panelvalues';
 import { ChartFlags } from '../msf-dashboard-panel/msf-dashboard-chartflags';
@@ -67,6 +66,8 @@ export class MsfDashboardChildPanelComponent {
   totalRecord = 0;
   metadata;
 
+  paletteColors: string[];
+
   predefinedColumnFormats: any = {
     "short": "M/d/yy, h:mm a",
     "medium": "MMM d, yyyy, h:mm:ss a",
@@ -116,7 +117,7 @@ export class MsfDashboardChildPanelComponent {
   }
 
   // Function to create horizontal column chart series
-  createHorizColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat): void
+  createHorizColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat, paletteColors): void
   {
     // Set up series
     let series = chart.series.push (new am4charts.ColumnSeries ());
@@ -152,7 +153,7 @@ export class MsfDashboardChildPanelComponent {
   }
 
   // Function to create vertical column chart series
-  createVertColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat): void
+  createVertColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat, paletteColors): void
   {
     let series = chart.series.push (new am4charts.ColumnSeries ());
     series.name = item.valueAxis;
@@ -185,7 +186,7 @@ export class MsfDashboardChildPanelComponent {
   }
 
   // Function to create line chart series
-  createLineSeries(values, stacked, chart, item, parseDate, theme, outputFormat): void
+  createLineSeries(values, stacked, chart, item, parseDate, theme, outputFormat, paletteColors): void
   {
     // Set up series
     let series = chart.series.push (new am4charts.LineSeries ());
@@ -245,7 +246,7 @@ export class MsfDashboardChildPanelComponent {
   }
 
   // Function to create simple line chart series
-  createSimpleLineSeries(values, stacked, chart, item, parseDate, theme, outputFormat): any
+  createSimpleLineSeries(values, stacked, chart, item, parseDate, theme, outputFormat, paletteColors): any
   {
     // Set up series
     let series = chart.series.push (new am4charts.LineSeries ());
@@ -310,7 +311,7 @@ export class MsfDashboardChildPanelComponent {
         }
       }
 
-      return am4core.color (values.paletteColors[0]);
+      return am4core.color (paletteColors[0]);
     });
 
     series.adapter.add ("stroke", (stroke, target) => {
@@ -323,7 +324,7 @@ export class MsfDashboardChildPanelComponent {
         }
       }
 
-      return am4core.color (values.paletteColors[0]);
+      return am4core.color (paletteColors[0]);
     });
 
     if (!(values.currentChartType.flags & ChartFlags.ADVANCED))
@@ -344,7 +345,7 @@ export class MsfDashboardChildPanelComponent {
   }
 
   // Function to create simple vertical column chart series
-  createSimpleVertColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat): void
+  createSimpleVertColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat, paletteColors): void
   {
     let series = chart.series.push (new am4charts.ColumnSeries());
     series.dataFields.valueY = item.valueField;
@@ -376,12 +377,12 @@ export class MsfDashboardChildPanelComponent {
 
     // Set colors
     series.columns.template.adapter.add ("fill", (fill, target) => {
-      return am4core.color (values.paletteColors[0]);
+      return am4core.color (paletteColors[0]);
     });
   }
 
   // Function to create simple horizontal column chart series
-  createSimpleHorizColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat): void
+  createSimpleHorizColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat, paletteColors): void
   {
     let series = chart.series.push (new am4charts.ColumnSeries());
     series.dataFields.valueX = item.valueField;
@@ -412,12 +413,12 @@ export class MsfDashboardChildPanelComponent {
     series.stacked = stacked;
 
     series.columns.template.adapter.add ("fill", (fill, target) => {
-      return am4core.color (values.paletteColors[0]);
+      return am4core.color (paletteColors[0]);
     });
   }
 
   // Function to create pie chart series
-  createPieSeries(values, stacked, chart, item, parseDate, theme, outputFormat): void
+  createPieSeries(values, stacked, chart, item, parseDate, theme, outputFormat, paletteColors): void
   {
     let series, colorSet;
 
@@ -448,14 +449,14 @@ export class MsfDashboardChildPanelComponent {
 
     // Set the color for the chart to display
     colorSet = new am4core.ColorSet ();
-    colorSet.list = values.paletteColors.map (function(color) {
+    colorSet.list = paletteColors.map (function(color) {
       return am4core.color (color);
     });
     series.colors = colorSet;
   }
 
   // Function to create funnel chart series
-  createFunnelSeries(values, stacked, chart, item, parseDate, theme, outputFormat): void
+  createFunnelSeries(values, stacked, chart, item, parseDate, theme, outputFormat, paletteColors): void
   {
     let series, colorSet;
 
@@ -478,7 +479,7 @@ export class MsfDashboardChildPanelComponent {
 
     // Set the color for the chart to display
     colorSet = new am4core.ColorSet ();
-    colorSet.list = values.paletteColors.map (function(color) {
+    colorSet.list = paletteColors.map (function(color) {
       return am4core.color (color);
     });
     series.colors = colorSet;
@@ -515,6 +516,11 @@ export class MsfDashboardChildPanelComponent {
   {
     let theme = this.globals.theme;
 
+    if (this.values.paletteColors && this.values.paletteColors.length)
+      this.paletteColors = this.values.paletteColors;
+    else
+      this.paletteColors = Themes.AmCharts[theme].resultColors;
+
     this.zone.runOutsideAngular (() => {
       let chart, options;
 
@@ -534,7 +540,7 @@ export class MsfDashboardChildPanelComponent {
         chart.fontSize = 10;
 
         // Create the series
-        this.values.currentChartType.createSeries (this.values, false, chart, chartInfo, null, theme, null);
+        this.values.currentChartType.createSeries (this.values, false, chart, chartInfo, null, theme, null, this.paletteColors);
 
         if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART)
         {
@@ -865,7 +871,7 @@ export class MsfDashboardChildPanelComponent {
           // Create the series and set colors
           chart.colors.list = [];
 
-          for (let color of this.values.paletteColors)
+          for (let color of this.paletteColors)
             chart.colors.list.push (am4core.color (color));
 
           for (let object of chartInfo.filter)
@@ -882,7 +888,7 @@ export class MsfDashboardChildPanelComponent {
               object.valueAxis = new DatePipe ('en-US').transform (date.toString (), legendOutputFormat);
             }
 
-            this.values.currentChartType.createSeries (this.values, stacked, chart, object, parseDate, theme, outputFormat);
+            this.values.currentChartType.createSeries (this.values, stacked, chart, object, parseDate, theme, outputFormat, this.paletteColors);
           }
         }
         else
@@ -953,7 +959,7 @@ export class MsfDashboardChildPanelComponent {
           }
 
           // Create the series
-          this.values.currentChartType.createSeries (this.values, false, chart, chartInfo, parseDate, theme, outputFormat);
+          this.values.currentChartType.createSeries (this.values, false, chart, chartInfo, parseDate, theme, outputFormat, this.paletteColors);
         }
 
         // Add cursor if the chart type is line, area or stacked area

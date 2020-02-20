@@ -74,6 +74,8 @@ export class MsfDashboardPanelComponent implements OnInit {
   chartInfo: any;
   redisplayChart: boolean = false;
 
+  paletteColors: string[];
+
   chartTypes: any[] = [
     { name: 'Bars', flags: ChartFlags.XYCHART, createSeries: this.createVertColumnSeries },
     { name: 'Horizontal Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED, createSeries: this.createHorizColumnSeries },
@@ -422,7 +424,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   }
 
   // Function to create horizontal column chart series
-  createHorizColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat, panelLoading): void
+  createHorizColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat, panelLoading, paletteColors): void
   {
     // Set up series
     let series = chart.series.push (new am4charts.ColumnSeries ());
@@ -485,7 +487,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   }
 
   // Function to create vertical column chart series
-  createVertColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat, panelLoading): any
+  createVertColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat, panelLoading, paletteColors): any
   {
     let series = chart.series.push (new am4charts.ColumnSeries ());
 
@@ -544,7 +546,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   }
 
   // Function to create line chart series
-  createLineSeries(values, stacked, chart, item, parseDate, theme, outputFormat, panelLoading): any
+  createLineSeries(values, stacked, chart, item, parseDate, theme, outputFormat, panelLoading, paletteColors): any
   {
     // Set up series
     let series = chart.series.push (new am4charts.LineSeries ());
@@ -641,7 +643,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   }
 
   // Function to create simple line chart series
-  createSimpleLineSeries(values, simpleValue, chart, item, parseDate, index, outputFormat, panelLoading): any
+  createSimpleLineSeries(values, simpleValue, chart, item, parseDate, index, outputFormat, panelLoading, paletteColors): any
   {
     // Set up series
     let series = chart.series.push (new am4charts.LineSeries ());
@@ -713,11 +715,11 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     // Set line color for legend
     series.segments.template.adapter.add ("fill", (fill, target) => {
-      return am4core.color (values.paletteColors[index]);
+      return am4core.color (paletteColors[index]);
     });
 
     series.adapter.add ("stroke", (stroke, target) => {
-      return am4core.color (values.paletteColors[index]);
+      return am4core.color (paletteColors[index]);
     });
 
     // Set thresholds
@@ -748,7 +750,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   }
 
   // Function to create simple vertical column chart series
-  createSimpleVertColumnSeries(values, simpleValue, chart, item, parseDate, index, outputFormat, panelLoading): any
+  createSimpleVertColumnSeries(values, simpleValue, chart, item, parseDate, index, outputFormat, panelLoading, paletteColors): any
   {
     let series = chart.series.push (new am4charts.ColumnSeries ());
 
@@ -806,7 +808,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           }
         }
 
-        return am4core.color (values.paletteColors[index]);
+        return am4core.color (paletteColors[index]);
       });
     }
 
@@ -827,7 +829,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   }
 
   // Function to create simple horizontal column chart series
-  createSimpleHorizColumnSeries(values, simpleValue, chart, item, parseDate, index, outputFormat, panelLoading): any
+  createSimpleHorizColumnSeries(values, simpleValue, chart, item, parseDate, index, outputFormat, panelLoading, paletteColors): any
   {
     let series = chart.series.push (new am4charts.ColumnSeries ());
 
@@ -884,7 +886,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           }
         }
 
-        return am4core.color (values.paletteColors[index]);
+        return am4core.color (paletteColors[index]);
       });
     }
 
@@ -904,7 +906,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   }
 
   // Function to create pie chart series
-  createPieSeries(values, stacked, chart, item, parseDate, theme, outputFormat, panelLoading): any
+  createPieSeries(values, stacked, chart, item, parseDate, theme, outputFormat, panelLoading, paletteColors): any
   {
     let series, colorSet;
 
@@ -936,7 +938,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     // Set the color for the chart to display
     colorSet = new am4core.ColorSet ();
-    colorSet.list = values.paletteColors.map (function (color) {
+    colorSet.list = paletteColors.map (function (color) {
       return am4core.color (color);
     });
     series.colors = colorSet;
@@ -958,7 +960,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   }
 
   // Function to create funnel chart series
-  createFunnelSeries(values, stacked, chart, item, parseDate, theme, outputFormat, panelLoading): any
+  createFunnelSeries(values, stacked, chart, item, parseDate, theme, outputFormat, panelLoading, paletteColors): any
   {
     let series, colorSet;
 
@@ -982,7 +984,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     // Set the color for the chart to display
     colorSet = new am4core.ColorSet ();
-    colorSet.list = values.paletteColors.map (function (color) {
+    colorSet.list = paletteColors.map (function (color) {
       return am4core.color (color);
     });
     series.colors = colorSet;
@@ -1043,6 +1045,11 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     this.values.chartSeries = [];
 
+    if (this.values.paletteColors && this.values.paletteColors.length)
+      this.paletteColors = this.values.paletteColors;
+    else
+      this.paletteColors = Themes.AmCharts[theme].resultColors;
+
     // reset advanced chart values
     this.addUpValuesSet = false;
     this.sumValueAxis = null;
@@ -1063,7 +1070,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         let minRange, maxRange, heatLegend, pow, home, zoomControl;
 
         chart = am4core.create ("msf-dashboard-chart-display-" + this.values.id, am4maps.MapChart);
-        chartColor = am4core.color (this.values.paletteColors[0]);
+        chartColor = am4core.color (this.paletteColors[0]);
         chart.numberFormatter.numberFormat = "#,###.#";
 
         // Create map instance displaying the chosen geography data
@@ -1318,7 +1325,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         chart.fontSize = 10;
 
         // Create the series
-        this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, false, chart, chartInfo, null, theme, null, panelLoading));
+        this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, false, chart, chartInfo, null, theme, null, panelLoading, this.paletteColors));
 
         if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART)
         {
@@ -1715,7 +1722,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           // Create the series and set colors
           chart.colors.list = [];
 
-          for (let color of this.values.paletteColors)
+          for (let color of this.paletteColors)
             chart.colors.list.push (am4core.color (color));
 
           for (let object of chartInfo.filter)
@@ -1737,7 +1744,7 @@ export class MsfDashboardPanelComponent implements OnInit {
               object.valueAxis = new DatePipe ('en-US').transform (date.toString (), legendOutputFormat);
             }
 
-            this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, stacked, chart, object, parseDate, theme, outputFormat, panelLoading));
+            this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, stacked, chart, object, parseDate, theme, outputFormat, panelLoading, this.paletteColors));
           }
         }
         else
@@ -1916,7 +1923,7 @@ export class MsfDashboardPanelComponent implements OnInit {
                 // set line color depending of the threshold
                 for (let data of chart.data)
                 {
-                  let lineColor = am4core.color (this.values.paletteColors[i]);
+                  let lineColor = am4core.color (this.paletteColors[i]);
                   let value = data[chartInfo.valueFields[i]];
 
                   for (let threshold of this.values.thresholds)
@@ -1932,7 +1939,7 @@ export class MsfDashboardPanelComponent implements OnInit {
                 }
               }
 
-              this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, curValue, chart, chartInfo, parseDate, i, outputFormat, panelLoading));
+              this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, curValue, chart, chartInfo, parseDate, i, outputFormat, panelLoading, this.paletteColors));
             }
           }
           else
@@ -1953,7 +1960,7 @@ export class MsfDashboardPanelComponent implements OnInit {
               // set line color depending of the threshold
               for (let data of chart.data)
               {
-                let lineColor = am4core.color (this.values.paletteColors[0]);
+                let lineColor = am4core.color (this.paletteColors[0]);
                 let value = data[chartInfo.valueField];
 
                 for (let threshold of this.values.thresholds)
@@ -1969,7 +1976,7 @@ export class MsfDashboardPanelComponent implements OnInit {
               }
             }
 
-            this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, curValue, chart, chartInfo, parseDate, 0, outputFormat, panelLoading));
+            this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, curValue, chart, chartInfo, parseDate, 0, outputFormat, panelLoading, this.paletteColors));
           }
         }
 
@@ -6736,7 +6743,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           sumSeries.bullets.push (new am4charts.CircleBullet ());
   
           sumSeries.strokeWidth = 2;
-          sumSeries.fill = am4core.color (this.values.paletteColors[index]);
+          sumSeries.fill = am4core.color (this.paletteColors[index]);
           sumSeries.stroke = Themes.AmCharts[theme].sumStroke;
           sumSeries.strokeOpacity = 0.5;
           sumSeries.name = object.valueAxis;
@@ -6775,7 +6782,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         sumSeries.bullets.push (new am4charts.CircleBullet ());
 
         sumSeries.strokeWidth = 2;
-        sumSeries.fill = am4core.color (this.values.paletteColors[0]);
+        sumSeries.fill = am4core.color (this.paletteColors[0]);
         sumSeries.stroke = Themes.AmCharts[theme].sumStroke;
         sumSeries.strokeOpacity = 0.5;
         sumSeries.name = "Sum";

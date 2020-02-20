@@ -51,7 +51,22 @@ export class Themes {
             fontColor: white,
             chartZoomScrollBar: blueJeans,
             axisTooltipFontColor: white,
-            sumStroke: white
+            sumStroke: white,
+            resultColors: [
+                am4core.color ("#00defa"),
+                am4core.color ("#6b94fc"),
+                am4core.color ("#a769f6"),
+                am4core.color ("#51e9bd"),
+                am4core.color ("#00aca9"),
+                am4core.color ("#136ffc"),
+                am4core.color ("#8436ff"),
+                am4core.color ("#c767dc"),
+                am4core.color ("#dc677e"),
+                am4core.color ("#dc4238"),
+                am4core.color ("#ff8b3b"),
+                am4core.color ("#f3ba25"),
+                am4core.color ("#ffdb7c")
+            ]
         },
         "light-theme": {
             mainTheme: am4themes_light,
@@ -67,7 +82,22 @@ export class Themes {
             fontColor: darkGray2,
             chartZoomScrollBar: orange,
             axisTooltipFontColor: black,
-            sumStroke: darkGray
+            sumStroke: darkGray,
+            resultColors: [
+                am4core.color ("#00ca77"),
+                am4core.color ("#ff7242"),
+                am4core.color ("#ffc54f"),
+                am4core.color ("#4f933b"),
+                am4core.color ("#00aca9"),
+                am4core.color ("#136fc1"),
+                am4core.color ("#6b94fc"),
+                am4core.color ("#a769f6"),
+                am4core.color ("#8436ff"),
+                am4core.color ("#c767dc"),
+                am4core.color ("#dc677e"),
+                am4core.color ("#dc4238"),
+                am4core.color ("#8bcccc")
+            ]
         }
     };
 }
