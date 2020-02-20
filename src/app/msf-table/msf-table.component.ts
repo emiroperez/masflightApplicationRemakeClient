@@ -340,9 +340,19 @@ export class MsfTableComponent implements OnInit {
                 else
                   value = element[column.columnName];
 
-                element[column.columnName] = {
-                  value: value,
-                  parsedValue: this.parseTime (value, column.columnFormat),
+                if (column.outputFormat && column.outputFormat === "min")
+                {
+                  element[column.columnName] = {
+                    value: value,
+                    parsedValue: value,
+                  };
+                }
+                else
+                {
+                  element[column.columnName] = {
+                    value: value,
+                    parsedValue: this.parseTime (value, column.columnFormat),
+                  };
                 }
               }
 
@@ -352,17 +362,30 @@ export class MsfTableComponent implements OnInit {
             {
               let value = data[j].Flight[column.columnName];
 
-              data[j].Flight[column.columnName] = {
-                value: value,
-                parsedValue: this.parseTime (value, column.columnFormat),
-              };
+              if (column.outputFormat && column.outputFormat === "min")
+              {
+                data[j].Flight[column.columnName] = {
+                  value: value,
+                  parsedValue: value,
+                };
+              }
+              else
+              {
+                data[j].Flight[column.columnName] = {
+                  value: value,
+                  parsedValue: this.parseTime (value, column.columnFormat),
+                };
+              }
 
               data[j][column.columnName] = data[j].Flight[column.columnName].parsedValue;
               continue;
             }
           }
 
-          data[j][column.columnName] = this.parseTime (data[j][column.columnName], column.columnFormat);
+          if (column.outputFormat && column.outputFormat === "min")
+            data[j][column.columnName] = data[j][column.columnName];
+          else
+            data[j][column.columnName] = this.parseTime (data[j][column.columnName], column.columnFormat);
         }
       }
       else if (column.columnType === "date")
@@ -764,7 +787,18 @@ export class MsfTableComponent implements OnInit {
 
     date = new Date (time);
 
-    if (isNaN (date.getTime ()))
+    if (format && format === "min")
+    {
+      // special format for Passenger Info service
+      let momentDate: moment.Moment;
+
+      time = parseFloat (time);
+      time /= 60;
+
+      momentDate = moment (time, "HH.mm");
+      return momentDate.toDate ();
+    }
+    else if (isNaN (date.getTime ()))
     {
       let momentDate: moment.Moment;
 
@@ -864,6 +898,7 @@ export class MsfTableComponent implements OnInit {
     }
  
     _this.globals.subDisplayedColumns = data.metadata;
+
     if( _this.globals.subTotalRecord > 1){
       let mainElement = _this.getMainKey(keys,response);
     if(!(mainElement instanceof Array)){
@@ -886,9 +921,11 @@ export class MsfTableComponent implements OnInit {
           _this.globals.moreResults = false;
       }
     }  
-    if(_this.globals.currentDrillDown.title!="More Info Passenger"){
+
+    if(_this.globals.currentDrillDown.title === "More Info Passenger")
+      _this.globals.popupMainElement[0] = _this.parseResults (_this.globals.popupMainElement[0], _this.globals.subDisplayedColumns, _this.globals.currentDrillDown.childrenOptionId);
+    else
       _this.globals.popupLoading2 = false;
-    }
   }
 
   setSubColumnsDisplayed(_this){
@@ -995,4 +1032,20 @@ export class MsfTableComponent implements OnInit {
     return "inherit";
   }
 
+  getFormatMinutes(value:any)
+  {
+    if(value=="0"){
+      return "0h 0m";
+    }else{
+      var aux ="";
+      var result = value/60;
+      var resultString = String(result);
+      if(resultString.split(".")[0]!="0"){
+        aux = resultString.split(".")[0] + "h " + resultString.split(".")[1].substr(0, 1)+ "m";
+      }else{
+        aux = value + "m";
+      }
+      return aux;
+    }
+  }
 }

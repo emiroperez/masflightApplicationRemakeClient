@@ -12,17 +12,41 @@
     <div [ngClass]="globals.currentDrillDown.title!='More Info Passenger'?'msf-media-info-container':'msf-media-info-container msf-padding-passenger'" class="msf-media-info-container">
       <div class="msf-media-info-row" *ngFor="let info of globals.subDisplayedColumns; let i = index" >
         <div class="msf-media-info" *ngIf="i>0">{{info.columnLabel}}</div>
-          <div class="msf-media-info-value" *ngIf="i>0 && info.columnType=='string' && info.columnFormat==null">
+          <div class="msf-media-info-value" *ngIf="i>0 && info.columnType=='string'">
             {{globals.popupMainElement[0][info.columnName]}}
           </div>
-          <div class="msf-media-info-value" *ngIf="i>0 && info.columnType=='number' && info.columnFormat==null">
-            {{ globals.popupMainElement[0][info.columnName] | number:'.0-2':'en'}}
+          <div class="msf-media-info-value" *ngIf="i>0 && info.columnType=='number'">
+            <ng-container *ngIf="info.outputFormat != null && info.outputFormat != ''">
+              <span *ngIf="info.prefix">{{info.prefix}}</span>
+              {{globals.popupMainElement[0][info.columnName] | number:info.outputFormat:'en'}}
+              <span *ngIf="info.suffix">{{info.suffix}}</span>
+            </ng-container>
+            <ng-container *ngIf="info.outputFormat == null || info.outputFormat == ''">
+              <span *ngIf="info.prefix">{{info.prefix}}</span>
+              {{globals.popupMainElement[0][info.columnName] | number:'.0-2':'en'}}
+              <span *ngIf="info.suffix">{{info.suffix}}</span>
+            </ng-container>
           </div>
-          <div class="msf-media-info-value" *ngIf="i>0 && info.columnType=='number' && info.columnFormat=='$' && globals.popupMainElement[0][info.columnName]">
-              ${{globals.popupMainElement[0][info.columnName] | number:'.0-2':'en'}}
+          <div class="msf-media-info-value" *ngIf="i>0 && info.columnType=='time'">
+            <ng-container *ngIf="info.outputFormat != null || info.outputFormat != ''">
+              <ng-container *ngIf="info.outputFormat === 'min'">
+                {{ getFormatMinutes(globals.popupMainElement[0][info.columnName]) }}
+              </ng-container>
+              <ng-container *ngIf="info.outputFormat !== 'min'">
+                {{globals.popupMainElement[0][info.columnName] | date: info.outputFormat}}
+              </ng-container>
+            </ng-container>
+            <ng-container *ngIf="info.outputFormat == null || info.outputFormat == ''">
+              {{globals.popupMainElement[0][info.columnName]}}
+            </ng-container>
           </div>
-          <div class="msf-media-info-value" *ngIf="i>0 && info.columnType=='number' && info.columnFormat=='min'">
-            {{ getFormatMinutes(globals.popupMainElement[0][info.columnName]) }}
+          <div class="msf-media-info-value" *ngIf="i>0 && info.columnType=='date'">
+            <ng-container *ngIf="info.outputFormat != null || info.outputFormat != ''">
+              {{globals.popupMainElement[0][info.columnName] | date: info.outputFormat}}
+            </ng-container>
+            <ng-container *ngIf="info.outputFormat == null || info.outputFormat == ''">
+              {{globals.popupMainElement[0][info.columnName]}}
+            </ng-container>
           </div>
        </div>
     </div>
