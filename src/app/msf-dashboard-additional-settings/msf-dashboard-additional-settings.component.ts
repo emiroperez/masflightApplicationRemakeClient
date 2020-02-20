@@ -18,12 +18,12 @@ export class MsfDashboardAdditionalSettingsComponent {
   _onDestroy = new Subject<void> ();
 
   configList: any[] = [
-    ConfigFlags.CHARTCOLORS,
-    ConfigFlags.THRESHOLDS,
     ConfigFlags.LIMITVALUES,
     ConfigFlags.LIMITAGGREGATOR,
-    ConfigFlags.GOALS,
-    ConfigFlags.HEATMAPCOLOR
+    ConfigFlags.CHARTCOLORS,
+    ConfigFlags.HEATMAPCOLOR,
+    ConfigFlags.THRESHOLDS,
+    ConfigFlags.GOALS
   ];
 
   advSettingsOpen: number = 0;
