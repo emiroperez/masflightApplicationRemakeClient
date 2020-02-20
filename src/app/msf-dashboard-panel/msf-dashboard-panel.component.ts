@@ -6294,7 +6294,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       }
 
       this.chart.homeZoomLevel = zoomLevel;
-      this.chart.goHome ();
+      this.chart.zoomToGeoPoint ({ latitude: this.chart.homeGeoPoint.latitude, longitude: this.chart.homeGeoPoint.longitude }, zoomLevel);
     });
   }
 
@@ -7284,7 +7284,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     chart.homeGeoPoint.longitude = Number (zoomlong);
     chart.homeGeoPoint.latitude = Number (zoomlat);
     chart.homeZoomLevel = zoomLevel;
-    chart.goHome ();
+    chart.zoomToGeoPoint ({ latitude: zoomlat, longitude: zoomlong }, zoomLevel);
   }
 
   startURLUpdate(): void

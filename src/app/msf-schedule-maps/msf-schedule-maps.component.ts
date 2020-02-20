@@ -302,7 +302,7 @@ export class MsfScheduleMapsComponent implements OnInit {
       this.globals.scheduleChart.homeGeoPoint.longitude = Number (zoomlong);
       this.globals.scheduleChart.homeGeoPoint.latitude = Number (zoomlat);
       this.globals.scheduleChart.homeZoomLevel = zoomLevel;
-      this.globals.scheduleChart.goHome ();
+      this.globals.scheduleChart.zoomToGeoPoint ({ latitude: zoomlat, longitude: zoomlong }, zoomLevel);
     });
   }
 
