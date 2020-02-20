@@ -46,6 +46,8 @@ export class MsfChartPreviewComponent {
   advTableView: boolean = false;
   intervalTableRows: any[] = [];
 
+  paletteColors: string[];
+
   predefinedColumnFormats: any = {
     "short": "M/d/yy, h:mm a",
     "medium": "MMM d, yyyy, h:mm:ss a",
@@ -267,7 +269,8 @@ export class MsfChartPreviewComponent {
   makeChart(chartInfo): void
   {
     let theme = this.globals.theme;
-    let paletteColors = Themes.AmCharts[theme].resultColors;
+
+    this.paletteColors = Themes.AmCharts[theme].resultColors;
 
     // reset advanced chart values
     this.addUpValuesSet = false;
@@ -296,7 +299,7 @@ export class MsfChartPreviewComponent {
         chart.fontSize = 10;
 
         // Create the series
-        this.data.currentChartType.createSeries (this.data, false, chart, chartInfo, null, theme, null, paletteColors);
+        this.data.currentChartType.createSeries (this.data, false, chart, chartInfo, null, theme, null, this.paletteColors);
 
         if (this.data.currentChartType.flags & ChartFlags.FUNNELCHART)
         {
@@ -616,7 +619,7 @@ export class MsfChartPreviewComponent {
           // Create the series and set colors
           chart.colors.list = [];
 
-          for (let color of this.data.paletteColors)
+          for (let color of this.paletteColors)
             chart.colors.list.push (am4core.color (color));
 
           for (let object of chartInfo.filter)
@@ -638,7 +641,7 @@ export class MsfChartPreviewComponent {
               object.valueAxis = new DatePipe ('en-US').transform (date.toString (), legendOutputFormat);
             }
 
-            this.data.currentChartType.createSeries (this.data, stacked, chart, object, parseDate, theme, outputFormat, paletteColors);
+            this.data.currentChartType.createSeries (this.data, stacked, chart, object, parseDate, theme, outputFormat, this.paletteColors);
           }
         }
         else
@@ -689,7 +692,7 @@ export class MsfChartPreviewComponent {
           categoryAxis.dataFields.category = chartInfo.titleField;
 
           // Create the series
-          this.data.currentChartType.createSeries (this.data, false, chart, chartInfo, parseDate, theme, outputFormat, paletteColors);
+          this.data.currentChartType.createSeries (this.data, false, chart, chartInfo, parseDate, theme, outputFormat, this.paletteColors);
         }
 
         // Add cursor if the chart type is line, area or stacked area
@@ -918,7 +921,7 @@ export class MsfChartPreviewComponent {
           sumSeries.bullets.push (new am4charts.CircleBullet ());
   
           sumSeries.strokeWidth = 2;
-          sumSeries.fill = am4core.color (this.data.paletteColors[index]);
+          sumSeries.fill = am4core.color (this.paletteColors[index]);
           sumSeries.stroke = Themes.AmCharts[theme].sumStroke;
           sumSeries.strokeOpacity = 0.5;
           sumSeries.name = object.valueAxis;
@@ -957,7 +960,7 @@ export class MsfChartPreviewComponent {
         sumSeries.bullets.push (new am4charts.CircleBullet ());
 
         sumSeries.strokeWidth = 2;
-        sumSeries.fill = am4core.color (this.data.paletteColors[0]);
+        sumSeries.fill = am4core.color (this.paletteColors[0]);
         sumSeries.stroke = Themes.AmCharts[theme].sumStroke;
         sumSeries.strokeOpacity = 0.5;
         sumSeries.name = "Sum";

@@ -52,20 +52,23 @@ export class Themes {
             chartZoomScrollBar: blueJeans,
             axisTooltipFontColor: white,
             sumStroke: white,
+            heatMapColor: [
+                "#01abec"
+            ],
             resultColors: [
-                am4core.color ("#00defa"),
-                am4core.color ("#6b94fc"),
-                am4core.color ("#a769f6"),
-                am4core.color ("#51e9bd"),
-                am4core.color ("#00aca9"),
-                am4core.color ("#136ffc"),
-                am4core.color ("#8436ff"),
-                am4core.color ("#c767dc"),
-                am4core.color ("#dc677e"),
-                am4core.color ("#dc4238"),
-                am4core.color ("#ff8b3b"),
-                am4core.color ("#f3ba25"),
-                am4core.color ("#ffdb7c")
+                "#00defa",
+                "#6b94fc",
+                "#a769f6",
+                "#51e9bd",
+                "#00aca9",
+                "#136ffc",
+                "#8436ff",
+                "#c767dc",
+                "#dc677e",
+                "#dc4238",
+                "#ff8b3b",
+                "#f3ba25",
+                "#ffdb7c"
             ]
         },
         "light-theme": {
@@ -83,20 +86,23 @@ export class Themes {
             chartZoomScrollBar: orange,
             axisTooltipFontColor: black,
             sumStroke: darkGray,
+            heatMapColor: [
+                "#ff9a70"
+            ],
             resultColors: [
-                am4core.color ("#00ca77"),
-                am4core.color ("#ff7242"),
-                am4core.color ("#ffc54f"),
-                am4core.color ("#4f933b"),
-                am4core.color ("#00aca9"),
-                am4core.color ("#136fc1"),
-                am4core.color ("#6b94fc"),
-                am4core.color ("#a769f6"),
-                am4core.color ("#8436ff"),
-                am4core.color ("#c767dc"),
-                am4core.color ("#dc677e"),
-                am4core.color ("#dc4238"),
-                am4core.color ("#8bcccc")
+                "#00ca77",
+                "#ff7242",
+                "#ffc54f",
+                "#4f933b",
+                "#00aca9",
+                "#136fc1",
+                "#6b94fc",
+                "#a769f6",
+                "#8436ff",
+                "#c767dc",
+                "#dc677e",
+                "#dc4238",
+                "#8bcccc"
             ]
         }
     };

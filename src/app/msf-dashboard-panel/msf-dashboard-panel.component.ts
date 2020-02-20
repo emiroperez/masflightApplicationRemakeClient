@@ -1048,7 +1048,12 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (this.values.paletteColors && this.values.paletteColors.length)
       this.paletteColors = this.values.paletteColors;
     else
-      this.paletteColors = Themes.AmCharts[theme].resultColors;
+    {
+      if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
+        this.paletteColors = Themes.AmCharts[theme].heatMapColor;
+      else
+        this.paletteColors = Themes.AmCharts[theme].resultColors;
+    }
 
     // reset advanced chart values
     this.addUpValuesSet = false;
@@ -5489,6 +5494,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     else if (this.values.currentChartType.flags & ChartFlags.PIECHART
       || this.values.currentChartType.flags & ChartFlags.FUNNELCHART)
       configFlags = ConfigFlags.LIMITVALUES | ConfigFlags.CHARTCOLORS;
+    else if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
+      configFlags = ConfigFlags.HEATMAPCOLOR | ConfigFlags.CHARTCOLORS;
     else if (this.values.currentChartType.flags & ChartFlags.XYCHART || this.isSimpleChart ())
     {
       configFlags = ConfigFlags.CHARTCOLORS | ConfigFlags.GOALS;
@@ -5501,8 +5508,6 @@ export class MsfDashboardPanelComponent implements OnInit {
           configFlags |= ConfigFlags.THRESHOLDS;
       }
     }
-    else if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
-      configFlags = ConfigFlags.HEATMAPCOLOR | ConfigFlags.CHARTCOLORS;
 
     // don't allow the option to limit results on advanced charts
     if (this.values.currentChartType.flags & ChartFlags.ADVANCED)

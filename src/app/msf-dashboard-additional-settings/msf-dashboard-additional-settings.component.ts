@@ -6,6 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { Globals } from '../globals/Globals';
 import { ConfigFlags } from '../msf-dashboard-panel/msf-dashboard-configflags';
+import { Themes } from '../globals/Themes';
 
 @Component({
   selector: 'app-msf-dashboard-additional-settings',
@@ -28,6 +29,7 @@ export class MsfDashboardAdditionalSettingsComponent {
   advSettingsOpen: number = 0;
 
   oneSettingActive: boolean = false;
+  useThemeColors: boolean = false;
 
   constructor(
     public dialogRef: MatDialogRef<MsfDashboardAdditionalSettingsComponent>,
@@ -57,6 +59,9 @@ export class MsfDashboardAdditionalSettingsComponent {
 
     if (data.values.limitAmount == null)
       data.values.limitAmount = 10;
+
+    if (!this.data.values.paletteColors || !this.data.values.paletteColors.length)
+      this.useThemeColors = true;
 
     this.searchChange (this.columnFilterCtrl);
     this.filteredVariables.next (this.data.values.chartColumnOptions.slice ());
@@ -181,5 +186,18 @@ export class MsfDashboardAdditionalSettingsComponent {
     }
 
     return (this.data.configFlags & configFlag) ? true : false;
+  }
+
+  toggleThemeColors(): void
+  {
+    if (!this.data.values.paletteColors || !this.data.values.paletteColors.length)
+    {
+      if (this.haveConfig (4))
+        this.data.values.paletteColors = JSON.parse (JSON.stringify (Themes.AmCharts[this.globals.theme].heatMapColor));
+      else
+        this.data.values.paletteColors = JSON.parse (JSON.stringify (Themes.AmCharts[this.globals.theme].resultColors));
+    }
+    else
+      this.data.values.paletteColors = [];
   }
 }

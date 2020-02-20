@@ -844,7 +844,6 @@ export class MsfDashboardAssistantComponent {
         variable: variable,
         xaxis: xaxis,
         valueColumn: valueColumn,
-        paletteColors: this.data.paletteColors,
         chartMode: this.chartMode,
         intervalType: this.intervalType,
         intValue: (this.intervalType === "ncile" ? this.ncile : this.intValue),

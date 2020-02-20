@@ -54,25 +54,31 @@
   <i *ngIf="advSettingsOpen == 3" class="material-icons msf-menu-cmpte-row">expand_less</i>
 </div>
 <div class="msf-dashboard-color-picker-container" *ngIf="advSettingsOpen == 3">
-  <div class="msf-dashboard-addmenu-icon-item msf-dashboard-additional-settings-title">
-    <mat-icon class="msf-dashboard-chart-icon" aria-label="Palette Colors">palette</mat-icon>
-    <span class="msf-dashboard-addmenu-item-text" *ngIf="haveConfig(4)">Select Palette Color</span>
-    <span class="msf-dashboard-addmenu-item-text" *ngIf="!haveConfig(4)">Select Palette Colors</span>
-  </div>
-  <div class="msf-dashboard-color-picker-layout" *ngIf="haveConfig(4)">
-    <div class="msf-dashboard-color-picker-selector-container">
-      <span class="msf-dashboard-color-picker-selector-label">Color:</span>
-      <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="data.values.paletteColors[0]" [style.background]="data.values.paletteColors[0]" [(cpOutputFormat)]="hex"/>
-      <span class="msf-dashboard-color-picker-color-label">{{data.values.paletteColors[0]}}</span>
+  <mat-checkbox color="primary" [(ngModel)]="useThemeColors" (click)="toggleThemeColors()">
+    <ng-container *ngIf="haveConfig(4)">Use Theme Color</ng-container>
+    <ng-container *ngIf="!haveConfig(4)">Use Theme Colors</ng-container>
+  </mat-checkbox>
+  <ng-container *ngIf="data.values.paletteColors && data.values.paletteColors.length">
+    <div class="msf-dashboard-addmenu-icon-item msf-dashboard-additional-settings-title">
+      <mat-icon class="msf-dashboard-chart-icon" aria-label="Palette Colors">palette</mat-icon>
+      <span class="msf-dashboard-addmenu-item-text" *ngIf="haveConfig(4)">Select Palette Color</span>
+      <span class="msf-dashboard-addmenu-item-text" *ngIf="!haveConfig(4)">Select Palette Colors</span>
     </div>
-  </div>
-  <div class="msf-dashboard-color-picker-grid-layout" *ngIf="!haveConfig(4)">
-    <div *ngFor="let color of data.values.paletteColors; let i = index; trackBy: trackColor" class="msf-dashboard-color-picker-selector-container">
-      <span class="msf-dashboard-color-picker-selector-label">Color #{{i + 1}}:</span>
-      <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="data.values.paletteColors[i]" [style.background]="data.values.paletteColors[i]" [(cpOutputFormat)]="hex"/>
-      <span class="msf-dashboard-color-picker-color-label">{{data.values.paletteColors[i]}}</span>
+    <div class="msf-dashboard-color-picker-layout" *ngIf="haveConfig(4)">
+      <div class="msf-dashboard-color-picker-selector-container">
+        <span class="msf-dashboard-color-picker-selector-label">Color:</span>
+        <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="data.values.paletteColors[0]" [style.background]="data.values.paletteColors[0]" [(cpOutputFormat)]="hex"/>
+        <span class="msf-dashboard-color-picker-color-label">{{data.values.paletteColors[0]}}</span>
+      </div>
     </div>
-  </div>
+    <div class="msf-dashboard-color-picker-grid-layout" *ngIf="!haveConfig(4)">
+      <div *ngFor="let color of data.values.paletteColors; let i = index; trackBy: trackColor" class="msf-dashboard-color-picker-selector-container">
+        <span class="msf-dashboard-color-picker-selector-label">Color #{{i + 1}}:</span>
+        <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="data.values.paletteColors[i]" [style.background]="data.values.paletteColors[i]" [(cpOutputFormat)]="hex"/>
+        <span class="msf-dashboard-color-picker-color-label">{{data.values.paletteColors[i]}}</span>
+      </div>
+    </div>
+  </ng-container>
 </div>
 <div *ngIf="haveConfig(5) && !oneSettingActive" [ngClass]="advSettingsOpen == 5 ? 'msf-dashboard-menu-component-active' : 'msf-dashboard-menu-component'" (click)="componentClickHandler(5)">
   <span class="msf-menu-component-text msf-control-variables-text">Threshold Values</span>
