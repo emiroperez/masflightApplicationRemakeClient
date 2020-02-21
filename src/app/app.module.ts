@@ -51,7 +51,6 @@ import { MsfMapComponent } from './msf-map/msf-map.component';
 import { MsfLoadingComponent } from './msf-loading/msf-loading.component';
 import { MsfGroupingComponent } from './msf-grouping/msf-grouping.component';
 import { MsfRoundingComponent } from './msf-rounding/msf-rounding.component';
-import { MapBoxComponent } from './map-box/map-box.component';
 import { AdminMenuComponent } from './admin-menu/admin-menu.component';
 import { CreateMembershipsComponent } from './create-memberships/create-memberships.component';
 import { MatSnackBarModule } from '@angular/material';
@@ -250,7 +249,6 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     MsfRoundingComponent,
     AdminMenuComponent,
     CreateMembershipsComponent,
-    MapBoxComponent,
     AdminMenuComponent,
     AdminMenuComponent,
     AdminMenuMembershipsComponent,
