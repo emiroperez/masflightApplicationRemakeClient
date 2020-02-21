@@ -206,6 +206,18 @@ export class MsfScheduleMapsComponent implements OnInit {
       {
         let city, latOrigin, lonOrigin, latDest, lonDest;
 
+        if (latOrigin === "NULL" || lonOrigin === "NULL")
+        {
+          console.warn (record.origin + " have invalid coordinates! (lat: " + latOrigin + ", lon: " + lonOrigin + ")");
+          continue;
+        }
+  
+        if (latDest === "NULL" || lonDest === "NULL")
+        {
+          console.warn (record.origin + " have invalid coordinates! (lat: " + latDest + ", lon: " + lonDest + ")");
+          continue;
+        }
+  
         latOrigin = parseFloat (record.latOrigin);
         lonOrigin = parseFloat (record.lonOrigin);
         latDest = parseFloat (record.latDest);
@@ -217,7 +229,15 @@ export class MsfScheduleMapsComponent implements OnInit {
           city = this.globals.scheduleImageSeries.mapImages.create ();
     
           if (latOrigin < -90 || latOrigin > 90 || lonOrigin < -180 || lonOrigin > 180)
+          {
             console.warn (record.origin + " have invalid coordinates! (lat: " + latOrigin + ", lon: " + lonOrigin + ")");
+
+            if (latOrigin < -90 || latOrigin > 90)
+              latOrigin /= 1000000;
+
+            if (lonOrigin < -180 || lonOrigin > 180)
+              lonOrigin /= 1000000;
+          }
     
           city.latitude = latOrigin;
           city.longitude = lonOrigin;
@@ -233,6 +253,14 @@ export class MsfScheduleMapsComponent implements OnInit {
           sumY += tempLatCos * Math.sin (tempLng);
           sumZ += Math.sin (tempLat);
         }
+        else
+        {
+          if (latOrigin < -90 || latOrigin > 90)
+            latOrigin /= 1000000;
+
+          if (lonOrigin < -180 || lonOrigin > 180)
+            lonOrigin /= 1000000;
+        }
 
         // Add destination city
         if (cities.indexOf (record.dest) == -1)
@@ -240,7 +268,15 @@ export class MsfScheduleMapsComponent implements OnInit {
           city = this.globals.scheduleImageSeries.mapImages.create ();
     
           if (latDest < -90 || latDest > 90 || lonDest < -180 || lonDest > 180)
+          {
             console.warn (record.dest + " have invalid coordinates! (lat: " + latDest + ", lon: " + lonDest + ")");
+
+            if (latDest < -90 || latDest > 90)
+              latDest /= 1000000;
+
+            if (lonDest < -180 || lonDest > 180)
+              lonDest /= 1000000;
+          }
     
           city.latitude = latDest;
           city.longitude = lonDest;
@@ -255,6 +291,14 @@ export class MsfScheduleMapsComponent implements OnInit {
           sumX += tempLatCos * Math.cos (tempLng);
           sumY += tempLatCos * Math.sin (tempLng);
           sumZ += Math.sin (tempLat);
+        }
+        else
+        {
+          if (latDest < -90 || latDest > 90)
+            latDest /= 1000000;
+
+          if (lonDest < -180 || lonDest > 180)
+            lonDest /= 1000000;
         }
 
         // Add route
