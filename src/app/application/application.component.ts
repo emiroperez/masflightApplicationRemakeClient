@@ -708,12 +708,17 @@ toggle(){
             }
             else if (column.columnType === "time")
             {
-              let time: Date = new Date (curitem);
+              if (column.outputFormat === "min")
+                excelItem[column.columnLabel] = this.msfContainerRef.msfTableRef.getFormatMinutes (curitem);
+              else
+              {
+                let time: Date = new Date (curitem);
 
-              // Advance one minute, since on time on Excel files will be one minute behind
-              time.setMinutes (time.getMinutes () + 1);
+                // Advance one minute, since on time on Excel files will be one minute behind
+                time.setMinutes (time.getMinutes () + 1);
 
-              excelItem[column.columnLabel] = time.toISOString ();
+                excelItem[column.columnLabel] = time.toISOString ();
+              }
             }
             else
             {
@@ -753,12 +758,17 @@ toggle(){
         }
         else if (column.columnType === "time")
         {
-          let time: Date = new Date (curitem);
+          if (column.outputFormat === "min")
+            excelItem[column.columnLabel] = this.msfContainerRef.msfTableRef.getFormatMinutes (curitem);
+          else
+          {
+            let time: Date = new Date (curitem);
 
-          // Advance one minute, since on time on Excel files will be one minute behind
-          time.setMinutes (time.getMinutes () + 1);
+            // Advance one minute, since on time on Excel files will be one minute behind
+            time.setMinutes (time.getMinutes () + 1);
 
-          excelItem[column.columnLabel] = time.toISOString ();
+            excelItem[column.columnLabel] = time.toISOString ();
+          }
         }
         else
         {
@@ -902,9 +912,14 @@ toggle(){
     
             if (column.columnType === "date" || column.columnType === "time")
             {
-              let date: Date = new Date (curitem);
+              if (column.columnType === "time" && column.outputFormat === "min")
+                CSVdata += _this.msfContainerRef.msfTableRef.getFormatMinutes (curitem);
+              else
+              {
+                let date: Date = new Date (curitem);
 
-              CSVdata += new DatePipe ('en-US').transform (date, column.outputFormat);
+                CSVdata += new DatePipe ('en-US').transform (date, column.outputFormat);
+              }
             }
             else if (column.columnType === "number")
             {
@@ -948,9 +963,14 @@ toggle(){
 
         if (column.columnType === "date" || column.columnType === "time")
         {
-          let date: Date = new Date (curitem);
+          if (column.columnType === "time" && column.outputFormat === "min")
+            CSVdata += _this.msfContainerRef.msfTableRef.getFormatMinutes (curitem);
+          else
+          {
+            let date: Date = new Date (curitem);
 
-          CSVdata += new DatePipe ('en-US').transform (date, column.outputFormat);
+            CSVdata += new DatePipe ('en-US').transform (date, column.outputFormat);
+          }
         }
         else if (column.columnType === "number")
         {

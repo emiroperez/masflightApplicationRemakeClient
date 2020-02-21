@@ -987,4 +987,81 @@ export class Utils{
 
         return urlFilters;
     }
+
+    convertNumberFormat(format): string
+    {
+        let minIntegerDigits, minFractionDigits, maxFractionDigits: number;
+        let convertedFormat: string = "";
+
+        minIntegerDigits = 1;
+        minFractionDigits = 0;
+        maxFractionDigits = 2;
+
+        // get the digits from the column format if available
+        if (format)
+        {
+            let digits: number[] = format.match (/\d+/g).map (Number);
+
+            if (format.startsWith ("."))
+            {
+                if (digits[0])
+                    minFractionDigits = digits[0];
+
+                if (digits[1])
+                    maxFractionDigits = digits[1];
+            }
+            else
+            {
+                if (digits[0])
+                    minIntegerDigits = digits[0];
+
+                if (digits[1])
+                    minFractionDigits = digits[1];
+
+                if (digits[2])
+                    maxFractionDigits = digits[2];
+            }
+        }
+
+        if (minIntegerDigits >= 4)
+        {
+            while (minIntegerDigits)
+            {
+                convertedFormat += "0";
+                minIntegerDigits--;
+
+                if (minIntegerDigits && !(minIntegerDigits % 3))
+                    convertedFormat += ",";
+            }
+        }
+        else if (minIntegerDigits == 3) // Default number formats if the minimum number of integer digits is less than 4
+            convertedFormat += "#,000";
+        else if (minIntegerDigits == 2)
+            convertedFormat += "#,#00";
+        else
+            convertedFormat += "#,##0";
+
+        if (minFractionDigits || maxFractionDigits)
+        {
+            convertedFormat += ".";
+
+            maxFractionDigits -= minFractionDigits;
+            if (maxFractionDigits < 0)
+                maxFractionDigits = 0;
+
+            while (minFractionDigits)
+            {
+                convertedFormat += "0";
+                minFractionDigits--;
+            }
+
+            while (maxFractionDigits)
+            {
+                convertedFormat += "#";
+                maxFractionDigits--;
+            }
+        }
+
+        return convertedFormat;
+    }
 }
