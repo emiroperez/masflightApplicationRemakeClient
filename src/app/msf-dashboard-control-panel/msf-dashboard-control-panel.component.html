@@ -1,5 +1,5 @@
 <ng-container *ngIf="controlPanelOpen">
-  <div *ngIf="!addVariableMenu && !setCategoriesValues && !controlVariables.length" class="msf-dashboard-control-panel-container">
+  <div *ngIf="!addVariableMenu && !setCategoriesValues && !setUpdateInterval && !controlVariables.length" class="msf-dashboard-control-panel-container">
     <button mat-flat-button [disabled]="!controlVariablesAvailable.length" (click)="addVariable()" [ngClass]="controlVariablesAvailable.length ? 'flat-button' : 'flat-button-disabled'" class="msf-dashboard-control-panel-button">
       <mat-icon aria-label="Add Variable">add</mat-icon>
       Add Variable
@@ -7,6 +7,10 @@
     <button mat-flat-button [disabled]="!controlPanelCategories.length" (click)="setCategories()" [ngClass]="controlPanelCategories.length ? 'flat-button' : 'flat-button-disabled'" class="msf-dashboard-control-panel-button">
       <mat-icon aria-label="Set Categories">category</mat-icon>
       Set Categories
+    </button>
+    <button mat-flat-button [disabled]="!dashboardColumns || !dashboardColumns.length" (click)="setInterval()" [ngClass]="(!dashboardColumns || !dashboardColumns.length) ? 'flat-button-disabled' : 'flat-button'" class="msf-dashboard-control-panel-button">
+      <mat-icon aria-label="Set Update Intervals">timer</mat-icon>
+      Set Update Interval
     </button>
   </div>
   <div *ngIf="!addVariableMenu && !setCategoriesValues && controlVariables.length" class="msf-dashboard-control-panel-tabs-container">
@@ -30,6 +34,9 @@
             </button>
             <button mat-flat-button [disabled]="!controlPanelCategories.length" (click)="setCategories()" [ngClass]="controlPanelCategories.length ? 'flat-button' : 'flat-button-disabled'" class="msf-dashboard-control-panel-variable-button" matTooltip="Set Categories">
               <mat-icon aria-label="Set Categories">category</mat-icon>
+            </button>
+            <button mat-flat-button [disabled]="!dashboardColumns || !dashboardColumns.length" (click)="setInterval()" [ngClass]="(!dashboardColumns || !dashboardColumns.length) ? 'flat-button-disabled' : 'flat-button'" class="msf-dashboard-control-panel-variable-button" matTooltip="Set Update Interval">
+              <mat-icon aria-label="Set Update Interval">timer</mat-icon>
             </button>
           </div>
           <div class="msf-dashboard-control-panel-variable-arguments">
@@ -103,8 +110,11 @@
         </ng-template>
         <div class="msf-dashboard-control-panel-variable-tab-container">
           <div class="msf-dashboard-control-panel-variable-buttons">
-            <button mat-flat-button (click)="returnToVariables()" class="flat-button msf-dashboard-control-panel-variable-button">
-              Set Variables
+            <button mat-flat-button (click)="returnToVariables()" class="flat-button msf-dashboard-control-panel-variable-button" matTooltip="Set Variables" [style.margin-right.px]="10">
+              <mat-icon aria-label="Set Variables">more_vert</mat-icon>
+            </button>
+            <button mat-flat-button (click)="setInterval()" [disabled]="!dashboardColumns || !dashboardColumns.length" [ngClass]="(!dashboardColumns || !dashboardColumns.length) ? 'flat-button-disabled' : 'flat-button'" class="msf-dashboard-control-panel-variable-button" matTooltip="Set Update Interval">
+              <mat-icon aria-label="Set Update Interval">timer</mat-icon>
             </button>
           </div>
           <div class="msf-dashboard-control-panel-category-checkboxes">
@@ -119,5 +129,25 @@
         </div>
       </mat-tab>
     </mat-tab-group>
+  </div>
+  <div *ngIf="setUpdateInterval" class="msf-dashboard-control-panel-interval-container">
+    <div class="msf-dashboard-control-panel-variable-tab-container">
+      <div class="msf-dashboard-control-panel-variable-buttons">
+        <button mat-flat-button (click)="returnToVariables()" class="flat-button msf-dashboard-control-panel-variable-button" matTooltip="Set Variables" [style.margin-right.px]="10">
+          <mat-icon aria-label="Set Variables">more_vert</mat-icon>
+        </button>
+        <button mat-flat-button [disabled]="!controlPanelCategories.length" (click)="setCategories()" [ngClass]="controlPanelCategories.length ? 'flat-button' : 'flat-button-disabled'" class="msf-dashboard-control-panel-variable-button" matTooltip="Set Categories">
+          <mat-icon aria-label="Set Categories">category</mat-icon>
+        </button>
+        <button mat-flat-button (click)="updateDashboardInterval()" class="flat-button msf-dashboard-control-panel-variable-button" matTooltip="Refresh">
+          <mat-icon aria-label="Update">refresh</mat-icon>
+        </button>
+      </div>
+      <div class="msf-dashboard-control-panel-interval-editor">
+        <mat-form-field [style.width.px]="250">
+          <input matInput [(ngModel)]="updateInterval" autocomplete="off" type="number" placeholder="Update Interval (In Minutes)">
+        </mat-form-field>
+      </div>
+    </div>
   </div>
 </ng-container>

@@ -72,6 +72,7 @@ export class MsfDashboardComponent implements OnInit {
   controlPanelOpen: boolean;
   controlVariablesAvailable: any[] = [];
   controlPanelVariables: CategoryArguments[];
+  controlPanelInterval: number = -1;
   hiddenCategoriesValues: any[] = [];
   controlPanelCategories: any[] = [];
   currentHiddenCategories: any;
@@ -113,6 +114,7 @@ export class MsfDashboardComponent implements OnInit {
     {
       // replace dashboard panels if the menu has changed and we're still on the dashboard
       this.controlPanelVariables = null;
+      this.controlPanelInterval = -1;
       this.dashboardColumns.splice (0, this.dashboardColumns.length);
       this.dashboardColumnsProperties.splice (0, this.dashboardColumnsProperties.length);
       this.dashboardColumnsReAppendCharts.splice (0, this.dashboardColumnsReAppendCharts.length);
@@ -131,9 +133,12 @@ export class MsfDashboardComponent implements OnInit {
     }
   }
 
-  updateAllPanels(): void
+  updateAllPanels(updateInterval: boolean): void
   {
-    this.controlPanelVariables = JSON.parse (JSON.stringify (this.dashboardControlPanel.controlVariables));
+    if (updateInterval)
+      this.controlPanelInterval = this.dashboardControlPanel.updateInterval;
+    else
+      this.controlPanelVariables = JSON.parse (JSON.stringify (this.dashboardControlPanel.controlVariables));
   }
 
   hideCategoryFromCharts(category): void

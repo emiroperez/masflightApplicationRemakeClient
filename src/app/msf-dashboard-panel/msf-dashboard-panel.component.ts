@@ -184,6 +184,9 @@ export class MsfDashboardPanelComponent implements OnInit {
   @Output("removePanel")
   removePanel = new EventEmitter ();
 
+  @Input("controlPanelInterval")
+  controlPanelInterval: number;
+
   childPanelValues: any[] = [];
   childPanelsConfigured: boolean[] = [];
 
@@ -387,6 +390,36 @@ export class MsfDashboardPanelComponent implements OnInit {
           }
         }
       }
+
+      setTimeout (() =>
+      {
+        this.loadData ();
+      }, 10);
+    }
+    else if (changes['controlPanelInterval'])
+    {
+      // validate the panel configuration before updating
+      if (!this.checkPanelConfiguration ())
+        return;
+
+      // copy the update interval
+      if (this.controlPanelInterval)
+      {
+        this.values.updateIntervalSwitch = true;
+        this.values.updateTimeLeft = this.controlPanelInterval;
+      }
+      else
+      {
+        this.values.updateIntervalSwitch = false;
+        this.values.updateTimeLeft = 0;
+      }
+
+      this.chartForm.get ('intervalCtrl').setValue (this.values.updateTimeLeft);
+
+      if (this.values.updateIntervalSwitch)
+        this.chartForm.get ('intervalCtrl').enable ();
+      else
+        this.chartForm.get ('intervalCtrl').disable ();
 
       setTimeout (() =>
       {

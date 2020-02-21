@@ -4,6 +4,7 @@ import { Globals } from '../globals/Globals';
 import { ComponentType } from '../commons/ComponentType';
 import { Arguments } from '../model/Arguments';
 import { MsfDashboardComponent } from '../msf-dashboard/msf-dashboard.component';
+import { MsfDashboardPanelValues } from '../msf-dashboard-panel/msf-dashboard-panelvalues';
 
 @Component({
   selector: 'app-msf-dashboard-control-panel',
@@ -13,8 +14,10 @@ export class MsfDashboardControlPanelComponent implements OnInit {
 
   addVariableMenu: boolean;
   setCategoriesValues: boolean;
+  setUpdateInterval: boolean;
   controlVariables: any[] = [];
   selectedIndex: number = -1;
+  updateInterval: number = 0;
 
   @Input("controlPanelOpen")
   controlPanelOpen: boolean;
@@ -30,6 +33,9 @@ export class MsfDashboardControlPanelComponent implements OnInit {
 
   @Output("hideCategoryFromCharts")
   hideCategoryFromCharts = new EventEmitter ();
+
+  @Input("dashboardColumns")
+  dashboardColumns: MsfDashboardPanelValues[][] = null;
 
   numControlVariablesSelected: number;
   updateURLResults: boolean = false;
@@ -161,17 +167,30 @@ export class MsfDashboardControlPanelComponent implements OnInit {
 
   updateDashboard(): void
   {
-    this.updateAllPanels.emit ();
+    this.updateAllPanels.emit (false);
+  }
+
+  updateDashboardInterval(): void
+  {
+    this.updateAllPanels.emit (true);
   }
 
   setCategories(): void
   {
     this.setCategoriesValues = true;
+    this.setUpdateInterval = false;
+  }
+
+  setInterval(): void
+  {
+    this.setCategoriesValues = false;
+    this.setUpdateInterval = true;
   }
 
   returnToVariables(): void
   {
     this.setCategoriesValues = false;
+    this.setUpdateInterval = false;
   }
 
   toggleCategory(category, controlPanelCategory): void

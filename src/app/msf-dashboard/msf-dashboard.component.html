@@ -17,7 +17,7 @@
         </div>
       </div>
     </div>
-    <app-msf-dashboard-control-panel #dashboardControlPanel (updateAllPanels)="updateAllPanels()" (hideCategoryFromCharts)="hideCategoryFromCharts($event)" [controlPanelOpen]="controlPanelOpen" [controlVariablesAvailable]="controlVariablesAvailable" [controlPanelCategories]="controlPanelCategories"></app-msf-dashboard-control-panel>
+    <app-msf-dashboard-control-panel #dashboardControlPanel (updateAllPanels)="updateAllPanels($event)" (hideCategoryFromCharts)="hideCategoryFromCharts($event)" [controlPanelOpen]="controlPanelOpen" [controlVariablesAvailable]="controlVariablesAvailable" [controlPanelCategories]="controlPanelCategories" [dashboardColumns]="dashboardColumns"></app-msf-dashboard-control-panel>
     <ng-container *ngIf="dashboardColumns.length">
       <div class="msf-dashboard-chartbox" cdkDropList cdkDropListOrientation="vertical" [cdkDropListData]="dashboardColumns" (cdkDropListDropped)="swapColumnPositions($event)">
         <div class="{{globals.theme}} msf-dashboard-chartbox-column" *ngFor="let dashboardColumn of dashboardColumns; let column = index" [attr.data-index]="column" cdkDragLockAxis="y" vsDragScroll [vsDragScrollContainer]="scrollContainer" cdkDrag [cdkDragDisabled]="dashboardColumns.length == 1 || globals.readOnlyDashboard || !dashboardColumnsProperties[column]">
@@ -44,7 +44,7 @@
                   [panelHeight]="getHeight(column)" [panelWidth]="getPanelWidth(column, row)" [controlPanelVariables]="controlPanelVariables"
                   [currentHiddenCategories]="currentHiddenCategories" (removeDeadVariablesAndCategories)="removeDeadVariablesAndCategories($event)"
                   (addNewVariablesAndCategories)="addNewVariablesAndCategories($event)" (toggleControlVariableDialogOpen)="toggleControlVariableDialogOpen($event)"
-                  [numPanelsInColumn]="dashboardColumn.length" (removePanel)="removePanel(column, row)">
+                  [numPanelsInColumn]="dashboardColumn.length" (removePanel)="removePanel(column, row)" [controlPanelInterval]="controlPanelInterval">
                 </app-msf-dashboard-panel>
               </div>
             </div>

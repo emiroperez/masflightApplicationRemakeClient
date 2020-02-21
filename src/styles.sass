@@ -524,7 +524,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             .mat-tab-label-active
                 color: $primary-color !important
                 background-color: $dashboard-assistant-sub-background-color !important
-        .msf-dashboard-control-panel-tabs-container, .msf-dashboard-control-panel-category-tabs-container, .msf-dashboard-assistant-tab-group
+        .msf-dashboard-control-panel-tabs-container, .msf-dashboard-control-panel-category-tabs-container, .msf-dashboard-assistant-tab-group, .msf-dashboard-control-panel-interval-container
             background-color: $dashboard-assistant-sub-background-color
             .mat-tab-labels
                 background-color: $dashboard-assistant-sub-background-color
@@ -4786,6 +4786,14 @@ mat-tab-group
 .msf-dashboard-control-panel-category-tabs-container
     min-height: 120px
     max-height: 300px
+
+.msf-dashboard-control-panel-interval-container
+    height: 130px
+    .msf-dashboard-control-panel-interval-editor
+        width: 100%
+        align-self: center
+
+.msf-dashboard-control-panel-category-tabs-container, .msf-dashboard-control-panel-interval-container
     margin-top: 8px
     .msf-dashboard-control-panel-variable-tab-container
         display: flex
@@ -4823,7 +4831,7 @@ mat-tab-group
             padding: 0 10px
             .msf-dashboard-control-panel-variable-button
                 margin-top: 10px
-                width: 180px
+                width: 70px
                 height: 50px
 
 .msf-dashboard-control-panel-category-checkbox-border, .msf-dashboard-control-panel-category-checkbox-checked-border
