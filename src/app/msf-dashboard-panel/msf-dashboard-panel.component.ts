@@ -1076,7 +1076,16 @@ export class MsfDashboardPanelComponent implements OnInit {
 
         chart = am4core.create ("msf-dashboard-chart-display-" + this.values.id, am4maps.MapChart);
         chartColor = am4core.color (this.paletteColors[0]);
-        chart.numberFormatter.numberFormat = "#,###.#";
+
+        if (this.values.valueColumn.item.columnType === "number")
+        {
+          if (this.values.valueColumn.item.outputFormat)
+            chart.numberFormatter.numberFormat = this.utils.convertNumberFormat (this.values.valueColumn.item.outputFormat);
+          else
+            chart.numberFormatter.numberFormat = this.utils.convertNumberFormat (this.values.valueColumn.item.columnFormat);
+        }
+        else
+          chart.numberFormatter.numberFormat = "#,###.#";
 
         // Create map instance displaying the chosen geography data
         chart.geodata = this.values.geodata.value;
@@ -1324,7 +1333,16 @@ export class MsfDashboardPanelComponent implements OnInit {
           chart = am4core.create ("msf-dashboard-chart-display-" + this.values.id, am4charts.PieChart);
 
         chart.data = chartInfo.dataProvider;
-        chart.numberFormatter.numberFormat = "#,###.#";
+
+        if (this.values.valueColumn.item.columnType === "number")
+        {
+          if (this.values.valueColumn.item.outputFormat)
+            chart.numberFormatter.numberFormat = this.utils.convertNumberFormat (this.values.valueColumn.item.outputFormat);
+          else
+            chart.numberFormatter.numberFormat = this.utils.convertNumberFormat (this.values.valueColumn.item.columnFormat);
+        }
+        else
+          chart.numberFormatter.numberFormat = "#,###.#";
 
         // Set label font size
         chart.fontSize = 10;
@@ -1367,7 +1385,21 @@ export class MsfDashboardPanelComponent implements OnInit {
         let categoryAxis, valueAxis, parseDate, outputFormat, stacked;
 
         chart = am4core.create ("msf-dashboard-chart-display-" + this.values.id, am4charts.XYChart);
-        chart.numberFormatter.numberFormat = "#,###.#";
+
+        if (this.values.valueColumn && !this.values.valueList)
+        {
+          if (this.values.valueColumn.item.columnType === "number")
+          {
+            if (this.values.valueColumn.item.outputFormat)
+              chart.numberFormatter.numberFormat = this.utils.convertNumberFormat (this.values.valueColumn.item.outputFormat);
+            else
+              chart.numberFormatter.numberFormat = this.utils.convertNumberFormat (this.values.valueColumn.item.columnFormat);
+          }
+          else
+            chart.numberFormatter.numberFormat = "#,###.#";
+        }
+        else
+          chart.numberFormatter.numberFormat = "#,###.#"; // universal number format if there are multiple values or no values set
 
         // Don't parse dates if the chart is a simple version
         if (this.values.currentChartType.flags & ChartFlags.XYCHART)
