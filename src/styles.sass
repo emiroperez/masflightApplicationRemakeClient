@@ -4035,10 +4035,24 @@ mat-tab-group
             margin-top: 15px
     .msf-dashboard-panel-sub-container-column-reverse
         @include msf-dashboard-panel-sub-container(row-reverse, 5px)
+        .mat-flat-button
+            padding-left: 12px
+            padding-right: 12px
         .msf-dashboard-panel-control-variable-button
             display: flex
-            width: 50px
+            width: 40px
             flex-direction: column
+            .mat-mini-fab
+                width: 35px
+                height: 35px
+                margin-top: 2px
+                .mat-button-wrapper
+                    line-height: 20px
+                    img, .mat-icon
+                        width: 21px
+                        height: 21px
+                        font-size: 21px
+                        margin-top: -1px
 
 .msf-dashboard-panel-anchor-container
     display: flex
