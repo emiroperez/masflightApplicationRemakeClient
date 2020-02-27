@@ -53,7 +53,7 @@ export class MsfDashboardChildPanelComponent {
   ];
 
   // table variables
-  @ViewChild('msfTableRef')
+  @ViewChild('msfTableRef', { static: false })
   msfTableRef: MsfTableComponent;
 
   actualPageNumber: number;

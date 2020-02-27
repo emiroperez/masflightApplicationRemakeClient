@@ -30,7 +30,7 @@ export class MsfDynamicTableVariablesComponent {
   public variableFilterCtrl: FormControl = new FormControl();
   public filteredVariables: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
 
-  @ViewChild('variableSelect') variableSelect: MatSelect;
+  @ViewChild('variableSelect', { static: false }) variableSelect: MatSelect;
 
  /** control for the MatSelect filter keyword */
  public valueFilterCtrl: FormControl = new FormControl();
@@ -39,7 +39,7 @@ export class MsfDynamicTableVariablesComponent {
   /** list of variable filtered by search keyword */
   public filteredValues: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
 
-  @ViewChild('valueSelect') valueSelect: MatSelect;
+  @ViewChild('valueSelect', { static: false }) valueSelect: MatSelect;
   
  /** Subject that emits when the component has been destroyed. */
  private _onDestroy = new Subject<void>();

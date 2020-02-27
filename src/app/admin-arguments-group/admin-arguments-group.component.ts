@@ -18,7 +18,7 @@ import { AdminShareGroupsArgumentsComponent } from '../admin-share-groups-argume
 export class AdminArgumentsGroupComponent implements OnInit {
 
   innerHeight: number;
-  @ViewChild("materialIconPicker")
+  @ViewChild("materialIconPicker", { static: false })
   materialIconPicker: MaterialIconPickerComponent;
 
 

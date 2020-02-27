@@ -64,10 +64,10 @@ export class CreateCustomerComponent implements OnInit {
 
   private _onDestroy = new Subject<void> ();
 
-  @ViewChild(MatPaginator)
+  @ViewChild(MatPaginator, { static: false })
   paginator: MatPaginator;
 
-  @ViewChild('customerNameField')
+  @ViewChild('customerNameField', { static: false })
   customerNameField: ElementRef;
 
   constructor(public globals: Globals, private registerServices: RegisterService,

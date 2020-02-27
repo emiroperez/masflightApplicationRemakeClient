@@ -9,8 +9,6 @@
 
 @import "~@mapbox/mapbox-gl-geocoder/lib/mapbox-gl-geocoder.css"
 
-@import "~ng-pick-datetime/assets/style/picker.min.css"
-
 @import "~@angular/material/prebuilt-themes/deeppurple-amber.css"
 
 @import "~codemirror/lib/codemirror.css"
@@ -415,6 +413,8 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             border: 1px solid $quaternary-background-color
             @include msf-dashboard-dialog-loading(250px, $quaternary-background-color, url(assets/images/#{$name}-loading_pulse.gif), 1000)
         .msf-dashboard-assistant-loading
+            @include msf-dashboard-dialog-loading(250px, $quaternary-background-color, url(assets/images/#{$name}-loading_pulse.gif))
+        .msf-select-data-loading
             @include msf-dashboard-dialog-loading(250px, $quaternary-background-color, url(assets/images/#{$name}-loading_pulse.gif))
         .msf-dashboard-info-display
             .msf-dashboard-info-container
@@ -5709,6 +5709,7 @@ li.msf-select:before
     @extend .msf-summary-icon
 
 .msf-menu-complete-row
+    margin-left: -10px
     position: absolute
     left: 20px
 

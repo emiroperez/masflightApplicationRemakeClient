@@ -21,7 +21,7 @@ const minQueryPanelHeight = 30;
   templateUrl: './datalake-query-engine.component.html'
 })
 export class DatalakeQueryEngineComponent implements OnInit {
-  @ViewChild("codeEditor") codeEditor: CodemirrorComponent;
+  @ViewChild("codeEditor", { static: false }) codeEditor: CodemirrorComponent;
   leftPanelWidth: number = 30;
   rightPanelWidth: number = 70;
   selectedIndex: number = 0;

@@ -30,7 +30,7 @@ export class DatalakeAlarmsComponent implements OnInit {
 
   filter: string;
 
-  @ViewChild(MatPaginator)
+  @ViewChild(MatPaginator, { static: false })
   paginator: MatPaginator;
 
   alarmFormGroup: FormGroup;

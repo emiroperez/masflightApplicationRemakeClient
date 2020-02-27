@@ -73,10 +73,10 @@ export class MsfDashboardAssistantComponent {
   tablePreview: boolean = true;
   selectDataPreview: boolean = false;
 
-  @ViewChild('msfTableRef')
+  @ViewChild('msfTableRef', { static: false })
   msfTableRef: MsfTableComponent;
 
-  @ViewChild("tabs")
+  @ViewChild("tabs", { static: false })
   tabs: MatTabGroup;
 
   configuredControlVariables: boolean = false;

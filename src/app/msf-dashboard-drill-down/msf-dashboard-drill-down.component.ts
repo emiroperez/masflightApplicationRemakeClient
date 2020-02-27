@@ -26,10 +26,6 @@ export class MsfDashboardDrillDownComponent {
   lastValue: MsfDashboardPanelValues;
   currentIndex: number = -1;
 
-  @ViewChild('variableSelect') variableSelect: MatSelect;
-  @ViewChild('xaxisSelect') xaxisSelect: MatSelect;
-  @ViewChild('valueSelect') valueSelect: MatSelect;
-
   private _onDestroy = new Subject<void> ();
 
   public filteredVariables: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);

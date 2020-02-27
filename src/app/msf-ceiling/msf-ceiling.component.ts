@@ -48,8 +48,8 @@ export class MsfCeilingComponent implements OnInit {
   // /** list of banks filtered by search keyword for multi-selection */
    public filteredDestAirports: ReplaySubject<Airport[]> = new ReplaySubject<Airport[]>(1);
 
-  // @ViewChild('originAirportSelect') originAirportSelect: MatSelect;
-  // @ViewChild('destAirportSelect') destAirportSelect: MatSelect;
+  // @ViewChild('originAirportSelect', { static: false }) originAirportSelect: MatSelect;
+  // @ViewChild('destAirportSelect', { static: false }) destAirportSelect: MatSelect;
 
   // /** Subject that emits when the component has been destroyed. */
   // private _onDestroy = new Subject<void>();

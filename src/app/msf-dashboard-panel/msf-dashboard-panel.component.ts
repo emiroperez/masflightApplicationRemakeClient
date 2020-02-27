@@ -198,7 +198,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   updateInterval: any;
 
   // table variables
-  @ViewChild('msfTableRef')
+  @ViewChild('msfTableRef', { static: false })
   msfTableRef: MsfTableComponent;
 
   // map variables
@@ -243,7 +243,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   private _onDestroy = new Subject<void> ();
 
   // mapbox variables
-  @ViewChild('msfMapRef')
+  @ViewChild('msfMapRef', { static: true })
   msfMapRef: MsfMapComponent;
   mapboxInterval: any;
   lastWidth: number;
@@ -270,7 +270,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   intervalTableRows: any[] = [];
   
   //paginator
-  @ViewChild('paginator')
+  @ViewChild('paginator', { static: false })
   paginator: MatPaginator;
 
   pageIndex: any;

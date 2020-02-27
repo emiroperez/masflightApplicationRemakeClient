@@ -43,7 +43,7 @@ export class UserActivationComponent implements OnInit {
   displayedColumns = ['columnName', 'columnLastName', 'columnEmail', 'columnAddress', 'columnPostalCode',
     'columnCountry', 'columnCountryState', 'columnPhone', 'columnState', 'columnProposedCustomer', 'columnCustomer', 'columnDatalake'];
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
 
   ngOnInit()
   {

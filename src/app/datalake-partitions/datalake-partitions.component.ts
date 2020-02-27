@@ -13,7 +13,7 @@ import { ApplicationService } from '../services/application.service';
   templateUrl: './datalake-partitions.component.html'
 })
 export class DatalakePartitionsComponent implements OnInit {
-  @ViewChild(MatPaginator)
+  @ViewChild(MatPaginator, { static: false })
   paginator: MatPaginator;
 
   innerHeight: number;

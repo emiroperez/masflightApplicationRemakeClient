@@ -58,10 +58,10 @@ export class ApplicationComponent implements OnInit {
     options: {}
   };
 
-  @ViewChild('msfContainerRef')
+  @ViewChild('msfContainerRef', { static: false })
   msfContainerRef: MsfContainerComponent;
 
-  @ViewChild('paginator')
+  @ViewChild('paginator', { static: false })
   paginator: MatPaginator;
 
   pageIndex: any;

@@ -13,7 +13,7 @@ export class DatalakeExecutionPartitionViewDetailComponent implements OnInit {
   
   innerHeight: number;
   PartitionTable: MatTableDataSource<any>;
-  @ViewChild(MatPaginator)
+  @ViewChild(MatPaginator, { static: false })
   paginator: MatPaginator;
   partitionsColumns: string[] = ['schemaName', 'tableName', 'type', 'timestamp', 'cron','actions'];
 

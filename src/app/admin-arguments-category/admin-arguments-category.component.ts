@@ -29,7 +29,7 @@ export class AdminArgumentsCategoryComponent implements OnInit {
   dataToSend: any[] = [];
   searchText: string;
 
-  @ViewChild("materialIconPicker")
+  @ViewChild("materialIconPicker", { static: false })
   materialIconPicker: MaterialIconPickerComponent;
 
   argTypes: any[] = [

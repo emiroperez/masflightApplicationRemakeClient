@@ -5,7 +5,6 @@ import { ApplicationService } from '../services/application.service';
 import { MsfGroupingComponent } from '../msf-grouping/msf-grouping.component';
 import { Utils } from '../commons/utils';
 import { MessageComponent } from '../message/message.component';
-import { parseIntAutoRadix } from '@angular/common/src/i18n/format_number';
 import { MsfMoreInfoPopupComponent } from '../msf-more-info-popup/msf-more-info-popup.component';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as moment from 'moment';
@@ -31,7 +30,7 @@ export class MsfTableComponent implements OnInit {
   @Input('displayedColumns')
   displayedColumns: string[] = []; 
 
-  @ViewChild('TABLE') table: ElementRef;
+  @ViewChild('TABLE', { static: false }) table: ElementRef;
 
   @Input('msfGroupingComponent')
   msfGroupingComponent: MsfGroupingComponent;
@@ -100,7 +99,7 @@ export class MsfTableComponent implements OnInit {
     "fullTime": true
   };
 
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatSort, { static: false }) sort: MatSort;
 
   securityTokenResultTable: string;
 

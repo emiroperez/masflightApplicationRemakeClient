@@ -66,7 +66,7 @@ export class MsfDashboardComponent implements OnInit {
   @Input()
   currentDashboardMenu: any;
 
-  @ViewChild("dashboardControlPanel")
+  @ViewChild("dashboardControlPanel", { static: false })
   dashboardControlPanel: MsfDashboardControlPanelComponent;
 
   controlPanelOpen: boolean;
