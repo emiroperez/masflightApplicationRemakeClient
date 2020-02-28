@@ -10,10 +10,11 @@ import { ChartFlags } from '../msf-dashboard-panel/msf-dashboard-chartflags';
 import { MsfDashboardControlPanelComponent } from '../msf-dashboard-control-panel/msf-dashboard-control-panel.component';
 import { CategoryArguments } from '../model/CategoryArguments';
 
-const $ = require('jquery');
-declare var _: any; // lodash
-
 const minPanelWidth = 25;
+
+// for gridstack
+const $ = require ('jquery');
+declare var _: any; // lodash
 
 @Component({
   selector: 'app-msf-dashboard',
@@ -40,6 +41,12 @@ export class MsfDashboardComponent implements OnInit {
 
   widgets: any[] = [];
   noDashboardUpdate: boolean = false;
+  gridStackOptions: any = {
+    animate: true,
+    draggable: {
+      handle: ".msf-dashboard-button-move-icon"
+    }
+  };
 
   isAmChartWithMultipleSeries: boolean[] = [
     true,     // Bars
@@ -111,8 +118,13 @@ export class MsfDashboardComponent implements OnInit {
 
     // set gridstack event when panels change their position and size
     $('.grid-stack').on('change', function(event, items) {
-      if (!_this.noDashboardUpdate)
-        console.log (items);
+      if (items)
+      {
+        if (!_this.noDashboardUpdate)
+          console.log (items);
+        // else
+          // items[items.length - 1].minHeight = "5"; // set minimum height for the dashboard panel
+      }
     });
 
     this.globals.isLoading = true;
@@ -1083,14 +1095,27 @@ export class MsfDashboardComponent implements OnInit {
     let panel = {
       x: 0,
       y: 0,
-      h: 3,
-      w: 3,
-      customid: this.widgets.length + 1
+      h: 5,
+      w: 4,
+      customid: this.widgets.length + 1,
+      values: new MsfDashboardPanelValues (this.options, "New Panel", this.widgets.length + 1,
+        3, this.heightValues[0])
     };
 
     this.widgets.push (panel);
 
     this.changeDetector.detectChanges ();
+
+    // set minimum height for dashboard panel since ng2-gridstack doesn't have a way to set it
+    _.map ($('.grid-stack .grid-stack-item:visible'), function (el: any)
+    {
+      let node;
+
+      el = $(el);
+      node = el.data('_gridstack_node');
+      node.minHeight = "5";
+    });
+
     this.noDashboardUpdate = false;
   }
 

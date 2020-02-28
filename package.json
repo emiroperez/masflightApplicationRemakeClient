@@ -43,7 +43,6 @@
     "core-js": "^2.5.4",
     "events": "^3.0.0",
     "file-saver": "^2.0.0",
-    "gridstack": "^1.0.0",
     "jqwidgets-scripts": "^6.1.0",
     "jsdom": "^13.0.0",
     "mapbox-gl": "^0.54.0",

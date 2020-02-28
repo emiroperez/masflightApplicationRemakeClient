@@ -1,5 +1,5 @@
-<div [style.min-height.px]="panelHeight">
-  <div class="msf-dashboard-panel-container" [style.height.px]="panelHeightOffset" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !values.displayDynTable && globals.readOnlyDashboard">
+<div [style.height.%]="100">
+  <div class="msf-dashboard-panel-container msf-dashboard-panel-gridstack" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !values.displayDynTable && globals.readOnlyDashboard">
     <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-picture-container">
       <div class="msf-dashboard-panel-picture-label-container">
         <div class="msf-dashboard-panel-picture-label">
@@ -8,7 +8,7 @@
       </div>
     </div>
   </div>
-  <div class="msf-dashboard-panel-container" [style.height.px]="panelHeightOffset" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !values.displayDynTable && !globals.readOnlyDashboard">
+  <div class="msf-dashboard-panel-container msf-dashboard-panel-gridstack" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !values.displayDynTable && !globals.readOnlyDashboard">
     <div class="msf-dashboard-panel-sub-container-column msf-dashboard-panel-header">
       <div class="msf-dashboard-panel-sub-container-row msf-dashboard-panel-discover-button">
         <button class="flat-button discover-button" mat-button (click)="openDiscoveryDialog()">
@@ -963,7 +963,7 @@
       </div>
     </div>
   </div>
-  <div class="msf-dashboard-panel-container-chart" *ngIf="values.displayInfo" [style.height.px]="panelHeightOffset">
+  <div class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack" *ngIf="values.displayInfo">
     <div class="msf-dashboard-panel-title">
       {{values.chartName}}
     </div>
@@ -995,7 +995,7 @@
       </div>
     </div>
   </div>
-  <div class="msf-dashboard-panel-container-chart" *ngIf="values.displayForm" [style.height.px]="panelHeightOffset">
+  <div class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack" *ngIf="values.displayForm">
     <div class="msf-dashboard-panel-title">
       {{values.chartName}}
     </div>
@@ -1026,7 +1026,7 @@
       </div>
     </div>
   </div>
-  <div class="msf-dashboard-panel-container-chart" *ngIf="values.displayPic" [style.height.px]="panelHeightOffset">
+  <div class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack" *ngIf="values.displayPic">
     <div class="msf-dashboard-panel-title">
       {{values.chartName}}
     </div>
@@ -1048,7 +1048,7 @@
       </div>
     </div>
   </div>
-  <div class="msf-dashboard-panel-container-chart" [style.display]="values.displayTable ? 'block' : 'none'" [style.height.px]="panelHeightOffset">
+  <div class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack" [style.display]="values.displayTable ? 'block' : 'none'">
     <div class="msf-dashboard-panel-title" [style.padding-bottom.px]="5">
       {{values.chartName}}
     </div>
@@ -1085,7 +1085,7 @@
       </div>
     </div>
   </div>
-  <div class="msf-dashboard-panel-container-chart" [style.display]="values.displayMapbox ? 'block' : 'none'" [style.height.px]="panelHeightOffset">
+  <div class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack" [style.display]="values.displayMapbox ? 'block' : 'none'">
     <div class="msf-dashboard-panel-title">
       {{values.chartName}}
     </div>
@@ -1106,7 +1106,7 @@
       </div>
     </div>
   </div>
-  <div class="msf-dashboard-panel-container-chart" *ngIf="values.displayDynTable" [style.height.px]="panelHeightOffset">
+  <div class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack" *ngIf="values.displayDynTable">
     <div class="msf-dashboard-panel-title">
       {{values.chartName}}
     </div>
@@ -1138,7 +1138,7 @@
     </div>
   </div>
   <!-- Table view for advanced charts -->
-  <div *ngIf="values.displayChart && advTableView" class="msf-dashboard-panel-container-chart" [style.height.px]="panelHeightOffset">
+  <div *ngIf="values.displayChart && advTableView" class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack">
     <div class="msf-dashboard-panel-title" *ngIf="values.displayChart">
       {{values.chartName}}
     </div>

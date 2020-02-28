@@ -21,11 +21,13 @@
 
     <button (click)="addP()">Add panel</button>
     <button (click)="checkP()">Check panels</button>
-    <gridStack w="12" buttonClass="flat-button" animate="true">
-      <div gridStackItem *ngFor="let panel of widgets" [customid]="panel.customid" [x]="panel.x" [y]="panel.y" [h]="panel.h" [w]="panel.w">
-        <div style="border-style: solid; height: calc(100% - 2px); border-width: 1px; border-color: white">
-          <h1>Hello</h1>
-        </div>
+    <gridStack w="12" [options]="gridStackOptions">
+      <div gridStackItem *ngFor="let panel of widgets" [customid]="panel.customid" [x]="panel.x" [y]="panel.y" [h]="panel.h" [w]="panel.w" [minWidth]="4">
+        <app-msf-dashboard-panel [values]="panel.values" [reAppendChart]="dashboardColumnsReAppendCharts[column]"
+          [controlPanelVariables]="controlPanelVariables" [currentHiddenCategories]="currentHiddenCategories" (removeDeadVariablesAndCategories)="removeDeadVariablesAndCategories($event)"
+          (addNewVariablesAndCategories)="addNewVariablesAndCategories($event)" (toggleControlVariableDialogOpen)="toggleControlVariableDialogOpen($event)"
+          (removePanel)="removePanel(column, row)">
+        </app-msf-dashboard-panel>
       </div>
     </gridStack>
 <!--
