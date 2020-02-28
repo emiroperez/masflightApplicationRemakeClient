@@ -12,11 +12,6 @@ import { CategoryArguments } from '../model/CategoryArguments';
 
 const minPanelWidth = 25;
 
-// for gridstack
-
-const $ = require ('jquery');
-declare var _: any; // lodash
-
 @Component({
   selector: 'app-msf-dashboard',
   templateUrl: './msf-dashboard.component.html',
@@ -115,14 +110,6 @@ export class MsfDashboardComponent implements OnInit {
 
   ngAfterViewInit()
   {
-    let _this = this;
-
-    // set gridstack event when panels change their position and size
-    $('.grid-stack').on('change', function(event, items) {
-      if (!_this.noDashboardUpdate && items)
-       console.log (items);
-    });
-
     this.globals.isLoading = true;
 
     this.service.getMenuForDashboardString (this, this.globals.currentApplication.id,
@@ -1101,17 +1088,6 @@ export class MsfDashboardComponent implements OnInit {
     this.widgets.push (panel);
 
     this.changeDetector.detectChanges ();
-
-    // set minimum height for dashboard panel since ng2-gridstack doesn't have a way to set it
-    /*_.map ($('.grid-stack .grid-stack-item:visible'), function (el: any)
-    {
-      let node;
-
-      el = $(el);
-      node = el.data('_gridstack_node');
-      node.minHeight = "5";
-    });*/
-
     this.noDashboardUpdate = false;
   }
 
@@ -1121,34 +1097,9 @@ export class MsfDashboardComponent implements OnInit {
       console.log (panel);
   }
 
-  /*save(event): void
+  dashboardChanged(items): void
   {
-    var jsonItems = _.map($('.grid-stack .grid-stack-item:visible'), function (el: any) {
-      el = $(el);
-      var node = el.data('_gridstack_node');
-      return {
-          customid: el.attr('data-custom-id'),
-          x: node.x,
-          y: node.y,
-          width: node.width,
-          height: node.height,
-          content: el[0].firstChild.outerText
-      };
-  });
-
-  for (let panel of this.widgets)
-  {
-    for (let jsonItem of jsonItems)
-    {
-      if (panel.customid == jsonItem.customid)
-      {
-        panel.x = jsonItem.x;
-        panel.y = jsonItem.y;
-        panel.w = jsonItem.width;
-        panel.h = jsonItem.height;
-        break;
-      }
-    }
+    if (!this.noDashboardUpdate && items)
+     console.log (items);
   }
-  }*/
 }
