@@ -18,6 +18,17 @@
       </div>
     </div>
     <app-msf-dashboard-control-panel #dashboardControlPanel (updateAllPanels)="updateAllPanels()" (hideCategoryFromCharts)="hideCategoryFromCharts($event)" [controlPanelOpen]="controlPanelOpen" [controlVariablesAvailable]="controlVariablesAvailable" [controlPanelCategories]="controlPanelCategories"></app-msf-dashboard-control-panel>
+
+    <button (click)="addP()">Add panel</button>
+    <button (click)="checkP()">Check panels</button>
+    <gridStack w="12" buttonClass="flat-button" animate="true">
+      <div gridStackItem *ngFor="let panel of widgets" [customid]="panel.customid" [x]="panel.x" [y]="panel.y" [h]="panel.h" [w]="panel.w">
+        <div style="border-style: solid; height: calc(100% - 2px); border-width: 1px; border-color: white">
+          <h1>Hello</h1>
+        </div>
+      </div>
+    </gridStack>
+<!--
     <ng-container *ngIf="dashboardColumns.length">
       <div class="msf-dashboard-chartbox" cdkDropList cdkDropListOrientation="vertical" [cdkDropListData]="dashboardColumns" (cdkDropListDropped)="swapColumnPositions($event)">
         <div class="{{globals.theme}} msf-dashboard-chartbox-column" *ngFor="let dashboardColumn of dashboardColumns; let column = index" [attr.data-index]="column" cdkDragLockAxis="y" vsDragScroll [vsDragScrollContainer]="scrollContainer" cdkDrag [cdkDragDisabled]="dashboardColumns.length == 1 || globals.readOnlyDashboard || !dashboardColumnsProperties[column]">
@@ -95,6 +106,8 @@
         </div>
       </div>
     </ng-container>
+    -->
+    <!--
     <div class="msf-dashboard-empty" *ngIf="!dashboardColumns.length">
       You have not added any panel.<br>
       Click here to start!
@@ -119,6 +132,7 @@
         <div class="msf-dashboard-addmenu-item-text" (click)="addPanel(4)">4 Panels</div>
       </div>
     </div>
+    -->
     <div *ngIf="displayContextMenu">
       <div class="msf-dashboard-panel-context-menu" [style.left.px]="getContextMenuPosX()" [style.top.px]="getContextMenuPosY()">
         <div id="msf-dashboard-panel-context-menu-container">

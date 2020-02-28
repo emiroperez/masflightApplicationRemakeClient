@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, Input, SimpleChanges, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, HostListener, OnInit, Input, SimpleChanges, ViewChild, ChangeDetectorRef, ViewChildren, QueryList } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MatDialog } from '@angular/material';
 
@@ -9,6 +9,9 @@ import { MsfDashboardChildPanelComponent } from '../msf-dashboard-child-panel/ms
 import { ChartFlags } from '../msf-dashboard-panel/msf-dashboard-chartflags';
 import { MsfDashboardControlPanelComponent } from '../msf-dashboard-control-panel/msf-dashboard-control-panel.component';
 import { CategoryArguments } from '../model/CategoryArguments';
+
+const $ = require('jquery')
+declare var _: any; // lodash
 
 const minPanelWidth = 25;
 
@@ -34,6 +37,9 @@ export class MsfDashboardComponent implements OnInit {
   contextMenuY: number = 0;
   contextMenuItems: any;
   contextParentPanel: MsfDashboardPanelValues;
+
+  widgets: any[] = [];
+  noDashboardUpdate: boolean = false;
 
   isAmChartWithMultipleSeries: boolean[] = [
     true,     // Bars
@@ -101,6 +107,14 @@ export class MsfDashboardComponent implements OnInit {
 
   ngAfterViewInit()
   {
+    let _this = this;
+
+    // set gridstack event when panels change their position and size
+    $('.grid-stack').on('change', function(event, items) {
+      if (!_this.noDashboardUpdate)
+        console.log (items);
+    });
+
     this.globals.isLoading = true;
 
     this.service.getMenuForDashboardString (this, this.globals.currentApplication.id,
@@ -1061,4 +1075,59 @@ export class MsfDashboardComponent implements OnInit {
   {
     this.controlVariableDialogOpen = enable;
   }
+
+  addP(): void
+  {
+    this.noDashboardUpdate = true;
+
+    let panel = {
+      x: 0,
+      y: 0,
+      h: 3,
+      w: 3,
+      customid: this.widgets.length + 1
+    };
+
+    this.widgets.push (panel);
+
+    this.changeDetector.detectChanges ();
+    this.noDashboardUpdate = false;
+  }
+
+  checkP(): void
+  {
+    for (let panel of this.widgets)
+      console.log (panel);
+  }
+
+  /*save(event): void
+  {
+    var jsonItems = _.map($('.grid-stack .grid-stack-item:visible'), function (el: any) {
+      el = $(el);
+      var node = el.data('_gridstack_node');
+      return {
+          customid: el.attr('data-custom-id'),
+          x: node.x,
+          y: node.y,
+          width: node.width,
+          height: node.height,
+          content: el[0].firstChild.outerText
+      };
+  });
+
+  for (let panel of this.widgets)
+  {
+    for (let jsonItem of jsonItems)
+    {
+      if (panel.customid == jsonItem.customid)
+      {
+        panel.x = jsonItem.x;
+        panel.y = jsonItem.y;
+        panel.w = jsonItem.width;
+        panel.h = jsonItem.height;
+        break;
+      }
+    }
+  }
+  }*/
 }
