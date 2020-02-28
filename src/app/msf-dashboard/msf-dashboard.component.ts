@@ -13,6 +13,7 @@ import { CategoryArguments } from '../model/CategoryArguments';
 const minPanelWidth = 25;
 
 // for gridstack
+
 const $ = require ('jquery');
 declare var _: any; // lodash
 
@@ -118,13 +119,8 @@ export class MsfDashboardComponent implements OnInit {
 
     // set gridstack event when panels change their position and size
     $('.grid-stack').on('change', function(event, items) {
-      if (items)
-      {
-        if (!_this.noDashboardUpdate)
-          console.log (items);
-        // else
-          // items[items.length - 1].minHeight = "5"; // set minimum height for the dashboard panel
-      }
+      if (!_this.noDashboardUpdate && items)
+       console.log (items);
     });
 
     this.globals.isLoading = true;
@@ -1107,14 +1103,14 @@ export class MsfDashboardComponent implements OnInit {
     this.changeDetector.detectChanges ();
 
     // set minimum height for dashboard panel since ng2-gridstack doesn't have a way to set it
-    _.map ($('.grid-stack .grid-stack-item:visible'), function (el: any)
+    /*_.map ($('.grid-stack .grid-stack-item:visible'), function (el: any)
     {
       let node;
 
       el = $(el);
       node = el.data('_gridstack_node');
       node.minHeight = "5";
-    });
+    });*/
 
     this.noDashboardUpdate = false;
   }
