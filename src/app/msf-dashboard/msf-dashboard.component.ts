@@ -10,7 +10,7 @@ import { ChartFlags } from '../msf-dashboard-panel/msf-dashboard-chartflags';
 import { MsfDashboardControlPanelComponent } from '../msf-dashboard-control-panel/msf-dashboard-control-panel.component';
 import { CategoryArguments } from '../model/CategoryArguments';
 
-const $ = require('jquery')
+const $ = require('jquery');
 declare var _: any; // lodash
 
 const minPanelWidth = 25;
