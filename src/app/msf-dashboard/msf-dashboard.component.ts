@@ -14,8 +14,7 @@ const minPanelWidth = 25;
 
 @Component({
   selector: 'app-msf-dashboard',
-  templateUrl: './msf-dashboard.component.html',
-  styleUrls: ['./msf-dashboard.component.css']
+  templateUrl: './msf-dashboard.component.html'
 })
 export class MsfDashboardComponent implements OnInit {
   dashboardColumns: MsfDashboardPanelValues[][] = [];
@@ -553,21 +552,6 @@ export class MsfDashboardComponent implements OnInit {
     this.globals.isLoading = true;
     this.service.createDashboardPanelInColumn (this, panelsToAdd, width, this.insertPanelsInColumn,
       this.handlerError);
-  }
-
-  toggleColumnProperties(column): void
-  {
-    this.dashboardColumnsProperties[column] = !this.dashboardColumnsProperties[column];
-  }
-
-  getPanelWidth(column, row): number
-  {
-    return this.dashboardColumns[column][row].width;
-  }
-
-  getHeight(column): number
-  {
-    return this.dashboardColumns[column][0].calculatedHeight;
   }
 
   changePanelHeight(column, index): void
