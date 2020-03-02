@@ -41,6 +41,10 @@ export class MsfDashboardComponent implements OnInit {
     animate: true,
     draggable: {
       handle: ".msf-dashboard-button-move-icon"
+    },
+    resizable: {
+      autoHide: true,
+      handles: 'se'
     }
   };
 

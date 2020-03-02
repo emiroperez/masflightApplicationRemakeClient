@@ -21,26 +21,30 @@
 
     <button (click)="addP()">Add panel</button>
     <button (click)="checkP()">Check panels</button>
-    <!--
-    <gridStack w="12" [options]="gridStackOptions">
-      <div gridStackItem *ngFor="let panel of widgets" [customid]="panel.customid" [x]="panel.x" [y]="panel.y" [h]="panel.h" [w]="panel.w" [minWidth]="4">
+
+    <div lb-gridstack width="12" [options]="gridStackOptions" (change)="dashboardChanged($event)">
+      <div lb-gridstack-item *ngFor="let panel of widgets" x="{{panel.x}}" y="{{panel.y}}" width="{{panel.w}}" height="{{panel.h}}" min-width="4" min-height="5">
+        <div [ngClass]="panel.values.isLoading? 'tab-show loading-panel' : 'tab-hide'" id="msf-dashboard-panel-loading" class="msf-dashboard-panel-loading">
+          <div class="msf-dashboard-panel-button msf-dashboard-panel-loading-button">
+            <mat-icon class="msf-dashboard-button-close-icon" aria-label="close">close</mat-icon>
+            <div class="msf-dashboard-button-move-icon" *ngIf="!globals.readOnlyDashboard" (click)="disableContextMenu()"></div>
+          </div>
+          <button *ngIf="panel.values.isLoading" mat-button class="cancel-button" (click)="cancelLoading(panel.values)">
+            Cancel
+            <mat-icon class="close-icon">close</mat-icon> 
+          </button>
+        </div>
+        <div class="msf-dashboard-panel-button" *ngIf="!globals.readOnlyDashboard">
+          <mat-icon class="msf-dashboard-button-close-icon" aria-label="close">close</mat-icon>
+          <div class="msf-dashboard-button-move-icon" (click)="disableContextMenu()"></div>
+        </div>
         <app-msf-dashboard-panel [values]="panel.values" [reAppendChart]="dashboardColumnsReAppendCharts[column]"
           [controlPanelVariables]="controlPanelVariables" [currentHiddenCategories]="currentHiddenCategories" (removeDeadVariablesAndCategories)="removeDeadVariablesAndCategories($event)"
           (addNewVariablesAndCategories)="addNewVariablesAndCategories($event)" (toggleControlVariableDialogOpen)="toggleControlVariableDialogOpen($event)"
           (removePanel)="removePanel(column, row)">
         </app-msf-dashboard-panel>
       </div>
-    </gridStack>
-  -->
-  <div lb-gridstack width="12" animate="true" (change)="dashboardChanged($event)">
-    <div lb-gridstack-item *ngFor="let panel of widgets" x="{{panel.x}}" y="{{panel.y}}" width="{{panel.w}}" height="{{panel.h}}" min-width="4" min-height="5">
-      <app-msf-dashboard-panel [values]="panel.values" [reAppendChart]="dashboardColumnsReAppendCharts[column]"
-        [controlPanelVariables]="controlPanelVariables" [currentHiddenCategories]="currentHiddenCategories" (removeDeadVariablesAndCategories)="removeDeadVariablesAndCategories($event)"
-        (addNewVariablesAndCategories)="addNewVariablesAndCategories($event)" (toggleControlVariableDialogOpen)="toggleControlVariableDialogOpen($event)"
-        (removePanel)="removePanel(column, row)">
-      </app-msf-dashboard-panel>
     </div>
-  </div>
  <!--
     <ng-container *ngIf="dashboardColumns.length">
       <div class="msf-dashboard-chartbox" cdkDropList cdkDropListOrientation="vertical" [cdkDropListData]="dashboardColumns" (cdkDropListDropped)="swapColumnPositions($event)">

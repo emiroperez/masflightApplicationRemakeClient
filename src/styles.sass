@@ -337,9 +337,9 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             .msf-dashboard-button-close-icon:hover
                 @include msf-dashboard-icon(5px, $primary-color, pointer)
             .msf-dashboard-button-move-icon
-                background-image: url(assets/images/#{$name}-horiz-move.png)       // Replace this image
+                background-image: url(assets/images/#{$name}-drag-icon.png)
             .msf-dashboard-button-move-icon:hover
-                background-image: url(assets/images/#{$name}-horiz-move-hover.png) // Replace this image
+                background-image: url(assets/images/#{$name}-drag-icon-hover.png)
                 @include msf-dashboard-icon(5px, $primary-color, move)
         .msf-dashboard-column-properties-form-field
             .mat-select-value-text
@@ -3971,14 +3971,16 @@ mat-tab-group
         @include msf-dashboard-icon(5px)
     .msf-dashboard-button-move-icon
         z-index: 2
-        margin-right: -8px
         background-repeat: no-repeat
-        width: 45px
-        height: 20px
+        width: 12px
+        height: 12px
         background-size: 85%
-        padding-top: 5px !important
         margin-right: 3px
         @include msf-dashboard-icon(5px)
+
+.msf-dashboard-panel-loading-button
+    margin-top: -1px
+    margin-left: 1px
 
 .msf-dashboard-chart-icon
     vertical-align: middle
@@ -4591,6 +4593,7 @@ mat-tab-group
     padding-bottom: 0 !important
     border-radius: 10px
     width: calc(100% - 2px) !important
+    height: calc(100% - 2px) !important
     @extend .msf-dashboard-dialog
     .cancel-button
         margin-top: 10px !important
