@@ -10,7 +10,11 @@ import { ChartFlags } from '../msf-dashboard-panel/msf-dashboard-chartflags';
 import { MsfDashboardControlPanelComponent } from '../msf-dashboard-control-panel/msf-dashboard-control-panel.component';
 import { CategoryArguments } from '../model/CategoryArguments';
 
-const minPanelWidth = 25;
+// dashboard gridstack constants
+const maxDashboardWidth = 12;
+const defaultPanelHeight = 8;
+const defaultPanelWidth = 4;
+const minPanelWidth = 3;
 
 @Component({
   selector: 'app-msf-dashboard',
@@ -26,8 +30,6 @@ export class MsfDashboardComponent implements OnInit {
   rowToUpdate: number;
   screenHeight: string;
 
-  displayAddPanel: boolean = false;
-
   displayContextMenu: boolean = false;
   contextMenuX: number = 0;
   contextMenuY: number = 0;
@@ -35,9 +37,10 @@ export class MsfDashboardComponent implements OnInit {
   contextParentPanel: MsfDashboardPanelValues;
 
   widgets: any[] = [];
-  noDashboardUpdate: boolean = false;
+  newDashboardPanel: boolean = false;
   gridStackOptions: any = {
     animate: true,
+    cellHeight: 30,
     draggable: {
       handle: ".msf-dashboard-button-move-icon"
     },
@@ -417,11 +420,6 @@ export class MsfDashboardComponent implements OnInit {
       });
   }
 
-  toggleDisplayAddPanel(): void
-  {
-    this.displayAddPanel = !this.displayAddPanel;
-  }
-
   insertPanels(_this, data): void
   {
     let dashboardPanels;
@@ -439,7 +437,6 @@ export class MsfDashboardComponent implements OnInit {
     }
 
     _this.dashboardColumns.push (dashboardRows);
-    _this.displayAddPanel = false;
     _this.globals.isLoading = false;
   }
 
@@ -1061,14 +1058,38 @@ export class MsfDashboardComponent implements OnInit {
 
   addP(): void
   {
-    this.noDashboardUpdate = true;
+    let newx, newy, lasth;
+
+    this.newDashboardPanel = true;
+    newx = 0;
+    newy = 0;
+    lasth = 0;
+
+    // get coordinates to add new dashboard panel
+    for (let i = 0; i < this.widgets.length; i++)
+    {
+      let panel = this.widgets[i];
+
+      newx += panel.w;
+
+      if (panel.h > lasth)
+        lasth = panel.h;
+
+      if (newx + defaultPanelWidth > maxDashboardWidth)
+      {
+        newx = 0;
+        newy += lasth;
+      }
+
+      panel.id = i;  // reset panel id
+    }
 
     let panel = {
-      x: 0,
-      y: 0,
-      h: 5,
-      w: 4,
-      customid: this.widgets.length + 1,
+      x: newx,
+      y: newy,
+      h: defaultPanelHeight,
+      w: defaultPanelWidth,
+      id: this.widgets.length + 1,
       values: new MsfDashboardPanelValues (this.options, "New Panel", this.widgets.length + 1,
         3, this.heightValues[0])
     };
@@ -1076,18 +1097,28 @@ export class MsfDashboardComponent implements OnInit {
     this.widgets.push (panel);
 
     this.changeDetector.detectChanges ();
-    this.noDashboardUpdate = false;
+    this.newDashboardPanel = false;
   }
 
-  checkP(): void
+  dashboardChanged(panels): void
   {
-    for (let panel of this.widgets)
-      console.log (panel);
-  }
+    if (!panels)
+      return;
 
-  dashboardChanged(items): void
-  {
-    if (!this.noDashboardUpdate && items)
-     console.log (items);
+    // update panel size and positioning
+    for (let item of this.widgets)
+    {
+      for (let panel of panels)
+      {
+        if (item.id == panel.id)
+        {
+          item.x = panel.x;
+          item.y = panel.y;
+          item.w = panel.width;
+          item.h = panel.height;
+          break;
+        }
+      }
+    }
   }
 }

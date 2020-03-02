@@ -18,12 +18,8 @@
       </div>
     </div>
     <app-msf-dashboard-control-panel #dashboardControlPanel (updateAllPanels)="updateAllPanels()" (hideCategoryFromCharts)="hideCategoryFromCharts($event)" [controlPanelOpen]="controlPanelOpen" [controlVariablesAvailable]="controlVariablesAvailable" [controlPanelCategories]="controlPanelCategories"></app-msf-dashboard-control-panel>
-
-    <button (click)="addP()">Add panel</button>
-    <button (click)="checkP()">Check panels</button>
-
-    <div lb-gridstack width="12" [options]="gridStackOptions" (change)="dashboardChanged($event)">
-      <div lb-gridstack-item *ngFor="let panel of widgets" x="{{panel.x}}" y="{{panel.y}}" width="{{panel.w}}" height="{{panel.h}}" min-width="4" min-height="5">
+    <div class="msf-dashboard-gridstack" lb-gridstack [width]="maxDashboardWidth" [options]="gridStackOptions" (change)="dashboardChanged($event)">
+      <div lb-gridstack-item *ngFor="let panel of widgets" [id]="panel.id" [x]="panel.x" [y]="panel.y" [width]="panel.w" [height]="panel.h" [min-width]="minPanelWidth" min-height="7">
         <div [ngClass]="panel.values.isLoading? 'tab-show loading-panel' : 'tab-hide'" id="msf-dashboard-panel-loading" class="msf-dashboard-panel-loading">
           <div class="msf-dashboard-panel-button msf-dashboard-panel-loading-button">
             <mat-icon class="msf-dashboard-button-close-icon" aria-label="close">close</mat-icon>
@@ -45,32 +41,23 @@
         </app-msf-dashboard-panel>
       </div>
     </div>
-    <!--
-    <div class="msf-dashboard-empty" *ngIf="!dashboardColumns.length">
-      You have not added any panel.<br>
-      Click here to start!
+    <div class="msf-dashboard-empty" *ngIf="!widgets.length">
+      <ng-container *ngIf="!globals.readOnlyDashboard">
+        You have not added any panel.<br>
+        Click here to start!
+      </ng-container>
+      <ng-container *ngIf="globals.readOnlyDashboard">
+        There are no panels on this dashboard.
+      </ng-container>
     </div>
     <div class="msf-dashboard-addmenu" *ngIf="!globals.readOnlyDashboard">
-      <div class="msf-dashboard-addmenu-item" (click)="toggleDisplayAddPanel()">
+      <div class="msf-dashboard-addmenu-item" (click)="addP()">
         <div class="msf-dashboard-addmenu-item-text">
           <mat-icon class="msf-dashboard-icon" aria-label="add">add</mat-icon>
-          <span class="msf-dashboard-addmenu-item-addtext">ADD PANELS</span>
+          <span class="msf-dashboard-addmenu-item-addtext">ADD PANEL</span>
         </div>
       </div>
-      <div class="msf-dashboard-addmenu-item" *ngIf="displayAddPanel">
-        <div class="msf-dashboard-addmenu-item-text" (click)="addPanel(1)">1 Panel</div>
-      </div>
-      <div class="msf-dashboard-addmenu-item" *ngIf="displayAddPanel">
-        <div class="msf-dashboard-addmenu-item-text" (click)="addPanel(2)">2 Panels</div>
-      </div>
-      <div class="msf-dashboard-addmenu-item" *ngIf="displayAddPanel">
-        <div class="msf-dashboard-addmenu-item-text" (click)="addPanel(3)">3 Panels</div>
-      </div>
-      <div class="msf-dashboard-addmenu-item" *ngIf="displayAddPanel">
-        <div class="msf-dashboard-addmenu-item-text" (click)="addPanel(4)">4 Panels</div>
-      </div>
     </div>
-    -->
     <div *ngIf="displayContextMenu">
       <div class="msf-dashboard-panel-context-menu" [style.left.px]="getContextMenuPosX()" [style.top.px]="getContextMenuPosY()">
         <div id="msf-dashboard-panel-context-menu-container">
