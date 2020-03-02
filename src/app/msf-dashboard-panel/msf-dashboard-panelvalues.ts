@@ -101,7 +101,11 @@ export class MsfDashboardPanelValues {
 
     tokenResultTable: any;
 
-    constructor(options: any[], chartName: String, id: number, width: any, height: any, currentOption?: any, variable?: any,
+    gridId: number;
+    x: number;
+    y: number;
+
+    constructor(options: any[], chartName: String, id: number, gridId: number, x: number, y: number, width: number, height: number, currentOption?: any, variable?: any,
         xaxis?: any, valueColumn?: any, func?: any, chartType?: any, currentOptionCategories?: any, lastestResponse?: string,
         paletteColors?: any, updateTimeInterval?: number, row?: number, thresholds?: any, vertAxisName?: string, horizAxisName?: string,
         intValue?: any, startAtZero?: boolean, limitMode?: number, limitAmount?: number, ordered?: boolean,
@@ -110,6 +114,9 @@ export class MsfDashboardPanelValues {
         this.options = options;
         this.chartName = chartName;
         this.id = id;
+        this.gridId = gridId;
+        this.x = x;
+        this.y = y;
         this.currentOption = currentOption;
         this.variable = variable;
         this.xaxis = xaxis;
@@ -119,8 +126,8 @@ export class MsfDashboardPanelValues {
         this.width = width;
         this.height = height;
 
-        if (height != null)
-            this.calculatedHeight = 323 + ((height.value - 1) * 15);
+        // if (height != null)
+            // this.calculatedHeight = 323 + ((height.value - 1) * 15);
 
         if (thresholds)
             this.thresholds = JSON.parse (thresholds);

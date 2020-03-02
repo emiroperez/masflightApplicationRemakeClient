@@ -19,13 +19,13 @@
     </div>
     <app-msf-dashboard-control-panel #dashboardControlPanel (updateAllPanels)="updateAllPanels()" (hideCategoryFromCharts)="hideCategoryFromCharts($event)" [controlPanelOpen]="controlPanelOpen" [controlVariablesAvailable]="controlVariablesAvailable" [controlPanelCategories]="controlPanelCategories"></app-msf-dashboard-control-panel>
     <div class="msf-dashboard-gridstack" lb-gridstack [width]="maxDashboardWidth" [options]="gridStackOptions" (change)="dashboardChanged($event)">
-      <div lb-gridstack-item *ngFor="let panel of widgets" [id]="panel.id" [x]="panel.x" [y]="panel.y" [width]="panel.w" [height]="panel.h" [min-width]="minPanelWidth" min-height="7">
-        <div [ngClass]="panel.values.isLoading? 'tab-show loading-panel' : 'tab-hide'" id="msf-dashboard-panel-loading" class="msf-dashboard-panel-loading">
+      <div lb-gridstack-item *ngFor="let panel of dashboardPanels" [id]="panel.gridId" [x]="panel.x" [y]="panel.y" [width]="panel.width" [height]="panel.height" [min-width]="minPanelWidth" min-height="7">
+        <div [ngClass]="panel.isLoading? 'tab-show loading-panel' : 'tab-hide'" id="msf-dashboard-panel-loading" class="msf-dashboard-panel-loading">
           <div class="msf-dashboard-panel-button msf-dashboard-panel-loading-button">
             <mat-icon class="msf-dashboard-button-close-icon" aria-label="close">close</mat-icon>
             <div class="msf-dashboard-button-move-icon" *ngIf="!globals.readOnlyDashboard" (click)="disableContextMenu()"></div>
           </div>
-          <button *ngIf="panel.values.isLoading" mat-button class="cancel-button" (click)="cancelLoading(panel.values)">
+          <button *ngIf="panel.isLoading" mat-button class="cancel-button" (click)="cancelLoading(panel)">
             Cancel
             <mat-icon class="close-icon">close</mat-icon> 
           </button>
@@ -34,14 +34,14 @@
           <mat-icon class="msf-dashboard-button-close-icon" aria-label="close">close</mat-icon>
           <div class="msf-dashboard-button-move-icon" (click)="disableContextMenu()"></div>
         </div>
-        <app-msf-dashboard-panel [values]="panel.values" [reAppendChart]="dashboardColumnsReAppendCharts[column]"
-          [controlPanelVariables]="controlPanelVariables" [currentHiddenCategories]="currentHiddenCategories" (removeDeadVariablesAndCategories)="removeDeadVariablesAndCategories($event)"
+        <app-msf-dashboard-panel [values]="panel" [controlPanelVariables]="controlPanelVariables"
+          [currentHiddenCategories]="currentHiddenCategories" (removeDeadVariablesAndCategories)="removeDeadVariablesAndCategories($event)"
           (addNewVariablesAndCategories)="addNewVariablesAndCategories($event)" (toggleControlVariableDialogOpen)="toggleControlVariableDialogOpen($event)"
-          (removePanel)="removePanel(column, row)">
+          (removePanel)="removePanel(panel.gridId)">
         </app-msf-dashboard-panel>
       </div>
     </div>
-    <div class="msf-dashboard-empty" *ngIf="!widgets.length">
+    <div class="msf-dashboard-empty" *ngIf="!dashboardPanels.length">
       <ng-container *ngIf="!globals.readOnlyDashboard">
         You have not added any panel.<br>
         Click here to start!
@@ -51,7 +51,7 @@
       </ng-container>
     </div>
     <div class="msf-dashboard-addmenu" *ngIf="!globals.readOnlyDashboard">
-      <div class="msf-dashboard-addmenu-item" (click)="addP()">
+      <div class="msf-dashboard-addmenu-item" (click)="addPanel()">
         <div class="msf-dashboard-addmenu-item-text">
           <mat-icon class="msf-dashboard-icon" aria-label="add">add</mat-icon>
           <span class="msf-dashboard-addmenu-item-addtext">ADD PANEL</span>

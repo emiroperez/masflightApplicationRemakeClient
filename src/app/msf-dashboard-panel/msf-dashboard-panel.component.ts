@@ -160,9 +160,6 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   panelHeightOffset: number;
 
-  @Input("reAppendChart")
-  reAppendChart: boolean;
-
   @Input("controlPanelVariables")
   controlPanelVariables: CategoryArguments[];
 
@@ -328,7 +325,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void
   {
-    if (changes['reAppendChart'] && this.reAppendChart)
+    /*if (changes['reAppendChart'] && this.reAppendChart)
     {
       if (this.values.chartGenerated)
       {
@@ -341,7 +338,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           this.redisplayChart = true;
       }
     }
-    else if (changes['controlPanelVariables'] && this.controlPanelVariables)
+    else*/ if (changes['controlPanelVariables'] && this.controlPanelVariables)
     {
       // validate the panel configuration before updating
       if (!this.checkPanelConfiguration ())
@@ -3960,7 +3957,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (!this.temp)
     {
       this.temp = new MsfDashboardPanelValues (this.values.options, this.values.chartName,
-        this.values.id, this.values.width, this.values.height);
+        this.values.id, this.values.gridId, this.values.x, this.values.y, this.values.width,
+        this.values.height);
     }
     else
       this.temp.chartName = this.values.chartName;
