@@ -709,4 +709,25 @@ export class ApplicationService {
     let url = this.host + "/getDateRestriction?customerId=" + customerId;
     this.http.get (_this, url, handlerSuccess, handlerError, null);
   }
+
+  confirmationOrCancelDialog(_this, message, callback,cancel)
+  {
+    const dialogRef = this.dialog.open (MsfConfirmationDialogComponent, {
+      disableClose: false,
+      panelClass: 'msf-dashboard-control-variables-dialog'
+    });
+
+    let self = _this;
+    dialogRef.componentInstance.confirmMessage = message;
+
+    dialogRef.afterClosed ().subscribe (result =>
+    {
+      if (result){
+        callback (self);
+      }else{
+        cancel(self);
+      }
+
+    });
+  }
 }

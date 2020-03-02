@@ -15,12 +15,28 @@
       <div class="datalake-table-show-table-tablename">Schema: {{data.values.schemaName}}</div>
     </div>
     <div class="datalake-table-show-table-close-button">
-      <button mat-button class="datalake-table-export-excel"
-        [disabled]="!displayedColumns.length"
+      <div class="datalake-search-input datalake-alarm-search-input">
+        <mat-form-field *ngIf="edit" class="datalake-search-formfield" appearance="outline">
+            <mat-label>Search</mat-label>
+            <input matInput type="text" autocomplete="off">
+            <mat-icon matPrefix aria-label="search">search</mat-icon>
+        </mat-form-field>
+      </div>
+      <!-- <button *ngIf="edit" mat-button class="datalake-table-export-excel" [disabled]="!displayedColumns.length"
+        (click)="SearchRow()" matTooltip="Search">
+        <img class="datalake-table-export-excel-img" src="../../assets/images/{{globals.theme}}-datalake-SearchRow.png">
+      </button> -->
+      <button *ngIf="edit" mat-button class="datalake-table-export-excel" [disabled]="!displayedColumns.length"
+        (click)="exportToExcel()" matTooltip="Save">
+        <img class="datalake-table-export-excel-img" src="../../assets/images/{{globals.theme}}-datalake-SaveRow.png">
+      </button>
+      <button *ngIf="edit" mat-button class="datalake-table-export-excel" [disabled]="!displayedColumns.length"
+        (click)="exportToExcel()" matTooltip="Insert New Row ">
+        <img class="datalake-table-export-excel-img" src="../../assets/images/{{globals.theme}}-datalake-AddRow.png">
+      </button>
+      <button mat-button class="datalake-table-export-excel" [disabled]="!displayedColumns.length"
         (click)="exportToExcel()" matTooltip="Export to Excel">
         <img class="datalake-table-export-excel-img" src="../../assets/images/{{globals.theme}}-excel_white.png">
-            <!-- <img src="../../assets/images/{{globals.theme}}-ExporttoExcel.png"
-                class="msf-menu-image msf-vertical-middle"> -->
       </button>
 
       <button mat-icon-button (click)="onNoClick()">
@@ -28,16 +44,45 @@
       </button>
     </div>
   </div>
-  <div class="datalake-table-body">
-    <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8 datasource">
+  <div [ngClass]=" edit? 'datalake-Edittable-body':'datalake-table-body'">
+    <table mat-table matSort [dataSource]="dataSourceTable" 
+    [ngClass]=" edit? 'mat-elevation-z8 datasource Datalake-editTableData':'mat-elevation-z8 datasource'">
       <ng-container *ngFor="let column of displayedColumns; let j = index" [matColumnDef]="column">
         <th mat-header-cell *matHeaderCellDef>{{column}}</th>
         <td mat-cell *matCellDef="let element">
-          {{element[column]}}
+          <div *ngIf="column != 'actions' && !element.edit">
+            {{element[column]}}
+          </div>
+          <mat-form-field *ngIf="column != 'actions' && element === rowSelected">
+            <input matInput class="datalake-table-edit-input" 
+            appearance="standard" [(ngModel)]="element[column]" (ngModelChange)="MarkEditAsUpdate(element)">
+          </mat-form-field>
+
+          <div *ngIf="edit && column === 'actions'" class="btn-actions-partition Datalake-btns-editTableData">
+            <button 
+            class="mat-icon-button-edit" 
+            (mouseover)="element.hoverEdit = true" (mouseout)="element.hoverEdit = false" 
+            (click)="editRow(element)" mat-icon-button
+              matTooltip="Edit Row">
+              <img class="datalake-table-edit-button-image"
+                src="{{getEditRowImage(element)}}" />
+            </button>
+            <button [disabled]="element.edit"
+             (mouseover)="element.hoverDelete=true" (mouseleave)="element.hoverDelete=false" 
+            (click)="removeRow(element)"
+              mat-icon-button matTooltip="Delete Row">
+              <img class="datalake-table-edit-button-image"
+                src="{{getDeleteRowImage(element)}}" />
+            </button>
+          </div>
         </td>
       </ng-container>
-      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" ></tr>
+      <tr mat-row  [ngClass]="{ 'mat-row-highlighted': row.highlight, 'mat-row-edit-highlighted' : row === rowSelected || row === rowDelete}" 
+      *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
   </div>
 </div>
+<mat-paginator 
+[ngClass]="!globals.popupLoading && displayedColumns.length && edit? 'datalake-alarm-paginator':'msf-hide'"
+#paginator [pageSizeOptions]="[10, 30, 50, 100]" showFirstLastButtons></mat-paginator>

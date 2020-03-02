@@ -79,7 +79,7 @@ export class DatalakeTableCardComponent implements OnInit {
   {
     let dialogRef = this.dialog.open (DatalakeTablePreviewComponent, {
       panelClass: 'datalake-table-show-table-dialog',
-      data: { values: this.values }
+      data: { values: this.values , edit: false }
     });
 
     dialogRef.afterClosed ().subscribe (() => {
@@ -169,5 +169,17 @@ export class DatalakeTableCardComponent implements OnInit {
   {
     _this.globals.popupLoading = false;
   }  
+
+  editTable(): void
+  {
+    let dialogRef = this.dialog.open (DatalakeTablePreviewComponent, {
+      panelClass: 'datalake-table-show-table-dialog',
+      data: { values: this.values, edit: true }
+    });
+
+    dialogRef.afterClosed ().subscribe (() => {
+      this.globals.popupLoading = false;
+    });
+  }
 
 }
