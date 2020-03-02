@@ -1,4 +1,4 @@
-<div id="msf-dashboard-element" #scrollContainer (click)="disableContextMenu()" (contextmenu)="disableContextMenu()" (scroll)="disableContextMenu()" class="msf-dashboard-container" [style.height]="screenHeight" [ngStyle]="{ 'cursor': getHoverCursor() }">
+<div id="msf-dashboard-element" #scrollContainer (click)="disableContextMenu()" (contextmenu)="disableContextMenu()" (scroll)="disableContextMenu()" class="msf-dashboard-container" [style.height]="screenHeight">
   <!-- ngClass must be used for the control variable overlay it can override the overlays used on some dialogs such as the wizard -->
   <div [ngClass]="{ 'msf-control-variables-overlay': !controlVariableDialogOpen }">
     <div class="msf-dashboard-header" *ngIf="currentDashboardMenu">
@@ -19,7 +19,7 @@
     </div>
     <app-msf-dashboard-control-panel #dashboardControlPanel (updateAllPanels)="updateAllPanels()" (hideCategoryFromCharts)="hideCategoryFromCharts($event)" [controlPanelOpen]="controlPanelOpen" [controlVariablesAvailable]="controlVariablesAvailable" [controlPanelCategories]="controlPanelCategories"></app-msf-dashboard-control-panel>
     <div class="msf-dashboard-gridstack" lb-gridstack [width]="maxDashboardWidth" [options]="gridStackOptions" (change)="dashboardChanged($event)">
-      <div lb-gridstack-item *ngFor="let panel of dashboardPanels" [id]="panel.gridId" [x]="panel.x" [y]="panel.y" [width]="panel.width" [height]="panel.height" [min-width]="minPanelWidth" min-height="7">
+      <div lb-gridstack-item *ngFor="let panel of dashboardPanels" [id]="panel.gridId" [x]="panel.x" [y]="panel.y" [width]="panel.width" [height]="panel.height" [min-width]="minPanelWidth" min-height="7" (contextmenu)="onRightClick($event, panel)">
         <div [ngClass]="panel.isLoading? 'tab-show loading-panel' : 'tab-hide'" id="msf-dashboard-panel-loading" class="msf-dashboard-panel-loading">
           <div class="msf-dashboard-panel-button msf-dashboard-panel-loading-button">
             <mat-icon class="msf-dashboard-button-close-icon" aria-label="close">close</mat-icon>

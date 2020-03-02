@@ -1999,14 +1999,17 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                 border-color: $font-color
         .datalake-create-alarm-hint, .datalake-alarm-emails-hint
             color: $dashboard-border-color !important
-        .airline-selection-type-radio, .airport-selection-type-radio, .content-type-argument-radio-group, .argument-radio-group
+        .airline-selection-type-radio, .airport-selection-type-radio, .airport-selection-type-radio-admin, .content-type-argument-radio-group, .argument-radio-group
             .mat-radio-label
                 border-color: $font-color
                 &:hover
-                    background-color: $primary-color
                     border-color: $primary-color !important
             .mat-radio-outer-circle
                 border-color: $font-color
+        .airline-selection-type-radio, .airport-selection-type-radio
+            .mat-radio-label
+                &:hover
+                    background-color: $primary-color
         .airline-selection-type-radio-checked, .airport-selection-type-radio-checked
             .mat-radio-label
                 background-color: $primary-color
@@ -4176,6 +4179,7 @@ mat-tab-group
     overflow-y: visible
     -webkit-overflow-scrolling: touch
     border-radius: 10px
+    height: calc(100% - 20px)
     .msf-dashboard-panel-title
         font-size: 16px
         text-align: left
@@ -4187,6 +4191,7 @@ mat-tab-group
     .msf-dashboard-panel-sub-container-column
         @include msf-dashboard-panel-sub-container(row, 5px)
         position: relative
+        height: calc(100% - 40px)
 
 .msf-dashboard-panel-config-button
     opacity: 0.05

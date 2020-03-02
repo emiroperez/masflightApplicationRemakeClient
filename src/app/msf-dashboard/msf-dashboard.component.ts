@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, Input, SimpleChanges, ViewChild, ChangeDetectorRef, ViewChildren, QueryList } from '@angular/core';
+import { Component, HostListener, OnInit, Input, SimpleChanges, ViewChild, ChangeDetectorRef, ViewChildren, QueryList, isDevMode } from '@angular/core';
 import { MatDialog } from '@angular/material';
 
 import { Globals } from '../globals/Globals';
@@ -22,8 +22,6 @@ const minPanelWidth = 3;
 export class MsfDashboardComponent implements OnInit {
   options: any[] = [];
 
-  columnToUpdate: number;
-  rowToUpdate: number;
   screenHeight: string;
 
   displayContextMenu: boolean = false;
@@ -87,12 +85,6 @@ export class MsfDashboardComponent implements OnInit {
   hiddenCategoriesValues: any[] = [];
   controlPanelCategories: any[] = [];
   currentHiddenCategories: any;
-
-  // variables for panel resizing
-  currentColumn: number;
-  resizePanel: boolean;
-  leftPanel: any;
-  rightPanel: any;
 
   controlVariableDialogOpen: boolean = false;
 
@@ -413,8 +405,6 @@ export class MsfDashboardComponent implements OnInit {
   deleteColumn (_this): void
   {
     _this.dashboardColumns.splice (_this.columnToUpdate, 1);
-    _this.dashboardColumnsProperties.splice (_this.columnToUpdate, 1);
-    _this.dashboardColumnsReAppendCharts.splice (_this.columnToUpdate, 1);
     _this.globals.isLoading = false;
     _this.changeDetector.detectChanges ();
   }
@@ -468,21 +458,18 @@ export class MsfDashboardComponent implements OnInit {
 
   positionUpdated(_this): void
   {
-    // if (_this.currentColumn != null)
-      // _this.dashboardColumnsReAppendCharts[_this.currentColumn] = false;
+    if (isDevMode ())
+      console.log ("Dashboard panel positions are updated successfully.");
   }
 
   positionError(_this): void
   {
-    // if (_this.currentColumn != null)
-      // _this.dashboardColumnsReAppendCharts[_this.currentColumn] = false;
+    if (isDevMode ())
+      console.log ("Failed to update the dashboard panel positions.");
   }
 
   handlerSuccess(_this): void
   {
-    if (_this.currentColumn != null)
-      _this.dashboardColumnsReAppendCharts[_this.currentColumn] = false;
-
     // _this.globals.isLoading = false;
   }
 
@@ -515,17 +502,17 @@ export class MsfDashboardComponent implements OnInit {
     this.disableContextMenu ();
   }
 
-  onrightClick(event, dashboardColumn, rowindex): boolean
+  onRightClick(event, panel): boolean
   {
     event.stopPropagation ();
 
-    if (!dashboardColumn[rowindex].chartClicked)
+    if (!panel.chartClicked)
     {
       this.displayContextMenu = false;
       return true;
     }
 
-    this.contextMenuItems = dashboardColumn[rowindex].childPanels;
+    this.contextMenuItems = panel.childPanels;
     if (!this.contextMenuItems.length)
     {
       // do not display drill down context menu if there are no child panels
@@ -534,7 +521,7 @@ export class MsfDashboardComponent implements OnInit {
     }
 
     this.contextMenuX = event.clientX;
-    this.contextParentPanel = dashboardColumn[rowindex];
+    this.contextParentPanel = panel;
 
     if (this.globals.isFullscreen)
       this.contextMenuY = event.clientY;
@@ -542,7 +529,7 @@ export class MsfDashboardComponent implements OnInit {
       this.contextMenuY = event.clientY - 90;
 
     // prevent context menu from appearing
-    dashboardColumn[rowindex].chartClicked = false;
+    panel.chartClicked = false;
     this.displayContextMenu = true;
     return false;
   }
@@ -578,15 +565,6 @@ export class MsfDashboardComponent implements OnInit {
     return this.contextMenuY;
   }
 
-  getHoverCursor(): string
-  {
-    // Use column resize while dragging the panels
-    if (this.resizePanel)
-      return "col-resize";
-
-    return "inherit";
-  }
-
   displayChildPanel(contextDrillDownId): void
   {
     this.dialog.open (MsfDashboardChildPanelComponent, {
@@ -605,18 +583,6 @@ export class MsfDashboardComponent implements OnInit {
         secondaryCategoryFilter: this.contextParentPanel.chartSecondaryObjectSelected
       }
     });
-  }
-
-  columnSwapSucess(_this): void
-  {
-    for (let i = 0; i < _this.dashboardColumns.length; i++)
-      _this.dashboardColumnsReAppendCharts[i] = false;
-  }
-
-  columnSwapError(_this): void
-  {
-    for (let i = 0; i < _this.dashboardColumns.length; i++)
-      _this.dashboardColumnsReAppendCharts[i] = false;
   }
 
   cancelLoading(dashboardPanel): void

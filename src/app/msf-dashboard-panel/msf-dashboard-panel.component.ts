@@ -3962,8 +3962,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
     else
       this.temp.chartName = this.values.chartName;
-      this.temp.urlImg = this.values.urlImg;
 
+    this.temp.urlImg = this.values.urlImg;
     this.temp.currentOption = JSON.parse (JSON.stringify (this.values.currentOption));
     this.temp.variable = this.values.variable ? this.values.variable.item.id : null;
     this.temp.xaxis = this.values.xaxis ? this.values.xaxis.item.id : null;
@@ -4104,6 +4104,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.values.displayChart = true;
 
     // discard any changes
+    this.values.urlImg = this.temp.urlImg;
     this.values.currentOption = JSON.parse (JSON.stringify (this.temp.currentOption));
     this.values.chartName = this.temp.chartName;
 
@@ -7093,14 +7094,6 @@ export class MsfDashboardPanelComponent implements OnInit {
   toggleAnchoredArguments(): void
   {
     this.displayAnchoredArguments = !this.displayAnchoredArguments;
-  }
-
-  getPanelHeightOffset(): string
-  {
-    if (this.displayAnchoredArguments)
-      return "inherit";
-
-    return "0";
   }
 
   saveAnchoredChanges(): void
