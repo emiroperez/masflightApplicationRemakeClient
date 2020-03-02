@@ -19,7 +19,7 @@
     </div>
     <app-msf-dashboard-control-panel #dashboardControlPanel (updateAllPanels)="updateAllPanels()" (hideCategoryFromCharts)="hideCategoryFromCharts($event)" [controlPanelOpen]="controlPanelOpen" [controlVariablesAvailable]="controlVariablesAvailable" [controlPanelCategories]="controlPanelCategories"></app-msf-dashboard-control-panel>
     <div class="msf-dashboard-gridstack" lb-gridstack [width]="maxDashboardWidth" [options]="gridStackOptions" (change)="dashboardChanged($event)">
-      <div lb-gridstack-item *ngFor="let panel of dashboardPanels" [id]="panel.gridId" [x]="panel.x" [y]="panel.y" [width]="panel.width" [height]="panel.height" [min-width]="minPanelWidth" min-height="7" (contextmenu)="onRightClick($event, panel)">
+      <div lb-gridstack-item *ngFor="let panel of dashboardPanels" [id]="panel.gridId" [x]="panel.x" [y]="panel.y" [width]="panel.width" [height]="panel.height" min-width="3" min-height="7" (contextmenu)="onRightClick($event, panel)">
         <div [ngClass]="panel.isLoading? 'tab-show loading-panel' : 'tab-hide'" id="msf-dashboard-panel-loading" class="msf-dashboard-panel-loading">
           <div class="msf-dashboard-panel-button msf-dashboard-panel-loading-button">
             <mat-icon class="msf-dashboard-button-close-icon" aria-label="close">close</mat-icon>
@@ -34,7 +34,7 @@
           <mat-icon class="msf-dashboard-button-close-icon" aria-label="close">close</mat-icon>
           <div class="msf-dashboard-button-move-icon" (click)="disableContextMenu()"></div>
         </div>
-        <app-msf-dashboard-panel [values]="panel" [controlPanelVariables]="controlPanelVariables"
+        <app-msf-dashboard-panel [values]="panel" [controlPanelVariables]="controlPanelVariables" [panelWidth]="panel.width" [panelHeight]="panel.height"
           [currentHiddenCategories]="currentHiddenCategories" (removeDeadVariablesAndCategories)="removeDeadVariablesAndCategories($event)"
           (addNewVariablesAndCategories)="addNewVariablesAndCategories($event)" (toggleControlVariableDialogOpen)="toggleControlVariableDialogOpen($event)"
           (removePanel)="removePanel(panel.gridId)">

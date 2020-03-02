@@ -13,7 +13,6 @@ import { CategoryArguments } from '../model/CategoryArguments';
 const maxDashboardWidth = 12;
 const defaultPanelHeight = 8;
 const defaultPanelWidth = 4;
-const minPanelWidth = 3;
 
 @Component({
   selector: 'app-msf-dashboard',

@@ -915,7 +915,7 @@
     </div>
     <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-chart-display-container-{{values.id}}">
       <div class="msf-dashboard-map-routelist" *ngIf="isMapPanel() && values.flightRoutes.length">
-        <div class="msf-dashboard-map-routelist-container" [style.height.px]="calcRouteListHeight()">
+        <div class="msf-dashboard-map-routelist-container" style="height: calc(100% - 71px)">
           <div class="msf-dashboard-map-routelist-item" *ngFor="let item of values.flightRoutes">
             <div class="msf-dashboard-map-item-flight">
               <span *ngIf="isArray(item.Flight)">{{item.TouchedAirports}}</span>
@@ -927,7 +927,7 @@
           </div>
         </div>
       </div>
-      <div id="msf-dashboard-chart-display-{{values.id}}" [ngStyle]="{'width': (globals.readOnlyDashboard || (isMapPanel() || !values.flightRoutes.length)) ? '100%' : 'calc(100% - 35px)'}" [style.height.px]="calcPanelHeight()"></div>
+      <div id="msf-dashboard-chart-display-{{values.id}}" [ngStyle]="{'width': (globals.readOnlyDashboard || (isMapPanel() || !values.flightRoutes.length)) ? '100%' : 'calc(100% - 35px)'}"></div>
       <div class="msf-dashboard-map-panelinfo" *ngIf="isMapPanel() && checkedRoutes.length == 1">
         <table class="msf-dashboard-map-panelinfo-container">
           <tr><td>Touched Airports</td><td>{{checkedRoutes[0].TouchedAirports}}</td></tr>
@@ -968,7 +968,7 @@
       {{values.chartName}}
     </div>
     <div class="msf-dashboard-panel-sub-container-column">
-      <div style="width: 100%" [style.height.px]="calcPanelHeight()">
+      <div style="width: 100%; height: 100%">
         <div class="msf-dashboard-info-display">
           <div class="msf-dashboard-info-container" *ngIf="values.infoVar1">
             <div class="msf-dashboard-info-table" *ngFor="let result of values.lastestResponse">
@@ -1000,7 +1000,7 @@
       {{values.chartName}}
     </div>
     <div class="msf-dashboard-panel-sub-container-column">
-      <div class="msf-dashboard-form-container" [style.height.px]="calcPanelHeight()">
+      <div class="msf-dashboard-form-container">
         <div class="msf-media-title-container" id="msf-dashboard-form-display">
           <div class="msf-dashboard-form-display-child" [ngClass]="values.formVariables[column].valueOrientation.value ? 'msf-dashboard-form-display-result-vertical' : 'msf-dashboard-form-display-result-horizontal'" *ngFor="let formResult of values.lastestResponse; let column = index">
             <span class="msf-media-title-value" id="msf-dashboard-form-display-title" [style.font-size.px]="getFormFontSize(column)">{{formResult.column.columnLabel}}: </span>
@@ -1013,7 +1013,7 @@
           </div>
         </div>
       </div>
-      <div class="msf-dashboard-panel-config-button" *ngIf="!globals.readOnlyDashboard" [style.margin-bottom.px]="-10">
+      <div class="msf-dashboard-panel-config-button" *ngIf="!globals.readOnlyDashboard">
         <button mat-mini-fab (click)="goToFormConfiguration()" color="primary" class="msf-dashboard-panel-margin-button" matTooltip="Edit Configuration">
           <mat-icon aria-label="Edit Configuration">menu</mat-icon>
         </button>
@@ -1031,7 +1031,7 @@
       {{values.chartName}}
     </div>
     <div class="msf-dashboard-panel-sub-container-column">
-      <div [style.height.px]="calcPanelHeight()" class="content-panel-img">
+      <div class="content-panel-img">
         <!-- TODO: Picture goes here -->
         <app-image-link [url]="values.urlImg"></app-image-link>
       </div>
@@ -1054,7 +1054,7 @@
     </div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-table-container">
-        <div class="msf-dashboard-child-panel-table msf-dashboard-panel-table" [style.height.px]="calcPanelHeight() - 27">
+        <div class="msf-dashboard-child-panel-table msf-dashboard-panel-table" style="height: calc(100% - 27px)">
           <app-msf-table #msfTableRef [isLoading]="values.isLoading" 
           (finishLoading)="finishLoadingTable($event)" [categoryArguments]="values.currentOptionCategories"
            [currentOption]="values.currentOption" [isPanel]="true" [thresholds]="values.thresholds"
@@ -1090,7 +1090,7 @@
       {{values.chartName}}
     </div>
     <div class="msf-dashboard-panel-sub-container-column">
-      <div [style.height.px]="calcPanelHeight() - 7" class="msf-dashboard-panel-mapbox">
+      <div style="height: calc(100% - 7px)" class="msf-dashboard-panel-mapbox">
         <app-msf-map #msfMapRef [isLoading]="values.isLoading" [useCancelButton]="false" [displayMapMenu]="2" [currentMapType]="values.style" [legendOffset]="45" (finishLoading)="finishMapboxLoading($event)"></app-msf-map>
       </div>
       <div class="msf-dashboard-panel-config-button" *ngIf="!globals.readOnlyDashboard">
@@ -1111,7 +1111,7 @@
       {{values.chartName}}
     </div>
     <div class="msf-dashboard-panel-sub-container-column">
-      <div class="dynamic-table-scroll dashboard-panel-dynamic-table-scroll" [style.height.px]="panelHeightOffset - 20">
+      <div class="dynamic-table-scroll dashboard-panel-dynamic-table-scroll" style="height: (100% - 20px)">
         <table *ngIf="dynTableData" class="mat-elevation-z8 dynamic-table-container">
           <tr class="dynamic-table-header-container" *ngFor="let header of dynTableData.headers">
             <!-- Always insert a blank tab header first since it's a pivot table -->
@@ -1143,7 +1143,7 @@
       {{values.chartName}}
     </div>
     <div class="msf-dashboard-panel-sub-container-column">
-      <div class="msf-dashboard-child-panel-table msf-dashboard-panel-table msf-adv-chart-table" [style.height.px]="panelHeightOffset - 20" [style.width.%]="100" [style.margin-top.px]="5">
+      <div class="msf-dashboard-child-panel-table msf-dashboard-panel-table msf-adv-chart-table" style="height: calc(100% - 20px)" [style.width.%]="100" [style.margin-top.px]="5">
         <div class="results-container">
           <table class="mat-elevation-z8 datasource results" style="border-collapse: separate; border-spacing: 0">
             <thead>
