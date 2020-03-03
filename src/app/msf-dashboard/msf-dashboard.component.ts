@@ -405,6 +405,11 @@ export class MsfDashboardComponent implements OnInit {
     newy = 0;
     lasth = 0;
 
+    // sort the dashboard panels from left to right then top to bottom
+    this.dashboardPanels.sort (function (e1, e2) {
+      return e1.x == e2.x ? e1.x - e2.x : e1.y - e2.y;
+    });
+
     // get coordinates to add new dashboard panel
     for (let i = 0; i < this.dashboardPanels.length; i++)
     {
