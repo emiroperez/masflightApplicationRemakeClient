@@ -166,8 +166,8 @@ export class MsfDashboardPanelComponent implements OnInit {
   @Input("numPanelsInColumn")
   numPanelsInColumn: number;
 
-  @Input("addingPanels")
-  addingPanels: number;
+  @Input("addingOrRemovingPanels")
+  addingOrRemovingPanels: number;
 
   @Output("removeDeadVariablesAndCategories")
   removeDeadVariablesAndCategories = new EventEmitter ();
@@ -177,9 +177,6 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   @Output("toggleControlVariableDialogOpen")
   toggleControlVariableDialogOpen  = new EventEmitter ();
-
-  @Output("removePanel")
-  removePanel = new EventEmitter ();
 
   childPanelValues: any[] = [];
   childPanelsConfigured: boolean[] = [];
@@ -324,7 +321,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void
   {
-    if (this.addingPanels)
+    if (this.addingOrRemovingPanels)
       return;
 
     if (changes['controlPanelVariables'] && this.controlPanelVariables)

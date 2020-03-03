@@ -378,10 +378,10 @@ export class ApplicationService {
     this.http.post (_this, this.host + url, panels, handlerSuccess, handlerError);
   }
 
-  deleteDashboardPanel(_this, id, handlerSuccess, handlerError): void
+  deleteDashboardPanel(_this, panelId, handlerSuccess, handlerError): void
   {
     let url = this.host + "/deleteDashboardPanel";
-    this.http.post (_this, url, id, handlerSuccess, handlerError);
+    this.http.post (_this, url, panelId, handlerSuccess, handlerError);
   }
 
   getDashboardPanels(_this, dashboardMenuId, handlerSuccess, handlerError): void

@@ -31,7 +31,7 @@ export class MsfDashboardComponent implements OnInit {
 
   dashboardPanels: MsfDashboardPanelValues[] = [];
   newDashboardPanel: boolean = false;
-  addingPanels: number = 0;
+  addingOrRemovingPanels: number = 0;
   gridStackOptions: any = {
     animate: true,
     cellHeight: 30,
@@ -287,7 +287,7 @@ export class MsfDashboardComponent implements OnInit {
       return;
     }
 
-    _this.addingPanels = 1;
+    _this.addingOrRemovingPanels = 1;
 
     for (let dashboardPanel of dashboardPanels)
     {
@@ -308,7 +308,7 @@ export class MsfDashboardComponent implements OnInit {
     }
 
     _this.changeDetector.detectChanges ();
-    _this.addingPanels = 0;
+    _this.addingOrRemovingPanels = 0;
     _this.service.getAllChildPanels (_this, dashboardPanelIds, _this.setChildPanels, _this.handlerError);
   }
 
@@ -350,29 +350,13 @@ export class MsfDashboardComponent implements OnInit {
     _this.globals.isLoading = false;
   }
 
-  removePanel(gridId: number): void
+  removePanel(panelId: number): void
   {
     this.service.confirmationDialog (this, "Are you sure you want to delete this panel?",
       function (_this)
       {
-        let dashboardPanels: MsfDashboardPanelValues[];
-        let dashboardPanel, defaultWidth;
-    
-        // dashboardPanels = _this.dashboardColumns[column];
-    
-        // _this.columnToUpdate = column;
-        // _this.rowToUpdate = row;
-        // dashboardPanel = dashboardPanels[row];
-
-        // reset panel width to avoid mess after deleting one
-        if (dashboardPanels.length == 1)
-          defaultWidth = 0;
-        else
-          defaultWidth = 100 / (dashboardPanels.length - 1);
-
         _this.globals.isLoading = true;
-        _this.service.deleteDashboardPanel (_this, dashboardPanel.id,
-          _this.deleteRowPanel, _this.handlerError);
+        _this.service.deleteDashboardPanel (_this, panelId, _this.deletePanel, _this.handlerError);
       });
   }
 
@@ -382,30 +366,32 @@ export class MsfDashboardComponent implements OnInit {
     _this.globals.isLoading = false;
   }
 
-  deleteRowPanel(_this, defaultWidth): void
+  deletePanel(_this, panelId): void
   {
-    let dashboardPanels = [];
+    let panelToDelete = null;
+    let i;
 
-    dashboardPanels = _this.dashboardColumns[_this.columnToUpdate];
-    dashboardPanels.splice (_this.rowToUpdate, 1);
+    _this.addingOrRemovingPanels = 3;
 
-    // set panel width for synchronization with the database
-    for (let i = 0; i < dashboardPanels.length; i++)
-      dashboardPanels[i].width = defaultWidth;
-
-    // also remove the column if there are no panels left in the row
-    if (!dashboardPanels.length)
+    for (i = 0; i < _this.dashboardPanels.length; i++)
     {
-    }
-    else
-      _this.globals.isLoading = false;
-  }
+      let dashboardPanel = _this.dashboardPanels[i];
 
-  deleteColumn (_this): void
-  {
-    _this.dashboardColumns.splice (_this.columnToUpdate, 1);
+      if (dashboardPanel.id == panelId)
+      {
+        panelToDelete = i;
+        break;
+      }
+    }
+
+    if (panelToDelete != null)
+    {
+      _this.dashboardPanels.splice (panelToDelete, 1);
+      _this.changeDetector.detectChanges ();
+    }
+
+    _this.addingOrRemovingPanels = 0;
     _this.globals.isLoading = false;
-    _this.changeDetector.detectChanges ();
   }
 
   addPanel(): void
@@ -414,7 +400,7 @@ export class MsfDashboardComponent implements OnInit {
 
     this.globals.isLoading = true;
     this.newDashboardPanel = true;
-    this.addingPanels = 2;
+    this.addingOrRemovingPanels = 2;
     newx = 0;
     newy = 0;
     lasth = 0;
@@ -443,7 +429,7 @@ export class MsfDashboardComponent implements OnInit {
 
     this.changeDetector.detectChanges ();
     this.newDashboardPanel = false;
-    this.addingPanels = 0;
+    this.addingOrRemovingPanels = 0;
   }
 
   changePanelHeight(column, index): void
@@ -788,7 +774,7 @@ export class MsfDashboardComponent implements OnInit {
 
   dashboardChanged(panels): void
   {
-    if (!panels || this.addingPanels == 1)
+    if (!panels || this.addingOrRemovingPanels == 1)
       return;
 
     // update panel size and positioning
@@ -805,6 +791,13 @@ export class MsfDashboardComponent implements OnInit {
           break;
         }
       }
+    }
+
+    if (this.addingOrRemovingPanels == 3)
+    {
+      // reset dashboard panel grid IDs
+      for (let i = 0; i < this.dashboardPanels.length; i++)
+        this.dashboardPanels[i].gridId = i;
     }
 
     if (this.newDashboardPanel)
