@@ -421,7 +421,7 @@ export class MsfDashboardComponent implements OnInit {
       if (panel.height > lasth)
         lasth = panel.height;
 
-      if (newy < panel.y)
+      if (newy + defaultPanelHeight <= panel.y)
         break;
 
       if (newx + defaultPanelWidth <= panel.x)
