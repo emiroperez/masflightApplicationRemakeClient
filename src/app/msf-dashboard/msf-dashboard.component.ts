@@ -406,7 +406,6 @@ export class MsfDashboardComponent implements OnInit {
     newy = 0;
     lasth = 0;
 
-
     // sort the dashboard panels from left to right then top to bottom
     this.dashboardPanels.sort (function (e1, e2) {
       return e1.x == e2.x ? e1.x - e2.x : e1.y - e2.y;
@@ -429,7 +428,7 @@ export class MsfDashboardComponent implements OnInit {
 
       newx += panel.x + panel.width;
 
-      if (newx + defaultPanelWidth > maxDashboardWidth)
+      if (newx + defaultPanelWidth > maxDashboardWidth + defaultPanelWidth)
       {
         newx = 0;
         newy += lasth;
@@ -817,9 +816,28 @@ export class MsfDashboardComponent implements OnInit {
 
     if (this.addingOrRemovingPanels == 3)
     {
+      let offy = 0;
+
+      // sort the dashboard panels from left to right then top to bottom
+      this.dashboardPanels.sort (function (e1, e2) {
+        return e1.x == e2.x ? e1.x - e2.x : e1.y - e2.y;
+      });
+
+      if (this.dashboardPanels.length)
+        offy = this.dashboardPanels[0].y;
+
       // reset dashboard panel grid IDs and adjust vertical position
       for (let i = 0; i < this.dashboardPanels.length; i++)
-        this.dashboardPanels[i].gridId = i;
+      {
+        let panel = this.dashboardPanels[i];
+
+        if (offy == panel.y)
+          panel.y -= offy;
+        else
+          offy = panel.y - offy;
+
+        panel.gridId = i;
+      }
     }
 
     if (this.newDashboardPanel)
