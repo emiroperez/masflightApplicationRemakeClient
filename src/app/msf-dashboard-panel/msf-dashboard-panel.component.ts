@@ -166,6 +166,9 @@ export class MsfDashboardPanelComponent implements OnInit {
   @Input("numPanelsInColumn")
   numPanelsInColumn: number;
 
+  @Input("addingPanels")
+  addingPanels: number;
+
   @Output("removeDeadVariablesAndCategories")
   removeDeadVariablesAndCategories = new EventEmitter ();
 
@@ -321,6 +324,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void
   {
+    if (this.addingPanels)
+      return;
+
     if (changes['controlPanelVariables'] && this.controlPanelVariables)
     {
       // validate the panel configuration before updating

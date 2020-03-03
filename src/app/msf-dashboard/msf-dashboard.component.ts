@@ -31,7 +31,7 @@ export class MsfDashboardComponent implements OnInit {
 
   dashboardPanels: MsfDashboardPanelValues[] = [];
   newDashboardPanel: boolean = false;
-  loadingDashboard: boolean = false;
+  addingPanels: number = 0;
   gridStackOptions: any = {
     animate: true,
     cellHeight: 30,
@@ -287,7 +287,7 @@ export class MsfDashboardComponent implements OnInit {
       return;
     }
 
-    _this.loadingDashboard = true;
+    _this.addingPanels = 1;
 
     for (let dashboardPanel of dashboardPanels)
     {
@@ -308,7 +308,7 @@ export class MsfDashboardComponent implements OnInit {
     }
 
     _this.changeDetector.detectChanges ();
-    _this.loadingDashboard = false;
+    _this.addingPanels = 0;
     _this.service.getAllChildPanels (_this, dashboardPanelIds, _this.setChildPanels, _this.handlerError);
   }
 
@@ -414,6 +414,7 @@ export class MsfDashboardComponent implements OnInit {
 
     this.globals.isLoading = true;
     this.newDashboardPanel = true;
+    this.addingPanels = 2;
     newx = 0;
     newy = 0;
     lasth = 0;
@@ -442,6 +443,7 @@ export class MsfDashboardComponent implements OnInit {
 
     this.changeDetector.detectChanges ();
     this.newDashboardPanel = false;
+    this.addingPanels = 0;
   }
 
   changePanelHeight(column, index): void
@@ -786,7 +788,7 @@ export class MsfDashboardComponent implements OnInit {
 
   dashboardChanged(panels): void
   {
-    if (!panels || this.loadingDashboard)
+    if (!panels || this.addingPanels == 1)
       return;
 
     // update panel size and positioning
