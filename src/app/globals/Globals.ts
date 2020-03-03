@@ -62,8 +62,8 @@ export class Globals {
   template : boolean = false;
   isFullscreen: boolean = false;
   // baseUrl = "http://localhost:8887";
-  baseUrl = "http://pulse.globaleagle.com:8887";
-  // baseUrl = "";
+  // baseUrl = "http://pulse.globaleagle.com:8887";
+  baseUrl = "";
   baseUrl2 = "https://pulse.globaleagle.com:8886/mapBoxServices";
   popupUrl = "https://pulse.globaleagle.com:8900";
   // baseUrl2 = "http://pulse.globaleagle.com:8884/mapBoxServices";
@@ -91,6 +91,7 @@ export class Globals {
   buildScheduleMapChart: boolean = false;
 
   admin: boolean = false;
+  SuperAdmin: boolean = false;
   testingPlan: number = -1;
   token = "Gtk5zI0GAeMbFBRgU191vZmJt8YLUGytwuf";
 

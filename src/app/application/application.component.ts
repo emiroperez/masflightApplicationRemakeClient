@@ -171,6 +171,7 @@ export class ApplicationComponent implements OnInit {
     _this.globals.currentUser = data.name;
     _this.userName = data.name;
     _this.globals.admin = data.admin;
+    _this.globals.SuperAdmin = data.superAdmin;
     _this.userService.getUserLastLoginTime (_this, _this.lastTimeSuccess, _this.errorLogin);
   }
 
@@ -333,8 +334,8 @@ export class ApplicationComponent implements OnInit {
 
   handlerSuccess(_this,data)
   {
-    if (!data.categories.length && (!_this.globals.admin ||
-      (_this.globals.admin && _this.globals.testingPlan != -1)))
+    if (!data.categories.length && (!_this.globals.admin && !_this.globals.superAdmin||
+      ((_this.globals.admin || _this.globals.superAdmin) && _this.globals.testingPlan != -1)))
     {
       // send user back to welcome screen if no category menu is found
       _this.router.navigate (["/welcome"]);

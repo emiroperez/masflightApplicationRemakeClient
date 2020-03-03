@@ -67,7 +67,7 @@
                                             </mat-option>
                                         </mat-select>
                                     </mat-form-field>
-                                    <mat-form-field  *ngIf="globals.admin" class="admin-arguments-group-type">
+                                    <mat-form-field  *ngIf="globals.SuperAdmin" class="admin-arguments-group-type">
                                         <mat-select class="white" placeholder="Type" [(ngModel)]="ArgumentGroup.type" >
                                             <mat-option [disabled]="disable" *ngFor="let types of argTypes " [value]="types.value">
                                                 {{types.name}}

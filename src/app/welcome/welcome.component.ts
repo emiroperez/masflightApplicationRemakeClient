@@ -115,6 +115,7 @@ this.mobileQuery.addListener(this._mobileQueryListener);
     _this.userName = _this.globals.currentUser;
     _this.globals.userName = data.email;
     _this.globals.admin = data.admin;
+    _this.globals.superAdmin = data.superAdmin;
 
     if(data.userInfoDatalake){
       data.userInfoDatalake.datalakeRoles.forEach(datalakeRole => {

@@ -307,7 +307,7 @@ addCategory() {
     iataList: [],
     delete: false
   }
-  if (!this.globals.admin){
+  if (!this.globals.SuperAdmin){
     ArgGroup.type=1;
   }
   this.ArgumentsGroups.unshift(ArgGroup);

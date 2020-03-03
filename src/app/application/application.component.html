@@ -58,31 +58,31 @@
         </button>
 
         <mat-menu #adminMenu="matMenu">
-            <button *ngIf="globals.admin"  mat-menu-item routerLink="/admin-menu">
+            <button *ngIf="globals.SuperAdmin"  mat-menu-item routerLink="/admin-menu">
                 <mat-icon class="mat-menu-item-icon">settings</mat-icon>
                 <span>Menu Administration</span>
             </button>
-            <button *ngIf="globals.admin" mat-menu-item routerLink="/arguments-category">
+            <button *ngIf="globals.SuperAdmin" mat-menu-item routerLink="/arguments-category">
                 <mat-icon class="mat-menu-item-icon">category</mat-icon>
                 <span>Arguments Category Administration</span>
             </button>
-            <button *ngIf="globals.admin" mat-menu-item routerLink="/arguments-groups">
+            <button *ngIf="globals.SuperAdmin" mat-menu-item routerLink="/arguments-groups">
                 <mat-icon class="mat-menu-item-icon">group_work</mat-icon>
                 <span>Arguments Group Administration</span>
             </button>
-            <button  *ngIf="globals.admin" mat-menu-item routerLink="/create-membership">
+            <button  *ngIf="globals.SuperAdmin" mat-menu-item routerLink="/create-membership">
                 <mat-icon class="mat-menu-item-icon">contacts</mat-icon>
                 <span>Memberships</span>
             </button>
-            <button *ngIf="globals.admin" mat-menu-item routerLink="/user-activation">
+            <button *ngIf="globals.admin || globals.SuperAdmin" mat-menu-item routerLink="/user-activation">
                 <mat-icon class="mat-menu-item-icon">supervisor_account</mat-icon>
                 <span>Users Activation</span>
             </button>
-            <button *ngIf="globals.admin" mat-menu-item routerLink="/create-customer">
+            <button *ngIf="globals.admin || globals.SuperAdmin" mat-menu-item routerLink="/create-customer">
                 <mat-icon class="mat-menu-item-icon">business</mat-icon>
                 <span>Customers</span>
             </button>
-            <button *ngIf="globals.admin && globals.testingPlan != -1" mat-menu-item (click)="stopPlanTest()">
+            <button *ngIf="globals.SuperAdmin && globals.testingPlan != -1" mat-menu-item (click)="stopPlanTest()">
                 <mat-icon class="mat-menu-item-icon">card_membership</mat-icon>
                 <span>Stop Testing Membership</span>
             </button>
