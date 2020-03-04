@@ -793,28 +793,8 @@ export class MsfDashboardComponent implements OnInit {
 
   dashboardChanged(panels): void
   {
-    let updatedPanels = [];
-
     if (!panels || this.addingOrRemovingPanels == 1 || !this.dashboardPanels.length)
       return;
-
-    // update panel size and positioning
-    for (let item of this.dashboardPanels)
-    {
-      for (let panel of panels)
-      {
-        if (item.gridId == panel.id)
-        {
-          item.x = panel.x;
-          item.y = panel.y;
-          item.width = panel.width;
-          item.height = panel.height;
-
-          updatedPanels.push (item);
-          break;
-        }
-      }
-    }
 
     if (this.newDashboardPanel)
     {
@@ -833,19 +813,26 @@ export class MsfDashboardComponent implements OnInit {
       this.service.createDashboardPanel (this, newPanel, this.addPanelSuccess, this.handlerError);
       newPanelInfo.autoposition = false; // panel position has been set
     }
-    else if (updatedPanels.length)
+    else if (panels.length)
     {
       let panelsToUpdate = [];
 
-      for (let dashboardPanel of updatedPanels)
+      // update panel size and positioning
+      for (let item of this.dashboardPanels)
       {
-        panelsToUpdate.push ({
-          id: dashboardPanel.id,
-          x: dashboardPanel.x,
-          y: dashboardPanel.y,
-          width: dashboardPanel.width,
-          height: dashboardPanel.height
-        });
+        for (let panel of panels)
+        {
+          if (item.gridId == panel.id)
+          {
+            item.x = panel.x;
+            item.y = panel.y;
+            item.width = panel.width;
+            item.height = panel.height;
+
+            panelsToUpdate.push (item);
+            break;
+          }
+        }
       }
 
       if (this.addingOrRemovingPanels == 3)
