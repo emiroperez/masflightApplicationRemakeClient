@@ -205,6 +205,7 @@ import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { AirlineRestrictionsDialogComponent } from './airline-restrictions-dialog/airline-restrictions-dialog.component';
 import { ImageLinkComponent } from './image-link/image-link.component';
 import { DateRestrictionDialogComponent } from './date-restriction-dialog/date-restriction-dialog.component';
+import { GridstackModule } from '@libria/gridstack';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -427,7 +428,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     AngularEditorModule,
     NgxGaugeModule,
     CodemirrorModule,
-    NgxMaskModule.forRoot(options)
+    NgxMaskModule.forRoot(options),
+    GridstackModule.forRoot()
   ],
   providers: [
     AuthService,
