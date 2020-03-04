@@ -377,7 +377,7 @@ export class MsfDashboardComponent implements OnInit {
     let panelToDelete = null;
     let i;
 
-    _this.addingOrRemovingPanels = 1;
+    _this.addingOrRemovingPanels = 2;
 
     for (i = 0; i < _this.dashboardPanels.length; i++)
     {
