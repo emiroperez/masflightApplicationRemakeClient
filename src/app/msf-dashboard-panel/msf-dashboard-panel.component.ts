@@ -3213,7 +3213,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (!_this.values.isLoading)
       return;
 
-      _this.values.isLoading = false;
+    _this.values.isLoading = false;
     _this.destroyChart ();
 
     _this.values.displayPic = true;

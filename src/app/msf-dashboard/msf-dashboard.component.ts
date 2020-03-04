@@ -34,8 +34,8 @@ export class MsfDashboardComponent implements OnInit {
   addingOrRemovingPanels: number = 0;
   gridStackIdCount: number = 0;
   gridStackOptions: any = {
-    animate: true,
     cellHeight: 30,
+    animate: true,
     draggable: {
       handle: ".msf-dashboard-button-move-icon"
     },
@@ -319,9 +319,6 @@ export class MsfDashboardComponent implements OnInit {
       if (legacyDashboard)
       {
         // use auto positioning for legacy dashboard panels
-        dashboardPanel.x = null;
-        dashboardPanel.y = null;
-
         dashboardPanel.width = Math.round (dashboardPanel.width * maxDashboardWidth / 100);
 
         switch (dashboardPanel.height)
@@ -335,11 +332,11 @@ export class MsfDashboardComponent implements OnInit {
             break;
 
           case 2:
-            dashboardPanel.height = 10;
+            dashboardPanel.height = 9;
             break;
 
           case 3:
-            dashboardPanel.height = 12;
+            dashboardPanel.height = 10;
             break;
         }
       }
