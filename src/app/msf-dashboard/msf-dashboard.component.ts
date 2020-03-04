@@ -109,6 +109,7 @@ export class MsfDashboardComponent implements OnInit {
     if (changes['currentDashboardMenu'] && this.options.length != 0)
     {
       // replace dashboard panels if the menu has changed and we're still on the dashboard
+      this.globals.showPaginator = false;
       this.controlPanelVariables = null;
       this.dashboardPanels.splice (0, this.dashboardPanels.length);
       this.gridStackIdCount = 0;
