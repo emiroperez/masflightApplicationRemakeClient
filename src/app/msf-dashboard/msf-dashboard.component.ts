@@ -288,7 +288,7 @@ export class MsfDashboardComponent implements OnInit {
     // check if the dashboard uses the old format for positining
     for (let dashboardPanel of dashboardPanels)
     {
-      if (dashboardPanel.column && dashboardPanel.row)
+      if (dashboardPanel.column != null && dashboardPanel.row != null)
       {
         legacyDashboard = true;
         break;
@@ -795,7 +795,7 @@ export class MsfDashboardComponent implements OnInit {
 
   dashboardChanged(panels): void
   {
-    if (!panels || this.addingOrRemovingPanels == 1 || (this.dashboardPanels && !this.dashboardPanels.length))
+    if (!panels || this.addingOrRemovingPanels == 1 || !this.dashboardPanels.length)
       return;
 
     // update panel size and positioning
