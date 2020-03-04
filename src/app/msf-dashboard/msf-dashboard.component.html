@@ -17,7 +17,7 @@
         </div>
       </div>
     </div>
-    <app-msf-dashboard-control-panel #dashboardControlPanel (updateAllPanels)="updateAllPanels()" (hideCategoryFromCharts)="hideCategoryFromCharts($event)" [controlPanelOpen]="controlPanelOpen" [controlVariablesAvailable]="controlVariablesAvailable" [controlPanelCategories]="controlPanelCategories"></app-msf-dashboard-control-panel>
+    <app-msf-dashboard-control-panel #dashboardControlPanel (updateAllPanels)="updateAllPanels($event)" (hideCategoryFromCharts)="hideCategoryFromCharts($event)" [controlPanelOpen]="controlPanelOpen" [controlVariablesAvailable]="controlVariablesAvailable" [controlPanelCategories]="controlPanelCategories"></app-msf-dashboard-control-panel>
     <div class="msf-dashboard-gridstack" lb-gridstack width="12" [options]="gridStackOptions" (change)="onDashboardChange($event)" *ngIf="dashboardPanels.length">
       <div lb-gridstack-item *ngFor="let panel of dashboardPanels" [id]="panel.gridId" [x]="panel.x" [y]="panel.y" [width]="panel.width" [height]="panel.height" [auto-position]="panel.autoposition" min-width="3" min-height="7" (contextmenu)="onRightClick($event, panel)">
         <div [ngClass]="panel.isLoading ? 'tab-show loading-panel' : 'tab-hide'" id="msf-dashboard-panel-loading" class="msf-dashboard-panel-loading">
