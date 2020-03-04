@@ -35,8 +35,9 @@
           <div class="msf-dashboard-button-move-icon" (click)="disableContextMenu()"></div>
         </div>
         <app-msf-dashboard-panel [values]="panel" [controlPanelVariables]="controlPanelVariables" [panelWidth]="panel.width" [panelHeight]="panel.height"
-          [currentHiddenCategories]="currentHiddenCategories" [addingOrRemovingPanels]="addingOrRemovingPanels" (removeDeadVariablesAndCategories)="removeDeadVariablesAndCategories($event)"
-          (addNewVariablesAndCategories)="addNewVariablesAndCategories($event)" (toggleControlVariableDialogOpen)="toggleControlVariableDialogOpen($event)">
+          [currentHiddenCategories]="currentHiddenCategories" [addingOrRemovingPanels]="addingOrRemovingPanels" [controlPanelInterval]="controlPanelInterval"
+          (removeDeadVariablesAndCategories)="removeDeadVariablesAndCategories($event)" (addNewVariablesAndCategories)="addNewVariablesAndCategories($event)"
+          (toggleControlVariableDialogOpen)="toggleControlVariableDialogOpen($event)">
         </app-msf-dashboard-panel>
       </div>
     </div>
