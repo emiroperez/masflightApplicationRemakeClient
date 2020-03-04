@@ -1,4 +1,4 @@
-<div id="msf-dashboard-element" #scrollContainer (click)="disableContextMenu()" (contextmenu)="disableContextMenu()" (scroll)="disableContextMenu()" class="msf-dashboard-container" [style.height]="screenHeight" [ngStyle]="{ 'cursor': getHoverCursor() }">
+<div id="msf-dashboard-element" #scrollContainer (click)="disableContextMenu()" (contextmenu)="disableContextMenu()" (scroll)="disableContextMenu()" class="msf-dashboard-container" [style.height]="screenHeight">
   <!-- ngClass must be used for the control variable overlay it can override the overlays used on some dialogs such as the wizard -->
   <div [ngClass]="{ 'msf-control-variables-overlay': !controlVariableDialogOpen }">
     <div class="msf-dashboard-header" *ngIf="currentDashboardMenu">
@@ -17,106 +17,44 @@
         </div>
       </div>
     </div>
-    <app-msf-dashboard-control-panel #dashboardControlPanel (updateAllPanels)="updateAllPanels($event)" (hideCategoryFromCharts)="hideCategoryFromCharts($event)" [controlPanelOpen]="controlPanelOpen" [controlVariablesAvailable]="controlVariablesAvailable" [controlPanelCategories]="controlPanelCategories" [dashboardColumns]="dashboardColumns"></app-msf-dashboard-control-panel>
-    <ng-container *ngIf="dashboardColumns.length">
-      <div class="msf-dashboard-chartbox" cdkDropList cdkDropListOrientation="vertical" [cdkDropListData]="dashboardColumns" (cdkDropListDropped)="swapColumnPositions($event)">
-        <div class="{{globals.theme}} msf-dashboard-chartbox-column" *ngFor="let dashboardColumn of dashboardColumns; let column = index" [attr.data-index]="column" cdkDragLockAxis="y" vsDragScroll [vsDragScrollContainer]="scrollContainer" cdkDrag [cdkDragDisabled]="dashboardColumns.length == 1 || globals.readOnlyDashboard || !dashboardColumnsProperties[column]">
-          <div class="msf-dashboard-chartbox-items">
-            <div class="msf-dashboard-chartbox-column" cdkDropList cdkDropListOrientation="horizontal" [cdkDropListData]="dashboardColumns[column]" (cdkDropListDropped)="swapPanelRowPositions($event, dashboardColumns[column], column)">
-              <div (contextmenu)="onrightClick($event, dashboardColumns[column], row)" class="{{globals.theme}} msf-dashboard-chartbox-item" [style.width.%]="getPanelWidth(column, row)" *ngFor="let dashboardPanel of dashboardColumn; let row = index" [attr.data-index]="row" cdkDragLockAxis="x" cdkDrag [cdkDragDisabled]="dashboardColumn.length == 1 || globals.readOnlyDashboard">
-                <div [ngClass]="dashboardPanel.isLoading? 'tab-show loading-panel' : 'tab-hide'" id="msf-dashboard-panel-loading" class="msf-dashboard-panel-loading" [style.height.px]="getHeight(column)">
-                  <div class="msf-dashboard-panel-button">
-                    <mat-icon class="msf-dashboard-button-close-icon" aria-label="close" (click)="removePanel(column, row)">close</mat-icon>
-                    <div class="msf-dashboard-button-move-icon" *ngIf="dashboardColumn.length != 1 && !globals.readOnlyDashboard" cdkDragHandle (click)="disableContextMenu()"></div>
-                  </div>
-                  <button *ngIf="dashboardPanel.isLoading" mat-button class="cancel-button" (click)="cancelLoading(dashboardPanel)">
-                    Cancel
-                    <mat-icon class="close-icon">close</mat-icon> 
-                  </button>
-                </div>
-                <div *ngIf="row && !globals.readOnlyDashboard" (mousedown)='onLineClick($event, column, row - 1, row)' (mouseup)='onLineRelease()' id='msf-dashboard-panel-left-resize' class='msf-dashboard-panel-line-resize'></div>
-                <div *ngIf="row != dashboardColumn.length - 1 && !globals.readOnlyDashboard" (mousedown)='onLineClick($event, column, row, row + 1)' id='msf-dashboard-panel-right-resize' class='msf-dashboard-panel-line-resize'></div>
-                <div class="msf-dashboard-panel-button" *ngIf="!globals.readOnlyDashboard">
-                  <mat-icon class="msf-dashboard-button-close-icon" aria-label="close" (click)="removePanel(column, row)">close</mat-icon>
-                  <div class="msf-dashboard-button-move-icon" *ngIf="dashboardColumn.length != 1" cdkDragHandle (click)="disableContextMenu()"></div>
-                </div>
-                <app-msf-dashboard-panel [values]="dashboardPanel" [reAppendChart]="dashboardColumnsReAppendCharts[column]"
-                  [panelHeight]="getHeight(column)" [panelWidth]="getPanelWidth(column, row)" [controlPanelVariables]="controlPanelVariables"
-                  [currentHiddenCategories]="currentHiddenCategories" (removeDeadVariablesAndCategories)="removeDeadVariablesAndCategories($event)"
-                  (addNewVariablesAndCategories)="addNewVariablesAndCategories($event)" (toggleControlVariableDialogOpen)="toggleControlVariableDialogOpen($event)"
-                  [numPanelsInColumn]="dashboardColumn.length" (removePanel)="removePanel(column, row)" [controlPanelInterval]="controlPanelInterval">
-                </app-msf-dashboard-panel>
-              </div>
-            </div>
-            <div class="msf-dashboard-panel-padding" *ngIf="globals.readOnlyDashboard"></div>
-            <div [ngClass]="globals.readOnlyDashboard ? 'msf-dashboard-panel-size-properties-invisible' : (dashboardColumnsProperties[column] ? 'msf-dashboard-panel-size-properties-open' : 'msf-dashboard-panel-size-properties-closed')">
-              <div *ngIf="!dashboardColumnsProperties[column]" (click)="toggleColumnProperties(column)" class="msf-dashboard-button msf-dashboard-column-dropdown-button">
-                <mat-icon class="msf-dashboard-button-icon msf-dashboard-column-dropdown-icon" aria-label="fold">arrow_drop_down</mat-icon>
-              </div>
-              <ng-container *ngIf="dashboardColumnsProperties[column]">
-                <div class="msf-dashboard-column-properties-align">
-                  <span class="msf-dashboard-column-properties-height-label">Height:</span>
-                  <mat-form-field class="msf-dashboard-column-properties-form-field">
-                    <mat-select [(ngModel)]="dashboardColumns[column][0].height" style="text-align: center" (selectionChange)="changePanelHeight(column, $event.value)">
-                      <mat-option *ngFor="let heightValue of heightValues" [value]="heightValue">
-                        {{heightValue.name}}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                </div>
-                <div class="msf-dashboard-column-button" *ngIf="dashboardColumn.length <= 3">
-                  <ng-container>
-                    <div class="msf-dashboard-column-properties-button">
-                      <button mat-flat-button class="flat-button" (click)="addPanelInColumn(column, 1)">Add 1 panel</button>
-                    </div>
-                  </ng-container>
-                  <ng-container *ngIf="dashboardColumn.length <= 2">
-                    <div class="msf-dashboard-column-properties-button">
-                      <button mat-flat-button class="flat-button" (click)="addPanelInColumn(column, 3)">Add 2 panels</button>
-                    </div>
-                  </ng-container>
-                  <ng-container *ngIf="dashboardColumn.length == 1">
-                    <div class="msf-dashboard-column-properties-button">
-                      <button mat-flat-button class="flat-button" (click)="addPanelInColumn(column, 2)">Add 3 panels</button>
-                    </div>
-                  </ng-container>
-                </div>
-                <div class="msf-dashboard-columns-move-button" *ngIf="dashboardColumns.length != 1">
-                  <div class="msf-dashboard-column-properties-button">
-                    <div class="msf-dashboard-button-move-icon" cdkDragHandle (click)="disableContextMenu()"></div>
-                  </div>
-                </div>
-                <div (click)="toggleColumnProperties(column)" class="msf-dashboard-button msf-dashboard-column-dropdown-button">
-                  <mat-icon class="msf-dashboard-button-icon msf-dashboard-column-dropdown-icon" aria-label="fold">arrow_drop_up</mat-icon>
-                </div>
-              </ng-container>
-            </div>
+    <app-msf-dashboard-control-panel #dashboardControlPanel (updateAllPanels)="updateAllPanels()" (hideCategoryFromCharts)="hideCategoryFromCharts($event)" [controlPanelOpen]="controlPanelOpen" [controlVariablesAvailable]="controlVariablesAvailable" [controlPanelCategories]="controlPanelCategories"></app-msf-dashboard-control-panel>
+    <div class="msf-dashboard-gridstack" lb-gridstack width="12" [options]="gridStackOptions" (change)="onDashboardChange($event)" *ngIf="dashboardPanels.length">
+      <div lb-gridstack-item *ngFor="let panel of dashboardPanels" [id]="panel.gridId" [x]="panel.x" [y]="panel.y" [width]="panel.width" [height]="panel.height" [auto-position]="panel.autoposition" min-width="3" min-height="7" (contextmenu)="onRightClick($event, panel)">
+        <div [ngClass]="panel.isLoading ? 'tab-show loading-panel' : 'tab-hide'" id="msf-dashboard-panel-loading" class="msf-dashboard-panel-loading">
+          <div class="msf-dashboard-panel-button msf-dashboard-panel-loading-button">
+            <mat-icon class="msf-dashboard-button-close-icon" (click)="removePanel(panel.id)" aria-label="close">close</mat-icon>
+            <div class="msf-dashboard-button-move-icon" *ngIf="!globals.readOnlyDashboard" (click)="disableContextMenu()"></div>
           </div>
+          <button *ngIf="panel.isLoading" mat-button class="cancel-button" (click)="cancelLoading(panel)">
+            Cancel
+            <mat-icon class="close-icon">close</mat-icon> 
+          </button>
         </div>
+        <div class="msf-dashboard-panel-button" *ngIf="!globals.readOnlyDashboard">
+          <mat-icon class="msf-dashboard-button-close-icon" (click)="removePanel(panel.id)" aria-label="close">close</mat-icon>
+          <div class="msf-dashboard-button-move-icon" (click)="disableContextMenu()"></div>
+        </div>
+        <app-msf-dashboard-panel [values]="panel" [controlPanelVariables]="controlPanelVariables" [panelWidth]="panel.width" [panelHeight]="panel.height"
+          [currentHiddenCategories]="currentHiddenCategories" [addingOrRemovingPanels]="addingOrRemovingPanels" (removeDeadVariablesAndCategories)="removeDeadVariablesAndCategories($event)"
+          (addNewVariablesAndCategories)="addNewVariablesAndCategories($event)" (toggleControlVariableDialogOpen)="toggleControlVariableDialogOpen($event)">
+        </app-msf-dashboard-panel>
       </div>
-    </ng-container>
-    <div class="msf-dashboard-empty" *ngIf="!dashboardColumns.length">
-      You have not added any panel.<br>
-      Click here to start!
+    </div>
+    <div class="msf-dashboard-empty" *ngIf="!dashboardPanels.length">
+      <ng-container *ngIf="!globals.readOnlyDashboard">
+        You have not added any panel.<br>
+        Click here to start!
+      </ng-container>
+      <ng-container *ngIf="globals.readOnlyDashboard">
+        There are no panels on this dashboard.
+      </ng-container>
     </div>
     <div class="msf-dashboard-addmenu" *ngIf="!globals.readOnlyDashboard">
-      <div class="msf-dashboard-addmenu-item" (click)="toggleDisplayAddPanel()">
+      <div class="msf-dashboard-addmenu-item" (click)="addPanel()">
         <div class="msf-dashboard-addmenu-item-text">
           <mat-icon class="msf-dashboard-icon" aria-label="add">add</mat-icon>
-          <span class="msf-dashboard-addmenu-item-addtext">ADD PANELS</span>
+          <span class="msf-dashboard-addmenu-item-addtext">ADD PANEL</span>
         </div>
-      </div>
-      <div class="msf-dashboard-addmenu-item" *ngIf="displayAddPanel">
-        <div class="msf-dashboard-addmenu-item-text" (click)="addPanel(1)">1 Panel</div>
-      </div>
-      <div class="msf-dashboard-addmenu-item" *ngIf="displayAddPanel">
-        <div class="msf-dashboard-addmenu-item-text" (click)="addPanel(2)">2 Panels</div>
-      </div>
-      <div class="msf-dashboard-addmenu-item" *ngIf="displayAddPanel">
-        <div class="msf-dashboard-addmenu-item-text" (click)="addPanel(3)">3 Panels</div>
-      </div>
-      <div class="msf-dashboard-addmenu-item" *ngIf="displayAddPanel">
-        <div class="msf-dashboard-addmenu-item-text" (click)="addPanel(4)">4 Panels</div>
       </div>
     </div>
     <div *ngIf="displayContextMenu">
