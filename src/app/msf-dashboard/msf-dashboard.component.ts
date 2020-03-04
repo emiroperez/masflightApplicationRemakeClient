@@ -32,7 +32,7 @@ export class MsfDashboardComponent implements OnInit {
   dashboardPanels: MsfDashboardPanelValues[] = [];
   newDashboardPanel: boolean = false;
   addingOrRemovingPanels: number = 0;
-  gridStackCount: number = 0;
+  gridStackIdCount: number = 0;
   gridStackOptions: any = {
     animate: true,
     cellHeight: 30,
@@ -111,6 +111,7 @@ export class MsfDashboardComponent implements OnInit {
       // replace dashboard panels if the menu has changed and we're still on the dashboard
       this.controlPanelVariables = null;
       this.dashboardPanels.splice (0, this.dashboardPanels.length);
+      this.gridStackIdCount = 0;
 
       if (this.currentDashboardMenu != null)
       {
@@ -344,7 +345,7 @@ export class MsfDashboardComponent implements OnInit {
       }
 
       _this.dashboardPanels.push (new MsfDashboardPanelValues (_this.options, dashboardPanel.title,
-        dashboardPanel.id, _this.gridStackCount++, dashboardPanel.x, dashboardPanel.y, dashboardPanel.width,
+        dashboardPanel.id, _this.gridStackIdCount++, dashboardPanel.x, dashboardPanel.y, dashboardPanel.width,
         dashboardPanel.height, _this.getOption (dashboardPanel.option), dashboardPanel.analysis, dashboardPanel.xaxis,
         dashboardPanel.values, dashboardPanel.function, dashboardPanel.chartType,
         dashboardPanel.categoryOptions, dashboardPanel.lastestResponse,
@@ -455,7 +456,7 @@ export class MsfDashboardComponent implements OnInit {
       return e1.x == e2.x ? e1.y - e2.y : e1.x - e2.x;
     });
 
-    this.dashboardPanels.push (new MsfDashboardPanelValues (this.options, "New Panel", null, this.gridStackCount++,
+    this.dashboardPanels.push (new MsfDashboardPanelValues (this.options, "New Panel", null, this.gridStackIdCount++,
       null, null, defaultPanelWidth, defaultPanelHeight));
 
     this.changeDetector.detectChanges ();
@@ -794,7 +795,7 @@ export class MsfDashboardComponent implements OnInit {
 
   dashboardChanged(panels): void
   {
-    if (!panels || this.addingOrRemovingPanels == 1)
+    if (!panels || this.addingOrRemovingPanels == 1 || (this.dashboardPanels && !this.dashboardPanels.length))
       return;
 
     // update panel size and positioning
@@ -830,7 +831,7 @@ export class MsfDashboardComponent implements OnInit {
       this.service.createDashboardPanel (this, newPanel, this.addPanelSuccess, this.handlerError);
       newPanelInfo.autoposition = false; // panel position has been set
     }
-    else
+    else if (this.dashboardPanels)
     {
       let panelsToUpdate = [];
 
