@@ -833,7 +833,14 @@ export class MsfDashboardComponent implements OnInit {
             item.width = panel.width;
             item.height = panel.height;
 
-            panelsToUpdate.push (item);
+            panelsToUpdate.push ({
+              id: item.id,
+              x: item.x,
+              y: item.y,
+              width: item.width,
+              height: item.height
+            });
+
             break;
           }
         }
