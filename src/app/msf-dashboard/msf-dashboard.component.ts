@@ -32,7 +32,6 @@ export class MsfDashboardComponent implements OnInit {
   dashboardPanels: MsfDashboardPanelValues[] = [];
   newDashboardPanel: boolean = false;
   addingOrRemovingPanels: number = 0;
-  deletedPanel: any = null;
   gridStackCount: number = 0;
   gridStackOptions: any = {
     animate: true,
@@ -378,7 +377,7 @@ export class MsfDashboardComponent implements OnInit {
     let panelToDelete = null;
     let i;
 
-    _this.addingOrRemovingPanels = 3;
+    _this.addingOrRemovingPanels = 1;
 
     for (i = 0; i < _this.dashboardPanels.length; i++)
     {
@@ -390,13 +389,6 @@ export class MsfDashboardComponent implements OnInit {
         break;
       }
     }
-
-    _this.deletedPanel = {
-      x: panelToDelete.x,
-      y: panelToDelete.y,
-      width: panelToDelete.width,
-      height: panelToDelete.height
-    };
 
     if (panelToDelete != null)
     {
@@ -413,6 +405,11 @@ export class MsfDashboardComponent implements OnInit {
     this.globals.isLoading = true;
     this.newDashboardPanel = true;
     this.addingOrRemovingPanels = 2;
+
+    // sort the dashboard panels from left to right then top to bottom
+    this.dashboardPanels.sort (function (e1, e2) {
+      return e1.x == e2.x ? e1.x - e2.x : e1.y - e2.y;
+    });
 
     this.dashboardPanels.push (new MsfDashboardPanelValues (this.options, "New Panel", null, this.gridStackCount++,
       null, null, defaultPanelWidth, defaultPanelHeight));
@@ -781,22 +778,6 @@ export class MsfDashboardComponent implements OnInit {
           break;
         }
       }
-    }
-
-    if (this.addingOrRemovingPanels == 3)
-    {
-      let xoffs = this.deletedPanel.x + this.deletedPanel.width;
-      let yoffs = this.deletedPanel.y + this.deletedPanel.height;
-
-      // adjust vertical position of panels when applicable
-      for (let panel of this.dashboardPanels)
-      {
-        if (panel.x + panel.width >= xoffs && panel.x + panel.width <= xoffs
-          && panel.y + panel.height > yoffs)
-          panel.y -= yoffs;
-      }
-
-      this.deletedPanel = null;
     }
 
     if (this.newDashboardPanel)
