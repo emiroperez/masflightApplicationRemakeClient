@@ -852,10 +852,4 @@ export class MsfDashboardComponent implements OnInit {
         this.service.updateDashboardPanelPositions (this, panelsToUpdate, this.positionUpdated, this.positionError);
     }
   }
-
-  panelTest(event, widget): void
-  {
-    console.log (event);
-    console.log (widget);
-  }
 }
