@@ -66,13 +66,6 @@ export class MsfDashboardComponent implements OnInit {
     false     // Map Tracker
   ];
 
-  heightValues: any[] = [
-    { value: 1, name: 'Small' },
-    { value: 3, name: 'Medium' },
-    { value: 6, name: 'Large' },
-    { value: 12, name: 'Very Large' }
-  ];
-
   @Input()
   currentDashboardMenu: any;
 
@@ -279,6 +272,7 @@ export class MsfDashboardComponent implements OnInit {
   {
     let dashboardPanelIds: number[] = [];
     let dashboardPanels: any[] = [];
+    let legacyDashboard = false;
 
     dashboardPanels = data;
     if (!dashboardPanels.length)
@@ -290,22 +284,72 @@ export class MsfDashboardComponent implements OnInit {
 
     _this.addingOrRemovingPanels = 1;
 
+    // check if the dashboard uses the old format for positining
+    for (let dashboardPanel of dashboardPanels)
+    {
+      if (dashboardPanel.column && dashboardPanel.row)
+      {
+        legacyDashboard = true;
+        break;
+      }
+    }
+
+     if (legacyDashboard)
+       _this.addingOrRemovingPanels = 3;
+
     // sort the dashboard panels from left to right then top to bottom
-    _this.dashboardPanels.sort (function (e1, e2) {
-      return e1.x == e2.x ? e1.x - e2.x : e1.y - e2.y;
-    });
+    if (legacyDashboard)
+    {
+      dashboardPanels.sort (function (e1, e2) {
+        return e1.column == e2.column ? e1.row - e2.row : e1.column - e2.column;
+      });
+    }
+    else
+    {
+      dashboardPanels.sort (function (e1, e2) {
+        return e1.x == e2.x ? e1.y - e2.y : e1.x - e2.x;
+      });
+    }
 
     for (let dashboardPanel of dashboardPanels)
     {
-      // TODO: Convert old dashboard panels to the flexible format
       dashboardPanelIds.push (dashboardPanel.id);
+
+      if (legacyDashboard)
+      {
+        // use auto positioning for legacy dashboard panels
+        dashboardPanel.x = null;
+        dashboardPanel.y = null;
+
+        dashboardPanel.width = Math.round (dashboardPanel.width * maxDashboardWidth / 100);
+
+        switch (dashboardPanel.height)
+        {
+          case 0:
+            dashboardPanel.height = 7;
+            break;
+
+          case 1:
+            dashboardPanel.height = 8;
+            break;
+
+          case 2:
+            dashboardPanel.height = 10;
+            break;
+
+          case 3:
+            dashboardPanel.height = 12;
+            break;
+        }
+      }
+
       _this.dashboardPanels.push (new MsfDashboardPanelValues (_this.options, dashboardPanel.title,
         dashboardPanel.id, _this.gridStackCount++, dashboardPanel.x, dashboardPanel.y, dashboardPanel.width,
         dashboardPanel.height, _this.getOption (dashboardPanel.option), dashboardPanel.analysis, dashboardPanel.xaxis,
         dashboardPanel.values, dashboardPanel.function, dashboardPanel.chartType,
         dashboardPanel.categoryOptions, dashboardPanel.lastestResponse,
         dashboardPanel.paletteColors, dashboardPanel.updateTimeInterval,
-        dashboardPanel.row, dashboardPanel.thresholds, dashboardPanel.vertAxisName,
+        dashboardPanel.thresholds, dashboardPanel.vertAxisName,
         dashboardPanel.horizAxisName, dashboardPanel.advIntervalValue,
         dashboardPanel.startAtZero, dashboardPanel.limitMode,
         dashboardPanel.limitAmount, dashboardPanel.ordered,
@@ -408,7 +452,7 @@ export class MsfDashboardComponent implements OnInit {
 
     // sort the dashboard panels from left to right then top to bottom
     this.dashboardPanels.sort (function (e1, e2) {
-      return e1.x == e2.x ? e1.x - e2.x : e1.y - e2.y;
+      return e1.x == e2.x ? e1.y - e2.y : e1.x - e2.x;
     });
 
     this.dashboardPanels.push (new MsfDashboardPanelValues (this.options, "New Panel", null, this.gridStackCount++,
@@ -417,17 +461,6 @@ export class MsfDashboardComponent implements OnInit {
     this.changeDetector.detectChanges ();
     this.newDashboardPanel = false;
     this.addingOrRemovingPanels = 0;
-  }
-
-  changePanelHeight(column, index): void
-  {
-    let dashboardColumn = this.dashboardPanels[column];
-    let i, calculatedHeight;
-    let dashboardIds = [];
-  
-    calculatedHeight = 323 + ((this.dashboardPanels[0].height.value - 1) * 15);
-
-    // this.globals.isLoading = true;
   }
 
   positionUpdated(_this): void
@@ -812,7 +845,10 @@ export class MsfDashboardComponent implements OnInit {
         });
       }
 
-      this.service.updateDashboardPanelPositions (this, panelsToUpdate, this.positionUpdated, this.positionError);
+      if (this.addingOrRemovingPanels == 3)
+        this.service.convertLegacyDashboardPanel (this, panelsToUpdate, this.positionUpdated, this.positionError);
+      else
+        this.service.updateDashboardPanelPositions (this, panelsToUpdate, this.positionUpdated, this.positionError);
     }
   }
 

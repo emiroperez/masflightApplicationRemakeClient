@@ -73,7 +73,6 @@ export class MsfDashboardPanelValues {
     updateTimeLeft: number = 5;
     updateIntervalSwitch: boolean = false;
 
-    row: number;
     childPanels: any[] = [];
     flightRoutes: any[] = [];
 
@@ -108,7 +107,7 @@ export class MsfDashboardPanelValues {
 
     constructor(options: any[], chartName: String, id: number, gridId: number, x: number, y: number, width: number, height: number, currentOption?: any, variable?: any,
         xaxis?: any, valueColumn?: any, func?: any, chartType?: any, currentOptionCategories?: any, lastestResponse?: string,
-        paletteColors?: any, updateTimeInterval?: number, row?: number, thresholds?: any, vertAxisName?: string, horizAxisName?: string,
+        paletteColors?: any, updateTimeInterval?: number, thresholds?: any, vertAxisName?: string, horizAxisName?: string,
         intValue?: any, startAtZero?: boolean, limitMode?: number, limitAmount?: number, ordered?: boolean,
         valueList?: any, minValueRange?: number, maxValueRange?: number, goals?: any)
     {
@@ -178,8 +177,6 @@ export class MsfDashboardPanelValues {
             this.updateTimeLeft = updateTimeInterval;
             this.updateIntervalSwitch = true;
         }
-
-        this.row = row;
 
         this.vertAxisName = vertAxisName;
         this.horizAxisName = horizAxisName;

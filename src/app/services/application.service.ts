@@ -408,6 +408,12 @@ export class ApplicationService {
     this.http.post (_this, url, dashboardPanels, handlerSuccess, handlerError);
   }
 
+  convertLegacyDashboardPanel(_this, dashboardPanels, handlerSuccess, handlerError): void
+  {
+    let url = this.host + "/convertLegacyDashboardPanel";
+    this.http.post (_this, url, dashboardPanels, handlerSuccess, handlerError);
+  }
+
   confirmationDialog(_this, message, callback)
   {
     const dialogRef = this.dialog.open (MsfConfirmationDialogComponent, {
