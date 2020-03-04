@@ -104,6 +104,7 @@ export class MsfDashboardPanelValues {
     gridId: number;
     x: number;
     y: number;
+    autoposition: boolean;
 
     constructor(options: any[], chartName: String, id: number, gridId: number, x: number, y: number, width: number, height: number, currentOption?: any, variable?: any,
         xaxis?: any, valueColumn?: any, func?: any, chartType?: any, currentOptionCategories?: any, lastestResponse?: string,
@@ -117,6 +118,12 @@ export class MsfDashboardPanelValues {
         this.gridId = gridId;
         this.x = x;
         this.y = y;
+
+        if (this.gridId != null && (x == null || y == null))
+            this.autoposition = true;
+        else
+            this.autoposition = false;
+
         this.currentOption = currentOption;
         this.variable = variable;
         this.xaxis = xaxis;

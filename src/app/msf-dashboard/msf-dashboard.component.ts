@@ -32,6 +32,8 @@ export class MsfDashboardComponent implements OnInit {
   dashboardPanels: MsfDashboardPanelValues[] = [];
   newDashboardPanel: boolean = false;
   addingOrRemovingPanels: number = 0;
+  deletedPanel: any = null;
+  gridStackCount: number = 0;
   gridStackOptions: any = {
     animate: true,
     cellHeight: 30,
@@ -40,7 +42,7 @@ export class MsfDashboardComponent implements OnInit {
     },
     resizable: {
       autoHide: true,
-      handles: 'se'
+      handles: 'sw, w, s, e, se'
     }
   };
 
@@ -289,12 +291,17 @@ export class MsfDashboardComponent implements OnInit {
 
     _this.addingOrRemovingPanels = 1;
 
+    // sort the dashboard panels from left to right then top to bottom
+    _this.dashboardPanels.sort (function (e1, e2) {
+      return e1.x == e2.x ? e1.x - e2.x : e1.y - e2.y;
+    });
+
     for (let dashboardPanel of dashboardPanels)
     {
       // TODO: Convert old dashboard panels to the flexible format
       dashboardPanelIds.push (dashboardPanel.id);
       _this.dashboardPanels.push (new MsfDashboardPanelValues (_this.options, dashboardPanel.title,
-        dashboardPanel.id, _this.dashboardPanels.length, dashboardPanel.x, dashboardPanel.y, dashboardPanel.width,
+        dashboardPanel.id, _this.gridStackCount++, dashboardPanel.x, dashboardPanel.y, dashboardPanel.width,
         dashboardPanel.height, _this.getOption (dashboardPanel.option), dashboardPanel.analysis, dashboardPanel.xaxis,
         dashboardPanel.values, dashboardPanel.function, dashboardPanel.chartType,
         dashboardPanel.categoryOptions, dashboardPanel.lastestResponse,
@@ -379,14 +386,21 @@ export class MsfDashboardComponent implements OnInit {
 
       if (dashboardPanel.id == panelId)
       {
-        panelToDelete = i;
+        panelToDelete = dashboardPanel;
         break;
       }
     }
 
+    _this.deletedPanel = {
+      x: panelToDelete.x,
+      y: panelToDelete.y,
+      width: panelToDelete.width,
+      height: panelToDelete.height
+    };
+
     if (panelToDelete != null)
     {
-      _this.dashboardPanels.splice (panelToDelete, 1);
+      _this.dashboardPanels.splice (_this.dashboardPanels.indexOf (panelToDelete), 1);
       _this.changeDetector.detectChanges ();
     }
 
@@ -396,57 +410,12 @@ export class MsfDashboardComponent implements OnInit {
 
   addPanel(): void
   {
-    let newx, newy, lasth;
-
     this.globals.isLoading = true;
     this.newDashboardPanel = true;
     this.addingOrRemovingPanels = 2;
 
-    newx = 0;
-    newy = 0;
-    lasth = 0;
-
-    // sort the dashboard panels from left to right then top to bottom
-    this.dashboardPanels.sort (function (e1, e2) {
-      return e1.x == e2.x ? e1.x - e2.x : e1.y - e2.y;
-    });
-
-    // get coordinates to add new dashboard panel
-    for (let i = 0; i < this.dashboardPanels.length; i++)
-    {
-      let panel = this.dashboardPanels[i];
-      let spaceAvailable: boolean = false;
-
-      if (panel.height > lasth)
-        lasth = panel.height;
-
-      if (newy + defaultPanelHeight <= panel.y)
-        break;
-
-      if (newx + defaultPanelWidth <= panel.x)
-        spaceAvailable = true;
-
-      newx += panel.x + panel.width;
-
-      if (newx + defaultPanelWidth > maxDashboardWidth + defaultPanelWidth)
-      {
-        newx = 0;
-        newy += lasth;
-        lasth = 0;
-      }
-      else if (spaceAvailable)
-        break;
-    }
-
-    // reset panel IDs
-    for (let i = 0; i < this.dashboardPanels.length; i++)
-    {
-      let panel = this.dashboardPanels[i];
-      panel.gridId = i;
-    }
-
-    this.dashboardPanels.push (new MsfDashboardPanelValues (this.options, "New Panel", null, this.dashboardPanels.length,
-      newx, newy, defaultPanelWidth, defaultPanelHeight));
+    this.dashboardPanels.push (new MsfDashboardPanelValues (this.options, "New Panel", null, this.gridStackCount++,
+      null, null, defaultPanelWidth, defaultPanelHeight));
 
     this.changeDetector.detectChanges ();
     this.newDashboardPanel = false;
@@ -816,28 +785,18 @@ export class MsfDashboardComponent implements OnInit {
 
     if (this.addingOrRemovingPanels == 3)
     {
-      let offy = 0;
+      let xoffs = this.deletedPanel.x + this.deletedPanel.width;
+      let yoffs = this.deletedPanel.y + this.deletedPanel.height;
 
-      // sort the dashboard panels from left to right then top to bottom
-      this.dashboardPanels.sort (function (e1, e2) {
-        return e1.x == e2.x ? e1.x - e2.x : e1.y - e2.y;
-      });
-
-      if (this.dashboardPanels.length)
-        offy = this.dashboardPanels[0].y;
-
-      // reset dashboard panel grid IDs and adjust vertical position
-      for (let i = 0; i < this.dashboardPanels.length; i++)
+      // adjust vertical position of panels when applicable
+      for (let panel of this.dashboardPanels)
       {
-        let panel = this.dashboardPanels[i];
-
-        if (offy == panel.y)
-          panel.y -= offy;
-        else
-          offy = panel.y - offy;
-
-        panel.gridId = i;
+        if (panel.x + panel.width >= xoffs && panel.x + panel.width <= xoffs
+          && panel.y + panel.height > yoffs)
+          panel.y -= yoffs;
       }
+
+      this.deletedPanel = null;
     }
 
     if (this.newDashboardPanel)
@@ -855,6 +814,7 @@ export class MsfDashboardComponent implements OnInit {
       };
 
       this.service.createDashboardPanel (this, newPanel, this.addPanelSuccess, this.handlerError);
+      newPanelInfo.autoposition = false; // panel position has been set
     }
     else
     {
@@ -873,5 +833,11 @@ export class MsfDashboardComponent implements OnInit {
 
       this.service.updateDashboardPanelPositions (this, panelsToUpdate, this.positionUpdated, this.positionError);
     }
+  }
+
+  panelTest(event, widget): void
+  {
+    console.log (event);
+    console.log (widget);
   }
 }
