@@ -791,7 +791,7 @@ export class MsfDashboardComponent implements OnInit {
     this.controlVariableDialogOpen = enable;
   }
 
-  dashboardChanged(panels): void
+  onDashboardChange(panels): void
   {
     if (!panels || this.addingOrRemovingPanels == 1 || !this.dashboardPanels.length)
       return;
