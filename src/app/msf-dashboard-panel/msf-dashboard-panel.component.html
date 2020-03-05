@@ -1032,10 +1032,9 @@
     </div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="content-panel-img">
-        <!-- TODO: Picture goes here -->
         <app-image-link [url]="values.urlImg"></app-image-link>
       </div>
-      <div class="msf-dashboard-panel-config-button" *ngIf="!globals.readOnlyDashboard">
+      <div class="msf-dashboard-panel-config-button msf-dashboard-panel-pic-button" *ngIf="!globals.readOnlyDashboard">
         <button mat-mini-fab (click)="goToPicConfiguration()" color="primary" class="msf-dashboard-panel-margin-button" matTooltip="Edit Configuration">
           <mat-icon aria-label="Edit Configuration">menu</mat-icon>
         </button>
