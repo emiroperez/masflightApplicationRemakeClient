@@ -44,7 +44,7 @@
     "events": "^3.0.0",
     "file-saver": "^2.0.0",
     "gridstack": "^0.3.0",
-    "jquery": "^2.2.0",
+    "jquery": "^3.4.1",
     "jquery-ui-dist": "^1.12.1",
     "jqwidgets-scripts": "^6.1.0",
     "jsdom": "^13.0.0",
