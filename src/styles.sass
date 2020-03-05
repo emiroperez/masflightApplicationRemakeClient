@@ -4008,7 +4008,7 @@ mat-tab-group
     font-size: 12px
 
 .msf-dashboard-panel-gridstack
-    height: calc(100% - 20px)
+    height: 100%
 
 .msf-dashboard-panel-container
     padding: 10px
@@ -4193,11 +4193,13 @@ mat-tab-group
     z-index: 1
 
 .msf-dashboard-panel-container-chart
+    display: flex
+    flex-direction: column
     padding: 10px
     overflow-y: visible
     -webkit-overflow-scrolling: touch
     border-radius: 10px
-    height: calc(100% - 20px)
+    height: 100%
     .msf-dashboard-panel-title
         font-size: 16px
         text-align: left
