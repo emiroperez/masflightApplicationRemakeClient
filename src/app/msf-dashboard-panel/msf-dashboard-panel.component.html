@@ -1063,10 +1063,10 @@
            (shmoreResult)=shmoreResult($event)></app-msf-table>
         </div>
         <mat-paginator #paginator [pageIndex]="pageI" [pageSize]="pageSize" [length]="lengthpag" hidePageSize
-            (page)="pageEvent = getServerData($event)" showFirstLastButtons
-            [ngClass]=" values.showPaginator && !values.isLoading ? 'msf-paginator-tableDashboard' : 'msf-hide'"></mat-paginator>
+          (page)="pageEvent = getServerData($event)" showFirstLastButtons
+          [ngClass]="values.showPaginator && !values.isLoading ? 'msf-paginator-tableDashboard' : 'msf-hide'"></mat-paginator>
         <div [ngClass]="moreResultsBtn ? 'msf-menu-more-button' : 'msf-menu-more-button disabled-more-button'"
-            (click)="moreTableResults()" [style.margin-top-px]="3" *ngIf="msfTableRef && msfTableRef.dataSource && !values.showPaginator">
+          (click)="moreTableResults()" [style.margin-top-px]="3" *ngIf="msfTableRef && msfTableRef.dataSource && !values.showPaginator">
           <img style="width: 16px; height: 16px;" src="../../assets/images/{{globals.theme}}-more.png" class="msf-menu-image msf-vertical-middle msf-line">
           <div class="msf-vertical-middle msf-line" style="font-size: 13px;">More Result</div>
         </div>

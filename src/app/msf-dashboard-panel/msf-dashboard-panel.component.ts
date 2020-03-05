@@ -5866,7 +5866,14 @@ export class MsfDashboardPanelComponent implements OnInit {
     }else{
       this.values.showPaginator = false;
     }
-    
+
+    // hide paginator if there are no results
+    if (this.msfTableRef.tableOptions)
+    {
+      if (!this.msfTableRef.tableOptions.dataSource && !this.msfTableRef.tableOptions.template)
+        this.values.showPaginator = false;
+    }
+
     // only save the lastest response if the page number of the table is the first one
     if (!this.actualPageNumber)
     {
