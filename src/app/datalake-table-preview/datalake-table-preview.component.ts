@@ -50,20 +50,7 @@ export class DatalakeTablePreviewComponent {
   }
 
   handlerSuccess(_this, data): void {
-    data = {
-      Columns: [{ title: 'id' }, { title: 'name' }, { title: 'lastName' }, { title: 'Direccion' }],
-      Values: [['1', 'admin', 'administrador', ''],
-      ['2', 'karen', 'perez', 'call 20'],
-      ['3', 'camila', 'vergara', 'calle 123'],
-      ['4', 'karen', 'perez', 'call 20'],
-      ['5', 'camila', 'vergara', 'calle 123'],
-      ['6', 'admin', 'administrador', ''],
-      ['7', 'karen', 'perez', 'call 20'],
-      ['8', 'camila', 'vergara', 'calle 123'],
-      ['9', 'karen', 'perez', 'call 20'],
-      ['10', 'camila', 'vergara', 'calle 123']]
-    }
-
+    
     if (!data) {
       _this.globals.popupLoading = false;
       return;
