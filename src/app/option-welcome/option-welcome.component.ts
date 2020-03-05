@@ -1,6 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Globals } from '../globals/Globals';
-import { forEach } from '@angular/router/src/utils/collection';
 import { MediaMatcher } from '@angular/cdk/layout';
 
 @Component({

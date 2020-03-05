@@ -1,5 +1,4 @@
-import { Component, HostListener, OnInit, Input, SimpleChanges, ViewChild, ChangeDetectorRef } from '@angular/core';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { Component, HostListener, OnInit, Input, SimpleChanges, ViewChild, ChangeDetectorRef, ViewChildren, QueryList, isDevMode } from '@angular/core';
 import { MatDialog } from '@angular/material';
 
 import { Globals } from '../globals/Globals';
@@ -10,30 +9,41 @@ import { ChartFlags } from '../msf-dashboard-panel/msf-dashboard-chartflags';
 import { MsfDashboardControlPanelComponent } from '../msf-dashboard-control-panel/msf-dashboard-control-panel.component';
 import { CategoryArguments } from '../model/CategoryArguments';
 
-const minPanelWidth = 25;
+// dashboard gridstack constants
+const maxDashboardWidth = 12;
+const defaultPanelHeight = 8;
+const defaultPanelWidth = 4;
 
 @Component({
   selector: 'app-msf-dashboard',
-  templateUrl: './msf-dashboard.component.html',
-  styleUrls: ['./msf-dashboard.component.css']
+  templateUrl: './msf-dashboard.component.html'
 })
 export class MsfDashboardComponent implements OnInit {
-  dashboardColumns: MsfDashboardPanelValues[][] = [];
-  dashboardColumnsProperties: boolean[] = [];
-  dashboardColumnsReAppendCharts: boolean[] = [];
   options: any[] = [];
 
-  columnToUpdate: number;
-  rowToUpdate: number;
   screenHeight: string;
-
-  displayAddPanel: boolean = false;
 
   displayContextMenu: boolean = false;
   contextMenuX: number = 0;
   contextMenuY: number = 0;
   contextMenuItems: any;
   contextParentPanel: MsfDashboardPanelValues;
+
+  dashboardPanels: MsfDashboardPanelValues[] = [];
+  newDashboardPanel: boolean = false;
+  addingOrRemovingPanels: number = 0;
+  gridStackIdCount: number = 0;
+  gridStackOptions: any = {
+    cellHeight: 30,
+    animate: true,
+    draggable: {
+      handle: ".msf-dashboard-button-move-icon"
+    },
+    resizable: {
+      autoHide: true,
+      handles: 'sw, w, s, e, se'
+    }
+  };
 
   isAmChartWithMultipleSeries: boolean[] = [
     true,     // Bars
@@ -56,17 +66,10 @@ export class MsfDashboardComponent implements OnInit {
     false     // Map Tracker
   ];
 
-  heightValues: any[] = [
-    { value: 1, name: 'Small' },
-    { value: 3, name: 'Medium' },
-    { value: 6, name: 'Large' },
-    { value: 12, name: 'Very Large' }
-  ];
-
   @Input()
   currentDashboardMenu: any;
 
-  @ViewChild("dashboardControlPanel")
+  @ViewChild("dashboardControlPanel", { static: false })
   dashboardControlPanel: MsfDashboardControlPanelComponent;
 
   controlPanelOpen: boolean;
@@ -76,12 +79,6 @@ export class MsfDashboardComponent implements OnInit {
   hiddenCategoriesValues: any[] = [];
   controlPanelCategories: any[] = [];
   currentHiddenCategories: any;
-
-  // variables for panel resizing
-  currentColumn: number;
-  resizePanel: boolean;
-  leftPanel: any;
-  rightPanel: any;
 
   controlVariableDialogOpen: boolean = false;
 
@@ -113,11 +110,11 @@ export class MsfDashboardComponent implements OnInit {
     if (changes['currentDashboardMenu'] && this.options.length != 0)
     {
       // replace dashboard panels if the menu has changed and we're still on the dashboard
-      this.controlPanelVariables = null;
+      this.globals.showPaginator = false;
       this.controlPanelInterval = -1;
-      this.dashboardColumns.splice (0, this.dashboardColumns.length);
-      this.dashboardColumnsProperties.splice (0, this.dashboardColumnsProperties.length);
-      this.dashboardColumnsReAppendCharts.splice (0, this.dashboardColumnsReAppendCharts.length);
+      this.controlPanelVariables = null;
+      this.dashboardPanels.splice (0, this.dashboardPanels.length);
+      this.gridStackIdCount = 0;
 
       if (this.currentDashboardMenu != null)
       {
@@ -282,7 +279,7 @@ export class MsfDashboardComponent implements OnInit {
   {
     let dashboardPanelIds: number[] = [];
     let dashboardPanels: any[] = [];
-    let dashboardRows = [];
+    let legacyDashboard = false;
 
     dashboardPanels = data;
     if (!dashboardPanels.length)
@@ -292,34 +289,71 @@ export class MsfDashboardComponent implements OnInit {
       return;
     }
 
-    // insert dashboard panels for synchronization
-    for (let i = 0, curColumn = 0; i < dashboardPanels.length; i++)
+    _this.addingOrRemovingPanels = 1;
+
+    // check if the dashboard uses the old format for positining
+    for (let dashboardPanel of dashboardPanels)
     {
-      let dashboardPanel = dashboardPanels[i];
-
-      if (dashboardPanel.column != curColumn)
+      if (dashboardPanel.column != null && dashboardPanel.row != null)
       {
-        curColumn = dashboardPanel.column;
+        legacyDashboard = true;
+        break;
+      }
+    }
 
-        // sort rows before adding the column
-        dashboardRows.sort (function(e1, e2) {
-          return e1.row - e2.row;
-        });
+     if (legacyDashboard)
+       _this.addingOrRemovingPanels = 3;
 
-        _this.dashboardColumns.push (dashboardRows);
-        _this.dashboardColumnsProperties.push (false);
-        _this.dashboardColumnsReAppendCharts.push (false);
-        dashboardRows = [];
+    // sort the dashboard panels from left to right then top to bottom
+    if (legacyDashboard)
+    {
+      dashboardPanels.sort (function (e1, e2) {
+        return e1.column == e2.column ? e1.row - e2.row : e1.column - e2.column;
+      });
+    }
+    else
+    {
+      dashboardPanels.sort (function (e1, e2) {
+        return e1.x == e2.x ? e1.y - e2.y : e1.x - e2.x;
+      });
+    }
+
+    for (let dashboardPanel of dashboardPanels)
+    {
+      dashboardPanelIds.push (dashboardPanel.id);
+
+      if (legacyDashboard)
+      {
+        // use auto positioning for legacy dashboard panels
+        dashboardPanel.width = Math.round (dashboardPanel.width * maxDashboardWidth / 100);
+
+        switch (dashboardPanel.height)
+        {
+          case 0:
+            dashboardPanel.height = 7;
+            break;
+
+          case 1:
+            dashboardPanel.height = 8;
+            break;
+
+          case 2:
+            dashboardPanel.height = 9;
+            break;
+
+          case 3:
+            dashboardPanel.height = 10;
+            break;
+        }
       }
 
-      dashboardPanelIds.push (dashboardPanel.id);
-      dashboardRows.push (new MsfDashboardPanelValues (_this.options, dashboardPanel.title,
-        dashboardPanel.id, dashboardPanel.width, _this.heightValues[dashboardPanel.height],
-        _this.getOption (dashboardPanel.option), dashboardPanel.analysis, dashboardPanel.xaxis,
+      _this.dashboardPanels.push (new MsfDashboardPanelValues (_this.options, dashboardPanel.title,
+        dashboardPanel.id, _this.gridStackIdCount++, dashboardPanel.x, dashboardPanel.y, dashboardPanel.width,
+        dashboardPanel.height, _this.getOption (dashboardPanel.option), dashboardPanel.analysis, dashboardPanel.xaxis,
         dashboardPanel.values, dashboardPanel.function, dashboardPanel.chartType,
         dashboardPanel.categoryOptions, dashboardPanel.lastestResponse,
         dashboardPanel.paletteColors, dashboardPanel.updateTimeInterval,
-        dashboardPanel.row, dashboardPanel.thresholds, dashboardPanel.vertAxisName,
+        dashboardPanel.thresholds, dashboardPanel.vertAxisName,
         dashboardPanel.horizAxisName, dashboardPanel.advIntervalValue,
         dashboardPanel.startAtZero, dashboardPanel.limitMode,
         dashboardPanel.limitAmount, dashboardPanel.ordered,
@@ -327,15 +361,8 @@ export class MsfDashboardComponent implements OnInit {
         dashboardPanel.maxValueRange, dashboardPanel.goals));
     }
 
-    // add the last dashboard column
-    dashboardRows.sort (function(e1, e2) {
-      return e1.row - e2.row;
-    });
-
-    _this.dashboardColumns.push (dashboardRows);
-    _this.dashboardColumnsProperties.push (false);
-    _this.dashboardColumnsReAppendCharts.push (false);
-
+    _this.changeDetector.detectChanges ();
+    _this.addingOrRemovingPanels = 0;
     _this.service.getAllChildPanels (_this, dashboardPanelIds, _this.setChildPanels, _this.handlerError);
   }
 
@@ -354,24 +381,17 @@ export class MsfDashboardComponent implements OnInit {
       return;
     }
 
-    for (let i = 0; i < _this.dashboardColumns.length; i++)
+    for (let panel of _this.dashboardPanels)
     {
-      let dashboardRows = _this.dashboardColumns[i];
-
-      for (let j = 0; j < dashboardRows.length; j++)
+      for (let i = 0; i < drillDownInfo.length; i++)
       {
-        let panel = dashboardRows[j];
-
-        for (let k = 0; k < drillDownInfo.length; k++)
+        if (panel.id == drillDownInfo[i].dashboardPanelId)
         {
-          if (panel.id == drillDownInfo[k].dashboardPanelId)
-          {
-            panel.childPanels.push ({
-              id: drillDownInfo[k].drillDownId,
-              title: childPanelNames[k],
-              childPanelId: drillDownInfo[k].childPanelId
-            });
-          }
+          panel.childPanels.push ({
+            id: drillDownInfo[i].drillDownId,
+            title: childPanelNames[i],
+            childPanelId: drillDownInfo[i].childPanelId
+          });
         }
       }
     }
@@ -384,287 +404,94 @@ export class MsfDashboardComponent implements OnInit {
     _this.globals.isLoading = false;
   }
 
-  removePanel(column, row): void
+  removePanel(panelId: number): void
   {
     this.service.confirmationDialog (this, "Are you sure you want to delete this panel?",
       function (_this)
       {
-        let dashboardPanels: MsfDashboardPanelValues[];
-        let dashboardPanel, defaultWidth;
-    
-        dashboardPanels = _this.dashboardColumns[column];
-    
-        _this.columnToUpdate = column;
-        _this.rowToUpdate = row;
-        dashboardPanel = dashboardPanels[row];
-
-        // reset panel width to avoid mess after deleting one
-        if (dashboardPanels.length == 1)
-          defaultWidth = 0;
-        else
-          defaultWidth = 100 / (dashboardPanels.length - 1);
-
         _this.globals.isLoading = true;
-        _this.service.deleteDashboardPanel (_this, dashboardPanel.id, defaultWidth,
-          _this.deleteRowPanel, _this.handlerError);
+        _this.service.deleteDashboardPanel (_this, panelId, _this.deletePanel, _this.handlerError);
       });
   }
 
-  toggleDisplayAddPanel(): void
+  addPanelSuccess(_this, data): void
   {
-    this.displayAddPanel = !this.displayAddPanel;
-  }
-
-  insertPanels(_this, data): void
-  {
-    let dashboardPanels;
-    let dashboardRows = [];
-
-    dashboardPanels = data;
-
-    // insert the data options for each chart
-    for (let i = 0; i < dashboardPanels.length; i++)
-    {
-      let dashboardPanel = dashboardPanels[i];
-
-      dashboardRows.push (new MsfDashboardPanelValues (_this.options, dashboardPanel.title, dashboardPanel.id,
-        dashboardPanels[0].width, _this.heightValues[dashboardPanels[0].height]));
-    }
-
-    _this.dashboardColumns.push (dashboardRows);
-    _this.displayAddPanel = false;
+    _this.dashboardPanels[_this.dashboardPanels.length - 1].id = data.id; // set id for new panel
     _this.globals.isLoading = false;
   }
 
-  insertPanelsInColumn(_this, data): void
+  deletePanel(_this, panelId): void
   {
-    let i, dashboardColumn, dashboardPanels, dashboardPanel, column;
+    let panelToDelete = null;
+    let i;
 
-    dashboardPanels = data;
-    column = dashboardPanels[0].column;
-    dashboardColumn = _this.dashboardColumns[column];
+    _this.addingOrRemovingPanels = 2;
 
-    // change width values of existing panels in the same column
-    for (i = 0; i < dashboardColumn.length; i++)
+    for (i = 0; i < _this.dashboardPanels.length; i++)
     {
-      dashboardPanel = dashboardColumn[i];
-      dashboardPanel.width = dashboardPanels[0].width;
-    }
+      let dashboardPanel = _this.dashboardPanels[i];
 
-    // insert the data options for each chart
-    for (i = 0; i < dashboardPanels.length; i++)
-    {
-      dashboardPanel = dashboardPanels[i];
-      dashboardColumn.push (new MsfDashboardPanelValues (_this.options, dashboardPanel.title, dashboardPanel.id,
-        dashboardPanel.width, _this.heightValues[dashboardPanel.height]));
-    }
-
-    _this.globals.isLoading = false;
-  }
-
-  deleteRowPanel(_this, defaultWidth): void
-  {
-    let dashboardPanels = [];
-
-    dashboardPanels = _this.dashboardColumns[_this.columnToUpdate];
-    dashboardPanels.splice (_this.rowToUpdate, 1);
-
-    // set panel width for synchronization with the database
-    for (let i = 0; i < dashboardPanels.length; i++)
-      dashboardPanels[i].width = defaultWidth;
-
-    // also remove the column if there are no panels left in the row
-    if (!dashboardPanels.length)
-    {
-      _this.service.deleteDashboardColumn (_this, _this.currentDashboardMenu.id,
-        _this.columnToUpdate, _this.deleteColumn, _this.handlerError);
-    }
-    else
-      _this.globals.isLoading = false;
-  }
-
-  deleteColumn (_this): void
-  {
-    _this.dashboardColumns.splice (_this.columnToUpdate, 1);
-    _this.dashboardColumnsProperties.splice (_this.columnToUpdate, 1);
-    _this.dashboardColumnsReAppendCharts.splice (_this.columnToUpdate, 1);
-    _this.globals.isLoading = false;
-    _this.changeDetector.detectChanges ();
-  }
-
-  // update the dashboard container and hide the menu after
-  // adding a new panel column
-  addPanel(numPanels): void
-  {
-    let panelsToAdd, width, column;
-
-    panelsToAdd = [];
-    column = this.dashboardColumns.length;
-    width = 100 / numPanels;
-
-    for (let i = 0; i < numPanels; i++)
-    {
-      // set the properties for each panel before adding it into the database
-      panelsToAdd.push (
+      if (dashboardPanel.id == panelId)
       {
-        'dashboardMenuId' : this.currentDashboardMenu.id,
-        'row' : i,
-        'column' : column,
-        'title' : "New Panel",
-        'height' : 0,
-        'width' : width
-      });
+        panelToDelete = dashboardPanel;
+        break;
+      }
     }
 
-    this.globals.isLoading = true;
-    this.service.createDashboardPanel (this, panelsToAdd, this.insertPanels, this.handlerError);
-  }
-
-  addPanelInColumn(column, numPanels): void
-  {
-    let dashboardColumns = this.dashboardColumns[column];
-    let panelsToAdd, width;
-
-    panelsToAdd = [];
-    width = 100 / (dashboardColumns.length + numPanels);
-
-    for (let i = 0; i < numPanels; i++)
+    if (panelToDelete != null)
     {
-      // set the properties for each panel before adding it into the database
-      panelsToAdd.push (
-      {
-        'dashboardMenuId' : this.currentDashboardMenu.id,
-        'row' : i,
-        'column' : column,
-        'title' : "New Panel",
-        'height' : this.heightValues.indexOf (dashboardColumns[0].height),
-        'width' : width
-      });
+      _this.dashboardPanels.splice (_this.dashboardPanels.indexOf (panelToDelete), 1);
+      _this.changeDetector.detectChanges ();
     }
 
+    _this.addingOrRemovingPanels = 0;
+    _this.globals.isLoading = false;
+  }
+
+  addPanel(): void
+  {
     this.globals.isLoading = true;
-    this.service.createDashboardPanelInColumn (this, panelsToAdd, width, this.insertPanelsInColumn,
-      this.handlerError);
+    this.newDashboardPanel = true;
+    this.addingOrRemovingPanels = 2;
+
+    // sort the dashboard panels from left to right then top to bottom
+    this.dashboardPanels.sort (function (e1, e2) {
+      return e1.x == e2.x ? e1.y - e2.y : e1.x - e2.x;
+    });
+
+    this.dashboardPanels.push (new MsfDashboardPanelValues (this.options, "New Panel", null, this.gridStackIdCount++,
+      null, null, defaultPanelWidth, defaultPanelHeight));
+
+    this.changeDetector.detectChanges ();
+    this.newDashboardPanel = false;
+    this.addingOrRemovingPanels = 0;
   }
 
-  toggleColumnProperties(column): void
+  positionUpdated(_this): void
   {
-    this.dashboardColumnsProperties[column] = !this.dashboardColumnsProperties[column];
+    if (isDevMode ())
+      console.log ("Dashboard panel positions are updated successfully.");
   }
 
-  getPanelWidth(column, row): number
+  positionError(_this): void
   {
-    return this.dashboardColumns[column][row].width;
-  }
-
-  getHeight(column): number
-  {
-    return this.dashboardColumns[column][0].calculatedHeight;
-  }
-
-  changePanelHeight(column, index): void
-  {
-    let dashboardColumn = this.dashboardColumns[column];
-    let i, calculatedHeight;
-    let dashboardIds = [];
-  
-    calculatedHeight = 323 + ((this.dashboardColumns[column][0].height.value - 1) * 15);
-
-    for (i = 0; i < dashboardColumn.length; i++)
-    {
-      dashboardIds.push (dashboardColumn[i].id);
-
-      if (i >= 1)
-        dashboardColumn[i].height = dashboardColumn[0].height;
-
-      dashboardColumn[i].calculatedHeight = calculatedHeight;
-    }
-
-    // this.globals.isLoading = true;
-    this.service.updateDashboardPanelHeight (this, dashboardIds, this.heightValues.indexOf (index), this.handlerSuccess, this.handlerError);
-  }
-
-  rowSwapSucess(_this): void
-  {
-    if (_this.currentColumn != null)
-      _this.dashboardColumnsReAppendCharts[_this.currentColumn] = false;
-  }
-
-  rowSwapError(_this): void
-  {
-    if (_this.currentColumn != null)
-      _this.dashboardColumnsReAppendCharts[_this.currentColumn] = false;
+    if (isDevMode ())
+      console.log ("Failed to update the dashboard panel positions.");
   }
 
   handlerSuccess(_this): void
   {
-    if (_this.currentColumn != null)
-      _this.dashboardColumnsReAppendCharts[_this.currentColumn] = false;
-
     // _this.globals.isLoading = false;
-  }
-
-  onLineClick(event, column, leftrow, rightrow): void
-  {
-    this.currentColumn = column;
-    this.leftPanel = this.dashboardColumns[column][leftrow];
-    this.rightPanel = this.dashboardColumns[column][rightrow];
-    this.resizePanel = true;
-
-    event.preventDefault ();
-    event.stopPropagation ();
-  }
-
-  @HostListener('document:mousemove', ['$event'])
-  onLineMove(event: MouseEvent)
-  {
-    let offsetX, totalWidth;
-
-    if (!this.resizePanel)
-        return;
-
-    // convert horizontal offset into percentage for proper resizing
-    offsetX = event.movementX * 100 / window.innerWidth;
-    totalWidth = this.leftPanel.width + this.rightPanel.width;
-
-    // begin resizing the panels
-    if (offsetX > 0 && this.rightPanel.width - offsetX < minPanelWidth)
-    {
-      this.rightPanel.width = minPanelWidth;
-      this.leftPanel.width = totalWidth - minPanelWidth;
-      return;
-    }
-    else if (offsetX < 0 && this.leftPanel.width + offsetX < minPanelWidth)
-    {    
-      this.leftPanel.width = minPanelWidth;
-      this.rightPanel.width = totalWidth - minPanelWidth;
-      return;
-    }
-
-    this.leftPanel.width += offsetX;
-    this.rightPanel.width -= offsetX;
-  }
-
-  @HostListener('document:mouseup', ['$event'])
-  onLineRelease(event: MouseEvent)
-  {
-    if (!this.resizePanel)
-      return;
-
-    this.dashboardColumnsReAppendCharts[this.currentColumn] = true;
-    this.resizePanel = false;
-    this.saveResizedPanels ();
   }
 
   saveResizedPanels(): void
   {
-    let dashboardColumn = this.dashboardColumns[this.currentColumn];
     let dashboardIds = [];
 
     // update the database to save changes
-    for (let i = 0; i < dashboardColumn.length; i++)
+    for (let i = 0; i < this.dashboardPanels.length; i++)
     {
-      let dashboardPanel = dashboardColumn[i];
+      let dashboardPanel = this.dashboardPanels[i];
 
       dashboardIds.push ({
         id: dashboardPanel.id,
@@ -673,7 +500,6 @@ export class MsfDashboardComponent implements OnInit {
     }
 
     // this.globals.isLoading = true;
-    this.service.updateDashboardPanelWidth (this, dashboardIds, this.handlerSuccess, this.handlerError);
   }
 
   @HostListener('window:resize', ['$event'])
@@ -687,55 +513,17 @@ export class MsfDashboardComponent implements OnInit {
     this.disableContextMenu ();
   }
 
-  swapPanelRowPositions(event: CdkDragDrop<MsfDashboardPanelValues[]>, dashboardColumn, columnIndex): void
-  {
-    let newPanelPos = [];
-
-    // reappend the chart div element to the chart container of each panel in the specified
-    // column as a workaround to a bug that causes the chart resizing sensor to stop working
-    // after dragging the panels
-    this.currentColumn = columnIndex;
-    this.dashboardColumnsReAppendCharts[columnIndex] = true;
-
-    // do not perform query if the panels are now swapped
-    if (event.previousIndex == event.currentIndex)
-    {
-      setTimeout (() => {
-        this.dashboardColumnsReAppendCharts[this.currentColumn] = false;
-      }, 100);
-
-      return;
-    }
-
-    // move items
-    moveItemInArray (dashboardColumn, event.previousIndex, event.currentIndex);
-
-    // update the database to set the new row position for the panels
-    for (let i = 0; i < dashboardColumn.length; i++)
-    {
-      // swap row position by swapping the dashboard ids
-      newPanelPos.push ({
-        id: dashboardColumn[i].id,
-        column : columnIndex,
-        row: i
-      });
-    }
-
-    // this.globals.isLoading = true;
-    this.service.setDashboardPanelRowPositions (this, newPanelPos, this.rowSwapSucess, this.rowSwapError);
-  }
-
-  onrightClick(event, dashboardColumn, rowindex): boolean
+  onRightClick(event, panel): boolean
   {
     event.stopPropagation ();
 
-    if (!dashboardColumn[rowindex].chartClicked)
+    if (!panel.chartClicked)
     {
       this.displayContextMenu = false;
       return true;
     }
 
-    this.contextMenuItems = dashboardColumn[rowindex].childPanels;
+    this.contextMenuItems = panel.childPanels;
     if (!this.contextMenuItems.length)
     {
       // do not display drill down context menu if there are no child panels
@@ -744,7 +532,7 @@ export class MsfDashboardComponent implements OnInit {
     }
 
     this.contextMenuX = event.clientX;
-    this.contextParentPanel = dashboardColumn[rowindex];
+    this.contextParentPanel = panel;
 
     if (this.globals.isFullscreen)
       this.contextMenuY = event.clientY;
@@ -752,7 +540,7 @@ export class MsfDashboardComponent implements OnInit {
       this.contextMenuY = event.clientY - 90;
 
     // prevent context menu from appearing
-    dashboardColumn[rowindex].chartClicked = false;
+    panel.chartClicked = false;
     this.displayContextMenu = true;
     return false;
   }
@@ -788,15 +576,6 @@ export class MsfDashboardComponent implements OnInit {
     return this.contextMenuY;
   }
 
-  getHoverCursor(): string
-  {
-    // Use column resize while dragging the panels
-    if (this.resizePanel)
-      return "col-resize";
-
-    return "inherit";
-  }
-
   displayChildPanel(contextDrillDownId): void
   {
     this.dialog.open (MsfDashboardChildPanelComponent, {
@@ -815,56 +594,6 @@ export class MsfDashboardComponent implements OnInit {
         secondaryCategoryFilter: this.contextParentPanel.chartSecondaryObjectSelected
       }
     });
-  }
-
-  columnSwapSucess(_this): void
-  {
-    for (let i = 0; i < _this.dashboardColumns.length; i++)
-      _this.dashboardColumnsReAppendCharts[i] = false;
-  }
-
-  columnSwapError(_this): void
-  {
-    for (let i = 0; i < _this.dashboardColumns.length; i++)
-      _this.dashboardColumnsReAppendCharts[i] = false;
-  }
-
-  swapColumnPositions(event: CdkDragDrop<MsfDashboardPanelValues[]>): void
-  {
-    let newColumnPos = [];
-    let i;
-
-    // reappend the chart div elements of every panel
-    for (i = 0; i < this.dashboardColumns.length; i++)
-      this.dashboardColumnsReAppendCharts[i] = true;
-
-    // do not perform query if the columns are now swapped
-    if (event.previousIndex == event.currentIndex)
-      return;
-
-    // move items
-    moveItemInArray (this.dashboardColumns, event.previousIndex, event.currentIndex);
-    moveItemInArray (this.dashboardColumnsProperties, event.previousIndex, event.currentIndex);
-    moveItemInArray (this.dashboardColumnsReAppendCharts, event.previousIndex, event.currentIndex);
-
-    // update the database the new column positions
-    for (i = 0; i < this.dashboardColumns.length; i++)
-    {
-      let dashboardColumn = this.dashboardColumns[i];
-
-      // swap column position by swapping the dashboard ids
-      for (let j = 0; j < dashboardColumn.length; j++)
-      {
-        newColumnPos.push ({
-          id: dashboardColumn[j].id,
-          column : i
-        });
-      }
-    }
-
-    // this.globals.isLoading = true;
-    this.service.setDashboardColumnPositions (this, newColumnPos,
-      this.columnSwapSucess, this.columnSwapError);
   }
 
   cancelLoading(dashboardPanel): void
@@ -1065,5 +794,63 @@ export class MsfDashboardComponent implements OnInit {
   toggleControlVariableDialogOpen(enable: boolean): void
   {
     this.controlVariableDialogOpen = enable;
+  }
+
+  onDashboardChange(panels): void
+  {
+    if (!panels || this.addingOrRemovingPanels == 1 || !this.dashboardPanels.length)
+      return;
+
+    if (this.newDashboardPanel)
+    {
+      let newPanel, newPanelInfo;
+
+      newPanelInfo = this.dashboardPanels[this.dashboardPanels.length - 1];
+      newPanel = {
+        'dashboardMenuId' : this.currentDashboardMenu.id,
+        'title' : newPanelInfo.chartName,
+        'x': newPanelInfo.x,
+        'y': newPanelInfo.y,
+        'height' : newPanelInfo.height,
+        'width' : newPanelInfo.width
+      };
+
+      this.service.createDashboardPanel (this, newPanel, this.addPanelSuccess, this.handlerError);
+      newPanelInfo.autoposition = false; // panel position has been set
+    }
+    else if (panels.length)
+    {
+      let panelsToUpdate = [];
+
+      // update panel size and positioning
+      for (let item of this.dashboardPanels)
+      {
+        for (let panel of panels)
+        {
+          if (item.gridId == panel.id)
+          {
+            item.x = panel.x;
+            item.y = panel.y;
+            item.width = panel.width;
+            item.height = panel.height;
+
+            panelsToUpdate.push ({
+              id: item.id,
+              x: item.x,
+              y: item.y,
+              width: item.width,
+              height: item.height
+            });
+
+            break;
+          }
+        }
+      }
+
+      if (this.addingOrRemovingPanels == 3)
+        this.service.convertLegacyDashboardPanel (this, panelsToUpdate, this.positionUpdated, this.positionError);
+      else
+        this.service.updateDashboardPanelPositions (this, panelsToUpdate, this.positionUpdated, this.positionError);
+    }
   }
 }

@@ -18,7 +18,7 @@ export class DatalakeTablePreviewComponent {
   dataSource: any[] = [];
   dataSourceTable: MatTableDataSource<any>;
 
-  @ViewChild('paginator')
+  @ViewChild('paginator', { static: false })
   paginator: MatPaginator;
 
   edit: boolean = false;

@@ -20,10 +20,10 @@ export class DatalakeCreateTableComponent {
   isLoading: boolean = false;
   redrawTab: boolean = false;
 
-  @ViewChild("tabs")
+  @ViewChild("tabs", { static: false })
   tabs: MatTabGroup;
   
-  @ViewChild("upload")
+  @ViewChild("upload", { static: false })
   upload: DatalakeDataUploadComponent;
 
   constructor(public globals: Globals,public dialogRef: MatDialogRef<DatalakeCreateTableComponent>,

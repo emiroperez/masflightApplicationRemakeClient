@@ -166,7 +166,7 @@ export class MaterialIconPickerComponent implements OnInit {
   @ViewChildren("materialIconSeachText")
   materialIconSearchTextField: QueryList<ElementRef>;
 
-  @ViewChild("materialIconResultTextField")
+  @ViewChild("materialIconResultTextField", { static: false })
   materialIconResultTextField: ElementRef;
 
   @Input("value")

@@ -65,7 +65,6 @@ import { EditOptionsDialog } from './create-memberships/create-memberships.compo
 import { MsfFreeTextInputComponent } from './msf-free-text-input/msf-free-text-input.component';
 import { MsfSelectBoxSingleOptionComponent } from './msf-select-box-single-option/msf-select-box-single-option.component';
 import { MsfSelectBoxMultipleOptionComponent } from './msf-select-box-multiple-option/msf-select-box-multiple-option.component';
-import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { MsfCancelsCheckboxComponent } from './msf-cancels-checkbox/msf-cancels-checkbox.component';
 import { MsfDiversionsCheckboxComponent } from './msf-diversions-checkbox/msf-diversions-checkbox.component';
 import { MsfFlightDelaysCheckboxesComponent } from './msf-flight-delays-checkboxes/msf-flight-delays-checkboxes.component';
@@ -206,6 +205,7 @@ import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { AirlineRestrictionsDialogComponent } from './airline-restrictions-dialog/airline-restrictions-dialog.component';
 import { ImageLinkComponent } from './image-link/image-link.component';
 import { DateRestrictionDialogComponent } from './date-restriction-dialog/date-restriction-dialog.component';
+import { GridstackModule } from '@libria/gridstack';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -420,8 +420,6 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     MatSnackBarModule,
     MatTableModule,
     MatPaginatorModule,
-    OwlDateTimeModule,
-    OwlNativeDateTimeModule,
     ColorPickerModule,
     DragScrollModule,
     DigitOnlyModule,
@@ -430,7 +428,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     AngularEditorModule,
     NgxGaugeModule,
     CodemirrorModule,
-    NgxMaskModule.forRoot(options)
+    NgxMaskModule.forRoot(options),
+    GridstackModule.forRoot()
   ],
   providers: [
     AuthService,

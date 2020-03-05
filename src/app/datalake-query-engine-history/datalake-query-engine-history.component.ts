@@ -20,7 +20,7 @@ export class DatalakeQueryEngineHistoryComponent implements OnInit {
   innerHeight: number;
 
   historyTable: MatTableDataSource<any>;
-  @ViewChild(MatPaginator)
+  @ViewChild(MatPaginator, { static: false })
   paginator: MatPaginator;
   historyColumns: string[] = ['ExecutionId', 'Query','ExecutionStatus', 'Schema', 'Timestamp', 'Name','actions'];
   expandedElement: any | null;

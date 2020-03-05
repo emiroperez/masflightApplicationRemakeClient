@@ -9,8 +9,6 @@
 
 @import "~@mapbox/mapbox-gl-geocoder/lib/mapbox-gl-geocoder.css"
 
-@import "~ng-pick-datetime/assets/style/picker.min.css"
-
 @import "~@angular/material/prebuilt-themes/deeppurple-amber.css"
 
 @import "~codemirror/lib/codemirror.css"
@@ -337,9 +335,9 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             .msf-dashboard-button-close-icon:hover
                 @include msf-dashboard-icon(5px, $primary-color, pointer)
             .msf-dashboard-button-move-icon
-                background-image: url(assets/images/#{$name}-horiz-move.png)       // Replace this image
+                background-image: url(assets/images/#{$name}-drag-icon.png)
             .msf-dashboard-button-move-icon:hover
-                background-image: url(assets/images/#{$name}-horiz-move-hover.png) // Replace this image
+                background-image: url(assets/images/#{$name}-drag-icon-hover.png)
                 @include msf-dashboard-icon(5px, $primary-color, move)
         .msf-dashboard-column-properties-form-field
             .mat-select-value-text
@@ -415,6 +413,8 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             border: 1px solid $quaternary-background-color
             @include msf-dashboard-dialog-loading(250px, $quaternary-background-color, url(assets/images/#{$name}-loading_pulse.gif), 1000)
         .msf-dashboard-assistant-loading
+            @include msf-dashboard-dialog-loading(250px, $quaternary-background-color, url(assets/images/#{$name}-loading_pulse.gif))
+        .msf-select-data-loading
             @include msf-dashboard-dialog-loading(250px, $quaternary-background-color, url(assets/images/#{$name}-loading_pulse.gif))
         .msf-dashboard-info-display
             .msf-dashboard-info-container
@@ -1999,14 +1999,17 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                 border-color: $font-color
         .datalake-create-alarm-hint, .datalake-alarm-emails-hint
             color: $dashboard-border-color !important
-        .airline-selection-type-radio, .airport-selection-type-radio, .content-type-argument-radio-group, .argument-radio-group
+        .airline-selection-type-radio, .airport-selection-type-radio, .airport-selection-type-radio-admin, .content-type-argument-radio-group, .argument-radio-group
             .mat-radio-label
                 border-color: $font-color
                 &:hover
-                    background-color: $primary-color
                     border-color: $primary-color !important
             .mat-radio-outer-circle
                 border-color: $font-color
+        .airline-selection-type-radio, .airport-selection-type-radio
+            .mat-radio-label
+                &:hover
+                    background-color: $primary-color
         .airline-selection-type-radio-checked, .airport-selection-type-radio-checked
             .mat-radio-label
                 background-color: $primary-color
@@ -3826,6 +3829,10 @@ mat-tab-group
     display: flex
     align-items: flex-end
 
+.msf-dashboard-gridstack
+    margin-top: 15px
+    margin-bottom: 20px
+
 .msf-dashboard-map-panelinfo
     width: 184px
     height: 95px
@@ -3854,6 +3861,7 @@ mat-tab-group
     border-style: solid
     .msf-dashboard-map-routelist-container
         width: 170px
+        height: 100%
         font-size: 11px
         overflow-y: auto
         -webkit-overflow-scrolling: touch
@@ -3945,7 +3953,8 @@ mat-tab-group
             @include msf-dashboard-control-panel-button
             cursor: pointer
     .msf-dashboard-empty
-        padding-top: 45px
+        margin-top: 20px
+        margin-bottom: 20px
     .msf-dashboard-addmenu
         margin-top: 10px
         display: table
@@ -3998,14 +4007,16 @@ mat-tab-group
         @include msf-dashboard-icon(5px)
     .msf-dashboard-button-move-icon
         z-index: 2
-        margin-right: -8px
         background-repeat: no-repeat
-        width: 45px
-        height: 20px
+        width: 12px
+        height: 12px
         background-size: 85%
-        padding-top: 5px !important
         margin-right: 3px
         @include msf-dashboard-icon(5px)
+
+.msf-dashboard-panel-loading-button
+    margin-top: -1px
+    margin-left: 1px
 
 .msf-dashboard-chart-icon
     vertical-align: middle
@@ -4022,6 +4033,9 @@ mat-tab-group
     padding-right: $padding-right
     padding-top: $padding-top
     font-size: 12px
+
+.msf-dashboard-panel-gridstack
+    height: 100%
 
 .msf-dashboard-panel-container
     padding: 10px
@@ -4062,10 +4076,26 @@ mat-tab-group
             margin-top: 15px
     .msf-dashboard-panel-sub-container-column-reverse
         @include msf-dashboard-panel-sub-container(row-reverse, 5px)
+        .mat-flat-button
+            padding-left: 10px
+            padding-right: 10px
+            .mat-button-wrapper
+                font-size: 12px
         .msf-dashboard-panel-control-variable-button
             display: flex
-            width: 50px
+            width: 40px
             flex-direction: column
+            .mat-mini-fab
+                width: 35px
+                height: 35px
+                margin-top: 2px
+                .mat-button-wrapper
+                    line-height: 20px
+                    img, .mat-icon
+                        width: 21px
+                        height: 21px
+                        font-size: 21px
+                        margin-top: -1px
 
 .msf-dashboard-panel-anchor-container
     display: flex
@@ -4190,10 +4220,13 @@ mat-tab-group
     z-index: 1
 
 .msf-dashboard-panel-container-chart
+    display: flex
+    flex-direction: column
     padding: 10px
     overflow-y: visible
     -webkit-overflow-scrolling: touch
     border-radius: 10px
+    height: 100%
     .msf-dashboard-panel-title
         font-size: 16px
         text-align: left
@@ -4205,6 +4238,10 @@ mat-tab-group
     .msf-dashboard-panel-sub-container-column
         @include msf-dashboard-panel-sub-container(row, 5px)
         position: relative
+        height: calc(100% - 35px)
+
+.msf-dashboard-panel-pic-button
+    opacity: 0 !important
 
 .msf-dashboard-panel-config-button
     opacity: 0.05
@@ -4226,7 +4263,7 @@ mat-tab-group
         height: 24px
 
 .msf-dashboard-panel-config-button:hover
-    opacity: 1
+    opacity: 1 !important
     transition: opacity 0.5s ease-in
     @include msf-dashboard-panel-config-button
 
@@ -4615,6 +4652,7 @@ mat-tab-group
     padding-bottom: 0 !important
     border-radius: 10px
     width: calc(100% - 2px) !important
+    height: calc(100% - 2px) !important
     @extend .msf-dashboard-dialog
     .cancel-button
         margin-top: 10px !important
@@ -4652,6 +4690,9 @@ mat-tab-group
     margin-top: -5px
     padding-right: 5px
     font-size: 22px
+
+.msf-dashboard-panel-sub-container-form-column
+    overflow-y: auto !important
 
 #msf-dashboard-panel-form-container-column
     flex-direction: column
@@ -5736,6 +5777,7 @@ li.msf-select:before
     @extend .msf-summary-icon
 
 .msf-menu-complete-row
+    margin-left: -10px
     position: absolute
     left: 20px
 
@@ -7869,7 +7911,7 @@ button.mat-icon-button-menu
     transition: 0.25s
 
 .msf-menu-internal-content-mobile 
-    height: calc(100% - 20px)
+    height: 100%
     background-color: #ffffff
     vertical-align: middle
 
@@ -10688,6 +10730,15 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         padding-left: 18px
         padding-top: 18px
         width: 300px
+
+// hide gridstack UI resizable cursor
+.grid-stack > .grid-stack-item > .ui-resizable-sw, .grid-stack > .grid-stack-item > .ui-resizable-se
+    background-image: none !important
+
+// gridstack.js animation workaround
+.grid-stack-item
+    top: 0
+    left: 0
 
 .Datalake-editTableData
     .datalake-table-edit-input

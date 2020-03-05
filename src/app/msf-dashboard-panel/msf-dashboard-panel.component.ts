@@ -72,7 +72,6 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   chart: any;
   chartInfo: any;
-  redisplayChart: boolean = false;
 
   paletteColors: string[];
 
@@ -151,17 +150,12 @@ export class MsfDashboardPanelComponent implements OnInit {
   values: MsfDashboardPanelValues;
   temp: MsfDashboardPanelValues;
 
-  @Input("panelHeight")
-  panelHeight: number;
-
   @Input("panelWidth")
   panelWidth: number;
+
+  @Input("panelHeight")
+  panelHeight: number;
   displayLabel: boolean = true;
-
-  panelHeightOffset: number;
-
-  @Input("reAppendChart")
-  reAppendChart: boolean;
 
   @Input("controlPanelVariables")
   controlPanelVariables: CategoryArguments[];
@@ -171,6 +165,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   @Input("numPanelsInColumn")
   numPanelsInColumn: number;
+
+  @Input("addingOrRemovingPanels")
+  addingOrRemovingPanels: number;
 
   @Output("removeDeadVariablesAndCategories")
   removeDeadVariablesAndCategories = new EventEmitter ();
@@ -198,7 +195,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   updateInterval: any;
 
   // table variables
-  @ViewChild('msfTableRef')
+  @ViewChild('msfTableRef', { static: false })
   msfTableRef: MsfTableComponent;
 
   // map variables
@@ -243,7 +240,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   private _onDestroy = new Subject<void> ();
 
   // mapbox variables
-  @ViewChild('msfMapRef')
+  @ViewChild('msfMapRef', { static: true })
   msfMapRef: MsfMapComponent;
   mapboxInterval: any;
   lastWidth: number;
@@ -270,7 +267,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   intervalTableRows: any[] = [];
   
   //paginator
-  @ViewChild('paginator')
+  @ViewChild('paginator', { static: false })
   paginator: MatPaginator;
 
   pageIndex: any;
@@ -315,8 +312,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   ngOnInit()
   {
-    this.panelHeightOffset = this.panelHeight - 18;
-    this.displayLabel = this.panelWidth >= 35 ? true : false;
+    this.displayLabel = this.panelWidth >= 5 ? true : false;
 
     // prepare the data form combo box
     this.optionSearchChange (this.dataFormFilterCtrl);
@@ -331,20 +327,10 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void
   {
-    if (changes['reAppendChart'] && this.reAppendChart)
-    {
-      if (this.values.chartGenerated)
-      {
-        if (this.values.displayChart)
-        {
-          let chartElement = document.getElementById ("msf-dashboard-chart-display-" + this.values.id);
-          document.getElementById ("msf-dashboard-chart-display-container-" + this.values.id).appendChild (chartElement);
-        }
-        else
-          this.redisplayChart = true;
-      }
-    }
-    else if (changes['controlPanelVariables'] && this.controlPanelVariables)
+    if (this.addingOrRemovingPanels)
+      return;
+
+    if (changes['controlPanelVariables'] && this.controlPanelVariables)
     {
       // validate the panel configuration before updating
       if (!this.checkPanelConfiguration ())
@@ -426,10 +412,18 @@ export class MsfDashboardPanelComponent implements OnInit {
         this.loadData ();
       }, 10);
     }
-    else if (changes['panelHeight'])
-      this.panelHeightOffset = this.panelHeight - 18;
     else if (changes['panelWidth'])
-      this.displayLabel = this.panelWidth >= 35 ? true : false;
+    {
+      this.displayLabel = this.panelWidth >= 5 ? true : false;
+
+      if (this.values.currentChartType.flags & ChartFlags.MAPBOX && this.values.displayMapbox)
+        this.msfMapRef.resizeMap ();
+    }
+    else if (changes['panelHeight'])
+    {
+      if (this.values.currentChartType.flags & ChartFlags.MAPBOX && this.values.displayMapbox)
+        this.msfMapRef.resizeMap ();
+    }
     else if (changes['currentHiddenCategories'])
     {
       for (let series of this.values.chartSeries)
@@ -2834,7 +2828,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     else
       urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
 
-    urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=1&page_number=0";
+    urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
     urlArg = encodeURIComponent (urlBase);
 
     if (isDevMode ())
@@ -3255,7 +3249,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (!_this.values.isLoading)
       return;
 
-      _this.values.isLoading = false;
+    _this.values.isLoading = false;
     _this.destroyChart ();
 
     _this.values.displayPic = true;
@@ -3993,12 +3987,13 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (!this.temp)
     {
       this.temp = new MsfDashboardPanelValues (this.values.options, this.values.chartName,
-        this.values.id, this.values.width, this.values.height);
+        this.values.id, this.values.gridId, this.values.x, this.values.y, this.values.width,
+        this.values.height);
     }
     else
       this.temp.chartName = this.values.chartName;
-      this.temp.urlImg = this.values.urlImg;
 
+    this.temp.urlImg = this.values.urlImg;
     this.temp.currentOption = JSON.parse (JSON.stringify (this.values.currentOption));
     this.temp.variable = this.values.variable ? this.values.variable.item.id : null;
     this.temp.xaxis = this.values.xaxis ? this.values.xaxis.item.id : null;
@@ -4139,6 +4134,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.values.displayChart = true;
 
     // discard any changes
+    this.values.urlImg = this.temp.urlImg;
     this.values.currentOption = JSON.parse (JSON.stringify (this.temp.currentOption));
     this.values.chartName = this.temp.chartName;
 
@@ -4279,13 +4275,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
 
     this.changeDetectorRef.detectChanges ();
-
-    if (this.redisplayChart)
-    {
-      let chartElement = document.getElementById ("msf-dashboard-chart-display-" + this.values.id);
-      document.getElementById ("msf-dashboard.chart-display-container-" + this.values.id).appendChild (chartElement);
-      this.redisplayChart = false;
-    }
   }
 
   // check if the x axis should be enabled or not depending of the chart type
@@ -5402,16 +5391,6 @@ export class MsfDashboardPanelComponent implements OnInit {
       });
   }
 
-  calcPanelHeight(): number
-  {
-    return this.panelHeight - 50;
-  }
-
-  calcRouteListHeight(): number
-  {
-    return this.panelHeight - 71;
-  }
-
   isInformationPanel(): boolean
   {
     return (this.values.currentChartType.flags & ChartFlags.INFO
@@ -5887,7 +5866,14 @@ export class MsfDashboardPanelComponent implements OnInit {
     }else{
       this.values.showPaginator = false;
     }
-    
+
+    // hide paginator if there are no results
+    if (this.msfTableRef.tableOptions)
+    {
+      if (!this.msfTableRef.tableOptions.dataSource && !this.msfTableRef.tableOptions.template)
+        this.values.showPaginator = false;
+    }
+
     // only save the lastest response if the page number of the table is the first one
     if (!this.actualPageNumber)
     {
@@ -7128,14 +7114,6 @@ export class MsfDashboardPanelComponent implements OnInit {
   toggleAnchoredArguments(): void
   {
     this.displayAnchoredArguments = !this.displayAnchoredArguments;
-  }
-
-  getPanelHeightOffset(): string
-  {
-    if (this.displayAnchoredArguments)
-      return "inherit";
-
-    return "0";
   }
 
   saveAnchoredChanges(): void

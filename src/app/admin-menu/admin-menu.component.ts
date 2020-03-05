@@ -58,7 +58,7 @@ export class DrillDownDialog {
   public optCtrl: FormControl = new FormControl();
   public optFilterCtrl: FormControl = new FormControl();
   public filteredOpts: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
-  @ViewChild('singleSelect') singleSelect: MatSelect;
+  @ViewChild('singleSelect', { static: false }) singleSelect: MatSelect;
   protected _onDestroy = new Subject<void>();
 
   constructor(
@@ -148,8 +148,8 @@ export class DrillDownDialog {
 })
 
 export class EditOutputOptionsMetaDialog {
-  @ViewChild('table') table: MatTable<any>;
-  @ViewChild('list') list: CdkDropList;
+  @ViewChild('table', { static: false }) table: MatTable<any>;
+  @ViewChild('list', { static: false }) list: CdkDropList;
   optionSelected: any;
   dataToSend: any[] = [];
   dataToDelete: any[] = [];
@@ -1062,7 +1062,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
   filteredCategories: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
 
-  @ViewChild("materialIconPicker")
+  @ViewChild("materialIconPicker", { static: false })
   materialIconPicker: MaterialIconPickerComponent;
 
   optionTypes: any[] = [

@@ -16,25 +16,25 @@ import { MsfScheduleMapsComponent } from '../msf-schedule-maps/msf-schedule-maps
 export class MsfContainerComponent implements OnInit {
 
 
-  @ViewChild('msfTableRef')
+  @ViewChild('msfTableRef', { static: false })
   msfTableRef: MsfTableComponent;
 
-  @ViewChild('msfMapRef')
+  @ViewChild('msfMapRef', { static: false })
   msfMapRef: MsfMapComponent;
 
-  @ViewChild('msfDynamicTableRef')
+  @ViewChild('msfDynamicTableRef', { static: false })
   msfDynamicTableRef: MsfDynamicTableComponent;
 
-  @ViewChild('msfDynamicTableTabRef')
+  @ViewChild('msfDynamicTableTabRef', { static: false })
   msfDynamicTableTabRef: MatTab;
 
-  @ViewChild('msfScMapRef')
+  @ViewChild('msfScMapRef', { static: false })
   msfScMapRef: MsfScheduleMapsComponent;
   
-  @ViewChild('msfWelcomeTab')
+  @ViewChild('msfWelcomeTab', { static: false })
   msfWelcomeTab: MatTab;
 
-  @ViewChild(MatTabGroup) tabGroup: MatTabGroup;
+  @ViewChild(MatTabGroup, { static: false }) tabGroup: MatTabGroup;
 
 
   @Input("paginator")

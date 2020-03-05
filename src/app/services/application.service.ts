@@ -374,26 +374,14 @@ export class ApplicationService {
 
   createDashboardPanel(_this, panels, handlerSuccess, handlerError): void
   {
-    let url = "/addDashboardPanels";
+    let url = "/addDashboardPanel";
     this.http.post (_this, this.host + url, panels, handlerSuccess, handlerError);
   }
 
-  createDashboardPanelInColumn(_this, panels, width, handlerSuccess, handlerError): void
+  deleteDashboardPanel(_this, panelId, handlerSuccess, handlerError): void
   {
-    let url = "/addDashboardPanels/column?width=" + width;
-    this.http.post (_this, this.host + url, panels, handlerSuccess, handlerError);
-  }
-
-  deleteDashboardPanel(_this, id, width, handlerSuccess, handlerError): void
-  {
-    let url = this.host + "/deleteDashboardPanel?width=" + width;
-    this.http.post (_this, url, id, handlerSuccess, handlerError);
-  }
-
-  deleteDashboardColumn(_this, dashboardMenuId, column, handlerSuccess, handlerError): void
-  {
-    let url = "/updateDashboardPanelColumns?dashboardMenuId=" + dashboardMenuId + "&column=" + column;
-    this.http.post (_this, this.host + url, null, handlerSuccess, handlerError);
+    let url = this.host + "/deleteDashboardPanel";
+    this.http.post (_this, url, panelId, handlerSuccess, handlerError);
   }
 
   getDashboardPanels(_this, dashboardMenuId, handlerSuccess, handlerError): void
@@ -414,22 +402,16 @@ export class ApplicationService {
     this.http.post (_this, url, panel, handlerSuccess, handlerError);
   }
 
-  updateDashboardPanelHeight(_this, dashboardIds, height, handlerSuccess, handlerError): void
+  updateDashboardPanelPositions(_this, dashboardPanels, handlerSuccess, handlerError): void
   {
-    let url = this.host + "/updateDashboardPanelHeight?height=" + height;
-    this.http.post (_this, url, dashboardIds, handlerSuccess, handlerError);
+    let url = this.host + "/updateDashboardPanelPositions";
+    this.http.post (_this, url, dashboardPanels, handlerSuccess, handlerError);
   }
 
-  updateDashboardPanelWidth(_this, dashboardIds, handlerSuccess, handlerError): void
+  convertLegacyDashboardPanel(_this, dashboardPanels, handlerSuccess, handlerError): void
   {
-    let url = this.host + "/updateDashboardPanelWidth";
-    this.http.post (_this, url, dashboardIds, handlerSuccess, handlerError);
-  }
-
-  setDashboardPanelRowPositions(_this, panels, handlerSuccess, handlerError): void
-  {
-    let url = this.host + "/updateDashboardPanelRowPositions";
-    this.http.post (_this, url, panels, handlerSuccess, handlerError);
+    let url = this.host + "/convertLegacyDashboardPanel";
+    this.http.post (_this, url, dashboardPanels, handlerSuccess, handlerError);
   }
 
   confirmationDialog(_this, message, callback)
@@ -548,12 +530,6 @@ export class ApplicationService {
   {
     let url = this.host + "/addSharedPanel?dashboardId=" + dashboardId + "&panelId=" + panelId;
     this.http.post (_this, url, null, handlerSuccess, handlerError);
-  }
-
-  setDashboardColumnPositions(_this, columns, handlerSuccess, handlerError): void
-  {
-    let url = this.host + "/updateDashboardColumnPositions";
-    this.http.post (_this, url, columns, handlerSuccess, handlerError);
   }
 
   getCustomers(_this, handlerSuccess, handlerError): void

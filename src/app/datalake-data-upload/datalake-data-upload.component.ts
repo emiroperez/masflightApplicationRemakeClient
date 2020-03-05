@@ -19,7 +19,7 @@ export class DatalakeDataUploadComponent{
   @Input("schemas")
   schemas: DatalakeQuerySchema[] = [];
 
-  @ViewChild("fileLocation")
+  @ViewChild("fileLocation", { static: false })
   fileLocation: MatInput ;
 
   // @Input("buckets") kp 16/12/2019

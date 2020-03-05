@@ -73,7 +73,6 @@ export class MsfDashboardPanelValues {
     updateTimeLeft: number = 5;
     updateIntervalSwitch: boolean = false;
 
-    row: number;
     childPanels: any[] = [];
     flightRoutes: any[] = [];
 
@@ -101,15 +100,29 @@ export class MsfDashboardPanelValues {
 
     tokenResultTable: any;
 
-    constructor(options: any[], chartName: String, id: number, width: any, height: any, currentOption?: any, variable?: any,
+    gridId: number;
+    x: number;
+    y: number;
+    autoposition: boolean;
+
+    constructor(options: any[], chartName: String, id: number, gridId: number, x: number, y: number, width: number, height: number, currentOption?: any, variable?: any,
         xaxis?: any, valueColumn?: any, func?: any, chartType?: any, currentOptionCategories?: any, lastestResponse?: string,
-        paletteColors?: any, updateTimeInterval?: number, row?: number, thresholds?: any, vertAxisName?: string, horizAxisName?: string,
+        paletteColors?: any, updateTimeInterval?: number, thresholds?: any, vertAxisName?: string, horizAxisName?: string,
         intValue?: any, startAtZero?: boolean, limitMode?: number, limitAmount?: number, ordered?: boolean,
         valueList?: any, minValueRange?: number, maxValueRange?: number, goals?: any)
     {
         this.options = options;
         this.chartName = chartName;
         this.id = id;
+        this.gridId = gridId;
+        this.x = x;
+        this.y = y;
+
+        if (this.gridId != null && (x == null || y == null))
+            this.autoposition = true;
+        else
+            this.autoposition = false;
+
         this.currentOption = currentOption;
         this.variable = variable;
         this.xaxis = xaxis;
@@ -119,8 +132,8 @@ export class MsfDashboardPanelValues {
         this.width = width;
         this.height = height;
 
-        if (height != null)
-            this.calculatedHeight = 323 + ((height.value - 1) * 15);
+        // if (height != null)
+            // this.calculatedHeight = 323 + ((height.value - 1) * 15);
 
         if (thresholds)
             this.thresholds = JSON.parse (thresholds);
@@ -164,8 +177,6 @@ export class MsfDashboardPanelValues {
             this.updateTimeLeft = updateTimeInterval;
             this.updateIntervalSwitch = true;
         }
-
-        this.row = row;
 
         this.vertAxisName = vertAxisName;
         this.horizAxisName = horizAxisName;

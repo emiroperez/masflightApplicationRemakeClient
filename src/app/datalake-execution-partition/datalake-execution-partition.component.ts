@@ -20,7 +20,7 @@ export class DatalakeExecutionPartitionComponent implements OnInit {
   //   cron: 'Alter table'
   // }
   // ];
-  @ViewChild('partitionDetail')
+  @ViewChild('partitionDetail', { static: false })
   partitionDetail : DatalakeExecutionPartitionViewDetailComponent;
 
   detailView: boolean = true;

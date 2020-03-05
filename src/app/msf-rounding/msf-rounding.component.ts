@@ -1,8 +1,7 @@
-import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Arguments } from '../model/Arguments';
 import { FormControl } from '@angular/forms';
-import { ReplaySubject ,  Subject } from 'rxjs';
-import { MatSelect } from '@angular/material';
+import { ReplaySubject, Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 import { ApiClient } from '../api/api-client';
 
@@ -31,9 +30,6 @@ export class MsfRoundingComponent implements OnInit {
                           {id: 2, name: '2 Digits (n.dd)'},
                           {id: 3, name: '3 Digits (n.ddd)'}
                         ];
-
-  @ViewChild('roundingSelect') roundingSelect: MatSelect;
-
 
   loading = false;
   constructor(private http: ApiClient) { }

@@ -23,7 +23,7 @@ import { MsfShareDashboardComponent } from '../msf-share-dashboard/msf-share-das
 })
 export class DatalakeComponent implements OnInit {
 
-  @ViewChild("dataExplorer")
+  @ViewChild("dataExplorer", { static: false })
   dataExplorer: DatalakeExplorerComponent;
 
   currentOption: any;

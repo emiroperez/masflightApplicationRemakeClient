@@ -13,7 +13,7 @@ export class MenuOptionComponent implements OnInit {
 
   @Input("trigger") trigger: MatMenuTrigger;
 
-  @ViewChild('childMenu') public childMenu;
+  @ViewChild('childMenu', { static: true }) public childMenu;
 
 
   @Output('optionChanged')
