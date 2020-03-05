@@ -43,7 +43,7 @@
     "core-js": "^2.5.4",
     "events": "^3.0.0",
     "file-saver": "^2.0.0",
-    "gridstack": "^0.3.0",
+    "gridstack": "^0.4.0",
     "jquery": "^3.4.1",
     "jquery-ui-dist": "^1.12.1",
     "jqwidgets-scripts": "^6.1.0",
