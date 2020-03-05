@@ -45,6 +45,7 @@ export class DatalakeComponent implements OnInit {
   dashboards: Array<DashboardMenu>;
 
   bodyHeight: number;
+  userDatalake: boolean = false;
 
   constructor(public globals: Globals, private appService: ApplicationService,
     private changeDetectorRef: ChangeDetectorRef,
@@ -125,8 +126,12 @@ export class DatalakeComponent implements OnInit {
     _this.globals.currentUser = data.name;
     _this.globals.admin = data.admin;
     _this.globals.userName = data.email;
+    _this.globals.SuperAdmin = data.superAdmin;
 
     if (data.userInfoDatalake) {
+      if(data.userInfoDatalake.state){
+          _this.userDatalake = true;
+      }
       data.userInfoDatalake.datalakeRoles.forEach(datalakeRole => {
         datalakeRole.role.datalakeOption.forEach(datalakeOption => {
           if (datalakeOption) {

@@ -2056,7 +2056,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
         .msf-large-container
             color: $font-color
         .datalake-table-export-excel
-            border: 1px solid $admin-button-color
+            border: 1px solid $admin-button-color            
             .mat-button-wrapper
                 color: $admin-button-color
             &:hover
@@ -8734,8 +8734,8 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
             display: flex
             padding: 0px
             .mat-button-wrapper
-                height: 28px
-                width: 28px
+                height: 30px
+                width: 30px
                 display: flex
                 align-items: center
                 justify-content: center
@@ -8747,6 +8747,9 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                 .datalake-table-card-button-csv
                     width: 22px
                     height: 22px
+                .datalake-table-card-button-editTable
+                    width: 28px
+                    height: 28px
                 .datalake-table-card-button-query-image
                     // margin-top: -3px !important
                 .datalake-table-card-button-query-complete-image
@@ -8762,9 +8765,10 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         .datalake-table-show-table-header
             display: flex
             height: 60px
+            justify-content: space-between
             .datalake-table-show-table-title
                 // min-width: 300px
-                width: 80%
+                width: 50%
                 padding: 15px
                 .datalake-table-show-table-longname
                     font-weight: 550
@@ -8776,12 +8780,15 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                 padding-right: 5px
                 display: flex
                 flex-direction: row
-                width: 20%
+                width: 50%
                 justify-content: flex-end
                 
 
 .datalake-table-body
-    max-height: 536px
+    max-height: 465px
+
+// .datalake-table-body
+//     max-height: 536px
 
 .datalake-table
     .datalake-table-body, .datalake-query-table-body
@@ -10698,6 +10705,88 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 .grid-stack > .grid-stack-item > .ui-resizable-sw, .grid-stack > .grid-stack-item > .ui-resizable-se
     background-image: none !important
 
+// gridstack.js animation workaround
 .grid-stack-item
     top: 0
     left: 0
+
+.Datalake-editTableData
+    .datalake-table-edit-input
+        color: black
+        caret-color: black
+    .mat-row 
+        td.mat-cell
+            border: 1px solid rgba(0,0,0,.12) !important
+    .mat-row.mat-row-edit-highlighted
+        background-color: #F2F2F2
+        td.mat-cell
+            border-bottom: 1px solid #01abec !important
+            border-top: 1px solid #01abec !important
+        td.mat-cell:last-of-type
+            border-right: 1px solid #01abec !important
+        td.mat-cell:first-of-type
+            border-left: 1px solid #01abec !important
+
+
+.Datalake-btns-editTableData
+    justify-content: space-between
+    display: flex
+    .mat-icon-button-edit
+        margin-right: 10px
+    .mat-icon-button
+        height: 20px
+        width: 20px
+        display: flex
+        align-items: center
+        .mat-button-wrapper
+            height: 20px
+            display: flex
+            .datalake-table-edit-button-image
+                height: 20px
+                width: 20px
+
+.datalake-table-export-excel
+    margin-right: 5px !important
+
+.datalake-Edittable-body
+    background-color: #ffffff
+    overflow: auto
+    tr.example-detail-row.mat-row
+        height: 0 !important          
+    tr.mat-header-row, tr.mat-row
+        height: 35px !important
+        background-color: #FFFFFF
+    th.mat-header-cell
+        background-color: #F2F2F2
+        color: #000000
+        border: 0
+        padding: 10px 15px !important
+        white-space: nowrap
+        text-align: left !important
+    td.mat-cell
+        white-space: nowrap
+        padding: 0px 15px !important
+        text-align: left !important
+    .mat-form-field-appearance-legacy .mat-form-field-underline
+        display: none !important
+    .mat-form-field-appearance-legacy .mat-form-field-wrapper
+        padding-bottom: 0px
+    .mat-form-field-appearance-legacy .mat-form-field-infix
+        padding: 0px
+        border: 0px
+
+.datalake-editTable-search
+    width: 50%
+
+.datalake-search-width
+    width: 7%
+
+.datalake-search-editTable
+    margin-right: 5px
+    align-items: center
+    display: flex
+    .datalake-search-editTable-formfield
+        margin: 0px
+        .mat-form-field-wrapper
+            margin: 0px
+            padding: 0px

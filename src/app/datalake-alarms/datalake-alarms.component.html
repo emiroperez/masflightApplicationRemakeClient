@@ -22,7 +22,8 @@
       <div *ngIf="!actionDisable('List Alarms') || !actionDisable('Create Alarm') || !actionDisable('Edit Alarm') || !actionDisable('Delete Alarm')" 
       [ngClass]="actionDisable('Create Alarm') && !actionDisable('List Alarms') ? 'datalake-alarms-item datalake-alarms-itemOne':'datalake-alarms-item'">
         <div class="datalake-alarm-table-scroll" [ngStyle]="{ 'height': getTableHeight() }">
-          <table mat-table matSort [dataSource]="alarmTable" class="datasource welcome-table datalake-alarm-table">
+          <table mat-table matSort [dataSource]="alarmTable" 
+          class="datasource welcome-table datalake-alarm-table">
           <!-- <table mat-table matSort [dataSource]="filteredAlarms" class="datasource welcome-table datalake-alarm-table"> -->
             <ng-container matColumnDef="schemaName">
               <th mat-header-cell *matHeaderCellDef mat-sort-header>Schema Name</th>
@@ -48,7 +49,9 @@
               <th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
               <td mat-cell *matCellDef="let element" class="btn-actions-alarms">
                 <button (click)="viewEmail(element.emailList)" mat-icon-button matTooltip="View Emails List">
-                    <img  *ngIf="element.emailList && element.emailList.length != 0" class="listEmail" (mouseover)="element.hover = true" (mouseout)="element.hover = false" src="{{getEmailListImage(element)}}"/>
+                    <img  *ngIf="element.emailList && element.emailList.length != 0" class="listEmail" 
+                    (mouseover)="element.hover = true" (mouseout)="element.hover = false" 
+                    src="{{getEmailListImage(element)}}"/>
                 </button> 
                 <button [disabled]="actionDisable('Edit Alarm')"
                 (click)="editAlarm(element)" mat-icon-button matTooltip="Edit Alarm">
@@ -61,7 +64,8 @@
               </td>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="alarmColumns"></tr>
-            <tr mat-row [ngClass]="{ 'mat-row-highlighted': row.highlight }" *matRowDef="let row; columns: alarmColumns;"></tr>
+            <tr mat-row [ngClass]="{ 'mat-row-highlighted': row.highlight }" 
+            *matRowDef="let row; columns: alarmColumns;"></tr>
           </table>
         </div>
         <mat-paginator class="datalake-alarm-paginator" [pageSizeOptions]="[15, 30, 50, 100]" showFirstLastButtons></mat-paginator>

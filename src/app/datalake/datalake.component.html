@@ -48,15 +48,15 @@
                 <mat-icon class="mat-menu-item-icon">settings</mat-icon>
                 <span>Dashboard Option Administration</span>
             </button>
-            <button *ngIf="globals.admin" mat-menu-item routerLink="/datalake-roles">
+            <button *ngIf="(globals.admin && userDatalake) || globals.SuperAdmin" mat-menu-item routerLink="/datalake-roles">
                 <mat-icon class="mat-menu-item-icon">account_tree</mat-icon>
                 <span>Datalake Roles Administration</span>
             </button>
-            <button *ngIf="globals.admin" mat-menu-item routerLink="/arguments-category">
+            <button *ngIf="(globals.admin && userDatalake) || globals.SuperAdmin" mat-menu-item routerLink="/arguments-category">
                 <mat-icon class="mat-menu-item-icon">category</mat-icon>
                 <span>Arguments Category Administration</span>
             </button>
-            <button *ngIf="globals.admin && globals.testingPlan != -1" mat-menu-item (click)="stopPlanTest()">
+            <button *ngIf="((globals.admin && userDatalake) || globals.SuperAdmin) && globals.testingPlan != -1" mat-menu-item (click)="stopPlanTest()">
                 <mat-icon class="mat-menu-item-icon">card_membership</mat-icon>
                 <span>Stop Testing Membership</span>
             </button>

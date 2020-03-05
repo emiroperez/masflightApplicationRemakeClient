@@ -91,6 +91,7 @@ export class Globals {
   buildScheduleMapChart: boolean = false;
 
   admin: boolean = false;
+  SuperAdmin: boolean = false;
   testingPlan: number = -1;
   token = "Gtk5zI0GAeMbFBRgU191vZmJt8YLUGytwuf";
 
