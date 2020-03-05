@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, ViewChild } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA, MatTableDataSource, MatPaginator } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatTableDataSource, MatPaginator, PageEvent } from '@angular/material';
 
 import { DatalakeService } from '../services/datalake.service';
 import { Globals } from '../globals/Globals';
@@ -26,16 +26,23 @@ export class DatalakeTablePreviewComponent {
   rowDelete: any;
   disabledEdit: boolean = false;
   disabledDelete: boolean = false;
-  search: boolean = false;
+  filter: string;
+  RowsUpdated: any[] = [];
+  lengthpag: any;
+  pageI: any = 0;
+  pageSize: any;
+  paginatorData: PageEvent;
+  TABLEPREVIEWLIMIT: number;
+  firstTime: boolean = true;
 
   constructor(public dialogRef: MatDialogRef<DatalakeTablePreviewComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any, private service: DatalakeService,
     public globals: Globals, private excelService: ExcelService, private appService: ApplicationService) {
-    
+
     this.globals.popupLoading = true;
     this.edit = data.edit;
-    let TABLEPREVIEWLIMIT = this.edit ? -1 : TABLE_PREVIEW_LIMIT;
-    this.service.getDatalakeTableData(this, data.values.schemaName, data.values.tableName, TABLEPREVIEWLIMIT, this.handlerSuccess, this.handlerError);
+    this.TABLEPREVIEWLIMIT = this.edit ? -1 : TABLE_PREVIEW_LIMIT;
+    this.service.getDatalakeTableData(this, data.values.schemaName, data.values.tableName, this.TABLEPREVIEWLIMIT, this.handlerSuccess, this.handlerError);
   }
 
   onNoClick(): void {
@@ -43,6 +50,20 @@ export class DatalakeTablePreviewComponent {
   }
 
   handlerSuccess(_this, data): void {
+    data = {
+      Columns: [{ title: 'id' }, { title: 'name' }, { title: 'lastName' }, { title: 'Direccion' }],
+      Values: [['1', 'admin', 'administrador', ''],
+      ['2', 'karen', 'perez', 'call 20'],
+      ['3', 'camila', 'vergara', 'calle 123'],
+      ['4', 'karen', 'perez', 'call 20'],
+      ['5', 'camila', 'vergara', 'calle 123'],
+      ['6', 'admin', 'administrador', ''],
+      ['7', 'karen', 'perez', 'call 20'],
+      ['8', 'camila', 'vergara', 'calle 123'],
+      ['9', 'karen', 'perez', 'call 20'],
+      ['10', 'camila', 'vergara', 'calle 123']]
+    }
+
     if (!data) {
       _this.globals.popupLoading = false;
       return;
@@ -53,15 +74,16 @@ export class DatalakeTablePreviewComponent {
       return;
     }
 
-    for (let column of data.Columns)
-      _this.displayedColumns.push(column.title);
+    if (_this.firstTime) {
+      for (let column of data.Columns)
+        _this.displayedColumns.push(column.title);
 
-    if (_this.edit) {
-      if (_this.displayedColumns.length > 0) {
-        _this.displayedColumns.unshift("actions");
+      if (_this.edit) {
+        if (_this.displayedColumns.length > 0) {
+          _this.displayedColumns.unshift("actions");
+        }
       }
     }
-
     if (data.Values) {
       for (let result of data.Values) {
         let item = {};
@@ -76,8 +98,12 @@ export class DatalakeTablePreviewComponent {
       }
     }
 
+    // this.lengthpag = data.Rows;
+    _this.lengthpag = 20;
+    _this.pageSize = 10;
+
     _this.dataSourceTable = new MatTableDataSource(_this.dataSource);
-    _this.dataSourceTable.paginator = _this.paginator;
+    // _this.dataSourceTable.paginator = _this.paginator;
     _this.globals.popupLoading = false;
   }
 
@@ -160,14 +186,14 @@ export class DatalakeTablePreviewComponent {
   editRow(row) {
     if (this.rowSelected === row) {
       this.rowSelected = null;
-      row.edit= false;
+      row.edit = false;
     } else {
-      if(this.rowSelected){
+      if (this.rowSelected) {
         this.rowSelected.edit = false;
       }
-        row.edit= true;
-        this.rowSelected = row;
-        this.rowDelete = null;
+      row.edit = true;
+      this.rowSelected = row;
+      this.rowDelete = null;
     }
   }
 
@@ -175,8 +201,8 @@ export class DatalakeTablePreviewComponent {
     if (this.rowDelete === row) {
       this.rowDelete = null;
     } else {
-        this.rowDelete = row;
-        this.rowSelected = null;
+      this.rowDelete = row;
+      this.rowSelected = null;
     }
   }
 
@@ -203,11 +229,83 @@ export class DatalakeTablePreviewComponent {
     return "../../assets/images/" + this.globals.theme + "-datalake-DeleteRow.png";
   }
 
-  MarkEditAsUpdate(element){
+  MarkEditAsUpdate(element) {
     element.update = true
   }
 
-  SearchRow(){
-    this.search = true;
+  filterDataTable(): void {
+    let search, filteredResults
+    // let filteredResults = [];
+
+    if (!this.dataSource.length)
+      return;
+
+    // get the search keyword
+    search = this.filter;
+    if (!search) {
+      this.dataSourceTable = new MatTableDataSource(this.dataSource);
+      this.dataSourceTable.paginator = this.paginator;
+      return;
+    }
+
+    search = search.toLowerCase();
+    let size = this.displayedColumns.length;
+    for (let i = 0; i < size; i++) {
+      const element = this.displayedColumns[i];
+      let index = -1;
+      filteredResults =
+        this.dataSource.
+          filter(function (a) {
+            if (element != 'actions') {
+              index = a[element].toLowerCase().indexOf(search);
+              if (index > -1) {
+                i = size;
+              }
+              return index > -1;
+            }
+          });
+    }
+
+    this.dataSourceTable = new MatTableDataSource(filteredResults);
+    this.dataSourceTable.paginator = this.paginator;
   }
+
+  SaveRows() {
+
+    this.appService.confirmationDialog(this, "Do you want to save the changes?",
+      function (_this) {
+        //registros actualizados en la pagina actual
+        let RowsUpdatePage = this.dataSource.filter(a => (a['update'] === true));
+
+        for (let i = 0; i < RowsUpdatePage.length; i++) {
+          const element = this.RowsUpdatePage[i];
+          if (element['update']) {
+            //adiciono los nuevos registros a los que ya tenia guardados
+            this.RowsUpdated.push(element);
+          }
+        }
+        //llamar al servicio que envia los datos
+        // _this.globals.isLoading = true;
+        // _this.service.Datalake_updateRows(_this, RowsUpdated, _this.saveHandler, _this.saveError);
+      }
+    );
+  }
+
+  saveHandler(_this, data) {
+    _this.RowsUpdated = [];
+  }
+
+  saveError() {
+  }
+
+  public getServerData(event?: PageEvent) {
+    if (!this.globals.popupLoading) {
+      this.paginatorData = event;
+      this.firstTime = false;
+      this.dataSource = [];
+      this.service.getDatalakeTableData(this, this.data.values.schemaName, this.data.values.tableName, this.TABLEPREVIEWLIMIT, this.handlerSuccess, this.handlerError);
+      return event;
+    }
+  }
+
 }

@@ -1048,4 +1048,31 @@ export class MsfTableComponent implements OnInit {
       return aux;
     }
   }
+
+  /*sortData(event?:Sort){
+    if(event){
+      this.getDataSorting(true, event.active,event.direction);
+    }
+  }
+
+  getDataSorting(moreResults: boolean, sortingColumn, sorting_dir) {
+    // if(this.tableOptions.moreResultsBtn){
+    this.globals.startTimestamp = new Date();
+
+    if (moreResults) {
+      // if(this.pageIndex && this.globals.showPaginator){
+      //   this.actualPageNumber = this.pageIndex.pageIndex;
+      // }else{
+      //   this.actualPageNumber++;
+      // }
+      this.authService.removeTokenResultTable();//se remueve el topken porque debe ser una nueva consulta ordenada
+      this.tableOptions.moreResults = true;
+    } else {
+      this.actualPageNumber = 0;
+      this.authService.removeTokenResultTable();
+    }
+    let tokenResultTable = this.authService.getTokenResultTable() ? this.authService.getTokenResultTable() : "";
+    this.service.getDataTableSource(this, this.handlerSuccess, this.handlerError, "" + this.actualPageNumber,tokenResultTable,sortingColumn,sorting_dir);
+    // }}
+  }*/
 }

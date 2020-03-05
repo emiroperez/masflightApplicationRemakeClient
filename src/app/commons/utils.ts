@@ -562,9 +562,9 @@ export class Utils{
             for (var val of value)
             {
                 if (i == 0)
-                    valueAux = val.columnName + "-" + val.order;
+                    valueAux = val.columnName + " " + val.order;
                 else
-                    valueAux += "," + val.columnName + "-" + val.order;
+                    valueAux += "," + val.columnName + " " + val.order;
                 
                 i++;
             }
@@ -754,9 +754,9 @@ export class Utils{
                 for (var val of value)
                 {
                     if (i == 0)
-                        valueAux = val.columnName + "-" + val.order;
+                        valueAux = val.columnName + " " + val.order;
                     else
-                        valueAux += "," + val.columnName+ "-" + val.order;
+                        valueAux += "," + val.columnName+ " " + val.order;
 
                     i++;
                 }

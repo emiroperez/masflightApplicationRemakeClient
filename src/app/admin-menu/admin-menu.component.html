@@ -160,6 +160,9 @@
                                             <input class="search-input" matInput [(ngModel)]="searchText" (ngModelChange)="filterCategories()" autocomplete="off">
                                             <mat-icon class="admin-mat-search-icon" aria-label="search">search</mat-icon>
                                         </mat-form-field>
+                                        <!-- <div class="msf-admin-show-selected">
+                                            <mat-checkbox class="admin-checkboxes" color="primary" [(ngModel)]="optionSelected.serverSorting" (ngModelChange)="setChangeSorting(optionSelected)">Server Side Sorting</mat-checkbox>
+                                        </div> -->
                                         <div class="msf-admin-show-selected">
                                             <mat-checkbox class="admin-checkboxes" color="primary" [(ngModel)]="showSelected">Only Selected</mat-checkbox>
                                         </div>

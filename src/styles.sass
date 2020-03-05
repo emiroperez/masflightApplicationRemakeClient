@@ -2199,6 +2199,33 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                 background-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0, $dashboard-input-underline-color 50%, transparent 0)
             .mat-select.mat-select-disabled .mat-select-arrow-wrapper .mat-select-arrow, .mat-form-field-disabled .mat-form-field-label
                 color: $dashboard-input-underline-color !important
+        .Datalake-editTableData
+            .mat-row.mat-row-edit-highlighted
+                td.mat-cell
+                    border-bottom: 1px solid $primary-color !important
+                    border-top: 1px solid $primary-color !important
+                td.mat-cell:last-of-type
+                    border-right: 1px solid $primary-color !important
+                td.mat-cell:first-of-type
+                    border-left: 1px solid $primary-color !important
+        .datalake-search-editTable
+            .mat-form-field-appearance-outline .mat-form-field-outline-start
+                border: 1px solid $font-color !important
+                border-right-style: none !important
+            .mat-form-field-appearance-outline .mat-form-field-outline-gap
+                border: 1px solid $font-color !important
+                border-left-style: none !important
+                border-right-style: none !important
+            .mat-form-field-appearance-outline .mat-form-field-outline-end
+                border: 1px solid $font-color !important
+                border-left-style: none !important
+                min-width: 26px !important
+            .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-outline-gap
+                border-top-color: transparent !important
+            .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-outline-end
+                min-width: 5px !important
+            .mat-form-field-label 
+                color: $font-color !important
 
 @each $name, $font-color, $little-font-color, $disabled-color, $secondary-disabled-color, $tertiary-disabled-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $quaternary-background-color, $body-background-color, $dashboard-background-color, $dashboard-secondary-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $scrollbar-background-color, $dashboard-panel-background-color, $dashboard-panel-chart-background-color, $dashboard-border-color, $schedule-map-background-color, $schedule-map-info-border, $disabled-combo-box-color, $disabled-underline, $dashboard-info-background-color, $dashboard-info-secondary-background-color, $dashboard-info-font-color, $dashboard-drill-down-border-color, $dashboard-threshold-background-color, $dashboard-title-font-color, $map-panelinfo-background-color, $dashboard-info-border-color, $dashboard-form-font-color, $admin-menu-background, $admin-menu-input-underline, $admin-tree-active-color, $admin-button-color, $admin-secondary-background-color, $admin-table-background-color, $admin-table-hover-color, $admin-secondary-button-color, $login-font-color, $intro-logout-icon-color, $control-variables-border-color, $control-variable-hover-background-color, $control-variable-hover-icon-color, $control-variables-input-underline, $control-variables-dropdown-hover-font-color, $control-variables-dropdown-hover-background-hover-color, $control-variables-selected-background-color, $dashboard-input-underline-color, $membership-primary-background-color, $membership-secondary-background-color, $customer-edit-header-color, $customer-table-header-background-color, $customer-table-row-background-color, $customer-table-row-border-color, $customer-table-row-hover-background-color, $customer-table-row-selected-background-color, $customer-table-row-border-selected-color, $customer-input-color, $customer-input-underline-color, $customer-disabled-underline, $dashboard-control-panel-background-color, $menu-open-background-color, $menu-open-active-background-color, $menu-first-line, $menu-second-line, $menu-background-color, $menu-child-background-color, $control-variable-disabled-color, $dashboard-assistant-analysis-color, $dashboard-assistant-axis-color, $dashboard-assistant-values-color, $dashboard-assistant-analysis-font-color, $dashboard-assistant-sub-background-color, $admin-menu-tree-scrollbar-track-color, $dialog-category-arguments-scrollbar-color, $admin-menu-category-scrollbar-track-color, $datalake-search-input-border-color, $progress-bar-fill, $progress-bar-buffer, $datalake-data-ingestion-background-color, $datalake-explorer-background-color, $datalake-table-stats-background-color, $datalake-table-button-color, $query-engine-background-color, $query-engine-result-header-color, $codemirror-selected-color, $codemirror-focused-selected-color, $codemirror-keyword-color, $codemirror-number-color, $codemirror-string-color, $codemirror-variable-color, $codemirror-variable2-color, $codemirror-comment-color, $codemirror-builtin-color, $codemirror-attribute-color, $codemirror-property-color, $datalake-query-left-panel-scrollbar-color, $datalake-query-left-panel-scrollbar-track-color, $datalake-table-row-background-color, $datalake-table-row-hover-background-color,$datalake-disabled-buttonAlarmEmail, $datalake-alarm-secondary-background-color, $membership-tertiary-background-color, $membership-header-primary-color, $membership-header-secondary-color, $membership-border-color, $table-header-color, $table-item-odd-color, $table-item-even-color, $table-border-color, $table-header-border-color in $color-scheme
     @include theme($name, $font-color, $little-font-color, $disabled-color, $secondary-disabled-color, $tertiary-disabled-color, $menu-disabled-font-color, $background-color, $secondary-background-color, $tertiary-background-color, $quaternary-background-color, $body-background-color, $dashboard-background-color, $dashboard-secondary-background-color, $primary-color, $secondary-color, $tab-label-color, $tab-border-color, $menu-header-color, $secondary-menu-header-color, $selected-menu-color, $menu-border-color, $badge-color, $control-variable-icon-color, $scrollbar-background-color, $dashboard-panel-background-color, $dashboard-panel-chart-background-color, $dashboard-border-color, $schedule-map-background-color, $schedule-map-info-border, $disabled-combo-box-color, $disabled-underline, $dashboard-info-background-color, $dashboard-info-secondary-background-color, $dashboard-info-font-color, $dashboard-drill-down-border-color, $dashboard-threshold-background-color, $dashboard-title-font-color, $map-panelinfo-background-color, $dashboard-info-border-color, $dashboard-form-font-color, $admin-menu-background, $admin-menu-input-underline, $admin-tree-active-color, $admin-button-color, $admin-secondary-background-color, $admin-table-background-color, $admin-table-hover-color, $admin-secondary-button-color, $login-font-color, $intro-logout-icon-color, $control-variables-border-color, $control-variable-hover-background-color, $control-variable-hover-icon-color, $control-variables-input-underline, $control-variables-dropdown-hover-font-color, $control-variables-dropdown-hover-background-hover-color, $control-variables-selected-background-color, $dashboard-input-underline-color, $membership-primary-background-color, $membership-secondary-background-color, $customer-edit-header-color, $customer-table-header-background-color, $customer-table-row-background-color, $customer-table-row-border-color, $customer-table-row-hover-background-color, $customer-table-row-selected-background-color, $customer-table-row-border-selected-color, $customer-input-color, $customer-input-underline-color, $customer-disabled-underline, $dashboard-control-panel-background-color, $menu-open-background-color, $menu-open-active-background-color,$menu-first-line, $menu-second-line, $menu-background-color, $menu-child-background-color, $control-variable-disabled-color, $dashboard-assistant-analysis-color, $dashboard-assistant-axis-color, $dashboard-assistant-values-color, $dashboard-assistant-analysis-font-color, $dashboard-assistant-sub-background-color, $admin-menu-tree-scrollbar-track-color, $dialog-category-arguments-scrollbar-color, $admin-menu-category-scrollbar-track-color, $datalake-search-input-border-color, $progress-bar-fill, $progress-bar-buffer, $datalake-data-ingestion-background-color, $datalake-explorer-background-color, $datalake-table-stats-background-color, $datalake-table-button-color, $query-engine-background-color, $query-engine-result-header-color, $codemirror-selected-color, $codemirror-focused-selected-color, $codemirror-keyword-color, $codemirror-number-color, $codemirror-string-color, $codemirror-variable-color, $codemirror-variable2-color, $codemirror-comment-color, $codemirror-builtin-color, $codemirror-attribute-color, $codemirror-property-color, $datalake-query-left-panel-scrollbar-color, $datalake-query-left-panel-scrollbar-track-color, $datalake-table-row-background-color, $datalake-table-row-hover-background-color, $datalake-disabled-buttonAlarmEmail, $datalake-alarm-secondary-background-color, $membership-tertiary-background-color, $membership-header-primary-color, $membership-header-secondary-color, $membership-border-color, $table-header-color, $table-item-odd-color, $table-item-even-color, $table-border-color, $table-header-border-color)
@@ -10288,7 +10315,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     margin-bottom: 10px
     width: 100%
 
-.datalake-search-input
+.datalake-search-input , .datalake-search-editTable
     .mat-form-field-label-wrapper
         top: -1.4em
     .mat-form-field-appearance-outline .mat-form-field-infix
@@ -10666,23 +10693,18 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     .datalake-table-edit-input
         color: black
         caret-color: black
+    .mat-header-row
+        th.cdk-column-actions.mat-column-actions
+            width: 52px !important
     .mat-row 
         td.mat-cell
             border: 1px solid rgba(0,0,0,.12) !important
-    .mat-row.mat-row-edit-highlighted
-        background-color: #F2F2F2
-        td.mat-cell
-            border-bottom: 1px solid #01abec !important
-            border-top: 1px solid #01abec !important
-        td.mat-cell:last-of-type
-            border-right: 1px solid #01abec !important
-        td.mat-cell:first-of-type
-            border-left: 1px solid #01abec !important
 
 
 .Datalake-btns-editTableData
     justify-content: space-between
     display: flex
+    width: 52px !important
     .mat-icon-button-edit
         margin-right: 10px
     .mat-icon-button
@@ -10703,11 +10725,14 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 .datalake-Edittable-body
     background-color: #ffffff
     overflow: auto
+    tr:nth-child(even)
+        background-color:#f2f2f2
+    tr:nth-child(odd)
+        background-color:#fbfbfb
     tr.example-detail-row.mat-row
         height: 0 !important          
     tr.mat-header-row, tr.mat-row
         height: 35px !important
-        background-color: #FFFFFF
     th.mat-header-cell
         background-color: #F2F2F2
         color: #000000
@@ -10727,6 +10752,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         padding: 0px
         border: 0px
 
+
 .datalake-editTable-search
     width: 50%
 
@@ -10734,11 +10760,17 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     width: 7%
 
 .datalake-search-editTable
+    align-self: center
     margin-right: 5px
-    align-items: center
+    justify-content: flex-end
     display: flex
     .datalake-search-editTable-formfield
         margin: 0px
+        width: 32px
+        transition: width 1s ease-out
         .mat-form-field-wrapper
             margin: 0px
             padding: 0px
+    .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float 
+        width: 100% !important
+        transition: width 1s ease-out

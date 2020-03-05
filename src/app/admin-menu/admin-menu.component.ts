@@ -1218,6 +1218,12 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     this.dataChange.next(this.data);
   }
 
+  setChangeSorting(node) {
+    const nestedNode = this.flatNodeMap.get(node);
+    nestedNode.serverSorting = node.serverSorting;
+    this.dataChange.next(this.data);
+  }
+
   ngOnInit() {
     this.innerHeight = window.innerHeight;
     this.getDefaultMenuId ();
