@@ -79,10 +79,11 @@
     </table>
   </div>
 </div>
+<!--
 <mat-paginator [ngClass]="!globals.popupLoading && displayedColumns.length && edit? 'datalake-alarm-paginator':'msf-hide'"
-#paginator [pageSizeOptions]="[5, 30, 50, 100]" [pageIndex]="pageI" [pageSize]="pageSize" [length]="lengthpag"
-hidePageSize
-(page)="pageEvent = getServerData($event)" showFirstLastButtons></mat-paginator> 
-<!-- <mat-paginator 
-[ngClass]="!globals.popupLoading && displayedColumns.length && edit? 'datalake-alarm-paginator':'msf-hide'"
-#paginator [pageSizeOptions]="[5, 30, 50, 100]" showFirstLastButtons></mat-paginator> -->
+  #paginator [pageSizeOptions]="[5, 30, 50, 100]" [pageIndex]="pageI" [pageSize]="pageSize" [length]="lengthpag" hidePageSize
+  (page)="pageEvent = getServerData($event)" showFirstLastButtons></mat-paginator>
+-->
+<mat-paginator 
+  [ngClass]="!globals.popupLoading && displayedColumns.length && edit? 'datalake-alarm-paginator':'msf-hide'"
+  #paginator [pageSizeOptions]="[5, 30, 50, 100]" showFirstLastButtons></mat-paginator>
