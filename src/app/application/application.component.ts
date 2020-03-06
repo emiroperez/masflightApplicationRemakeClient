@@ -207,7 +207,7 @@ export class ApplicationComponent implements OnInit {
       };
     }
 
-    _this.getMenu();
+    _this.getMenu ();
   }
 
   handlerDefaultDashboard(_this, data): void

@@ -778,7 +778,7 @@ export class MsfDateRangeComponent implements OnInit {
     switch (option)
     {
       case 'TODAY':
-        this.argument.value1 = this.argument.value2 = moment ().toDate ();
+        this.argument.value1 = this.argument.value2 = today;
         break;
 
       case 'CURRENTWEEK':

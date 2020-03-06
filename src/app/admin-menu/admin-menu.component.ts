@@ -763,6 +763,12 @@ export class EditCategoryArgumentDialog {
 
       if (item.monthDateFormat)
         item.selectionMode |= item.monthDateFormat << 12;
+
+      if (item.minDate)
+        item.minDate = new Date (item.minDate);
+
+      if (item.maxDate)
+        item.maxDate = new Date (item.maxDate);
     }
 
     this.dialog.open (DialogArgumentPreviewComponent, {

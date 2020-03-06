@@ -61,9 +61,9 @@ export class Globals {
   currentAirline: any;
   template : boolean = false;
   isFullscreen: boolean = false;
-  // baseUrl = "http://localhost:8887";
+  baseUrl = "http://localhost:8887";
   // baseUrl = "http://pulse.globaleagle.com:8887";
-  baseUrl = "";
+  // baseUrl = "";
   baseUrl2 = "https://pulse.globaleagle.com:8886/mapBoxServices";
   popupUrl = "https://pulse.globaleagle.com:8900";
   // baseUrl2 = "http://pulse.globaleagle.com:8884/mapBoxServices";
@@ -103,7 +103,10 @@ export class Globals {
   showDashboard: boolean = false;
   queryTabs: DatalakeQueryTab[] = [ new DatalakeQueryTab () ];
   restrictedAirlines: boolean = false;
-  dateRestrictionInfo: any = null;
+  dateRestrictionInfo: any = {
+    startDate: null,
+    endDate: null
+  };
   
   @HostBinding('class')
   theme: string = "light-theme";
