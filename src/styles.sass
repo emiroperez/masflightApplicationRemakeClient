@@ -4249,6 +4249,11 @@ mat-tab-group
         padding-bottom: 10px !important
         margin-bottom: 10px
         width: calc(100% + 5px)
+        .msf-dashboard-panel-title-label
+            width: calc(100% - 50px)
+            text-overflow: ellipsis
+            white-space: nowrap
+            overflow: hidden
     .msf-dashboard-panel-sub-container-column
         @include msf-dashboard-panel-sub-container(row, 5px)
         position: relative

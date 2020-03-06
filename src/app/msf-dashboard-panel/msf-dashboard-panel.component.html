@@ -901,7 +901,7 @@
   <!-- ngIf doesn't work with AmCharts -->
   <div class="{{values.displayChart && !advTableView ? 'msf-dashboard-panel-container-chart' : 'msf-dashboard-panel-container-invisible'}}">
     <div class="msf-dashboard-panel-title" *ngIf="values.displayChart">
-      {{values.chartName}}
+      <div class="msf-dashboard-panel-title-label">{{values.chartName}}</div>
     </div>
     <div class="msf-dashboard-panel-anchor-container" *ngIf="displayAnchoredArguments">
       <div class="msf-dashboard-panel-anchored-argument" *ngFor="let anchoredArgument of anchoredArguments">
@@ -968,7 +968,7 @@
   </div>
   <div class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack" *ngIf="values.displayInfo">
     <div class="msf-dashboard-panel-title">
-      {{values.chartName}}
+      <div class="msf-dashboard-panel-title-label">{{values.chartName}}</div>
     </div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div style="width: 100%; height: 100%">
@@ -1000,7 +1000,7 @@
   </div>
   <div class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack" *ngIf="values.displayForm">
     <div class="msf-dashboard-panel-title">
-      {{values.chartName}}
+      <div class="msf-dashboard-panel-title-label">{{values.chartName}}</div>
     </div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-form-container">
@@ -1031,7 +1031,7 @@
   </div>
   <div class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack" *ngIf="values.displayPic">
     <div class="msf-dashboard-panel-title">
-      {{values.chartName}}
+      <div class="msf-dashboard-panel-title-label">{{values.chartName}}</div>
     </div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="content-panel-img">
@@ -1052,7 +1052,7 @@
   </div>
   <div class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack" [style.display]="values.displayTable ? 'block' : 'none'">
     <div class="msf-dashboard-panel-title" [style.padding-bottom.px]="5">
-      {{values.chartName}}
+      <div class="msf-dashboard-panel-title-label">{{values.chartName}}</div>
     </div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-table-container">
@@ -1089,7 +1089,7 @@
   </div>
   <div class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack" [style.display]="values.displayMapbox ? 'block' : 'none'">
     <div class="msf-dashboard-panel-title">
-      {{values.chartName}}
+      <div class="msf-dashboard-panel-title-label">{{values.chartName}}</div>
     </div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div style="height: calc(100% - 7px)" class="msf-dashboard-panel-mapbox">
@@ -1110,7 +1110,7 @@
   </div>
   <div class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack" *ngIf="values.displayDynTable">
     <div class="msf-dashboard-panel-title">
-      {{values.chartName}}
+      <div class="msf-dashboard-panel-title-label">{{values.chartName}}</div>
     </div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="dynamic-table-scroll dashboard-panel-dynamic-table-scroll" style="height: (100% - 20px)">
@@ -1142,7 +1142,7 @@
   <!-- Table view for advanced charts -->
   <div *ngIf="values.displayChart && advTableView" class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack">
     <div class="msf-dashboard-panel-title" *ngIf="values.displayChart">
-      {{values.chartName}}
+      <div class="msf-dashboard-panel-title-label">{{values.chartName}}</div>
     </div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-child-panel-table msf-dashboard-panel-table msf-adv-chart-table" style="height: calc(100% - 20px)" [style.width.%]="100" [style.margin-top.px]="5">
