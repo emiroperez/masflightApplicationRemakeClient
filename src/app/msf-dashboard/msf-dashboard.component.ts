@@ -8,6 +8,7 @@ import { MsfDashboardChildPanelComponent } from '../msf-dashboard-child-panel/ms
 import { ChartFlags } from '../msf-dashboard-panel/msf-dashboard-chartflags';
 import { MsfDashboardControlPanelComponent } from '../msf-dashboard-control-panel/msf-dashboard-control-panel.component';
 import { CategoryArguments } from '../model/CategoryArguments';
+import { MsfDashboardPanelComponent } from '../msf-dashboard-panel/msf-dashboard-panel.component';
 
 // dashboard gridstack constants
 const maxDashboardWidth = 12;
@@ -24,10 +25,13 @@ export class MsfDashboardComponent implements OnInit {
   screenHeight: string;
 
   displayContextMenu: boolean = false;
+  displayPanelContextMenu: boolean = false;
+  panelContextMenu: any;
   contextMenuX: number = 0;
   contextMenuY: number = 0;
   contextMenuItems: any;
   contextParentPanel: MsfDashboardPanelValues;
+  contextPanel: MsfDashboardPanelComponent;
 
   dashboardPanels: MsfDashboardPanelValues[] = [];
   newDashboardPanel: boolean = false;
@@ -520,6 +524,7 @@ export class MsfDashboardComponent implements OnInit {
     if (!panel.chartClicked)
     {
       this.displayContextMenu = false;
+      this.displayPanelContextMenu = false;
       return true;
     }
 
@@ -542,12 +547,14 @@ export class MsfDashboardComponent implements OnInit {
     // prevent context menu from appearing
     panel.chartClicked = false;
     this.displayContextMenu = true;
+    this.displayPanelContextMenu = false;
     return false;
   }
 
   disableContextMenu(): void
   {
     this.displayContextMenu = false;
+    this.displayPanelContextMenu = false;
     this.contextMenuItems = null;
   }
 
@@ -852,5 +859,48 @@ export class MsfDashboardComponent implements OnInit {
       else
         this.service.updateDashboardPanelPositions (this, panelsToUpdate, this.positionUpdated, this.positionError);
     }
+  }
+
+  enablePanelContextMenu(results): void
+  {
+    let event = results.event;
+
+    event.stopPropagation ();
+
+    this.contextMenuX = event.clientX;
+
+    if (this.globals.isFullscreen)
+      this.contextMenuY = event.clientY;
+    else
+      this.contextMenuY = event.clientY - 90;
+
+    this.displayContextMenu = false;
+    this.displayPanelContextMenu = true;
+    this.panelContextMenu = results.flags;
+    this.contextPanel = results.panel;
+  }
+
+  getPanelContextMenuPosX(): number
+  {
+    var clientWidth = document.getElementById ('msf-dashboard-panel-results-context-menu-container').clientWidth;
+
+    if (this.contextMenuX + clientWidth > window.innerWidth)
+      return window.innerWidth - clientWidth;
+
+    return this.contextMenuX;
+  }
+
+  getPanelContextMenuPosY(): number
+  {
+    var clientHeight = document.getElementById ('msf-dashboard-panel-results-context-menu-container').clientHeight;
+    var heightOffset = 0;
+
+    if (!this.globals.isFullscreen)
+      heightOffset = 90;
+
+    if (this.contextMenuY + clientHeight > window.innerHeight - heightOffset)
+      return this.contextMenuY - clientHeight;
+
+    return this.contextMenuY;
   }
 }

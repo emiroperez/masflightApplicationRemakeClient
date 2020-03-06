@@ -181,6 +181,9 @@ export class MsfDashboardPanelComponent implements OnInit {
   @Output("removePanel")
   removePanel = new EventEmitter ();
 
+  @Output("enablePanelContextMenu")
+  enablePanelContextMenu = new EventEmitter ();
+
   @Input("controlPanelInterval")
   controlPanelInterval: number;
 
@@ -4103,55 +4106,33 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
   }
 
-  goToChartConfiguration(): void
+  goToPanelConfiguration(): void
   {
-    this.values.displayChart = false;
+    if (this.values.displayChart)
+      this.values.displayChart = false;
+    else if (this.values.displayInfo)
+      this.values.displayInfo = false;
+    else if (this.values.displayForm)
+      this.values.displayForm = false;
+    else if (this.values.displayPic)
+      this.values.displayPic = false;
+    else if (this.values.displayTable)
+      this.values.displayTable = false;
+    else if (this.values.displayMapbox)
+      this.values.displayMapbox = false;
+    else if (this.values.displayDynTable)
+      this.values.displayDynTable = false;
+
     this.storeChartValues ();
   }
 
-  goToInfoConfiguration(): void
-  {
-    this.values.displayInfo = false;
-    this.storeChartValues ();
-  }
-
-  goToFormConfiguration(): void
-  {
-    this.values.displayForm = false;
-    this.storeChartValues ();
-  }
-
-  goToPicConfiguration(): void
-  {
-    this.values.displayPic = false;
-    this.storeChartValues ();
-  }
-
-  goToTableConfiguration(): void
-  {
-    this.values.displayTable = false;
-    this.storeChartValues ();
-  }
-
-  goToMapboxConfiguration(): void
-  {
-    this.values.displayMapbox = false;
-    this.storeChartValues ();
-  }
-
-  goToDynTableConfiguration(): void
-  {
-    this.values.displayDynTable = false;
-    this.storeChartValues ();
-  }
-
-  goToChart(): void
+  goToResults(): void
   {
     let i, item;
 
     if (this.dialogData)
     {
-      this.dialogRef.close ({ goToChart: true });
+      this.dialogRef.close ({ goToResults: true });
       return;
     }
 
@@ -7460,9 +7441,47 @@ export class MsfDashboardPanelComponent implements OnInit {
           this.loadData ();
         else if (result.savePanel)
           this.savePanel (true);
-        else if (result.goToChart)
-          this.goToChart ();
+        else if (result.goToResults)
+          this.goToResults ();
       }
+    });
+  }
+
+  enableContextMenu(event): void
+  {
+    let contextMenuFlags: any = {
+      advChartTableView: false,
+      advChartView: false,
+      sumSeriesList: false,
+      anchoredArguments: false,
+      anchoredArgumentsSettings: false
+    };
+
+    if (this.isAdvChartPanel ())
+    {
+      if (this.advTableView)
+        contextMenuFlags.advChartTableView = true;
+      else
+      {
+        contextMenuFlags.advChartView = true;
+
+        if (this.sumSeriesList && this.sumSeriesList.length)
+          contextMenuFlags.sumSeriesList = true;
+      }
+    }
+
+    if (this.anchoredArguments && this.anchoredArguments.length)
+    {
+      contextMenuFlags.anchoredArguments = true;
+
+      if (this.displayAnchoredArguments)
+        contextMenuFlags.anchoredArgumentsSettings = true;
+    }
+
+    this.enablePanelContextMenu.emit ({
+      event: event,
+      flags: contextMenuFlags,
+      panel: this
     });
   }
 }

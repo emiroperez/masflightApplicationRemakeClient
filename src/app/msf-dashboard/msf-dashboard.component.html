@@ -1,6 +1,6 @@
 <div id="msf-dashboard-element" #scrollContainer (click)="disableContextMenu()" (contextmenu)="disableContextMenu()" (scroll)="disableContextMenu()" class="msf-dashboard-container" [style.height]="screenHeight">
   <!-- ngClass must be used for the control variable overlay it can override the overlays used on some dialogs such as the wizard -->
-  <div [ngClass]="{ 'msf-control-variables-overlay': !controlVariableDialogOpen }">
+  <div [ngClass]="{ 'msf-control-variables-overlay': (!controlVariableDialogOpen && !displayContextMenu && !displayPanelContextMenu) }">
     <div class="msf-dashboard-header" *ngIf="currentDashboardMenu">
       <div class="msf-dashboard-title">
         <span class="msf-dashboard-title-label">
@@ -34,7 +34,7 @@
         <app-msf-dashboard-panel [values]="panel" [controlPanelVariables]="controlPanelVariables" [panelWidth]="panel.width" [panelHeight]="panel.height"
           [currentHiddenCategories]="currentHiddenCategories" [addingOrRemovingPanels]="addingOrRemovingPanels" [controlPanelInterval]="controlPanelInterval"
           (removeDeadVariablesAndCategories)="removeDeadVariablesAndCategories($event)" (addNewVariablesAndCategories)="addNewVariablesAndCategories($event)"
-          (toggleControlVariableDialogOpen)="toggleControlVariableDialogOpen($event)">
+          (toggleControlVariableDialogOpen)="toggleControlVariableDialogOpen($event)" (enablePanelContextMenu)="enablePanelContextMenu($event)">
         </app-msf-dashboard-panel>
       </div>
     </div>
@@ -61,6 +61,41 @@
           <div class="msf-dashboard-panel-context-menu-top-bound"></div>
           <button class="msf-dashboard-panel-context-menu-item" mat-menu-item *ngFor="let item of contextMenuItems" (click)="displayChildPanel(item.id)">
             <span>{{item.title}}</span>
+          </button>
+          <div class="msf-dashboard-panel-context-menu-bottom-bound"></div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="displayPanelContextMenu">
+      <div class="msf-dashboard-panel-context-menu" [style.left.px]="getPanelContextMenuPosX()" [style.top.px]="getPanelContextMenuPosY()">
+        <div id="msf-dashboard-panel-results-context-menu-container">
+          <div class="msf-dashboard-panel-context-menu-top-bound"></div>
+          <button *ngIf="!globals.readOnlyDashboard" class="msf-dashboard-panel-context-menu-item" mat-menu-item (click)="contextPanel.goToPanelConfiguration()">
+            <span><mat-icon aria-label="Edit Configuration">menu</mat-icon>Edit Configuration</span>
+          </button>
+          <button *ngIf="!globals.readOnlyDashboard" class="msf-dashboard-panel-context-menu-item" mat-menu-item (click)="contextPanel.sharePanel()">
+            <span><mat-icon aria-label="Share Panel">share</mat-icon>Share Panel</span>
+          </button>
+          <button *ngIf="!globals.readOnlyDashboard" class="msf-dashboard-panel-context-menu-item" mat-menu-item (click)="contextPanel.copyControlVariables()">
+            <span><mat-icon aria-label="Copy Control Variables">file_copy</mat-icon>Copy Control Variables</span>
+          </button>
+          <button *ngIf="panelContextMenu.advChartTableView" class="msf-dashboard-panel-context-menu-item" mat-menu-item (click)="contextPanel.toggleIntervalTable()">
+            <span><mat-icon aria-label="Chart View">bar_chart</mat-icon>Chart View</span>
+          </button>
+          <button *ngIf="panelContextMenu.advChartView" class="msf-dashboard-panel-context-menu-item" mat-menu-item (click)="contextPanel.addUpIntervals()">
+            <span><mat-icon aria-label="Add Up Intervals">functions</mat-icon>{{panelContextMenu.sumSeriesList ? 'Remove Sum Of Intervals' : 'Add Up Intervals'}}</span>
+          </button>
+          <button *ngIf="panelContextMenu.advChartView" class="msf-dashboard-panel-context-menu-item" mat-menu-item (click)="contextPanel.toggleIntervalTable()">
+            <span><mat-icon aria-label="Table View">table_chart</mat-icon>Table View</span>
+          </button>
+          <button *ngIf="!globals.readOnlyDashboard && panelContextMenu.anchoredArguments" class="msf-dashboard-panel-context-menu-item" mat-menu-item (click)="contextPanel.toggleAnchoredArguments()">
+            <div class="anchor-option-container"><div class="anchor-icon"></div>Toggle Anchored Arguments</div>
+          </button>
+          <button *ngIf="!globals.readOnlyDashboard && panelContextMenu.anchoredArgumentsSettings" class="msf-dashboard-panel-context-menu-item" mat-menu-item (click)="contextPanel.revertAnchoredChanges()">
+            <span><mat-icon aria-label="Revert Changes">close</mat-icon>Revert Changes</span>
+          </button>
+          <button *ngIf="!globals.readOnlyDashboard && panelContextMenu.anchoredArgumentsSettings" class="msf-dashboard-panel-context-menu-item" mat-menu-item (click)="contextPanel.saveAnchoredChanges()">
+            <span><mat-icon aria-label="Apply Changes">check</mat-icon>Apply Changes</span>
           </button>
           <div class="msf-dashboard-panel-context-menu-bottom-bound"></div>
         </div>

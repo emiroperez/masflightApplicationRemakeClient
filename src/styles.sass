@@ -225,9 +225,9 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
         .msf-header-icons
             .mat-button, .mat-icon-button
                 &[aria-expanded="true"]
-                    background-color: $selected-menu-color
+                    background-color: $selected-menu-color    
         .msf-dashboard-panel-context-menu
-            #msf-dashboard-panel-context-menu-container
+            #msf-dashboard-panel-context-menu-container, #msf-dashboard-panel-results-context-menu-container
                 background-color: $menu-header-color
                 .msf-dashboard-panel-context-menu-item
                     border-bottom: 1px solid $menu-border-color !important
@@ -235,6 +235,8 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                     background-color: $selected-menu-color
                 .msf-dashboard-panel-context-menu-top-bound
                     border-bottom: 1px solid $menu-border-color !important
+                .anchor-icon
+                    background-image: url(assets/images/dark-theme-anchor-icon.png)
         .ng-dropdown-panel .ng-dropdown-panel-items
             background-color: $tertiary-background-color
         .msf-dashboard-menu-component
@@ -2137,6 +2139,10 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
         .msf-dashboard-panel-margin-button
             .anchor-icon
                 background-image: url(assets/images/dark-theme-anchor-icon.png)
+        .msf-dashboard-panel-results-button
+            color: $font-color
+            &:hover
+                color: $primary-color
         .datalake-create-table-input-body .mat-form-field-disabled .mat-select-value
             color: $menu-disabled-font-color !important
         .datalake-create-table-input-body .mat-form-field-disabled .mat-form-field-label-wrapper .mat-form-field-label
@@ -4009,7 +4015,7 @@ mat-tab-group
     flex-direction: row-reverse
     align-items: flex-end
     position: absolute
-    width: 100%
+    right: 0
     .msf-dashboard-button-close-icon
         z-index: 2
         @include msf-dashboard-icon(5px)
@@ -4242,6 +4248,7 @@ mat-tab-group
     border-radius: 10px
     height: 100%
     .msf-dashboard-panel-title
+        display: flex
         font-size: 16px
         text-align: left
         margin-left: -10px
@@ -4250,10 +4257,19 @@ mat-tab-group
         margin-bottom: 10px
         width: calc(100% + 5px)
         .msf-dashboard-panel-title-label
-            width: calc(100% - 50px)
+            width: calc(100% - 77px)
             text-overflow: ellipsis
             white-space: nowrap
             overflow: hidden
+        .msf-dashboard-panel-title-label-read-only
+            width: calc(100% - 27px) !important
+        .msf-dashboard-panel-results-button
+            width: 20px
+            font-size: 12px
+            text-align: center
+            cursor: pointer
+            &:hover
+                cursor: pointer
     .msf-dashboard-panel-sub-container-column
         @include msf-dashboard-panel-sub-container(row, 5px)
         position: relative
@@ -4505,7 +4521,7 @@ mat-tab-group
 .msf-dashboard-panel-context-menu
     position: absolute
     z-index: 1
-    #msf-dashboard-panel-context-menu-container
+    #msf-dashboard-panel-context-menu-container, #msf-dashboard-panel-results-context-menu-container
         border-radius: 4px
         font-size: 12px
         box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12)
@@ -4513,6 +4529,15 @@ mat-tab-group
             height: 7px
         .msf-dashboard-panel-context-menu-bottom-bound
             height: 7px
+        .anchor-option-container
+            display: flex
+            .anchor-icon
+                margin-top: 12px
+                margin-right: 16px
+                background-repeat: no-repeat
+                background-size: 100%
+                width: 24px
+                height: 24px
 
 .msf-dynamic-table-variable-title
     display: flex
