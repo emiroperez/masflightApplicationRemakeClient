@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input, NgZone, SimpleChanges, Output, EventEmitter, isDevMode, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, NgZone, SimpleChanges, Output, EventEmitter, isDevMode, ChangeDetectorRef, Injector } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
@@ -19,7 +19,7 @@ import { Globals } from '../globals/Globals';
 import { Themes } from '../globals/Themes';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { ReplaySubject, Subject } from 'rxjs';
-import { MatSelect, MatDialog, PageEvent, MatPaginator } from '@angular/material';
+import { MatDialog, PageEvent, MatPaginator, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { takeUntil } from 'rxjs/operators';
 import * as moment from 'moment';
 import { DatePipe } from '@angular/common';
@@ -283,11 +283,18 @@ export class MsfDashboardPanelComponent implements OnInit {
   displayAnchoredArguments: boolean = false;
   updateURLResults: boolean = false;
 
+  // variables for the dialog version
+  dialogRef: any;
+  dialogData: any;
+
   constructor(private zone: NgZone, public globals: Globals,
     private service: ApplicationService, private http: ApiClient, private authService: AuthService, public dialog: MatDialog,
-    private changeDetectorRef: ChangeDetectorRef, private formBuilder: FormBuilder)
+    private changeDetectorRef: ChangeDetectorRef, private formBuilder: FormBuilder, private injector: Injector)
   {
     this.utils = new Utils ();
+
+    this.dialogRef = this.injector.get (MatDialogRef, null);
+    this.dialogData = this.injector.get (MAT_DIALOG_DATA, null);
 
     this.chartForm = this.formBuilder.group ({
       dataFormCtrl: new FormControl (),
@@ -308,6 +315,15 @@ export class MsfDashboardPanelComponent implements OnInit {
       geodataValueCtrl: new FormControl ({ value: '', disabled: true }),
       geodataKeyCtrl: new FormControl ({ value: '', disabled: true })
     });
+
+    if (this.dialogData)
+    {
+      // This is for the dialog version
+      this.values = this.dialogData.values;
+      this.panelWidth = this.dialogData.panelWidth;
+      this.panelHeight = this.dialogData.panelHeight;
+      this.toggleControlVariableDialogOpen = this.dialogData.toggleControlVariableDialogOpen;
+    }
   }
 
   ngOnInit()
@@ -327,7 +343,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void
   {
-    if (this.addingOrRemovingPanels)
+    if (this.addingOrRemovingPanels || this.dialogData)
       return;
 
     if (changes['controlPanelVariables'] && this.controlPanelVariables)
@@ -2198,6 +2214,9 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     this.msfTableRef.tableOptions = this;
 
+    if (this.dialogData)
+      return; // ignore ngAfterViewInit on the dialog version
+
     if ((this.values.currentChartType.flags & ChartFlags.TABLE)
       || (this.values.currentChartType.flags & ChartFlags.MAPBOX)
       || (this.values.currentChartType.flags & ChartFlags.DYNTABLE))
@@ -2240,6 +2259,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   ngAfterContentInit(): void
   {
+    if (this.dialogData)
+      return; // ignore ngAfterContentInit on the dialog version
+
     // these parts must be here because it generate an error if inserted on ngAfterViewInit
     this.initPanelSettings ();
 
@@ -2958,6 +2980,12 @@ export class MsfDashboardPanelComponent implements OnInit {
       }
     }
 
+    if (this.dialogData)
+    {
+      this.dialogRef.close ({ generateChart: true });
+      return;
+    }
+
     this.globals.startTimestamp = new Date ();
 
     // check if any variable that requires grouping are in configure properly
@@ -2994,6 +3022,9 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     this._onDestroy.next ();
     this._onDestroy.complete ();
+
+    if (this.dialogData)
+      return; // ignore the rest of ngOnDestroy on the dialog version
 
     clearInterval (this.updateInterval);
 
@@ -4117,6 +4148,12 @@ export class MsfDashboardPanelComponent implements OnInit {
   goToChart(): void
   {
     let i, item;
+
+    if (this.dialogData)
+    {
+      this.dialogRef.close ({ goToChart: true });
+      return;
+    }
 
     if (this.values.picGenerated)
       this.values.displayPic = true;
@@ -5277,117 +5314,134 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.isLoading = false;
   }
 
-  savePanel(): void
+  prepareToSavePanel(): void
   {
+    let panel;
+
+    if (this.values.currentChartType.flags & ChartFlags.TABLE)
+    {
+      let tableVariableIds = [];
+
+      panel = this.getPanelInfo ();
+      panel.function = -1;
+
+      for (let tableVariable of this.values.tableVariables)
+      {
+        tableVariableIds.push ({
+          id: tableVariable.itemId,
+          checked: tableVariable.checked
+        });
+      }
+
+      panel.lastestResponse = JSON.stringify (tableVariableIds);
+    }
+    else if (this.values.currentChartType.flags & ChartFlags.FORM)
+    {
+      let formVariables = [];
+
+      panel = this.getPanelInfo ();
+      panel.function = 2;
+
+      for (let formVariable of this.values.formVariables)
+      {
+        formVariables.push ({
+          value: null,
+          column: formVariable.column.item.id,
+          fontSize: this.fontSizes.indexOf (formVariable.fontSize),
+          valueFontSize: this.fontSizes.indexOf (formVariable.valueFontSize),
+          valueOrientation: this.orientations.indexOf (formVariable.valueOrientation),
+          function: this.functions.indexOf (formVariable.function)
+        });
+      }
+
+      panel.lastestResponse = JSON.stringify (formVariables);
+    }
+    else if (this.values.currentChartType.flags & ChartFlags.INFO
+      && !(this.values.currentChartType.flags & ChartFlags.PICTURE)
+      && !(this.values.currentChartType.flags & ChartFlags.MAP)
+      && !(this.values.currentChartType.flags & ChartFlags.HEATMAP)
+      && !(this.values.currentChartType.flags & ChartFlags.DYNTABLE))
+    {
+      let variables;
+
+      panel = this.getPanelInfo ();
+      panel.function = -1;
+
+      // Prepare list of variables
+      variables = [];
+
+      for (let i = 0; i < this.values.infoNumVariables; i++)
+      {
+        let infoVar, infoFunc;
+
+        switch (i)
+        {
+          case 2:
+            infoVar = this.values.infoVar3;
+            infoFunc = this.values.infoFunc3;
+            break;
+
+          case 1:
+            infoVar = this.values.infoVar2;
+            infoFunc = this.values.infoFunc2;
+            break;
+
+          default:
+            infoVar = this.values.infoVar1;
+            infoFunc = this.values.infoFunc1;
+            break;
+        }
+
+        for (let j = 0; j < 5; j++)
+        {
+          if (!infoFunc[j].checked)
+            continue;
+
+          variables.push ({
+            id : i,
+            function : infoFunc[j].id,
+            title : infoFunc[j].title,
+            measure : infoFunc[j].measure,
+            column : infoVar.id
+          });
+        }
+      }
+
+      panel.lastestResponse = JSON.stringify (variables);
+    }
+    else if (this.values.currentChartType.flags & ChartFlags.PICTURE)
+    {
+      panel = this.getPanelInfo ();
+      panel.lastestResponse = this.values.urlImg;
+    }
+    else
+    {
+      panel = this.getPanelInfo ();
+      panel.lastestResponse = null;
+    }
+
+    this.values.isLoading = true;
+    this.service.updateDashboardPanel (this, panel, this.handlerUpdateSuccess, this.handlerError);
+  }
+
+  savePanel(fromDialog: boolean): void
+  {
+    if (fromDialog)
+    {
+      this.prepareToSavePanel ();
+      return;
+    }
+
     this.service.confirmationDialog (this, "Are you sure you want to save the changes?",
       function (_this)
       {
-        let panel;
-
-        if (_this.values.currentChartType.flags & ChartFlags.TABLE)
+        if (_this.dialogData)
         {
-          let tableVariableIds = [];
-
-          panel = _this.getPanelInfo ();
-          panel.function = -1;
-
-          for (let tableVariable of _this.values.tableVariables)
-          {
-            tableVariableIds.push ({
-              id: tableVariable.itemId,
-              checked: tableVariable.checked
-            });
-          }
-  
-          panel.lastestResponse = JSON.stringify (tableVariableIds);
-        }
-        else if (_this.values.currentChartType.flags & ChartFlags.FORM)
-        {
-          let formVariables = [];
-
-          panel = _this.getPanelInfo ();
-          panel.function = 2;
-
-          for (let formVariable of _this.values.formVariables)
-          {
-            formVariables.push ({
-              value: null,
-              column: formVariable.column.item.id,
-              fontSize: _this.fontSizes.indexOf (formVariable.fontSize),
-              valueFontSize: _this.fontSizes.indexOf (formVariable.valueFontSize),
-              valueOrientation: _this.orientations.indexOf (formVariable.valueOrientation),
-              function: _this.functions.indexOf (formVariable.function)
-            });
-          }
-
-          panel.lastestResponse = JSON.stringify (formVariables);
-        }
-        else if (_this.values.currentChartType.flags & ChartFlags.INFO
-          && !(_this.values.currentChartType.flags & ChartFlags.PICTURE)
-          && !(_this.values.currentChartType.flags & ChartFlags.MAP)
-          && !(_this.values.currentChartType.flags & ChartFlags.HEATMAP)
-          && !(_this.values.currentChartType.flags & ChartFlags.DYNTABLE))
-        {
-          let variables;
-
-          panel = _this.getPanelInfo ();
-          panel.function = -1;
-
-          // Prepare list of variables
-          variables = [];
-
-          for (let i = 0; i < _this.values.infoNumVariables; i++)
-          {
-            let infoVar, infoFunc;
-
-            switch (i)
-            {
-              case 2:
-                infoVar = _this.values.infoVar3;
-                infoFunc = _this.values.infoFunc3;
-                break;
-
-              case 1:
-                infoVar = _this.values.infoVar2;
-                infoFunc = _this.values.infoFunc2;
-                break;
-
-              default:
-                infoVar = _this.values.infoVar1;
-                infoFunc = _this.values.infoFunc1;
-                break;
-            }
-
-            for (let j = 0; j < 5; j++)
-            {
-              if (!infoFunc[j].checked)
-                continue;
-
-              variables.push ({
-                id : i,
-                function : infoFunc[j].id,
-                title : infoFunc[j].title,
-                measure : infoFunc[j].measure,
-                column : infoVar.id
-              });
-            }
-          }
-
-          panel.lastestResponse = JSON.stringify (variables);
-        }
-        else if (_this.values.currentChartType.flags & ChartFlags.PICTURE)
-        {
-          panel = _this.getPanelInfo ();
-          panel.lastestResponse = _this.values.urlImg;
-        }
-        else
-        {
-          panel = _this.getPanelInfo ();
-          panel.lastestResponse = null;
+          _this.dialogRef.close ({ savePanel: true });
+          return;
         }
 
-        _this.values.isLoading = true;
-        _this.service.updateDashboardPanel (_this, panel, _this.handlerUpdateSuccess, _this.handlerError);
+        _this.prepareToSavePanel ();
       });
   }
 
@@ -7381,5 +7435,34 @@ export class MsfDashboardPanelComponent implements OnInit {
     setTimeout (() => {
       this.updateURLResults = false;
     }, 100);
+  }
+
+  configurePanel(): void
+  {
+    let dialogRef;
+
+    dialogRef = this.dialog.open (MsfDashboardPanelComponent, {
+      width: '750px',
+      height: '395px',
+      panelClass: 'msf-dashboard-panel-dialog',
+      data: {
+        values: this.values,
+        panelWidth: 12,           // random width and height panel values
+        panelHeight: 7,
+        toggleControlVariableDialogOpen: this.toggleControlVariableDialogOpen
+      }
+    });
+
+    dialogRef.afterClosed ().subscribe ((result) => {
+      if (result)
+      {
+        if (result.generateChart)
+          this.loadData ();
+        else if (result.savePanel)
+          this.savePanel (true);
+        else if (result.goToChart)
+          this.goToChart ();
+      }
+    });
   }
 }

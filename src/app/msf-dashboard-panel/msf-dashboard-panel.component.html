@@ -8,13 +8,10 @@
       </div>
     </div>
   </div>
-  <!--
-    <div class="msf-dashboard-panel-container msf-dashboard-panel-gridstack" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !values.displayDynTable && !globals.readOnlyDashboard && (values.width < 3 || values.height < 7)">
-      TODO: Add button to edit panel settings
-    </div>
-    <div class="msf-dashboard-panel-container msf-dashboard-panel-gridstack" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !values.displayDynTable && !globals.readOnlyDashboard && values.width >= 3 && values.height >= 7">
-    -->
-  <div class="msf-dashboard-panel-container msf-dashboard-panel-gridstack" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !values.displayDynTable && !globals.readOnlyDashboard">
+  <div class="msf-dashboard-panel-container msf-dashboard-panel-small msf-dashboard-panel-gridstack" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !values.displayDynTable && !globals.readOnlyDashboard && ((values.width < 3 || values.height < 7) && !dialogData)">
+    <button mat-flat-button class="flat-button" (click)="configurePanel()">Configure Panel</button>
+  </div>
+  <div class="msf-dashboard-panel-container msf-dashboard-panel-gridstack" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !values.displayDynTable && !globals.readOnlyDashboard && ((values.width >= 3 && values.height >= 7) || dialogData)">
     <div class="msf-dashboard-panel-sub-container-column msf-dashboard-panel-header">
       <div class="msf-dashboard-panel-sub-container-row msf-dashboard-panel-discover-button">
         <button class="flat-button discover-button" mat-button (click)="openDiscoveryDialog()">
@@ -64,9 +61,9 @@
         <div class="msf-dashboard-addmenu-icon-item msf-chart-config-label-container">
           <mat-icon class="msf-dashboard-chart-icon" aria-label="Filter List">filter_list</mat-icon>
           <span class="msf-dashboard-addmenu-item-text msf-dashboard-chart-configuration-label">Chart Configuration</span>
-          <div *ngIf="isLineOrBarChart()" class="msf-dashboard-panel-sub-container-row msf-dashboard-panel-sub-container-checkbox msf-dashboard-panel-interval-time">
-            <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="values.ordered">Ordered</mat-checkbox>
-            <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="values.startAtZero">Min Value At 0</mat-checkbox>
+          <div *ngIf="isLineOrBarChart()" class="msf-dashboard-panel-sub-container-row msf-dashboard-panel-sub-container-checkbox msf-dashboard-panel-chart-checkboxes">
+            <mat-checkbox class="cancels-checkbox" [(ngModel)]="values.ordered">Ordered</mat-checkbox>
+            <mat-checkbox class="cancels-checkbox" [(ngModel)]="values.startAtZero">Min Value At 0</mat-checkbox>
           </div>
         </div>
       </div>
@@ -177,7 +174,7 @@
               </button>
             </div>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button mat-mini-fab (click)="savePanel()" color="primary" matTooltip="Save Changes">
+              <button mat-mini-fab (click)="savePanel(false)" color="primary" matTooltip="Save Changes">
                 <mat-icon aria-label="Save Changes">save</mat-icon>
               </button>
             </div>
@@ -280,7 +277,7 @@
               </button>
             </div>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button mat-mini-fab (click)="savePanel()" color="primary" matTooltip="Save Changes">
+              <button mat-mini-fab (click)="savePanel(false)" color="primary" matTooltip="Save Changes">
                 <mat-icon aria-label="Save Changes">save</mat-icon>
               </button>
             </div>
@@ -291,7 +288,7 @@
     <ng-container *ngIf="isSimpleFormPanel()">
       <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-form-sub-container">
         <div class="msf-dashboard-chart-options-container">
-          <div class="msf-dashboard-chart-selector">
+          <div class="msf-dashboard-chart-selector msf-simple-form-selector">
             <div class="msf-dashboard-chart-analysis-title">
               <mat-icon class="msf-dashboard-chart-icon">list</mat-icon>
             </div>
@@ -434,7 +431,7 @@
               </button>
             </div>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button mat-mini-fab (click)="savePanel()" color="primary" matTooltip="Save Changes">
+              <button mat-mini-fab (click)="savePanel(false)" color="primary" matTooltip="Save Changes">
                 <mat-icon aria-label="Save Changes">save</mat-icon>
               </button>
             </div>
@@ -460,7 +457,7 @@
               </button>
             </div>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button mat-mini-fab (click)="savePanel()" color="primary" matTooltip="Save Changes">
+              <button mat-mini-fab (click)="savePanel(false)" color="primary" matTooltip="Save Changes">
                 <mat-icon aria-label="Save Changes">save</mat-icon>
               </button>
             </div>
@@ -491,7 +488,7 @@
               </button>
             </div>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button mat-mini-fab (click)="savePanel()" color="primary" matTooltip="Save Changes">
+              <button mat-mini-fab (click)="savePanel(false)" color="primary" matTooltip="Save Changes">
                 <mat-icon aria-label="Save Changes">save</mat-icon>
               </button>
             </div>
@@ -574,7 +571,7 @@
               </button>
             </div>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button mat-mini-fab (click)="savePanel()" color="primary" matTooltip="Save Changes">
+              <button mat-mini-fab (click)="savePanel(false)" color="primary" matTooltip="Save Changes">
                 <mat-icon aria-label="Save Changes">save</mat-icon>
               </button>
             </div>
@@ -616,7 +613,7 @@
               </button>
             </div>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button mat-mini-fab (click)="savePanel()" color="primary" matTooltip="Save Changes">
+              <button mat-mini-fab (click)="savePanel(false)" color="primary" matTooltip="Save Changes">
                 <mat-icon aria-label="Save Changes">save</mat-icon>
               </button>
             </div>
@@ -660,7 +657,7 @@
               </button>
             </div>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button mat-mini-fab (click)="savePanel()" color="primary" matTooltip="Save Changes">
+              <button mat-mini-fab (click)="savePanel(false)" color="primary" matTooltip="Save Changes">
                 <mat-icon aria-label="Save Changes">save</mat-icon>
               </button>
             </div>
@@ -773,7 +770,7 @@
               </button>
             </div>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button mat-mini-fab (click)="savePanel()" color="primary" matTooltip="Save Changes">
+              <button mat-mini-fab (click)="savePanel(false)" color="primary" matTooltip="Save Changes">
                 <mat-icon aria-label="Save Changes">save</mat-icon>
               </button>
             </div>
@@ -887,7 +884,7 @@
               </button>
             </div>
             <div class="msf-dashboard-panel-control-variable-button">
-              <button mat-mini-fab (click)="savePanel()" color="primary" matTooltip="Save Changes">
+              <button mat-mini-fab (click)="savePanel(false)" color="primary" matTooltip="Save Changes">
                 <mat-icon aria-label="Save Changes">save</mat-icon>
               </button>
             </div>

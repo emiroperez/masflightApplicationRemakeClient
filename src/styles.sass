@@ -375,6 +375,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
         .msf-argument-preview-loading
             @include msf-dashboard-dialog-loading(50%, $quaternary-background-color, url(assets/images/#{$name}-loading_pulse.gif))
         .msf-dashboard-control-variables-loading
+            height: 605px !important
             @include msf-dashboard-dialog-loading(50%, $quaternary-background-color, url(assets/images/#{$name}-loading_pulse.gif))
         .create-user-loading
             @include msf-dashboard-dialog-loading(35%, $quaternary-background-color, url(assets/images/#{$name}-loading_pulse.gif))
@@ -411,7 +412,14 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             @include msf-dashboard-dialog-loading(50%, $quaternary-background-color, url(assets/images/#{$name}-loading_pulse.gif))
         .msf-dashboard-panel-loading
             border: 1px solid $quaternary-background-color
-            @include msf-dashboard-dialog-loading(250px, $quaternary-background-color, url(assets/images/#{$name}-loading_pulse.gif), 1000)
+            @include msf-dashboard-dialog-loading(min(50%, 250px), $quaternary-background-color, url(assets/images/#{$name}-loading_pulse.gif), 1000)
+            .cancel-button
+                color: $font-color !important
+                border-color: $font-color !important
+                &:hover
+                    color: #ffffff !important
+                    background-color: $primary-color !important
+                    border-color: $primary-color !important
         .msf-dashboard-assistant-loading
             @include msf-dashboard-dialog-loading(250px, $quaternary-background-color, url(assets/images/#{$name}-loading_pulse.gif))
         .msf-select-data-loading
@@ -4037,6 +4045,10 @@ mat-tab-group
 .msf-dashboard-panel-gridstack
     height: 100%
 
+.msf-dashboard-panel-small
+    .flat-button
+        margin: auto
+
 .msf-dashboard-panel-container
     padding: 10px
     overflow-y: visible
@@ -4059,6 +4071,8 @@ mat-tab-group
             white-space: nowrap
             overflow: hidden
             text-overflow: ellipsis
+            font-size: 11px
+            text-align: left
         .msf-full-width
             @extend .msf-dashboard-form-field
         .msf-dashboard-addmenu-icon-item
@@ -4283,6 +4297,12 @@ mat-tab-group
     padding: 0px
     overflow: hidden
 
+.msf-dashboard-panel-dialog .mat-dialog-container
+    padding: 0px
+    overflow: hidden
+    .msf-dashboard-panel-container
+        height: 375px !important
+
 .msf-dashboard-child-panel-dialog .mat-dialog-container
     padding: 12px
     overflow: hidden
@@ -4419,6 +4439,11 @@ mat-tab-group
                 width: 50%
                 padding-left: 5px !important
                 @extend .msf-dashboard-form-field
+
+.msf-simple-form-selector
+    height: 20px
+    align-items: center !important
+    padding-top: 13px !important
 
 .msf-dashboard-table-container
     display: flex
@@ -4655,7 +4680,16 @@ mat-tab-group
     height: calc(100% - 2px) !important
     @extend .msf-dashboard-dialog
     .cancel-button
-        margin-top: 10px !important
+        border-style: solid
+        border-width: 1px
+        border-radius: 5px
+        padding: 5px
+        font-size: 12px
+        font-weight: normal
+        margin-right: 10px
+        margin-bottom: 3px
+        &:hover
+            cursor: pointer
 
 #msf-dashboard-parent-title
     height: 25px
@@ -10246,6 +10280,18 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         justify-content: flex-end
         width: 100% !important
         height: 15px !important
+    .msf-dashboard-panel-chart-checkboxes
+        width: calc(100% - 23px) !important
+        justify-content: flex-end
+        height: 15px !important
+        font-size: 11px !important
+        .msf-dashboard-chart-icon
+            font-size: 22px !important
+            width: 22px !important
+            height: 22px !important
+        .cancels-checkbox
+            margin-right: -1px !important
+            display: inline-block
 
 .datalake-upload-table-chips
     border-radius: 5px !important
@@ -10739,6 +10785,10 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 .grid-stack-item
     top: 0
     left: 0
+
+// hide vertical scroll bar on gridstack items
+.grid-stack > .grid-stack-item > .grid-stack-item-content
+    overflow-y: hidden !important
 
 .Datalake-editTableData
     .datalake-table-edit-input

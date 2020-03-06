@@ -489,7 +489,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     YearHeader,
     CreateUserDialogComponent,
     AirlineRestrictionsDialogComponent,
-    DateRestrictionDialogComponent
+    DateRestrictionDialogComponent,
+    MsfDashboardPanelComponent
   ]
 })
 export class AppModule { }
