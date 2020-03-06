@@ -932,7 +932,7 @@
           </div>
         </div>
       </div>
-      <div id="msf-dashboard-chart-display-{{values.id}}" [ngStyle]="{'width': (globals.readOnlyDashboard || (isMapPanel() || !values.flightRoutes.length)) ? '100%' : 'calc(100% - 35px)'}"></div>
+      <div id="msf-dashboard-chart-display-{{values.id}}" [style.width.%]="100"></div>
       <div class="msf-dashboard-map-panelinfo" *ngIf="isMapPanel() && checkedRoutes.length == 1">
         <table class="msf-dashboard-map-panelinfo-container">
           <tr><td>Touched Airports</td><td>{{checkedRoutes[0].TouchedAirports}}</td></tr>
@@ -1035,7 +1035,7 @@
     </div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div style="height: calc(100% - 7px)" class="msf-dashboard-panel-mapbox">
-        <app-msf-map #msfMapRef [isLoading]="values.isLoading" [useCancelButton]="false" [displayMapMenu]="2" [currentMapType]="values.style" [legendOffset]="45" (finishLoading)="finishMapboxLoading($event)"></app-msf-map>
+        <app-msf-map #msfMapRef [isLoading]="values.isLoading" [useCancelButton]="false" [displayMapMenu]="2" [currentMapType]="values.style" (finishLoading)="finishMapboxLoading($event)"></app-msf-map>
       </div>
     </div>
   </div>

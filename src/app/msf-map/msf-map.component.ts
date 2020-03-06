@@ -104,9 +104,6 @@ export class MsfMapComponent implements OnInit {
   @Input("displayMapMenu")
   displayMapMenu: number = 1;
 
-  @Input("legendOffset")
-  legendOffset: number = 0;
-
   mapRefresh: boolean = false;
 
   constructor(private zone: NgZone, private services: ApplicationService, public globals: Globals) { }
