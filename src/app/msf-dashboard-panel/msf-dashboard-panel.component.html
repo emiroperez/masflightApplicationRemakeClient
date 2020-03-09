@@ -20,7 +20,7 @@
         </button>
       </div>
       <div class="msf-dashboard-panel-sub-container-row msf-dashboard-panel-data-select">
-        <mat-form-field *ngIf="values.currentChartType.name !='Link Image'" [formGroup]="chartForm" class="msf-full-width">
+        <mat-form-field *ngIf="values.currentChartType.name !='Link Image'" [formGroup]="panelForm" class="msf-full-width">
           <mat-select formControlName="dataFormCtrl" placeholder="Select Data From" [(value)]="values.currentOption" (selectionChange)="loadChartFilterValues($event.value)">
             <ngx-mat-select-search [formControl]="dataFormFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
             <mat-option *ngFor="let option of filteredOptions | async | panelOptionFilter: values.currentChartType" [value]="option">
@@ -51,7 +51,7 @@
       </div>
       <div class="msf-dashboard-panel-sub-container-row msf-dashboard-panel-sub-container-checkbox msf-dashboard-panel-interval-time">
         <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="values.updateIntervalSwitch" (ngModelChange)="toggleIntervalInput()"></mat-checkbox>
-        <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+        <mat-form-field [formGroup]="panelForm" class="msf-full-width">
           <input matInput formControlName="intervalCtrl" autocomplete="off" type="number" placeholder="Update Interval (In Minutes)" [(value)]="values.updateTimeLeft"/>
         </mat-form-field>
       </div>
@@ -76,7 +76,7 @@
             <div class="msf-dashboard-chart-op-container">
               <div class="msf-dashboard-chart-op-container-row">
                 <div class="msf-dashboard-field-valuectrl">
-                  <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+                  <mat-form-field [formGroup]="panelForm" class="msf-full-width">
                     <mat-select formControlName="variableCtrl" placeholder="Analysis by" [(value)]="values.variable" (selectionChange)="checkPanelConfiguration()">
                       <ngx-mat-select-search [formControl]="variableFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
                       <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
@@ -100,7 +100,7 @@
             <div class="msf-dashboard-chart-op-container">
               <div class="msf-dashboard-chart-op-container-row">
                 <div class="msf-dashboard-field-valuectrl">
-                  <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+                  <mat-form-field [formGroup]="panelForm" class="msf-full-width">
                     <mat-select formControlName="xaxisCtrl" placeholder="x - Axis" [(value)]="values.xaxis" (selectionChange)="checkPanelConfiguration()">
                       <ngx-mat-select-search [formControl]="xaxisFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
                       <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
@@ -124,7 +124,7 @@
             <div class="msf-dashboard-chart-op-container">
               <div class="msf-dashboard-chart-op-container-row">
                 <div class="msf-dashboard-field-valuectrl">
-                  <mat-form-field [formGroup]="chartForm">
+                  <mat-form-field [formGroup]="panelForm">
                     <mat-select *ngIf="!isSimpleChart()" formControlName="valueCtrl" placeholder="Values" [(value)]="values.valueColumn" (selectionChange)="checkPanelConfiguration()">
                       <ngx-mat-select-search [formControl]="valueFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
                       <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
@@ -196,7 +196,7 @@
                 <mat-icon class="msf-dashboard-chart-icon">table_chart</mat-icon>
               </div>
               <div class="msf-dashboard-chart-op-container">
-                <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+                <mat-form-field [formGroup]="panelForm" class="msf-full-width">
                   <mat-select formControlName="infoNumVarCtrl" placeholder="Number of variables" [(value)]="values.infoNumVariables" (selectionChange)="checkNumVariables()">
                     <mat-option *ngFor="let number of [1,2,3]" [value]="number">
                       {{number}}
@@ -210,7 +210,7 @@
                 <mat-icon class="msf-dashboard-chart-icon">filter_1</mat-icon>
               </div>
               <div class="msf-dashboard-chart-op-container">
-                <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+                <mat-form-field [formGroup]="panelForm" class="msf-full-width">
                   <mat-select formControlName="infoVar1Ctrl" placeholder="Variable #1" [(value)]="values.infoVar1">
                     <ngx-mat-select-search [formControl]="infoVar1FilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
                     <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
@@ -228,7 +228,7 @@
                 <mat-icon class="msf-dashboard-chart-icon">filter_2</mat-icon>
               </div>
               <div class="msf-dashboard-chart-op-container">
-                <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+                <mat-form-field [formGroup]="panelForm" class="msf-full-width">
                   <mat-select formControlName="infoVar2Ctrl" placeholder="Variable #2" [(value)]="values.infoVar2">
                     <ngx-mat-select-search [formControl]="infoVar2FilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
                     <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
@@ -246,7 +246,7 @@
                 <mat-icon class="msf-dashboard-chart-icon">filter_3</mat-icon>
               </div>
               <div class="msf-dashboard-chart-op-container">
-                <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+                <mat-form-field [formGroup]="panelForm" class="msf-full-width">
                   <mat-select formControlName="infoVar3Ctrl" placeholder="Variable #3" [(value)]="values.infoVar3">
                     <ngx-mat-select-search [formControl]="infoVar3FilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
                     <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
@@ -293,7 +293,7 @@
               <mat-icon class="msf-dashboard-chart-icon">list</mat-icon>
             </div>
             <div class="msf-dashboard-chart-op-container">
-              <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+              <mat-form-field [formGroup]="panelForm" class="msf-full-width">
                 <mat-select formControlName="columnCtrl" placeholder="Select Column">
                   <ngx-mat-select-search [formControl]="columnFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
                   <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
@@ -303,7 +303,7 @@
               </mat-form-field>
             </div>
             <div class="msf-dashboard-chart-op-container">
-              <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+              <mat-form-field [formGroup]="panelForm" class="msf-full-width">
                 <mat-select formControlName="fontSizeCtrl" placeholder="Title Font Size">
                   <mat-option *ngFor="let fontSize of fontSizes" [value]="fontSize">
                     {{fontSize.name}}
@@ -312,7 +312,7 @@
               </mat-form-field>
             </div>
             <div class="msf-dashboard-chart-op-container">
-              <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+              <mat-form-field [formGroup]="panelForm" class="msf-full-width">
                 <mat-select formControlName="valueFontSizeCtrl" placeholder="Value Font Size">
                   <mat-option *ngFor="let fontSize of fontSizes" [value]="fontSize">
                     {{fontSize.name}}
@@ -321,7 +321,7 @@
               </mat-form-field>
             </div>
             <div class="msf-dashboard-chart-op-container">
-              <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+              <mat-form-field [formGroup]="panelForm" class="msf-full-width">
                 <mat-select formControlName="valueOrientationCtrl" placeholder="Value Orientation">
                   <mat-option *ngFor="let orientation of orientations" [value]="orientation">
                     {{orientation.name}}
@@ -330,7 +330,7 @@
               </mat-form-field>
             </div>
             <div class="msf-dashboard-chart-op-container">
-              <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+              <mat-form-field [formGroup]="panelForm" class="msf-full-width">
                 <mat-select formControlName="functionCtrl" placeholder="Function">
                   <mat-option *ngFor="let fun of functions" [value]="fun">
                     {{fun.name}}
@@ -524,7 +524,7 @@
               <mat-icon class="msf-dashboard-chart-icon">vpn_key</mat-icon>
             </div>
             <div class="msf-dashboard-chart-op-container">
-              <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+              <mat-form-field [formGroup]="panelForm" class="msf-full-width">
                 <mat-select formControlName="geodataKeyCtrl" placeholder="Geography Data Key" [(value)]="values.valueColumn" (selectionChange)="checkPanelConfiguration()">
                   <ngx-mat-select-search [formControl]="valueFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
                   <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
@@ -539,7 +539,7 @@
               <mat-icon class="msf-dashboard-chart-icon">data_usage</mat-icon>
             </div>
             <div class="msf-dashboard-chart-op-container">
-              <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+              <mat-form-field [formGroup]="panelForm" class="msf-full-width">
                 <mat-select formControlName="geodataValueCtrl" placeholder="Value To Display" [(value)]="values.variable" (selectionChange)="checkPanelConfiguration()">
                   <ngx-mat-select-search [formControl]="variableFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
                   <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
@@ -794,7 +794,7 @@
             <div class="msf-dashboard-chart-op-container">
               <div class="msf-dashboard-chart-op-container-row">
                 <div class="msf-dashboard-field-valuectrl">
-                  <mat-form-field [formGroup]="chartForm" class="msf-full-width">
+                  <mat-form-field [formGroup]="panelForm" class="msf-full-width">
                     <mat-select formControlName="variableCtrl" placeholder="Analysis by" [(value)]="values.variable" (selectionChange)="checkPanelConfiguration()">
                       <ngx-mat-select-search [formControl]="variableFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
                       <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
@@ -818,7 +818,7 @@
             <div class="msf-dashboard-chart-op-container">
               <div class="msf-dashboard-chart-op-container-row">
                 <div class="msf-dashboard-field-valuectrl">
-                  <mat-form-field [formGroup]="chartForm">
+                  <mat-form-field [formGroup]="panelForm">
                     <mat-select formControlName="valueCtrl" placeholder="Aggregation Value" [(value)]="values.valueColumn" (selectionChange)="checkPanelConfiguration()">
                       <ngx-mat-select-search [formControl]="valueFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
                       <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
