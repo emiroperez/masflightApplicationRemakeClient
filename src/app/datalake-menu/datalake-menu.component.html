@@ -8,17 +8,24 @@ style="padding: 0px  7px !important;">
 [ngClass]="globals.optionDatalakeSelected === 1 ? 'msf-menu-op-1-selected': 'msf-menu-op-1'"
     [matMenuTriggerFor]="dashboardMenu" style="padding: 0px 7px !important;">System Status</button>
     <mat-menu #dashboardMenu="matMenu">
+      <ng-container *ngFor="let dashboardCategory of dashboardCategories">
+          <ng-container *ngIf="checkDashboardCategory(dashboardCategory)">
+              <button mat-menu-item [matMenuTriggerFor]="child.childMenu">
+                {{dashboardCategory.title}}
+              </button>
+              <app-menu-dashboard #child [dashboardCategory]="dashboardCategory" (setDashboard)="setDashboard($event)"></app-menu-dashboard>
+          </ng-container>
+      </ng-container>
       <ng-container *ngIf="!globals.readOnlyDashboardPlan">
           <button mat-menu-item *ngFor="let dashboard of dashboards" (click)="goToDashboard(dashboard, false)">
               {{dashboard.title}}
           </button>
       </ng-container>
-      <button mat-menu-item [disabled]="actionDisable('Create Dashboard')"
-      *ngFor="let dashboard of sharedDashboards" (click)="goToDashboard(dashboard, true)">
-          {{dashboard.title}} (Read only)
+      <button mat-menu-item *ngFor="let dashboard of sharedDashboards" (click)="goToDashboard(dashboardMenuId, true)">
+          {{dashboard.dashboardMenuId.title}} (Read only)
       </button>
       <button mat-menu-item (click)="checkSharedItems()">Shared with me</button >
-      <button mat-menu-item *ngIf="!globals.readOnlyDashboardPlan" (click)="addDashboard()">Add dashboard</button>
+      <button mat-menu-item [disabled]="actionDisable('Create Dashboard')" *ngIf="!globals.readOnlyDashboardPlan" (click)="addDashboard()">Add dashboard</button>
   </mat-menu>
 
 <button mat-button 

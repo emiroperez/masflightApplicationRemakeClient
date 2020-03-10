@@ -1,10 +1,11 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatMenuTrigger } from '@angular/material';
 import { DatalakeCreateTableComponent } from '../datalake-create-table/datalake-create-table.component';
 import { Globals } from '../globals/Globals';
 import { MsfAddDashboardComponent } from '../msf-add-dashboard/msf-add-dashboard.component';
 import { DashboardMenu } from '../model/DashboardMenu';
 import { MsfSharedDashboardItemsComponent } from '../msf-shared-dashboard-items/msf-shared-dashboard-items.component';
+import { DashboardCategory } from '../model/DashboardCategory';
 
 @Component({
   selector: 'app-datalake-menu',
@@ -13,6 +14,9 @@ import { MsfSharedDashboardItemsComponent } from '../msf-shared-dashboard-items/
 export class DatalakeMenuComponent implements OnInit {
   @Output('setOption')
   setOption = new EventEmitter();
+
+  @Input("dashboardCategories")
+  dashboardCategories: Array<DashboardCategory>;
 
   @Input("dashboards")
   dashboards: Array<DashboardMenu>;
@@ -25,6 +29,9 @@ export class DatalakeMenuComponent implements OnInit {
 
   @Output('refreshDataExplorer')
   refreshDataExplorer = new EventEmitter();
+
+  dashbaordTrigger: MatMenuTrigger;
+  currentDashboardTrigger: MatMenuTrigger;
 
   constructor(public globals: Globals, private dialog: MatDialog) { }
 
@@ -62,11 +69,12 @@ export class DatalakeMenuComponent implements OnInit {
 
   addDashboard(){    
     this.dialog.open (MsfAddDashboardComponent, {
-      height: '160px',
-      width: '400px',
+      height: '210px',
+      width: '480px',
       panelClass: 'msf-dashboard-control-variables-dialog',
       data: {
-        dashboards: this.dashboards
+        dashboards: this.dashboards,
+        dashboardCategories: this.dashboardCategories
       }
     });
   }
@@ -100,12 +108,73 @@ export class DatalakeMenuComponent implements OnInit {
     });
   }
 
+  recursiveDashboardFullPath(category, dashboard, arg): any
+  {
+    for (let item of category.children)
+    {
+      let path = arg.fullPath + item.title + "/";
+
+      if (dashboard.parentId == item.id)
+      {
+        return {
+          item: item,
+          fullPath: path
+        };
+      }
+
+      if (item.children && item.children.length)
+      {
+        arg = this.recursiveDashboardFullPath (item, dashboard, {
+          item: item,
+          fullPath: path
+        });
+      }
+    }
+
+    return arg;
+  }
+
+  getDashboardFullPath(dashboard, arg): any
+  {
+    if (dashboard.parentId != null)
+    {
+      for (let category of this.dashboardCategories)
+      {
+        let path = arg.fullPath + category.title + "/";
+
+        if (dashboard.parentId == category.id)
+        {
+          return {
+            item: category,
+            fullPath: path
+          };
+        }
+
+        if (category.children && category.children.length)
+        {
+          arg = this.recursiveDashboardFullPath (category, dashboard, {
+            item: category,
+            fullPath: path
+          });
+        }
+      }
+    }
+
+    return arg;
+  }
+
   goToDashboard(dashboard, readOnly): void
   {
+    let arg = {
+      item: null,
+      fullPath: "/"
+    };
+
     this.globals.minDate=null;
     this.globals.maxDate=null;
     this.globals.showBigLoading = true;
     this.globals.currentDashboardMenu = dashboard;
+    this.globals.currentDashboardLocation = this.getDashboardFullPath (dashboard, arg);
     this.globals.currentOption = 'dashboard';
     this.globals.readOnlyDashboard = readOnly;
     this.globals.optionDatalakeSelected = 1
@@ -120,5 +189,26 @@ export class DatalakeMenuComponent implements OnInit {
       //no encontro el dato
       return true;
     }
+  }
+
+  openDashboardMenu(menu, trigger)
+  {
+    menu.openMenu ();
+    this.currentDashboardTrigger = menu;
+  }
+
+  setDashboard(event): void
+  {
+    this.goToDashboard (event.dashboard, event.readOnly);
+  }
+
+  checkDashboardCategory(dashboardCategory: DashboardCategory): boolean
+  {
+    if ((dashboardCategory.children && dashboardCategory.children.length > 0)
+      || (dashboardCategory.dashboards && dashboardCategory.dashboards.length > 0)
+      || (dashboardCategory.sharedDashboards && dashboardCategory.sharedDashboards.length > 0))
+      return true;
+
+    return false;
   }
 }

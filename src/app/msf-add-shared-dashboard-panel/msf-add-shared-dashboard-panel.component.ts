@@ -37,9 +37,11 @@ export class MsfAddSharedDashboardPanelComponent implements OnInit {
     if (_this.globals.currentDashboardMenu != null && _this.globals.currentDashboardMenu.id == _this.selectedDashboard.id)
     {
       _this.globals.currentDashboardMenu = null;
+      _this.globals.currentDashboardLocation = null;
 
       setTimeout(() => {
         _this.globals.currentDashboardMenu = _this.selectedDashboard;
+        // TODO: Set full path
       }, 100);
     }
     else

@@ -1,3 +1,7 @@
+import { DashboardCategory } from './DashboardCategory';
+import { DashboardMenu } from './DashboardMenu';
+import { SharedDashboardMenu } from './SharedDashboardMenu';
+
 export class MenuDashboardMobileNode {
     id: any;
     applicationId: any;
@@ -5,6 +9,9 @@ export class MenuDashboardMobileNode {
     title: any;    
     expandable: boolean;
     level: number;
-    children: any[];
+    children: DashboardCategory[];
+    dashboards: DashboardMenu[];
+    sharedDashboards: SharedDashboardMenu[];
+    dashboardMenuId: DashboardMenu;
     readOnly: any;
   }

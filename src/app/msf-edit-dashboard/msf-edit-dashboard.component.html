@@ -2,14 +2,23 @@
   <div class="msf-dashboard-control-variables-close-button">
     <mat-icon class="msf-dashboard-close-icon" aria-label="close" (click)="confirmChanges(false)">close</mat-icon>
   </div>
-  Edit Dashboard Title
+  Dashboard Settings
 </div>
 <div class="msf-dashboard-panel-sub-container-row msf-edit-dashboard-container">
-  <div class="msf-dashboard-function-measure">
+  <div class="msf-dashboard-function-measure dashboard-config-title">
     <mat-form-field>
-      <input matInput autocomplete="off" type="text" placeholder="Name" [(ngModel)]="currentDashboardMenuTitle"/>
+      <input matInput autocomplete="off" type="text" placeholder="Title" [(ngModel)]="currentDashboardMenuTitle"/>
     </mat-form-field> 
   </div>
+  <div class="dashboard-config-location">
+    <div class="dashboard-config-location-container">
+        <span class="dashboard-config-location-placeholder" *ngIf="!currentDashboardLocation">Location</span>
+        <span class="dashboard-config-location-value" *ngIf="currentDashboardLocation">{{currentDashboardLocation.fullPath}}</span>
+    </div>
+    <button mat-flat-button class="flat-button dashboard-config-browser-button" (click)="openDashboardBrowser()">
+        <mat-icon>folder_open</mat-icon>
+    </button>
+</div>
 </div>
 <div class="msf-dashboard-control-variables-button">
   <button mat-flat-button class="flat-button" (click)="confirmChanges(true)">OK</button>

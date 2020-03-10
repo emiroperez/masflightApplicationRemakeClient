@@ -1,20 +1,28 @@
 <ng-container *ngIf="menu && menu.categories && menu.categories.length > 0">
     <ng-container *ngFor="let category of menu.categories; let i = index ; let size = count">
-        <button mat-button #trigger #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu.childMenu" (click)="setMenuCategory(category)" [ngClass]="{'msf-menu-op-2':i == 0, 'msf-menu-op-1':i != 0}" style="padding: 0px  7px !important;">
+        <button mat-button #trigger [matMenuTriggerFor]="menu.childMenu" (click)="setMenuCategory(category)" [ngClass]="{'msf-menu-op-2':i == 0, 'msf-menu-op-1':i != 0}" style="padding: 0px  7px !important;">
             {{category.label}}
         </button>
         <app-menu-option #menu [options]="category.options" [trigger]="trigger" (optionChanged)="optionChangedFromChildren()"></app-menu-option>
     </ng-container>
     <button mat-button class='msf-menu-op-3' 
-    [matMenuTriggerFor]="dashboardMenu" style="padding: 0px 7px !important;">Dashboards</button>
+        [matMenuTriggerFor]="dashboardMenu" style="padding: 0px 7px !important;">Dashboards</button>
     <mat-menu #dashboardMenu="matMenu">
+        <ng-container *ngFor="let dashboardCategory of dashboardCategories">
+            <ng-container *ngIf="checkDashboardCategory(dashboardCategory)">
+                <button mat-menu-item [matMenuTriggerFor]="child.childMenu">
+                  {{dashboardCategory.title}}
+                </button>
+                <app-menu-dashboard #child [dashboardCategory]="dashboardCategory" (setDashboard)="setDashboard($event)"></app-menu-dashboard>
+            </ng-container>
+        </ng-container>
         <ng-container *ngIf="!globals.readOnlyDashboardPlan">
             <button mat-menu-item *ngFor="let dashboard of dashboards" (click)="goToDashboard(dashboard, false)">
                 {{dashboard.title}}
             </button>
         </ng-container>
-        <button mat-menu-item *ngFor="let dashboard of sharedDashboards" (click)="goToDashboard(dashboard, true)">
-            {{dashboard.title}} (Read only)
+        <button mat-menu-item *ngFor="let dashboard of sharedDashboards" (click)="goToDashboard(dashboard.dashboardMenuId, true)">
+            {{dashboard.dashboardMenuId.title}} (Read only)
         </button>
         <button mat-menu-item (click)="checkSharedItems()" >Shared with me</button >
         <button mat-menu-item *ngIf="!globals.readOnlyDashboardPlan" (click)="addDashboard()" >Add dashboard</button>

@@ -1,0 +1,20 @@
+<mat-menu #childMenu="matMenu">
+    <div>
+        <ng-container *ngFor="let category of dashboardCategory.children">
+            <ng-container *ngIf="checkDashboardCategory(category)">
+                <button mat-menu-item [matMenuTriggerFor]="child.childMenu">
+                    {{category.title}}
+                </button>
+                <app-menu-dashboard #child [dashboardCategory]="category" (setDashboard)="setDashboard.emit($event)"></app-menu-dashboard>
+            </ng-container>
+        </ng-container>
+        <ng-container *ngIf="!globals.readOnlyDashboardPlan">
+            <button mat-menu-item *ngFor="let dashboard of dashboardCategory.dashboards" (click)="goToDashboard(dashboard, false)">
+                {{dashboard.title}}
+            </button>
+        </ng-container>
+        <button mat-menu-item *ngFor="let dashboard of dashboardCategory.sharedDashboards" (click)="goToDashboard(dashboard.dashboardMenuId, true)">
+            {{dashboard.dashboardMenuId.title}} (Read only)
+        </button>
+    </div>
+</mat-menu>

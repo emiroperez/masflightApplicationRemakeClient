@@ -111,7 +111,12 @@ export class MsfSharedDashboardItemsComponent implements OnInit {
       }
       else
       {
-        this.menuService.addSharedReadOnlyDashboard (this, this.selectedDashboardItem.id, this.handlerReadOnlySuccess,
+        let data = {
+          dashboardId: this.selectedDashboardItem.id,
+          parentId: 0 // TODO: Set parent
+        };
+
+        this.menuService.addSharedReadOnlyDashboard (this, data, this.handlerReadOnlySuccess,
           this.handlerError);
       }
 
@@ -156,7 +161,7 @@ export class MsfSharedDashboardItemsComponent implements OnInit {
     }
 
     // add read-only dashboard into the menu
-    _this.data.sharedDashboards.push (newDashboard.dashboardMenuId);
+    _this.data.sharedDashboards.push (newDashboard);
 
     _this.globals.isLoading = false;
     _this.dialog.closeAll ();

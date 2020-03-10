@@ -22,7 +22,7 @@
         <img src="../../assets/images/{{globals.theme}}-adjust.png" class="msf-menu-ajustes-icon">
     </div>
     <div [style.display]="getMenuVisibility()" class="msf-menu-container">
-        <app-menu [menu]="menu" [dashboards]="dashboards" [sharedDashboards]="sharedDashboards"
+        <app-menu [menu]="menu" [dashboards]="dashboards" [sharedDashboards]="sharedDashboards" [dashboardCategories]="dashboardCategories"
             (optionChanged)="optionHandler()"></app-menu>
     </div>
     <div [ngClass]="mobileQuery.matches ? 'msf-header-icons is-mobile'
@@ -145,7 +145,7 @@
         <button *ngIf="globals.currentOption === 'dashboard' && !globals.readOnlyDashboardPlan" class="msf-menu-icon"
             (click)="changeDashboardName()">
             <img src="../../assets/images/{{globals.theme}}-Chart.png" class="msf-menu-image msf-vertical-middle">
-            <span class="msf-vertical-middle" *ngIf="!TabletQuery.matches">Edit Dashboard Title</span>
+            <span class="msf-vertical-middle" *ngIf="!TabletQuery.matches">Dashboard Settings</span>
         </button>
         <button *ngIf="globals.currentOption === 'dashboard' && !globals.readOnlyDashboardPlan" class="msf-menu-icon"
             (click)="shareDashboard()">
@@ -187,8 +187,8 @@
                         *ngIf="globals.currentOption && globals.currentOption.menuOptionArguments && globals.currentOption.menuOptionArguments.length > 0 && globals.currentOption.menuOptionArguments[0].categoryArguments.length > 0">
                     </app-msf-component>
                 </div>
-                <app-menu-nav *ngIf="(ResponsiveQuery.matches || mobileQuery.matches) && globals.showMenu " [menu]="menu" [dashboards]="dashboards"
-                [sharedDashboards]="sharedDashboards" (optionChanged)="optionHandler()"></app-menu-nav>
+                <app-menu-nav *ngIf="(ResponsiveQuery.matches || mobileQuery.matches) && globals.showMenu" [menu]="menu" [dashboards]="dashboards"
+                    [sharedDashboards]="sharedDashboards" [dashboardCategories]="dashboardCategories" (optionChanged)="optionHandler()"></app-menu-nav>
                 <div class="msf-category-container"
                     [ngClass]="(globals.currentOption && globals.currentOption.metaData != 3) ? 'msf-hide' : (globals.hideParametersPanels ? 'msf-hide':'msf-category-container')">
                     <app-msf-map-coordinates></app-msf-map-coordinates>
@@ -229,7 +229,7 @@
                                                                         : ((globals.showPaginator && !globals.isLoading) ? 'msf-menu-internal-content-with-paginator' : 'msf-menu-internal-content')) "  [class.is-MQueryresponsive]="ResponsiveQuery.matches">
                 <app-msf-container #msfContainerRef [paginator]="paginator"   [pageIndex]="pageIndex" (lengthpaginator)=lengthpaginator($event) (moreResult)=moreResult($event)></app-msf-container>
                 <!-- <app-menu-nav *ngIf="(ResponsiveQuery.matches || mobileQuery.matches) && globals.showMenu " [menu]="menu" [dashboards]="dashboards"
-                    [sharedDashboards]="sharedDashboards"></app-menu-nav> -->
+                    [dashboardCategories]="dashboardCategories" [sharedDashboards]="sharedDashboards"></app-menu-nav> -->
             </div>            
             <mat-paginator #paginator [pageIndex]="pageI" [pageSize]="pageSize" [length]="lengthpag"
              hidePageSize

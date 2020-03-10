@@ -38,7 +38,7 @@
         <div class="menu-option-container-second-line"></div>
         <div [ngClass]="{'is-active-mobile': node.isActive,'is-inactive': !node.isActive }"
                 class="{{globals.theme}} menu-node is-mobile">
-                <div class="menu-option-text" [style.padding-left.%]="(node.level*5)+2" [style.min-width.%]="85-((node.level*5)+2)">{{node.title}}</div>  
+                <div class="menu-option-text" [style.padding-left.%]="(node.level*5)+2" [style.min-width.%]="85-((node.level*5)+2)"><span *ngIf="node.dashboardMenuId">{{node.dashboardMenuId.title}} (Read Only)</span><span *ngIf="node.title">{{node.title}}</span></div>  
         </div>
         </mat-tree-node>
         

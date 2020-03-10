@@ -1,6 +1,6 @@
 
 <mat-menu #childMenu="matMenu" [overlapTrigger]="false" yPosition="below">
-  <div (mouseleave)="closeMenu()">
+  <div>
     <ng-container *ngFor="let option of options">
       <!-- Handle branch node menu items -->
       <ng-container *ngIf="(option.children && option.children.length > 0) && option.typeOption != '2'">

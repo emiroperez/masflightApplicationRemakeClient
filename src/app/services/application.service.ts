@@ -686,6 +686,12 @@ export class ApplicationService {
     this.http.get (_this, url, handlerSuccess, handlerError, null);
   }
 
+  getDashboardCategories(_this, handlerSuccess, handlerError)
+  {
+    let url = this.host + "/secure/getDashboardCategories?appId=" + this.globals.currentApplication.id;
+    this.authService.get (_this, url, handlerSuccess, handlerError);
+  }
+
   confirmationOrCancelDialog(_this, message, callback,cancel)
   {
     const dialogRef = this.dialog.open (MsfConfirmationDialogComponent, {

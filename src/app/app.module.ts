@@ -206,6 +206,9 @@ import { AirlineRestrictionsDialogComponent } from './airline-restrictions-dialo
 import { ImageLinkComponent } from './image-link/image-link.component';
 import { DateRestrictionDialogComponent } from './date-restriction-dialog/date-restriction-dialog.component';
 import { GridstackModule } from '@libria/gridstack';
+import { MsfDashboardBrowserComponent } from './msf-dashboard-browser/msf-dashboard-browser.component';
+import { MsfDashboardBrowserFolderItemComponent } from './msf-dashboard-browser-folder-item/msf-dashboard-browser-folder-item.component';
+import { MenuDashboardComponent } from './menu-dashboard/menu-dashboard.component';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -388,7 +391,10 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     DatalakeHomeComponent,
     AirlineRestrictionsDialogComponent,
     ImageLinkComponent,
-    DateRestrictionDialogComponent
+    DateRestrictionDialogComponent,
+    MsfDashboardBrowserComponent,
+    MsfDashboardBrowserFolderItemComponent,
+    MenuDashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -444,7 +450,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     DateTimeFormatPipe,
     Utils,
     AuthGuard,
-    Cookie
+    Cookie,
+    MenuDashboardComponent
   ],
   bootstrap: [AppComponent],
   entryComponents: [
@@ -490,7 +497,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     CreateUserDialogComponent,
     AirlineRestrictionsDialogComponent,
     DateRestrictionDialogComponent,
-    MsfDashboardPanelComponent
+    MsfDashboardPanelComponent,
+    MsfDashboardBrowserComponent
   ]
 })
 export class AppModule { }

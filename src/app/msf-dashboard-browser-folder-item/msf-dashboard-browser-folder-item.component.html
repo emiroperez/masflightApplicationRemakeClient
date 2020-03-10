@@ -1,0 +1,34 @@
+<ng-container *ngIf="directoryTree.open">
+  <ng-container *ngFor="let child of directoryTree.children">
+    <ng-container *ngIf="child.children.length > 0">
+      <div class="dashboard-browser-tree-folder" [style.padding-left.px]="treeMargin">
+        <button mat-icon-button class="tree-button" (click)="toggleTreeItem(child)">
+          <mat-icon *ngIf="!child.open" aria-label="open">keyboard_arrow_right</mat-icon>
+          <mat-icon *ngIf="child.open" aria-label="close">keyboard_arrow_down</mat-icon>
+        </button>
+        <img class="dashboard-browser-item-image" *ngIf="child.open" src="../../assets/images/{{globals.theme}}-folder-open.png"/>
+        <img class="dashboard-browser-item-image" *ngIf="!child.open" src="../../assets/images/{{globals.theme}}-folder-closed.png"/>
+        <ng-container *ngIf="!allowEditing">
+          <span class="dashboard-browser-item-label">{{child.title}}</span>
+        </ng-container>
+        <ng-container *ngIf="allowEditing">
+          <input type="text" autocomplete="off" matInput class="dashboard-browser-item-label" [(ngModel)]="child.name" (ngModelChange)="categoryModified.emit(child)" (click)="selectFolder.emit(child)">
+        </ng-container>
+        <mat-radio-button class="dashboard-browser-item-selector" [value]="child" [checked]="selectedFolder == child" (click)="selectFolder.emit(child)"></mat-radio-button>
+      </div>
+      <app-msf-dashboard-browser-folder-item [directoryTree]="child" [treeMargin]="treeMargin + 30" [allowEditing]="allowEditing" [selectedFolder]="selectedFolder" (selectFolder)="selectFolder.emit($event)" (categoryModified)="categoryModified.emit($event)"></app-msf-dashboard-browser-folder-item>
+    </ng-container>
+    <ng-container *ngIf="!child.children.length">
+      <div class="dashboard-browser-tree-folder" [style.padding-left.px]="treeMargin">
+        <img class="dashboard-browser-item-image" src="../../assets/images/{{globals.theme}}-folder-closed.png"/>
+        <ng-container *ngIf="!allowEditing">
+          <span class="dashboard-browser-item-label">{{child.title}}</span>
+        </ng-container>
+        <ng-container *ngIf="allowEditing">
+          <input type="text" autocomplete="off" matInput class="dashboard-browser-item-label" [(ngModel)]="child.name" (ngModelChange)="categoryModified.emit(child)" (click)="selectFolder.emit(child)">
+        </ng-container>
+        <mat-radio-button class="dashboard-browser-item-selector" [value]="child" [checked]="selectedFolder == child" (click)="selectFolder.emit(child)"></mat-radio-button>
+      </div>
+    </ng-container>
+  </ng-container>
+</ng-container>

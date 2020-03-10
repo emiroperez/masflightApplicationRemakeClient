@@ -23,6 +23,7 @@ import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
 import { ComponentType } from '../commons/ComponentType';
 import { AirportSelection } from '../commons/AirportSelection';
 import { DecimalPipe, DatePipe } from '@angular/common';
+import { DashboardCategory } from '../model/DashboardCategory';
 
 @Component({
   selector: 'app-application',
@@ -38,6 +39,7 @@ export class ApplicationComponent implements OnInit {
   dashboardPlan: boolean;
   defaultDashboardId: number;
   menu: Menu;
+  dashboardCategories: Array<DashboardCategory>;
   dashboards: Array<DashboardMenu>;
   sharedDashboards: Array<DashboardMenu>;
   planAdvanceFeatures: any[];
@@ -210,6 +212,45 @@ export class ApplicationComponent implements OnInit {
     _this.getMenu ();
   }
 
+  recursiveDashboardCategory(category, data): void
+  {
+    for (let child of category.children)
+    {
+      this.recursiveDashboardCategory (child, data);
+
+      if (this.globals.currentDashboardMenu != null)
+        break;
+    }
+
+    if (!this.globals.currentDashboardMenu)
+    {
+      for (let dashboard of category.dashboards)
+      {
+        if (dashboard.id == data.id)
+        {
+          this.globals.currentDashboardMenu = data;
+          this.globals.currentOption = 'dashboard';
+          this.globals.readOnlyDashboard = false;
+          break;
+        }
+      }
+    }
+
+    if (!this.globals.currentDashboardMenu)
+    {
+      for (let dashboard of category.sharedDashboards)
+      {
+        if (dashboard.dashboardMenuId.id == data.id)
+        {
+          this.globals.currentDashboardMenu = data;
+          this.globals.currentOption = 'dashboard';
+          this.globals.readOnlyDashboard = true;
+          break;
+        }
+      }
+    }
+  }
+
   handlerDefaultDashboard(_this, data): void
   {
     // if the user has a default dashboard selected, go to it
@@ -217,23 +258,35 @@ export class ApplicationComponent implements OnInit {
     {
       _this.defaultDashboardId = data.id;
       _this.globals.currentDashboardMenu = null;
+      _this.globals.currentDashboardLocation = null;
 
-      for (let dashboard of _this.dashboards)
+      for (let category of _this.dashboardCategories)
       {
-        if (dashboard.id == data.id)
-        {
-          _this.globals.currentDashboardMenu = data;
-          _this.globals.currentOption = 'dashboard';
-          _this.globals.readOnlyDashboard = false;
+        _this.recursiveDashboardCategory (category, data);
+
+        if (_this.globals.currentDashboardMenu != null)
           break;
+      }
+
+      if (!_this.globals.currentDashboardMenu)
+      {
+        for (let dashboard of _this.dashboards)
+        {
+          if (dashboard.id == data.id)
+          {
+            _this.globals.currentDashboardMenu = data;
+            _this.globals.currentOption = 'dashboard';
+            _this.globals.readOnlyDashboard = false;
+            break;
+          }
         }
       }
-    
+
       if (!_this.globals.currentDashboardMenu)
       {
         for (let dashboard of _this.sharedDashboards)
         {
-          if (dashboard.id == data.id)
+          if (dashboard.dashboardMenuId.id == data.id)
           {
             _this.globals.currentDashboardMenu = data;
             _this.globals.currentOption = 'dashboard';
@@ -268,13 +321,9 @@ export class ApplicationComponent implements OnInit {
   }
 
   handlerDashboard(_this, data){
-    _this.dashboards = data;
-    _this.menuService.getSharedDashboardsByUser(_this, _this.handlerSharedDashboard, _this.errorHandler);
-  }
-
-  handlerSharedDashboard(_this, data)
-  {
-    _this.sharedDashboards = data;
+    _this.dashboardCategories = data.children;
+    _this.dashboards = data.dashboards;
+    _this.sharedDashboards = data.sharedDashboards;
     _this.getAdvanceFeatures();
   }
 
@@ -1089,11 +1138,12 @@ toggle(){
   changeDashboardName(): void
   {
     this.dialog.open (MsfEditDashboardComponent, {
-      height: '160px',
-      width: '400px',
+      height: '200px',
+      width: '480px',
       panelClass: 'msf-dashboard-control-variables-dialog',
       data: {
-        currentDashboardMenu: this.globals.currentDashboardMenu
+        currentDashboardMenu: this.globals.currentDashboardMenu,
+        currentDashboardLocation: this.globals.currentDashboardLocation
       }
     });
   }

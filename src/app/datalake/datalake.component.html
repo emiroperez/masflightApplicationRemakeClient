@@ -9,7 +9,7 @@
         <img src="../../assets/images/{{globals.theme}}-adjust.png" class="msf-menu-ajustes-icon">
     </div>
     <div [style.display]="getMenuVisibility()" class="msf-menu-container">
-        <app-datalake-menu (refreshDataExplorer)="refreshDataExplorer($event)" (setOption)="setOption($event)" [dashboards]="dashboards" [sharedDashboards]="sharedDashboards"></app-datalake-menu>
+        <app-datalake-menu (refreshDataExplorer)="refreshDataExplorer($event)" (setOption)="setOption($event)" [dashboards]="dashboards" [sharedDashboards]="sharedDashboards" [dashboardCategories]="dashboardCategories"></app-datalake-menu>
     </div>
     <div [ngClass]="mobileQuery.matches ? 'msf-header-icons is-mobile'
                                      :(ResponsiveQuery.matches ? 'msf-header-icons is-MQueryresponsive':'msf-header-icons')">
@@ -88,7 +88,7 @@
     <button *ngIf="globals.currentOption === 'dashboard' && !globals.readOnlyDashboardPlan" class="msf-menu-icon"
         (click)="changeDashboardName()">
         <img src="../../assets/images/{{globals.theme}}-Chart.png" class="msf-menu-image msf-vertical-middle">
-        <span class="msf-vertical-middle" *ngIf="!TabletQuery.matches">Edit Dashboard Title</span>
+        <span class="msf-vertical-middle" *ngIf="!TabletQuery.matches">Dashboard Settings</span>
     </button>
     <button *ngIf="globals.currentOption === 'dashboard' && !globals.readOnlyDashboardPlan" class="msf-menu-icon"
         (click)="shareDashboard()">

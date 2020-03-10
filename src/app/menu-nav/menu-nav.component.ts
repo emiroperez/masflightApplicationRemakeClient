@@ -6,6 +6,8 @@ import { Globals } from '../globals/Globals';
 import { MenuDashboardMobileNode } from '../model/MenuDashboardMobileNode';
 import { DashboardMenu } from '../model/DashboardMenu';
 import { MediaMatcher } from '@angular/cdk/layout';
+import { DashboardCategory } from '../model/DashboardCategory';
+import { SharedDashboardMenu } from '../model/SharedDashboardMenu';
 
 @Component({
   selector: 'app-menu-nav',
@@ -66,12 +68,15 @@ export class MenuNavComponent implements OnInit {
     const flatNodeDashboard = existingNode && existingNode.title === node.title
       ? existingNode
       : new MenuDashboardMobileNode();
-      flatNodeDashboard.expandable = (!!node.children && node.children.length > 0) || (!!node.options && node.options.length > 0);
+      flatNodeDashboard.expandable = (!!node.children && node.children.length > 0) || (!!node.dashboards && node.dashboards.length > 0) || (!!node.sharedDashboards && node.sharedDashboards.length > 0);
       flatNodeDashboard.id = node.id;
       flatNodeDashboard.applicationId = node.applicationId;
       flatNodeDashboard.title = node.title;
-      flatNodeDashboard.level = level; 
+      flatNodeDashboard.level = level;
+      flatNodeDashboard.dashboards = node.dashboards;
+      flatNodeDashboard.sharedDashboards = node.sharedDashboards;
       flatNodeDashboard.readOnly = node.readOnly;
+      flatNodeDashboard.dashboardMenuId = node.dashboardMenuId;
     this.flatNodeDashboardMap.set(flatNodeDashboard, node);
     this.nestedNodeDashboardMap.set(node, flatNodeDashboard);
     return flatNodeDashboard;
@@ -97,22 +102,69 @@ export class MenuNavComponent implements OnInit {
     this.transformerDashboard,
     node => node.level,
     node => node.expandable,
-    node => node.children,
+    node => this.getDashboardChildrens(node),
   );
   dashboardButton: any;
 
-  getChildrens(node: any):any {
-    if(node.options){
-      if(node.options.length!=0){
-        return node.options
+  getChildrens(node: any): any
+  {
+    let items = [];
+
+    if (node.options)
+    {
+      if (node.options.length != 0)
+      {
+        for (let option of node.options)
+          items.push (option);
       }
     }
-      if(node.children){
-        if(node.children.length!=0){
-          return node.children
-        }
+
+    if (node.children)
+    {
+      if (node.children.length != 0)
+      {
+        for (let child of node.children)
+          items.push (child);
+      }
     }
+
+    return items;
   }
+
+  getDashboardChildrens(node: any): any
+  {
+    let items = [];
+
+    if (node.children)
+    {
+      if (node.children.length != 0)
+      {
+        for (let child of node.children)
+          items.push (child);
+      }
+    }
+
+    if (node.dashboards)
+    {
+      if (node.dashboards.length != 0)
+      {
+        for (let dashboard of node.dashboards)
+          items.push (dashboard);
+      }
+    }
+
+    if (node.sharedDashboards)
+    {
+      if (node.sharedDashboards.length != 0)
+      {
+        for (let sharedDashboard of node.sharedDashboards)
+          items.push (sharedDashboard);
+      }
+    }
+
+    return items;
+  }
+
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
   dataSourceDashboard = new MatTreeFlatDataSource(this.treeControlDashboard, this.treeFlattenerDashboard);
 
@@ -125,25 +177,28 @@ export class MenuNavComponent implements OnInit {
   @Input("menu")
   menu: any;
 
+  @Input("dashboardCategories")
+  dashboardCategories: DashboardCategory[];
+
   @Input("dashboards")
-  dashboards: any[];
+  dashboards: DashboardMenu[];
 
   @Input("sharedDashboards")
-  sharedDashboards: any[];
+  sharedDashboards: SharedDashboardMenu[];
 
   @Output('optionChanged')
   optionChanged = new EventEmitter ();
 
   ngOnInit() {
     this.dataSource.data = this.menu.categories;
-    this.dashboards.forEach(element => {
-      element.readOnly=false;
-    });
-    this.sharedDashboards.forEach(element => {
-      element.readOnly=true;
-    });
-    // this.dashboards = this.dashboards.concat(sharedDashboards);
-    this.dashboardButton =[{id:0,title:"Dashboard",children: this.dashboards}] ;
+
+    this.dashboardButton = [{
+      id: 0,
+      title: "Dashboard",
+      children: this.dashboardCategories,
+      dashboards: this.dashboards,
+      sharedDashboards: this.sharedDashboards
+    }];
 
     this.dataSourceDashboard.data = this.dashboardButton;
   }
@@ -215,8 +270,68 @@ export class MenuNavComponent implements OnInit {
     this.optionChanged.emit ();
   }  
 
+  recursiveDashboardFullPath(category, dashboard, arg): any
+  {
+    for (let item of category.children)
+    {
+      let path = arg.fullPath + item.title + "/";
+
+      if (dashboard.parentId == item.id)
+      {
+        return {
+          item: item,
+          fullPath: path
+        };
+      }
+
+      if (item.children && item.children.length)
+      {
+        arg = this.recursiveDashboardFullPath (item, dashboard, {
+          item: item,
+          fullPath: path
+        });
+      }
+    }
+
+    return arg;
+  }
+
+  getDashboardFullPath(dashboard, arg): any
+  {
+    if (dashboard.parentId != null)
+    {
+      for (let category of this.dashboardCategories)
+      {
+        let path = arg.fullPath + category.title + "/";
+
+        if (dashboard.parentId == category.id)
+        {
+          return {
+            item: category,
+            fullPath: path
+          };
+        }
+
+        if (category.children && category.children.length)
+        {
+          arg = this.recursiveDashboardFullPath (category, dashboard, {
+            item: category,
+            fullPath: path
+          });
+        }
+      }
+    }
+
+    return arg;
+  }
+
   goToDashboard(dashboard, readOnly): void
   {
+    let arg = {
+      item: null,
+      fullPath: "/"
+    };
+
     this.optionSelected.isActive = false;
     dashboard.isActive = dashboard.isActive == null ? true : !dashboard.isActive;
     
@@ -228,7 +343,14 @@ export class MenuNavComponent implements OnInit {
     this.globals.minDate=null;
     this.globals.maxDate=null;
     this.globals.showBigLoading = true;
-    this.globals.currentDashboardMenu = dashboard;
+
+    if (readOnly)
+      this.globals.currentDashboardMenu = dashboard.dashboardMenuId;
+    else
+      this.globals.currentDashboardMenu = dashboard;
+
+    this.globals.currentDashboardLocation = this.getDashboardFullPath (dashboard, arg);
+
     this.globals.currentOption = 'dashboard';
     this.globals.readOnlyDashboard = readOnly;
     this.optionChanged.emit ();
