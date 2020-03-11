@@ -6,7 +6,7 @@
             </button>
             <app-menu-dashboard #child [dashboardCategory]="category" (setDashboard)="setDashboard.emit($event)"></app-menu-dashboard>
         </ng-container>
-        <ng-container *ngIf="!globals.readOnlyDashboardPlan">
+        <ng-container *ngIf="checkPlan('Create Dashboard')">
             <button mat-menu-item *ngFor="let dashboard of dashboardCategory.dashboards" (click)="goToDashboard(dashboard, false)">
                 {{dashboard.title}}
             </button>

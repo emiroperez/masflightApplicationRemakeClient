@@ -14,7 +14,7 @@ style="padding: 0px  7px !important;">
           </button>
           <app-menu-dashboard #child [dashboardCategory]="dashboardCategory" (setDashboard)="setDashboard($event)"></app-menu-dashboard>
       </ng-container>
-      <ng-container *ngIf="!globals.readOnlyDashboardPlan">
+      <ng-container *ngIf="!actionDisable('Create Dashboard')">
           <button mat-menu-item *ngFor="let dashboard of dashboards" (click)="goToDashboard(dashboard, false)">
               {{dashboard.title}}
           </button>
@@ -23,7 +23,7 @@ style="padding: 0px  7px !important;">
           {{dashboard.dashboardMenuId.title}} (Read only)
       </button>
       <button mat-menu-item (click)="checkSharedItems()">Shared with me</button >
-      <button mat-menu-item [disabled]="actionDisable('Create Dashboard')" *ngIf="!globals.readOnlyDashboardPlan" (click)="addDashboard()">Add dashboard</button>
+      <button mat-menu-item *ngIf="!actionDisable('Create Dashboard')" (click)="addDashboard()">Add dashboard</button>
   </mat-menu>
 
 <button mat-button 

@@ -29,4 +29,20 @@ export class MenuDashboardComponent implements OnInit {
       readOnly: readOnly
     });
   }
+
+  checkPlan(option: string): boolean
+  {
+    if (this.globals.currentApplication.id == 5)
+    {
+      let index = this.globals.optionsDatalake.findIndex (od => od.action.name === option);
+
+      // DataLake doesn't use the membership plan
+      if (index != -1)
+        return false;
+      else
+        return true;
+    }
+
+    return this.globals.readOnlyDashboardPlan ? false : true;
+  }
 }

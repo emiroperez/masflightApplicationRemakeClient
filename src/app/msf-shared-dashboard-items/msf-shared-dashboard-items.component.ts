@@ -98,9 +98,25 @@ export class MsfSharedDashboardItemsComponent implements OnInit {
     });
   }
 
+  isReadOnlyDashboardSet(): boolean
+  {
+    if (this.globals.currentApplication.id == 5)
+    {
+      let index = this.globals.optionsDatalake.findIndex (od => od.action.name === 'Create Dashboard');
+
+      // DataLake doesn't use the membership plan
+      if (index != -1)
+        return false;
+      else
+        return true;
+    }
+
+    return this.globals.readOnlyDashboardPlan ? true : false;
+  }
+
   addItem(): void
   {
-    if (this.globals.readOnlyDashboardPlan && this.selectedDashboardItem.isPanel)
+    if (this.isReadOnlyDashboardSet () && this.selectedDashboardItem.isPanel)
     {
       // Only allow read-only dashboards if this plan is enabled
       this.dialog.open (MessageComponent, {

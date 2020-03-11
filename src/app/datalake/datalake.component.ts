@@ -395,6 +395,17 @@ export class DatalakeComponent implements OnInit {
     // }
   }
 
+  isReadOnlyDashboardSet(): boolean
+  {
+    let index = this.globals.optionsDatalake.findIndex (od => od.action.name === 'Create Dashboard');
+
+    // DataLake doesn't use the membership plan
+    if (index != -1)
+      return false;
+    else
+      return true;
+  }
+
   showDataExplorer() {
     if (this.globals.optionDatalakeSelected === 2 || this.globals.optionDatalakeSelected === 3) {
       let index;

@@ -4,14 +4,14 @@
   </div>
   Add Shared Dashboard
 </div>
-<div *ngIf="!globals.readOnlyDashboardPlan" class="msf-dashboard-panel-sub-container-row msf-shared-dashboard-container">
+<div *ngIf="!isReadOnlyDashboardSet()" class="msf-dashboard-panel-sub-container-row msf-shared-dashboard-container">
   Which preference you want to choose to add the shared dashboard:
 </div>
-<div *ngIf="globals.readOnlyDashboardPlan" class="msf-dashboard-panel-sub-container-row msf-shared-dashboard-container">
+<div *ngIf="isReadOnlyDashboardSet()" class="msf-dashboard-panel-sub-container-row msf-shared-dashboard-container">
   Select shared dashboard location
 </div>
 <div class="msf-dashboard-panel-sub-container-row msf-shared-dashboard-container">
-  <mat-radio-group *ngIf="!globals.readOnlyDashboardPlan" [(ngModel)]="isOwner">
+  <mat-radio-group *ngIf="!isReadOnlyDashboardSet()" [(ngModel)]="isOwner">
     <mat-radio-button class="cancels-checkbox" [value]="false">Viewer</mat-radio-button>
     <mat-radio-button class="cancels-checkbox" [value]="true">Owner</mat-radio-button>
   </mat-radio-group>
