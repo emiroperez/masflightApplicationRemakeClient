@@ -174,6 +174,7 @@ export class MsfDashboardComponent implements OnInit {
         drillDownOptions: [],
         tabType: columnConfig.tabType,
         metaData: columnConfig.metaData,
+        serverSorting: parseInt(columnConfig.serverSorting),
         columnOptions: null
       });
 

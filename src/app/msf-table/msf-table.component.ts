@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, Input ,ChangeDetectorRef, ElementRef, EventEmitter, Output} from '@angular/core';
-import {MatSort, MatTableDataSource, MatTab, Sort, MatDialog, MatPaginator} from '@angular/material';
+import { Component, OnInit, ViewChild, Input, ChangeDetectorRef, ElementRef, EventEmitter, Output } from '@angular/core';
+import { MatSort, MatTableDataSource, MatTab, Sort, MatDialog, MatPaginator } from '@angular/material';
 import { Globals } from '../globals/Globals';
 import { ApplicationService } from '../services/application.service';
 import { MsfGroupingComponent } from '../msf-grouping/msf-grouping.component';
@@ -9,7 +9,8 @@ import { MsfMoreInfoPopupComponent } from '../msf-more-info-popup/msf-more-info-
 import { DomSanitizer } from '@angular/platform-browser';
 import * as moment from 'moment';
 import { AuthService } from '../services/auth.service';
-
+import { CategoryArguments } from '../model/CategoryArguments';
+import { Arguments } from '../model/Arguments';
 
 
 @Component({
@@ -19,16 +20,16 @@ import { AuthService } from '../services/auth.service';
 })
 export class MsfTableComponent implements OnInit {
 
-  utils: Utils;
+  utils: Utils = new Utils();
   resultsAvailable: string = "msf-no-visible";
-  
+
   color = 'primary';
 
   @Input('tabRef')
   tabRef: MatTab;
 
   @Input('displayedColumns')
-  displayedColumns: string[] = []; 
+  displayedColumns: string[] = [];
 
   @ViewChild('TABLE', { static: false }) table: ElementRef;
 
@@ -39,7 +40,7 @@ export class MsfTableComponent implements OnInit {
   isLoading: any;
 
   @Output('finishLoading')
-  finishLoading = new EventEmitter ();
+  finishLoading = new EventEmitter();
 
   @Input('categoryArguments')
   categoryArguments: any;
@@ -53,9 +54,12 @@ export class MsfTableComponent implements OnInit {
   @Input('thresholds')
   thresholds: any;
 
+  @Input('tableVariables')
+  tableVariables: any[];
+
   metadata;
 
-  dataSource : any;
+  dataSource: any;
 
   actualPageNumber;
 
@@ -71,18 +75,22 @@ export class MsfTableComponent implements OnInit {
 
   tableOptions: any;
 
+  SortingColumns: any[] = [];
 
   @Input("paginator")
   paginator: MatPaginator;
-  
+
   @Input("pageIndex")
   pageIndex: any;
 
   @Output('paginatorlength')
-  paginatorlength = new EventEmitter ();
-  
+  paginatorlength = new EventEmitter();
+
   @Output('shmoreResult')
-  shmoreResult = new EventEmitter ();
+  shmoreResult = new EventEmitter();
+
+  @Output('sortingDataTable')
+  sortingDataTable = new EventEmitter();
 
   predefinedColumnFormats: any = {
     "short": true,
@@ -100,142 +108,154 @@ export class MsfTableComponent implements OnInit {
   };
 
   @ViewChild(MatSort, { static: false }) sort: MatSort;
+  // @ViewChild(MatMultiSort, { static: false }) sort: MatMultiSort;
 
   securityTokenResultTable: string;
+  tokenResult: { showMoreResult: boolean; tokenResultTable: any; };
+  ListSortingColumns: string = "";
 
   constructor(public globals: Globals, private service: ApplicationService,
     public dialog: MatDialog, private sanitizer: DomSanitizer,
     private authService: AuthService) { }
 
-  ngOnInit() {      
+  ngOnInit() {
     this.tableOptions = this.globals;
   }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     //this.globals.generateDynamicTable = false;
   }
 
-  setGroupingArgument(){
+  setGroupingArgument() {
     var categoryArguments = this.categoryArguments;
-    if(categoryArguments!=null){
+    if (categoryArguments != null) {
       categoryArguments.forEach(element => {
-        if(element.arguments!=null){
+        if (element.arguments != null) {
           element.arguments.forEach(element2 => {
-            if(element2.type=="groupingAthena"){
+            if (element2.type == "groupingAthena") {
               this.groupingArgument = element2;
             }
-            if(element2.type=="sortingCheckboxes"){
+            if (element2.type == "sortingCheckboxes") {
               this.sortingArgument = element2;
             }
-            if(element2.type=="summary"){
+            if (element2.type == "summary") {
               this.groupingArgument = element2;
             }
-            if(element2.type=="grouping"){
+            if (element2.type == "grouping") {
               this.groupingArgument = element2;
             }
-            if(element2.type=="groupingOperationsSummary"){
+            if (element2.type == "groupingOperationsSummary") {
               this.groupingArgument = element2;
             }
-            if(element2.type=="groupingDailyStatics"){
+            if (element2.type == "groupingDailyStatics") {
               this.groupingArgument = element2;
             }
-            if(element2.type=="groupingMariaDB"){
+            if (element2.type == "groupingMariaDB") {
               this.groupingArgument = element2;
             }
-            if(element2.type=="groupingCompTotal"){
+            if (element2.type == "groupingCompTotal") {
               this.groupingArgument = element2;
             }
-            if(element2.type=="groupingCompGenre"){
+            if (element2.type == "groupingCompGenre") {
               this.groupingArgument = element2;
             }
-            if(element2.type=="groupingOpSum2"){
+            if (element2.type == "groupingOpSum2") {
               this.groupingArgument = element2;
             }
-            if(element2.name1=="limitNumber"){
+            if (element2.name1 == "limitNumber") {
               this.limitNumber = element2;
             }
-        });
+          });
         }
 
-    });
+      });
     }
-    }
+  }
 
-    addGroupingColumns(displayedColumns: any[]){
-      var array =null;
-      var array2 =null;
-        if(this.groupingArgument!=null){
-           array = this.groupingArgument.value1;
-           if(array!=null){
-            if(array.length==0){
-              displayedColumns = this.removeFunctionsColumns(displayedColumns,this);
-            }
-           }else{
-            displayedColumns = this.removeFunctionsColumns(displayedColumns,this);
-          }
-      }else{
-        displayedColumns = this.removeFunctionsColumns(displayedColumns,this);
+  addGroupingColumns(displayedColumns: any[]) {
+    var array = null;
+    var array2 = null;
+    if (this.groupingArgument != null) {
+      array = this.groupingArgument.value1;
+      if (array != null) {
+        if (array.length == 0) {
+          displayedColumns = this.removeFunctionsColumns(displayedColumns, this);
+        }
+      } else {
+        displayedColumns = this.removeFunctionsColumns(displayedColumns, this);
       }
-        if(this.sortingArgument!=null){
-           array2 = this.sortingArgument.value1;
-        }
-    if(array2!=null){
-        for (let index = array2.length-1; index >= 0; index--) {
-          const element = array2[index];
-          const indexColumn = displayedColumns.findIndex(column => column.columnName === element.columnName);
-          if(indexColumn==-1){
-            displayedColumns.unshift({ columnType: "string",
-            columnName:element.columnName,
-            columnLabel:element.columnLabel,
-            drillDowns: [],
-            show:true});
-          }
-        }
+    } else {
+      displayedColumns = this.removeFunctionsColumns(displayedColumns, this);
     }
-    if(array!=null){
-      if(Array.isArray(array)){
-        for (let index = array.length-1; index >= 0; index--) {
+    if (this.sortingArgument != null) {
+      array2 = this.sortingArgument.value1;
+    }
+    if (array2 != null) {
+      for (let index = array2.length - 1; index >= 0; index--) {
+        const element = array2[index];
+        const indexColumn = displayedColumns.findIndex(column => column.columnName === element.columnName);
+        if (indexColumn == -1) {
+          displayedColumns.unshift({
+            columnType: "string",
+            columnName: element.columnName,
+            columnLabel: element.columnLabel,
+            drillDowns: [],
+            show: true
+          });
+        }
+      }
+    }
+    if (array != null) {
+      if (Array.isArray(array)) {
+        for (let index = array.length - 1; index >= 0; index--) {
           const element = array[index];
           const indexColumn = displayedColumns.findIndex(column => column.columnName.toLowerCase() === element.columnName.toLowerCase());
-          if(indexColumn==-1){
-            displayedColumns.unshift({ columnType: "string",
-            columnName:element.columnName,
-            columnLabel:element.columnLabel,
-            drillDowns: [],
-            show:true
-          });
-          }else{
+          if (indexColumn == -1) {
+            displayedColumns.unshift({
+              columnType: "string",
+              columnName: element.columnName,
+              columnLabel: element.columnLabel,
+              drillDowns: [],
+              show: true
+            });
+          } else {
             let columnType = displayedColumns[indexColumn].columnType;
             let columnFormat = displayedColumns[indexColumn].columnFormat;
-  
-              displayedColumns.splice(indexColumn,1);
-              displayedColumns.unshift({ columnType:columnType,
-              columnName:element.columnName,
-              columnLabel:element.columnLabel,
-              columnFormat:columnFormat,
+
+            displayedColumns.splice(indexColumn, 1);
+            displayedColumns.unshift({
+              columnType: columnType,
+              columnName: element.columnName,
+              columnLabel: element.columnLabel,
+              columnFormat: columnFormat,
               drillDowns: [],
-              show:true});
+              show: true
+            });
           }
         }
-      }else{
+      } else {
         const indexColumn = displayedColumns.findIndex(column => column.columnName === array.columnName);
-        if(indexColumn==-1){
-          displayedColumns.unshift({ columnType: "string",
-          columnName:array.columnName,
-          columnLabel:array.columnLabel,
-          drillDowns: [],
-          show:true});
-        }else{
+        if (indexColumn == -1) {
+          displayedColumns.unshift({
+            columnType: "string",
+            columnName: array.columnName,
+            columnLabel: array.columnLabel,
+            drillDowns: [],
+            show: true
+          });
+        } else {
           let columnType = displayedColumns[indexColumn].columnType;
           let columnFormat = displayedColumns[indexColumn].columnFormat;
 
-            displayedColumns.splice(indexColumn,1);
-            displayedColumns.unshift({ columnType: columnType,
-            columnName:array.columnName,
-            columnLabel:array.columnLabel,
-            columnFormat:columnFormat,
+          displayedColumns.splice(indexColumn, 1);
+          displayedColumns.unshift({
+            columnType: columnType,
+            columnName: array.columnName,
+            columnLabel: array.columnLabel,
+            columnFormat: columnFormat,
             drillDowns: [],
-            show:true});
+            show: true
+          });
         }
 
       }
@@ -245,26 +265,26 @@ export class MsfTableComponent implements OnInit {
   }
 
 
-  deleteEmptyColumns(dataResult,displayedColumns: any[]){
+  deleteEmptyColumns(dataResult, displayedColumns: any[]) {
     var aux = displayedColumns.slice();
     var cont = 0;
     for (let index = 0; index < displayedColumns.length; index++) {
       const element = displayedColumns[index];
       var x = index;
-      if(element.grouping==1){
-        if(dataResult.data[0][element.columnName]==null){
-            x = x-cont;
-            aux.splice(x,1);
-            cont++;
+      if (element.grouping == 1) {
+        if (dataResult.data[0][element.columnName] == null) {
+          x = x - cont;
+          aux.splice(x, 1);
+          cont++;
         }
       }
     }
     return aux;
   }
 
-  replaceAll(text: string){
-     let re = /_/gi;
-     return text.replace(re, ' ');
+  replaceAll(text: string) {
+    let re = /_/gi;
+    return text.replace(re, ' ');
   }
 
   getData(moreResults: boolean) {
@@ -272,9 +292,9 @@ export class MsfTableComponent implements OnInit {
     this.globals.startTimestamp = new Date();
 
     if (moreResults) {
-      if(this.pageIndex && this.globals.showPaginator){
+      if (this.pageIndex && this.globals.showPaginator) {
         this.actualPageNumber = this.pageIndex.pageIndex;
-      }else{
+      } else {
         this.actualPageNumber++;
       }
       this.tableOptions.moreResults = true;
@@ -283,55 +303,48 @@ export class MsfTableComponent implements OnInit {
       this.authService.removeTokenResultTable();
     }
     let tokenResultTable = this.authService.getTokenResultTable() ? this.authService.getTokenResultTable() : "";
-    this.service.getDataTableSource(this, this.handlerSuccess, this.handlerError, "" + this.actualPageNumber,tokenResultTable);
+    this.service.getDataTableSource(this, this.handlerSuccess, this.handlerError, "" + this.actualPageNumber, tokenResultTable, this.ListSortingColumns);
     // }}
   }
 
-  getDataUsageStatistics(){
+  getDataUsageStatistics() {
     this.service.getDataTableSourceUsageStatistics(this, this.handlerSuccess, this.handlerError);
   }
 
 
-  getDataCurrentSource(){
+  getDataCurrentSource() {
     let tab = this.tabRef;
-    for(let data of this.dataSource){
-      if(data.id=== tab){
+    for (let data of this.dataSource) {
+      if (data.id === tab) {
         return data;
       }
     }
     return null;
   }
 
-  getMainKey(keys, response){
-    for(let i of keys){
+  getMainKey(keys, response) {
+    for (let i of keys) {
       let obj = response[i];
-      if(obj instanceof Object){
+      if (obj instanceof Object) {
         return obj;
       }
     }
     return null;
   }
 
-  parseResults(data, displayedColumns, currentOption): any
-  {
-    for (let i = 0; i < displayedColumns.length; i++)
-    {
+  parseResults(data, displayedColumns, currentOption): any {
+    for (let i = 0; i < displayedColumns.length; i++) {
       let column = displayedColumns[i];
 
       // use column format if no output format is set
       if (!column.outputFormat || column.outputFormat === "")
         column.outputFormat = column.columnFormat;
 
-      if (column.columnType === "time")
-      {
-        for (let j = 0; j < data.length; j++)
-        {
-          if (currentOption.tabType === "scmap" && data[j].Flight)
-          {
-            if (this.isArray (data[j].Flight))
-            {
-              for (let element of data[j].Flight)
-              {
+      if (column.columnType === "time") {
+        for (let j = 0; j < data.length; j++) {
+          if (currentOption.tabType === "scmap" && data[j].Flight) {
+            if (this.isArray(data[j].Flight)) {
+              for (let element of data[j].Flight) {
                 let value;
 
                 if (element[column.columnName] == undefined)
@@ -339,40 +352,35 @@ export class MsfTableComponent implements OnInit {
                 else
                   value = element[column.columnName];
 
-                if (column.outputFormat && column.outputFormat === "min")
-                {
+                if (column.outputFormat && column.outputFormat === "min") {
                   element[column.columnName] = {
                     value: value,
                     parsedValue: value,
                   };
                 }
-                else
-                {
+                else {
                   element[column.columnName] = {
                     value: value,
-                    parsedValue: this.parseTime (value, column.columnFormat),
+                    parsedValue: this.parseTime(value, column.columnFormat),
                   };
                 }
               }
 
               continue;
             }
-            else if (data[j][column.columnName] == undefined)
-            {
+            else if (data[j][column.columnName] == undefined) {
               let value = data[j].Flight[column.columnName];
 
-              if (column.outputFormat && column.outputFormat === "min")
-              {
+              if (column.outputFormat && column.outputFormat === "min") {
                 data[j].Flight[column.columnName] = {
                   value: value,
                   parsedValue: value,
                 };
               }
-              else
-              {
+              else {
                 data[j].Flight[column.columnName] = {
                   value: value,
-                  parsedValue: this.parseTime (value, column.columnFormat),
+                  parsedValue: this.parseTime(value, column.columnFormat),
                 };
               }
 
@@ -384,19 +392,14 @@ export class MsfTableComponent implements OnInit {
           if (column.outputFormat && column.outputFormat === "min")
             data[j][column.columnName] = data[j][column.columnName];
           else
-            data[j][column.columnName] = this.parseTime (data[j][column.columnName], column.columnFormat);
+            data[j][column.columnName] = this.parseTime(data[j][column.columnName], column.columnFormat);
         }
       }
-      else if (column.columnType === "date")
-      {
-        for (let j = 0; j < data.length; j++)
-        {
-          if (currentOption.tabType === "scmap" && data[j].Flight)
-          {
-            if (this.isArray (data[j].Flight))
-            {
-              for (let element of data[j].Flight)
-              {
+      else if (column.columnType === "date") {
+        for (let j = 0; j < data.length; j++) {
+          if (currentOption.tabType === "scmap" && data[j].Flight) {
+            if (this.isArray(data[j].Flight)) {
+              for (let element of data[j].Flight) {
                 let value;
 
                 if (element[column.columnName] == undefined)
@@ -406,19 +409,18 @@ export class MsfTableComponent implements OnInit {
 
                 element[column.columnName] = {
                   value: value,
-                  parsedValue: this.parseDate (value, column.columnFormat),
+                  parsedValue: this.parseDate(value, column.columnFormat),
                 }
               }
 
               continue;
             }
-            else if (data[j][column.columnName] == undefined)
-            {
+            else if (data[j][column.columnName] == undefined) {
               let value = data[j].Flight[column.columnName];
 
               data[j].Flight[column.columnName] = {
                 value: value,
-                parsedValue: this.parseDate (value, column.columnFormat),
+                parsedValue: this.parseDate(value, column.columnFormat),
               };
 
               data[j][column.columnName] = data[j].Flight[column.columnName].parsedValue;
@@ -426,19 +428,14 @@ export class MsfTableComponent implements OnInit {
             }
           }
 
-          data[j][column.columnName] = this.parseDate (data[j][column.columnName], column.columnFormat);
+          data[j][column.columnName] = this.parseDate(data[j][column.columnName], column.columnFormat);
         }
       }
-      else if (column.columnType === "number")
-      {
-        for (let j = 0; j < data.length; j++)
-        {
-          if (currentOption.tabType === "scmap" && data[j].Flight)
-          {
-            if (this.isArray (data[j].Flight))
-            {
-              for (let element of data[j].Flight)
-              {
+      else if (column.columnType === "number") {
+        for (let j = 0; j < data.length; j++) {
+          if (currentOption.tabType === "scmap" && data[j].Flight) {
+            if (this.isArray(data[j].Flight)) {
+              for (let element of data[j].Flight) {
                 let value;
 
                 if (element[column.columnName] == undefined)
@@ -448,19 +445,18 @@ export class MsfTableComponent implements OnInit {
 
                 element[column.columnName] = {
                   value: value,
-                  parsedValue: this.parseNumber (value),
+                  parsedValue: this.parseNumber(value),
                 }
               }
 
               continue;
             }
-            else if (data[j][column.columnName] == undefined)
-            {
+            else if (data[j][column.columnName] == undefined) {
               let value = data[j].Flight[column.columnName];
 
               data[j].Flight[column.columnName] = {
                 value: value,
-                parsedValue: this.parseNumber (value),
+                parsedValue: this.parseNumber(value),
               };
 
               data[j][column.columnName] = data[j].Flight[column.columnName].parsedValue;
@@ -468,19 +464,15 @@ export class MsfTableComponent implements OnInit {
             }
           }
 
-          data[j][column.columnName] = this.parseNumber (data[j][column.columnName]);
+          data[j][column.columnName] = this.parseNumber(data[j][column.columnName]);
         }
       }
       else // string
       {
-        for (let j = 0; j < data.length; j++)
-        {
-          if (this.currentOption.tabType === "scmap" && data[j].Flight)
-          {
-            if (this.isArray (data[j].Flight))
-            {
-              for (let element of data[j].Flight)
-              {
+        for (let j = 0; j < data.length; j++) {
+          if (this.currentOption.tabType === "scmap" && data[j].Flight) {
+            if (this.isArray(data[j].Flight)) {
+              for (let element of data[j].Flight) {
                 let value;
 
                 if (element[column.columnName] == undefined)
@@ -490,19 +482,18 @@ export class MsfTableComponent implements OnInit {
 
                 element[column.columnName] = {
                   value: value,
-                  parsedValue: this.parseString (value),
+                  parsedValue: this.parseString(value),
                 }
               }
 
               continue;
             }
-            else if (data[j][column.columnName] == undefined)
-            {
+            else if (data[j][column.columnName] == undefined) {
               let value = data[j].Flight[column.columnName];
 
               data[j].Flight[column.columnName] = {
                 value: value,
-                parsedValue: this.parseString (value),
+                parsedValue: this.parseString(value),
               };
 
               data[j][column.columnName] = data[j].Flight[column.columnName].parsedValue;
@@ -510,7 +501,7 @@ export class MsfTableComponent implements OnInit {
             }
           }
 
-          data[j][column.columnName] = this.parseString (data[j][column.columnName]);
+          data[j][column.columnName] = this.parseString(data[j][column.columnName]);
         }
       }
     }
@@ -518,33 +509,33 @@ export class MsfTableComponent implements OnInit {
     return data;
   }
 
-  handlerSuccess(_this,data, tab){
-    if(_this.isLoading) {
-      _this.tableOptions.totalRecord=0;
+  handlerSuccess(_this, data, tab) {
+    if (_this.isLoading) {
+      _this.tableOptions.totalRecord = 0;
       _this.setGroupingArgument();
       _this.globals.endTimestamp = new Date();
       let response = data.Response;
-      if(response!=null){
-        if(response.total!=null){
+      if (response != null) {
+        if (response.total != null) {
           _this.tableOptions.totalRecord = response.total;
-          if (response.tokenResultTable != null){
-              _this.authService.setTokenResultTable (response.tokenResultTable);
+          if (response.tokenResultTable != null) {
+            _this.authService.setTokenResultTable(response.tokenResultTable);
           }
           //
-        }else{
+        } else {
           for (var key in response) {
             var array = response[key];
-            if( array != null){
-              if(Array.isArray(array)){
+            if (array != null) {
+              if (Array.isArray(array)) {
                 _this.tableOptions.totalRecord = array.length;
                 break;
-              }else{
+              } else {
                 for (var key in array) {
                   var obj = array[key];
-                  if( obj != null){
+                  if (obj != null) {
                     let keys = Object.keys(response);
-                    let mainElement = _this.getMainKey(keys,response);
-                    if(mainElement!=null){
+                    let mainElement = _this.getMainKey(keys, response);
+                    if (mainElement != null) {
                       _this.tableOptions.totalRecord = 1;
                     }
                   }
@@ -555,148 +546,149 @@ export class MsfTableComponent implements OnInit {
         }
       }
       let keys = Object.keys(response);
-      let mainElement = _this.getMainKey(keys,response);
-      if(!(mainElement instanceof Array)){
+      let mainElement = _this.getMainKey(keys, response);
+      if (!(mainElement instanceof Array)) {
         mainElement = [mainElement];
       }
-      if( _this.tableOptions.totalRecord > 0){
-        if(_this.currentOption.metaData==1 || _this.currentOption.metaData==3 || _this.currentOption.tabType=='scmap'){  
+      if (_this.tableOptions.totalRecord > 0) {
+        if (_this.currentOption.metaData == 1 || _this.currentOption.metaData == 3 || _this.currentOption.tabType == 'scmap') {
           _this.tableOptions.displayedColumns = data.metadata;
           let dataResult = new MatTableDataSource(mainElement);
-                  
-        if(response.Rows){
-          _this.globals.showPaginator = true;
-          let tokenResult = {
-            showMoreResult: false,
-            tokenResultTable: response.tokenResultTable
-          }
-          _this.shmoreResult.emit(tokenResult);
-        }else{
-          _this.globals.showPaginator = false;
-          let tokenResult = {
-            showMoreResult: true,
-            tokenResultTable: ""
-          }
-          _this.shmoreResult.emit(tokenResult);
-        }
+          // let dataResult = new MatMultiSortTableDataSource(mainElement,false);
 
-        if(_this.actualPageNumber===0){
-          let paginatorlength = {
-            length: data.Response.Rows ,
-            pageIndex: 0,
-            pageSize: 50
+          if (response.Rows) {
+            _this.globals.showPaginator = true;
+            _this.tokenResult = {
+              showMoreResult: false,
+              tokenResultTable: response.tokenResultTable
+            }
+            _this.shmoreResult.emit(_this.tokenResult);
+          } else {
+            _this.globals.showPaginator = false;
+            _this.tokenResult = {
+              showMoreResult: true,
+              tokenResultTable: ""
+            }
+            _this.shmoreResult.emit(_this.tokenResult);
           }
-          _this.paginatorlength.emit(paginatorlength);
-          _this.paginator.firstPage();
-        }
-            _this.tableOptions.displayedColumns  = _this.addGroupingColumns(_this.tableOptions.displayedColumns);
-            _this.tableOptions.displayedColumns  = _this.deleteEmptyColumns(dataResult,_this.tableOptions.displayedColumns);
+
+          if (_this.actualPageNumber === 0) {
+            let paginatorlength = {
+              length: data.Response.Rows,
+              pageIndex: 0,
+              pageSize: 50
+            }
+            _this.paginatorlength.emit(paginatorlength);
+            _this.paginator.firstPage();
+          }
+          _this.tableOptions.displayedColumns = _this.addGroupingColumns(_this.tableOptions.displayedColumns);
+          _this.tableOptions.displayedColumns = _this.deleteEmptyColumns(dataResult, _this.tableOptions.displayedColumns);
           _this.metadata = _this.tableOptions.displayedColumns;
           _this.tableOptions.metadata = data.metadata;
-          
-          _this.setColumnsDisplayed(_this);
-          
 
-          if( _this.tableOptions.moreResults){
-            if(_this.currentOption.tabType === "legacy" || _this.currentOption.tabType === "scmap")
+          _this.setColumnsDisplayed(_this);
+
+
+          if (_this.tableOptions.moreResults) {
+            if (_this.currentOption.tabType === "legacy" || _this.currentOption.tabType === "scmap")
               _this.dataSource.data = _this.dataSource.data.concat(dataResult.data);
             else
               _this.dataSource = dataResult;
-          }else{
+          } else {
             _this.dataSource = dataResult;
           }
 
           // parse table values
-          _this.dataSource.data = _this.parseResults (_this.dataSource.data, _this.tableOptions.displayedColumns, _this.currentOption);
+          _this.dataSource.data = _this.parseResults(_this.dataSource.data, _this.tableOptions.displayedColumns, _this.currentOption);
 
-          if(_this.currentOption.tabType === "legacy" || _this.currentOption.tabType === "scmap"){
-            if( _this.tableOptions.totalRecord < 50 || _this.tableOptions.totalRecord > 50){
+          if (_this.currentOption.tabType === "legacy" || _this.currentOption.tabType === "scmap") {
+            if (_this.tableOptions.totalRecord < 50 || _this.tableOptions.totalRecord > 50) {
               _this.tableOptions.moreResultsBtn = false;
               _this.tableOptions.moreResults = false;
-            }else{
+            } else {
               _this.tableOptions.moreResultsBtn = true;
             }
-          }else{  
-            if(_this.tableOptions.actualPageNumber==undefined)
+          } else {
+            if (_this.tableOptions.actualPageNumber == undefined)
               _this.tableOptions.actualPageNumber = _this.actualPageNumber;
-            
-            var aux = (_this.tableOptions.actualPageNumber+1)*50;
-            aux = aux!=0 ? aux : 50;
-            if( _this.tableOptions.totalRecord<aux){
+
+            var aux = (_this.tableOptions.actualPageNumber + 1) * 50;
+            aux = aux != 0 ? aux : 50;
+            if (_this.tableOptions.totalRecord < aux) {
               _this.tableOptions.moreResultsBtn = false;
               _this.tableOptions.moreResults = false;
-            }else{
+            } else {
               _this.tableOptions.moreResultsBtn = true;
             }
           }
-          if(_this.limitNumber!=null){
-            if(_this.limitNumber.value1!=null &&_this.limitNumber.value1!=""){
+          if (_this.limitNumber != null) {
+            if (_this.limitNumber.value1 != null && _this.limitNumber.value1 != "") {
               _this.tableOptions.moreResultsBtn = false;
               _this.tableOptions.moreResults = false;
             }
           }
-      }else if (_this.currentOption.metaData==0){
-        _this.template = data.template;
-      }
-      if (_this.currentOption.metaData==2){
-        if(data.metadata.length>0){
-          _this.tableOptions.metadata =new Map();
-          data.metadata.forEach(element => {
-            _this.tableOptions.metadata.set(element.columnName,element.columnLabel);
-           });
-         
+        } else if (_this.currentOption.metaData == 0) {
+          _this.template = data.template;
         }
-      
-        _this.globals.hideParametersPanels = true;
-        _this.globals.scheduledata = mainElement;
-        _this.globals.scmap=true;
-        // _this.globals.tab =false;
-      }
-      }else{
+        if (_this.currentOption.metaData == 2) {
+          if (data.metadata.length > 0) {
+            _this.tableOptions.metadata = new Map();
+            data.metadata.forEach(element => {
+              _this.tableOptions.metadata.set(element.columnName, element.columnLabel);
+            });
+
+          }
+
+          _this.globals.hideParametersPanels = true;
+          _this.globals.scheduledata = mainElement;
+          _this.globals.scmap = true;
+          // _this.globals.tab =false;
+        }
+      } else {
         _this.globals.showPaginator = false;
-        if(response.Rows){
+        if (response.Rows) {
           // _this.globals.showMoreResult = false;
           _this.shmoreResult.emit(false);
-        }else{
+        } else {
           // _this.globals.showMoreResult = true;
           _this.shmoreResult.emit(true);
         }
-        if( _this.tableOptions.moreResults){
+        if (_this.tableOptions.moreResults) {
           _this.tableOptions.moreResultsBtn = false;
-            _this.tableOptions.moreResults = false;
+          _this.tableOptions.moreResults = false;
         }
-        if(_this.globals.moreResultsBtn){
+        if (_this.globals.moreResultsBtn) {
           _this.globals.moreResultsBtn = false;
         }
-      }  
-      if(_this.dataSource){
-        if(_this.sort!=undefined){
-          _this.dataSource.sort =_this.sort;
+      }
+      if (_this.dataSource) {
+        if (_this.sort != undefined) {
+          _this.dataSource.sort = _this.sort;
         }
         _this.tableOptions.dataSource = true;
 
         if (_this.currentOption.tabType !== "map")
           _this.tableOptions.selectedIndex = 2;
-      }else{
+      } else {
         _this.tableOptions.dataSource = false;
       }
-      
-      if(_this.template){
+
+      if (_this.template) {
         _this.tableOptions.template = true;
 
-      }else{
+      } else {
         _this.tableOptions.template = false;
       }
 
       if (_this.currentOption.tabType !== "map")
         _this.tableOptions.selectedIndex = 2;
 
-      _this.finishLoading.emit (false);
-      if(!_this.globals.isLoading){
+      _this.finishLoading.emit(false);
+      if (!_this.globals.isLoading) {
         _this.globals.showBigLoading = true;
       }
 
-      if (_this.tableOptions.dataSource && !_this.tableOptions.template && ((_this.currentOption.metaData==1) || (_this.currentOption.metaData==3) || (_this.currentOption.tabType=='scmap')))
+      if (_this.tableOptions.dataSource && !_this.tableOptions.template && ((_this.currentOption.metaData == 1) || (_this.currentOption.metaData == 3) || (_this.currentOption.tabType == 'scmap')))
         _this.resultsAvailable = "msf-visible";
       else
         _this.resultsAvailable = "msf-no-visible";
@@ -708,28 +700,28 @@ export class MsfTableComponent implements OnInit {
     displayedColumns.forEach(element => {
       cont = 0;
       for (let index = 0; index < displayedColumns.length; index++) {
-        if(element.columnName === displayedColumns[index].columnName){
+        if (element.columnName === displayedColumns[index].columnName) {
           cont++;
-          if(cont>1){
-            displayedColumns[index].columnName = displayedColumns[index].columnName+(cont-1)
+          if (cont > 1) {
+            displayedColumns[index].columnName = displayedColumns[index].columnName + (cont - 1)
           }
         }
-        
+
       }
     });
     return displayedColumns;
   }
 
-  setColumnsDisplayed(_this){
-      for(let column of this.metadata){
-        _this.displayedColumns.push(column.columnName);
-        // _this.displayedColumns.push(column.columnLabel);
-      }
+  setColumnsDisplayed(_this) {
+    for (let column of this.metadata) {
+      _this.displayedColumns.push(column.columnName);
+      // _this.displayedColumns.push(column.columnLabel);
+    }
   }
 
-  handlerError(_this,result) {
-    _this.finishLoading.emit (true);
-    if(!_this.globals.isLoading){
+  handlerError(_this, result) {
+    _this.finishLoading.emit(true);
+    if (!_this.globals.isLoading) {
       _this.globals.showBigLoading = true;
     }
     _this.tableOptions.dataSource = false;
@@ -738,19 +730,18 @@ export class MsfTableComponent implements OnInit {
     _this.resultsAvailable = "msf-no-visible";
   }
 
-  getCurrentClass(tableItem:any){
-    var aux ="financial-table-item-label-title";
-    if(tableItem.bold=='1'){
-      aux+=" msf-bold";
+  getCurrentClass(tableItem: any) {
+    var aux = "financial-table-item-label-title";
+    if (tableItem.bold == '1') {
+      aux += " msf-bold";
     }
-    if(tableItem.subtitle=='1'){
-      aux+=" parent-cell-subtitle";
+    if (tableItem.subtitle == '1') {
+      aux += " parent-cell-subtitle";
     }
     return aux;
   }
 
-  parseDate(date: any, format: string): Date
-  {
+  parseDate(date: any, format: string): Date {
     let momentDate: moment.Moment;
     let momentFormat: string;
 
@@ -761,109 +752,101 @@ export class MsfTableComponent implements OnInit {
       momentFormat = "YYYYMMDD"; // fallback for date values with no column or pre-defined format set
     else if (this.predefinedColumnFormats[format])
       momentFormat = "DD/MM/YYYY";
-    else
-    {
+    else {
       // replace lower case letters with uppercase ones for the moment date format
-      momentFormat = format.replace (/m/g, "M");
-      momentFormat = momentFormat.replace (/y/g, "Y");
-      momentFormat = momentFormat.replace (/d/g, "D");
+      momentFormat = format.replace(/m/g, "M");
+      momentFormat = momentFormat.replace(/y/g, "Y");
+      momentFormat = momentFormat.replace(/d/g, "D");
     }
 
-    momentDate = moment (date, momentFormat);
-    if (!momentDate.isValid ())
+    momentDate = moment(date, momentFormat);
+    if (!momentDate.isValid())
       return null; // invalid date value will be null
 
-    return momentDate.toDate ();
+    return momentDate.toDate();
   }
 
-  parseTime(time: any, format: string): Date
-  {
+  parseTime(time: any, format: string): Date {
     let momentFormat: string;
     let date: Date;
 
     if (time == null || time == "")
       return null;
 
-    date = new Date (time);
+    date = new Date(time);
 
-    if (format && format === "min")
-    {
+    if (format && format === "min") {
       // special format for Passenger Info service
       let momentDate: moment.Moment;
 
-      time = parseFloat (time);
+      time = parseFloat(time);
       time /= 60;
 
-      momentDate = moment (time, "HH.mm");
-      return momentDate.toDate ();
+      momentDate = moment(time, "HH.mm");
+      return momentDate.toDate();
     }
-    else if (isNaN (date.getTime ()))
-    {
+    else if (isNaN(date.getTime())) {
       let momentDate: moment.Moment;
 
       if (format == null || format == "" || this.predefinedColumnFormats[format])
         momentFormat = "HH:mm:ss";          // fallback for time values with no column or pre-defined format set
-      else
-      {
+      else {
         // replace some cases in order for moment date format compatibility
-        momentFormat = format.replace (/h/g, "H");
-        momentFormat = momentFormat.replace (/M/g, "m");
-        momentFormat = momentFormat.replace (/S/g, "s");
+        momentFormat = format.replace(/h/g, "H");
+        momentFormat = momentFormat.replace(/M/g, "m");
+        momentFormat = momentFormat.replace(/S/g, "s");
       }
 
-      momentDate = moment (time, momentFormat);
-      if (!momentDate.isValid ())
+      momentDate = moment(time, momentFormat);
+      if (!momentDate.isValid())
         return null; // invalid time value will be null
 
-      return momentDate.toDate ();
+      return momentDate.toDate();
     }
 
     // use full date format if the time value is a valid date
-    return moment (date.toISOString (), "YYYY-MM-DDTHH:mm:ss.sssZ").toDate ();
+    return moment(date.toISOString(), "YYYY-MM-DDTHH:mm:ss.sssZ").toDate();
   }
 
-  parseNumber(value: any): string
-  {
-    if (isNaN (value))
-    {
-      let aux: string = String (value);
+  parseNumber(value: any): string {
+    if (isNaN(value)) {
+      let aux: string = String(value);
 
       // remove any non-numeric characters except dot if the value is not a number
-      value = aux.replace (/[^0-9.]/g, "");
+      value = aux.replace(/[^0-9.]/g, "");
     }
 
-    if (value.toString () == "0")
+    if (value.toString() == "0")
       value = "0";
 
     return value;
   }
 
-  parseString(value: any): string
-  {
+  parseString(value: any): string {
     let aux: string;
 
     if (value == null)
       return null;
 
-    aux = String (value);
+    aux = String(value);
 
     // remove any newline charaters
-    return aux.replace (/\n/g, "");
+    return aux.replace(/\n/g, "");
   }
 
-  isArray( element:any){
-   return element instanceof Array;
+  isArray(element: any) {
+    return element instanceof Array;
   }
 
-  getDecoration(array,j){
-    if(j > 0 && j < array.length){
+  getDecoration(array, j) {
+    if (j > 0 && j < array.length) {
       return 'msf-sub-cell msf-border-top';
-    }else{
+    } else {
       return 'msf-sub-cell';
     }
   }
 
-  openSubQuery(drillDown : any,element: any){
+  openSubQuery(drillDown: any, element: any) {
     this.globals.popupMainElement = null;
     this.globals.popupResponse = null;
     this.globals.subDataSource = null;
@@ -872,70 +855,70 @@ export class MsfTableComponent implements OnInit {
     this.globals.currentDrillDown = drillDown;
     var rowNumber = this.dataSource.filteredData.indexOf(element);
     this.globals.popupLoading2 = true;
-    var parameters = this.getSubOptionParameters(drillDown.drillDownParameter,rowNumber);
-    this.service.getSubDataTableSource(this,drillDown.childrenOptionId,parameters,this.getPopupInfo,this.popupInfoError)
+    var parameters = this.getSubOptionParameters(drillDown.drillDownParameter, rowNumber);
+    this.service.getSubDataTableSource(this, drillDown.childrenOptionId, parameters, this.getPopupInfo, this.popupInfoError)
   }
 
-  popupInfoError(_this,data) {
+  popupInfoError(_this, data) {
     _this.globals.popupLoading2 = false;
   }
 
-  getPopupInfo(_this,data){
-    let response =  data.Response;
+  getPopupInfo(_this, data) {
+    let response = data.Response;
     _this.globals.subTotalRecord = response.total;
     let keys = Object.keys(response);
     let dataResult;
+    let dataResult2;
 
-    if (response.url && response.url != "")
-    {
+    if (response.url && response.url != "") {
       // sanitize this html code in order to be able to use the pdf viewer for the drill down
-      _this.globals.subPdfViewer = _this.sanitizer.bypassSecurityTrustHtml (
-        "<object data='" + _this.globals.baseUrl + response.url + "' type='application/pdf' width='100%' height='100%'>" + 
-          "<embed src='" + _this.globals.baseUrl + response.url + "' type='application/pdf' width='100%' height='100%'/>" +
+      _this.globals.subPdfViewer = _this.sanitizer.bypassSecurityTrustHtml(
+        "<object data='" + _this.globals.baseUrl + response.url + "' type='application/pdf' width='100%' height='100%'>" +
+        "<embed src='" + _this.globals.baseUrl + response.url + "' type='application/pdf' width='100%' height='100%'/>" +
         "</object>"
       );
     }
- 
+
     _this.globals.subDisplayedColumns = data.metadata;
 
-    if( _this.globals.subTotalRecord > 1){
-      let mainElement = _this.getMainKey(keys,response);
-    if(!(mainElement instanceof Array)){
-      mainElement = [mainElement];
-    }
-        dataResult = new MatTableDataSource(mainElement);     
-        _this.setSubColumnsDisplayed(_this);
-        _this.globals.subDataSource = dataResult;
+    if (_this.globals.subTotalRecord > 1) {
+      let mainElement = _this.getMainKey(keys, response);
+      if (!(mainElement instanceof Array)) {
+        mainElement = [mainElement];
+      }
+      dataResult = new MatTableDataSource(mainElement);
+      // dataResult2 = new MatMultiSortTableDataSource(mainElement,false);
+      _this.setSubColumnsDisplayed(_this);
+      _this.globals.subDataSource = dataResult;
 
-    }else if(_this.globals.subTotalRecord==1){
-      let mainElement = _this.getMainKey(keys,response);
-      if(!(mainElement instanceof Array)){
+    } else if (_this.globals.subTotalRecord == 1) {
+      let mainElement = _this.getMainKey(keys, response);
+      if (!(mainElement instanceof Array)) {
         mainElement = [mainElement];
       }
       _this.globals.popupResponse = response;
       _this.globals.popupMainElement = mainElement;
-    }else{
-      if( _this.globals.subMoreResults){
+    } else {
+      if (_this.globals.subMoreResults) {
         _this.globals.moreResultsBtn = false;
-          _this.globals.moreResults = false;
+        _this.globals.moreResults = false;
       }
-    }  
+    }
 
-    if(_this.globals.currentDrillDown.title === "More Info Passenger")
-      _this.globals.popupMainElement[0] = _this.parseResults (_this.globals.popupMainElement[0], _this.globals.subDisplayedColumns, _this.globals.currentDrillDown.childrenOptionId);
+    if (_this.globals.currentDrillDown.title === "More Info Passenger")
+      _this.globals.popupMainElement[0] = _this.parseResults(_this.globals.popupMainElement[0], _this.globals.subDisplayedColumns, _this.globals.currentDrillDown.childrenOptionId);
     else
       _this.globals.popupLoading2 = false;
   }
 
-  setSubColumnsDisplayed(_this){
-    for(let column of _this.globals.subDisplayedColumns){
+  setSubColumnsDisplayed(_this) {
+    for (let column of _this.globals.subDisplayedColumns) {
       _this.globals.subDisplayedColumnNames.push(column.columnName);
     }
-}
+  }
 
 
-  goToPopup(drillDown:any)
-  {
+  goToPopup(drillDown: any) {
     var width = drillDown.width;
     var height = drillDown.height;
 
@@ -949,79 +932,76 @@ export class MsfTableComponent implements OnInit {
     else
       height += " !important";
 
-    this.dialog.open (MsfMoreInfoPopupComponent, {
+    this.dialog.open(MsfMoreInfoPopupComponent, {
       height: height,
       width: width,
       panelClass: 'msf-more-info-popup',
       data: {
-        tableWidth: (drillDown.width && drillDown.width != "" && drillDown.width != "auto" ? (Number (drillDown.width) - 116) : 1084)
+        tableWidth: (drillDown.width && drillDown.width != "" && drillDown.width != "auto" ? (Number(drillDown.width) - 116) : 1084)
       }
     });
   }
 
-  
-  getSubOptionParameters(parameters:any[],rowNumber: any){
+
+  getSubOptionParameters(parameters: any[], rowNumber: any) {
     var urlPam = "";
     for (let index = 0; index < parameters.length; index++) {
-        const element = parameters[index].webservicesMetaId;
-        var argName = "";
-        if(element.argumentsId!=null){
-          if (element.argumentsId.name1)
+      const element = parameters[index].webservicesMetaId;
+      var argName = "";
+      if (element.argumentsId != null) {
+        if (element.argumentsId.name1)
           argName = element.argumentsId.name1;
 
-          if (element.argumentsId.name2)
+        if (element.argumentsId.name2)
           argName = element.argumentsId.name2;
 
-          if (element.argumentsId.name3)
+        if (element.argumentsId.name3)
           argName = element.argumentsId.name3;
-        }else{
-          argName = element.columnName;
-        }
-        if(index==0){
-            urlPam+="?" + argName + "=" + this.dataSource.filteredData[rowNumber][element.columnName];
-        }else{
-            urlPam+="&" + argName + "=" + this.dataSource.filteredData[rowNumber][element.columnName];
-        }
-        return urlPam;
+      } else {
+        argName = element.columnName;
+      }
+      if (index == 0) {
+        urlPam += "?" + argName + "=" + this.dataSource.filteredData[rowNumber][element.columnName];
+      } else {
+        urlPam += "&" + argName + "=" + this.dataSource.filteredData[rowNumber][element.columnName];
+      }
+      return urlPam;
     }
-}
+  }
 
-  removeFunctionsColumns(displayedColumns,_this){
+  removeFunctionsColumns(displayedColumns, _this) {
     var aux = displayedColumns.slice();
     var cont = 0;
     for (let index = 0; index < displayedColumns.length; index++) {
       const element = displayedColumns[index];
       var x = index;
-      if(element.function==0){
-        x = x-cont;
-        aux.splice(x,1);
+      if (element.function == 0) {
+        x = x - cont;
+        aux.splice(x, 1);
         cont++;
       }
     }
     return aux;
   }
 
-  cancelLoading(){
-    this.finishLoading.emit (false);
+  cancelLoading() {
+    this.finishLoading.emit(false);
     this.globals.showBigLoading = true;
   }
 
-  noResults(){
-    if(this.tableOptions){
-      if(!this.tableOptions.dataSource && !this.tableOptions.template){
+  noResults() {
+    if (this.tableOptions) {
+      if (!this.tableOptions.dataSource && !this.tableOptions.template) {
         return "msf-show";
       }
     }
     return "msf-hide";
   }
 
-  getFontColor(column, value): string
-  {
-    if (this.thresholds)
-    {
-      for (let threshold of this.thresholds)
-      {
-        value = parseFloat (value);
+  getFontColor(column, value): string {
+    if (this.thresholds) {
+      for (let threshold of this.thresholds) {
+        value = parseFloat(value);
 
         if (threshold.column == column.id && value >= threshold.min && value <= threshold.max)
           return threshold.color;
@@ -1031,47 +1011,38 @@ export class MsfTableComponent implements OnInit {
     return "inherit";
   }
 
-  getFormatMinutes(value:any)
-  {
-    if(value=="0"){
+  getFormatMinutes(value: any) {
+    if (value == "0") {
       return "0h 0m";
-    }else{
-      var aux ="";
-      var result = value/60;
+    } else {
+      var aux = "";
+      var result = value / 60;
       var resultString = String(result);
-      if(resultString.split(".")[0]!="0"){
-        aux = resultString.split(".")[0] + "h " + resultString.split(".")[1].substr(0, 1)+ "m";
-      }else{
+      if (resultString.split(".")[0] != "0") {
+        aux = resultString.split(".")[0] + "h " + resultString.split(".")[1].substr(0, 1) + "m";
+      } else {
         aux = value + "m";
       }
       return aux;
     }
   }
 
-  /*sortData(event?:Sort){
-    if(event){
-      this.getDataSorting(true, event.active,event.direction);
+  sortData(event?: Sort) {
+    let SortingData = {
+      columnName: event.active,
+      order: event.direction
     }
+    this.sortingDataTable.emit(SortingData);
   }
 
-  getDataSorting(moreResults: boolean, sortingColumn, sorting_dir) {
-    // if(this.tableOptions.moreResultsBtn){
+
+  getDataSorting(ListSortingColumns) {
+    this.isLoading = true;
     this.globals.startTimestamp = new Date();
 
-    if (moreResults) {
-      // if(this.pageIndex && this.globals.showPaginator){
-      //   this.actualPageNumber = this.pageIndex.pageIndex;
-      // }else{
-      //   this.actualPageNumber++;
-      // }
-      this.authService.removeTokenResultTable();//se remueve el topken porque debe ser una nueva consulta ordenada
-      this.tableOptions.moreResults = true;
-    } else {
-      this.actualPageNumber = 0;
-      this.authService.removeTokenResultTable();
-    }
+    this.authService.removeTokenResultTable();//se remueve el topken porque debe ser una nueva consulta ordenada
+    this.tableOptions.moreResults = true;
     let tokenResultTable = this.authService.getTokenResultTable() ? this.authService.getTokenResultTable() : "";
-    this.service.getDataTableSource(this, this.handlerSuccess, this.handlerError, "" + this.actualPageNumber,tokenResultTable,sortingColumn,sorting_dir);
-    // }}
-  }*/
+    this.service.getDataTableSource(this, this.handlerSuccess, this.handlerError, "" + this.actualPageNumber, tokenResultTable, ListSortingColumns);
+  }
 }

@@ -26,7 +26,8 @@
                 (finishLoading)="finishLoadingTable($event)" [categoryArguments]="getCategoryArguments()" 
                 [currentOption]="globals.currentOption" [isPanel]="false" [paginator]="paginator" [pageIndex]="pageIndex" 
                 (paginatorlength)=paginatorlength($event)
-                (shmoreResult)=shmoreResult($event)></app-msf-table>
+                (shmoreResult)=shmoreResult($event)
+                (sortingDataTable)=sortingDataTable($event)></app-msf-table>
             </div>    
         </mat-tab>        
         <mat-tab *ngIf="globals.generateDynamicTable" label="Dynamic Table" #msfDynamicTableTabRef>

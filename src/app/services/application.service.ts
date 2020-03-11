@@ -54,7 +54,7 @@ export class ApplicationService {
     this.authService.get (_this, url, successHandler, errorHandler);
   }
 
-  getDataTableSource(_this, handlerSuccess, handlerError,pageNumber: String,tokenResultable: String) {
+  getDataTableSource(_this, handlerSuccess, handlerError,pageNumber: String,tokenResultable: String, SortingColumns: String) {
     // _this.globals.isLoading = true;
     _this.displayedColumns = [];
     let param = this.utils.getUrlParameters(_this.globals.currentOption,true);
@@ -68,7 +68,19 @@ export class ApplicationService {
     if(!urlBase.includes("minuteunit")){
       urlBase += "&minuteunit=m";
     }
-    urlBase += "&pageSize=50&page_number="+pageNumber+"&token="+tokenResultable;
+    if(_this.globals.currentOption.tabType != "legacy" && SortingColumns != "" && !_this.globals.showPaginator){
+      let sortingList = "sortingList="+SortingColumns;
+      if(!urlBase.includes("sortingList")){
+        urlBase += "&"+sortingList;
+      }else{
+        let index = urlBase.indexOf("sortingList=&")
+        if(index>-1){
+          urlBase = urlBase.replace("sortingList=&",sortingList+"&")
+        }
+      }
+    }
+
+    urlBase += "&pageSize=50&page_number="+pageNumber+"&token="+tokenResultable+"&sortingColumns="+SortingColumns;
     if(pageNumber=="0"){
       _this.dataSource = null;
     }
