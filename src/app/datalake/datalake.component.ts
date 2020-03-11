@@ -192,17 +192,21 @@ export class DatalakeComponent implements OnInit {
     _this.globals.isLoading = false;
   }
 
+
   recursiveDashboardFullPath(category, dashboard, arg): any
   {
+    let fullPath = arg.fullPath;
+
     for (let item of category.children)
     {
-      let path = arg.fullPath + item.title + "/";
+      let path = fullPath + item.title + "/";
 
       if (dashboard.parentId == item.id)
       {
         return {
           item: item,
-          fullPath: path
+          fullPath: path,
+          found: true
         };
       }
 
@@ -213,7 +217,7 @@ export class DatalakeComponent implements OnInit {
           fullPath: path
         });
 
-        if (arg.item != null)
+        if (arg.found)
           return arg;
       }
     }
@@ -225,15 +229,18 @@ export class DatalakeComponent implements OnInit {
   {
     if (dashboard.parentId != null)
     {
+      let fullPath = arg.fullPath;
+
       for (let category of this.dashboardCategories)
       {
-        let path = arg.fullPath + category.title + "/";
+        let path = fullPath + category.title + "/";
 
         if (dashboard.parentId == category.id)
         {
           return {
             item: category,
-            fullPath: path
+            fullPath: path,
+            found: true
           };
         }
 
@@ -244,7 +251,7 @@ export class DatalakeComponent implements OnInit {
             fullPath: path
           });
 
-          if (arg.item != null)
+          if (arg.found)
             return arg;
         }
       }
@@ -483,14 +490,37 @@ export class DatalakeComponent implements OnInit {
     });
   }
 
-  changeDashboardName(): void {
+  recursiveTotalDashboardCategories(categories, category): void
+  {
+    for (let item of category.children)
+    {
+      categories.push (item);
+      this.recursiveTotalDashboardCategories (categories, item);
+    }
+  }
+
+  getTotalDashboardCategories(): DashboardCategory[]
+  {
+    let categories = [];
+
+    for (let category of this.dashboardCategories)
+    {
+      categories.push (category);
+      this.recursiveTotalDashboardCategories (categories, category);
+    }
+
+    return categories;
+  }
+
+  editDashboard(): void {
     this.dialog.open(MsfEditDashboardComponent, {
       height: '200px',
       width: '480px',
       panelClass: 'msf-dashboard-control-variables-dialog',
       data: {
         currentDashboardMenu: this.globals.currentDashboardMenu,
-        currentDashboardLocation: this.globals.currentDashboardLocation
+        currentDashboardLocation: this.globals.currentDashboardLocation,
+        dashboardCategories: this.getTotalDashboardCategories ()
       }
     });
   }

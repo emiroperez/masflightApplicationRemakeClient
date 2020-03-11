@@ -134,15 +134,18 @@ export class DatalakeMenuComponent implements OnInit {
 
   recursiveDashboardFullPath(category, dashboard, arg): any
   {
+    let fullPath = arg.fullPath;
+
     for (let item of category.children)
     {
-      let path = arg.fullPath + item.title + "/";
+      let path = fullPath + item.title + "/";
 
       if (dashboard.parentId == item.id)
       {
         return {
           item: item,
-          fullPath: path
+          fullPath: path,
+          found: true
         };
       }
 
@@ -153,7 +156,7 @@ export class DatalakeMenuComponent implements OnInit {
           fullPath: path
         });
 
-        if (arg.item != null)
+        if (arg.found)
           return arg;
       }
     }
@@ -165,15 +168,18 @@ export class DatalakeMenuComponent implements OnInit {
   {
     if (dashboard.parentId != null)
     {
+      let fullPath = arg.fullPath;
+
       for (let category of this.dashboardCategories)
       {
-        let path = arg.fullPath + category.title + "/";
+        let path = fullPath + category.title + "/";
 
         if (dashboard.parentId == category.id)
         {
           return {
             item: category,
-            fullPath: path
+            fullPath: path,
+            found: true
           };
         }
 
@@ -184,7 +190,7 @@ export class DatalakeMenuComponent implements OnInit {
             fullPath: path
           });
 
-          if (arg.item != null)
+          if (arg.found)
             return arg;
         }
       }

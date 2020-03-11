@@ -63,6 +63,8 @@ export class MsfEditDashboardComponent {
     // update database if confirmed, otherwise discard the title change
     if (confirm)
     {
+      let data;
+
       if (this.currentDashboardMenuTitle == null || this.currentDashboardMenuTitle.length == 0)
       {
         this.dialog.open (MessageComponent, {
@@ -81,12 +83,14 @@ export class MsfEditDashboardComponent {
         return;
       }
 
-      this.data.currentDashboardMenu.title = this.currentDashboardMenuTitle;
-      this.data.currentDashboardLocation.item = this.currentDashboardLocation.item;
-      this.data.currentDashboardLocation.fullPath = this.currentDashboardLocation.fullPath;
+      data = {
+        dashboardId: this.data.currentDashboardMenu.id,
+        title: this.currentDashboardMenuTitle,
+        parentId: this.currentDashboardLocation.item != null ? this.currentDashboardLocation.item.id : 0
+      };
 
-      this.service.updateDashboardTitle (this, this.data.currentDashboardMenu.id,
-        this.currentDashboardMenuTitle, this.closeDialog, this.closeDialog);
+      this.globals.isLoading = true;
+      this.service.updateDashboard (this, data, this.changeHierarchy, this.closeDialog);
     }
     else
     {
@@ -98,8 +102,49 @@ export class MsfEditDashboardComponent {
     }
   }
 
+  changeHierarchy(_this): void
+  {
+    if (_this.currentDashboardLocation.fullPath === _this.oldDashboardLocation.fullPath)
+    {
+      _this.dialogRef.close ();
+      return;
+    }
+
+    _this.data.currentDashboardMenu.title = _this.currentDashboardMenuTitle;
+    _this.data.currentDashboardLocation.item = _this.currentDashboardLocation.item;
+    _this.data.currentDashboardLocation.fullPath = _this.currentDashboardLocation.fullPath;
+
+    // remove dashboard from previous category
+    for (let i = 0; i < _this.oldDashboardLocation.item.dashboards.length; i++)
+    {
+      let dashboard = _this.oldDashboardLocation.item.dashboards[i];
+
+      if (_this.data.currentDashboardMenu.id == dashboard.id)
+      {
+        _this.oldDashboardLocation.item.dashboards.splice (i, 1);
+        break;
+      }
+    }
+
+    // add dashboard into new category
+    for (let category of _this.data.dashboardCategories)
+    {
+      if (category.id == _this.data.currentDashboardLocation.item.id)
+      {
+        _this.data.currentDashboardLocation.item = category;
+        break;
+      }
+    }
+
+    _this.data.currentDashboardLocation.item.dashboards.push (_this.data.currentDashboardMenu);
+
+    _this.globals.isLoading = false;
+    _this.dialogRef.close ();
+  }
+
   closeDialog(_this)
   {
+    _this.globals.isLoading = false;
     _this.dialogRef.close ();
   }
 
@@ -112,13 +157,10 @@ export class MsfEditDashboardComponent {
     });
 
     dialogRef.afterClosed ().subscribe ((currentDashboardLocation) => {
-      if (!currentDashboardLocation || currentDashboardLocation.fullPath == this.currentDashboardLocation.fullPath)
+      if (!currentDashboardLocation)
         return;
 
-      // this.oldDashboardLocation.item.splice (, 1);
-      // this.currentDashboardLocation.item.dashboards.push (data.currentDashboardMenu);
       this.currentDashboardLocation = currentDashboardLocation;
-      // TODO: Find original location and delete it if changed
     });
   }
 }

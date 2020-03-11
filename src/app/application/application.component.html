@@ -143,7 +143,7 @@
             <span class="msf-vertical-middle" *ngIf="!TabletQuery.matches">Export Dashboard As PNG</span>
         </button>
         <button *ngIf="globals.currentOption === 'dashboard' && !globals.readOnlyDashboardPlan" class="msf-menu-icon"
-            (click)="changeDashboardName()">
+            (click)="editDashboard()">
             <img src="../../assets/images/{{globals.theme}}-Chart.png" class="msf-menu-image msf-vertical-middle">
             <span class="msf-vertical-middle" *ngIf="!TabletQuery.matches">Dashboard Settings</span>
         </button>

@@ -52,10 +52,10 @@ export class MenuService {
     this.authService.post (_this, _this.globals.baseUrl + "/secure" + url, data, successHandler, errorHandler);
   }
 
-  updateDashboardTitle(_this, id, title, successHandler, errorHandler)
+  updateDashboard(_this, data, successHandler, errorHandler)
   {
-    let url = _this.globals.baseUrl + "/updateDashboardTitle?id=" + id + "&title=" + title;
-    this.authService.post (_this, url, null, successHandler, errorHandler);
+    let url = _this.globals.baseUrl + "/updateDashboard";
+    this.authService.post (_this, url, data, successHandler, errorHandler);
   }
 
   deleteDashboard(_this, id, successHandler, errorHandler)
