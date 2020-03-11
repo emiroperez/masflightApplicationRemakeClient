@@ -29,14 +29,4 @@ export class MenuDashboardComponent implements OnInit {
       readOnly: readOnly
     });
   }
-
-  checkDashboardCategory(dashboardCategory: DashboardCategory): boolean
-  {
-    if ((dashboardCategory.children && dashboardCategory.children.length > 0)
-      || (dashboardCategory.dashboards && dashboardCategory.dashboards.length > 0)
-      || (dashboardCategory.sharedDashboards && dashboardCategory.sharedDashboards.length > 0))
-      return true;
-
-    return false;
-  }
 }

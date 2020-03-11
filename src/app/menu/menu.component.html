@@ -9,12 +9,10 @@
         [matMenuTriggerFor]="dashboardMenu" style="padding: 0px 7px !important;">Dashboards</button>
     <mat-menu #dashboardMenu="matMenu">
         <ng-container *ngFor="let dashboardCategory of dashboardCategories">
-            <ng-container *ngIf="checkDashboardCategory(dashboardCategory)">
-                <button mat-menu-item [matMenuTriggerFor]="child.childMenu">
-                  {{dashboardCategory.title}}
-                </button>
-                <app-menu-dashboard #child [dashboardCategory]="dashboardCategory" (setDashboard)="setDashboard($event)"></app-menu-dashboard>
-            </ng-container>
+            <button mat-menu-item [matMenuTriggerFor]="child.childMenu">
+                {{dashboardCategory.title}}
+            </button>
+            <app-menu-dashboard #child [dashboardCategory]="dashboardCategory" (setDashboard)="setDashboard($event)"></app-menu-dashboard>
         </ng-container>
         <ng-container *ngIf="!globals.readOnlyDashboardPlan">
             <button mat-menu-item *ngFor="let dashboard of dashboards" (click)="goToDashboard(dashboard, false)">
