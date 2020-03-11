@@ -180,6 +180,9 @@
                                 <mat-form-field>
                                     <input matInput placeholder="Argument Name" [(ngModel)]="filter.name">
                                 </mat-form-field>
+                                <button mat-icon-button matTooltip="Remove URL Filter" (click)="removeURLFilter(item, filter)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
                             </div>
                         </div>
                     </div>

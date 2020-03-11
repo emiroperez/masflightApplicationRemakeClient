@@ -902,6 +902,11 @@ export class EditCategoryArgumentDialog {
     });
   }
 
+  removeURLFilter(item, filter): void
+  {
+    item.filters.splice (item.filters.indexOf (filter, 1));
+  }
+
   prepareVariableList(filter, loading): void
   {
     // reset variables
