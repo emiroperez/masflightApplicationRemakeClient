@@ -11,6 +11,7 @@ import { MessageComponent } from '../message/message.component';
 })
 export class MsfAddSharedDashboardPanelComponent implements OnInit {
   selectedDashboard: any;
+  dashboardList: any = [];
 
   constructor(
     public dialogRef: MatDialogRef<MsfAddSharedDashboardPanelComponent>,
@@ -19,10 +20,30 @@ export class MsfAddSharedDashboardPanelComponent implements OnInit {
     private service: ApplicationService,
     @Inject(MAT_DIALOG_DATA) public data: any)
   {
+    for (let category of data.dashboardCategories)
+    {
+      for (let child of category.children)
+        this.recursiveDashboardCategory (child);
+
+      for (let dashboard of category.dashboards)
+        this.dashboardList.push (dashboard);
+    }
+
+    for (let dashboard of data.dashboards)
+      this.dashboardList.push (dashboard);
   }
 
   ngOnInit()
   {
+  }
+
+  recursiveDashboardCategory(category): void
+  {
+    for (let child of category.children)
+      this.recursiveDashboardCategory (child);
+
+    for (let dashboard of category.dashboards)
+      this.dashboardList.push (dashboard);
   }
 
   addPanel(): void
@@ -31,7 +52,7 @@ export class MsfAddSharedDashboardPanelComponent implements OnInit {
     this.service.addSharedPanel (this, this.selectedDashboard.id, this.data.panelId, this.handlerSuccess, this.handlerError);
   }
 
-  handlerSuccess(_this, data): void
+  handlerSuccess(_this): void
   {
     // refresh dashboard if the shared panel is to be added on a dashboard the user is watching
     if (_this.globals.currentDashboardMenu != null && _this.globals.currentDashboardMenu.id == _this.selectedDashboard.id)

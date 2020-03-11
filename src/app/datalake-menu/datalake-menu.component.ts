@@ -67,14 +67,37 @@ export class DatalakeMenuComponent implements OnInit {
     this.setOption.emit(data);
   }
 
-  addDashboard(){    
+  recursiveTotalDashboardCategories(categories, category): void
+  {
+    for (let item of category.children)
+    {
+      categories.push (item);
+      this.recursiveTotalDashboardCategories (categories, item);
+    }
+  }
+
+  getTotalDashboardCategories(): DashboardCategory[]
+  {
+      let categories = [];
+
+      for (let category of this.dashboardCategories)
+      {
+        categories.push (category);
+        this.recursiveTotalDashboardCategories (categories, category);
+      }
+
+      return categories;
+  }
+
+  addDashboard()
+  {
     this.dialog.open (MsfAddDashboardComponent, {
       height: '210px',
       width: '480px',
       panelClass: 'msf-dashboard-control-variables-dialog',
       data: {
         dashboards: this.dashboards,
-        getDashboardFullPath: this.getDashboardFullPath
+        dashboardCategories: this.getTotalDashboardCategories ()
       }
     });
   }
@@ -104,7 +127,7 @@ export class DatalakeMenuComponent implements OnInit {
       data: {
         dashboards: this.dashboards,
         sharedDashboards: this.sharedDashboards,
-        getDashboardFullPath: this.getDashboardFullPath
+        dashboardCategories: this.getTotalDashboardCategories ()
       }
     });
   }

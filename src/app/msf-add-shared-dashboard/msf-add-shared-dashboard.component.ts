@@ -4,12 +4,15 @@ import { MatDialogRef, MatDialog, MAT_DIALOG_DATA } from '@angular/material';
 import { Globals } from '../globals/Globals';
 import { MenuService } from '../services/menu.service';
 import { MessageComponent } from '../message/message.component';
+import { MsfDashboardBrowserComponent } from '../msf-dashboard-browser/msf-dashboard-browser.component';
+import { DashboardCategory } from '../model/DashboardCategory';
 
 @Component({
   selector: 'app-msf-add-shared-dashboard',
   templateUrl: './msf-add-shared-dashboard.component.html'
 })
 export class MsfAddSharedDashboardComponent implements OnInit {
+  selectedLocation: any = null;
   isOwner: boolean = false;
 
   constructor(
@@ -27,13 +30,22 @@ export class MsfAddSharedDashboardComponent implements OnInit {
 
   addDashboard(): void
   {
+    let data = {
+      dashboardId: this.data.dashboardId,
+      parentId: this.selectedLocation.item != null ? this.selectedLocation.item.id : 0
+    };
+
+    if (this.selectedLocation == null)
+    {
+      this.dialog.open (MessageComponent, {
+        data: { title: "Error", message: "You must select a location for the dashboard." }
+      });
+
+      return;
+    }
+
     if (!this.isOwner)
     {
-      let data = {
-        dashboardId: this.data.dashboardId,
-        parentId: 0 // TODO: Set parent
-      };
-
       this.globals.isLoading = true;
       this.service.addSharedReadOnlyDashboard (this, data, this.handlerReadOnlySuccess,
         this.handlerError);
@@ -41,7 +53,7 @@ export class MsfAddSharedDashboardComponent implements OnInit {
     }
 
     this.globals.isLoading = true;
-    this.service.addSharedDashboard (this, this.data.dashboardId, this.handlerSuccess,
+    this.service.addSharedDashboard (this, data, this.handlerSuccess,
       this.handlerError);
   }
 
@@ -56,7 +68,21 @@ export class MsfAddSharedDashboardComponent implements OnInit {
     }
 
     // add read-only dashboard into the menu
-    _this.data.sharedDashboards.push (newDashboard);
+    if (_this.selectedLocation.item == null)
+      _this.data.sharedDashboards.push (newDashboard);
+    else
+    {
+      for (let category of _this.data.dashboardCategories)
+      {
+        if (category.id == _this.selectedLocation.item.id)
+        {
+          _this.selectedLocation.item = category;
+          break;
+        }
+      }
+
+      _this.selectedLocation.item.sharedDashboards.push (newDashboard);
+    }
 
     _this.globals.isLoading = false;
     _this.dialog.closeAll ();
@@ -77,7 +103,21 @@ export class MsfAddSharedDashboardComponent implements OnInit {
     }
 
     // add dashboard into the menu
-    _this.data.dashboards.push (newDashboard);
+    if (_this.selectedLocation.item == null)
+      _this.data.dashboards.push (newDashboard);
+    else
+    {
+      for (let category of _this.data.dashboardCategories)
+      {
+        if (category.id == _this.selectedLocation.item.id)
+        {
+          _this.selectedLocation.item = category;
+          break;
+        }
+      }
+
+      _this.selectedLocation.item.dashboards.push (newDashboard);
+    }
 
     _this.globals.isLoading = false;
     _this.dialog.closeAll ();
@@ -101,5 +141,21 @@ export class MsfAddSharedDashboardComponent implements OnInit {
   closeDialog(): void
   {
     this.dialogRef.close ();
+  }
+
+  openDashboardBrowser(): void
+  {
+    let dialogRef = this.dialog.open (MsfDashboardBrowserComponent, {
+      panelClass: 'dashboard-config-dialog',
+      autoFocus: false,
+      data: {}
+    });
+  
+    dialogRef.afterClosed ().subscribe ((selectedLocation) => {
+      if (!selectedLocation)
+        return;
+  
+      this.selectedLocation = selectedLocation;
+    });
   }
 }

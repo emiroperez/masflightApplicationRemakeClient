@@ -76,10 +76,10 @@ export class MenuService {
     this.authService.get (_this, url, successHandler, errorHandler);
   }
 
-  addSharedDashboard(_this, dashboardId, handlerSuccess, handlerError)
+  addSharedDashboard(_this, data, handlerSuccess, handlerError)
   {
-    let url = _this.globals.baseUrl + "/secure/addSharedDashboard?dashboardId=" + dashboardId;
-    this.authService.post (_this, url, null, handlerSuccess, handlerError);
+    let url = _this.globals.baseUrl + "/secure/addSharedDashboard";
+    this.authService.post (_this, url, data, handlerSuccess, handlerError);
   }
 
   addSharedReadOnlyDashboard(_this, data, handlerSuccess, handlerError)

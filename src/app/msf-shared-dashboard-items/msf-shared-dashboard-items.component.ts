@@ -100,25 +100,12 @@ export class MsfSharedDashboardItemsComponent implements OnInit {
 
   addItem(): void
   {
-    if (this.globals.readOnlyDashboardPlan)
+    if (this.globals.readOnlyDashboardPlan && this.selectedDashboardItem.isPanel)
     {
       // Only allow read-only dashboards if this plan is enabled
-      if (this.selectedDashboardItem.isPanel)
-      {
-        this.dialog.open (MessageComponent, {
-          data: { title: "Error", message: "You are not allowed to add this shared dashboard panel." }
-        });
-      }
-      else
-      {
-        let data = {
-          dashboardId: this.selectedDashboardItem.id,
-          parentId: 0 // TODO: Set parent
-        };
-
-        this.menuService.addSharedReadOnlyDashboard (this, data, this.handlerReadOnlySuccess,
-          this.handlerError);
-      }
+      this.dialog.open (MessageComponent, {
+        data: { title: "Error", message: "You are not allowed to add this shared dashboard panel." }
+      });
 
       return;
     }
@@ -131,6 +118,7 @@ export class MsfSharedDashboardItemsComponent implements OnInit {
         panelClass: 'msf-dashboard-control-variables-dialog',
         data: {
           panelId: this.selectedDashboardItem.id,
+          dashboardCategories: this.data.dashboardCategories,
           dashboards: this.data.dashboards
         }
       });
@@ -138,11 +126,12 @@ export class MsfSharedDashboardItemsComponent implements OnInit {
     else
     {
       this.dialog.open (MsfAddSharedDashboardComponent, {
-        height: '183px',
-        width: '400px',
+        height: (!this.globals.readOnlyDashboard ? '230px' : '210px'),
+        width: '480px',
         panelClass: 'msf-dashboard-control-variables-dialog',
         data: {
           dashboardId: this.selectedDashboardItem.id,
+          dashboardCategories: this.data.dashboardCategories,
           dashboards: this.data.dashboards,
           sharedDashboards: this.data.sharedDashboards
         }

@@ -6,14 +6,14 @@
 </div>
 <div class="msf-dashboard-panel-container" id="msf-dashboard-drill-down-container">
   <div class="msf-dashboard-panel-sub-container-column">
-    <div class="msf-dashboard-panel-sub-container-column" id="msf-add-shared-dashboard-content" *ngIf="data.dashboards.length">
+    <div class="msf-dashboard-panel-sub-container-column" id="msf-add-shared-dashboard-content" *ngIf="dashboardList.length">
       <mat-radio-group [(ngModel)]="selectedDashboard" style="flex-direction: column; display: flex">
-        <mat-radio-button style="margin: 10px;" class="cancels-checkbox" *ngFor="let dashboard of data.dashboards" [value]="dashboard">
+        <mat-radio-button style="margin: 10px;" class="cancels-checkbox" *ngFor="let dashboard of dashboardList" [value]="dashboard">
           {{dashboard.title}}
         </mat-radio-button>
       </mat-radio-group>
     </div>
-    <div class="msf-dashboard-panel-sub-container-column" id="msf-add-shared-dashboard-content-empty" *ngIf="!data.dashboards.length" style="height: 200px">
+    <div class="msf-dashboard-panel-sub-container-column" id="msf-add-shared-dashboard-content-empty" *ngIf="!dashboardList.length" style="height: 200px">
       <div class="msf-no-results">
         You don't have added any dashboards
       </div>

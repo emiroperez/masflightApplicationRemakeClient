@@ -6,7 +6,6 @@ import { MenuService } from '../services/menu.service';
 import { DashboardMenu } from '../model/DashboardMenu';
 import { MessageComponent } from '../message/message.component';
 import { MsfDashboardBrowserComponent } from '../msf-dashboard-browser/msf-dashboard-browser.component';
-import { DashboardCategory } from '../model/DashboardCategory';
 
 @Component({
   selector: 'app-msf-add-dashboard',
@@ -83,25 +82,34 @@ export class MsfAddDashboardComponent {
 
   successHandler(_this,data)
   {
-    let arg = {
-      item: null,
-      fullPath: "/"
-    };
-
     if (data.parentId == null)
     {
       _this.data.dashboards.push (data);
       _this.globals.currentDashboardMenu = _this.data.dashboards[_this.data.dashboards.length - 1];
-      _this.globals.currentDashboardLocation = arg;
+      _this.globals.currentDashboardLocation = {
+        item: null,
+        fullPath: "/"
+      };
     }
     else
     {
-      _this.globals.currentDashboardLocation = _this.data.getDashboardFullPath (data, arg);
+      _this.globals.currentDashboardLocation = _this.selectedLocation;
+
+      for (let category of _this.data.dashboardCategories)
+      {
+        if (category.id == _this.globals.currentDashboardLocation.item.id)
+        {
+          _this.globals.currentDashboardLocation.item = category;
+          break;
+        }
+      }
+
+      _this.globals.currentDashboardLocation.item.dashboards.push (data);
       _this.globals.currentDashboardMenu = _this.globals.currentDashboardLocation.item.dashboards[_this.globals.currentDashboardLocation.item.dashboards.length - 1];
     }
 
     _this.globals.currentOption = 'dashboard';
-      _this.globals.optionDatalakeSelected = 1;
+    _this.globals.optionDatalakeSelected = 1;
   }
 
   errorHandler(_this,result)

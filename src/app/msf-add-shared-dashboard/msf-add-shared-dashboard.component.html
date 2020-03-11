@@ -4,14 +4,26 @@
   </div>
   Add Shared Dashboard
 </div>
-<div class="msf-dashboard-panel-sub-container-row msf-shared-dashboard-container">
+<div *ngIf="!globals.readOnlyDashboardPlan" class="msf-dashboard-panel-sub-container-row msf-shared-dashboard-container">
   Which preference you want to choose to add the shared dashboard:
 </div>
+<div *ngIf="globals.readOnlyDashboardPlan" class="msf-dashboard-panel-sub-container-row msf-shared-dashboard-container">
+  Select shared dashboard location
+</div>
 <div class="msf-dashboard-panel-sub-container-row msf-shared-dashboard-container">
-  <mat-radio-group [(ngModel)]="isOwner">
+  <mat-radio-group *ngIf="!globals.readOnlyDashboardPlan" [(ngModel)]="isOwner">
     <mat-radio-button class="cancels-checkbox" [value]="false">Viewer</mat-radio-button>
     <mat-radio-button class="cancels-checkbox" [value]="true">Owner</mat-radio-button>
   </mat-radio-group>
+  <div class="dashboard-config-location">
+    <div class="dashboard-config-location-container">
+        <span class="dashboard-config-location-placeholder" *ngIf="!selectedLocation">Location</span>
+        <span class="dashboard-config-location-value" *ngIf="selectedLocation">{{selectedLocation.fullPath}}</span>
+    </div>
+    <button mat-flat-button class="flat-button dashboard-config-browser-button" (click)="openDashboardBrowser()">
+        <mat-icon>folder_open</mat-icon>
+    </button>
+</div>
 </div>
 <div class="msf-dashboard-control-variables-button">
   <button mat-flat-button class="flat-button" (click)="addDashboard()" cdkFocusInitial>OK</button>
