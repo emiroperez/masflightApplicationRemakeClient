@@ -653,7 +653,7 @@ export class ApplicationService {
     let url = this.host + "/secure/getNumAirlinesRestriction";
 
     if (this.globals.testingPlan != -1)
-      url += "&testPlanId=" + this.globals.testingPlan;
+      url += "?testPlanId=" + this.globals.testingPlan;
   
     this.authService.get (_this, url, handlerSuccess, handlerError);
   }
@@ -675,7 +675,7 @@ export class ApplicationService {
     let url = this.host + "/secure/getDateRestriction";
 
     if (this.globals.testingPlan != -1)
-      url += "&testPlanId=" + this.globals.testingPlan;
+      url += "?testPlanId=" + this.globals.testingPlan;
 
     this.authService.get (_this, url, handlerSuccess, handlerError);
   }
