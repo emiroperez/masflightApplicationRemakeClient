@@ -16,7 +16,6 @@ export class MsfAddDashboardComponent {
 
   title: string;
   selectedLocation: any = null;
-  dashboardCategories: Array<DashboardCategory>;
 
   constructor(
     public dialogRef: MatDialogRef<MsfAddDashboardComponent>,
@@ -25,7 +24,6 @@ export class MsfAddDashboardComponent {
     private service: MenuService,
     @Inject(MAT_DIALOG_DATA) public data: any)
   {
-    this.dashboardCategories = data.dashboardCategories;
   }
 
   onNoClick(): void
@@ -83,65 +81,6 @@ export class MsfAddDashboardComponent {
     }
   }
 
-  recursiveDashboardFullPath(category, dashboard, arg): any
-  {
-    for (let item of category.children)
-    {
-      let path = arg.fullPath + item.title + "/";
-
-      if (dashboard.parentId == item.id)
-      {
-        item.dashboards.push (dashboard);
-
-        return {
-          item: item,
-          fullPath: path
-        };
-      }
-
-      if (item.children && item.children.length)
-      {
-        arg = this.recursiveDashboardFullPath (item, dashboard, {
-          item: item,
-          fullPath: path
-        });
-      }
-    }
-
-    return arg;
-  }
-
-  getDashboardFullPath(dashboard, arg): any
-  {
-    if (dashboard.parentId != null)
-    {
-      for (let category of this.dashboardCategories)
-      {
-        let path = arg.fullPath + category.title + "/";
-
-        if (dashboard.parentId == category.id)
-        {
-          category.dashboards.push (dashboard);
-
-          return {
-            item: category,
-            fullPath: path
-          };
-        }
-
-        if (category.children && category.children.length)
-        {
-          arg = this.recursiveDashboardFullPath (category, dashboard, {
-            item: category,
-            fullPath: path
-          });
-        }
-      }
-    }
-
-    return arg;
-  }
-
   successHandler(_this,data)
   {
     let arg = {
@@ -157,7 +96,7 @@ export class MsfAddDashboardComponent {
     }
     else
     {
-      _this.globals.currentDashboardLocation = _this.getDashboardFullPath (data, arg);
+      _this.globals.currentDashboardLocation = _this.data.getDashboardFullPath (data, arg);
       _this.globals.currentDashboardMenu = _this.globals.currentDashboardLocation.item.dashboards[_this.globals.currentDashboardLocation.item.dashboards.length - 1];
     }
 

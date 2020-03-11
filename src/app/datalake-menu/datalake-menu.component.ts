@@ -74,7 +74,7 @@ export class DatalakeMenuComponent implements OnInit {
       panelClass: 'msf-dashboard-control-variables-dialog',
       data: {
         dashboards: this.dashboards,
-        dashboardCategories: this.dashboardCategories
+        getDashboardFullPath: this.getDashboardFullPath
       }
     });
   }
@@ -103,7 +103,8 @@ export class DatalakeMenuComponent implements OnInit {
       panelClass: 'msf-dashboard-child-panel-dialog',
       data: {
         dashboards: this.dashboards,
-        sharedDashboards: this.sharedDashboards
+        sharedDashboards: this.sharedDashboards,
+        getDashboardFullPath: this.getDashboardFullPath
       }
     });
   }
@@ -128,6 +129,9 @@ export class DatalakeMenuComponent implements OnInit {
           item: item,
           fullPath: path
         });
+
+        if (arg.item != null)
+          return arg;
       }
     }
 
@@ -156,6 +160,9 @@ export class DatalakeMenuComponent implements OnInit {
             item: category,
             fullPath: path
           });
+
+          if (arg.item != null)
+            return arg;
         }
       }
     }

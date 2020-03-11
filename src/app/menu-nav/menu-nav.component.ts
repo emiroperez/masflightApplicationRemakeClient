@@ -70,6 +70,7 @@ export class MenuNavComponent implements OnInit {
       : new MenuDashboardMobileNode();
       flatNodeDashboard.expandable = (!!node.children && node.children.length > 0) || (!!node.dashboards && node.dashboards.length > 0) || (!!node.sharedDashboards && node.sharedDashboards.length > 0);
       flatNodeDashboard.id = node.id;
+      flatNodeDashboard.parentId = node.parentId;
       flatNodeDashboard.applicationId = node.applicationId;
       flatNodeDashboard.title = node.title;
       flatNodeDashboard.level = level;
@@ -290,6 +291,9 @@ export class MenuNavComponent implements OnInit {
           item: item,
           fullPath: path
         });
+
+        if (arg.item != null)
+          return arg;
       }
     }
 
@@ -318,6 +322,9 @@ export class MenuNavComponent implements OnInit {
             item: category,
             fullPath: path
           });
+
+          if (arg.item != null)
+            return arg;
         }
       }
     }

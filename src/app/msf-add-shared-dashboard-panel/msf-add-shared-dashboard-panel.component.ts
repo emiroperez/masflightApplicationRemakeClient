@@ -31,17 +31,15 @@ export class MsfAddSharedDashboardPanelComponent implements OnInit {
     this.service.addSharedPanel (this, this.selectedDashboard.id, this.data.panelId, this.handlerSuccess, this.handlerError);
   }
 
-  handlerSuccess(_this): void
+  handlerSuccess(_this, data): void
   {
     // refresh dashboard if the shared panel is to be added on a dashboard the user is watching
     if (_this.globals.currentDashboardMenu != null && _this.globals.currentDashboardMenu.id == _this.selectedDashboard.id)
     {
       _this.globals.currentDashboardMenu = null;
-      _this.globals.currentDashboardLocation = null;
 
       setTimeout(() => {
         _this.globals.currentDashboardMenu = _this.selectedDashboard;
-        // TODO: Set full path
       }, 100);
     }
     else

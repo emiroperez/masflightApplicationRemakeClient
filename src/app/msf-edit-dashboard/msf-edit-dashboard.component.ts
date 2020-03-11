@@ -112,9 +112,11 @@ export class MsfEditDashboardComponent {
     });
 
     dialogRef.afterClosed ().subscribe ((currentDashboardLocation) => {
-      if (!currentDashboardLocation)
+      if (!currentDashboardLocation || currentDashboardLocation.fullPath == this.currentDashboardLocation.fullPath)
         return;
 
+      // this.oldDashboardLocation.item.splice (, 1);
+      // this.currentDashboardLocation.item.dashboards.push (data.currentDashboardMenu);
       this.currentDashboardLocation = currentDashboardLocation;
       // TODO: Find original location and delete it if changed
     });

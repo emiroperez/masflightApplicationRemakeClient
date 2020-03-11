@@ -192,11 +192,72 @@ export class DatalakeComponent implements OnInit {
     _this.globals.isLoading = false;
   }
 
-  recursiveDashboardCategory(category, data): void
+  recursiveDashboardFullPath(category, dashboard, arg): any
+  {
+    for (let item of category.children)
+    {
+      let path = arg.fullPath + item.title + "/";
+
+      if (dashboard.parentId == item.id)
+      {
+        return {
+          item: item,
+          fullPath: path
+        };
+      }
+
+      if (item.children && item.children.length)
+      {
+        arg = this.recursiveDashboardFullPath (item, dashboard, {
+          item: item,
+          fullPath: path
+        });
+
+        if (arg.item != null)
+          return arg;
+      }
+    }
+
+    return arg;
+  }
+
+  getDashboardFullPath(dashboard, arg): any
+  {
+    if (dashboard.parentId != null)
+    {
+      for (let category of this.dashboardCategories)
+      {
+        let path = arg.fullPath + category.title + "/";
+
+        if (dashboard.parentId == category.id)
+        {
+          return {
+            item: category,
+            fullPath: path
+          };
+        }
+
+        if (category.children && category.children.length)
+        {
+          arg = this.recursiveDashboardFullPath (category, dashboard, {
+            item: category,
+            fullPath: path
+          });
+
+          if (arg.item != null)
+            return arg;
+        }
+      }
+    }
+
+    return arg;
+  }
+
+  recursiveDashboardCategory(category, data, arg): void
   {
     for (let child of category.children)
     {
-      this.recursiveDashboardCategory (child, data);
+      this.recursiveDashboardCategory (child, data, arg);
 
       if (this.globals.currentDashboardMenu != null)
         break;
@@ -209,6 +270,7 @@ export class DatalakeComponent implements OnInit {
         if (dashboard.id == data.id)
         {
           this.globals.currentDashboardMenu = data;
+          this.globals.currentDashboardLocation = this.getDashboardFullPath (dashboard, arg);
           this.globals.currentOption = 'dashboard';
           this.globals.readOnlyDashboard = false;
           break;
@@ -223,6 +285,7 @@ export class DatalakeComponent implements OnInit {
         if (dashboard.dashboardMenuId.id == data.id)
         {
           this.globals.currentDashboardMenu = data;
+          this.globals.currentDashboardLocation = this.getDashboardFullPath (dashboard, arg);
           this.globals.currentOption = 'dashboard';
           this.globals.readOnlyDashboard = true;
           break;
@@ -232,6 +295,11 @@ export class DatalakeComponent implements OnInit {
   }
 
   handlerDefaultDashboard(_this, data): void {
+    let arg = {
+      item: null,
+      fullPath: "/"
+    };
+
     // if the user has a default dashboard selected, go to it
     if (data) {
       _this.defaultDashboardId = data.id;
@@ -240,7 +308,7 @@ export class DatalakeComponent implements OnInit {
 
       for (let category of _this.dashboardCategories)
       {
-        _this.recursiveDashboardCategory (category, data);
+        _this.recursiveDashboardCategory (category, data, arg);
 
         if (_this.globals.currentDashboardMenu != null)
           break;
@@ -250,6 +318,7 @@ export class DatalakeComponent implements OnInit {
         for (let dashboard of _this.dashboards) {
           if (dashboard.id == data.id) {
             _this.globals.currentDashboardMenu = data;
+            _this.globals.currentDashboardLocation = _this.getDashboardFullPath (dashboard, arg);
             _this.globals.currentOption = 'dashboard';
             _this.globals.readOnlyDashboard = false;
             break;
@@ -261,6 +330,7 @@ export class DatalakeComponent implements OnInit {
         for (let dashboard of _this.sharedDashboards) {
           if (dashboard.id == data.id) {
             _this.globals.currentDashboardMenu = data;
+            _this.globals.currentDashboardLocation = _this.getDashboardFullPath (dashboard, arg);
             _this.globals.currentOption = 'dashboard';
             _this.globals.readOnlyDashboard = true;
             break;
