@@ -2937,7 +2937,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     else
       urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
 
-    urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=2000&page_number=" + this.actualPageNumber+"&token="+tokenResultTable;
+    urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=500&page_number=" + this.actualPageNumber+"&token="+tokenResultTable;
     urlArg = encodeURIComponent (urlBase);
 
     if (isDevMode ())

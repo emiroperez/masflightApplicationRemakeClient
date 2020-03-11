@@ -68,7 +68,7 @@ export class ApplicationService {
     if(!urlBase.includes("minuteunit")){
       urlBase += "&minuteunit=m";
     }
-    urlBase += "&pageSize=2000&page_number="+pageNumber+"&token="+tokenResultable;
+    urlBase += "&pageSize=500&page_number="+pageNumber+"&token="+tokenResultable;
     if(pageNumber=="0"){
       _this.dataSource = null;
     }
