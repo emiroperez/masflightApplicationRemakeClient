@@ -209,6 +209,7 @@ import { GridstackModule } from '@libria/gridstack';
 import { MsfDashboardBrowserComponent } from './msf-dashboard-browser/msf-dashboard-browser.component';
 import { MsfDashboardBrowserFolderItemComponent } from './msf-dashboard-browser-folder-item/msf-dashboard-browser-folder-item.component';
 import { MenuDashboardComponent } from './menu-dashboard/menu-dashboard.component';
+import { NgxCurrencyModule } from "ngx-currency";
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -434,6 +435,7 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     AngularEditorModule,
     NgxGaugeModule,
     CodemirrorModule,
+    NgxCurrencyModule,
     NgxMaskModule.forRoot(options),
     GridstackModule.forRoot()
   ],

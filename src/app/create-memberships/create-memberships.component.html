@@ -147,7 +147,7 @@
                                                     </mat-select>
                                                 </mat-form-field>
                                                 <mat-form-field class="msf-fare-input">
-                                                    <input matInput autocomplete="off" type="text" mask="comma_separator" prefix="$" formControlName="fare"/>
+                                                    <input matInput currencyMask [options]="{ prefix: '$', thousands: ',', decimal: '.', precision: 0, allowNegative: false }" autocomplete="off" type="text" formControlName="fare"/>
                                                 </mat-form-field>
                                                 <div class="msf-fare-delete-button">
                                                     <button class="button-delete" mat-icon-button color="basic" (click)="deletePrice(i,k)" matTooltip="Delete Price"></button>

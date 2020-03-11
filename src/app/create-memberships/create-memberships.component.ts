@@ -605,7 +605,7 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
       }
       fare.fare = this.prices.at(i).get("fare").value;
       fare.periodicity = this.prices.at(i).get("periodicity").value;
-      pricesJson.push(fare)
+      pricesJson.push(fare);
     }
     return pricesJson;
 
@@ -797,6 +797,8 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
       this.dialog.open (MessageComponent, {
         data: { title:'Error', message: 'You must complete all the information about memberships plans'}
       });
+
+      return;
     }
 
     this.globals.isLoading = true;
