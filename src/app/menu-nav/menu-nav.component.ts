@@ -365,7 +365,7 @@ export class MenuNavComponent implements OnInit {
     this.globals.currentDashboardLocation = this.getDashboardFullPath (dashboard, arg);
 
     this.globals.currentOption = 'dashboard';
-    this.globals.readOnlyDashboard = readOnly;
+    this.globals.readOnlyDashboard = readOnly ? dashboard : null;
     this.optionChanged.emit ();
   }
 }

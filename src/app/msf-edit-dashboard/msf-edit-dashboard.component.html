@@ -5,7 +5,7 @@
   Dashboard Settings
 </div>
 <div class="msf-dashboard-panel-sub-container-row msf-edit-dashboard-container">
-  <div class="msf-dashboard-function-measure dashboard-config-title">
+  <div class="msf-dashboard-function-measure dashboard-config-title" *ngIf="!globals.readOnlyDashboard">
     <mat-form-field>
       <input matInput autocomplete="off" type="text" placeholder="Title" [(ngModel)]="currentDashboardMenuTitle"/>
     </mat-form-field> 

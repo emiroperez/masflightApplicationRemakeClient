@@ -9,6 +9,7 @@ import { DatalakeQueryTab } from '../datalake-query-engine/datalake-query-tab';
 import * as am4core from "@amcharts/amcharts4/core";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import { DashboardMenu } from '../model/DashboardMenu';
+import { SharedDashboardMenu } from '../model/SharedDashboardMenu';
 
 am4core.useTheme(am4themes_animated);
 
@@ -49,8 +50,8 @@ export class Globals {
   currentApplication : any;
   currentDashboardMenu : any;
   currentDashboardLocation : any;
-  readOnlyDashboard : boolean = false;
-  readOnlyDashboardPlan: boolean = false;
+  readOnlyDashboard : SharedDashboardMenu = null;
+  readOnlyDashboardPlan : boolean = false;
   minDate:any;
   maxDate:any;
   welcome:any;

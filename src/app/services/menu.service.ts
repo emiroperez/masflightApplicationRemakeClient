@@ -64,6 +64,12 @@ export class MenuService {
     this.authService.post (_this, url, null, successHandler, errorHandler);
   }
 
+  updateSharedDashboard(_this, data, successHandler, errorHandler)
+  {
+    let url = _this.globals.baseUrl + "/updateSharedDashboard";
+    this.authService.post (_this, url, data, successHandler, errorHandler);
+  }
+
   deleteSharedDashboard(_this, dashboardId, successHandler, errorHandler)
   {
     let url = _this.globals.baseUrl + "/secure/deleteSharedDashboard?dashboardId=" + dashboardId;

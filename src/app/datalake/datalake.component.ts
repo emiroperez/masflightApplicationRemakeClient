@@ -279,7 +279,7 @@ export class DatalakeComponent implements OnInit {
           this.globals.currentDashboardMenu = data;
           this.globals.currentDashboardLocation = this.getDashboardFullPath (dashboard, arg);
           this.globals.currentOption = 'dashboard';
-          this.globals.readOnlyDashboard = false;
+          this.globals.readOnlyDashboard = null;
           break;
         }
       }
@@ -294,7 +294,7 @@ export class DatalakeComponent implements OnInit {
           this.globals.currentDashboardMenu = data;
           this.globals.currentDashboardLocation = this.getDashboardFullPath (dashboard, arg);
           this.globals.currentOption = 'dashboard';
-          this.globals.readOnlyDashboard = true;
+          this.globals.readOnlyDashboard = dashboard;
           break;
         }
       }
@@ -327,7 +327,7 @@ export class DatalakeComponent implements OnInit {
             _this.globals.currentDashboardMenu = data;
             _this.globals.currentDashboardLocation = _this.getDashboardFullPath (dashboard, arg);
             _this.globals.currentOption = 'dashboard';
-            _this.globals.readOnlyDashboard = false;
+            _this.globals.readOnlyDashboard = null;
             break;
           }
         }
@@ -339,7 +339,7 @@ export class DatalakeComponent implements OnInit {
             _this.globals.currentDashboardMenu = data;
             _this.globals.currentDashboardLocation = _this.getDashboardFullPath (dashboard, arg);
             _this.globals.currentOption = 'dashboard';
-            _this.globals.readOnlyDashboard = true;
+            _this.globals.readOnlyDashboard = dashboard;
             break;
           }
         }
@@ -514,12 +514,14 @@ export class DatalakeComponent implements OnInit {
 
   editDashboard(): void {
     this.dialog.open(MsfEditDashboardComponent, {
-      height: '200px',
+      height: this.globals.readOnlyDashboard ? '145px' : '200px',
       width: '480px',
       panelClass: 'msf-dashboard-control-variables-dialog',
       data: {
         currentDashboardMenu: this.globals.currentDashboardMenu,
         currentDashboardLocation: this.globals.currentDashboardLocation,
+        dashboards: this.dashboards,
+        sharedDashboards: this.sharedDashboards,
         dashboardCategories: this.getTotalDashboardCategories ()
       }
     });

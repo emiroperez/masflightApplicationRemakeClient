@@ -209,10 +209,15 @@ export class DatalakeMenuComponent implements OnInit {
     this.globals.minDate=null;
     this.globals.maxDate=null;
     this.globals.showBigLoading = true;
-    this.globals.currentDashboardMenu = dashboard;
+
+    if (readOnly)
+      this.globals.currentDashboardMenu = dashboard.dashboardMenuId;
+    else
+      this.globals.currentDashboardMenu = dashboard;
+
     this.globals.currentDashboardLocation = this.getDashboardFullPath (dashboard, arg);
     this.globals.currentOption = 'dashboard';
-    this.globals.readOnlyDashboard = readOnly;
+    this.globals.readOnlyDashboard = readOnly ? dashboard : null;
     this.globals.optionDatalakeSelected = 1
     this.optionChanged.emit ();
   }

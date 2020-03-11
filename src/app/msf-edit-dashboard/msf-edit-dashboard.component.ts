@@ -83,14 +83,25 @@ export class MsfEditDashboardComponent {
         return;
       }
 
-      data = {
-        dashboardId: this.data.currentDashboardMenu.id,
-        title: this.currentDashboardMenuTitle,
-        parentId: this.currentDashboardLocation.item != null ? this.currentDashboardLocation.item.id : 0
-      };
+      if (!this.globals.readOnlyDashboard)
+      {
+        data = {
+          dashboardId: this.data.currentDashboardMenu.id,
+          title: this.currentDashboardMenuTitle,
+          parentId: this.currentDashboardLocation.item != null ? this.currentDashboardLocation.item.id : 0
+        };
 
-      this.globals.isLoading = true;
-      this.service.updateDashboard (this, data, this.changeHierarchy, this.closeDialog);
+        this.service.updateDashboard (this, data, this.changeHierarchy, this.closeDialog);
+      }
+      else
+      {
+        data = {
+          dashboardId: this.globals.readOnlyDashboard.id,
+          parentId: this.currentDashboardLocation.item != null ? this.currentDashboardLocation.item.id : 0
+        };
+
+        this.service.updateSharedDashboard (this, data, this.changeHierarchy, this.closeDialog);
+      }
     }
     else
     {
@@ -104,47 +115,116 @@ export class MsfEditDashboardComponent {
 
   changeHierarchy(_this): void
   {
+    if (!_this.globals.readOnlyDashboard)
+      _this.data.currentDashboardMenu.title = _this.currentDashboardMenuTitle;
+
     if (_this.currentDashboardLocation.fullPath === _this.oldDashboardLocation.fullPath)
     {
       _this.dialogRef.close ();
       return;
     }
 
-    _this.data.currentDashboardMenu.title = _this.currentDashboardMenuTitle;
     _this.data.currentDashboardLocation.item = _this.currentDashboardLocation.item;
     _this.data.currentDashboardLocation.fullPath = _this.currentDashboardLocation.fullPath;
 
-    // remove dashboard from previous category
-    for (let i = 0; i < _this.oldDashboardLocation.item.dashboards.length; i++)
+    if (_this.globals.readOnlyDashboard)
     {
-      let dashboard = _this.oldDashboardLocation.item.dashboards[i];
-
-      if (_this.data.currentDashboardMenu.id == dashboard.id)
+      if (_this.oldDashboardLocation.item && _this.oldDashboardLocation.item.id != 0)
       {
-        _this.oldDashboardLocation.item.dashboards.splice (i, 1);
-        break;
+        for (let i = 0; i < _this.oldDashboardLocation.item.sharedDashboards.length; i++)
+        {
+          let dashboard = _this.oldDashboardLocation.item.sharedDashboards[i];
+
+          if (_this.globals.readOnlyDashboard.id == dashboard.id)
+          {
+            _this.oldDashboardLocation.item.sharedDashboards.splice (i, 1);
+            break;
+          }
+        }
+      }
+      else
+      {
+        for (let i = 0; i < _this.data.sharedDashboards.length; i++)
+        {
+          let dashboard = _this.data.sharedDashboards[i];
+
+          if (_this.globals.readOnlyDashboard.id == dashboard.id)
+          {
+            _this.data.sharedDashboards.splice (i, 1);
+            break;
+          }
+        }
+      }
+
+      if (!_this.data.currentDashboardLocation.item || _this.data.currentDashboardLocation.item.id == 0)
+        _this.data.sharedDashboards.push (_this.globals.readOnlyDashboard);
+      else
+      {
+        for (let category of _this.data.dashboardCategories)
+        {
+          if (category.id == _this.data.currentDashboardLocation.item.id)
+          {
+            _this.data.currentDashboardLocation.item = category;
+            break;
+          }
+        }
+
+        _this.data.currentDashboardLocation.item.sharedDashboards.push (_this.globals.readOnlyDashboard);
+      }
+    }
+    else
+    {
+      // remove dashboard from previous category
+      if (_this.oldDashboardLocation.item && _this.oldDashboardLocation.item.id != 0)
+      {
+        for (let i = 0; i < _this.oldDashboardLocation.item.dashboards.length; i++)
+        {
+          let dashboard = _this.oldDashboardLocation.item.dashboards[i];
+
+          if (_this.data.currentDashboardMenu.id == dashboard.id)
+          {
+            _this.oldDashboardLocation.item.dashboards.splice (i, 1);
+            break;
+          }
+        }
+      }
+      else
+      {
+        for (let i = 0; i < _this.data.dashboards.length; i++)
+        {
+          let dashboard = _this.data.dashboards[i];
+
+          if (_this.data.currentDashboardMenu.id == dashboard.id)
+          {
+            _this.data.dashboards.splice (i, 1);
+            break;
+          }
+        }
+      }
+
+      // add dashboard into new category
+      if (!_this.data.currentDashboardLocation.item || _this.data.currentDashboardLocation.item.id == 0)
+        _this.data.dashboards.push (_this.data.currentDashboardMenu);
+      else
+      {
+        for (let category of _this.data.dashboardCategories)
+        {
+          if (category.id == _this.data.currentDashboardLocation.item.id)
+          {
+            _this.data.currentDashboardLocation.item = category;
+            break;
+          }
+        }
+
+        _this.data.currentDashboardLocation.item.dashboards.push (_this.data.currentDashboardMenu);
       }
     }
 
-    // add dashboard into new category
-    for (let category of _this.data.dashboardCategories)
-    {
-      if (category.id == _this.data.currentDashboardLocation.item.id)
-      {
-        _this.data.currentDashboardLocation.item = category;
-        break;
-      }
-    }
-
-    _this.data.currentDashboardLocation.item.dashboards.push (_this.data.currentDashboardMenu);
-
-    _this.globals.isLoading = false;
     _this.dialogRef.close ();
   }
 
   closeDialog(_this)
   {
-    _this.globals.isLoading = false;
     _this.dialogRef.close ();
   }
 

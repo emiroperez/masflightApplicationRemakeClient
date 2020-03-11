@@ -68,7 +68,7 @@ export class MsfAddSharedDashboardComponent implements OnInit {
     }
 
     // add read-only dashboard into the menu
-    if (_this.selectedLocation.item == null)
+    if (!_this.selectedLocation.item || _this.selectedLocation.item.id == 0)
       _this.data.sharedDashboards.push (newDashboard);
     else
     {
@@ -103,7 +103,7 @@ export class MsfAddSharedDashboardComponent implements OnInit {
     }
 
     // add dashboard into the menu
-    if (_this.selectedLocation.item == null)
+    if (!_this.selectedLocation.item || _this.selectedLocation.item.id == 0)
       _this.data.dashboards.push (newDashboard);
     else
     {
