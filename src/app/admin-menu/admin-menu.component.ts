@@ -980,6 +980,7 @@ export class ExampleFlatNode {
   welcome: any;
   createdMetas: any[];
   createdDrillDowns: any[];
+  serverSorting: number;
 }
 
 @Component({
@@ -1026,6 +1027,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     flatNode.typeOption = node.typeOption;
     flatNode.welcome = node.welcome;
     flatNode.createdMetas = node.createdMetas;
+    flatNode.serverSorting = node.serverSorting;
     flatNode.createdDrillDowns = node.createdDrillDowns;
     this.flatNodeMap.set(flatNode, node);
     this.nestedNodeMap.set(node, flatNode);
@@ -1226,7 +1228,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
   setChangeSorting(node) {
     const nestedNode = this.flatNodeMap.get(node);
-    nestedNode.serverSorting = node.serverSorting;
+    nestedNode.serverSorting = node.serverSorting? 1:0 ;
     this.dataChange.next(this.data);
   }
 
@@ -1516,6 +1518,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
       "isRoot": false,
       "applicationId": this.globals.currentApplication.id,
       "metaData": 1,
+      "serverSorting": 0
     };
     if (this.optionSelected.label != null) {
       this.optionSelected.isOpened = true;
@@ -2306,7 +2309,8 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
         menuOptionArgumentsAdmin: [],
         metaData: 1,
         createdMetas: [],
-        createdDrillDowns: []
+        createdDrillDowns: [],
+        serverSorting: 0
       } as any);
       this.dataChange.next(this.data);
     } else {
@@ -2324,6 +2328,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
         typeOption: "0",
         applicationId: this.globals.currentApplication.id,
         metaData: 1,
+        serverSorting: 0
       } as any);
       this.dataChange.next(this.data);
     }
