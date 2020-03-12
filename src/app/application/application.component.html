@@ -1,5 +1,5 @@
 <!--Header-->
-<div *ngIf="(mobileQuery.matches || ResponsiveQuery.matches) ||(!globals.isFullscreen && !mobileQuery.matches || (globals.isFullscreen && globals.currentOption !== 'dashboard' && globals.currentOption !== 'categoryAdmin' && !mobileQuery.matches && !ResponsiveQuery.matches))"
+<div *ngIf="(mobileQuery.matches || ResponsiveQuery.matches) ||(!globals.isFullscreen && !mobileQuery.matches || (globals.isFullscreen && globals.currentOption !== 'dashboard' && !mobileQuery.matches && !ResponsiveQuery.matches))"
     class="msf-menu-header">
     <!-- div to Menu Mobile-->
     <div *ngIf="mobileQuery.matches || ResponsiveQuery.matches" class="msf-header-iconss">
@@ -91,7 +91,7 @@
     </div>
 </div>
 <div *ngIf="(!globals.isFullscreen && !mobileQuery.matches 
-            || (globals.isFullscreen && globals.currentOption !== 'dashboard' && globals.currentOption !== 'categoryAdmin') &&  !mobileQuery.matches )  
+            || (globals.isFullscreen && globals.currentOption !== 'dashboard') &&  !mobileQuery.matches )  
             || (mobileQuery.matches && !globals.showMenu) " 
             class="msf-menu-icons-container">
     <div *ngIf="!mobileQuery.matches || (mobileQuery.matches && !globals.showMenu && !globals.showDashboard) "
