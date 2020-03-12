@@ -97,6 +97,7 @@ export class MsfDashboardPanelValues {
 
     showPaginator: boolean;
     showMoreResult: boolean;
+    ListSortingColumns: any = "";
 
     tokenResultTable: any;
 

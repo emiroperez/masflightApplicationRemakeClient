@@ -597,6 +597,7 @@ toggle(){
     }else if(this.globals.currentOption.tabType === 'usageStatistics'){
       this.msfContainerRef.msfTableRef.getDataUsageStatistics();
     }else{
+      this.clearSort();
       this.msfContainerRef.msfTableRef.getData(false);
     }
   }
@@ -1559,5 +1560,14 @@ toggle(){
 
   moreResult(event: any){
     this.showMoreResult = event;
+  }
+
+  clearSort() {
+    if (this.msfContainerRef.msfTableRef.ListSortingColumns != "") {
+      this.msfContainerRef.msfTableRef.ListSortingColumns = "";
+      this.msfContainerRef.msfTableRef.actualPageNumber = 0;
+      this.msfContainerRef.msfTableRef.tableOptions.moreResultsBtn = false;
+      this.msfContainerRef.msfTableRef.sort.sort({ id: '', start: 'asc', disableClear: false });
+    }
   }
 }

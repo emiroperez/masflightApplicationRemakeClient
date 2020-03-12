@@ -2937,7 +2937,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     else
       urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
 
-    urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=" + Globals.TABLE_PAGESIZE + "&page_number=" + this.actualPageNumber+"&token="+tokenResultTable;
+    urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=" + Globals.TABLE_PAGESIZE + "&page_number=" + this.actualPageNumber+"&token="+tokenResultTable+"&sortingColumns=" + this.values.ListSortingColumns;
     urlArg = encodeURIComponent (urlBase);
 
     if (isDevMode ())
@@ -7521,5 +7521,95 @@ export class MsfDashboardPanelComponent implements OnInit {
       flags: contextMenuFlags,
       panel: this
     });
+  }
+
+  sortingDataTable(event: any): void
+  {
+    if (event.columnName != "") {
+      this.values.ListSortingColumns = event.columnName + " " + event.order;
+    }
+
+    if (event.order === "") {
+      this.values.ListSortingColumns = "";
+    }
+    if (event && this.values.currentOption.serverSorting === 1
+      && ((!this.moreResultsBtn && this.actualPageNumber!=0) || this.moreResultsBtn)) {
+      let sorting = true;
+      let currentOptionCategories = this.values.currentOptionCategories;  
+      if (currentOptionCategories)
+      {
+        for (let i = 0; i < currentOptionCategories.length; i++)
+        {
+          let category: CategoryArguments = currentOptionCategories[i];
+  
+          if (category && category.arguments)
+          {
+            for (let j = 0; j < category.arguments.length; j++)
+            {
+              let argument = category.arguments[j];
+              if (argument.type === "sortingCheckboxes") {
+                if (argument.value1 && argument.value1.length != 0) {
+                  sorting = false;
+                }
+              }
+            }}}}
+      if (sorting) {
+        this.loadTableDataSorting(this.values.ListSortingColumns,this.msfTableRef.handlerSuccess, this.msfTableRef.handlerError);
+      }
+    }
+  }
+
+  loadTableDataSorting(ListSortingColumns, handlerSuccess, handlerError): void
+  {
+    let url, urlBase, urlArg;
+
+    this.msfTableRef.displayedColumns = [];
+    this.values.tokenResultTable = "";
+
+    if (!this.actualPageNumber)
+      this.msfTableRef.dataSource = null;
+
+    this.values.isLoading = true;
+
+    this.msfTableRef.actualPageNumber = this.actualPageNumber;
+    let tokenResultTable = this.values.tokenResultTable;
+    
+    if (this.globals.currentApplication.name === "DataLake")
+    {
+      if (this.getParameters ())
+        urlBase = this.values.currentOption.baseUrl + "?uName=" + this.globals.userName + "&" + this.getParameters ();
+      else
+        urlBase = this.values.currentOption.baseUrl + "?uName=" + this.globals.userName;
+    }
+    else
+      urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
+
+    urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=500&page_number=" + this.actualPageNumber+"&token="+tokenResultTable+"&sortingColumns=" + ListSortingColumns;
+    urlArg = encodeURIComponent (urlBase);
+
+    if (isDevMode ())
+      console.log (urlBase);
+
+    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
+
+    for (let tableVariable of this.values.tableVariables)
+    {
+      if (tableVariable.checked)
+        url += "&metaDataIds=" + tableVariable.itemId;
+    }
+
+    if (this.globals.testingPlan != -1)
+      url += "&testPlanId=" + this.globals.testingPlan;
+
+    this.authService.get (this.msfTableRef, url, handlerSuccess, handlerError);
+  }
+
+  clearSort() {
+    if (this.values.ListSortingColumns != "") {
+      this.values.ListSortingColumns = "";
+      this.actualPageNumber = 0;
+      this.moreResults = false;
+      this.msfTableRef.sort.sort({ id: '', start: 'asc', disableClear: false });
+    }
   }
 }

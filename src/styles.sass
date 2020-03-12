@@ -1008,7 +1008,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             border-top-color: rgba($admin-menu-input-underline, 0.5)
         .standard-input-text
             color: $font-color
-        .msf-admin-show-selected span.mat-checkbox-label
+        .msf-admin-show-selected span.mat-checkbox-label, .msf-argumentsAdmin-show-selected span.mat-checkbox-label
             color: $font-color
         .material-icon-result-text, .material-icon-picker-remove-icon-button
             color: $font-color
@@ -5428,9 +5428,6 @@ td.mat-cell.admin-column-arguments-cell
 .msf-width-90
     width: 90%
 
-.landing-icon
-
-
 .landing-icon-content
     display: flex
     align-items: center
@@ -6642,7 +6639,7 @@ th.msf-show-table, td.msf-show-table
     height: 27px !important
 
 .msf-admin-search
-    width: 74%
+    width: 50%
     height: 24px
     display: inline-block
     margin-bottom: 20px
@@ -6662,11 +6659,17 @@ th.msf-show-table, td.msf-show-table
 .msf-argument-preview-container
     padding: 30px 75px
 
-.msf-admin-show-selected 
+.msf-argumentsAdmin-show-selected
     display: inline-block
     width: 18%
     margin-left: 20px
     text-align: right
+
+.msf-admin-show-selected 
+    display: inline-block
+    width: calc(45% - 19px)
+    margin-left: 19px
+    text-align: left
 
 .loading-panel.table-loading 
     position: absolute
@@ -7143,7 +7146,8 @@ mat-form-field.msf-table-input
                 color: #ffffff
 
 .admin-checkboxes
-    margin: 5px
+    // margin: 5px
+    margin-left: 18px
 
 .admin-menu-tree-header
     display: flex
