@@ -213,7 +213,12 @@ export class MsfContainerComponent implements OnInit {
         }
       }
       if (sorting) {
-        this.msfTableRef.getDataSorting(this.msfTableRef.ListSortingColumns);
+        // this.globals.showPaginator = false;
+        // this.msfTableRef.getDataSorting(this.msfTableRef.ListSortingColumns);
+        this.globals.moreResults = false;
+        this.globals.isLoading = true;
+        this.globals.showBigLoading = false;
+        this.msfTableRef.getData(false);
       }
     }
   }

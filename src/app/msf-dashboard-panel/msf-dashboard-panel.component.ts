@@ -7554,12 +7554,14 @@ export class MsfDashboardPanelComponent implements OnInit {
               }
             }}}}
       if (sorting) {
-        this.loadTableDataSorting(this.values.ListSortingColumns,this.msfTableRef.handlerSuccess, this.msfTableRef.handlerError);
+        this.loadData();
+        // this.loadTableData (false, this.msfTableRef.handlerSuccess, this.msfTableRef.handlerError);
+        // this.loadTableDataSorting(this.values.ListSortingColumns,this.msfTableRef.handlerSuccess, this.msfTableRef.handlerError);
       }
     }
   }
 
-  loadTableDataSorting(ListSortingColumns, handlerSuccess, handlerError): void
+  /*loadTableDataSorting(ListSortingColumns, handlerSuccess, handlerError): void
   {
     let url, urlBase, urlArg;
 
@@ -7602,7 +7604,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       url += "&testPlanId=" + this.globals.testingPlan;
 
     this.authService.get (this.msfTableRef, url, handlerSuccess, handlerError);
-  }
+  }*/
 
   clearSort() {
     if (this.values.ListSortingColumns != "") {

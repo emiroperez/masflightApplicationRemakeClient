@@ -1062,13 +1062,14 @@ export class MsfTableComponent implements OnInit {
   }
 
 
-  getDataSorting(ListSortingColumns) {
+  /*getDataSorting(ListSortingColumns) {
     this.isLoading = true;
+    // this.actualPageNumber = 0;
     this.globals.startTimestamp = new Date();
 
     this.authService.removeTokenResultTable();//se remueve el topken porque debe ser una nueva consulta ordenada
     this.tableOptions.moreResults = true;
     let tokenResultTable = this.authService.getTokenResultTable() ? this.authService.getTokenResultTable() : "";
     this.service.getDataTableSource(this, this.handlerSuccess, this.handlerError, "" + this.actualPageNumber, tokenResultTable, ListSortingColumns);
-  }
+  }*/
 }
