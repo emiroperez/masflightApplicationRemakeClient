@@ -25,6 +25,7 @@ export class MenuMobileNode {
     typeOption: any;
     level: number;
     application: any;
+    serverSorting: number;
 
     // categoryParentId: any;
     // menuParentId: any;

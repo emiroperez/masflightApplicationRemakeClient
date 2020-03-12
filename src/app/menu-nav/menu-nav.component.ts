@@ -58,6 +58,7 @@ export class MenuNavComponent implements OnInit {
     flatNode.childrenOption = node.childrenOption;
     flatNode.typeOption = node.typeOption;	
     flatNode.application = node.application;
+    flatNode.serverSorting = node.serverSorting;
     this.flatNodeMap.set(flatNode, node);
     this.nestedNodeMap.set(node, flatNode);
     return flatNode;
