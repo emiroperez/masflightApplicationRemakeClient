@@ -15,6 +15,8 @@ am4core.useTheme(am4themes_animated);
 
 @Injectable()
 export class Globals {
+  public static TABLE_PAGESIZE = 500;
+
   currentOption: any;
   currentMenuCategory: any;
   currentUser: any;
@@ -64,9 +66,9 @@ export class Globals {
   currentAirline: any;
   template : boolean = false;
   isFullscreen: boolean = false;
-  baseUrl = "http://localhost:8887";
+  // baseUrl = "http://localhost:8887";
   // baseUrl = "http://pulse.globaleagle.com:8887";
-  // baseUrl = "";
+  baseUrl = "";
   baseUrl2 = "https://pulse.globaleagle.com:8886/mapBoxServices";
   popupUrl = "https://pulse.globaleagle.com:8900";
   // baseUrl2 = "http://pulse.globaleagle.com:8884/mapBoxServices";
