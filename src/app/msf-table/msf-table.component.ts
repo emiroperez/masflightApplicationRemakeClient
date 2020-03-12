@@ -576,7 +576,7 @@ export class MsfTableComponent implements OnInit {
             let paginatorlength = {
               length: data.Response.Rows,
               pageIndex: 0,
-              pageSize: 50
+              pageSize: 500
             }
             _this.paginatorlength.emit(paginatorlength);
             _this.paginator.firstPage();
@@ -602,7 +602,7 @@ export class MsfTableComponent implements OnInit {
           _this.dataSource.data = _this.parseResults(_this.dataSource.data, _this.tableOptions.displayedColumns, _this.currentOption);
 
           if (_this.currentOption.tabType === "legacy" || _this.currentOption.tabType === "scmap") {
-            if (_this.tableOptions.totalRecord < 50 || _this.tableOptions.totalRecord > 50) {
+            if (_this.tableOptions.totalRecord < 500 || _this.tableOptions.totalRecord > 500) {
               _this.tableOptions.moreResultsBtn = false;
               _this.tableOptions.moreResults = false;
             } else {
@@ -612,8 +612,8 @@ export class MsfTableComponent implements OnInit {
             if (_this.tableOptions.actualPageNumber == undefined)
               _this.tableOptions.actualPageNumber = _this.actualPageNumber;
 
-            var aux = (_this.tableOptions.actualPageNumber + 1) * 50;
-            aux = aux != 0 ? aux : 50;
+            var aux = (_this.tableOptions.actualPageNumber + 1) * 500;
+            aux = aux != 0 ? aux : 500;
             if (_this.tableOptions.totalRecord < aux) {
               _this.tableOptions.moreResultsBtn = false;
               _this.tableOptions.moreResults = false;
