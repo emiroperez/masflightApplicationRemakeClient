@@ -1013,7 +1013,8 @@
            [currentOption]="values.currentOption" [isPanel]="true" [thresholds]="values.thresholds"
            [paginator]="paginator" [pageIndex]="pageIndex" 
            (paginatorlength)=paginatorlength($event)
-           (shmoreResult)=shmoreResult($event)></app-msf-table>
+           (shmoreResult)=shmoreResult($event)
+           (sortingDataTable)=sortingDataTable($event)></app-msf-table>
         </div>
         <mat-paginator #paginator [pageIndex]="pageI" [pageSize]="pageSize" [length]="lengthpag" hidePageSize
           (page)="pageEvent = getServerData($event)" showFirstLastButtons

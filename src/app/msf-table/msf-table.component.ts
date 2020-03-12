@@ -19,7 +19,7 @@ import { AuthService } from '../services/auth.service';
 })
 export class MsfTableComponent implements OnInit {
 
-  utils: Utils;
+  utils: Utils = new Utils();
   resultsAvailable: string = "msf-no-visible";
   
   color = 'primary';
@@ -83,6 +83,9 @@ export class MsfTableComponent implements OnInit {
   
   @Output('shmoreResult')
   shmoreResult = new EventEmitter ();
+  
+  @Output('sortingDataTable')
+  sortingDataTable = new EventEmitter();				 
 
   predefinedColumnFormats: any = {
     "short": true,
@@ -102,6 +105,8 @@ export class MsfTableComponent implements OnInit {
   @ViewChild(MatSort, { static: false }) sort: MatSort;
 
   securityTokenResultTable: string;
+  tokenResult: { showMoreResult: boolean; tokenResultTable: any; };
+  ListSortingColumns: string = "";							
 
   constructor(public globals: Globals, private service: ApplicationService,
     public dialog: MatDialog, private sanitizer: DomSanitizer,
@@ -283,7 +288,7 @@ export class MsfTableComponent implements OnInit {
       this.authService.removeTokenResultTable();
     }
     let tokenResultTable = this.authService.getTokenResultTable() ? this.authService.getTokenResultTable() : "";
-    this.service.getDataTableSource(this, this.handlerSuccess, this.handlerError, "" + this.actualPageNumber,tokenResultTable);
+    this.service.getDataTableSource(this, this.handlerSuccess, this.handlerError, "" + this.actualPageNumber,tokenResultTable,this.ListSortingColumns);
     // }}
   }
 
@@ -566,18 +571,18 @@ export class MsfTableComponent implements OnInit {
                   
         if(response.Rows){
           _this.globals.showPaginator = true;
-          let tokenResult = {
+          _this.tokenResult = {
             showMoreResult: false,
             tokenResultTable: response.tokenResultTable
           }
-          _this.shmoreResult.emit(tokenResult);
+          _this.shmoreResult.emit(_this.tokenResult);
         }else{
           _this.globals.showPaginator = false;
-          let tokenResult = {
+          _this.tokenResult = {
             showMoreResult: true,
             tokenResultTable: ""
           }
-          _this.shmoreResult.emit(tokenResult);
+          _this.shmoreResult.emit(_this.tokenResult);
         }
 
         if(_this.actualPageNumber===0){
@@ -1048,30 +1053,22 @@ export class MsfTableComponent implements OnInit {
     }
   }
 
-  /*sortData(event?:Sort){
-    if(event){
-      this.getDataSorting(true, event.active,event.direction);
+  sortData(event?: Sort) {
+    let SortingData = {
+      columnName: event.active,
+      order: event.direction
     }
+    this.sortingDataTable.emit(SortingData);
   }
 
-  getDataSorting(moreResults: boolean, sortingColumn, sorting_dir) {
-    // if(this.tableOptions.moreResultsBtn){
+
+  getDataSorting(ListSortingColumns) {
+    this.isLoading = true;
     this.globals.startTimestamp = new Date();
 
-    if (moreResults) {
-      // if(this.pageIndex && this.globals.showPaginator){
-      //   this.actualPageNumber = this.pageIndex.pageIndex;
-      // }else{
-      //   this.actualPageNumber++;
-      // }
-      this.authService.removeTokenResultTable();//se remueve el topken porque debe ser una nueva consulta ordenada
-      this.tableOptions.moreResults = true;
-    } else {
-      this.actualPageNumber = 0;
-      this.authService.removeTokenResultTable();
-    }
+    this.authService.removeTokenResultTable();//se remueve el topken porque debe ser una nueva consulta ordenada
+    this.tableOptions.moreResults = true;
     let tokenResultTable = this.authService.getTokenResultTable() ? this.authService.getTokenResultTable() : "";
-    this.service.getDataTableSource(this, this.handlerSuccess, this.handlerError, "" + this.actualPageNumber,tokenResultTable,sortingColumn,sorting_dir);
-    // }}
-  }*/
+    this.service.getDataTableSource(this, this.handlerSuccess, this.handlerError, "" + this.actualPageNumber, tokenResultTable, ListSortingColumns);
+  }
 }

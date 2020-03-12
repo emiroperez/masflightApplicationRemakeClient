@@ -7,6 +7,7 @@ import { MsfMapComponent } from '../msf-map/msf-map.component';
 import { MsfDashboardComponent } from '../msf-dashboard/msf-dashboard.component';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { MsfScheduleMapsComponent } from '../msf-schedule-maps/msf-schedule-maps.component';
+import { CategoryArguments } from '../model/CategoryArguments';
 
 @Component({
   selector: 'app-msf-container',
@@ -179,4 +180,42 @@ export class MsfContainerComponent implements OnInit {
   shmoreResult(event: any){
     this.showMoreResult = event.showMoreResult;
   }
+
+  sortingDataTable(event: any): void
+  {
+    if (event.columnName != "") {
+      this.msfTableRef.ListSortingColumns = event.columnName + " " + event.order;
+    }
+    if (event.order === "") {
+      this.msfTableRef.ListSortingColumns = "";
+    }
+    if (event && this.msfTableRef.currentOption.serverSorting == 1
+      && ((!this.msfTableRef.tableOptions.moreResultsBtn && this.msfTableRef.actualPageNumber) || (this.msfTableRef.tableOptions.moreResultsBtn))) {
+      let sorting = true;
+      if (this.msfTableRef.currentOption.menuOptionArguments) {
+        //para los servicios viejos del pto 8900 verifico si tienen sorting 
+        for (let menuOptionArguments of this.msfTableRef.currentOption.menuOptionArguments) {
+          if (menuOptionArguments.categoryArguments) {
+            for (let i = 0; i < menuOptionArguments.categoryArguments.length; i++) {
+              let category: CategoryArguments = menuOptionArguments.categoryArguments[i];
+              if (category && category.arguments) {
+                for (let j = 0; j < category.arguments.length; j++) {
+                  let argument = category.arguments[j];
+                  if (argument.type === "sortingCheckboxes") {
+                    if (argument.value1 && argument.value1.length != 0) {
+                      sorting = false;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      if (sorting) {
+        this.msfTableRef.getDataSorting(this.msfTableRef.ListSortingColumns);
+      }
+    }
+  }
+  
 }
