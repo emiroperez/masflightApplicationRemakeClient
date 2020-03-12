@@ -209,14 +209,14 @@
                     </div>
                     <div class="arguments-child" [style.margin-right.%]="5">
                         <mat-form-field [style.width.%]="100">
-                            <input matInput placeholder="Start Date Availability" [(ngModel)]="item.minDate" [matDatepicker]="startDatePicker">
+                            <input matInput placeholder="Start Date Availability" [(ngModel)]="item.minDate" [max]="item.maxDate" [matDatepicker]="startDatePicker">
                             <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
                             <mat-datepicker #startDatePicker></mat-datepicker>
                         </mat-form-field>
                     </div>
                     <div class="arguments-child">
                         <mat-form-field [style.width.%]="100">
-                            <input matInput placeholder="End Date Availability" [(ngModel)]="item.maxDate" [matDatepicker]="endDatePicker">
+                            <input matInput placeholder="End Date Availability" [(ngModel)]="item.maxDate" [min]="item.minDate" [matDatepicker]="endDatePicker">
                             <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
                             <mat-datepicker #endDatePicker></mat-datepicker>
                         </mat-form-field>
