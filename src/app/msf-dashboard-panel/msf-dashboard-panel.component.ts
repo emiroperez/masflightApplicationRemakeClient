@@ -7555,56 +7555,10 @@ export class MsfDashboardPanelComponent implements OnInit {
             }}}}
       if (sorting) {
         this.loadData();
-        // this.loadTableData (false, this.msfTableRef.handlerSuccess, this.msfTableRef.handlerError);
-        // this.loadTableDataSorting(this.values.ListSortingColumns,this.msfTableRef.handlerSuccess, this.msfTableRef.handlerError);
       }
     }
   }
 
-  /*loadTableDataSorting(ListSortingColumns, handlerSuccess, handlerError): void
-  {
-    let url, urlBase, urlArg;
-
-    this.msfTableRef.displayedColumns = [];
-    this.values.tokenResultTable = "";
-
-    if (!this.actualPageNumber)
-      this.msfTableRef.dataSource = null;
-
-    this.values.isLoading = true;
-
-    this.msfTableRef.actualPageNumber = this.actualPageNumber;
-    let tokenResultTable = this.values.tokenResultTable;
-    
-    if (this.globals.currentApplication.name === "DataLake")
-    {
-      if (this.getParameters ())
-        urlBase = this.values.currentOption.baseUrl + "?uName=" + this.globals.userName + "&" + this.getParameters ();
-      else
-        urlBase = this.values.currentOption.baseUrl + "?uName=" + this.globals.userName;
-    }
-    else
-      urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
-
-    urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=500&page_number=" + this.actualPageNumber+"&token="+tokenResultTable+"&sortingColumns=" + ListSortingColumns;
-    urlArg = encodeURIComponent (urlBase);
-
-    if (isDevMode ())
-      console.log (urlBase);
-
-    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
-
-    for (let tableVariable of this.values.tableVariables)
-    {
-      if (tableVariable.checked)
-        url += "&metaDataIds=" + tableVariable.itemId;
-    }
-
-    if (this.globals.testingPlan != -1)
-      url += "&testPlanId=" + this.globals.testingPlan;
-
-    this.authService.get (this.msfTableRef, url, handlerSuccess, handlerError);
-  }*/
 
   clearSort() {
     if (this.values.ListSortingColumns != "") {
