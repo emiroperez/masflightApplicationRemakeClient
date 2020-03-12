@@ -15,7 +15,7 @@ am4core.useTheme(am4themes_animated);
 
 @Injectable()
 export class Globals {
-  public static TABLE_PAGESIZE = 500;
+  public static TABLE_PAGESIZE = 200;
 
   currentOption: any;
   currentMenuCategory: any;
