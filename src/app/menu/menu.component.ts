@@ -234,7 +234,7 @@ export class MenuComponent implements OnInit {
     this.goToDashboard (event.dashboard, event.readOnly);
   }
 
-  goToCategoryAdministrator(): void
+  goToCategoryManager(): void
   {
     this.globals.minDate = null;
     this.globals.maxDate = null;

@@ -22,7 +22,7 @@ style="padding: 0px  7px !important;">
       <button mat-menu-item *ngFor="let dashboard of sharedDashboards" (click)="goToDashboard(dashboard, true)">
           {{dashboard.dashboardMenuId.title}} (Read only)
       </button>
-      <button mat-menu-item (click)="goToCategoryAdministrator()">Category Administrator</button>
+      <button mat-menu-item (click)="goToCategoryManager()">Category Manager</button>
       <button mat-menu-item (click)="checkSharedItems()">Shared with me</button>
       <button mat-menu-item *ngIf="!actionDisable('Create Dashboard')" (click)="addDashboard()">Add dashboard</button>
   </mat-menu>
