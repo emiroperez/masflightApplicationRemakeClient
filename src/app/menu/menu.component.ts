@@ -233,4 +233,13 @@ export class MenuComponent implements OnInit {
   {
     this.goToDashboard (event.dashboard, event.readOnly);
   }
+
+  goToCategoryAdministrator(): void
+  {
+    this.globals.minDate = null;
+    this.globals.maxDate = null;
+    this.globals.showBigLoading = true;
+    this.globals.currentOption = 'categoryAdmin';
+    this.optionChanged.emit ();
+  }
 }

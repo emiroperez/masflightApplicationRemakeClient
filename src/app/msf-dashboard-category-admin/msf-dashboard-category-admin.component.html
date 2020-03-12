@@ -1,0 +1,50 @@
+<div class="category-administrator-container">
+  <div class="category-administrator-sub-container">
+    <div class="category-administrator-menu">
+      <div class="category-administrator-label">Category Menu</div>
+      <div class="category-administrator-list">
+        <div *ngIf="root" class="dashboard-browser-tree">
+          <mat-radio-group>
+            <div class="dashboard-browser-tree-folder">
+              <ng-container *ngIf="root && root.children.length">
+                <button mat-icon-button class="tree-button" (click)="toggleRoot()">
+                    <mat-icon *ngIf="!root.open" aria-label="open">keyboard_arrow_right</mat-icon>
+                    <mat-icon *ngIf="root.open" aria-label="close">keyboard_arrow_down</mat-icon>
+                </button>
+              </ng-container>
+              <img class="dashboard-browser-item-image" *ngIf="root.open" src="../../assets/images/{{globals.theme}}-folder-open.png"/>
+              <img class="dashboard-browser-item-image" *ngIf="!root.open" src="../../assets/images/{{globals.theme}}-folder-closed.png"/>
+              <span class="dashboard-browser-item-label">{{root.title}}</span>
+              <mat-radio-button class="dashboard-browser-item-selector" [value]="root" [checked]="categorySelected == root" (click)="selectCategory(root)"></mat-radio-button>
+            </div>
+            <app-msf-dashboard-browser-folder-item [directoryTree]="root" [treeMargin]="30" [allowEditing]="true" [selectedFolder]="categorySelected" (selectFolder)="selectCategory($event)" (categoryModified)="categoryModified($event)"></app-msf-dashboard-browser-folder-item>
+          </mat-radio-group>
+        </div>
+      </div>
+    </div>
+    <div class="category-administrator-options">
+      <div class="category-administrator-label">Options</div>
+      <div class="category-administrator-option-container">
+        <div class="category-administrator-option-buttons">
+          <div class="category-administrador-option-button-list">
+            <button mat-button [disabled]="!root" [ngClass]="{ 'flat-button': root, 'flat-button-disabled': !root }"
+              class="category-administrator-option-button category-administrator-button-separator" (click)="createCategory(categorySelected)">
+              Create Category
+            </button>
+            <button mat-button [disabled]="!categorySelected || categorySelected == root"
+              [ngClass]="{ 'flat-button': categorySelected && categorySelected != root,
+              'flat-button-disabled': !categorySelected || categorySelected == root }"
+              class="category-administrator-option-button category-administrator-button-separator"
+              (click)="deleteCategory(categorySelected)">
+              Delete
+            </button>
+            <button mat-button [disabled]="!root" [ngClass]="{ 'flat-button': root, 'flat-button-disabled': !root }"
+              class="category-administrator-option-button" (click)="saveCategories()">
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

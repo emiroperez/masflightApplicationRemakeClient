@@ -692,6 +692,18 @@ export class ApplicationService {
     this.authService.get (_this, url, handlerSuccess, handlerError);
   }
 
+  getDashboardCategories2(_this, handlerSuccess, handlerError)
+  {
+    let url = this.host + "/secure/getDashboardCategories2?appId=" + this.globals.currentApplication.id;
+    this.authService.get (_this, url, handlerSuccess, handlerError);
+  }
+
+  saveDashboardCategories(_this, info, handlerSuccess, handlerError)
+  {
+    let url = this.host + "/secure/saveDashboardCategories";
+    this.authService.post (_this, url, info, handlerSuccess, handlerError);
+  }
+
   confirmationOrCancelDialog(_this, message, callback,cancel)
   {
     const dialogRef = this.dialog.open (MsfConfirmationDialogComponent, {

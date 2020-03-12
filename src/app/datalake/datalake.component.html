@@ -1,5 +1,5 @@
 <!--Header-->
-<div *ngIf="(mobileQuery.matches || ResponsiveQuery.matches) ||(!globals.isFullscreen && !mobileQuery.matches || (globals.isFullscreen && globals.currentOption !== 'dashboard' && !mobileQuery.matches && !ResponsiveQuery.matches))"
+<div *ngIf="(mobileQuery.matches || ResponsiveQuery.matches) ||(!globals.isFullscreen && !mobileQuery.matches || (globals.isFullscreen && globals.currentOption !== 'dashboard' && globals.currentOption !== 'categoryAdmin' && !mobileQuery.matches && !ResponsiveQuery.matches))"
     class="msf-menu-header">
     <div 
     [ngClass]="mobileQuery.matches ? 'msf-menu-header-image-container is-mobile'
@@ -75,9 +75,13 @@
 
 <div *ngIf="globals.optionDatalakeSelected === 1" [style.height.px]="bodyHeight" [class.is-mobile]="mobileQuery.matches">
         <div *ngIf="(!globals.isFullscreen && !mobileQuery.matches 
-        || (globals.isFullscreen && globals.currentOption !== 'dashboard' ) &&  !mobileQuery.matches )  
+        || (globals.isFullscreen && globals.currentOption !== 'dashboard' && globals.currentOption !== 'categoryAdmin') &&  !mobileQuery.matches )  
         || (mobileQuery.matches && !globals.showMenu) " 
         class="msf-menu-icons-container">
+<div *ngIf="!mobileQuery.matches || (mobileQuery.matches && !globals.showMenu && !globals.showDashboard) "
+    [ngClass]="mobileQuery.matches ? (globals.showTabs ? 'msf-menu-icons-left':'msf-menu-icons-left-mobile') :'msf-menu-icons-left'">
+    <span *ngIf="globals.currentOption == 'categoryAdmin'">Dashboard Category Administrator</span>
+</div>
 <div *ngIf="!mobileQuery.matches || (mobileQuery.matches && !globals.showMenu && (globals.showTabs || globals.showDashboard)) "
     [ngClass]="mobileQuery.matches ? (globals.showTabs ? 'msf-menu-icons-right':'msf-menu-icons-right-mobile') :'msf-menu-icons-right'">
     <button *ngIf="globals.currentOption === 'dashboard' && !isReadOnlyDashboardSet()" class="msf-menu-icon"
@@ -126,7 +130,7 @@
                                                    : (mobileQuery.matches ? (globals.showMenu ? 'msf-menu-internal-content-all-mobile'
                                                                             : (globals.showTabs ? 'msf-menu-internal-content-tabs':'msf-menu-internal-content-mobile'))
                                                                             :'msf-menu-internal-content') "  [class.is-MQueryresponsive]="ResponsiveQuery.matches">
-                    <app-msf-container #msfContainerRef></app-msf-container>
+                    <app-msf-container #msfContainerRef (refreshDashboardMenu)="refreshDashboardMenu()"></app-msf-container>
                 </div>
             </div>
         </div>

@@ -22,8 +22,9 @@
         <button mat-menu-item *ngFor="let dashboard of sharedDashboards" (click)="goToDashboard(dashboard, true)">
             {{dashboard.dashboardMenuId.title}} (Read only)
         </button>
-        <button mat-menu-item (click)="checkSharedItems()" >Shared with me</button >
-        <button mat-menu-item *ngIf="!globals.readOnlyDashboardPlan" (click)="addDashboard()" >Add dashboard</button>
+        <button mat-menu-item (click)="goToCategoryAdministrator()">Category Administrator</button>
+        <button mat-menu-item (click)="checkSharedItems()">Shared with me</button>
+        <button mat-menu-item *ngIf="!globals.readOnlyDashboardPlan" (click)="addDashboard()">Add dashboard</button>
     </mat-menu>
 
 </ng-container>

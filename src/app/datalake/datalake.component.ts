@@ -594,10 +594,27 @@ export class DatalakeComponent implements OnInit {
   }
 
   isSimpleContent(): boolean {
-    return (this.globals.currentOption === "dashboard" || !this.globals.currentOption);
+    return (this.globals.currentOption === "dashboard" || this.globals.currentOption === "categoryAdmin" || !this.globals.currentOption);
   }
 
   stopPlanTest(): void {
     this.globals.testingPlan = -1;
+  }
+
+  refreshDashboardMenu(): void
+  {
+    this.menuService.getDashboardsByUser (this, this.handlerDashboardRefresh, this.errorHandler);
+  }
+
+  handlerDashboardRefresh(_this, data)
+  {
+    _this.dashboardCategories = data.children;
+    _this.dashboards = data.dashboards;
+    _this.sharedDashboards = data.sharedDashboards;
+    _this.globals.isLoading = false;
+
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Information", message: "The categories were saved successfully." }
+    });
   }
 }

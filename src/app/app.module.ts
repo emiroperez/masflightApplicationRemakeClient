@@ -210,6 +210,7 @@ import { MsfDashboardBrowserComponent } from './msf-dashboard-browser/msf-dashbo
 import { MsfDashboardBrowserFolderItemComponent } from './msf-dashboard-browser-folder-item/msf-dashboard-browser-folder-item.component';
 import { MenuDashboardComponent } from './menu-dashboard/menu-dashboard.component';
 import { NgxCurrencyModule } from "ngx-currency";
+import { MsfDashboardCategoryAdminComponent } from './msf-dashboard-category-admin/msf-dashboard-category-admin.component';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -395,7 +396,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     DateRestrictionDialogComponent,
     MsfDashboardBrowserComponent,
     MsfDashboardBrowserFolderItemComponent,
-    MenuDashboardComponent
+    MenuDashboardComponent,
+    MsfDashboardCategoryAdminComponent
   ],
   imports: [
     BrowserModule,

@@ -12,7 +12,7 @@
           <span class="dashboard-browser-item-label">{{child.title}}</span>
         </ng-container>
         <ng-container *ngIf="allowEditing">
-          <input type="text" autocomplete="off" matInput class="dashboard-browser-item-label" [(ngModel)]="child.name" (ngModelChange)="categoryModified.emit(child)" (click)="selectFolder.emit(child)">
+          <input type="text" autocomplete="off" matInput class="dashboard-browser-item-label" [(ngModel)]="child.title" (ngModelChange)="categoryModified.emit(child)" (click)="selectFolder.emit(child)">
         </ng-container>
         <mat-radio-button class="dashboard-browser-item-selector" [value]="child" [checked]="selectedFolder == child" (click)="selectFolder.emit(child)"></mat-radio-button>
       </div>
@@ -25,7 +25,7 @@
           <span class="dashboard-browser-item-label">{{child.title}}</span>
         </ng-container>
         <ng-container *ngIf="allowEditing">
-          <input type="text" autocomplete="off" matInput class="dashboard-browser-item-label" [(ngModel)]="child.name" (ngModelChange)="categoryModified.emit(child)" (click)="selectFolder.emit(child)">
+          <input type="text" autocomplete="off" matInput class="dashboard-browser-item-label" [(ngModel)]="child.title" (ngModelChange)="categoryModified.emit(child)" (click)="selectFolder.emit(child)">
         </ng-container>
         <mat-radio-button class="dashboard-browser-item-selector" [value]="child" [checked]="selectedFolder == child" (click)="selectFolder.emit(child)"></mat-radio-button>
       </div>

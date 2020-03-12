@@ -50,6 +50,8 @@ export class MsfContainerComponent implements OnInit {
   @Output('moreResult')
   moreResult = new EventEmitter ();
 
+  @Output('refreshDashboardMenu')
+  refreshDashboardMenu = new EventEmitter ();
 
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;							   
@@ -177,5 +179,4 @@ export class MsfContainerComponent implements OnInit {
   shmoreResult(event: any){
     this.showMoreResult = event.showMoreResult;
   }
-  
 }

@@ -218,7 +218,7 @@ export class DatalakeMenuComponent implements OnInit {
     this.globals.currentDashboardLocation = this.getDashboardFullPath (dashboard, arg);
     this.globals.currentOption = 'dashboard';
     this.globals.readOnlyDashboard = readOnly ? dashboard : null;
-    this.globals.optionDatalakeSelected = 1
+    this.globals.optionDatalakeSelected = 1;
     this.optionChanged.emit ();
   }
 
@@ -241,5 +241,15 @@ export class DatalakeMenuComponent implements OnInit {
   setDashboard(event): void
   {
     this.goToDashboard (event.dashboard, event.readOnly);
+  }
+
+  goToCategoryAdministrator(): void
+  {
+    this.globals.minDate = null;
+    this.globals.maxDate = null;
+    this.globals.showBigLoading = true;
+    this.globals.currentOption = 'categoryAdmin';
+    this.globals.optionDatalakeSelected = 1;
+    this.optionChanged.emit ();
   }
 }

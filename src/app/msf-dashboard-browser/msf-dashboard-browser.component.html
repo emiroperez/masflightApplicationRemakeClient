@@ -5,19 +5,21 @@
             Dashboard Location
         </div>
         <div class="dashboard-browser-tree">
-            <div class="dashboard-browser-tree-folder">
-                <ng-container *ngIf="root && root.children.length">
-                    <button mat-icon-button class="tree-button" (click)="toggleRoot()">
-                        <mat-icon *ngIf="!root.open" aria-label="open">keyboard_arrow_right</mat-icon>
-                        <mat-icon *ngIf="root.open" aria-label="close">keyboard_arrow_down</mat-icon>
-                    </button>
-                </ng-container>
-                <img class="dashboard-browser-item-image" *ngIf="root.open" src="../../assets/images/{{globals.theme}}-folder-open.png"/>
-                <img class="dashboard-browser-item-image" *ngIf="!root.open" src="../../assets/images/{{globals.theme}}-folder-closed.png"/>
-                <span class="dashboard-browser-item-label">{{root.title}}</span>
-                <mat-radio-button class="dashboard-browser-item-selector" [value]="root" [checked]="selectedFolder == root" (click)="selectFolder(root)"></mat-radio-button>
-            </div>
-            <app-msf-dashboard-browser-folder-item [directoryTree]="root" [treeMargin]="30" [selectedFolder]="selectedFolder" (selectFolder)="selectFolder($event)" (categoryModified)="categoryModified($event)"></app-msf-dashboard-browser-folder-item>
+            <mat-radio-group>
+                <div class="dashboard-browser-tree-folder">
+                    <ng-container *ngIf="root && root.children.length">
+                        <button mat-icon-button class="tree-button" (click)="toggleRoot()">
+                            <mat-icon *ngIf="!root.open" aria-label="open">keyboard_arrow_right</mat-icon>
+                            <mat-icon *ngIf="root.open" aria-label="close">keyboard_arrow_down</mat-icon>
+                        </button>
+                    </ng-container>
+                    <img class="dashboard-browser-item-image" *ngIf="root.open" src="../../assets/images/{{globals.theme}}-folder-open.png"/>
+                    <img class="dashboard-browser-item-image" *ngIf="!root.open" src="../../assets/images/{{globals.theme}}-folder-closed.png"/>
+                    <span class="dashboard-browser-item-label">{{root.title}}</span>
+                    <mat-radio-button class="dashboard-browser-item-selector" [value]="root" [checked]="selectedFolder == root" (click)="selectFolder(root)"></mat-radio-button>
+                </div>
+                <app-msf-dashboard-browser-folder-item [directoryTree]="root" [treeMargin]="30" [selectedFolder]="selectedFolder" (selectFolder)="selectFolder($event)" (categoryModified)="categoryModified($event)"></app-msf-dashboard-browser-folder-item>
+            </mat-radio-group>
         </div>
         <div class="dashboard-browser-button">
             <button mat-flat-button class="flat-button" (click)="setCategory(selectedFolder)">
