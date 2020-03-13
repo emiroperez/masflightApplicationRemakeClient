@@ -71,8 +71,7 @@ export class MenuNavComponent implements OnInit {
     const flatNodeDashboard = existingNode && existingNode.title === node.title
       ? existingNode
       : new MenuDashboardMobileNode();
-      flatNodeDashboard.expandable = (!!node.children && node.children.length > 0) || (!!node.dashboards && node.dashboards.length > 0) || (!!node.sharedDashboards && node.sharedDashboards.length > 0)
-        || (!!node.options && node.options.length > 0);
+      flatNodeDashboard.expandable = (node.children || node.dashboards || node.sharedDashboards || node.options);
       flatNodeDashboard.id = node.id;
       flatNodeDashboard.parentId = node.parentId;
       flatNodeDashboard.applicationId = node.applicationId;
@@ -372,6 +371,9 @@ export class MenuNavComponent implements OnInit {
 
   goToDashboardOption(node): void
   {
+    if (node.children || node.dashboards || node.sharedDashboards || node.options)
+      return; // do nothing for dashboard categories
+
     if (node.menuType == MenuDashboardMobileNode.CATEGORY_MANAGER_OPTION)
       this.goToCategoryManager ();
     else if (node.menuType == MenuDashboardMobileNode.ADD_DASHBOARD_OPTION)
