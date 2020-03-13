@@ -103,9 +103,9 @@
         <img src="../../assets/images/{{globals.theme}}-trash-small.png" class="msf-menu-image msf-vertical-middle">
         <span class="msf-vertical-middle" *ngIf="!TabletQuery.matches">Delete Dashboard</span>
     </button>
-    <button class="msf-menu-icon" *ngIf="!globals.isFullscreen" (click)="goToFullscreen()">
+    <button class="msf-menu-icon" *ngIf="!globals.isFullscreen && !TabletQuery.matches" (click)="goToFullscreen()">
         <img src="../../assets/images/{{globals.theme}}-fullscreen.png" class="msf-menu-image msf-vertical-middle">
-        <span class="msf-vertical-middle" *ngIf="!TabletQuery.matches">Full Screen</span>
+        <span class="msf-vertical-middle">Full Screen</span>
     </button>
 </div>
 </div>
