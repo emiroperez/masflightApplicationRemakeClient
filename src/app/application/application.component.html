@@ -2,7 +2,7 @@
 <div *ngIf="(mobileQuery.matches || ResponsiveQuery.matches) ||(!globals.isFullscreen && !mobileQuery.matches || (globals.isFullscreen && globals.currentOption !== 'dashboard' && !mobileQuery.matches && !ResponsiveQuery.matches))"
     class="msf-menu-header">
     <!-- div to Menu Mobile-->
-    <div *ngIf="mobileQuery.matches || ResponsiveQuery.matches" class="msf-header-iconss">
+    <div *ngIf="mobileQuery.matches || ResponsiveQuery.matches" class="msf-mobile-menu-header">
         <button *ngIf="((globals.showMenu || globals.showIntroWelcome) && mobileQuery.matches) 
         || ResponsiveQuery.matches && !mobileQuery.matches" class="mat-icon-menu" mat-icon-button
             (click)="showMenu()">
