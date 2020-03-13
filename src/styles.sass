@@ -449,7 +449,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             border-color: $schedule-map-info-border
             .msf-dashboard-map-panelinfo-container
                 color: $font-color
-        .msf-dashboard-child-panel-dialog .mat-dialog-container
+        .msf-shared-dashboard-dialog .mat-dialog-container, .msf-dashboard-child-panel-dialog .mat-dialog-container
             background-color: $quaternary-background-color !important
         #msf-dashboard-drill-down-container
             color: $font-color
@@ -4358,6 +4358,12 @@ mat-tab-group
 .msf-dashboard-child-panel-dialog .mat-dialog-container
     padding: 12px
     overflow: hidden
+
+.msf-shared-dashboard-dialog
+    max-width: 90vw !important
+    .mat-dialog-container
+        padding: 12px
+        overflow: hidden
 
 .msf-dashboard-child-panel-container-chart, .chart-preview-container
     padding: 10px

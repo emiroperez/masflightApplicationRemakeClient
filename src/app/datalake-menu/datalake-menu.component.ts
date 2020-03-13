@@ -123,7 +123,7 @@ export class DatalakeMenuComponent implements OnInit {
     this.dialog.open (MsfSharedDashboardItemsComponent, {
       height: '340px',
       width: '400px',
-      panelClass: 'msf-dashboard-child-panel-dialog',
+      panelClass: 'msf-shared-dashboard-dialog',
       data: {
         dashboards: this.dashboards,
         sharedDashboards: this.sharedDashboards,
