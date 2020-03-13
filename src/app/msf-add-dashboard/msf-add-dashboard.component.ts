@@ -130,7 +130,7 @@ export class MsfAddDashboardComponent {
   openDashboardBrowser(): void
   {
     let dialogRef = this.dialog.open (MsfDashboardBrowserComponent, {
-      panelClass: 'dashboard-config-dialog',
+      panelClass: 'dashboard-browser-dialog',
       autoFocus: false,
       data: {}
     });
