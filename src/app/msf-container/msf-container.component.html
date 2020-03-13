@@ -5,7 +5,7 @@
 *ngIf="(globals.currentOption && globals.currentOption !== 'dashboard' && globals.currentOption !== 'categoryAdmin')">
     <div style="height: 100%;"  [hidden]= "globals.mapsc">
     <mat-tab-group [ngClass]="mobileQuery.matches? (globals.showMenu? 'msf-hide':'msf-show-panel'):'msf-show-panel' "
-    [selectedIndex]="globals.selectedIndex" (selectedTabChange)="onLinkClick($event)" #tabs >
+    [selectedIndex]="globals.selectedIndex" (selectedTabChange)="onLinkClick($event)" #tabs>
         <mat-tab *ngIf="globals.showWelcome" label="Welcome" style="height: 100%;">
             <app-option-welcome></app-option-welcome> 
         </mat-tab>        

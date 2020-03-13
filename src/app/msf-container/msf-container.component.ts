@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ChangeDetectorRef, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ChangeDetectorRef, EventEmitter, Output, SimpleChanges } from '@angular/core';
 import { Globals } from '../globals/Globals';
 import { MatTab, MatTabGroup, MatTabChangeEvent, MatPaginator } from '@angular/material';
 import { MsfTableComponent } from '../msf-table/msf-table.component';
@@ -35,8 +35,8 @@ export class MsfContainerComponent implements OnInit {
   @ViewChild('msfWelcomeTab', { static: false })
   msfWelcomeTab: MatTab;
 
-  @ViewChild(MatTabGroup, { static: false }) tabGroup: MatTabGroup;
-
+  @ViewChild('tabs', { static: false })
+  tabs: MatTabGroup;
 
   @Input("paginator")
   paginator: MatPaginator;
@@ -44,7 +44,7 @@ export class MsfContainerComponent implements OnInit {
   
   @Input("pageIndex")
   pageIndex: any;
-  
+
   @Output('lengthpaginator')
   lengthpaginator = new EventEmitter ();
 
@@ -80,6 +80,7 @@ export class MsfContainerComponent implements OnInit {
     this.mobileQuery.removeListener(this._mobileQueryListener);
     this.responsiveQuery.removeListener(this._responsiveQueryListener);
   }
+
   ngAfterViewInit(){
   }
 

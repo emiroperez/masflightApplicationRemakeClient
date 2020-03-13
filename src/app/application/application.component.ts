@@ -556,34 +556,39 @@ toggle(){
 
     this.globals.moreResults = false;
     this.globals.query = true;
-    this.globals.mapsc=false;
+    this.globals.mapsc = false;
     this.globals.tab = true;
 
-    this.globals.isLoading = true;
-    if (this.globals.currentOption.tabType === 'scmap2')
-    {
-      this.globals.showBigLoading = false;
-      this.globals.mapsc = true;
-    }
-    else if(this.globals.currentOption.tabType === 'map'){
-      this.globals.map = true;
-      this.globals.showBigLoading = false;
-      this.globals.selectedIndex = 3;
-      this.msfContainerRef.msfMapRef.getTrackingDataSource();
-    }else if(this.globals.currentOption.tabType === 'usageStatistics'){
-      this.msfContainerRef.msfTableRef.getDataUsageStatistics();
-    }else {
-      this.globals.showBigLoading = false;
-      this.globals.selectedIndex = 2;
-    }
+    setTimeout (() => {
+      this.globals.isLoading = true;
 
-    // close dynamic table tab if visible
-    this.globals.generateDynamicTable = false;
-
-    setTimeout(() => {
-      this.search2();
-  }, 3000);
-
+      if (this.globals.currentOption.tabType === 'scmap2')
+      {
+        this.globals.showBigLoading = false;
+        this.globals.mapsc = true;
+      }
+      else if (this.globals.currentOption.tabType === 'map')
+      {
+        this.globals.map = true;
+        this.globals.showBigLoading = false;
+        this.globals.selectedIndex = 3;
+        this.msfContainerRef.msfMapRef.getTrackingDataSource();
+      }
+      else if (this.globals.currentOption.tabType === 'usageStatistics')
+        this.msfContainerRef.msfTableRef.getDataUsageStatistics();
+      else
+      {
+        this.globals.showBigLoading = false;
+        this.globals.selectedIndex = 2;
+      }
+  
+      // close dynamic table tab if visible
+      this.globals.generateDynamicTable = false;
+  
+      setTimeout (() => {
+        this.search2 ();
+      }, 3000);
+    }, 500);
   }
 
   search2(){
