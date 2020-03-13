@@ -9,7 +9,6 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { DashboardCategory } from '../model/DashboardCategory';
 import { SharedDashboardMenu } from '../model/SharedDashboardMenu';
 import { MsfSharedDashboardItemsComponent } from '../msf-shared-dashboard-items/msf-shared-dashboard-items.component';
-import { open } from 'fs';
 import { MsfAddDashboardComponent } from '../msf-add-dashboard/msf-add-dashboard.component';
 
 @Component({
