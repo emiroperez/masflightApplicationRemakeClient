@@ -1470,7 +1470,6 @@ toggle(){
       // return to default menu
       this.globals.currentOption = this.globals.currentApplication.defaultMenu;
       this.globals.showDashboard = false;
-      this.globals.showPaginator = false;
       this.globals.showIntroWelcome = true;
       return;
     }

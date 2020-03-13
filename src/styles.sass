@@ -3307,11 +3307,6 @@ button[aria-expanded="true"]
     background-color: #ffffff
     vertical-align: middle
 
-.msf-menu-internal-content-with-paginator
-    height: calc(100% - 175px)
-    background-color: #ffffff
-    vertical-align: middle
-
 .msf-menu-more-button
     @extend .msf-secondary-color
     height: 20px
@@ -8010,13 +8005,17 @@ button.mat-icon-button-menu
     // width: calc(100% + 20px)
     width: 100%
     transition: 0.25s
+    .msf-menu-internal-content-tabs
+        height: 100% !important
 
 .msf-menu-tabs-content-mobile-with-paginator
-    height: calc(100% - 40px)
+    height: calc(100% - 57px)
     width: 100%
     transition: 0.25s
+    .msf-menu-internal-content-tabs
+        height: 100% !important
 
-.msf-menu-internal-content-mobile 
+.msf-menu-internal-content-mobile
     height: 100%
     background-color: #ffffff
     vertical-align: middle

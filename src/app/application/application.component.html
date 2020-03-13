@@ -228,7 +228,7 @@
                 || (mobileQuery.matches && isSimpleContent() && globals.showDashboard)  ? 'msf-menu-internal-simple-content' 
                                                : (mobileQuery.matches ? (globals.showMenu ? 'msf-menu-internal-content-all-mobile'
                                                                         : (globals.showTabs ? 'msf-menu-internal-content-tabs': 'msf-menu-internal-content-mobile'))
-                                                                        : ((globals.showPaginator && !globals.isLoading) ? 'msf-menu-internal-content-with-paginator' : 'msf-menu-internal-content')) "  [class.is-MQueryresponsive]="ResponsiveQuery.matches">
+                                                                        : 'msf-menu-internal-content') "  [class.is-MQueryresponsive]="ResponsiveQuery.matches">
                 <app-msf-container #msfContainerRef [paginator]="paginator" [pageIndex]="pageIndex" (lengthpaginator)="lengthpaginator($event)" (moreResult)="moreResult($event)" (refreshDashboardMenu)="refreshDashboardMenu()"></app-msf-container>
                 <!-- <app-menu-nav *ngIf="(ResponsiveQuery.matches || mobileQuery.matches) && globals.showMenu " [menu]="menu" [dashboards]="dashboards"
                     [dashboardCategories]="dashboardCategories" [sharedDashboards]="sharedDashboards"></app-menu-nav> -->
