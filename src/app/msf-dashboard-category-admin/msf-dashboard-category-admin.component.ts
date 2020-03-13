@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { MatDialog } from '@angular/material';
 
 import { Globals } from '../globals/Globals';
@@ -11,6 +11,9 @@ import { MessageComponent } from '../message/message.component';
 })
 export class MsfDashboardCategoryAdminComponent
 {
+  @Input("isMobile")
+  isMobile: boolean;
+
   @Output("refreshDashboardMenu")
   refreshDashboardMenu = new EventEmitter ();
 

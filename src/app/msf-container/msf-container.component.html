@@ -64,5 +64,5 @@
     <app-msf-schedule-maps #msfScMapRef [currentOption]="globals.currentOption" [buildScheduleMapChart]="globals.buildScheduleMapChart" [hidden]="!globals.mapsc"></app-msf-schedule-maps>
 </div>
 <app-msf-dashboard [currentDashboardMenu]="globals.currentDashboardMenu" *ngIf="globals.currentOption === 'dashboard'"></app-msf-dashboard>
-<app-msf-dashboard-category-admin (refreshDashboardMenu)="refreshDashboardMenu.emit()" *ngIf="globals.currentOption === 'categoryAdmin'"></app-msf-dashboard-category-admin>
+<app-msf-dashboard-category-admin [isMobile]="mobileQuery.matches" (refreshDashboardMenu)="refreshDashboardMenu.emit()" *ngIf="globals.currentOption === 'categoryAdmin'"></app-msf-dashboard-category-admin>
 <app-intro *ngIf="!globals.currentOption"></app-intro>
