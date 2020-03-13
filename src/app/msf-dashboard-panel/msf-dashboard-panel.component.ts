@@ -1131,7 +1131,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.zone.runOutsideAngular (() => {
       let chart, options;
 
-      // am4core.options.viewportTarget = document.getElementById ("msf-dashboard-element");
+      am4core.options.viewportTarget = document.getElementById ("msf-dashboard-element");
 
       // Check chart type before generating it
       if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
@@ -2148,7 +2148,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       this.chart = chart;
 
-      // am4core.options.viewportTarget = null;
+      am4core.options.viewportTarget = null;
 
       // build interval table for advanced charts
       if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
