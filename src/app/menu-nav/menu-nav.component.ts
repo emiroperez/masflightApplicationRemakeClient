@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
-import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material';
+import { MatTreeFlatDataSource, MatTreeFlattener, MatDialog } from '@angular/material';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MenuMobileNode } from '../model/MenuMobileNode';
 import { Globals } from '../globals/Globals';
@@ -8,6 +8,9 @@ import { DashboardMenu } from '../model/DashboardMenu';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { DashboardCategory } from '../model/DashboardCategory';
 import { SharedDashboardMenu } from '../model/SharedDashboardMenu';
+import { MsfSharedDashboardItemsComponent } from '../msf-shared-dashboard-items/msf-shared-dashboard-items.component';
+import { open } from 'fs';
+import { MsfAddDashboardComponent } from '../msf-add-dashboard/msf-add-dashboard.component';
 
 @Component({
   selector: 'app-menu-nav',
@@ -69,7 +72,8 @@ export class MenuNavComponent implements OnInit {
     const flatNodeDashboard = existingNode && existingNode.title === node.title
       ? existingNode
       : new MenuDashboardMobileNode();
-      flatNodeDashboard.expandable = (!!node.children && node.children.length > 0) || (!!node.dashboards && node.dashboards.length > 0) || (!!node.sharedDashboards && node.sharedDashboards.length > 0);
+      flatNodeDashboard.expandable = (!!node.children && node.children.length > 0) || (!!node.dashboards && node.dashboards.length > 0) || (!!node.sharedDashboards && node.sharedDashboards.length > 0)
+        || (!!node.options && node.options.length > 0);
       flatNodeDashboard.id = node.id;
       flatNodeDashboard.parentId = node.parentId;
       flatNodeDashboard.applicationId = node.applicationId;
@@ -77,7 +81,8 @@ export class MenuNavComponent implements OnInit {
       flatNodeDashboard.level = level;
       flatNodeDashboard.dashboards = node.dashboards;
       flatNodeDashboard.sharedDashboards = node.sharedDashboards;
-      flatNodeDashboard.readOnly = node.readOnly;
+      flatNodeDashboard.options = node.options;
+      flatNodeDashboard.menuType = node.menuType;
       flatNodeDashboard.dashboardMenuId = node.dashboardMenuId;
     this.flatNodeDashboardMap.set(flatNodeDashboard, node);
     this.nestedNodeDashboardMap.set(node, flatNodeDashboard);
@@ -146,7 +151,7 @@ export class MenuNavComponent implements OnInit {
       }
     }
 
-    if (node.dashboards)
+    if (node.dashboards && !this.globals.readOnlyDashboardPlan)
     {
       if (node.dashboards.length != 0)
       {
@@ -164,13 +169,22 @@ export class MenuNavComponent implements OnInit {
       }
     }
 
+    if (node.options)
+    {
+      if (node.options.length != 0)
+      {
+        for (let option of node.options)
+          items.push (option);
+      }
+    }
+
     return items;
   }
 
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
   dataSourceDashboard = new MatTreeFlatDataSource(this.treeControlDashboard, this.treeFlattenerDashboard);
 
-  constructor(public globals:Globals, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
+  constructor(public globals:Globals, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private dialog: MatDialog) {
 
    }
 
@@ -199,8 +213,26 @@ export class MenuNavComponent implements OnInit {
       title: "Dashboard",
       children: this.dashboardCategories,
       dashboards: this.dashboards,
-      sharedDashboards: this.sharedDashboards
+      sharedDashboards: this.sharedDashboards,
+      options: [
+        {
+          title: "Category Manager",
+          menuType: MenuDashboardMobileNode.CATEGORY_MANAGER_OPTION
+        },
+        {
+          title: "Shared With Me",
+          menuType: MenuDashboardMobileNode.SHARED_MENU_OPTION
+        }
+      ]
     }];
+
+    if (!this.globals.readOnlyDashboardPlan)
+    {
+      this.dashboardButton[0].options.push ({
+        title: "Add Dashboard",
+        menuType: MenuDashboardMobileNode.ADD_DASHBOARD_OPTION
+      });
+    }
 
     this.dataSourceDashboard.data = this.dashboardButton;
   }
@@ -339,6 +371,51 @@ export class MenuNavComponent implements OnInit {
     return arg;
   }
 
+  goToDashboardOption(node): void
+  {
+    if (node.menuType == MenuDashboardMobileNode.CATEGORY_MANAGER_OPTION)
+      this.goToCategoryManager ();
+    else if (node.menuType == MenuDashboardMobileNode.ADD_DASHBOARD_OPTION)
+      this.addDashboard ();
+    else if (node.menuType == MenuDashboardMobileNode.SHARED_MENU_OPTION)
+      this.checkSharedItems ();
+    else
+      this.goToDashboard (node, node.menuType == MenuDashboardMobileNode.READ_ONLY_DASHBOARD ? true : false);
+  }
+
+  addDashboard()
+  {
+    this.globals.showMenu = false;
+    this.globals.showIntroWelcome = true;
+
+    this.dialog.open (MsfAddDashboardComponent, {
+      height: '210px',
+      width: '480px',
+      panelClass: 'msf-dashboard-control-variables-dialog',
+      data: {
+        dashboards: this.dashboards,
+        dashboardCategories: this.getTotalDashboardCategories ()
+      }
+    });
+  }
+
+  checkSharedItems()
+  {
+    this.globals.showMenu = false;
+    this.globals.showIntroWelcome = true;
+
+    this.dialog.open (MsfSharedDashboardItemsComponent, {
+      height: '340px',
+      width: '400px',
+      panelClass: 'msf-dashboard-child-panel-dialog',
+      data: {
+        dashboards: this.dashboards,
+        sharedDashboards: this.sharedDashboards,
+        dashboardCategories: this.getTotalDashboardCategories ()
+      }
+    });
+  }
+
   goToDashboard(dashboard, readOnly): void
   {
     let arg = {
@@ -368,5 +445,44 @@ export class MenuNavComponent implements OnInit {
     this.globals.currentOption = 'dashboard';
     this.globals.readOnlyDashboard = readOnly ? dashboard : null;
     this.optionChanged.emit ();
+  }
+
+  goToCategoryManager(): void
+  {
+    this.optionSelected.isActive = false;
+
+    this.globals.showCategoryArguments = false;
+    this.globals.showMenu = false;
+    this.globals.showIntroWelcome = false;
+    this.globals.showDashboard = true;
+
+    this.globals.minDate = null;
+    this.globals.maxDate = null;
+    this.globals.showBigLoading = true;
+    this.globals.currentOption = 'categoryAdmin';
+    this.globals.optionDatalakeSelected = 1;
+    this.optionChanged.emit ();
+  }
+
+  recursiveTotalDashboardCategories(categories, category): void
+  {
+    for (let item of category.children)
+    {
+      categories.push (item);
+      this.recursiveTotalDashboardCategories (categories, item);
+    }
+  }
+
+  getTotalDashboardCategories(): DashboardCategory[]
+  {
+    let categories = [];
+
+    for (let category of this.dashboardCategories)
+    {
+      categories.push (category);
+      this.recursiveTotalDashboardCategories (categories, category);
+    }
+
+    return categories;
   }
 }

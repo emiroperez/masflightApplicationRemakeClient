@@ -70,15 +70,15 @@ export class MenuComponent implements OnInit {
 
   getTotalDashboardCategories(): DashboardCategory[]
   {
-      let categories = [];
+    let categories = [];
 
-      for (let category of this.dashboardCategories)
-      {
-        categories.push (category);
-        this.recursiveTotalDashboardCategories (categories, category);
-      }
+    for (let category of this.dashboardCategories)
+    {
+      categories.push (category);
+      this.recursiveTotalDashboardCategories (categories, category);
+    }
 
-      return categories;
+    return categories;
   }
 
   addDashboard()

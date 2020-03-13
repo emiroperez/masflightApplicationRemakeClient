@@ -33,7 +33,7 @@
 
     <mat-tree [dataSource]="dataSourceDashboard" [treeControl]="treeControlDashboard" >
         <mat-tree-node class="menu-child-option"
-        matTreeNodePadding [matTreeNodePaddingIndent]="getNodeIndent(node)" *matTreeNodeDef="let node" (click)="goToDashboard(node, node.readOnly)" 
+        matTreeNodePadding [matTreeNodePaddingIndent]="getNodeIndent(node)" *matTreeNodeDef="let node" (click)="goToDashboardOption(node)" 
         [ngClass]="parentIsOpen(node)? 'menu-opened' : 'menu-parent-option'">         
         <div class="menu-option-container-second-line"></div>
         <div [ngClass]="{'is-active-mobile': node.isActive,'is-inactive': !node.isActive }"
