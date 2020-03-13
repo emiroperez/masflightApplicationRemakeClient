@@ -55,19 +55,30 @@ export class MsfContainerComponent implements OnInit {
   refreshDashboardMenu = new EventEmitter ();
 
   mobileQuery: MediaQueryList;
-  private _mobileQueryListener: () => void;							   
+  private _mobileQueryListener: () => void;
+
+  responsiveQuery: MediaQueryList;
+  private _responsiveQueryListener: () => void;
+
   showMoreResult: boolean;
-  constructor(public globals: Globals, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) { 
-    
+
+  constructor(public globals: Globals, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher)
+  { 
     this.mobileQuery = media.matchMedia('(max-width: 480px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
-    this.mobileQuery.addListener(this._mobileQueryListener);}
+    this.mobileQuery.addListener(this._mobileQueryListener);
+
+    this.responsiveQuery = media.matchMedia('(max-width: 1023px)');
+    this._responsiveQueryListener = () => changeDetectorRef.detectChanges();
+    this.responsiveQuery.addListener(this._responsiveQueryListener);
+  }
 	
   ngOnInit() {
   }
 
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
+    this.responsiveQuery.removeListener(this._responsiveQueryListener);
   }
   ngAfterViewInit(){
   }
