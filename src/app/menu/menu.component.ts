@@ -34,6 +34,9 @@ export class MenuComponent implements OnInit {
   @Output('optionChanged')
   optionChanged = new EventEmitter ();
 
+  @Output('cancelLoadingFromLastService')
+  cancelLoadingFromLastService = new EventEmitter ();
+
   trigger: MatMenuTrigger;
   currentTrigger: MatMenuTrigger;
 
@@ -181,6 +184,8 @@ export class MenuComponent implements OnInit {
       fullPath: "/"
     };
 
+    this.cancelLoadingFromLastService.emit ();
+
     // this is for the mobile version
     this.globals.showCategoryArguments = false;
     this.globals.showMenu = false;
@@ -241,6 +246,8 @@ export class MenuComponent implements OnInit {
 
   goToCategoryManager(): void
   {
+    this.cancelLoadingFromLastService.emit ();
+
     // this is for the mobile version
     this.globals.showCategoryArguments = false;
     this.globals.showMenu = false;

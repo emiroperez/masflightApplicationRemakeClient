@@ -203,6 +203,9 @@ export class MenuNavComponent implements OnInit {
   @Output('optionChanged')
   optionChanged = new EventEmitter ();
 
+  @Output('cancelLoadingFromLastService')
+  cancelLoadingFromLastService = new EventEmitter ();
+
   ngOnInit() {
     this.dataSource.data = this.menu.categories;
 
@@ -242,6 +245,8 @@ export class MenuNavComponent implements OnInit {
   }
 
   getOptionSelected(option) { 
+    this.cancelLoadingFromLastService.emit ();
+
     this.globals.showCategoryArguments = true;
     this.globals.showMenu = false;
     this.globals.showIntroWelcome = false;
@@ -373,6 +378,8 @@ export class MenuNavComponent implements OnInit {
   {
     if (node.children || node.dashboards || node.sharedDashboards || node.options)
       return; // do nothing for dashboard categories
+
+    this.cancelLoadingFromLastService.emit ();
 
     if (node.menuType == MenuDashboardMobileNode.CATEGORY_MANAGER_OPTION)
       this.goToCategoryManager ();

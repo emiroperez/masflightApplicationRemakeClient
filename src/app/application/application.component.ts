@@ -637,6 +637,9 @@ toggle(){
 
   handlerRouteSuccess(_this, data): void
   {
+    if (!_this.routeLoading)
+      return;
+
     if (!data.Response || (data.Response.records && !data.Response.records.length))
     {
       _this.routeLoading = false;
@@ -1614,5 +1617,12 @@ toggle(){
   setRouteLoading(value): void
   {
     this.routeLoading = value;
+  }
+
+  cancelLoadingFromLastService(): void
+  {
+    this.tableLoading = false;
+    this.mapboxLoading = false;
+    this.routeLoading = false;
   }
 }

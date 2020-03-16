@@ -359,5 +359,9 @@ export class MsfScheduleMapsComponent implements OnInit {
   cancelLoading(): void
   {
     this.setRouteLoading.emit (false);
+
+    this.globals.mapsc = false;
+    this.globals.query = false;
+    this.globals.tab = false;
   }
 }

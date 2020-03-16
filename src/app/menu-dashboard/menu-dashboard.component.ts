@@ -14,6 +14,9 @@ export class MenuDashboardComponent implements OnInit {
   @Output("setDashboard")
   setDashboard = new EventEmitter ();
 
+  @Output("cancelLoadingFromLastService")
+  cancelLoadingFromLastService = new EventEmitter ();
+
   @ViewChild('childMenu', { static: true })
   public childMenu;
 
@@ -24,6 +27,8 @@ export class MenuDashboardComponent implements OnInit {
 
   goToDashboard(dashboard, readOnly): void
   {
+    this.cancelLoadingFromLastService.emit ();
+
     this.setDashboard.emit ({
       dashboard: dashboard,
       readOnly: readOnly

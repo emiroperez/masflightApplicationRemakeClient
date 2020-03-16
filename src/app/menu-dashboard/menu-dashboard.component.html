@@ -4,7 +4,7 @@
             <button mat-menu-item [matMenuTriggerFor]="child.childMenu">
                 {{category.title}}
             </button>
-            <app-menu-dashboard #child [dashboardCategory]="category" (setDashboard)="setDashboard.emit($event)"></app-menu-dashboard>
+            <app-menu-dashboard #child [dashboardCategory]="category" (setDashboard)="setDashboard.emit($event)" (cancelLoadingFromLastService)="cancelLoadingFromLastService.emit()"></app-menu-dashboard>
         </ng-container>
         <ng-container *ngIf="checkPlan('Create Dashboard')">
             <button mat-menu-item *ngFor="let dashboard of dashboardCategory.dashboards" (click)="goToDashboard(dashboard, false)">

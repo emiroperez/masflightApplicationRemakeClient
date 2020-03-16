@@ -7,7 +7,7 @@
         <button mat-menu-item [matMenuTriggerFor]="menu.childMenu">               
           {{option.label}}
         </button>
-        <app-menu-option #menu [options]="option.children" (optionChanged)="optionChangedFromChildren()"></app-menu-option>
+        <app-menu-option #menu [options]="option.children" (optionChanged)="optionChangedFromChildren()" (cancelLoadingFromLastService)="cancelLoadingFromLastService.emit()"></app-menu-option>
       </ng-container>
       <!-- Handle leaf node menu items -->
       <ng-container *ngIf="(!option.children || option.children.length === 0) && option.typeOption != '2'">

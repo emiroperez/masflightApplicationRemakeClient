@@ -19,6 +19,8 @@ export class MenuOptionComponent implements OnInit {
   @Output('optionChanged')
   optionChanged = new EventEmitter ();
 
+  @Output('cancelLoadingFromLastService')
+  cancelLoadingFromLastService = new EventEmitter ();
 
   constructor(private globals: Globals) { }
 
@@ -27,6 +29,8 @@ export class MenuOptionComponent implements OnInit {
 
   optionClickHandler(option)
   {
+    this.cancelLoadingFromLastService.emit ();
+
     this.globals.clearVariables ();
     this.globals.currentOption = option;
     this.globals.initDataSource ();
