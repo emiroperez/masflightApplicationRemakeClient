@@ -211,6 +211,7 @@ import { MsfDashboardBrowserFolderItemComponent } from './msf-dashboard-browser-
 import { MenuDashboardComponent } from './menu-dashboard/menu-dashboard.component';
 import { NgxCurrencyModule } from "ngx-currency";
 import { MsfDashboardCategoryAdminComponent } from './msf-dashboard-category-admin/msf-dashboard-category-admin.component';
+import { MsfPartialSummariesComponent } from './msf-partial-summaries/msf-partial-summaries.component';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -397,7 +398,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     MsfDashboardBrowserComponent,
     MsfDashboardBrowserFolderItemComponent,
     MenuDashboardComponent,
-    MsfDashboardCategoryAdminComponent
+    MsfDashboardCategoryAdminComponent,
+    MsfPartialSummariesComponent
   ],
   imports: [
     BrowserModule,
@@ -502,7 +504,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     AirlineRestrictionsDialogComponent,
     DateRestrictionDialogComponent,
     MsfDashboardPanelComponent,
-    MsfDashboardBrowserComponent
+    MsfDashboardBrowserComponent,
+    MsfPartialSummariesComponent
   ]
 })
 export class AppModule { }

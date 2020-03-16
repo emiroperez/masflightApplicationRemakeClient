@@ -24,6 +24,7 @@ import { ComponentType } from '../commons/ComponentType';
 import { AirportSelection } from '../commons/AirportSelection';
 import { DecimalPipe, DatePipe } from '@angular/common';
 import { DashboardCategory } from '../model/DashboardCategory';
+import { MsfPartialSummariesComponent } from '../msf-partial-summaries/msf-partial-summaries.component';
 
 @Component({
   selector: 'app-application',
@@ -783,6 +784,27 @@ toggle(){
 
   dynamicTable(){
     this.openDialog();
+  }
+
+  partialSummaries(): void
+  {
+    const dialogRef = this.dialog.open (MsfPartialSummariesComponent, {
+      width: '800px',
+      height: '600px',
+      panelClass: 'partial-summaries-dialog',
+      data: {
+        metadata: this.msfContainerRef.msfTableRef.metadata,
+        variables: this.variables
+      }
+    });
+
+    dialogRef.afterClosed ().subscribe(result => {
+      if (result)
+      {
+        // this.dynTableLoading = true;
+        // this.msfContainerRef.msfDynamicTableRef.loadData ();
+      }
+    });
   }
 
   openDialog(): void {
