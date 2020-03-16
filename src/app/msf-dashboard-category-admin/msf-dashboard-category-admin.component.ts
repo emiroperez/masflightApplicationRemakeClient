@@ -11,6 +11,9 @@ import { MessageComponent } from '../message/message.component';
 })
 export class MsfDashboardCategoryAdminComponent
 {
+  @Input("isMobile")
+  isMobile: boolean;
+
   @Input("isResponsive")
   isResponsive: boolean;
 

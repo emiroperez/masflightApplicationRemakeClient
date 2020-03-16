@@ -32,6 +32,9 @@ export class MenuOptionComponent implements OnInit {
     this.globals.initDataSource ();
     this.globals.dataAvailabilityInit ();
 
+    this.globals.showDashboard = false;
+    this.globals.showIntroWelcome = true;
+
     if (this.globals.currentOption.tabType === 'map')
     {
       this.globals.map = true;

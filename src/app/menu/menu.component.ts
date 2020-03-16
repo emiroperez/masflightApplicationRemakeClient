@@ -181,7 +181,7 @@ export class MenuComponent implements OnInit {
       fullPath: "/"
     };
 
-    // this is for the mobile version (for development)
+    // this is for the mobile version
     this.globals.showCategoryArguments = false;
     this.globals.showMenu = false;
     this.globals.showIntroWelcome = false;
@@ -242,6 +242,12 @@ export class MenuComponent implements OnInit {
 
   goToCategoryManager(): void
   {
+    // this is for the mobile version
+    this.globals.showCategoryArguments = false;
+    this.globals.showMenu = false;
+    this.globals.showIntroWelcome = false;
+    this.globals.showDashboard = true;
+
     this.globals.minDate = null;
     this.globals.maxDate = null;
     this.globals.showBigLoading = true;

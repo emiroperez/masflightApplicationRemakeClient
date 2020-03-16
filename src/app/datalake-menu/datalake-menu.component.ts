@@ -61,8 +61,11 @@ export class DatalakeMenuComponent implements OnInit {
 
 
 
-  setOptionSelect(opcion) {
-    this.globals.optionDatalakeSelected = opcion;
+  setOptionSelect(option) {
+    this.globals.optionDatalakeSelected = option;
+    this.globals.showDashboard = false;
+    this.globals.showIntroWelcome = true;
+
     let data = { schemaName: null, tableName: null }
     this.setOption.emit(data);
   }
@@ -206,7 +209,7 @@ export class DatalakeMenuComponent implements OnInit {
       fullPath: "/"
     };
 
-    // this is for the mobile version (for development)
+    // this is for the mobile version
     this.globals.showCategoryArguments = false;
     this.globals.showMenu = false;
     this.globals.showIntroWelcome = false;
@@ -251,6 +254,12 @@ export class DatalakeMenuComponent implements OnInit {
 
   goToCategoryManager(): void
   {
+    // this is for the mobile version
+    this.globals.showCategoryArguments = false;
+    this.globals.showMenu = false;
+    this.globals.showIntroWelcome = false;
+    this.globals.showDashboard = true;
+
     this.globals.minDate = null;
     this.globals.maxDate = null;
     this.globals.showBigLoading = true;
