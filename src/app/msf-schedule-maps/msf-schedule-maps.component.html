@@ -1,5 +1,5 @@
 <div [style.width.%]="100" [style.height.%]="100" style="position: relative">
-    <div class="loading-panel table-loading scmap-loading" *ngIf="globals.isLoading">
+    <div class="loading-panel table-loading scmap-loading" *ngIf="isLoading">
         <button mat-button class="cancel-button" (click)="cancelLoading()">
           Cancel
         <mat-icon  class="close-icon">close</mat-icon>

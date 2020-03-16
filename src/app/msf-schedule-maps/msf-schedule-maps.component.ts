@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone, SimpleChanges, Input, isDevMode } from '@angular/core';
+import { Component, OnInit, NgZone, SimpleChanges, Input, isDevMode, Output, EventEmitter } from '@angular/core';
 import { Globals } from '../globals/Globals';
 import { Themes } from '../globals/Themes';
 import * as am4core from "@amcharts/amcharts4/core";
@@ -27,6 +27,12 @@ export class MsfScheduleMapsComponent implements OnInit {
 
   @Input("buildScheduleMapChart")
   buildScheduleMapChart: boolean;
+
+  @Input("isLoading")
+  isLoading: boolean;
+
+  @Output("setRouteLoading")
+  setRouteLoading = new EventEmitter ();
 
   utils: Utils;
 
@@ -352,7 +358,6 @@ export class MsfScheduleMapsComponent implements OnInit {
 
   cancelLoading(): void
   {
-    this.globals.isLoading = false;
-    this.globals.showBigLoading = true;
+    this.setRouteLoading.emit (false);
   }
 }

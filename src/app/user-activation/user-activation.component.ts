@@ -37,7 +37,6 @@ export class UserActivationComponent implements OnInit {
     private service: ApplicationService, private userService: UserService,
     private dialog: MatDialog)
   {
-    this.globals.showBigLoading = true;
   }
 
   displayedColumns = ['columnName', 'columnLastName', 'columnEmail', 'columnAddress', 'columnPostalCode',

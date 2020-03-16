@@ -168,7 +168,6 @@ export class CreateMembershipsComponent implements OnInit {
     public dialog: MatDialog, private ref: ChangeDetectorRef, private router: Router) {
     this.utils = new Utils();
     this.config.notFoundText = 'There is no options';
-    this.globals.showBigLoading = true;
   }
 
 

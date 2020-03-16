@@ -189,7 +189,6 @@ export class MenuComponent implements OnInit {
 
     this.globals.minDate=null;
     this.globals.maxDate=null;
-    this.globals.showBigLoading = true;
 
     if (readOnly)
       this.globals.currentDashboardMenu = dashboard.dashboardMenuId;
@@ -250,7 +249,6 @@ export class MenuComponent implements OnInit {
 
     this.globals.minDate = null;
     this.globals.maxDate = null;
-    this.globals.showBigLoading = true;
     this.globals.currentOption = 'categoryAdmin';
     this.optionChanged.emit ();
   }

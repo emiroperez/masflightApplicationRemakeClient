@@ -15,8 +15,6 @@ import { CategoryArguments } from '../model/CategoryArguments';
   styleUrls: ['./msf-container.component.css']
 })
 export class MsfContainerComponent implements OnInit {
-
-
   @ViewChild('msfTableRef', { static: false })
   msfTableRef: MsfTableComponent;
 
@@ -41,9 +39,17 @@ export class MsfContainerComponent implements OnInit {
   @Input("paginator")
   paginator: MatPaginator;
 
-  
   @Input("pageIndex")
   pageIndex: any;
+
+  @Input("tableLoading")
+  tableLoading: boolean;
+
+  @Input("mapboxLoading")
+  mapboxLoading: boolean;
+
+  @Input("routeLoading")
+  routeLoading: boolean;
 
   @Output('lengthpaginator')
   lengthpaginator = new EventEmitter ();
@@ -53,6 +59,15 @@ export class MsfContainerComponent implements OnInit {
 
   @Output('refreshDashboardMenu')
   refreshDashboardMenu = new EventEmitter ();
+
+  @Output('setTableLoading')
+  setTableLoading = new EventEmitter ();
+
+  @Output('setMapboxLoading')
+  setMapboxLoading = new EventEmitter ();
+
+  @Output('setRouteLoading')
+  setRouteLoading = new EventEmitter ();
 
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
@@ -114,28 +129,15 @@ export class MsfContainerComponent implements OnInit {
 
   finishLoadingTable(error)
   {
+    this.setTableLoading.emit (false);
 
-    if(this.globals.currentOption.tabType=='scmap'){
-      this.globals.isLoading = false;
-    }else{
-      this.msfTableRef.isLoading = false;
-      if(this.msfMapRef){
-        if(!this.msfMapRef.isLoading){
-          this.globals.isLoading = false;
-        }
-      }else{
-        this.globals.isLoading = false;
-      }
-      this.moreResult.emit(this.showMoreResult);
-    }
+    if (this.globals.currentOption.tabType !=='scmap')
+      this.moreResult.emit (this.showMoreResult);
   }
 
   finishLoadingMap(error)
   {
-    this.msfMapRef.isLoading = false;
-    if(!this.msfTableRef.isLoading){
-      this.globals.isLoading = false;
-    }
+    this.setMapboxLoading.emit (false);
   }
 
   onLinkClick(event: MatTabChangeEvent) {
@@ -226,8 +228,7 @@ export class MsfContainerComponent implements OnInit {
       }
       if (sorting) {
         this.globals.moreResults = false;
-        this.globals.isLoading = true;
-        this.globals.showBigLoading = false;
+        this.tableLoading = true;
         this.msfTableRef.getData(false);
       }
     }

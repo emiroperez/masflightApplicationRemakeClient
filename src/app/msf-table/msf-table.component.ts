@@ -697,9 +697,6 @@ export class MsfTableComponent implements OnInit {
         _this.tableOptions.selectedIndex = 2;
 
       _this.finishLoading.emit (false);
-      if(!_this.globals.isLoading){
-        _this.globals.showBigLoading = true;
-      }
 
       if (_this.tableOptions.dataSource && !_this.tableOptions.template && ((_this.currentOption.metaData==1) || (_this.currentOption.metaData==3) || (_this.currentOption.tabType=='scmap')))
         _this.resultsAvailable = "msf-visible";
@@ -734,9 +731,7 @@ export class MsfTableComponent implements OnInit {
 
   handlerError(_this,result) {
     _this.finishLoading.emit (true);
-    if(!_this.globals.isLoading){
-      _this.globals.showBigLoading = true;
-    }
+
     _this.tableOptions.dataSource = false;
     _this.tableOptions.template = false;
 
@@ -1008,7 +1003,6 @@ export class MsfTableComponent implements OnInit {
 
   cancelLoading(){
     this.finishLoading.emit (false);
-    this.globals.showBigLoading = true;
   }
 
   noResults(){

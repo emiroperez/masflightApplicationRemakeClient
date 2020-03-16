@@ -1,14 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Globals } from '../globals/Globals';
 import { ApplicationService } from '../services/application.service';
 import { Utils } from '../commons/utils';
 
 @Component({
   selector: 'app-current-query-summary',
-  templateUrl: './current-query-summary.component.html',
-  styleUrls: ['./current-query-summary.component.css']
+  templateUrl: './current-query-summary.component.html'
 })
 export class CurrentQuerySummaryComponent implements OnInit {
+
+  @Input("isLoading")
+  isLoading: boolean;
+
+  @Output("finishLoading")
+  finishLoading = new EventEmitter ();
 
   open: boolean = false;
 
@@ -43,5 +48,8 @@ export class CurrentQuerySummaryComponent implements OnInit {
     this.argsBefore = argsContainer;
   }
   
-
+  cancelLoading(): void
+  {
+    this.finishLoading.emit (false);
+  }
 }

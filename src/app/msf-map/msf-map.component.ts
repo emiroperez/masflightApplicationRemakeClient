@@ -26,7 +26,7 @@ export class MsfMapComponent implements OnInit {
   useCancelButton: boolean;
 
   @Output('finishLoading')
-  finishLoading = new EventEmitter();
+  finishLoading = new EventEmitter ();
 
   mapReady: boolean = false;
   showAllRoutes: boolean = true;
@@ -174,7 +174,6 @@ export class MsfMapComponent implements OnInit {
     this.globals.startTimestamp = new Date();
     this.data = [];
     this.coordinates = [];
-    // this.isLoading = true;
     this.services.getMapBoxTracking(this, this.successHandler, this.errorHandler);
   }
 
@@ -203,9 +202,6 @@ export class MsfMapComponent implements OnInit {
       _this.refreshMap();
 
       _this.finishLoading.emit(false);
-      if (!_this.globals.isLoading) {
-        _this.globals.showBigLoading = true;
-      }
     }
 
   }
@@ -236,9 +232,6 @@ export class MsfMapComponent implements OnInit {
 
   errorHandler(_this, data) {
     _this.finishLoading.emit(true);
-    if (!_this.globals.isLoading) {
-      _this.globals.showBigLoading = true;
-    }
   }
 
   getHeight(): string {
@@ -293,7 +286,6 @@ export class MsfMapComponent implements OnInit {
 
   cancelLoading() {
     this.finishLoading.emit (false);
-    this.globals.showBigLoading = true;
   }
 
   getRouteInfo(feature): string {

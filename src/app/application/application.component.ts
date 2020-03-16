@@ -32,6 +32,9 @@ import { DashboardCategory } from '../model/DashboardCategory';
 })
 export class ApplicationComponent implements OnInit {
 
+  tableLoading: boolean = false;
+  mapboxLoading: boolean = false;
+  routeLoading: boolean = false;
   isFullscreen: boolean;
   name: string;
   dynamicTablePlan: boolean;
@@ -576,26 +579,24 @@ toggle(){
 
   startSearch(): void
   {
-    this.globals.isLoading = true;
-
-    if (this.globals.currentOption.tabType === 'scmap2')
+    if (this.globals.currentOption.tabType === 'scmap2' && this.globals.currentOption.metaData == 4)
     {
-      this.globals.showBigLoading = false;
       this.globals.mapsc = true;
+      this.routeLoading = true;
     }
-    else if (this.globals.currentOption.tabType === 'map')
+    else if (this.globals.currentOption.tabType === 'map' && this.globals.currentOption.url != null)
     {
       this.globals.map = true;
-      this.globals.showBigLoading = false;
       this.globals.selectedIndex = 3;
-      this.msfContainerRef.msfMapRef.getTrackingDataSource();
+      this.tableLoading = true;
+      this.mapboxLoading = true;
     }
-    else if (this.globals.currentOption.tabType === 'usageStatistics')
-      this.msfContainerRef.msfTableRef.getDataUsageStatistics();
     else
     {
-      this.globals.showBigLoading = false;
-      this.globals.selectedIndex = 2;
+      if (this.globals.currentOption.tabType !== 'usageStatistics')
+        this.globals.selectedIndex = 2;
+
+      this.tableLoading = true;
     }
 
     // close dynamic table tab if visible
@@ -609,16 +610,18 @@ toggle(){
   search2(){
     if (this.globals.currentOption.tabType === 'scmap2' && this.globals.currentOption.metaData == 4)
       this.getRoutes ();
-    else if(this.globals.currentOption.tabType === 'map'&& this.globals.currentOption.url!=null)
+    else if (this.globals.currentOption.tabType === 'map' && this.globals.currentOption.url != null)
     {
       this.globals.map = true;
-      this.msfContainerRef.msfMapRef.getTrackingDataSource();
-      this.msfContainerRef.msfTableRef.getData(false);
-    }else if(this.globals.currentOption.tabType === 'usageStatistics'){
-      this.msfContainerRef.msfTableRef.getDataUsageStatistics();
-    }else{
-      this.clearSort();
-      this.msfContainerRef.msfTableRef.getData(false);
+      this.msfContainerRef.msfMapRef.getTrackingDataSource ();
+      this.msfContainerRef.msfTableRef.getData (false);
+    }
+    else if (this.globals.currentOption.tabType === 'usageStatistics')
+      this.msfContainerRef.msfTableRef.getDataUsageStatistics ();
+    else
+    {
+      this.clearSort ();
+      this.msfContainerRef.msfTableRef.getData (false);
     }
   }
 
@@ -629,7 +632,6 @@ toggle(){
     this.authService.removeTokenResultTable();
     let tokenResultTable = this.authService.getTokenResultTable() ? this.authService.getTokenResultTable() : "";
 
-    this.globals.isLoading = true;
     this.appService.getDataSource(this, this.handlerRouteSuccess, this.handlerRouteError, tokenResultTable);
   }
 
@@ -637,8 +639,7 @@ toggle(){
   {
     if (!data.Response || (data.Response.records && !data.Response.records.length))
     {
-      _this.globals.isLoading = false;
-      _this.globals.showBigLoading = false;
+      _this.routeLoading = false;
 
       _this.globals.mapsc = false;
       _this.globals.query = false;
@@ -657,15 +658,13 @@ toggle(){
     setTimeout (() => {
       _this.msfContainerRef.msfScMapRef.setRoutesToScMap (data.Response.records);
 
-      _this.globals.isLoading = false;
-      _this.globals.showBigLoading = false;
+      _this.routeLoading = false;
     }, 50);
   }
 
   handlerRouteError(_this): void
   {
-    _this.globals.isLoading = false;
-    _this.globals.showBigLoading = true;
+    _this.routeLoading = false;
 
     _this.globals.mapsc = false;
     _this.globals.query = false;
@@ -686,15 +685,13 @@ toggle(){
       this.globals.isLoading = true;
       if(this.globals.currentOption.tabType === 'map'){
         this.globals.map = true;
-        this.globals.showBigLoading = false;
         this.globals.selectedIndex = 3;
         this.msfContainerRef.msfMapRef.getTrackingDataSource();
       }else if(this.globals.currentOption.tabType === 'usageStatistics'){
         this.msfContainerRef.msfTableRef.getDataUsageStatistics();
-      }else {
-        this.globals.showBigLoading = false;
+      }else
         this.globals.selectedIndex = 2;
-      }
+
       setTimeout(() => {
         this.moreResults2();
     }, 3000);
@@ -791,16 +788,12 @@ toggle(){
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result)
-      {
-        this.globals.showBigLoading = false;
         this.msfContainerRef.msfDynamicTableRef.loadData ();
-      }
     });
   }
 
   goHome()
   {
-    this.globals.showBigLoading = true;
     this.router.navigate (["/welcome"]);
   }
 
@@ -1184,7 +1177,6 @@ toggle(){
     this.appService.confirmationDialog (this, "Are you sure you want to Log Out?",
       function (_this)
       {
-        _this.globals.showBigLoading = true;
         _this.userService.setUserLastLoginTime (_this, _this.logoutSuccess, _this.logoutError);
       });
   }
@@ -1551,7 +1543,6 @@ toggle(){
 
   stopPlanTest(): void
   {
-    this.globals.showBigLoading = true;
     this.globals.testingPlan = -1;
 
     // reload menu
@@ -1608,5 +1599,20 @@ toggle(){
       this.msfContainerRef.msfTableRef.tableOptions.moreResultsBtn = false;
       this.msfContainerRef.msfTableRef.sort.sort({ id: '', start: 'asc', disableClear: false });
     }
+  }
+
+  setTableLoading(value): void
+  {
+    this.tableLoading = value;
+  }
+
+  setMapboxLoading(value): void
+  {
+    this.mapboxLoading = value;
+  }
+
+  setRouteLoading(value): void
+  {
+    this.routeLoading = value;
   }
 }

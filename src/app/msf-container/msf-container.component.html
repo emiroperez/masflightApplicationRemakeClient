@@ -14,7 +14,7 @@
                 Current Query General Summary
                 <mat-icon (click)="closeTab(1)" class="close-icon">close</mat-icon> 
             </ng-template>
-            <app-current-query-summary></app-current-query-summary> 
+            <app-current-query-summary [isLoading]="tableLoading" (finishLoading)="finishLoadingTable($event)"></app-current-query-summary> 
         </mat-tab>
         <!-- <mat-tab> -->
         <mat-tab *ngIf="globals.tab">
@@ -22,12 +22,12 @@
                 {{globals.currentOption.tab}} <mat-icon (click)="closeTab(2)" class="close-icon">close</mat-icon> 
             </ng-template>
             <div class="msf-viewport-container">
-                <app-msf-table #msfTableRef [tabRef]="tabRef" [isLoading]="globals.isLoading" 
+                <app-msf-table #msfTableRef [tabRef]="tabRef" [isLoading]="tableLoading" 
                 (finishLoading)="finishLoadingTable($event)" [categoryArguments]="getCategoryArguments()" 
                 [currentOption]="globals.currentOption" [isPanel]="false" [paginator]="paginator" [pageIndex]="pageIndex" 
-                (paginatorlength)=paginatorlength($event)
-                (shmoreResult)=shmoreResult($event)
-                (sortingDataTable)=sortingDataTable($event)></app-msf-table>
+                (paginatorlength)="paginatorlength($event)"
+                (shmoreResult)="shmoreResult($event)"
+                (sortingDataTable)="sortingDataTable($event)"></app-msf-table>
             </div>    
         </mat-tab>        
         <mat-tab *ngIf="globals.generateDynamicTable" label="Dynamic Table" #msfDynamicTableTabRef>
@@ -48,7 +48,7 @@
                 Map
                 <mat-icon (click)="closeTab(5)" class="close-icon">close</mat-icon> 
             </ng-template>
-            <app-msf-map #msfMapRef [useCancelButton]="true" [isLoading]="globals.isLoading" [displayMapMenu]="globals.displayMapMenu" [displayOptionPanel]="globals.status" (finishLoading)="finishLoadingMap($event)"></app-msf-map>
+            <app-msf-map #msfMapRef [useCancelButton]="true" [isLoading]="mapboxLoading" [displayMapMenu]="globals.displayMapMenu" [displayOptionPanel]="globals.status" (finishLoading)="finishLoadingMap($event)"></app-msf-map>
         </mat-tab> 
 
        <!-- <mat-tab  [style.visibility]= "globals.mapsc ? 'visible' : 'hidden' " #tabRef >
@@ -61,7 +61,7 @@
         
     </mat-tab-group>
     </div>
-    <app-msf-schedule-maps #msfScMapRef [currentOption]="globals.currentOption" [buildScheduleMapChart]="globals.buildScheduleMapChart" [hidden]="!globals.mapsc"></app-msf-schedule-maps>
+    <app-msf-schedule-maps #msfScMapRef [currentOption]="globals.currentOption" [buildScheduleMapChart]="globals.buildScheduleMapChart" [hidden]="!globals.mapsc" [isLoading]="routeLoading" (setRouteLoading)="setRouteLoading.emit($event)"></app-msf-schedule-maps>
 </div>
 <app-msf-dashboard [currentDashboardMenu]="globals.currentDashboardMenu" *ngIf="globals.currentOption === 'dashboard'"></app-msf-dashboard>
 <app-msf-dashboard-category-admin [isMobile]="mobileQuery.matches" [isResponsive]="responsiveQuery.matches" (refreshDashboardMenu)="refreshDashboardMenu.emit()" *ngIf="globals.currentOption === 'categoryAdmin'"></app-msf-dashboard-category-admin>

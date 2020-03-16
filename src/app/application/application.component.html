@@ -222,23 +222,23 @@
         <div
             [ngClass]="(isSimpleContent() && !mobileQuery.matches) 
             || (mobileQuery.matches && isSimpleContent() && globals.showDashboard)   ? 'msf-menu-simple-content' 
-                                            : (mobileQuery.matches ? ((globals.showPaginator && !globals.isLoading) ? 'msf-menu-content msf-menu-tabs-content-mobile-with-paginator' : 'msf-menu-content msf-menu-tabs-content-mobile')
+                                            : (mobileQuery.matches ? ((globals.showPaginator && !tableLoading) ? 'msf-menu-content msf-menu-tabs-content-mobile-with-paginator' : 'msf-menu-content msf-menu-tabs-content-mobile')
                                                                         : 'msf-menu-content msf-menu-tabs-content')">
             <div
                 [ngClass]="(isSimpleContent() && !mobileQuery.matches) 
                 || (mobileQuery.matches && isSimpleContent() && globals.showDashboard)  ? 'msf-menu-internal-simple-content' 
                                                : (mobileQuery.matches ? (globals.showMenu ? 'msf-menu-internal-content-all-mobile'
                                                                         : (globals.showTabs ? 'msf-menu-internal-content-tabs': 'msf-menu-internal-content-mobile'))
-                                                                        : 'msf-menu-internal-content') "  [class.is-MQueryresponsive]="ResponsiveQuery.matches">
-                <app-msf-container #msfContainerRef [paginator]="paginator" [pageIndex]="pageIndex" (lengthpaginator)="lengthpaginator($event)" (moreResult)="moreResult($event)" (refreshDashboardMenu)="refreshDashboardMenu()"></app-msf-container>
+                                                                        : (globals.showPaginator && !tableLoading && !mobileQuery.matches) ? 'msf-menu-internal-content-with-paginator' : 'msf-menu-internal-content') "  [class.is-MQueryresponsive]="ResponsiveQuery.matches">
+                <app-msf-container #msfContainerRef [paginator]="paginator" [pageIndex]="pageIndex" [tableLoading]="tableLoading" [mapboxLoading]="mapboxLoading" [routeLoading]="routeLoading" (setTableLoading)="setTableLoading($event)" (setMapboxLoading)="setMapboxLoading($event)" (setRouteLoading)="setRouteLoading($event)" (lengthpaginator)="lengthpaginator($event)" (moreResult)="moreResult($event)" (refreshDashboardMenu)="refreshDashboardMenu()"></app-msf-container>
                 <!-- <app-menu-nav *ngIf="(ResponsiveQuery.matches || mobileQuery.matches) && globals.showMenu " [menu]="menu" [dashboards]="dashboards"
                     [dashboardCategories]="dashboardCategories" [sharedDashboards]="sharedDashboards"></app-menu-nav> -->
             </div>            
             <mat-paginator #paginator [pageIndex]="pageI" [pageSize]="pageSize" [length]="lengthpag"
              hidePageSize
             (page)="pageEvent = getServerData($event)" showFirstLastButtons
-            [ngClass]="(globals.showPaginator && !globals.isLoading)  || (mobileQuery.matches && globals.showCategoryArguments) ? 'msf-paginator-table':'msf-hide'"></mat-paginator>
-             <div [ngClass]="globals.moreResultsBtn && !globals.isLoading ? 'msf-menu-more-button' : 'msf-menu-more-button disabled-more-button'"
+            [ngClass]="(globals.showPaginator && !tableLoading)  || (mobileQuery.matches && globals.showCategoryArguments) ? 'msf-paginator-table':'msf-hide'"></mat-paginator>
+             <div [ngClass]="globals.moreResultsBtn && !tableLoading ? 'msf-menu-more-button' : 'msf-menu-more-button disabled-more-button'"
                 (click)="moreResults()"
                 *ngIf="(globals.dataSource && !globals.mapsc && !mobileQuery.matches && showMoreResult) || (mobileQuery.matches && globals.showCategoryArguments)">
                 <img style="width: 16px;height: 16px;" src="../../assets/images/{{globals.theme}}-more.png"

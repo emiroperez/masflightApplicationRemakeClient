@@ -26,7 +26,6 @@ export class DatalakeCreateRolesComponent implements OnInit {
     private service: ApplicationService,
     public dialog: MatDialog)
   {
-    this.globals.showBigLoading = true;
   }
 
   ngOnInit() {
