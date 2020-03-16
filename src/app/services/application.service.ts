@@ -157,7 +157,6 @@ export class ApplicationService {
   }
 
   loadDynamicTableData(_this, handlerSuccess, handlerError) {
-    _this.globals.isLoading = true;
     _this.columns = [];
 
     let param = this.utils.getUrlParameters(_this.globals.currentOption,true);

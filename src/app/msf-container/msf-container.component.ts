@@ -51,6 +51,9 @@ export class MsfContainerComponent implements OnInit {
   @Input("routeLoading")
   routeLoading: boolean;
 
+  @Input("dynTableLoading")
+  dynTableLoading: boolean;
+
   @Output('lengthpaginator')
   lengthpaginator = new EventEmitter ();
 
@@ -68,6 +71,9 @@ export class MsfContainerComponent implements OnInit {
 
   @Output('setRouteLoading')
   setRouteLoading = new EventEmitter ();
+
+  @Output("setDynTableLoading")
+  setDynTableLoading = new EventEmitter ();
 
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;

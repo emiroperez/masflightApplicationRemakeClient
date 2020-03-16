@@ -35,6 +35,7 @@ export class ApplicationComponent implements OnInit {
   tableLoading: boolean = false;
   mapboxLoading: boolean = false;
   routeLoading: boolean = false;
+  dynTableLoading: boolean = false;
   isFullscreen: boolean;
   name: string;
   dynamicTablePlan: boolean;
@@ -791,7 +792,10 @@ toggle(){
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result)
+      {
+        this.dynTableLoading = true;
         this.msfContainerRef.msfDynamicTableRef.loadData ();
+      }
     });
   }
 
@@ -1619,10 +1623,16 @@ toggle(){
     this.routeLoading = value;
   }
 
+  setDynTableLoading(value): void
+  {
+    this.dynTableLoading = value;
+  }
+
   cancelLoadingFromLastService(): void
   {
     this.tableLoading = false;
     this.mapboxLoading = false;
     this.routeLoading = false;
+    this.dynTableLoading = false;
   }
 }

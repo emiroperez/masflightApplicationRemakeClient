@@ -1,4 +1,4 @@
-import { Component, Inject, ViewChild, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Inject, ViewChild, Input } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatSelect, MatDialog } from '@angular/material';
 import { Airport } from '../model/Airport';
 import { ReplaySubject, Subject } from 'rxjs';
@@ -24,8 +24,6 @@ export class MsfDynamicTableVariablesComponent {
   columns:any[] = []; 
 
   utils: Utils;
-
-  @Output() dynamicTableOpen = new EventEmitter();
 
   public variableFilterCtrl: FormControl = new FormControl();
   public filteredVariables: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
@@ -145,7 +143,6 @@ export class MsfDynamicTableVariablesComponent {
   generateTable(){
     this.globals.generateDynamicTable = true;
     this.globals.selectedIndex = 3;
-    this.dynamicTableOpen.emit ();
     this.dialogRef.close (true);
   }
 

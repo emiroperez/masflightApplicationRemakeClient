@@ -35,7 +35,7 @@
                 Dynamic Table
                 <mat-icon (click)="closeTab(3)" class="close-icon">close</mat-icon> 
             </ng-template>
-            <app-msf-dynamic-table #msfDynamicTableRef></app-msf-dynamic-table>
+            <app-msf-dynamic-table #msfDynamicTableRef [isLoading]="dynTableLoading" (setDynTableLoading)="setDynTableLoading.emit($event)"></app-msf-dynamic-table>
         </mat-tab>    
         <mat-tab *ngIf="globals.chart" #tabRef label="Chart">
             <ng-template mat-tab-label>

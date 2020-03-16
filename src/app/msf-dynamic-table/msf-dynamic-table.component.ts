@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ApiClient } from '../api/api-client';
 import { Globals } from '../globals/Globals';
 import { ApplicationService } from '../services/application.service';
@@ -10,6 +10,12 @@ import { ApplicationService } from '../services/application.service';
 })
 export class MsfDynamicTableComponent implements OnInit {
   dataAdapter: any;
+
+  @Input("isLoading")
+  isLoading: boolean = false;
+
+  @Output("setDynTableLoading")
+  setDynTableLoading = new EventEmitter ();
 
   constructor(private http: ApiClient, public globals: Globals, private service: ApplicationService)
   { 
@@ -26,17 +32,20 @@ export class MsfDynamicTableComponent implements OnInit {
 
   handlerSuccess(_this,data)
   {
+    if (!_this.isLoading)
+      return;
+
     _this.dataAdapter = data;
-    _this.globals.isLoading = false;
+    _this.setDynTableLoading.emit (false);
   }
 
   handlerError(_this,result)
   {
-    _this.globals.isLoading = false;
+    _this.setDynTableLoading.emit (false);
   }
 
   cancelLoading()
   {
-    this.globals.isLoading = false;
+    this.setDynTableLoading.emit (false);
   }
 }
