@@ -22,7 +22,6 @@ export class Globals {
   currentUser: any;
   currentArgs: any;
   isLoading: boolean = false;
-  showBigLoading: boolean = true;
   popupLoading: boolean = false;
   popupLoading2: boolean = false;
   sort: MatSort;
