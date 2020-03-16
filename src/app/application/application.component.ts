@@ -1483,38 +1483,39 @@ toggle(){
     this.changeDetectorRef.detectChanges ();
   }
 
-  backMenu(){
-    if (this.mobileQuery.matches){
+  backMenu()
+  {
+    if (!this.mobileQuery.matches && !this.ResponsiveQuery.matches)
+    {
+      this.changeDetectorRef.detectChanges ();
+      return;
+    }
+
     if (this.globals.showDashboard)
     {
       // return to default menu
-      this.globals.currentOption = this.globals.currentApplication.defaultMenu;
+      this.globals.currentOption = this.currentOptionBackUp;
       this.globals.showDashboard = false;
       this.globals.showIntroWelcome = true;
       return;
     }
 
-    if(!this.globals.showMenu && this.globals.showCategoryArguments){
+    if (!this.globals.showMenu && this.globals.showCategoryArguments)
+    {
       this.globals.showIntroWelcome = false;
       this.globals.showCategoryArguments = false;
-      this.globals.showTabs=false;
-      this.globals.showDashboard=false;
+      this.globals.showTabs = false;
+      this.globals.showDashboard = false;
       this.globals.showMenu = true;
-    }else if(!this.globals.showMenu && this.globals.showTabs){
+    }
+    else if (!this.globals.showMenu && this.globals.showTabs)
+    {
       this.globals.showMenu = false;
       this.globals.showIntroWelcome = false;
-      this.globals.showTabs=false;
-      this.globals.showDashboard=false;
+      this.globals.showTabs = false;
+      this.globals.showDashboard = false;
       this.globals.showCategoryArguments = true;
     }
-  }
-    /*else if(!this.globals.showMenu && this.globals.showTabs && this.ResponsiveQuery.matches){
-      this.globals.showIntroWelcome = false;
-      this.globals.showCategoryArguments = false;
-      this.globals.showTabs=false;
-      this.globals.showDashboard=false;
-      this.globals.showMenu = true;
-    }*/
 
     this.changeDetectorRef.detectChanges ();
   }
