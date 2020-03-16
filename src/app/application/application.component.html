@@ -180,7 +180,7 @@
                                         : (globals.status ? 'msf-menu-nav msf-menu-show-nav' : 'msf-menu-nav msf-menu-hide-nav')">
             <div
                 [ngClass]="mobileQuery.matches ? (globals.showCategoryArguments || globals.showMenu? 'msf-menu-components-container-show-mobile':'msf-menu-components-container-hide') : (globals.status ? 'msf-menu-components-container-show' : 'msf-menu-components-container-hide')"
-                [class.is-mobile]="mobileQuery.matches && globals.showMenu">
+                [class.is-mobile]="mobileQuery.matches && globals.showMenu" [class.is-responsive]="ResponsiveQuery.matches && !mobileQuery.matches">
 
                 <div class="msf-category-container" [class.is-mobile]="mobileQuery.matches"
                     [ngClass]="(globals.currentOption && globals.currentOption.metaData == 3) ? 'msf-hide' : (globals.hideParametersPanels ? 'msf-hide':'msf-category-container')"

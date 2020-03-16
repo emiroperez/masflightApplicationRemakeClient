@@ -3368,6 +3368,17 @@ button[aria-expanded="true"]
     position: relative
     overflow: auto
 
+.msf-menu-components-container-show.is-responsive
+    height: calc(100% - 90px) !important
+
+.is-responsive
+    .msf-menu-search-button
+        bottom: 2px !important
+    .msf-category-container
+        height: calc(100% - 62px) !important
+    .menu-nav-container
+        height: calc(100% - 10px) !important
+
 .msf-menu-tabs-content
     width: calc(100% - 20px)
     transition: 0.5s
@@ -7944,10 +7955,8 @@ mat-form-field.msf-table-input
     height: 100% !important
     min-height: 100% !important
 
-.menu-nav-container::-webkit-scrollbar-thumb    
-    background-color: transparent !important
-    border-radius: 10px !important
-    outline: transparent !important
+.menu-nav-container::-webkit-scrollbar
+    display: none !important
 
 .menu-nav-container
     height: 96%
@@ -7955,6 +7964,8 @@ mat-form-field.msf-table-input
     padding: 0px 0px 3% 3%
     overflow-y: auto
     overflow-x: hidden
+    position: relative
+    z-index: 1
     // background-color: #333333
 
 // .menu-parent-option
