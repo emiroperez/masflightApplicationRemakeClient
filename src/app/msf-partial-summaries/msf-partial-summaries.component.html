@@ -1,4 +1,5 @@
 <div class="partial-summaries-header">
+    <img class="partial-summaries-icon" src="../../assets/images/{{globals.theme}}-summary.png">
     <span class="partial-summaries-title">Partial Summaries</span>
     <div class="partial-summaries-header-buttons">
         <button mat-flat-button class="flat-button">
@@ -25,17 +26,21 @@
                 <div class="drag-handle">
                     {{pos + 1}}
                 </div>
-                <mat-form-field class="column-breaker-selector">
-                    <mat-select placeholder="Column">
-                        <mat-option>
-                            Test
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <mat-checkbox>
+                <div class="datalake-search-input column-breaker-selector">
+                    <mat-form-field class="datalake-search-formfield" appearance="outline">
+                        <mat-label>Column</mat-label>
+                        <mat-select [(ngModel)]="colBreaker.column">
+                            <mat-option *ngFor="let column of data.metadata" [value]="column.columnName">
+                                {{column.columnLabel}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <mat-checkbox [(ngModel)]="colBreaker.summary" class="column-breaker-space" *ngIf="pos != colBreakers.length - 1">
                     Show summary when value changes
                 </mat-checkbox>
-                <button mat-icon-button matTooltip="Delete Column Breaker">
+                <div class="column-breaker-space" *ngIf="pos == colBreakers.length - 1"></div>
+                <button mat-icon-button matTooltip="Delete Column Breaker" (click)="removeColumnBreaker(pos)">
                     <mat-icon>delete</mat-icon>
                 </button>
             </div>
@@ -54,13 +59,47 @@
         <div class="partial-summaries-list">
             <div class="partial-summaries-item partial-summaries-count">
                 <span class="total-count-label">Count Records</span>
-                <mat-slide-toggle class="count-switch"></mat-slide-toggle>
-                <mat-form-field class="total-count-alias-input">
-                    <input placeholder="Alias" matInput>
-                </mat-form-field>
+                <mat-slide-toggle class="count-switch" [(ngModel)]="countRecords"></mat-slide-toggle>
+                <div class="datalake-search-input partial-summaries-input-container" [ngClass]="{'partial-summaries-input-container-disabled': !countRecords }">
+                    <mat-form-field class="datalake-search-formfield" appearance="outline">
+                        <mat-label>Alias</mat-label>
+                        <input matInput [(ngModel)]="countAlias" [disabled]="!countRecords" autocomplete="off">
+                    </mat-form-field>
+                </div>
             </div>
-            <div class="partial-summaries-item" *ngFor="let colAggregator of colAggregators">
-                {{colAggregator}}
+            <div class="partial-summaries-item" *ngFor="let colAggregator of colAggregators; let pos = index">
+                <div class="drag-handle">
+                    {{pos + 1}}
+                </div>
+                <div class="datalake-search-input partial-summaries-aggregator-input-container">
+                    <mat-form-field class="datalake-search-formfield" appearance="outline">
+                        <mat-label>Column</mat-label>
+                        <mat-select [(ngModel)]="colAggregator.column">
+                            <mat-option *ngFor="let column of data.metadata" [value]="column.columnName">
+                                {{column.columnLabel}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="datalake-search-input partial-summaries-aggregator-input-container">
+                    <mat-form-field class="datalake-search-formfield" appearance="outline">
+                        <mat-label>Function</mat-label>
+                        <mat-select [(ngModel)]="colAggregator.function">
+                            <mat-option *ngFor="let function of functions" [value]="function.id">
+                                {{function.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="datalake-search-input partial-summaries-aggregator-input-container">
+                    <mat-form-field class="datalake-search-formfield" appearance="outline">
+                        <mat-label>Alias</mat-label>
+                        <input matInput [(ngModel)]="colAggregator.alias" autocomplete="off">
+                    </mat-form-field>
+                </div>
+                <button mat-icon-button matTooltip="Delete Column Aggregator" (click)="removeColumnAggregator(pos)">
+                    <mat-icon>delete</mat-icon>
+                </button>
             </div>
         </div>
     </div>

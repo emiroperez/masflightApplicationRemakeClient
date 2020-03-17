@@ -789,7 +789,7 @@ toggle(){
   partialSummaries(): void
   {
     const dialogRef = this.dialog.open (MsfPartialSummariesComponent, {
-      width: '800px',
+      width: '1100px',
       height: '600px',
       panelClass: 'partial-summaries-dialog',
       data: {
