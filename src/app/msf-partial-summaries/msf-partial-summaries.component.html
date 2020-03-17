@@ -1,20 +1,66 @@
 <div class="partial-summaries-header">
     <span class="partial-summaries-title">Partial Summaries</span>
+    <div class="partial-summaries-header-buttons">
+        <button mat-flat-button class="flat-button">
+            Generate
+        </button>
+        <button mat-icon-button class="partial-summaries-close-button">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
 </div>
 <div class="partial-summaries-body">
     <div class="partial-summaries-left">
-        <div class="partial-summaries-button-header">
+        <div class="partial-summaries-desc">
             <div class="partial-summaries-label-container">
                 <span class="title-label">Column Breakers</span>
-                <span>Drag and Drop columns to change breaker order</span>
+                <span class="desc-label">Drag and Drop columns to change column breaker order</span>
+            </div>
+            <div class="partial-summaries-add-button" matTooltip="Add Column Breaker" (click)="addColumnBreaker()">
+                <mat-icon>add</mat-icon>
+            </div>
+        </div>
+        <div class="partial-summaries-list">
+            <div class="partial-summaries-item" *ngFor="let colBreaker of colBreakers; let pos = index">
+                <div class="drag-handle">
+                    {{pos + 1}}
+                </div>
+                <mat-form-field class="column-breaker-selector">
+                    <mat-select placeholder="Column">
+                        <mat-option>
+                            Test
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-checkbox>
+                    Show summary when value changes
+                </mat-checkbox>
+                <button mat-icon-button matTooltip="Delete Column Breaker">
+                    <mat-icon>delete</mat-icon>
+                </button>
             </div>
         </div>
     </div>
     <div class="partial-summaries-right">
-        <div class="partial-summaries-button-header">
+        <div class="partial-summaries-desc">
             <div class="partial-summaries-label-container">
                 <span class="title-label">Column Aggregation</span>
-                <span>Drag and Drop columns to change column order</span>
+                <span class="desc-label">Drag and Drop columns to change column aggregation order</span>
+            </div>
+            <div class="partial-summaries-add-button" matTooltip="Add Column Aggregator" (click)="addColumnAggregator()">
+                <mat-icon>add</mat-icon>
+            </div>
+        </div>
+        <div class="partial-summaries-list">
+            <div class="partial-summaries-item partial-summaries-count">
+                <span class="total-count-label">Count Records</span>
+                <mat-slide-toggle class="count-switch"></mat-slide-toggle>
+                <mat-form-field class="total-count-alias-input">
+                    <input placeholder="Alias" matInput>
+                </mat-form-field>
+            </div>
+            <div class="partial-summaries-item" *ngFor="let colAggregator of colAggregators">
+                {{colAggregator}}
             </div>
         </div>
     </div>

@@ -1,14 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-msf-partial-summaries',
   templateUrl: './msf-partial-summaries.component.html'
 })
-export class MsfPartialSummariesComponent implements OnInit {
+export class MsfPartialSummariesComponent {
+  colBreakers: any[] = [];
+  colAggregators: any[] = [];
 
   constructor() { }
 
-  ngOnInit() {
+  addColumnBreaker(): void
+  {
+    this.colBreakers.push ("foobar");
   }
 
+  addColumnAggregator(): void
+  {
+    this.colAggregators.push ("foobar");
+  }
 }
