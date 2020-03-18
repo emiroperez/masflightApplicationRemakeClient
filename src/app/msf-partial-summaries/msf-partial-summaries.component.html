@@ -2,10 +2,12 @@
     <img class="partial-summaries-icon" src="../../assets/images/{{globals.theme}}-summary.png">
     <span class="partial-summaries-title">Partial Summaries</span>
     <div class="partial-summaries-header-buttons">
-        <button mat-flat-button [disabled]="!colBreakers.length" class="flat-button" [ngClass]="{ 'flat-button-disabled' : !colBreakers.length, 'flat-button': colBreakers.length }">
+        <button mat-flat-button [disabled]="!colBreakers.length" class="flat-button"
+            [ngClass]="{ 'flat-button-disabled' : !colBreakers.length, 'flat-button': colBreakers.length }"
+            (click)="generateSummary()">
             Generate
         </button>
-        <button mat-icon-button class="partial-summaries-close-button">
+        <button mat-icon-button class="partial-summaries-close-button" (click)="closeDialog()">
             <mat-icon>close</mat-icon>
         </button>
     </div>

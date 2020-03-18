@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import { Globals } from '../globals/Globals';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
@@ -24,7 +24,8 @@ export class MsfPartialSummariesComponent {
     { id: 'count', name: 'Count' }
   ];
 
-  constructor(public globals: Globals, @Inject(MAT_DIALOG_DATA) public data) { }
+  constructor(public globals: Globals, public dialogRef: MatDialogRef<MsfPartialSummariesComponent>,
+    @Inject(MAT_DIALOG_DATA) public data) { }
 
   addColumnBreaker(): void
   {
@@ -65,5 +66,20 @@ export class MsfPartialSummariesComponent {
   {
     // move items
     moveItemInArray (this.colAggregators, event.previousIndex, event.currentIndex);
+  }
+
+  closeDialog(): void
+  {
+    this.dialogRef.close ();
+  }
+
+  generateSummary(): void
+  {
+    this.dialogRef.close ({
+      breakers: this.colBreakers,
+      aggregators: this.colAggregators,
+      countRecords: this.countRecords,
+      countAlias: this.countAlias
+    })
   }
 }

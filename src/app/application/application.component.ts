@@ -549,14 +549,13 @@ toggle(){
   {
     let isMobile = false;
 
-    if (!this.globals.showMenu && this.globals.showCategoryArguments)
-    {
-  		//para mobile
-      this.globals.showCategoryArguments = false;
-      this.globals.showIntroWelcome = false;
-      this.globals.showTabs = true;
+    if (this.mobileQuery.matches)
       isMobile = true;
-    }
+
+  	// for mobile devices
+    this.globals.showCategoryArguments = false;
+    this.globals.showIntroWelcome = false;
+    this.globals.showTabs = true;
 
     if (this.globals.currentOption.metaData == 3)
     {
@@ -776,12 +775,6 @@ toggle(){
     return disabled;
   }
 
-
-  openChart(){
-    this.globals.chart = !this.globals.chart;
-    this.globals.selectedIndex = 3;
-  }
-
   dynamicTable(){
     this.openDialog();
   }
@@ -794,6 +787,26 @@ toggle(){
       panelClass: 'partial-summaries-dialog',
       autoFocus: false,
       data: {
+        metadata: this.msfContainerRef.msfTableRef.metadata
+      }
+    });
+
+    dialogRef.afterClosed ().subscribe(result => {
+      if (result)
+      {
+        // this.variables
+        // this.dynTableLoading = true;
+        // this.msfContainerRef.msfDynamicTableRef.loadData ();
+      }
+    });
+  }
+
+  openDialog(): void
+  {
+    const dialogRef = this.dialog.open (MsfDynamicTableVariablesComponent,
+    {
+      width: '600px',
+      data: {
         metadata: this.msfContainerRef.msfTableRef.metadata,
         variables: this.variables
       }
@@ -802,20 +815,7 @@ toggle(){
     dialogRef.afterClosed ().subscribe(result => {
       if (result)
       {
-        // this.dynTableLoading = true;
-        // this.msfContainerRef.msfDynamicTableRef.loadData ();
-      }
-    });
-  }
-
-  openDialog(): void {
-    const dialogRef = this.dialog.open(MsfDynamicTableVariablesComponent, {
-      width: '600px',
-      data: {metadata:this.msfContainerRef.msfTableRef.metadata, variables: this.variables}
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result)
-      {
+        this.globals.selectedIndex = 3;
         this.dynTableLoading = true;
         this.msfContainerRef.msfDynamicTableRef.loadData ();
       }
