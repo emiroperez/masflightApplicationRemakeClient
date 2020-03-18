@@ -27,7 +27,7 @@ export class MsfPartialSummariesComponent {
   addColumnBreaker(): void
   {
     this.colBreakers.push ({
-      column: null,
+      column: this.data.metadata[0],
       summary: false
     });
   }
@@ -40,7 +40,7 @@ export class MsfPartialSummariesComponent {
   addColumnAggregator(): void
   {
     this.colAggregators.push ({
-      column: null,
+      column: this.data.metadata[0],
       function: 'avg',
       alias: ""
     });

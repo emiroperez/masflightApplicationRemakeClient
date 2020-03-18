@@ -30,7 +30,7 @@
                     <mat-form-field class="datalake-search-formfield" appearance="outline">
                         <mat-label>Column</mat-label>
                         <mat-select [(ngModel)]="colBreaker.column">
-                            <mat-option *ngFor="let column of data.metadata" [value]="column.columnName">
+                            <mat-option *ngFor="let column of data.metadata" [value]="column">
                                 {{column.columnLabel}}
                             </mat-option>
                         </mat-select>
@@ -75,7 +75,7 @@
                     <mat-form-field class="datalake-search-formfield" appearance="outline">
                         <mat-label>Column</mat-label>
                         <mat-select [(ngModel)]="colAggregator.column">
-                            <mat-option *ngFor="let column of data.metadata" [value]="column.columnName">
+                            <mat-option *ngFor="let column of data.metadata" [value]="column">
                                 {{column.columnLabel}}
                             </mat-option>
                         </mat-select>
