@@ -60,4 +60,10 @@ export class MsfPartialSummariesComponent {
     // move items
     moveItemInArray (this.colBreakers, event.previousIndex, event.currentIndex);
   }
+
+  swapColumnAggregator(event: CdkDragDrop<any[]>): void
+  {
+    // move items
+    moveItemInArray (this.colAggregators, event.previousIndex, event.currentIndex);
+  }
 }

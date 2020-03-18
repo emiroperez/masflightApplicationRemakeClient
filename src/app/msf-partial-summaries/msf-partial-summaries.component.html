@@ -22,8 +22,8 @@
             </div>
         </div>
         <div class="partial-summaries-list" id="breaker-list" cdkDropList [cdkDropListData]="colBreakers" cdkDropListOrientation="vertical" (cdkDropListDropped)="swapColumnBreakers($event)" #breakerScrollContainer>
-            <div class="{{globals.theme}} partial-summaries-item" id="breaker-list-item" cdkDragLockAxis="y" vsDragScroll [vsDragScrollContainer]="breakerScrollContainer" *ngFor="let colBreaker of colBreakers; let pos = index" cdkDrag>
-                <div cdkDragHandle (mouseover)="colBreaker.mouseover = true" (mouseout)="colBreaker.mouseover = false">
+            <div class="{{globals.theme}} partial-summaries-item" id="breaker-list-item" cdkDragLockAxis="y" vsDragScroll [vsDragScrollContainer]="breakerScrollContainer" *ngFor="let colBreaker of colBreakers; let pos = index" (mouseover)="colBreaker.mouseover = true" (mouseout)="colBreaker.mouseover = false" cdkDrag>
+                <div cdkDragHandle>
                     <div class="column-drag-handle" *ngIf="!colBreaker.mouseover">{{pos + 1}}</div>
                     <mat-icon class="column-drag-handle column-drag-icon" *ngIf="colBreaker.mouseover">drag_handle</mat-icon>
                 </div>
@@ -57,7 +57,7 @@
                 <mat-icon>add</mat-icon>
             </div>
         </div>
-        <div class="partial-summaries-list">
+        <div class="partial-summaries-list" id="aggregator-list" cdkDropList [cdkDropListData]="colAggregators" cdkDropListOrientation="vertical" (cdkDropListDropped)="swapColumnAggregator($event)" #aggregatorScrollContainer>
             <div class="partial-summaries-item partial-summaries-count">
                 <span class="total-count-label">Count Records</span>
                 <mat-slide-toggle class="count-switch" [(ngModel)]="countRecords"></mat-slide-toggle>
@@ -68,9 +68,10 @@
                     </mat-form-field>
                 </div>
             </div>
-            <div class="partial-summaries-item" *ngFor="let colAggregator of colAggregators; let pos = index">
-                <div class="drag-handle">
-                    {{pos + 1}}
+            <div class="{{globals.theme}} partial-summaries-item aggregator-list-item" id="aggregator-list-item" cdkDragLockAxis="y" vsDragScroll [vsDragScrollContainer]="aggregatorScrollContainer" *ngFor="let colAggregator of colAggregators; let pos = index"  (mouseover)="colAggregator.mouseover = true" (mouseout)="colAggregator.mouseover = false" cdkDrag>
+                <div cdkDragHandle>
+                    <div class="column-drag-handle" *ngIf="!colAggregator.mouseover">{{pos + 1}}</div>
+                    <mat-icon class="column-drag-handle column-drag-icon" *ngIf="colAggregator.mouseover">drag_handle</mat-icon>
                 </div>
                 <div class="datalake-search-input partial-summaries-aggregator-input-container">
                     <mat-form-field class="datalake-search-formfield" appearance="outline">
