@@ -109,6 +109,7 @@
                 class="msf-menu-image msf-vertical-middle">
             <span class="msf-vertical-middle" *ngIf="!TabletQuery.matches">Dynamic Table</span>
         </button>
+        <!--
         <button *ngIf="globals.currentOption !== 'dashboard' && globals.currentOption !== 'categoryAdmin'"
         [disabled]="(!msfContainerRef.msfTableRef || !msfContainerRef.msfTableRef.dataSource || msfContainerRef.msfTableRef.dataSource.length < 0 || globals.mapsc) || !dynamicTablePlan"
             class="msf-menu-icon" (click)="partialSummaries()">
@@ -116,6 +117,7 @@
                 class="msf-menu-image msf-vertical-middle">
             <span class="msf-vertical-middle" *ngIf="!TabletQuery.matches">Partial Summaries</span>
         </button>
+        -->
         <!-- <button [disabled]="(!msfContainerRef.msfTableRef || !msfContainerRef.msfTableRef.dataSource || msfContainerRef.msfTableRef.dataSource.length < 0) || !chartPlan" class="msf-menu-icon" (click)="openChart()"><img src="../../assets/images/Chart.png" class="msf-menu-image msf-vertical-middle" ><span  class="msf-vertical-middle">Chart</span></button> -->
         <button *ngIf="globals.currentOption !== 'dashboard' && globals.currentOption !== 'categoryAdmin'"
             [disabled]="(!msfContainerRef.msfTableRef || !msfContainerRef.msfTableRef.dataSource || msfContainerRef.msfTableRef.dataSource.length < 0 || globals.mapsc) || !exportExcelPlan"
