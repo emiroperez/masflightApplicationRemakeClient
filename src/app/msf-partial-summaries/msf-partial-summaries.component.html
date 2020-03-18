@@ -2,7 +2,7 @@
     <img class="partial-summaries-icon" src="../../assets/images/{{globals.theme}}-summary.png">
     <span class="partial-summaries-title">Partial Summaries</span>
     <div class="partial-summaries-header-buttons">
-        <button mat-flat-button class="flat-button">
+        <button mat-flat-button [disabled]="!colBreakers.length" class="flat-button" [ngClass]="{ 'flat-button-disabled' : !colBreakers.length, 'flat-button': colBreakers.length }">
             Generate
         </button>
         <button mat-icon-button class="partial-summaries-close-button">
@@ -21,10 +21,11 @@
                 <mat-icon>add</mat-icon>
             </div>
         </div>
-        <div class="partial-summaries-list">
-            <div class="partial-summaries-item" *ngFor="let colBreaker of colBreakers; let pos = index">
-                <div class="drag-handle">
-                    {{pos + 1}}
+        <div class="partial-summaries-list" id="breaker-list" cdkDropList [cdkDropListData]="colBreakers" cdkDropListOrientation="vertical" (cdkDropListDropped)="swapColumnBreakers($event)" #breakerScrollContainer>
+            <div class="{{globals.theme}} partial-summaries-item" id="breaker-list-item" cdkDragLockAxis="y" vsDragScroll [vsDragScrollContainer]="breakerScrollContainer" *ngFor="let colBreaker of colBreakers; let pos = index" cdkDrag>
+                <div cdkDragHandle (mouseover)="colBreaker.mouseover = true" (mouseout)="colBreaker.mouseover = false">
+                    <div class="column-drag-handle" *ngIf="!colBreaker.mouseover">{{pos + 1}}</div>
+                    <mat-icon class="column-drag-handle column-drag-icon" *ngIf="colBreaker.mouseover">drag_handle</mat-icon>
                 </div>
                 <div class="datalake-search-input column-breaker-selector">
                     <mat-form-field class="datalake-search-formfield" appearance="outline">
@@ -36,7 +37,7 @@
                         </mat-select>
                     </mat-form-field>
                 </div>
-                <mat-checkbox [(ngModel)]="colBreaker.summary" class="column-breaker-space" *ngIf="pos != colBreakers.length - 1">
+                <mat-checkbox [(ngModel)]="colBreaker.summary" class="partial-summaries-checkbox column-breaker-space" *ngIf="pos != colBreakers.length - 1">
                     Show summary when value changes
                 </mat-checkbox>
                 <div class="column-breaker-space" *ngIf="pos == colBreakers.length - 1"></div>

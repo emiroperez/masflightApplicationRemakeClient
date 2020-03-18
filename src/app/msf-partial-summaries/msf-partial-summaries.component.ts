@@ -2,10 +2,12 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material';
 
 import { Globals } from '../globals/Globals';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-msf-partial-summaries',
-  templateUrl: './msf-partial-summaries.component.html'
+  templateUrl: './msf-partial-summaries.component.html',
+  styleUrls: ['./msf-partial-summaries.component.css']
 })
 export class MsfPartialSummariesComponent {
   colBreakers: any[] = [];
@@ -28,7 +30,8 @@ export class MsfPartialSummariesComponent {
   {
     this.colBreakers.push ({
       column: this.data.metadata[0],
-      summary: false
+      summary: false,
+      mouseover: false
     });
   }
 
@@ -42,12 +45,19 @@ export class MsfPartialSummariesComponent {
     this.colAggregators.push ({
       column: this.data.metadata[0],
       function: 'avg',
-      alias: ""
+      alias: "",
+      mouseover: false
     });
   }
 
   removeColumnAggregator(pos: number): void
   {
     this.colAggregators.splice (pos, 1);
+  }
+
+  swapColumnBreakers(event: CdkDragDrop<any[]>): void
+  {
+    // move items
+    moveItemInArray (this.colBreakers, event.previousIndex, event.currentIndex);
   }
 }

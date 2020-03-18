@@ -792,6 +792,7 @@ toggle(){
       width: '1100px',
       height: '600px',
       panelClass: 'partial-summaries-dialog',
+      autoFocus: false,
       data: {
         metadata: this.msfContainerRef.msfTableRef.metadata,
         variables: this.variables

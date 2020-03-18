@@ -1,0 +1,40 @@
+.cdk-drag-preview
+{
+    display: inherit;
+    margin: inherit;
+    padding: inherit;
+    font-size: inherit;
+    background-color: inherit;
+    display: flex;
+    height: 30px;
+    padding: 20px;
+    padding-right: 5px;
+    align-items: center;
+    color: inherit !important;
+    position: relative;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;
+    opacity: 0.5;
+}
+
+.cdk-drag-placeholder
+{
+    height: 30px;
+    padding: 20px;
+    padding-right: 5px;
+    display: flex;
+    flex-direction: row;
+    opacity: 0;
+}
+
+.cdk-drag-animating
+{
+    transition: transform 300ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+#breaker-list.cdk-drop-list-dragging #breaker-list-item:not(.cdk-drag-placeholder)
+{
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
