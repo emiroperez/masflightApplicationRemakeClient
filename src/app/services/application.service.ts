@@ -54,6 +54,35 @@ export class ApplicationService {
     this.authService.get (_this, url, successHandler, errorHandler);
   }
 
+  getSummaryResponse(_this, config, handlerSuccess, handlerError)
+  {
+    let param = this.utils.getUrlParameters (_this.globals.currentOption, true);
+    let urlBase = param.url;
+
+    if (!urlBase.includes ("MIN_VALUE"))
+      urlBase += "&MIN_VALUE=0";
+
+    if (!urlBase.includes ("MAX_VALUE"))
+      urlBase += "&MAX_VALUE=999";
+
+    if (!urlBase.includes ("minuteunit"))
+      urlBase += "&minuteunit=m";
+ 
+    urlBase += "&pageSize=" + Globals.TABLE_PAGESIZE + "&page_number=0"; // TODO: Set page number
+
+    let urlArg = encodeURIComponent (urlBase);
+
+    if (isDevMode ())
+      console.log (urlBase);
+
+    let url = this.host + "/secure/getSummaryResponse?url=" + urlArg + "&optionId=" + _this.globals.currentOption.id;
+
+    if (this.globals.testingPlan != -1)
+      url += "&testPlanId=" + this.globals.testingPlan;
+
+    this.authService.post (_this, url, config, handlerSuccess, handlerError);
+  }
+
   getDataTableSource(_this, handlerSuccess, handlerError,pageNumber: String,tokenResultable: String, SortingColumns: String) {
     // _this.globals.isLoading = true;
     _this.displayedColumns = [];

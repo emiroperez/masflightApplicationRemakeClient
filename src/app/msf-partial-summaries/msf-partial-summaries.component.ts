@@ -76,8 +76,8 @@ export class MsfPartialSummariesComponent {
   generateSummary(): void
   {
     this.dialogRef.close ({
-      breakers: this.colBreakers,
-      aggregators: this.colAggregators,
+      columnBreakers: this.colBreakers,
+      columnAggregators: this.colAggregators,
       countRecords: this.countRecords,
       countAlias: this.countAlias
     })

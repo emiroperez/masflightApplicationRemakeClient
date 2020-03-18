@@ -794,9 +794,14 @@ toggle(){
     dialogRef.afterClosed ().subscribe(result => {
       if (result)
       {
-        // this.variables
+        // this.globals.selectedIndex = 4;
         // this.dynTableLoading = true;
-        // this.msfContainerRef.msfDynamicTableRef.loadData ();
+
+        // don't display summary for the last column breaker
+        if (result.columnBreakers.length)
+          result.columnBreakers[result.columnBreakers.length - 1].summary = false;
+
+        this.appService.getSummaryResponse (this, result, this.summarySuccess, this.summaryError);
       }
     });
   }
@@ -1657,5 +1662,15 @@ toggle(){
     this.mapboxLoading = false;
     this.routeLoading = false;
     this.dynTableLoading = false;
+  }
+
+  summarySuccess(_this, data): void
+  {
+    console.log (data);
+  }
+
+  summaryError(_this): void
+  {
+
   }
 }
