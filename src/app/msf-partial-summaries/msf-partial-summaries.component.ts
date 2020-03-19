@@ -20,8 +20,7 @@ export class MsfPartialSummariesComponent {
     { id: 'avg', name: 'Average' },
     { id: 'sum', name: 'Sum' },
     { id: 'max', name: 'Max' },
-    { id: 'min', name: 'Min' },
-    { id: 'count', name: 'Count' }
+    { id: 'min', name: 'Min' }
   ];
 
   constructor(public globals: Globals, public dialogRef: MatDialogRef<MsfPartialSummariesComponent>,
@@ -75,11 +74,13 @@ export class MsfPartialSummariesComponent {
 
   generateSummary(): void
   {
+    for (let colBreaker of this.colBreakers)
+      colBreaker.aggregators = JSON.parse (JSON.stringify (this.colAggregators));
+
     this.dialogRef.close ({
       columnBreakers: this.colBreakers,
-      columnAggregators: this.colAggregators,
       countRecords: this.countRecords,
       countAlias: this.countAlias
-    })
+    });
   }
 }

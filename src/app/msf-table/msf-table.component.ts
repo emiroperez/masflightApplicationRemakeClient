@@ -53,6 +53,8 @@ export class MsfTableComponent implements OnInit {
   @Input('thresholds')
   thresholds: any;
 
+  summaryColumns: string[] = ['SummaryTitle'];
+
   metadata;
 
   dataSource : any;
@@ -1055,4 +1057,7 @@ export class MsfTableComponent implements OnInit {
     this.sortingDataTable.emit(SortingData);
   }
 
+  isSummary(index, item): boolean {
+    return item.SummaryTitle != null;
+  }
 }

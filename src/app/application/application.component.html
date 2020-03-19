@@ -115,10 +115,9 @@
             class="msf-menu-icon" (click)="partialSummaries()">
             <img src="../../assets/images/{{globals.theme}}-small-summary.png"
                 class="msf-menu-image msf-vertical-middle">
-            <span class="msf-vertical-middle" *ngIf="!TabletQuery.matches">Partial Summaries</span>
+            <span class="msf-vertical-middle" *ngIf="!TabletQuery.matches">Partial Summary</span>
         </button>
         -->
-        <!-- <button [disabled]="(!msfContainerRef.msfTableRef || !msfContainerRef.msfTableRef.dataSource || msfContainerRef.msfTableRef.dataSource.length < 0) || !chartPlan" class="msf-menu-icon" (click)="openChart()"><img src="../../assets/images/Chart.png" class="msf-menu-image msf-vertical-middle" ><span  class="msf-vertical-middle">Chart</span></button> -->
         <button *ngIf="globals.currentOption !== 'dashboard' && globals.currentOption !== 'categoryAdmin'"
             [disabled]="(!msfContainerRef.msfTableRef || !msfContainerRef.msfTableRef.dataSource || msfContainerRef.msfTableRef.dataSource.length < 0 || globals.mapsc) || !exportExcelPlan"
             class="msf-menu-icon" (click)="exportToExcel()">
@@ -244,12 +243,9 @@
                 <!-- <app-menu-nav *ngIf="(ResponsiveQuery.matches || mobileQuery.matches) && globals.showMenu " [menu]="menu" [dashboards]="dashboards"
                     [dashboardCategories]="dashboardCategories" [sharedDashboards]="sharedDashboards" (cancelLoadingFromLastService)="cancelLoadingFromLastService()"></app-menu-nav> -->
             </div>            
-            <mat-paginator #paginator [pageIndex]="pageI" [pageSize]="pageSize" [length]="lengthpag"
-             hidePageSize
-            (page)="pageEvent = getServerData($event)" showFirstLastButtons
+            <mat-paginator #paginator [pageIndex]="pageI" [pageSize]="pageSize" [length]="lengthpag" hidePageSize (page)="pageEvent = getServerData($event)" showFirstLastButtons
             [ngClass]="(globals.showPaginator && !tableLoading)  || (mobileQuery.matches && globals.showCategoryArguments) ? 'msf-paginator-table':'msf-hide'"></mat-paginator>
-             <div [ngClass]="globals.moreResultsBtn && !tableLoading ? 'msf-menu-more-button' : 'msf-menu-more-button disabled-more-button'"
-                (click)="moreResults()"
+             <div [ngClass]="globals.moreResultsBtn && !tableLoading ? 'msf-menu-more-button' : 'msf-menu-more-button disabled-more-button'" (click)="moreResults()"
                 *ngIf="(globals.dataSource && !globals.mapsc && !mobileQuery.matches && showMoreResult) || (mobileQuery.matches && globals.showCategoryArguments)">
                 <img style="width: 16px;height: 16px;" src="../../assets/images/{{globals.theme}}-more.png"
                     class="msf-menu-image msf-vertical-middle msf-line">

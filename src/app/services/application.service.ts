@@ -54,7 +54,7 @@ export class ApplicationService {
     this.authService.get (_this, url, successHandler, errorHandler);
   }
 
-  getSummaryResponse(_this, config, handlerSuccess, handlerError)
+  getSummaryResponse(_this, config, tokenResultable, SortingColumns, handlerSuccess, handlerError)
   {
     let param = this.utils.getUrlParameters (_this.globals.currentOption, true);
     let urlBase = param.url;
@@ -67,8 +67,20 @@ export class ApplicationService {
 
     if (!urlBase.includes ("minuteunit"))
       urlBase += "&minuteunit=m";
- 
-    urlBase += "&pageSize=" + Globals.TABLE_PAGESIZE + "&page_number=0"; // TODO: Set page number
+
+    if(_this.globals.currentOption.tabType != "legacy" && SortingColumns != "" && !_this.globals.showPaginator){
+      let sortingList = "sortingList="+SortingColumns;
+      if(!urlBase.includes("sortingList")){
+        urlBase += "&"+sortingList;
+      }else{
+        let index = urlBase.indexOf("sortingList=&")
+        if(index>-1){
+          urlBase = urlBase.replace("sortingList=&",sortingList+"&")
+        }
+      }
+    }
+
+    urlBase += "&pageSize=" + Globals.TABLE_PAGESIZE + "&page_number=0&token=" + tokenResultable + "&sortingColumns=" + SortingColumns; // TODO: Set page number
 
     let urlArg = encodeURIComponent (urlBase);
 
@@ -128,7 +140,7 @@ export class ApplicationService {
     this.authService.get(_this, url, handlerSuccess, handlerError);
   }
 
-  getDataTableSourceForCSV(_this, handlerSuccess, handlerError)
+  getDataTableSourceForCSV(_this, tokenResultable, SortingColumns, handlerSuccess, handlerError)
   {
     let param = this.utils.getUrlParameters (_this.globals.currentOption, true);
     let urlBase = param.url;
@@ -142,7 +154,19 @@ export class ApplicationService {
     if (!urlBase.includes("minuteunit"))
       urlBase += "&minuteunit=m";
 
-    urlBase += "&pageSize=999999&page_number=0";
+    if(_this.globals.currentOption.tabType != "legacy" && SortingColumns != "" && !_this.globals.showPaginator){
+      let sortingList = "sortingList="+SortingColumns;
+      if(!urlBase.includes("sortingList")){
+        urlBase += "&"+sortingList;
+      }else{
+        let index = urlBase.indexOf("sortingList=&")
+        if(index>-1){
+          urlBase = urlBase.replace("sortingList=&",sortingList+"&")
+        }
+      }
+    }
+
+    urlBase += "&pageSize=999999&page_number=0&token=" + tokenResultable + "&sortingColumns=" + SortingColumns;
 
     let urlArg = encodeURIComponent (urlBase);
 

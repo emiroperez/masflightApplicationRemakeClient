@@ -794,14 +794,20 @@ toggle(){
     dialogRef.afterClosed ().subscribe(result => {
       if (result)
       {
-        // this.globals.selectedIndex = 4;
-        // this.dynTableLoading = true;
+        let tokenResultTable;
 
-        // don't display summary for the last column breaker
+        this.globals.selectedIndex = 2;
+        this.tableLoading = true;
+
+        // always display the summary for the last column breaker
         if (result.columnBreakers.length)
-          result.columnBreakers[result.columnBreakers.length - 1].summary = false;
+          result.columnBreakers[result.columnBreakers.length - 1].summary = true;
 
-        this.appService.getSummaryResponse (this, result, this.summarySuccess, this.summaryError);
+        this.authService.removeTokenResultTable ();
+        tokenResultTable = this.authService.getTokenResultTable () ? this.authService.getTokenResultTable () : "";
+
+        this.appService.getSummaryResponse (this, result, tokenResultTable, this.msfContainerRef.msfTableRef.ListSortingColumns,
+          this.summarySuccess, this.summaryError);
       }
     });
   }
@@ -980,7 +986,11 @@ toggle(){
   exportToCSV(): void
   {
     this.globals.isLoading = true;
-    this.appService.getDataTableSourceForCSV (this, this.prepareDataForCSV, this.CSVFail);
+
+    this.authService.removeTokenResultTable();
+    let tokenResultTable = this.authService.getTokenResultTable() ? this.authService.getTokenResultTable() : "";
+
+    this.appService.getDataTableSourceForCSV (this, tokenResultTable, this.msfContainerRef.msfTableRef.ListSortingColumns, this.prepareDataForCSV, this.CSVFail);
   }
 
   prepareDataForCSV(_this, result): void
@@ -1588,14 +1598,17 @@ toggle(){
   }
 
   public getServerData(event?:PageEvent){
-    if(!this.globals.isLoading){
-      this.pageIndex = event;
-      this.globals.moreResultsBtn = true;
-      // this.pageIndex = event.pageIndex;
-      this.moreResults();
-      return event;
+    if (this.globals.selectedIndex == 2)
+    {
+      if (!this.tableLoading)
+      {
+        this.pageIndex = event;
+        this.globals.moreResultsBtn = true;
+        // this.pageIndex = event.pageIndex;
+        this.moreResults();
+        return event;
+      }
     }
-
   }
 
   lengthpaginator(event: any) {
@@ -1666,11 +1679,17 @@ toggle(){
 
   summarySuccess(_this, data): void
   {
-    console.log (data);
+    if (!_this.tableLoading)
+      return;
+
+    // TODO: parse column values and set paginator values
+    _this.msfContainerRef.msfTableRef.dataSource = data;
+
+    _this.tableLoading = false;
   }
 
   summaryError(_this): void
   {
-
+    _this.tableLoading = false;
   }
 }
