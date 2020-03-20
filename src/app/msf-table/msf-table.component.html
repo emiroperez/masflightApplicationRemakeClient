@@ -61,10 +61,25 @@
       <ng-container *ngIf="summaryColumns.length">
         <ng-container matColumnDef="SummaryTitle">
           <td class="summary-column "colspan="999" mat-cell *matCellDef="let rowgroup">
-            <span>{{rowgroup.SummaryTitle}}</span>
-            <span *ngFor="let result of rowgroup.results">
-              {{result}}
-            </span>
+            <div class="summary-column-container">
+              <span class="summary-column-title">{{rowgroup.SummaryTitle}}</span>
+              <span class="summary-column-result-container" *ngFor="let result of rowgroup.results">
+                <span class="summary-result-label">{{result.label}}</span>
+                <span class="summary-result-value">
+                  <ng-container *ngIf="result.type=='number'">
+                    <ng-container *ngIf="result.outputFormat != null && result.outputFormat != ''">
+                      <span *ngIf="result.prefix">{{result.prefix}}</span>{{result.value | number:result.outputFormat:'en'}}<span *ngIf="result.suffix">{{result.suffix}}</span>
+                    </ng-container>
+                    <ng-container *ngIf="result.outputFormat == null || result.outputFormat == ''">
+                      <span *ngIf="result.prefix">{{result.prefix}}</span>{{result.value | number:'.0-2':'en'}}<span *ngIf="result.suffix">{{result.suffix}}</span>
+                    </ng-container>
+                  </ng-container>
+                  <ng-container *ngIf="result.type!='number'">
+                    NaN
+                  </ng-container>
+                </span>
+              </span>
+            </div>
           </td>
         </ng-container>
         <tr mat-row *matRowDef="let row; columns: summaryColumns; when: isSummary" [style.height.px]="40"> </tr>

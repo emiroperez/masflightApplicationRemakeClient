@@ -2317,6 +2317,10 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
         .partial-summaries-body
             .partial-summaries-add-button
                 background-color: $datalake-disabled-buttonAlarmEmail
+        .summary-column
+            background-color: $background-color !important
+            .summary-column-container
+                color: $font-color
     .#{$name}.partial-summaries-item
         border-bottom: 1px solid $dashboard-config-location-border-color
 
@@ -11303,4 +11307,17 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         margin-right: 5px
 
 .summary-column
-    text-align: left !important
+    .summary-column-container
+        text-align: left !important
+        margin-left: 20px
+        font-size: 12px
+        .summary-column-title
+            margin-right: 20px
+            font-weight: 550
+        .summary-column-result-container
+            margin-right: 15px
+            .summary-result-label
+                margin-right: 12px
+                font-weight: 100
+            .summary-result-value
+                font-weight: 550
