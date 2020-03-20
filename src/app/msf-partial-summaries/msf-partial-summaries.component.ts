@@ -24,7 +24,55 @@ export class MsfPartialSummariesComponent {
   ];
 
   constructor(public globals: Globals, public dialogRef: MatDialogRef<MsfPartialSummariesComponent>,
-    @Inject(MAT_DIALOG_DATA) public data) { }
+    @Inject(MAT_DIALOG_DATA) public data)
+  {
+    if (this.data.partialSummaryValues == null)
+      return;
+
+    for (let colBreaker of this.data.partialSummaryValues.columnBreakers)
+    {
+      let temp = this.data.metadata[0];
+
+      for (let column of this.data.metadata)
+      {
+        if (column.id == colBreaker.column.id)
+        {
+          temp = column;
+          break;
+        }
+      }
+
+      this.colBreakers.push ({
+        column: temp,
+        summary: colBreaker.summary,
+        mouseover: false
+      });
+    }
+
+    for (let colAggregator of this.data.partialSummaryValues.columnBreakers[0].aggregators)
+    {
+      let temp = this.data.metadata[0];
+
+      for (let column of this.data.metadata)
+      {
+        if (column.id == colAggregator.column.id)
+        {
+          temp = column;
+          break;
+        }
+      }
+
+      this.colAggregators.push ({
+        column: temp,
+        function: colAggregator.function,
+        alias: colAggregator.alias,
+        mouseover: false
+      });
+    }
+
+    this.countRecords = this.data.partialSummaryValues.countRecords;
+    this.countAlias = this.data.partialSummaryValues.countAlias;
+  }
 
   addColumnBreaker(): void
   {

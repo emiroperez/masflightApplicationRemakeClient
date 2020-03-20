@@ -790,7 +790,8 @@ toggle(){
       panelClass: 'partial-summaries-dialog',
       autoFocus: false,
       data: {
-        metadata: this.msfContainerRef.msfTableRef.metadata
+        metadata: this.msfContainerRef.msfTableRef.metadata,
+        partialSummaryValues: this.partialSummaryValues
       }
     });
 
