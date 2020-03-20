@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, Input ,ChangeDetectorRef, ElementRef, EventEmitter, Output} from '@angular/core';
-import {MatSort, MatTableDataSource, MatTab, Sort, MatDialog, MatPaginator} from '@angular/material';
+import { Component, OnInit, ViewChild, Input ,ChangeDetectorRef, ElementRef, EventEmitter, Output } from '@angular/core';
+import { MatSort, MatTableDataSource, MatTab, Sort, MatDialog, MatPaginator } from '@angular/material';
 import { Globals } from '../globals/Globals';
 import { ApplicationService } from '../services/application.service';
 import { MsfGroupingComponent } from '../msf-grouping/msf-grouping.component';
@@ -27,7 +27,6 @@ export class MsfTableComponent implements OnInit {
   @Input('tabRef')
   tabRef: MatTab;
 
-  @Input('displayedColumns')
   displayedColumns: string[] = []; 
 
   @ViewChild('TABLE', { static: false }) table: ElementRef;
@@ -53,6 +52,9 @@ export class MsfTableComponent implements OnInit {
   @Input('thresholds')
   thresholds: any;
 
+  @Input('partialSummaryValues')
+  partialSummaryValues: any = null;
+
   summaryColumns: string[] = ['SummaryTitle'];
 
   metadata;
@@ -72,7 +74,6 @@ export class MsfTableComponent implements OnInit {
   template;
 
   tableOptions: any;
-
 
   @Input("paginator")
   paginator: MatPaginator;
@@ -289,9 +290,35 @@ export class MsfTableComponent implements OnInit {
       this.actualPageNumber = 0;
       this.authService.removeTokenResultTable();
     }
+
     let tokenResultTable = this.authService.getTokenResultTable() ? this.authService.getTokenResultTable() : "";
-    this.service.getDataTableSource(this, this.handlerSuccess, this.handlerError, "" + this.actualPageNumber,tokenResultTable,this.ListSortingColumns);
+
+    if (this.partialSummaryValues)
+    {
+      this.displayedColumns = [];
+      this.service.getSummaryResponse (this, this.partialSummaryValues, "" + this.actualPageNumber, tokenResultTable, this.ListSortingColumns,
+        this.summarySuccess, this.handlerError);
+    }
+    else
+      this.service.getDataTableSource(this, this.handlerSuccess, this.handlerError, "" + this.actualPageNumber,tokenResultTable,this.ListSortingColumns);
     // }}
+  }
+
+  summarySuccess(_this, data)
+  {
+    if (!_this.isLoading)
+      return;
+
+    if (data.metadata)
+      data.metadata = JSON.parse (data.metadata);
+
+    if (data.Response && data.Response.rows)
+    {
+      data.Response.Rows = data.Response.rows;
+      data.Response.rows = undefined;
+    }
+
+    _this.handlerSuccess (_this, data);
   }
 
   getDataUsageStatistics(){
@@ -525,7 +552,7 @@ export class MsfTableComponent implements OnInit {
     return data;
   }
 
-  handlerSuccess(_this,data, tab){
+  handlerSuccess(_this,data){
     if(_this.isLoading) {
       _this.tableOptions.totalRecord=0;
       _this.setGroupingArgument();
@@ -600,7 +627,7 @@ export class MsfTableComponent implements OnInit {
             _this.tableOptions.displayedColumns  = _this.deleteEmptyColumns(dataResult,_this.tableOptions.displayedColumns);
           _this.metadata = _this.tableOptions.displayedColumns;
           _this.tableOptions.metadata = data.metadata;
-          
+
           _this.setColumnsDisplayed(_this);
           
 
@@ -677,9 +704,9 @@ export class MsfTableComponent implements OnInit {
         }
       }  
       if(_this.dataSource){
-        if(_this.sort!=undefined){
+        if(_this.sort!=undefined)
           _this.dataSource.sort =_this.sort;
-        }
+
         _this.tableOptions.dataSource = true;
 
         if (_this.currentOption.tabType !== "map")
@@ -1059,5 +1086,13 @@ export class MsfTableComponent implements OnInit {
 
   isSummary(index, item): boolean {
     return item.SummaryTitle != null;
+  }
+
+  isSortingDisabled(): boolean
+  {
+    if (this.partialSummaryValues)
+      return true;
+
+    return false;
   }
 }

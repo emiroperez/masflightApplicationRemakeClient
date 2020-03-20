@@ -44,7 +44,7 @@
                 </mat-checkbox>
                 <div class="column-breaker-space" *ngIf="pos == colBreakers.length - 1"></div>
                 <button mat-icon-button matTooltip="Delete Column Breaker" (click)="removeColumnBreaker(pos)">
-                    <mat-icon>delete</mat-icon>
+                    <mat-icon class="partial-summaries-delete-button">delete</mat-icon>
                 </button>
             </div>
         </div>
@@ -102,7 +102,7 @@
                     </mat-form-field>
                 </div>
                 <button mat-icon-button matTooltip="Delete Column Aggregator" (click)="removeColumnAggregator(pos)">
-                    <mat-icon>delete</mat-icon>
+                    <mat-icon class="partial-summaries-delete-button">delete</mat-icon>
                 </button>
             </div>
         </div>

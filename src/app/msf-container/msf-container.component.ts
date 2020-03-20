@@ -54,6 +54,9 @@ export class MsfContainerComponent implements OnInit {
   @Input("dynTableLoading")
   dynTableLoading: boolean;
 
+  @Input("partialSummaryValues")
+  partialSummaryValues: any;
+
   @Output('lengthpaginator')
   lengthpaginator = new EventEmitter ();
 

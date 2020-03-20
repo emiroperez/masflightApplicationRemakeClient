@@ -2318,9 +2318,11 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             .partial-summaries-add-button
                 background-color: $datalake-disabled-buttonAlarmEmail
         .summary-column
-            background-color: $background-color !important
+            background-color: $dashboard-background-color !important
             .summary-column-container
                 color: $font-color
+        .partial-summaries-close-button .mat-icon, .partial-summaries-delete-button
+            color: $font-color !important
     .#{$name}.partial-summaries-item
         border-bottom: 1px solid $dashboard-config-location-border-color
 
@@ -11305,6 +11307,9 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     .column-drag-icon
         margin-left: -5px
         margin-right: 5px
+
+.mat-sort-header-disabled .mat-sort-header-container
+    padding-left: 0 !important
 
 .summary-column
     .summary-column-container

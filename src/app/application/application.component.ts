@@ -51,6 +51,7 @@ export class ApplicationComponent implements OnInit {
   status: boolean;
   user: any[];
   userName : any;
+  partialSummaryValues: any = null;
 
   // admin: boolean = false;
   ELEMENT_DATA: any[];
@@ -557,6 +558,9 @@ toggle(){
     this.globals.showIntroWelcome = false;
     this.globals.showTabs = true;
 
+    // remove summary configuration
+    this.partialSummaryValues = null;
+
     if (this.globals.currentOption.metaData == 3)
     {
       this.configureCoordinates ();
@@ -686,14 +690,13 @@ toggle(){
       this.globals.mapsc=false;
       this.globals.tab = true;
 
-      this.globals.isLoading = true;
+      this.tableLoading = true;
       if(this.globals.currentOption.tabType === 'map'){
         this.globals.map = true;
         this.globals.selectedIndex = 3;
-        this.msfContainerRef.msfMapRef.getTrackingDataSource();
-      }else if(this.globals.currentOption.tabType === 'usageStatistics'){
-        this.msfContainerRef.msfTableRef.getDataUsageStatistics();
-      }else
+        this.mapboxLoading = true;
+      }
+      else
         this.globals.selectedIndex = 2;
 
       setTimeout(() => {
@@ -704,8 +707,7 @@ toggle(){
 
   moreResults2(){
     if(this.globals.currentOption.tabType === 'map' && this.globals.currentOption.url!=null){
-      this.globals.map = true;
-      // this.msfContainerRef.msfMapRef.getTrackingDataSource();
+      this.msfContainerRef.msfMapRef.getTrackingDataSource();
       this.msfContainerRef.msfTableRef.getData(true);
     }else if(this.globals.currentOption.tabType === 'usageStatistics'){
       this.msfContainerRef.msfTableRef.getDataUsageStatistics();
@@ -796,6 +798,10 @@ toggle(){
       {
         let tokenResultTable;
 
+        this.globals.moreResults = false;
+        this.globals.query = true;
+        this.globals.tab = true;
+
         this.globals.selectedIndex = 2;
         this.tableLoading = true;
 
@@ -803,10 +809,18 @@ toggle(){
         if (result.columnBreakers.length)
           result.columnBreakers[result.columnBreakers.length - 1].summary = true;
 
+        this.partialSummaryValues = result; // store the partial summary configuration
+
+        this.clearSort ();
+        this.msfContainerRef.msfTableRef.displayedColumns = [];
+
+        this.globals.startTimestamp = new Date();
+        this.msfContainerRef.msfTableRef.actualPageNumber = 0;
+
         this.authService.removeTokenResultTable ();
         tokenResultTable = this.authService.getTokenResultTable () ? this.authService.getTokenResultTable () : "";
 
-        this.appService.getSummaryResponse (this, result, tokenResultTable, this.msfContainerRef.msfTableRef.ListSortingColumns,
+        this.appService.getSummaryResponse (this, result, "" + this.msfContainerRef.msfTableRef.actualPageNumber, tokenResultTable, this.msfContainerRef.msfTableRef.ListSortingColumns,
           this.summarySuccess, this.summaryError);
       }
     });
@@ -1368,6 +1382,7 @@ toggle(){
     if (this.msfContainerRef && this.msfContainerRef.msfTableRef)
       this.msfContainerRef.msfTableRef = null;
 
+    this.partialSummaryValues = null;
     this.changeDetectorRef.detectChanges ();
   }
 
@@ -1682,14 +1697,25 @@ toggle(){
     if (!_this.tableLoading)
       return;
 
-    // TODO: parse column values and set paginator values
-    _this.msfContainerRef.msfTableRef.dataSource = data;
+    if (data.metadata)
+      data.metadata = JSON.parse (data.metadata);
 
-    _this.tableLoading = false;
+    if (data.Response && data.Response.rows)
+    {
+      data.Response.Rows = data.Response.rows;
+      data.Response.rows = undefined;
+    }
+
+    _this.msfContainerRef.msfTableRef.handlerSuccess (_this.msfContainerRef.msfTableRef, data);
   }
 
   summaryError(_this): void
   {
+    _this.msfContainerRef.msfTableRef.tableOptions.dataSource = false;
+    _this.msfContainerRef.msfTableRef.tableOptions.template = false;
+
+    _this.msfContainerRef.msfTableRef.resultsAvailable = "msf-no-visible";
+
     _this.tableLoading = false;
   }
 }

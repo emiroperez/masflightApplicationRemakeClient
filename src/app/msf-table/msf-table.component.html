@@ -3,7 +3,7 @@
     <table  #table mat-table  [dataSource]="dataSource" matSort (matSortChange)="sortData($event)" class="mat-elevation-z8 datasource results">
         <ng-container  [matColumnDef]="column.columnName" 
         *ngFor="let column of metadata; let i = index">
-          <th [ngClass]="column.show?'msf-show-table':'msf-hide'" mat-header-cell *matHeaderCellDef mat-sort-header>{{column.columnLabel}}</th>
+          <th [ngClass]="column.show?'msf-show-table':'msf-hide'" mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="isSortingDisabled()">{{column.columnLabel}}</th>
           <td [ngClass]="column.show?'msf-show-table':'msf-hide'" mat-cell *matCellDef="let element;let rowNumber = dataIndex"> 
             <span *ngIf="column.drillDowns.length==0 && !isArray(element['Flight'])">
               <ng-container *ngIf="element[column.columnName] != null && element[column.columnName] != ''">

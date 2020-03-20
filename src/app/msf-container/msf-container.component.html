@@ -25,6 +25,7 @@
                 <app-msf-table #msfTableRef [tabRef]="tabRef" [isLoading]="tableLoading" 
                 (finishLoading)="finishLoadingTable($event)" [categoryArguments]="getCategoryArguments()" 
                 [currentOption]="globals.currentOption" [isPanel]="false" [paginator]="paginator" [pageIndex]="pageIndex" 
+                [partialSummaryValues]="partialSummaryValues"
                 (paginatorlength)="paginatorlength($event)"
                 (shmoreResult)="shmoreResult($event)"
                 (sortingDataTable)="sortingDataTable($event)"></app-msf-table>

@@ -54,7 +54,7 @@ export class ApplicationService {
     this.authService.get (_this, url, successHandler, errorHandler);
   }
 
-  getSummaryResponse(_this, config, tokenResultable, SortingColumns, handlerSuccess, handlerError)
+  getSummaryResponse(_this, config, pageNumber, tokenResultable, SortingColumns, handlerSuccess, handlerError)
   {
     let param = this.utils.getUrlParameters (_this.globals.currentOption, true);
     let urlBase = param.url;
@@ -80,7 +80,7 @@ export class ApplicationService {
       }
     }
 
-    urlBase += "&pageSize=" + Globals.TABLE_PAGESIZE + "&page_number=0&token=" + tokenResultable + "&sortingColumns=" + SortingColumns; // TODO: Set page number
+    urlBase += "&pageSize=" + Globals.TABLE_PAGESIZE + "&page_number=" + pageNumber + "&token=" + tokenResultable + "&sortingColumns=" + SortingColumns; // TODO: Set page number
 
     let urlArg = encodeURIComponent (urlBase);
 
