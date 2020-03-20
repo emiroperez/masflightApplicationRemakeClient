@@ -576,7 +576,7 @@ toggle(){
     {
       setTimeout (() => {
         this.startSearch ();
-      }, 750);
+      }, 100);
     }
     else
       this.startSearch ();
@@ -606,6 +606,7 @@ toggle(){
 
     // close dynamic table tab if visible
     this.globals.generateDynamicTable = false;
+    this.changeDetectorRef.detectChanges ();
 
     setTimeout (() => {
       this.search2 ();
