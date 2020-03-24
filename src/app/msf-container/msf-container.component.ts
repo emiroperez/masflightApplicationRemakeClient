@@ -54,6 +54,9 @@ export class MsfContainerComponent implements OnInit {
   @Input("dynTableLoading")
   dynTableLoading: boolean;
 
+  @Input("partialSummaryValues")
+  partialSummaryValues: any;
+
   @Output('lengthpaginator')
   lengthpaginator = new EventEmitter ();
 
@@ -113,7 +116,7 @@ export class MsfContainerComponent implements OnInit {
     }else if(tab==3){
       this.globals.generateDynamicTable = false;
     }else if(tab==4){
-      this.globals.chart = false;
+      this.globals.dummyTab = false;
     }else if(tab==5){
       this.globals.map = false;
     }

@@ -51,6 +51,7 @@ export class ApplicationComponent implements OnInit {
   status: boolean;
   user: any[];
   userName : any;
+  partialSummaryValues: any = null;
 
   // admin: boolean = false;
   ELEMENT_DATA: any[];
@@ -557,6 +558,9 @@ toggle(){
     this.globals.showIntroWelcome = false;
     this.globals.showTabs = true;
 
+    // remove summary configuration
+    this.partialSummaryValues = null;
+
     if (this.globals.currentOption.metaData == 3)
     {
       this.configureCoordinates ();
@@ -574,7 +578,7 @@ toggle(){
 
       setTimeout (() => {
         this.startSearch ();
-      }, 750);
+      }, 100);
     }
     else
       this.startSearch ();
@@ -604,6 +608,7 @@ toggle(){
 
     // close dynamic table tab if visible
     this.globals.generateDynamicTable = false;
+    this.changeDetectorRef.detectChanges ();
 
     setTimeout (() => {
       this.search2 ();
@@ -688,14 +693,13 @@ toggle(){
       this.globals.mapsc=false;
       this.globals.tab = true;
 
-      this.globals.isLoading = true;
+      this.tableLoading = true;
       if(this.globals.currentOption.tabType === 'map'){
         this.globals.map = true;
         this.globals.selectedIndex = 3;
-        this.msfContainerRef.msfMapRef.getTrackingDataSource();
-      }else if(this.globals.currentOption.tabType === 'usageStatistics'){
-        this.msfContainerRef.msfTableRef.getDataUsageStatistics();
-      }else
+        this.mapboxLoading = true;
+      }
+      else
         this.globals.selectedIndex = 2;
 
       setTimeout(() => {
@@ -706,8 +710,7 @@ toggle(){
 
   moreResults2(){
     if(this.globals.currentOption.tabType === 'map' && this.globals.currentOption.url!=null){
-      this.globals.map = true;
-      // this.msfContainerRef.msfMapRef.getTrackingDataSource();
+      this.msfContainerRef.msfMapRef.getTrackingDataSource();
       this.msfContainerRef.msfTableRef.getData(true);
     }else if(this.globals.currentOption.tabType === 'usageStatistics'){
       this.msfContainerRef.msfTableRef.getDataUsageStatistics();
@@ -789,21 +792,40 @@ toggle(){
       panelClass: 'partial-summaries-dialog',
       autoFocus: false,
       data: {
-        metadata: this.msfContainerRef.msfTableRef.metadata
+        metadata: this.msfContainerRef.msfTableRef.metadata,
+        partialSummaryValues: this.partialSummaryValues
       }
     });
 
     dialogRef.afterClosed ().subscribe(result => {
       if (result)
       {
-        // this.globals.selectedIndex = 4;
-        // this.dynTableLoading = true;
+        let tokenResultTable;
 
-        // don't display summary for the last column breaker
+        this.globals.moreResults = false;
+        this.globals.query = true;
+        this.globals.tab = true;
+
+        this.globals.selectedIndex = 2;
+        this.tableLoading = true;
+
+        // always display the summary for the last column breaker
         if (result.columnBreakers.length)
-          result.columnBreakers[result.columnBreakers.length - 1].summary = false;
+          result.columnBreakers[result.columnBreakers.length - 1].summary = true;
 
-        this.appService.getSummaryResponse (this, result, this.summarySuccess, this.summaryError);
+        this.partialSummaryValues = result; // store the partial summary configuration
+
+        this.clearSort ();
+        this.msfContainerRef.msfTableRef.displayedColumns = [];
+
+        this.globals.startTimestamp = new Date();
+        this.msfContainerRef.msfTableRef.actualPageNumber = 0;
+
+        this.authService.removeTokenResultTable ();
+        tokenResultTable = this.authService.getTokenResultTable () ? this.authService.getTokenResultTable () : "";
+
+        this.appService.getSummaryResponse (this, result, "" + this.msfContainerRef.msfTableRef.actualPageNumber, tokenResultTable, this.msfContainerRef.msfTableRef.ListSortingColumns,
+          this.summarySuccess, this.summaryError);
       }
     });
   }
@@ -982,7 +1004,11 @@ toggle(){
   exportToCSV(): void
   {
     this.globals.isLoading = true;
-    this.appService.getDataTableSourceForCSV (this, this.prepareDataForCSV, this.CSVFail);
+
+    this.authService.removeTokenResultTable();
+    let tokenResultTable = this.authService.getTokenResultTable() ? this.authService.getTokenResultTable() : "";
+
+    this.appService.getDataTableSourceForCSV (this, tokenResultTable, this.msfContainerRef.msfTableRef.ListSortingColumns, this.prepareDataForCSV, this.CSVFail);
   }
 
   prepareDataForCSV(_this, result): void
@@ -1360,6 +1386,7 @@ toggle(){
     if (this.msfContainerRef && this.msfContainerRef.msfTableRef)
       this.msfContainerRef.msfTableRef = null;
 
+    this.partialSummaryValues = null;
     this.changeDetectorRef.detectChanges ();
   }
 
@@ -1590,14 +1617,17 @@ toggle(){
   }
 
   public getServerData(event?:PageEvent){
-    if(!this.globals.isLoading){
-      this.pageIndex = event;
-      this.globals.moreResultsBtn = true;
-      // this.pageIndex = event.pageIndex;
-      this.moreResults();
-      return event;
+    if (this.globals.selectedIndex == 2)
+    {
+      if (!this.tableLoading)
+      {
+        this.pageIndex = event;
+        this.globals.moreResultsBtn = true;
+        // this.pageIndex = event.pageIndex;
+        this.moreResults();
+        return event;
+      }
     }
-
   }
 
   lengthpaginator(event: any) {
@@ -1668,11 +1698,28 @@ toggle(){
 
   summarySuccess(_this, data): void
   {
-    console.log (data);
+    if (!_this.tableLoading)
+      return;
+
+    if (data.metadata)
+      data.metadata = JSON.parse (data.metadata);
+
+    if (data.Response && data.Response.rows)
+    {
+      data.Response.Rows = data.Response.rows;
+      data.Response.rows = undefined;
+    }
+
+    _this.msfContainerRef.msfTableRef.handlerSuccess (_this.msfContainerRef.msfTableRef, data);
   }
 
   summaryError(_this): void
   {
+    _this.msfContainerRef.msfTableRef.tableOptions.dataSource = false;
+    _this.msfContainerRef.msfTableRef.tableOptions.template = false;
 
+    _this.msfContainerRef.msfTableRef.resultsAvailable = "msf-no-visible";
+
+    _this.tableLoading = false;
   }
 }

@@ -25,7 +25,7 @@ export class Globals {
   popupLoading: boolean = false;
   popupLoading2: boolean = false;
   sort: MatSort;
-  chart: boolean = false;
+  dummyTab: boolean = false;
   map: boolean = false;
   mapsc: boolean = false;
   usageStatistics: boolean = false;
@@ -282,10 +282,10 @@ clearVariablesMenu(){
 }
 
   clearVariables(){
-    this.currentOption=null;
-    this.currentArgs=null;
+    this.currentOption = null;
+    this.currentArgs = null;
     this.isLoading = false;
-    this.chart = false;
+    this.dummyTab = false;
     this.map = false;
     this.mapsc = false;
     this.variables = null;

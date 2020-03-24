@@ -1,9 +1,9 @@
 <div class="partial-summaries-header">
     <img class="partial-summaries-icon" src="../../assets/images/{{globals.theme}}-summary.png">
-    <span class="partial-summaries-title">Partial Summaries</span>
+    <span class="partial-summaries-title">Partial Summary</span>
     <div class="partial-summaries-header-buttons">
-        <button mat-flat-button [disabled]="!colBreakers.length" class="flat-button"
-            [ngClass]="{ 'flat-button-disabled' : !colBreakers.length, 'flat-button': colBreakers.length }"
+        <button mat-flat-button [disabled]="!(colBreakers.length && (colAggregators.length || countRecords))" class="flat-button"
+            [ngClass]="{ 'flat-button-disabled' : !(colBreakers.length && (colAggregators.length || countRecords)), 'flat-button': colBreakers.length && (colAggregators.length || countRecords) }"
             (click)="generateSummary()">
             Generate
         </button>
@@ -44,7 +44,7 @@
                 </mat-checkbox>
                 <div class="column-breaker-space" *ngIf="pos == colBreakers.length - 1"></div>
                 <button mat-icon-button matTooltip="Delete Column Breaker" (click)="removeColumnBreaker(pos)">
-                    <mat-icon>delete</mat-icon>
+                    <mat-icon class="partial-summaries-delete-button">delete</mat-icon>
                 </button>
             </div>
         </div>
@@ -102,7 +102,7 @@
                     </mat-form-field>
                 </div>
                 <button mat-icon-button matTooltip="Delete Column Aggregator" (click)="removeColumnAggregator(pos)">
-                    <mat-icon>delete</mat-icon>
+                    <mat-icon class="partial-summaries-delete-button">delete</mat-icon>
                 </button>
             </div>
         </div>

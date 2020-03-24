@@ -25,6 +25,7 @@
                 <app-msf-table #msfTableRef [tabRef]="tabRef" [isLoading]="tableLoading" 
                 (finishLoading)="finishLoadingTable($event)" [categoryArguments]="getCategoryArguments()" 
                 [currentOption]="globals.currentOption" [isPanel]="false" [paginator]="paginator" [pageIndex]="pageIndex" 
+                [partialSummaryValues]="partialSummaryValues"
                 (paginatorlength)="paginatorlength($event)"
                 (shmoreResult)="shmoreResult($event)"
                 (sortingDataTable)="sortingDataTable($event)"></app-msf-table>
@@ -37,12 +38,12 @@
             </ng-template>
             <app-msf-dynamic-table #msfDynamicTableRef [isLoading]="dynTableLoading" (setDynTableLoading)="setDynTableLoading.emit($event)"></app-msf-dynamic-table>
         </mat-tab>    
-        <mat-tab *ngIf="globals.chart" #tabRef label="Chart">
+        <mat-tab *ngIf="globals.dummyTab" label="Dummy Tab">
             <ng-template mat-tab-label>
-                Chart
+                Dummy Tab
                 <mat-icon (click)="closeTab(4)" class="close-icon">close</mat-icon> 
             </ng-template>
-        </mat-tab> 
+        </mat-tab>
         <mat-tab *ngIf="globals.map" #tabRef label="Map">
             <ng-template mat-tab-label>
                 Map
@@ -50,15 +51,6 @@
             </ng-template>
             <app-msf-map #msfMapRef [useCancelButton]="true" [isLoading]="mapboxLoading" [displayMapMenu]="globals.displayMapMenu" [displayOptionPanel]="globals.status" (finishLoading)="finishLoadingMap($event)"></app-msf-map>
         </mat-tab> 
-
-       <!-- <mat-tab  [style.visibility]= "globals.mapsc ? 'visible' : 'hidden' " #tabRef >
-                <ng-template mat-tab-label>
-                        Map
-                        <mat-icon (click)="closeTab(6)" class="close-icon">close</mat-icon> 
-                </ng-template>
-            <app-msf-schedule-maps ></app-msf-schedule-maps>
-        </mat-tab>  -->
-        
     </mat-tab-group>
     </div>
     <app-msf-schedule-maps #msfScMapRef [currentOption]="globals.currentOption" [buildScheduleMapChart]="globals.buildScheduleMapChart" [hidden]="!globals.mapsc" [isLoading]="routeLoading" (setRouteLoading)="setRouteLoading.emit($event)"></app-msf-schedule-maps>
