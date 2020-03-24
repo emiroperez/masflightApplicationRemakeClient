@@ -578,7 +578,7 @@ toggle(){
 
       setTimeout (() => {
         this.startSearch ();
-      }, 100);
+      }, 750);
     }
     else
       this.startSearch ();
