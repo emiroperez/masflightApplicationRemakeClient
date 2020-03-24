@@ -1,5 +1,5 @@
 <div class="msf-dashboard-assistant-loading" *ngIf="isLoading"></div>
-<div [ngStyle]="{ 'display': checkVisibility() }">
+<div [ngStyle]="{ 'display': checkVisibility() }" [style.height.%]="100">
   <div class="msf-dashboard-assistant-header">
     <span class="msf-dashboard-assistant-title">
       <span *ngIf="!selectDataPreview">Chart Configuration Wizard</span>
@@ -77,9 +77,9 @@
       </mat-vertical-stepper>
     </div>
     <div *ngIf="selectDataPreview" [style.margin-left.px]="17.5"></div>
-    <span [ngStyle]="{ 'display': checkStep1Visibility(stepper) }">
-      <span [ngStyle]="{ 'display': checkTablePreviewVisibility() }">
-        <div class="msf-dashboard-assistant-content" [style.width.px]="getConfigWidth()">
+    <span class="msf-dashboard-assistant-step1-right" [ngStyle]="{ 'display': checkStep1Visibility(stepper) }">
+      <span [ngStyle]="{ 'display': checkTablePreviewVisibility() }" [style.height.%]="100">
+        <div class="msf-dashboard-assistant-content" [style.width.px]="getConfigWidth()" [style.height.%]="100">
           <div class="msf-dashboard-assistant-tab-group">
             <div class="no-control-variables-container" *ngIf="!currentOptionCategories">
               No Control Variables For This Option
@@ -172,8 +172,8 @@
           </div>
         </div>
       </span>
-      <span [ngStyle]="{ 'display': checkEditVisibility() }">
-        <div class="msf-dashboard-assistant-content" [style.width.px]="getConfigWidth()">
+      <span class="msf-dashboard-assistant-step1-edit-right" [ngStyle]="{ 'display': checkEditVisibility() }">
+        <div class="msf-dashboard-assistant-content" [style.width.px]="getConfigWidth()" [style.height.%]="100">
           <div class="msf-dashboard-assistant-tab-group msf-dashboard-assistant-edit-tab-group">
             <mat-tab-group #editTabs>
               <mat-tab *ngFor="let controlVariable of currentOptionCategories">

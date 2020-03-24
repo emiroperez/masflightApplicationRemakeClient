@@ -4458,6 +4458,9 @@ mat-tab-group
     .msf-no-results, msf-no-results-email
         margin-top: 80px
 
+.chart-preview-container
+    height: calc(100% - 90px) !important
+
 .msf-dashboard-dialog
     .msf-dashboard-control-variables-close-button
         z-index: 99999
@@ -5103,7 +5106,7 @@ mat-tab-group
             right: 24px
 
 .msf-dashboard-assistant-edit-tab-group
-    height: 446px !important
+    height: 100% !important
     .msf-dashboard-assistant-edit-tab-container
         width: 100%
         height: 100% !important
@@ -8382,11 +8385,14 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     justify-content: right
     padding: 0px 10px
 
-.msf-dashboard-assistant-dialog, .msf-dashboard-assistant-loading
+.msf-dashboard-assistant-loading
+  height: 100% !important
+
+.msf-dashboard-assistant-dialog
     min-width: 1050px !important
     max-width: 1050px !important
     width: 1050px !important
-    height: 525px !important
+    height: 75% !important
     .mat-dialog-container
         padding: 0
         overflow: hidden
@@ -8436,9 +8442,10 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                         line-height: 0 !important
         .msf-dashboard-assistant-body
             display: flex
+            height: calc(100% - 100px)
             .msf-dashboard-assistant-stepper
                 width: 255px
-                height: 427px
+                height: 100%
                 margin: -3px 15px
                 padding: 10px
                 .mat-vertical-content-container
@@ -8467,9 +8474,15 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                 .msf-dashboard-assistant-table
                     overflow: auto
                     width: 100%
-                    height: 303px
+                    height: 100%
             .msf-dashboard-assistant-argument-value
                 font-weight: 550
+
+.msf-dashboard-assistant-step1-right
+    height: calc(100% + 15px)
+
+.msf-dashboard-assistant-step1-edit-right
+    height: calc(100% + 5px)
 
 .msf-dashboard-assistant-chart-type-label
     font-weight: 550
@@ -8576,8 +8589,9 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 
 .msf-dashboard-select-distribution-chart-table-container
     width: 730px
+    height: calc(100% - 78px)
     .msf-dashboard-select-distribution-chart-table
-        height: 350px
+        height: 100%
         overflow: auto
         th
             min-width: 100px
