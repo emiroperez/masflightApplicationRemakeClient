@@ -11228,8 +11228,10 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                         margin-bottom: 3vh !important
 
 .partial-summaries-dialog
+    max-width: 90vw !important
     .mat-dialog-container
         padding: 0 !important
+        overflow-x: hidden
         .partial-summaries-header
             display: flex
             align-items: center
@@ -11285,6 +11287,17 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                 .partial-summaries-list
                     height: calc(100% - 65px)
                     overflow-y: auto
+        .partial-summaries-body-mobile
+            flex-direction: column
+            .partial-summaries-left, .partial-summaries-right
+                width: 100% !important
+                height: 50%
+                .mat-checkbox-label
+                    font-size: 10px !important
+                    white-space: normal
+                    line-height: 12px !important
+                .partial-summaries-item .partial-summaries-input-container
+                    width: calc(100% - 180px) !important
 
 .partial-summaries-item
     display: flex
