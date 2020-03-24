@@ -1,8 +1,9 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ChangeDetectorRef } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import { Globals } from '../globals/Globals';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { MediaMatcher } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-msf-partial-summaries',
@@ -10,11 +11,15 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
   styleUrls: ['./msf-partial-summaries.component.css']
 })
 export class MsfPartialSummariesComponent {
+  mobileQuery: MediaQueryList;
+  private _mobileQueryListener: () => void;
+
   colBreakers: any[] = [];
   colAggregators: any[] = [];
 
   countAlias: string = "";
   countRecords: boolean = false;
+  isMobile: boolean = false;
 
   functions: any[] = [
     { id: 'avg', name: 'Average' },
@@ -23,9 +28,13 @@ export class MsfPartialSummariesComponent {
     { id: 'min', name: 'Min' }
   ];
 
-  constructor(public globals: Globals, public dialogRef: MatDialogRef<MsfPartialSummariesComponent>,
+  constructor(public globals: Globals, private media: MediaMatcher, private changeDetectorRef: ChangeDetectorRef, public dialogRef: MatDialogRef<MsfPartialSummariesComponent>,
     @Inject(MAT_DIALOG_DATA) public data)
   {
+    this.mobileQuery = media.matchMedia ('(max-width: 480px)');
+    this._mobileQueryListener = () => changeDetectorRef.detectChanges ();
+    this.mobileQuery.addListener (this._mobileQueryListener);
+
     if (this.data.partialSummaryValues == null)
       return;
 

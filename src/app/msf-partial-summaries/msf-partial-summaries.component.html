@@ -12,7 +12,7 @@
         </button>
     </div>
 </div>
-<div class="partial-summaries-body">
+<div [ngClass]="this.mobileQuery.matches ? 'partial-summaries-body partial-summaries-body-mobile' : 'partial-summaries-body'">
     <div class="partial-summaries-left">
         <div class="partial-summaries-desc">
             <div class="partial-summaries-label-container">

@@ -14,7 +14,7 @@
                 Current Query General Summary
                 <mat-icon (click)="closeTab(1)" class="close-icon">close</mat-icon> 
             </ng-template>
-            <app-current-query-summary [isLoading]="tableLoading" (finishLoading)="finishLoadingTable($event)"></app-current-query-summary> 
+            <app-current-query-summary [isLoading]="tableLoading" [isMobile]="mobileQuery.matches" (finishLoading)="finishLoadingTable($event)"></app-current-query-summary> 
         </mat-tab>
         <!-- <mat-tab> -->
         <mat-tab *ngIf="globals.tab">

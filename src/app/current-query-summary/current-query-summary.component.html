@@ -1,6 +1,6 @@
 
   <div class="msf-intro-body1 msf-current-query-summary-body" [style.width.%]="100" [style.height.%]="100">    
-      <div class="msf-current-query-summary-container">
+      <div [ngClass]="isMobile ? 'msf-current-query-summary-container' : 'msf-current-query-summary-container-mobile'">
         <div class="msf-summary-title">Current Query Summary</div>
         <div class="msf-summary-div-container">
         <div class="msf-inline ">Data Selected: </div>
@@ -37,27 +37,27 @@
            </ng-container>    
         </div>
       </div>
-      <div class="msf-search-complete-container">
+      <div class="msf-search-complete-container" [ngClass]="isMobile ? 'msf-search-complete-container-mobile' : 'msf-block'">
             <div class="msf-search-title">Search Complete</div>            
             <div  class="msf-search-complete-option" (click)="componentClickHandler(argsContainer, icon2)">   
-                <i #icon2 class="material-icons msf-menu-complete-row ">expand_more</i>             
-                <span class="msf-menu-component-text">{{globals.currentOption.label}} : ({{globals.getTime()}} s)</span>
-                <i #icon [ngClass]="globals.getTime() != 0 ?'material-icons msf-summary-ok-icon':'material-icons msf-summary-icon'">check_circle</i>
+                <i #icon2 class="material-icons msf-menu-complete-row msf-query-summary-icon">expand_more</i>             
+                <span class="msf-menu-component-text msf-query-summary-text">{{globals.currentOption.label}} : ({{globals.getTime()}} s)</span>
+                <i #icon class="msf-query-summary-icon" [ngClass]="globals.getTime() != 0 ?'material-icons msf-summary-ok-icon':'material-icons msf-summary-icon'">check_circle</i>
             </div>
             <div [ngClass]="argsContainer.open ? 'msf-detail-container msf-block' : 'msf-detail-container msf-hidden'" #argsContainer>
                 <div class="msf-summary-category-label">Request Details</div>
-                <div class="msf-detail msf-block">                       
+                <div class="msf-detail msf-block">
                         <div class="msf-inline msf-summary-arg-label">Start Date: </div>
                         <div class="msf-inline msf-summary-value msf-summary-arg-value"> {{utils.getDateFormat(globals.startTimestamp,'MM/dd/yyyy HH:mm:ss')}}</div>                        
-                </div>  
-                <div class="msf-detail  msf-block">                                               
+                </div>
+                <div class="msf-detail  msf-block">
                         <div class="msf-inline msf-summary-arg-label">End Date: </div>
                         <div class="msf-inline msf-summary-value msf-summary-arg-value"> {{utils.getDateFormat(globals.endTimestamp,'MM/dd/yyyy HH:mm:ss')}}</div>
-                </div>  
-                <div class="msf-detail  msf-block">                                               
+                </div>
+                <div class="msf-detail  msf-block">
                         <div class="msf-inline msf-summary-arg-label">Time: </div>
                         <div class="msf-inline msf-summary-value msf-summary-arg-value"> {{globals.getTime()}} s</div>
-                </div>  
+                </div>
                 <!--
                 <div class="msf-detail  msf-block">                                               
                         <div class="msf-inline msf-summary-arg-label">Size: </div>
@@ -65,18 +65,18 @@
                 </div>  
                 -->
             </div>
-            <div class="msf-summary-category-label ">Having Problems?</div>
-            <div  class="msf-search-complete-option" >                
-                <span class="msf-menu-component-text">Having Problems?</span>
-                <i #icon class="material-icons msf-summary-icon">warning</i>
+            <div class="msf-summary-category-label">Having Problems?</div>
+            <div  class="msf-search-complete-option">
+                <span class="msf-menu-component-text msf-query-summary-text msf-query-summary-text-problems">Troubleshooting</span>
+                <i #icon class="material-icons msf-summary-icon msf-query-summary-icon">warning</i>
             </div>
-            <div  class="msf-search-complete-option" >                
-                <span class="msf-menu-component-text">Documentation</span>
-                <i #icon class="material-icons msf-summary-icon">find_in_page</i>
+            <div  class="msf-search-complete-option">                
+                <span class="msf-menu-component-text msf-query-summary-text msf-query-summary-text-problems">Documentation</span>
+                <i #icon class="material-icons msf-summary-icon msf-query-summary-icon">find_in_page</i>
             </div>
-            <div  class="msf-search-complete-option" >                
-                <span class="msf-menu-component-text">Forum</span>
-                <i #icon class="material-icons msf-summary-icon">question_answer</i>
+            <div  class="msf-search-complete-option">
+                <span class="msf-menu-component-text msf-query-summary-text msf-query-summary-text-problems">Forum</span>
+                <i #icon class="material-icons msf-summary-icon msf-query-summary-icon">question_answer</i>
             </div>
       </div>
   </div>

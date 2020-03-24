@@ -3899,6 +3899,23 @@ mat-tab-group
 .msf-category-container.is-mobile
     height: calc(100% - 150px) !important
 
+.msf-search-complete-container-mobile
+    width: 30% !important
+    .msf-query-summary-text
+        font-size: 72.5% !important
+    .msf-query-summary-icon
+        font-size: 120% !important
+    .msf-detail-container
+        font-size: 90% !important
+        margin-left: 15px !important
+    .msf-query-summary-text-problems
+        margin-left: 0px !important
+        margin-right: 5px !important
+    .msf-menu-complete-row
+        margin-left: -17px !important
+    .msf-summary-icon, .msf-summary-ok-icon
+        right: 0 !important
+
 .msf-control-variables-overlay
     position: relative
 
@@ -4440,6 +4457,9 @@ mat-tab-group
         height: 5%
     .msf-no-results, msf-no-results-email
         margin-top: 80px
+
+.chart-preview-container
+    height: calc(100% - 90px) !important
 
 .msf-dashboard-dialog
     .msf-dashboard-control-variables-close-button
@@ -5086,7 +5106,7 @@ mat-tab-group
             right: 24px
 
 .msf-dashboard-assistant-edit-tab-group
-    height: 446px !important
+    height: 100% !important
     .msf-dashboard-assistant-edit-tab-container
         width: 100%
         height: 100% !important
@@ -5859,6 +5879,9 @@ li.msf-select:before
 .msf-current-query-summary-body
     .msf-current-query-summary-container
         width: 75% !important
+        overflow-x: hidden
+    .msf-current-query-summary-container-mobile
+        width: 70% !important
         overflow-x: hidden
 
 .msf-search-complete-container
@@ -8378,11 +8401,14 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     justify-content: right
     padding: 0px 10px
 
-.msf-dashboard-assistant-dialog, .msf-dashboard-assistant-loading
+.msf-dashboard-assistant-loading
+  height: 100% !important
+
+.msf-dashboard-assistant-dialog
     min-width: 1050px !important
     max-width: 1050px !important
     width: 1050px !important
-    height: 525px !important
+    height: 75% !important
     .mat-dialog-container
         padding: 0
         overflow: hidden
@@ -8432,9 +8458,10 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                         line-height: 0 !important
         .msf-dashboard-assistant-body
             display: flex
+            height: calc(100% - 100px)
             .msf-dashboard-assistant-stepper
                 width: 255px
-                height: 427px
+                height: 100%
                 margin: -3px 15px
                 padding: 10px
                 .mat-vertical-content-container
@@ -8463,9 +8490,15 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                 .msf-dashboard-assistant-table
                     overflow: auto
                     width: 100%
-                    height: 303px
+                    height: 100%
             .msf-dashboard-assistant-argument-value
                 font-weight: 550
+
+.msf-dashboard-assistant-step1-right
+    height: calc(100% + 15px)
+
+.msf-dashboard-assistant-step1-edit-right
+    height: calc(100% + 5px)
 
 .msf-dashboard-assistant-chart-type-label
     font-weight: 550
@@ -8572,8 +8605,9 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 
 .msf-dashboard-select-distribution-chart-table-container
     width: 730px
+    height: calc(100% - 78px)
     .msf-dashboard-select-distribution-chart-table
-        height: 350px
+        height: 100%
         overflow: auto
         th
             min-width: 100px
@@ -11224,8 +11258,10 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                         margin-bottom: 3vh !important
 
 .partial-summaries-dialog
+    max-width: 90vw !important
     .mat-dialog-container
         padding: 0 !important
+        overflow-x: hidden
         .partial-summaries-header
             display: flex
             align-items: center
@@ -11281,6 +11317,17 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                 .partial-summaries-list
                     height: calc(100% - 65px)
                     overflow-y: auto
+        .partial-summaries-body-mobile
+            flex-direction: column
+            .partial-summaries-left, .partial-summaries-right
+                width: 100% !important
+                height: 50%
+                .mat-checkbox-label
+                    font-size: 10px !important
+                    white-space: normal
+                    line-height: 12px !important
+                .partial-summaries-item .partial-summaries-input-container
+                    width: calc(100% - 180px) !important
 
 .partial-summaries-item
     display: flex

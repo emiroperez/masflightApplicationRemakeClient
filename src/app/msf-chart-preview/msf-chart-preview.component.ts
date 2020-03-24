@@ -194,7 +194,7 @@ export class MsfChartPreviewComponent {
       variableName: haveVariable ? this.data.variable.columnName : null,
       xaxisName: haveXaxis ? this.data.xaxis.columnName : null,
       valueName: (this.data.valueColumn && !this.isSimpleChart ()) ? this.data.valueColumn.columnName : null,
-      valueList: (this.data.valueColumn && this.isSimpleChart ()) ? this.data.valueColumn.columnName : null,
+      valueNameList: (this.data.valueColumn && this.isSimpleChart()) ? this.data.valueColumn.columnName : null,
       functionName: isAdvChart ? ("advby" + this.data.intervalType) : this.data.function.id,
       advIntervalValue: isAdvChart ? this.data.intValue : null
     };
