@@ -12,6 +12,9 @@ export class CurrentQuerySummaryComponent implements OnInit {
   @Input("isLoading")
   isLoading: boolean;
 
+  @Input("isMobile")
+  isMobile: boolean;
+
   @Output("finishLoading")
   finishLoading = new EventEmitter ();
 
