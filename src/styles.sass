@@ -3900,8 +3900,9 @@ mat-tab-group
     height: calc(100% - 150px) !important
 
 .msf-search-complete-container-mobile
+    width: 30% !important
     .msf-query-summary-text
-        font-size: 75% !important
+        font-size: 72.5% !important
     .msf-query-summary-icon
         font-size: 120% !important
     .msf-detail-container
@@ -3910,6 +3911,10 @@ mat-tab-group
     .msf-query-summary-text-problems
         margin-left: 0px !important
         margin-right: 5px !important
+    .msf-menu-complete-row
+        margin-left: -17px !important
+    .msf-summary-icon, .msf-summary-ok-icon
+        right: 0 !important
 
 .msf-control-variables-overlay
     position: relative
@@ -5873,6 +5878,9 @@ li.msf-select:before
 .msf-current-query-summary-body
     .msf-current-query-summary-container
         width: 75% !important
+        overflow-x: hidden
+    .msf-current-query-summary-container-mobile
+        width: 70% !important
         overflow-x: hidden
 
 .msf-search-complete-container
