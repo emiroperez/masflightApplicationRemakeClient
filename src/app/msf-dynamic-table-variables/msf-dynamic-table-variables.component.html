@@ -1,3 +1,34 @@
+<div class="dynamic-table-header">
+  <img class="dynamic-table-icon" src="../../assets/images/{{globals.theme}}-dynamicTable.png" [style.width.px]="20" [style.height.px]="20">
+  <span class="dynamic-table-title">Dynamic Table</span>
+  <div class="dynamic-table-header-buttons">
+    <button mat-flat-button class="flat-button">
+      Generate
+    </button>
+    <button mat-icon-button class="dynamic-table-close-button" (click)="onNoClick()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</div>
+<div class="dynamic-table-body">
+  <div class="dynamic-table-left">
+    <div class="dynamic-table-metadata-container">
+      <div class="dynamic-table-metadata-search">
+        <mat-form-field>
+          <input matInput placeholder="Drag N Drop" autocomplete="off"/>
+        </mat-form-field>
+      </div>
+      <div class="metadata-list">
+        <div class="metadata-item">
+          Test
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="dynamic-table-right">
+  </div>
+</div>
+<!--
 <div class="msf-dynamic-table-variable-containner">
   <div class="msf-dynamic-table-variable-title">
     <img src="../../assets/images/{{globals.theme}}-dynamicTable.png" [style.width.px]="20" [style.height.px]="20">
@@ -35,13 +66,13 @@
               </mat-select>
           </mat-form-field>
           <mat-accordion>
-              <ng-container *ngFor="let val of this.globals.values"> 
+              <ng-container *ngFor="let val of this.globals.values">
                 <mat-expansion-panel class="msf-val-name-content">
                   <mat-expansion-panel-header>
                     <mat-panel-title>
                         {{val.name}}
                     </mat-panel-title>
-                  </mat-expansion-panel-header>   
+                  </mat-expansion-panel-header>
                   <div class="msf-component-radio">
                       <mat-radio-group [(ngModel)]="val.function">
                         <div class="alias-container">
@@ -79,16 +110,17 @@
                             <i *ngIf="val.count" class="material-icons alias-button" (click)="configureAlias(val, 'Count')">more_horiz</i>
                             <i *ngIf="!val.count" class="material-icons alias-button-disabled">more_horiz</i>
                         </div>
-                      </mat-radio-group>    
-                  </div>                                                                              
-                </mat-expansion-panel>   
-            </ng-container>               
+                      </mat-radio-group>
+                  </div>
+                </mat-expansion-panel>
+            </ng-container>
           </mat-accordion>
-          
+
       </div>
   </div>
   <div class="msf-dynamic-table-variable-fotter">
       <button class="msf-cancel-button" mat-button (click)="onNoClick()" >Cancel</button>
-      <button [disabled]="disabled()" [ngClass]="disabled()?'msf-disabled msf-ok-button ':'msf-ok-button'" mat-button (click)="generateTable()" >Generate Table</button>      
+      <button [disabled]="disabled()" [ngClass]="disabled()?'msf-disabled msf-ok-button ':'msf-ok-button'" mat-button (click)="generateTable()" >Generate Table</button>
   </div>
 </div>
+-->

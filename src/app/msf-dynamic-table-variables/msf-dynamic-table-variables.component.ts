@@ -28,7 +28,7 @@ export class MsfDynamicTableVariablesComponent {
   public variableFilterCtrl: FormControl = new FormControl();
   public filteredVariables: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
 
-  @ViewChild('variableSelect', { static: false }) variableSelect: MatSelect;
+  //@ViewChild('variableSelect', { static: false }) variableSelect: MatSelect;
 
  /** control for the MatSelect filter keyword */
  public valueFilterCtrl: FormControl = new FormControl();
@@ -37,7 +37,7 @@ export class MsfDynamicTableVariablesComponent {
   /** list of variable filtered by search keyword */
   public filteredValues: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
 
-  @ViewChild('valueSelect', { static: false }) valueSelect: MatSelect;
+  //@ViewChild('valueSelect', { static: false }) valueSelect: MatSelect;
   
  /** Subject that emits when the component has been destroyed. */
  private _onDestroy = new Subject<void>();
@@ -85,12 +85,12 @@ export class MsfDynamicTableVariablesComponent {
   }
 
   private setInitialValue() {
-    this.filteredVariables
+    /*this.filteredVariables
       .pipe(take(1), takeUntil(this._onDestroy))
       .subscribe(() => {
         this.variableSelect.compareWith = (a: Airport, b: Airport) => (a.id === b.id);
         this.valueSelect.compareWith = (a: Airport, b: Airport) => (a.id === b.id);
-      });
+      });*/
   }
 
   private filterVariables() {

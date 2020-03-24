@@ -834,7 +834,9 @@ toggle(){
   {
     const dialogRef = this.dialog.open (MsfDynamicTableVariablesComponent,
     {
-      width: '600px',
+      width: '1100px',
+      height: '600px',
+      panelClass: 'dynamic-table-dialog',
       data: {
         metadata: this.msfContainerRef.msfTableRef.metadata,
         variables: this.variables
