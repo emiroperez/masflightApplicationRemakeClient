@@ -10,22 +10,30 @@
     </button>
   </div>
 </div>
-<div class="dynamic-table-body">
+<div class="dynamic-table-body" cdkDropListGroup>
   <div class="dynamic-table-left">
     <div class="dynamic-table-metadata-container">
       <div class="dynamic-table-metadata-search">
         <mat-form-field>
-          <input matInput placeholder="Drag N Drop" autocomplete="off"/>
+          <input matInput placeholder="Drag N Drop" autocomplete="off" [(ngModel)]="filter" (ngModelChange)="filterVariables()"/>
+          <mat-icon class="dynamic-table-search-icon" aria-label="search">search</mat-icon>
         </mat-form-field>
       </div>
-      <div class="metadata-list">
-        <div class="metadata-item">
-          Test
+      <div class="metadata-list" cdkDropList [cdkDropListData]="filteredVariables" cdkDropListSortingDisabled>
+        <div class="{{globals.theme}} metadata-item" *ngFor="let variable of filteredVariables | async" cdkDrag>
+          <div class="metadata-label">{{variable.name}}</div>
+          <div class="metadata-drag-handle" [style.width.px]="20" [style.height.px]="20" cdkDragHandle></div>
         </div>
       </div>
     </div>
   </div>
   <div class="dynamic-table-right">
+    <div class="drop-here" cdkDropList [cdkDropListData]="tests" (cdkDropListDropped)="drop($event)">
+      <span cdkDrag [cdkDragDisabled]="true">Drop here</span>
+    </div>
+    <div *ngFor="let test of tests">
+      {{test.name}}
+    </div>
   </div>
 </div>
 <!--

@@ -1,0 +1,15 @@
+.cdk-drag-preview
+{
+  box-sizing: border-box;
+  opacity: 0.85;
+}
+
+.drop-here .cdk-drag-placeholder
+{
+  display: none;
+}
+
+.cdk-drag-placeholder
+{
+  opacity: 0;
+}

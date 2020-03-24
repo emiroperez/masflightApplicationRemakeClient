@@ -1,15 +1,15 @@
-import { Component, Inject, ViewChild, Input } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA, MatSelect, MatDialog } from '@angular/material';
-import { Airport } from '../model/Airport';
-import { ReplaySubject, Subject } from 'rxjs';
-import { FormControl } from '@angular/forms';
-import { take, takeUntil } from 'rxjs/operators';
+import { Component, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
+
+import { ReplaySubject } from 'rxjs';
 import { Utils } from '../commons/utils';
 import { Globals } from '../globals/Globals';
 import { MsfDynamicTableAliasComponent } from '../msf-dynamic-table-alias/msf-dynamic-table-alias.component';
+import { take, toArray } from 'rxjs/operators';
 
 export interface DialogData {
-  metadata: string[];
+  metadata: any[];
 }
 
 @Component({
@@ -19,119 +19,57 @@ export interface DialogData {
 })
 export class MsfDynamicTableVariablesComponent {
 
-  metadata;  
-
-  columns:any[] = []; 
+  columns: any[] = [];
+  filter: string;
 
   utils: Utils;
 
-  public variableFilterCtrl: FormControl = new FormControl();
   public filteredVariables: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
-
-  //@ViewChild('variableSelect', { static: false }) variableSelect: MatSelect;
-
- /** control for the MatSelect filter keyword */
- public valueFilterCtrl: FormControl = new FormControl();
-
-
-  /** list of variable filtered by search keyword */
-  public filteredValues: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
-
-  //@ViewChild('valueSelect', { static: false }) valueSelect: MatSelect;
-  
- /** Subject that emits when the component has been destroyed. */
- private _onDestroy = new Subject<void>();
 
   constructor(public dialogRef: MatDialogRef<MsfDynamicTableVariablesComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData, public globals: Globals,
-    public dialog: MatDialog) {
+    public dialog: MatDialog)
+  {
+    this.utils = new Utils ();
+  }
 
-      this.metadata = data.metadata;
-      this.utils = new Utils();
-      
-    }
-
-  onNoClick(): void {
+  onNoClick(): void
+  {
     this.globals.values = [];
     this.globals.variables = [];
-    this.dialogRef.close(false);
+    this.dialogRef.close (false);
   }
 
-  ngOnInit() {
-
-    this.setColumns();
-
-    this.globals.variables = [];
-
-    this.filteredVariables.next(this.columns.slice());
-    this.variableFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterVariables();
-      });
-
-    this.globals.values = [];
-
-    this.filteredValues.next(this.columns.slice());
-    this.valueFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterValues();
-      });
+  ngOnInit()
+  {
+    this.setColumns ();
+    this.filteredVariables.next (this.columns.slice ());
   }
 
-  ngAfterViewInit() {
-    this.setInitialValue();
-  }
-
-  private setInitialValue() {
-    /*this.filteredVariables
-      .pipe(take(1), takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.variableSelect.compareWith = (a: Airport, b: Airport) => (a.id === b.id);
-        this.valueSelect.compareWith = (a: Airport, b: Airport) => (a.id === b.id);
-      });*/
-  }
-
-  private filterVariables() {
-    if (!this.columns) {
+  filterVariables(): void
+  {
+    if (!this.columns)
       return;
-    }
-    let search = this.variableFilterCtrl.value;
-    if (!search) {
+
+    let search = this.filter;
+    if (!search)
+    {
       this.filteredVariables.next(this.columns.slice());
       return;
-    } else {
-      search = search.toLowerCase();
     }
-    this.filteredVariables.next(
-      this.columns.filter(variable => variable.name.toLowerCase().indexOf(search) > -1)
+
+    search = search.toLowerCase ();
+
+    this.filteredVariables.next (
+      this.columns.filter (variable => variable.name.toLowerCase ().indexOf (search) > -1)
     );
   }
 
-  private filterValues() {
-    if (!this.columns) {
-      return;
-    }
-    let search = this.valueFilterCtrl.value;
-    if (!search) {
-      this.filteredValues.next(this.columns.slice());
-      return;
-    } else {
-      search = search.toLowerCase();
-    }
-    this.filteredValues.next(
-      this.columns.filter(value => value.name.toLowerCase().indexOf(search) > -1)
-    );
-  }
-
-
-  setColumns(){
-    for(let columnConfig of this.metadata){
+  setColumns()
+  {
+    for (let columnConfig of this.data.metadata)
       this.columns.push({id: columnConfig.columnName, name: columnConfig.columnLabel});
-    }
   }
-
 
   deleteVariable(variable)
   {
@@ -315,6 +253,16 @@ export class MsfDynamicTableVariablesComponent {
             break;
         }
       }
+    });
+  }
+
+
+  tests: any[] = [];
+
+  drop(event: CdkDragDrop<any[]>): void
+  {
+    this.filteredVariables.pipe(toArray()).subscribe((variables) => {
+      this.tests.push(variables[event.previousIndex]);
     });
   }
 }
