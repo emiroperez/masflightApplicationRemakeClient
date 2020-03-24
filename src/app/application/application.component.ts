@@ -570,6 +570,8 @@ toggle(){
 
     if (isMobile)
     {
+      this.changeDetectorRef.detectChanges ();
+
       setTimeout (() => {
         this.startSearch ();
       }, 750);
