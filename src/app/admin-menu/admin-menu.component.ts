@@ -1071,6 +1071,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   menuString: any[] = [];
   @ViewChildren('tooltip') tooltips;
   optionForm: FormGroup;
+  optionFormtabType: FormGroup;
   recursiveDeleteDone: boolean;
 
   filteredCategories: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
@@ -1082,6 +1083,14 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     { name: 'Normal', value: 0 },
     { name: 'Main Menu Only', value: 1 },
     { name: 'Dashboard Only', value: 2 }
+  ];
+
+  tabTypes: any[] = [
+    { name: 'Normal', metaData: 1 , tabType: null},
+    { name: 'Map', metaData: 1 , tabType: 'map'},
+    { name: 'Schedule Maps', metaData: 2 , tabType: 'scmap'},
+    { name: 'Coordinates Map', metaData: 3, tabType: 'map'},
+    { name: 'Route Network Map', metaData: 4, tabType: 'scmap2'}
   ];
 
   numArgumentsPerType: any[] = [
@@ -1192,6 +1201,10 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
       optionTypeCtrl: new FormControl()
     });
 
+    this.optionFormtabType = this.formBuilder.group({
+      optionTabTypeCtrl: new FormControl()
+    });
+
     this.dataChange.subscribe(data => {
       this.dataSource.data = data;
     });
@@ -1226,6 +1239,15 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     node.typeOption = item.value.value;
     const nestedNode = this.flatNodeMap.get(node);
     nestedNode.typeOption = node.typeOption;
+    this.dataChange.next(this.data);
+  }
+
+  setChangeTabType(item, node) {
+    node.tabType = item.value.tabType;
+    node.metaData = item.value.metaData;
+    const nestedNode = this.flatNodeMap.get(node);
+    nestedNode.tabType = node.tabType;
+    nestedNode.metaData = node.metaData;
     this.dataChange.next(this.data);
   }
 
@@ -1434,6 +1456,14 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     for (let i = 0; i < this.optionTypes.length; i++) {
       if (option.typeOption == this.optionTypes[i].value) {
         this.optionForm.get('optionTypeCtrl').setValue(this.optionTypes[i]);
+        break;
+      }
+    }
+
+    this.optionFormtabType.get('optionTabTypeCtrl').setValue(null);
+    for (let i = 0; i < this.tabTypes.length; i++) {
+      if (option.tabType == this.tabTypes[i].tabType) {
+        this.optionFormtabType.get('optionTabTypeCtrl').setValue(this.tabTypes[i]);
         break;
       }
     }

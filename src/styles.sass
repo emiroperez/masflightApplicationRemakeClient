@@ -2606,7 +2606,7 @@ p
     margin-bottom: 2px
     background: rgba($msf-primary-dark-color,.5)
 
-.msf-row
+// .msf-row
 
 .msf-row-name
     @extend .msf-font-smaller
@@ -3450,7 +3450,7 @@ button[aria-expanded="true"]
 .msf-menu-hide-full-nav
     display: none
 
-.msf-menu-show-full-nav
+// .msf-menu-show-full-nav
 
 .msf-menu-show-full-nav-component
     width: calc(100% - 300px)
@@ -5497,8 +5497,6 @@ td.mat-cell.admin-column-arguments-cell
     &:first-of-type
             margin-top: 10px
 
-.jqx-widget-header
-
 .msf-width-20
     width: 20%
 
@@ -6716,7 +6714,7 @@ th.msf-show-table, td.msf-show-table
     height: 27px !important
 
 .msf-admin-search
-    width: 50%
+    width: 45%
     height: 24px
     display: inline-block
     margin-bottom: 20px
@@ -6744,7 +6742,7 @@ th.msf-show-table, td.msf-show-table
 
 .msf-admin-show-selected 
     display: inline-block
-    width: calc(45% - 19px)
+    width: calc(50% - 19px)
     margin-left: 19px
     text-align: left
 
@@ -7209,8 +7207,10 @@ mat-form-field.msf-table-input
     .button-setup
         display: flex
         flex-direction: row
-        width: 30%
-        margin-right: 5%
+        // width: 30%
+        // margin-right: 5%
+        width: 27%
+        margin-left: 5%
         .button-label
             flex: 4
             .button-section
@@ -7254,11 +7254,24 @@ mat-form-field.msf-table-input
     h2
         font-weight: 500
 
-.dropdown-setup
+.option-type-admin-menu
     display: flex
     flex-direction: row
-    width: 30%
-    margin-right: 5%
+    width: 28%
+    margin-left: 6%
+    margin-bottom: -20px
+    .dropdown-form-field
+        flex: 1
+
+.DrillDown-setup 
+    width: 25% !important
+    margin: 0px !important
+
+.dropdown-setup
+    width: 33% !important
+    margin-left: 5%
+    display: flex
+    flex-direction: row
     margin-bottom: -20px
     .dropdown-form-field
         flex: 1
@@ -7270,12 +7283,15 @@ mat-form-field.msf-table-input
     width: 95% !important
 
 .admin-input-icon
-    width: 45% !important
-    padding-right: 5%
+    // width: 45% !important
+    width: 26% !important
+    // padding-right: 5%
     display: inline-block
 
 .admin-input-tab
-    width: 45% !important
+    // width: 45% !important
+    width: 35% !important
+    margin-left: 5%
 
 .admin-menu-category-argumets-header
     flex: 1

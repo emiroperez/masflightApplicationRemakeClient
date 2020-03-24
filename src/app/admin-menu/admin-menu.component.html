@@ -112,17 +112,30 @@
                                     <mat-form-field class="standard-text admin-input-base-url">
                                         <input matInput class="standard-input-text" autocomplete="off" placeholder="URL Base" [(ngModel)]="optionSelected.baseUrl" (ngModelChange)="setChangeURL(optionSelected)">
                                     </mat-form-field>
-                                    <div class="standard-text admin-input-icon">
-                                        <app-material-icon-picker #materialIconPicker [value]="optionSelected.icon" (iconChanged)="setChangeIcon($event, optionSelected)"></app-material-icon-picker>
+                                    <div [style.margin-right.%]= "5" class="msf-flex">
+                                        <div class="standard-text admin-input-icon">
+                                            <app-material-icon-picker #materialIconPicker [value]="optionSelected.icon"
+                                                (iconChanged)="setChangeIcon($event, optionSelected)"></app-material-icon-picker>
+                                        </div>
+                                        <div class="option-type-admin-menu">
+                                            <mat-form-field class="dropdown-form-field" [formGroup]="optionFormtabType">
+                                                <mat-select placeholder="Tab Type" formControlName="optionTabTypeCtrl"
+                                                    (selectionChange)="setChangeTabType($event, optionSelected)">
+                                                    <mat-option *ngFor="let tabType of tabTypes" [value]="tabType">
+                                                        {{tabType.name}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <mat-form-field class="standard-text admin-input-tab">
+                                            <input matInput class="standard-input-text" autocomplete="off" placeholder="Tab" [(ngModel)]="optionSelected.tab" (ngModelChange)="setChangeTab(optionSelected)">
+                                        </mat-form-field>                                    
                                     </div>
-                                    <mat-form-field class="standard-text admin-input-tab">
-                                        <input matInput class="standard-input-text" autocomplete="off" placeholder="Tab" [(ngModel)]="optionSelected.tab" (ngModelChange)="setChangeTab(optionSelected)">
-                                    </mat-form-field>
                                 </div>
                             </div>
                             <div *ngIf="!optionSelected.isRoot && optionSelected.isActive">
                                 <div *ngIf="optionSelected.children.length == 0" class="admin-menu-button-container">
-                                    <div class="button-setup">
+                                    <div class="button-setup DrillDown-setup">
                                         <div class="button-label">
                                             <h2 class="button-section">Drill Down Setup</h2>
                                         </div>
@@ -144,7 +157,7 @@
                                     </div>
                                     <div class="dropdown-setup">
                                         <mat-form-field class="dropdown-form-field" [formGroup]="optionForm">
-                                            <mat-select placeholder="Option Type" formControlName="optionTypeCtrl" (selectionChange)="setChangeOptionType($event, optionSelected)">
+                                            <mat-select placeholder="Display Menu" formControlName="optionTypeCtrl" (selectionChange)="setChangeOptionType($event, optionSelected)">
                                                 <mat-option *ngFor="let optionType of optionTypes" [value]="optionType">
                                                     {{optionType.name}}
                                                 </mat-option>
