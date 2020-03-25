@@ -24,7 +24,7 @@ export class MsfSelectDataFromComponent {
     @Inject(MAT_DIALOG_DATA) public data: any)
   {
     this.globals.popupLoading = true;
-    this.services.loadMenuOptions (this, this.handlerSuccess, this.handlerError);
+    this.services.loadMenuOptionsForDashboard (this, this.handlerSuccess, this.handlerError);
   }
 
   closeDialog(): void
