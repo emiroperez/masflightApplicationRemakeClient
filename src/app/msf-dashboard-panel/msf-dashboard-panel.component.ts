@@ -6718,6 +6718,9 @@ export class MsfDashboardPanelComponent implements OnInit {
       if (!selectedOption)
         return;
 
+      if (this.values.currentOption.id == selectedOption.id)
+        return; // do not reset the dashboard settings if the option id is the same
+
       this.values.currentOption = selectedOption;
       this.loadChartFilterValues (selectedOption);
     });
