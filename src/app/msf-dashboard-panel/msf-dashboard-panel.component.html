@@ -50,9 +50,9 @@
         </mat-form-field>
       </div>
       <div class="msf-dashboard-panel-sub-container-row msf-dashboard-panel-sub-container-checkbox msf-dashboard-panel-interval-time">
-        <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="values.updateIntervalSwitch" (ngModelChange)="toggleIntervalInput()"></mat-checkbox>
-        <mat-form-field [formGroup]="panelForm" class="msf-full-width">
-          <input matInput formControlName="intervalCtrl" autocomplete="off" type="number" placeholder="Update Interval (In Minutes)" [(value)]="values.updateTimeLeft"/>
+        <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="values.updateIntervalSwitch"></mat-checkbox>
+        <mat-form-field class="msf-full-width">
+          <input [disabled]="!values.updateIntervalSwitch" matInput autocomplete="off" type="number" placeholder="Update Interval (In Minutes)" [(ngModel)]="values.updateTimeLeft"/>
         </mat-form-field>
       </div>
     </div>
