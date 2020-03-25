@@ -2,11 +2,10 @@ import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 
-import { ReplaySubject } from 'rxjs';
 import { Utils } from '../commons/utils';
 import { Globals } from '../globals/Globals';
 import { MsfDynamicTableAliasComponent } from '../msf-dynamic-table-alias/msf-dynamic-table-alias.component';
-import { take, toArray } from 'rxjs/operators';
+import { MessageComponent } from '../message/message.component';
 
 export interface DialogData {
   metadata: any[];
@@ -76,10 +75,15 @@ export class MsfDynamicTableVariablesComponent {
     }
   }
 
-  setColumns()
+  setColumns(): void
   {
+    let i = 0;
+
     for (let columnConfig of this.data.metadata)
-      this.columns.push ({ id: columnConfig.columnName, name: columnConfig.columnLabel, hidden: false });
+    {
+      this.columns.push({ id: columnConfig.columnName, name: columnConfig.columnLabel, hidden: false, index: i });
+      i++;
+    }
   }
 
   deleteVariable(variable)
@@ -301,6 +305,31 @@ export class MsfDynamicTableVariablesComponent {
     this.valueMouseover = value;
   }
 
+  resetColumns(variable): void
+  {
+    this.columns.push (variable);
+
+    // Sort column order
+    this.columns.sort ((a, b) => {
+      if (a.index == b.index)
+        return 0;
+
+      return a.index > b.index ? 1 : -1;
+    });
+  }
+
+  removeXAxis(): void
+  {
+    this.resetColumns (this.xaxis[0]);
+    this.xaxis.pop ();
+  }
+
+  removeValue(value): void
+  {
+    this.resetColumns (value);
+    this.values.splice (this.values.indexOf (value), 1);
+  }
+
   dropToXAxis(event: CdkDragDrop<any[]>): void
   {
     this.draggingColumn = false;
@@ -308,6 +337,11 @@ export class MsfDynamicTableVariablesComponent {
     if (this.xaxis.length)
     {
       this.xAxisMouseover = false;
+
+      this.dialog.open (MessageComponent, {
+        data: { title: "Information", message: "Only one X-Axis variable is allowed." }
+      });
+
       return;       // Only one X Axis variable will be allowed
     }
 

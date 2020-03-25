@@ -61,10 +61,11 @@
           </div>
           <!-- Only one X-Axis variable is allowed -->
           <div class="x-axis-variable" *ngIf="xaxis.length">
-            {{xaxis[0].name}}
+            <span class="variable-label">{{xaxis[0].name}}</span>
+            <mat-icon class="remove-button" matTooltip="Remove Variable" (click)="removeXAxis()">close</mat-icon>
           </div>
         </div>
-        <div class="values-axis-container">
+        <div class="values-container">
           <mat-icon class="right-arrow">forward</mat-icon>
           <div class="drop-here" [ngClass]="{'drop-here-mouseover': valueMouseover }" cdkDropList [cdkDropListData]="values"
             (cdkDropListDropped)="dropToValues($event)" (mouseover)="setValueMouseover(true)" (mouseout)="setValueMouseover(false)">
@@ -73,8 +74,11 @@
               <mat-icon *ngIf="valueMouseover">add</mat-icon>
             </span>
           </div>
-          <div class="values-variable" *ngFor="let value of values">
-            {{value.name}}
+          <div class="values-list-container" [ngClass]="{'values-list-container-extended': values.length > 1}">
+            <div class="values-variable" *ngFor="let value of values">
+              <span class="variable-label">{{value.name}}</span>
+              <mat-icon class="remove-button" matTooltip="Remove Variable" (click)="removeValue(value)">close</mat-icon>
+            </div>
           </div>
         </div>
       </div>
