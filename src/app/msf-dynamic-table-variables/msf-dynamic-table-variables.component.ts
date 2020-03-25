@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
-import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 
 import { ReplaySubject } from 'rxjs';
 import { Utils } from '../commons/utils';
@@ -19,12 +19,18 @@ export interface DialogData {
 })
 export class MsfDynamicTableVariablesComponent {
 
+  xaxis: any[] = [];
+  yaxis: any[] = [];
+  values: any[] = [];
   columns: any[] = [];
+
+  draggingColumn: boolean = false;
+  xAxisMouseover: boolean = false;
+  yAxisMouseover: boolean = false;
+  valueMouseover: boolean = false;
+
   filter: string;
-
   utils: Utils;
-
-  public filteredVariables: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
 
   constructor(public dialogRef: MatDialogRef<MsfDynamicTableVariablesComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData, public globals: Globals,
@@ -40,10 +46,9 @@ export class MsfDynamicTableVariablesComponent {
     this.dialogRef.close (false);
   }
 
-  ngOnInit()
+  ngOnInit(): void
   {
     this.setColumns ();
-    this.filteredVariables.next (this.columns.slice ());
   }
 
   filterVariables(): void
@@ -54,21 +59,27 @@ export class MsfDynamicTableVariablesComponent {
     let search = this.filter;
     if (!search)
     {
-      this.filteredVariables.next(this.columns.slice());
+      for (let column of this.columns)
+        column.hidden = false;
+
       return;
     }
 
     search = search.toLowerCase ();
 
-    this.filteredVariables.next (
-      this.columns.filter (variable => variable.name.toLowerCase ().indexOf (search) > -1)
-    );
+    for (let column of this.columns)
+    {
+      if (column.name.toLowerCase ().indexOf(search) > -1)
+        column.hidden = false;
+      else
+        column.hidden = true;
+    }
   }
 
   setColumns()
   {
     for (let columnConfig of this.data.metadata)
-      this.columns.push({id: columnConfig.columnName, name: columnConfig.columnLabel});
+      this.columns.push ({ id: columnConfig.columnName, name: columnConfig.columnLabel, hidden: false });
   }
 
   deleteVariable(variable)
@@ -256,13 +267,73 @@ export class MsfDynamicTableVariablesComponent {
     });
   }
 
-
-  tests: any[] = [];
-
-  drop(event: CdkDragDrop<any[]>): void
+  dragStarted(): void
   {
-    this.filteredVariables.pipe(toArray()).subscribe((variables) => {
-      this.tests.push(variables[event.previousIndex]);
-    });
+    this.draggingColumn = true;
+  }
+
+  dragEnded(): void
+  {
+    this.draggingColumn = false;
+  }
+
+  setXAxisMouseover(value: boolean): void
+  {
+    if (!this.draggingColumn)
+      return;
+
+    this.xAxisMouseover = value;
+  }
+
+  setYAxisMouseover(value: boolean): void
+  {
+    if (!this.draggingColumn)
+      return;
+
+    this.yAxisMouseover = value;
+  }
+
+  setValueMouseover(value: boolean): void
+  {
+    if (!this.draggingColumn)
+      return;
+
+    this.valueMouseover = value;
+  }
+
+  dropToXAxis(event: CdkDragDrop<any[]>): void
+  {
+    this.draggingColumn = false;
+
+    if (this.xaxis.length)
+    {
+      this.xAxisMouseover = false;
+      return;       // Only one X Axis variable will be allowed
+    }
+
+    if (this.xAxisMouseover)
+      transferArrayItem (event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
+
+    this.xAxisMouseover = false;
+  }
+
+  dropToYAxis(event: CdkDragDrop<any[]>): void
+  {
+    this.draggingColumn = false;
+
+    if (this.yAxisMouseover)
+      transferArrayItem (event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
+
+    this.yAxisMouseover = false;
+  }
+
+  dropToValues(event: CdkDragDrop<any[]>): void
+  {
+    this.draggingColumn = false;
+
+    if (this.valueMouseover)
+      transferArrayItem (event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
+
+    this.valueMouseover = false;
   }
 }

@@ -19,21 +19,57 @@
           <mat-icon class="dynamic-table-search-icon" aria-label="search">search</mat-icon>
         </mat-form-field>
       </div>
-      <div class="metadata-list" cdkDropList [cdkDropListData]="filteredVariables" cdkDropListSortingDisabled>
-        <div class="{{globals.theme}} metadata-item" *ngFor="let variable of filteredVariables | async" cdkDrag>
-          <div class="metadata-label">{{variable.name}}</div>
-          <div class="metadata-drag-handle" [style.width.px]="20" [style.height.px]="20" cdkDragHandle></div>
-        </div>
+      <div class="metadata-list" cdkDropList [cdkDropListData]="columns" cdkDropListSortingDisabled>
+        <ng-container *ngFor="let variable of columns">
+          <div class="{{globals.theme}} metadata-item" *ngIf="!variable.hidden" cdkDrag (cdkDragStarted)="dragStarted()" (cdkDragEnded)="dragEnded()">
+            <div class="metadata-label">{{variable.name}}</div>
+            <div class="metadata-drag-handle" [style.width.px]="20" [style.height.px]="20" cdkDragHandle></div>
+          </div>
+        </ng-container>
       </div>
     </div>
   </div>
   <div class="dynamic-table-right">
-    <div class="drop-here" cdkDropList [cdkDropListData]="tests" (cdkDropListDropped)="drop($event)">
-      <span cdkDrag [cdkDragDisabled]="true">Drop here</span>
+    <div class="y-axis-container">
+      <div class="empty"></div>
+      <div class="drop-here" cdkDropList [cdkDropListData]="yaxis" (cdkDropListDropped)="dropToYAxis($event)">
+        <span cdkDrag [cdkDragDisabled]="true">Add Y-Axis</span>
+      </div>
+      <div *ngFor="let test of yaxis">
+        {{test.name}}
+      </div>
     </div>
-    <div *ngFor="let test of tests">
-      {{test.name}}
-    </div>
+    <div class="x-axis-and-values-container">
+      <div class="x-axis-and-values-header">
+        <div class="x-axis-container">
+          <mat-icon class="right-arrow">arrow_right_alt</mat-icon>
+          <div class="drop-here" [ngClass]="{'drop-here-mouseover': xAxisMouseover }" cdkDropList [cdkDropListData]="xaxis"
+            (cdkDropListDropped)="dropToXAxis($event)" (mouseover)="setXAxisMouseover(true)" (mouseout)="setXAxisMouseover(false)">
+            <span cdkDrag [cdkDragDisabled]="true">
+              <span *ngIf="!xAxisMouseover">Add X-Axis</span>
+              <mat-icon *ngIf="xAxisMouseover">add</mat-icon>
+            </span>
+          </div>
+          <!-- Only one X-Axis variable is allowed -->
+          <div class="x-axis-variable" *ngIf="xaxis.length">
+            {{xaxis[0].name}}
+          </div>
+        </div>
+        <div class="values-axis-container">
+          <mat-icon class="right-arrow">arrow_right_alt</mat-icon>
+          <div class="drop-here" [ngClass]="{'drop-here-mouseover': valueMouseover }" cdkDropList [cdkDropListData]="values"
+            (cdkDropListDropped)="dropToValues($event)" (mouseover)="setValueMouseover(true)" (mouseout)="setValueMouseover(false)">
+            <span cdkDrag [cdkDragDisabled]="true">
+              <span *ngIf="!valueMouseover">Add Values</span>
+              <mat-icon *ngIf="valueMouseover">add</mat-icon>
+            </span>
+          </div>
+          <div class="values-variable" *ngFor="let value of values">
+            {{value.name}}
+          </div>
+        </div>
+      </div>
+     </div>
   </div>
 </div>
 <!--

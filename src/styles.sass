@@ -2336,6 +2336,15 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                 color: $font-color
         .partial-summaries-close-button .mat-icon, .partial-summaries-delete-button
             color: $font-color !important
+        .x-axis-and-values-container
+            .drop-here
+                border-color: $background-color
+            .drop-here-mouseover
+                color: #ffffff !important
+                border-color: $primary-color !important
+                background-color: $primary-color !important
+                .mat-icon
+                    color: #ffffff !important
     .#{$name}.partial-summaries-item
         border-bottom: 1px solid $dashboard-config-location-border-color
     .#{$name}.metadata-item
@@ -4084,7 +4093,57 @@ mat-tab-group
                         overflow-y: auto
                         padding-top: 5px
             .dynamic-table-right
+                display: flex
                 width: 75%
+                .y-axis-container
+                    width: 30%
+                    .empty
+                        width: 100%
+                        height: 200px                          
+                .x-axis-and-values-container
+                    width: 70%
+                    .x-axis-and-values-header
+                        display: flex
+                        flex-direction: column
+                        justify-content: center
+                        width: calc(100% + 38px)
+                        height: 200px
+                        margin-left: -38px
+                        .right-arrow
+                            font-size: 34px
+                            width: 34px
+                            height: 34px
+                        .drop-here
+                            @include disable-text-selection
+                            display: flex
+                            margin-left: 10px
+                            width: 150px
+                            height: 40px
+                            font-size: 16px
+                            font-weight: 550
+                            align-items: center
+                            justify-content: center
+                            border-style: dashed
+                            border-width: 2px
+                        .drop-here-mouseover
+                            border-style: solid !important
+                            .mat-icon
+                                margin-top: 2px
+                        .x-axis-container
+                            align-items: center
+                            display: flex
+                            height: 100px
+                            .x-axis-drop-here
+                                margin-left: 10px
+                            .x-axis-variable
+                                margin-left: 20px
+                        .values-axis-container
+                            align-items: center
+                            margin-top: -30px
+                            display: flex
+                            height: 100px
+                            .values-variable
+                                margin-left: 20px
 
 .metadata-item
     display: flex
