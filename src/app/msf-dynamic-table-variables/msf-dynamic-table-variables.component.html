@@ -30,19 +30,28 @@
     </div>
   </div>
   <div class="dynamic-table-right">
-    <div class="y-axis-container">
+    <div class="y-axis-header">
       <div class="empty"></div>
-      <div class="drop-here" cdkDropList [cdkDropListData]="yaxis" (cdkDropListDropped)="dropToYAxis($event)">
-        <span cdkDrag [cdkDragDisabled]="true">Add Y-Axis</span>
-      </div>
-      <div *ngFor="let test of yaxis">
-        {{test.name}}
+      <div class="y-axis-container">
+        <div class="y-axis-drag-handle">
+          <mat-icon class="down-arrow">forward</mat-icon>
+          <div class="drop-here" [ngClass]="{'drop-here-mouseover': yAxisMouseover }" cdkDropList [cdkDropListData]="yaxis"
+               (cdkDropListDropped)="dropToYAxis($event)" (mouseover)="setYAxisMouseover(true)" (mouseout)="setYAxisMouseover(false)">
+            <span cdkDrag [cdkDragDisabled]="true">
+              <span *ngIf="!yAxisMouseover">Add Y-Axis</span>
+              <mat-icon *ngIf="yAxisMouseover">add</mat-icon>
+            </span>
+          </div>
+        </div>
+        <div *ngFor="let test of yaxis">
+          {{test.name}}
+        </div>
       </div>
     </div>
     <div class="x-axis-and-values-container">
       <div class="x-axis-and-values-header">
         <div class="x-axis-container">
-          <mat-icon class="right-arrow">arrow_right_alt</mat-icon>
+          <mat-icon class="right-arrow">forward</mat-icon>
           <div class="drop-here" [ngClass]="{'drop-here-mouseover': xAxisMouseover }" cdkDropList [cdkDropListData]="xaxis"
             (cdkDropListDropped)="dropToXAxis($event)" (mouseover)="setXAxisMouseover(true)" (mouseout)="setXAxisMouseover(false)">
             <span cdkDrag [cdkDragDisabled]="true">
@@ -56,7 +65,7 @@
           </div>
         </div>
         <div class="values-axis-container">
-          <mat-icon class="right-arrow">arrow_right_alt</mat-icon>
+          <mat-icon class="right-arrow">forward</mat-icon>
           <div class="drop-here" [ngClass]="{'drop-here-mouseover': valueMouseover }" cdkDropList [cdkDropListData]="values"
             (cdkDropListDropped)="dropToValues($event)" (mouseover)="setValueMouseover(true)" (mouseout)="setValueMouseover(false)">
             <span cdkDrag [cdkDragDisabled]="true">
