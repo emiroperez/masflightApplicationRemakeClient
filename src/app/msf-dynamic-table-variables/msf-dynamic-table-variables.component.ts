@@ -23,7 +23,7 @@ export class MsfDynamicTableVariablesComponent {
   values: any[] = [];
   columns: any[] = [];
 
-  variableFuncOpen: any = null;
+  selectedVariable: any = null;
   funcListPosX: number = 0;
 
   draggingColumn: boolean = false;
@@ -84,7 +84,28 @@ export class MsfDynamicTableVariablesComponent {
 
     for (let columnConfig of this.data.metadata)
     {
-      this.columns.push({ id: columnConfig.columnName, name: columnConfig.columnLabel, hidden: false, functions: {}, funcopen: false, index: i });
+      this.columns.push({
+        id: columnConfig.columnName,
+        name: columnConfig.columnLabel,
+        hidden: false,
+        funcopen: false,
+        summary: false,
+        average: false,
+        mean: false,
+        max: false,
+        min: false,
+        stddeviation: false,
+        count: false,
+        sumAlias: "",
+        avgAlias: "",
+        meanAlias: "",
+        maxAlias: "",
+        minAlias: "",
+        stdDevAlias: "",
+        cntAlias: "",
+        index: i
+      });
+
       i++;
     }
   }
@@ -315,6 +336,22 @@ export class MsfDynamicTableVariablesComponent {
 
   resetColumns(variable): void
   {
+    variable.funcopen = false;
+    variable.summary = false;
+    variable.average = false;
+    variable.mean = false;
+    variable.max = false;
+    variable.min = false;
+    variable.stddeviation = false;
+    variable.count = false;
+    variable.sumAlias = "";
+    variable.avgAlias = "";
+    variable.meanAlias = "";
+    variable.maxAlias = "";
+    variable.minAlias = "";
+    variable.stdDevAlias = "";
+    variable.cntAlias = "";
+
     this.columns.push (variable);
 
     // Sort column order
@@ -324,6 +361,8 @@ export class MsfDynamicTableVariablesComponent {
 
       return a.index > b.index ? 1 : -1;
     });
+
+    this.filterVariables ();
   }
 
   removeXAxis(): void
@@ -387,23 +426,43 @@ export class MsfDynamicTableVariablesComponent {
     this.valueMouseover = false;
   }
 
-  toggleFunctions(index, variable): void
+  toggleFunctions(event, index, variable): void
   {
+    event.stopPropagation ();
+
     variable.funcopen = !variable.funcopen;
+
+    // close previous one if open
+    if (this.selectedVariable)
+      this.selectedVariable.funcopen = false;
 
     if (variable.funcopen)
     {
       let variableElement = document.getElementById ('variable-' + index);
       let variableListElement = document.getElementById ('variable-list');
 
-      this.variableFuncOpen = variable;
+      this.selectedVariable = variable;
       this.funcListPosX = variableElement.offsetLeft - variableListElement.scrollLeft + 10;
     }
     else
     {
-      this.variableFuncOpen = null;
+      this.selectedVariable = null;
       this.funcListPosX = 0;
     }
+  }
+
+  disableFuncMenu(): void
+  {
+    if (this.selectedVariable)
+      this.selectedVariable.funcopen = false;
+
+    this.selectedVariable = null;
+    this.funcListPosX = 0;
+  }
+
+  keepFuncMenu(event): void
+  {
+    event.stopPropagation ();
   }
 
   getFuncListPostX(): number

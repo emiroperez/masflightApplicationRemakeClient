@@ -1,4 +1,4 @@
-<div class="dynamic-table-header">
+<div class="dynamic-table-header" (click)="disableFuncMenu()" (contextmenu)="disableFuncMenu()" (scroll)="disableFuncMenu()">
   <img class="dynamic-table-icon" src="../../assets/images/{{globals.theme}}-dynamicTable.png" [style.width.px]="20" [style.height.px]="20">
   <span class="dynamic-table-title">Dynamic Table</span>
   <div class="dynamic-table-header-buttons">
@@ -10,7 +10,7 @@
     </button>
   </div>
 </div>
-<div class="dynamic-table-body" cdkDropListGroup>
+<div class="dynamic-table-body" (click)="disableFuncMenu()" (contextmenu)="disableFuncMenu()" (scroll)="disableFuncMenu()" cdkDropListGroup>
   <div class="dynamic-table-left">
     <div class="dynamic-table-metadata-container">
       <div class="dynamic-table-metadata-search">
@@ -80,7 +80,7 @@
           <div class="values-list-container" id="variable-list" [ngClass]="{'values-list-container-extended': values.length > 1}">
             <div class="values-variable" id="variable-{{i}}" *ngFor="let variable of values; let i = index">
               <span class="variable-label">{{variable.name}}</span>
-              <mat-icon class="func-button" matTooltip="Functions" (click)="toggleFunctions(i,variable)">
+              <mat-icon class="func-button" matTooltip="Functions" (click)="toggleFunctions($event,i,variable)">
                 <ng-container *ngIf="!variable.funcopen">arrow_drop_down</ng-container>
                 <ng-container *ngIf="variable.funcopen">arrow_drop_up</ng-container>
               </mat-icon>
@@ -90,43 +90,43 @@
         </div>
       </div>
     </div>
-    <div class="func-list" [style.left.px]="getFuncListPostX()" *ngIf="variableFuncOpen">
+    <div class="func-list" [style.left.px]="getFuncListPostX()"  (click)="keepFuncMenu($event)" (contextmenu)="keepFuncMenu($event)" (scroll)="keepFuncMenu($event)" *ngIf="selectedVariable">
       <div class="msf-component-radio">
         <mat-radio-group>
           <div class="alias-container">
-            <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="variableFuncOpen.summary">Summary</mat-checkbox>
-            <i *ngIf="variableFuncOpen.summary" class="material-icons alias-button" (click)="configureAlias(variableFuncOpen, 'Summary')">more_horiz</i>
-            <i *ngIf="!variableFuncOpen.summary" class="material-icons alias-button-disabled">more_horiz</i>
+            <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="selectedVariable.summary">Summary</mat-checkbox>
+            <i *ngIf="selectedVariable.summary" class="material-icons alias-button" (click)="configureAlias(selectedVariable, 'Summary')">more_horiz</i>
+            <i *ngIf="!selectedVariable.summary" class="material-icons alias-button-disabled">more_horiz</i>
           </div>
           <div class="alias-container">
-            <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="variableFuncOpen.average">Average</mat-checkbox>
-            <i *ngIf="variableFuncOpen.average" class="material-icons alias-button" (click)="configureAlias(variableFuncOpen, 'Average')">more_horiz</i>
-            <i *ngIf="!variableFuncOpen.average" class="material-icons alias-button-disabled">more_horiz</i>
+            <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="selectedVariable.average">Average</mat-checkbox>
+            <i *ngIf="selectedVariable.average" class="material-icons alias-button" (click)="configureAlias(selectedVariable, 'Average')">more_horiz</i>
+            <i *ngIf="!selectedVariable.average" class="material-icons alias-button-disabled">more_horiz</i>
           </div>
           <div class="alias-container">
-            <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="variableFuncOpen.mean">Mean</mat-checkbox>
-            <i *ngIf="variableFuncOpen.mean" class="material-icons alias-button" (click)="configureAlias(variableFuncOpen, 'Mean')">more_horiz</i>
-            <i *ngIf="!variableFuncOpen.mean" class="material-icons alias-button-disabled">more_horiz</i>
+            <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="selectedVariable.mean">Mean</mat-checkbox>
+            <i *ngIf="selectedVariable.mean" class="material-icons alias-button" (click)="configureAlias(selectedVariable, 'Mean')">more_horiz</i>
+            <i *ngIf="!selectedVariable.mean" class="material-icons alias-button-disabled">more_horiz</i>
           </div>
           <div class="alias-container">
-            <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="variableFuncOpen.max">Max</mat-checkbox>
-            <i *ngIf="variableFuncOpen.max" class="material-icons alias-button" (click)="configureAlias(variableFuncOpen, 'Max')">more_horiz</i>
-            <i *ngIf="!variableFuncOpen.max" class="material-icons alias-button-disabled">more_horiz</i>
+            <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="selectedVariable.max">Max</mat-checkbox>
+            <i *ngIf="selectedVariable.max" class="material-icons alias-button" (click)="configureAlias(selectedVariable, 'Max')">more_horiz</i>
+            <i *ngIf="!selectedVariable.max" class="material-icons alias-button-disabled">more_horiz</i>
           </div>
           <div class="alias-container">
-            <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="variableFuncOpen.min">Min</mat-checkbox>
-            <i *ngIf="variableFuncOpen.min" class="material-icons alias-button" (click)="configureAlias(variableFuncOpen, 'Min')">more_horiz</i>
-            <i *ngIf="!variableFuncOpen.min" class="material-icons alias-button-disabled">more_horiz</i>
+            <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="selectedVariable.min">Min</mat-checkbox>
+            <i *ngIf="selectedVariable.min" class="material-icons alias-button" (click)="configureAlias(selectedVariable, 'Min')">more_horiz</i>
+            <i *ngIf="!selectedVariable.min" class="material-icons alias-button-disabled">more_horiz</i>
           </div>
           <div class="alias-container">
-            <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="variableFuncOpen.stddeviation">Std Deviation</mat-checkbox>
-            <i *ngIf="variableFuncOpen.stddeviation" class="material-icons alias-button" (click)="configureAlias(variableFuncOpen, 'Std Deviation')">more_horiz</i>
-            <i *ngIf="!variableFuncOpen.stddeviation" class="material-icons alias-button-disabled">more_horiz</i>
+            <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="selectedVariable.stddeviation">Std Deviation</mat-checkbox>
+            <i *ngIf="selectedVariable.stddeviation" class="material-icons alias-button" (click)="configureAlias(selectedVariable, 'Std Deviation')">more_horiz</i>
+            <i *ngIf="!selectedVariable.stddeviation" class="material-icons alias-button-disabled">more_horiz</i>
           </div>
           <div class="alias-container">
-            <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="variableFuncOpen.count">Count</mat-checkbox>
-            <i *ngIf="variableFuncOpen.count" class="material-icons alias-button" (click)="configureAlias(variableFuncOpen, 'Count')">more_horiz</i>
-            <i *ngIf="!variableFuncOpen.count" class="material-icons alias-button-disabled">more_horiz</i>
+            <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="selectedVariable.count">Count</mat-checkbox>
+            <i *ngIf="selectedVariable.count" class="material-icons alias-button" (click)="configureAlias(selectedVariable, 'Count')">more_horiz</i>
+            <i *ngIf="!selectedVariable.count" class="material-icons alias-button-disabled">more_horiz</i>
           </div>
         </mat-radio-group>
       </div>
