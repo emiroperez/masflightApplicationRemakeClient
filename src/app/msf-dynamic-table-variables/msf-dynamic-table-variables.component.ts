@@ -23,6 +23,9 @@ export class MsfDynamicTableVariablesComponent {
   values: any[] = [];
   columns: any[] = [];
 
+  variableFuncOpen: any = null;
+  funcListPosX: number = 0;
+
   draggingColumn: boolean = false;
   xAxisMouseover: boolean = false;
   yAxisMouseover: boolean = false;
@@ -81,7 +84,7 @@ export class MsfDynamicTableVariablesComponent {
 
     for (let columnConfig of this.data.metadata)
     {
-      this.columns.push({ id: columnConfig.columnName, name: columnConfig.columnLabel, hidden: false, index: i });
+      this.columns.push({ id: columnConfig.columnName, name: columnConfig.columnLabel, hidden: false, functions: {}, funcopen: false, index: i });
       i++;
     }
   }
@@ -271,6 +274,11 @@ export class MsfDynamicTableVariablesComponent {
     });
   }
 
+  calcMarginOffset(index: number): number
+  {
+    return index * 10;
+  }
+
   dragStarted(): void
   {
     this.draggingColumn = true;
@@ -324,10 +332,18 @@ export class MsfDynamicTableVariablesComponent {
     this.xaxis.pop ();
   }
 
-  removeValue(value): void
+  removeYAxis(variable): void
   {
-    this.resetColumns (value);
-    this.values.splice (this.values.indexOf (value), 1);
+    this.resetColumns (variable);
+    this.yaxis.splice (this.yaxis.indexOf (variable), 1);
+  }
+
+  removeValue(variable): void
+  {
+    variable.functions = {};
+    variable.funcopen = false;
+    this.resetColumns (variable);
+    this.values.splice (this.values.indexOf (variable), 1);
   }
 
   dropToXAxis(event: CdkDragDrop<any[]>): void
@@ -346,7 +362,7 @@ export class MsfDynamicTableVariablesComponent {
     }
 
     if (this.xAxisMouseover)
-      transferArrayItem (event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
+      transferArrayItem (event.previousContainer.data, event.container.data, event.previousIndex, this.xaxis.length);
 
     this.xAxisMouseover = false;
   }
@@ -356,7 +372,7 @@ export class MsfDynamicTableVariablesComponent {
     this.draggingColumn = false;
 
     if (this.yAxisMouseover)
-      transferArrayItem (event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
+      transferArrayItem (event.previousContainer.data, event.container.data, event.previousIndex, this.yaxis.length);
 
     this.yAxisMouseover = false;
   }
@@ -366,8 +382,32 @@ export class MsfDynamicTableVariablesComponent {
     this.draggingColumn = false;
 
     if (this.valueMouseover)
-      transferArrayItem (event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
+      transferArrayItem (event.previousContainer.data, event.container.data, event.previousIndex, this.values.length);
 
     this.valueMouseover = false;
+  }
+
+  toggleFunctions(index, variable): void
+  {
+    variable.funcopen = !variable.funcopen;
+
+    if (variable.funcopen)
+    {
+      let variableElement = document.getElementById ('variable-' + index);
+      let variableListElement = document.getElementById ('variable-list');
+
+      this.variableFuncOpen = variable;
+      this.funcListPosX = variableElement.offsetLeft - variableListElement.scrollLeft + 10;
+    }
+    else
+    {
+      this.variableFuncOpen = null;
+      this.funcListPosX = 0;
+    }
+  }
+
+  getFuncListPostX(): number
+  {
+    return this.funcListPosX;
   }
 }

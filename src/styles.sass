@@ -2348,6 +2348,10 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             color: #ffffff
             .remove-button
                 color: #ffffff
+        .dynamic-table-right
+            .func-list
+                color: $font-color
+                background-color: $tertiary-background-color
     .#{$name}.partial-summaries-item
         border-bottom: 1px solid $dashboard-config-location-border-color
     .#{$name}.metadata-item
@@ -4057,7 +4061,7 @@ mat-tab-group
     border-style: dashed
     border-width: 2px
 
-@mixin dynamic-table-horiz-variable
+@mixin dynamic-table-variable
     display: flex
     margin-left: 20px
     width: 185px
@@ -4150,6 +4154,7 @@ mat-tab-group
                             display: flex
                             width: 100%
                             .down-arrow
+                                @include disable-text-selection
                                 @include dynamic-table-arrow
                                 transform: rotate(90deg)
                                 align-self: center
@@ -4161,6 +4166,15 @@ mat-tab-group
                                 border-style: solid !important
                                 .mat-icon
                                     margin-top: 2px
+                        .y-axis-list-container
+                            height: calc(100% - 44px)
+                            margin-left: 10px
+                            overflow-y: auto
+                            .y-axis-variable
+                                margin-top: 10px
+                                min-width: inherit !important
+                                width: inherit !important
+                                @include dynamic-table-variable
                 .x-axis-and-values-container
                     width: 70%
                     .x-axis-and-values-header
@@ -4171,6 +4185,7 @@ mat-tab-group
                         height: 200px
                         margin-left: -38px
                         .right-arrow
+                            @include disable-text-selection
                             @include dynamic-table-arrow
                         .drop-here
                             @include disable-text-selection
@@ -4186,7 +4201,7 @@ mat-tab-group
                             .x-axis-drop-here
                                 margin-left: 10px
                             .x-axis-variable
-                                @include dynamic-table-horiz-variable
+                                @include dynamic-table-variable
                         .values-container
                             display: flex
                             align-items: center
@@ -4199,9 +4214,24 @@ mat-tab-group
                                 width: 400px
                                 overflow-x: auto
                                 .values-variable
-                                    @include dynamic-table-horiz-variable
+                                    @include dynamic-table-variable
+                                .values-variable
+                                    .variable-label
+                                        width: calc(100% - 50px) !important
+                                    .func-button
+                                        cursor: pointer
+                                        position: absolute
+                                        right: 35px
+                                        top: 7px
                             .values-list-container-extended
                                 padding-top: 15px !important
+                .func-list
+                    width: 183px
+                    top: 450px
+                    position: absolute
+                    box-shadow: 0 5px 5px -3px rgba(0,0,0,.1), 0 8px 10px 1px rgba(0,0,0,.07),0 3px 14px 2px rgba(0,0,0,.06)
+                    .mat-checkbox-background
+                        border-radius: 10px
 
 .metadata-item
     display: flex

@@ -36,15 +36,18 @@
         <div class="y-axis-drag-handle">
           <mat-icon class="down-arrow">forward</mat-icon>
           <div class="drop-here" [ngClass]="{'drop-here-mouseover': yAxisMouseover }" cdkDropList [cdkDropListData]="yaxis"
-               (cdkDropListDropped)="dropToYAxis($event)" (mouseover)="setYAxisMouseover(true)" (mouseout)="setYAxisMouseover(false)">
+               (cdkDropListDropped)="dropToYAxis($event)" (mouseenter)="setYAxisMouseover(true)" (mouseleave)="setYAxisMouseover(false)">
             <span cdkDrag [cdkDragDisabled]="true">
               <span *ngIf="!yAxisMouseover">Add Y-Axis</span>
               <mat-icon *ngIf="yAxisMouseover">add</mat-icon>
             </span>
           </div>
         </div>
-        <div *ngFor="let test of yaxis">
-          {{test.name}}
+        <div class="y-axis-list-container">
+          <div class="y-axis-variable" [style.margin-left.px]="calcMarginOffset(i)" *ngFor="let variable of yaxis; let i = index">
+            <span class="variable-label">{{variable.name}}</span>
+            <mat-icon class="remove-button" matTooltip="Remove Variable" (click)="removeYAxis(variable)">close</mat-icon>
+          </div>
         </div>
       </div>
     </div>
@@ -53,7 +56,7 @@
         <div class="x-axis-container">
           <mat-icon class="right-arrow">forward</mat-icon>
           <div class="drop-here" [ngClass]="{'drop-here-mouseover': xAxisMouseover }" cdkDropList [cdkDropListData]="xaxis"
-            (cdkDropListDropped)="dropToXAxis($event)" (mouseover)="setXAxisMouseover(true)" (mouseout)="setXAxisMouseover(false)">
+               (cdkDropListDropped)="dropToXAxis($event)" (mouseenter)="setXAxisMouseover(true)" (mouseleave)="setXAxisMouseover(false)">
             <span cdkDrag [cdkDragDisabled]="true">
               <span *ngIf="!xAxisMouseover">Add X-Axis</span>
               <mat-icon *ngIf="xAxisMouseover">add</mat-icon>
@@ -68,21 +71,66 @@
         <div class="values-container">
           <mat-icon class="right-arrow">forward</mat-icon>
           <div class="drop-here" [ngClass]="{'drop-here-mouseover': valueMouseover }" cdkDropList [cdkDropListData]="values"
-            (cdkDropListDropped)="dropToValues($event)" (mouseover)="setValueMouseover(true)" (mouseout)="setValueMouseover(false)">
+               (cdkDropListDropped)="dropToValues($event)" (mouseenter)="setValueMouseover(true)" (mouseleave)="setValueMouseover(false)">
             <span cdkDrag [cdkDragDisabled]="true">
               <span *ngIf="!valueMouseover">Add Values</span>
               <mat-icon *ngIf="valueMouseover">add</mat-icon>
             </span>
           </div>
-          <div class="values-list-container" [ngClass]="{'values-list-container-extended': values.length > 1}">
-            <div class="values-variable" *ngFor="let value of values">
-              <span class="variable-label">{{value.name}}</span>
-              <mat-icon class="remove-button" matTooltip="Remove Variable" (click)="removeValue(value)">close</mat-icon>
+          <div class="values-list-container" id="variable-list" [ngClass]="{'values-list-container-extended': values.length > 1}">
+            <div class="values-variable" id="variable-{{i}}" *ngFor="let variable of values; let i = index">
+              <span class="variable-label">{{variable.name}}</span>
+              <mat-icon class="func-button" matTooltip="Functions" (click)="toggleFunctions(i,variable)">
+                <ng-container *ngIf="!variable.funcopen">arrow_drop_down</ng-container>
+                <ng-container *ngIf="variable.funcopen">arrow_drop_up</ng-container>
+              </mat-icon>
+              <mat-icon class="remove-button" matTooltip="Remove Variable" (click)="removeValue(variable)">close</mat-icon>
             </div>
           </div>
         </div>
       </div>
-     </div>
+    </div>
+    <div class="func-list" [style.left.px]="getFuncListPostX()" *ngIf="variableFuncOpen">
+      <div class="msf-component-radio">
+        <mat-radio-group>
+          <div class="alias-container">
+            <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="variableFuncOpen.summary">Summary</mat-checkbox>
+            <i *ngIf="variableFuncOpen.summary" class="material-icons alias-button" (click)="configureAlias(variableFuncOpen, 'Summary')">more_horiz</i>
+            <i *ngIf="!variableFuncOpen.summary" class="material-icons alias-button-disabled">more_horiz</i>
+          </div>
+          <div class="alias-container">
+            <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="variableFuncOpen.average">Average</mat-checkbox>
+            <i *ngIf="variableFuncOpen.average" class="material-icons alias-button" (click)="configureAlias(variableFuncOpen, 'Average')">more_horiz</i>
+            <i *ngIf="!variableFuncOpen.average" class="material-icons alias-button-disabled">more_horiz</i>
+          </div>
+          <div class="alias-container">
+            <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="variableFuncOpen.mean">Mean</mat-checkbox>
+            <i *ngIf="variableFuncOpen.mean" class="material-icons alias-button" (click)="configureAlias(variableFuncOpen, 'Mean')">more_horiz</i>
+            <i *ngIf="!variableFuncOpen.mean" class="material-icons alias-button-disabled">more_horiz</i>
+          </div>
+          <div class="alias-container">
+            <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="variableFuncOpen.max">Max</mat-checkbox>
+            <i *ngIf="variableFuncOpen.max" class="material-icons alias-button" (click)="configureAlias(variableFuncOpen, 'Max')">more_horiz</i>
+            <i *ngIf="!variableFuncOpen.max" class="material-icons alias-button-disabled">more_horiz</i>
+          </div>
+          <div class="alias-container">
+            <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="variableFuncOpen.min">Min</mat-checkbox>
+            <i *ngIf="variableFuncOpen.min" class="material-icons alias-button" (click)="configureAlias(variableFuncOpen, 'Min')">more_horiz</i>
+            <i *ngIf="!variableFuncOpen.min" class="material-icons alias-button-disabled">more_horiz</i>
+          </div>
+          <div class="alias-container">
+            <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="variableFuncOpen.stddeviation">Std Deviation</mat-checkbox>
+            <i *ngIf="variableFuncOpen.stddeviation" class="material-icons alias-button" (click)="configureAlias(variableFuncOpen, 'Std Deviation')">more_horiz</i>
+            <i *ngIf="!variableFuncOpen.stddeviation" class="material-icons alias-button-disabled">more_horiz</i>
+          </div>
+          <div class="alias-container">
+            <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="variableFuncOpen.count">Count</mat-checkbox>
+            <i *ngIf="variableFuncOpen.count" class="material-icons alias-button" (click)="configureAlias(variableFuncOpen, 'Count')">more_horiz</i>
+            <i *ngIf="!variableFuncOpen.count" class="material-icons alias-button-disabled">more_horiz</i>
+          </div>
+        </mat-radio-group>
+      </div>
+    </div>
   </div>
 </div>
 <!--
