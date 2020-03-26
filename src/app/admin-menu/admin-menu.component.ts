@@ -1462,7 +1462,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
     this.optionFormtabType.get('optionTabTypeCtrl').setValue(null);
     for (let i = 0; i < this.tabTypes.length; i++) {
-      if (option.tabType == this.tabTypes[i].tabType) {
+      if (option.tabType == this.tabTypes[i].tabType && option.metaData == this.tabTypes[i].metaData) {
         this.optionFormtabType.get('optionTabTypeCtrl').setValue(this.tabTypes[i]);
         break;
       }
