@@ -1701,14 +1701,14 @@ toggle(){
     if (!_this.tableLoading)
       return;
 
-    if (data.metadata)
+/*    if (data.metadata)
       data.metadata = JSON.parse (data.metadata);
 
     if (data.Response && data.Response.rows)
     {
       data.Response.Rows = data.Response.rows;
       data.Response.rows = undefined;
-    }
+    }*/
 
     _this.msfContainerRef.msfTableRef.handlerSuccess (_this.msfContainerRef.msfTableRef, data);
   }
