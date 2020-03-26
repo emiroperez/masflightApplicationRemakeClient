@@ -313,7 +313,6 @@ export class MsfDashboardPanelComponent implements OnInit {
       valueFontSizeCtrl: new FormControl ({ value: this.fontSizes[1], disabled: true }),
       valueOrientationCtrl: new FormControl ({ value: this.orientations[0], disabled: true }),
       functionCtrl: new FormControl ({ value: this.functions[0], disabled: true }),
-      intervalCtrl: new FormControl ({ value: 5, disabled: true }),
       geodataValueCtrl: new FormControl ({ value: '', disabled: true }),
       geodataKeyCtrl: new FormControl ({ value: '', disabled: true })
     });
@@ -345,6 +344,9 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.columnFilterCtrl = this.dialogData.columnFilterCtrl;
       this.filteredVariables = this.dialogData.filteredVariables;
       this.filteredOptions = this.dialogData.filteredOptions;
+
+      this.variableCtrlBtnEnabled = this.dialogData.variableCtrlBtnEnabled;
+      this.generateBtnEnabled = this.dialogData.generateBtnEnabled;
     }
   }
 
@@ -437,13 +439,6 @@ export class MsfDashboardPanelComponent implements OnInit {
         this.values.updateIntervalSwitch = false;
         this.values.updateTimeLeft = 0;
       }
-
-      this.panelForm.get ('intervalCtrl').setValue (this.values.updateTimeLeft);
-
-      if (this.values.updateIntervalSwitch)
-        this.panelForm.get ('intervalCtrl').enable ();
-      else
-        this.panelForm.get ('intervalCtrl').disable ();
 
       setTimeout (() =>
       {
@@ -2282,7 +2277,13 @@ export class MsfDashboardPanelComponent implements OnInit {
   ngAfterContentInit(): void
   {
     if (this.dialogData)
+    {
+      if (this.values.currentOption)
+        this.variableCtrlBtnEnabled = true;
+
+      this.checkChartType ();
       return; // ignore ngAfterContentInit on the dialog version
+    }
 
     // these parts must be here because it generate an error if inserted on ngAfterViewInit
     this.initPanelSettings ();
@@ -5289,11 +5290,6 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.variableCtrlBtnEnabled = true;
 
     this.checkChartType ();
-
-    if (this.values.updateTimeLeft != null)
-      this.panelForm.get ('intervalCtrl').setValue (this.values.updateTimeLeft);
-
-    this.toggleIntervalInput ();
   }
 
   handlerUpdateSuccess(_this): void
@@ -5880,16 +5876,6 @@ export class MsfDashboardPanelComponent implements OnInit {
         dashboardContentTitle: this.values.chartName
       }
     });
-  }
-
-  toggleIntervalInput(): void
-  {
-    // this must be inverted since this is called before changing updateIntervalSwitch
-    // value
-    if (this.values.updateIntervalSwitch)
-      this.panelForm.get ('intervalCtrl').enable ();
-    else
-      this.panelForm.get ('intervalCtrl').disable ();
   }
 
   swapFormVariablePositions(event: CdkDragDrop<MsfDashboardPanelValues[]>): void
@@ -6718,6 +6704,12 @@ export class MsfDashboardPanelComponent implements OnInit {
       if (!selectedOption)
         return;
 
+      if (this.values.currentOption)
+      {
+        if (this.values.currentOption.id == selectedOption.id)
+          return; // do not reset the dashboard settings if the option id is the same
+      }
+
       this.values.currentOption = selectedOption;
       this.loadChartFilterValues (selectedOption);
     });
@@ -7468,11 +7460,18 @@ export class MsfDashboardPanelComponent implements OnInit {
         infoVar3FilterCtrl: this.infoVar3FilterCtrl,
         columnFilterCtrl: this.columnFilterCtrl,
         filteredVariables: this.filteredVariables,
-        filteredOptions: this.filteredOptions
+        filteredOptions: this.filteredOptions,
+        variableCtrlBtnEnabled: this.variableCtrlBtnEnabled,
+        generateBtnEnabled: this.generateBtnEnabled
       }
     });
 
     dialogRef.afterClosed ().subscribe ((result) => {
+      if (this.values.currentOption)
+        this.variableCtrlBtnEnabled = true;
+
+      this.checkChartType ();
+
       if (result)
       {
         if (result.generateChart)
