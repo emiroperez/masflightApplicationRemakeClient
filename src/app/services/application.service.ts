@@ -68,6 +68,45 @@ export class ApplicationService {
     if (!urlBase.includes ("minuteunit"))
       urlBase += "&minuteunit=m";
 
+    if (SortingColumns !== "")
+    {
+      let colBreakerSort = "";
+
+      for (let i = 0; i < config.columnBreakers.length; i++)
+      {
+        let colBreaker = config.columnBreakers[i];
+
+        colBreakerSort += colBreaker.column.columnName + " ";
+
+        if (colBreaker.column.columnType === "number")
+          colBreakerSort += "dsc";  // use descending order for numbers
+        else
+          colBreakerSort += "asc";
+
+        if (i != config.columnBreakers.length - 1)
+          colBreakerSort += ", ";
+      }
+
+      SortingColumns += colBreakerSort + ", " + SortingColumns;
+    }
+    else
+    {
+      for (let i = 0; i < config.columnBreakers.length; i++)
+      {
+        let colBreaker = config.columnBreakers[i];
+
+        SortingColumns += colBreaker.column.columnName + " ";
+
+        if (colBreaker.column.columnType === "number")
+          SortingColumns += "dsc";  // use descending order for numbers
+        else
+          SortingColumns += "asc";
+
+        if (i != config.columnBreakers.length - 1)
+          SortingColumns += ", ";
+      }
+    }
+
     if(_this.globals.currentOption.tabType != "legacy" && SortingColumns != "" && !_this.globals.showPaginator){
       let sortingList = "sortingList="+SortingColumns;
       if(!urlBase.includes("sortingList")){
@@ -80,7 +119,7 @@ export class ApplicationService {
       }
     }
 
-    urlBase += "&pageSize=" + Globals.TABLE_PAGESIZE + "&page_number=" + pageNumber + "&token=" + tokenResultable + "&sortingColumns=" + SortingColumns; // TODO: Set page number
+    urlBase += "&pageSize=" + Globals.TABLE_PAGESIZE + "&page_number=" + pageNumber + "&token=" + tokenResultable + "&sortingColumns=" + SortingColumns;
 
     let urlArg = encodeURIComponent (urlBase);
 

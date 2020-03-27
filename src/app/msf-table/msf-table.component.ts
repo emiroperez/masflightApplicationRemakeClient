@@ -309,15 +309,6 @@ export class MsfTableComponent implements OnInit {
     if (!_this.isLoading)
       return;
 
-    if (data.metadata)
-      data.metadata = JSON.parse (data.metadata);
-
-    if (data.Response && data.Response.rows)
-    {
-      data.Response.Rows = data.Response.rows;
-      data.Response.rows = undefined;
-    }
-
     _this.handlerSuccess (_this, data);
   }
 
