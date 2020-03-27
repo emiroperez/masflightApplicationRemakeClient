@@ -52,12 +52,12 @@ export class ApplicationComponent implements OnInit {
   user: any[];
   userName : any;
   partialSummaryValues: any = null;
+  dynamicTableValues: any = null;
 
   // admin: boolean = false;
   ELEMENT_DATA: any[];
   coordinates: any;
   //displayedColumns: string[] = [];
-  variables;
   currentOptionBackUp: any;
 
   exportConfig: ExportAsConfig = {
@@ -560,6 +560,7 @@ toggle(){
 
     // remove summary configuration
     this.partialSummaryValues = null;
+    this.dynamicTableValues = null;
 
     if (this.globals.currentOption.metaData == 3)
     {
@@ -840,16 +841,17 @@ toggle(){
       autoFocus: false,
       data: {
         metadata: this.msfContainerRef.msfTableRef.metadata,
-        variables: this.variables
+        dynamicTableValues: this.dynamicTableValues
       }
     });
 
     dialogRef.afterClosed ().subscribe(result => {
-      if (result)
+      if (result != null)
       {
         this.globals.selectedIndex = 3;
         this.dynTableLoading = true;
-        this.msfContainerRef.msfDynamicTableRef.loadData ();
+        this.dynamicTableValues = result; // store the dynamic table configuration
+        this.msfContainerRef.msfDynamicTableRef.loadData (result.xaxis, result.yaxis, result.values);
       }
     });
   }
@@ -1390,6 +1392,7 @@ toggle(){
       this.msfContainerRef.msfTableRef = null;
 
     this.partialSummaryValues = null;
+    this.dynamicTableValues = null;
     this.changeDetectorRef.detectChanges ();
   }
 

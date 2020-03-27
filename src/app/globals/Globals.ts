@@ -29,8 +29,6 @@ export class Globals {
   map: boolean = false;
   mapsc: boolean = false;
   usageStatistics: boolean = false;
-  variables;
-  values;
   generateDynamicTable = false;
   selectedIndex = 0;
   displayedColumns;
@@ -288,8 +286,6 @@ clearVariablesMenu(){
     this.dummyTab = false;
     this.map = false;
     this.mapsc = false;
-    this.variables = null;
-    this.values = null;
     this.generateDynamicTable = false;
     this.selectedIndex = 0;
     this.totalRecord = 0;
