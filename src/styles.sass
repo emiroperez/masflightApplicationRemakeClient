@@ -2351,7 +2351,15 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
         .dynamic-table-right
             .func-list
                 color: $font-color
-                background-color: $tertiary-background-color
+                background-color: $datalake-disabled-buttonAlarmEmail
+                .alias-container
+                    border-top: 1px solid $tertiary-background-color
+                    .alias-button
+                        font-size: 17px !important
+                        width: 17px
+                        height: 17px
+                        margin-right: 2px
+                        margin-top: -2px
     .#{$name}.partial-summaries-item
         border-bottom: 1px solid $dashboard-config-location-border-color
     .#{$name}.metadata-item
@@ -4053,6 +4061,7 @@ mat-tab-group
     display: flex
     margin-left: 10px
     width: 150px
+    min-width: 150px
     height: 40px
     font-size: 16px
     font-weight: 550
@@ -4160,6 +4169,8 @@ mat-tab-group
                                 align-self: center
                                 margin-left: 5%
                             .drop-here
+                                width: 185px !important
+                                min-width: inherit !important
                                 @include disable-text-selection
                                 @include dynamic-table-drop-here
                             .drop-here-mouseover
@@ -4227,11 +4238,13 @@ mat-tab-group
                                 padding-top: 15px !important
                 .func-list
                     width: 183px
-                    top: 450px
                     position: absolute
                     box-shadow: 0 5px 5px -3px rgba(0,0,0,.1), 0 8px 10px 1px rgba(0,0,0,.07),0 3px 14px 2px rgba(0,0,0,.06)
-                    .mat-checkbox-background
-                        border-radius: 10px
+                    .alias-container
+                        width: calc(100% - 2px) !important
+                        height: 30px
+                        align-items: center
+                        padding-left: 2px
 
 .metadata-item
     display: flex

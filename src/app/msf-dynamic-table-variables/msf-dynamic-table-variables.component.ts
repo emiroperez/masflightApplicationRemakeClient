@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, HostListener } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 
@@ -25,6 +25,7 @@ export class MsfDynamicTableVariablesComponent {
 
   selectedVariable: any = null;
   funcListPosX: number = 0;
+  funcListPosY: number = 0;
 
   draggingColumn: boolean = false;
   xAxisMouseover: boolean = false;
@@ -438,16 +439,18 @@ export class MsfDynamicTableVariablesComponent {
 
     if (variable.funcopen)
     {
-      let variableElement = document.getElementById ('variable-' + index);
-      let variableListElement = document.getElementById ('variable-list');
+      let variableElement = document.getElementById ('value-' + index);
+      let variableListElement = document.getElementById ('values-list');
 
       this.selectedVariable = variable;
       this.funcListPosX = variableElement.offsetLeft - variableListElement.scrollLeft + 10;
+      this.funcListPosY = variableElement.offsetTop + 38;
     }
     else
     {
       this.selectedVariable = null;
       this.funcListPosX = 0;
+      this.funcListPosY = 0;
     }
   }
 
@@ -458,6 +461,7 @@ export class MsfDynamicTableVariablesComponent {
 
     this.selectedVariable = null;
     this.funcListPosX = 0;
+    this.funcListPosY = 0;
   }
 
   keepFuncMenu(event): void
@@ -465,8 +469,26 @@ export class MsfDynamicTableVariablesComponent {
     event.stopPropagation ();
   }
 
-  getFuncListPostX(): number
+  getFuncListPosX(): number
   {
     return this.funcListPosX;
+  }
+
+  getFuncListPosY(): number
+  {
+    return this.funcListPosY;
+  }
+
+  @HostListener('window:resize', ['$event'])
+  resetFuncListMenu(event): void
+  {
+    if (!this.selectedVariable.funcopen)
+      return;
+
+    let variableElement = document.getElementById ('value-' + this.values.indexOf (this.selectedVariable));
+    let variableListElement = document.getElementById ('values-list');
+
+    this.funcListPosX = variableElement.offsetLeft - variableListElement.scrollLeft + 10;
+    this.funcListPosY = variableElement.offsetTop + 38;
   }
 }

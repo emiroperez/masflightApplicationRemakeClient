@@ -77,8 +77,8 @@
               <mat-icon *ngIf="valueMouseover">add</mat-icon>
             </span>
           </div>
-          <div class="values-list-container" id="variable-list" [ngClass]="{'values-list-container-extended': values.length > 1}">
-            <div class="values-variable" id="variable-{{i}}" *ngFor="let variable of values; let i = index">
+          <div class="values-list-container" id="values-list" [ngClass]="{'values-list-container-extended': values.length > 1}">
+            <div class="values-variable" id="value-{{i}}" *ngFor="let variable of values; let i = index">
               <span class="variable-label">{{variable.name}}</span>
               <mat-icon class="func-button" matTooltip="Functions" (click)="toggleFunctions($event,i,variable)">
                 <ng-container *ngIf="!variable.funcopen">arrow_drop_down</ng-container>
@@ -90,45 +90,38 @@
         </div>
       </div>
     </div>
-    <div class="func-list" [style.left.px]="getFuncListPostX()"  (click)="keepFuncMenu($event)" (contextmenu)="keepFuncMenu($event)" (scroll)="keepFuncMenu($event)" *ngIf="selectedVariable">
-      <div class="msf-component-radio">
-        <mat-radio-group>
-          <div class="alias-container">
-            <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="selectedVariable.summary">Summary</mat-checkbox>
-            <i *ngIf="selectedVariable.summary" class="material-icons alias-button" (click)="configureAlias(selectedVariable, 'Summary')">more_horiz</i>
-            <i *ngIf="!selectedVariable.summary" class="material-icons alias-button-disabled">more_horiz</i>
-          </div>
-          <div class="alias-container">
-            <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="selectedVariable.average">Average</mat-checkbox>
-            <i *ngIf="selectedVariable.average" class="material-icons alias-button" (click)="configureAlias(selectedVariable, 'Average')">more_horiz</i>
-            <i *ngIf="!selectedVariable.average" class="material-icons alias-button-disabled">more_horiz</i>
-          </div>
-          <div class="alias-container">
-            <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="selectedVariable.mean">Mean</mat-checkbox>
-            <i *ngIf="selectedVariable.mean" class="material-icons alias-button" (click)="configureAlias(selectedVariable, 'Mean')">more_horiz</i>
-            <i *ngIf="!selectedVariable.mean" class="material-icons alias-button-disabled">more_horiz</i>
-          </div>
-          <div class="alias-container">
-            <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="selectedVariable.max">Max</mat-checkbox>
-            <i *ngIf="selectedVariable.max" class="material-icons alias-button" (click)="configureAlias(selectedVariable, 'Max')">more_horiz</i>
-            <i *ngIf="!selectedVariable.max" class="material-icons alias-button-disabled">more_horiz</i>
-          </div>
-          <div class="alias-container">
-            <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="selectedVariable.min">Min</mat-checkbox>
-            <i *ngIf="selectedVariable.min" class="material-icons alias-button" (click)="configureAlias(selectedVariable, 'Min')">more_horiz</i>
-            <i *ngIf="!selectedVariable.min" class="material-icons alias-button-disabled">more_horiz</i>
-          </div>
-          <div class="alias-container">
-            <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="selectedVariable.stddeviation">Std Deviation</mat-checkbox>
-            <i *ngIf="selectedVariable.stddeviation" class="material-icons alias-button" (click)="configureAlias(selectedVariable, 'Std Deviation')">more_horiz</i>
-            <i *ngIf="!selectedVariable.stddeviation" class="material-icons alias-button-disabled">more_horiz</i>
-          </div>
-          <div class="alias-container">
-            <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="selectedVariable.count">Count</mat-checkbox>
-            <i *ngIf="selectedVariable.count" class="material-icons alias-button" (click)="configureAlias(selectedVariable, 'Count')">more_horiz</i>
-            <i *ngIf="!selectedVariable.count" class="material-icons alias-button-disabled">more_horiz</i>
-          </div>
-        </mat-radio-group>
+    <div class="func-list" [style.left.px]="getFuncListPosX()" [style.top.px]="getFuncListPosY()" (click)="keepFuncMenu($event)" (contextmenu)="keepFuncMenu($event)" (scroll)="keepFuncMenu($event)" *ngIf="selectedVariable">
+      <div class="alias-container">
+        <mat-checkbox class="alias-label" color="primary" [(ngModel)]="selectedVariable.summary">Summary</mat-checkbox>
+        <i *ngIf="selectedVariable.summary" class="material-icons alias-button" (click)="configureAlias(selectedVariable, 'Summary')" matTooltip="Set Alias For Summary">create</i>
+      </div>
+      <div class="alias-container">
+        <mat-checkbox class="alias-label" color="primary" [(ngModel)]="selectedVariable.average">Average</mat-checkbox>
+        <i *ngIf="selectedVariable.average" class="material-icons alias-button" (click)="configureAlias(selectedVariable, 'Average')" matTooltip="Set Alias For Average">create</i>
+      </div>
+      <!--
+      <div class="alias-container">
+        <mat-checkbox class="alias-label" color="primary" [(ngModel)]="selectedVariable.mean">Mean</mat-checkbox>
+        <i *ngIf="selectedVariable.mean" class="material-icons alias-button" (click)="configureAlias(selectedVariable, 'Mean')" matTooltip="Set Alias For Mean">create</i>
+      </div>
+      -->
+      <div class="alias-container">
+        <mat-checkbox class="alias-label" color="primary" [(ngModel)]="selectedVariable.max">Max</mat-checkbox>
+        <i *ngIf="selectedVariable.max" class="material-icons alias-button" (click)="configureAlias(selectedVariable, 'Max')" matTooltip="Set Alias For Max">create</i>
+      </div>
+      <div class="alias-container">
+        <mat-checkbox class="alias-label" color="primary" [(ngModel)]="selectedVariable.min">Min</mat-checkbox>
+        <i *ngIf="selectedVariable.min" class="material-icons alias-button" (click)="configureAlias(selectedVariable, 'Min')" matTooltip="Set Alias For Min">create</i>
+      </div>
+      <!--
+      <div class="alias-container">
+        <mat-checkbox class="alias-label" color="primary" [(ngModel)]="selectedVariable.stddeviation">Std Deviation</mat-checkbox>
+        <i *ngIf="selectedVariable.stddeviation" class="material-icons alias-button" (click)="configureAlias(selectedVariable, 'Std. Deviation')" matTooltip="Set Alias For Std. Deviation">create</i>
+      </div>
+      -->
+      <div class="alias-container">
+        <mat-checkbox class="alias-label" color="primary" [(ngModel)]="selectedVariable.count">Count</mat-checkbox>
+        <i *ngIf="selectedVariable.count" class="material-icons alias-button" (click)="configureAlias(selectedVariable, 'Count')" matTooltip="Set Alias For Count">create</i>
       </div>
     </div>
   </div>
