@@ -315,6 +315,6 @@ export class UserActivationComponent implements OnInit {
     if (element.hoverDelete) {
       return "../../assets/images/" + this.globals.theme + "-datalake-DeleteRow-active.png";
     }
-    return "../../assets/images/" + this.globals.theme + "-datalake-DeleteRow.png";
+    return "../../assets/images/datalake-DeleteRow.png";
   }
 }
