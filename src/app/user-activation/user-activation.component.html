@@ -22,7 +22,18 @@
                 <input class="filter-input" matInput (input)="applyFilter($event.target.value)" placeholder="Filter">
             </mat-form-field>
             <div class="mat-elevation-z8 user-activation-table">
-                <table mat-table matSort [dataSource]="dataSource" class="datasource welcome-table">
+                <table mat-table matSort [dataSource]="dataSource" class="datasource welcome-table userActivation">
+                    <ng-container matColumnDef="action">
+                        <th mat-header-cell class="user-activation-action-row" *matHeaderCellDef mat-sort-header></th>
+                        <td mat-cell class="mat-cell-centered btn-actions" *matCellDef="let element">
+                            <button mat-icon-button matTooltip="Delete User" (click)="removeUser(element)"
+                            (mouseover)="element.hoverDelete=true" (mouseleave)="element.hoverDelete=false" >
+                              <!-- <mat-icon class="delete-icon">delete</mat-icon> -->
+                              <img class="datalake-table-edit-button-image"
+                src="{{getDeleteRowImage(element)}}" />
+                            </button>
+                        </td>
+                    </ng-container>
                     <ng-container matColumnDef="columnName">
                         <th mat-header-cell class="user-activation-name-row" *matHeaderCellDef mat-sort-header>Name</th>
                         <td mat-cell class="mat-cell-centered" *matCellDef="let element"> {{ element.name }}</td>
@@ -33,7 +44,9 @@
                     </ng-container>
                     <ng-container matColumnDef="columnEmail">
                         <th mat-header-cell class="user-activation-email-header-row" *matHeaderCellDef mat-sort-header>Email</th>
-                        <td mat-cell class="mat-cell-centered" *matCellDef="let element"> {{ element.email }}</td>
+                        <td mat-cell class="mat-cell-centered mat-cell-email" *matCellDef="let element" 
+                        title="{{ element.email }}" (dblclick)=copyMessageToClipboard(element.email)> 
+                            {{ element.email }}</td>
                     </ng-container>
                     <ng-container matColumnDef="columnCountry">
                         <th mat-header-cell class="user-activation-country-row" *matHeaderCellDef mat-sort-header>Country</th>
@@ -58,7 +71,8 @@
                     <ng-container matColumnDef="columnState">
                         <th mat-header-cell class="user-activation-status-row" *matHeaderCellDef mat-sort-header>Activation Status</th>
                         <td mat-cell *matCellDef="let element" class="user-activation-data-centered">
-                            <mat-checkbox class="activation-form activation-form-checkbox" [disabled]="element.customerInfo" ng-true-value=1 ng-false-value=0 [(ngModel)]="element.state" (change)="addToJson(element)"></mat-checkbox>
+                            <mat-checkbox class="activation-form activation-form-checkbox" 
+                            [disabled]="element.customerInfo" ng-true-value=1 ng-false-value=0 [(ngModel)]="element.state" (change)="addToJson(element)"></mat-checkbox>
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="columnProposedCustomer">

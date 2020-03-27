@@ -39,7 +39,7 @@ export class UserActivationComponent implements OnInit {
   {
   }
 
-  displayedColumns = ['columnName', 'columnLastName', 'columnEmail', 'columnAddress', 'columnPostalCode',
+  displayedColumns = ['action','columnName', 'columnLastName', 'columnEmail', 'columnAddress', 'columnPostalCode',
     'columnCountry', 'columnCountryState', 'columnPhone', 'columnState', 'columnProposedCustomer', 'columnCustomer', 'columnDatalake'];
 
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
@@ -122,8 +122,11 @@ export class UserActivationComponent implements OnInit {
 
   addToJson(element){
     this.userSelected = element;
-    this.userSelected.state ? this.userSelected.state = 1 : this.userSelected.state = 0;
-    //add KP
+    if(this.userSelected.state === null){
+      this.userSelected.state = -1;
+    }else{
+      this.userSelected.state ? this.userSelected.state = 1 : this.userSelected.state = 0;
+    }
     if(this.usersToAdd.length!=0){
       let index: number = this.usersToAdd.findIndex(d => d.id === this.userSelected.id);
       if(index != -1){
@@ -268,5 +271,50 @@ export class UserActivationComponent implements OnInit {
         this.saveUsers ();
       }
     });
+  }
+
+  removeUser(element) {
+    this.service.confirmationDialog(this, "Do you want to delete this user?",
+      function (_this) {
+        const index: number = _this.users.findIndex(d => d.id === element.id);
+        if (index != -1) {
+          _this.users.splice(index, 1);
+          _this.dataSource = new MatTableDataSource(_this.users);
+          _this.dataSource.paginator = _this.paginator;
+          element.state = null;
+          _this.addToJson(element);
+          _this.saveUsers();
+        }
+      }
+    );
+  }
+
+    
+  
+
+  copyMessageToClipboard(element): void
+  {
+    const messageBox = document.createElement('textarea');
+
+    messageBox.style.position = 'fixed';
+    messageBox.style.left = '0';
+    messageBox.style.top = '0';
+    messageBox.style.opacity = '0';
+    messageBox.value = element;
+
+    document.body.appendChild (messageBox);
+
+    messageBox.focus();
+    messageBox.select();
+
+    document.execCommand ('copy');
+    document.body.removeChild (messageBox);
+  }
+
+  getDeleteRowImage(element) {
+    if (element.hoverDelete) {
+      return "../../assets/images/" + this.globals.theme + "-datalake-DeleteRow-active.png";
+    }
+    return "../../assets/images/" + this.globals.theme + "-datalake-DeleteRow.png";
   }
 }
