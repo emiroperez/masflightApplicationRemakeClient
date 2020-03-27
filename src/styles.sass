@@ -2274,7 +2274,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             background-color: $category-admin-option-container-color
         .msf-mobile-menu-header
             background-color: $menu-header-color
-        .partial-summaries-header, .partial-summaries-body, .dynamic-table-header, .dynamic-table-body
+        .partial-summaries-header, .partial-summaries-body, .dynamic-table-config-header, .dynamic-table-body
             color: $font-color
             .flat-button-disabled
                 background-color: $dashboard-assistant-sub-background-color !important
@@ -2293,8 +2293,6 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             background-color: $background-color
             .metadata-drag-handle
                 background-image: url(assets/images/dark-theme-drag-icon.png)
-        .dynamic-table-right
-            background-color: $dashboard-threshold-background-color
         .column-drag-handle
             color: $font-color !important
         .partial-summaries-left
@@ -2349,6 +2347,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             .remove-button
                 color: #ffffff
         .dynamic-table-right
+            background-color: $dashboard-threshold-background-color
             .func-list
                 color: $font-color
                 background-color: $datalake-disabled-buttonAlarmEmail
@@ -2360,6 +2359,8 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                         height: 17px
                         margin-right: 2px
                         margin-top: -2px
+            .dynamic-table-preview-inactive
+                background-color: $table-header-border-color
     .#{$name}.partial-summaries-item
         border-bottom: 1px solid $dashboard-config-location-border-color
     .#{$name}.metadata-item
@@ -4097,7 +4098,7 @@ mat-tab-group
         padding: 0 !important
         overflow-x: hidden
         overflow-y: hidden
-        .dynamic-table-header
+        .dynamic-table-config-header
             display: flex
             align-items: center
             padding: 10px 2px 7px 18px
@@ -4192,9 +4193,9 @@ mat-tab-group
                         display: flex
                         flex-direction: column
                         justify-content: center
-                        width: calc(100% + 38px)
+                        width: calc(100% + 18px)
                         height: 200px
-                        margin-left: -38px
+                        margin-left: -18px
                         .right-arrow
                             @include disable-text-selection
                             @include dynamic-table-arrow
@@ -4209,10 +4210,19 @@ mat-tab-group
                             align-items: center
                             display: flex
                             height: 100px
+                            .x-axis-list-container, .x-axis-list-container-extended
+                                display: flex
+                                padding-top: 5px
+                                padding-bottom: 5px
+                                width: 400px
+                                overflow-x: auto
+                                .x-axis-variable
+                                    @include dynamic-table-variable
+                            .x-axis-list-container-extended
+                                padding-top: 15px !important
+                                width: calc(100% - 218px)
                             .x-axis-drop-here
                                 margin-left: 10px
-                            .x-axis-variable
-                                @include dynamic-table-variable
                         .values-container
                             display: flex
                             align-items: center
@@ -4236,9 +4246,30 @@ mat-tab-group
                                         top: 7px
                             .values-list-container-extended
                                 padding-top: 15px !important
+                                width: calc(100% - 218px)
+                .dynamic-table-preview-container
+                    width: 100%
+                    height: calc(100% - 170px)
+                    margin-top: -30px
+                    .dynamic-table-preview-inactive
+                        display: flex
+                        margin: 30px
+                        height: calc(100% - 50px)
+                        align-items: center
+                        justify-content: center
+                        font-weight: 550
+                        font-size: 18px
+                    .dynamic-table-preview-active
+                        margin: 30px
+                        height: calc(100% - 50px)
+                        .loading-panel.table-loading
+                            position: inherit !important
+                            width: 100%
+                            height: 100%
                 .func-list
                     width: 183px
                     position: absolute
+                    z-index: 1
                     box-shadow: 0 5px 5px -3px rgba(0,0,0,.1), 0 8px 10px 1px rgba(0,0,0,.07),0 3px 14px 2px rgba(0,0,0,.06)
                     .alias-container
                         width: calc(100% - 2px) !important

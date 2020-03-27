@@ -1,4 +1,4 @@
-import { Component, Inject, HostListener } from '@angular/core';
+import { Component, Inject, HostListener, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 
@@ -6,6 +6,7 @@ import { Utils } from '../commons/utils';
 import { Globals } from '../globals/Globals';
 import { MsfDynamicTableAliasComponent } from '../msf-dynamic-table-alias/msf-dynamic-table-alias.component';
 import { MessageComponent } from '../message/message.component';
+import { MsfDynamicTableComponent } from '../msf-dynamic-table/msf-dynamic-table.component';
 
 export interface DialogData {
   metadata: any[];
@@ -19,11 +20,16 @@ export interface DialogData {
 })
 export class MsfDynamicTableVariablesComponent {
 
+  @ViewChild('dynamicTablePreview', { static: false })
+  dynamicTablePreview: MsfDynamicTableComponent;
+
   xaxis: any[] = [];
   yaxis: any[] = [];
   values: any[] = [];
   columns: any[] = [];
 
+  previewAvailable: boolean = false;
+  tableLoading: boolean = false;
   selectedVariable: any = null;
   funcListPosX: number = 0;
   funcListPosY: number = 0;
@@ -38,7 +44,7 @@ export class MsfDynamicTableVariablesComponent {
 
   constructor(public dialogRef: MatDialogRef<MsfDynamicTableVariablesComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData, public globals: Globals,
-    public dialog: MatDialog)
+    public dialog: MatDialog, private changeDetectorRef: ChangeDetectorRef)
   {
     this.utils = new Utils ();
   }
@@ -113,6 +119,8 @@ export class MsfDynamicTableVariablesComponent {
           }
         }
       }
+
+      this.checkConfig ();
     }
   }
 
@@ -306,6 +314,8 @@ export class MsfDynamicTableVariablesComponent {
             value.cntAlias = result;
             break;
         }
+
+        this.checkConfig ();
       }
     });
   }
@@ -378,16 +388,20 @@ export class MsfDynamicTableVariablesComponent {
     });
   }
 
-  removeXAxis(): void
+  removeXAxis(variable): void
   {
-    this.resetColumns (this.xaxis[0]);
-    this.xaxis.pop ();
+    this.resetColumns (variable);
+    this.xaxis.splice (this.xaxis.indexOf (variable), 1);
+
+    this.checkConfig ();
   }
 
   removeYAxis(variable): void
   {
     this.resetColumns (variable);
     this.yaxis.splice (this.yaxis.indexOf (variable), 1);
+
+    this.checkConfig ();
   }
 
   removeValue(variable): void
@@ -396,25 +410,19 @@ export class MsfDynamicTableVariablesComponent {
     variable.funcopen = false;
     this.resetColumns (variable);
     this.values.splice (this.values.indexOf (variable), 1);
+
+    this.checkConfig ();
   }
 
   dropToXAxis(event: CdkDragDrop<any[]>): void
   {
     this.draggingColumn = false;
 
-    if (this.xaxis.length)
-    {
-      this.xAxisMouseover = false;
-
-      this.dialog.open (MessageComponent, {
-        data: { title: "Information", message: "Only one X-Axis variable is allowed." }
-      });
-
-      return;       // Only one X Axis variable will be allowed
-    }
-
     if (this.xAxisMouseover)
-      transferArrayItem (event.previousContainer.data, event.container.data, event.previousIndex, this.xaxis.length);
+    {
+      transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, this.xaxis.length);
+      this.checkConfig ();
+    }
 
     this.xAxisMouseover = false;
   }
@@ -424,7 +432,10 @@ export class MsfDynamicTableVariablesComponent {
     this.draggingColumn = false;
 
     if (this.yAxisMouseover)
-      transferArrayItem (event.previousContainer.data, event.container.data, event.previousIndex, this.yaxis.length);
+    {
+      transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, this.yaxis.length);
+      this.checkConfig ();
+    }
 
     this.yAxisMouseover = false;
   }
@@ -434,7 +445,10 @@ export class MsfDynamicTableVariablesComponent {
     this.draggingColumn = false;
 
     if (this.valueMouseover)
+    {
       transferArrayItem (event.previousContainer.data, event.container.data, event.previousIndex, this.values.length);
+      this.checkConfig ();
+    }
 
     this.valueMouseover = false;
   }
@@ -502,5 +516,23 @@ export class MsfDynamicTableVariablesComponent {
 
     this.funcListPosX = variableElement.offsetLeft - variableListElement.scrollLeft + 10;
     this.funcListPosY = variableElement.offsetTop + 38;
+  }
+
+  setDynTableLoading(value): void
+  {
+    this.tableLoading = value;
+  }
+
+  checkConfig(): void
+  {
+    if (this.variablesSet () && this.hasFunctions ())
+    {
+      this.previewAvailable = true;
+      this.tableLoading = true;
+      this.changeDetectorRef.detectChanges ();
+      this.dynamicTablePreview.loadData (this.xaxis, this.yaxis, this.values);
+    }
+    else
+      this.previewAvailable = false;
   }
 }

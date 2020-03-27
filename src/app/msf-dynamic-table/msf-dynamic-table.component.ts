@@ -14,6 +14,9 @@ export class MsfDynamicTableComponent implements OnInit {
   @Input("isLoading")
   isLoading: boolean = false;
 
+  @Input("isPreview")
+  isPreview: boolean = false;
+
   @Output("setDynTableLoading")
   setDynTableLoading = new EventEmitter ();
 
