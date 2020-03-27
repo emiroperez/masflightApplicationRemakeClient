@@ -23,7 +23,7 @@ export class MsfPartialSummariesComponent {
 
   functions: any[] = [
     { id: 'avg', name: 'Average' },
-    { id: 'sum', name: 'Sum' },
+    { id: 'sum', name: 'Summary' },
     { id: 'max', name: 'Max' },
     { id: 'min', name: 'Min' }
   ];

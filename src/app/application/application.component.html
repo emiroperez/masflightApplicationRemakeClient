@@ -118,14 +118,14 @@
             <span class="msf-vertical-middle" *ngIf="!TabletQuery.matches">Partial Summary</span>
         </button>
         <button *ngIf="globals.currentOption !== 'dashboard' && globals.currentOption !== 'categoryAdmin'"
-            [disabled]="(!msfContainerRef.msfTableRef || !msfContainerRef.msfTableRef.dataSource || msfContainerRef.msfTableRef.dataSource.length < 0 || globals.mapsc) || !exportExcelPlan"
+            [disabled]="(!msfContainerRef.msfTableRef || !msfContainerRef.msfTableRef.dataSource || msfContainerRef.msfTableRef.dataSource.length < 0 || globals.mapsc || partialSummaryValues) || !exportExcelPlan"
             class="msf-menu-icon" (click)="exportToExcel()">
             <img src="../../assets/images/{{globals.theme}}-ExporttoExcel.png"
                 class="msf-menu-image msf-vertical-middle">
             <span class="msf-vertical-middle" *ngIf="!TabletQuery.matches">Export Excel</span>
         </button>
         <button *ngIf="globals.currentOption !== 'dashboard' && globals.currentOption !== 'categoryAdmin'"
-            [disabled]="(!msfContainerRef.msfTableRef || !msfContainerRef.msfTableRef.dataSource || msfContainerRef.msfTableRef.dataSource.length < 0 || globals.mapsc) || !exportExcelPlan"
+            [disabled]="(!msfContainerRef.msfTableRef || !msfContainerRef.msfTableRef.dataSource || msfContainerRef.msfTableRef.dataSource.length < 0 || globals.mapsc || partialSummaryValues) || !exportExcelPlan"
             class="msf-menu-icon" (click)="exportToCSV()">
             <img src="../../assets/images/{{globals.theme}}-csv.png"
                 class="msf-menu-image msf-vertical-middle">
