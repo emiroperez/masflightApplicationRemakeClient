@@ -1,4 +1,4 @@
-<div class="dynamic-table-scroll">
+<div class="dynamic-table-scroll" *ngIf="!isLoading">
   <table *ngIf="dataAdapter" class="mat-elevation-z8 dynamic-table-container">
     <tr class="dynamic-table-header-container" *ngFor="let header of dataAdapter.headers">
       <!-- Always insert a blank tab header first since it's a pivot table -->
@@ -7,11 +7,13 @@
     </tr>
     <tr class="dynamic-table-body-container" *ngFor="let body of dataAdapter.body">
       <th class="dynamic-table-body-title">{{body[0].value}}</th>
-      <td class="dynamic-table-value" *ngFor="let value of body | slice: 1; let valueindex = index"><span *ngIf="body[valueindex + 1]">{{body[valueindex + 1]}}</span></td>
+      <ng-container *ngIf="!body[0].header">
+        <td class="dynamic-table-value" *ngFor="let value of body | slice: 1; let valueindex = index"><span *ngIf="body[valueindex + 1]">{{body[valueindex + 1]}}</span></td>
+      </ng-container>
     </tr>
   </table>
 </div>
-<div class="loading-panel table-loading" *ngIf="!isLoading">
+<div class="loading-panel table-loading" *ngIf="isLoading">
   <button *ngIf="globals.currentOption !== 'dashboard' && !isPreview" mat-button class="cancel-button" (click)="cancelLoading()">
     Cancel
   <mat-icon class="close-icon">close</mat-icon> 

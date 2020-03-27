@@ -230,10 +230,19 @@ export class ApplicationService {
       data.variables[data.variables.length - 1].direction = "horizontal";
     }
 
-    for (let variable of yaxis)
+    for (let i = 0; i < yaxis.length; i++)
     {
+      let variable = yaxis[i];
+      let index;
+
       data.variables.push (variable);
-      data.variables[data.variables.length - 1].direction = "vertical";
+      index = data.variables.length - 1;
+      data.variables[index].direction = "vertical";
+
+      if (i != yaxis.length - 1)
+        data.variables[index].summary = true;
+      else
+        data.variables[index].summary = false;
     }
 
     for (let value of values)
