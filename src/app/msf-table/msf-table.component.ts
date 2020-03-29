@@ -110,6 +110,8 @@ export class MsfTableComponent implements OnInit {
   securityTokenResultTable: string;
   tokenResult: { showMoreResult: boolean; tokenResultTable: any; };
   ListSortingColumns: string = "";							
+  nameAirlines: any[] = [];
+  searchNameAirline: boolean = false;
 
   constructor(public globals: Globals, private service: ApplicationService,
     public dialog: MatDialog, private sanitizer: DomSanitizer,
@@ -496,6 +498,24 @@ export class MsfTableComponent implements OnInit {
           data[j][column.columnName] = this.parseNumber (data[j][column.columnName]);
         }
       }
+      else if (column.columnType === "Airline")
+      {
+        for (let j = 0; j < data.length; j++)
+        {          
+          if(data[j][column.columnName] && data[j][column.columnName] != null && data[j][column.columnName] != ""){
+            this.searchNameAirline = true;
+            if(this.nameAirlines.length>0){
+              const index: number = this.nameAirlines.findIndex(d => d === data[j][column.columnName]);
+              if (index === -1) {
+                this.nameAirlines.push(data[j][column.columnName]);
+              }
+            }else{              
+              this.nameAirlines.push(data[j][column.columnName]);
+            }
+          }
+          data[j][column.columnName] = this.parseString (data[j][column.columnName]);
+        }
+      }
       else // string
       {
         for (let j = 0; j < data.length; j++)
@@ -632,6 +652,7 @@ export class MsfTableComponent implements OnInit {
           }
 
           // parse table values
+          _this.nameAirlines = [];
           _this.dataSource.data = _this.parseResults (_this.dataSource.data, _this.tableOptions.displayedColumns, _this.currentOption);
 
           if(_this.currentOption.tabType === "legacy" || _this.currentOption.tabType === "scmap"){
@@ -716,14 +737,12 @@ export class MsfTableComponent implements OnInit {
       if (_this.currentOption.tabType !== "map")
         _this.tableOptions.selectedIndex = 2;
 
-      _this.finishLoading.emit (false);
-
-      if (_this.tableOptions.dataSource && !_this.tableOptions.template && ((_this.currentOption.metaData==1) || (_this.currentOption.metaData==3) || (_this.currentOption.tabType=='scmap')))
-        _this.resultsAvailable = "msf-visible";
-      else
-        _this.resultsAvailable = "msf-no-visible";
+        
+        //search name of iata to Airlines for colum type airline
+      _this.getNameColumnSpecial();
     }
   }
+
 
   renameDuplicateColumns(displayedColumns: any): any {
     let cont = 0;
@@ -1086,4 +1105,47 @@ export class MsfTableComponent implements OnInit {
 
     return false;
   }
+
+  
+  getNameColumnSpecial(){
+    if(this.searchNameAirline){
+      let iataAirline = this.nameAirlines.join();
+      this.service.getAirlinesRecords (this,iataAirline, this.recordSuccess, this.RecordError);      
+    }else{
+      this.RecordError(this, null);
+    }
+  }
+
+  recordSuccess(_this, data): void
+  {
+    _this.nameAirlines = data;    
+    _this.finishLoading.emit (false);
+
+    if (_this.tableOptions.dataSource && !_this.tableOptions.template && 
+      ((_this.currentOption.metaData==1) || (_this.currentOption.metaData==3) || 
+      (_this.currentOption.tabType=='scmap')))
+      _this.resultsAvailable = "msf-visible";
+    else
+      _this.resultsAvailable = "msf-no-visible";
+  }
+
+  RecordError(_this, data): void
+  {    
+    _this.finishLoading.emit (false);
+
+    if (_this.tableOptions.dataSource && !_this.tableOptions.template && ((_this.currentOption.metaData==1) || (_this.currentOption.metaData==3) || (_this.currentOption.tabType=='scmap')))
+      _this.resultsAvailable = "msf-visible";
+    else
+      _this.resultsAvailable = "msf-no-visible";
+  }
+
+  getNameAirline(iata){
+    const index: number = this.nameAirlines.findIndex(d => d.iata === iata);
+    if (index != -1) {
+      return this.nameAirlines[index].name;
+    }else{
+      return iata;
+    }
+  }
+
 }

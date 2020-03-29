@@ -836,4 +836,10 @@ export class ApplicationService {
 
     });
   }
+
+  getAirlinesRecords(_this,search, handlerSuccess, handlerError): void
+  {
+    let url = _this.globals.baseUrl + "/SearchAirlines?search=" + (search != null ? search : '');  
+    this.http.get (_this, url, handlerSuccess, handlerError, null);
+  }
 }
