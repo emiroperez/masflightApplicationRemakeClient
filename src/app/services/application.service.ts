@@ -56,7 +56,7 @@ export class ApplicationService {
 
   getSummaryResponse(_this, config, pageNumber, tokenResultable, SortingColumns, handlerSuccess, handlerError)
   {
-    let param = this.utils.getUrlParameters (_this.globals.currentOption, true);
+    let param = this.utils.getUrlParameters (_this.globals.currentOption, true, true);
     let urlBase = param.url;
 
     if (!urlBase.includes ("MIN_VALUE"))
