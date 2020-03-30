@@ -115,7 +115,7 @@
             class="msf-menu-icon" (click)="partialSummaries()">
             <img src="../../assets/images/{{globals.theme}}-small-summary.png"
                 class="msf-menu-image msf-vertical-middle">
-            <span class="msf-vertical-middle" *ngIf="!TabletQuery.matches">Partial Summary</span>
+            <span class="msf-vertical-middle" *ngIf="!TabletQuery.matches">Subtotal</span>
         </button>
         <button *ngIf="globals.currentOption !== 'dashboard' && globals.currentOption !== 'categoryAdmin'"
             [disabled]="(!msfContainerRef.msfTableRef || !msfContainerRef.msfTableRef.dataSource || msfContainerRef.msfTableRef.dataSource.length < 0 || globals.mapsc || partialSummaryValues) || !exportExcelPlan"
