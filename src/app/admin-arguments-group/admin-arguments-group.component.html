@@ -74,9 +74,10 @@
                                             </mat-option>
                                         </mat-select>
                                     </mat-form-field>
+                                    <!--only share if private y esta guardado-->
                                     <button  
-                                        (click)="share(ArgumentGroup)" class="msf-menu-icon" [disabled]="ArgumentGroup.id === null || ArgumentGroup.type != Private">
-                                        <img src="../../assets/images/{{globals.theme}}-share.png" >
+                                        (click)="share(ArgumentGroup)" class="msf-menu-icon" [disabled]="ArgumentGroup.id === null || ArgumentGroup.type != 1">
+                                        <img src="../../assets/images/{{globals.theme}}-share.png" class="msf-menu-image msf-vertical-middle">
                                     </button>
                                     <div class="admin-arguments-group-save">
                                             <!-- [disabled]="ArgumentGroup.name === '' && ArgumentGroup.group === ''" -->
