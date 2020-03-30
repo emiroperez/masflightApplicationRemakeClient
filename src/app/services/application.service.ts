@@ -72,7 +72,7 @@ export class ApplicationService {
     {
       let colBreakerSort = "";
 
-      for (let i = 0; i < config.columnBreakers.length; i++)
+      for (let i = config.columnBreakers.length - 1; i >= 0; i--)
       {
         let colBreaker = config.columnBreakers[i];
 
@@ -83,7 +83,7 @@ export class ApplicationService {
         else
           colBreakerSort += "asc";
 
-        if (i != config.columnBreakers.length - 1)
+        if (i != 0)
           colBreakerSort += ", ";
       }
 
@@ -91,7 +91,7 @@ export class ApplicationService {
     }
     else
     {
-      for (let i = 0; i < config.columnBreakers.length; i++)
+      for (let i = config.columnBreakers.length - 1; i >= 0; i--)
       {
         let colBreaker = config.columnBreakers[i];
 
@@ -102,7 +102,7 @@ export class ApplicationService {
         else
           SortingColumns += "asc";
 
-        if (i != config.columnBreakers.length - 1)
+        if (i != 0)
           SortingColumns += ", ";
       }
     }
