@@ -51,7 +51,7 @@ export class MsfDynamicTableVariablesComponent {
 
   onNoClick(): void
   {
-    this.dialogRef.close (false);
+    this.dialogRef.close (null);
   }
 
   ngOnInit(): void

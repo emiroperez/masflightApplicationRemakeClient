@@ -2,12 +2,17 @@
   <table *ngIf="dataAdapter" class="mat-elevation-z8 dynamic-table-container">
     <tr class="dynamic-table-header-container" *ngFor="let header of dataAdapter.headers">
       <!-- Always insert a blank tab header first since it's a pivot table -->
-      <th class="dyanmic-table-padding"></th>
-      <th class="dynamic-table-header" *ngFor="let value of header.values" [colSpan]="value.colSpan">{{value.value}}</th>
+      <th class="dyanmic-table-padding" [style.top.px]="header.topOffset"></th>
+      <th class="dynamic-table-header" [style.top.px]="header.topOffset" *ngFor="let value of header.values" [colSpan]="value.colSpan">{{value.value}}</th>
     </tr>
     <tr class="dynamic-table-body-container" *ngFor="let body of dataAdapter.body">
-      <th class="dynamic-table-body-title">{{body[0].value}}</th>
-      <ng-container *ngIf="!body[0].header">
+      <ng-container *ngIf="body[0].titleOnly">
+        <th class="dynamic-table-yaxis-title" [colSpan]="yAxisColSpan">
+          <div [style.margin-left.px]="body[0].margin">{{body[0].value}}</div>
+        </th>
+      </ng-container>
+      <ng-container *ngIf="!body[0].titleOnly">
+        <th class="dynamic-table-body-title">{{body[0].value}}</th>
         <td class="dynamic-table-value" *ngFor="let value of body | slice: 1; let valueindex = index"><span *ngIf="body[valueindex + 1]">{{body[valueindex + 1]}}</span></td>
       </ng-container>
     </tr>
@@ -16,6 +21,6 @@
 <div class="loading-panel table-loading" *ngIf="isLoading">
   <button *ngIf="globals.currentOption !== 'dashboard' && !isPreview" mat-button class="cancel-button" (click)="cancelLoading()">
     Cancel
-  <mat-icon class="close-icon">close</mat-icon> 
+  <mat-icon class="close-icon">close</mat-icon>
   </button>
 </div>

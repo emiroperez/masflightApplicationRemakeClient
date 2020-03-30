@@ -18,7 +18,9 @@ export class MsfDynamicTableComponent implements OnInit {
   isPreview: boolean = false;
 
   @Output("setDynTableLoading")
-  setDynTableLoading = new EventEmitter ();
+  setDynTableLoading = new EventEmitter();
+
+  yAxisColSpan: number;
 
   constructor(private http: ApiClient, public globals: Globals, private service: ApplicationService)
   { 
@@ -28,6 +30,11 @@ export class MsfDynamicTableComponent implements OnInit {
   {
   }
 
+  isArray(item): boolean
+  {
+    return Array.isArray (item);
+  }
+
   loadData(xaxis, yaxis, values)
   {  
     this.service.loadDynamicTableData (this, xaxis, yaxis, values, this.handlerSuccess, this.handlerError);
@@ -35,10 +42,32 @@ export class MsfDynamicTableComponent implements OnInit {
 
   handlerSuccess(_this,data)
   {
+    let topOffsetValue = 0;
+
     if (!_this.isLoading)
       return;
 
     _this.dataAdapter = data;
+    _this.yAxisColSpan = 1;
+
+    for (let i = 0; i < _this.dataAdapter.headers.length; i++)
+    {
+      let header = _this.dataAdapter.headers[i];
+      header.topOffset = topOffsetValue;
+
+      if (!i)
+      {
+        for (let j = 0; j < header.values.length - 1; j++)
+        {
+          let value = header.values[j];
+
+          _this.yAxisColSpan += value.colSpan;
+        }
+      }
+
+      topOffsetValue += 35;
+    }
+
     _this.setDynTableLoading.emit (false);
   }
 
