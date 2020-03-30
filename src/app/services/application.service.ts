@@ -248,7 +248,7 @@ export class ApplicationService {
     this.authService.get(_this, url, handlerSuccess, handlerError);
   }
 
-  loadDynamicTableData(_this, handlerSuccess, handlerError) {
+  loadDynamicTableData(_this, xaxis, yaxis, values, handlerSuccess, handlerError) {
     _this.columns = [];
 
     let param = this.utils.getUrlParameters(_this.globals.currentOption,true);
@@ -260,8 +260,32 @@ export class ApplicationService {
     if (isDevMode ())
       console.log (urlBase);
 
-    let data = { variables: _this.globals.variables, values: _this.globals.values };
+    let data = { variables: [], values: [] };
     let url = this.host + "/secure/getHorizontalMatrix?url=" + urlArg + "&optionId=" + _this.globals.currentOption.id;
+
+    for (let variable of xaxis)
+    {
+      data.variables.push (variable);
+      data.variables[data.variables.length - 1].direction = "horizontal";
+    }
+
+    for (let i = 0; i < yaxis.length; i++)
+    {
+      let variable = yaxis[i];
+      let index;
+
+      data.variables.push (variable);
+      index = data.variables.length - 1;
+      data.variables[index].direction = "vertical";
+
+      if (i != yaxis.length - 1)
+        data.variables[index].summary = true;
+      else
+        data.variables[index].summary = false;
+    }
+
+    for (let value of values)
+      data.values.push (value);
 
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;

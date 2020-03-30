@@ -1,94 +1,137 @@
-<div class="msf-dynamic-table-variable-containner">
-  <div class="msf-dynamic-table-variable-title">
-    <img src="../../assets/images/{{globals.theme}}-dynamicTable.png" [style.width.px]="20" [style.height.px]="20">
-    <span>Dynamic Table</span>
+<div class="dynamic-table-config-header" (click)="disableFuncMenu()" (contextmenu)="disableFuncMenu()" (scroll)="disableFuncMenu()">
+  <img class="dynamic-table-icon" src="../../assets/images/{{globals.theme}}-dynamicTable.png" [style.width.px]="20" [style.height.px]="20">
+  <span class="dynamic-table-title">Dynamic Table</span>
+  <div class="dynamic-table-header-buttons">
+    <button mat-flat-button [disabled]="disabled()" [ngClass]="disabled() ? 'flat-button-disabled' : 'flat-button'" (click)="generateTable()">
+      Generate
+    </button>
+    <button mat-icon-button class="dynamic-table-close-button" (click)="onNoClick()">
+      <mat-icon>close</mat-icon>
+    </button>
   </div>
-  <div class="msf-dynamic-table-variable-content">
-      <div class="msf-var-content">
-          <mat-form-field class="msf-full-width">
-              <mat-select [multiple]="true" placeholder="Variables" #variableSelect [(ngModel)]="this.globals.variables" (ngModelChange)="orderVariable($event)" openedChange="show()">
-                  <ngx-mat-select-search [formControl]="variableFilterCtrl" placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>
-                  <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
-                      {{variable.name}}
-                  </mat-option>
-              </mat-select>
-          </mat-form-field>
-          <ng-container *ngFor="let variable of this.globals.variables">
-              <mat-card class="msf-var-name-content">
-                {{variable.name}}
-                <div class="msf-var-buttons">
-                    <i class="material-icons" *ngIf="variable.direction === 'vertical'" (click)="changeVariableDirection(variable)">arrow_downward</i>
-                    <i class="material-icons" *ngIf="variable.direction === 'horizontal'" (click)="changeVariableDirection(variable)">arrow_forward</i>
-                    <i class="material-icons" (click)="deleteVariable(variable)">close</i>
-                </div>
-              </mat-card>
-          </ng-container>
+</div>
+<div class="dynamic-table-body" (click)="disableFuncMenu()" (contextmenu)="disableFuncMenu()" (scroll)="disableFuncMenu()" cdkDropListGroup>
+  <div class="dynamic-table-left">
+    <div class="dynamic-table-metadata-container">
+      <div class="dynamic-table-metadata-search">
+        <mat-form-field>
+          <input matInput placeholder="Drag N Drop" autocomplete="off" [(ngModel)]="filter" (ngModelChange)="filterVariables()"/>
+          <mat-icon class="dynamic-table-search-icon" aria-label="search">search</mat-icon>
+        </mat-form-field>
       </div>
-      <img src="../../assets/images/{{globals.theme}}-arrows.png" class="msf-var-img" alt="">
-      <div class="msf-var-content">
-          <mat-form-field class="msf-full-width">
-              <mat-select [multiple]="true" placeholder="Values" #valueSelect [(ngModel)]="this.globals.values" (ngModelChange)="orderValues($event)">
-                  <ngx-mat-select-search [formControl]="valueFilterCtrl" placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>
-                  <mat-option *ngFor="let value of filteredValues | async" [value]="value">
-                      {{value.name}}
-                  </mat-option>
-              </mat-select>
-          </mat-form-field>
-          <mat-accordion>
-              <ng-container *ngFor="let val of this.globals.values"> 
-                <mat-expansion-panel class="msf-val-name-content">
-                  <mat-expansion-panel-header>
-                    <mat-panel-title>
-                        {{val.name}}
-                    </mat-panel-title>
-                  </mat-expansion-panel-header>   
-                  <div class="msf-component-radio">
-                      <mat-radio-group [(ngModel)]="val.function">
-                        <div class="alias-container">
-                            <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="val.summary">Summary</mat-checkbox>
-                            <i *ngIf="val.summary" class="material-icons alias-button" (click)="configureAlias(val, 'Summary')">more_horiz</i>
-                            <i *ngIf="!val.summary" class="material-icons alias-button-disabled">more_horiz</i>
-                        </div>
-                        <div class="alias-container">
-                            <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="val.average">Average</mat-checkbox>
-                            <i *ngIf="val.average" class="material-icons alias-button" (click)="configureAlias(val, 'Average')">more_horiz</i>
-                            <i *ngIf="!val.average" class="material-icons alias-button-disabled">more_horiz</i>
-                        </div>
-                        <div class="alias-container">
-                            <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="val.mean">Mean</mat-checkbox>
-                            <i *ngIf="val.mean" class="material-icons alias-button" (click)="configureAlias(val, 'Mean')">more_horiz</i>
-                            <i *ngIf="!val.mean" class="material-icons alias-button-disabled">more_horiz</i>
-                        </div>
-                        <div class="alias-container">
-                            <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="val.max">Max</mat-checkbox>
-                            <i *ngIf="val.max" class="material-icons alias-button" (click)="configureAlias(val, 'Max')">more_horiz</i>
-                            <i *ngIf="!val.max" class="material-icons alias-button-disabled">more_horiz</i>
-                        </div>
-                        <div class="alias-container">
-                            <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="val.min">Min</mat-checkbox>
-                            <i *ngIf="val.min" class="material-icons alias-button" (click)="configureAlias(val, 'Min')">more_horiz</i>
-                            <i *ngIf="!val.min" class="material-icons alias-button-disabled">more_horiz</i>
-                        </div>
-                        <div class="alias-container">
-                            <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="val.stddeviation">Std Deviation</mat-checkbox>
-                            <i *ngIf="val.stddeviation" class="material-icons alias-button" (click)="configureAlias(val, 'Std Deviation')">more_horiz</i>
-                            <i *ngIf="!val.stddeviation" class="material-icons alias-button-disabled">more_horiz</i>
-                        </div>
-                        <div class="alias-container">
-                            <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="val.count">Count</mat-checkbox>
-                            <i *ngIf="val.count" class="material-icons alias-button" (click)="configureAlias(val, 'Count')">more_horiz</i>
-                            <i *ngIf="!val.count" class="material-icons alias-button-disabled">more_horiz</i>
-                        </div>
-                      </mat-radio-group>    
-                  </div>                                                                              
-                </mat-expansion-panel>   
-            </ng-container>               
-          </mat-accordion>
-          
+      <div class="metadata-list" cdkDropList [cdkDropListData]="columns" cdkDropListSortingDisabled>
+        <ng-container *ngFor="let variable of columns">
+          <div class="{{globals.theme}} metadata-item" *ngIf="!variable.hidden" cdkDrag (cdkDragStarted)="dragStarted()" (cdkDragEnded)="dragEnded()">
+            <div class="metadata-label">{{variable.name}}</div>
+            <div class="metadata-drag-handle" [style.width.px]="20" [style.height.px]="20" cdkDragHandle></div>
+          </div>
+        </ng-container>
       </div>
+    </div>
   </div>
-  <div class="msf-dynamic-table-variable-fotter">
-      <button class="msf-cancel-button" mat-button (click)="onNoClick()" >Cancel</button>
-      <button [disabled]="disabled()" [ngClass]="disabled()?'msf-disabled msf-ok-button ':'msf-ok-button'" mat-button (click)="generateTable()" >Generate Table</button>      
+  <div class="dynamic-table-right">
+    <div class="y-axis-header">
+      <div class="empty"></div>
+      <div class="y-axis-container">
+        <div class="y-axis-drag-handle">
+          <mat-icon class="down-arrow">forward</mat-icon>
+          <div class="drop-here" [ngClass]="{'drop-here-mouseover': yAxisMouseover }" cdkDropList [cdkDropListData]="yaxis"
+               (cdkDropListDropped)="dropToYAxis($event)" (mouseenter)="setYAxisMouseover(true)" (mouseleave)="setYAxisMouseover(false)">
+            <span cdkDrag [cdkDragDisabled]="true">
+              <span *ngIf="!yAxisMouseover">Add Y-Axis</span>
+              <mat-icon *ngIf="yAxisMouseover">add</mat-icon>
+            </span>
+          </div>
+        </div>
+        <div class="y-axis-list-container">
+          <div class="y-axis-variable" [style.margin-left.px]="calcMarginOffset(i)" *ngFor="let variable of yaxis; let i = index">
+            <span class="variable-label">{{variable.name}}</span>
+            <mat-icon class="remove-button" matTooltip="Remove Variable" (click)="removeYAxis(variable)">close</mat-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="x-axis-and-values-container">
+      <div class="x-axis-and-values-header">
+        <div class="x-axis-container">
+          <mat-icon class="right-arrow">forward</mat-icon>
+          <div class="drop-here" [ngClass]="{'drop-here-mouseover': xAxisMouseover }" cdkDropList [cdkDropListData]="xaxis"
+               (cdkDropListDropped)="dropToXAxis($event)" (mouseenter)="setXAxisMouseover(true)" (mouseleave)="setXAxisMouseover(false)">
+            <span cdkDrag [cdkDragDisabled]="true">
+              <span *ngIf="!xAxisMouseover">Add X-Axis</span>
+              <mat-icon *ngIf="xAxisMouseover">add</mat-icon>
+            </span>
+          </div>
+          <div class="x-axis-list-container" [ngClass]="{'x-axis-list-container-extended': xaxis.length > 1}">
+            <div class="x-axis-variable" *ngFor="let variable of xaxis; let i = index">
+              <span class="variable-label">{{variable.name}}</span>
+              <mat-icon class="remove-button" matTooltip="Remove Variable" (click)="removeXAxis(variable)">close</mat-icon>
+            </div>
+          </div>
+        </div>
+        <div class="values-container">
+          <mat-icon class="right-arrow">forward</mat-icon>
+          <div class="drop-here" [ngClass]="{'drop-here-mouseover': valueMouseover }" cdkDropList [cdkDropListData]="values"
+               (cdkDropListDropped)="dropToValues($event)" (mouseenter)="setValueMouseover(true)" (mouseleave)="setValueMouseover(false)">
+            <span cdkDrag [cdkDragDisabled]="true">
+              <span *ngIf="!valueMouseover">Add Values</span>
+              <mat-icon *ngIf="valueMouseover">add</mat-icon>
+            </span>
+          </div>
+          <div class="values-list-container" id="values-list" [ngClass]="{'values-list-container-extended': values.length > 1}">
+            <div class="values-variable" id="value-{{i}}" *ngFor="let variable of values; let i = index">
+              <span class="variable-label">{{variable.name}}</span>
+              <mat-icon class="func-button" matTooltip="Functions" (click)="toggleFunctions($event,i,variable)">
+                <ng-container *ngIf="!variable.funcopen">arrow_drop_down</ng-container>
+                <ng-container *ngIf="variable.funcopen">arrow_drop_up</ng-container>
+              </mat-icon>
+              <mat-icon class="remove-button" matTooltip="Remove Variable" (click)="removeValue(variable)">close</mat-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="dynamic-table-preview-container">
+        <div class="dynamic-table-preview-inactive" *ngIf="!previewAvailable">
+          Result Preview
+        </div>
+        <div class="dynamic-table-preview-active" *ngIf="previewAvailable">
+          <app-msf-dynamic-table #dynamicTablePreview [isLoading]="tableLoading" [isPreview]="true" (setDynTableLoading)="setDynTableLoading($event)"></app-msf-dynamic-table>
+        </div>
+      </div>
+    </div>
+    <div class="func-list" [style.left.px]="getFuncListPosX()" [style.top.px]="getFuncListPosY()" (click)="keepFuncMenu($event)" (contextmenu)="keepFuncMenu($event)" (scroll)="keepFuncMenu($event)" *ngIf="selectedVariable">
+      <div class="alias-container">
+        <mat-checkbox class="alias-label" color="primary" [(ngModel)]="selectedVariable.summary" (ngModelChange)="checkConfig()">Summary</mat-checkbox>
+        <i *ngIf="selectedVariable.summary" class="material-icons alias-button" (click)="configureAlias(selectedVariable, 'Summary')" matTooltip="Set Alias For Summary">create</i>
+      </div>
+      <div class="alias-container">
+        <mat-checkbox class="alias-label" color="primary" [(ngModel)]="selectedVariable.average" (ngModelChange)="checkConfig()">Average</mat-checkbox>
+        <i *ngIf="selectedVariable.average" class="material-icons alias-button" (click)="configureAlias(selectedVariable, 'Average')" matTooltip="Set Alias For Average">create</i>
+      </div>
+      <!--
+      <div class="alias-container">
+        <mat-checkbox class="alias-label" color="primary" [(ngModel)]="selectedVariable.mean" (ngModelChange)="checkConfig()">Mean</mat-checkbox>
+        <i *ngIf="selectedVariable.mean" class="material-icons alias-button" (click)="configureAlias(selectedVariable, 'Mean')" matTooltip="Set Alias For Mean">create</i>
+      </div>
+      -->
+      <div class="alias-container">
+        <mat-checkbox class="alias-label" color="primary" [(ngModel)]="selectedVariable.max" (ngModelChange)="checkConfig()">Max</mat-checkbox>
+        <i *ngIf="selectedVariable.max" class="material-icons alias-button" (click)="configureAlias(selectedVariable, 'Max')" matTooltip="Set Alias For Max">create</i>
+      </div>
+      <div class="alias-container">
+        <mat-checkbox class="alias-label" color="primary" [(ngModel)]="selectedVariable.min" (ngModelChange)="checkConfig()">Min</mat-checkbox>
+        <i *ngIf="selectedVariable.min" class="material-icons alias-button" (click)="configureAlias(selectedVariable, 'Min')" matTooltip="Set Alias For Min">create</i>
+      </div>
+      <!--
+      <div class="alias-container">
+        <mat-checkbox class="alias-label" color="primary" [(ngModel)]="selectedVariable.stddeviation" (ngModelChange)="checkConfig()">Std Deviation</mat-checkbox>
+        <i *ngIf="selectedVariable.stddeviation" class="material-icons alias-button" (click)="configureAlias(selectedVariable, 'Std. Deviation')" matTooltip="Set Alias For Std. Deviation">create</i>
+      </div>
+      -->
+      <div class="alias-container">
+        <mat-checkbox class="alias-label" color="primary" [(ngModel)]="selectedVariable.count" (ngModelChange)="checkConfig()">Count</mat-checkbox>
+        <i *ngIf="selectedVariable.count" class="material-icons alias-button" (click)="configureAlias(selectedVariable, 'Count')" matTooltip="Set Alias For Count">create</i>
+      </div>
+    </div>
   </div>
 </div>

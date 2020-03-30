@@ -1,0 +1,20 @@
+.cdk-drag-preview
+{
+  box-sizing: border-box;
+  opacity: 0.85;
+}
+
+.drop-here .ng-star-inserted.cdk-drag-placeholder
+{
+  display: none;
+}
+
+.drop-here .cdk-drag-disabled
+{
+  transform: inherit !important;
+}
+
+.cdk-drag-placeholder
+{
+  opacity: 0;
+}
