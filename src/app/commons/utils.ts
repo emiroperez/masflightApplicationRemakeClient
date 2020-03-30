@@ -39,7 +39,7 @@ export class Utils{
         return false;
     }
 
-    getUrlParameters(option: any, urlBase:boolean){
+    getUrlParameters(option: any, urlBase:boolean, summary?: boolean){
         let params;    
         let paramsGroup = [];     
         if(option.menuOptionArguments){            
@@ -77,7 +77,10 @@ export class Utils{
         let newParam = this.setTarget(paramsGroup,params);
         if(option.baseUrl && urlBase){
             // return {tab:option.tab,url:option.baseUrl + "?" + params};
-            return {tab:option.tab,url:option.baseUrl + "?" + newParam};
+            if (summary)
+              return { tab: option.tab, url: option.baseUrl + "/summary?" + newParam };
+            else
+              return {tab:option.tab,url:option.baseUrl + "?" + newParam};
         }
         // return {tab:option.tab,url: params};
         return {tab:option.tab,url: newParam};

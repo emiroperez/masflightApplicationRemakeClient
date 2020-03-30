@@ -1148,4 +1148,8 @@ export class MsfTableComponent implements OnInit {
     }
   }
 
+  calcMargin(margin): number
+  {
+    return 24 + margin;
+  }
 }

@@ -67,7 +67,7 @@
       <ng-container *ngIf="summaryColumns.length">
         <ng-container matColumnDef="SummaryTitle">
           <td class="summary-column "colspan="999" mat-cell *matCellDef="let rowgroup">
-            <div class="summary-column-container">
+            <div class="summary-column-container" [style.margin-left.px]="calcMargin(rowgroup.margin)">
               <span class="summary-column-title">{{rowgroup.SummaryTitle}}</span>
               <span class="summary-column-result-container" *ngFor="let result of rowgroup.results">
                 <span class="summary-result-label">{{result.label}}</span>

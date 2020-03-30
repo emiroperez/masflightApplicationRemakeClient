@@ -3323,13 +3323,7 @@
   margin-top: -2px;
 }
 .dark-theme .dynamic-table-right .dynamic-table-preview-inactive {
-  background-color: #141414;
-}
-.dark-theme .dynamic-table-scroll .dynamic-table-container {
-  background-color: #333333 !important;
-}
-.dark-theme .dynamic-table-scroll .dynamic-table-container tr.dynamic-table-body-container th.dynamic-table-yaxis-title {
-  color: #ffffff;
+  background-color: #101010;
 }
 
 .dark-theme.partial-summaries-item {
@@ -6641,7 +6635,7 @@
 }
 .light-theme .dynamic-table-right .func-list {
   color: #4d4d4d;
-  background-color: #c6c6c6;
+  background-color: #f4f4f4;
 }
 .light-theme .dynamic-table-right .func-list .alias-container {
   border-top: 1px solid #e6e6e6;
@@ -6654,13 +6648,7 @@
   margin-top: -2px;
 }
 .light-theme .dynamic-table-right .dynamic-table-preview-inactive {
-  background-color: #eaeaea;
-}
-.light-theme .dynamic-table-scroll .dynamic-table-container {
-  background-color: #efefef !important;
-}
-.light-theme .dynamic-table-scroll .dynamic-table-container tr.dynamic-table-body-container th.dynamic-table-yaxis-title {
-  color: #4d4d4d;
+  background-color: #c3c3c3;
 }
 
 .light-theme.partial-summaries-item {
@@ -12478,6 +12466,7 @@ mat-form-field.msf-table-input {
   height: 100%;
 }
 .dynamic-table-scroll .dynamic-table-container {
+  background-color: #333333;
   border-collapse: separate;
   border-spacing: 0;
   width: unset !important;
@@ -12512,6 +12501,7 @@ mat-form-field.msf-table-input {
   font-weight: 550;
   text-align: left;
   z-index: 0;
+  color: #ffffff;
   left: 0;
 }
 .dynamic-table-scroll .dynamic-table-container tr.dynamic-table-body-container th.dynamic-table-body-title {
