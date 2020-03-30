@@ -85,7 +85,7 @@ export class MsfPartialSummariesComponent {
 
   addColumnBreaker(): void
   {
-    this.colBreakers.push ({
+    this.colBreakers.unshift ({
       column: this.data.metadata[0],
       summary: false,
       mouseover: false
