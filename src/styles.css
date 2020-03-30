@@ -11062,6 +11062,9 @@ table.results {
 table.results tr.mat-row {
   font-size: 100% !important;
 }
+table.results .mat-cell {
+  color: rgba(0, 0, 0, 0.95) !important;
+}
 
 .results-container {
   position: relative;
