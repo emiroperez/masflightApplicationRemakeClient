@@ -56,20 +56,20 @@
                         <div class="admin-arguments-category-right-panel-header admin-arguments-category-right-panel-header-group admin-arguments-group-right-panel-header">
                             <div class="admin-arguments-category-form-container">
                                 <mat-form-field>
-                                    <input [disabled]="disable"  matInput (focus)="ArgumentGroup.focus" placeholder="Name Group" 
+                                    <input #nameGroup [disabled]="disable"  matInput placeholder="Name Group" 
                                     [(ngModel)]="ArgumentGroup.name"/>
                                 </mat-form-field>
                                 <div class="admin-arguments-group">
                                     <mat-form-field  class="admin-arguments-group-type">
-                                        <mat-select class="white" placeholder="Group" [(ngModel)]="ArgumentGroup.group" >
-                                            <mat-option [disabled]="disable" *ngFor="let group of argGroupTypes " [value]="group.value">
+                                        <mat-select [disabled]="disable" class="white" placeholder="Group" [(ngModel)]="ArgumentGroup.group" >
+                                            <mat-option  *ngFor="let group of argGroupTypes " [value]="group.value">
                                                 {{group.name}}
                                             </mat-option>
                                         </mat-select>
                                     </mat-form-field>
-                                    <mat-form-field  *ngIf="globals.SuperAdmin" class="admin-arguments-group-type">
-                                        <mat-select class="white" placeholder="Type" [(ngModel)]="ArgumentGroup.type" >
-                                            <mat-option [disabled]="disable" *ngFor="let types of argTypes " [value]="types.value">
+                                    <mat-form-field  *ngIf="globals.SuperAdmin || globals.admin " class="admin-arguments-group-type">
+                                        <mat-select [disabled]="disable" class="white" placeholder="Type" [(ngModel)]="ArgumentGroup.type" >
+                                            <mat-option *ngFor="let types of argTypes " [value]="types.value">
                                                 {{types.name}}
                                             </mat-option>
                                         </mat-select>

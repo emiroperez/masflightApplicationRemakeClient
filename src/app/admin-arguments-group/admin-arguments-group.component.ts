@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener, ElementRef } from '@angular/core';
 import { MaterialIconPickerComponent } from '../material-icon-picker/material-icon-picker.component';
 import { Globals } from '../globals/Globals';
 import { ApplicationService } from '../services/application.service';
@@ -9,6 +9,7 @@ import { takeUntil, delay } from 'rxjs/operators';
 import { ApiClient } from '../api/api-client';
 import { MatDialog } from '@angular/material';
 import { AdminShareGroupsArgumentsComponent } from '../admin-share-groups-arguments/admin-share-groups-arguments.component';
+import { MenuService } from '../services/menu.service';
 
 @Component({
   selector: 'app-admin-arguments-group, FilterPipeGroupArg',
@@ -20,6 +21,7 @@ export class AdminArgumentsGroupComponent implements OnInit {
   innerHeight: number;
   @ViewChild("materialIconPicker", { static: false })
   materialIconPicker: MaterialIconPickerComponent;
+  @ViewChild("nameGroup", { static: false }) nameGroup: ElementRef;
 
 
   filteredAirline: any[] = [];
@@ -55,9 +57,10 @@ export class AdminArgumentsGroupComponent implements OnInit {
   
   constructor( private http: ApiClient,public globals: Globals, 
     private service: ApplicationService,
+     private menuService: MenuService,
     public dialog: MatDialog) {     
     //add airports and airlines 
-
+    this.validateAdmin ();
     this.getAirports(null,this.AirportHandlerSuccess,this.AirportHandlerError);
     this.getAirlines(null,this.AirlineHandlerSuccess,this.AirlineHandlerError);
     this.getAircraft(null,this.AircraftHandlerSuccess,this.AircraftHandlerError);
@@ -163,6 +166,7 @@ export class AdminArgumentsGroupComponent implements OnInit {
       this.ArgumentGroup = option;      
       this.checkArgGroupDet(this.ArgumentGroup);
       this.disable = false;
+      setTimeout(() => this.nameGroup.nativeElement.focus(), 100);
       // this.shareAct= true;
     } else {
       option.isSelected = !option.isSelected;
@@ -306,12 +310,13 @@ addCategory() {
     iataList: [],
     delete: false
   }
-  if (!this.globals.SuperAdmin){
+  if (!this.globals.SuperAdmin && !this.globals.admin){
     ArgGroup.type=1;
   }
-  this.ArgumentsGroups.unshift(ArgGroup);
+  this.ArgumentsGroups.unshift(ArgGroup);  
   this.getSelectedOption(this.ArgumentsGroups[0]);
   this.disable = false;
+  // this.nameGroup.nativeElement.focus();
   // this.shareAct = false ;
 }
 
@@ -526,5 +531,19 @@ addGroupDet(ArgGroupDet, type) {
   }
 }
 
+validateAdmin(){
+  this.menuService.getUserLoggedin(this, this.handleLogin, this.errorLogin);
+}
+
+handleLogin(_this,data){
+  _this.globals.currentUser = data.name;
+  _this.globals.admin = data.admin;
+  _this.globals.SuperAdmin = data.superAdmin;
+}
+
+errorLogin(_this, result)
+{
+  
+}
 
 }

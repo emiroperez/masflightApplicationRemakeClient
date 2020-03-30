@@ -11056,14 +11056,18 @@ table.datasource {
   max-width: 2000px !important;
 }
 
+.msf-container-tabs table.results td.mat-cell {
+  color: rgba(0, 0, 0, 0.95);
+}
+
 table.results {
   position: absolute;
 }
-table.results tr.mat-row {
-  font-size: 100% !important;
+table.results tbody {
+  font-size: 12px !important;
 }
-table.results .mat-cell {
-  color: rgba(0, 0, 0, 0.95) !important;
+table.results td.mat-cell {
+  font-size: 100% !important;
 }
 
 .results-container {
