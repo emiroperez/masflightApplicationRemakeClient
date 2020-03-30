@@ -14,6 +14,7 @@ import { MsfDashboardBrowserComponent } from '../msf-dashboard-browser/msf-dashb
 export class MsfAddDashboardComponent {
 
   title: string;
+  description: string;
   selectedLocation: any = null;
 
   constructor(
@@ -57,6 +58,7 @@ export class MsfAddDashboardComponent {
       }
 
       dashboard.title = this.title;
+      dashboard.description = this.description;
 
       if (this.selectedLocation.item.id != 0)
       {

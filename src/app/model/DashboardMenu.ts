@@ -4,6 +4,7 @@ export class DashboardMenu
   "applicationId": number;
   "owner": number;
   "title": string;
+  "description": string;
   "parent": any;
   "readOnly": boolean;
 
@@ -13,6 +14,7 @@ export class DashboardMenu
     this.applicationId = null;
     this.owner = null;
     this.title = '';
+    this.description = '';
     this.parent = null;
     this.readOnly = false;
   }
