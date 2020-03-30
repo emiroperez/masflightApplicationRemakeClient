@@ -224,6 +224,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   metadata;
 
   lastChartName: String;
+  yAxisColSpan: number = 0;
 
   public dataFormFilterCtrl: FormControl = new FormControl ();
   public variableFilterCtrl: FormControl = new FormControl ();
@@ -3263,6 +3264,8 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   handlerDynTableSuccess(_this, data): void
   {
+    let topOffsetValue = 0;
+
     if (!_this.values.isLoading)
       return;
 
@@ -3273,6 +3276,26 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
 
     _this.dynTableData = data;
+    _this.yAxisColSpan = 1;
+
+    for (let i = 0; i < _this.dynTableData.headers.length; i++)
+    {
+      let header = _this.dynTableData.headers[i];
+      header.topOffset = topOffsetValue;
+
+      if (!i)
+      {
+        for (let j = 0; j < header.values.length - 1; j++)
+        {
+          let value = header.values[j];
+
+          _this.yAxisColSpan += value.colSpan;
+        }
+      }
+
+      topOffsetValue += 35;
+    }
+
     _this.values.lastestResponse = {
       variables: _this.values.dynTableVariables,
       values: _this.values.dynTableValues
