@@ -282,7 +282,7 @@ export class MsfDynamicTableVariablesComponent {
 
     dialogRef.afterClosed ().subscribe ((result: any) =>
     {
-      if (result)
+      if (result != null)
       {
         switch (name)
         {
