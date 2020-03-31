@@ -8986,6 +8986,16 @@ mat-tab-group {
   padding: 0px;
   margin: 0px;
 }
+.msf-dashboard-container .msf-dashboard-header .msf-dashboard-title.is-mobile {
+  font-size: 9px !important;
+}
+.msf-dashboard-container .msf-dashboard-header .msf-dashboard-title.is-mobile .msf-dashboard-title-description {
+  width: calc(100% - 176px);
+}
+.msf-dashboard-container .msf-dashboard-header .msf-dashboard-title.is-mobile .msf-dashboard-control-panel-button-title {
+  padding: 10px 35px 10px 15px !important;
+  font-size: 12px !important;
+}
 .msf-dashboard-container .msf-dashboard-header .msf-dashboard-control-panel-button {
   -moz-user-select: none;
   -ms-user-select: none;
@@ -17896,8 +17906,10 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
 }
 
 .msf-dashboard-title-label-description {
-  font-weight: lighter;
-  font-size: 65%;
+  font-weight: lighter !important;
+  font-size: 12px;
+  text-align: left;
+  margin-top: 5px !important;
 }
 
 /*# sourceMappingURL=styles.css.map */

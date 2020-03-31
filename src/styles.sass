@@ -4359,7 +4359,14 @@ mat-tab-group
                 .msf-dashboard-title-label
                     padding: 0px
                     margin: 0px
-                    // padding: 14px 0
+                    // padding: 14px 0        
+        .msf-dashboard-title.is-mobile
+            font-size: 9px !important
+            .msf-dashboard-title-description
+                width: calc(100% - 176px)
+            .msf-dashboard-control-panel-button-title
+                padding: 10px 35px 10px 15px !important
+                font-size: 12px !important
         .msf-dashboard-control-panel-button
             @include msf-dashboard-control-panel-button
         .msf-dashboard-control-panel-button:hover, .msf-dashboard-control-panel-button-open
@@ -11742,8 +11749,11 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 .msf-dashboard-control-panel-button-title.msf-dashboard-control-panel-button , .msf-dashboard-control-panel-button-title.msf-dashboard-control-panel-button-open
     margin-top: 0px !important
 
+
 .msf-dashboard-title-label-description
-    font-weight: lighter
-    font-size: 65%
+    font-weight: lighter !important
+    font-size: 12px
+    text-align: left
+    margin-top: 5px !important
 
 

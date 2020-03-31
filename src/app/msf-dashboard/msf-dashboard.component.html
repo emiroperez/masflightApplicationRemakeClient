@@ -2,7 +2,7 @@
   <!-- ngClass must be used for the control variable overlay it can override the overlays used on some dialogs such as the wizard -->
   <div [ngClass]="{ 'msf-control-variables-overlay': (!controlVariableDialogOpen && !displayContextMenu && !displayPanelContextMenu) }">
     <div class="msf-dashboard-header" *ngIf="currentDashboardMenu">
-      <div class="msf-dashboard-title">
+      <div [ngClass]="mobileQuery.matches ? 'msf-dashboard-title is-mobile':'msf-dashboard-title'">
         <div class="msf-dashboard-title-description">
         <h1 class="msf-dashboard-title-label">
           {{currentDashboardMenu.title}}
