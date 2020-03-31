@@ -419,7 +419,7 @@ export class MsfDynamicTableVariablesComponent {
 
     if (this.xAxisMouseover)
     {
-      transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, this.xaxis.length);
+      transferArrayItem (event.previousContainer.data, event.container.data, event.previousIndex, this.xaxis.length);
       this.checkConfig ();
     }
 
@@ -432,7 +432,7 @@ export class MsfDynamicTableVariablesComponent {
 
     if (this.yAxisMouseover)
     {
-      transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, this.yaxis.length);
+      transferArrayItem (event.previousContainer.data, event.container.data, event.previousIndex, this.yaxis.length);
       this.checkConfig ();
     }
 
@@ -507,6 +507,9 @@ export class MsfDynamicTableVariablesComponent {
   @HostListener('window:resize', ['$event'])
   resetFuncListMenu(event): void
   {
+    if (!this.selectedVariable)
+      return;
+
     if (!this.selectedVariable.funcopen)
       return;
 

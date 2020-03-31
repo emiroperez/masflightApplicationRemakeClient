@@ -530,7 +530,19 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     if (!(values.currentChartType.flags & ChartFlags.ADVANCED))
     {
-      // Display a special context menu when a chart column is right clicked
+      // Display a special context menu when a chart column is right clicked or touched
+      series.columns.template.events.on ("down", function (event) {
+        if (!values.currentOption.drillDownOptions.length)
+          return;
+
+        if (!event.touch)
+          return;
+
+        values.chartClicked = true;
+        values.chartObjectSelected = event.target.dataItem.dataContext[values.xaxis.id];
+        values.chartSecondaryObjectSelected = series.dataFields.valueX;
+      });
+
       series.columns.template.events.on ("rightclick", function (event) {
         if (!values.currentOption.drillDownOptions.length)
           return;
@@ -590,6 +602,18 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     if (values.currentChartType.flags & ChartFlags.ADVANCED)
     {
+      series.columns.template.events.on ("down", function (event) {
+        if (!values.currentOption.drillDownOptions.length)
+          return;
+
+        if (!event.touch)
+          return;
+
+        values.chartClicked = true;
+        values.chartObjectSelected = event.target.dataItem.dataContext[values.xaxis.id];
+        values.chartSecondaryObjectSelected = series.dataFields.valueY;
+      });
+
       series.columns.template.events.on ("rightclick", function (event) {
         if (!values.currentOption.drillDownOptions.length)
           return;
@@ -687,6 +711,18 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       // Display a special context menu when a chart line segment is right clicked
       series.segments.template.interactionsEnabled = true;
+      series.segments.template.events.on ("down", function (event) {
+        if (!values.currentOption.drillDownOptions.length)
+          return;
+
+        if (!event.touch)
+          return;
+
+        values.chartClicked = true;
+        values.chartObjectSelected = event.target.dataItem.component.tooltipDataItem.dataContext[values.xaxis.id];
+        values.chartSecondaryObjectSelected = series.dataFields.valueY;
+      });
+
       series.segments.template.events.on ("rightclick", function (event) {
         if (!values.currentOption.drillDownOptions.length)
           return;
@@ -794,6 +830,18 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       // Display a special context menu when a chart line segment is right clicked
       series.segments.template.interactionsEnabled = true;
+      series.columns.template.events.on ("down", function (event) {
+        if (!values.currentOption.drillDownOptions.length)
+          return;
+
+        if (!event.touch)
+          return;
+
+        values.chartClicked = true;
+        values.chartObjectSelected = event.target.dataItem.component.tooltipDataItem.dataContext[values.variable.id];
+        values.chartSecondaryObjectSelected = series.dataFields.valueY;
+      });
+
       series.segments.template.events.on ("rightclick", function (event) {
         if (!values.currentOption.drillDownOptions.length)
           return;
@@ -874,6 +922,18 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
 
     // Display a special context menu when a chart column is right clicked
+    series.columns.template.events.on ("down", function (event) {
+      if (!values.currentOption.drillDownOptions.length)
+        return;
+
+      if (!event.touch)
+        return;
+
+      values.chartClicked = true;
+      values.chartObjectSelected = event.target.dataItem.dataContext[item.titleField];
+      values.chartSecondaryObjectSelected = null;
+    });
+
     series.columns.template.events.on ("rightclick", function (event) {
       if (!values.currentOption.drillDownOptions.length)
         return;
@@ -951,6 +1011,18 @@ export class MsfDashboardPanelComponent implements OnInit {
       });
     }
 
+    series.columns.template.events.on("down", function (event) {
+      if (!values.currentOption.drillDownOptions.length)
+        return;
+
+      if (!event.touch)
+        return;
+
+      values.chartClicked = true;
+      values.chartObjectSelected = event.target.dataItem.dataContext[item.titleField];
+      values.chartSecondaryObjectSelected = null;
+    });
+
     series.columns.template.events.on ("rightclick", function (event) {
       if (!values.currentOption.drillDownOptions.length)
         return;
@@ -1005,6 +1077,18 @@ export class MsfDashboardPanelComponent implements OnInit {
     series.colors = colorSet;
 
     // Display a special context menu when a pie slice is right clicked
+    series.columns.template.events.on ("down", function (event) {
+      if (!values.currentOption.drillDownOptions.length)
+        return;
+
+      if (!event.touch)
+        return;
+
+      values.chartClicked = true;
+      values.chartObjectSelected = event.target.dataItem.dataContext[item.titleField];
+      values.chartSecondaryObjectSelected = null;
+    });
+
     series.slices.template.events.on ("rightclick", function (event) {
       if (!values.currentOption.drillDownOptions.length)
         return;
@@ -1051,6 +1135,18 @@ export class MsfDashboardPanelComponent implements OnInit {
     series.colors = colorSet;
 
     // Display a special context menu when a funnel slice is right clicked
+    series.columns.template.events.on ("down", function (event) {
+      if (!values.currentOption.drillDownOptions.length)
+        return;
+
+      if (!event.touch)
+        return;
+
+      values.chartClicked = true;
+      values.chartObjectSelected = event.target.dataItem.dataContext[item.titleField];
+      values.chartSecondaryObjectSelected = null;
+    });
+
     series.slices.template.events.on ("rightclick", function (event) {
       if (!values.currentOption.drillDownOptions.length)
         return;

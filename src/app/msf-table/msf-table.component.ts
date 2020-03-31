@@ -299,7 +299,7 @@ export class MsfTableComponent implements OnInit {
     {
       this.displayedColumns = [];
       this.service.getSummaryResponse (this, this.partialSummaryValues, "" + this.actualPageNumber, tokenResultTable, this.ListSortingColumns,
-        this.summarySuccess, this.handlerError);
+        this.summarySuccess, this.summaryError);
     }
     else
       this.service.getDataTableSource(this, this.handlerSuccess, this.handlerError, "" + this.actualPageNumber,tokenResultTable,this.ListSortingColumns);
@@ -312,6 +312,13 @@ export class MsfTableComponent implements OnInit {
       return;
 
     _this.handlerSuccess (_this, data);
+  }
+
+  summaryError(_this, result)
+  {
+    console.log (result);
+
+    _this.handlerError (_this);
   }
 
   getDataUsageStatistics(){

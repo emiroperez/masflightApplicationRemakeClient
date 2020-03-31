@@ -71,8 +71,9 @@ export class MsfDynamicTableComponent implements OnInit {
     _this.setDynTableLoading.emit (false);
   }
 
-  handlerError(_this,result)
+  handlerError(_this, result)
   {
+    console.log (result);
     _this.setDynTableLoading.emit (false);
   }
 

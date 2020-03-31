@@ -1,4 +1,4 @@
-<div class="dynamic-table-config-header" (click)="disableFuncMenu()" (contextmenu)="disableFuncMenu()" (scroll)="disableFuncMenu()">
+<div class="dynamic-table-config-header" (touchstart)="disableFuncMenu()" (click)="disableFuncMenu()" (contextmenu)="disableFuncMenu()" (scroll)="disableFuncMenu()">
   <img class="dynamic-table-icon" src="../../assets/images/{{globals.theme}}-dynamicTable.png" [style.width.px]="20" [style.height.px]="20">
   <span class="dynamic-table-title">Dynamic Table</span>
   <div class="dynamic-table-header-buttons">
@@ -10,7 +10,7 @@
     </button>
   </div>
 </div>
-<div class="dynamic-table-body" (click)="disableFuncMenu()" (contextmenu)="disableFuncMenu()" (scroll)="disableFuncMenu()" cdkDropListGroup>
+<div class="dynamic-table-body" (touchstart)="disableFuncMenu()" (click)="disableFuncMenu()" (contextmenu)="disableFuncMenu()" (scroll)="disableFuncMenu()" cdkDropListGroup>
   <div class="dynamic-table-left">
     <div class="dynamic-table-metadata-container">
       <div class="dynamic-table-metadata-search">
@@ -36,7 +36,7 @@
         <div class="y-axis-drag-handle">
           <mat-icon class="down-arrow">forward</mat-icon>
           <div class="drop-here" [ngClass]="{'drop-here-mouseover': yAxisMouseover }" cdkDropList [cdkDropListData]="yaxis"
-               (cdkDropListDropped)="dropToYAxis($event)" (mouseenter)="setYAxisMouseover(true)" (mouseleave)="setYAxisMouseover(false)">
+               (cdkDropListDropped)="dropToYAxis($event)" (cdkDropListEntered)="setYAxisMouseover(true)" (cdkDropListExited)="setYAxisMouseover(false)">
             <span cdkDrag [cdkDragDisabled]="true">
               <span *ngIf="!yAxisMouseover">Add Y-Axis</span>
               <mat-icon *ngIf="yAxisMouseover">add</mat-icon>
@@ -55,8 +55,8 @@
       <div class="x-axis-and-values-header">
         <div class="x-axis-container">
           <mat-icon class="right-arrow">forward</mat-icon>
-          <div class="drop-here" [ngClass]="{'drop-here-mouseover': xAxisMouseover }" cdkDropList [cdkDropListData]="xaxis"
-               (cdkDropListDropped)="dropToXAxis($event)" (mouseenter)="setXAxisMouseover(true)" (mouseleave)="setXAxisMouseover(false)">
+          <div class="drop-here y-axis-drop-here" [ngClass]="{'drop-here-mouseover': xAxisMouseover }" cdkDropList [cdkDropListData]="xaxis"
+               (cdkDropListDropped)="dropToXAxis($event)" (cdkDropListEntered)="setXAxisMouseover(true)" (cdkDropListExited)="setXAxisMouseover(false)">
             <span cdkDrag [cdkDragDisabled]="true">
               <span *ngIf="!xAxisMouseover">Add X-Axis</span>
               <mat-icon *ngIf="xAxisMouseover">add</mat-icon>
@@ -72,7 +72,7 @@
         <div class="values-container">
           <mat-icon class="right-arrow">forward</mat-icon>
           <div class="drop-here" [ngClass]="{'drop-here-mouseover': valueMouseover }" cdkDropList [cdkDropListData]="values"
-               (cdkDropListDropped)="dropToValues($event)" (mouseenter)="setValueMouseover(true)" (mouseleave)="setValueMouseover(false)">
+               (cdkDropListDropped)="dropToValues($event)" (cdkDropListEntered)="setValueMouseover(true)" (cdkDropListExited)="setValueMouseover(false)">
             <span cdkDrag [cdkDragDisabled]="true">
               <span *ngIf="!valueMouseover">Add Values</span>
               <mat-icon *ngIf="valueMouseover">add</mat-icon>
@@ -99,7 +99,7 @@
         </div>
       </div>
     </div>
-    <div class="func-list" [style.left.px]="getFuncListPosX()" [style.top.px]="getFuncListPosY()" (click)="keepFuncMenu($event)" (contextmenu)="keepFuncMenu($event)" (scroll)="keepFuncMenu($event)" *ngIf="selectedVariable">
+    <div class="func-list" [style.left.px]="getFuncListPosX()" [style.top.px]="getFuncListPosY()" (touchstart)="keepFuncMenu($event)" (click)="keepFuncMenu($event)" (contextmenu)="keepFuncMenu($event)" (scroll)="keepFuncMenu($event)" *ngIf="selectedVariable">
       <div class="alias-container">
         <mat-checkbox class="alias-label" color="primary" [(ngModel)]="selectedVariable.summary" (ngModelChange)="checkConfig()">Summary</mat-checkbox>
         <i *ngIf="selectedVariable.summary" class="material-icons alias-button" (click)="configureAlias(selectedVariable, 'Summary')" matTooltip="Set Alias For Summary">create</i>

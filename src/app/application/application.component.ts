@@ -1710,8 +1710,10 @@ toggle(){
     _this.msfContainerRef.msfTableRef.handlerSuccess (_this.msfContainerRef.msfTableRef, data);
   }
 
-  summaryError(_this): void
+  summaryError(_this, result): void
   {
+    console.log (result);
+
     _this.msfContainerRef.msfTableRef.tableOptions.dataSource = false;
     _this.msfContainerRef.msfTableRef.tableOptions.template = false;
 

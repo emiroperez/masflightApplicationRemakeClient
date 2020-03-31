@@ -914,7 +914,13 @@ export class MsfDashboardComponent implements OnInit {
     return this.contextMenuY;
   }
 
-  ngOnDestroy(): void {
-	this.mobileQuery.removeListener(this._mobileQueryListener);
+  ngOnDestroy(): void
+  {
+  	this.mobileQuery.removeListener (this._mobileQueryListener);
+  }
+
+  keepContextMenu(event): void
+  {
+    event.stopPropagation ();
   }
 }
