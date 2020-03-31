@@ -1,4 +1,4 @@
-import { Injectable, HostBinding } from '@angular/core';
+import { Injectable, HostBinding, isDevMode } from '@angular/core';
 import { MatSort } from '@angular/material';
 import { Observable } from 'rxjs';
 import { OverlayContainer } from '@angular/cdk/overlay';
@@ -63,13 +63,9 @@ export class Globals {
   currentAirline: any;
   template : boolean = false;
   isFullscreen: boolean = false;
-  // baseUrl = "http://localhost:8887";
-  baseUrl = "http://pulse.globaleagle.com:8887";
-  // baseUrl = "";
-  baseUrl2 = "https://pulse.globaleagle.com:8886/mapBoxServices";
-  popupUrl = "https://pulse.globaleagle.com:8900";
-  // baseUrl2 = "http://pulse.globaleagle.com:8884/mapBoxServices";
-  // popupUrl = "http://pulse.globaleagle.com:8881";
+  baseUrl: string;
+  baseUrl2: string;
+  popupUrl: string;
   scheduledata:any;
   hideParametersPanels : boolean =false;
   Airportdataorigin:any;
@@ -123,6 +119,20 @@ export class Globals {
   constructor (public overlayContainer: OverlayContainer, private cookie: Cookie)
   {
     let pulseTheme, useLightTheme;
+
+    if (isDevMode ())
+    {
+      // this.baseUrl = "http://localhost:8887";
+      this.baseUrl = "http://pulse.globaleagle.com:8887";
+      this.baseUrl2 = "http://pulse.globaleagle.com:8884/mapBoxServices";
+      this.popupUrl = "http://pulse.globaleagle.com:8881";
+    }
+    else
+    {
+      this.baseUrl = "";
+      this.baseUrl2 = "https://pulse.globaleagle.com:8886/mapBoxServices";
+      this.popupUrl = "https://pulse.globaleagle.com:8900";
+    }
 
     AmChartConfig.Init ();
 
