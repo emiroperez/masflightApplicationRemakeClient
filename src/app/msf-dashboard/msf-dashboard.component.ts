@@ -9,6 +9,7 @@ import { ChartFlags } from '../msf-dashboard-panel/msf-dashboard-chartflags';
 import { MsfDashboardControlPanelComponent } from '../msf-dashboard-control-panel/msf-dashboard-control-panel.component';
 import { CategoryArguments } from '../model/CategoryArguments';
 import { MsfDashboardPanelComponent } from '../msf-dashboard-panel/msf-dashboard-panel.component';
+import { MediaMatcher } from '@angular/cdk/layout';
 
 // dashboard gridstack constants
 const maxDashboardWidth = 12;
@@ -86,8 +87,12 @@ export class MsfDashboardComponent implements OnInit {
 
   controlVariableDialogOpen: boolean = false;
 
+  
+  mobileQuery: MediaQueryList;
+  private _mobileQueryListener: () => void;
+
   constructor(public globals: Globals, private service: ApplicationService,
-    public dialog: MatDialog, private changeDetector: ChangeDetectorRef)
+    public dialog: MatDialog, private changeDetector: ChangeDetectorRef, media: MediaMatcher)
   {
     if (globals.isFullscreen)
       this.screenHeight = "100%";
@@ -95,6 +100,10 @@ export class MsfDashboardComponent implements OnInit {
       this.screenHeight = "calc(100% - 90px)";
 
     this.globals.showPaginator = false; // hide paginator
+    
+    this.mobileQuery = media.matchMedia('(max-width: 480px)');
+    this._mobileQueryListener = () => changeDetector.detectChanges();
+    this.mobileQuery.addListener(this._mobileQueryListener);
   }
 
   ngOnInit()
@@ -903,5 +912,9 @@ export class MsfDashboardComponent implements OnInit {
       return this.contextMenuY - clientHeight;
 
     return this.contextMenuY;
+  }
+
+  ngOnDestroy(): void {
+	this.mobileQuery.removeListener(this._mobileQueryListener);
   }
 }
