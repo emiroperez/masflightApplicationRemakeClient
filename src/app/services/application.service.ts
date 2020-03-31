@@ -98,7 +98,7 @@ export class ApplicationService {
         SortingColumns += colBreaker.column.columnName + " ";
 
         if (colBreaker.column.columnType === "number")
-          SortingColumns += "dsc";  // use descending order for numbers
+          SortingColumns += "desc";  // use descending order for numbers
         else
           SortingColumns += "asc";
 
