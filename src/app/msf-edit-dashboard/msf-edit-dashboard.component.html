@@ -10,6 +10,11 @@
       <input matInput autocomplete="off" type="text" placeholder="Title" [(ngModel)]="currentDashboardMenuTitle"/>
     </mat-form-field> 
   </div>
+  <div class="msf-dashboard-function-measure dashboard-config-title" *ngIf="!globals.readOnlyDashboard">
+    <mat-form-field>
+      <input matInput autocomplete="off" type="text" placeholder="Description" [(ngModel)]="currentDashboardMenuDescription"/>
+    </mat-form-field> 
+  </div>
   <div class="dashboard-config-location">
     <div class="dashboard-config-location-container">
         <span class="dashboard-config-location-placeholder" *ngIf="!currentDashboardLocation">Location</span>

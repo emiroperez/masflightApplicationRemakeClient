@@ -13,6 +13,9 @@ import { MessageComponent } from '../message/message.component';
 export class MsfEditDashboardComponent {
   oldDashboardMenuTitle: string;
   currentDashboardMenuTitle: string;
+  
+  oldDashboardMenuDescription: any;
+  currentDashboardMenuDescription: string;
 
   oldDashboardLocation: any;
   currentDashboardLocation: any;
@@ -26,6 +29,9 @@ export class MsfEditDashboardComponent {
   {
     this.oldDashboardMenuTitle = data.currentDashboardMenu.title;
     this.currentDashboardMenuTitle = data.currentDashboardMenu.title;
+
+    this.oldDashboardMenuDescription = data.currentDashboardMenu.description;
+    this.currentDashboardMenuDescription = data.currentDashboardMenu.description;
 
     if (data.currentDashboardLocation.item)
     {
@@ -88,6 +94,7 @@ export class MsfEditDashboardComponent {
         data = {
           dashboardId: this.data.currentDashboardMenu.id,
           title: this.currentDashboardMenuTitle,
+          description: this.currentDashboardMenuDescription,
           parentId: this.currentDashboardLocation.item != null ? this.currentDashboardLocation.item.id : 0
         };
 
@@ -106,6 +113,7 @@ export class MsfEditDashboardComponent {
     else
     {
       this.data.currentDashboardMenu.title = this.oldDashboardMenuTitle;
+      this.data.currentDashboardMenu.description = this.oldDashboardMenuDescription;
       this.data.currentDashboardLocation.item = this.oldDashboardLocation.item;
       this.data.currentDashboardLocation.fullPath = this.oldDashboardLocation.fullPath;
 
@@ -115,9 +123,10 @@ export class MsfEditDashboardComponent {
 
   changeHierarchy(_this): void
   {
-    if (!_this.globals.readOnlyDashboard)
+    if (!_this.globals.readOnlyDashboard){
       _this.data.currentDashboardMenu.title = _this.currentDashboardMenuTitle;
-
+      _this.data.currentDashboardMenu.description = _this.currentDashboardMenuDescription;
+    }
     if (_this.currentDashboardLocation.fullPath === _this.oldDashboardLocation.fullPath)
     {
       _this.dialogRef.close ();
