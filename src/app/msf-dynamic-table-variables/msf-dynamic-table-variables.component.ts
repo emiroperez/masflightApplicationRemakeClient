@@ -211,8 +211,7 @@ export class MsfDynamicTableVariablesComponent {
   // check if there are any horizontal and vertical variables
   variablesSet(): boolean
   {
-    if (!this.xaxis || this.xaxis.length < 1 || !this.yaxis || this.yaxis.length < 1
-      || !this.values || this.values.length < 1)
+    if (!this.yaxis || this.yaxis.length < 1 || !this.values || this.values.length < 1)
       return false;
 
     return true;
