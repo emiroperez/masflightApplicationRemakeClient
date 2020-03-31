@@ -93,7 +93,7 @@
 </div>
 <div *ngIf="(!globals.isFullscreen && !mobileQuery.matches 
             || (globals.isFullscreen && globals.currentOption !== 'dashboard') &&  !mobileQuery.matches )  
-            || (mobileQuery.matches && !globals.showMenu) " 
+            || (mobileQuery.matches && !ResponsiveQuery.matches && !globals.showMenu) " 
             class="msf-menu-icons-container">
     <div *ngIf="!mobileQuery.matches || (mobileQuery.matches && !globals.showMenu && !globals.showDashboard && !globals.showTabs) "
         [ngClass]="mobileQuery.matches ? (globals.showTabs ? 'msf-menu-icons-left':'msf-menu-icons-left-mobile') :'msf-menu-icons-left'">
