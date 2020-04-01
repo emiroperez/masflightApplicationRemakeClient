@@ -523,7 +523,7 @@ export class DatalakeComponent implements OnInit {
 
   editDashboard(): void {
     this.dialog.open(MsfEditDashboardComponent, {
-      height: this.globals.readOnlyDashboard ? '145px' : '200px',
+      height: this.globals.readOnlyDashboard ? '150px' : '250px',
       width: '480px',
       panelClass: 'msf-dashboard-control-variables-dialog',
       data: {

@@ -1318,7 +1318,7 @@ toggle(){
   editDashboard(): void
   {
     this.dialog.open (MsfEditDashboardComponent, {
-      height: this.globals.readOnlyDashboard ? '195px' : '250px',
+      height: this.globals.readOnlyDashboard ? '150px' : '250px',
       width: '480px',
       panelClass: 'msf-dashboard-control-variables-dialog',
       data: {
