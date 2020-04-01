@@ -43,6 +43,7 @@ import { MsfDashboardAssistantComponent } from '../msf-dashboard-assistant/msf-d
 import { MsfDynamicTableAliasComponent } from '../msf-dynamic-table-alias/msf-dynamic-table-alias.component';
 import { MsfSelectDataFromComponent } from '../msf-select-data-from/msf-select-data-from.component';
 import { ConfigFlags } from './msf-dashboard-configflags';
+import { MsfDynamicTableVariablesComponent } from '../msf-dynamic-table-variables/msf-dynamic-table-variables.component';
 
 // AmCharts colors
 const black = am4core.color ("#000000");
@@ -7670,10 +7671,13 @@ export class MsfDashboardPanelComponent implements OnInit {
                   sorting = false;
                 }
               }
-            }}}}
-      if (sorting) {
-        this.loadData();
+            }
+          }
+        }
       }
+
+      if (sorting)
+        this.loadData ();
     }
   }
 
@@ -7685,5 +7689,31 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.moreResults = false;
       this.msfTableRef.sort.sort({ id: '', start: 'asc', disableClear: false });
     }
+  }
+
+  configureDynamicTable(): void
+  {
+    const dialogRef = this.dialog.open (MsfDynamicTableVariablesComponent,
+    {
+      width: '1100px',
+      height: '600px',
+      panelClass: 'dynamic-table-dialog',
+      autoFocus: false,
+      data: {
+        metadata: this.values.currentOption.columnOptions/*,
+        dynamicTableValues: this.dynamicTableValues*/
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result =>
+    {
+      if (result != null)
+      {
+/*        this.globals.selectedIndex = 3;
+        this.dynTableLoading = true;
+        this.dynamicTableValues = result; // store the dynamic table configuration
+        this.msfContainerRef.msfDynamicTableRef.loadData (result.xaxis, result.yaxis, result.values);*/
+      }
+    });
   }
 }

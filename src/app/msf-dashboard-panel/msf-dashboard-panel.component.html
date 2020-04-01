@@ -666,6 +666,7 @@
       </div>
     </ng-container>
     <ng-container *ngIf="isDynTablePanel()">
+      <!-- Dyn Table -->
       <div class="msf-dashboard-panel-sub-container-column">
         <div class="msf-dashboard-addmenu-icon-item">
           <img src="../../assets/images/{{globals.theme}}-dynamicTable.png" [style.margin-left.px]="10" [style.margin-right.px]="10" [style.width.px]="20" [style.height.px]="20">
@@ -777,6 +778,13 @@
           </div>
         </div>
       </div>
+      <!--
+      <div class="msf-dashboard-panel-sub-container-column msf-dashboard-panel-dynamic-table">
+        <button mat-button class="flat-button dynamic-table-config-button" (click)="configureDynamicTable()">
+          Configure Dynamic Table
+        </button>
+      </div>
+      -->
     </ng-container>
     <ng-container *ngIf="isAdvChartPanel()">
       <div class="msf-dashboard-panel-sub-container-column">
