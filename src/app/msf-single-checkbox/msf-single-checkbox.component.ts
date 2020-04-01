@@ -20,12 +20,13 @@ export class MsfSingleCheckboxComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    if(this.argument.required==1){
-      this.argument.value1 = true;
-    }else{
-      this.argument.value1 = false;
-    }
-
+    if(this.argument.value1==null || this.argument.value1== undefined){
+      if(this.argument.required==1){
+        this.argument.value1 = true;
+      }else{
+        this.argument.value1 = false;
+      }
+  }
   }
 
 }
