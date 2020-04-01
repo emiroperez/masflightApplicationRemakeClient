@@ -25,6 +25,9 @@ export class MsfMapComponent implements OnInit {
   @Input('useCancelButton')
   useCancelButton: boolean;
 
+  @Input("currentOption")
+  currentOption: any;
+
   @Output('finishLoading')
   finishLoading = new EventEmitter ();
 

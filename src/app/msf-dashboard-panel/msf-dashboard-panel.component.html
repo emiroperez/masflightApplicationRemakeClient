@@ -666,7 +666,7 @@
       </div>
     </ng-container>
     <ng-container *ngIf="isDynTablePanel()">
-      <!-- Dyn Table -->
+      <!-- Dynamic table -->
       <div class="msf-dashboard-panel-sub-container-column">
         <div class="msf-dashboard-addmenu-icon-item">
           <img src="../../assets/images/{{globals.theme}}-dynamicTable.png" [style.margin-left.px]="10" [style.margin-right.px]="10" [style.width.px]="20" [style.height.px]="20">
@@ -1045,7 +1045,7 @@
     </div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div style="height: calc(100% - 7px)" class="msf-dashboard-panel-mapbox">
-        <app-msf-map #msfMapRef [isLoading]="values.isLoading" [useCancelButton]="false" [displayMapMenu]="2" [currentMapType]="values.style" (finishLoading)="finishMapboxLoading($event)"></app-msf-map>
+        <app-msf-map #msfMapRef [isLoading]="values.isLoading" [currentOption]="values.currentOption" [useCancelButton]="false" [displayMapMenu]="2" [currentMapType]="values.style" (finishLoading)="finishMapboxLoading($event)"></app-msf-map>
       </div>
     </div>
   </div>

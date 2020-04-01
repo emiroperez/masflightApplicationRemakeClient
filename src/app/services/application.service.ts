@@ -222,8 +222,11 @@ export class ApplicationService {
 
   getDataSource(_this, handlerSuccess, handlerError, tokenResultable: String)
   {
-    let param = this.utils.getUrlParameters(_this.globals.currentOption,true);
-    let urlBase = param.url;
+    let param, urlBase;
+
+    param = this.utils.getUrlParameters(_this.globals.currentOption, true);
+    urlBase = param.url;
+
     if(!urlBase.includes("MIN_VALUE")){
       urlBase += "&MIN_VALUE=0";
     }
@@ -248,11 +251,30 @@ export class ApplicationService {
     this.authService.get(_this, url, handlerSuccess, handlerError);
   }
 
-  loadDynamicTableData(_this, xaxis, yaxis, values, handlerSuccess, handlerError) {
+  loadDynamicTableData(_this, xaxis, yaxis, values, handlerSuccess, handlerError, dashboardPanel?)
+  {
+    let urlBase;
+
     _this.columns = [];
 
-    let param = this.utils.getUrlParameters(_this.globals.currentOption,true);
-    let urlBase = param.url;
+    if (dashboardPanel)
+    {
+      if (this.globals.currentApplication.name === "DataLake")
+      {
+        if (this.utils.getDashboardPanelParameters (dashboardPanel))
+          urlBase = dashboardPanel.currentOption.baseUrl + "?uName=" + this.globals.userName + "&" + this.utils.getDashboardPanelParameters (dashboardPanel);
+        else
+          urlBase = dashboardPanel.currentOption.baseUrl + "?uName=" + this.globals.userName;
+      }
+      else
+        urlBase = dashboardPanel.currentOption.baseUrl + "?" + this.utils.getDashboardPanelParameters (dashboardPanel);
+    }
+    else
+    {
+      let param = this.utils.getUrlParameters (_this.globals.currentOption, true);
+      urlBase = param.url;
+    }
+
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
 						 
     let urlArg = encodeURIComponent (urlBase);
@@ -261,7 +283,7 @@ export class ApplicationService {
       console.log (urlBase);
 
     let data = { variables: [], values: [] };
-    let url = this.host + "/secure/getHorizontalMatrix?url=" + urlArg + "&optionId=" + _this.globals.currentOption.id;
+    let url = this.host + "/secure/getHorizontalMatrix?url=" + urlArg + "&optionId=" + (dashboardPanel ? dashboardPanel.currentOption.id : _this.globals.currentOption.id);
 
     for (let variable of xaxis)
     {
@@ -494,6 +516,12 @@ export class ApplicationService {
       url += "&testPlanId=" + this.globals.testingPlan;
 
     this.authService.get (_this, url, handlerSuccess, handlerError);
+  }
+
+  getPublicMenuForDashboardString(_this, applicationId, handlerSuccess, handlerError): void
+  {
+    let url = this.host + "/getMenuForDashboardString?appId=" + applicationId;
+    this.http.get (_this, url, handlerSuccess, handlerError, null);
   }
 
   getChartFilterValues(_this, id, handlerSuccess, handlerError): void
@@ -864,6 +892,18 @@ export class ApplicationService {
   getAirlinesRecords(_this,search, handlerSuccess, handlerError): void
   {
     let url = _this.globals.baseUrl + "/SearchAirlines?search=" + (search != null ? search : '');  
+    this.http.get (_this, url, handlerSuccess, handlerError, null);
+  }
+
+  getPublicDashboard(_this, dashboardName, handlerSuccess, handlerError): void
+  {
+    let url = _this.globals.baseUrl + "/getPublicDashboard";
+    this.http.post (_this, url, dashboardName, handlerSuccess, handlerError);
+  }
+
+  getApplication(_this, appId, handlerSuccess, handlerError): void
+  {
+    let url = _this.globals.baseUrl + "/getApplication?appId=" + appId;
     this.http.get (_this, url, handlerSuccess, handlerError, null);
   }
 }

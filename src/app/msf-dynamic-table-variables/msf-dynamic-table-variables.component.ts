@@ -7,10 +7,12 @@ import { Globals } from '../globals/Globals';
 import { MsfDynamicTableAliasComponent } from '../msf-dynamic-table-alias/msf-dynamic-table-alias.component';
 import { MessageComponent } from '../message/message.component';
 import { MsfDynamicTableComponent } from '../msf-dynamic-table/msf-dynamic-table.component';
+import { MsfDashboardPanelValues } from '../msf-dashboard-panel/msf-dashboard-panelvalues';
 
 export interface DialogData {
   metadata: any[];
   dynamicTableValues: any;
+  dashboardPanel: MsfDashboardPanelValues;
 }
 
 @Component({
@@ -181,7 +183,7 @@ export class MsfDynamicTableVariablesComponent {
     }
   }
 
-  generateTable()
+  generateTable(): void
   {
     this.globals.generateDynamicTable = true;
     this.globals.selectedIndex = 3;
@@ -192,12 +194,13 @@ export class MsfDynamicTableVariablesComponent {
     });
   }
 
-  changeVariableDirection(variable)
+  setPanelSettings(): void
   {
-    if (variable.direction === "vertical")
-      variable.direction = "horizontal";
-    else
-      variable.direction = "vertical";
+    this.dialogRef.close({
+      xaxis: this.xaxis,
+      yaxis: this.yaxis,
+      values: this.values
+    });
   }
 
   disabled()
@@ -531,8 +534,12 @@ export class MsfDynamicTableVariablesComponent {
     {
       this.previewAvailable = true;
       this.tableLoading = true;
-      this.changeDetectorRef.detectChanges ();
-      this.dynamicTablePreview.loadData (this.xaxis, this.yaxis, this.values);
+      this.changeDetectorRef.detectChanges();
+
+      if (this.data.dashboardPanel)
+        this.dynamicTablePreview.loadData (this.xaxis, this.yaxis, this.values, this.data.dashboardPanel);
+      else
+        this.dynamicTablePreview.loadData (this.xaxis, this.yaxis, this.values);
     }
     else
       this.previewAvailable = false;

@@ -16,6 +16,7 @@ import { CreateCustomerComponent } from '../create-customer/create-customer.comp
 import { AdminArgumentsGroupComponent } from '../admin-arguments-group/admin-arguments-group.component';
 import { DatalakeComponent } from '../datalake/datalake.component';
 import { DatalakeCreateRolesComponent } from '../datalake-create-roles/datalake-create-roles.component';
+import { PublicDashboardComponent } from '../public-dashboard/public-dashboard.component';
 
 export const routes: Routes = [
   { path: '', component: LoginScreenComponent },
@@ -32,6 +33,8 @@ export const routes: Routes = [
   { path: 'create-customer', component: CreateCustomerComponent, canActivate: [AuthGuard] },
   { path: 'datalake', component: DatalakeComponent, canActivate: [AuthGuard] },
   { path: 'datalake-roles', component: DatalakeCreateRolesComponent, canActivate: [AuthGuard] },
+  { path: 'public-dashboard/:name', component: PublicDashboardComponent },
+  { path: 'public-dashboard', component: PublicDashboardComponent }
 ];
 
 @NgModule({

@@ -841,7 +841,8 @@ toggle(){
       autoFocus: false,
       data: {
         metadata: this.msfContainerRef.msfTableRef.metadata,
-        dynamicTableValues: this.dynamicTableValues
+        dynamicTableValues: this.dynamicTableValues,
+        configurePanel: false
       }
     });
 

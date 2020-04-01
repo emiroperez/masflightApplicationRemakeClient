@@ -4101,7 +4101,9 @@ mat-tab-group
         .dynamic-table-config-header
             display: flex
             align-items: center
+            height: 36px
             padding: 10px 2px 7px 18px
+            position: relative
             .dynamic-table-icon
                 width: 20px
                 height: 20px
@@ -4109,8 +4111,9 @@ mat-tab-group
             .dynamic-table-title
                 font-size: 16px
                 font-weight: 550
-                width: calc(100% - 180px)
             .dynamic-table-header-buttons
+                position: absolute
+                right: 10px
                 .dynamic-table-close-button
                     height: 35px !important
                     line-height: 35px !important

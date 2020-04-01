@@ -1432,8 +1432,12 @@ export class MsfDashboardChildPanelComponent {
 
     urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
     urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&&pageSize=100&page_number=" + this.actualPageNumber;
-    urlArg = encodeURIComponent (urlBase);
-    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.argumentsId;
+    urlArg = encodeURIComponent(urlBase);
+
+    if (this.data.public)
+      url = this.service.host + "/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.argumentsId;
+    else
+      url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.argumentsId;
 
     for (let tableVariable of this.values.tableVariables)
     {
@@ -1472,7 +1476,10 @@ export class MsfDashboardChildPanelComponent {
     if (isDevMode ())
       console.log (urlBase);
 
-    url = this.service.host + "/secure/getChartData?url=" + urlArg;
+    if (this.data.public)
+      url = this.service.host + "/getChartData?url=" + urlArg;
+    else
+      url = this.service.host + "/secure/getChartData?url=" + urlArg;
 
     // don't use the xaxis parameter if the chart type is pie, donut or radar
     if (this.values.currentChartType.flags & ChartFlags.PIECHART || this.values.currentChartType.flags & ChartFlags.FUNNELCHART)

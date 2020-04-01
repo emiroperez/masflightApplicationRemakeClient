@@ -188,6 +188,9 @@ export class MsfDashboardPanelComponent implements OnInit {
   @Input("controlPanelInterval")
   controlPanelInterval: number;
 
+  @Input("public")
+  public: boolean = false;
+
   childPanelValues: any[] = [];
   childPanelsConfigured: boolean[] = [];
 
@@ -831,7 +834,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       // Display a special context menu when a chart line segment is right clicked
       series.segments.template.interactionsEnabled = true;
-      series.columns.template.events.on ("down", function (event) {
+      series.segments.template.events.on ("down", function (event) {
         if (!values.currentOption.drillDownOptions.length)
           return;
 
@@ -1078,7 +1081,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     series.colors = colorSet;
 
     // Display a special context menu when a pie slice is right clicked
-    series.columns.template.events.on ("down", function (event) {
+    series.slices.template.events.on ("down", function (event) {
       if (!values.currentOption.drillDownOptions.length)
         return;
 
@@ -1136,7 +1139,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     series.colors = colorSet;
 
     // Display a special context menu when a funnel slice is right clicked
-    series.columns.template.events.on ("down", function (event) {
+    series.slices.template.events.on ("down", function (event) {
       if (!values.currentOption.drillDownOptions.length)
         return;
 
@@ -2845,7 +2848,10 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (isDevMode ())
       console.log (urlArg);
 
-    url = this.service.host + "/secure/getTextSummaryResponse?url=" + urlArg;
+    if (this.public)
+      url = this.service.host + "/getTextSummaryResponse?url=" + urlArg;
+    else
+      url = this.service.host + "/secure/getTextSummaryResponse?url=" + urlArg;
 
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;
@@ -2877,7 +2883,11 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (isDevMode ())
       console.log (urlBase);
 
-    url = this.service.host + "/secure/getChartData?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
+
+    if (this.public)
+      url = this.service.host + "/getChartData?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
+    else
+      url = this.service.host + "/secure/getChartData?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
 
     if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
     {
@@ -2924,7 +2934,10 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (isDevMode ())
       console.log (urlBase);
 
-    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
+    if (this.public)
+      url = this.service.host + "/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
+    else
+      url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
 
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;
@@ -2948,7 +2961,10 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (isDevMode ())
       console.log (url);
 
-    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&noXml=true";
+    if (this.public)
+      url = this.service.host + "/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&noXml=true";
+    else
+      url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&noXml=true";
 
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;
@@ -2977,7 +2993,10 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (isDevMode ())
       console.log (urlBase);
 
-    url = this.service.host + "/secure/getFormResponse?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
+    if (this.public)
+      url = this.service.host + "/getFormResponse?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
+    else
+      url = this.service.host + "/secure/getFormResponse?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
 
     // Prepare the form configuration
     formConfig = [];
@@ -3042,7 +3061,10 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (isDevMode ())
       console.log (urlBase);
 
-    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
+    if (this.public)
+      url = this.service.host + "/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
+    else
+      url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
 
     for (let tableVariable of this.values.tableVariables)
     {
@@ -3078,7 +3100,11 @@ export class MsfDashboardPanelComponent implements OnInit {
       console.log (urlBase);
 
     data = { variables: this.values.dynTableVariables, values: this.values.dynTableValues };
-    url = this.service.host + "/secure/getHorizontalMatrix?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
+
+    if (this.public)
+      url = this.service.host + "/getHorizontalMatrix?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
+    else
+      url = this.service.host + "/secure/getHorizontalMatrix?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
 
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;
@@ -7693,6 +7719,13 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   configureDynamicTable(): void
   {
+    let dynamicTableValues =
+    {
+      xaxis: [],
+      yaxis: [],
+      values: []
+    };
+
     const dialogRef = this.dialog.open (MsfDynamicTableVariablesComponent,
     {
       width: '1100px',
@@ -7700,8 +7733,9 @@ export class MsfDashboardPanelComponent implements OnInit {
       panelClass: 'dynamic-table-dialog',
       autoFocus: false,
       data: {
-        metadata: this.values.currentOption.columnOptions/*,
-        dynamicTableValues: this.dynamicTableValues*/
+        metadata: this.values.currentOption.columnOptions,
+        dynamicTableValues: dynamicTableValues,
+        dashboardPanel: this
       }
     });
 

@@ -6,7 +6,7 @@
         <div class="msf-dashboard-title-description">
         <h1 class="msf-dashboard-title-label">
           {{currentDashboardMenu.title}}
-          <span *ngIf="globals.readOnlyDashboard">
+          <span *ngIf="globals.readOnlyDashboard && !public">
            (Read Only)
           </span>
         </h1>
@@ -24,19 +24,19 @@
     </div>
     <app-msf-dashboard-control-panel #dashboardControlPanel (updateAllPanels)="updateAllPanels($event)" (hideCategoryFromCharts)="hideCategoryFromCharts($event)" [controlPanelOpen]="controlPanelOpen" [controlVariablesAvailable]="controlVariablesAvailable" [controlPanelCategories]="controlPanelCategories"></app-msf-dashboard-control-panel>
     <div class="msf-dashboard-gridstack" lb-gridstack width="12" [options]="gridStackOptions" (change)="onDashboardChange($event)" *ngIf="dashboardPanels.length">
-      <div lb-gridstack-item *ngFor="let panel of dashboardPanels" [id]="panel.gridId" [x]="panel.x" [y]="panel.y" [width]="panel.width" [height]="panel.height" [auto-position]="panel.autoposition" [no-resize]="globals.readOnlyDashboard" [no-move]="globals.readOnlyDashboard" min-width="2" min-height="3" (touchend)="onRightClick($event, panel)" (contextmenu)="onRightClick($event, panel)">
+      <div lb-gridstack-item *ngFor="let panel of dashboardPanels" [id]="panel.gridId" [x]="panel.x" [y]="panel.y" [width]="panel.width" [height]="panel.height" [auto-position]="panel.autoposition" [no-resize]="readOnlyDashboard" [no-move]="readOnlyDashboard" min-width="2" min-height="3" (touchend)="onRightClick($event, panel)" (contextmenu)="onRightClick($event, panel)">
         <div [ngClass]="panel.isLoading ? 'tab-show loading-panel' : 'tab-hide'" id="msf-dashboard-panel-loading" class="msf-dashboard-panel-loading">
           <div class="msf-dashboard-panel-button msf-dashboard-panel-loading-button">
             <mat-icon class="msf-dashboard-button-close-icon" (click)="removePanel(panel.id)" aria-label="close">close</mat-icon>
             <div class="msf-dashboard-button-move-icon" *ngIf="!globals.readOnlyDashboard" (click)="disableContextMenu()"></div>
-            <div class="cancel-button" (click)="cancelLoading(panel)">Cancel</div>
+            <div class="cancel-button" *ngIf="!globals.readOnlyDashboard" (click)="cancelLoading(panel)">Cancel</div>
           </div>
         </div>
         <div class="msf-dashboard-panel-button" *ngIf="!globals.readOnlyDashboard">
           <mat-icon class="msf-dashboard-button-close-icon" (click)="removePanel(panel.id)" aria-label="close">close</mat-icon>
           <div class="msf-dashboard-button-move-icon" (click)="disableContextMenu()"></div>
         </div>
-        <app-msf-dashboard-panel [values]="panel" [controlPanelVariables]="controlPanelVariables" [panelWidth]="panel.width" [panelHeight]="panel.height"
+        <app-msf-dashboard-panel [values]="panel" [controlPanelVariables]="controlPanelVariables" [panelWidth]="panel.width" [panelHeight]="panel.height" [public]="public"
           [currentHiddenCategories]="currentHiddenCategories" [addingOrRemovingPanels]="addingOrRemovingPanels" [controlPanelInterval]="controlPanelInterval"
           (removeDeadVariablesAndCategories)="removeDeadVariablesAndCategories($event)" (addNewVariablesAndCategories)="addNewVariablesAndCategories($event)"
           (toggleControlVariableDialogOpen)="toggleControlVariableDialogOpen($event)" (enablePanelContextMenu)="enablePanelContextMenu($event)">

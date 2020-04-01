@@ -212,6 +212,7 @@ import { MenuDashboardComponent } from './menu-dashboard/menu-dashboard.componen
 import { NgxCurrencyModule } from "ngx-currency";
 import { MsfDashboardCategoryAdminComponent } from './msf-dashboard-category-admin/msf-dashboard-category-admin.component';
 import { MsfPartialSummariesComponent } from './msf-partial-summaries/msf-partial-summaries.component';
+import { PublicDashboardComponent } from './public-dashboard/public-dashboard.component';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -399,7 +400,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     MsfDashboardBrowserFolderItemComponent,
     MenuDashboardComponent,
     MsfDashboardCategoryAdminComponent,
-    MsfPartialSummariesComponent
+    MsfPartialSummariesComponent,
+    PublicDashboardComponent
   ],
   imports: [
     BrowserModule,

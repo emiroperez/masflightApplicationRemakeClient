@@ -71,8 +71,11 @@ export class MsfDashboardComponent implements OnInit {
     false     // Map Tracker
   ];
 
-  @Input()
+  @Input("currentDashboardMenu")
   currentDashboardMenu: any;
+
+  @Input("public")
+  public: boolean = false;
 
   @ViewChild("dashboardControlPanel", { static: false })
   dashboardControlPanel: MsfDashboardControlPanelComponent;
@@ -86,6 +89,7 @@ export class MsfDashboardComponent implements OnInit {
   currentHiddenCategories: any;
 
   controlVariableDialogOpen: boolean = false;
+  readOnlyDashboard: boolean = false;
 
   
   mobileQuery: MediaQueryList;
@@ -94,11 +98,7 @@ export class MsfDashboardComponent implements OnInit {
   constructor(public globals: Globals, private service: ApplicationService,
     public dialog: MatDialog, private changeDetector: ChangeDetectorRef, media: MediaMatcher)
   {
-    if (globals.isFullscreen)
-      this.screenHeight = "100%";
-    else
-      this.screenHeight = "calc(100% - 90px)";
-
+    this.readOnlyDashboard = this.globals.readOnlyDashboard ? true : false;
     this.globals.showPaginator = false; // hide paginator
     
     this.mobileQuery = media.matchMedia('(max-width: 480px)');
@@ -108,14 +108,26 @@ export class MsfDashboardComponent implements OnInit {
 
   ngOnInit()
   {
+    if (this.globals.isFullscreen || this.public)
+      this.screenHeight = "100%";
+    else
+      this.screenHeight = "calc(100% - 90px)";
   }
 
   ngAfterViewInit()
   {
     this.globals.isLoading = true;
 
-    this.service.getMenuForDashboardString (this, this.globals.currentApplication.id,
-      this.addDataForms, this.handlerError);
+    if (this.public)
+    {
+      this.service.getPublicMenuForDashboardString (this, this.globals.currentApplication.id,
+        this.addDataForms, this.handlerError);
+    }
+    else
+    {
+      this.service.getMenuForDashboardString (this, this.globals.currentApplication.id,
+        this.addDataForms, this.handlerError);
+    }
   }
 
   ngOnChanges(changes: SimpleChanges)
@@ -519,7 +531,7 @@ export class MsfDashboardComponent implements OnInit {
   @HostListener('window:resize', ['$event'])
   checkScreen(event): void
   {
-    if (event.target.innerHeight == window.screen.height && event.target.innerWidth == window.screen.width)
+    if ((event.target.innerHeight == window.screen.height && event.target.innerWidth == window.screen.width && !this.public) || this.public)
       this.screenHeight = "100%";
     else
       this.screenHeight = "calc(100% - 90px)";
@@ -608,7 +620,8 @@ export class MsfDashboardComponent implements OnInit {
         parentCategory: (this.contextParentPanel.currentChartType.flags & ChartFlags.XYCHART ? this.contextParentPanel.xaxis : this.contextParentPanel.variable),
         secondaryParentCategory: (this.contextParentPanel.currentChartType.flags & ChartFlags.XYCHART ? this.contextParentPanel.variable : null),
         categoryFilter: this.contextParentPanel.chartObjectSelected,
-        secondaryCategoryFilter: this.contextParentPanel.chartSecondaryObjectSelected
+        secondaryCategoryFilter: this.contextParentPanel.chartSecondaryObjectSelected,
+        public: this.public
       }
     });
   }
