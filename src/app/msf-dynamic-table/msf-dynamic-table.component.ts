@@ -35,9 +35,9 @@ export class MsfDynamicTableComponent implements OnInit {
     return Array.isArray (item);
   }
 
-  loadData(xaxis, yaxis, values)
+  loadData(xaxis, yaxis, values, dashboardPanel?)
   {  
-    this.service.loadDynamicTableData (this, xaxis, yaxis, values, this.handlerSuccess, this.handlerError);
+    this.service.loadDynamicTableData (this, xaxis, yaxis, values, this.handlerSuccess, this.handlerError, dashboardPanel);
   }
 
   handlerSuccess(_this,data)

@@ -43,6 +43,7 @@ import { MsfDashboardAssistantComponent } from '../msf-dashboard-assistant/msf-d
 import { MsfDynamicTableAliasComponent } from '../msf-dynamic-table-alias/msf-dynamic-table-alias.component';
 import { MsfSelectDataFromComponent } from '../msf-select-data-from/msf-select-data-from.component';
 import { ConfigFlags } from './msf-dashboard-configflags';
+import { MsfDynamicTableVariablesComponent } from '../msf-dynamic-table-variables/msf-dynamic-table-variables.component';
 
 // AmCharts colors
 const black = am4core.color ("#000000");
@@ -186,6 +187,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   @Input("controlPanelInterval")
   controlPanelInterval: number;
+
+  @Input("public")
+  public: boolean = false;
 
   childPanelValues: any[] = [];
   childPanelsConfigured: boolean[] = [];
@@ -830,7 +834,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       // Display a special context menu when a chart line segment is right clicked
       series.segments.template.interactionsEnabled = true;
-      series.columns.template.events.on ("down", function (event) {
+      series.segments.template.events.on ("down", function (event) {
         if (!values.currentOption.drillDownOptions.length)
           return;
 
@@ -1077,7 +1081,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     series.colors = colorSet;
 
     // Display a special context menu when a pie slice is right clicked
-    series.columns.template.events.on ("down", function (event) {
+    series.slices.template.events.on ("down", function (event) {
       if (!values.currentOption.drillDownOptions.length)
         return;
 
@@ -1135,7 +1139,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     series.colors = colorSet;
 
     // Display a special context menu when a funnel slice is right clicked
-    series.columns.template.events.on ("down", function (event) {
+    series.slices.template.events.on ("down", function (event) {
       if (!values.currentOption.drillDownOptions.length)
         return;
 
@@ -2844,7 +2848,10 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (isDevMode ())
       console.log (urlArg);
 
-    url = this.service.host + "/secure/getTextSummaryResponse?url=" + urlArg;
+    if (this.public)
+      url = this.service.host + "/getTextSummaryResponse?url=" + urlArg;
+    else
+      url = this.service.host + "/secure/getTextSummaryResponse?url=" + urlArg;
 
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;
@@ -2876,7 +2883,11 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (isDevMode ())
       console.log (urlBase);
 
-    url = this.service.host + "/secure/getChartData?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
+
+    if (this.public)
+      url = this.service.host + "/getChartData?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
+    else
+      url = this.service.host + "/secure/getChartData?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
 
     if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
     {
@@ -2923,7 +2934,10 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (isDevMode ())
       console.log (urlBase);
 
-    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
+    if (this.public)
+      url = this.service.host + "/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
+    else
+      url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
 
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;
@@ -2947,7 +2961,10 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (isDevMode ())
       console.log (url);
 
-    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&noXml=true";
+    if (this.public)
+      url = this.service.host + "/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&noXml=true";
+    else
+      url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id + "&noXml=true";
 
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;
@@ -2976,7 +2993,10 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (isDevMode ())
       console.log (urlBase);
 
-    url = this.service.host + "/secure/getFormResponse?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
+    if (this.public)
+      url = this.service.host + "/getFormResponse?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
+    else
+      url = this.service.host + "/secure/getFormResponse?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
 
     // Prepare the form configuration
     formConfig = [];
@@ -3041,7 +3061,10 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (isDevMode ())
       console.log (urlBase);
 
-    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
+    if (this.public)
+      url = this.service.host + "/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
+    else
+      url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
 
     for (let tableVariable of this.values.tableVariables)
     {
@@ -3077,7 +3100,11 @@ export class MsfDashboardPanelComponent implements OnInit {
       console.log (urlBase);
 
     data = { variables: this.values.dynTableVariables, values: this.values.dynTableValues };
-    url = this.service.host + "/secure/getHorizontalMatrix?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
+
+    if (this.public)
+      url = this.service.host + "/getHorizontalMatrix?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
+    else
+      url = this.service.host + "/secure/getHorizontalMatrix?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
 
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;
@@ -7670,10 +7697,13 @@ export class MsfDashboardPanelComponent implements OnInit {
                   sorting = false;
                 }
               }
-            }}}}
-      if (sorting) {
-        this.loadData();
+            }
+          }
+        }
       }
+
+      if (sorting)
+        this.loadData ();
     }
   }
 
@@ -7685,5 +7715,39 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.moreResults = false;
       this.msfTableRef.sort.sort({ id: '', start: 'asc', disableClear: false });
     }
+  }
+
+  configureDynamicTable(): void
+  {
+    let dynamicTableValues =
+    {
+      xaxis: [],
+      yaxis: [],
+      values: []
+    };
+
+    const dialogRef = this.dialog.open (MsfDynamicTableVariablesComponent,
+    {
+      width: '1100px',
+      height: '600px',
+      panelClass: 'dynamic-table-dialog',
+      autoFocus: false,
+      data: {
+        metadata: this.values.currentOption.columnOptions,
+        dynamicTableValues: dynamicTableValues,
+        dashboardPanel: this
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result =>
+    {
+      if (result != null)
+      {
+/*        this.globals.selectedIndex = 3;
+        this.dynTableLoading = true;
+        this.dynamicTableValues = result; // store the dynamic table configuration
+        this.msfContainerRef.msfDynamicTableRef.loadData (result.xaxis, result.yaxis, result.values);*/
+      }
+    });
   }
 }

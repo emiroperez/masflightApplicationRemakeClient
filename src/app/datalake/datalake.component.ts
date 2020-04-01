@@ -523,7 +523,7 @@ export class DatalakeComponent implements OnInit {
 
   editDashboard(): void {
     this.dialog.open(MsfEditDashboardComponent, {
-      height: this.globals.readOnlyDashboard ? '145px' : '200px',
+      height: this.globals.readOnlyDashboard ? '150px' : '250px',
       width: '480px',
       panelClass: 'msf-dashboard-control-variables-dialog',
       data: {
@@ -555,7 +555,7 @@ export class DatalakeComponent implements OnInit {
         _this.globals.isLoading = true;
 
         if (_this.globals.readOnlyDashboard) {
-          _this.menuService.deleteSharedDashboard(_this, _this.globals.currentDashboardMenu.id,
+          _this.menuService.deleteSharedDashboard(_this, _this.globals.readOnlyDashboard.id, _this.globals.currentDashboardMenu.id,
             _this.deleteSuccess, _this.deleteError);
         }
         else {

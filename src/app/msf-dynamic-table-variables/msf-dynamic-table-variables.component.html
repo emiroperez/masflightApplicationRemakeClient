@@ -2,8 +2,11 @@
   <img class="dynamic-table-icon" src="../../assets/images/{{globals.theme}}-dynamicTable.png" [style.width.px]="20" [style.height.px]="20">
   <span class="dynamic-table-title">Dynamic Table</span>
   <div class="dynamic-table-header-buttons">
-    <button mat-flat-button [disabled]="disabled()" [ngClass]="disabled() ? 'flat-button-disabled' : 'flat-button'" (click)="generateTable()">
+    <button *ngIf="!data.dashboardPanel" mat-flat-button [disabled]="disabled()" [ngClass]="disabled() ? 'flat-button-disabled' : 'flat-button'" (click)="generateTable()">
       Generate
+    </button>
+    <button *ngIf="data.dashboardPanel" mat-flat-button [disabled]="disabled()" [ngClass]="disabled() ? 'flat-button-disabled' : 'flat-button'" (click)="setPanelSettings()">
+      OK
     </button>
     <button mat-icon-button class="dynamic-table-close-button" (click)="onNoClick()">
       <mat-icon>close</mat-icon>

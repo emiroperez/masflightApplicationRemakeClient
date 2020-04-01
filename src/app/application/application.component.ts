@@ -841,7 +841,8 @@ toggle(){
       autoFocus: false,
       data: {
         metadata: this.msfContainerRef.msfTableRef.metadata,
-        dynamicTableValues: this.dynamicTableValues
+        dynamicTableValues: this.dynamicTableValues,
+        configurePanel: false
       }
     });
 
@@ -1318,7 +1319,7 @@ toggle(){
   editDashboard(): void
   {
     this.dialog.open (MsfEditDashboardComponent, {
-      height: this.globals.readOnlyDashboard ? '195px' : '250px',
+      height: this.globals.readOnlyDashboard ? '150px' : '250px',
       width: '480px',
       panelClass: 'msf-dashboard-control-variables-dialog',
       data: {
@@ -1364,7 +1365,7 @@ toggle(){
 
         if (_this.globals.readOnlyDashboard)
         {
-          _this.menuService.deleteSharedDashboard (_this, _this.globals.currentDashboardMenu.id,
+          _this.menuService.deleteSharedDashboard (_this, _this.globals.readOnlyDashboard.id, _this.globals.currentDashboardMenu.id,
             _this.deleteSuccess, _this.deleteError);
         }
         else

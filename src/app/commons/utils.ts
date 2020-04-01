@@ -1067,4 +1067,38 @@ export class Utils{
 
         return convertedFormat;
     }
+
+    getDashboardPanelParameters(dashboardPanel): string
+    {
+        let currentOptionCategories = dashboardPanel.currentOptionCategories;
+        let params;
+
+        if (currentOptionCategories)
+        {
+            for (let i = 0; i < currentOptionCategories.length; i++)
+            {
+                let category: CategoryArguments = currentOptionCategories[i];
+
+                if (category && category.arguments)
+                {
+                    for (let j = 0; j < category.arguments.length; j++)
+                    {
+                        let argument: Arguments = category.arguments[j];
+
+                        if (params)
+                        {
+                            if (argument.type != "singleCheckbox" && argument.type != "serviceClasses" && argument.type != "fareLower" && argument.type != "airportsRoutes" && argument.name1 != "intermediateCitiesList")
+                                params += "&" + this.getArguments(argument);
+                            else if (argument.value1 != false && argument.value1 != "" && argument.value1 != undefined && argument.value1 != null)
+                                params += "&" + this.getArguments(argument);
+                        }
+                        else
+                            params = this.getArguments(argument);
+                    }
+                }
+            }
+        }
+
+        return params;
+    }
 }
