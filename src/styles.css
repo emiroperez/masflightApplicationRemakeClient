@@ -8981,6 +8981,7 @@ mat-tab-group {
 .msf-dashboard-container .msf-dashboard-header .msf-dashboard-title .msf-dashboard-title-description {
   display: flex;
   flex-direction: column;
+  width: calc(100% - 200px);
 }
 .msf-dashboard-container .msf-dashboard-header .msf-dashboard-title .msf-dashboard-title-description .msf-dashboard-title-label {
   padding: 0px;
@@ -8988,9 +8989,6 @@ mat-tab-group {
 }
 .msf-dashboard-container .msf-dashboard-header .msf-dashboard-title.is-mobile {
   font-size: 9px !important;
-}
-.msf-dashboard-container .msf-dashboard-header .msf-dashboard-title.is-mobile .msf-dashboard-title-description {
-  width: calc(100% - 176px);
 }
 .msf-dashboard-container .msf-dashboard-header .msf-dashboard-title.is-mobile .msf-dashboard-control-panel-button-title {
   padding: 10px 35px 10px 15px !important;
