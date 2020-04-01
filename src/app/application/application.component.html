@@ -243,7 +243,8 @@
                     [dashboardCategories]="dashboardCategories" [sharedDashboards]="sharedDashboards" (cancelLoadingFromLastService)="cancelLoadingFromLastService()"></app-menu-nav> -->
             </div>            
             <mat-paginator #paginator [pageIndex]="pageI" [pageSize]="pageSize" [length]="lengthpag" hidePageSize (page)="pageEvent = getServerData($event)" showFirstLastButtons
-            [ngClass]="(globals.showPaginator && !tableLoading)  || (mobileQuery.matches && globals.showCategoryArguments) ? 'msf-paginator-table':'msf-hide'"></mat-paginator>
+            [ngClass]="(globals.showPaginator && !tableLoading && (globals.moreResultsBtn || (!globals.moreResultsBtn && pageI!=0)))  || 
+            (mobileQuery.matches && globals.showCategoryArguments) ? 'msf-paginator-table':'msf-hide'"></mat-paginator>
              <div [ngClass]="globals.moreResultsBtn && !tableLoading ? 'msf-menu-more-button' : 'msf-menu-more-button disabled-more-button'" (click)="moreResults()"
                 *ngIf="(globals.dataSource && !globals.mapsc && !mobileQuery.matches && showMoreResult) || (mobileQuery.matches && globals.showCategoryArguments)">
                 <img style="width: 16px;height: 16px;" src="../../assets/images/{{globals.theme}}-more.png"
