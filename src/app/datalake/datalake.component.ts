@@ -555,7 +555,7 @@ export class DatalakeComponent implements OnInit {
         _this.globals.isLoading = true;
 
         if (_this.globals.readOnlyDashboard) {
-          _this.menuService.deleteSharedDashboard(_this, _this.globals.currentDashboardMenu.id,
+          _this.menuService.deleteSharedDashboard(_this, _this.globals.readOnlyDashboard.id, _this.globals.currentDashboardMenu.id,
             _this.deleteSuccess, _this.deleteError);
         }
         else {
