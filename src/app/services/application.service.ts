@@ -930,4 +930,10 @@ export class ApplicationService {
     let url = _this.globals.baseUrl + "/removePublicDashboard";
     this.http.post (_this, url, dashboardId, handlerSuccess, handlerError);
   }
+
+  checkPublicDashboardName(_this, dashboardName, handlerSuccess, handlerError): void
+  {
+    let url = _this.globals.baseUrl + "/checkPublicDashboardName";
+    this.http.post(_this, url, dashboardName, handlerSuccess, handlerError);
+  }
 }

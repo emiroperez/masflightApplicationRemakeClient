@@ -274,8 +274,36 @@ export class MsfShareDashboardComponent implements OnInit {
       autoFocus: false
     });
 
-    dialogRef.afterClosed ().subscribe (() => {
-
+    dialogRef.afterClosed ().subscribe ((results) => {
+      if (results)
+      {
+        this.globals.popupLoading = true;
+        this.appService.createPublicDashboard (this, results, this.createSuccess, this.createError);
+      }
     });
+  }
+
+  createSuccess(_this, data): void
+  {
+    _this.globals.popupLoading = false;
+
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Information", message: "The dashboard is now public." }
+    });
+
+    _this.publicDashboard = data;
+  }
+
+  createError(_this): void
+  {
+    _this.globals.popupLoading = false;
+
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Information", message: "Failed to publicize the dashboard." }
+    });
+  }
+
+  editPublicDashboard(): void
+  {
   }
 }
