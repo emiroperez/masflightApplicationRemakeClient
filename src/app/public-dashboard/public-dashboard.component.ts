@@ -17,6 +17,8 @@ export class PublicDashboardComponent {
     private services: ApplicationService, public globals: Globals,
     private dialog: MatDialog)
   {
+    this.globals.setOverlayTheme ({ checked: false }, true);
+
     this.route.params.subscribe (params =>
     {
       if (params['name'])

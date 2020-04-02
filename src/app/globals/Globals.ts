@@ -151,7 +151,7 @@ export class Globals {
     this.setOverlayTheme ({ checked : useLightTheme });
   }
 
-  setOverlayTheme(themeSwitch): void
+  setOverlayTheme(themeSwitch, keepTheme?): void
   {
     let containerElement = this.overlayContainer.getContainerElement ();
     let themeName;
@@ -173,7 +173,8 @@ export class Globals {
     this.theme = themeName;
 
     // save current theme into the cookies
-    this.cookie.set ("pulseTheme", themeName);
+    if (!keepTheme)
+      this.cookie.set ("pulseTheme", themeName);
   }
 
    initDataSource(){

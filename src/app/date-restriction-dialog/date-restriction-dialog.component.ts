@@ -1,12 +1,29 @@
 import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MatDialog, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MatDialog, MAT_DIALOG_DATA, DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
 
 import { Globals } from '../globals/Globals';
 import { ApplicationService } from '../services/application.service';
 
+export const US_DATE_FORMAT = {
+  parse: {
+    dateInput: 'MM/DD/YYYY',
+  },
+  display: {
+    dateInput: 'MM/DD/YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
+
 @Component({
   selector: 'app-date-restriction-dialog',
-  templateUrl: './date-restriction-dialog.component.html'
+  templateUrl: './date-restriction-dialog.component.html',
+  providers: [
+    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
+    { provide: MAT_DATE_FORMATS, useValue: US_DATE_FORMAT },
+  ]
 })
 export class DateRestrictionDialogComponent {
 
