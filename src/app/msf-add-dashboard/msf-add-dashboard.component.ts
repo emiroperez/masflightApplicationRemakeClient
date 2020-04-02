@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ViewChild, NgZone } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 
 import { Globals } from '../globals/Globals';
@@ -6,6 +6,8 @@ import { MenuService } from '../services/menu.service';
 import { DashboardMenu } from '../model/DashboardMenu';
 import { MessageComponent } from '../message/message.component';
 import { MsfDashboardBrowserComponent } from '../msf-dashboard-browser/msf-dashboard-browser.component';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-msf-add-dashboard',
@@ -16,14 +18,23 @@ export class MsfAddDashboardComponent {
   title: string;
   description: string;
   selectedLocation: any = null;
+  @ViewChild('autosize', {static: false}) autosize: CdkTextareaAutosize;
+
 
   constructor(
     public dialogRef: MatDialogRef<MsfAddDashboardComponent>,
     public globals: Globals,
     public dialog: MatDialog,
     private service: MenuService,
+    private _ngZone: NgZone,
     @Inject(MAT_DIALOG_DATA) public data: any)
   {
+  }
+
+  triggerResize() {
+    // Wait for changes to be applied, then trigger textarea resize.
+    this._ngZone.onStable.pipe(take(1))
+        .subscribe(() => this.autosize.resizeToFitContent(true));
   }
 
   onNoClick(): void

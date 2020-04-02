@@ -2075,13 +2075,13 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                 .mat-button-wrapper
                     color: #ffffff
         .datalake-table-export-excel[disabled]
-            border: 1px solid $disabled-color
+            border: 1px solid $tertiary-disabled-color
             background-color: transparent !important
             cursor: auto
             .mat-button-wrapper
                 color: $menu-disabled-font-color !important
             &:hover
-                border: 1px solid $disabled-color !important
+                border: 1px solid $tertiary-disabled-color !important
                 background-color: $disabled-color !important
                 .mat-button-wrapper
                     color: $menu-disabled-font-color !important
@@ -4358,16 +4358,18 @@ mat-tab-group
             text-align: left
             margin-left: 16px
             display: flex
-            flex-direction: row
-            align-items: center
-            .msf-dashboard-title-description
+            flex-direction: Column
+            align-items: flex-start
+            .msf-dashboard-title-btn
                 display: flex
                 flex-direction: column
-                width: calc(100% - 200px)
+                width: 100%
+                justify-content: center
                 .msf-dashboard-title-label
                     padding: 0px
                     margin: 0px
-                    // padding: 14px 0        
+                    width: calc(100% - 175px)
+                    // padding: 14px 0 
         .msf-dashboard-title.is-mobile
             font-size: 9px !important
             .msf-dashboard-control-panel-button-title
@@ -11046,7 +11048,8 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 
 .datalake-table-export-excel[disabled]
     .datalake-table-export-excel-img
-        filter: opacity(0.6)
+        // filter: opacity(0.6)
+        filter: brightness(0.5)
 .msf-dashboard-additional-settings-title
     margin-top: 10px
 
@@ -11764,7 +11767,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     font-weight: lighter !important
     font-size: 12px
     text-align: left
-    margin-top: 5px !important
+    margin-top: 15px !important
 
 .msf-dashboard-panel-dynamic-table
     height: 100%
