@@ -7,16 +7,15 @@
           <h1 class="msf-dashboard-title-label">
             {{currentDashboardMenu.title}}
             <span *ngIf="globals.readOnlyDashboard && !public">
-             (Read Only)
+              (Read Only)
             </span>
           </h1>
           <span class="msf-dashboard-title-label msf-dashboard-title-label-description">
             {{currentDashboardMenu.description}}
           </span>
         </div>
-        <div class="public-dashboard-logos" *ngIf="public">
-          <img class="global-eagle-logo" src="../../assets/images/dark-theme-logo.png"/>
-          <img class="pulse-logo" src="../../assets/images/light-theme-pulse_welc.png"/>
+        <div class="public-dashboard-header-logo" *ngIf="public">
+          <img class="pulse-logo" src="../../assets/images/{{globals.theme}}-login-logo.png" />
         </div>
         <div class="msf-dashboard-control-panel-button-title" [ngClass]="{ 'msf-dashboard-control-panel-button' : !controlPanelOpen, 'msf-dashboard-control-panel-button-open' : controlPanelOpen }" (click)="toggleControlPanel()" *ngIf="!globals.readOnlyDashboard">
           <div class="msf-dashboard-control-panel-icon"></div>
@@ -41,9 +40,9 @@
           <div class="msf-dashboard-button-move-icon" (click)="disableContextMenu()"></div>
         </div>
         <app-msf-dashboard-panel [values]="panel" [controlPanelVariables]="controlPanelVariables" [panelWidth]="panel.width" [panelHeight]="panel.height" [public]="public"
-          [currentHiddenCategories]="currentHiddenCategories" [addingOrRemovingPanels]="addingOrRemovingPanels" [controlPanelInterval]="controlPanelInterval"
-          (removeDeadVariablesAndCategories)="removeDeadVariablesAndCategories($event)" (addNewVariablesAndCategories)="addNewVariablesAndCategories($event)"
-          (toggleControlVariableDialogOpen)="toggleControlVariableDialogOpen($event)" (enablePanelContextMenu)="enablePanelContextMenu($event)">
+                                 [currentHiddenCategories]="currentHiddenCategories" [addingOrRemovingPanels]="addingOrRemovingPanels" [controlPanelInterval]="controlPanelInterval"
+                                 (removeDeadVariablesAndCategories)="removeDeadVariablesAndCategories($event)" (addNewVariablesAndCategories)="addNewVariablesAndCategories($event)"
+                                 (toggleControlVariableDialogOpen)="toggleControlVariableDialogOpen($event)" (enablePanelContextMenu)="enablePanelContextMenu($event)">
         </app-msf-dashboard-panel>
       </div>
     </div>
@@ -110,5 +109,9 @@
         </div>
       </div>
     </div>
+  </div>
+  <div class="public-dashboard-footer" *ngIf="public">
+    <span>Copyright reserved Global Eagle Entertainment &copy; 2020</span>
+    <img class="global-eagle-logo" src="../../assets/images/{{globals.theme}}-logo.png" />
   </div>
 </div>
