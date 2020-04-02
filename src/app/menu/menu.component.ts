@@ -87,7 +87,6 @@ export class MenuComponent implements OnInit {
   addDashboard()
   {
     this.dialog.open (MsfAddDashboardComponent, {
-      height: '300px',
       width: '480px',
       panelClass: 'msf-dashboard-control-variables-dialog',
       data: {
