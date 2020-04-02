@@ -2361,6 +2361,10 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                         margin-top: -2px
             .dynamic-table-preview-inactive
                 background-color: $dynamic-table-preview-color
+        .publicize-dashboard-container
+            color: $font-color
+        .public-dashboard-logos
+            background-color: $dashboard-panel-chart-background-color
     .#{$name}.partial-summaries-item
         border-bottom: 1px solid $dashboard-config-location-border-color
     .#{$name}.metadata-item
@@ -11768,3 +11772,21 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     align-items: center
     .dynamic-table-config-button
         height: 40px
+
+.publicize-dashboard-container
+    margin-top: 10px
+    .mat-error
+        margin-left: 0 !important
+
+.public-dashboard-logos
+    display: flex
+    padding: 15px 30px
+    border-radius: 10px
+    margin-right: 10px
+    .global-eagle-logo
+        width: 300px
+        height: 45px
+        margin-right: 30px
+    .pulse-logo
+        width: 170px
+        height: 45px

@@ -4,16 +4,20 @@
     <div class="msf-dashboard-header" *ngIf="currentDashboardMenu">
       <div [ngClass]="mobileQuery.matches ? 'msf-dashboard-title is-mobile':'msf-dashboard-title'">
         <div class="msf-dashboard-title-description">
-        <h1 class="msf-dashboard-title-label">
-          {{currentDashboardMenu.title}}
-          <span *ngIf="globals.readOnlyDashboard && !public">
-           (Read Only)
+          <h1 class="msf-dashboard-title-label">
+            {{currentDashboardMenu.title}}
+            <span *ngIf="globals.readOnlyDashboard && !public">
+             (Read Only)
+            </span>
+          </h1>
+          <span class="msf-dashboard-title-label msf-dashboard-title-label-description">
+            {{currentDashboardMenu.description}}
           </span>
-        </h1>
-        <span class="msf-dashboard-title-label msf-dashboard-title-label-description">
-          {{currentDashboardMenu.description}}
-        </span>
-      </div>
+        </div>
+        <div class="public-dashboard-logos" *ngIf="public">
+          <img class="global-eagle-logo" src="../../assets/images/dark-theme-logo.png"/>
+          <img class="pulse-logo" src="../../assets/images/light-theme-pulse_welc.png"/>
+        </div>
         <div class="msf-dashboard-control-panel-button-title" [ngClass]="{ 'msf-dashboard-control-panel-button' : !controlPanelOpen, 'msf-dashboard-control-panel-button-open' : controlPanelOpen }" (click)="toggleControlPanel()" *ngIf="!globals.readOnlyDashboard">
           <div class="msf-dashboard-control-panel-icon"></div>
           Control Panel
