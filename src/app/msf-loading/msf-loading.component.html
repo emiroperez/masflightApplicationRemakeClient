@@ -1,6 +1,6 @@
 <div [ngClass]="globals.isLoading ? 'tab-show':'tab-hide'" id='loading-panel' class='loading-panel'>
-    <button mat-button class="cancel-button" (click)="cancelLoading()">
+    <button *ngIf="globals.public" mat-button class="cancel-button" (click)="cancelLoading()">
         Cancel
-    <mat-icon  class="close-icon">close</mat-icon> 
+      <mat-icon  class="close-icon">close</mat-icon> 
     </button>
 </div>

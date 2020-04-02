@@ -18,6 +18,7 @@ export class PublicDashboardComponent {
     private dialog: MatDialog)
   {
     this.globals.setOverlayTheme ({ checked: false }, true);
+    this.globals.public = true;
 
     this.route.params.subscribe (params =>
     {
@@ -27,7 +28,10 @@ export class PublicDashboardComponent {
         this.services.getPublicDashboard (this, params['name'], this.publicDashboardSuccess, this.publicDashboardError);
       }
       else
+      {
+        this.globals.public = false;
         this.router.navigate (['']); // go to the login screen if there is no parameter set
+      }
     });
   }
 
@@ -36,6 +40,7 @@ export class PublicDashboardComponent {
     if (!data)
     {
       _this.globals.isLoading = false;
+      _this.globals.public = false;
       _this.router.navigate(['']);
       return;
     }
@@ -47,6 +52,7 @@ export class PublicDashboardComponent {
   publicDashboardError(_this): void
   {
     _this.globals.isLoading = false;
+    _this.globals.public = false;
 
     _this.dialog.open (MessageComponent, {
       data: { title: "Error", message: "Failed to load dashboard!" }
@@ -60,6 +66,7 @@ export class PublicDashboardComponent {
     if (!application)
     {
       _this.globals.isLoading = false;
+      _this.globals.public = false;
       _this.router.navigate(['']);
       return;
     }

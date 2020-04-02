@@ -21,6 +21,7 @@ export class Globals {
   currentMenuCategory: any;
   currentUser: any;
   currentArgs: any;
+  public: boolean = false;
   isLoading: boolean = false;
   popupLoading: boolean = false;
   popupLoading2: boolean = false;
