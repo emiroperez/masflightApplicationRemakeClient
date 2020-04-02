@@ -8,6 +8,7 @@ import { Globals } from '../globals/Globals';
 import { ApplicationService } from '../services/application.service';
 import { MenuService } from '../services/menu.service';
 import { MessageComponent } from '../message/message.component';
+import { PublicizeDashboardDialogComponent } from '../publicize-dashboard-dialog/publicize-dashboard-dialog.component';
 
 @Component({
   selector: 'app-msf-share-dashboard',
@@ -16,6 +17,7 @@ import { MessageComponent } from '../message/message.component';
 export class MsfShareDashboardComponent implements OnInit {
   users: any[] = [];
   selectedUser: any;
+  publicDashboard: any = null;
 
   userNameList: any = [];
   selectedUserNames: any[] = [];
@@ -106,8 +108,12 @@ export class MsfShareDashboardComponent implements OnInit {
       _this.userNameList.push (user);
 
     _this.filteredUserNames.next (_this.userNameList.slice ());
-    _this.searchChange ();
-    _this.globals.popupLoading = false;
+    _this.searchChange();
+
+    if (!_this.isPanel)
+      _this.appService.getPublicDashboardById (_this, _this.data.dashboardContentId, _this.publicSuccess, _this.publicError);
+    else
+      _this.globals.popupLoading = false;
   }
 
   errorHandler(_this): void
@@ -117,6 +123,22 @@ export class MsfShareDashboardComponent implements OnInit {
 
     _this.dialog.open (MessageComponent, {
       data: { title: "Error", message: "Failed to get the list of users." }
+    });
+  }
+
+  publicSuccess(_this, data): void
+  {
+    _this.publicDashboard = data;
+    _this.globals.popupLoading = false;
+  }
+
+  publicError(_this): void
+  {
+    _this.globals.popupLoading = false;
+    _this.dialogRef.close();
+
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Error", message: "Failed to verify if dashboard is publicized." }
     });
   }
 
@@ -243,5 +265,17 @@ export class MsfShareDashboardComponent implements OnInit {
     });
 
     _this.globals.popupLoading = false;
+  }
+
+  publicizeDashboard(): void
+  {
+    let dialogRef = this.dialog.open (PublicizeDashboardDialogComponent, {
+      width: '480px',
+      autoFocus: false
+    });
+
+    dialogRef.afterClosed ().subscribe (() => {
+
+    });
   }
 }

@@ -3945,7 +3945,7 @@ mat-tab-group
     height: calc(100% - 150px)
 
 .msf-category-container.is-mobile
-    height: calc(100% - 150px) !important
+    height: calc(100% - 120px) !important
 
 .msf-search-complete-container-mobile
     width: 30% !important
@@ -4367,11 +4367,32 @@ mat-tab-group
                 .msf-dashboard-title-label
                     padding: 0px
                     margin: 0px
+        .msf-dashboard-title-private-mobile
+            flex-direction: column !important
+            .msf-dashboard-control-panel-button-title
+                margin-top: 10px
+                position: inherit !important
+                align-self: center
+                align-items: center
+                padding: 10px 0px 10px 15px !important
+            .msf-dashboard-control-panel-button-arrow
+                position: inherit !important
         .msf-dashboard-title.is-mobile
             font-size: 9px !important
+            flex-direction: column-reverse
             .msf-dashboard-control-panel-button-title
-                padding: 10px 35px 10px 15px !important
                 font-size: 12px !important
+            .msf-dashboard-title-description
+                width: calc(100% - 16px)
+            .msf-dashboard-title-label-description
+                margin-top: 0 !important
+                display: block
+                width: 100%
+                white-space: normal
+                word-break: break-word
+            .public-dashboard-header-logo
+                align-self: center
+                margin-bottom: 15px
         .msf-dashboard-control-panel-button
             @include msf-dashboard-control-panel-button
         .msf-dashboard-control-panel-button:hover, .msf-dashboard-control-panel-button-open
@@ -4674,6 +4695,10 @@ mat-tab-group
             overflow: hidden
         .msf-dashboard-panel-title-label-read-only
             width: calc(100% - 27px) !important
+        .msf-dashboard-panel-title-label-public-mobile
+            width: calc(100% - 157px) !important
+        .msf-dashboard-panel-title-label-public
+            width: calc(100% - 207px) !important
         .msf-dashboard-panel-results-button
             width: 20px
             font-size: 12px
@@ -4681,6 +4706,23 @@ mat-tab-group
             cursor: pointer
             &:hover
                 cursor: pointer
+        .msf-dashboard-panel-powered-logo
+            display: flex
+            font-size: 14px
+            margin-left: 5px
+            margin-right: 15px
+            align-self: center
+            opacity: 0.35
+        .msf-dashboard-panel-public-mobile-logo
+            width: 25px
+            background-size: 25px
+            background-repeat: no-repeat
+            background-position: center
+        .msf-dashboard-panel-public-logo
+            width: 70px
+            background-size: 70px
+            background-repeat: no-repeat
+            background-position: center
     .msf-dashboard-panel-sub-container-column
         @include msf-dashboard-panel-sub-container(row, 5px)
         position: relative
@@ -8546,7 +8588,7 @@ button.mat-icon-button-menu
 
 .msf-menu-show-full-nav-component-wide.is-mobile
     width: 100% !important
-    height: calc(100% - 90px)
+    height: calc(100% - 60px)
 
 .mat-tab-body-content
     .msf-viewport-container
@@ -11496,6 +11538,9 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         margin-top: 2px
         margin-right: -10px
 
+.category-administrator-container-mobile
+    height: calc(100% - 60px) !important
+
 .category-administrator-container
     display: flex
     height: calc(100% - 90px)
@@ -11799,4 +11844,17 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     .global-eagle-logo
         position: absolute
         right: 0
+        width: 200px
+
+.public-dashboard-footer-mobile
+    display: flex
+    width: calc(100% - 30px)
+    align-items: center
+    margin: 15px
+    margin-top: 0
+    position: relative
+    flex-direction: column
+    .global-eagle-logo
+        margin-top: 10px
+        margin-bottom: 10px
         width: 200px

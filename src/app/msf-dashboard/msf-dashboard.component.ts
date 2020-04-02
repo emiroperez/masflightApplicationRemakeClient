@@ -111,7 +111,12 @@ export class MsfDashboardComponent implements OnInit {
     if (this.globals.isFullscreen || this.public)
       this.screenHeight = "100%";
     else
-      this.screenHeight = "calc(100% - 90px)";
+    {
+      if (this.mobileQuery.matches)
+        this.screenHeight = "calc(100% - 60px)";
+      else
+        this.screenHeight = "calc(100% - 90px)";
+    }
   }
 
   ngAfterViewInit()
@@ -534,7 +539,12 @@ export class MsfDashboardComponent implements OnInit {
     if ((event.target.innerHeight == window.screen.height && event.target.innerWidth == window.screen.width && !this.public) || this.public)
       this.screenHeight = "100%";
     else
-      this.screenHeight = "calc(100% - 90px)";
+    {
+      if (this.mobileQuery.matches)
+        this.screenHeight = "calc(100% - 60px)";
+      else
+        this.screenHeight = "calc(100% - 90px)";
+    }
   
     this.disableContextMenu ();
   }

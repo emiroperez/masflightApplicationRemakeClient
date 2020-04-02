@@ -191,6 +191,9 @@ export class MsfDashboardPanelComponent implements OnInit {
   @Input("public")
   public: boolean = false;
 
+  @Input("isMobile")
+  isMobile: boolean = false;
+
   childPanelValues: any[] = [];
   childPanelsConfigured: boolean[] = [];
 
@@ -7726,6 +7729,9 @@ export class MsfDashboardPanelComponent implements OnInit {
       values: []
     };
 
+    console.log (this.values.dynTableVariables);
+    console.log (this.values.dynTableValues);
+
     const dialogRef = this.dialog.open (MsfDynamicTableVariablesComponent,
     {
       width: '1100px',
@@ -7749,5 +7755,15 @@ export class MsfDashboardPanelComponent implements OnInit {
         this.msfContainerRef.msfDynamicTableRef.loadData (result.xaxis, result.yaxis, result.values);*/
       }
     });
+  }
+
+  getMasFlightMobileLogoImage(): string
+  {
+    return "../../assets/images/dark-theme-masFlight-mobile-logo.png";
+  }
+
+  getMasFlightLogoImage(): string
+  {
+    return "../../assets/images/dark-theme-masFlight-logo.png";
   }
 }

@@ -906,4 +906,28 @@ export class ApplicationService {
     let url = _this.globals.baseUrl + "/getApplication?appId=" + appId;
     this.http.get (_this, url, handlerSuccess, handlerError, null);
   }
+
+  getPublicDashboardById(_this, dashboardId, handlerSuccess, handlerError): void
+  {
+    let url = _this.globals.baseUrl + "/getPublicDashboardById";
+    this.http.post (_this, url, dashboardId, handlerSuccess, handlerError);
+  }
+
+  createPublicDashboard(_this, data, handlerSuccess, handlerError): void
+  {
+    let url = _this.globals.baseUrl + "/createPublicDashboard";
+    this.http.post (_this, url, data, handlerSuccess, handlerError);
+  }
+
+  updatePublicDashboard(_this, data, handlerSuccess, handlerError): void
+  {
+    let url = _this.globals.baseUrl + "/updatePublicDashboard";
+    this.http.post (_this, url, data, handlerSuccess, handlerError);
+  }
+
+  removePublicDashboard(_this, dashboardId, handlerSuccess, handlerError): void
+  {
+    let url = _this.globals.baseUrl + "/removePublicDashboard";
+    this.http.post (_this, url, dashboardId, handlerSuccess, handlerError);
+  }
 }
