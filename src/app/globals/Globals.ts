@@ -139,7 +139,7 @@ export class Globals {
     // get theme setting from cookies
     pulseTheme = cookie.get ("pulseTheme");
     if (!pulseTheme)
-      useLightTheme = true;
+      useLightTheme = false;
     else
     {
       if (pulseTheme === "light-theme")
