@@ -2947,7 +2947,7 @@
   color: #ffffff;
 }
 .dark-theme .datalake-table-export-excel[disabled] {
-  border: 1px solid #333333;
+  border: 1px solid #727277;
   background-color: transparent !important;
   cursor: auto;
 }
@@ -2955,7 +2955,7 @@
   color: #9e9e9e !important;
 }
 .dark-theme .datalake-table-export-excel[disabled]:hover {
-  border: 1px solid #333333 !important;
+  border: 1px solid #727277 !important;
   background-color: #333333 !important;
 }
 .dark-theme .datalake-table-export-excel[disabled]:hover .mat-button-wrapper {
@@ -6272,7 +6272,7 @@
   color: #ffffff;
 }
 .light-theme .datalake-table-export-excel[disabled] {
-  border: 1px solid #c6c6c6;
+  border: 1px solid #b2b2b2;
   background-color: transparent !important;
   cursor: auto;
 }
@@ -6280,7 +6280,7 @@
   color: #2d2d2d !important;
 }
 .light-theme .datalake-table-export-excel[disabled]:hover {
-  border: 1px solid #c6c6c6 !important;
+  border: 1px solid #b2b2b2 !important;
   background-color: #c6c6c6 !important;
 }
 .light-theme .datalake-table-export-excel[disabled]:hover .mat-button-wrapper {
@@ -8980,17 +8980,19 @@ mat-tab-group {
   text-align: left;
   margin-left: 16px;
   display: flex;
-  flex-direction: row;
-  align-items: center;
+  flex-direction: Column;
+  align-items: flex-start;
 }
-.msf-dashboard-container .msf-dashboard-header .msf-dashboard-title .msf-dashboard-title-description {
+.msf-dashboard-container .msf-dashboard-header .msf-dashboard-title .msf-dashboard-title-btn {
   display: flex;
   flex-direction: column;
-  width: calc(100% - 200px);
+  width: 100%;
+  justify-content: center;
 }
-.msf-dashboard-container .msf-dashboard-header .msf-dashboard-title .msf-dashboard-title-description .msf-dashboard-title-label {
+.msf-dashboard-container .msf-dashboard-header .msf-dashboard-title .msf-dashboard-title-btn .msf-dashboard-title-label {
   padding: 0px;
   margin: 0px;
+  width: calc(100% - 175px);
 }
 .msf-dashboard-container .msf-dashboard-header .msf-dashboard-title.is-mobile {
   font-size: 9px !important;
@@ -17032,7 +17034,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
 }
 
 .datalake-table-export-excel[disabled] .datalake-table-export-excel-img {
-  filter: opacity(0.6);
+  filter: brightness(0.5);
 }
 
 .msf-dashboard-additional-settings-title {
@@ -17917,7 +17919,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
   font-weight: lighter !important;
   font-size: 12px;
   text-align: left;
-  margin-top: 5px !important;
+  margin-top: 15px !important;
 }
 
 .msf-dashboard-panel-dynamic-table {
