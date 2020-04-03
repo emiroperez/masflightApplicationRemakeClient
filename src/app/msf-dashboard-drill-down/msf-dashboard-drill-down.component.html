@@ -9,12 +9,6 @@
   </div>
   {{data.title}}
 </div>
-<div class="msf-dashboard-control-variables-title" *ngIf="!globals.popupLoading">
-  <div class="msf-dashboard-control-variables-close-button">
-    <mat-icon class="msf-dashboard-close-icon" aria-label="close" (click)="closeDialog()">close</mat-icon>
-  </div>
-  {{data.description}}
-</div>
 <div class="msf-dashboard-panel-container" id="msf-dashboard-drill-down-container" *ngIf="data.childPanelValues.length">
   <div class="msf-dashboard-panel-sub-container-column">
     <mat-form-field class="msf-full-width" id="msf-dashboard-drill-down-container-column">
@@ -31,6 +25,16 @@
       <input matInput formControlName="panelNameCtrl" autocomplete="off" placeholder="Panel Name" [(value)]="currentValue == null ? '' : currentValue.chartName" (blur)="checkPanelName()"/>
     </mat-form-field>
   </div>
+  <!-- <div  class="msf-dashboard-panel-sub-container-column">
+    <mat-form-field>
+      <textarea matInput 
+      cdkTextareaAutosize
+      #autosize="cdkTextareaAutosize"
+      cdkAutosizeMinRows="1"
+      cdkAutosizeMaxRows="5"
+      placeholder="Panel Description" [(value)]="currentValue == null ? '' : currentValue.chartDescription"></textarea>
+  </mat-form-field>
+  </div> -->
   <div class="msf-dashboard-panel-sub-container-column">
     <mat-form-field [formGroup]="chartForm" class="msf-full-width" id="msf-dashboard-drill-down-container-column">
       <mat-select formControlName="chartCtrl" placeholder="Chart Type" (selectionChange)="checkChartType($event.value)">
