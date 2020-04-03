@@ -262,7 +262,15 @@ export class MsfTableComponent implements OnInit {
       const element = displayedColumns[index];
       var x = index;
       if(element.grouping==1){
-        if(dataResult.data[0][element.columnName]==null){
+        let deletecolumn = true;
+        for (let i = 0; i < dataResult.data.length; i++) {
+          const dataElement = dataResult.data[i];
+          if(dataElement[element.columnName] != null){
+            deletecolumn = false;
+            break;
+          }          
+        }
+        if(deletecolumn){
             x = x-cont;
             aux.splice(x,1);
             cont++;
