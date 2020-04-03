@@ -214,14 +214,14 @@ export class MsfDashboardDrillDownComponent {
 
     this.currentValue.chartColumnOptions = [];
 
-    for (let columnConfig of this.currentValue.currentOption.columnOptions)
+    for (let columnConfig of component.childrenOptionId.columnOptions)
       this.currentValue.chartColumnOptions.push ( { id: columnConfig.columnName, name: columnConfig.columnLabel, item: columnConfig } );
     
     if (!this.currentValue.tableVariables.length)
     {
       this.currentValue.tableVariables = [];
 
-      for (let columnConfig of this.currentValue.currentOption.columnOptions)
+      for (let columnConfig of component.childrenOptionId.columnOptions)
         this.currentValue.tableVariables.push ( { id: columnConfig.columnName, name: columnConfig.columnLabel, itemId: columnConfig.id, checked: true } );
     }
 
@@ -269,13 +269,11 @@ export class MsfDashboardDrillDownComponent {
           break;
       }
 
-      this.lastValue.currentChartType = this.chartTypes[this.lastValue.currentChartType];
       this.lastValue.variable = (variableIndex != -1 ? this.currentValue.chartColumnOptions[variableIndex] : null);
       this.lastValue.xaxis = (xAxisIndex != -1 ? this.currentValue.chartColumnOptions[xAxisIndex] : null);
       this.lastValue.valueColumn = (valueColumnIndex != -1 ? this.currentValue.chartColumnOptions[valueColumnIndex] : null);
       this.lastValue.function = this.data.functions[this.lastValue.function];
 
-      this.currentValue.currentChartType = this.chartTypes[this.currentValue.currentChartType];
       this.currentValue.variable = (variableIndex != -1 ? this.currentValue.chartColumnOptions[variableIndex] : null);
       this.currentValue.xaxis = (xAxisIndex != -1 ? this.currentValue.chartColumnOptions[xAxisIndex] : null);
       this.currentValue.valueColumn = (valueColumnIndex != -1 ? this.currentValue.chartColumnOptions[valueColumnIndex] : null);
@@ -423,12 +421,13 @@ export class MsfDashboardDrillDownComponent {
             _this.data.childPanelValues.push (new MsfDashboardPanelValues (_this.data.options,
               panel.title, panel.description,panel.id, null, null, _this.getOption (panel.option),
               panel.analysis, panel.xaxis, panel.values, panel.function,
-              panel.chartType, null, panel.lastestResponse, panel.paletteColors));
+              null, null, panel.lastestResponse, panel.paletteColors));
 
-            _this.values.limitAmount = panel.limitAmount;
-            _this.values.limitMode = panel.limitMode;
-            _this.values.startAtZero = panel.startAtZero;
-            _this.values.ordered = panel.ordered;
+            _this.data.childPanelValues[_this.data.childPanelValues.length - 1].currentChartType = _this.chartTypes[panel.chartType];
+            _this.data.childPanelValues[_this.data.childPanelValues.length - 1].limitAmount = panel.limitAmount;
+            _this.data.childPanelValues[_this.data.childPanelValues.length - 1].limitMode = panel.limitMode;
+            _this.data.childPanelValues[_this.data.childPanelValues.length - 1].startAtZero = panel.startAtZero;
+            _this.data.childPanelValues[_this.data.childPanelValues.length - 1].ordered = panel.ordered;
 
             _this.convertValues.push (true);
             _this.newPanel.push (false);
