@@ -21,7 +21,7 @@ export class MsfDashboardDrillDownComponent {
   horizAxisDisabled: boolean = true;
 
   chartForm: FormGroup;
-  nullValue: MsfDashboardPanelValues = new MsfDashboardPanelValues (null, "", 0, 0, 0, 0, 0, 0, null);
+  nullValue: MsfDashboardPanelValues = new MsfDashboardPanelValues (null, "","", 0, 0, 0, 0, 0, 0, null);
   currentValue: MsfDashboardPanelValues = this.nullValue;
   lastValue: MsfDashboardPanelValues;
   currentIndex: number = -1;
@@ -214,9 +214,11 @@ export class MsfDashboardDrillDownComponent {
 
     this.currentValue.chartColumnOptions = [];
 
-    for (let columnConfig of this.currentValue.currentOption.columnOptions)
+    if(this.currentValue.currentOption){
+      for (let columnConfig of this.currentValue.currentOption.columnOptions)
       this.currentValue.chartColumnOptions.push ( { id: columnConfig.columnName, name: columnConfig.columnLabel, item: columnConfig } );
-
+    }
+    
     if (!this.currentValue.tableVariables.length)
     {
       this.currentValue.tableVariables = [];
@@ -420,7 +422,7 @@ export class MsfDashboardDrillDownComponent {
             let panel = data[j];
 
             _this.data.childPanelValues.push (new MsfDashboardPanelValues (_this.data.options,
-              panel.title, panel.id, null, null, _this.getOption (panel.option),
+              panel.title, panel.description,panel.id, null, null, _this.getOption (panel.option),
               panel.analysis, panel.xaxis, panel.values, panel.function,
               panel.chartType, null, panel.lastestResponse, panel.paletteColors));
 
@@ -436,7 +438,7 @@ export class MsfDashboardDrillDownComponent {
           else if (j == data.length - 1)
           {
             _this.data.childPanelValues.push (new MsfDashboardPanelValues (_this.data.drillDownOptions,
-              "New Child Panel", -1, null, null, null, null, null, _this.getOption (_this.data.drillDownOptions[i].childrenOptionId)));
+              "New Child Panel", "",-1, null, null, null, null, null, _this.getOption (_this.data.drillDownOptions[i].childrenOptionId)));
 
             _this.data.childPanelValues[i].currentChartType = _this.chartTypes[0];
             _this.convertValues.push (false);
@@ -452,7 +454,7 @@ export class MsfDashboardDrillDownComponent {
         _this.data.childPanelsConfigured.push (false);
 
         _this.data.childPanelValues.push (new MsfDashboardPanelValues (_this.data.drillDownOptions,
-          "New Child Panel", -1, null, null, null, null, null, _this.getOption (_this.data.drillDownOptions[i].childrenOptionId)));
+          "New Child Panel","", -1, null, null, null, null, null, _this.getOption (_this.data.drillDownOptions[i].childrenOptionId)));
 
         _this.data.childPanelValues[i].currentChartType = _this.chartTypes[0];
         _this.convertValues.push (false);

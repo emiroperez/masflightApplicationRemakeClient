@@ -22,6 +22,7 @@ export class MsfDashboardPanelValues {
     dynTableGenerated: boolean;
 
     chartName: String;
+    chartDescription: String;
     chartColumnOptions:any[] = []; 
     currentChartType;
     currentOption: any;
@@ -106,7 +107,7 @@ export class MsfDashboardPanelValues {
     y: number;
     autoposition: boolean;
 
-    constructor(options: any[], chartName: String, id: number, gridId: number, x: number, y: number, width: number, height: number, currentOption?: any, variable?: any,
+    constructor(options: any[], chartName: String,chartDescription: String, id: number, gridId: number, x: number, y: number, width: number, height: number, currentOption?: any, variable?: any,
         xaxis?: any, valueColumn?: any, func?: any, chartType?: any, currentOptionCategories?: any, lastestResponse?: string,
         paletteColors?: any, updateTimeInterval?: number, thresholds?: any, vertAxisName?: string, horizAxisName?: string,
         intValue?: any, startAtZero?: boolean, limitMode?: number, limitAmount?: number, ordered?: boolean,
@@ -114,6 +115,7 @@ export class MsfDashboardPanelValues {
     {
         this.options = options;
         this.chartName = chartName;
+        this.chartDescription = chartDescription;
         this.id = id;
         this.gridId = gridId;
         this.x = x;
