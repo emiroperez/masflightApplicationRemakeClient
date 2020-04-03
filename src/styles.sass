@@ -4350,8 +4350,23 @@ mat-tab-group
     overflow-x: hidden
     -webkit-overflow-scrolling: touch
     transition: 0.5s
+    .msf-dashboard-header.is-mobile
+        margin-top: 15px
+        flex-direction: column-reverse
+    .msf-dashboard-header-private-mobile
+        flex-direction: column !important
+        width: inherit !important
+        margin-top: 0 !important
+        .msf-dashboard-control-panel-button-title
+            margin-top: 10px
+            position: inherit !important
+            align-self: center
+            align-items: center
+            padding: 10px 0px 10px 15px !important
+        .msf-dashboard-control-panel-button-arrow
+            position: inherit !important
     .msf-dashboard-header
-        position: relative
+        display: flex
         .msf-dashboard-title
             padding-top: 20px
             padding-bottom: 10px
@@ -4359,9 +4374,10 @@ mat-tab-group
             text-align: left
             margin-left: 16px
             display: flex
-            flex-direction: Column
+            flex-direction: column
             align-items: flex-start
             padding-right: 10px
+            width: 100%
             .msf-dashboard-title-btn
                 display: flex
                 flex-direction: row
@@ -4371,25 +4387,25 @@ mat-tab-group
                     padding: 0px
                     margin: 0px
                     width: calc(100% - 175px)
-        .msf-dashboard-title-private-mobile
-            flex-direction: column !important
-            .msf-dashboard-control-panel-button-title
-                margin-top: 10px
-                position: inherit !important
-                align-self: center
-                align-items: center
-                padding: 10px 0px 10px 15px !important
-            .msf-dashboard-control-panel-button-arrow
-                position: inherit !important
+        .msf-dashboard-control-panel
+            margin-top: 20px
+            display: flex
+            flex-direction: row
+        .msf-dashboard-control-panel.is-mobile
+            margin-top: 0 !important
+            align-items: inherit !important
+            justify-content: center
+            width: 100%
         .msf-dashboard-title.is-mobile
             font-size: 9px !important
-            flex-direction: column-reverse
+            flex-direction: column
+            width: inherit !important
             .msf-dashboard-control-panel-button-title
                 font-size: 12px !important
             .msf-dashboard-title-description
                 width: calc(100% - 16px)
             .msf-dashboard-title-label-description
-                margin-top: 0 !important
+                margin-top: 10px !important
                 display: block
                 width: 100%
                 white-space: normal

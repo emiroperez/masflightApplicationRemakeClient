@@ -1,8 +1,8 @@
 <div id="msf-dashboard-element" #scrollContainer (touchstart)="disableContextMenu()" (touchend)="disableContextMenu()" (click)="disableContextMenu()" (contextmenu)="disableContextMenu()" (scroll)="disableContextMenu()" class="msf-dashboard-container" [style.height]="screenHeight">
   <!-- ngClass must be used for the control variable overlay it can override the overlays used on some dialogs such as the wizard -->
   <div [ngClass]="{ 'msf-control-variables-overlay': (!controlVariableDialogOpen && !displayContextMenu && !displayPanelContextMenu) }">
-    <div class="msf-dashboard-header" *ngIf="currentDashboardMenu">
-      <div [ngClass]="mobileQuery.matches ? (public ? 'msf-dashboard-title is-mobile' : 'msf-dashboard-title is-mobile msf-dashboard-title-private-mobile'):'msf-dashboard-title'">
+    <div [ngClass]="mobileQuery.matches ? (public ? 'msf-dashboard-header is-mobile' : 'msf-dashboard-header is-mobile msf-dashboard-header-private-mobile') : 'msf-dashboard-header'" *ngIf="currentDashboardMenu">
+      <div [ngClass]="mobileQuery.matches ? 'msf-dashboard-title is-mobile' : 'msf-dashboard-title'">
         <div class="msf-dashboard-title-btn">
           <h1 class="msf-dashboard-title-label">
             {{currentDashboardMenu.title}}
@@ -10,7 +10,12 @@
               (Read Only)
             </span>
           </h1>
-        
+        </div>
+        <span class="msf-dashboard-title-label msf-dashboard-title-label-description">
+          {{currentDashboardMenu.description}}
+        </span>
+      </div>
+      <div [ngClass]="mobileQuery.matches ? 'msf-dashboard-control-panel is-mobile' : 'msf-dashboard-control-panel'">
         <div class="public-dashboard-header-logo" *ngIf="public">
           <img class="pulse-logo" src="../../assets/images/{{globals.theme}}-login-logo.png" />
         </div>
@@ -20,10 +25,6 @@
           <mat-icon *ngIf="!controlPanelOpen" class="msf-dashboard-control-panel-button-arrow" aria-label="open">arrow_drop_down</mat-icon>
           <mat-icon *ngIf="controlPanelOpen" class="msf-dashboard-control-panel-button-arrow" aria-label="open">arrow_drop_up</mat-icon>
         </div>
-      </div>
-      <span class="msf-dashboard-title-label msf-dashboard-title-label-description">
-        {{currentDashboardMenu.description}}
-      </span>
       </div>
     </div>
     <app-msf-dashboard-control-panel #dashboardControlPanel (updateAllPanels)="updateAllPanels($event)" (hideCategoryFromCharts)="hideCategoryFromCharts($event)" [controlPanelOpen]="controlPanelOpen" [controlVariablesAvailable]="controlVariablesAvailable" [controlPanelCategories]="controlPanelCategories"></app-msf-dashboard-control-panel>
