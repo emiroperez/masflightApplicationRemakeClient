@@ -278,6 +278,8 @@ export class MsfShareDashboardComponent implements OnInit {
       if (results)
       {
         this.globals.popupLoading = true;
+
+        results.dashboardMenu = { id: this.data.dashboardContentId };
         this.appService.createPublicDashboard (this, results, this.createSuccess, this.createError);
       }
     });
