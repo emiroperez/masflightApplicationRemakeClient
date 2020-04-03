@@ -214,10 +214,8 @@ export class MsfDashboardDrillDownComponent {
 
     this.currentValue.chartColumnOptions = [];
 
-    if(this.currentValue.currentOption){
-      for (let columnConfig of this.currentValue.currentOption.columnOptions)
+    for (let columnConfig of this.currentValue.currentOption.columnOptions)
       this.currentValue.chartColumnOptions.push ( { id: columnConfig.columnName, name: columnConfig.columnLabel, item: columnConfig } );
-    }
     
     if (!this.currentValue.tableVariables.length)
     {

@@ -204,7 +204,7 @@ export class MsfDashboardComponent implements OnInit {
         drillDownOptions: [],
         tabType: columnConfig.tabType,
         metaData: columnConfig.metaData,
-        serverSorting: parseInt(columnConfig.serverSorting),
+        serverSorting: parseInt (columnConfig.serverSorting),
         columnOptions: null
       });
 
@@ -248,6 +248,15 @@ export class MsfDashboardComponent implements OnInit {
       {
         if (drillDown.parentOptionId == _this.options[i].id)
         {
+          for (let j = 0; j < _this.options.length; j++)
+          {
+            if (drillDown.childrenOptionId.id == _this.options[j].id)
+            {
+              drillDown.childrenOptionId = _this.options[j];
+              break;
+            }
+          }
+
           _this.options[i].drillDownOptions.push (drillDown);
           break;
         }
