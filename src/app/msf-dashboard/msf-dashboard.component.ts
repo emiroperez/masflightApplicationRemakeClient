@@ -41,6 +41,7 @@ export class MsfDashboardComponent implements OnInit {
   gridStackOptions: any = {
     cellHeight: 30,
     animate: true,
+    oneColumnModeDomSort: true,
     draggable: {
       handle: ".msf-dashboard-button-move-icon"
     },

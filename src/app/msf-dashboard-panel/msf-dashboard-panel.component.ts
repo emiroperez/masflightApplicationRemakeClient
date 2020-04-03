@@ -489,6 +489,39 @@ export class MsfDashboardPanelComponent implements OnInit {
           series.show ();
       }
     }
+    else if (changes['isMobile'])
+    {
+      if (this.chart)
+      {
+        this.zone.runOutsideAngular(() => {
+          if (this.isMobile)
+          {
+            this.chart.scrollbarX = null;
+            this.chart.scrollbarY = null;
+          }
+          else if (!(this.values.currentChartType.flags & ChartFlags.PIECHART || this.values.currentChartType.flags & ChartFlags.FUNNELCHART
+            || this.values.currentChartType.flags & ChartFlags.MAP || this.values.currentChartType.flags & ChartFlags.HEATMAP))
+          {
+            // recreate scrollbar
+            if (this.chart.data.length > 1)
+            {
+              let theme = this.globals.theme;
+
+              if (this.values.currentChartType.flags & ChartFlags.ROTATED)
+              {
+                this.chart.scrollbarY = new am4core.Scrollbar ();
+                this.chart.scrollbarY.background.fill = Themes.AmCharts[theme].chartZoomScrollBar;
+              }
+              else
+              {
+                this.chart.scrollbarX = new am4core.Scrollbar ();
+                this.chart.scrollbarX.background.fill = Themes.AmCharts[theme].chartZoomScrollBar;
+              }
+            }
+          }
+        });
+      }
+    }
   }
 
   // Function to create horizontal column chart series
@@ -1657,11 +1690,7 @@ export class MsfDashboardPanelComponent implements OnInit {
               categoryAxis.baseInterval.count = 1;
             }
 
-            if (!outputFormat.includes ("y") && !outputFormat.includes ("Y"))
-              categoryAxis.periodChangeDateFormats.setKey ("month", "yyyy");
-            else
-              categoryAxis.periodChangeDateFormats.setKey ("month", outputFormat);
-
+            categoryAxis.periodChangeDateFormats.setKey ("month", outputFormat);
             categoryAxis.periodChangeDateFormats.setKey ("day", outputFormat);
             categoryAxis.periodChangeDateFormats.setKey ("week", outputFormat);
             categoryAxis.periodChangeDateFormats.setKey ("year", outputFormat);
@@ -1679,7 +1708,7 @@ export class MsfDashboardPanelComponent implements OnInit {
             valueAxis.min = 0;
 
           // Add scrollbar into the chart for zooming if there are multiple series
-          if (chart.data.length > 1)
+          if (chart.data.length > 1 && !this.isMobile)
           {
             chart.scrollbarY = new am4core.Scrollbar ();
             chart.scrollbarY.background.fill = Themes.AmCharts[theme].chartZoomScrollBar;
@@ -1714,11 +1743,7 @@ export class MsfDashboardPanelComponent implements OnInit {
               categoryAxis.baseInterval.count = 1;
             }
 
-            if (!outputFormat.includes ("y") && !outputFormat.includes ("Y"))
-              categoryAxis.periodChangeDateFormats.setKey ("month", "yyyy");
-            else
-              categoryAxis.periodChangeDateFormats.setKey ("month", outputFormat);
-
+            categoryAxis.periodChangeDateFormats.setKey ("month", outputFormat);
             categoryAxis.periodChangeDateFormats.setKey ("day", outputFormat);
             categoryAxis.periodChangeDateFormats.setKey ("week", outputFormat);
             categoryAxis.periodChangeDateFormats.setKey ("year", outputFormat);
@@ -1741,7 +1766,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           if (this.values.startAtZero)
             valueAxis.min = 0;
 
-          if (chart.data.length > 1)
+          if (chart.data.length > 1 && !this.isMobile)
           {
             chart.scrollbarX = new am4core.Scrollbar ();
             chart.scrollbarX.background.fill = Themes.AmCharts[theme].chartZoomScrollBar;
@@ -1768,9 +1793,6 @@ export class MsfDashboardPanelComponent implements OnInit {
         valueAxis.renderer.grid.template.strokeOpacity = 1;
         valueAxis.renderer.grid.template.stroke = Themes.AmCharts[theme].stroke;
         valueAxis.renderer.grid.template.strokeWidth = 1;
-
-        if (!(this.values.currentChartType.flags & ChartFlags.LINECHART))
-          valueAxis.min = 0;
 
         // Set axis tooltip background color depending of the theme
         valueAxis.tooltip.label.fill = Themes.AmCharts[theme].axisTooltipFontColor;

@@ -95,7 +95,6 @@ export class DatalakeMenuComponent implements OnInit {
   addDashboard()
   {
     this.dialog.open (MsfAddDashboardComponent, {
-      height: '210px',
       width: '480px',
       panelClass: 'msf-dashboard-control-variables-dialog',
       data: {
