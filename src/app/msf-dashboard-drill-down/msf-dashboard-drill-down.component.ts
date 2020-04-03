@@ -269,6 +269,7 @@ export class MsfDashboardDrillDownComponent {
           break;
       }
 
+      this.lastValue.currentChartType = this.currentValue.currentChartType;
       this.lastValue.variable = (variableIndex != -1 ? this.currentValue.chartColumnOptions[variableIndex] : null);
       this.lastValue.xaxis = (xAxisIndex != -1 ? this.currentValue.chartColumnOptions[xAxisIndex] : null);
       this.lastValue.valueColumn = (valueColumnIndex != -1 ? this.currentValue.chartColumnOptions[valueColumnIndex] : null);
