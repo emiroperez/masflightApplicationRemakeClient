@@ -493,29 +493,32 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       if (this.chart)
       {
-        this.zone.runOutsideAngular(() => {
+        this.zone.runOutsideAngular (() => {
           if (this.isMobile)
           {
             this.chart.scrollbarX = null;
             this.chart.scrollbarY = null;
           }
-          else if (!(this.values.currentChartType.flags & ChartFlags.PIECHART || this.values.currentChartType.flags & ChartFlags.FUNNELCHART
-            || this.values.currentChartType.flags & ChartFlags.MAP || this.values.currentChartType.flags & ChartFlags.HEATMAP))
+          else
           {
-            // recreate scrollbar
-            if (this.chart.data.length > 1)
+            if (!(this.values.currentChartType.flags & ChartFlags.PIECHART || this.values.currentChartType.flags & ChartFlags.FUNNELCHART
+              || this.values.currentChartType.flags & ChartFlags.MAP || this.values.currentChartType.flags & ChartFlags.HEATMAP))
             {
-              let theme = this.globals.theme;
+              // recreate scrollbar
+              if (this.chart.data.length > 1)
+              {
+                let theme = this.globals.theme;
 
-              if (this.values.currentChartType.flags & ChartFlags.ROTATED)
-              {
-                this.chart.scrollbarY = new am4core.Scrollbar ();
-                this.chart.scrollbarY.background.fill = Themes.AmCharts[theme].chartZoomScrollBar;
-              }
-              else
-              {
-                this.chart.scrollbarX = new am4core.Scrollbar ();
-                this.chart.scrollbarX.background.fill = Themes.AmCharts[theme].chartZoomScrollBar;
+                if (this.values.currentChartType.flags & ChartFlags.ROTATED)
+                {
+                  this.chart.scrollbarY = new am4core.Scrollbar ();
+                  this.chart.scrollbarY.background.fill = Themes.AmCharts[theme].chartZoomScrollBar;
+                }
+                else
+                {
+                  this.chart.scrollbarX = new am4core.Scrollbar ();
+                  this.chart.scrollbarX.background.fill = Themes.AmCharts[theme].chartZoomScrollBar;
+                }
               }
             }
           }
@@ -2266,6 +2269,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         chartSeries: this.values.chartSeries,
         optionId: this.values.currentOption.id
       });
+
+      chart.tapToActivate = true;
 
       this.chart = chart;
 
