@@ -391,6 +391,7 @@ export class MsfDashboardDrillDownComponent {
       this.chartForm.get ('functionCtrl').setValue ('');
 
     this.chartForm.get ('panelNameCtrl').setValue (this.currentValue.chartName);
+    // this.chartForm.get ('panelDescriptionCtrl').setValue (this.currentValue.chartDescription);
   }
 
   getOption(dashboardPanelOption)
@@ -543,6 +544,12 @@ export class MsfDashboardDrillDownComponent {
   checkPanelName(): void
   {
     this.currentValue.chartName = this.chartForm.get ('panelNameCtrl').value;
+    this.checkIfPanelIsConfigured ();
+  }
+
+  checkPanelDescription(): void
+  {
+    this.currentValue.chartDescription = this.chartForm.get ('panelDestriptionCtrl').value;
     this.checkIfPanelIsConfigured ();
   }
 
