@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, isDevMode } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { FormControl } from '@angular/forms';
 import { ReplaySubject, Subject } from 'rxjs';
@@ -9,6 +9,7 @@ import { ApplicationService } from '../services/application.service';
 import { MenuService } from '../services/menu.service';
 import { MessageComponent } from '../message/message.component';
 import { PublicizeDashboardDialogComponent } from '../publicize-dashboard-dialog/publicize-dashboard-dialog.component';
+import { UrlMessageComponent } from '../url-message/url-message.component';
 
 @Component({
   selector: 'app-msf-share-dashboard',
@@ -287,10 +288,17 @@ export class MsfShareDashboardComponent implements OnInit {
 
   createSuccess(_this, data): void
   {
+    let url;
+
     _this.globals.popupLoading = false;
 
-    _this.dialog.open (MessageComponent, {
-      data: { title: "Information", message: "The dashboard is now public." }
+    if (!isDevMode ())
+      url = "https://pulse.globaleagle.com/public-dashboard/" + data.name;
+    else
+      url = _this.globals.baseUrl + "/public-dashboard/" + data.name;
+
+    _this.dialog.open (UrlMessageComponent, {
+      data: { title: "Information", message: "The dashboard is now public.", url: url }
     });
 
     _this.publicDashboard = data;
@@ -333,10 +341,19 @@ export class MsfShareDashboardComponent implements OnInit {
 
   updateSuccess(_this, data): void
   {
+    let url;
+
     _this.globals.popupLoading = false;
 
-    _this.dialog.open (MessageComponent, {
-      data: { title: "Information", message: "The public dashboard updated successfully." }
+    if (!isDevMode ())
+      url = "https://pulse.globaleagle.com/public-dashboard/" + data.name;
+    else
+      url = _this.globals.baseUrl + "/public-dashboard/" + data.name;
+
+    _this.dialog.open (UrlMessageComponent, {
+      data: {
+        title: "Information", message: "The public dashboard updated successfully.", url: url
+      }
     });
 
     _this.publicDashboard = data;
