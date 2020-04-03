@@ -9,6 +9,12 @@
   </div>
   {{data.title}}
 </div>
+<div class="msf-dashboard-control-variables-title" *ngIf="!globals.popupLoading">
+  <div class="msf-dashboard-control-variables-close-button">
+    <mat-icon class="msf-dashboard-close-icon" aria-label="close" (click)="closeDialog()">close</mat-icon>
+  </div>
+  {{data.description}}
+</div>
 <div class="msf-dashboard-panel-container" id="msf-dashboard-drill-down-container" *ngIf="data.childPanelValues.length">
   <div class="msf-dashboard-panel-sub-container-column">
     <mat-form-field class="msf-full-width" id="msf-dashboard-drill-down-container-column">

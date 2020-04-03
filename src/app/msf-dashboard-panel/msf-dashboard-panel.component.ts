@@ -20,7 +20,7 @@ import { Themes } from '../globals/Themes';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { ReplaySubject, Subject } from 'rxjs';
 import { MatDialog, PageEvent, MatPaginator, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, take } from 'rxjs/operators';
 import * as moment from 'moment';
 import { DatePipe } from '@angular/common';
 
@@ -44,6 +44,7 @@ import { MsfDynamicTableAliasComponent } from '../msf-dynamic-table-alias/msf-dy
 import { MsfSelectDataFromComponent } from '../msf-select-data-from/msf-select-data-from.component';
 import { ConfigFlags } from './msf-dashboard-configflags';
 import { MsfDynamicTableVariablesComponent } from '../msf-dynamic-table-variables/msf-dynamic-table-variables.component';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 
 // AmCharts colors
 const black = am4core.color ("#000000");
@@ -297,6 +298,8 @@ export class MsfDashboardPanelComponent implements OnInit {
   dialogRef: any;
   dialogData: any;
 
+  @ViewChild('autosize', {static: false}) autosize: CdkTextareaAutosize;
+
   constructor(private zone: NgZone, public globals: Globals,
     private service: ApplicationService, private http: ApiClient, private authService: AuthService, public dialog: MatDialog,
     private changeDetectorRef: ChangeDetectorRef, private formBuilder: FormBuilder, private injector: Injector)
@@ -356,6 +359,12 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.variableCtrlBtnEnabled = this.dialogData.variableCtrlBtnEnabled;
       this.generateBtnEnabled = this.dialogData.generateBtnEnabled;
     }
+  }
+
+  triggerResize() {
+    // Wait for changes to be applied, then trigger textarea resize.
+    this.zone.onStable.pipe(take(1))
+        .subscribe(() => this.autosize.resizeToFitContent(true));
   }
 
   ngOnInit()
@@ -1444,6 +1453,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         chart.exporting.menu.align = "left";
         chart.exporting.menu.verticalAlign = "bottom";
         chart.exporting.title = this.values.chartName;
+        chart.exporting.description = this.values.chartDescription;
         chart.exporting.filePrefix = this.values.chartName;
         chart.exporting.useWebFonts = false;
 
@@ -1569,6 +1579,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         chart.exporting.menu.align = "left";
         chart.exporting.menu.verticalAlign = "bottom";
         chart.exporting.title = this.values.chartName;
+        chart.exporting.description = this.values.chartDescription;
         chart.exporting.filePrefix = this.values.chartName;
         chart.exporting.useWebFonts = false;
 
@@ -2238,6 +2249,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         chart.exporting.menu.align = "left";
         chart.exporting.menu.verticalAlign = "bottom";
         chart.exporting.title = this.values.chartName;
+        chart.exporting.description = this.values.chartDescription;
         chart.exporting.filePrefix = this.values.chartName;
         chart.exporting.useWebFonts = false;
 
@@ -2663,6 +2675,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         id: this.values.id,
         option: this.values.currentOption,
         title: this.values.chartName,
+        description: this.values.chartDescription,
         chartType: this.chartTypes.indexOf (this.values.currentChartType),
         categoryOptions: this.values.currentOptionCategories ? JSON.stringify (this.values.currentOptionCategories) : null,
         function: this.geodatas.indexOf (this.values.geodata),
@@ -2688,6 +2701,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         id: this.values.id,
         option: this.values.currentOption,
         title: this.values.chartName,
+        description: this.values.chartDescription,
         chartType: this.chartTypes.indexOf (this.values.currentChartType),
         categoryOptions: this.values.currentOptionCategories ? JSON.stringify (this.values.currentOptionCategories) : null,
         updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0),
@@ -2713,6 +2727,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         id: this.values.id,
         option: this.values.currentOption,
         title: this.values.chartName,
+        description: this.values.chartDescription,
         chartType: this.chartTypes.indexOf (this.values.currentChartType),
         categoryOptions: this.values.currentOptionCategories ? JSON.stringify (this.values.currentOptionCategories) : null,
         updateTimeInterval: (this.values.updateIntervalSwitch ? this.values.updateTimeLeft : 0),
@@ -2735,6 +2750,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         id: this.values.id,
         option: this.values.currentOption,
         title: this.values.chartName,
+        description: this.values.chartDescription,
         analysis: this.values.chartColumnOptions ? (this.values.infoVar1 ? this.values.infoVar1.item.id : null) : null,
         xaxis: this.values.chartColumnOptions ? (this.values.infoVar2 ? this.values.infoVar2.item.id : null) : null,
         values: this.values.chartColumnOptions ? (this.values.infoVar3 ? this.values.infoVar3.item.id : null) : null,
@@ -2757,6 +2773,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         id: this.values.id,
         option: this.values.currentOption,
         title: this.values.chartName,
+        description: this.values.chartDescription,
         analysis: this.values.chartColumnOptions ? (this.values.variable ? this.values.variable.item.id : null) : null,
         values: this.values.chartColumnOptions ? (this.values.valueColumn ? this.values.valueColumn.item.id : null) : null,
         function: this.values.intervalType === 'ncile' ? 0 : 1,
@@ -2785,6 +2802,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         id: this.values.id,
         option: this.values.currentOption,
         title: this.values.chartName,
+        description: this.values.chartDescription,
         analysis: this.values.chartColumnOptions ? (this.values.variable ? this.values.variable.item.id : null) : null,
         xaxis: this.values.chartColumnOptions ? (this.values.xaxis ? this.values.xaxis.item.id : null) : null,
         values: this.values.chartColumnOptions ? (this.values.valueColumn ? this.values.valueColumn.item.id : null) : null,
@@ -4216,13 +4234,14 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     if (!this.temp)
     {
-      this.temp = new MsfDashboardPanelValues (this.values.options, this.values.chartName,
+      this.temp = new MsfDashboardPanelValues (this.values.options, this.values.chartName,this.values.chartDescription,
         this.values.id, this.values.gridId, this.values.x, this.values.y, this.values.width,
         this.values.height);
     }
     else
       this.temp.chartName = this.values.chartName;
 
+    this.temp.chartDescription = this.values.chartDescription;
     this.temp.urlImg = this.values.urlImg;
     this.temp.currentOption = JSON.parse (JSON.stringify (this.values.currentOption));
     this.temp.variable = this.values.variable ? this.values.variable.item.id : null;
@@ -4351,6 +4370,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.urlImg = this.temp.urlImg;
     this.values.currentOption = JSON.parse (JSON.stringify (this.temp.currentOption));
     this.values.chartName = this.temp.chartName;
+    this.values.chartDescription = this.temp.chartDescription;
 
     if (this.temp.variable)
       this.values.variable = this.temp.variable;
@@ -5814,6 +5834,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       panelClass: 'msf-dashboard-child-panel-dialog',
       data: {
         title: this.values.chartName,
+        description: this.values.chartDescription,
         optionId: this.values.currentOption.id,
         parentPanelId: this.values.id,
         childPanelValues: this.childPanelValues,
@@ -5867,6 +5888,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           id: value.id,
           option: value.currentOption,
           title: value.chartName,
+          description: value.chartDescription,
           chartColumnOptions: JSON.stringify (value.chartColumnOptions),
           chartType: childChartTypes.indexOf (value.currentChartType),
           lastestResponse: JSON.stringify (tableVariableIds),
@@ -5879,7 +5901,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         childPanels.push ({
           id: value.id,
           option: value.currentOption,
-          title: value.chartName,
+          title: value.chartName,          
+          description: value.chartDescription,
           chartColumnOptions: JSON.stringify (value.chartColumnOptions),
           analysis: value.chartColumnOptions ? (value.variable ? value.variable.item.id : null) : null,
           xaxis: value.chartColumnOptions ? (value.xaxis ? value.xaxis.item.id : null) : null,
@@ -6049,7 +6072,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       data: {
         isPanel: true,
         dashboardContentId: this.values.id,
-        dashboardContentTitle: this.values.chartName
+        dashboardContentTitle: this.values.chartName,
+        dashboardContentDescription: this.values.chartDescription
       }
     });
   }

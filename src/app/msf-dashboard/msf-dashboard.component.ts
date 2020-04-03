@@ -378,7 +378,7 @@ export class MsfDashboardComponent implements OnInit {
         }
       }
 
-      _this.dashboardPanels.push (new MsfDashboardPanelValues (_this.options, dashboardPanel.title,
+      _this.dashboardPanels.push (new MsfDashboardPanelValues (_this.options, dashboardPanel.title,dashboardPanel.description,
         dashboardPanel.id, _this.gridStackIdCount++, dashboardPanel.x, dashboardPanel.y, dashboardPanel.width,
         dashboardPanel.height, _this.getOption (dashboardPanel.option), dashboardPanel.analysis, dashboardPanel.xaxis,
         dashboardPanel.values, dashboardPanel.function, dashboardPanel.chartType,
@@ -490,7 +490,7 @@ export class MsfDashboardComponent implements OnInit {
       return e1.y == e2.y ? e1.x - e2.x : e1.y - e2.y;
     });
 
-    this.dashboardPanels.push (new MsfDashboardPanelValues (this.options, "New Panel", null, this.gridStackIdCount++,
+    this.dashboardPanels.push (new MsfDashboardPanelValues (this.options, "New Panel","", null, this.gridStackIdCount++,
       null, null, defaultPanelWidth, defaultPanelHeight));
 
     this.changeDetector.detectChanges ();

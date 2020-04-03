@@ -56,6 +56,16 @@
         </mat-form-field>
       </div>
     </div>
+    <div class="msf-dashboard-panel-sub-container-row">
+      <mat-form-field class="msf-full-width">
+        <textarea matInput 
+        cdkTextareaAutosize
+        #autosize="cdkTextareaAutosize"
+        cdkAutosizeMinRows="1"
+        cdkAutosizeMaxRows="2"
+        placeholder="Description" [(ngModel)]="values.chartDescription"></textarea>
+    </mat-form-field>
+    </div>
     <ng-container *ngIf="!isInformationPanel() && !isSimpleFormPanel() && !isPicturePanel() && !isTablePanel() && !isMapPanel() && !isHeatMapPanel() && !isMapboxPanel() && !isDynTablePanel() && !isAdvChartPanel()">
       <div class="msf-dashboard-panel-sub-container-column">
         <div class="msf-dashboard-addmenu-icon-item msf-chart-config-label-container">
@@ -909,6 +919,7 @@
   <!-- ngIf doesn't work with AmCharts -->
   <div class="{{values.displayChart && !advTableView ? 'msf-dashboard-panel-container-chart' : 'msf-dashboard-panel-container-invisible'}}">
     <div class="msf-dashboard-panel-title" *ngIf="values.displayChart">
+      <div class="msf-dashboard-panel-title-label-icon">
       <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard && !isMobile">{{values.chartName}}</div>
       <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-mobile" *ngIf="!globals.readOnlyDashboard && isMobile">{{values.chartName}}</div>
       <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-read-only" *ngIf="globals.readOnlyDashboard && !public">{{values.chartName}}</div>
@@ -921,6 +932,8 @@
         <div class="msf-dashboard-panel-public-mobile-logo" *ngIf="isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightMobileLogoImage() + ')'}"></div>
         <div class="msf-dashboard-panel-public-logo" *ngIf="!isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightLogoImage() + ')'}"></div>
       </ng-container>
+    </div>
+    <div class="msf-dashboard-panel-title-description" *ngIf="!globals.readOnlyDashboard">{{values.chartDescription}}</div>
     </div>
     <div class="msf-dashboard-panel-anchor-container" *ngIf="displayAnchoredArguments">
       <div class="msf-dashboard-panel-anchored-argument" *ngFor="let anchoredArgument of anchoredArguments">
@@ -961,6 +974,7 @@
   </div>
   <div class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack" *ngIf="values.displayInfo">
     <div class="msf-dashboard-panel-title">
+      <div class="msf-dashboard-panel-title-label-icon">
       <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard && !isMobile">{{values.chartName}}</div>
       <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-mobile" *ngIf="!globals.readOnlyDashboard && isMobile">{{values.chartName}}</div>
       <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-read-only" *ngIf="globals.readOnlyDashboard && !public">{{values.chartName}}</div>
@@ -973,6 +987,8 @@
         <div class="msf-dashboard-panel-public-mobile-logo" *ngIf="isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightMobileLogoImage() + ')'}"></div>
         <div class="msf-dashboard-panel-public-logo" *ngIf="!isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightLogoImage() + ')'}"></div>
       </ng-container>
+    </div>
+    <div class="msf-dashboard-panel-title-description" *ngIf="!globals.readOnlyDashboard">{{values.chartDescription}}</div>
     </div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div style="width: 100%; height: 100%">
@@ -993,6 +1009,7 @@
   </div>
   <div class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack" *ngIf="values.displayForm">
     <div class="msf-dashboard-panel-title">
+      <div class="msf-dashboard-panel-title-label-icon">
       <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard && !isMobile">{{values.chartName}}</div>
       <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-mobile" *ngIf="!globals.readOnlyDashboard && isMobile">{{values.chartName}}</div>
       <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-read-only" *ngIf="globals.readOnlyDashboard && !public">{{values.chartName}}</div>
@@ -1005,6 +1022,8 @@
         <div class="msf-dashboard-panel-public-mobile-logo" *ngIf="isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightMobileLogoImage() + ')'}"></div>
         <div class="msf-dashboard-panel-public-logo" *ngIf="!isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightLogoImage() + ')'}"></div>
       </ng-container>
+    </div>
+    <div class="msf-dashboard-panel-title-description" *ngIf="!globals.readOnlyDashboard">{{values.chartDescription}}</div>
     </div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-form-container">
@@ -1024,6 +1043,7 @@
   </div>
   <div class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack" *ngIf="values.displayPic">
     <div class="msf-dashboard-panel-title">
+      <div class="msf-dashboard-panel-title-label-icon">
       <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard && !isMobile">{{values.chartName}}</div>
       <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-mobile" *ngIf="!globals.readOnlyDashboard && isMobile">{{values.chartName}}</div>
       <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-read-only" *ngIf="globals.readOnlyDashboard && !public">{{values.chartName}}</div>
@@ -1036,6 +1056,8 @@
         <div class="msf-dashboard-panel-public-mobile-logo" *ngIf="isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightMobileLogoImage() + ')'}"></div>
         <div class="msf-dashboard-panel-public-logo" *ngIf="!isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightLogoImage() + ')'}"></div>
       </ng-container>
+    </div>
+    <div class="msf-dashboard-panel-title-description" *ngIf="!globals.readOnlyDashboard">{{values.chartDescription}}</div>
     </div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="content-panel-img">
@@ -1045,6 +1067,7 @@
   </div>
   <div class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack" [style.display]="values.displayTable ? 'block' : 'none'">
     <div class="msf-dashboard-panel-title" [style.padding-bottom.px]="5">
+      <div class="msf-dashboard-panel-title-label-icon">
       <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard && !isMobile">{{values.chartName}}</div>
       <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-mobile" *ngIf="!globals.readOnlyDashboard && isMobile">{{values.chartName}}</div>
       <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-read-only" *ngIf="globals.readOnlyDashboard && !public">{{values.chartName}}</div>
@@ -1058,9 +1081,11 @@
         <div class="msf-dashboard-panel-public-logo" *ngIf="!isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightLogoImage() + ')'}"></div>
       </ng-container>
     </div>
+    <div class="msf-dashboard-panel-title-description" *ngIf="!globals.readOnlyDashboard">{{values.chartDescription}}</div>
+    </div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-table-container">
-        <div class="msf-dashboard-child-panel-table msf-dashboard-panel-table" style="height: calc(100% - 27px)">
+        <div class="msf-dashboard-child-panel-table msf-dashboard-panel-table" style="height: calc(100% - 77px)">
           <app-msf-table #msfTableRef [isLoading]="values.isLoading" 
           (finishLoading)="finishLoadingTable($event)" [categoryArguments]="values.currentOptionCategories"
            [currentOption]="values.currentOption" [isPanel]="true" [thresholds]="values.thresholds"
@@ -1084,6 +1109,7 @@
   </div>
   <div class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack" [style.display]="values.displayMapbox ? 'block' : 'none'">
     <div class="msf-dashboard-panel-title">
+      <div class="msf-dashboard-panel-title-label-icon">
       <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard && !isMobile">{{values.chartName}}</div>
       <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-mobile" *ngIf="!globals.readOnlyDashboard && isMobile">{{values.chartName}}</div>
       <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-read-only" *ngIf="globals.readOnlyDashboard && !public">{{values.chartName}}</div>
@@ -1096,6 +1122,8 @@
         <div class="msf-dashboard-panel-public-mobile-logo" *ngIf="isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightMobileLogoImage() + ')'}"></div>
         <div class="msf-dashboard-panel-public-logo" *ngIf="!isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightLogoImage() + ')'}"></div>
       </ng-container>
+    </div>
+    <div class="msf-dashboard-panel-title-description" *ngIf="!globals.readOnlyDashboard">{{values.chartDescription}}</div>
     </div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div style="height: calc(100% - 7px)" class="msf-dashboard-panel-mapbox">
@@ -1105,6 +1133,7 @@
   </div>
   <div class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack" *ngIf="values.displayDynTable">
     <div class="msf-dashboard-panel-title">
+      <div class="msf-dashboard-panel-title-label-icon">
       <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard && !isMobile">{{values.chartName}}</div>
       <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-mobile" *ngIf="!globals.readOnlyDashboard && isMobile">{{values.chartName}}</div>
       <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-read-only" *ngIf="globals.readOnlyDashboard && !public">{{values.chartName}}</div>
@@ -1117,6 +1146,8 @@
         <div class="msf-dashboard-panel-public-mobile-logo" *ngIf="isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightMobileLogoImage() + ')'}"></div>
         <div class="msf-dashboard-panel-public-logo" *ngIf="!isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightLogoImage() + ')'}"></div>
       </ng-container>
+    </div>
+    <div class="msf-dashboard-panel-title-description" *ngIf="!globals.readOnlyDashboard">{{values.chartDescription}}</div>
     </div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="dynamic-table-scroll dashboard-panel-dynamic-table-scroll" style="height: calc(100% - 20px)">
@@ -1144,6 +1175,7 @@
   <!-- Table view for advanced charts -->
   <div *ngIf="values.displayChart && advTableView" class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack">
     <div class="msf-dashboard-panel-title" *ngIf="values.displayChart">
+      <div class="msf-dashboard-panel-title-label-icon">
       <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard && !isMobile">{{values.chartName}}</div>
       <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-mobile" *ngIf="!globals.readOnlyDashboard && isMobile">{{values.chartName}}</div>
       <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-read-only" *ngIf="globals.readOnlyDashboard && !public">{{values.chartName}}</div>
@@ -1156,6 +1188,8 @@
         <div class="msf-dashboard-panel-public-mobile-logo" *ngIf="isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightMobileLogoImage() + ')'}"></div>
         <div class="msf-dashboard-panel-public-logo" *ngIf="!isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightLogoImage() + ')'}"></div>
       </ng-container>
+    </div>
+    <div class="msf-dashboard-panel-title-description" *ngIf="!globals.readOnlyDashboard">{{values.chartDescription}}</div>
     </div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-child-panel-table msf-dashboard-panel-table msf-adv-chart-table" style="height: calc(100% - 20px)" [style.width.%]="100" [style.margin-top.px]="5">
