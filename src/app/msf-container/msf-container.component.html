@@ -57,4 +57,4 @@
 </div>
 <app-msf-dashboard [currentDashboardMenu]="globals.currentDashboardMenu" *ngIf="globals.currentOption === 'dashboard'"></app-msf-dashboard>
 <app-msf-dashboard-category-admin [isMobile]="mobileQuery.matches" [isResponsive]="responsiveQuery.matches" (refreshDashboardMenu)="refreshDashboardMenu.emit()" *ngIf="globals.currentOption === 'categoryAdmin'"></app-msf-dashboard-category-admin>
-<app-intro *ngIf="!globals.currentOption"></app-intro>
+<app-intro [isMobile]="mobileQuery.matches" *ngIf="!globals.currentOption"></app-intro>

@@ -1,5 +1,5 @@
 <!--body-->
-<div class="msf-intro-body" style="overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 2%;">
+<div [ngClass]="{ 'msf-intro-body': !isMobile, 'msf-intro-body is-mobile': isMobile }" style="overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 2%;">
     <div>
         <div class="msf-intro-welcome" style="font-size: 120%;font-weight: 500;" *ngIf="!globals.currentApplication">Welcome<ng-container *ngIf="globals.currentUser">, {{globals.currentUser}}</ng-container></div>
         <div class="msf-intro-welcome" style="font-size: 120%;font-weight: 500;" *ngIf="globals.currentApplication">Welcome to {{globals.currentApplication.name}}<ng-container *ngIf="globals.currentUser">, {{globals.currentUser}}</ng-container></div>

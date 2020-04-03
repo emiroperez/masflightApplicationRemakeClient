@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Globals } from '../globals/Globals';
 
 @Component({
@@ -7,6 +7,8 @@ import { Globals } from '../globals/Globals';
   styleUrls: ['./intro.component.css']
 })
 export class IntroComponent implements OnInit {
+  @Input("isMobile")
+  isMobile: boolean = false;
 
   constructor(public globals: Globals) { }
 

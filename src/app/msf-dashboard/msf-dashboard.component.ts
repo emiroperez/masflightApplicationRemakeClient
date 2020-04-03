@@ -41,7 +41,6 @@ export class MsfDashboardComponent implements OnInit {
   gridStackOptions: any = {
     cellHeight: 30,
     animate: true,
-    oneColumnModeDomSort: true,
     draggable: {
       handle: ".msf-dashboard-button-move-icon"
     },
@@ -102,7 +101,7 @@ export class MsfDashboardComponent implements OnInit {
     this.readOnlyDashboard = this.globals.readOnlyDashboard ? true : false;
     this.globals.showPaginator = false; // hide paginator
     
-    this.mobileQuery = media.matchMedia('(max-width: 480px)');
+    this.mobileQuery = media.matchMedia('(max-width: 767px)');
     this._mobileQueryListener = () => changeDetector.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
   }
