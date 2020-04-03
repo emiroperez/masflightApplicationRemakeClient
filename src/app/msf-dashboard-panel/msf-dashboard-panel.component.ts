@@ -7756,8 +7756,22 @@ export class MsfDashboardPanelComponent implements OnInit {
       values: []
     };
 
-    console.log (this.values.dynTableVariables);
-    console.log (this.values.dynTableValues);
+    if (this.values.dynTableVariables)
+    {
+      for (let variable of this.values.dynTableVariables)
+      {
+        if (variable.direction === "horizontal")
+          dynamicTableValues.xaxis.push (variable);
+        else
+          dynamicTableValues.yaxis.push (variable);
+      }
+    }
+
+    if (this.values.dynTableValues)
+    {
+      for (let value of this.values.dynTableValues)
+        dynamicTableValues.values.push (value);
+    }
 
     const dialogRef = this.dialog.open (MsfDynamicTableVariablesComponent,
     {
@@ -7768,18 +7782,42 @@ export class MsfDashboardPanelComponent implements OnInit {
       data: {
         metadata: this.values.currentOption.columnOptions,
         dynamicTableValues: dynamicTableValues,
-        dashboardPanel: this
+        dashboardPanel: this.values
       }
     });
 
-    dialogRef.afterClosed().subscribe(result =>
+    dialogRef.afterClosed ().subscribe (result =>
     {
       if (result != null)
       {
-/*        this.globals.selectedIndex = 3;
-        this.dynTableLoading = true;
-        this.dynamicTableValues = result; // store the dynamic table configuration
-        this.msfContainerRef.msfDynamicTableRef.loadData (result.xaxis, result.yaxis, result.values);*/
+        this.values.dynTableVariables = [];
+        this.values.dynTableValues = [];
+
+        for (let variable of result.xaxis)
+        {
+          this.values.dynTableVariables.push (variable);
+          this.values.dynTableVariables[this.values.dynTableVariables.length - 1].direction = "horizontal";
+        }
+
+        for (let i = 0; i < result.yaxis.length; i++)
+        {
+          let variable = result.yaxis[i];
+          let index;
+
+          this.values.dynTableVariables.push (variable);
+          index = this.values.dynTableVariables.length - 1;
+          this.values.dynTableVariables[index].direction = "vertical";
+
+          if (i != result.yaxis.length - 1)
+            this.values.dynTableVariables[index].summary = true;
+          else
+            this.values.dynTableVariables[index].summary = false;
+        }
+
+        for (let value of result.values)
+          this.values.dynTableValues.push (value);
+
+        this.checkPanelConfiguration ();
       }
     });
   }
