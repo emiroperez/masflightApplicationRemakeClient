@@ -676,7 +676,7 @@
       </div>
     </ng-container>
     <ng-container *ngIf="isDynTablePanel()">
-      <!-- Dynamic table -->
+      <!-- Dynamic table
       <div class="msf-dashboard-panel-sub-container-column">
         <div class="msf-dashboard-addmenu-icon-item">
           <img src="../../assets/images/{{globals.theme}}-dynamicTable.png" [style.margin-left.px]="10" [style.margin-right.px]="10" [style.width.px]="20" [style.height.px]="20">
@@ -766,6 +766,13 @@
           </mat-accordion>
         </div>
       </div>
+      -->
+      <div class="msf-dashboard-panel-sub-container-column msf-dashboard-panel-dynamic-table">
+        <button mat-button [disabled]="!this.values.currentOptionCategories" class="dynamic-table-config-button"
+          [ngClass]="{ 'flat-button': this.values.currentOptionCategories, 'flat-button-disabled': !this.values.currentOptionCategories }" (click)="configureDynamicTable()">
+          Configure Dynamic Table
+        </button>
+      </div>
       <div class="msf-dashboard-panel-sub-container-column">
         <div class="msf-dashboard-chart-options-container">
           <div class="msf-dashboard-panel-sub-container-column-reverse">
@@ -788,13 +795,6 @@
           </div>
         </div>
       </div>
-      <!--
-      <div class="msf-dashboard-panel-sub-container-column msf-dashboard-panel-dynamic-table">
-        <button mat-button class="flat-button dynamic-table-config-button" (click)="configureDynamicTable()">
-          Configure Dynamic Table
-        </button>
-      </div>
-      -->
     </ng-container>
     <ng-container *ngIf="isAdvChartPanel()">
       <div class="msf-dashboard-panel-sub-container-column">
