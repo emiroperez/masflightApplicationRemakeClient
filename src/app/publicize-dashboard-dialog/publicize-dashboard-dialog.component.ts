@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { MatDialogRef, DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS, MatDialog } from '@angular/material';
+import { Component, Inject } from '@angular/core';
+import { MatDialogRef, DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS, MatDialog, MAT_DIALOG_DATA } from '@angular/material';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { FormControl, FormGroup, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 
@@ -31,24 +31,40 @@ export class PublicizeDashboardDialogComponent
 {
   publicDashboardInfo: any = {};
   expirable: boolean = false;
+  today: Date = new Date ();
 
   publicForm: FormGroup;
 
   constructor(public dialogRef: MatDialogRef<PublicizeDashboardDialogComponent>,
-    private services: ApplicationService, public globals: Globals, public dialog: MatDialog)
+    private services: ApplicationService, public globals: Globals, public dialog: MatDialog,
+    @Inject(MAT_DIALOG_DATA) public data: any)
   {
     this.publicForm = new FormGroup ({
       nameValidator: new FormControl ('', [Validators.required, PublicizeDashboardDialogComponent.spaceValidator (this)])
     });
 
-    this.publicDashboardInfo.id = null;
-    this.publicDashboardInfo.name = "";
-    this.publicDashboardInfo.expirationDate = null;
-  }
+    if (this.data)
+    {
+      this.publicDashboardInfo.id = this.data.publicDashboardInfo.id;
+      this.publicDashboardInfo.name = this.data.publicDashboardInfo.name;
+      this.publicDashboardInfo.expirationDate = this.data.publicDashboardInfo.expirationDate;
 
-  setDashboardToPublic(): void
-  {
-    this.dialogRef.close (this.publicDashboardInfo);
+      this.publicForm.get ('nameValidator').setValue (this.publicDashboardInfo.name);
+
+      if (this.publicDashboardInfo.expirationDate)
+        this.expirable = true;
+    }
+    else
+    {
+      this.publicDashboardInfo.id = null;
+      this.publicDashboardInfo.name = "";
+      this.publicDashboardInfo.expirationDate = null;
+    }
+
+    this.publicForm.get ('nameValidator').valueChanges.subscribe (value =>
+    {
+      this.checkPublicDashboardName (value);
+    });
   }
 
   clearExpirationDate(): void
@@ -111,7 +127,7 @@ export class PublicizeDashboardDialogComponent
     if (this.publicDashboardInfo)
       this.publicDashboardInfo.expirationDate = this.parseDate (this.publicDashboardInfo.expirationDate);
 
-    this.dialogRef.close (this.publicDashboardInfo);
+    this.dialogRef.close ({ delete: false, info: this.publicDashboardInfo });
   }
 
   checkPublicDashboardName(name): void
@@ -121,10 +137,29 @@ export class PublicizeDashboardDialogComponent
 
   checkNameResponse(_this, data): void
   {
+    let nameValidator = _this.publicForm.get ("nameValidator");
+
     if (data)
-      _this.publicForm.get ("nameValidator").setErrors ({ exists: data });
+    {
+      if (!(_this.data.publicDashboardInfo && _this.data.publicDashboardInfo.id == data))
+      {
+        if (nameValidator.hasError ('hasSpaces'))
+          nameValidator.setErrors ({ hasSpaces: nameValidator.hasError ('hasSpaces'), exists: true });
+        else if (nameValidator.hasError ('required'))
+          nameValidator.setErrors ({ required: nameValidator.hasError ('required'), exists: true });
+        else
+          nameValidator.setErrors ({ exists: true });
+
+        return;
+      }
+    }
+
+    if (nameValidator.hasError ('hasSpaces'))
+      nameValidator.setErrors ({ hasSpaces: nameValidator.hasError ('hasSpaces'), exists: null });
+    else if (nameValidator.hasError ('required'))
+      nameValidator.setErrors ({ required: nameValidator.hasError ('required'), exists: null });
     else
-      _this.publicForm.get ("nameValidator").setErrors (null);
+      nameValidator.setErrors (null);
   }
 
   checkNameError(_this): void
@@ -133,12 +168,23 @@ export class PublicizeDashboardDialogComponent
 
   getNameErrorMessage(): string
   {
-    if (this.publicForm.get('nameValidator').hasError ('hasSpaces'))
+    if (this.publicForm.get ('nameValidator').hasError ('hasSpaces'))
       return 'The name must not have any spaces';
-    else if (this.publicForm.get('nameValidator').hasError ('exists'))
+    else if (this.publicForm.get ('nameValidator').hasError ('exists'))
       return 'This dashboard name is already in use';
 
     return this.publicForm.get ('nameValidator').hasError ('required') ? 'The name must not be empty' : '';
+  }
+
+  removePublicDashboard(): void
+  {
+    this.services.confirmationDialog (this, "Are you sure you want to remove the public dashboard?",
+      function (_this)
+      {
+        _this.publicDashboardInfo.id = null;
+        _this.dialogRef.close ({ delete: true, info: _this.publicDashboardInfo });
+      }
+    );
   }
 
   static spaceValidator(comp: PublicizeDashboardDialogComponent): ValidatorFn
@@ -147,12 +193,13 @@ export class PublicizeDashboardDialogComponent
       if (comp.publicForm == undefined)
         return null;
 
-      let name: string = comp.publicForm.get ('nameValidator').value;
+      let nameValidator = comp.publicForm.get ('nameValidator');
+      let name: string = nameValidator.value;
 
-      if (name != null && name != "" && /\s/g.test (name))
+      if (name != null && name != "" && /\s/g.test(name))
         return { hasSpaces: true };
-      else
-        return null;
+
+      return null;
     };
   }
 }

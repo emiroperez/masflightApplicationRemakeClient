@@ -7,7 +7,7 @@
 <div class="msf-dashboard-panel-sub-container-row msf-edit-dashboard-container publicize-dashboard-container">
   <div class="msf-dashboard-function-measure dashboard-config-title">
     <mat-form-field [formGroup]="publicForm">
-      <input matInput autocomplete="off" type="text" placeholder="Public Dashboard Name" (change)="checkPublicDashboardName($event.target.value)" formControlName="nameValidator"/>
+      <input matInput autocomplete="off" type="text" placeholder="Public Dashboard Name" (input)="checkPublicDashboardName($event.target.value)" formControlName="nameValidator"/>
       <mat-error *ngIf="publicForm.get('nameValidator')?.invalid">{{getNameErrorMessage()}}</mat-error>
     </mat-form-field>
   </div>
@@ -20,13 +20,17 @@
   </div>
   <div class="msf-component-date-input-container msf-single-date date-restriction-input-container" *ngIf="expirable">
     <mat-form-field class="msf-full-width msf-single-date">
-      <input matInput class="msf-component-airport-container mat-input-element" [(ngModel)]="publicDashboardInfo.expirationDate" [matDatepicker]="picker" placeholder="Expiration Date" autocomplete="off" (click)="picker.open()" [readonly]="true">
+      <input matInput class="msf-component-airport-container mat-input-element" [(ngModel)]="publicDashboardInfo.expirationDate" [min]="today" [matDatepicker]="picker" placeholder="Expiration Date" autocomplete="off" (click)="picker.open()" [readonly]="true">
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
   </div>
 </div>
 <div class="msf-dashboard-control-variables-button">
+  <ng-container *ngIf="this.data">
+    <button mat-flat-button class="flat-button" (click)="removePublicDashboard()">Delete Public Dashboard</button>
+    <span class="button-separator"></span>
+  </ng-container>
   <button mat-flat-button class="flat-button" (click)="confirmChanges(true)">OK</button>
   <span class="button-separator"></span>
   <button mat-flat-button class="flat-button" (click)="confirmChanges(false)">Cancel</button>

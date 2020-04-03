@@ -933,7 +933,7 @@ export class ApplicationService {
 
   checkPublicDashboardName(_this, dashboardName, handlerSuccess, handlerError): void
   {
-    let url = _this.globals.baseUrl + "/checkPublicDashboardName";
-    this.http.post(_this, url, dashboardName, handlerSuccess, handlerError);
+    let url = _this.globals.baseUrl + "/checkPublicDashboardName?name=" + dashboardName;
+    this.http.post (_this, url, null, handlerSuccess, handlerError);
   }
 }

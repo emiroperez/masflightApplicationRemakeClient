@@ -279,8 +279,8 @@ export class MsfShareDashboardComponent implements OnInit {
       {
         this.globals.popupLoading = true;
 
-        results.dashboardMenu = { id: this.data.dashboardContentId };
-        this.appService.createPublicDashboard (this, results, this.createSuccess, this.createError);
+        results.info.dashboardMenu = { id: this.data.dashboardContentId };
+        this.appService.createPublicDashboard (this, results.info, this.createSuccess, this.createError);
       }
     });
   }
@@ -307,5 +307,67 @@ export class MsfShareDashboardComponent implements OnInit {
 
   editPublicDashboard(): void
   {
+    let dialogRef = this.dialog.open (PublicizeDashboardDialogComponent, {
+      width: '480px',
+      autoFocus: false,
+      data: {
+        publicDashboardInfo: JSON.parse (JSON.stringify (this.publicDashboard))
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((results) => {
+      if (results)
+      {
+        this.globals.popupLoading = true;
+
+        if (results.delete)
+          this.appService.removePublicDashboard (this, this.publicDashboard.id, this.publicRemoveSuccess, this.publicRemoveError);
+        else
+        {
+          results.info.dashboardMenu = { id: this.data.dashboardContentId };
+          this.appService.updatePublicDashboard (this, results.info, this.updateSuccess, this.updateError);
+        }
+      }
+    });
+  }
+
+  updateSuccess(_this, data): void
+  {
+    _this.globals.popupLoading = false;
+
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Information", message: "The public dashboard updated successfully." }
+    });
+
+    _this.publicDashboard = data;
+  }
+
+  updateError(_this): void
+  {
+    _this.globals.popupLoading = false;
+
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Information", message: "Failed to update public dashboard." }
+    });
+  }
+
+  publicRemoveSuccess(_this): void
+  {
+    _this.globals.popupLoading = false;
+
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Information", message: "The public dashboard has been removed." }
+    });
+
+    _this.publicDashboard = null;
+  }
+
+  publicRemoveError(_this): void
+  {
+    _this.globals.popupLoading = false;
+
+    _this.dialog.open (MessageComponent, {
+      data: { title: "Error", message: "Failed to remove public dashboard." }
+    });
   }
 }

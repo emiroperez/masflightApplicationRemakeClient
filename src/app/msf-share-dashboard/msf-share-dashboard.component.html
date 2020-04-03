@@ -50,13 +50,11 @@
   </div>
 </div>
 <div class="msf-dashboard-control-variables-button msf-dashboard-share-content-container" id="msf-dashboard-drill-down-container" *ngIf="!globals.popupLoading">
-  <!--
   <ng-container *ngIf="!isPanel && globals.SuperAdmin">
     <button mat-flat-button *ngIf="!publicDashboard" class="flat-button" (click)="publicizeDashboard()">Publicize Dashboard</button>
     <button mat-flat-button *ngIf="publicDashboard" class="flat-button" (click)="editPublicDashboard()">Edit Public Dashboard</button>
     <span class="button-separator"></span>
   </ng-container>
-  -->
   <button [disabled]="!selectedUser" mat-flat-button [ngClass]="selectedUser ? 'flat-button' : 'flat-button-disabled'" (click)="removeUser()">Remove User</button>
   <span class="button-separator"></span>
   <button mat-flat-button class="flat-button" (click)="closeDialog()">OK</button>
