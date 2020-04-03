@@ -3,17 +3,14 @@
   <div [ngClass]="{ 'msf-control-variables-overlay': (!controlVariableDialogOpen && !displayContextMenu && !displayPanelContextMenu) }">
     <div class="msf-dashboard-header" *ngIf="currentDashboardMenu">
       <div [ngClass]="mobileQuery.matches ? (public ? 'msf-dashboard-title is-mobile' : 'msf-dashboard-title is-mobile msf-dashboard-title-private-mobile'):'msf-dashboard-title'">
-        <div class="msf-dashboard-title-description">
+        <div class="msf-dashboard-title-btn">
           <h1 class="msf-dashboard-title-label">
             {{currentDashboardMenu.title}}
             <span *ngIf="globals.readOnlyDashboard && !public">
               (Read Only)
             </span>
           </h1>
-          <span class="msf-dashboard-title-label msf-dashboard-title-label-description">
-            {{currentDashboardMenu.description}}
-          </span>
-        </div>
+        
         <div class="public-dashboard-header-logo" *ngIf="public">
           <img class="pulse-logo" src="../../assets/images/{{globals.theme}}-login-logo.png" />
         </div>
@@ -23,6 +20,10 @@
           <mat-icon *ngIf="!controlPanelOpen" class="msf-dashboard-control-panel-button-arrow" aria-label="open">arrow_drop_down</mat-icon>
           <mat-icon *ngIf="controlPanelOpen" class="msf-dashboard-control-panel-button-arrow" aria-label="open">arrow_drop_up</mat-icon>
         </div>
+      </div>
+      <span class="msf-dashboard-title-label msf-dashboard-title-label-description">
+        {{currentDashboardMenu.description}}
+      </span>
       </div>
     </div>
     <app-msf-dashboard-control-panel #dashboardControlPanel (updateAllPanels)="updateAllPanels($event)" (hideCategoryFromCharts)="hideCategoryFromCharts($event)" [controlPanelOpen]="controlPanelOpen" [controlVariablesAvailable]="controlVariablesAvailable" [controlPanelCategories]="controlPanelCategories"></app-msf-dashboard-control-panel>
